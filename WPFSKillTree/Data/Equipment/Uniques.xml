@@ -1414,7 +1414,7 @@
       <Stat Name="You can only deal Damage with this Weapon and Ignite" From="" To="" />
     </Explicit>
   </Unique>
-  <Unique Name="The Goddess Unleashed" Level="66" BaseMetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword21">
+  <Unique Name="The Goddess Unleashed" Level="52" BaseMetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword21">
     <Explicit>
       <Stat Name="Uses both hand slots" From="" To="" />
       <Stat Name="Item has # Sockets and is fully linked (Hidden)" From="6" To="6" />
@@ -1845,7 +1845,7 @@
       <Stat Name="Items and Gems have #% reduced Attribute Requirements" From="25" To="25" />
     </Explicit>
   </Unique>
-  <Unique Name="Blightwell" Level="28" DropDisabled="true" BaseMetadataId="Metadata/Items/Amulets/Talismans/Talisman2_5">
+  <Unique Name="Blightwell" Level="28" BaseMetadataId="Metadata/Items/Amulets/Talismans/Talisman2_5">
     <Explicit>
       <Stat Name="+# to maximum Energy Shield" From="20" To="30" />
       <Stat Name="+#% to Fire Resistance" From="15" To="30" />
@@ -1931,7 +1931,7 @@
       <Stat Name="#% of Fire Damage Leeched as Life while Ignited" From="2" To="2" />
     </Explicit>
   </Unique>
-  <Unique Name="Eyes of the Greatwolf" Level="52" DropDisabled="true" BaseMetadataId="Metadata/Items/Amulets/Talismans/Talisman4">
+  <Unique Name="Eyes of the Greatwolf" Level="52" BaseMetadataId="Metadata/Items/Amulets/Talismans/Talisman4">
     <Explicit>
       <Stat Name="Implicit Modifier magnitudes are doubled" From="" To="" />
     </Explicit>
@@ -1972,7 +1972,7 @@
       <Stat Name="Critical Strikes have Culling Strike" From="" To="" />
     </Explicit>
   </Unique>
-  <Unique Name="Natural Hierarchy" Level="1" DropDisabled="true" BaseMetadataId="Metadata/Items/Amulets/Talismans/Talisman3_5">
+  <Unique Name="Natural Hierarchy" Level="1" BaseMetadataId="Metadata/Items/Amulets/Talismans/Talisman3_5">
     <Explicit>
       <Stat Name="#% increased Physical Damage" From="10" To="15" />
       <Stat Name="#% increased Fire Damage" From="25" To="30" />
@@ -1990,7 +1990,7 @@
       <Stat Name="#% of Life Regenerated per second while on Low Life" From="1" To="1" />
     </Explicit>
   </Unique>
-  <Unique Name="Night's Hold" Level="10" DropDisabled="true" BaseMetadataId="Metadata/Items/Amulets/Talismans/Talisman1_1">
+  <Unique Name="Night's Hold" Level="10" BaseMetadataId="Metadata/Items/Amulets/Talismans/Talisman1_1">
     <Explicit>
       <Stat Name="+# to Level of Socketed Gems" From="2" To="2" />
       <Stat Name="Socketed Gems are Supported by level # Added Chaos Damage" From="10" To="10" />
@@ -2016,7 +2016,7 @@
       <Stat Name="Cannot gain Power Charges" From="" To="" />
     </Explicit>
   </Unique>
-  <Unique Name="Rigwald's Curse" Level="28" DropDisabled="true" BaseMetadataId="Metadata/Items/Amulets/Talismans/Talisman2_3">
+  <Unique Name="Rigwald's Curse" Level="28" BaseMetadataId="Metadata/Items/Amulets/Talismans/Talisman2_3">
     <Explicit>
       <Stat Name="+#% Unarmed Critical Strike Chance" From="7" To="7" />
       <Stat Name="Modifiers to Claw Damage also apply to Unarmed" From="" To="" />
@@ -4954,6 +4954,13 @@
   <Unique Name="Fireborn" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelStr">
     <Explicit>
       <Stat Name="Increases and Reductions to other Damage Types in Radius are Transformed to apply to Fire Damage" From="" To="" />
+    </Explicit>
+  </Unique>
+  <Unique Name="First Snow" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelInt">
+    <Explicit>
+      <Stat Name="#% increased Projectile Damage" From="10" To="10" />
+      <Stat Name="With at least # Intelligence in Radius, Freezing Pulse fires # additional Projectiles" From="40 2" To="40 2" />
+      <Stat Name="With at least # Intelligence in Radius, #% increased Freezing Pulse Damage if you've Shattered an Enemy Recently" From="40 25" To="40 25" />
     </Explicit>
   </Unique>
   <Unique Name="Fluid Motion" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelDex">

@@ -3272,73 +3272,73 @@
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Ashscale Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_3">
+  <ItemBase ItemType="Amulet" Name="Ashscale Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_3">
     <Implicit>
       <Stat Name="#% increased Fire Damage" From="20" To="30" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_6_3">
+  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_6_3">
     <Implicit>
       <Stat Name="#% of Cold Damage taken as Fire Damage" From="50" To="50" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_6_4">
+  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_6_4">
     <Implicit>
       <Stat Name="#% of Cold Damage taken as Lightning Damage" From="50" To="50" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_6_1">
+  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_6_1">
     <Implicit>
       <Stat Name="#% of Fire Damage taken as Cold Damage" From="50" To="50" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_6_2">
+  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_6_2">
     <Implicit>
       <Stat Name="#% of Fire Damage taken as Lightning Damage" From="50" To="50" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_6_5">
+  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_6_5">
     <Implicit>
       <Stat Name="#% of Lightning Damage taken as Cold Damage" From="50" To="50" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_6_6">
+  <ItemBase ItemType="Amulet" Name="Avian Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_6_6">
     <Implicit>
       <Stat Name="#% of Lightning Damage taken as Fire Damage" From="50" To="50" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Black Maw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_1">
+  <ItemBase ItemType="Amulet" Name="Black Maw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_1">
     <Implicit>
       <Stat Name="Has # Socket" From="1" To="1" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Bonespire Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_2">
+  <ItemBase ItemType="Amulet" Name="Bonespire Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_2">
     <Implicit>
       <Stat Name="#% increased maximum Mana" From="20" To="30" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Breakrib Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_6">
+  <ItemBase ItemType="Amulet" Name="Breakrib Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_6">
     <Implicit>
       <Stat Name="#% increased Physical Damage" From="20" To="30" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Chrysalis Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_11">
+  <ItemBase ItemType="Amulet" Name="Chrysalis Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_11">
     <Implicit>
       <Stat Name="#% increased Spell Damage" From="20" To="30" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Clutching Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_5">
+  <ItemBase ItemType="Amulet" Name="Clutching Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_5">
     <Implicit>
       <Stat Name="#% increased Global Defences" From="15" To="25" />
     </Implicit>
@@ -3350,79 +3350,79 @@
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Deadhand Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_7">
+  <ItemBase ItemType="Amulet" Name="Deadhand Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_7">
     <Implicit>
       <Stat Name="#% increased Chaos Damage" From="19" To="31" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Deep One Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_5">
+  <ItemBase ItemType="Amulet" Name="Deep One Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_5">
     <Implicit>
       <Stat Name="#% increased Cold Damage" From="20" To="30" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Fangjaw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_7">
+  <ItemBase ItemType="Amulet" Name="Fangjaw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_7">
     <Implicit>
       <Stat Name="#% increased maximum Life" From="8" To="12" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Greatwolf Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman4">
+  <ItemBase ItemType="Amulet" Name="Greatwolf Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman4">
     <Implicit>
       <Stat Name="# random talisman implicit modifiers" From="2" To="2" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Hexclaw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_1">
+  <ItemBase ItemType="Amulet" Name="Hexclaw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_1">
     <Implicit>
       <Stat Name="#% increased Global Critical Strike Chance" From="40" To="50" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Horned Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_8">
+  <ItemBase ItemType="Amulet" Name="Horned Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_8">
     <Implicit>
       <Stat Name="#% chance of Projectiles Piercing" From="25" To="35" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Lone Antler Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_4">
+  <ItemBase ItemType="Amulet" Name="Lone Antler Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_4">
     <Implicit>
       <Stat Name="#% increased Lightning Damage" From="20" To="30" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Longtooth Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_4">
+  <ItemBase ItemType="Amulet" Name="Longtooth Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_4">
     <Implicit>
       <Stat Name="#% additional Physical Damage Reduction" From="4" To="6" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Mandible Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_10">
+  <ItemBase ItemType="Amulet" Name="Mandible Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_10">
     <Implicit>
       <Stat Name="#% increased Attack and Cast Speed" From="6" To="10" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Monkey Paw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_6_3">
+  <ItemBase ItemType="Amulet" Name="Monkey Paw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_6_3">
     <Implicit>
       <Stat Name="#% chance to gain an Endurance Charge on Kill" From="10" To="10" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Monkey Paw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_6_2">
+  <ItemBase ItemType="Amulet" Name="Monkey Paw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_6_2">
     <Implicit>
       <Stat Name="#% chance to gain a Frenzy Charge on Kill" From="10" To="10" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Monkey Paw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_6_1">
+  <ItemBase ItemType="Amulet" Name="Monkey Paw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_6_1">
     <Implicit>
       <Stat Name="#% chance to gain a Power Charge on Kill" From="10" To="10" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Monkey Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_3">
+  <ItemBase ItemType="Amulet" Name="Monkey Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_3">
     <Implicit>
       <Stat Name="#% increased Radius of Area Skills" From="5" To="8" />
     </Implicit>
@@ -3434,19 +3434,19 @@
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Primal Skull Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_2">
+  <ItemBase ItemType="Amulet" Name="Primal Skull Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_2">
     <Implicit>
       <Stat Name="#% of Life Regenerated per second" From="2" To="2" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Rot Head Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_9">
+  <ItemBase ItemType="Amulet" Name="Rot Head Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_9">
     <Implicit>
       <Stat Name="#% increased Fish Bite Sensitivity" From="30" To="40" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Rotfeather Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_5">
+  <ItemBase ItemType="Amulet" Name="Rotfeather Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_5">
     <Implicit>
       <Stat Name="#% increased Damage" From="25" To="35" />
     </Implicit>
@@ -3458,43 +3458,43 @@
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Spinefuse Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_1">
+  <ItemBase ItemType="Amulet" Name="Spinefuse Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_1">
     <Implicit>
       <Stat Name="#% increased Quantity of Items found" From="6" To="10" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Splitnewt Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_4">
+  <ItemBase ItemType="Amulet" Name="Splitnewt Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_4">
     <Implicit>
       <Stat Name="#% chance to Freeze, Shock and Ignite" From="4" To="6" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Three Hands Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_7">
+  <ItemBase ItemType="Amulet" Name="Three Hands Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_7">
     <Implicit>
       <Stat Name="Gain #% of Physical Damage as Extra Damage of a random Element" From="6" To="12" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Three Rat Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_2">
+  <ItemBase ItemType="Amulet" Name="Three Rat Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_2">
     <Implicit>
       <Stat Name="#% increased Attributes" From="12" To="16" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Undying Flesh Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_8">
+  <ItemBase ItemType="Amulet" Name="Undying Flesh Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_8">
     <Implicit>
       <Stat Name="+# to maximum number of Zombies" From="1" To="1" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Wereclaw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_3">
+  <ItemBase ItemType="Amulet" Name="Wereclaw Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman2_3">
     <Implicit>
       <Stat Name="+#% to Global Critical Strike Multiplier" From="24" To="36" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Amulet" Name="Writhing Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_12">
+  <ItemBase ItemType="Amulet" Name="Writhing Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman1_12">
     <Implicit>
       <Stat Name="#% increased Attack Damage" From="20" To="30" />
     </Implicit>

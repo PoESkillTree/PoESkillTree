@@ -91,7 +91,7 @@ namespace UpdateDB.DataLoading
             {
                 Level = SingularValue<int>(printouts, RdfLvlReq),
                 Name = SingularValue<string>(printouts, RdfName),
-                DropDisabled = !SingularBool(printouts, RdfDropEnabled),
+                DropDisabled = !SingularBool(printouts, RdfDropEnabled, true),
                 BaseMetadataId = SingularValue<string>(printouts, RdfBaseMetadataId),
                 Explicit = explicits
             };
