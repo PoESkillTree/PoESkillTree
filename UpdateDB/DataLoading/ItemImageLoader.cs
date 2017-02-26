@@ -24,7 +24,7 @@ namespace UpdateDB.DataLoading
             "One Hand Maces", "Sceptres", "Two Hand Maces", "Staves",
             "One Hand Swords", "Thrusting One Hand Swords", "Two Hand Swords", "Wands",
             "Amulets", "Belts", "Quivers", "Rings",
-            "Body Armours", "Boots", "Helmets", "Shields", "Jewel",
+            "Body Armours", "Boots", "Helmets", "Gloves", "Shields", "Jewel",
         };
 
         public override bool SavePathIsFolder

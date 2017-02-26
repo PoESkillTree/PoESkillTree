@@ -4328,6 +4328,297 @@
       <Stat Name="#% chance to create Shocked Ground when Hit" From="5" To="5" />
     </Explicit>
   </Unique>
+  <Unique Name="Asenath's Gentle Touch" Level="25" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesInt3">
+    <Explicit>
+      <Stat Name="+# to Intelligence" From="20" To="30" />
+      <Stat Name="+# to maximum Life" From="20" To="30" />
+      <Stat Name="+# to maximum Mana" From="20" To="30" />
+      <Stat Name="Curse Enemies with Temporal Chains on Hit" From="" To="" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Atziri's Acuity" Level="75" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStr8">
+    <Explicit>
+      <Stat Name="+# to Intelligence" From="60" To="80" />
+      <Stat Name="+# to maximum Life" From="60" To="75" />
+      <Stat Name="#% increased Armour" From="200" To="220" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="25" To="35" />
+      <Stat Name="Leech applies instantly on Critical Strike" From="" To="" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Aurseize" Level="36" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStrDex4">
+    <Explicit>
+      <Stat Name="#% increased Armour and Evasion" From="40" To="60" />
+      <Stat Name="+#% to all Elemental Resistances" From="15" To="15" />
+      <Stat Name="#% increased Rarity of Items found" From="40" To="50" />
+      <Stat Name="#% reduced Movement Speed" From="5" To="5" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Demigod's Touch" Level="12" DropDisabled="true" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesDemigods1">
+    <Explicit>
+      <Stat Name="#% increased Attack Speed" From="10" To="16" />
+      <Stat Name="#% increased Cast Speed" From="6" To="10" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Doedre's Tenure" Level="12" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesInt2">
+    <Explicit>
+      <Stat Name="#% increased Spell Damage" From="40" To="50" />
+      <Stat Name="+# to Intelligence" From="10" To="10" />
+      <Stat Name="#% reduced Cast Speed" From="20" To="20" />
+      <Stat Name="+# to maximum Energy Shield" From="16" To="16" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Doryani's Fist" Level="63" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStr8">
+    <Explicit>
+      <Stat Name="+# to maximum Energy Shield" From="30" To="30" />
+      <Stat Name="#% chance to Shock" From="10" To="10" />
+      <Stat Name="Adds # to # Lightning Damage to Attacks while Unarmed" From="225 785" To="335 900" />
+      <Stat Name="Adds # to # Lightning Damage to Spells while Unarmed" From="60 210" To="90 240" />
+      <Stat Name="+# Energy Shield gained on Killing a Shocked Enemy" From="30" To="30" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Empire's Grasp" Level="53" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStr7">
+    <Explicit>
+      <Stat Name="+# to Armour" From="400" To="600" />
+      <Stat Name="Knockback direction is reversed" From="" To="" />
+      <Stat Name="Socketed Gems are Supported by Level # Knockback" From="10" To="10" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Facebreaker" Level="16" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesDexInt2">
+    <Explicit>
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="45" To="45" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
+      <Stat Name="#% more Unarmed Physical Damage" From="600" To="800" />
+      <Stat Name="Extra gore" From="" To="" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Flesh and Spirit" Level="15" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStrDex2">
+    <Explicit>
+      <Stat Name="#% increased Attack Speed" From="6" To="9" />
+      <Stat Name="#% increased Armour and Evasion" From="80" To="120" />
+      <Stat Name="# Life Regenerated per second" From="3" To="4" />
+      <Stat Name="Recover #% of your Maximum Life on Rampage" From="20" To="20" />
+      <Stat Name="Gain # Souls for Vaal Skills on Rampage" From="5" To="5" />
+      <Stat Name="Rampage" From="" To="" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Grip of the Council" Level="60" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesInt8">
+    <Explicit>
+      <Stat Name="+# to Strength" From="30" To="30" />
+      <Stat Name="+# to maximum Life" From="30" To="50" />
+      <Stat Name="+#% to Cold Resistance" From="20" To="40" />
+      <Stat Name="Minions have #% reduced Movement Speed" From="10" To="10" />
+      <Stat Name="Minions have +#% to Cold Resistance" From="40" To="40" />
+      <Stat Name="Minions gain #% of Physical Damage as Extra Cold Damage" From="20" To="20" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Hrimburn" Level="24" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesDex2">
+    <Explicit>
+      <Stat Name="+# to Strength" From="20" To="30" />
+      <Stat Name="#% increased Evasion Rating" From="50" To="50" />
+      <Stat Name="+#% to Cold Resistance" From="10" To="20" />
+      <Stat Name="#% of Physical Damage Converted to Cold Damage" From="25" To="25" />
+      <Stat Name="Reflects # Cold Damage to Melee Attackers" From="10" To="10" />
+      <Stat Name="Your Cold Damage can Ignite" From="" To="" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Hrimsorrow" Level="9" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesDex2">
+    <Explicit>
+      <Stat Name="+# to Strength" From="20" To="30" />
+      <Stat Name="#% increased Evasion Rating" From="50" To="50" />
+      <Stat Name="+#% to Cold Resistance" From="10" To="20" />
+      <Stat Name="#% of Physical Damage Converted to Cold Damage" From="25" To="25" />
+      <Stat Name="Reflects # Cold Damage to Melee Attackers" From="10" To="10" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Lochtonial Caress" Level="1" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStr1">
+    <Explicit>
+      <Stat Name="#% increased Attack Speed" From="10" To="15" />
+      <Stat Name="#% increased Cast Speed" From="10" To="15" />
+      <Stat Name="+# to Armour" From="10" To="20" />
+      <Stat Name="#% reduced maximum Mana" From="15" To="10" />
+      <Stat Name="Conduit" From="" To="" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Maligaro's Virtuosity" Level="21" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesDex3">
+    <Explicit>
+      <Stat Name="+# to Dexterity" From="20" To="30" />
+      <Stat Name="#% increased Attack Speed" From="5" To="5" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="50" To="50" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="28" To="36" />
+      <Stat Name="#% increased Evasion Rating" From="60" To="80" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Meginord's Vise" Level="35" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStr4">
+    <Explicit>
+      <Stat Name="#% increased Physical Damage" From="10" To="10" />
+      <Stat Name="+# to Strength" From="100" To="100" />
+      <Stat Name="#% increased Armour" From="40" To="60" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Null and Void" Level="57" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStrInt7">
+    <Explicit>
+      <Stat Name="+# to Strength" From="20" To="30" />
+      <Stat Name="#% increased Armour and Energy Shield" From="150" To="180" />
+      <Stat Name="+# to maximum Life" From="50" To="70" />
+      <Stat Name="#% increased Mana Regeneration Rate" From="20" To="40" />
+      <Stat Name="Dispels Elemental Status Ailments on Rampage" From="" To="" />
+      <Stat Name="Gain Immunity to Physical Damage for # seconds on Rampage" From="1.5" To="1.5" />
+      <Stat Name="Rampage" From="" To="" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Ondar's Clasp" Level="5" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesDexInt1">
+    <Explicit>
+      <Stat Name="#% increased Attack Speed when on Full Life" From="30" To="30" />
+      <Stat Name="Adds # to # Lightning Damage to Attacks" From="1 13" To="1 13" />
+      <Stat Name="+# to Accuracy Rating" From="50" To="80" />
+      <Stat Name="#% increased Movement Speed when on Low Life" From="20" To="20" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Repentance" Level="66" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStrInt8">
+    <Explicit>
+      <Stat Name="#% reduced Spell Damage" From="30" To="0" />
+      <Stat Name="#% increased Armour and Energy Shield" From="120" To="180" />
+      <Stat Name="+# to maximum Energy Shield" From="8" To="16" />
+      <Stat Name="#% increased Attribute Requirements" From="500" To="500" />
+      <Stat Name="Iron Will" From="" To="" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Sadima's Touch" Level="11" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesInt1">
+    <Explicit>
+      <Stat Name="Adds # to # Fire Damage to Attacks" From="4 8" To="4 8" />
+      <Stat Name="Adds # to # Lightning Damage to Attacks" From="1 13" To="1 13" />
+      <Stat Name="+# to maximum Energy Shield" From="18" To="18" />
+      <Stat Name="#% increased Quantity of Items found" From="12" To="16" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Shackles of the Wretched" Level="7" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStrInt1">
+    <Explicit>
+      <Stat Name="#% increased Stun and Block Recovery" From="40" To="60" />
+      <Stat Name="Curses in this item are reflected back to you" From="" To="" />
+      <Stat Name="You cannot be Chilled for # seconds after being Chilled" From="3" To="3" />
+      <Stat Name="You cannot be Frozen for # seconds after being Frozen" From="3" To="3" />
+      <Stat Name="You cannot be Ignited for # seconds after being Ignited" From="3" To="3" />
+      <Stat Name="You cannot be Shocked for # seconds after being Shocked" From="3" To="3" />
+      <Stat Name="You grant # Frenzy Charges to allies on Death" From="4" To="6" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Shadows and Dust" Level="31" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesDexInt3">
+    <Explicit>
+      <Stat Name="#% increased Global Critical Strike Chance" From="20" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="45" />
+      <Stat Name="#% increased Evasion and Energy Shield" From="100" To="130" />
+      <Stat Name="#% of Physical Attack Damage Leeched as Mana" From="0.2" To="0.2" />
+      <Stat Name="Creates a Smoke Cloud on Rampage" From="" To="" />
+      <Stat Name="Gain Unholy Might for # seconds on Rampage" From="3" To="3" />
+      <Stat Name="Rampage" From="" To="" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Shaper's Touch" Level="66" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStrInt8">
+    <Explicit>
+      <Stat Name="#% increased Armour and Energy Shield" From="80" To="120" />
+      <Stat Name="+# Accuracy Rating per # Intelligence" From="2 2" To="2 2" />
+      <Stat Name="+# Life per # Dexterity" From="1 4" To="1 4" />
+      <Stat Name="+# Mana per # Strength" From="1 4" To="1 4" />
+      <Stat Name="#% increased Energy Shield per # Strength" From="1 10" To="1 10" />
+      <Stat Name="#% increased Evasion Rating per # Intelligence" From="1 10" To="1 10" />
+      <Stat Name="#% increased Melee Physical Damage per # Dexterity" From="1 10" To="1 10" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Slitherpinch" Level="27" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStrDex3">
+    <Explicit>
+      <Stat Name="+# to Dexterity" From="40" To="50" />
+      <Stat Name="#% increased Attack Speed" From="5" To="5" />
+      <Stat Name="#% increased Evasion Rating" From="60" To="100" />
+      <Stat Name="#% of Physical Attack Damage Leeched as Life" From="0.6" To="0.6" />
+      <Stat Name="#% of Physical Attack Damage Leeched as Mana" From="0.4" To="0.4" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Snakebite" Level="58" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesDexInt7">
+    <Explicit>
+      <Stat Name="#% increased Evasion Rating" From="150" To="180" />
+      <Stat Name="+# to maximum Life" From="60" To="70" />
+      <Stat Name="#% increased Attack Speed per Frenzy Charge" From="2" To="2" />
+      <Stat Name="#% increased Accuracy Rating per Frenzy Charge" From="6" To="6" />
+      <Stat Name="#% reduced Frenzy Charge Duration per Frenzy Charge" From="10" To="10" />
+      <Stat Name="While at maximum Frenzy Charges, Attacks Poison Enemies" From="" To="" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Southbound" Level="51" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStrInt6">
+    <Explicit>
+      <Stat Name="Adds # to # Cold Damage to Attacks" From="30 44" To="36 50" />
+      <Stat Name="#% increased maximum Life" From="12" To="16" />
+      <Stat Name="+#% to Cold Resistance" From="40" To="50" />
+      <Stat Name="#% increased Freeze Duration on Enemies" From="25" To="25" />
+      <Stat Name="Your Hits can only Kill Frozen Enemies" From="" To="" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Surgebinders" Level="67" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStrDex8">
+    <Explicit>
+      <Stat Name="#% increased Armour and Evasion" From="90" To="110" />
+      <Stat Name="#% increased Spell Damage per Power Charge" From="4" To="7" />
+      <Stat Name="#% increased Physical Damage per Endurance Charge" From="4" To="7" />
+      <Stat Name="#% increased Elemental Damage per Frenzy Charge" From="4" To="7" />
+      <Stat Name="#% chance to Steal Power, Frenzy, and Endurance Charges on Hit" From="10" To="10" />
+      <Stat Name="#% reduced Endurance, Frenzy and Power Charge Duration" From="30" To="10" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Thunderfist" Level="67" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesDexInt8">
+    <Explicit>
+      <Stat Name="Socketed Gems are Supported by level # Added Lightning Damage" From="18" To="18" />
+      <Stat Name="Adds # to # Lightning Damage to Attacks" From="1 40" To="1 40" />
+      <Stat Name="#% increased Attack Speed" From="10" To="10" />
+      <Stat Name="+# to maximum Energy Shield" From="25" To="30" />
+      <Stat Name="#% increased Shock Duration on Enemies" From="100" To="100" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="10" To="10" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Vaal Caress" Level="27" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStrDex3">
+    <Explicit>
+      <Stat Name="+# to Level of Socketed Vaal Gems" From="2" To="2" />
+      <Stat Name="#% increased Armour and Evasion" From="120" To="140" />
+      <Stat Name="+# to maximum Life" From="30" To="40" />
+      <Stat Name="+#% to Cold Resistance" From="30" To="30" />
+      <Stat Name="You gain Onslaught for # seconds on using a Vaal Skill" From="5" To="5" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Veruso's Battering Rams" Level="69" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStr9">
+    <Explicit>
+      <Stat Name="#% increased Attack Speed" From="8" To="13" />
+      <Stat Name="#% increased Armour" From="120" To="180" />
+      <Stat Name="#% increased Movement Speed" From="3" To="5" />
+      <Stat Name="#% increased Stun Duration on you" From="50" To="50" />
+      <Stat Name="#% increased Melee Damage per Endurance Charge" From="4" To="4" />
+      <Stat Name="You cannot be Shocked while at maximum Endurance Charges" From="" To="" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Voidbringer" Level="55" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesInt7">
+    <Explicit>
+      <Stat Name="+# to Level of Socketed Elemental Gems" From="1" To="1" />
+      <Stat Name="#% increased Critical Strike Chance for Spells" From="125" To="150" />
+      <Stat Name="#% increased Energy Shield" From="280" To="350" />
+      <Stat Name="#% increased Mana Cost of Skills" From="80" To="80" />
+      <Stat Name="+# Energy Shield gained on Kill" From="15" To="20" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Winds of Change" Level="47" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStr6">
+    <Explicit>
+      <Stat Name="+# to maximum Life" From="30" To="60" />
+      <Stat Name="#% increased Projectile Speed" From="30" To="30" />
+      <Stat Name="#% reduced Movement Speed" From="10" To="10" />
+      <Stat Name="#% chance to Knock Enemies Back on hit" From="10" To="10" />
+      <Stat Name="#% increased Projectile Damage" From="30" To="50" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Wyrmsign" Level="49" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStrDex6">
+    <Explicit>
+      <Stat Name="Socketed Gems are Supported by level # Concentrated Effect" From="5" To="5" />
+      <Stat Name="#% increased Armour and Evasion" From="120" To="160" />
+      <Stat Name="+# to maximum Life" From="50" To="70" />
+      <Stat Name="#% reduced Mana Cost per Endurance Charge" From="4" To="4" />
+      <Stat Name="Gain Rampage while at Maximum Endurance Charges" From="" To="" />
+      <Stat Name="Lose all Endurance Charges when Rampage ends" From="" To="" />
+    </Explicit>
+  </Unique>
   <Unique Name="Aegis Aurora" Level="62" BaseMetadataId="Metadata/Items/Armours/Shields/ShieldStrInt11">
     <Explicit>
       <Stat Name="#% increased Elemental Damage with Weapons" From="10" To="20" />
