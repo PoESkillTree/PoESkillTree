@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -93,12 +94,14 @@ namespace POESKillTree.Model.Items
             {
                 Equip.Remove(old);
                 old.Slot = ItemSlot.Unequipable;
+                old.PropertyChanged -= SlottedItemOnPropertyChanged;
             }
 
             if (value != null)
             {
                 value.Slot = slot;
                 Equip.Add(value);
+                value.PropertyChanged += SlottedItemOnPropertyChanged;
             }
             OnPropertyChanged(slot.ToString());
             RefreshItemAttributes();
@@ -147,7 +150,7 @@ namespace POESKillTree.Model.Items
         }
         #endregion
 
-        public ObservableCollection<Item> Equip { get; private set; }
+        public ObservableCollection<Item> Equip { get; }
 
         private ListCollectionView _attributes;
         public ListCollectionView Attributes
@@ -159,6 +162,16 @@ namespace POESKillTree.Model.Items
         public IReadOnlyList<ItemMod> NonLocalMods { get; private set; }
 
         private readonly IPersistentData _persistentData;
+
+        public event EventHandler ItemDataChanged;
+
+        private void SlottedItemOnPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == nameof(Item.JsonBase))
+            {
+                ItemDataChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         public ItemAttributes()
         {
@@ -333,7 +346,9 @@ namespace POESKillTree.Model.Items
 
         private void AddItem(JObject val, ItemSlot islot)
         {
-            Equip.Add(new Item(_persistentData, val, islot));
+            var item = new Item(_persistentData, val, islot);
+            Equip.Add(item);
+            item.PropertyChanged += SlottedItemOnPropertyChanged;
         }
 
 

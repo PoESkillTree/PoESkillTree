@@ -1713,6 +1713,7 @@ namespace POESKillTree.Views
             if (ItemAttributes != null)
             {
                 ItemAttributes.Equip.CollectionChanged -= ItemAttributesEquipCollectionChanged;
+                ItemAttributes.ItemDataChanged -= ItemAttributesEquipCollectionChanged;
                 ItemAttributes.PropertyChanged -= ItemAttributesPropertyChanged;
             }
 
@@ -1737,6 +1738,7 @@ namespace POESKillTree.Views
             }
 
             itemAttributes.Equip.CollectionChanged += ItemAttributesEquipCollectionChanged;
+            itemAttributes.ItemDataChanged += ItemAttributesEquipCollectionChanged;
             itemAttributes.PropertyChanged += ItemAttributesPropertyChanged;
             ItemAttributes = itemAttributes;
             UpdateUI();
@@ -1747,7 +1749,7 @@ namespace POESKillTree.Views
             UpdateUI();
         }
 
-        private void ItemAttributesEquipCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        private void ItemAttributesEquipCollectionChanged(object sender, EventArgs args)
         {
             _pauseLoadItemData = true;
             PersistentData.CurrentBuild.ItemData = ItemAttributes.ToJsonString();

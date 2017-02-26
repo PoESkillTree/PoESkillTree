@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -157,7 +158,16 @@ namespace POESKillTree.ViewModels.Crafting
         {
             if (param)
             {
-                // todo edit item's gems   
+                var gems = new List<Item>();
+                foreach (var gem in SocketedGems)
+                {
+                    var tags = gem.GemBase.Gem.Tags.Split(new[] {", "}, StringSplitOptions.RemoveEmptyEntries);
+                    var gemItem = new Item(gem.GemBase.Name, tags, gem.Level, gem.Quality, gem.Group - 1);
+                    gemItem.SetJsonBase();
+                    gems.Add(gemItem);
+                }
+                _itemWithSockets.Gems = gems;
+                _itemWithSockets.SetJsonBase();
             }
             base.OnClose(param);
         }

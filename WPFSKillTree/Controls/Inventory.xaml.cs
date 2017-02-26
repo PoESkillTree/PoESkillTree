@@ -3,7 +3,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.ComponentModel;
-using System.Linq;
 using MahApps.Metro.Controls;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model.Items;
@@ -75,17 +74,7 @@ namespace POESKillTree.Controls
             var visualizer = (ItemVisualizer) sender;
             if (effect == DragDropEffects.Copy)
             {
-                var newItem = new Item(draggedItem.Item);
-                var oldItem = visualizer.Item;
-                // Copy gems from old item if the old item has gems, this item doesn't have gems and is not
-                // from this Inventory (but from the Stash).
-                if (oldItem?.Gems != null && oldItem.Gems.Any()
-                    && (newItem.Gems == null || !newItem.Gems.Any())
-                    && draggedItem.SourceItemVisualizer.TryFindParent<Inventory>() != this)
-                {
-                    newItem.CopyGemsFrom(oldItem);
-                }
-                visualizer.Item = newItem;
+                visualizer.Item = new Item(draggedItem.Item);
             }
             else
             {
