@@ -22,6 +22,8 @@ namespace POESKillTree.Model.Items
         ItemType ItemType { get; }
         ItemGroup ItemGroup { get; }
 
+        int MaximumNumberOfSockets { get; }
+
         bool CanHaveQuality { get; }
         IReadOnlyList<Stat> ImplicitMods { get; }
 

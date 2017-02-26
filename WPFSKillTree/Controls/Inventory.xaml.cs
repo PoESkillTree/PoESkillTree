@@ -143,11 +143,11 @@ namespace POESKillTree.Controls
             {
                 var menu = mi.TryFindParent<ContextMenu>();
                 var vis = menu.PlacementTarget as ItemVisualizer;
-                if (vis?.Item != null)
+                if (vis?.Item != null && vis.Item.BaseType.MaximumNumberOfSockets > 0)
                 {
                     var w = (MetroWindow) Window.GetWindow(this);
                     await w.ShowDialogAsync(
-                        new SocketedGemsEditingViewModel(EquipmentData.ItemImageService), 
+                        new SocketedGemsEditingViewModel(EquipmentData.ItemImageService, vis.Item), 
                         new SocketedGemsEditingView());
                 }
             }
@@ -156,7 +156,7 @@ namespace POESKillTree.Controls
         private void iv_mouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var itemVis = sender as ItemVisualizer;
-            if (itemVis == null || itemVis.Item == null)
+            if (itemVis?.Item == null)
                 return;
             using (var dragged = new DraggedItem(itemVis) {DropOnStashEffect = DragDropEffects.Copy})
             {

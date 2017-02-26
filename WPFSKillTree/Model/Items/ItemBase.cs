@@ -26,6 +26,8 @@ namespace POESKillTree.Model.Items
         public ItemGroup ItemGroup { get; }
         public string MetadataId { get; }
 
+        public int MaximumNumberOfSockets { get; }
+
         public bool CanHaveQuality { get; }
         public IReadOnlyList<Stat> ImplicitMods { get; }
         private readonly IReadOnlyList<Stat> _properties;
@@ -55,6 +57,8 @@ namespace POESKillTree.Model.Items
                              || ItemGroup == ItemGroup.Shield;
 
             Image = new ItemImage(itemImageService, Name, ItemGroup);
+
+            MaximumNumberOfSockets = GetMaximumNumberOfSockets();
         }
 
         /// <summary>
@@ -182,6 +186,29 @@ namespace POESKillTree.Model.Items
         public override string ToString()
         {
             return Name;
+        }
+
+        private int GetMaximumNumberOfSockets()
+        {
+            if (ImplicitMods.Any(s => s.Name == "Has # Socket"))
+            {
+                return 1;
+            }
+            switch (ItemGroup)
+            {
+                case ItemGroup.OneHandedWeapon:
+                case ItemGroup.Shield:
+                    return 3;
+                case ItemGroup.Boots:
+                case ItemGroup.Gloves:
+                case ItemGroup.Helmet:
+                    return 4;
+                case ItemGroup.TwoHandedWeapon:
+                case ItemGroup.BodyArmour:
+                    return 6;
+                default:
+                    return 0;
+            }
         }
     }
 }

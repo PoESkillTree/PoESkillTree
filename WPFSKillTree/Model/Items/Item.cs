@@ -130,7 +130,7 @@ namespace POESKillTree.Model.Items
         }
 
         // The socket group of gem (all gems with same socket group value are linked).
-        private int _socketGroup;
+        public int SocketGroup { get; private set; }
 
         public IItemBase BaseType { get; }
 
@@ -220,7 +220,7 @@ namespace POESKillTree.Model.Items
             _flavourText = source.FlavourText;
             _nameLine = source.NameLine;
             _typeLine = source.TypeLine;
-            _socketGroup = source._socketGroup;
+            SocketGroup = source.SocketGroup;
             BaseType = source.BaseType;
             _iconUrl = source._iconUrl;
             Image = source.Image;
@@ -386,7 +386,7 @@ namespace POESKillTree.Model.Items
                 int socket = 0;
                 foreach (JObject obj in (JArray)val["socketedItems"])
                 {
-                    var item = new Item(persistentData, obj, isGem: true) {_socketGroup = sockets[socket++]};
+                    var item = new Item(persistentData, obj, isGem: true) {SocketGroup = sockets[socket++]};
                     _gems.Add(item);
                 }
             }
@@ -580,7 +580,7 @@ namespace POESKillTree.Model.Items
         // Returns gems linked to specified gem.
         public List<Item> GetLinkedGems(Item gem)
         {
-            return Gems.Where(linked => linked != gem && linked._socketGroup == gem._socketGroup).ToList();
+            return Gems.Where(linked => linked != gem && linked.SocketGroup == gem.SocketGroup).ToList();
         }
 
         /// <summary>

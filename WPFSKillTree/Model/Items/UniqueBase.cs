@@ -23,6 +23,7 @@ namespace POESKillTree.Model.Items
         public string Name => _base.Name;
         public ItemType ItemType => _base.ItemType;
         public ItemGroup ItemGroup => _base.ItemGroup;
+        public int MaximumNumberOfSockets => _base.MaximumNumberOfSockets;
 
         private readonly ItemBase _base;
         public bool CanHaveQuality => _base.CanHaveQuality;
