@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Views
+﻿namespace POESKillTree.Views.Equipment
 {
     /// <summary>
     /// Interaction logic for DownloadItemsWindow.xaml

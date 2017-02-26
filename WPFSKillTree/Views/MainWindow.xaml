@@ -11,6 +11,7 @@
         xmlns:views="clr-namespace:POESKillTree.Views"
         xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:builds="clr-namespace:POESKillTree.Views.Builds"
 
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
         Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
@@ -747,7 +748,7 @@
                     <l:Catalog Message="Saved Builds"/>
                 </Expander.Header>
 
-                <views:BuildsControl FlowDirection="LeftToRight"
+                <builds:BuildsControl FlowDirection="LeftToRight"
                                      DataContext="{Binding ElementName=window, Path=BuildsControlViewModel}"
                                      dialogs:DialogParticipation.Register="{Binding}" />
             </Expander>

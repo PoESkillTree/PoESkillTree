@@ -6,6 +6,7 @@ using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.Model.Serialization;
+using POESKillTree.ViewModels.Builds;
 
 namespace POESKillTree.ViewModels
 {

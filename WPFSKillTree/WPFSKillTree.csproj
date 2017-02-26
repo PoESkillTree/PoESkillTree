@@ -448,7 +448,7 @@
     <Compile Include="Utils\Wpf\Setter.cs" />
     <Compile Include="Utils\Wpf\Helper.cs" />
     <Compile Include="ViewModels\AttributeToTextblockConverter.cs" />
-    <Compile Include="ViewModels\BuildsControlViewModel.cs" />
+    <Compile Include="ViewModels\Builds\BuildsControlViewModel.cs" />
     <Compile Include="ViewModels\Builds\AbstractBuildViewModel.cs" />
     <Compile Include="ViewModels\Builds\BuildFolderViewModel.cs" />
     <Compile Include="ViewModels\Builds\BuildValidator.cs" />
@@ -458,12 +458,12 @@
     <Compile Include="TreeGenerator\ViewModels\GeneratorTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SettingsViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SteinerTabViewModel.cs" />
-    <Compile Include="ViewModels\DownloadStashViewModel.cs" />
-    <Compile Include="ViewModels\EditBuildViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\DownloadStashViewModel.cs" />
+    <Compile Include="ViewModels\Builds\EditBuildViewModel.cs" />
     <Compile Include="ViewModels\ExtendedDialogCoordinator.cs" />
     <Compile Include="ViewModels\SettingsMenuViewModel.cs" />
     <Compile Include="Utils\Wpf\StyleSelectorByType.cs" />
-    <Compile Include="ViewModels\TabPickerViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\TabPickerViewModel.cs" />
     <Compile Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml.cs">
       <DependentUpon>AdvancedGeneratorTab.xaml</DependentUpon>
     </Compile>
@@ -483,7 +483,7 @@
     <Compile Include="Utils\Extensions\StringExtension.cs" />
     <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
-    <Compile Include="ViewModels\DownloadItemsViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\DownloadItemsViewModel.cs" />
     <Compile Include="Model\Items\Item.cs" />
     <Compile Include="Model\Items\ItemAttributes.cs" />
     <Compile Include="Model\Items\ItemBase.cs" />
@@ -503,7 +503,7 @@
     <Compile Include="Controls\BanditSelection.xaml.cs">
       <DependentUpon>BanditSelection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BuildsControl.xaml.cs">
+    <Compile Include="Views\Builds\BuildsControl.xaml.cs">
       <DependentUpon>BuildsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Crafting\SocketedGemsEditingView.xaml.cs">
@@ -512,10 +512,10 @@
     <Compile Include="Views\Crafting\UniqueCraftingView.xaml.cs">
       <DependentUpon>UniqueCraftingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DownloadStashWindow.xaml.cs">
+    <Compile Include="Views\Equipment\DownloadStashWindow.xaml.cs">
       <DependentUpon>DownloadStashWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditBuildWindow.xaml.cs">
+    <Compile Include="Views\Builds\EditBuildWindow.xaml.cs">
       <DependentUpon>EditBuildWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\HelpWindow.xaml.cs">
@@ -535,7 +535,7 @@
     <Compile Include="SkillTreeFiles\SkillTree.cs" />
     <Compile Include="SkillTreeFiles\Vector2D.cs" />
     <Compile Include="Controls\ZoomBorder.cs" />
-    <Compile Include="Views\DownloadItemsWindow.xaml.cs">
+    <Compile Include="Views\Equipment\DownloadItemsWindow.xaml.cs">
       <DependentUpon>DownloadItemsWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Contrib\Monotone\Styles\ExtendedWPFToolkit.xaml">
@@ -633,7 +633,7 @@
     <Compile Include="Views\SettingsMenuWindow.xaml.cs">
       <DependentUpon>SettingsMenuWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TabPicker.xaml.cs">
+    <Compile Include="Views\Equipment\TabPicker.xaml.cs">
       <DependentUpon>TabPicker.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\Inventory.xaml">
@@ -660,7 +660,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BuildsControl.xaml">
+    <Page Include="Views\Builds\BuildsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -672,11 +672,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DownloadStashWindow.xaml">
+    <Page Include="Views\Equipment\DownloadStashWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\EditBuildWindow.xaml">
+    <Page Include="Views\Builds\EditBuildWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -704,7 +704,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\DownloadItemsWindow.xaml">
+    <Page Include="Views\Equipment\DownloadItemsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -712,7 +712,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TabPicker.xaml">
+    <Page Include="Views\Equipment\TabPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

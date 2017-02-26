@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using POESKillTree.Localization;
 
-namespace POESKillTree.Views
+namespace POESKillTree.Views.Builds
 {
     public class LastUpdatedStringConverter : IValueConverter
     {

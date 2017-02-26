@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Views
+﻿namespace POESKillTree.Views.Builds
 {
     /// <summary>
     /// Interaction logic for BuildsControl.xaml

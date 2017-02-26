@@ -2,7 +2,7 @@
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model.Builds;
 using POESKillTree.ViewModels.Builds;
-using POESKillTree.Views;
+using POESKillTree.Views.Builds;
 
 namespace POESKillTree.ViewModels
 {

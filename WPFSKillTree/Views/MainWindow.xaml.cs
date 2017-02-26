@@ -36,8 +36,11 @@ using POESKillTree.Utils.Converter;
 using POESKillTree.Utils.Extensions;
 using POESKillTree.Utils.UrlProcessing;
 using POESKillTree.ViewModels;
+using POESKillTree.ViewModels.Builds;
 using POESKillTree.ViewModels.Crafting;
+using POESKillTree.ViewModels.Equipment;
 using POESKillTree.Views.Crafting;
+using POESKillTree.Views.Equipment;
 using Attribute = POESKillTree.ViewModels.Attribute;
 
 namespace POESKillTree.Views

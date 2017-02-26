@@ -5,7 +5,7 @@ using POESKillTree.Common.ViewModels;
 using POESKillTree.Localization;
 using POESKillTree.Model.Builds;
 
-namespace POESKillTree.ViewModels
+namespace POESKillTree.ViewModels.Equipment
 {
     public class DownloadItemsViewModel : CloseableViewModel
     {

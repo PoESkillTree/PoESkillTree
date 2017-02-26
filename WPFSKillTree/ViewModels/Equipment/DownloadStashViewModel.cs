@@ -19,7 +19,7 @@ using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils;
 
-namespace POESKillTree.ViewModels
+namespace POESKillTree.ViewModels.Equipment
 {
     public class DownloadStashViewModel : CloseableViewModel
     {

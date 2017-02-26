@@ -17,8 +17,8 @@ using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils.Extensions;
-using POESKillTree.ViewModels;
-using POESKillTree.Views;
+using POESKillTree.ViewModels.Equipment;
+using POESKillTree.Views.Equipment;
 
 namespace POESKillTree.Controls
 {

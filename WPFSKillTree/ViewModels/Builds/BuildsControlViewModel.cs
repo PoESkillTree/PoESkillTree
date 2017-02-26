@@ -21,9 +21,8 @@ using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
 using POESKillTree.Utils.Wpf;
-using POESKillTree.ViewModels.Builds;
 
-namespace POESKillTree.ViewModels
+namespace POESKillTree.ViewModels.Builds
 {
     public class ClassFilterItem
     {
