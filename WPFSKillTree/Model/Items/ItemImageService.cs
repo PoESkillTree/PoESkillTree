@@ -169,10 +169,7 @@ namespace POESKillTree.Model.Items
                 }
                 var imgData = await _httpClient.GetByteArrayAsync(imageUrl).ConfigureAwait(false);
                 CreateDirectories(fileName);
-                using (var outputStream = File.Create(fileName))
-                {
-                    WikiApiUtils.SaveImage(imgData, outputStream, false);
-                }
+                WikiApiUtils.SaveImage(imgData, fileName, false);
                 Log.Info($"Downloaded item image {fileName} to the file system.");
             }
             return await Task.Run(() => ImageSourceFromPath(fileName)).ConfigureAwait(false);

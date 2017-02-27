@@ -24,6 +24,20 @@ namespace POESKillTree.Utils.WikiApi
         }
 
         /// <summary>
+        /// Returns the singular boolean value of the predicate in the printouts.
+        /// </summary>
+        public static bool SingularBool(JToken printouts, string rdfPredicate, bool defaultValue)
+        {
+            var token = printouts[rdfPredicate];
+            if (!token.HasValues)
+            {
+                return defaultValue;
+            }
+            var value = token.First.Value<string>();
+            return value == "t";
+        }
+
+        /// <summary>
         /// Returns the singular value of the predicate in the printouts or <paramref name="defaultValue"/> if the
         /// predicate is not in the printouts.
         /// </summary>
@@ -42,13 +56,14 @@ namespace POESKillTree.Utils.WikiApi
         }
 
         /// <summary>
-        /// Saves the image to a stream.
+        /// Saves the image to a file.
         /// </summary>
         /// <param name="imageData">the binary image data</param>
-        /// <param name="outputStream">the stream to save the image to</param>
+        /// <param name="fileName">the file to save the image to</param>
         /// <param name="resize">true iff the image is from the wiki and should be resized to match the stash</param>
-        public static void SaveImage(byte[] imageData, Stream outputStream, bool resize)
+        public static void SaveImage(byte[] imageData, string fileName, bool resize)
         {
+            using (var outputStream = File.Create(fileName))
             using (var ms = new MemoryStream(imageData))
             using (var image = Image.FromStream(ms))
             {

@@ -5,9 +5,12 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using log4net;
+using MoreLinq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using POESKillTree.Utils.Extensions;
+
+using static POESKillTree.Utils.WikiApi.ItemRdfPredicates;
+using static POESKillTree.Utils.WikiApi.WikiApiUtils;
 
 namespace POESKillTree.Utils.WikiApi
 {
@@ -121,9 +124,7 @@ namespace POESKillTree.Utils.WikiApi
         {
             const int maxTitlesPerRequest = 50;
             var batches = titles
-                .Select((t, i) => new { Index = i, Title = t })
-                .GroupBy(x => x.Index / maxTitlesPerRequest)
-                .Select(g => g.Select(x => x.Title))
+                .Batch(maxTitlesPerRequest)
                 .Select(QueryImageInfoUrlsBatch)
                 .ToList();
 
@@ -163,6 +164,34 @@ namespace POESKillTree.Utils.WikiApi
             return Enumerable.Empty<Tuple<string, string>>();
         }
 
+        /// <summary>
+        /// First queries the API using the 'ask' action, the given conditions and RdfName and RdfIcon printouts.
+        /// The queries the API using the 'query' action, 'imageinfo' prop and 'url' iiprop with the icon page titles
+        /// from the first query.
+        /// </summary>
+        /// <param name="conditions">the conditions items have to much to have their icon urls retrieved</param>
+        /// <returns>
+        /// A task that returns an enumerable of ItemImageInfoResults.
+        /// </returns>
+        public async Task<IEnumerable<ItemImageInfoResult>> AskAndQueryImageInforUrls(
+            IEnumerable<string> conditions)
+        {
+            // Ask: retrieve page titles of the icons
+            string[] printouts = { RdfName, RdfIcon };
+            var results = (from ps in await Ask(conditions, printouts).ConfigureAwait(false)
+                           where ps[RdfIcon].Any()
+                           let title = ps[RdfIcon].First.Value<string>("fulltext")
+                           let name = SingularValue<string>(ps, RdfName)
+                           select new { name, title }).ToList();
+            var titleToName = results.ToLookup(x => x.title, x => x.name);
+
+            // QueryImageInfoUrls: retrieve urls of the icons
+            var task = QueryImageInfoUrls(results.Select(t => t.title));
+            return
+                from tuple in await task.ConfigureAwait(false)
+                select new ItemImageInfoResult(titleToName[tuple.Item1], tuple.Item2);
+        }
+
         private static bool LogErrors(JObject json, string uri)
         {
             JToken errorToken;
@@ -194,6 +223,26 @@ namespace POESKillTree.Utils.WikiApi
                     // e.g. warnings.main.warnings.Value is the path to the first warning string
                     warnings.SelectMany(t => t).SelectMany(t => t).Cast<JProperty>().Select(p => p.Value.Value<string>()).ForEach(Log.Warn);
                 }
+            }
+        }
+
+
+        // Some items have the same image, e.g. Agnerod North/East/South/West
+        public struct ItemImageInfoResult
+        {
+            /// <summary>
+            /// Gets the names of the items.
+            /// </summary>
+            public IEnumerable<string> Names { get; }
+            /// <summary>
+            /// Gets the url of the image for the named items.
+            /// </summary>
+            public string Url { get; }
+
+            public ItemImageInfoResult(IEnumerable<string> names, string url)
+            {
+                Names = names;
+                Url = url;
             }
         }
     }

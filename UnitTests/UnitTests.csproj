@@ -105,6 +105,7 @@
     <Compile Include="UrlProcessing\BuildUrlNormalizerTests.cs" />
     <Compile Include="UrlProcessing\UrlProcessingTests.cs" />
     <Compile Include="WeightedSamplerTests.cs" />
+    <Compile Include="WikiStatTextUtilsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UpdateDB\UpdateDB.csproj">

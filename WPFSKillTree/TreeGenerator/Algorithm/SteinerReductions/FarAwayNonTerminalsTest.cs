@@ -1,6 +1,6 @@
 ﻿using System.Linq;
+using MoreLinq;
 using POESKillTree.TreeGenerator.Algorithm.Model;
-using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
 {

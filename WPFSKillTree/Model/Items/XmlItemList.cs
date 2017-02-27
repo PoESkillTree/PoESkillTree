@@ -4,7 +4,7 @@ using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items
 {
-    // Contains the classes that allow serialization and deserialization of ItemList.xml
+    // Contains the classes that allow serialization and deserialization of Items.xml
 
     [XmlRoot(Namespace = "", IsNullable = false, ElementName = "ItemList")]
     public class XmlItemList
@@ -38,5 +38,19 @@ namespace POESKillTree.Model.Items
 
         [XmlAttribute]
         public int Intelligence { get; set; }
+
+        [XmlAttribute]
+        public bool DropDisabled { get; set; }
+
+        public bool ShouldSerializeDropDisabled() => DropDisabled;
+
+        [XmlAttribute]
+        public int InventoryHeight { get; set; }
+
+        [XmlAttribute]
+        public int InventoryWidth { get; set; }
+
+        [XmlAttribute]
+        public string MetadataId { get; set; }
     }
 }

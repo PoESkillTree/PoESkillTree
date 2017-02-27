@@ -1,0 +1,58 @@
+﻿<dialogs:CloseableBaseDialog x:Class="POESKillTree.Views.Crafting.UniqueCraftingView"
+                             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                             xmlns:local="clr-namespace:POESKillTree.Views.Crafting"
+                             xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
+                             xmlns:crafting="clr-namespace:POESKillTree.ViewModels.Crafting"
+                             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+                             xmlns:controls="clr-namespace:POESKillTree.Controls"
+                             mc:Ignorable="d"
+                             d:DataContext="{d:DesignInstance crafting:UniqueCraftingViewModel}"
+                             CloseButtonVisibility="Collapsed"
+                             MaxContentWidth="450">
+    <dialogs:CloseableBaseDialog.Title>
+        <l:Catalog Message="Unique Crafting Window"/>
+    </dialogs:CloseableBaseDialog.Title>
+    <dialogs:CloseableBaseDialog.DialogLeft>
+        <controls:ItemTooltip HorizontalAlignment="Center" VerticalAlignment="Top"
+                              Margin="5 55"
+                              Item="{Binding Item}" />
+    </dialogs:CloseableBaseDialog.DialogLeft>
+
+    <Grid Margin="0 5 0 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <local:BaseCraftingView Grid.Row="0"
+                                DataContext="{Binding}" />
+
+        <local:ModSelectorView Grid.Row="1"
+                               Margin="0 5 0 0"
+                               MinHeight="200"
+                               DataContext="{Binding MsExplicits}" />
+
+        <CheckBox Grid.Row="2"
+                  VerticalAlignment="Center"
+                  IsChecked="{Binding ShowDropDisabledItems}">
+            <l:Catalog>Show drop disabled uniques</l:Catalog>
+        </CheckBox>
+        <StackPanel Grid.Row="2"
+                    Style="{StaticResource DialogPanel}">
+            <Button Style="{StaticResource DynamicDialogPanelButton}"
+                    Command="{Binding CloseCommand}" CommandParameter="{StaticResource True}"
+                    IsDefault="True">
+                <l:Catalog Message="Create Item"/>
+            </Button>
+            <Button Style="{StaticResource DynamicDialogPanelButton}"
+                    Command="{Binding CloseCommand}" CommandParameter="{StaticResource False}"
+                    IsCancel="True">
+                <l:Catalog Message="Cancel"/>
+            </Button>
+        </StackPanel>
+    </Grid>
+</dialogs:CloseableBaseDialog>

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MoreLinq;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.JsonSettings
 {

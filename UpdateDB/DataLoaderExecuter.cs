@@ -7,8 +7,8 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using log4net;
+using MoreLinq;
 using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
 using UpdateDB.DataLoading;
 
 namespace UpdateDB
@@ -22,11 +22,12 @@ namespace UpdateDB
 
         private readonly LoaderCollection _loaderDefinitions = new LoaderCollection
         {
-            {"affixes", "Equipment/AffixList.xml", new AffixDataLoader(), LoaderCategories.VersionControlled, "Affixes"},
-            {"base items", "Equipment/ItemList.xml", new ItemDataLoader(), LoaderCategories.VersionControlled, "Items"},
-            {"base item images", "Equipment/Assets", new ItemImageLoader(false), LoaderCategories.NotVersionControlled, "ItemImages"},
+            {"affixes", "Equipment/Affixes.xml", new AffixDataLoader(), LoaderCategories.VersionControlled, "Affixes"},
+            {"base items", "Equipment/Items.xml", new ItemBaseLoader(), LoaderCategories.VersionControlled, "Items"},
+            {"base item images", "Equipment/Assets", new ItemImageLoader(), LoaderCategories.NotVersionControlled, "ItemImages"},
             {"skill tree assets", "", new SkillTreeLoader(), LoaderCategories.NotVersionControlled, "TreeAssets"},
-            {"gems", "ItemDB/GemList.xml", new GemLoader(), LoaderCategories.VersionControlled, "Gems"}
+            {"gems", "ItemDB/GemList.xml", new GemLoader(), LoaderCategories.VersionControlled, "Gems"},
+            {"uniques", "Equipment/Uniques.xml", new UniqueLoader(), LoaderCategories.VersionControlled, "Uniques"}
         };
 
         private readonly IArguments _arguments;

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using MB.Algodat;
+using MoreLinq;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model.Items;

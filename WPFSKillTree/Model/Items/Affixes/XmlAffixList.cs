@@ -1,9 +1,14 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Xml.Serialization;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items.Affixes
 {
-    // Contains the classes that allow serialization and deserialization of AffixList.xml
+    // Contains the classes that allow serialization and deserialization of Affixes.xml
 
     [XmlRoot(Namespace = "", IsNullable = false, ElementName = "AffixList")]
     public class XmlAffixList
@@ -56,10 +61,36 @@ namespace POESKillTree.Model.Items.Affixes
         [XmlAttribute]
         public string Name { get; set; }
 
-        [XmlAttribute]
-        public float From { get; set; }
+        [XmlIgnore]
+        public IReadOnlyList<float> From { get; set; }
 
-        [XmlAttribute]
-        public float To { get; set; }
+        [XmlAttribute(AttributeName = "From")]
+        public string FromAsString
+        {
+            get { return Join(From); }
+            set { From = Split(value); }
+        }
+
+        [XmlIgnore]
+        public IReadOnlyList<float> To { get; set; }
+
+        [XmlAttribute(AttributeName = "To")]
+        public string ToAsString
+        {
+            get { return Join(To); }
+            set { To = Split(value); }
+        }
+
+        private static string Join(IEnumerable<float> values)
+        {
+            return string.Join(" ", values.Select(f => f.ToString(CultureInfo.InvariantCulture)));
+        }
+
+        private static IReadOnlyList<float> Split(string value)
+        {
+            return value
+                .Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => s.ParseFloat()).ToList();
+        }
     }
 }

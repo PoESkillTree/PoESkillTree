@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using POESKillTree.Model.Items.Affixes;
@@ -8,112 +7,30 @@ using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items
 {
-    public class ItemBase
+    /// <summary>
+    /// Represents an item base, e.g. Harbinger Bow or Glorious Plate.
+    /// </summary>
+    public class ItemBase : IItemBase
     {
-        private static int GetWidthForItem(ItemType type, ItemGroup group, string name)
-        {
-            switch (group)
-            {
-                case ItemGroup.Helmet:
-                case ItemGroup.BodyArmour:
-                case ItemGroup.Belt:
-                case ItemGroup.Gloves:
-                case ItemGroup.Boots:
-                case ItemGroup.Quiver:
-                case ItemGroup.Shield:
-                case ItemGroup.TwoHandedWeapon:
-                    return name == "Corroded Blade" ? 1 : 2;
-            }
-            switch (type)
-            {
-                case ItemType.OneHandedAxe:
-                case ItemType.Claw:
-                case ItemType.Sceptre:
-                    return 2;
 
-                case ItemType.OneHandedMace:
-                    if (name.EndsWith("Club") || name == "Tenderizer")
-                        return 1;
-                    return 2;
+        public int Level { get; }
+        public int RequiredStrength { get; }
+        public int RequiredDexterity { get; }
+        public int RequiredIntelligence { get; }
+        public bool DropDisabled { get; }
+        public int InventoryHeight { get; }
+        public int InventoryWidth { get; }
 
-                case ItemType.OneHandedSword:
-                    switch (name)
-                    {
-                        case "Rusted Sword":
-                        case "Gemstone Sword":
-                        case "Corsair Sword":
-                        case "Cutlass":
-                        case "Variscite Blade":
-                        case "Sabre":
-                        case "Copper Sword":
-                            return 1;
-                    }
-                    return 2;
+        public string Name { get; }
+        public ItemType ItemType { get; }
+        public ItemGroup ItemGroup { get; }
+        public string MetadataId { get; }
 
-            }
+        public bool CanHaveQuality { get; }
+        public IReadOnlyList<Stat> ImplicitMods { get; }
+        private readonly IReadOnlyList<Stat> _properties;
 
-            // Thrusting swords, rings, amulets
-            return 1;
-        }
-
-        private static int GetHeightForItem(ItemType type, ItemGroup group, string name)
-        {
-            switch (group)
-            {
-                case ItemGroup.TwoHandedWeapon:
-                    return name.EndsWith("Crude Bow") || name.EndsWith("Short Bow") || name.EndsWith("Grove Bow") || name.EndsWith("Thicket Bow") ? 3 : 4;
-                case ItemGroup.Helmet:
-                case ItemGroup.Gloves:
-                case ItemGroup.Boots:
-                    return 2;
-
-                case ItemGroup.Shield:
-                    if (name.EndsWith("Kite Shield") || name.EndsWith("Round Shield"))
-                        return 3;
-                    if (name.EndsWith("Tower Shield"))
-                        return 4;
-                    return 2;
-
-                case ItemGroup.Quiver:
-                case ItemGroup.BodyArmour:
-                    return 3;
-            }
-
-            // belts, amulets, rings
-            if (group != ItemGroup.OneHandedWeapon) return 1;
-
-            switch (type)
-            {
-                case ItemType.Claw:
-                    return 2;
-                case ItemType.Dagger:
-                case ItemType.Wand:
-                case ItemType.OneHandedAxe:
-                case ItemType.OneHandedMace:
-                case ItemType.Sceptre:
-                case ItemType.OneHandedSword:
-                    return 3;
-                case ItemType.ThrustingOneHandedSword:
-                    return 4;
-                default:
-                    return 1;
-            }
-        }
-
-        public int Level { get; private set; }
-        public int RequiredStrength { get; private set; }
-        public int RequiredDexterity { get; private set; }
-        public int RequiredIntelligence { get; private set; }
-
-        public string Name { get; private set; }
-        public ItemType ItemType { get; private set; }
-        public ItemGroup ItemGroup { get; private set; }
-
-        public bool CanHaveQuality { get; private set; }
-        public IReadOnlyList<Stat> ImplicitMods { get; private set; }
-        private IReadOnlyList<Stat> Properties { get; set; }
-
-        public ItemImage Image { get; private set; }
+        public ItemImage Image { get; }
 
         public ItemBase(ItemImageService itemImageService, XmlItemBase xmlBase)
         {
@@ -121,16 +38,17 @@ namespace POESKillTree.Model.Items
             RequiredStrength = xmlBase.Strength;
             RequiredDexterity = xmlBase.Dexterity;
             RequiredIntelligence = xmlBase.Intelligence;
+            DropDisabled = xmlBase.DropDisabled;
+            InventoryHeight = xmlBase.InventoryHeight;
+            InventoryWidth = xmlBase.InventoryWidth;
 
             Name = xmlBase.Name;
             ItemType = xmlBase.ItemType;
             ItemGroup = ItemType.Group();
-            ImplicitMods = xmlBase.Implicit != null
-                ? xmlBase.Implicit.Select(i => new Stat(i, ItemType)).ToList()
-                : new List<Stat>();
-            Properties = xmlBase.Properties != null
-                ? xmlBase.Properties.Select(p => new Stat(p, ItemType)).ToList()
-                : new List<Stat>();
+            MetadataId = xmlBase.MetadataId;
+
+            ImplicitMods = xmlBase.Implicit.Select(i => new Stat(i, ItemType)).ToList();
+            _properties = xmlBase.Properties.Select(p => new Stat(p, ItemType)).ToList();
             CanHaveQuality = ItemGroup == ItemGroup.OneHandedWeapon || ItemGroup == ItemGroup.TwoHandedWeapon
                              || ItemGroup == ItemGroup.BodyArmour || ItemGroup == ItemGroup.Boots
                              || ItemGroup == ItemGroup.Gloves || ItemGroup == ItemGroup.Helmet
@@ -162,8 +80,12 @@ namespace POESKillTree.Model.Items
             RequiredStrength = 0;
             RequiredDexterity = 0;
             RequiredIntelligence = 0;
+            DropDisabled = false;
+            InventoryHeight = 0;
+            InventoryWidth = 0;
+            MetadataId = "";
             ImplicitMods = new List<Stat>();
-            Properties = new List<Stat>();
+            _properties = new List<Stat>();
             CanHaveQuality = false;
 
             Name = typeLine;
@@ -230,15 +152,7 @@ namespace POESKillTree.Model.Items
             }
         }
 
-        public Item CreateItem()
-        {
-            return new Item(this, GetWidthForItem(ItemType, ItemGroup, Name), GetHeightForItem(ItemType, ItemGroup, Name))
-            {
-                Properties = new ObservableCollection<ItemMod>(GetRawProperties())
-            };
-        }
-
-        public List<ItemMod> GetRawProperties(float quality = 0)
+        public List<ItemMod> GetRawProperties(int quality = 0)
         {
             var props = new List<ItemMod>();
 
@@ -260,8 +174,8 @@ namespace POESKillTree.Model.Items
                 props.Add(qProp);
             }
 
-            if (Properties != null)
-                props.AddRange(Properties.Select(prop => prop.ToItemMod(true)));
+            if (_properties != null)
+                props.AddRange(_properties.Select(prop => prop.AsPropertyToItemMod()));
             return props;
         }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -91,34 +90,27 @@ namespace POESKillTree.Utils.WikiApi
             }
             try
             {
-                // retrieve page titles of the items' icons
                 var nameToItem = pool.ToDictionary(p => p.ItemName);
+                // retrieve urls of the items' icons
                 var conditions = new ConditionBuilder
                 {
                     {RdfName, string.Join("||", pool.Select(p => p.ItemName))}
                 };
-                var printouts = new[] {RdfName, RdfIcon};
-                var results = (from ps in await _apiAccessor.Ask(conditions, printouts).ConfigureAwait(false)
-                               let title = ps[RdfIcon].First.Value<string>("fulltext")
-                               let name = SingularValue<string>(ps, RdfName)
-                               select new { name, title }).ToList();
-                var titleToItem = results.ToDictionary(x => x.title, x => nameToItem[x.name]);
-
-                // retrieve urls of the actual icons
-                var task = _apiAccessor.QueryImageInfoUrls(results.Select(t => t.title));
-                var imageInfo =
-                    from tuple in await task.ConfigureAwait(false)
-                    select new {Item = titleToItem[tuple.Item1], Url = tuple.Item2};
+                var imageInfo = await _apiAccessor.AskAndQueryImageInforUrls(conditions).ConfigureAwait(false);
 
                 // download and save icons
                 var saveTasks = new List<Task>();
                 var missing = new HashSet<PoolItem>(pool);
-                foreach (var x in imageInfo)
+                foreach (var result in imageInfo)
                 {
-                    // Don't load duplicates (e.g. for Two-Stone Ring or items with weapon skins)
-                    if (missing.Remove(x.Item))
+                    foreach (var name in result.Names)
                     {
-                        saveTasks.Add(LoadSingleAsync(x.Item, x.Url));
+                        var item = nameToItem[name];
+                        // Don't load duplicates (e.g. for Two-Stone Ring or items with weapon skins)
+                        if (missing.Remove(item))
+                        {
+                            saveTasks.Add(LoadSingleAsync(item, result.Url));
+                        }
                     }
                 }
                 await Task.WhenAll(saveTasks).ConfigureAwait(false);
@@ -143,10 +135,7 @@ namespace POESKillTree.Utils.WikiApi
             try
             {
                 var imgData = await _httpClient.GetByteArrayAsync(url).ConfigureAwait(false);
-                using (var outputStream = File.Create(item.FileName))
-                {
-                    SaveImage(imgData, outputStream, true);
-                }
+                SaveImage(imgData, item.FileName, true);
                 Log.Info($"Downloaded item image for {item.ItemName} to the file system.");
                 item.Tcs.SetResult(item.ItemName);
             }
