@@ -50,7 +50,7 @@ Queries require O(log n + m) time, with n being the total number of intervals an
     var results3 = tree.Query(29);                    // 2 items: [20 - 30], [25 - 35]
     var results4 = tree.Query(new Range<int>(5, 15)); // 2 items: [0 - 10], [15 - 17]
     
-The solution file contains a few examples and also a comparision of the default and async versions.
+The solution file contains a few examples and also a comparison of the default and async versions.
     
 ### Implementation Details ###
 
