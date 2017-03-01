@@ -23,11 +23,11 @@ namespace POESKillTree.ViewModels.Equipment
             private set { SetProperty(ref _isDragged, value); }
         }
 
-        private Thickness _dragAdornerMargin;
-        public Thickness DragAdornerMargin
+        private Point _dragMouseAnchorPoint = new Point(0, 0);
+        public Point DragMouseAnchorPoint
         {
-            get { return _dragAdornerMargin; }
-            private set { SetProperty(ref _dragAdornerMargin, value); }
+            get { return _dragMouseAnchorPoint; }
+            private set { SetProperty(ref _dragMouseAnchorPoint, value); }
         }
 
         public virtual DragDropEffects DropOnInventoryEffect => DragDropEffects.Move;
@@ -65,14 +65,13 @@ namespace POESKillTree.ViewModels.Equipment
 
         public void StartDrag(IDragInfo dragInfo)
         {
-            dragInfo.Effects = AllowedEffects;
             dragInfo.Data = this;
-            var visualSource = (FrameworkElement) dragInfo.VisualSourceItem;
-            DragAdornerMargin = new Thickness(
-                - dragInfo.PositionInDraggedItem.X + 4,
-                0,
-                0,
-                - visualSource.ActualHeight + dragInfo.PositionInDraggedItem.Y - 4);
+            var image = Item.Image.ImageSource.Result;
+            DragMouseAnchorPoint = new Point(
+                dragInfo.PositionInDraggedItem.X / image.Width, 
+                dragInfo.PositionInDraggedItem.Y / image.Height
+            );
+            dragInfo.Effects = AllowedEffects;
             IsDragged = true;
         }
 

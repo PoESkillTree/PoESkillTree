@@ -12,6 +12,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:builds="clr-namespace:POESKillTree.Views.Builds"
         xmlns:equipment="clr-namespace:POESKillTree.Views.Equipment"
+        xmlns:dd="urn:gong-wpf-dragdrop"
 
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
         Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
@@ -675,7 +676,8 @@
 
         <!-- grid row 2 - center part, tree and editors -->
         <Grid Grid.Row="2">
-            <TabControl Background="Transparent" Name="tcMainArea">
+            <TabControl Background="Transparent" Name="tcMainArea"
+                        dd:DragDrop.IsDropTarget="True">
                 <TabControl.ItemContainerStyle>
                     <Style TargetType="TabItem">
                         <Style.Setters>
@@ -703,7 +705,7 @@
 
                             <Rectangle Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
                                        Height="2" Fill="{DynamicResource GrayNormalBrush}" VerticalAlignment="Top" />
-                            
+
                             <UniformGrid Grid.Column="0" Grid.Row="0"
                                          Margin="0 6 0 0"
                                          Height="32" Width="480"

@@ -12,12 +12,12 @@
              d:DataContext="{d:DesignInstance viewModels:DraggableItemViewModel}"
              dialogs:DialogParticipation.Register="{Binding}"
              dd:DragDrop.IsDragSource="True"
-             dd:DragDrop.DragHandler="{Binding}">
+             dd:DragDrop.DragHandler="{Binding}"
+             dd:DragDrop.DragMouseAnchorPoint="{Binding DragMouseAnchorPoint}">
     <dd:DragDrop.DragAdornerTemplate>
         <DataTemplate DataType="viewModels:DraggableItemViewModel">
             <Image Source="{Binding Item.Image.ImageSource.Result}"
-                   Stretch="None"
-                   Margin="{Binding DragAdornerMargin}" />
+                   Stretch="None" />
         </DataTemplate>
     </dd:DragDrop.DragAdornerTemplate>
     <UserControl.ContextMenu>
