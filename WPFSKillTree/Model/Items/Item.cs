@@ -355,7 +355,7 @@ namespace POESKillTree.Model.Items
 
             if (isGem)
             {
-                switch (val["colour"].Value<string>())
+                switch (val["colour"]?.Value<string>())
                 {
                     case "S":
                         _keywords.Add("Strength");
