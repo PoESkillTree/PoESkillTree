@@ -7,23 +7,20 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:WpfRangeControls="clr-namespace:WpfRangeControls" xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared" x:Class="POESKillTree.Controls.Stash"
+             xmlns:WpfRangeControls="clr-namespace:WpfRangeControls" xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared"
+    x:Class="POESKillTree.Controls.Stash"
              mc:Ignorable="d" 
              d:DesignHeight="351"
-             x:Name="control" MouseWheel="control_MouseWheel" Loaded="control_Loaded"
+             x:Name="control"
              >
     <UserControl.Resources>
         <CompositeCollection x:Key="scrollbarOverlayCollection">
             <CollectionContainer Collection="{Binding Bookmarks, Source={x:Reference Name=control}}"/>
             <CollectionContainer Collection="{Binding SearchMatches, Source={x:Reference Name=control}}"/>
-            <CollectionContainer Collection="{Binding NewlyAddedRanges, Source={x:Reference Name=control}}"/>
         </CompositeCollection>
-        <ContextMenu x:Key="itemContextMenu">
-            <MenuItem Header="{l:Catalog 'Delete'}" Click="MenuItem_Delete_Click" />
-        </ContextMenu>
         <CompositeCollection x:Key="stashTabsCollection">
             <CollectionContainer Collection="{Binding Bookmarks, Source={x:Reference Name=control}}"/>
-            <Button Width="17" MinWidth="17" MinHeight="17" Height="17" Margin="0,1,0,0" Padding="3" Click="Button_AddBookmark">
+            <Button Width="17" MinWidth="17" MinHeight="17" Height="17" Margin="0,1,0,0" Padding="3">
                 <Button.Template>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Grid>
@@ -67,8 +64,7 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <Grid x:Name="gcontent" Grid.Column="1" Width="564" ClipToBounds="True" SizeChanged="gcontent_SizeChanged"
-              DragOver="gcontent_DragOver" AllowDrop="True" Drop="gcontent_Drop" DragLeave="gcontent_DragLeave" DragEnter="gcontent_DragEnter">
+        <Grid x:Name="gcontent" Grid.Column="1" Width="564" ClipToBounds="True">
             <Grid.Background>
                 <DrawingBrush TileMode="Tile" Stretch="None" ViewportUnits="Absolute" Viewport="0,0,47,47" >
                     <DrawingBrush.Drawing>
@@ -94,8 +90,9 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Button RenderTransformOrigin="0.5,0.5" MinWidth="25" Height="20" MinHeight="16" Content="{Binding Name}" Click="Button_StashTab_Click" MouseDown="ButtonStashTabMouseDown" DragEnter="Button_DragEnter" AllowDrop="True">
+                <DataTemplate DataType="cont:StashBookmark">
+                    <Button RenderTransformOrigin="0.5,0.5" MinWidth="25" Height="20" MinHeight="16" Content="{Binding Name}" AllowDrop="True">
+                        <!-- todo bind right click to EditStashTabCommand with DataContext as parameter -->
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type ButtonBase}">
                                 <Border CornerRadius="3,3,0,0" x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True" Padding="3,0">
@@ -143,7 +140,7 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="tbSearch" Grid.Column="1" TextChanged="tbSearch_TextChanged"
+            <TextBox x:Name="tbSearch" Grid.Column="1"
                      controls:TextBoxHelper.ClearTextButton="True"
                      controls:TextBoxHelper.SelectAllOnFocus="True">
                 <controls:TextBoxHelper.Watermark>
@@ -152,7 +149,7 @@
             </TextBox>
         </Grid>
 
-        <WpfRangeControls:RangeScrollbar x:Name="asBar" Grid.Column="2" Maximum="{Binding LastLine, ElementName=control}" ValueChanged="asBar_ValueChanged" SmallChange="1" LargeChange="12">
+        <WpfRangeControls:RangeScrollbar x:Name="asBar" Grid.Column="2" Maximum="{Binding LastLine, ElementName=control}" SmallChange="1" LargeChange="12">
             <WpfRangeControls:RangeScrollbar.Resources>
                 <DataTemplate DataType="{x:Type cont:StashBookmark}" >
                     <Rectangle Height="2" HorizontalAlignment="Stretch" WpfRangeControls:RangePanel.Position="{Binding Position}">
@@ -163,10 +160,6 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type sys:Int32}">
                     <Rectangle Height="4" Width="4" WpfRangeControls:RangePanel.Position="{Binding}" Fill="#8043D9E8"/>
-                </DataTemplate>
-
-                <DataTemplate DataType="{x:Type cont:IntRange}" >
-                    <Rectangle Width="3"  HorizontalAlignment="Left" WpfRangeControls:RangePanel.Position="{Binding From}" WpfRangeControls:RangePanel.Range="{Binding Range}" WpfRangeControls:RangePanel.Alignment="Begin" Fill="YellowGreen"/>
                 </DataTemplate>
 
             </WpfRangeControls:RangeScrollbar.Resources>

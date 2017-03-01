@@ -146,7 +146,7 @@
                             <Button Command="{Binding Data.RemoveGemCommand, Source={StaticResource VmProxy}}"
                                     CommandParameter="{Binding}" Width="30" Height="30"
                                     Style="{DynamicResource MetroCircleButtonStyle}">
-                                <iconPacks:PackIconModern Kind="Close" Height="10" Width="10"/>
+                                <iconPacks:PackIconModern Kind="Close" Height="10" Width="10" />
                             </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

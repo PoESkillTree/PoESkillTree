@@ -134,7 +134,7 @@ namespace POESKillTree.Model.Items
         {
             switch (itemSlot)
             {
-                case ItemSlot.Armor:
+                case ItemSlot.BodyArmour:
                     return ItemGroup.BodyArmour;
                 case ItemSlot.Ring:
                 case ItemSlot.Ring2:

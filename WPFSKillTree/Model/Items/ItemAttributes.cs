@@ -21,8 +21,8 @@ namespace POESKillTree.Model.Items
 
         public Item Armor
         {
-            get { return GetItemInSlot(ItemSlot.Armor); }
-            set { SetItemInSlot(value, ItemSlot.Armor); }
+            get { return GetItemInSlot(ItemSlot.BodyArmour); }
+            set { SetItemInSlot(value, ItemSlot.BodyArmour); }
         }
 
         public Item MainHand
@@ -79,12 +79,12 @@ namespace POESKillTree.Model.Items
             set { SetItemInSlot(value, ItemSlot.Belt); }
         }
 
-        private Item GetItemInSlot(ItemSlot slot)
+        public Item GetItemInSlot(ItemSlot slot)
         {
             return Equip.FirstOrDefault(i => i.Slot == slot);
         }
 
-        private void SetItemInSlot(Item value, ItemSlot slot)
+        public void SetItemInSlot(Item value, ItemSlot slot)
         {
             if (!CanEquip(value, slot))
                 return;
@@ -190,7 +190,7 @@ namespace POESKillTree.Model.Items
                 switch (jobj["inventoryId"].Value<string>())
                 {
                     case "BodyArmour":
-                        AddItem(jobj, ItemSlot.Armor);
+                        AddItem(jobj, ItemSlot.BodyArmour);
                         break;
                     case "Ring":
                         AddItem(jobj, ItemSlot.Ring);
@@ -233,7 +233,7 @@ namespace POESKillTree.Model.Items
                 var jItem = item.JsonBase;
                 switch (item.Slot)
                 {
-                    case ItemSlot.Armor:
+                    case ItemSlot.BodyArmour:
                         jItem["inventoryId"] = "BodyArmour";
                         break;
                     case ItemSlot.MainHand:

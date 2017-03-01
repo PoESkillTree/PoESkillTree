@@ -19,7 +19,7 @@ namespace POESKillTree.Model
         IBuild SelectedBuild { get; set; }
         BuildFolder RootBuild { get; }
         EquipmentData EquipmentData { get; }
-        ObservableCollection<Item> StashItems { get; }
+        List<Item> StashItems { get; }
         ObservableCollection<StashBookmark> StashBookmarks { get; }
         IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes { get; }
 

@@ -104,8 +104,8 @@
     <Reference Include="ExpressionEvaluator">
       <HintPath>.\ExpressionEvaluator.dll</HintPath>
     </Reference>
-    <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\gong-wpf-dragdrop.1.0.0\lib\net45\GongSolutions.Wpf.DragDrop.dll</HintPath>
+    <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\gong-wpf-dragdrop.1.1.0\lib\net45\GongSolutions.Wpf.DragDrop.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
@@ -217,6 +217,11 @@
     <Compile Include="ViewModels\Crafting\SliderViewModel.cs" />
     <Compile Include="ViewModels\Crafting\SocketedGemsEditingViewModel.cs" />
     <Compile Include="ViewModels\Crafting\UniqueCraftingViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\BinViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\DraggableItemViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\InventoryItemViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\InventoryViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\StashItemViewModel.cs" />
     <Compile Include="Views\Crafting\BaseCraftingView.xaml.cs">
       <DependentUpon>BaseCraftingView.xaml</DependentUpon>
     </Compile>
@@ -274,8 +279,14 @@
       <DependentUpon>ValidatingInputDialogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DraggedItem.cs" />
-    <Compile Include="Controls\Inventory.xaml.cs">
-      <DependentUpon>Inventory.xaml</DependentUpon>
+    <Compile Include="Views\Equipment\BinView.xaml.cs">
+      <DependentUpon>BinView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Equipment\InventoryItemView.xaml.cs">
+      <DependentUpon>InventoryItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Equipment\InventoryView.xaml.cs">
+      <DependentUpon>InventoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ItemTooltip.xaml.cs">
       <DependentUpon>ItemTooltip.xaml</DependentUpon>
@@ -490,7 +501,6 @@
     <Compile Include="ViewModels\ListGroup.cs" />
     <Compile Include="SkillTreeFiles\ImageHelper.cs" />
     <Compile Include="ViewModels\Attribute.cs" />
-    <Compile Include="Controls\DragAdorner.cs" />
     <Compile Include="SkillTreeFiles\EXTHelper.cs" />
     <Compile Include="ViewModels\ListGroupItem.cs" />
     <Compile Include="Model\Items\ItemConverter.cs" />
@@ -517,6 +527,16 @@
     </Compile>
     <Compile Include="Views\Builds\EditBuildWindow.xaml.cs">
       <DependentUpon>EditBuildWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Equipment\DraggableItemView.xaml.cs">
+      <DependentUpon>DraggableItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Equipment\StashViewModel.cs" />
+    <Compile Include="Views\Equipment\StashItemView.xaml.cs">
+      <DependentUpon>StashItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Equipment\StashView.xaml.cs">
+      <DependentUpon>StashView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
@@ -636,7 +656,15 @@
     <Compile Include="Views\Equipment\TabPicker.xaml.cs">
       <DependentUpon>TabPicker.xaml</DependentUpon>
     </Compile>
-    <Page Include="Controls\Inventory.xaml">
+    <Page Include="Views\Equipment\BinView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Equipment\InventoryItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Equipment\InventoryView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -677,6 +705,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Builds\EditBuildWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Equipment\DraggableItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Equipment\StashItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Equipment\StashView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -878,7 +918,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ExpressionEvaluator.dll" />
-    <Resource Include="Images\EquipmentUI\Inventory.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Amulet.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Belt.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Boots.png" />
@@ -968,6 +1007,7 @@
     <Resource Include="Images\Raider.jpg" />
     <Resource Include="Images\Raider_Highlighted.jpg" />
     <Resource Include="Libs\README.txt" />
+    <Resource Include="Images\EquipmentUI\Bin.png" />
     <Content Include="Libs\Xceed.Wpf.Toolkit.dll" />
     <Content Include="release.iss" />
     <None Include="Tools\isetup\ISCC.exe" />

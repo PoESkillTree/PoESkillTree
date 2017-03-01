@@ -41,7 +41,7 @@ namespace POESKillTree.Model.Serialization
 
         public BuildFolder RootBuild { get; } = new BuildFolder {Name = "Root"};
 
-        public ObservableCollection<Item> StashItems { get; } = new ObservableCollection<Item>();
+        public List<Item> StashItems { get; } = new List<Item>();
 
         public IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes { get; } =
             new Dictionary<string, IEnumerable<StashBookmark>>();

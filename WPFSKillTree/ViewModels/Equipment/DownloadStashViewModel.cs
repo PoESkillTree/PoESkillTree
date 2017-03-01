@@ -23,7 +23,7 @@ namespace POESKillTree.ViewModels.Equipment
 {
     public class DownloadStashViewModel : CloseableViewModel
     {
-        private readonly Stash _stash;
+        private readonly StashViewModel _stash;
         private readonly IPersistentData _persistenData;
         private readonly IDialogCoordinator _dialogCoordinator;
         private readonly TaskCompletionSource<object> _viewLoadedCompletionSource;
@@ -77,7 +77,7 @@ namespace POESKillTree.ViewModels.Equipment
             get { return _loadTabContentsCommand ?? (_loadTabContentsCommand = new AsyncRelayCommand(LoadTabContents)); }
         }
 
-        public DownloadStashViewModel(IDialogCoordinator dialogCoordinator, IPersistentData persistentData, Stash stash)
+        public DownloadStashViewModel(IDialogCoordinator dialogCoordinator, IPersistentData persistentData, StashViewModel stash)
         {
             _stash = stash;
             _persistenData = persistentData;
@@ -195,13 +195,12 @@ namespace POESKillTree.ViewModels.Equipment
         private async Task LoadTabContents()
         {
             var tabContents = Clipboard.GetText();
-            IntRange highlightrange = null;
             try
             {
                 var json = JObject.Parse(tabContents);
                 var items = json["items"].Select(i => new Item(_persistenData, (JObject)i)).ToArray();
 
-                var yStart = _stash.LastOccupiedLine + 3;
+                var yStart = _stash.LastOccupiedRow + 3;
 
                 var selectedBookmark = TabsView.CurrentItem as StashBookmark;
                 var sb = selectedBookmark != null
@@ -209,7 +208,7 @@ namespace POESKillTree.ViewModels.Equipment
                     : new StashBookmark("imported", yStart);
 
                 _stash.BeginUpdate();
-                _stash.AddBookmark(sb);
+                _stash.AddStashTab(sb);
 
                 var yOffsetInImported = items.Min(i => i.Y);
                 var yEnd = yStart;
@@ -217,17 +216,16 @@ namespace POESKillTree.ViewModels.Equipment
                 {
                     item.Y += yStart - yOffsetInImported;
                     yEnd = Math.Max(yEnd, item.Y + item.Height);
-                    if (item.X + item.Width > 12)
+                    if (item.X + item.Width > StashViewModel.Columns)
                     {
                         await _dialogCoordinator.ShowWarningAsync(this, "Skipping item because it is too wide.");
                         continue;
                     }
-                    _stash.Items.Add(item);
+                    _stash.AddItem(item);
                 }
 
                 await _dialogCoordinator.ShowInfoAsync(this, L10n.Message("New tab added"),
                     string.Format(L10n.Message("New tab with {0} items was added to stash."), items.Length));
-                highlightrange = new IntRange { From = yStart, Range = yEnd - yStart };
             }
             catch (Exception e)
             {
@@ -238,9 +236,6 @@ namespace POESKillTree.ViewModels.Equipment
             {
                 _stash.EndUpdate();
             }
-
-            if (highlightrange != null)
-                _stash.AddHighlightRange(highlightrange);
         }
     }
 }

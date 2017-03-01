@@ -12,9 +12,11 @@
              xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Builds"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:controls1="clr-namespace:POESKillTree.Controls"
+             xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:BuildsControlViewModel}"
-             x:Name="Control">
+             x:Name="Control"
+             dialogs:DialogParticipation.Register="{Binding}">
     <UserControl.Resources>
         <viewModels:BuildsViewModelProxy x:Key="VmProxy" Data="{Binding}" />
         <converter:BooleanToStringConverter x:Key="DirtyBooleanConverter" TrueString="*" FalseString="" />
