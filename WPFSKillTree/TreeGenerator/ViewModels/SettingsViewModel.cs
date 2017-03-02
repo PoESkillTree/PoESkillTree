@@ -15,6 +15,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
     public sealed class SettingsViewModel : AbstractCompositeSetting
     {
         private readonly ISettingsDialogCoordinator _dialogCoordinator;
+        private readonly object _dialogContext;
 
         private SkillTree Tree { get; }
 
@@ -42,19 +43,21 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </summary>
         /// <param name="tree">The skill tree to operate on. (not null)</param>
         /// <param name="dialogCoordinator"></param>
-        public SettingsViewModel(SkillTree tree, ISettingsDialogCoordinator dialogCoordinator)
+        /// <param name="dialogContext">The context used for <paramref name="dialogCoordinator"/>.</param>
+        public SettingsViewModel(SkillTree tree, ISettingsDialogCoordinator dialogCoordinator, object dialogContext)
         {
             Tree = tree;
             _dialogCoordinator = dialogCoordinator;
+            _dialogContext = dialogContext;
 
             SelectedTabIndex = new LeafSetting<int>(nameof(SelectedTabIndex), 0);
 
             Action<GeneratorTabViewModel> runCallback = async g => await RunAsync(g);
             Tabs = new ObservableCollection<GeneratorTabViewModel>
             {
-                new SteinerTabViewModel(Tree, _dialogCoordinator, this, runCallback),
-                new AdvancedTabViewModel(Tree, _dialogCoordinator, this, runCallback),
-                new AutomatedTabViewModel(Tree, _dialogCoordinator, this, runCallback)
+                new SteinerTabViewModel(Tree, _dialogCoordinator, _dialogContext, runCallback),
+                new AdvancedTabViewModel(Tree, _dialogCoordinator, _dialogContext, runCallback),
+                new AutomatedTabViewModel(Tree, _dialogCoordinator, _dialogContext, runCallback)
             };
             SubSettings = new ISetting[] {SelectedTabIndex}.Union(Tabs).ToArray();
         }
@@ -68,7 +71,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 return;
 
             var controllerResult = await _dialogCoordinator
-                .ShowControllerDialogAsync(this, solver, generator.DisplayName, Tree);
+                .ShowControllerDialogAsync(_dialogContext, solver, generator.DisplayName, Tree);
             if (controllerResult != null)
             {
                 Tree.SkilledNodes.Clear();
