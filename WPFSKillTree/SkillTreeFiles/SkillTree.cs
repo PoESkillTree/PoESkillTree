@@ -991,9 +991,17 @@ namespace POESKillTree.SkillTreeFiles
         public void ResetTaggedNodes()
         {
             var build = _persistentData.CurrentBuild;
-            _nodeHighlighter.ResetHighlights(build.CheckedNodeIds.Select(i => Skillnodes[i]), HighlightState.Checked);
-            _nodeHighlighter.ResetHighlights(build.CrossedNodeIds.Select(i => Skillnodes[i]), HighlightState.Crossed);
+            _nodeHighlighter.ResetHighlights(SelectExistingNodesById(build.CheckedNodeIds), HighlightState.Checked);
+            _nodeHighlighter.ResetHighlights(SelectExistingNodesById(build.CrossedNodeIds), HighlightState.Crossed);
             DrawHighlights();
+        }
+
+        private static IEnumerable<SkillNode> SelectExistingNodesById(IEnumerable<ushort> nodeIds)
+        {
+            return
+                from id in nodeIds
+                where Skillnodes.ContainsKey(id)
+                select Skillnodes[id];
         }
 
         public void SetCheckTaggedNodes(IReadOnlyList<SkillNode> checkTagged)
