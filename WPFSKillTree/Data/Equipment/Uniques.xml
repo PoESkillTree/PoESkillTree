@@ -12,10 +12,10 @@
   </Unique>
   <Unique Name="Dyadus" Level="69" BaseMetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe22">
     <Explicit>
-      <Stat Name="Adds # to # Fire Damage in Main Hand" From="170 200" To="190 220" />
-      <Stat Name="Adds # to # Cold Damage in Off Hand" From="170 200" To="190 220" />
+      <Stat Name="Adds # to # Fire Damage in Main Hand" From="255 300" To="285 330" />
+      <Stat Name="Adds # to # Cold Damage in Off Hand" From="255 300" To="285 330" />
       <Stat Name="#% increased Attack Speed" From="10" To="15" />
-      <Stat Name="Enemies Chilled by you take #% increased Burning Damage" From="40" To="40" />
+      <Stat Name="Enemies Chilled by you take #% increased Burning Damage" From="100" To="100" />
       <Stat Name="#% chance to Ignite when in Main Hand" From="25" To="25" />
       <Stat Name="#% increased Chill Duration on Enemies when in Off Hand" From="100" To="100" />
     </Explicit>
@@ -90,11 +90,11 @@
   </Unique>
   <Unique Name="The Screaming Eagle" Level="6" BaseMetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe2">
     <Explicit>
+      <Stat Name="Socketed Gems are supported by Level # Chance to Flee" From="2" To="2" />
       <Stat Name="Adds # to # Physical Damage" From="10 25" To="15 30" />
       <Stat Name="+# to maximum Life" From="10" To="15" />
       <Stat Name="+# Life gained on Kill" From="5" To="7" />
       <Stat Name="#% increased Movement Speed" From="10" To="10" />
-      <Stat Name="Socketed Gems are supported by Level # Chance to Flee" From="2" To="2" />
     </Explicit>
   </Unique>
   <Unique Name="Atziri's Disfavour" Level="75" BaseMetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxe17">
@@ -263,14 +263,13 @@
       <Stat Name="Adds an additional Arrow" From="" To="" />
     </Explicit>
   </Unique>
-  <Unique Name="Death's Opus" Level="44" BaseMetadataId="Metadata/Items/Weapons/TwoHandWeapons/Bows/Bow8">
+  <Unique Name="Death's Opus" Level="40" BaseMetadataId="Metadata/Items/Weapons/TwoHandWeapons/Bows/Bow8">
     <Explicit>
       <Stat Name="#% increased Physical Damage" From="100" To="125" />
       <Stat Name="Adds # to # Physical Damage" From="10 30" To="20 35" />
       <Stat Name="#% increased Attack Speed" From="10" To="10" />
       <Stat Name="+#% to Global Critical Strike Multiplier" From="150" To="150" />
-      <Stat Name="Adds an additional Arrow" From="" To="" />
-      <Stat Name="Adds an additional Arrow" From="" To="" />
+      <Stat Name="Adds # additional Arrows" From="2" To="2" />
     </Explicit>
   </Unique>
   <Unique Name="Doomfletch" Level="28" BaseMetadataId="Metadata/Items/Weapons/TwoHandWeapons/Bows/Bow7">
@@ -356,7 +355,7 @@
       <Stat Name="#% increased Physical Damage" From="40" To="50" />
       <Stat Name="Adds # to # Physical Damage" From="15 70" To="30 95" />
       <Stat Name="#% increased Attack Speed" From="8" To="12" />
-      <Stat Name="# additional Arrows" From="4" To="4" />
+      <Stat Name="# additional Arrows" From="2" To="2" />
       <Stat Name="#% reduced Projectile Speed" From="20" To="20" />
     </Explicit>
   </Unique>
@@ -502,7 +501,7 @@
       <Stat Name="#% increased Spell Damage per #% Block Chance" From="8 5" To="8 5" />
     </Explicit>
   </Unique>
-  <Unique Name="Essentia Sanguis" Level="64" BaseMetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw19">
+  <Unique Name="Essentia Sanguis" Level="66" BaseMetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw20">
     <Explicit>
       <Stat Name="#% additional Block Chance while Dual Wielding Claws" From="8" To="8" />
       <Stat Name="#% increased Physical Damage" From="140" To="180" />
@@ -1189,7 +1188,7 @@
   </Unique>
   <Unique Name="Taryn's Shiver" Level="64" BaseMetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff17">
     <Explicit>
-      <Stat Name="+# to Level of Socketed Cold Gems" From="1" To="1" />
+      <Stat Name="+# to Level of Socketed Cold Gems" From="2" To="2" />
       <Stat Name="#% increased Spell Damage" From="50" To="60" />
       <Stat Name="#% increased Cold Damage" From="40" To="50" />
       <Stat Name="#% increased Cast Speed" From="10" To="20" />
@@ -1990,7 +1989,7 @@
       <Stat Name="#% of Life Regenerated per second while on Low Life" From="1" To="1" />
     </Explicit>
   </Unique>
-  <Unique Name="Night's Hold" Level="10" BaseMetadataId="Metadata/Items/Amulets/Talismans/Talisman1_1">
+  <Unique Name="Night's Hold" Level="25" BaseMetadataId="Metadata/Items/Amulets/Talismans/Talisman1_1">
     <Explicit>
       <Stat Name="+# to Level of Socketed Gems" From="2" To="2" />
       <Stat Name="Socketed Gems are Supported by level # Added Chaos Damage" From="10" To="10" />
@@ -2206,7 +2205,7 @@
   <Unique Name="Ascent From Flesh" Level="44" BaseMetadataId="Metadata/Items/Belts/Belt2">
     <Explicit>
       <Stat Name="+# to Evasion Rating" From="300" To="300" />
-      <Stat Name="+# to maximum Energy Shield" From="35" To="45" />
+      <Stat Name="+# to maximum Energy Shield" From="75" To="80" />
       <Stat Name="+#% to all Elemental Resistances" From="10" To="15" />
       <Stat Name="You have Phasing if Energy Shield Recharge has started Recently" From="" To="" />
       <Stat Name="#% chance to Dodge Attacks while Phasing" From="6" To="6" />
@@ -2468,7 +2467,7 @@
       <Stat Name="#% increased Stun Duration on Enemies" From="20" To="30" />
     </Explicit>
   </Unique>
-  <Unique Name="Cragfall" Level="5" BaseMetadataId="Metadata/Items/Quivers/QuiverDescent">
+  <Unique Name="Cragfall" Level="5" BaseMetadataId="Metadata/Items/Quivers/Quiver6">
     <Explicit>
       <Stat Name="#% reduced Enemy Stun Threshold" From="20" To="25" />
       <Stat Name="#% reduced Projectile Speed" From="25" To="25" />
@@ -2477,7 +2476,7 @@
       <Stat Name="#% chance to double Stun Duration" From="50" To="50" />
     </Explicit>
   </Unique>
-  <Unique Name="Craghead" Level="1" BaseMetadataId="Metadata/Items/Quivers/QuiverDescent">
+  <Unique Name="Craghead" Level="5" BaseMetadataId="Metadata/Items/Quivers/Quiver6">
     <Explicit>
       <Stat Name="#% reduced Enemy Stun Threshold" From="20" To="25" />
       <Stat Name="#% reduced Projectile Speed" From="25" To="25" />
@@ -2510,8 +2509,8 @@
       <Stat Name="+# to maximum Life" From="50" To="70" />
       <Stat Name="+#% to Chaos Resistance" From="12" To="16" />
       <Stat Name="Adds # to # Physical Damage to Attacks with Bows" From="5 8" To="7 10" />
-      <Stat Name="#% increased Damage against Blinded Enemies" From="20" To="40" />
       <Stat Name="#% chance to create a Smoke Cloud when Hit" From="10" To="10" />
+      <Stat Name="#% increased Damage against Blinded Enemies" From="20" To="40" />
     </Explicit>
   </Unique>
   <Unique Name="Rearguard" Level="28" BaseMetadataId="Metadata/Items/Quivers/Quiver11">
@@ -3816,8 +3815,8 @@
       <Stat Name="+# to Dexterity" From="25" To="35" />
       <Stat Name="#% increased Evasion Rating" From="20" To="40" />
       <Stat Name="#% increased Evasion Rating while you have Onslaught" From="40" To="40" />
-      <Stat Name="+# to maximum Life" From="30" To="60" />
-      <Stat Name="#% increased Movement Speed" From="20" To="20" />
+      <Stat Name="+# to maximum Life" From="50" To="70" />
+      <Stat Name="#% increased Movement Speed" From="25" To="25" />
       <Stat Name="#% chance to Dodge Spell Damage while Phasing" From="10" To="10" />
     </Explicit>
   </Unique>
@@ -4207,6 +4206,16 @@
       <Stat Name="+# to maximum Life" From="10" To="10" />
       <Stat Name="#% increased Cast Speed when on Low Life" From="20" To="20" />
       <Stat Name="#% increased Cast Speed when on Full Life" From="9" To="9" />
+    </Explicit>
+  </Unique>
+  <Unique Name="The Baron" Level="26" BaseMetadataId="Metadata/Items/Armours/Helmets/HelmetStr4">
+    <Explicit>
+      <Stat Name="+# to Strength" From="20" To="40" />
+      <Stat Name="+# to Level of Socketed Minion Gems" From="2" To="2" />
+      <Stat Name="Minions have #% increased maximum Life" From="20" To="20" />
+      <Stat Name="Your Strength is added to your Minions" From="" To="" />
+      <Stat Name="+# to maximum number of Zombies per # Strength" From="1 300" To="1 300" />
+      <Stat Name="With # or more Strength #% of Damage dealt by your Zombies is Leeched to you as Life" From="1000 2" To="1000 2" />
     </Explicit>
   </Unique>
   <Unique Name="The Brine Crown" Level="63" BaseMetadataId="Metadata/Items/Armours/Helmets/HelmetStrInt9">
@@ -5398,9 +5407,9 @@
   </Unique>
   <Unique Name="Pitch Darkness" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelDex">
     <Explicit>
-      <Stat Name="#% increased Fire Damage" From="5" To="15" />
-      <Stat Name="With at least # Dexterity Allocated in radius, Burning Arrow has a #% chance to spread Tar if it does not Ignite an Enemy" From="50 10" To="50 10" />
-      <Stat Name="With at least # Dexterity Allocated in radius, Burning Arrow has a #% chance to spread Burning Ground if it Ignites an Enemy" From="50 10" To="50 10" />
+      <Stat Name="#% increased Fire Damage" From="10" To="15" />
+      <Stat Name="With at least # Dexterity in Radius, Burning Arrow has a #% chance to spread Tar if it does not Ignite an Enemy" From="40 10" To="40 10" />
+      <Stat Name="With at least # Dexterity in Radius, Burning Arrow has a #% chance to spread Burning Ground if it Ignites an Enemy" From="40 10" To="40 10" />
     </Explicit>
   </Unique>
   <Unique Name="Poacher's Aim" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelDex">
@@ -5470,6 +5479,13 @@
       <Stat Name="#% of Block Chance applied to Spells" From="20" To="20" />
       <Stat Name="#% additional Block Chance" From="2" To="4" />
       <Stat Name="#% additional Chance to receive a Critical Strike" From="7" To="10" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Ring of Blades" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelDex">
+    <Explicit>
+      <Stat Name="#% increased Physical Damage" From="10" To="15" />
+      <Stat Name="With at least # Dexterity in Radius, Ethereal Knives fires Projectiles in a Nova" From="40" To="40" />
+      <Stat Name="With at least # Dexterity in Radius, Ethereal Knives fires # additional Projectiles" From="40 10" To="40 10" />
     </Explicit>
   </Unique>
   <Unique Name="Rolling Flames" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelInt">
@@ -5544,6 +5560,13 @@
   <Unique Name="Sturdy Growth" Level="1" DropDisabled="true" BaseMetadataId="Metadata/Items/Jewels/JewelStr">
     <Explicit>
       <Stat Name="If at least # Strength is Allocated in Radius, #% increased Life Recovery rate" From="70 15" To="70 15" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Sudden Ignition" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelDex">
+    <Explicit>
+      <Stat Name="#% increased Fire Damage" From="10" To="15" />
+      <Stat Name="With at least # Dexterity in Radius, Burning" From="40" To="40" />
+      <Stat Name="Arrow can inflict an additional Ignite on an Enemy" From="" To="" />
     </Explicit>
   </Unique>
   <Unique Name="Surplus" Level="1" DropDisabled="true" BaseMetadataId="Metadata/Items/Jewels/JewelInt">
@@ -5653,6 +5676,15 @@
       <Stat Name="#% increased Damage while Leeching" From="25" To="30" />
     </Explicit>
   </Unique>
+  <Unique Name="Violent Dead" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelInt">
+    <Explicit>
+      <Stat Name="Minions deal #% increased Damage" From="8" To="12" />
+      <Stat Name="With at least # Intelligence in Radius, Raised" From="40" To="40" />
+      <Stat Name="Zombies' Slam Attack has #% increased Cooldown Recovery Speed" From="100" To="100" />
+      <Stat Name="With at least # Intelligence in Radius, Raised Zombies' Slam" From="40" To="40" />
+      <Stat Name="Attack deals #% increased Damage" From="30" To="30" />
+    </Explicit>
+  </Unique>
   <Unique Name="Volley Fire" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelDex">
     <Explicit>
       <Stat Name="#% increased Projectile Damage" From="6" To="10" />
@@ -5676,6 +5708,15 @@
       <Stat Name="#% increased Physical Damage" From="4" To="12" />
       <Stat Name="With at least # Strength Allocated in Radius, Heavy Strike has a " From="50" To="50" />
       <Stat Name="#% chance to deal Double Damage" From="10" To="10" />
+    </Explicit>
+  </Unique>
+  <Unique Name="Winter Burial" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelStr">
+    <Explicit>
+      <Stat Name="#% increased Cold Damage" From="10" To="15" />
+      <Stat Name="With at least # Strength in Radius, Glacial Hammer deals" From="40" To="40" />
+      <Stat Name="Cold-only Splash Damage to surrounding targets" From="" To="" />
+      <Stat Name="With at least # Strength in Radius, #% of Glacial" From="40 25" To="40 25" />
+      <Stat Name="Hammer Physical Damage converted to Cold Damage" From="" To="" />
     </Explicit>
   </Unique>
   <Unique Name="Winter's Bounty" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelInt">

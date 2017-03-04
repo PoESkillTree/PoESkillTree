@@ -3,7 +3,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Rusted Hatchet" Level="2" Strength="12" Dexterity="6" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe1">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="5" To="9" />
+      <Stat Name="Physical Damage" From="6" To="11" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -12,7 +12,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Jade Hatchet" Level="6" Strength="21" Dexterity="10" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe2">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="8" To="13" />
+      <Stat Name="Physical Damage" From="10" To="16" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -21,7 +21,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Boarding Axe" Level="11" Strength="28" Dexterity="19" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe3">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="9" To="17" />
+      <Stat Name="Physical Damage" From="11" To="21" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -30,7 +30,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Cleaver" Level="16" Strength="48" Dexterity="14" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe4">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="11" To="33" />
+      <Stat Name="Physical Damage" From="13" To="39" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -39,7 +39,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Broad Axe" Level="21" Strength="54" Dexterity="25" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe5">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="17" To="31" />
+      <Stat Name="Physical Damage" From="20" To="36" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -48,7 +48,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Arming Axe" Level="25" Strength="58" Dexterity="33" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe6">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="12" To="36" />
+      <Stat Name="Physical Damage" From="14" To="42" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -57,7 +57,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Decorative Axe" Level="29" Strength="80" Dexterity="23" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe7">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="23" To="43" />
+      <Stat Name="Physical Damage" From="27" To="50" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -66,7 +66,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Spectral Axe" Level="33" Strength="85" Dexterity="37" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe8">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="26" To="43" />
+      <Stat Name="Physical Damage" From="29" To="48" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -77,7 +77,7 @@
       <Stat Name="#% increased Physical Damage" From="8" To="8" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="24" To="42" />
+      <Stat Name="Physical Damage" From="26" To="46" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -86,7 +86,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Jasper Axe" Level="36" Strength="86" Dexterity="40" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe9">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="28" To="43" />
+      <Stat Name="Physical Damage" From="32" To="50" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -95,7 +95,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Tomahawk" Level="39" Strength="81" Dexterity="56" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe10">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="22" To="41" />
+      <Stat Name="Physical Damage" From="25" To="46" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -104,7 +104,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Wrist Chopper" Level="42" Strength="112" Dexterity="32" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe11">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="23" To="68" />
+      <Stat Name="Physical Damage" From="26" To="79" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -113,7 +113,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="War Axe" Level="45" Strength="106" Dexterity="49" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe12">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="30" To="55" />
+      <Stat Name="Physical Damage" From="35" To="65" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -122,7 +122,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Chest Splitter" Level="48" Strength="105" Dexterity="60" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe13">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="20" To="61" />
+      <Stat Name="Physical Damage" From="24" To="71" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -131,7 +131,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Ceremonial Axe" Level="51" Strength="134" Dexterity="39" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe14">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="37" To="69" />
+      <Stat Name="Physical Damage" From="45" To="83" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -140,7 +140,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Wraith Axe" Level="54" Strength="134" Dexterity="59" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe15">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="39" To="65" />
+      <Stat Name="Physical Damage" From="45" To="75" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -151,7 +151,7 @@
       <Stat Name="#% increased Physical Damage" From="8" To="8" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="35" To="63" />
+      <Stat Name="Physical Damage" From="40" To="71" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -160,7 +160,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Karui Axe" Level="57" Strength="132" Dexterity="62" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe16">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="41" To="64" />
+      <Stat Name="Physical Damage" From="49" To="77" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -169,7 +169,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Siege Axe" Level="59" Strength="119" Dexterity="82" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe17">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="32" To="59" />
+      <Stat Name="Physical Damage" From="38" To="70" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -178,7 +178,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Reaver Axe" Level="61" Strength="167" Dexterity="57" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe18">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="31" To="92" />
+      <Stat Name="Physical Damage" From="38" To="114" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -187,7 +187,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Butcher Axe" Level="63" Strength="149" Dexterity="76" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe19">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="38" To="71" />
+      <Stat Name="Physical Damage" From="47" To="87" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -196,7 +196,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Vaal Hatchet" Level="65" Strength="140" Dexterity="86" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe20">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="25" To="74" />
+      <Stat Name="Physical Damage" From="30" To="90" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -205,7 +205,7 @@
   <ItemBase ItemType="OneHandedAxe" Name="Royal Axe" Level="67" Strength="167" Dexterity="57" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxe21">
     <Implicit />
     <Properties>
-      <Stat Name="Physical Damage" From="43" To="80" />
+      <Stat Name="Physical Damage" From="54" To="100" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -225,7 +225,7 @@
       <Stat Name="#% increased Physical Damage" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="38" To="68" />
+      <Stat Name="Physical Damage" From="44" To="79" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -683,7 +683,7 @@
       <Stat Name="+# Life gained for each Enemy hit by Attacks" From="3" To="3" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="4" To="9" />
+      <Stat Name="Physical Damage" From="4" To="11" />
       <Stat Name="Critical Strike Chance %" From="6.2" To="6.2" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -694,7 +694,7 @@
       <Stat Name="+# Life gained for each Enemy hit by Attacks" From="6" To="6" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="6" To="15" />
+      <Stat Name="Physical Damage" From="7" To="18" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -702,10 +702,10 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Awl" Level="12" Strength="0" Dexterity="25" Intelligence="25" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw3">
     <Implicit>
-      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="5" To="5" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="7" To="7" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="6" To="20" />
+      <Stat Name="Physical Damage" From="7" To="24" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -713,10 +713,10 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Cat's Paw" Level="17" Strength="0" Dexterity="39" Intelligence="27" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw4">
     <Implicit>
-      <Stat Name="#% of Physical Attack Damage Leeched as Life" From="1.6" To="1.6" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="8" To="8" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="10" To="19" />
+      <Stat Name="Physical Damage" From="12" To="22" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -724,10 +724,10 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Blinder" Level="22" Strength="0" Dexterity="41" Intelligence="41" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw5">
     <Implicit>
-      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="10" To="10" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="10" To="27" />
+      <Stat Name="Physical Damage" From="12" To="32" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -735,10 +735,10 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Timeworn Claw" Level="26" Strength="0" Dexterity="39" Intelligence="56" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw6">
     <Implicit>
-      <Stat Name="#% of Physical Attack Damage Leeched as Life" From="2" To="2" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="19" To="19" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="14" To="36" />
+      <Stat Name="Physical Damage" From="16" To="43" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -746,10 +746,10 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Sparkling Claw" Level="30" Strength="0" Dexterity="64" Intelligence="44" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw7">
     <Implicit>
-      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="10" To="10" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="15" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="12" To="32" />
+      <Stat Name="Physical Damage" From="14" To="38" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -757,10 +757,10 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Fright Claw" Level="34" Strength="0" Dexterity="61" Intelligence="61" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw8">
     <Implicit>
-      <Stat Name="#% of Physical Attack Damage Leeched as Life" From="2" To="2" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="9" To="37" />
+      <Stat Name="Physical Damage" From="12" To="46" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -768,10 +768,11 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Double Claw" Level="36" Strength="0" Dexterity="67" Intelligence="67" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/ClawM1">
     <Implicit>
-      <Stat Name="+# Life and Mana gained for each Enemy hit" From="6" To="6" />
+      <Stat Name="+# Mana gained for each Enemy hit by Attacks" From="6" To="6" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="15" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="13" To="40" />
+      <Stat Name="Physical Damage" From="15" To="44" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -779,10 +780,10 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Thresher Claw" Level="37" Strength="0" Dexterity="53" Intelligence="77" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw9">
     <Implicit>
-      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="21" To="21" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="18" To="48" />
+      <Stat Name="Physical Damage" From="20" To="53" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -790,10 +791,10 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Gouger" Level="40" Strength="0" Dexterity="70" Intelligence="70" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw10">
     <Implicit>
-      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="13" To="13" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="24" To="24" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="13" To="46" />
+      <Stat Name="Physical Damage" From="15" To="51" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -804,7 +805,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Life" From="1.6" To="1.6" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="21" To="38" />
+      <Stat Name="Physical Damage" From="23" To="43" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -812,10 +813,10 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Gut Ripper" Level="46" Strength="0" Dexterity="80" Intelligence="80" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw12">
     <Implicit>
-      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="21" To="21" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="44" To="44" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="18" To="48" />
+      <Stat Name="Physical Damage" From="20" To="53" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -826,7 +827,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Life" From="2" To="2" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="23" To="61" />
+      <Stat Name="Physical Damage" From="26" To="68" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -834,10 +835,10 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Noble Claw" Level="52" Strength="0" Dexterity="105" Intelligence="73" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw14">
     <Implicit>
-      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="18" To="18" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="19" To="50" />
+      <Stat Name="Physical Damage" From="21" To="56" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -848,7 +849,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Life" From="2" To="2" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="14" To="56" />
+      <Stat Name="Physical Damage" From="17" To="69" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -856,10 +857,11 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Twin Claw" Level="57" Strength="0" Dexterity="103" Intelligence="103" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/ClawM2">
     <Implicit>
-      <Stat Name="+# Life and Mana gained for each Enemy hit" From="10" To="10" />
+      <Stat Name="+# Mana gained for each Enemy hit by Attacks" From="10" To="10" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="28" To="28" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="20" To="60" />
+      <Stat Name="Physical Damage" From="21" To="64" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -867,10 +869,10 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Great White Claw" Level="58" Strength="0" Dexterity="81" Intelligence="117" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw16">
     <Implicit>
-      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="34" To="34" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="46" To="46" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="27" To="70" />
+      <Stat Name="Physical Damage" From="30" To="78" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -878,10 +880,10 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Throat Stabber" Level="60" Strength="0" Dexterity="113" Intelligence="113" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw17">
     <Implicit>
-      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="21" To="21" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="19" To="65" />
+      <Stat Name="Physical Damage" From="21" To="73" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -892,7 +894,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Life" From="1.6" To="1.6" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="27" To="51" />
+      <Stat Name="Physical Damage" From="29" To="55" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -900,10 +902,10 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Eye Gouger" Level="64" Strength="0" Dexterity="113" Intelligence="113" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw19">
     <Implicit>
-      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="31" To="31" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="50" To="50" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="23" To="61" />
+      <Stat Name="Physical Damage" From="26" To="68" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -914,7 +916,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Life" From="2" To="2" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="27" To="72" />
+      <Stat Name="Physical Damage" From="29" To="76" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -922,10 +924,10 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Imperial Claw" Level="68" Strength="0" Dexterity="131" Intelligence="95" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/Claw21">
     <Implicit>
-      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="25" To="25" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="46" To="46" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="22" To="57" />
+      <Stat Name="Physical Damage" From="25" To="65" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -936,7 +938,7 @@
       <Stat Name="#% of Physical Attack Damage Leeched as Life" From="2" To="2" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="15" To="60" />
+      <Stat Name="Physical Damage" From="18" To="71" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -944,10 +946,11 @@
   </ItemBase>
   <ItemBase ItemType="Claw" Name="Gemini Claw" Level="72" Strength="0" Dexterity="121" Intelligence="121" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/ClawM3">
     <Implicit>
-      <Stat Name="+# Life and Mana gained for each Enemy hit" From="14" To="14" />
+      <Stat Name="+# Mana gained for each Enemy hit by Attacks" From="14" To="14" />
+      <Stat Name="+# Life gained for each Enemy hit by Attacks" From="38" To="38" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="21" To="63" />
+      <Stat Name="Physical Damage" From="23" To="68" />
       <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -955,10 +958,10 @@
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Glass Shank" Level="1" Strength="0" Dexterity="9" Intelligence="6" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger1">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="5" To="8" />
+      <Stat Name="Physical Damage" From="6" To="10" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="8" To="8" />
@@ -966,10 +969,10 @@
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Skinning Knife" Level="5" Strength="0" Dexterity="16" Intelligence="11" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger2">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="4" To="16" />
+      <Stat Name="Physical Damage" From="5" To="19" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="8" To="8" />
@@ -977,76 +980,76 @@
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Carving Knife" Level="10" Strength="0" Dexterity="18" Intelligence="26" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger3">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="2" To="22" />
-      <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
+      <Stat Name="Physical Damage" From="3" To="27" />
+      <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Stiletto" Level="15" Strength="0" Dexterity="30" Intelligence="30" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger4">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="6" To="23" />
-      <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
+      <Stat Name="Physical Damage" From="7" To="27" />
+      <Stat Name="Critical Strike Chance %" From="6.1" To="6.1" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Boot Knife" Level="20" Strength="0" Dexterity="31" Intelligence="45" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger5">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="8" To="30" />
-      <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
+      <Stat Name="Physical Damage" From="9" To="35" />
+      <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Copper Kris" Level="24" Strength="0" Dexterity="28" Intelligence="60" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger6">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="80" To="80" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="50" To="50" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="10" To="39" />
-      <Stat Name="Critical Strike Chance %" From="7" To="7" />
+      <Stat Name="Physical Damage" From="12" To="46" />
+      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Skean" Level="28" Strength="0" Dexterity="42" Intelligence="60" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger7">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="9" To="37" />
-      <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
+      <Stat Name="Physical Damage" From="11" To="43" />
+      <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.45" To="1.45" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Imp Dagger" Level="32" Strength="0" Dexterity="36" Intelligence="78" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger8">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="60" To="60" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="12" To="49" />
-      <Stat Name="Critical Strike Chance %" From="7" To="7" />
+      <Stat Name="Physical Damage" From="15" To="59" />
+      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Flaying Knife" Level="35" Strength="0" Dexterity="73" Intelligence="51" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger9">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="14" To="56" />
+      <Stat Name="Physical Damage" From="16" To="64" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="8" To="8" />
@@ -1057,74 +1060,74 @@
       <Stat Name="#% Chance to Block" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="13" To="51" />
-      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
+      <Stat Name="Physical Damage" From="14" To="57" />
+      <Stat Name="Critical Strike Chance %" From="6.2" To="6.2" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Butcher Knife" Level="38" Strength="0" Dexterity="55" Intelligence="79" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger10">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="6" To="54" />
-      <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
+      <Stat Name="Physical Damage" From="7" To="59" />
+      <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Poignard" Level="41" Strength="0" Dexterity="72" Intelligence="72" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger11">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="12" To="48" />
-      <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
+      <Stat Name="Physical Damage" From="13" To="52" />
+      <Stat Name="Critical Strike Chance %" From="6.1" To="6.1" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Boot Blade" Level="44" Strength="0" Dexterity="63" Intelligence="90" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger12">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="14" To="55" />
-      <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
+      <Stat Name="Physical Damage" From="15" To="59" />
+      <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Golden Kris" Level="47" Strength="0" Dexterity="51" Intelligence="110" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger13">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="80" To="80" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="50" To="50" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="16" To="65" />
-      <Stat Name="Critical Strike Chance %" From="7" To="7" />
+      <Stat Name="Physical Damage" From="19" To="75" />
+      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Royal Skean" Level="50" Strength="0" Dexterity="71" Intelligence="102" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger14">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="15" To="59" />
-      <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
+      <Stat Name="Physical Damage" From="16" To="64" />
+      <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.45" To="1.45" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Fiend Dagger" Level="53" Strength="0" Dexterity="58" Intelligence="123" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger15">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="60" To="60" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="19" To="76" />
-      <Stat Name="Critical Strike Chance %" From="7" To="7" />
+      <Stat Name="Physical Damage" From="22" To="87" />
+      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
@@ -1134,18 +1137,18 @@
       <Stat Name="#% Chance to Block" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="19" To="74" />
-      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
+      <Stat Name="Physical Damage" From="21" To="83" />
+      <Stat Name="Critical Strike Chance %" From="6.2" To="6.2" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Gutting Knife" Level="56" Strength="0" Dexterity="113" Intelligence="78" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger16">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="21" To="84" />
+      <Stat Name="Physical Damage" From="24" To="97" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="8" To="8" />
@@ -1153,66 +1156,66 @@
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Slaughter Knife" Level="58" Strength="0" Dexterity="81" Intelligence="117" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger17">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="9" To="78" />
-      <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
+      <Stat Name="Physical Damage" From="10" To="86" />
+      <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Ambusher" Level="60" Strength="0" Dexterity="113" Intelligence="113" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger18">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="17" To="67" />
-      <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
+      <Stat Name="Physical Damage" From="19" To="74" />
+      <Stat Name="Critical Strike Chance %" From="6.1" To="6.1" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Ezomyte Dagger" Level="62" Strength="0" Dexterity="95" Intelligence="131" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger19">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="18" To="72" />
-      <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
+      <Stat Name="Physical Damage" From="20" To="79" />
+      <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Platinum Kris" Level="64" Strength="0" Dexterity="76" Intelligence="149" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger20">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="80" To="80" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="50" To="50" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="20" To="81" />
-      <Stat Name="Critical Strike Chance %" From="7" To="7" />
+      <Stat Name="Physical Damage" From="24" To="95" />
+      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Imperial Skean" Level="66" Strength="0" Dexterity="95" Intelligence="131" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger21">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="17" To="69" />
-      <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
+      <Stat Name="Physical Damage" From="19" To="76" />
+      <Stat Name="Critical Strike Chance %" From="6.3" To="6.3" />
       <Stat Name="Attacks per Second" From="1.45" To="1.45" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Dagger" Name="Demon Dagger" Level="68" Strength="0" Dexterity="76" Intelligence="149" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/Dagger22">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="60" To="60" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="21" To="85" />
-      <Stat Name="Critical Strike Chance %" From="7" To="7" />
+      <Stat Name="Physical Damage" From="24" To="97" />
+      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
@@ -1222,18 +1225,18 @@
       <Stat Name="#% Chance to Block" From="6" To="6" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="20" To="80" />
-      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
+      <Stat Name="Physical Damage" From="23" To="90" />
+      <Stat Name="Critical Strike Chance %" From="6.2" To="6.2" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Driftwood Club" Level="1" Strength="14" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace1">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="5" To="7" />
+      <Stat Name="Physical Damage" From="6" To="8" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.45" To="1.45" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1241,10 +1244,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Tribal Club" Level="5" Strength="26" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace2">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="7" To="12" />
+      <Stat Name="Physical Damage" From="9" To="14" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1252,10 +1255,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Spiked Club" Level="10" Strength="41" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace3">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="11" To="14" />
+      <Stat Name="Physical Damage" From="13" To="17" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1263,10 +1266,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Stone Hammer" Level="15" Strength="56" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace4">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="40" To="40" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="15" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="14" To="27" />
+      <Stat Name="Physical Damage" From="17" To="32" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1274,10 +1277,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="War Hammer" Level="20" Strength="71" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace5">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="11" To="26" />
+      <Stat Name="Physical Damage" From="14" To="32" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1285,10 +1288,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Bladed Mace" Level="24" Strength="83" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace6">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="18" To="30" />
+      <Stat Name="Physical Damage" From="22" To="36" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1296,10 +1299,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Ceremonial Mace" Level="28" Strength="95" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace7">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="40" To="40" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="15" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="26" To="33" />
+      <Stat Name="Physical Damage" From="32" To="40" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1307,10 +1310,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Dream Mace" Level="32" Strength="107" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace8">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="17" To="35" />
+      <Stat Name="Physical Damage" From="21" To="43" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1321,7 +1324,7 @@
       <Stat Name="#% increased Attack Speed" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="23" To="35" />
+      <Stat Name="Physical Damage" From="28" To="42" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1329,10 +1332,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Petrified Club" Level="35" Strength="116" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace9">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="25" To="41" />
+      <Stat Name="Physical Damage" From="31" To="51" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1340,10 +1343,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Barbed Club" Level="38" Strength="125" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace10">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="27" To="34" />
+      <Stat Name="Physical Damage" From="33" To="42" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1351,10 +1354,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Rock Breaker" Level="41" Strength="134" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace11">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="40" To="40" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="15" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="30" To="55" />
+      <Stat Name="Physical Damage" From="37" To="69" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1362,10 +1365,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Battle Hammer" Level="44" Strength="143" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace12">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="20" To="48" />
+      <Stat Name="Physical Damage" From="25" To="59" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1373,10 +1376,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Flanged Mace" Level="47" Strength="152" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace13">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="30" To="50" />
+      <Stat Name="Physical Damage" From="38" To="63" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1384,10 +1387,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Ornate Mace" Level="50" Strength="161" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace14">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="40" To="40" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="15" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="42" To="53" />
+      <Stat Name="Physical Damage" From="53" To="67" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1395,10 +1398,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Phantom Mace" Level="53" Strength="170" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace15">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="26" To="54" />
+      <Stat Name="Physical Damage" From="33" To="69" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1409,7 +1412,7 @@
       <Stat Name="#% increased Attack Speed" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="35" To="53" />
+      <Stat Name="Physical Damage" From="44" To="66" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1417,10 +1420,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Ancestral Club" Level="56" Strength="179" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace16">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="37" To="62" />
+      <Stat Name="Physical Damage" From="48" To="80" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1428,10 +1431,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Tenderizer" Level="58" Strength="185" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace17">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="38" To="49" />
+      <Stat Name="Physical Damage" From="49" To="62" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1439,10 +1442,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Gavel" Level="60" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace18">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="40" To="40" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="15" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="42" To="77" />
+      <Stat Name="Physical Damage" From="54" To="101" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1450,10 +1453,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Legion Hammer" Level="62" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace19">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="27" To="63" />
+      <Stat Name="Physical Damage" From="35" To="81" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1461,10 +1464,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Pernarch" Level="64" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace20">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="37" To="62" />
+      <Stat Name="Physical Damage" From="49" To="82" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1472,10 +1475,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Auric Mace" Level="66" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace21">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="40" To="40" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="15" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="49" To="63" />
+      <Stat Name="Physical Damage" From="65" To="82" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1483,10 +1486,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedMace" Name="Nightmare Mace" Level="68" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMace22">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% reduced Enemy Stun Threshold" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="29" To="61" />
+      <Stat Name="Physical Damage" From="38" To="80" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1497,7 +1500,7 @@
       <Stat Name="#% increased Attack Speed" From="6" To="6" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="38" To="57" />
+      <Stat Name="Physical Damage" From="49" To="74" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1508,7 +1511,7 @@
       <Stat Name="#% increased Elemental Damage" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="5" To="7" />
+      <Stat Name="Physical Damage" From="6" To="9" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1519,7 +1522,7 @@
       <Stat Name="#% increased Elemental Damage" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="7" To="10" />
+      <Stat Name="Physical Damage" From="8" To="12" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1530,7 +1533,7 @@
       <Stat Name="#% increased Elemental Damage" From="12" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="10" To="19" />
+      <Stat Name="Physical Damage" From="12" To="23" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1541,8 +1544,8 @@
       <Stat Name="#% increased Elemental Damage" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="14" To="21" />
-      <Stat Name="Critical Strike Chance %" From="7" To="7" />
+      <Stat Name="Physical Damage" From="17" To="26" />
+      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
@@ -1552,7 +1555,7 @@
       <Stat Name="#% increased Elemental Damage" From="14" To="14" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="18" To="27" />
+      <Stat Name="Physical Damage" From="21" To="32" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1563,7 +1566,7 @@
       <Stat Name="#% increased Elemental Damage" From="16" To="16" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="15" To="28" />
+      <Stat Name="Physical Damage" From="17" To="32" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1574,7 +1577,7 @@
       <Stat Name="#% increased Elemental Damage" From="16" To="16" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="18" To="41" />
+      <Stat Name="Physical Damage" From="21" To="50" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1585,8 +1588,8 @@
       <Stat Name="#% increased Elemental Damage" From="22" To="22" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="25" To="37" />
-      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
+      <Stat Name="Physical Damage" From="29" To="44" />
+      <Stat Name="Critical Strike Chance %" From="6.2" To="6.2" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
@@ -1596,7 +1599,7 @@
       <Stat Name="#% increased Elemental Damage" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="21" To="32" />
+      <Stat Name="Physical Damage" From="24" To="36" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1607,7 +1610,7 @@
       <Stat Name="Damage Penetrates #% Elemental Resistances" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="22" To="42" />
+      <Stat Name="Physical Damage" From="27" To="50" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1618,7 +1621,7 @@
       <Stat Name="#% increased Elemental Damage" From="18" To="18" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="25" To="46" />
+      <Stat Name="Physical Damage" From="30" To="55" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1629,8 +1632,8 @@
       <Stat Name="#% increased Elemental Damage" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="29" To="43" />
-      <Stat Name="Critical Strike Chance %" From="7" To="7" />
+      <Stat Name="Physical Damage" From="35" To="52" />
+      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
@@ -1640,7 +1643,7 @@
       <Stat Name="#% increased Elemental Damage" From="22" To="22" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="32" To="48" />
+      <Stat Name="Physical Damage" From="38" To="57" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1651,7 +1654,7 @@
       <Stat Name="#% increased Elemental Damage" From="24" To="24" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="25" To="47" />
+      <Stat Name="Physical Damage" From="30" To="55" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1662,7 +1665,7 @@
       <Stat Name="#% increased Elemental Damage" From="24" To="24" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="29" To="67" />
+      <Stat Name="Physical Damage" From="34" To="80" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1673,8 +1676,8 @@
       <Stat Name="#% increased Elemental Damage" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="38" To="57" />
-      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
+      <Stat Name="Physical Damage" From="45" To="67" />
+      <Stat Name="Critical Strike Chance %" From="6.2" To="6.2" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
@@ -1684,7 +1687,7 @@
       <Stat Name="Damage Penetrates #% Elemental Resistances" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="32" To="60" />
+      <Stat Name="Physical Damage" From="39" To="72" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1695,7 +1698,7 @@
       <Stat Name="#% increased Elemental Damage" From="26" To="26" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="32" To="47" />
+      <Stat Name="Physical Damage" From="37" To="55" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1706,7 +1709,7 @@
       <Stat Name="#% increased Elemental Damage" From="26" To="26" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="36" To="67" />
+      <Stat Name="Physical Damage" From="43" To="80" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1717,8 +1720,8 @@
       <Stat Name="#% increased Elemental Damage" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="40" To="60" />
-      <Stat Name="Critical Strike Chance %" From="7" To="7" />
+      <Stat Name="Physical Damage" From="49" To="73" />
+      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
@@ -1728,7 +1731,7 @@
       <Stat Name="#% increased Elemental Damage" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="42" To="63" />
+      <Stat Name="Physical Damage" From="51" To="76" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1739,7 +1742,7 @@
       <Stat Name="#% increased Elemental Damage" From="32" To="32" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="31" To="58" />
+      <Stat Name="Physical Damage" From="37" To="70" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1750,7 +1753,7 @@
       <Stat Name="#% increased Elemental Damage" From="32" To="32" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="34" To="78" />
+      <Stat Name="Physical Damage" From="41" To="95" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -1761,8 +1764,8 @@
       <Stat Name="#% increased Elemental Damage" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="42" To="63" />
-      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
+      <Stat Name="Physical Damage" From="50" To="76" />
+      <Stat Name="Critical Strike Chance %" From="6.2" To="6.2" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
@@ -1772,7 +1775,7 @@
       <Stat Name="Damage Penetrates #% Elemental Resistances" From="6" To="6" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="35" To="65" />
+      <Stat Name="Physical Damage" From="42" To="78" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2022,252 +2025,252 @@
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Gnarled Branch" Level="4" Strength="12" Dexterity="0" Intelligence="12" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff1">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="8" To="17" />
-      <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
+      <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Primitive Staff" Level="9" Strength="20" Dexterity="0" Intelligence="20" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff2">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="9" To="28" />
-      <Stat Name="Critical Strike Chance %" From="6.8" To="6.8" />
+      <Stat Name="Critical Strike Chance %" From="6.2" To="6.2" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Long Staff" Level="13" Strength="27" Dexterity="0" Intelligence="27" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff3">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="17" To="28" />
-      <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
+      <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Iron Staff" Level="18" Strength="35" Dexterity="0" Intelligence="35" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff4">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="16" To="47" />
-      <Stat Name="Critical Strike Chance %" From="7" To="7" />
+      <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Coiled Staff" Level="23" Strength="43" Dexterity="0" Intelligence="43" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff5">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="18" To="18" />
+      <Stat Name="#% Chance to Block" From="20" To="20" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="23" To="48" />
-      <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
+      <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Royal Staff" Level="28" Strength="51" Dexterity="0" Intelligence="51" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff6">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="23" To="70" />
-      <Stat Name="Critical Strike Chance %" From="7.2" To="7.2" />
+      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Vile Staff" Level="33" Strength="59" Dexterity="0" Intelligence="59" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff7">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="33" To="62" />
-      <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
+      <Stat Name="Critical Strike Chance %" From="6.1" To="6.1" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Crescent Staff" Level="36" Strength="66" Dexterity="0" Intelligence="66" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/StaffM1">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="60" To="60" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="80" To="80" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="35" To="73" />
-      <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
+      <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Woodful Staff" Level="37" Strength="65" Dexterity="0" Intelligence="65" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff8">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="29" To="88" />
-      <Stat Name="Critical Strike Chance %" From="6.8" To="6.8" />
+      <Stat Name="Critical Strike Chance %" From="6.2" To="6.2" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Quarterstaff" Level="41" Strength="72" Dexterity="0" Intelligence="72" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff9">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="41" To="68" />
-      <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
+      <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Military Staff" Level="45" Strength="78" Dexterity="0" Intelligence="78" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff10">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="34" To="101" />
-      <Stat Name="Critical Strike Chance %" From="7" To="7" />
+      <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Serpentine Staff" Level="49" Strength="85" Dexterity="0" Intelligence="85" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff11">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="18" To="18" />
+      <Stat Name="#% Chance to Block" From="20" To="20" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="46" To="95" />
-      <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
+      <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Highborn Staff" Level="52" Strength="89" Dexterity="0" Intelligence="89" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff12">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="42" To="125" />
-      <Stat Name="Critical Strike Chance %" From="7.2" To="7.2" />
+      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Foul Staff" Level="55" Strength="94" Dexterity="0" Intelligence="94" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff13">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="55" To="103" />
-      <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
+      <Stat Name="Critical Strike Chance %" From="6.1" To="6.1" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Moon Staff" Level="57" Strength="101" Dexterity="0" Intelligence="101" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/StaffM2">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="60" To="60" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="80" To="80" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="57" To="118" />
-      <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
+      <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Primordial Staff" Level="58" Strength="99" Dexterity="0" Intelligence="99" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff14">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="47" To="141" />
-      <Stat Name="Critical Strike Chance %" From="6.8" To="6.8" />
+      <Stat Name="Critical Strike Chance %" From="6.2" To="6.2" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Lathi" Level="60" Strength="113" Dexterity="0" Intelligence="113" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff15">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="62" To="103" />
-      <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
+      <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Ezomyte Staff" Level="62" Strength="113" Dexterity="0" Intelligence="113" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff16">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="46" To="138" />
-      <Stat Name="Critical Strike Chance %" From="7" To="7" />
+      <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Maelström Staff" Level="64" Strength="113" Dexterity="0" Intelligence="113" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff17">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="18" To="18" />
+      <Stat Name="#% Chance to Block" From="20" To="20" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="57" To="119" />
-      <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
+      <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Imperial Staff" Level="66" Strength="113" Dexterity="0" Intelligence="113" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff18">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="49" To="147" />
-      <Stat Name="Critical Strike Chance %" From="7.2" To="7.2" />
+      <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Judgement Staff" Level="68" Strength="113" Dexterity="0" Intelligence="113" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff19">
     <Implicit>
-      <Stat Name="#% Chance to Block" From="12" To="12" />
+      <Stat Name="#% Chance to Block" From="18" To="18" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="61" To="113" />
-      <Stat Name="Critical Strike Chance %" From="6.6" To="6.6" />
+      <Stat Name="Critical Strike Chance %" From="6.1" To="6.1" />
       <Stat Name="Attacks per Second" From="1.25" To="1.25" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Staff" Name="Eclipse Staff" Level="70" Strength="117" Dexterity="0" Intelligence="117" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/StaffM3">
     <Implicit>
-      <Stat Name="#% increased Global Critical Strike Chance" From="80" To="80" />
+      <Stat Name="#% increased Global Critical Strike Chance" From="100" To="100" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="60" To="125" />
-      <Stat Name="Critical Strike Chance %" From="6.4" To="6.4" />
+      <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Rusted Sword" Level="1" Strength="8" Dexterity="8" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword1">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="4" To="8" />
+      <Stat Name="Physical Damage" From="4" To="10" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.45" To="1.45" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2275,10 +2278,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Copper Sword" Level="5" Strength="14" Dexterity="14" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword2">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="45" To="45" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="6" To="12" />
+      <Stat Name="Physical Damage" From="7" To="15" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2286,10 +2289,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Sabre" Level="10" Strength="18" Dexterity="26" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword3">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="4" To="18" />
+      <Stat Name="Physical Damage" From="5" To="22" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.55" To="1.55" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2297,10 +2300,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Broad Sword" Level="15" Strength="30" Dexterity="30" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword4">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="14" To="21" />
+      <Stat Name="Physical Damage" From="17" To="25" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2308,10 +2311,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="War Sword" Level="20" Strength="41" Dexterity="35" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword5">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="16" To="30" />
+      <Stat Name="Physical Damage" From="20" To="37" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2319,10 +2322,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Ancient Sword" Level="24" Strength="44" Dexterity="44" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword6">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="165" To="165" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="17" To="31" />
+      <Stat Name="Physical Damage" From="20" To="38" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2330,10 +2333,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Elegant Sword" Level="28" Strength="46" Dexterity="55" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword7">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="190" To="190" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="17" To="27" />
+      <Stat Name="Physical Damage" From="20" To="33" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2341,10 +2344,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Dusk Blade" Level="32" Strength="57" Dexterity="57" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword8">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="15" To="43" />
+      <Stat Name="Physical Damage" From="19" To="54" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2352,10 +2355,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Hook Sword" Level="34" Strength="64" Dexterity="64" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSwordM1">
     <Implicit>
-      <Stat Name="#% chance to Dodge Attacks" From="2" To="2" />
+      <Stat Name="#% chance to Dodge Attacks" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="23" To="49" />
+      <Stat Name="Physical Damage" From="28" To="60" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2363,10 +2366,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Variscite Blade" Level="35" Strength="62" Dexterity="62" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword9">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="240" To="240" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="20" To="43" />
+      <Stat Name="Physical Damage" From="25" To="53" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2374,10 +2377,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Cutlass" Level="38" Strength="55" Dexterity="79" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword10">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="11" To="44" />
+      <Stat Name="Physical Damage" From="13" To="53" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.55" To="1.55" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2385,10 +2388,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Baselard" Level="41" Strength="72" Dexterity="72" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword11">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="29" To="42" />
+      <Stat Name="Physical Damage" From="37" To="53" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2396,10 +2399,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Battle Sword" Level="44" Strength="83" Dexterity="70" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword12">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="30" To="55" />
+      <Stat Name="Physical Damage" From="38" To="70" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2407,10 +2410,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Elder Sword" Level="47" Strength="81" Dexterity="81" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword13">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="330" To="330" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="28" To="52" />
+      <Stat Name="Physical Damage" From="36" To="66" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2418,10 +2421,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Graceful Sword" Level="50" Strength="78" Dexterity="94" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword14">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="350" To="350" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="27" To="44" />
+      <Stat Name="Physical Damage" From="34" To="55" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2429,10 +2432,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Twilight Blade" Level="53" Strength="91" Dexterity="91" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword15">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="23" To="66" />
+      <Stat Name="Physical Damage" From="30" To="86" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2440,10 +2443,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Grappler" Level="55" Strength="99" Dexterity="99" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSwordM2">
     <Implicit>
-      <Stat Name="#% chance to Dodge Attacks" From="2" To="2" />
+      <Stat Name="#% chance to Dodge Attacks" From="4" To="4" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="35" To="75" />
+      <Stat Name="Physical Damage" From="44" To="94" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2451,10 +2454,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Gemstone Sword" Level="56" Strength="96" Dexterity="96" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword16">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="400" To="400" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="30" To="64" />
+      <Stat Name="Physical Damage" From="39" To="83" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2462,10 +2465,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Corsair Sword" Level="58" Strength="81" Dexterity="117" Intelligence="0" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword17">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="16" To="63" />
+      <Stat Name="Physical Damage" From="20" To="80" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.55" To="1.55" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2473,10 +2476,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Gladius" Level="60" Strength="113" Dexterity="113" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword18">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="41" To="59" />
+      <Stat Name="Physical Damage" From="54" To="78" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2484,10 +2487,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Legion Sword" Level="62" Strength="122" Dexterity="104" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword19">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="39" To="73" />
+      <Stat Name="Physical Damage" From="53" To="98" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2495,10 +2498,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Vaal Blade" Level="64" Strength="113" Dexterity="113" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword20">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="460" To="460" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="35" To="65" />
+      <Stat Name="Physical Damage" From="46" To="86" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2506,10 +2509,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Eternal Sword" Level="66" Strength="104" Dexterity="122" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword21">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="475" To="475" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="32" To="52" />
+      <Stat Name="Physical Damage" From="41" To="68" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2517,10 +2520,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Midnight Blade" Level="68" Strength="113" Dexterity="113" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword22">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="26" To="74" />
+      <Stat Name="Physical Damage" From="35" To="99" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2528,10 +2531,10 @@
   </ItemBase>
   <ItemBase ItemType="OneHandedSword" Name="Tiger Hook" Level="70" Strength="119" Dexterity="119" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSwordM3">
     <Implicit>
-      <Stat Name="#% chance to Dodge Attacks" From="3" To="3" />
+      <Stat Name="#% chance to Dodge Attacks" From="6" To="6" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="43" To="92" />
+      <Stat Name="Physical Damage" From="49" To="105" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.15" To="1.15" />
       <Stat Name="Weapon Range" From="9" To="9" />
@@ -2539,10 +2542,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Rusted Spike" Level="3" Strength="0" Dexterity="20" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier1">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="4" To="10" />
+      <Stat Name="Physical Damage" From="5" To="13" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2550,10 +2553,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Whalebone Rapier" Level="7" Strength="0" Dexterity="32" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier2">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="4" To="15" />
+      <Stat Name="Physical Damage" From="4" To="18" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.55" To="1.55" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2561,10 +2564,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Battered Foil" Level="12" Strength="0" Dexterity="47" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier3">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="10" To="18" />
+      <Stat Name="Physical Damage" From="12" To="22" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2572,10 +2575,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Basket Rapier" Level="17" Strength="0" Dexterity="62" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier4">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="9" To="22" />
+      <Stat Name="Physical Damage" From="11" To="26" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2583,10 +2586,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Jagged Foil" Level="22" Strength="0" Dexterity="77" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier5">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="11" To="25" />
+      <Stat Name="Physical Damage" From="12" To="29" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2594,10 +2597,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Antique Rapier" Level="26" Strength="0" Dexterity="89" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier6">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="10" To="40" />
+      <Stat Name="Physical Damage" From="12" To="46" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2605,10 +2608,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Elegant Foil" Level="30" Strength="0" Dexterity="101" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier7">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="15" To="28" />
+      <Stat Name="Physical Damage" From="18" To="33" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2616,10 +2619,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Thorn Rapier" Level="34" Strength="0" Dexterity="113" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier8">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="50" To="50" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="35" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="16" To="37" />
+      <Stat Name="Physical Damage" From="19" To="44" />
       <Stat Name="Critical Strike Chance %" From="5.7" To="5.7" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2627,10 +2630,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Smallsword" Level="36" Strength="0" Dexterity="124" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/RapierM1">
     <Implicit>
-      <Stat Name="#% chance to cause Bleeding on Hit" From="8" To="8" />
+      <Stat Name="#% chance to cause Bleeding on Hit" From="15" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="17" To="36" />
+      <Stat Name="Physical Damage" From="19" To="40" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.55" To="1.55" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2638,10 +2641,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Wyrmbone Rapier" Level="37" Strength="0" Dexterity="122" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier9">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="11" To="44" />
+      <Stat Name="Physical Damage" From="13" To="51" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2649,10 +2652,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Burnished Foil" Level="40" Strength="0" Dexterity="131" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier10">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="22" To="41" />
+      <Stat Name="Physical Damage" From="25" To="46" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2660,10 +2663,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Estoc" Level="43" Strength="0" Dexterity="140" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier11">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="19" To="44" />
+      <Stat Name="Physical Damage" From="21" To="50" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2671,10 +2674,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Serrated Foil" Level="46" Strength="0" Dexterity="149" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier12">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="19" To="43" />
+      <Stat Name="Physical Damage" From="21" To="49" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2682,10 +2685,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Primeval Rapier" Level="49" Strength="0" Dexterity="158" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier13">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="17" To="67" />
+      <Stat Name="Physical Damage" From="18" To="73" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2693,10 +2696,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Fancy Foil" Level="52" Strength="0" Dexterity="167" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier14">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="24" To="45" />
+      <Stat Name="Physical Damage" From="28" To="51" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2704,10 +2707,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Apex Rapier" Level="55" Strength="0" Dexterity="176" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier15">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="50" To="50" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="35" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="24" To="55" />
+      <Stat Name="Physical Damage" From="29" To="67" />
       <Stat Name="Critical Strike Chance %" From="5.7" To="5.7" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2715,10 +2718,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Courtesan Sword" Level="57" Strength="0" Dexterity="190" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/RapierM2">
     <Implicit>
-      <Stat Name="#% chance to cause Bleeding on Hit" From="8" To="8" />
+      <Stat Name="#% chance to cause Bleeding on Hit" From="15" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="26" To="53" />
+      <Stat Name="Physical Damage" From="29" To="60" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.55" To="1.55" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2726,10 +2729,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Dragonbone Rapier" Level="58" Strength="0" Dexterity="185" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier16">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="16" To="65" />
+      <Stat Name="Physical Damage" From="19" To="75" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2737,10 +2740,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Tempered Foil" Level="60" Strength="0" Dexterity="212" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier17">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="31" To="58" />
+      <Stat Name="Physical Damage" From="35" To="65" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2748,10 +2751,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Pecoraro" Level="62" Strength="0" Dexterity="212" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier18">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="25" To="59" />
+      <Stat Name="Physical Damage" From="29" To="69" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2759,10 +2762,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Spiraled Foil" Level="64" Strength="0" Dexterity="212" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier19">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="24" To="55" />
+      <Stat Name="Physical Damage" From="27" To="64" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2770,10 +2773,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Vaal Rapier" Level="66" Strength="0" Dexterity="212" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier20">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="20" To="80" />
+      <Stat Name="Physical Damage" From="22" To="87" />
       <Stat Name="Critical Strike Chance %" From="6.5" To="6.5" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2781,10 +2784,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Jewelled Foil" Level="68" Strength="0" Dexterity="212" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier21">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="30" To="30" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="25" To="25" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="27" To="51" />
+      <Stat Name="Physical Damage" From="32" To="60" />
       <Stat Name="Critical Strike Chance %" From="5.5" To="5.5" />
       <Stat Name="Attacks per Second" From="1.6" To="1.6" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2792,10 +2795,10 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Harpy Rapier" Level="70" Strength="0" Dexterity="212" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/Rapier22">
     <Implicit>
-      <Stat Name="+#% to Global Critical Strike Multiplier" From="50" To="50" />
+      <Stat Name="+#% to Global Critical Strike Multiplier" From="35" To="35" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="26" To="60" />
+      <Stat Name="Physical Damage" From="31" To="72" />
       <Stat Name="Critical Strike Chance %" From="5.7" To="5.7" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="12" To="12" />
@@ -2803,16 +2806,16 @@
   </ItemBase>
   <ItemBase ItemType="ThrustingOneHandedSword" Name="Dragoon Sword" Level="72" Strength="0" Dexterity="220" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/RapierM3">
     <Implicit>
-      <Stat Name="#% chance to cause Bleeding on Hit" From="12" To="12" />
+      <Stat Name="#% chance to cause Bleeding on Hit" From="20" To="20" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="28" To="58" />
+      <Stat Name="Physical Damage" From="32" To="66" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="12" To="12" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="TwoHandedSword" Name="Keyblade" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSwordDev">
+  <ItemBase ItemType="TwoHandedSword" Name="Keyblade" Level="1" Strength="8" Dexterity="8" Intelligence="0" DropDisabled="true" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSwordDev">
     <Implicit />
     <Properties>
       <Stat Name="Physical Damage" From="1" To="1" />
@@ -2823,67 +2826,67 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedSword" Name="Corroded Blade" Level="3" Strength="11" Dexterity="11" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword1">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="7" To="14" />
+      <Stat Name="Physical Damage" From="7" To="13" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.35" To="1.35" />
+      <Stat Name="Attacks per Second" From="1.45" To="1.45" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedSword" Name="Longsword" Level="8" Strength="20" Dexterity="17" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword2">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="60" To="60" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="11" To="25" />
-      <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.25" To="1.25" />
-      <Stat Name="Weapon Range" From="11" To="11" />
-    </Properties>
-  </ItemBase>
-  <ItemBase ItemType="TwoHandedSword" Name="Bastard Sword" Level="12" Strength="21" Dexterity="30" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword3">
-    <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
-    </Implicit>
-    <Properties>
-      <Stat Name="Physical Damage" From="15" To="25" />
+      <Stat Name="Physical Damage" From="10" To="24" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="TwoHandedSword" Name="Two-Handed Sword" Level="17" Strength="33" Dexterity="33" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword4">
+  <ItemBase ItemType="TwoHandedSword" Name="Bastard Sword" Level="12" Strength="21" Dexterity="30" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword3">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="20" To="37" />
+      <Stat Name="Physical Damage" From="15" To="25" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.25" To="1.25" />
+      <Stat Name="Attacks per Second" From="1.45" To="1.45" />
+      <Stat Name="Weapon Range" From="11" To="11" />
+    </Properties>
+  </ItemBase>
+  <ItemBase ItemType="TwoHandedSword" Name="Two-Handed Sword" Level="17" Strength="33" Dexterity="33" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword4">
+    <Implicit>
+      <Stat Name="+# to Accuracy Rating" From="120" To="120" />
+    </Implicit>
+    <Properties>
+      <Stat Name="Physical Damage" From="19" To="34" />
+      <Stat Name="Critical Strike Chance %" From="5" To="5" />
+      <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedSword" Name="Etched Greatsword" Level="22" Strength="45" Dexterity="38" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword5">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="24" To="49" />
+      <Stat Name="Physical Damage" From="22" To="46" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.2" To="1.2" />
+      <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedSword" Name="Ornate Sword" Level="27" Strength="45" Dexterity="54" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword6">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="185" To="185" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="29" To="48" />
+      <Stat Name="Physical Damage" From="26" To="43" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.3" To="1.3" />
+      <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
@@ -2892,9 +2895,9 @@
       <Stat Name="#% increased Accuracy Rating" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="30" To="62" />
+      <Stat Name="Physical Damage" From="27" To="56" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.25" To="1.25" />
+      <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
@@ -2903,64 +2906,64 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="39" To="65" />
+      <Stat Name="Physical Damage" From="35" To="58" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
-      <Stat Name="Attacks per Second" From="1.25" To="1.25" />
+      <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedSword" Name="Butcher Sword" Level="36" Strength="69" Dexterity="58" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword8">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="250" To="250" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="32" To="75" />
+      <Stat Name="Physical Damage" From="29" To="68" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.2" To="1.2" />
+      <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedSword" Name="Footman Sword" Level="40" Strength="57" Dexterity="83" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword9">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="38" To="63" />
+      <Stat Name="Physical Damage" From="34" To="56" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.35" To="1.35" />
+      <Stat Name="Attacks per Second" From="1.45" To="1.45" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedSword" Name="Highland Blade" Level="44" Strength="77" Dexterity="77" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword10">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="305" To="305" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="43" To="80" />
+      <Stat Name="Physical Damage" From="39" To="72" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.25" To="1.25" />
+      <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedSword" Name="Engraved Greatsword" Level="48" Strength="91" Dexterity="76" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword11">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="47" To="97" />
+      <Stat Name="Physical Damage" From="42" To="87" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.2" To="1.2" />
+      <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedSword" Name="Tiger Sword" Level="51" Strength="80" Dexterity="96" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword12">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="360" To="360" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="52" To="86" />
+      <Stat Name="Physical Damage" From="46" To="76" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.3" To="1.3" />
+      <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
@@ -2969,9 +2972,9 @@
       <Stat Name="#% increased Accuracy Rating" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="50" To="104" />
+      <Stat Name="Physical Damage" From="45" To="93" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.25" To="1.25" />
+      <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
@@ -2980,64 +2983,64 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="63" To="105" />
+      <Stat Name="Physical Damage" From="54" To="89" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
-      <Stat Name="Attacks per Second" From="1.25" To="1.25" />
+      <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedSword" Name="Headman's Sword" Level="57" Strength="106" Dexterity="89" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword14">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="400" To="400" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="52" To="122" />
+      <Stat Name="Physical Damage" From="47" To="109" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.2" To="1.2" />
+      <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedSword" Name="Reaver Sword" Level="59" Strength="82" Dexterity="119" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword15">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="57" To="95" />
+      <Stat Name="Physical Damage" From="52" To="86" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.35" To="1.35" />
+      <Stat Name="Attacks per Second" From="1.45" To="1.45" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedSword" Name="Ezomyte Blade" Level="61" Strength="113" Dexterity="113" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword16">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="435" To="435" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="61" To="113" />
+      <Stat Name="Physical Damage" From="55" To="102" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.25" To="1.25" />
+      <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedSword" Name="Vaal Greatsword" Level="63" Strength="122" Dexterity="104" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword17">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="#% increased Accuracy Rating" From="40" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="60" To="125" />
+      <Stat Name="Physical Damage" From="55" To="113" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.2" To="1.2" />
+      <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="TwoHandedSword" Name="Lion Sword" Level="65" Strength="104" Dexterity="122" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSword18">
     <Implicit>
-      <Stat Name="#% increased Accuracy Rating" From="18" To="18" />
+      <Stat Name="+# to Accuracy Rating" From="470" To="470" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="62" To="103" />
+      <Stat Name="Physical Damage" From="57" To="94" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.3" To="1.3" />
+      <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
@@ -3046,9 +3049,9 @@
       <Stat Name="#% increased Accuracy Rating" From="30" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="57" To="118" />
+      <Stat Name="Physical Damage" From="52" To="108" />
       <Stat Name="Critical Strike Chance %" From="5" To="5" />
-      <Stat Name="Attacks per Second" From="1.25" To="1.25" />
+      <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
@@ -3057,9 +3060,9 @@
       <Stat Name="+#% to Global Critical Strike Multiplier" From="60" To="60" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="68" To="114" />
+      <Stat Name="Physical Damage" From="56" To="94" />
       <Stat Name="Critical Strike Chance %" From="6" To="6" />
-      <Stat Name="Attacks per Second" From="1.25" To="1.25" />
+      <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
@@ -3068,8 +3071,8 @@
       <Stat Name="#% increased Spell Damage" From="8" To="12" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="3" To="6" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="4" To="8" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.4" To="1.4" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3079,8 +3082,8 @@
       <Stat Name="#% increased Spell Damage" From="10" To="14" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="5" To="10" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="7" To="13" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3090,8 +3093,8 @@
       <Stat Name="#% increased Spell Damage" From="11" To="15" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="6" To="11" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="8" To="14" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3101,8 +3104,8 @@
       <Stat Name="#% increased Spell Damage" From="18" To="22" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="9" To="17" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="12" To="22" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3112,8 +3115,8 @@
       <Stat Name="#% increased Spell Damage" From="15" To="19" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="8" To="24" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="10" To="31" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3123,19 +3126,19 @@
       <Stat Name="#% increased Spell Damage" From="17" To="21" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="15" To="28" />
-      <Stat Name="Critical Strike Chance %" From="9" To="9" />
+      <Stat Name="Physical Damage" From="19" To="35" />
+      <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Pagan Wand" Level="34" Strength="0" Dexterity="0" Intelligence="118" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Wands/WandM1">
     <Implicit>
-      <Stat Name="#% increased Cast Speed" From="8" To="8" />
+      <Stat Name="#% increased Cast Speed" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="14" To="26" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="18" To="33" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3145,8 +3148,8 @@
       <Stat Name="#% increased Spell Damage" From="20" To="24" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="17" To="32" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="22" To="40" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3156,8 +3159,8 @@
       <Stat Name="#% increased Spell Damage" From="22" To="26" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="14" To="27" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="17" To="32" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3167,8 +3170,8 @@
       <Stat Name="#% increased Spell Damage" From="29" To="33" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="19" To="35" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="23" To="43" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3178,8 +3181,8 @@
       <Stat Name="#% increased Spell Damage" From="26" To="30" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="15" To="44" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="18" To="53" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3189,19 +3192,19 @@
       <Stat Name="#% increased Spell Damage" From="27" To="31" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="25" To="46" />
-      <Stat Name="Critical Strike Chance %" From="9" To="9" />
+      <Stat Name="Physical Damage" From="27" To="50" />
+      <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Heathen Wand" Level="55" Strength="0" Dexterity="0" Intelligence="184" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Wands/WandM2">
     <Implicit>
-      <Stat Name="#% increased Cast Speed" From="8" To="8" />
+      <Stat Name="#% increased Cast Speed" From="10" To="10" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="21" To="40" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="26" To="48" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3211,8 +3214,8 @@
       <Stat Name="#% increased Spell Damage" From="31" To="35" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="26" To="48" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="32" To="59" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3222,8 +3225,8 @@
       <Stat Name="#% increased Spell Damage" From="33" To="37" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="20" To="38" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="24" To="44" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.5" To="1.5" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3233,8 +3236,8 @@
       <Stat Name="#% increased Spell Damage" From="38" To="42" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="24" To="45" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="29" To="54" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3244,8 +3247,8 @@
       <Stat Name="#% increased Spell Damage" From="35" To="39" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="17" To="52" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="21" To="62" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.3" To="1.3" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3255,19 +3258,19 @@
       <Stat Name="#% increased Spell Damage" From="36" To="40" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="27" To="51" />
-      <Stat Name="Critical Strike Chance %" From="9" To="9" />
+      <Stat Name="Physical Damage" From="29" To="54" />
+      <Stat Name="Critical Strike Chance %" From="8" To="8" />
       <Stat Name="Attacks per Second" From="1.2" To="1.2" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
   </ItemBase>
   <ItemBase ItemType="Wand" Name="Profane Wand" Level="70" Strength="0" Dexterity="0" Intelligence="237" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Wands/WandM3">
     <Implicit>
-      <Stat Name="#% increased Cast Speed" From="12" To="12" />
+      <Stat Name="#% increased Cast Speed" From="14" To="14" />
     </Implicit>
     <Properties>
-      <Stat Name="Physical Damage" From="23" To="43" />
-      <Stat Name="Critical Strike Chance %" From="8" To="8" />
+      <Stat Name="Physical Damage" From="27" To="51" />
+      <Stat Name="Critical Strike Chance %" From="7" To="7" />
       <Stat Name="Attacks per Second" From="1.35" To="1.35" />
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
@@ -3370,7 +3373,7 @@
   </ItemBase>
   <ItemBase ItemType="Amulet" Name="Greatwolf Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman4">
     <Implicit>
-      <Stat Name="# random talisman implicit modifiers" From="2" To="2" />
+      <Stat Name="&lt;# random talisman implicit modifiers&gt;" From="2" To="2" />
     </Implicit>
     <Properties />
   </ItemBase>
@@ -3638,7 +3641,7 @@
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemType="Quiver" Name="Serrated Arrow Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/QuiverDescent">
+  <ItemBase ItemType="Quiver" Name="Serrated Arrow Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/QuiverDescent">
     <Implicit>
       <Stat Name="Adds # to # Physical Damage to Attacks with Bows" From="1 4" To="1 4" />
     </Implicit>
@@ -3653,6 +3656,12 @@
   <ItemBase ItemType="Quiver" Name="Heavy Quiver" Level="5" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/Quiver4">
     <Implicit>
       <Stat Name="Adds # to # Physical Damage to Attacks" From="1 4" To="1 4" />
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemType="Quiver" Name="Serrated Arrow Quiver" Level="5" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/Quiver6">
+    <Implicit>
+      <Stat Name="Adds # to # Physical Damage to Attacks with Bows" From="1 4" To="1 4" />
     </Implicit>
     <Properties />
   </ItemBase>
