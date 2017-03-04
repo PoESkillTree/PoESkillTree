@@ -264,7 +264,7 @@ namespace POESKillTree.Model.Items
                 {
                     BaseType = persistentData.EquipmentData.ItemBaseFromTypeline(TypeLine);
                 }
-                else if (Frame == FrameType.Unique 
+                else if ((Frame == FrameType.Unique || Frame == FrameType.Foil)
                     && persistentData.EquipmentData.UniqueBaseDictionary.ContainsKey(NameLine))
                 {
                     BaseType = persistentData.EquipmentData.UniqueBaseDictionary[NameLine];
@@ -276,9 +276,10 @@ namespace POESKillTree.Model.Items
                     persistentData.EquipmentData.ItemBaseDictionary.TryGetValue(TypeLine, out iBase);
                     BaseType = iBase;
                 }
-                // For known bases, images are only downloaded if the item is unique. All other items should always
-                // have the same image. (except alt art non-uniques that are rare enough to be ignored)
-                var loadImageFromIconUrl = _iconUrl != null && (BaseType == null || Frame == FrameType.Unique);
+                // For known bases, images are only downloaded if the item is unique or foil. All other items should
+                // always have the same image. (except alt art non-uniques that are rare enough to be ignored)
+                var loadImageFromIconUrl = _iconUrl != null
+                    && (BaseType == null || Frame == FrameType.Unique || Frame == FrameType.Foil);
                 if (BaseType == null)
                 {
                     BaseType = new ItemBase(persistentData.EquipmentData.ItemImageService, itemSlot, TypeLine,
