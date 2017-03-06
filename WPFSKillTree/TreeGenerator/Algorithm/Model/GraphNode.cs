@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using POESKillTree.SkillTreeFiles;
 
 namespace POESKillTree.TreeGenerator.Algorithm.Model
 {

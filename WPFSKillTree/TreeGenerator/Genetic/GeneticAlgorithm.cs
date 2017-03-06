@@ -397,6 +397,7 @@ namespace POESKillTree.TreeGenerator.Genetic
         /// </summary>
         public void NextIteration()
         {
+            _fitnessCache.Clear();
             _temperature = _initialTemperature;
             CurrentIteration++;
             _population = CreatePopulation();
