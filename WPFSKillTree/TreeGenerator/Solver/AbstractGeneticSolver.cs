@@ -74,12 +74,6 @@ namespace POESKillTree.TreeGenerator.Solver
         private List<DirectedGraphEdge> _orderedEdges;
 
         /// <summary>
-        /// Unordered edges accessible by the two DistanceIndexes of the nodes.
-        /// (used for mst calculation if <see cref="PreFilledSpanThreshold"/> is not satisfied)
-        /// </summary>
-        private ITwoDArray<DirectedGraphEdge> _edges;
-
-        /// <summary>
         /// Gets or sets whether this solver should try to improve the solution with simple HillClimbing
         /// after the final step.
         /// </summary>
@@ -98,17 +92,6 @@ namespace POESKillTree.TreeGenerator.Solver
 
             var totalCount = SearchSpace.Count + TargetNodes.Count;
 
-            // Create edges
-            var edges = new DirectedGraphEdge[totalCount, totalCount];
-            for (int i = 0; i < totalCount; i++)
-            {
-                for (int j = 0; j < totalCount; j++)
-                {
-                    edges[i, j] = new DirectedGraphEdge(i, j, Distances[i, j]);
-                }
-            }
-            _edges = new TwoDArray<DirectedGraphEdge>(edges);
-
             // Sort edges if PreFilledSpanThreshold is satisfied.
             if (TargetNodes.Count/(double) totalCount >= PreFilledSpanThreshold)
             {
@@ -121,7 +104,7 @@ namespace POESKillTree.TreeGenerator.Solver
                     {
                         for (var j = i + 1; j < totalCount; j++)
                         {
-                            prioQueue.Enqueue(_edges[i, j]);
+                            prioQueue.Enqueue(new DirectedGraphEdge(i, j), Distances[i, j]);
                             enqueued++;
                         }
                     }
@@ -204,7 +187,7 @@ namespace POESKillTree.TreeGenerator.Solver
             if (_orderedEdges != null)
                 mst.Span(_orderedEdges);
             else
-                mst.Span(StartNode.DistancesIndex, _edges);
+                mst.Span(StartNode.DistancesIndex);
 
             // Convert GraphNodes and GraphEdges to SkillNode-Ids.
             var usedNodes = new HashSet<ushort>(mstNodes.Select(n => n.Id));

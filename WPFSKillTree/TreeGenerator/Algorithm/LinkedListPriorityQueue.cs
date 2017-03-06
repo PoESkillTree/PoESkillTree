@@ -7,26 +7,15 @@ namespace POESKillTree.TreeGenerator.Algorithm
     /// Type of nodes mainly used for the Priority Queue.
     /// The values represent the DistancesIndex of the two GraphNodes this edge connects.
     /// </summary>
-    public class DirectedGraphEdge : IWithPriority
+    public struct DirectedGraphEdge
     {
         public readonly int Inside, Outside;
 
-        public DirectedGraphEdge(int inside, int outside, uint priority)
+        public DirectedGraphEdge(int inside, int outside)
         {
             Inside = inside;
             Outside = outside;
-            Priority = priority;
         }
-
-        public uint Priority { get; private set; }
-    }
-
-    /// <summary>
-    /// Interface for nodes used with <see cref="LinkedListPriorityQueue{T}"/>.
-    /// </summary>
-    public interface IWithPriority
-    {
-        uint Priority { get; }
     }
     
     /// <summary>
@@ -50,9 +39,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
     /// and are never completely cleared for performance reasons, so references to enqueued instances of T may exist for an
     /// arbitrary time (until the next queue uses that array and at least the same amount of elements are enqueued).
     /// </remarks>
-    /// <typeparam name="T">Type of the stored objects, needs to implement <see cref="IWithPriority"/>.</typeparam>
+    /// <typeparam name="T">Type of the stored objects.</typeparam>
     public class LinkedListPriorityQueue<T> : IDisposable
-        where T: IWithPriority
     {
         // The large arrays (_elements and _links) are reused through an object pool because allocation of arrays of this size
         // (with easily a few 100k elements) is expensive and was bottlenecking the priority queue class.
@@ -191,9 +179,9 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// Older nodes with the same priority are stored in front.
         /// </summary>
         /// <param name="node">The node to be stored.</param>
-        public void Enqueue(T node)
+        /// <param name="priority">the priority of the node</param>
+        public void Enqueue(T node, uint priority)
         {
-            var priority = node.Priority;
             var id = _nextId++;
             // Overwrite potentially old entries.
             _elements[id] = node;
