@@ -153,11 +153,18 @@ namespace POESKillTree.Model.Items
             // Remove the query part, remove the host part, remove image/Art/2DItems/, trim slashes
             var relevantPart = Regex.Replace(imageUrl, @"(\?.*)|(.*(\.net|\.com)/)|(image/Art/2DItems/)", "").Trim('/');
             var match = Regex.Match(relevantPart, @"gen/image/.*?/([a-zA-Z0-9]*)/Item\.png");
+            var isRelic = imageUrl.Contains("&relic=1");
             if (match.Success)
             {
                 // These names are too long.
                 // They contain groups of 20 chars (as folders) and end with a unique identifier.
                 relevantPart = $"gen/{match.Groups[1]}.png";
+            }
+            else if (isRelic)
+            {
+                // Non-generated images for relics and normal uniques have the same url, the relic flag is in the
+                // query part. As the query is removed, the file name needs to be adjusted for relics.
+                relevantPart = relevantPart.Replace(".png", "Relic.png");
             }
             var fileName = string.Format(DownloadedPathFormat, relevantPart);
 

@@ -252,7 +252,7 @@ namespace POESKillTree.Views
                         await CurrentBuildChanged();
                         break;
                     case nameof(PersistentData.SelectedBuild):
-                        UpdateTreeComparision();
+                        UpdateTreeComparison();
                         break;
                 }
             };
@@ -575,7 +575,7 @@ namespace POESKillTree.Views
             PersistentData.Options.PropertyChanged += Options_PropertyChanged;
             PopulateAscendancySelectionList();
             BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData, Tree);
-            UpdateTreeComparision();
+            UpdateTreeComparison();
             TreeGeneratorInteraction =
                 new TreeGeneratorInteraction(SettingsDialogCoordinator.Instance, PersistentData, Tree);
             TreeGeneratorInteraction.RunFinished += (o, args) =>
@@ -621,7 +621,7 @@ namespace POESKillTree.Views
                     Tree.ToggleAscendancyTree(PersistentData.Options.ShowAllAscendancyClasses);
                     break;
                 case nameof(Options.TreeComparisonEnabled):
-                    UpdateTreeComparision();
+                    UpdateTreeComparison();
                     break;
             }
             SearchUpdate();
@@ -2092,7 +2092,7 @@ namespace POESKillTree.Views
         }
 #endregion
 
-        private void UpdateTreeComparision()
+        private void UpdateTreeComparison()
         {
             if (Tree == null)
                 return;
@@ -2130,7 +2130,6 @@ namespace POESKillTree.Views
         private async Task CraftItemAsync<TBase>(AbstractCraftingViewModel<TBase> viewModel, BaseDialog view)
             where TBase: class, IItemBase
         {
-            viewModel.Init();
             if (!await this.ShowDialogAsync(viewModel, view))
             {
                 return;

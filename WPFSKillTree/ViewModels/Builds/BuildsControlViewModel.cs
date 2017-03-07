@@ -390,6 +390,8 @@ namespace POESKillTree.ViewModels.Builds
 
         private async Task Delete(IBuildViewModel build)
         {
+            if (build == null)
+                return;
             if (TreeFind<BuildViewModel>(b => b == CurrentBuild, build) != null)
             {
                 await _dialogCoordinator.ShowInfoAsync(this,

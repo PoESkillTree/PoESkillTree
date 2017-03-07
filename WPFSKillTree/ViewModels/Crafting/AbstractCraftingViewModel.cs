@@ -26,8 +26,7 @@ namespace POESKillTree.ViewModels.Crafting
 
         private readonly IReadOnlyList<TBase> _bases;
         private IEnumerable<TBase> EligibleBases => _bases
-            .Where(b => ShowDropDisabledItems || !b.DropDisabled)
-            .Where(b => EquipmentData.AffixesPerItemType.ContainsKey(b.ItemType));
+            .Where(b => ShowDropDisabledItems || !b.DropDisabled);
 
         private ILookup<ItemType, TBase> BasesPerType => EligibleBases.ToLookup(b => b.ItemType);
         private IEnumerable<ItemType> EligibleTypes
@@ -110,7 +109,7 @@ namespace POESKillTree.ViewModels.Crafting
             MsImplicits.PropertyChanged += MsOnPropertyChanged;
         }
 
-        public void Init()
+        protected void Init()
         {
             GroupList = EligibleGroups.ToList();
             SelectedGroup = GroupList[0];

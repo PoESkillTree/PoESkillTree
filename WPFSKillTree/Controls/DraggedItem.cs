@@ -27,14 +27,18 @@ namespace POESKillTree.Controls
             //var winPos = GetWindowPosition(mainWindow);
             //_offset.X = -DragStart.X - winPos.X;
             //_offset.Y = -DragStart.Y - winPos.Y - mainWindow.TitlebarHeight;
+
+            // Win32.GetCursorPos() returns logical pixels, WPF uses physical/device pixels.
+            // Need to scale from logical to physical if user has a custom UI scaling.
+            //_uiScaling = PresentationSource.FromVisual(_dragAdorner).CompositionTarget.TransformToDevice;
         }
 
         private void GiveFeedback(object sender, GiveFeedbackEventArgs giveFeedbackEventArgs)
         {
             var w32Mouse = new Win32.Point();
             Win32.GetCursorPos(ref w32Mouse);
-            //_dragAdorner.OffsetLeft = w32Mouse.X + _offset.X;
-            //_dragAdorner.OffsetTop = w32Mouse.Y + _offset.Y;
+            //_dragAdorner.OffsetLeft = w32Mouse.X / _uiScaling.M11 + _offset.X;
+            //_dragAdorner.OffsetTop = w32Mouse.Y / _uiScaling.M22 + _offset.Y;
         }
 
         private static Point GetWindowPosition(Window window)

@@ -26,9 +26,14 @@ namespace POESKillTree.Utils.WikiApi
         /// <summary>
         /// Returns the singular boolean value of the predicate in the printouts.
         /// </summary>
-        public static bool SingularBool(JToken printouts, string rdfPredicate)
+        public static bool SingularBool(JToken printouts, string rdfPredicate, bool defaultValue)
         {
-            var value = printouts[rdfPredicate].First.Value<string>();
+            var token = printouts[rdfPredicate];
+            if (!token.HasValues)
+            {
+                return defaultValue;
+            }
+            var value = token.First.Value<string>();
             return value == "t";
         }
 

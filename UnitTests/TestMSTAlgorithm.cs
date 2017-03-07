@@ -165,17 +165,17 @@ namespace UnitTests
             foreach (int t in queueTestOrder)
             {
                 if (t > 0)
-                    queue.Enqueue(new TestNode((uint)t));
+                    queue.Enqueue(new TestNode(t), (uint) t);
                 if (t < 0)
                     Assert.IsTrue(queue.Dequeue().Priority == -t);
             }
         }
 
-        class TestNode : IWithPriority
+        class TestNode
         {
-            public uint Priority { get; set; }
+            public int Priority { get; }
 
-            public TestNode(uint priority)
+            public TestNode(int priority)
             {
                 Priority = priority;
             }

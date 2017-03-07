@@ -17,7 +17,7 @@ namespace POESKillTree.Utils.UrlProcessing
         /// <param name="buildUrl">The https://pathofexile.com build url.</param>
         /// <param name="ascendancyClasses">The instance of the <see cref="ascendancyClasses"/>
         /// to access general information about skill tree.</param>
-        public PathofexileUrlDeserializer(string buildUrl, IAscendancyClasses ascendancyClasses) : base(buildUrl, ascendancyClasses)
+        private PathofexileUrlDeserializer(string buildUrl, IAscendancyClasses ascendancyClasses) : base(buildUrl, ascendancyClasses)
         {
         }
 

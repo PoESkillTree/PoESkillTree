@@ -312,10 +312,10 @@
                                ContentDirection="RightToLeft"
                                HorizontalContentAlignment="Left">
             <controls:ToggleSwitch.OnLabel>
-                <l:Catalog Message="Skill Tree comparision enabled" />
+                <l:Catalog Message="Skill Tree comparison enabled" />
             </controls:ToggleSwitch.OnLabel>
             <controls:ToggleSwitch.OffLabel>
-                <l:Catalog Message="Skill Tree comparision disabled" />
+                <l:Catalog Message="Skill Tree comparison disabled" />
             </controls:ToggleSwitch.OffLabel>
         </controls:ToggleSwitch>
         

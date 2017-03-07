@@ -36,7 +36,7 @@ namespace UpdateDB.DataLoading
                 var gemObj = _gemsJson.Value<JObject>(gemId);
                 if (gemObj["base_item"].Type == JTokenType.Null)
                 {
-                    Log.Info($"Skipping gem without base item with id {gemId}m");
+                    Log.Info($"Skipping gem without base item with id {gemId}");
                     continue;
                 }
                 var baseItem = gemObj.Value<JObject>("base_item");

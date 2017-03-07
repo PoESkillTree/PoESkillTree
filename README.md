@@ -91,6 +91,7 @@ Note: Both these options require that you can access the official Path of Exile 
 * Ttxman
 * yazilliclick
 * MauranKilom
+* brather1ng
 
 ###Screenshots
 ---

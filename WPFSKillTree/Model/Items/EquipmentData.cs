@@ -36,6 +36,12 @@ namespace POESKillTree.Model.Items
 
         private EquipmentData(Options options)
         {
+            if (!UriParser.IsKnownScheme("pack"))
+            {
+                // Necessary for unit tests. Accessing PackUriHelper triggers static initialization.
+                // Without it, creating resource URIs from unit tests would throw UriFormatExceptions.
+                var _ = System.IO.Packaging.PackUriHelper.UriSchemePack;
+            }
             _itemImageService = new ItemImageService(options);
         }
 

@@ -171,7 +171,7 @@ namespace UpdateDB.DataLoading
                 Intelligence = SingularValue(printouts, RdfBaseIntReq, 0),
                 Strength = SingularValue(printouts, RdfBaseStrReq, 0),
                 Name = SingularValue<string>(printouts, RdfName),
-                DropDisabled = !SingularBool(printouts, RdfDropEnabled),
+                DropDisabled = !SingularBool(printouts, RdfDropEnabled, true),
                 InventoryHeight = SingularValue(printouts, RdfInventoryHeight, 1),
                 InventoryWidth = SingularValue(printouts, RdfInventoryWidth, 1),
                 MetadataId = SingularValue<string>(printouts, RdfMetadataId),

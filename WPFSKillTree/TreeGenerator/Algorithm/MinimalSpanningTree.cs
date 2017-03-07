@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using POESKillTree.TreeGenerator.Algorithm.Model;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
@@ -41,18 +40,6 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// <param name="startIndex">The node index to start from.</param>
         public void Span(int startIndex)
         {
-            var edges = new FunctionalTwoDArray<DirectedGraphEdge>((a, b) => new DirectedGraphEdge(a, b, _distances[a, b]));
-            Span(startIndex, edges);
-        }
-
-        /// <summary>
-        ///     Uses Prim's algorithm to build an MST spanning the mstNodes.
-        ///     O(|mstNodes|^2) runtime.
-        /// </summary>
-        /// <param name="startIndex">The node index to start from.</param>
-        /// <param name="edges">Cache for the edges used.</param>
-        public void Span(int startIndex, ITwoDArray<DirectedGraphEdge> edges)
-        {
             // All nodes that are not yet included.
             var toAdd = new List<int>(_mstNodes.Count);
             // If the index node is already included.
@@ -67,7 +54,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
                     if (t != startIndex)
                     {
                         toAdd.Add(t);
-                        adjacentEdgeQueue.Enqueue(edges[startIndex, t]);
+                        adjacentEdgeQueue.Enqueue(new DirectedGraphEdge(startIndex, t), 
+                            _distances[startIndex, t]);
                     }
                 }
                 inMst[startIndex] = true;
@@ -96,7 +84,8 @@ namespace POESKillTree.TreeGenerator.Algorithm
                         }
                         else
                         {
-                            adjacentEdgeQueue.Enqueue(edges[newIn, otherNode]);
+                            adjacentEdgeQueue.Enqueue(new DirectedGraphEdge(newIn, otherNode), 
+                                _distances[newIn, otherNode]);
                         }
                     }
                 }

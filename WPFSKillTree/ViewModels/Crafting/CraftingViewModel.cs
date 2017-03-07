@@ -31,10 +31,13 @@ namespace POESKillTree.ViewModels.Crafting
         private bool _changingBase;
 
         public CraftingViewModel(EquipmentData equipmentData)
-            : base(equipmentData, equipmentData.ItemBases)
+            : base(equipmentData,
+                equipmentData.ItemBases.Where(b => equipmentData.AffixesPerItemType.ContainsKey(b.ItemType)))
         {
             MsPrefix.ForEach(ms => ms.PropertyChanged += MsPrefixOnPropertyChanged);
             MsSuffix.ForEach(ms => ms.PropertyChanged += MsSuffixOnPropertyChanged);
+
+            Init();
         }
 
         protected override void UpdateBaseSpecific()
