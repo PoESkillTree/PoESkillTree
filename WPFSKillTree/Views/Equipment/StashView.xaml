@@ -3,17 +3,95 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:equipment="clr-namespace:POESKillTree.ViewModels.Equipment"
+             xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Equipment"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:local="clr-namespace:POESKillTree.Views.Equipment"
+             xmlns:wpf="clr-namespace:POESKillTree.Utils.Wpf"
+             xmlns:wpfRangeControls="clr-namespace:WpfRangeControls"
+             xmlns:dd="urn:gong-wpf-dragdrop"
              mc:Ignorable="d" 
              d:DesignHeight="300"
-             d:DataContext="{d:DesignInstance equipment:StashViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:StashViewModel}">
     <UserControl.Resources>
+        <viewModels:CellSizeMultiplicationConverter x:Key="CellSizeMultiplicationConverter" />
+
+        <CompositeCollection x:Key="ItemsSource">
+            <CollectionContainer Collection="{Binding Items}" />
+            <CollectionContainer Collection="{Binding Bookmarks}" />
+        </CompositeCollection>
+        
         <CompositeCollection x:Key="ScrollBarOverlayCollection">
             <CollectionContainer Collection="{Binding Bookmarks}" />
             <CollectionContainer Collection="{Binding SearchMatches}" />
         </CompositeCollection>
+
+        <CompositeCollection x:Key="StashTabCollection">
+            <CollectionContainer Collection="{Binding Bookmarks}" />
+            <Button Style="{DynamicResource MetroCircleButtonStyle}"
+                    Width="17" Height="17"
+                    Command="{Binding AddStashTabCommand}">
+                <iconPacks:PackIconModern Kind="Add" Height="10" Width="10" />
+            </Button>
+        </CompositeCollection>
     </UserControl.Resources>
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Column="1" Grid.Row="0"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Hidden"
+                      wpf:Helper.ScrollViewerVerticalOffset="{Binding ScrollBarValue, Converter={StaticResource CellSizeMultiplicationConverter}}"
+                      dd:DragDrop.IsDropTarget="True"
+                      dd:DragDrop.DropHandler="{Binding}">
+            <ItemsControl ItemsSource="{Binding Items}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas Height="{Binding Rows, Converter={StaticResource CellSizeMultiplicationConverter}}"
+                                Width="{Binding Columns, Converter={StaticResource CellSizeMultiplicationConverter}}" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.Background>
+                    <DrawingBrush TileMode="Tile" Stretch="None"
+                                  ViewportUnits="Absolute" Viewport="0 0 47 47" >
+                        <DrawingBrush.Drawing>
+                            <DrawingGroup>
+                                <GeometryDrawing>
+                                    <GeometryDrawing.Pen>
+                                        <Pen Thickness="1" Brush="Gray"/>
+                                    </GeometryDrawing.Pen>
+                                    <GeometryDrawing.Geometry>
+                                        <RectangleGeometry Rect="0 0 47 47" />
+                                    </GeometryDrawing.Geometry>
+                                </GeometryDrawing>
+                            </DrawingGroup>
+                        </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                </ItemsControl.Background>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="FrameworkElement">
+                        <Setter Property="Canvas.Left" Value="{Binding Item.X, Converter={StaticResource CellSizeMultiplicationConverter}}" />
+                        <Setter Property="Canvas.Top" Value="{Binding Item.Y, Converter={StaticResource CellSizeMultiplicationConverter}}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="viewModels:StashItemViewModel">
+                        <local:StashItemView Width="{Binding Item.Width, Converter={StaticResource CellSizeMultiplicationConverter}}"
+                                             Height="{Binding Item.Height, Converter={StaticResource CellSizeMultiplicationConverter}}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        <wpfRangeControls:RangeScrollbar Grid.Row="0" Grid.Column="2"
+                                         Minimum="0" Maximum="{Binding LastOccupiedRow}"
+                                         Value="{Binding ScrollBarValue}"
+                                         SmallChange="1" LargeChange="12" />
     </Grid>
 </UserControl>

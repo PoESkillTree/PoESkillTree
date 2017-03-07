@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
 using MoreLinq;
@@ -18,6 +20,29 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Equipment
 {
+    public class CellSizeMultiplicationConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var d = value as double?;
+            if (d != null)
+            {
+                return d * StashViewModel.CellSize;
+            }
+            return (int) value * StashViewModel.CellSize;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var d = value as double?;
+            if (d != null)
+            {
+                return d / StashViewModel.CellSize;
+            }
+            return (int) value / StashViewModel.CellSize;
+        }
+    }
+
     public class StashViewModel : Notifier, IDropTarget
     {
         // todo order members; sections
@@ -47,19 +72,11 @@ namespace POESKillTree.ViewModels.Equipment
         public double ScrollBarValue
         {
             get { return _scrollBarValue; }
-            set { SetProperty(ref _scrollBarValue, value); } // todo may need redraw call?
+            set { SetProperty(ref _scrollBarValue, value); }
         }
-
-        // todo bind ScrollBar.LargeChange to this
-        // todo bind ScrollBar.ViewportSize to this
-        // todo bind Grid.ActualHeight / CellSize to this
-        // the amount of rows visible at the same time
-        private int _visibleRows;
-        public int VisibleRows
-        {
-            get { return _visibleRows; }
-            set { SetProperty(ref _visibleRows, value, () => OnPropertyChanged(nameof(Rows))); }
-        }
+        // todo Scroll wheel scrolling (bind ScrollViewer.VerticalOffsert to ScrollBarValue)
+        // todo Items and background grid are not sharp
+        // todo RangeScrollBar.ViewportSize needs to be bound to ScrollViewer.ViewportHeight
 
         private string _searchText;
         public string SearchText
@@ -112,7 +129,7 @@ namespace POESKillTree.ViewModels.Equipment
 
             if (!_suppressRebuild)
             {
-                OnPropertyChanged(nameof(Rows));
+                RowCountChanged();
             }
         }
 
@@ -130,7 +147,7 @@ namespace POESKillTree.ViewModels.Equipment
 
         private void BookmarksOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
-            OnPropertyChanged(nameof(Rows));
+            RowCountChanged();
         }
 
         private void OnSearchTextChanged()
@@ -184,7 +201,6 @@ namespace POESKillTree.ViewModels.Equipment
          * with Width = Rows * GridSize
          *      Margin/Padding Top (may need centered outer grid) so that rectangle is on nearest GridSize multiple
          *        (GridSize * (int) Math.Round(y / CellSize))
-         *      Move icon
          * 
          * EffectMoveAdornerTemplate and EffectCopyAdornerTemplate for item:
          * <Rectangle VerticalAlignment="Top" HorizontalAlignment="Left"
@@ -194,7 +210,6 @@ namespace POESKillTree.ViewModels.Equipment
          *      Margin/Padding Top and Left (may need centered outer grid) so that DragStart is cursor position on recangle,
          *      adjusted to fit into GridSize
          *        (GridSize * (int) Math.Round(value / CellSize))
-         *      Move/Copy icon
          * see https://github.com/punker76/gong-wpf-dragdrop/blob/dev/src/GongSolutions.WPF.DragDrop.Shared/DragDrop.cs#L170
          * 
          * EffectNoneAdornerTemplate for item:
@@ -229,15 +244,14 @@ namespace POESKillTree.ViewModels.Equipment
         }
          */
 
-        public int FirstVisibleRow
+        private int FirstVisibleRow
         {
-            get { return (int) Math.Round(ScrollBarValue); }
+            get { return (int) ScrollBarValue; }
         }
 
-        // todo bind ScrollBar.Maximum to this and set ScrollBar.Minimum to 0
         public int Rows
         {
-            get { return LastOccupiedRow + VisibleRows; }
+            get { return LastOccupiedRow + 12; }
         }
 
         public int LastOccupiedRow
@@ -245,9 +259,15 @@ namespace POESKillTree.ViewModels.Equipment
             get
             {
                 return Math.Max(
-                    Items.Select(i => i.Item.Y).DefaultIfEmpty().Max(),
+                    Items.Select(i => i.Item.Y + i.Item.Height - 1).DefaultIfEmpty().Max(),
                     Bookmarks.Select(b => b.Position).DefaultIfEmpty().Max());
             }
+        }
+
+        private void RowCountChanged()
+        {
+            OnPropertyChanged(nameof(LastOccupiedRow));
+            OnPropertyChanged(nameof(Rows));
         }
 
         public void BeginUpdate()
@@ -259,7 +279,7 @@ namespace POESKillTree.ViewModels.Equipment
         public void EndUpdate()
         {
             _suppressRebuild = false;
-            OnPropertyChanged(nameof(Rows));
+            RowCountChanged();
             if (_smallestAddedItemY < int.MaxValue)
             {
                 ScrollBarValue = _smallestAddedItemY;
@@ -356,7 +376,7 @@ namespace POESKillTree.ViewModels.Equipment
             var to =
                 Bookmarks.Where(b => b.Position > from)
                     .Select(b => b.Position)
-                    .DefaultIfEmpty(Rows)
+                    .DefaultIfEmpty(LastOccupiedRow)
                     .Min();
             var diff = to - from;
 
@@ -397,18 +417,17 @@ namespace POESKillTree.ViewModels.Equipment
             var draggedItem = dropInfo.Data as DraggableItemViewModel;
             var bookmark = dropInfo.Data as StashBookmark;
 
-            // todo might not be necessary
-            // todo use DragDropEffects.Scroll?
+            // todo scrolling
             Point pos = dropInfo.DropPosition;
             // Scroll up or down if at upper or lower end of stash grid.
-            if (pos.Y / CellSize > VisibleRows - 0.3)
-            {
-                ScrollBarValue++;
-            }
-            else if (pos.Y / CellSize < 0.3)
-            {
-                ScrollBarValue--;
-            }
+            //if (pos.Y / CellSize > VisibleRows - 0.3)
+            //{
+            //    ScrollBarValue++;
+            //}
+            //else if (pos.Y / CellSize < 0.3)
+            //{
+            //    ScrollBarValue--;
+            //}
 
             if (draggedItem != null)
             {
@@ -429,7 +448,7 @@ namespace POESKillTree.ViewModels.Equipment
                         continue;
                     }
                     if ((i.X < x + item.Width && x < i.X + i.Width)
-                        || (i.Y < y + item.Height && y < i.Y + i.Height))
+                        && (i.Y < y + item.Height && y < i.Y + i.Height))
                     {
                         hasOverlap = true;
                         break;
@@ -453,7 +472,6 @@ namespace POESKillTree.ViewModels.Equipment
             var draggedItem = dropInfo.Data as DraggableItemViewModel;
             var bookmark = dropInfo.Data as StashBookmark;
             Point pos = dropInfo.DropPosition;
-            var rowsBefore = Rows;
 
             if (draggedItem != null)
             {
@@ -492,10 +510,7 @@ namespace POESKillTree.ViewModels.Equipment
                 bookmark.Position = y;
             }
 
-            if (Rows != rowsBefore)
-            {
-                OnPropertyChanged(nameof(Rows));
-            }
+            RowCountChanged();
         }
     }
 }

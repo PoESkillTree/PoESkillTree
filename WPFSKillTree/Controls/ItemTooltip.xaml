@@ -42,7 +42,7 @@
                 <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Currency}">
                     <Setter Property="Foreground" Value="#FFAA9E82"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Foil}">
+                <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Foil}">
                     <Setter Property="Foreground" Value="#82ad6a"/>
                 </DataTrigger>
             </Style.Triggers>

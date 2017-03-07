@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using POESKillTree.Utils.Converter;
@@ -92,6 +93,34 @@ namespace POESKillTree.Utils.Wpf
                 ConverterParameter = value
             };
             element.SetBinding(FrameworkElement.MaxHeightProperty, binding);
+        }
+
+        public static readonly DependencyProperty ScrollViewerVerticalOffsetProperty = DependencyProperty.RegisterAttached(
+            "ScrollViewerVerticalOffset", typeof(double), typeof(Helper),
+            new PropertyMetadata(default(double), ScrollViewerVerticalOffsetPropertyChangedCallback));
+
+        public static void SetScrollViewerVerticalOffset(DependencyObject element, double value)
+        {
+            element.SetValue(ScrollViewerVerticalOffsetProperty, value);
+        }
+
+        [AttachedPropertyBrowsableForType(typeof(ScrollViewer))]
+        public static double GetScrollViewerVerticalOffset(DependencyObject element)
+        {
+            return (double) element.GetValue(ScrollViewerVerticalOffsetProperty);
+        }
+
+        private static void ScrollViewerVerticalOffsetPropertyChangedCallback(DependencyObject dependencyObject,
+            DependencyPropertyChangedEventArgs e)
+        {
+            var element = dependencyObject as ScrollViewer;
+            if (element == null)
+            {
+                return;
+            }
+
+            var value = (double) e.NewValue;
+            element.ScrollToVerticalOffset(value);
         }
     }
 }
