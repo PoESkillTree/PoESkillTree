@@ -210,6 +210,7 @@
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
+    <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
     <Compile Include="ViewModels\Crafting\AbstractCraftingViewModel.cs" />
     <Compile Include="ViewModels\Crafting\CraftingViewModel.cs" />
     <Compile Include="ViewModels\Crafting\ModSelectorViewModel.cs" />
@@ -442,7 +443,7 @@
     <Compile Include="Utils\Converter\BooleanToStringConverter.cs" />
     <Compile Include="Utils\Converter\EmptyStringConverter.cs" />
     <Compile Include="Utils\Converter\StringBrushConverter.cs" />
-    <Compile Include="Utils\Converter\SubtractionConverter.cs" />
+    <Compile Include="Utils\Converter\ArithmeticConverter.cs" />
     <Compile Include="Utils\Converter\NullToVisibilityConverter.cs" />
     <Compile Include="Utils\Converter\StringToVisibilityConverter.cs" />
     <Compile Include="Controls\Dialogs\ExtendedDialogManager.cs" />

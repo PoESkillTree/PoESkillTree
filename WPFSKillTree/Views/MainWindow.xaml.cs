@@ -103,19 +103,7 @@ namespace POESKillTree.Views
             }
         }
 
-        private StashViewModel _stashViewModel;
-
-        public StashViewModel StashViewModel
-        {
-            get { return _stashViewModel; }
-            private set
-            {
-                if (value == _stashViewModel)
-                    return;
-                _stashViewModel = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StashViewModel)));
-            }
-        }
+        public StashViewModel StashViewModel { get; } = new StashViewModel(ExtendedDialogCoordinator.Instance);
 
         private SkillTree _tree;
         public SkillTree Tree
@@ -545,7 +533,7 @@ namespace POESKillTree.Views
                     x => new ComboBoxItem {Name = x.Key, Content = x.Value});
             cbAscType.SelectedIndex = 0;
 
-            StashViewModel = new StashViewModel(ExtendedDialogCoordinator.Instance, PersistentData);
+            StashViewModel.PersistentData = PersistentData;
 
             // Set theme & accent.
             SetTheme(PersistentData.Options.Theme);

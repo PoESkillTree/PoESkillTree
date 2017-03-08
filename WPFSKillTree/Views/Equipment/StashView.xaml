@@ -9,17 +9,20 @@
              xmlns:wpf="clr-namespace:POESKillTree.Utils.Wpf"
              xmlns:wpfRangeControls="clr-namespace:WpfRangeControls"
              xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="300"
              d:DataContext="{d:DesignInstance viewModels:StashViewModel}">
     <UserControl.Resources>
-        <viewModels:CellSizeMultiplicationConverter x:Key="CellSizeMultiplicationConverter" />
+        <converter:ProductConverter x:Key="CellSizeMultiplicationConverter"
+                                    Constant="{x:Static viewModels:StashViewModel.CellSize}" />
 
         <CompositeCollection x:Key="ItemsSource">
             <CollectionContainer Collection="{Binding Items}" />
             <CollectionContainer Collection="{Binding Bookmarks}" />
         </CompositeCollection>
-        
+
         <CompositeCollection x:Key="ScrollBarOverlayCollection">
             <CollectionContainer Collection="{Binding Bookmarks}" />
             <CollectionContainer Collection="{Binding SearchMatches}" />
@@ -51,11 +54,23 @@
                       wpf:Helper.ScrollViewerVerticalOffset="{Binding ScrollBarValue, Converter={StaticResource CellSizeMultiplicationConverter}}"
                       dd:DragDrop.IsDropTarget="True"
                       dd:DragDrop.DropHandler="{Binding}">
+            <i:Interaction.Behaviors>
+                <wpf:BindableActualSizeBehavior ActualHeight="{Binding VisibleRows, Converter={StaticResource CellSizeMultiplicationConverter}, Mode=OneWayToSource}" />
+            </i:Interaction.Behaviors>
             <ItemsControl ItemsSource="{Binding Items}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Canvas Height="{Binding Rows, Converter={StaticResource CellSizeMultiplicationConverter}}"
-                                Width="{Binding Columns, Converter={StaticResource CellSizeMultiplicationConverter}}" />
+                        <Canvas Width="{Binding Columns, Converter={StaticResource CellSizeMultiplicationConverter}}">
+                            <Canvas.Height>
+                                <MultiBinding>
+                                    <MultiBinding.Converter>
+                                        <converter:SumConverter Constant="{x:Static viewModels:StashViewModel.CellSize}" />
+                                    </MultiBinding.Converter>
+                                    <Binding Path="LastOccupiedRow" Converter="{StaticResource CellSizeMultiplicationConverter}" />
+                                    <Binding Path="VisibleRows" Converter="{StaticResource CellSizeMultiplicationConverter}" />
+                                </MultiBinding>
+                            </Canvas.Height>
+                        </Canvas>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.Background>
@@ -90,8 +105,11 @@
             </ItemsControl>
         </ScrollViewer>
         <wpfRangeControls:RangeScrollbar Grid.Row="0" Grid.Column="2"
-                                         Minimum="0" Maximum="{Binding LastOccupiedRow}"
+                                         Minimum="0"
+                                         Maximum="{Binding Path=LastOccupiedRow}"
                                          Value="{Binding ScrollBarValue}"
-                                         SmallChange="1" LargeChange="12" />
+                                         SmallChange="1" LargeChange="{Binding VisibleRows}"
+                                         ViewportSize="{Binding VisibleRows}">
+        </wpfRangeControls:RangeScrollbar>
     </Grid>
 </UserControl>
