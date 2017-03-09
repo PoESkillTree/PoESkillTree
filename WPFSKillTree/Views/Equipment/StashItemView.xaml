@@ -15,7 +15,7 @@
                 <Setter Property="Opacity" Value="1" />
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Highlight}" Value="True">
-                        <Setter Property="Background" Value="#43D9E8" />
+                        <Setter Property="Background" Value="#6343D9E8" />
                     </DataTrigger>
                     <DataTrigger Binding="{Binding IsDragged}" Value="True">
                         <Setter Property="Opacity" Value="0.3" />

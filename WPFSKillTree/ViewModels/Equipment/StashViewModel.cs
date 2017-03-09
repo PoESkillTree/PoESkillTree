@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -16,9 +15,15 @@ using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils;
+using POESKillTree.Utils.Extensions;
+using POESKillTree.Utils.Wpf;
 
 namespace POESKillTree.ViewModels.Equipment
 {
+    public class StashViewModelProxy : BindingProxy<StashViewModel>
+    {
+    }
+
     public class StashViewModel : Notifier, IDropTarget
     {
         // todo order members; sections
@@ -48,12 +53,7 @@ namespace POESKillTree.ViewModels.Equipment
         public ObservableCollection<StashItemViewModel> Items { get; }
             = new ObservableCollection<StashItemViewModel>();
 
-        private IReadOnlyList<int> _searchMatches;
-        public IReadOnlyList<int> SearchMatches
-        {
-            get { return _searchMatches; }
-            private set { SetProperty(ref _searchMatches, value); }
-        }
+        public ObservableCollection<int> SearchMatches { get; } = new ObservableCollection<int>();
 
         private ObservableCollection<StashBookmark> _bookmarks = new ObservableCollection<StashBookmark>();
         public ObservableCollection<StashBookmark> Bookmarks
@@ -169,16 +169,16 @@ namespace POESKillTree.ViewModels.Equipment
         private void OnSearchTextChanged()
         {
             Items.ForEach(i => i.Highlight = false);
+            SearchMatches.Clear();
 
             if (SearchText == null || SearchText.Length < 3)
             {
-                SearchMatches = new int[0];
                 return;
             }
 
             var matches = Items.Where(IsSearchMatch).ToList();
             matches.ForEach(i => i.Highlight = true);
-            SearchMatches = new ObservableCollection<int>(matches.Select(i => i.Item.Y).Distinct());
+            SearchMatches.AddRange(matches.Select(i => i.Item.Y).Distinct());
         }
 
         private bool IsSearchMatch(StashItemViewModel itemVm)

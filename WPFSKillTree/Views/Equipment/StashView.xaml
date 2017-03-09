@@ -11,6 +11,10 @@
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
+             xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+             xmlns:controls="clr-namespace:POESKillTree.Controls"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300"
              d:DataContext="{d:DesignInstance viewModels:StashViewModel}">
@@ -18,15 +22,7 @@
         <converter:ProductConverter x:Key="CellSizeMultiplicationConverter"
                                     Constant="{x:Static viewModels:StashViewModel.CellSize}" />
 
-        <CompositeCollection x:Key="ItemsSource">
-            <CollectionContainer Collection="{Binding Items}" />
-            <CollectionContainer Collection="{Binding Bookmarks}" />
-        </CompositeCollection>
-
-        <CompositeCollection x:Key="ScrollBarOverlayCollection">
-            <CollectionContainer Collection="{Binding Bookmarks}" />
-            <CollectionContainer Collection="{Binding SearchMatches}" />
-        </CompositeCollection>
+        <viewModels:StashViewModelProxy x:Key="VmProxy" Data="{Binding}" />
 
         <CompositeCollection x:Key="StashTabCollection">
             <CollectionContainer Collection="{Binding Bookmarks}" />
@@ -57,7 +53,13 @@
                 <wpf:BindableActualSizeBehavior ActualHeight="{Binding VisibleRows, Converter={StaticResource CellSizeMultiplicationConverter}, Mode=OneWayToSource}" />
                 <wpf:ScrollViewerBindableOffsetBehavior VerticalOffset="{Binding ScrollBarValue, Converter={StaticResource CellSizeMultiplicationConverter}, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
-            <ItemsControl ItemsSource="{Binding Items}">
+            <ItemsControl>
+                <ItemsControl.ItemsSource>
+                    <CompositeCollection>
+                        <CollectionContainer Collection="{Binding Data.Items, Source={StaticResource VmProxy}}" />
+                        <!--<CollectionContainer Collection="{Binding Data.Bookmarks, Source={StaticResource VmProxy}}" />-->
+                    </CompositeCollection>
+                </ItemsControl.ItemsSource>
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas Width="{Binding Columns, Converter={StaticResource CellSizeMultiplicationConverter}}">
@@ -104,12 +106,44 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
+
         <wpfRangeControls:RangeScrollbar Grid.Row="0" Grid.Column="2"
                                          Minimum="0"
                                          Maximum="{Binding LastOccupiedRow}"
                                          Value="{Binding ScrollBarValue}"
                                          SmallChange="1" LargeChange="{Binding VisibleRows}"
                                          ViewportSize="{Binding VisibleRows}">
+            <wpfRangeControls:RangeScrollbar.ItemsSource>
+                <CompositeCollection>
+                    <CollectionContainer Collection="{Binding Data.Bookmarks, Source={StaticResource VmProxy}}" />
+                    <CollectionContainer Collection="{Binding Data.SearchMatches, Source={StaticResource VmProxy}}" />
+                </CompositeCollection>
+            </wpfRangeControls:RangeScrollbar.ItemsSource>
+            <wpfRangeControls:RangeScrollbar.Resources>
+                <DataTemplate DataType="{x:Type controls:StashBookmark}">
+                    <Rectangle Height="2" HorizontalAlignment="Stretch"
+                               wpfRangeControls:RangePanel.Position="{Binding Position}">
+                        <Rectangle.Fill>
+                            <SolidColorBrush Color="{Binding Color}" x:Name="_not_working_without_name_1234" />
+                        </Rectangle.Fill>
+                    </Rectangle>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type system:Int32}">
+                    <Rectangle Height="2" Width="4"
+                               wpfRangeControls:RangePanel.Position="{Binding}"
+                               Fill="#8043D9E8"/>
+                </DataTemplate>
+            </wpfRangeControls:RangeScrollbar.Resources>
         </wpfRangeControls:RangeScrollbar>
+
+        <TextBox Grid.Row="1" 
+                 Grid.Column="0" Grid.ColumnSpan="3"
+                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                 mahapps:TextBoxHelper.ClearTextButton="True"
+                 mahapps:TextBoxHelper.SelectAllOnFocus="True">
+            <mahapps:TextBoxHelper.Watermark>
+                <l:Catalog>Stash search</l:Catalog>
+            </mahapps:TextBoxHelper.Watermark>
+        </TextBox>
     </Grid>
 </UserControl>

@@ -4,20 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cont="clr-namespace:POESKillTree.Controls"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:WpfRangeControls="clr-namespace:WpfRangeControls" xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared"
+             xmlns:Custom="http://metro.mahapps.com/winfx/xaml/shared"
     x:Class="POESKillTree.Controls.Stash"
              mc:Ignorable="d" 
              d:DesignHeight="351"
              x:Name="control"
              >
     <UserControl.Resources>
-        <CompositeCollection x:Key="scrollbarOverlayCollection">
-            <CollectionContainer Collection="{Binding Bookmarks, Source={x:Reference Name=control}}"/>
-            <CollectionContainer Collection="{Binding SearchMatches, Source={x:Reference Name=control}}"/>
-        </CompositeCollection>
         <CompositeCollection x:Key="stashTabsCollection">
             <CollectionContainer Collection="{Binding Bookmarks, Source={x:Reference Name=control}}"/>
             <Button Width="17" MinWidth="17" MinHeight="17" Height="17" Margin="0,1,0,0" Padding="3">
@@ -63,25 +56,6 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-
-        <Grid x:Name="gcontent" Grid.Column="1" Width="564" ClipToBounds="True">
-            <Grid.Background>
-                <DrawingBrush TileMode="Tile" Stretch="None" ViewportUnits="Absolute" Viewport="0,0,47,47" >
-                    <DrawingBrush.Drawing>
-                        <DrawingGroup>
-                            <GeometryDrawing>
-                                <GeometryDrawing.Pen>
-                                    <Pen Thickness="1" Brush="Gray"/>
-                                </GeometryDrawing.Pen>
-                                <GeometryDrawing.Geometry>
-                                    <RectangleGeometry Rect="0,0,47,47" />
-                                </GeometryDrawing.Geometry>
-                            </GeometryDrawing>
-                        </DrawingGroup>
-                    </DrawingBrush.Drawing>
-                </DrawingBrush>
-            </Grid.Background>
-        </Grid>
 
         <ItemsControl Grid.Column="0" ItemsSource="{StaticResource stashTabsCollection}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
             <ItemsControl.ItemsPanel>
@@ -134,39 +108,6 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-
-        <Grid Grid.Row="1" Grid.ColumnSpan="3">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBox x:Name="tbSearch" Grid.Column="1"
-                     controls:TextBoxHelper.ClearTextButton="True"
-                     controls:TextBoxHelper.SelectAllOnFocus="True">
-                <controls:TextBoxHelper.Watermark>
-                    <l:Catalog>Stash search</l:Catalog>
-                </controls:TextBoxHelper.Watermark>
-            </TextBox>
-        </Grid>
-
-        <WpfRangeControls:RangeScrollbar x:Name="asBar" Grid.Column="2" Maximum="{Binding LastLine, ElementName=control}" SmallChange="1" LargeChange="12">
-            <WpfRangeControls:RangeScrollbar.Resources>
-                <DataTemplate DataType="{x:Type cont:StashBookmark}" >
-                    <Rectangle Height="2" HorizontalAlignment="Stretch" WpfRangeControls:RangePanel.Position="{Binding Position}">
-                        <Rectangle.Fill>
-                            <SolidColorBrush Color="{Binding Color}" x:Name="_not_working_without_name_1234" />
-                        </Rectangle.Fill>
-                    </Rectangle>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type sys:Int32}">
-                    <Rectangle Height="4" Width="4" WpfRangeControls:RangePanel.Position="{Binding}" Fill="#8043D9E8"/>
-                </DataTemplate>
-
-            </WpfRangeControls:RangeScrollbar.Resources>
-            <WpfRangeControls:RangeScrollbar.ItemsSource>
-                <StaticResource ResourceKey="scrollbarOverlayCollection"/>
-            </WpfRangeControls:RangeScrollbar.ItemsSource>
-        </WpfRangeControls:RangeScrollbar>
 
     </Grid>
 </UserControl>
