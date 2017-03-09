@@ -223,6 +223,7 @@
     <Compile Include="ViewModels\Equipment\DraggableItemViewModel.cs" />
     <Compile Include="ViewModels\Equipment\InventoryItemViewModel.cs" />
     <Compile Include="ViewModels\Equipment\InventoryViewModel.cs" />
+    <Compile Include="Views\Equipment\ScrollBarPositionConverter.cs" />
     <Compile Include="ViewModels\Equipment\StashItemViewModel.cs" />
     <Compile Include="Views\Crafting\BaseCraftingView.xaml.cs">
       <DependentUpon>BaseCraftingView.xaml</DependentUpon>

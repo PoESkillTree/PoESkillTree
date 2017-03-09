@@ -53,7 +53,7 @@ namespace POESKillTree.ViewModels.Equipment
         public ObservableCollection<StashItemViewModel> Items { get; }
             = new ObservableCollection<StashItemViewModel>();
 
-        public ObservableCollection<int> SearchMatches { get; } = new ObservableCollection<int>();
+        public ObservableCollection<double> SearchMatches { get; } = new ObservableCollection<double>();
 
         private ObservableCollection<StashBookmark> _bookmarks = new ObservableCollection<StashBookmark>();
         public ObservableCollection<StashBookmark> Bookmarks
@@ -78,7 +78,7 @@ namespace POESKillTree.ViewModels.Equipment
         public double VisibleRows
         {
             get { return _visibleRows; }
-            set { SetProperty(ref _visibleRows, value); }
+            set { SetProperty(ref _visibleRows, value, RowsChanged); }
         }
 
         private string _searchText;
@@ -105,7 +105,7 @@ namespace POESKillTree.ViewModels.Equipment
         {
             BeginUpdate();
             Bookmarks = PersistentData.StashBookmarks;
-            Bookmarks.CollectionChanged += (sender, args) => OnPropertyChanged(nameof(LastOccupiedRow));
+            Bookmarks.CollectionChanged += (sender, args) => RowsChanged();
             foreach (var stashItem in PersistentData.StashItems)
             {
                 var item = new StashItemViewModel(_dialogCoordinator, PersistentData.EquipmentData, stashItem);
@@ -141,7 +141,7 @@ namespace POESKillTree.ViewModels.Equipment
 
             if (!_suppressRebuild)
             {
-                OnPropertyChanged(nameof(LastOccupiedRow));
+                RowsChanged();
             }
         }
 
@@ -178,7 +178,7 @@ namespace POESKillTree.ViewModels.Equipment
 
             var matches = Items.Where(IsSearchMatch).ToList();
             matches.ForEach(i => i.Highlight = true);
-            SearchMatches.AddRange(matches.Select(i => i.Item.Y).Distinct());
+            SearchMatches.AddRange(matches.Select(i => i.Item.Y + i.Item.Height / 2.0).Distinct());
         }
 
         private bool IsSearchMatch(StashItemViewModel itemVm)
@@ -189,17 +189,13 @@ namespace POESKillTree.ViewModels.Equipment
                 i.FlavourText,
                 i.Name
             }.Union(i.Properties.Select(p => p.Attribute)).Union(i.Mods.Select(m => m.Attribute));
-
+            
             return modstrings.Any(s => s != null && s.ToLower().Contains(SearchText));
         }
 
         /* todo
          * 
          * StashBookmark: todo DragDrop settings
-         * <Rectangle Fill="{Binding Color}" Height="2" Cursor="SizeNS"
-         *            VerticalAlignment="Top" HorizontalAlignment="Stretch"
-         *            Panel.ZIndex="10000" />
-         * with Margin Top = {Binding Position} * GridSize
          * when dragged:
          *  IsHitTestVisible = false
          *  Opacity = 0.3
@@ -222,6 +218,15 @@ namespace POESKillTree.ViewModels.Equipment
             }
         }
 
+        public double Rows
+            => LastOccupiedRow + VisibleRows;
+
+        private void RowsChanged()
+        {
+            OnPropertyChanged(nameof(LastOccupiedRow));
+            OnPropertyChanged(nameof(Rows));
+        }
+
         public void BeginUpdate()
         {
             _suppressRebuild = true;
@@ -231,7 +236,7 @@ namespace POESKillTree.ViewModels.Equipment
         public void EndUpdate()
         {
             _suppressRebuild = false;
-            OnPropertyChanged(nameof(LastOccupiedRow));
+            RowsChanged();
             if (_smallestAddedItemY < int.MaxValue)
             {
                 ScrollBarValue = _smallestAddedItemY;
@@ -469,7 +474,7 @@ namespace POESKillTree.ViewModels.Equipment
                 bookmark.Position = y;
             }
 
-            OnPropertyChanged(nameof(LastOccupiedRow));
+            RowsChanged();
         }
 
 

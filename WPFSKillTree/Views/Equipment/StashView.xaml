@@ -21,6 +21,8 @@
     <UserControl.Resources>
         <converter:ProductConverter x:Key="CellSizeMultiplicationConverter"
                                     Constant="{x:Static viewModels:StashViewModel.CellSize}" />
+        <converter:SumConverter x:Key="SumConverter" />
+        <local:ScrollBarPositionConverter x:Key="ScrollBarPositionConverter" />
 
         <viewModels:StashViewModelProxy x:Key="VmProxy" Data="{Binding}" />
 
@@ -57,22 +59,28 @@
                 <ItemsControl.ItemsSource>
                     <CompositeCollection>
                         <CollectionContainer Collection="{Binding Data.Items, Source={StaticResource VmProxy}}" />
-                        <!--<CollectionContainer Collection="{Binding Data.Bookmarks, Source={StaticResource VmProxy}}" />-->
+                        <CollectionContainer Collection="{Binding Data.Bookmarks, Source={StaticResource VmProxy}}" />
                     </CompositeCollection>
                 </ItemsControl.ItemsSource>
+                <ItemsControl.Resources>
+                    <DataTemplate DataType="{x:Type viewModels:StashItemViewModel}">
+                        <local:StashItemView Width="{Binding Item.Width, Converter={StaticResource CellSizeMultiplicationConverter}}"
+                                             Height="{Binding Item.Height, Converter={StaticResource CellSizeMultiplicationConverter}}" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type controls:StashBookmark}">
+                        <Rectangle Height="2"
+                                   Width="{Binding Data.Columns, Converter={StaticResource CellSizeMultiplicationConverter}, Source={StaticResource VmProxy}}"
+                                   Cursor="SizeNS">
+                            <Rectangle.Fill>
+                                <SolidColorBrush Color="{Binding Color}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </DataTemplate>
+                </ItemsControl.Resources>
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Canvas Width="{Binding Columns, Converter={StaticResource CellSizeMultiplicationConverter}}">
-                            <Canvas.Height>
-                                <MultiBinding>
-                                    <MultiBinding.Converter>
-                                        <converter:SumConverter Constant="{x:Static viewModels:StashViewModel.CellSize}" />
-                                    </MultiBinding.Converter>
-                                    <Binding Path="LastOccupiedRow" Converter="{StaticResource CellSizeMultiplicationConverter}" />
-                                    <Binding Path="VisibleRows" Converter="{StaticResource CellSizeMultiplicationConverter}" />
-                                </MultiBinding>
-                            </Canvas.Height>
-                        </Canvas>
+                        <Canvas Width="{Binding Columns, Converter={StaticResource CellSizeMultiplicationConverter}}"
+                                Height="{Binding Rows, Converter={StaticResource CellSizeMultiplicationConverter}}" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.Background>
@@ -92,18 +100,29 @@
                         </DrawingBrush.Drawing>
                     </DrawingBrush>
                 </ItemsControl.Background>
-                <ItemsControl.ItemContainerStyle>
-                    <Style TargetType="FrameworkElement">
-                        <Setter Property="Canvas.Left" Value="{Binding Item.X, Converter={StaticResource CellSizeMultiplicationConverter}}" />
-                        <Setter Property="Canvas.Top" Value="{Binding Item.Y, Converter={StaticResource CellSizeMultiplicationConverter}}" />
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="viewModels:StashItemViewModel">
-                        <local:StashItemView Width="{Binding Item.Width, Converter={StaticResource CellSizeMultiplicationConverter}}"
-                                             Height="{Binding Item.Height, Converter={StaticResource CellSizeMultiplicationConverter}}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemContainerStyleSelector>
+                    <wpf:StyleSelectorByType Type="{x:Type controls:StashBookmark}">
+                        <wpf:StyleSelectorByType.DefaultStyle>
+                            <Style TargetType="FrameworkElement">
+                                <Setter Property="Canvas.Left" Value="{Binding Item.X, Converter={StaticResource CellSizeMultiplicationConverter}}" />
+                                <Setter Property="Canvas.Top" Value="{Binding Item.Y, Converter={StaticResource CellSizeMultiplicationConverter}}" />
+                            </Style>
+                        </wpf:StyleSelectorByType.DefaultStyle>
+                        <wpf:StyleSelectorByType.Style>
+                            <Style TargetType="FrameworkElement">
+                                <Setter Property="Canvas.Left" Value="0" />
+                                <Setter Property="Canvas.Top">
+                                    <Setter.Value>
+                                        <MultiBinding Converter="{StaticResource SumConverter}"
+                                                      ConverterParameter="-1">
+                                            <Binding Path="Position" Converter="{StaticResource CellSizeMultiplicationConverter}" />
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </wpf:StyleSelectorByType.Style>
+                    </wpf:StyleSelectorByType>
+                </ItemsControl.ItemContainerStyleSelector>
             </ItemsControl>
         </ScrollViewer>
 
@@ -121,17 +140,30 @@
             </wpfRangeControls:RangeScrollbar.ItemsSource>
             <wpfRangeControls:RangeScrollbar.Resources>
                 <DataTemplate DataType="{x:Type controls:StashBookmark}">
-                    <Rectangle Height="2" HorizontalAlignment="Stretch"
-                               wpfRangeControls:RangePanel.Position="{Binding Position}">
+                    <Rectangle Height="2" HorizontalAlignment="Stretch">
+                        <wpfRangeControls:RangePanel.Position>
+                            <MultiBinding Converter="{StaticResource ScrollBarPositionConverter}">
+                                <Binding Path="Position" />
+                                <Binding Path="Data.Rows" Source="{StaticResource VmProxy}" />
+                                <Binding Path="Data.VisibleRows" Source="{StaticResource VmProxy}" />
+                            </MultiBinding>
+                        </wpfRangeControls:RangePanel.Position>
                         <Rectangle.Fill>
-                            <SolidColorBrush Color="{Binding Color}" x:Name="_not_working_without_name_1234" />
+                            <SolidColorBrush Color="{Binding Color}" />
                         </Rectangle.Fill>
                     </Rectangle>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type system:Int32}">
+                <DataTemplate DataType="{x:Type system:Double}">
                     <Rectangle Height="2" Width="4"
-                               wpfRangeControls:RangePanel.Position="{Binding}"
-                               Fill="#8043D9E8"/>
+                               Fill="#8043D9E8">
+                        <wpfRangeControls:RangePanel.Position>
+                            <MultiBinding Converter="{StaticResource ScrollBarPositionConverter}">
+                                <Binding />
+                                <Binding Path="Data.Rows" Source="{StaticResource VmProxy}" />
+                                <Binding Path="Data.VisibleRows" Source="{StaticResource VmProxy}" />
+                            </MultiBinding>
+                        </wpfRangeControls:RangePanel.Position>
+                    </Rectangle>
                 </DataTemplate>
             </wpfRangeControls:RangeScrollbar.Resources>
         </wpfRangeControls:RangeScrollbar>
