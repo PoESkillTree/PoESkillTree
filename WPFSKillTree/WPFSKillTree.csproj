@@ -211,6 +211,7 @@
     <Compile Include="Controls\SearchableComboBox.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
     <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
+    <Compile Include="Utils\Wpf\ScrollViewerBindableOffsetBehavior.cs" />
     <Compile Include="ViewModels\Crafting\AbstractCraftingViewModel.cs" />
     <Compile Include="ViewModels\Crafting\CraftingViewModel.cs" />
     <Compile Include="ViewModels\Crafting\ModSelectorViewModel.cs" />
@@ -372,7 +373,7 @@
     <Compile Include="TreeGenerator\Views\SteinerTabView.xaml.cs">
       <DependentUpon>SteinerTabView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\Helper.cs" />
+    <Compile Include="Utils\Util.cs" />
     <Compile Include="Utils\PathEx.cs" />
     <Compile Include="Utils\SerializationUtils.cs" />
     <Compile Include="Model\Serialization\XmlBuildFolder.cs" />

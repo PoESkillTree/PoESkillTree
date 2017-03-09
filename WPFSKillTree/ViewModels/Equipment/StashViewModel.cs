@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using GongSolutions.Wpf.DragDrop;
 using MoreLinq;
 using POESKillTree.Common.ViewModels;
@@ -33,6 +34,10 @@ namespace POESKillTree.ViewModels.Equipment
             private get { return _persistentData; }
             set
             {
+                if (_persistentData != null)
+                {
+                    throw new InvalidOperationException("PersistentData may only be set once");
+                }
                 SetProperty(ref _persistentData, value, OnPersistentDataChanged);
             }
         }
@@ -58,13 +63,16 @@ namespace POESKillTree.ViewModels.Equipment
         }
 
         private double _scrollBarValue;
+        // This floored is the first partly visible row. This ceiled is the first fully visible row.
         public double ScrollBarValue
         {
             get { return _scrollBarValue; }
-            set { SetProperty(ref _scrollBarValue, value); }
+            set
+            {
+                var v = Math.Min(Math.Max(value, 0), LastOccupiedRow);
+                SetProperty(ref _scrollBarValue, v);
+            }
         }
-        // todo Scroll wheel scrolling (bind ScrollViewer.VerticalOffsert to ScrollBarValue)
-        // todo Items and background grid are not sharp (on x axis, only at some window widths)
 
         private double _visibleRows;
         public double VisibleRows
@@ -87,7 +95,6 @@ namespace POESKillTree.ViewModels.Equipment
         public StashViewModel(IExtendedDialogCoordinator dialogCoordinator)
         {
             _dialogCoordinator = dialogCoordinator;
-            Items.CollectionChanged += ItemsOnCollectionChanged;
 
             EditStashTabCommand = new AsyncRelayCommand<StashBookmark>(EditStashTabAsync);
             AddStashTabCommand = new AsyncRelayCommand(AddStashTabAsync);
@@ -102,8 +109,11 @@ namespace POESKillTree.ViewModels.Equipment
             foreach (var stashItem in PersistentData.StashItems)
             {
                 var item = new StashItemViewModel(_dialogCoordinator, PersistentData.EquipmentData, stashItem);
+                item.PropertyChanging += ItemOnPropertyChanging;
+                item.PropertyChanged += ItemOnPropertyChanged;
                 Items.Add(item);
             }
+            Items.CollectionChanged += ItemsOnCollectionChanged;
             EndUpdate();
         }
 
@@ -113,7 +123,9 @@ namespace POESKillTree.ViewModels.Equipment
             {
                 foreach (StashItemViewModel i in args.OldItems)
                 {
+                    i.PropertyChanging -= ItemOnPropertyChanging;
                     i.PropertyChanged -= ItemOnPropertyChanged;
+                    PersistentData.StashItems.Remove(i.Item);
                 }
             }
 
@@ -121,7 +133,9 @@ namespace POESKillTree.ViewModels.Equipment
             {
                 foreach (StashItemViewModel i in args.NewItems)
                 {
+                    i.PropertyChanging += ItemOnPropertyChanging;
                     i.PropertyChanged += ItemOnPropertyChanged;
+                    PersistentData.StashItems.Add(i.Item);
                 }
             }
 
@@ -131,14 +145,23 @@ namespace POESKillTree.ViewModels.Equipment
             }
         }
 
+        private void ItemOnPropertyChanging(object sender, PropertyChangingEventArgs args)
+        {
+            if (args.PropertyName == nameof(StashItemViewModel.Item))
+            {
+                var item = (StashItemViewModel) sender;
+                Items.Remove(item);
+            }
+        }
+
         private void ItemOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName == nameof(StashItemViewModel.Item))
             {
                 var item = (StashItemViewModel) sender;
-                if (item.Item == null)
+                if (item.Item != null)
                 {
-                    Items.Remove(item);
+                    Items.Add(item);
                 }
             }
         }
@@ -187,22 +210,7 @@ namespace POESKillTree.ViewModels.Equipment
          * with Width = Rows * GridSize
          *      Margin/Padding Top (may need centered outer grid) so that rectangle is on nearest GridSize multiple
          *        (GridSize * (int) Math.Round(y / CellSize))
-         * 
-         * DropAdorner and EffectCopyAdornerTemplate for item:
-         * <Rectangle VerticalAlignment="Top" HorizontalAlignment="Left"
-         *            Fill="DarkGreen" Opacity="0.3" />
-         * with Width = {Binding Width} * GridSize
-         *      Height = {Binding Height} * GridSize
-         *      Margin/Padding Top and Left (may need centered outer grid) so that DragStart is cursor position on recangle,
-         *      adjusted to fit into GridSize
-         *        (GridSize * (int) Math.Round(value / CellSize))
-         * Fill = Brushes.DarkRed if None effect
          */
-
-        private int FirstVisibleRow
-        {
-            get { return (int) ScrollBarValue; }
-        }
 
         public int LastOccupiedRow
         {
@@ -230,10 +238,15 @@ namespace POESKillTree.ViewModels.Equipment
             }
         }
 
-        public void AddItem(Item item)
+        public void AddItem(Item item, bool scrollToItem)
         {
             var itemVm = new StashItemViewModel(_dialogCoordinator, PersistentData.EquipmentData, item);
             Items.Add(itemVm);
+
+            if (!scrollToItem)
+            {
+                return;
+            }
             if (!_suppressRebuild)
             {
                 ScrollBarValue = item.Y;
@@ -253,7 +266,7 @@ namespace POESKillTree.ViewModels.Equipment
             var result = await _dialogCoordinator.EditStashTabAsync(this, vm);
             if (result == TabPickerResult.Affirmative)
             {
-                AddStashTab(new StashBookmark(vm.Name, FirstVisibleRow + 1, vm.Color));
+                AddStashTab(new StashBookmark(vm.Name, (int) ScrollBarValue + 1, vm.Color));
             }
         }
 
@@ -334,8 +347,6 @@ namespace POESKillTree.ViewModels.Equipment
                 else if (y >= to)
                 {
                     item.Item.Y -= diff;
-                    Items.Remove(item);
-                    Items.Add(item);
                 }
             }
 
@@ -366,16 +377,17 @@ namespace POESKillTree.ViewModels.Equipment
             var draggedItem = dropInfo.Data as DraggableItemViewModel;
             var bookmark = dropInfo.Data as StashBookmark;
 
-            // todo scrolling
             Point pos = dropInfo.DropPosition;
             // Scroll up or down if at upper or lower end of stash grid.
-            if (pos.Y / CellSize > VisibleRows - 0.35)
+            const double scrollRate = 0.6;
+            const double scrollThreshold = 0.5;
+            if (pos.Y / CellSize > VisibleRows - scrollThreshold)
             {
-                ScrollBarValue += 0.6;
+                ScrollBarValue += scrollRate;
             }
-            else if (pos.Y / CellSize < 0.35)
+            else if (pos.Y / CellSize < scrollThreshold)
             {
-                ScrollBarValue -= 0.6;
+                ScrollBarValue -= scrollRate;
             }
 
             if (draggedItem != null)
@@ -384,8 +396,7 @@ namespace POESKillTree.ViewModels.Equipment
                 pos.X -= dragStart.X;
                 pos.Y -= dragStart.Y;
                 var x = NearestCell(pos.X);
-                var y = NearestCell(pos.Y);
-                y += FirstVisibleRow;
+                var y = NearestCell(pos.Y + ScrollBarValue * CellSize);
 
                 var item = draggedItem.Item;
                 var hasOverlap = false;
@@ -407,6 +418,7 @@ namespace POESKillTree.ViewModels.Equipment
                 {
                     dropInfo.Effects = draggedItem.DropOnStashEffect;
                 }
+                dropInfo.DropTargetAdorner = typeof(ItemDropTargetAdorner);
             }
             else if (bookmark != null)
             {
@@ -428,8 +440,7 @@ namespace POESKillTree.ViewModels.Equipment
                 pos.X -= dragStart.X;
                 pos.Y -= dragStart.Y;
                 var x = NearestCell(pos.X);
-                var y = NearestCell(pos.Y);
-                y += FirstVisibleRow;
+                var y = NearestCell(pos.Y + ScrollBarValue * CellSize);
 
                 if (effect == DragDropEffects.Move)
                 {
@@ -439,7 +450,7 @@ namespace POESKillTree.ViewModels.Equipment
                     if (!Items.Contains(draggedItem))
                     {
                         draggedItem.Item = null;
-                        AddItem(item);
+                        AddItem(item, false);
                     }
                 }
                 else
@@ -449,17 +460,50 @@ namespace POESKillTree.ViewModels.Equipment
                         X = x,
                         Y = y
                     };
-                    AddItem(item);
+                    AddItem(item, false);
                 }
             }
             else if (bookmark != null)
             {
-                var y = NearestCell(pos.Y);
-                y += FirstVisibleRow;
+                var y = NearestCell(pos.Y + ScrollBarValue * CellSize);
                 bookmark.Position = y;
             }
 
             OnPropertyChanged(nameof(LastOccupiedRow));
+        }
+
+
+        private class ItemDropTargetAdorner : DropTargetAdorner
+        {
+            private static readonly Brush DefaultBrush = new SolidColorBrush(Color.FromArgb(80, 0, 100, 0));
+            private static readonly Brush NoneBrush = new SolidColorBrush(Color.FromArgb(80, 139, 0, 0));
+
+            public ItemDropTargetAdorner(UIElement adornedElement, DropInfo dropInfo)
+                : base(adornedElement, dropInfo)
+            {
+            }
+
+            protected override void OnRender(DrawingContext drawingContext)
+            {
+                // get drop position relative to AdornedElement
+                Point pos = DropInfo.VisualTargetItem.TranslatePoint(DropInfo.DropPosition, AdornedElement);
+                Point dragStart = DropInfo.DragInfo.PositionInDraggedItem;
+                pos.X -= dragStart.X;
+                pos.Y -= dragStart.Y;
+
+                var item = ((DraggableItemViewModel) DropInfo.Data).Item;
+                var rect = new Rect
+                {
+                    X = NearestCell(pos.X) * CellSize,
+                    Y = NearestCell(pos.Y) * CellSize,
+                    Width = item.Width * CellSize,
+                    Height = item.Height * CellSize
+                };
+
+                var brush = DropInfo.Effects == DragDropEffects.None
+                    ? NoneBrush : DefaultBrush;
+                drawingContext.DrawRectangle(brush, null, rect);
+            }
         }
     }
 }

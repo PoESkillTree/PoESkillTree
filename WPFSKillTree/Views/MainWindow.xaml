@@ -20,7 +20,8 @@
         PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp"
         TextOptions.TextFormattingMode="Display"
         x:Name="window" SaveWindowPosition="True"
-        DataContext="{Binding ElementName=window}">
+        DataContext="{Binding ElementName=window}"
+        UseLayoutRounding="True">
     <controls:MetroWindow.Title>
         <MultiBinding StringFormat="{}{0} - {1}">
             <Binding Path="PersistentData.CurrentBuild.Name" ElementName="window" />

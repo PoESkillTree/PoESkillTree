@@ -221,7 +221,7 @@ namespace POESKillTree.ViewModels.Equipment
                         await _dialogCoordinator.ShowWarningAsync(this, "Skipping item because it is too wide.");
                         continue;
                     }
-                    _stash.AddItem(item);
+                    _stash.AddItem(item, true);
                 }
 
                 await _dialogCoordinator.ShowInfoAsync(this, L10n.Message("New tab added"),

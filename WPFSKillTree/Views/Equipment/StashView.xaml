@@ -51,11 +51,11 @@
         <ScrollViewer Grid.Column="1" Grid.Row="0"
                       HorizontalScrollBarVisibility="Disabled"
                       VerticalScrollBarVisibility="Hidden"
-                      wpf:Helper.ScrollViewerVerticalOffset="{Binding ScrollBarValue, Converter={StaticResource CellSizeMultiplicationConverter}}"
                       dd:DragDrop.IsDropTarget="True"
                       dd:DragDrop.DropHandler="{Binding}">
             <i:Interaction.Behaviors>
                 <wpf:BindableActualSizeBehavior ActualHeight="{Binding VisibleRows, Converter={StaticResource CellSizeMultiplicationConverter}, Mode=OneWayToSource}" />
+                <wpf:ScrollViewerBindableOffsetBehavior VerticalOffset="{Binding ScrollBarValue, Converter={StaticResource CellSizeMultiplicationConverter}, Mode=TwoWay}" />
             </i:Interaction.Behaviors>
             <ItemsControl ItemsSource="{Binding Items}">
                 <ItemsControl.ItemsPanel>
@@ -75,7 +75,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.Background>
                     <DrawingBrush TileMode="Tile" Stretch="None"
-                                  ViewportUnits="Absolute" Viewport="0 0 47 47" >
+                                  ViewportUnits="Absolute" Viewport="0 0 47 47">
                         <DrawingBrush.Drawing>
                             <DrawingGroup>
                                 <GeometryDrawing>
@@ -106,7 +106,7 @@
         </ScrollViewer>
         <wpfRangeControls:RangeScrollbar Grid.Row="0" Grid.Column="2"
                                          Minimum="0"
-                                         Maximum="{Binding Path=LastOccupiedRow}"
+                                         Maximum="{Binding LastOccupiedRow}"
                                          Value="{Binding ScrollBarValue}"
                                          SmallChange="1" LargeChange="{Binding VisibleRows}"
                                          ViewportSize="{Binding VisibleRows}">

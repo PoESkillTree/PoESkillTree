@@ -2125,12 +2125,12 @@ namespace POESKillTree.Views
 
             var item = viewModel.Item;
             item.SetJsonBase();
-            if (PersistentData.StashItems.Count > 0)
+            if (StashViewModel.Items.Count > 0)
             {
-                item.Y = PersistentData.StashItems.Max(i => i.Y + i.Height);
+                item.Y = StashViewModel.LastOccupiedRow + 1;
             }
 
-            StashViewModel.AddItem(item);
+            StashViewModel.AddItem(item, true);
         }
 
 #region Async task helpers
