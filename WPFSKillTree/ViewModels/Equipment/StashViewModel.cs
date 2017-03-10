@@ -92,6 +92,8 @@ namespace POESKillTree.ViewModels.Equipment
         public ICommand AddStashTabCommand { get; }
         public ICommand ScrollToStashTabCommand { get; }
 
+        public IDropTarget StashTabDropHandler { get; }
+
         public StashViewModel(IExtendedDialogCoordinator dialogCoordinator)
         {
             _dialogCoordinator = dialogCoordinator;
@@ -99,6 +101,8 @@ namespace POESKillTree.ViewModels.Equipment
             EditStashTabCommand = new AsyncRelayCommand<StashBookmark>(EditStashTabAsync);
             AddStashTabCommand = new AsyncRelayCommand(AddStashTabAsync);
             ScrollToStashTabCommand = new RelayCommand<StashBookmark>(ScrollToStashTab);
+
+            StashTabDropHandler = new StashTabDropTarget(this);
         }
 
         private void OnPersistentDataChanged()
@@ -477,6 +481,30 @@ namespace POESKillTree.ViewModels.Equipment
             RowsChanged();
         }
 
+
+        private class StashTabDropTarget : IDropTarget
+        {
+            private readonly StashViewModel _stashViewModel;
+
+            public StashTabDropTarget(StashViewModel stashViewModel)
+            {
+                _stashViewModel = stashViewModel;
+            }
+
+            public void DragOver(IDropInfo dropInfo)
+            {
+                var tab = ((FrameworkElement) dropInfo.VisualTarget).DataContext as StashBookmark;
+                if (tab != null)
+                {
+                    _stashViewModel.ScrollToStashTab(tab);
+                }
+            }
+
+            public void Drop(IDropInfo dropInfo)
+            {
+                // drop is not allowed, DragDropEffects are always None
+            }
+        }
 
         private class ItemDropTargetAdorner : DropTargetAdorner
         {

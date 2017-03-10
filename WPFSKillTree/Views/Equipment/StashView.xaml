@@ -15,9 +15,11 @@
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
              xmlns:controls="clr-namespace:POESKillTree.Controls"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
              mc:Ignorable="d" 
              d:DesignHeight="300"
-             d:DataContext="{d:DesignInstance viewModels:StashViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:StashViewModel}"
+             dialogs:DialogParticipation.Register="{Binding}">
     <UserControl.Resources>
         <converter:ProductConverter x:Key="CellSizeMultiplicationConverter"
                                     Constant="{x:Static viewModels:StashViewModel.CellSize}" />
@@ -25,15 +27,6 @@
         <local:ScrollBarPositionConverter x:Key="ScrollBarPositionConverter" />
 
         <viewModels:StashViewModelProxy x:Key="VmProxy" Data="{Binding}" />
-
-        <CompositeCollection x:Key="StashTabCollection">
-            <CollectionContainer Collection="{Binding Bookmarks}" />
-            <Button Style="{DynamicResource MetroCircleButtonStyle}"
-                    Width="17" Height="17"
-                    Command="{Binding AddStashTabCommand}">
-                <iconPacks:PackIconModern Kind="Add" Height="10" Width="10" />
-            </Button>
-        </CompositeCollection>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -46,6 +39,75 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <ItemsControl Grid.Column="0" Grid.Row="0">
+            <ItemsControl.ItemsSource>
+                <CompositeCollection>
+                    <CollectionContainer Collection="{Binding Data.Bookmarks, Source={StaticResource VmProxy}}" />
+                    <Button Style="{DynamicResource MahApps.Metro.Styles.MetroCircleButtonStyle}"
+                            Width="18" Height="18"
+                            Command="{Binding AddStashTabCommand}">
+                        <iconPacks:PackIconModern Kind="Add" Height="10" Width="10" />
+                    </Button>
+                </CompositeCollection>
+            </ItemsControl.ItemsSource>
+            <ItemsControl.Resources>
+                <DataTemplate DataType="{x:Type controls:StashBookmark}">
+                    <Button RenderTransformOrigin="0.5 0.5"
+                            MinWidth="25" Height="20" MinHeight="16" 
+                            Content="{Binding Name}"
+                            Command="{Binding Data.ScrollToStashTabCommand, Source={StaticResource VmProxy}}"
+                            CommandParameter="{Binding}"
+                            dd:DragDrop.IsDropTarget="True"
+                            dd:DragDrop.DropHandler="{Binding Data.StashTabDropHandler, Source={StaticResource VmProxy}}">
+                        <Button.Background>
+                            <SolidColorBrush Color="{Binding Color}" />
+                        </Button.Background>
+                        <Button.LayoutTransform>
+                            <TransformGroup>
+                                <RotateTransform Angle="-90"/>
+                            </TransformGroup>
+                        </Button.LayoutTransform>
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border x:Name="PART_Border"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="1"
+                                        Background="{TemplateBinding Background}"
+                                        Padding="2 0"
+                                        CornerRadius="3 3 0 0">
+                                    <ContentPresenter Content="{TemplateBinding Content}"
+                                                      Focusable="False"
+                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      RecognizesAccessKey="True"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" TargetName="PART_Border" Value="#FFBEE6FD"/>
+                                        <Setter Property="BorderBrush" TargetName="PART_Border" Value="#FF3C7FB1"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" TargetName="PART_Border" Value="#FFC4E5F6"/>
+                                        <Setter Property="BorderBrush" TargetName="PART_Border" Value="#FF2C628B"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <Button.InputBindings>
+                            <MouseBinding MouseAction="RightClick"
+                                          Command="{Binding Data.EditStashTabCommand, Source={StaticResource VmProxy}}"
+                                          CommandParameter="{Binding}" />
+                        </Button.InputBindings>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.Resources>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        
         <ScrollViewer Grid.Column="1" Grid.Row="0"
                       HorizontalScrollBarVisibility="Disabled"
                       VerticalScrollBarVisibility="Hidden"

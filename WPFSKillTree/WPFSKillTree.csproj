@@ -298,9 +298,6 @@
       <DependentUpon>ItemVisualizer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MenuItemExtensions.cs" />
-    <Compile Include="Controls\Stash.xaml.cs">
-      <DependentUpon>Stash.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\StashBookmark.cs" />
     <Compile Include="ItemFilter\Model\Block.cs" />
     <Compile Include="ItemFilter\Model\Filter.cs" />
@@ -675,10 +672,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ItemVisualizer.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Stash.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
