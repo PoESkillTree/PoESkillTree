@@ -296,7 +296,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Dagger Axe" Level="36" Strength="89" Dexterity="43" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxeM1">
     <Implicit>
-      <Stat Name="#% increased Critical Strike Chance" From="25" To="25" />
+      <Stat Name="#% increased Critical Strike Chance" From="50" To="50" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="45" To="71" />
@@ -370,7 +370,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Talon Axe" Level="59" Strength="140" Dexterity="67" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxeM2">
     <Implicit>
-      <Stat Name="#% increased Critical Strike Chance" From="25" To="25" />
+      <Stat Name="#% increased Critical Strike Chance" From="50" To="50" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="75" To="118" />
@@ -426,7 +426,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedAxe" Name="Fleshripper" Level="70" Strength="156" Dexterity="84" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxeM3">
     <Implicit>
-      <Stat Name="#% increased Critical Strike Chance" From="40" To="40" />
+      <Stat Name="#% increased Critical Strike Chance" From="50" To="50" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="80" To="125" />
@@ -491,7 +491,7 @@
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Royal Bow" Level="28" Strength="0" Dexterity="95" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Bows/Bow7">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage with Weapons" From="6" To="12" />
+      <Stat Name="#% increased Elemental Damage with Weapons" From="20" To="24" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="10" To="41" />
@@ -569,7 +569,7 @@
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Highborn Bow" Level="50" Strength="0" Dexterity="161" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Bows/Bow14">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage with Weapons" From="6" To="12" />
+      <Stat Name="#% increased Elemental Damage with Weapons" From="20" To="24" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="17" To="66" />
@@ -647,7 +647,7 @@
   </ItemBase>
   <ItemBase ItemType="Bow" Name="Imperial Bow" Level="66" Strength="0" Dexterity="212" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Bows/Bow21">
     <Implicit>
-      <Stat Name="#% increased Elemental Damage with Weapons" From="6" To="12" />
+      <Stat Name="#% increased Elemental Damage with Weapons" From="20" To="24" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="19" To="78" />
@@ -1783,7 +1783,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Driftwood Maul" Level="3" Strength="20" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace1">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="9" To="13" />
@@ -1794,7 +1794,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Tribal Maul" Level="8" Strength="35" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace2">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="15" To="23" />
@@ -1805,7 +1805,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Mallet" Level="12" Strength="47" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace3">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="15" To="30" />
@@ -1816,7 +1816,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Sledgehammer" Level="17" Strength="62" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace4">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="40" To="40" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="45" To="45" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="21" To="32" />
@@ -1827,7 +1827,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Jagged Maul" Level="22" Strength="77" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace5">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="24" To="45" />
@@ -1838,7 +1838,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Brass Maul" Level="27" Strength="92" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace6">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="34" To="51" />
@@ -1849,7 +1849,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Fright Maul" Level="32" Strength="107" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace7">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="39" To="53" />
@@ -1860,7 +1860,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Morning Star" Level="34" Strength="118" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMaceM1">
     <Implicit>
-      <Stat Name="#% increased Radius of Area Skills" From="4" To="4" />
+      <Stat Name="#% increased Area of Effect of Area Skills" From="4" To="4" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="39" To="58" />
@@ -1871,7 +1871,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Totemic Maul" Level="36" Strength="119" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace8">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="49" To="73" />
@@ -1882,7 +1882,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Great Mallet" Level="40" Strength="131" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace9">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="37" To="76" />
@@ -1893,7 +1893,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Steelhead" Level="44" Strength="143" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace10">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="40" To="40" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="45" To="45" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="47" To="70" />
@@ -1904,7 +1904,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Spiny Maul" Level="48" Strength="155" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace11">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="47" To="88" />
@@ -1915,7 +1915,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Plated Maul" Level="51" Strength="164" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace12">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="62" To="92" />
@@ -1926,7 +1926,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Dread Maul" Level="54" Strength="173" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace13">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="66" To="89" />
@@ -1937,7 +1937,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Solar Maul" Level="56" Strength="187" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMaceM2">
     <Implicit>
-      <Stat Name="#% increased Radius of Area Skills" From="4" To="4" />
+      <Stat Name="#% increased Area of Effect of Area Skills" From="4" To="4" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="64" To="97" />
@@ -1948,7 +1948,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Karui Maul" Level="57" Strength="182" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace14">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="79" To="118" />
@@ -1959,7 +1959,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Colossus Mallet" Level="59" Strength="188" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace15">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="57" To="118" />
@@ -1970,7 +1970,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Piledriver" Level="61" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace16">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="40" To="40" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="45" To="45" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="67" To="100" />
@@ -1981,7 +1981,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Meatgrinder" Level="63" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace17">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="63" To="117" />
@@ -1992,7 +1992,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Imperial Maul" Level="65" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace18">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="74" To="111" />
@@ -2003,7 +2003,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Terror Maul" Level="67" Strength="212" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMace19">
     <Implicit>
-      <Stat Name="#% increased Stun Duration on Enemies" From="20" To="20" />
+      <Stat Name="#% increased Stun Duration on Enemies" From="30" To="30" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="75" To="102" />
@@ -2014,7 +2014,7 @@
   </ItemBase>
   <ItemBase ItemType="TwoHandedMace" Name="Coronal Maul" Level="69" Strength="220" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMaceM3">
     <Implicit>
-      <Stat Name="#% increased Radius of Area Skills" From="6" To="6" />
+      <Stat Name="#% increased Area of Effect of Area Skills" From="6" To="6" />
     </Implicit>
     <Properties>
       <Stat Name="Physical Damage" From="74" To="110" />
@@ -3427,7 +3427,7 @@
   </ItemBase>
   <ItemBase ItemType="Amulet" Name="Monkey Twins Talisman" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Talismans/Talisman3_3">
     <Implicit>
-      <Stat Name="#% increased Radius of Area Skills" From="5" To="8" />
+      <Stat Name="#% increased Area of Effect of Area Skills" From="5" To="8" />
     </Implicit>
     <Properties />
   </ItemBase>
@@ -4823,7 +4823,7 @@
       <Stat Name="Evasion Rating" From="214" To="214" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemType="BootsEnergyShield" Name="Wool Shoes" Level="3" Strength="0" Dexterity="0" Intelligence="11" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Boots/BootsInt1">
+  <ItemBase ItemType="BootsEnergyShield" Name="Wool Shoes" Level="1" Strength="0" Dexterity="0" Intelligence="11" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Boots/BootsInt1">
     <Implicit />
     <Properties>
       <Stat Name="Energy Shield" From="4" To="4" />
