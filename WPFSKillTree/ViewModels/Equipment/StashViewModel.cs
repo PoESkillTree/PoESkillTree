@@ -26,8 +26,6 @@ namespace POESKillTree.ViewModels.Equipment
 
     public class StashViewModel : Notifier, IDropTarget
     {
-        // todo order members; sections
-
         public static double CellSize => 47.0;
         public static int Columns => 12;
 
@@ -76,6 +74,19 @@ namespace POESKillTree.ViewModels.Equipment
             get { return _visibleRows; }
             set { SetProperty(ref _visibleRows, value, RowsChanged); }
         }
+
+        public int LastOccupiedRow
+        {
+            get
+            {
+                return Math.Max(
+                    Items.Select(i => i.Item.Y + i.Item.Height - 1).DefaultIfEmpty().Max(),
+                    Bookmarks.Select(b => b.Bookmark.Position).DefaultIfEmpty().Max());
+            }
+        }
+
+        public double Rows
+            => LastOccupiedRow + VisibleRows;
 
         private string _searchText;
         public string SearchText
@@ -193,19 +204,6 @@ namespace POESKillTree.ViewModels.Equipment
             return modstrings.Any(s => s != null && s.ToLower().Contains(SearchText));
         }
 
-        public int LastOccupiedRow
-        {
-            get
-            {
-                return Math.Max(
-                    Items.Select(i => i.Item.Y + i.Item.Height - 1).DefaultIfEmpty().Max(),
-                    Bookmarks.Select(b => b.Bookmark.Position).DefaultIfEmpty().Max());
-            }
-        }
-
-        public double Rows
-            => LastOccupiedRow + VisibleRows;
-
         private void RowsChanged()
         {
             OnPropertyChanged(nameof(LastOccupiedRow));
@@ -246,6 +244,8 @@ namespace POESKillTree.ViewModels.Equipment
                 _smallestAddedItemY = item.Y;
             }
         }
+
+        #region Stash Tabs
 
         private async Task AddStashTabAsync()
         {
@@ -362,6 +362,10 @@ namespace POESKillTree.ViewModels.Equipment
         {
             ScrollBarValue = bookmark.Bookmark.Position;
         }
+
+        #endregion
+
+        #region Drag&Drop
 
         private static int NearestCell(double pos)
         {
@@ -553,5 +557,7 @@ namespace POESKillTree.ViewModels.Equipment
                 drawingContext.DrawRectangle(brush, null, rect);
             }
         }
+
+        #endregion
     }
 }
