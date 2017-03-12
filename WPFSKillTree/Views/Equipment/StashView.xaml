@@ -129,25 +129,31 @@
                                              Height="{Binding Item.Height, Converter={StaticResource CellSizeMultiplicationConverter}}" />
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type viewModels:StashBookmarkViewModel}">
-                        <Rectangle Height="2"
-                                   Width="{Binding Data.Columns, Converter={StaticResource CellSizeMultiplicationConverter}, Source={StaticResource VmProxy}}"
-                                   Cursor="SizeNS"
-                                   dd:DragDrop.IsDragSource="True"
-                                   dd:DragDrop.DragHandler="{Binding}">
-                            <Rectangle.Fill>
-                                <SolidColorBrush Color="{Binding Bookmark.Color}" />
-                            </Rectangle.Fill>
-                            <Rectangle.Style>
-                                <Style TargetType="Rectangle">
-                                    <Setter Property="Opacity" Value="1" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsDragged}" Value="True">
-                                            <Setter Property="Opacity" Value="0.4" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Rectangle.Style>
-                        </Rectangle>
+                        <!-- Drag can only be started if the mouse stays over the control, so the actual visual
+                             rectangle is surrounded by a grid to allow the mouse to stay over the control easier.  -->
+                        <Grid Height="10"
+                              Width="{Binding Data.Columns, Converter={StaticResource CellSizeMultiplicationConverter}, Source={StaticResource VmProxy}}"
+                              Cursor="SizeNS"
+                              dd:DragDrop.IsDragSource="True"
+                              dd:DragDrop.DragHandler="{Binding}"
+                              Background="Transparent">
+                            <Rectangle Height="2"
+                                       VerticalAlignment="Center">
+                                <Rectangle.Fill>
+                                    <SolidColorBrush Color="{Binding Bookmark.Color}" />
+                                </Rectangle.Fill>
+                                <Rectangle.Style>
+                                    <Style TargetType="Rectangle">
+                                        <Setter Property="Opacity" Value="1" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsDragged}" Value="True">
+                                                <Setter Property="Opacity" Value="0.4" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Rectangle.Style>
+                            </Rectangle>
+                        </Grid>
                     </DataTemplate>
                 </ItemsControl.Resources>
                 <ItemsControl.ItemsPanel>
@@ -187,7 +193,7 @@
                                 <Setter Property="Canvas.Top">
                                     <Setter.Value>
                                         <MultiBinding Converter="{StaticResource SumConverter}"
-                                                      ConverterParameter="-1">
+                                                      ConverterParameter="-5">
                                             <Binding Path="Bookmark.Position" Converter="{StaticResource CellSizeMultiplicationConverter}" />
                                         </MultiBinding>
                                     </Setter.Value>
