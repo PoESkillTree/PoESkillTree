@@ -13,7 +13,6 @@
              xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
              xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-             xmlns:controls="clr-namespace:POESKillTree.Controls"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
              mc:Ignorable="d" 
@@ -51,16 +50,16 @@
                 </CompositeCollection>
             </ItemsControl.ItemsSource>
             <ItemsControl.Resources>
-                <DataTemplate DataType="{x:Type controls:StashBookmark}">
+                <DataTemplate DataType="{x:Type viewModels:StashBookmarkViewModel}">
                     <Button RenderTransformOrigin="0.5 0.5"
                             MinWidth="25" Height="20" MinHeight="16" 
-                            Content="{Binding Name}"
+                            Content="{Binding Bookmark.Name}"
                             Command="{Binding Data.ScrollToStashTabCommand, Source={StaticResource VmProxy}}"
                             CommandParameter="{Binding}"
                             dd:DragDrop.IsDropTarget="True"
                             dd:DragDrop.DropHandler="{Binding Data.StashTabDropHandler, Source={StaticResource VmProxy}}">
                         <Button.Background>
-                            <SolidColorBrush Color="{Binding Color}" />
+                            <SolidColorBrush Color="{Binding Bookmark.Color}" />
                         </Button.Background>
                         <Button.LayoutTransform>
                             <TransformGroup>
@@ -129,13 +128,25 @@
                         <local:StashItemView Width="{Binding Item.Width, Converter={StaticResource CellSizeMultiplicationConverter}}"
                                              Height="{Binding Item.Height, Converter={StaticResource CellSizeMultiplicationConverter}}" />
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type controls:StashBookmark}">
+                    <DataTemplate DataType="{x:Type viewModels:StashBookmarkViewModel}">
                         <Rectangle Height="2"
                                    Width="{Binding Data.Columns, Converter={StaticResource CellSizeMultiplicationConverter}, Source={StaticResource VmProxy}}"
-                                   Cursor="SizeNS">
+                                   Cursor="SizeNS"
+                                   dd:DragDrop.IsDragSource="True"
+                                   dd:DragDrop.DragHandler="{Binding}">
                             <Rectangle.Fill>
-                                <SolidColorBrush Color="{Binding Color}" />
+                                <SolidColorBrush Color="{Binding Bookmark.Color}" />
                             </Rectangle.Fill>
+                            <Rectangle.Style>
+                                <Style TargetType="Rectangle">
+                                    <Setter Property="Opacity" Value="1" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsDragged}" Value="True">
+                                            <Setter Property="Opacity" Value="0.4" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Rectangle.Style>
                         </Rectangle>
                     </DataTemplate>
                 </ItemsControl.Resources>
@@ -163,7 +174,7 @@
                     </DrawingBrush>
                 </ItemsControl.Background>
                 <ItemsControl.ItemContainerStyleSelector>
-                    <wpf:StyleSelectorByType Type="{x:Type controls:StashBookmark}">
+                    <wpf:StyleSelectorByType Type="{x:Type viewModels:StashBookmarkViewModel}">
                         <wpf:StyleSelectorByType.DefaultStyle>
                             <Style TargetType="FrameworkElement">
                                 <Setter Property="Canvas.Left" Value="{Binding Item.X, Converter={StaticResource CellSizeMultiplicationConverter}}" />
@@ -177,7 +188,7 @@
                                     <Setter.Value>
                                         <MultiBinding Converter="{StaticResource SumConverter}"
                                                       ConverterParameter="-1">
-                                            <Binding Path="Position" Converter="{StaticResource CellSizeMultiplicationConverter}" />
+                                            <Binding Path="Bookmark.Position" Converter="{StaticResource CellSizeMultiplicationConverter}" />
                                         </MultiBinding>
                                     </Setter.Value>
                                 </Setter>
@@ -201,17 +212,17 @@
                 </CompositeCollection>
             </wpfRangeControls:RangeScrollbar.ItemsSource>
             <wpfRangeControls:RangeScrollbar.Resources>
-                <DataTemplate DataType="{x:Type controls:StashBookmark}">
+                <DataTemplate DataType="{x:Type viewModels:StashBookmarkViewModel}">
                     <Rectangle Height="2" HorizontalAlignment="Stretch">
                         <wpfRangeControls:RangePanel.Position>
                             <MultiBinding Converter="{StaticResource ScrollBarPositionConverter}">
-                                <Binding Path="Position" />
+                                <Binding Path="Bookmark.Position" />
                                 <Binding Path="Data.Rows" Source="{StaticResource VmProxy}" />
                                 <Binding Path="Data.VisibleRows" Source="{StaticResource VmProxy}" />
                             </MultiBinding>
                         </wpfRangeControls:RangePanel.Position>
                         <Rectangle.Fill>
-                            <SolidColorBrush Color="{Binding Color}" />
+                            <SolidColorBrush Color="{Binding Bookmark.Color}" />
                         </Rectangle.Fill>
                     </Rectangle>
                 </DataTemplate>

@@ -55,12 +55,8 @@ namespace POESKillTree.ViewModels.Equipment
 
         public ObservableCollection<double> SearchMatches { get; } = new ObservableCollection<double>();
 
-        private ObservableCollection<StashBookmark> _bookmarks = new ObservableCollection<StashBookmark>();
-        public ObservableCollection<StashBookmark> Bookmarks
-        {
-            get { return _bookmarks; }
-            private set { SetProperty(ref _bookmarks, value); }
-        }
+        public ObservableCollection<StashBookmarkViewModel> Bookmarks { get; }
+            = new ObservableCollection<StashBookmarkViewModel>();
 
         private double _scrollBarValue;
         // This floored is the first partly visible row. This ceiled is the first fully visible row.
@@ -98,9 +94,9 @@ namespace POESKillTree.ViewModels.Equipment
         {
             _dialogCoordinator = dialogCoordinator;
 
-            EditStashTabCommand = new AsyncRelayCommand<StashBookmark>(EditStashTabAsync);
+            EditStashTabCommand = new AsyncRelayCommand<StashBookmarkViewModel>(EditStashTabAsync);
             AddStashTabCommand = new AsyncRelayCommand(AddStashTabAsync);
-            ScrollToStashTabCommand = new RelayCommand<StashBookmark>(ScrollToStashTab);
+            ScrollToStashTabCommand = new RelayCommand<StashBookmarkViewModel>(ScrollToStashTab);
 
             StashTabDropHandler = new StashTabDropTarget(this);
         }
@@ -108,7 +104,7 @@ namespace POESKillTree.ViewModels.Equipment
         private void OnPersistentDataChanged()
         {
             BeginUpdate();
-            Bookmarks = PersistentData.StashBookmarks;
+            Bookmarks.AddRange(PersistentData.StashBookmarks.Select(b => new StashBookmarkViewModel(b)));
             Bookmarks.CollectionChanged += (sender, args) => RowsChanged();
             foreach (var stashItem in PersistentData.StashItems)
             {
@@ -197,28 +193,13 @@ namespace POESKillTree.ViewModels.Equipment
             return modstrings.Any(s => s != null && s.ToLower().Contains(SearchText));
         }
 
-        /* todo
-         * 
-         * StashBookmark: todo DragDrop settings
-         * when dragged:
-         *  IsHitTestVisible = false
-         *  Opacity = 0.3
-         * 
-         * DropAdorner for bookmark:
-         * <Rectangle VerticalAlignment="Top" HorizontalAlignment="Left"
-         *            Fill="{Binding Color}" Opacity="0.3" Height="2" />
-         * with Width = Rows * GridSize
-         *      Margin/Padding Top (may need centered outer grid) so that rectangle is on nearest GridSize multiple
-         *        (GridSize * (int) Math.Round(y / CellSize))
-         */
-
         public int LastOccupiedRow
         {
             get
             {
                 return Math.Max(
                     Items.Select(i => i.Item.Y + i.Item.Height - 1).DefaultIfEmpty().Max(),
-                    Bookmarks.Select(b => b.Position).DefaultIfEmpty().Max());
+                    Bookmarks.Select(b => b.Bookmark.Position).DefaultIfEmpty().Max());
             }
         }
 
@@ -281,7 +262,10 @@ namespace POESKillTree.ViewModels.Equipment
 
         public void AddStashTab(StashBookmark stashBookmark)
         {
-            Bookmarks.Insert(FindTabPos(stashBookmark.Position, 0, Bookmarks.Count), stashBookmark);
+            var position = FindTabPos(stashBookmark.Position, 0, Bookmarks.Count);
+            Bookmarks.Insert(position, 
+                new StashBookmarkViewModel(stashBookmark));
+            PersistentData.StashBookmarks.Insert(position, stashBookmark);
         }
 
         private int FindTabPos(int position, int from, int limit)
@@ -292,18 +276,19 @@ namespace POESKillTree.ViewModels.Equipment
             var middle = from + (limit - from) / 2;
 
             if (middle == from)
-                return (Bookmarks[middle].Position > position) ? middle : middle + 1;
+                return (Bookmarks[middle].Bookmark.Position > position) ? middle : middle + 1;
 
             if (middle == limit)
                 return limit + 1;
 
-            if (Bookmarks[middle].Position > position)
+            if (Bookmarks[middle].Bookmark.Position > position)
                 return FindTabPos(position, from, middle);
             return FindTabPos(position, middle, limit);
         }
 
-        private async Task EditStashTabAsync(StashBookmark bookmark)
+        private async Task EditStashTabAsync(StashBookmarkViewModel bookmarkVm)
         {
+            var bookmark = bookmarkVm.Bookmark;
             var vm = new TabPickerViewModel
             {
                 Color = bookmark.Color,
@@ -313,7 +298,8 @@ namespace POESKillTree.ViewModels.Equipment
             switch (result)
             {
                 case TabPickerResult.Delete:
-                    Bookmarks.Remove(bookmark);
+                    Bookmarks.Remove(bookmarkVm);
+                    PersistentData.StashBookmarks.Remove(bookmark);
                     break;
 
                 case TabPickerResult.DeleteIncludingItems:
@@ -323,7 +309,7 @@ namespace POESKillTree.ViewModels.Equipment
                         title: L10n.Message("Delete items"));
                     if (confirmationResult == MessageBoxResult.Yes)
                     {
-                        DeleteBookmarkAndItems(bookmark);
+                        DeleteBookmarkAndItems(bookmarkVm);
                     }
                     break;
 
@@ -334,14 +320,14 @@ namespace POESKillTree.ViewModels.Equipment
             }
         }
 
-        private void DeleteBookmarkAndItems(StashBookmark bm)
+        private void DeleteBookmarkAndItems(StashBookmarkViewModel bm)
         {
             BeginUpdate();
 
-            var from = bm.Position;
+            var from = bm.Bookmark.Position;
             var to =
-                Bookmarks.Where(b => b.Position > from)
-                    .Select(b => b.Position)
+                Bookmarks.Where(b => b.Bookmark.Position > from)
+                    .Select(b => b.Bookmark.Position)
                     .DefaultIfEmpty(LastOccupiedRow)
                     .Min();
             var diff = to - from;
@@ -360,20 +346,21 @@ namespace POESKillTree.ViewModels.Equipment
             }
 
             Bookmarks.Remove(bm);
+            PersistentData.StashBookmarks.Remove(bm.Bookmark);
             foreach (var bookmark in Bookmarks.ToList())
             {
-                if (bookmark.Position >= to)
+                if (bookmark.Bookmark.Position >= to)
                 {
-                    bookmark.Position -= diff;
+                    bookmark.Bookmark.Position -= diff;
                 }
             }
 
             EndUpdate();
         }
 
-        private void ScrollToStashTab(StashBookmark bookmark)
+        private void ScrollToStashTab(StashBookmarkViewModel bookmark)
         {
-            ScrollBarValue = bookmark.Position;
+            ScrollBarValue = bookmark.Bookmark.Position;
         }
 
         private static int NearestCell(double pos)
@@ -384,7 +371,7 @@ namespace POESKillTree.ViewModels.Equipment
         void IDropTarget.DragOver(IDropInfo dropInfo)
         {
             var draggedItem = dropInfo.Data as DraggableItemViewModel;
-            var bookmark = dropInfo.Data as StashBookmark;
+            var bookmark = dropInfo.Data as StashBookmarkViewModel;
 
             Point pos = dropInfo.DropPosition;
             // Scroll up or down if at upper or lower end of stash grid.
@@ -432,6 +419,7 @@ namespace POESKillTree.ViewModels.Equipment
             else if (bookmark != null)
             {
                 dropInfo.Effects = DragDropEffects.Move;
+                dropInfo.DropTargetAdorner = typeof(BookmarkDropTargetAdorner);
             }
         }
 
@@ -440,7 +428,7 @@ namespace POESKillTree.ViewModels.Equipment
             var effect = dropInfo.Effects;
 
             var draggedItem = dropInfo.Data as DraggableItemViewModel;
-            var bookmark = dropInfo.Data as StashBookmark;
+            var bookmark = dropInfo.Data as StashBookmarkViewModel;
             Point pos = dropInfo.DropPosition;
 
             if (draggedItem != null)
@@ -475,7 +463,7 @@ namespace POESKillTree.ViewModels.Equipment
             else if (bookmark != null)
             {
                 var y = NearestCell(pos.Y + ScrollBarValue * CellSize);
-                bookmark.Position = y;
+                bookmark.Bookmark.Position = y;
             }
 
             RowsChanged();
@@ -493,7 +481,7 @@ namespace POESKillTree.ViewModels.Equipment
 
             public void DragOver(IDropInfo dropInfo)
             {
-                var tab = ((FrameworkElement) dropInfo.VisualTarget).DataContext as StashBookmark;
+                var tab = ((FrameworkElement) dropInfo.VisualTarget).DataContext as StashBookmarkViewModel;
                 if (tab != null)
                 {
                     _stashViewModel.ScrollToStashTab(tab);
@@ -505,6 +493,7 @@ namespace POESKillTree.ViewModels.Equipment
                 // drop is not allowed, DragDropEffects are always None
             }
         }
+
 
         private class ItemDropTargetAdorner : DropTargetAdorner
         {
@@ -535,6 +524,32 @@ namespace POESKillTree.ViewModels.Equipment
 
                 var brush = DropInfo.Effects == DragDropEffects.None
                     ? NoneBrush : DefaultBrush;
+                drawingContext.DrawRectangle(brush, null, rect);
+            }
+        }
+
+
+        private class BookmarkDropTargetAdorner : DropTargetAdorner
+        {
+            public BookmarkDropTargetAdorner(UIElement adornedElement, DropInfo dropInfo)
+                : base(adornedElement, dropInfo)
+            {
+            }
+
+            protected override void OnRender(DrawingContext drawingContext)
+            {
+                // get drop position relative to AdornedElement
+                Point pos = DropInfo.VisualTargetItem.TranslatePoint(DropInfo.DropPosition, AdornedElement);
+                var rect = new Rect
+                {
+                    X = 0,
+                    Y = NearestCell(pos.Y) * CellSize - 1,
+                    Width = VisualTreeHelper.GetDescendantBounds(DropInfo.VisualTargetItem).Width,
+                    Height = 2
+                };
+
+                var bookmark = ((StashBookmarkViewModel)DropInfo.Data).Bookmark;
+                var brush = new SolidColorBrush(bookmark.Color);
                 drawingContext.DrawRectangle(brush, null, rect);
             }
         }
