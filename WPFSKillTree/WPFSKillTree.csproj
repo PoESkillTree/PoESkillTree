@@ -217,7 +217,7 @@
     <Compile Include="ViewModels\Crafting\ModSelectorViewModel.cs" />
     <Compile Include="ViewModels\Crafting\SliderGroupViewModel.cs" />
     <Compile Include="ViewModels\Crafting\SliderViewModel.cs" />
-    <Compile Include="ViewModels\Crafting\SocketedGemsEditingViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\SocketedGemsEditingViewModel.cs" />
     <Compile Include="ViewModels\Crafting\UniqueCraftingViewModel.cs" />
     <Compile Include="ViewModels\Equipment\BinViewModel.cs" />
     <Compile Include="ViewModels\Equipment\DraggableItemViewModel.cs" />
@@ -282,7 +282,6 @@
     <Compile Include="Controls\Dialogs\Views\ValidatingInputDialogView.xaml.cs">
       <DependentUpon>ValidatingInputDialogView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DraggedItem.cs" />
     <Compile Include="Views\Equipment\BinView.xaml.cs">
       <DependentUpon>BinView.xaml</DependentUpon>
     </Compile>
@@ -516,7 +515,7 @@
     <Compile Include="Views\Builds\BuildsControl.xaml.cs">
       <DependentUpon>BuildsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Crafting\SocketedGemsEditingView.xaml.cs">
+    <Compile Include="Views\Equipment\SocketedGemsEditingView.xaml.cs">
       <DependentUpon>SocketedGemsEditingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Crafting\UniqueCraftingView.xaml.cs">
@@ -688,7 +687,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Crafting\SocketedGemsEditingView.xaml">
+    <Page Include="Views\Equipment\SocketedGemsEditingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

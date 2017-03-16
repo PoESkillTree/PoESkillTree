@@ -9,13 +9,15 @@ namespace POESKillTree.Controls
         public ItemVisualizer()
         {
             InitializeComponent();
-            // The ItemTooltip is lazily created because it is a major slowdown if all tooltips are recreated for each scroll.
+            // The ItemTooltip is lazily created. 
+            // Else opening the Equipment tab for the first time would take a few seconds longer.
             tooltip.Opened += (sender, args) =>
             {
                 if (tooltip.Child != null) return;
                 var itemTooltip = new ItemTooltip
                 {
                     DataContext = DataContext,
+                    // padding of 5 to not interfere with drag operations
                     Padding = new Thickness(5)
                 };
                 itemTooltip.SetBinding(DataContextProperty, new Binding("DataContext") { Source = this });

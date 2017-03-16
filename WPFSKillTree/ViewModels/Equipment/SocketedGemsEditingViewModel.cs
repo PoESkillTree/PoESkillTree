@@ -10,42 +10,54 @@ using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Wpf;
 
-namespace POESKillTree.ViewModels.Crafting
+namespace POESKillTree.ViewModels.Equipment
 {
-    public class SocketedGem : Notifier
+    /// <summary>
+    /// View model for a gem socketed in an item. An item will be created from this when the dialog is accepted.
+    /// </summary>
+    public class SocketedGemViewModel : Notifier
     {
         private int _level;
         private int _quality;
         private int _group;
-        private GemBase _gemBase;
+        private GemBaseViewModel _gemBase;
 
+        /// <summary>
+        /// Gets or sets the level of this gem.
+        /// </summary>
         public int Level
         {
             get { return _level; }
             set { SetProperty(ref _level, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the quality of this gem (in percent).
+        /// </summary>
         public int Quality
         {
             get { return _quality; }
             set { SetProperty(ref _quality, value); }
         }
 
+        /// <summary>
+        /// Gets or sets the socket group this gem is in. Gems of the same group are linked.
+        /// </summary>
         public int Group
         {
             get { return _group; }
             set { SetProperty(ref _group, value); }
         }
 
-        public GemBase GemBase
+        public GemBaseViewModel GemBase
         {
             get { return _gemBase; }
             set { SetProperty(ref _gemBase, value); }
         }
 
-        public SocketedGem Clone()
+        public SocketedGemViewModel Clone()
         {
-            return new SocketedGem
+            return new SocketedGemViewModel
             {
                 GemBase = GemBase,
                 Group = Group,
@@ -55,7 +67,10 @@ namespace POESKillTree.ViewModels.Crafting
         }
     }
 
-    public class GemBase
+    /// <summary>
+    /// View model for a gem that can be socketed in items.
+    /// </summary>
+    public class GemBaseViewModel
     {
         public string Name { get; }
 
@@ -63,7 +78,7 @@ namespace POESKillTree.ViewModels.Crafting
 
         public ItemDB.Gem Gem { get; }
 
-        public GemBase(ItemImageService itemImageService, ItemDB.Gem gem)
+        public GemBaseViewModel(ItemImageService itemImageService, ItemDB.Gem gem)
         {
             Gem = gem;
             Name = Gem.Name;
@@ -75,23 +90,34 @@ namespace POESKillTree.ViewModels.Crafting
     {
     }
 
+    /// <summary>
+    /// View model for editing gems socketed in an item.
+    /// </summary>
     public class SocketedGemsEditingViewModel : CloseableViewModel<bool>
     {
         private readonly Item _itemWithSockets;
 
-        public IReadOnlyList<GemBase> AvailableGems { get; }
+        /// <summary>
+        /// Gets the gems that can be socketed in the item.
+        /// </summary>
+        public IReadOnlyList<GemBaseViewModel> AvailableGems { get; }
 
-        public ObservableCollection<SocketedGem> SocketedGems { get; } = new ObservableCollection<SocketedGem>();
+        /// <summary>
+        /// Gets the gems currently socketed in the item.
+        /// </summary>
+        public ObservableCollection<SocketedGemViewModel> SocketedGems { get; }
+            = new ObservableCollection<SocketedGemViewModel>();
 
-        public ICommand AddGemCommand { get; set; }
-
-        public ICommand RemoveGemCommand { get; set; }
+        public ICommand AddGemCommand { get; }
+        public ICommand RemoveGemCommand { get; }
 
         public int NumberOfSockets { get; }
 
-        private SocketedGem _newSocketedGem;
-
-        public SocketedGem NewSocketedGem
+        private SocketedGemViewModel _newSocketedGem;
+        /// <summary>
+        /// Gets the currently edited gem that can be socketed into the item with AddGemCommand.
+        /// </summary>
+        public SocketedGemViewModel NewSocketedGem
         {
             get { return _newSocketedGem; }
             private set { SetProperty(ref _newSocketedGem, value); }
@@ -100,9 +126,10 @@ namespace POESKillTree.ViewModels.Crafting
         public SocketedGemsEditingViewModel(ItemImageService itemImageService, Item itemWithSockets)
         {
             _itemWithSockets = itemWithSockets;
-            AvailableGems = ItemDB.GetAllGems().Select(g => new GemBase(itemImageService, g)).ToList();
+            // convert ItemDB.Gems into GemBaseViewModels
+            AvailableGems = ItemDB.GetAllGems().Select(g => new GemBaseViewModel(itemImageService, g)).ToList();
             NumberOfSockets = _itemWithSockets.BaseType.MaximumNumberOfSockets;
-            NewSocketedGem = new SocketedGem
+            NewSocketedGem = new SocketedGemViewModel
             {
                 GemBase = AvailableGems[0],
                 Level = 1,
@@ -110,8 +137,9 @@ namespace POESKillTree.ViewModels.Crafting
                 Group = 1
             };
             AddGemCommand = new RelayCommand(AddGem, CanAddGem);
-            RemoveGemCommand = new RelayCommand<SocketedGem>(RemoveGem);
+            RemoveGemCommand = new RelayCommand<SocketedGemViewModel>(RemoveGem);
 
+            // convert currently socketed gem Items into SocketedGemViewModels
             foreach (var gem in _itemWithSockets.Gems)
             {
                 var gemBase = AvailableGems.FirstOrDefault(g => g.Name == gem.Name);
@@ -119,7 +147,7 @@ namespace POESKillTree.ViewModels.Crafting
                 {
                     continue;
                 }
-                var socketedGem = new SocketedGem
+                var socketedGem = new SocketedGemViewModel
                 {
                     GemBase = gemBase,
                     Level = ItemDB.LevelOf(gem),
@@ -148,7 +176,7 @@ namespace POESKillTree.ViewModels.Crafting
         private bool CanAddGem()
             => SocketedGems.Count < NumberOfSockets;
 
-        private void RemoveGem(SocketedGem gem)
+        private void RemoveGem(SocketedGemViewModel gem)
         {
             SocketedGems.Remove(gem);
             NewSocketedGem = gem;
@@ -158,6 +186,7 @@ namespace POESKillTree.ViewModels.Crafting
         {
             if (param)
             {
+                // replace gems in the edited item with SocketedGems if dialog is accepted
                 var gems = new List<Item>();
                 foreach (var gem in SocketedGems)
                 {

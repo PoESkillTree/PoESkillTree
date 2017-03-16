@@ -6,6 +6,9 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Equipment
 {
+    /// <summary>
+    /// View model for StashBookmarks as shown as draggable lines in the stash itself.
+    /// </summary>
     public class StashBookmarkViewModel : Notifier, IDragSource
     {
         public StashBookmark Bookmark { get; }

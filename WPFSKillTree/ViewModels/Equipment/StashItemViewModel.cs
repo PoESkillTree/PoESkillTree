@@ -1,8 +1,12 @@
 ﻿using System.Windows;
+using JetBrains.Annotations;
 using POESKillTree.Model.Items;
 
 namespace POESKillTree.ViewModels.Equipment
 {
+    /// <summary>
+    /// View model for items in the stash.
+    /// </summary>
     public class StashItemViewModel : DraggableItemViewModel
     {
         private Item _item;
@@ -13,6 +17,11 @@ namespace POESKillTree.ViewModels.Equipment
         }
 
         private bool _highlight;
+        /// <summary>
+        /// Gets or sets whether this view model should be displayed highlighted.
+        /// </summary>
+        // used in styles, Visual Studio/Resharper somehow doesn't recognize that
+        [UsedImplicitly(ImplicitUseKindFlags.Access)]
         public bool Highlight
         {
             get { return _highlight; }

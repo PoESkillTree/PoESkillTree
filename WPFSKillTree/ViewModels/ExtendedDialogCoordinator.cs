@@ -1,12 +1,9 @@
 ﻿using System.Threading.Tasks;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model.Builds;
-using POESKillTree.Model.Items;
 using POESKillTree.ViewModels.Builds;
-using POESKillTree.ViewModels.Crafting;
 using POESKillTree.ViewModels.Equipment;
 using POESKillTree.Views.Builds;
-using POESKillTree.Views.Crafting;
 using POESKillTree.Views.Equipment;
 
 namespace POESKillTree.ViewModels
@@ -15,7 +12,7 @@ namespace POESKillTree.ViewModels
     {
         Task<bool> EditBuildAsync(object context, IBuildViewModel<PoEBuild> buildVm, BuildValidator buildValidator);
 
-        Task EditSocketedGemsAsync(object context, ItemImageService itemImageService, Item item);
+        Task EditSocketedGemsAsync(object context, SocketedGemsEditingViewModel viewModel);
 
         Task<TabPickerResult> EditStashTabAsync(object context, TabPickerViewModel tabPickerViewModel);
     }
@@ -40,11 +37,9 @@ namespace POESKillTree.ViewModels
             return true;
         }
 
-        public async Task EditSocketedGemsAsync(object context, ItemImageService itemImageService, Item item)
+        public async Task EditSocketedGemsAsync(object context, SocketedGemsEditingViewModel viewModel)
         {
-            await ShowDialogAsync(context,
-                new SocketedGemsEditingViewModel(itemImageService, item),
-                new SocketedGemsEditingView());
+            await ShowDialogAsync(context, viewModel, new SocketedGemsEditingView());
         }
 
         public async Task<TabPickerResult> EditStashTabAsync(object context, TabPickerViewModel tabPickerViewModel)

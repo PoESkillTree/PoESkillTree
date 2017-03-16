@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Views.Crafting
+﻿namespace POESKillTree.Views.Equipment
 {
     /// <summary>
     /// Interaction logic for SocketedGemsEditingView.xaml

@@ -19,6 +19,9 @@ namespace POESKillTree.Model
         BuildFolder RootBuild { get; }
         EquipmentData EquipmentData { get; }
         List<Item> StashItems { get; }
+        /// <summary>
+        /// Gets the stash bookmarks/tabs. They are always ordered by position ascending.
+        /// </summary>
         List<StashBookmark> StashBookmarks { get; }
         IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes { get; }
 

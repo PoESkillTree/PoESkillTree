@@ -192,6 +192,7 @@ namespace POESKillTree.Model.Items
         {
             if (ImplicitMods.Any(s => s.Name == "Has # Socket"))
             {
+                // e.g. Unset Ring
                 return 1;
             }
             switch (ItemGroup)

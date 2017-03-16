@@ -1,15 +1,20 @@
 ﻿using System.Windows;
 using GongSolutions.Wpf.DragDrop;
+using JetBrains.Annotations;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.ViewModels.Equipment
 {
+    /// <summary>
+    /// View model for draggable items in the inventory. This is also a drop target.
+    /// </summary>
     public class InventoryItemViewModel : DraggableItemViewModel, IDropTarget
     {
         private readonly ItemAttributes _itemAttributes;
         private readonly ItemSlot _slot;
 
+        // the item is delegated to this view model's slot in ItemAttributes
         public override Item Item
         {
             get { return _itemAttributes.GetItemInSlot(_slot); }
@@ -17,6 +22,11 @@ namespace POESKillTree.ViewModels.Equipment
         }
 
         private string _emptyBackgroundImagePath;
+        /// <summary>
+        /// Gets or sets the path to the image that should be shown if Item is null.
+        /// </summary>
+        // used in styles, Visual Studio/Resharper somehow doesn't recognize that
+        [UsedImplicitly(ImplicitUseKindFlags.Access)]
         public string EmptyBackgroundImagePath
         {
             get { return _emptyBackgroundImagePath; }
@@ -33,6 +43,7 @@ namespace POESKillTree.ViewModels.Equipment
             _itemAttributes = itemAttributes;
             _slot = slot;
 
+            // Item changes when the slotted item in ItemAttribute changes as they are the same
             _itemAttributes.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == slot.ToString())

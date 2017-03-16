@@ -4,6 +4,9 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Equipment
 {
+    /// <summary>
+    /// View model for the inventory. Only a collection of the the InventoryItemViewModels for the slots.
+    /// </summary>
     public class InventoryViewModel : Notifier
     {
         private readonly IExtendedDialogCoordinator _dialogCoordinator;

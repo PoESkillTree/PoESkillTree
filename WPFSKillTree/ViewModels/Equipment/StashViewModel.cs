@@ -24,13 +24,25 @@ namespace POESKillTree.ViewModels.Equipment
     {
     }
 
+    /// <summary>
+    /// View model for the stash.
+    /// </summary>
     public class StashViewModel : Notifier, IDropTarget
     {
+        /// <summary>
+        /// Gets the width/height of a cell in the stash.
+        /// </summary>
         public static double CellSize => 47.0;
+        /// <summary>
+        /// Gets the number of cells in the stash in each row.
+        /// </summary>
         public static int Columns => 12;
 
         private readonly IExtendedDialogCoordinator _dialogCoordinator;
 
+        // The view model is created before the window is loaded, PersistentData is not available at that point.
+        // This is done because some WPF things don't like DataContext initially being null and don't recognize it 
+        // changing to a valid value.
         private IPersistentData _persistentData;
         public IPersistentData PersistentData
         {
@@ -45,19 +57,33 @@ namespace POESKillTree.ViewModels.Equipment
             }
         }
 
-        private bool _suppressRebuild;
+        // true if after BeginUpdate() and before EndUpdate()
+        private bool _inBatchUpdate;
+        // the smallest y of all items added in a batch update, is scrolled to at the end of the update
         private int _smallestAddedItemY;
 
+        /// <summary>
+        /// Gets the items in the stash.
+        /// </summary>
         public ObservableCollection<StashItemViewModel> Items { get; }
             = new ObservableCollection<StashItemViewModel>();
 
+        /// <summary>
+        /// Gets the y values of all items matching the current search.
+        /// </summary>
         public ObservableCollection<double> SearchMatches { get; } = new ObservableCollection<double>();
 
+        /// <summary>
+        /// Gets the bookmarks/tabs in the stash.
+        /// </summary>
         public ObservableCollection<StashBookmarkViewModel> Bookmarks { get; }
             = new ObservableCollection<StashBookmarkViewModel>();
 
         private double _scrollBarValue;
-        // This floored is the first partly visible row. This ceiled is the first fully visible row.
+        /// <summary>
+        /// Gets or sets the value of the vertical stash scroll bar.
+        /// This floored is the first partly visible row. This ceiled is the first fully visible row.
+        /// </summary>
         public double ScrollBarValue
         {
             get { return _scrollBarValue; }
@@ -69,12 +95,18 @@ namespace POESKillTree.ViewModels.Equipment
         }
 
         private double _visibleRows;
+        /// <summary>
+        /// Gets or sets the number of currently visible rows.
+        /// </summary>
         public double VisibleRows
         {
             get { return _visibleRows; }
             set { SetProperty(ref _visibleRows, value, RowsChanged); }
         }
 
+        /// <summary>
+        /// Gets the last row that is occupied by an item or bookmark.
+        /// </summary>
         public int LastOccupiedRow
         {
             get
@@ -85,10 +117,16 @@ namespace POESKillTree.ViewModels.Equipment
             }
         }
 
-        public double Rows
-            => LastOccupiedRow + VisibleRows;
+        /// <summary>
+        /// Gets the number of cells in the stash in each column.
+        /// This is set so there is always a full viewport (minus one row) available below the last item or bookmark.
+        /// </summary>
+        public double Rows => LastOccupiedRow + VisibleRows;
 
         private string _searchText;
+        /// <summary>
+        /// Gets or sets the text by which items should be searched/highlight.
+        /// </summary>
         public string SearchText
         {
             get { return _searchText; }
@@ -99,6 +137,9 @@ namespace POESKillTree.ViewModels.Equipment
         public ICommand AddStashTabCommand { get; }
         public ICommand ScrollToStashTabCommand { get; }
 
+        /// <summary>
+        /// Gets the drop handler that handles dragging over the stash tab buttons.
+        /// </summary>
         public IDropTarget StashTabDropHandler { get; }
 
         public StashViewModel(IExtendedDialogCoordinator dialogCoordinator)
@@ -114,6 +155,8 @@ namespace POESKillTree.ViewModels.Equipment
 
         private void OnPersistentDataChanged()
         {
+            // add view models for bookmarks and items
+            // PersistentData.StashBookmarks and PersistentData.StashItems may only be changed through the stash after this
             BeginUpdate();
             Bookmarks.AddRange(PersistentData.StashBookmarks.Select(b => new StashBookmarkViewModel(b)));
             Bookmarks.CollectionChanged += (sender, args) => RowsChanged();
@@ -150,7 +193,7 @@ namespace POESKillTree.ViewModels.Equipment
                 }
             }
 
-            if (!_suppressRebuild)
+            if (!_inBatchUpdate)
             {
                 RowsChanged();
             }
@@ -160,6 +203,7 @@ namespace POESKillTree.ViewModels.Equipment
         {
             if (args.PropertyName == nameof(StashItemViewModel.Item))
             {
+                // always remove the view model so the item is removed from PersistentData
                 var item = (StashItemViewModel) sender;
                 Items.Remove(item);
             }
@@ -169,6 +213,7 @@ namespace POESKillTree.ViewModels.Equipment
         {
             if (args.PropertyName == nameof(StashItemViewModel.Item))
             {
+                // add the view model back if the item was changed and not removed
                 var item = (StashItemViewModel) sender;
                 if (item.Item != null)
                 {
@@ -194,6 +239,7 @@ namespace POESKillTree.ViewModels.Equipment
 
         private bool IsSearchMatch(StashItemViewModel itemVm)
         {
+            // search in base type name, flavour text, name, properties and mods
             var i = itemVm.Item;
             var modstrings = new[] {
                 i.BaseType.Name,
@@ -206,19 +252,26 @@ namespace POESKillTree.ViewModels.Equipment
 
         private void RowsChanged()
         {
+            // these are getter-only, changes must be triggered manually
             OnPropertyChanged(nameof(LastOccupiedRow));
             OnPropertyChanged(nameof(Rows));
         }
 
+        /// <summary>
+        /// Starts a batch update. Call this before adding multiple items to the stash.
+        /// </summary>
         public void BeginUpdate()
         {
-            _suppressRebuild = true;
+            _inBatchUpdate = true;
             _smallestAddedItemY = int.MaxValue;
         }
         
+        /// <summary>
+        /// Ends a batch update. Call this after adding multiple items to the stash.
+        /// </summary>
         public void EndUpdate()
         {
-            _suppressRebuild = false;
+            _inBatchUpdate = false;
             RowsChanged();
             if (_smallestAddedItemY < int.MaxValue)
             {
@@ -235,7 +288,7 @@ namespace POESKillTree.ViewModels.Equipment
             {
                 return;
             }
-            if (!_suppressRebuild)
+            if (!_inBatchUpdate)
             {
                 ScrollBarValue = item.Y;
             }
@@ -262,28 +315,16 @@ namespace POESKillTree.ViewModels.Equipment
 
         public void AddStashTab(StashBookmark stashBookmark)
         {
-            var position = FindTabPos(stashBookmark.Position, 0, Bookmarks.Count);
-            Bookmarks.Insert(position, 
-                new StashBookmarkViewModel(stashBookmark));
-            PersistentData.StashBookmarks.Insert(position, stashBookmark);
+            var vm = new StashBookmarkViewModel(stashBookmark);
+            var index = FindTabIndex(vm);
+            Bookmarks.Insert(index, vm);
+            PersistentData.StashBookmarks.Insert(index, stashBookmark);
         }
 
-        private int FindTabPos(int position, int from, int limit)
+        private int FindTabIndex(StashBookmarkViewModel bookmark)
         {
-            if (Bookmarks.Count == 0)
-                return 0;
-
-            var middle = from + (limit - from) / 2;
-
-            if (middle == from)
-                return (Bookmarks[middle].Bookmark.Position > position) ? middle : middle + 1;
-
-            if (middle == limit)
-                return limit + 1;
-
-            if (Bookmarks[middle].Bookmark.Position > position)
-                return FindTabPos(position, from, middle);
-            return FindTabPos(position, middle, limit);
+            var position = bookmark.Bookmark.Position;
+            return Bookmarks.Where(b => b != bookmark).TakeWhile(b => b.Bookmark.Position <= position).Count();
         }
 
         private async Task EditStashTabAsync(StashBookmarkViewModel bookmarkVm)
@@ -367,6 +408,9 @@ namespace POESKillTree.ViewModels.Equipment
 
         #region Drag&Drop
 
+        /// <summary>
+        /// Returns the index of the cell that is closest to the given position (position in pixel)
+        /// </summary>
         private static int NearestCell(double pos)
         {
             return (int) Math.Round(pos / CellSize);
@@ -376,8 +420,8 @@ namespace POESKillTree.ViewModels.Equipment
         {
             var draggedItem = dropInfo.Data as DraggableItemViewModel;
             var bookmark = dropInfo.Data as StashBookmarkViewModel;
-
             Point pos = dropInfo.DropPosition;
+
             // Scroll up or down if at upper or lower end of stash grid.
             const double scrollRate = 0.6;
             const double scrollThreshold = 0.5;
@@ -414,7 +458,9 @@ namespace POESKillTree.ViewModels.Equipment
                         break;
                     }
                 }
-                if (!hasOverlap && x >= 0 && y >= 0 && x < Columns)
+                // only allow drop if the drop area does not overlap any item (that is not the source) and
+                // the position is inside the stash's bounds
+                if (!hasOverlap && x >= 0 && y >= 0 && x + item.Width <= Columns)
                 {
                     dropInfo.Effects = draggedItem.DropOnStashEffect;
                 }
@@ -468,12 +514,21 @@ namespace POESKillTree.ViewModels.Equipment
             {
                 var y = NearestCell(pos.Y + ScrollBarValue * CellSize);
                 bookmark.Bookmark.Position = y;
+                // make sure bookmarks are still ordererd
+                var oldIndex = Bookmarks.IndexOf(bookmark);
+                var newIndex = FindTabIndex(bookmark);
+                Bookmarks.Move(oldIndex, newIndex);
+                PersistentData.StashBookmarks.RemoveAt(oldIndex);
+                PersistentData.StashBookmarks.Insert(newIndex, bookmark.Bookmark);
             }
 
             RowsChanged();
         }
 
 
+        /// <summary>
+        /// IDropTarget for dragging over stash tab buttons.
+        /// </summary>
         private class StashTabDropTarget : IDropTarget
         {
             private readonly StashViewModel _stashViewModel;
@@ -485,6 +540,7 @@ namespace POESKillTree.ViewModels.Equipment
 
             public void DragOver(IDropInfo dropInfo)
             {
+                // scroll to the targeted tab
                 var tab = ((FrameworkElement) dropInfo.VisualTarget).DataContext as StashBookmarkViewModel;
                 if (tab != null)
                 {
@@ -499,6 +555,10 @@ namespace POESKillTree.ViewModels.Equipment
         }
 
 
+        /// <summary>
+        /// DropTargetAdorner for dragging items over the stash. Shows a rectangle the size of the item that fills
+        /// the cells the item would cover if dropped.
+        /// </summary>
         private class ItemDropTargetAdorner : DropTargetAdorner
         {
             private static readonly Brush DefaultBrush = new SolidColorBrush(Color.FromArgb(80, 0, 100, 0));
@@ -533,6 +593,10 @@ namespace POESKillTree.ViewModels.Equipment
         }
 
 
+        /// <summary>
+        /// DropTargetAdorner for dragging tabs/bookmarks over the stash. Shows a rectangle at the position the 
+        /// bookmark would cover if dropped.
+        /// </summary>
         private class BookmarkDropTargetAdorner : DropTargetAdorner
         {
             public BookmarkDropTargetAdorner(UIElement adornedElement, DropInfo dropInfo)

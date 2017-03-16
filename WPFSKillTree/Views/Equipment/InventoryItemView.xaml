@@ -13,7 +13,7 @@
                              dd:DragDrop.DropHandler="{Binding}"
                              BorderThickness="2" BorderBrush="{DynamicResource AccentColorBrush}">
         <UserControl.Style>
-            <Style TargetType="local:DraggableItemView">
+            <Style TargetType="{x:Type local:DraggableItemView}">
                 <Setter Property="Background" Value="#202051" />
                 <Setter Property="Opacity" Value="1" />
                 <Style.Triggers>

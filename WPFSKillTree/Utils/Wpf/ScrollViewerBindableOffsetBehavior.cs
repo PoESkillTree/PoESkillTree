@@ -5,6 +5,11 @@ using System.Windows.Interactivity;
 
 namespace POESKillTree.Utils.Wpf
 {
+    /// <summary>
+    /// Allows two way binding to the VerticalOffset property of ScrollViewer.
+    /// Source to ScrollViewer: ScrollViewer.ScrollToVerticalOffset,
+    /// ScrollViewer to Source: ScrollViewer.PART_VerticalScrollBar.Value
+    /// </summary>
     public class ScrollViewerBindableOffsetBehavior : Behavior<ScrollViewer>
     {
         public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register(
