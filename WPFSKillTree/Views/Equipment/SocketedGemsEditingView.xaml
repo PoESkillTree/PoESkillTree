@@ -11,13 +11,14 @@
                              xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Equipment"
                              mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:SocketedGemsEditingViewModel}"
                              CloseButtonVisibility="Collapsed"
-                             MaxContentWidth="480">
+                             MaxContentWidth="510">
     <dialogs:CloseableBaseDialog.Title>
         <l:Catalog>Edit Socketed Gems</l:Catalog>
     </dialogs:CloseableBaseDialog.Title>
-    
+
     <dialogs:CloseableBaseDialog.Resources>
         <viewModels:SocketedGemsEditingViewModelProxy x:Key="VmProxy" Data="{Binding}" />
+
         <Style x:Key="UpDownInDataGridStyle"
                TargetType="mahapps:NumericUpDown">
             <Setter Property="BorderThickness" Value="0" />
@@ -29,14 +30,14 @@
     <Grid Margin="0 5 0 0">
         <Grid.RowDefinitions>
             <RowDefinition />
-            <RowDefinition Height="220" />
+            <RowDefinition Height="240" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="240" />
-            <ColumnDefinition Width="70" />
-            <ColumnDefinition Width="70" />
-            <ColumnDefinition Width="65" />
+            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="75" />
+            <ColumnDefinition Width="75" />
+            <ColumnDefinition Width="75" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
@@ -47,7 +48,7 @@
             <controls:SearchableComboBox.ItemTemplate>
                 <DataTemplate DataType="viewModels:GemBaseViewModel">
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="18"
+                        <Image Width="18" Margin="0 0 2 0"
                                Source="{Binding Icon.ImageSource.Result}" />
                         <TextBlock Text="{Binding Name}" />
                     </StackPanel>
@@ -72,7 +73,21 @@
 
         <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"
                   AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
-                  ItemsSource="{Binding SocketedGems}">
+                  CanUserResizeColumns="False"
+                  HorizontalScrollBarVisibility="Hidden"
+                  ItemsSource="{Binding SocketedGemsViewSource.View}">
+            <DataGrid.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.DataGrid.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                    <Style x:Key="DataGridColumnHeaderStyle"
+                           TargetType="DataGridColumnHeader"
+                           BasedOn="{StaticResource MetroDataGridColumnHeader}">
+                        <Setter Property="Padding" Value="5 0" />
+                    </Style>
+                </ResourceDictionary>
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="16">
                     <DataGridTemplateColumn.CellTemplate>
@@ -84,13 +99,20 @@
 
                 <DataGridTextColumn Binding="{Binding GemBase.Name}"
                                     IsReadOnly="True"
-                                    Width="220">
+                                    Width="230">
                     <DataGridTextColumn.Header>
                         <l:Catalog>Gem Name</l:Catalog>
                     </DataGridTextColumn.Header>
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader"
+                               BasedOn="{StaticResource MetroDataGridColumnHeader}">
+                            <Setter Property="Padding" Value="2 0" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
                 </DataGridTextColumn>
                 
-                <DataGridTemplateColumn Width="70">
+                <DataGridTemplateColumn Width="75"
+                                        HeaderStyle="{StaticResource DataGridColumnHeaderStyle}">
                     <DataGridTemplateColumn.Header>
                         <l:Catalog>Level</l:Catalog>
                     </DataGridTemplateColumn.Header>
@@ -102,8 +124,9 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Width="70">
+
+                <DataGridTemplateColumn Width="75"
+                                        HeaderStyle="{StaticResource DataGridColumnHeaderStyle}">
                     <DataGridTemplateColumn.Header>
                         <l:Catalog>Quality</l:Catalog>
                     </DataGridTemplateColumn.Header>
@@ -116,29 +139,19 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Width="65"
-                                    IsReadOnly="True"
-                                    Binding="{Binding Group}">
-                    <DataGridTextColumn.Header>
+                <DataGridTemplateColumn Width="75"
+                                        HeaderStyle="{StaticResource DataGridColumnHeaderStyle}">
+                    <DataGridTemplateColumn.Header>
                         <l:Catalog>Group</l:Catalog>
-                    </DataGridTextColumn.Header>
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Padding" Value="8 0 0 0" />
-                            <Style.Triggers>
-                                <Trigger Property="Text" Value="2">
-                                    <Setter Property="Foreground" Value="{DynamicResource GrayBrush3}" />
-                                </Trigger>
-                                <Trigger Property="Text" Value="4">
-                                    <Setter Property="Foreground" Value="{DynamicResource GrayBrush3}" />
-                                </Trigger>
-                                <Trigger Property="Text" Value="6">
-                                    <Setter Property="Foreground" Value="{DynamicResource GrayBrush3}" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="viewModels:SocketedGemViewModel">
+                            <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
+                                                   Minimum="1" Maximum="{Binding Data.NumberOfSockets, Source={StaticResource VmProxy}}"
+                                                   Value="{Binding Group, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn MinWidth="33">
                     <DataGridTemplateColumn.CellTemplate>
@@ -155,7 +168,8 @@
         </DataGrid>
 
         <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5"
-                    Style="{StaticResource DialogPanel}">
+                    Style="{StaticResource DialogPanel}"
+                    Height="45" Margin="0 0 0 20">
             <Button Style="{StaticResource DynamicDialogPanelButton}"
                     Command="{Binding CloseCommand}" CommandParameter="{StaticResource True}"
                     IsDefault="True">

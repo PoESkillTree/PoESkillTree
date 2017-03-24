@@ -22,8 +22,7 @@
     </dd:DragDrop.DragAdornerTemplate>
     <UserControl.ContextMenu>
         <ContextMenu>
-            <MenuItem Command="{Binding DeleteCommand}"
-                      InputGestureText="Delete">
+            <MenuItem Command="{Binding DeleteCommand}">
                 <MenuItem.Header>
                     <l:Catalog>Delete</l:Catalog>
                 </MenuItem.Header>
@@ -35,5 +34,9 @@
             </MenuItem>
         </ContextMenu>
     </UserControl.ContextMenu>
+    <UserControl.InputBindings>
+        <MouseBinding MouseAction="LeftDoubleClick"
+                      Command="{Binding EditSocketedGemsCommand}"></MouseBinding>
+    </UserControl.InputBindings>
     <controls:ItemVisualizer DataContext="{Binding Item}" />
 </UserControl>

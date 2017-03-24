@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows.Data;
 using System.Windows.Input;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Model.Items;
@@ -103,9 +105,14 @@ namespace POESKillTree.ViewModels.Equipment
         public IReadOnlyList<GemBaseViewModel> AvailableGems { get; }
 
         /// <summary>
-        /// Gets the gems currently socketed in the item.
+        /// Gets a view source for the gems currently socketed in the item.
         /// </summary>
-        public ObservableCollection<SocketedGemViewModel> SocketedGems { get; }
+        public CollectionViewSource SocketedGemsViewSource { get; }
+
+        /// <summary>
+        /// The gems currently socketed in the item.
+        /// </summary>
+        private readonly ObservableCollection<SocketedGemViewModel> _socketedGems
             = new ObservableCollection<SocketedGemViewModel>();
 
         public ICommand AddGemCommand { get; }
@@ -139,6 +146,17 @@ namespace POESKillTree.ViewModels.Equipment
             AddGemCommand = new RelayCommand(AddGem, CanAddGem);
             RemoveGemCommand = new RelayCommand<SocketedGemViewModel>(RemoveGem);
 
+            SocketedGemsViewSource = new CollectionViewSource
+            {
+                Source = _socketedGems
+            };
+            SocketedGemsViewSource.SortDescriptions.Add(new SortDescription(
+                nameof(SocketedGemViewModel.GemBase) + "." + nameof(GemBaseViewModel.Name),
+                ListSortDirection.Ascending));
+            SocketedGemsViewSource.SortDescriptions.Add(new SortDescription(
+                nameof(SocketedGemViewModel.Group), 
+                ListSortDirection.Ascending));
+
             // convert currently socketed gem Items into SocketedGemViewModels
             foreach (var gem in _itemWithSockets.Gems)
             {
@@ -154,32 +172,34 @@ namespace POESKillTree.ViewModels.Equipment
                     Quality = ItemDB.QualityOf(gem),
                     Group = gem.SocketGroup + 1
                 };
-                SocketedGems.Add(socketedGem);
+                socketedGem.PropertyChanged += SocketedGemsOnPropertyChanged;
+                _socketedGems.Add(socketedGem);
             }
         }
 
         private void AddGem()
         {
             var addedGem = NewSocketedGem.Clone();
-            var group = addedGem.Group;
-            int i;
-            for (i = 0; i < SocketedGems.Count; i++)
-            {
-                if (SocketedGems[i].Group > group)
-                {
-                    break;
-                }
-            }
-            SocketedGems.Insert(i, addedGem);
+            addedGem.PropertyChanged += SocketedGemsOnPropertyChanged;
+            _socketedGems.Add(addedGem);
         }
 
         private bool CanAddGem()
-            => SocketedGems.Count < NumberOfSockets;
+            => _socketedGems.Count < NumberOfSockets;
 
         private void RemoveGem(SocketedGemViewModel gem)
         {
-            SocketedGems.Remove(gem);
+            gem.PropertyChanged -= SocketedGemsOnPropertyChanged;
+            _socketedGems.Remove(gem);
             NewSocketedGem = gem;
+        }
+
+        private void SocketedGemsOnPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == nameof(SocketedGemViewModel.Group))
+            {
+                SocketedGemsViewSource.View.Refresh();
+            }
         }
 
         protected override void OnClose(bool param)
@@ -188,7 +208,7 @@ namespace POESKillTree.ViewModels.Equipment
             {
                 // replace gems in the edited item with SocketedGems if dialog is accepted
                 var gems = new List<Item>();
-                foreach (var gem in SocketedGems)
+                foreach (var gem in _socketedGems)
                 {
                     var tags = gem.GemBase.Gem.Tags.Split(new[] {", "}, StringSplitOptions.RemoveEmptyEntries);
                     var gemItem = new Item(gem.GemBase.Name, tags, gem.Level, gem.Quality, gem.Group - 1);
