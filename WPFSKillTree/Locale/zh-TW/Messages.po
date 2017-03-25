@@ -1,33 +1,35 @@
-# German translation for PoESkillTree.
+# Template translations for PoESkillTree.
 # This file is distributed under the same license as the PoESkillTree.
 msgid ""
 msgstr ""
 "Project-Id-Version: PoESkillTree 2.1.3\n"
 "POT-Creation-Date: 2015-01-01 00:00+0000\n"
-"PO-Revision-Date: 2016-03-23 00:25+0100\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"Language: de-DE\n"
+"PO-Revision-Date: 2017-03-02 22:23+0800\n"
+"Last-Translator: EMAIL@ADDRESS\n"
+"Language-Team: Chinese (traditional) <chuanhsing@gmail.com>\n"
+"Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.12\n"
+"X-Poedit-SourceCharset: UTF-8\n"
 
 #: Controls\BanditSelection.xaml:13
 msgid "Bandit reward for Normal difficulty."
-msgstr ""
+msgstr "普通難度盜賊獎勵"
 
 #: Controls\BanditSelection.xaml:18
 msgid "Bandit reward for Cruel difficulty."
-msgstr ""
+msgstr "殘酷難度盜賊獎勵"
 
 #: Controls\BanditSelection.xaml:23
 msgid "Bandit reward for Merciless difficulty."
-msgstr ""
+msgstr "無情難度盜賊獎勵"
 
 #: Controls\Dialogs\Views\FileSelectorView.xaml:41
 msgid "Browse..."
-msgstr "Durchsuchen..."
+msgstr "瀏覽..."
 
 #: Controls\Dialogs\Views\FileSelectorView.xaml:49
 #: Controls\Dialogs\Views\MetroMessageBoxView.xaml:71
@@ -35,7 +37,7 @@ msgstr "Durchsuchen..."
 #: Views\EditBuildWindow.xaml:59 Views\TabPicker.xaml:122
 #: Controls\Dialogs\ExtendedDialogManager.cs:82
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 #: Controls\Dialogs\Views\FileSelectorView.xaml:55
 #: Controls\Dialogs\Views\MetroMessageBoxView.xaml:77
@@ -48,54 +50,54 @@ msgstr "OK"
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:118
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:366
 msgid "Cancel"
-msgstr "Abbrechen"
+msgstr "取消"
 
 #: Controls\Dialogs\Views\MetroMessageBoxView.xaml:45
 msgid "Details"
-msgstr "Details"
+msgstr "詳細"
 
 #: Controls\Dialogs\Views\MetroMessageBoxView.xaml:57
 msgid "Yes"
-msgstr "Ja"
+msgstr ""
 
 #: Controls\Dialogs\Views\MetroMessageBoxView.xaml:64
 msgid "No"
-msgstr "Nein"
+msgstr ""
 
 #: ItemFilter\Views\ColorButtonDialog.xaml:12
 msgid "Choose colors"
-msgstr "Wähle Farben"
+msgstr "選擇顏色"
 
 #: ItemFilter\Views\ColorButtonDialog.xaml:35
 msgid "Choose color of background, text or border."
-msgstr "Wähle die Farben für den Hintergrund, den Text oder den Rand aus."
+msgstr ""
 
 #: ItemFilter\Views\ColorButtonDialog.xaml:39
 msgid "To preserve original in-game color, choose Default color."
-msgstr "Benutze Default um die Standardfarbe des Spiels zu erhalten"
+msgstr ""
 
 #: ItemFilter\Views\ColorButtonDialog.xaml:44
 msgid "Background"
-msgstr "Hintergrund"
+msgstr "背景"
 
 #: ItemFilter\Views\ColorButtonDialog.xaml:50
 msgid "Text"
-msgstr "Text"
+msgstr "文字"
 
 #: ItemFilter\Views\ColorButtonDialog.xaml:56
 msgid "Border"
-msgstr "Rand"
+msgstr "邊框"
 
 #: ItemFilter\Views\ColorButtonDialog.xaml:62
 #: ItemFilter\Views\ItemFilterOpenWindow.xaml:93 Themes\BaseDialog.xaml:57
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:305
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:373
 msgid "Close"
-msgstr "Schließen"
+msgstr "關閉"
 
 #: ItemFilter\Views\ItemFilterEditWindow.xaml:15
 msgid "Item Filter"
-msgstr "Item Filter"
+msgstr "物品過濾"
 
 #: ItemFilter\Views\ItemFilterEditWindow.xaml:98
 msgid "Check or uncheck rules to either show or hide specific types of items."
@@ -108,271 +110,275 @@ msgstr ""
 #: ItemFilter\Views\ItemFilterEditWindow.xaml:133 Views\BuildsControl.xaml:228
 #: Views\BuildsControl.xaml:326
 msgid "Save"
-msgstr "Speichern"
+msgstr "儲存"
 
 #: ItemFilter\Views\ItemFilterOpenWindow.xaml:13
 msgid "Item Filter Editor"
-msgstr "Item Filter Editor"
+msgstr "物品過濾編輯器"
 
 #: ItemFilter\Views\ItemFilterOpenWindow.xaml:38
 msgid "Enter a name for filter you want to create."
-msgstr "Gebe einen Namen für den Filter ein."
+msgstr ""
 
 #: ItemFilter\Views\ItemFilterOpenWindow.xaml:53
 msgid "New Filter"
-msgstr "Neuer Filter"
+msgstr ""
 
 #: ItemFilter\Views\ItemFilterOpenWindow.xaml:58
 msgid "Create Copy"
-msgstr "Erstelle Kopie"
+msgstr ""
 
 #: ItemFilter\Views\ItemFilterOpenWindow.xaml:64
 msgid "Select a filter you want to edit or create copy of."
-msgstr "Wähle einen Filter aus der bearbeitet oder kopiert werden soll."
+msgstr ""
 
 #: ItemFilter\Views\ItemFilterOpenWindow.xaml:82 Views\BuildsControl.xaml:122
 #: Views\BuildsControl.xaml:199
 msgid "Edit"
-msgstr "Bearbeiten"
+msgstr "編輯"
 
 #: ItemFilter\Views\ItemFilterOpenWindow.xaml:87 Views\BuildsControl.xaml:129
 #: Views\BuildsControl.xaml:206
 msgid "Delete"
-msgstr "Löschen"
+msgstr "刪除"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:99
 msgid "Level:"
-msgstr "Level:"
+msgstr "等級:"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:108
 msgid "Additional points:"
-msgstr "Zusätzliche Punkte:"
+msgstr "額外點數:"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:116
 msgid "Total points:"
-msgstr "Gesamte Punkte:"
+msgstr "全部點數:"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:126
 msgid "include Check-tagged nodes"
-msgstr "Schließe Knoten mit Haken ein"
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:135
 #: TreeGenerator\Views\SteinerTabView.xaml:14
 msgid "exclude Cross-tagged nodes"
-msgstr "Schließe Knoten mit Kreuz aus"
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:143
 msgid "Iterations:"
-msgstr "Versuche:"
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:146
-msgid "Determines how often the generator is run. The best result from all runs is kept."
-msgstr "Legt fest, wie oft der Generator ausgeführt wird. Das beste Ergebnis wird behalten."
+msgid ""
+"Determines how often the generator is run. The best result from all runs is "
+"kept."
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:148
 msgid "Pause and then Close it at any point to keep the current solution."
-msgstr "Pausiere und schließe den Generator um die aktuelle Lösung zu behalten."
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:160
 #: TreeGenerator\Views\SteinerTabView.xaml:24
 msgid "Run"
-msgstr "Starten"
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:167
 msgid "Reset settings"
-msgstr "Einstellungen zurücksetzen"
+msgstr "重置設定"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:174 Views\MainWindow.xaml:758
 msgid "Attributes"
-msgstr "Attribute"
+msgstr "屬性"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:192
 msgid "Load from tree"
-msgstr "Vom Baum laden"
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:195
 msgid "Convert to Pseudo Attributes"
-msgstr "Zu Pseudo Attribute umwandeln"
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:197
-msgid "Converts the attributes to pseudo attributes where possible using the defined settings."
-msgstr "Wandelt die Attribute mithilfe der definierten Einstellungen, wo es möglich ist, zu Pseudo-Attributen um."
+msgid ""
+"Converts the attributes to pseudo attributes where possible using the "
+"defined settings."
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:222
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:315
 msgid "Add"
-msgstr "Hinzufügen"
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:231
 msgid "Attribute"
-msgstr "Attribute"
+msgstr "屬性"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:236
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:329
 msgid "Target"
-msgstr "Ziel"
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:249
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:342
 msgid "Weight"
-msgstr "Gewichtung"
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:280
 msgid "Pseudo Attributes"
-msgstr "Pseudo Attribute"
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:324
 msgid "Pseudo attribute"
-msgstr "Pseudo Attribute"
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:384 Views\MainWindow.xaml:201
 #: ViewModels\SettingsMenuViewModel.cs:29
 msgid "Settings"
-msgstr "Einstellungen"
+msgstr "設定"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:419
 msgid "Tree + Items"
-msgstr "Baum + Items"
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:422
 msgid "Tree only"
-msgstr "Baum"
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:429
 msgid "Reload Pseudo Attributes from filesystem"
-msgstr "Pseudo Attribute vom Verzeichnis neu einlesen"
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:436
 msgid "Weapon class"
-msgstr "Waffenklasse"
+msgstr ""
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:451
 msgid "Off hand"
-msgstr "Nebenhand"
+msgstr "副手"
 
 #: TreeGenerator\Views\AdvancedGeneratorTab.xaml:474
 msgid "Tags"
-msgstr "Schlagwörter"
+msgstr "標籤"
 
 #: TreeGenerator\Views\ControllerWindow.xaml:30
 msgid "Finding optimal Skill tree..."
-msgstr "Finde optimalen Fähigkeitenbaum..."
+msgstr ""
 
 #: Views\AboutWindow.xaml:11
 msgid "About PoESkillTree"
-msgstr "Über PoESkillTree"
+msgstr ""
 
 #: Views\AboutWindow.xaml:32
 msgid "Version"
-msgstr "Version"
+msgstr "版本"
 
 #: Views\AboutWindow.xaml:39
 msgid "Updates"
-msgstr "Aktualisierungen"
+msgstr "更新"
 
 #: Views\AboutWindow.xaml:42
 msgid "See the GitHub page for new versions and source code:"
-msgstr "Besuche die GitHub Seite für neue Versionen und den Quellcode:"
+msgstr ""
 
 #: Views\AboutWindow.xaml:51
 msgid "Authors"
-msgstr "Autoren"
+msgstr ""
 
 #: Views\AboutWindow.xaml:54
 msgid "original author"
-msgstr "Ursprünglicher Autor"
+msgstr ""
 
 #: Views\AboutWindow.xaml:71
 msgid "Legal"
-msgstr "Rechtliches"
+msgstr ""
 
 #: Views\AboutWindow.xaml:74
 msgid "Skill tree assets and item images belong to"
-msgstr "Fähigkeitenbaum Assets und Gegenstandsbilder gehören zu"
+msgstr ""
 
 #: Views\AboutWindow.xaml:75
 msgid "Data used in character calculations are from"
-msgstr "Die Daten die in der Charakterberechnung verwendet werden sind von"
+msgstr ""
 
 #: Views\AboutWindow.xaml:79
 msgid "Information about base item types and their images are retrieved from"
-msgstr "Die Informationen über 'base item types' und deren Bilder sind von"
+msgstr ""
 
 #: Views\AboutWindow.xaml:83
 msgid "Information about item affixes is retrieved from"
-msgstr "Die Informationen über Item Affixes sind von"
+msgstr ""
 
 #: Views\BuildsControl.xaml:24
 msgid "Right click to edit"
-msgstr "Rechtsklick um zu bearbeiten"
+msgstr ""
 
 #: Views\BuildsControl.xaml:137 Views\BuildsControl.xaml:214
 msgid "Cut"
-msgstr "Ausschneiden"
+msgstr "剪下"
 
 #: Views\BuildsControl.xaml:144
 msgid "Paste"
-msgstr "Einfügen"
+msgstr "貼上"
 
 #: Views\BuildsControl.xaml:151
 msgid "New Build"
-msgstr "Neuer Build"
+msgstr ""
 
 #: Views\BuildsControl.xaml:157 ViewModels\BuildsControlViewModel.cs:372
 msgid "New Folder"
-msgstr "Neuer Ordner"
+msgstr ""
 
 #: Views\BuildsControl.xaml:193
 msgid "Open"
-msgstr "Öffnen"
+msgstr "開啟"
 
 #: Views\BuildsControl.xaml:221
 msgid "Copy"
-msgstr "Kopieren"
+msgstr "拷貝"
 
 #: Views\BuildsControl.xaml:234
 msgid "Discard changes"
-msgstr "Änderungen verwerfen"
+msgstr ""
 
 #: Views\BuildsControl.xaml:237
 msgid "Discards all changes made to this build after the last save"
-msgstr "Verwerfe alle Änderungen die seit dem letzten Speichern gemacht wurden."
+msgstr ""
 
 #: Views\BuildsControl.xaml:314
 msgid "Skill Tree comparison enabled"
-msgstr "Vergleich aktiviert"
+msgstr ""
 
 #: Views\BuildsControl.xaml:317
 msgid "Skill Tree comparison disabled"
-msgstr "Vergleich deaktiviert"
+msgstr ""
 
 #: Views\BuildsControl.xaml:328
 msgid "Saves the currently opened build"
-msgstr "Speichert den aktuell geöffneten Build"
+msgstr ""
 
 #: Views\BuildsControl.xaml:335
 msgid "Save As"
-msgstr "Speichern als..."
+msgstr "另存為"
 
 #: Views\BuildsControl.xaml:337
 msgid "Saves the currently opened build as a new build"
-msgstr "Speichert den zurzeit geöffneten Build als neuen Build"
+msgstr ""
 
 #: Views\BuildsControl.xaml:342
 msgid "Save All"
-msgstr "Alles Speichern"
+msgstr "儲存全部"
 
 #: Views\BuildsControl.xaml:344
 msgid "Saves all changed builds"
-msgstr "Speicher alle geänderten Builds"
+msgstr ""
 
 #: Views\BuildsControl.xaml:352
 msgid "New top level build"
-msgstr "Neuer Build"
+msgstr ""
 
 #: Views\BuildsControl.xaml:357
 msgid "New top level folder"
-msgstr "Neuer Hauptordner"
+msgstr ""
 
 #: Views\Crafting\CraftingView.xaml:28
 msgid "Crafting Window"
@@ -381,239 +387,250 @@ msgstr ""
 #: Views\Crafting\CraftingView.xaml:96
 #: Views\Crafting\UniqueCraftingView.xaml:49
 msgid "Create Item"
-msgstr "Erstelle Item"
+msgstr ""
 
 #: Views\Crafting\UniqueCraftingView.xaml:16
 msgid "Unique Crafting Window"
 msgstr ""
 
 #: Views\DownloadItemsWindow.xaml:14
-msgid "Please enter your Character and Account Name below and click 'Open in Browser'."
-msgstr "Bitte gebe den Charaktername und Kontoname ein und klicke 'In Browser öffnen'"
+msgid ""
+"Please enter your Character and Account Name below and click 'Open in "
+"Browser'."
+msgstr ""
 
 #: Views\DownloadItemsWindow.xaml:15
-msgid "This will open a page in your default Web-Browser containing your character's item data"
-msgstr "Dies wird eine Seite in dem Browser öffnen welche die Gegenstandsdaten des Charakters beinhaltet."
+msgid ""
+"This will open a page in your default Web-Browser containing your "
+"character's item data"
+msgstr ""
 
 #: Views\DownloadItemsWindow.xaml:16
-msgid "Copy the contents of that page and paste them into the 'Item data' field."
-msgstr "Kopiere den Inhalt der Seite und füge diese in dem Feld 'Gegenstandsdaten' ein."
+msgid ""
+"Copy the contents of that page and paste them into the 'Item data' field."
+msgstr ""
 
 #: Views\DownloadItemsWindow.xaml:25 Views\EditBuildWindow.xaml:42
 msgid "Character name"
-msgstr "Charaktername"
+msgstr "角色名稱"
 
 #: Views\DownloadItemsWindow.xaml:30 Views\DownloadStashWindow.xaml:45
 #: Views\EditBuildWindow.xaml:47
 msgid "Account name"
-msgstr "Kontoname"
+msgstr "帳號名稱"
 
 #: Views\DownloadItemsWindow.xaml:41
 msgid "Link to item data:"
-msgstr "Link zu Gegenstandsdaten:"
+msgstr ""
 
 #: Views\DownloadItemsWindow.xaml:45 Views\DownloadStashWindow.xaml:62
 #: Views\DownloadStashWindow.xaml:110
 msgid "Open in Browser"
-msgstr "In Browser öffnen"
+msgstr ""
 
 #: Views\DownloadItemsWindow.xaml:51
 msgid "Item data:"
-msgstr "Gegenstandsdaten:"
+msgstr ""
 
 #: Views\DownloadStashWindow.xaml:27
-msgid "Please enter your Account Name and league below and click on 'Open in Browser'."
-msgstr "Bitte gebe in den folgenden Feldern dein Kontoname und den Name der Liga ein und klicke 'In Browser öffnen'"
+msgid ""
+"Please enter your Account Name and league below and click on 'Open in "
+"Browser'."
+msgstr ""
 
 #: Views\DownloadStashWindow.xaml:28
-msgid "This will open a page in your default Web-browser containing a list of your stash tabs."
-msgstr "Dies wird eine Seite in deinem Browser öffnen welche eine Liste der Tabs beinhaltet."
+msgid ""
+"This will open a page in your default Web-browser containing a list of your "
+"stash tabs."
+msgstr ""
 
 #: Views\DownloadStashWindow.xaml:29
 msgid "Copy the contents of that page and click 'Load stash tab list'."
-msgstr "Kopiere den Inhalt von der Seite und klicke 'Lade Liste mit den Tabs'."
+msgstr ""
 
 #: Views\DownloadStashWindow.xaml:40
 msgid "League"
-msgstr "Liga"
+msgstr "聯盟"
 
 #: Views\DownloadStashWindow.xaml:57
 msgid "Link to stash tab list:"
-msgstr "Link zu der Liste mit den Tabs:"
+msgstr ""
 
 #: Views\DownloadStashWindow.xaml:71
 msgid "Load stash tab list from clipboard"
-msgstr "Lade die Liste mit den Tabs von der Zwischenablage"
+msgstr ""
 
 #: Views\DownloadStashWindow.xaml:76
 msgid "Select a stash tab and click 'Open in browser' below"
-msgstr "Wähle ein Tab aus und klicke 'In Browser öffnen'"
+msgstr ""
 
 #: Views\DownloadStashWindow.xaml:77
-msgid "This will open a page in your default Web-browser containing the item data of the selected stash."
-msgstr "Dies wird eine Seite im Browser öffnen welche die Daten des ausgewählten Tabs beinhaltet."
+msgid ""
+"This will open a page in your default Web-browser containing the item data "
+"of the selected stash."
+msgstr ""
 
 #: Views\DownloadStashWindow.xaml:78
 msgid "Copy the contents of that page and click 'Load stash tab'."
-msgstr "Kopiere den Inhalt der Seite und klicke 'Lade Tab'."
+msgstr ""
 
 #: Views\DownloadStashWindow.xaml:105
 msgid "Link to stash tab:"
-msgstr "Link zum Tab:"
+msgstr ""
 
 #: Views\DownloadStashWindow.xaml:119
 msgid "Load stash tab from clipboard"
-msgstr "Lade Tab von der Zwischenablage"
+msgstr ""
 
 #: Views\EditBuildWindow.xaml:17
 msgid "Build Information"
-msgstr "Information"
+msgstr "流派資訊"
 
 #: Views\EditBuildWindow.xaml:24
 msgid "Build name"
-msgstr "Name"
+msgstr "流派名稱"
 
 #: Views\EditBuildWindow.xaml:30
 msgid "Build note"
-msgstr "Notiz"
+msgstr "流派註解"
 
 #: Views\EditBuildWindow.xaml:38
 msgid "Character Information"
-msgstr "Charakterinformation"
+msgstr "角色資訊"
 
 #: Views\HelpWindow.xaml:11
 msgid "Help"
-msgstr "Hilfe"
+msgstr "幫助"
 
 #: Views\HotkeysWindow.xaml:9
 msgid "Hotkeys"
-msgstr "Tastenbelegung"
+msgstr "熱鍵"
 
 #: Views\HotkeysWindow.xaml:52
 msgid "Key combination"
-msgstr "Tastenkombination"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:55
 msgid "Function"
-msgstr "Funktion"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:59
-msgid "Hineinzoomen"
-msgstr ""
+msgid "Zoom In"
+msgstr "放大"
 
 #: Views\HotkeysWindow.xaml:63
-msgid "Herauszoomen"
-msgstr ""
+msgid "Zoom Out"
+msgstr "縮小"
 
 #: Views\HotkeysWindow.xaml:67
 msgid "Scion"
-msgstr ""
+msgstr "貴族"
 
 #: Views\HotkeysWindow.xaml:71
 msgid "Marauder"
-msgstr ""
+msgstr "野蠻人"
 
 #: Views\HotkeysWindow.xaml:75
 msgid "Ranger"
-msgstr ""
+msgstr "遊俠"
 
 #: Views\HotkeysWindow.xaml:79
 msgid "Witch"
-msgstr ""
+msgstr "女巫"
 
 #: Views\HotkeysWindow.xaml:83
 msgid "Duelist"
-msgstr ""
+msgstr "決鬥者"
 
 #: Views\HotkeysWindow.xaml:87
 msgid "Templar"
-msgstr ""
+msgstr "聖堂武僧"
 
 #: Views\HotkeysWindow.xaml:91
 msgid "Shadow"
-msgstr ""
+msgstr "暗影刺客"
 
 #: Views\HotkeysWindow.xaml:95
 msgid "Toggle Attributes sidebar"
-msgstr "Schalte die Attribute-Seitenleiste um"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:99
 msgid "Toggle Character Sheet sidebar"
-msgstr "Schalte die Charakterinformationen-Seitenleiste um"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:103
 msgid "Toggle Saved Builds sidebar"
-msgstr "Schalte die Seitenleiste der gespeicherten Builds um"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:107
 msgid "Copy PoEUrl link to Clipboard"
-msgstr "Kopiere den PoEUrl Link in die Zwischenablage"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:111
 msgid "Reset Skill tree"
-msgstr "Setze Fähigkeitenbaum zurück"
+msgstr "重置天賦樹"
 
 #: Views\HotkeysWindow.xaml:114
 msgid "Ctrl + Up/Down"
-msgstr "Strg + Hoch/Runter"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:117
 msgid "(Saved Builds) Move build up and down"
-msgstr "(Gespeicherte Builds) Bewege Builds hoch und runter"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:121
 msgid "Undo last Skill tree change"
-msgstr "Mache letzte Änderung am Fähigkeitenbaum rückgängig"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:125
 msgid "Redo last Skill tree change"
-msgstr "Wiederhole letzte Änderung am Fähigkeitenbaum"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:129
 #: Model\Serialization\SerializationConstants.cs:16
 msgid "New build"
-msgstr "Neuer Build"
+msgstr "新流派"
 
 #: Views\HotkeysWindow.xaml:133
 msgid "Save build"
-msgstr "Speicher Build"
+msgstr "儲存流派"
 
 #: Views\HotkeysWindow.xaml:137
 msgid "Save build as"
-msgstr "Speicher Build als..."
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:141
 msgid "Search"
-msgstr "Suche"
+msgstr "搜尋"
 
 #: Views\HotkeysWindow.xaml:145 Views\MainWindow.xaml:440
 msgid "Show summary of changes"
-msgstr "Zeige Zusammenfassung der Änderungen"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:148 Views\HotkeysWindow.xaml:153
 #: Views\HotkeysWindow.xaml:159
 msgid "Right Click"
-msgstr "Rechtsklick"
+msgstr "右鍵"
 
 #: Views\HotkeysWindow.xaml:151
 msgid "(Skill tree) Center Skill tree and reset zoom"
-msgstr "(Fähigkeitenbaum) Zentriere Fähigkeitenbaum und setze die Zoomstufe zurück"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:156
 msgid "(Attributes) Highlight corresponding nodes in Skill tree"
-msgstr "(Attribute) Hebe dazugehörige Knoten im Fähigkeitenbaum hervor"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:162
 msgid "(Skill node) Toggle skill node highlighting"
-msgstr "(Fähigkeitsknoten) Schalte die Hervorhebung von Fähigkeitsknoten um"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:165
 msgid "Shift + Right Click"
-msgstr "Shift + Rechtsklick"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:168
 msgid "(Skill node) Toggle skill node highlighting (reversed)"
-msgstr "(Fähigkeitsknoten) Schalte die Hervorhebung von Fähigkeitsknoten um (umgekehrt)"
+msgstr ""
 
 #: Views\HotkeysWindow.xaml:171
 msgid "Shift + Hover"
@@ -621,447 +638,445 @@ msgstr ""
 
 #: Views\HotkeysWindow.xaml:174
 msgid "(Skill node) Highlight similar skill nodes"
-msgstr "(Fähigkeitsknoten) Hebe ähnliche Fähigkeitsknoten hervor"
+msgstr ""
 
 #: Views\MainWindow.xaml:100
 msgid "_File"
-msgstr "Datei"
+msgstr "檔案(_F)"
 
 #: Views\MainWindow.xaml:106
 msgid "_New"
-msgstr "Neu"
+msgstr "新增(_N)"
 
 #: Views\MainWindow.xaml:144
 msgid "Save A_ll"
-msgstr "Alles Speichern"
+msgstr "儲存全部"
 
 #: Views\MainWindow.xaml:153
 #, csharp-format
 msgid "Export {0} to clipboard"
-msgstr "Exportiere {0} in die Zwischenablage"
+msgstr ""
 
 #: Views\MainWindow.xaml:161
 msgid "Import build from clipboard"
-msgstr "Importiere Build von der Zwischenablage"
+msgstr ""
 
 #: Views\MainWindow.xaml:167
 msgid "Reload builds from filesystem"
-msgstr "Erneutes Einlesen aller Builds aus dem Verzeichnis"
+msgstr ""
 
 #: Views\MainWindow.xaml:178
 msgid ""
 "Opens the directory your builds are saved to so you can share those builds.\n"
 "The directory can be changed in the settings."
 msgstr ""
-"Öffnet das Verzeichnis indem die Builds gespeichert sind damit diese geteilt werden können.\n"
-"Das Verzeichnis kann in den Einstellungen geändert werden."
 
 #: Views\MainWindow.xaml:188
 msgid "E_xit"
-msgstr "Beenden"
+msgstr "離開(_x)"
 
 #: Views\MainWindow.xaml:197
 msgid "_Edit"
-msgstr "Bearbeiten"
+msgstr "編輯(_E)"
 
 #: Views\MainWindow.xaml:209
 msgid "_Undo"
-msgstr "Rückgängig"
+msgstr "復原(_U)"
 
 #: Views\MainWindow.xaml:217
 msgid "_Redo"
-msgstr "Wiederholen"
+msgstr "重複(_R)"
 
 #: Views\MainWindow.xaml:225
 msgid "Reset Skill _Tree"
-msgstr "Fähigkeitenbaum zurücksetzen"
+msgstr "重置天賦樹(_T)"
 
 #: Views\MainWindow.xaml:234
 msgid "Copy _Passive Attributes to Clipboard"
-msgstr "Kopiere passive Attribute in die Zwischenablage"
+msgstr "拷貝天賦屬性到剪貼簿(_P)"
 
 #: Views\MainWindow.xaml:242
 msgid "Copy Po_EUrl of Skill tree to Clipboard"
-msgstr "Kopiere PoEUrl des Fähigkeitenbaums in die Zwischenablage"
+msgstr "拷貝PoEUrl網址到剪貼簿(_E)"
 
 #: Views\MainWindow.xaml:251
 msgid "_View"
-msgstr "Ansicht"
+msgstr "瀏覽(_V)"
 
 #: Views\MainWindow.xaml:255
 msgid "_Theme"
-msgstr "Skin"
+msgstr "佈景(_T)"
 
 #: Views\MainWindow.xaml:262
 msgctxt "color"
 msgid "Light"
-msgstr "Hell"
+msgstr "明亮"
 
 #: Views\MainWindow.xaml:267
 msgctxt "color"
 msgid "Dark"
-msgstr "Dunkel"
+msgstr "灰暗"
 
 #: Views\MainWindow.xaml:273
 msgid "Acce_nt"
-msgstr "Akzent"
+msgstr ""
 
 #: Views\MainWindow.xaml:280
 msgctxt "color"
 msgid "Amber"
-msgstr "Bernstein"
+msgstr ""
 
 #: Views\MainWindow.xaml:285
 msgctxt "color"
 msgid "Blue"
-msgstr "Blau"
+msgstr ""
 
 #: Views\MainWindow.xaml:290
 msgctxt "color"
 msgid "Brown"
-msgstr "Braun"
+msgstr ""
 
 #: Views\MainWindow.xaml:295
 msgctxt "color"
 msgid "Cobalt"
-msgstr "Kobalt"
+msgstr ""
 
 #: Views\MainWindow.xaml:300
 msgctxt "color"
 msgid "Crimson"
-msgstr "Purpurrot"
+msgstr ""
 
 #: Views\MainWindow.xaml:305
 msgctxt "color"
 msgid "Cyan"
-msgstr "Türkis"
+msgstr ""
 
 #: Views\MainWindow.xaml:310
 msgctxt "color"
 msgid "Emerald"
-msgstr "Smaragd"
+msgstr ""
 
 #: Views\MainWindow.xaml:315
 msgctxt "color"
 msgid "Green"
-msgstr "Grün"
+msgstr ""
 
 #: Views\MainWindow.xaml:320
 msgctxt "color"
 msgid "Indigo"
-msgstr "Indigo"
+msgstr ""
 
 #: Views\MainWindow.xaml:325
 msgctxt "color"
 msgid "Lime"
-msgstr "Limette"
+msgstr ""
 
 #: Views\MainWindow.xaml:330
 msgctxt "color"
 msgid "Magenta"
-msgstr "Magenta"
+msgstr ""
 
 #: Views\MainWindow.xaml:335
 msgctxt "color"
 msgid "Mauve"
-msgstr "Malven"
+msgstr ""
 
 #: Views\MainWindow.xaml:340
 msgctxt "color"
 msgid "Olive"
-msgstr "Olive"
+msgstr ""
 
 #: Views\MainWindow.xaml:345
 msgctxt "color"
 msgid "Orange"
-msgstr "Orange"
+msgstr ""
 
 #: Views\MainWindow.xaml:350
 msgctxt "color"
 msgid "Pink"
-msgstr "Pink"
+msgstr ""
 
 #: Views\MainWindow.xaml:355
 msgctxt "color"
 msgid "Purple"
-msgstr "Lila"
+msgstr ""
 
 #: Views\MainWindow.xaml:360
 msgctxt "color"
 msgid "Red"
-msgstr "Rot"
+msgstr ""
 
 #: Views\MainWindow.xaml:365
 msgctxt "color"
 msgid "Sienna"
-msgstr "Sienna"
+msgstr ""
 
 #: Views\MainWindow.xaml:370
 msgctxt "color"
 msgid "Steel"
-msgstr "Stahl"
+msgstr ""
 
 #: Views\MainWindow.xaml:375
 msgctxt "color"
 msgid "Taupe"
-msgstr "Taupe"
+msgstr ""
 
 #: Views\MainWindow.xaml:380
 msgctxt "color"
 msgid "Teal"
-msgstr "Blaugrün"
+msgstr ""
 
 #: Views\MainWindow.xaml:385
 msgctxt "color"
 msgid "Violet"
-msgstr "Violett"
+msgstr ""
 
 #: Views\MainWindow.xaml:390
 msgctxt "color"
 msgid "Yellow"
-msgstr "Gelb"
+msgstr ""
 
 #: Views\MainWindow.xaml:397
 msgid "Saved _Builds"
-msgstr "Gespeicherte Builds"
+msgstr ""
 
 #: Views\MainWindow.xaml:403
 msgid "_Attributes"
-msgstr "Attribute"
+msgstr "屬性(_A)"
 
 #: Views\MainWindow.xaml:409
 msgid "_Character Sheet"
-msgstr "Charakterinformationen"
+msgstr "角色清單(_C)"
 
 #: Views\MainWindow.xaml:415
 msgid "Skill _Tree Comparison"
-msgstr "Fähigkeitenbaumvergleich"
+msgstr "天賦樹比較(_T)"
 
 #: Views\MainWindow.xaml:449
 msgid "_Tools"
-msgstr "Werkzeuge"
+msgstr "工具(_T)"
 
 #: Views\MainWindow.xaml:453
 msgid "Take _Screenshot of Skilled Nodes"
-msgstr "Erstelle ein Screenshot der ausgewählten Knoten"
+msgstr ""
 
 #: Views\MainWindow.xaml:462
 msgid "_Download & Import Items"
-msgstr "Lade Gegenstände herunter und importiere diese"
+msgstr ""
 
 #: Views\MainWindow.xaml:470
 msgid "_Download & Import Stash"
-msgstr "Lade Truhe herunter und importiere"
+msgstr ""
 
 #: Views\MainWindow.xaml:479
 msgid "_Redownload Skill Tree Assets"
-msgstr "Lade Fähigkeitenbaum Assets neu herunter"
+msgstr ""
 
 #: Views\MainWindow.xaml:487
 msgid "Item _Filter Editor"
-msgstr ""
+msgstr "物品過濾編輯器(_F)"
 
 #: Views\MainWindow.xaml:496
 msgid "_Nodes"
-msgstr "Knoten"
+msgstr "節點(_N)"
 
 #: Views\MainWindow.xaml:501
 msgid "_Skill Tree Generator"
-msgstr "Fähigkeitenbaum Generator"
+msgstr ""
 
 #: Views\MainWindow.xaml:508
 msgid "Run 'Tagged _Nodes' generator"
-msgstr "'Markierte Knoten' Generator"
+msgstr ""
 
 #: Views\MainWindow.xaml:518
 msgid "Run '_Advanced' generator"
-msgstr "'Erweiterter' Generator"
+msgstr ""
 
 #: Views\MainWindow.xaml:528
 msgid "Un_tag All Nodes"
-msgstr "Entferne alle Markierungen"
+msgstr ""
 
 #: Views\MainWindow.xaml:533
 msgid "_Unhighlight All Nodes"
-msgstr "Entferne alle Hervorhebungen"
+msgstr ""
 
 #: Views\MainWindow.xaml:538
 msgid "_Check-tag highlighted Nodes"
-msgstr "Markiere hervorgehobene Knoten mit einem Haken"
+msgstr ""
 
 #: Views\MainWindow.xaml:543
 msgid "C_ross-tag highlighted Nodes"
-msgstr "Markiere hervorgehobene Knoten mit einem Kreuz"
+msgstr ""
 
 #: Views\MainWindow.xaml:549
 msgid "_Help"
-msgstr "Hilfe"
+msgstr "幫助(_H)"
 
 #: Views\MainWindow.xaml:553
 msgid "_Links"
-msgstr "Links"
+msgstr "連結(_L)"
 
 #: Views\MainWindow.xaml:560
 msgid "_Path of Exile Website"
-msgstr "Path of Exile Website"
+msgstr "流亡黯道網站(_P)"
 
 #: Views\MainWindow.xaml:565
 msgid "Path of Exile _Wiki"
-msgstr "Path of Exile Wiki"
+msgstr "流亡黯道維基(_W)"
 
 #: Views\MainWindow.xaml:571
 msgid "View _Help"
-msgstr "Hilfe"
+msgstr "瀏覽幫助(_H)"
 
 #: Views\MainWindow.xaml:579
 msgid "Hot_keys"
-msgstr "Tastenbelegung"
+msgstr "熱鍵(_k)"
 
 #: Views\MainWindow.xaml:587
 msgid "Check for _Updates"
-msgstr "Suche nach Aktualisierungen"
+msgstr "檢查更新(_U)"
 
 #: Views\MainWindow.xaml:595
 msgid "_About PoESkillTree"
-msgstr "Über PoESkillTree"
+msgstr "關於PoESkillTree(_A)"
 
 #: Views\MainWindow.xaml:608
 msgid "Skill Tree"
-msgstr "Fähigkeitenbaum"
+msgstr "天賦樹"
 
 #: Views\MainWindow.xaml:614
 msgid "Equipment"
-msgstr "Ausrüstung"
+msgstr "裝備"
 
 #: Views\MainWindow.xaml:630
 msgid "Bandits"
-msgstr "Banditen"
+msgstr "盜賊"
 
 #: Views\MainWindow.xaml:643
 msgid "Level"
-msgstr "Level"
+msgstr "等級"
 
 #: Views\MainWindow.xaml:650
 msgid "Used Passive Skill Points"
-msgstr "Verwendete passive Fähigkeitenpunkte"
+msgstr "已使用天賦點數"
 
 #: Views\MainWindow.xaml:655
 msgid "Used Ascendancy Skill Points"
-msgstr "Verwendete 'Ascendancy' Fähigkeitenpunkte"
+msgstr "已使用昇華點數"
 
 #: Views\MainWindow.xaml:662
 msgid "Total Passive Skill Points"
-msgstr "Gesamte passive Fähigkeitenpunkte"
+msgstr "全部天賦點數"
 
 #: Views\MainWindow.xaml:667
 msgid "Total Ascendancy Skill Points"
-msgstr "Gesamte 'Ascendancy' Fähigkeitenpunkte"
+msgstr "全部昇華點數"
 
 #: Views\MainWindow.xaml:721
 msgid "Craft new unique"
-msgstr "Erstelle neues 'Unique'"
+msgstr "創造新傳奇"
 
 #: Views\MainWindow.xaml:725
 msgid "Craft new item"
-msgstr "Erstelle neuen Gegenstand"
+msgstr "創造新物品"
 
 #: Views\MainWindow.xaml:746
 msgid "Saved Builds"
-msgstr "Gespeicherte Builds"
+msgstr "已儲存流派"
 
 #: Views\MainWindow.xaml:781
 msgid "Passive Attributes"
-msgstr "Passive Attribute"
+msgstr "天賦屬性"
 
 #: Views\MainWindow.xaml:798
 msgid "Item Attributes"
-msgstr "Gegenstandsattribute"
+msgstr "物品屬性"
 
 #: Views\MainWindow.xaml:817
 msgid "Total Attributes"
-msgstr "Gesamte Attribute"
+msgstr "全部屬性"
 
 #: Views\MainWindow.xaml:834
 msgid "ItemList"
-msgstr "Gegenstandsliste"
+msgstr "物品清單"
 
 #: Views\MainWindow.xaml:858
 msgid "Character Sheet"
-msgstr "Charakterinformation"
+msgstr "角色清單"
 
 #: Views\MainWindow.xaml:864 SkillTreeFiles\Compute.cs:2300
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:218
 #: Utils\Converter\GroupStringConverter.cs:31
 msgid "Defense"
-msgstr "Verteidigung"
+msgstr "防禦"
 
 #: Views\MainWindow.xaml:881
 msgid "Offense"
-msgstr "Angriff"
+msgstr "攻擊"
 
 #: Views\MainWindow.xaml:924 Views\MainWindow.xaml:927
 msgid "Skill tree link"
-msgstr "Fähigkeitenbaum Link"
+msgstr "天賦樹連結"
 
 #: Views\SettingsMenuWindow.xaml:48
 msgid "General:"
-msgstr "Allgemein:"
+msgstr ""
 
 #: Views\SettingsMenuWindow.xaml:65
 msgid "Show All Ascendancy Classes"
-msgstr "Zeige alle 'Ascendancy' Klassen"
+msgstr "顯示所有昇華職業"
 
 #: Views\SettingsMenuWindow.xaml:74
 msgid "Language"
-msgstr "Sprache"
+msgstr "語言"
 
 #: Views\SettingsMenuWindow.xaml:85
 msgid "Build save path"
-msgstr "Speicherpfad für Builds"
+msgstr "流派儲存路徑"
 
 #: Views\SettingsMenuWindow.xaml:100
 msgid "Change..."
-msgstr "Ändern..."
+msgstr "變更..."
 
 #: Views\SettingsMenuWindow.xaml:108
 msgid "Colors:"
-msgstr "Farben:"
+msgstr "顏色:"
 
 #: Views\SettingsMenuWindow.xaml:125
 msgid "Node Search Highlight"
-msgstr "Knotensuche Hervorhebung"
+msgstr "節點尋找高亮"
 
 #: Views\SettingsMenuWindow.xaml:136
 msgid "Attribute Highlight"
-msgstr "Attribut Hervorhebung"
+msgstr "屬性高亮"
 
 #: Views\SettingsMenuWindow.xaml:146
 msgid "Node Hover Highlight"
-msgstr "Knoten Hover Hervorhebung"
+msgstr ""
 
 #: Views\SettingsMenuWindow.xaml:156
 msgid "Equipment:"
-msgstr "Ausrüstung:"
+msgstr "裝備:"
 
 #: Views\SettingsMenuWindow.xaml:171
 msgid "Automatically download missing item images"
-msgstr "Lade fehlende Bilder automatisch herunter"
+msgstr ""
 
 #: Views\SettingsMenuWindow.xaml:180
 msgid "Reset button preferences:"
-msgstr "Einstellungen für Zurücksetzungen"
+msgstr ""
 
 #: Views\SettingsMenuWindow.xaml:197
 msgid "Reset main skill tree"
-msgstr "Setze den Fähigkeitenbaum zurück"
+msgstr ""
 
 #: Views\SettingsMenuWindow.xaml:206
 msgid "Reset ascendancy skill tree"
-msgstr "Setze 'Ascendancy' Fähigkeitenbaum zurück"
+msgstr ""
 
 #: Views\SettingsMenuWindow.xaml:215
 msgid "Reset selected bandits"
-msgstr "Setze ausgewählte Banditen zurück"
+msgstr ""
 
 #: Views\TabPicker.xaml:18
 msgid "Stash Bookmark"
@@ -1069,357 +1084,354 @@ msgstr ""
 
 #: Views\TabPicker.xaml:33
 msgid "Name"
-msgstr "Name"
+msgstr "名稱"
 
 #: Views\TabPicker.xaml:110
 msgid "Delete bookmark and items"
-msgstr "Lösche Lesezeichen und Gegenstände"
+msgstr "刪除書籤和物品"
 
 #: Views\TabPicker.xaml:114
 msgid "Delete bookmark"
-msgstr "Lösche Lesezeichen"
+msgstr "刪除書籤"
 
 #: Controls\Dialogs\ExtendedDialogManager.cs:59
 msgid "Confirmation"
-msgstr "Bestätigung"
+msgstr ""
 
 #: Controls\Dialogs\ExtendedDialogManager.cs:64
 msgid "Error"
-msgstr "Fehler"
+msgstr "錯誤"
 
 #: Controls\Dialogs\ExtendedDialogManager.cs:69
 msgid "Warning"
-msgstr "Warnung"
+msgstr "警告"
 
 #: Controls\Dialogs\ExtendedDialogManager.cs:74
 msgid "Information"
-msgstr "Information"
+msgstr "資訊"
 
 #: Controls\Stash.xaml.cs:699
 msgid ""
-"This will delete all items between this and the next bookmark and can not be undone.\n"
+"This will delete all items between this and the next bookmark and can not be "
+"undone.\n"
 "Do you want to continue?"
 msgstr ""
-"Dies wird alle Gegenstände zwischen diesem und dem nächsten Lesezeichen unwiderruflich löschen.\n"
-"Möchtest Du fortfahren?"
 
 #: Controls\Stash.xaml.cs:700
 msgid "Delete items"
-msgstr "Lösche Gegenstände"
+msgstr "刪除物品"
 
 #: Model\Serialization\AbstractPersistentDataDeserializer.cs:84
 msgid "Directory must be empty."
-msgstr "Verzeichnis muss leer sein."
+msgstr ""
 
 #: Model\Serialization\AbstractPersistentDataDeserializer.cs:88
 #: ViewModels\SettingsMenuViewModel.cs:64
 msgid "Select build directory"
-msgstr "Wähle das Verzeichnis für Builds aus"
+msgstr ""
 
 #: Model\Serialization\AbstractPersistentDataDeserializer.cs:89
 msgid ""
 "Select the directory where builds will be stored.\n"
-"It will be created if it does not yet exist. You can change it in the settings later."
+"It will be created if it does not yet exist. You can change it in the "
+"settings later."
 msgstr ""
-"Wähle das Verzeichnis in dem die Builds gespeichert werden sollen.\n"
-"Wenn das Verzeichnis nicht existiert wird es automatisch erstellt. Es kann später in den Einstellungen geändert werden.."
 
 #: Model\Serialization\PersistentDataDeserializerCurrent.cs:74
 #, csharp-format
-msgid "Could not import build file, only existing files with the extension {0} can be imported."
-msgstr "Konnte Build nicht importieren. Es können nur vorhandende Datein mit der Endung {0} importiert werden."
+msgid ""
+"Could not import build file, only existing files with the extension {0} can "
+"be imported."
+msgstr ""
 
 #: Model\Serialization\PersistentDataDeserializerCurrent.cs:76
 #: Model\Serialization\PersistentDataDeserializerCurrent.cs:138
 #: Model\Serialization\PersistentDataDeserializerCurrent.cs:147
 msgid "Import failed"
-msgstr "Import ist fehlgeschlagen"
+msgstr "匯入失敗"
 
 #: Model\Serialization\PersistentDataDeserializerCurrent.cs:137
 msgid "Build is of an old version and can't be imported"
-msgstr "Build ist von einer älteren Version und kann nicht importiert werden."
+msgstr ""
 
 #: Model\Serialization\PersistentDataDeserializerCurrent.cs:146
 msgid "Could not import build"
-msgstr "Konnte Build nicht importieren"
+msgstr ""
 
 #: SkillTreeFiles\Compute.cs:2299
 msgid "Character"
-msgstr "Charakter"
+msgstr "角色"
 
 #: SkillTreeFiles\SkillTree.cs:1221
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
-msgstr "Manche Knoten ({unknownNodes}) sind unbekannt und wurden weggelassen."
+msgstr ""
 
 #: SkillTreeFiles\Updater.cs:116 SkillTreeFiles\Updater.cs:237
 msgid "Download already in progress"
-msgstr "Das Herunterladen findet bereits statt"
+msgstr ""
 
 #: SkillTreeFiles\Updater.cs:118
 msgid "Download already completed"
-msgstr "Das Herunterladen ist bereits abgeschlossen"
+msgstr ""
 
 #: SkillTreeFiles\Updater.cs:160 SkillTreeFiles\Updater.cs:353
 #: SkillTreeFiles\Updater.cs:427
 msgid "Download still in progress"
-msgstr "Das Herunterladen ist noch nicht abgeschlossen"
+msgstr ""
 
 #: SkillTreeFiles\Updater.cs:163 SkillTreeFiles\Updater.cs:429
 msgid "No package downloaded"
-msgstr "Kein Paket heruntergeladen"
+msgstr ""
 
 #: SkillTreeFiles\Updater.cs:261
 msgid "No release found"
-msgstr "Keine Veröffentlichung gefunden"
+msgstr ""
 
 #: SkillTreeFiles\Updater.cs:369
 msgid "Download completed or still in progress"
-msgstr "Das Herunterladen ist abgeschlossen oder findet noch statt"
+msgstr ""
 
 #: SkillTreeFiles\Updater.cs:409
 msgid "The application is not correctly installed"
-msgstr "Die Anwendung ist nicht korrekt installiert"
+msgstr ""
 
 #: TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs:74
 #, csharp-format
 msgid "No Pseudo Attributes loaded. Make sure {0} is not empty."
-msgstr "Keine Pseudoattribute geladen. Stelle sicher, dass {0} nicht leer ist."
+msgstr ""
 
 #: TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs:105
 msgid "Invalid Xml file: "
-msgstr "Unzulässige XML-Datei:"
+msgstr ""
 
 #: TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs:190
 #, csharp-format
 msgid "Unsupported condition type in attribute {0} in pseudo attribute {1}"
-msgstr "Nicht supporteter Bedingungstyp in Attribut {0} in Pseudoattribut {1}"
+msgstr ""
 
 #: TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs:226
 #, csharp-format
 msgid "Empty not condition in attribute {0} in pseudo attribute {1}"
-msgstr "Leere Nicht-Bedingung in Attribut {0} in Pseudoattribut {1}"
+msgstr ""
 
 #: TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs:244
 msgid "A PseudoAttribute is nested in itself or nesting depth is too high"
-msgstr "Ein Pseudoattribut ist in sich selbst verschachtelt oder die Verschachtelungstiefe ist zu groß"
+msgstr ""
 
 #: TreeGenerator\Model\PseudoAttributes\PseudoAttributeLoader.cs:254
 #, csharp-format
 msgid "Nested PseudoAttribute {0} does not exist as top level PseudoAttribute"
-msgstr "Verschachteltes Pseudoattribute {0} existiert nicht als top Level Pseudoattribute"
+msgstr ""
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:204
 msgid "Popular"
-msgstr "Populär"
+msgstr "熱門"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:213
 #: Utils\Converter\GroupStringConverter.cs:34
 msgid "Core Attributes"
-msgstr "Kernattribute"
+msgstr "主要屬性"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:214
 #: Utils\Converter\GroupStringConverter.cs:30
 msgid "General"
-msgstr "Allgemein"
+msgstr "一般"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:215
 #: Utils\Converter\GroupStringConverter.cs:19
 msgid "Keystone"
-msgstr ""
+msgstr "重點"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:216
 #: Utils\Converter\GroupStringConverter.cs:21
 msgid "Charges"
-msgstr "Aufladungen"
+msgstr "充能球"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:219
 #: Utils\Converter\GroupStringConverter.cs:29
 msgid "Block"
-msgstr ""
+msgstr "格擋"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:220
 #: Utils\Converter\GroupStringConverter.cs:28
 msgid "Shield"
-msgstr ""
+msgstr "盾牌"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:222
 #: Utils\Converter\GroupStringConverter.cs:20
 msgid "Weapon"
-msgstr ""
+msgstr "武器"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:223
 #: Utils\Converter\GroupStringConverter.cs:32
 msgid "Spell"
-msgstr ""
+msgstr "法術"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:224
 #: Utils\Converter\GroupStringConverter.cs:27
 msgid "Critical Strike"
-msgstr ""
+msgstr "暴擊"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:226
 #: Utils\Converter\GroupStringConverter.cs:26
 msgid "Aura"
-msgstr ""
+msgstr "光環"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:227
 #: Utils\Converter\GroupStringConverter.cs:25
 msgid "Curse"
-msgstr ""
+msgstr "詛咒"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:228
 #: Utils\Converter\GroupStringConverter.cs:22
 msgid "Minion"
-msgstr ""
+msgstr "召喚物"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:229
 #: Utils\Converter\GroupStringConverter.cs:23
 msgid "Trap"
-msgstr ""
+msgstr "陷阱"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:230
 #: Utils\Converter\GroupStringConverter.cs:24
 msgid "Totem"
-msgstr ""
+msgstr "圖騰"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:231
 #: Utils\Converter\GroupStringConverter.cs:33
 #: ItemFilter\Model\FilterManager.cs:416
 msgid "Flasks"
-msgstr ""
+msgstr "藥劑"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:232
 #: Utils\Converter\GroupStringConverter.cs:35
-msgid "Everything else"
-msgstr "Alles andere"
+msgid "Everything Else"
+msgstr "其他"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:603
 msgid "Advanced"
-msgstr "Erweitert"
+msgstr ""
 
 #: TreeGenerator\ViewModels\AutomatedTabViewModel.cs:23
 msgid "Automated"
-msgstr "Automatisiert"
+msgstr "自動"
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:22
 msgid "Current iteration:"
-msgstr "Derzeitiger Versuch:"
+msgstr ""
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:77
 msgid "Initializing..."
-msgstr "Initialisiere..."
+msgstr "初始化..."
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:138
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:365
 msgid "Pause"
-msgstr "Pausieren"
+msgstr "暫停"
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:186
 msgid "Skill tree generator"
-msgstr "Fähigkeitenbaum Generator"
+msgstr ""
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:244
 msgid ""
 "The optimizer was unable to find a conforming tree.\n"
 "Please change skill node tagging and try again.\n"
 "\n"
-"Note: When using the Advanced generator, you need to check-tag all keystones you want."
+"Note: When using the Advanced generator, you need to check-tag all keystones "
+"you want."
 msgstr ""
-"Der Generator konnte keinen passenden Baum finden.\n"
-"Bitte ändere die Fähigkeitsknotenmarkierung und versuche es erneut.\n"
-"\n"
-"Info: Wenn der erweiterte Generator verwendet wird müssen alle benötigten Keystones manuell markiert werden."
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:304
 msgid "Finished!"
-msgstr "Fertig!"
+msgstr "完成!"
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:339
 #, csharp-format
 msgid "Best result so far: {0} point spent"
 msgid_plural "Best result so far: {0} points spent"
-msgstr[0] "Bisher bestes Ergebnis: {0} Punkt verwendet"
-msgstr[1] "Bisher bestes Ergebnis: {0} Punkte verwendet"
+msgstr[0] ""
+msgstr[1] ""
 
 #: TreeGenerator\ViewModels\ControllerViewModel.cs:372
 msgid "Continue"
-msgstr "Fortfahren"
+msgstr "繼續"
 
 #: TreeGenerator\ViewModels\SteinerTabViewModel.cs:35
 msgid "Tagged Nodes"
-msgstr "Markierte Knoten"
+msgstr ""
 
 #: TreeGenerator\ViewModels\SteinerTabViewModel.cs:45
 msgid "Please tag non-skilled nodes by right-clicking them."
-msgstr "Markiere nicht ausgewählte Fähigkeitsknoten durch einen Rechtsklick."
+msgstr ""
 
 #: TreeGenerator\ViewModels\TreeGeneratorInteraction.cs:68
 msgid "The Skill Tree Generator is already open"
-msgstr "Der Fähigkeitenbaum Generator ist bereits geöffnet"
+msgstr ""
 
 #: TreeGenerator\ViewModels\TreeGeneratorInteraction.cs:83
 msgid "Could not open Skill Tree Generator"
-msgstr "Der Fähigkeitenbaum Generator konnte nicht geöffnet werden"
+msgstr ""
 
 #: Utils\PathEx.cs:37 ViewModels\Builds\BuildValidator.cs:164
 msgid "Value is required."
-msgstr "Wert ist benötigt."
+msgstr ""
 
 #: Utils\PathEx.cs:41
 msgid "Value only contains white space characters."
-msgstr "Wert enthält nur Leerzeichen."
+msgstr ""
 
 #: Utils\PathEx.cs:52
 msgid "Path already exists."
-msgstr "Pfad existiert bereits."
+msgstr ""
 
 #: Utils\PathEx.cs:56
 msgid "Path exists and is not a directory."
-msgstr "Pfad existiert und ist kein Verzeichnis."
+msgstr ""
 
 #: Utils\PathEx.cs:60
 msgid "Path already exists as a directory."
-msgstr "Pfad existiert bereits als ein Verzeichnis."
+msgstr ""
 
 #: Utils\PathEx.cs:65
 msgid "Path must not be relative."
-msgstr "Der Pfad darf nicht relativ sein."
+msgstr ""
 
 #: Utils\PathEx.cs:70
 msgid "Value contains invalid characters."
-msgstr "Der Wert beinhaltet ungültige Zeichen."
+msgstr ""
 
 #: Utils\PathEx.cs:74
 msgid "Path could not be accessed."
-msgstr "Auf den Pfad konnte nicht zugegriffen werden."
+msgstr ""
 
 #: Utils\PathEx.cs:78
 msgid "Path is too long."
-msgstr "Der Pfad ist zu lang."
+msgstr ""
 
 #: Utils\PathEx.cs:82
 msgid "Value contains a colon at an invalid position-"
-msgstr "Wert enthält ein Komma an einer unzulässigen Position."
+msgstr ""
 
 #: Utils\UrlProcessing\BuildUrlNormalizer.cs:99
 msgid "Resolving shortened tree address"
-msgstr "Auflösung der gekürzten Adresse"
+msgstr ""
 
 #: Utils\UrlProcessing\NaivePoeUrlDeserializer.cs:37
 msgid "The build is using an old version of the passive tree."
-msgstr "Dieser Build verwendet eine alte Version des Fähigkeitenbaums."
+msgstr ""
 
 #: Utils\UrlProcessing\NaivePoeUrlDeserializer.cs:88
 msgid "Failed to load build from URL."
-msgstr "Fehler beim Laden des Builds von der URL."
+msgstr ""
 
 #: ItemFilter\Model\FilterManager.cs:31
 msgid "Currency"
-msgstr ""
+msgstr "通貨"
 
 #: ItemFilter\Model\FilterManager.cs:255
 msgid "Recipes"
-msgstr ""
+msgstr "配方"
 
 #: ItemFilter\Model\FilterManager.cs:266
 msgid ""
@@ -1435,11 +1447,11 @@ msgstr ""
 
 #: ItemFilter\Model\FilterManager.cs:386
 msgid "Gems"
-msgstr ""
+msgstr "寶石"
 
 #: ItemFilter\Model\FilterManager.cs:610
 msgid "Miscellaneous"
-msgstr "Verschiedenes"
+msgstr ""
 
 #: ItemFilter\Model\FilterManager.cs:690
 msgid "Chancing"
@@ -1447,43 +1459,41 @@ msgstr ""
 
 #: ItemFilter\Views\ColorButtonDialog.xaml.cs:35
 msgid "Original color"
-msgstr "Originale Farbe"
+msgstr ""
 
 #: ItemFilter\Views\ColorButtonDialog.xaml.cs:37
 msgid "Standard colors"
-msgstr "Standardfarben"
+msgstr ""
 
 #: ItemFilter\Views\ColorButtonDialog.xaml.cs:39
 msgid "Recent colors"
-msgstr "Kürzlich verwendete Farben"
+msgstr ""
 
 #: ItemFilter\Views\ColorButtonDialog.xaml.cs:40
 msgctxt "color"
 msgid "Custom"
-msgstr "Benutzerdefiniert"
+msgstr ""
 
 #: ItemFilter\Views\ColorButtonDialog.xaml.cs:41
 msgctxt "color"
 msgid "Standard"
-msgstr "Standard"
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:57
 msgid "All"
-msgstr "Alle"
+msgstr "全部"
 
 #: ViewModels\BuildsControlViewModel.cs:349
 msgid ""
 "Files in your build save directory have been changed.\n"
 "Do you want to reload all builds from the file system?"
 msgstr ""
-"Dateien im Verzeichnis wurden geändert.\n"
-"Sollen die Builds vom Verzeichnis neu eingelesen werden?"
 
 #: ViewModels\BuildsControlViewModel.cs:353
 msgid ""
 "\n"
 "All unsaved changes will be lost."
-msgstr "Alle ungespeicherten Änderungen gehen verloren."
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:355
 msgid ""
@@ -1491,104 +1501,100 @@ msgid ""
 "\n"
 "You can also reload through the 'File' menu."
 msgstr ""
-"\n"
-"\n"
-"Builds können auch durch das Menü 'Datei' neu eingelesen werden."
 
 #: ViewModels\BuildsControlViewModel.cs:357
 msgid "Builds changed"
-msgstr "Geänderte Builds im Verzeichnis"
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:373
 msgid "Enter the name of the new folder."
-msgstr "Gebe den Namen des neuen Ordners ein."
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:399
 msgid "The currently opened build can not be deleted."
-msgstr "Der zurzeit geöffnete Build kann nicht gelöscht werden."
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:405
 #, csharp-format
 msgid "This will delete the build folder \"{0}\" and all its contents.\n"
-msgstr "Dies wird das Verzeichnis \"{0}\" und den ganzen Inhalt löschen.\n"
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:406 Views\MainWindow.xaml.cs:917
 msgid "Do you want to continue?"
-msgstr "Fortfahren?"
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:427
 msgid "This build is currently opened but has unsaved changes.\n"
-msgstr "Dieser Build ist zurzeit geöffnet "
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:428
 msgid "Do you want to discard all changes made to it since your last save?"
-msgstr "Möchtest Du alle Änderungen verwerfen die seit dem letzten Speichern gemacht wurden?"
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:429
 msgid "Discard changes?"
-msgstr "Änderungen verwerfen?"
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:444
 msgid "Saving new Build"
-msgstr "Speicher neuen Build"
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:445
 msgid "Enter the name of the build."
-msgstr "Gebe den Namen des Builds ein"
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:461
 msgid "Save as"
-msgstr "Speichern als..."
+msgstr "另存為"
 
 #: ViewModels\BuildsControlViewModel.cs:462
 msgid "Enter the new name of the build"
-msgstr "Gebe den neuen Namen des Builds ein"
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:595
 msgid "Edit Folder"
-msgstr "Bearbeite Ordner"
+msgstr "編輯資料夾"
 
 #: ViewModels\BuildsControlViewModel.cs:596
 msgid "Enter the new name for this folder below."
-msgstr "Gebe den neuen Namen des Ordners ein."
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:620
 msgid ""
 "Any unsaved changes will be lost.\n"
 "Are you sure?"
-msgstr "Alle ungespeicherten Änderungen gehen verloren.\n"
-"Bist du sicher?"
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:766
 msgid "An error occurred during a save operation."
-msgstr "Beim Speichern ist ein Fehler aufgetreten."
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:783
 msgid "An error occurred during a delete operation."
-msgstr "Beim Löschen ist ein Fehler aufgetreten."
+msgstr ""
 
 #: ViewModels\BuildsControlViewModel.cs:800
 msgid "Unsaved Builds"
-msgstr "Ungespeicherte Builds"
+msgstr "未儲存流派"
 
 #: ViewModels\BuildsControlViewModel.cs:801
 msgid "These builds are not saved:\n"
-msgstr "Diese Builds wurden nicht gespeichert:\n"
+msgstr "這些流派未儲存:\n"
 
 #: ViewModels\Builds\BuildValidator.cs:142
 msgid "A build or folder with this name already exists."
-msgstr "Ein Build oder Ordner mit diesem Namen existiert bereits."
+msgstr ""
 
 #: ViewModels\Builds\BuildViewModel.cs:87
 #, csharp-format
 msgid "{0}, {1} point used"
 msgid_plural "{0}, {1} points used"
-msgstr[0] "{0}, {1} Punkt verwendet"
-msgstr[1] "{0}, {1} Punkte verwendet"
+msgstr[0] ""
+msgstr[1] ""
 
 #: ViewModels\DownloadItemsViewModel.cs:38
 msgid "Download & Import Items"
-msgstr "Herunterladen & Importieren von Gegenständen."
+msgstr ""
 
 #: ViewModels\DownloadStashViewModel.cs:85
 msgid "Download & Import Stash"
@@ -1596,100 +1602,96 @@ msgstr ""
 
 #: ViewModels\DownloadStashViewModel.cs:105
 msgid "Could not load the currently running leagues."
-msgstr "Konnte die zurzeit laufende Ligen nicht laden."
+msgstr ""
 
 #: ViewModels\DownloadStashViewModel.cs:185
 #: ViewModels\DownloadStashViewModel.cs:231
 msgid "An error occurred while attempting to load stash data."
-msgstr "Beim Laden der Daten ist ein Fehler aufgetreten"
+msgstr ""
 
 #: ViewModels\DownloadStashViewModel.cs:224
 msgid "New tab added"
-msgstr "Neuer Tab hinzugefügt"
+msgstr ""
 
 #: ViewModels\DownloadStashViewModel.cs:225
 #, csharp-format
 msgid "New tab with {0} items was added to stash."
-msgstr "Es wurde ein neuer Tab mit {0} Gegenständen hinzugefügt."
+msgstr ""
 
 #: ViewModels\SettingsMenuViewModel.cs:47
 msgid "You will need to restart the program for all changes to take effect."
-msgstr "Das Programm muss neu gestartet werden damit die Änderungen wirksam werden."
+msgstr ""
 
 #: ViewModels\SettingsMenuViewModel.cs:48
 msgid "Restart is needed"
-msgstr "Neustart benötigt"
+msgstr ""
 
 #: ViewModels\SettingsMenuViewModel.cs:65
 msgid ""
 "Select the directory where builds will be stored.\n"
 "It will be created if it does not yet exist."
 msgstr ""
-"Wähle das Verzeichnis aus in dem die Builds gespeichert werden.\n"
-"Falls das Verzeichnis nicht existiert wird es automatisch erstellt."
 
 #: ViewModels\SettingsMenuViewModel.cs:71
 msgid ""
-"There are unsaved builds. Do you want to save them before changing build directory?\n"
+"There are unsaved builds. Do you want to save them before changing build "
+"directory?\n"
 "\n"
 "If you cancel, the build directory will not be changed."
 msgstr ""
-"Es sind ungespeicherte Builds vorhanden. Sollen diese gespeichert werden bevor das Verzeichnis geändert wird?"
-"\n"
-"Bei Abbruch wird das Verzeichnis nicht geändert."
 
 #: Views\EditBuildWindow.xaml.cs:16
 msgid "Not Available"
-msgstr "Nicht verfügbar"
+msgstr "無法取得"
 
 #: Views\EditBuildWindow.xaml.cs:18
 #, csharp-format
 msgid "Last updated: {0}"
-msgstr "Letzte Aktualisierung: {0}"
+msgstr ""
 
 #: Views\HelpWindow.xaml.cs:16
 msgid "Help file not found"
-msgstr "Hilfedatei nicht gefunden"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:338
 msgid "Create New Attribute Group"
-msgstr "Erstelle eine neue Attributgruppe"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:338
 msgid "Group name"
-msgstr "Gruppenname"
+msgstr "群組名稱"
 
 #: Views\MainWindow.xaml.cs:343
 msgid "A group with that name already exists."
-msgstr "Eine Gruppe mit diesem Namen existiert bereits."
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:434
 msgid "Initialization"
-msgstr "Initialisierung"
+msgstr "初始化"
 
 #: Views\MainWindow.xaml.cs:435 Views\MainWindow.xaml.cs:537
 msgid "Initalizing window ..."
-msgstr "Initialisiere Fenster..."
+msgstr "初始化視窗 ..."
 
 #: Views\MainWindow.xaml.cs:462
 msgid "Highlight nodes by attribute"
-msgstr "Hebe Knoten nach Attribut hervor"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:467
 msgid "Remove highlights by attribute"
-msgstr "Entferne die Hervorhebungen nach Attribut"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:527
 msgid "Loading skill tree assets ..."
-msgstr "Lade Assets für den Fähigkeitenbaum..."
+msgstr "讀取天賦樹元件"
 
 #: Views\MainWindow.xaml.cs:560
 msgid "Load Tree"
-msgstr "Lade Fähigkeitenbaum"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:566
 msgid "Load as new build"
-msgstr "Lade als neuen Build"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:736
 msgid ""
@@ -1697,139 +1699,142 @@ msgid ""
 "\n"
 "Canceling stops the program from closing and does not save any builds."
 msgstr ""
-"Es sind ungespeicherte Builds vorhanden. Sollen diese gespeichert werden bevor das Programm beendet wird?\n"
-"\n"
-"'Abbrechen' verhindert das Beenden und speichert keine Builds."
 
 #: Views\MainWindow.xaml.cs:766
 msgid "Are you sure?"
-msgstr "Bist Du sicher?"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:767
 msgid "Untag All Skill Nodes"
-msgstr "Entmarkiere alle Fähigkeitsknoten"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:840
 #, csharp-format
 msgid "{0} point"
 msgid_plural "{0} points"
-msgstr[0] "{0} Punkt"
-msgstr[1] "{0} Punkte"
+msgstr[0] ""
+msgstr[1] ""
 
 #: Views\MainWindow.xaml.cs:874
 msgid "Your build must use at least one node to generate a screenshot"
-msgstr "Dein Build muss mindestens einen Knoten ausgewählt haben, damit ein Screenshot generiert werden kann."
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:910 Views\MainWindow.xaml.cs:2021
 msgid "An error occurred while copying to Clipboard."
-msgstr "Beim Kopieren in den Zwischenspeicher ist ein Fehler aufgetreten."
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:916
-msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
-msgstr "Die existierenden Bilder sowie Assets des Fähigkeitenbaums werden gelöscht und neu heruntergeladen."
+msgid ""
+"The existing Skill tree assets will be deleted and new assets will be "
+"downloaded."
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:923
 msgid "Downloading skill tree assets ..."
-msgstr "Lade Assets für den Fähigkeitenbaum herunter..."
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:943
 msgid "An error occurred while downloading assets."
-msgstr "Beim Herunterladen der Assets ist ein Fehler aufgetreten."
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:998
 msgid "Checking for updates"
-msgstr "Suche nach Aktualisierungen"
+msgstr "檢查更新"
 
 #: Views\MainWindow.xaml.cs:1003
 msgid "You have the latest version!"
-msgstr "Das Programm hat bereits die aktuellste Version!"
+msgstr "你的版本是最新版!"
 
 #: Views\MainWindow.xaml.cs:1008
 #, csharp-format
 msgid "An update for {0} ({1}) is available!"
-msgstr "Eine Aktualisierung für {0} ({1}) ist verfügbar!"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1011
-msgid "The application will be closed when download completes to proceed with the update."
-msgstr "Die Anwendung wird nach dem Herunterladen geschlossen um mit dem Update fortfahren zu können."
+msgid ""
+"The application will be closed when download completes to proceed with the "
+"update."
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1012
 #, csharp-format
 msgid "A new version {0} is available!"
-msgstr "Eine neue Version {0} steht zur Verfügung!"
+msgstr "新版本 {0} 可下載!"
 
 #: Views\MainWindow.xaml.cs:1015
-msgid "The new version of application will be installed side-by-side with earlier versions."
-msgstr "Die neue Version des Programms wird neben den älteren Versionen installiert."
+msgid ""
+"The new version of application will be installed side-by-side with earlier "
+"versions."
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1019
 msgid "Warning: This is a pre-release, meaning there could be some bugs!"
-msgstr "Warnung: Dies ist eine Vorabversion. Dies bedeutet, dass Fehler auftreten können!"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1023
 msgid "Do you want to download and install the update?"
-msgstr "Möchtest Du die Aktualisierung herunterladen und installieren?"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1024
 msgid "Do you want to download and install the new version?"
-msgstr "Möchtest Du die neue Version herunterladen und installieren?"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1026
 msgid "Continue installation?"
-msgstr "Installation fortfahren?"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1037
 msgid "An error occurred while attempting to contact the update location."
-msgstr "Beim Versuch den Updateserver zu erreichen ist ein Fehler aufgetreten."
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1045
 msgid "Downloading latest version"
-msgstr "Lade aktuelle Version herunter"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1060 Views\MainWindow.xaml.cs:1075
 msgid "An error occurred during the download operation."
-msgstr "Während des Herunterladens ist ein Fehler aufgetreten."
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1088
 msgid "An error occurred while attempting to start the installation."
-msgstr "Beim Versuch die Installation zu starten ist ein Fehler aufgetreten."
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1730
 msgid "An error occurred while attempting to load item data."
-msgstr "Beim Versuch die Gegenstandsdaten zu laden ist ein Fehler aufgetreten."
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1821 Views\MainWindow.xaml.cs:1868
 msgid "An error occurred while attempting to load Skill tree from URL."
-msgstr "Beim Versuch den Fähigkeitenbaum von der URL zu laden ist ein Fehler aufgetreten."
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1845
 msgid "The build you are loading contains information about selected bandits."
-msgstr "Der Build enthält Informationen über ausgewählte Banditen."
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1846
 msgid "Do you want to use it and overwrite current settings?"
-msgstr "Möchtest Du es verwenden und die derzeitige Einstellungen überschreiben?"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1847
 msgid "Replace Bandits settings"
-msgstr "Ersetze Einstellungen für Banditen"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1875
 msgid "Current:"
-msgstr "Aktuell:"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:1879
 msgid "Loaded:"
-msgstr "Geladen:"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:2001
 msgid "Generating PoEUrl of Skill tree"
-msgstr "Generiere PoEUrl des Fähigkeitenbaums"
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:2007
 msgid "An error occurred while attempting to contact the PoEUrl location."
-msgstr "Beim Versuch die PoEUrl zu kontaktieren ist ein Fehler aufgetreten."
+msgstr ""
 
 #: Views\MainWindow.xaml.cs:2017
 msgid "The PoEUrl link has been copied to Clipboard."
-msgstr "Der PoEUrl Link wurde in die Zwischenablage kopiert."
+msgstr ""
