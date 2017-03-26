@@ -1103,7 +1103,7 @@
       <Stat Name="#% increased Spell Damage if you've dealt a Critical Strike Recently" From="120" To="120" />
     </Explicit>
   </Unique>
-  <Unique Name="Dying Breath" Level="23" BaseMetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff5">
+  <Unique Name="Dying Breath" Level="18" BaseMetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff4">
     <Explicit>
       <Stat Name="#% increased Cast Speed" From="18" To="18" />
       <Stat Name="#% increased maximum Mana" From="18" To="18" />
@@ -2852,7 +2852,7 @@
       <Stat Name="Socketed Gems are Supported by Level # Increased Minion Damage" From="17" To="17" />
       <Stat Name="+# to Strength" From="30" To="40" />
       <Stat Name="#% increased Fire Damage" From="20" To="30" />
-      <Stat Name="Adds # to # Fire Damage to Attacks" From="8 20" To="12 30" />
+      <Stat Name="+# to maximum Life" From="30" To="40" />
     </Explicit>
   </Unique>
   <Unique Name="Rigwald's Crest" Level="49" BaseMetadataId="Metadata/Items/Rings/Ring14">
@@ -3724,8 +3724,14 @@
       <Stat Name="+# to Intelligence" From="20" To="30" />
       <Stat Name="#% increased Energy Shield" From="100" To="140" />
       <Stat Name="#% increased Stun and Block Recovery" From="10" To="15" />
+<<<<<<< HEAD
       <Stat Name="#% increased Movement Speed when on Full Life" From="35" To="35" />
       <Stat Name="#% of Energy Shield Regenerated per second while on Low Life" From="2" To="2" />
+=======
+      <Stat Name="#% increased Movement Speed" From="15" To="15" />
+      <Stat Name="#% increased Movement Speed when on Full Life" From="20" To="20" />
+      <Stat Name="#% of Energy Shield Regenerated per second" From="1" To="1" />
+>>>>>>> refs/remotes/EmmittJ/master
     </Explicit>
   </Unique>
   <Unique Name="Shavronne's Pace" Level="32" BaseMetadataId="Metadata/Items/Armours/Boots/BootsInt4">
@@ -4696,11 +4702,19 @@
     <Explicit>
       <Stat Name="#% increased Physical Damage" From="20" To="20" />
       <Stat Name="#% increased Armour and Evasion" From="100" To="120" />
+<<<<<<< HEAD
       <Stat Name="+#% to Fire Resistance" From="10" To="20" />
       <Stat Name="+#% to Cold Resistance" From="10" To="20" />
       <Stat Name="+#% to Lightning Resistance" From="10" To="20" />
       <Stat Name="#% of Block Chance applied to Spells when on Low Life" From="120" To="120" />
       <Stat Name="+#% Chance to Block" From="3" To="6" />
+=======
+      <Stat Name="+#% to all Elemental Resistances" From="10" To="20" />
+      <Stat Name="#% of Block Chance applied to Spells when on Low Life" From="120" To="120" />
+      <Stat Name="+#% Chance to Block" From="3" To="6" />
+      <Stat Name="#% chance to Block Attacks if you have Blocked a Spell Recently" From="20" To="20" />
+      <Stat Name="#% chance to Block Spells if you have Blocked an Attack Recently" From="20" To="20" />
+>>>>>>> refs/remotes/EmmittJ/master
     </Explicit>
   </Unique>
   <Unique Name="Demigod's Beacon" Level="15" DropDisabled="true" BaseMetadataId="Metadata/Items/Armours/Shields/ShieldDemigods">
@@ -4771,6 +4785,7 @@
       <Stat Name="#% increased Evasion Rating" From="60" To="100" />
       <Stat Name="+#% to maximum Cold Resistance" From="5" To="5" />
       <Stat Name="+#% to Cold Resistance" From="50" To="50" />
+      <Stat Name="Gain #% of Physical Damage as Extra Cold Damage" From="10" To="15" />
       <Stat Name="Reflects # Cold Damage to Melee Attackers" From="25" To="50" />
       <Stat Name="+#% Chance to Block" From="5" To="5" />
       <Stat Name="#% of Fire Damage taken as Cold Damage" From="20" To="20" />
