@@ -1132,7 +1132,7 @@
     <Folder Include="GlobalCode_ExperimentalCode\" />
     <Folder Include="GlobalCode_VariableConversionFunctions\" />
   </ItemGroup>
-  <Import Project="..\..\..\..\Visual Studio 2013\Projects\NifLibEnvironment\GlobalCode\CSharpGlobalCode.projitems" Label="Shared" />
+  <Import Project="C:\Users\BlazesRus\Documents\Visual Studio 2013\Projects\NifLibEnvironment\GlobalCode\CSharpGlobalCode.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release call $(ProjectDir)build-locale.bat $(TargetDir)
