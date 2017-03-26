@@ -4,7 +4,8 @@ using System.IO;
 
 namespace POESKillTree.Utils.Extensions
 {
-    public static class StringExtensions
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+	public static class StringExtensions
     {
         public static bool Contains(this string source, string toCheck, StringComparison comp)
         {
@@ -63,6 +64,22 @@ namespace POESKillTree.Utils.Extensions
         public static bool TryParseFloat(this string s, out float f)
         {
             return float.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out f);
+        }
+
+        /// <summary>
+        /// Equal to <code>SmallDec.Parse(s, CultureInfo.InvariantCulture)</code>
+        /// </summary>
+        public static SmallDec ParseFloatAsSmallDec(this string s)
+        {
+            return SmallDec.Parse(s, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Equal to <code>SmallDec.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out f)</code>
+        /// </summary>
+        public static bool TryParseFloatAsSmallDec(this string s, out SmallDec f)
+        {
+            return SmallDec.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out f);
         }
 
         /// <summary>

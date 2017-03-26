@@ -23,8 +23,9 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
-    // Some aliases to make things clearer without the need of extra classes.
-    using AttributeConstraint = TargetWeightConstraint<string>;
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+	// Some aliases to make things clearer without the need of extra classes.
+	using AttributeConstraint = TargetWeightConstraint<string>;
     using PseudoAttributeConstraint = TargetWeightConstraint<PseudoAttribute>;
 
     /// <summary>
@@ -106,7 +107,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
                         var attr = attrToken.ToObject<string>();
                         newConstraints.Add(new AttributeConstraint(attr)
                         {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                            TargetValue = targetToken.ToObject<SmallDec>(),
+#else
                             TargetValue = targetToken.ToObject<float>(),
+#endif
                             Weight = weightToken.ToObject<int>()
                         });
                         _vm._addedAttributes.Add(attr);
@@ -140,7 +145,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
                             continue;
                         newConstraints.Add(new PseudoAttributeConstraint(attr)
                         {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                            TargetValue = targetToken.ToObject<SmallDec>(),
+#else
                             TargetValue = targetToken.ToObject<float>(),
+#endif
                             Weight = weightToken.ToObject<int>()
                         });
                         _vm._addedPseudoAttributes.Add(attr);
@@ -177,6 +186,16 @@ namespace POESKillTree.TreeGenerator.ViewModels
             }
 
             private static void AddTo(JArray array, string attribute, float targetValue, int weight)
+            {
+                array.Add(new JObject
+                {
+                    {AttributeKey, new JValue(attribute)},
+                    {TargetValueKey, new JValue(targetValue)},
+                    {WeightKey, new JValue(weight)}
+                });
+            }
+
+            private static void AddTo(JArray array, string attribute, SmallDec targetValue, int weight)
             {
                 array.Add(new JObject
                 {
@@ -247,7 +266,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// <summary>
         /// Dictionary of attributes influenced by character level with the ratio per level.
         /// </summary>
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        private static readonly Dictionary<string, SmallDec> AttributesPerLevel = new Dictionary<string, SmallDec>()
+#else
         private static readonly Dictionary<string, float> AttributesPerLevel = new Dictionary<string, float>()
+#endif
         {
             {"+# to maximum Mana", Constants.ManaPerLevel},
             {"+# to maximum Life", Constants.LifePerLevel},
@@ -673,7 +696,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </remarks>
         private void LoadAttributesFromTree()
         {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            var attributes = new Dictionary<string, SmallDec>();
+#else
             var attributes = new Dictionary<string, float>();
+#endif
             var unique = new List<SkillNode>();
             foreach (var node in Tree.SkilledNodes)
             {
@@ -798,12 +825,21 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         protected override Task<ISolver> CreateSolverAsync(SolverSettings settings)
         {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            var attributeConstraints = AttributeConstraints.ToDictionary(
+                constraint => constraint.Data,
+                constraint => new Tuple<SmallDec, double>(constraint.TargetValue, constraint.Weight / 100.0));
+            var pseudoConstraints = PseudoAttributeConstraints.ToDictionary(
+                constraint => constraint.Data,
+                constraint => new Tuple<SmallDec, double>(constraint.TargetValue, constraint.Weight / 100.0));
+#else
             var attributeConstraints = AttributeConstraints.ToDictionary(
                 constraint => constraint.Data,
                 constraint => new Tuple<float, double>(constraint.TargetValue, constraint.Weight / 100.0));
             var pseudoConstraints = PseudoAttributeConstraints.ToDictionary(
                 constraint => constraint.Data,
                 constraint => new Tuple<float, double>(constraint.TargetValue, constraint.Weight / 100.0));
+#endif
             var solver = new AdvancedSolver(Tree, new AdvancedSolverSettings(settings, TotalPoints,
                 CreateInitialAttributes(), attributeConstraints,
                 pseudoConstraints, WeaponClass.Value, Tags.Value, OffHand.Value));
@@ -814,10 +850,18 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// Creates the attributes the skill tree has with these settings initially
         /// (without any tree generating done).
         /// </summary>
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        private Dictionary<string, SmallDec> CreateInitialAttributes()
+#else
         private Dictionary<string, float> CreateInitialAttributes()
+#endif
         {
             // base attributes: SkillTree.BaseAttributes, SkillTree.CharBaseAttributes
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            var stats = new Dictionary<string, SmallDec>(SkillTree.BaseAttributes);
+#else
             var stats = new Dictionary<string, float>(SkillTree.BaseAttributes);
+#endif
             foreach (var attr in SkillTree.CharBaseAttributes[Tree.Chartype])
             {
                 stats[attr.Key] = attr.Value;
