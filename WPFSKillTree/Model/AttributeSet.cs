@@ -5,8 +5,12 @@ using POESKillTree.Model.Items.Affixes;
 namespace POESKillTree.Model
 {
 	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
-    public class AttributeSet : Dictionary<string, List<SmallDec>>
-    {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+	    public class AttributeSet : Dictionary<string, List<SmallDec>>
+#else
+	public class AttributeSet : Dictionary<string, List<float>>
+#endif
+	{
         public AttributeSet() { }
 
         // Initialize from dictionary instance.

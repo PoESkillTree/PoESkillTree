@@ -133,6 +133,41 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugVS2015AlternativeTypes|x86'">
+    <OutputPath>bin\x86\DebugVS2015AlternativeTypes\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;BlazesGlobalCode_Disable128BitFeatures;PoESkillTree_UseSmallDec_ForAttributes</DefineConstants>
+	<ErrorReport>prompt</ErrorReport>
+	<DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugVS2015AlternativeTypes|AnyCPU'">
+    <OutputPath>bin\DebugVS2015AlternativeTypes\</OutputPath>
+    <DefineConstants>TRACE;BlazesGlobalCode_Disable128BitFeatures;PoESkillTree_UseSmallDec_ForAttributes</DefineConstants>
+	<DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugVS2015AlternativeTypes|x64'">
+    <OutputPath>bin\x64\DebugVS2015AlternativeTypes\</OutputPath>
+    <DefineConstants>TRACE;BlazesGlobalCode_Disable128BitFeatures;PoESkillTree_UseSmallDec_ForAttributes</DefineConstants>
+	<DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
