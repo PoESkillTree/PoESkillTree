@@ -302,7 +302,6 @@
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
-	  
     <Compile Include="GlobalCode_ExperimentalCode\CustomDec.cs" />
     <Compile Include="GlobalCode_ExperimentalCode\SmallDecCollection.cs" />
     <Compile Include="GlobalCode_ExperimentalCode\SuperDecGlobalCode.cs" />
@@ -317,8 +316,7 @@
     <Compile Include="GlobalCode_ExperimentalCode\SuperDec_SmallDec_OtherConversions.cs" />
     <Compile Include="GlobalCode_ExperimentalCode\SuperDec_SmallDec_Rounding.cs" />
     <Compile Include="GlobalCode_ExperimentalCode\SuperDec_SmallDec_TrigometricFunctions.cs" />
-	<Compile Include="GlobalCode_VariableConversionFunctions\VariableConversionFunctions.cs" />
-	<Compile Include="GlobalCode_ExperimentalCode\SmallDecCollection.cs" />
+    <Compile Include="GlobalCode_VariableConversionFunctions\VariableConversionFunctions.cs" />
     <Compile Include="GlobalCode_ExperimentalCode\SmallDecSlider.xaml.cs">
       <DependentUpon>SmallDecSlider.xaml</DependentUpon>
     </Compile>

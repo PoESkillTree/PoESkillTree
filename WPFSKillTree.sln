@@ -12,10 +12,6 @@ EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CSharpGlobalCode", "C:\Users\BlazesRus\Documents\Visual Studio 2013\Projects\NifLibEnvironment\GlobalCode\CSharpGlobalCode.shproj", "{1F56ECD0-AF20-4544-A747-E2C6434594C6}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		C:\Users\BlazesRus\Documents\Visual Studio 2013\Projects\NifLibEnvironment\GlobalCode\CSharpGlobalCode.projitems*{1f56ecd0-af20-4544-a747-e2c6434594c6}*SharedItemsImports = 13
-		C:\Users\BlazesRus\Documents\Visual Studio 2013\Projects\NifLibEnvironment\GlobalCode\CSharpGlobalCode.projitems*{fcda18d8-4fd9-484b-b7dc-dbf771b3aec7}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
