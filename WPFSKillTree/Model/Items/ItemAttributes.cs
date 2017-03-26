@@ -15,6 +15,7 @@ using POESKillTree.ViewModels;
 
 namespace POESKillTree.Model.Items
 {
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     public class ItemAttributes : Notifier
     {
         #region slotted items
@@ -356,7 +357,11 @@ namespace POESKillTree.Model.Items
         {
             public static readonly Regex Backreplace = new Regex("#");
 
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            private readonly List<SmallDec> _value;
+#else
             private readonly List<float> _value;
+#endif
 
             private readonly string _group;
             public string Group
@@ -372,17 +377,34 @@ namespace POESKillTree.Model.Items
 
             public string ValuedAttribute
             {
-                get { return _value.Aggregate(_attribute, (current, f) => Backreplace.Replace(current, f + "", 1)); }
-            }
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+				get { return _value.Aggregate(_attribute, (current, f) => Backreplace.Replace(current, f.ToString() + "", 1)); }
+#else
+				get { return _value.Aggregate(_attribute, (current, f) => Backreplace.Replace(current, f + "", 1)); }
+#endif
+			}
 
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            public Attribute(string s, IEnumerable<SmallDec> val, string grp)
+            {
+                _attribute = s;
+                _value = new List<SmallDec>(val);
+                _group = grp;
+            }
+#else
             public Attribute(string s, IEnumerable<float> val, string grp)
             {
                 _attribute = s;
                 _value = new List<float>(val);
                 _group = grp;
             }
+#endif
 
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            public void Add(IReadOnlyList<SmallDec> val)
+#else
             public void Add(IReadOnlyList<float> val)
+#endif
             {
                 if (_value.Count != val.Count) throw new NotSupportedException();
                 for (var i = 0; i < val.Count; i++)

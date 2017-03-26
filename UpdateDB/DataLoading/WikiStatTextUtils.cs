@@ -9,11 +9,12 @@ using POESKillTree.Utils.Extensions;
 
 namespace UpdateDB.DataLoading
 {
-    /// <summary>
-    /// Utility class to convert Wiki stat text (i.e. contents of "Has implicit stat text" and "Has explicit stat
-    /// text") to XmlStats.
-    /// </summary>
-    public static class WikiStatTextUtils
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+	/// <summary>
+	/// Utility class to convert Wiki stat text (i.e. contents of "Has implicit stat text" and "Has explicit stat
+	/// text") to XmlStats.
+	/// </summary>
+	public static class WikiStatTextUtils
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(WikiStatTextUtils));
 
@@ -53,13 +54,34 @@ namespace UpdateDB.DataLoading
             var statWithPlaceholders = NumberRegex.Replace(stat, "#");
             var placeholderMatches = PlaceholderRegex.Matches(statWithPlaceholders);
 
-            var from = new List<float>();
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+			var from = new List<SmallDec>();
+            var to = new List<SmallDec>();
+#else
+			var from = new List<float>();
             var to = new List<float>();
-            var i = 0;
+#endif
+			var i = 0;
             foreach (Match match in placeholderMatches)
             {
                 var placeholder = match.Value;
-                if (placeholder == "#")
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+				if (placeholder == "#")
+				{
+					SmallDec value = numberMatches[i].Value;
+					from.Add(value);
+					to.Add(value);
+					i++;
+				}
+				else
+				{
+					from.Add(numberMatches[i].Value);
+					i++;
+					to.Add(numberMatches[i].Value);
+					i++;
+				}
+#else
+				if (placeholder == "#")
                 {
                     var value = numberMatches[i].Value.ParseFloat();
                     from.Add(value);
@@ -73,7 +95,8 @@ namespace UpdateDB.DataLoading
                     to.Add(numberMatches[i].Value.ParseFloat());
                     i++;
                 }
-            }
+#endif
+			}
             return new XmlStat
             {
                 From = from,

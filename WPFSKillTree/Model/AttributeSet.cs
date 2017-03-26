@@ -4,16 +4,25 @@ using POESKillTree.Model.Items.Affixes;
 
 namespace POESKillTree.Model
 {
-    public class AttributeSet : Dictionary<string, List<float>>
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    public class AttributeSet : Dictionary<string, List<SmallDec>>
     {
         public AttributeSet() { }
 
         // Initialize from dictionary instance.
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        public AttributeSet(Dictionary<string, List<SmallDec>> dict)
+        {
+            foreach (var attr in dict)
+                Add(attr.Key, new List<SmallDec>(attr.Value));
+        }
+#else
         public AttributeSet(Dictionary<string, List<float>> dict)
         {
             foreach (var attr in dict)
                 Add(attr.Key, new List<float>(attr.Value));
         }
+#endif
 
         // Adds attributes.
         // Existing attributes have value increased by value of attribute being added.
@@ -24,7 +33,11 @@ namespace POESKillTree.Model
 
         // Adds attribute.
         // Existing attribute has value increased by value of attribute being added.
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        public void Add(KeyValuePair<string, List<SmallDec>> attr)
+#else
         public void Add(KeyValuePair<string, List<float>> attr)
+#endif
         {
             if (ContainsKey(attr.Key))
             {
@@ -33,7 +46,11 @@ namespace POESKillTree.Model
                         this[attr.Key][i] += attr.Value[i];
             }
             else
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                Add(attr.Key, new List<SmallDec>(attr.Value));
+#else
                 Add(attr.Key, new List<float>(attr.Value));
+#endif
         }
 
         // Adds item mod.
@@ -47,7 +64,11 @@ namespace POESKillTree.Model
                         this[itemMod.Attribute][i] += itemMod.Value[i];
             }
             else
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                Add(itemMod.Attribute, new List<SmallDec>(itemMod.Value));
+#else
                 Add(itemMod.Attribute, new List<float>(itemMod.Value));
+#endif
         }
 
         // Returns new copy of this attribute set.
@@ -57,8 +78,11 @@ namespace POESKillTree.Model
 
             // Values must be instantiated with new.
             foreach (var attr in this)
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                copy.Add(attr.Key, new List<SmallDec>(attr.Value));
+#else
                 copy.Add(attr.Key, new List<float>(attr.Value));
-
+#endif
             return copy;
         }
 
@@ -101,7 +125,11 @@ namespace POESKillTree.Model
         // Removes attribute.
         // Attribute has value decreased by value of attribute being removed.
         // If attribute in set has all values zeroes or it has no value at all it will be removed from set.
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        public void Remove(KeyValuePair<string, List<SmallDec>> attr)
+#else
         public void Remove(KeyValuePair<string, List<float>> attr)
+#endif
         {
             if (ContainsKey(attr.Key))
             {

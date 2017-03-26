@@ -15,6 +15,7 @@ using static POESKillTree.Utils.WikiApi.ItemRdfPredicates;
 
 namespace UpdateDB.DataLoading
 {
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// Retrieves item bases from the Wiki through its API.
     /// </summary>
@@ -290,9 +291,14 @@ namespace UpdateDB.DataLoading
 
             public void Add(string name, string rdfPredicateFrom, string rdfPredicateTo)
             {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+				var from = SingularValue<SmallDec>(_printouts, rdfPredicateFrom, 0);
+				var to = SingularValue<SmallDec>(_printouts, rdfPredicateTo, 0);
+#else
                 var from = SingularValue<float>(_printouts, rdfPredicateFrom, 0);
                 var to = SingularValue<float>(_printouts, rdfPredicateTo, 0);
-                if (from.AlmostEquals(0, 0.001) && to.AlmostEquals(0, 0.001)) // stats don't use many decimal places
+#endif
+				if (from.AlmostEquals(0, 0.001) && to.AlmostEquals(0, 0.001)) // stats don't use many decimal places
                     return;
                 _properties.Add(new XmlStat
                 {

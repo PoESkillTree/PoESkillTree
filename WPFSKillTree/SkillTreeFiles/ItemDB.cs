@@ -20,6 +20,7 @@ using Weapon = POESKillTree.SkillTreeFiles.Compute.Weapon;
 
 namespace POESKillTree.SkillTreeFiles
 {
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     public class ItemDB
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ItemDB));
@@ -83,7 +84,11 @@ namespace POESKillTree.SkillTreeFiles
                 bool levelTableIsFull = false;
                 if (tableValues.Count > 0)
                 {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                    SmallDec[] dummy = new SmallDec[] { 1 };
+#else
                     float[] dummy = new float[] { 1 };
+#endif
                     table = new LookupTable();
                     foreach (ValueAt value in tableValues)
                         table.Add(value.Level, dummy);
@@ -100,7 +105,11 @@ namespace POESKillTree.SkillTreeFiles
                 bool qualityTableIsFull = false;
                 if (tableValues.Count > 0)
                 {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                    SmallDec[] dummy = new SmallDec[] { 1 };
+#else
                     float[] dummy = new float[] { 1 };
+#endif
                     table = new LookupTable();
                     foreach (ValueAt value in tableValues)
                         table.Add(value.Quality, dummy);
@@ -123,7 +132,11 @@ namespace POESKillTree.SkillTreeFiles
                 bool levelRangeIsFull = false;
                 if (levelRangeValues.Count > 0)
                 {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                    SmallDec[] dummy = new SmallDec[] { 1 };
+#else
                     float[] dummy = new float[] { 1 };
+#endif
                     ranges = new LookupRanges();
                     foreach (ValueForLevelRange value in levelRangeValues)
                         ranges.Add(value.From, value.To, dummy);
@@ -139,7 +152,11 @@ namespace POESKillTree.SkillTreeFiles
                 bool qualityRangesIsFull = false;
                 if (qualityRangeValues.Count > 0)
                 {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                    SmallDec[] dummy = new SmallDec[] { 1 };
+#else
                     float[] dummy = new float[] { 1 };
+#endif
                     ranges = new LookupRanges();
                     foreach (ValueForQualityRange value in qualityRangeValues)
                         ranges.Add(value.From, value.To, dummy);
@@ -325,7 +342,11 @@ namespace POESKillTree.SkillTreeFiles
                     if (values.Count > 2)
                     {
                         // 3) All values must have same value to level ratio (level - 1 actually).
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                        SmallDec gain = values[0].ToValue()[0] / (values[0].Level - 1);
+#else
                         float gain = values[0].ToValue()[0] / (values[0].Level - 1);
+#endif
                         bool isGain = true;
                         foreach (ValueAt value in values)
                             if (value.ToValue()[0] / (value.Level - 1) != gain)
@@ -350,7 +371,11 @@ namespace POESKillTree.SkillTreeFiles
                 if (!hasMultiValue && values.Count > 2)
                 {
                     // 2) All values must have same value to quality ratio.
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                    SmallDec gain = values[0].ToValue()[0] / values[0].Quality;
+#else
                     float gain = values[0].ToValue()[0] / values[0].Quality;
+#endif
                     bool isGain = true;
                     foreach (ValueAt value in values)
                         if (value.ToValue()[0] / value.Quality != gain)
@@ -526,9 +551,15 @@ namespace POESKillTree.SkillTreeFiles
 
                 foreach (var lookup in LevelIndex)
                 {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                    List<SmallDec> value = lookup.Value.ValueAt(level);
+                    if (value != null)
+                        attrs.Add(lookup.Key, new List<SmallDec>(value));
+#else
                     List<float> value = lookup.Value.ValueAt(level);
                     if (value != null)
                         attrs.Add(lookup.Key, new List<float>(value));
+#endif
                 }
 
                 return attrs;
@@ -541,9 +572,15 @@ namespace POESKillTree.SkillTreeFiles
 
                 foreach (var lookup in QualityIndex)
                 {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                    List<SmallDec> value = lookup.Value.ValueAt(quality);
+                    if (value != null)
+                        attrs.Add(lookup.Key, new List<SmallDec>(value));
+#else
                     List<float> value = lookup.Value.ValueAt(quality);
                     if (value != null)
                         attrs.Add(lookup.Key, new List<float>(value));
+#endif
                 }
 
                 return attrs;
@@ -724,12 +761,25 @@ namespace POESKillTree.SkillTreeFiles
             internal enum Method { None, Fixed = 1, Gain = 2, Range = 4, Table = 8 };
 
             // Implementation in derived class must return either defined value(s) or null if value isn't defined for specified level.
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            abstract internal List<SmallDec> ValueAt(int level);
+#else
             abstract internal List<float> ValueAt(int level);
+#endif
         }
 
         // Fixed value.
         internal class LookupFixed : LookupBase
         {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            internal SmallDec[] Value;
+
+            // Returns fixed value regardless of level.
+            override internal List<SmallDec> ValueAt(int level)
+            {
+                return new List<SmallDec>(Value);
+            }
+#else
             internal float[] Value;
 
             // Returns fixed value regardless of level.
@@ -737,17 +787,31 @@ namespace POESKillTree.SkillTreeFiles
             {
                 return new List<float>(Value);
             }
+#endif
         }
 
 
         // Fixed gain per level.
         internal class LookupGain : LookupBase
         {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            internal SmallDec[] Value;
+#else
             internal float[] Value;
+#endif
             // Per quality gains start from quality 1, while per level gains start from level 2.
             internal int From = 1;
 
             // Returns value multiplied by level if level is greater or equal to From property, null otherwise.
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            override internal List<SmallDec> ValueAt(int level)
+            {
+                if (level < From) return null;
+
+                List<SmallDec> values = new List<SmallDec>();
+
+                foreach (SmallDec value in Value)
+#else
             override internal List<float> ValueAt(int level)
             {
                 if (level < From) return null;
@@ -755,6 +819,7 @@ namespace POESKillTree.SkillTreeFiles
                 List<float> values = new List<float>();
 
                 foreach (float value in Value)
+#endif
                     values.Add(value * (level - From + 1));
 
                 return values;
@@ -770,9 +835,15 @@ namespace POESKillTree.SkillTreeFiles
             internal LookupTable Table;
 
             // Returns defined value from either table, ranges or gain in this order.
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            override internal List<SmallDec> ValueAt(int level)
+            {
+                List<SmallDec> value;
+#else
             override internal List<float> ValueAt(int level)
             {
                 List<float> value;
+#endif
                 
                 if (Table != null)
                 {
@@ -802,13 +873,21 @@ namespace POESKillTree.SkillTreeFiles
             {
                 internal int From;
                 internal int To;
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                internal SmallDec[] Value;
+#else
                 internal float[] Value;
+#endif
             }
 
             List<Range> Ranges = new List<Range>();
 
             // Adds value for given level range.
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            internal void Add(int from, int to, SmallDec[] value)
+#else
             internal void Add(int from, int to, float[] value)
+#endif
             {
                 Ranges.Add(new Range { From = from == 0 ? 1 : from, To = to == 0 ? MAX_LEVEL : to, Value = value });
                 Ranges.Sort(delegate(Range range1, Range range2) { return range1.From.CompareTo(range2.From); });
@@ -872,12 +951,19 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             // Returns value for level inside of range, null otherwise.
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            override internal List<SmallDec> ValueAt(int level)
+            {
+                foreach (Range range in Ranges)
+                    if (level >= range.From && level <= range.To)
+                        return new List<SmallDec>(range.Value);
+#else
             override internal List<float> ValueAt(int level)
             {
                 foreach (Range range in Ranges)
                     if (level >= range.From && level <= range.To)
                         return new List<float>(range.Value);
-
+#endif
                 return null;
             }
         }
@@ -886,12 +972,21 @@ namespace POESKillTree.SkillTreeFiles
         internal class LookupTable : LookupBase
         {
             // Value for each level (initialized to null).
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            internal List<SmallDec>[] Values = new List<SmallDec>[MAX_LEVEL];
+
+            // Adds value for given level to table.
+            internal void Add (int level, SmallDec[] value)
+            {
+                Values[level - 1] = value == null ? null : new List<SmallDec>(value);
+#else
             internal List<float>[] Values = new List<float>[MAX_LEVEL];
 
             // Adds value for given level to table.
             internal void Add (int level, float[] value)
             {
                 Values[level - 1] = value == null ? null : new List<float>(value);
+#endif
             }
 
             // Returns true if table defines all values as specified value.
@@ -934,25 +1029,35 @@ namespace POESKillTree.SkillTreeFiles
             // Returns true if table is empty, false otherwise.
             internal bool IsEmpty()
             {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                foreach (List<SmallDec> value in Values)
+#else
                 foreach (List<float> value in Values)
+#endif
                     if (value != null)
                         return false;
-
                 return true;
             }
 
             // Returns true if table is full (i.e. contains values from level 1 to MAX_LEVEL), false otherwise.
             internal bool IsFull()
             {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                foreach (List<SmallDec> value in Values)
+#else
                 foreach (List<float> value in Values)
+#endif
                     if (value == null)
                         return false;
-
                 return true;
             }
 
             // Returns value if it is defined for level, null otherwise.
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            override internal List<SmallDec> ValueAt(int level)
+#else
             override internal List<float> ValueAt(int level)
+#endif
             {
                 return Values[level - 1];
             }
@@ -992,6 +1097,22 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             // Returns parsed value.
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            internal SmallDec[] ToValue()
+            {
+                return Text == null ? null : Parse(Text);
+            }
+
+            public static SmallDec[] Parse(string text)
+            {
+                List<SmallDec> value = new List<SmallDec>();
+
+                foreach (Match m in ReValue.Matches(text))
+                    value.Add(SmallDec.Parse(m.Groups[0].Value, System.Globalization.CultureInfo.InvariantCulture));
+
+                return value.Count > 0 ? value.ToArray() : new SmallDec[0];
+            }
+#else
             internal float[] ToValue()
             {
                 return Text == null ? null : Parse(Text);
@@ -1006,6 +1127,7 @@ namespace POESKillTree.SkillTreeFiles
 
                 return value.Count > 0 ? value.ToArray() : new float[0];
             }
+#endif
         }
 
         // Deserialized value for specific level or quality.
@@ -1221,11 +1343,17 @@ namespace POESKillTree.SkillTreeFiles
             AttributeSet attrs = new AttributeSet();
 
             // Collect gem attributes and modifiers at gem level.
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            foreach (var prop in gem.Properties)
+                attrs.Add(prop.Attribute, new List<SmallDec>(prop.Value));
+            foreach (ItemMod mod in gem.Mods)
+                attrs.Add(mod.Attribute, new List<SmallDec>(mod.Value));
+#else
             foreach (var prop in gem.Properties)
                 attrs.Add(prop.Attribute, new List<float>(prop.Value));
             foreach (ItemMod mod in gem.Mods)
                 attrs.Add(mod.Attribute, new List<float>(mod.Value));
-
+#endif
             // Check if gem is in database.
             if (GemIndex.ContainsKey(gem.Name))
             {
@@ -1358,7 +1486,11 @@ namespace POESKillTree.SkillTreeFiles
         }
 
         // Returns numbner of hits skill gem does per single attack.
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        public static SmallDec HitsPerAttackOf(Item gem)
+#else
         public static float HitsPerAttackOf(Item gem)
+#endif
         {
             return GemIndex.ContainsKey(gem.Name) ? GemIndex[gem.Name].HitsPerAttack : 1;
         }
@@ -1393,7 +1525,11 @@ namespace POESKillTree.SkillTreeFiles
         // Returns level of gem.
         public static int LevelOf(Item gem)
         {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            SmallDec ret;
+#else
             float ret;
+#endif
             if (gem.Properties.TryGetValue("Level: #", 0, out ret))
                 return (int) ret;
             else

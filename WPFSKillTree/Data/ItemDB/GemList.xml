@@ -13558,6 +13558,64 @@
       <Value Level="30">6</Value>
     </Attribute>
   </Gem>
+  <Gem Name="Storm Burst" Tags="Projectile, AoE, Spell, Lightning, Channelling">
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="3">6</ValueForLevel>
+      <ValueForLevel From="4" To="5">7</ValueForLevel>
+      <ValueForLevel From="6" To="8">8</ValueForLevel>
+      <ValueForLevel From="9" To="10">9</ValueForLevel>
+      <ValueForLevel From="11" To="18">10</ValueForLevel>
+      <ValueForLevel From="19" To="22">11</ValueForLevel>
+      <ValueForLevel From="23" To="30">12</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Cast Time: # sec">
+      <ValueForLevel From="1" To="30">0.35</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Critical Strike Chance: #%">
+      <ValueForLevel From="1" To="30">5</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Damage Effectiveness: #%">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Area of Effect">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Deals # to # Lightning Damage">
+      <Value Level="1">13 20</Value>
+      <Value Level="2">15 23</Value>
+      <Value Level="3">18 27</Value>
+      <Value Level="4">20 31</Value>
+      <Value Level="5">23 35</Value>
+      <Value Level="6">26 39</Value>
+      <Value Level="7">28 42</Value>
+      <Value Level="8">31 46</Value>
+      <Value Level="9">33 50</Value>
+      <Value Level="10">36 54</Value>
+      <Value Level="11">39 59</Value>
+      <Value Level="12">43 64</Value>
+      <Value Level="13">46 69</Value>
+      <Value Level="14">50 75</Value>
+      <Value Level="15">54 81</Value>
+      <Value Level="16">58 87</Value>
+      <Value Level="17">63 94</Value>
+      <Value Level="18">68 102</Value>
+      <Value Level="19">73 110</Value>
+      <Value Level="20">79 118</Value>
+      <Value Level="21">85 128</Value>
+      <Value Level="22">92 137</Value>
+      <Value Level="23">98 148</Value>
+      <Value Level="24">106 159</Value>
+      <Value Level="25">114 171</Value>
+      <Value Level="26">122 183</Value>
+      <Value Level="27">131 197</Value>
+      <Value Level="28">141 211</Value>
+      <Value Level="29">151 226</Value>
+      <Value Level="30">162 243</Value>
+    </Attribute>
+    <Attribute Name="#% more Area Damage">
+      <ValueForLevel From="1" To="30">300</ValueForLevel>
+    </Attribute>
+  </Gem>
   <Gem Name="Storm Call" Tags="Spell, AoE, Duration, Lightning">
     <Attribute Name="Mana Cost: #">
       <Value Level="1">6</Value>
@@ -16359,6 +16417,11 @@
     </Attribute>
     <Attribute Name="Damage cannot be Reflected">
       <ValueForLevel From="1" To="30">_</ValueForLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Vaal Soul Harvesting" Tags="Support">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">110</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Vaal Spark" Tags="Projectile, Vaal, Spell, Duration, Lightning">
