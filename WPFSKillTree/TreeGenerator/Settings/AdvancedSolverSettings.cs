@@ -19,7 +19,7 @@ namespace POESKillTree.TreeGenerator.Settings
         public readonly int TotalPoints;
 
         /// <summary>
-        /// The attribute constraints the solver should try to fullfill.
+        /// The attribute constraints the solver should try to fulfill.
         /// The key is the name of the attribute.
         /// Value is a tuple of target value (float) and weight (double).
         /// Weight must be between 0 and 1 (both inclusive).
@@ -31,7 +31,7 @@ namespace POESKillTree.TreeGenerator.Settings
 #endif
 
         /// <summary>
-        /// The pseudo attribute constraints the solver should try to fullfill.
+        /// The pseudo attribute constraints the solver should try to fulfill.
         /// The key is the name of the attribute.
         /// Value is a tuple of target value (float) and weight (double).
         /// Weight must be between 0 and 1 (both inclusive).
