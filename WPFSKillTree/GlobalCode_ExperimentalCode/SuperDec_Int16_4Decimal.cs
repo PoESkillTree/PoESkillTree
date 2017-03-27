@@ -18,8 +18,10 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 	[System.ComponentModel.TypeConverter(typeof(SuperDec_SmallDec_TypeConverter))]
 	public partial struct SmallDec : IComparable<SmallDec>
 	{
+#if (!BlazesGlobalCode_ReducedSmallDecSize)
 		//0 = Positive;1=Negative;Other states at higher then 1;254 = Positive Infinity;255 = Negative Infinity
 		public byte DecBoolStatus;
+#endif
 
 		//Stores decimal section info (4 Decimal places stored)
 		public ushort DecimalStatus;
@@ -240,9 +242,78 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 		//Initialize constructor
 		public SmallDec(dynamic Value)
 		{
+#if (BlazesGlobalCode_ReducedSmallDecSize)
 			if (Value is DependencyProperty)
 			{
-				SmallDec NewValue = Value.ToString();
+				SmallDec NewValue = (SmallDec)Value;
+				this.IntValue = NewValue.IntValue;
+				this.DecimalStatus = NewValue.DecimalStatus;
+			}
+			else if (Value is string)
+			{
+				IntValue = 0;
+				DecimalStatus = 0;
+				bool IsNegative = false;
+				sbyte PlaceNumber;
+				byte StringLength = (byte)Value.Length;
+				string WholeNumberBuffer = "";
+				string DecimalBuffer = "";
+				bool ReadingDecimal = false;
+				int TempInt;
+				int TempInt02;
+				foreach (char StringChar in Value)
+				{
+					if (IsDigit(StringChar))
+					{
+						if (ReadingDecimal)
+						{
+							DecimalBuffer += StringChar;
+						}
+						else
+						{
+							WholeNumberBuffer += StringChar;
+						}
+					}
+					else if (StringChar == '-')
+					{
+						IsNegative = true;
+					}
+					else if (StringChar == '.')
+					{
+						ReadingDecimal = true;
+					}
+				}
+				PlaceNumber = (sbyte)(WholeNumberBuffer.Length - 1);
+				foreach (char StringChar in WholeNumberBuffer)
+				{
+					TempInt = CharAsInt(StringChar);
+					TempInt02 = (ushort)(TempInt * Math.Pow(10, PlaceNumber));
+					if (StringChar != '0')
+					{
+						IntValue += (ushort)TempInt02;
+					}
+					PlaceNumber--;
+				}
+				PlaceNumber = 3;
+				foreach (char StringChar in DecimalBuffer)
+				{
+					//Limit stored decimal numbers to the amount it can store
+					if (PlaceNumber > -1)
+					{
+						TempInt = CharAsInt(StringChar);
+						TempInt02 = (ushort)(TempInt * Math.Pow(10, PlaceNumber));
+						if (StringChar != '0')
+						{
+							DecimalStatus += (ushort)TempInt02;
+						}
+						PlaceNumber--;
+					}
+				}
+			}
+#else
+			if (Value is DependencyProperty)
+			{
+				SmallDec NewValue = (SmallDec)Value;
 				this.DecBoolStatus = NewValue.DecBoolStatus;
 				this.IntValue = NewValue.IntValue;
 				this.DecimalStatus = NewValue.DecimalStatus;
@@ -308,7 +379,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 					}
 				}
 			}
-#if (!BlazesGlobalCode_Disable128BitFeatures)
+#	if (!BlazesGlobalCode_Disable128BitFeatures)
 			else if (Value is MediumSuperDec)
 			{
 				IntValue = (ushort)Value.IntValue;
@@ -330,7 +401,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 				DecimalStatus = (ushort)TempDec;
 				DecBoolStatus = Value.DecBoolStatus;
 			}
-#endif
+#	endif
 			else if (Value is double || Value is float || Value is decimal)
 			{
 				if (Value < 0)
@@ -389,6 +460,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 				this.IntValue = (ushort)Value;
 				this.DecimalStatus = 0;
 			}
+#endif
 		}
 
 		//From this type to Standard types

@@ -41,6 +41,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 			else { return RightSide; }
 		}
 
+#if (!BlazesGlobalCode_ReducedSmallDecSize)
 		public SmallDec Convert(ModerateSuperDec Value)
 		{
 			SmallDec NewSelf;
@@ -100,6 +101,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 		{
 			return new SmallDec().Convert(Value);
 		}
+#endif
 		public static List<SmallDec> CreateList(List<float> ListValue)
 		{
 			List<SmallDec> NewList = new List<SmallDec>();
