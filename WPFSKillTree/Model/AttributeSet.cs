@@ -57,9 +57,32 @@ namespace POESKillTree.Model
 #endif
         }
 
-        // Adds item mod.
-        // Existing attribute has value increased by value of attribute being added.
-        public void Add(ItemMod itemMod)
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+		// Adds attribute.
+		// Existing attribute has value increased by value of attribute being added.
+        public void Add(KeyValuePair<string, List<float>> attr)
+		{
+			if (ContainsKey(attr.Key))
+			{
+				if (attr.Value.Count > 0)
+					for (int i = 0; i < attr.Value.Count; ++i)
+						this[attr.Key][i] += attr.Value[i];
+			}
+			else
+			{
+				List<SmallDec> NewList = new List<SmallDec>();
+				foreach(var value in attr.Value)
+				{
+					NewList.Add((SmallDec)value);
+				}
+				Add(attr.Key, NewList);
+			}
+		}
+#endif
+
+		// Adds item mod.
+		// Existing attribute has value increased by value of attribute being added.
+		public void Add(ItemMod itemMod)
         {
             if (ContainsKey(itemMod.Attribute))
             {
@@ -68,12 +91,22 @@ namespace POESKillTree.Model
                         this[itemMod.Attribute][i] += itemMod.Value[i];
             }
             else
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+			{
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
                 Add(itemMod.Attribute, new List<SmallDec>(itemMod.Value));
+#elif (PoESkillTree_UseSmallDec_ForAttributes)
+				List<SmallDec> NewList = new List<SmallDec>();
+				foreach (var value in itemMod.Value)
+				{
+					NewList.Add((SmallDec)value);
+				}
+				Add(itemMod.Attribute,	NewList);
 #else
                 Add(itemMod.Attribute, new List<float>(itemMod.Value));
 #endif
-        }
+			}
+
+		}
 
         // Returns new copy of this attribute set.
         public AttributeSet Copy()
@@ -128,7 +161,7 @@ namespace POESKillTree.Model
 
         // Removes attribute.
         // Attribute has value decreased by value of attribute being removed.
-        // If attribute in set has all values zeroes or it has no value at all it will be removed from set.
+        // If attribute in set has all values zeros or it has no value at all it will be removed from set.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
         public void Remove(KeyValuePair<string, List<SmallDec>> attr)
 #else
@@ -142,7 +175,7 @@ namespace POESKillTree.Model
                     for (int i = 0; i < attr.Value.Count; ++i)
                         this[attr.Key][i] -= attr.Value[i];
 
-                    // Remove attribute from set if all values are zeroes.
+                    // Remove attribute from set if all values are zeros.
                     for (int i = 0; i < attr.Value.Count; ++i)
                         if (this[attr.Key][i] != 0) return;
                     Remove(attr.Key);
@@ -152,8 +185,29 @@ namespace POESKillTree.Model
             }
         }
 
-        // Replaces attribute values with values from specified set.
-        public void Replace(AttributeSet attrs)
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+		public void Remove(KeyValuePair<string, List<float>> attr)
+		{
+			if (ContainsKey(attr.Key))
+			{
+				if (attr.Value.Count > 0)
+				{
+					for (int i = 0; i < attr.Value.Count; ++i)
+						this[attr.Key][i] -= attr.Value[i];
+
+					// Remove attribute from set if all values are zeros.
+					for (int i = 0; i < attr.Value.Count; ++i)
+						if (this[attr.Key][i] != 0) return;
+					Remove(attr.Key);
+				}
+				else // Remove from set if it has no values.
+					Remove(attr.Key);
+			}
+		}
+#endif
+
+		// Replaces attribute values with values from specified set.
+		public void Replace(AttributeSet attrs)
         {
             foreach (var attr in attrs)
                 if (ContainsKey(attr.Key))

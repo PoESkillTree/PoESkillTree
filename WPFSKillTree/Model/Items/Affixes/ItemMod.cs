@@ -27,10 +27,10 @@ namespace POESKillTree.Model.Items.Affixes
 
         public string Attribute { get; }
 
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
         public List<SmallDec> Value { get; set; }
 #else
-        public List<float> Value { get; set; }
+		public List<float> Value { get; set; }
 #endif
 
         public List<ValueColoring> ValueColor { get; set; }
@@ -40,10 +40,10 @@ namespace POESKillTree.Model.Items.Affixes
         public ItemMod(ItemType itemType, string attribute, Regex numberfilter, IEnumerable<ValueColoring> valueColor = null)
         {
             Value = (from Match match in numberfilter.Matches(attribute)
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
                      select SmallDec.Parse(match.Value, CultureInfo.InvariantCulture))
 #else
-                     select float.Parse(match.Value, CultureInfo.InvariantCulture))
+					 select float.Parse(match.Value, CultureInfo.InvariantCulture))
 #endif
                      .ToList();
             Attribute = numberfilter.Replace(attribute, "#");
@@ -56,10 +56,10 @@ namespace POESKillTree.Model.Items.Affixes
             IsLocal = DetermineLocal(itemType, attribute);
             Attribute = attribute;
             ParentTier = parentTier;
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
             Value = new List<SmallDec>();
 #else
-            Value = new List<float>();
+			Value = new List<float>();
 #endif
             ValueColor = new List<ValueColoring>();
         }
@@ -189,28 +189,28 @@ namespace POESKillTree.Model.Items.Affixes
     /// </summary>
     public static class ItemModExtensions
     {
-        /// <summary>
-        /// Returns the value at index <paramref name="valueIndex"/> of the first ItemMod in <paramref name="mods"/> whose
-        /// attribute equals <paramref name="attribute"/>, or <paramref name="defaultValue"/> if there is no such ItemMod.
-        /// </summary>
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+		/// <summary>
+		/// Returns the value at index <paramref name="valueIndex"/> of the first ItemMod in <paramref name="mods"/> whose
+		/// attribute equals <paramref name="attribute"/>, or <paramref name="defaultValue"/> if there is no such ItemMod.
+		/// </summary>
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
         public static SmallDec First(this IEnumerable<ItemMod> mods, string attribute, int valueIndex, SmallDec defaultValue)
 #else
-        public static float First(this IEnumerable<ItemMod> mods, string attribute, int valueIndex, float defaultValue)
+		public static float First(this IEnumerable<ItemMod> mods, string attribute, int valueIndex, float defaultValue)
 #endif
         {
             return mods.Where(p => p.Attribute == attribute).Select(p => p.Value[valueIndex]).DefaultIfEmpty(defaultValue).First();
         }
 
-        /// <summary>
-        /// Returns true and writes the value at index <paramref name="valueIndex"/> of the first ItemMod in <paramref name="mods"/> whose
-        /// attribute equals <paramref name="attribute"/> into <paramref name="value"/>, or returns false and writes 0 into <paramref name="value"/>
-        /// if there is no such ItemMod.
-        /// </summary>
+		/// <summary>
+		/// Returns true and writes the value at index <paramref name="valueIndex"/> of the first ItemMod in <paramref name="mods"/> whose
+		/// attribute equals <paramref name="attribute"/> into <paramref name="value"/>, or returns false and writes 0 into <paramref name="value"/>
+		/// if there is no such ItemMod.
+		/// </summary>
 #if (PoESkillTree_UseSmallDec_ForAttributes)
         public static bool TryGetValue(this IEnumerable<ItemMod> mods, string attribute, int valueIndex, out SmallDec value)
 #else
-        public static bool TryGetValue(this IEnumerable<ItemMod> mods, string attribute, int valueIndex, out float value)
+		public static bool TryGetValue(this IEnumerable<ItemMod> mods, string attribute, int valueIndex, out float value)
 #endif
         {
             var mod = mods.FirstOrDefault(p => p.Attribute == attribute);
@@ -219,7 +219,7 @@ namespace POESKillTree.Model.Items.Affixes
 #if (PoESkillTree_UseSmallDec_ForAttributes)
                 value = SmallDec.Zero;
 #else
-                value = default(float);
+				value = default(float);
 #endif
                 return false;
             }
@@ -228,6 +228,22 @@ namespace POESKillTree.Model.Items.Affixes
                 value = mod.Value[valueIndex];
                 return true;
             }
+		}
+#if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_UseSmallDec_ForGeneratorBars)
+		public static bool TryGetValue(this IEnumerable<ItemMod> mods, string attribute, int valueIndex, out float value)
+        {
+            var mod = mods.FirstOrDefault(p => p.Attribute == attribute);
+            if (mod == null)
+            {
+				value = default(float);
+                return false;
+            }
+            else
+            {
+                value = mod.Value[valueIndex];
+                return true;
+            }
         }
-    }
+#endif
+	}
 }

@@ -11,6 +11,7 @@
              xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:controls="clr-namespace:POESKillTree.Controls"
+             xmlns:GlobalCode="clr-namespace:CSharpGlobalCode.GlobalCode_ExperimentalCode"
              mc:Ignorable="d" 
              x:Name="Control"
              d:DesignHeight="460" d:DesignWidth="600" d:DataContext="{d:DesignInstance viewModels:AdvancedTabViewModel}">

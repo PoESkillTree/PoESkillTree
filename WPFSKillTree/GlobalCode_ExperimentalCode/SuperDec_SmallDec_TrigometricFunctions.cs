@@ -17,5 +17,9 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 	//Aka SuperDec_Int16_4Decimal
 	public partial struct SmallDec : IComparable<SmallDec>
 	{
+		public static explicit operator SmallDec(List<float> v)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

@@ -6,3 +6,6 @@ https://github.com/BlazesRus/NifLibEnvironment
 (Updating separately for now to make easier to update the code instead of having to copy the changes over to other folder for uploading)
 
 Loading both DataFlow versions since 4.7 fails to download/install on VS2015 Community Edition
+
+Temporary removed from packages.config to enable install of packages
+  <package id="System.Threading.Tasks.Dataflow" version="4.7.0" targetFramework="net45" />

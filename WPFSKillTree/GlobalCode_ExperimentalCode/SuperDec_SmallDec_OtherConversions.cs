@@ -40,8 +40,87 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 			if (LeftSide < RightSide) { return LeftSide; }
 			else { return RightSide; }
 		}
+
+		public SmallDec Convert(ModerateSuperDec Value)
+		{
+			SmallDec NewSelf;
+			NewSelf.IntValue = (ushort)Value.IntValue;
+			ulong TempDec = Value.DecimalStatus;
+			TempDec /= 1000000000000000;
+			NewSelf.DecimalStatus = (ushort)TempDec;
+			NewSelf.DecBoolStatus = Value.DecBoolStatus;
+			return NewSelf;
+		}
+
+		public SmallDec Convert(LargeSuperDec Value)
+		{
+			SmallDec NewSelf;
+			NewSelf.IntValue = (ushort)Value.IntValue;
+			ulong TempDec = Value.DecimalStatus / 100000000000000;
+			NewSelf.DecimalStatus = (ushort)TempDec;
+			NewSelf.DecBoolStatus = Value.DecBoolStatus;
+			return NewSelf;
+		}
+
+		public static SmallDec operator +(SmallDec self, ModerateSuperDec y)
+		{
+			self += (SmallDec)y;
+			return self;
+		}
+
+		public static SmallDec operator -(SmallDec self, ModerateSuperDec y)
+		{
+			self -= (SmallDec)y;
+			return self;
+		}
+
+		public static SmallDec operator *(SmallDec self, ModerateSuperDec y)
+		{
+			self *= (SmallDec)y;
+			return self;
+		}
+
+		public static SmallDec operator /(SmallDec self, ModerateSuperDec y)
+		{
+			self /= (SmallDec)y;
+			return self;
+		}
+
+		public static explicit operator SmallDec(MediumSuperDec Value)
+		{
+			return new SmallDec(Value);
+		}
+
+		public static explicit operator SmallDec(ModerateSuperDec Value)
+		{
+			return new SmallDec().Convert(Value);
+		}
+
+		public static explicit operator SmallDec(LargeSuperDec Value)
+		{
+			return new SmallDec().Convert(Value);
+		}
+		public static List<SmallDec> CreateList(List<float> ListValue)
+		{
+			List<SmallDec> NewList = new List<SmallDec>();
+			foreach (var value in ListValue)
+			{
+				NewList.Add((SmallDec)value);
+			}
+			return NewList;
+		}
+		public static List<SmallDec> CreateList(List<dynamic> ListValue)
+		{
+			List<SmallDec> NewList = new List<SmallDec>();
+			foreach (var value in ListValue)
+			{
+				NewList.Add((SmallDec)value);
+			}
+			return NewList;
+		}
 	}
 	//class SmallDecTuple : Tuple<string, SmallDec>
 	//{
 	//}
+
 }

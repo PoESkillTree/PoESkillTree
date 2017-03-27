@@ -1342,14 +1342,19 @@ namespace POESKillTree.SkillTreeFiles
         {
             AttributeSet attrs = new AttributeSet();
 
-            // Collect gem attributes and modifiers at gem level.
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+			// Collect gem attributes and modifiers at gem level.
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
             foreach (var prop in gem.Properties)
                 attrs.Add(prop.Attribute, new List<SmallDec>(prop.Value));
             foreach (ItemMod mod in gem.Mods)
                 attrs.Add(mod.Attribute, new List<SmallDec>(mod.Value));
-#else
+#elif (PoESkillTree_UseSmallDec_ForAttributes)
             foreach (var prop in gem.Properties)
+                attrs.Add(prop.Attribute, new List<SmallDec>(SmallDec.CreateList(prop.Value)));
+            foreach (ItemMod mod in gem.Mods)
+                attrs.Add(mod.Attribute, new List<SmallDec>(SmallDec.CreateList(mod.Value)));
+#else
+			foreach (var prop in gem.Properties)
                 attrs.Add(prop.Attribute, new List<float>(prop.Value));
             foreach (ItemMod mod in gem.Mods)
                 attrs.Add(mod.Attribute, new List<float>(mod.Value));
@@ -1485,7 +1490,7 @@ namespace POESKillTree.SkillTreeFiles
             return DB == null ? null : DB.Gems.Find(g => g.Name == gemName);
         }
 
-        // Returns numbner of hits skill gem does per single attack.
+        // Returns number of hits skill gem does per single attack.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
         public static SmallDec HitsPerAttackOf(Item gem)
 #else
@@ -1525,10 +1530,10 @@ namespace POESKillTree.SkillTreeFiles
         // Returns level of gem.
         public static int LevelOf(Item gem)
         {
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
             SmallDec ret;
 #else
-            float ret;
+			float ret;
 #endif
             if (gem.Properties.TryGetValue("Level: #", 0, out ret))
                 return (int) ret;

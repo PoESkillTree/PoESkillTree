@@ -36,7 +36,7 @@ namespace POESKillTree.TreeGenerator.Model
             get { return _data; }
             set { SetProperty(ref _data, value); }
         }
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_EnableTargetWeightAsSmallDec)
         private SmallDec _targetValue = DefaultTargetValue;
 
         public SmallDec TargetValue
@@ -45,7 +45,7 @@ namespace POESKillTree.TreeGenerator.Model
             set { SetProperty(ref _targetValue, value); }
         }
 #else
-        private float _targetValue = DefaultTargetValue;
+		private float _targetValue = DefaultTargetValue;
 
         public float TargetValue
         {

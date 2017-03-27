@@ -92,7 +92,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 			set
 			{
 				SetValue(ValueProperty, value);
-				if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("Minimum")); }
+				if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("Value")); }
 			}
 		}
 
@@ -106,22 +106,22 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 			this.InitializeComponent();
 		}
 		
-		public static readonly DependencyProperty ExtraFeaturesSettingProp = DependencyProperty.Register("ExtraFeaturesSetting", typeof(byte), typeof(SmallDecSlider), new PropertyMetadata(0, OnValuePropertyChanged));
-		
-		public byte ExtraFeaturesSetting
-		{
-			get { return (byte)GetValue(ExtraFeaturesSettingProp); }
-			set
-			{
-				SetValue(ExtraFeaturesSettingProp, value);
-				if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("ExtraFeaturesSetting")); }
-			}
-		}
+		//public static readonly DependencyProperty ExtraFeaturesSettingProp = DependencyProperty.Register("ExtraFeaturesSetting", typeof(byte), typeof(SmallDecSlider), new PropertyMetadata(0, OnValuePropertyChanged));
+
+		//public byte ExtraFeaturesSetting
+		//{
+		//	get { return (byte)GetValue(ExtraFeaturesSettingProp); }
+		//	set
+		//	{
+		//		SetValue(ExtraFeaturesSettingProp, value);
+		//		if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("ExtraFeaturesSetting")); }
+		//	}
+		//}
 		
 		public SmallDecSlider(byte OptionValue)
 		{
 			this.InitializeComponent();
-			if(OptionValue!=0){	ExtraFeaturesSetting = OptionValue; }
+			//if(OptionValue!=0){	ExtraFeaturesSetting = OptionValue; }
 		}
 
 		private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -196,6 +196,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 			Canvas.SetZIndex(Thumb, 10);
 		}
 
+#if (BlazesGlobalCode_SmallDecSliderEnableExtraFeatures)
 		//Tick based code parts (for adding in tick features of slider later to control)
 		//Will try to program in ticks features later (mainly to reduce errors from missing properties for now)
 		public double SmallChange
@@ -234,7 +235,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 			set { SetValue(IsSnapToTickEnabledProperty, value); }
 		}
 		public static readonly DependencyProperty IsSnapToTickEnabledProperty = DependencyProperty.Register("IsSnapToTickEnabled", typeof(bool), typeof(SmallDecSlider), new PropertyMetadata(false, OnValuePropertyChanged));
-
+#endif
 		////Routed Event from http://stackoverflow.com/questions/21033509/routedevent-the-member-is-not-recognized-or-is-not-accessible
 		//public static readonly RoutedEvent fooEvent = EventManager.RegisterRoutedEvent("foo", RoutingStrategy.Direct, typeof(RoutedEventHandler), typeof(MainWindow));
 		//// Provide CLR accessors for the event 
@@ -292,7 +293,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 		}
 	}
 }
-//Property change code for the most part from Notifier.cs in PoESkillTree code (required licease for related part of code below)
+//Property change code for the most part from Notifier.cs in PoESkillTree code (required license for related part of code below)
 //Copyright © 2012-2016 PoESkillTree Team
 //
 //Permission is hereby granted, free of charge, to any person obtaining a copy

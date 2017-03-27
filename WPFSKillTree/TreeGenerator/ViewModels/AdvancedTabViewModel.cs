@@ -107,12 +107,12 @@ namespace POESKillTree.TreeGenerator.ViewModels
                         var attr = attrToken.ToObject<string>();
                         newConstraints.Add(new AttributeConstraint(attr)
                         {
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_EnableTargetWeightAsSmallDec)
                             TargetValue = targetToken.ToObject<SmallDec>(),
 #else
-                            TargetValue = targetToken.ToObject<float>(),
+							TargetValue = targetToken.ToObject<float>(),
 #endif
-                            Weight = weightToken.ToObject<int>()
+							Weight = weightToken.ToObject<int>()
                         });
                         _vm._addedAttributes.Add(attr);
                     }
@@ -145,10 +145,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
                             continue;
                         newConstraints.Add(new PseudoAttributeConstraint(attr)
                         {
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_EnableTargetWeightAsSmallDec)
                             TargetValue = targetToken.ToObject<SmallDec>(),
 #else
-                            TargetValue = targetToken.ToObject<float>(),
+							TargetValue = targetToken.ToObject<float>(),
 #endif
                             Weight = weightToken.ToObject<int>()
                         });
@@ -746,8 +746,12 @@ namespace POESKillTree.TreeGenerator.ViewModels
             AttributeConstraints.Clear();
             foreach (var attribute in attributes)
             {
-                AttributeConstraints.Add(new AttributeConstraint(attribute.Key) {TargetValue = attribute.Value});
-            }
+#if (PoESkillTree_UseSmallDec_ForAttributes&&!PoESkillTree_EnableTargetWeightAsSmallDec)
+				AttributeConstraints.Add(new AttributeConstraint(attribute.Key) { TargetValue = (float)attribute.Value });
+#else
+				AttributeConstraints.Add(new AttributeConstraint(attribute.Key) {TargetValue = attribute.Value});
+#endif
+			}
         }
 
         /// <summary>
@@ -786,8 +790,12 @@ namespace POESKillTree.TreeGenerator.ViewModels
                         {
                             if (pseudoAttributeConstraint.Data == pseudoAttribute)
                             {
-                                pseudoAttributeConstraint.TargetValue += attributeConstraint.TargetValue * pseudo.Multiplier;
-                            }
+#if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_EnableTargetWeightAsSmallDec)
+								pseudoAttributeConstraint.TargetValue += (float)(attributeConstraint.TargetValue * pseudo.Multiplier);
+#else
+								pseudoAttributeConstraint.TargetValue += attributeConstraint.TargetValue * pseudo.Multiplier;
+#endif
+							}
                         }
                     }
                     else
@@ -795,8 +803,12 @@ namespace POESKillTree.TreeGenerator.ViewModels
                         _addedPseudoAttributes.Add(pseudoAttribute);
                         PseudoAttributeConstraints.Add(new PseudoAttributeConstraint(pseudoAttribute)
                         {
-                            TargetValue = attributeConstraint.TargetValue * pseudo.Multiplier
-                        });
+#if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_EnableTargetWeightAsSmallDec)
+							TargetValue = (float)(attributeConstraint.TargetValue * pseudo.Multiplier)
+#else
+							TargetValue = attributeConstraint.TargetValue * pseudo.Multiplier
+#endif
+						});
                     }
                 }
 

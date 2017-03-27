@@ -1804,8 +1804,13 @@ namespace POESKillTree.SkillTreeFiles
                     {
                         Attributes.Add(prop);
 
-                        Damage damage = Damage.Create(Nature, prop.Attribute, prop.Value);
-                        if (damage != null && damage.Type == DamageType.Physical) // Create only physical damage from item properties.
+#if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_UseSmallDec_ForGeneratorBars)
+						Damage damage = Damage.Create(Nature, prop.Attribute, SmallDec.CreateList(prop.Value));
+#else
+						Damage damage = Damage.Create(Nature, prop.Attribute, prop.Value);
+#endif
+
+						if (damage != null && damage.Type == DamageType.Physical) // Create only physical damage from item properties.
                             Deals.Add(damage);
                     }
 
@@ -3172,8 +3177,10 @@ namespace POESKillTree.SkillTreeFiles
 
             Equipment = new AttributeSet();
             foreach (var attr in itemAttrs.NonLocalMods)
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
 				Equipment.Add(attr.Attribute, new List<SmallDec>(attr.Value));
+#elif (PoESkillTree_UseSmallDec_ForAttributes)
+				Equipment.Add(attr.Attribute, new List<SmallDec>(SmallDec.CreateList(attr.Value)));
 #else
 				Equipment.Add(attr.Attribute, new List<float>(attr.Value));
 #endif

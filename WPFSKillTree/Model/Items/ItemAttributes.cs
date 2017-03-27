@@ -296,7 +296,17 @@ namespace POESKillTree.Model.Items
 
         private static void AddAttribute(ItemMod mod, string group, ICollection<Attribute> attributes, Attribute existingAttribute)
         {
-            if (existingAttribute == null)
+#if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_UseSmallDec_ForGeneratorBars)
+			if (existingAttribute == null)
+			{
+				attributes.Add(new Attribute(mod.Attribute, SmallDec.CreateList(mod.Value), group));
+			}
+			else
+			{
+				existingAttribute.Add(SmallDec.CreateList(mod.Value));
+			}
+#else
+			if (existingAttribute == null)
             {
                 attributes.Add(new Attribute(mod.Attribute, mod.Value, group));
             }
@@ -304,7 +314,8 @@ namespace POESKillTree.Model.Items
             {
                 existingAttribute.Add(mod.Value);
             }
-        }
+#endif
+		}
 
         private static void LoadItemAttributes(Item item, List<Attribute> attributes, List<Attribute> independentAttributes)
         {
@@ -312,8 +323,12 @@ namespace POESKillTree.Model.Items
             {
                 // Show all properties except quality in the group for this slot.
                 if (attr.Attribute == "Quality: +#%") continue;
-                attributes.Add(new Attribute(attr.Attribute, attr.Value, item.Slot.ToString()));
-            }
+#if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_UseSmallDec_ForGeneratorBars)
+				attributes.Add(new Attribute(attr.Attribute, SmallDec.CreateList(attr.Value), item.Slot.ToString()));
+#else
+				attributes.Add(new Attribute(attr.Attribute, attr.Value, item.Slot.ToString()));
+#endif
+			}
 
             var modsAffectingProperties = item.GetModsAffectingProperties().SelectMany(pair => pair.Value).ToList();
             foreach (var mod in item.Mods)

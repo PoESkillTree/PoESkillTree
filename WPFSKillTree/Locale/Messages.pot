@@ -108,7 +108,7 @@ msgid "Choose colors of item labels shown for each rule or group of rules."
 msgstr ""
 
 #: ItemFilter\Views\ItemFilterEditWindow.xaml:133
-#: Views\Builds\BuildsControl.xaml:229 Views\Builds\BuildsControl.xaml:327
+#: Views\Builds\BuildsControl.xaml:230 Views\Builds\BuildsControl.xaml:328
 msgid "Save"
 msgstr ""
 
@@ -133,126 +133,126 @@ msgid "Select a filter you want to edit or create copy of."
 msgstr ""
 
 #: ItemFilter\Views\ItemFilterOpenWindow.xaml:82
-#: Views\Builds\BuildsControl.xaml:123 Views\Builds\BuildsControl.xaml:200
+#: Views\Builds\BuildsControl.xaml:124 Views\Builds\BuildsControl.xaml:201
 msgid "Edit"
 msgstr ""
 
 #: ItemFilter\Views\ItemFilterOpenWindow.xaml:87
-#: Views\Builds\BuildsControl.xaml:130 Views\Builds\BuildsControl.xaml:207
+#: Views\Builds\BuildsControl.xaml:131 Views\Builds\BuildsControl.xaml:208
 msgid "Delete"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:99
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:100
 msgid "Level:"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:108
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:109
 msgid "Additional points:"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:116
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:117
 msgid "Total points:"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:126
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:127
 msgid "include Check-tagged nodes"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:135
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:136
 #: TreeGenerator\Views\SteinerTabView.xaml:14
 msgid "exclude Cross-tagged nodes"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:143
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:144
 msgid "Iterations:"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:146
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:147
 msgid "Determines how often the generator is run. The best result from all runs is kept."
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:148
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:149
 msgid "Pause and then Close it at any point to keep the current solution."
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:160
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:161
 #: TreeGenerator\Views\SteinerTabView.xaml:24
 msgid "Run"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:167
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:168
 msgid "Reset settings"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:174 Views\MainWindow.xaml:757
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:175 Views\MainWindow.xaml:757
 msgid "Attributes"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:192
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:193
 msgid "Load from tree"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:195
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:196
 msgid "Convert to Pseudo Attributes"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:197
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:198
 msgid "Converts the attributes to pseudo attributes where possible using the defined settings."
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:222
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:315
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:223
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:316
 msgid "Add"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:231
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:232
 msgid "Attribute"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:236
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:329
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:237
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:330
 msgid "Target"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:249
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:342
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:250
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:343
 msgid "Weight"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:280
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:281
 msgid "Pseudo Attributes"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:324
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:325
 msgid "Pseudo attribute"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:384 Views\MainWindow.xaml:204
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:385 Views\MainWindow.xaml:204
 #: ViewModels\SettingsMenuViewModel.cs:30
 msgid "Settings"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:419
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:420
 msgid "Tree + Items"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:422
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:423
 msgid "Tree only"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:429
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:430
 msgid "Reload Pseudo Attributes from filesystem"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:436
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:437
 msgid "Weapon class"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:451
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:452
 msgid "Off hand"
 msgstr ""
 
-#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:474
+#: TreeGenerator\Views\AdvancedGeneratorTab.xaml:475
 msgid "Tags"
 msgstr ""
 
@@ -304,76 +304,76 @@ msgstr ""
 msgid "Information about item affixes is retrieved from"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:25
+#: Views\Builds\BuildsControl.xaml:26
 msgid "Right click to edit"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:138 Views\Builds\BuildsControl.xaml:215
+#: Views\Builds\BuildsControl.xaml:139 Views\Builds\BuildsControl.xaml:216
 msgid "Cut"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:145
+#: Views\Builds\BuildsControl.xaml:146
 msgid "Paste"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:152
+#: Views\Builds\BuildsControl.xaml:153
 msgid "New Build"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:158
+#: Views\Builds\BuildsControl.xaml:159
 #: ViewModels\Builds\BuildsControlViewModel.cs:371
 msgid "New Folder"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:194
+#: Views\Builds\BuildsControl.xaml:195
 msgid "Open"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:222
+#: Views\Builds\BuildsControl.xaml:223
 msgid "Copy"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:235
+#: Views\Builds\BuildsControl.xaml:236
 msgid "Discard changes"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:238
+#: Views\Builds\BuildsControl.xaml:239
 msgid "Discards all changes made to this build after the last save"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:315
+#: Views\Builds\BuildsControl.xaml:316
 msgid "Skill Tree comparison enabled"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:318
+#: Views\Builds\BuildsControl.xaml:319
 msgid "Skill Tree comparison disabled"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:329
+#: Views\Builds\BuildsControl.xaml:330
 msgid "Saves the currently opened build"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:336
+#: Views\Builds\BuildsControl.xaml:337
 msgid "Save As"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:338
+#: Views\Builds\BuildsControl.xaml:339
 msgid "Saves the currently opened build as a new build"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:343
+#: Views\Builds\BuildsControl.xaml:344
 msgid "Save All"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:345
+#: Views\Builds\BuildsControl.xaml:346
 msgid "Saves all changed builds"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:353
+#: Views\Builds\BuildsControl.xaml:354
 msgid "New top level build"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:358
+#: Views\Builds\BuildsControl.xaml:359
 msgid "New top level folder"
 msgstr ""
 

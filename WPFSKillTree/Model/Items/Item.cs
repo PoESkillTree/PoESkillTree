@@ -456,10 +456,10 @@ namespace POESKillTree.Model.Items
         private void RequirementsFromBase(int minRequiredLevel = 0, int attrRequirementsMultiplier = 100)
         {
             var requirements = new List<string>();
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
             var values = new List<SmallDec>();
 #else
-            var values = new List<float>();
+			var values = new List<float>();
 #endif
             var colors = new List<ItemMod.ValueColoring>();
             var attrColor = attrRequirementsMultiplier == 100

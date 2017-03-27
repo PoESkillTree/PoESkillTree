@@ -4,9 +4,6 @@
 
 using System;
 
-//#define SuperDecPercentVal_EnableMultipleDecimalStatusFormulas
-//#define SuperDecPercentVal_EnableNullAndInfinity
-
 namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 {
 	using System.Collections.Generic;

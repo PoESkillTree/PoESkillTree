@@ -21,6 +21,12 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 			this.InnerList.Add(tics);
 		}
 
+		public SmallDecCollection(IEnumerable<double> tics)
+		{
+			this.InnerList.Clear();
+			this.InnerList.Add(tics);
+		}
+
 		public SmallDecCollection()
 		{
 			this.InnerList.Clear();

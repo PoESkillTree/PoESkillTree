@@ -1190,14 +1190,17 @@ namespace POESKillTree.Views
 
             var attritemp = Tree.SelectedAttributesWithoutImplicit;
 
-            var itemAttris = _itemAttributes.NonLocalMods
-#if (PoESkillTree_UseSmallDec_ForAttributes)
-				.Select(m => new KeyValuePair<string, List<SmallDec>>(m.Attribute, m.Value))
+			var itemAttris =
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
+			 _itemAttributes.NonLocalMods.Select(m => new KeyValuePair<string, List<SmallDec>>(m.Attribute, m.Value))
+#elif (PoESkillTree_UseSmallDec_ForAttributes)
+			_itemAttributes.NonLocalMods.Select(m => new KeyValuePair<string, List<SmallDec>>(m.Attribute, SmallDec.CreateList(m.Value)))
 #else
-                .Select(m => new KeyValuePair<string, List<float>>(m.Attribute, m.Value))
+			_itemAttributes.NonLocalMods.Select(m => new KeyValuePair<string, List<float>>(m.Attribute, m.Value))
+			
 #endif
-				.SelectMany(SkillTree.ExpandHybridAttributes);
-            foreach (var mod in itemAttris)
+			.SelectMany(SkillTree.ExpandHybridAttributes);
+			foreach (var mod in itemAttris)
             {
                 if (attritemp.ContainsKey(mod.Key))
                 {
@@ -1968,9 +1971,9 @@ namespace POESKillTree.Views
         }
 #endif
 
-		#endregion
+#endregion
 
-		#region Bottom Bar (Build URL etc)
+#region Bottom Bar (Build URL etc)
 
 		private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {

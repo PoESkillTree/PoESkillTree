@@ -211,10 +211,10 @@ namespace POESKillTree.ViewModels.Crafting
                 }
                 if (ibase.CanHaveQuality)
                 {
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
                     var qualityStat = new Stat(QualityModName, new Range<SmallDec>(0, 20), Item.ItemType, null);
 #else
-                    var qualityStat = new Stat(QualityModName, new Range<float>(0, 20), Item.ItemType, null);
+					var qualityStat = new Stat(QualityModName, new Range<float>(0, 20), Item.ItemType, null);
 #endif
                     MsQuality.Affixes = new[]
                     {
@@ -291,10 +291,10 @@ namespace POESKillTree.ViewModels.Crafting
 
             if (elementalMods.Any())
             {
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
                 var values = new List<SmallDec>();
 #else
-                var values = new List<float>();
+				var values = new List<float>();
 #endif
                 var mods = new List<string>();
                 var cols = new List<ItemMod.ValueColoring>();
@@ -337,10 +337,10 @@ namespace POESKillTree.ViewModels.Crafting
             {
                 Item.Properties.Add(new ItemMod(Item.ItemType, "Chaos Damage: #-#")
                 {
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
                     Value = new List<SmallDec>(chaosMods[0].Value),
 #else
-                    Value = new List<float>(chaosMods[0].Value),
+					Value = new List<float>(chaosMods[0].Value),
 #endif
                     ValueColor = new List<ItemMod.ValueColoring> { ItemMod.ValueColoring.Chaos, ItemMod.ValueColoring.Chaos },
                 });
@@ -359,11 +359,11 @@ namespace POESKillTree.ViewModels.Crafting
 
                 if (valuem.Count > 0)
                 {
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
                     List<SmallDec> val = valuem.Select(m => m.Value).Aggregate((l1, l2) => l1.Zip(l2, (f1, f2) => f1 + f2).ToList());
                     List<SmallDec> nval = prop.Value.Zip(val, (f1, f2) => f1 + f2).ToList();
 #else
-                    List<float> val = valuem.Select(m => m.Value).Aggregate((l1, l2) => l1.Zip(l2, (f1, f2) => f1 + f2).ToList());
+					List<float> val = valuem.Select(m => m.Value).Aggregate((l1, l2) => l1.Zip(l2, (f1, f2) => f1 + f2).ToList());
                     List<float> nval = prop.Value.Zip(val, (f1, f2) => f1 + f2).ToList();
 #endif
                     prop.ValueColor = prop.ValueColor
@@ -371,7 +371,7 @@ namespace POESKillTree.ViewModels.Crafting
                         .ToList();
                     prop.Value = nval;
                 }
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
                 Func<SmallDec, SmallDec> roundf = val => SmallDec.Round(val);
 
                 if (prop.Attribute.Contains("Critical"))
@@ -390,7 +390,7 @@ namespace POESKillTree.ViewModels.Crafting
                     prop.Value = prop.Value.Select(v => roundf(v * perc)).ToList();
                 }
 #else
-                Func<float, float> roundf = val => (float)Math.Round(val);
+				Func<float, float> roundf = val => (float)Math.Round(val);
 
                 if (prop.Attribute.Contains("Critical"))
                 {
