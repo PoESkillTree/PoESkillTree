@@ -2,14 +2,20 @@
 
 namespace POESKillTree.ViewModels
 {
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     public class ListGroup
     {
         public string Name { get; set; }
-        public Dictionary<string, List<float>> Properties { get; set; }
 
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+		public Dictionary<string, List<SmallDec>> Properties { get; set; }
+		public ListGroup(string name, Dictionary<string, List<SmallDec>> props)
+#else
+		public Dictionary<string, List<float>> Properties { get; set; }
         public ListGroup(string name, Dictionary<string, List<float>> props)
-        {
-            Name = name;
+#endif
+		{
+			Name = name;
             Properties = props;
         }
 

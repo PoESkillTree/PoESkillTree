@@ -18,6 +18,8 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,8 +34,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -44,7 +44,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -55,7 +55,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowedReferenceRelatedFileExtensions>.none</AllowedReferenceRelatedFileExtensions>
-    <Prefer32Bit>false</Prefer32Bit>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -69,7 +69,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;BlazesGlobalCode_Disable128BitFeatures</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -81,7 +81,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;BlazesGlobalCode_Disable128BitFeatures</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -96,6 +96,171 @@
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>POESKillTree.SkillTreeFiles.Bootstrap</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug_x64\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;BlazesGlobalCode_Disable128BitFeatures;PoESkillTree_UseSmallDec_ForAttributes</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <OutputType>Exe</OutputType>
+	 <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\Release_x64\</OutputPath>
+    <DefineConstants>TRACE;BlazesGlobalCode_Disable128BitFeatures</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+	 <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseVS2015|x86'">
+    <OutputPath>bin\ReleaseVS2015_x86\</OutputPath>
+    <DefineConstants>TRACE;BlazesGlobalCode_Disable128BitFeatures</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+	 <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseVS2015|AnyCPU'">
+    <OutputPath>bin\ReleaseVS2015\</OutputPath>
+    <DefineConstants>TRACE;BlazesGlobalCode_Disable128BitFeatures</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+	<Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseVS2015|x64'">
+    <OutputPath>bin\ReleaseVS2015_x64\</OutputPath>
+    <DefineConstants>TRACE;BlazesGlobalCode_Disable128BitFeatures;</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+	<Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseVS2015AlternativeTypes|x86' ">
+    <OutputPath>bin\ReleaseVS2015AlternativeTypes_86\</OutputPath>
+    <DefineConstants>TRACE;BlazesGlobalCode_Disable128BitFeatures;PoESkillTree_UseSmallDec_ForAttributes</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseVS2015AlternativeTypes|AnyCPU' ">
+    <OutputPath>bin\ReleaseVS2015AlternativeTypes\</OutputPath>
+    <DefineConstants>TRACE;BlazesGlobalCode_Disable128BitFeatures;PoESkillTree_UseSmallDec_ForAttributes</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseVS2015AlternativeTypes|x64' ">
+    <OutputPath>bin\ReleaseVS2015AlternativeTypes_64\</OutputPath>
+    <DefineConstants>TRACE;BlazesGlobalCode_Disable128BitFeatures;PoESkillTree_UseSmallDec_ForAttributes</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugVS2015AlternativeTypes|x86'">
+    <OutputPath>bin\x86\DebugVS2015AlternativeTypes\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;BlazesGlobalCode_Disable128BitFeatures;PoESkillTree_UseSmallDec_ForAttributes</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugVS2015AlternativeTypes|AnyCPU'">
+    <OutputPath>bin\DebugVS2015AlternativeTypes\</OutputPath>
+    <DefineConstants>TRACE;BlazesGlobalCode_Disable128BitFeatures;PoESkillTree_UseSmallDec_ForAttributes</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugVS2015AlternativeTypes|x64'">
+    <OutputPath>bin\DebugVS2015AlternativeTypes_64\</OutputPath>
+    <DefineConstants>TRACE;BlazesGlobalCode_Disable128BitFeatures;PoESkillTree_UseSmallDec_ForAttributes</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseAlternativeGeneration|x86'">
+    <OutputPath>bin\x86\ReleaseAlternativeGeneration\</OutputPath>
+    <DefineConstants>TRACE;BlazesGlobalCode_Disable128BitFeatures;PoESkillTree_UseSmallDec_ForAttributes</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseAlternativeGeneration|AnyCPU'">
+    <OutputPath>bin\ReleaseAlternativeGeneration\</OutputPath>
+    <DefineConstants>TRACE;BlazesGlobalCode_Disable128BitFeatures;PoESkillTree_UseSmallDec_ForAttributes</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseAlternativeGeneration|x64'">
+    <OutputPath>bin\ReleaseAlternativeGeneration_64\</OutputPath>
+    <DefineConstants>TRACE;BlazesGlobalCode_Disable128BitFeatures;PoESkillTree_UseSmallDec_ForAttributes;PoESkillTree_UseSmallDec_ForGeneratorBars</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime">
@@ -162,8 +327,14 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.6.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.6.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" Condition="'$(Configuration)'=='Debug' Or '$(Configuration)'=='Release' ">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\System.Threading.Tasks.Dataflow.4.7.0\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.24.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" Condition="'$(Configuration)'!='Debug'  And  '$(Configuration)'!='Release' ">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.24\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows.Forms" />
@@ -209,6 +380,36 @@
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\ConfigBasedSlider.xaml.cs">
+      <DependentUpon>ConfigBasedSlider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GlobalCode_ExperimentalCode\CustomDec.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\SmallDecCollection.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\SuperDecGlobalCode.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\SuperDec_ExtraDec64_19Decimal.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\SuperDec_Int16_4Decimal.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\SuperDec_Int32_9Decimal.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\SuperDec_LargeDec_OperatorFunctions.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\SuperDec_MediumDec_OperatorFunctions.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\SuperDec_ModerateDec_OperatorFunctions.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\SuperDec_PercentVal.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\SuperDec_SmallDec_OperatorFunctions.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\SuperDec_SmallDec_OtherConversions.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\SuperDec_SmallDec_Rounding.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\SuperDec_SmallDec_TrigometricFunctions.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\SuperDec_SmallDec_TypeConverter.cs" />
+    <Compile Include="GlobalCode_VariableConversionFunctions\VariableConversionFunctions.cs" />
+    <Compile Include="GlobalCode_ExperimentalCode\SmallDecSlider.xaml.cs">
+      <DependentUpon>SmallDecSlider.xaml</DependentUpon>
+    </Compile>
+    <Page Include="GlobalCode_ExperimentalCode\ConfigBasedSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GlobalCode_ExperimentalCode\SmallDecSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Compile Include="Model\Items\IItemBase.cs" />
     <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
     <Compile Include="Utils\Wpf\ScrollViewerBindableOffsetBehavior.cs" />
@@ -1039,14 +1240,17 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Release call $(ProjectDir)build-locale.bat $(TargetDir)</PostBuildEvent>
+    <PostBuildEvent>if $(ConfigurationName) == Release call $(ProjectDir)build-locale.bat $(TargetDir)
+if $(ConfigurationName) == ReleaseVS2015 call $(ProjectDir)build-localeVS2015.bat $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\xcc.1.0.9\build\Xcc.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\xcc.1.0.9\build\Xcc.targets'))" />
   </Target>
+  <Import Project="..\packages\xcc.1.0.9\build\Xcc.targets" Condition="Exists('..\packages\xcc.1.0.9\build\Xcc.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

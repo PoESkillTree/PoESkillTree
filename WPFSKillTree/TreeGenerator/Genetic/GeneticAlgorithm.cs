@@ -530,7 +530,7 @@ namespace POESKillTree.TreeGenerator.Genetic
 
         /// <summary>
         ///  Takes a non-mutated individual and a mutated form of it and and decides
-        ///  wether it should be replaced by the mutated individual in the population.
+        ///  whether it should be replaced by the mutated individual in the population.
         ///  The mutated one always gets accepted if its fitness value is greater or
         ///  equal. If it is inferior it has a chance of e^(difference / temperature) to be
         ///  accepted.

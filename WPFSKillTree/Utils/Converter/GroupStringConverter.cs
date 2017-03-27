@@ -10,6 +10,7 @@ using Attribute = POESKillTree.ViewModels.Attribute;
 
 namespace POESKillTree.Utils.Converter
 {
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     [ValueConversion(typeof (string), typeof (string))]
     //list view sorter here
     public class GroupStringConverter : IValueConverter, IComparer
@@ -352,8 +353,13 @@ namespace POESKillTree.Utils.Converter
 
         public void UpdateGroupNames(List<Attribute> attrlist)
         {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            Dictionary<string, SmallDec> groupTotals = new Dictionary<string, SmallDec>();
+            Dictionary<string, SmallDec> groupDeltas = new Dictionary<string, SmallDec>();
+#else
             Dictionary<string, float> groupTotals = new Dictionary<string, float>();
             Dictionary<string, float> groupDeltas = new Dictionary<string, float>();
+#endif
             foreach (var gp in CustomGroups)
             {
                 //only sum for the groups that need it
@@ -371,7 +377,11 @@ namespace POESKillTree.Utils.Converter
                                 groupTotals.Add(gp[1], 0);
                                 groupDeltas.Add(gp[1], 0);
                             }
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                            groupTotals[gp[1]] += (SmallDec) matchResult.Value;
+#else
                             groupTotals[gp[1]] += (float)Decimal.Parse(matchResult.Value);
+#endif
                             if (attr.Deltas.Length > 0)
                                 groupDeltas[gp[1]] += attr.Deltas[0];
                         }

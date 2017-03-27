@@ -9,6 +9,7 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// The exception that is thrown when the xml files describing pseudo
     /// attributes are invalid.
@@ -129,7 +130,11 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
                     var attr = new Attribute(xmlAttr.Name);
                     if (xmlAttr.ConversionMultiplierSpecified)
                     {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                        attr.ConversionMultiplier = (SmallDec) xmlAttr.ConversionMultiplier;
+#else
                         attr.ConversionMultiplier = (float) xmlAttr.ConversionMultiplier;
+#endif
                     }
                     pseudo.Attributes.Add(attr);
 

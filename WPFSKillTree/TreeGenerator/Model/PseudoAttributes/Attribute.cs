@@ -3,13 +3,14 @@ using System.Text.RegularExpressions;
 
 namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
-    /// <summary>
-    /// Data class describing a conditioned Attribute.
-    /// At least one condition must be true or there must not be
-    /// any conditions for <see cref="ICondition.Evaluate"/> to return true.
-    /// (see <see cref="OrComposition"/>)
-    /// </summary>
-    public class Attribute : OrComposition
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+	/// <summary>
+	/// Data class describing a conditioned Attribute.
+	/// At least one condition must be true or there must not be
+	/// any conditions for <see cref="ICondition.Evaluate"/> to return true.
+	/// (see <see cref="OrComposition"/>)
+	/// </summary>
+	public class Attribute : OrComposition
     {
         private static readonly Regex WildcardRegex = new Regex(@"{\d+}");
 
@@ -32,7 +33,11 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
         /// be multiplied before being adding into the <see cref="PseudoAttribute"/>
         /// containing this attribute.
         /// </summary>
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        public SmallDec ConversionMultiplier { get; internal set; }
+#else
         public float ConversionMultiplier { get; internal set; }
+#endif
 
         /// <summary>
         /// Creates a new Attribute with the given name, a ConversionMultiplier

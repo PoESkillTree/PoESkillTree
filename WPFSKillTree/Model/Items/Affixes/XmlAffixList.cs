@@ -8,6 +8,7 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items.Affixes
 {
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     // Contains the classes that allow serialization and deserialization of Affixes.xml
 
     [XmlRoot(Namespace = "", IsNullable = false, ElementName = "AffixList")]
@@ -62,7 +63,11 @@ namespace POESKillTree.Model.Items.Affixes
         public string Name { get; set; }
 
         [XmlIgnore]
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        public IReadOnlyList<SmallDec> From { get; set; }
+#else
         public IReadOnlyList<float> From { get; set; }
+#endif
 
         [XmlAttribute(AttributeName = "From")]
         public string FromAsString
@@ -72,7 +77,11 @@ namespace POESKillTree.Model.Items.Affixes
         }
 
         [XmlIgnore]
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        public IReadOnlyList<SmallDec> To { get; set; }
+#else
         public IReadOnlyList<float> To { get; set; }
+#endif
 
         [XmlAttribute(AttributeName = "To")]
         public string ToAsString
@@ -81,16 +90,27 @@ namespace POESKillTree.Model.Items.Affixes
             set { To = Split(value); }
         }
 
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        private static string Join(IEnumerable<SmallDec> values)
+#else
         private static string Join(IEnumerable<float> values)
+#endif
         {
             return string.Join(" ", values.Select(f => f.ToString(CultureInfo.InvariantCulture)));
         }
 
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        private static IReadOnlyList<SmallDec> Split(string value)
+#else
         private static IReadOnlyList<float> Split(string value)
+#endif
         {
-            return value
-                .Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries)
+            return value.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries)
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                .Select(s => (SmallDec)s).ToList();
+#else
                 .Select(s => s.ParseFloat()).ToList();
+#endif
         }
     }
 }

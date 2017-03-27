@@ -15,7 +15,8 @@ using POESKillTree.ViewModels;
 
 namespace UnitTests
 {
-    [TestClass]
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+	[TestClass]
     public class TestCharacterSheet
     {
         private TestContext TestContextInstance;
@@ -45,6 +46,17 @@ namespace UnitTests
         }
 
         readonly Regex _backreplace = new Regex("#");
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+		string InsertNumbersInAttributes(KeyValuePair<string, List<SmallDec>> attrib)
+		{
+			string s = attrib.Key;
+			foreach (SmallDec f in attrib.Value)
+			{
+				s = _backreplace.Replace(s, f.ToString(CultureInfo.InvariantCulture.NumberFormat), 1);
+			}
+			return s;
+		}
+#else
         string InsertNumbersInAttributes(KeyValuePair<string, List<float>> attrib)
         {
             string s = attrib.Key;
@@ -54,8 +66,9 @@ namespace UnitTests
             }
             return s;
         }
+#endif
 
-        [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"..\..\TestBuilds\Builds.xml", "TestBuild", DataAccessMethod.Sequential)]
+		[DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"..\..\TestBuilds\Builds.xml", "TestBuild", DataAccessMethod.Sequential)]
         [TestMethod]
         public async Task TestBuild()
         {

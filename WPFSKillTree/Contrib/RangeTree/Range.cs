@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace MB.Algodat
 {
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// Represents a range of values. 
     /// Both values must be of the same type and comparable.
@@ -116,8 +117,7 @@ namespace MB.Algodat
 
         public static Range<T> Parse(string p, IFormatProvider provider = null)
         {
-
-            provider = provider ?? CultureInfo.CurrentCulture;
+			provider = provider ?? CultureInfo.CurrentCulture;
             var parts = p
                 .Split(new[] { " to " }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(pp => (T)Convert.ChangeType(pp, typeof(T), provider))
@@ -134,7 +134,6 @@ namespace MB.Algodat
             {
                 return new Range<T>(parts[0], parts[1]);
             }
-
         }
     }
 

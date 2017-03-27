@@ -10,10 +10,11 @@ using POESKillTree.Utils.Extensions;
 
 namespace UpdateDB.DataLoading
 {
-    /// <summary>
-    /// Extracts affix information from exilemods.com as a <see cref="XmlAffixList"/>.
-    /// </summary>
-    public class AffixDataLoader : XmlDataLoader<XmlAffixList>
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+	/// <summary>
+	/// Extracts affix information from exilemods.com as a <see cref="XmlAffixList"/>.
+	/// </summary>
+	public class AffixDataLoader : XmlDataLoader<XmlAffixList>
     {
         private const string Url = "http://www.exilemods.com/js/data.js";
 
@@ -34,7 +35,7 @@ namespace UpdateDB.DataLoading
         private static readonly IReadOnlyDictionary<ItemType, ChangeRange> ItemTypeSpecificRangeChanges =
             new Dictionary<ItemType, ChangeRange>
             {
-                // Amulet crit chance was nerfed
+                // Amulet critical chance was nerfed
                 {
                     ItemType.Amulet, (affix, tier, range) =>
                     {
@@ -43,7 +44,7 @@ namespace UpdateDB.DataLoading
                         return range;
                     }
                 },
-                // Jewel crit multi was adjusted when crit multi was renamed
+                // Jewel critical multiplier was adjusted when critical multiplier was renamed
                 {ItemType.CobaltJewel, JewelCritMultiChange},
                 {ItemType.CrimsonJewel, JewelCritMultiChange},
                 {ItemType.ViridianJewel, JewelCritMultiChange}
@@ -235,9 +236,14 @@ namespace UpdateDB.DataLoading
                 }
                 stat = rangeRenameFunc(affix, stat);
                 var fromTo = stat.Split(new[] {" to "}, StringSplitOptions.None);
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+				SmallDec from = fromTo[0];
+				SmallDec to = fromTo.Length > 1 ? fromTo[1] : from;
+#else
                 float from = fromTo[0].ParseFloat();
                 float to = fromTo.Length > 1 ? fromTo[1].ParseFloat() : from;
-                xmlStats.Add(new XmlStat
+#endif
+				xmlStats.Add(new XmlStat
                 {
                     Name = affix,
                     From = new[] { from },

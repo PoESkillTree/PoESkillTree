@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace POESKillTree.SkillTreeFiles
 {
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     public enum NodeType
     {
         Normal,
@@ -16,8 +17,12 @@ namespace POESKillTree.SkillTreeFiles
     {
         public static float[] SkillsPerOrbit = {1, 6, 12, 12, 40};
         public static float[] OrbitRadii = {0, 81.5f, 163, 326, 489};
-        public Dictionary<string, List<float>> Attributes;
-        public HashSet<int> Connections = new HashSet<int>();
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+		public Dictionary<string, List<SmallDec>> Attributes;
+#else
+		public Dictionary<string, List<float>> Attributes;
+#endif
+		public HashSet<int> Connections = new HashSet<int>();
         public List<SkillNode> Neighbor = new List<SkillNode>();
         // The subset of neighbors to which connections should be drawn.
         public readonly List<SkillNode> VisibleNeighbors = new List<SkillNode>();

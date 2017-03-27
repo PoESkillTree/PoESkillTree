@@ -28,8 +28,15 @@ namespace POESKillTree.ViewModels
                 if (i != 0)
                 {
                     tb.Inlines.Add(" ");
-                    txt = new Run(i.ToString("+#;-#;0"));
-                    txt.Foreground = (i < 0) ? Brushes.Red : Brushes.Green;
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+					if(i>0)
+						txt = new Run("+"+i.ToString("+#;-#;0"));
+					else
+						txt = new Run(i.ToString("+#;-#;0"));
+#else
+					txt = new Run(i.ToString("+#;-#;0"));
+#endif
+					txt.Foreground = (i < 0) ? Brushes.Red : Brushes.Green;
                     tb.Inlines.Add(txt);
                 }
             }

@@ -3,6 +3,7 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Model
 {
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// Data class for Constraints with a data object, a target value and a weight.
     /// </summary>
@@ -35,15 +36,23 @@ namespace POESKillTree.TreeGenerator.Model
             get { return _data; }
             set { SetProperty(ref _data, value); }
         }
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_EnableTargetWeightAsSmallDec)
+        private SmallDec _targetValue = DefaultTargetValue;
 
-        private float _targetValue = DefaultTargetValue;
+        public SmallDec TargetValue
+        {
+            get { return _targetValue; }
+            set { SetProperty(ref _targetValue, value); }
+        }
+#else
+		private float _targetValue = DefaultTargetValue;
 
         public float TargetValue
         {
             get { return _targetValue; }
             set { SetProperty(ref _targetValue, value); }
         }
-
+#endif
         private int _weight = DefaultWeight;
 
         public int Weight

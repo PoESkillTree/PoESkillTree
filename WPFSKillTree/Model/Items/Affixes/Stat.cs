@@ -7,25 +7,32 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items.Affixes
 {
+	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     public class Stat : IEquatable<Stat>
     {
         public string Name { get; }
-
-        public IReadOnlyList<Range<float>> Ranges { get; }
-
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
+        public IReadOnlyList<Range<SmallDec>> Ranges { get; }
+#else
+		public IReadOnlyList<Range<float>> Ranges { get; }
+#endif
         private readonly ItemModTier _parentTier;
 
         private readonly ItemType _itemType;
 
-        public Stat(string name, Range<float> range, ItemType itemType, ItemModTier parentTier)
-        {
-            Name = name;
-            Ranges = new[] { range };
-            _parentTier = parentTier;
-            _itemType = itemType;
-        }
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
+		public Stat(string name, Range<SmallDec> range, ItemType itemType, ItemModTier parentTier)
+#else
+		public Stat(string name, Range<float> range, ItemType itemType, ItemModTier parentTier)
+#endif
+		{
+			Name = name;
+			Ranges = new[] { range };
+			_parentTier = parentTier;
+			_itemType = itemType;
+		}
 
-        public Stat(Stat stat, ItemModTier parentTier)
+		public Stat(Stat stat, ItemModTier parentTier)
         {
             Name = stat.Name;
             Ranges = stat.Ranges;
@@ -36,27 +43,46 @@ namespace POESKillTree.Model.Items.Affixes
         public Stat(XmlStat xmlStat, ItemType itemType, ItemModTier parentTier = null)
         {
             Name = xmlStat.Name;
-            var ranges = new List<Range<float>>();
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
+            var ranges = new List<Range<SmallDec>>();
+#else
+			var ranges = new List<Range<float>>();
+#endif
             for (var i = 0; i < xmlStat.From.Count; i++)
             {
                 var from = xmlStat.From[i];
                 var to = xmlStat.To[i];
-                // RangeTrees don't like from > to.
-                ranges.Add(Range.Create(Math.Min(from, to), Math.Max(from, to)));
+				// RangeTrees don't like from > to.
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
+                ranges.Add(Range.Create(SmallDec.Min(from, to), SmallDec.Max(from, to)));
+#elif (PoESkillTree_UseSmallDec_ForAttributes)
+                ranges.Add(Range.Create((float)SmallDec.Min(from, to), (float)SmallDec.Max(from, to)));
+#else
+				ranges.Add(Range.Create(Math.Min(from, to), Math.Max(from, to)));
+#endif
             }
             Ranges = ranges;
             _parentTier = parentTier;
             _itemType = itemType;
         }
 
-        public ItemMod ToItemMod(IReadOnlyList<float> values)
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
+		public ItemMod ToItemMod(IReadOnlyList<SmallDec> values)
+		{
+			if (values.Count != Ranges.Count)
+				throw new ArgumentException("There must be one value for each range");
+			return ToItemMod(Name, values.ToList());
+		}
+#else
+		public ItemMod ToItemMod(IReadOnlyList<float> values)
         {
             if (values.Count != Ranges.Count)
                 throw new ArgumentException("There must be one value for each range");
             return ToItemMod(Name, values.ToList());
         }
+#endif
 
-        public ItemMod AsPropertyToItemMod()
+		public ItemMod AsPropertyToItemMod()
         {
             if (Ranges.Count != 1)
             {
@@ -65,7 +91,11 @@ namespace POESKillTree.Model.Items.Affixes
             }
 
             var range = Ranges[0];
-            var values = new List<float> { range.From };
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
+            var values = new List<SmallDec> { range.From };
+#else
+			var values = new List<float> { range.From };
+#endif
             if (!range.From.AlmostEquals(range.To, 1e-5))
             {
                 values.Add(range.To);
@@ -84,10 +114,14 @@ namespace POESKillTree.Model.Items.Affixes
             return ToItemMod(attribute, values);
         }
 
-        private ItemMod ToItemMod(string attribute, List<float> values)
-        {
-            // replace "+#" by "#" if the value for that placeholder is negative
-            var attr = "";
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
+		private ItemMod ToItemMod(string attribute, List<SmallDec> values)
+#else
+		private ItemMod ToItemMod(string attribute, List<float> values)
+#endif
+		{ 
+			// replace "+#" by "#" if the value for that placeholder is negative
+			var attr = "";
             var parts = attribute.Split('#');
             for (var i = 0; i < values.Count; i++)
             {
