@@ -353,3 +353,4 @@ obj
 
 # mstest test results
 TestResults
+*.TaskCanvasSL

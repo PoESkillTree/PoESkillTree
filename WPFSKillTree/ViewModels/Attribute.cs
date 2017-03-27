@@ -16,7 +16,7 @@ namespace POESKillTree.ViewModels
             Text = text;
         }
 
-		public override string ToString()
+        public override string ToString()
         {
             return Text;
         }
