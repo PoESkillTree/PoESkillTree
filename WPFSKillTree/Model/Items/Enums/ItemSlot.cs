@@ -9,7 +9,7 @@ namespace POESKillTree.Model.Items.Enums
     public enum ItemSlot
     {
         Unequipable = 0x0,
-        Armor = 0x1,
+        BodyArmour = 0x1,
         MainHand = 0x2,
         OffHand = 0x4,
         Ring = 0x8,

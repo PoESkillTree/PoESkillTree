@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using POESKillTree.Controls;
 using POESKillTree.Controls.Dialogs;
@@ -37,11 +36,11 @@ namespace POESKillTree.Model.Serialization
             set { SetProperty(ref _selectedBuild, value); }
         }
 
-        public ObservableCollection<StashBookmark> StashBookmarks { get; } = new ObservableCollection<StashBookmark>();
+        public List<StashBookmark> StashBookmarks { get; } = new List<StashBookmark>();
 
         public BuildFolder RootBuild { get; } = new BuildFolder {Name = "Root"};
 
-        public ObservableCollection<Item> StashItems { get; } = new ObservableCollection<Item>();
+        public List<Item> StashItems { get; } = new List<Item>();
 
         public IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes { get; } =
             new Dictionary<string, IEnumerable<StashBookmark>>();

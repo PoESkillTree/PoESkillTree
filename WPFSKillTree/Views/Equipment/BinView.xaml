@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="POESKillTree.Views.Equipment.BinView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Equipment"
+             mc:Ignorable="d" 
+             dd:DragDrop.IsDropTarget="True"
+             dd:DragDrop.DropHandler="{Binding}"
+             dd:DragDrop.DropTargetAdornerBrush="#50006400"
+             BorderThickness="2" BorderBrush="{DynamicResource AccentColorBrush}"
+             Width="98" Height="98">
+    <UserControl.DataContext>
+        <viewModels:BinViewModel />
+    </UserControl.DataContext>
+    <UserControl.Background>
+        <ImageBrush ImageSource="/POESKillTree;component/Images/EquipmentUI/Bin.png" />
+    </UserControl.Background>
+</UserControl>

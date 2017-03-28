@@ -30,7 +30,7 @@
     <dialogs:CloseableBaseDialog.DialogLeft>
         <controls:ItemTooltip HorizontalAlignment="Center" VerticalAlignment="Top"
                               Margin="5 55"
-                              Item="{Binding Item}" />
+                              DataContext="{Binding Item}" />
     </dialogs:CloseableBaseDialog.DialogLeft>
     
     <Grid Margin="0 5 0 0">
@@ -70,7 +70,7 @@
                                      Width="94" Height="188"
                                      Margin="5 45"
                                      VerticalAlignment="Top"
-                                     Item="{Binding Data.Item, Source={StaticResource VmProxy}}" />
+                                     DataContext="{Binding Data.Item, Source={StaticResource VmProxy}}" />
 
             <Label Content="Suffixes"
                    Grid.Column="2" Grid.Row="0"/>

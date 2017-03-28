@@ -270,7 +270,6 @@ namespace POESKillTree.Controls
 
             public object Source
             {
-                get { return GetValue(SourceProperty); }
                 set { SetValue(SourceProperty, value); }
             }
 
@@ -280,7 +279,6 @@ namespace POESKillTree.Controls
             public object Target
             {
                 get { return GetValue(TargetProperty); }
-                set { SetValue(TargetProperty, value); }
             }
 
             public BindingEvaluator(string propertyPath)
@@ -288,7 +286,7 @@ namespace POESKillTree.Controls
                 var binding = new Binding(nameof(Source) + "." + propertyPath)
                 {
                     Source = this,
-                    Mode = BindingMode.TwoWay
+                    Mode = BindingMode.OneWay
                 };
                 BindingOperations.SetBinding(this, TargetProperty, binding);
             }

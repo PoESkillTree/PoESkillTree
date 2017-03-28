@@ -192,8 +192,6 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
             _progress = new Progress<Tuple<int, int, IEnumerable<ushort>>>(tuple => ReportProgress(tuple.Item1, tuple.Item2, tuple.Item3));
             _reportStopwatch.Start();
-
-            RequestsClose += _ => CancelClose();
         }
 
         /// <summary>
@@ -345,7 +343,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// <summary>
         /// Stop the optimizer and/or close the window.
         /// </summary>
-        private void CancelClose()
+        protected override void OnClose()
         {
             // Don't do this more than once.
             if (_solverTcs.Task.IsCompleted)

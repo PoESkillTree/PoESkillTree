@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
@@ -22,7 +21,6 @@ using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MoreLinq;
 using POESKillTree.Common.ViewModels;
-using POESKillTree.Controls;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.ItemFilter.Views;
 using POESKillTree.Localization;
@@ -36,8 +34,11 @@ using POESKillTree.Utils.Converter;
 using POESKillTree.Utils.Extensions;
 using POESKillTree.Utils.UrlProcessing;
 using POESKillTree.ViewModels;
+using POESKillTree.ViewModels.Builds;
 using POESKillTree.ViewModels.Crafting;
+using POESKillTree.ViewModels.Equipment;
 using POESKillTree.Views.Crafting;
+using POESKillTree.Views.Equipment;
 using Attribute = POESKillTree.ViewModels.Attribute;
 
 namespace POESKillTree.Views
@@ -89,6 +90,21 @@ namespace POESKillTree.Views
             }
         }
 
+        private InventoryViewModel _inventoryViewModel;
+        public InventoryViewModel InventoryViewModel
+        {
+            get { return _inventoryViewModel; }
+            private set
+            {
+                if (value == _inventoryViewModel)
+                    return;
+                _inventoryViewModel = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InventoryViewModel)));
+            }
+        }
+
+        public StashViewModel StashViewModel { get; } = new StashViewModel(ExtendedDialogCoordinator.Instance);
+
         private SkillTree _tree;
         public SkillTree Tree
         {
@@ -105,7 +121,6 @@ namespace POESKillTree.Views
             AssetLoader assetLoader = null)
         {
             var tree = await SkillTree.CreateAsync(PersistentData, DialogCoordinator.Instance, controller, assetLoader);
-            DialogParticipation.SetRegister(this, tree);
             tree.PropertyChanged += Tree_PropertyChanged;
             if (BuildsControlViewModel != null)
                 BuildsControlViewModel.SkillTree = tree;
@@ -518,7 +533,7 @@ namespace POESKillTree.Views
                     x => new ComboBoxItem {Name = x.Key, Content = x.Value});
             cbAscType.SelectedIndex = 0;
 
-            Stash.Bookmarks = PersistentData.StashBookmarks;
+            StashViewModel.PersistentData = PersistentData;
 
             // Set theme & accent.
             SetTheme(PersistentData.Options.Theme);
@@ -884,7 +899,7 @@ namespace POESKillTree.Views
 
         private async void Menu_ImportStash(object sender, RoutedEventArgs e)
         {
-            var vm = new DownloadStashViewModel(DialogCoordinator.Instance, PersistentData, Stash);
+            var vm = new DownloadStashViewModel(DialogCoordinator.Instance, PersistentData, StashViewModel);
             await this.ShowDialogAsync(vm, new DownloadStashWindow(), () => vm.ViewLoaded());
         }
 
@@ -1713,6 +1728,7 @@ namespace POESKillTree.Views
             if (ItemAttributes != null)
             {
                 ItemAttributes.Equip.CollectionChanged -= ItemAttributesEquipCollectionChanged;
+                ItemAttributes.ItemDataChanged -= ItemAttributesEquipCollectionChanged;
                 ItemAttributes.PropertyChanged -= ItemAttributesPropertyChanged;
             }
 
@@ -1737,8 +1753,11 @@ namespace POESKillTree.Views
             }
 
             itemAttributes.Equip.CollectionChanged += ItemAttributesEquipCollectionChanged;
+            itemAttributes.ItemDataChanged += ItemAttributesEquipCollectionChanged;
             itemAttributes.PropertyChanged += ItemAttributesPropertyChanged;
             ItemAttributes = itemAttributes;
+            InventoryViewModel = new InventoryViewModel(ExtendedDialogCoordinator.Instance, 
+                PersistentData.EquipmentData, itemAttributes);
             UpdateUI();
         }
 
@@ -1747,7 +1766,7 @@ namespace POESKillTree.Views
             UpdateUI();
         }
 
-        private void ItemAttributesEquipCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        private void ItemAttributesEquipCollectionChanged(object sender, EventArgs args)
         {
             _pauseLoadItemData = true;
             PersistentData.CurrentBuild.ItemData = ItemAttributes.ToJsonString();
@@ -2106,74 +2125,12 @@ namespace POESKillTree.Views
 
             var item = viewModel.Item;
             item.SetJsonBase();
-            if (PersistentData.StashItems.Count > 0)
+            if (StashViewModel.Items.Count > 0)
             {
-                item.Y = PersistentData.StashItems.Max(i => i.Y + i.Height);
+                item.Y = StashViewModel.LastOccupiedRow + 1;
             }
 
-            Stash.Items.Add(item);
-
-            Stash.AddHighlightRange(new IntRange { From = item.Y, Range = item.Height });
-            Stash.asBar.Value = item.Y;
-        }
-
-        private static DragDropEffects deleteRect_DropEffect(DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(typeof(DraggedItem)))
-            {
-                var draggedItem = (DraggedItem)e.Data.GetData(typeof(DraggedItem));
-                var effect = draggedItem.DropOnBinEffect;
-
-                if (e.AllowedEffects.HasFlag(effect))
-                {
-                    return effect;
-                }
-            }
-            return DragDropEffects.None;
-        }
-
-        private void deleteRect_DragOver(object sender, DragEventArgs e)
-        {
-            e.Handled = true;
-            e.Effects = deleteRect_DropEffect(e);
-        }
-
-        private void deleteRect_Drop(object sender, DragEventArgs e)
-        {
-            var effect = deleteRect_DropEffect(e);
-            if (effect == DragDropEffects.None)
-                return;
-
-            e.Handled = true;
-            e.Effects = effect;
-            var draggedItem = (DraggedItem)e.Data.GetData(typeof(DraggedItem));
-            var visualizer = draggedItem.SourceItemVisualizer;
-            var st = visualizer.TryFindParent<Stash>();
-            if (st != null)
-            {
-                st.RemoveItem(visualizer.Item);
-            }
-            else
-            {
-                visualizer.Item = null;
-            }
-            deleteRect.Opacity = 0.0;
-        }
-
-        private void deleteRect_DragEnter(object sender, DragEventArgs e)
-        {
-            if (deleteRect_DropEffect(e) != DragDropEffects.None)
-            {
-                deleteRect.Opacity = 0.3;
-            }
-        }
-
-        private void deleteRect_DragLeave(object sender, DragEventArgs e)
-        {
-            if (deleteRect_DropEffect(e) != DragDropEffects.None)
-            {
-                deleteRect.Opacity = 0.0;
-            }
+            StashViewModel.AddItem(item, true);
         }
 
 #region Async task helpers

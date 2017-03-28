@@ -208,7 +208,7 @@ namespace POESKillTree.Model.Items.Enums
             switch (group)
             {
                 case ItemGroup.BodyArmour:
-                    return ItemSlot.Armor;
+                    return ItemSlot.BodyArmour;
                 case ItemGroup.Boots:
                     return ItemSlot.Boots;
                 case ItemGroup.Gloves:

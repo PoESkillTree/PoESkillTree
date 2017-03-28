@@ -1504,11 +1504,7 @@ namespace POESKillTree.SkillTreeFiles
         // Returns quality of gem.
         public static int QualityOf(Item gem)
         {
-            float ret;
-            if (gem.Properties.TryGetValue("Quality: #", 0, out ret))
-                return (int)ret;
-            else
-                return (int)gem.Properties.First("Quality: # (Max)", 0, 0);
+            return (int) gem.Properties.First("Quality: +#%", 0, 0);
         }
 
         // Writes database to file.
