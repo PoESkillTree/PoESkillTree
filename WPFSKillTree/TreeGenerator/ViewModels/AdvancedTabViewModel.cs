@@ -23,9 +23,10 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
-	// Some aliases to make things clearer without the need of extra classes.
-	using AttributeConstraint = TargetWeightConstraint<string>;
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    using Newtonsoft.Json;  
+    // Some aliases to make things clearer without the need of extra classes.
+    using AttributeConstraint = TargetWeightConstraint<string>;
     using PseudoAttributeConstraint = TargetWeightConstraint<PseudoAttribute>;
 
     /// <summary>
@@ -88,101 +89,143 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
             public void LoadFrom(JObject jObject)
             {
-                JToken token;
-                _vm.ClearAttributeConstraints();
-                if (jObject.TryGetValue(nameof(AttributeConstraints), out token) && token.Any())
+                try
                 {
-                    var newConstraints = new List<AttributeConstraint>();
-                    foreach (var element in token)
-                    {
-                        var obj = element as JObject;
-                        if (obj == null)
-                            continue;
-                        JToken attrToken, targetToken, weightToken;
-                        if (!obj.TryGetValue(AttributeKey, out attrToken)
-                            || !obj.TryGetValue(TargetValueKey, out targetToken)
-                            || !obj.TryGetValue(WeightKey, out weightToken))
-                            continue;
-
-                        var attr = attrToken.ToObject<string>();
-                        newConstraints.Add(new AttributeConstraint(attr)
-                        {
-#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_EnableTargetWeightAsSmallDec)
-                            TargetValue = targetToken.ToObject<SmallDec>(),
-#else
-							TargetValue = targetToken.ToObject<float>(),
+#if (DEBUG)
+                    string DebugTest = jObject.ToString();
+                    if (DebugTest != null) { System.Console.WriteLine("Loaded jObject value " + DebugTest); }
 #endif
-							Weight = weightToken.ToObject<int>()
-                        });
-                        _vm._addedAttributes.Add(attr);
+                    JToken token;
+                    //[JsonConverter(typeof(CustomJSONConverter))]
+                    //CustomJSONConverter Converter;
+                    _vm.ClearAttributeConstraints();
+                    if (jObject.TryGetValue(nameof(AttributeConstraints), out token) && token.Any())
+                    {
+
+                        var newConstraints = new List<AttributeConstraint>();
+                        foreach (var element in token)
+                        {
+                            var obj = element as JObject;
+                            if (obj == null)
+                                continue;
+                            JToken attrToken, targetToken, weightToken;
+                            if (!obj.TryGetValue(AttributeKey, out attrToken)
+                                || !obj.TryGetValue(TargetValueKey, out targetToken)
+                                || !obj.TryGetValue(WeightKey, out weightToken))
+                                continue;
+//#if (DEBUG)
+//                            string TokenType = attrToken.Type.ToString();
+//                            if (TokenType != null) { Console.WriteLine("Loaded attribute jToken of type " + TokenType); }
+//                            TokenType = targetToken.Type.ToString();
+//                            if (TokenType != null) { Console.WriteLine("Loaded target jToken of type " + TokenType); }
+//                            TokenType = weightToken.Type.ToString();
+//                            if (TokenType != null) { Console.WriteLine("Loaded weight jToken of type " + TokenType); }
+//                            TokenType = attrToken.ToString();
+//                            if (TokenType != null) { Console.WriteLine("Attribute jToken has detected value of " + TokenType); }
+//                            TokenType = targetToken.ToString();
+//                            if (TokenType != null) { Console.WriteLine("Target jToken has detected value of " + TokenType); }
+//                            TokenType = weightToken.ToString();
+//                            if (TokenType != null) { Console.WriteLine("Weight jToken has detected value of " + TokenType); }
+//#endif
+
+							var attr = attrToken.ToObject<string>();
+							newConstraints.Add(new AttributeConstraint(attr)
+							{
+	#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_EnableTargetWeightAsSmallDec)
+								TargetValue = targetToken.ToObject<SmallDec>(),
+	#else
+								TargetValue = targetToken.ToObject<float>(),
+	#endif
+								Weight = weightToken.ToObject<int>()
+							});
+                            _vm._addedAttributes.Add(attr);
+                        }
+
+                        _vm.AttributesView.Refresh();
+                        _vm.AttributesView.MoveCurrentToFirst();
+                        _vm.NewAttributeConstraint.Data = _vm.AttributesView.CurrentItem as string;
+                        _vm.AttributeConstraints.AddRange(newConstraints);
                     }
 
-                    _vm.AttributesView.Refresh();
-                    _vm.AttributesView.MoveCurrentToFirst();
-                    _vm.NewAttributeConstraint.Data = _vm.AttributesView.CurrentItem as string;
-                    _vm.AttributeConstraints.AddRange(newConstraints);
+                    _vm.ClearPseudoAttributeConstraints();
+                    if (jObject.TryGetValue(nameof(PseudoAttributeConstraints), out token) && token.Any())
+                    {
+                        var pseudoDict = _vm._pseudoAttributes.ToDictionary(p => p.Name);
+
+                        var newConstraints = new List<PseudoAttributeConstraint>();
+
+                        foreach (var element in token)
+                        {
+                            var obj = element as JObject;
+                            if (obj == null)
+                                continue;
+                            JToken attrToken, targetToken, weightToken;
+                            if (!obj.TryGetValue(AttributeKey, out attrToken)
+                                || !obj.TryGetValue(TargetValueKey, out targetToken)
+                                || !obj.TryGetValue(WeightKey, out weightToken))
+                                continue;
+
+                            PseudoAttribute attr;
+                            if (!pseudoDict.TryGetValue(attrToken.ToObject<string>(), out attr))
+                                continue;
+
+							newConstraints.Add(new PseudoAttributeConstraint(attr)
+							{
+	#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_EnableTargetWeightAsSmallDec)
+								TargetValue = targetToken.ToObject<SmallDec>(),
+	#else
+								TargetValue = targetToken.ToObject<float>(),
+	#endif
+								Weight = weightToken.ToObject<int>()
+							});
+                            _vm._addedPseudoAttributes.Add(attr);
+                        }
+
+                        _vm.PseudoAttributesView.Refresh();
+                        _vm.PseudoAttributesView.MoveCurrentToFirst();
+                        _vm.NewPseudoAttributeConstraint.Data = _vm.PseudoAttributesView.CurrentItem as PseudoAttribute;
+                        _vm.PseudoAttributeConstraints.AddRange(newConstraints);
+                    }
                 }
-
-                _vm.ClearPseudoAttributeConstraints();
-                if (jObject.TryGetValue(nameof(PseudoAttributeConstraints), out token) && token.Any())
+                catch (System.Exception ex)
                 {
-                    var pseudoDict = _vm._pseudoAttributes.ToDictionary(p => p.Name);
-
-                    var newConstraints = new List<PseudoAttributeConstraint>();
-                    foreach (var element in token)
-                    {
-                        var obj = element as JObject;
-                        if (obj == null)
-                            continue;
-                        JToken attrToken, targetToken, weightToken;
-                        if (!obj.TryGetValue(AttributeKey, out attrToken)
-                            || !obj.TryGetValue(TargetValueKey, out targetToken)
-                            || !obj.TryGetValue(WeightKey, out weightToken))
-                            continue;
-
-                        PseudoAttribute attr;
-                        if (!pseudoDict.TryGetValue(attrToken.ToObject<string>(), out attr))
-                            continue;
-                        newConstraints.Add(new PseudoAttributeConstraint(attr)
-                        {
-#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_EnableTargetWeightAsSmallDec)
-                            TargetValue = targetToken.ToObject<SmallDec>(),
-#else
-							TargetValue = targetToken.ToObject<float>(),
-#endif
-                            Weight = weightToken.ToObject<int>()
-                        });
-                        _vm._addedPseudoAttributes.Add(attr);
-                    }
-
-                    _vm.PseudoAttributesView.Refresh();
-                    _vm.PseudoAttributesView.MoveCurrentToFirst();
-                    _vm.NewPseudoAttributeConstraint.Data = _vm.PseudoAttributesView.CurrentItem as PseudoAttribute;
-                    _vm.PseudoAttributeConstraints.AddRange(newConstraints);
+                    System.Console.WriteLine("Loaded AdvancedTabViewModel/ConstraintsSetting JObject Exception of " + ex.ToString());
                 }
             }
 
             public bool SaveTo(JObject jObject)
             {
-                var changed = false;
-                var attrArray = new JArray();
-                _vm.AttributeConstraints.ForEach(c => AddTo(attrArray, c.Data, c.TargetValue, c.Weight));
-                JToken oldToken;
-                if (jObject.TryGetValue(nameof(AttributeConstraints), out oldToken))
-                {
-                    changed = !JToken.DeepEquals(attrArray, oldToken);
-                }
-                jObject[nameof(AttributeConstraints)] = attrArray;
+                try
+                { 
+    #if (DEBUG)
+                    string DebugTest = jObject.ToString();
+                    if (DebugTest != null) { Console.WriteLine("Saved jObject value " + DebugTest); }
+    #endif
+                    var changed = false;
+                    var attrArray = new JArray();
+                    _vm.AttributeConstraints.ForEach(c => AddTo(attrArray, c.Data, c.TargetValue, c.Weight));
+                    JToken oldToken;
+                    if (jObject.TryGetValue(nameof(AttributeConstraints), out oldToken))
+                    {
+                        changed = !JToken.DeepEquals(attrArray, oldToken);
+                    }
+                    jObject[nameof(AttributeConstraints)] = attrArray;
 
-                var pseudoArray = new JArray();
-                _vm.PseudoAttributeConstraints.ForEach(c => AddTo(pseudoArray, c.Data.Name, c.TargetValue, c.Weight));
-                if (!changed && jObject.TryGetValue(nameof(PseudoAttributeConstraints), out oldToken)
-                    && !JToken.DeepEquals(pseudoArray, oldToken))
-                {
-                    changed = true;
+                    var pseudoArray = new JArray();
+                    _vm.PseudoAttributeConstraints.ForEach(c => AddTo(pseudoArray, c.Data.Name, c.TargetValue, c.Weight));
+                    if (!changed && jObject.TryGetValue(nameof(PseudoAttributeConstraints), out oldToken)
+                        && !JToken.DeepEquals(pseudoArray, oldToken))
+                    {
+                        changed = true;
+                    }
+                    jObject[nameof(PseudoAttributeConstraints)] = pseudoArray;
+                    return changed;
                 }
-                jObject[nameof(PseudoAttributeConstraints)] = pseudoArray;
-                return changed;
+                catch (System.Exception ex)
+                {
+                    System.Console.WriteLine("Saved AdvancedTabViewModel/ConstraintsSetting JObject Exception of " + ex.ToString());
+                }
+                return false;
             }
 
             private static void AddTo(JArray array, string attribute, float targetValue, int weight)

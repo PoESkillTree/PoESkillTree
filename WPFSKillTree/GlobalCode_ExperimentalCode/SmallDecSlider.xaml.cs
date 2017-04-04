@@ -1,5 +1,4 @@
-﻿using CSharpGlobalCode.GlobalCode_ExperimentalCode;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,46 +14,38 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using System.Windows.Threading;
 
 namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 {
-	/// <summary>
-	///	Interaction logic for SmallDecSlider.xaml
-	//		Range slider code based mostly on	http://stackoverflow.com/questions/36545896/universal-windows-uwp-range-slider
-	/// Follow steps 1a or 1b and then 2 to use this custom control in a XAML file.
-	///
-	/// Step 1a) Using this custom control in a XAML file that exists in the current project.
-	/// Add this XmlNamespace attribute to the root element of the markup file where it is 
-	/// to be used:
-	///
-	///     xmlns:GlobalCode="clr-namespace:CSharpGlobalCode.GlobalCode_ExperimentalCode"
-	///or
-	///	xmlns:SmallDecSlider="clr-namespace:CSharpGlobalCode.GlobalCode_ExperimentalCode.SmallDecSlider"
-	/// Step 1b) Using this custom control in a XAML file that exists in a different project.
-	/// Add this XmlNamespace attribute to the root element of the markup file where it is 
-	/// to be used:
-	///
-	///     xmlns:GlobalCode="clr-namespace:CSharpGlobalCode.GlobalCode_ExperimentalCode;assembly=CSharpGlobalCode.GlobalCode_ExperimentalCode"
-	///
-	/// You will also need to add a project reference from the project where the XAML file lives
-	/// to this project and Rebuild to avoid compilation errors:
-	///
-	///     Right click on the target project in the Solution Explorer and
-	///     "Add Reference"->"Projects"->[Browse to and select this project]
-	///
-	///
-	/// Step 2)
-	/// Go ahead and use your control in the XAML file.
-	///
-	///     <GlobalCode:SmallDecSlider/>
-	/// </summary>
-	public partial class SmallDecSlider : UserControl, System.ComponentModel.INotifyPropertyChanged, System.ComponentModel.INotifyPropertyChanging
+    /// <summary>
+    /// Interaction logic for SmallDecUpdownSlider.xaml (Parts of code based on SmallDecSlider code)/Replacement for metroControls:NumericUpDown
+	//Parts of code/UI based on http://www.philosophicalgeek.com/2009/11/16/a-wpf-numeric-entry-control/
+    /// </summary>
+    [Newtonsoft.Json.JsonConverter(typeof(CustomJSONConverter))]
+    public partial class SmallDecSlider : UserControl, System.ComponentModel.INotifyPropertyChanged, System.ComponentModel.INotifyPropertyChanging
 	{
-		public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(SmallDec), typeof(SmallDecSlider), new PropertyMetadata(0.0));
+        public static readonly DependencyProperty DesignWidthProperty = DependencyProperty.Register("DesignWidth", typeof(double), typeof(SmallDecSlider), new PropertyMetadata((double)100));
 
-		public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(SmallDec), typeof(SmallDecSlider), new PropertyMetadata(1.0));
+        //Used for determining size of the UI element width(separate from maximum size of value)
+        public double DesignWidth
+        {
+            get { return (double)GetValue(DesignWidthProperty); }
+            set
+            {
+                SetValue(DesignWidthProperty, value);
+                if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("DesignWidth"));
+            }
+        }
 
-		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(SmallDec), typeof(SmallDecSlider), new PropertyMetadata(0.0, OnValuePropertyChanged));
+        [System.ComponentModel.TypeConverter(typeof(SuperDec_SmallDec_TypeConverter))]
+        public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(SmallDec), typeof(SmallDecSlider), new PropertyMetadata(SmallDec.Zero));
+
+        [System.ComponentModel.TypeConverter(typeof(SuperDec_SmallDec_TypeConverter))]
+        public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(SmallDec), typeof(SmallDecSlider), new PropertyMetadata((SmallDec)100));
+
+        [System.ComponentModel.TypeConverter(typeof(SuperDec_SmallDec_TypeConverter))]
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(SmallDec), typeof(SmallDecSlider), new PropertyMetadata(SmallDec.Zero, OnValuePropertyChanged));
 
 		/// <summary>
 		/// INotifyPropertyChanged event that is called right before a property is changed.
@@ -105,24 +96,6 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 		{
 			this.InitializeComponent();
 		}
-		
-		//public static readonly DependencyProperty ExtraFeaturesSettingProp = DependencyProperty.Register("ExtraFeaturesSetting", typeof(byte), typeof(SmallDecSlider), new PropertyMetadata(0, OnValuePropertyChanged));
-
-		//public byte ExtraFeaturesSetting
-		//{
-		//	get { return (byte)GetValue(ExtraFeaturesSettingProp); }
-		//	set
-		//	{
-		//		SetValue(ExtraFeaturesSettingProp, value);
-		//		if (PropertyChanged != null) { PropertyChanged(this, new PropertyChangedEventArgs("ExtraFeaturesSetting")); }
-		//	}
-		//}
-		
-		public SmallDecSlider(byte OptionValue)
-		{
-			this.InitializeComponent();
-			//if(OptionValue!=0){	ExtraFeaturesSetting = OptionValue; }
-		}
 
 		private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
@@ -151,44 +124,38 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 			{
 				if (update || !Thumb.IsDragging)
 				{
-					var relativeLeft = ((value - Minimum) / (Maximum - Minimum)) * ContainerCanvas.ActualWidth;
+                    double relativeLeft = (double)((value - Minimum) / (Maximum - Minimum)) * DesignWidth;
 
-					Canvas.SetLeft(Thumb, (double)relativeLeft);
-					Canvas.SetLeft(ActiveRectangle, (double)relativeLeft);
-
-					ActiveRectangle.Width = (double)((Maximum - value) / (Maximum - Minimum) * ContainerCanvas.ActualWidth);
-				}
+                    Canvas.SetLeft(Thumb, (double)relativeLeft);
+                }
 			}
 		}
 
-		private void ContainerCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void ContainerCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            //var relativeLeft = (double)((Value - Minimum) / (Maximum - Minimum)) * DesignWidth;
+            //if (relativeLeft > DesignWidth)
+            //{
+            //    relativeLeft = DesignWidth;
+            //}
+            //Canvas.SetLeft(Thumb, (double)relativeLeft);//Only move the thumb
+        }
+
+        private void Thumb_DragDelta(object sender, DragDeltaEventArgs e)
 		{
-			var relativeLeft = ((Value - Minimum) / (Maximum - Minimum)) * ContainerCanvas.ActualWidth;
-			var relativeRight = ContainerCanvas.ActualWidth;
-
-			Canvas.SetLeft(Thumb, (double)relativeLeft);
-			Canvas.SetLeft(ActiveRectangle, (double)relativeLeft);
-
-			ActiveRectangle.Width = (double)((Maximum - Value) / (Maximum - Minimum) * ContainerCanvas.ActualWidth);
-		}
-
-		private void Thumb_DragDelta(object sender, DragDeltaEventArgs e)
-		{
-			var min = DragThumb(Thumb, SmallDec.Zero, Maximum, e.HorizontalChange);
+            var min = DragThumb(Thumb, 0.0, DesignWidth, e.HorizontalChange);
 			UpdateThumb(min, true);
-			Value = min.Round();
 		}
 
-		private SmallDec DragThumb(Thumb thumb, SmallDec min, SmallDec max, double offset)
+		private SmallDec DragThumb(Thumb thumb, double min, double max, double offset)
 		{
-			var currentPos = Canvas.GetLeft(thumb);
-			SmallDec nextPos = (SmallDec) currentPos + offset;
+            var currentPos = Canvas.GetLeft(thumb);
+            double nextPos = currentPos + offset;
 
-			nextPos = SmallDec.Max(min, nextPos);
-			nextPos = SmallDec.Min(max, nextPos);
-
-			return (Minimum + (nextPos / ContainerCanvas.ActualWidth) * (Maximum - Minimum));
-		}
+            nextPos = SmallDec.DynamicMax(max, nextPos);
+            return nextPos;
+            //return (Minimum + (nextPos / DesignWidth) * (Maximum - Minimum));
+        }
 
 		private void Thumb_DragCompleted(object sender, DragCompletedEventArgs e)
 		{
@@ -196,46 +163,6 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 			Canvas.SetZIndex(Thumb, 10);
 		}
 
-#if (BlazesGlobalCode_SmallDecSliderEnableExtraFeatures)
-		//Tick based code parts (for adding in tick features of slider later to control)
-		//Will try to program in ticks features later (mainly to reduce errors from missing properties for now)
-		public double SmallChange
-		{
-			get { return (double)GetValue(SmallChangeProperty); }
-			set { SetValue(SmallChangeProperty, value); }
-		}
-		public double LargeChange
-		{
-			get { return (double)GetValue(LargeChangeProperty); }
-			set { SetValue(LargeChangeProperty, value); }
-		}
-		public double TickFrequency
-		{
-			get { return (double)GetValue(TickFrequencyProperty); }
-			set { SetValue(TickFrequencyProperty, value); }
-		}
-		public static readonly DependencyProperty SmallChangeProperty = DependencyProperty.Register("SmallChange", typeof(double), typeof(SmallDecSlider), new PropertyMetadata(0.01, OnValuePropertyChanged));
-		public static readonly DependencyProperty LargeChangeProperty = DependencyProperty.Register("SmallChange", typeof(double), typeof(SmallDecSlider), new PropertyMetadata(1.0, OnValuePropertyChanged));
-		public static readonly DependencyProperty TickFrequencyProperty = DependencyProperty.Register("TickFrequency", typeof(double), typeof(SmallDecSlider), new PropertyMetadata(10.0, OnValuePropertyChanged));
-		public DoubleCollection Ticks
-		{
-			get { return (DoubleCollection)GetValue(TicksProperty); }
-			set { SetValue(TicksProperty, value); }
-		}
-		public static readonly DependencyProperty TicksProperty = DependencyProperty.Register("Ticks", typeof(DoubleCollection), typeof(SmallDecSlider), new PropertyMetadata(new DoubleCollection(), OnValuePropertyChanged));
-		public string TickPlacement
-		{
-			get { return (string)GetValue(TickPlacementProperty); }
-			set { SetValue(TickPlacementProperty, value); }
-		}
-		public static readonly DependencyProperty TickPlacementProperty = DependencyProperty.Register("TickPlacement", typeof(string), typeof(SmallDecSlider), new PropertyMetadata("TopLeft", OnValuePropertyChanged));
-		public bool IsSnapToTickEnabled
-		{
-			get { return (bool)GetValue(IsSnapToTickEnabledProperty); }
-			set { SetValue(IsSnapToTickEnabledProperty, value); }
-		}
-		public static readonly DependencyProperty IsSnapToTickEnabledProperty = DependencyProperty.Register("IsSnapToTickEnabled", typeof(bool), typeof(SmallDecSlider), new PropertyMetadata(false, OnValuePropertyChanged));
-#endif
 		////Routed Event from http://stackoverflow.com/questions/21033509/routedevent-the-member-is-not-recognized-or-is-not-accessible
 		//public static readonly RoutedEvent fooEvent = EventManager.RegisterRoutedEvent("foo", RoutingStrategy.Direct, typeof(RoutedEventHandler), typeof(MainWindow));
 		//// Provide CLR accessors for the event 
@@ -291,5 +218,10 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 			t.PropertyChanging = null;
 			return t;
 		}
-	}
+
+        public override string ToString()
+        {
+            return Value.ToFullString();
+        }
+    }
 }

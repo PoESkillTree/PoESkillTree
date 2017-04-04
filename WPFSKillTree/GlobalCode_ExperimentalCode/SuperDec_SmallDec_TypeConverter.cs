@@ -104,29 +104,43 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
 		{
 			//Console.WriteLine("Attempting to convert with context " + context.GetType().ToString() + " to type " + destinationType.ToString());
+            dynamic ObjectAsType;
+            if(value is SmallDec)
+            {
+                //Console.WriteLine("Object value was detected as SmallDec");
+                ObjectAsType = (SmallDec)value;
+            }
+            else if(value is PercentValV2)
+            {
+                ObjectAsType = (PercentValV2)value;
+            }
+            else
+            {
+                ObjectAsType = (SmallDec)value;
+            }
 			if (destinationType == typeof(string))
 			{
-				return (string)value;
+                return (string)ObjectAsType;
 			}
 			if (destinationType == typeof(double))
 			{
-				return (double)value;
+                return (double)ObjectAsType;
 			}
 			if (destinationType == typeof(SmallDec))
 			{
-				return (SmallDec)value;
+                return (SmallDec)ObjectAsType;
 			}
 			if (destinationType == typeof(float))
 			{
-				return (float)value;
+                return (float)ObjectAsType;
 			}
 			if (destinationType == typeof(decimal))
 			{
-				return (decimal)value;
+                return (decimal)ObjectAsType;
 			}
 			if (destinationType == typeof(int))
 			{
-				return (int)value;
+                return (int)ObjectAsType;
 			}
 			return base.ConvertTo(context, culture, value, destinationType);
 		}

@@ -10,6 +10,7 @@ using POESKillTree.TreeGenerator.Solver;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// Base class for tabs in SettingsViewModel that specify which solver
     /// to use and offer settings to customize the solver execution.

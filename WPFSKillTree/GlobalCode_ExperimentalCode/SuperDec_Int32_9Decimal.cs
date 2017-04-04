@@ -358,7 +358,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 		}
 
 		//Returns value of highest non-infinite/Special Decimal State Value that can store
-		public MediumSuperDec Maximum()
+		private static MediumSuperDec MaximumValue()
 		{
 			MediumSuperDec NewSelf;
 			NewSelf.IntValue = 4294967295;
@@ -367,8 +367,11 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 			return NewSelf;
 		}
 
-		//Returns value of minimum non-infinite/Special Decimal State Value that can store
-		public MediumSuperDec Minimum()
+        //Returns value of highest non-infinite/Special Decimal State Value that can store
+        public static readonly MediumSuperDec Maximum = MaximumValue();
+
+        //Returns value of lowest non-infinite/Special Decimal State Value that can store
+        private static MediumSuperDec MinimumValue()
 		{
 			MediumSuperDec NewSelf; 
 			NewSelf.IntValue = 4294967295;
@@ -377,7 +380,11 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 			return NewSelf;
 		}
 
-		public bool IsInfinity()
+        //Returns value of lowest non-infinite/Special Decimal State Value that can store
+        public static readonly MediumSuperDec Minimum = MinimumValue();
+
+
+        public bool IsInfinity()
 		{
 			//Negative Infinity
 			if (DecBoolStatus == 255)

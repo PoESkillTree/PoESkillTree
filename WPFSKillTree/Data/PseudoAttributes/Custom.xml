@@ -18,7 +18,7 @@
 		<Attribute Name="#% increased Area Damage" />
 		<Attribute Name="#% increased Spell Damage" />
 	</PseudoAttribute>
-	<PseudoAttribute Name="#% increased Average Wild Strike Damage with Pure Physical Weapon" Group="Damage">
+ 	<PseudoAttribute Name="#% increased Average Wild Strike Damage with Pure Physical Weapon" Group="Damage">
 		<Attribute Name="#% increased Elemental Damage" />
 		<Attribute Name="#% increased Elemental Damage with Weapons" />
 		<Attribute Name="#% increased Physical Damage" />
@@ -40,7 +40,7 @@
 		<Attribute Name="#% increased Projectile Damage" ConversionMultiplier="0.333333333"/>
 		<Attribute Name="#% increased Attack Damage" />
 	</PseudoAttribute>
-<!-- 
+
 	<PseudoAttribute Name="#% increased Average Wild Strike Damage" Group="Damage">
 		<Attribute Name="#% increased Elemental Damage" />
 		<Attribute Name="#% increased Elemental Damage with Weapons" />
@@ -51,7 +51,7 @@
 		<Attribute Name="#% increased Projectile Damage" ConversionMultiplier="0.333333333"/>
 		<Attribute Name="#% increased Attack Damage" />
 	</PseudoAttribute>
--->
+
 	<PseudoAttribute Name="#% increased Hybrid Life/ES Percent" Group="Defense">
 		<Attribute Name="#% increased maximum Life" />
 		<Attribute Name="#% increased maximum Energy Shield" />
@@ -94,6 +94,7 @@ Bleed damage not effected by Melee Damage nodes (give small amount since only ef
 		<Attribute Name="#% chance to Poison on Hit against Bleeding Enemies" ConversionMultiplier="0.05" />-->
 		<!--<Attribute Name="Melee Attacks have a #% chance to cause Bleeding" ConversionMultiplier="0.1" />-->
 		<Attribute Name="+# to Strength" ConversionMultiplier="0.02" />
+		<Attribute Name="#% increased Damage"/>
 	</PseudoAttribute>
 	<PseudoAttribute Name="#% increased Physical+Fire Focused TriDot Puncture Damage Supported by Poison+Melee Splash+Rapid Decay+WeaponElemental Damage/Other" Group="Damage">
 		<Attribute Name="#% increased Damage over Time" />
@@ -105,15 +106,35 @@ Bleed damage not effected by Melee Damage nodes (give small amount since only ef
 		<Attribute Name="#% increased Critical Strike Chance" ConversionMultiplier="0.001"/>
 		<Attribute Name="#% increased Critical Strike Chance with One Handed Melee Weapons" ConversionMultiplier="0.001"/>
 		<Attribute Name="#% chance to Freeze, Shock, and Ignite" ConversionMultiplier="0.001"/>
-		<Attribute Name="#% increased Damage with Poison" ConversionMultiplier="0.75" />
+		<Attribute Name="#% increased Damage with Poison" ConversionMultiplier="0.7" />
 		<!--Increased Splash damage to other targets-->
 		<Attribute Name="#% increased Area Damage" ConversionMultiplier="0.6" />
+		<Attribute Name="#% increased Damage"/>
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Bleed DOT before tags" Group="Damage">
+		<Attribute Name="#% increased Damage over Time" />
+		<Attribute Name="#% increased Physical Damage"/>
+		<Attribute Name="#% increased Physical Damage over Time"/>
+		<Attribute Name="#% increased Damage"/>
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Poison DOT before tags" Group="Damage">
+		<Attribute Name="#% increased Damage over Time" />
+		<Attribute Name="#% increased Damage with Poison"/>
+		<Attribute Name="#% increased Chaos Damage"/>
+		<Attribute Name="#% increased Damage"/>
+	</PseudoAttribute>
+		<PseudoAttribute Name="#% increased Burn DOT before tags" Group="Damage">
+		<Attribute Name="#% increased Damage over Time" />
+		<Attribute Name="#% increased Damage"/>
+		<Attribute Name="#% increased Fire Damage"/>
+		<Attribute Name="#% increased Elemental Damage"/>
+		<Attribute Name="#% increased Burning Damage"/>
 	</PseudoAttribute>
 	<PseudoAttribute Name="#% increased SharedStrength Minion Damage" Group="Damage">
 		<Attribute Name="+# to Strength" ConversionMultiplier="0.2" />
 		<Attribute Name="Minions deal #% increased Damage" />
 	</PseudoAttribute>
-<!-- 	<PseudoAttribute Name="#% increased Total Critical Strike Chance with Spells" Group="Critical Strike">
+ 	<PseudoAttribute Name="#% increased Total Critical Strike Chance with Spells" Group="Critical Strike">
 		<Attribute Name="#% increased Critical Strike Chance" />
 		<Attribute Name="#% increased Critical Strike Chance for Spells" />
 	</PseudoAttribute>
@@ -122,7 +143,21 @@ Bleed damage not effected by Melee Damage nodes (give small amount since only ef
 		<Attribute Name="#% increased Critical Strike Chance with One Handed Melee Weapons" />
 		<Attribute Name="#% increased Critical Strike Chance with Swords" />
 	</PseudoAttribute>
-	<PseudoAttribute Name="#% increased Total Elemental Damage with Spells" Group="Damage">
+ 	<PseudoAttribute Name="#% increased Total Cold Area of Effect Damage" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" />
+		<Attribute Name="#% increased Cold Damage" />
+		<Attribute Name="#% increased Area Damage" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Total Lightning Damage" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" />
+		<Attribute Name="#% increased Lightning Damage" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Total Fire Area of Effect Damage" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" />
+		<Attribute Name="#% increased Fire Damage" />
+		<Attribute Name="#% increased Area Damage" />
+	</PseudoAttribute> -->
+ 	<PseudoAttribute Name="#% increased Total Elemental Damage with Spells" Group="Damage">
 		<Attribute Name="#% increased Elemental Damage" />
 		<Attribute Name="#% increased Spell Damage" />
 	</PseudoAttribute>
@@ -148,20 +183,7 @@ Bleed damage not effected by Melee Damage nodes (give small amount since only ef
 		<Attribute Name="#% increased Area Damage" />
 		<Attribute Name="#% increased Elemental Damage with Weapons" />
 	</PseudoAttribute>
-	<PseudoAttribute Name="#% increased Total Cold Area of Effect Damage" Group="Damage">
-		<Attribute Name="#% increased Elemental Damage" />
-		<Attribute Name="#% increased Cold Damage" />
-		<Attribute Name="#% increased Area Damage" />
-	</PseudoAttribute>
-	<PseudoAttribute Name="#% increased Total Lightning Damage" Group="Damage">
-		<Attribute Name="#% increased Elemental Damage" />
-		<Attribute Name="#% increased Lightning Damage" />
-	</PseudoAttribute>
-	<PseudoAttribute Name="#% increased Total Fire Area of Effect Damage" Group="Damage">
-		<Attribute Name="#% increased Elemental Damage" />
-		<Attribute Name="#% increased Fire Damage" />
-		<Attribute Name="#% increased Area Damage" />
-	</PseudoAttribute>
+
 	<PseudoAttribute Name="#% increased Total Chaos Area of Effect Damage" Group="Damage">
 		<Attribute Name="#% increased Chaos Damage" />
 		<Attribute Name="#% increased Area Damage" />
@@ -197,5 +219,5 @@ Bleed damage not effected by Melee Damage nodes (give small amount since only ef
 		<Attribute Name="+# to Strength" ConversionMultiplier="1.0" />
 		<Attribute Name="+# to Intelligence" ConversionMultiplier="1.0" />
 		<Attribute Name="+# to Dexterity" ConversionMultiplier="1.0" />
-	</PseudoAttribute> -->
+	</PseudoAttribute>
 </PseudoAttributes>

@@ -10,8 +10,7 @@ namespace MB.Algodat
     /// Both values must be of the same type and comparable.
     /// </summary>
     /// <typeparam name="T">Type of the values.</typeparam>
-    public struct Range<T> : IComparable<Range<T>>
-        where T : IComparable<T>
+    public struct Range<T> : IComparable<Range<T>> where T : IComparable<T>
     {
         public T From;
         public T To;
@@ -19,8 +18,7 @@ namespace MB.Algodat
         /// <summary>
         /// Initializes a new <see cref="Range&lt;T&gt;"/> instance.
         /// </summary>
-        public Range(T value)
-            : this()
+        public Range(T value): this()
         {
             From = value;
             To = value;
@@ -29,8 +27,7 @@ namespace MB.Algodat
         /// <summary>
         /// Initializes a new <see cref="Range&lt;T&gt;"/> instance.
         /// </summary>
-        public Range(T from, T to)
-            : this()
+        public Range(T from, T to): this()
         {
             From = from;
             To = to;
@@ -78,7 +75,14 @@ namespace MB.Algodat
         /// </returns>
         public override string ToString()
         {
-            return string.Format("{0} - {1}", From, To);
+            if (From is SmallDec)
+            {
+                return string.Format("{0} - {1}", ((SmallDec)((object)From)).ToOptimalString(), ((SmallDec)((object)To)).ToOptimalString());
+            }
+            else
+            {
+                return string.Format("{0} - {1}", From, To);
+            }
         }
 
         public override int GetHashCode()
@@ -117,22 +121,48 @@ namespace MB.Algodat
 
         public static Range<T> Parse(string p, IFormatProvider provider = null)
         {
-			provider = provider ?? CultureInfo.CurrentCulture;
-            var parts = p
-                .Split(new[] { " to " }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(pp => (T)Convert.ChangeType(pp, typeof(T), provider))
-                .ToArray();
-
-            if (parts.Length < 1 || parts.Length > 2)
-                throw new ArgumentException(string.Format("cannot parse given range ({0}), it doesn't have one or two parts", p));
-
-            if (parts.Length == 1)
+            T TTypeTest = default(T);
+            provider = provider ?? CultureInfo.CurrentCulture;
+            if (((object)TTypeTest) is SmallDec)
             {
-                return new Range<T>(parts[0]);
+                try
+                {
+                    var parts = p.Split(new[] { " to " }, StringSplitOptions.RemoveEmptyEntries).Select(pp => pp).ToArray();
+                    if (parts.Length < 1 || parts.Length > 2)
+                        throw new ArgumentException(string.Format("cannot parse given range ({0}), it doesn't have one or two parts", p));
+
+                    if (parts.Length == 1)
+                    {
+                        return new Range<T>((T)(Object)((SmallDec)parts[0]));
+                    }
+                    else
+                    {
+                        return new Range<T>((T)(Object)((SmallDec)parts[0]), (T)(Object)((SmallDec)parts[1]));
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    System.Console.WriteLine("Range Parse Exception of " + ex.ToString());
+                }
+                return new Range<T>((T)(Object)((SmallDec.Zero)));//Force return empty range if has exception so can see the error on debugging instead of it crashing without seeing it in console
             }
             else
             {
-                return new Range<T>(parts[0], parts[1]);
+                var parts = p.Split(new[] { " to " }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(pp => (T)Convert.ChangeType(pp, typeof(T), provider))
+                .ToArray();
+
+                if (parts.Length < 1 || parts.Length > 2)
+                    throw new ArgumentException(string.Format("cannot parse given range ({0}), it doesn't have one or two parts", p));
+
+                if (parts.Length == 1)
+                {
+                    return new Range<T>(parts[0]);
+                }
+                else
+                {
+                    return new Range<T>(parts[0], parts[1]);
+                }
             }
         }
     }
@@ -145,8 +175,7 @@ namespace MB.Algodat
         /// <summary>
         /// Creates and returns a new <see cref="Range&lt;T&gt;"/> instance.
         /// </summary>
-        public static Range<T> Create<T>(T from, T to)
-            where T : IComparable<T>
+        public static Range<T> Create<T>(T from, T to)where T : IComparable<T>
         {
             return new Range<T>(from, to);
         }

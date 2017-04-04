@@ -11,7 +11,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 	using System.Windows;
 	using static GlobalCode_VariableConversionFunctions.VariableConversionFunctions;
 
-	public struct SuperDec_PercentVal : IComparable<SuperDec_PercentVal>
+	public partial struct SuperDec_PercentVal : IComparable<SuperDec_PercentVal>
 	{
 		//0 = 0.XXXX ;1= -0.XXXX;2 = +1.XXXX; 3 = -1.XXXX
 		//Other decimal states require alternative code turned on to use
@@ -549,13 +549,13 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 		}
 
 		//Returns value of highest non-infinite/Special Decimal State Value that can store
-		public SuperDec_PercentVal Maximum()
+		public static SuperDec_PercentVal Maximum()
 		{
 			throw new NotImplementedException();
 		}
 
 		//Returns value of minimum non-infinite/Special Decimal State Value that can store
-		public SuperDec_PercentVal Minimum()
+		public static SuperDec_PercentVal Minimum()
 		{
 			throw new NotImplementedException();
 		}

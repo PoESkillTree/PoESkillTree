@@ -158,36 +158,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 		// Self Less than Value
 		public static bool operator <(SmallDec self, dynamic Value)
 		{
-			if (Value is SmallDec)
-			{
-				if (self.DecBoolStatus == Value.DecBoolStatus && self.IntValue == Value.IntValue && self.DecimalStatus == Value.DecimalStatus) { return false; }
-				else
-				{
-					// Positive Self <= -Value
-					if (Value.DecBoolStatus == 1 && self.DecBoolStatus == 0) { return false; }
-					// Negative Self <= Value
-					else if (Value.DecBoolStatus == 0 && self.DecBoolStatus == 1) { return true; }
-					else
-					{
-						ulong SelfAsInt = self.IntValue;
-						SelfAsInt *= 10000;
-						SelfAsInt += self.DecimalStatus;
-						ulong ValueAsInt = Value.IntValue;
-						ValueAsInt *= 10000;
-						ValueAsInt += Value.DecimalStatus;
-						//Both are either positive or negative numbers
-						if (self.DecBoolStatus == 0)
-						{
-							return SelfAsInt < ValueAsInt;
-						}
-						else
-						{//Larger number = farther down into negative
-							return !(SelfAsInt < ValueAsInt);
-						}
-					}
-				}
-			}
-			else if (Value is double)
+			if (Value is double||Value is float||Value is decimal)
 			{
 				if (Value < 0.0 && self.DecBoolStatus == 0) { return false; }
 				else if (Value >= 0.0 && self.DecBoolStatus == 1) { return true; }
@@ -238,11 +209,10 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 					}
 				}
 			}
-			else if (Value is String)
+			else if (Value is string)
 			{
-				//return (String)Value == (String)self;
-				return false;
-			}
+                return self < (SmallDec)Value;
+            }
 			else
 			{
 				if (Value < 0 && self.DecBoolStatus == 0) { return false; }
@@ -275,36 +245,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 		// Self Less than or equal to Value
 		public static bool operator <=(SmallDec self, dynamic Value)
 		{
-			if (Value is SmallDec)
-			{
-				if (self.DecBoolStatus == Value.DecBoolStatus && self.IntValue == Value.IntValue && self.DecimalStatus == Value.DecimalStatus) { return true; }
-				else
-				{
-					// Positive Self <= -Value
-					if (Value.DecBoolStatus == 1 && self.DecBoolStatus == 0) { return false; }
-					// Negative Self <= Value
-					else if (Value.DecBoolStatus == 0 && self.DecBoolStatus == 1) { return true; }
-					else
-					{
-						uint SelfAsInt = self.IntValue;
-						SelfAsInt *= 10000;
-						SelfAsInt += self.DecimalStatus;
-						uint ValueAsInt = Value.IntValue;
-						ValueAsInt *= 10000;
-						ValueAsInt += Value.DecimalStatus;
-						//Both are either positive or negative numbers
-						if (self.DecBoolStatus == 0)
-						{
-							return SelfAsInt <= ValueAsInt;
-						}
-						else
-						{//Larger number = farther down into negative
-							return !(SelfAsInt <= ValueAsInt);
-						}
-					}
-				}
-			}
-			else if (Value is double)
+			if (Value is double||Value is float||Value is decimal)
 			{
 				if (Value < 0.0 && self.DecBoolStatus == 0) { return false; }
 				else if (Value >= 0.0 && self.DecBoolStatus == 1) { return true; }
@@ -355,11 +296,10 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 					}
 				}
 			}
-			else if (Value is String)
+			else if (Value is string)
 			{
-				//return (String)Value == (String)self;
-				return false;
-			}
+                return self <= (SmallDec)Value;
+            }
 			else
 			{
 				if (Value < 0 && self.DecBoolStatus == 0) { return false; }
@@ -392,36 +332,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 		// Self Greater than Value
 		public static bool operator >(SmallDec self, dynamic Value)
 		{
-			if (Value is SmallDec)
-			{
-				if (self.DecBoolStatus == Value.DecBoolStatus && self.IntValue == Value.IntValue && self.DecimalStatus == Value.DecimalStatus) { return false; }
-				else
-				{
-					// Positive Self >= -Value
-					if (Value.DecBoolStatus == 1 && self.DecBoolStatus == 0) { return true; }
-					// Negative Self >= Value
-					else if (Value.DecBoolStatus == 0 && self.DecBoolStatus == 1) { return false; }
-					else
-					{
-						uint SelfAsInt = self.IntValue;
-						SelfAsInt *= 10000;
-						SelfAsInt += self.DecimalStatus;
-						uint ValueAsInt = Value.IntValue;
-						ValueAsInt *= 10000;
-						ValueAsInt += Value.DecimalStatus;
-						//Both are either positive or negative numbers
-						if (self.DecBoolStatus == 0)
-						{
-							return SelfAsInt > ValueAsInt;
-						}
-						else
-						{//Larger number = farther down into negative
-							return !(SelfAsInt > ValueAsInt);
-						}
-					}
-				}
-			}
-			else if (Value is double)
+			if (Value is double||Value is float||Value is decimal)
 			{
 				// Positive Self >= -Value
 				if (Value < 0.0 && self.DecBoolStatus == 0) { return true; }
@@ -474,11 +385,11 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 					}
 				}
 			}
-			else if (Value is String)
+			else if (Value is string)
 			{
-				//return (String)Value == (String)self;
-				return false;
-			}
+                //return (String)Value == (String)self;
+                return self > (SmallDec)Value;
+            }
 			else
 			{
 				// Positive Self >= -Value
@@ -513,36 +424,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 		// Self Greater than or Equal to Value
 		public static bool operator >=(SmallDec self, dynamic Value)
 		{
-			if (Value is SmallDec)
-			{
-				if (self.DecBoolStatus == Value.DecBoolStatus && self.IntValue == Value.IntValue && self.DecimalStatus == Value.DecimalStatus) { return true; }
-				else
-				{
-					// Positive Self >= -Value
-					if (Value.DecBoolStatus == 1 && self.DecBoolStatus == 0) { return true; }
-					// Negative Self >= Value
-					else if (Value.DecBoolStatus == 0 && self.DecBoolStatus == 1) { return false; }
-					else
-					{
-						ulong SelfAsInt = self.IntValue;
-						SelfAsInt *= 10000;
-						SelfAsInt += self.DecimalStatus;
-						ulong ValueAsInt = Value.IntValue;
-						ValueAsInt *= 10000;
-						ValueAsInt += Value.DecimalStatus;
-						//Both are either positive or negative numbers
-						if (self.DecBoolStatus == 0)
-						{
-							return SelfAsInt >= ValueAsInt;
-						}
-						else
-						{//Larger number = farther down into negative
-							return !(SelfAsInt >= ValueAsInt);
-						}
-					}
-				}
-			}
-			else if (Value is double)
+			if (Value is double||Value is float||Value is decimal)
 			{
 				if (Value < 0.0 && self.DecBoolStatus == 0) { return true; }
 				else if (Value >= 0.0 && self.DecBoolStatus == 1) { return false; }
@@ -592,10 +474,10 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 					}
 				}
 			}
-			else if (Value is String)
+			else if (Value is string)
 			{
 				//return (String)Value == (String)self;
-				return false;
+				return self>= (SmallDec)Value;
 			}
 			else
 			{
@@ -708,12 +590,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 		// Inequality operator for comparing self to multiple value types
 		public static bool operator !=(SmallDec self, dynamic Value)
 		{
-			if (Value is SmallDec)
-			{
-				if (self.DecBoolStatus != Value.DecBoolStatus || self.IntValue != Value.IntValue || self.DecimalStatus != Value.DecimalStatus) { return true; }
-				else { return false; }
-			}
-			else if (Value is double)
+			if (Value is double||Value is float||Value is decimal)
 			{
 				if (Value < 0.0 && self.DecBoolStatus == 0) { return true; }
 				else if (Value >= 0.0 && self.DecBoolStatus == 1) { return true; }
@@ -761,10 +638,10 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 					}
 				}
 			}
-			else if (Value is String)
+			else if (Value is string)
 			{
-				return (String)Value != (String)self;
-			}
+                return self != (SmallDec)Value;
+            }
 			else
 			{
 				if (self.DecimalStatus != 0) { return true; }
@@ -1156,7 +1033,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 
 		public static SmallDec operator %(SmallDec self, dynamic y)
 		{
-			if (y is double || y is SmallDec || y is decimal)
+			if (y is double || y is float || y is decimal)
 			{
 				if (y == 0.0)
 				{
@@ -1221,6 +1098,10 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 					if (self.IntValue == 0 && self.DecimalStatus == 0) { self.DecimalStatus = 1; }
 				}
 			}
+            else if(y is string)
+            {
+                self %= (SmallDec)y;
+            }
 			else
 			{
 				if (y == 0)
@@ -1372,7 +1253,11 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 					}
 				}
 			}
-			else
+            else if (y is string)
+            {
+                self += (SmallDec)y;
+            }
+            else
 			{
 				if (self.DecBoolStatus == 1 && y < 0)
 				{// -X - Y (ex. -8 + -6)
@@ -1537,7 +1422,11 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 					}
 				}
 			}
-			else
+            else if (y is string)
+            {
+                self -= (SmallDec)y;
+            }
+            else
 			{
 				//ex. -9 - 9
 				if (self.DecBoolStatus == 1 && y >= 0)
@@ -1653,7 +1542,11 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 					if (self.IntValue == 0 && self.DecimalStatus == 0) { self.DecimalStatus = 1; }
 				}
 			}
-			else
+            else if (y is string)
+            {
+                self *= (SmallDec)y;
+            }
+            else
 			{
 				if (y == 0)
 				{
@@ -1751,7 +1644,11 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 					if (self.IntValue == 0 && self.DecimalStatus == 0) { self.DecimalStatus = 1; }
 				}
 			}
-			else
+            else if (y is string)
+            {
+                self /= (SmallDec)y;
+            }
+            else
 			{
 				if (y == 0)
 				{
@@ -1800,14 +1697,14 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 		public static SmallDec operator *(dynamic y, SmallDec self)
 		{
 			SmallDec YAsSuperDec = (SmallDec)y;
-			YAsSuperDec += self;
+			YAsSuperDec *= self;
 			return YAsSuperDec;
 		}
 
 		public static SmallDec operator /(dynamic y, SmallDec self)
 		{
 			SmallDec YAsSuperDec = (SmallDec)y;
-			YAsSuperDec += self;
+			YAsSuperDec /= self;
 			return YAsSuperDec;
 		}
 

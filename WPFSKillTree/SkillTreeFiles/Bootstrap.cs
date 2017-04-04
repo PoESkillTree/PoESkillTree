@@ -8,6 +8,8 @@ using POESKillTree.Views;
 
 namespace POESKillTree.SkillTreeFiles
 {
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    using Newtonsoft.Json;    
     // Application entry class.
     class Bootstrap : MarshalByRefObject
     {
@@ -28,6 +30,16 @@ namespace POESKillTree.SkillTreeFiles
         [STAThread]
         public static void Main(string[] arguments)
         {
+#if (PoESkillTree_ForceGlobalJSONConverter)
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                Converters = new System.Collections.Generic.List<JsonConverter> { new CustomJSONConverter() }
+            };
+#endif
+#if (DEBUG)
+            Console.SetBufferSize(Console.BufferWidth, 32766);
+            Console.SetWindowSize(150, 75);
+#endif
             // If executed from JumpTask, do nothing.
             if (TaskbarHelper.IsJumpTask(arguments))
                 return;

@@ -114,6 +114,9 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
         /// </summary>
         private IEnumerable<PseudoAttribute> ConvertFromXml(IEnumerable<XmlPseudoAttribute> xmlPseudoAttributes)
         {
+#if (DEBUG)
+            Console.WriteLine("Number of Pseudo-Attributes to load="+xmlPseudoAttributes.Count());
+#endif
             foreach (var xmlPseudo in xmlPseudoAttributes)
             {
                 var pseudo = new PseudoAttribute(xmlPseudo.Name, xmlPseudo.Group);
