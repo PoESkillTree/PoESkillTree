@@ -6,6 +6,7 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.Model
 {
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// Enumeration of the bandits from whom can be choose at each difficulty.
     /// (choosing none gives an extra skill point)
@@ -33,24 +34,67 @@ namespace POESKillTree.Model
     /// </summary>
     public static class BanditExtensions
     {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        private static readonly Dictionary<Tuple<Bandit, Difficulty>, Tuple<string, SmallDec>> Rewards = new Dictionary<Tuple<Bandit, Difficulty>, Tuple<string, SmallDec>>
+#else
         private static readonly Dictionary<Tuple<Bandit, Difficulty>, Tuple<string, float>> Rewards = new Dictionary<Tuple<Bandit, Difficulty>, Tuple<string, float>>
+#endif
         {
-            {Tuple.Create(Bandit.Alira, Difficulty.Normal), Tuple.Create("+# to maximum Mana", 60F)},
-            {Tuple.Create(Bandit.Alira, Difficulty.Cruel), Tuple.Create("#% increased Cast Speed", 5F)},
-            {Tuple.Create(Bandit.Alira, Difficulty.Merciless), Tuple.Create("+# to Maximum Power Charges", 1F)},
-            {Tuple.Create(Bandit.Oak, Difficulty.Normal), Tuple.Create("+# to maximum Life", 40F)},
-            {Tuple.Create(Bandit.Oak, Difficulty.Cruel), Tuple.Create("#% increased Physical Damage", 16F)},
-            {Tuple.Create(Bandit.Oak, Difficulty.Merciless), Tuple.Create("+# to Maximum Endurance Charges", 1F)},
-            {Tuple.Create(Bandit.Kraityn, Difficulty.Normal), Tuple.Create("#% to all Elemental Resistances", 10F)},
-            {Tuple.Create(Bandit.Kraityn, Difficulty.Cruel), Tuple.Create("#% increased Attack Speed", 8F)},
-            {Tuple.Create(Bandit.Kraityn, Difficulty.Merciless), Tuple.Create("+# to Maximum Frenzy Charges", 1F)},
+            {Tuple.Create(Bandit.Alira, Difficulty.Normal), Tuple.Create("+# to maximum Mana",
+#	if (PoESkillTree_UseSmallDec_ForAttributes) 
+            (SmallDec)
+#	endif
+                60F)},
+            {Tuple.Create(Bandit.Alira, Difficulty.Cruel), Tuple.Create("#% increased Cast Speed", 
+#	if (PoESkillTree_UseSmallDec_ForAttributes) 
+            (SmallDec)
+#	endif
+                5F)},
+            {Tuple.Create(Bandit.Alira, Difficulty.Merciless), Tuple.Create("+# to Maximum Power Charges",
+#	if (PoESkillTree_UseSmallDec_ForAttributes) 
+            (SmallDec)
+#	endif
+                1F)},
+            {Tuple.Create(Bandit.Oak, Difficulty.Normal), Tuple.Create("+# to maximum Life", 
+#	if (PoESkillTree_UseSmallDec_ForAttributes) 
+            (SmallDec)
+#	endif
+                40F)},
+            {Tuple.Create(Bandit.Oak, Difficulty.Cruel), Tuple.Create("#% increased Physical Damage", 
+#	if (PoESkillTree_UseSmallDec_ForAttributes) 
+            (SmallDec)
+#	endif
+                16F)},
+            {Tuple.Create(Bandit.Oak, Difficulty.Merciless), Tuple.Create("+# to Maximum Endurance Charges",
+#	if (PoESkillTree_UseSmallDec_ForAttributes) 
+            (SmallDec)
+#	endif
+                1F)},
+            {Tuple.Create(Bandit.Kraityn, Difficulty.Normal), Tuple.Create("#% to all Elemental Resistances",
+#	if (PoESkillTree_UseSmallDec_ForAttributes) 
+            (SmallDec)
+#	endif
+                10F)},
+            {Tuple.Create(Bandit.Kraityn, Difficulty.Cruel), Tuple.Create("#% increased Attack Speed", 
+#	if (PoESkillTree_UseSmallDec_ForAttributes) 
+            (SmallDec)
+#	endif
+                8F)},
+            {Tuple.Create(Bandit.Kraityn, Difficulty.Merciless), Tuple.Create("+# to Maximum Frenzy Charges", 
+#	if (PoESkillTree_UseSmallDec_ForAttributes) 
+            (SmallDec)
+#	endif
+                1F)},
         };
-
         /// <summary>
         /// Returns the reward attribute this bandit gives in this difficulty.
         /// </summary>
-        /// <returns>The reward attribute. Null iff the bandit has no reward (Bandit.None)./></returns>
+        /// <returns>The reward attribute. Null if the bandit has no reward (Bandit.None)./></returns>
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        public static Tuple<string, SmallDec> Reward(this Bandit bandit, Difficulty difficulty)
+#else
         public static Tuple<string, float> Reward(this Bandit bandit, Difficulty difficulty)
+#endif
         {
             return bandit == Bandit.None ? null : Rewards[Tuple.Create(bandit, difficulty)];
         }
@@ -84,11 +128,19 @@ namespace POESKillTree.Model
         }
 
         [XmlIgnore]
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        public Dictionary<string, SmallDec> Rewards
+#else
         public Dictionary<string, float> Rewards
+#endif
         {
             get
             {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                var rewards = new Dictionary<string, SmallDec>();
+#else
                 var rewards = new Dictionary<string, float>();
+#endif
                 if (Normal != Bandit.None)
                 {
                     var r = Normal.Reward(Difficulty.Normal);

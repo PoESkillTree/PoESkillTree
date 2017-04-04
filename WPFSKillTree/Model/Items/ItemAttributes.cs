@@ -15,6 +15,7 @@ using POESKillTree.ViewModels;
 
 namespace POESKillTree.Model.Items
 {
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     public class ItemAttributes : Notifier
     {
         #region slotted items
@@ -295,6 +296,16 @@ namespace POESKillTree.Model.Items
 
         private static void AddAttribute(ItemMod mod, string group, ICollection<Attribute> attributes, Attribute existingAttribute)
         {
+#if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_UseSmallDec_ForGeneratorBars)
+            if (existingAttribute == null)
+            {
+                attributes.Add(new Attribute(mod.Attribute, SmallDec.CreateList(mod.Value), group));
+            }
+            else
+            {
+                existingAttribute.Add(SmallDec.CreateList(mod.Value));
+            }
+#else
             if (existingAttribute == null)
             {
                 attributes.Add(new Attribute(mod.Attribute, mod.Value, group));
@@ -303,6 +314,7 @@ namespace POESKillTree.Model.Items
             {
                 existingAttribute.Add(mod.Value);
             }
+#endif
         }
 
         private static void LoadItemAttributes(Item item, List<Attribute> attributes, List<Attribute> independentAttributes)
@@ -311,7 +323,11 @@ namespace POESKillTree.Model.Items
             {
                 // Show all properties except quality in the group for this slot.
                 if (attr.Attribute == "Quality: +#%") continue;
+#if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_UseSmallDec_ForGeneratorBars)
+                attributes.Add(new Attribute(attr.Attribute, SmallDec.CreateList(attr.Value), item.Slot.ToString()));
+#else
                 attributes.Add(new Attribute(attr.Attribute, attr.Value, item.Slot.ToString()));
+#endif
             }
 
             var modsAffectingProperties = item.GetModsAffectingProperties().SelectMany(pair => pair.Value).ToList();
@@ -356,7 +372,11 @@ namespace POESKillTree.Model.Items
         {
             public static readonly Regex Backreplace = new Regex("#");
 
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            private readonly List<SmallDec> _value;
+#else
             private readonly List<float> _value;
+#endif
 
             private readonly string _group;
             public string Group
@@ -372,17 +392,34 @@ namespace POESKillTree.Model.Items
 
             public string ValuedAttribute
             {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                get { return _value.Aggregate(_attribute, (current, f) => Backreplace.Replace(current, f.ToString() + "", 1)); }
+#else
                 get { return _value.Aggregate(_attribute, (current, f) => Backreplace.Replace(current, f + "", 1)); }
+#endif
             }
 
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            public Attribute(string s, IEnumerable<SmallDec> val, string grp)
+            {
+                _attribute = s;
+                _value = new List<SmallDec>(val);
+                _group = grp;
+            }
+#else
             public Attribute(string s, IEnumerable<float> val, string grp)
             {
                 _attribute = s;
                 _value = new List<float>(val);
                 _group = grp;
             }
+#endif
 
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            public void Add(IReadOnlyList<SmallDec> val)
+#else
             public void Add(IReadOnlyList<float> val)
+#endif
             {
                 if (_value.Count != val.Count) throw new NotSupportedException();
                 for (var i = 0; i < val.Count; i++)

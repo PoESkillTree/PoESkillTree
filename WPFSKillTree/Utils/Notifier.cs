@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace POESKillTree.Utils
 {
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// Abstract class that simplifies Properties using INotifyPropertyChanged.
     /// <code>set { SetProperty(ref _property, value); }</code> is enough with this class.

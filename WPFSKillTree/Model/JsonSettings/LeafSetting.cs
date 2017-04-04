@@ -4,6 +4,7 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.Model.JsonSettings
 {
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// Simple implementation of a setting without sub settings.
     /// Represents a key value pair with a simple value type (supported by <see cref="JValue"/>).
@@ -43,21 +44,55 @@ namespace POESKillTree.Model.JsonSettings
 
         public void LoadFrom(JObject jObject)
         {
-            JToken token;
-            Value = jObject.TryGetValue(_key, out token) ? token.ToObject<T>() : _defaultValue;
+            try
+            {
+#if (DEBUG)
+                string DebugTest = jObject.ToString();
+                if (DebugTest != null) { System.Console.WriteLine("Loaded jObject value " + DebugTest); }
+#endif
+                JToken token;
+                Value = jObject.TryGetValue(_key, out token) ? token.ToObject<T>() : _defaultValue;
+            }
+            catch (System.Exception ex)
+            {
+                System.Console.WriteLine("Loaded LeafSetting JObject Exception of " + ex.ToString());
+            }
         }
 
         public bool SaveTo(JObject jObject)
         {
-            var newToken = new JValue(Value);
-            var changed = !Equals(Value, _defaultValue);
-            JToken oldToken;
-            if (jObject.TryGetValue(_key, out oldToken))
+            try
             {
-                changed = !JToken.DeepEquals(newToken, oldToken);
+                string DebugTest;
+#if (DEBUG)
+                DebugTest = jObject.ToString();
+                if (DebugTest != null) { Console.WriteLine("Saved jObject value " + DebugTest); }
+#endif
+                var newToken = new JValue(Value);
+#if (DEBUG)
+                DebugTest = newToken.ToString();
+                if (DebugTest != null) { Console.WriteLine("newToken value " + DebugTest); }
+                DebugTest = newToken.GetType().ToString();
+                if (DebugTest != null) { Console.WriteLine("newToken has Type of " + DebugTest); }
+#endif
+                DebugTest = newToken.Type.ToString();
+#if (DEBUG)
+                if (DebugTest != null) { Console.WriteLine("newToken has JType of " + DebugTest); }
+#endif
+                    var changed = !Equals(Value, _defaultValue);
+                    JToken oldToken;
+                    if (jObject.TryGetValue(_key, out oldToken))
+                    {
+                        changed = !JToken.DeepEquals(newToken, oldToken);
+                    }
+                    jObject[_key] = newToken;
+                    return changed;
             }
-            jObject[_key] = newToken;
-            return changed;
+            catch (System.Exception ex)
+            {
+                System.Console.WriteLine("Saved LeafSetting JObject Exception of " + ex.ToString());
+            }
+            return false;
         }
 
         public void Reset()

@@ -6,6 +6,7 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.Model.JsonSettings
 {
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// Abstract base class for composite settings that assemble multiple sub settings under one key in the
     /// JSON object tree. Implementations only need to provide the key and the sub settings.
@@ -24,32 +25,55 @@ namespace POESKillTree.Model.JsonSettings
 
         public void LoadFrom(JObject jObject)
         {
-            JToken token;
-            if (!jObject.TryGetValue(Key, out token) || !(token is JObject))
+            try
             {
-                Reset();
-                return;
+                JToken token;
+#if (DEBUG)
+                string DebugTest = jObject.ToString();
+                if (DebugTest != null) { System.Console.WriteLine("Loaded jObject value " + DebugTest); }
+#endif
+                if (!jObject.TryGetValue(Key, out token) || !(token is JObject))
+                {
+                    Reset();
+                    return;
+                }
+                SubSettings.ForEach(s => s.LoadFrom((JObject)token));
             }
-            SubSettings.ForEach(s => s.LoadFrom((JObject)token));
+            catch(System.Exception ex)
+            {
+                System.Console.WriteLine("Loaded AbstractCompositeSetting JObject Exception of " + ex.ToString());
+            }
         }
 
         public bool SaveTo(JObject jObject)
         {
-            JToken token;
-            if (!jObject.TryGetValue(Key, out token) || !(token is JObject))
+            try
             {
-                jObject[Key] = token = new JObject();
+                JToken token;
+#if (DEBUG)
+                string DebugTest = jObject.ToString();
+                if (DebugTest != null) { System.Console.WriteLine("Saved jObject value" + DebugTest); }
+#endif
+                if (!jObject.TryGetValue(Key, out token) || !(token is JObject))
+                {
+                    jObject[Key] = token = new JObject();
+                }
+                if (!SubSettings.Any())
+                    return false;
+                var obj = (JObject)token;
+                var changed = false;
+                foreach (var s in SubSettings)
+                {
+                    if (s.SaveTo(obj))
+                        changed = true;
+                }
+                return changed;
             }
-            if (!SubSettings.Any())
-                return false;
-            var obj = (JObject) token;
-            var changed = false;
-            foreach (var s in SubSettings)
+            catch (System.Exception ex)
             {
-                if (s.SaveTo(obj))
-                    changed = true;
+                System.Console.WriteLine("Saved AbstractCompositeSetting JObject Exception of " + ex.ToString());
             }
-            return changed;
+            return false;
         }
 
         public void Reset()

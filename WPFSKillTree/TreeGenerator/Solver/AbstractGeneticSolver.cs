@@ -9,6 +9,7 @@ using POESKillTree.TreeGenerator.Settings;
 
 namespace POESKillTree.TreeGenerator.Solver
 {
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// Abstract solver that uses <see cref="GeneticAlgorithm"/> for solving.
     /// Subclasses at least need to provide a fitness function and <see cref="GeneticAlgorithmParameters"/>.
