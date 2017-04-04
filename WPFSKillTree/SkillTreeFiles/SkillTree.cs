@@ -23,7 +23,7 @@ using static POESKillTree.SkillTreeFiles.Constants;
 
 namespace POESKillTree.SkillTreeFiles
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     public partial class SkillTree : Notifier, ISkillTree
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(SkillTree));
@@ -1547,11 +1547,11 @@ namespace POESKillTree.SkillTreeFiles
                 foreach (var expandedAttribute in expandedAttributes)
                 {
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-					yield return new KeyValuePair<string, List<SmallDec>>(expandedAttribute, attribute.Value);
+                    yield return new KeyValuePair<string, List<SmallDec>>(expandedAttribute, attribute.Value);
 #else
                     yield return new KeyValuePair<string, List<float>>(expandedAttribute, attribute.Value);
 #endif
-				}
+                }
             }
             else
             {

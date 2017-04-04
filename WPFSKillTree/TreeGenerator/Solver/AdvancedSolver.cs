@@ -10,11 +10,11 @@ using POESKillTree.TreeGenerator.Settings;
 
 namespace POESKillTree.TreeGenerator.Solver
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
-	/// <summary>
-	/// Implementation of AbstractGeneticSolver that tries to find optimal trees based on constraints.
-	/// </summary>
-	public class AdvancedSolver : AbstractGeneticSolver<AdvancedSolverSettings>
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    /// <summary>
+    /// Implementation of AbstractGeneticSolver that tries to find optimal trees based on constraints.
+    /// </summary>
+    public class AdvancedSolver : AbstractGeneticSolver<AdvancedSolverSettings>
     {
         /// <summary>
         /// PseudoAttributeConstraint data object where the PseudoAttribute is converted
@@ -23,28 +23,28 @@ namespace POESKillTree.TreeGenerator.Solver
         private class ConvertedPseudoAttributeConstraint
         {
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public List<Tuple<string, SmallDec>> Attributes { get; private set; }
+            public List<Tuple<string, SmallDec>> Attributes { get; private set; }
 
-			public Tuple<SmallDec, double> TargetWeightTuple { get; private set; }
+            public Tuple<SmallDec, double> TargetWeightTuple { get; private set; }
 #else
             public List<Tuple<string, float>> Attributes { get; private set; }
 
             public Tuple<float, double> TargetWeightTuple { get; private set; }
 #endif
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public ConvertedPseudoAttributeConstraint(List<Tuple<string, SmallDec>> attributes, Tuple<SmallDec, double> tuple)
-			{
-				Attributes = attributes;
-				TargetWeightTuple = tuple;
-			}
+            public ConvertedPseudoAttributeConstraint(List<Tuple<string, SmallDec>> attributes, Tuple<SmallDec, double> tuple)
+            {
+                Attributes = attributes;
+                TargetWeightTuple = tuple;
+            }
 #else
-			public ConvertedPseudoAttributeConstraint(List<Tuple<string, float>> attributes, Tuple<float, double> tuple)
+            public ConvertedPseudoAttributeConstraint(List<Tuple<string, float>> attributes, Tuple<float, double> tuple)
             {
                 Attributes = attributes;
                 TargetWeightTuple = tuple;
             }
 #endif
-		}
+        }
 
         /// <summary>
         /// Regex to search for Wildcards of the form '{number}' in attribute names.
@@ -177,47 +177,47 @@ namespace POESKillTree.TreeGenerator.Solver
             base.Initialize();
         }
 
-		/// <summary>
-		/// Assigns a number to each attribute and pseudo attribute constraint, saves
-		/// their weights and target values into _attrConstraints, saves the numbers for each
-		/// name into _attrNameLookup and saves the conversion multipliers into _attrConversionMultipliers.
-		/// </summary>
+        /// <summary>
+        /// Assigns a number to each attribute and pseudo attribute constraint, saves
+        /// their weights and target values into _attrConstraints, saves the numbers for each
+        /// name into _attrNameLookup and saves the conversion multipliers into _attrConversionMultipliers.
+        /// </summary>
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-		private void FormalizeConstraints(Dictionary<string, Tuple<SmallDec, double>> attrConstraints,
-			IReadOnlyCollection<ConvertedPseudoAttributeConstraint> pseudoConstraints)
-		{
-			_attrConstraints = new Tuple<SmallDec, double>[attrConstraints.Count + pseudoConstraints.Count];
-			_attrNameLookup = new Dictionary<string, List<int>>(attrConstraints.Count);
-			_attrConversionMultipliers = new Dictionary<Tuple<string, int>, SmallDec>(attrConstraints.Count);
-			_fixedAttributes = new SmallDec[attrConstraints.Count + pseudoConstraints.Count];
-			var i = 0;
-			foreach (var kvPair in attrConstraints)
-			{
-				_attrConstraints[i] = kvPair.Value;
-				_attrNameLookup[kvPair.Key] = new List<int> { i };
-				_attrConversionMultipliers[Tuple.Create(kvPair.Key, i)] = 1;
-				i++;
-			}
-			foreach (var pseudo in pseudoConstraints)
-			{
-				_attrConstraints[i] = pseudo.TargetWeightTuple;
-				foreach (var tuple in pseudo.Attributes)
-				{
-					if (_attrNameLookup.ContainsKey(tuple.Item1))
-					{
-						_attrNameLookup[tuple.Item1].Add(i);
-					}
-					else
-					{
-						_attrNameLookup[tuple.Item1] = new List<int> { i };
-					}
-					_attrConversionMultipliers[Tuple.Create(tuple.Item1, i)] = tuple.Item2;
-				}
-				i++;
-			}
-		}
+        private void FormalizeConstraints(Dictionary<string, Tuple<SmallDec, double>> attrConstraints,
+            IReadOnlyCollection<ConvertedPseudoAttributeConstraint> pseudoConstraints)
+        {
+            _attrConstraints = new Tuple<SmallDec, double>[attrConstraints.Count + pseudoConstraints.Count];
+            _attrNameLookup = new Dictionary<string, List<int>>(attrConstraints.Count);
+            _attrConversionMultipliers = new Dictionary<Tuple<string, int>, SmallDec>(attrConstraints.Count);
+            _fixedAttributes = new SmallDec[attrConstraints.Count + pseudoConstraints.Count];
+            var i = 0;
+            foreach (var kvPair in attrConstraints)
+            {
+                _attrConstraints[i] = kvPair.Value;
+                _attrNameLookup[kvPair.Key] = new List<int> { i };
+                _attrConversionMultipliers[Tuple.Create(kvPair.Key, i)] = 1;
+                i++;
+            }
+            foreach (var pseudo in pseudoConstraints)
+            {
+                _attrConstraints[i] = pseudo.TargetWeightTuple;
+                foreach (var tuple in pseudo.Attributes)
+                {
+                    if (_attrNameLookup.ContainsKey(tuple.Item1))
+                    {
+                        _attrNameLookup[tuple.Item1].Add(i);
+                    }
+                    else
+                    {
+                        _attrNameLookup[tuple.Item1] = new List<int> { i };
+                    }
+                    _attrConversionMultipliers[Tuple.Create(tuple.Item1, i)] = tuple.Item2;
+                }
+                i++;
+            }
+        }
 #else
-		private void FormalizeConstraints(Dictionary<string, Tuple<float, double>> attrConstraints,
+        private void FormalizeConstraints(Dictionary<string, Tuple<float, double>> attrConstraints,
             IReadOnlyCollection<ConvertedPseudoAttributeConstraint> pseudoConstraints)
         {
             _attrConstraints = new Tuple<float, double>[attrConstraints.Count + pseudoConstraints.Count];
@@ -252,7 +252,7 @@ namespace POESKillTree.TreeGenerator.Solver
         }
 #endif
 
-		protected override bool MustIncludeNodeGroup(SkillNode node)
+        protected override bool MustIncludeNodeGroup(SkillNode node)
         {
             // If the node has stats and is not a travel node,
             // the group is included.
@@ -444,22 +444,22 @@ namespace POESKillTree.TreeGenerator.Solver
             }
         }
 
-		/// <summary>
-		/// Adds all attributes of the given node ids to the given list.
-		/// </summary>
+        /// <summary>
+        /// Adds all attributes of the given node ids to the given list.
+        /// </summary>
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-		private void AddAttributes(IEnumerable<ushort> ids, IList<SmallDec> to)
-		{
-			foreach (var id in ids)
-			{
-				foreach (var tuple in _nodeAttributes[id])
-				{
-					to[tuple.Item1] += tuple.Item2;
-				}
-			}
-		}
+        private void AddAttributes(IEnumerable<ushort> ids, IList<SmallDec> to)
+        {
+            foreach (var id in ids)
+            {
+                foreach (var tuple in _nodeAttributes[id])
+                {
+                    to[tuple.Item1] += tuple.Item2;
+                }
+            }
+        }
 #else
-		private void AddAttributes(IEnumerable<ushort> ids, IList<float> to)
+        private void AddAttributes(IEnumerable<ushort> ids, IList<float> to)
         {
             foreach (var id in ids)
             {
@@ -470,7 +470,7 @@ namespace POESKillTree.TreeGenerator.Solver
             }
         }
 #endif
-		protected override double FitnessFunction(HashSet<ushort> skilledNodes)
+        protected override double FitnessFunction(HashSet<ushort> skilledNodes)
         {
             // Add stats of the MST-nodes and start stats.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
@@ -510,31 +510,31 @@ namespace POESKillTree.TreeGenerator.Solver
         }
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-		private static double CalcCsv(int x, double weight, int target)
-		{
-			// Don't go higher than the target value.
-			x = SmallDec.DynamicMin(x, target);
-			return Math.Exp(weight * CsvWeightMultiplier * x / target) / Math.Exp(weight * CsvWeightMultiplier);
+        private static double CalcCsv(int x, double weight, int target)
+        {
+            // Don't go higher than the target value.
+            x = SmallDec.DynamicMin(x, target);
+            return Math.Exp(weight * CsvWeightMultiplier * x / target) / Math.Exp(weight * CsvWeightMultiplier);
 
-		}
+        }
 
-		private static double CalcCsv(SmallDec x, double weight, SmallDec target)
-		{
-			// Don't go higher than the target value.
-			x = SmallDec.Min(x, target);
-			return Math.Exp(weight * CsvWeightMultiplier * (double)(x / target)) / Math.Exp(weight * CsvWeightMultiplier);
+        private static double CalcCsv(SmallDec x, double weight, SmallDec target)
+        {
+            // Don't go higher than the target value.
+            x = SmallDec.Min(x, target);
+            return Math.Exp(weight * CsvWeightMultiplier * (double)(x / target)) / Math.Exp(weight * CsvWeightMultiplier);
 
-		}
+        }
 #else
-		private static double CalcCsv(float x, double weight, float target)
-		{
-			// Don't go higher than the target value.
-			x = Math.Min(x, target);
-			return Math.Exp(weight * CsvWeightMultiplier * x / target) / Math.Exp(weight * CsvWeightMultiplier);
-		}
+        private static double CalcCsv(float x, double weight, float target)
+        {
+            // Don't go higher than the target value.
+            x = Math.Min(x, target);
+            return Math.Exp(weight * CsvWeightMultiplier * x / target) / Math.Exp(weight * CsvWeightMultiplier);
+        }
 #endif
 #if (PoESkillTree_UseSmallDec_Csv)
-		private static SmallDec CalcCsv(SmallDec x, double weight, SmallDec target)
+        private static SmallDec CalcCsv(SmallDec x, double weight, SmallDec target)
         {
             // Don't go higher than the target value.
             x = SmallDec.Min(x, target);
@@ -542,5 +542,5 @@ namespace POESKillTree.TreeGenerator.Solver
        }
 #endif
 
-	}
+    }
 }

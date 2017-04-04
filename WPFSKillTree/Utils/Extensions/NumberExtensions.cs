@@ -2,8 +2,8 @@
 
 namespace POESKillTree.Utils.Extensions
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
-	public static class NumberExtensions
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    public static class NumberExtensions
     {
         public static bool AlmostEquals(this float x, float y, double delta)
         {

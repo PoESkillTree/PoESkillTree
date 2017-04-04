@@ -20,7 +20,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
 {
     /// <summary>
     /// Interaction logic for SmallDecUpdownSlider.xaml (Parts of code based on SmallDecSlider code)/Replacement for metroControls:NumericUpDown
-	//Parts of code/UI based on http://www.philosophicalgeek.com/2009/11/16/a-wpf-numeric-entry-control/
+    //Parts of code/UI based on http://www.philosophicalgeek.com/2009/11/16/a-wpf-numeric-entry-control/
     /// </summary>
     [Newtonsoft.Json.JsonConverter(typeof(CustomJSONConverter))]
     public partial class SmallDecUpdownSlider : UserControl, System.ComponentModel.INotifyPropertyChanged, System.ComponentModel.INotifyPropertyChanging
@@ -42,7 +42,7 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
                 if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("IncrementProperty"));
             }
         }
-		
+        
         [System.ComponentModel.TypeConverter(typeof(StringToSmallDec))]
         public SmallDec LargeIncrement
         {
@@ -115,73 +115,73 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
             return Value;
         }
 
-		private DispatcherTimer _timer =   new DispatcherTimer();
-		private static int _delayRate = System.Windows.SystemParameters.KeyboardDelay;
-		private static int _repeatSpeed = Math.Max(1, System.Windows.SystemParameters.KeyboardSpeed);
-		private bool _isIncrementing = false;
+        private DispatcherTimer _timer =   new DispatcherTimer();
+        private static int _delayRate = System.Windows.SystemParameters.KeyboardDelay;
+        private static int _repeatSpeed = Math.Max(1, System.Windows.SystemParameters.KeyboardSpeed);
+        private bool _isIncrementing = false;
         public SmallDec _previousValue;
-		
+        
         public SmallDecUpdownSlider()
         {
             InitializeComponent();
-			ValueDisplay.PreviewTextInput +=   new TextCompositionEventHandler(ValuePreviewTextInput);
-			ValueDisplay.GotFocus +=  new RoutedEventHandler(_textbox_GotFocus);
-			ValueDisplay.LostFocus +=   new RoutedEventHandler(_textbox_LostFocus);
-			ValueDisplay.PreviewKeyDown +=   new KeyEventHandler(_textbox_PreviewKeyDown);
+            ValueDisplay.PreviewTextInput +=   new TextCompositionEventHandler(ValuePreviewTextInput);
+            ValueDisplay.GotFocus +=  new RoutedEventHandler(_textbox_GotFocus);
+            ValueDisplay.LostFocus +=   new RoutedEventHandler(_textbox_LostFocus);
+            ValueDisplay.PreviewKeyDown +=   new KeyEventHandler(_textbox_PreviewKeyDown);
             //ValueDisplay.PreviewMouseUp += new MouseButtonEventHandler(_textbox_MouseWheelUp);
 
-			IncreaseButton.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(IncreaseButton_PreviewMouseLeftButtonDown);
-			IncreaseButton.PreviewMouseLeftButtonUp +=  new MouseButtonEventHandler(IncreaseButton_PreviewMouseLeftButtonUp);
-			DecreaseButton.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(DecreaseButton_PreviewMouseLeftButtonDown);
-			DecreaseButton.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(DecreaseButton_PreviewMouseLeftButtonUp);
-			
-			_timer.Tick += new EventHandler(_timer_Tick);
+            IncreaseButton.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(IncreaseButton_PreviewMouseLeftButtonDown);
+            IncreaseButton.PreviewMouseLeftButtonUp +=  new MouseButtonEventHandler(IncreaseButton_PreviewMouseLeftButtonUp);
+            DecreaseButton.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(DecreaseButton_PreviewMouseLeftButtonDown);
+            DecreaseButton.PreviewMouseLeftButtonUp += new MouseButtonEventHandler(DecreaseButton_PreviewMouseLeftButtonUp);
+            
+            _timer.Tick += new EventHandler(_timer_Tick);
         }
 
-		void IncreaseButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-		{
-			IncreaseButton.CaptureMouse();
+        void IncreaseButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            IncreaseButton.CaptureMouse();
 
-			_timer.Interval = TimeSpan.FromMilliseconds(_delayRate * 250);
-			_timer.Start();
-			_isIncrementing = true;
-		}
+            _timer.Interval = TimeSpan.FromMilliseconds(_delayRate * 250);
+            _timer.Start();
+            _isIncrementing = true;
+        }
 
-		void IncreaseButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-		{
-			_timer.Stop();
-			IncreaseButton.ReleaseMouseCapture();
-			IncrementValue();
-		}
+        void IncreaseButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _timer.Stop();
+            IncreaseButton.ReleaseMouseCapture();
+            IncrementValue();
+        }
 
-		void DecreaseButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-		{
-			DecreaseButton.CaptureMouse();
-			_timer.Interval = TimeSpan.FromMilliseconds(_delayRate * 250);
-			_timer.Start();
-			_isIncrementing = false;
-		}
+        void DecreaseButton_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DecreaseButton.CaptureMouse();
+            _timer.Interval = TimeSpan.FromMilliseconds(_delayRate * 250);
+            _timer.Start();
+            _isIncrementing = false;
+        }
 
-		void DecreaseButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-		{
-			_timer.Stop();
-			DecreaseButton.ReleaseMouseCapture();
-			DecrementValue();
-		}
+        void DecreaseButton_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _timer.Stop();
+            DecreaseButton.ReleaseMouseCapture();
+            DecrementValue();
+        }
 
-		void _timer_Tick(object sender, EventArgs e)
-		{
-			if (_isIncrementing)
-			{
-				IncrementValue();
-			}
-			else
-			{
-				DecrementValue();
-			}
+        void _timer_Tick(object sender, EventArgs e)
+        {
+            if (_isIncrementing)
+            {
+                IncrementValue();
+            }
+            else
+            {
+                DecrementValue();
+            }
 
-			_timer.Interval = TimeSpan.FromMilliseconds(1000.0 / _repeatSpeed);
-		}
+            _timer.Interval = TimeSpan.FromMilliseconds(1000.0 / _repeatSpeed);
+        }
 
         void ConvertTextFocusEvent(object sender, RoutedEventArgs e)
         {
@@ -207,32 +207,32 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
         //}
 
         void _textbox_GotFocus(object sender, RoutedEventArgs e)
-		{
+        {
             //_previousValue = Value;//Causes it to lose info
             ConvertTextFocusEvent(sender, e);
         }
 
-		void _textbox_LostFocus(object sender, RoutedEventArgs e)
-		{
+        void _textbox_LostFocus(object sender, RoutedEventArgs e)
+        {
             ConvertTextFocusEvent(sender, e);
         }
 
-		void _textbox_PreviewKeyDown(object sender, KeyEventArgs e)
-		{
-			switch (e.Key)
-			{
-				case Key.Up:
-					IncrementValue();
-					break;
-				case Key.Down:
-					DecrementValue();
-					break;
-				case Key.PageUp:
-					Value = SmallDec.Min(Value + LargeIncrement, Maximum);
-					break;
-				case Key.PageDown:
-					Value = SmallDec.Max(Value - LargeIncrement, Minimum);
-					break;
+        void _textbox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Up:
+                    IncrementValue();
+                    break;
+                case Key.Down:
+                    DecrementValue();
+                    break;
+                case Key.PageUp:
+                    Value = SmallDec.Min(Value + LargeIncrement, Maximum);
+                    break;
+                case Key.PageDown:
+                    Value = SmallDec.Max(Value - LargeIncrement, Minimum);
+                    break;
                 case Key.Enter:
                     Value = ValueDisplay.Text;
                     break;
@@ -240,20 +240,20 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
                     _previousValue = Value;
                     break;
                 default:
-					//do nothing
-					break;
-			}
-		}
+                    //do nothing
+                    break;
+            }
+        }
 
-		private void IncrementValue()
-		{
+        private void IncrementValue()
+        {
             Value = SmallDec.Min(Value + Increment, Maximum);
-		}
-		 
-		private void DecrementValue()
-		{
-			Value = SmallDec.Max(Value - Increment, Minimum);
-		}
+        }
+         
+        private void DecrementValue()
+        {
+            Value = SmallDec.Max(Value - Increment, Minimum);
+        }
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -324,26 +324,26 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
             }
         }
 
-		void ValuePreviewTextInput(object self, TextCompositionEventArgs e)
-		{
-			if (!IsNumericInput(e.Text))
-			{
-				e.Handled = true;
-				return;
-			}
-		}
+        void ValuePreviewTextInput(object self, TextCompositionEventArgs e)
+        {
+            if (!IsNumericInput(e.Text))
+            {
+                e.Handled = true;
+                return;
+            }
+        }
 
-		private bool IsNumericInput(string text)
-		{
-			foreach (char c in text)
-			{
-				if (!char.IsDigit(c))
-				{
-					return false;
-				}
-			}
-			return true;
-		}
+        private bool IsNumericInput(string text)
+        {
+            foreach (char c in text)
+            {
+                if (!char.IsDigit(c))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         ////Used for determining size of the UI element width(separate from maximum size of value)
         //public static readonly DependencyProperty DesignWidthProperty = DependencyProperty.Register("DesignWidth", typeof(double), typeof(SmallDecSlider), new PropertyMetadata((double)100.0));
@@ -369,11 +369,11 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
                 if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("RelativeSliderWidth"));
             }
         }
-		
+        
         private static void OnValuePropertyChanged(DependencyObject self, DependencyPropertyChangedEventArgs e)
         {
             var Self = (SmallDecUpdownSlider)self;
-			
+            
             //var newValue = (SmallDec)e.NewValue;
    //         if (newValue < Self.Minimum)
    //         {
@@ -388,10 +388,10 @@ namespace CSharpGlobalCode.GlobalCode_ExperimentalCode
    //             Self.Value = newValue;
    //         }
 //Update Slider position
-			//Only need accuracy of relative position to XX.XX% 
-			SmallDec PercentPosition = ((Self.Value - Self.Minimum) / (Self.Maximum - Self.Minimum));
-			double RelativePosition = (double)(PercentPosition*Self.ValueDisplay.ActualWidth);
-			Self.RelativeSliderWidth = RelativePosition;
+            //Only need accuracy of relative position to XX.XX% 
+            SmallDec PercentPosition = ((Self.Value - Self.Minimum) / (Self.Maximum - Self.Minimum));
+            double RelativePosition = (double)(PercentPosition*Self.ValueDisplay.ActualWidth);
+            Self.RelativeSliderWidth = RelativePosition;
             Self.ValueDisplay.Text = (string)Self.Value;
         }
         private void ContainerCanvas_SizeChanged(object sender, SizeChangedEventArgs e)

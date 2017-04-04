@@ -10,7 +10,7 @@ using Attribute = POESKillTree.ViewModels.Attribute;
 
 namespace POESKillTree.Utils.Converter
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     [ValueConversion(typeof (string), typeof (string))]
     //list view sorter here
     public class GroupStringConverter : IValueConverter, IComparer

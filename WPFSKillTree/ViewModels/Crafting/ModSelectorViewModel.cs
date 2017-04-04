@@ -10,7 +10,7 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.ViewModels.Crafting
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// View model for selecting a mod out of a list of affixes and selecting their values.
     /// </summary>
@@ -66,15 +66,15 @@ namespace POESKillTree.ViewModels.Crafting
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
         public IEnumerable<IEnumerable<SmallDec>> SelectedValues
 #else
-		public IEnumerable<IEnumerable<float>> SelectedValues
+        public IEnumerable<IEnumerable<float>> SelectedValues
 #endif
         {
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
-			get { return _sliderGroups.Select(g => g.Sliders.Select(s => s.Value)); }
+            get { return _sliderGroups.Select(g => g.Sliders.Select(s => s.Value)); }
 #else
-			get { return _sliderGroups.Select(g => g.Sliders.Select(s => s.Value)); }
+            get { return _sliderGroups.Select(g => g.Sliders.Select(s => s.Value)); }
 #endif
-		}
+        }
 
         private readonly ObservableCollection<SliderGroupViewModel> _sliderGroups =
             new ObservableCollection<SliderGroupViewModel>();
@@ -122,7 +122,7 @@ namespace POESKillTree.ViewModels.Crafting
                                         (int) SmallDec.Round((r.To - r.From) * (isFloatMod ? 100 : 1) + 1)))
                             .Select(f => isFloatMod ? (double) f / 100 : f);
 #else
-									Enumerable.Range((int) Math.Round(isFloatMod ? r.From * 100 : r.From),
+                                    Enumerable.Range((int) Math.Round(isFloatMod ? r.From * 100 : r.From),
                                         (int) Math.Round((r.To - r.From) * (isFloatMod ? 100 : 1) + 1)))
                             .Select(f => isFloatMod ? (double) f / 100 : f);
 #endif
@@ -187,18 +187,18 @@ namespace POESKillTree.ViewModels.Crafting
                 var iValue = other.ValueIndex;
                 if (!SelectedAffix.QueryMod(iStat, iValue, other.Value).Intersect(tiers).Any())
                 {
-					// slider isn't inside current tier
+                    // slider isn't inside current tier
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
                     Range<SmallDec> moveto = tiers[0].Stats[iStat].Ranges[iValue];
 #else
-					Range<float> moveto = tiers[0].Stats[iStat].Ranges[iValue];
+                    Range<float> moveto = tiers[0].Stats[iStat].Ranges[iValue];
 #endif
 #if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_UseSmallDec_ForGeneratorBars)
-					other.Value = (e.NewValue > e.OldValue) ? (float)moveto.From : (float)moveto.To;
+                    other.Value = (e.NewValue > e.OldValue) ? (float)moveto.From : (float)moveto.To;
 #else
-					other.Value = (e.NewValue > e.OldValue) ? moveto.From : moveto.To;
+                    other.Value = (e.NewValue > e.OldValue) ? moveto.From : moveto.To;
 #endif
-				}
+                }
             }
             _updatingSliders = false;
 

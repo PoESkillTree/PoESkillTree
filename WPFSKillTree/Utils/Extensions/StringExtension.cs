@@ -4,8 +4,8 @@ using System.IO;
 
 namespace POESKillTree.Utils.Extensions
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
-	public static class StringExtensions
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    public static class StringExtensions
     {
         public static bool Contains(this string source, string toCheck, StringComparison comp)
         {

@@ -3,7 +3,7 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Model
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// Data class for Constraints with a data object, a target value and a weight.
     /// </summary>
@@ -45,7 +45,7 @@ namespace POESKillTree.TreeGenerator.Model
             set { SetProperty(ref _targetValue, value); }
         }
 #else
-		private float _targetValue = DefaultTargetValue;
+        private float _targetValue = DefaultTargetValue;
 
         public float TargetValue
         {

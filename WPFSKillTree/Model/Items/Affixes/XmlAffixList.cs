@@ -8,7 +8,7 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items.Affixes
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     // Contains the classes that allow serialization and deserialization of Affixes.xml
 
     [XmlRoot(Namespace = "", IsNullable = false, ElementName = "AffixList")]

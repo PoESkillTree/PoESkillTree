@@ -10,11 +10,11 @@ using POESKillTree.Utils.Extensions;
 
 namespace UpdateDB.DataLoading
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
-	/// <summary>
-	/// Extracts affix information from exilemods.com as a <see cref="XmlAffixList"/>.
-	/// </summary>
-	public class AffixDataLoader : XmlDataLoader<XmlAffixList>
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    /// <summary>
+    /// Extracts affix information from exilemods.com as a <see cref="XmlAffixList"/>.
+    /// </summary>
+    public class AffixDataLoader : XmlDataLoader<XmlAffixList>
     {
         private const string Url = "http://www.exilemods.com/js/data.js";
 
@@ -237,13 +237,13 @@ namespace UpdateDB.DataLoading
                 stat = rangeRenameFunc(affix, stat);
                 var fromTo = stat.Split(new[] {" to "}, StringSplitOptions.None);
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				SmallDec from = fromTo[0];
-				SmallDec to = fromTo.Length > 1 ? fromTo[1] : from;
+                SmallDec from = fromTo[0];
+                SmallDec to = fromTo.Length > 1 ? fromTo[1] : from;
 #else
                 float from = fromTo[0].ParseFloat();
                 float to = fromTo.Length > 1 ? fromTo[1].ParseFloat() : from;
 #endif
-				xmlStats.Add(new XmlStat
+                xmlStats.Add(new XmlStat
                 {
                     Name = affix,
                     From = new[] { from },

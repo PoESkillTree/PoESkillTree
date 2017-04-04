@@ -20,7 +20,7 @@ using Weapon = POESKillTree.SkillTreeFiles.Compute.Weapon;
 
 namespace POESKillTree.SkillTreeFiles
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     public class ItemDB
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ItemDB));
@@ -1342,7 +1342,7 @@ namespace POESKillTree.SkillTreeFiles
         {
             AttributeSet attrs = new AttributeSet();
 
-			// Collect gem attributes and modifiers at gem level.
+            // Collect gem attributes and modifiers at gem level.
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
             foreach (var prop in gem.Properties)
                 attrs.Add(prop.Attribute, new List<SmallDec>(prop.Value));
@@ -1354,7 +1354,7 @@ namespace POESKillTree.SkillTreeFiles
             foreach (ItemMod mod in gem.Mods)
                 attrs.Add(mod.Attribute, new List<SmallDec>(SmallDec.CreateList(mod.Value)));
 #else
-			foreach (var prop in gem.Properties)
+            foreach (var prop in gem.Properties)
                 attrs.Add(prop.Attribute, new List<float>(prop.Value));
             foreach (ItemMod mod in gem.Mods)
                 attrs.Add(mod.Attribute, new List<float>(mod.Value));
@@ -1533,7 +1533,7 @@ namespace POESKillTree.SkillTreeFiles
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
             SmallDec ret;
 #else
-			float ret;
+            float ret;
 #endif
             if (gem.Properties.TryGetValue("Level: #", 0, out ret))
                 return (int) ret;

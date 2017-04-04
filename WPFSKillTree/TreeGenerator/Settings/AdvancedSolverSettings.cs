@@ -5,7 +5,7 @@ using POESKillTree.TreeGenerator.Model.PseudoAttributes;
 
 namespace POESKillTree.TreeGenerator.Settings
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// Data class for settings for AdvancedSolver.
     /// </summary>

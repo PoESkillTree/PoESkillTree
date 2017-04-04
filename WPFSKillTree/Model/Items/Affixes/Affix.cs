@@ -9,7 +9,7 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items.Affixes
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     public class Affix
     {
         public ItemType ItemType { get; }
@@ -22,17 +22,17 @@ namespace POESKillTree.Model.Items.Affixes
         [UsedImplicitly(ImplicitUseKindFlags.Access)] // accessed in ModSelectorView
         public string Name { get; }
 
-		/// <summary>
-		/// The ranges of this affix. The first array index specifies the stat (the stat's name is the element in
-		/// StatNames with the same index). The second array index specifies the value of the stat. The list then
-		/// specifies the ranges of the different tiers for this value of this stat.
-		/// </summary>
+        /// <summary>
+        /// The ranges of this affix. The first array index specifies the stat (the stat's name is the element in
+        /// StatNames with the same index). The second array index specifies the value of the stat. The list then
+        /// specifies the ranges of the different tiers for this value of this stat.
+        /// </summary>
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
         private readonly IReadOnlyList<Range<SmallDec>>[][] _ranges;
 
         private readonly IRangeTree<SmallDec, ModWrapper>[][] _trees;
 #else
-		private readonly IReadOnlyList<Range<float>>[][] _ranges;
+        private readonly IReadOnlyList<Range<float>>[][] _ranges;
 
         private readonly IRangeTree<float, ModWrapper>[][] _trees;
 #endif
@@ -80,7 +80,7 @@ namespace POESKillTree.Model.Items.Affixes
             _trees = new IRangeTree<SmallDec, ModWrapper>[statCount][];
             _ranges = new IReadOnlyList<Range<SmallDec>>[statCount][];
 #else
-			_trees = new IRangeTree<float, ModWrapper>[statCount][];
+            _trees = new IRangeTree<float, ModWrapper>[statCount][];
             _ranges = new IReadOnlyList<Range<float>>[statCount][];
 #endif
             var valueCounts = new int[statCount];
@@ -93,7 +93,7 @@ namespace POESKillTree.Model.Items.Affixes
                 _trees[i] = new IRangeTree<SmallDec, ModWrapper>[rangeCount];
                 _ranges[i] = new IReadOnlyList<Range<SmallDec>>[rangeCount];
 #else
-				_trees[i] = new IRangeTree<float, ModWrapper>[rangeCount];
+                _trees[i] = new IRangeTree<float, ModWrapper>[rangeCount];
                 _ranges[i] = new IReadOnlyList<Range<float>>[rangeCount];
 #endif
                 valueCounts[i] = rangeCount;
@@ -110,7 +110,7 @@ namespace POESKillTree.Model.Items.Affixes
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
                     _trees[i][j] = new RangeTree<SmallDec, ModWrapper>(wrapper, comparer);
 #else
-					_trees[i][j] = new RangeTree<float, ModWrapper>(wrapper, comparer);
+                    _trees[i][j] = new RangeTree<float, ModWrapper>(wrapper, comparer);
 #endif
                     _ranges[i][j] = wrapper.Select(w => w.Range).ToList();
                 }
@@ -123,7 +123,7 @@ namespace POESKillTree.Model.Items.Affixes
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
         public IEnumerable<ItemModTier> QueryMod(int statIndex, int valueIndex, SmallDec value)
 #else
-		public IEnumerable<ItemModTier> QueryMod(int statIndex, int valueIndex, float value)
+        public IEnumerable<ItemModTier> QueryMod(int statIndex, int valueIndex, float value)
 #endif
         {
             return _trees[statIndex][valueIndex].Query(value).Select(mw => mw.ItemModTier);
@@ -132,7 +132,7 @@ namespace POESKillTree.Model.Items.Affixes
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
         public IEnumerable<ItemModTier> Query(IEnumerable<IEnumerable<SmallDec>> values)
 #else
-		public IEnumerable<ItemModTier> Query(IEnumerable<IEnumerable<float>> values)
+        public IEnumerable<ItemModTier> Query(IEnumerable<IEnumerable<float>> values)
 #endif
         {
             if (!_trees.Any())
@@ -151,14 +151,14 @@ namespace POESKillTree.Model.Items.Affixes
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
         private static IEnumerable<ItemModTier> QueryForTree(SmallDec value, IRangeTree<SmallDec, ModWrapper> tree)
 #else
-		private static IEnumerable<ItemModTier> QueryForTree(float value, IRangeTree<float, ModWrapper> tree)
+        private static IEnumerable<ItemModTier> QueryForTree(float value, IRangeTree<float, ModWrapper> tree)
 #endif
             => tree.Query(value).Select(w => w.ItemModTier);
 
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
         public IEnumerable<ItemMod> ToItemMods(IEnumerable<IEnumerable<SmallDec>> values)
 #else
-		public IEnumerable<ItemMod> ToItemMods(IEnumerable<IEnumerable<float>> values)
+        public IEnumerable<ItemMod> ToItemMods(IEnumerable<IEnumerable<float>> values)
 #endif
         {
             return values.EquiZip(_firstTierStats, (vs, stat) => stat.ToItemMod(vs.ToList()));
@@ -167,7 +167,7 @@ namespace POESKillTree.Model.Items.Affixes
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
         public IReadOnlyList<Range<SmallDec>> GetRanges(int statIndex, int valueIndex)
 #else
-		public IReadOnlyList<Range<float>> GetRanges(int statIndex, int valueIndex)
+        public IReadOnlyList<Range<float>> GetRanges(int statIndex, int valueIndex)
 #endif
             =>_ranges[statIndex][valueIndex];
 
@@ -179,7 +179,7 @@ namespace POESKillTree.Model.Items.Affixes
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
         private class ModWrapper : IRangeProvider<SmallDec>
 #else
-		private class ModWrapper : IRangeProvider<float>
+        private class ModWrapper : IRangeProvider<float>
 #endif
         {
 
@@ -188,17 +188,17 @@ namespace POESKillTree.Model.Items.Affixes
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
             public Range<SmallDec> Range { get; }
 
-			Range<float> IRangeProvider<float>.Range
-			{
-				get
-				{
-					throw new NotImplementedException();
-				}
-			}
+            Range<float> IRangeProvider<float>.Range
+            {
+                get
+                {
+                    throw new NotImplementedException();
+                }
+            }
 
-			public ModWrapper(ItemModTier tier, Range<SmallDec> range)
+            public ModWrapper(ItemModTier tier, Range<SmallDec> range)
 #else
-			public Range<float> Range { get; }
+            public Range<float> Range { get; }
 
             public ModWrapper(ItemModTier tier, Range<float> range)
 #endif

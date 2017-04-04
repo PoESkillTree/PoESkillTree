@@ -128,16 +128,16 @@ namespace POESKillTree.TreeGenerator.ViewModels
 //                            if (TokenType != null) { Console.WriteLine("Weight jToken has detected value of " + TokenType); }
 //#endif
 
-							var attr = attrToken.ToObject<string>();
-							newConstraints.Add(new AttributeConstraint(attr)
-							{
-	#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_EnableTargetWeightAsSmallDec)
-								TargetValue = targetToken.ToObject<SmallDec>(),
-	#else
-								TargetValue = targetToken.ToObject<float>(),
-	#endif
-								Weight = weightToken.ToObject<int>()
-							});
+                            var attr = attrToken.ToObject<string>();
+                            newConstraints.Add(new AttributeConstraint(attr)
+                            {
+    #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_EnableTargetWeightAsSmallDec)
+                                TargetValue = targetToken.ToObject<SmallDec>(),
+    #else
+                                TargetValue = targetToken.ToObject<float>(),
+    #endif
+                                Weight = weightToken.ToObject<int>()
+                            });
                             _vm._addedAttributes.Add(attr);
                         }
 
@@ -169,15 +169,15 @@ namespace POESKillTree.TreeGenerator.ViewModels
                             if (!pseudoDict.TryGetValue(attrToken.ToObject<string>(), out attr))
                                 continue;
 
-							newConstraints.Add(new PseudoAttributeConstraint(attr)
-							{
-	#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_EnableTargetWeightAsSmallDec)
-								TargetValue = targetToken.ToObject<SmallDec>(),
-	#else
-								TargetValue = targetToken.ToObject<float>(),
-	#endif
-								Weight = weightToken.ToObject<int>()
-							});
+                            newConstraints.Add(new PseudoAttributeConstraint(attr)
+                            {
+    #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_EnableTargetWeightAsSmallDec)
+                                TargetValue = targetToken.ToObject<SmallDec>(),
+    #else
+                                TargetValue = targetToken.ToObject<float>(),
+    #endif
+                                Weight = weightToken.ToObject<int>()
+                            });
                             _vm._addedPseudoAttributes.Add(attr);
                         }
 
@@ -790,11 +790,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
             foreach (var attribute in attributes)
             {
 #if (PoESkillTree_UseSmallDec_ForAttributes&&!PoESkillTree_EnableTargetWeightAsSmallDec)
-				AttributeConstraints.Add(new AttributeConstraint(attribute.Key) { TargetValue = (float)attribute.Value });
+                AttributeConstraints.Add(new AttributeConstraint(attribute.Key) { TargetValue = (float)attribute.Value });
 #else
-				AttributeConstraints.Add(new AttributeConstraint(attribute.Key) {TargetValue = attribute.Value});
+                AttributeConstraints.Add(new AttributeConstraint(attribute.Key) {TargetValue = attribute.Value});
 #endif
-			}
+            }
         }
 
         /// <summary>
@@ -834,11 +834,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
                             if (pseudoAttributeConstraint.Data == pseudoAttribute)
                             {
 #if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_EnableTargetWeightAsSmallDec)
-								pseudoAttributeConstraint.TargetValue += (float)(attributeConstraint.TargetValue * pseudo.Multiplier);
+                                pseudoAttributeConstraint.TargetValue += (float)(attributeConstraint.TargetValue * pseudo.Multiplier);
 #else
-								pseudoAttributeConstraint.TargetValue += attributeConstraint.TargetValue * pseudo.Multiplier;
+                                pseudoAttributeConstraint.TargetValue += attributeConstraint.TargetValue * pseudo.Multiplier;
 #endif
-							}
+                            }
                         }
                     }
                     else
@@ -847,11 +847,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
                         PseudoAttributeConstraints.Add(new PseudoAttributeConstraint(pseudoAttribute)
                         {
 #if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_EnableTargetWeightAsSmallDec)
-							TargetValue = (float)(attributeConstraint.TargetValue * pseudo.Multiplier)
+                            TargetValue = (float)(attributeConstraint.TargetValue * pseudo.Multiplier)
 #else
-							TargetValue = attributeConstraint.TargetValue * pseudo.Multiplier
+                            TargetValue = attributeConstraint.TargetValue * pseudo.Multiplier
 #endif
-						});
+                        });
                     }
                 }
 

@@ -11,7 +11,7 @@ using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.SkillTreeFiles
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /* Known issues:
      * - No support for minions, traps, mines and totems.
      * - No support for Vaal gems.
@@ -37,24 +37,24 @@ namespace POESKillTree.SkillTreeFiles
             List<AttackSource> Sources = new List<AttackSource>();
             // Skill gem local attributes.
             public AttributeSet Local = new AttributeSet();
-			// Damage effectiveness.
+            // Damage effectiveness.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			SmallDec Effectiveness;
+            SmallDec Effectiveness;
 #else
-			float Effectiveness;
+            float Effectiveness;
 #endif
-			// List of damage conversions.
-			List<Damage.Converted> Converts = new List<Damage.Converted>();
+            // List of damage conversions.
+            List<Damage.Converted> Converts = new List<Damage.Converted>();
             // List of damage gains.
             List<Damage.Gained> Gains = new List<Damage.Gained>();
-			// The number of hits skill does per single attack.
+            // The number of hits skill does per single attack.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public SmallDec HitsPerAttack;
+            public SmallDec HitsPerAttack;
 #else
-			public float HitsPerAttack;
+            public float HitsPerAttack;
 #endif
-			// The flag whether skill strikes with both weapons at once instead of alternating weapons while dual wielding.
-			public bool IsStrikingWithBothWeaponsAtOnce;
+            // The flag whether skill strikes with both weapons at once instead of alternating weapons while dual wielding.
+            public bool IsStrikingWithBothWeaponsAtOnce;
             // The flag whether skill is usable.
             public bool IsUseable = true;
 
@@ -122,40 +122,40 @@ namespace POESKillTree.SkillTreeFiles
                 // Iron Grip.
                 if (IronGrip || attrs.ContainsKey("Strength's damage bonus applies to Projectile Attacks made with Supported Skills"))
                 {
-					// Create projectile attack damage bonus from value of implicit melee physical damage increase.
+                    // Create projectile attack damage bonus from value of implicit melee physical damage increase.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-					SmallDec bonus = Implicit["#% increased Melee Physical Damage"][0];
+                    SmallDec bonus = Implicit["#% increased Melee Physical Damage"][0];
 #else
                     float bonus = Implicit["#% increased Melee Physical Damage"][0];
 #endif
-					if (attrs.ContainsKey("#% increased Projectile Weapon Damage"))
+                    if (attrs.ContainsKey("#% increased Projectile Weapon Damage"))
                         attrs["#% increased Projectile Weapon Damage"][0] += bonus;
                     else
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-						attrs.Add("#% increased Projectile Weapon Damage", new List<SmallDec> { bonus });
+                        attrs.Add("#% increased Projectile Weapon Damage", new List<SmallDec> { bonus });
 #else
                         attrs.Add("#% increased Projectile Weapon Damage", new List<float> { bonus });
 #endif
-				}
+                }
 
                 // Iron Will.
                 if (attrs.ContainsKey("Strength's damage bonus applies to Spell Damage as well for Supported Skills"))
                 {
-					// Create spell damage bonus from value of implicit melee physical damage increase.
+                    // Create spell damage bonus from value of implicit melee physical damage increase.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-					SmallDec bonus = Implicit["#% increased Melee Physical Damage"][0];
+                    SmallDec bonus = Implicit["#% increased Melee Physical Damage"][0];
 #else
                     float bonus = Implicit["#% increased Melee Physical Damage"][0];
 #endif
-					if (attrs.ContainsKey("#% increased Spell Damage"))
+                    if (attrs.ContainsKey("#% increased Spell Damage"))
                         attrs["#% increased Spell Damage"][0] += bonus;
                     else
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-						attrs.Add("#% increased Spell Damage", new List<SmallDec> { bonus });
+                        attrs.Add("#% increased Spell Damage", new List<SmallDec> { bonus });
 #else
                         attrs.Add("#% increased Spell Damage", new List<float> { bonus });
 #endif
-				}
+                }
 
                 // Collect damage gains, increases and multipliers.
                 foreach (var attr in attrs)
@@ -185,7 +185,7 @@ namespace POESKillTree.SkillTreeFiles
                     foreach (Damage damage in source.Deals)
                     {
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-						SmallDec inc = 0;
+                        SmallDec inc = 0;
 #else
                         float inc = 0;
 #endif
@@ -205,13 +205,13 @@ namespace POESKillTree.SkillTreeFiles
                         if (inc != 0)
                             damage.Increase(inc);
 
-						// Apply all less multipliers.
+                        // Apply all less multipliers.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-						SmallDec mul = 1;
+                        SmallDec mul = 1;
 #else
                         float mul = 1;
 #endif
-						foreach (Damage.More more in mores.FindAll(m => m.IsLess && damage.Matches(m)))
+                        foreach (Damage.More more in mores.FindAll(m => m.IsLess && damage.Matches(m)))
                             mul *= (100 + more.Percent) / 100;
                         if (mul != 1)
                             damage.Multiply(RoundHalfDownValue(mul, 2));
@@ -240,23 +240,23 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
 
-			// Returns attacks/casts per second.
+            // Returns attacks/casts per second.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public SmallDec AttacksPerSecond()
+            public SmallDec AttacksPerSecond()
 #else
             public float AttacksPerSecond()
 #endif
-			{
+            {
                 return Nature.Is(DamageSource.Attack) && IsDualWielding ? (Sources[0].APS + Sources[1].APS) / 2 : Sources[0].APS;
             }
 
-			// Returns average hit including critical strikes.
+            // Returns average hit including critical strikes.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public SmallDec AverageHit()
+            public SmallDec AverageHit()
 #else
             public float AverageHit()
 #endif
-			{
+            {
                 return Nature.Is(DamageSource.Attack) && IsDualWielding ? (Sources[0].AverageHit() + Sources[1].AverageHit()) / 2 : Sources[0].AverageHit();
             }
 
@@ -266,13 +266,13 @@ namespace POESKillTree.SkillTreeFiles
                 return (weapon.IsWeapon() || weapon.IsUnarmed()) && Nature.Is(weapon.Nature.WeaponType) && ItemDB.CanUse(Gem, weapon);
             }
 
-	// Returns chance to hit.
+    // Returns chance to hit.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public SmallDec ChanceToHit()
+            public SmallDec ChanceToHit()
 #else
             public float ChanceToHit()
 #endif
-			{
+            {
                 return Nature.Is(DamageSource.Attack) && IsDualWielding ? (Sources[0].ChanceToHit() + Sources[1].ChanceToHit()) / 2 : Sources[0].ChanceToHit();
             }
 
@@ -286,19 +286,19 @@ namespace POESKillTree.SkillTreeFiles
                     List<Damage.Converted> conversions;
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-					SmallDec pool = convert.Count > 0 ? 100 : 0;
+                    SmallDec pool = convert.Count > 0 ? 100 : 0;
 #else
                     float pool = convert.Count > 0 ? 100 : 0;
 #endif
-					// Apply gem conversions.
-					if (pool > 0)
+                    // Apply gem conversions.
+                    if (pool > 0)
                         foreach (Damage.Converted conv in Converts.FindAll(c => c.Source == DamageConversionSource.Gem && c.From == type))
                         {
                             pool -= conv.Percent;
                             conv.Apply(convert, output, 1);
                         }
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-					SmallDec sum;
+                    SmallDec sum;
 #else
                     float sum;
 #endif
@@ -396,17 +396,17 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
 
-			// Returns damage per second.
+            // Returns damage per second.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public SmallDec DamagePerSecond()
-			{
-				SmallDec dps = AverageHit() * (IsDamageOnUse() ? 1 : AttacksPerSecond()) * RoundValue(ChanceToHit(), 0) / 100;
+            public SmallDec DamagePerSecond()
+            {
+                SmallDec dps = AverageHit() * (IsDamageOnUse() ? 1 : AttacksPerSecond()) * RoundValue(ChanceToHit(), 0) / 100;
 #else
             public float DamagePerSecond()
             {
                 float dps = AverageHit() * (IsDamageOnUse() ? 1 : AttacksPerSecond()) * RoundValue(ChanceToHit(), 0) / 100;
 #endif
-				dps *= HitsPerAttack;
+                dps *= HitsPerAttack;
 
                 // XXX: If skill doesn't alternate weapons while dual wielding (i.e. strikes with both weapons at once), then DPS is doubled.
                 return IsDualWielding && IsStrikingWithBothWeaponsAtOnce ? dps * 2 : dps;
@@ -464,15 +464,15 @@ namespace POESKillTree.SkillTreeFiles
                 AttributeSet props = new AttributeSet();
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				props.Add(IsDamageOnUse() ? "Damage per Use: #" : "Damage per Second: #", new List<SmallDec> { RoundHalfDownValue(DamagePerSecond(), 1) });
+                props.Add(IsDamageOnUse() ? "Damage per Use: #" : "Damage per Second: #", new List<SmallDec> { RoundHalfDownValue(DamagePerSecond(), 1) });
 
-				if (Nature.Is(DamageSource.Attack))
-				{
-					props.Add("Chance to Hit: #%", new List<SmallDec> { RoundValue(ChanceToHit(), 0) });
-					props.Add("Attacks per Second: #", new List<SmallDec> { RoundHalfDownValue(AttacksPerSecond(), 1) });
-				}
-				else
-					props.Add("Casts per Second: #", new List<SmallDec> { RoundHalfDownValue(AttacksPerSecond(), 1) });
+                if (Nature.Is(DamageSource.Attack))
+                {
+                    props.Add("Chance to Hit: #%", new List<SmallDec> { RoundValue(ChanceToHit(), 0) });
+                    props.Add("Attacks per Second: #", new List<SmallDec> { RoundHalfDownValue(AttacksPerSecond(), 1) });
+                }
+                else
+                    props.Add("Casts per Second: #", new List<SmallDec> { RoundHalfDownValue(AttacksPerSecond(), 1) });
 #else
                 props.Add(IsDamageOnUse() ? "Damage per Use: #" : "Damage per Second: #", new List<float> { RoundHalfDownValue(DamagePerSecond(), 1) });
 
@@ -485,7 +485,7 @@ namespace POESKillTree.SkillTreeFiles
                     props.Add("Casts per Second: #", new List<float> { RoundHalfDownValue(AttacksPerSecond(), 1) });
 #endif
 
-				foreach (AttackSource source in Sources)
+                foreach (AttackSource source in Sources)
                 {
                     string sourcePrefix = source.Name.Length == 0 ? "" : source.Name + " ";
 
@@ -498,22 +498,22 @@ namespace POESKillTree.SkillTreeFiles
 
                     if (source.Nature.Is(DamageSource.Attack))
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-						props.Add(sourcePrefix + "Accuracy Rating: #", new List<SmallDec> { RoundValue(source.Accuracy, 0) });
+                        props.Add(sourcePrefix + "Accuracy Rating: #", new List<SmallDec> { RoundValue(source.Accuracy, 0) });
 #else
                         props.Add(sourcePrefix + "Accuracy Rating: #", new List<float> { RoundValue(source.Accuracy, 0) });
 #endif
 
-					if (source.CriticalChance > 0)
+                    if (source.CriticalChance > 0)
                     {
-						// XXX: Different rounding style for spells and attacks. Really?
+                        // XXX: Different rounding style for spells and attacks. Really?
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-						props.Add(sourcePrefix + "Critical Strike Chance: #%", new List<SmallDec> { Nature.Is(DamageSource.Spell) ? RoundValue(source.CriticalChance, 1) : RoundHalfDownValue(source.CriticalChance, 1) });
-						props.Add(sourcePrefix + "Critical Strike Multiplier: #%", new List<SmallDec> { RoundValue(source.CriticalMultiplier, 0) });
+                        props.Add(sourcePrefix + "Critical Strike Chance: #%", new List<SmallDec> { Nature.Is(DamageSource.Spell) ? RoundValue(source.CriticalChance, 1) : RoundHalfDownValue(source.CriticalChance, 1) });
+                        props.Add(sourcePrefix + "Critical Strike Multiplier: #%", new List<SmallDec> { RoundValue(source.CriticalMultiplier, 0) });
 #else
                         props.Add(sourcePrefix + "Critical Strike Chance: #%", new List<float> { Nature.Is(DamageSource.Spell) ? RoundValue(source.CriticalChance, 1) : RoundHalfDownValue(source.CriticalChance, 1) });
                         props.Add(sourcePrefix + "Critical Strike Multiplier: #%", new List<float> { RoundValue(source.CriticalMultiplier, 0) });
 #endif
-					}
+                    }
                 }
 
                 return new ListGroup(Name + (IsUseable ? "" : " (Unuseable)"), props);
@@ -523,16 +523,16 @@ namespace POESKillTree.SkillTreeFiles
         public class AttackSource
         {
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			// The accuracy rating.
-			public SmallDec Accuracy;
-			// Attacks/casts per second.
-			public SmallDec APS;
-			// Cast time.
-			public SmallDec CastTime;
-			// Critical strike chance (in percent).
-			public SmallDec CriticalChance;
-			// Critical strike multiplier (in percent).
-			public SmallDec CriticalMultiplier = 150;
+            // The accuracy rating.
+            public SmallDec Accuracy;
+            // Attacks/casts per second.
+            public SmallDec APS;
+            // Cast time.
+            public SmallDec CastTime;
+            // Critical strike chance (in percent).
+            public SmallDec CriticalChance;
+            // Critical strike multiplier (in percent).
+            public SmallDec CriticalMultiplier = 150;
 #else
             // The accuracy rating.
             public float Accuracy;
@@ -545,8 +545,8 @@ namespace POESKillTree.SkillTreeFiles
             // Critical strike multiplier (in percent).
             public float CriticalMultiplier = 150;
 #endif
-			// List of damage dealt by source.
-			public List<Damage> Deals = new List<Damage>();
+            // List of damage dealt by source.
+            public List<Damage> Deals = new List<Damage>();
             // Local attributes of weapon.
             public AttributeSet Local;
             // The source name.
@@ -638,12 +638,12 @@ namespace POESKillTree.SkillTreeFiles
                 if (Local.ContainsKey("+# to Accuracy Rating"))
                     Accuracy += Local["+# to Accuracy Rating"][0];
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				SmallDec incAcc = 0;
+                SmallDec incAcc = 0;
 #else
                 float incAcc = 0;
 #endif
-				// Local weapon accuracy bonus.
-				if (Local.ContainsKey("#% increased Accuracy Rating"))
+                // Local weapon accuracy bonus.
+                if (Local.ContainsKey("#% increased Accuracy Rating"))
                     incAcc += Local["#% increased Accuracy Rating"][0];
                 // Gems & global bonuses.
                 if (attrs.ContainsKey("+# to Accuracy Rating"))
@@ -679,11 +679,11 @@ namespace POESKillTree.SkillTreeFiles
                             APS = IncreaseValueByPercentage(APS, Local["#% increased Attack Speed"][0]);
                     }
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-					SmallDec incAS = 0;
+                    SmallDec incAS = 0;
 #else
                     float incAS = 0;
 #endif
-					if (attrs.ContainsKey("#% increased Attack Speed"))
+                    if (attrs.ContainsKey("#% increased Attack Speed"))
                         incAS += attrs["#% increased Attack Speed"][0];
                     if (attrs.ContainsKey("#% reduced Attack Speed"))
                         incAS -= attrs["#% reduced Attack Speed"][0];
@@ -723,11 +723,11 @@ namespace POESKillTree.SkillTreeFiles
                         APS = IncreaseValueByPercentage(APS, incAS);
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-					SmallDec moreAS = 1;
+                    SmallDec moreAS = 1;
 #else
                     float moreAS = 1;
 #endif
-					if (attrs.ContainsKey("#% more Attack Speed"))
+                    if (attrs.ContainsKey("#% more Attack Speed"))
                         moreAS *= 1 + attrs["#% more Attack Speed"][0] / 100;
                     if (attrs.ContainsKey("#% less Attack Speed"))
                         moreAS *= 1 - attrs["#% less Attack Speed"][0] / 100;
@@ -748,11 +748,11 @@ namespace POESKillTree.SkillTreeFiles
                 else // Spell (use Cast Time directly).
                 {
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-					SmallDec incCS = 0;
+                    SmallDec incCS = 0;
 #else
                     float incCS = 0;
 #endif
-					if (attrs.ContainsKey("#% increased Cast Speed"))
+                    if (attrs.ContainsKey("#% increased Cast Speed"))
                         incCS += attrs["#% increased Cast Speed"][0];
                     if (attrs.ContainsKey("#% reduced Cast Speed"))
                         incCS -= attrs["#% reduced Cast Speed"][0];
@@ -766,11 +766,11 @@ namespace POESKillTree.SkillTreeFiles
                         CastTime = RoundValue(CastTime / ((100 + incCS) / 100), 3);
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-					SmallDec moreCS = 0;
+                    SmallDec moreCS = 0;
 #else
                     float moreCS = 0;
 #endif
-					if (attrs.ContainsKey("#% more Cast Speed"))
+                    if (attrs.ContainsKey("#% more Cast Speed"))
                         moreCS += attrs["#% more Cast Speed"][0];
                     if (attrs.ContainsKey("#% less Cast Speed"))
                         moreCS -= attrs["#% less Cast Speed"][0];
@@ -781,13 +781,13 @@ namespace POESKillTree.SkillTreeFiles
                 }
             }
 
-			// Returns average hit including critical strikes.
+            // Returns average hit including critical strikes.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public SmallDec AverageHit()
+            public SmallDec AverageHit()
 #else
             public float AverageHit()
 #endif
-			{
+            {
                 Damage total = Deals.Find(d => d.Type == DamageType.Total);
 
                 return total.AverageHit() * (1 + (CriticalChance / 100) * (RoundValue(CriticalMultiplier, 0) - 100) / 100);
@@ -818,13 +818,13 @@ namespace POESKillTree.SkillTreeFiles
                 Deals.Add(total);
             }
 
-			// Returns chance to hit.
+            // Returns chance to hit.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public SmallDec ChanceToHit()
+            public SmallDec ChanceToHit()
 #else
-			public float ChanceToHit()
+            public float ChanceToHit()
 #endif
-			{
+            {
                 // Chance to hit is always 100% when:
                 if (ResoluteTechnique                               // Resolute Technique keystone.
                     || Local.ContainsKey("Hits can't be Evaded")    // Local weapon modifier (Kongor's Undying Rage).
@@ -844,11 +844,11 @@ namespace POESKillTree.SkillTreeFiles
                     if (CriticalChance > 0)
                     {
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-						SmallDec incCC = 0;
+                        SmallDec incCC = 0;
 #else
-						float incCC = 0;
+                        float incCC = 0;
 #endif
-						if (attrs.ContainsKey("#% increased Critical Strike Chance"))
+                        if (attrs.ContainsKey("#% increased Critical Strike Chance"))
                             incCC += attrs["#% increased Critical Strike Chance"][0];
                         if (attrs.ContainsKey("#% increased Global Critical Strike Chance"))
                             incCC += attrs["#% increased Global Critical Strike Chance"][0];
@@ -888,42 +888,42 @@ namespace POESKillTree.SkillTreeFiles
                         else if (CriticalChance > 95) CriticalChance = 95;
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-						SmallDec incCM = 0;
+                        SmallDec incCM = 0;
 #else
-						float incCM = 0;
+                        float incCM = 0;
 #endif
-						if (attrs.ContainsKey("+#% to Critical Strike Multiplier"))
-							incCM += attrs["+#% to Critical Strike Multiplier"][0];
-						if (attrs.ContainsKey("+#% to Global Critical Strike Multiplier"))
-							incCM += attrs["+#% to Global Critical Strike Multiplier"][0];
-						if (IsWieldingStaff && attrs.ContainsKey("+#% to Global Critical Strike Multiplier while wielding a Staff"))
-							incCM += attrs["+#% to Global Critical Strike Multiplier while wielding a Staff"][0];
-						if (Nature.Is(DamageSource.Spell))
-						{
-							if (attrs.ContainsKey("+#% to Critical Strike Multiplier for Spells"))
-								incCM += attrs["+#% to Critical Strike Multiplier for Spells"][0];
-							if (attrs.ContainsKey("+#% to Global Critical Strike Multiplier for Spells"))
-								incCM += attrs["+#% to Global Critical Strike Multiplier for Spells"][0];
-						}
-						else // Attack
-						{
-							foreach (var attr in attrs.Matches(ReIncreasedCriticalMultiplierWithWeaponType))
-							{
-								Match m = ReIncreasedCriticalMultiplierWithWeaponType.Match(attr.Key);
-								if (WithWeaponType.ContainsKey(m.Groups[2].Value) && Nature.Is(WithWeaponType[m.Groups[2].Value]))
-									incCM += m.Groups[1].Value == "+" ? attr.Value[0] : -attr.Value[0];
-							}
-							if (IsDualWielding && attrs.ContainsKey("+#% to Weapon Critical Strike Multiplier while Dual Wielding"))
-								incCM += attrs["+#% to Weapon Critical Strike Multiplier while Dual Wielding"][0];
-						}
-						// Form specific.
-						foreach (var attr in attrs.Matches(ReIncreasedCriticalMultiplierForm))
-						{
-							Match m = ReIncreasedCriticalMultiplierForm.Match(attr.Key);
-							if (DamageNature.Forms.ContainsKey(m.Groups[2].Value) && Nature.Is(DamageNature.Forms[m.Groups[2].Value]))
-								incCM += m.Groups[1].Value == "+" ? attr.Value[0] : -attr.Value[0];
-						}
-						CriticalMultiplier += incCM;
+                        if (attrs.ContainsKey("+#% to Critical Strike Multiplier"))
+                            incCM += attrs["+#% to Critical Strike Multiplier"][0];
+                        if (attrs.ContainsKey("+#% to Global Critical Strike Multiplier"))
+                            incCM += attrs["+#% to Global Critical Strike Multiplier"][0];
+                        if (IsWieldingStaff && attrs.ContainsKey("+#% to Global Critical Strike Multiplier while wielding a Staff"))
+                            incCM += attrs["+#% to Global Critical Strike Multiplier while wielding a Staff"][0];
+                        if (Nature.Is(DamageSource.Spell))
+                        {
+                            if (attrs.ContainsKey("+#% to Critical Strike Multiplier for Spells"))
+                                incCM += attrs["+#% to Critical Strike Multiplier for Spells"][0];
+                            if (attrs.ContainsKey("+#% to Global Critical Strike Multiplier for Spells"))
+                                incCM += attrs["+#% to Global Critical Strike Multiplier for Spells"][0];
+                        }
+                        else // Attack
+                        {
+                            foreach (var attr in attrs.Matches(ReIncreasedCriticalMultiplierWithWeaponType))
+                            {
+                                Match m = ReIncreasedCriticalMultiplierWithWeaponType.Match(attr.Key);
+                                if (WithWeaponType.ContainsKey(m.Groups[2].Value) && Nature.Is(WithWeaponType[m.Groups[2].Value]))
+                                    incCM += m.Groups[1].Value == "+" ? attr.Value[0] : -attr.Value[0];
+                            }
+                            if (IsDualWielding && attrs.ContainsKey("+#% to Weapon Critical Strike Multiplier while Dual Wielding"))
+                                incCM += attrs["+#% to Weapon Critical Strike Multiplier while Dual Wielding"][0];
+                        }
+                        // Form specific.
+                        foreach (var attr in attrs.Matches(ReIncreasedCriticalMultiplierForm))
+                        {
+                            Match m = ReIncreasedCriticalMultiplierForm.Match(attr.Key);
+                            if (DamageNature.Forms.ContainsKey(m.Groups[2].Value) && Nature.Is(DamageNature.Forms[m.Groups[2].Value]))
+                                incCM += m.Groups[1].Value == "+" ? attr.Value[0] : -attr.Value[0];
+                        }
+                        CriticalMultiplier += incCM;
                         if (attrs.ContainsKey("No Critical Strike Multiplier"))
                             CriticalMultiplier = 100;
                     }
@@ -1121,19 +1121,19 @@ namespace POESKillTree.SkillTreeFiles
             public class Added : DamageNature
             {
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				// The added damage minimum.
-				SmallDec Min;
-				// The added damage maximum.
-				SmallDec Max;
+                // The added damage minimum.
+                SmallDec Min;
+                // The added damage maximum.
+                SmallDec Max;
 #else
                 // The added damage minimum.
                 float Min;
                 // The added damage maximum.
                 float Max;
 #endif
-				// The weapon hand to be applied to only.
-				// TODO: Migrate to DamageNature's WeaponHand property.
-				public WeaponHand Hand = WeaponHand.Any;
+                // The weapon hand to be applied to only.
+                // TODO: Migrate to DamageNature's WeaponHand property.
+                public WeaponHand Hand = WeaponHand.Any;
 
                 private static readonly Regex ReAddMod = new Regex("Adds # to # ([^ ]+) Damage$");
                 private static readonly Regex ReAddInHandMod = new Regex("Adds # to # ([^ ]+) Damage in (Main|Off) Hand$");
@@ -1142,24 +1142,24 @@ namespace POESKillTree.SkillTreeFiles
                 private static readonly Regex ReAddToSpells = new Regex("Adds # to # ([^ ]+) Damage to Spells");
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				public Added(DamageSource source, string type, SmallDec min, SmallDec max) : base()
+                public Added(DamageSource source, string type, SmallDec min, SmallDec max) : base()
 #else
                 public Added(DamageSource source, string type, float min, float max): base()
 #endif
-				{
+                {
                     Source = source;
                     Type = DamageNature.TypeOf(type);
                     Min = min;
                     Max = max;
                 }
 
-				// Creates added damage.
+                // Creates added damage.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				public static Added Create(DamageSource source, KeyValuePair<string, List<SmallDec>> attr)
+                public static Added Create(DamageSource source, KeyValuePair<string, List<SmallDec>> attr)
 #else
                 public static Added Create(DamageSource source, KeyValuePair<string, List<float>> attr)
 #endif
-				{
+                {
                     if (source == DamageSource.Attack)
                     {
                         var m = ReAddToAttacks.Match(attr.Key);
@@ -1195,13 +1195,13 @@ namespace POESKillTree.SkillTreeFiles
                     return null;
                 }
 
-				// Applies damage added with nature of source.
+                // Applies damage added with nature of source.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				public void Apply(AttackSource source, SmallDec effectiveness)
+                public void Apply(AttackSource source, SmallDec effectiveness)
 #else
                 public void Apply(AttackSource source, float effectiveness)
 #endif
-				{
+                {
                     Damage damage = new Damage(source.Nature, Min, Max) { Type = Type };
 
                     damage.Mul(effectiveness);
@@ -1215,21 +1215,21 @@ namespace POESKillTree.SkillTreeFiles
             {
                 // The source of conversion.
                 public DamageConversionSource Source;
-				// The percentage of damage to convert.
+                // The percentage of damage to convert.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				public SmallDec Percent;
+                public SmallDec Percent;
 #else
                 public float Percent;
 #endif
-				// The damage type to convert from.
-				public DamageType From;
+                // The damage type to convert from.
+                public DamageType From;
                 // The damage type to convert to.
                 DamageType To;
 
                 static Regex ReConvertMod = new Regex("^#% of ([^ ]+) Damage (C|c)onverted to ([^ ]+) Damage$");
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				public Converted(DamageConversionSource source, SmallDec percent, DamageType from, DamageType to)
+                public Converted(DamageConversionSource source, SmallDec percent, DamageType from, DamageType to)
 #else
                 public Converted(DamageConversionSource source, float percent, DamageType from, DamageType to)
 #endif
@@ -1240,13 +1240,13 @@ namespace POESKillTree.SkillTreeFiles
                     To = to;
                 }
 
-				// Creates damage conversion from attribute.
+                // Creates damage conversion from attribute.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				public static Converted Create(DamageConversionSource source, KeyValuePair<string, List<SmallDec>> attr)
+                public static Converted Create(DamageConversionSource source, KeyValuePair<string, List<SmallDec>> attr)
 #else
                 public static Converted Create(DamageConversionSource source, KeyValuePair<string, List<float>> attr)
 #endif
-				{
+                {
                     Match m = ReConvertMod.Match(attr.Key);
                     if (m.Success)
                     {
@@ -1256,13 +1256,13 @@ namespace POESKillTree.SkillTreeFiles
                     return null;
                 }
 
-				// Applies conversion.
+                // Applies conversion.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				public void Apply(List<Damage> input, List<Damage> output, SmallDec scale)
+                public void Apply(List<Damage> input, List<Damage> output, SmallDec scale)
 #else
                 public void Apply(List<Damage> input, List<Damage> output, float scale)
 #endif
-				{
+                {
                     foreach (Damage damage in input)
                         output.Add(damage.PercentOf(Percent * scale, To));
                 }
@@ -1270,35 +1270,35 @@ namespace POESKillTree.SkillTreeFiles
 
             public class Gained : DamageNature
             {
-				// The percentage of damage to convert.
+                // The percentage of damage to convert.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				SmallDec Percent;
+                SmallDec Percent;
 #else
                 float Percent;
 #endif
-				// The damage type to convert to.
-				DamageType To;
+                // The damage type to convert to.
+                DamageType To;
 
                 static Regex ReGainMod = new Regex("Gain #% of ([^ ]+) Damage as Extra ([^ ]+) Damage");
                 static Regex ReGainAddedMod = new Regex("#% of (.+) Damage Added as ([^ ]+) Damage");
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				public Gained(SmallDec percent, string from, DamageType to) : base(from)
+                public Gained(SmallDec percent, string from, DamageType to) : base(from)
 #else
-				public Gained(float percent, string from, DamageType to): base(from)
+                public Gained(float percent, string from, DamageType to): base(from)
 #endif
-				{
+                {
                     Percent = percent;
                     To = to;
                 }
 
-				// Creates damage gain from attribute.
+                // Creates damage gain from attribute.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				public static Gained Create(KeyValuePair<string, List<SmallDec>> attr)
+                public static Gained Create(KeyValuePair<string, List<SmallDec>> attr)
 #else
                 public static Gained Create(KeyValuePair<string, List<float>> attr)
 #endif
-				{
+                {
                     Match m = ReGainMod.Match(attr.Key);
                     if (m.Success)
                         return new Gained(attr.Value[0], m.Groups[1].Value, DamageNature.Types[m.Groups[2].Value]);
@@ -1322,11 +1322,11 @@ namespace POESKillTree.SkillTreeFiles
 
             public class Increased : DamageNature
             {
-				// The percentage of damage increase.
+                // The percentage of damage increase.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				public SmallDec Percent;
+                public SmallDec Percent;
 #else
-				public float Percent;
+                public float Percent;
 #endif
 
                 static Regex ReIncreasedAll = new Regex("^#% (increased|reduced) Damage$");
@@ -1336,23 +1336,23 @@ namespace POESKillTree.SkillTreeFiles
                 static Regex ReIncreasedWithSource = new Regex("#% (increased|reduced) (.+) Damage with (Spells|Attacks|Weapons)$");
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				public Increased(SmallDec percent) : base()
-				{
-					Percent = percent;
-				}
+                public Increased(SmallDec percent) : base()
+                {
+                    Percent = percent;
+                }
 
-				public Increased(string str, SmallDec percent) : base(str)
-				{
-					Percent = percent;
-				}
+                public Increased(string str, SmallDec percent) : base(str)
+                {
+                    Percent = percent;
+                }
 
-				public Increased(DamageSource source, string type, SmallDec percent) : base(source, type)
-				{
-					Percent = percent;
-				}
+                public Increased(DamageSource source, string type, SmallDec percent) : base(source, type)
+                {
+                    Percent = percent;
+                }
 
-				// Creates modifier.
-				public static Increased Create(KeyValuePair<string, List<SmallDec>> attr)
+                // Creates modifier.
+                public static Increased Create(KeyValuePair<string, List<SmallDec>> attr)
 #else
                 public Increased(float percent): base()
                 {
@@ -1372,7 +1372,7 @@ namespace POESKillTree.SkillTreeFiles
                 // Creates modifier.
                 public static Increased Create(KeyValuePair<string, List<float>> attr)
 #endif
-				{
+                {
                     Match m = ReIncreasedType.Match(attr.Key);
                     if (m.Success)
                         return new Increased(m.Groups[2].Value, m.Groups[1].Value == "increased" ? attr.Value[0] : -attr.Value[0]);
@@ -1412,14 +1412,14 @@ namespace POESKillTree.SkillTreeFiles
  
             public class More : DamageNature
             {
-				// The percentage of damage multiplier.
+                // The percentage of damage multiplier.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				public SmallDec Percent;
+                public SmallDec Percent;
 #else
                 public float Percent;
 #endif
-				// The flag whether multiplier is actually divider.
-				public bool IsLess { get { return Percent < 0; } }
+                // The flag whether multiplier is actually divider.
+                public bool IsLess { get { return Percent < 0; } }
 
                 static Regex ReMoreAll = new Regex("^#% (more|less) Damage( to main target)?$");
                 static Regex ReMoreBase = new Regex("^Deals #% of Base Damage$");
@@ -1429,18 +1429,18 @@ namespace POESKillTree.SkillTreeFiles
                 static Regex ReMoreWith = new Regex("^#% more (.+) Damage with Weapons$");
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				public More(SmallDec percent) : base()
-				{
-					Percent = percent;
-				}
+                public More(SmallDec percent) : base()
+                {
+                    Percent = percent;
+                }
 
-				public More(string str, SmallDec percent) : base(str)
-				{
-					Percent = percent;
-				}
+                public More(string str, SmallDec percent) : base(str)
+                {
+                    Percent = percent;
+                }
 
-				// Creates damage multiplier.
-				public static More Create(KeyValuePair<string, List<SmallDec>> attr)
+                // Creates damage multiplier.
+                public static More Create(KeyValuePair<string, List<SmallDec>> attr)
 #else
                 public More(float percent): base()
                 {
@@ -1455,7 +1455,7 @@ namespace POESKillTree.SkillTreeFiles
                 // Creates damage multiplier.
                 public static More Create(KeyValuePair<string, List<float>> attr)
 #endif
-				{
+                {
                     Match m = ReMoreBase.Match(attr.Key);
                     if (m.Success)
                         return new More(attr.Value[0] - 100);
@@ -1512,10 +1512,10 @@ namespace POESKillTree.SkillTreeFiles
             // The nature from which this damage originated (due to conversion).
             DamageNature Origin;
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			// The damage range minimum.
-			SmallDec Min;
-			// The damage range maximum.
-			SmallDec Max;
+            // The damage range minimum.
+            SmallDec Min;
+            // The damage range maximum.
+            SmallDec Max;
 #else
             // The damage range minimum.
             float Min;
@@ -1523,7 +1523,7 @@ namespace POESKillTree.SkillTreeFiles
             float Max;
 #endif
 
-			static Regex ReDamageAttribute = new Regex("([^ ]+) Damage: #-#");
+            static Regex ReDamageAttribute = new Regex("([^ ]+) Damage: #-#");
             static Regex ReDamageMod = new Regex("Deals # to # ([^ ]+) Damage$");
 
             // Copy constructor.
@@ -1535,51 +1535,51 @@ namespace POESKillTree.SkillTreeFiles
                 Max = damage.Max;
             }
 
-			// Damage originated from specified damage but with different type.
-			// Used in Damage.PercentOf.
+            // Damage originated from specified damage but with different type.
+            // Used in Damage.PercentOf.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			Damage(Damage damage, DamageType type, SmallDec min, SmallDec max) : base(damage)
+            Damage(Damage damage, DamageType type, SmallDec min, SmallDec max) : base(damage)
 #else
             Damage(Damage damage, DamageType type, float min, float max): base(damage)
 #endif
-			{
+            {
                 Origin = new DamageNature(damage);
                 Type = type;
                 Min = min;
                 Max = max;
             }
 
-			// Damage with specified nature.
+            // Damage with specified nature.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			Damage(DamageNature nature, SmallDec min, SmallDec max) : base(nature)
+            Damage(DamageNature nature, SmallDec min, SmallDec max) : base(nature)
 #else
-			Damage(DamageNature nature, float min, float max): base(nature)
+            Damage(DamageNature nature, float min, float max): base(nature)
 #endif
-			{
+            {
                 Origin = new DamageNature(this);
                 Min = min;
                 Max = max;
             }
 
-			// Damage with specified nature but with different type.
+            // Damage with specified nature but with different type.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			Damage(DamageNature nature, string type, SmallDec min, SmallDec max) : base(nature, type)
+            Damage(DamageNature nature, string type, SmallDec min, SmallDec max) : base(nature, type)
 #else
-			Damage(DamageNature nature, string type, float min, float max): base(nature, type)
+            Damage(DamageNature nature, string type, float min, float max): base(nature, type)
 #endif
-			{
+            {
                 Origin = new DamageNature(this);
                 Min = min;
                 Max = max;
             }
 
-			// Damage from specified source with specified type.
+            // Damage from specified source with specified type.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public Damage(DamageSource source, DamageType type, SmallDec min, SmallDec max) : base(source, type)
+            public Damage(DamageSource source, DamageType type, SmallDec min, SmallDec max) : base(source, type)
 #else
-			public Damage(DamageSource source, DamageType type, float min, float max) : base(source, type)
+            public Damage(DamageSource source, DamageType type, float min, float max) : base(source, type)
 #endif
-			{
+            {
                 Origin = new DamageNature(Source, Type);
                 Min = min;
                 Max = max;
@@ -1592,13 +1592,13 @@ namespace POESKillTree.SkillTreeFiles
                 Max += damage.Max;
             }
 
-			// Returns average hit.
+            // Returns average hit.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public SmallDec AverageHit()
+            public SmallDec AverageHit()
 #else
-			public float AverageHit()
+            public float AverageHit()
 #endif
-			{
+            {
                 return (Min + Max) / 2;
             }
 
@@ -1608,13 +1608,13 @@ namespace POESKillTree.SkillTreeFiles
                 return new Damage(nature, UnarmedDamageRangeMin, UnarmedDamageRangeMax) { Type = DamageType.Physical };
             }
 
-			// Creates damage from attribute.
+            // Creates damage from attribute.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public static Damage Create(DamageNature nature, string attrName, IReadOnlyList<SmallDec> attrValues)
+            public static Damage Create(DamageNature nature, string attrName, IReadOnlyList<SmallDec> attrValues)
 #else
-			public static Damage Create(DamageNature nature, string attrName, IReadOnlyList<float> attrValues)
+            public static Damage Create(DamageNature nature, string attrName, IReadOnlyList<float> attrValues)
 #endif
-			{
+            {
                 Match m = ReDamageAttribute.Match(attrName);
                 if (m.Success)
                     return new Damage(nature, m.Groups[1].Value, attrValues[0], attrValues[1]);
@@ -1628,24 +1628,24 @@ namespace POESKillTree.SkillTreeFiles
                 return null;
             }
 
-			// Increases damage.
+            // Increases damage.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public void Increase(SmallDec percent)
+            public void Increase(SmallDec percent)
 #else
             public void Increase(float percent)
 #endif
-			{
+            {
                 Min = Min * (100 + percent) / 100;
                 Max = Max * (100 + percent) / 100;
             }
 
-			// Returns percent of damage with specific damage type.
+            // Returns percent of damage with specific damage type.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public Damage PercentOf(SmallDec percent, DamageType type)
+            public Damage PercentOf(SmallDec percent, DamageType type)
 #else
-			public Damage PercentOf(float percent, DamageType type)
+            public Damage PercentOf(float percent, DamageType type)
 #endif
-			{
+            {
                 Damage damage = new Damage(this, type, Min * percent / 100, Max * percent / 100);
 
                 // Origin damage type of new damage is union of our damage type (set in constructor above) and our origin's damage type.
@@ -1660,24 +1660,24 @@ namespace POESKillTree.SkillTreeFiles
                 return nature.Matches(this) || nature.Matches(Origin);
             }
 
-			// Multiplies damage by percent.
+            // Multiplies damage by percent.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public void Mul(SmallDec percent)
+            public void Mul(SmallDec percent)
 #else
-			public void Mul(float percent)
+            public void Mul(float percent)
 #endif
-			{
+            {
                 Min = Min * percent / 100;
                 Max = Max * percent / 100;
             }
 
-			// Multiplies damage by multiplier.
+            // Multiplies damage by multiplier.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public void Multiply(SmallDec multiplier)
+            public void Multiply(SmallDec multiplier)
 #else
-			public void Multiply(float multiplier)
+            public void Multiply(float multiplier)
 #endif
-			{
+            {
                 Min *= multiplier;
                 Max *= multiplier;
             }
@@ -1700,15 +1700,15 @@ namespace POESKillTree.SkillTreeFiles
             }
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public List<SmallDec> ToValue()
-			{
-				return new List<SmallDec>() { Min, Max };
+            public List<SmallDec> ToValue()
+            {
+                return new List<SmallDec>() { Min, Max };
 #else
             public List<float> ToValue()
             {
                 return new List<float>() { Min, Max };
 #endif
-			}
+            }
         }
 
         public class Weapon
@@ -1805,12 +1805,12 @@ namespace POESKillTree.SkillTreeFiles
                         Attributes.Add(prop);
 
 #if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_UseSmallDec_ForGeneratorBars)
-						Damage damage = Damage.Create(Nature, prop.Attribute, SmallDec.CreateList(prop.Value));
+                        Damage damage = Damage.Create(Nature, prop.Attribute, SmallDec.CreateList(prop.Value));
 #else
-						Damage damage = Damage.Create(Nature, prop.Attribute, prop.Value);
+                        Damage damage = Damage.Create(Nature, prop.Attribute, prop.Value);
 #endif
 
-						if (damage != null && damage.Type == DamageType.Physical) // Create only physical damage from item properties.
+                        if (damage != null && damage.Type == DamageType.Physical) // Create only physical damage from item properties.
                             Deals.Add(damage);
                     }
 
@@ -1832,15 +1832,15 @@ namespace POESKillTree.SkillTreeFiles
                     {
                         Nature = new DamageNature() { WeaponType = WeaponType.Unarmed };
 
-						// Implicit Unarmed attributes.
+                        // Implicit Unarmed attributes.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-						Attributes.Add("Attacks per Second: #", new List<SmallDec>() { UnarmedAttacksPerSecond });
+                        Attributes.Add("Attacks per Second: #", new List<SmallDec>() { UnarmedAttacksPerSecond });
 #else
                         Attributes.Add("Attacks per Second: #", new List<float>() { UnarmedAttacksPerSecond });
 #endif
 
-						// Unarmed damage.
-						Damage damage = Damage.Create(Nature);
+                        // Unarmed damage.
+                        Damage damage = Damage.Create(Nature);
                         Deals.Add(damage);
                     }
             }
@@ -1851,17 +1851,17 @@ namespace POESKillTree.SkillTreeFiles
                 return new Weapon(this) { Hand = forHand };
             }
 
-			// Returns attribute's list of values, or empty list if not found.
+            // Returns attribute's list of values, or empty list if not found.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			public List<SmallDec> GetValues(string attr)
-			{
-				return Attributes.ContainsKey(attr) ? Attributes[attr] : new List<SmallDec>();
+            public List<SmallDec> GetValues(string attr)
+            {
+                return Attributes.ContainsKey(attr) ? Attributes[attr] : new List<SmallDec>();
 #else
             public List<float> GetValues(string attr)
             {
                 return Attributes.ContainsKey(attr) ? Attributes[attr] : new List<float>();
 #endif
-			}
+            }
 
             // Returns true if weapon is in specified hand, false otherwise.
             public bool Is(WeaponHand hand)
@@ -2035,90 +2035,90 @@ namespace POESKillTree.SkillTreeFiles
         };
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-		// Returns rounded value with all fractional digits after specified precision cut off.
-		public static SmallDec CeilValue(SmallDec value, int precision)
-		{
-			SmallDec coeff = (SmallDec)Math.Pow(10, precision);
+        // Returns rounded value with all fractional digits after specified precision cut off.
+        public static SmallDec CeilValue(SmallDec value, int precision)
+        {
+            SmallDec coeff = (SmallDec)Math.Pow(10, precision);
 
-			return (SmallDec.Ceiling((value * coeff)) / coeff);
-		}
+            return (SmallDec.Ceiling((value * coeff)) / coeff);
+        }
 
-		// Chance to Evade = 1 - Attacker's Accuracy / ( Attacker's Accuracy + (Defender's Evasion / 4) ^ 0.8 )
-		// @see http://pathofexile.gamepedia.com/Evasion
-		public static SmallDec ChanceToEvade(int level, SmallDec evasionRating)
-		{
-			if (Global.ContainsKey("Cannot Evade enemy Attacks")) return 0; // The modifier can be from other source than Unwavering Stance.
+        // Chance to Evade = 1 - Attacker's Accuracy / ( Attacker's Accuracy + (Defender's Evasion / 4) ^ 0.8 )
+        // @see http://pathofexile.gamepedia.com/Evasion
+        public static SmallDec ChanceToEvade(int level, SmallDec evasionRating)
+        {
+            if (Global.ContainsKey("Cannot Evade enemy Attacks")) return 0; // The modifier can be from other source than Unwavering Stance.
 
-			int maa = MonsterAverageAccuracy[level];
+            int maa = MonsterAverageAccuracy[level];
 
-			return RoundValue((1 - maa / (maa + SmallDec.Pow(evasionRating / 4, 0.8))) * 100, 0);
-		}
+            return RoundValue((1 - maa / (maa + SmallDec.Pow(evasionRating / 4, 0.8))) * 100, 0);
+        }
 
-		// Chance to Hit = Attacker's Accuracy / ( Attacker's Accuracy + (Defender's Evasion / 4) ^ 0.8 )
-		// Chance to hit can never be lower than 5%, nor higher than 95%.
-		// @see http://pathofexile.gamepedia.com/Accuracy
-		public static SmallDec ChanceToHit(int level, SmallDec accuracyRating)
-		{
-			// the maximum level considered for this is 80 if it is the same for estimated physical damage reduction
-			int mae = MonsterAverageEvasion[Math.Min(level, 80) - 1]; // XXX: For some reason this works.
+        // Chance to Hit = Attacker's Accuracy / ( Attacker's Accuracy + (Defender's Evasion / 4) ^ 0.8 )
+        // Chance to hit can never be lower than 5%, nor higher than 95%.
+        // @see http://pathofexile.gamepedia.com/Accuracy
+        public static SmallDec ChanceToHit(int level, SmallDec accuracyRating)
+        {
+            // the maximum level considered for this is 80 if it is the same for estimated physical damage reduction
+            int mae = MonsterAverageEvasion[Math.Min(level, 80) - 1]; // XXX: For some reason this works.
 
-			SmallDec chance = (SmallDec)(accuracyRating / (accuracyRating + Math.Pow(mae / 4, 0.8))) * 100;
-			if (chance < 5f) chance = 5f;
-			else if (chance > 95f) chance = 95f;
+            SmallDec chance = (SmallDec)(accuracyRating / (accuracyRating + Math.Pow(mae / 4, 0.8))) * 100;
+            if (chance < 5f) chance = 5f;
+            else if (chance > 95f) chance = 95f;
 
-			return chance;
-		}
+            return chance;
+        }
 
-		// Computes core attributes.
-		private static void CoreAttributes()
-		{
-			SmallDec strength = 0;
-			SmallDec dexterity = 0;
-			SmallDec intelligence = 0;
+        // Computes core attributes.
+        private static void CoreAttributes()
+        {
+            SmallDec strength = 0;
+            SmallDec dexterity = 0;
+            SmallDec intelligence = 0;
 
-			// Citrine Amulet
-			if (Global.ContainsKey("+# to Strength and Dexterity"))
-			{
-				strength += Global["+# to Strength and Dexterity"][0];
-				dexterity += Global["+# to Strength and Dexterity"][0];
+            // Citrine Amulet
+            if (Global.ContainsKey("+# to Strength and Dexterity"))
+            {
+                strength += Global["+# to Strength and Dexterity"][0];
+                dexterity += Global["+# to Strength and Dexterity"][0];
 
-				Global.Remove("+# to Strength and Dexterity");
-			}
+                Global.Remove("+# to Strength and Dexterity");
+            }
 
-			// Agate Amulet
-			if (Global.ContainsKey("+# to Strength and Intelligence"))
-			{
-				strength += Global["+# to Strength and Intelligence"][0];
-				intelligence += Global["+# to Strength and Intelligence"][0];
+            // Agate Amulet
+            if (Global.ContainsKey("+# to Strength and Intelligence"))
+            {
+                strength += Global["+# to Strength and Intelligence"][0];
+                intelligence += Global["+# to Strength and Intelligence"][0];
 
-				Global.Remove("+# to Strength and Intelligence");
-			}
+                Global.Remove("+# to Strength and Intelligence");
+            }
 
-			// Turquoise Amulet
-			if (Global.ContainsKey("+# to Dexterity and Intelligence"))
-			{
-				dexterity += Global["+# to Dexterity and Intelligence"][0];
-				intelligence += Global["+# to Dexterity and Intelligence"][0];
+            // Turquoise Amulet
+            if (Global.ContainsKey("+# to Dexterity and Intelligence"))
+            {
+                dexterity += Global["+# to Dexterity and Intelligence"][0];
+                intelligence += Global["+# to Dexterity and Intelligence"][0];
 
-				Global.Remove("+# to Dexterity and Intelligence");
-			}
+                Global.Remove("+# to Dexterity and Intelligence");
+            }
 
-			if (Global.ContainsKey("+# to all Attributes"))
-			{
-				strength += Global["+# to all Attributes"][0];
-				dexterity += Global["+# to all Attributes"][0];
-				intelligence += Global["+# to all Attributes"][0];
+            if (Global.ContainsKey("+# to all Attributes"))
+            {
+                strength += Global["+# to all Attributes"][0];
+                dexterity += Global["+# to all Attributes"][0];
+                intelligence += Global["+# to all Attributes"][0];
 
-				Global.Remove("+# to all Attributes");
-			}
+                Global.Remove("+# to all Attributes");
+            }
 
-			if (strength != 0)
-				Global["+# to Strength"][0] += strength;
-			if (dexterity != 0)
-				Global["+# to Dexterity"][0] += dexterity;
-			if (intelligence != 0)
-				Global["+# to Intelligence"][0] += intelligence;
-		}
+            if (strength != 0)
+                Global["+# to Strength"][0] += strength;
+            if (dexterity != 0)
+                Global["+# to Dexterity"][0] += dexterity;
+            if (intelligence != 0)
+                Global["+# to Intelligence"][0] += intelligence;
+        }
 #else
         // Returns rounded value with all fractional digits after specified precision cut off.
         public static float CeilValue(float value, int precision)
@@ -2206,8 +2206,8 @@ namespace POESKillTree.SkillTreeFiles
         }
 #endif
 
-		// Computes defensive statistics.
-		public static List<ListGroup> Defense()
+        // Computes defensive statistics.
+        public static List<ListGroup> Defense()
         {
             AttributeSet ch = new AttributeSet();
             AttributeSet def = new AttributeSet();
@@ -2218,282 +2218,282 @@ namespace POESKillTree.SkillTreeFiles
             bool difficultyMerciless = false;
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			SmallDec life;
-			if (ChaosInoculation)
-				life = Global["Maximum Life becomes #, Immune to Chaos Damage"][0];
-			else
-			{
-				life = Global["+# to maximum Life"][0];
-				if (Global.ContainsKey("#% increased maximum Life"))
-					life = IncreaseValueByPercentage(life, Global["#% increased maximum Life"][0]);
-			}
-			ch["Life: #"] = new List<SmallDec>() { RoundValue(life, 0) };
+            SmallDec life;
+            if (ChaosInoculation)
+                life = Global["Maximum Life becomes #, Immune to Chaos Damage"][0];
+            else
+            {
+                life = Global["+# to maximum Life"][0];
+                if (Global.ContainsKey("#% increased maximum Life"))
+                    life = IncreaseValueByPercentage(life, Global["#% increased maximum Life"][0]);
+            }
+            ch["Life: #"] = new List<SmallDec>() { RoundValue(life, 0) };
 
-			SmallDec mana = Global["+# to maximum Mana"][0];
-			SmallDec incMana = 0;
-			if (Global.ContainsKey("#% increased maximum Mana"))
-				incMana = Global["#% increased maximum Mana"][0];
+            SmallDec mana = Global["+# to maximum Mana"][0];
+            SmallDec incMana = 0;
+            if (Global.ContainsKey("#% increased maximum Mana"))
+                incMana = Global["#% increased maximum Mana"][0];
 
-			SmallDec es = 0;
-			SmallDec incES = 0;
-			// Add maximum shield from tree.
-			if (Global.ContainsKey("+# to maximum Energy Shield"))
-				es += Global["+# to maximum Energy Shield"][0];
-			// Add maximum shield from items.
-			if (Global.ContainsKey("Energy Shield: #"))
-				es += Global["Energy Shield: #"][0];
-			// Increase % maximum shield from tree, items and intelligence.
-			if (Global.ContainsKey("#% increased maximum Energy Shield"))
-				incES += Global["#% increased maximum Energy Shield"][0];
+            SmallDec es = 0;
+            SmallDec incES = 0;
+            // Add maximum shield from tree.
+            if (Global.ContainsKey("+# to maximum Energy Shield"))
+                es += Global["+# to maximum Energy Shield"][0];
+            // Add maximum shield from items.
+            if (Global.ContainsKey("Energy Shield: #"))
+                es += Global["Energy Shield: #"][0];
+            // Increase % maximum shield from tree, items and intelligence.
+            if (Global.ContainsKey("#% increased maximum Energy Shield"))
+                incES += Global["#% increased maximum Energy Shield"][0];
 
-			SmallDec moreES = 0;
-			// More % maximum shield from tree and items.
-			if (Global.ContainsKey("#% more maximum Energy Shield"))
-				moreES += Global["#% more maximum Energy Shield"][0];
+            SmallDec moreES = 0;
+            // More % maximum shield from tree and items.
+            if (Global.ContainsKey("#% more maximum Energy Shield"))
+                moreES += Global["#% more maximum Energy Shield"][0];
 
-			SmallDec lessArmourAndES = 0;
-			if (Acrobatics)
-				lessArmourAndES += Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield, #% less Chance to Block Spells and Attacks"][1];
+            SmallDec lessArmourAndES = 0;
+            if (Acrobatics)
+                lessArmourAndES += Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield, #% less Chance to Block Spells and Attacks"][1];
 
-			// Equipped Shield bonuses.
-			SmallDec incArmourShield = 0;
-			SmallDec incESShield = 0;
-			SmallDec incDefencesShield = 0;
-			if (Global.ContainsKey("#% increased Armour from equipped Shield"))
-				incArmourShield += Global["#% increased Armour from equipped Shield"][0];
-			if (Global.ContainsKey("#% increased Energy Shield from equipped Shield"))
-				incESShield += Global["#% increased Energy Shield from equipped Shield"][0];
-			if (Global.ContainsKey("#% increased Defences from equipped Shield"))
-				incDefencesShield += Global["#% increased Defences from equipped Shield"][0];
-			SmallDec shieldArmour = 0;
-			SmallDec shieldEvasion = 0;
-			SmallDec shieldES = 0;
-			if (incDefencesShield > 0 || incArmourShield > 0 || incESShield > 0)
-			{
-				List<SmallDec> value = OffHand.GetValues("Armour: #");
-				if (value.Count > 0)
-					shieldArmour += PercentOfValue(value[0], incArmourShield + incDefencesShield);
+            // Equipped Shield bonuses.
+            SmallDec incArmourShield = 0;
+            SmallDec incESShield = 0;
+            SmallDec incDefencesShield = 0;
+            if (Global.ContainsKey("#% increased Armour from equipped Shield"))
+                incArmourShield += Global["#% increased Armour from equipped Shield"][0];
+            if (Global.ContainsKey("#% increased Energy Shield from equipped Shield"))
+                incESShield += Global["#% increased Energy Shield from equipped Shield"][0];
+            if (Global.ContainsKey("#% increased Defences from equipped Shield"))
+                incDefencesShield += Global["#% increased Defences from equipped Shield"][0];
+            SmallDec shieldArmour = 0;
+            SmallDec shieldEvasion = 0;
+            SmallDec shieldES = 0;
+            if (incDefencesShield > 0 || incArmourShield > 0 || incESShield > 0)
+            {
+                List<SmallDec> value = OffHand.GetValues("Armour: #");
+                if (value.Count > 0)
+                    shieldArmour += PercentOfValue(value[0], incArmourShield + incDefencesShield);
 
-				value = OffHand.GetValues("Evasion Rating: #");
-				if (value.Count > 0)
-					shieldEvasion += PercentOfValue(value[0], incDefencesShield);
+                value = OffHand.GetValues("Evasion Rating: #");
+                if (value.Count > 0)
+                    shieldEvasion += PercentOfValue(value[0], incDefencesShield);
 
-				value = OffHand.GetValues("Energy Shield: #");
-				if (value.Count > 0)
-					shieldES += PercentOfValue(value[0], incESShield + incDefencesShield);
-			}
+                value = OffHand.GetValues("Energy Shield: #");
+                if (value.Count > 0)
+                    shieldES += PercentOfValue(value[0], incESShield + incDefencesShield);
+            }
 
-			// ( Mana * %mana increases ) + ( ES * ( %ES increases + %mana increases ) * ( %ES more ) )
-			// ES to Mana conversion mod (old Eldritch Battery).
-			if (Global.ContainsKey("Converts all Energy Shield to Mana"))
-			{
-				es = IncreaseValueByPercentage(es, incES + incMana);
-				es += shieldES;
-				if (moreES > 0)
-					es = IncreaseValueByPercentage(es, moreES);
-				if (lessArmourAndES > 0)
-					es = IncreaseValueByPercentage(es, -lessArmourAndES);
+            // ( Mana * %mana increases ) + ( ES * ( %ES increases + %mana increases ) * ( %ES more ) )
+            // ES to Mana conversion mod (old Eldritch Battery).
+            if (Global.ContainsKey("Converts all Energy Shield to Mana"))
+            {
+                es = IncreaseValueByPercentage(es, incES + incMana);
+                es += shieldES;
+                if (moreES > 0)
+                    es = IncreaseValueByPercentage(es, moreES);
+                if (lessArmourAndES > 0)
+                    es = IncreaseValueByPercentage(es, -lessArmourAndES);
 
-				mana = IncreaseValueByPercentage(mana, incMana) + es;
-				es = 0;
-			}
-			else
-			{
-				mana = IncreaseValueByPercentage(mana, incMana);
-				es = IncreaseValueByPercentage(es, incES);
-				es += shieldES;
-				if (moreES > 0)
-					es = IncreaseValueByPercentage(es, moreES);
-				if (lessArmourAndES > 0)
-					es = IncreaseValueByPercentage(es, -lessArmourAndES);
-			}
+                mana = IncreaseValueByPercentage(mana, incMana) + es;
+                es = 0;
+            }
+            else
+            {
+                mana = IncreaseValueByPercentage(mana, incMana);
+                es = IncreaseValueByPercentage(es, incES);
+                es += shieldES;
+                if (moreES > 0)
+                    es = IncreaseValueByPercentage(es, moreES);
+                if (lessArmourAndES > 0)
+                    es = IncreaseValueByPercentage(es, -lessArmourAndES);
+            }
 
-			if (BloodMagic)
-				mana = 0;
+            if (BloodMagic)
+                mana = 0;
 
-			ch["Mana: #"] = new List<SmallDec>() { RoundValue(mana, 0) };
-			ch["Maximum Energy Shield: #"] = new List<SmallDec>() { RoundValue(es, 0) };
+            ch["Mana: #"] = new List<SmallDec>() { RoundValue(mana, 0) };
+            ch["Maximum Energy Shield: #"] = new List<SmallDec>() { RoundValue(es, 0) };
 
-			// Evasion Rating from level, tree and items.
-			SmallDec evasion = Global["Evasion Rating: #"][0];
-			if (Global.ContainsKey("+# to Evasion Rating"))
-				evasion += Global["+# to Evasion Rating"][0];
-			// Increase % from dexterity, tree and items.
-			SmallDec incEvasion = Global["#% increased Evasion Rating"][0];
-			SmallDec incEvasionAndArmour = 0;
-			if (Global.ContainsKey("#% increased Evasion Rating and Armour"))
-				incEvasionAndArmour += Global["#% increased Evasion Rating and Armour"][0];
+            // Evasion Rating from level, tree and items.
+            SmallDec evasion = Global["Evasion Rating: #"][0];
+            if (Global.ContainsKey("+# to Evasion Rating"))
+                evasion += Global["+# to Evasion Rating"][0];
+            // Increase % from dexterity, tree and items.
+            SmallDec incEvasion = Global["#% increased Evasion Rating"][0];
+            SmallDec incEvasionAndArmour = 0;
+            if (Global.ContainsKey("#% increased Evasion Rating and Armour"))
+                incEvasionAndArmour += Global["#% increased Evasion Rating and Armour"][0];
 
-			SmallDec armour = 0;
-			SmallDec armourProjectile = 0;
-			// Armour from items.
-			if (Global.ContainsKey("Armour: #"))
-				armour += Global["Armour: #"][0];
-			if (Global.ContainsKey("+# to Armour"))
-				armour += Global["+# to Armour"][0];
-			SmallDec incArmour = 0;
-			SmallDec incArmourProjectile = 0;
-			if (Global.ContainsKey("#% increased Armour"))
-				incArmour += Global["#% increased Armour"][0];
-			if (Global.ContainsKey("#% increased Armour against Projectiles"))
-				incArmourProjectile += Global["#% increased Armour against Projectiles"][0];
-			// Enable armour against projectile calculations once there is some Armour against Projectiles modifier.
-			if (incArmourProjectile != 0)
-				armourProjectile = armour;
+            SmallDec armour = 0;
+            SmallDec armourProjectile = 0;
+            // Armour from items.
+            if (Global.ContainsKey("Armour: #"))
+                armour += Global["Armour: #"][0];
+            if (Global.ContainsKey("+# to Armour"))
+                armour += Global["+# to Armour"][0];
+            SmallDec incArmour = 0;
+            SmallDec incArmourProjectile = 0;
+            if (Global.ContainsKey("#% increased Armour"))
+                incArmour += Global["#% increased Armour"][0];
+            if (Global.ContainsKey("#% increased Armour against Projectiles"))
+                incArmourProjectile += Global["#% increased Armour against Projectiles"][0];
+            // Enable armour against projectile calculations once there is some Armour against Projectiles modifier.
+            if (incArmourProjectile != 0)
+                armourProjectile = armour;
 
-			// Final Armour = Base Evasion * ( 1 + % increased Evasion Rating + % increased Armour + % increased Evasion Rating and Armour )
-			//              + Base Armour  * ( 1 + % increased Armour                              + % increased Evasion Rating and Armour )
-			// @see http://pathofexile.gamepedia.com/Iron_Reflexes
-			if (IronReflexes)
-			{
-				// Subtract "#% increased Evasion Rating" from Dexterity (it's not being applied).
-				incEvasion -= Implicit["#% increased Evasion Rating"][0];
-				armour = IncreaseValueByPercentage(armour, incArmour + incEvasionAndArmour) + IncreaseValueByPercentage(evasion, incEvasion + incArmour + incEvasionAndArmour);
-				armour += shieldArmour + shieldEvasion;
-				if (armourProjectile > 0)
-				{
-					armourProjectile = IncreaseValueByPercentage(armourProjectile, incArmour + incArmourProjectile + incEvasionAndArmour) + IncreaseValueByPercentage(evasion, incEvasion + incArmour + incEvasionAndArmour);
-					armourProjectile += shieldArmour + shieldEvasion;
-				}
-				evasion = 0;
-			}
-			else
-			{
-				evasion = IncreaseValueByPercentage(evasion, incEvasion + incEvasionAndArmour) + shieldEvasion;
-				armour = IncreaseValueByPercentage(armour, incArmour + incEvasionAndArmour) + shieldArmour;
-				if (armourProjectile > 0)
-					armourProjectile = IncreaseValueByPercentage(armourProjectile, incArmour + incArmourProjectile + incEvasionAndArmour) + shieldArmour;
-			}
-			if (lessArmourAndES > 0)
-			{
-				armour = IncreaseValueByPercentage(armour, -lessArmourAndES);
-				if (armourProjectile > 0)
-					armourProjectile = IncreaseValueByPercentage(armourProjectile, -lessArmourAndES);
-			}
+            // Final Armour = Base Evasion * ( 1 + % increased Evasion Rating + % increased Armour + % increased Evasion Rating and Armour )
+            //              + Base Armour  * ( 1 + % increased Armour                              + % increased Evasion Rating and Armour )
+            // @see http://pathofexile.gamepedia.com/Iron_Reflexes
+            if (IronReflexes)
+            {
+                // Subtract "#% increased Evasion Rating" from Dexterity (it's not being applied).
+                incEvasion -= Implicit["#% increased Evasion Rating"][0];
+                armour = IncreaseValueByPercentage(armour, incArmour + incEvasionAndArmour) + IncreaseValueByPercentage(evasion, incEvasion + incArmour + incEvasionAndArmour);
+                armour += shieldArmour + shieldEvasion;
+                if (armourProjectile > 0)
+                {
+                    armourProjectile = IncreaseValueByPercentage(armourProjectile, incArmour + incArmourProjectile + incEvasionAndArmour) + IncreaseValueByPercentage(evasion, incEvasion + incArmour + incEvasionAndArmour);
+                    armourProjectile += shieldArmour + shieldEvasion;
+                }
+                evasion = 0;
+            }
+            else
+            {
+                evasion = IncreaseValueByPercentage(evasion, incEvasion + incEvasionAndArmour) + shieldEvasion;
+                armour = IncreaseValueByPercentage(armour, incArmour + incEvasionAndArmour) + shieldArmour;
+                if (armourProjectile > 0)
+                    armourProjectile = IncreaseValueByPercentage(armourProjectile, incArmour + incArmourProjectile + incEvasionAndArmour) + shieldArmour;
+            }
+            if (lessArmourAndES > 0)
+            {
+                armour = IncreaseValueByPercentage(armour, -lessArmourAndES);
+                if (armourProjectile > 0)
+                    armourProjectile = IncreaseValueByPercentage(armourProjectile, -lessArmourAndES);
+            }
 
-			if (armour > 0)
-			{
-				def["Armour: #"] = new List<SmallDec>() { RoundValue(armour, 0) };
-				def["Estimated Physical Damage reduction: #%"] = new List<SmallDec>() { RoundValue(PhysicalDamageReduction(Level, RoundValue(armour, 0)), 0) };
-			}
-			if (armourProjectile > 0)
-			{
-				def["Armour against Projectiles: #"] = new List<SmallDec>() { RoundValue(armourProjectile, 0) };
-				def["Estimated Physical Damage reduction against Projectiles: #%"] = new List<SmallDec>() { RoundValue(PhysicalDamageReduction(Level, RoundValue(armourProjectile, 0)), 0) };
-			}
-			if (evasion > 0)
-				def["Evasion Rating: #"] = new List<SmallDec>() { RoundValue(evasion, 0) };
-			SmallDec chanceToEvade = ChanceToEvade(Level, RoundValue(evasion, 0));
-			if (chanceToEvade > 0)
-			{
-				// Arrow Dancing keystone.
-				SmallDec chanceToEvadeMelee = chanceToEvade, chanceToEvadeProjectile = chanceToEvade;
+            if (armour > 0)
+            {
+                def["Armour: #"] = new List<SmallDec>() { RoundValue(armour, 0) };
+                def["Estimated Physical Damage reduction: #%"] = new List<SmallDec>() { RoundValue(PhysicalDamageReduction(Level, RoundValue(armour, 0)), 0) };
+            }
+            if (armourProjectile > 0)
+            {
+                def["Armour against Projectiles: #"] = new List<SmallDec>() { RoundValue(armourProjectile, 0) };
+                def["Estimated Physical Damage reduction against Projectiles: #%"] = new List<SmallDec>() { RoundValue(PhysicalDamageReduction(Level, RoundValue(armourProjectile, 0)), 0) };
+            }
+            if (evasion > 0)
+                def["Evasion Rating: #"] = new List<SmallDec>() { RoundValue(evasion, 0) };
+            SmallDec chanceToEvade = ChanceToEvade(Level, RoundValue(evasion, 0));
+            if (chanceToEvade > 0)
+            {
+                // Arrow Dancing keystone.
+                SmallDec chanceToEvadeMelee = chanceToEvade, chanceToEvadeProjectile = chanceToEvade;
 
-				if (Global.ContainsKey("#% less chance to Evade Melee Attacks"))
-					chanceToEvadeMelee = IncreaseValueByPercentage(chanceToEvadeMelee, -Global["#% less chance to Evade Melee Attacks"][0]);
-				if (Global.ContainsKey("#% more chance to Evade Melee Attacks"))
-					chanceToEvadeMelee = IncreaseValueByPercentage(chanceToEvadeMelee, Global["#% more chance to Evade Melee Attacks"][0]);
-				if (Global.ContainsKey("#% less chance to Evade Projectile Attacks"))
-					chanceToEvadeProjectile = IncreaseValueByPercentage(chanceToEvadeProjectile, -Global["#% less chance to Evade Projectile Attacks"][0]);
-				if (Global.ContainsKey("#% more chance to Evade Projectile Attacks"))
-					chanceToEvadeProjectile = IncreaseValueByPercentage(chanceToEvadeProjectile, Global["#% more chance to Evade Projectile Attacks"][0]);
-				// Chance cannot be less than 5% and more than 95%.
-				if (chanceToEvadeMelee < 5f) chanceToEvadeMelee = 5f;
-				else if (chanceToEvadeMelee > 95f) chanceToEvadeMelee = 95f;
-				if (chanceToEvadeProjectile < 5f) chanceToEvadeProjectile = 5f;
-				else if (chanceToEvadeProjectile > 95f) chanceToEvadeProjectile = 95f;
+                if (Global.ContainsKey("#% less chance to Evade Melee Attacks"))
+                    chanceToEvadeMelee = IncreaseValueByPercentage(chanceToEvadeMelee, -Global["#% less chance to Evade Melee Attacks"][0]);
+                if (Global.ContainsKey("#% more chance to Evade Melee Attacks"))
+                    chanceToEvadeMelee = IncreaseValueByPercentage(chanceToEvadeMelee, Global["#% more chance to Evade Melee Attacks"][0]);
+                if (Global.ContainsKey("#% less chance to Evade Projectile Attacks"))
+                    chanceToEvadeProjectile = IncreaseValueByPercentage(chanceToEvadeProjectile, -Global["#% less chance to Evade Projectile Attacks"][0]);
+                if (Global.ContainsKey("#% more chance to Evade Projectile Attacks"))
+                    chanceToEvadeProjectile = IncreaseValueByPercentage(chanceToEvadeProjectile, Global["#% more chance to Evade Projectile Attacks"][0]);
+                // Chance cannot be less than 5% and more than 95%.
+                if (chanceToEvadeMelee < 5f) chanceToEvadeMelee = 5f;
+                else if (chanceToEvadeMelee > 95f) chanceToEvadeMelee = 95f;
+                if (chanceToEvadeProjectile < 5f) chanceToEvadeProjectile = 5f;
+                else if (chanceToEvadeProjectile > 95f) chanceToEvadeProjectile = 95f;
 
-				if (chanceToEvadeMelee == chanceToEvadeProjectile)
-					def["Estimated chance to Evade Attacks: #%"] = new List<SmallDec>() { RoundValue(chanceToEvadeMelee, 0) };
-				else
-				{
-					def["Estimated chance to Evade Melee Attacks: #%"] = new List<SmallDec>() { RoundValue(chanceToEvadeMelee, 0) };
-					def["Estimated chance to Evade Projectile Attacks: #%"] = new List<SmallDec>() { RoundValue(chanceToEvadeProjectile, 0) };
-				}
-			}
+                if (chanceToEvadeMelee == chanceToEvadeProjectile)
+                    def["Estimated chance to Evade Attacks: #%"] = new List<SmallDec>() { RoundValue(chanceToEvadeMelee, 0) };
+                else
+                {
+                    def["Estimated chance to Evade Melee Attacks: #%"] = new List<SmallDec>() { RoundValue(chanceToEvadeMelee, 0) };
+                    def["Estimated chance to Evade Projectile Attacks: #%"] = new List<SmallDec>() { RoundValue(chanceToEvadeProjectile, 0) };
+                }
+            }
 
-			// Dodge Attacks and Spells.
-			SmallDec chanceToDodgeAttacks = 0;
-			SmallDec chanceToDodgeSpells = 0;
-			if (Acrobatics)
-				chanceToDodgeAttacks += Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield, #% less Chance to Block Spells and Attacks"][0];
-			if (Global.ContainsKey("#% additional chance to Dodge Attacks"))
-				chanceToDodgeAttacks += Global["#% additional chance to Dodge Attacks"][0];
-			if (Global.ContainsKey("#% Chance to Dodge Spell Damage"))
-				chanceToDodgeSpells += Global["#% Chance to Dodge Spell Damage"][0];
-			if (chanceToDodgeAttacks > 0)
-				def["Chance to Dodge Attacks: #%"] = new List<SmallDec>() { chanceToDodgeAttacks };
-			if (chanceToDodgeSpells > 0)
-				def["Chance to Dodge Spells: #%"] = new List<SmallDec>() { chanceToDodgeSpells };
+            // Dodge Attacks and Spells.
+            SmallDec chanceToDodgeAttacks = 0;
+            SmallDec chanceToDodgeSpells = 0;
+            if (Acrobatics)
+                chanceToDodgeAttacks += Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield, #% less Chance to Block Spells and Attacks"][0];
+            if (Global.ContainsKey("#% additional chance to Dodge Attacks"))
+                chanceToDodgeAttacks += Global["#% additional chance to Dodge Attacks"][0];
+            if (Global.ContainsKey("#% Chance to Dodge Spell Damage"))
+                chanceToDodgeSpells += Global["#% Chance to Dodge Spell Damage"][0];
+            if (chanceToDodgeAttacks > 0)
+                def["Chance to Dodge Attacks: #%"] = new List<SmallDec>() { chanceToDodgeAttacks };
+            if (chanceToDodgeSpells > 0)
+                def["Chance to Dodge Spells: #%"] = new List<SmallDec>() { chanceToDodgeSpells };
 
-			// Energy Shield Recharge per Second.
-			// @see http://pathofexile.gamepedia.com/Energy_shield
-			if (es > 0)
-			{
-				def["Maximum Energy Shield: #"] = new List<SmallDec>() { RoundValue(es, 0) };
+            // Energy Shield Recharge per Second.
+            // @see http://pathofexile.gamepedia.com/Energy_shield
+            if (es > 0)
+            {
+                def["Maximum Energy Shield: #"] = new List<SmallDec>() { RoundValue(es, 0) };
 
-				SmallDec esRecharge = RoundValue(es, 0) / 5; // By default, energy shield recharges at a rate equal to a fifth of the character's maximum energy shield per second.
-				if (Global.ContainsKey("#% increased Energy Shield Recharge Rate"))
-					esRecharge = esRecharge * (1 + Global["#% increased Energy Shield Recharge Rate"][0] / 100);
-				def["Energy Shield Recharge per Second: #"] = new List<SmallDec>() { RoundValue(esRecharge, 1) };
+                SmallDec esRecharge = RoundValue(es, 0) / 5; // By default, energy shield recharges at a rate equal to a fifth of the character's maximum energy shield per second.
+                if (Global.ContainsKey("#% increased Energy Shield Recharge Rate"))
+                    esRecharge = esRecharge * (1 + Global["#% increased Energy Shield Recharge Rate"][0] / 100);
+                def["Energy Shield Recharge per Second: #"] = new List<SmallDec>() { RoundValue(esRecharge, 1) };
 
-				SmallDec esDelay = 2; // By default, the delay period for energy shield to begin to recharge is 2 seconds.
-				SmallDec esOccurrence = 0;
-				if (Global.ContainsKey("#% faster start of Energy Shield Recharge"))
-					esOccurrence += Global["#% faster start of Energy Shield Recharge"][0];
-				if (Global.ContainsKey("#% slower start of Energy Shield Recharge"))
-					esOccurrence -= Global["#% slower start of Energy Shield Recharge"][0];
-				esDelay = esDelay * 100 / (100 + esOccurrence); // 200 / (100 + r)
-				if (esOccurrence != 0)
-					def["Energy Shield Recharge Occurrence modifier: " + (esOccurrence > 0 ? "+" : "") + "#%"] = new List<SmallDec>() { esOccurrence };
-				def["Energy Shield Recharge Delay: #s"] = new List<SmallDec>() { RoundValue(esDelay, 1) };
-			}
+                SmallDec esDelay = 2; // By default, the delay period for energy shield to begin to recharge is 2 seconds.
+                SmallDec esOccurrence = 0;
+                if (Global.ContainsKey("#% faster start of Energy Shield Recharge"))
+                    esOccurrence += Global["#% faster start of Energy Shield Recharge"][0];
+                if (Global.ContainsKey("#% slower start of Energy Shield Recharge"))
+                    esOccurrence -= Global["#% slower start of Energy Shield Recharge"][0];
+                esDelay = esDelay * 100 / (100 + esOccurrence); // 200 / (100 + r)
+                if (esOccurrence != 0)
+                    def["Energy Shield Recharge Occurrence modifier: " + (esOccurrence > 0 ? "+" : "") + "#%"] = new List<SmallDec>() { esOccurrence };
+                def["Energy Shield Recharge Delay: #s"] = new List<SmallDec>() { RoundValue(esDelay, 1) };
+            }
 
-			// Life Regeneration.
-			SmallDec lifeRegen = 0;
-			SmallDec lifeRegenFlat = 0;
-			if (Global.ContainsKey("#% of Life Regenerated per second"))
-				lifeRegen += Global["#% of Life Regenerated per second"][0];
-			if (Global.ContainsKey("# Life Regenerated per second"))
-				lifeRegenFlat += Global["# Life Regenerated per second"][0];
+            // Life Regeneration.
+            SmallDec lifeRegen = 0;
+            SmallDec lifeRegenFlat = 0;
+            if (Global.ContainsKey("#% of Life Regenerated per second"))
+                lifeRegen += Global["#% of Life Regenerated per second"][0];
+            if (Global.ContainsKey("# Life Regenerated per second"))
+                lifeRegenFlat += Global["# Life Regenerated per second"][0];
 
-			if (VaalPact)
-				lifeRegen = 0;
+            if (VaalPact)
+                lifeRegen = 0;
 
-			if (ZealotsOath)
-			{
-				if (es > 0 && lifeRegen + lifeRegenFlat > 0)
-					def["Energy Shield Regeneration per Second: #"] = new List<SmallDec>() { RoundValue(PercentOfValue(RoundValue(es, 0), lifeRegen), 1) + lifeRegenFlat };
-			}
-			else
-			{
-				if (!ChaosInoculation && lifeRegen + lifeRegenFlat > 0)
-					def["Life Regeneration per Second: #"] = new List<SmallDec>() { RoundValue(PercentOfValue(RoundValue(life, 0), lifeRegen), 1) + lifeRegenFlat };
-			}
+            if (ZealotsOath)
+            {
+                if (es > 0 && lifeRegen + lifeRegenFlat > 0)
+                    def["Energy Shield Regeneration per Second: #"] = new List<SmallDec>() { RoundValue(PercentOfValue(RoundValue(es, 0), lifeRegen), 1) + lifeRegenFlat };
+            }
+            else
+            {
+                if (!ChaosInoculation && lifeRegen + lifeRegenFlat > 0)
+                    def["Life Regeneration per Second: #"] = new List<SmallDec>() { RoundValue(PercentOfValue(RoundValue(life, 0), lifeRegen), 1) + lifeRegenFlat };
+            }
 
-			// Mana Regeneration.
-			if (mana > 0)
-			{
-				SmallDec manaRegen = PercentOfValue(RoundValue(mana, 0), 1.75f);
-				// manaRegen += ClarityManaRegenerationPerSecond; // Clarity provides flat mana regeneration bonus.
-				SmallDec incManaRegen = 0;
-				if (Global.ContainsKey("#% increased Mana Regeneration Rate"))
-					incManaRegen += Global["#% increased Mana Regeneration Rate"][0];
-				manaRegen = IncreaseValueByPercentage(manaRegen, incManaRegen);
-				def["Mana Regeneration per Second: #"] = new List<SmallDec>() { RoundValue(manaRegen, 1) };
-			}
+            // Mana Regeneration.
+            if (mana > 0)
+            {
+                SmallDec manaRegen = PercentOfValue(RoundValue(mana, 0), 1.75f);
+                // manaRegen += ClarityManaRegenerationPerSecond; // Clarity provides flat mana regeneration bonus.
+                SmallDec incManaRegen = 0;
+                if (Global.ContainsKey("#% increased Mana Regeneration Rate"))
+                    incManaRegen += Global["#% increased Mana Regeneration Rate"][0];
+                manaRegen = IncreaseValueByPercentage(manaRegen, incManaRegen);
+                def["Mana Regeneration per Second: #"] = new List<SmallDec>() { RoundValue(manaRegen, 1) };
+            }
 
-			// Character attributes.
-			ch["Strength: #"] = Global["+# to Strength"];
-			ch["Dexterity: #"] = Global["+# to Dexterity"];
-			ch["Intelligence: #"] = Global["+# to Intelligence"];
+            // Character attributes.
+            ch["Strength: #"] = Global["+# to Strength"];
+            ch["Dexterity: #"] = Global["+# to Dexterity"];
+            ch["Intelligence: #"] = Global["+# to Intelligence"];
 
-			// Tawhoa, Forest's Strength. Chieftain passive.
-			if (Global.ContainsKey("#% increased Strength"))
-			{
-				ch["Strength: #"][0] *= 1 + (Global["#% increased Strength"][0] / 100);
-				ch["Strength: #"][0] = (SmallDec)Math.Round((decimal)ch["Strength: #"][0], 0, MidpointRounding.AwayFromZero);
-			}
+            // Tawhoa, Forest's Strength. Chieftain passive.
+            if (Global.ContainsKey("#% increased Strength"))
+            {
+                ch["Strength: #"][0] *= 1 + (Global["#% increased Strength"][0] / 100);
+                ch["Strength: #"][0] = (SmallDec)Math.Round((decimal)ch["Strength: #"][0], 0, MidpointRounding.AwayFromZero);
+            }
 #else
             float life;
             if (ChaosInoculation)
@@ -2771,76 +2771,76 @@ namespace POESKillTree.SkillTreeFiles
                 ch["Strength: #"][0] = (float)Math.Round((decimal)ch["Strength: #"][0], 0, MidpointRounding.AwayFromZero);
             }
 #endif
-			// Shield, Staff and Dual Wielding detection.
-			bool hasShield = OffHand.IsShield();
+            // Shield, Staff and Dual Wielding detection.
+            bool hasShield = OffHand.IsShield();
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			// Resistances.
-			SmallDec maxResistFire = 75;
-			SmallDec maxResistCold = 75;
-			SmallDec maxResistLightning = 75;
-			SmallDec maxResistChaos = 75;
-			SmallDec resistFire = 0;
-			SmallDec resistCold = 0;
-			SmallDec resistLightning = 0;
-			SmallDec resistChaos = 0;
-			// Penalties to resistances at difficulty levels.
-			if (difficultyCruel)
-				resistFire = resistCold = resistLightning = resistChaos = -20;
-			else if (difficultyMerciless)
-				resistFire = resistCold = resistLightning = resistChaos = -60;
-			if (Global.ContainsKey("+#% to Fire Resistance"))
-				resistFire += Global["+#% to Fire Resistance"][0];
-			if (Global.ContainsKey("+#% to Cold Resistance"))
-				resistCold += Global["+#% to Cold Resistance"][0];
-			if (Global.ContainsKey("+#% to Lightning Resistance"))
-				resistLightning += Global["+#% to Lightning Resistance"][0];
-			if (Global.ContainsKey("+#% to Chaos Resistance"))
-				resistChaos += Global["+#% to Chaos Resistance"][0];
-			if (Global.ContainsKey("+#% to Fire and Cold Resistances")) // Two-Stone Ring.
-			{
-				SmallDec value = Global["+#% to Fire and Cold Resistances"][0];
-				resistFire += value;
-				resistCold += value;
-			}
-			if (Global.ContainsKey("+#% to Fire and Lightning Resistances")) // Two-Stone Ring.
-			{
-				SmallDec value = Global["+#% to Fire and Lightning Resistances"][0];
-				resistFire += value;
-				resistLightning += value;
-			}
-			if (Global.ContainsKey("+#% to Cold and Lightning Resistances")) // Two-Stone Ring.
-			{
-				SmallDec value = Global["+#% to Cold and Lightning Resistances"][0];
-				resistCold += value;
-				resistLightning += value;
-			}
-			if (Global.ContainsKey("+#% to all Elemental Resistances"))
-			{
-				SmallDec value = Global["+#% to all Elemental Resistances"][0];
-				resistFire += value;
-				resistCold += value;
-				resistLightning += value;
-			}
-			if (hasShield && Global.ContainsKey("+#% Elemental Resistances while holding a Shield"))
-			{
-				SmallDec value = Global["+#% Elemental Resistances while holding a Shield"][0];
-				resistFire += value;
-				resistCold += value;
-				resistLightning += value;
-			}
-			if (Global.ContainsKey("+#% to maximum Fire Resistance"))
-				maxResistFire += Global["+#% to maximum Fire Resistance"][0];
-			if (Global.ContainsKey("+#% to maximum Cold Resistance"))
-				maxResistCold += Global["+#% to maximum Cold Resistance"][0];
-			if (Global.ContainsKey("+#% to maximum Lightning Resistance"))
-				maxResistLightning += Global["+#% to maximum Lightning Resistance"][0];
-			if (ChaosInoculation)
-				maxResistChaos = resistChaos = 100;
-			def["Fire Resistance: #% (#%)"] = new List<SmallDec>() { MaximumValue(resistFire, maxResistFire), resistFire };
-			def["Cold Resistance: #% (#%)"] = new List<SmallDec>() { MaximumValue(resistCold, maxResistCold), resistCold };
-			def["Lightning Resistance: #% (#%)"] = new List<SmallDec>() { MaximumValue(resistLightning, maxResistLightning), resistLightning };
-			def["Chaos Resistance: #% (#%)"] = new List<SmallDec>() { MaximumValue(resistChaos, maxResistChaos), resistChaos };
+            // Resistances.
+            SmallDec maxResistFire = 75;
+            SmallDec maxResistCold = 75;
+            SmallDec maxResistLightning = 75;
+            SmallDec maxResistChaos = 75;
+            SmallDec resistFire = 0;
+            SmallDec resistCold = 0;
+            SmallDec resistLightning = 0;
+            SmallDec resistChaos = 0;
+            // Penalties to resistances at difficulty levels.
+            if (difficultyCruel)
+                resistFire = resistCold = resistLightning = resistChaos = -20;
+            else if (difficultyMerciless)
+                resistFire = resistCold = resistLightning = resistChaos = -60;
+            if (Global.ContainsKey("+#% to Fire Resistance"))
+                resistFire += Global["+#% to Fire Resistance"][0];
+            if (Global.ContainsKey("+#% to Cold Resistance"))
+                resistCold += Global["+#% to Cold Resistance"][0];
+            if (Global.ContainsKey("+#% to Lightning Resistance"))
+                resistLightning += Global["+#% to Lightning Resistance"][0];
+            if (Global.ContainsKey("+#% to Chaos Resistance"))
+                resistChaos += Global["+#% to Chaos Resistance"][0];
+            if (Global.ContainsKey("+#% to Fire and Cold Resistances")) // Two-Stone Ring.
+            {
+                SmallDec value = Global["+#% to Fire and Cold Resistances"][0];
+                resistFire += value;
+                resistCold += value;
+            }
+            if (Global.ContainsKey("+#% to Fire and Lightning Resistances")) // Two-Stone Ring.
+            {
+                SmallDec value = Global["+#% to Fire and Lightning Resistances"][0];
+                resistFire += value;
+                resistLightning += value;
+            }
+            if (Global.ContainsKey("+#% to Cold and Lightning Resistances")) // Two-Stone Ring.
+            {
+                SmallDec value = Global["+#% to Cold and Lightning Resistances"][0];
+                resistCold += value;
+                resistLightning += value;
+            }
+            if (Global.ContainsKey("+#% to all Elemental Resistances"))
+            {
+                SmallDec value = Global["+#% to all Elemental Resistances"][0];
+                resistFire += value;
+                resistCold += value;
+                resistLightning += value;
+            }
+            if (hasShield && Global.ContainsKey("+#% Elemental Resistances while holding a Shield"))
+            {
+                SmallDec value = Global["+#% Elemental Resistances while holding a Shield"][0];
+                resistFire += value;
+                resistCold += value;
+                resistLightning += value;
+            }
+            if (Global.ContainsKey("+#% to maximum Fire Resistance"))
+                maxResistFire += Global["+#% to maximum Fire Resistance"][0];
+            if (Global.ContainsKey("+#% to maximum Cold Resistance"))
+                maxResistCold += Global["+#% to maximum Cold Resistance"][0];
+            if (Global.ContainsKey("+#% to maximum Lightning Resistance"))
+                maxResistLightning += Global["+#% to maximum Lightning Resistance"][0];
+            if (ChaosInoculation)
+                maxResistChaos = resistChaos = 100;
+            def["Fire Resistance: #% (#%)"] = new List<SmallDec>() { MaximumValue(resistFire, maxResistFire), resistFire };
+            def["Cold Resistance: #% (#%)"] = new List<SmallDec>() { MaximumValue(resistCold, maxResistCold), resistCold };
+            def["Lightning Resistance: #% (#%)"] = new List<SmallDec>() { MaximumValue(resistLightning, maxResistLightning), resistLightning };
+            def["Chaos Resistance: #% (#%)"] = new List<SmallDec>() { MaximumValue(resistChaos, maxResistChaos), resistChaos };
 #else
             // Resistances.
             float maxResistFire = 75;
@@ -2882,7 +2882,7 @@ namespace POESKillTree.SkillTreeFiles
                 resistCold += value;
                 resistLightning += value;
             }
-			if (Global.ContainsKey("+#% to all Elemental Resistances"))
+            if (Global.ContainsKey("+#% to all Elemental Resistances"))
             {
                 float value = Global["+#% to all Elemental Resistances"][0];
                 resistFire += value;
@@ -2910,60 +2910,60 @@ namespace POESKillTree.SkillTreeFiles
             def["Chaos Resistance: #% (#%)"] = new List<float>() { MaximumValue(resistChaos, maxResistChaos), resistChaos };
 #endif
 
-			// Chance to Block Attacks and Spells.
-			// Block chance is capped at 75%. The chance to block spells is also capped at 75%.
-			// @see http://pathofexile.gamepedia.com/Blocking
+            // Chance to Block Attacks and Spells.
+            // Block chance is capped at 75%. The chance to block spells is also capped at 75%.
+            // @see http://pathofexile.gamepedia.com/Blocking
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			SmallDec maxChanceBlockAttacks = 75;
-			SmallDec maxChanceBlockSpells = 75;
-			SmallDec maxChanceBlockProjectiles = 75;
-			SmallDec chanceBlockAttacks = 0;
-			SmallDec chanceBlockSpells = 0;
-			SmallDec chanceBlockProjectiles = 0;
-			if (Global.ContainsKey("+#% to maximum Block Chance"))
-			{
-				maxChanceBlockAttacks += Global["+#% to maximum Block Chance"][0];
-				maxChanceBlockSpells += Global["+#% to maximum Block Chance"][0];
-				maxChanceBlockProjectiles += Global["+#% to maximum Block Chance"][0];
-			}
-			if (hasShield)
-			{
-				List<SmallDec> values = OffHand.GetValues("Chance to Block: #%");
-				if (values.Count > 0) chanceBlockAttacks += values[0];
-			}
-			else if (IsWieldingStaff)
-			{
-				List<SmallDec> values = MainHand.GetValues("#% Chance to Block");
-				if (values.Count > 0) chanceBlockAttacks += values[0];
-			}
-			else if (IsDualWielding)
-				chanceBlockAttacks += 15; // When dual wielding, the base chance to block is 15% no matter which weapons are used.
-			if (hasShield && Global.ContainsKey("#% additional Chance to Block with Shields"))
-				chanceBlockAttacks += Global["#% additional Chance to Block with Shields"][0];
-			if (IsWieldingStaff && Global.ContainsKey("#% additional Block Chance With Staves"))
-				chanceBlockAttacks += Global["#% additional Block Chance With Staves"][0];
-			if (IsDualWielding && Global.ContainsKey("#% additional Block Chance while Dual Wielding"))
-				chanceBlockAttacks += Global["#% additional Block Chance while Dual Wielding"][0];
-			if ((IsDualWielding || hasShield) && Global.ContainsKey("#% additional Block Chance while Dual Wielding or holding a Shield"))
-				chanceBlockAttacks += Global["#% additional Block Chance while Dual Wielding or holding a Shield"][0];
-			if (Global.ContainsKey("#% of Block Chance applied to Spells"))
-				chanceBlockSpells = PercentOfValue(chanceBlockAttacks, Global["#% of Block Chance applied to Spells"][0]);
-			if (hasShield && Global.ContainsKey("#% additional Chance to Block Spells with Shields"))
-				chanceBlockSpells += Global["#% additional Chance to Block Spells with Shields"][0];
-			if (Global.ContainsKey("+#% additional Block Chance against Projectiles"))
-				chanceBlockProjectiles = chanceBlockAttacks + Global["+#% additional Block Chance against Projectiles"][0];
-			if (Acrobatics)
-			{
-				SmallDec lessChanceBlock = Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield, #% less Chance to Block Spells and Attacks"][2];
-				chanceBlockAttacks = IncreaseValueByPercentage(chanceBlockAttacks, -lessChanceBlock);
-				chanceBlockSpells = IncreaseValueByPercentage(chanceBlockSpells, -lessChanceBlock);
-			}
-			if (chanceBlockAttacks > 0)
-				def["Chance to Block Attacks: #%"] = new List<SmallDec>() { MaximumValue(RoundValue(chanceBlockAttacks, 0), maxChanceBlockAttacks) };
-			if (chanceBlockSpells > 0)
-				def["Chance to Block Spells: #%"] = new List<SmallDec>() { MaximumValue(RoundValue(chanceBlockSpells, 0), maxChanceBlockSpells) };
-			if (chanceBlockProjectiles > 0)
-				def["Chance to Block Projectile Attacks: #%"] = new List<SmallDec>() { MaximumValue(RoundValue(chanceBlockProjectiles, 0), maxChanceBlockProjectiles) };
+            SmallDec maxChanceBlockAttacks = 75;
+            SmallDec maxChanceBlockSpells = 75;
+            SmallDec maxChanceBlockProjectiles = 75;
+            SmallDec chanceBlockAttacks = 0;
+            SmallDec chanceBlockSpells = 0;
+            SmallDec chanceBlockProjectiles = 0;
+            if (Global.ContainsKey("+#% to maximum Block Chance"))
+            {
+                maxChanceBlockAttacks += Global["+#% to maximum Block Chance"][0];
+                maxChanceBlockSpells += Global["+#% to maximum Block Chance"][0];
+                maxChanceBlockProjectiles += Global["+#% to maximum Block Chance"][0];
+            }
+            if (hasShield)
+            {
+                List<SmallDec> values = OffHand.GetValues("Chance to Block: #%");
+                if (values.Count > 0) chanceBlockAttacks += values[0];
+            }
+            else if (IsWieldingStaff)
+            {
+                List<SmallDec> values = MainHand.GetValues("#% Chance to Block");
+                if (values.Count > 0) chanceBlockAttacks += values[0];
+            }
+            else if (IsDualWielding)
+                chanceBlockAttacks += 15; // When dual wielding, the base chance to block is 15% no matter which weapons are used.
+            if (hasShield && Global.ContainsKey("#% additional Chance to Block with Shields"))
+                chanceBlockAttacks += Global["#% additional Chance to Block with Shields"][0];
+            if (IsWieldingStaff && Global.ContainsKey("#% additional Block Chance With Staves"))
+                chanceBlockAttacks += Global["#% additional Block Chance With Staves"][0];
+            if (IsDualWielding && Global.ContainsKey("#% additional Block Chance while Dual Wielding"))
+                chanceBlockAttacks += Global["#% additional Block Chance while Dual Wielding"][0];
+            if ((IsDualWielding || hasShield) && Global.ContainsKey("#% additional Block Chance while Dual Wielding or holding a Shield"))
+                chanceBlockAttacks += Global["#% additional Block Chance while Dual Wielding or holding a Shield"][0];
+            if (Global.ContainsKey("#% of Block Chance applied to Spells"))
+                chanceBlockSpells = PercentOfValue(chanceBlockAttacks, Global["#% of Block Chance applied to Spells"][0]);
+            if (hasShield && Global.ContainsKey("#% additional Chance to Block Spells with Shields"))
+                chanceBlockSpells += Global["#% additional Chance to Block Spells with Shields"][0];
+            if (Global.ContainsKey("+#% additional Block Chance against Projectiles"))
+                chanceBlockProjectiles = chanceBlockAttacks + Global["+#% additional Block Chance against Projectiles"][0];
+            if (Acrobatics)
+            {
+                SmallDec lessChanceBlock = Global["#% Chance to Dodge Attacks. #% less Armour and Energy Shield, #% less Chance to Block Spells and Attacks"][2];
+                chanceBlockAttacks = IncreaseValueByPercentage(chanceBlockAttacks, -lessChanceBlock);
+                chanceBlockSpells = IncreaseValueByPercentage(chanceBlockSpells, -lessChanceBlock);
+            }
+            if (chanceBlockAttacks > 0)
+                def["Chance to Block Attacks: #%"] = new List<SmallDec>() { MaximumValue(RoundValue(chanceBlockAttacks, 0), maxChanceBlockAttacks) };
+            if (chanceBlockSpells > 0)
+                def["Chance to Block Spells: #%"] = new List<SmallDec>() { MaximumValue(RoundValue(chanceBlockSpells, 0), maxChanceBlockSpells) };
+            if (chanceBlockProjectiles > 0)
+                def["Chance to Block Projectile Attacks: #%"] = new List<SmallDec>() { MaximumValue(RoundValue(chanceBlockProjectiles, 0), maxChanceBlockProjectiles) };
 
 #else
             float maxChanceBlockAttacks = 75;
@@ -3018,44 +3018,44 @@ namespace POESKillTree.SkillTreeFiles
                 def["Chance to Block Projectile Attacks: #%"] = new List<float>() { MaximumValue(RoundValue(chanceBlockProjectiles, 0), maxChanceBlockProjectiles) };
 #endif
 
-			// Elemental status ailments.
+            // Elemental status ailments.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			SmallDec igniteAvoidance = 0;
-			SmallDec chillAvoidance = 0;
-			SmallDec freezeAvoidance = 0;
-			SmallDec shockAvoidance = 0;
-			if (Global.ContainsKey("#% chance to Avoid being Ignited"))
-				igniteAvoidance += Global["#% chance to Avoid being Ignited"][0];
-			if (Global.ContainsKey("#% chance to Avoid being Chilled"))
-				chillAvoidance += Global["#% chance to Avoid being Chilled"][0];
-			if (Global.ContainsKey("#% chance to Avoid being Frozen"))
-				freezeAvoidance += Global["#% chance to Avoid being Frozen"][0];
-			if (Global.ContainsKey("#% chance to Avoid being Shocked"))
-				shockAvoidance += Global["#% chance to Avoid being Shocked"][0];
-			if (Global.ContainsKey("#% chance to Avoid Elemental Status Ailments"))
-			{
-				SmallDec value = Global["#% chance to Avoid Elemental Status Ailments"][0];
-				igniteAvoidance += value;
-				chillAvoidance += value;
-				freezeAvoidance += value;
-				shockAvoidance += value;
-			}
-			if (Global.ContainsKey("Cannot be Ignited"))
-				igniteAvoidance = 100;
-			if (Global.ContainsKey("Cannot be Chilled"))
-				chillAvoidance = 100;
-			if (Global.ContainsKey("Cannot be Frozen"))
-				freezeAvoidance = 100;
-			if (Global.ContainsKey("Cannot be Shocked"))
-				shockAvoidance = 100;
-			if (igniteAvoidance > 0)
-				def["Ignite Avoidance: #%"] = new List<SmallDec>() { igniteAvoidance };
-			if (chillAvoidance > 0)
-				def["Chill Avoidance: #%"] = new List<SmallDec>() { chillAvoidance };
-			if (freezeAvoidance > 0)
-				def["Freeze Avoidance: #%"] = new List<SmallDec>() { freezeAvoidance };
-			if (shockAvoidance > 0)
-				def["Shock Avoidance: #%"] = new List<SmallDec>() { shockAvoidance };
+            SmallDec igniteAvoidance = 0;
+            SmallDec chillAvoidance = 0;
+            SmallDec freezeAvoidance = 0;
+            SmallDec shockAvoidance = 0;
+            if (Global.ContainsKey("#% chance to Avoid being Ignited"))
+                igniteAvoidance += Global["#% chance to Avoid being Ignited"][0];
+            if (Global.ContainsKey("#% chance to Avoid being Chilled"))
+                chillAvoidance += Global["#% chance to Avoid being Chilled"][0];
+            if (Global.ContainsKey("#% chance to Avoid being Frozen"))
+                freezeAvoidance += Global["#% chance to Avoid being Frozen"][0];
+            if (Global.ContainsKey("#% chance to Avoid being Shocked"))
+                shockAvoidance += Global["#% chance to Avoid being Shocked"][0];
+            if (Global.ContainsKey("#% chance to Avoid Elemental Status Ailments"))
+            {
+                SmallDec value = Global["#% chance to Avoid Elemental Status Ailments"][0];
+                igniteAvoidance += value;
+                chillAvoidance += value;
+                freezeAvoidance += value;
+                shockAvoidance += value;
+            }
+            if (Global.ContainsKey("Cannot be Ignited"))
+                igniteAvoidance = 100;
+            if (Global.ContainsKey("Cannot be Chilled"))
+                chillAvoidance = 100;
+            if (Global.ContainsKey("Cannot be Frozen"))
+                freezeAvoidance = 100;
+            if (Global.ContainsKey("Cannot be Shocked"))
+                shockAvoidance = 100;
+            if (igniteAvoidance > 0)
+                def["Ignite Avoidance: #%"] = new List<SmallDec>() { igniteAvoidance };
+            if (chillAvoidance > 0)
+                def["Chill Avoidance: #%"] = new List<SmallDec>() { chillAvoidance };
+            if (freezeAvoidance > 0)
+                def["Freeze Avoidance: #%"] = new List<SmallDec>() { freezeAvoidance };
+            if (shockAvoidance > 0)
+                def["Shock Avoidance: #%"] = new List<SmallDec>() { shockAvoidance };
 #else
             float igniteAvoidance = 0;
             float chillAvoidance = 0;
@@ -3094,7 +3094,7 @@ namespace POESKillTree.SkillTreeFiles
             if (shockAvoidance > 0)
                 def["Shock Avoidance: #%"] = new List<float>() { shockAvoidance };
 #endif
-			List<ListGroup> groups = new List<ListGroup>();
+            List<ListGroup> groups = new List<ListGroup>();
             groups.Add(new ListGroup(L10n.Message("Character"), ch));
             groups.Add(new ListGroup(L10n.Message("Defense"), def));
 
@@ -3102,19 +3102,19 @@ namespace POESKillTree.SkillTreeFiles
         }
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-		// Returns rounded value with all fractional digits after specified precision cut off.
-		public static SmallDec FloorValue(SmallDec value, int precision)
-		{
-			SmallDec coeff = Math.Pow(10, precision);
+        // Returns rounded value with all fractional digits after specified precision cut off.
+        public static SmallDec FloorValue(SmallDec value, int precision)
+        {
+            SmallDec coeff = Math.Pow(10, precision);
 
-			return (SmallDec.Floor((value * coeff)) / coeff);
-		}
+            return (SmallDec.Floor((value * coeff)) / coeff);
+        }
 
-		// Returns value increased by specified percentage.
-		public static SmallDec IncreaseValueByPercentage(SmallDec value, SmallDec percentage)
-		{
-			return value * (100 + percentage) / 100;
-		}
+        // Returns value increased by specified percentage.
+        public static SmallDec IncreaseValueByPercentage(SmallDec value, SmallDec percentage)
+        {
+            return value * (100 + percentage) / 100;
+        }
 #else
         // Returns rounded value with all fractional digits after specified precision cut off.
         public static float FloorValue(float value, int precision)
@@ -3131,8 +3131,8 @@ namespace POESKillTree.SkillTreeFiles
         }
 #endif
 
-		// Initializes structures.
-		public static void Initialize(SkillTree skillTree, ItemAttributes itemAttrs)
+        // Initializes structures.
+        public static void Initialize(SkillTree skillTree, ItemAttributes itemAttrs)
         {
             Items = itemAttrs.Equip.ToList();
 
@@ -3178,14 +3178,14 @@ namespace POESKillTree.SkillTreeFiles
             Equipment = new AttributeSet();
             foreach (var attr in itemAttrs.NonLocalMods)
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
-				Equipment.Add(attr.Attribute, new List<SmallDec>(attr.Value));
+                Equipment.Add(attr.Attribute, new List<SmallDec>(attr.Value));
 #elif (PoESkillTree_UseSmallDec_ForAttributes)
-				Equipment.Add(attr.Attribute, new List<SmallDec>(SmallDec.CreateList(attr.Value)));
+                Equipment.Add(attr.Attribute, new List<SmallDec>(SmallDec.CreateList(attr.Value)));
 #else
-				Equipment.Add(attr.Attribute, new List<float>(attr.Value));
+                Equipment.Add(attr.Attribute, new List<float>(attr.Value));
 #endif
 
-			if (NecromanticAegis && OffHand.IsShield())
+            if (NecromanticAegis && OffHand.IsShield())
             {
                 // Remove all bonuses of shield from equipment set.
                 // @see http://pathofexile.gamepedia.com/Necromantic_Aegis
@@ -3217,32 +3217,32 @@ namespace POESKillTree.SkillTreeFiles
             if (IsDualWielding)
             {
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				Global["#% more Attack Speed"] = new List<SmallDec>() { 10 };
-				Global["#% more Physical Damage with Weapons"] = new List<SmallDec>() { 20 };
+                Global["#% more Attack Speed"] = new List<SmallDec>() { 10 };
+                Global["#% more Physical Damage with Weapons"] = new List<SmallDec>() { 20 };
 #else
                 Global["#% more Attack Speed"] = new List<float>() { 10 };
                 Global["#% more Physical Damage with Weapons"] = new List<float>() { 20 };
 #endif
-			}
+            }
         }
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-		// Returns value capped at specified maximum.
-		public static SmallDec MaximumValue(SmallDec value, SmallDec maximum)
-		{
-			return value <= maximum ? value : maximum;
-		}
+        // Returns value capped at specified maximum.
+        public static SmallDec MaximumValue(SmallDec value, SmallDec maximum)
+        {
+            return value <= maximum ? value : maximum;
+        }
 
-		// Returns average damage done by monsters at specified character level.
-		// @see http://pathofexile.gamepedia.com/Monster_Damage
-		public static SmallDec MonsterAverageDamage(int level)
-		{
-			return RoundValue((0.0015 * SmallDec.Pow(level, 3) + 0.2 * level + 6), 0);
-		}
+        // Returns average damage done by monsters at specified character level.
+        // @see http://pathofexile.gamepedia.com/Monster_Damage
+        public static SmallDec MonsterAverageDamage(int level)
+        {
+            return RoundValue((0.0015 * SmallDec.Pow(level, 3) + 0.2 * level + 6), 0);
+        }
 
 #else
-		// Returns value capped at specified maximum.
-		public static float MaximumValue(float value, float maximum)
+        // Returns value capped at specified maximum.
+        public static float MaximumValue(float value, float maximum)
         {
             return value <= maximum ? value : maximum;
         }
@@ -3254,8 +3254,8 @@ namespace POESKillTree.SkillTreeFiles
             return RoundValue((float)(0.0015 * Math.Pow(level, 3) + 0.2 * level + 6), 0);
         }
 #endif
-		// Computes offensive attacks.
-		public static List<ListGroup> Offense()
+        // Computes offensive attacks.
+        public static List<ListGroup> Offense()
         {
             List<ListGroup> groups = new List<ListGroup>();
 
@@ -3281,62 +3281,62 @@ namespace POESKillTree.SkillTreeFiles
             return groups;
         }
 
-		// Returns percent of value.
+        // Returns percent of value.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-		public static SmallDec PercentOfValue(SmallDec value, SmallDec percentage)
+        public static SmallDec PercentOfValue(SmallDec value, SmallDec percentage)
 #else
-		public static float PercentOfValue(float value, float percentage)
+        public static float PercentOfValue(float value, float percentage)
 #endif
-		{
+        {
             return value * percentage / 100;
         }
 
-		// Damage Reduction Factor = Armour / ( Armour + (10 * Damage) )
-		// Damage reduction is capped at 90%.
-		// @see http://pathofexile.gamepedia.com/Armour
+        // Damage Reduction Factor = Armour / ( Armour + (10 * Damage) )
+        // Damage reduction is capped at 90%.
+        // @see http://pathofexile.gamepedia.com/Armour
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-		public static SmallDec PhysicalDamageReduction(int level, SmallDec armour)
-		{
-			SmallDec mad = MonsterAverageDamage(SmallDec.DynamicMin(level, 80) - 1);
-			SmallDec reduction = RoundValue(armour / (armour + 10 * mad) * 100, 1);
+        public static SmallDec PhysicalDamageReduction(int level, SmallDec armour)
+        {
+            SmallDec mad = MonsterAverageDamage(SmallDec.DynamicMin(level, 80) - 1);
+            SmallDec reduction = RoundValue(armour / (armour + 10 * mad) * 100, 1);
 #else
-		public static float PhysicalDamageReduction(int level, float armour)
+        public static float PhysicalDamageReduction(int level, float armour)
         {
             float mad = MonsterAverageDamage(Math.Min(level, 80) - 1);
             float reduction = RoundValue(armour / (armour + 10 * mad) * 100, 1);
 #endif
-			if (reduction > 90f) reduction = 90f;
+            if (reduction > 90f) reduction = 90f;
 
             return reduction;
         }
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-		// Returns rounded value with specified number of fractional digits (round half down if even digit before half).
-		public static SmallDec RoundHalfDownEvenValue(SmallDec value, int precision)
-		{
-			// Detect half.
-			return value.DecimalStatus==5000&&value.IntValue%2==0
-				   ? SmallDec.Floor(value)
-				   : SmallDec.Round(value, precision, MidpointRounding.AwayFromZero);
-		}
+        // Returns rounded value with specified number of fractional digits (round half down if even digit before half).
+        public static SmallDec RoundHalfDownEvenValue(SmallDec value, int precision)
+        {
+            // Detect half.
+            return value.DecimalStatus==5000&&value.IntValue%2==0
+                   ? SmallDec.Floor(value)
+                   : SmallDec.Round(value, precision, MidpointRounding.AwayFromZero);
+        }
 
-		// Returns rounded value with specified number of fractional digits (round half down).
-		public static SmallDec RoundHalfDownValue(SmallDec value, int precision)
-		{
-			// Detect half.
-			return value.DecimalStatus == 5000
-				   ? SmallDec.Floor(value)
-				   : SmallDec.Round(value, precision, MidpointRounding.AwayFromZero);
-		}
+        // Returns rounded value with specified number of fractional digits (round half down).
+        public static SmallDec RoundHalfDownValue(SmallDec value, int precision)
+        {
+            // Detect half.
+            return value.DecimalStatus == 5000
+                   ? SmallDec.Floor(value)
+                   : SmallDec.Round(value, precision, MidpointRounding.AwayFromZero);
+        }
 
-		// Returns rounded value with specified number of fractional digits.
-		public static SmallDec RoundValue(SmallDec value, int precision)
-		{
-			return SmallDec.Round(value, precision, MidpointRounding.AwayFromZero);
-		}
+        // Returns rounded value with specified number of fractional digits.
+        public static SmallDec RoundValue(SmallDec value, int precision)
+        {
+            return SmallDec.Round(value, precision, MidpointRounding.AwayFromZero);
+        }
 #else
-			// Returns rounded value with specified number of fractional digits (round half down if even digit before half).
-		public static float RoundHalfDownEvenValue(float value, int precision)
+            // Returns rounded value with specified number of fractional digits (round half down if even digit before half).
+        public static float RoundHalfDownEvenValue(float value, int precision)
         {
             // Detect half.
             float coeff = (float)Math.Pow(10, precision);
@@ -3365,5 +3365,5 @@ namespace POESKillTree.SkillTreeFiles
             return (float)Math.Round((decimal)value, precision, MidpointRounding.AwayFromZero);
         }
 #endif
-	}
+    }
 }

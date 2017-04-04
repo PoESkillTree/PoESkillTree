@@ -6,7 +6,7 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.Model
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// Enumeration of the bandits from whom can be choose at each difficulty.
     /// (choosing none gives an extra skill point)
@@ -39,59 +39,59 @@ namespace POESKillTree.Model
 #else
         private static readonly Dictionary<Tuple<Bandit, Difficulty>, Tuple<string, float>> Rewards = new Dictionary<Tuple<Bandit, Difficulty>, Tuple<string, float>>
 #endif
-		{
-			{Tuple.Create(Bandit.Alira, Difficulty.Normal), Tuple.Create("+# to maximum Mana",
+        {
+            {Tuple.Create(Bandit.Alira, Difficulty.Normal), Tuple.Create("+# to maximum Mana",
 #	if (PoESkillTree_UseSmallDec_ForAttributes) 
-			(SmallDec)
+            (SmallDec)
 #	endif
-				60F)},
-			{Tuple.Create(Bandit.Alira, Difficulty.Cruel), Tuple.Create("#% increased Cast Speed", 
+                60F)},
+            {Tuple.Create(Bandit.Alira, Difficulty.Cruel), Tuple.Create("#% increased Cast Speed", 
 #	if (PoESkillTree_UseSmallDec_ForAttributes) 
-			(SmallDec)
+            (SmallDec)
 #	endif
-				5F)},
-			{Tuple.Create(Bandit.Alira, Difficulty.Merciless), Tuple.Create("+# to Maximum Power Charges",
+                5F)},
+            {Tuple.Create(Bandit.Alira, Difficulty.Merciless), Tuple.Create("+# to Maximum Power Charges",
 #	if (PoESkillTree_UseSmallDec_ForAttributes) 
-			(SmallDec)
+            (SmallDec)
 #	endif
-				1F)},
-			{Tuple.Create(Bandit.Oak, Difficulty.Normal), Tuple.Create("+# to maximum Life", 
+                1F)},
+            {Tuple.Create(Bandit.Oak, Difficulty.Normal), Tuple.Create("+# to maximum Life", 
 #	if (PoESkillTree_UseSmallDec_ForAttributes) 
-			(SmallDec)
+            (SmallDec)
 #	endif
-				40F)},
-			{Tuple.Create(Bandit.Oak, Difficulty.Cruel), Tuple.Create("#% increased Physical Damage", 
+                40F)},
+            {Tuple.Create(Bandit.Oak, Difficulty.Cruel), Tuple.Create("#% increased Physical Damage", 
 #	if (PoESkillTree_UseSmallDec_ForAttributes) 
-			(SmallDec)
+            (SmallDec)
 #	endif
-				16F)},
-			{Tuple.Create(Bandit.Oak, Difficulty.Merciless), Tuple.Create("+# to Maximum Endurance Charges",
+                16F)},
+            {Tuple.Create(Bandit.Oak, Difficulty.Merciless), Tuple.Create("+# to Maximum Endurance Charges",
 #	if (PoESkillTree_UseSmallDec_ForAttributes) 
-			(SmallDec)
+            (SmallDec)
 #	endif
-				1F)},
-			{Tuple.Create(Bandit.Kraityn, Difficulty.Normal), Tuple.Create("#% to all Elemental Resistances",
+                1F)},
+            {Tuple.Create(Bandit.Kraityn, Difficulty.Normal), Tuple.Create("#% to all Elemental Resistances",
 #	if (PoESkillTree_UseSmallDec_ForAttributes) 
-			(SmallDec)
+            (SmallDec)
 #	endif
-				10F)},
-			{Tuple.Create(Bandit.Kraityn, Difficulty.Cruel), Tuple.Create("#% increased Attack Speed", 
+                10F)},
+            {Tuple.Create(Bandit.Kraityn, Difficulty.Cruel), Tuple.Create("#% increased Attack Speed", 
 #	if (PoESkillTree_UseSmallDec_ForAttributes) 
-			(SmallDec)
+            (SmallDec)
 #	endif
-				8F)},
-			{Tuple.Create(Bandit.Kraityn, Difficulty.Merciless), Tuple.Create("+# to Maximum Frenzy Charges", 
+                8F)},
+            {Tuple.Create(Bandit.Kraityn, Difficulty.Merciless), Tuple.Create("+# to Maximum Frenzy Charges", 
 #	if (PoESkillTree_UseSmallDec_ForAttributes) 
-			(SmallDec)
+            (SmallDec)
 #	endif
-				1F)},
-		};
-		/// <summary>
-		/// Returns the reward attribute this bandit gives in this difficulty.
-		/// </summary>
-		/// <returns>The reward attribute. Null if the bandit has no reward (Bandit.None)./></returns>
+                1F)},
+        };
+        /// <summary>
+        /// Returns the reward attribute this bandit gives in this difficulty.
+        /// </summary>
+        /// <returns>The reward attribute. Null if the bandit has no reward (Bandit.None)./></returns>
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-		public static Tuple<string, SmallDec> Reward(this Bandit bandit, Difficulty difficulty)
+        public static Tuple<string, SmallDec> Reward(this Bandit bandit, Difficulty difficulty)
 #else
         public static Tuple<string, float> Reward(this Bandit bandit, Difficulty difficulty)
 #endif

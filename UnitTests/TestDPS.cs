@@ -5,52 +5,52 @@ using POESKillTree.SkillTreeFiles;
 
 namespace UnitTests
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
-	[TestClass]
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    [TestClass]
     public class TestDPS
     {
         internal enum Rounding { None, Round, Floor, Ceil };
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-		internal class Spell
-		{
-			internal SmallDec DisplayDPS;
-			internal SmallDec MinDamage;
-			internal SmallDec MaxDamage;
-			internal SmallDec CPS = 1;
-			internal SmallDec BaseDPS;
-			internal SmallDec CC;
-			internal SmallDec CM;
-			internal SmallDec DPS;
+        internal class Spell
+        {
+            internal SmallDec DisplayDPS;
+            internal SmallDec MinDamage;
+            internal SmallDec MaxDamage;
+            internal SmallDec CPS = 1;
+            internal SmallDec BaseDPS;
+            internal SmallDec CC;
+            internal SmallDec CM;
+            internal SmallDec DPS;
 
-			internal void DamageRange(RoundingVariant csv, RoundingVariant drv)
-			{
-				BaseDPS = Round(CPS, csv) * ((Round(MinDamage, drv) + Round(MaxDamage, drv)) / 2);
-			}
+            internal void DamageRange(RoundingVariant csv, RoundingVariant drv)
+            {
+                BaseDPS = Round(CPS, csv) * ((Round(MinDamage, drv) + Round(MaxDamage, drv)) / 2);
+            }
 
-			internal void Compute(RoundingVariant bv, RoundingVariant ccv, RoundingVariant cmv)
-			{
-				DPS = Round(BaseDPS, bv) * (1 + Round(CC, ccv) / 100 * (Round(CM, cmv) - 100) / 100);
-			}
+            internal void Compute(RoundingVariant bv, RoundingVariant ccv, RoundingVariant cmv)
+            {
+                DPS = Round(BaseDPS, bv) * (1 + Round(CC, ccv) / 100 * (Round(CM, cmv) - 100) / 100);
+            }
 
-			internal void Display(RoundingVariant dv)
-			{
-				DPS = Round(DPS, dv);
-			}
-		}
+            internal void Display(RoundingVariant dv)
+            {
+                DPS = Round(DPS, dv);
+            }
+        }
 
-		internal class SpellWiki : Spell
-		{
-			internal SmallDec IncCC;
-			internal SmallDec IncCM;
+        internal class SpellWiki : Spell
+        {
+            internal SmallDec IncCC;
+            internal SmallDec IncCM;
 
-			new internal void Compute(RoundingVariant bv, RoundingVariant ccv, RoundingVariant cmv)
-			{
-				DPS = Round(BaseDPS, bv) + Round(BaseDPS, bv) * (CC / 100) * (1 + (IncCC / 100)) * (0.5f + 1.5f * (IncCM / 100));
-			}
-		}
+            new internal void Compute(RoundingVariant bv, RoundingVariant ccv, RoundingVariant cmv)
+            {
+                DPS = Round(BaseDPS, bv) + Round(BaseDPS, bv) * (CC / 100) * (1 + (IncCC / 100)) * (0.5f + 1.5f * (IncCM / 100));
+            }
+        }
 #else
-		internal class Spell
+        internal class Spell
         {
             internal float DisplayDPS;
             internal float MinDamage;
@@ -90,25 +90,25 @@ namespace UnitTests
 #endif
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-		internal static SmallDec Round(SmallDec value, RoundingVariant variant)
-		{
-			switch (variant.Style)
-			{
-				case Rounding.None:
-					return value;
+        internal static SmallDec Round(SmallDec value, RoundingVariant variant)
+        {
+            switch (variant.Style)
+            {
+                case Rounding.None:
+                    return value;
 
-				case Rounding.Round:
-					return Compute.RoundValue(value, variant.Precision);
+                case Rounding.Round:
+                    return Compute.RoundValue(value, variant.Precision);
 
-				case Rounding.Floor:
-					return Compute.FloorValue(value, variant.Precision);
+                case Rounding.Floor:
+                    return Compute.FloorValue(value, variant.Precision);
 
-				case Rounding.Ceil:
-					return Compute.CeilValue(value, variant.Precision);
-			}
+                case Rounding.Ceil:
+                    return Compute.CeilValue(value, variant.Precision);
+            }
 
-			throw new NotImplementedException();
-		}
+            throw new NotImplementedException();
+        }
 #else
         internal static float Round(float value, RoundingVariant variant)
         {
@@ -131,7 +131,7 @@ namespace UnitTests
         }
 #endif
 
-		internal class RoundingVariant
+        internal class RoundingVariant
         {
             internal Rounding Style;
             internal int Precision;

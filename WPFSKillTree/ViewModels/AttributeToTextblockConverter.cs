@@ -29,14 +29,14 @@ namespace POESKillTree.ViewModels
                 {
                     tb.Inlines.Add(" ");
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-					if(i>0)
-						txt = new Run("+"+i.ToString("+#;-#;0"));
-					else
-						txt = new Run(i.ToString("+#;-#;0"));
+                    if(i>0)
+                        txt = new Run("+"+i.ToString("+#;-#;0"));
+                    else
+                        txt = new Run(i.ToString("+#;-#;0"));
 #else
-					txt = new Run(i.ToString("+#;-#;0"));
+                    txt = new Run(i.ToString("+#;-#;0"));
 #endif
-					txt.Foreground = (i < 0) ? Brushes.Red : Brushes.Green;
+                    txt.Foreground = (i < 0) ? Brushes.Red : Brushes.Green;
                     tb.Inlines.Add(txt);
                 }
             }

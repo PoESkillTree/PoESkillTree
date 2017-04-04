@@ -14,7 +14,7 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     public class Item : Notifier, IRangeProvider<int>
     {
         private static readonly Regex Numberfilter = new Regex(@"[0-9]*\.?[0-9]+");
@@ -459,7 +459,7 @@ namespace POESKillTree.Model.Items
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
             var values = new List<SmallDec>();
 #else
-			var values = new List<float>();
+            var values = new List<float>();
 #endif
             var colors = new List<ItemMod.ValueColoring>();
             var attrColor = attrRequirementsMultiplier == 100
@@ -603,13 +603,13 @@ namespace POESKillTree.Model.Items
         public Dictionary<ItemMod, List<ItemMod>> GetModsAffectingProperties()
         {
             var qualityMod = Properties.FirstOrDefault(m => m.Attribute == "Quality: +#%");
-			// Quality with "+#%" in name is not recognized as percentage increase.
+            // Quality with "+#%" in name is not recognized as percentage increase.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			var qIncMod = qualityMod == null ? null : new ItemMod(ItemType, qualityMod.Value[0].ToString() + "%", Numberfilter);
+            var qIncMod = qualityMod == null ? null : new ItemMod(ItemType, qualityMod.Value[0].ToString() + "%", Numberfilter);
 #else
             var qIncMod = qualityMod == null ? null: new ItemMod(ItemType, qualityMod.Value[0] + "%", Numberfilter);
 #endif
-			var localmods = Mods.Where(m => m.IsLocal).ToList();
+            var localmods = Mods.Where(m => m.IsLocal).ToList();
 
             var r = new Regex(@"(?<=[^a-zA-Z] |^)(to|increased|decreased|more|less) |^Adds # to # |(\+|-|#|%|:|\s\s)\s*?(?=\s?)|^\s+|\s+$");
 

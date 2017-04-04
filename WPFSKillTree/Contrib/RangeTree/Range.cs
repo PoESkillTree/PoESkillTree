@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MB.Algodat
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// Represents a range of values. 
     /// Both values must be of the same type and comparable.

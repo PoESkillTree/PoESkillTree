@@ -3,14 +3,14 @@ using System.Text.RegularExpressions;
 
 namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
-	/// <summary>
-	/// Data class describing a conditioned Attribute.
-	/// At least one condition must be true or there must not be
-	/// any conditions for <see cref="ICondition.Evaluate"/> to return true.
-	/// (see <see cref="OrComposition"/>)
-	/// </summary>
-	public class Attribute : OrComposition
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    /// <summary>
+    /// Data class describing a conditioned Attribute.
+    /// At least one condition must be true or there must not be
+    /// any conditions for <see cref="ICondition.Evaluate"/> to return true.
+    /// (see <see cref="OrComposition"/>)
+    /// </summary>
+    public class Attribute : OrComposition
     {
         private static readonly Regex WildcardRegex = new Regex(@"{\d+}");
 

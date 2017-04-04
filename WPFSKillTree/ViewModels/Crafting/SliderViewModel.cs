@@ -6,18 +6,18 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Crafting
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
-	/// <summary>
-	/// View model for a slider for a value of a mod, overlayed by text.
-	/// The slider and/or the text can be hidden.
-	/// </summary>
-	public class SliderViewModel : Notifier
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    /// <summary>
+    /// View model for a slider for a value of a mod, overlayed by text.
+    /// The slider and/or the text can be hidden.
+    /// </summary>
+    public class SliderViewModel : Notifier
   {
 #if (PoESkillTree_UseSmallDec_ForGeneratorBars)
-		private SmallDec _value;
+        private SmallDec _value;
         public SmallDec Value
 #else
-		private float _value;
+        private float _value;
         public float Value
 #endif
         {
@@ -31,15 +31,15 @@ namespace POESKillTree.ViewModels.Crafting
         }
 
 #if (PoESkillTree_UseSmallDec_ForGeneratorBars)
-		public SmallDecCollection Ticks { get; }
-		public SmallDec Minimum { get; }
+        public SmallDecCollection Ticks { get; }
+        public SmallDec Minimum { get; }
         public SmallDec Maximum { get; }
 #else
-		public DoubleCollection Ticks { get; }
-		public double Minimum { get; }
+        public DoubleCollection Ticks { get; }
+        public double Minimum { get; }
         public double Maximum { get; }
 #endif
-		public bool ShowSlider { get; }
+        public bool ShowSlider { get; }
 
         public int StatIndex { get; }
         public int ValueIndex { get; }
@@ -51,16 +51,16 @@ namespace POESKillTree.ViewModels.Crafting
             StatIndex = statIndex;
             ValueIndex = valueIndex;
 #if (PoESkillTree_UseSmallDec_ForGeneratorBars)
-			Ticks = new SmallDecCollection(ticks);
+            Ticks = new SmallDecCollection(ticks);
 #else
-			Ticks = new DoubleCollection(ticks);
+            Ticks = new DoubleCollection(ticks);
 #endif
-			Minimum = Ticks.First();
+            Minimum = Ticks.First();
             Maximum = Ticks.Last();
 #if (PoESkillTree_UseSmallDec_ForGeneratorBars)
-			_value = (SmallDec) Minimum;
+            _value = (SmallDec) Minimum;
 #else
-			_value = (float) Minimum;
+            _value = (float) Minimum;
 #endif
             ShowSlider = Ticks.Count > 1;
         }
@@ -69,16 +69,16 @@ namespace POESKillTree.ViewModels.Crafting
     public class SliderValueChangedEventArgs
     {
 #if (PoESkillTree_UseSmallDec_ForGeneratorBars)
-		public SmallDec OldValue { get; }
-		public SmallDec NewValue { get; }
+        public SmallDec OldValue { get; }
+        public SmallDec NewValue { get; }
 
-		public SliderValueChangedEventArgs(SmallDec oldValue, SmallDec newValue)
-		{
-			OldValue = oldValue;
-			NewValue = newValue;
-		}
+        public SliderValueChangedEventArgs(SmallDec oldValue, SmallDec newValue)
+        {
+            OldValue = oldValue;
+            NewValue = newValue;
+        }
 #else
-		public float OldValue { get; }
+        public float OldValue { get; }
         public float NewValue { get; }
 
         public SliderValueChangedEventArgs(float oldValue, float newValue)
@@ -87,5 +87,5 @@ namespace POESKillTree.ViewModels.Crafting
             NewValue = newValue;
         }
 #endif
-	}
+    }
 }

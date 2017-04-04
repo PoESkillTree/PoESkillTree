@@ -43,11 +43,11 @@ using Attribute = POESKillTree.ViewModels.Attribute;
 
 namespace POESKillTree.Views
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
-	/// <summary>
-	///     Interaction logic for MainWindow.xaml
-	/// </summary>
-	public partial class MainWindow : INotifyPropertyChanged
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    /// <summary>
+    ///     Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : INotifyPropertyChanged
     {
         /// <summary>
         /// The set of keys of which one needs to be pressed to highlight similar nodes on hover.
@@ -1190,17 +1190,17 @@ namespace POESKillTree.Views
 
             var attritemp = Tree.SelectedAttributesWithoutImplicit;
 
-			var itemAttris =
+            var itemAttris =
 #if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
-			 _itemAttributes.NonLocalMods.Select(m => new KeyValuePair<string, List<SmallDec>>(m.Attribute, m.Value))
+             _itemAttributes.NonLocalMods.Select(m => new KeyValuePair<string, List<SmallDec>>(m.Attribute, m.Value))
 #elif (PoESkillTree_UseSmallDec_ForAttributes)
-			_itemAttributes.NonLocalMods.Select(m => new KeyValuePair<string, List<SmallDec>>(m.Attribute, SmallDec.CreateList(m.Value)))
+            _itemAttributes.NonLocalMods.Select(m => new KeyValuePair<string, List<SmallDec>>(m.Attribute, SmallDec.CreateList(m.Value)))
 #else
-			_itemAttributes.NonLocalMods.Select(m => new KeyValuePair<string, List<float>>(m.Attribute, m.Value))
-			
+            _itemAttributes.NonLocalMods.Select(m => new KeyValuePair<string, List<float>>(m.Attribute, m.Value))
+            
 #endif
-			.SelectMany(SkillTree.ExpandHybridAttributes);
-			foreach (var mod in itemAttris)
+            .SelectMany(SkillTree.ExpandHybridAttributes);
+            foreach (var mod in itemAttris)
             {
                 if (attritemp.ContainsKey(mod.Key))
                 {
@@ -1212,11 +1212,11 @@ namespace POESKillTree.Views
                 else
                 {
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-					attritemp[mod.Key] = new List<SmallDec>(mod.Value);
+                    attritemp[mod.Key] = new List<SmallDec>(mod.Value);
 #else
                     attritemp[mod.Key] = new List<float>(mod.Value);
 #endif
-				}
+                }
             }
 
             foreach (var a in SkillTree.ImplicitAttributes(attritemp, Tree.Level))
@@ -1227,11 +1227,11 @@ namespace POESKillTree.Views
 
                 if (!attritemp.ContainsKey(key))
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-					attritemp[key] = new List<SmallDec>();
+                    attritemp[key] = new List<SmallDec>();
 #else
                     attritemp[key] = new List<float>();
 #endif
-				for (var i = 0; i < a.Value.Count; i++)
+                for (var i = 0; i < a.Value.Count; i++)
                 {
                     if (attritemp.ContainsKey(key) && attritemp[key].Count > i)
                         attritemp[key][i] += a.Value[i];
@@ -1262,12 +1262,12 @@ namespace POESKillTree.Views
             _attiblist.Clear();
             var copy = Tree.HighlightedAttributes == null? null :
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			new Dictionary<string, List<SmallDec>>(Tree.HighlightedAttributes);
+            new Dictionary<string, List<SmallDec>>(Tree.HighlightedAttributes);
 #else
             new Dictionary<string, List<float>>(Tree.HighlightedAttributes);
 #endif
 
-			foreach (var item in Tree.SelectedAttributes)
+            foreach (var item in Tree.SelectedAttributes)
             {
                 var a = new Attribute(InsertNumbersInAttributes(item));
                 if (!CheckIfAttributeMatchesFilter(a)) continue;
@@ -1281,11 +1281,11 @@ namespace POESKillTree.Views
                 {
                     a.Deltas = copy != null ? item.Value.ToArray() :
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-					item.Value.Select(v => SmallDec.Zero).ToArray();
+                    item.Value.Select(v => SmallDec.Zero).ToArray();
 #else
-					item.Value.Select(v => 0f).ToArray();
+                    item.Value.Select(v => 0f).ToArray();
 #endif
-				}
+                }
                 _attiblist.Add(a);
             }
 
@@ -1294,11 +1294,11 @@ namespace POESKillTree.Views
                 foreach (var item in copy)
                 {
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-					var a = new Attribute(InsertNumbersInAttributes(new KeyValuePair<string, List<SmallDec>>(item.Key, item.Value.Select(v => SmallDec.Zero).ToList())));
+                    var a = new Attribute(InsertNumbersInAttributes(new KeyValuePair<string, List<SmallDec>>(item.Key, item.Value.Select(v => SmallDec.Zero).ToList())));
 #else
                     var a = new Attribute(InsertNumbersInAttributes(new KeyValuePair<string, List<float>>(item.Key, item.Value.Select(v => 0f).ToList())));
 #endif
-					if (!CheckIfAttributeMatchesFilter(a)) continue;
+                    if (!CheckIfAttributeMatchesFilter(a)) continue;
                     a.Deltas = item.Value.Select(h => 0 - h).ToArray();
                     a.Missing = true;
                     _attiblist.Add(a);
@@ -1358,20 +1358,20 @@ namespace POESKillTree.Views
         }
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-		private string InsertNumbersInAttributes(KeyValuePair<string, List<SmallDec>> attrib)
+        private string InsertNumbersInAttributes(KeyValuePair<string, List<SmallDec>> attrib)
 #else
         private string InsertNumbersInAttributes(KeyValuePair<string, List<float>> attrib)
 #endif
-		{
+        {
             var s = attrib.Key;
             foreach (var f in attrib.Value)
             {
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				s = _backreplace.Replace(s, f.ToString() + "", 1);
+                s = _backreplace.Replace(s, f.ToString() + "", 1);
 #else
-				s = _backreplace.Replace(s, f + "", 1);
+                s = _backreplace.Replace(s, f + "", 1);
 #endif
-			}
+            }
             return s;
         }
 
@@ -1663,11 +1663,11 @@ namespace POESKillTree.Views
                     if (_prePath != null | _toRemove != null)
                     {
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-						var attributechanges = new Dictionary<string, List<SmallDec>>();
+                        var attributechanges = new Dictionary<string, List<SmallDec>>();
 #else
                         var attributechanges = new Dictionary<string, List<float>>();
 #endif
-						int changedNodes;
+                        int changedNodes;
 
                         if (_prePath != null)
                         {
@@ -1946,24 +1946,24 @@ namespace POESKillTree.Views
         {
             var result = $"{Enum.GetName(typeof(Difficulty), difficulty)}:  {Enum.GetName(typeof(Bandit), bandit)}";
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			result += bandit == Bandit.None ? string.Empty : " (" + 
-				InsertNumbersInAttributes(bandit.Reward(difficulty).Item1, bandit.Reward(difficulty).Item2) 
-				+ ")";
+            result += bandit == Bandit.None ? string.Empty : " (" + 
+                InsertNumbersInAttributes(bandit.Reward(difficulty).Item1, bandit.Reward(difficulty).Item2) 
+                + ")";
 #else
             result += bandit == Bandit.None ? string.Empty : " (" + InsertNumbersInAttributes(bandit.Reward(difficulty).Item1, bandit.Reward(difficulty).Item2) + ")";
 #endif
-			return result;
+            return result;
         }
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-		private string InsertNumbersInAttributes(string attr, SmallDec value)
-		{
-			var s = attr;
-			s = s.Replace("#", value.ToString(CultureInfo.InvariantCulture));
-			return s;
-		}
+        private string InsertNumbersInAttributes(string attr, SmallDec value)
+        {
+            var s = attr;
+            s = s.Replace("#", value.ToString(CultureInfo.InvariantCulture));
+            return s;
+        }
 #else
-		private string InsertNumbersInAttributes(string attr, float value)
+        private string InsertNumbersInAttributes(string attr, float value)
         {
             var s = attr;
             s = s.Replace("#", Convert.ToString(value, CultureInfo.InvariantCulture));
@@ -1975,7 +1975,7 @@ namespace POESKillTree.Views
 
 #region Bottom Bar (Build URL etc)
 
-		private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
+        private void tbSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             SearchUpdate();
         }

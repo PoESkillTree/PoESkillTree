@@ -9,12 +9,12 @@ using POESKillTree.Utils.Extensions;
 
 namespace UpdateDB.DataLoading
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
-	/// <summary>
-	/// Utility class to convert Wiki stat text (i.e. contents of "Has implicit stat text" and "Has explicit stat
-	/// text") to XmlStats.
-	/// </summary>
-	public static class WikiStatTextUtils
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    /// <summary>
+    /// Utility class to convert Wiki stat text (i.e. contents of "Has implicit stat text" and "Has explicit stat
+    /// text") to XmlStats.
+    /// </summary>
+    public static class WikiStatTextUtils
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(WikiStatTextUtils));
 
@@ -55,33 +55,33 @@ namespace UpdateDB.DataLoading
             var placeholderMatches = PlaceholderRegex.Matches(statWithPlaceholders);
 
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-			var from = new List<SmallDec>();
+            var from = new List<SmallDec>();
             var to = new List<SmallDec>();
 #else
-			var from = new List<float>();
+            var from = new List<float>();
             var to = new List<float>();
 #endif
-			var i = 0;
+            var i = 0;
             foreach (Match match in placeholderMatches)
             {
                 var placeholder = match.Value;
 #if (PoESkillTree_UseSmallDec_ForAttributes)
-				if (placeholder == "#")
-				{
-					SmallDec value = numberMatches[i].Value;
-					from.Add(value);
-					to.Add(value);
-					i++;
-				}
-				else
-				{
-					from.Add(numberMatches[i].Value);
-					i++;
-					to.Add(numberMatches[i].Value);
-					i++;
-				}
+                if (placeholder == "#")
+                {
+                    SmallDec value = numberMatches[i].Value;
+                    from.Add(value);
+                    to.Add(value);
+                    i++;
+                }
+                else
+                {
+                    from.Add(numberMatches[i].Value);
+                    i++;
+                    to.Add(numberMatches[i].Value);
+                    i++;
+                }
 #else
-				if (placeholder == "#")
+                if (placeholder == "#")
                 {
                     var value = numberMatches[i].Value.ParseFloat();
                     from.Add(value);
@@ -96,7 +96,7 @@ namespace UpdateDB.DataLoading
                     i++;
                 }
 #endif
-			}
+            }
             return new XmlStat
             {
                 From = from,

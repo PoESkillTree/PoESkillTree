@@ -9,7 +9,7 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
-	using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
     /// <summary>
     /// The exception that is thrown when the xml files describing pseudo
     /// attributes are invalid.
