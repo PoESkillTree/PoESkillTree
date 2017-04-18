@@ -79,6 +79,12 @@ namespace POESKillTree.Model.Items
             set { SetItemInSlot(value, ItemSlot.Belt); }
         }
 
+        public Item Jewel
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel); }
+            set { SetItemInSlot(value, ItemSlot.Jewel); }
+        }
+
         public Item GetItemInSlot(ItemSlot slot)
         {
             return Equip.FirstOrDefault(i => i.Slot == slot);
@@ -219,6 +225,9 @@ namespace POESKillTree.Model.Items
                     case "Belt":
                         AddItem(jobj, ItemSlot.Belt);
                         break;
+                    case "Jewel":
+                        AddItem(jobj, ItemSlot.Jewel);
+                        break;
                 }
             }
 
@@ -262,6 +271,9 @@ namespace POESKillTree.Model.Items
                         break;
                     case ItemSlot.Belt:
                         jItem["inventoryId"] = "Belt";
+                        break;
+                    case ItemSlot.Jewel:
+                        jItem["inventoryId"] = "Jewel";
                         break;
                 }
                 items.Add(jItem);
