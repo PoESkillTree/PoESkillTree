@@ -479,7 +479,7 @@
                 <Separator />
                 <MenuItem Click="Menu_RedownloadTreeAssets">
                     <MenuItem.Header>
-                        <l:Catalog Message="_Redownload Skill Tree Assets" />
+                        <l:Catalog Message="_Redownload Live Skill Tree Data" />
                     </MenuItem.Header>
                     <MenuItem.Icon>
                         <iconPacks:PackIconModern Kind="PageDownload" HorizontalAlignment="Center" />
@@ -641,7 +641,8 @@
                     <controls:NumericUpDown Margin="5,0,0,0" x:Name="LevelUpDown" ValueChanged="Level_ValueChanged" MinWidth="70"
                                             Height="{Binding ActualHeight, ElementName=cbCharType}"
                                             DataContext="{Binding Tree, ElementName=window}" Value="{Binding Level, ValidatesOnDataErrors=True}"
-                                            Minimum="{Binding UndefinedLevel}" Maximum="{Binding MaximumLevel}">
+                                            Minimum="{Binding UndefinedLevel}" Maximum="{Binding MaximumLevel}"
+                                            HasDecimals="False">
                         <controls:NumericUpDown.ToolTip>
                             <l:Catalog Message="Level"/>
                         </controls:NumericUpDown.ToolTip>
@@ -708,10 +709,10 @@
                                        Height="2" Fill="{DynamicResource GrayNormalBrush}" VerticalAlignment="Top" />
 
                             <UniformGrid Grid.Column="0" Grid.Row="0"
-                                         Margin="0 6 0 0"
+                                         Margin="0 6 18 0"
                                          Height="32" Width="480"
                                          Rows="1"
-                                         HorizontalAlignment="Center">
+                                         HorizontalAlignment="Right">
                                 <Button Margin="4 0"
                                         Click="Menu_ImportItems">
                                     <l:Catalog>Import Items</l:Catalog>
@@ -731,7 +732,8 @@
                             </UniformGrid>
 
                             <equipment:InventoryView Grid.Column="0" Grid.Row="1"
-                                                     HorizontalAlignment="Center" VerticalAlignment="Top"
+                                                     HorizontalAlignment="Right" VerticalAlignment="Top"
+                                                     Margin="20 0"
                                                      DataContext="{Binding InventoryViewModel, ElementName=window}"/>
                             <equipment:StashView Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
                                                  HorizontalAlignment="Left" Margin="0,4,0,0"

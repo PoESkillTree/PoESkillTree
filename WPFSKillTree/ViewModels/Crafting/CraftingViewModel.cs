@@ -30,6 +30,13 @@ namespace POESKillTree.ViewModels.Crafting
 
         private bool _changingBase;
 
+        private string _nameLine;
+        public string NameLine
+        {
+            get { return _nameLine; }
+            set { SetProperty(ref _nameLine, value, UpdateItemNameLine); }
+        }
+
         public CraftingViewModel(EquipmentData equipmentData)
             : base(equipmentData,
                 equipmentData.ItemBases.Where(b => equipmentData.AffixesPerItemType.ContainsKey(b.ItemType)))
@@ -96,14 +103,31 @@ namespace POESKillTree.ViewModels.Crafting
             else
             {
                 Item.Frame = FrameType.Rare;
-                Item.NameLine = "Crafted " + Item.BaseType;
             }
+            UpdateItemNameLine();
 
             var prefixes = selectedPreff.SelectMany(p => p.GetExactMods());
             var suffixes = selectedSuff.SelectMany(p => p.GetExactMods());
             return prefixes.Concat(suffixes)
                 .GroupBy(m => m.Attribute)
                 .Select(g => g.Aggregate((m1, m2) => m1.Sum(m2)));
+        }
+
+        private void UpdateItemNameLine()
+        {
+            if (Item.Frame != FrameType.Rare)
+            {
+                Item.NameLine = "";
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(NameLine))
+            {
+                Item.NameLine = "Crafted " + Item.BaseType;
+            }
+            else
+            {
+                Item.NameLine = NameLine;
+            }
         }
 
         private void MsPrefixOnPropertyChanged(object sender, PropertyChangedEventArgs e)

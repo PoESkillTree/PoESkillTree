@@ -17,6 +17,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using log4net;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MoreLinq;
@@ -48,6 +49,8 @@ namespace POESKillTree.Views
     /// </summary>
     public partial class MainWindow : INotifyPropertyChanged
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(MainWindow));
+
         /// <summary>
         /// The set of keys of which one needs to be pressed to highlight similar nodes on hover.
         /// </summary>
@@ -928,7 +931,9 @@ namespace POESKillTree.Views
 
         private async void Menu_RedownloadTreeAssets(object sender, RoutedEventArgs e)
         {
-            var sMessageBoxText = L10n.Message("The existing Skill tree assets will be deleted and new assets will be downloaded.")
+            var sMessageBoxText = L10n.Message("The existing skill tree data will be deleted. The data will " +
+                                               "be downloaded from the official online skill tree and " +
+                                               "is from the latest released version of the game.")
                                      + "\n\n" + L10n.Message("Do you want to continue?");
 
             var rsltMessageBox = await this.ShowQuestionAsync(sMessageBoxText, image: MessageBoxImage.Warning);
@@ -955,6 +960,7 @@ namespace POESKillTree.Views
                     catch (Exception ex)
                     {
                         assetLoader.RestoreBackup();
+                        Log.Error("Exception while downloading skill tree assets", ex);
                         await this.ShowErrorAsync(L10n.Message("An error occurred while downloading assets."), ex.Message);
                     }
                     await controller.CloseAsync();
