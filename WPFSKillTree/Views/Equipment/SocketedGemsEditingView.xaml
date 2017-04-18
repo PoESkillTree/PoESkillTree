@@ -57,13 +57,16 @@
         </controls:SearchableComboBox>
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="1"
                                Minimum="1" Maximum="21"
+                               HasDecimals="False"
                                Value="{Binding NewSocketedGem.Level}" />
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="2"
                                Minimum="0" Maximum="23"
+                               HasDecimals="False"
                                Value="{Binding NewSocketedGem.Quality}" />
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="3"
                                Minimum="1"
                                Maximum="{Binding NumberOfSockets}"
+                               HasDecimals="False"
                                Value="{Binding NewSocketedGem.Group}" />
         <Button Grid.Row="0" Grid.Column="4"
                 IsDefault="True"
@@ -120,6 +123,7 @@
                         <DataTemplate DataType="viewModels:SocketedGemViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
                                                    Minimum="1" Maximum="21"
+                                                   HasDecimals="False"
                                                    Value="{Binding Level, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -134,6 +138,7 @@
                         <DataTemplate DataType="viewModels:SocketedGemViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
                                                    Minimum="0" Maximum="23"
+                                                   HasDecimals="False"
                                                    Value="{Binding Quality, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -148,6 +153,7 @@
                         <DataTemplate DataType="viewModels:SocketedGemViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
                                                    Minimum="1" Maximum="{Binding Data.NumberOfSockets, Source={StaticResource VmProxy}}"
+                                                   HasDecimals="False"
                                                    Value="{Binding Group, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

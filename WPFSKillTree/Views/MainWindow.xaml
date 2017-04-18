@@ -641,7 +641,8 @@
                     <controls:NumericUpDown Margin="5,0,0,0" x:Name="LevelUpDown" ValueChanged="Level_ValueChanged" MinWidth="70"
                                             Height="{Binding ActualHeight, ElementName=cbCharType}"
                                             DataContext="{Binding Tree, ElementName=window}" Value="{Binding Level, ValidatesOnDataErrors=True}"
-                                            Minimum="{Binding UndefinedLevel}" Maximum="{Binding MaximumLevel}">
+                                            Minimum="{Binding UndefinedLevel}" Maximum="{Binding MaximumLevel}"
+                                            HasDecimals="False">
                         <controls:NumericUpDown.ToolTip>
                             <l:Catalog Message="Level"/>
                         </controls:NumericUpDown.ToolTip>
