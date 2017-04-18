@@ -479,7 +479,7 @@
                 <Separator />
                 <MenuItem Click="Menu_RedownloadTreeAssets">
                     <MenuItem.Header>
-                        <l:Catalog Message="_Redownload Skill Tree Assets" />
+                        <l:Catalog Message="_Redownload Live Skill Tree Data" />
                     </MenuItem.Header>
                     <MenuItem.Icon>
                         <iconPacks:PackIconModern Kind="PageDownload" HorizontalAlignment="Center" />
