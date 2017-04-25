@@ -38,7 +38,7 @@ namespace POESKillTree.Model.Items
             Level = xmlUnique.Level;
             DropDisabled = xmlUnique.DropDisabled;
             _base = itemBase;
-            ExplicitMods = xmlUnique.Explicit.Select(e => new Stat(e, itemBase.ItemType)).ToList();
+            ExplicitMods = xmlUnique.Explicit.Select(e => new Stat(e, itemBase.ItemType, ModGroup.Explicit)).ToList();
 
             Image = itemBase.Image.AsDefaultForUniqueImage(itemImageService, UniqueName);
         }

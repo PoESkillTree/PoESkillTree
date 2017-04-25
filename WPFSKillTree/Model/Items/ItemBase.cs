@@ -49,8 +49,8 @@ namespace POESKillTree.Model.Items
             ItemGroup = ItemType.Group();
             MetadataId = xmlBase.MetadataId;
 
-            ImplicitMods = xmlBase.Implicit.Select(i => new Stat(i, ItemType)).ToList();
-            _properties = xmlBase.Properties.Select(p => new Stat(p, ItemType)).ToList();
+            ImplicitMods = xmlBase.Implicit.Select(i => new Stat(i, ItemType, ModGroup.Implicit)).ToList();
+            _properties = xmlBase.Properties.Select(p => new Stat(p, ItemType, ModGroup.Property)).ToList();
             CanHaveQuality = ItemGroup == ItemGroup.OneHandedWeapon || ItemGroup == ItemGroup.TwoHandedWeapon
                              || ItemGroup == ItemGroup.BodyArmour || ItemGroup == ItemGroup.Boots
                              || ItemGroup == ItemGroup.Gloves || ItemGroup == ItemGroup.Helmet
@@ -167,12 +167,13 @@ namespace POESKillTree.Model.Items
                     type = ItemType.OneHandedMace;
                 else if (type == ItemType.ThrustingOneHandedSword)
                     type = ItemType.OneHandedSword;
-                props.Add(new ItemMod(ItemType, Regex.Replace(type.ToString(), @"([a-z])([A-Z])", @"$1 $2")));
+                props.Add(new ItemMod(ItemType, Regex.Replace(type.ToString(), @"([a-z])([A-Z])", @"$1 $2"), 
+                    ModGroup.Property));
             }
 
             if (quality > 0)
             {
-                var qProp = new ItemMod(ItemType, "Quality: +#%");
+                var qProp = new ItemMod(ItemType, "Quality: +#%", ModGroup.Property);
                 qProp.Value.Add(quality);
                 qProp.ValueColor.Add(ItemMod.ValueColoring.LocallyAffected);
                 props.Add(qProp);

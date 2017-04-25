@@ -13,27 +13,21 @@ namespace POESKillTree.Model.Items.Affixes
 
         public IReadOnlyList<Range<float>> Ranges { get; }
 
-        private readonly ItemModTier _parentTier;
-
         private readonly ItemType _itemType;
 
-        public Stat(string name, Range<float> range, ItemType itemType, ItemModTier parentTier)
-        {
-            Name = name;
-            Ranges = new[] { range };
-            _parentTier = parentTier;
-            _itemType = itemType;
-        }
+        private readonly ModGroup _modGroup;
+        private readonly int _level;
 
-        public Stat(Stat stat, ItemModTier parentTier)
+        public Stat(Stat stat)
         {
             Name = stat.Name;
             Ranges = stat.Ranges;
             _itemType = stat._itemType;
-            _parentTier = parentTier;
+            _modGroup = stat._modGroup;
+            _level = stat._level;
         }
 
-        public Stat(XmlStat xmlStat, ItemType itemType, ItemModTier parentTier = null)
+        public Stat(XmlStat xmlStat, ItemType itemType, ModGroup modGroup, int level = 0)
         {
             Name = xmlStat.Name;
             var ranges = new List<Range<float>>();
@@ -45,8 +39,22 @@ namespace POESKillTree.Model.Items.Affixes
                 ranges.Add(Range.Create(Math.Min(from, to), Math.Max(from, to)));
             }
             Ranges = ranges;
-            _parentTier = parentTier;
             _itemType = itemType;
+            _modGroup = modGroup;
+            _level = level;
+        }
+
+        private Stat(string name, ItemType itemType, ModGroup modGroup, Range<float> range)
+        {
+            Name = name;
+            _itemType = itemType;
+            _modGroup = modGroup;
+            Ranges = new[] { range };
+        }
+
+        public static Stat CreateProperty(string name, Range<float> range)
+        {
+            return new Stat(name, ItemType.Unknown, ModGroup.Property, range);
         }
 
         public ItemMod ToItemMod(IReadOnlyList<float> values)
@@ -103,7 +111,7 @@ namespace POESKillTree.Model.Items.Affixes
                 attr += "#";
             }
             attr += parts.Last();
-            return new ItemMod(_itemType, attr, _parentTier)
+            return new ItemMod(_itemType, attr, _modGroup, _level)
             {
                 Value = values,
                 ValueColor = values.Select(_ => ItemMod.ValueColoring.White).ToList()
@@ -122,9 +130,10 @@ namespace POESKillTree.Model.Items.Affixes
             if (ReferenceEquals(null, other))
                 return false;
 
-            if (Name != other.Name)
-                return false;
-            if (Ranges.Count != other.Ranges.Count)
+            if (Name != other.Name
+                || _level != other._level
+                || _modGroup != other._modGroup
+                || Ranges.Count != other.Ranges.Count)
                 return false;
 
             return Ranges.Zip(other.Ranges, (x, y) => x.CompareTo(y) == 0).All(b => b);
@@ -139,6 +148,8 @@ namespace POESKillTree.Model.Items.Affixes
         {
             int h = 23;
             h = h * 37 + Name.GetHashCode();
+            h = h * 37 + _level.GetHashCode();
+            h = h * 37 + _modGroup.GetHashCode();
             return Ranges.Aggregate(h, (a, r) => a * 37 + r.GetHashCode());
         }
     }

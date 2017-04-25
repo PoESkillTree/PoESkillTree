@@ -236,13 +236,13 @@ namespace POESKillTree.Model.Items
             Keywords = tags.ToList();
             _frame = FrameType.Gem;
 
-            var keywordProp = new ItemMod(ItemType, string.Join(", ", Keywords));
+            var keywordProp = new ItemMod(ItemType, string.Join(", ", Keywords), ModGroup.Property);
             _properties.Add(keywordProp);
-            var levelProp = new ItemMod(ItemType, "Level: #");
+            var levelProp = new ItemMod(ItemType, "Level: #", ModGroup.Property);
             levelProp.Value.Add(level);
             levelProp.ValueColor.Add(ItemMod.ValueColoring.LocallyAffected);
             _properties.Add(levelProp);
-            var qualityProp = new ItemMod(ItemType, "Quality: +#%");
+            var qualityProp = new ItemMod(ItemType, "Quality: +#%", ModGroup.Property);
             qualityProp.Value.Add(quality);
             qualityProp.ValueColor.Add(ItemMod.ValueColoring.LocallyAffected);
             _properties.Add(qualityProp);
@@ -325,7 +325,7 @@ namespace POESKillTree.Model.Items
             {
                 foreach (var obj in val["properties"])
                 {
-                    Properties.Add(ItemModFromJson(obj, false));
+                    Properties.Add(ItemModFromJson(obj, ModGroup.Property));
                 }
                 if (Properties.Any(m => !m.Value.Any()))
                 {
@@ -336,7 +336,7 @@ namespace POESKillTree.Model.Items
 
             if (val["requirements"] != null)
             {
-                var mods = val["requirements"].Select(t => ItemModFromJson(t, true)).ToList();
+                var mods = val["requirements"].Select(t => ItemModFromJson(t, ModGroup.Requirement)).ToList();
                 if (!mods.Any(m => m.Attribute.StartsWith("Requires ")))
                 {
                     var modsToMerge = new []
@@ -347,7 +347,10 @@ namespace POESKillTree.Model.Items
                         mods.FirstOrDefault(m => m.Attribute == "# Int")
                     }.Where(m => m != null).ToList();
                     modsToMerge.ForEach(m => mods.Remove(m));
-                    mods.Add(new ItemMod(ItemType, "Requires " + string.Join(", ", modsToMerge.Select(m => m.Attribute)))
+                    mods.Add(new ItemMod(
+                        ItemType, 
+                        "Requires " + string.Join(", ", modsToMerge.Select(m => m.Attribute)), 
+                        ModGroup.Requirement)
                     {
                         Value = modsToMerge.Select(m => m.Value).Flatten().ToList(),
                         ValueColor = modsToMerge.Select(m => m.ValueColor).Flatten().ToList()
@@ -360,17 +363,17 @@ namespace POESKillTree.Model.Items
             if (val["implicitMods"] != null)
                 foreach (var s in val["implicitMods"].Values<string>())
                 {
-                    _implicitMods.Add(new ItemMod(ItemType, FixOldRanges(s), Numberfilter));
+                    _implicitMods.Add(new ItemMod(ItemType, FixOldRanges(s), ModGroup.Implicit, Numberfilter));
                 }
             if (val["explicitMods"] != null)
                 foreach (var s in val["explicitMods"].Values<string>())
                 {
-                    ExplicitMods.Add(new ItemMod(ItemType, FixOldRanges(s), Numberfilter));
+                    ExplicitMods.Add(new ItemMod(ItemType, FixOldRanges(s), ModGroup.Explicit, Numberfilter));
                 }
             if (val["craftedMods"] != null)
                 foreach (var s in val["craftedMods"].Values<string>())
                 {
-                    CraftedMods.Add(new ItemMod(ItemType, FixOldRanges(s), Numberfilter));
+                    CraftedMods.Add(new ItemMod(ItemType, FixOldRanges(s), ModGroup.Crafted, Numberfilter));
                 }
 
             if (val["flavourText"] != null)
@@ -393,7 +396,7 @@ namespace POESKillTree.Model.Items
             }
         }
 
-        private ItemMod ItemModFromJson(JToken jsonMod, bool areRequirements)
+        private ItemMod ItemModFromJson(JToken jsonMod, ModGroup modGroup)
         {
             var valuePairs = (from a in jsonMod["values"]
                               let vc = (ItemMod.ValueColoring)a[1].Value<int>()
@@ -411,7 +414,7 @@ namespace POESKillTree.Model.Items
              * - 3: `attribute = name.Replace(%i with values[i])`
              */
             var name = jsonMod["name"].Value<string>();
-            var mode0Separator = areRequirements ? " " : ": ";
+            var mode0Separator = modGroup == ModGroup.Requirement ? " " : ": ";
             string attribute;
             if (values.Any() && !string.IsNullOrEmpty(name))
             {
@@ -442,7 +445,7 @@ namespace POESKillTree.Model.Items
                 attribute = name;
             }
 
-            return new ItemMod(ItemType, attribute, Numberfilter, valueColors);
+            return new ItemMod(ItemType, attribute, modGroup, Numberfilter, valueColors);
         }
 
         private static readonly Regex OldRangeRegex = new Regex(@"(\d+)-(\d+) ");
@@ -486,7 +489,8 @@ namespace POESKillTree.Model.Items
             }
             if (requirements.Any())
             {
-                _requirements.Add(new ItemMod(ItemType, "Requires " + string.Join(", ", requirements))
+                _requirements.Add(new ItemMod(ItemType, "Requires " + string.Join(", ", requirements), 
+                    ModGroup.Requirement)
                 {
                     Value = values,
                     ValueColor = colors
@@ -498,9 +502,7 @@ namespace POESKillTree.Model.Items
         {
             _requirements.Clear();
             var minRequiredLevel = Mods
-                .Where(m => m.ParentTier != null)
-                .Select(m => m.ParentTier)
-                .Select(t => (80 * t.Level) / 100)
+                .Select(m => (80 * m.Level) / 100)
                 .DefaultIfEmpty(0)
                 .Max();
             var attrRequirementsMultiplier = 100 - Mods
@@ -600,7 +602,7 @@ namespace POESKillTree.Model.Items
             var qualityMod = Properties.FirstOrDefault(m => m.Attribute == "Quality: +#%");
             // Quality with "+#%" in name is not recognized as percentage increase.
             var qIncMod = qualityMod == null ? null
-                : new ItemMod(ItemType, qualityMod.Value[0] + "%", Numberfilter);
+                : new ItemMod(ItemType, qualityMod.Value[0] + "%", ModGroup.Property, Numberfilter);
             var localmods = Mods.Where(m => m.IsLocal).ToList();
 
             var r = new Regex(@"(?<=[^a-zA-Z] |^)(to|increased|decreased|more|less) |^Adds # to # |(\+|-|#|%|:|\s\s)\s*?(?=\s?)|^\s+|\s+$");
@@ -616,7 +618,9 @@ namespace POESKillTree.Model.Items
             var dict = new Dictionary<ItemMod, List<ItemMod>>();
             foreach (var mod in Properties)
             {
-                dict[mod] = localmods.Where((m, i) => localnames[i].Any(n => mod.Attribute.Contains(n))).ToList();
+                dict[mod] = localmods.Where((m, i) =>
+                        localnames[i].Any(n => mod.Attribute.Contains(n, StringComparison.InvariantCultureIgnoreCase)))
+                    .ToList();
                 // Add quality if this property is affected by quality
                 var name = mod.Attribute;
                 if (qualityMod != null &&

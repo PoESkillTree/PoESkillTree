@@ -22,7 +22,9 @@ namespace POESKillTree.Model.Items.Affixes
         }
 
 
-        public ItemModTier ParentTier { get; }
+        public ModGroup ModGroup { get; }
+        
+        public int Level { get; }
 
         public string Attribute { get; }
 
@@ -32,21 +34,34 @@ namespace POESKillTree.Model.Items.Affixes
 
         public bool IsLocal { get; }
 
-        public ItemMod(ItemType itemType, string attribute, Regex numberfilter, IEnumerable<ValueColoring> valueColor = null)
+        // itemType and modGroup are only used to determine locality
+        public ItemMod(ItemType itemType, string attribute, ModGroup modGroup, Regex numberfilter, 
+            IEnumerable<ValueColoring> valueColor = null)
         {
+            ModGroup = modGroup;
             Value = (from Match match in numberfilter.Matches(attribute)
                      select float.Parse(match.Value, CultureInfo.InvariantCulture))
                      .ToList();
             Attribute = numberfilter.Replace(attribute, "#");
-            IsLocal = DetermineLocal(itemType, Attribute);
+            IsLocal = DetermineLocal(itemType, modGroup, Attribute);
             ValueColor = valueColor == null ? new List<ValueColoring>() : new List<ValueColoring>(valueColor);
         }
 
-        public ItemMod(ItemType itemType, string attribute, ItemModTier parentTier = null)
+        public ItemMod(ItemType itemType, string attribute, ModGroup modGroup)
         {
-            IsLocal = DetermineLocal(itemType, attribute);
+            ModGroup = modGroup;
+            IsLocal = DetermineLocal(itemType, modGroup, attribute);
             Attribute = attribute;
-            ParentTier = parentTier;
+            Value = new List<float>();
+            ValueColor = new List<ValueColoring>();
+        }
+
+        public ItemMod(ItemType itemType, string attribute, ModGroup modGroup, int level)
+        {
+            ModGroup = modGroup;
+            Level = level;
+            IsLocal = DetermineLocal(itemType, modGroup, attribute);
+            Attribute = attribute;
             Value = new List<float>();
             ValueColor = new List<ValueColoring>();
         }
@@ -55,13 +70,20 @@ namespace POESKillTree.Model.Items.Affixes
         {
             IsLocal = other.IsLocal;
             Attribute = other.Attribute;
-            ParentTier = other.ParentTier;
+            ModGroup = other.ModGroup;
+            Level = other.Level;
             ValueColor = other.ValueColor.ToList();
         }
 
         // Returns true if property/mod is local, false otherwise.
-        private static bool DetermineLocal(ItemType itemType, string attr)
+        private static bool DetermineLocal(ItemType itemType, ModGroup modGroup, string attr)
         {
+            if (modGroup == ModGroup.Property || modGroup == ModGroup.Requirement)
+            {
+                // local or not doesn't really apply to properties and requirements
+                return true;
+            }
+
             if (attr == "#% reduced Attribute Requirements"
                 || attr.Contains("+# to Level of Socketed "))
                 return true;
@@ -82,15 +104,24 @@ namespace POESKillTree.Model.Items.Affixes
                     return false;
                 case ItemGroup.OneHandedWeapon:
                 case ItemGroup.TwoHandedWeapon:
+                    if (attr == "#% increased Physical Damage")
+                    {
+                        // Implicit increased physical damage is global
+                        return modGroup != ModGroup.Implicit;
+                    }
+                    if (attr == "+# to Accuracy Rating")
+                    {
+                        // Crafted accuracy is global
+                        return modGroup != ModGroup.Crafted;
+                    }
                     return attr == "#% increased Attack Speed"
                            || attr == "#% increased Accuracy Rating"
-                           || attr == "+# to Accuracy Rating"
                            || attr.StartsWith("Adds ") && (attr.EndsWith(" Damage") || attr.EndsWith(" Damage in Main Hand") || attr.EndsWith(" Damage in Off Hand"))
-                           || attr == "#% increased Physical Damage"
                            || attr == "#% increased Critical Strike Chance"
                            || attr.Contains("Damage Leeched as")
                            || attr.Contains("Critical Strike Chance with this Weapon")
-                           || attr.Contains("Critical Strike Damage Multiplier with this Weapon");
+                           || attr.Contains("Critical Strike Damage Multiplier with this Weapon")
+                           || attr == "+# to Weapon range";
                 case ItemGroup.Shield:
                 case ItemGroup.BodyArmour:
                 case ItemGroup.Boots:
