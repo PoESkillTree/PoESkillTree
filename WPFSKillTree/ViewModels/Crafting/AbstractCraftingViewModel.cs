@@ -271,7 +271,7 @@ namespace POESKillTree.ViewModels.Crafting
             foreach (var mod in allMods)
             {
                 string attr = mod.Attribute;
-                if (attr.StartsWith("Adds"))
+                if (attr.StartsWith("Adds") && !attr.Contains("in Main Hand") && !attr.Contains("in Off Hand"))
                 {
                     if (attr.Contains("Fire") || attr.Contains("Cold") || attr.Contains("Lightning"))
                     {
