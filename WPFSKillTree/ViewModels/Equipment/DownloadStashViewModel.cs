@@ -198,7 +198,17 @@ namespace POESKillTree.ViewModels.Equipment
             try
             {
                 var json = JObject.Parse(tabContents);
-                var items = json["items"].Select(i => new Item(_persistenData, (JObject)i)).ToArray();
+                var isQuadTab = json.Value<bool>("quadLayout");
+                var items = new List<Item>();
+                foreach (JObject jItem in json["items"])
+                {
+                    if (isQuadTab)
+                    {
+                        // icons of quad tabs are downsized and their url doesn't allow inferring the normal-sized url
+                        jItem.Remove("icon");
+                    }
+                    items.Add(new Item(_persistenData, jItem));
+                }
 
                 var yStart = _stash.LastOccupiedRow + 3;
 
@@ -211,21 +221,24 @@ namespace POESKillTree.ViewModels.Equipment
                 _stash.AddStashTab(sb);
 
                 var yOffsetInImported = items.Min(i => i.Y);
-                var yEnd = yStart;
+                var yMax = items.Max(i => i.Y + i.Height);
                 foreach (var item in items)
                 {
                     item.Y += yStart - yOffsetInImported;
-                    yEnd = Math.Max(yEnd, item.Y + item.Height);
                     if (item.X + item.Width > StashViewModel.Columns)
                     {
-                        await _dialogCoordinator.ShowWarningAsync(this, "Skipping item because it is too wide.");
-                        continue;
+                        // Mostly for quad stash tabs:
+                        // - add items on the right side below those on the left side
+                        // - items crossing both sides have to be moved to one side, which might lead to stacked items
+                        // Also makes sure items are not added outside the stash when importing other special tabs.
+                        item.X = Math.Max(0, Math.Min(item.X - StashViewModel.Columns, StashViewModel.Columns - 1));
+                        item.Y += yMax;
                     }
                     _stash.AddItem(item, true);
                 }
 
                 await _dialogCoordinator.ShowInfoAsync(this, L10n.Message("New tab added"),
-                    string.Format(L10n.Message("New tab with {0} items was added to stash."), items.Length));
+                    string.Format(L10n.Message("New tab with {0} items was added to stash."), items.Count));
             }
             catch (Exception e)
             {

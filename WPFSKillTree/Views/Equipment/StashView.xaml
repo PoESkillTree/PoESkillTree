@@ -131,13 +131,13 @@
                     <DataTemplate DataType="{x:Type viewModels:StashBookmarkViewModel}">
                         <!-- Drag can only be started if the mouse stays over the control, so the actual visual
                              rectangle is surrounded by a grid to allow the mouse to stay over the control easier.  -->
-                        <Grid Height="10"
+                        <Grid Height="12"
                               Width="{Binding Data.Columns, Converter={StaticResource CellSizeMultiplicationConverter}, Source={StaticResource VmProxy}}"
-                              Cursor="SizeNS"
                               dd:DragDrop.IsDragSource="True"
                               dd:DragDrop.DragHandler="{Binding}"
                               Background="Transparent">
                             <Rectangle Height="2"
+                                       Cursor="SizeNS"
                                        VerticalAlignment="Center">
                                 <Rectangle.Fill>
                                     <SolidColorBrush Color="{Binding Bookmark.Color}" />
@@ -193,7 +193,7 @@
                                 <Setter Property="Canvas.Top">
                                     <Setter.Value>
                                         <MultiBinding Converter="{StaticResource SumConverter}"
-                                                      ConverterParameter="-5">
+                                                      ConverterParameter="-6">
                                             <Binding Path="Bookmark.Position" Converter="{StaticResource CellSizeMultiplicationConverter}" />
                                         </MultiBinding>
                                     </Setter.Value>

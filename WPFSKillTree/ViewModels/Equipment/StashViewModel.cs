@@ -369,7 +369,7 @@ namespace POESKillTree.ViewModels.Equipment
             var to =
                 Bookmarks.Where(b => b.Bookmark.Position > from)
                     .Select(b => b.Bookmark.Position)
-                    .DefaultIfEmpty(LastOccupiedRow)
+                    .DefaultIfEmpty(LastOccupiedRow + 1)
                     .Min();
             var diff = to - from;
 
@@ -517,7 +517,9 @@ namespace POESKillTree.ViewModels.Equipment
                 // make sure bookmarks are still ordererd
                 var oldIndex = Bookmarks.IndexOf(bookmark);
                 var newIndex = FindTabIndex(bookmark);
-                Bookmarks.Move(oldIndex, newIndex);
+                // with Bookmarks.Move() the scroll bar element's position is not updated
+                Bookmarks.RemoveAt(oldIndex);
+                Bookmarks.Insert(newIndex, bookmark);
                 PersistentData.StashBookmarks.RemoveAt(oldIndex);
                 PersistentData.StashBookmarks.Insert(newIndex, bookmark.Bookmark);
             }
