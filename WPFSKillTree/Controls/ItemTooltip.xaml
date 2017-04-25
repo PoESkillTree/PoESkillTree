@@ -247,10 +247,10 @@
             <Image.Style>
                 <Style TargetType="{x:Type Image}" BasedOn="{StaticResource spacerBase}">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Properties}" Value="0" >
+                        <DataTrigger Binding="{Binding Properties.Count}" Value="0" >
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Requirements}" Value="0" >
+                        <DataTrigger Binding="{Binding Requirements.Count}" Value="0" >
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
