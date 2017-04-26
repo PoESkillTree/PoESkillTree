@@ -8,9 +8,7 @@ namespace POESKillTree.Model.Items.Affixes
     public class ItemModTier : IEquatable<ItemModTier>
     {
         public string Name { get; }
-        public int Level { get; }
         public IReadOnlyList<Stat> Stats { get; }
-        public bool IsMasterCrafted { get; }
         public int Tier { get; }
 
         /// <summary>
@@ -20,16 +18,14 @@ namespace POESKillTree.Model.Items.Affixes
         public ItemModTier(IEnumerable<Stat> stats)
         {
             Name = "";
-            Stats = stats.Select(s => new Stat(s, this)).ToList();
+            Stats = stats.Select(s => new Stat(s)).ToList();
         }
 
         public ItemModTier(XmlTier xmlTier, ItemType itemType)
         {
-            IsMasterCrafted = xmlTier.IsMasterCrafted;
             Tier = xmlTier.Tier;
             Name = xmlTier.Name;
-            Level = xmlTier.ItemLevel;
-            Stats = xmlTier.Stats.Select(s => new Stat(s, itemType, this)).ToList();
+            Stats = xmlTier.Stats.Select(s => new Stat(s, itemType, xmlTier.ModGroup, xmlTier.ItemLevel)).ToList();
         }
 
         public override string ToString()
@@ -41,15 +37,14 @@ namespace POESKillTree.Model.Items.Affixes
         {
             var x = this;
             var y = other;
-            return x.Level == y.Level && x.Name == y.Name && x.IsMasterCrafted == y.IsMasterCrafted
+            return x.Name == y.Name
                 && x.Stats.Zip(y.Stats, (xs, ys) => xs.Equals(ys)).All(z => z);
         }
 
         public override int GetHashCode()
         {
-            var obj = this;
-            return obj.Level.GetHashCode() ^ obj.Name.GetHashCode() ^ obj.IsMasterCrafted.GetHashCode()
-                ^ obj.Stats.Aggregate(0, (a, s) => a ^ s.GetHashCode());
+            return Name.GetHashCode()
+                ^ Stats.Aggregate(0, (a, s) => a ^ s.GetHashCode());
         }
 
     }

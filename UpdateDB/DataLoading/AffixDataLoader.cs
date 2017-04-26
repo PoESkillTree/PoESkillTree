@@ -150,7 +150,7 @@ namespace UpdateDB.DataLoading
                             ItemLevel = columns[0].ParseInt(),
                             Stats = ExtractStats(columns[1], affixName, rangeRenameFunc).ToArray(),
                             Name = tierName,
-                            IsMasterCrafted = MasterCraftedRegex.IsMatch(columns[2]),
+                            ModGroup = MasterCraftedRegex.IsMatch(columns[2]) ? ModGroup.Crafted : ModGroup.Explicit,
                             Tier = tierName.Contains(" lvl: ") ? 0 : currentTier++
                         });
                     }

@@ -88,8 +88,8 @@ namespace POESKillTree.Utils.Wpf
             var binding = new Binding("ActualHeight")
             {
                 Source = Application.Current.MainWindow,
-                Converter = new SubtractionConverter(),
-                ConverterParameter = value
+                Converter = new SumConverter {Minimum = 0},
+                ConverterParameter = -value
             };
             element.SetBinding(FrameworkElement.MaxHeightProperty, binding);
         }

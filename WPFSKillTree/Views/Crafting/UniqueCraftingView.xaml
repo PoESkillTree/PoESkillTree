@@ -18,7 +18,7 @@
     <dialogs:CloseableBaseDialog.DialogLeft>
         <controls:ItemTooltip HorizontalAlignment="Center" VerticalAlignment="Top"
                               Margin="5 55"
-                              Item="{Binding Item}" />
+                              DataContext="{Binding Item}" />
     </dialogs:CloseableBaseDialog.DialogLeft>
 
     <Grid Margin="0 5 0 0">

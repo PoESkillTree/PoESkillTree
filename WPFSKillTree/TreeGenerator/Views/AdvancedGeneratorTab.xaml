@@ -101,6 +101,7 @@
         <metroControls:NumericUpDown Grid.Row="0" Grid.Column="1"
                                      Margin="0 5"
                                      Minimum="{Binding Tree.UndefinedLevel}" Maximum="{Binding Tree.MaximumLevel}"
+                                     HasDecimals="False"
                                      Value="{Binding Tree.Level}" />
 
         <Label Grid.Row="1" Grid.Column="0"
@@ -109,6 +110,7 @@
         </Label>
         <metroControls:NumericUpDown Grid.Row="1" Grid.Column="1"
                                      Margin="0 5" Minimum="0"
+                                     HasDecimals="False"
                                      Value="{Binding AdditionalPoints.Value, ValidatesOnDataErrors=True}" />
 
         <Label Grid.Row="2" Grid.Column="0"
@@ -151,6 +153,7 @@
         </Label>
         <metroControls:NumericUpDown Grid.Row="2" Grid.Column="3"
                                      Margin="0 5" Minimum="1"
+                                     HasDecimals="False"
                                      Value="{Binding Iterations.Value, ValidatesOnDataErrors=True}" />
 
         <Button Grid.Row="1" Grid.Column="4"

@@ -210,7 +210,7 @@ namespace POESKillTree.ViewModels.Crafting
                 }
                 if (ibase.CanHaveQuality)
                 {
-                    var qualityStat = new Stat(QualityModName, new Range<float>(0, 20), Item.ItemType, null);
+                    var qualityStat = Stat.CreateProperty(QualityModName, new Range<float>(0, 20));
                     MsQuality.Affixes = new[]
                     {
                         new Affix(new ItemModTier(new[] { qualityStat }))
@@ -241,8 +241,8 @@ namespace POESKillTree.ViewModels.Crafting
 
             var allmods = RecalculateItemSpecific().ToList();
 
-            Item.ExplicitMods = allmods.Where(m => m.ParentTier == null || !m.ParentTier.IsMasterCrafted).ToList();
-            Item.CraftedMods = allmods.Where(m => m.ParentTier != null && m.ParentTier.IsMasterCrafted).ToList();
+            Item.ExplicitMods = allmods.Where(m => m.ModGroup == ModGroup.Explicit).ToList();
+            Item.CraftedMods = allmods.Where(m => m.ModGroup == ModGroup.Crafted).ToList();
             Item.ImplicitMods = MsImplicits.GetExactMods().ToList();
 
             var quality = SelectedBase.CanHaveQuality 
@@ -271,7 +271,7 @@ namespace POESKillTree.ViewModels.Crafting
             foreach (var mod in allMods)
             {
                 string attr = mod.Attribute;
-                if (attr.StartsWith("Adds"))
+                if (attr.StartsWith("Adds") && !attr.Contains("in Main Hand") && !attr.Contains("in Off Hand"))
                 {
                     if (attr.Contains("Fire") || attr.Contains("Cold") || attr.Contains("Lightning"))
                     {
@@ -317,7 +317,8 @@ namespace POESKillTree.ViewModels.Crafting
                     cols.Add(ItemMod.ValueColoring.Lightning);
                 }
 
-                Item.Properties.Add(new ItemMod(Item.ItemType, "Elemental Damage: " + string.Join(", ", mods))
+                Item.Properties.Add(new ItemMod(Item.ItemType, "Elemental Damage: " + string.Join(", ", mods), 
+                    ModGroup.Property)
                 {
                     Value = values,
                     ValueColor = cols,
@@ -326,7 +327,7 @@ namespace POESKillTree.ViewModels.Crafting
 
             if (chaosMods.Any())
             {
-                Item.Properties.Add(new ItemMod(Item.ItemType, "Chaos Damage: #-#")
+                Item.Properties.Add(new ItemMod(Item.ItemType, "Chaos Damage: #-#", ModGroup.Property)
                 {
                     Value = new List<float>(chaosMods[0].Value),
                     ValueColor = new List<ItemMod.ValueColoring> { ItemMod.ValueColoring.Chaos, ItemMod.ValueColoring.Chaos },

@@ -23,6 +23,7 @@ namespace POESKillTree.Model.Items
         public string Name => _base.Name;
         public ItemType ItemType => _base.ItemType;
         public ItemGroup ItemGroup => _base.ItemGroup;
+        public int MaximumNumberOfSockets => _base.MaximumNumberOfSockets;
 
         private readonly ItemBase _base;
         public bool CanHaveQuality => _base.CanHaveQuality;
@@ -37,7 +38,7 @@ namespace POESKillTree.Model.Items
             Level = xmlUnique.Level;
             DropDisabled = xmlUnique.DropDisabled;
             _base = itemBase;
-            ExplicitMods = xmlUnique.Explicit.Select(e => new Stat(e, itemBase.ItemType)).ToList();
+            ExplicitMods = xmlUnique.Explicit.Select(e => new Stat(e, itemBase.ItemType, ModGroup.Explicit)).ToList();
 
             Image = itemBase.Image.AsDefaultForUniqueImage(itemImageService, UniqueName);
         }

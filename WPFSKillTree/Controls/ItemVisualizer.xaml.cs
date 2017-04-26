@@ -1,33 +1,26 @@
 ﻿using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
-using POESKillTree.Model.Items;
 
 namespace POESKillTree.Controls
 {
     public partial class ItemVisualizer
     {
-        public static readonly Brush FoundItemBrush = new SolidColorBrush(Color.FromArgb(0x80,0x43,0xD9,0xE8));
-
-        public Item Item
-        {
-            get { return (Item)GetValue(ItemProperty); }
-            set { SetValue(ItemProperty, value); }
-        }
-
-        public static readonly DependencyProperty ItemProperty = DependencyProperty.Register("Item", typeof(Item),
-            typeof(ItemVisualizer), new PropertyMetadata(null));
-
         public ItemVisualizer()
         {
             InitializeComponent();
-            // The ItemTooltip is lazily created because it is a major slowdown if all tooltips are recreated for each scroll.
+            // The ItemTooltip is lazily created. 
+            // Else opening the Equipment tab for the first time would take a few seconds longer.
             tooltip.Opened += (sender, args) =>
             {
                 if (tooltip.Child != null) return;
-                var itemTooltip = new ItemTooltip {Item = Item};
-                itemTooltip.SetBinding(ItemTooltip.ItemProperty, new Binding("Item") {Source = this});
+                var itemTooltip = new ItemTooltip
+                {
+                    DataContext = DataContext,
+                    // padding of 5 to not interfere with drag operations
+                    Padding = new Thickness(5)
+                };
+                itemTooltip.SetBinding(DataContextProperty, new Binding("DataContext") { Source = this });
                 tooltip.Child = itemTooltip;
             };
         }

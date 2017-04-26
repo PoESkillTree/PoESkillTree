@@ -8,6 +8,8 @@
                              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
                              xmlns:controls="clr-namespace:POESKillTree.Controls"
                              xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Crafting"
+                             xmlns:enums="clr-namespace:POESKillTree.Model.Items.Enums"
+                             xmlns:mahApps="http://metro.mahapps.com/winfx/xaml/controls"
                              mc:Ignorable="d" 
                              d:DataContext="{d:DesignInstance viewModels:CraftingViewModel}"
                              CloseButtonVisibility="Collapsed"
@@ -28,9 +30,38 @@
         <l:Catalog Message="Crafting Window"/>
     </dialogs:CloseableBaseDialog.Title>
     <dialogs:CloseableBaseDialog.DialogLeft>
-        <controls:ItemTooltip HorizontalAlignment="Center" VerticalAlignment="Top"
-                              Margin="5 55"
-                              Item="{Binding Item}" />
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Top"
+              Margin="5 55">
+            <controls:ItemTooltip DataContext="{Binding Item}" />
+            <!-- For rare items, the name line of the tooltip is overlayed by a textbox to make it editable -->
+            <TextBox HorizontalAlignment="Center" VerticalAlignment="Top"
+                     Margin="40 0"
+                     Text="{Binding NameLine, UpdateSourceTrigger=PropertyChanged}"
+                     TextAlignment="Center"
+                     Typography.Capitals="SmallCaps"
+                     Foreground="#FFFFFF77"
+                     FontSize="16" FontWeight="Medium"
+                     mahApps:TextBoxHelper.Watermark="{Binding Item.TypeLine, StringFormat=Crafted {0}}">
+                <TextBox.Background>
+                    <VisualBrush TileMode="Tile" 
+                                 Viewport="0 0 44 54" ViewportUnits="Absolute">
+                        <VisualBrush.Visual>
+                            <Image Source="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderRareMiddle.png" />
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </TextBox.Background>
+                <TextBox.Style>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Item.Frame}" Value="{x:Static enums:FrameType.Rare}">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+        </Grid>
     </dialogs:CloseableBaseDialog.DialogLeft>
     
     <Grid Margin="0 5 0 0">
@@ -70,7 +101,7 @@
                                      Width="94" Height="188"
                                      Margin="5 45"
                                      VerticalAlignment="Top"
-                                     Item="{Binding Data.Item, Source={StaticResource VmProxy}}" />
+                                     DataContext="{Binding Data.Item, Source={StaticResource VmProxy}}" />
 
             <Label Content="Suffixes"
                    Grid.Column="2" Grid.Row="0"/>

@@ -8,9 +8,11 @@
         xmlns:local="clr-namespace:POESKillTree.Controls"
         xmlns:conv ="clr-namespace:POESKillTree.ViewModels"
         xmlns:items="clr-namespace:POESKillTree.Model.Items"
-        xmlns:views="clr-namespace:POESKillTree.Views"
         xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:builds="clr-namespace:POESKillTree.Views.Builds"
+        xmlns:equipment="clr-namespace:POESKillTree.Views.Equipment"
+        xmlns:dd="urn:gong-wpf-dragdrop"
 
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
         Height="667" Width="1200" SizeChanged="Window_SizeChanged" 
@@ -18,7 +20,8 @@
         PreviewKeyDown="Window_PreviewKeyDown" PreviewKeyUp="Window_PreviewKeyUp"
         TextOptions.TextFormattingMode="Display"
         x:Name="window" SaveWindowPosition="True"
-        DataContext="{Binding ElementName=window}">
+        DataContext="{Binding ElementName=window}"
+        UseLayoutRounding="True">
     <controls:MetroWindow.Title>
         <MultiBinding StringFormat="{}{0} - {1}">
             <Binding Path="PersistentData.CurrentBuild.Name" ElementName="window" />
@@ -476,7 +479,7 @@
                 <Separator />
                 <MenuItem Click="Menu_RedownloadTreeAssets">
                     <MenuItem.Header>
-                        <l:Catalog Message="_Redownload Skill Tree Assets" />
+                        <l:Catalog Message="_Redownload Live Skill Tree Data" />
                     </MenuItem.Header>
                     <MenuItem.Icon>
                         <iconPacks:PackIconModern Kind="PageDownload" HorizontalAlignment="Center" />
@@ -638,7 +641,8 @@
                     <controls:NumericUpDown Margin="5,0,0,0" x:Name="LevelUpDown" ValueChanged="Level_ValueChanged" MinWidth="70"
                                             Height="{Binding ActualHeight, ElementName=cbCharType}"
                                             DataContext="{Binding Tree, ElementName=window}" Value="{Binding Level, ValidatesOnDataErrors=True}"
-                                            Minimum="{Binding UndefinedLevel}" Maximum="{Binding MaximumLevel}">
+                                            Minimum="{Binding UndefinedLevel}" Maximum="{Binding MaximumLevel}"
+                                            HasDecimals="False">
                         <controls:NumericUpDown.ToolTip>
                             <l:Catalog Message="Level"/>
                         </controls:NumericUpDown.ToolTip>
@@ -674,7 +678,8 @@
 
         <!-- grid row 2 - center part, tree and editors -->
         <Grid Grid.Row="2">
-            <TabControl Background="Transparent" Name="tcMainArea">
+            <TabControl Background="Transparent" Name="tcMainArea"
+                        dd:DragDrop.IsDropTarget="True">
                 <TabControl.ItemContainerStyle>
                     <Style TargetType="TabItem">
                         <Style.Setters>
@@ -702,9 +707,9 @@
 
                             <Rectangle Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
                                        Height="2" Fill="{DynamicResource GrayNormalBrush}" VerticalAlignment="Top" />
-                            
+
                             <UniformGrid Grid.Column="0" Grid.Row="0"
-                                         Margin="0 6 60 0"
+                                         Margin="0 6 18 0"
                                          Height="32" Width="480"
                                          Rows="1"
                                          HorizontalAlignment="Right">
@@ -726,16 +731,13 @@
                                 </Button>
                             </UniformGrid>
 
-                            <local:Inventory Grid.Column="0" Grid.Row="1"
-                                             HorizontalAlignment="Right" VerticalAlignment="Top"
-                                             ItemAttributes="{Binding ItemAttributes, ElementName=window}"/>
-
-                            <Rectangle Grid.Column="0" Grid.Row="1"
-                                       Name="deleteRect" Fill="DarkGreen" VerticalAlignment="Top" HorizontalAlignment="Right" Opacity="0" Margin="0,387,31,0" Width="93" Height="92" Panel.ZIndex="10000" IsHitTestVisible="True" AllowDrop="True"
-                                       DragOver="deleteRect_DragOver" Drop="deleteRect_Drop" DragEnter="deleteRect_DragEnter" DragLeave="deleteRect_DragLeave"/>
-
-                            <local:Stash Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
-                                         x:Name="Stash" HorizontalAlignment="Left" Margin="0,4,0,0" Items="{Binding PersistentData.StashItems, ElementName=window}"></local:Stash>
+                            <equipment:InventoryView Grid.Column="0" Grid.Row="1"
+                                                     HorizontalAlignment="Right" VerticalAlignment="Top"
+                                                     Margin="20 0"
+                                                     DataContext="{Binding InventoryViewModel, ElementName=window}"/>
+                            <equipment:StashView Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
+                                                 HorizontalAlignment="Left" Margin="0,4,0,0"
+                                                 DataContext="{Binding StashViewModel, ElementName=window}" />
                         </Grid>
                     </ScrollViewer>
                 </TabItem>
@@ -746,9 +748,8 @@
                     <l:Catalog Message="Saved Builds"/>
                 </Expander.Header>
 
-                <views:BuildsControl FlowDirection="LeftToRight"
-                                     DataContext="{Binding ElementName=window, Path=BuildsControlViewModel}"
-                                     dialogs:DialogParticipation.Register="{Binding}" />
+                <builds:BuildsControl FlowDirection="LeftToRight"
+                                      DataContext="{Binding ElementName=window, Path=BuildsControlViewModel}" />
             </Expander>
 
             <Expander Style="{StaticResource TopRowExpander}"
@@ -837,7 +838,7 @@
                                     <ListBox ScrollViewer.CanContentScroll="False"  ItemsSource="{Binding ItemAttributes.Equip, ElementName=window, Mode=OneWay}" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="lbItemList" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate DataType="items:Item">
-                                                <local:ItemTooltip Item="{Binding}"/>
+                                                <local:ItemTooltip DataContext="{Binding}"/>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                         <ListBox.GroupStyle>

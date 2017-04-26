@@ -53,7 +53,7 @@ namespace POESKillTree.Model.Items.Affixes
         public int Tier { get; set; }
 
         [XmlAttribute]
-        public bool IsMasterCrafted { get; set; }
+        public ModGroup ModGroup { get; set; }
     }
 
     public class XmlStat

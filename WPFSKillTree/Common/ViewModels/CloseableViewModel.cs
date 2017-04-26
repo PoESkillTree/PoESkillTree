@@ -28,6 +28,19 @@ namespace POESKillTree.Common.ViewModels
         {
             return CanClose();
         }
+
+        /// <summary>
+        /// Called when CloseCommand is executed. Default implementation does nothing.
+        /// </summary>
+        protected virtual void OnClose()
+        {
+        }
+
+        protected sealed override void OnClose(object param)
+        {
+            OnClose();
+            base.OnClose(param);
+        }
     }
 
     /// <summary>
@@ -42,26 +55,17 @@ namespace POESKillTree.Common.ViewModels
         /// </summary>
         public ICommand CloseCommand { get; }
 
-        /// <summary>
-        /// Raised when <see cref="CloseCommand"/> is executed.
-        /// </summary>
-        public event Action<T> RequestsClose;
-
         private readonly TaskCompletionSource<T> _closeCompletionSource =
             new TaskCompletionSource<T>();
 
         protected CloseableViewModel()
         {
-            CloseCommand = new RelayCommand<T>(param =>
-            {
-                RequestsClose?.Invoke(param);
-                _closeCompletionSource.TrySetResult(param);
-            }, CanClose);
+            CloseCommand = new RelayCommand<T>(OnClose, CanClose);
         }
 
         /// <summary>
         /// Returns a task that completes with the produced result once <see cref="CloseCommand"/>
-        /// is executed and all handlers for <see cref="RequestsClose"/> returned.
+        /// is executed.
         /// </summary>
         public Task<T> WaitForCloseAsync()
         {
@@ -84,6 +88,15 @@ namespace POESKillTree.Common.ViewModels
         protected virtual bool CanClose(T param)
         {
             return true;
+        }
+
+        /// <summary>
+        /// Called when <see cref="CloseCommand"/> is executed. Default implementation completes the closing task and
+        /// must be called by overriding methods.
+        /// </summary>
+        protected virtual void OnClose(T param)
+        {
+            _closeCompletionSource.TrySetResult(param);
         }
     }
 }

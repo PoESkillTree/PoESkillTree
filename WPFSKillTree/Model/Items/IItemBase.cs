@@ -22,6 +22,11 @@ namespace POESKillTree.Model.Items
         ItemType ItemType { get; }
         ItemGroup ItemGroup { get; }
 
+        /// <summary>
+        /// Gets the maximum number of sockets an item of this base can have.
+        /// </summary>
+        int MaximumNumberOfSockets { get; }
+
         bool CanHaveQuality { get; }
         IReadOnlyList<Stat> ImplicitMods { get; }
 

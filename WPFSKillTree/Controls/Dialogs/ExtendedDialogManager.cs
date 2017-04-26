@@ -35,7 +35,6 @@ namespace POESKillTree.Controls.Dialogs
             var oldFocus = Keyboard.FocusedElement;
 
             await window.ShowMetroDialogAsync(view, new MetroDialogSettings {AnimateShow = false});
-            DialogParticipation.SetRegister(view, viewModel);
             // Focus the first focusable element in the view
             var element = view.FindVisualChildren<UIElement>().FirstOrDefault(e => e.Focusable);
             element?.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => Keyboard.Focus(element)));
@@ -43,7 +42,6 @@ namespace POESKillTree.Controls.Dialogs
 
             var result = await viewModel.WaitForCloseAsync();
             await window.HideMetroDialogAsync(view, new MetroDialogSettings {AnimateHide = false});
-            DialogParticipation.SetRegister(view, null);
 
             // Restore IsDefault and keyboard focus.
             oldDefaults.ForEach(b => b.IsDefault = true);

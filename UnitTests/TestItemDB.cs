@@ -62,10 +62,10 @@ namespace UnitTests
              *   <ValuePerQuality>0.5</ValuePerQuality>
              * </Attribute>
              */
-            Assert.AreEqual(5, GetValueOf("Fork Support", "#% increased Projectile Damage", 5, 10)[0]);
+            Assert.AreEqual(5, GetValueOf("Fork Support", "Supported Projectile Skills deal #% increased Projectile Damage", 5, 10)[0]);
 
             // Test of "Gems in this item are Supported by level 30 Spell Echo" modifier on Pledge of Hands.
-            Assert.AreEqual(10, GetValueOf("Spell Echo Support", "#% less Damage", 30)[0]);
+            Assert.AreEqual(10, GetValueOf("Spell Echo Support", "Supported Skills deal #% less Damage", 30)[0]);
             Assert.AreEqual(80, GetValueOf("Spell Echo Support", "#% more Cast Speed", 30)[0]);
         }
 
