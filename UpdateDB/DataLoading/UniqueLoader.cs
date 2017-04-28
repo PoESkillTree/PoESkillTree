@@ -24,6 +24,9 @@ namespace UpdateDB.DataLoading
          * - Has level requirement
          * - Has explicit mod ids
          * - Is drop enabled
+         * Printout Jewel:
+         * - Has item limit
+         * - Has jewel radius
          * Possibly useful printouts not yet used:
          * - Is corrupted
          * Possible item classes not used here:
@@ -43,6 +46,11 @@ namespace UpdateDB.DataLoading
         private static readonly IReadOnlyList<string> Printouts = new[]
         {
             RdfName, RdfBaseMetadataId, RdfLvlReq, RdfExplicits, RdfDropEnabled
+        };
+
+        private static readonly IReadOnlyList<string> PrintoutsJewel = new[]
+        {
+            RdfItemLimit, RdfJewelRadius
         };
 
         private static readonly IReadOnlyList<string> RelevantWikiClasses = new[]
@@ -75,8 +83,11 @@ namespace UpdateDB.DataLoading
                 {RdfRarity, "Unique"},
                 {RdfItemClass, wikiClass}
             };
+            var printouts = wikiClass == "Jewel"
+                ? Printouts.Concat(PrintoutsJewel)
+                : Printouts;
             IEnumerable<XmlUnique> enumerable =
-                from result in await WikiApiAccessor.AskArgs(conditions, Printouts)
+                from result in await WikiApiAccessor.AskArgs(conditions, printouts)
                 select PrintoutsToUnique(result);
             var ret = enumerable.ToList();
             Log.Info($"Retrieved {ret.Count} bases of class {wikiClass}.");
@@ -87,13 +98,23 @@ namespace UpdateDB.DataLoading
         {
             var explicits = PluralValue<string>(printouts, RdfExplicits)
                 .SelectMany(WikiStatTextUtils.ConvertStatText).ToArray();
+            var properties = new PropertyBuilder(printouts);
+            if (printouts[RdfItemLimit]?.HasValues == true)
+            {
+                properties.Add("Limited to", RdfItemLimit);
+            }
+            if (printouts[RdfJewelRadius]?.HasValues == true)
+            {
+                properties.Add("Radius", RdfJewelRadius);
+            }
             return new XmlUnique
             {
                 Level = SingularValue<int>(printouts, RdfLvlReq),
                 Name = SingularValue<string>(printouts, RdfName),
                 DropDisabled = !SingularBool(printouts, RdfDropEnabled, true),
                 BaseMetadataId = SingularValue<string>(printouts, RdfBaseMetadataId),
-                Explicit = explicits
+                Explicit = explicits,
+                Properties = properties.ToArray()
             };
         }
     }

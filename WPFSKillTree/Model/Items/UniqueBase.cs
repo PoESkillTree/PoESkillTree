@@ -27,6 +27,7 @@ namespace POESKillTree.Model.Items
 
         private readonly ItemBase _base;
         public bool CanHaveQuality => _base.CanHaveQuality;
+        private readonly IReadOnlyList<Stat> _properties;
         public IReadOnlyList<Stat> ImplicitMods => _base.ImplicitMods;
         public IReadOnlyList<Stat> ExplicitMods { get; }
 
@@ -38,6 +39,7 @@ namespace POESKillTree.Model.Items
             Level = xmlUnique.Level;
             DropDisabled = xmlUnique.DropDisabled;
             _base = itemBase;
+            _properties = xmlUnique.Properties.Select(p => new Stat(p, ItemType, ModGroup.Property)).ToList();
             ExplicitMods = xmlUnique.Explicit.Select(e => new Stat(e, itemBase.ItemType, ModGroup.Explicit)).ToList();
 
             Image = itemBase.Image.AsDefaultForUniqueImage(itemImageService, UniqueName);
@@ -50,7 +52,9 @@ namespace POESKillTree.Model.Items
 
         public List<ItemMod> GetRawProperties(int quality = 0)
         {
-            return _base.GetRawProperties(quality);
+            var mods = _base.GetRawProperties(quality);
+            mods.AddRange(_properties.Select(prop => prop.AsPropertyToItemMod()));
+            return mods;
         }
     }
 }

@@ -38,5 +38,9 @@
         public const string RdfBaseArmour = "Has base armour";
         public const string RdfBaseEvasion = "Has base evasion";
         public const string RdfBaseEnergyShield = "Has base energy shield";
+
+        // Unique jewel properties
+        public const string RdfItemLimit = "Has item limit";
+        public const string RdfJewelRadius = "Has jewel radius";
     }
 }

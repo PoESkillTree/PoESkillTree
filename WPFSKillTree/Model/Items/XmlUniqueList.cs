@@ -31,5 +31,8 @@ namespace POESKillTree.Model.Items
         [XmlArrayItem("Stat")]
         public XmlStat[] Explicit { get; set; }
 
+        [XmlArrayItem("Stat")]
+        public XmlStat[] Properties { get; set; }
+
     }
 }
