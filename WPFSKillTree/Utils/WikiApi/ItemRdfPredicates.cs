@@ -15,6 +15,7 @@
         public const string RdfInventoryWidth = "Has inventory width";
         public const string RdfMetadataId = "Has metadata id";
         public const string RdfBaseMetadataId = "Has base item metadata id";
+        public const string RdfTags = "Has tags";
 
         // Requirements
         public const string RdfLvlReq = "Has level requirement";

@@ -22,7 +22,10 @@ namespace POESKillTree.Model.Items
         public XmlStat[] Properties { get; set; }
         
         [XmlAttribute]
-        public ItemType ItemType { get; set; }
+        public ItemClass ItemClass { get; set; }
+
+        [XmlAttribute]
+        public Tags Tags { get; set; }
         
         [XmlAttribute]
         public string Name { get; set; }

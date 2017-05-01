@@ -45,7 +45,7 @@ namespace POESKillTree.Model.Items
             InventoryWidth = xmlBase.InventoryWidth;
 
             Name = xmlBase.Name;
-            ItemType = xmlBase.ItemType;
+            //ItemType = xmlBase.ItemType; todo
             ItemGroup = ItemType.Group();
             MetadataId = xmlBase.MetadataId;
 
