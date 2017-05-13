@@ -3,6 +3,9 @@
     public enum ModType
     {
         Prefix,
-        Suffix
+        Suffix,
+        Unique,
+        Corrupted,
+        Enchantment
     }
 }

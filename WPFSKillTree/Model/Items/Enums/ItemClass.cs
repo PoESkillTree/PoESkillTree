@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace POESKillTree.Model.Items.Enums
 {
@@ -91,6 +92,11 @@ namespace POESKillTree.Model.Items.Enums
         public static Tags ToTags(this ItemClass itemClass)
         {
             return ItemClassToTags[itemClass];
+        }
+
+        public static bool TryParse(string ggpkItemClass, out ItemClass itemClass)
+        {
+            return Enum.TryParse(ggpkItemClass.Replace(" ", ""), true, out itemClass);
         }
     }
 }

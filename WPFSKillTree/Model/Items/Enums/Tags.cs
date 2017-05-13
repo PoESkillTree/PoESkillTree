@@ -114,4 +114,13 @@ namespace POESKillTree.Model.Items.Enums
         Gem = 1L << 48,
         SupportGem = 1L << 49,
     }
+
+
+    public static class TagsEx
+    {
+        public static bool TryParse(string ggpkTag, out Tags tag)
+        {
+            return Enum.TryParse(ggpkTag.Replace("_", ""), true, out tag);
+        }
+    }
 }

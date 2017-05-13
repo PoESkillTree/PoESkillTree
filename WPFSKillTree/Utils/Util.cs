@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MoreLinq;
 
 namespace POESKillTree.Utils
@@ -20,6 +21,11 @@ namespace POESKillTree.Utils
                 i++;
             }
             return name + $" ({i})";
+        }
+
+        public static T[] GetEnumValues<T>() where T: struct
+        {
+            return (T[]) Enum.GetValues(typeof(T));
         }
     }
 }

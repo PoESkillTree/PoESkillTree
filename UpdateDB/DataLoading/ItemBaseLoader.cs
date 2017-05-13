@@ -167,7 +167,7 @@ namespace UpdateDB.DataLoading
             foreach (var s in PluralValue<string>(printouts, RdfTags))
             {
                 Tags tag;
-                if (Enum.TryParse(s.Replace("_", ""), true, out tag))
+                if (TagsEx.TryParse(s, out tag))
                 {
                     item.Tags |= tag;
                 }

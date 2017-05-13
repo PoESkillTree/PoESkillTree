@@ -18,6 +18,8 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,8 +34,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -213,6 +213,14 @@
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
+    <Compile Include="Model\Items\Mods\Affix.cs" />
+    <Compile Include="Model\Items\Mods\IMod.cs" />
+    <Compile Include="Model\Items\Mods\JsonCraftingBenchOption.cs" />
+    <Compile Include="Model\Items\Mods\JsonMod.cs" />
+    <Compile Include="Model\Items\Mods\Mod.cs" />
+    <Compile Include="Model\Items\Mods\ModDatabase.cs" />
+    <Compile Include="Model\Items\Mods\ModDomain.cs" />
+    <Compile Include="Model\Items\Mods\Stat.cs" />
     <Compile Include="Utils\RePoELoader.cs" />
     <Compile Include="Model\Items\StatTranslation\Format.cs" />
     <Compile Include="Model\Items\StatTranslation\IndexHandler.cs" />

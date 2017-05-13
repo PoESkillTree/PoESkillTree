@@ -32,8 +32,14 @@ namespace POESKillTree.Model.Items.Affixes
 
         private readonly IReadOnlyList<Stat> _firstTierStats;
 
-        public Affix(params ItemModTier[] tiers)
-            : this(ItemType.Unknown, tiers)
+        public Affix()
+            : this(ItemType.Unknown, new ItemModTier[0])
+        {
+            Name = "";
+        }
+
+        public Affix(ItemModTier tier)
+            : this(ItemType.Unknown, new[] { tier })
         {
             Name = string.Join(",", StatNames);
         }
