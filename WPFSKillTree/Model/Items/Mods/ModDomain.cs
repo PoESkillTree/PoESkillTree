@@ -6,6 +6,5 @@
         Flask,
         Master,
         Jewel,
-        Leaguestone,
     }
 }

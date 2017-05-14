@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using log4net;
 using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items.Mods
@@ -20,10 +21,11 @@ namespace POESKillTree.Model.Items.Mods
         public ModDomain Domain => JsonMod.Domain;
         public bool IsEssenceOnly => JsonMod.IsEssenceOnly;
 
-        public Mod(string id, JsonMod jsonMod, IEnumerable<JsonCraftingBenchOption> jsonMasterMods)
+        public Mod(string id, JsonMod jsonMod, IEnumerable<JsonCraftingBenchOption> jsonBenchOptions,
+            IEnumerable<IReadOnlyDictionary<string, bool>> spawnTagsReplacement)
         {
             Id = id;
-            foreach (var jsonMasterMod in jsonMasterMods)
+            foreach (var jsonMasterMod in jsonBenchOptions)
             {
                 foreach (var itemClass in jsonMasterMod.ItemClasses)
                 {
@@ -34,7 +36,8 @@ namespace POESKillTree.Model.Items.Mods
                     }
                 }
             }
-            foreach (var spawnTagDict in jsonMod.SpawnTags)
+            var spawnTags = spawnTagsReplacement ?? jsonMod.SpawnTags;
+            foreach (var spawnTagDict in spawnTags)
             {
                 foreach (var spawnTagPair in spawnTagDict)
                 {

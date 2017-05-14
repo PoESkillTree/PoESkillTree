@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -13,11 +13,36 @@ namespace UnitTests.Model.Items.Mods
     [TestClass]
     public class ModDatabaseTest
     {
+        private static readonly ISet<string> UnknownTags = new HashSet<string>
+        {
+            // only added by other mods, which is not supported anyway
+            // - master mods "Cannot roll Attack Mods" and "Cannot roll Caster Mods"
+            "no_attack_mods", "no_caster_mods",
+            // - jewel mods
+            "specific_weapon", "two_handed_mod", "shield_mod", "dual_wielding_mod", "one_handed_mod", "melee_mod",
+            // map crafting is not supported
+            "map",
+        };
+        private static readonly ISet<string> UnknownItemClasses = new HashSet<string>
+        {
+            // map crafting is not supported
+            "Map", "MapFragment",
+        };
+
         private Task _initialization;
 
         private Dictionary<string, JsonMod> _mods;
-        private JsonCraftingBenchOption[] _masterMods;
+        private JsonCraftingBenchOption[] _benchOptions;
+        private Dictionary<string, JsonNpcMaster> _npcMasters;
         private ModDatabase _modDatabase;
+
+        [ClassInitialize]
+        public static void StaticInitialize(TestContext testContext)
+        {
+            // Remove all files before running the first test to make sure they are up to date
+            var dataPath = AppData.GetFolder(Path.Combine("Data", "RePoE"));
+            Directory.Delete(dataPath, true);
+        }
 
         [TestInitialize]
         public void TestInitialize()
@@ -29,8 +54,9 @@ namespace UnitTests.Model.Items.Mods
         {
             var loader = new RePoELoader(new HttpClient(), false);
             _mods = await loader.LoadAsync<Dictionary<string, JsonMod>>("mods");
-            _masterMods = await loader.LoadAsync<JsonCraftingBenchOption[]>("crafting_bench_options");
-            _modDatabase = new ModDatabase(_mods, _masterMods);
+            _benchOptions = await loader.LoadAsync<JsonCraftingBenchOption[]>("crafting_bench_options");
+            _npcMasters = await loader.LoadAsync<Dictionary<string, JsonNpcMaster>>("npc_master");
+            _modDatabase = new ModDatabase(_mods, _benchOptions, _npcMasters);
         }
 
         [TestMethod]
@@ -98,60 +124,58 @@ namespace UnitTests.Model.Items.Mods
 
         // make sure master crafted mods can't spawn through tags so matching their item classes is enough
         [TestMethod]
-        public async Task ModDatabase_MasterMods_NoSpawnTags()
+        public async Task MasterMods_NoSpawnTags()
         {
             await _initialization;
-            foreach (var modType in Util.GetEnumValues<ModType>())
+            foreach (var mod in _mods.Values)
             {
-                var affixes = _modDatabase[modType];
-                foreach (var affix in affixes)
+                if (mod.Domain == ModDomain.Master)
                 {
-                    foreach (Mod mod in affix.Mods)
-                    {
-                        if (mod.Domain != ModDomain.Master)
-                        {
-                            continue;
-                        }
-                        foreach (var spawnTagDict in mod.JsonMod.SpawnTags)
-                        {
-                            if (spawnTagDict.Any())
-                            {
-                                Assert.AreEqual(1, spawnTagDict.Count);
-                                Assert.IsTrue(spawnTagDict.ContainsKey("default"));
-                                Assert.IsFalse(spawnTagDict["default"]);
-                            }
-                        }
-                    }
+                    AssertCantSpawn(mod);
                 }
             }
         }
 
         // make sure essence mods can't spawn through tags so they need to be handled differently
         [TestMethod]
-        public async Task ModDatabase_EssenceMods_NoSpawnTags()
+        public async Task EssenceMods_NoSpawnTags()
         {
             await _initialization;
-            foreach (var modType in Util.GetEnumValues<ModType>())
+            foreach (var mod in _mods.Values)
             {
-                var affixes = _modDatabase[modType];
-                foreach (var affix in affixes)
+                if (mod.IsEssenceOnly)
                 {
-                    foreach (Mod mod in affix.Mods)
-                    {
-                        if (!mod.IsEssenceOnly)
-                        {
-                            continue;
-                        }
-                        foreach (var spawnTagDict in mod.JsonMod.SpawnTags)
-                        {
-                            if (spawnTagDict.Any())
-                            {
-                                Assert.AreEqual(1, spawnTagDict.Count);
-                                Assert.IsTrue(spawnTagDict.ContainsKey("default"));
-                                Assert.IsFalse(spawnTagDict["default"]);
-                            }
-                        }
-                    }
+                    AssertCantSpawn(mod);
+                }
+            }
+        }
+
+        // make sure signature mods can't spawn through tags 
+        // so the spawn tags in JsonNpcMaster can simply be prepended
+        [TestMethod]
+        public async Task SignatureMods_NoSpawnTags()
+        {
+            await _initialization;
+            foreach (var npcMaster in _npcMasters.Values)
+            {
+                // TryGetValue because Zana's signature mod is of domain Map. Those mods are not in _mods.
+                JsonMod mod;
+                if (_mods.TryGetValue(npcMaster.SignatureMod.Id, out mod))
+                {
+                    AssertCantSpawn(mod);
+                }
+            }
+        }
+
+        private void AssertCantSpawn(JsonMod mod)
+        {
+            foreach (var spawnTagDict in mod.SpawnTags)
+            {
+                if (spawnTagDict.Any())
+                {
+                    Assert.AreEqual(1, spawnTagDict.Count);
+                    Assert.IsTrue(spawnTagDict.ContainsKey("default"));
+                    Assert.IsFalse(spawnTagDict["default"]);
                 }
             }
         }
@@ -191,6 +215,78 @@ namespace UnitTests.Model.Items.Mods
             Assert.AreEqual(6, quiver.Count);
             Assert.AreEqual("DexMasterProjectileSpeedCrafted", quiver[0].Id);
             Assert.AreEqual("ProjectileSpeed1", quiver[1].Id);
+        }
+
+        [TestMethod]
+        public async Task GetMatchingMods_CausesBleeding()
+        {
+            await _initialization;
+            var affixes = _modDatabase[ModType.Prefix];
+            var affix = affixes.Single(a => a.Group == "CausesBleeding");
+
+            var bow = affix.GetMatchingMods(ModDomain.Item,
+                Tags.Bow | Tags.TwoHandWeapon | Tags.Ranged, ItemClass.Bow).ToList();
+            Assert.AreEqual(1, bow.Count);
+            Assert.AreEqual("BleedOnHitGainedDexMasterVendorItem", bow[0].Id);
+        }
+
+        // Make sure all possible Tags and ItemClasses are either known or purposefully unknown.
+
+        [TestMethod]
+        public async Task JsonMod_UnknownTags()
+        {
+            await _initialization;
+            foreach (var mod in _mods.Values)
+            {
+                foreach (var spawnTagDict in mod.SpawnTags)
+                {
+                    foreach (var spawnTag in spawnTagDict.Keys)
+                    {
+                        Tags tag;
+                        if (!TagsEx.TryParse(spawnTag, out tag))
+                        {
+                            Assert.IsTrue(UnknownTags.Contains(spawnTag), spawnTag + " unknown");
+                        }
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public async Task JsonCraftingBenchOption_UnknownItemClasses()
+        {
+            await _initialization;
+            foreach (var benchOption in _benchOptions)
+            {
+                foreach (var itemClass in benchOption.ItemClasses)
+                {
+                    ItemClass enumClass;
+                    if (!ItemClassEx.TryParse(itemClass, out enumClass))
+                    {
+                        Assert.IsTrue(UnknownItemClasses.Contains(itemClass), itemClass + " unknown");
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public async Task JsonSignatureMod_UnknownTags()
+        {
+            await _initialization;
+            foreach (var mod in _npcMasters.Values.Select(n => n.SignatureMod))
+            {
+                foreach (var spawnTagDict in mod.SpawnTags)
+                {
+                    foreach (var spawnTag in spawnTagDict.Keys)
+                    {
+                        Tags tag;
+                        if (!TagsEx.TryParse(spawnTag, out tag))
+                        {
+                            Assert.IsTrue(UnknownTags.Contains(spawnTag), spawnTag + " unknown");
+                        }
+                    }
+                }
+            }
         }
     }
 }

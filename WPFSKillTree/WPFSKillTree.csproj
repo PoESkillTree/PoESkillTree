@@ -217,6 +217,7 @@
     <Compile Include="Model\Items\Mods\IMod.cs" />
     <Compile Include="Model\Items\Mods\JsonCraftingBenchOption.cs" />
     <Compile Include="Model\Items\Mods\JsonMod.cs" />
+    <Compile Include="Model\Items\Mods\JsonNpcMaster.cs" />
     <Compile Include="Model\Items\Mods\Mod.cs" />
     <Compile Include="Model\Items\Mods\ModDatabase.cs" />
     <Compile Include="Model\Items\Mods\ModDomain.cs" />

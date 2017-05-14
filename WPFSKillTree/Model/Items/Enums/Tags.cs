@@ -17,23 +17,7 @@ namespace POESKillTree.Model.Items.Enums
      * - add spaces in front of each capital letter
      * 
      * Item class to tag and vice versa: (if base lookup fails)
-     * Bow = Bow | TwoHandWeapon | Ranged
-     * Wand = Wand | OneHandWeapon | Ranged
-     * Staff = Staff | TwoHandWeapon
-     * OneHandMace = Mace | OneHandWeapon
-     * TwoHandMace = Mace | TwoHandWeapon
-     * ThrustingOneHandSword = Rapier | Sword | OneHandWeapon
-     * OneHandSword = Sword | OneHandWeapon
-     * TwoHandSword = Sword | TwoHandWeapon
-     * Dagger = Dagger | OneHandWeapon
-     * Claw = Claw | OneHandWeapon
-     * OneHandAxe = Axe | OneHandWeapon
-     * TwoHandAxe = Axe | TwoHandWeapon
-     * Sceptre = Sceptre | OneHandWeapon
-     * FishingRod = FishingRod | TwoHandWeapon
-     * SupportSkillGem = Gem | SupportGem
-     * ActiveSkillGem = Gem
-     * not listed above: take exact match or Default if no exact match
+     * ItemClass.ToTags()
      * 
      * Item class "Thrusting One Hand Sword" is considered a subclass of "One Hand Sword"
      * Item class "Sceptre" is considered a subclass of "One Hand Mace"
@@ -50,7 +34,8 @@ namespace POESKillTree.Model.Items.Enums
         OneHand = 1 << 1,
         TwoHand = 1 << 2,
         Ranged = 1 << 3,
-        // these tags are in the game data but seem redundant
+        // Fishing Rod is the only item where these definitions are incorrect (it has Weapon and TwoHand but not 
+        // TwoHandWeapon). By ignoring that, these tags can be defined as a combination.
         OneHandWeapon = Weapon | OneHand,
         TwoHandWeapon = Weapon | TwoHand,
 
@@ -113,6 +98,13 @@ namespace POESKillTree.Model.Items.Enums
 
         Gem = 1L << 48,
         SupportGem = 1L << 49,
+
+        // Energy shield shields have a tag called "focus"
+        Focus = 1L << 50,
+        // Prevents master signature mods from appearing on items that are not sold by vendors
+        NotForSale = 1L << 51,
+        // Prevents Diamond Flask from getting the increased effect mod
+        NoEffectFlaskMod = 1L << 52,
     }
 
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
@@ -106,6 +105,8 @@ namespace UpdateDB.DataLoading
                 { "Jewel", ItemClass.Jewel },
             };
 
+        private readonly HashSet<string> _unknownTags = new HashSet<string>();
+
         protected override async Task LoadAsync()
         {
             // start tasks
@@ -124,6 +125,7 @@ namespace UpdateDB.DataLoading
             {
                 ItemBases = bases.ToArray()
             };
+            Log.Info("Unknown tags: " + string.Join(", ", _unknownTags));
         }
 
         private async Task<IEnumerable<XmlItemBase>> ReadJson(string wikiClass, ItemClass itemClass)
@@ -144,7 +146,7 @@ namespace UpdateDB.DataLoading
                 select b;
         }
 
-        private static XmlItemBase PrintoutsToBase(ItemClass itemClass, JToken printouts)
+        private XmlItemBase PrintoutsToBase(ItemClass itemClass, JToken printouts)
         {
             // name, requirements and implicts; same for all categories
             var implicits = PluralValue<string>(printouts, RdfImplicits)
@@ -170,6 +172,10 @@ namespace UpdateDB.DataLoading
                 if (TagsEx.TryParse(s, out tag))
                 {
                     item.Tags |= tag;
+                }
+                else
+                {
+                    _unknownTags.Add(s);
                 }
             }
             // properties; tag specific

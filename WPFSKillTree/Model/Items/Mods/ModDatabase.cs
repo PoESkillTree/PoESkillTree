@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items.Mods
 {
@@ -11,10 +12,16 @@ namespace POESKillTree.Model.Items.Mods
 
         public IEnumerable<Affix> this[ModType modtype] => _affixesByType[modtype];
 
-        public ModDatabase(IReadOnlyDictionary<string, JsonMod> mods, IEnumerable<JsonCraftingBenchOption> masterMods)
+        public ModDatabase(IReadOnlyDictionary<string, JsonMod> mods, IEnumerable<JsonCraftingBenchOption> benchOptions,
+            IReadOnlyDictionary<string, JsonNpcMaster> npcMasters)
         {
-            var masterLookup = masterMods.ToLookup(m => m.ModId);
-            _mods = mods.ToDictionary(p => p.Key, p => new Mod(p.Key, p.Value, masterLookup[p.Key]));
+            var benchLookup = benchOptions.ToLookup(m => m.ModId);
+            var signatureModDict = npcMasters
+                .Select(n => n.Value.SignatureMod)
+                .ToDictionary(s => s.Id, s => s.SpawnTags);
+            _mods = mods.ToDictionary(
+                p => p.Key, 
+                p => new Mod(p.Key, p.Value, benchLookup[p.Key], signatureModDict.GetOrDefault(p.Key)));
             _affixesByType = _mods.Values
                 .GroupBy(m => m.JsonMod.GenerationType)
                 .ToDictionary(g => g.Key, ModsToAffixes);

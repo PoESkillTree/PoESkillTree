@@ -88,7 +88,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Hook Sword" Level="34" Strength="64" Dexterity="64" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSwordM1">
+  <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword NotForSale" Name="Hook Sword" Level="34" Strength="64" Dexterity="64" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSwordM1">
     <Implicit>
       <Stat Name="#% chance to Dodge Attacks" From="4" To="4" />
     </Implicit>
@@ -176,7 +176,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Grappler" Level="55" Strength="99" Dexterity="99" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSwordM2">
+  <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword NotForSale" Name="Grappler" Level="55" Strength="99" Dexterity="99" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSwordM2">
     <Implicit>
       <Stat Name="#% chance to Dodge Attacks" From="4" To="4" />
     </Implicit>
@@ -264,7 +264,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword" Name="Tiger Hook" Level="70" Strength="119" Dexterity="119" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSwordM3">
+  <ItemBase ItemClass="OneHandSword" Tags="Weapon OneHand OneHandWeapon Sword NotForSale" Name="Tiger Hook" Level="70" Strength="119" Dexterity="119" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSwordM3">
     <Implicit>
       <Stat Name="#% chance to Dodge Attacks" From="6" To="6" />
     </Implicit>
@@ -363,7 +363,7 @@
       <Stat Name="Weapon Range" From="12" To="12" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Smallsword" Level="36" Strength="0" Dexterity="124" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/RapierM1">
+  <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier NotForSale" Name="Smallsword" Level="36" Strength="0" Dexterity="124" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/RapierM1">
     <Implicit>
       <Stat Name="#% chance to cause Bleeding on Hit" From="15" To="15" />
     </Implicit>
@@ -451,7 +451,7 @@
       <Stat Name="Weapon Range" From="12" To="12" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Courtesan Sword" Level="57" Strength="0" Dexterity="190" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/RapierM2">
+  <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier NotForSale" Name="Courtesan Sword" Level="57" Strength="0" Dexterity="190" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/RapierM2">
     <Implicit>
       <Stat Name="#% chance to cause Bleeding on Hit" From="15" To="15" />
     </Implicit>
@@ -539,7 +539,7 @@
       <Stat Name="Weapon Range" From="12" To="12" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier" Name="Dragoon Sword" Level="72" Strength="0" Dexterity="220" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/RapierM3">
+  <ItemBase ItemClass="ThrustingOneHandSword" Tags="Weapon OneHand OneHandWeapon Sword Rapier NotForSale" Name="Dragoon Sword" Level="72" Strength="0" Dexterity="220" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandThrustingSwords/RapierM3">
     <Implicit>
       <Stat Name="#% chance to cause Bleeding on Hit" From="20" To="20" />
     </Implicit>
@@ -622,7 +622,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Etched Hatchet" Level="35" Strength="93" Dexterity="43" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxeM1">
+  <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe NotForSale" Name="Etched Hatchet" Level="35" Strength="93" Dexterity="43" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxeM1">
     <Implicit>
       <Stat Name="#% increased Physical Damage" From="8" To="8" />
     </Implicit>
@@ -696,7 +696,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Engraved Hatchet" Level="56" Strength="143" Dexterity="66" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxeM2">
+  <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe NotForSale" Name="Engraved Hatchet" Level="56" Strength="143" Dexterity="66" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxeM2">
     <Implicit>
       <Stat Name="#% increased Physical Damage" From="8" To="8" />
     </Implicit>
@@ -770,7 +770,7 @@
       <Stat Name="Weapon Range" From="5" To="5" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe" Name="Runic Hatchet" Level="71" Strength="163" Dexterity="82" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxeM3">
+  <ItemBase ItemClass="OneHandAxe" Tags="Weapon OneHand OneHandWeapon Axe NotForSale" Name="Runic Hatchet" Level="71" Strength="163" Dexterity="82" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandAxes/OneHandAxeM3">
     <Implicit>
       <Stat Name="#% increased Physical Damage" From="12" To="12" />
     </Implicit>
@@ -869,7 +869,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Wyrm Mace" Level="34" Strength="118" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMaceM1">
+  <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace NotForSale" Name="Wyrm Mace" Level="34" Strength="118" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMaceM1">
     <Implicit>
       <Stat Name="#% increased Attack Speed" From="4" To="4" />
     </Implicit>
@@ -957,7 +957,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Dragon Mace" Level="55" Strength="184" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMaceM2">
+  <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace NotForSale" Name="Dragon Mace" Level="55" Strength="184" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMaceM2">
     <Implicit>
       <Stat Name="#% increased Attack Speed" From="4" To="4" />
     </Implicit>
@@ -1045,7 +1045,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace" Name="Behemoth Mace" Level="70" Strength="220" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMaceM3">
+  <ItemBase ItemClass="OneHandMace" Tags="Weapon OneHand OneHandWeapon Mace NotForSale" Name="Behemoth Mace" Level="70" Strength="220" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/OneHandMaceM3">
     <Implicit>
       <Stat Name="#% increased Attack Speed" From="6" To="6" />
     </Implicit>
@@ -1155,7 +1155,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Horned Sceptre" Level="36" Strength="66" Dexterity="0" Intelligence="66" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/SceptreM1">
+  <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre NotForSale" Name="Horned Sceptre" Level="36" Strength="66" Dexterity="0" Intelligence="66" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/SceptreM1">
     <Implicit>
       <Stat Name="Damage Penetrates #% Elemental Resistances" From="4" To="4" />
     </Implicit>
@@ -1232,7 +1232,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Stag Sceptre" Level="55" Strength="98" Dexterity="0" Intelligence="98" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/SceptreM2">
+  <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre NotForSale" Name="Stag Sceptre" Level="55" Strength="98" Dexterity="0" Intelligence="98" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/SceptreM2">
     <Implicit>
       <Stat Name="Damage Penetrates #% Elemental Resistances" From="4" To="4" />
     </Implicit>
@@ -1320,7 +1320,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre" Name="Sambar Sceptre" Level="70" Strength="121" Dexterity="0" Intelligence="113" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/SceptreM3">
+  <ItemBase ItemClass="Sceptre" Tags="Weapon OneHand OneHandWeapon Sceptre NotForSale" Name="Sambar Sceptre" Level="70" Strength="121" Dexterity="0" Intelligence="113" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/SceptreM3">
     <Implicit>
       <Stat Name="Damage Penetrates #% Elemental Resistances" From="6" To="6" />
     </Implicit>
@@ -1430,7 +1430,7 @@
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Prong Dagger" Level="36" Strength="0" Dexterity="55" Intelligence="77" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/DaggerM1">
+  <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger NotForSale" Name="Prong Dagger" Level="36" Strength="0" Dexterity="55" Intelligence="77" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/DaggerM1">
     <Implicit>
       <Stat Name="#% Chance to Block" From="4" To="4" />
     </Implicit>
@@ -1507,7 +1507,7 @@
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Trisula" Level="55" Strength="0" Dexterity="89" Intelligence="106" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/DaggerM2">
+  <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger NotForSale" Name="Trisula" Level="55" Strength="0" Dexterity="89" Intelligence="106" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/DaggerM2">
     <Implicit>
       <Stat Name="#% Chance to Block" From="4" To="4" />
     </Implicit>
@@ -1595,7 +1595,7 @@
       <Stat Name="Weapon Range" From="8" To="8" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger" Name="Sai" Level="70" Strength="0" Dexterity="121" Intelligence="121" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/DaggerM3">
+  <ItemBase ItemClass="Dagger" Tags="Weapon OneHand OneHandWeapon Dagger NotForSale" Name="Sai" Level="70" Strength="0" Dexterity="121" Intelligence="121" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Daggers/DaggerM3">
     <Implicit>
       <Stat Name="#% Chance to Block" From="6" To="6" />
     </Implicit>
@@ -1694,7 +1694,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Double Claw" Level="36" Strength="0" Dexterity="67" Intelligence="67" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/ClawM1">
+  <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw NotForSale" Name="Double Claw" Level="36" Strength="0" Dexterity="67" Intelligence="67" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/ClawM1">
     <Implicit>
       <Stat Name="+# Life gained for each Enemy hit by Attacks&lt;br /&gt;+# Mana gained for each Enemy hit by Attacks" From="15 6" To="15 6" />
     </Implicit>
@@ -1782,7 +1782,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Twin Claw" Level="57" Strength="0" Dexterity="103" Intelligence="103" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/ClawM2">
+  <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw NotForSale" Name="Twin Claw" Level="57" Strength="0" Dexterity="103" Intelligence="103" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/ClawM2">
     <Implicit>
       <Stat Name="+# Life gained for each Enemy hit by Attacks&lt;br /&gt;+# Mana gained for each Enemy hit by Attacks" From="28 10" To="28 10" />
     </Implicit>
@@ -1870,7 +1870,7 @@
       <Stat Name="Weapon Range" From="9" To="9" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw" Name="Gemini Claw" Level="72" Strength="0" Dexterity="121" Intelligence="121" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/ClawM3">
+  <ItemBase ItemClass="Claw" Tags="Weapon OneHand OneHandWeapon Claw NotForSale" Name="Gemini Claw" Level="72" Strength="0" Dexterity="121" Intelligence="121" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Claws/ClawM3">
     <Implicit>
       <Stat Name="+# Life gained for each Enemy hit by Attacks&lt;br /&gt;+# Mana gained for each Enemy hit by Attacks" From="38 14" To="38 14" />
     </Implicit>
@@ -1947,7 +1947,7 @@
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Wand" Tags="Weapon OneHand Ranged OneHandWeapon Wand" Name="Pagan Wand" Level="34" Strength="0" Dexterity="0" Intelligence="118" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Wands/WandM1">
+  <ItemBase ItemClass="Wand" Tags="Weapon OneHand Ranged OneHandWeapon Wand NotForSale" Name="Pagan Wand" Level="34" Strength="0" Dexterity="0" Intelligence="118" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Wands/WandM1">
     <Implicit>
       <Stat Name="#% increased Cast Speed" From="10" To="10" />
     </Implicit>
@@ -2013,7 +2013,7 @@
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Wand" Tags="Weapon OneHand Ranged OneHandWeapon Wand" Name="Heathen Wand" Level="55" Strength="0" Dexterity="0" Intelligence="184" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Wands/WandM2">
+  <ItemBase ItemClass="Wand" Tags="Weapon OneHand Ranged OneHandWeapon Wand NotForSale" Name="Heathen Wand" Level="55" Strength="0" Dexterity="0" Intelligence="184" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Wands/WandM2">
     <Implicit>
       <Stat Name="#% increased Cast Speed" From="10" To="10" />
     </Implicit>
@@ -2079,7 +2079,7 @@
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Wand" Tags="Weapon OneHand Ranged OneHandWeapon Wand" Name="Profane Wand" Level="70" Strength="0" Dexterity="0" Intelligence="237" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Wands/WandM3">
+  <ItemBase ItemClass="Wand" Tags="Weapon OneHand Ranged OneHandWeapon Wand NotForSale" Name="Profane Wand" Level="70" Strength="0" Dexterity="0" Intelligence="237" InventoryHeight="3" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/OneHandWeapons/Wands/WandM3">
     <Implicit>
       <Stat Name="#% increased Cast Speed" From="14" To="14" />
     </Implicit>
@@ -2090,7 +2090,7 @@
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="FishingRod" Tags="Weapon TwoHand TwoHandWeapon FishingRod" Name="Fishing Rod" Level="1" Strength="8" Dexterity="8" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/TwoHandWeapon/FishingRods/FishingRod1">
+  <ItemBase ItemClass="FishingRod" Tags="Weapon TwoHand TwoHandWeapon FishingRod NotForSale" Name="Fishing Rod" Level="1" Strength="8" Dexterity="8" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/TwoHandWeapon/FishingRods/FishingRod1">
     <Implicit />
     <Properties>
       <Stat Name="Physical Damage" From="7" To="13" />
@@ -2099,7 +2099,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Keyblade" Level="1" Strength="8" Dexterity="8" Intelligence="0" DropDisabled="true" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSwordDev">
+  <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword NotForSale" Name="Keyblade" Level="1" Strength="8" Dexterity="8" Intelligence="0" DropDisabled="true" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSwordDev">
     <Implicit />
     <Properties>
       <Stat Name="Physical Damage" From="1" To="1" />
@@ -2185,7 +2185,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Curved Blade" Level="35" Strength="62" Dexterity="73" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSwordM1">
+  <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword NotForSale" Name="Curved Blade" Level="35" Strength="62" Dexterity="73" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSwordM1">
     <Implicit>
       <Stat Name="+#% to Global Critical Strike Multiplier" From="40" To="40" />
     </Implicit>
@@ -2262,7 +2262,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Lithe Blade" Level="56" Strength="96" Dexterity="113" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSwordM2">
+  <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword NotForSale" Name="Lithe Blade" Level="56" Strength="96" Dexterity="113" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSwordM2">
     <Implicit>
       <Stat Name="+#% to Global Critical Strike Multiplier" From="40" To="40" />
     </Implicit>
@@ -2339,7 +2339,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword" Name="Exquisite Blade" Level="70" Strength="119" Dexterity="131" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSwordM3">
+  <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword NotForSale" Name="Exquisite Blade" Level="70" Strength="119" Dexterity="131" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSwordM3">
     <Implicit>
       <Stat Name="+#% to Global Critical Strike Multiplier" From="60" To="60" />
     </Implicit>
@@ -2413,7 +2413,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Dagger Axe" Level="36" Strength="89" Dexterity="43" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxeM1">
+  <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe NotForSale" Name="Dagger Axe" Level="36" Strength="89" Dexterity="43" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxeM1">
     <Implicit>
       <Stat Name="#% increased Critical Strike Chance" From="50" To="50" />
     </Implicit>
@@ -2487,7 +2487,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Talon Axe" Level="59" Strength="140" Dexterity="67" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxeM2">
+  <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe NotForSale" Name="Talon Axe" Level="59" Strength="140" Dexterity="67" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxeM2">
     <Implicit>
       <Stat Name="#% increased Critical Strike Chance" From="50" To="50" />
     </Implicit>
@@ -2543,7 +2543,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe" Name="Fleshripper" Level="70" Strength="156" Dexterity="84" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxeM3">
+  <ItemBase ItemClass="TwoHandAxe" Tags="Weapon TwoHand TwoHandWeapon Axe NotForSale" Name="Fleshripper" Level="70" Strength="156" Dexterity="84" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandAxes/TwoHandAxeM3">
     <Implicit>
       <Stat Name="#% increased Critical Strike Chance" From="50" To="50" />
     </Implicit>
@@ -2631,7 +2631,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Morning Star" Level="34" Strength="118" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMaceM1">
+  <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace NotForSale" Name="Morning Star" Level="34" Strength="118" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMaceM1">
     <Implicit>
       <Stat Name="#% increased Area of Effect of Area Skills" From="4" To="4" />
     </Implicit>
@@ -2708,7 +2708,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Solar Maul" Level="56" Strength="187" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMaceM2">
+  <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace NotForSale" Name="Solar Maul" Level="56" Strength="187" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMaceM2">
     <Implicit>
       <Stat Name="#% increased Area of Effect of Area Skills" From="4" To="4" />
     </Implicit>
@@ -2785,7 +2785,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace" Name="Coronal Maul" Level="69" Strength="220" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMaceM3">
+  <ItemBase ItemClass="TwoHandMace" Tags="Weapon TwoHand TwoHandWeapon Mace NotForSale" Name="Coronal Maul" Level="69" Strength="220" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandMaces/TwoHandMaceM3">
     <Implicit>
       <Stat Name="#% increased Area of Effect of Area Skills" From="6" To="6" />
     </Implicit>
@@ -2881,7 +2881,7 @@
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Bow" Tags="Weapon TwoHand Ranged TwoHandWeapon Bow" Name="Reflex Bow" Level="36" Strength="0" Dexterity="124" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Bows/BowM1">
+  <ItemBase ItemClass="Bow" Tags="Weapon TwoHand Ranged TwoHandWeapon Bow NotForSale" Name="Reflex Bow" Level="36" Strength="0" Dexterity="124" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Bows/BowM1">
     <Implicit>
       <Stat Name="#% increased Movement Speed" From="4" To="4" />
     </Implicit>
@@ -2959,7 +2959,7 @@
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Bow" Tags="Weapon TwoHand Ranged TwoHandWeapon Bow" Name="Steelwood Bow" Level="57" Strength="0" Dexterity="190" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Bows/BowM2">
+  <ItemBase ItemClass="Bow" Tags="Weapon TwoHand Ranged TwoHandWeapon Bow NotForSale" Name="Steelwood Bow" Level="57" Strength="0" Dexterity="190" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Bows/BowM2">
     <Implicit>
       <Stat Name="#% increased Movement Speed" From="4" To="4" />
     </Implicit>
@@ -3028,7 +3028,7 @@
       <Stat Name="Weapon Range" From="120" To="120" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Bow" Tags="Weapon TwoHand Ranged TwoHandWeapon Bow" Name="Maraketh Bow" Level="71" Strength="0" Dexterity="222" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Bows/BowM3">
+  <ItemBase ItemClass="Bow" Tags="Weapon TwoHand Ranged TwoHandWeapon Bow NotForSale" Name="Maraketh Bow" Level="71" Strength="0" Dexterity="222" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Bows/BowM3">
     <Implicit>
       <Stat Name="#% increased Movement Speed" From="6" To="6" />
     </Implicit>
@@ -3116,7 +3116,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Crescent Staff" Level="36" Strength="66" Dexterity="0" Intelligence="66" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/StaffM1">
+  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff NotForSale" Name="Crescent Staff" Level="36" Strength="66" Dexterity="0" Intelligence="66" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/StaffM1">
     <Implicit>
       <Stat Name="#% increased Global Critical Strike Chance" From="80" To="80" />
     </Implicit>
@@ -3193,7 +3193,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Moon Staff" Level="57" Strength="101" Dexterity="0" Intelligence="101" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/StaffM2">
+  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff NotForSale" Name="Moon Staff" Level="57" Strength="101" Dexterity="0" Intelligence="101" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/StaffM2">
     <Implicit>
       <Stat Name="#% increased Global Critical Strike Chance" From="80" To="80" />
     </Implicit>
@@ -3270,7 +3270,7 @@
       <Stat Name="Weapon Range" From="11" To="11" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff" Name="Eclipse Staff" Level="70" Strength="117" Dexterity="0" Intelligence="117" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/StaffM3">
+  <ItemBase ItemClass="Staff" Tags="Weapon TwoHand TwoHandWeapon Staff NotForSale" Name="Eclipse Staff" Level="70" Strength="117" Dexterity="0" Intelligence="117" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/StaffM3">
     <Implicit>
       <Stat Name="#% increased Global Critical Strike Chance" From="100" To="100" />
     </Implicit>
@@ -3287,7 +3287,7 @@
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Belt" Tags="Belt" Name="Golden Obi" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="2" MetadataId="Metadata/Items/Belts/BeltDemigods1">
+  <ItemBase ItemClass="Belt" Tags="Belt NotForSale" Name="Golden Obi" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="2" MetadataId="Metadata/Items/Belts/BeltDemigods1">
     <Implicit>
       <Stat Name="#% increased Rarity of Items found" From="20" To="30" />
     </Implicit>
@@ -3323,19 +3323,19 @@
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Belt" Tags="Belt" Name="Vanguard Belt" Level="78" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="2" MetadataId="Metadata/Items/Belts/BeltAtlas1">
+  <ItemBase ItemClass="Belt" Tags="Belt NotForSale" Name="Vanguard Belt" Level="78" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="2" MetadataId="Metadata/Items/Belts/BeltAtlas1">
     <Implicit>
       <Stat Name="+# to Armour and Evasion Rating" From="260" To="320" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Belt" Tags="Belt" Name="Crystal Belt" Level="79" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="2" MetadataId="Metadata/Items/Belts/BeltAtlas2">
+  <ItemBase ItemClass="Belt" Tags="Belt NotForSale" Name="Crystal Belt" Level="79" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="2" MetadataId="Metadata/Items/Belts/BeltAtlas2">
     <Implicit>
       <Stat Name="+# to maximum Energy Shield" From="60" To="80" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Ring" Tags="Ring" Name="Breach Ring" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Rings/BreachRing">
+  <ItemBase ItemClass="Ring" Tags="Ring NotForSale" Name="Breach Ring" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Rings/BreachRing">
     <Implicit>
       <Stat Name="Properties are doubled while in a Breach" From="" To="" />
     </Implicit>
@@ -3353,7 +3353,7 @@
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Ring" Tags="Ring" Name="Jet Ring" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Rings/RingVictor1">
+  <ItemBase ItemClass="Ring" Tags="Ring NotForSale" Name="Jet Ring" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Rings/RingVictor1">
     <Implicit>
       <Stat Name="#% increased Global Defences" From="5" To="10" />
     </Implicit>
@@ -3377,7 +3377,7 @@
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Ring" Tags="Ring" Name="Golden Hoop" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Rings/RingDemigods1">
+  <ItemBase ItemClass="Ring" Tags="Ring NotForSale" Name="Golden Hoop" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Rings/RingDemigods1">
     <Implicit>
       <Stat Name="+# to all Attributes" From="8" To="12" />
     </Implicit>
@@ -3443,13 +3443,13 @@
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Ring" Tags="Ring" Name="Opal Ring" Level="80" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Rings/RingAtlas2">
+  <ItemBase ItemClass="Ring" Tags="Ring NotForSale" Name="Opal Ring" Level="80" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Rings/RingAtlas2">
     <Implicit>
       <Stat Name="#% increased Elemental Damage" From="15" To="25" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Ring" Tags="Ring" Name="Steel Ring" Level="80" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Rings/RingAtlas1">
+  <ItemBase ItemClass="Ring" Tags="Ring NotForSale" Name="Steel Ring" Level="80" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Rings/RingAtlas1">
     <Implicit>
       <Stat Name="Adds # to # Physical Damage to Attacks" From="3 10" To="4 14" />
     </Implicit>
@@ -3635,7 +3635,7 @@
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Amulet" Tags="Amulet" Name="Ruby Amulet" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Amulet11">
+  <ItemBase ItemClass="Amulet" Tags="Amulet NotForSale" Name="Ruby Amulet" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulets/Amulet11">
     <Implicit>
       <Stat Name="+#% to Fire Resistance" From="20" To="30" />
     </Implicit>
@@ -3707,7 +3707,7 @@
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Amulet" Tags="Amulet" Name="Jet Amulet" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulet/AmuletVictor1">
+  <ItemBase ItemClass="Amulet" Tags="Amulet NotForSale" Name="Jet Amulet" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulet/AmuletVictor1">
     <Implicit>
       <Stat Name="+#% to all Elemental Resistances" From="8" To="12" />
     </Implicit>
@@ -3737,13 +3737,13 @@
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Amulet" Tags="Amulet" Name="Marble Amulet" Level="74" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulet/AmuletAtlas2">
+  <ItemBase ItemClass="Amulet" Tags="Amulet NotForSale" Name="Marble Amulet" Level="74" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulet/AmuletAtlas2">
     <Implicit>
       <Stat Name="#% of Life Regenerated per second" From="1.2" To="1.6" />
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Amulet" Tags="Amulet" Name="Blue Pearl Amulet" Level="77" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulet/AmuletAtlas1">
+  <ItemBase ItemClass="Amulet" Tags="Amulet NotForSale" Name="Blue Pearl Amulet" Level="77" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulet/AmuletAtlas1">
     <Implicit>
       <Stat Name="#% increased Mana Regeneration Rate" From="48" To="56" />
     </Implicit>
@@ -3767,7 +3767,7 @@
     </Implicit>
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Quiver" Tags="Quiver" Name="Serrated Arrow Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/QuiverDescent">
+  <ItemBase ItemClass="Quiver" Tags="Quiver NotForSale" Name="Serrated Arrow Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/QuiverDescent">
     <Implicit>
       <Stat Name="Adds # to # Physical Damage to Attacks with Bows" From="1 4" To="1 4" />
     </Implicit>
@@ -3851,7 +3851,7 @@
       <Stat Name="Evasion Rating" From="10" To="10" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Twig Spirit Shield" Level="3" Strength="0" Dexterity="0" Intelligence="15" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt1">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Twig Spirit Shield" Level="3" Strength="0" Dexterity="0" Intelligence="15" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt1">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="10" To="10" />
@@ -3912,7 +3912,7 @@
       <Stat Name="Evasion Rating" From="38" To="38" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Yew Spirit Shield" Level="9" Strength="0" Dexterity="0" Intelligence="28" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt2">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Yew Spirit Shield" Level="9" Strength="0" Dexterity="0" Intelligence="28" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt2">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
@@ -3964,7 +3964,7 @@
       <Stat Name="Energy Shield" From="12" To="12" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Bone Spirit Shield" Level="15" Strength="0" Dexterity="0" Intelligence="42" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt3">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Bone Spirit Shield" Level="15" Strength="0" Dexterity="0" Intelligence="42" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt3">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="15" To="15" />
@@ -3974,7 +3974,7 @@
       <Stat Name="Energy Shield" From="17" To="17" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield" Name="Golden Flame" Level="15" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDemigods">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield NotForSale" Name="Golden Flame" Level="15" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDemigods">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="+#% to Chaos Resistance" From="11" To="19" />
@@ -4042,7 +4042,7 @@
       <Stat Name="Evasion Rating" From="84" To="84" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Tarnished Spirit Shield" Level="23" Strength="0" Dexterity="0" Intelligence="60" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt4">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Tarnished Spirit Shield" Level="23" Strength="0" Dexterity="0" Intelligence="60" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt4">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
@@ -4093,7 +4093,7 @@
       <Stat Name="Evasion Rating" From="75" To="75" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Jingling Spirit Shield" Level="28" Strength="0" Dexterity="0" Intelligence="71" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt5">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Jingling Spirit Shield" Level="28" Strength="0" Dexterity="0" Intelligence="71" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt5">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="10" To="10" />
@@ -4121,7 +4121,7 @@
       <Stat Name="Armour" From="249" To="249" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Brass Spirit Shield" Level="33" Strength="0" Dexterity="0" Intelligence="82" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt6">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Brass Spirit Shield" Level="33" Strength="0" Dexterity="0" Intelligence="82" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt6">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
@@ -4181,7 +4181,7 @@
       <Stat Name="Armour" From="189" To="189" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Walnut Spirit Shield" Level="37" Strength="0" Dexterity="0" Intelligence="92" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt7">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Walnut Spirit Shield" Level="37" Strength="0" Dexterity="0" Intelligence="92" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt7">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
@@ -4242,7 +4242,7 @@
       <Stat Name="Energy Shield" From="33" To="33" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Ivory Spirit Shield" Level="41" Strength="0" Dexterity="0" Intelligence="100" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt8">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Ivory Spirit Shield" Level="41" Strength="0" Dexterity="0" Intelligence="100" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt8">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="15" To="15" />
@@ -4270,7 +4270,7 @@
       <Stat Name="Armour" From="231" To="231" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Ancient Spirit Shield" Level="45" Strength="0" Dexterity="0" Intelligence="110" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt9">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Ancient Spirit Shield" Level="45" Strength="0" Dexterity="0" Intelligence="110" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt9">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
@@ -4330,7 +4330,7 @@
       <Stat Name="Armour" From="319" To="319" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Chiming Spirit Shield" Level="49" Strength="0" Dexterity="0" Intelligence="118" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt10">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Chiming Spirit Shield" Level="49" Strength="0" Dexterity="0" Intelligence="118" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt10">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="10" To="10" />
@@ -4390,7 +4390,7 @@
       <Stat Name="Armour" From="418" To="418" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Thorium Spirit Shield" Level="53" Strength="0" Dexterity="0" Intelligence="128" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt11">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Thorium Spirit Shield" Level="53" Strength="0" Dexterity="0" Intelligence="128" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt11">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
@@ -4450,7 +4450,7 @@
       <Stat Name="Armour" From="294" To="294" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Lacewood Spirit Shield" Level="56" Strength="0" Dexterity="0" Intelligence="134" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt12">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Lacewood Spirit Shield" Level="56" Strength="0" Dexterity="0" Intelligence="134" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt12">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
@@ -4511,7 +4511,7 @@
       <Stat Name="Energy Shield" From="47" To="47" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Fossilised Spirit Shield" Level="59" Strength="0" Dexterity="0" Intelligence="141" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt13">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Fossilised Spirit Shield" Level="59" Strength="0" Dexterity="0" Intelligence="141" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt13">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="15" To="15" />
@@ -4571,7 +4571,7 @@
       <Stat Name="Evasion Rating" From="134" To="134" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Vaal Spirit Shield" Level="62" Strength="0" Dexterity="0" Intelligence="159" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt14">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Vaal Spirit Shield" Level="62" Strength="0" Dexterity="0" Intelligence="159" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt14">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="5" To="5" />
@@ -4599,7 +4599,7 @@
       <Stat Name="Armour" From="454" To="454" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Harmonic Spirit Shield" Level="65" Strength="0" Dexterity="0" Intelligence="159" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt15">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Harmonic Spirit Shield" Level="65" Strength="0" Dexterity="0" Intelligence="159" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt15">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
       <Stat Name="#% increased Spell Damage" From="10" To="10" />
@@ -4670,7 +4670,7 @@
       <Stat Name="Energy Shield" From="40" To="40" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Titanium Spirit Shield" Level="68" Strength="0" Dexterity="0" Intelligence="159" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt16">
+  <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour Focus" Name="Titanium Spirit Shield" Level="68" Strength="0" Dexterity="0" Intelligence="159" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt16">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
@@ -4719,7 +4719,7 @@
       <Stat Name="Energy Shield" From="62" To="62" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Boots" Tags="Armour Boots" Name="Avian Slippers" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Boots/BootsDescent1">
+  <ItemBase ItemClass="Boots" Tags="Armour Boots NotForSale" Name="Avian Slippers" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Boots/BootsDescent1">
     <Implicit>
       <Stat Name="#% increased Movement Speed" From="10" To="10" />
     </Implicit>
@@ -4782,7 +4782,7 @@
       <Stat Name="Evasion Rating" From="36" To="36" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Boots" Tags="Armour Boots" Name="Golden Caligae" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Boots/BootsDemigods1">
+  <ItemBase ItemClass="Boots" Tags="Armour Boots NotForSale" Name="Golden Caligae" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Boots/BootsDemigods1">
     <Implicit>
       <Stat Name="+#% to all Elemental Resistances" From="8" To="16" />
     </Implicit>
@@ -5068,7 +5068,7 @@
       <Stat Name="Evasion Rating" From="214" To="214" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Boots" Tags="Armour Boots" Name="Two-Toned Boots" Level="72" Strength="0" Dexterity="62" Intelligence="62" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Boots/BootsAtlas1">
+  <ItemBase ItemClass="Boots" Tags="Armour Boots NotForSale" Name="Two-Toned Boots" Level="72" Strength="0" Dexterity="62" Intelligence="62" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Boots/BootsAtlas1">
     <Implicit>
       <Stat Name="+#% to Cold and Lightning Resistances" From="15" To="20" />
     </Implicit>
@@ -5077,7 +5077,7 @@
       <Stat Name="Energy Shield" From="32" To="32" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Boots" Tags="Armour Boots" Name="Two-Toned Boots" Level="72" Strength="62" Dexterity="62" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Boots/BootsAtlas2">
+  <ItemBase ItemClass="Boots" Tags="Armour Boots NotForSale" Name="Two-Toned Boots" Level="72" Strength="62" Dexterity="62" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Boots/BootsAtlas2">
     <Implicit>
       <Stat Name="+#% to Fire and Cold Resistances" From="15" To="20" />
     </Implicit>
@@ -5086,7 +5086,7 @@
       <Stat Name="Evasion Rating" From="109" To="109" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Boots" Tags="Armour Boots" Name="Two-Toned Boots" Level="72" Strength="62" Dexterity="0" Intelligence="62" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Boots/BootsAtlas3">
+  <ItemBase ItemClass="Boots" Tags="Armour Boots NotForSale" Name="Two-Toned Boots" Level="72" Strength="62" Dexterity="0" Intelligence="62" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Boots/BootsAtlas3">
     <Implicit>
       <Stat Name="+#% to Fire and Lightning Resistances" From="15" To="20" />
     </Implicit>
@@ -5248,7 +5248,7 @@
       <Stat Name="Energy Shield" From="41" To="41" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexIntArmour" Name="Golden Mantle" Level="20" Strength="8" Dexterity="8" Intelligence="8" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDemigods1">
+  <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexIntArmour NotForSale" Name="Golden Mantle" Level="20" Strength="8" Dexterity="8" Intelligence="8" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDemigods1">
     <Implicit>
       <Stat Name="+#% to all Elemental Resistances" From="15" To="25" />
     </Implicit>
@@ -5973,7 +5973,7 @@
       <Stat Name="Energy Shield" From="105" To="105" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexIntArmour" Name="Sacrificial Garb" Level="72" Strength="66" Dexterity="66" Intelligence="66" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDexInt1">
+  <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexIntArmour NotForSale" Name="Sacrificial Garb" Level="72" Strength="66" Dexterity="66" Intelligence="66" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDexInt1">
     <Implicit>
       <Stat Name="#% reduced Movement Speed (Hidden)" From="3" To="3" />
     </Implicit>
@@ -6034,7 +6034,7 @@
       <Stat Name="Armour" From="34" To="34" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Gloves" Tags="Armour Gloves" Name="Golden Bracers" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Gloves/GlovesDemigods1">
+  <ItemBase ItemClass="Gloves" Tags="Armour Gloves NotForSale" Name="Golden Bracers" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Gloves/GlovesDemigods1">
     <Implicit>
       <Stat Name="+# to maximum Life" From="20" To="30" />
     </Implicit>
@@ -6319,7 +6319,7 @@
       <Stat Name="Evasion Rating" From="210" To="210" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Gloves" Tags="Armour Gloves" Name="Fingerless Silk Gloves" Level="73" Strength="0" Dexterity="0" Intelligence="95" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Gloves/GlovesAtlasInt">
+  <ItemBase ItemClass="Gloves" Tags="Armour Gloves NotForSale" Name="Fingerless Silk Gloves" Level="73" Strength="0" Dexterity="0" Intelligence="95" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Gloves/GlovesAtlasInt">
     <Implicit>
       <Stat Name="#% increased Spell Damage" From="12" To="16" />
     </Implicit>
@@ -6327,7 +6327,7 @@
       <Stat Name="Energy Shield" From="56" To="56" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Gloves" Tags="Armour Gloves" Name="Gripped Gloves" Level="73" Strength="0" Dexterity="95" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Gloves/GlovesAtlasDex">
+  <ItemBase ItemClass="Gloves" Tags="Armour Gloves NotForSale" Name="Gripped Gloves" Level="73" Strength="0" Dexterity="95" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Gloves/GlovesAtlasDex">
     <Implicit>
       <Stat Name="#% increased Projectile Attack Damage" From="14" To="18" />
     </Implicit>
@@ -6335,7 +6335,7 @@
       <Stat Name="Evasion Rating" From="191" To="191" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Gloves" Tags="Armour Gloves" Name="Spiked Gloves" Level="73" Strength="95" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Gloves/GlovesAtlasStr">
+  <ItemBase ItemClass="Gloves" Tags="Armour Gloves NotForSale" Name="Spiked Gloves" Level="73" Strength="95" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Gloves/GlovesAtlasStr">
     <Implicit>
       <Stat Name="#% increased Melee Damage" From="16" To="20" />
     </Implicit>
@@ -6407,7 +6407,7 @@
       <Stat Name="Evasion Rating" From="46" To="46" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Helmet" Tags="Armour Helmet" Name="Golden Wreath" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Helmets/HelmetWreath1">
+  <ItemBase ItemClass="Helmet" Tags="Armour Helmet NotForSale" Name="Golden Wreath" Level="12" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Helmets/HelmetWreath1">
     <Implicit>
       <Stat Name="+# to all Attributes" From="16" To="24" />
     </Implicit>
@@ -6758,7 +6758,7 @@
       <Stat Name="Evasion Rating" From="331" To="331" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Helmet" Tags="Armour Helmet" Name="Bone Helmet" Level="75" Strength="76" Dexterity="0" Intelligence="76" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Helmets/HelmetAtlas1">
+  <ItemBase ItemClass="Helmet" Tags="Armour Helmet NotForSale" Name="Bone Helmet" Level="75" Strength="76" Dexterity="0" Intelligence="76" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Helmets/HelmetAtlas1">
     <Implicit>
       <Stat Name="Minions deal #% increased Damage" From="30" To="40" />
     </Implicit>
@@ -6767,19 +6767,19 @@
       <Stat Name="Energy Shield" From="50" To="50" />
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="Jewel" Tags="Jewel IntJewel NotStr NotDex" Name="Cobalt Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelInt">
+  <ItemBase ItemClass="Jewel" Tags="Jewel IntJewel NotStr NotDex NotForSale" Name="Cobalt Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelInt">
     <Implicit />
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Jewel" Tags="Jewel StrJewel NotDex NotInt" Name="Crimson Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelStr">
+  <ItemBase ItemClass="Jewel" Tags="Jewel StrJewel NotDex NotInt NotForSale" Name="Crimson Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelStr">
     <Implicit />
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Jewel" Tags="Jewel StrJewel DexJewel IntJewel" Name="Prismatic Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelPrismatic">
+  <ItemBase ItemClass="Jewel" Tags="Jewel StrJewel DexJewel IntJewel NotForSale" Name="Prismatic Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelPrismatic">
     <Implicit />
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="Jewel" Tags="Jewel DexJewel NotStr NotInt" Name="Viridian Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelDex">
+  <ItemBase ItemClass="Jewel" Tags="Jewel DexJewel NotStr NotInt NotForSale" Name="Viridian Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelDex">
     <Implicit />
     <Properties />
   </ItemBase>
