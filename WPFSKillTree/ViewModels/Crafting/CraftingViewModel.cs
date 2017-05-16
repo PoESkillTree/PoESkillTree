@@ -3,9 +3,10 @@ using System.ComponentModel;
 using System.Linq;
 using MoreLinq;
 using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils.Wpf;
+using Affix = POESKillTree.Model.Items.Affixes.Affix;
 
 namespace POESKillTree.ViewModels.Crafting
 {
@@ -39,7 +40,7 @@ namespace POESKillTree.ViewModels.Crafting
 
         public CraftingViewModel(EquipmentData equipmentData)
             : base(equipmentData,
-                equipmentData.ItemBases.Where(b => equipmentData.AffixesPerItemType.ContainsKey(b.ItemType)))
+                null)// todo equipmentData.ItemBases.Where(b => equipmentData.AffixesPerItemType.ContainsKey(b.ItemType)))
         {
             MsPrefix.ForEach(ms => ms.PropertyChanged += MsPrefixOnPropertyChanged);
             MsSuffix.ForEach(ms => ms.PropertyChanged += MsSuffixOnPropertyChanged);
@@ -49,7 +50,7 @@ namespace POESKillTree.ViewModels.Crafting
 
         protected override void UpdateBaseSpecific()
         {
-            var aaff = EquipmentData.AffixesPerItemType[Item.ItemType];
+            List<Affix> aaff = null;// todo EquipmentData.AffixesPerItemType[Item.ItemType];
 
             _prefixes = aaff.Where(a => a.ModType == ModType.Prefix).ToList();
             _suffixes = aaff.Where(a => a.ModType == ModType.Suffix).ToList();

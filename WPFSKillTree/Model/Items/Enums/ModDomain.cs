@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Model.Items.Mods
+﻿namespace POESKillTree.Model.Items.Enums
 {
     public enum ModDomain
     {

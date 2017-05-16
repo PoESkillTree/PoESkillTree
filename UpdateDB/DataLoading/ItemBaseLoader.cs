@@ -150,7 +150,7 @@ namespace UpdateDB.DataLoading
         {
             // name, requirements and implicts; same for all categories
             var implicits = PluralValue<string>(printouts, RdfImplicits)
-                .SelectMany(WikiStatTextUtils.ConvertStatText).ToArray();
+                .Select(s => new XmlMod {Id = s}).ToArray();
             var item = new XmlItemBase
             {
                 Level = SingularValue<int>(printouts, RdfLvlReq),

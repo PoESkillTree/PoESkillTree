@@ -97,7 +97,7 @@ namespace UpdateDB.DataLoading
         private static XmlUnique PrintoutsToUnique(JToken printouts)
         {
             var explicits = PluralValue<string>(printouts, RdfExplicits)
-                .SelectMany(WikiStatTextUtils.ConvertStatText).ToArray();
+                .Select(s => new XmlMod { Id = s }).ToArray();
             var properties = new PropertyBuilder(printouts);
             if (printouts[RdfItemLimit]?.HasValues == true)
             {

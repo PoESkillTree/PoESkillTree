@@ -91,7 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataLoaderExecuter.cs" />
-    <Compile Include="DataLoading\AffixDataLoader.cs" />
     <Compile Include="DataLoading\DataLoader.cs" />
     <Compile Include="DataLoading\GemLoader.cs" />
     <Compile Include="DataLoading\ItemBaseLoader.cs" />
@@ -99,7 +98,6 @@
     <Compile Include="DataLoading\PropertyBuilder.cs" />
     <Compile Include="DataLoading\SkillTreeLoader.cs" />
     <Compile Include="DataLoading\UniqueLoader.cs" />
-    <Compile Include="DataLoading\WikiStatTextUtils.cs" />
     <Compile Include="DataLoading\XmlDataLoader.cs" />
     <Compile Include="IArguments.cs" />
     <Compile Include="Program.cs" />

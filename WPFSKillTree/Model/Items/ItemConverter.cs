@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
-using POESKillTree.Model.Items.Affixes;
+using POESKillTree.Model.Items.Mods;
 
 namespace POESKillTree.Model.Items
 {
@@ -64,7 +64,7 @@ namespace POESKillTree.Model.Items
             int from = 0;
             string istring;
             Run r;
-            for (int i = 0; i < matches.Length && i < mod.Value.Count; i++)
+            for (int i = 0; i < matches.Length && i < mod.Values.Count; i++)
             {
                 var m = matches[i];
                 istring = mod.Attribute.Substring(from, m.Index - from);
@@ -86,7 +86,7 @@ namespace POESKillTree.Model.Items
 
                 inlines.Add(r);
 
-                r = new Run(prefix + mod.Value[i].ToString("###0.##"));
+                r = new Run(prefix + mod.Values[i].ToString("###0.##"));
                 if (parameter != null)
                     r.Foreground = clr;
 
@@ -107,8 +107,8 @@ namespace POESKillTree.Model.Items
 
         private static SolidColorBrush GetColoringFor(ItemMod mod, int i)
         {
-            if (mod.ValueColor.Count > i && i >= 0)
-                switch (mod.ValueColor[i])
+            if (mod.ValueColors.Count > i && i >= 0)
+                switch (mod.ValueColors[i])
                 {
                     case ItemMod.ValueColoring.LocallyAffected:
                         return LocallyAffectedColor;

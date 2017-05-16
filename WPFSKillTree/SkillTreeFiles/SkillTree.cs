@@ -411,7 +411,7 @@ namespace POESKillTree.SkillTreeFiles
                     }
 
                     //populate the Attributes fields with parsed attributes 
-                    skillnode.Value.Attributes = new Dictionary<string, List<float>>();
+                    skillnode.Value.Attributes = new Dictionary<string, IReadOnlyList<float>>();
                     foreach (string s in skillnode.Value.attributes)
                     {
                         var values = new List<float>();
@@ -1374,19 +1374,19 @@ namespace POESKillTree.SkillTreeFiles
             return availNodes;
         }
 
-        public static IEnumerable<KeyValuePair<string, List<float>>> ExpandHybridAttributes(Dictionary<string, List<float>> attributes)
+        public static IEnumerable<KeyValuePair<string, IReadOnlyList<float>>> ExpandHybridAttributes(Dictionary<string, IReadOnlyList<float>> attributes)
         {
             return attributes.SelectMany(ExpandHybridAttributes);
         }
 
-        public static IEnumerable<KeyValuePair<string, List<float>>> ExpandHybridAttributes(KeyValuePair<string, List<float>> attribute)
+        public static IEnumerable<KeyValuePair<string, IReadOnlyList<float>>> ExpandHybridAttributes(KeyValuePair<string, IReadOnlyList<float>> attribute)
         {
             List<string> expandedAttributes;
             if (HybridAttributes.TryGetValue(attribute.Key, out expandedAttributes))
             {
                 foreach (var expandedAttribute in expandedAttributes)
                 {
-                    yield return new KeyValuePair<string, List<float>>(expandedAttribute, attribute.Value);
+                    yield return new KeyValuePair<string, IReadOnlyList<float>>(expandedAttribute, attribute.Value);
                 }
             }
             else

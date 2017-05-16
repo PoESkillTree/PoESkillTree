@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using POESKillTree.Model.Items.Affixes;
+using POESKillTree.Model.Items.Mods;
 
 namespace POESKillTree.Model
 {
@@ -42,12 +43,12 @@ namespace POESKillTree.Model
         {
             if (ContainsKey(itemMod.Attribute))
             {
-                if (itemMod.Value.Count > 0)
-                    for (int i = 0; i < itemMod.Value.Count; ++i)
-                        this[itemMod.Attribute][i] += itemMod.Value[i];
+                if (itemMod.Values.Count > 0)
+                    for (int i = 0; i < itemMod.Values.Count; ++i)
+                        this[itemMod.Attribute][i] += itemMod.Values[i];
             }
             else
-                Add(itemMod.Attribute, new List<float>(itemMod.Value));
+                Add(itemMod.Attribute, new List<float>(itemMod.Values));
         }
 
         // Returns new copy of this attribute set.

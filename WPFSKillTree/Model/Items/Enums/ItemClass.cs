@@ -11,9 +11,11 @@ namespace POESKillTree.Model.Items.Enums
         Any,
 
         OneHandSword,
+        // Considered a subclass of OneHandSword for gem supporting and mod application
         ThrustingOneHandSword,
         OneHandAxe,
         OneHandMace,
+        // Considered a subclass of OneHandMace for gem supporting and mod application
         Sceptre,
         Dagger,
         Claw,
@@ -97,6 +99,68 @@ namespace POESKillTree.Model.Items.Enums
         public static bool TryParse(string ggpkItemClass, out ItemClass itemClass)
         {
             return Enum.TryParse(ggpkItemClass.Replace(" ", ""), true, out itemClass);
+        }
+
+        public static ItemClass ItemClassForGem(string gemName)
+        {
+            return gemName.EndsWith(" Support") ? ItemClass.SupportSkillGem : ItemClass.ActiveSkillGem;
+        }
+
+        /// <summary>
+        /// Returns all <see cref="ItemSlot"/>s items of this class can be slotted into.
+        /// </summary>
+        public static ItemSlot ItemSlots(this ItemClass itemClass)
+        {
+            switch (itemClass)
+            {
+                case ItemClass.OneHandSword:
+                case ItemClass.ThrustingOneHandSword:
+                case ItemClass.OneHandAxe:
+                case ItemClass.OneHandMace:
+                case ItemClass.Sceptre:
+                case ItemClass.Dagger:
+                case ItemClass.Claw:
+                case ItemClass.Wand:
+                    return ItemSlot.MainHand | ItemSlot.OffHand;
+                case ItemClass.FishingRod:
+                case ItemClass.TwoHandSword:
+                case ItemClass.TwoHandAxe:
+                case ItemClass.TwoHandMace:
+                case ItemClass.Bow:
+                case ItemClass.Staff:
+                    return ItemSlot.MainHand;
+                case ItemClass.Belt:
+                    return ItemSlot.Belt;
+                case ItemClass.Ring:
+                    return ItemSlot.Ring | ItemSlot.Ring2;
+                case ItemClass.Amulet:
+                    return ItemSlot.Amulet;
+                case ItemClass.Quiver:
+                case ItemClass.Shield:
+                    return ItemSlot.OffHand;
+                case ItemClass.Boots:
+                    return ItemSlot.Boots;
+                case ItemClass.BodyArmour:
+                    return ItemSlot.BodyArmour;
+                case ItemClass.Gloves:
+                    return ItemSlot.Gloves;
+                case ItemClass.Helmet:
+                    return ItemSlot.Helm;
+                case ItemClass.ActiveSkillGem:
+                case ItemClass.SupportSkillGem:
+                    return ItemSlot.Gem;
+                case ItemClass.LifeFlask:
+                case ItemClass.ManaFlask:
+                case ItemClass.HybridFlask:
+                case ItemClass.UtilityFlask:
+                case ItemClass.CriticalUtilityFlask:
+                case ItemClass.Jewel:
+                case ItemClass.Unknown:
+                case ItemClass.Any:
+                    return ItemSlot.Unequipable;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(itemClass), itemClass, null);
+            }
         }
     }
 }

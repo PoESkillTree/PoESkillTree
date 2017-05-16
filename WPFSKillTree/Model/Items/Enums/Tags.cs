@@ -3,27 +3,6 @@ using System.ComponentModel;
 
 namespace POESKillTree.Model.Items.Enums
 {
-    /*
-     * First weapon property to item class: (if base lookup fails)
-     * - remove spaces
-     * - replace "Handed" with "Hand"
-     * - take matching class
-     * (fails for sceptres and rapiers)
-     * 
-     * Item class to first weapon property:
-     * - replace "ThrustingOneHandSword" with "OneHandSword"
-     * - replace "Sceptre" with "OneHandMace"
-     * - replace "Hand" with "Handed"
-     * - add spaces in front of each capital letter
-     * 
-     * Item class to tag and vice versa: (if base lookup fails)
-     * ItemClass.ToTags()
-     * 
-     * Item class "Thrusting One Hand Sword" is considered a subclass of "One Hand Sword"
-     * Item class "Sceptre" is considered a subclass of "One Hand Mace"
-     * (for gem supporting and modifier application purposes)
-     */
-
     // taken from the GGPK's Tags.dat
     [Flags]
     public enum Tags : ulong

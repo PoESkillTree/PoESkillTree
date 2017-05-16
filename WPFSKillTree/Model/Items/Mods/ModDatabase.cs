@@ -10,6 +10,7 @@ namespace POESKillTree.Model.Items.Mods
         private readonly IReadOnlyDictionary<string, Mod> _mods;
         private readonly IReadOnlyDictionary<ModType, IEnumerable<Affix>> _affixesByType;
 
+        public IMod this[string modId] => _mods[modId];
         public IEnumerable<Affix> this[ModType modtype] => _affixesByType[modtype];
 
         public ModDatabase(IReadOnlyDictionary<string, JsonMod> mods, IEnumerable<JsonCraftingBenchOption> benchOptions,

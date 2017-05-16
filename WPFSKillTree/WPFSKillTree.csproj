@@ -220,8 +220,10 @@
     <Compile Include="Model\Items\Mods\JsonNpcMaster.cs" />
     <Compile Include="Model\Items\Mods\Mod.cs" />
     <Compile Include="Model\Items\Mods\ModDatabase.cs" />
-    <Compile Include="Model\Items\Mods\ModDomain.cs" />
+    <Compile Include="Model\Items\Enums\ModDomain.cs" />
+    <Compile Include="Model\Items\Mods\ModSelector.cs" />
     <Compile Include="Model\Items\Mods\Stat.cs" />
+    <Compile Include="Model\Items\Mods\StatLocalityChecker.cs" />
     <Compile Include="Utils\RePoELoader.cs" />
     <Compile Include="Model\Items\StatTranslation\Format.cs" />
     <Compile Include="Model\Items\StatTranslation\IndexHandler.cs" />
@@ -362,10 +364,9 @@
     <Compile Include="Model\IMemento.cs" />
     <Compile Include="Model\IPersistentData.cs" />
     <Compile Include="Model\Items\Affixes\Affix.cs" />
-    <Compile Include="Model\Items\Affixes\ItemMod.cs" />
+    <Compile Include="Model\Items\Mods\ItemMod.cs" />
     <Compile Include="Model\Items\Affixes\ItemModTier.cs" />
     <Compile Include="Model\Items\Affixes\Stat.cs" />
-    <Compile Include="Model\Items\Affixes\XmlAffixList.cs" />
     <Compile Include="Model\Items\Enums\FrameType.cs" />
     <Compile Include="Model\Items\Enums\ItemGroup.cs" />
     <Compile Include="Model\Items\Enums\ItemSlot.cs" />
@@ -904,7 +905,6 @@
   <ItemGroup>
     <Content Include="Antlr3.Runtime.dll" />
     <Resource Include="TreeGenerator\ideas_todos.txt" />
-    <Resource Include="Data\Equipment\Affixes.xml" />
     <Resource Include="Data\Equipment\Items.xml" />
     <None Include="Data\ItemDB\GemList.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -912,7 +912,6 @@
     <None Include="Data\ItemDB\GemProperties.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Resource Include="Data\Equipment\SignatureAffixes.xml" />
     <Resource Include="Contrib\Monotone\LICENSE.txt" />
     <Resource Include="Contrib\Monotone\README.txt" />
     <Resource Include="Data\Equipment\Uniques.xml" />
@@ -949,12 +948,9 @@
     <Resource Include="Images\Duelist_Highlighted.jpg" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\BodyArmour.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Helmet.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandedWeapon.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Shield.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandedWeapon.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Jewel.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Quiver.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Gem.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Unknown.png" />
     <Resource Include="Images\Slayer_Highlighted.jpg" />
     <Resource Include="Images\Champion_Highlighted.jpg" />
@@ -1021,6 +1017,27 @@
     <Resource Include="Images\EquipmentUI\ItemsSeparatorRare.png" />
     <Resource Include="Images\EquipmentUI\ItemsSeparatorUnique.png" />
     <Resource Include="Images\EquipmentUI\ItemsSeparatorWhite.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\ActiveskillGem.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Bow.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Claw.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\CriticalUtilityFlask.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Dagger.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\FishingRod.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\HybridFlask.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\LifeFlask.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\ManaFlask.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandAxe.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandMace.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandSword.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Sceptre.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Staff.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\SupportSkillGem.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\ThrustingOneHandSword.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandAxe.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandMace.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandSword.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\UtilityFlask.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Wand.png" />
     <Content Include="Libs\Xceed.Wpf.Toolkit.dll" />
     <Content Include="release.iss" />
     <None Include="Tools\isetup\ISCC.exe" />

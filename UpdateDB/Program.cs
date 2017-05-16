@@ -65,14 +65,14 @@ namespace UpdateDB
                     case "/?":
                         Console.WriteLine("Updates item database.\r\n");
                         Console.WriteLine("Flags:\r\n");
-                        Console.WriteLine("/VersionControlledOnly    Only download version controlled files (gem, affix, base item and unique lists).");
+                        Console.WriteLine("/VersionControlledOnly    Only download version controlled files (gem, base item and unique lists).");
                         Console.WriteLine("/NotVersionControlledOnly Only download not version controlled files (item images and skill tree assets).");
                         Console.WriteLine("/SourceCodeDir            Save into the WPFSKillTree source code directory instead of the AppData directory.");
                         Console.WriteLine("/CurrentDir               Save into the current directory instead of the AppData directory.");
                         Console.WriteLine("/SpecifiedDir:dirPath     Save into the specified directory instead of the AppData directory.");
                         Console.WriteLine("/Quiet                    Do not display any output.");
                         Console.WriteLine("/Verbose                  Enable verbose output.");
-                        Console.WriteLine("/Affixes, /Items, /ItemImages, /TreeAssets, /Gems, /Uniques");
+                        Console.WriteLine("/Items, /ItemImages, /TreeAssets, /Gems, /Uniques");
                         Console.WriteLine("If at least one is specified, only the specified files are downloaded.\r\n");
                         return 1;
 

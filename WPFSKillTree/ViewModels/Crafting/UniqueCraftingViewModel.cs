@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Model.Items.Mods;
+using Affix = POESKillTree.Model.Items.Affixes.Affix;
 
 namespace POESKillTree.ViewModels.Crafting
 {
@@ -29,7 +30,7 @@ namespace POESKillTree.ViewModels.Crafting
             {
                 MsExplicits.Affixes = new[]
                 {
-                    new Affix(new ItemModTier(SelectedBase.ExplicitMods))
+                    new Affix()// todo new ItemModTier(SelectedBase.ExplicitMods))
                 };
             }
             else

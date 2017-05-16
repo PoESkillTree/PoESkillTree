@@ -16,7 +16,7 @@ namespace POESKillTree.SkillTreeFiles
     {
         public static float[] SkillsPerOrbit = {1, 6, 12, 12, 40};
         public static float[] OrbitRadii = {0, 81.5f, 163, 326, 489};
-        public Dictionary<string, List<float>> Attributes;
+        public Dictionary<string, IReadOnlyList<float>> Attributes;
         public HashSet<int> Connections = new HashSet<int>();
         public List<SkillNode> Neighbor = new List<SkillNode>();
         // The subset of neighbors to which connections should be drawn.

@@ -1,5 +1,4 @@
 ﻿using System.Xml.Serialization;
-using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items
@@ -13,13 +12,14 @@ namespace POESKillTree.Model.Items
         public XmlItemBase[] ItemBases { get; set; }
     }
     
+
     public class XmlItemBase
     {
-        [XmlArrayItem("Stat")]
-        public XmlStat[] Implicit { get; set; }
+        [XmlArrayItem("Mod")]
+        public XmlMod[] Implicit { get; set; }
         
-        [XmlArrayItem("Stat")]
-        public XmlStat[] Properties { get; set; }
+        [XmlArrayItem("Property")]
+        public XmlProperty[] Properties { get; set; }
         
         [XmlAttribute]
         public ItemClass ItemClass { get; set; }
@@ -55,5 +55,25 @@ namespace POESKillTree.Model.Items
 
         [XmlAttribute]
         public string MetadataId { get; set; }
+    }
+
+
+    public class XmlProperty
+    {
+        [XmlAttribute]
+        public string Name { get; set; }
+
+        [XmlAttribute]
+        public float From { get; set; }
+
+        [XmlAttribute]
+        public float To { get; set; }
+    }
+
+
+    public class XmlMod
+    {
+        [XmlAttribute]
+        public string Id { get; set; }
     }
 }

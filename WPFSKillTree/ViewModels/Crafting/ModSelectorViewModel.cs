@@ -5,8 +5,10 @@ using System.Linq;
 using MB.Algodat;
 using MoreLinq;
 using POESKillTree.Model.Items.Affixes;
+using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
+using Affix = POESKillTree.Model.Items.Affixes.Affix;
 
 namespace POESKillTree.ViewModels.Crafting
 {

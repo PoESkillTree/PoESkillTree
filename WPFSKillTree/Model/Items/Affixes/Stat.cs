@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using MB.Algodat;
 using POESKillTree.Model.Items.Enums;
-using POESKillTree.Utils.Extensions;
+using POESKillTree.Model.Items.Mods;
 
 namespace POESKillTree.Model.Items.Affixes
 {
-    public class Stat : IEquatable<Stat>
+    public class Stat
     {
         public string Name { get; }
 
@@ -25,23 +25,6 @@ namespace POESKillTree.Model.Items.Affixes
             _itemType = stat._itemType;
             _modGroup = stat._modGroup;
             _level = stat._level;
-        }
-
-        public Stat(XmlStat xmlStat, ItemType itemType, ModGroup modGroup, int level = 0)
-        {
-            Name = xmlStat.Name;
-            var ranges = new List<Range<float>>();
-            for (var i = 0; i < xmlStat.From.Count; i++)
-            {
-                var from = xmlStat.From[i];
-                var to = xmlStat.To[i];
-                // RangeTrees don't like from > to.
-                ranges.Add(Range.Create(Math.Min(from, to), Math.Max(from, to)));
-            }
-            Ranges = ranges;
-            _itemType = itemType;
-            _modGroup = modGroup;
-            _level = level;
         }
 
         private Stat(string name, ItemType itemType, ModGroup modGroup, Range<float> range)
@@ -64,34 +47,6 @@ namespace POESKillTree.Model.Items.Affixes
             return ToItemMod(Name, values.ToList());
         }
 
-        public ItemMod AsPropertyToItemMod()
-        {
-            if (Ranges.Count != 1)
-            {
-                throw new InvalidOperationException(
-                    "Only stats with a single range can be converted to ItemMods as properties");
-            }
-
-            var range = Ranges[0];
-            var values = new List<float> { range.From };
-            if (!range.From.AlmostEquals(range.To, 1e-5))
-            {
-                values.Add(range.To);
-            }
-
-            string attribute;
-            if (Name.EndsWith(" %"))
-                attribute = Name.Substring(0, Name.Length - 2) + ": #%";
-            else
-                attribute = Name + ": #";
-            if (values.Count > 1)
-            {
-                attribute = attribute.Replace("#", "#-#");
-            }
-
-            return ToItemMod(attribute, values);
-        }
-
         private ItemMod ToItemMod(string attribute, List<float> values)
         {
             // replace "+#" by "#" if the value for that placeholder is negative
@@ -111,46 +66,9 @@ namespace POESKillTree.Model.Items.Affixes
                 attr += "#";
             }
             attr += parts.Last();
-            return new ItemMod(_itemType, attr, _modGroup, _level)
-            {
-                Value = values,
-                ValueColor = values.Select(_ => ItemMod.ValueColoring.White).ToList()
-            };
-        }
-
-        public override string ToString()
-        {
-            return Name + " {" + string.Join(", ", Ranges) + "}";
-        }
-
-        public bool Equals(Stat other)
-        {
-            if (ReferenceEquals(this, other))
-                return true;
-            if (ReferenceEquals(null, other))
-                return false;
-
-            if (Name != other.Name
-                || _level != other._level
-                || _modGroup != other._modGroup
-                || Ranges.Count != other.Ranges.Count)
-                return false;
-
-            return Ranges.Zip(other.Ranges, (x, y) => x.CompareTo(y) == 0).All(b => b);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as Stat);
-        }
-
-        public override int GetHashCode()
-        {
-            int h = 23;
-            h = h * 37 + Name.GetHashCode();
-            h = h * 37 + _level.GetHashCode();
-            h = h * 37 + _modGroup.GetHashCode();
-            return Ranges.Aggregate(h, (a, r) => a * 37 + r.GetHashCode());
+            // todo
+            var isLocal = StatLocalityChecker.DetermineLocal((ItemClass) _itemType, _modGroup, attr);
+            return new ItemMod(attr, isLocal, _level, values, values.Select(_ => ItemMod.ValueColoring.White));
         }
     }
 }

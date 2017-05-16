@@ -4,12 +4,10 @@ namespace POESKillTree.Model.Items.Mods
 {
     public interface IMod
     {
-        IReadOnlyList<Stat> Stats { get; }
-
-        ModDomain Domain { get; }
+        IReadOnlyList<IStat> Stats { get; }
 
         string Id { get; }
 
-        bool IsEssenceOnly { get; }
+        int RequiredLevel { get; }
     }
 }

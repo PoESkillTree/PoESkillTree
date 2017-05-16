@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using log4net;
 using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items.Mods
@@ -17,9 +16,9 @@ namespace POESKillTree.Model.Items.Mods
 
         public JsonMod JsonMod { get; }
 
-        public IReadOnlyList<Stat> Stats { get; }
+        public IReadOnlyList<IStat> Stats { get; }
         public ModDomain Domain => JsonMod.Domain;
-        public bool IsEssenceOnly => JsonMod.IsEssenceOnly;
+        public int RequiredLevel => JsonMod.RequiredLevel;
 
         public Mod(string id, JsonMod jsonMod, IEnumerable<JsonCraftingBenchOption> jsonBenchOptions,
             IEnumerable<IReadOnlyDictionary<string, bool>> spawnTagsReplacement)

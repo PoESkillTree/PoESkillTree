@@ -10,7 +10,10 @@ using POESKillTree.Common.ViewModels;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils;
+using Affix = POESKillTree.Model.Items.Affixes.Affix;
+using Stat = POESKillTree.Model.Items.Affixes.Stat;
 
 namespace POESKillTree.ViewModels.Crafting
 {
@@ -28,11 +31,11 @@ namespace POESKillTree.ViewModels.Crafting
         private IEnumerable<TBase> EligibleBases => _bases
             .Where(b => ShowDropDisabledItems || !b.DropDisabled);
 
-        private ILookup<ItemType, TBase> BasesPerType => EligibleBases.ToLookup(b => b.ItemType);
+        private ILookup<ItemType, TBase> BasesPerType => null;// todo EligibleBases.ToLookup(b => b.ItemType);
         private IEnumerable<ItemType> EligibleTypes
             => ItemType.Any.Concat(BasesPerType.Select(t => t.Key)).OrderBy(t => t);
 
-        private ILookup<ItemGroup, TBase> BasesPerGroup => EligibleBases.ToLookup(b => b.ItemGroup);
+        private ILookup<ItemGroup, TBase> BasesPerGroup => null;// todo EligibleBases.ToLookup(b => b.ItemGroup);
         private IEnumerable<ItemGroup> EligibleGroups
             => ItemGroup.Any.Concat(BasesPerGroup.Select(g => g.Key)).OrderBy(g => g);
 
@@ -201,7 +204,7 @@ namespace POESKillTree.ViewModels.Crafting
                 {
                     MsImplicits.Affixes = new[]
                     {
-                        new Affix(new ItemModTier(ibase.ImplicitMods))
+                        new Affix()// todo new Affix(new ItemModTier(ibase.ImplicitMods))
                     };
                 }
                 else
@@ -241,8 +244,9 @@ namespace POESKillTree.ViewModels.Crafting
 
             var allmods = RecalculateItemSpecific().ToList();
 
-            Item.ExplicitMods = allmods.Where(m => m.ModGroup == ModGroup.Explicit).ToList();
-            Item.CraftedMods = allmods.Where(m => m.ModGroup == ModGroup.Crafted).ToList();
+            // todo return explicit and crafted mods separately
+            //Item.ExplicitMods = allmods.Where(m => m.ModGroup == ModGroup.Explicit).ToList();
+            //Item.CraftedMods = allmods.Where(m => m.ModGroup == ModGroup.Crafted).ToList();
             Item.ImplicitMods = MsImplicits.GetExactMods().ToList();
 
             var quality = SelectedBase.CanHaveQuality 
@@ -293,7 +297,7 @@ namespace POESKillTree.ViewModels.Crafting
                 var fmod = elementalMods.FirstOrDefault(m => m.Attribute.Contains("Fire"));
                 if (fmod != null)
                 {
-                    values.AddRange(fmod.Value);
+                    values.AddRange(fmod.Values);
                     mods.Add("#-#");
                     cols.Add(ItemMod.ValueColoring.Fire);
                     cols.Add(ItemMod.ValueColoring.Fire);
@@ -302,7 +306,7 @@ namespace POESKillTree.ViewModels.Crafting
                 var cmod = elementalMods.FirstOrDefault(m => m.Attribute.Contains("Cold"));
                 if (cmod != null)
                 {
-                    values.AddRange(cmod.Value);
+                    values.AddRange(cmod.Values);
                     mods.Add("#-#");
                     cols.Add(ItemMod.ValueColoring.Cold);
                     cols.Add(ItemMod.ValueColoring.Cold);
@@ -311,27 +315,19 @@ namespace POESKillTree.ViewModels.Crafting
                 var lmod = elementalMods.FirstOrDefault(m => m.Attribute.Contains("Lightning"));
                 if (lmod != null)
                 {
-                    values.AddRange(lmod.Value);
+                    values.AddRange(lmod.Values);
                     mods.Add("#-#");
                     cols.Add(ItemMod.ValueColoring.Lightning);
                     cols.Add(ItemMod.ValueColoring.Lightning);
                 }
 
-                Item.Properties.Add(new ItemMod(Item.ItemType, "Elemental Damage: " + string.Join(", ", mods), 
-                    ModGroup.Property)
-                {
-                    Value = values,
-                    ValueColor = cols,
-                });
+                Item.Properties.Add(new ItemMod("Elemental Damage: " + string.Join(", ", mods), true, values, cols));
             }
 
             if (chaosMods.Any())
             {
-                Item.Properties.Add(new ItemMod(Item.ItemType, "Chaos Damage: #-#", ModGroup.Property)
-                {
-                    Value = new List<float>(chaosMods[0].Value),
-                    ValueColor = new List<ItemMod.ValueColoring> { ItemMod.ValueColoring.Chaos, ItemMod.ValueColoring.Chaos },
-                });
+                Item.Properties.Add(new ItemMod("Chaos Damage: #-#", true, chaosMods[0].Values,
+                    new[] { ItemMod.ValueColoring.Chaos, ItemMod.ValueColoring.Chaos }));
             }
         }
 
@@ -347,17 +343,17 @@ namespace POESKillTree.ViewModels.Crafting
 
                 if (valuem.Count > 0)
                 {
-                    List<float> val = valuem
-                        .Select(m => m.Value)
+                    IReadOnlyList<float> val = valuem
+                        .Select(m => m.Values)
                         .Aggregate((l1, l2) => l1.Zip(l2, (f1, f2) => f1 + f2)
                         .ToList());
-                    List<float> nval = prop.Value
+                    IReadOnlyList<float> nval = prop.Values
                         .Zip(val, (f1, f2) => f1 + f2)
                         .ToList();
-                    prop.ValueColor = prop.ValueColor
-                        .Select((c, i) => val[i] == nval[i] ? prop.ValueColor[i] : ItemMod.ValueColoring.LocallyAffected)
+                    prop.ValueColors = prop.ValueColors
+                        .Select((c, i) => val[i] == nval[i] ? prop.ValueColors[i] : ItemMod.ValueColoring.LocallyAffected)
                         .ToList();
-                    prop.Value = nval;
+                    prop.Values = nval;
                 }
 
                 Func<float, float> roundf = val => (float)Math.Round(val);
@@ -373,9 +369,9 @@ namespace POESKillTree.ViewModels.Crafting
 
                 if (percm.Count > 0)
                 {
-                    var perc = 1f + percm.Select(m => m.Value[0]).Sum() / 100f;
-                    prop.ValueColor = prop.ValueColor.Select(c => ItemMod.ValueColoring.LocallyAffected).ToList();
-                    prop.Value = prop.Value.Select(v => roundf(v * perc)).ToList();
+                    var perc = 1f + percm.Select(m => m.Values[0]).Sum() / 100f;
+                    prop.ValueColors = prop.ValueColors.Select(c => ItemMod.ValueColoring.LocallyAffected).ToList();
+                    prop.Values = prop.Values.Select(v => roundf(v * perc)).ToList();
                 }
             }
         }

@@ -7,8 +7,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using MB.Algodat;
 using Newtonsoft.Json.Linq;
-using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
 
@@ -25,9 +25,8 @@ namespace POESKillTree.Model.Items
             set { SetProperty(ref _slot, value); }
         }
 
-        public ItemType ItemType { get; }
-
-        public ItemGroup ItemGroup { get; }
+        public ItemClass ItemClass { get; }
+        public Tags Tags { get; }
 
         private List<Item> _gems = new List<Item>();
         public IReadOnlyList<Item> Gems
@@ -165,27 +164,18 @@ namespace POESKillTree.Model.Items
         public int Width { get; }
         public int Height { get; }
 
-        public bool IsWeapon
-        {
-            get { return ItemGroup == ItemGroup.OneHandedWeapon || ItemGroup == ItemGroup.TwoHandedWeapon; }
-        }
+        public bool IsWeapon => Tags.HasFlag(Tags.Weapon);
 
         /// <summary>
         /// vertical range of item
         /// </summary>
-        Range<int> IRangeProvider<int>.Range
-        {
-            get
-            {
-                return new Range<int>(Y, Y + Height - 1);
-            }
-        }
+        Range<int> IRangeProvider<int>.Range => new Range<int>(Y, Y + Height - 1);
 
         public Item(IItemBase itemBase)
         {
             BaseType = itemBase;
-            ItemType = itemBase.ItemType;
-            ItemGroup = itemBase.ItemGroup;
+            ItemClass = itemBase.ItemClass;
+            Tags = itemBase.Tags;
             Width = itemBase.InventoryWidth;
             Height = itemBase.InventoryHeight;
             RequirementsFromBase();
@@ -195,10 +185,10 @@ namespace POESKillTree.Model.Items
 
         public Item(Item source)
         {
-            //_slot, _itemType, _itemGroup, _gems, _keywords, _frame
+            //_slot, ItemClass, Tags, _gems, _keywords, _frame
             _slot = source._slot;
-            ItemType = source.ItemType;
-            ItemGroup = source.ItemGroup;
+            ItemClass = source.ItemClass;
+            Tags = source.Tags;
             _gems = source._gems.ToList();
             if (source.Keywords != null)
                 Keywords = source.Keywords.ToList();
@@ -231,20 +221,20 @@ namespace POESKillTree.Model.Items
         /// </summary>
         public Item(string gemName, IEnumerable<string> tags, int level, int quality, int socketGroup)
         {
-            ItemType = ItemType.Gem;
-            ItemGroup = ItemGroup.Gem;
+            ItemClass = ItemClassEx.ItemClassForGem(gemName);
+            Tags = ItemClass.ToTags();
             Keywords = tags.ToList();
             _frame = FrameType.Gem;
 
-            var keywordProp = new ItemMod(ItemType, string.Join(", ", Keywords), ModGroup.Property);
+            var keywordProp = new ItemMod(string.Join(", ", Keywords), false);
             _properties.Add(keywordProp);
-            var levelProp = new ItemMod(ItemType, "Level: #", ModGroup.Property);
-            levelProp.Value.Add(level);
-            levelProp.ValueColor.Add(ItemMod.ValueColoring.LocallyAffected);
+            var levelProp = new ItemMod("Level: #", false, 
+                new float[] { level },
+                new[] { ItemMod.ValueColoring.LocallyAffected });
             _properties.Add(levelProp);
-            var qualityProp = new ItemMod(ItemType, "Quality: +#%", ModGroup.Property);
-            qualityProp.Value.Add(quality);
-            qualityProp.ValueColor.Add(ItemMod.ValueColoring.LocallyAffected);
+            var qualityProp = new ItemMod("Quality: +#%", false,
+                new float[] { quality },
+                new[] { ItemMod.ValueColoring.LocallyAffected });
             _properties.Add(qualityProp);
 
             NameLine = "";
@@ -279,7 +269,8 @@ namespace POESKillTree.Model.Items
             if (isGem)
             {
                 // BaseType will be null for socketed gems.
-                ItemGroup = ItemGroup.Gem;
+                ItemClass = ItemClassEx.ItemClassForGem(TypeLine);
+                Tags = ItemClass.ToTags();
             }
             else
             {
@@ -308,8 +299,8 @@ namespace POESKillTree.Model.Items
                     BaseType = new ItemBase(persistentData.EquipmentData.ItemImageService, itemSlot, TypeLine,
                         Keywords == null ? "" : Keywords.FirstOrDefault(), Frame);
                 }
-                ItemType = BaseType.ItemType;
-                ItemGroup = BaseType.ItemGroup;
+                ItemClass = BaseType.ItemClass;
+                Tags = BaseType.Tags;
                 if (loadImageFromIconUrl)
                 {
                     Image = BaseType.Image.AsDefaultForImageFromUrl(
@@ -327,10 +318,10 @@ namespace POESKillTree.Model.Items
                 {
                     Properties.Add(ItemModFromJson(obj, ModGroup.Property));
                 }
-                if (Properties.Any(m => !m.Value.Any()))
+                if (Properties.Any(m => !m.Values.Any()))
                 {
                     // The name of one property of gems contains the Keywords of that gem.
-                    Keywords = Properties.First(m => !m.Value.Any()).Attribute.Split(',').Select(i => i.Trim()).ToList();
+                    Keywords = Properties.First(m => !m.Values.Any()).Attribute.Split(',').Select(i => i.Trim()).ToList();
                 }
             }
 
@@ -348,13 +339,11 @@ namespace POESKillTree.Model.Items
                     }.Where(m => m != null).ToList();
                     modsToMerge.ForEach(m => mods.Remove(m));
                     mods.Add(new ItemMod(
-                        ItemType, 
-                        "Requires " + string.Join(", ", modsToMerge.Select(m => m.Attribute)), 
-                        ModGroup.Requirement)
-                    {
-                        Value = modsToMerge.Select(m => m.Value).Flatten().ToList(),
-                        ValueColor = modsToMerge.Select(m => m.ValueColor).Flatten().ToList()
-                    });
+                        "Requires " + string.Join(", ", modsToMerge.Select(m => m.Attribute)),
+                        false,
+                        modsToMerge.Select(m => m.Values).Flatten(),
+                        modsToMerge.Select(m => m.ValueColors).Flatten()
+                    ));
                 }
                 _requirements.AddRange(mods);
             }
@@ -363,17 +352,17 @@ namespace POESKillTree.Model.Items
             if (val["implicitMods"] != null)
                 foreach (var s in val["implicitMods"].Values<string>())
                 {
-                    _implicitMods.Add(new ItemMod(ItemType, FixOldRanges(s), ModGroup.Implicit, Numberfilter));
+                    _implicitMods.Add(ItemModFromString(FixOldRanges(s), ModGroup.Implicit));
                 }
             if (val["explicitMods"] != null)
                 foreach (var s in val["explicitMods"].Values<string>())
                 {
-                    ExplicitMods.Add(new ItemMod(ItemType, FixOldRanges(s), ModGroup.Explicit, Numberfilter));
+                    ExplicitMods.Add(ItemModFromString(FixOldRanges(s), ModGroup.Explicit));
                 }
             if (val["craftedMods"] != null)
                 foreach (var s in val["craftedMods"].Values<string>())
                 {
-                    CraftedMods.Add(new ItemMod(ItemType, FixOldRanges(s), ModGroup.Crafted, Numberfilter));
+                    CraftedMods.Add(ItemModFromString(FixOldRanges(s), ModGroup.Crafted));
                 }
 
             if (val["flavourText"] != null)
@@ -394,6 +383,13 @@ namespace POESKillTree.Model.Items
                     _gems.Add(item);
                 }
             }
+        }
+
+        private ItemMod ItemModFromString(string attribute, ModGroup modGroup, 
+            IEnumerable<ItemMod.ValueColoring> valueColor = null)
+        {
+            var isLocal = StatLocalityChecker.DetermineLocal(ItemClass, modGroup, attribute);
+            return new ItemMod(attribute, isLocal, Numberfilter, valueColor);
         }
 
         private ItemMod ItemModFromJson(JToken jsonMod, ModGroup modGroup)
@@ -445,7 +441,7 @@ namespace POESKillTree.Model.Items
                 attribute = name;
             }
 
-            return new ItemMod(ItemType, attribute, modGroup, Numberfilter, valueColors);
+            return ItemModFromString(attribute, modGroup, valueColors);
         }
 
         private static readonly Regex OldRangeRegex = new Regex(@"(\d+)-(\d+) ");
@@ -489,12 +485,7 @@ namespace POESKillTree.Model.Items
             }
             if (requirements.Any())
             {
-                _requirements.Add(new ItemMod(ItemType, "Requires " + string.Join(", ", requirements), 
-                    ModGroup.Requirement)
-                {
-                    Value = values,
-                    ValueColor = colors
-                });
+                _requirements.Add(new ItemMod("Requires " + string.Join(", ", requirements), true, values, colors));
             }
         }
 
@@ -507,8 +498,8 @@ namespace POESKillTree.Model.Items
                 .Max();
             var attrRequirementsMultiplier = 100 - Mods
                 .Where(m => m.Attribute == "#% reduced Attribute Requirements")
-                .Where(m => m.Value.Any())
-                .Select(m => (int)m.Value[0])
+                .Where(m => m.Values.Any())
+                .Select(m => (int)m.Values[0])
                 .DefaultIfEmpty(0)
                 .Sum();
             RequirementsFromBase(minRequiredLevel, attrRequirementsMultiplier);
@@ -602,7 +593,7 @@ namespace POESKillTree.Model.Items
             var qualityMod = Properties.FirstOrDefault(m => m.Attribute == "Quality: +#%");
             // Quality with "+#%" in name is not recognized as percentage increase.
             var qIncMod = qualityMod == null ? null
-                : new ItemMod(ItemType, qualityMod.Value[0] + "%", ModGroup.Property, Numberfilter);
+                : new ItemMod(qualityMod.Values[0] + "%", true, Numberfilter);
             var localmods = Mods.Where(m => m.IsLocal).ToList();
 
             var r = new Regex(@"(?<=[^a-zA-Z] |^)(to|increased|decreased|more|less) |^Adds # to # |(\+|-|#|%|:|\s\s)\s*?(?=\s?)|^\s+|\s+$");

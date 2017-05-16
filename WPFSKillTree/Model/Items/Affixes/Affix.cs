@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using MB.Algodat;
 using MoreLinq;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items.Affixes
@@ -42,15 +43,6 @@ namespace POESKillTree.Model.Items.Affixes
             : this(ItemType.Unknown, new[] { tier })
         {
             Name = string.Join(",", StatNames);
-        }
-
-        public Affix(XmlAffix xmlAffix)
-            : this(xmlAffix.ItemType, xmlAffix.Tiers.Select(el => new ItemModTier(el, xmlAffix.ItemType)))
-        {
-            if (!xmlAffix.Tiers.Any())
-                throw new NotSupportedException("There should not be any Affix without tiers");
-            ModType = xmlAffix.ModType;
-            Name = xmlAffix.Name;
         }
 
         private Affix(ItemType itemType, IEnumerable<ItemModTier> tiers)
