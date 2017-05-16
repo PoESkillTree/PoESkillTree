@@ -17,6 +17,7 @@ namespace POESKillTree.Model.Items.Mods
         public JsonMod JsonMod { get; }
 
         public IReadOnlyList<IStat> Stats { get; }
+        public string Name => JsonMod.Name;
         public ModDomain Domain => JsonMod.Domain;
         public int RequiredLevel => JsonMod.RequiredLevel;
 
@@ -51,12 +52,35 @@ namespace POESKillTree.Model.Items.Mods
             Stats = jsonMod.Stats.Select(s => new Stat(s)).ToList();
         }
 
-        public bool Matches(ModDomain domain, Tags tags, ItemClass itemClass)
+        public bool Matches(Tags tags, ItemClass itemClass)
         {
-            if (Domain != domain && !(domain == ModDomain.Item && Domain == ModDomain.Master))
+            // the ModDomains Item and Master match everything but Flask, Jewel and Gem
+            if (tags.HasFlag(Tags.Flask))
+            {
+                if (Domain != ModDomain.Flask)
+                {
+                    return false;
+                }
+            }
+            else if (tags.HasFlag(Tags.Jewel))
+            {
+                if (Domain != ModDomain.Jewel)
+                {
+                    return false;
+                }
+            }
+            else if (tags.HasFlag(Tags.Gem))
             {
                 return false;
             }
+            else
+            {
+                if (Domain != ModDomain.Item && Domain != ModDomain.Master)
+                {
+                    return false;
+                }
+            }
+
             if (_itemClasses.Contains(itemClass))
             {
                 return true;

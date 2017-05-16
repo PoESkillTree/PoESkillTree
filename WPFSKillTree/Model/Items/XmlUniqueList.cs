@@ -27,11 +27,9 @@ namespace POESKillTree.Model.Items
         [XmlAttribute]
         public string BaseMetadataId { get; set; }
 
-        [XmlArrayItem("Mod")]
-        public XmlMod[] Explicit { get; set; }
+        public string[] Explicit { get; set; }
 
-        [XmlArrayItem("Property")]
-        public XmlProperty[] Properties { get; set; }
+        public string[] Properties { get; set; }
 
     }
 }

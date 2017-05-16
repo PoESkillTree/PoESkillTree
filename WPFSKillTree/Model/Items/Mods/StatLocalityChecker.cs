@@ -5,9 +5,9 @@ namespace POESKillTree.Model.Items.Mods
 {
     public static class StatLocalityChecker
     {
-        public static bool DetermineLocal(ItemClass itemclass, ModGroup modGroup, string attr)
+        public static bool DetermineLocal(ItemClass itemclass, ModLocation location, string attr)
         {
-            if (modGroup == ModGroup.Property || modGroup == ModGroup.Requirement)
+            if (location == ModLocation.Property || location == ModLocation.Requirement)
             {
                 // local or not doesn't really apply to properties and requirements
                 return true;
@@ -48,7 +48,7 @@ namespace POESKillTree.Model.Items.Mods
                 case ItemClass.TwoHandMace:
                 case ItemClass.Bow:
                 case ItemClass.Staff:
-                    return DetermineWeaponLocal(modGroup, attr);
+                    return DetermineWeaponLocal(location, attr);
                 case ItemClass.Shield:
                 case ItemClass.Boots:
                 case ItemClass.BodyArmour:
@@ -69,17 +69,17 @@ namespace POESKillTree.Model.Items.Mods
             }
         }
 
-        private static bool DetermineWeaponLocal(ModGroup modGroup, string attr)
+        private static bool DetermineWeaponLocal(ModLocation location, string attr)
         {
             if (attr == "#% increased Physical Damage")
             {
                 // Implicit increased physical damage is global
-                return modGroup != ModGroup.Implicit;
+                return location != ModLocation.Implicit;
             }
             if (attr == "+# to Accuracy Rating")
             {
                 // Crafted accuracy is global
-                return modGroup != ModGroup.Crafted;
+                return location != ModLocation.Crafted;
             }
             if (attr.StartsWith("Adds ") 
                 && (attr.EndsWith(" Damage") || attr.EndsWith(" Damage in Main Hand") || attr.EndsWith(" Damage in Off Hand")))

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using MoreLinq;
@@ -7,10 +8,16 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items.StatTranslation
 {
+    public interface ITranslation
+    {
+        [CanBeNull]
+        string Translate(IReadOnlyList<int> values);
+    }
+
     /// <summary>
     /// Encapsulates a JsonStatTranslation and contains the logic for using it to translate values.
     /// </summary>
-    public class Translation
+    public class Translation : ITranslation
     {
         private readonly JsonStatTranslation _jsonTranslation;
 
@@ -32,7 +39,6 @@ namespace POESKillTree.Model.Items.StatTranslation
         /// <returns>the translated values. Null if the values should not be translated, e.g. the stat should be 
         /// hidden. This is the case for stats without effect or stats that are not meant to be visible to players.
         /// </returns>
-        [CanBeNull]
         public string Translate(IReadOnlyList<int> values)
         {
             if (values.Count != Ids.Count)
@@ -62,7 +68,8 @@ namespace POESKillTree.Model.Items.StatTranslation
                         formatInputs.Add(entry.Formats[i].Apply(value));
                     }
                     var suffix = _jsonTranslation.IsHidden ? " (Hidden)" : "";
-                    return string.Format(entry.FormatString, formatInputs.ToArray<object>()) + suffix;
+                    return string.Format(CultureInfo.InvariantCulture, entry.FormatString, 
+                        formatInputs.ToArray<object>()) + suffix;
                 }
             }
             return null;

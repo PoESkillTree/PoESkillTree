@@ -8,10 +8,10 @@ namespace POESKillTree.Model.Items.Mods
     public class ModDatabase
     {
         private readonly IReadOnlyDictionary<string, Mod> _mods;
-        private readonly IReadOnlyDictionary<ModType, IEnumerable<Affix>> _affixesByType;
+        private readonly IReadOnlyDictionary<ModGenerationType, IReadOnlyList<ModGroup>> _groupsByType;
 
         public IMod this[string modId] => _mods[modId];
-        public IEnumerable<Affix> this[ModType modtype] => _affixesByType[modtype];
+        public IReadOnlyList<ModGroup> this[ModGenerationType modtype] => _groupsByType[modtype];
 
         public ModDatabase(IReadOnlyDictionary<string, JsonMod> mods, IEnumerable<JsonCraftingBenchOption> benchOptions,
             IReadOnlyDictionary<string, JsonNpcMaster> npcMasters)
@@ -23,16 +23,17 @@ namespace POESKillTree.Model.Items.Mods
             _mods = mods.ToDictionary(
                 p => p.Key, 
                 p => new Mod(p.Key, p.Value, benchLookup[p.Key], signatureModDict.GetOrDefault(p.Key)));
-            _affixesByType = _mods.Values
+            _groupsByType = _mods.Values
                 .GroupBy(m => m.JsonMod.GenerationType)
                 .ToDictionary(g => g.Key, ModsToAffixes);
         }
 
-        private static IEnumerable<Affix> ModsToAffixes(IEnumerable<Mod> mods)
+        private static IReadOnlyList<ModGroup> ModsToAffixes(IEnumerable<Mod> mods)
         {
             return mods
                 .GroupBy(m => m.JsonMod.Group)
-                .Select(g => new Affix(g.Key, g));
+                .Select(g => new ModGroup(g.Key, g))
+                .ToList();
         }
     }
 }

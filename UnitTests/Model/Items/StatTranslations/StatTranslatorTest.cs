@@ -75,5 +75,29 @@ namespace UnitTests.Model.Items.StatTranslations
             CollectionAssert.AreEqual(expected, actual.ToArray());
         }
 
+        [TestMethod]
+        public async Task GetTranslations_Blackheart()
+        {
+            IReadOnlyDictionary<string, int> statDict = new Dictionary<string, int>
+            {
+                { "base_maximum_life", 25 },
+                { "attack_minimum_added_chaos_damage", 1 },
+                { "attack_maximum_added_chaos_damage", 3 },
+                { "physical_damage_+%", 5 },
+                { "base_life_regeneration_rate_per_minute", 124 },
+                { "global_hit_causes_monster_flee_%", 10 },
+            };
+            string[] expected =
+            {
+                "+25 to maximum Life",
+                "Adds 1 to 3 Chaos Damage to Attacks",
+                "5% increased Physical Damage",
+                "2.1 Life Regenerated per second",
+                "10% chance to Cause Monsters to Flee",
+            };
+            var actual = (await _translator).GetTranslations(statDict);
+            CollectionAssert.AreEqual(expected, actual.ToArray());
+        }
+
     }
 }

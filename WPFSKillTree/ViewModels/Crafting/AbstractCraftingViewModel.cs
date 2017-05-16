@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using MB.Algodat;
 using MoreLinq;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
+using POESKillTree.Model.Items.StatTranslation;
 using POESKillTree.Utils;
-using Affix = POESKillTree.Model.Items.Affixes.Affix;
-using Stat = POESKillTree.Model.Items.Affixes.Stat;
 
 namespace POESKillTree.ViewModels.Crafting
 {
@@ -25,8 +23,6 @@ namespace POESKillTree.ViewModels.Crafting
     public abstract class AbstractCraftingViewModel<TBase> : CloseableViewModel<bool>
         where TBase : class, IItemBase
     {
-        private const string QualityModName = "Quality: +#%";
-
         private readonly IReadOnlyList<TBase> _bases;
         private IEnumerable<TBase> EligibleBases => _bases
             .Where(b => ShowDropDisabledItems || !b.DropDisabled);
@@ -89,14 +85,29 @@ namespace POESKillTree.ViewModels.Crafting
         }
 
         private Item _item;
+
         public Item Item
         {
             get { return _item; }
             private set { SetProperty(ref _item, value); }
         }
 
-        public ModSelectorViewModel MsQuality { get; } = new ModSelectorViewModel(false);
-        public ModSelectorViewModel MsImplicits { get; } = new ModSelectorViewModel(false);
+        private IReadOnlyList<ModSelectorViewModel> _msImplicits;
+        public IReadOnlyList<ModSelectorViewModel> MsImplicits
+        {
+            get { return _msImplicits; }
+            private set { SetProperty(ref _msImplicits, value); }
+        }
+
+        private readonly SliderViewModel _qualitySlider;
+        public SliderGroupViewModel QualitySliderGroup { get; }
+
+        private bool _showQualitySlider;
+        public bool ShowQualitySlider
+        {
+            get { return _showQualitySlider; }
+            private set { SetProperty(ref _showQualitySlider, value); }
+        }
 
         protected SimpleMonitor Monitor { get; } = new SimpleMonitor();
 
@@ -108,8 +119,10 @@ namespace POESKillTree.ViewModels.Crafting
             _bases = bases.ToList();
             Monitor.Freed += (sender, args) => RecalculateItem();
 
-            MsQuality.PropertyChanged += MsOnPropertyChanged;
-            MsImplicits.PropertyChanged += MsOnPropertyChanged;
+            var qualityStat = new FormatTranslation("Quality: +{0}%");
+            _qualitySlider = new SliderViewModel(0, Enumerable.Range(0, 21));
+            QualitySliderGroup = new SliderGroupViewModel(new[] { _qualitySlider }, qualityStat);
+            _qualitySlider.ValueChanged += QualitySliderOnValueChanged;
         }
 
         protected void Init()
@@ -200,29 +213,22 @@ namespace POESKillTree.ViewModels.Crafting
                 var ibase = SelectedBase;
                 Item = new Item(ibase);
 
-                if (ibase.ImplicitMods.Any())
+                MsImplicits.ForEach(ms => ms.PropertyChanged -= MsOnPropertyChanged);
+                var modSelectors = new List<ModSelectorViewModel>();
+                foreach (var implicitMod in ibase.ImplicitMods)
                 {
-                    MsImplicits.Affixes = new[]
+                    var modSelector = new ModSelectorViewModel(EquipmentData.StatTranslator, false)
                     {
-                        new Affix()// todo new Affix(new ItemModTier(ibase.ImplicitMods))
+                        Affixes = new[]
+                        {
+                            new Affix(implicitMod)
+                        }
                     };
+                    modSelector.PropertyChanged += MsOnPropertyChanged;
                 }
-                else
-                {
-                    MsImplicits.Affixes = null;
-                }
-                if (ibase.CanHaveQuality)
-                {
-                    var qualityStat = Stat.CreateProperty(QualityModName, new Range<float>(0, 20));
-                    MsQuality.Affixes = new[]
-                    {
-                        new Affix(new ItemModTier(new[] { qualityStat }))
-                    };
-                }
-                else
-                {
-                    MsQuality.Affixes = null;
-                }
+                MsImplicits = modSelectors;
+
+                ShowQualitySlider = ibase.CanHaveQuality;
 
                 UpdateBaseSpecific();
             }
@@ -242,31 +248,65 @@ namespace POESKillTree.ViewModels.Crafting
             Item.TypeLine = Item.BaseType.Name;
             Item.FlavourText = "Created with PoESkillTree";
 
-            var allmods = RecalculateItemSpecific().ToList();
+            int requiredLevel;
+            var statLookup = RecalculateItemSpecific(out requiredLevel).ToList();
 
-            // todo return explicit and crafted mods separately
-            //Item.ExplicitMods = allmods.Where(m => m.ModGroup == ModGroup.Explicit).ToList();
-            //Item.CraftedMods = allmods.Where(m => m.ModGroup == ModGroup.Crafted).ToList();
-            Item.ImplicitMods = MsImplicits.GetExactMods().ToList();
+            Item.ExplicitMods = CreateItemMods(ModLocation.Explicit, 
+                statLookup.Single(g => g.Key == ModLocation.Explicit)).ToList();
+            Item.CraftedMods = CreateItemMods(ModLocation.Crafted, 
+                statLookup.Single(g => g.Key == ModLocation.Crafted)).ToList();
+            Item.ImplicitMods = CreateItemMods(ModLocation.Implicit, 
+                MsImplicits.SelectMany(ms => ms.GetStatValues())).ToList();
 
             var quality = SelectedBase.CanHaveQuality 
-                ? (int) MsQuality.SelectedValues.First().First() 
+                ? _qualitySlider.Value
                 : 0;
             Item.Properties = new ObservableCollection<ItemMod>(Item.BaseType.GetRawProperties(quality));
             ApplyLocals();
 
             if (Item.IsWeapon)
             {
-                ApplyElementalMods(allmods);
+                ApplyElementalMods(Item.Mods);
             }
-            Item.UpdateRequirements();
+
+            var implicits = MsImplicits.Select(ms => ms.Query());
+            requiredLevel = Math.Max(requiredLevel, implicits.Max(m => m.RequiredLevel));
+            Item.UpdateRequirements((80 * requiredLevel) / 100);
         }
 
         /// <summary>
         /// (Re)calculate parts of the item in crafting specific to <see cref="TBase"/>.
         /// </summary>
-        /// <returns>All explicit mods (prefixes, suffixes, unique explicits) of the item.</returns>
-        protected abstract IEnumerable<ItemMod> RecalculateItemSpecific();
+        /// <param name="requiredLevel">the highest <see cref="IMod.RequiredLevel"/> of any selected mod</param>
+        /// <returns>All explicit and crafted stats of the item and their values (the lookup has entries for explicit
+        /// and crafted and the entries are the stat ids and their values.</returns>
+        protected abstract IEnumerable<IGrouping<ModLocation, StatIdValuePair>> RecalculateItemSpecific(out int requiredLevel);
+
+        private IEnumerable<ItemMod> CreateItemMods(ModLocation location, IEnumerable<StatIdValuePair> statValuePairs)
+        {
+            // this list is used to translate the stats in order of appearance,
+            // using merged.Keys wouldn't guarantee that
+            var statIds = new List<string>();
+            var merged = new Dictionary<string, int>();
+            foreach (var pair in statValuePairs)
+            {
+                var stat = pair.StatId;
+                statIds.Add(stat);
+                var value = pair.Value;
+                if (merged.ContainsKey(stat))
+                {
+                    value += merged[stat];
+                }
+                merged[stat] = value;
+            }
+
+            var lines = EquipmentData.StatTranslator.GetTranslations(statIds).Select(t => t.Translate(merged));
+            foreach (var line in lines)
+            {
+                var isLocal = StatLocalityChecker.DetermineLocal(SelectedBase.ItemClass, location, line);
+                yield return new ItemMod(line, isLocal);
+            }
+        }
 
         private void ApplyElementalMods(IEnumerable<ItemMod> allMods)
         {
@@ -381,6 +421,31 @@ namespace POESKillTree.ViewModels.Crafting
             if (e.PropertyName == nameof(ModSelectorViewModel.SelectedValues))
             {
                 RecalculateItem();
+            }
+        }
+
+        private void QualitySliderOnValueChanged(object sender, SliderValueChangedEventArgs e)
+        {
+            RecalculateItem();
+        }
+
+
+        private class FormatTranslation : ITranslation
+        {
+            private readonly string _format;
+
+            public FormatTranslation(string format)
+            {
+                _format = format;
+            }
+
+            public string Translate(IReadOnlyList<int> values)
+            {
+                if (values.Count != 1)
+                {
+                    throw new ArgumentException("Number of values does not match number of ranges");
+                }
+                return string.Format(CultureInfo.InvariantCulture,_format, values[0]);
             }
         }
 

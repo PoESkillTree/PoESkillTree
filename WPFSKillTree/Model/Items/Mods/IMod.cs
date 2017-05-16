@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items.Mods
 {
@@ -6,7 +7,9 @@ namespace POESKillTree.Model.Items.Mods
     {
         IReadOnlyList<IStat> Stats { get; }
 
-        string Id { get; }
+        string Name { get; }
+
+        ModDomain Domain { get; }
 
         int RequiredLevel { get; }
     }

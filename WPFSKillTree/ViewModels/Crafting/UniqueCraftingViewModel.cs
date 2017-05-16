@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using MoreLinq;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
-using Affix = POESKillTree.Model.Items.Affixes.Affix;
 
 namespace POESKillTree.ViewModels.Crafting
 {
@@ -13,39 +13,48 @@ namespace POESKillTree.ViewModels.Crafting
     /// </summary>
     public class UniqueCraftingViewModel : AbstractCraftingViewModel<UniqueBase>
     {
-        public ModSelectorViewModel MsExplicits { get; } = new ModSelectorViewModel(false);
+
+        private IReadOnlyList<ModSelectorViewModel> _msExplicits;
+        public IReadOnlyList<ModSelectorViewModel> MsExplicits
+        {
+            get { return _msExplicits; }
+            private set { SetProperty(ref _msExplicits, value); }
+        }
 
         public UniqueCraftingViewModel(EquipmentData equipmentData)
             : base(equipmentData, equipmentData.UniqueBases)
         {
-            MsExplicits.PropertyChanged += MsOnPropertyChanged;
-
             Init();
         }
 
         protected override void UpdateBaseSpecific()
         {
-
-            if (SelectedBase.ExplicitMods.Any())
+            MsExplicits.ForEach(ms => ms.PropertyChanged -= MsOnPropertyChanged);
+            var modSelectors = new List<ModSelectorViewModel>();
+            foreach (var explicitMod in SelectedBase.ExplicitMods)
             {
-                MsExplicits.Affixes = new[]
+                var modSelector = new ModSelectorViewModel(EquipmentData.StatTranslator, false)
                 {
-                    new Affix()// todo new ItemModTier(SelectedBase.ExplicitMods))
+                    Affixes = new[]
+                    {
+                        new Affix(explicitMod)
+                    }
                 };
+                modSelector.PropertyChanged += MsOnPropertyChanged;
             }
-            else
-            {
-                MsImplicits.Affixes = null;
-            }
+            MsExplicits = modSelectors;
         }
 
-        protected override IEnumerable<ItemMod> RecalculateItemSpecific()
+        protected override IEnumerable<IGrouping<ModLocation, StatIdValuePair>> RecalculateItemSpecific(out int requiredLevel)
         {
             Item.NameLine = SelectedBase.UniqueName;
             Item.Frame = FrameType.Unique;
-            return MsExplicits.GetExactMods()
-                .GroupBy(m => m.Attribute)
-                .Select(g => g.Aggregate((m1, m2) => m1.Sum(m2)));
+            requiredLevel = MsExplicits
+                .Select(ms => ms.Query())
+                .Max(m => m.RequiredLevel);
+            return MsExplicits
+                .SelectMany(ms => ms.GetStatValues())
+                .ToLookup(_ => ModLocation.Explicit);
         }
 
         private void MsOnPropertyChanged(object sender, PropertyChangedEventArgs e)

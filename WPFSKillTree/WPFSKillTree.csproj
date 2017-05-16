@@ -213,7 +213,7 @@
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
-    <Compile Include="Model\Items\Mods\Affix.cs" />
+    <Compile Include="Model\Items\Mods\ModGroup.cs" />
     <Compile Include="Model\Items\Mods\IMod.cs" />
     <Compile Include="Model\Items\Mods\JsonCraftingBenchOption.cs" />
     <Compile Include="Model\Items\Mods\JsonMod.cs" />
@@ -221,7 +221,7 @@
     <Compile Include="Model\Items\Mods\Mod.cs" />
     <Compile Include="Model\Items\Mods\ModDatabase.cs" />
     <Compile Include="Model\Items\Enums\ModDomain.cs" />
-    <Compile Include="Model\Items\Mods\ModSelector.cs" />
+    <Compile Include="Model\Items\Mods\Affix.cs" />
     <Compile Include="Model\Items\Mods\Stat.cs" />
     <Compile Include="Model\Items\Mods\StatLocalityChecker.cs" />
     <Compile Include="Utils\RePoELoader.cs" />
@@ -230,7 +230,7 @@
     <Compile Include="Model\Items\StatTranslation\JsonStatTranslation.cs" />
     <Compile Include="Model\Items\StatTranslation\StatTranslator.cs" />
     <Compile Include="Model\Items\Enums\ItemClass.cs" />
-    <Compile Include="Model\Items\Enums\ModGroup.cs" />
+    <Compile Include="Model\Items\Enums\ModLocation.cs" />
     <Compile Include="Model\Items\Enums\Tags.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
     <Compile Include="Model\Items\StatTranslation\Translation.cs" />
@@ -363,15 +363,12 @@
     <Compile Include="Model\Builds\IBuild.cs" />
     <Compile Include="Model\IMemento.cs" />
     <Compile Include="Model\IPersistentData.cs" />
-    <Compile Include="Model\Items\Affixes\Affix.cs" />
     <Compile Include="Model\Items\Mods\ItemMod.cs" />
-    <Compile Include="Model\Items\Affixes\ItemModTier.cs" />
-    <Compile Include="Model\Items\Affixes\Stat.cs" />
     <Compile Include="Model\Items\Enums\FrameType.cs" />
     <Compile Include="Model\Items\Enums\ItemGroup.cs" />
     <Compile Include="Model\Items\Enums\ItemSlot.cs" />
     <Compile Include="Model\Items\Enums\ItemType.cs" />
-    <Compile Include="Model\Items\Enums\ModType.cs" />
+    <Compile Include="Model\Items\Enums\ModGenerationType.cs" />
     <Compile Include="Model\Items\EquipmentData.cs" />
     <Compile Include="Model\Items\ItemImage.cs" />
     <Compile Include="Model\Items\XmlItemList.cs" />

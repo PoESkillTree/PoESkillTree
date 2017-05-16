@@ -149,8 +149,7 @@ namespace UpdateDB.DataLoading
         private XmlItemBase PrintoutsToBase(ItemClass itemClass, JToken printouts)
         {
             // name, requirements and implicts; same for all categories
-            var implicits = PluralValue<string>(printouts, RdfImplicits)
-                .Select(s => new XmlMod {Id = s}).ToArray();
+            var implicits = PluralValue<string>(printouts, RdfImplicits).ToArray();
             var item = new XmlItemBase
             {
                 Level = SingularValue<int>(printouts, RdfLvlReq),
@@ -182,17 +181,17 @@ namespace UpdateDB.DataLoading
             var propBuilder = new PropertyBuilder(printouts);
             if (item.Tags.HasFlag(Tags.Weapon))
             {
-                propBuilder.Add("Physical Damage", RdfBasePhysMin, RdfBasePhysMax);
-                propBuilder.Add("Critical Strike Chance %", RdfBaseCritChance);
-                propBuilder.Add("Attacks per Second", RdfBaseAttackSpeed);
-                propBuilder.Add("Weapon Range", RdfBaseWeaponRange);
+                propBuilder.Add("Physical Damage: {0}-{1}", RdfBasePhysMin, RdfBasePhysMax);
+                propBuilder.Add("Critical Strike Chance: {0}%", RdfBaseCritChance);
+                propBuilder.Add("Attacks per Second: {0}", RdfBaseAttackSpeed);
+                propBuilder.Add("Weapon Range: {0}", RdfBaseWeaponRange);
             }
             if (item.Tags.HasFlag(Tags.Armour))
             {
-                propBuilder.Add("Chance to Block %", RdfBaseBlock);
-                propBuilder.Add("Armour", RdfBaseArmour);
-                propBuilder.Add("Evasion Rating", RdfBaseEvasion);
-                propBuilder.Add("Energy Shield", RdfBaseEnergyShield);
+                propBuilder.Add("Chance to Block: {0}%", RdfBaseBlock);
+                propBuilder.Add("Armour: {0}", RdfBaseArmour);
+                propBuilder.Add("Evasion Rating: {0}", RdfBaseEvasion);
+                propBuilder.Add("Energy Shield: {0}", RdfBaseEnergyShield);
             }
             item.Properties = propBuilder.ToArray();
             return item;

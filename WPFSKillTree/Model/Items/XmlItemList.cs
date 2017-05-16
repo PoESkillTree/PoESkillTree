@@ -15,11 +15,9 @@ namespace POESKillTree.Model.Items
 
     public class XmlItemBase
     {
-        [XmlArrayItem("Mod")]
-        public XmlMod[] Implicit { get; set; }
-        
-        [XmlArrayItem("Property")]
-        public XmlProperty[] Properties { get; set; }
+        public string[] Implicit { get; set; }
+
+        public string[] Properties { get; set; }
         
         [XmlAttribute]
         public ItemClass ItemClass { get; set; }
@@ -55,25 +53,5 @@ namespace POESKillTree.Model.Items
 
         [XmlAttribute]
         public string MetadataId { get; set; }
-    }
-
-
-    public class XmlProperty
-    {
-        [XmlAttribute]
-        public string Name { get; set; }
-
-        [XmlAttribute]
-        public float From { get; set; }
-
-        [XmlAttribute]
-        public float To { get; set; }
-    }
-
-
-    public class XmlMod
-    {
-        [XmlAttribute]
-        public string Id { get; set; }
     }
 }

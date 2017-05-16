@@ -66,7 +66,7 @@ namespace UnitTests.Model.Items.Mods
             var mod = _mods["AccuracyAndCritsJewel"];
 
             Assert.AreEqual(ModDomain.Jewel, mod.Domain);
-            Assert.AreEqual(ModType.Suffix, mod.GenerationType);
+            Assert.AreEqual(ModGenerationType.Suffix, mod.GenerationType);
             Assert.AreEqual("AccuracyAndCrits", mod.Group);
             Assert.AreEqual(false, mod.IsEssenceOnly);
             Assert.AreEqual("of Deadliness", mod.Name);
@@ -98,7 +98,7 @@ namespace UnitTests.Model.Items.Mods
             var mod = _mods["LocalIncreasedAccuracy6"];
 
             Assert.AreEqual(ModDomain.Item, mod.Domain);
-            Assert.AreEqual(ModType.Suffix, mod.GenerationType);
+            Assert.AreEqual(ModGenerationType.Suffix, mod.GenerationType);
             Assert.AreEqual("IncreasedAccuracy", mod.Group);
             Assert.AreEqual(false, mod.IsEssenceOnly);
             Assert.AreEqual("of the Marksman", mod.Name);
@@ -184,50 +184,49 @@ namespace UnitTests.Model.Items.Mods
         public async Task GetMatchingMods_ChaosDamage()
         {
             await _initialization;
-            var affixes = _modDatabase[ModType.Prefix];
+            var affixes = _modDatabase[ModGenerationType.Prefix];
 
             var chaosDamage = affixes.Single(a => a.Group == "ChaosDamage");
             Assert.AreEqual(2, chaosDamage.Mods.Count);
-            Assert.AreEqual("ChaosDamageJewel", chaosDamage.Mods[0].Id);
-            Assert.AreEqual("StrIntMasterAddedChaosDamageCrafted", chaosDamage.Mods[1].Id);
+            Assert.AreEqual("ChaosDamageJewel", ((Mod) chaosDamage.Mods[0]).Id);
+            Assert.AreEqual("StrIntMasterAddedChaosDamageCrafted", ((Mod) chaosDamage.Mods[1]).Id);
 
-            var bowChaosDamage = chaosDamage.GetMatchingMods(ModDomain.Item,
+            var bowChaosDamage = chaosDamage.GetMatchingMods(
                 Tags.Bow | Tags.TwoHandWeapon | Tags.Ranged, ItemClass.Bow).ToList();
             Assert.AreEqual(0, bowChaosDamage.Count);
-            var jewelChaosDamage = chaosDamage.GetMatchingMods(ModDomain.Jewel,
+            var jewelChaosDamage = chaosDamage.GetMatchingMods(
                 Tags.Jewel | Tags.DexJewel | Tags.NotInt | Tags.NotStr, ItemClass.Jewel).ToList();
             Assert.AreEqual(1, jewelChaosDamage.Count);
-            Assert.AreEqual("ChaosDamageJewel", jewelChaosDamage[0].Id);
-            var amuletChaosDamage = chaosDamage.GetMatchingMods(ModDomain.Item,
-                Tags.Amulet, ItemClass.Amulet).ToList();
+            Assert.AreEqual("ChaosDamageJewel", ((Mod) jewelChaosDamage[0]).Id);
+            var amuletChaosDamage = chaosDamage.GetMatchingMods(Tags.Amulet, ItemClass.Amulet).ToList();
             Assert.AreEqual(1, amuletChaosDamage.Count);
-            Assert.AreEqual("StrIntMasterAddedChaosDamageCrafted", amuletChaosDamage[0].Id);
+            Assert.AreEqual("StrIntMasterAddedChaosDamageCrafted", ((Mod) amuletChaosDamage[0]).Id);
         }
 
         [TestMethod]
         public async Task GetMatchingMods_ProjectileSpeed()
         {
             await _initialization;
-            var affixes = _modDatabase[ModType.Suffix];
+            var affixes = _modDatabase[ModGenerationType.Suffix];
             var affix = affixes.Single(a => a.Group == "ProjectileSpeed");
 
-            var quiver = affix.GetMatchingMods(ModDomain.Item, Tags.Quiver, ItemClass.Quiver).ToList();
+            var quiver = affix.GetMatchingMods(Tags.Quiver, ItemClass.Quiver).ToList();
             Assert.AreEqual(6, quiver.Count);
-            Assert.AreEqual("DexMasterProjectileSpeedCrafted", quiver[0].Id);
-            Assert.AreEqual("ProjectileSpeed1", quiver[1].Id);
+            Assert.AreEqual("DexMasterProjectileSpeedCrafted", ((Mod) quiver[0]).Id);
+            Assert.AreEqual("ProjectileSpeed1", ((Mod) quiver[1]).Id);
         }
 
         [TestMethod]
         public async Task GetMatchingMods_CausesBleeding()
         {
             await _initialization;
-            var affixes = _modDatabase[ModType.Prefix];
+            var affixes = _modDatabase[ModGenerationType.Prefix];
             var affix = affixes.Single(a => a.Group == "CausesBleeding");
 
-            var bow = affix.GetMatchingMods(ModDomain.Item,
+            var bow = affix.GetMatchingMods(
                 Tags.Bow | Tags.TwoHandWeapon | Tags.Ranged, ItemClass.Bow).ToList();
             Assert.AreEqual(1, bow.Count);
-            Assert.AreEqual("BleedOnHitGainedDexMasterVendorItem", bow[0].Id);
+            Assert.AreEqual("BleedOnHitGainedDexMasterVendorItem", ((Mod) bow[0]).Id);
         }
 
         // Make sure all possible Tags and ItemClasses are either known or purposefully unknown.

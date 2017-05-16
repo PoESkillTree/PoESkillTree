@@ -30,7 +30,7 @@ namespace POESKillTree.Model.Items
 
         public bool CanHaveQuality { get; }
         public IReadOnlyList<IMod> ImplicitMods { get; }
-        private readonly IReadOnlyList<Property> _properties;
+        private readonly IReadOnlyList<string> _properties;
 
         public ItemImage Image { get; }
 
@@ -49,8 +49,8 @@ namespace POESKillTree.Model.Items
             Tags = xmlBase.Tags;
             MetadataId = xmlBase.MetadataId;
 
-            ImplicitMods = xmlBase.Implicit.Select(i => modDatabase[i.Id]).ToList();
-            _properties = xmlBase.Properties.Select(p => new Property(p)).ToList();
+            ImplicitMods = xmlBase.Implicit.Select(id => modDatabase[id]).ToList();
+            _properties = xmlBase.Properties;
             CanHaveQuality = Tags.HasFlag(Tags.Weapon) || Tags.HasFlag(Tags.Armour);
 
             Image = new ItemImage(itemImageService, Name, ItemClass);
@@ -86,7 +86,7 @@ namespace POESKillTree.Model.Items
             InventoryWidth = 0;
             MetadataId = "";
             ImplicitMods = new List<IMod>();
-            _properties = new List<Property>();
+            _properties = new List<string>();
             CanHaveQuality = false;
 
             Name = typeLine;
@@ -196,13 +196,12 @@ namespace POESKillTree.Model.Items
 
             if (quality > 0)
             {
-                var qProp = new ItemMod("Quality: +#%", true, new float[] { quality },
-                    new[] { ItemMod.ValueColoring.LocallyAffected });
+                var qProp = new ItemMod($"Quality: +{quality}%", true, ItemMod.ValueColoring.LocallyAffected);
                 props.Add(qProp);
             }
 
             if (_properties != null)
-                props.AddRange(_properties.Select(prop => prop.ToItemMod()));
+                props.AddRange(_properties.Select(prop => new ItemMod(prop, true)));
             return props;
         }
 
@@ -213,10 +212,13 @@ namespace POESKillTree.Model.Items
 
         private int GetMaximumNumberOfSockets()
         {
-            if (ImplicitMods.Any(s => s.Id == "RingHasOneSocket"))
+            var socketStat = ImplicitMods
+                .SelectMany(m => m.Stats)
+                .FirstOrDefault(s => s.Id == "local_has_X_sockets");
+            if (socketStat != null)
             {
                 // e.g. Unset Ring
-                return 1;
+                return socketStat.Range.From;
             }
             if (Tags.HasFlag(Tags.OneHand) || Tags.HasFlag(Tags.Shield))
             {

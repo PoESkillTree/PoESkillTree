@@ -19,8 +19,7 @@ namespace POESKillTree.Model.Items.Mods
             Chaos = 7
         }
 
-        
-        public int Level { get; }
+        public static readonly Regex Numberfilter = new Regex(@"[0-9]*\.?[0-9]+");
 
         public string Attribute { get; }
 
@@ -30,33 +29,23 @@ namespace POESKillTree.Model.Items.Mods
 
         public bool IsLocal { get; }
 
-        public ItemMod(string attribute, bool isLocal, Regex numberfilter, 
-            IEnumerable<ValueColoring> valueColors = null)
+        public ItemMod(string attribute, bool isLocal, ValueColoring valueColor = ValueColoring.White)
         {
-            Values = (from Match match in numberfilter.Matches(attribute)
-                     select float.Parse(match.Value, CultureInfo.InvariantCulture))
-                     .ToList();
-            Attribute = numberfilter.Replace(attribute, "#");
             IsLocal = isLocal;
-            ValueColors = valueColors?.ToList() ?? new List<ValueColoring>();
+            Attribute = Numberfilter.Replace(attribute, "#");
+            Values = (
+                from Match match in Numberfilter.Matches(attribute)
+                select float.Parse(match.Value, CultureInfo.InvariantCulture)
+            ).ToList();
+            ValueColors = Values.Select(_ => valueColor).ToList();
         }
 
-        public ItemMod(string attribute, bool isLocal, IEnumerable<float> values = null,
-            IEnumerable<ValueColoring> valueColors = null)
+        public ItemMod(string attribute, bool isLocal, IEnumerable<float> values, 
+            IEnumerable<ValueColoring> valueColors)
         {
             IsLocal = isLocal;
             Attribute = attribute;
-            Values = values?.ToList() ?? new List<float>();
-            ValueColors = valueColors?.ToList() ?? new List<ValueColoring>();
-        }
-
-        public ItemMod(string attribute, bool isLocal, int level, IEnumerable<float> values = null,
-            IEnumerable<ValueColoring> valueColors = null)
-        {
-            Level = level;
-            IsLocal = isLocal;
-            Attribute = attribute;
-            Values = values?.ToList() ?? new List<float>();
+            Values = values.ToList();
             ValueColors = valueColors?.ToList() ?? new List<ValueColoring>();
         }
 
@@ -64,7 +53,6 @@ namespace POESKillTree.Model.Items.Mods
         {
             IsLocal = other.IsLocal;
             Attribute = other.Attribute;
-            Level = other.Level;
             ValueColors = other.ValueColors.ToList();
         }
 

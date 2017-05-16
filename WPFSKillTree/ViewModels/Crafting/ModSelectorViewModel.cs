@@ -4,20 +4,33 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using MB.Algodat;
 using MoreLinq;
-using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Mods;
+using POESKillTree.Model.Items.StatTranslation;
 using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
-using Affix = POESKillTree.Model.Items.Affixes.Affix;
 
 namespace POESKillTree.ViewModels.Crafting
 {
+    public class StatIdValuePair
+    {
+        public string StatId { get; }
+        public int Value { get; }
+
+        public StatIdValuePair(string statId, int value)
+        {
+            StatId = statId;
+            Value = value;
+        }
+    }
+
+
     /// <summary>
     /// View model for selecting a mod out of a list of affixes and selecting their values.
     /// </summary>
     public class ModSelectorViewModel : Notifier
     {
         private static readonly Affix EmptySelection = new Affix();
+
+        private readonly StatTranslator _statTranslator;
 
         public bool CanDeselct { get; }
 
@@ -51,10 +64,7 @@ namespace POESKillTree.ViewModels.Crafting
             set { SetProperty(ref _selectedAffix, value, OnSelectedAffixChanged); }
         }
 
-        public bool IsEmptySelection
-        {
-            get { return _selectedAffix == EmptySelection; }
-        }
+        public bool IsEmptySelection => _selectedAffix == EmptySelection;
 
         private string _affixText;
 
@@ -64,25 +74,20 @@ namespace POESKillTree.ViewModels.Crafting
             private set { SetProperty(ref _affixText, value); }
         }
 
-        public IEnumerable<IEnumerable<float>> SelectedValues
-        {
-            get { return _sliderGroups.Select(g => g.Sliders.Select(s => s.Value)); }
-        }
+        public IEnumerable<int> SelectedValues => _sliders.Select(s => s.Value);
 
         private readonly ObservableCollection<SliderGroupViewModel> _sliderGroups =
             new ObservableCollection<SliderGroupViewModel>();
 
-        public IReadOnlyList<SliderGroupViewModel> SliderGroups
-        {
-            get { return _sliderGroups; }
-        }
+        public IEnumerable<SliderGroupViewModel> SliderGroups => _sliderGroups;
 
         private readonly List<SliderViewModel> _sliders = new List<SliderViewModel>();
 
         private bool _updatingSliders;
 
-        public ModSelectorViewModel(bool canDeselect = true)
+        public ModSelectorViewModel(StatTranslator statTranslator, bool canDeselect = true)
         {
+            _statTranslator = statTranslator;
             CanDeselct = canDeselect;
         }
 
@@ -94,30 +99,40 @@ namespace POESKillTree.ViewModels.Crafting
 
             if (SelectedAffix != null && !IsEmptySelection)
             {
-                for (int i = 0; i < SelectedAffix.StatNames.Count; i++)
+                var ids = new List<string>();
+                var idToIndex = new Dictionary<string, int>();
+                for (var i = 0; i < SelectedAffix.ValueCount; i++)
+                {
+                    var stat = SelectedAffix.FirstTierStats[i];
+                    ids.Add(stat.Id);
+                    idToIndex[stat.Id] = i;
+                }
+
+                var translations = _statTranslator.GetTranslations(ids);
+                var groups = new List<IReadOnlyList<int>>();
+                foreach (var translation in translations)
+                {
+                    var translatedIndices = translation.Ids
+                        .Where(id => idToIndex.ContainsKey(id))
+                        .Select(id => idToIndex[id]).ToList();
+                    groups.Add(translatedIndices);
+                }
+
+                foreach (var group in groups)
                 {
                     var sliderGroup = new List<SliderViewModel>();
 
-                    for (var j = 0; j < SelectedAffix.ValueCountPerStat[i]; j++)
+                    foreach (var valueIndex in group)
                     {
-                        var ranges = SelectedAffix.GetRanges(i, j);
-                        var isFloatMod = ranges
-                            .Any(r => !r.From.AlmostEquals((int)r.From, 1e-5) || !r.To.AlmostEquals((int)r.To, 1e-5));
-                        IEnumerable<double> ticks = ranges
-                            .SelectMany(
-                                r =>
-                                    Enumerable.Range((int) Math.Round(isFloatMod ? r.From * 100 : r.From),
-                                        (int) Math.Round((r.To - r.From) * (isFloatMod ? 100 : 1) + 1)))
-                            .Select(f => isFloatMod ? (double) f / 100 : f);
-
-                        var slider = new SliderViewModel(i, j, ticks);
+                        var ranges = SelectedAffix.GetRanges(valueIndex);
+                        var ticks = ranges.SelectMany(r => Enumerable.Range(r.From, r.To - r.From + 1));
+                        var slider = new SliderViewModel(valueIndex, ticks);
                         sliderGroup.Add(slider);
                         _sliders.Add(slider);
                     }
 
-                    string groupFormat = StatNameToFormat(SelectedAffix.StatNames[i]);
-                    var group = new SliderGroupViewModel(sliderGroup, groupFormat);
-                    _sliderGroups.Add(group);
+                    var translation = new DynamicTranslation(_statTranslator, SelectedAffix, group);
+                    _sliderGroups.Add(new SliderGroupViewModel(sliderGroup, translation));
                 }
             }
 
@@ -133,27 +148,6 @@ namespace POESKillTree.ViewModels.Crafting
             }
         }
 
-        private static string StatNameToFormat(string statName)
-        {
-            var format = "";
-            var parts = statName.Split('#');
-            for (var i = 0; i < parts.Length - 1; i++)
-            {
-                var part = parts[i];
-                if (part.EndsWith("+"))
-                {
-                    // replace "+#" placeholders by a format to always show the sign
-                    format += part.Substring(0, part.Length - 1) + "{" + i + ":+0;-#}";
-                }
-                else
-                {
-                    format += part + "{" + i + "}";
-                }
-            }
-            format += parts.Last();
-            return format;
-        }
-
         private void SliderOnValueChanged(object sender, SliderValueChangedEventArgs e)
         {
             if (_updatingSliders)
@@ -161,17 +155,16 @@ namespace POESKillTree.ViewModels.Crafting
 
             var slider = (SliderViewModel) sender;
 
-            ItemModTier[] tiers = SelectedAffix.QueryMod(slider.StatIndex, slider.ValueIndex, e.NewValue)
-                .OrderBy(m => m.Name).ToArray();
+            IMod[] tiers = SelectedAffix.QueryModsSingleValue(slider.ValueIndex, e.NewValue)
+                .OrderBy(m => m.RequiredLevel).ToArray();
             _updatingSliders = true;
             foreach (var other in _sliders.Where(s => s != slider))
             {
-                var iStat = other.StatIndex;
                 var iValue = other.ValueIndex;
-                if (!SelectedAffix.QueryMod(iStat, iValue, other.Value).Intersect(tiers).Any())
+                if (!SelectedAffix.QueryModsSingleValue(iValue, other.Value).Intersect(tiers).Any())
                 {
                     // slider isn't inside current tier
-                    Range<float> moveto = tiers[0].Stats[iStat].Ranges[iValue];
+                    Range<int> moveto = tiers[0].Stats[iValue].Range;
                     other.Value = (e.NewValue > e.OldValue) ? moveto.From : moveto.To;
                 }
             }
@@ -179,26 +172,60 @@ namespace POESKillTree.ViewModels.Crafting
 
             OnPropertyChanged("SelectedValues");
 
-            AffixText = TiersString(Query());
+            AffixText = string.Join("/", SelectedAffix.QueryMods(SelectedValues).Select(s => $"{s.Name}"));
         }
 
-        private static string TiersString(IEnumerable<ItemModTier> tiers)
+        public IMod Query()
         {
-            return string.Join("/", tiers.Select(s => $"T{s.Tier}: {s.Name}"));
+            return SelectedAffix.QueryMods(SelectedValues).First();
         }
 
-        public IEnumerable<ItemModTier> Query()
+        public IEnumerable<StatIdValuePair> GetStatValues()
         {
-            return SelectedAffix.Query(SelectedValues);
-        }
-
-        public IEnumerable<ItemMod> GetExactMods()
-        {
-            if (IsEmptySelection)
+            var firstMatch = SelectedAffix.QueryMods(SelectedValues).FirstOrDefault();
+            if (firstMatch == null)
             {
-                return new ItemMod[0];
+                return Enumerable.Empty<StatIdValuePair>();
             }
-            return SelectedAffix.ToItemMods(SelectedValues);
+            return firstMatch.Stats.EquiZip(SelectedValues, (s, v) => new StatIdValuePair(s.Id, v));
+        }
+
+
+        private class DynamicTranslation : ITranslation
+        {
+            private readonly StatTranslator _statTranslator;
+            private readonly Affix _affix;
+            private readonly IReadOnlyList<int> _valueIndices;
+
+            public DynamicTranslation(StatTranslator statTranslator, Affix affix, IEnumerable<int> valueIndices)
+            {
+                _statTranslator = statTranslator;
+                _affix = affix;
+                _valueIndices = valueIndices.ToList();
+            }
+
+            public string Translate(IReadOnlyList<int> values)
+            {
+                if (_valueIndices.Count != values.Count)
+                {
+                    throw new ArgumentException("Number of values must match number of value indices");
+                }
+
+                var firstMatch = _valueIndices
+                    .EquiZip(values, (i, v) => _affix.QueryModsSingleValue(i, v))
+                    .Aggregate((a, ms) => a.Intersect(ms))
+                    .FirstOrDefault();
+                if (firstMatch == null)
+                {
+                    return null;
+                }
+
+                var idValueDict = _valueIndices
+                    .Select(i => firstMatch.Stats[i].Id)
+                    .EquiZip(values, Tuple.Create)
+                    .ToDictionary(t => t.Item1, t => t.Item2);
+                return _statTranslator.GetTranslations(idValueDict).First();
+            }
         }
     }
 }

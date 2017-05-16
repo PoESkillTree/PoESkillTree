@@ -12,7 +12,7 @@ namespace POESKillTree.Model.Items.Mods
         [JsonProperty("domain")]
         public ModDomain Domain { get; set; }
         [JsonProperty("generation_type")]
-        public ModType GenerationType { get; set; }
+        public ModGenerationType GenerationType { get; set; }
         // "grants_buff": not used
         // "grants_effect": not used
         [JsonProperty("group")]

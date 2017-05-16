@@ -1,6 +1,6 @@
 ﻿namespace POESKillTree.Model.Items.Enums
 {
-    public enum ModType
+    public enum ModGenerationType
     {
         Prefix,
         Suffix,
