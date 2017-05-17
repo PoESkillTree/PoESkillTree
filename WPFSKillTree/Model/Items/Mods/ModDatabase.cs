@@ -7,10 +7,9 @@ namespace POESKillTree.Model.Items.Mods
 {
     public class ModDatabase
     {
-        private readonly IReadOnlyDictionary<string, Mod> _mods;
+        public IReadOnlyDictionary<string, Mod> Mods { get; }
         private readonly IReadOnlyDictionary<ModGenerationType, IReadOnlyList<ModGroup>> _groupsByType;
 
-        public IMod this[string modId] => _mods[modId];
         public IReadOnlyList<ModGroup> this[ModGenerationType modtype] => _groupsByType[modtype];
 
         public ModDatabase(IReadOnlyDictionary<string, JsonMod> mods, IEnumerable<JsonCraftingBenchOption> benchOptions,
@@ -20,10 +19,10 @@ namespace POESKillTree.Model.Items.Mods
             var signatureModDict = npcMasters
                 .Select(n => n.Value.SignatureMod)
                 .ToDictionary(s => s.Id, s => s.SpawnTags);
-            _mods = mods.ToDictionary(
+            Mods = mods.ToDictionary(
                 p => p.Key, 
                 p => new Mod(p.Key, p.Value, benchLookup[p.Key], signatureModDict.GetOrDefault(p.Key)));
-            _groupsByType = _mods.Values
+            _groupsByType = Mods.Values
                 .GroupBy(m => m.JsonMod.GenerationType)
                 .ToDictionary(g => g.Key, ModsToAffixes);
         }

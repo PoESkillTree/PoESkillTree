@@ -49,7 +49,7 @@ namespace POESKillTree.Model.Items
             Tags = xmlBase.Tags;
             MetadataId = xmlBase.MetadataId;
 
-            ImplicitMods = xmlBase.Implicit.Select(id => modDatabase[id]).ToList();
+            ImplicitMods = xmlBase.Implicit.Select(id => modDatabase.Mods[id]).ToList();
             _properties = xmlBase.Properties;
             CanHaveQuality = Tags.HasFlag(Tags.Weapon) || Tags.HasFlag(Tags.Armour);
 
@@ -59,10 +59,10 @@ namespace POESKillTree.Model.Items
         }
 
         /// <summary>
-        /// Creates an ItemBase that sets <see cref="ItemGroup"/> and <see cref="ItemType"/> on
+        /// Creates an ItemBase that sets <see cref="ItemClass"/> and <see cref="Tags"/> on
         /// a best effort basis. They might not be set correctly.
         /// <para/>
-        /// Only <see cref="Name"/>, <see cref="ItemGroup"/> and <see cref="ItemType"/> may be called on
+        /// Only <see cref="Name"/>, <see cref="ItemClass"/> and <see cref="Tags"/> may be called on
         /// ItemBases created via this constructor. It is not meant to produce bases that can exist independent
         /// of the <see cref="Item"/> they are created for.
         /// </summary>

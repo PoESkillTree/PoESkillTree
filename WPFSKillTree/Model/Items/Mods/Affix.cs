@@ -43,6 +43,8 @@ namespace POESKillTree.Model.Items.Mods
             {
                 ValueCount = 0;
                 FirstTierStats = new IStat[0];
+                _ranges = new IReadOnlyList<Range<int>>[0];
+                _trees = new IRangeTree<int, ModWrapper>[0];
                 return;
             }
 

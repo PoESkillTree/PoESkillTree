@@ -281,7 +281,7 @@
       <Value Level="30">1594</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Ancestral Protector" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Totem, Attack, Duration, Melee">
+  <Gem Name="Ancestral Protector" RequiredWeapon="Claw Dagger OneHandAxe OneHandMace OneHandSword Staff TwoHandAxe TwoHandMace TwoHandSword Unarmed" Tags="Totem, Attack, Duration, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
@@ -354,7 +354,7 @@
       <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Ancestral Warchief" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Totem, Attack, Duration, AoE, Melee">
+  <Gem Name="Ancestral Warchief" RequiredWeapon="Claw Dagger OneHandAxe OneHandMace OneHandSword Staff TwoHandAxe TwoHandMace TwoHandSword Unarmed" Tags="Totem, Attack, Duration, AoE, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
@@ -1353,7 +1353,7 @@
       <Value Level="30">4162 5826</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Blade Flurry" RequiredWeapon="Claw Dagger OneHandedSword" Tags="Attack, AoE, Channelling, Melee">
+  <Gem Name="Blade Flurry" RequiredWeapon="Claw Dagger OneHandSword" Tags="Attack, AoE, Channelling, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">4</ValueForLevel>
     </Attribute>
@@ -2812,7 +2812,7 @@
       <Value Level="30">50</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Cleave" RequiredWeapon="OneHandedAxe OneHandedSword TwoHandedAxe TwoHandedSword" StrikesWithBothWeapons="true" Tags="Attack, AoE, Melee">
+  <Gem Name="Cleave" RequiredWeapon="OneHandAxe OneHandSword TwoHandAxe TwoHandSword" StrikesWithBothWeapons="true" Tags="Attack, AoE, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -3563,7 +3563,7 @@
       <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Cyclone" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Attack, AoE, Movement, Melee">
+  <Gem Name="Cyclone" RequiredWeapon="Claw Dagger OneHandAxe OneHandMace OneHandSword Staff TwoHandAxe TwoHandMace TwoHandSword Unarmed" Tags="Attack, AoE, Movement, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">12</ValueForLevel>
     </Attribute>
@@ -4246,7 +4246,7 @@
       <Value Level="30">50</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Dominating Blow" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Attack, Minion, Duration, Melee">
+  <Gem Name="Dominating Blow" RequiredWeapon="Claw Dagger OneHandAxe OneHandMace OneHandSword Staff TwoHandAxe TwoHandMace TwoHandSword Unarmed" Tags="Attack, Minion, Duration, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="3">12</ValueForLevel>
       <ValueForLevel From="4" To="6">13</ValueForLevel>
@@ -4343,7 +4343,7 @@
       <Value Level="30">110.6</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Dual Strike" RequiredHand="DualWielded" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword TwoHandedAxe" Tags="Attack, Melee">
+  <Gem Name="Dual Strike" RequiredHand="DualWielded" RequiredWeapon="Claw Dagger OneHandAxe OneHandMace OneHandSword TwoHandAxe" Tags="Attack, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
@@ -4386,7 +4386,7 @@
       <Value Level="30">114</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Earthquake" RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace Staff TwoHandedAxe TwoHandedMace" Tags="Attack, AoE, Duration, Melee">
+  <Gem Name="Earthquake" RequiredHand="Main" RequiredWeapon="OneHandAxe OneHandMace Staff TwoHandAxe TwoHandMace" Tags="Attack, AoE, Duration, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">10</ValueForLevel>
     </Attribute>
@@ -7360,7 +7360,7 @@
       <Value Level="30">502 758</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Glacial Hammer" RequiredWeapon="OneHandedMace Staff TwoHandedMace" Tags="Attack, Melee, Cold">
+  <Gem Name="Glacial Hammer" RequiredWeapon="OneHandMace Staff TwoHandMace" Tags="Attack, Melee, Cold">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
@@ -7523,7 +7523,7 @@
       <ValueForLevel From="29" To="30">21</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Ground Slam" RequiredHand="Main" RequiredWeapon="OneHandedMace Staff TwoHandedMace" Tags="Attack, AoE, Melee">
+  <Gem Name="Ground Slam" RequiredHand="Main" RequiredWeapon="OneHandMace Staff TwoHandMace" Tags="Attack, AoE, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -7727,7 +7727,7 @@
       <Value Level="30">50</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Heavy Strike" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" Tags="Attack, Melee">
+  <Gem Name="Heavy Strike" RequiredWeapon="OneHandAxe OneHandMace OneHandSword Staff TwoHandAxe TwoHandMace TwoHandSword" Tags="Attack, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
@@ -8146,7 +8146,7 @@
       <ValueForLevel From="1" To="30">15</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Ice Crash" RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Attack, AoE, Cold, Melee">
+  <Gem Name="Ice Crash" RequiredHand="Main" RequiredWeapon="OneHandAxe OneHandMace OneHandSword Staff TwoHandAxe TwoHandMace TwoHandSword Unarmed" Tags="Attack, AoE, Cold, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
@@ -8854,7 +8854,7 @@
       <Value Level="30">74</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Infernal Blow" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Attack, AoE, Melee, Fire">
+  <Gem Name="Infernal Blow" RequiredWeapon="OneHandAxe OneHandMace OneHandSword Staff TwoHandAxe TwoHandMace TwoHandSword Unarmed" Tags="Attack, AoE, Melee, Fire">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -9142,7 +9142,7 @@
       <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Lacerate" RequiredWeapon="OneHandedAxe OneHandedSword TwoHandedAxe TwoHandedSword" Tags="Attack, AoE, Melee">
+  <Gem Name="Lacerate" RequiredWeapon="OneHandAxe OneHandSword TwoHandAxe TwoHandSword" Tags="Attack, AoE, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
@@ -9197,7 +9197,7 @@
       <ValueForLevel From="28" To="30">7</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Leap Slam" RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword" Tags="Attack, AoE, Movement, Melee">
+  <Gem Name="Leap Slam" RequiredHand="Main" RequiredWeapon="OneHandAxe OneHandMace OneHandSword Staff TwoHandAxe TwoHandMace TwoHandSword" Tags="Attack, AoE, Movement, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">15</ValueForLevel>
     </Attribute>
@@ -11275,7 +11275,7 @@
       <Value Level="30">54</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Puncture" RequiredWeapon="Bow Claw Dagger OneHandedSword TwoHandedSword" Tags="Attack, Duration, Melee, Bow">
+  <Gem Name="Puncture" RequiredWeapon="Bow Claw Dagger OneHandSword TwoHandSword" Tags="Attack, Duration, Melee, Bow">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -12201,7 +12201,7 @@
       <ValueForLevel From="1" To="30">15</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Reave" RequiredWeapon="Claw Dagger OneHandedSword" Tags="Attack, AoE, Melee">
+  <Gem Name="Reave" RequiredWeapon="Claw Dagger OneHandSword" Tags="Attack, AoE, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
@@ -12255,7 +12255,7 @@
       <Value Level="30">6</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Reckoning" RequiresEquippedShield="true" RequiredHand="Main" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Unarmed" Tags="Trigger, Attack, AoE, Melee">
+  <Gem Name="Reckoning" RequiresEquippedShield="true" RequiredHand="Main" RequiredWeapon="Claw Dagger OneHandAxe OneHandMace OneHandSword Unarmed" Tags="Trigger, Attack, AoE, Melee">
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">0.4</ValueForLevel>
     </Attribute>
@@ -12509,7 +12509,7 @@
       <ValueForLevel From="28" To="30">7</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Riposte" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" StrikesWithBothWeapons="true" Tags="Trigger, Attack, Melee">
+  <Gem Name="Riposte" RequiredWeapon="Claw Dagger OneHandAxe OneHandMace OneHandSword Staff TwoHandAxe TwoHandMace TwoHandSword Unarmed" StrikesWithBothWeapons="true" Tags="Trigger, Attack, Melee">
     <Attribute Name="Cooldown Time: # sec">
       <ValueForLevel From="1" To="30">0.8</ValueForLevel>
     </Attribute>
@@ -12707,7 +12707,7 @@
       <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Shield Charge" RequiresEquippedShield="true" RequiredHand="Main" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Unarmed" Tags="Attack, AoE, Movement, Melee">
+  <Gem Name="Shield Charge" RequiresEquippedShield="true" RequiredHand="Main" RequiredWeapon="Claw Dagger OneHandAxe OneHandMace OneHandSword Unarmed" Tags="Attack, AoE, Movement, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
@@ -14248,7 +14248,7 @@
       <Value Level="30">164</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Sunder" RequiredHand="Main" RequiredWeapon="OneHandedAxe OneHandedMace Staff TwoHandedAxe TwoHandedMace" Tags="Attack, AoE, Melee">
+  <Gem Name="Sunder" RequiredHand="Main" RequiredWeapon="OneHandAxe OneHandMace Staff TwoHandAxe TwoHandMace" Tags="Attack, AoE, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
@@ -15027,7 +15027,7 @@
       <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vaal Cyclone" RequiredWeapon="Claw Dagger OneHandedAxe OneHandedMace OneHandedSword Staff TwoHandedAxe TwoHandedMace TwoHandedSword Unarmed" Tags="Vaal, Attack, AoE, Duration, Melee">
+  <Gem Name="Vaal Cyclone" RequiredWeapon="Claw Dagger OneHandAxe OneHandMace OneHandSword Staff TwoHandAxe TwoHandMace TwoHandSword Unarmed" Tags="Vaal, Attack, AoE, Duration, Melee">
     <Attribute Name="Souls Per Use: #">
       <ValueForLevel From="1" To="30">32</ValueForLevel>
     </Attribute>
@@ -15382,7 +15382,7 @@
       <ValueForLevel From="1" To="30">110</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vaal Glacial Hammer" RequiredWeapon="OneHandedMace Staff TwoHandedMace" Tags="Vaal, Attack, Melee, Duration, AoE, Cold">
+  <Gem Name="Vaal Glacial Hammer" RequiredWeapon="OneHandMace Staff TwoHandMace" Tags="Vaal, Attack, Melee, Duration, AoE, Cold">
     <Attribute Name="Souls Per Use: #">
       <ValueForLevel From="1" To="30">12</ValueForLevel>
     </Attribute>
@@ -15556,7 +15556,7 @@
       <ValueForLevel From="1" To="30">6</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vaal Ground Slam" RequiredHand="Main" RequiredWeapon="OneHandedMace Staff TwoHandedMace" Tags="Vaal, Attack, AoE, Melee">
+  <Gem Name="Vaal Ground Slam" RequiredHand="Main" RequiredWeapon="OneHandMace Staff TwoHandMace" Tags="Vaal, Attack, AoE, Melee">
     <Attribute Name="Souls Per Use: #">
       <ValueForLevel From="1" To="30">24</ValueForLevel>
     </Attribute>
@@ -16246,7 +16246,7 @@
       <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vaal Reave" RequiredWeapon="Claw Dagger OneHandedSword" Tags="Vaal, Attack, AoE, Melee">
+  <Gem Name="Vaal Reave" RequiredWeapon="Claw Dagger OneHandSword" Tags="Vaal, Attack, AoE, Melee">
     <Attribute Name="Souls Per Use: #">
       <ValueForLevel From="1" To="30">24</ValueForLevel>
     </Attribute>
@@ -16745,7 +16745,7 @@
       <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Viper Strike" RequiredWeapon="Claw Dagger OneHandedSword TwoHandedSword" Tags="Attack, Duration, Melee, Chaos">
+  <Gem Name="Viper Strike" RequiredWeapon="Claw Dagger OneHandSword TwoHandSword" Tags="Attack, Duration, Melee, Chaos">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
@@ -17269,7 +17269,7 @@
       <Value Level="30">69</Value>
     </Attribute>
   </Gem>
-  <Gem Name="Whirling Blades" RequiredWeapon="Claw Dagger OneHandedSword" Tags="Attack, Movement, Melee">
+  <Gem Name="Whirling Blades" RequiredWeapon="Claw Dagger OneHandSword" Tags="Attack, Movement, Melee">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="30">15</ValueForLevel>
     </Attribute>

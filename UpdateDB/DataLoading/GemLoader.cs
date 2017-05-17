@@ -106,14 +106,14 @@ namespace UpdateDB.DataLoading
                         foreach (var restriction in weaponRestrictions)
                         {
                             // map game's ItemClass to our WeaponType
-                            var w = restriction.Replace(" Hand ", " Handed ");
-                            if (w == "Thrusting One Handed Sword")
+                            var w = restriction;
+                            if (w == "Thrusting One Hand Sword")
                             {
-                                w = "One Handed Sword";
+                                w = "One Hand Sword";
                             }
                             else if (w == "Sceptre")
                             {
-                                w = "One Handed Mace";
+                                w = "One Hand Mace";
                             }
                             w = Regex.Replace(w, @"([a-z]) ([A-Z])", "$1$2");
                             Compute.WeaponType weaponType;

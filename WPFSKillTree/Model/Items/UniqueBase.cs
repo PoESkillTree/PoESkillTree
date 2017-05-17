@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using log4net;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
 
@@ -10,6 +11,7 @@ namespace POESKillTree.Model.Items
     /// </summary>
     public class UniqueBase : IItemBase
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(UniqueBase));
 
         public int Level { get; }
         public int RequiredStrength => _base.RequiredStrength;
@@ -41,7 +43,18 @@ namespace POESKillTree.Model.Items
             DropDisabled = xmlUnique.DropDisabled;
             _base = itemBase;
             _properties = xmlUnique.Properties;
-            ExplicitMods = xmlUnique.Explicit.Select(id => modDatabase[id]).ToList();
+            var explicits = new List<IMod>();
+            foreach (var id in xmlUnique.Explicit)
+            {
+                Mod mod;
+                if (!modDatabase.Mods.TryGetValue(id, out mod))
+                {
+                    Log.Warn($"Unknown mod id {id} on unique {UniqueName}");
+                    continue;
+                }
+                explicits.Add(mod);
+            }
+            ExplicitMods = explicits;
 
             Image = itemBase.Image.AsDefaultForUniqueImage(itemImageService, UniqueName);
         }

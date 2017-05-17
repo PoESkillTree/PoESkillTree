@@ -21,13 +21,13 @@ namespace POESKillTree.Model.Items.Enums
         Claw,
         Wand,
         //Unarmed,
-        FishingRod,
 
         TwoHandSword,
         TwoHandAxe,
         TwoHandMace,
         Bow,
         Staff,
+        FishingRod,
 
         Belt,
         Ring,

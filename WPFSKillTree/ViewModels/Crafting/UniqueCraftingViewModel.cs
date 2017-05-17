@@ -50,8 +50,9 @@ namespace POESKillTree.ViewModels.Crafting
             Item.NameLine = SelectedBase.UniqueName;
             Item.Frame = FrameType.Unique;
             requiredLevel = MsExplicits
-                .Select(ms => ms.Query())
-                .Max(m => m.RequiredLevel);
+                .Select(ms => ms.Query().RequiredLevel)
+                .DefaultIfEmpty()
+                .Max();
             return MsExplicits
                 .SelectMany(ms => ms.GetStatValues())
                 .ToLookup(_ => ModLocation.Explicit);

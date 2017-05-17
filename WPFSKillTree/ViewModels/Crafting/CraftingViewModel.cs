@@ -155,8 +155,9 @@ namespace POESKillTree.ViewModels.Crafting
             UpdateItemNameLine();
 
             requiredLevel = selectedPrefixes.Concat(selectedSuffixes)
-                .Select(ms => ms.Query())
-                .Max(m => m.RequiredLevel);
+                .Select(ms => ms.Query().RequiredLevel)
+                .DefaultIfEmpty()
+                .Max();
 
             return
                 from ms in MsPrefix.Concat(MsSuffix)

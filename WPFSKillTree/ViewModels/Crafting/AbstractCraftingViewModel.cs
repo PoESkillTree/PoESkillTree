@@ -23,52 +23,18 @@ namespace POESKillTree.ViewModels.Crafting
     public abstract class AbstractCraftingViewModel<TBase> : CloseableViewModel<bool>
         where TBase : class, IItemBase
     {
-        private readonly IReadOnlyList<TBase> _bases;
-        private IEnumerable<TBase> EligibleBases => _bases
-            .Where(b => ShowDropDisabledItems || !b.DropDisabled);
-
-        private ILookup<ItemType, TBase> BasesPerType => null;// todo EligibleBases.ToLookup(b => b.ItemType);
-        private IEnumerable<ItemType> EligibleTypes
-            => ItemType.Any.Concat(BasesPerType.Select(t => t.Key)).OrderBy(t => t);
-
-        private ILookup<ItemGroup, TBase> BasesPerGroup => null;// todo EligibleBases.ToLookup(b => b.ItemGroup);
-        private IEnumerable<ItemGroup> EligibleGroups
-            => ItemGroup.Any.Concat(BasesPerGroup.Select(g => g.Key)).OrderBy(g => g);
-
         private bool _showDropDisabledItems;
         public bool ShowDropDisabledItems
         {
             get { return _showDropDisabledItems; }
-            set { SetProperty(ref _showDropDisabledItems, value, OnShowDropDisabledItemsChanged);}
+            set { SetProperty(ref _showDropDisabledItems, value, OnShowDropDisabledItemsChanged); }
         }
 
-        private IReadOnlyList<ItemGroup> _groupList;
-        public IReadOnlyList<ItemGroup> GroupList
-        {
-            get { return _groupList; }
-            private set { SetProperty(ref _groupList, value); }
-        }
+        // Bases
 
-        private ItemGroup _selectedGroup;
-        public ItemGroup SelectedGroup
-        {
-            get { return _selectedGroup; }
-            set { SetProperty(ref _selectedGroup, value, OnSelectedGroupChanged); }
-        }
-
-        private IReadOnlyList<ItemType> _typeList;
-        public IReadOnlyList<ItemType> TypeList
-        {
-            get { return _typeList; }
-            private set { SetProperty(ref _typeList, value); }
-        }
-
-        private ItemType _selectedType;
-        public ItemType SelectedType
-        {
-            get { return _selectedType; }
-            set { SetProperty(ref _selectedType, value, UpdateBaseList); }
-        }
+        private readonly IReadOnlyList<TBase> _bases;
+        private IEnumerable<TBase> EligibleBases
+            => _bases.Where(b => ShowDropDisabledItems || !b.DropDisabled);
 
         private IReadOnlyList<TBase> _baseList;
         public IReadOnlyList<TBase> BaseList
@@ -84,6 +50,59 @@ namespace POESKillTree.ViewModels.Crafting
             set { SetProperty(ref _selectedBase, value, UpdateBase); }
         }
 
+        // First level
+
+        public IReadOnlyList<BaseGroup> FirstLevelList { get; } = Util.GetEnumValues<BaseGroup>();
+
+        private BaseGroup _selectedFirstLevel;
+        public BaseGroup SelectedFirstLevel
+        {
+            get { return _selectedFirstLevel; }
+            set { SetProperty(ref _selectedFirstLevel, value, UpdateSecondLevel); }
+        }
+
+        // Second level
+
+        private IReadOnlyList<ItemClass> _secondLevelList;
+        public IReadOnlyList<ItemClass> SecondLevelList
+        {
+            get { return _secondLevelList; }
+            private set { SetProperty(ref _secondLevelList, value); }
+        }
+
+        private ItemClass _selectedSecondLevel;
+        public ItemClass SelectedSecondLevel
+        {
+            get { return _selectedSecondLevel; }
+            set { SetProperty(ref _selectedSecondLevel, value, UpdateThirdLevel); }
+        }
+
+        // Third level
+
+        private readonly IEnumerable<Tags> _thirdLevelOptions = new[]
+        {
+            Tags.StrArmour, Tags.DexArmour, Tags.IntArmour, 
+            Tags.StrDexArmour, Tags.StrIntArmour, Tags.DexIntArmour, 
+            Tags.StrDexIntArmour,
+            Tags.StrJewel | Tags.DexJewel | Tags.IntJewel, // Prismatic Jewel
+            Tags.StrJewel, Tags.DexJewel, Tags.IntJewel
+        };
+
+        private IReadOnlyList<Tags> _thirdLevelList;
+        public IReadOnlyList<Tags> ThirdLevelList
+        {
+            get { return _thirdLevelList; }
+            private set { SetProperty(ref _thirdLevelList, value); }
+        }
+
+        private Tags _selectedThirdLevel;
+        public Tags SelectedThirdLevel
+        {
+            get { return _selectedThirdLevel; }
+            set { SetProperty(ref _selectedThirdLevel, value, UpdateBaseList); }
+        }
+
+
         private Item _item;
 
         public Item Item
@@ -92,7 +111,7 @@ namespace POESKillTree.ViewModels.Crafting
             private set { SetProperty(ref _item, value); }
         }
 
-        private IReadOnlyList<ModSelectorViewModel> _msImplicits;
+        private IReadOnlyList<ModSelectorViewModel> _msImplicits = new ModSelectorViewModel[0];
         public IReadOnlyList<ModSelectorViewModel> MsImplicits
         {
             get { return _msImplicits; }
@@ -117,6 +136,8 @@ namespace POESKillTree.ViewModels.Crafting
         {
             EquipmentData = equipmentData;
             _bases = bases.ToList();
+            // setting the underlying field directly, setting other properties is initiated in Init()
+            _selectedFirstLevel = FirstLevelList[0];
             Monitor.Freed += (sender, args) => RecalculateItem();
 
             var qualityStat = new FormatTranslation("Quality: +{0}%");
@@ -127,53 +148,98 @@ namespace POESKillTree.ViewModels.Crafting
 
         protected void Init()
         {
-            GroupList = EligibleGroups.ToList();
-            SelectedGroup = GroupList[0];
+            UpdateSecondLevel();
         }
 
         private void OnShowDropDisabledItemsChanged()
         {
             using (Monitor.Enter())
             {
-                GroupList = EligibleGroups.ToList();
-                SelectedGroup = GroupList[0];
-
                 // this is visibly slow, but the button shouldn't be spammed anyway
-                OnSelectedGroupChanged();
-                UpdateBaseList();
-                UpdateBase();
+                var previousSelectedFirstLevel = SelectedFirstLevel;
+                SelectedFirstLevel = FirstLevelList[0];
+                if (previousSelectedFirstLevel == SelectedFirstLevel)
+                {
+                    UpdateSecondLevel();
+                }
             }
         }
 
-        private void OnSelectedGroupChanged()
+        private void UpdateSecondLevel()
         {
             using (Monitor.Enter())
             {
-                var previousSelectedType = SelectedType;
+                var previousSecondLevel = SelectedSecondLevel;
 
-                if (SelectedGroup == ItemGroup.Any)
+                if (SelectedFirstLevel == BaseGroup.Any)
                 {
-                    TypeList = new[] { ItemType.Any };
+                    SecondLevelList = ItemClass.Any
+                        .Concat(EligibleBases.Select(b => b.ItemClass))
+                        .Distinct()
+                        .OrderBy(c => c).ToList();
                 }
                 else
                 {
-                    var list = EligibleTypes
-                        .Where(t => t == ItemType.Any || t.Group() == SelectedGroup)
-                        .ToArray();
-                    if (list.Length == 2)
+                    var list = EligibleBases
+                        .Where(b => BaseGroupEx.FromTags(b.Tags) == SelectedFirstLevel)
+                        .Select(b => b.ItemClass)
+                        .Distinct()
+                        .OrderBy(c => c).ToList();
+                    switch (list.Count)
                     {
-                        // Only contains "any" and the only type of the selected group
-                        // -> "any" makes no sense, take the only type
-                        list = new[] { list[1] };
+                        case 1:
+                            // Only contains the only class of the selected group
+                            // -> "any" makes no sense
+                            SecondLevelList = list;
+                            break;
+                        default:
+                            SecondLevelList = ItemClass.Any.Concat(list).ToList();
+                            break;
                     }
-                    TypeList = list;
                 }
-                SelectedType = TypeList[0];
+                SelectedSecondLevel = SecondLevelList[0];
 
-                if (SelectedType == previousSelectedType)
+                if (previousSecondLevel == SelectedSecondLevel)
                 {
-                    UpdateBaseList();
+                    UpdateThirdLevel();
                 }
+            }
+        }
+
+        private void UpdateThirdLevel()
+        {
+            var previousThirdLevel = SelectedThirdLevel;
+
+            if (SelectedSecondLevel == ItemClass.Any)
+            {
+                ThirdLevelList = new[] { Tags.Default };
+            }
+            else
+            {
+                var matchingBases = EligibleBases
+                    .Where(b => b.ItemClass == SelectedSecondLevel)
+                    .ToList();
+                var list = _thirdLevelOptions
+                    .Where(t => matchingBases.Any(b => b.Tags.HasFlag(t)))
+                    .ToList();
+                switch (list.Count)
+                {
+                    case 0:
+                        ThirdLevelList = new[] { Tags.Default };
+                        break;
+                    case 1:
+                        ThirdLevelList = list;
+                        break;
+                    default:
+                        ThirdLevelList = Tags.Default.Concat(list).ToList();
+                        break;
+                }
+            }
+            SelectedThirdLevel = ThirdLevelList[0];
+
+            if (previousThirdLevel == SelectedThirdLevel)
+            {
+                UpdateBaseList();
             }
         }
 
@@ -183,15 +249,20 @@ namespace POESKillTree.ViewModels.Crafting
             {
                 var previousSelectedBase = SelectedBase;
 
-                if (SelectedType == ItemType.Any)
+                var bases = EligibleBases;
+                if (SelectedFirstLevel != BaseGroup.Any)
                 {
-                    BaseList = SelectedGroup == ItemGroup.Any 
-                        ? EligibleBases.ToList() : BasesPerGroup[SelectedGroup].ToList();
+                    bases = bases.Where(b => SelectedFirstLevel.Matches(b.Tags));
                 }
-                else
+                if (SelectedSecondLevel != ItemClass.Any)
                 {
-                    BaseList = BasesPerType[SelectedType].ToList();
+                    bases = bases.Where(b => b.ItemClass == SelectedSecondLevel);
                 }
+                if (SelectedThirdLevel != Tags.Default)
+                {
+                    bases = bases.Where(b => b.Tags.HasFlag(SelectedThirdLevel));
+                }
+                BaseList = bases.ToList();
                 SelectedBase = BaseList[0];
 
                 if (SelectedBase == previousSelectedBase)

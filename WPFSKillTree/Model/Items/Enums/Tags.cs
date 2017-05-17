@@ -7,6 +7,7 @@ namespace POESKillTree.Model.Items.Enums
     [Flags]
     public enum Tags : ulong
     {
+        [Description("Any")]
         Default = 0,
 
         Weapon = 1 << 0,

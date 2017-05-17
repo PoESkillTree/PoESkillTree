@@ -18,14 +18,9 @@
     </UserControl.Resources>
 
     <StackPanel>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <ComboBox Grid.Column="0"
-                              ItemsSource="{Binding GroupList}"
-                              SelectedItem="{Binding SelectedGroup}">
+        <UniformGrid Rows="1">
+            <ComboBox ItemsSource="{Binding FirstLevelList}"
+                      SelectedItem="{Binding SelectedFirstLevel}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Converter={StaticResource EnumToSpacedStringConverter}}"/>
@@ -34,32 +29,48 @@
                 <ComboBox.Style>
                     <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding TypeList.Count}" Value="1">
-                                <Setter Property="Grid.ColumnSpan" Value="2" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ComboBox.Style>
-            </ComboBox>
-            <ComboBox Grid.Column="1"
-                              ItemsSource="{Binding TypeList}"
-                              SelectedItem="{Binding SelectedType}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Converter={StaticResource EnumToSpacedStringConverter}}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-                <ComboBox.Style>
-                    <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding TypeList.Count}" Value="1">
+                            <DataTrigger Binding="{Binding FirstLevelList.Count}" Value="1">
                                 <Setter Property="Visibility" Value="Collapsed" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </ComboBox.Style>
             </ComboBox>
-        </Grid>
+            <ComboBox ItemsSource="{Binding SecondLevelList}"
+                      SelectedItem="{Binding SelectedSecondLevel}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumToSpacedStringConverter}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+                <ComboBox.Style>
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SecondLevelList.Count}" Value="1">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
+            </ComboBox>
+            <ComboBox ItemsSource="{Binding ThirdLevelList}"
+                      SelectedItem="{Binding SelectedThirdLevel}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumToSpacedStringConverter}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+                <ComboBox.Style>
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ThirdLevelList.Count}" Value="1">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
+            </ComboBox>
+        </UniformGrid>
         <controls:SearchableComboBox ItemsSource="{Binding BaseList}"
                                      SelectedItem="{Binding SelectedBase}">
             <ComboBox.ItemTemplate>

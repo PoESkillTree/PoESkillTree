@@ -237,6 +237,7 @@
     <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
     <Compile Include="Utils\Wpf\ScrollViewerBindableOffsetBehavior.cs" />
     <Compile Include="ViewModels\Crafting\AbstractCraftingViewModel.cs" />
+    <Compile Include="ViewModels\Crafting\BaseGroup.cs" />
     <Compile Include="ViewModels\Crafting\CraftingViewModel.cs" />
     <Compile Include="ViewModels\Crafting\ModSelectorViewModel.cs" />
     <Compile Include="ViewModels\Crafting\SliderGroupViewModel.cs" />
@@ -365,9 +366,7 @@
     <Compile Include="Model\IPersistentData.cs" />
     <Compile Include="Model\Items\Mods\ItemMod.cs" />
     <Compile Include="Model\Items\Enums\FrameType.cs" />
-    <Compile Include="Model\Items\Enums\ItemGroup.cs" />
     <Compile Include="Model\Items\Enums\ItemSlot.cs" />
-    <Compile Include="Model\Items\Enums\ItemType.cs" />
     <Compile Include="Model\Items\Enums\ModGenerationType.cs" />
     <Compile Include="Model\Items\EquipmentData.cs" />
     <Compile Include="Model\Items\ItemImage.cs" />
