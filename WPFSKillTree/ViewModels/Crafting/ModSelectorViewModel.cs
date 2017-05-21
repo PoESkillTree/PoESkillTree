@@ -47,11 +47,29 @@ namespace POESKillTree.ViewModels.Crafting
                     if (!CanDeselct && Affixes.Count > 1)
                     {
                         SelectedAffix = Affixes[1];
+                        return;
                     }
-                    else if (!Affixes.Contains(SelectedAffix))
+                    if (Affixes.Contains(SelectedAffix))
                     {
-                        SelectedAffix = EmptySelection;
+                        return;
                     }
+                    if (SelectedAffix != null)
+                    {
+                        var matchingAffix = Affixes.FirstOrDefault(a => a.Name == SelectedAffix.Name);
+                        if (matchingAffix != null)
+                        {
+                            var valuesBefore = SelectedValues.ToList();
+                            SelectedAffix = matchingAffix;
+                            if (SelectedValues.Count() == valuesBefore.Count
+                                && matchingAffix.QueryMods(valuesBefore).Any())
+                            {
+                                _sliders.Zip(valuesBefore, Tuple.Create)
+                                    .ForEach(t => t.Item1.Value = t.Item2);
+                            }
+                            return;
+                        }
+                    }
+                    SelectedAffix = EmptySelection;
                 });
             }
         }
@@ -125,7 +143,8 @@ namespace POESKillTree.ViewModels.Crafting
                     foreach (var valueIndex in group)
                     {
                         var ranges = SelectedAffix.GetRanges(valueIndex);
-                        var ticks = ranges.SelectMany(r => Enumerable.Range(r.From, r.To - r.From + 1));
+                        var ticks = ranges.SelectMany(r => Enumerable.Range(r.From, r.To - r.From + 1))
+                            .OrderBy(i => i);
                         var slider = new SliderViewModel(valueIndex, ticks);
                         sliderGroup.Add(slider);
                         _sliders.Add(slider);
@@ -172,7 +191,7 @@ namespace POESKillTree.ViewModels.Crafting
 
             OnPropertyChanged("SelectedValues");
 
-            AffixText = string.Join("/", SelectedAffix.QueryMods(SelectedValues).Select(s => $"{s.Name}"));
+            AffixText = string.Join("/", SelectedAffix.QueryMods(SelectedValues).Select(s => $"{s.Name}").Distinct());
         }
 
         public IMod Query()

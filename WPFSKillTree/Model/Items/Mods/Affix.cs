@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using JetBrains.Annotations;
 using MB.Algodat;
@@ -7,6 +8,7 @@ using MoreLinq;
 
 namespace POESKillTree.Model.Items.Mods
 {
+    [DebuggerDisplay("{" + nameof(Name) + "}")]
     public class Affix
     {
         [UsedImplicitly(ImplicitUseKindFlags.Access)] // used in ModSelectorView
@@ -25,21 +27,30 @@ namespace POESKillTree.Model.Items.Mods
         private readonly IRangeTree<int, ModWrapper>[] _trees;
 
         public Affix()
-            : this(Enumerable.Empty<IMod>(), "")
+            : this(new IMod[0])
         {
+            Name = "";
         }
 
         public Affix(IMod mod)
-            : this(new[] { mod }, "")
+            : this(new[] { mod })
         {
+            Name = "";
         }
 
-        public Affix(IEnumerable<IMod> mods, string name)
+        public Affix(IReadOnlyList<IMod> mods, string name)
+            : this(mods)
         {
+            if (!mods.Any())
+            {
+                throw new ArgumentException("Can not create named Affix with no mods", nameof(mods));
+            }
             Name = name;
+        }
 
-            var modList = mods.ToList();
-            if (!modList.Any())
+        private Affix(IReadOnlyList<IMod> mods)
+        {
+            if (!mods.Any())
             {
                 ValueCount = 0;
                 FirstTierStats = new IStat[0];
@@ -48,10 +59,10 @@ namespace POESKillTree.Model.Items.Mods
                 return;
             }
 
-            var firstMod = modList[0];
+            var firstMod = mods[0];
             ValueCount = firstMod.Stats.Count;
             FirstTierStats = firstMod.Stats;
-            if (modList.Any(m => m.Stats.Count != ValueCount))
+            if (mods.Any(m => m.Stats.Count != ValueCount))
             {
                 throw new NotSupportedException("Mods must all have the same amount of stats");
             }
@@ -61,7 +72,7 @@ namespace POESKillTree.Model.Items.Mods
             _ranges = new IReadOnlyList<Range<int>>[ValueCount];
             for (int i = 0; i < ValueCount; i++)
             {
-                var wrapper = modList.Select(t => new ModWrapper(t, t.Stats[i].Range)).ToList();
+                var wrapper = mods.Select(t => new ModWrapper(t, t.Stats[i].Range)).ToList();
                 _trees[i] = new RangeTree<int, ModWrapper>(wrapper, comparer);
                 _ranges[i] = wrapper.Select(w => w.Range).ToList();
             }
@@ -87,16 +98,6 @@ namespace POESKillTree.Model.Items.Mods
 
         private static IEnumerable<IMod> QueryForTree(int value, IRangeTree<int, ModWrapper> tree)
             => tree.Query(value).Select(w => w.Mod);
-
-        public IEnumerable<IStat> QueryStats(IEnumerable<int> values)
-        {
-            var mods = QueryMods(values).ToList();
-            if (mods.Any())
-            {
-                return mods.First().Stats;
-            }
-            return Enumerable.Empty<IStat>();
-        }
 
         public IReadOnlyList<Range<int>> GetRanges(int valueIndex)
             => _ranges[valueIndex];

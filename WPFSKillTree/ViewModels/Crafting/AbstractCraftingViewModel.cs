@@ -84,7 +84,6 @@ namespace POESKillTree.ViewModels.Crafting
             Tags.StrArmour, Tags.DexArmour, Tags.IntArmour, 
             Tags.StrDexArmour, Tags.StrIntArmour, Tags.DexIntArmour, 
             Tags.StrDexIntArmour,
-            Tags.StrJewel | Tags.DexJewel | Tags.IntJewel, // Prismatic Jewel
             Tags.StrJewel, Tags.DexJewel, Tags.IntJewel
         };
 
@@ -296,6 +295,7 @@ namespace POESKillTree.ViewModels.Crafting
                         }
                     };
                     modSelector.PropertyChanged += MsOnPropertyChanged;
+                    modSelectors.Add(modSelector);
                 }
                 MsImplicits = modSelectors;
 
@@ -323,9 +323,9 @@ namespace POESKillTree.ViewModels.Crafting
             var statLookup = RecalculateItemSpecific(out requiredLevel).ToList();
 
             Item.ExplicitMods = CreateItemMods(ModLocation.Explicit, 
-                statLookup.Single(g => g.Key == ModLocation.Explicit)).ToList();
+                statLookup.SingleOrDefault(g => g.Key == ModLocation.Explicit)).ToList();
             Item.CraftedMods = CreateItemMods(ModLocation.Crafted, 
-                statLookup.Single(g => g.Key == ModLocation.Crafted)).ToList();
+                statLookup.SingleOrDefault(g => g.Key == ModLocation.Crafted)).ToList();
             Item.ImplicitMods = CreateItemMods(ModLocation.Implicit, 
                 MsImplicits.SelectMany(ms => ms.GetStatValues())).ToList();
 
@@ -340,8 +340,11 @@ namespace POESKillTree.ViewModels.Crafting
                 ApplyElementalMods(Item.Mods);
             }
 
-            var implicits = MsImplicits.Select(ms => ms.Query());
-            requiredLevel = Math.Max(requiredLevel, implicits.Max(m => m.RequiredLevel));
+            if (MsImplicits.Any())
+            {
+                var implicits = MsImplicits.Select(ms => ms.Query());
+                requiredLevel = Math.Max(requiredLevel, implicits.Max(m => m.RequiredLevel));
+            }
             Item.UpdateRequirements((80 * requiredLevel) / 100);
         }
 
@@ -355,6 +358,11 @@ namespace POESKillTree.ViewModels.Crafting
 
         private IEnumerable<ItemMod> CreateItemMods(ModLocation location, IEnumerable<StatIdValuePair> statValuePairs)
         {
+            if (statValuePairs == null)
+            {
+                yield break;
+            }
+
             // this list is used to translate the stats in order of appearance,
             // using merged.Keys wouldn't guarantee that
             var statIds = new List<string>();
@@ -371,10 +379,13 @@ namespace POESKillTree.ViewModels.Crafting
                 merged[stat] = value;
             }
 
-            var lines = EquipmentData.StatTranslator.GetTranslations(statIds).Select(t => t.Translate(merged));
+            var lines = EquipmentData.StatTranslator.GetTranslations(statIds)
+                .Select(t => t.Translate(merged))
+                .Where(l => l != null);
             foreach (var line in lines)
             {
-                var isLocal = StatLocalityChecker.DetermineLocal(SelectedBase.ItemClass, location, line);
+                var attr = ItemMod.Numberfilter.Replace(line, "#");
+                var isLocal = StatLocalityChecker.DetermineLocal(SelectedBase.ItemClass, location, attr);
                 yield return new ItemMod(line, isLocal);
             }
         }

@@ -112,13 +112,13 @@ namespace POESKillTree.Model.Items
             if (item == null) return true;
             if (slot == ItemSlot.Unequipable) return false;
             // one handed -> only equippable if other hand is free, shield or matching one handed
-            if (item.Tags.HasFlag(Tags.OneHandWeapon)
+            if (item.Tags.HasFlag(Tags.OneHand)
                 && (slot == ItemSlot.MainHand || slot == ItemSlot.OffHand))
             {
                 var other = slot == ItemSlot.MainHand ? OffHand : MainHand;
                 if (other == null || other.ItemClass == ItemClass.Shield)
                     return true;
-                if (!other.Tags.HasFlag(Tags.OneHandWeapon))
+                if (!other.Tags.HasFlag(Tags.OneHand))
                     return false;
                 if ((item.ItemClass == ItemClass.Wand && other.ItemClass != ItemClass.Wand)
                     || (other.ItemClass == ItemClass.Wand && item.ItemClass != ItemClass.Wand))
@@ -126,7 +126,7 @@ namespace POESKillTree.Model.Items
                 return true;
             }
             // two handed and not bow -> only equippable if off hand is free
-            if (item.Tags.HasFlag(Tags.TwoHandWeapon) && item.ItemClass != ItemClass.Bow
+            if (item.Tags.HasFlag(Tags.TwoHand) && item.ItemClass != ItemClass.Bow
                 && slot == ItemSlot.MainHand)
             {
                 return OffHand == null;
@@ -144,7 +144,7 @@ namespace POESKillTree.Model.Items
             // shield -> only equippable if main hand is free or one hand
             if (item.ItemClass == ItemClass.Shield && slot == ItemSlot.OffHand)
             {
-                return MainHand == null || MainHand.Tags.HasFlag(Tags.OneHandWeapon);
+                return MainHand == null || MainHand.Tags.HasFlag(Tags.OneHand);
             }
             return ((int) item.ItemClass.ItemSlots() & (int) slot) != 0;
         }

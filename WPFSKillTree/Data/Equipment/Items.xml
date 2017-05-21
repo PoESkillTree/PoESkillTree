@@ -2090,15 +2090,6 @@
       <string>Weapon Range: 120</string>
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="FishingRod" Tags="Weapon TwoHand TwoHandWeapon FishingRod NotForSale" Name="Fishing Rod" Level="1" Strength="8" Dexterity="8" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/TwoHandWeapon/FishingRods/FishingRod1">
-    <Implicit />
-    <Properties>
-      <string>Physical Damage: 7-13</string>
-      <string>Critical Strike Chance: 5%</string>
-      <string>Attacks per Second: 1.2</string>
-      <string>Weapon Range: 11</string>
-    </Properties>
-  </ItemBase>
   <ItemBase ItemClass="TwoHandSword" Tags="Weapon TwoHand TwoHandWeapon Sword NotForSale" Name="Keyblade" Level="1" Strength="8" Dexterity="8" Intelligence="0" DropDisabled="true" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Weapons/TwoHandWeapons/TwoHandSwords/TwoHandSwordDev">
     <Implicit />
     <Properties>
@@ -3281,6 +3272,15 @@
       <string>Weapon Range: 11</string>
     </Properties>
   </ItemBase>
+  <ItemBase ItemClass="FishingRod" Tags="Weapon TwoHand TwoHandWeapon FishingRod NotForSale" Name="Fishing Rod" Level="1" Strength="8" Dexterity="8" Intelligence="0" InventoryHeight="4" InventoryWidth="1" MetadataId="Metadata/Items/Weapons/TwoHandWeapon/FishingRods/FishingRod1">
+    <Implicit />
+    <Properties>
+      <string>Physical Damage: 7-13</string>
+      <string>Critical Strike Chance: 5%</string>
+      <string>Attacks per Second: 1.2</string>
+      <string>Weapon Range: 11</string>
+    </Properties>
+  </ItemBase>
   <ItemBase ItemClass="Belt" Tags="Belt" Name="Chain Belt" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="2" MetadataId="Metadata/Items/Belts/Belt2">
     <Implicit>
       <string>IncreasedEnergyShieldImplicitBelt1</string>
@@ -3926,8 +3926,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Plank Kite Shield" Level="7" Strength="13" Dexterity="0" Intelligence="13" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt1">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>AllResistancesImplicitShield1</string>
+      <string>MovementVelocityPenaltyLightShieldImplicit</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 22%</string>
@@ -3965,8 +3965,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Driftwood Spiked Shield" Level="12" Strength="0" Dexterity="19" Intelligence="19" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt2">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>AttackerTakesDamageShieldImplicit1</string>
+      <string>MovementVelocityPenaltyLightShieldImplicit</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
@@ -3987,8 +3987,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Linden Kite Shield" Level="13" Strength="20" Dexterity="0" Intelligence="20" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt2">
     <Implicit>
-      <string>AllResistancesImplicitShield1</string>
       <string>MovementVelocityPenaltyLightShieldImplicit</string>
+      <string>AllResistancesImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
@@ -4008,8 +4008,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield NotForSale" Name="Golden Flame" Level="15" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDemigods">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChaosResistDemigodsTorchImplicit</string>
+      <string>MovementVelocityPenaltyLightShieldImplicit</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 20%</string>
@@ -4035,8 +4035,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Alloyed Spiked Shield" Level="20" Strength="0" Dexterity="28" Intelligence="28" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt3">
     <Implicit>
-      <string>AttackerTakesDamageShieldImplicit2</string>
       <string>MovementVelocityPenaltyLightShieldImplicit</string>
+      <string>AttackerTakesDamageShieldImplicit2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
@@ -4106,8 +4106,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Layered Kite Shield" Level="27" Strength="37" Dexterity="0" Intelligence="37" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt4">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>AllResistancesImplicitShield2</string>
+      <string>MovementVelocityPenaltyLightShieldImplicit</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
@@ -4453,8 +4453,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Sovereign Spiked Shield" Level="54" Strength="0" Dexterity="70" Intelligence="70" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt9">
     <Implicit>
-      <string>AttackerTakesDamageShieldImplicit8</string>
       <string>MovementVelocityPenaltyLightShieldImplicit</string>
+      <string>AttackerTakesDamageShieldImplicit8</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
@@ -4464,8 +4464,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Angelic Kite Shield" Level="55" Strength="70" Dexterity="0" Intelligence="70" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt9">
     <Implicit>
-      <string>AllResistancesImplicitShield3</string>
       <string>MovementVelocityPenaltyLightShieldImplicit</string>
+      <string>AllResistancesImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 22%</string>
@@ -4583,8 +4583,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Ezomyte Spiked Shield" Level="62" Strength="0" Dexterity="85" Intelligence="85" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt11">
     <Implicit>
-      <string>AttackerTakesDamageShieldImplicit10</string>
       <string>MovementVelocityPenaltyLightShieldImplicit</string>
+      <string>AttackerTakesDamageShieldImplicit10</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
@@ -4742,8 +4742,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Supreme Spiked Shield" Level="70" Strength="0" Dexterity="85" Intelligence="85" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt13">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>AttackerTakesDamageShieldImplicit12</string>
+      <string>MovementVelocityPenaltyLightShieldImplicit</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>

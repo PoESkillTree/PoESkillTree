@@ -83,13 +83,13 @@ namespace UpdateDB.DataLoading
                 { "Daggers", ItemClass.Dagger },
                 { "Claws", ItemClass.Claw },
                 { "Wands", ItemClass.Wand },
-                { "Fishing Rods", ItemClass.FishingRod },
 
                 { "Two Hand Swords", ItemClass.TwoHandSword },
                 { "Two Hand Axes", ItemClass.TwoHandAxe },
                 { "Two Hand Maces", ItemClass.TwoHandMace },
                 { "Bows", ItemClass.Bow },
                 { "Staves", ItemClass.Staff },
+                { "Fishing Rods", ItemClass.FishingRod },
 
                 { "Belts", ItemClass.Belt },
                 { "Rings", ItemClass.Ring },

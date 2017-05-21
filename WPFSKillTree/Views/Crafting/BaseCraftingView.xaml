@@ -12,8 +12,8 @@
              d:DataContext="{d:DesignInstance viewModels:CraftingViewModel}">
     <UserControl.Resources>
         <converter:EnumToSpacedStringConverter x:Key="EnumToSpacedStringConverter" />
-        <DataTemplate DataType="{x:Type viewModels:SliderGroupViewModel}">
-            <local:SliderGroupView />
+        <DataTemplate DataType="{x:Type viewModels:ModSelectorViewModel}">
+            <local:ModSelectorView />
         </DataTemplate>
     </UserControl.Resources>
 

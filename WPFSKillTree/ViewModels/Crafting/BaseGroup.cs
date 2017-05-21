@@ -22,14 +22,14 @@ namespace POESKillTree.ViewModels.Crafting
                 case BaseGroup.Any:
                     return true;
                 case BaseGroup.OneHandWeapon:
-                    return tags.HasFlag(Tags.OneHandWeapon);
+                    return tags.HasFlag(Tags.OneHand);
                 case BaseGroup.TwoHandWeapon:
-                    return tags.HasFlag(Tags.TwoHandWeapon);
+                    return tags.HasFlag(Tags.TwoHand);
                 case BaseGroup.Armour:
                     return tags.HasFlag(Tags.Armour);
                 case BaseGroup.Other:
-                    return !tags.HasFlag(Tags.OneHandWeapon)
-                           && !tags.HasFlag(Tags.TwoHandWeapon)
+                    return !tags.HasFlag(Tags.OneHand)
+                           && !tags.HasFlag(Tags.TwoHand)
                            && !tags.HasFlag(Tags.Armour);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(baseGroup), baseGroup, null);
@@ -38,11 +38,11 @@ namespace POESKillTree.ViewModels.Crafting
 
         public static BaseGroup FromTags(Tags tags)
         {
-            if (tags.HasFlag(Tags.OneHandWeapon))
+            if (tags.HasFlag(Tags.OneHand))
             {
                 return BaseGroup.OneHandWeapon;
             }
-            if (tags.HasFlag(Tags.TwoHandWeapon))
+            if (tags.HasFlag(Tags.TwoHand))
             {
                 return BaseGroup.TwoHandWeapon;
             }

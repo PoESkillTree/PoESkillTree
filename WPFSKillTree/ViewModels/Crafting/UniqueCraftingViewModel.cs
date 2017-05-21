@@ -14,7 +14,7 @@ namespace POESKillTree.ViewModels.Crafting
     public class UniqueCraftingViewModel : AbstractCraftingViewModel<UniqueBase>
     {
 
-        private IReadOnlyList<ModSelectorViewModel> _msExplicits;
+        private IReadOnlyList<ModSelectorViewModel> _msExplicits = new ModSelectorViewModel[0];
         public IReadOnlyList<ModSelectorViewModel> MsExplicits
         {
             get { return _msExplicits; }
@@ -41,6 +41,7 @@ namespace POESKillTree.ViewModels.Crafting
                     }
                 };
                 modSelector.PropertyChanged += MsOnPropertyChanged;
+                modSelectors.Add(modSelector);
             }
             MsExplicits = modSelectors;
         }

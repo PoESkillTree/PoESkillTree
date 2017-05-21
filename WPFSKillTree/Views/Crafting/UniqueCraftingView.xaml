@@ -21,8 +21,8 @@
                               DataContext="{Binding Item}" />
     </dialogs:CloseableBaseDialog.DialogLeft>
     <dialogs:CloseableBaseDialog.Resources>
-        <DataTemplate DataType="{x:Type crafting:SliderGroupViewModel}">
-            <local:SliderGroupView />
+        <DataTemplate DataType="{x:Type crafting:ModSelectorViewModel}">
+            <local:ModSelectorView />
         </DataTemplate>
     </dialogs:CloseableBaseDialog.Resources>
 

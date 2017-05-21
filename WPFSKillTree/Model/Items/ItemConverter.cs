@@ -54,7 +54,9 @@ namespace POESKillTree.Model.Items
         {
             var mod = value as ItemMod;
             if (mod == null)
-                throw new NotSupportedException();
+            {
+                return null;
+            }
 
             var inlines = new List<Inline>();
 

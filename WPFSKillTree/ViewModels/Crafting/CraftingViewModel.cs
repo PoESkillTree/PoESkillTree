@@ -101,6 +101,7 @@ namespace POESKillTree.ViewModels.Crafting
             return
                 from modGroup in modGroups
                 let mods = modGroup.GetMatchingMods(SelectedBase.Tags, SelectedBase.ItemClass).ToList()
+                where mods.Any()
                 let name = GetNameForAffix(mods)
                 select new Affix(mods, name);
         }
@@ -114,7 +115,8 @@ namespace POESKillTree.ViewModels.Crafting
             var mod = mods.First();
             var statValueDict = mod.Stats.ToDictionary(s => s.Id, s => s.Range.From);
             var translations = EquipmentData.StatTranslator.GetTranslations(statValueDict)
-                .Where(s => !string.IsNullOrWhiteSpace(s));
+                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .Select(s => ItemMod.Numberfilter.Replace(s, "#"));
             return string.Join(", ", translations);
         }
 
@@ -161,6 +163,7 @@ namespace POESKillTree.ViewModels.Crafting
 
             return
                 from ms in MsPrefix.Concat(MsSuffix)
+                where !ms.IsEmptySelection
                 let location = ms.Query().Domain == ModDomain.Master ? ModLocation.Crafted : ModLocation.Explicit
                 from tuple in ms.GetStatValues()
                 group tuple by location;
