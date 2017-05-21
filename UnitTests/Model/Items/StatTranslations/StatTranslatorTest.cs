@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.Model.Items.StatTranslation;
@@ -21,7 +20,7 @@ namespace UnitTests.Model.Items.StatTranslations
 
         private static async Task<StatTranslator> InitializeAsync()
         {
-            var translations = await new RePoELoader(new HttpClient(), false)
+            var translations = await RePoEUtils
                 .LoadAsync<List<JsonStatTranslation>>("stat_translations");
             return new StatTranslator(translations);
         }

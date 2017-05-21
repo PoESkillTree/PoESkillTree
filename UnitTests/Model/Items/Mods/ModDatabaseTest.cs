@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.Model.Items.Enums;
@@ -36,14 +34,6 @@ namespace UnitTests.Model.Items.Mods
         private Dictionary<string, JsonNpcMaster> _npcMasters;
         private ModDatabase _modDatabase;
 
-        [ClassInitialize]
-        public static void StaticInitialize(TestContext testContext)
-        {
-            // Remove all files before running the first test to make sure they are up to date
-            var dataPath = AppData.GetFolder(Path.Combine("Data", "RePoE"));
-            Directory.Delete(dataPath, true);
-        }
-
         [TestInitialize]
         public void TestInitialize()
         {
@@ -52,10 +42,9 @@ namespace UnitTests.Model.Items.Mods
 
         private async Task InitializeAsync()
         {
-            var loader = new RePoELoader(new HttpClient(), false);
-            _mods = await loader.LoadAsync<Dictionary<string, JsonMod>>("mods");
-            _benchOptions = await loader.LoadAsync<JsonCraftingBenchOption[]>("crafting_bench_options");
-            _npcMasters = await loader.LoadAsync<Dictionary<string, JsonNpcMaster>>("npc_master");
+            _mods = await RePoEUtils.LoadAsync<Dictionary<string, JsonMod>>("mods");
+            _benchOptions = await RePoEUtils.LoadAsync<JsonCraftingBenchOption[]>("crafting_bench_options");
+            _npcMasters = await RePoEUtils.LoadAsync<Dictionary<string, JsonNpcMaster>>("npc_master");
             _modDatabase = new ModDatabase(_mods, _benchOptions, _npcMasters);
         }
 

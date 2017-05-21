@@ -1,8 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml.Serialization;
 
 namespace POESKillTree.Utils
@@ -12,6 +14,16 @@ namespace POESKillTree.Utils
     /// </summary>
     public static class SerializationUtils
     {
+        public static async Task<string> ReadResourceAsync(string path)
+        {
+            var resource = Application.GetResourceStream(new Uri(path));
+            using (var stream = resource.Stream)
+            using (var reader = new StreamReader(stream))
+            {
+                return await reader.ReadToEndAsync();
+            }
+        }
+
         /// <summary>
         /// Deserializes an object of type <typeparamref name="T"/> from <paramref name="filePath"/>
         /// asynchronously using XmlSerializer.

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Windows;
 using MoreLinq;
 using POESKillTree.Model.Items.Mods;
 using POESKillTree.Model.Items.StatTranslation;
@@ -34,28 +31,20 @@ namespace POESKillTree.Model.Items
         // (private field is used to reduce ambiguity between class and property)
         public ItemImageService ItemImageService => _itemImageService;
 
-        private readonly RePoELoader _rePoELoader;
-
         private WordSetTreeNode _root;
 
         private EquipmentData(Options options)
         {
-            if (!UriParser.IsKnownScheme("pack"))
-            {
-                // Necessary for unit tests. Accessing PackUriHelper triggers static initialization.
-                // Without it, creating resource URIs from unit tests would throw UriFormatExceptions.
-                var _ = System.IO.Packaging.PackUriHelper.UriSchemePack;
-            }
+            Util.TriggerPackUriSchemeInitialization();
             _itemImageService = new ItemImageService(options);
-            _rePoELoader = new RePoELoader(new HttpClient(), false);
         }
 
         private async Task InitializeAsync()
         {
-            var modsTask = _rePoELoader.LoadAsync<Dictionary<string, JsonMod>>("mods");
-            var benchOptionsTask = _rePoELoader.LoadAsync<JsonCraftingBenchOption[]>("crafting_bench_options");
-            var npcMastersTask = _rePoELoader.LoadAsync<Dictionary<string, JsonNpcMaster>>("npc_master");
-            var statTranslationsTask = _rePoELoader.LoadAsync<List<JsonStatTranslation>>("stat_translations");
+            var modsTask = RePoEUtils.LoadAsync<Dictionary<string, JsonMod>>("mods");
+            var benchOptionsTask = RePoEUtils.LoadAsync<JsonCraftingBenchOption[]>("crafting_bench_options");
+            var npcMastersTask = RePoEUtils.LoadAsync<Dictionary<string, JsonNpcMaster>>("npc_master");
+            var statTranslationsTask = RePoEUtils.LoadAsync<List<JsonStatTranslation>>("stat_translations");
             ModDatabase = new ModDatabase(await modsTask, await benchOptionsTask, await npcMastersTask);
             StatTranslator = new StatTranslator(await statTranslationsTask);
 
@@ -77,27 +66,22 @@ namespace POESKillTree.Model.Items
 
         private async Task<IEnumerable<ItemBase>> LoadBases()
         {
-            var xmlList = await DeserializeResourceAsync<XmlItemList>("Items.xml");
+            var xmlList = await DeserializeXmlResourceAsync<XmlItemList>("Items.xml");
             return xmlList.ItemBases.Select(x => new ItemBase(_itemImageService, ModDatabase, x));
         }
 
         private async Task<IEnumerable<UniqueBase>> LoadUniques()
         {
             var metadataToBase = ItemBases.ToDictionary(b => b.MetadataId);
-            var xmlList = await DeserializeResourceAsync<XmlUniqueList>("Uniques.xml");
+            var xmlList = await DeserializeXmlResourceAsync<XmlUniqueList>("Uniques.xml");
             return xmlList.Uniques.Select(
                 x => new UniqueBase(_itemImageService, ModDatabase, metadataToBase[x.BaseMetadataId], x));
         }
 
-        private static async Task<T> DeserializeResourceAsync<T>(string file)
+        private static async Task<T> DeserializeXmlResourceAsync<T>(string file)
         {
-            var resource = Application.GetResourceStream(new Uri(ResourcePath + file));
-            using (var stream = resource.Stream)
-            using (var reader = new StreamReader(stream))
-            {
-                var text = await reader.ReadToEndAsync();
-                return SerializationUtils.XmlDeserializeString<T>(text);
-            }
+            var text = await SerializationUtils.ReadResourceAsync(ResourcePath + file);
+            return SerializationUtils.XmlDeserializeString<T>(text);
         }
 
         public ItemBase ItemBaseFromTypeline(string typeline)

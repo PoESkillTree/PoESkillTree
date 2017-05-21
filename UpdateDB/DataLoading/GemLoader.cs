@@ -8,6 +8,7 @@ using log4net;
 using MoreLinq;
 using Newtonsoft.Json.Linq;
 using POESKillTree.SkillTreeFiles;
+using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
 
 namespace UpdateDB.DataLoading
@@ -19,8 +20,8 @@ namespace UpdateDB.DataLoading
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(GemLoader));
 
-        private const string RepoeGemsUrl = "https://raw.githubusercontent.com/brather1ng/RePoE/master/data/gems.min.json";
-        private const string RepoeGemTooltipsUrl = "https://raw.githubusercontent.com/brather1ng/RePoE/master/data/gem_tooltips.min.json";
+        private const string RepoeGemsUrl = RePoEUtils.RePoEDataUrl + "gems.min.json";
+        private const string RepoeGemTooltipsUrl = RePoEUtils.RePoEDataUrl + "gem_tooltips.min.json";
 
         public override bool SavePathIsFolder => false;
 
@@ -131,6 +132,8 @@ namespace UpdateDB.DataLoading
 
                 ItemDB.Add(gem);
             }
+
+            ItemDB.WriteToCompletePath(SavePath);
         }
 
         /// <summary>
@@ -313,12 +316,6 @@ namespace UpdateDB.DataLoading
                 default:
                     return value.ToString();
             }
-        }
-
-        protected override Task CompleteSavingAsync()
-        {
-            ItemDB.WriteToCompletePath(SavePath);
-            return Task.WhenAll();
         }
     }
 }

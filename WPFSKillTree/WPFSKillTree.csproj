@@ -224,7 +224,7 @@
     <Compile Include="Model\Items\Mods\Affix.cs" />
     <Compile Include="Model\Items\Mods\Stat.cs" />
     <Compile Include="Model\Items\Mods\StatLocalityChecker.cs" />
-    <Compile Include="Utils\RePoELoader.cs" />
+    <Compile Include="Utils\RePoEUtils.cs" />
     <Compile Include="Model\Items\StatTranslation\Format.cs" />
     <Compile Include="Model\Items\StatTranslation\IndexHandler.cs" />
     <Compile Include="Model\Items\StatTranslation\JsonStatTranslation.cs" />
@@ -799,6 +799,10 @@
     <None Include="Contrib\RangeTree\README.md" />
     <None Include="Contrib\WpfRangeControls\LICENSE" />
     <None Include="Contrib\WpfRangeControls\README.md" />
+    <Resource Include="Data\RePoE\crafting_bench_options.min.json" />
+    <Resource Include="Data\RePoE\mods.min.json" />
+    <Resource Include="Data\RePoE\npc_master.min.json" />
+    <Resource Include="Data\RePoE\stat_translations.min.json" />
     <None Include="dist-clean.bat" />
     <None Include="dist-release.bat" />
     <None Include="Locale\de-DE\Help.md" />

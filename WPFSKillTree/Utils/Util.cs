@@ -27,5 +27,15 @@ namespace POESKillTree.Utils
         {
             return (T[]) Enum.GetValues(typeof(T));
         }
+
+        public static void TriggerPackUriSchemeInitialization()
+        {
+            if (!UriParser.IsKnownScheme("pack"))
+            {
+                // Necessary for unit tests. Accessing PackUriHelper triggers static initialization.
+                // Without it, creating resource URIs from unit tests would throw UriFormatExceptions.
+                var _ = System.IO.Packaging.PackUriHelper.UriSchemePack;
+            }
+        }
     }
 }

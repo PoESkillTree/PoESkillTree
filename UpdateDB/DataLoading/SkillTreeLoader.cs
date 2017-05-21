@@ -27,10 +27,5 @@ namespace UpdateDB.DataLoading
                 throw;
             }
         }
-
-        protected override Task CompleteSavingAsync()
-        {
-            return Task.WhenAll();
-        }
     }
 }

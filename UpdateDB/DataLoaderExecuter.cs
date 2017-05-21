@@ -26,7 +26,8 @@ namespace UpdateDB
             {"base item images", "Equipment/Assets", new ItemImageLoader(), LoaderCategories.NotVersionControlled, "ItemImages"},
             {"skill tree assets", "", new SkillTreeLoader(), LoaderCategories.NotVersionControlled, "TreeAssets"},
             {"gems", "ItemDB/GemList.xml", new GemLoader(), LoaderCategories.VersionControlled, "Gems"},
-            {"uniques", "Equipment/Uniques.xml", new UniqueLoader(), LoaderCategories.VersionControlled, "Uniques"}
+            {"uniques", "Equipment/Uniques.xml", new UniqueLoader(), LoaderCategories.VersionControlled, "Uniques"},
+            {"RePoE", "RePoE", new RePoELoader(), LoaderCategories.VersionControlled, "RePoE" }
         };
 
         private readonly IArguments _arguments;

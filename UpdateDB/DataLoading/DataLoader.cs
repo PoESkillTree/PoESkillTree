@@ -58,6 +58,7 @@ namespace UpdateDB.DataLoading
         public HttpClient HttpClient { protected get; set; }
 
         private ApiAccessor _wikiApiAccessor;
+
         /// <summary>
         /// Gets a lazily created <see cref="ApiAccessor"/> instance.
         /// </summary>
@@ -107,6 +108,9 @@ namespace UpdateDB.DataLoading
         /// <summary>
         /// Returns a task that completes once all data has been saved.
         /// </summary>
-        protected abstract Task CompleteSavingAsync();
+        protected virtual Task CompleteSavingAsync()
+        {
+            return Task.WhenAll();
+        }
     }
 }
