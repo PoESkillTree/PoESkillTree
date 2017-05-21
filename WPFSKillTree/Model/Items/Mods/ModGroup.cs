@@ -5,6 +5,9 @@ using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items.Mods
 {
+    /// <summary>
+    /// A group of mods with the same <see cref="JsonMod.Group"/>
+    /// </summary>
     [DebuggerDisplay("{" + nameof(Group) + "}")]
     public class ModGroup
     {
@@ -20,6 +23,8 @@ namespace POESKillTree.Model.Items.Mods
             _mods = mods.ToList();
         }
 
+        /// <returns>all mods in this group that can be can be crafted onto an item with the given tags and class
+        /// </returns>
         public IEnumerable<IMod> GetMatchingMods(Tags tags, ItemClass itemClass)
         {
             return _mods.Where(m => m.Matches(tags, itemClass));

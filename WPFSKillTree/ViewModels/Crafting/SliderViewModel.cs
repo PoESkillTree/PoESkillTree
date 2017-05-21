@@ -40,7 +40,7 @@ namespace POESKillTree.ViewModels.Crafting
             Ticks = new DoubleCollection(tickList.Select(i => (double) i));
             Minimum = Ticks.First();
             Maximum = Ticks.Last();
-            _value = tickList.FirstOrDefault();
+            _value = tickList.LastOrDefault();
             ShowSlider = Ticks.Count > 1;
         }
     }

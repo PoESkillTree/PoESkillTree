@@ -8,8 +8,18 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items.StatTranslation
 {
+    /// <summary>
+    /// Interface for classes that can translate values to a string
+    /// </summary>
     public interface ITranslation
     {
+        /// <summary>
+        /// Translates the given values.
+        /// </summary>
+        /// <param name="values">the values to translates</param>
+        /// <returns>the translated values. Null if the values should not be translated, e.g. the stat should be 
+        /// hidden. This is the case for stats without effect or stats that are not meant to be visible to players.
+        /// </returns>
         [CanBeNull]
         string Translate(IReadOnlyList<int> values);
     }
@@ -39,6 +49,8 @@ namespace POESKillTree.Model.Items.StatTranslation
         /// <returns>the translated values. Null if the values should not be translated, e.g. the stat should be 
         /// hidden. This is the case for stats without effect or stats that are not meant to be visible to players.
         /// </returns>
+        /// <exception cref="ArgumentException">if the number of values does not match the number of 
+        /// <see cref="Ids"/></exception>
         public string Translate(IReadOnlyList<int> values)
         {
             if (values.Count != Ids.Count)

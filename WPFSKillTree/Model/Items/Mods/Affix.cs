@@ -2,20 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using JetBrains.Annotations;
 using MB.Algodat;
 using MoreLinq;
 
 namespace POESKillTree.Model.Items.Mods
 {
+    /// <summary>
+    /// Collection of <see cref="IMod"/>s with each mod representing a tier of this affix.
+    /// The affix can be queried with values to get the mod(s) matching those values.
+    /// </summary>
     [DebuggerDisplay("{" + nameof(Name) + "}")]
     public class Affix
     {
-        [UsedImplicitly(ImplicitUseKindFlags.Access)] // used in ModSelectorView
         public string Name { get; }
 
+        /// <summary>
+        /// Gets the number of values mods of this affix have
+        /// </summary>
         public int ValueCount { get; }
 
+        /// <summary>
+        /// Gets the stats of the first tier mod
+        /// </summary>
         public IReadOnlyList<IStat> FirstTierStats { get; }
 
         /// <summary>

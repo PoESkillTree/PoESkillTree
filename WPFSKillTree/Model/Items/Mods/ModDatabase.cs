@@ -5,11 +5,19 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items.Mods
 {
+    /// <summary>
+    /// Provides access to mods.
+    /// </summary>
     public class ModDatabase
     {
+        /// <summary>
+        /// Gets a dictionary with mod ids as keys and the mods as values
+        /// </summary>
         public IReadOnlyDictionary<string, Mod> Mods { get; }
+
         private readonly IReadOnlyDictionary<ModGenerationType, IReadOnlyList<ModGroup>> _groupsByType;
 
+        /// <returns>the mod groups in this database with the given generation type</returns>
         public IReadOnlyList<ModGroup> this[ModGenerationType modtype] => _groupsByType[modtype];
 
         public ModDatabase(IReadOnlyDictionary<string, JsonMod> mods, IEnumerable<JsonCraftingBenchOption> benchOptions,

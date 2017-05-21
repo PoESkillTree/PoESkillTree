@@ -30,6 +30,12 @@ namespace POESKillTree.ViewModels.Crafting
             set { SetProperty(ref _showDropDisabledItems, value, OnShowDropDisabledItemsChanged); }
         }
 
+        // Bases are filtered in three levels:
+        // 1. BaseGroup
+        // 2. ItemClass
+        // 3. specific Tags, i.e. Str/Dex/Int for armour and jewels
+        // All levels also support not being filtered (Any/Default)
+
         // Bases
 
         private readonly IReadOnlyList<TBase> _bases;
@@ -512,6 +518,10 @@ namespace POESKillTree.ViewModels.Crafting
         }
 
 
+        /// <summary>
+        /// ITranslation implementation that translates a single value with <see cref="string.Format(string,object)"/>.
+        /// Used for the quality slider as the quality has no mod or stat behind it that could be translated.
+        /// </summary>
         private class FormatTranslation : ITranslation
         {
             private readonly string _format;
@@ -527,7 +537,7 @@ namespace POESKillTree.ViewModels.Crafting
                 {
                     throw new ArgumentException("Number of values does not match number of ranges");
                 }
-                return string.Format(CultureInfo.InvariantCulture,_format, values[0]);
+                return string.Format(CultureInfo.InvariantCulture, _format, values[0]);
             }
         }
 

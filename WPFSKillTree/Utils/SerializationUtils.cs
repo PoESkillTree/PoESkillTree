@@ -14,6 +14,9 @@ namespace POESKillTree.Utils
     /// </summary>
     public static class SerializationUtils
     {
+        /// <summary>
+        /// Asynchronously reads the resource at the given path as a string.
+        /// </summary>
         public static async Task<string> ReadResourceAsync(string path)
         {
             var resource = Application.GetResourceStream(new Uri(path));

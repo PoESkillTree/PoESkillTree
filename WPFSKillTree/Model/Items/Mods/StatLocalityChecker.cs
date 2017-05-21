@@ -5,6 +5,10 @@ namespace POESKillTree.Model.Items.Mods
 {
     public static class StatLocalityChecker
     {
+        /// <summary>
+        /// Determines whether a <see cref="ItemMod"/> with the given text, class and location is applied
+        /// locally or not
+        /// </summary>
         public static bool DetermineLocal(ItemClass itemclass, ModLocation location, string attr)
         {
             if (location == ModLocation.Property || location == ModLocation.Requirement)

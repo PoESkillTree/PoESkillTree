@@ -3,7 +3,9 @@ using System.ComponentModel;
 
 namespace POESKillTree.Model.Items.Enums
 {
-    // taken from the GGPK's Tags.dat
+    /// <summary>
+    /// Tags of an item as in the GGPK's Tags.dat. Mostly used to define which mods can spawn on the item.
+    /// </summary>
     [Flags]
     public enum Tags : ulong
     {
@@ -90,6 +92,10 @@ namespace POESKillTree.Model.Items.Enums
 
     public static class TagsEx
     {
+        /// <summary>
+        /// Tries to convert a string from the GGPK's Tags.dat to an <see cref="Tags"/>
+        /// instance.
+        /// </summary>
         public static bool TryParse(string ggpkTag, out Tags tag)
         {
             return Enum.TryParse(ggpkTag.Replace("_", ""), true, out tag);

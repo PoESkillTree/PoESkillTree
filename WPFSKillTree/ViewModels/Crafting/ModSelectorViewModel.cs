@@ -10,7 +10,10 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Crafting
 {
-    public class StatIdValuePair
+    /// <summary>
+    /// Pair of a stat id and a associated value. Used for translation.
+    /// </summary>
+    public struct StatIdValuePair
     {
         public string StatId { get; }
         public int Value { get; }
@@ -55,11 +58,14 @@ namespace POESKillTree.ViewModels.Crafting
                     }
                     if (SelectedAffix != null)
                     {
+                        // Assigned Affixes are created anew each time the crafted base changes.
+                        // Try to select an Affix that matches the previously selected one.
                         var matchingAffix = Affixes.FirstOrDefault(a => a.Name == SelectedAffix.Name);
                         if (matchingAffix != null)
                         {
                             var valuesBefore = SelectedValues.ToList();
                             SelectedAffix = matchingAffix;
+                            // Try to assign the old values
                             if (SelectedValues.Count() == valuesBefore.Count
                                 && matchingAffix.QueryMods(valuesBefore).Any())
                             {
@@ -209,7 +215,9 @@ namespace POESKillTree.ViewModels.Crafting
             return firstMatch.Stats.EquiZip(SelectedValues, (s, v) => new StatIdValuePair(s.Id, v));
         }
 
-
+        /// <summary>
+        /// Translation implementation that dynamically selects the stat id to translate based on the given values.
+        /// </summary>
         private class DynamicTranslation : ITranslation
         {
             private readonly StatTranslator _statTranslator;

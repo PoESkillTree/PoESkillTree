@@ -3,7 +3,6 @@
 namespace POESKillTree.Model.Items.Mods
 {
     // The class used to deserialize RePoE's crafting_bench_options
-
     public class JsonCraftingBenchOption
     {
         [JsonProperty("mod_id")]

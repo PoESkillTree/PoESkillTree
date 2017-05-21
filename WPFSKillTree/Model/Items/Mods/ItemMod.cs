@@ -6,6 +6,9 @@ using Newtonsoft.Json.Linq;
 
 namespace POESKillTree.Model.Items.Mods
 {
+    /// <summary>
+    /// Represents a single mod line on an item
+    /// </summary>
     public class ItemMod
     {
         public enum ValueColoring
@@ -29,6 +32,9 @@ namespace POESKillTree.Model.Items.Mods
 
         public bool IsLocal { get; }
 
+        /// <summary>
+        /// Creates an ItemMod using the numbers in <paramref name="attribute"/> as values
+        /// </summary>
         public ItemMod(string attribute, bool isLocal, ValueColoring valueColor = ValueColoring.White)
         {
             IsLocal = isLocal;
@@ -40,6 +46,9 @@ namespace POESKillTree.Model.Items.Mods
             ValueColors = Values.Select(_ => valueColor).ToList();
         }
 
+        /// <summary>
+        /// Creates an ItemMod using the given values
+        /// </summary>
         public ItemMod(string attribute, bool isLocal, IEnumerable<float> values, 
             IEnumerable<ValueColoring> valueColors)
         {

@@ -3,6 +3,10 @@ using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.ViewModels.Crafting
 {
+    /// <summary>
+    /// Very rough classification of item/unique bases used for the first filter level in  
+    /// <see cref="AbstractCraftingViewModel{TBase}"/>
+    /// </summary>
     public enum BaseGroup
     {
         Any,
@@ -15,6 +19,7 @@ namespace POESKillTree.ViewModels.Crafting
 
     public static class BaseGroupEx
     {
+        /// <returns>true if the given tags match this group</returns>
         public static bool Matches(this BaseGroup baseGroup, Tags tags)
         {
             switch (baseGroup)
@@ -36,6 +41,7 @@ namespace POESKillTree.ViewModels.Crafting
             }
         }
 
+        /// <returns>the group matching the given tags</returns>
         public static BaseGroup FromTags(Tags tags)
         {
             if (tags.HasFlag(Tags.OneHand))

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 namespace POESKillTree.Model.Items.Enums
 {
-    // taken from GGPK's ItemClasses.dat ("id" field) (except Unknown and Any)
+    /// <summary>
+    /// Classes of items as in the GGPK's ItemClasses.dat ("id" field).
+    /// </summary>
     public enum ItemClass
     {
         Unknown,
@@ -91,11 +93,16 @@ namespace POESKillTree.Model.Items.Enums
             { ItemClass.SupportSkillGem, Tags.SupportGem | Tags.Gem }
         };
 
+        /// <returns>the Tags an item with this ItemClass always has</returns>
         public static Tags ToTags(this ItemClass itemClass)
         {
             return ItemClassToTags[itemClass];
         }
 
+        /// <summary>
+        /// Tries to convert a string that is an Id from the GGPK's ItemClasses.dat to an <see cref="ItemClass"/>
+        /// instance.
+        /// </summary>
         public static bool TryParse(string ggpkItemClass, out ItemClass itemClass)
         {
             return Enum.TryParse(ggpkItemClass.Replace(" ", ""), true, out itemClass);

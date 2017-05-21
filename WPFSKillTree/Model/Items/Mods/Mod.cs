@@ -6,6 +6,10 @@ using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items.Mods
 {
+    /// <summary>
+    /// Encapsulates a <see cref="JsonMod"/> into the <see cref="IMod"/> interface
+    /// and provides a method to determine whether the mod can be crafted onto an item.
+    /// </summary>
     [DebuggerDisplay("{" + nameof(Id) + "}")]
     public class Mod : IMod
     {
@@ -21,6 +25,11 @@ namespace POESKillTree.Model.Items.Mods
         public ModDomain Domain => JsonMod.Domain;
         public int RequiredLevel => JsonMod.RequiredLevel;
 
+        /// <param name="id">the id of this mod</param>
+        /// <param name="jsonMod">the <see cref="JsonMod"/> to encapsulate</param>
+        /// <param name="jsonBenchOptions">the master crafting options with which this mod can be crafted</param>
+        /// <param name="spawnTagsReplacement">replacement spawn tags if this mod can only be spawned by different 
+        /// means, e.g. as a master signature mod</param>
         public Mod(string id, JsonMod jsonMod, IEnumerable<JsonCraftingBenchOption> jsonBenchOptions,
             IEnumerable<IReadOnlyDictionary<string, bool>> spawnTagsReplacement)
         {
@@ -52,6 +61,7 @@ namespace POESKillTree.Model.Items.Mods
             Stats = jsonMod.Stats.Select(s => new Stat(s)).ToList();
         }
 
+        /// <returns>true if this mod can be crafted onto an item with the given tags and class</returns>
         public bool Matches(Tags tags, ItemClass itemClass)
         {
             // the ModDomains Item and Master match everything but Flask, Jewel and Gem
