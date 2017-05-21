@@ -49,7 +49,7 @@ namespace POESKillTree.Model.Items
                 Mod mod;
                 if (!modDatabase.Mods.TryGetValue(id, out mod))
                 {
-                    Log.Warn($"Unknown mod id {id} on unique {UniqueName}");
+                    Log.Error($"Unknown mod id {id} on unique {UniqueName}");
                     continue;
                 }
                 explicits.Add(mod);
