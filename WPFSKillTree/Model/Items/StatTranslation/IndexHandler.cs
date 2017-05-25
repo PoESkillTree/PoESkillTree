@@ -61,10 +61,10 @@ namespace POESKillTree.Model.Items.StatTranslation
             = new Dictionary<IndexHandler, Func<double, double>>
             {
                 { IndexHandler.Percent60OfValue, d => d * 0.6 },
-                { IndexHandler.DecisecondsToSeconds, d => d * 10 },
+                { IndexHandler.DecisecondsToSeconds, d => d / 10 },
                 { IndexHandler.DivideBy100, d => d / 100 },
                 { IndexHandler.DivideBy100AndNegate, d => -d / 100 },
-                { IndexHandler.DivideBy100Precision2, d => Math.Round(d, 2) },
+                { IndexHandler.DivideBy100Precision2, d => Math.Round(d / 100, 2) },
                 { IndexHandler.MillisecondsToSeconds, d => d / 1000 },
                 { IndexHandler.MillisecondsToSecondsPrecision0, d => Math.Round(d / 1000, 0) },
                 { IndexHandler.MillisecondsToSecondsPrecision2, d => Math.Round(d / 1000, 2) },
