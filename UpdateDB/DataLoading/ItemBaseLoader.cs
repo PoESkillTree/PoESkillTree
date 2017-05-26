@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
@@ -32,6 +31,7 @@ namespace UpdateDB.DataLoading
          * - Has inventory height
          * - Has inventory width
          * - Has metadata id
+         * - Has tags
          * Printout weapons:
          * - Has base minimum physical damage
          * - Has base maximum physical damage
@@ -45,7 +45,6 @@ namespace UpdateDB.DataLoading
          * - Has base energy shield
          * Possibly useful printouts not yet used:
          * - Is corrupted
-         * - Has tags
          * Possible item classes not used here:
          * - Life Flasks, Mana Flasks, Hybrid Flasks, Utility Flasks, Critical Utility Flasks,
          * - Currency, Stackable Currency,
@@ -53,73 +52,68 @@ namespace UpdateDB.DataLoading
          * - Small Relics, Medium Relics, Large Relics,
          * - Quest Items, 
          * - Maps, Map Fragments,
-         * - Unarmed, Fishing Rods,
+         * - Unarmed,
          * - Hideout Doodads, Microtransactions, Divination Card,
          * - Labyrinth Item, Labyrinth Trinket, Labyrinth Map Item
          */
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(ItemBaseLoader));
-
-        // printouts for different ItemCategories
-        private static readonly IReadOnlyList<string> GlobalPredicates = new[]
+        
+        private static readonly IReadOnlyList<string> PrintoutPredicates = new[]
         {
+            // Global
             RdfName, RdfLvlReq, RdfBaseDexReq, RdfBaseIntReq, RdfBaseStrReq, RdfImplicits, RdfDropEnabled,
-            RdfInventoryHeight, RdfInventoryWidth, RdfMetadataId
+            RdfInventoryHeight, RdfInventoryWidth, RdfMetadataId, RdfTags,
+            // Weapon
+            RdfBasePhysMin, RdfBasePhysMax, RdfBaseCritChance, RdfBaseAttackSpeed, RdfBaseWeaponRange,
+            // Armour
+            RdfBaseBlock, RdfBaseArmour, RdfBaseEnergyShield, RdfBaseEvasion
         };
-        private static readonly IReadOnlyDictionary<ItemCategory, IReadOnlyList<string>> PredicatesPerCategory
-            = new Dictionary<ItemCategory, IReadOnlyList<string>>
+
+        // the wiki's item classes are mapped to ItemClass 
+        // (Wiki uses ItemClass.Name, we use ItemClass.Id with code naming convention)
+        private static readonly IReadOnlyDictionary<string, ItemClass> WikiClassToItemClass =
+            new Dictionary<string, ItemClass>
             {
-                {ItemCategory.Weapon, new[] {RdfBasePhysMin, RdfBasePhysMax, RdfBaseCritChance, RdfBaseAttackSpeed, RdfBaseWeaponRange}},
-                {ItemCategory.Armour, new[] {RdfBaseBlock, RdfBaseArmour, RdfBaseEnergyShield, RdfBaseEvasion}},
-                {ItemCategory.Other, new string[0]}
+                { "One Hand Swords", ItemClass.OneHandSword },
+                { "Thrusting One Hand Swords", ItemClass.ThrustingOneHandSword },
+                { "One Hand Axes", ItemClass.OneHandAxe },
+                { "One Hand Maces", ItemClass.OneHandMace },
+                { "Sceptres", ItemClass.Sceptre },
+                { "Daggers", ItemClass.Dagger },
+                { "Claws", ItemClass.Claw },
+                { "Wands", ItemClass.Wand },
+
+                { "Two Hand Swords", ItemClass.TwoHandSword },
+                { "Two Hand Axes", ItemClass.TwoHandAxe },
+                { "Two Hand Maces", ItemClass.TwoHandMace },
+                { "Bows", ItemClass.Bow },
+                { "Staves", ItemClass.Staff },
+                { "Fishing Rods", ItemClass.FishingRod },
+
+                { "Belts", ItemClass.Belt },
+                { "Rings", ItemClass.Ring },
+                { "Amulets", ItemClass.Amulet },
+                { "Quivers", ItemClass.Quiver },
+
+                { "Shields", ItemClass.Shield },
+                { "Boots", ItemClass.Boots },
+                { "Body Armours", ItemClass.BodyArmour },
+                { "Gloves", ItemClass.Gloves },
+                { "Helmets", ItemClass.Helmet },
+
+                { "Jewel", ItemClass.Jewel },
             };
 
-        // the wiki's item classes are mapped to either ItemType or ItemGroup
-        private static readonly IReadOnlyDictionary<string, ItemType> WikiClassToType
-            = new Dictionary<string, ItemType>
-            {
-                {"One Hand Axes", ItemType.OneHandedAxe},
-                {"Two Hand Axes", ItemType.TwoHandedAxe},
-                {"Bows", ItemType.Bow},
-                {"Claws", ItemType.Claw},
-                {"Daggers", ItemType.Dagger},
-                {"One Hand Maces", ItemType.OneHandedMace},
-                {"Sceptres", ItemType.Sceptre},
-                {"Two Hand Maces", ItemType.TwoHandedMace},
-                {"Staves", ItemType.Staff},
-                {"One Hand Swords", ItemType.OneHandedSword},
-                {"Thrusting One Hand Swords", ItemType.ThrustingOneHandedSword},
-                {"Two Hand Swords", ItemType.TwoHandedSword},
-                {"Wands", ItemType.Wand},
-                {"Amulets", ItemType.Amulet},
-                {"Belts", ItemType.Belt},
-                {"Quivers", ItemType.Quiver},
-                {"Rings", ItemType.Ring}
-            };
-        private static readonly IReadOnlyDictionary<string, ItemGroup> WikiClassToGroup
-            = new Dictionary<string, ItemGroup>
-            {
-                {"Body Armours", ItemGroup.BodyArmour},
-                {"Boots", ItemGroup.Boots},
-                {"Gloves", ItemGroup.Gloves},
-                {"Helmets", ItemGroup.Helmet},
-                {"Shields", ItemGroup.Shield},
-                {"Jewel", ItemGroup.Jewel}
-            };
+        private readonly HashSet<string> _unknownTags = new HashSet<string>();
 
         protected override async Task LoadAsync()
         {
             // start tasks
             var tasks = new List<Task<IEnumerable<XmlItemBase>>>();
-            foreach (var pair in WikiClassToType)
+            foreach (var pair in WikiClassToItemClass)
             {
-                var type = pair.Value;
-                tasks.Add(ReadJson(pair.Key, _ => type, GroupToCategory(type.Group())));
-            }
-            foreach (var pair in WikiClassToGroup)
-            {
-                var group = pair.Value;
-                tasks.Add(ReadJson(pair.Key, b => TypeFromItem(b, group), GroupToCategory(group)));
+                tasks.Add(ReadJson(pair.Key, pair.Value));
             }
             // collect results
             var bases = new List<XmlItemBase>();
@@ -131,37 +125,31 @@ namespace UpdateDB.DataLoading
             {
                 ItemBases = bases.ToArray()
             };
+            Log.Info("Unknown tags: " + string.Join(", ", _unknownTags));
         }
 
-        private async Task<IEnumerable<XmlItemBase>> ReadJson(string wikiClass,
-            Func<XmlItemBase, ItemType> itemTypeFunc, ItemCategory category)
+        private async Task<IEnumerable<XmlItemBase>> ReadJson(string wikiClass, ItemClass itemClass)
         {
             var conditions = new ConditionBuilder
             {
                 {RdfRarity, "Normal"},
                 {RdfItemClass, wikiClass}
             };
-            var printouts = GlobalPredicates.Union(PredicatesPerCategory[category]);
             var enumerable =
-                from result in await WikiApiAccessor.AskArgs(conditions, printouts)
-                select PrintoutsToBase(category, result);
+                from result in await WikiApiAccessor.AskArgs(conditions, PrintoutPredicates)
+                select PrintoutsToBase(itemClass, result);
             var ret = enumerable.ToList();
-            foreach (var item in ret)
-            {
-                item.ItemType = itemTypeFunc(item);
-            }
             Log.Info($"Retrieved {ret.Count} bases of class {wikiClass}.");
             return
                 from b in ret
-                orderby b.ItemType, b.Level, b.Name
+                orderby b.Level, b.Name
                 select b;
         }
 
-        private static XmlItemBase PrintoutsToBase(ItemCategory category, JToken printouts)
+        private XmlItemBase PrintoutsToBase(ItemClass itemClass, JToken printouts)
         {
             // name, requirements and implicts; same for all categories
-            var implicits = PluralValue<string>(printouts, RdfImplicits)
-                .SelectMany(WikiStatTextUtils.ConvertStatText).ToArray();
+            var implicits = PluralValue<string>(printouts, RdfImplicits).ToArray();
             var item = new XmlItemBase
             {
                 Level = SingularValue<int>(printouts, RdfLvlReq),
@@ -174,95 +162,39 @@ namespace UpdateDB.DataLoading
                 InventoryWidth = SingularValue(printouts, RdfInventoryWidth, 1),
                 MetadataId = SingularValue<string>(printouts, RdfMetadataId),
                 Implicit = implicits,
+                ItemClass = itemClass,
             };
-            // properties; category specific
-            var propBuilder = new PropertyBuilder(printouts);
-            switch (category)
+            // tags and properties
+            foreach (var s in PluralValue<string>(printouts, RdfTags))
             {
-                case ItemCategory.Weapon:
-                    propBuilder.Add("Physical Damage", RdfBasePhysMin, RdfBasePhysMax);
-                    propBuilder.Add("Critical Strike Chance %", RdfBaseCritChance);
-                    propBuilder.Add("Attacks per Second", RdfBaseAttackSpeed);
-                    propBuilder.Add("Weapon Range", RdfBaseWeaponRange);
-                    break;
-                case ItemCategory.Armour:
-                    propBuilder.Add("Chance to Block %", RdfBaseBlock);
-                    propBuilder.Add("Armour", RdfBaseArmour);
-                    propBuilder.Add("Evasion Rating", RdfBaseEvasion);
-                    propBuilder.Add("Energy Shield", RdfBaseEnergyShield);
-                    break;
-                case ItemCategory.Other:
-                    break;
+                Tags tag;
+                if (TagsEx.TryParse(s, out tag))
+                {
+                    item.Tags |= tag;
+                }
+                else
+                {
+                    _unknownTags.Add(s);
+                }
+            }
+            // properties; tag specific
+            var propBuilder = new PropertyBuilder(printouts);
+            if (item.Tags.HasFlag(Tags.Weapon))
+            {
+                propBuilder.Add("Physical Damage: {0}-{1}", RdfBasePhysMin, RdfBasePhysMax);
+                propBuilder.Add("Critical Strike Chance: {0}%", RdfBaseCritChance);
+                propBuilder.Add("Attacks per Second: {0}", RdfBaseAttackSpeed);
+                propBuilder.Add("Weapon Range: {0}", RdfBaseWeaponRange);
+            }
+            if (item.Tags.HasFlag(Tags.Armour))
+            {
+                propBuilder.Add("Chance to Block: {0}%", RdfBaseBlock);
+                propBuilder.Add("Armour: {0}", RdfBaseArmour);
+                propBuilder.Add("Evasion Rating: {0}", RdfBaseEvasion);
+                propBuilder.Add("Energy Shield: {0}", RdfBaseEnergyShield);
             }
             item.Properties = propBuilder.ToArray();
             return item;
-        }
-
-        private static ItemCategory GroupToCategory(ItemGroup group)
-        {
-            switch (group)
-            {
-                case ItemGroup.OneHandedWeapon:
-                case ItemGroup.TwoHandedWeapon:
-                    return ItemCategory.Weapon;
-                case ItemGroup.BodyArmour:
-                case ItemGroup.Boots:
-                case ItemGroup.Gloves:
-                case ItemGroup.Helmet:
-                case ItemGroup.Shield:
-                    return ItemCategory.Armour;
-                case ItemGroup.Belt:
-                case ItemGroup.Ring:
-                case ItemGroup.Amulet:
-                case ItemGroup.Quiver:
-                case ItemGroup.Jewel:
-                    return ItemCategory.Other;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(group), group, "Unexpected group");
-            }
-        }
-
-        private static ItemType TypeFromItem(XmlItemBase item, ItemGroup group)
-        {
-            ItemType ret;
-            var type = group.ToString();
-            // If there is a type with the same name as the group, take that
-            if (Enum.TryParse(type, out ret))
-                return ret;
-
-            // Each jewel base has its own type.
-            if (Enum.TryParse(item.Name.Replace(" Jewel", "Jewel"), out ret))
-                return ret;
-
-            // Types of armour groups.
-            if (item.Strength > 0)
-            {
-                type += "Armour";
-            }
-            if (item.Dexterity > 0)
-            {
-                type += "Evasion";
-            }
-            if (item.Intelligence > 0)
-            {
-                type += "EnergyShield";
-            }
-            // Special case for when all of Str, Dex and Int are 0
-            if (type == group.ToString())
-            {
-                type += "ArmourEvasionEnergyShield";
-            }
-            if (!Enum.TryParse(type, out ret))
-                throw new ArgumentException($"Type {type} parsed from the given base item and group does not exist");
-            return ret;
-        }
-
-
-        private enum ItemCategory
-        {
-            Weapon,
-            Armour,
-            Other
         }
     }
 }

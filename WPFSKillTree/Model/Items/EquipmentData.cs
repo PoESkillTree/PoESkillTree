@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using MoreLinq;
-using POESKillTree.Model.Items.Affixes;
-using POESKillTree.Model.Items.Enums;
+using POESKillTree.Model.Items.Mods;
+using POESKillTree.Model.Items.StatTranslation;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Model.Items
@@ -16,7 +14,8 @@ namespace POESKillTree.Model.Items
         private const string ResourcePath =
             "pack://application:,,,/PoESkillTree;component/Data/Equipment/";
 
-        public IReadOnlyDictionary<ItemType, IReadOnlyList<Affix>> AffixesPerItemType { get; private set; }
+        public ModDatabase ModDatabase { get; private set; }
+        public StatTranslator StatTranslator { get; private set; }
 
         public IReadOnlyList<ItemBase> ItemBases { get; private set; }
 
@@ -30,28 +29,24 @@ namespace POESKillTree.Model.Items
 
         // ReSharper disable once ConvertToAutoPropertyWhenPossible 
         // (private field is used to reduce ambiguity between class and property)
-        public ItemImageService ItemImageService { get { return _itemImageService; } }
+        public ItemImageService ItemImageService => _itemImageService;
 
         private WordSetTreeNode _root;
 
         private EquipmentData(Options options)
         {
-            if (!UriParser.IsKnownScheme("pack"))
-            {
-                // Necessary for unit tests. Accessing PackUriHelper triggers static initialization.
-                // Without it, creating resource URIs from unit tests would throw UriFormatExceptions.
-                var _ = System.IO.Packaging.PackUriHelper.UriSchemePack;
-            }
+            Util.TriggerPackUriSchemeInitialization();
             _itemImageService = new ItemImageService(options);
         }
 
         private async Task InitializeAsync()
         {
-            AffixesPerItemType =
-                (from a in await LoadAffixes()
-                 group a by a.ItemType into types
-                 select types)
-                 .ToDictionary(g => g.Key, g => (IReadOnlyList<Affix>)new List<Affix>(g));
+            var modsTask = RePoEUtils.LoadAsync<Dictionary<string, JsonMod>>("mods");
+            var benchOptionsTask = RePoEUtils.LoadAsync<JsonCraftingBenchOption[]>("crafting_bench_options");
+            var npcMastersTask = RePoEUtils.LoadAsync<Dictionary<string, JsonNpcMaster>>("npc_master");
+            var statTranslationsTask = RePoEUtils.LoadAsync<List<JsonStatTranslation>>("stat_translations");
+            ModDatabase = new ModDatabase(await modsTask, await benchOptionsTask, await npcMastersTask);
+            StatTranslator = new StatTranslator(await statTranslationsTask);
 
             ItemBases = (await LoadBases()).ToList();
             UniqueBases = (await LoadUniques()).ToList();
@@ -69,66 +64,24 @@ namespace POESKillTree.Model.Items
             return o;
         }
 
-        private static async Task<IEnumerable<XmlAffix>> LoadAffixFile(string fileName)
-        {
-            var affixList = await DeserializeResourceAsync<XmlAffixList>(fileName);
-            return affixList.Affixes;
-        }
-
-        private static async Task<IEnumerable<Affix>> LoadAffixes()
-        {
-            return (await LoadAffixFile("Affixes.xml"))
-                    .Union(await LoadAffixFile("SignatureAffixes.xml"))
-                    .SelectMany(GroupToTypes)
-                    .Select(x => new Affix(x));
-        }
-
-        private static IEnumerable<XmlAffix> GroupToTypes(XmlAffix affix)
-        {
-            if (affix.ItemGroup == ItemGroup.Unknown)
-            {
-                yield return affix;
-            }
-            else
-            {
-                foreach (var itemType in affix.ItemGroup.Types())
-                {
-                    yield return new XmlAffix
-                    {
-                        Global = affix.Global,
-                        ItemGroup = ItemGroup.Unknown,
-                        ItemType = itemType,
-                        ModType = affix.ModType,
-                        Name = affix.Name,
-                        Tiers = affix.Tiers
-                    };
-                }
-            }
-        }
-
         private async Task<IEnumerable<ItemBase>> LoadBases()
         {
-            var xmlList = await DeserializeResourceAsync<XmlItemList>("Items.xml");
-            return xmlList.ItemBases.Select(x => new ItemBase(_itemImageService, x));
+            var xmlList = await DeserializeXmlResourceAsync<XmlItemList>("Items.xml");
+            return xmlList.ItemBases.Select(x => new ItemBase(_itemImageService, ModDatabase, x));
         }
 
         private async Task<IEnumerable<UniqueBase>> LoadUniques()
         {
             var metadataToBase = ItemBases.ToDictionary(b => b.MetadataId);
-            var xmlList = await DeserializeResourceAsync<XmlUniqueList>("Uniques.xml");
+            var xmlList = await DeserializeXmlResourceAsync<XmlUniqueList>("Uniques.xml");
             return xmlList.Uniques.Select(
-                x => new UniqueBase(_itemImageService, metadataToBase[x.BaseMetadataId], x));
+                x => new UniqueBase(_itemImageService, ModDatabase, metadataToBase[x.BaseMetadataId], x));
         }
 
-        private static async Task<T> DeserializeResourceAsync<T>(string file)
+        private static async Task<T> DeserializeXmlResourceAsync<T>(string file)
         {
-            var resource = Application.GetResourceStream(new Uri(ResourcePath + file));
-            using (var stream = resource.Stream)
-            using (var reader = new StreamReader(stream))
-            {
-                var text = await reader.ReadToEndAsync();
-                return SerializationUtils.XmlDeserializeString<T>(text);
-            }
+            var text = await SerializationUtils.ReadResourceAsync(ResourcePath + file);
+            return SerializationUtils.XmlDeserializeString<T>(text);
         }
 
         public ItemBase ItemBaseFromTypeline(string typeline)

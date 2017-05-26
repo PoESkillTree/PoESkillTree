@@ -22,10 +22,22 @@ namespace POESKillTree.Utils.Extensions
         }
 
         public static TValue GetOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict, TKey key,
+            TValue defaultValue = default(TValue))
+        {
+            TValue value;
+            return dict.TryGetValue(key, out value) ? value : defaultValue;
+        }
+
+        public static TValue GetOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict, TKey key,
             Func<TValue> defaultValueProvider)
         {
             TValue value;
             return dict.TryGetValue(key, out value) ? value : defaultValueProvider();
+        }
+
+        public static bool All(this IEnumerable<bool> enumerable)
+        {
+            return enumerable.All(b => b);
         }
     }
 }

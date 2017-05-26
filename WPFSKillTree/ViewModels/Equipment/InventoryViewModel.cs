@@ -47,7 +47,7 @@ namespace POESKillTree.ViewModels.Equipment
             var imageName = slot.ToString();
             if (slot == ItemSlot.MainHand)
             {
-                imageName = "TwoHandedWeapon";
+                imageName = "TwoHandSword";
             }
             else if (slot == ItemSlot.OffHand)
             {

@@ -3,8 +3,8 @@ using System.ComponentModel;
 using System.Linq;
 using MoreLinq;
 using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils.Wpf;
 
 namespace POESKillTree.ViewModels.Crafting
@@ -18,12 +18,11 @@ namespace POESKillTree.ViewModels.Crafting
     /// </summary>
     public class CraftingViewModel : AbstractCraftingViewModel<ItemBase>
     {
-        public IReadOnlyList<ModSelectorViewModel> MsPrefix { get; } = new[] {
-            new ModSelectorViewModel(), new ModSelectorViewModel(), new ModSelectorViewModel()
-        };
-        public IReadOnlyList<ModSelectorViewModel> MsSuffix { get; } = new[] {
-            new ModSelectorViewModel(), new ModSelectorViewModel(), new ModSelectorViewModel()
-        };
+        public IReadOnlyList<ModSelectorViewModel> MsPrefix { get; }
+        public IReadOnlyList<ModSelectorViewModel> MsSuffix { get; }
+
+        private readonly IReadOnlyList<ModGroup> _allPrefixes;
+        private readonly IReadOnlyList<ModGroup> _allSuffixes;
 
         private List<Affix> _prefixes = new List<Affix>();
         private List<Affix> _suffixes = new List<Affix>();
@@ -38,21 +37,48 @@ namespace POESKillTree.ViewModels.Crafting
         }
 
         public CraftingViewModel(EquipmentData equipmentData)
-            : base(equipmentData,
-                equipmentData.ItemBases.Where(b => equipmentData.AffixesPerItemType.ContainsKey(b.ItemType)))
+            : base(equipmentData, SelectCraftableBases(equipmentData))
         {
+            _allPrefixes = equipmentData.ModDatabase[ModGenerationType.Prefix];
+            _allSuffixes = equipmentData.ModDatabase[ModGenerationType.Suffix];
+
+            MsPrefix = new[] {
+                new ModSelectorViewModel(EquipmentData.StatTranslator),
+                new ModSelectorViewModel(EquipmentData.StatTranslator),
+                new ModSelectorViewModel(EquipmentData.StatTranslator)
+            };
             MsPrefix.ForEach(ms => ms.PropertyChanged += MsPrefixOnPropertyChanged);
+            MsSuffix = new[] {
+                new ModSelectorViewModel(EquipmentData.StatTranslator),
+                new ModSelectorViewModel(EquipmentData.StatTranslator),
+                new ModSelectorViewModel(EquipmentData.StatTranslator)
+            };
             MsSuffix.ForEach(ms => ms.PropertyChanged += MsSuffixOnPropertyChanged);
 
             Init();
         }
 
+        private static IEnumerable<ItemBase> SelectCraftableBases(EquipmentData equipmentData)
+        {
+            var prefixes = equipmentData.ModDatabase[ModGenerationType.Prefix];
+            var suffixes = equipmentData.ModDatabase[ModGenerationType.Suffix];
+            foreach (var itemBase in equipmentData.ItemBases)
+            {
+                if (prefixes.Any(p => p.GetMatchingMods(itemBase.Tags, itemBase.ItemClass).Any()))
+                {
+                    yield return itemBase;
+                }
+                else if (suffixes.Any(p => p.GetMatchingMods(itemBase.Tags, itemBase.ItemClass).Any()))
+                {
+                    yield return itemBase;
+                }
+            }
+        }
+
         protected override void UpdateBaseSpecific()
         {
-            var aaff = EquipmentData.AffixesPerItemType[Item.ItemType];
-
-            _prefixes = aaff.Where(a => a.ModType == ModType.Prefix).ToList();
-            _suffixes = aaff.Where(a => a.ModType == ModType.Suffix).ToList();
+            _prefixes = CreateAffixes(_allPrefixes).ToList();
+            _suffixes = CreateAffixes(_allSuffixes).ToList();
 
             _changingBase = true;
             MsPrefix.ForEach(ms => ms.Affixes = _prefixes);
@@ -70,32 +96,56 @@ namespace POESKillTree.ViewModels.Crafting
             _changingBase = false;
         }
 
-        protected override IEnumerable<ItemMod> RecalculateItemSpecific()
+        private IEnumerable<Affix> CreateAffixes(IEnumerable<ModGroup> modGroups)
         {
-            var selectedPreff = MsPrefix.Where(s => !s.IsEmptySelection).ToArray();
-            var selectedSuff = MsSuffix.Where(s => !s.IsEmptySelection).ToArray();
+            return
+                from modGroup in modGroups
+                let mods = modGroup.GetMatchingMods(SelectedBase.Tags, SelectedBase.ItemClass).ToList()
+                where mods.Any()
+                let name = GetNameForAffix(mods)
+                select new Affix(mods, name);
+        }
 
-            if (selectedPreff.Length + selectedSuff.Length == 0)
+        private string GetNameForAffix(IReadOnlyList<IMod> mods)
+        {
+            if (!mods.Any())
+            {
+                return "";
+            }
+            var mod = mods.First();
+            var statValueDict = mod.Stats.ToDictionary(s => s.Id, s => s.Range.From);
+            var translations = EquipmentData.StatTranslator.GetTranslations(statValueDict)
+                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .Select(s => ItemMod.Numberfilter.Replace(s, "#"));
+            return string.Join(", ", translations);
+        }
+
+        protected override IEnumerable<IGrouping<ModLocation, StatIdValuePair>> RecalculateItemSpecific(out int requiredLevel)
+        {
+            var selectedPrefixes = MsPrefix.Where(s => !s.IsEmptySelection).ToArray();
+            var selectedSuffixes = MsSuffix.Where(s => !s.IsEmptySelection).ToArray();
+
+            if (selectedPrefixes.Length + selectedSuffixes.Length == 0)
             {
                 Item.Frame = FrameType.White;
             }
-            else if (selectedPreff.Length <= 1 && selectedSuff.Length <= 1)
+            else if (selectedPrefixes.Length <= 1 && selectedSuffixes.Length <= 1)
             {
                 Item.Frame = FrameType.Magic;
                 var typeline = "";
 
-                if (selectedPreff.Length > 0)
+                if (selectedPrefixes.Length > 0)
                 {
-                    var pref = selectedPreff[0];
-                    typeline = pref.Query().First().Name + " ";
+                    var pref = selectedPrefixes[0];
+                    typeline = pref.Query().Name + " ";
                 }
 
                 typeline += Item.BaseType;
 
-                if (selectedSuff.Length > 0)
+                if (selectedSuffixes.Length > 0)
                 {
-                    var suff = selectedSuff[0];
-                    typeline += " " + suff.Query().First().Name;
+                    var suff = selectedSuffixes[0];
+                    typeline += " " + suff.Query().Name;
                 }
 
                 Item.TypeLine = typeline;
@@ -106,11 +156,17 @@ namespace POESKillTree.ViewModels.Crafting
             }
             UpdateItemNameLine();
 
-            var prefixes = selectedPreff.SelectMany(p => p.GetExactMods());
-            var suffixes = selectedSuff.SelectMany(p => p.GetExactMods());
-            return prefixes.Concat(suffixes)
-                .GroupBy(m => m.Attribute)
-                .Select(g => g.Aggregate((m1, m2) => m1.Sum(m2)));
+            requiredLevel = selectedPrefixes.Concat(selectedSuffixes)
+                .Select(ms => ms.Query().RequiredLevel)
+                .DefaultIfEmpty()
+                .Max();
+
+            return
+                from ms in MsPrefix.Concat(MsSuffix)
+                where !ms.IsEmptySelection
+                let location = ms.Query().Domain == ModDomain.Master ? ModLocation.Crafted : ModLocation.Explicit
+                from tuple in ms.GetStatValues()
+                group tuple by location;
         }
 
         private void UpdateItemNameLine()

@@ -18,6 +18,8 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,8 +34,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -148,8 +148,8 @@
     <Reference Include="Microsoft.WindowsAPICodePack.ShellExtensions">
       <HintPath>..\packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.ShellExtensions.dll</HintPath>
     </Reference>
-    <Reference Include="MoreLinq, Version=2.0.20029.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
-      <HintPath>..\packages\morelinq.2.1.0\lib\net35\MoreLinq.dll</HintPath>
+    <Reference Include="MoreLinq, Version=2.4.20801.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.2.4.1\lib\net40\MoreLinq.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -164,6 +164,10 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Threading.Tasks.Dataflow, Version=4.6.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Dataflow.4.7.0\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows.Forms" />
@@ -209,11 +213,31 @@
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
-    <Compile Include="Model\Items\Enums\ModGroup.cs" />
+    <Compile Include="Model\Items\Mods\ModGroup.cs" />
+    <Compile Include="Model\Items\Mods\IMod.cs" />
+    <Compile Include="Model\Items\Mods\JsonCraftingBenchOption.cs" />
+    <Compile Include="Model\Items\Mods\JsonMod.cs" />
+    <Compile Include="Model\Items\Mods\JsonNpcMaster.cs" />
+    <Compile Include="Model\Items\Mods\Mod.cs" />
+    <Compile Include="Model\Items\Mods\ModDatabase.cs" />
+    <Compile Include="Model\Items\Enums\ModDomain.cs" />
+    <Compile Include="Model\Items\Mods\Affix.cs" />
+    <Compile Include="Model\Items\Mods\Stat.cs" />
+    <Compile Include="Model\Items\Mods\StatLocalityChecker.cs" />
+    <Compile Include="Utils\RePoEUtils.cs" />
+    <Compile Include="Model\Items\StatTranslation\Format.cs" />
+    <Compile Include="Model\Items\StatTranslation\IndexHandler.cs" />
+    <Compile Include="Model\Items\StatTranslation\JsonStatTranslation.cs" />
+    <Compile Include="Model\Items\StatTranslation\StatTranslator.cs" />
+    <Compile Include="Model\Items\Enums\ItemClass.cs" />
+    <Compile Include="Model\Items\Enums\ModLocation.cs" />
+    <Compile Include="Model\Items\Enums\Tags.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
+    <Compile Include="Model\Items\StatTranslation\Translation.cs" />
     <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
     <Compile Include="Utils\Wpf\ScrollViewerBindableOffsetBehavior.cs" />
     <Compile Include="ViewModels\Crafting\AbstractCraftingViewModel.cs" />
+    <Compile Include="ViewModels\Crafting\BaseGroup.cs" />
     <Compile Include="ViewModels\Crafting\CraftingViewModel.cs" />
     <Compile Include="ViewModels\Crafting\ModSelectorViewModel.cs" />
     <Compile Include="ViewModels\Crafting\SliderGroupViewModel.cs" />
@@ -340,16 +364,10 @@
     <Compile Include="Model\Builds\IBuild.cs" />
     <Compile Include="Model\IMemento.cs" />
     <Compile Include="Model\IPersistentData.cs" />
-    <Compile Include="Model\Items\Affixes\Affix.cs" />
-    <Compile Include="Model\Items\Affixes\ItemMod.cs" />
-    <Compile Include="Model\Items\Affixes\ItemModTier.cs" />
-    <Compile Include="Model\Items\Affixes\Stat.cs" />
-    <Compile Include="Model\Items\Affixes\XmlAffixList.cs" />
+    <Compile Include="Model\Items\Mods\ItemMod.cs" />
     <Compile Include="Model\Items\Enums\FrameType.cs" />
-    <Compile Include="Model\Items\Enums\ItemGroup.cs" />
     <Compile Include="Model\Items\Enums\ItemSlot.cs" />
-    <Compile Include="Model\Items\Enums\ItemType.cs" />
-    <Compile Include="Model\Items\Enums\ModType.cs" />
+    <Compile Include="Model\Items\Enums\ModGenerationType.cs" />
     <Compile Include="Model\Items\EquipmentData.cs" />
     <Compile Include="Model\Items\ItemImage.cs" />
     <Compile Include="Model\Items\XmlItemList.cs" />
@@ -781,6 +799,10 @@
     <None Include="Contrib\RangeTree\README.md" />
     <None Include="Contrib\WpfRangeControls\LICENSE" />
     <None Include="Contrib\WpfRangeControls\README.md" />
+    <Resource Include="Data\RePoE\crafting_bench_options.min.json" />
+    <Resource Include="Data\RePoE\mods.min.json" />
+    <Resource Include="Data\RePoE\npc_master.min.json" />
+    <Resource Include="Data\RePoE\stat_translations.min.json" />
     <None Include="dist-clean.bat" />
     <None Include="dist-release.bat" />
     <None Include="Locale\de-DE\Help.md" />
@@ -883,7 +905,6 @@
   <ItemGroup>
     <Content Include="Antlr3.Runtime.dll" />
     <Resource Include="TreeGenerator\ideas_todos.txt" />
-    <Resource Include="Data\Equipment\Affixes.xml" />
     <Resource Include="Data\Equipment\Items.xml" />
     <None Include="Data\ItemDB\GemList.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -891,7 +912,6 @@
     <None Include="Data\ItemDB\GemProperties.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Resource Include="Data\Equipment\SignatureAffixes.xml" />
     <Resource Include="Contrib\Monotone\LICENSE.txt" />
     <Resource Include="Contrib\Monotone\README.txt" />
     <Resource Include="Data\Equipment\Uniques.xml" />
@@ -928,12 +948,9 @@
     <Resource Include="Images\Duelist_Highlighted.jpg" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\BodyArmour.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Helmet.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandedWeapon.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Shield.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandedWeapon.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Jewel.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Quiver.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Gem.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Unknown.png" />
     <Resource Include="Images\Slayer_Highlighted.jpg" />
     <Resource Include="Images\Champion_Highlighted.jpg" />
@@ -1000,6 +1017,27 @@
     <Resource Include="Images\EquipmentUI\ItemsSeparatorRare.png" />
     <Resource Include="Images\EquipmentUI\ItemsSeparatorUnique.png" />
     <Resource Include="Images\EquipmentUI\ItemsSeparatorWhite.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\ActiveskillGem.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Bow.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Claw.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\CriticalUtilityFlask.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Dagger.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\FishingRod.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\HybridFlask.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\LifeFlask.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\ManaFlask.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandAxe.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandMace.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandSword.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Sceptre.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Staff.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\SupportSkillGem.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\ThrustingOneHandSword.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandAxe.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandMace.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandSword.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\UtilityFlask.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Wand.png" />
     <Content Include="Libs\Xceed.Wpf.Toolkit.dll" />
     <Content Include="release.iss" />
     <None Include="Tools\isetup\ISCC.exe" />

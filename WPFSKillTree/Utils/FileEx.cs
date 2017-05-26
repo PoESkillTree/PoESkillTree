@@ -21,14 +21,6 @@ namespace POESKillTree.Utils
             }
         }
 
-        public static async Task WriteStreamAsync(string path, Stream contents)
-        {
-            using (var writer = File.Create(path))
-            {
-                await contents.CopyToAsync(writer).ConfigureAwait(false);
-            }
-        }
-
         public static void DeleteIfExists(string path)
         {
             if (File.Exists(path))

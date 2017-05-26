@@ -96,16 +96,15 @@ namespace UpdateDB.DataLoading
 
         private static XmlUnique PrintoutsToUnique(JToken printouts)
         {
-            var explicits = PluralValue<string>(printouts, RdfExplicits)
-                .SelectMany(WikiStatTextUtils.ConvertStatText).ToArray();
+            var explicits = PluralValue<string>(printouts, RdfExplicits).ToArray();
             var properties = new PropertyBuilder(printouts);
             if (printouts[RdfItemLimit]?.HasValues == true)
             {
-                properties.Add("Limited to", RdfItemLimit);
+                properties.Add("Limited to: {0}", RdfItemLimit);
             }
             if (printouts[RdfJewelRadius]?.HasValues == true)
             {
-                properties.Add("Radius", RdfJewelRadius);
+                properties.Add("Radius: {0}", RdfJewelRadius);
             }
             return new XmlUnique
             {

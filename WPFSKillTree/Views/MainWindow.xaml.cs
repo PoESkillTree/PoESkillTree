@@ -1196,7 +1196,7 @@ namespace POESKillTree.Views
             var attritemp = Tree.SelectedAttributesWithoutImplicit;
 
             var itemAttris = _itemAttributes.NonLocalMods
-                .Select(m => new KeyValuePair<string, List<float>>(m.Attribute, m.Value))
+                .Select(m => new KeyValuePair<string, IReadOnlyList<float>>(m.Attribute, m.Values))
                 .SelectMany(SkillTree.ExpandHybridAttributes);
             foreach (var mod in itemAttris)
             {

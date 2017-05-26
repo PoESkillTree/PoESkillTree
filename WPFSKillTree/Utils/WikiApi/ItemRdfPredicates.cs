@@ -15,6 +15,7 @@
         public const string RdfInventoryWidth = "Has inventory width";
         public const string RdfMetadataId = "Has metadata id";
         public const string RdfBaseMetadataId = "Has base item metadata id";
+        public const string RdfTags = "Has tags";
 
         // Requirements
         public const string RdfLvlReq = "Has level requirement";
@@ -22,9 +23,9 @@
         public const string RdfBaseIntReq = "Has base intelligence requirement";
         public const string RdfBaseStrReq = "Has base strength requirement";
 
-        // Stats (not properties)
-        public const string RdfImplicits = "Has implicit stat text";
-        public const string RdfExplicits = "Has explicit stat text";
+        // Mods (not properties)
+        public const string RdfImplicits = "Has implicit mod ids";
+        public const string RdfExplicits = "Has explicit mod ids";
 
         // Weapon properties
         public const string RdfBasePhysMin = "Has base minimum physical damage";
