@@ -26,7 +26,7 @@ namespace POESKillTree.Model.Items.Mods
             var benchLookup = benchOptions.ToLookup(m => m.ModId);
             var signatureModDict = npcMasters
                 .Select(n => n.Value.SignatureMod)
-                .ToDictionary(s => s.Id, s => s.SpawnTags);
+                .ToDictionary(s => s.Id, s => s.SpawnWeights);
             Mods = mods.ToDictionary(
                 p => p.Key, 
                 p => new Mod(p.Key, p.Value, benchLookup[p.Key], signatureModDict.GetOrDefault(p.Key)));

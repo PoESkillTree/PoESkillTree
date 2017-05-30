@@ -60,15 +60,15 @@ namespace UnitTests.Model.Items.Mods
             Assert.AreEqual(false, mod.IsEssenceOnly);
             Assert.AreEqual("of Deadliness", mod.Name);
             Assert.AreEqual(1, mod.RequiredLevel);
-            Assert.AreEqual(2, mod.SpawnTags.Length);
+            Assert.AreEqual(2, mod.SpawnWeights.Length);
             Assert.AreEqual(2, mod.Stats.Length);
 
-            var spawnTag = mod.SpawnTags[0];
-            Assert.AreEqual(1, spawnTag.Count);
-            Assert.AreEqual(false, spawnTag["not_dex"]);
-            spawnTag = mod.SpawnTags[1];
-            Assert.AreEqual(1, spawnTag.Count);
-            Assert.AreEqual(true, spawnTag["default"]);
+            var spawnWeight = mod.SpawnWeights[0];
+            Assert.AreEqual("not_dex", spawnWeight.Tag);
+            Assert.AreEqual(false, spawnWeight.CanSpawn);
+            spawnWeight = mod.SpawnWeights[1];
+            Assert.AreEqual("default", spawnWeight.Tag);
+            Assert.AreEqual(true, spawnWeight.CanSpawn);
 
             var stat = mod.Stats[0];
             Assert.AreEqual("accuracy_rating_+%", stat.Id);
@@ -92,18 +92,18 @@ namespace UnitTests.Model.Items.Mods
             Assert.AreEqual(false, mod.IsEssenceOnly);
             Assert.AreEqual("of the Marksman", mod.Name);
             Assert.AreEqual(41, mod.RequiredLevel);
-            Assert.AreEqual(3, mod.SpawnTags.Length);
+            Assert.AreEqual(3, mod.SpawnWeights.Length);
             Assert.AreEqual(1, mod.Stats.Length);
 
-            var spawnTag = mod.SpawnTags[0];
-            Assert.AreEqual(1, spawnTag.Count);
-            Assert.AreEqual(false, spawnTag["no_attack_mods"]);
-            spawnTag = mod.SpawnTags[1];
-            Assert.AreEqual(1, spawnTag.Count);
-            Assert.AreEqual(true, spawnTag["weapon"]);
-            spawnTag = mod.SpawnTags[2];
-            Assert.AreEqual(1, spawnTag.Count);
-            Assert.AreEqual(false, spawnTag["default"]);
+            var spawnWeight = mod.SpawnWeights[0];
+            Assert.AreEqual("no_attack_mods", spawnWeight.Tag);
+            Assert.AreEqual(false, spawnWeight.CanSpawn);
+            spawnWeight = mod.SpawnWeights[1];
+            Assert.AreEqual("weapon", spawnWeight.Tag);
+            Assert.AreEqual(true, spawnWeight.CanSpawn);
+            spawnWeight = mod.SpawnWeights[2];
+            Assert.AreEqual("default", spawnWeight.Tag);
+            Assert.AreEqual(false, spawnWeight.CanSpawn);
 
             var stat = mod.Stats[0];
             Assert.AreEqual("local_accuracy_rating", stat.Id);
@@ -158,14 +158,10 @@ namespace UnitTests.Model.Items.Mods
 
         private void AssertCantSpawn(JsonMod mod)
         {
-            foreach (var spawnTagDict in mod.SpawnTags)
+            foreach (var spawnWeight in mod.SpawnWeights)
             {
-                if (spawnTagDict.Any())
-                {
-                    Assert.AreEqual(1, spawnTagDict.Count);
-                    Assert.IsTrue(spawnTagDict.ContainsKey("default"));
-                    Assert.IsFalse(spawnTagDict["default"]);
-                }
+                Assert.AreEqual("default", spawnWeight.Tag);
+                Assert.IsFalse(spawnWeight.CanSpawn);
             }
         }
 
@@ -226,15 +222,12 @@ namespace UnitTests.Model.Items.Mods
             await _initialization;
             foreach (var mod in _mods.Values)
             {
-                foreach (var spawnTagDict in mod.SpawnTags)
+                foreach (var spawnWeight in mod.SpawnWeights)
                 {
-                    foreach (var spawnTag in spawnTagDict.Keys)
+                    Tags tag;
+                    if (!TagsEx.TryParse(spawnWeight.Tag, out tag))
                     {
-                        Tags tag;
-                        if (!TagsEx.TryParse(spawnTag, out tag))
-                        {
-                            Assert.IsTrue(UnknownTags.Contains(spawnTag), spawnTag + " unknown");
-                        }
+                        Assert.IsTrue(UnknownTags.Contains(spawnWeight.Tag), spawnWeight.Tag + " unknown");
                     }
                 }
             }
@@ -263,15 +256,12 @@ namespace UnitTests.Model.Items.Mods
             await _initialization;
             foreach (var mod in _npcMasters.Values.Select(n => n.SignatureMod))
             {
-                foreach (var spawnTagDict in mod.SpawnTags)
+                foreach (var spawnWeight in mod.SpawnWeights)
                 {
-                    foreach (var spawnTag in spawnTagDict.Keys)
+                    Tags tag;
+                    if (!TagsEx.TryParse(spawnWeight.Tag, out tag))
                     {
-                        Tags tag;
-                        if (!TagsEx.TryParse(spawnTag, out tag))
-                        {
-                            Assert.IsTrue(UnknownTags.Contains(spawnTag), spawnTag + " unknown");
-                        }
+                        Assert.IsTrue(UnknownTags.Contains(spawnWeight.Tag), spawnWeight.Tag + " unknown");
                     }
                 }
             }

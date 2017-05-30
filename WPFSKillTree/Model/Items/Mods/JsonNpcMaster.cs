@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace POESKillTree.Model.Items.Mods
 {
@@ -16,7 +15,7 @@ namespace POESKillTree.Model.Items.Mods
         [JsonProperty("id")]
         public string Id { get; set; }
 
-        [JsonProperty("spawn_tags")]
-        public Dictionary<string, bool>[] SpawnTags { get; set; }
+        [JsonProperty("spawn_weights")]
+        public JsonSpawnWeight[] SpawnWeights { get; set; }
     }
 }
