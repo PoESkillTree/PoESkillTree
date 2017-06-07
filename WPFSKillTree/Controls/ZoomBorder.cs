@@ -14,6 +14,14 @@ namespace POESKillTree.Controls
         private Point _start;
         private bool allowZoom = true;
 
+        const double ZOOM_STEP = 0.3;
+        
+        const double MAX_ZOOM = 75;
+        const double MIN_ZOOM = 0.5;
+
+        // Not sure if this takes the zoom factor into account, but this feels reasonable.
+        const double DRAG_THRESHOLD = 5;
+
         public Point Origin
         {
             get
@@ -134,8 +142,8 @@ namespace POESKillTree.Controls
                 TranslateTransform tt = GetTranslateTransform(_child);
                 ScaleTransform st = GetScaleTransform(_child);
 
-                const double zoom = .3;
-                if (st.ScaleX + zoom > 75 || st.ScaleY + zoom > 75)
+                const double zoom = ZOOM_STEP;
+                if (st.ScaleX + zoom > MAX_ZOOM || st.ScaleY + zoom > MAX_ZOOM)
                     return;
                 Point relative = e.GetPosition(_child);
 
@@ -159,8 +167,8 @@ namespace POESKillTree.Controls
                 TranslateTransform tt = GetTranslateTransform(_child);
                 ScaleTransform st = GetScaleTransform(_child);
 
-                const double zoom = -.3;
-                if (st.ScaleX + zoom < 0.5 || st.ScaleY + zoom < 0.5)
+                const double zoom = -ZOOM_STEP;
+                if (st.ScaleX + zoom < MIN_ZOOM || st.ScaleY + zoom < MIN_ZOOM)
                     return;
 
                 Point relative = e.GetPosition(_child);
@@ -200,15 +208,13 @@ namespace POESKillTree.Controls
 
         private void child_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            // Not sure if this takes the zoom factor into account, but this feels reasonable.
-            const double dragThreshold = 5;
             allowZoom = true;
             if (_child != null)
             {
                 _child.ReleaseMouseCapture();
                 Cursor = Cursors.Arrow;
 
-                if ((_start - e.GetPosition(this)).LengthSquared >= dragThreshold * dragThreshold)
+                if ((_start - e.GetPosition(this)).LengthSquared >= DRAG_THRESHOLD * DRAG_THRESHOLD)
                 {
                     // If we dragged a distance larger than our threshold, handle the up event so that
                     // it's not treated as a click on a skill node.
@@ -235,11 +241,7 @@ namespace POESKillTree.Controls
         {
             if (_child != null)
             {
-                var st = GetScaleTransform(_child);
-
-                var zoom = e.Delta > 0 ? .3 : -.3;
-
-                if (zoom > 0)
+                if (e.Delta > 0)
                     ZoomIn(e);
                 else
                     ZoomOut(e);

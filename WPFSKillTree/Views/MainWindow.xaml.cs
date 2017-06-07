@@ -739,6 +739,20 @@ namespace POESKillTree.Views
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            if (SkillTree.SkillTreeRect.Height == 0) // Not yet initialized
+                return;
+            double aspectRatio = SkillTree.SkillTreeRect.Width / SkillTree.SkillTreeRect.Height;
+            if (zbSkillTreeBackground.ActualWidth / zbSkillTreeBackground.ActualHeight > aspectRatio)
+            {
+                recSkillTree.Height = zbSkillTreeBackground.ActualHeight;
+                recSkillTree.Width = aspectRatio * recSkillTree.Height;
+            }
+            else
+            {
+                recSkillTree.Width = zbSkillTreeBackground.ActualWidth;
+                recSkillTree.Height = recSkillTree.Width / aspectRatio;
+            }
+            //recSkillTree.UpdateLayout();
         }
 
         private bool? _canClose;
