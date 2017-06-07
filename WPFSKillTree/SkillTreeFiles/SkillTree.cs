@@ -202,6 +202,11 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     SkillIcons icons;
                     string prefix;
+                    foreach(var i in obj.Value)
+                    {
+                        if (i.filename.Contains('?'))
+                            i.filename = i.filename.Remove(i.filename.IndexOf('?'));
+                    }
                     if (obj.Key.EndsWith("Active"))
                     {
                         // Adds active nodes to IconActiveSkills

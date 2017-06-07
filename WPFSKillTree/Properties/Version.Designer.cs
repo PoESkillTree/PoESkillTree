@@ -61,7 +61,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {DC22AC48-5C37-4F50-9D1F-27487B1A384A}.
+        ///   Looks up a localized string similar to {3CAA9AFE-7355-4E10-A183-89849968729E}.
         /// </summary>
         public static string AppId {
             get {
@@ -106,7 +106,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PoESkillTree - Atlas of Worlds.
+        ///   Looks up a localized string similar to PoESkillTree - The Fall of Oriath.
         /// </summary>
         public static string ProductName {
             get {
@@ -124,7 +124,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2.6.0.
+        ///   Looks up a localized string similar to 2.7.0.
         /// </summary>
         public static string ProductVersion {
             get {
