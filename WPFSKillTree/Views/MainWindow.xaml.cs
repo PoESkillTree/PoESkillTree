@@ -545,12 +545,9 @@ namespace POESKillTree.Views
             controller.SetMessage(L10n.Message("Loading skill tree assets ..."));
             Tree = await CreateSkillTreeAsync(controller);
             await Task.Delay(1); // Give the progress dialog a chance to update
-            recSkillTree.Width = SkillTree.SkillTreeRect.Width / SkillTree.SkillTreeRect.Height * recSkillTree.Height;
-            recSkillTree.UpdateLayout();
-            recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
-            _multransform = SkillTree.SkillTreeRect.Size / new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
-            _addtransform = SkillTree.SkillTreeRect.TopLeft;
+            updateCanvasSize();
+            recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
 
             controller.SetMessage(L10n.Message("Initalizing window ..."));
             controller.SetIndeterminate();
@@ -741,6 +738,12 @@ namespace POESKillTree.Views
         {
             if (SkillTree.SkillTreeRect.Height == 0) // Not yet initialized
                 return;
+
+            updateCanvasSize();
+        }
+
+        private void updateCanvasSize()
+        {
             double aspectRatio = SkillTree.SkillTreeRect.Width / SkillTree.SkillTreeRect.Height;
             if (zbSkillTreeBackground.ActualWidth / zbSkillTreeBackground.ActualHeight > aspectRatio)
             {
@@ -752,7 +755,9 @@ namespace POESKillTree.Views
                 recSkillTree.Width = zbSkillTreeBackground.ActualWidth;
                 recSkillTree.Height = recSkillTree.Width / aspectRatio;
             }
-            //recSkillTree.UpdateLayout();
+            recSkillTree.UpdateLayout();
+            _multransform = SkillTree.SkillTreeRect.Size / new Vector2D(recSkillTree.RenderSize.Width, recSkillTree.RenderSize.Height);
+            _addtransform = SkillTree.SkillTreeRect.TopLeft;
         }
 
         private bool? _canClose;
