@@ -45,5 +45,5 @@ using System.Windows;
 [assembly: AssemblyProduct("PoESkillTree - The Fall of Oriath")]
 [assembly: AssemblyCopyright("Copyright © 2012-2016 PoESkillTree Team")]
 [assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.7.0.1312")]
-[assembly: AssemblyInformationalVersion("2.7.0")]
+[assembly: AssemblyFileVersion("2.7.1.1315")]
+[assembly: AssemblyInformationalVersion("2.7.1")]
