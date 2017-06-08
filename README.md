@@ -23,7 +23,7 @@ A Passive Skill Tree and Character Planner for Path of Exile
 * Equipment
   * Accessible by clicking on "Equipment" in the top right corner
   * Change your character's equipped items
-  * (not yet released) Change socketed gems of items (double left click or right click the item)
+  * Change socketed gems of items (double left click or right click the item)
   * Organize imported and crafted items in a stash
   * Import character inventories and stash tabs
   * Craft rare and unique items
@@ -105,4 +105,4 @@ Note: Both these options require that you can access the official Path of Exile 
 ![](https://github.com/EmmittJ/PoESkillTree/wiki/images/tree.png)
 ![](https://github.com/EmmittJ/PoESkillTree/wiki/images/equipment.PNG)
 ![](https://github.com/EmmittJ/PoESkillTree/wiki/images/treeGen.png)
-<!--- ![](https://github.com/EmmittJ/PoESkillTree/wiki/images/gems.png) --->
+![](https://github.com/EmmittJ/PoESkillTree/wiki/images/gems.png)
