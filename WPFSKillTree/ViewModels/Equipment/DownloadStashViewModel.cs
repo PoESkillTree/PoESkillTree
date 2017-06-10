@@ -60,8 +60,9 @@ namespace POESKillTree.ViewModels.Equipment
         {
             get
             {
-                return _openInBrowserCommand ??
-                       (_openInBrowserCommand = new RelayCommand<string>(param => Process.Start(param)));
+                return _openInBrowserCommand ?? (_openInBrowserCommand = new RelayCommand<string>(
+                    param => Process.Start(param), 
+                    param => !string.IsNullOrEmpty(param)));
             }
         }
 
