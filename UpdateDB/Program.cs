@@ -16,7 +16,7 @@ namespace UpdateDB
     /// <code>UpdateDB /VersionControlledOnly /SourceCodeDir</code> or run dist-update.bat.
     /// If you only want to update some of these three lists, you can specify them explicitly
     /// (skip the arguments that you don't want):
-    /// <code>UpdateDB /Items /Gems /RePoE /SourceCodeDir</code>
+    /// <code>UpdateDB /Items /Uniques /Gems /RePoE /SourceCodeDir</code>
     /// </para>
     /// <para>
     /// The other files (base item images and skill tree assets) are not version controlled. They are
