@@ -852,9 +852,27 @@
                 </Grid>
             </Expander>
 
-            <Expander Margin="108 -30 0 0" Padding="-109,0,0,0" Style="{StaticResource TopRowExpander}"
+            <Expander Style="{StaticResource TopRowExpander}"
                       IsExpanded="{Binding IsChecked,ElementName=mnuViewCharacterSheet}"
-                      Expanded="expCharacterSheet_Expanded">
+                      Expanded="expCharacterSheet_Expanded"
+                      Background="{x:Null}"
+                      controls:GroupBoxHelper.HeaderForeground="{DynamicResource BlackColorBrush}">
+                <controls:ExpanderHelper.HeaderDownStyle>
+                    <Style TargetType="{x:Type ToggleButton}"
+                           BasedOn="{StaticResource ExpanderDownHeaderStyle}">
+                        <Style.Setters>
+                            <Setter Property="Margin" Value="108 4 4 4" />
+                        </Style.Setters>
+                    </Style>
+                </controls:ExpanderHelper.HeaderDownStyle>
+                <controls:ExpanderHelper.HeaderUpStyle>
+                    <Style TargetType="{x:Type ToggleButton}"
+                           BasedOn="{StaticResource ExpanderUpHeaderStyle}">
+                        <Style.Setters>
+                            <Setter Property="Margin" Value="108 4 4 4" />
+                        </Style.Setters>
+                    </Style>
+                </controls:ExpanderHelper.HeaderUpStyle>
                 <Expander.Header>
                     <l:Catalog Message="Character Sheet"/>
                 </Expander.Header>
