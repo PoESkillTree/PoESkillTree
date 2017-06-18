@@ -38,8 +38,7 @@ namespace POESKillTree.Model.Items.Mods
             {
                 foreach (var itemClass in jsonMasterMod.ItemClasses)
                 {
-                    ItemClass enumClass;
-                    if (ItemClassEx.TryParse(itemClass, out enumClass))
+                    if (ItemClassEx.TryParse(itemClass, out ItemClass enumClass))
                     {
                         _itemClasses.Add(enumClass);
                     }
@@ -48,8 +47,7 @@ namespace POESKillTree.Model.Items.Mods
             var spawnWeights = spawnWeightsReplacement ?? jsonMod.SpawnWeights;
             foreach (var spawnWeight in spawnWeights)
             {
-                Tags tag;
-                if (TagsEx.TryParse(spawnWeight.Tag, out tag))
+                if (TagsEx.TryParse(spawnWeight.Tag, out Tags tag))
                 {
                     _spawnTags.Add(Tuple.Create(tag, spawnWeight.CanSpawn));
                 }
