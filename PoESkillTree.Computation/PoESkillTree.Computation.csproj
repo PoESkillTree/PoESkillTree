@@ -56,6 +56,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MatcherCollection.cs" />
+    <Compile Include="Providers\IBuffProvider.cs" />
+    <Compile Include="Providers\IBuffTargetProvider.cs" />
+    <Compile Include="Providers\IConditionProvider.cs" />
+    <Compile Include="Providers\IConverterProvider.cs" />
+    <Compile Include="Providers\IDamageSourceProvider.cs" />
+    <Compile Include="Providers\IDamageTypeProvider.cs" />
+    <Compile Include="IComputationData.cs" />
+    <Compile Include="Providers\IEquipmentProvider.cs" />
+    <Compile Include="Providers\IFormProvider.cs" />
+    <Compile Include="Providers\IGemModifierProvider.cs" />
+    <Compile Include="Providers\IGroupConverter.cs" />
+    <Compile Include="Providers\IKeywordProvider.cs" />
+    <Compile Include="Providers\IMatchConditionProvider.cs" />
+    <Compile Include="Providers\IMultiplierProvider.cs" />
+    <Compile Include="Providers\ISkillProvider.cs" />
+    <Compile Include="Providers\IStatProvider.cs" />
+    <Compile Include="Providers\IValueProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
