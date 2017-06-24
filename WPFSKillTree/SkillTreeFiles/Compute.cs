@@ -5,6 +5,7 @@ using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.ViewModels;
 using System.Linq;
+using PoESkillTree.Common.Model.Items.Enums;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;

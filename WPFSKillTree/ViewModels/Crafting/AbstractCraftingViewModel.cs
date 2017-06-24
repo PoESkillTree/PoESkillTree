@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using MoreLinq;
+using PoESkillTree.Common.Model.Items.Enums;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;
@@ -420,15 +421,15 @@ namespace POESKillTree.ViewModels.Crafting
             {
                 var values = new List<float>();
                 var mods = new List<string>();
-                var cols = new List<ItemMod.ValueColoring>();
+                var cols = new List<ValueColoring>();
 
                 var fmod = elementalMods.FirstOrDefault(m => m.Attribute.Contains("Fire"));
                 if (fmod != null)
                 {
                     values.AddRange(fmod.Values);
                     mods.Add("#-#");
-                    cols.Add(ItemMod.ValueColoring.Fire);
-                    cols.Add(ItemMod.ValueColoring.Fire);
+                    cols.Add(ValueColoring.Fire);
+                    cols.Add(ValueColoring.Fire);
                 }
 
                 var cmod = elementalMods.FirstOrDefault(m => m.Attribute.Contains("Cold"));
@@ -436,8 +437,8 @@ namespace POESKillTree.ViewModels.Crafting
                 {
                     values.AddRange(cmod.Values);
                     mods.Add("#-#");
-                    cols.Add(ItemMod.ValueColoring.Cold);
-                    cols.Add(ItemMod.ValueColoring.Cold);
+                    cols.Add(ValueColoring.Cold);
+                    cols.Add(ValueColoring.Cold);
                 }
 
                 var lmod = elementalMods.FirstOrDefault(m => m.Attribute.Contains("Lightning"));
@@ -445,8 +446,8 @@ namespace POESKillTree.ViewModels.Crafting
                 {
                     values.AddRange(lmod.Values);
                     mods.Add("#-#");
-                    cols.Add(ItemMod.ValueColoring.Lightning);
-                    cols.Add(ItemMod.ValueColoring.Lightning);
+                    cols.Add(ValueColoring.Lightning);
+                    cols.Add(ValueColoring.Lightning);
                 }
 
                 Item.Properties.Add(new ItemMod("Elemental Damage: " + string.Join(", ", mods), true, values, cols));
@@ -455,7 +456,7 @@ namespace POESKillTree.ViewModels.Crafting
             if (chaosMods.Any())
             {
                 Item.Properties.Add(new ItemMod("Chaos Damage: #-#", true, chaosMods[0].Values,
-                    new[] { ItemMod.ValueColoring.Chaos, ItemMod.ValueColoring.Chaos }));
+                    new[] { ValueColoring.Chaos, ValueColoring.Chaos }));
             }
         }
 
@@ -479,7 +480,7 @@ namespace POESKillTree.ViewModels.Crafting
                         .Zip(val, (f1, f2) => f1 + f2)
                         .ToList();
                     prop.ValueColors = prop.ValueColors
-                        .Select((c, i) => val[i] == nval[i] ? prop.ValueColors[i] : ItemMod.ValueColoring.LocallyAffected)
+                        .Select((c, i) => val[i] == nval[i] ? prop.ValueColors[i] : ValueColoring.LocallyAffected)
                         .ToList();
                     prop.Values = nval;
                 }
@@ -498,7 +499,7 @@ namespace POESKillTree.ViewModels.Crafting
                 if (percm.Count > 0)
                 {
                     var perc = 1f + percm.Select(m => m.Values[0]).Sum() / 100f;
-                    prop.ValueColors = prop.ValueColors.Select(c => ItemMod.ValueColoring.LocallyAffected).ToList();
+                    prop.ValueColors = prop.ValueColors.Select(c => ValueColoring.LocallyAffected).ToList();
                     prop.Values = prop.Values.Select(v => roundf(v * perc)).ToList();
                 }
             }

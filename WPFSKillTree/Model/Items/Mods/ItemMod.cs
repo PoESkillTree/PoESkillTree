@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
+using PoESkillTree.Common.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items.Mods
 {
@@ -11,16 +12,6 @@ namespace POESKillTree.Model.Items.Mods
     /// </summary>
     public class ItemMod
     {
-        public enum ValueColoring
-        {
-            White = 0,
-            LocallyAffected = 1,
-
-            Fire = 4,
-            Cold = 5,
-            Lightning = 6,
-            Chaos = 7
-        }
 
         public static readonly Regex Numberfilter = new Regex(@"[0-9]*\.?[0-9]+");
 

@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using PoESkillTree.Common.Model.Items.Enums;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils;
