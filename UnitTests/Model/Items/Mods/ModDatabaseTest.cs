@@ -214,6 +214,31 @@ namespace UnitTests.Model.Items.Mods
             Assert.AreEqual("BleedOnHitGainedDexMasterVendorItem", ((Mod) bow[0]).Id);
         }
 
+        [TestMethod]
+        public async Task GetMatchingMods_DefencesPercent_NoMasterMods()
+        {
+            await _initialization;
+            var affixes = _modDatabase[ModGenerationType.Prefix];
+            var affix = affixes.Single(a => a.Group == "DefencesPercent");
+
+            var dexHelmet = affix.GetMatchingMods(Tags.Armour | Tags.Helmet | Tags.DexArmour, ItemClass.Helmet)
+                .ToList();
+            Assert.IsTrue(dexHelmet.Any());
+            Assert.IsFalse(dexHelmet.Any(m => m.Domain == ModDomain.Master));
+        }
+
+        [TestMethod]
+        public async Task GetMatchingMods_IncreasedLife_MasterMods()
+        {
+            await _initialization;
+            var affixes = _modDatabase[ModGenerationType.Prefix];
+            var affix = affixes.Single(a => a.Group == "IncreasedLife");
+
+            var dexHelmet = affix.GetMatchingMods(Tags.Armour | Tags.Helmet | Tags.DexArmour, ItemClass.Helmet)
+                .ToList();
+            Assert.IsTrue(dexHelmet.Any(m => m.Domain == ModDomain.Master));
+        }
+
         // Make sure all possible Tags and ItemClasses are either known or purposefully unknown.
 
         [TestMethod]

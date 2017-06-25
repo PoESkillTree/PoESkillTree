@@ -13,6 +13,15 @@ namespace POESKillTree.Model.Items.Mods
     [DebuggerDisplay("{" + nameof(Id) + "}")]
     public class Mod : IMod
     {
+        /// <summary>
+        /// Mod groups no mod with ModDomain.Master should match. These do not work well with crafting
+        /// (multiple different stats with same value ranges) and are covered by normal mods anyway.
+        /// </summary>
+        private static readonly ISet<string> IgnoredMasterCraftedGroups = new HashSet<string>
+        {
+            "DefencesPercent"
+        };
+
         public string Id { get; }
 
         private readonly ISet<ItemClass> _itemClasses = new HashSet<ItemClass>();
@@ -88,7 +97,7 @@ namespace POESKillTree.Model.Items.Mods
                 }
             }
 
-            if (_itemClasses.Contains(itemClass))
+            if (!IgnoredMasterCraftedGroups.Contains(JsonMod.Group) && _itemClasses.Contains(itemClass))
             {
                 return true;
             }
