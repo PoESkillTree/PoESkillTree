@@ -4,7 +4,7 @@
 
 PUSHD %~dp0
 
-IF [%1] == [] cmd /C "vsvars32.bat && msbuild release.xml /target:BuildLocale"
-IF NOT [%1] == [] cmd /C "vsvars32.bat && msbuild release.xml /target:BuildAndCopyLocale /property:LocaleTargetDir=%1"
+IF [%1] == [] cmd /C "vsdevcmd.bat && cd ""%~dp0"" && msbuild release.xml /target:BuildLocale"
+IF NOT [%1] == [] cmd /C "vsdevcmd.bat && cd ""%~dp0"" && msbuild release.xml /target:BuildAndCopyLocale /property:LocaleTargetDir=%1"
 
 POPD

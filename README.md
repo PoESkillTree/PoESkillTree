@@ -87,6 +87,12 @@ Note: Both these options require that you can access the official Path of Exile 
 * If you find any bugs/faults please report it here on GitHub
 * Miss any features? Create an issue here or post in the forum thread
 
+## Information for contributors
+
+* The code requires Visual Studio 2017 to be compiled and run
+* It is compiled to .NET 2.5 using C# 7
+* To run the batch scripts in WPFSKillTree, your installation's Common7/Tools/ folder must be added to the PATH environment variable
+
 ## Credits
 
 * Headhorr - for his original "Unofficial Offline Skilltree Calc" http://www.pathofexile.com/forum/view-thread/19723
