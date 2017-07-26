@@ -362,8 +362,6 @@
     <Compile Include="Model\IMemento.cs" />
     <Compile Include="Model\IPersistentData.cs" />
     <Compile Include="Model\Items\Mods\ItemMod.cs" />
-    <Compile Include="Model\Items\Enums\FrameType.cs" />
-    <Compile Include="Model\Items\Enums\ItemSlot.cs" />
     <Compile Include="Model\Items\Enums\ModGenerationType.cs" />
     <Compile Include="Model\Items\EquipmentData.cs" />
     <Compile Include="Model\Items\ItemImage.cs" />

@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using JetBrains.Annotations;
+using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.Computation.Providers;
 
 namespace PoESkillTree.Computation
 {
@@ -11,22 +16,110 @@ namespace PoESkillTree.Computation
     {
         IReadOnlyList<string> GivenStats { get; }
 
+        GivenBaseStatsCollection GivenBaseStats { get; }
+
+        EffectStatCollection EffectStats { get; }
+
+        StatReplacerCollection StatReplacers { get; }
+            
         FormMatcherCollection FormMatchers { get; }
 
-        FormMatcherCollection FormAndStatMatchers { get; }
-
-        StatMatcherCollection RegenTypeMatchers { get; }
+        FormAndStatMatcherCollection FormAndStatMatchers { get; }
 
         StatMatcherCollection StatMatchers { get; }
 
-        BuffMatcherCollection BuffMatchers { get; }
+        StatMatcherCollection<IDamageStatProvider> DamageStatMatchers { get; }
+
+        StatMatcherCollection<IPoolStatProvider> PoolStatMatchers { get; }
+
+        DamageTypeMatcherCollection DamageTypeMatchers { get; }
+
+        ChargeTypeMatcherCollection ChargeTypeMatchers { get; }
+
+        AilmentMatcherCollection AilmentMatchers { get; }
+
+        FlagMatcherCollection FlagMatchers { get; }
+
+        KeywordMatcherCollection KeywordMatchers { get; }
+
+        IReadOnlyDictionary<string, ItemSlot> ItemSlotMatchers { get; }
 
         ConditionMatcherCollection ConditionMatchers { get; }
 
-        MultiplierMatcherCollection MultiplierMatchers { get; }
+        ValueConversionMatcherCollection ValueConversionMatchers { get; }
+
+        StatManipulatorMatcherCollection StatManipulationMatchers { get; }
 
         SpecialMatcherCollection SpecialMatchers { get; }
 
         StatMatcherCollection PropertyMatchers { get; }
+    }
+
+
+    public class GivenBaseStatsCollection : IEnumerable<object>
+    {
+        public IEnumerator<object> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        // IFormProvider is FormProviders.BaseAdd
+        public void Add(IStatProvider stat, ValueProvider value)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+    public class EffectStatCollection : IEnumerable<object>
+    {
+        public IEnumerator<object> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Add(IEffectProvider effect, params string[] stats)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Add(IEffectProvider effect, params IFlagStatProvider[] stats)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Add(IFlagStatProvider stat, params string[] stats)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+    public class StatReplacerCollection : IEnumerable<object>
+    {
+        public IEnumerator<object> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Add([RegexPattern] string originalStat, params string[] replacements)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

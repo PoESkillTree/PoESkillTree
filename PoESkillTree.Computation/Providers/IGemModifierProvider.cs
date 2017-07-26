@@ -9,7 +9,7 @@ namespace PoESkillTree.Computation.Providers
 
     public static class GemModifierProviders
     {
-        public static IGemModifierProvider IncreaseLevelBy(IValueProvider value,
+        public static IGemModifierProvider IncreaseLevelBy(ValueProvider value,
             bool onlySocketedGems = false, bool onlySupportGems = false)
         {
             throw new NotImplementedException();

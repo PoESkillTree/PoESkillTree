@@ -1,26 +1,36 @@
-using System;
-
 namespace PoESkillTree.Computation.Providers
 {
     public interface IGroupConverter
     {
+        T As<T>() where T : IStatProvider;
 
         IDamageTypeProvider AsDamageType { get; }
+
+        IChargeTypeProvider AsChargeType { get; }
+
+        IAilmentProvider AsAilment { get; }
+
+        IKeywordProvider AsKeyword { get; }
+
+        IItemSlotProvider AsItemSlot { get; }
 
         IStatProvider AsStat { get; }
 
         ISkillProvider AsSkill { get; }
     }
 
+
+    public interface IGroupConverterCollection : IProviderCollection<IGroupConverter>
+    {
+        
+    }
+
+
     public static class GroupConverters
     {
-        public static IGroupConverter Group(int index)
-        {
-            throw new NotImplementedException();
-        }
-        public static IGroupConverter EvaluatedGroup(int index)
-        {
-            throw new NotImplementedException();
-        }
+        // includes only regex groups of from ({FooMatchers})
+        public static readonly IGroupConverterCollection Groups;
+
+        public static readonly IGroupConverter Group = Groups.Single;
     }
 }
