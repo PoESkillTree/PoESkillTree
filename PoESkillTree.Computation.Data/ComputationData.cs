@@ -79,7 +79,7 @@ namespace PoESkillTree.Computation.Data
     Enemies Become Chilled as they Unfreeze
     Light Radius is based on Energy Shield instead of Life
     Traps cannot be Damaged for 5 seconds after being Thrown
-    Mines cannot be Damaged for 5 seoncds after being Placed
+    Mines cannot be Damaged for 5 seconds after being Placed
     #% chance to Steal Power, Frenzy and Endurance Charges on Hit with Claws
     Enemies Cannot Leech Life From You
     Hits that Stun Enemies have Culling Strike
@@ -107,7 +107,7 @@ namespace PoESkillTree.Computation.Data
     #% chance to Recover #% of Maximum Mana when you use a Skill
     Critical Strikes have Culling Strike
     Elemental Ailments caused by your Skills spread to other nearby Enemies Radius: #
-    Energy Shield Recharge is not interrupted by Damge if Recharge began Recently
+    Energy Shield Recharge is not interrupted by Damage if Recharge began Recently
     #% reduced life regeneration rate
     Cursed Enemies you Kill Explode, dealing a quarter of their maximum Life as Chaos Damage
     Nearby Enemies cannot gain Power, Frenzy or Endurance Charges
@@ -155,7 +155,7 @@ namespace PoESkillTree.Computation.Data
             "+1 to Strength Damage Bonus per Strength",
             "1% increased Melee Physical Damage per 5 Strength Damage Bonus ceiled",
             "+2 to Accuracy Rating per 1 Dexterity",
-            "+1 to Dexerity Evasion Bonus per Dexterity",
+            "+1 to Dexterity Evasion Bonus per Dexterity",
             "1% increased Evasion Rating per 5 Dexterity Evasion Bonus ceiled",
             "+1 Mana per 2 Intelligence ceiled",
             "1% increased maximum Energy Shield per 5 Intelligence ceiled",
@@ -307,7 +307,7 @@ namespace PoESkillTree.Computation.Data
          * If no success: proceed below with unchanged mod line
          * 
          * Then: try the below matchers in order. 
-         * - Each matcher regex is appended and prepended by "\b" to mae sure they only match whole
+         * - Each matcher regex is appended and prepended by "\b" to make sure they only match whole
          *   words
          * - If one matcher collection has multiple matches, take the one with the longest regex or 
          *   matched substring (first match if multiple of same length) 
@@ -429,7 +429,7 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Damage.PenetrationOf(Group.AsDamageType), "$1"
                 },
                 {
-                    "penetrate #% ({DamageTypeMatchers}) resistancess?",
+                    "penetrate #% ({DamageTypeMatchers}) resistances?",
                     BaseAdd, Damage.PenetrationOf(Group.AsDamageType), "$1"
                 },
                 // - crit
@@ -442,7 +442,7 @@ namespace PoESkillTree.Computation.Data
                 { "never deal critical strikes", Zero, CritChance },
                 // - speed
                 // - projectiles
-                { "skils fire an additional projectile", BaseAdd, Projectile.Count, 1 },
+                { "skills fire an additional projectile", BaseAdd, Projectile.Count, 1 },
                 { "pierces # additional targets", BaseAdd, Projectile.PierceCount },
                 { "projectiles pierce an additional target", BaseAdd, Projectile.PierceCount, 1 },
                 { "projectiles pierce # targets", BaseAdd, Projectile.PierceCount },
@@ -576,7 +576,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 // stun
                 { "(you )?cannot be stunned", Always, Stun.Avoidance },
-                { "your damaging hits alyway stun enemies", Always, Stun.ChanceOn(Enemy) },
+                { "your damaging hits always stun enemies", Always, Stun.ChanceOn(Enemy) },
                 // item quantity/quality
                 // range and area of effect
                 // other
@@ -824,7 +824,7 @@ namespace PoESkillTree.Computation.Data
             { "character size" },
             { "reduced reflected elemental damage taken" },
             { "reduced reflected physical damage taken" },
-            { "damage taken gained as mana over # seonds when hit" },
+            { "damage taken gained as mana over # seconds when hit" },
             { "light radius" },
         };
 
@@ -1316,7 +1316,7 @@ namespace PoESkillTree.Computation.Data
                     Buffs(withKeyword: CurseKeyword, target: Enemy).Count()
                 },
                 // ailments
-                { "for each poison on the enemey", Poison.InstancesOn(Enemy).Value },
+                { "for each poison on the enemy", Poison.InstancesOn(Enemy).Value },
                 { "per poison on enemy", Poison.InstancesOn(Enemy).Value },
                 // skills
                 { "for each zombie you own", RaiseZombie.Instances.Value },
@@ -1505,7 +1505,7 @@ namespace PoESkillTree.Computation.Data
             },
             {
                 "armour received from body armour is doubled",
-                BaseAdd, Armour, Equipment[ItemSlot.BodyArmour].Property(Armour).Value
+                PercentMore, Armour, 100, BaseValueComesFrom(Equipment[ItemSlot.BodyArmour])
             },
         };
 

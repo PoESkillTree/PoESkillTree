@@ -11,8 +11,6 @@ namespace PoESkillTree.Computation.Providers
 
         IFlagStatProvider AppliesToSelf { get; } // default: 1
         IFlagStatProvider AppliesToMinions { get; }
-
-        IStatProvider Property(IStatProvider stat);
     }
 
     public interface IEquipmentProviderCollection : IProviderCollection<IEquipmentProvider>
