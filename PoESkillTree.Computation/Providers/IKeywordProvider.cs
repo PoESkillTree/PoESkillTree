@@ -5,32 +5,37 @@
 
     }
 
-    public static class KeywordProviders
+
+    public interface IKeywordProviderFactory
     {
-        // TODO invert names (e.g. Keyword.Melee) for far less constants
+        IKeywordProvider Melee { get; }
+        IKeywordProvider Attack { get; }
+        IKeywordProvider Bow { get; }
 
-        public static readonly IKeywordProvider MeleeKeyword;
-        public static readonly IKeywordProvider AttackKeyword;
-        public static readonly IKeywordProvider BowKeyword;
+        IKeywordProvider Projectile { get; }
+        IKeywordProvider AreaOfEffect { get; }
 
-        public static readonly IKeywordProvider ProjectileKeyword;
-        public static readonly IKeywordProvider AreaOfEffectKeyword;
+        IKeywordProvider Movement { get; }
 
-        public static readonly IKeywordProvider MovementKeyword;
+        IKeywordProvider Spell { get; }
+        IKeywordProvider Curse { get; }
+        IKeywordProvider Aura { get; }
+        IKeywordProvider Offering { get; }
+        IKeywordProvider Warcry { get; }
 
-        public static readonly IKeywordProvider SpellKeyword;
-        public static readonly IKeywordProvider CurseKeyword;
-        public static readonly IKeywordProvider AuraKeyword;
-        public static readonly IKeywordProvider OfferingKeyword;
-        public static readonly IKeywordProvider WarcryKeyword;
+        IKeywordProvider Golem { get; }
+        IKeywordProvider Trap { get; }
+        IKeywordProvider Mine { get; }
+        IKeywordProvider Totem { get; }
 
-        public static readonly IKeywordProvider GolemKeyword;
-        public static readonly IKeywordProvider TrapKeyword;
-        public static readonly IKeywordProvider MineKeyword;
-        public static readonly IKeywordProvider TotemKeyword;
-
-        public static readonly IKeywordProvider VaalKeyword;
+        IKeywordProvider Vaal { get; }
 
         // don't add keywords for damage types (e.g. physical, fire, elemental, chaos)
+    }
+
+
+    public static class KeywordProviders
+    {
+        public static readonly IKeywordProviderFactory Keyword;
     }
 }

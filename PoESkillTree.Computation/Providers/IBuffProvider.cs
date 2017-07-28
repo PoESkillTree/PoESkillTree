@@ -17,10 +17,13 @@ namespace PoESkillTree.Computation.Providers
         IStatProvider EffectIncrease { get; }
 
         IBuffProviderCollection ExceptFrom(params ISkillProvider[] skills);
+
+        IBuffProviderCollection With(IKeywordProvider keyword);
+        IBuffProviderCollection Without(IKeywordProvider keyword);
     }
 
 
-    public interface IConfluxBuffProvider
+    public interface IConfluxBuffProviderFactory
     {
         IBuffProvider Igniting { get; }
         IBuffProvider Shocking { get; }
@@ -29,25 +32,27 @@ namespace PoESkillTree.Computation.Providers
     }
 
 
-    public static class BuffProviders
+    public interface IBuffProviderFactory
     {
-        public static readonly IBuffProvider Fortify;
-        public static readonly IBuffProvider Maim;
-        public static readonly IBuffProvider Intimidate;
-        public static readonly IBuffProvider Taunt;
-        public static readonly IBuffProvider Blind;
+        IBuffProvider Fortify { get; }
+        IBuffProvider Maim { get; }
+        IBuffProvider Intimidate { get; }
+        IBuffProvider Taunt { get; }
+        IBuffProvider Blind { get; }
 
-        public static readonly IConfluxBuffProvider Conflux;
+        IConfluxBuffProviderFactory Conflux { get; }
 
         // TODO this probably needs changes when other skills from items are added
         // stats of the skill starting with "cursed enemies ..." are the (de)buff
-        public static IBuffProvider Curse(ISkillProvider skill, ValueProvider level)
-        {
-            throw new NotImplementedException();
-        }
+        IBuffProvider Curse(ISkillProvider skill, ValueProvider level);
+    }
+
+
+    public static class BuffProviders
+    {
+        public static readonly IBuffProviderFactory Buff;
 
         public static IBuffProviderCollection Buffs(ITargetProvider source = null, 
-            IKeywordProvider withKeyword = null, IKeywordProvider withoutKeyword = null, 
             ITargetProvider target = null)
         {
             throw new NotImplementedException();

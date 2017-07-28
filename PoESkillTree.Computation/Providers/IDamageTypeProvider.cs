@@ -31,26 +31,32 @@ namespace PoESkillTree.Computation.Providers
         IStatProvider PenetrationOf(IDamageTypeProvider resistance);
         IFlagStatProvider IgnoreResistance(IDamageTypeProvider resistance);
 
-        IDamageConditionProvider With { get; }
+        IDamageConditionProvider With();
+        IDamageConditionProvider With(IDamageSourceProvider source);
+        IDamageConditionProvider With(IKeywordProvider keyword);
+        IDamageConditionProvider With(Tags tags);
+        IDamageConditionProvider With(IDamagingAilmentProvider ailment);
+        IDamageConditionProvider With(ItemSlot slot);
     }
 
 
     public interface IDamageConditionProvider : IConditionProvider
     {
-        IDamageConditionProvider Source(IDamageSourceProvider source);
+        IDamageConditionProvider And(IDamageSourceProvider source);
 
-        IDamageConditionProvider Keyword(IKeywordProvider keyword);
+        IDamageConditionProvider And(IKeywordProvider keyword);
 
-        IDamageConditionProvider WeaponTags(Tags tags);
+        IDamageConditionProvider And(Tags tags);
 
-        IDamageConditionProvider Ailment(IAilmentProvider ailment);
+        IDamageConditionProvider And(IDamagingAilmentProvider ailment);
 
-        IDamageConditionProvider ItemSlot(ItemSlot slot);
+        IDamageConditionProvider And(ItemSlot slot);
     }
 
 
     public static class DamageTypeProviders
     {
+
         public static readonly IDamageTypeProvider Physical;
         public static readonly IDamageTypeProvider Fire;
         public static readonly IDamageTypeProvider Lightning;

@@ -9,6 +9,7 @@ namespace PoESkillTree.Computation.Providers
 
     public static class GemModifierProviders
     {
+        // TODO will probably need some changes once other gem modifiers are added
         public static IGemModifierProvider IncreaseLevelBy(ValueProvider value,
             bool onlySocketedGems = false, bool onlySupportGems = false)
         {

@@ -44,6 +44,8 @@ namespace PoESkillTree.Computation
 
         IReadOnlyDictionary<string, ItemSlot> ItemSlotMatchers { get; }
 
+        ActionMatcherCollection ActionMatchers { get; }
+
         ConditionMatcherCollection ConditionMatchers { get; }
 
         ValueConversionMatcherCollection ValueConversionMatchers { get; }

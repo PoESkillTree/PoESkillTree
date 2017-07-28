@@ -9,10 +9,13 @@ namespace PoESkillTree.Computation.Providers
         IChargeTypeProvider AsChargeType { get; }
 
         IAilmentProvider AsAilment { get; }
+        IDamagingAilmentProvider AsDamagingAilment { get; }
 
         IKeywordProvider AsKeyword { get; }
 
         IItemSlotProvider AsItemSlot { get; }
+
+        IActionProvider<ISelfProvider, ITargetProvider> AsAction { get; }
 
         IStatProvider AsStat { get; }
 

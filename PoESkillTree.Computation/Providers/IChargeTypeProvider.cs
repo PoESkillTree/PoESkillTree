@@ -8,10 +8,16 @@
     }
 
 
+    public interface IChargeTypeProviderFactory
+    {
+        IChargeTypeProvider Endurance { get; }
+        IChargeTypeProvider Frenzy { get; }
+        IChargeTypeProvider Power { get; }
+    }
+
+
     public static class ChargeTypeProviders
     {
-        public static readonly IChargeTypeProvider EnduranceCharge;
-        public static readonly IChargeTypeProvider FrenzyCharge;
-        public static readonly IChargeTypeProvider PowerCharge;
+        public static readonly IChargeTypeProviderFactory Charge;
     }
 }

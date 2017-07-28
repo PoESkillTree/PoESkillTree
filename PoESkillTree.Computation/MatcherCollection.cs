@@ -42,6 +42,11 @@ namespace PoESkillTree.Computation
             throw new NotImplementedException();
         }
 
+        public void Add([RegexPattern] string regex, IFormProvider form, IEnumerable<IStatProvider> stats)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Add([RegexPattern] string regex, IFormProvider form, IStatProvider stat, string substitution)
         {
             throw new NotImplementedException();
@@ -60,7 +65,12 @@ namespace PoESkillTree.Computation
         {
             throw new NotImplementedException();
         }
-        
+
+        public void Add([RegexPattern] string regex, IEnumerable<T> stats)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Add([RegexPattern] string regex, T stat = null, string substitution = "")
         {
             throw new NotImplementedException();
@@ -88,67 +98,47 @@ namespace PoESkillTree.Computation
     }
 
 
-    public class DamageTypeMatcherCollection : MatcherCollection
+    public class MatcherCollection<T> : MatcherCollection
     {
-        public void Add([RegexPattern] string regex, IDamageTypeProvider type)
+        public void Add([RegexPattern] string regex, T element)
         {
             throw new NotImplementedException();
         }
     }
 
 
-    public class ChargeTypeMatcherCollection : MatcherCollection
+    public class DamageTypeMatcherCollection : MatcherCollection<IDamageTypeProvider>
     {
-        public void Add([RegexPattern] string regex, IChargeTypeProvider type)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 
-    public class AilmentMatcherCollection : MatcherCollection
+    public class ChargeTypeMatcherCollection : MatcherCollection<IChargeTypeProvider>
     {
-        public void Add([RegexPattern] string regex, IAilmentProvider type)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 
-    public class FlagMatcherCollection : MatcherCollection
+    public class AilmentMatcherCollection : MatcherCollection<IAilmentProvider>
     {
-        public void Add([RegexPattern] string regex, IFlagStatProvider flagStat)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 
-    public class KeywordMatcherCollection : MatcherCollection
+    public class FlagMatcherCollection : MatcherCollection<IFlagStatProvider>
     {
-        public void Add([RegexPattern] string regex, IKeywordProvider keyword)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 
-    public class ConditionMatcherCollection : MatcherCollection
+    public class KeywordMatcherCollection : MatcherCollection<IKeywordProvider>
     {
-        public void Add([RegexPattern] string regex, IConditionProvider condition)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 
-    public class ValueConversionMatcherCollection : MatcherCollection
+    public class ConditionMatcherCollection : MatcherCollection<IConditionProvider>
     {
-        public void Add([RegexPattern] string regex, ValueFunc conversionFunc)
-        {
-            throw new NotImplementedException();
-        }
+    }
 
+
+    public class ValueConversionMatcherCollection : MatcherCollection<ValueFunc>
+    {
         public void Add([RegexPattern] string regex, ValueProvider multiplier)
         {
             Add(regex, v => v * multiplier);
@@ -156,15 +146,13 @@ namespace PoESkillTree.Computation
     }
 
 
+    public class ActionMatcherCollection : MatcherCollection<IActionProvider>
+    {
+    }
+
+
     public class StatManipulatorMatcherCollection : MatcherCollection
     {
-
-        public void Add<T>([RegexPattern] string regex,
-            Func<IStatProvider, T[]> manipulateStat,
-            string substitution = "") where T: IStatProvider
-        {
-            throw new NotImplementedException();
-        }
 
         public void Add([RegexPattern] string regex,
             Func<IStatProvider, IStatProvider> manipulateStat,

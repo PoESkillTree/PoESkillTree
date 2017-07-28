@@ -31,9 +31,9 @@
     public interface ITargetFromSkillProvider : ITargetProvider
     {
         // Limits the targets this instance describes
-        ITargetFromSkillProvider WithKeyword(IKeywordProvider keyword);
-        ITargetFromSkillProvider WithKeywords(params IKeywordProvider[] keywords);
-        ITargetFromSkillProvider FromSkill(ISkillProvider skill);
+        ITargetFromSkillProvider With(IKeywordProvider keyword);
+        ITargetFromSkillProvider With(params IKeywordProvider[] keywords);
+        ITargetFromSkillProvider From(ISkillProvider skill);
     }
 
 

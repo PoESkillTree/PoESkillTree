@@ -5,11 +5,18 @@
 
     }
 
+
+    public interface IDamageSourceProviderFactory
+    {
+        IDamageSourceProvider Attack { get; }
+        IDamageSourceProvider Spell { get; }
+        IDamageSourceProvider Secondary { get; }
+        IDamageSourceProvider DamageOverTime { get; }
+    }
+
+
     public static class DamageSourceProviders
     {
-        public static readonly IDamageSourceProvider Attack;
-        public static readonly IDamageSourceProvider Spell;
-        public static readonly IDamageSourceProvider Secondary;
-        public static readonly IDamageSourceProvider DamageOverTime;
+        public static readonly IDamageSourceProviderFactory Source;
     }
 }

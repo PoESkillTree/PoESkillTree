@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
 
 namespace PoESkillTree.Computation.Providers
@@ -9,7 +10,7 @@ namespace PoESkillTree.Computation.Providers
     }
 
 
-    public interface IProviderCollection<out T>
+    public interface IProviderCollection<out T> : IEnumerable<T>
     {
         T this[int index] { get; }
 
@@ -60,8 +61,9 @@ namespace PoESkillTree.Computation.Providers
             throw new NotImplementedException();
         }
 
-        // These need to be set by the user in a checkbox (will probably also need a section name or something)
-        // or are displayed as chances to gain something (as tooltip or something on the "Do you have X?" checkbox)
+        // These need to be set by the user in a check box (will probably also need a section name 
+        // or something) or are displayed as chances to gain something (as tool tip or something 
+        // on the "Do you have X?" check box).
         // Name may be a regex replacement.
         public static IConditionProvider UniqueCondition(string name)
         {

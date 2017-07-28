@@ -32,7 +32,6 @@ namespace PoESkillTree.Computation.Providers
         public static readonly IFormProvider SetFlag;
         // shortcuts for TotalOverride with value 0
         public static readonly IFormProvider Zero;
-        public static readonly IFormProvider Never;
         // shortcut for TotalOverride with value 100
         public static readonly IFormProvider Always;
 

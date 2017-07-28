@@ -41,11 +41,13 @@ namespace PoESkillTree.Computation.Providers
         IConditionProvider IsSet { get; }
 
         IStatProvider EffectIncrease { get; }
+
+        // Applies to buffs that grant this flag
         IStatProvider DurationIncrease { get; }
     }
 
 
-    public interface IFlaskStatProvider
+    public interface IFlaskStatProviderFactory
     {
         IStatProvider Effect { get; }
         IStatProvider Duration { get; }
@@ -61,7 +63,7 @@ namespace PoESkillTree.Computation.Providers
     }
 
 
-    public interface IProjectileStatProvider
+    public interface IProjectileStatProviderFactory
     {
         IStatProvider Speed { get; }
 
@@ -77,6 +79,31 @@ namespace PoESkillTree.Computation.Providers
     }
 
 
+    public interface ICritStatProviderFactory
+    {
+        IStatProvider Chance { get; }
+
+        IStatProvider Multiplier { get; }
+
+        IStatProvider AilmentMultiplier { get; }
+
+        // default value: 30% (default monster crit multi is 130%)
+        IStatProvider ExtraDamageTaken { get; }
+    }
+
+
+    public interface IFlagStatProviderFactory
+    {
+        IFlagStatProvider Onslaught { get; }
+
+        IFlagStatProvider UnholyMight { get; }
+
+        IFlagStatProvider Phasing { get; }
+
+        IFlagStatProvider IgnoreMovementSpeedPenalties { get; }
+    }
+
+
     public static class StatProviders
     {
         public static readonly IStatProvider Strength;
@@ -86,13 +113,10 @@ namespace PoESkillTree.Computation.Providers
         public static readonly IStatProvider DexterityEvasionBonus;
 
         public static readonly IStatProvider Accuracy;
-        public static readonly IStatProvider CritChance;
-        public static readonly IStatProvider CritMultiplier;
-        public static readonly IStatProvider AilmentCritMultiplier;
-        // default value: 30% (default monster crit multi is 130%)
-        public static readonly IStatProvider ExtraDamageFromCritsTaken;
 
-        public static readonly IProjectileStatProvider Projectile;
+        public static readonly ICritStatProviderFactory Crit;
+
+        public static readonly IProjectileStatProviderFactory Projectile;
 
         public static readonly IStatProvider Armour;
         public static readonly IStatProvider Evasion;
@@ -129,13 +153,9 @@ namespace PoESkillTree.Computation.Providers
 
         public static readonly IStatProvider RampageStacks;
 
-        public static readonly IFlaskStatProvider Flask;
+        public static readonly IFlaskStatProviderFactory Flask;
 
-        public static readonly IFlagStatProvider Onslaught;
-        public static readonly IFlagStatProvider UnholyMight;
-        public static readonly IFlagStatProvider Phasing;
-
-        public static readonly IFlagStatProvider IgnoreMovementSpeedPenalties;
+        public static readonly IFlagStatProviderFactory Flag;
 
         // no "double dipping" if one of the stats is converted to another
         public static IStatProvider ApplyOnce(params IStatProvider[] stats)

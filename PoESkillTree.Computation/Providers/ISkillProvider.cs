@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Providers
 
         IStatProvider CombinedInstances { get; }
 
-        // these apply to all skils in the collection
+        // these apply to all skills in the collection
 
         IStatProvider Duration { get; }
 
@@ -58,29 +58,37 @@ namespace PoESkillTree.Computation.Providers
         IActionProvider<ISelfProvider, ITargetProvider> Cast { get; }
     }
 
+
+    public interface ISkillProviderFactory
+    {
+        ISkillProvider SummonSkeletons { get; }
+        ISkillProvider VaalSummonSkeletons { get; }
+        ISkillProvider RaiseSpectre { get; }
+        ISkillProvider RaiseZombie { get; }
+
+        ISkillProvider DetonateMines { get; }
+
+        ISkillProvider BloodRage { get; }
+        ISkillProvider MoltenShell { get; }
+    }
+
+
     public static class SkillProviders
     {
-        public static readonly ISkillProvider SummonSkeletons;
-        public static readonly ISkillProvider VaalSummonSkeletons;
-        public static readonly ISkillProvider RaiseSpectre;
-        public static readonly ISkillProvider RaiseZombie;
-
-        public static readonly ISkillProvider DetonateMines;
-
-        public static readonly ISkillProvider BloodRage;
-        public static readonly ISkillProvider MoltenShell;
-
         public static ISkillProviderCollection Combine(params ISkillProvider[] skills)
         {
             throw new NotImplementedException();
         }
 
-        public static ISkillProviderCollection Traps => Skills[KeywordProviders.TrapKeyword];
-        public static ISkillProviderCollection Mines => Skills[KeywordProviders.MineKeyword];
-        public static ISkillProviderCollection Totems => Skills[KeywordProviders.TotemKeyword];
-        public static ISkillProviderCollection Golems => Skills[KeywordProviders.GolemKeyword];
+        public static ISkillProviderCollection Traps => Skills[KeywordProviders.Keyword.Trap];
+        public static ISkillProviderCollection Mines => Skills[KeywordProviders.Keyword.Mine];
+        public static ISkillProviderCollection Totems => Skills[KeywordProviders.Keyword.Totem];
+        public static ISkillProviderCollection Golems => Skills[KeywordProviders.Keyword.Golem];
 
         // all skills
         public static readonly ISkillProviderCollection Skills;
+
+        // Single skills that need to be individually referenced
+        public static readonly ISkillProviderFactory Skill;
     }
 }

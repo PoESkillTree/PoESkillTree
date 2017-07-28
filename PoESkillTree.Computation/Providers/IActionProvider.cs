@@ -14,7 +14,7 @@ namespace PoESkillTree.Computation.Providers
     }
 
 
-    public interface IActionProvider<TSource, TTarget> : IActionProvider
+    public interface IActionProvider<out TSource, out TTarget> : IActionProvider
         where TSource : ITargetProvider
         where TTarget : ITargetProvider
     {
@@ -50,10 +50,10 @@ namespace PoESkillTree.Computation.Providers
         public static readonly IDefaultActionProvider SavageHit;
         public static readonly IDefaultActionProvider CriticalStrike;
         public static readonly IDefaultActionProvider NonCriticalStrike;
-        public static readonly IActionProvider<ISelfProvider, IEnemyProvider> Shatter;
+        public static readonly IDefaultActionProvider Shatter;
         public static readonly IDefaultActionProvider ConsumeCorpse;
 
-        public static IDefaultActionProvider SpendMana(ValueProvider amout)
+        public static IDefaultActionProvider SpendMana(ValueProvider amount)
         {
             throw new NotImplementedException();
         }

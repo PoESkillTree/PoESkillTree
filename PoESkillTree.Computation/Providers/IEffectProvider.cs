@@ -1,4 +1,6 @@
-﻿namespace PoESkillTree.Computation.Providers
+﻿using System.Collections.Generic;
+
+namespace PoESkillTree.Computation.Providers
 {
     public interface IEffectProvider
     {
@@ -41,6 +43,28 @@
     }
 
 
+    public interface IAilmentProviderCollection : IProviderCollection<IAilmentProvider>
+    {
+        
+    }
+
+
+    public interface IAilmentProviderFactory
+    {
+        IDamagingAilmentProvider Ignite { get; }
+        IAilmentProvider Shock { get; }
+        IAilmentProvider Chill { get; }
+        IAilmentProvider Freeze { get; }
+
+        IDamagingAilmentProvider Bleed { get; }
+        IDamagingAilmentProvider Poison { get; }
+
+        IAilmentProviderCollection All { get; }
+        IAilmentProviderCollection Elemental { get; }
+        IProviderCollection<IDamagingAilmentProvider> Damaging { get; }
+    }
+
+
     public interface IStunProvider : IAvoidableEffectProvider, 
         IActionProvider<ISelfProvider, IEnemyProvider>
     {
@@ -58,20 +82,18 @@
     }
 
 
+    public interface IEffectProviderFactory
+    {
+        IStunProvider Stun { get; }
+
+        IKnockbackProvider Knockback { get; }
+    }
+
+
     public static class EffectProviders
     {
-        public static readonly IDamagingAilmentProvider Ignite;
-        public static readonly IAilmentProvider Shock;
-        public static readonly IAilmentProvider Chill;
-        public static readonly IAilmentProvider Freeze;
+        public static readonly IAilmentProviderFactory Ailment;
 
-        public static readonly IDamagingAilmentProvider Bleed;
-        public static readonly IDamagingAilmentProvider Poison;
-
-        public static readonly IAilmentProvider ElementalAilment;
-        public static readonly IAilmentProvider AnyAilment;
-
-        public static readonly IStunProvider Stun;
-        public static readonly IKnockbackProvider Knockback;
+        public static readonly IEffectProviderFactory Effect;
     }
 }
