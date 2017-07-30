@@ -129,7 +129,7 @@ namespace PoESkillTree.Computation.Data
             IFormProviderFactory formProviderFactory,
             IEffectProviderFactory effectProviderFactory,
             IMatchContextFactory matchContextFactory,
-            IFluentValueBuilder valueBuilder,
+            IValueProviderFactory valueProviderFactory,
             IKeywordProviderFactory keywordProviderFactory,
             ISkillProviderFactory skillProviderFactory,
             IDamageTypeProviderFactory damageTypeProviderFactory,
@@ -138,7 +138,7 @@ namespace PoESkillTree.Computation.Data
             IStatProviderFactory statProviderFactory) 
             : base(actionProviderFactory, buffProviderFactory, chargeTypeProviderFactory, 
                   conditionProviderFactory, damageSourceProviderFactory, equipmentProviderFactory,
-                  formProviderFactory, effectProviderFactory, matchContextFactory, valueBuilder,
+                  formProviderFactory, effectProviderFactory, matchContextFactory, valueProviderFactory,
                   keywordProviderFactory, skillProviderFactory, damageTypeProviderFactory,
                   matchConditionFactory, entityProviderFactory, statProviderFactory)
         {
@@ -1398,7 +1398,7 @@ namespace PoESkillTree.Computation.Data
                 "dealing less damage to targets as the projectile travels farther",
                 PercentMore, Damage, Value,
                 // 0 to 10: Value; 10 to 35: Value to 0; 35 to 150: 0 to -Value
-                ValueBuilder.LinearScale(Projectile.TravelDistance,
+                ValueFactory.LinearScale(Projectile.TravelDistance,
                     (0, 1), (10, 1), (35, 0), (150, -1)),
                 And(Damage.With(Source.Attack), With(Skills[Keyword.Projectile]))
             },
@@ -1438,13 +1438,13 @@ namespace PoESkillTree.Computation.Data
             {
                 "far shot",
                 PercentMore, Damage, 30,
-                ValueBuilder.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
+                ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
                 And(Damage.With(Source.Attack), With(Skills[Keyword.Projectile]))
             },
             {
                 "projectiles gain damage as they travel further, dealing up to #% increased damage to targets",
                 PercentIncrease, Damage, Value,
-                ValueBuilder.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
+                ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
                 With(Skills[Keyword.Projectile])
             },
             {

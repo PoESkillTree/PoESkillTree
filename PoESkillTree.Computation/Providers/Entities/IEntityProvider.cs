@@ -10,6 +10,8 @@ namespace PoESkillTree.Computation.Providers.Entities
         IConditionProvider HitByInPastXSeconds(IDamageTypeProvider damageType, 
             ValueProvider seconds);
 
+        IConditionProvider HitByInPastXSeconds(IDamageTypeProvider damageType, double seconds);
+
         IConditionProvider HitByRecently(IDamageTypeProvider damageType);
 
         // Changes the context of a stat in the same way as IConditionProviderFactory.For(target)

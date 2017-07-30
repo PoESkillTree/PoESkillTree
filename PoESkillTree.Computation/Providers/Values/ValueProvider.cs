@@ -5,14 +5,8 @@ namespace PoESkillTree.Computation.Providers.Values
 {
     public class ValueProvider : IValueProvider
     {
-        public static implicit operator ValueProvider(int value)
+        internal ValueProvider()
         {
-            throw new NotImplementedException();
-        }
-
-        public static implicit operator ValueProvider(double value)
-        {
-            throw new NotImplementedException();
         }
 
         // If the == and != overloads make implementing the class difficult, they can easily be
@@ -22,7 +16,27 @@ namespace PoESkillTree.Computation.Providers.Values
             throw new NotImplementedException();
         }
 
+        public static IConditionProvider operator ==(ValueProvider left, double right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IConditionProvider operator ==(double left, ValueProvider right)
+        {
+            throw new NotImplementedException();
+        }
+
         public static IConditionProvider operator !=(ValueProvider left, ValueProvider right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IConditionProvider operator !=(ValueProvider left, double right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IConditionProvider operator !=(double left, ValueProvider right)
         {
             throw new NotImplementedException();
         }
@@ -32,7 +46,27 @@ namespace PoESkillTree.Computation.Providers.Values
             throw new NotImplementedException();
         }
 
+        public static IConditionProvider operator >=(ValueProvider left, double right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IConditionProvider operator >=(double left, ValueProvider right)
+        {
+            throw new NotImplementedException();
+        }
+
         public static IConditionProvider operator <=(ValueProvider left, ValueProvider right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IConditionProvider operator <=(ValueProvider left, double right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IConditionProvider operator <=(double left, ValueProvider right)
         {
             throw new NotImplementedException();
         }
@@ -42,7 +76,27 @@ namespace PoESkillTree.Computation.Providers.Values
             throw new NotImplementedException();
         }
 
+        public static IConditionProvider operator >(ValueProvider left, double right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IConditionProvider operator >(double left, ValueProvider right)
+        {
+            throw new NotImplementedException();
+        }
+
         public static IConditionProvider operator <(ValueProvider left, ValueProvider right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IConditionProvider operator <(ValueProvider left, double right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static IConditionProvider operator <(double left, ValueProvider right)
         {
             throw new NotImplementedException();
         }
@@ -52,7 +106,27 @@ namespace PoESkillTree.Computation.Providers.Values
             throw new NotImplementedException();
         }
 
+        public static ValueProvider operator *(ValueProvider left, double right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static ValueProvider operator *(double left, ValueProvider right)
+        {
+            throw new NotImplementedException();
+        }
+
         public static ValueProvider operator /(ValueProvider left, ValueProvider right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static ValueProvider operator /(ValueProvider left, double right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static ValueProvider operator /(double left, ValueProvider right)
         {
             throw new NotImplementedException();
         }
@@ -62,7 +136,27 @@ namespace PoESkillTree.Computation.Providers.Values
             throw new NotImplementedException();
         }
 
+        public static ValueProvider operator -(ValueProvider left, double right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static ValueProvider operator -(double left, ValueProvider right)
+        {
+            throw new NotImplementedException();
+        }
+
         public static ValueProvider operator +(ValueProvider left, ValueProvider right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static ValueProvider operator +(ValueProvider left, double right)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static ValueProvider operator +(double left, ValueProvider right)
         {
             throw new NotImplementedException();
         }

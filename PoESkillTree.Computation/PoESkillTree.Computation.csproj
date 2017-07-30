@@ -111,7 +111,7 @@
     <Compile Include="Providers\Skills\ISkillProviderCollection.cs" />
     <Compile Include="Providers\Skills\ISkillProviderFactory.cs" />
     <Compile Include="Providers\Stats\IStatProviderFactory.cs" />
-    <Compile Include="Providers\Values\IFluentValueBuilder.cs" />
+    <Compile Include="Providers\Values\IValueProviderFactory.cs" />
     <Compile Include="Providers\Matching\IGroupConverter.cs" />
     <Compile Include="Providers\Equipment\IItemSlotProvider.cs" />
     <Compile Include="Providers\Skills\IKeywordProvider.cs" />

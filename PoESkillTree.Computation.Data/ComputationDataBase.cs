@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Data
             IFormProviderFactory formProviderFactory,
             IEffectProviderFactory effectProviderFactory,
             IMatchContextFactory matchContextFactory,
-            IFluentValueBuilder valueBuilder,
+            IValueProviderFactory valueProviderFactory,
             IKeywordProviderFactory keywordProviderFactory,
             ISkillProviderFactory skillProviderFactory,
             IDamageTypeProviderFactory damageTypeProviderFactory,
@@ -51,7 +51,7 @@ namespace PoESkillTree.Computation.Data
             _damageTypeProviderFactory = damageTypeProviderFactory;
             Source = damageSourceProviderFactory;
             Effect = effectProviderFactory;
-            ValueBuilder = valueBuilder;
+            ValueFactory = valueProviderFactory;
             Keyword = keywordProviderFactory;
             Skill = skillProviderFactory;
             MatchCondition = matchConditionFactory;
@@ -148,7 +148,7 @@ namespace PoESkillTree.Computation.Data
         protected IMatchContext<ValueProvider> Values => _matchContextFactory.Values;
         protected ValueProvider Value => Values.Single;
 
-        protected IFluentValueBuilder ValueBuilder { get; }
+        protected IValueProviderFactory ValueFactory { get; }
 
         protected IMatchConditionFactory MatchCondition { get; }
 

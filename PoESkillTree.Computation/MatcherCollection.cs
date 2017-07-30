@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using PoESkillTree.Computation.Providers;
 using PoESkillTree.Computation.Providers.Actions;
 using PoESkillTree.Computation.Providers.Charges;
 using PoESkillTree.Computation.Providers.Conditions;
@@ -200,7 +199,19 @@ namespace PoESkillTree.Computation
         }
 
         public void Add([RegexPattern] string regex, IFormProvider form, IStatProvider stat,
+            double value, ValueFunc converter = null, IConditionProvider condition = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Add([RegexPattern] string regex, IFormProvider form, IStatProvider stat,
             ValueProvider value, IConditionProvider condition)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Add([RegexPattern] string regex, IFormProvider form, IStatProvider stat,
+            double value, IConditionProvider condition)
         {
             throw new NotImplementedException();
         }
@@ -213,6 +224,13 @@ namespace PoESkillTree.Computation
 
         public void Add([RegexPattern] string regex,
             params (IFormProvider form, IStatProvider stat, ValueProvider value,
+                IConditionProvider condition)[] stats)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Add([RegexPattern] string regex,
+            params (IFormProvider form, IStatProvider stat, double value,
                 IConditionProvider condition)[] stats)
         {
             throw new NotImplementedException();

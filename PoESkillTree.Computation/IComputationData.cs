@@ -3,17 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using PoESkillTree.Common.Model.Items.Enums;
-using PoESkillTree.Computation.Providers;
 using PoESkillTree.Computation.Providers.Effects;
 using PoESkillTree.Computation.Providers.Stats;
-using PoESkillTree.Computation.Providers.Values;
 
 namespace PoESkillTree.Computation
 {
-    // Data structures and data in separate projects to allow hiding implementation with internal
-
     // Interfaces have "Provider" in name as they may be dependent on the values and/or groups of the
     // actually matched stat line and to not lead to confusion with existing classes.
+    // TODO once it's known how the Provider interfaces are actually used for Computation,
+    //      it probably makes sense to rename most to XyzBuilder or entirely without suffix
 
     public interface IComputationData
     {
@@ -74,7 +72,7 @@ namespace PoESkillTree.Computation
         }
 
         // IFormProvider is FormProviders.BaseAdd
-        public void Add(IStatProvider stat, ValueProvider value)
+        public void Add(IStatProvider stat, double value)
         {
             throw new NotImplementedException();
         }
