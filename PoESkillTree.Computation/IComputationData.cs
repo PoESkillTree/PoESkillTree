@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Providers;
+using PoESkillTree.Computation.Providers.Effects;
+using PoESkillTree.Computation.Providers.Stats;
+using PoESkillTree.Computation.Providers.Values;
 
 namespace PoESkillTree.Computation
 {

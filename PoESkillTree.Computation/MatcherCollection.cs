@@ -3,9 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using PoESkillTree.Computation.Providers;
+using PoESkillTree.Computation.Providers.Actions;
+using PoESkillTree.Computation.Providers.Charges;
+using PoESkillTree.Computation.Providers.Conditions;
+using PoESkillTree.Computation.Providers.Damage;
+using PoESkillTree.Computation.Providers.Effects;
+using PoESkillTree.Computation.Providers.Forms;
+using PoESkillTree.Computation.Providers.Matching;
+using PoESkillTree.Computation.Providers.Skills;
+using PoESkillTree.Computation.Providers.Stats;
+using PoESkillTree.Computation.Providers.Values;
 
 namespace PoESkillTree.Computation
 {
+    // TODO once this has a proper interface, most can probably be moved to Computation.Data
+
     public class MatcherCollection : IEnumerable<object>
     {
         public IEnumerator<object> GetEnumerator()
@@ -56,6 +68,12 @@ namespace PoESkillTree.Computation
         {
             throw new NotImplementedException();
         }
+
+        public void Add([RegexPattern] string regex, 
+            (IFormProvider forFirstValue, IFormProvider forSecondValue) forms, IStatProvider stat)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 
@@ -86,7 +104,7 @@ namespace PoESkillTree.Computation
             throw new NotImplementedException();
         }
 
-        public void Add([RegexPattern] string regex, T stat, IMatchConditionProvider matchesIf)
+        public void Add([RegexPattern] string regex, T stat, IMatchCondition matchesIf)
         {
             throw new NotImplementedException();
         }
@@ -175,11 +193,6 @@ namespace PoESkillTree.Computation
 
     public class SpecialMatcherCollection : MatcherCollection
     {
-        public void Add([RegexPattern] string regex, IGemModifierProvider gemModifier)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Add([RegexPattern] string regex, IFormProvider form, IStatProvider stat, 
             ValueProvider value, ValueFunc converter = null, IConditionProvider condition = null)
         {
