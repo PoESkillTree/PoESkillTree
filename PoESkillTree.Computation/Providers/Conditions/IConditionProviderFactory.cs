@@ -25,7 +25,7 @@ namespace PoESkillTree.Computation.Providers.Conditions
         // or something) or are displayed as chances to gain something (as tool tip or something 
         // on the "Do you have X?" check box).
         // Name may be a regex replacement.
-        IConditionProvider Unique(string name);
+        IConditionProvider Unique(string name = "$0");
 
         IConditionProvider And(params IConditionProvider[] conditions);
         IConditionProvider Or(params IConditionProvider[] conditions);

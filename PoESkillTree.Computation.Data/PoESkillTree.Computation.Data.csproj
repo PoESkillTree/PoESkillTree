@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -47,11 +50,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionMatchers.cs" />
+    <Compile Include="AilmentMatchers.cs" />
+    <Compile Include="ChargeTypeMatchers.cs" />
+    <Compile Include="Collections\StatReplacerCollection.cs" />
     <Compile Include="ComputationData.cs" />
-    <Compile Include="ComputationDataBase.cs" />
+    <Compile Include="ConditionMatchers.cs" />
+    <Compile Include="DamageStatMatchers.cs" />
+    <Compile Include="DamageTypeMatchers.cs" />
+    <Compile Include="Collections\EffectStatCollection.cs" />
+    <Compile Include="EffectStats.cs" />
+    <Compile Include="FlagMatchers.cs" />
+    <Compile Include="Collections\FlagStatCollection.cs" />
+    <Compile Include="FormAndStatMatchers.cs" />
+    <Compile Include="FormMatchers.cs" />
+    <Compile Include="Collections\GivenStatsCollection.cs" />
+    <Compile Include="ItemSlotMatchers.cs" />
+    <Compile Include="KeywordMatchers.cs" />
+    <Compile Include="Collections\MatcherCollection.cs" />
+    <Compile Include="PoolStatMatchers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CharacterGivenStats.cs" />
+    <Compile Include="GeneralStatMatchers.cs" />
+    <Compile Include="PropertyMatchers.cs" />
+    <Compile Include="SpecialMatchers.cs" />
+    <Compile Include="StatManipulatorMatchers.cs" />
+    <Compile Include="Base\UsesConditionProviders.cs" />
+    <Compile Include="Base\UsesFormProviders.cs" />
+    <Compile Include="Base\UsesMatchContext.cs" />
+    <Compile Include="Base\UsesStatProviders.cs" />
+    <Compile Include="Base\UsesValueProviders.cs" />
+    <Compile Include="StatReplacers.cs" />
+    <Compile Include="ValueConversionMatchers.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -64,7 +97,6 @@
       <Name>PoESkillTree.Computation</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

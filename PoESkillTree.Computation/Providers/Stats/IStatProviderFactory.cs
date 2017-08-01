@@ -45,5 +45,10 @@ namespace PoESkillTree.Computation.Providers.Stats
 
         // No "double dipping" if one of the stats is converted to another
         IStatProvider ApplyOnce(params IStatProvider[] stats);
+
+        // These don't interact with anything but should still be calculated.
+        // Will probably also need section information or something like that.
+        // Name may be a regex replacement.
+        IStatProvider Unique(string name = "$0");
     }
 }

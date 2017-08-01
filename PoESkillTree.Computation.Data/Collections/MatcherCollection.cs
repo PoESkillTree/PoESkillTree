@@ -2,20 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using PoESkillTree.Computation.Providers.Actions;
-using PoESkillTree.Computation.Providers.Charges;
 using PoESkillTree.Computation.Providers.Conditions;
-using PoESkillTree.Computation.Providers.Damage;
-using PoESkillTree.Computation.Providers.Effects;
 using PoESkillTree.Computation.Providers.Forms;
 using PoESkillTree.Computation.Providers.Matching;
-using PoESkillTree.Computation.Providers.Skills;
 using PoESkillTree.Computation.Providers.Stats;
 using PoESkillTree.Computation.Providers.Values;
 
-namespace PoESkillTree.Computation
+namespace PoESkillTree.Computation.Data.Collections
 {
-    // TODO once this has a proper interface, most can probably be moved to Computation.Data
+    // TODO move to Computation.Data
 
     public class MatcherCollection : IEnumerable<object>
     {
@@ -88,7 +83,7 @@ namespace PoESkillTree.Computation
             throw new NotImplementedException();
         }
 
-        public void Add([RegexPattern] string regex, T stat = null, string substitution = "")
+        public void Add([RegexPattern] string regex, T stat, string substitution = "")
         {
             throw new NotImplementedException();
         }
@@ -102,11 +97,6 @@ namespace PoESkillTree.Computation
         {
             throw new NotImplementedException();
         }
-
-        public void Add([RegexPattern] string regex, T stat, IMatchCondition matchesIf)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 
@@ -115,56 +105,64 @@ namespace PoESkillTree.Computation
     }
 
 
-    public class MatcherCollection<T> : MatcherCollection
+    public class PropertyMatcherCollection : MatcherCollection
     {
-        public void Add([RegexPattern] string regex, T element)
+        public void Add([RegexPattern] string regex, IStatProvider stat = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Add([RegexPattern] string regex, IStatProvider stat, ValueFunc converter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Add([RegexPattern] string regex, IStatProvider stat, IMatchCondition matchesIf)
         {
             throw new NotImplementedException();
         }
     }
 
 
-    public class DamageTypeMatcherCollection : MatcherCollection<IDamageTypeProvider>
+    public class MatcherCollection<T> : IEnumerable<(string regex, T match)>
     {
-    }
-
-
-    public class ChargeTypeMatcherCollection : MatcherCollection<IChargeTypeProvider>
-    {
-    }
-
-
-    public class AilmentMatcherCollection : MatcherCollection<IAilmentProvider>
-    {
-    }
-
-
-    public class FlagMatcherCollection : MatcherCollection<IFlagStatProvider>
-    {
-    }
-
-
-    public class KeywordMatcherCollection : MatcherCollection<IKeywordProvider>
-    {
-    }
-
-
-    public class ConditionMatcherCollection : MatcherCollection<IConditionProvider>
-    {
-    }
-
-
-    public class ValueConversionMatcherCollection : MatcherCollection<ValueFunc>
-    {
-        public void Add([RegexPattern] string regex, ValueProvider multiplier)
+        public void Add([RegexPattern] string regex, T element)
         {
-            Add(regex, v => v * multiplier);
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator<(string regex, T match)> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 
 
-    public class ActionMatcherCollection : MatcherCollection<IActionProvider>
+    public class ConditionMatcherCollection : MatcherCollection
     {
+        public void Add([RegexPattern] string regex, IConditionProvider condition)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+    public class ValueConversionMatcherCollection : MatcherCollection
+    {
+        public void Add([RegexPattern] string regex, ValueFunc func)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Add([RegexPattern] string regex, ValueProvider multiplier)
+        {
+            Add(regex, v => v * multiplier);
+        }
     }
 
 

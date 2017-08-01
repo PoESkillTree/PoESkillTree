@@ -10,8 +10,8 @@ namespace PoESkillTree.Computation.Providers.Effects
         // shortcut for ChanceOn(Enemy)
         IStatProvider Chance { get; }
 
-        // default value is 1 for everything except bleed
-        // default value is positive infinity for bleed
+        // default maximum value is 1 for everything except poison
+        // default maximum value is positive infinity for poison
         IStatProvider InstancesOn(IEntityProvider target);
 
         IFlagStatProvider AddSource(IDamageTypeProvider type);

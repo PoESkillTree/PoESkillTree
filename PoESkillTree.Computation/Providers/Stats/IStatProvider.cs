@@ -24,6 +24,12 @@ namespace PoESkillTree.Computation.Providers.Stats
         // chance to double Value
         IStatProvider ChanceToDouble { get; }
 
+        // For Buffs and Auras: some conditions apply to this stat (e.g. the "Attack" from 
+        // "Attack Speed"), others specify whether the buff/aura is granted (e.g. "if you've Blocked 
+        // Recently"). It has to be decided at some point which conditions to and which don't.
+        // That point must be before the conditions are combined into one.
+        // Probably as a property inherent in conditions, i.e. decided on condition construction.
+
         IBuffProvider ForXSeconds(ValueProvider seconds);
         // similar to ForXSeconds(), just with the duration set elsewhere
         IBuffProvider AsBuff { get; }

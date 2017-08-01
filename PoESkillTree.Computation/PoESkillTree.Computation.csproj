@@ -56,7 +56,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MatcherCollection.cs" />
+    <Compile Include="IEffectStats.cs" />
+    <Compile Include="IGivenStats.cs" />
+    <Compile Include="IReferencedMatchers.cs" />
+    <Compile Include="IStatMatchers.cs" />
+    <Compile Include="IStatReplacers.cs" />
     <Compile Include="Providers\Actions\IActionProviderFactory.cs" />
     <Compile Include="Providers\Actions\IBlockActionProvider.cs" />
     <Compile Include="Providers\Actions\ICriticalStrikeActionProvider.cs" />
@@ -72,6 +76,7 @@
     <Compile Include="Providers\Entities\IEntityProvider.cs" />
     <Compile Include="Providers\Entities\ISelfProvider.cs" />
     <Compile Include="Providers\Entities\ISkillEntityProvider.cs" />
+    <Compile Include="Providers\IProviderFactories.cs" />
     <Compile Include="Providers\Stats\IAttributeStatProviderFactory.cs" />
     <Compile Include="Providers\Stats\IDodgeStatProviderFactory.cs" />
     <Compile Include="Providers\Stats\IEvasionStatProvider.cs" />
@@ -103,7 +108,6 @@
     <Compile Include="Providers\Conditions\IConditionProvider.cs" />
     <Compile Include="Providers\Damage\IDamageSourceProvider.cs" />
     <Compile Include="Providers\Damage\IDamageTypeProvider.cs" />
-    <Compile Include="IComputationData.cs" />
     <Compile Include="Providers\Equipment\IEquipmentProvider.cs" />
     <Compile Include="Providers\Forms\IFormProvider.cs" />
     <Compile Include="Providers\Effects\IGroundEffectProvider.cs" />
