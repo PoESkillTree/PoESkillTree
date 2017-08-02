@@ -4,24 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:model="clr-namespace:POESKillTree.Model"
-             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DataContext="{d:DesignInstance model:BanditSettings}">
     <StackPanel Orientation="Horizontal">
-        <ComboBox ItemsSource="{Binding BanditValues}" SelectedValue="{Binding Normal}" Width="80">
-            <ComboBox.ToolTip>
-                <l:Catalog Message="Bandit reward for Normal difficulty." />
-            </ComboBox.ToolTip>
-        </ComboBox>
-        <ComboBox ItemsSource="{Binding BanditValues}" SelectedValue="{Binding Cruel}" Width="80">
-            <ComboBox.ToolTip>
-                <l:Catalog Message="Bandit reward for Cruel difficulty." />
-            </ComboBox.ToolTip>
-        </ComboBox>
-        <ComboBox ItemsSource="{Binding BanditValues}" SelectedValue="{Binding Merciless}" Width="80">
-            <ComboBox.ToolTip>
-                <l:Catalog Message="Bandit reward for Merciless difficulty." />
-            </ComboBox.ToolTip>
-        </ComboBox>
+        <ComboBox ItemsSource="{Binding BanditValues}" SelectedValue="{Binding Choice}" Width="80" />
     </StackPanel>
 </UserControl>
+

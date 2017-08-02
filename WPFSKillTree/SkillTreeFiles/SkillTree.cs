@@ -494,12 +494,8 @@ namespace POESKillTree.SkillTreeFiles
 
             var bandits = _persistentData.CurrentBuild.Bandits;
             points["NormalTotal"] += Level - 1;
-            if (bandits.Normal == Bandit.None)
-                points["NormalTotal"]++;
-            if (bandits.Cruel == Bandit.None)
-                points["NormalTotal"]++;
-            if (bandits.Merciless == Bandit.None)
-                points["NormalTotal"]++;
+            if (bandits.Choice == Bandit.None)
+                points["NormalTotal"] += 2;
 
             foreach (var node in SkilledNodes)
             {

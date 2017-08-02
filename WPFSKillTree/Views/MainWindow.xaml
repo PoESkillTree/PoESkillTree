@@ -630,9 +630,9 @@
 
                 <StackPanel Orientation="Horizontal" Grid.Column="1">
                     <ToggleButton x:Name="BanditToggle" Width="50">
-                        <l:Catalog Message="Bandits" />
+                        <l:Catalog Message="Bandit" />
                     </ToggleButton>
-                    <Popup IsOpen="{Binding IsChecked, ElementName=BanditToggle}" StaysOpen="False" Placement="Bottom" HorizontalOffset="-100" VerticalOffset="5">
+                    <Popup IsOpen="{Binding IsChecked, ElementName=BanditToggle}" StaysOpen="False" Placement="Bottom" HorizontalOffset="-20" VerticalOffset="5">
                         <Border Background="{DynamicResource WhiteColorBrush}" BorderThickness="1"
                                 BorderBrush="{DynamicResource AccentColorBrush}">
                             <local:BanditSelection DataContext="{Binding PersistentData.CurrentBuild.Bandits}" Margin="5" />

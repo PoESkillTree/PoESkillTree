@@ -1877,9 +1877,7 @@ namespace POESKillTree.Views
                 BanditSettings bandits = PersistentData.CurrentBuild.Bandits;
                 if (forceBanditsUpdate)
                 {
-                    bandits.Normal = data.BanditNormal;
-                    bandits.Cruel = data.BanditCruel;
-                    bandits.Merciless = data.BanditMerciless;
+                    bandits.Choice = data.Bandit;
                 }
                 else if (data != null && data.HasAnyBanditValue() && !data.BanditsAreSame(bandits))
                 {
@@ -1892,9 +1890,7 @@ namespace POESKillTree.Views
 
                     if (dialogResult == MessageBoxResult.Yes)
                     {
-                        bandits.Normal = data.BanditNormal;
-                        bandits.Cruel = data.BanditCruel;
-                        bandits.Merciless = data.BanditMerciless;
+                        bandits.Choice = data.Bandit;
                     }
                 }
 
@@ -1916,32 +1912,11 @@ namespace POESKillTree.Views
         private string CreateDetailsString(BanditSettings bandits, BuildUrlData data)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(L10n.Message("Current:"))
-                .AppendLine($" - {GetBanditWithReward(bandits.Normal, Difficulty.Normal)}")
-                .AppendLine($" - {GetBanditWithReward(bandits.Cruel, Difficulty.Cruel)}")
-                .AppendLine($" - {GetBanditWithReward(bandits.Merciless, Difficulty.Merciless)}")
-                .AppendLine(L10n.Message("Loaded:"))
-                .AppendLine($" - {GetBanditWithReward(data.BanditNormal, Difficulty.Normal)}")
-                .AppendLine($" - {GetBanditWithReward(data.BanditCruel, Difficulty.Cruel)}")
-                .Append($" - {GetBanditWithReward(data.BanditMerciless, Difficulty.Merciless)}");
+            sb.AppendLine(L10n.Message("Current: ")).Append(bandits.Choice)
+                .AppendLine(L10n.Message("Loaded: ")).Append(data.Bandit);
 
             string details = sb.ToString();
             return details;
-        }
-
-        private string GetBanditWithReward(Bandit bandit, Difficulty difficulty)
-        {
-            var result = $"{Enum.GetName(typeof(Difficulty), difficulty)}:  {Enum.GetName(typeof(Bandit), bandit)}";
-            result += bandit == Bandit.None ? string.Empty : " (" + InsertNumbersInAttributes(bandit.Reward(difficulty).Item1, bandit.Reward(difficulty).Item2) + ")";
-
-            return result;
-        }
-
-        private string InsertNumbersInAttributes(string attr, float value)
-        {
-            var s = attr;
-            s = s.Replace("#", Convert.ToString(value, CultureInfo.InvariantCulture));
-            return s;
         }
 
         #endregion
