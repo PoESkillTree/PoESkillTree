@@ -9,7 +9,7 @@ namespace PoESkillTree.Computation.Providers.Skills
 
         // Single skills that need to be individually referenced
 
-        ISkillProvider SummonSkeletons { get; }
+        ISkillProvider SummonSkeleton { get; }
         ISkillProvider VaalSummonSkeletons { get; }
         ISkillProvider RaiseSpectre { get; }
         ISkillProvider RaiseZombie { get; }

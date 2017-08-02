@@ -1,5 +1,6 @@
 using PoESkillTree.Computation.Providers.Buffs;
 using PoESkillTree.Computation.Providers.Effects;
+using PoESkillTree.Computation.Providers.Entities;
 using PoESkillTree.Computation.Providers.Skills;
 using PoESkillTree.Computation.Providers.Values;
 
@@ -33,7 +34,8 @@ namespace PoESkillTree.Computation.Providers.Stats
         IBuffProvider ForXSeconds(ValueProvider seconds);
         // similar to ForXSeconds(), just with the duration set elsewhere
         IBuffProvider AsBuff { get; }
-        IFlagStatProvider AsAura { get; }
+
+        IFlagStatProvider AsAura(params IEntityProvider[] affectedEntities);
 
         // add stat to skills instead of the stat applying as is, 
         // e.g. "Auras you Cast grant ... to you and Allies"

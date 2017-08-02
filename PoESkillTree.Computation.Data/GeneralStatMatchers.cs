@@ -69,7 +69,6 @@ namespace PoESkillTree.Computation.Data
             { "projectiles?", Projectile.Count },
             // - other
             { "accuracy rating", Stat.Accuracy },
-            { "chance to hit", Hit.Chance },
             // defense
             // - life, mana, defences; see also PoolStatMatchers
             { "armour", Armour },
@@ -191,13 +190,13 @@ namespace PoESkillTree.Computation.Data
             // minions
             {
                 "maximum number of skeletons",
-                Combine(Skill.SummonSkeletons, Skill.VaalSummonSkeletons).CombinedInstances.Maximum
+                Combine(Skill.SummonSkeleton, Skill.VaalSummonSkeletons).CombinedInstances.Maximum
             },
             { "maximum number of spectres", Skill.RaiseSpectre.Instances.Maximum },
             { "maximum number of zombies", Skill.RaiseZombie.Instances.Maximum },
             {
                 "skeleton duration",
-                Skill.SummonSkeletons.Duration, Skill.VaalSummonSkeletons.Duration
+                Skill.SummonSkeleton.Duration, Skill.VaalSummonSkeletons.Duration
             },
             { "golem at a time", Golems.CombinedInstances.Maximum },
             // buffs

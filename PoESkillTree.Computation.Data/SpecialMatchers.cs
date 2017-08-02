@@ -163,11 +163,12 @@ namespace PoESkillTree.Computation.Data
             // Guardian
             {
                 "grants armour equal to #% of your reserved life to you and nearby allies",
-                BaseAdd, Armour.AsAura, Value.AsPercentage * Life.Value * Life.Reservation.Value
+                BaseAdd, Armour.AsAura(Self, Ally),
+                Value.AsPercentage * Life.Value * Life.Reservation.Value
             },
             {
                 "grants maximum energy shield equal to #% of your reserved mana to you and nearby allies",
-                BaseAdd, EnergyShield.AsAura,
+                BaseAdd, EnergyShield.AsAura(Self, Ally),
                 Value.AsPercentage * Mana.Value * Mana.Reservation.Value
             },
             { "warcries cost no mana", Zero, Skills[Keyword.Warcry].Cost },

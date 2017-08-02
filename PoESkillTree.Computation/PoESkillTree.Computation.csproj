@@ -64,7 +64,6 @@
     <Compile Include="Providers\Actions\IActionProviderFactory.cs" />
     <Compile Include="Providers\Actions\IBlockActionProvider.cs" />
     <Compile Include="Providers\Actions\ICriticalStrikeActionProvider.cs" />
-    <Compile Include="Providers\Actions\IHitActionProvider.cs" />
     <Compile Include="Providers\Conditions\IConditionProviderFactory.cs" />
     <Compile Include="Providers\Actions\IActionProvider.cs" />
     <Compile Include="Providers\Buffs\IBuffProviderFactory.cs" />

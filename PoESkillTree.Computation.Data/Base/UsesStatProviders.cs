@@ -59,7 +59,7 @@ namespace PoESkillTree.Computation.Data.Base
 
         protected ISelfToAnyActionProvider Kill => Action.Kill;
         protected IBlockActionProvider Block => Action.Block;
-        protected IHitActionProvider Hit => Action.Hit;
+        protected ISelfToAnyActionProvider Hit => Action.Hit;
         protected ICriticalStrikeActionProvider CriticalStrike => Action.CriticalStrike;
 
         // Buffs

@@ -6,7 +6,7 @@ namespace PoESkillTree.Computation.Providers.Actions
     {
         ISelfToAnyActionProvider Kill { get; }
         IBlockActionProvider Block { get; }
-        IHitActionProvider Hit { get; }
+        ISelfToAnyActionProvider Hit { get; }
         ISelfToAnyActionProvider SavageHit { get; }
         ICriticalStrikeActionProvider CriticalStrike { get; }
         ISelfToAnyActionProvider NonCriticalStrike { get; }

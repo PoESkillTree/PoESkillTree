@@ -305,9 +305,6 @@ namespace PoESkillTree.Computation.Data
             // other
             { "while leeching", Condition.WhileLeeching },
             { "(you )?gain", Condition.True }, // may be left over at the end, does nothing
-            // other enemy
-            { "nearby enemies (have|deal|take)", And(For(Enemy), Enemy.IsNearby) },
-            { "enemies near your totems (have|deal|take)", And(For(Enemy), Enemy.IsNearby) },
             // unique
             { "when your trap is triggered by an enemy", Condition.Unique() },
             { "when your mine is detonated targeting an enemy", Condition.Unique() },

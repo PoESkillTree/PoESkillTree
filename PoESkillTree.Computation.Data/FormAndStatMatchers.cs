@@ -71,7 +71,7 @@ namespace PoESkillTree.Computation.Data
             },
             { @"skills chain \+# times", BaseAdd, Projectile.ChainCount },
             // - other
-            { "you hits can't be evaded", Always, Hit.Chance },
+            { "your hits can't be evaded", Zero, Enemy.Stat(Evasion.Chance) },
             // defense
             // - life, mana, defences
             { "maximum life becomes #", TotalOverride, Life },
