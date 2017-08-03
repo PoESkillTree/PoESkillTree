@@ -4,6 +4,8 @@ namespace PoESkillTree.Computation
 {
     public interface IReferencedMatchers<T>
     {
-        IReadOnlyList<(string regex, T match)> Matchers { get; }
+        string ReferenceName { get; }
+
+        IReadOnlyList<ReferencedMatcherData<T>> Matchers { get; }
     }
 }

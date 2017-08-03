@@ -16,7 +16,9 @@ namespace PoESkillTree.Computation.Data
             Matchers = CreateCollection().ToList();
         }
 
-        public IReadOnlyList<(string regex, IKeywordProvider match)> Matchers { get; }
+        public string ReferenceName { get; } = nameof(KeywordMatchers);
+
+        public IReadOnlyList<ReferencedMatcherData<IKeywordProvider>> Matchers { get; }
 
         private MatcherCollection<IKeywordProvider> CreateCollection() =>
             new MatcherCollection<IKeywordProvider>

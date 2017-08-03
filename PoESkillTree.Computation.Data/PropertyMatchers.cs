@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using PoESkillTree.Common.Model.Items.Enums;
+using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Providers;
@@ -10,26 +10,24 @@ namespace PoESkillTree.Computation.Data
     public class PropertyMatchers : UsesMatchContext, IStatMatchers
     {
         // Used to match properties of items and skills
-
-        private IMatchConditionFactory MatchCondition { get; }
+        // "Elemental Damage: ..." needs to be replaced by up to three properties (one for each 
+        // element) before it gets here.
 
         public PropertyMatchers(IProviderFactories providerFactories, 
-            IMatchContextFactory matchContextFactory, IMatchConditionFactory matchConditionFactory)
+            IMatchContextFactory matchContextFactory)
             : base(providerFactories, matchContextFactory)
         {
-            MatchCondition = matchConditionFactory;
-
-            StatMatchers = CreateCollection();
+            Matchers = CreateCollection().ToList();
         }
 
-        public IEnumerable<object> StatMatchers { get; }
+        public IReadOnlyList<MatcherData> Matchers { get; }
 
         private PropertyMatcherCollection CreateCollection() => new PropertyMatcherCollection
         {
             { "quality" }, // do nothing with it
             { "attacks per second", Skills.Speed },
             { "cast time", Skills.Speed, v => v.Invert },
-            { "elemental damage", Fire.Damage, MatchCondition.MatchHas(ValueColoring.Fire) },
+            { "fire damage", Fire.Damage },
             { "damage effectiveness", Skills.DamageEffectiveness }
         };
     }

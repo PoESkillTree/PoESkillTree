@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.Data
             "4% increased Attack Speed per Frenzy Charge",
             "4% increased Cast Speed per Frenzy Charge",
             "4% more Damage per Frenzy Charge",
-            "50% increased Critical Strike Chance per Power Charge",
+            "40% increased Critical Strike Chance per Power Charge",
             // Rampage
             "1% increased Movement Speed per 10 Rampage Stacks",
             "2% increased Damage per 10 Rampage Stacks",

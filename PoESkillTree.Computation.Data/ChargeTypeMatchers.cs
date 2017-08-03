@@ -16,7 +16,9 @@ namespace PoESkillTree.Computation.Data
             Matchers = CreateCollection().ToList();
         }
 
-        public IReadOnlyList<(string regex, IChargeTypeProvider match)> Matchers { get; }
+        public string ReferenceName { get; } = nameof(ChargeTypeMatchers);
+
+        public IReadOnlyList<ReferencedMatcherData<IChargeTypeProvider>> Matchers { get; }
 
         private MatcherCollection<IChargeTypeProvider> CreateCollection() =>
             new MatcherCollection<IChargeTypeProvider>

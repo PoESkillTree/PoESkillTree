@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -10,16 +11,17 @@ namespace PoESkillTree.Computation.Data
 {
     public class ValueConversionMatchers : UsesMatchContext, IStatMatchers
     {
-        // with multiple values in the mod line, these apply to the closest value before them
+        // These apply to the main value of the modifier (or multiple e.g. for "Adds # to # ..."),
+        // not to other values like in "for # seconds".
 
         public ValueConversionMatchers(IProviderFactories providerFactories,
             IMatchContextFactory matchContextFactory) 
             : base(providerFactories, matchContextFactory)
         {
-            StatMatchers = CreateCollection();
+            Matchers = CreateCollection().ToList();
         }
 
-        public IEnumerable<object> StatMatchers { get; }
+        public IReadOnlyList<MatcherData> Matchers { get; }
 
         private ValueConversionMatcherCollection CreateCollection() =>
             new ValueConversionMatcherCollection

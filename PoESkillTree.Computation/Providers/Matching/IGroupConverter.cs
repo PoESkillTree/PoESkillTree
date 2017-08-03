@@ -4,7 +4,6 @@ using PoESkillTree.Computation.Providers.Damage;
 using PoESkillTree.Computation.Providers.Effects;
 using PoESkillTree.Computation.Providers.Equipment;
 using PoESkillTree.Computation.Providers.Skills;
-using PoESkillTree.Computation.Providers.Entities;
 using PoESkillTree.Computation.Providers.Stats;
 
 namespace PoESkillTree.Computation.Providers.Matching
@@ -23,7 +22,7 @@ namespace PoESkillTree.Computation.Providers.Matching
 
         IItemSlotProvider AsItemSlot { get; }
 
-        IActionProvider<ISelfProvider, IEntityProvider> AsAction { get; }
+        ISelfToAnyActionProvider AsAction { get; }
 
         IStatProvider AsStat { get; }
 

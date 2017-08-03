@@ -16,7 +16,9 @@ namespace PoESkillTree.Computation.Data
             Matchers = CreateCollection().ToList();
         }
 
-        public IReadOnlyList<(string regex, IFlagStatProvider match)> Matchers { get; }
+        public string ReferenceName { get; } = nameof(FlagMatchers);
+
+        public IReadOnlyList<ReferencedMatcherData<IFlagStatProvider>> Matchers { get; }
 
         private MatcherCollection<IFlagStatProvider> CreateCollection() =>
             new MatcherCollection<IFlagStatProvider>

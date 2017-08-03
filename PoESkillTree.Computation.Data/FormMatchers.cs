@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Providers;
@@ -9,10 +10,10 @@ namespace PoESkillTree.Computation.Data
     {
         public FormMatchers(IProviderFactories providerFactories) : base(providerFactories)
         {
-            StatMatchers = CreateCollection();
+            Matchers = CreateCollection().ToList();
         }
 
-        public IEnumerable<object> StatMatchers { get; }
+        public IReadOnlyList<MatcherData> Matchers { get; }
 
         private FormMatcherCollection CreateCollection() => new FormMatcherCollection
         {

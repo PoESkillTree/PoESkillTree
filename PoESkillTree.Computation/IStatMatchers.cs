@@ -4,6 +4,6 @@ namespace PoESkillTree.Computation
 {
     public interface IStatMatchers
     {
-        IEnumerable<object> StatMatchers { get; }
+        IReadOnlyList<MatcherData> Matchers { get; }
     }
 }

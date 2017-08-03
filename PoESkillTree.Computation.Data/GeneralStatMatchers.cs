@@ -19,10 +19,10 @@ namespace PoESkillTree.Computation.Data
             IMatchContextFactory matchContextFactory) 
             : base(providerFactories, matchContextFactory)
         {
-            StatMatchers = CreateCollection();
+            Matchers = CreateCollection().ToList();
         }
 
-        public IEnumerable<object> StatMatchers { get; }
+        public IReadOnlyList<MatcherData> Matchers { get; }
 
         private StatMatcherCollection CreateCollection() => new StatMatcherCollection
         {

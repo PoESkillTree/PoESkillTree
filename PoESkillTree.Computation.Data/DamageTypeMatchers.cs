@@ -22,7 +22,9 @@ namespace PoESkillTree.Computation.Data
         private IDamageTypeProvider Cold => _damageTypeProviderFactory.Cold;
         private IDamageTypeProvider Chaos => _damageTypeProviderFactory.Chaos;
 
-        public IReadOnlyList<(string regex, IDamageTypeProvider match)> Matchers { get; }
+        public string ReferenceName { get; } = nameof(DamageTypeMatchers);
+
+        public IReadOnlyList<ReferencedMatcherData<IDamageTypeProvider>> Matchers { get; }
 
         private MatcherCollection<IDamageTypeProvider> CreateCollection() => 
             new MatcherCollection<IDamageTypeProvider>

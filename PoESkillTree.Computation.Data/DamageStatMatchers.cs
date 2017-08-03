@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -14,10 +15,10 @@ namespace PoESkillTree.Computation.Data
             IMatchContextFactory matchContextFactory) 
             : base(providerFactories, matchContextFactory)
         {
-            StatMatchers = CreateCollection();
+            Matchers = CreateCollection().ToList();
         }
 
-        public IEnumerable<object> StatMatchers { get; }
+        public IReadOnlyList<MatcherData> Matchers { get; }
 
         private StatMatcherCollection<IDamageStatProvider> CreateCollection() =>
             new StatMatcherCollection<IDamageStatProvider>

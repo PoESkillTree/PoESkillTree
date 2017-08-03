@@ -4,17 +4,16 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using PoESkillTree.Computation.Providers.Conditions;
 using PoESkillTree.Computation.Providers.Forms;
-using PoESkillTree.Computation.Providers.Matching;
 using PoESkillTree.Computation.Providers.Stats;
 using PoESkillTree.Computation.Providers.Values;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
-    // TODO move to Computation.Data
+    // TODO rename collision between generic and non-generic MatcherCollection
 
-    public class MatcherCollection : IEnumerable<object>
+    public class MatcherCollection : IEnumerable<MatcherData>
     {
-        public IEnumerator<object> GetEnumerator()
+        public IEnumerator<MatcherData> GetEnumerator()
         {
             throw new NotImplementedException();
         }
@@ -116,22 +115,17 @@ namespace PoESkillTree.Computation.Data.Collections
         {
             throw new NotImplementedException();
         }
-
-        public void Add([RegexPattern] string regex, IStatProvider stat, IMatchCondition matchesIf)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 
-    public class MatcherCollection<T> : IEnumerable<(string regex, T match)>
+    public class MatcherCollection<T> : IEnumerable<ReferencedMatcherData<T>>
     {
         public void Add([RegexPattern] string regex, T element)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerator<(string regex, T match)> GetEnumerator()
+        public IEnumerator<ReferencedMatcherData<T>> GetEnumerator()
         {
             throw new NotImplementedException();
         }

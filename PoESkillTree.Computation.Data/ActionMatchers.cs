@@ -16,7 +16,9 @@ namespace PoESkillTree.Computation.Data
             Matchers = CreateCollection().ToList();
         }
 
-        public IReadOnlyList<(string regex, IActionProvider match)> Matchers { get; }
+        public string ReferenceName { get; } = nameof(ActionMatchers);
+
+        public IReadOnlyList<ReferencedMatcherData<IActionProvider>> Matchers { get; }
 
         private MatcherCollection<IActionProvider> CreateCollection() =>
             new MatcherCollection<IActionProvider>
