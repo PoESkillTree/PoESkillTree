@@ -20,8 +20,8 @@ namespace PoESkillTree.Computation.Data
 
         public IReadOnlyList<ReferencedMatcherData<IKeywordProvider>> Matchers { get; }
 
-        private MatcherCollection<IKeywordProvider> CreateCollection() =>
-            new MatcherCollection<IKeywordProvider>
+        private ReferencedMatcherCollection<IKeywordProvider> CreateCollection() =>
+            new ReferencedMatcherCollection<IKeywordProvider>
             {
                 { "melee", Keyword.Melee },
                 { "attacks?", Keyword.Attack },

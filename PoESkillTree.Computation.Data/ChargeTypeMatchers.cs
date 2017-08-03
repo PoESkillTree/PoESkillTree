@@ -20,8 +20,8 @@ namespace PoESkillTree.Computation.Data
 
         public IReadOnlyList<ReferencedMatcherData<IChargeTypeProvider>> Matchers { get; }
 
-        private MatcherCollection<IChargeTypeProvider> CreateCollection() =>
-            new MatcherCollection<IChargeTypeProvider>
+        private ReferencedMatcherCollection<IChargeTypeProvider> CreateCollection() =>
+            new ReferencedMatcherCollection<IChargeTypeProvider>
             {
                 { "endurance charges?", Charge.Endurance },
                 { "power charges?", Charge.Power },

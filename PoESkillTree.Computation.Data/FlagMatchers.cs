@@ -20,8 +20,8 @@ namespace PoESkillTree.Computation.Data
 
         public IReadOnlyList<ReferencedMatcherData<IFlagStatProvider>> Matchers { get; }
 
-        private MatcherCollection<IFlagStatProvider> CreateCollection() =>
-            new MatcherCollection<IFlagStatProvider>
+        private ReferencedMatcherCollection<IFlagStatProvider> CreateCollection() =>
+            new ReferencedMatcherCollection<IFlagStatProvider>
             {
                 { "onslaught", Flag.Onslaught },
                 { "unholy might", Flag.UnholyMight },

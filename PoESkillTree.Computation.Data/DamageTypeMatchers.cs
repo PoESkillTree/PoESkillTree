@@ -26,8 +26,8 @@ namespace PoESkillTree.Computation.Data
 
         public IReadOnlyList<ReferencedMatcherData<IDamageTypeProvider>> Matchers { get; }
 
-        private MatcherCollection<IDamageTypeProvider> CreateCollection() => 
-            new MatcherCollection<IDamageTypeProvider>
+        private ReferencedMatcherCollection<IDamageTypeProvider> CreateCollection() => 
+            new ReferencedMatcherCollection<IDamageTypeProvider>
             {
                 { "physical", Physical },
                 { "fire", Fire },

@@ -9,8 +9,6 @@ using PoESkillTree.Computation.Providers.Values;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
-    // TODO rename collision between generic and non-generic MatcherCollection
-
     public class MatcherCollection : IEnumerable<MatcherData>
     {
         public IEnumerator<MatcherData> GetEnumerator()
@@ -114,25 +112,6 @@ namespace PoESkillTree.Computation.Data.Collections
         public void Add([RegexPattern] string regex, IStatProvider stat, ValueFunc converter)
         {
             throw new NotImplementedException();
-        }
-    }
-
-
-    public class MatcherCollection<T> : IEnumerable<ReferencedMatcherData<T>>
-    {
-        public void Add([RegexPattern] string regex, T element)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerator<ReferencedMatcherData<T>> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 

@@ -20,8 +20,8 @@ namespace PoESkillTree.Computation.Data
 
         public IReadOnlyList<ReferencedMatcherData<IActionProvider>> Matchers { get; }
 
-        private MatcherCollection<IActionProvider> CreateCollection() =>
-            new MatcherCollection<IActionProvider>
+        private ReferencedMatcherCollection<IActionProvider> CreateCollection() =>
+            new ReferencedMatcherCollection<IActionProvider>
             {
                 { "kill(ed)?", Action.Kill },
                 { "block(ed)?", Action.Block },

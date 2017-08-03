@@ -53,6 +53,7 @@
     <Compile Include="ActionMatchers.cs" />
     <Compile Include="AilmentMatchers.cs" />
     <Compile Include="ChargeTypeMatchers.cs" />
+    <Compile Include="Collections\ReferencedMatcherCollection.cs" />
     <Compile Include="Collections\StatReplacerCollection.cs" />
     <Compile Include="ComputationData.cs" />
     <Compile Include="ConditionMatchers.cs" />

@@ -20,8 +20,8 @@ namespace PoESkillTree.Computation.Data
 
         public IReadOnlyList<ReferencedMatcherData<IAilmentProvider>> Matchers { get; }
 
-        private MatcherCollection<IAilmentProvider> CreateCollection() =>
-            new MatcherCollection<IAilmentProvider>
+        private ReferencedMatcherCollection<IAilmentProvider> CreateCollection() =>
+            new ReferencedMatcherCollection<IAilmentProvider>
             {
                 // chance to x/x duration
                 { "ignite", Ailment.Ignite },
