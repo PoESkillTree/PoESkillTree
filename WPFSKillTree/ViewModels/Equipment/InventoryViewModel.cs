@@ -23,6 +23,7 @@ namespace POESKillTree.ViewModels.Equipment
         public InventoryItemViewModel Gloves { get; }
         public InventoryItemViewModel Boots { get; }
         public InventoryItemViewModel Belt { get; }
+        public InventoryItemViewModel Jewel { get; }
 
         public InventoryViewModel(IExtendedDialogCoordinator dialogCoordinator, EquipmentData equipmentData,
             ItemAttributes itemAttributes)
@@ -40,6 +41,7 @@ namespace POESKillTree.ViewModels.Equipment
             Gloves = CreateSlotVm(ItemSlot.Gloves);
             Boots = CreateSlotVm(ItemSlot.Boots);
             Belt = CreateSlotVm(ItemSlot.Belt);
+            Jewel = CreateSlotVm(ItemSlot.Jewel);
         }
 
         private InventoryItemViewModel CreateSlotVm(ItemSlot slot)

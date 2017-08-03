@@ -231,6 +231,7 @@ namespace POESKillTree.Model.Items.Enums
                 case ItemGroup.Gem:
                     return ItemSlot.Gem;
                 case ItemGroup.Jewel:
+                    return ItemSlot.Jewel;
                 case ItemGroup.Unknown:
                     return ItemSlot.Unequipable;
                 default:

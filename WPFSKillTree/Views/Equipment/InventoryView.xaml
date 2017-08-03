@@ -21,7 +21,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
+
         <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
                    Grid.Row="0"
                    HorizontalAlignment="Center"
@@ -88,6 +88,13 @@
                                  HorizontalAlignment="Left" VerticalAlignment="Bottom"
                                  Width="98" Height="98"
                                  DataContext="{Binding Boots}" />
+
+        <views:InventoryItemView Grid.Column="0"
+                                 Grid.Row="2"
+                                 Margin="0,0,118,70"
+                                 HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                 Width="41" Height="38"
+                                 DataContext="{Binding Jewel}"/>
 
         <views:BinView Grid.Column="0" Grid.ColumnSpan="3"
                        Grid.Row="2"

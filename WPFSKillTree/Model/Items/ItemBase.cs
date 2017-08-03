@@ -151,6 +151,8 @@ namespace POESKillTree.Model.Items
                     return ItemGroup.Gem;
                 case ItemSlot.Belt:
                     return ItemGroup.Belt;
+                case ItemSlot.Jewel:
+                    return ItemGroup.Jewel;
                 default: // MainHand, OffHand, Unequippable
                     return ItemGroup.Unknown;
             }

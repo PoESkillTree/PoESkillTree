@@ -19,6 +19,7 @@ namespace POESKillTree.Model.Items.Enums
         Gloves = 0x80,
         Boots = 0x100,
         Gem = 0x200,
-        Belt = 0x400
+        Belt = 0x400,
+        Jewel = 0x800
     }
 }
