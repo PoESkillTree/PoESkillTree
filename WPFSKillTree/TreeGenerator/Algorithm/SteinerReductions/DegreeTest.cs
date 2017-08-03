@@ -96,6 +96,8 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
                             untested.Remove(other);
                             untested.UnionWith(MergeInto(other, i));
                             removedNodes++;
+                            // neighbors changed, minimumTargetNeighbors might be outdated
+                            break;
                         }
                     }
                 }

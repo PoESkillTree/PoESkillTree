@@ -18,7 +18,7 @@
         <viewModels:CraftingViewModelProxy x:Key="VmProxy" Data="{Binding}" />
         <Style x:Key="HideForJewelsStyle" TargetType="local:ModSelectorView">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Data.Item.ItemGroup, Source={StaticResource VmProxy}}"
+                <DataTrigger Binding="{Binding Data.Item.ItemClass, Source={StaticResource VmProxy}}"
                              Value="Jewel">
                     <Setter Property="Visibility" Value="Hidden" />
                 </DataTrigger>

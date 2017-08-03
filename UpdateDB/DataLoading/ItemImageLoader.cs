@@ -68,10 +68,5 @@ namespace UpdateDB.DataLoading
 
             Log.Info($"Retrieved {results.Count} images for class {wikiClass}.");
         }
-
-        protected override Task CompleteSavingAsync()
-        {
-            return Task.FromResult<object>(null);
-        }
     }
 }

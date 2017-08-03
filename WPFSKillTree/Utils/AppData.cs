@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using JetBrains.Annotations;
 
 namespace POESKillTree.Utils
 {
@@ -120,6 +121,18 @@ namespace POESKillTree.Utils
         public static void SetApplicationData(string path)
         {
             ApplicationData = path;
+        }
+    }
+
+    /// <summary>
+    /// PatternConverter to use in Log4Net.config files that outputs the installation's application data folder.
+    /// </summary>
+    [UsedImplicitly]
+    public class AppDataPatternConverter : log4net.Util.PatternConverter
+    {
+        protected override void Convert(TextWriter writer, object state)
+        {
+            writer.Write(AppData.GetFolder());
         }
     }
 }

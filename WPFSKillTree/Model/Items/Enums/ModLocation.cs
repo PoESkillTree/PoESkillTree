@@ -1,6 +1,9 @@
 ﻿namespace POESKillTree.Model.Items.Enums
 {
-    public enum ModGroup
+    /// <summary>
+    /// Defines the location of a mod on an item
+    /// </summary>
+    public enum ModLocation
     {
         Property,
         Requirement,

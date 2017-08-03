@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using POESKillTree.Model.Items.Affixes;
+using log4net;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Model.Items.Mods;
 
 namespace POESKillTree.Model.Items
 {
@@ -10,6 +11,7 @@ namespace POESKillTree.Model.Items
     /// </summary>
     public class UniqueBase : IItemBase
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(UniqueBase));
 
         public int Level { get; }
         public int RequiredStrength => _base.RequiredStrength;
@@ -21,24 +23,38 @@ namespace POESKillTree.Model.Items
 
         public string UniqueName { get; }
         public string Name => _base.Name;
-        public ItemType ItemType => _base.ItemType;
-        public ItemGroup ItemGroup => _base.ItemGroup;
+        public ItemClass ItemClass => _base.ItemClass;
+        public Tags Tags => _base.Tags;
         public int MaximumNumberOfSockets => _base.MaximumNumberOfSockets;
 
         private readonly ItemBase _base;
         public bool CanHaveQuality => _base.CanHaveQuality;
-        public IReadOnlyList<Stat> ImplicitMods => _base.ImplicitMods;
-        public IReadOnlyList<Stat> ExplicitMods { get; }
+        private readonly IReadOnlyList<string> _properties;
+        public IReadOnlyList<IMod> ImplicitMods => _base.ImplicitMods;
+        public IReadOnlyList<IMod> ExplicitMods { get; }
 
         public ItemImage Image { get; }
 
-        public UniqueBase(ItemImageService itemImageService, ItemBase itemBase, XmlUnique xmlUnique)
+        public UniqueBase(ItemImageService itemImageService, ModDatabase modDatabase, ItemBase itemBase, 
+            XmlUnique xmlUnique)
         {
             UniqueName = xmlUnique.Name;
             Level = xmlUnique.Level;
             DropDisabled = xmlUnique.DropDisabled;
             _base = itemBase;
-            ExplicitMods = xmlUnique.Explicit.Select(e => new Stat(e, itemBase.ItemType, ModGroup.Explicit)).ToList();
+            _properties = xmlUnique.Properties;
+            var explicits = new List<IMod>();
+            foreach (var id in xmlUnique.Explicit)
+            {
+                Mod mod;
+                if (!modDatabase.Mods.TryGetValue(id, out mod))
+                {
+                    Log.Error($"Unknown mod id {id} on unique {UniqueName}");
+                    continue;
+                }
+                explicits.Add(mod);
+            }
+            ExplicitMods = explicits;
 
             Image = itemBase.Image.AsDefaultForUniqueImage(itemImageService, UniqueName);
         }
@@ -50,7 +66,9 @@ namespace POESKillTree.Model.Items
 
         public List<ItemMod> GetRawProperties(int quality = 0)
         {
-            return _base.GetRawProperties(quality);
+            var mods = _base.GetRawProperties(quality);
+            mods.AddRange(_properties.Select(prop => new ItemMod(prop, true)));
+            return mods;
         }
     }
 }

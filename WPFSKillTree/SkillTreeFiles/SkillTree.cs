@@ -202,6 +202,11 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     SkillIcons icons;
                     string prefix;
+                    foreach(var i in obj.Value)
+                    {
+                        if (i.filename.Contains('?'))
+                            i.filename = i.filename.Remove(i.filename.IndexOf('?'));
+                    }
                     if (obj.Key.EndsWith("Active"))
                     {
                         // Adds active nodes to IconActiveSkills
@@ -411,7 +416,7 @@ namespace POESKillTree.SkillTreeFiles
                     }
 
                     //populate the Attributes fields with parsed attributes 
-                    skillnode.Value.Attributes = new Dictionary<string, List<float>>();
+                    skillnode.Value.Attributes = new Dictionary<string, IReadOnlyList<float>>();
                     foreach (string s in skillnode.Value.attributes)
                     {
                         var values = new List<float>();
@@ -489,12 +494,8 @@ namespace POESKillTree.SkillTreeFiles
 
             var bandits = _persistentData.CurrentBuild.Bandits;
             points["NormalTotal"] += Level - 1;
-            if (bandits.Normal == Bandit.None)
-                points["NormalTotal"]++;
-            if (bandits.Cruel == Bandit.None)
-                points["NormalTotal"]++;
-            if (bandits.Merciless == Bandit.None)
-                points["NormalTotal"]++;
+            if (bandits.Choice == Bandit.None)
+                points["NormalTotal"] += 2;
 
             foreach (var node in SkilledNodes)
             {
@@ -1374,19 +1375,19 @@ namespace POESKillTree.SkillTreeFiles
             return availNodes;
         }
 
-        public static IEnumerable<KeyValuePair<string, List<float>>> ExpandHybridAttributes(Dictionary<string, List<float>> attributes)
+        public static IEnumerable<KeyValuePair<string, IReadOnlyList<float>>> ExpandHybridAttributes(Dictionary<string, IReadOnlyList<float>> attributes)
         {
             return attributes.SelectMany(ExpandHybridAttributes);
         }
 
-        public static IEnumerable<KeyValuePair<string, List<float>>> ExpandHybridAttributes(KeyValuePair<string, List<float>> attribute)
+        public static IEnumerable<KeyValuePair<string, IReadOnlyList<float>>> ExpandHybridAttributes(KeyValuePair<string, IReadOnlyList<float>> attribute)
         {
             List<string> expandedAttributes;
             if (HybridAttributes.TryGetValue(attribute.Key, out expandedAttributes))
             {
                 foreach (var expandedAttribute in expandedAttributes)
                 {
-                    yield return new KeyValuePair<string, List<float>>(expandedAttribute, attribute.Value);
+                    yield return new KeyValuePair<string, IReadOnlyList<float>>(expandedAttribute, attribute.Value);
                 }
             }
             else

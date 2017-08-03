@@ -12,8 +12,8 @@ namespace POESKillTree.ViewModels.Crafting
     /// </summary>
     public class SliderViewModel : Notifier
     {
-        private float _value;
-        public float Value
+        private int _value;
+        public int Value
         {
             get { return _value; }
             set
@@ -29,29 +29,28 @@ namespace POESKillTree.ViewModels.Crafting
         public double Maximum { get; }
         public bool ShowSlider { get; }
 
-        public int StatIndex { get; }
         public int ValueIndex { get; }
 
         public event EventHandler<SliderValueChangedEventArgs> ValueChanged;
 
-        public SliderViewModel(int statIndex, int valueIndex, IEnumerable<double> ticks)
+        public SliderViewModel(int valueIndex, IEnumerable<int> ticks)
         {
-            StatIndex = statIndex;
             ValueIndex = valueIndex;
-            Ticks = new DoubleCollection(ticks);
+            var tickList = ticks.ToList();
+            Ticks = new DoubleCollection(tickList.Select(i => (double) i));
             Minimum = Ticks.First();
             Maximum = Ticks.Last();
-            _value = (float) Minimum;
+            _value = tickList.LastOrDefault();
             ShowSlider = Ticks.Count > 1;
         }
     }
 
     public class SliderValueChangedEventArgs
     {
-        public float OldValue { get; }
-        public float NewValue { get; }
+        public int OldValue { get; }
+        public int NewValue { get; }
 
-        public SliderValueChangedEventArgs(float oldValue, float newValue)
+        public SliderValueChangedEventArgs(int oldValue, int newValue)
         {
             OldValue = oldValue;
             NewValue = newValue;

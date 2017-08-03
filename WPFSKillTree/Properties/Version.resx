@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppId" xml:space="preserve">
-    <value>{DC22AC48-5C37-4F50-9D1F-27487B1A384A}</value>
+    <value>{3CAA9AFE-7355-4E10-A183-89849968729E}</value>
     <comment>The application identifier also used as AppUserModelId and running application instance Mutex. Change only when release is not an update of previous release, but should be installed alongside it.</comment>
   </data>
   <data name="AssemblyCompany" xml:space="preserve">
@@ -138,7 +138,7 @@
     <comment>The assembly version used by CLR to resolve dependencies. Change only when public API has changed and all client assemblies has to be recompiled.</comment>
   </data>
   <data name="ProductName" xml:space="preserve">
-    <value>PoESkillTree - Atlas of Worlds</value>
+    <value>PoESkillTree - The Fall of Oriath</value>
     <comment>The product name also used as name of Program Files group, Application Data folder, Start Menu group and Desktop shortcut. Change only when AppId is changed.</comment>
   </data>
   <data name="ProductURL" xml:space="preserve">
@@ -146,7 +146,7 @@
     <comment>The URL of product website.</comment>
   </data>
   <data name="ProductVersion" xml:space="preserve">
-    <value>2.6.0</value>
+    <value>2.7.1</value>
     <comment>The application version identical to Git release tag. Change each release.</comment>
   </data>
 </root>

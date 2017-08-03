@@ -42,8 +42,8 @@ using System.Windows;
 // Updated by release.xml. DO NOT MODIFY!
 [assembly: AssemblyDescription("Passive skill tree planner for Path of Exile®")]
 [assembly: AssemblyCompany("PoESkillTree Team")]
-[assembly: AssemblyProduct("PoESkillTree - Atlas of Worlds")]
+[assembly: AssemblyProduct("PoESkillTree - The Fall of Oriath")]
 [assembly: AssemblyCopyright("Copyright © 2012-2016 PoESkillTree Team")]
 [assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.6.0.1248")]
-[assembly: AssemblyInformationalVersion("2.6.0")]
+[assembly: AssemblyFileVersion("2.7.1.1315")]
+[assembly: AssemblyInformationalVersion("2.7.1")]

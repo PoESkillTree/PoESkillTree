@@ -606,7 +606,7 @@
 
         <TabControl Grid.Row="0" HorizontalAlignment="Right">
             <TabItem controls:ControlsHelper.HeaderFontSize="14"
-                     IsSelected="{Binding IsSelected, ElementName= tyPAssiveTree}">
+                     IsSelected="{Binding IsSelected, ElementName= tyPassiveTree}">
                 <TabItem.Header>
                     <l:Catalog Message="Skill Tree"/>
                 </TabItem.Header>
@@ -630,9 +630,9 @@
 
                 <StackPanel Orientation="Horizontal" Grid.Column="1">
                     <ToggleButton x:Name="BanditToggle" Width="50">
-                        <l:Catalog Message="Bandits" />
+                        <l:Catalog Message="Bandit" />
                     </ToggleButton>
-                    <Popup IsOpen="{Binding IsChecked, ElementName=BanditToggle}" StaysOpen="False" Placement="Bottom" HorizontalOffset="-100" VerticalOffset="5">
+                    <Popup IsOpen="{Binding IsChecked, ElementName=BanditToggle}" StaysOpen="False" Placement="Bottom" HorizontalOffset="-20" VerticalOffset="5">
                         <Border Background="{DynamicResource WhiteColorBrush}" BorderThickness="1"
                                 BorderBrush="{DynamicResource AccentColorBrush}">
                             <local:BanditSelection DataContext="{Binding PersistentData.CurrentBuild.Bandits}" Margin="5" />
@@ -687,7 +687,7 @@
                         </Style.Setters>
                     </Style>
                 </TabControl.ItemContainerStyle>
-                <TabItem IsSelected="True" Name="tyPAssiveTree">
+                <TabItem IsSelected="True" Name="tyPassiveTree">
                     <local:ZoomBorder IsManipulationEnabled="True" x:Name="zbSkillTreeBackground" ClipToBounds="True" MouseMove="zbSkillTreeBackground_MouseMove" Click="zbSkillTreeBackground_Click" Background="Black" MouseLeave="zbSkillTreeBackground_MouseLeave" Margin="0,0,0,0" Focusable="True" PreviewMouseUp="zbSkillTreeBackground_PreviewMouseUp">
                         <Rectangle Height="500" Width="597" IsManipulationEnabled="True" x:Name="recSkillTree" Stretch="Fill"  ClipToBounds="True" Margin="0,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </local:ZoomBorder>
@@ -852,9 +852,27 @@
                 </Grid>
             </Expander>
 
-            <Expander Margin="108 -30 0 0" Padding="-109,0,0,0" Style="{StaticResource TopRowExpander}"
+            <Expander Style="{StaticResource TopRowExpander}"
                       IsExpanded="{Binding IsChecked,ElementName=mnuViewCharacterSheet}"
-                      Expanded="expCharacterSheet_Expanded">
+                      Expanded="expCharacterSheet_Expanded"
+                      Background="{x:Null}"
+                      controls:GroupBoxHelper.HeaderForeground="{DynamicResource BlackColorBrush}">
+                <controls:ExpanderHelper.HeaderDownStyle>
+                    <Style TargetType="{x:Type ToggleButton}"
+                           BasedOn="{StaticResource ExpanderDownHeaderStyle}">
+                        <Style.Setters>
+                            <Setter Property="Margin" Value="108 4 4 4" />
+                        </Style.Setters>
+                    </Style>
+                </controls:ExpanderHelper.HeaderDownStyle>
+                <controls:ExpanderHelper.HeaderUpStyle>
+                    <Style TargetType="{x:Type ToggleButton}"
+                           BasedOn="{StaticResource ExpanderUpHeaderStyle}">
+                        <Style.Setters>
+                            <Setter Property="Margin" Value="108 4 4 4" />
+                        </Style.Setters>
+                    </Style>
+                </controls:ExpanderHelper.HeaderUpStyle>
                 <Expander.Header>
                     <l:Catalog Message="Character Sheet"/>
                 </Expander.Header>

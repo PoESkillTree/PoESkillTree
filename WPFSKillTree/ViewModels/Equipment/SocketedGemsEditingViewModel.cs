@@ -84,7 +84,7 @@ namespace POESKillTree.ViewModels.Equipment
         {
             Gem = gem;
             Name = Gem.Name;
-            Icon = new ItemImage(itemImageService, Name, ItemGroup.Gem);
+            Icon = new ItemImage(itemImageService, Name, ItemClass.ActiveSkillGem);
         }
     }
 

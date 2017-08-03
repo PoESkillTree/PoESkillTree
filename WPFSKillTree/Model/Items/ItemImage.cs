@@ -22,11 +22,11 @@ namespace POESKillTree.Model.Items
         public NotifyingTask<ImageSource> ImageSource { get; }
 
         /// <summary>
-        /// Represents an image for an item group. The image will be loaded synchronously.
+        /// Represents an image for an item class. The image will be loaded synchronously.
         /// </summary>
-        public ItemImage(ItemImageService itemImageService, ItemGroup baseGroup)
+        public ItemImage(ItemImageService itemImageService, ItemClass baseClass)
         {
-            var defaultImage = itemImageService.LoadDefaultImage(baseGroup);
+            var defaultImage = itemImageService.LoadDefaultImage(baseClass);
             ImageSource = NewImageSourceTask(
                 Task.FromResult(defaultImage),
                 "Exception in completed task",
@@ -35,12 +35,12 @@ namespace POESKillTree.Model.Items
         }
 
         /// <summary>
-        /// Represents an image for an item base. First the group's image will be loaded synchronously,
+        /// Represents an image for an item base. First the classes's image will be loaded synchronously,
         /// which is then used as the image until the base item's image is loaded asynchronously.
         /// </summary>
-        public ItemImage(ItemImageService itemImageService, string baseName, ItemGroup baseGroup)
+        public ItemImage(ItemImageService itemImageService, string baseName, ItemClass baseClass)
         {
-            var defaultImage = itemImageService.LoadDefaultImage(baseGroup);
+            var defaultImage = itemImageService.LoadDefaultImage(baseClass);
             ImageSource = NewImageSourceTask(
                 itemImageService.LoadItemImageAsync(baseName, defaultImage),
                 "Loading of base item image failed",
