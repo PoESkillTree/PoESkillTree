@@ -24,6 +24,21 @@ namespace POESKillTree.Utils.UrlProcessing
         {
         }
 
+        public override bool ValidateBuildUrl(out Exception exception)
+        {
+            try
+            {
+                GetRawData();
+                exception = null;
+                return true;
+            }
+            catch (Exception e)
+            {
+                exception = e;
+                return false;
+            }
+        }
+
         public override BuildUrlData GetBuildData()
         {
             var bytes = GetRawData();
@@ -49,14 +64,14 @@ namespace POESKillTree.Utils.UrlProcessing
             return deserializedData;
         }
 
-        public override int GetCharacterClassId()
+        protected override int GetCharacterClassId()
         {
             var rawData = GetRawData();
 
             return rawData.Length < 5 ? 0 : rawData[4];
         }
 
-        public override int GetAscendancyClassId()
+        protected override int GetAscendancyClassId()
         {
             var rawData = GetRawData();
 

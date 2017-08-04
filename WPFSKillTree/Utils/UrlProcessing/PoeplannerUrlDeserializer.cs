@@ -19,7 +19,7 @@ namespace POESKillTree.Utils.UrlProcessing
         /// <param name="buildUrl">The poeplanner build url.</param>
         /// <param name="ascendancyClasses">The instance of the <see cref="ascendancyClasses"/>
         /// to access general information about skill tree.</param>
-        public PoeplannerUrlDeserializer(string buildUrl, IAscendancyClasses ascendancyClasses) : base(buildUrl, ascendancyClasses)
+        private PoeplannerUrlDeserializer(string buildUrl, IAscendancyClasses ascendancyClasses) : base(buildUrl, ascendancyClasses)
         {
         }
 
@@ -41,6 +41,21 @@ namespace POESKillTree.Utils.UrlProcessing
             return true;
         }
 
+        public override bool ValidateBuildUrl(out Exception exception)
+        {
+            try
+            {
+                GetRawData();
+                exception = null;
+                return true;
+            }
+            catch (Exception e)
+            {
+                exception = e;
+                return false;
+            }
+        }
+
         public override BuildUrlData GetBuildData()
         {
             PoeplannerData data = DecodePoeplannerUrl();
@@ -50,14 +65,14 @@ namespace POESKillTree.Utils.UrlProcessing
             return buildData;
         }
 
-        public override int GetCharacterClassId()
+        protected override int GetCharacterClassId()
         {
             var rawData = GetRawData();
 
             return rawData.Length < 6 ? 0 : rawData[5] & 15;
         }
 
-        public override int GetAscendancyClassId()
+        protected override int GetAscendancyClassId()
         {
             var rawData = GetRawData();
 
@@ -126,9 +141,7 @@ namespace POESKillTree.Utils.UrlProcessing
             if (data.NodesData.Length < 2)
                 return result;
 
-            result.SetBanditNormal(data.NodesData[1] & 3);
-            result.SetBanditCruel(data.NodesData[1] >> 2 & 3);
-            result.SetBanditMerciless(data.NodesData[1] >> 4 & 3);
+            result.SetBandit(data.NodesData[1] & 3);
 
             if (data.NodesData.Length < 4)
                 return result;

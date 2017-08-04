@@ -1,24 +1,25 @@
 using System.Collections.Generic;
 using System.Linq;
+using POESKillTree.Model.Items.StatTranslation;
 using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Crafting
 {
     /// <summary>
-    /// View model for a group of mod value sliders. Shows additional text if there are either no sliders
-    /// or no slider is shown.
+    /// View model for a group of mod value sliders. Shows a line of text describing the sliders at their current
+    /// values.
     /// </summary>
     public class SliderGroupViewModel : Notifier
     {
         public IReadOnlyList<SliderViewModel> Sliders { get; }
-        
-        private readonly string _format;
-        public string Text => string.Format(_format, Sliders.Select(s => s.Value).Cast<object>().ToArray());
 
-        public SliderGroupViewModel(IEnumerable<SliderViewModel> sliders, string format)
+        private readonly ITranslation _translation;
+        public string Text => _translation.Translate(Sliders.Select(s => s.Value).ToList()) ?? "";
+
+        public SliderGroupViewModel(IEnumerable<SliderViewModel> sliders, ITranslation translation)
         {
+            _translation = translation;
             Sliders = sliders.ToList();
-            _format = format;
 
             foreach (var slider in Sliders)
             {

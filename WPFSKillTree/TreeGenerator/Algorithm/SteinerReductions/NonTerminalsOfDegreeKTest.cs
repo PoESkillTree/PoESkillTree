@@ -66,7 +66,7 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
                     var mst = new MinimalSpanningTree(subset, SMatrix);
                     mst.Span(subset[0]);
                     // Sum up the edge weights of the MST.
-                    var mstSum = mst.SpanningEdges.Sum(e => e.Priority);
+                    var mstSum = mst.SpanningEdges.Sum(e => DistanceLookup[e.Inside, e.Outside]);
                     // The condition is only satisfied if edgeSum >= mstSum.
                     if (edgeSum < mstSum)
                     {

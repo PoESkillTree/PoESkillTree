@@ -7,9 +7,6 @@
              xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Crafting"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:ModSelectorViewModel}">
     <UserControl.Resources>
-        <DataTemplate DataType="{x:Type viewModels:SliderViewModel}">
-            <local:SliderView />
-        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:SliderGroupViewModel}">
             <local:SliderGroupView />
         </DataTemplate>

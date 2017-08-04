@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using POESKillTree.Controls;
@@ -19,8 +18,11 @@ namespace POESKillTree.Model
         IBuild SelectedBuild { get; set; }
         BuildFolder RootBuild { get; }
         EquipmentData EquipmentData { get; }
-        ObservableCollection<Item> StashItems { get; }
-        ObservableCollection<StashBookmark> StashBookmarks { get; }
+        List<Item> StashItems { get; }
+        /// <summary>
+        /// Gets the stash bookmarks/tabs. They are always ordered by position ascending.
+        /// </summary>
+        List<StashBookmark> StashBookmarks { get; }
         IDictionary<string, IEnumerable<StashBookmark>> LeagueStashes { get; }
 
         /// <summary>

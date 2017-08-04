@@ -8,6 +8,7 @@ using log4net;
 using MoreLinq;
 using Newtonsoft.Json.Linq;
 using POESKillTree.SkillTreeFiles;
+using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
 
 namespace UpdateDB.DataLoading
@@ -19,8 +20,8 @@ namespace UpdateDB.DataLoading
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(GemLoader));
 
-        private const string RepoeGemsUrl = "https://raw.githubusercontent.com/brather1ng/RePoE/master/data/gems.min.json";
-        private const string RepoeGemTooltipsUrl = "https://raw.githubusercontent.com/brather1ng/RePoE/master/data/gem_tooltips.min.json";
+        private const string RepoeGemsUrl = RePoEUtils.RePoEDataUrl + "gems.min.json";
+        private const string RepoeGemTooltipsUrl = RePoEUtils.RePoEDataUrl + "gem_tooltips.min.json";
 
         public override bool SavePathIsFolder => false;
 
@@ -36,7 +37,7 @@ namespace UpdateDB.DataLoading
                 var gemObj = _gemsJson.Value<JObject>(gemId);
                 if (gemObj["base_item"].Type == JTokenType.Null)
                 {
-                    Log.Info($"Skipping gem without base item with id {gemId}m");
+                    Log.Info($"Skipping gem without base item with id {gemId}");
                     continue;
                 }
                 var baseItem = gemObj.Value<JObject>("base_item");
@@ -106,14 +107,14 @@ namespace UpdateDB.DataLoading
                         foreach (var restriction in weaponRestrictions)
                         {
                             // map game's ItemClass to our WeaponType
-                            var w = restriction.Replace(" Hand ", " Handed ");
-                            if (w == "Thrusting One Handed Sword")
+                            var w = restriction;
+                            if (w == "Thrusting One Hand Sword")
                             {
-                                w = "One Handed Sword";
+                                w = "One Hand Sword";
                             }
                             else if (w == "Sceptre")
                             {
-                                w = "One Handed Mace";
+                                w = "One Hand Mace";
                             }
                             w = Regex.Replace(w, @"([a-z]) ([A-Z])", "$1$2");
                             Compute.WeaponType weaponType;
@@ -131,6 +132,8 @@ namespace UpdateDB.DataLoading
 
                 ItemDB.Add(gem);
             }
+
+            ItemDB.WriteToCompletePath(SavePath);
         }
 
         /// <summary>
@@ -313,12 +316,6 @@ namespace UpdateDB.DataLoading
                 default:
                     return value.ToString();
             }
-        }
-
-        protected override Task CompleteSavingAsync()
-        {
-            ItemDB.WriteToCompletePath(SavePath);
-            return Task.WhenAll();
         }
     }
 }

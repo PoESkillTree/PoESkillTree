@@ -1,5 +1,4 @@
 ﻿using System.Xml.Serialization;
-using POESKillTree.Model.Items.Affixes;
 
 namespace POESKillTree.Model.Items
 {
@@ -28,8 +27,9 @@ namespace POESKillTree.Model.Items
         [XmlAttribute]
         public string BaseMetadataId { get; set; }
 
-        [XmlArrayItem("Stat")]
-        public XmlStat[] Explicit { get; set; }
+        public string[] Explicit { get; set; }
+
+        public string[] Properties { get; set; }
 
     }
 }

@@ -184,7 +184,7 @@ namespace POESKillTree.Model.Builds
             IEnumerable<ushort> checkedNodeIds, IEnumerable<ushort> crossedNodeIds, string additionalData)
         {
             PropertyChanged += PropertyChangedHandler;
-            Bandits = bandits;
+            Bandits = bandits ?? new BanditSettings();
             CustomGroups = new ObservableCollection<string[]>(customGroups);
             CheckedNodeIds = new ObservableSet<ushort>(checkedNodeIds);
             CrossedNodeIds = new ObservableSet<ushort>(crossedNodeIds);

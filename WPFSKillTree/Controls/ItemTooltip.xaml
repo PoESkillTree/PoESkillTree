@@ -4,14 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             xmlns:items1="clr-namespace:POESKillTree.Model.Items"
+             xmlns:items="clr-namespace:POESKillTree.Model.Items"
              xmlns:enums="clr-namespace:POESKillTree.Model.Items.Enums"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             Name="control" FontSize="14" FontWeight="Medium" Background="#AF000000">
+             d:DataContext="{d:DesignInstance items:Item}"
+             FontSize="14" FontWeight="Medium">
     <Control.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
-        <items1:ItemModToInlinesConverter x:Key="itemModToInlinesConverter" />
+        <items:ItemModToInlinesConverter x:Key="itemModToInlinesConverter" />
         <Style TargetType="{x:Type TextBlock}" x:Key="allCapsTextblock">
             <Style.Setters>
                 <Setter Property="Typography.Capitals" Value="SmallCaps"/>
@@ -23,23 +24,26 @@
 
         <Style TargetType="{x:Type TextBlock}" x:Key="qualitycoloredTextblock" BasedOn="{StaticResource allCapsTextblock}">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.White}">
+                <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.White}">
                     <Setter Property="Foreground" Value="White"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Magic}">
+                <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Magic}">
                     <Setter Property="Foreground" Value="#FF8888FF"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Rare}">
+                <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Rare}">
                     <Setter Property="Foreground" Value="#FFFFFF77"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Unique}">
+                <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Unique}">
                     <Setter Property="Foreground" Value="#FFAF6021"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Gem}">
+                <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Gem}">
                     <Setter Property="Foreground" Value="#FF1BA29B"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Currency}">
+                <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Currency}">
                     <Setter Property="Foreground" Value="#FFAA9E82"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Foil}">
+                    <Setter Property="Foreground" Value="#82ad6a"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -50,28 +54,31 @@
                 <Setter Property="Stretch" Value="None"/>
             </Style.Setters>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.White}">
-                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/SeparatorWhite.png"/>
+                <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.White}">
+                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsSeparatorWhite.png"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Magic}">
-                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/SeparatorMagic.png"/>
+                <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Magic}">
+                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsSeparatorMagic.png"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Rare}">
-                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/SeparatorRare.png"/>
+                <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Rare}">
+                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsSeparatorRare.png"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Unique}">
-                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/SeparatorUnique.png"/>
+                <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Unique}">
+                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsSeparatorUnique.png"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Gem}">
-                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/SeparatorGem.png"/>
+                <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Gem}">
+                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsSeparatorGem.png"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Currency}">
-                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/SeparatorCurrency.png"/>
+                <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Currency}">
+                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsSeparatorCurrency.png"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Foil}">
+                    <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsSeparatorFoil.png"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
     </Control.Resources>
-    <Grid>
+    <Grid Background="#CF000000">
         <Grid.RowDefinitions>
             <!--0 header-->
             <RowDefinition Height="auto" />
@@ -112,23 +119,26 @@
                 <Image.Style>
                     <Style TargetType="{x:Type Image}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.White}">
-                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderWhiteLeft.png"/>
+                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.White}">
+                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderWhiteLeft.png"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Magic}">
-                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderMagicLeft.png"/>
+                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Magic}">
+                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderMagicLeft.png"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Rare}">
-                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderRareLeft.png"/>
+                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Rare}">
+                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderRareLeft.png"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Unique}">
-                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderUniqueLeft.png"/>
+                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Unique}">
+                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderUniqueLeft.png"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Gem}">
-                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderGemLeft.png"/>
+                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Gem}">
+                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderGemLeft.png"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Currency}">
-                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderCurrencyLeft.png"/>
+                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Currency}">
+                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderCurrencyLeft.png"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Foil}">
+                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderFoilLeft.png"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -142,23 +152,26 @@
                                 <Image.Style>
                                     <Style TargetType="{x:Type Image}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.White}">
-                                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderWhiteMiddle.png"/>
+                                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.White}">
+                                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderWhiteMiddle.png"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Magic}">
-                                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderMagicMiddle.png"/>
+                                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Magic}">
+                                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderMagicMiddle.png"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Rare}">
-                                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderRareMiddle.png"/>
+                                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Rare}">
+                                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderRareMiddle.png"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Unique}">
-                                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderUniqueMiddle.png"/>
+                                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Unique}">
+                                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderUniqueMiddle.png"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Gem}">
-                                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderGemMiddle.png"/>
+                                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Gem}">
+                                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderGemMiddle.png"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Currency}">
-                                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderCurrencyMiddle.png"/>
+                                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Currency}">
+                                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderCurrencyMiddle.png"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Foil}">
+                                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderFoilMiddle.png"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -176,7 +189,7 @@
                                         <Setter Property="Height" Value="*"/>
                                     </Style.Setters>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Item.HaveName,ElementName=control}" Value="False">
+                                        <DataTrigger Binding="{Binding HaveName}" Value="False">
                                             <Setter Property="Height" Value="0"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -185,31 +198,34 @@
                         </RowDefinition>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" VerticalAlignment="Center" Grid.Row="0" Name="ItemName" Text="{Binding Item.NameLine,ElementName=control}" Visibility="{Binding Item.HaveName,ElementName=control, Converter={StaticResource BoolToVisConverter}}"/>
-                    <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" VerticalAlignment="Center" Margin="0,0,0,4" Grid.Row="1" Name="ItemType" Text="{Binding Item.TypeLine,ElementName=control}"/>
+                    <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" VerticalAlignment="Center" Grid.Row="0" Text="{Binding NameLine}" Visibility="{Binding HaveName, Converter={StaticResource BoolToVisConverter}}"/>
+                    <TextBlock FontSize="16" Style="{StaticResource qualitycoloredTextblock}" VerticalAlignment="Center" Margin="0,0,0,4" Grid.Row="1" Text="{Binding TypeLine}"/>
                 </Grid>
             </Grid>
             <Image Grid.Column="2">
                 <Image.Style>
                     <Style TargetType="{x:Type Image}">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.White}">
-                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderWhiteRight.png"/>
+                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.White}">
+                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderWhiteRight.png"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Magic}">
-                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderMagicRight.png"/>
+                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Magic}">
+                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderMagicRight.png"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Rare}">
-                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderRareRight.png"/>
+                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Rare}">
+                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderRareRight.png"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Unique}">
-                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderUniqueRight.png"/>
+                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Unique}">
+                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderUniqueRight.png"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Gem}">
-                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderGemRight.png"/>
+                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Gem}">
+                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderGemRight.png"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Item.Frame, ElementName=control}" Value="{x:Static enums:FrameType.Currency}">
-                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemHeaderCurrencyRight.png"/>
+                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Currency}">
+                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderCurrencyRight.png"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Frame}" Value="{x:Static enums:FrameType.Foil}">
+                                <Setter Property="Source" Value="/POESKillTree;component/Images/EquipmentUI/ItemsHeaderFoilRight.png"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -218,10 +234,10 @@
         </Grid>
 
         <!--properties values - like armor or weapon damage -->
-        <ItemsControl Margin="3,0" Grid.Row="1" ItemsSource="{Binding Item.Properties,ElementName=control}">
+        <ItemsControl Margin="3,0" Grid.Row="1" ItemsSource="{Binding Properties}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type system:String}">
-                    <TextBlock  Foreground="#FF7F7F7F" Style="{StaticResource allCapsTextblock}" items1:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}, ConverterParameter=colorNumbers}" />
+                    <TextBlock  Foreground="#FF7F7F7F" Style="{StaticResource allCapsTextblock}" items:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}, ConverterParameter=colorNumbers}" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -231,10 +247,10 @@
             <Image.Style>
                 <Style TargetType="{x:Type Image}" BasedOn="{StaticResource spacerBase}">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding Item.Properties.Count, ElementName=control}" Value="0" >
+                        <DataTrigger Binding="{Binding Properties.Count}" Value="0" >
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Item.Requirements.Count, ElementName=control}" Value="0" >
+                        <DataTrigger Binding="{Binding Requirements.Count}" Value="0" >
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -243,10 +259,10 @@
         </Image>
 
         <!--3requirements -->
-        <ItemsControl Margin="3,0" Grid.Row="3" ItemsSource="{Binding Item.Requirements,ElementName=control}">
+        <ItemsControl Margin="3,0" Grid.Row="3" ItemsSource="{Binding Requirements}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type system:String}">
-                    <TextBlock Foreground="#FF7F7F7F" Style="{StaticResource allCapsTextblock}" items1:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter},ConverterParameter=colorNumbers}"/>
+                    <TextBlock Foreground="#FF7F7F7F" Style="{StaticResource allCapsTextblock}" items:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter},ConverterParameter=colorNumbers}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -258,13 +274,13 @@
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Item.Properties.Count, ElementName=control}" Value="0" />
-                                <Condition Binding="{Binding Item.Requirements.Count, ElementName=control}" Value="0" />
+                                <Condition Binding="{Binding Properties.Count}" Value="0" />
+                                <Condition Binding="{Binding Requirements.Count}" Value="0" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </MultiDataTrigger>
 
-                        <DataTrigger Binding="{Binding Item.ImplicitMods.Count, ElementName=control}" Value="0">
+                        <DataTrigger Binding="{Binding ImplicitMods.Count}" Value="0">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -273,10 +289,10 @@
         </Image>
 
         <!--5 implicit mods-->
-        <ItemsControl Margin="3,0" Grid.Row="5" ItemsSource="{Binding Item.ImplicitMods,ElementName=control}">
+        <ItemsControl Margin="3,0" Grid.Row="5" ItemsSource="{Binding ImplicitMods}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type system:String}">
-                    <TextBlock Style="{StaticResource allCapsTextblock}" items1:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}}"/>
+                    <TextBlock Style="{StaticResource allCapsTextblock}" items:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -289,16 +305,16 @@
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Item.Properties.Count, ElementName=control}" Value="0" />
-                                <Condition Binding="{Binding Item.Requirements.Count, ElementName=control}" Value="0" />
-                                <Condition Binding="{Binding Item.ImplicitMods.Count, ElementName=control}" Value="0" />
+                                <Condition Binding="{Binding Properties.Count}" Value="0" />
+                                <Condition Binding="{Binding Requirements.Count}" Value="0" />
+                                <Condition Binding="{Binding ImplicitMods.Count}" Value="0" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Item.ExplicitMods.Count, ElementName=control}" Value="0" />
-                                <Condition Binding="{Binding Item.CraftedMods.Count, ElementName=control}" Value="0" />
+                                <Condition Binding="{Binding ExplicitMods.Count}" Value="0" />
+                                <Condition Binding="{Binding CraftedMods.Count}" Value="0" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </MultiDataTrigger>
@@ -309,34 +325,34 @@
 
 
         <!--7 explicit mods-->
-        <ItemsControl Margin="3,0" Grid.Row="7" ItemsSource="{Binding Item.ExplicitMods,ElementName=control}">
+        <ItemsControl Margin="3,0" Grid.Row="7" ItemsSource="{Binding ExplicitMods}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type system:String}">
-                    <TextBlock Style="{StaticResource allCapsTextblock}" items1:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}}"/>
+                    <TextBlock Style="{StaticResource allCapsTextblock}" items:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
         <!--8 crafted mods-->
-        <ItemsControl Margin="3,0" Grid.Row="8" ItemsSource="{Binding Item.CraftedMods,ElementName=control}">
+        <ItemsControl Margin="3,0" Grid.Row="8" ItemsSource="{Binding CraftedMods}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type system:String}">
-                    <TextBlock Foreground="#FFB4B4FF" Style="{StaticResource allCapsTextblock}" items1:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}}"/>
+                    <TextBlock Foreground="#FFB4B4FF" Style="{StaticResource allCapsTextblock}" items:TextBlockHelper.TextBlockInlines="{Binding Path=., Converter={StaticResource itemModToInlinesConverter}}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
         <!--9 flavour text separator-->
-        <Image Grid.Row="9" Visibility="{Binding Item.HaveFlavourText,ElementName=control, Converter={StaticResource BoolToVisConverter}}">
+        <Image Grid.Row="9" Visibility="{Binding HaveFlavourText, Converter={StaticResource BoolToVisConverter}}">
             <Image.Style>
                 <Style TargetType="{x:Type Image}" BasedOn="{StaticResource spacerBase}">
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Item.Properties.Count, ElementName=control}" Value="0" />
-                                <Condition Binding="{Binding Item.Requirements.Count, ElementName=control}" Value="0" />
-                                <Condition Binding="{Binding Item.ImplicitMods.Count, ElementName=control}" Value="0" />
-                                <Condition Binding="{Binding Item.ExplicitMods.Count, ElementName=control}" Value="0" />
-                                <Condition Binding="{Binding Item.CraftedMods.Count, ElementName=control}" Value="0" />
+                                <Condition Binding="{Binding Properties.Count}" Value="0" />
+                                <Condition Binding="{Binding Requirements.Count}" Value="0" />
+                                <Condition Binding="{Binding ImplicitMods.Count}" Value="0" />
+                                <Condition Binding="{Binding ExplicitMods.Count}" Value="0" />
+                                <Condition Binding="{Binding CraftedMods.Count}" Value="0" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </MultiDataTrigger>
@@ -346,8 +362,8 @@
         </Image>
 
         <TextBlock Margin="3,0" Grid.Row="10" FontStyle="Oblique" Style="{StaticResource qualitycoloredTextblock}"
-                   Visibility="{Binding Item.HaveFlavourText,ElementName=control, Converter={StaticResource BoolToVisConverter}}"
-                   Text="{Binding Item.FlavourText, ElementName=control}" />
+                   Visibility="{Binding HaveFlavourText, Converter={StaticResource BoolToVisConverter}}"
+                   Text="{Binding FlavourText}" />
 
     </Grid>
 </UserControl>

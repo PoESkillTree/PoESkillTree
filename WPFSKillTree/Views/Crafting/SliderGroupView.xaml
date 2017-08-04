@@ -4,8 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:crafting="clr-namespace:POESKillTree.ViewModels.Crafting"
+             xmlns:local="clr-namespace:POESKillTree.Views.Crafting"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance crafting:SliderGroupViewModel}">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type crafting:SliderViewModel}">
+            <local:SliderView />
+        </DataTemplate>
+    </UserControl.Resources>
     <StackPanel Orientation="Vertical">
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                    Text="{Binding Text}" />

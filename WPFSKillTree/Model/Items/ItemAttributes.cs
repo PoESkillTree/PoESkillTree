@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
 
@@ -20,8 +21,8 @@ namespace POESKillTree.Model.Items
 
         public Item Armor
         {
-            get { return GetItemInSlot(ItemSlot.Armor); }
-            set { SetItemInSlot(value, ItemSlot.Armor); }
+            get { return GetItemInSlot(ItemSlot.BodyArmour); }
+            set { SetItemInSlot(value, ItemSlot.BodyArmour); }
         }
 
         public Item MainHand
@@ -78,12 +79,12 @@ namespace POESKillTree.Model.Items
             set { SetItemInSlot(value, ItemSlot.Belt); }
         }
 
-        private Item GetItemInSlot(ItemSlot slot)
+        public Item GetItemInSlot(ItemSlot slot)
         {
             return Equip.FirstOrDefault(i => i.Slot == slot);
         }
 
-        private void SetItemInSlot(Item value, ItemSlot slot)
+        public void SetItemInSlot(Item value, ItemSlot slot)
         {
             if (!CanEquip(value, slot))
                 return;
@@ -93,12 +94,14 @@ namespace POESKillTree.Model.Items
             {
                 Equip.Remove(old);
                 old.Slot = ItemSlot.Unequipable;
+                old.PropertyChanged -= SlottedItemOnPropertyChanged;
             }
 
             if (value != null)
             {
                 value.Slot = slot;
                 Equip.Add(value);
+                value.PropertyChanged += SlottedItemOnPropertyChanged;
             }
             OnPropertyChanged(slot.ToString());
             RefreshItemAttributes();
@@ -109,45 +112,45 @@ namespace POESKillTree.Model.Items
             if (item == null) return true;
             if (slot == ItemSlot.Unequipable) return false;
             // one handed -> only equippable if other hand is free, shield or matching one handed
-            if (item.ItemGroup == ItemGroup.OneHandedWeapon
+            if (item.Tags.HasFlag(Tags.OneHand)
                 && (slot == ItemSlot.MainHand || slot == ItemSlot.OffHand))
             {
                 var other = slot == ItemSlot.MainHand ? OffHand : MainHand;
-                if (other == null || other.ItemGroup == ItemGroup.Shield)
+                if (other == null || other.ItemClass == ItemClass.Shield)
                     return true;
-                if (other.ItemGroup != ItemGroup.OneHandedWeapon)
+                if (!other.Tags.HasFlag(Tags.OneHand))
                     return false;
-                if ((item.ItemType == ItemType.Wand && other.ItemType != ItemType.Wand)
-                    || (other.ItemType == ItemType.Wand && item.ItemType != ItemType.Wand))
+                if ((item.ItemClass == ItemClass.Wand && other.ItemClass != ItemClass.Wand)
+                    || (other.ItemClass == ItemClass.Wand && item.ItemClass != ItemClass.Wand))
                     return false;
                 return true;
             }
             // two handed and not bow -> only equippable if off hand is free
-            if (item.ItemGroup == ItemGroup.TwoHandedWeapon && item.ItemType != ItemType.Bow
+            if (item.Tags.HasFlag(Tags.TwoHand) && item.ItemClass != ItemClass.Bow
                 && slot == ItemSlot.MainHand)
             {
                 return OffHand == null;
             }
             // bow -> only equippable if off hand is free or quiver
-            if (item.ItemType == ItemType.Bow && slot == ItemSlot.MainHand)
+            if (item.ItemClass == ItemClass.Bow && slot == ItemSlot.MainHand)
             {
-                return OffHand == null || OffHand.ItemGroup == ItemGroup.Quiver;
+                return OffHand == null || OffHand.ItemClass == ItemClass.Quiver;
             }
             // quiver -> only equippable if main hand is free or bow
-            if (item.ItemGroup == ItemGroup.Quiver && slot == ItemSlot.OffHand)
+            if (item.ItemClass == ItemClass.Quiver && slot == ItemSlot.OffHand)
             {
-                return MainHand == null || MainHand.ItemType == ItemType.Bow;
+                return MainHand == null || MainHand.ItemClass == ItemClass.Bow;
             }
             // shield -> only equippable if main hand is free or one hand
-            if (item.ItemGroup == ItemGroup.Shield && slot == ItemSlot.OffHand)
+            if (item.ItemClass == ItemClass.Shield && slot == ItemSlot.OffHand)
             {
-                return MainHand == null || MainHand.ItemGroup == ItemGroup.OneHandedWeapon;
+                return MainHand == null || MainHand.Tags.HasFlag(Tags.OneHand);
             }
-            return ((int)item.ItemGroup.ItemSlots() & (int)slot) != 0;
+            return ((int) item.ItemClass.ItemSlots() & (int) slot) != 0;
         }
         #endregion
 
-        public ObservableCollection<Item> Equip { get; private set; }
+        public ObservableCollection<Item> Equip { get; }
 
         private ListCollectionView _attributes;
         public ListCollectionView Attributes
@@ -159,6 +162,16 @@ namespace POESKillTree.Model.Items
         public IReadOnlyList<ItemMod> NonLocalMods { get; private set; }
 
         private readonly IPersistentData _persistentData;
+
+        public event EventHandler ItemDataChanged;
+
+        private void SlottedItemOnPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == nameof(Item.JsonBase))
+            {
+                ItemDataChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         public ItemAttributes()
         {
@@ -177,7 +190,7 @@ namespace POESKillTree.Model.Items
                 switch (jobj["inventoryId"].Value<string>())
                 {
                     case "BodyArmour":
-                        AddItem(jobj, ItemSlot.Armor);
+                        AddItem(jobj, ItemSlot.BodyArmour);
                         break;
                     case "Ring":
                         AddItem(jobj, ItemSlot.Ring);
@@ -220,7 +233,7 @@ namespace POESKillTree.Model.Items
                 var jItem = item.JsonBase;
                 switch (item.Slot)
                 {
-                    case ItemSlot.Armor:
+                    case ItemSlot.BodyArmour:
                         jItem["inventoryId"] = "BodyArmour";
                         break;
                     case ItemSlot.MainHand:
@@ -284,11 +297,11 @@ namespace POESKillTree.Model.Items
         {
             if (existingAttribute == null)
             {
-                attributes.Add(new Attribute(mod.Attribute, mod.Value, group));
+                attributes.Add(new Attribute(mod.Attribute, mod.Values, group));
             }
             else
             {
-                existingAttribute.Add(mod.Value);
+                existingAttribute.Add(mod.Values);
             }
         }
 
@@ -298,7 +311,7 @@ namespace POESKillTree.Model.Items
             {
                 // Show all properties except quality in the group for this slot.
                 if (attr.Attribute == "Quality: +#%") continue;
-                attributes.Add(new Attribute(attr.Attribute, attr.Value, item.Slot.ToString()));
+                attributes.Add(new Attribute(attr.Attribute, attr.Values, item.Slot.ToString()));
             }
 
             var modsAffectingProperties = item.GetModsAffectingProperties().SelectMany(pair => pair.Value).ToList();
@@ -326,14 +339,16 @@ namespace POESKillTree.Model.Items
         {
             var mods = item.Mods.Where(m => !m.IsLocal);
             // Weapons are treated differently, their properties do not count towards global mods.
-            if (item.ItemGroup != ItemGroup.OneHandedWeapon && item.ItemGroup != ItemGroup.TwoHandedWeapon)
+            if (!item.Tags.HasFlag(Tags.Weapon))
                 return mods.Union(item.Properties.Where(p => p.Attribute != "Quality: +#%"));
             return mods;
         }
 
         private void AddItem(JObject val, ItemSlot islot)
         {
-            Equip.Add(new Item(_persistentData, val, islot));
+            var item = new Item(_persistentData, val, islot);
+            Equip.Add(item);
+            item.PropertyChanged += SlottedItemOnPropertyChanged;
         }
 
 

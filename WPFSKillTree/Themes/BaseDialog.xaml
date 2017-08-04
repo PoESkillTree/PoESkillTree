@@ -87,6 +87,7 @@
            BasedOn="{StaticResource {x:Type dialogs:BaseMetroDialog}}">
         <Setter Property="Title" Value="{Binding DisplayName}" />
         <Setter Property="Template" Value="{StaticResource BaseDialogTemplate}" />
+        <Setter Property="controls:DialogParticipation.Register" Value="{Binding}" />
     </Style>
 
     <Style TargetType="{x:Type controls:CloseableBaseDialog}"

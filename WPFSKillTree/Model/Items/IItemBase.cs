@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Model.Items.Mods;
 
 namespace POESKillTree.Model.Items
 {
@@ -19,11 +19,16 @@ namespace POESKillTree.Model.Items
         int InventoryWidth { get; }
 
         string Name { get; }
-        ItemType ItemType { get; }
-        ItemGroup ItemGroup { get; }
+        ItemClass ItemClass { get; }
+        Tags Tags { get; }
+
+        /// <summary>
+        /// Gets the maximum number of sockets an item of this base can have.
+        /// </summary>
+        int MaximumNumberOfSockets { get; }
 
         bool CanHaveQuality { get; }
-        IReadOnlyList<Stat> ImplicitMods { get; }
+        IReadOnlyList<IMod> ImplicitMods { get; }
 
         ItemImage Image { get; }
 

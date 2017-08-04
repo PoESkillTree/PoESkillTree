@@ -10,6 +10,7 @@
         Currency = 5,
         DivinationCard = 6,
         QuestItem = 7,
-        Prophecy = 8
+        Prophecy = 8,
+        Foil = 9
     }
 }

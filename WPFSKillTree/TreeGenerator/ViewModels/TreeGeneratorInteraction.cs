@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 using POESKillTree.Common.ViewModels;
-using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
@@ -36,7 +34,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 {
                     if (_treeGeneratorViewModel != null)
                         _treeGeneratorViewModel.RunFinished -= ViewModelRunFinished;
-                    _treeGeneratorViewModel = new SettingsViewModel(SkillTree, SettingsDialogCoordinator.Instance);
+                    _treeGeneratorViewModel = new SettingsViewModel(SkillTree, SettingsDialogCoordinator.Instance, this);
                     _treeGeneratorViewModel.RunFinished += ViewModelRunFinished;
                     LoadSettings();
                 });
@@ -89,18 +87,8 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
         private async Task RunGenerator(int index)
         {
-            DependencyObject registration = null;
-            if (_treeGeneratorWindow == null)
-            {
-                registration = DialogParticipation.GetAssociation(this);
-                DialogParticipation.SetRegister(registration, _treeGeneratorViewModel);
-            }
             var generator = _treeGeneratorViewModel.Tabs[index];
             await _treeGeneratorViewModel.RunAsync(generator);
-            if (registration != null)
-            {
-                DialogParticipation.SetRegister(registration, this);
-            }
         }
 
         private async Task RunTaggedNodes()

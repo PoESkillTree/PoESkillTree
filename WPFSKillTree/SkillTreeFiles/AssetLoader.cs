@@ -109,6 +109,8 @@ namespace POESKillTree.SkillTreeFiles
                 var sprite = obj.Value[Constants.AssetZoomLevel];
                 var path = _tempAssetsPath + sprite.filename;
                 var url = SpriteUrl + sprite.filename;
+                if (path.Contains('?'))
+                    path = path.Remove(path.IndexOf('?'));
                 await DownloadAsync(url, path);
                 progress += perSpriteProgress;
                 reportProgress?.Invoke(progress);

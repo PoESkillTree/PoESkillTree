@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using POESKillTree.SkillTreeFiles;
 
@@ -8,7 +9,7 @@ namespace POESKillTree.Utils.UrlProcessing
     /// </summary>
     public abstract class BuildUrlDeserializer
     {
-        protected IAscendancyClasses AscendancyClasses;
+        private readonly IAscendancyClasses _ascendancyClasses;
         protected string BuildUrl { get; }
 
         /// <summary>
@@ -20,7 +21,7 @@ namespace POESKillTree.Utils.UrlProcessing
         protected BuildUrlDeserializer(string buildUrl, IAscendancyClasses ascendancyClasses)
         {
             BuildUrl = buildUrl ?? string.Empty;
-            AscendancyClasses = ascendancyClasses;
+            _ascendancyClasses = ascendancyClasses;
         }
 
         /// <summary>
@@ -31,12 +32,20 @@ namespace POESKillTree.Utils.UrlProcessing
         /// <summary>
         /// Returns the id of a character class decoded from the tree url.
         /// </summary>
-        public abstract int GetCharacterClassId();
+        protected abstract int GetCharacterClassId();
 
         /// <summary>
         /// Returns the id of an ascendancy class decoded from the tree url.
         /// </summary>
-        public abstract int GetAscendancyClassId();
+        protected abstract int GetAscendancyClassId();
+
+        /// <summary>
+        /// Validates that the build url can be deserialized without exceptions.
+        /// </summary>
+        /// <param name="exception">The exception that was thrown on deserializing the build url. Null if true is
+        /// returned.</param>
+        /// <returns>True iff the build url can be deserialized without exceptions</returns>
+        public abstract bool ValidateBuildUrl(out Exception exception);
 
         /// <summary>
         /// Returns the number of non-ascendancy points the given tree url uses.
@@ -82,7 +91,7 @@ namespace POESKillTree.Utils.UrlProcessing
 
             var classId = GetCharacterClassId();
 
-            return AscendancyClasses.GetClassName(classId, ascendancyId);
+            return _ascendancyClasses.GetClassName(classId, ascendancyId);
         }
     }
 }

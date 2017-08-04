@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -18,6 +18,8 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,8 +34,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -104,8 +104,8 @@
     <Reference Include="ExpressionEvaluator">
       <HintPath>.\ExpressionEvaluator.dll</HintPath>
     </Reference>
-    <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\gong-wpf-dragdrop.1.0.0\lib\net45\GongSolutions.Wpf.DragDrop.dll</HintPath>
+    <Reference Include="GongSolutions.Wpf.DragDrop, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\gong-wpf-dragdrop.1.1.0\lib\net45\GongSolutions.Wpf.DragDrop.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
@@ -148,9 +148,8 @@
     <Reference Include="Microsoft.WindowsAPICodePack.ShellExtensions">
       <HintPath>..\packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.ShellExtensions.dll</HintPath>
     </Reference>
-    <Reference Include="MoreLinq, Version=2.0.20029.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
-      <HintPath>..\packages\morelinq.2.1.0\lib\net35\MoreLinq.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MoreLinq, Version=2.4.20801.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.2.4.1\lib\net40\MoreLinq.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -165,6 +164,9 @@
     <Reference Include="System.Threading.Tasks.Dataflow, Version=4.6.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Dataflow.4.7.0\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -209,13 +211,44 @@
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
+    <Compile Include="Model\Items\Mods\ModGroup.cs" />
+    <Compile Include="Model\Items\Mods\IMod.cs" />
+    <Compile Include="Model\Items\Mods\JsonCraftingBenchOption.cs" />
+    <Compile Include="Model\Items\Mods\JsonMod.cs" />
+    <Compile Include="Model\Items\Mods\JsonNpcMaster.cs" />
+    <Compile Include="Model\Items\Mods\Mod.cs" />
+    <Compile Include="Model\Items\Mods\ModDatabase.cs" />
+    <Compile Include="Model\Items\Enums\ModDomain.cs" />
+    <Compile Include="Model\Items\Mods\Affix.cs" />
+    <Compile Include="Model\Items\Mods\Stat.cs" />
+    <Compile Include="Model\Items\Mods\StatLocalityChecker.cs" />
+    <Compile Include="Utils\RePoEUtils.cs" />
+    <Compile Include="Model\Items\StatTranslation\Format.cs" />
+    <Compile Include="Model\Items\StatTranslation\IndexHandler.cs" />
+    <Compile Include="Model\Items\StatTranslation\JsonStatTranslation.cs" />
+    <Compile Include="Model\Items\StatTranslation\StatTranslator.cs" />
+    <Compile Include="Model\Items\Enums\ItemClass.cs" />
+    <Compile Include="Model\Items\Enums\ModLocation.cs" />
+    <Compile Include="Model\Items\Enums\Tags.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
+    <Compile Include="Model\Items\StatTranslation\Translation.cs" />
+    <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
+    <Compile Include="Utils\Wpf\ScrollViewerBindableOffsetBehavior.cs" />
     <Compile Include="ViewModels\Crafting\AbstractCraftingViewModel.cs" />
+    <Compile Include="ViewModels\Crafting\BaseGroup.cs" />
     <Compile Include="ViewModels\Crafting\CraftingViewModel.cs" />
     <Compile Include="ViewModels\Crafting\ModSelectorViewModel.cs" />
     <Compile Include="ViewModels\Crafting\SliderGroupViewModel.cs" />
     <Compile Include="ViewModels\Crafting\SliderViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\SocketedGemsEditingViewModel.cs" />
     <Compile Include="ViewModels\Crafting\UniqueCraftingViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\BinViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\DraggableItemViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\InventoryItemViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\InventoryViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\StashBookmarkViewModel.cs" />
+    <Compile Include="Views\Equipment\ScrollBarPositionConverter.cs" />
+    <Compile Include="ViewModels\Equipment\StashItemViewModel.cs" />
     <Compile Include="Views\Crafting\BaseCraftingView.xaml.cs">
       <DependentUpon>BaseCraftingView.xaml</DependentUpon>
     </Compile>
@@ -272,9 +305,14 @@
     <Compile Include="Controls\Dialogs\Views\ValidatingInputDialogView.xaml.cs">
       <DependentUpon>ValidatingInputDialogView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DraggedItem.cs" />
-    <Compile Include="Controls\Inventory.xaml.cs">
-      <DependentUpon>Inventory.xaml</DependentUpon>
+    <Compile Include="Views\Equipment\BinView.xaml.cs">
+      <DependentUpon>BinView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Equipment\InventoryItemView.xaml.cs">
+      <DependentUpon>InventoryItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Equipment\InventoryView.xaml.cs">
+      <DependentUpon>InventoryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ItemTooltip.xaml.cs">
       <DependentUpon>ItemTooltip.xaml</DependentUpon>
@@ -283,9 +321,6 @@
       <DependentUpon>ItemVisualizer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MenuItemExtensions.cs" />
-    <Compile Include="Controls\Stash.xaml.cs">
-      <DependentUpon>Stash.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\StashBookmark.cs" />
     <Compile Include="ItemFilter\Model\Block.cs" />
     <Compile Include="ItemFilter\Model\Filter.cs" />
@@ -327,16 +362,10 @@
     <Compile Include="Model\Builds\IBuild.cs" />
     <Compile Include="Model\IMemento.cs" />
     <Compile Include="Model\IPersistentData.cs" />
-    <Compile Include="Model\Items\Affixes\Affix.cs" />
-    <Compile Include="Model\Items\Affixes\ItemMod.cs" />
-    <Compile Include="Model\Items\Affixes\ItemModTier.cs" />
-    <Compile Include="Model\Items\Affixes\Stat.cs" />
-    <Compile Include="Model\Items\Affixes\XmlAffixList.cs" />
+    <Compile Include="Model\Items\Mods\ItemMod.cs" />
     <Compile Include="Model\Items\Enums\FrameType.cs" />
-    <Compile Include="Model\Items\Enums\ItemGroup.cs" />
     <Compile Include="Model\Items\Enums\ItemSlot.cs" />
-    <Compile Include="Model\Items\Enums\ItemType.cs" />
-    <Compile Include="Model\Items\Enums\ModType.cs" />
+    <Compile Include="Model\Items\Enums\ModGenerationType.cs" />
     <Compile Include="Model\Items\EquipmentData.cs" />
     <Compile Include="Model\Items\ItemImage.cs" />
     <Compile Include="Model\Items\XmlItemList.cs" />
@@ -359,7 +388,7 @@
     <Compile Include="TreeGenerator\Views\SteinerTabView.xaml.cs">
       <DependentUpon>SteinerTabView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\Helper.cs" />
+    <Compile Include="Utils\Util.cs" />
     <Compile Include="Utils\PathEx.cs" />
     <Compile Include="Utils\SerializationUtils.cs" />
     <Compile Include="Model\Serialization\XmlBuildFolder.cs" />
@@ -402,7 +431,6 @@
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\NonTerminalsOfDegreeKTest.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\PathsWithManyTerminalsTest.cs" />
     <Compile Include="TreeGenerator\Algorithm\SteinerReductions\SteinerReduction.cs" />
-    <Compile Include="TreeGenerator\Algorithm\Model\TwoDArray.cs" />
     <Compile Include="TreeGenerator\Genetic\BitArray.cs" />
     <Compile Include="TreeGenerator\Genetic\GeneticAlgorithm.cs" />
     <Compile Include="TreeGenerator\Genetic\WeightedSampling.cs" />
@@ -431,7 +459,7 @@
     <Compile Include="Utils\Converter\BooleanToStringConverter.cs" />
     <Compile Include="Utils\Converter\EmptyStringConverter.cs" />
     <Compile Include="Utils\Converter\StringBrushConverter.cs" />
-    <Compile Include="Utils\Converter\SubtractionConverter.cs" />
+    <Compile Include="Utils\Converter\ArithmeticConverter.cs" />
     <Compile Include="Utils\Converter\NullToVisibilityConverter.cs" />
     <Compile Include="Utils\Converter\StringToVisibilityConverter.cs" />
     <Compile Include="Controls\Dialogs\ExtendedDialogManager.cs" />
@@ -447,7 +475,7 @@
     <Compile Include="Utils\Wpf\Setter.cs" />
     <Compile Include="Utils\Wpf\Helper.cs" />
     <Compile Include="ViewModels\AttributeToTextblockConverter.cs" />
-    <Compile Include="ViewModels\BuildsControlViewModel.cs" />
+    <Compile Include="ViewModels\Builds\BuildsControlViewModel.cs" />
     <Compile Include="ViewModels\Builds\AbstractBuildViewModel.cs" />
     <Compile Include="ViewModels\Builds\BuildFolderViewModel.cs" />
     <Compile Include="ViewModels\Builds\BuildValidator.cs" />
@@ -457,12 +485,12 @@
     <Compile Include="TreeGenerator\ViewModels\GeneratorTabViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SettingsViewModel.cs" />
     <Compile Include="TreeGenerator\ViewModels\SteinerTabViewModel.cs" />
-    <Compile Include="ViewModels\DownloadStashViewModel.cs" />
-    <Compile Include="ViewModels\EditBuildViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\DownloadStashViewModel.cs" />
+    <Compile Include="ViewModels\Builds\EditBuildViewModel.cs" />
     <Compile Include="ViewModels\ExtendedDialogCoordinator.cs" />
     <Compile Include="ViewModels\SettingsMenuViewModel.cs" />
     <Compile Include="Utils\Wpf\StyleSelectorByType.cs" />
-    <Compile Include="ViewModels\TabPickerViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\TabPickerViewModel.cs" />
     <Compile Include="TreeGenerator\Views\AdvancedGeneratorTab.xaml.cs">
       <DependentUpon>AdvancedGeneratorTab.xaml</DependentUpon>
     </Compile>
@@ -482,14 +510,13 @@
     <Compile Include="Utils\Extensions\StringExtension.cs" />
     <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
-    <Compile Include="ViewModels\DownloadItemsViewModel.cs" />
+    <Compile Include="ViewModels\Equipment\DownloadItemsViewModel.cs" />
     <Compile Include="Model\Items\Item.cs" />
     <Compile Include="Model\Items\ItemAttributes.cs" />
     <Compile Include="Model\Items\ItemBase.cs" />
     <Compile Include="ViewModels\ListGroup.cs" />
     <Compile Include="SkillTreeFiles\ImageHelper.cs" />
     <Compile Include="ViewModels\Attribute.cs" />
-    <Compile Include="Controls\DragAdorner.cs" />
     <Compile Include="SkillTreeFiles\EXTHelper.cs" />
     <Compile Include="ViewModels\ListGroupItem.cs" />
     <Compile Include="Model\Items\ItemConverter.cs" />
@@ -502,17 +529,30 @@
     <Compile Include="Controls\BanditSelection.xaml.cs">
       <DependentUpon>BanditSelection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\BuildsControl.xaml.cs">
+    <Compile Include="Views\Builds\BuildsControl.xaml.cs">
       <DependentUpon>BuildsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Equipment\SocketedGemsEditingView.xaml.cs">
+      <DependentUpon>SocketedGemsEditingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Crafting\UniqueCraftingView.xaml.cs">
       <DependentUpon>UniqueCraftingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DownloadStashWindow.xaml.cs">
+    <Compile Include="Views\Equipment\DownloadStashWindow.xaml.cs">
       <DependentUpon>DownloadStashWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditBuildWindow.xaml.cs">
+    <Compile Include="Views\Builds\EditBuildWindow.xaml.cs">
       <DependentUpon>EditBuildWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Equipment\DraggableItemView.xaml.cs">
+      <DependentUpon>DraggableItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\Equipment\StashViewModel.cs" />
+    <Compile Include="Views\Equipment\StashItemView.xaml.cs">
+      <DependentUpon>StashItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Equipment\StashView.xaml.cs">
+      <DependentUpon>StashView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
@@ -531,7 +571,7 @@
     <Compile Include="SkillTreeFiles\SkillTree.cs" />
     <Compile Include="SkillTreeFiles\Vector2D.cs" />
     <Compile Include="Controls\ZoomBorder.cs" />
-    <Compile Include="Views\DownloadItemsWindow.xaml.cs">
+    <Compile Include="Views\Equipment\DownloadItemsWindow.xaml.cs">
       <DependentUpon>DownloadItemsWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Contrib\Monotone\Styles\ExtendedWPFToolkit.xaml">
@@ -629,10 +669,18 @@
     <Compile Include="Views\SettingsMenuWindow.xaml.cs">
       <DependentUpon>SettingsMenuWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TabPicker.xaml.cs">
+    <Compile Include="Views\Equipment\TabPicker.xaml.cs">
       <DependentUpon>TabPicker.xaml</DependentUpon>
     </Compile>
-    <Page Include="Controls\Inventory.xaml">
+    <Page Include="Views\Equipment\BinView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Equipment\InventoryItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Equipment\InventoryView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -644,10 +692,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Stash.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\BanditSelection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -656,7 +700,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\BuildsControl.xaml">
+    <Page Include="Views\Builds\BuildsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Equipment\SocketedGemsEditingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -664,11 +712,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DownloadStashWindow.xaml">
+    <Page Include="Views\Equipment\DownloadStashWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\EditBuildWindow.xaml">
+    <Page Include="Views\Builds\EditBuildWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Equipment\DraggableItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Equipment\StashItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Equipment\StashView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -696,7 +756,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\DownloadItemsWindow.xaml">
+    <Page Include="Views\Equipment\DownloadItemsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -704,7 +764,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TabPicker.xaml">
+    <Page Include="Views\Equipment\TabPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -737,6 +797,10 @@
     <None Include="Contrib\RangeTree\README.md" />
     <None Include="Contrib\WpfRangeControls\LICENSE" />
     <None Include="Contrib\WpfRangeControls\README.md" />
+    <Resource Include="Data\RePoE\crafting_bench_options.min.json" />
+    <Resource Include="Data\RePoE\mods.min.json" />
+    <Resource Include="Data\RePoE\npc_master.min.json" />
+    <Resource Include="Data\RePoE\stat_translations.min.json" />
     <None Include="dist-clean.bat" />
     <None Include="dist-release.bat" />
     <None Include="Locale\de-DE\Help.md" />
@@ -839,7 +903,6 @@
   <ItemGroup>
     <Content Include="Antlr3.Runtime.dll" />
     <Resource Include="TreeGenerator\ideas_todos.txt" />
-    <Resource Include="Data\Equipment\Affixes.xml" />
     <Resource Include="Data\Equipment\Items.xml" />
     <None Include="Data\ItemDB\GemList.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -847,7 +910,6 @@
     <None Include="Data\ItemDB\GemProperties.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Resource Include="Data\Equipment\SignatureAffixes.xml" />
     <Resource Include="Contrib\Monotone\LICENSE.txt" />
     <Resource Include="Contrib\Monotone\README.txt" />
     <Resource Include="Data\Equipment\Uniques.xml" />
@@ -870,44 +932,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ExpressionEvaluator.dll" />
-    <Resource Include="Images\EquipmentUI\Inventory.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Amulet.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Belt.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Boots.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Gloves.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Ring.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderCurrencyLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderCurrencyMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderCurrencyRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderGemLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderGemMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderGemRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderMagicLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderMagicMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderMagicRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderRareLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderRareMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderRareRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderUniqueLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderUniqueMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderUniqueRight.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderWhiteLeft.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderWhiteMiddle.png" />
-    <Resource Include="Images\EquipmentUI\ItemHeaderWhiteRight.png" />
-    <Resource Include="Images\EquipmentUI\SeparatorCurrency.png" />
-    <Resource Include="Images\EquipmentUI\SeparatorGem.png" />
-    <Resource Include="Images\EquipmentUI\SeparatorMagic.png" />
-    <Resource Include="Images\EquipmentUI\SeparatorRare.png" />
-    <Resource Include="Images\EquipmentUI\SeparatorUnique.png" />
-    <Resource Include="Images\EquipmentUI\SeparatorWhite.png" />
-    <Resource Include="Images\EquipmentUI\SocketSkillBlue.png" />
-    <Resource Include="Images\EquipmentUI\SocketSkillGreen.png" />
-    <Resource Include="Images\EquipmentUI\SocketSkillRed.png" />
-    <Resource Include="Images\EquipmentUI\SocketSupportBlue.png" />
-    <Resource Include="Images\EquipmentUI\SocketSupportGreen.png" />
-    <Resource Include="Images\EquipmentUI\SocketSupportRed.png" />
-    <Resource Include="Images\EquipmentUI\Socket_Link_Horizontal.png" />
-    <Resource Include="Images\EquipmentUI\Socket_Link_Vertical.png" />
     <Resource Include="Images\Witch_Highlighted.jpg" />
     <Resource Include="Images\Templar_Highlighted.jpg" />
     <Resource Include="Images\Shadow_Highlighted.jpg" />
@@ -917,12 +946,9 @@
     <Resource Include="Images\Duelist_Highlighted.jpg" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\BodyArmour.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Helmet.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandedWeapon.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Shield.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandedWeapon.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Jewel.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Quiver.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\Gem.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Unknown.png" />
     <Resource Include="Images\Slayer_Highlighted.jpg" />
     <Resource Include="Images\Champion_Highlighted.jpg" />
@@ -960,6 +986,56 @@
     <Resource Include="Images\Raider.jpg" />
     <Resource Include="Images\Raider_Highlighted.jpg" />
     <Resource Include="Libs\README.txt" />
+    <Resource Include="Images\EquipmentUI\Bin.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderCurrencyLeft.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderCurrencyMiddle.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderCurrencyRight.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderFoilLeft.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderFoilMiddle.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderFoilRight.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderGemLeft.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderGemMiddle.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderGemRight.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderMagicLeft.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderMagicMiddle.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderMagicRight.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderRareLeft.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderRareMiddle.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderRareRight.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderUniqueLeft.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderUniqueMiddle.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderUniqueRight.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderWhiteLeft.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderWhiteMiddle.png" />
+    <Resource Include="Images\EquipmentUI\ItemsHeaderWhiteRight.png" />
+    <Resource Include="Images\EquipmentUI\ItemsSeparatorCurrency.png" />
+    <Resource Include="Images\EquipmentUI\ItemsSeparatorFoil.png" />
+    <Resource Include="Images\EquipmentUI\ItemsSeparatorGem.png" />
+    <Resource Include="Images\EquipmentUI\ItemsSeparatorMagic.png" />
+    <Resource Include="Images\EquipmentUI\ItemsSeparatorRare.png" />
+    <Resource Include="Images\EquipmentUI\ItemsSeparatorUnique.png" />
+    <Resource Include="Images\EquipmentUI\ItemsSeparatorWhite.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\ActiveskillGem.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Bow.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Claw.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\CriticalUtilityFlask.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Dagger.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\FishingRod.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\HybridFlask.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\LifeFlask.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\ManaFlask.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandAxe.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandMace.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\OneHandSword.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Sceptre.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Staff.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\SupportSkillGem.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\ThrustingOneHandSword.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandAxe.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandMace.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandSword.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\UtilityFlask.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\Wand.png" />
     <Content Include="Libs\Xceed.Wpf.Toolkit.dll" />
     <Content Include="release.iss" />
     <None Include="Tools\isetup\ISCC.exe" />
@@ -1006,7 +1082,7 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using MB.Algodat;
 using MoreLinq;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Model.Items.Mods;
+using POESKillTree.Model.Items.StatTranslation;
 using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Crafting
@@ -22,54 +23,24 @@ namespace POESKillTree.ViewModels.Crafting
     public abstract class AbstractCraftingViewModel<TBase> : CloseableViewModel<bool>
         where TBase : class, IItemBase
     {
-        private const string QualityModName = "Quality: +#%";
-
-        private readonly IReadOnlyList<TBase> _bases;
-        private IEnumerable<TBase> EligibleBases => _bases
-            .Where(b => ShowDropDisabledItems || !b.DropDisabled);
-
-        private ILookup<ItemType, TBase> BasesPerType => EligibleBases.ToLookup(b => b.ItemType);
-        private IEnumerable<ItemType> EligibleTypes
-            => ItemType.Any.Concat(BasesPerType.Select(t => t.Key)).OrderBy(t => t);
-
-        private ILookup<ItemGroup, TBase> BasesPerGroup => EligibleBases.ToLookup(b => b.ItemGroup);
-        private IEnumerable<ItemGroup> EligibleGroups
-            => ItemGroup.Any.Concat(BasesPerGroup.Select(g => g.Key)).OrderBy(g => g);
-
         private bool _showDropDisabledItems;
         public bool ShowDropDisabledItems
         {
             get { return _showDropDisabledItems; }
-            set { SetProperty(ref _showDropDisabledItems, value, OnShowDropDisabledItemsChanged);}
+            set { SetProperty(ref _showDropDisabledItems, value, OnShowDropDisabledItemsChanged); }
         }
 
-        private IReadOnlyList<ItemGroup> _groupList;
-        public IReadOnlyList<ItemGroup> GroupList
-        {
-            get { return _groupList; }
-            private set { SetProperty(ref _groupList, value); }
-        }
+        // Bases are filtered in three levels:
+        // 1. BaseGroup
+        // 2. ItemClass
+        // 3. specific Tags, i.e. Str/Dex/Int for armour and jewels
+        // All levels also support not being filtered (Any/Default)
 
-        private ItemGroup _selectedGroup;
-        public ItemGroup SelectedGroup
-        {
-            get { return _selectedGroup; }
-            set { SetProperty(ref _selectedGroup, value, OnSelectedGroupChanged); }
-        }
+        // Bases
 
-        private IReadOnlyList<ItemType> _typeList;
-        public IReadOnlyList<ItemType> TypeList
-        {
-            get { return _typeList; }
-            private set { SetProperty(ref _typeList, value); }
-        }
-
-        private ItemType _selectedType;
-        public ItemType SelectedType
-        {
-            get { return _selectedType; }
-            set { SetProperty(ref _selectedType, value, UpdateBaseList); }
-        }
+        private readonly IReadOnlyList<TBase> _bases;
+        private IEnumerable<TBase> EligibleBases
+            => _bases.Where(b => ShowDropDisabledItems || !b.DropDisabled);
 
         private IReadOnlyList<TBase> _baseList;
         public IReadOnlyList<TBase> BaseList
@@ -85,15 +56,82 @@ namespace POESKillTree.ViewModels.Crafting
             set { SetProperty(ref _selectedBase, value, UpdateBase); }
         }
 
+        // First level
+
+        public IReadOnlyList<BaseGroup> FirstLevelList { get; } = Util.GetEnumValues<BaseGroup>();
+
+        private BaseGroup _selectedFirstLevel;
+        public BaseGroup SelectedFirstLevel
+        {
+            get { return _selectedFirstLevel; }
+            set { SetProperty(ref _selectedFirstLevel, value, UpdateSecondLevel); }
+        }
+
+        // Second level
+
+        private IReadOnlyList<ItemClass> _secondLevelList;
+        public IReadOnlyList<ItemClass> SecondLevelList
+        {
+            get { return _secondLevelList; }
+            private set { SetProperty(ref _secondLevelList, value); }
+        }
+
+        private ItemClass _selectedSecondLevel;
+        public ItemClass SelectedSecondLevel
+        {
+            get { return _selectedSecondLevel; }
+            set { SetProperty(ref _selectedSecondLevel, value, UpdateThirdLevel); }
+        }
+
+        // Third level
+
+        private readonly IEnumerable<Tags> _thirdLevelOptions = new[]
+        {
+            Tags.StrArmour, Tags.DexArmour, Tags.IntArmour, 
+            Tags.StrDexArmour, Tags.StrIntArmour, Tags.DexIntArmour, 
+            Tags.StrDexIntArmour,
+            Tags.StrJewel, Tags.DexJewel, Tags.IntJewel
+        };
+
+        private IReadOnlyList<Tags> _thirdLevelList;
+        public IReadOnlyList<Tags> ThirdLevelList
+        {
+            get { return _thirdLevelList; }
+            private set { SetProperty(ref _thirdLevelList, value); }
+        }
+
+        private Tags _selectedThirdLevel;
+        public Tags SelectedThirdLevel
+        {
+            get { return _selectedThirdLevel; }
+            set { SetProperty(ref _selectedThirdLevel, value, UpdateBaseList); }
+        }
+
+
         private Item _item;
+
         public Item Item
         {
             get { return _item; }
             private set { SetProperty(ref _item, value); }
         }
 
-        public ModSelectorViewModel MsQuality { get; } = new ModSelectorViewModel(false);
-        public ModSelectorViewModel MsImplicits { get; } = new ModSelectorViewModel(false);
+        private IReadOnlyList<ModSelectorViewModel> _msImplicits = new ModSelectorViewModel[0];
+        public IReadOnlyList<ModSelectorViewModel> MsImplicits
+        {
+            get { return _msImplicits; }
+            private set { SetProperty(ref _msImplicits, value); }
+        }
+
+        private readonly SliderViewModel _qualitySlider;
+        public SliderGroupViewModel QualitySliderGroup { get; }
+
+        private bool _showQualitySlider;
+        public bool ShowQualitySlider
+        {
+            get { return _showQualitySlider; }
+            private set { SetProperty(ref _showQualitySlider, value); }
+        }
 
         protected SimpleMonitor Monitor { get; } = new SimpleMonitor();
 
@@ -103,61 +141,110 @@ namespace POESKillTree.ViewModels.Crafting
         {
             EquipmentData = equipmentData;
             _bases = bases.ToList();
+            // setting the underlying field directly, setting other properties is initiated in Init()
+            _selectedFirstLevel = FirstLevelList[0];
             Monitor.Freed += (sender, args) => RecalculateItem();
 
-            MsQuality.PropertyChanged += MsOnPropertyChanged;
-            MsImplicits.PropertyChanged += MsOnPropertyChanged;
+            var qualityStat = new FormatTranslation("Quality: +{0}%");
+            _qualitySlider = new SliderViewModel(0, Enumerable.Range(0, 21));
+            QualitySliderGroup = new SliderGroupViewModel(new[] { _qualitySlider }, qualityStat);
+            _qualitySlider.ValueChanged += QualitySliderOnValueChanged;
         }
 
         protected void Init()
         {
-            GroupList = EligibleGroups.ToList();
-            SelectedGroup = GroupList[0];
+            UpdateSecondLevel();
         }
 
         private void OnShowDropDisabledItemsChanged()
         {
             using (Monitor.Enter())
             {
-                GroupList = EligibleGroups.ToList();
-                SelectedGroup = GroupList[0];
-
                 // this is visibly slow, but the button shouldn't be spammed anyway
-                OnSelectedGroupChanged();
-                UpdateBaseList();
-                UpdateBase();
+                var previousSelectedFirstLevel = SelectedFirstLevel;
+                SelectedFirstLevel = FirstLevelList[0];
+                if (previousSelectedFirstLevel == SelectedFirstLevel)
+                {
+                    UpdateSecondLevel();
+                }
             }
         }
 
-        private void OnSelectedGroupChanged()
+        private void UpdateSecondLevel()
         {
             using (Monitor.Enter())
             {
-                var previousSelectedType = SelectedType;
+                var previousSecondLevel = SelectedSecondLevel;
 
-                if (SelectedGroup == ItemGroup.Any)
+                if (SelectedFirstLevel == BaseGroup.Any)
                 {
-                    TypeList = new[] { ItemType.Any };
+                    SecondLevelList = ItemClass.Any
+                        .Concat(EligibleBases.Select(b => b.ItemClass))
+                        .Distinct()
+                        .OrderBy(c => c).ToList();
                 }
                 else
                 {
-                    var list = EligibleTypes
-                        .Where(t => t == ItemType.Any || t.Group() == SelectedGroup)
-                        .ToArray();
-                    if (list.Length == 2)
+                    var list = EligibleBases
+                        .Where(b => BaseGroupEx.FromTags(b.Tags) == SelectedFirstLevel)
+                        .Select(b => b.ItemClass)
+                        .Distinct()
+                        .OrderBy(c => c).ToList();
+                    switch (list.Count)
                     {
-                        // Only contains "any" and the only type of the selected group
-                        // -> "any" makes no sense, take the only type
-                        list = new[] { list[1] };
+                        case 1:
+                            // Only contains the only class of the selected group
+                            // -> "any" makes no sense
+                            SecondLevelList = list;
+                            break;
+                        default:
+                            SecondLevelList = ItemClass.Any.Concat(list).ToList();
+                            break;
                     }
-                    TypeList = list;
                 }
-                SelectedType = TypeList[0];
+                SelectedSecondLevel = SecondLevelList[0];
 
-                if (SelectedType == previousSelectedType)
+                if (previousSecondLevel == SelectedSecondLevel)
                 {
-                    UpdateBaseList();
+                    UpdateThirdLevel();
                 }
+            }
+        }
+
+        private void UpdateThirdLevel()
+        {
+            var previousThirdLevel = SelectedThirdLevel;
+
+            if (SelectedSecondLevel == ItemClass.Any)
+            {
+                ThirdLevelList = new[] { Tags.Default };
+            }
+            else
+            {
+                var matchingBases = EligibleBases
+                    .Where(b => b.ItemClass == SelectedSecondLevel)
+                    .ToList();
+                var list = _thirdLevelOptions
+                    .Where(t => matchingBases.Any(b => b.Tags.HasFlag(t)))
+                    .ToList();
+                switch (list.Count)
+                {
+                    case 0:
+                        ThirdLevelList = new[] { Tags.Default };
+                        break;
+                    case 1:
+                        ThirdLevelList = list;
+                        break;
+                    default:
+                        ThirdLevelList = Tags.Default.Concat(list).ToList();
+                        break;
+                }
+            }
+            SelectedThirdLevel = ThirdLevelList[0];
+
+            if (previousThirdLevel == SelectedThirdLevel)
+            {
+                UpdateBaseList();
             }
         }
 
@@ -167,15 +254,20 @@ namespace POESKillTree.ViewModels.Crafting
             {
                 var previousSelectedBase = SelectedBase;
 
-                if (SelectedType == ItemType.Any)
+                var bases = EligibleBases;
+                if (SelectedFirstLevel != BaseGroup.Any)
                 {
-                    BaseList = SelectedGroup == ItemGroup.Any 
-                        ? EligibleBases.ToList() : BasesPerGroup[SelectedGroup].ToList();
+                    bases = bases.Where(b => SelectedFirstLevel.Matches(b.Tags));
                 }
-                else
+                if (SelectedSecondLevel != ItemClass.Any)
                 {
-                    BaseList = BasesPerType[SelectedType].ToList();
+                    bases = bases.Where(b => b.ItemClass == SelectedSecondLevel);
                 }
+                if (SelectedThirdLevel != Tags.Default)
+                {
+                    bases = bases.Where(b => b.Tags.HasFlag(SelectedThirdLevel));
+                }
+                BaseList = bases.ToList();
                 SelectedBase = BaseList[0];
 
                 if (SelectedBase == previousSelectedBase)
@@ -197,29 +289,23 @@ namespace POESKillTree.ViewModels.Crafting
                 var ibase = SelectedBase;
                 Item = new Item(ibase);
 
-                if (ibase.ImplicitMods.Any())
+                MsImplicits.ForEach(ms => ms.PropertyChanged -= MsOnPropertyChanged);
+                var modSelectors = new List<ModSelectorViewModel>();
+                foreach (var implicitMod in ibase.ImplicitMods)
                 {
-                    MsImplicits.Affixes = new[]
+                    var modSelector = new ModSelectorViewModel(EquipmentData.StatTranslator, false)
                     {
-                        new Affix(new ItemModTier(ibase.ImplicitMods))
+                        Affixes = new[]
+                        {
+                            new Affix(implicitMod)
+                        }
                     };
+                    modSelector.PropertyChanged += MsOnPropertyChanged;
+                    modSelectors.Add(modSelector);
                 }
-                else
-                {
-                    MsImplicits.Affixes = null;
-                }
-                if (ibase.CanHaveQuality)
-                {
-                    var qualityStat = new Stat(QualityModName, new Range<float>(0, 20), Item.ItemType, null);
-                    MsQuality.Affixes = new[]
-                    {
-                        new Affix(new ItemModTier(new[] { qualityStat }))
-                    };
-                }
-                else
-                {
-                    MsQuality.Affixes = null;
-                }
+                MsImplicits = modSelectors;
+
+                ShowQualitySlider = ibase.CanHaveQuality;
 
                 UpdateBaseSpecific();
             }
@@ -239,30 +325,76 @@ namespace POESKillTree.ViewModels.Crafting
             Item.TypeLine = Item.BaseType.Name;
             Item.FlavourText = "Created with PoESkillTree";
 
-            var allmods = RecalculateItemSpecific().ToList();
+            int requiredLevel;
+            var statLookup = RecalculateItemSpecific(out requiredLevel).ToList();
 
-            Item.ExplicitMods = allmods.Where(m => m.ParentTier == null || !m.ParentTier.IsMasterCrafted).ToList();
-            Item.CraftedMods = allmods.Where(m => m.ParentTier != null && m.ParentTier.IsMasterCrafted).ToList();
-            Item.ImplicitMods = MsImplicits.GetExactMods().ToList();
+            Item.ExplicitMods = CreateItemMods(ModLocation.Explicit, 
+                statLookup.SingleOrDefault(g => g.Key == ModLocation.Explicit)).ToList();
+            Item.CraftedMods = CreateItemMods(ModLocation.Crafted, 
+                statLookup.SingleOrDefault(g => g.Key == ModLocation.Crafted)).ToList();
+            Item.ImplicitMods = CreateItemMods(ModLocation.Implicit, 
+                MsImplicits.SelectMany(ms => ms.GetStatValues())).ToList();
 
             var quality = SelectedBase.CanHaveQuality 
-                ? (int) MsQuality.SelectedValues.First().First() 
+                ? _qualitySlider.Value
                 : 0;
             Item.Properties = new ObservableCollection<ItemMod>(Item.BaseType.GetRawProperties(quality));
             ApplyLocals();
 
             if (Item.IsWeapon)
             {
-                ApplyElementalMods(allmods);
+                ApplyElementalMods(Item.Mods);
             }
-            Item.UpdateRequirements();
+
+            if (MsImplicits.Any())
+            {
+                var implicits = MsImplicits.Select(ms => ms.Query());
+                requiredLevel = Math.Max(requiredLevel, implicits.Max(m => m.RequiredLevel));
+            }
+            Item.UpdateRequirements((80 * requiredLevel) / 100);
         }
 
         /// <summary>
         /// (Re)calculate parts of the item in crafting specific to <see cref="TBase"/>.
         /// </summary>
-        /// <returns>All explicit mods (prefixes, suffixes, unique explicits) of the item.</returns>
-        protected abstract IEnumerable<ItemMod> RecalculateItemSpecific();
+        /// <param name="requiredLevel">the highest <see cref="IMod.RequiredLevel"/> of any selected mod</param>
+        /// <returns>All explicit and crafted stats of the item and their values (the lookup has entries for explicit
+        /// and crafted and the entries are the stat ids and their values.</returns>
+        protected abstract IEnumerable<IGrouping<ModLocation, StatIdValuePair>> RecalculateItemSpecific(out int requiredLevel);
+
+        private IEnumerable<ItemMod> CreateItemMods(ModLocation location, IEnumerable<StatIdValuePair> statValuePairs)
+        {
+            if (statValuePairs == null)
+            {
+                yield break;
+            }
+
+            // this list is used to translate the stats in order of appearance,
+            // using merged.Keys wouldn't guarantee that
+            var statIds = new List<string>();
+            var merged = new Dictionary<string, int>();
+            foreach (var pair in statValuePairs)
+            {
+                var stat = pair.StatId;
+                statIds.Add(stat);
+                var value = pair.Value;
+                if (merged.ContainsKey(stat))
+                {
+                    value += merged[stat];
+                }
+                merged[stat] = value;
+            }
+
+            var lines = EquipmentData.StatTranslator.GetTranslations(statIds)
+                .Select(t => t.Translate(merged))
+                .Where(l => l != null);
+            foreach (var line in lines)
+            {
+                var attr = ItemMod.Numberfilter.Replace(line, "#");
+                var isLocal = StatLocalityChecker.DetermineLocal(SelectedBase.ItemClass, location, attr);
+                yield return new ItemMod(line, isLocal);
+            }
+        }
 
         private void ApplyElementalMods(IEnumerable<ItemMod> allMods)
         {
@@ -271,7 +403,7 @@ namespace POESKillTree.ViewModels.Crafting
             foreach (var mod in allMods)
             {
                 string attr = mod.Attribute;
-                if (attr.StartsWith("Adds"))
+                if (attr.StartsWith("Adds") && !attr.Contains("in Main Hand") && !attr.Contains("in Off Hand"))
                 {
                     if (attr.Contains("Fire") || attr.Contains("Cold") || attr.Contains("Lightning"))
                     {
@@ -293,7 +425,7 @@ namespace POESKillTree.ViewModels.Crafting
                 var fmod = elementalMods.FirstOrDefault(m => m.Attribute.Contains("Fire"));
                 if (fmod != null)
                 {
-                    values.AddRange(fmod.Value);
+                    values.AddRange(fmod.Values);
                     mods.Add("#-#");
                     cols.Add(ItemMod.ValueColoring.Fire);
                     cols.Add(ItemMod.ValueColoring.Fire);
@@ -302,7 +434,7 @@ namespace POESKillTree.ViewModels.Crafting
                 var cmod = elementalMods.FirstOrDefault(m => m.Attribute.Contains("Cold"));
                 if (cmod != null)
                 {
-                    values.AddRange(cmod.Value);
+                    values.AddRange(cmod.Values);
                     mods.Add("#-#");
                     cols.Add(ItemMod.ValueColoring.Cold);
                     cols.Add(ItemMod.ValueColoring.Cold);
@@ -311,26 +443,19 @@ namespace POESKillTree.ViewModels.Crafting
                 var lmod = elementalMods.FirstOrDefault(m => m.Attribute.Contains("Lightning"));
                 if (lmod != null)
                 {
-                    values.AddRange(lmod.Value);
+                    values.AddRange(lmod.Values);
                     mods.Add("#-#");
                     cols.Add(ItemMod.ValueColoring.Lightning);
                     cols.Add(ItemMod.ValueColoring.Lightning);
                 }
 
-                Item.Properties.Add(new ItemMod(Item.ItemType, "Elemental Damage: " + string.Join(", ", mods))
-                {
-                    Value = values,
-                    ValueColor = cols,
-                });
+                Item.Properties.Add(new ItemMod("Elemental Damage: " + string.Join(", ", mods), true, values, cols));
             }
 
             if (chaosMods.Any())
             {
-                Item.Properties.Add(new ItemMod(Item.ItemType, "Chaos Damage: #-#")
-                {
-                    Value = new List<float>(chaosMods[0].Value),
-                    ValueColor = new List<ItemMod.ValueColoring> { ItemMod.ValueColoring.Chaos, ItemMod.ValueColoring.Chaos },
-                });
+                Item.Properties.Add(new ItemMod("Chaos Damage: #-#", true, chaosMods[0].Values,
+                    new[] { ItemMod.ValueColoring.Chaos, ItemMod.ValueColoring.Chaos }));
             }
         }
 
@@ -346,17 +471,17 @@ namespace POESKillTree.ViewModels.Crafting
 
                 if (valuem.Count > 0)
                 {
-                    List<float> val = valuem
-                        .Select(m => m.Value)
+                    IReadOnlyList<float> val = valuem
+                        .Select(m => m.Values)
                         .Aggregate((l1, l2) => l1.Zip(l2, (f1, f2) => f1 + f2)
                         .ToList());
-                    List<float> nval = prop.Value
+                    IReadOnlyList<float> nval = prop.Values
                         .Zip(val, (f1, f2) => f1 + f2)
                         .ToList();
-                    prop.ValueColor = prop.ValueColor
-                        .Select((c, i) => val[i] == nval[i] ? prop.ValueColor[i] : ItemMod.ValueColoring.LocallyAffected)
+                    prop.ValueColors = prop.ValueColors
+                        .Select((c, i) => val[i] == nval[i] ? prop.ValueColors[i] : ItemMod.ValueColoring.LocallyAffected)
                         .ToList();
-                    prop.Value = nval;
+                    prop.Values = nval;
                 }
 
                 Func<float, float> roundf = val => (float)Math.Round(val);
@@ -372,9 +497,9 @@ namespace POESKillTree.ViewModels.Crafting
 
                 if (percm.Count > 0)
                 {
-                    var perc = 1f + percm.Select(m => m.Value[0]).Sum() / 100f;
-                    prop.ValueColor = prop.ValueColor.Select(c => ItemMod.ValueColoring.LocallyAffected).ToList();
-                    prop.Value = prop.Value.Select(v => roundf(v * perc)).ToList();
+                    var perc = 1f + percm.Select(m => m.Values[0]).Sum() / 100f;
+                    prop.ValueColors = prop.ValueColors.Select(c => ItemMod.ValueColoring.LocallyAffected).ToList();
+                    prop.Values = prop.Values.Select(v => roundf(v * perc)).ToList();
                 }
             }
         }
@@ -384,6 +509,35 @@ namespace POESKillTree.ViewModels.Crafting
             if (e.PropertyName == nameof(ModSelectorViewModel.SelectedValues))
             {
                 RecalculateItem();
+            }
+        }
+
+        private void QualitySliderOnValueChanged(object sender, SliderValueChangedEventArgs e)
+        {
+            RecalculateItem();
+        }
+
+
+        /// <summary>
+        /// ITranslation implementation that translates a single value with <see cref="string.Format(string,object)"/>.
+        /// Used for the quality slider as the quality has no mod or stat behind it that could be translated.
+        /// </summary>
+        private class FormatTranslation : ITranslation
+        {
+            private readonly string _format;
+
+            public FormatTranslation(string format)
+            {
+                _format = format;
+            }
+
+            public string Translate(IReadOnlyList<int> values)
+            {
+                if (values.Count != 1)
+                {
+                    throw new ArgumentException("Number of values does not match number of ranges");
+                }
+                return string.Format(CultureInfo.InvariantCulture, _format, values[0]);
             }
         }
 

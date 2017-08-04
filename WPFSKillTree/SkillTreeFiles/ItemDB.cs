@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 using log4net;
 using POESKillTree.Model;
 using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Affixes;
+using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils;
 using AttackSkill = POESKillTree.SkillTreeFiles.Compute.AttackSkill;
 using DamageForm = POESKillTree.SkillTreeFiles.Compute.DamageForm;
@@ -1222,9 +1222,9 @@ namespace POESKillTree.SkillTreeFiles
 
             // Collect gem attributes and modifiers at gem level.
             foreach (var prop in gem.Properties)
-                attrs.Add(prop.Attribute, new List<float>(prop.Value));
+                attrs.Add(prop.Attribute, new List<float>(prop.Values));
             foreach (ItemMod mod in gem.Mods)
-                attrs.Add(mod.Attribute, new List<float>(mod.Value));
+                attrs.Add(mod.Attribute, new List<float>(mod.Values));
 
             // Check if gem is in database.
             if (GemIndex.ContainsKey(gem.Name))
@@ -1236,7 +1236,7 @@ namespace POESKillTree.SkillTreeFiles
                 foreach (ItemMod mod in item.Mods)
                 {
                     if (mod.Attribute == "+# to Level of Socketed Gems")
-                        plusLevel += (int)mod.Value[0];
+                        plusLevel += (int)mod.Values[0];
                     else
                     {
                         Match m = ReGemLevelKeyword.Match(mod.Attribute);
@@ -1244,7 +1244,7 @@ namespace POESKillTree.SkillTreeFiles
                         {
                             if (gem.Keywords.Contains(m.Groups[1].Value)
                                 || m.Groups[1].Value == "Elemental" && (gem.Keywords.Contains("Cold") || gem.Keywords.Contains("Fire") || gem.Keywords.Contains("Lightning")))
-                                plusLevel += (int)mod.Value[0];
+                                plusLevel += (int)mod.Values[0];
                         }
                     }
                 }
@@ -1504,11 +1504,7 @@ namespace POESKillTree.SkillTreeFiles
         // Returns quality of gem.
         public static int QualityOf(Item gem)
         {
-            float ret;
-            if (gem.Properties.TryGetValue("Quality: #", 0, out ret))
-                return (int)ret;
-            else
-                return (int)gem.Properties.First("Quality: # (Max)", 0, 0);
+            return (int) gem.Properties.First("Quality: +#%", 0, 0);
         }
 
         // Writes database to file.

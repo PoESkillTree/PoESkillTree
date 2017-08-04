@@ -49,10 +49,10 @@ namespace POESKillTree.Model.Items
         private readonly Options _options;
 
         /// <summary>
-        /// Stores images for ItemGroups.
+        /// Stores images for ItemClasses.
         /// </summary>
-        private readonly ConcurrentDictionary<ItemGroup, ImageSource> _defaultImageCache = 
-            new ConcurrentDictionary<ItemGroup, ImageSource>();
+        private readonly ConcurrentDictionary<ItemClass, ImageSource> _defaultImageCache = 
+            new ConcurrentDictionary<ItemClass, ImageSource>();
 
         /// <summary>
         /// Stores tasks for images for base items. The key is the file name as inserted into
@@ -69,7 +69,7 @@ namespace POESKillTree.Model.Items
             new ConcurrentDictionary<string, Task<ImageSource>>();
 
         /// <summary>
-        /// Fallback image for ItemGroups.
+        /// Fallback image for ItemClasses.
         /// </summary>
         private readonly ImageSource _errorImage = Imaging.CreateBitmapSourceFromHIcon(
             SystemIcons.Error.Handle,
@@ -85,22 +85,22 @@ namespace POESKillTree.Model.Items
         }
 
         /// <summary>
-        /// Returns the image for the ItemGroup. Each ItemGroup image is only loaded once.
+        /// Returns the image for the ItemClass. Each ItemClass image is only loaded once.
         /// </summary>
-        public ImageSource LoadDefaultImage(ItemGroup group)
+        public ImageSource LoadDefaultImage(ItemClass itemClass)
         {
-            return _defaultImageCache.GetOrAdd(group, g =>
+            return _defaultImageCache.GetOrAdd(itemClass, c =>
             {
                 if (Application.Current == null)
                     return _errorImage;
                 try
                 {
-                    var path = string.Format(ResourcePathFormat, g);
+                    var path = string.Format(ResourcePathFormat, c);
                     return ImageSourceFromPath(path);
                 }
                 catch (Exception e)
                 {
-                    Log.Warn("Could not load default file for ItemGroup " + g, e);
+                    Log.Warn("Could not load default file for ItemClass " + c, e);
                     return _errorImage;
                 }
             });
@@ -153,11 +153,18 @@ namespace POESKillTree.Model.Items
             // Remove the query part, remove the host part, remove image/Art/2DItems/, trim slashes
             var relevantPart = Regex.Replace(imageUrl, @"(\?.*)|(.*(\.net|\.com)/)|(image/Art/2DItems/)", "").Trim('/');
             var match = Regex.Match(relevantPart, @"gen/image/.*?/([a-zA-Z0-9]*)/Item\.png");
+            var isRelic = imageUrl.Contains("&relic=1");
             if (match.Success)
             {
                 // These names are too long.
                 // They contain groups of 20 chars (as folders) and end with a unique identifier.
                 relevantPart = $"gen/{match.Groups[1]}.png";
+            }
+            else if (isRelic)
+            {
+                // Non-generated images for relics and normal uniques have the same url, the relic flag is in the
+                // query part. As the query is removed, the file name needs to be adjusted for relics.
+                relevantPart = relevantPart.Replace(".png", "Relic.png");
             }
             var fileName = string.Format(DownloadedPathFormat, relevantPart);
 

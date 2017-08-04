@@ -6,8 +6,8 @@ using POESKillTree.Model;
 using POESKillTree.ViewModels;
 using System.Linq;
 using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Affixes;
 using POESKillTree.Model.Items.Enums;
+using POESKillTree.Model.Items.Mods;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -380,7 +380,7 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     Match m = ReGemSupportFromItem.Match(mod.Attribute);
                     string gemName = m.Groups[1].Value;
-                    int level = (int)mod.Value[0];
+                    int level = (int)mod.Values[0];
 
                     if (!ItemDB.CanSupport(this, gemName)) continue;
                     Local.Add(ItemDB.AttributesOf(gemName, level, 0));
@@ -1044,12 +1044,12 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     Match m = ReAddMod.Match(itemMod.Attribute);
                     if (m.Success)
-                        return new Added(source, m.Groups[1].Value, itemMod.Value[0], itemMod.Value[1]);
+                        return new Added(source, m.Groups[1].Value, itemMod.Values[0], itemMod.Values[1]);
                     else
                     {
                         m = ReAddInHandMod.Match(itemMod.Attribute);
                         if (m.Success)
-                            return new Added(source, m.Groups[1].Value, itemMod.Value[0], itemMod.Value[1]) { Hand = m.Groups[2].Value == "Main" ? WeaponHand.Main : WeaponHand.Off };
+                            return new Added(source, m.Groups[1].Value, itemMod.Values[0], itemMod.Values[1]) { Hand = m.Groups[2].Value == "Main" ? WeaponHand.Main : WeaponHand.Off };
                     }
 
                     return null;
@@ -1476,13 +1476,13 @@ namespace POESKillTree.SkillTreeFiles
                 { "Bow",                WeaponType.Bow },
                 { "Claw",               WeaponType.Claw },
                 { "Dagger",             WeaponType.Dagger },
-                { "One Handed Axe",     WeaponType.OneHandedAxe },
-                { "One Handed Mace",    WeaponType.OneHandedMace },
-                { "One Handed Sword",   WeaponType.OneHandedSword },
+                { "One Handed Axe",     WeaponType.OneHandAxe },
+                { "One Handed Mace",    WeaponType.OneHandMace },
+                { "One Handed Sword",   WeaponType.OneHandSword },
                 { "Staff",              WeaponType.Staff },
-                { "Two Handed Axe",     WeaponType.TwoHandedAxe },
-                { "Two Handed Mace",    WeaponType.TwoHandedMace },
-                { "Two Handed Sword",   WeaponType.TwoHandedSword },
+                { "Two Handed Axe",     WeaponType.TwoHandAxe },
+                { "Two Handed Mace",    WeaponType.TwoHandMace },
+                { "Two Handed Sword",   WeaponType.TwoHandSword },
                 { "Wand",               WeaponType.Wand },
                 { "Unarmed",            WeaponType.Unarmed }
             };
@@ -1508,7 +1508,7 @@ namespace POESKillTree.SkillTreeFiles
                     Item = item;
 
                     // Get weapon type (damage nature).
-                    if (item.ItemGroup != ItemGroup.OneHandedWeapon && item.ItemGroup != ItemGroup.TwoHandedWeapon)
+                    if (!item.Tags.HasFlag(Tags.Weapon))
                         // Quiver or shield.
                     {
                         if (item.BaseType.Name.Contains("Quiver"))
@@ -1522,12 +1522,12 @@ namespace POESKillTree.SkillTreeFiles
                     else // Regular weapon.
                     {
                         WeaponType weaponType;
-                        if (!Enum.TryParse(item.ItemType.ToString(), out weaponType))
+                        if (!Enum.TryParse(item.ItemClass.ToString(), out weaponType))
                         {
-                            if (item.ItemType == ItemType.ThrustingOneHandedSword)
-                                weaponType = WeaponType.OneHandedSword;
-                            else if (item.ItemType == ItemType.Sceptre)
-                                weaponType = WeaponType.OneHandedMace;
+                            if (item.ItemClass == ItemClass.ThrustingOneHandSword)
+                                weaponType = WeaponType.OneHandSword;
+                            else if (item.ItemClass == ItemClass.Sceptre)
+                                weaponType = WeaponType.OneHandMace;
                             else
                                 throw new Exception("Unknown weapon type: " + item.BaseType);
                         }
@@ -1546,7 +1546,7 @@ namespace POESKillTree.SkillTreeFiles
                     {
                         Attributes.Add(prop);
 
-                        Damage damage = Damage.Create(Nature, prop.Attribute, prop.Value);
+                        Damage damage = Damage.Create(Nature, prop.Attribute, prop.Values);
                         if (damage != null && damage.Type == DamageType.Physical) // Create only physical damage from item properties.
                             Deals.Add(damage);
                     }
@@ -1638,17 +1638,17 @@ namespace POESKillTree.SkillTreeFiles
         public enum WeaponType
         {
             Any,
-            Bow = 1, Claw = 2, Dagger = 4, OneHandedAxe = 8, OneHandedMace = 16, OneHandedSword = 32,
-            Staff = 64, TwoHandedAxe = 128, TwoHandedMace = 256, TwoHandedSword = 512, Wand = 1024,
+            Bow = 1, Claw = 2, Dagger = 4, OneHandAxe = 8, OneHandMace = 16, OneHandSword = 32,
+            Staff = 64, TwoHandAxe = 128, TwoHandMace = 256, TwoHandSword = 512, Wand = 1024,
             Quiver = 2048,
             Shield = 4096,
             Unarmed = 8192,
-            Melee = Claw | Dagger | OneHandedAxe | OneHandedMace | OneHandedSword | Staff | TwoHandedAxe | TwoHandedMace | TwoHandedSword,
-            OneHandedMelee = Claw | Dagger | OneHandedAxe | OneHandedMace | OneHandedSword,
-            TwoHandedMelee = Staff | TwoHandedAxe | TwoHandedMace | TwoHandedSword,
-            Axe = OneHandedAxe | TwoHandedAxe,
-            Mace = OneHandedMace | TwoHandedMace,
-            Sword = OneHandedSword | TwoHandedSword,
+            Melee = Claw | Dagger | OneHandAxe | OneHandMace | OneHandSword | Staff | TwoHandAxe | TwoHandMace | TwoHandSword,
+            OneHandedMelee = Claw | Dagger | OneHandAxe | OneHandMace | OneHandSword,
+            TwoHandedMelee = Staff | TwoHandAxe | TwoHandMace | TwoHandSword,
+            Axe = OneHandAxe | TwoHandAxe,
+            Mace = OneHandMace | TwoHandMace,
+            Sword = OneHandSword | TwoHandSword,
             Ranged = Bow | Wand,
             Weapon = Melee | Ranged
         }
@@ -2362,7 +2362,7 @@ namespace POESKillTree.SkillTreeFiles
 
             Equipment = new AttributeSet();
             foreach (var attr in itemAttrs.NonLocalMods)
-                Equipment.Add(attr.Attribute, new List<float>(attr.Value));
+                Equipment.Add(attr.Attribute, new List<float>(attr.Values));
 
             if (NecromanticAegis && OffHand.IsShield())
             {
@@ -2380,9 +2380,9 @@ namespace POESKillTree.SkillTreeFiles
                 && itemAttrs.Armor != null)
             {
                 var armorProp = itemAttrs.Armor.Properties.FirstOrDefault(m => m.Attribute == "Armour: #");
-                if (armorProp != null && armorProp.Value.Any())
+                if (armorProp != null && armorProp.Values.Any())
                 {
-                    Global["Armour: #"][0] += armorProp.Value[0];
+                    Global["Armour: #"][0] += armorProp.Values[0];
                 }
             }
 
@@ -2420,8 +2420,6 @@ namespace POESKillTree.SkillTreeFiles
 
             foreach (Item item in Items)
             {
-                if (item.Gems == null)
-                    continue;
                 foreach (Item gem in item.Gems)
                 {
                     if (AttackSkill.IsAttackSkill(gem))

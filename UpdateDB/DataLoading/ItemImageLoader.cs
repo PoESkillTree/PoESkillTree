@@ -25,6 +25,7 @@ namespace UpdateDB.DataLoading
             "One Hand Swords", "Thrusting One Hand Swords", "Two Hand Swords", "Wands",
             "Amulets", "Belts", "Quivers", "Rings",
             "Body Armours", "Boots", "Helmets", "Gloves", "Shields", "Jewel",
+            "Active Skill Gems", "Support Skill Gems",
         };
 
         public override bool SavePathIsFolder
@@ -66,11 +67,6 @@ namespace UpdateDB.DataLoading
             }
 
             Log.Info($"Retrieved {results.Count} images for class {wikiClass}.");
-        }
-
-        protected override Task CompleteSavingAsync()
-        {
-            return Task.FromResult<object>(null);
         }
     }
 }
