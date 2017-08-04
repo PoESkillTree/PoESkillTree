@@ -10,7 +10,7 @@
 		<Attribute Name="#% increased Attack Speed" ConversionMultiplier="0.01"/>
 		<Attribute Name="#% increased Movement Speed" ConversionMultiplier="0.01"/>
 	</PseudoAttribute>
-		<PseudoAttribute Name="#% increased Righteous Fire Damage(with slightly reduced fire/burn-dot preference)" Group="Damage">
+	<PseudoAttribute Name="#% increased Righteous Fire Damage(with slightly reduced fire/burn-dot preference)" Group="Damage">
 		<Attribute Name="#% increased Elemental Damage" />
 		<Attribute Name="#% increased Fire Damage" ConversionMultiplier="0.98"/>
 		<Attribute Name="#% increased Area Damage" />
@@ -143,6 +143,20 @@
 		<Attribute Name="#% increased Elemental Damage" />
 		<Attribute Name="#% increased Cold Damage" />
 		<Attribute Name="#% increased Area Damage" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Lightning Projectile Damage" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage"/>
+		<Attribute Name="#% increased Lightning Damage"/>
+		<Attribute Name="#% increased Projectile Damage"/>
+		<Attribute Name="#% increased Spell Damage" />
+		<Attribute Name="#% increased Damage"/>
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Lightning Area Damage" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage"/>
+		<Attribute Name="#% increased Lightning Damage"/>
+		<Attribute Name="#% increased Area Damage"/>
+		<Attribute Name="#% increased Spell Damage" />
+		<Attribute Name="#% increased Damage"/>
 	</PseudoAttribute>
 	<PseudoAttribute Name="#% increased Total Lightning Damage(before tags)" Group="Damage">
 		<Attribute Name="#% increased Elemental Damage" />

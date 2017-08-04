@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFSKillTree", "WPFSKillTree\WPFSKillTree.csproj", "{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}"
 EndProject
@@ -17,14 +17,13 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Debug|x86.ActiveCfg = Debug|x86
 		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Debug|x86.Build.0 = Debug|x86
-		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Release|x86.ActiveCfg = Release|x86
-		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Release|x86.Build.0 = Release|x86
+		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Release|Any CPU.ActiveCfg = Debug|x86
+		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Release|Any CPU.Build.0 = Debug|x86
+		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Release|x86.ActiveCfg = Debug|x86
+		{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}.Release|x86.Build.0 = Debug|x86
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.Debug|x86.ActiveCfg = Debug|x86
