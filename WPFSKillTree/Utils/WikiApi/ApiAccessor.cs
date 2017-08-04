@@ -152,6 +152,7 @@ namespace POESKillTree.Utils.WikiApi
                     return
                         from result in json["query"]["pages"]
                         let title = result.Value<string>("title")
+                        where HasImageInfo(result, title)
                         let url = result["imageinfo"].First.Value<string>("url")
                         select Tuple.Create(title, url);
                 }
@@ -162,6 +163,21 @@ namespace POESKillTree.Utils.WikiApi
                 Log.Error($"Retrieving query-imageinfo-url results from {uri} failed", e);
             }
             return Enumerable.Empty<Tuple<string, string>>();
+        }
+
+        private static bool HasImageInfo(JToken imageInfoEntry, string title)
+        {
+            if (imageInfoEntry.Value<bool>("missing"))
+            {
+                Log.Warn("Missing image for " + title);
+                return false;
+            }
+            if (imageInfoEntry["imageinfo"] == null)
+            {
+                Log.Error("No imageinfo entry for " + title);
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
