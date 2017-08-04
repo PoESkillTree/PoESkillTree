@@ -7,6 +7,9 @@ using POESKillTree.TreeGenerator.Algorithm.Model;
 
 namespace POESKillTree.TreeGenerator.Algorithm
 {
+#if (PoESkillTree_AlternativeCSVType&&PoESkillTree_UseSmallDec_ForAttributes)
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+#endif
     /// <summary>
     ///     Simple hillclimbing algorithm that tries to improve a set of nodes by swapping
     ///     single nodes in and out until no swap improves the score.
@@ -20,7 +23,13 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// <summary>
         /// Function returning the fitness of a set of nodes.
         /// </summary>
-        private readonly Func<HashSet<ushort>, double> _fitnessFunc;
+        private readonly Func<HashSet<ushort>,
+#if (PoESkillTree_AlternativeCSVType&&PoESkillTree_UseSmallDec_ForAttributes)
+        SmallDec
+#else
+        double
+#endif
+        > _fitnessFunc;
 
         /// <summary>
         /// All nodes of the graph.
@@ -40,7 +49,13 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// <summary>
         /// Fitness value of the current node set.
         /// </summary>
-        private double _curFitness;
+        private
+#if (PoESkillTree_AlternativeCSVType&&PoESkillTree_UseSmallDec_ForAttributes)
+        SmallDec
+#else
+        double
+#endif
+        _curFitness;
         /// <summary>
         /// Current set of nodes that build the tree.
         /// These can be swapped out (if not in <see cref="_fixedNodes"/>).
@@ -64,7 +79,13 @@ namespace POESKillTree.TreeGenerator.Algorithm
         /// <param name="fitnessFunc">Function returning the fitness of a set of nodes. (not null)</param>
         /// <param name="fixedNodes">Nodes that can not swapped out of the current set. (not null)</param>
         /// <param name="allNodes">All nodes of the graph. (not null)</param>
-        public HillClimber(Func<HashSet<ushort>, double> fitnessFunc, IEnumerable<GraphNode> fixedNodes,
+        public HillClimber(Func<HashSet<ushort>,
+#if (PoESkillTree_AlternativeCSVType&&PoESkillTree_UseSmallDec_ForAttributes)
+        SmallDec
+#else
+        double
+#endif
+        > fitnessFunc, IEnumerable<GraphNode> fixedNodes,
             IEnumerable<GraphNode> allNodes)
         {
             if (fitnessFunc == null) throw new ArgumentNullException("fitnessFunc");

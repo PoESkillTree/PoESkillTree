@@ -353,3 +353,6 @@ obj
 
 # mstest test results
 TestResults
+
+#Other projects within same folder(to make easier to reuse structure of folders)
+ArcheAgeSkillTree/

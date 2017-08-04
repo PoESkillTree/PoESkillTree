@@ -1,5 +1,6 @@
 ﻿namespace POESKillTree.TreeGenerator.Views
 {
+#if (PoESkillTree_EnableMinimumValue && !PoESkillTree_UseSmallDec_ForAttributes)
     /// <summary>
     /// Interaction logic for AdvancedGeneratorTab.xaml
     /// </summary>
@@ -10,8 +11,8 @@
 #if (DEBUG)
             try
             {
-                InitializeComponent();
-            }
+            InitializeComponent();
+        }
             catch (System.Exception ex)
             { // Log error (including InnerExceptions!)
               // Handle exception
@@ -20,6 +21,7 @@
 #else
             InitializeComponent();
 #endif
-       }
+        }
     }
+#endif
 }

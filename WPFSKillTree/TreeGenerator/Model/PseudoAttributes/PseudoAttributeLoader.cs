@@ -9,6 +9,9 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+#endif
     /// <summary>
     /// The exception that is thrown when the xml files describing pseudo
     /// attributes are invalid.
@@ -113,6 +116,9 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
         /// </summary>
         private IEnumerable<PseudoAttribute> ConvertFromXml(IEnumerable<XmlPseudoAttribute> xmlPseudoAttributes)
         {
+#if (DEBUG)
+            Console.WriteLine("Number of Pseudo-Attributes to load="+xmlPseudoAttributes.Count());
+#endif
             foreach (var xmlPseudo in xmlPseudoAttributes)
             {
                 var pseudo = new PseudoAttribute(xmlPseudo.Name, xmlPseudo.Group);

@@ -9,7 +9,7 @@
     xmlns:dialogs="clr-namespace:POESKillTree.Controls.Dialogs"
     xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
     d:DataContext="{d:DesignInstance vm:ControllerViewModel}"
-    MaxContentWidth="500">
+    MaxContentWidth="1000">
     <ContentControl.Resources>
         <converter:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     </ContentControl.Resources>

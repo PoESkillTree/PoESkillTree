@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+#endif
     /// <summary>
     /// Data class describing a conditioned Attribute.
     /// At least one condition must be true or there must not be
@@ -32,7 +35,13 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
         /// be multiplied before being adding into the <see cref="PseudoAttribute"/>
         /// containing this attribute.
         /// </summary>
-        public float ConversionMultiplier { get; internal set; }
+        public
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        SmallDec
+#else
+        float
+#endif
+        ConversionMultiplier { get; internal set; }
 
         /// <summary>
         /// Creates a new Attribute with the given name, a ConversionMultiplier
