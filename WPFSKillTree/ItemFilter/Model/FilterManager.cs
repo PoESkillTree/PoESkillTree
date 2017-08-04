@@ -269,6 +269,87 @@ namespace POESKillTree.ItemFilter.Model
                                 Name = "Blessing",
                                 Description = "Blessing of Xoph, Tul, Esh, Uul-Netol or Chayula",
                                 Matches = new List<Match> { new MatchClass(new string[] { "Currency" }), new MatchBaseType(new string[] { "Blessing of" }) }
+                            },
+                            // XXX: Harbringer
+                            new Rule
+                            {
+                                Id = "ChaosShard",
+                                IsEnabled = false,
+                                Name = "Chaos Shard",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Chaos Shard" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "RegalShard",
+                                IsEnabled = false,
+                                Name = "Regal Shard",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Regal Shard" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "ExaltedShard",
+                                IsEnabled = false,
+                                Name = "Exalted Shard",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Exalted Shard" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "MirrorShard",
+                                IsEnabled = false,
+                                Name = "Mirror Shard",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Mirror Shard" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "AncientShardOrb",
+                                IsEnabled = false,
+                                Name = "Ancient Shard & Orb",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Ancient Shard", "Ancient Orb" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "AnnulmentShardOrb",
+                                IsEnabled = false,
+                                Name = "Annulment Shard & Orb",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Annulment Shard", "Orb of Annulment" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "BindingShardOrb",
+                                IsEnabled = false,
+                                Name = "Binding Shard & Orb",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Binding Shard", "Orb of Binding" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "EngineerShardOrb",
+                                IsEnabled = false,
+                                Name = "Engineer's Shard & Orb",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Engineer's Shard", "Engineer's Orb" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "HarbingerShardOrb",
+                                IsEnabled = false,
+                                Name = "Harbinger's Shard & Orb",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Harbinger's Shard", "Harbinger's Orb" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "HorizonShardOrb",
+                                IsEnabled = false,
+                                Name = "Horizon Shard & Orb",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Horizon Shard", "Orb of Horizons" }) }
                             }
                         }
                     },
@@ -281,6 +362,7 @@ namespace POESKillTree.ItemFilter.Model
                             new Rule
                             {
                                 Id = "ScrollFragment",
+                                IsEnabled = false,
                                 Name = "Scroll Fragment",
                                 Description = L10n.Message("Any Normal item which vendor trades for Scroll Fragment."),
                                 Matches = new List<Match>
@@ -292,6 +374,7 @@ namespace POESKillTree.ItemFilter.Model
                             new Rule
                             {
                                 Id = "ShardFromMagic",
+                                IsEnabled = false,
                                 Name = "Shards from Magic items",
                                 Description = L10n.Message("Any Magic item which vendor trades for Transmutation Shard, Alteration Shard or Alchemy Shard."),
                                 Matches = new List<Match>
@@ -731,6 +814,7 @@ namespace POESKillTree.ItemFilter.Model
                                 Description = "Xoph's, Tul's, Esh's, Uul-Netol's or Chayula's Breachstone",
                                 Matches = new List<Match> { new MatchClass(new string[]{ "Misc Map Items" }), new MatchBaseType(new string[] { "Breachstone" }) }
                             },
+                            /*
                             new Rule // XXX: Legacy
                             {
                                 Id = "Leaguestones",
@@ -744,6 +828,15 @@ namespace POESKillTree.ItemFilter.Model
                                 IsEnabled = false,
                                 Name = "Ancient Reliquary Key",
                                 Matches = new List<Match> { new MatchClass(new string[]{ "Misc Map Items" }), new MatchBaseType(new string[]{ "Ancient Reliquary Key" }) }
+                            }
+                            */
+                            new Rule // XXX: Harbringer
+                            {
+                                Id = "Piece",
+                                IsEnabled = false,
+                                Name = "Piece of unique item",
+                                Description = "Unique item fragments found exclusively in the Harbinger league.\nAll pieces of an particular item can be forged into the full unique item.",
+                                Matches = new List<Match> { new MatchClass(new string[]{ "Piece" }) }
                             }
                         }
                     },

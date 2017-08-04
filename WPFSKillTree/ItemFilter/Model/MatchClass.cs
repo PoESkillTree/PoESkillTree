@@ -43,6 +43,9 @@ namespace POESKillTree.ItemFilter.Model
      * Divination Card
      * Jewel
      * Trinket
+     * +++ 3.0.0
+     * Pantheon Soul
+     * Piece
      */
     public class MatchClass : MatchStrings
     {
