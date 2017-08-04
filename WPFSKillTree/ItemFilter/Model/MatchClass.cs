@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace POESKillTree.ItemFilter.Model
 {
@@ -42,16 +43,25 @@ namespace POESKillTree.ItemFilter.Model
      * Divination Card
      * Jewel
      * Trinket
+     * +++ 3.0.0
+     * Pantheon Soul
+     * Piece
      */
     public class MatchClass : MatchStrings
     {
-        public List<string> BaseTypes = new List<string>();
+        /// <summary>
+        /// Dictionary of BaseType strings which belong to specific Class identified by string.
+        /// </summary>
+        private static Dictionary<string,List<string>> BaseTypesOfClass = new Dictionary<string,List<string>>();
 
-        protected MatchClass(MatchClass copy)
-            : base(copy)
+        /// <summary>
+        /// The BaseType match narrowing this Class match within same rule.
+        /// </summary>
+        public MatchBaseType NarrowedBy;
+
+        protected MatchClass(MatchClass copy) : base(copy)
         {
-            if (copy.BaseTypes != null)
-                BaseTypes = new List<string>(copy.BaseTypes);
+            NarrowedBy = copy.NarrowedBy;
         }
 
         public MatchClass(string[] classes) : base(classes)
@@ -66,15 +76,57 @@ namespace POESKillTree.ItemFilter.Model
         }
 
         /// <summary>
+        /// Determines whether BaseType match is contained in this Class match based on learnt strings.
+        /// </summary>
+        /// <param name="match">The BaseType match.</param>
+        /// <returns>true, if this Class match contains all strings of BaseType match; otherwise false.</returns>
+        public bool Contains(MatchBaseType match)
+        {
+            // Find this Class strings defined in dictionary as whole or partially.
+            foreach (string clazz in FindMatched(BaseTypesOfClass.Keys.ToArray()))
+            {
+                foreach (string baseType in match.Values)
+                {
+                    if (BaseTypesOfClass[clazz].Exists(bt => bt.Contains(baseType)))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Learn BaseTypes which are subset of this class.
         /// </summary>
         /// <param name="match">The BaseType match to learn BaseTypes from.</param>
         public void Learn(MatchBaseType match)
         {
-            foreach (string str in match.Values)
+            // First, to learn BaseType of Class relationship, this Class must have only one string defined.
+            if (Values.Count == 1)
             {
-                if (!BaseTypes.Contains(str)) BaseTypes.Add(str);
+                // If this Class has already learnt some BaseType(s), then add only new BaseType strings.
+                if (BaseTypesOfClass.ContainsKey(Values[0]))
+                    foreach (string str in match.Values)
+                    {
+                        if (!BaseTypesOfClass[Values[0]].Contains(str))
+                            BaseTypesOfClass[Values[0]].Add(str);
+                    }
+                else // Otherwise create new entry with copy of all BaseType strings.
+                    BaseTypesOfClass.Add(Values[0], new List<string>(match.Values));
+                    
             }
+        }
+
+        /// <summary>
+        /// Narrows Class match by BaseType match within same rule.
+        /// Also invokes Learn.
+        /// </summary>
+        /// <param name="match"></param>
+        public void NarrowBy(MatchBaseType match)
+        {
+            NarrowedBy = match;
+
+            Learn(match);
         }
     }
 }

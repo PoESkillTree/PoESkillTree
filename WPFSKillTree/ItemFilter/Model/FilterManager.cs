@@ -12,6 +12,22 @@ namespace POESKillTree.ItemFilter.Model
 {
     public class FilterManager
     {
+        private static string[] ClassesWithRarity = new string[]
+        {
+            "Life Flasks", "Mana Flasks", "Hybrid Flasks", "Utility Flasks",
+            "Amulets", "Rings", "Claws", "Daggers", "Wands", "One Hand Swords", "Thrusting One Hand Swords", "One Hand Axes", "One Hand Maces",
+            "Bows", "Staves", "Two Hand Swords", "Two Hand Axes", "Two Hand Maces", "Quivers", "Belts", "Gloves", "Boots", "Body Armours", "Helmets",
+            "Shields", "Sceptres", "Maps", "Leaguestone", "Fishing Rods", "Jewel"
+        };
+
+        private static string[] ClassesWithQuality = new string[]
+        {
+            "Flasks", "Gems",
+            "Claws", "Daggers", "Wands", "One Hand Swords", "Thrusting One Hand Swords", "One Hand Axes", "One Hand Maces",
+            "Bows", "Staves", "Two Hand Swords", "Two Hand Axes", "Two Hand Maces", "Gloves", "Boots", "Body Armours", "Helmets",
+            "Shields", "Sceptres", "Maps", "Fishing Rods"
+        };
+
         private const string GameDocumentsFolder = @"My Games\Path of Exile";
 
         private const string GameFilterMagicLine = "# PoESkillTree";
@@ -197,6 +213,13 @@ namespace POESKillTree.ItemFilter.Model
                             },
                             new Rule
                             {
+                                Id = "PerandusCoin",
+                                IsEnabled = false,
+                                Name = "Perandus Coin",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Perandus Coin" }) }
+                            },
+                            new Rule
+                            {
                                 Id = "SilverCoin",
                                 IsEnabled = false,
                                 Name = "Silver Coin",
@@ -246,6 +269,87 @@ namespace POESKillTree.ItemFilter.Model
                                 Name = "Blessing",
                                 Description = "Blessing of Xoph, Tul, Esh, Uul-Netol or Chayula",
                                 Matches = new List<Match> { new MatchClass(new string[] { "Currency" }), new MatchBaseType(new string[] { "Blessing of" }) }
+                            },
+                            // XXX: Harbringer
+                            new Rule
+                            {
+                                Id = "ChaosShard",
+                                IsEnabled = false,
+                                Name = "Chaos Shard",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Chaos Shard" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "RegalShard",
+                                IsEnabled = false,
+                                Name = "Regal Shard",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Regal Shard" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "ExaltedShard",
+                                IsEnabled = false,
+                                Name = "Exalted Shard",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Exalted Shard" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "MirrorShard",
+                                IsEnabled = false,
+                                Name = "Mirror Shard",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Mirror Shard" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "AncientShardOrb",
+                                IsEnabled = false,
+                                Name = "Ancient Shard & Orb",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Ancient Shard", "Ancient Orb" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "AnnulmentShardOrb",
+                                IsEnabled = false,
+                                Name = "Annulment Shard & Orb",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Annulment Shard", "Orb of Annulment" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "BindingShardOrb",
+                                IsEnabled = false,
+                                Name = "Binding Shard & Orb",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Binding Shard", "Orb of Binding" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "EngineerShardOrb",
+                                IsEnabled = false,
+                                Name = "Engineer's Shard & Orb",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Engineer's Shard", "Engineer's Orb" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "HarbingerShardOrb",
+                                IsEnabled = false,
+                                Name = "Harbinger's Shard & Orb",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Harbinger's Shard", "Harbinger's Orb" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "HorizonShardOrb",
+                                IsEnabled = false,
+                                Name = "Horizon Shard & Orb",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Horizon Shard", "Orb of Horizons" }) }
                             }
                         }
                     },
@@ -255,13 +359,34 @@ namespace POESKillTree.ItemFilter.Model
                         Name = L10n.Message("Recipes"),
                         Rules = new List<Rule>
                         {
-                            //new Rule { Name = "Scroll Fragment", Group = recipeGroup },   // Normal, Gem, Flask, ...
-                            //new Rule { Name = "Shards from Magic items", Group = recipeGroup },   // Magic (Transmutation Shard, Alteration Shard, Alchemy Shard)
-                            //new Rule { Name = "Shards from Rare items", Group = recipeGroup },   // Rare (Transmutation Shard, Alteration Shard, Alchemy Shard)
+                            new Rule
+                            {
+                                Id = "ScrollFragment",
+                                IsEnabled = false,
+                                Name = "Scroll Fragment",
+                                Description = L10n.Message("Any Normal item which vendor trades for Scroll Fragment."),
+                                Matches = new List<Match>
+                                {
+                                    new MatchClass(new string[]{ "Claws", "Daggers", "Wands", "Swords", "Axes", "Maces", "Bows", "Staves", "Sceptres", "Quivers", "Belts", "Gloves", "Boots", "Body Armours", "Helmets", "Shields", "Rings", "Amulets" }),
+                                    new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal)
+                                }
+                            },
+                            new Rule
+                            {
+                                Id = "ShardFromMagic",
+                                IsEnabled = false,
+                                Name = "Shards from Magic items",
+                                Description = L10n.Message("Any Magic item which vendor trades for Transmutation Shard, Alteration Shard or Alchemy Shard."),
+                                Matches = new List<Match>
+                                {
+                                    new MatchClass(new string[]{ "Claws", "Daggers", "Wands", "Swords", "Axes", "Maces", "Bows", "Staves", "Sceptres", "Quivers", "Belts", "Gloves", "Boots", "Body Armours", "Helmets", "Shields", "Rings", "Amulets" }),
+                                    new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Magic)
+                                }
+                            },
+                            //new Rule { Name = "Shards from Rare items" },   // Rare (Alteration Shard, Alchemy Shard)
                             new Rule
                             {
                                 Id = "Whetstone",
-                                IsEnabled = false,
                                 Name = "Blacksmith's Whetstone",
                                 Description = L10n.Message("A single Normal weapon with 20% quality.\nWeapons with a total of at least 40% quality."),
                                 Matches = new List<Match>
@@ -274,7 +399,6 @@ namespace POESKillTree.ItemFilter.Model
                             new Rule
                             {
                                 Id = "Scrap",
-                                IsEnabled = false,
                                 Name = "Armourer's Scrap",
                                 Matches = new List<Match>
                                 {
@@ -311,7 +435,6 @@ namespace POESKillTree.ItemFilter.Model
                             new Rule
                             {
                                 Id = "Chisel",
-                                IsEnabled = false,
                                 Name = "Cartographer's Chisel",
                                 Description = L10n.Message("1× Stone Hammer, Rock Breaker or Gavel with 20% quality\n1× Any Map"),
                                 Set = new List<Match>[]
@@ -319,18 +442,21 @@ namespace POESKillTree.ItemFilter.Model
                                     // XXX: 4 or less whetstones to be spent to bring an item to quality of 20 for a recipe.
                                     new List<Match>
                                     {
-                                        new MatchBaseType(new string[]{ "Stone Hammer", "Rock Breaker", "Gavel" }),
+                                        new MatchClass(new string[] {"One Hand Maces"}),
+                                        new MatchBaseType(new string[] { "Stone Hammer", "Rock Breaker", "Gavel" }),
                                         new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal)
                                     },
                                     new List<Match>
                                     {
-                                        new MatchBaseType(new string[]{ "Stone Hammer", "Rock Breaker", "Gavel" }),
+                                        new MatchClass(new string[] {"One Hand Maces"}),
+                                        new MatchBaseType(new string[] { "Stone Hammer", "Rock Breaker", "Gavel" }),
                                         new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Magic),
                                         new MatchQuality(MatchNumber.Operator.GreaterOrEqual, 12)
                                     },
                                     new List<Match>
                                     {
-                                        new MatchBaseType(new string[]{ "Stone Hammer", "Rock Breaker", "Gavel" }),
+                                        new MatchClass(new string[] {"One Hand Maces"}),
+                                        new MatchBaseType(new string[] { "Stone Hammer", "Rock Breaker", "Gavel" }),
                                         new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Rare),
                                         new MatchQuality(MatchNumber.Operator.GreaterOrEqual, 16)
                                     }
@@ -417,8 +543,7 @@ namespace POESKillTree.ItemFilter.Model
                         Matches = new List<Match>
                         {
                             new MatchClass(new string[]{ "Flasks" }),
-                            new MatchRarity(MatchEnum.Operator.LessThan, MatchRarity.Rarity.Unique),
-                            new MatchQuality() // Implicit.
+                            new MatchRarity(MatchEnum.Operator.LessThan, MatchRarity.Rarity.Unique)
                         },
                         Rules = new List<Rule>
                         {
@@ -667,20 +792,169 @@ namespace POESKillTree.ItemFilter.Model
                                 Description = "All Maps and Map Fragments",
                                 Matches = new List<Match> { new MatchClass(new string[]{ "Maps", "Map Fragments" }) }
                             },
-                            new Rule // XXX: Breach
-                            {
-                                Id = "Breachstones",
-                                IsEnabled = false,
-                                Name = "Breachstones",
-                                Description = "Breach Map Fragments: Xoph's, Tul's, Esh's, Uul-Netol's or Chayula's Breachstone",
-                                Matches = new List<Match> { new MatchClass(new string[]{ "Map Fragments" }), new MatchBaseType(new string[] { "Breachstone" }) }
-                            },
                             new Rule
                             {
                                 Id = "QuestItems",
                                 IsEnabled = false,
                                 Name = "Quest Item",
                                 Matches = new List<Match> { new MatchClass(new string[]{ "Quest Items" }) }
+                            },
+                            new Rule // XXX: Talisman
+                            {
+                                Id = "Talismans",
+                                IsEnabled = false,
+                                Name = "Talismans",
+                                Matches = new List<Match> { new MatchClass(new string[]{ "Amulet" }), new MatchBaseType(new string[] { "Talisman" }) }
+                            },
+                            new Rule // XXX: Breach
+                            {
+                                Id = "Breachstones",
+                                IsEnabled = false,
+                                Name = "Breachstones",
+                                Description = "Xoph's, Tul's, Esh's, Uul-Netol's or Chayula's Breachstone",
+                                Matches = new List<Match> { new MatchClass(new string[]{ "Misc Map Items" }), new MatchBaseType(new string[] { "Breachstone" }) }
+                            },
+                            /*
+                            new Rule // XXX: Legacy
+                            {
+                                Id = "Leaguestones",
+                                IsEnabled = false,
+                                Name = "Leaguestones",
+                                Matches = new List<Match> { new MatchClass(new string[]{ "Leaguestone" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "ARK",
+                                IsEnabled = false,
+                                Name = "Ancient Reliquary Key",
+                                Matches = new List<Match> { new MatchClass(new string[]{ "Misc Map Items" }), new MatchBaseType(new string[]{ "Ancient Reliquary Key" }) }
+                            }
+                            */
+                            new Rule // XXX: Harbringer
+                            {
+                                Id = "Piece",
+                                IsEnabled = false,
+                                Name = "Piece of unique item",
+                                Description = "Unique item fragments found exclusively in the Harbinger league.\nAll pieces of an particular item can be forged into the full unique item.",
+                                Matches = new List<Match> { new MatchClass(new string[]{ "Piece" }) }
+                            }
+                        }
+                    },
+                    new RuleGroup
+                    {
+                        Id = "Crafting",
+                        Name = L10n.Message("Crafting"),
+                        Rules = new List<Rule>
+                        {
+                            new Rule
+                            {
+                                Id = "BluePearlAmulet",
+                                Name = "Blue Pearl Amulet",
+                                Matches = new List<Match>
+                                {
+                                    new MatchClass(new string[] {"Amulets"}),
+                                    new MatchBaseType(new string[] { "Blue Pearl Amulet" })
+                                }
+                            },
+                            new Rule
+                            {
+                                Id = "BoneHelmet",
+                                Name = "Bone Helmet",
+                                Matches = new List<Match>
+                                {
+                                    new MatchClass(new string[] {"Helmets"}),
+                                    new MatchBaseType(new string[] { "Bone Helmet" })
+                                }
+                            },
+                            new Rule
+                            {
+                                Id = "CrystalBelt",
+                                Name = "Crystal Belt",
+                                Matches = new List<Match>
+                                {
+                                    new MatchClass(new string[] {"Belts"}),
+                                    new MatchBaseType(new string[] { "Crystal Belt" })
+                                }
+                            },
+                            new Rule
+                            {
+                                Id = "FingerlessSilkGloves",
+                                Name = "Fingerless Silk Gloves",
+                                Matches = new List<Match>
+                                {
+                                    new MatchClass(new string[] {"Gloves"}),
+                                    new MatchBaseType(new string[] { "Fingerless Silk Gloves" })
+                                }
+                            },
+                            new Rule
+                            {
+                                Id = "GrippedGloves",
+                                Name = "Gripped Gloves",
+                                Matches = new List<Match>
+                                {
+                                    new MatchClass(new string[] {"Gloves"}),
+                                    new MatchBaseType(new string[] { "Gripped Gloves" })
+                                }
+                            },
+                            new Rule
+                            {
+                                Id = "MarbleAmulet",
+                                Name = "Marble Amulet",
+                                Matches = new List<Match>
+                                {
+                                    new MatchClass(new string[] {"Amulets"}),
+                                    new MatchBaseType(new string[] { "Marble Amulet" })
+                                }
+                            },
+                            new Rule
+                            {
+                                Id = "OpalRing",
+                                Name = "Opal Ring",
+                                Matches = new List<Match>
+                                {
+                                    new MatchClass(new string[] {"Rings"}),
+                                    new MatchBaseType(new string[] { "Opal Ring" })
+                                }
+                            },
+                            new Rule
+                            {
+                                Id = "SpikedGloves",
+                                Name = "Spiked Gloves",
+                                Matches = new List<Match>
+                                {
+                                    new MatchClass(new string[] {"Gloves"}),
+                                    new MatchBaseType(new string[] { "Spiked Gloves" })
+                                }
+                            },
+                            new Rule
+                            {
+                                Id = "SteelRing",
+                                Name = "Steel Ring",
+                                Matches = new List<Match>
+                                {
+                                    new MatchClass(new string[] {"Rings"}),
+                                    new MatchBaseType(new string[] { "Steel Ring" })
+                                }
+                            },
+                            new Rule
+                            {
+                                Id = "TwoTonedBoots",
+                                Name = "Two-Toned Boots",
+                                Matches = new List<Match>
+                                {
+                                    new MatchClass(new string[] {"Boots"}),
+                                    new MatchBaseType(new string[] { "Two-Toned Boots" })
+                                }
+                            },
+                            new Rule
+                            {
+                                Id = "VanguardBelt",
+                                Name = "Vanguard Belt",
+                                Matches = new List<Match>
+                                {
+                                    new MatchClass(new string[] {"Belts"}),
+                                    new MatchBaseType(new string[] { "Vanguard Belt" })
+                                }
                             }
                         }
                     },
@@ -693,43 +967,43 @@ namespace POESKillTree.ItemFilter.Model
                             new Rule
                             {
                                 Id = "Headhunter",
-                                IsEnabled = false,
                                 Name = "Headhunter",
                                 Matches = new List<Match>
                                 {
-                                    new MatchBaseType(new string[]{ "Leather Belt" }),
+                                    new MatchClass(new string[] {"Belts"}),
+                                    new MatchBaseType(new string[] { "Leather Belt" }),
                                     new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal)
                                 }
                             },
                             new Rule
                             {
                                 Id = "HegemonysEraPledgeOfHands",
-                                IsEnabled = false,
                                 Name = "Hegemony's Era, Pledge of Hands",
                                 Matches = new List<Match>
                                 {
-                                    new MatchBaseType(new string[]{ "Judgement Staff" }),
+                                    new MatchClass(new string[] {"Staves"}),
+                                    new MatchBaseType(new string[] { "Judgement Staff" }),
                                     new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal)
                                 }
                             },
                             new Rule
                             {
                                 Id = "KaomsHeart",
-                                IsEnabled = false,
                                 Name = "Kaom's Heart",
                                 Matches = new List<Match>
                                 {
-                                    new MatchBaseType(new string[]{ "Glorious Plate" }),
+                                    new MatchClass(new string[] {"Body Armours"}),
+                                    new MatchBaseType(new string[] { "Glorious Plate" }),
                                     new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal)
                                 }
                             },
                             new Rule
                             {
                                 Id = "Mjolner",
-                                IsEnabled = false,
                                 Name = "Mjölner",
                                 Matches = new List<Match>
                                 {
+                                    new MatchClass(new string[] {"One Hand Maces"}),
                                     new MatchBaseType(new string[]{ "Gavel" }),
                                     new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal)
                                 }
@@ -737,88 +1011,88 @@ namespace POESKillTree.ItemFilter.Model
                             new Rule
                             {
                                 Id = "ShavronnesRevelation",
-                                IsEnabled = false,
                                 Name = "Shavronne's Revelation",
                                 Matches = new List<Match>
                                 {
-                                    new MatchBaseType(new string[]{ "Moonstone Ring" }),
+                                    new MatchClass(new string[] {"Rings"}),
+                                    new MatchBaseType(new string[] { "Moonstone Ring" }),
                                     new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal)
                                 }
                             },
                             new Rule
                             {
                                 Id = "ShavronnesWrappings",
-                                IsEnabled = false,
                                 Name = "Shavronne's Wrappings",
                                 Matches = new List<Match>
                                 {
-                                    new MatchBaseType(new string[]{ "Occultist's Vestment" }),
+                                    new MatchClass(new string[] {"Body Armours"}),
+                                    new MatchBaseType(new string[] { "Occultist's Vestment" }),
                                     new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal)
                                 }
                             },
                             new Rule
                             {
                                 Id = "Skyforth",
-                                IsEnabled = false,
                                 Name = "Skyforth",
                                 Matches = new List<Match>
                                 {
-                                    new MatchBaseType(new string[]{ "Sorcerer Boots" }),
+                                    new MatchClass(new string[] {"Boots"}),
+                                    new MatchBaseType(new string[] { "Sorcerer Boots" }),
                                     new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal)
                                 }
                             },
                             new Rule
                             {
                                 Id = "SoulTaker",
-                                IsEnabled = false,
                                 Name = "Soul Taker",
                                 Matches = new List<Match>
                                 {
-                                    new MatchBaseType(new string[]{ "Siege Axe" }),
+                                    new MatchClass(new string[] {"One Hand Axes"}),
+                                    new MatchBaseType(new string[] { "Siege Axe" }),
                                     new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal)
                                 }
                             },
                             new Rule
                             {
                                 Id = "VoidBattery",
-                                IsEnabled = false,
                                 Name = "Void Battery",
                                 Matches = new List<Match>
                                 {
-                                    new MatchBaseType(new string[]{ "Prophecy Wand" }),
+                                    new MatchClass(new string[] {"Wands"}),
+                                    new MatchBaseType(new string[] { "Prophecy Wand" }),
                                     new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal)
                                 }
                             },
                             new Rule
                             {
                                 Id = "VollsDevotion",
-                                IsEnabled = false,
                                 Name = "Voll's Devotion",
                                 Matches = new List<Match>
                                 {
-                                    new MatchBaseType(new string[]{ "Agate Amulet" }),
+                                    new MatchClass(new string[] {"Amulets"}),
+                                    new MatchBaseType(new string[] { "Agate Amulet" }),
                                     new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal)
                                 }
                             },
                             new Rule
                             {
                                 Id = "Voltaxic",
-                                IsEnabled = false,
                                 Name = "Voltaxic Rift",
                                 Matches = new List<Match>
                                 {
-                                    new MatchBaseType(new string[]{ "Spine Bow" }),
+                                    new MatchClass(new string[] {"Bows"}),
+                                    new MatchBaseType(new string[] { "Spine Bow" }),
                                     new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal)
                                 }
                             },
                             new Rule
                             {
                                 Id = "Windripper",
-                                IsEnabled = false,
                                 Name = "Windripper",
                                 Matches = new List<Match>
                                 {
-                                    new MatchBaseType(new string[]{ "Imperial Bow" }),
+                                    new MatchClass(new string[] {"Bows"}),
+                                    new MatchBaseType(new string[] { "Imperial Bow" }),
                                     new MatchRarity(MatchEnum.Operator.Equal, MatchRarity.Rarity.Normal)
                                 }
                             }
@@ -828,6 +1102,66 @@ namespace POESKillTree.ItemFilter.Model
             };
 
             filter.Refresh();
+
+            // Add implicit rarity/quality matches to all rules or rule groups which matches any of classes with rarity/quality.
+            foreach (RuleGroup group in filter.Groups)
+            {
+                if (group.HasMatches)
+                {
+                    if (!group.Matches.Exists(m => m is MatchRarity))
+                    {
+                        MatchClass match = group.Matches.Find(m => m is MatchClass) as MatchClass;
+                        if (match != null && match.IsMatchingAny(ClassesWithRarity))
+                            group.Matches.Add(new MatchRarity());
+                    }
+                    if (!group.Matches.Exists(m => m is MatchQuality))
+                    {
+                        MatchClass match = group.Matches.Find(m => m is MatchClass) as MatchClass;
+                        if (match != null && match.IsMatchingAny(ClassesWithQuality))
+                            group.Matches.Add(new MatchQuality());
+                    }
+                }
+
+                foreach (Rule rule in group.Rules)
+                {
+                    if (rule.HasMatches)
+                    {
+                        if (!rule.Matches.Exists(m => m is MatchRarity))
+                        {
+                            MatchClass match = rule.Matches.Find(m => m is MatchClass) as MatchClass;
+                            if (match != null && match.IsMatchingAny(ClassesWithRarity))
+                                rule.Matches.Add(new MatchRarity());
+                        }
+                        if (!rule.Matches.Exists(m => m is MatchQuality))
+                        {
+                            MatchClass match = rule.Matches.Find(m => m is MatchClass) as MatchClass;
+                            if (match != null && match.IsMatchingAny(ClassesWithQuality))
+                                rule.Matches.Add(new MatchQuality());
+                        }
+                    }
+                    else if (rule.IsSet)
+                    {
+                        foreach (List<Match> matches in rule.Set)
+                        {
+                            if (!matches.Exists(m => m is MatchRarity))
+                            {
+                                MatchClass match = matches.Find(m => m is MatchClass) as MatchClass;
+                                if (match != null && match.IsMatchingAny(ClassesWithRarity))
+                                    matches.Add(new MatchRarity());
+
+                            }
+                            if (!matches.Exists(m => m is MatchQuality))
+                            {
+                                MatchClass match = matches.Find(m => m is MatchClass) as MatchClass;
+                                if (match != null && match.IsMatchingAny(ClassesWithQuality))
+                                    matches.Add(new MatchQuality());
+
+                            }
+                        }
+                    }
+                }
+
+            }
 
             // Learn from relationship between group and its rules.
             foreach (RuleGroup group in filter.Groups)
@@ -853,8 +1187,8 @@ namespace POESKillTree.ItemFilter.Model
             string path = GamePathOf(filter.Name);
 
             // XXX: Optimize before opening stream to not overwrite generated filter in case of error.
-            List<Block> output = Optimize(filter.GetBlocks());
-
+             List<Block> output = Optimize(filter.GetBlocks());
+            
             using(StreamWriter writer = new StreamWriter(path, false, Encoding.UTF8))
             {
                 // Write magic string for possible identification of filters generated by us.
@@ -947,7 +1281,6 @@ namespace POESKillTree.ItemFilter.Model
             List<Block> output = new List<Block>();
 
             // Phase 1: Visibility (i.e. show only those blocks which have colors defined or lower priority block would hide them).
-
             List<Block> input = new List<Block>(blocks);
             input.Sort();
 
@@ -981,7 +1314,7 @@ namespace POESKillTree.ItemFilter.Model
                     output.Add(block);
             }
 
-            // Phase 2: Redundancy (i.e. try to merge blocks with same visual and same priority).
+            // Phase 2: Mergining (i.e. try to merge blocks with same visual and same priority).
             input = new List<Block>(output);
             output.Clear();
 
@@ -1003,6 +1336,23 @@ namespace POESKillTree.ItemFilter.Model
                 }
 
                 output.Add(block);
+            }
+
+            // Phase 3: Redundancy (i.e. remove Hide blocks which subset explicitly lower or same priority Hide blocks).
+            input = new List<Block>(output);
+            output.Clear();
+
+            // Iterate through blocks in order by priority.
+            input.Sort();
+            while (input.Count > 0)
+            {
+                // Fetch first block from input for processing.
+                Block block = input[0];
+                input.Remove(block);
+
+                // Keep Show block, or Hide block which doesn't subset explicitly lower or same priority Hide block.
+                if (block.Show || !input.Exists(b => block.SubsetsExplicitly(b) && !b.Show))
+                    output.Add(block);
             }
 
             output.Sort();
