@@ -12,16 +12,18 @@ namespace POESKillTree.ItemFilter.Model
             Unique
         }
 
-        private static readonly string[] Values =
+        private static readonly string[] RarityValues = { "Normal", "Magic", "Rare", "Unique" };
+
+        // Implicit match.
+        public MatchRarity()
+            : base(MatchEnum.Operator.GreaterOrEqual, (int)Rarity.Normal, RarityValues)
         {
-                "Normal",
-                "Magic",
-                "Rare",
-                "Unique"
-        };
+            Keyword = "Rarity";
+            Priority = Type.Rarity;
+        }
 
         public MatchRarity(Operator op, Rarity rarity)
-            : base(op, Values[(int)rarity])
+            : base(op, (int)rarity, RarityValues)
         {
             Keyword = "Rarity";
             Priority = Type.Rarity;

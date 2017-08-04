@@ -40,6 +40,22 @@ namespace POESKillTree.ItemFilter.Model
             }
         }
 
+        public List<Match> AnyMatches
+        {
+            get
+            {
+                if (IsSet)
+                {
+                    List<Match> set = new List<Match>();
+                    foreach (List<Match> element in Set) set.AddRange(element);
+
+                    return set;
+                }
+
+                return Matches;
+            }
+        }
+
         public string Description { get; set; }
 
         public RuleGroup Group { get; set; }
@@ -47,6 +63,8 @@ namespace POESKillTree.ItemFilter.Model
         public int GroupIndex { get { return Group.Index; } }
 
         public string GroupName { get { return Group.Name; } }
+
+        public bool HasAnyMatches { get { return HasMatches || IsSet; } }
 
         public bool HasDescription { get { return !string.IsNullOrEmpty(Description); } }
 
@@ -97,8 +115,8 @@ namespace POESKillTree.ItemFilter.Model
 
         public Block ToBlock()
         {
-            // Emit block only if it has matches defined and its group is not hidden.
-            if (HasMatches && !Group.IsHidden)
+            // Emit block only if it has matches defined and its group is either not hidden or it doesn't have matches.
+            if (HasMatches && (!Group.IsHidden || !Group.HasMatches))
             {
                 // Rule doesn't have colors defined, but its group does. Inherit them.
                 if (!HasColors && Group.HasColors)
@@ -124,8 +142,8 @@ namespace POESKillTree.ItemFilter.Model
 
         public List<Block> ToBlocks()
         {
-            // Emit blocks only if it has set defined and its group is not hidden.
-            if (IsSet && !Group.IsHidden)
+            // Emit blocks only if it has set defined and its group is either not hidden or it doesn't have matches.
+            if (IsSet && (!Group.IsHidden || !Group.HasMatches))
             {
                 List<Block> blocks = new List<Block>();
 

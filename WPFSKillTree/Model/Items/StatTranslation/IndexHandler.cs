@@ -27,6 +27,14 @@ namespace POESKillTree.Model.Items.StatTranslation
         DivideBy100AndNegate,
         [EnumMember(Value = "divide_by_one_hundred_2dp")]
         DivideBy100Precision2,
+        [EnumMember(Value = "divide_by_ten_0dp")]
+        DivideBy10Precision0,
+        [EnumMember(Value = "divide_by_two_0dp")]
+        DivideBy2Precision0,
+        [EnumMember(Value = "divide_by_fifteen_0dp")]
+        DivideBy15Precision0,
+        [EnumMember(Value = "divide_by_twenty_then_double_0dp")]
+        DivideBy20ThenDoublePrecision0,
         [EnumMember(Value = "milliseconds_to_seconds")]
         MillisecondsToSeconds,
         [EnumMember(Value = "milliseconds_to_seconds_0dp")]
@@ -49,6 +57,8 @@ namespace POESKillTree.Model.Items.StatTranslation
         PerMinuteToPerSecondPrecision0,
         [EnumMember(Value = "per_minute_to_per_second_2dp")]
         PerMinuteToPerSecondPrecision2,
+        [EnumMember(Value = "per_minute_to_per_second_2dp_if_required")]
+        PerMinuteToPerSecondPrecision2IfRequired,
         [EnumMember(Value = "mod_value_to_item_class")]
         ModValueToItemClass,
         [EnumMember(Value = "tempest_mod_text")]
@@ -65,6 +75,10 @@ namespace POESKillTree.Model.Items.StatTranslation
                 { IndexHandler.DivideBy100, d => d / 100 },
                 { IndexHandler.DivideBy100AndNegate, d => -d / 100 },
                 { IndexHandler.DivideBy100Precision2, d => Math.Round(d / 100, 2) },
+                { IndexHandler.DivideBy10Precision0, d => Math.Round(d / 10, 0) },
+                { IndexHandler.DivideBy2Precision0, d => Math.Round(d / 2, 0) },
+                { IndexHandler.DivideBy15Precision0, d => Math.Round(d / 15, 0) },
+                { IndexHandler.DivideBy20ThenDoublePrecision0, d => Math.Round(d / 20, 0) * 2 },
                 { IndexHandler.MillisecondsToSeconds, d => d / 1000 },
                 { IndexHandler.MillisecondsToSecondsPrecision0, d => Math.Round(d / 1000, 0) },
                 { IndexHandler.MillisecondsToSecondsPrecision2, d => Math.Round(d / 1000, 2) },
@@ -76,10 +90,14 @@ namespace POESKillTree.Model.Items.StatTranslation
                 { IndexHandler.PerMinuteToPerSecondPrecision0, d => Math.Round(d / 60, 0) },
                 { IndexHandler.PerMinuteToPerSecondPrecision1, d => Math.Round(d / 60, 1) },
                 { IndexHandler.PerMinuteToPerSecondPrecision2, d => Math.Round(d / 60, 2) },
+                {
+                    IndexHandler.PerMinuteToPerSecondPrecision2IfRequired,
+                    d => (int) d == 0 ? 0 : Math.Round(d / 60, 2)
+                },
                 // this appears on a unique map, we don't support map crafting
                 { IndexHandler.ModValueToItemClass, d => { throw new NotSupportedException(); } },
                 // not sure where this appears, at least not on anything we need to support
-                { IndexHandler.TempestModText, d => { throw new NotSupportedException(); }},
+                { IndexHandler.TempestModText, d => { throw new NotSupportedException(); } },
             };
 
         /// <summary>
