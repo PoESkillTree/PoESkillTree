@@ -3969,8 +3969,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Driftwood Spiked Shield" Level="12" Strength="0" Dexterity="19" Intelligence="19" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt2">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChanceToDodgeImplicitShield1</string>
+      <string>MovementVelocityPenaltyLightShieldImplicit</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
@@ -3991,8 +3991,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Linden Kite Shield" Level="13" Strength="20" Dexterity="0" Intelligence="20" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt2">
     <Implicit>
-      <string>AllResistancesImplicitShield1</string>
       <string>MovementVelocityPenaltyLightShieldImplicit</string>
+      <string>AllResistancesImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
@@ -4012,8 +4012,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield NotForSale" Name="Golden Flame" Level="15" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDemigods">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChaosResistDemigodsTorchImplicit</string>
+      <string>MovementVelocityPenaltyLightShieldImplicit</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 20%</string>
@@ -4021,8 +4021,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Painted Buckler" Level="16" Strength="0" Dexterity="44" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex3">
     <Implicit>
-      <string>MovementVelocityImplicitShield2</string>
       <string>MovementVelocityPenaltyLightShieldImplicit</string>
+      <string>MovementVelocityImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
@@ -4103,8 +4103,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Burnished Spiked Shield" Level="27" Strength="0" Dexterity="37" Intelligence="37" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt4">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChanceToDodgeImplicitShield2</string>
+      <string>MovementVelocityPenaltyLightShieldImplicit</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
@@ -4155,8 +4155,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Reinforced Tower Shield" Level="30" Strength="76" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr6">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield1</string>
+      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 23%</string>
@@ -4310,8 +4310,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Mahogany Tower Shield" Level="43" Strength="105" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr9">
     <Implicit>
-      <string>IncreasedLifeImplicitShield2</string>
       <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
+      <string>IncreasedLifeImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
@@ -4434,8 +4434,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Girded Tower Shield" Level="51" Strength="123" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr11">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield1</string>
+      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 23%</string>
@@ -4485,8 +4485,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Angelic Kite Shield" Level="55" Strength="70" Dexterity="0" Intelligence="70" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt9">
     <Implicit>
-      <string>AllResistancesImplicitShield3</string>
       <string>MovementVelocityPenaltyLightShieldImplicit</string>
+      <string>AllResistancesImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 22%</string>
@@ -4579,8 +4579,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Lacquered Buckler" Level="60" Strength="0" Dexterity="159" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex13">
     <Implicit>
-      <string>MovementVelocityImplicitShield2</string>
       <string>MovementVelocityPenaltyLightShieldImplicit</string>
+      <string>MovementVelocityImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
@@ -4609,8 +4609,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Ezomyte Spiked Shield" Level="62" Strength="0" Dexterity="85" Intelligence="85" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt11">
     <Implicit>
-      <string>ChanceToDodgeSpellsImplicitShield1</string>
       <string>MovementVelocityPenaltyLightShieldImplicit</string>
+      <string>ChanceToDodgeSpellsImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
@@ -4692,8 +4692,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Crusader Buckler" Level="66" Strength="0" Dexterity="159" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex15">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield3</string>
+      <string>MovementVelocityPenaltyLightShieldImplicit</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
@@ -4713,8 +4713,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Colossal Tower Shield" Level="67" Strength="159" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr16">
     <Implicit>
-      <string>IncreasedLifeImplicitShield1</string>
       <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
+      <string>IncreasedLifeImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 23%</string>
@@ -4743,8 +4743,8 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Imperial Buckler" Level="69" Strength="0" Dexterity="159" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex16">
     <Implicit>
-      <string>MovementVelocityImplicitShield2</string>
       <string>MovementVelocityPenaltyLightShieldImplicit</string>
+      <string>MovementVelocityImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
