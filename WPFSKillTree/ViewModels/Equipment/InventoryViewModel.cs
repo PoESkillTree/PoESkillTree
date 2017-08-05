@@ -23,7 +23,29 @@ namespace POESKillTree.ViewModels.Equipment
         public InventoryItemViewModel Gloves { get; }
         public InventoryItemViewModel Boots { get; }
         public InventoryItemViewModel Belt { get; }
+
+        //Jewel Slots
         public InventoryItemViewModel Jewel { get; }
+        public InventoryItemViewModel Jewel02 { get; }
+        public InventoryItemViewModel Jewel03 { get; }
+        public InventoryItemViewModel Jewel04 { get; }
+        public InventoryItemViewModel Jewel05 { get; }
+        public InventoryItemViewModel Jewel06 { get; }
+        public InventoryItemViewModel Jewel07 { get; }
+        public InventoryItemViewModel Jewel08 { get; }
+        public InventoryItemViewModel Jewel09 { get; }
+        public InventoryItemViewModel Jewel10 { get; }
+        public InventoryItemViewModel Jewel11 { get; }
+        public InventoryItemViewModel Jewel12 { get; }
+        public InventoryItemViewModel Jewel13 { get; }
+        public InventoryItemViewModel Jewel14 { get; }
+        public InventoryItemViewModel Jewel15 { get; }
+        public InventoryItemViewModel Jewel16 { get; }
+        public InventoryItemViewModel Jewel17 { get; }
+        public InventoryItemViewModel Jewel18 { get; }
+        public InventoryItemViewModel Jewel19 { get; }
+        public InventoryItemViewModel Jewel20 { get; }
+        public InventoryItemViewModel Jewel21 { get; }
 
         public InventoryViewModel(IExtendedDialogCoordinator dialogCoordinator, EquipmentData equipmentData,
             ItemAttributes itemAttributes)
@@ -41,7 +63,29 @@ namespace POESKillTree.ViewModels.Equipment
             Gloves = CreateSlotVm(ItemSlot.Gloves);
             Boots = CreateSlotVm(ItemSlot.Boots);
             Belt = CreateSlotVm(ItemSlot.Belt);
+
+            //Jewel Slots
             Jewel = CreateSlotVm(ItemSlot.Jewel);
+            Jewel02 = CreateSlotVm(ItemSlot.Jewel02);
+            Jewel03 = CreateSlotVm(ItemSlot.Jewel03);
+            Jewel04 = CreateSlotVm(ItemSlot.Jewel04);
+            Jewel05 = CreateSlotVm(ItemSlot.Jewel05);
+            Jewel06 = CreateSlotVm(ItemSlot.Jewel06);
+            Jewel07 = CreateSlotVm(ItemSlot.Jewel07);
+            Jewel08 = CreateSlotVm(ItemSlot.Jewel08);
+            Jewel09 = CreateSlotVm(ItemSlot.Jewel09);
+            Jewel10 = CreateSlotVm(ItemSlot.Jewel10);
+            Jewel11 = CreateSlotVm(ItemSlot.Jewel11);
+            Jewel12 = CreateSlotVm(ItemSlot.Jewel12);
+            Jewel13 = CreateSlotVm(ItemSlot.Jewel13);
+            Jewel14 = CreateSlotVm(ItemSlot.Jewel14);
+            Jewel15 = CreateSlotVm(ItemSlot.Jewel15);
+            Jewel16 = CreateSlotVm(ItemSlot.Jewel16);
+            Jewel17 = CreateSlotVm(ItemSlot.Jewel17);
+            Jewel18 = CreateSlotVm(ItemSlot.Jewel18);
+            Jewel19 = CreateSlotVm(ItemSlot.Jewel19);
+            Jewel20 = CreateSlotVm(ItemSlot.Jewel20);
+            Jewel21 = CreateSlotVm(ItemSlot.Jewel21);
         }
 
         private InventoryItemViewModel CreateSlotVm(ItemSlot slot)
