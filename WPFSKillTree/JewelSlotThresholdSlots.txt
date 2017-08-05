@@ -1,9 +1,9 @@
-XX XX XX 01 02 03 XX XX
-XX XX ?? XX XX XX ??
-XX ?? ?? XX XX XX ?? ??
-?? XX XX XX XX XX XX XX ??
-?? XX XX XX XX XX XX XX ??
-?? XX XX XX XX XX XX XX ??
-XX ?? ?? XX XX XX ?? ??
-XX XX ?? XX XX XX ??
-XX XX XX ?? ?? ?? XX
+Dex North, Str West, Int East, Hybrid Slots NE,NW, and between W & E
+XX XX 08 10 11 XX XX
+XX 17 XX XX XX 09 XX
+12 XX XX XX XX XX 01
+13 XX XX XX XX XX 02
+15 XX XX XX XX XX 03
+21 XX XX 16 XX XX 14
+Non-Threshold Slots Below
+04 05 06 07 18 19 20
