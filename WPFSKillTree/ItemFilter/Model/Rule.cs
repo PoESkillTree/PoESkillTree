@@ -123,7 +123,7 @@ namespace POESKillTree.ItemFilter.Model
                     return new Block(this)
                     {
                         DebugOrigin = "#" + Group.Id + "." + Id,
-                        OfGroup = Group,
+                        OfGroup = Group.HasMatches ? Group : null, // XXX: Don't set OfGroup if Group doesn't have matches.
                         BackgroundColor = Group.BackgroundColor,
                         BorderColor = Group.BorderColor,
                         TextColor = Group.TextColor
@@ -132,7 +132,7 @@ namespace POESKillTree.ItemFilter.Model
                     return new Block(this)
                     {
                         DebugOrigin = "#" + Group.Id + "." + Id,
-                        OfGroup = Group
+                        OfGroup = Group.HasMatches ? Group : null, // XXX: Don't set OfGroup if Group doesn't have matches.
                     };
             }
 
@@ -158,7 +158,7 @@ namespace POESKillTree.ItemFilter.Model
                         block = new Block(this)
                         {
                             DebugOrigin = "#" + Group.Id + "." + Id + "[" + i + "]",
-                            OfGroup = Group,
+                            OfGroup = Group.HasMatches ? Group : null, // XXX: Don't set OfGroup if Group doesn't have matches.
                             BackgroundColor = Group.BackgroundColor,
                             BorderColor = Group.BorderColor,
                             TextColor = Group.TextColor
@@ -167,7 +167,7 @@ namespace POESKillTree.ItemFilter.Model
                         block = new Block(this)
                         {
                             DebugOrigin = "#" + Group.Id + "." + Id + "[" + i + "]",
-                            OfGroup = Group
+                            OfGroup = Group.HasMatches ? Group : null, // XXX: Don't set OfGroup if Group doesn't have matches.
                         };
 
                     // Copy matches.
