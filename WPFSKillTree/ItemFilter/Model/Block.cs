@@ -145,12 +145,17 @@ namespace POESKillTree.ItemFilter.Model
         }
 
         // Blocks are sorted from highest priority to lowest.
+        // TODO: Fully transitive ordering.
         public int CompareTo(Block block)
         {
             if (block == null) return 1;
 
             // Any Show block is always in front of any Hide block, unless both blocks are from same rule group.
-            if (Show != block.Show && (OfGroup == null && block.OfGroup == null || OfGroup != block.OfGroup)) return Show ? -1 : 1;
+            // FIXME: Not every block combination is compared. @Flasks and #Flasks.* blocks may never be compared against each other, while they may require specific ordering due to difference in visibility!
+            if (Show != block.Show)
+                return OfGroup == block.OfGroup && OfGroup != null
+                    ? (Show ? 1 : -1)
+                    : (Show ? -1 : 1);
 
             // Comparison by explicit priority.
             int result = block.ExplicitPriority.CompareTo(ExplicitPriority);
@@ -269,6 +274,11 @@ namespace POESKillTree.ItemFilter.Model
             Color c = ColorUtils.FromRgbString(color);
 
             return c.R + " " + c.G + " " + c.B + (c.A < 255 ? " " + c.A : "");
+        }
+
+        public override string ToString()
+        {
+            return (Show ? "Show " : "Hide ") + (DebugOrigin == null ? "(original)" : DebugOrigin);
         }
 
         public bool VisualEquals(Block block)

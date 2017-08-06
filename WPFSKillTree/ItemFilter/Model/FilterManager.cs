@@ -273,6 +273,30 @@ namespace POESKillTree.ItemFilter.Model
                             // XXX: Harbringer
                             new Rule
                             {
+                                Id = "TransmutationShard",
+                                IsEnabled = false,
+                                Name = "Transmutation Shard",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Transmutation Shard" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "AlterationShard",
+                                IsEnabled = false,
+                                Name = "Alteration Shard",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Alteration Shard" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "AlchemyShard",
+                                IsEnabled = false,
+                                Name = "Alchemy Shard",
+                                Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Alchemy Shard" }) }
+                            },
+                            new Rule
+                            {
                                 Id = "ChaosShard",
                                 IsEnabled = false,
                                 Name = "Chaos Shard",
@@ -362,7 +386,6 @@ namespace POESKillTree.ItemFilter.Model
                             new Rule
                             {
                                 Id = "ScrollFragment",
-                                IsEnabled = false,
                                 Name = "Scroll Fragment",
                                 Description = L10n.Message("Any Normal item which vendor trades for Scroll Fragment."),
                                 Matches = new List<Match>
@@ -374,7 +397,6 @@ namespace POESKillTree.ItemFilter.Model
                             new Rule
                             {
                                 Id = "ShardFromMagic",
-                                IsEnabled = false,
                                 Name = "Shards from Magic items",
                                 Description = L10n.Message("Any Magic item which vendor trades for Transmutation Shard, Alteration Shard or Alchemy Shard."),
                                 Matches = new List<Match>
@@ -1280,6 +1302,31 @@ namespace POESKillTree.ItemFilter.Model
         {
             List<Block> output = new List<Block>();
 
+            List<string> debugOnly = new List<string>()
+            {
+                // test1.xml will product wrong filter.
+                "#Recipes.Bauble", "@Flasks", "#Flasks.",
+                "#Currency.",
+                "#Crafting.",
+                "#Chancing.",
+                "#Recipes.Scrap", "#Recipes.Whetstone",
+                "#Recipes.Chisel",
+                "#Recipes.ShardFromMagic", "#Recipes.ScrollFragment"
+            };
+            List<Block> remove = new List<Block>();
+            foreach (Block block in blocks)
+            {
+                bool keep = false;
+                foreach (string only in debugOnly)
+                    if (block.DebugOrigin.StartsWith(only))
+                    {
+                        keep = true;
+                        break;
+                    }
+                if (!keep) remove.Add(block);
+            }
+            //if (remove.Count > 0) blocks.RemoveAll(b => remove.Contains(b));
+
             // Phase 1: Visibility (i.e. show only those blocks which have colors defined or lower priority block would hide them).
             List<Block> input = new List<Block>(blocks);
             input.Sort();
@@ -1356,6 +1403,25 @@ namespace POESKillTree.ItemFilter.Model
             }
 
             output.Sort();
+
+            // Phase 4: Forced re-ordering (until Block.CompareTo is fully transitive, i.e. (A < B) && (B < C) => (A < C))
+
+            // Ensure that hidden group's member block will be always in front of its shown group block, and vice versa.
+            List<Block[]> moves = new List<Block[]>();
+            foreach (Block group in output.FindAll(b => b.DebugOrigin[0] == '@'))
+                foreach (Block member in output.FindAll(b => b.OfGroup == group.OfGroup && b.Show != group.Show))
+                {
+                    if (group.Show)
+                        moves.Add(new Block[2] { member, group }); // Move member before group.
+                    else
+                        moves.Add(new Block[2] { group, member }); // Move group before member.
+                }
+            if (moves.Count > 0)
+                foreach (Block[] move in moves)
+                {
+                    output.Remove(move[0]);
+                    output.Insert(output.IndexOf(move[1]), move[0]);
+                }
 
             return output;
         }
