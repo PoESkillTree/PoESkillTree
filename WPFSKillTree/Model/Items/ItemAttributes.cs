@@ -617,7 +617,7 @@ namespace POESKillTree.Model.Items
         {
             public static readonly Regex Backreplace = new Regex("#");
 
-            private readonly List<float> _value;
+            private readonly List<SmallDigit> _value;
 
             private readonly string _group;
             public string Group
@@ -636,14 +636,14 @@ namespace POESKillTree.Model.Items
                 get { return _value.Aggregate(_attribute, (current, f) => Backreplace.Replace(current, f + "", 1)); }
             }
 
-            public Attribute(string s, IEnumerable<float> val, string grp)
+            public Attribute(string s, IEnumerable<SmallDigit> val, string grp)
             {
                 _attribute = s;
-                _value = new List<float>(val);
+                _value = new List<SmallDigit>(val);
                 _group = grp;
             }
 
-            public void Add(IReadOnlyList<float> val)
+            public void Add(IReadOnlyList<SmallDigit> val)
             {
                 if (_value.Count != val.Count) throw new NotSupportedException();
                 for (var i = 0; i < val.Count; i++)
