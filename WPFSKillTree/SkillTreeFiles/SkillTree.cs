@@ -1053,7 +1053,9 @@ namespace POESKillTree.SkillTreeFiles
                 }
                 catch (Exception)
                 {
-                    // ?
+#if (DEBUG)
+                    Console.WriteLine("Exception of" + ex.ToString() + " occurred during SkillTree->HighlightNodesBySearch.");
+#endif
                 }
             }
             else
@@ -1134,7 +1136,11 @@ namespace POESKillTree.SkillTreeFiles
             // Dexterity value is not getting rounded up any more but rounded normally to the nearest multiple of 5.
             // @see http://pathofexile.gamepedia.com/Talk:Evasion
             SmallDigit dex = attribs["+# to Dexterity"][0];
-            dex = (SmallDigit)Math.Round(dex / DexPerEvas, 0, MidpointRounding.AwayFromZero) * DexPerEvas;
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            dex = SmallDec.Round(dex / DexPerEvas, 0, MidpointRounding.AwayFromZero) * DexPerEvas;
+#else
+            dex = (float)Math.Round(dex / DexPerEvas, 0, MidpointRounding.AwayFromZero) * DexPerEvas;
+#endif
             retval["#% increased Evasion Rating"] = new List<SmallDigit> { dex / DexPerEvas };
 
             int frenzycharges, powercharges;

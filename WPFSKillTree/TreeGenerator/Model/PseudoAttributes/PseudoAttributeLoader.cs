@@ -12,6 +12,12 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
 #if (PoESkillTree_UseSmallDec_ForAttributes)
     using CSharpGlobalCode.GlobalCode_ExperimentalCode;
 #endif
+    using SmallDigit =
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+    SmallDec;
+#else
+    System.Single;
+#endif
     /// <summary>
     /// The exception that is thrown when the xml files describing pseudo
     /// attributes are invalid.
@@ -135,7 +141,7 @@ namespace POESKillTree.TreeGenerator.Model.PseudoAttributes
                     var attr = new Attribute(xmlAttr.Name);
                     if (xmlAttr.ConversionMultiplierSpecified)
                     {
-                        attr.ConversionMultiplier = (float) xmlAttr.ConversionMultiplier;
+                        attr.ConversionMultiplier = (SmallDigit) xmlAttr.ConversionMultiplier;
                     }
                     pseudo.Attributes.Add(attr);
 

@@ -3,6 +3,15 @@ using POESKillTree.Utils;
 
 namespace POESKillTree.TreeGenerator.Model
 {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+#endif
+    using SmallDigit =
+#if (PoESkillTree_UseSmallDec_ForAttributes&&PoESkillTree_UseSmallDec_ForGeneratorBars)
+    SmallDec;
+#else
+    System.Single;
+#endif
     /// <summary>
     /// Data class for Constraints with a data object, a target value and a weight.
     /// </summary>
@@ -36,9 +45,9 @@ namespace POESKillTree.TreeGenerator.Model
             set { SetProperty(ref _data, value); }
         }
 
-        private float _targetValue = DefaultTargetValue;
+        private SmallDigit _targetValue = DefaultTargetValue;
 
-        public float TargetValue
+        public SmallDigit TargetValue
         {
             get { return _targetValue; }
             set { SetProperty(ref _targetValue, value); }
@@ -62,11 +71,35 @@ namespace POESKillTree.TreeGenerator.Model
             Data = data;
         }
 
+#if (PoESkillTree_EnableMinimumValue)
+        private SmallDigit _minimumValue =
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
+        SmallDec.Zero;
+#else
+        0.0f;
+#endif
+
+        /// <summary>
+        /// Minimum Aimed value for the Attribute(with greater CSVS score contribution effect if get at least this amount) 
+        /// </summary>
+        public SmallDigit MinimumValue
+        {
+            get { return _minimumValue; }
+            set
+            {
+                SetProperty(ref _minimumValue, value);
+            }
+        }
+#endif
+
         private TargetWeightConstraint(TargetWeightConstraint<T> toClone)
             : this(toClone.Data)
         {
             TargetValue = toClone.TargetValue;
             Weight = toClone.Weight;
+#if (PoESkillTree_EnableMinimumValue)
+            MinimumValue = toClone.MinimumValue;
+#endif
         }
 
         public object Clone()
