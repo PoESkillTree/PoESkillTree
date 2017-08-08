@@ -50,7 +50,7 @@ namespace POESKillTree.SkillTreeFiles
             {"#% Attack Speed Increase per Frenzy Charge", 4},
             {"#% Cast Speed Increase per Frenzy Charge", 4},
             {"#% More Damage per Frenzy Charge", 4},
-            {"#% Critical Strike Chance Increase per Power Charge", 50},
+            {"#% Critical Strike Chance Increase per Power Charge", 40},
         };
 
         public static readonly Dictionary<string, List<string>> HybridAttributes = new Dictionary<string, List<string>>
