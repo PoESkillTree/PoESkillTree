@@ -14,17 +14,20 @@ namespace PoESkillTree.Computation.Data
         // These apply to the main value of the modifier (or multiple e.g. for "Adds # to # ..."),
         // not to other values like in "for # seconds".
 
+        private readonly IMatchBuilder _matchBuilder;
+
         public ValueConversionMatchers(IProviderFactories providerFactories,
-            IMatchContextFactory matchContextFactory) 
+            IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder) 
             : base(providerFactories, matchContextFactory)
         {
+            _matchBuilder = matchBuilder;
             Matchers = CreateCollection().ToList();
         }
 
         public IReadOnlyList<MatcherData> Matchers { get; }
 
         private ValueConversionMatcherCollection CreateCollection() =>
-            new ValueConversionMatcherCollection
+            new ValueConversionMatcherCollection(_matchBuilder)
             {
                 // action
                 { "for each enemy you've killed recently", Kill.CountRecently },

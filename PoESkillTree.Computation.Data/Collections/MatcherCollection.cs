@@ -9,11 +9,30 @@ using PoESkillTree.Computation.Providers.Values;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
-    public class MatcherCollection : IEnumerable<MatcherData>
+    public abstract class MatcherCollection : IEnumerable<MatcherData>
     {
+        protected IMatchBuilder MatchBuilder { get; }
+
+        private readonly List<MatcherData> _matchers = new List<MatcherData>();
+
+        protected MatcherCollection(IMatchBuilder matchBuilder)
+        {
+            MatchBuilder = matchBuilder;
+        }
+
+        protected void Add(string regex, IMatchBuilder matchBuilder)
+        {
+            _matchers.Add(new MatcherData(regex, matchBuilder));
+        }
+
+        protected void Add(string regex, IMatchBuilder matchBuilder, string matchSubstitution)
+        {
+            _matchers.Add(new MatcherData(regex, matchBuilder, matchSubstitution));
+        }
+
         public IEnumerator<MatcherData> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _matchers.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -23,53 +42,12 @@ namespace PoESkillTree.Computation.Data.Collections
     }
 
 
-    public class FormMatcherCollection : MatcherCollection
-    {
-        public void Add([RegexPattern] string regex, IFormProvider form, int? value = null)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-
-    public class FormAndStatMatcherCollection : MatcherCollection
-    {
-        public void Add([RegexPattern] string regex, IFormProvider form, IStatProvider stat, double? value = null,
-            IConditionProvider condition = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Add([RegexPattern] string regex, IFormProvider form, params IStatProvider[] stats)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Add([RegexPattern] string regex, IFormProvider form, IEnumerable<IStatProvider> stats)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Add([RegexPattern] string regex, IFormProvider form, IStatProvider stat, string substitution)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Add([RegexPattern] string regex, IFormProvider form, IStatProvider stat, ValueFunc converter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Add([RegexPattern] string regex, 
-            (IFormProvider forFirstValue, IFormProvider forSecondValue) forms, IStatProvider stat)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-
     public class StatMatcherCollection<T> : MatcherCollection where T : class, IStatProvider
     {
+        public StatMatcherCollection(IMatchBuilder matchBuilder) : base(matchBuilder)
+        {
+        }
+
         public void Add([RegexPattern] string regex, params T[] stats)
         {
             throw new NotImplementedException();
@@ -99,11 +77,18 @@ namespace PoESkillTree.Computation.Data.Collections
 
     public class StatMatcherCollection : StatMatcherCollection<IStatProvider>
     {
+        public StatMatcherCollection(IMatchBuilder matchBuilder) : base(matchBuilder)
+        {
+        }
     }
 
 
     public class PropertyMatcherCollection : MatcherCollection
     {
+        public PropertyMatcherCollection(IMatchBuilder matchBuilder) : base(matchBuilder)
+        {
+        }
+
         public void Add([RegexPattern] string regex, IStatProvider stat = null)
         {
             throw new NotImplementedException();
@@ -118,6 +103,10 @@ namespace PoESkillTree.Computation.Data.Collections
 
     public class ConditionMatcherCollection : MatcherCollection
     {
+        public ConditionMatcherCollection(IMatchBuilder matchBuilder) : base(matchBuilder)
+        {
+        }
+
         public void Add([RegexPattern] string regex, IConditionProvider condition)
         {
             throw new NotImplementedException();
@@ -127,6 +116,10 @@ namespace PoESkillTree.Computation.Data.Collections
 
     public class ValueConversionMatcherCollection : MatcherCollection
     {
+        public ValueConversionMatcherCollection(IMatchBuilder matchBuilder) : base(matchBuilder)
+        {
+        }
+
         public void Add([RegexPattern] string regex, ValueFunc func)
         {
             throw new NotImplementedException();
@@ -141,6 +134,9 @@ namespace PoESkillTree.Computation.Data.Collections
 
     public class StatManipulatorMatcherCollection : MatcherCollection
     {
+        public StatManipulatorMatcherCollection(IMatchBuilder matchBuilder) : base(matchBuilder)
+        {
+        }
 
         public void Add([RegexPattern] string regex,
             Func<IStatProvider, IStatProvider> manipulateStat,
@@ -163,6 +159,10 @@ namespace PoESkillTree.Computation.Data.Collections
 
     public class SpecialMatcherCollection : MatcherCollection
     {
+        public SpecialMatcherCollection(IMatchBuilder matchBuilder) : base(matchBuilder)
+        {
+        }
+
         public void Add([RegexPattern] string regex, IFormProvider form, IStatProvider stat, 
             ValueProvider value, ValueFunc converter = null, IConditionProvider condition = null)
         {

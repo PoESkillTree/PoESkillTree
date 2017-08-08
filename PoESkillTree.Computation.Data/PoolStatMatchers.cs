@@ -10,17 +10,20 @@ namespace PoESkillTree.Computation.Data
 {
     public class PoolStatMatchers : UsesMatchContext, IStatMatchers
     {
+        private readonly IMatchBuilder _matchBuilder;
+
         public PoolStatMatchers(IProviderFactories providerFactories, 
-            IMatchContextFactory matchContextFactory) 
+            IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder) 
             : base(providerFactories, matchContextFactory)
         {
+            _matchBuilder = matchBuilder;
             Matchers = CreateCollection().ToList();
         }
 
         public IReadOnlyList<MatcherData> Matchers { get; }
 
         private StatMatcherCollection<IPoolStatProvider> CreateCollection() =>
-            new StatMatcherCollection<IPoolStatProvider>
+            new StatMatcherCollection<IPoolStatProvider>(_matchBuilder)
             {
                 { "(maximum )?life", Life },
                 { "(maximum )?mana", Mana },

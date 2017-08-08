@@ -11,17 +11,20 @@ namespace PoESkillTree.Computation.Data
 {
     public class StatManipulatorMatchers : UsesMatchContext, IStatMatchers
     {
+        private readonly IMatchBuilder _matchBuilder;
+
         public StatManipulatorMatchers(IProviderFactories providerFactories, 
-            IMatchContextFactory matchContextFactory) 
+            IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder) 
             : base(providerFactories, matchContextFactory)
         {
+            _matchBuilder = matchBuilder;
             Matchers = CreateCollection().ToList();
         }
 
         public IReadOnlyList<MatcherData> Matchers { get; }
 
         private StatManipulatorMatcherCollection CreateCollection() =>
-            new StatManipulatorMatcherCollection
+            new StatManipulatorMatcherCollection(_matchBuilder)
             {
                 { "you and nearby allies( deal| have)?", s => s.AsAura(Self, Ally) },
                 {

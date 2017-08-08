@@ -15,16 +15,19 @@ namespace PoESkillTree.Computation.Data
 {
     public class GeneralStatMatchers : UsesMatchContext, IStatMatchers
     {
+        private readonly IMatchBuilder _matchBuilder;
+
         public GeneralStatMatchers(IProviderFactories providerFactories, 
-            IMatchContextFactory matchContextFactory) 
+            IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder) 
             : base(providerFactories, matchContextFactory)
         {
+            _matchBuilder = matchBuilder;
             Matchers = CreateCollection().ToList();
         }
 
         public IReadOnlyList<MatcherData> Matchers { get; }
 
-        private StatMatcherCollection CreateCollection() => new StatMatcherCollection
+        private StatMatcherCollection CreateCollection() => new StatMatcherCollection(_matchBuilder)
         {
             // attributes
             { "strength", Attribute.Strength },

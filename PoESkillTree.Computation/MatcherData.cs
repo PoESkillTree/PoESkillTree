@@ -1,5 +1,3 @@
-using JetBrains.Annotations;
-
 namespace PoESkillTree.Computation
 {
     public class MatcherData
@@ -8,10 +6,13 @@ namespace PoESkillTree.Computation
 
         public IMatchBuilder MatchBuilder { get; }
 
-        public MatcherData([RegexPattern] string regex, IMatchBuilder matchBuilder)
+        public string MatchSubstitution { get; }
+
+        public MatcherData(string regex, IMatchBuilder matchBuilder, string matchSubstitution = "")
         {
             Regex = regex;
             MatchBuilder = matchBuilder;
+            MatchSubstitution = matchSubstitution;
         }
     }
 }

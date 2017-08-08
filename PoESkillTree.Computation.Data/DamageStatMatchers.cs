@@ -11,17 +11,20 @@ namespace PoESkillTree.Computation.Data
 {
     public class DamageStatMatchers : UsesMatchContext, IStatMatchers
     {
+        private readonly IMatchBuilder _matchBuilder;
+
         public DamageStatMatchers(IProviderFactories providerFactories, 
-            IMatchContextFactory matchContextFactory) 
+            IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder) 
             : base(providerFactories, matchContextFactory)
         {
+            _matchBuilder = matchBuilder;
             Matchers = CreateCollection().ToList();
         }
 
         public IReadOnlyList<MatcherData> Matchers { get; }
 
         private StatMatcherCollection<IDamageStatProvider> CreateCollection() =>
-            new StatMatcherCollection<IDamageStatProvider>
+            new StatMatcherCollection<IDamageStatProvider>(_matchBuilder)
             {
                 // unspecific
                 { "damage", Damage },

@@ -14,16 +14,20 @@ namespace PoESkillTree.Computation.Data
 {
     public class SpecialMatchers : UsesMatchContext, IStatMatchers
     {
+        private readonly IMatchBuilder _matchBuilder;
+
         public SpecialMatchers(IProviderFactories providerFactories, 
-            IMatchContextFactory matchContextFactory) 
+            IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder) 
             : base(providerFactories, matchContextFactory)
         {
+            _matchBuilder = matchBuilder;
             Matchers = CreateCollection().ToList();
         }
 
         public IReadOnlyList<MatcherData> Matchers { get; }
 
-        private SpecialMatcherCollection CreateCollection() => new SpecialMatcherCollection
+        private SpecialMatcherCollection CreateCollection() => new SpecialMatcherCollection(
+            _matchBuilder)
         {
             {
                 @"\+# to level of socketed support gems",

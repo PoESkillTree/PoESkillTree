@@ -8,19 +8,24 @@ namespace PoESkillTree.Computation.Data
 {
     public class FormMatchers : UsesFormProviders, IStatMatchers
     {
-        public FormMatchers(IProviderFactories providerFactories) : base(providerFactories)
+        private readonly IMatchBuilder _matchBuilder;
+
+        public FormMatchers(IProviderFactories providerFactories, IMatchBuilder matchBuilder) 
+            : base(providerFactories)
         {
+            _matchBuilder = matchBuilder;
             Matchers = CreateCollection().ToList();
         }
 
         public IReadOnlyList<MatcherData> Matchers { get; }
 
-        private FormMatcherCollection CreateCollection() => new FormMatcherCollection
+        private FormMatcherCollection CreateCollection() => new FormMatcherCollection(_matchBuilder,
+            ValueFactory)
         {
             { "#% increased", PercentIncrease },
             { "#% reduced", PercentReduce },
             { "#% more", PercentMore },
-            { "#% less", PercentLess},
+            { "#% less", PercentLess },
             { @"\+#%? to", BaseAdd },
             { @"\+?#%?(?= chance)", BaseAdd },
             { @"\+?#% of", BaseAdd },

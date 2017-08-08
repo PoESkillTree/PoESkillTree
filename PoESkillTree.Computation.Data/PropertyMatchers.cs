@@ -13,16 +13,20 @@ namespace PoESkillTree.Computation.Data
         // "Elemental Damage: ..." needs to be replaced by up to three properties (one for each 
         // element) before it gets here.
 
+        private readonly IMatchBuilder _matchBuilder;
+
         public PropertyMatchers(IProviderFactories providerFactories, 
-            IMatchContextFactory matchContextFactory)
+            IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder)
             : base(providerFactories, matchContextFactory)
         {
+            _matchBuilder = matchBuilder;
             Matchers = CreateCollection().ToList();
         }
 
         public IReadOnlyList<MatcherData> Matchers { get; }
 
-        private PropertyMatcherCollection CreateCollection() => new PropertyMatcherCollection
+        private PropertyMatcherCollection CreateCollection() => new PropertyMatcherCollection(
+            _matchBuilder)
         {
             { "quality" }, // do nothing with it
             { "attacks per second", Skills.Speed },

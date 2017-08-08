@@ -11,16 +11,20 @@ namespace PoESkillTree.Computation.Data
 {
     public class FormAndStatMatchers : UsesMatchContext, IStatMatchers
     {
+        private readonly IMatchBuilder _matchBuilder;
+
         public FormAndStatMatchers(IProviderFactories providerFactories,
-            IMatchContextFactory matchContextFactory)
+            IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder)
             : base(providerFactories, matchContextFactory)
         {
+            _matchBuilder = matchBuilder;
             Matchers = CreateCollection().ToList();
         }
 
         public IReadOnlyList<MatcherData> Matchers { get; }
 
-        private FormAndStatMatcherCollection CreateCollection() => new FormAndStatMatcherCollection
+        private FormAndStatMatcherCollection CreateCollection() => new FormAndStatMatcherCollection(
+            _matchBuilder, ValueFactory)
         {
             // attributes
             // offense

@@ -5,7 +5,7 @@ namespace PoESkillTree.Computation.Providers.Values
 {
     public class ValueProvider : IValueProvider
     {
-        internal ValueProvider()
+        public ValueProvider(IValueProvider value)
         {
         }
 

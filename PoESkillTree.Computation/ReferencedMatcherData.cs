@@ -1,6 +1,4 @@
-﻿using JetBrains.Annotations;
-
-namespace PoESkillTree.Computation
+﻿namespace PoESkillTree.Computation
 {
     public class ReferencedMatcherData<T>
     {
@@ -8,7 +6,7 @@ namespace PoESkillTree.Computation
 
         public T Match { get; }
 
-        public ReferencedMatcherData([RegexPattern] string regex, T match)
+        public ReferencedMatcherData(string regex, T match)
         {
             Regex = regex;
             Match = match;

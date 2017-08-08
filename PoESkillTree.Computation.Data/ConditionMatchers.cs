@@ -12,16 +12,20 @@ namespace PoESkillTree.Computation.Data
 {
     public class ConditionMatchers : UsesMatchContext, IStatMatchers
     {
+        private readonly IMatchBuilder _matchBuilder;
+
         public ConditionMatchers(IProviderFactories providerFactories, 
-            IMatchContextFactory matchContextFactory) 
+            IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder) 
             : base(providerFactories, matchContextFactory)
         {
+            _matchBuilder = matchBuilder;
             Matchers = CreateCollection().ToList();
         }
 
         public IReadOnlyList<MatcherData> Matchers { get; }
 
-        private ConditionMatcherCollection CreateCollection() => new ConditionMatcherCollection
+        private ConditionMatcherCollection CreateCollection() => new ConditionMatcherCollection(
+            _matchBuilder)
         {
             // actions
             { "on ({ActionMatchers})", Group.AsAction.On() },
