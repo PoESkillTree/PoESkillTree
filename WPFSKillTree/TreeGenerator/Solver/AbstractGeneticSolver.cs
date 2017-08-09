@@ -9,6 +9,15 @@ using POESKillTree.TreeGenerator.Settings;
 
 namespace POESKillTree.TreeGenerator.Solver
 {
+#if (PoESkillTree_EnableAlternativeCSV&&PoESkillTree_UseSmallDec_ForAttributes)
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+#endif
+    using Digit =
+#if (PoESkillTree_AlternativeCSVType&&PoESkillTree_UseSmallDec_ForAttributes)
+    SmallDec;
+#else
+    System.Double;
+#endif
     /// <summary>
     /// Abstract solver that uses <see cref="GeneticAlgorithm"/> for solving.
     /// Subclasses at least need to provide a fitness function and <see cref="GeneticAlgorithmParameters"/>.
@@ -211,9 +220,9 @@ namespace POESKillTree.TreeGenerator.Solver
         /// Calculates the fitness given a set of nodes that form the skill tree.
         /// </summary>
         /// <returns>a value indicating the fitness of the given nodes. Higher means better.</returns>
-        protected abstract double FitnessFunction(HashSet<ushort> skilledNodes);
+        protected abstract Digit FitnessFunction(HashSet<ushort> skilledNodes);
 
-        private double FitnessFunction(BitArray dna)
+        private Digit FitnessFunction(BitArray dna)
         {
             return FitnessFunction(DnaToUsedNodes(dna));
         }

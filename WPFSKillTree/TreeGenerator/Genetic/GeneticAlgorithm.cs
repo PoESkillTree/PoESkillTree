@@ -11,6 +11,12 @@ namespace POESKillTree.TreeGenerator.Genetic
 #if (PoESkillTree_AlternativeCSVType&&PoESkillTree_UseSmallDec_ForAttributes)
     using CSharpGlobalCode.GlobalCode_ExperimentalCode;
 #endif
+    using Digit =
+#if (PoESkillTree_AlternativeCSVType&&PoESkillTree_UseSmallDec_ForAttributes)
+    SmallDec;
+#else
+    System.Double;
+#endif
     /// <summary>
     /// Data struct to pass parameters to <see cref="GeneticAlgorithm"/>.
     /// Most of these are up for experimentation to see what produces the best results.
@@ -131,13 +137,7 @@ namespace POESKillTree.TreeGenerator.Genetic
         /// evaluated.</param>
         /// <returns>The fitness of the DNA, a score for how good the
         /// corresponding solution is.</returns>
-        public delegate
-#if (PoESkillTree_AlternativeCSVType&&PoESkillTree_UseSmallDec_ForAttributes)
-        SmallDec
-#else
-        double
-#endif
-        SolutionFitnessFunction(BitArray dna);
+        public delegate Digit SolutionFitnessFunction(BitArray dna);
 
         private readonly SolutionFitnessFunction _solutionFitness;
 
@@ -185,26 +185,14 @@ namespace POESKillTree.TreeGenerator.Genetic
         {
             public readonly BitArray DNA;
             
-            public readonly
-#if (PoESkillTree_AlternativeCSVType&&PoESkillTree_UseSmallDec_ForAttributes)
-            SmallDec
-#else
-            double
-#endif
-            Fitness;
+            public readonly Digit Fitness;
 
             public int Rank;
 
             // The amount of generations this individual has lived.
             public int Age;
 
-            public Individual(BitArray dna,
-#if (PoESkillTree_AlternativeCSVType&&PoESkillTree_UseSmallDec_ForAttributes)
-            SmallDec
-#else
-            double
-#endif
-            fitness)
+            public Individual(BitArray dna, Digit fitness)
             {
                 DNA = dna;
                 Fitness = fitness;
@@ -215,19 +203,7 @@ namespace POESKillTree.TreeGenerator.Genetic
         /// <summary>
         /// Cache for the fitness values so they are only calculated once.
         /// </summary>
-        private readonly ConcurrentDictionary<BitArray,
-#if (PoESkillTree_AlternativeCSVType&&PoESkillTree_UseSmallDec_ForAttributes)
-        SmallDec
-#else
-        double
-#endif
-        > _fitnessCache = new ConcurrentDictionary<BitArray,
-#if (PoESkillTree_AlternativeCSVType&&PoESkillTree_UseSmallDec_ForAttributes)
-        SmallDec
-#else
-        double
-#endif
-        >();
+        private readonly ConcurrentDictionary<BitArray,Digit> _fitnessCache = new ConcurrentDictionary<BitArray, Digit>();
 
         /// <summary>
         /// Initializes a new instance of the genetic algorithm optimizer.

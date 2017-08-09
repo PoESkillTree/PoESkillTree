@@ -4,6 +4,9 @@ using System.IO;
 
 namespace POESKillTree.Utils.Extensions
 {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+#endif
     public static class StringExtensions
     {
         public static bool Contains(this string source, string toCheck, StringComparison comp)
@@ -80,5 +83,22 @@ namespace POESKillTree.Utils.Extensions
         {
             return double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out f);
         }
+#if (PoESkillTree_UseSmallDec_ForAttributes)//Having both methods so that can support separate types for player attributes and item attributes
+         /// <summary>
+        /// Equal to <code>SmallDec.Parse(s, CultureInfo.InvariantCulture)</code>
+        /// </summary>
+        public static SmallDec ParseAsSmallDec(this string s)
+        {
+            return SmallDec.Parse(s, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Equal to <code>SmallDec.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out f)</code>
+        /// </summary>
+        public static bool TryParseAsSmallDec(this string s, out SmallDec f)
+        {
+            return SmallDec.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out f);
+        }
+#endif
     }
 }

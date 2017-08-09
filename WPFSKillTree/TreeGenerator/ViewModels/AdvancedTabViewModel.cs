@@ -23,6 +23,21 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.TreeGenerator.ViewModels
 {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+#endif
+    using SmallDigit =
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+    SmallDec;
+#else
+    System.Single;
+#endif
+    using SmallDigitGUI =
+#if (PoESkillTree_UseSmallDec_ForAttributes && PoESkillTree_UseSmallDec_ForGeneratorBars)
+    SmallDec;
+#else
+    System.Single;
+#endif
     // Some aliases to make things clearer without the need of extra classes.
     using AttributeConstraint = TargetWeightConstraint<string>;
     using PseudoAttributeConstraint = TargetWeightConstraint<PseudoAttribute>;
@@ -77,6 +92,9 @@ namespace POESKillTree.TreeGenerator.ViewModels
             private const string AttributeKey = "Attribute";
             private const string TargetValueKey = "TargetValue";
             private const string WeightKey = "Weight";
+#if (PoESkillTree_EnableMinimumValue)
+            private const string MinimumValueKey = "MinimumValue";
+#endif
 
             private readonly AdvancedTabViewModel _vm;
 
@@ -87,101 +105,151 @@ namespace POESKillTree.TreeGenerator.ViewModels
 
             public void LoadFrom(JObject jObject)
             {
-                JToken token;
-                _vm.ClearAttributeConstraints();
-                if (jObject.TryGetValue(nameof(AttributeConstraints), out token) && token.Any())
+            #if (DEBUG)
+                try
                 {
-                    var newConstraints = new List<AttributeConstraint>();
-                    foreach (var element in token)
+            #endif
+                    JToken token;
+                    _vm.ClearAttributeConstraints();
+                    if (jObject.TryGetValue(nameof(AttributeConstraints), out token) && token.Any())
                     {
-                        var obj = element as JObject;
-                        if (obj == null)
-                            continue;
-                        JToken attrToken, targetToken, weightToken;
-                        if (!obj.TryGetValue(AttributeKey, out attrToken)
-                            || !obj.TryGetValue(TargetValueKey, out targetToken)
-                            || !obj.TryGetValue(WeightKey, out weightToken))
-                            continue;
-
-                        var attr = attrToken.ToObject<string>();
-                        newConstraints.Add(new AttributeConstraint(attr)
+                        var newConstraints = new List<AttributeConstraint>();
+                        foreach (var element in token)
                         {
-                            TargetValue = targetToken.ToObject<float>(),
-                            Weight = weightToken.ToObject<int>()
-                        });
-                        _vm._addedAttributes.Add(attr);
+                            var obj = element as JObject;
+                            if (obj == null)
+                                continue;
+                                JToken attrToken,
+    #if (PoESkillTree_EnableMinimumValue)
+                                minimumToken,
+    #endif
+                                targetToken, weightToken;
+                            if (!obj.TryGetValue(AttributeKey, out attrToken)
+    #if (PoESkillTree_EnableMinimumValue)
+                                    || !obj.TryGetValue(MinimumValueKey, out minimumToken)
+    #endif
+                                || !obj.TryGetValue(TargetValueKey, out targetToken)
+                                || !obj.TryGetValue(WeightKey, out weightToken))
+                                continue;
+    
+                            var attr = attrToken.ToObject<string>();
+                            newConstraints.Add(new AttributeConstraint(attr)
+                            {
+                                TargetValue = targetToken.ToObject<SmallDigitGUI>(),
+                                Weight = weightToken.ToObject<int>()
+    #if (PoESkillTree_EnableMinimumValue)
+                                    , MinimumValue = minimumToken.ToObject<SmallDigitGUI>()
+    #endif
+                            });
+                            _vm._addedAttributes.Add(attr);
+                        }
+    
+                        _vm.AttributesView.Refresh();
+                        _vm.AttributesView.MoveCurrentToFirst();
+                        _vm.NewAttributeConstraint.Data = _vm.AttributesView.CurrentItem as string;
+                        _vm.AttributeConstraints.AddRange(newConstraints);
                     }
-
-                    _vm.AttributesView.Refresh();
-                    _vm.AttributesView.MoveCurrentToFirst();
-                    _vm.NewAttributeConstraint.Data = _vm.AttributesView.CurrentItem as string;
-                    _vm.AttributeConstraints.AddRange(newConstraints);
+    
+                    _vm.ClearPseudoAttributeConstraints();
+                    if (jObject.TryGetValue(nameof(PseudoAttributeConstraints), out token) && token.Any())
+                    {
+                        var pseudoDict = _vm._pseudoAttributes.ToDictionary(p => p.Name);
+    
+                        var newConstraints = new List<PseudoAttributeConstraint>();
+                        foreach (var element in token)
+                        {
+                            var obj = element as JObject;
+                            if (obj == null)
+                                continue;
+                                JToken attrToken,
+    #if (PoESkillTree_EnableMinimumValue)
+                                minimumToken,
+    #endif
+                                targetToken, weightToken;
+                            if (!obj.TryGetValue(AttributeKey, out attrToken)
+    #if (PoESkillTree_EnableMinimumValue)
+                                    || !obj.TryGetValue(MinimumValueKey, out minimumToken)
+    #endif
+                                || !obj.TryGetValue(TargetValueKey, out targetToken)
+                                || !obj.TryGetValue(WeightKey, out weightToken))
+                                continue;
+    
+                            PseudoAttribute attr;
+                            if (!pseudoDict.TryGetValue(attrToken.ToObject<string>(), out attr))
+                                continue;
+                            newConstraints.Add(new PseudoAttributeConstraint(attr)
+                            {
+                                TargetValue = targetToken.ToObject<SmallDigitGUI>(),
+                                Weight = weightToken.ToObject<int>()
+#if (PoESkillTree_EnableMinimumValue)
+                                , MinimumValue = minimumToken.ToObject<SmallDigitGUI>()
+#endif
+                            });
+                            _vm._addedPseudoAttributes.Add(attr);
+                        }
+    
+                        _vm.PseudoAttributesView.Refresh();
+                        _vm.PseudoAttributesView.MoveCurrentToFirst();
+                        _vm.NewPseudoAttributeConstraint.Data = _vm.PseudoAttributesView.CurrentItem as PseudoAttribute;
+                        _vm.PseudoAttributeConstraints.AddRange(newConstraints);
+                    }
+            #if (DEBUG)
                 }
-
-                _vm.ClearPseudoAttributeConstraints();
-                if (jObject.TryGetValue(nameof(PseudoAttributeConstraints), out token) && token.Any())
+                catch (System.Exception ex)
                 {
-                    var pseudoDict = _vm._pseudoAttributes.ToDictionary(p => p.Name);
-
-                    var newConstraints = new List<PseudoAttributeConstraint>();
-                    foreach (var element in token)
-                    {
-                        var obj = element as JObject;
-                        if (obj == null)
-                            continue;
-                        JToken attrToken, targetToken, weightToken;
-                        if (!obj.TryGetValue(AttributeKey, out attrToken)
-                            || !obj.TryGetValue(TargetValueKey, out targetToken)
-                            || !obj.TryGetValue(WeightKey, out weightToken))
-                            continue;
-
-                        PseudoAttribute attr;
-                        if (!pseudoDict.TryGetValue(attrToken.ToObject<string>(), out attr))
-                            continue;
-                        newConstraints.Add(new PseudoAttributeConstraint(attr)
-                        {
-                            TargetValue = targetToken.ToObject<float>(),
-                            Weight = weightToken.ToObject<int>()
-                        });
-                        _vm._addedPseudoAttributes.Add(attr);
-                    }
-
-                    _vm.PseudoAttributesView.Refresh();
-                    _vm.PseudoAttributesView.MoveCurrentToFirst();
-                    _vm.NewPseudoAttributeConstraint.Data = _vm.PseudoAttributesView.CurrentItem as PseudoAttribute;
-                    _vm.PseudoAttributeConstraints.AddRange(newConstraints);
+                    System.Console.WriteLine("Loaded AdvancedTabViewModel/ConstraintsSetting JObject Exception of " + ex.ToString());
                 }
+            #endif
             }
 
             public bool SaveTo(JObject jObject)
             {
-                var changed = false;
-                var attrArray = new JArray();
-                _vm.AttributeConstraints.ForEach(c => AddTo(attrArray, c.Data, c.TargetValue, c.Weight));
-                JToken oldToken;
-                if (jObject.TryGetValue(nameof(AttributeConstraints), out oldToken))
+#if (DEBUG)
+                try
                 {
-                    changed = !JToken.DeepEquals(attrArray, oldToken);
+#endif
+                    var changed = false;
+                    var attrArray = new JArray();
+                    _vm.AttributeConstraints.ForEach(c => AddTo(attrArray, c.Data, c.TargetValue, c.Weight));
+                    JToken oldToken;
+                    if (jObject.TryGetValue(nameof(AttributeConstraints), out oldToken))
+                    {
+                        changed = !JToken.DeepEquals(attrArray, oldToken);
+                    }
+                    jObject[nameof(AttributeConstraints)] = attrArray;
+    
+                    var pseudoArray = new JArray();
+                        _vm.PseudoAttributeConstraints.ForEach(c => AddTo(pseudoArray, c.Data.Name, c.TargetValue, c.Weight
+    #if (PoESkillTree_EnableMinimumValue)
+                        , c.MinimumValue
+    #endif
+                        ));
+                    if (!changed && jObject.TryGetValue(nameof(PseudoAttributeConstraints), out oldToken)
+                        && !JToken.DeepEquals(pseudoArray, oldToken))
+                    {
+                        changed = true;
+                    }
+                    jObject[nameof(PseudoAttributeConstraints)] = pseudoArray;
+                    return changed;
+#if (DEBUG)
                 }
-                jObject[nameof(AttributeConstraints)] = attrArray;
-
-                var pseudoArray = new JArray();
-                _vm.PseudoAttributeConstraints.ForEach(c => AddTo(pseudoArray, c.Data.Name, c.TargetValue, c.Weight));
-                if (!changed && jObject.TryGetValue(nameof(PseudoAttributeConstraints), out oldToken)
-                    && !JToken.DeepEquals(pseudoArray, oldToken))
+                catch (System.Exception ex)
                 {
-                    changed = true;
+                    System.Console.WriteLine("Saved AdvancedTabViewModel/ConstraintsSetting JObject Exception of " + ex.ToString());
                 }
-                jObject[nameof(PseudoAttributeConstraints)] = pseudoArray;
-                return changed;
+                return false;
+#endif
             }
 
-            private static void AddTo(JArray array, string attribute, float targetValue, int weight)
+            private static void AddTo(JArray array, string attribute, SmallDigit targetValue, int weight)
             {
                 array.Add(new JObject
                 {
                     {AttributeKey, new JValue(attribute)},
                     {TargetValueKey, new JValue(targetValue)},
+#if (PoESkillTree_EnableMinimumValue)
+                    {MinimumValueKey, new JValue(minimumValue)},
+#endif
                     {WeightKey, new JValue(weight)}
                 });
             }
@@ -247,7 +315,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// <summary>
         /// Dictionary of attributes influenced by character level with the ratio per level.
         /// </summary>
-        private static readonly Dictionary<string, float> AttributesPerLevel = new Dictionary<string, float>()
+        private static readonly Dictionary<string, SmallDigit> AttributesPerLevel = new Dictionary<string, SmallDigit>()
         {
             {"+# to maximum Mana", Constants.ManaPerLevel},
             {"+# to maximum Life", Constants.LifePerLevel},
@@ -673,7 +741,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// </remarks>
         private void LoadAttributesFromTree()
         {
-            var attributes = new Dictionary<string, float>();
+            var attributes = new Dictionary<string, SmallDigit>();
             var unique = new List<SkillNode>();
             foreach (var node in Tree.SkilledNodes)
             {
@@ -719,7 +787,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
             AttributeConstraints.Clear();
             foreach (var attribute in attributes)
             {
-                AttributeConstraints.Add(new AttributeConstraint(attribute.Key) {TargetValue = attribute.Value});
+                AttributeConstraints.Add(new AttributeConstraint(attribute.Key) {TargetValue =
+#if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_UseSmallDec_ForGeneratorBars)
+                (float)
+#endif
+                attribute.Value});
             }
         }
 
@@ -759,7 +831,18 @@ namespace POESKillTree.TreeGenerator.ViewModels
                         {
                             if (pseudoAttributeConstraint.Data == pseudoAttribute)
                             {
-                                pseudoAttributeConstraint.TargetValue += attributeConstraint.TargetValue * pseudo.Multiplier;
+                                pseudoAttributeConstraint.TargetValue +=
+#if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_UseSmallDec_ForGeneratorBars)
+                                (float)
+#endif
+                                (attributeConstraint.TargetValue * pseudo.Multiplier);
+#if (PoESkillTree_EnableMinimumValue)
+                                pseudoAttributeConstraint.MinimumValue +=
+#if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_UseSmallDec_ForGeneratorBars)
+                                (float)
+#endif
+                                (attributeConstraint.MinimumValue * pseudo.Multiplier);
+#endif
                             }
                         }
                     }
@@ -768,7 +851,18 @@ namespace POESKillTree.TreeGenerator.ViewModels
                         _addedPseudoAttributes.Add(pseudoAttribute);
                         PseudoAttributeConstraints.Add(new PseudoAttributeConstraint(pseudoAttribute)
                         {
-                            TargetValue = attributeConstraint.TargetValue * pseudo.Multiplier
+                            TargetValue =
+#if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_UseSmallDec_ForGeneratorBars)
+                            (float)
+#endif
+                            (attributeConstraint.TargetValue * pseudo.Multiplier)
+#if (PoESkillTree_EnableMinimumValue)
+                            , MinimumValue =
+#if (PoESkillTree_UseSmallDec_ForAttributes && !PoESkillTree_UseSmallDec_ForGeneratorBars)
+                            (float)
+#endif
+                            (attributeConstraint.MinimumValue * pseudo.Multiplier)
+#endif
                         });
                     }
                 }
@@ -800,10 +894,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
         {
             var attributeConstraints = AttributeConstraints.ToDictionary(
                 constraint => constraint.Data,
-                constraint => new Tuple<float, double>(constraint.TargetValue, constraint.Weight / 100.0));
+                constraint => new Tuple<SmallDigit, double>(constraint.TargetValue, constraint.Weight / 100.0));
             var pseudoConstraints = PseudoAttributeConstraints.ToDictionary(
                 constraint => constraint.Data,
-                constraint => new Tuple<float, double>(constraint.TargetValue, constraint.Weight / 100.0));
+                constraint => new Tuple<SmallDigit, double>(constraint.TargetValue, constraint.Weight / 100.0));
             var solver = new AdvancedSolver(Tree, new AdvancedSolverSettings(settings, TotalPoints,
                 CreateInitialAttributes(), attributeConstraints,
                 pseudoConstraints, WeaponClass.Value, Tags.Value, OffHand.Value));
@@ -814,10 +908,10 @@ namespace POESKillTree.TreeGenerator.ViewModels
         /// Creates the attributes the skill tree has with these settings initially
         /// (without any tree generating done).
         /// </summary>
-        private Dictionary<string, float> CreateInitialAttributes()
+        private Dictionary<string, SmallDigit> CreateInitialAttributes()
         {
             // base attributes: SkillTree.BaseAttributes, SkillTree.CharBaseAttributes
-            var stats = new Dictionary<string, float>(SkillTree.BaseAttributes);
+            var stats = new Dictionary<string, SmallDigit>(SkillTree.BaseAttributes);
             foreach (var attr in SkillTree.CharBaseAttributes[Tree.Chartype])
             {
                 stats[attr.Key] = attr.Value;
