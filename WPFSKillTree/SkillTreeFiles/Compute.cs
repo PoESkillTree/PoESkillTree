@@ -30,7 +30,7 @@ namespace POESKillTree.SkillTreeFiles
      * - Estimated chance to Evade Attacks shows sometimes incorrect value.
      * - Cast gems (Herald of Ice, Herald of Thunder) have their quality bonuses applied in inactive state.
      * - Chance to Hit shows sometimes incorrect value affecting overall DPS.
-     * - Incorrect values fixed by using non-floating point representation (instead of float or double)
+     * - Incorrect values fixed by using non-floating point representation (something like SmallDec instead of float or double)
      */
      public class Compute
     {

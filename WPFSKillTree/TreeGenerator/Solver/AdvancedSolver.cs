@@ -465,10 +465,10 @@ namespace POESKillTree.TreeGenerator.Solver
 #if (PoESkillTree_EnableMinimumValue)
                     else if (AttributeTargets.Item3 > 0)
                     {
-                        //if less than Minimum value reached give half multiplier to weight of stat
+                        //if less than Minimum value reached give fourth multiplier to weight of stat
                         if (CurrentStatValue < AttributeTargets.Item3)
                         {
-                            Multiplier = AttributeTargets.Item2 / 2;
+                            Multiplier = AttributeTargets.Item2 / 4;
                         }
                         else
                         {
@@ -485,8 +485,13 @@ namespace POESKillTree.TreeGenerator.Solver
                     }
 #if (DEBUG)
                 Console.WriteLine("AttributeName:" + _ConstraintNames[i]);
-                Console.WriteLine("Current Value:" + CurrentStatValue.ToString() + " Target Value:" + AttributeTargets.Item1.ToString());
-                Console.WriteLine("CSV Multiplier:" + Multiplier.ToString() + " Current CSVScore:" + csvs.ToString());
+                Console.WriteLine("Current Value:" + CurrentStatValue.ToString());
+                Console.WriteLine("Target Value:" + AttributeTargets.Item1.ToString());
+#if (PoESkillTree_EnableMinimumValue)
+                Console.WriteLine("Minimin Value to Target: "+ AttributeTargets.Item3.ToString());
+#endif
+                Console.WriteLine("CSV Multiplier:" + Multiplier.ToString());
+                Console.WriteLine("Current CSVScore:" + csvs.ToString());
 #endif
 #endif
             }

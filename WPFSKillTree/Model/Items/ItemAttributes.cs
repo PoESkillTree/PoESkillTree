@@ -19,7 +19,7 @@ namespace POESKillTree.Model.Items
     using CSharpGlobalCode.GlobalCode_ExperimentalCode;
 #endif
     using SmallDigit =
-#if (PoESkillTree_UseSmallDec_ForAttributes)
+#if (PoESkillTree_StoreItemAttributesInSmallDec)
     SmallDec;
 #else
     System.Single;

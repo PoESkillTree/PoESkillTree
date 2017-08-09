@@ -152,6 +152,26 @@ namespace POESKillTree.Model.Items
                 case ItemSlot.Belt:
                     return ItemGroup.Belt;
                 case ItemSlot.Jewel:
+                case ItemSlot.Jewel02:
+                case ItemSlot.Jewel03:
+                case ItemSlot.Jewel04:
+                case ItemSlot.Jewel05:
+                case ItemSlot.Jewel06:
+                case ItemSlot.Jewel07:
+                case ItemSlot.Jewel08:
+                case ItemSlot.Jewel09:
+                case ItemSlot.Jewel10:
+                case ItemSlot.Jewel11:
+                case ItemSlot.Jewel12:
+                case ItemSlot.Jewel13:
+                case ItemSlot.Jewel14:
+                case ItemSlot.Jewel15:
+                case ItemSlot.Jewel16:
+                case ItemSlot.Jewel17:
+                case ItemSlot.Jewel18:
+                case ItemSlot.Jewel19:
+                case ItemSlot.Jewel20:
+                case ItemSlot.Jewel21:
                     return ItemGroup.Jewel;
                 default: // MainHand, OffHand, Unequippable
                     return ItemGroup.Unknown;

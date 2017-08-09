@@ -139,5 +139,47 @@ namespace POESKillTree.Model
                 else
                     Add(attr);
         }
+//Support both List<SmallDec> and List<float> at same time 
+//(enables having ItemAttributes as stored as float while having player attributes stored as SmallDec)
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+        // Adds attribute.
+        // Existing attribute has value increased by value of attribute being added.
+        public void Add(KeyValuePair<string, List<float>> attr)
+        {
+            if (ContainsKey(attr.Key))
+            {
+                if (attr.Value.Count > 0)
+                    for (int i = 0; i < attr.Value.Count; ++i)
+                        this[attr.Key][i] += (SmallDec)attr.Value[i];
+            }
+            else
+            {
+                List<SmallDec> NewList = new List<SmallDec>();
+                foreach(var value in attr.Value)
+                {
+                    NewList.Add((SmallDec)value);
+                }
+                Add(attr.Key, NewList);
+            }
+        }
+        public void Remove(KeyValuePair<string, List<float>> attr)
+        {
+            if (ContainsKey(attr.Key))
+            {
+                if (attr.Value.Count > 0)
+                {
+                    for (int i = 0; i < attr.Value.Count; ++i)
+                        this[attr.Key][i] -= attr.Value[i];
+
+                    // Remove attribute from set if all values are zeros.
+                    for (int i = 0; i < attr.Value.Count; ++i)
+                        if (this[attr.Key][i] != 0) return;
+                    Remove(attr.Key);
+                }
+                else // Remove from set if it has no values.
+                    Remove(attr.Key);
+            }
+        }
+#endif
     }
 }
