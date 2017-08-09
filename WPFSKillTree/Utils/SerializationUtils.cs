@@ -103,7 +103,8 @@ namespace POESKillTree.Utils
         public static string EncodeFileName(string fileName)
         {
             // * (asterisk) is not encoded but is not allowed in Windows file names
-            return WebUtility.UrlEncode(fileName)?.Replace("*", "%2a");
+            // . (full stop) is silently removed at the end of folder names
+            return WebUtility.UrlEncode(fileName)?.Replace("*", "%2a").Replace(".", "%2e");
         }
     }
 }
