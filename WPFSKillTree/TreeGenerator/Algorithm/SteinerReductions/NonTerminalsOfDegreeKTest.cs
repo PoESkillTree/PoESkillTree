@@ -90,8 +90,10 @@ namespace POESKillTree.TreeGenerator.Algorithm.SteinerReductions
                         // The weight of the new edge between the two neighbors is the sum of their edge weights to i.
                         var edge2 = edges[neighbor2];
                         var newEdgeWeight = edge.Weight + edge2.Weight;
-                        // Only add this edge if it wouldn't be removed by the Paths with many terminals test.
-                        if (newEdgeWeight <= SMatrix[neighbor, neighbor2])
+                        // Only add this edge if it wouldn't be removed by the Paths with many terminals test
+                        // and if it is of optimal length.
+                        if (newEdgeWeight <= SMatrix[neighbor, neighbor2]
+                            && newEdgeWeight <= DistanceLookup[neighbor, neighbor2])
                         {
                             EdgeSet.Add(neighbor, neighbor2, newEdgeWeight);
                         }
