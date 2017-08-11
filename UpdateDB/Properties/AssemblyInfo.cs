@@ -24,5 +24,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("PoESkillTree - The Fall of Oriath")]
 [assembly: AssemblyCopyright("Copyright © 2012-2016 PoESkillTree Team")]
 [assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.7.2.1329")]
-[assembly: AssemblyInformationalVersion("2.7.2")]
+[assembly: AssemblyFileVersion("2.7.3.1351")]
+[assembly: AssemblyInformationalVersion("2.7.3")]

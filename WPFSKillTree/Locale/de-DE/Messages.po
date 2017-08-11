@@ -96,7 +96,7 @@ msgid "Choose colors of item labels shown for each rule or group of rules."
 msgstr ""
 
 #: ItemFilter\Views\ItemFilterEditWindow.xaml:133
-#: Views\Builds\BuildsControl.xaml:229 Views\Builds\BuildsControl.xaml:327
+#: Views\Builds\BuildsControl.xaml:236 Views\Builds\BuildsControl.xaml:334
 msgid "Save"
 msgstr "Speichern"
 
@@ -121,12 +121,12 @@ msgid "Select a filter you want to edit or create copy of."
 msgstr "Wähle einen Filter aus der bearbeitet oder kopiert werden soll."
 
 #: ItemFilter\Views\ItemFilterOpenWindow.xaml:82
-#: Views\Builds\BuildsControl.xaml:123 Views\Builds\BuildsControl.xaml:200
+#: Views\Builds\BuildsControl.xaml:123 Views\Builds\BuildsControl.xaml:207
 msgid "Edit"
 msgstr "Bearbeiten"
 
 #: ItemFilter\Views\ItemFilterOpenWindow.xaml:87
-#: Views\Builds\BuildsControl.xaml:130 Views\Builds\BuildsControl.xaml:207
+#: Views\Builds\BuildsControl.xaml:130 Views\Builds\BuildsControl.xaml:214
 msgid "Delete"
 msgstr "Löschen"
 
@@ -277,26 +277,20 @@ msgid "Legal"
 msgstr "Rechtliches"
 
 #: Views\AboutWindow.xaml:74
-msgid "Skill tree assets and item images belong to"
+#, fuzzy
+msgid "Skill tree assets, item images and game data belong to"
 msgstr "Fähigkeitenbaum Assets und Gegenstandsbilder gehören zu"
 
 #: Views\AboutWindow.xaml:75
-msgid "Data used in character calculations are from"
-msgstr "Die Daten die in der Charakterberechnung verwendet werden sind von"
-
-#: Views\AboutWindow.xaml:79
-msgid "Information about base item types and their images are retrieved from"
+#, fuzzy
+msgid "Information about base item types and unique items and their images are retrieved from"
 msgstr "Die Informationen über 'base item types' und deren Bilder sind von"
-
-#: Views\AboutWindow.xaml:83
-msgid "Information about item affixes is retrieved from"
-msgstr "Die Informationen über Item Affixes sind von"
 
 #: Views\Builds\BuildsControl.xaml:25
 msgid "Right click to edit"
 msgstr "Rechtsklick um zu bearbeiten"
 
-#: Views\Builds\BuildsControl.xaml:138 Views\Builds\BuildsControl.xaml:215
+#: Views\Builds\BuildsControl.xaml:138 Views\Builds\BuildsControl.xaml:222
 msgid "Cut"
 msgstr "Ausschneiden"
 
@@ -309,59 +303,64 @@ msgid "New Build"
 msgstr "Neuer Build"
 
 #: Views\Builds\BuildsControl.xaml:158
-#: ViewModels\Builds\BuildsControlViewModel.cs:371
+#: ViewModels\Builds\BuildsControlViewModel.cs:420
 msgid "New Folder"
 msgstr "Neuer Ordner"
 
-#: Views\Builds\BuildsControl.xaml:194
+#: Views\Builds\BuildsControl.xaml:165
+#, fuzzy
+msgid "Export to .build"
+msgstr "Exportiere {0} in die Zwischenablage"
+
+#: Views\Builds\BuildsControl.xaml:201
 msgid "Open"
 msgstr "Öffnen"
 
-#: Views\Builds\BuildsControl.xaml:222
+#: Views\Builds\BuildsControl.xaml:229
 msgid "Copy"
 msgstr "Kopieren"
 
-#: Views\Builds\BuildsControl.xaml:235
+#: Views\Builds\BuildsControl.xaml:242
 msgid "Discard changes"
 msgstr "Änderungen verwerfen"
 
-#: Views\Builds\BuildsControl.xaml:238
+#: Views\Builds\BuildsControl.xaml:245
 msgid "Discards all changes made to this build after the last save"
 msgstr "Verwerfe alle Änderungen die seit dem letzten Speichern gemacht wurden."
 
-#: Views\Builds\BuildsControl.xaml:315
+#: Views\Builds\BuildsControl.xaml:322
 msgid "Skill Tree comparison enabled"
 msgstr "Vergleich aktiviert"
 
-#: Views\Builds\BuildsControl.xaml:318
+#: Views\Builds\BuildsControl.xaml:325
 msgid "Skill Tree comparison disabled"
 msgstr "Vergleich deaktiviert"
 
-#: Views\Builds\BuildsControl.xaml:329
+#: Views\Builds\BuildsControl.xaml:336
 msgid "Saves the currently opened build"
 msgstr "Speichert den aktuell geöffneten Build"
 
-#: Views\Builds\BuildsControl.xaml:336
+#: Views\Builds\BuildsControl.xaml:343
 msgid "Save As"
 msgstr "Speichern als..."
 
-#: Views\Builds\BuildsControl.xaml:338
+#: Views\Builds\BuildsControl.xaml:345
 msgid "Saves the currently opened build as a new build"
 msgstr "Speichert den zurzeit geöffneten Build als neuen Build"
 
-#: Views\Builds\BuildsControl.xaml:343
+#: Views\Builds\BuildsControl.xaml:350
 msgid "Save All"
 msgstr "Alles Speichern"
 
-#: Views\Builds\BuildsControl.xaml:345
+#: Views\Builds\BuildsControl.xaml:352
 msgid "Saves all changed builds"
 msgstr "Speicher alle geänderten Builds"
 
-#: Views\Builds\BuildsControl.xaml:353
+#: Views\Builds\BuildsControl.xaml:360
 msgid "New top level build"
 msgstr "Neuer Build"
 
-#: Views\Builds\BuildsControl.xaml:358
+#: Views\Builds\BuildsControl.xaml:365
 msgid "New top level folder"
 msgstr "Neuer Hauptordner"
 
@@ -1272,7 +1271,7 @@ msgstr ""
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:231
 #: Utils\Converter\GroupStringConverter.cs:33
-#: ItemFilter\Model\FilterManager.cs:416
+#: ItemFilter\Model\FilterManager.cs:564
 msgid "Flasks"
 msgstr ""
 
@@ -1402,35 +1401,47 @@ msgstr "Dieser Build verwendet eine alte Version des Fähigkeitenbaums."
 msgid "Failed to load build from URL."
 msgstr "Fehler beim Laden des Builds von der URL."
 
-#: ItemFilter\Model\FilterManager.cs:31
+#: ItemFilter\Model\FilterManager.cs:47
 msgid "Currency"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:255
+#: ItemFilter\Model\FilterManager.cs:383
 msgid "Recipes"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:266
+#: ItemFilter\Model\FilterManager.cs:390
+msgid "Any Normal item which vendor trades for Scroll Fragment."
+msgstr ""
+
+#: ItemFilter\Model\FilterManager.cs:401
+msgid "Any Magic item which vendor trades for Transmutation Shard, Alteration Shard or Alchemy Shard."
+msgstr ""
+
+#: ItemFilter\Model\FilterManager.cs:413
 msgid ""
 "A single Normal weapon with 20% quality.\n"
 "Weapons with a total of at least 40% quality."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:316
+#: ItemFilter\Model\FilterManager.cs:461
 msgid ""
 "1 Stone Hammer, Rock Breaker or Gavel with 20% quality\n"
 "1 Any Map"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:386
+#: ItemFilter\Model\FilterManager.cs:534
 msgid "Gems"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:610
+#: ItemFilter\Model\FilterManager.cs:757
 msgid "Miscellaneous"
 msgstr "Verschiedenes"
 
-#: ItemFilter\Model\FilterManager.cs:690
+#: ItemFilter\Model\FilterManager.cs:868
+msgid "Crafting"
+msgstr ""
+
+#: ItemFilter\Model\FilterManager.cs:986
 msgid "Chancing"
 msgstr ""
 
@@ -1456,11 +1467,20 @@ msgctxt "color"
 msgid "Standard"
 msgstr "Standard"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:56
+#: ViewModels\Builds\BuildsControlViewModel.cs:59
 msgid "All"
 msgstr "Alle"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:348
+#: ViewModels\Builds\BuildsControlViewModel.cs:309
+#, fuzzy
+msgid "Select save directory"
+msgstr "Wähle das Verzeichnis für Builds aus"
+
+#: ViewModels\Builds\BuildsControlViewModel.cs:310
+msgid "Select the directory where you want to export this build structure."
+msgstr ""
+
+#: ViewModels\Builds\BuildsControlViewModel.cs:397
 msgid ""
 "Files in your build save directory have been changed.\n"
 "Do you want to reload all builds from the file system?"
@@ -1468,13 +1488,13 @@ msgstr ""
 "Dateien im Verzeichnis wurden geändert.\n"
 "Sollen die Builds vom Verzeichnis neu eingelesen werden?"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:352
+#: ViewModels\Builds\BuildsControlViewModel.cs:401
 msgid ""
 "\n"
 "All unsaved changes will be lost."
 msgstr "Alle ungespeicherten Änderungen gehen verloren."
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:354
+#: ViewModels\Builds\BuildsControlViewModel.cs:403
 msgid ""
 "\n"
 "\n"
@@ -1484,65 +1504,65 @@ msgstr ""
 "\n"
 "Builds können auch durch das Menü 'Datei' neu eingelesen werden."
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:356
+#: ViewModels\Builds\BuildsControlViewModel.cs:405
 msgid "Builds changed"
 msgstr "Geänderte Builds im Verzeichnis"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:372
+#: ViewModels\Builds\BuildsControlViewModel.cs:421
 msgid "Enter the name of the new folder."
 msgstr "Gebe den Namen des neuen Ordners ein."
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:398
+#: ViewModels\Builds\BuildsControlViewModel.cs:447
 msgid "The currently opened build can not be deleted."
 msgstr "Der zurzeit geöffnete Build kann nicht gelöscht werden."
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:404
+#: ViewModels\Builds\BuildsControlViewModel.cs:453
 #, csharp-format
 msgid "This will delete the build folder \"{0}\" and all its contents.\n"
 msgstr "Dies wird das Verzeichnis \"{0}\" und den ganzen Inhalt löschen.\n"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:405
+#: ViewModels\Builds\BuildsControlViewModel.cs:454
 #: Views\MainWindow.xaml.cs:956
 msgid "Do you want to continue?"
 msgstr "Fortfahren?"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:426
+#: ViewModels\Builds\BuildsControlViewModel.cs:475
 msgid "This build is currently opened but has unsaved changes.\n"
 msgstr "Dieser Build ist zurzeit geöffnet "
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:427
+#: ViewModels\Builds\BuildsControlViewModel.cs:476
 msgid "Do you want to discard all changes made to it since your last save?"
 msgstr "Möchtest Du alle Änderungen verwerfen die seit dem letzten Speichern gemacht wurden?"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:428
+#: ViewModels\Builds\BuildsControlViewModel.cs:477
 msgid "Discard changes?"
 msgstr "Änderungen verwerfen?"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:443
+#: ViewModels\Builds\BuildsControlViewModel.cs:492
 msgid "Saving new Build"
 msgstr "Speicher neuen Build"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:444
+#: ViewModels\Builds\BuildsControlViewModel.cs:493
 msgid "Enter the name of the build."
 msgstr "Gebe den Namen des Builds ein"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:460
+#: ViewModels\Builds\BuildsControlViewModel.cs:509
 msgid "Save as"
 msgstr "Speichern als..."
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:461
+#: ViewModels\Builds\BuildsControlViewModel.cs:510
 msgid "Enter the new name of the build"
 msgstr "Gebe den neuen Namen des Builds ein"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:594
+#: ViewModels\Builds\BuildsControlViewModel.cs:643
 msgid "Edit Folder"
 msgstr "Bearbeite Ordner"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:595
+#: ViewModels\Builds\BuildsControlViewModel.cs:644
 msgid "Enter the new name for this folder below."
 msgstr "Gebe den neuen Namen des Ordners ein."
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:619
+#: ViewModels\Builds\BuildsControlViewModel.cs:668
 msgid ""
 "Any unsaved changes will be lost.\n"
 "Are you sure?"
@@ -1550,19 +1570,19 @@ msgstr ""
 "Alle ungespeicherten Änderungen gehen verloren.\n"
 "Bist du sicher?"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:765
+#: ViewModels\Builds\BuildsControlViewModel.cs:814
 msgid "An error occurred during a save operation."
 msgstr "Beim Speichern ist ein Fehler aufgetreten."
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:782
+#: ViewModels\Builds\BuildsControlViewModel.cs:831
 msgid "An error occurred during a delete operation."
 msgstr "Beim Löschen ist ein Fehler aufgetreten."
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:799
+#: ViewModels\Builds\BuildsControlViewModel.cs:848
 msgid "Unsaved Builds"
 msgstr "Ungespeicherte Builds"
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:800
+#: ViewModels\Builds\BuildsControlViewModel.cs:849
 msgid "These builds are not saved:\n"
 msgstr "Diese Builds wurden nicht gespeichert:\n"
 
@@ -1842,6 +1862,12 @@ msgstr "Beim Versuch die PoEUrl zu kontaktieren ist ein Fehler aufgetreten."
 #: Views\MainWindow.xaml.cs:2036
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr "Der PoEUrl Link wurde in die Zwischenablage kopiert."
+
+#~ msgid "Data used in character calculations are from"
+#~ msgstr "Die Daten die in der Charakterberechnung verwendet werden sind von"
+
+#~ msgid "Information about item affixes is retrieved from"
+#~ msgstr "Die Informationen über Item Affixes sind von"
 
 #~ msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 #~ msgstr "Die existierenden Bilder sowie Assets des Fähigkeitenbaums werden gelöscht und neu heruntergeladen."
