@@ -92,7 +92,9 @@ namespace POESKillTree.Model.Items.StatTranslation
                 { IndexHandler.PerMinuteToPerSecondPrecision2, d => Math.Round(d / 60, 2) },
                 {
                     IndexHandler.PerMinuteToPerSecondPrecision2IfRequired,
-                    d => (int) d == 0 ? 0 : Math.Round(d / 60, 2)
+                    // Handler says it shouldn't be rounded if it doesn't need to be, but in that
+                    // case rounding doesn't do anything anyway.
+                    d => Math.Round(d / 60, 2)
                 },
                 // this appears on a unique map, we don't support map crafting
                 { IndexHandler.ModValueToItemClass, d => { throw new NotSupportedException(); } },
