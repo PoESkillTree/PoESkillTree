@@ -13,18 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: Controls\BanditSelection.xaml:13
-msgid "Bandit reward for Normal difficulty."
-msgstr "Odmena banditu v obtiažnosti Normal"
-
-#: Controls\BanditSelection.xaml:18
-msgid "Bandit reward for Cruel difficulty."
-msgstr "Odmena banditu v obtiažnosti Cruel"
-
-#: Controls\BanditSelection.xaml:23
-msgid "Bandit reward for Merciless difficulty."
-msgstr "Odmena banditu v obtiažnosti Merciless"
-
 #: Controls\Dialogs\Views\FileSelectorView.xaml:41
 msgid "Browse..."
 msgstr ""
@@ -975,7 +963,8 @@ msgid "Equipment"
 msgstr "Vybavenie"
 
 #: Views\MainWindow.xaml:633
-msgid "Bandits"
+#, fuzzy
+msgid "Bandit"
 msgstr "Baditi"
 
 #: Views\MainWindow.xaml:647
@@ -1027,21 +1016,21 @@ msgstr "Atribúty celkovo"
 msgid "ItemList"
 msgstr "Údaje predmetov"
 
-#: Views\MainWindow.xaml:859
+#: Views\MainWindow.xaml:877
 msgid "Character Sheet"
 msgstr "Postava"
 
-#: Views\MainWindow.xaml:865 SkillTreeFiles\Compute.cs:2300
+#: Views\MainWindow.xaml:883 SkillTreeFiles\Compute.cs:2300
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:218
 #: Utils\Converter\GroupStringConverter.cs:31
 msgid "Defense"
 msgstr "Obrana"
 
-#: Views\MainWindow.xaml:882
+#: Views\MainWindow.xaml:900
 msgid "Offense"
 msgstr "Útok"
 
-#: Views\MainWindow.xaml:925 Views\MainWindow.xaml:928
+#: Views\MainWindow.xaml:943 Views\MainWindow.xaml:946
 #, fuzzy
 msgid "Skill tree link"
 msgstr "Odkaz stromu:"
@@ -1161,7 +1150,7 @@ msgstr ""
 msgid "Character"
 msgstr "Postava"
 
-#: SkillTreeFiles\SkillTree.cs:1234
+#: SkillTreeFiles\SkillTree.cs:1230
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr ""
 
@@ -1615,24 +1604,24 @@ msgstr "Načítať strom"
 msgid "Download & Import Items"
 msgstr "Stiahnutie a import predmetov"
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:85
+#: ViewModels\Equipment\DownloadStashViewModel.cs:86
 msgid "Download & Import Stash"
 msgstr "Stiahnuť a importovať Stash"
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:104
+#: ViewModels\Equipment\DownloadStashViewModel.cs:105
 msgid "Could not load the currently running leagues."
 msgstr "Nebolo možné načítať momentálne bežiace ligy."
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:189
-#: ViewModels\Equipment\DownloadStashViewModel.cs:246
+#: ViewModels\Equipment\DownloadStashViewModel.cs:190
+#: ViewModels\Equipment\DownloadStashViewModel.cs:247
 msgid "An error occurred while attempting to load stash data."
 msgstr "Nastala chyba pri pokuse načítať Stash údaje."
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:240
+#: ViewModels\Equipment\DownloadStashViewModel.cs:241
 msgid "New tab added"
 msgstr "Nová záložka pridaná"
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:241
+#: ViewModels\Equipment\DownloadStashViewModel.cs:242
 #, csharp-format
 msgid "New tab with {0} items was added to stash."
 msgstr "Nová záložka s {0} predmetmi bola pridaná do Stash"
@@ -1751,7 +1740,7 @@ msgstr[2] "{0}, {1} bodov"
 msgid "Your build must use at least one node to generate a screenshot"
 msgstr "Vaša zostava musí obsahovať aspoň jeden uzol pre vytvorenie snímky"
 
-#: Views\MainWindow.xaml.cs:947 Views\MainWindow.xaml.cs:2065
+#: Views\MainWindow.xaml.cs:947 Views\MainWindow.xaml.cs:2040
 msgid "An error occurred while copying to Clipboard."
 msgstr "Nastala chyba počas kopírovania do Schránky."
 
@@ -1829,44 +1818,53 @@ msgstr "Nastala chyba pri pokuse spustiť inštaláciu."
 msgid "An error occurred while attempting to load item data."
 msgstr "Nastala chyba pri pokuse načítať údaje predmetov."
 
-#: Views\MainWindow.xaml.cs:1865 Views\MainWindow.xaml.cs:1912
+#: Views\MainWindow.xaml.cs:1865 Views\MainWindow.xaml.cs:1908
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr "Nastala chyba pri pokuse načítať strom zručností z URL."
 
-#: Views\MainWindow.xaml.cs:1889
+#: Views\MainWindow.xaml.cs:1887
 msgid "The build you are loading contains information about selected bandits."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1890
+#: Views\MainWindow.xaml.cs:1888
 msgid "Do you want to use it and overwrite current settings?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1891
+#: Views\MainWindow.xaml.cs:1889
 #, fuzzy
 msgid "Replace Bandits settings"
 msgstr "Resetovať nastavenia"
 
-#: Views\MainWindow.xaml.cs:1919
+#: Views\MainWindow.xaml.cs:1915
 #, fuzzy
-msgid "Current:"
+msgid "Current: "
 msgstr "Platidlo"
 
-#: Views\MainWindow.xaml.cs:1923
+#: Views\MainWindow.xaml.cs:1916
 #, fuzzy
-msgid "Loaded:"
+msgid "Loaded: "
 msgstr "Načítať strom"
 
-#: Views\MainWindow.xaml.cs:2045
+#: Views\MainWindow.xaml.cs:2020
 msgid "Generating PoEUrl of Skill tree"
 msgstr "Vytváranie Po_EUrl odkazu"
 
-#: Views\MainWindow.xaml.cs:2051
+#: Views\MainWindow.xaml.cs:2026
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr "Nastala chyba pri pokuse kontaktovať PoEUrl lokáciu."
 
-#: Views\MainWindow.xaml.cs:2061
+#: Views\MainWindow.xaml.cs:2036
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr "PoEUrl odkaz bol skopírovaný do Schránky."
+
+#~ msgid "Bandit reward for Normal difficulty."
+#~ msgstr "Odmena banditu v obtiažnosti Normal"
+
+#~ msgid "Bandit reward for Cruel difficulty."
+#~ msgstr "Odmena banditu v obtiažnosti Cruel"
+
+#~ msgid "Bandit reward for Merciless difficulty."
+#~ msgstr "Odmena banditu v obtiažnosti Merciless"
 
 #~ msgid "The existing Skill tree assets will be deleted and new assets will be downloaded."
 #~ msgstr "Existujúce údaje stromu zručností budú zmazané a nové údaje budú stiahnuté."

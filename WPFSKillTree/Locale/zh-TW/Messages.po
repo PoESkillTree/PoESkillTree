@@ -15,18 +15,6 @@ msgstr ""
 "X-Generator: Poedit 1.8.12\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
-#: Controls\BanditSelection.xaml:13
-msgid "Bandit reward for Normal difficulty."
-msgstr "普通難度盜賊獎勵"
-
-#: Controls\BanditSelection.xaml:18
-msgid "Bandit reward for Cruel difficulty."
-msgstr "殘酷難度盜賊獎勵"
-
-#: Controls\BanditSelection.xaml:23
-msgid "Bandit reward for Merciless difficulty."
-msgstr "無情難度盜賊獎勵"
-
 #: Controls\Dialogs\Views\FileSelectorView.xaml:41
 msgid "Browse..."
 msgstr "瀏覽..."
@@ -960,7 +948,8 @@ msgid "Equipment"
 msgstr "裝備"
 
 #: Views\MainWindow.xaml:633
-msgid "Bandits"
+#, fuzzy
+msgid "Bandit"
 msgstr "盜賊"
 
 #: Views\MainWindow.xaml:647
@@ -1011,21 +1000,21 @@ msgstr "全部屬性"
 msgid "ItemList"
 msgstr "物品清單"
 
-#: Views\MainWindow.xaml:859
+#: Views\MainWindow.xaml:877
 msgid "Character Sheet"
 msgstr "角色清單"
 
-#: Views\MainWindow.xaml:865 SkillTreeFiles\Compute.cs:2300
+#: Views\MainWindow.xaml:883 SkillTreeFiles\Compute.cs:2300
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:218
 #: Utils\Converter\GroupStringConverter.cs:31
 msgid "Defense"
 msgstr "防禦"
 
-#: Views\MainWindow.xaml:882
+#: Views\MainWindow.xaml:900
 msgid "Offense"
 msgstr "攻擊"
 
-#: Views\MainWindow.xaml:925 Views\MainWindow.xaml:928
+#: Views\MainWindow.xaml:943 Views\MainWindow.xaml:946
 msgid "Skill tree link"
 msgstr "天賦樹連結"
 
@@ -1143,7 +1132,7 @@ msgstr ""
 msgid "Character"
 msgstr "角色"
 
-#: SkillTreeFiles\SkillTree.cs:1234
+#: SkillTreeFiles\SkillTree.cs:1230
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr ""
 
@@ -1581,24 +1570,24 @@ msgstr ""
 msgid "Download & Import Items"
 msgstr ""
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:85
+#: ViewModels\Equipment\DownloadStashViewModel.cs:86
 msgid "Download & Import Stash"
 msgstr ""
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:104
+#: ViewModels\Equipment\DownloadStashViewModel.cs:105
 msgid "Could not load the currently running leagues."
 msgstr ""
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:189
-#: ViewModels\Equipment\DownloadStashViewModel.cs:246
+#: ViewModels\Equipment\DownloadStashViewModel.cs:190
+#: ViewModels\Equipment\DownloadStashViewModel.cs:247
 msgid "An error occurred while attempting to load stash data."
 msgstr ""
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:240
+#: ViewModels\Equipment\DownloadStashViewModel.cs:241
 msgid "New tab added"
 msgstr ""
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:241
+#: ViewModels\Equipment\DownloadStashViewModel.cs:242
 #, csharp-format
 msgid "New tab with {0} items was added to stash."
 msgstr ""
@@ -1713,7 +1702,7 @@ msgstr[1] ""
 msgid "Your build must use at least one node to generate a screenshot"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:947 Views\MainWindow.xaml.cs:2065
+#: Views\MainWindow.xaml.cs:947 Views\MainWindow.xaml.cs:2040
 msgid "An error occurred while copying to Clipboard."
 msgstr ""
 
@@ -1791,38 +1780,48 @@ msgstr ""
 msgid "An error occurred while attempting to load item data."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1865 Views\MainWindow.xaml.cs:1912
+#: Views\MainWindow.xaml.cs:1865 Views\MainWindow.xaml.cs:1908
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1889
+#: Views\MainWindow.xaml.cs:1887
 msgid "The build you are loading contains information about selected bandits."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1890
+#: Views\MainWindow.xaml.cs:1888
 msgid "Do you want to use it and overwrite current settings?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1891
+#: Views\MainWindow.xaml.cs:1889
 msgid "Replace Bandits settings"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1919
-msgid "Current:"
+#: Views\MainWindow.xaml.cs:1915
+#, fuzzy
+msgid "Current: "
+msgstr "通貨"
+
+#: Views\MainWindow.xaml.cs:1916
+msgid "Loaded: "
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1923
-msgid "Loaded:"
-msgstr ""
-
-#: Views\MainWindow.xaml.cs:2045
+#: Views\MainWindow.xaml.cs:2020
 msgid "Generating PoEUrl of Skill tree"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2051
+#: Views\MainWindow.xaml.cs:2026
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2061
+#: Views\MainWindow.xaml.cs:2036
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr ""
+
+#~ msgid "Bandit reward for Normal difficulty."
+#~ msgstr "普通難度盜賊獎勵"
+
+#~ msgid "Bandit reward for Cruel difficulty."
+#~ msgstr "殘酷難度盜賊獎勵"
+
+#~ msgid "Bandit reward for Merciless difficulty."
+#~ msgstr "無情難度盜賊獎勵"

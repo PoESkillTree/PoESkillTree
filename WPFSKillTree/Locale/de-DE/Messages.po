@@ -13,18 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Controls\BanditSelection.xaml:13
-msgid "Bandit reward for Normal difficulty."
-msgstr ""
-
-#: Controls\BanditSelection.xaml:18
-msgid "Bandit reward for Cruel difficulty."
-msgstr ""
-
-#: Controls\BanditSelection.xaml:23
-msgid "Bandit reward for Merciless difficulty."
-msgstr ""
-
 #: Controls\Dialogs\Views\FileSelectorView.xaml:41
 msgid "Browse..."
 msgstr "Durchsuchen..."
@@ -961,7 +949,8 @@ msgid "Equipment"
 msgstr "Ausrüstung"
 
 #: Views\MainWindow.xaml:633
-msgid "Bandits"
+#, fuzzy
+msgid "Bandit"
 msgstr "Banditen"
 
 #: Views\MainWindow.xaml:647
@@ -1012,21 +1001,21 @@ msgstr "Gesamte Attribute"
 msgid "ItemList"
 msgstr "Gegenstandsliste"
 
-#: Views\MainWindow.xaml:859
+#: Views\MainWindow.xaml:877
 msgid "Character Sheet"
 msgstr "Charakterinformation"
 
-#: Views\MainWindow.xaml:865 SkillTreeFiles\Compute.cs:2300
+#: Views\MainWindow.xaml:883 SkillTreeFiles\Compute.cs:2300
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:218
 #: Utils\Converter\GroupStringConverter.cs:31
 msgid "Defense"
 msgstr "Verteidigung"
 
-#: Views\MainWindow.xaml:882
+#: Views\MainWindow.xaml:900
 msgid "Offense"
 msgstr "Angriff"
 
-#: Views\MainWindow.xaml:925 Views\MainWindow.xaml:928
+#: Views\MainWindow.xaml:943 Views\MainWindow.xaml:946
 msgid "Skill tree link"
 msgstr "Fähigkeitenbaum Link"
 
@@ -1146,7 +1135,7 @@ msgstr "Konnte Build nicht importieren"
 msgid "Character"
 msgstr "Charakter"
 
-#: SkillTreeFiles\SkillTree.cs:1234
+#: SkillTreeFiles\SkillTree.cs:1230
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr "Manche Knoten ({unknownNodes}) sind unbekannt und wurden weggelassen."
 
@@ -1597,24 +1586,24 @@ msgstr "Lade Fähigkeitenbaum"
 msgid "Download & Import Items"
 msgstr "Herunterladen & Importieren von Gegenständen."
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:85
+#: ViewModels\Equipment\DownloadStashViewModel.cs:86
 msgid "Download & Import Stash"
 msgstr ""
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:104
+#: ViewModels\Equipment\DownloadStashViewModel.cs:105
 msgid "Could not load the currently running leagues."
 msgstr "Konnte die zurzeit laufende Ligen nicht laden."
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:189
-#: ViewModels\Equipment\DownloadStashViewModel.cs:246
+#: ViewModels\Equipment\DownloadStashViewModel.cs:190
+#: ViewModels\Equipment\DownloadStashViewModel.cs:247
 msgid "An error occurred while attempting to load stash data."
 msgstr "Beim Laden der Daten ist ein Fehler aufgetreten"
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:240
+#: ViewModels\Equipment\DownloadStashViewModel.cs:241
 msgid "New tab added"
 msgstr "Neuer Tab hinzugefügt"
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:241
+#: ViewModels\Equipment\DownloadStashViewModel.cs:242
 #, csharp-format
 msgid "New tab with {0} items was added to stash."
 msgstr "Es wurde ein neuer Tab mit {0} Gegenständen hinzugefügt."
@@ -1738,7 +1727,7 @@ msgstr[1] "{0} Punkte"
 msgid "Your build must use at least one node to generate a screenshot"
 msgstr "Dein Build muss mindestens einen Knoten ausgewählt haben, damit ein Screenshot generiert werden kann."
 
-#: Views\MainWindow.xaml.cs:947 Views\MainWindow.xaml.cs:2065
+#: Views\MainWindow.xaml.cs:947 Views\MainWindow.xaml.cs:2040
 msgid "An error occurred while copying to Clipboard."
 msgstr "Beim Kopieren in den Zwischenspeicher ist ein Fehler aufgetreten."
 
@@ -1816,39 +1805,41 @@ msgstr "Beim Versuch die Installation zu starten ist ein Fehler aufgetreten."
 msgid "An error occurred while attempting to load item data."
 msgstr "Beim Versuch die Gegenstandsdaten zu laden ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:1865 Views\MainWindow.xaml.cs:1912
+#: Views\MainWindow.xaml.cs:1865 Views\MainWindow.xaml.cs:1908
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr "Beim Versuch den Fähigkeitenbaum von der URL zu laden ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:1889
+#: Views\MainWindow.xaml.cs:1887
 msgid "The build you are loading contains information about selected bandits."
 msgstr "Der Build enthält Informationen über ausgewählte Banditen."
 
-#: Views\MainWindow.xaml.cs:1890
+#: Views\MainWindow.xaml.cs:1888
 msgid "Do you want to use it and overwrite current settings?"
 msgstr "Möchtest Du es verwenden und die derzeitige Einstellungen überschreiben?"
 
-#: Views\MainWindow.xaml.cs:1891
+#: Views\MainWindow.xaml.cs:1889
 msgid "Replace Bandits settings"
 msgstr "Ersetze Einstellungen für Banditen"
 
-#: Views\MainWindow.xaml.cs:1919
-msgid "Current:"
+#: Views\MainWindow.xaml.cs:1915
+#, fuzzy
+msgid "Current: "
 msgstr "Aktuell:"
 
-#: Views\MainWindow.xaml.cs:1923
-msgid "Loaded:"
+#: Views\MainWindow.xaml.cs:1916
+#, fuzzy
+msgid "Loaded: "
 msgstr "Geladen:"
 
-#: Views\MainWindow.xaml.cs:2045
+#: Views\MainWindow.xaml.cs:2020
 msgid "Generating PoEUrl of Skill tree"
 msgstr "Generiere PoEUrl des Fähigkeitenbaums"
 
-#: Views\MainWindow.xaml.cs:2051
+#: Views\MainWindow.xaml.cs:2026
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr "Beim Versuch die PoEUrl zu kontaktieren ist ein Fehler aufgetreten."
 
-#: Views\MainWindow.xaml.cs:2061
+#: Views\MainWindow.xaml.cs:2036
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr "Der PoEUrl Link wurde in die Zwischenablage kopiert."
 
