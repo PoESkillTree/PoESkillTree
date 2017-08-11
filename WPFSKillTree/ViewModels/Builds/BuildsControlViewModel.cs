@@ -21,6 +21,9 @@ using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
 using POESKillTree.Utils.Wpf;
+using POESKillTree.Controls.Dialogs;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace POESKillTree.ViewModels.Builds
 {
@@ -112,6 +115,9 @@ namespace POESKillTree.ViewModels.Builds
 
         public ICommand ExportCurrentToClipboardCommand { get; }
         public ICommand ImportCurrentFromClipboardCommand { get; }
+
+        public ICommand ExportGGGBuildFile { get; }
+        public ICommand ImportGGGBuildFile { get; }
 
         public IPersistentData PersistentData { get; }
 
@@ -272,10 +278,53 @@ namespace POESKillTree.ViewModels.Builds
             ExportCurrentToClipboardCommand = new RelayCommand(() => CopyToClipboard(CurrentBuild.Build));
             ImportCurrentFromClipboardCommand = new AsyncRelayCommand(ImportCurrentFromClipboard, CanPasteFromClipboard);
 
+            ExportGGGBuildFile = new RelayCommand<IBuildFolderViewModel>(ExportGGGBuild);
+            ImportGGGBuildFile = new RelayCommand(() => ImportGGGBuild());
+
             SkillTree = skillTree;
             ClassFilterItems = GenerateAscendancyClassItems(SkillTree.AscendancyClasses).ToList();
             ClassFilter = NoFilterItem;
         }
+
+        #region GGG Builds File Export/Import
+        private async void ExportGGGBuild(IBuildFolderViewModel target)
+        {
+            var build = new GGGBuild()
+            {
+                Name = target.Build.Name,
+                Version = Properties.Version.GGGPatchVersion,
+                Parts = new List<GGGBuildPart>()
+            };
+
+            foreach (var c in target.Children)
+                if (!c.GetType().Equals(typeof(BuildFolderViewModel)))
+                    build.Parts.Add(new GGGBuildPart() { Label = c.Build.Name, Link = ((PoEBuild)c.Build).TreeUrl });
+
+            var dialogSettings = new FileSelectorDialogSettings
+            {
+                DefaultPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                IsFolderPicker = false,
+            };
+            var path = await _dialogCoordinator.ShowFileSelectorAsync(this,
+                L10n.Message("Select save directory"),
+                L10n.Message("Select the directory where you want to export this build structure."),
+                dialogSettings);
+            if (path == null)
+                return;
+            path = Path.Combine(path, $"{build.Name}.build");
+
+            byte[] jsonEncodedText = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(build));
+            using (FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: jsonEncodedText.Length, useAsync: true))
+            {
+                await stream.WriteAsync(jsonEncodedText, 0, jsonEncodedText.Length);
+            }
+        }
+
+        private void ImportGGGBuild()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
         private IEnumerable<ClassFilterItem> GenerateAscendancyClassItems(IAscendancyClasses ascendancyClasses)
         {
