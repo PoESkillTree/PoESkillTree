@@ -303,7 +303,7 @@ namespace POESKillTree.ViewModels.Builds
             var dialogSettings = new FileSelectorDialogSettings
             {
                 DefaultPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                IsFolderPicker = false,
+                IsFolderPicker = true,
             };
             var path = await _dialogCoordinator.ShowFileSelectorAsync(this,
                 L10n.Message("Select save directory"),
@@ -311,7 +311,7 @@ namespace POESKillTree.ViewModels.Builds
                 dialogSettings);
             if (path == null)
                 return;
-            path = Path.Combine(path, $"{build.Name}.build");
+            path = Path.Combine(path, $"{SerializationUtils.EncodeFileName(build.Name)}.build");
 
             byte[] jsonEncodedText = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(build));
             using (FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: jsonEncodedText.Length, useAsync: true))
