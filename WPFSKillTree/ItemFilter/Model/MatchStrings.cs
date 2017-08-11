@@ -57,6 +57,41 @@ namespace POESKillTree.ItemFilter.Model
             return base.Equals(match) && (match as MatchStrings).Values.Count == Values.Count && Values.Intersect((match as MatchStrings).Values).Count() == Values.Count;
         }
 
+        // Finds all strings which match (as whole or partially) with any of our string value.
+        public List<string> FindMatched(string[] strs)
+        {
+            List<string> matching = new List<string>();
+
+            // If any of our values is contained in any of given strings, then return it.
+            foreach (string value in Values)
+                foreach (string str in strs)
+                    if (str.Contains(value))
+                        matching.Add(str);
+
+            return matching;
+        }
+
+        // Determines whether this match is matching given string
+        public bool IsMatching(string str)
+        {
+            // If any of our values is contained in given string, then return true.
+            foreach (string value in Values)
+                if (str.Contains(value)) return true;
+
+            return false;
+        }
+
+        // Determines whether this match is matching any of given strings.
+        public bool IsMatchingAny(string[] strs)
+        {
+            // If any of our values is contained in any of given strings, then return true.
+            foreach (string value in Values)
+                foreach (string str in strs)
+                    if (str.Contains(value)) return true;
+
+            return false;
+        }
+
         public void Merge(Match match)
         {
             // If our string contains any of match strings, remove it.

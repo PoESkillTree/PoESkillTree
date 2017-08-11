@@ -12,6 +12,7 @@
         Suffix,
         Unique,
         Corrupted,
-        Enchantment
+        Tempest,
+        Enchantment,
     }
 }

@@ -11,6 +11,8 @@
         Item,
         Flask,
         Master,
+        Area,
         Jewel,
+        Atlas,
     }
 }

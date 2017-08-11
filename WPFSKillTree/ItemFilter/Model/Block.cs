@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using POESKillTree.Utils.Converter;
+using System.Linq;
 using System.Windows.Media;
+using POESKillTree.Utils.Converter;
 
 namespace POESKillTree.ItemFilter.Model
 {
@@ -97,27 +98,64 @@ namespace POESKillTree.ItemFilter.Model
                     if (!match.Equals(sameTypes[0])) return false;
                 }
 
-                // Test all mergeable matches.
-                foreach (Match match in Matches.FindAll(m => m is IMergeableMatch))
+                // Merging is allowed only within one mergeable match type.
+                // i.e. There must be only one mergeable match, while rest of mergeable matches must be equal.
+                List<Match> mergeables = Matches.FindAll(m => m is IMergeableMatch);
+                if (mergeables.Count > 0)
                 {
-                    // Find same type matches.
-                    List<Match> sameTypes = block.Matches.FindAll(m => m.Priority == match.Priority);
-                    if (sameTypes.Count != 1) return false;
+                    foreach (Match match in mergeables)
+                    {
+                        // Find other corresponding matches.
+                        List<Match> sameTypes = block.Matches.FindAll(m => m.Priority == match.Priority);
+                        if (sameTypes.Count != 1) return false;
 
-                    // Test mergeability.
-                    if (!match.CanMerge(sameTypes[0])) return false;
+                        // Determine wheter our match can be merged with other corresponding match.
+                        if (match.CanMerge(sameTypes[0]))
+                        {
+                            // Each our leftover mergeable match must be equal to other corresponding leftover match.
+                            bool allEquals = true;
+                            foreach (Match leftover in mergeables.Except(new List<Match>() { match }))
+                            {
+                                // Find other leftover corresponding matches.
+                                List<Match> others = block.Matches.FindAll(m => m.Priority == leftover.Priority && m != sameTypes[0]);
+                                if (others.Count != 1) return false;
+
+                                if (!leftover.Equals(others[0]))
+                                {
+                                    allEquals = false;
+                                    break;
+                                }
+                            }
+
+                            // All leftover matches are equal to other corresponding leftover matches.
+                            if (allEquals) return true;
+                        }
+                    }
+
+                    // No combination of mergeable matches satisfy condition for mergeability.
+                    return false;
                 }
 
+                // No mergeable matches and non-mergeable matches are equal.
                 return true;
             }
 
+            // Differs in visual, number of matches or type of matches (priority).
             return false;
         }
 
         // Blocks are sorted from highest priority to lowest.
+        // TODO: Fully transitive ordering.
         public int CompareTo(Block block)
         {
             if (block == null) return 1;
+
+            // Any Show block is always in front of any Hide block, unless both blocks are from same rule group.
+            // FIXME: Not every block combination is compared. @Flasks and #Flasks.* blocks may never be compared against each other, while they may require specific ordering due to difference in visibility!
+            if (Show != block.Show)
+                return OfGroup == block.OfGroup && OfGroup != null
+                    ? (Show ? 1 : -1)
+                    : (Show ? -1 : 1);
 
             // Comparison by explicit priority.
             int result = block.ExplicitPriority.CompareTo(ExplicitPriority);
@@ -139,6 +177,8 @@ namespace POESKillTree.ItemFilter.Model
 
             return 0;
         }
+
+
 
         public List<string> GetLines()
         {
@@ -172,6 +212,9 @@ namespace POESKillTree.ItemFilter.Model
             foreach (Match target in Matches.FindAll(m => m is IMergeableMatch))
                 foreach (Match mergeable in block.Matches.FindAll(m => target.CanMerge(m)))
                     (target as IMergeableMatch).Merge(mergeable);
+
+            // Once this block is merged with other block of different rule group, remove this block's rule group association.
+            if (OfGroup != block.OfGroup) OfGroup = null;
         }
 
         public bool Subsets(Block block)
@@ -200,11 +243,42 @@ namespace POESKillTree.ItemFilter.Model
             return true;
         }
 
+        public bool SubsetsExplicitly(Block block)
+        {
+            // This explicit priority is "less specific" than the other block's explicit priority, thus this block cannot be subset of the other block.
+            if (ExplicitPriority < block.ExplicitPriority) return false;
+
+            // All non-mergeable explicit matches must be equal.
+            foreach (Match match in Matches.FindAll(m => !(m is IMergeableMatch) && !m.IsImplicit()))
+            {
+                // Find same type matches.
+                List<Match> sameTypes = block.Matches.FindAll(m => m.Priority == match.Priority);
+                if (sameTypes.Count != 1) return false;
+
+                // Test value equality.
+                if (!match.Equals(sameTypes[0])) return false;
+            }
+
+            // All mergeable matches must subset block mergeable matches.
+            foreach (Match match in Matches.FindAll(m => m is IMergeableMatch && !m.IsImplicit()))
+            {
+                if (!block.Matches.Exists(m => m is IMergeableMatch && !m.IsImplicit() && (match as IMergeableMatch).Subsets(m)))
+                    return false;
+            }
+
+            return true;
+        }
+
         private string ToBlockColor(string color)
         {
             Color c = ColorUtils.FromRgbString(color);
 
             return c.R + " " + c.G + " " + c.B + (c.A < 255 ? " " + c.A : "");
+        }
+
+        public override string ToString()
+        {
+            return (Show ? "Show " : "Hide ") + (DebugOrigin == null ? "(original)" : DebugOrigin);
         }
 
         public bool VisualEquals(Block block)
