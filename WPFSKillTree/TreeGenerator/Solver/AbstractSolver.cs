@@ -153,10 +153,11 @@ namespace POESKillTree.TreeGenerator.Solver
         public abstract void FinalStep();
 
         /// <summary>
-        /// Returns true iff the given node can't be removed from the search space because it can become a target
+        /// Returns true if the given node can't be removed from the search space because it can become a target
         /// node in some instances (if optimizing for something else than simple Steiner).
         /// Overwrite if there are variable target nodes.
         /// </summary>
+        /// <param name="node">todo: describe node parameter on IsVariableTargetNode</param>
         protected virtual bool IsVariableTargetNode(GraphNode node)
         {
             return false;
@@ -169,7 +170,7 @@ namespace POESKillTree.TreeGenerator.Solver
         private void BuildSearchGraph()
         {
             // Make all directed edges from Scion Ascendant "Path of the ..." node undirected.
-            // This is really dirty but the whole code is so dependant on the skill tree stuff that
+            // This is really dirty but the whole code is so dependent on the skill tree stuff that
             // I don't see a non dirty way.
             var ascendantClassStartNodes = SkillTree.Skillnodes.Values.Where(SkillTree.IsAscendantClassStartNode).ToList();
             foreach (var classStartNode in ascendantClassStartNodes)
@@ -199,6 +200,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// <summary>
         /// Initializes <see cref="StartNode"/> and sets the start node in the provided SearchGraph.
         /// </summary>
+        /// <param name="searchGraph">todo: describe searchGraph parameter on CreateStartNodes</param>
         private void CreateStartNodes(SearchGraph searchGraph)
         {
             StartNode = searchGraph.SetStartNodes(_tree.SkilledNodes);
@@ -208,6 +210,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// Initializes <see cref="TargetNodes"/> with all check-tagged nodes and the start node.
         /// Adds the check-tagged nodes to the provided SearchGraph.
         /// </summary>
+        /// <param name="searchGraph">todo: describe searchGraph parameter on CreateTargetNodes</param>
         private void CreateTargetNodes(SearchGraph searchGraph)
         {
             TargetNodes = (from node in Settings.Checked
@@ -220,6 +223,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// Initializes the search graph by going through all node groups
         /// of the skill tree and including those that could be part of the solution.
         /// </summary>
+        /// <param name="searchGraph">todo: describe searchGraph parameter on CreateSearchGraph</param>
         private void CreateSearchGraph(SearchGraph searchGraph)
         {
             foreach (var ng in SkillTree.NodeGroups)
@@ -298,7 +302,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// Override to exclude node from the search graph with additional conditions.
         /// </summary>
         /// <param name="node">The node in question (not null)</param>
-        /// <returns>false if not overriden</returns>
+        /// <returns>false if not overridden</returns>
         protected virtual bool IncludeNodeInSearchGraph(SkillNode node)
         {
             return true;

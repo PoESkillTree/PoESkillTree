@@ -177,6 +177,8 @@ namespace POESKillTree.TreeGenerator.Solver
         /// their weights and target values into _attrConstraints, saves the numbers for each
         /// name into _attrNameLookup and saves the conversion multipliers into _attrConversionMultipliers.
         /// </summary>
+        /// <param name="attrConstraints">todo: describe attrConstraints parameter on FormalizeConstraints</param>
+        /// <param name="pseudoConstraints">todo: describe pseudoConstraints parameter on FormalizeConstraints</param>
         private void FormalizeConstraints(Dictionary<string, Tuple<SmallDigit, double
 #if (PoESkillTree_EnableMinimumValue)
         , SmallDigit
@@ -295,7 +297,7 @@ namespace POESKillTree.TreeGenerator.Solver
                     var name = attr.Name;
                     if (ContainsWildcardRegex.IsMatch(name))
                     {
-                        // Wildcards are resolverd by searching the skill tree attributes for each attribute
+                        // Wildcards are resolved by searching the skill tree attributes for each attribute
                         // that matches the attribute name ('{number}' replaced by '(.*)' for matching) and
                         // evaluating the attribute for each of those replacements.
                         if (!resolvedWildcardNames.ContainsKey(name))
@@ -327,6 +329,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// Returns an Array of all captured substrings from the given GroupCollection except the first
         /// (which is the whole matched string).
         /// </summary>
+        /// <param name="groups">todo: describe groups parameter on ExtractGroupValuesFromGroupCollection</param>
         private static string[] ExtractGroupValuesFromGroupCollection(GroupCollection groups)
         {
             var result = new string[groups.Count - 1];
@@ -403,6 +406,8 @@ namespace POESKillTree.TreeGenerator.Solver
         /// <summary>
         /// Adds all attributes of the given node ids to the given list.
         /// </summary>
+        /// <param name="ids">todo: describe ids parameter on AddAttributes</param>
+        /// <param name="to">todo: describe to parameter on AddAttributes</param>
         private void AddAttributes(IEnumerable<ushort> ids, IList<SmallDigit> to)
         {
             foreach (var id in ids)
@@ -488,7 +493,7 @@ namespace POESKillTree.TreeGenerator.Solver
                 Console.WriteLine("Current Value:" + CurrentStatValue.ToString());
                 Console.WriteLine("Target Value:" + AttributeTargets.Item1.ToString());
 #if (PoESkillTree_EnableMinimumValue)
-                Console.WriteLine("Minimin Value to Target: "+ AttributeTargets.Item3.ToString());
+                Console.WriteLine("Minimum Value to Target: "+ AttributeTargets.Item3.ToString());
 #endif
                 Console.WriteLine("CSV Multiplier:" + Multiplier.ToString());
                 Console.WriteLine("Current CSVScore:" + csvs.ToString());
@@ -524,7 +529,7 @@ namespace POESKillTree.TreeGenerator.Solver
         }
 
 #else
-        private static double CalcCsv(SmallDigit x, double weight, SmallDigit target)
+        private static double CalcCsv(SmallDigit CurrentValue, double weight, SmallDigit target)
         {
             // Don't go higher than the target value.
 #if (PoESkillTree_UseSmallDec_ForAttributes)
