@@ -137,6 +137,10 @@
     <value>2.0.0.0</value>
     <comment>The assembly version used by CLR to resolve dependencies. Change only when public API has changed and all client assemblies has to be recompiled.</comment>
   </data>
+  <data name="GGGPatchVersion" xml:space="preserve">
+    <value>3.0.0</value>
+    <comment>The current patch version, without letters, that GGG is on (i.e. 3.0.0). </comment>
+  </data>
   <data name="ProductName" xml:space="preserve">
     <value>PoESkillTree - The Fall of Oriath</value>
     <comment>The product name also used as name of Program Files group, Application Data folder, Start Menu group and Desktop shortcut. Change only when AppId is changed.</comment>
@@ -146,7 +150,7 @@
     <comment>The URL of product website.</comment>
   </data>
   <data name="ProductVersion" xml:space="preserve">
-    <value>2.7.1</value>
+    <value>2.7.3</value>
     <comment>The application version identical to Git release tag. Change each release.</comment>
   </data>
 </root>

@@ -50,7 +50,7 @@ namespace POESKillTree.SkillTreeFiles
             {"#% Attack Speed Increase per Frenzy Charge", 4},
             {"#% Cast Speed Increase per Frenzy Charge", 4},
             {"#% More Damage per Frenzy Charge", 4},
-            {"#% Critical Strike Chance Increase per Power Charge", 50},
+            {"#% Critical Strike Chance Increase per Power Charge", 40},
         };
 
         public static readonly Dictionary<string, List<string>> HybridAttributes = new Dictionary<string, List<string>>
@@ -184,8 +184,8 @@ namespace POESKillTree.SkillTreeFiles
                 {
                     Error = (sender, args) =>
                     {
-                        // This one is known: "515":{"x":_,"y":_,"oo":[],"n":[]}} has an Array in "oo".
-                        if (args.ErrorContext.Path != "groups.515.oo")
+                        // There are many errors in "oo" elements and we can't fix them anyway
+                        if (args.ErrorContext.Path == null || !args.ErrorContext.Path.EndsWith(".oo"))
                             Log.Error("Exception while deserializing Json tree", args.ErrorContext.Error);
                         args.ErrorContext.Handled = true;
                     }
@@ -494,12 +494,8 @@ namespace POESKillTree.SkillTreeFiles
 
             var bandits = _persistentData.CurrentBuild.Bandits;
             points["NormalTotal"] += Level - 1;
-            if (bandits.Normal == Bandit.None)
-                points["NormalTotal"]++;
-            if (bandits.Cruel == Bandit.None)
-                points["NormalTotal"]++;
-            if (bandits.Merciless == Bandit.None)
-                points["NormalTotal"]++;
+            if (bandits.Choice == Bandit.None)
+                points["NormalTotal"] += 2;
 
             foreach (var node in SkilledNodes)
             {

@@ -55,6 +55,14 @@ namespace PoESkillTree.Common.Model.Items.Enums
         [Description("Armour, Evasion and Energy Shield")]
         StrDexIntArmour = 1 << 27,
 
+        StrShield = Shield | StrArmour,
+        DexShield = Shield | DexArmour,
+        // Called "focus" on intelligence shields
+        Focus = Shield | IntArmour,
+        StrDexShield = Shield | StrDexArmour,
+        StrIntShield = Shield | StrIntArmour,
+        DexIntShield = Shield | DexIntArmour,
+
         Belt = 1 << 28,
         Ring = 1 << 29,
         Amulet = 1 << 30,
@@ -81,12 +89,10 @@ namespace PoESkillTree.Common.Model.Items.Enums
         Gem = 1L << 48,
         SupportGem = 1L << 49,
 
-        // Energy shield shields have a tag called "focus"
-        Focus = 1L << 50,
         // Prevents master signature mods from appearing on items that are not sold by vendors
-        NotForSale = 1L << 51,
+        NotForSale = 1L << 50,
         // Prevents Diamond Flask from getting the increased effect mod
-        NoEffectFlaskMod = 1L << 52,
+        NoEffectFlaskMod = 1L << 51,
     }
 
 

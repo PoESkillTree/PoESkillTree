@@ -106,6 +106,15 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 3.0.0.
+        /// </summary>
+        public static string GGGPatchVersion {
+            get {
+                return ResourceManager.GetString("GGGPatchVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to PoESkillTree - The Fall of Oriath.
         /// </summary>
         public static string ProductName {
@@ -124,7 +133,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2.7.1.
+        ///   Looks up a localized string similar to 2.7.3.
         /// </summary>
         public static string ProductVersion {
             get {

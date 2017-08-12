@@ -10,9 +10,7 @@ namespace POESKillTree.Utils.UrlProcessing
     public class BuildUrlData
     {
         private readonly BanditConverter _converter;
-        private int? _banditNormalId;
-        private int? _banditCruelId;
-        private int? _banditMercilessId;
+        private int? _banditId;
 
         public int Version { get; set; }
         public int CharacterClassId { get; set; }
@@ -21,40 +19,26 @@ namespace POESKillTree.Utils.UrlProcessing
         public Dictionary<int, List<byte>> Jewels { get; } = new Dictionary<int, List<byte>>();
         public List<string> CompatibilityIssues { get; } = new List<string>();
 
-        public virtual Bandit BanditNormal => _converter.GetBandit(_banditNormalId);
-        public virtual Bandit BanditCruel => _converter.GetBandit(_banditCruelId);
-        public virtual Bandit BanditMerciless => _converter.GetBandit(_banditMercilessId);
+        public virtual Bandit Bandit => _converter.GetBandit(_banditId);
 
         public BuildUrlData(BanditConverter converter)
         {
             _converter = converter;
         }
 
-        public void SetBanditNormal(int id)
+        public void SetBandit(int id)
         {
-            _banditNormalId = id;
-        }
-
-        public void SetBanditCruel(int id)
-        {
-            _banditCruelId = id;
-        }
-
-        public void SetBanditMerciless(int id)
-        {
-            _banditMercilessId = id;
+            _banditId = id;
         }
 
         public bool HasAnyBanditValue()
         {
-            return _banditNormalId.HasValue || _banditCruelId.HasValue || _banditMercilessId.HasValue;
+            return _banditId.HasValue;
         }
 
         public bool BanditsAreSame(BanditSettings bandits)
         {
-            return BanditNormal == bandits.Normal
-                && BanditCruel == bandits.Cruel
-                && BanditMerciless == bandits.Merciless;
+            return Bandit == bandits.Choice;
         }
     }
 }

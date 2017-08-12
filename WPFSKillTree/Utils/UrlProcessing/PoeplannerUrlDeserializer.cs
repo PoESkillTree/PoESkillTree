@@ -141,9 +141,7 @@ namespace POESKillTree.Utils.UrlProcessing
             if (data.NodesData.Length < 2)
                 return result;
 
-            result.SetBanditNormal(data.NodesData[1] & 3);
-            result.SetBanditCruel(data.NodesData[1] >> 2 & 3);
-            result.SetBanditMerciless(data.NodesData[1] >> 4 & 3);
+            result.SetBandit(data.NodesData[1] & 3);
 
             if (data.NodesData.Length < 4)
                 return result;

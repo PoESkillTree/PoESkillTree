@@ -212,7 +212,32 @@ namespace UnitTests.Model.Items.Mods
             var bow = affix.GetMatchingMods(
                 Tags.Bow | Tags.TwoHandWeapon | Tags.Ranged, ItemClass.Bow).ToList();
             Assert.AreEqual(1, bow.Count);
-            Assert.AreEqual("BleedOnHitGainedDexMasterVendorItem", ((Mod) bow[0]).Id);
+            Assert.AreEqual("BleedOnHitGainedDexMasterVendorItemUpdated_", ((Mod) bow[0]).Id);
+        }
+
+        [TestMethod]
+        public async Task GetMatchingMods_DefencesPercent_NoMasterMods()
+        {
+            await _initialization;
+            var affixes = _modDatabase[ModGenerationType.Prefix];
+            var affix = affixes.Single(a => a.Group == "DefencesPercent");
+
+            var dexHelmet = affix.GetMatchingMods(Tags.Armour | Tags.Helmet | Tags.DexArmour, ItemClass.Helmet)
+                .ToList();
+            Assert.IsTrue(dexHelmet.Any());
+            Assert.IsFalse(dexHelmet.Any(m => m.Domain == ModDomain.Master));
+        }
+
+        [TestMethod]
+        public async Task GetMatchingMods_IncreasedLife_MasterMods()
+        {
+            await _initialization;
+            var affixes = _modDatabase[ModGenerationType.Prefix];
+            var affix = affixes.Single(a => a.Group == "IncreasedLife");
+
+            var dexHelmet = affix.GetMatchingMods(Tags.Armour | Tags.Helmet | Tags.DexArmour, ItemClass.Helmet)
+                .ToList();
+            Assert.IsTrue(dexHelmet.Any(m => m.Domain == ModDomain.Master));
         }
 
         // Make sure all possible Tags and ItemClasses are either known or purposefully unknown.
@@ -221,7 +246,8 @@ namespace UnitTests.Model.Items.Mods
         public async Task JsonMod_UnknownTags()
         {
             await _initialization;
-            foreach (var mod in _mods.Values)
+            foreach (var mod in _mods.Values
+                .Where(m => m.Domain != ModDomain.Area && m.Domain != ModDomain.Atlas))
             {
                 foreach (var spawnWeight in mod.SpawnWeights)
                 {

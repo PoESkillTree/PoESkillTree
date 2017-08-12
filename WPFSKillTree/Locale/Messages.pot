@@ -13,18 +13,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Controls\BanditSelection.xaml:13
-msgid "Bandit reward for Normal difficulty."
-msgstr ""
-
-#: Controls\BanditSelection.xaml:18
-msgid "Bandit reward for Cruel difficulty."
-msgstr ""
-
-#: Controls\BanditSelection.xaml:23
-msgid "Bandit reward for Merciless difficulty."
-msgstr ""
-
 #: Controls\Dialogs\Views\FileSelectorView.xaml:41
 msgid "Browse..."
 msgstr ""
@@ -108,7 +96,7 @@ msgid "Choose colors of item labels shown for each rule or group of rules."
 msgstr ""
 
 #: ItemFilter\Views\ItemFilterEditWindow.xaml:133
-#: Views\Builds\BuildsControl.xaml:229 Views\Builds\BuildsControl.xaml:327
+#: Views\Builds\BuildsControl.xaml:236 Views\Builds\BuildsControl.xaml:334
 msgid "Save"
 msgstr ""
 
@@ -133,12 +121,12 @@ msgid "Select a filter you want to edit or create copy of."
 msgstr ""
 
 #: ItemFilter\Views\ItemFilterOpenWindow.xaml:82
-#: Views\Builds\BuildsControl.xaml:123 Views\Builds\BuildsControl.xaml:200
+#: Views\Builds\BuildsControl.xaml:123 Views\Builds\BuildsControl.xaml:207
 msgid "Edit"
 msgstr ""
 
 #: ItemFilter\Views\ItemFilterOpenWindow.xaml:87
-#: Views\Builds\BuildsControl.xaml:130 Views\Builds\BuildsControl.xaml:207
+#: Views\Builds\BuildsControl.xaml:130 Views\Builds\BuildsControl.xaml:214
 msgid "Delete"
 msgstr ""
 
@@ -289,26 +277,18 @@ msgid "Legal"
 msgstr ""
 
 #: Views\AboutWindow.xaml:74
-msgid "Skill tree assets and item images belong to"
+msgid "Skill tree assets, item images and game data belong to"
 msgstr ""
 
 #: Views\AboutWindow.xaml:75
-msgid "Data used in character calculations are from"
-msgstr ""
-
-#: Views\AboutWindow.xaml:79
-msgid "Information about base item types and their images are retrieved from"
-msgstr ""
-
-#: Views\AboutWindow.xaml:83
-msgid "Information about item affixes is retrieved from"
+msgid "Information about base item types and unique items and their images are retrieved from"
 msgstr ""
 
 #: Views\Builds\BuildsControl.xaml:25
 msgid "Right click to edit"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:138 Views\Builds\BuildsControl.xaml:215
+#: Views\Builds\BuildsControl.xaml:138 Views\Builds\BuildsControl.xaml:222
 msgid "Cut"
 msgstr ""
 
@@ -321,59 +301,63 @@ msgid "New Build"
 msgstr ""
 
 #: Views\Builds\BuildsControl.xaml:158
-#: ViewModels\Builds\BuildsControlViewModel.cs:371
+#: ViewModels\Builds\BuildsControlViewModel.cs:420
 msgid "New Folder"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:194
+#: Views\Builds\BuildsControl.xaml:165
+msgid "Export to .build"
+msgstr ""
+
+#: Views\Builds\BuildsControl.xaml:201
 msgid "Open"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:222
+#: Views\Builds\BuildsControl.xaml:229
 msgid "Copy"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:235
+#: Views\Builds\BuildsControl.xaml:242
 msgid "Discard changes"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:238
+#: Views\Builds\BuildsControl.xaml:245
 msgid "Discards all changes made to this build after the last save"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:315
+#: Views\Builds\BuildsControl.xaml:322
 msgid "Skill Tree comparison enabled"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:318
+#: Views\Builds\BuildsControl.xaml:325
 msgid "Skill Tree comparison disabled"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:329
+#: Views\Builds\BuildsControl.xaml:336
 msgid "Saves the currently opened build"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:336
+#: Views\Builds\BuildsControl.xaml:343
 msgid "Save As"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:338
+#: Views\Builds\BuildsControl.xaml:345
 msgid "Saves the currently opened build as a new build"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:343
+#: Views\Builds\BuildsControl.xaml:350
 msgid "Save All"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:345
+#: Views\Builds\BuildsControl.xaml:352
 msgid "Saves all changed builds"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:353
+#: Views\Builds\BuildsControl.xaml:360
 msgid "New top level build"
 msgstr ""
 
-#: Views\Builds\BuildsControl.xaml:358
+#: Views\Builds\BuildsControl.xaml:365
 msgid "New top level folder"
 msgstr ""
 
@@ -958,7 +942,7 @@ msgid "Equipment"
 msgstr ""
 
 #: Views\MainWindow.xaml:633
-msgid "Bandits"
+msgid "Bandit"
 msgstr ""
 
 #: Views\MainWindow.xaml:647
@@ -1009,21 +993,21 @@ msgstr ""
 msgid "ItemList"
 msgstr ""
 
-#: Views\MainWindow.xaml:859
+#: Views\MainWindow.xaml:877
 msgid "Character Sheet"
 msgstr ""
 
-#: Views\MainWindow.xaml:865 SkillTreeFiles\Compute.cs:2300
+#: Views\MainWindow.xaml:883 SkillTreeFiles\Compute.cs:2300
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:218
 #: Utils\Converter\GroupStringConverter.cs:31
 msgid "Defense"
 msgstr ""
 
-#: Views\MainWindow.xaml:882
+#: Views\MainWindow.xaml:900
 msgid "Offense"
 msgstr ""
 
-#: Views\MainWindow.xaml:925 Views\MainWindow.xaml:928
+#: Views\MainWindow.xaml:943 Views\MainWindow.xaml:946
 msgid "Skill tree link"
 msgstr ""
 
@@ -1141,7 +1125,7 @@ msgstr ""
 msgid "Character"
 msgstr ""
 
-#: SkillTreeFiles\SkillTree.cs:1234
+#: SkillTreeFiles\SkillTree.cs:1230
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr ""
 
@@ -1278,7 +1262,7 @@ msgstr ""
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:231
 #: Utils\Converter\GroupStringConverter.cs:33
-#: ItemFilter\Model\FilterManager.cs:416
+#: ItemFilter\Model\FilterManager.cs:564
 msgid "Flasks"
 msgstr ""
 
@@ -1403,35 +1387,47 @@ msgstr ""
 msgid "Failed to load build from URL."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:31
+#: ItemFilter\Model\FilterManager.cs:47
 msgid "Currency"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:255
+#: ItemFilter\Model\FilterManager.cs:383
 msgid "Recipes"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:266
+#: ItemFilter\Model\FilterManager.cs:390
+msgid "Any Normal item which vendor trades for Scroll Fragment."
+msgstr ""
+
+#: ItemFilter\Model\FilterManager.cs:401
+msgid "Any Magic item which vendor trades for Transmutation Shard, Alteration Shard or Alchemy Shard."
+msgstr ""
+
+#: ItemFilter\Model\FilterManager.cs:413
 msgid ""
 "A single Normal weapon with 20% quality.\n"
 "Weapons with a total of at least 40% quality."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:316
+#: ItemFilter\Model\FilterManager.cs:461
 msgid ""
 "1 Stone Hammer, Rock Breaker or Gavel with 20% quality\n"
 "1 Any Map"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:386
+#: ItemFilter\Model\FilterManager.cs:534
 msgid "Gems"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:610
+#: ItemFilter\Model\FilterManager.cs:757
 msgid "Miscellaneous"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:690
+#: ItemFilter\Model\FilterManager.cs:868
+msgid "Crafting"
+msgstr ""
+
+#: ItemFilter\Model\FilterManager.cs:986
 msgid "Chancing"
 msgstr ""
 
@@ -1457,106 +1453,114 @@ msgctxt "color"
 msgid "Standard"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:56
+#: ViewModels\Builds\BuildsControlViewModel.cs:59
 msgid "All"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:348
+#: ViewModels\Builds\BuildsControlViewModel.cs:309
+msgid "Select save directory"
+msgstr ""
+
+#: ViewModels\Builds\BuildsControlViewModel.cs:310
+msgid "Select the directory where you want to export this build structure."
+msgstr ""
+
+#: ViewModels\Builds\BuildsControlViewModel.cs:397
 msgid ""
 "Files in your build save directory have been changed.\n"
 "Do you want to reload all builds from the file system?"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:352
+#: ViewModels\Builds\BuildsControlViewModel.cs:401
 msgid ""
 "\n"
 "All unsaved changes will be lost."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:354
+#: ViewModels\Builds\BuildsControlViewModel.cs:403
 msgid ""
 "\n"
 "\n"
 "You can also reload through the 'File' menu."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:356
+#: ViewModels\Builds\BuildsControlViewModel.cs:405
 msgid "Builds changed"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:372
+#: ViewModels\Builds\BuildsControlViewModel.cs:421
 msgid "Enter the name of the new folder."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:398
+#: ViewModels\Builds\BuildsControlViewModel.cs:447
 msgid "The currently opened build can not be deleted."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:404
+#: ViewModels\Builds\BuildsControlViewModel.cs:453
 #, csharp-format
 msgid "This will delete the build folder \"{0}\" and all its contents.\n"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:405
+#: ViewModels\Builds\BuildsControlViewModel.cs:454
 #: Views\MainWindow.xaml.cs:956
 msgid "Do you want to continue?"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:426
+#: ViewModels\Builds\BuildsControlViewModel.cs:475
 msgid "This build is currently opened but has unsaved changes.\n"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:427
+#: ViewModels\Builds\BuildsControlViewModel.cs:476
 msgid "Do you want to discard all changes made to it since your last save?"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:428
+#: ViewModels\Builds\BuildsControlViewModel.cs:477
 msgid "Discard changes?"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:443
+#: ViewModels\Builds\BuildsControlViewModel.cs:492
 msgid "Saving new Build"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:444
+#: ViewModels\Builds\BuildsControlViewModel.cs:493
 msgid "Enter the name of the build."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:460
+#: ViewModels\Builds\BuildsControlViewModel.cs:509
 msgid "Save as"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:461
+#: ViewModels\Builds\BuildsControlViewModel.cs:510
 msgid "Enter the new name of the build"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:594
+#: ViewModels\Builds\BuildsControlViewModel.cs:643
 msgid "Edit Folder"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:595
+#: ViewModels\Builds\BuildsControlViewModel.cs:644
 msgid "Enter the new name for this folder below."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:619
+#: ViewModels\Builds\BuildsControlViewModel.cs:668
 msgid ""
 "Any unsaved changes will be lost.\n"
 "Are you sure?"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:765
+#: ViewModels\Builds\BuildsControlViewModel.cs:814
 msgid "An error occurred during a save operation."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:782
+#: ViewModels\Builds\BuildsControlViewModel.cs:831
 msgid "An error occurred during a delete operation."
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:799
+#: ViewModels\Builds\BuildsControlViewModel.cs:848
 msgid "Unsaved Builds"
 msgstr ""
 
-#: ViewModels\Builds\BuildsControlViewModel.cs:800
+#: ViewModels\Builds\BuildsControlViewModel.cs:849
 msgid "These builds are not saved:\n"
 msgstr ""
 
@@ -1579,24 +1583,24 @@ msgstr ""
 msgid "Download & Import Items"
 msgstr ""
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:85
+#: ViewModels\Equipment\DownloadStashViewModel.cs:86
 msgid "Download & Import Stash"
 msgstr ""
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:104
+#: ViewModels\Equipment\DownloadStashViewModel.cs:105
 msgid "Could not load the currently running leagues."
 msgstr ""
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:189
-#: ViewModels\Equipment\DownloadStashViewModel.cs:246
+#: ViewModels\Equipment\DownloadStashViewModel.cs:190
+#: ViewModels\Equipment\DownloadStashViewModel.cs:247
 msgid "An error occurred while attempting to load stash data."
 msgstr ""
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:240
+#: ViewModels\Equipment\DownloadStashViewModel.cs:241
 msgid "New tab added"
 msgstr ""
 
-#: ViewModels\Equipment\DownloadStashViewModel.cs:241
+#: ViewModels\Equipment\DownloadStashViewModel.cs:242
 #, csharp-format
 msgid "New tab with {0} items was added to stash."
 msgstr ""
@@ -1711,7 +1715,7 @@ msgstr[1] ""
 msgid "Your build must use at least one node to generate a screenshot"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:947 Views\MainWindow.xaml.cs:2065
+#: Views\MainWindow.xaml.cs:947 Views\MainWindow.xaml.cs:2040
 msgid "An error occurred while copying to Clipboard."
 msgstr ""
 
@@ -1789,38 +1793,38 @@ msgstr ""
 msgid "An error occurred while attempting to load item data."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1865 Views\MainWindow.xaml.cs:1912
+#: Views\MainWindow.xaml.cs:1865 Views\MainWindow.xaml.cs:1908
 msgid "An error occurred while attempting to load Skill tree from URL."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1889
+#: Views\MainWindow.xaml.cs:1887
 msgid "The build you are loading contains information about selected bandits."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1890
+#: Views\MainWindow.xaml.cs:1888
 msgid "Do you want to use it and overwrite current settings?"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1891
+#: Views\MainWindow.xaml.cs:1889
 msgid "Replace Bandits settings"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1919
-msgid "Current:"
+#: Views\MainWindow.xaml.cs:1915
+msgid "Current: "
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:1923
-msgid "Loaded:"
+#: Views\MainWindow.xaml.cs:1916
+msgid "Loaded: "
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2045
+#: Views\MainWindow.xaml.cs:2020
 msgid "Generating PoEUrl of Skill tree"
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2051
+#: Views\MainWindow.xaml.cs:2026
 msgid "An error occurred while attempting to contact the PoEUrl location."
 msgstr ""
 
-#: Views\MainWindow.xaml.cs:2061
+#: Views\MainWindow.xaml.cs:2036
 msgid "The PoEUrl link has been copied to Clipboard."
 msgstr ""

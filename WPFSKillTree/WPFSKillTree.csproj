@@ -211,6 +211,7 @@
       <DependentUpon>ColorPickerButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
+    <Compile Include="Model\Builds\GGGBuild.cs" />
     <Compile Include="Model\Items\Mods\ModGroup.cs" />
     <Compile Include="Model\Items\Mods\IMod.cs" />
     <Compile Include="Model\Items\Mods\JsonCraftingBenchOption.cs" />

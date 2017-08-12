@@ -21,18 +21,18 @@ namespace POESKillTree.ItemFilter.Model
         {
             if (match is MatchBaseType) return base.Subsets(match);
 
+            // BaseType can subset Class match based on learnt strings, while respecting narrowing.
             if (match is MatchClass)
             {
-                // BaseType matche subsets Class match, if all its strings are defined in BaseType list of Class match.
                 MatchClass clazz = match as MatchClass;
-                if (clazz.BaseTypes != null)
-                {
-                    foreach (string str in Values)
-                        if (!clazz.BaseTypes.Contains(str))
-                            return false;
 
+                // If Class match is narrowed by BaseType, perform BaseType vs. BaseType narrowing the Class subset test.
+                if (clazz.NarrowedBy != null && !base.Subsets(clazz.NarrowedBy))
+                    return false;
+
+                // BaseType match subsets Class match, if all its strings are defined in BaseTypesOfClass for Class match.
+                if (clazz.Contains(this))
                     return true;
-                }
             }
 
             return false;

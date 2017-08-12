@@ -65,24 +65,38 @@ namespace POESKillTree.ItemFilter.Model
         /// </summary>
         public void Learn ()
         {
-            if (Matches != null)
+            if (HasMatches)
             {
                 // If group has Class match, look for BaseType matches in its rules and learn them.
                 Match clazz = Matches.Find(m => m is MatchClass);
                 if (clazz != null)
                 {
-                    foreach (Rule rule in Rules)
+                    foreach (Rule rule in Rules.FindAll(r => r.HasAnyMatches))
                     {
-                        Match baseType = rule.Matches.Find(m => m is MatchBaseType);
+                        Match baseType = rule.AnyMatches.Find(m => m is MatchBaseType);
                         if (baseType != null) (clazz as MatchClass).Learn(baseType as MatchBaseType);
                     }
                 }
 
                 // If group has implicit matches, add them to each rule if they don't have them already.
                 foreach (Match match in Matches.FindAll(m => m.IsImplicit()))
-                    foreach (Rule rule in Rules)
-                        if (!rule.Matches.Exists(m => m.Priority == match.Priority))
-                            rule.Matches.Add(match.Clone());
+                    foreach (Rule rule in Rules.FindAll(r => r.HasAnyMatches))
+                        if (!rule.AnyMatches.Exists(m => m.Priority == match.Priority))
+                        {
+                            if (rule.IsSet)
+                            {
+                                foreach (List<Match> matches in rule.Set)
+                                    matches.Add(match.Clone());
+                            }
+                            else rule.Matches.Add(match.Clone());
+                        }
+            }
+
+            // Narrow Class matches with their BaseTypes within single rule (also learn BaseType containement in Class).
+            foreach (Rule rule in Rules.FindAll(r => r.HasAnyMatches && r.AnyMatches.Exists(m => m is MatchClass) && r.AnyMatches.Exists(m => m is MatchBaseType)))
+            {
+                Match clazz = rule.AnyMatches.Find(m => m is MatchClass);
+                (clazz as MatchClass).NarrowBy(rule.AnyMatches.Find(m => m is MatchBaseType) as MatchBaseType);
             }
         }
 

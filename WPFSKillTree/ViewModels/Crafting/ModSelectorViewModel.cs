@@ -150,7 +150,7 @@ namespace POESKillTree.ViewModels.Crafting
                     {
                         var ranges = SelectedAffix.GetRanges(valueIndex);
                         var ticks = ranges.SelectMany(r => Enumerable.Range(r.From, r.To - r.From + 1))
-                            .OrderBy(i => i);
+                            .OrderBy(i => i).Distinct();
                         var slider = new SliderViewModel(valueIndex, ticks);
                         sliderGroup.Add(slider);
                         _sliders.Add(slider);
