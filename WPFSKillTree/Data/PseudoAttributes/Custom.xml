@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PseudoAttributes>
-	<PseudoAttribute Name="#% increased Charged Dash Damage with Random Weapon" Group="Damage">
+	<PseudoAttribute Name="#% increased Charged Dash Damage with Phys Weapon" Group="Damage">
+		<Attribute Name="#% increased Physical Damage"/>
 		<Attribute Name="#% increased Elemental Damage"  ConversionMultiplier="0.5"/>
 		<Attribute Name="#% increased Elemental Damage with Attack Skills"  ConversionMultiplier="0.5"/>
 		<Attribute Name="#% increased Lightning Damage" ConversionMultiplier="0.5"/>
 		<Attribute Name="#% increased Area Damage"/>
 		<Attribute Name="#% increased Attack Damage" />
 		<Attribute Name="#% increased Damage"/>
-		<Attribute Name="#% increased Attack Speed" ConversionMultiplier="0.01"/>
-		<Attribute Name="#% increased Movement Speed" ConversionMultiplier="0.01"/>
+		<!--Attack speed increases rate of AOE circles during charge of skill, while Movement speed increases speed of travel distance (granting more damage based on percent of dash distance)-->
+		<Attribute Name="#% increased Attack Speed"/>
+		<Attribute Name="#% increased Movement Speed"/>
 	</PseudoAttribute>
 	<PseudoAttribute Name="#% increased Righteous Fire Damage(with slightly reduced fire/burn-dot preference)" Group="Damage">
 		<Attribute Name="#% increased Elemental Damage" />
@@ -25,20 +27,10 @@
 		<Attribute Name="#% increased Spell Damage" />
 		<Attribute Name="#% increased maximum Life"  ConversionMultiplier="0.12"/>
 	</PseudoAttribute>
-	<PseudoAttribute Name="#% increased Total Glacial Cascade Damage with 50% phys conversion" Group="Damage">
-		<!-- With Physical to Lightning Support
-		Before Phys to Lightning Gem
-		35.504201680672268907563025210084% of Glacial cascade is phys
-		
-		After Phys to Lightning Gem
-		17.752100840336134453781512605042% of Glacial cascade is phys (before added damage)
-		82.247899159663865546218487394958% is Elemental damage (before added damage)
-		64.495798319327731092436974789916% is Cold Damage
-		-->
-		<Attribute Name="#% increased Elemental Damage" ConversionMultiplier="0.82247899159663865546218487394958"/>
-		<Attribute Name="#% increased Cold Damage" ConversionMultiplier="0.64495798319327731092436974789916"/>
-		<Attribute Name="#% increased Physical Damage" ConversionMultiplier="0.17752100840336134453781512605042"/>
-		<Attribute Name="#% increased Lightning Damage" ConversionMultiplier="0.17752100840336134453781512605042"/>
+	<PseudoAttribute Name="#% increased Total Glacial Cascade Damage" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" ConversionMultiplier="0.6"/>
+		<Attribute Name="#% increased Cold Damage" ConversionMultiplier="0.6"/>
+		<Attribute Name="#% increased Physical Damage"/>
 		<Attribute Name="#% increased Area Damage" />
 		<Attribute Name="#% increased Spell Damage" />
 	</PseudoAttribute>
