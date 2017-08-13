@@ -9,7 +9,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
 {
     internal class MatchBuilderStub : IMatchBuilder
     {
-        internal IConditionProvider Condition { get; private set; }
+        internal IEnumerable<IConditionProvider> Conditions { get; private set; }
         internal IEnumerable<IFormProvider> Forms { get; private set; }
         internal IEnumerable<IStatProvider> Stats { get; private set; }
         internal Func<IStatProvider, IStatProvider> StatConverter { get; private set; }
@@ -20,10 +20,21 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         {
             if (condition == null)
                 throw new ArgumentNullException(nameof(condition));
-            if (Condition != null)
+            if (Conditions != null)
                 throw new InvalidOperationException();
             var ret = (MatchBuilderStub) MemberwiseClone();
-            ret.Condition = condition;
+            ret.Conditions = new[] { condition };
+            return ret;
+        }
+
+        public IMatchBuilder WithConditions(IEnumerable<IConditionProvider> conditions)
+        {
+            if (conditions == null)
+                throw new ArgumentNullException(nameof(conditions));
+            if (Conditions != null)
+                throw new InvalidOperationException();
+            var ret = (MatchBuilderStub) MemberwiseClone();
+            ret.Conditions = conditions;
             return ret;
         }
 

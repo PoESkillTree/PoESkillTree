@@ -40,7 +40,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
 
             _sut.Add(Regex, form, stat, 3);
 
-            var builder = AssertMatcherData();
+            var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
             Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));
             Assert.That(builder.Values, Has.Exactly(1).SameAs(value));
@@ -57,11 +57,11 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
 
             _sut.Add(Regex, form, stat, 3, condition);
 
-            var builder = AssertMatcherData();
+            var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
             Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));
             Assert.That(builder.Values, Has.Exactly(1).SameAs(value));
-            Assert.AreSame(condition, builder.Condition);
+            Assert.That(builder.Conditions, Has.Exactly(1).SameAs(condition));
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
 
             _sut.Add(Regex, form, stat1, stat2, stat3);
 
-            var builder = AssertMatcherData();
+            var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
             CollectionAssert.AreEqual(new[] { stat1, stat2, stat3 }, builder.Stats);
         }
@@ -87,7 +87,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
 
             _sut.Add(Regex, form, stat);
 
-            var builder = AssertMatcherData();
+            var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
             Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));
         }
@@ -100,7 +100,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
 
             _sut.Add(Regex, form, stats);
 
-            var builder = AssertMatcherData();
+            var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
             Assert.AreSame(stats, builder.Stats);
         }
@@ -131,7 +131,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
 
             _sut.Add(Regex, form, stat, converter);
 
-            var builder = AssertMatcherData();
+            var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
             Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));
             Assert.AreSame(converter, builder.ValueConverter);
@@ -146,7 +146,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
 
             _sut.Add(Regex, (firstForm, secondForm), stat);
 
-            var builder = AssertMatcherData();
+            var builder = _sut.AssertSingle(Regex);
             CollectionAssert.AreEqual(new[] {firstForm, secondForm}, builder.Forms);
             Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));
         }
@@ -167,15 +167,6 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             _sut.Add(Regex, (form, form), stat);
 
             Assert.AreEqual(6, _sut.Count());
-        }
-
-        private MatchBuilderStub AssertMatcherData()
-        {
-            var data = _sut.Single();
-            Assert.AreEqual(Regex, data.Regex);
-            Assert.IsInstanceOf<MatchBuilderStub>(data.MatchBuilder);
-            Assert.AreEqual(string.Empty, data.MatchSubstitution);
-            return (MatchBuilderStub) data.MatchBuilder;
         }
     }
 }

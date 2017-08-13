@@ -56,9 +56,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\ConditionMatcherCollectionTest.cs" />
     <Compile Include="Collections\FormAndStatMatcherCollectionTest.cs" />
     <Compile Include="Collections\FormMatcherCollectionTest.cs" />
     <Compile Include="Collections\MatchBuilderStub.cs" />
+    <Compile Include="Collections\MatcherCollectionHelpers.cs" />
+    <Compile Include="Collections\PropertyMatcherCollectionTest.cs" />
+    <Compile Include="Collections\SpecialMatcherCollectionTest.cs" />
+    <Compile Include="Collections\StatManipulatorMatcherCollectionTest.cs" />
+    <Compile Include="Collections\StatMatcherCollectionTest.cs" />
+    <Compile Include="Collections\ValueConversionMatcherCollectionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

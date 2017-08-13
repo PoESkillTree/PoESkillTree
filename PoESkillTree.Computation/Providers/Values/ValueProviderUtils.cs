@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Providers.Values
         public static ValueFunc PercentOf(IStatProvider stat) =>
             v => stat.Value * v.AsPercentage;
 
-        public static ValueFunc LinearScale(this IValueProviderFactory valueFactory, 
+        public static ValueProvider LinearScale(this IValueProviderFactory valueFactory, 
             IStatProvider yStat,
             params (double y, double multiplier)[] points)
         {
@@ -55,9 +55,7 @@ namespace PoESkillTree.Computation.Providers.Values
             {
                 builder = builder.ElseIf(condition).Then(multiplier);
             }
-            var conditionalMultiplier = builder.Else(lastMultiplier);
-
-            return x => x * conditionalMultiplier;
+            return builder.Else(lastMultiplier);
         }
 
     }

@@ -28,5 +28,7 @@ namespace PoESkillTree.Computation
         IMatchBuilder WithValueConverter(ValueFunc converter);
 
         IMatchBuilder WithCondition(IConditionProvider condition);
+
+        IMatchBuilder WithConditions(IEnumerable<IConditionProvider> conditions);
     }
 }

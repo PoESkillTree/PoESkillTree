@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Data
         public IReadOnlyList<MatcherData> Matchers { get; }
 
         private SpecialMatcherCollection CreateCollection() => new SpecialMatcherCollection(
-            _matchBuilder)
+            _matchBuilder, ValueFactory)
         {
             {
                 @"\+# to level of socketed support gems",
@@ -54,9 +54,9 @@ namespace PoESkillTree.Computation.Data
                 // Point Blank
                 "projectile attacks deal up to #% more damage to targets at the start of their movement, " +
                 "dealing less damage to targets as the projectile travels farther",
-                PercentMore, Damage, Value,
+                PercentMore, Damage,
                 // 0 to 10: Value; 10 to 35: Value to 0; 35 to 150: 0 to -Value
-                ValueFactory.LinearScale(Projectile.TravelDistance,
+                Value * ValueFactory.LinearScale(Projectile.TravelDistance,
                     (0, 1), (10, 1), (35, 0), (150, -1)),
                 And(Damage.With(Source.Attack), With(Skills[Keyword.Projectile]))
             },
@@ -95,14 +95,14 @@ namespace PoESkillTree.Computation.Data
             },
             {
                 "far shot",
-                PercentMore, Damage, 30,
-                ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
+                PercentMore, Damage,
+                30 * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
                 And(Damage.With(Source.Attack), With(Skills[Keyword.Projectile]))
             },
             {
                 "projectiles gain damage as they travel further, dealing up to #% increased damage to targets",
-                PercentIncrease, Damage, Value,
-                ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
+                PercentIncrease, Damage,
+                Value * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
                 With(Skills[Keyword.Projectile])
             },
             {
