@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using PoESkillTree.Computation.Providers.Forms;
@@ -6,11 +5,13 @@ using PoESkillTree.Computation.Providers.Stats;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
-    public class GivenStatsCollection : IEnumerable<object>
+    public class GivenStatCollection : IEnumerable<GivenStatData>
     {
-        public IEnumerator<object> GetEnumerator()
+        private readonly List<GivenStatData> _data = new List<GivenStatData>();
+
+        public IEnumerator<GivenStatData> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _data.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -20,7 +21,7 @@ namespace PoESkillTree.Computation.Data.Collections
 
         public void Add(IFormProvider form, IStatProvider stat, double value)
         {
-            throw new NotImplementedException();
+            _data.Add(new GivenStatData(form, stat, value));
         }
     }
 }

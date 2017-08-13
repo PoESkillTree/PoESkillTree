@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using PoESkillTree.Computation.Providers.Stats;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
-    public class FlagStatCollection : IEnumerable<object>
+    public class FlagStatCollection : IEnumerable<FlagStatData>
     {
-        public IEnumerator<object> GetEnumerator()
+        private readonly List<FlagStatData> _data = new List<FlagStatData>();
+
+        public IEnumerator<FlagStatData> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _data.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -19,7 +20,7 @@ namespace PoESkillTree.Computation.Data.Collections
 
         public void Add(IFlagStatProvider stat, params string[] stats)
         {
-            throw new NotImplementedException();
+            _data.Add(new FlagStatData(stat, stats));
         }
     }
 }

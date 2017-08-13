@@ -4,8 +4,8 @@ namespace PoESkillTree.Computation
 {
     public interface IEffectStats
     {
-        IEnumerable<object> Effects { get; }
+        IReadOnlyList<EffectStatData> Effects { get; }
 
-        IEnumerable<object> Flags { get; }
+        IReadOnlyList<FlagStatData> Flags { get; }
     }
 }

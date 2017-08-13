@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Data.Collections;
 
 namespace PoESkillTree.Computation.Data
@@ -13,7 +14,7 @@ namespace PoESkillTree.Computation.Data
         // - convert to all lowercase
         // - replace all sequences of whitespace characters with a single space
 
-        public IEnumerable<object> Replacers { get; } = new StatReplacerCollection
+        public IReadOnlyList<StatReplacerData> Replacers { get; } = new StatReplacerCollection
         {
             {
                 // Grand Spectrum
@@ -58,6 +59,6 @@ namespace PoESkillTree.Computation.Data
                 "the increase to physical damage from strength applies to projectile attacks as well as melee attacks",
                 "1% increased physical projectile attack damage per 5 strength damage bonus ceiled"
             },
-        };
+        }.ToList();
     }
 }

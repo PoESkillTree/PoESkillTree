@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Providers;
@@ -10,12 +11,12 @@ namespace PoESkillTree.Computation.Data
         public EffectStats(IProviderFactories providerFactories)
             : base(providerFactories)
         {
-            Effects = CreateEffectCollection();
-            Flags = CreateFlagCollection();
+            Effects = CreateEffectCollection().ToList();
+            Flags = CreateFlagCollection().ToList();
         }
 
-        public IEnumerable<object> Effects { get; }
-        public IEnumerable<object> Flags { get; }
+        public IReadOnlyList<EffectStatData> Effects { get; }
+        public IReadOnlyList<FlagStatData> Flags { get; }
 
         private EffectStatCollection CreateEffectCollection() => new EffectStatCollection
         {

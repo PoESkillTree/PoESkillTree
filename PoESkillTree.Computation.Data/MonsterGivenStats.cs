@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Providers;
@@ -10,7 +11,7 @@ namespace PoESkillTree.Computation.Data
     {
         public MonsterGivenStats(IProviderFactories providerFactories) : base(providerFactories)
         {
-            GivenStats = CreateCollection();
+            GivenStats = CreateCollection().ToList();
         }
 
         public IReadOnlyList<string> GivenStatLines { get; } = new[]
@@ -24,9 +25,9 @@ namespace PoESkillTree.Computation.Data
             "200% increased Critical Strike Chance per Power Charge",
         };
 
-        public IEnumerable<object> GivenStats { get; }
+        public IReadOnlyList<GivenStatData> GivenStats { get; }
 
-        private GivenStatsCollection CreateCollection() => new GivenStatsCollection
+        private GivenStatCollection CreateCollection() => new GivenStatCollection
         {
             // base stats
             { BaseSet, Mana, 200 },

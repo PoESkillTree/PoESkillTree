@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Providers;
@@ -11,7 +12,7 @@ namespace PoESkillTree.Computation.Data
         public CharacterGivenStats(IProviderFactories providerFactories)
             : base(providerFactories)
         {
-            GivenStats = CreateCollection();
+            GivenStats = CreateCollection().ToList();
         }
 
         public IReadOnlyList<string> GivenStatLines { get; } = new[]
@@ -55,9 +56,9 @@ namespace PoESkillTree.Computation.Data
             "100% of non-chaos damage is taken from energy shield before life"
         };
 
-        public IEnumerable<object> GivenStats { get; }
+        public IReadOnlyList<GivenStatData> GivenStats { get; }
 
-        private GivenStatsCollection CreateCollection() => new GivenStatsCollection
+        private GivenStatCollection CreateCollection() => new GivenStatCollection
         {
             // base stats
             { BaseSet, Life, 38 },

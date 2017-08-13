@@ -9,6 +9,6 @@ namespace PoESkillTree.Computation
         IReadOnlyList<string> GivenStatLines { get; }
 
         // Already processed into providers
-        IEnumerable<object> GivenStats { get; }
+        IReadOnlyList<GivenStatData> GivenStats { get; }
     }
 }

@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using PoESkillTree.Computation.Providers.Effects;
 using PoESkillTree.Computation.Providers.Stats;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
-    public class EffectStatCollection : IEnumerable<object>
+    public class EffectStatCollection : IEnumerable<EffectStatData>
     {
-        public IEnumerator<object> GetEnumerator()
+        private readonly List<EffectStatData> _data = new List<EffectStatData>();
+
+        public IEnumerator<EffectStatData> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _data.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -20,12 +21,12 @@ namespace PoESkillTree.Computation.Data.Collections
 
         public void Add(IEffectProvider effect, params string[] stats)
         {
-            throw new NotImplementedException();
+            _data.Add(new EffectStatData(effect, stats));
         }
 
         public void Add(IEffectProvider effect, params IFlagStatProvider[] stats)
         {
-            throw new NotImplementedException();
+            _data.Add(new EffectStatData(effect, stats));
         }
     }
 }

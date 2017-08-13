@@ -4,6 +4,6 @@ namespace PoESkillTree.Computation
 {
     public interface IStatReplacers
     {
-        IEnumerable<object> Replacers { get; }
+        IReadOnlyList<StatReplacerData> Replacers { get; }
     }
 }

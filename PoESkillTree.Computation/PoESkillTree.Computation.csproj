@@ -56,6 +56,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EffectStatData.cs" />
+    <Compile Include="FlagStatData.cs" />
+    <Compile Include="GivenStatData.cs" />
     <Compile Include="IEffectStats.cs" />
     <Compile Include="IGivenStats.cs" />
     <Compile Include="IMatchBuilder.cs" />
@@ -132,6 +135,7 @@
     <Compile Include="Providers\Values\ValueProvider.cs" />
     <Compile Include="Providers\Values\ValueProviderUtils.cs" />
     <Compile Include="ReferencedMatcherData.cs" />
+    <Compile Include="StatReplacerData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

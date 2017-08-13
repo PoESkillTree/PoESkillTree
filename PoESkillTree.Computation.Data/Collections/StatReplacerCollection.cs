@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
-    public class StatReplacerCollection : IEnumerable<object>
+    public class StatReplacerCollection : IEnumerable<StatReplacerData>
     {
-        public IEnumerator<object> GetEnumerator()
+        private readonly List<StatReplacerData> _data = new List<StatReplacerData>();
+
+        public IEnumerator<StatReplacerData> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _data.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -19,7 +20,7 @@ namespace PoESkillTree.Computation.Data.Collections
 
         public void Add([RegexPattern] string originalStat, params string[] replacements)
         {
-            throw new NotImplementedException();
+            _data.Add(new StatReplacerData(originalStat, replacements));
         }
     }
 }
