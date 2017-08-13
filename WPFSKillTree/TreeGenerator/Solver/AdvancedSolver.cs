@@ -86,7 +86,7 @@ namespace POESKillTree.TreeGenerator.Solver
         private const double UsedNodeCountWeight = 5;
 
         /// <summary>
-        /// Factor for the value calculated from the node difference if used node count is lower than the allowed node coutn.
+        /// Factor for the value calculated from the node difference if used node count is lower than the allowed node count.
         /// </summary>
         /// <remarks>
         /// A tree with less points spent should only better better if the csv satisfaction is not worse.
@@ -112,7 +112,7 @@ namespace POESKillTree.TreeGenerator.Solver
         /// </summary>
         private Dictionary<string, List<int>> _attrNameLookup;
         /// <summary>
-        /// Dictionary that maps attribute names and numbers (as indexes of _attrConstraints) to the converions multiplier
+        /// Dictionary that maps attribute names and numbers (as indexes of _attrConstraints) to their conversion multipliers
         /// that gets applied when they are calculated.
         /// </summary>
         private Dictionary<Tuple<string, int>, SmallDigit> _attrConversionMultipliers;

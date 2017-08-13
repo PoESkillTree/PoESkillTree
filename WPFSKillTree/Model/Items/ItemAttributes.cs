@@ -99,7 +99,7 @@ namespace POESKillTree.Model.Items
             get { return GetItemInSlot(ItemSlot.Jewel02); }
             set { SetItemInSlot(value, ItemSlot.Jewel02); }
         }
-		
+        
         public Item Jewel03
         {
             get { return GetItemInSlot(ItemSlot.Jewel03); }
@@ -117,14 +117,14 @@ namespace POESKillTree.Model.Items
             get { return GetItemInSlot(ItemSlot.Jewel05); }
             set { SetItemInSlot(value, ItemSlot.Jewel05); }
         }
-		
+        
         public Item Jewel06
         {
             get { return GetItemInSlot(ItemSlot.Jewel06); }
             set { SetItemInSlot(value, ItemSlot.Jewel06); }
         }
-		
-	    public Item Jewel07
+        
+        public Item Jewel07
         {
             get { return GetItemInSlot(ItemSlot.Jewel07); }
             set { SetItemInSlot(value, ItemSlot.Jewel07); }
@@ -135,31 +135,31 @@ namespace POESKillTree.Model.Items
             get { return GetItemInSlot(ItemSlot.Jewel08); }
             set { SetItemInSlot(value, ItemSlot.Jewel08); }
         }
-		
+        
         public Item Jewel09
         {
             get { return GetItemInSlot(ItemSlot.Jewel09); }
             set { SetItemInSlot(value, ItemSlot.Jewel09); }
         }
-		
+        
         public Item Jewel10
         {
             get { return GetItemInSlot(ItemSlot.Jewel10); }
             set { SetItemInSlot(value, ItemSlot.Jewel10); }
         }
-		
-		public Item Jewel11
+        
+        public Item Jewel11
         {
             get { return GetItemInSlot(ItemSlot.Jewel11); }
             set { SetItemInSlot(value, ItemSlot.Jewel11); }
         }
-		
+        
         public Item Jewel12
         {
             get { return GetItemInSlot(ItemSlot.Jewel12); }
             set { SetItemInSlot(value, ItemSlot.Jewel12); }
         }
-		
+        
         public Item Jewel13
         {
             get { return GetItemInSlot(ItemSlot.Jewel13); }
@@ -177,14 +177,14 @@ namespace POESKillTree.Model.Items
             get { return GetItemInSlot(ItemSlot.Jewel15); }
             set { SetItemInSlot(value, ItemSlot.Jewel15); }
         }
-		
+        
         public Item Jewel16
         {
             get { return GetItemInSlot(ItemSlot.Jewel16); }
             set { SetItemInSlot(value, ItemSlot.Jewel16); }
         }
-		
-	    public Item Jewel17
+        
+        public Item Jewel17
         {
             get { return GetItemInSlot(ItemSlot.Jewel17); }
             set { SetItemInSlot(value, ItemSlot.Jewel17); }
@@ -195,25 +195,25 @@ namespace POESKillTree.Model.Items
             get { return GetItemInSlot(ItemSlot.Jewel18); }
             set { SetItemInSlot(value, ItemSlot.Jewel18); }
         }
-		
+        
         public Item Jewel19
         {
             get { return GetItemInSlot(ItemSlot.Jewel19); }
             set { SetItemInSlot(value, ItemSlot.Jewel19); }
         }
-		
-		public Item Jewel20
+        
+        public Item Jewel20
         {
             get { return GetItemInSlot(ItemSlot.Jewel20); }
             set { SetItemInSlot(value, ItemSlot.Jewel20); }
         }
-		
-		public Item Jewel21
+        
+        public Item Jewel21
         {
             get { return GetItemInSlot(ItemSlot.Jewel21); }
             set { SetItemInSlot(value, ItemSlot.Jewel21); }
         }
-		
+        
         public Item GetItemInSlot(ItemSlot slot)
         {
             return Equip.FirstOrDefault(i => i.Slot == slot);

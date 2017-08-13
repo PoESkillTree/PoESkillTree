@@ -33,15 +33,15 @@ namespace POESKillTree.Model.Items.Enums
         /// </summary>
         Jewel03 = 0x2000,
         /// <summary>
-        /// Scion jewel slot east of starting area (Non-Threshold Jewel Slot); Might be good slot for Intuitize Leap Jewel
+        /// Scion jewel slot east of starting area (Both Int and Dex Threshold Jewel Slot)
         /// </summary>
         Jewel04 = 0x4000,
         /// <summary>
-        /// Scion Jewel Slot west of starting area (Non-Threshold Jewel Slot)
+        /// Scion Jewel Slot west of starting area (Both Str and Int Threshold Jewel Slot)
         /// </summary>
         Jewel05 = 0x8000,
         /// <summary>
-        /// Scion Jewel Slot south of starting area (Non-Threshold Jewel Slot)
+        /// Scion Jewel Slot south of starting area (Both Str and Dex Threshold Jewel Slot)
         /// </summary>
         Jewel06 = 0x10000,
         /// <summary>

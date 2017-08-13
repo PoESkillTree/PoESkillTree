@@ -47,6 +47,22 @@
         </Favorite>
       </favorites>
     </Folder>
+    <Folder>
+      <name>CSV Score Calculation</name>
+      <folders />
+      <favorites>
+        <Favorite>
+          <name>AdvancedSolver.cs</name>
+          <path>WPFSKillTree\TreeGenerator\Solver\AdvancedSolver.cs</path>
+          <absolutePath>C:\Users\BlazesRus\Documents\GitHub\PoESkillTree\WPFSKillTree\TreeGenerator\Solver\AdvancedSolver.cs</absolutePath>
+          <position>
+            <line>478</line>
+            <column>29</column>
+            <lineHash>Rr+tN/5O7Bw+galVo+3DzwbfOIZqupuEWpO4K3uF3KE=</lineHash>
+          </position>
+        </Favorite>
+      </favorites>
+    </Folder>
   </folders>
   <favorites />
 </Favorites>

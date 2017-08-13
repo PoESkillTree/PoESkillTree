@@ -105,12 +105,12 @@ if PO editing tool is used.
 A PO file is made up of many entries, each entry holding the relation between an original untranslated string
 in English and its corresponding translation. One PO file entry has the following schematic structure:
 
-	# comments containing:
-	#: source references
-	#, flags
-	#~ obsolete translations
-	msgid "untranslated-string"
-	msgstr "translated-string"
+    # comments containing:
+    #: source references
+    #, flags
+    #~ obsolete translations
+    msgid "untranslated-string"
+    msgstr "translated-string"
 
 These entries are separated by blank line. The comment lines starting with "#" character don't play any role
 in translation, but they can be useful to translators, developers and PO editing tools, and they should be preserved.
@@ -142,13 +142,13 @@ It should be noted that both untranslated and translated string are represented 
 contain control characters like new lines ("\n") or tabs ("\t"), which should be preserved. Also it's important to know
 that string can be split into multiple lines without affecting actual content of string. For example string:
 
-	msgid "line 1"
-	"line 2"
-	"line 3"
+    msgid "line 1"
+    "line 2"
+    "line 3"
 
 is identical to string:
 
-	msgid "line 1line 2line 3"
+    msgid "line 1line 2line 3"
 
 The "msgid_plural" keyword identifies general plural form of untranslated string in English. Once this line is present,
 it denotes an entry with plural forms, that is, a message where the text depends on a cardinal number. The general form
@@ -179,16 +179,16 @@ in C# is simply based on replacing placeholders (format items) in format string 
 
 Example of C# formatting:
 
-	string formatted = string.Format("Numbers {0} and {1} are equal!", number1, number2);
+    string formatted = string.Format("Numbers {0} and {1} are equal!", number1, number2);
 
 In this example, the format item "{0}" will be replaced with value of number1 variable and "{1}" with value of number2
 variable.
 
 The message entry in Slovak message file for this example would look like this:
 
-	#, csharp-format
-	msgid "Numbers {0} and {1} are equal!"
-	msgstr "Čísla {0} a {1} su zhodné!"
+    #, csharp-format
+    msgid "Numbers {0} and {1} are equal!"
+    msgstr "Čísla {0} a {1} su zhodné!"
 
 These format items are positional, that means that "{0}" will be always replaced with first argument and "{1}" with
 second. As such, it's safe to change order of format items in translated string if translation requires it.
@@ -223,12 +223,12 @@ be used.
 
 This is an example of Slovak PO file entry for message with plural forms:
 
-	#, csharp-format
-	msgid "{0} file deleted"
-	msgid_plural "{0} files deleted"
-	msgstr[0] "{0} súbor bol zmazaný"
-	msgstr[1] "{0} súbory boli zmazané"
-	msgstr[2] "{0} súborov bolo zmazaných"
+    #, csharp-format
+    msgid "{0} file deleted"
+    msgid_plural "{0} files deleted"
+    msgstr[0] "{0} súbor bol zmazaný"
+    msgstr[1] "{0} súbory boli zmazané"
+    msgstr[2] "{0} súborov bolo zmazaných"
 
 The difference from regular message without plural forms is, that untranslated string denoted by "msgid" is followed
 by "msgid_plural" untranslated string. The "msgid" untranslated string is singular form of message in English, while
@@ -247,7 +247,7 @@ to determine the index of translated string of correct plural form are defined i
 
 This is line from Slovak message file header:
 
-	"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+    "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 The expression "nplurals=3" means that there is total of 3 plural forms (it's 3, because singular form is technically
 considered as case of plural form). The expression "plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2" is formula written
@@ -275,12 +275,12 @@ context.
 
 Here is an example of such message:
 
-	msgid "Help"
-	msgstr "Pomocník"
+    msgid "Help"
+    msgstr "Pomocník"
 
-	msgctxt "exclamation"
-	msgid "Help"
-	msgstr "Pomoc"
+    msgctxt "exclamation"
+    msgid "Help"
+    msgstr "Pomoc"
 
 In this example, there are two same untranslated strings "Help". First one, doesn't have any context
 specified, so it will be most common use within application, which is "Help" as tool to access help document in menu.
@@ -346,7 +346,7 @@ Open command-line (run "cmd.exe") and change current directory to "Locale" folde
 (using "cd" command).
 Then execute "msginit.exe" tool with following arguments (example for Portuguese message file):
 
-	D:\PoESkillTree\Locale> msginit.exe -i Messages.pot -o pt-BR\Messages.po -l pt_BR --no-wrap --no-translator
+    D:\PoESkillTree\Locale> msginit.exe -i Messages.pot -o pt-BR\Messages.po -l pt_BR --no-wrap --no-translator
 
 where you replace "pt-BR" folder with name of folder you've created and "pt_BR" argument with *NIX locale identifier
 according to .NET culture name (see last paragraph of 1.1. Language identifiers).
@@ -357,7 +357,7 @@ useful, when you are creating translation for same language but different region
 
 Then "msginit.exe" tool execution could look like (example for Portuguese message file):
 
-	D:\PoESkillTree\Locale> msginit.exe -i pt-PT\Messages.po -o pt-BR\Messages.po -l pt_BR --no-wrap --no-translator
+    D:\PoESkillTree\Locale> msginit.exe -i pt-PT\Messages.po -o pt-BR\Messages.po -l pt_BR --no-wrap --no-translator
 
 which would create message file containing all translations from "pt-PT" message file and it would reduce translation
 process to changing only region specific terms or grammatical constructs.
@@ -397,32 +397,32 @@ The process of actual translation is very simple. It consist of following steps:
 
   - Replace each empty translated string ("" after "msgstr" keyword, or its plural form) with correct translation.
     If message has plural forms (is has one or more translated strings indexed by "[number]"), watch for correct index.
-	Remember that  first translated string ("msgstr[0]") is always singular form of message with plural forms. For rest
-	of plural forms follow the plurals formula in message file header.
+    Remember that  first translated string ("msgstr[0]") is always singular form of message with plural forms. For rest
+    of plural forms follow the plurals formula in message file header.
 
-	In Poedit plural forms are separated into tabs for each plural form. Just fill in all tabs with translation for
-	corresponding plural form.
+    In Poedit plural forms are separated into tabs for each plural form. Just fill in all tabs with translation for
+    corresponding plural form.
 
   - Handle fuzzy entries. This means, you should check if existing translation of such entry is still correct and fix
     the translation if it's required. After that, remove fuzzy flag.
 
-	In Poedit use "Fuzzy" button to remove fuzzy flag from entry.
+    In Poedit use "Fuzzy" button to remove fuzzy flag from entry.
 
 What should you also look for during translation:
 
   - The C# format strings (containing {0}, or more complex format items in braces "{..}"), these need to be preserved
     in translated strings. The order of format items in translated string can be changed if translation requires it.
 
-	Poedit checks the presence of format items in translated strings.
+    Poedit checks the presence of format items in translated strings.
 
   - Menu command accelerator keys (characters used with Alt key to access menu with keyboard), which are denoted
     by underscore character ("_") in front of alphanumeric character. Feel free to change these as you see them fit,
-	just keep in mind, that each menu item should use different key to access specific item of menu or submenu.
+    just keep in mind, that each menu item should use different key to access specific item of menu or submenu.
 
   - Specific contexts ("msgctxt" string in front of "msgid" untranslated string). These should be taken into account
     when translating the message as they specifies context in which message is used.
 
-	In Poedit context is displayed in brackets "[..]" next to untranslated string.
+    In Poedit context is displayed in brackets "[..]" next to untranslated string.
 
 If you are not certain about some translation of menu command or button label, try to use some other localized
 application as reference. It's better to use commonly used terms instead of inventing new ones which would just
@@ -465,18 +465,18 @@ that format string itself must be translated and not formatted result.
 
 Example of simple localized message:
 
-	MessageBox.Show(this, L10n.Message("You have the latest version!"), L10n.Message("No update"));
+    MessageBox.Show(this, L10n.Message("You have the latest version!"), L10n.Message("No update"));
 
 Example of simple localized message with formatting:
 
-	var message = String.Format(L10n.Message("Do you want to install version {0}?"), release.Version);
+    var message = String.Format(L10n.Message("Do you want to install version {0}?"), release.Version);
 
 Example of localized message with plural forms:
 
-	lblBestResult.Content = string.Format(L10n.Plural("Best result so far: {0} additional point spent",
+    lblBestResult.Content = string.Format(L10n.Plural("Best result so far: {0} additional point spent",
                                                       "Best result so far: {0} additional points spent",
-													  (uint)bestSoFar.Count),
-										  bestSoFar.Count);
+                                                      (uint)bestSoFar.Count),
+                                          bestSoFar.Count);
 
 Don't assign untranslated English string to variable and then use this variable as argument of L10n method. This won't
 be detected by gettext tools. So, always use localized strings directly as arguments of L10n method.
@@ -492,10 +492,10 @@ will lead to less confusion for translators as context of whole sentence will be
 Use "Catalog" custom tag of "clr-namespace:POESKillTree.Localization.XAML" XML namespace to translate messages.
 The custom tag has following attributes:
 
-	- Message: The untranslated string in English.
-	- Plural: The untranslated string of plural form in English.
-	- N: The numeric value based on which singular or plural form will be selected.
-	- Context: The optional string specifying context of message.
+    - Message: The untranslated string in English.
+    - Plural: The untranslated string of plural form in English.
+    - N: The numeric value based on which singular or plural form will be selected.
+    - Context: The optional string specifying context of message.
 
 For messages without plural form, only Message attribute with optional Context attribute is used.
 For messages with plural forms also Plural and N attributes have to be set.
@@ -505,16 +505,16 @@ Remember to declare XML namespace in root element of XAML file with "xmlns:l" at
 
 Example of simple localization:
 
-	<controls:MetroWindow
-		...
-		xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-		...>
-		<controls:MetroWindow.Title>
-			<l:Catalog Message="About PoESkillTree"/>
-		</controls:MetroWindow.Title>
-		...
-		<Button ...><l:Catalog Message="Close"/></Button>
-	</controls:MetroWindow>
+    <controls:MetroWindow
+        ...
+        xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+        ...>
+        <controls:MetroWindow.Title>
+            <l:Catalog Message="About PoESkillTree"/>
+        </controls:MetroWindow.Title>
+        ...
+        <Button ...><l:Catalog Message="Close"/></Button>
+    </controls:MetroWindow>
 
 The XAML custom tag doesn't support binding, so if you need to use string formatting or some more complex processing,
 do it in C# source and set final translation to property of named XAML element.
