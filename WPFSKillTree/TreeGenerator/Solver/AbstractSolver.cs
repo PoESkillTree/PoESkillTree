@@ -122,7 +122,7 @@ namespace POESKillTree.TreeGenerator.Solver
             StartNode = preProc.StartNode;
 
             // SkillNode-Ids of the remaining search space may represent more than one node. This
-            // information needs to be safed.
+            // information needs to be saved.
             var expansionDict = new IReadOnlyCollection<ushort>[ushort.MaxValue];
             foreach (var node in remainingNodes)
             {

@@ -32,20 +32,28 @@ namespace POESKillTree.TreeGenerator.Settings
         public readonly int TotalPoints;
 
         /// <summary>
-        /// The attribute constraints the solver should try to fullfill.
+        /// The attribute constraints the solver should try to fulfill.
         /// The key is the name of the attribute.
         /// Value is a tuple of target value (SmallDigit) and weight (double).
         /// Weight must be between 0 and 1 (both inclusive).
         /// </summary>
-        public readonly Dictionary<string, Tuple<SmallDigit, WeightType>> AttributeConstraints;
+        public readonly Dictionary<string, Tuple<SmallDigit, WeightType
+#if (PoESkillTree_EnableMinimumValue)
+        , SmallDigit
+#endif
+        >> AttributeConstraints;
 
         /// <summary>
-        /// The pseudo attribute constraints the solver should try to fullfill.
+        /// The pseudo attribute constraints the solver should try to fulfill.
         /// The key is the name of the attribute.
         /// Value is a tuple of target value (SmallDigit) and weight (double).
         /// Weight must be between 0 and 1 (both inclusive).
         /// </summary>
-        public readonly Dictionary<PseudoAttribute, Tuple<SmallDigit, WeightType>> PseudoAttributeConstraints;
+        public readonly Dictionary<PseudoAttribute, Tuple<SmallDigit, WeightType
+#if (PoESkillTree_EnableMinimumValue)
+        , SmallDigit
+#endif
+        >> PseudoAttributeConstraints;
 
         /// <summary>
         /// WeaponClass used for pseudo attribute calculation.
@@ -79,11 +87,18 @@ namespace POESKillTree.TreeGenerator.Settings
         /// <param name="weaponClass">WeaponClass used for pseudo attribute calculation.</param>
         /// <param name="tags">Tags used for pseudo attribute calculation.</param>
         /// <param name="offHand">OffHand used for pseudo attribute calculation.</param>
-        public AdvancedSolverSettings(SolverSettings baseSettings,
-            int totalPoints,
+        public AdvancedSolverSettings(SolverSettings baseSettings, int totalPoints,
             Dictionary<string, SmallDigit> initialAttributes,
-            Dictionary<string, Tuple<SmallDigit, WeightType>> attributeConstraints,
-            Dictionary<PseudoAttribute, Tuple<SmallDigit, WeightType>> pseudoAttributeConstraints,
+            Dictionary<string, Tuple<SmallDigit, WeightType
+#if (PoESkillTree_EnableMinimumValue)
+            , SmallDigit
+#endif
+            >> attributeConstraints,
+            Dictionary<PseudoAttribute, Tuple<SmallDigit, WeightType
+#if (PoESkillTree_EnableMinimumValue)
+            , SmallDigit
+#endif
+            >> pseudoAttributeConstraints,
             WeaponClass weaponClass, Tags tags, OffHand offHand)
             : base(baseSettings)
         {
@@ -93,8 +108,16 @@ namespace POESKillTree.TreeGenerator.Settings
             WeaponClass = weaponClass;
             Tags = tags;
             OffHand = offHand;
-            AttributeConstraints = attributeConstraints ?? new Dictionary<string, Tuple<SmallDigit, WeightType>>();
-            PseudoAttributeConstraints = pseudoAttributeConstraints ?? new Dictionary<PseudoAttribute, Tuple<SmallDigit, WeightType>>();
+            AttributeConstraints = attributeConstraints ?? new Dictionary<string, Tuple<SmallDigit, WeightType
+#if (PoESkillTree_EnableMinimumValue)
+        , SmallDigit
+#endif
+            >>();
+            PseudoAttributeConstraints = pseudoAttributeConstraints ?? new Dictionary<PseudoAttribute, Tuple<SmallDigit, WeightType
+#if (PoESkillTree_EnableMinimumValue)
+        , SmallDigit
+#endif
+            >>();
             InitialAttributes = initialAttributes ?? new Dictionary<string, SmallDigit>();
 
             if (AttributeConstraints.Values.Any(tuple => tuple.Item2 < 0 || tuple.Item2 > 1))
