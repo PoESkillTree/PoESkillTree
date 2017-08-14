@@ -31,13 +31,14 @@ namespace POESKillTree.TreeGenerator.Solver
         /// </summary>
         private class ConvertedPseudoAttributeConstraint
         {
-            public List<Tuple<string, SmallDigit
-#if (PoESkillTree_EnableMinimumValue)
-            , SmallDigit
-#endif
-            >> Attributes
-            { get; private set; }
+            /// <summary>
+            /// 
+            /// </summary>
+            public List<Tuple<string, SmallDigit>> Attributes{ get; private set; }
 
+            /// <summary>
+            /// 
+            /// </summary>
             public Tuple<SmallDigit, double
 #if (PoESkillTree_EnableMinimumValue)
             , SmallDigit
@@ -45,11 +46,7 @@ namespace POESKillTree.TreeGenerator.Solver
             > TargetWeightTuple
             { get; private set; }
 
-            public ConvertedPseudoAttributeConstraint(List<Tuple<string, SmallDigit
-#if (PoESkillTree_EnableMinimumValue)
-            , SmallDigit
-#endif
-            >> attributes, Tuple<SmallDigit, double
+            public ConvertedPseudoAttributeConstraint(List<Tuple<string, SmallDigit>> attributes, Tuple<SmallDigit, double
 #if (PoESkillTree_EnableMinimumValue)
             , SmallDigit
 #endif
@@ -117,6 +114,9 @@ namespace POESKillTree.TreeGenerator.Solver
 #endif
         >[] _attrConstraints;
 
+#if (PoESkillTree_EnableAlternativeCSV&&DEBUG)
+        List<string> _ConstraintNames;
+#endif
         /// <summary>
         /// Dictionary that maps attribute names to the constraint numbers they apply to (as indexes
         /// of _attrConstraints).
@@ -202,20 +202,28 @@ namespace POESKillTree.TreeGenerator.Solver
 #endif
         >> attrConstraints, IReadOnlyCollection<ConvertedPseudoAttributeConstraint> pseudoConstraints)
         {
+            //Slightly reduce number of calls needed by only calculating once (increase in speed more important than slight temporary increase of one byte)
+            int TotalConstraintCount = (byte)(attrConstraints.Count + pseudoConstraints.Count);
             _attrConstraints = new Tuple<SmallDigit, double
 #if (PoESkillTree_EnableMinimumValue)
             , SmallDigit
 #endif
-            >[attrConstraints.Count + pseudoConstraints.Count];
+            >[TotalConstraintCount];
             _attrNameLookup = new Dictionary<string, List<int>>(attrConstraints.Count);
             _attrConversionMultipliers = new Dictionary<Tuple<string, int>, SmallDigit>(attrConstraints.Count);
-            _fixedAttributes = new SmallDigit[attrConstraints.Count + pseudoConstraints.Count];
+            _fixedAttributes = new SmallDigit[TotalConstraintCount];
+#if (PoESkillTree_EnableAlternativeCSV&&DEBUG)
+            _ConstraintNames = new List<string>(TotalConstraintCount);
+#endif
             var i = 0;
             foreach (var kvPair in attrConstraints)
             {
                 _attrConstraints[i] = kvPair.Value;
                 _attrNameLookup[kvPair.Key] = new List<int> { i };
                 _attrConversionMultipliers[Tuple.Create(kvPair.Key, i)] = 1;
+#if (PoESkillTree_EnableAlternativeCSV&&DEBUG)
+                _ConstraintNames.Add(kvPair.Key);
+#endif
                 i++;
             }
             foreach (var pseudo in pseudoConstraints)

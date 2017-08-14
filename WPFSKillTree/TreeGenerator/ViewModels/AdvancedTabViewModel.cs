@@ -38,6 +38,12 @@ namespace POESKillTree.TreeGenerator.ViewModels
 #else
     System.Single;
 #endif
+    using WeightType =
+#if (PoESkillTree_AlternativeWeightType)
+    SmallDec;
+#else
+    System.Double;
+#endif
     // Some aliases to make things clearer without the need of extra classes.
     using AttributeConstraint = TargetWeightConstraint<string>;
     using PseudoAttributeConstraint = TargetWeightConstraint<PseudoAttribute>;
@@ -210,7 +216,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
 #endif
                     var changed = false;
                     var attrArray = new JArray();
-                    _vm.AttributeConstraints.ForEach(c => AddTo(attrArray, c.Data, c.TargetValue, c.Weight));
+                    _vm.AttributeConstraints.ForEach(c => AddTo(attrArray, c.Data, c.TargetValue, c.Weight
+#if (PoESkillTree_EnableMinimumValue)
+                    , c.MinimumValue
+#endif
+                    ));
                     JToken oldToken;
                     if (jObject.TryGetValue(nameof(AttributeConstraints), out oldToken))
                     {
@@ -241,7 +251,11 @@ namespace POESKillTree.TreeGenerator.ViewModels
 #endif
             }
 
-            private static void AddTo(JArray array, string attribute, SmallDigit targetValue, int weight)
+            private static void AddTo(JArray array, string attribute, SmallDigit targetValue, int weight
+#if (PoESkillTree_EnableMinimumValue)
+            , SmallDigit minimumValue
+#endif
+            )
             {
                 array.Add(new JObject
                 {
@@ -894,10 +908,26 @@ namespace POESKillTree.TreeGenerator.ViewModels
         {
             var attributeConstraints = AttributeConstraints.ToDictionary(
                 constraint => constraint.Data,
-                constraint => new Tuple<SmallDigit, double>(constraint.TargetValue, constraint.Weight / 100.0));
+                constraint => new Tuple<SmallDigit, double
+#if (PoESkillTree_EnableMinimumValue)
+                , SmallDigit
+#endif
+                >(constraint.TargetValue, constraint.Weight / 100.0
+#if (PoESkillTree_EnableMinimumValue)
+                , constraint.MinimumValue
+#endif
+                ));
             var pseudoConstraints = PseudoAttributeConstraints.ToDictionary(
                 constraint => constraint.Data,
-                constraint => new Tuple<SmallDigit, double>(constraint.TargetValue, constraint.Weight / 100.0));
+                constraint => new Tuple<SmallDigit, double
+#if (PoESkillTree_EnableMinimumValue)
+                , SmallDigit
+#endif
+                >(constraint.TargetValue, constraint.Weight / 100.0
+#if (PoESkillTree_EnableMinimumValue)
+                , constraint.MinimumValue
+#endif
+                ));
             var solver = new AdvancedSolver(Tree, new AdvancedSolverSettings(settings, TotalPoints,
                 CreateInitialAttributes(), attributeConstraints,
                 pseudoConstraints, WeaponClass.Value, Tags.Value, OffHand.Value));

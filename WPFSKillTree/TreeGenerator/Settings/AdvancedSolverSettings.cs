@@ -128,6 +128,12 @@ namespace POESKillTree.TreeGenerator.Settings
                 throw new ArgumentException("Weights need to be between 0 and 1", "pseudoAttributeConstraints");
             if (PseudoAttributeConstraints.Values.Any(t => t.Item1 <= 0))
                 throw new ArgumentException("Target values need to be greater than zero", "pseudoAttributeConstraints");
+#if (PoESkillTree_EnableMinimumValue)
+            if (AttributeConstraints.Values.Any(t => t.Item3 < 0))
+                throw new ArgumentException("Minimum values can not be negative", "attributeConstraints");
+            if (PseudoAttributeConstraints.Values.Any(t => t.Item3 < 0))
+                throw new ArgumentException("Minimum values can not be negative", "pseudoAttributeConstraints");
+#endif
         }
     }
 }

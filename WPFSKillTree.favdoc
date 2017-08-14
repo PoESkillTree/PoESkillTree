@@ -63,6 +63,42 @@
         </Favorite>
       </favorites>
     </Folder>
+    <Folder>
+      <name>WeightTypeOptions</name>
+      <folders />
+      <favorites>
+        <Favorite>
+          <name>AdvancedTabViewModel.cs</name>
+          <path>WPFSKillTree\TreeGenerator\ViewModels\AdvancedTabViewModel.cs</path>
+          <absolutePath>C:\Users\BlazesRus\Documents\GitHub\PoESkillTree\WPFSKillTree\TreeGenerator\ViewModels\AdvancedTabViewModel.cs</absolutePath>
+          <position>
+            <line>46</line>
+            <column>7</column>
+            <lineHash>v3KLaQjsgj7igi8+4twQavKf+oVO9ueasjwTS9a6nhM=</lineHash>
+          </position>
+        </Favorite>
+        <Favorite>
+          <name>AdvancedSolverSettings.cs</name>
+          <path>WPFSKillTree\TreeGenerator\Settings\AdvancedSolverSettings.cs</path>
+          <absolutePath>C:\Users\BlazesRus\Documents\GitHub\PoESkillTree\WPFSKillTree\TreeGenerator\Settings\AdvancedSolverSettings.cs</absolutePath>
+          <position>
+            <line>93</line>
+            <column>1</column>
+            <lineHash>bbsGwRayxr9bqawu13KNIKx2cZWGznn4u6nM/C0N9BI=</lineHash>
+          </position>
+        </Favorite>
+        <Favorite>
+          <name>AdvancedSolver.cs</name>
+          <path>WPFSKillTree\TreeGenerator\Solver\AdvancedSolver.cs</path>
+          <absolutePath>C:\Users\BlazesRus\Documents\GitHub\PoESkillTree\WPFSKillTree\TreeGenerator\Solver\AdvancedSolver.cs</absolutePath>
+          <position>
+            <line>503</line>
+            <column>66</column>
+            <lineHash>0ZGrvVmt99WaAguqkxNr0jDVBSEbzbpZMuYYvSIaSPs=</lineHash>
+          </position>
+        </Favorite>
+      </favorites>
+    </Folder>
   </folders>
   <favorites />
 </Favorites>
