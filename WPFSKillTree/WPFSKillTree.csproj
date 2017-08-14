@@ -92,7 +92,7 @@
   <PropertyGroup Label="Plus GUI Applied Constants" Condition="$(Configuration.Contains('AlternativeTypes')) And $(Configuration.Contains('PlusGUI'))">
     <DefineConstants>$(DefineConstants);PoESkillTree_UseSmallDec_ForGeneratorBars</DefineConstants>
   </PropertyGroup>
-   <PropertyGroup Label="Alternative Item Attribute Types" Condition="$(Configuration.Contains('AndItems'))">
+  <PropertyGroup Label="Alternative Item Attribute Types" Condition="$(Configuration.Contains('AndItems'))">
     <DefineConstants>$(DefineConstants);PoESkillTree_StoreItemAttributesInSmallDec</DefineConstants>
   </PropertyGroup>
   <!--PropertyGroup Label="Globally Applied Constants">
