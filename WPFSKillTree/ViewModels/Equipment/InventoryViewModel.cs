@@ -107,6 +107,14 @@ namespace POESKillTree.ViewModels.Equipment
             {
                 imageName = "Helmet";
             }
+            else if(slot == ItemSlot.Jewel || slot == ItemSlot.Jewel02 || slot == ItemSlot.Jewel03 || slot == ItemSlot.Jewel04 || slot == ItemSlot.Jewel05
+            || slot == ItemSlot.Jewel06 || slot == ItemSlot.Jewel07 || slot == ItemSlot.Jewel08 || slot == ItemSlot.Jewel09 || slot == ItemSlot.Jewel10
+            || slot == ItemSlot.Jewel11 || slot == ItemSlot.Jewel12 || slot == ItemSlot.Jewel13 || slot == ItemSlot.Jewel14 || slot == ItemSlot.Jewel15
+            || slot == ItemSlot.Jewel16 || slot == ItemSlot.Jewel17 || slot == ItemSlot.Jewel18 || slot == ItemSlot.Jewel19 || slot == ItemSlot.Jewel20
+            || slot == ItemSlot.Jewel21)
+            {
+                imageName = "Jewel";
+            }
 
             return new InventoryItemViewModel(_dialogCoordinator, _equipmentData, _itemAttributes, slot)
             {
