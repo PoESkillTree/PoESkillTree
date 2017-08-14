@@ -39,7 +39,7 @@ namespace POESKillTree.Model.JsonSettings
         }
         catch(System.Exception ex)
         {
-            System.Console.WriteLine("Loaded AbstractCompositeSetting JObject Exception of ")
+            System.Console.WriteLine("Loaded AbstractCompositeSetting JObject Exception of ");
             System.Console.WriteLine(ex.ToString());
         }
         #endif

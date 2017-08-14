@@ -41,6 +41,10 @@ namespace POESKillTree.Model.JsonSettings
             _onChanging = onChanging;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="jObject"></param>
         public void LoadFrom(JObject jObject)
         {
         #if (DEBUG)
@@ -59,6 +63,11 @@ namespace POESKillTree.Model.JsonSettings
         #endif
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="jObject"></param>
+        /// <returns></returns>
         public bool SaveTo(JObject jObject)
         {
         #if (DEBUG)
@@ -81,7 +90,8 @@ namespace POESKillTree.Model.JsonSettings
             System.Console.WriteLine("Saved LeafSetting JObject Exception of");
             System.Console.WriteLine(ex.ToString());
         }
-        #endif
+#endif
+            return false;
         }
 
         public void Reset()

@@ -1051,7 +1051,7 @@ namespace POESKillTree.SkillTreeFiles
                     _nodeHighlighter.ResetHighlights(nodes, flag);
                     DrawHighlights();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
 #if (DEBUG)
                     Console.WriteLine("Exception of" + ex.ToString() + " occurred during SkillTree->HighlightNodesBySearch.");
