@@ -77,12 +77,6 @@
       </PropertyGroup>
     </Otherwise>
   </Choose>
-  <PropertyGroup Condition="'$(Platform)'!='AnyCPU'">
-    <OutputPath>bin\$(Configuration)_$(Platform)\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Platform)'=='AnyCPU'">
-    <OutputPath>bin\$(Configuration)\</OutputPath>
-  </PropertyGroup>
   <PropertyGroup Label="Replace partial float usage with SmallDec" Condition=" $(Configuration.Contains('AlternativeTypes')) ">
     <DefineConstants>$(DefineConstants);PoESkillTree_UseSmallDec_ForAttributes;BlazesGlobalCode_RestrictConversionBetweenSuperDec;BlazesGlobalCode_Disable128BitFeatures</DefineConstants>
   </PropertyGroup>
@@ -139,6 +133,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugAlternativeTypesPlusGUI|x86'">
     <OutputPath>bin\x86\DebugAlternativeTypesPlusGUI\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'!='AnyCPU'">
+    <OutputPath>bin\$(Configuration)_$(Platform)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)'=='AnyCPU'">
+    <OutputPath>bin\$(Configuration)\</OutputPath>
   </PropertyGroup>
   <!--PropertyGroup Label="Globally Applied Constants">
         <DefineConstants>$(DefineConstants)</DefineConstants>
