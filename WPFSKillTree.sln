@@ -17,6 +17,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Data.Tests", "PoESkillTree.Computation.Data.Tests\PoESkillTree.Computation.Data.Tests.csproj", "{F5DF3138-0C63-48B4-9908-50CADA452224}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Parsing", "PoESkillTree.Computation.Parsing\PoESkillTree.Computation.Parsing.csproj", "{1E573C72-9B7F-40AF-A5E8-739F90B50690}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Console", "PoESkillTree.Computation.Console\PoESkillTree.Computation.Console.csproj", "{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Parsing.Tests", "PoESkillTree.Computation.Parsing.Tests\PoESkillTree.Computation.Parsing.Tests.csproj", "{0EFA2885-50A9-45C9-B1A1-701A83681C90}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +87,30 @@ Global
 		{F5DF3138-0C63-48B4-9908-50CADA452224}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F5DF3138-0C63-48B4-9908-50CADA452224}.Release|x86.ActiveCfg = Release|Any CPU
 		{F5DF3138-0C63-48B4-9908-50CADA452224}.Release|x86.Build.0 = Release|Any CPU
+		{1E573C72-9B7F-40AF-A5E8-739F90B50690}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E573C72-9B7F-40AF-A5E8-739F90B50690}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E573C72-9B7F-40AF-A5E8-739F90B50690}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1E573C72-9B7F-40AF-A5E8-739F90B50690}.Debug|x86.Build.0 = Debug|Any CPU
+		{1E573C72-9B7F-40AF-A5E8-739F90B50690}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E573C72-9B7F-40AF-A5E8-739F90B50690}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E573C72-9B7F-40AF-A5E8-739F90B50690}.Release|x86.ActiveCfg = Release|Any CPU
+		{1E573C72-9B7F-40AF-A5E8-739F90B50690}.Release|x86.Build.0 = Release|Any CPU
+		{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}.Debug|x86.Build.0 = Debug|Any CPU
+		{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}.Release|x86.ActiveCfg = Release|Any CPU
+		{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}.Release|x86.Build.0 = Release|Any CPU
+		{0EFA2885-50A9-45C9-B1A1-701A83681C90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EFA2885-50A9-45C9-B1A1-701A83681C90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EFA2885-50A9-45C9-B1A1-701A83681C90}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0EFA2885-50A9-45C9-B1A1-701A83681C90}.Debug|x86.Build.0 = Debug|Any CPU
+		{0EFA2885-50A9-45C9-B1A1-701A83681C90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EFA2885-50A9-45C9-B1A1-701A83681C90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EFA2885-50A9-45C9-B1A1-701A83681C90}.Release|x86.ActiveCfg = Release|Any CPU
+		{0EFA2885-50A9-45C9-B1A1-701A83681C90}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

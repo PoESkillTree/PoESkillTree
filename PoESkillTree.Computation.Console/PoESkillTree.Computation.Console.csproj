@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>PoESkillTree.Computation.Console</RootNamespace>
+    <AssemblyName>PoESkillTree.Computation.Console</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Common.csproj">
+      <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
+      <Name>PoESkillTree.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Data\PoESkillTree.Computation.Data.csproj">
+      <Project>{85cf9690-7eb9-42cb-9574-adf4239cffbe}</Project>
+      <Name>PoESkillTree.Computation.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Parsing\PoESkillTree.Computation.Parsing.csproj">
+      <Project>{1e573c72-9b7f-40af-a5e8-739f90b50690}</Project>
+      <Name>PoESkillTree.Computation.Parsing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation\PoESkillTree.Computation.csproj">
+      <Project>{e9c0cf81-6800-4461-8897-f8b569c7cdd0}</Project>
+      <Name>PoESkillTree.Computation</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
