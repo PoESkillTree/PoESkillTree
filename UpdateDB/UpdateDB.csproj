@@ -68,6 +68,51 @@
   <PropertyGroup Label="Alternative Item Attribute Types" Condition="$(Configuration.Contains('AndItems'))">
     <DefineConstants>$(DefineConstants);PoESkillTree_StoreItemAttributesInSmallDec</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'ExtendedFeaturesDebug'">
+    <OutputPath>bin\ExtendedFeaturesDebug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ExtendedFeaturesDebug|x64'">
+    <OutputPath>bin\x64\ExtendedFeaturesDebug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ExtendedFeaturesDebug|x86'">
+    <OutputPath>bin\x86\ExtendedFeaturesDebug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'ExtendedFeaturesRelease'">
+    <OutputPath>bin\ExtendedFeaturesRelease\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ExtendedFeaturesRelease|x64'">
+    <OutputPath>bin\x64\ExtendedFeaturesRelease\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ExtendedFeaturesRelease|x86'">
+    <OutputPath>bin\x86\ExtendedFeaturesRelease\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseAlternativeTypesPlusGUI' ">
+    <OutputPath>bin\AlternativeTypesPlusGUI\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseAlternativeTypesPlusGUI|x64' ">
+    <OutputPath>bin\x64\AlternativeTypesPlusGUI\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseAlternativeTypesPlusGUI|x86' ">
+    <OutputPath>bin\x86\AlternativeTypesPlusGUI\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'DebugAlternativeTypesPlusGUI'">
+    <OutputPath>bin\DebugAlternativeTypesPlusGUI\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugAlternativeTypesPlusGUI|x64'">
+    <OutputPath>bin\x64\DebugAlternativeTypesPlusGUI\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugAlternativeTypesPlusGUI|x86'">
+    <OutputPath>bin\x86\DebugAlternativeTypesPlusGUI\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>

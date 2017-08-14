@@ -95,6 +95,51 @@
   <PropertyGroup Label="Alternative Item Attribute Types" Condition="$(Configuration.Contains('AndItems'))">
     <DefineConstants>$(DefineConstants);PoESkillTree_StoreItemAttributesInSmallDec</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'ExtendedFeaturesDebug'">
+    <OutputPath>bin\ExtendedFeaturesDebug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ExtendedFeaturesDebug|x64'">
+    <OutputPath>bin\x64\ExtendedFeaturesDebug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ExtendedFeaturesDebug|x86'">
+    <OutputPath>bin\x86\ExtendedFeaturesDebug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'ExtendedFeaturesRelease'">
+    <OutputPath>bin\ExtendedFeaturesRelease\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ExtendedFeaturesRelease|x64'">
+    <OutputPath>bin\x64\ExtendedFeaturesRelease\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ExtendedFeaturesRelease|x86'">
+    <OutputPath>bin\x86\ExtendedFeaturesRelease\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'ReleaseAlternativeTypesPlusGUI'">
+    <OutputPath>bin\ReleaseAlternativeTypesPlusGUI\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseAlternativeTypesPlusGUI|x64'">
+    <OutputPath>bin\x64\ReleaseAlternativeTypesPlusGUI\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleaseAlternativeTypesPlusGUI|x86'">
+    <OutputPath>bin\x86\ReleaseAlternativeTypesPlusGUI\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'DebugAlternativeTypesPlusGUI'">
+    <OutputPath>bin\DebugAlternativeTypesPlusGUI\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugAlternativeTypesPlusGUI|x64'">
+    <OutputPath>bin\x64\DebugAlternativeTypesPlusGUI\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugAlternativeTypesPlusGUI|x86'">
+    <OutputPath>bin\x86\DebugAlternativeTypesPlusGUI\</OutputPath>
+  </PropertyGroup>
   <!--PropertyGroup Label="Globally Applied Constants">
         <DefineConstants>$(DefineConstants)</DefineConstants>
     </PropertyGroup-->
