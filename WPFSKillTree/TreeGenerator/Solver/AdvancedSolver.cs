@@ -203,7 +203,7 @@ namespace POESKillTree.TreeGenerator.Solver
         >> attrConstraints, IReadOnlyCollection<ConvertedPseudoAttributeConstraint> pseudoConstraints)
         {
             //Slightly reduce number of calls needed by only calculating once (increase in speed more important than slight temporary increase of one byte)
-            int TotalConstraintCount = (byte)(attrConstraints.Count + pseudoConstraints.Count);
+            int TotalConstraintCount = attrConstraints.Count + pseudoConstraints.Count;
             _attrConstraints = new Tuple<SmallDigit, double
 #if (PoESkillTree_EnableMinimumValue)
             , SmallDigit
@@ -212,18 +212,18 @@ namespace POESKillTree.TreeGenerator.Solver
             _attrNameLookup = new Dictionary<string, List<int>>(attrConstraints.Count);
             _attrConversionMultipliers = new Dictionary<Tuple<string, int>, SmallDigit>(attrConstraints.Count);
             _fixedAttributes = new SmallDigit[TotalConstraintCount];
-#if (PoESkillTree_EnableAlternativeCSV&&DEBUG)
-            _ConstraintNames = new List<string>(TotalConstraintCount);
-#endif
+//#if (PoESkillTree_EnableAlternativeCSV&&DEBUG)
+//            _ConstraintNames = new List<string>(TotalConstraintCount);
+//#endif
             var i = 0;
             foreach (var kvPair in attrConstraints)
             {
                 _attrConstraints[i] = kvPair.Value;
                 _attrNameLookup[kvPair.Key] = new List<int> { i };
                 _attrConversionMultipliers[Tuple.Create(kvPair.Key, i)] = 1;
-#if (PoESkillTree_EnableAlternativeCSV&&DEBUG)
-                _ConstraintNames.Add(kvPair.Key);
-#endif
+//#if (PoESkillTree_EnableAlternativeCSV&&DEBUG)
+//                _ConstraintNames.Add(kvPair.Key);
+//#endif
                 i++;
             }
             foreach (var pseudo in pseudoConstraints)
@@ -452,7 +452,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
             // Calculate constraint value for each stat and multiply them.
 #if (PoESkillTree_EnableAlternativeCSV&&PoESkillTree_UseSmallDec_ForAttributes)
-            SmallDec csvs = 1;
+            SmallDec csvs = 1;//Use Weight-like storage instead later for score
 #else
             var csvs = 1.0;
 #endif
@@ -473,12 +473,12 @@ namespace POESKillTree.TreeGenerator.Solver
 #else
                 var CurrentStatValue = totalStats[i];
                 //If current stat is better than target value give slight bonus CSV Score value
-                //Give weight modifier boost of 20% of value percent above target stat for reaching above CSVScore
+                //Give weight modifier boost of 10% of value percent above target stat for reaching above CSVScore
                 if (CurrentStatValue > AttributeTargets.Item1)
                 {
                     Multiplier = CurrentStatValue / AttributeTargets.Item1;
                     Multiplier -= 1;
-                    Multiplier /= 5;
+                    Multiplier /= 10;
                     Multiplier += 1;
                     Multiplier *= AttributeTargets.Item2;
                     Multiplier =
@@ -510,16 +510,16 @@ namespace POESKillTree.TreeGenerator.Solver
                     Multiplier = CalcCsv(CurrentStatValue, AttributeTargets.Item2, AttributeTargets.Item1);
                     csvs *= Multiplier;
                 }
-#if (DEBUG)
-                Console.WriteLine("AttributeName:" + _ConstraintNames[i]);
-                Console.WriteLine("Current Value:" + CurrentStatValue.ToString());
-                Console.WriteLine("Target Value:" + AttributeTargets.Item1.ToString());
-#if (PoESkillTree_EnableMinimumValue)
-                Console.WriteLine("Minimum Value to Target: " + AttributeTargets.Item3.ToString());
-#endif
-                Console.WriteLine("CSV Multiplier:" + Multiplier.ToString());
-                Console.WriteLine("Current CSVScore:" + csvs.ToString());
-#endif
+                //#if (DEBUG)
+                //                Console.WriteLine("AttributeName:" + _ConstraintNames[i]);
+                //                Console.WriteLine("Current Value:" + CurrentStatValue.ToString());
+                //                Console.WriteLine("Target Value:" + AttributeTargets.Item1.ToString());
+                //#if (PoESkillTree_EnableMinimumValue)
+                //                Console.WriteLine("Minimum Value to Target: " + AttributeTargets.Item3.ToString());
+                //#endif
+                //                Console.WriteLine("CSV Multiplier:" + Multiplier.ToString());
+                //                Console.WriteLine("Current CSVScore:" + csvs.ToString());
+                //#endif
 #endif
             }
 
@@ -536,9 +536,9 @@ namespace POESKillTree.TreeGenerator.Solver
                 csvs *= 1 + UsedNodeCountFactor * Math.Log(totalPoints + 1 - usedNodeCount);
             }
 
-#if (PoESkillTree_EnableAlternativeCSV && DEBUG)
-            Console.WriteLine("Generated fitness CSVScore:" + csvs.ToString());
-#endif
+//#if (PoESkillTree_EnableAlternativeCSV && DEBUG)
+//            Console.WriteLine("Generated fitness CSVScore:" + csvs.ToString());
+//#endif
             // Make sure the fitness is not < 0 (can't happen with the current implementation anyway).
             return Math.Max(csvs, 0);
         }
