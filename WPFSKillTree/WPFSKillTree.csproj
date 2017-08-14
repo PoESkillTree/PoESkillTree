@@ -273,6 +273,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup Label="Extended GUI Only Files " Condition="$(Configuration.Contains('PlusGUI')) Or $(Configuration.Contains('Extended')) ">
+	<Compile Include="SkillTreeFiles\PseudoAttributeTotalInfo.cs" />
+  </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="Views\App.xaml">
       <Generator>MSBuild:Compile</Generator>
