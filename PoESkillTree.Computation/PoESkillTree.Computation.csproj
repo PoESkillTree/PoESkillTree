@@ -65,7 +65,6 @@
     <Compile Include="IParser.cs" />
     <Compile Include="IReferencedMatchers.cs" />
     <Compile Include="IStatMatchers.cs" />
-    <Compile Include="IStatReplacers.cs" />
     <Compile Include="MatcherData.cs" />
     <Compile Include="Providers\Actions\IActionProviderFactory.cs" />
     <Compile Include="Providers\Actions\IBlockActionProvider.cs" />

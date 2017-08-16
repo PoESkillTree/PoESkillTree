@@ -60,6 +60,7 @@
     <Compile Include="Model\Items\Enums\ItemSlot.cs" />
     <Compile Include="Model\Items\Enums\Tags.cs" />
     <Compile Include="Model\Items\Enums\ValueColoring.cs" />
+    <Compile Include="Model\Items\ItemConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,14 +4,8 @@
     {
         // Returns true and outputs a result if the stat could be parsed
         // If it returns false, result may or may not be non-null (should only be used for debugging)
-        bool TryParse(string stat, out TResult result);
+        // remaining are the parts of stat that were not parsed into the result. If false is
+        // returned and result is null, remaining == stat.
+        bool TryParse(string stat, out string remaining, out TResult result);
     }
-
-    /*
-     * - Root parser IParser<IMatch> is called by computation
-     * - Calls IParser<(string remainingStat, IMatchBuilder matchBuilder)> instances in an order
-     *   that is defined in some strategy class
-     * - Returned IMatchBuilders are combined in some way into one
-     * - The combined IMatchBuilder is built to an IMatch instance
-     */
 }

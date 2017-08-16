@@ -119,7 +119,7 @@ Recover #% of Life and Mana when you use a Warcry
  * - Once the mod line is empty or consists only of whitespace, the mod line was successfully 
  *   matched.
  * - Merge multiple spaces to a single space before each matching step
- * - If FormAndStatMatchers matchers, skip FormMatchers, StatMatchers and all XStatMatchers
+ * - If FormAndStatMatchers matches, skip FormMatchers, StatMatchers and all XStatMatchers
  * StatManipulationMatchers
  * FormAndStatMatchers
  * ValueConversionMatchers (order between this and FormAndStatMatchers doesn't matter yet)

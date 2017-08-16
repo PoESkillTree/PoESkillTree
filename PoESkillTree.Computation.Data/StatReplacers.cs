@@ -4,15 +4,11 @@ using PoESkillTree.Computation.Data.Collections;
 
 namespace PoESkillTree.Computation.Data
 {
-    public class StatReplacers : IStatReplacers
+    public class StatReplacers
     {
         // These simply replace a stat line that would get thrown into the matchers with another
         // Reduces redundant handling in some cases and allows elegantly solving other cases
         // As opposed to the matchers, values are not replaced by # placeholders here
-
-        // other necessary preprocessing (done before anything else is done with the mod line): 
-        // - convert to all lowercase
-        // - replace all sequences of whitespace characters with a single space
 
         public IReadOnlyList<StatReplacerData> Replacers { get; } = new StatReplacerCollection
         {
