@@ -11,6 +11,62 @@
 		<!--Attack speed increases rate of AOE circles during charge of skill, while Movement speed increases speed of travel distance (granting more damage based on percent of dash distance)-->
 		<Attribute Name="#% increased Attack Speed"/>
 		<Attribute Name="#% increased Movement Speed"/>
+		<Attribute Name="#% increased Melee Physical Damage"/>
+		<Attribute Name="#% increased Attack Physical Damage"/>
+		<Attribute Name="#% increased Melee Damage"/>
+		<Attribute Name="+# to Strength" ConversionMultiplier=".2"/>
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Charged Dash Damage with Tagged Phys Weapon" Group="Damage">
+		<Attribute Name="#% increased Physical Damage"/>
+		<PseudoAttribute Name="raw #% increased Elemental Damage"  ConversionMultiplier="0.5"/>
+		<PseudoAttribute Name="raw #% increased Lightning Damage"  ConversionMultiplier="0.5"/>
+		<Attribute Name="#% increased Area Damage"/>
+		<Attribute Name="#% increased Attack Damage" />
+		<Attribute Name="#% increased Damage"/>
+		<!--Attack speed increases rate of AOE circles during charge of skill, while Movement speed increases speed of travel distance (granting more damage based on percent of dash distance)-->
+		<Attribute Name="#% increased Attack Speed"/>
+		<Attribute Name="#% increased Movement Speed"/>
+		<Attribute Name="#% increased Melee Physical Damage"/>
+		<Attribute Name="#% increased Attack Physical Damage"/>
+		<Attribute Name="#% increased Melee Damage"/>
+		<Attribute Name="+# to Strength" ConversionMultiplier=".2"/>
+		<Attribute Name="#% increased Physical Damage while holding a Shield">
+			<Conditions>
+				<OffHand>Shield</OffHand>
+			</Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Melee Physical Damage while holding a Shield">
+			<Conditions>
+				<AndComposition>
+					<OffHand>Shield</OffHand>
+					<Tag>Melee</Tag>
+				</AndComposition>
+			</Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Physical Damage while Dual Wielding or holding a Shield">
+			<Conditions>
+				<OffHand>Dual Wield</OffHand>
+				<OffHand>Shield</OffHand>
+			</Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Physical Weapon Damage while Dual Wielding">
+			<Conditions>
+				<AndComposition>
+					<OffHand>Dual Wield</OffHand>
+					<Tag>Attack</Tag>
+					<Not><WeaponClass>Unarmed</WeaponClass></Not>
+				</AndComposition>
+			</Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Physical Damage with {0}">
+			<Conditions>
+				<AndComposition>
+					<WeaponClass>{0}</WeaponClass> <!-- Maces, Axes, Two Handed Melee Weapons, ... -->
+					<Tag>Attack</Tag>
+				</AndComposition>
+				<Tag>{0}</Tag><!-- Attacks -->
+			</Conditions>
+		</Attribute>
 	</PseudoAttribute>
 	<PseudoAttribute Name="#% increased Righteous Fire Damage(with slightly reduced fire/burn-dot preference)" Group="Damage">
 		<Attribute Name="#% increased Elemental Damage" />

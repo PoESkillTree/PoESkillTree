@@ -91,7 +91,7 @@
 	</PseudoAttribute>
 	<PseudoAttribute Name="raw #% increased Fire Damage" Hidden="True" Group="Damage">
 		<Attribute Name="#% increased Fire Damage" />
-		<Attribute Name="#% increased Fire Damage with Weapons">
+		<Attribute Name="#% increased Fire Damage with Attack Skills">
 			<Conditions>
 				<AndComposition>
 					<Tag>Attack</Tag>
@@ -110,7 +110,7 @@
 	</PseudoAttribute>
 	<PseudoAttribute Name="raw #% increased Cold Damage" Hidden="True" Group="Damage">
 		<Attribute Name="#% increased Cold Damage" />
-		<Attribute Name="#% increased Cold Damage with Weapons">
+		<Attribute Name="#% increased Cold Damage with Attack Skills">
 			<Conditions>
 				<AndComposition>
 					<Tag>Attack</Tag>
@@ -126,7 +126,7 @@
 	</PseudoAttribute>
 	<PseudoAttribute Name="raw #% increased Lightning Damage" Hidden="True" Group="Damage">
 		<Attribute Name="#% increased Lightning Damage" />
-		<Attribute Name="#% increased Lightning Damage with Weapons">
+		<Attribute Name="#% increased Lightning Damage with Attack Skills">
 			<Conditions>
 				<AndComposition>
 					<Tag>Attack</Tag>
@@ -151,7 +151,7 @@
 				<Tag>{0}</Tag><!-- Attacks -->
 			</Conditions>
 		</Attribute>
-		<Attribute Name="#% increased Elemental Damage with Weapons">
+		<Attribute Name="#% increased Elemental Damage with Attack Skills">
 			<Conditions>
 				<AndComposition>
 					<Tag>Attack</Tag>
