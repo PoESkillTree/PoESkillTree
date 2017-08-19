@@ -495,7 +495,7 @@ namespace POESKillTree.TreeGenerator.Solver
             ushort NumberOfAttributes = 0;
             ushort NumberOfPenalties = 0;
             //#if (DEBUG)
-            //                Console.WriteLine("CVSV Info for Generator:");
+            //            Console.WriteLine("CVSV Info for Generator:");
             //#endif
 #endif
 #endif

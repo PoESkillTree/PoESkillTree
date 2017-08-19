@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFSKillTree", "WPFSKillTree\WPFSKillTree.csproj", "{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}"
 EndProject
@@ -82,13 +82,11 @@ Global
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.ExtendedFeaturesDebug|Any CPU.ActiveCfg = ExtendedFeaturesDebug|Any CPU
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.ExtendedFeaturesDebug|Any CPU.Build.0 = ExtendedFeaturesDebug|Any CPU
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.ExtendedFeaturesDebug|x64.ActiveCfg = ExtendedFeaturesDebug|x64
-		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.ExtendedFeaturesDebug|x64.Build.0 = ExtendedFeaturesDebug|x64
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.ExtendedFeaturesDebug|x86.ActiveCfg = ExtendedFeaturesDebug|x86
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.ExtendedFeaturesDebug|x86.Build.0 = ExtendedFeaturesDebug|x86
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.ExtendedFeaturesRelease|Any CPU.ActiveCfg = ExtendedFeaturesRelease|Any CPU
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.ExtendedFeaturesRelease|Any CPU.Build.0 = ExtendedFeaturesRelease|Any CPU
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.ExtendedFeaturesRelease|x64.ActiveCfg = ExtendedFeaturesRelease|x64
-		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.ExtendedFeaturesRelease|x64.Build.0 = ExtendedFeaturesRelease|x64
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.ExtendedFeaturesRelease|x86.ActiveCfg = ExtendedFeaturesRelease|x86
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.ExtendedFeaturesRelease|x86.Build.0 = ExtendedFeaturesRelease|x86
 		{494FD68A-38A7-4EEB-867A-44C2CDE13836}.Release|Any CPU.ActiveCfg = Release|Any CPU

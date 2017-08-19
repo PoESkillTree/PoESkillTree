@@ -10,171 +10,191 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:InventoryViewModel}"
              dialogs:DialogParticipation.Register="{Binding}">
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="Auto" />
-			<ColumnDefinition Width="Auto" />
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<!--Dex Jewel Slots on north, Str Jewel Slots at West, Int Jewel Slots at East; Hybrid Jewel Slots diagonally between (NE for Str+Dex Jewel Slot Etc)-->
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<!--Non Threshold Jewel Slots-->
-			<RowDefinition Height="Auto" />
-		</Grid.RowDefinitions>
 
-		<TextBlock Grid.Column="0" Grid.ColumnSpan="3"
-                   Grid.Row="0"
-                   HorizontalAlignment="Center"
-                   FontSize="36" FontWeight="Bold"
-                   Foreground="{DynamicResource AccentColorBrush}">
-			<TextBlock.Text>
-				<l:Catalog>Inventory</l:Catalog>
-			</TextBlock.Text>
-		</TextBlock>
-		<views:InventoryItemView Grid.Column="0"
-                                 Grid.Row="1"
-                                 Margin="0 0 71 108"
-                                 HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                 Width="98" Height="192"
-                                 DataContext="{Binding MainHand}" />
-		<views:InventoryItemView Grid.Column="0"
-                                 Grid.Row="1"
-                                 Margin="0 0 0 108"
-                                 HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                 Width="51" Height="51"
-                                 DataContext="{Binding Ring}" />
-		<views:InventoryItemView Grid.Column="0"
-                                 Grid.Row="1"
-                                 Margin="0 0 0 0"
-                                 HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                 Width="98" Height="98"
-                                 DataContext="{Binding Gloves}" />
+    <StackPanel Grid.IsSharedSizeScope="True" HorizontalAlignment="Stretch" Margin="10">
+        <Border BorderBrush="Black" BorderThickness="1">
+            <Grid ShowGridLines="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-		<StackPanel Grid.Column="1" Grid.Row="1"
-                    Margin="20 0 20 0"
-                    Orientation="Vertical">
-			<views:InventoryItemView Margin="0 0 0 10"
-                                     Width="98" Height="98"
-                                     DataContext="{Binding Helm}" />
-			<views:InventoryItemView Margin="0 0 0 10"
-                                     Width="98" Height="145"
-                                     DataContext="{Binding Armor}" />
-			<views:InventoryItemView Margin="0 0 0 0"
-                                     Width="98" Height="51"
-                                     DataContext="{Binding Belt}" />
-		</StackPanel>
+                <TextBlock Grid.Column="0" Grid.ColumnSpan="3"
+						   Grid.Row="0"
+						   HorizontalAlignment="Center"
+						   FontSize="36" FontWeight="Bold" 
+						   Foreground="{DynamicResource AccentColorBrush}">
+                    <TextBlock.Text>
+                        <l:Catalog>Inventory</l:Catalog>
+                    </TextBlock.Text>
+                </TextBlock>
+                <views:InventoryItemView Grid.Column="0"
+										 Grid.Row="1"
+										 Margin="0 0 71 108"
+										 HorizontalAlignment="Right" VerticalAlignment="Bottom"
+										 Width="98" Height="192"
+										 DataContext="{Binding MainHand}"/>
+                <views:InventoryItemView Grid.Column="0"
+										 Grid.Row="1"
+										 Margin="0 0 0 108"
+										 HorizontalAlignment="Right" VerticalAlignment="Bottom"
+										 Width="51" Height="51"
+										 DataContext="{Binding Ring}"/>
+                <views:InventoryItemView Grid.Column="0"
+										 Grid.Row="1"
+										 Margin="0 0 0 0"
+										 HorizontalAlignment="Right" VerticalAlignment="Bottom"
+										 Width="98" Height="98"
+										 DataContext="{Binding Gloves}"/>
 
-		<views:InventoryItemView Grid.Column="2"
-                                 Grid.Row="1"
-                                 Margin="71 0 0 108"
-                                 HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                                 Width="98" Height="192"
-                                 DataContext="{Binding OffHand}" />
-		<views:InventoryItemView Grid.Column="2"
-                                 Grid.Row="1"
-                                 Margin="0 0 0 108"
-                                 HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                                 Width="51" Height="51"
-                                 DataContext="{Binding Ring2}" />
-		<views:InventoryItemView Grid.Column="2"
-                                 Grid.Row="1"
-                                 Margin="0 0 0 169"
-                                 HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                                 Width="51" Height="51"
-                                 DataContext="{Binding Amulet}" />
-		<views:InventoryItemView Grid.Column="2"
-                                 Grid.Row="1"
-                                 Margin="0 0 0 0"
-                                 HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                                 Width="98" Height="98"
-                                 DataContext="{Binding Boots}" />
+                <StackPanel Grid.Column="1" Grid.Row="1"
+							Margin="20 0 20 0"
+							Orientation="Vertical">
+                    <views:InventoryItemView Margin="0 0 0 10"
+											 Width="98" Height="98"
+											 DataContext="{Binding Helm}"/>
+                    <views:InventoryItemView Margin="0 0 0 10"
+											 Width="98" Height="145"
+											 DataContext="{Binding Armor}"/>
+                    <views:InventoryItemView Margin="0 0 0 0"
+											 Width="98" Height="51"
+											 DataContext="{Binding Belt}"/>
+                </StackPanel>
 
-		<views:BinView Grid.Column="0" Grid.ColumnSpan="3"
-                       Grid.Row="2"
-                       Margin="0 20 0 0"
-                       HorizontalAlignment="Right" />
-		<views:InventoryItemView Grid.Row="4" Grid.Column="2"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel08}" />
-		<views:InventoryItemView Grid.Row="4" Grid.Column="3"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel10}" />
-		<views:InventoryItemView Grid.Row="4" Grid.Column="4"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel11}" />
-		<!-- Hybrid Stat Jewel Slots,Str+Int Jewel in Middle-->
-		<views:InventoryItemView Grid.Row="5" Grid.Column="1"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel06}" />
-		<views:InventoryItemView Grid.Row="5" Grid.Column="2"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel17}" />
-		
-		<views:InventoryItemView Grid.Row="5" Grid.Column="5"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel09}" />
-		<views:InventoryItemView Grid.Row="5" Grid.Column="6"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel04}" />
-		
-		<views:InventoryItemView Grid.Row="9" Grid.Column="3"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel16}" />
-		<views:InventoryItemView Grid.Row="9" Grid.Column="4"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel05}" />
-		<!-- Str Threshold Jewel Slots-->
-		<views:InventoryItemView Grid.Row="6" Grid.Column="0"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel12}" />
-		<views:InventoryItemView Grid.Row="7" Grid.Column="0"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel13}" />
-		<views:InventoryItemView Grid.Row="8" Grid.Column="0"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel15}" />
-		<views:InventoryItemView Grid.Row="9" Grid.Column="0"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel21}" />
-		<!-- Int Threshold Jewel Slots-->
-		<views:InventoryItemView Grid.Row="6" Grid.Column="7"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel}" />
-		<views:InventoryItemView Grid.Row="7" Grid.Column="7"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel02}" />
-		<views:InventoryItemView Grid.Row="8" Grid.Column="7"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel03}" />
-		<views:InventoryItemView Grid.Row="9" Grid.Column="7"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel14}" />
-		<!--Non Threshold Jewels-->
-		<views:InventoryItemView Grid.Row="10" Grid.Column="0"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel07}" />
-		<views:InventoryItemView Grid.Row="10" Grid.Column="1"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel18}" />
-		<views:InventoryItemView Grid.Row="10" Grid.Column="2"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel19}" />
-		<views:InventoryItemView Grid.Row="10" Grid.Column="3"
-		Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-		Width="41" Height="38" DataContext="{Binding Jewel20}" />
-	</Grid>
+                <views:InventoryItemView Grid.Column="2"
+										 Grid.Row="1"
+										 Margin="71 0 0 108"
+										 HorizontalAlignment="Left" VerticalAlignment="Bottom"
+										 Width="98" Height="192"
+										 DataContext="{Binding OffHand}" />
+                <views:InventoryItemView Grid.Column="2"
+										 Grid.Row="1"
+										 Margin="0 0 0 108"
+										 HorizontalAlignment="Left" VerticalAlignment="Bottom"
+										 Width="51" Height="51"
+										 DataContext="{Binding Ring2}"/>
+                <views:InventoryItemView Grid.Column="2"
+										 Grid.Row="1"
+										 Margin="0 0 0 169"
+										 HorizontalAlignment="Left" VerticalAlignment="Bottom"
+										 Width="51" Height="51"
+										 DataContext="{Binding Amulet}"/>
+                <views:InventoryItemView Grid.Column="2"
+										 Grid.Row="1"
+										 Margin="0 0 0 0"
+										 HorizontalAlignment="Left" VerticalAlignment="Bottom"
+										 Width="98" Height="98"
+										 DataContext="{Binding Boots}" />
+
+                <views:BinView Grid.Column="0" Grid.ColumnSpan="3"
+							   Grid.Row="2"
+							   Margin="0 20 0 0"
+							   HorizontalAlignment="Right" />
+            </Grid>
+        </Border>
+
+        <Border BorderBrush="Black" BorderThickness="1">
+            <Grid ShowGridLines="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock  Grid.Row="0" Grid.Column="0">Pure Dex Threshold Jewels</TextBlock>
+                <views:InventoryItemView Grid.Row="0" Grid.Column="1"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel08}" />
+                <views:InventoryItemView Grid.Row="0" Grid.Column="2"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel10}" />
+                <views:InventoryItemView Grid.Row="0" Grid.Column="3"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel11}" />
+                <!-- Hybrid Stat Jewel Slots,Str+Int Jewel in Middle-->
+                <TextBlock  Grid.Row="1" Grid.Column="0">Str+Dex Threshold Jewels</TextBlock>
+                <views:InventoryItemView Grid.Row="1" Grid.Column="1"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel06}" />
+                <views:InventoryItemView Grid.Row="1" Grid.Column="2"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel17}" />
+
+                <TextBlock  Grid.Row="2" Grid.Column="0">Int+Dex Threshold Jewels</TextBlock>
+                <views:InventoryItemView Grid.Row="2" Grid.Column="1"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel09}" />
+                <views:InventoryItemView Grid.Row="2" Grid.Column="2"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel04}" />
+
+                <TextBlock  Grid.Row="3" Grid.Column="0">Str+Int Threshold Jewels</TextBlock>
+                <views:InventoryItemView Grid.Row="3" Grid.Column="1"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel16}" />
+                <views:InventoryItemView Grid.Row="3" Grid.Column="2"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel05}" />
+                <!-- Str Threshold Jewel Slots-->
+                <TextBlock  Grid.Row="4" Grid.Column="0">Pure Str Threshold Jewels</TextBlock>
+                <views:InventoryItemView Grid.Row="4" Grid.Column="1"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel12}" />
+                <views:InventoryItemView Grid.Row="4" Grid.Column="2"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel13}" />
+                <views:InventoryItemView Grid.Row="4" Grid.Column="3"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel15}" />
+                <views:InventoryItemView Grid.Row="4" Grid.Column="3"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel21}" />
+                <!-- Int Threshold Jewel Slots-->
+                <TextBlock  Grid.Row="5" Grid.Column="0">Pure Int Threshold Jewels</TextBlock>
+                <views:InventoryItemView Grid.Row="5" Grid.Column="1"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel}" />
+                <views:InventoryItemView Grid.Row="5" Grid.Column="2"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel02}" />
+                <views:InventoryItemView Grid.Row="5" Grid.Column="3"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel03}" />
+                <views:InventoryItemView Grid.Row="5" Grid.Column="4"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel14}" />
+                <!--Non Threshold Jewels-->
+                <TextBlock  Grid.Row="6" Grid.Column="0">Non-Threshold Jewels</TextBlock>
+                <views:InventoryItemView Grid.Row="6" Grid.Column="1"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel07}" />
+                <views:InventoryItemView Grid.Row="6" Grid.Column="2"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel18}" />
+                <views:InventoryItemView Grid.Row="6" Grid.Column="3"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel19}" />
+                <views:InventoryItemView Grid.Row="6" Grid.Column="4"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel20}" Loaded="InventoryItemView_Loaded" />
+            </Grid>
+        </Border>
+    </StackPanel>
 </UserControl>
