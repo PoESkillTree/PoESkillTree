@@ -8,5 +8,6 @@ namespace POESKillTree.SkillTreeFiles
 {
     class PseudoAttributeTotalInfo
     {
+        List<string> AttributeNames = new List<string> ();
     }
 }

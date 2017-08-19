@@ -12,8 +12,8 @@
              dialogs:DialogParticipation.Register="{Binding}">
 
     <StackPanel Grid.IsSharedSizeScope="True" HorizontalAlignment="Stretch" Margin="10">
-        <Border BorderBrush="Black" BorderThickness="1">
-            <Grid ShowGridLines="True">
+        <Border BorderBrush="Black" BorderThickness="0">
+            <Grid ShowGridLines="False">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
@@ -94,8 +94,8 @@
             </Grid>
         </Border>
 
-        <Border BorderBrush="Black" BorderThickness="1">
-            <Grid ShowGridLines="True">
+        <Border BorderBrush="Black" BorderThickness="0">
+            <Grid ShowGridLines="False">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -114,83 +114,84 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,60,0,22">Pure Dex Threshold Jewels</TextBlock>
+                <TextBlock  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,60,0,22">Str+Dex Threshold Jewels</TextBlock>
                 <views:InventoryItemView Grid.Row="0" Grid.Column="1"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel08}" />
+				Width="41" Height="38" DataContext="{Binding Jewel06}" ToolTip="Scion Jewel Slot south of starting area"/>
                 <views:InventoryItemView Grid.Row="0" Grid.Column="2"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel10}" />
-                <views:InventoryItemView Grid.Row="0" Grid.Column="3"
-				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel11}" />
-                
-                <!-- Hybrid Stat Jewel Slots,Str+Int Jewel in Middle-->
-                <TextBlock  Grid.Row="1" Grid.Column="0">Str+Dex Threshold Jewels</TextBlock>
+				Width="41" Height="38" DataContext="{Binding Jewel17}" ToolTip="Jewel slot south of Duelist starting area"/>
+
+                <TextBlock  Grid.Row="1" Grid.Column="0">Int+Dex Threshold Jewels</TextBlock>
                 <views:InventoryItemView Grid.Row="1" Grid.Column="1"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel06}" />
+				Width="41" Height="38" DataContext="{Binding Jewel09}" ToolTip="Jewel slot east of Shadow starting area"/>
                 <views:InventoryItemView Grid.Row="1" Grid.Column="2"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel17}" />
+				Width="41" Height="38" DataContext="{Binding Jewel04}" ToolTip="Scion jewel slot east of starting area"/>
 
-                <TextBlock  Grid.Row="2" Grid.Column="0">Int+Dex Threshold Jewels</TextBlock>
+                <TextBlock  Grid.Row="2" Grid.Column="0">Str+Int Threshold Jewels</TextBlock>
                 <views:InventoryItemView Grid.Row="2" Grid.Column="1"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel09}" />
+				Width="41" Height="38" DataContext="{Binding Jewel16}" ToolTip="Jewel slot west of Templar starting area"/>
                 <views:InventoryItemView Grid.Row="2" Grid.Column="2"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel04}" />
+				Width="41" Height="38" DataContext="{Binding Jewel05}" ToolTip="Scion Jewel Slot west of starting area"/>
 
-                <TextBlock  Grid.Row="3" Grid.Column="0">Str+Int Threshold Jewels</TextBlock>
+                <TextBlock  Grid.Row="3" Grid.Column="0">Pure Str Threshold Jewels</TextBlock>
                 <views:InventoryItemView Grid.Row="3" Grid.Column="1"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel16}" />
+				Width="41" Height="38" DataContext="{Binding Jewel12}" ToolTip="Jewel slot south-west of Scion area; At road between Marauder and Duelist areas"/>
                 <views:InventoryItemView Grid.Row="3" Grid.Column="2"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel05}" />
-                <!-- Str Threshold Jewel Slots-->
-                <TextBlock  Grid.Row="4" Grid.Column="0">Pure Str Threshold Jewels</TextBlock>
+				Width="41" Height="38" DataContext="{Binding Jewel13}" ToolTip="Jewel slot west of Scion area; At road between Marauder and Templar areas"/>
+                <views:InventoryItemView Grid.Row="3" Grid.Column="3"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel15}" ToolTip="Jewel slot far west of Scion area; At road between Marauder and Templar areas; Nearest jewel slot to Resolute Technique"/>
+                <views:InventoryItemView Grid.Row="3" Grid.Column="4"
+				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+				Width="41" Height="38" DataContext="{Binding Jewel21}" ToolTip="Jewel slot west of Marauder area"/>
+
+                <TextBlock  Grid.Row="4" Grid.Column="0">Pure Int Threshold Jewels</TextBlock>
                 <views:InventoryItemView Grid.Row="4" Grid.Column="1"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel12}" />
+				Width="41" Height="38" DataContext="{Binding Jewel}" ToolTip="Jewel Slot directly north of Witch starting area"/>
                 <views:InventoryItemView Grid.Row="4" Grid.Column="2"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel13}" />
+				Width="41" Height="38" DataContext="{Binding Jewel02}" ToolTip="Jewel slot far NE of Scion Starting Area; Nearest Jewel to CI area"/>
                 <views:InventoryItemView Grid.Row="4" Grid.Column="3"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel15}" />
-                <views:InventoryItemView Grid.Row="4" Grid.Column="3"
+				Width="41" Height="38" DataContext="{Binding Jewel03}" ToolTip="NE from center jewel slot between Witch and shadow areas"/>
+                <views:InventoryItemView Grid.Row="4" Grid.Column="4"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel21}" />
-                <!-- Int Threshold Jewel Slots-->
-                <TextBlock  Grid.Row="5" Grid.Column="0">Pure Int Threshold Jewels</TextBlock>
+				Width="41" Height="38" DataContext="{Binding Jewel14}" ToolTip="Jewel slot north-west of Scion area; At road between Templar and Witch areas"/>
+
+                <TextBlock  Grid.Row="5" Grid.Column="0">Pure Dex Threshold Jewels</TextBlock>
                 <views:InventoryItemView Grid.Row="5" Grid.Column="1"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel}" />
+				Width="41" Height="38" DataContext="{Binding Jewel08}" ToolTip="Jewel Slot east of Scion starting area between Shadow and Ranger areas(above Ranger area); Nearest jewel slot to Charisma passive node"/>
                 <views:InventoryItemView Grid.Row="5" Grid.Column="2"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel02}" />
+				Width="41" Height="38" DataContext="{Binding Jewel10}" ToolTip="Jewel slot east of Ranger area"/>
                 <views:InventoryItemView Grid.Row="5" Grid.Column="3"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel03}" />
-                <views:InventoryItemView Grid.Row="5" Grid.Column="4"
-				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel14}" />
-                <!--Non Threshold Jewels-->
+				Width="41" Height="38" DataContext="{Binding Jewel11}" ToolTip="Jewel slot south-east of Scion area; At road between Ranger and Duelist areas"/>
+
                 <TextBlock  Grid.Row="6" Grid.Column="0">Non-Threshold Jewels</TextBlock>
                 <views:InventoryItemView Grid.Row="6" Grid.Column="1"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel07}" />
+				Width="41" Height="38" DataContext="{Binding Jewel07}" ToolTip="Jewel Slot far east of Scion starting area between Shadow and Ranger areas; Nearest jewel slot to Acrobatics Jewel"/>
                 <views:InventoryItemView Grid.Row="6" Grid.Column="2"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel18}" />
+				Width="41" Height="38" DataContext="{Binding Jewel18}" ToolTip="Jewel slot far south-west of center; Located between Marauder and Duelist areas next to Iron Grip"/>
                 <views:InventoryItemView Grid.Row="6" Grid.Column="3"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel19}" />
+				Width="41" Height="38" DataContext="{Binding Jewel19}" ToolTip="Jewel slot far south-east of center; Located between Duelist and Ranger areas next to Point Blank"/>
                 <views:InventoryItemView Grid.Row="6" Grid.Column="4"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel20}"/>
+				Width="41" Height="38" DataContext="{Binding Jewel20}" ToolTip="Jewel slot far north-west of center; Located between Templar and Witch areas next to Minion-Instability"/>
+
+
                 <views:BinView Grid.Column="6" Grid.ColumnSpan="3"
 							   Grid.Row="0"
 							   HorizontalAlignment="Right" />
