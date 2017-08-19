@@ -91,17 +91,13 @@
 										 HorizontalAlignment="Left" VerticalAlignment="Bottom"
 										 Width="98" Height="98"
 										 DataContext="{Binding Boots}" />
-
-                <views:BinView Grid.Column="0" Grid.ColumnSpan="3"
-							   Grid.Row="2"
-							   Margin="0 20 0 0"
-							   HorizontalAlignment="Right" />
             </Grid>
         </Border>
 
         <Border BorderBrush="Black" BorderThickness="1">
             <Grid ShowGridLines="True">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -118,7 +114,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock  Grid.Row="0" Grid.Column="0">Pure Dex Threshold Jewels</TextBlock>
+                <TextBlock  Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="0,60,0,22">Pure Dex Threshold Jewels</TextBlock>
                 <views:InventoryItemView Grid.Row="0" Grid.Column="1"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
 				Width="41" Height="38" DataContext="{Binding Jewel08}" />
@@ -128,6 +124,7 @@
                 <views:InventoryItemView Grid.Row="0" Grid.Column="3"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
 				Width="41" Height="38" DataContext="{Binding Jewel11}" />
+                
                 <!-- Hybrid Stat Jewel Slots,Str+Int Jewel in Middle-->
                 <TextBlock  Grid.Row="1" Grid.Column="0">Str+Dex Threshold Jewels</TextBlock>
                 <views:InventoryItemView Grid.Row="1" Grid.Column="1"
@@ -193,7 +190,10 @@
 				Width="41" Height="38" DataContext="{Binding Jewel19}" />
                 <views:InventoryItemView Grid.Row="6" Grid.Column="4"
 				Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-				Width="41" Height="38" DataContext="{Binding Jewel20}" Loaded="InventoryItemView_Loaded" />
+				Width="41" Height="38" DataContext="{Binding Jewel20}"/>
+                <views:BinView Grid.Column="6" Grid.ColumnSpan="3"
+							   Grid.Row="0"
+							   HorizontalAlignment="Right" />
             </Grid>
         </Border>
     </StackPanel>
