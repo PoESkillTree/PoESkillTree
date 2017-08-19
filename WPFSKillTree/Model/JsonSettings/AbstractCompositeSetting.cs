@@ -24,6 +24,10 @@ namespace POESKillTree.Model.JsonSettings
 
         public void LoadFrom(JObject jObject)
         {
+        #if (DEBUG)
+        try
+        {
+        #endif
             JToken token;
             if (!jObject.TryGetValue(Key, out token) || !(token is JObject))
             {
@@ -31,10 +35,22 @@ namespace POESKillTree.Model.JsonSettings
                 return;
             }
             SubSettings.ForEach(s => s.LoadFrom((JObject)token));
+        #if (DEBUG)
+        }
+        catch(System.Exception ex)
+        {
+            System.Console.WriteLine("Loaded AbstractCompositeSetting JObject Exception of ");
+            System.Console.WriteLine(ex.ToString());
+        }
+        #endif
         }
 
         public bool SaveTo(JObject jObject)
         {
+        #if (DEBUG)
+        try
+        {
+        #endif
             JToken token;
             if (!jObject.TryGetValue(Key, out token) || !(token is JObject))
             {
@@ -50,6 +66,15 @@ namespace POESKillTree.Model.JsonSettings
                     changed = true;
             }
             return changed;
+        #if (DEBUG)
+        }
+        catch(System.Exception ex)
+        {
+            System.Console.WriteLine("Saved AbstractCompositeSetting JObject Exception of ");
+            System.Console.WriteLine(ex.ToString());
+        }
+        return false;
+        #endif
         }
 
         public void Reset()

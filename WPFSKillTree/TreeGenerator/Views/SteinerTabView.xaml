@@ -6,7 +6,7 @@
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
              xmlns:viewModels="clr-namespace:POESKillTree.TreeGenerator.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="460" d:DesignWidth="600"
+             d:DesignHeight="1000" d:DesignWidth="1000"
              d:DataContext="{d:DesignInstance viewModels:SteinerTabViewModel}">
     <StackPanel Orientation="Vertical">
         <DockPanel Margin="10">

@@ -23,6 +23,15 @@ using static POESKillTree.SkillTreeFiles.Constants;
 
 namespace POESKillTree.SkillTreeFiles
 {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+#endif
+    using SmallDigit =
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+    SmallDec;
+#else
+    System.Single;
+#endif
     public partial class SkillTree : Notifier, ISkillTree
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(SkillTree));
@@ -37,7 +46,7 @@ namespace POESKillTree.SkillTreeFiles
         // The absolute path of Assets folder (contains trailing directory separator).
         private static string _assetsFolderPath;
 
-        public static readonly Dictionary<string, float> BaseAttributes = new Dictionary<string, float>
+        public static readonly Dictionary<string, SmallDigit> BaseAttributes = new Dictionary<string, SmallDigit>
         {
             {"+# to maximum Mana", 34},
             {"+# to maximum Life", 38},
@@ -138,7 +147,7 @@ namespace POESKillTree.SkillTreeFiles
             get { return _allAttributes ?? (_allAttributes = Skillnodes.Values.SelectMany(n => n.Attributes.Keys).Distinct().ToArray()); }
         }
 
-        public static Dictionary<string, float>[] CharBaseAttributes { get; private set; }
+        public static Dictionary<string, SmallDigit>[] CharBaseAttributes { get; private set; }
         public static List<int> RootNodeList { get; private set; }
         public static HashSet<SkillNode> AscRootNodeList { get; private set; }
         public static List<SkillNodeGroup> NodeGroups { get; private set; }
@@ -270,10 +279,10 @@ namespace POESKillTree.SkillTreeFiles
                     PathofexileUrlDeserializer.TryCreate
                 );
 
-                CharBaseAttributes = new Dictionary<string, float>[7];
+                CharBaseAttributes = new Dictionary<string, SmallDigit>[7];
                 foreach (var c in inTree.characterData)
                 {
-                    CharBaseAttributes[c.Key] = new Dictionary<string, float>
+                    CharBaseAttributes[c.Key] = new Dictionary<string, SmallDigit>
                     {
                         {"+# to Strength", c.Value.base_str},
                         {"+# to Dexterity", c.Value.base_dex},
@@ -416,19 +425,19 @@ namespace POESKillTree.SkillTreeFiles
                     }
 
                     //populate the Attributes fields with parsed attributes 
-                    skillnode.Value.Attributes = new Dictionary<string, IReadOnlyList<float>>();
+                    skillnode.Value.Attributes = new Dictionary<string, IReadOnlyList<SmallDigit>>();
                     foreach (string s in skillnode.Value.attributes)
                     {
-                        var values = new List<float>();
+                        var values = new List<SmallDigit>();
 
                         foreach (Match m in regexAttrib.Matches(s))
                         {
                             if (!AttributeTypes.Contains(regexAttrib.Replace(s, "#")))
                                 AttributeTypes.Add(regexAttrib.Replace(s, "#"));
                             if (m.Value == "")
-                                values.Add(float.NaN);
+                                values.Add(SmallDigit.NaN);
                             else
-                                values.Add(float.Parse(m.Value, CultureInfo.InvariantCulture));
+                                values.Add(SmallDigit.Parse(m.Value, CultureInfo.InvariantCulture));
                         }
                         string cs = (regexAttrib.Replace(s, "#"));
 
@@ -588,12 +597,12 @@ namespace POESKillTree.SkillTreeFiles
             _asctype = 0;
         }
 
-        public Dictionary<string, List<float>> HighlightedAttributes;
+        public Dictionary<string, List<SmallDigit>> HighlightedAttributes;
 
-        public Dictionary<string, List<float>> SelectedAttributes
+        public Dictionary<string, List<SmallDigit>> SelectedAttributes
             => GetAttributes(SkilledNodes, Chartype, Level, _persistentData.CurrentBuild.Bandits);
 
-        public static Dictionary<string, List<float>> GetAttributes(IEnumerable<SkillNode> skilledNodes, int chartype, int level, BanditSettings banditSettings)
+        public static Dictionary<string, List<SmallDigit>> GetAttributes(IEnumerable<SkillNode> skilledNodes, int chartype, int level, BanditSettings banditSettings)
         {
             var temp = GetAttributesWithoutImplicit(skilledNodes, chartype, banditSettings);
 
@@ -602,7 +611,7 @@ namespace POESKillTree.SkillTreeFiles
                 var key = RenameImplicitAttributes.ContainsKey(a.Key) ? RenameImplicitAttributes[a.Key] : a.Key;
 
                 if (!temp.ContainsKey(key))
-                    temp[key] = new List<float>();
+                    temp[key] = new List<SmallDigit>();
                 for (var i = 0; i < a.Value.Count; i++)
                 {
                     if (temp.ContainsKey(key) && temp[key].Count > i)
@@ -616,17 +625,17 @@ namespace POESKillTree.SkillTreeFiles
             return temp;
         }
 
-        public Dictionary<string, List<float>> SelectedAttributesWithoutImplicit
+        public Dictionary<string, List<SmallDigit>> SelectedAttributesWithoutImplicit
             => GetAttributesWithoutImplicit(SkilledNodes, Chartype, _persistentData.CurrentBuild.Bandits);
 
-        public static Dictionary<string, List<float>> GetAttributesWithoutImplicit(IEnumerable<SkillNode> skilledNodes, int chartype, BanditSettings banditSettings)
+        public static Dictionary<string, List<SmallDigit>> GetAttributesWithoutImplicit(IEnumerable<SkillNode> skilledNodes, int chartype, BanditSettings banditSettings)
         {
-            var temp = new Dictionary<string, List<float>>();
+            var temp = new Dictionary<string, List<SmallDigit>>();
             
             foreach (var attr in CharBaseAttributes[chartype].Union(BaseAttributes).Union(banditSettings.Rewards))
             {
                 if (!temp.ContainsKey(attr.Key))
-                    temp[attr.Key] = new List<float> { attr.Value };
+                    temp[attr.Key] = new List<SmallDigit> { attr.Value };
                 else if (temp[attr.Key].Any())
                     temp[attr.Key][0] += attr.Value;
             }
@@ -636,7 +645,7 @@ namespace POESKillTree.SkillTreeFiles
                 foreach (var attr in ExpandHybridAttributes(node.Attributes))
                 {
                     if (!temp.ContainsKey(attr.Key))
-                        temp[attr.Key] = new List<float>();
+                        temp[attr.Key] = new List<SmallDigit>();
                     for (int i = 0; i < attr.Value.Count; i++)
                     {
                         if (temp.ContainsKey(attr.Key) && temp[attr.Key].Count > i)
@@ -653,16 +662,16 @@ namespace POESKillTree.SkillTreeFiles
         }
 
 
-        public static Dictionary<string, List<float>> GetAttributesWithoutImplicitNodesOnly(IEnumerable<SkillNode> skilledNodes)
+        public static Dictionary<string, List<SmallDigit>> GetAttributesWithoutImplicitNodesOnly(IEnumerable<SkillNode> skilledNodes)
         {
-            var temp = new Dictionary<string, List<float>>();
+            var temp = new Dictionary<string, List<SmallDigit>>();
 
             foreach (var node in skilledNodes)
             {
                 foreach (var attr in ExpandHybridAttributes(node.Attributes))
                 {
                     if (!temp.ContainsKey(attr.Key))
-                        temp[attr.Key] = new List<float>();
+                        temp[attr.Key] = new List<SmallDigit>();
                     for (int i = 0; i < attr.Value.Count; i++)
                     {
                         if (temp.ContainsKey(attr.Key) && temp[attr.Key].Count > i)
@@ -1042,9 +1051,11 @@ namespace POESKillTree.SkillTreeFiles
                     _nodeHighlighter.ResetHighlights(nodes, flag);
                     DrawHighlights();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    // ?
+#if (DEBUG)
+                    Console.WriteLine("Exception of" + ex.ToString() + " occurred during SkillTree->HighlightNodesBySearch.");
+#endif
                 }
             }
             else
@@ -1091,19 +1102,19 @@ namespace POESKillTree.SkillTreeFiles
             DrawHighlights();
         }
 
-        public static Dictionary<string, List<float>> ImplicitAttributes(Dictionary<string, List<float>> attribs, int level)
+        public static Dictionary<string, List<SmallDigit>> ImplicitAttributes(Dictionary<string, List<SmallDigit>> attribs, int level)
         {
-            var retval = new Dictionary<string, List<float>>
+            var retval = new Dictionary<string, List<SmallDigit>>
             {
-                ["+# to maximum Mana"] = new List<float>
+                ["+# to maximum Mana"] = new List<SmallDigit>
                 {
                     attribs["+# to Intelligence"][0]/IntPerMana + level*ManaPerLevel
                 },
-                ["#% increased maximum Energy Shield"] = new List<float>
+                ["#% increased maximum Energy Shield"] = new List<SmallDigit>
                 {
-                    (float) Math.Round(attribs["+# to Intelligence"][0]/IntPerES, 0)
+                    (SmallDigit) Math.Round(attribs["+# to Intelligence"][0]/IntPerES, 0)
                 },
-                ["+# to maximum Life"] = new List<float>
+                ["+# to maximum Life"] = new List<SmallDigit>
                 {
                     attribs["+# to Strength"][0]/StrPerLife + level*LifePerLevel
                 }
@@ -1113,20 +1124,24 @@ namespace POESKillTree.SkillTreeFiles
             // Every 10 strength grants 2% increased melee physical damage. 
             var str = (int)attribs["+# to Strength"][0];
             if (str % (int)StrPerED > 0) str += (int)StrPerED - (str % (int)StrPerED);
-            retval["#% increased Melee Physical Damage"] = new List<float> { str / StrPerED };
+            retval["#% increased Melee Physical Damage"] = new List<SmallDigit> { str / StrPerED };
             // Every point of Dexterity gives 2 additional base accuracy, and characters gain 2 base accuracy when leveling up.
             // @see http://pathofexile.gamepedia.com/Accuracy
-            retval["+# Accuracy Rating"] = new List<float>
+            retval["+# Accuracy Rating"] = new List<SmallDigit>
             {
                 attribs["+# to Dexterity"][0]/DexPerAcc + (level - 1)*AccPerLevel
             };
-            retval["Evasion Rating: #"] = new List<float> { level * EvasPerLevel };
+            retval["Evasion Rating: #"] = new List<SmallDigit> { level * EvasPerLevel };
 
             // Dexterity value is not getting rounded up any more but rounded normally to the nearest multiple of 5.
             // @see http://pathofexile.gamepedia.com/Talk:Evasion
-            float dex = attribs["+# to Dexterity"][0];
+            SmallDigit dex = attribs["+# to Dexterity"][0];
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            dex = SmallDec.Round(dex / DexPerEvas, 0, MidpointRounding.AwayFromZero) * DexPerEvas;
+#else
             dex = (float)Math.Round(dex / DexPerEvas, 0, MidpointRounding.AwayFromZero) * DexPerEvas;
-            retval["#% increased Evasion Rating"] = new List<float> { dex / DexPerEvas };
+#endif
+            retval["#% increased Evasion Rating"] = new List<SmallDigit> { dex / DexPerEvas };
 
             int frenzycharges, powercharges;
             var endurancecharges = frenzycharges = powercharges = 0;
@@ -1142,7 +1157,7 @@ namespace POESKillTree.SkillTreeFiles
                 if (key.Contains("per Endurance Charge") && endurancecharges > 0)
                 {
                     newkey = key.Replace("per Endurance Charge", "with all Endurance Charges");
-                    retval.Add(newkey, new List<float>());
+                    retval.Add(newkey, new List<SmallDigit>());
                     foreach (var f in attribs[key])
                     {
                         retval[newkey].Add(f * endurancecharges);
@@ -1151,7 +1166,7 @@ namespace POESKillTree.SkillTreeFiles
                 if (key.Contains("per Frenzy Charge") && endurancecharges > 0)
                 {
                     newkey = key.Replace("per Frenzy Charge", "with all Frenzy Charges");
-                    retval.Add(newkey, new List<float>());
+                    retval.Add(newkey, new List<SmallDigit>());
                     foreach (var f in attribs[key])
                     {
                         retval[newkey].Add(f * frenzycharges);
@@ -1160,7 +1175,7 @@ namespace POESKillTree.SkillTreeFiles
                 if (key.Contains("per Power Charge") && endurancecharges > 0)
                 {
                     newkey = key.Replace("per Power Charge", "with all Power Charges");
-                    retval.Add(newkey, new List<float>());
+                    retval.Add(newkey, new List<SmallDigit>());
                     foreach (var f in attribs[key])
                     {
                         retval[newkey].Add(f * powercharges);
@@ -1375,19 +1390,19 @@ namespace POESKillTree.SkillTreeFiles
             return availNodes;
         }
 
-        public static IEnumerable<KeyValuePair<string, IReadOnlyList<float>>> ExpandHybridAttributes(Dictionary<string, IReadOnlyList<float>> attributes)
+        public static IEnumerable<KeyValuePair<string, IReadOnlyList<SmallDigit>>> ExpandHybridAttributes(Dictionary<string, IReadOnlyList<SmallDigit>> attributes)
         {
             return attributes.SelectMany(ExpandHybridAttributes);
         }
 
-        public static IEnumerable<KeyValuePair<string, IReadOnlyList<float>>> ExpandHybridAttributes(KeyValuePair<string, IReadOnlyList<float>> attribute)
+        public static IEnumerable<KeyValuePair<string, IReadOnlyList<SmallDigit>>> ExpandHybridAttributes(KeyValuePair<string, IReadOnlyList<SmallDigit>> attribute)
         {
             List<string> expandedAttributes;
             if (HybridAttributes.TryGetValue(attribute.Key, out expandedAttributes))
             {
                 foreach (var expandedAttribute in expandedAttributes)
                 {
-                    yield return new KeyValuePair<string, IReadOnlyList<float>>(expandedAttribute, attribute.Value);
+                    yield return new KeyValuePair<string, IReadOnlyList<SmallDigit>>(expandedAttribute, attribute.Value);
                 }
             }
             else

@@ -161,10 +161,13 @@ namespace POESKillTree.Model.Items.Enums
                 case ItemClass.HybridFlask:
                 case ItemClass.UtilityFlask:
                 case ItemClass.CriticalUtilityFlask:
-                case ItemClass.Jewel:
                 case ItemClass.Unknown:
                 case ItemClass.Any:
                     return ItemSlot.Unequipable;
+                case ItemClass.Jewel:
+                    return ItemSlot.Jewel | ItemSlot.Jewel02 | ItemSlot.Jewel03 | ItemSlot.Jewel04 | ItemSlot.Jewel05 | ItemSlot.Jewel06 | ItemSlot.Jewel07 | ItemSlot.Jewel08 | ItemSlot.Jewel09 | ItemSlot.Jewel10 |
+                    ItemSlot.Jewel11 | ItemSlot.Jewel12 | ItemSlot.Jewel13 | ItemSlot.Jewel14 | ItemSlot.Jewel15 | ItemSlot.Jewel16 | ItemSlot.Jewel17 | ItemSlot.Jewel18 | ItemSlot.Jewel19 | ItemSlot.Jewel10 |
+                    ItemSlot.Jewel21;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(itemClass), itemClass, null);
             }

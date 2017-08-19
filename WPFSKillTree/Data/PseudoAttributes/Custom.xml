@@ -1,5 +1,272 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Custom pseudo attributes -->
 <PseudoAttributes>
+	<PseudoAttribute Name="#% increased Charged Dash Damage with Phys Weapon" Group="Damage">
+		<Attribute Name="#% increased Physical Damage"/>
+		<Attribute Name="#% increased Elemental Damage"  ConversionMultiplier="0.5"/>
+		<Attribute Name="#% increased Elemental Damage with Attack Skills"  ConversionMultiplier="0.5"/>
+		<Attribute Name="#% increased Lightning Damage" ConversionMultiplier="0.5"/>
+		<Attribute Name="#% increased Area Damage"/>
+		<Attribute Name="#% increased Attack Damage" />
+		<Attribute Name="#% increased Damage"/>
+		<!--Attack speed increases rate of AOE circles during charge of skill, while Movement speed increases speed of travel distance (granting more damage based on percent of dash distance)-->
+		<Attribute Name="#% increased Attack Speed"/>
+		<Attribute Name="#% increased Movement Speed"/>
+		<Attribute Name="#% increased Melee Physical Damage"/>
+		<Attribute Name="#% increased Attack Physical Damage"/>
+		<Attribute Name="#% increased Melee Damage"/>
+		<Attribute Name="+# to Strength" ConversionMultiplier=".2"/>
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Charged Dash Damage with Tagged Phys Weapon" Group="Damage">
+		<Attribute Name="#% increased Physical Damage"/>
+		<PseudoAttribute Name="raw #% increased Elemental Damage"  ConversionMultiplier="0.5"/>
+		<PseudoAttribute Name="raw #% increased Lightning Damage"  ConversionMultiplier="0.5"/>
+		<Attribute Name="#% increased Area Damage"/>
+		<Attribute Name="#% increased Attack Damage" />
+		<Attribute Name="#% increased Damage"/>
+		<!--Attack speed increases rate of AOE circles during charge of skill, while Movement speed increases speed of travel distance (granting more damage based on percent of dash distance)-->
+		<Attribute Name="#% increased Attack Speed"/>
+		<Attribute Name="#% increased Movement Speed"/>
+		<Attribute Name="#% increased Melee Physical Damage"/>
+		<Attribute Name="#% increased Attack Physical Damage"/>
+		<Attribute Name="#% increased Melee Damage"/>
+		<Attribute Name="+# to Strength" ConversionMultiplier=".2"/>
+		<Attribute Name="#% increased Physical Damage while holding a Shield">
+			<Conditions>
+				<OffHand>Shield</OffHand>
+			</Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Melee Physical Damage while holding a Shield">
+			<Conditions>
+				<AndComposition>
+					<OffHand>Shield</OffHand>
+					<Tag>Melee</Tag>
+				</AndComposition>
+			</Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Physical Damage while Dual Wielding or holding a Shield">
+			<Conditions>
+				<OffHand>Dual Wield</OffHand>
+				<OffHand>Shield</OffHand>
+			</Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Physical Weapon Damage while Dual Wielding">
+			<Conditions>
+				<AndComposition>
+					<OffHand>Dual Wield</OffHand>
+					<Tag>Attack</Tag>
+					<Not><WeaponClass>Unarmed</WeaponClass></Not>
+				</AndComposition>
+			</Conditions>
+		</Attribute>
+		<Attribute Name="#% increased Physical Damage with {0}">
+			<Conditions>
+				<AndComposition>
+					<WeaponClass>{0}</WeaponClass> <!-- Maces, Axes, Two Handed Melee Weapons, ... -->
+					<Tag>Attack</Tag>
+				</AndComposition>
+				<Tag>{0}</Tag><!-- Attacks -->
+			</Conditions>
+		</Attribute>
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Righteous Fire Damage(with slightly reduced fire/burn-dot preference)" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" />
+		<Attribute Name="#% increased Fire Damage" ConversionMultiplier="0.98"/>
+		<Attribute Name="#% increased Area Damage" />
+		<Attribute Name="#% increased Damage"/>
+		<Attribute Name="#% increased Burning Damage" ConversionMultiplier="0.98"/>
+		<Attribute Name="#% increased Damage over Time" ConversionMultiplier="0.98"/>
+		<Attribute Name="#% to maximum Fire Resistance" ConversionMultiplier="5.0"/>
+	</PseudoAttribute>
+		<PseudoAttribute Name="#% increased Dark Pact Damage" Group="Damage">
+		<Attribute Name="#% increased Chaos Damage" />
+		<Attribute Name="#% increased Area Damage" />
+		<Attribute Name="#% increased Spell Damage" />
+		<Attribute Name="#% increased maximum Life"  ConversionMultiplier="0.12"/>
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Total Glacial Cascade Damage" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" ConversionMultiplier="0.6"/>
+		<Attribute Name="#% increased Cold Damage" ConversionMultiplier="0.6"/>
+		<Attribute Name="#% increased Physical Damage"/>
+		<Attribute Name="#% increased Area Damage" />
+		<Attribute Name="#% increased Spell Damage" />
+	</PseudoAttribute>
+ 	<PseudoAttribute Name="#% increased Average Wild Strike Damage with Pure Physical Weapon" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" />
+		<Attribute Name="#% increased Elemental Damage with Attack Skills" />
+		<Attribute Name="#% increased Physical Damage" />
+		<Attribute Name="#% increased Lightning Damage" ConversionMultiplier="0.333333333"/>
+		<Attribute Name="#% increased Cold Damage" ConversionMultiplier="0.333333333"/>
+		<Attribute Name="#% increased Fire Damage" ConversionMultiplier="0.333333333"/>
+		<Attribute Name="#% increased Area Damage" ConversionMultiplier="0.333333333"/>
+		<Attribute Name="#% increased Projectile Damage" ConversionMultiplier="0.333333333"/>
+		<Attribute Name="#% increased Attack Damage" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Average Wild Strike Damage with 75% Physical Weapon" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" />
+		<Attribute Name="#% increased Elemental Damage with Attack Skills" />
+		<Attribute Name="#% increased Physical Damage" ConversionMultiplier="0.75"/>
+		<Attribute Name="#% increased Lightning Damage" ConversionMultiplier="0.333333333"/>
+		<Attribute Name="#% increased Cold Damage" ConversionMultiplier="0.333333333"/>
+		<Attribute Name="#% increased Fire Damage" ConversionMultiplier="0.333333333"/>
+		<Attribute Name="#% increased Area Damage" ConversionMultiplier="0.333333333"/>
+		<Attribute Name="#% increased Projectile Damage" ConversionMultiplier="0.333333333"/>
+		<Attribute Name="#% increased Attack Damage" />
+	</PseudoAttribute>
 
+	<PseudoAttribute Name="#% increased Average Wild Strike Damage" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" />
+		<Attribute Name="#% increased Elemental Damage with Attack Skills" />
+		<Attribute Name="#% increased Lightning Damage" ConversionMultiplier="0.333333333"/>
+		<Attribute Name="#% increased Cold Damage" ConversionMultiplier="0.333333333"/>
+		<Attribute Name="#% increased Fire Damage" ConversionMultiplier="0.333333333"/>
+		<Attribute Name="#% increased Area Damage" ConversionMultiplier="0.333333333"/>
+		<Attribute Name="#% increased Projectile Damage" ConversionMultiplier="0.333333333"/>
+		<Attribute Name="#% increased Attack Damage" />
+	</PseudoAttribute>
+	
+	<PseudoAttribute Name="#% increased Bleed DOT before tags" Group="Damage">
+		<Attribute Name="#% increased Damage over Time" />
+		<Attribute Name="#% increased Physical Damage"/>
+		<Attribute Name="#% increased Physical Damage over Time"/>
+		<Attribute Name="#% increased Damage"/>
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Poison DOT before tags" Group="Damage">
+		<Attribute Name="#% increased Damage over Time" />
+		<Attribute Name="#% increased Damage with Poison"/>
+		<Attribute Name="#% increased Chaos Damage"/>
+		<Attribute Name="#% increased Damage"/>
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Burn DOT before tags" Group="Damage">
+		<Attribute Name="#% increased Damage over Time" />
+		<Attribute Name="#% increased Damage"/>
+		<Attribute Name="#% increased Fire Damage"/>
+		<Attribute Name="#% increased Elemental Damage"/>
+		<Attribute Name="#% increased Burning Damage"/>
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Bleed DOT before tags with Level 20 Melee Splash" Group="Damage">
+		<Attribute Name="#% increased Damage over Time" />
+		<Attribute Name="#% increased Physical Damage"/>
+		<Attribute Name="#% increased Physical Damage over Time"/>
+		<Attribute Name="#% increased Damage"/>
+		<Attribute Name="#% increased Area Damage" ConversionMultiplier="0.74" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Poison DOT before tags with Level 20 Melee Splash" Group="Damage">
+		<Attribute Name="#% increased Damage over Time" />
+		<Attribute Name="#% increased Damage with Poison"/>
+		<Attribute Name="#% increased Chaos Damage"/>
+		<Attribute Name="#% increased Damage"/>
+		<Attribute Name="#% increased Area Damage" ConversionMultiplier="0.74" />
+	</PseudoAttribute>
+		<PseudoAttribute Name="#% increased Burn DOT before tags with Level 20 Melee Splash" Group="Damage">
+		<Attribute Name="#% increased Damage over Time" />
+		<Attribute Name="#% increased Damage"/>
+		<Attribute Name="#% increased Fire Damage"/>
+		<Attribute Name="#% increased Elemental Damage"/>
+		<Attribute Name="#% increased Burning Damage"/>
+		<Attribute Name="#% increased Area Damage" ConversionMultiplier="0.74" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Bleed And Poison DOT before tags with Level 20 Melee Splash" Group="Damage">
+		<Attribute Name="#% increased Damage over Time" />
+		<Attribute Name="#% increased Physical Damage"/>
+		<Attribute Name="#% increased Physical Damage over Time"/>
+		<Attribute Name="#% increased Damage with Poison"/>
+		<Attribute Name="#% increased Chaos Damage"/>
+		<Attribute Name="#% increased Damage"/>
+		<Attribute Name="#% increased Area Damage" ConversionMultiplier="0.74" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased SharedStrength Minion Damage" Group="Damage">
+		<Attribute Name="+# to Strength" ConversionMultiplier="0.2" />
+		<Attribute Name="Minions deal #% increased Damage" />
+	</PseudoAttribute>
+ 	<PseudoAttribute Name="#% increased Total Critical Strike Chance with Spells" Group="Critical Strike">
+		<Attribute Name="#% increased Critical Strike Chance" />
+		<Attribute Name="#% increased Critical Strike Chance for Spells" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Total Critical Strike Chance with One-Handed Sword Attacks" Group="Critical Strike">
+		<Attribute Name="#% increased Critical Strike Chance" />
+		<Attribute Name="#% increased Critical Strike Chance with One Handed Melee Weapons" />
+		<Attribute Name="#% increased Critical Strike Chance with Swords" />
+	</PseudoAttribute>
+ 	<PseudoAttribute Name="#% increased Total Cold Area of Effect Damage(before tags)" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" />
+		<Attribute Name="#% increased Cold Damage" />
+		<Attribute Name="#% increased Area Damage" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Lightning Projectile Damage" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage"/>
+		<Attribute Name="#% increased Lightning Damage"/>
+		<Attribute Name="#% increased Projectile Damage"/>
+		<Attribute Name="#% increased Spell Damage" />
+		<Attribute Name="#% increased Damage"/>
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Lightning Area Damage" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage"/>
+		<Attribute Name="#% increased Lightning Damage"/>
+		<Attribute Name="#% increased Area Damage"/>
+		<Attribute Name="#% increased Spell Damage" />
+		<Attribute Name="#% increased Damage"/>
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Total Lightning Damage(before tags)" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" />
+		<Attribute Name="#% increased Lightning Damage" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Total Fire Area of Effect Damage(before tags)" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" />
+		<Attribute Name="#% increased Fire Damage" />
+		<Attribute Name="#% increased Area Damage" />
+	</PseudoAttribute>
+ 	<PseudoAttribute Name="#% increased Total Elemental Damage with Spells" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" />
+		<Attribute Name="#% increased Spell Damage" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Total Elemental Damage with One-Handed Sword Attack Projectiles" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" />
+		<Attribute Name="#% increased Attack Damage" />
+		<Attribute Name="#% increased Projectile Damage" />
+		<Attribute Name="#% increased Elemental Damage with Attack Skills" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Total Elemental Damage with Projectile Spells" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" />
+		<Attribute Name="#% increased Spell Damage" />
+		<Attribute Name="#% increased Projectile Damage" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Total Elemental Damage with One-Handed Sword AOE Attacks" Group="Damage">
+		<Attribute Name="#% increased Elemental Damage" />
+		<Attribute Name="#% increased Attack Damage" />
+		<Attribute Name="#% increased Area Damage" />
+		<Attribute Name="#% increased Elemental Damage with Attack Skills" />
+	</PseudoAttribute>
+
+	<PseudoAttribute Name="#% increased Total Chaos Area of Effect Damage" Group="Damage">
+		<Attribute Name="#% increased Chaos Damage" />
+		<Attribute Name="#% increased Area Damage" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Total Chaos Spell Area of Effect Damage" Group="Damage">
+		<Attribute Name="#% increased Chaos Damage" />
+		<Attribute Name="#% increased Area Damage" />
+		<Attribute Name="#% increased Spell Damage" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="+# maximum Energy Shield" Group="Defense">
+		<Attribute Name="+# to maximum Energy Shield" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="+# maximum Life" Group="Defense">
+		<Attribute Name="+# to maximum Life" />
+		<Attribute Name="+# to Strength" ConversionMultiplier="0.5" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="+# maximum Life/Energy Shield" Group="Defense">
+		<Attribute Name="+# to maximum Energy Shield" />
+		<Attribute Name="+# to maximum Life" />
+		<Attribute Name="+# to Strength" ConversionMultiplier="0.5" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="#% increased Hybrid Life/ES Percent" Group="Defense">
+		<Attribute Name="#% increased maximum Life" />
+		<Attribute Name="#% increased maximum Energy Shield" />
+		<Attribute Name="+# to Intelligence" ConversionMultiplier="0.2" />
+	</PseudoAttribute>
+	<PseudoAttribute Name="+# combined attributes" Group="Defense">
+		<Attribute Name="+# to maximum Life" />
+		<Attribute Name="+# to Strength" ConversionMultiplier="1.0" />
+		<Attribute Name="+# to Intelligence" ConversionMultiplier="1.0" />
+		<Attribute Name="+# to Dexterity" ConversionMultiplier="1.0" />
+	</PseudoAttribute>
 </PseudoAttributes>

@@ -10,22 +10,51 @@ using POESKillTree.TreeGenerator.Settings;
 
 namespace POESKillTree.TreeGenerator.Solver
 {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+#endif
+    using SmallDigit =
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+    SmallDec;
+#else
+    System.Single;
+#endif
+    using CSVScoreType =
+#if (PoESkillTree_EnableAlternativeCSV&&PoESkillTree_UseSmallDec_ForAttributes)
+    SmallDec;
+#else
+    System.Double;
+#endif
+
     /// <summary>
     /// Implementation of AbstractGeneticSolver that tries to find optimal trees based on constraints.
     /// </summary>
     public class AdvancedSolver : AbstractGeneticSolver<AdvancedSolverSettings>
     {
         /// <summary>
-        /// PseudoAttributeConstraint data object where the PseudoAttribute is converted
-        /// into the applicable attributes and their conversion multiplier.
+        /// PseudoAttributeConstraint data object where the PseudoAttribute is converted into the
+        /// applicable attributes and their conversion multiplier.
         /// </summary>
         private class ConvertedPseudoAttributeConstraint
         {
-            public List<Tuple<string, float>> Attributes { get; private set; }
+            /// <summary>
+            /// </summary>
+            public List<Tuple<string, SmallDigit>> Attributes { get; private set; }
 
-            public Tuple<float, double> TargetWeightTuple { get; private set; }
+            /// <summary>
+            /// </summary>
+            public Tuple<SmallDigit, double
+#if (PoESkillTree_EnableMinimumValue)
+            , SmallDigit
+#endif
+            > TargetWeightTuple
+            { get; private set; }
 
-            public ConvertedPseudoAttributeConstraint(List<Tuple<string, float>> attributes, Tuple<float, double> tuple)
+            public ConvertedPseudoAttributeConstraint(List<Tuple<string, SmallDigit>> attributes, Tuple<SmallDigit, double
+#if (PoESkillTree_EnableMinimumValue)
+            , SmallDigit
+#endif
+            > tuple)
             {
                 Attributes = attributes;
                 TargetWeightTuple = tuple;
@@ -42,20 +71,21 @@ namespace POESKillTree.TreeGenerator.Solver
         /// </summary>
         private static readonly Regex TravelNodeRegex = new Regex(@"\+# to (Strength|Intelligence|Dexterity)");
 
-        // It doesn't gain anything from larger populations and more generations.
-        // Running more generations has the upside that it doesn't take much longer because
-        // the GA reaches a point where not many new DNAs are generated and it can use the cache nearly always.
+        // It doesn't gain anything from larger populations and more generations. Running more
+        // generations has the upside that it doesn't take much longer because the GA reaches a point
+        // where not many new DNAs are generated and it can use the cache nearly always.
         protected override int Generations
         {
             get { return 200; }
         }
+
         private const double PopMultiplier = 7;
 
-        // Between 3 and 5 seems to be the optimal point. Anything higher or lower is worse.
-        // This is assuming it is not problem specific.
+        // Between 3 and 5 seems to be the optimal point. Anything higher or lower is worse. This is
+        // assuming it is not problem specific.
         /// <summary>
-        /// How many consecutive genes can be flipped at most by mutation.
-        /// Utilizes the fact that consecutive genes mostly are node clusters that are taken together.
+        /// How many consecutive genes can be flipped at most by mutation. Utilizes the fact that
+        /// consecutive genes mostly are node clusters that are taken together.
         /// </summary>
         private const int MaxMutateClusterSize = 4;
 
@@ -65,7 +95,7 @@ namespace POESKillTree.TreeGenerator.Solver
         private const double UsedNodeCountWeight = 5;
 
         /// <summary>
-        /// Factor for the value calculated from the node difference if used node count is lower than the allowed node coutn.
+        /// Factor for the value calculated from the node difference if used node count is lower than the allowed node count.
         /// </summary>
         /// <remarks>
         /// A tree with less points spent should only better better if the csv satisfaction is not worse.
@@ -79,23 +109,44 @@ namespace POESKillTree.TreeGenerator.Solver
         private const double CsvWeightMultiplier = 10;
 
         /// <summary>
-        /// Maps indexes of constraints (both attribute and pseudo attribute constraints) to their {Target, Weight}-Tuple.
+        /// Maps indexes of constraints (both attribute and pseudo attribute constraints) to their
+        /// {Target, Weight}-Tuple.
         /// </summary>
-        private Tuple<float, double>[] _attrConstraints;
+        private Tuple<SmallDigit, double
+#if (PoESkillTree_EnableMinimumValue)
+        , SmallDigit
+#endif
+        >[] _attrConstraints;
+
+#if (PoESkillTree_EnableAlternativeCSV)
+
         /// <summary>
-        /// Dictionary that maps attribute names to the constraint numbers they apply to (as indexes of _attrConstraints).
+        /// Names of the individual Attribute Constraints (use later to save/display the target
+        /// pseudo-attribute totals for targets with minimum value)
+        /// </summary>
+        public List<string> _ConstraintNames;
+
+#endif
+
+        /// <summary>
+        /// Dictionary that maps attribute names to the constraint numbers they apply to (as indexes
+        /// of _attrConstraints).
         /// </summary>
         private Dictionary<string, List<int>> _attrNameLookup;
+
         /// <summary>
-        /// Dictionary that maps attribute names and numbers (as indexes of _attrConstraints) to the converions multiplier
-        /// that gets applied when they are calculated.
+        /// Dictionary that maps attribute names and numbers (as indexes of _attrConstraints) to
+        /// their conversion multipliers that gets applied when they are calculated.
         /// </summary>
-        private Dictionary<Tuple<string, int>, float> _attrConversionMultipliers;
+        private Dictionary<Tuple<string, int>, SmallDigit> _attrConversionMultipliers;
+
         /// <summary>
-        /// Pseudo-Dictionary that maps node ids to a list of their attributes as a pair of the constraint number and the value.
-        /// Fits all possible ushorts (node ids) and is pretty sparse. Not contained ids have null as value.
+        /// Pseudo-Dictionary that maps node ids to a list of their attributes as a pair of the
+        /// constraint number and the value. Fits all possible ushorts (node ids) and is pretty
+        /// sparse. Not contained ids have null as value.
         /// </summary>
-        private List<Tuple<int, float>>[] _nodeAttributes;
+        private List<Tuple<int, SmallDigit>>[] _nodeAttributes;
+
         /// <summary>
         /// Dictionary that saves which nodes (represented by their id) are travel nodes.
         /// </summary>
@@ -110,14 +161,14 @@ namespace POESKillTree.TreeGenerator.Solver
         /// <summary>
         /// Array of the values for each attribute independent of the current calculated skill tree.
         /// </summary>
-        private float[] _fixedAttributes;
+        private SmallDigit[] _fixedAttributes;
 
         protected override GeneticAlgorithmParameters GaParameters
         {
             get
             {
                 return new GeneticAlgorithmParameters(
-                    (int) (PopMultiplier * SearchSpace.Count),
+                    (int)(PopMultiplier * SearchSpace.Count),
                     SearchSpace.Count,
                     maxMutateClusterSize: MaxMutateClusterSize);
             }
@@ -127,7 +178,9 @@ namespace POESKillTree.TreeGenerator.Solver
         /// Creates a new, uninitialized instance.
         /// </summary>
         /// <param name="tree">The (not null) skill tree in which to optimize.</param>
-        /// <param name="settings">The (not null) settings that describe what the solver should do.</param>
+        /// <param name="settings">
+        /// The (not null) settings that describe what the solver should do.
+        /// </param>
         public AdvancedSolver(SkillTree tree, AdvancedSolverSettings settings)
             : base(tree, settings)
         {
@@ -138,8 +191,8 @@ namespace POESKillTree.TreeGenerator.Solver
         {
             // Evaluate the pseudo constraints into attribute lists.
             var convertedPseudos = EvalPseudoAttrConstraints();
-            // Assign a number to each attribute and pseudo attribute constraint
-            // and link their names to these numbers.
+            // Assign a number to each attribute and pseudo attribute constraint and link their names
+            // to these numbers.
             FormalizeConstraints(Settings.AttributeConstraints, convertedPseudos);
             // Extract attributes from nodes and set travel nodes.
             ExtractNodeAttributes();
@@ -148,23 +201,40 @@ namespace POESKillTree.TreeGenerator.Solver
         }
 
         /// <summary>
-        /// Assigns a number to each attribute and pseudo attribute constraint, saves
-        /// their weights and target values into _attrConstraints, saves the numbers for each
-        /// name into _attrNameLookup and saves the conversion multipliers into _attrConversionMultipliers.
+        /// Assigns a number to each attribute and pseudo attribute constraint, saves their weights
+        /// and target values into _attrConstraints, saves the numbers for each name into
+        /// _attrNameLookup and saves the conversion multipliers into _attrConversionMultipliers.
         /// </summary>
-        private void FormalizeConstraints(Dictionary<string, Tuple<float, double>> attrConstraints,
-            IReadOnlyCollection<ConvertedPseudoAttributeConstraint> pseudoConstraints)
+        /// <param name="attrConstraints">todo: describe attrConstraints parameter on FormalizeConstraints</param>
+        /// <param name="pseudoConstraints">todo: describe pseudoConstraints parameter on FormalizeConstraints</param>
+        private void FormalizeConstraints(Dictionary<string, Tuple<SmallDigit, double
+#if (PoESkillTree_EnableMinimumValue)
+        , SmallDigit
+#endif
+        >> attrConstraints, IReadOnlyCollection<ConvertedPseudoAttributeConstraint> pseudoConstraints)
         {
-            _attrConstraints = new Tuple<float, double>[attrConstraints.Count + pseudoConstraints.Count];
+            //Slightly reduce number of calls needed by only calculating once (increase in speed more important than slight temporary increase of one byte)
+            int TotalConstraintCount = attrConstraints.Count + pseudoConstraints.Count;
+            _attrConstraints = new Tuple<SmallDigit, double
+#if (PoESkillTree_EnableMinimumValue)
+            , SmallDigit
+#endif
+            >[TotalConstraintCount];
             _attrNameLookup = new Dictionary<string, List<int>>(attrConstraints.Count);
-            _attrConversionMultipliers = new Dictionary<Tuple<string, int>, float>(attrConstraints.Count);
-            _fixedAttributes = new float[attrConstraints.Count + pseudoConstraints.Count];
+            _attrConversionMultipliers = new Dictionary<Tuple<string, int>, SmallDigit>(attrConstraints.Count);
+            _fixedAttributes = new SmallDigit[TotalConstraintCount];
+#if (PoESkillTree_EnableAlternativeCSV)
+            _ConstraintNames = new List<string>(TotalConstraintCount);
+#endif
             var i = 0;
             foreach (var kvPair in attrConstraints)
             {
                 _attrConstraints[i] = kvPair.Value;
-                _attrNameLookup[kvPair.Key] = new List<int> {i};
+                _attrNameLookup[kvPair.Key] = new List<int> { i };
                 _attrConversionMultipliers[Tuple.Create(kvPair.Key, i)] = 1;
+#if (PoESkillTree_EnableAlternativeCSV)
+                _ConstraintNames.Add(kvPair.Key);
+#endif
                 i++;
             }
             foreach (var pseudo in pseudoConstraints)
@@ -178,7 +248,7 @@ namespace POESKillTree.TreeGenerator.Solver
                     }
                     else
                     {
-                        _attrNameLookup[tuple.Item1] = new List<int> {i};
+                        _attrNameLookup[tuple.Item1] = new List<int> { i };
                     }
                     _attrConversionMultipliers[Tuple.Create(tuple.Item1, i)] = tuple.Item2;
                 }
@@ -188,8 +258,7 @@ namespace POESKillTree.TreeGenerator.Solver
 
         protected override bool MustIncludeNodeGroup(SkillNode node)
         {
-            // If the node has stats and is not a travel node,
-            // the group is included.
+            // If the node has stats and is not a travel node, the group is included.
             return _nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id];
         }
 
@@ -200,25 +269,23 @@ namespace POESKillTree.TreeGenerator.Solver
         }
 
         /// <summary>
-        /// Extracts attributes from the skill tree nodes and fills _nodeAttributes
-        /// and _areTravelNodes.
+        /// Extracts attributes from the skill tree nodes and fills _nodeAttributes and _areTravelNodes.
         /// </summary>
         private void ExtractNodeAttributes()
         {
             var skillNodes = SkillTree.Skillnodes;
-            _nodeAttributes = new List<Tuple<int, float>>[ushort.MaxValue];
+            _nodeAttributes = new List<Tuple<int, SmallDigit>>[ushort.MaxValue];
             _areTravelNodes = new Dictionary<ushort, bool>(skillNodes.Count);
             foreach (var node in skillNodes)
             {
                 var id = node.Key;
                 var skillNode = node.Value;
 
-                // Remove attributes that have no constraints.
-                // Replace attributes that have constraints with a tuple of their number and the value.
-                // For attributes with more than one value, the first one is selected,
-                // that is reasonable for the attributes the skill tree currently has.
-                // Attributes without value are not supported. If a constraint referencing an attribute
-                // without value slips through, it will break.
+                // Remove attributes that have no constraints. Replace attributes that have
+                // constraints with a tuple of their number and the value. For attributes with more
+                // than one value, the first one is selected, that is reasonable for the attributes
+                // the skill tree currently has. Attributes without value are not supported. If a
+                // constraint referencing an attribute without value slips through, it will break.
                 _nodeAttributes[id] =
                     (from attr in SkillTree.ExpandHybridAttributes(skillNode.Attributes)
                      where _attrNameLookup.ContainsKey(attr.Key)
@@ -241,8 +308,9 @@ namespace POESKillTree.TreeGenerator.Solver
         }
 
         /// <summary>
-        /// Evaluates <see cref="AdvancedSolverSettings.PseudoAttributeConstraints"/> and converts each
-        /// PseudoAttribute into a list of the attribute names that evaluated to true and their conversion multiplier.
+        /// Evaluates <see cref="AdvancedSolverSettings.PseudoAttributeConstraints"/> and converts
+        /// each PseudoAttribute into a list of the attribute names that evaluated to true and their
+        /// conversion multiplier.
         /// </summary>
         private List<ConvertedPseudoAttributeConstraint> EvalPseudoAttrConstraints()
         {
@@ -253,18 +321,18 @@ namespace POESKillTree.TreeGenerator.Solver
 
             var resolvedWildcardNames = new Dictionary<string, List<Tuple<string, string[]>>>();
             var convertedPseudos = new List<ConvertedPseudoAttributeConstraint>(Settings.PseudoAttributeConstraints.Count);
-            
+
             foreach (var pair in Settings.PseudoAttributeConstraints)
             {
-                var convAttrs = new List<Tuple<string, float>>(pair.Key.Attributes.Count);
+                var convAttrs = new List<Tuple<string, SmallDigit>>(pair.Key.Attributes.Count);
                 foreach (var attr in pair.Key.Attributes)
                 {
                     var name = attr.Name;
                     if (ContainsWildcardRegex.IsMatch(name))
                     {
-                        // Wildcards are resolverd by searching the skill tree attributes for each attribute
-                        // that matches the attribute name ('{number}' replaced by '(.*)' for matching) and
-                        // evaluating the attribute for each of those replacements.
+                        // Wildcards are resolved by searching the skill tree attributes for each
+                        // attribute that matches the attribute name ('{number}' replaced by '(.*)'
+                        // for matching) and evaluating the attribute for each of those replacements.
                         if (!resolvedWildcardNames.ContainsKey(name))
                         {
                             var searchRegex = new Regex("^" + ContainsWildcardRegex.Replace(name, "(.*)") + "$");
@@ -291,9 +359,10 @@ namespace POESKillTree.TreeGenerator.Solver
         }
 
         /// <summary>
-        /// Returns an Array of all captured substrings from the given GroupCollection except the first
-        /// (which is the whole matched string).
+        /// Returns an Array of all captured substrings from the given GroupCollection except the
+        /// first (which is the whole matched string).
         /// </summary>
+        /// <param name="groups">todo: describe groups parameter on ExtractGroupValuesFromGroupCollection</param>
         private static string[] ExtractGroupValuesFromGroupCollection(GroupCollection groups)
         {
             var result = new string[groups.Count - 1];
@@ -306,22 +375,21 @@ namespace POESKillTree.TreeGenerator.Solver
 
         protected override bool IsVariableTargetNode(GraphNode node)
         {
-            // Nodes that have relevant attributes and are not travel nodes (+10 int/str/dex) can be selected
-            // as target nodes.
+            // Nodes that have relevant attributes and are not travel nodes (+10 int/str/dex) can be
+            // selected as target nodes.
             return _nodeAttributes[node.Id].Count > 0 && !_areTravelNodes[node.Id];
         }
 
         protected override void OnFinalSearchSpaceCreated()
         {
-            // Merge attributes for nodes that were merged.
-            // Combine duplicate attributes per node.
+            // Merge attributes for nodes that were merged. Combine duplicate attributes per node.
             foreach (var node in AllNodes.Select(n => n.Id).Distinct())
             {
-                // This node is contained in another, it will be removed from
-                // _nodeAttributes when its parent is processed.
+                // This node is contained in another, it will be removed from _nodeAttributes when
+                // its parent is processed.
                 if (NodeExpansionDictionary[node] == null) continue;
 
-                var dict = new Dictionary<int, float>();
+                var dict = new Dictionary<int, SmallDigit>();
                 foreach (var containedNode in NodeExpansionDictionary[node])
                 {
                     foreach (var tuple in _nodeAttributes[containedNode])
@@ -345,8 +413,8 @@ namespace POESKillTree.TreeGenerator.Solver
         }
 
         /// <summary>
-        /// Sets the fixed attribute values from <see cref="AbstractSolver{T}.TargetNodes"/> and
-        /// from <see cref="AdvancedSolverSettings.InitialAttributes"/>.
+        /// Sets the fixed attribute values from <see cref="AbstractSolver{T}.TargetNodes"/> and from
+        /// <see cref="AdvancedSolverSettings.InitialAttributes"/>.
         /// </summary>
         private void CreateFixedAttributes()
         {
@@ -370,7 +438,9 @@ namespace POESKillTree.TreeGenerator.Solver
         /// <summary>
         /// Adds all attributes of the given node ids to the given list.
         /// </summary>
-        private void AddAttributes(IEnumerable<ushort> ids, IList<float> to)
+        /// <param name="ids">todo: describe ids parameter on AddAttributes</param>
+        /// <param name="to">todo: describe to parameter on AddAttributes</param>
+        private void AddAttributes(IEnumerable<ushort> ids, IList<SmallDigit> to)
         {
             foreach (var id in ids)
             {
@@ -381,29 +451,151 @@ namespace POESKillTree.TreeGenerator.Solver
             }
         }
 
-        protected override double FitnessFunction(HashSet<ushort> skilledNodes)
+        protected override CSVScoreType FitnessFunction(HashSet<ushort> skilledNodes)
         {
             // Add stats of the MST-nodes and start stats.
-            var totalStats = (float[])_fixedAttributes.Clone();
+            var totalStats = (SmallDigit[])_fixedAttributes.Clone();
             // Don't count the character start node.
             var usedNodeCount = skilledNodes.Select(n => NodeExpansionDictionary[n].Count).Sum() - UncountedNodes;
             var totalPoints = Settings.TotalPoints;
             skilledNodes.ExceptWith(_fixedNodes);
             AddAttributes(skilledNodes, totalStats);
-
-            // Calculate constraint value for each stat and multiply them.
-            var csvs = 1.0;
-            for (var i = 0; i < _attrConstraints.Length; i++)
+            //Give zero point trees worst score
+            if (usedNodeCount == 0)
             {
-                var stat = _attrConstraints[i];
-                csvs *= CalcCsv(totalStats[i], stat.Item2, stat.Item1);
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                return SmallDec.Zero;
+#else
+                return 0.0;
+#endif
             }
 
+
+            ///<summary>
+            /// Calculate constraint value for each stat and multiply them. (High score = better skilltree)
+            ///</summary>
+            CSVScoreType csvs
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            = SmallDec.Zero;
+#elif (PoESkillTree_UseSmallDec_ForAttributes && POESkillTree_ScoreMethodV1)
+            = 1.0;
+#else
+            = 0.0;
+#endif
+
+#if (PoESkillTree_EnableAlternativeCSV)
+            var Multiplier
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            = SmallDec.Zero;
+#else
+            = 0.0;
+#endif
+#if (!POESkillTree_ScoreMethodV1)
+            //Variables for alternative Scoring method
+            ushort NumberOfAttributes = 0;
+            ushort NumberOfPenalties = 0;
+            //#if (DEBUG)
+            //            Console.WriteLine("CVSV Info for Generator:");
+            //#endif
+#endif
+#endif
+            for (var i = 0; i < _attrConstraints.Length; i++)
+            {
+                var AttributeTargets = _attrConstraints[i];
+#if (!PoESkillTree_EnableAlternativeCSV)
+                csvs *= CalcCsv(totalStats[i], AttributeTargets.Item2, AttributeTargets.Item1);
+#else
+                var CurrentStatValue = totalStats[i];
+#if (!PoESkillTree_EnableAlternativeCSV || POESkillTree_ScoreMethodV1)
+                //If current stat is better than target value give slight bonus CSV Score value
+                if (CurrentStatValue > AttributeTargets.Item1)
+                {
+                    Multiplier = CurrentStatValue / AttributeTargets.Item1;
+                    Multiplier -= 1;
+                    Multiplier /= 20;
+                    Multiplier += 1;
+                    CurrentStatValue =
+#if (!PoESkillTree_UseSmallDec_ForAttributes)
+                    (float)
+#endif
+                    Multiplier * AttributeTargets.Item1;
+                    Multiplier =
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                    SmallDec.Exp(AttributeTargets.Item2 * CsvWeightMultiplier * (CurrentStatValue / AttributeTargets.Item1)) / SmallDec.Exp(AttributeTargets.Item2 * CsvWeightMultiplier);
+#else
+                    Math.Exp(AttributeTargets.Item2 * CsvWeightMultiplier * (CurrentStatValue / AttributeTargets.Item1)) / Math.Exp(AttributeTargets.Item2 * CsvWeightMultiplier);
+#endif
+                    csvs *= Multiplier;
+                }
+#if (PoESkillTree_EnableMinimumValue)
+                else if (AttributeTargets.Item3 > 0)
+                {
+                    //if less than Minimum value reached give score value 4th of the effect to cvsv
+                    Multiplier = CalcCsv(CurrentStatValue, AttributeTargets.Item2, AttributeTargets.Item1);
+
+                    csvs *= Multiplier;
+                }
+#endif
+                else
+                {
+                    Multiplier = CalcCsv(CurrentStatValue, AttributeTargets.Item2, AttributeTargets.Item1);
+                    csvs *= Multiplier;
+                }
+#else
+                //Alternative Scoring Method
+                ++NumberOfAttributes;
+                Multiplier = CurrentStatValue / AttributeTargets.Item1;
+                if (AttributeTargets.Item2 < 1.0)
+                {
+                    if(Multiplier<1.0)
+                    {
+                        Multiplier *= AttributeTargets.Item2;
+                        Multiplier += 1.0 - AttributeTargets.Item2;
+                    }
+                }
+                if (CurrentStatValue > AttributeTargets.Item1)
+                {
+                    Multiplier -= 1;
+                    Multiplier /= 20;
+                    Multiplier += 1;
+                    csvs += Multiplier;
+                }
+#if (PoESkillTree_EnableMinimumValue)
+                else if (AttributeTargets.Item3 > 0)
+                {
+                    if (CurrentStatValue < AttributeTargets.Item3)
+                    {
+                        ++NumberOfPenalties;
+                        csvs += Multiplier/2;
+                    }
+                    else
+                    {
+                        csvs += Multiplier / 2;
+                    }
+                }
+#endif
+                else
+                {
+                    csvs += Multiplier;
+                }
+                //#if (DEBUG)
+                //                Console.WriteLine("AttributeName:" + _ConstraintNames[i]);
+                //                Console.WriteLine("Current Value:" + CurrentStatValue.ToString());
+                //                Console.WriteLine("Target Value:" + AttributeTargets.Item1.ToString());
+                //#if (PoESkillTree_EnableMinimumValue)
+                //                Console.WriteLine("Minimum Value to Target: " + AttributeTargets.Item3.ToString());
+                //#endif
+                //#endif
+#endif
+#endif
+            }
+
+#if (!PoESkillTree_EnableAlternativeCSV || POESkillTree_ScoreMethodV1)
             // Total points spent is another csv.
             if (usedNodeCount > totalPoints)
             {
-                // If UsedNodeCount is higher than Settings.TotalPoints, it is 
-                // calculated as a csv with a weight of 5. (and lower = better)
+                // If UsedNodeCount is higher than Settings.TotalPoints, it is calculated as a csv
+                // with a weight of 5. (and lower = better)
                 csvs *= CalcCsv(2 * totalPoints - usedNodeCount, UsedNodeCountWeight, totalPoints);
             }
             else if (usedNodeCount < totalPoints)
@@ -412,15 +604,73 @@ namespace POESKillTree.TreeGenerator.Solver
                 csvs *= 1 + UsedNodeCountFactor * Math.Log(totalPoints + 1 - usedNodeCount);
             }
 
+            //#if (PoESkillTree_EnableAlternativeCSV && DEBUG)
+            //            Console.WriteLine("Generated fitness CSVScore:" + csvs.ToString());
+            //#endif
+#else
+            //Alternative Scoring Method
+            if (NumberOfAttributes==0)
+            {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+                return SmallDec.Zero;
+#else
+                return 0.0;
+#endif
+            }
+            csvs /= NumberOfAttributes;
+            if (usedNodeCount > totalPoints)
+            {
+                Multiplier = CalcCsv(2 * totalPoints - usedNodeCount, UsedNodeCountWeight, totalPoints);
+#if (DEBUG)
+                Console.WriteLine("CSV Score Multipier of " + Multiplier + " applied for using more nodes than total points target (used " + usedNodeCount + "/" + totalPoints + " nodes).");
+#endif
+                csvs *= Multiplier;
+            }
+            else
+            {
+                Multiplier = 1 + UsedNodeCountFactor * Math.Log(totalPoints + 1 - usedNodeCount);
+#if (DEBUG)
+                Console.WriteLine("CSV Score Multipier of " + Multiplier + " applied for using less nodes than total points target (used " + usedNodeCount + "/" + totalPoints + " nodes).");
+#endif
+                csvs *= Multiplier;
+            }
+            if(NumberOfPenalties>0)
+            {
+                Multiplier = NumberOfPenalties;
+                Multiplier /= NumberOfAttributes;
+                Multiplier = 1 - Multiplier;
+#if (DEBUG)
+                Console.WriteLine("CSV Score Multipier of " + Multiplier + " applied for failing to reach minimum values for "+ NumberOfPenalties + " target values." );
+#endif
+            }
+#endif
+
+
             // Make sure the fitness is not < 0 (can't happen with the current implementation anyway).
             return Math.Max(csvs, 0);
         }
 
-        private static double CalcCsv(float x, double weight, float target)
+#if (PoESkillTree_EnableAlternativeCSV && PoESkillTree_UseSmallDec_ForAttributes)
+        private static SmallDec CalcCsv(SmallDec CurrentValue, SmallDec weight, SmallDec target)
+        {
+            CurrentValue = SmallDec.Min(CurrentValue, target);
+            return SmallDec.Exp(weight * CsvWeightMultiplier * (CurrentValue / target)) / SmallDec.Exp(weight * CsvWeightMultiplier);
+        }
+
+#else
+
+        private static double CalcCsv(SmallDigit CurrentValue, double weight, SmallDigit target)
         {
             // Don't go higher than the target value.
-            x = Math.Min(x, target);
-            return Math.Exp(weight * CsvWeightMultiplier * x/target) / Math.Exp(weight * CsvWeightMultiplier);
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+            CurrentValue = SmallDec.Min(CurrentValue, target);
+            return Math.Exp(weight * CsvWeightMultiplier * (double)(CurrentValue / target)) / Math.Exp(weight * CsvWeightMultiplier);
+#else
+            CurrentValue = Math.Min(CurrentValue, target);
+            return Math.Exp(weight * CsvWeightMultiplier * (CurrentValue / target)) / Math.Exp(weight * CsvWeightMultiplier);
+#endif
         }
+
+#endif
     }
 }

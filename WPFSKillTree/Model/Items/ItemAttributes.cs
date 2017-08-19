@@ -15,6 +15,15 @@ using POESKillTree.ViewModels;
 
 namespace POESKillTree.Model.Items
 {
+#if (PoESkillTree_UseSmallDec_ForAttributes)
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+#endif
+    using SmallDigit =
+#if (PoESkillTree_StoreItemAttributesInSmallDec)
+    SmallDec;
+#else
+    System.Single;
+#endif
     public class ItemAttributes : Notifier
     {
         #region slotted items
@@ -79,6 +88,132 @@ namespace POESKillTree.Model.Items
             set { SetItemInSlot(value, ItemSlot.Belt); }
         }
 
+        public Item Jewel
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel); }
+            set { SetItemInSlot(value, ItemSlot.Jewel); }
+        }
+
+        public Item Jewel02
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel02); }
+            set { SetItemInSlot(value, ItemSlot.Jewel02); }
+        }
+        
+        public Item Jewel03
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel03); }
+            set { SetItemInSlot(value, ItemSlot.Jewel03); }
+        }
+
+        public Item Jewel04
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel04); }
+            set { SetItemInSlot(value, ItemSlot.Jewel04); }
+        }
+
+        public Item Jewel05
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel05); }
+            set { SetItemInSlot(value, ItemSlot.Jewel05); }
+        }
+        
+        public Item Jewel06
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel06); }
+            set { SetItemInSlot(value, ItemSlot.Jewel06); }
+        }
+        
+        public Item Jewel07
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel07); }
+            set { SetItemInSlot(value, ItemSlot.Jewel07); }
+        }
+
+        public Item Jewel08
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel08); }
+            set { SetItemInSlot(value, ItemSlot.Jewel08); }
+        }
+        
+        public Item Jewel09
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel09); }
+            set { SetItemInSlot(value, ItemSlot.Jewel09); }
+        }
+        
+        public Item Jewel10
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel10); }
+            set { SetItemInSlot(value, ItemSlot.Jewel10); }
+        }
+        
+        public Item Jewel11
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel11); }
+            set { SetItemInSlot(value, ItemSlot.Jewel11); }
+        }
+        
+        public Item Jewel12
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel12); }
+            set { SetItemInSlot(value, ItemSlot.Jewel12); }
+        }
+        
+        public Item Jewel13
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel13); }
+            set { SetItemInSlot(value, ItemSlot.Jewel13); }
+        }
+
+        public Item Jewel14
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel14); }
+            set { SetItemInSlot(value, ItemSlot.Jewel14); }
+        }
+
+        public Item Jewel15
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel15); }
+            set { SetItemInSlot(value, ItemSlot.Jewel15); }
+        }
+        
+        public Item Jewel16
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel16); }
+            set { SetItemInSlot(value, ItemSlot.Jewel16); }
+        }
+        
+        public Item Jewel17
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel17); }
+            set { SetItemInSlot(value, ItemSlot.Jewel17); }
+        }
+
+        public Item Jewel18
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel18); }
+            set { SetItemInSlot(value, ItemSlot.Jewel18); }
+        }
+        
+        public Item Jewel19
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel19); }
+            set { SetItemInSlot(value, ItemSlot.Jewel19); }
+        }
+        
+        public Item Jewel20
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel20); }
+            set { SetItemInSlot(value, ItemSlot.Jewel20); }
+        }
+        
+        public Item Jewel21
+        {
+            get { return GetItemInSlot(ItemSlot.Jewel21); }
+            set { SetItemInSlot(value, ItemSlot.Jewel21); }
+        }
+        
         public Item GetItemInSlot(ItemSlot slot)
         {
             return Equip.FirstOrDefault(i => i.Slot == slot);
@@ -219,6 +354,69 @@ namespace POESKillTree.Model.Items
                     case "Belt":
                         AddItem(jobj, ItemSlot.Belt);
                         break;
+                    case "Jewel":
+                        AddItem(jobj, ItemSlot.Jewel);
+                        break;
+                    case "Jewel02":
+                        AddItem(jobj, ItemSlot.Jewel02);
+                        break;
+                    case "Jewel03":
+                        AddItem(jobj, ItemSlot.Jewel03);
+                        break;
+                    case "Jewel04":
+                        AddItem(jobj, ItemSlot.Jewel04);
+                        break;
+                    case "Jewel05":
+                        AddItem(jobj, ItemSlot.Jewel05);
+                        break;
+                    case "Jewel06":
+                        AddItem(jobj, ItemSlot.Jewel06);
+                        break;
+                    case "Jewel07":
+                        AddItem(jobj, ItemSlot.Jewel07);
+                        break;
+                    case "Jewel08":
+                        AddItem(jobj, ItemSlot.Jewel08);
+                        break;
+                    case "Jewel09":
+                        AddItem(jobj, ItemSlot.Jewel09);
+                        break;
+                    case "Jewel10":
+                        AddItem(jobj, ItemSlot.Jewel10);
+                        break;
+                    case "Jewel11":
+                        AddItem(jobj, ItemSlot.Jewel11);
+                        break;
+                    case "Jewel12":
+                        AddItem(jobj, ItemSlot.Jewel12);
+                        break;
+                    case "Jewel13":
+                        AddItem(jobj, ItemSlot.Jewel13);
+                        break;
+                    case "Jewel14":
+                        AddItem(jobj, ItemSlot.Jewel14);
+                        break;
+                    case "Jewel15":
+                        AddItem(jobj, ItemSlot.Jewel15);
+                        break;
+                    case "Jewel16":
+                        AddItem(jobj, ItemSlot.Jewel16);
+                        break;
+                    case "Jewel17":
+                        AddItem(jobj, ItemSlot.Jewel17);
+                        break;
+                    case "Jewel18":
+                        AddItem(jobj, ItemSlot.Jewel18);
+                        break;
+                    case "Jewel19":
+                        AddItem(jobj, ItemSlot.Jewel19);
+                        break;
+                    case "Jewel20":
+                        AddItem(jobj, ItemSlot.Jewel20);
+                        break;
+                    case "Jewel21":
+                        AddItem(jobj, ItemSlot.Jewel21);
+                        break;
                 }
             }
 
@@ -262,6 +460,69 @@ namespace POESKillTree.Model.Items
                         break;
                     case ItemSlot.Belt:
                         jItem["inventoryId"] = "Belt";
+                        break;
+                    case ItemSlot.Jewel:
+                        jItem["inventoryId"] = "Jewel";
+                        break;
+                    case ItemSlot.Jewel02:
+                        jItem["inventoryId"] = "Jewel02";
+                        break;
+                    case ItemSlot.Jewel03:
+                        jItem["inventoryId"] = "Jewel03";
+                        break;
+                    case ItemSlot.Jewel04:
+                        jItem["inventoryId"] = "Jewel04";
+                        break;
+                    case ItemSlot.Jewel05:
+                        jItem["inventoryId"] = "Jewel05";
+                        break;
+                    case ItemSlot.Jewel06:
+                        jItem["inventoryId"] = "Jewel06";
+                        break;
+                    case ItemSlot.Jewel07:
+                        jItem["inventoryId"] = "Jewel07";
+                        break;
+                    case ItemSlot.Jewel08:
+                        jItem["inventoryId"] = "Jewel08";
+                        break;
+                    case ItemSlot.Jewel09:
+                        jItem["inventoryId"] = "Jewel09";
+                        break;
+                    case ItemSlot.Jewel10:
+                        jItem["inventoryId"] = "Jewel10";
+                        break;
+                    case ItemSlot.Jewel11:
+                        jItem["inventoryId"] = "Jewel11";
+                        break;
+                    case ItemSlot.Jewel12:
+                        jItem["inventoryId"] = "Jewel12";
+                        break;
+                    case ItemSlot.Jewel13:
+                        jItem["inventoryId"] = "Jewel13";
+                        break;
+                    case ItemSlot.Jewel14:
+                        jItem["inventoryId"] = "Jewel14";
+                        break;
+                    case ItemSlot.Jewel15:
+                        jItem["inventoryId"] = "Jewel15";
+                        break;
+                    case ItemSlot.Jewel16:
+                        jItem["inventoryId"] = "Jewel16";
+                        break;
+                    case ItemSlot.Jewel17:
+                        jItem["inventoryId"] = "Jewel17";
+                        break;
+                    case ItemSlot.Jewel18:
+                        jItem["inventoryId"] = "Jewel18";
+                        break;
+                    case ItemSlot.Jewel19:
+                        jItem["inventoryId"] = "Jewel19";
+                        break;
+                    case ItemSlot.Jewel20:
+                        jItem["inventoryId"] = "Jewel20";
+                        break;
+                    case ItemSlot.Jewel21:
+                        jItem["inventoryId"] = "Jewel21";
                         break;
                 }
                 items.Add(jItem);
@@ -356,7 +617,7 @@ namespace POESKillTree.Model.Items
         {
             public static readonly Regex Backreplace = new Regex("#");
 
-            private readonly List<float> _value;
+            private readonly List<SmallDigit> _value;
 
             private readonly string _group;
             public string Group
@@ -375,14 +636,14 @@ namespace POESKillTree.Model.Items
                 get { return _value.Aggregate(_attribute, (current, f) => Backreplace.Replace(current, f + "", 1)); }
             }
 
-            public Attribute(string s, IEnumerable<float> val, string grp)
+            public Attribute(string s, IEnumerable<SmallDigit> val, string grp)
             {
                 _attribute = s;
-                _value = new List<float>(val);
+                _value = new List<SmallDigit>(val);
                 _group = grp;
             }
 
-            public void Add(IReadOnlyList<float> val)
+            public void Add(IReadOnlyList<SmallDigit> val)
             {
                 if (_value.Count != val.Count) throw new NotSupportedException();
                 for (var i = 0; i < val.Count; i++)

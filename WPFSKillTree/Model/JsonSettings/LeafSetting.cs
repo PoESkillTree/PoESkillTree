@@ -41,14 +41,39 @@ namespace POESKillTree.Model.JsonSettings
             _onChanging = onChanging;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="jObject"></param>
         public void LoadFrom(JObject jObject)
         {
+        #if (DEBUG)
+        try
+        {
+        #endif
             JToken token;
             Value = jObject.TryGetValue(_key, out token) ? token.ToObject<T>() : _defaultValue;
+        #if (DEBUG)
+        }
+        catch(System.Exception ex)
+        {
+            System.Console.WriteLine("Loaded LeafSetting JObject Exception of ");
+            System.Console.WriteLine(ex.ToString());
+        }
+        #endif
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="jObject"></param>
+        /// <returns></returns>
         public bool SaveTo(JObject jObject)
         {
+        #if (DEBUG)
+        try
+        {
+        #endif
             var newToken = new JValue(Value);
             var changed = !Equals(Value, _defaultValue);
             JToken oldToken;
@@ -58,6 +83,15 @@ namespace POESKillTree.Model.JsonSettings
             }
             jObject[_key] = newToken;
             return changed;
+        #if (DEBUG)
+        }
+        catch(System.Exception ex)
+        {
+            System.Console.WriteLine("Saved LeafSetting JObject Exception of");
+            System.Console.WriteLine(ex.ToString());
+        }
+#endif
+            return false;
         }
 
         public void Reset()

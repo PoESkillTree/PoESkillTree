@@ -76,9 +76,23 @@
         </Task>
     </UsingTask>
 
-    <PropertyGroup>
+    <PropertyGroup Condition=" '$(Platform)' ==  'AnyCPU' "  >
+        <InstallDir>PoESkillTree</InstallDir>
+        <Platform>x64</Platform>
+        <WorkDir>$(MSBuildProjectDirectory)\dist</WorkDir>
+        <ZipTool>Tools\7z.exe a -tzip</ZipTool>
+        <ISCCTool>Tools\isetup\ISCC.exe</ISCCTool>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Platform)' ==  'x86' "  >
         <InstallDir>PoESkillTree</InstallDir>
         <Platform>x86</Platform>
+        <WorkDir>$(MSBuildProjectDirectory)\dist</WorkDir>
+        <ZipTool>Tools\7z.exe a -tzip</ZipTool>
+        <ISCCTool>Tools\isetup\ISCC.exe</ISCCTool>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Platform)' ==  'x64' "  >
+        <InstallDir>PoESkillTree</InstallDir>
+        <Platform>x64</Platform>
         <WorkDir>$(MSBuildProjectDirectory)\dist</WorkDir>
         <ZipTool>Tools\7z.exe a -tzip</ZipTool>
         <ISCCTool>Tools\isetup\ISCC.exe</ISCCTool>
@@ -173,10 +187,26 @@
 
     <Target Name="TransformXAML">
         <!-- Make output directory for fake C# file -->
-        <MakeDir Directories="@(XAMLFile->'$(LocaleWorkDir)\%(RecursiveDir)')" />
+        <MakeDir Directories="@(XAMLFile->'$(LocaleWorkDir)\%(RecursiveDir)')" 
+        Condition=
+        "(%(XAMLFile.Filename) != 'AdvancedGeneratorTab' And %(XAMLFile.Filename) != 'AdvancedGeneratorTabAlternative' And %(XAMLFile.Filename) != 'AdvancedGeneratorTabExtended') Or
+        (%(XAMLFile.Filename) == 'AdvancedGeneratorTabAlternative' And $(Configuration.Contains('PlusGUI'))) Or
+        (%(XAMLFile.Filename) == 'AdvancedGeneratorTabExtended' And !$(Configuration.Contains('PlusGUI')) And $(Configuration.Contains('Extended'))) Or
+        (%(XAMLFile.Filename) == 'AdvancedGeneratorTab' And !$(Configuration.Contains('PlusGUI')) And !$(Configuration.Contains('Extended')) )
+        "/>
 
-        <!-- Transform XAML file to fake C# file -->
-        <Exec Command="Tools\XAMLText %(XAMLFile.Identity) $(LocaleWorkDir)\%(XAMLFile.RecursiveDir)%(XAMLFile.Filename)%(XAMLFile.Extension)" />
+        <!-- Transform XAML file to fake C# file (Only one of 3 Advanced Generator Filenames should compile
+		+PlusGUI=MinimumValue Enabled with SmallDec GUI fields
+		+Extended=MinimumValue Enabled but only using things like float instead of SmallDec in GUI
+		-AdvancedGeneratorTab = Normal GUI fields without Minimum Value fields-->
+        <Exec Command="Tools\XAMLText %(XAMLFile.Identity) $(LocaleWorkDir)\%(XAMLFile.RecursiveDir)%(XAMLFile.Filename)%(XAMLFile.Extension)"
+        Condition=
+        "(%(XAMLFile.Filename) != 'AdvancedGeneratorTab' And %(XAMLFile.Filename) != 'AdvancedGeneratorTabAlternative' And %(XAMLFile.Filename) != 'AdvancedGeneratorTabExtended') Or
+        (%(XAMLFile.Filename) == 'AdvancedGeneratorTabAlternative' And $(Configuration.Contains('PlusGUI'))) Or
+        (%(XAMLFile.Filename) == 'AdvancedGeneratorTabExtended' And !$(Configuration.Contains('PlusGUI')) And $(Configuration.Contains('Extended'))) Or
+        (%(XAMLFile.Filename) == 'AdvancedGeneratorTab' And !$(Configuration.Contains('PlusGUI')) And !$(Configuration.Contains('Extended')) )
+        "/>
+        
     </Target>
 
     <Target Name="BuildLocaleTemplate" DependsOnTargets="TransformXAML">

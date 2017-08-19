@@ -5,6 +5,15 @@ using POESKillTree.TreeGenerator.Settings;
 
 namespace POESKillTree.TreeGenerator.Solver
 {
+#if (PoESkillTree_EnableAlternativeCSV&&PoESkillTree_UseSmallDec_ForAttributes)
+    using CSharpGlobalCode.GlobalCode_ExperimentalCode;
+#endif
+    using Digit =
+#if (PoESkillTree_EnableAlternativeCSV&&PoESkillTree_UseSmallDec_ForAttributes)
+    SmallDec;
+#else
+    System.Double;
+#endif
     /// <summary>
     /// Implementation of AbstractSolver that solves the Steiner tree problem.
     /// </summary>
@@ -157,7 +166,7 @@ namespace POESKillTree.TreeGenerator.Solver
             FinalHillClimbEnabled = false;
         }
 
-        protected override double FitnessFunction(HashSet<ushort> skilledNodes)
+        protected override Digit FitnessFunction(HashSet<ushort> skilledNodes)
         {
             // Fitness is higher for less points skilled.
             return 1500 - skilledNodes.Count;

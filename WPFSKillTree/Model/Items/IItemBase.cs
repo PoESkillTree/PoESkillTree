@@ -33,7 +33,7 @@ namespace POESKillTree.Model.Items
         ItemImage Image { get; }
 
         /// <param name="quality">If > 0, a quality property will be added.</param>
-        /// <returns>The property mods of this item base without influence from implict or explicit mods.
+        /// <returns>The property mods of this item base without influence from implicit or explicit mods.
         /// E.g. physical damage, attack speed, armour/evasion/ES, ...</returns>
         List<ItemMod> GetRawProperties(int quality = 0);
     }
