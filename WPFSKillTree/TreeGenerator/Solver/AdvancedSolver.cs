@@ -544,24 +544,39 @@ namespace POESKillTree.TreeGenerator.Solver
 #else
                 //Alternative Scoring Method
                 ++NumberOfAttributes;
+                Multiplier = CurrentStatValue / AttributeTargets.Item1;
+                if (AttributeTargets.Item2 < 1.0)
+                {
+                    if(Multiplier<1.0)
+                    {
+                        Multiplier *= AttributeTargets.Item2;
+                        Multiplier += 1.0 - AttributeTargets.Item2;
+                    }
+                }
                 if (CurrentStatValue > AttributeTargets.Item1)
                 {
-                    Multiplier = CurrentStatValue / AttributeTargets.Item1;
                     Multiplier -= 1;
                     Multiplier /= 20;
                     Multiplier += 1;
-                    csvs += CurrentStatValue * Multiplier;
+                    csvs += Multiplier;
                 }
 #if (PoESkillTree_EnableMinimumValue)
                 else if (AttributeTargets.Item3 > 0)
                 {
-                    ++NumberOfPenalties;
-                    csvs += CurrentStatValue/2;
+                    if (CurrentStatValue < AttributeTargets.Item3)
+                    {
+                        ++NumberOfPenalties;
+                        csvs += Multiplier/2;
+                    }
+                    else
+                    {
+                        csvs += Multiplier / 2;
+                    }
                 }
 #endif
                 else
                 {
-                    csvs += CurrentStatValue;
+                    csvs += Multiplier;
                 }
                 //#if (DEBUG)
                 //                Console.WriteLine("AttributeName:" + _ConstraintNames[i]);
