@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using PoESkillTree.Common;
 using PoESkillTree.Computation.Data;
 using PoESkillTree.Computation.Parsing;
 
@@ -13,7 +14,9 @@ namespace PoESkillTree.Computation.Console
                     new ValidatingParser<IReadOnlyList<string>>(
                         new StatNormalizingParser<IReadOnlyList<string>>(
                             new StatReplacingParser<string>(
-                                new DumpParser(),
+                                new CompositeParser<string, string>(
+                                    new SessionFactory(),
+                                    l => string.Join("\n  ", l)),
                                 new StatReplacers().Replacers
                             )
                         )
@@ -40,20 +43,11 @@ namespace PoESkillTree.Computation.Console
          -> StatNormalizingParser<IReadOnlyList<IMatch>>
          -> StatReplacingParser<IMatch>
          -> CompositeParser<IMatch>
-            - Start new parsing session: strategy.CreateSession()
-            - remaining = s
-            - builders = []
-            - Until session.Completed:
-              - IParser<IMatchBuilder> next = session.CurrentParser
-              - If next.TryParse(remaining, out builder, out remaining):
-                - builders.Add(builder)
-                - session.ParseSuccessful()
-              - Else:
-                - session.ParseFailed()
-            - Return session.Successful and output (Aggregate(builders), remaining)
+            - ?ParsingSession<IMatchBuilder>
+            - Func<IReadOnlyList<IMatchBuilder>, IMatch>
+            - ?Parser<IMatchBuilder>
          */
         /* Algorithm missing:
-         * - parsing strategy
          * - parsing session
          * - IMatchBuilder aggregator
          * - leaf parsers 
@@ -69,6 +63,38 @@ namespace PoESkillTree.Computation.Console
                 result = stat;
                 remaining = string.Empty;
                 return true;
+            }
+        }
+
+        private class SessionFactory : IFactory<IParsingSession<string>>
+        {
+            public IParsingSession<string> Create()
+            {
+                return new Session();
+            }
+        }
+
+        private class Session : IParsingSession<string>
+        {
+            public Session()
+            {
+                CurrentParser = new DumpParser();
+            }
+
+            public bool Completed { get; private set; }
+            public bool Successful { get; private set; }
+            public IParser<string> CurrentParser { get; }
+
+            public void ParseSuccessful()
+            {
+                Completed = true;
+                Successful = true;
+            }
+
+            public void ParseFailed()
+            {
+                Completed = true;
+                Successful = false;
             }
         }
     }

@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CachingParser.cs" />
+    <Compile Include="CompositeParser.cs" />
+    <Compile Include="IParsingSession.cs" />
     <Compile Include="StatNormalizingParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatReplacingParser.cs" />
