@@ -1,4 +1,4 @@
-﻿namespace PoESkillTree.Common
+﻿namespace PoESkillTree.Common.Utils
 {
     public interface IFactory<out T>
     {

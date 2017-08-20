@@ -1,41 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using PoESkillTree.Common;
+using PoESkillTree.Computation.Parsing.Steps;
 
 namespace PoESkillTree.Computation.Parsing
 {
     public class CompositeParser<TInnerResult, TResult> : IParser<TResult>
     {
-        private readonly IFactory<IParsingSession<TInnerResult>> _sessionFactory;
+        private readonly IStep<IParser<TInnerResult>, bool> _initialStep;
         private readonly Func<IReadOnlyList<TInnerResult>, TResult> _resultAggregator;
 
-        public CompositeParser(IFactory<IParsingSession<TInnerResult>> sessionFactory,
+        public CompositeParser(IStep<IParser<TInnerResult>, bool> initialStep,
             Func<IReadOnlyList<TInnerResult>, TResult> resultAggregator)
         {
-            _sessionFactory = sessionFactory;
+            _initialStep = initialStep;
             _resultAggregator = resultAggregator;
         }
 
         public bool TryParse(string stat, out string remaining, out TResult result)
         {
-            var session = _sessionFactory.Create();
+            var step = _initialStep;
             remaining = stat;
             var results = new List<TInnerResult>();
-            while (!session.Completed)
+            while (!step.Completed)
             {
-                var parser = session.CurrentParser;
-                if (parser.TryParse(remaining, out remaining, out var singleResult))
+                var parser = step.Current;
+                var parserReturn = parser.TryParse(remaining, out remaining, out var singleResult);
+                if (parserReturn)
                 {
                     results.Add(singleResult);
-                    session.ParseSuccessful();
                 }
-                else
-                {
-                    session.ParseFailed();
-                }
+                step = step.Next(parserReturn);
             }
             result = _resultAggregator(results);
-            return session.Successful;
+            return step.Successful;
         }
     }
 }

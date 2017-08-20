@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using PoESkillTree.Common;
 using PoESkillTree.Computation.Data;
 using PoESkillTree.Computation.Parsing;
+using PoESkillTree.Computation.Parsing.Steps;
 
 namespace PoESkillTree.Computation.Console
 {
@@ -9,13 +9,15 @@ namespace PoESkillTree.Computation.Console
     {
         public static void Main(string[] args)
         {
+            var initialStep = new MappingStep<ParsingStep, IParser<string>, bool>(
+                new SpecialStep(), s => new DumpParser(s));
             IParser<IReadOnlyList<string>> parser =
                 new CachingParser<IReadOnlyList<string>>(
                     new ValidatingParser<IReadOnlyList<string>>(
                         new StatNormalizingParser<IReadOnlyList<string>>(
                             new StatReplacingParser<string>(
                                 new CompositeParser<string, string>(
-                                    new SessionFactory(),
+                                    initialStep, 
                                     l => string.Join("\n  ", l)),
                                 new StatReplacers().Replacers
                             )
@@ -43,58 +45,36 @@ namespace PoESkillTree.Computation.Console
          -> StatNormalizingParser<IReadOnlyList<IMatch>>
          -> StatReplacingParser<IMatch>
          -> CompositeParser<IMatch>
-            - ?ParsingSession<IMatchBuilder>
-            - Func<IReadOnlyList<IMatchBuilder>, IMatch>
-            - ?Parser<IMatchBuilder>
+            - IStep<IParser<IMatchBuilder>>:
+              - new MappingStep<ParsingStep, IParser<IMatchBuilder>>(new SpecialStep(), ?)
+              - Func<ParsingStep, IStatMatcher>: ConventionResolver<TEnum, TOut>
+                - maps from ParsingStep to the IStatMatcher implementations
+              - Func<IStatMatcher, IParser<IMatchBuilder>> = x => new ?Parser(x)
+                - the ?Parser is where most of the logic happens
+              - Func<IParser<IMatchBuilder>, IParser<IMatchBuilder>> that consists of several 
+                chained constructor calls
+                - CachingParser, StatNormalizingParser/some postprocessing (merge multiple spaces)
          */
         /* Algorithm missing:
-         * - parsing session
-         * - IMatchBuilder aggregator
-         * - leaf parsers 
-         *   (they also have a postprocessor that merges multiple spaces in remaining into one
-         *    /run StatNormalizingParser before them)
+         * - IMatchBuilder aggregator (Func<IReadOnlyList<IMatchBuilder>, IMatch>)
+         * - leaf parsers (some class implementing IParser<IMatchBuilder> and using an IStatMatcher)
          */
 
         // Obviously only temporary until the actually useful classes exist
         private class DumpParser : IParser<string>
         {
+            private readonly ParsingStep _parsingStep;
+
+            public DumpParser(ParsingStep parsingStep)
+            {
+                _parsingStep = parsingStep;
+            }
+
             public bool TryParse(string stat, out string remaining, out string result)
             {
-                result = stat;
+                result = _parsingStep + ": " + stat;
                 remaining = string.Empty;
                 return true;
-            }
-        }
-
-        private class SessionFactory : IFactory<IParsingSession<string>>
-        {
-            public IParsingSession<string> Create()
-            {
-                return new Session();
-            }
-        }
-
-        private class Session : IParsingSession<string>
-        {
-            public Session()
-            {
-                CurrentParser = new DumpParser();
-            }
-
-            public bool Completed { get; private set; }
-            public bool Successful { get; private set; }
-            public IParser<string> CurrentParser { get; }
-
-            public void ParseSuccessful()
-            {
-                Completed = true;
-                Successful = true;
-            }
-
-            public void ParseFailed()
-            {
-                Completed = true;
-                Successful = false;
             }
         }
     }

@@ -44,11 +44,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CachingParser.cs" />
+    <Compile Include="Steps\CompletedStep.cs" />
     <Compile Include="CompositeParser.cs" />
-    <Compile Include="IParsingSession.cs" />
+    <Compile Include="Steps\ConditionStep.cs" />
+    <Compile Include="Steps\DamageStatStep.cs" />
+    <Compile Include="Steps\FormAndStatStep.cs" />
+    <Compile Include="Steps\FormStep.cs" />
+    <Compile Include="Steps\GeneralStatStep.cs" />
+    <Compile Include="Steps\IStep.cs" />
+    <Compile Include="NoOpParser.cs" />
+    <Compile Include="Steps\MappingStep.cs" />
+    <Compile Include="Steps\NotCompletedStep.cs" />
+    <Compile Include="Steps\ParsingStep.cs" />
     <Compile Include="StatNormalizingParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatReplacingParser.cs" />
+    <Compile Include="Steps\PoolStatStep.cs" />
+    <Compile Include="Steps\SpecialStep.cs" />
+    <Compile Include="Steps\StatManipulationStep.cs" />
+    <Compile Include="Steps\ValueConversionStep.cs" />
     <Compile Include="ValidatingParser.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,8 @@
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using PoESkillTree.Common.Utils.Extensions;
+using PoESkillTree.Computation.Parsing.Steps;
 
 namespace PoESkillTree.Computation.Parsing.Tests
 {
@@ -18,60 +20,29 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         [TestCase(true, ExpectedResult = true)]
         [TestCase(false, ExpectedResult = false)]
-        public bool TryParseReturnsSessionSuccessful(bool sessionSuccessful)
+        public bool TryParseReturnsStepSuccessfulWithCompletedInitialStep(bool stepSuccessful)
         {
-            var innerParser = CreateConstant("");
-            var session = Mock.Of<IParsingSession<int>>(s =>
-                s.Successful == sessionSuccessful &&
-                s.Completed &&
-                s.CurrentParser == innerParser);
-            var sut = CreateSut(session);
+            var initialStep = SetupSequenceWithSuccessful(stepSuccessful);
+            var sut = CreateSut(initialStep);
 
             return sut.TryParse("", out var _, out var _);
         }
 
-        [Test]
-        public void TryParseCallsSessionParseSuccessfulIfInnerCouldParse()
+        [TestCase(true, ExpectedResult = true)]
+        [TestCase(false, ExpectedResult = false)]
+        public bool TryParseReturnsLastStepsSuccessful(bool lastStepSuccessful)
         {
-            var sessionMock = new Mock<IParsingSession<int>>();
-            sessionMock.SetupSequence(s => s.Completed)
-                .Returns(false)
-                .Returns(true);
-            sessionMock.Setup(s => s.CurrentParser)
-                .Returns(CreateConstant(""));
-            var sut = CreateSut(sessionMock.Object);
+            var initialStep = SetupSequenceWithSuccessful(lastStepSuccessful, true, false);
+            var sut = CreateSut(initialStep);
 
-            sut.TryParse("", out var _, out var _);
-
-            sessionMock.Verify(s => s.ParseSuccessful());
-        }
-
-        [Test]
-        public void TryParseCallsSessionParseFailedIfInnerCouldNotParse()
-        {
-            var sessionMock = new Mock<IParsingSession<int>>();
-            sessionMock.SetupSequence(s => s.Completed)
-                .Returns(false)
-                .Returns(true);
-            sessionMock.Setup(s => s.CurrentParser)
-                .Returns(CreateConstant("", @return: false));
-            var sut = CreateSut(sessionMock.Object);
-
-            sut.TryParse("", out var _, out var _);
-
-            sessionMock.Verify(s => s.ParseFailed());
+            return sut.TryParse("stat", out var _, out var _);
         }
 
         [Test]
         public void TryParseOutputsCorrectValuesWithSingleInnerParse()
         {
-            var sessionMock = new Mock<IParsingSession<int>>();
-            sessionMock.SetupSequence(s => s.Completed)
-                .Returns(false)
-                .Returns(true);
-            sessionMock.Setup(s => s.CurrentParser)
-                .Returns(CreateConstant("stat", "remaining", 42));
-            var sut = CreateSut(sessionMock.Object);
+            var initialStep = SetupSequence(true);
+            var sut = CreateSut(initialStep);
 
             sut.TryParse("stat", out var actualRemaining, out var actualResult);
 
@@ -82,13 +53,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
         [Test]
         public void TryParseOutputsCorrectValuesWithSingleFailedInnerParse()
         {
-            var sessionMock = new Mock<IParsingSession<int>>();
-            sessionMock.SetupSequence(s => s.Completed)
-                .Returns(false)
-                .Returns(true);
-            sessionMock.Setup(s => s.CurrentParser)
-                .Returns(CreateConstant("stat", "remaining", 42, false));
-            var sut = CreateSut(sessionMock.Object);
+            var initialStep = SetupSequence(false);
+            var sut = CreateSut(initialStep);
 
             sut.TryParse("stat", out var actualRemaining, out var actualResult);
 
@@ -99,26 +65,21 @@ namespace PoESkillTree.Computation.Parsing.Tests
         [Test]
         public void TryParseOutputsCorrectValuesWithManyInnerParses()
         {
-            var sessionMock = new Mock<IParsingSession<int>>();
-            sessionMock.SetupSequence(s => s.Completed)
-                .Returns(false)
-                .Returns(false)
-                .Returns(false)
-                .Returns(false)
-                .Returns(true);
-            var currentParser = 0;
-            sessionMock.Setup(s => s.ParseSuccessful())
-                .Callback(() => currentParser++);
             IParser<int>[] parsers =
             {
-                CreateConstant("1 2 3", "2 3", 1),
-                CreateConstant("2 3", "3", 2),
-                CreateConstant("3", "", 3),
-                CreateConstant("", "nothing", @return: false),
+                MockConstantParser("1 2 3", "2 3", 1),
+                MockConstantParser("2 3", "3", 2),
+                MockConstantParser("3", "", 3),
+                MockConstantParser("", "nothing", @return: false),
             };
-            sessionMock.Setup(s => s.CurrentParser)
-                .Returns(() => parsers[currentParser]);
-            var sut = CreateSut(sessionMock.Object);
+            var steps = new IStep<IParser<int>, bool>[5];
+            steps[4] = CreateCompletedStep();
+            for (var i = steps.Length - 2; i >= 0; i--)
+            {
+                var parserReturn = i < 3;
+                steps[i] = MockStep(parsers[i], parserReturn, steps[i + 1]);
+            }
+            var sut = CreateSut(steps[0]);
 
             sut.TryParse("1 2 3", out var actualRemaining, out var actualResult);
 
@@ -126,15 +87,14 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.AreEqual("1,2,3", actualResult);
         }
 
-        private static CompositeParser<int, string> CreateSut(IParsingSession<int> session)
+        private static CompositeParser<int, string> CreateSut(IStep<IParser<int>, bool> initialStep)
         {
             string Aggregate(IEnumerable<int> results) => string.Join(",", results);
 
-            return new CompositeParser<int, string>(
-                new ConstantFactory<IParsingSession<int>>(session), Aggregate);
+            return new CompositeParser<int, string>(initialStep, Aggregate);
         }
 
-        private static IParser<int> CreateConstant(string stat, 
+        private static IParser<int> MockConstantParser(string stat, 
             string remaining = "", int result = 0, bool @return = true)
         {
             var mock = new Mock<IParser<int>>();
@@ -142,6 +102,46 @@ namespace PoESkillTree.Computation.Parsing.Tests
             mock.Setup(p => p.TryParse(stat, out remaining, out result)).Returns(@return);
 
             return mock.Object;
+        }
+
+        private static IStep<IParser<int>, bool> MockStep(IParser<int> parser, bool parserReturn,
+            IStep<IParser<int>, bool> nextStep)
+        {
+            return Mock.Of<IStep<IParser<int>, bool>>(s =>
+                !s.Completed &&
+                s.Current == parser &&
+                s.Next(parserReturn) == nextStep);
+        }
+
+        private static IStep<IParser<int>, bool> CreateCompletedStep(bool successful = false)
+        {
+            return new CompletedStep<IParser<int>, bool>(successful, new NoOpParser<int>());
+        }
+
+        private static IStep<IParser<int>, bool> SetupSequence(params bool[] parserReturns)
+        {
+            return SetupSequenceWithSuccessful(false, parserReturns);
+        }
+
+        private static IStep<IParser<int>, bool> SetupSequenceWithSuccessful(
+            bool lastStepSuccessful, params bool[] parserReturns)
+        {
+            return SetupSequenceWithSuccessful(lastStepSuccessful,
+                (IReadOnlyCollection<bool>) parserReturns);
+        }
+
+        private static IStep<IParser<int>, bool> SetupSequenceWithSuccessful(
+            bool lastStepSuccessful, IReadOnlyCollection<bool> parserReturns)
+        {
+            if (parserReturns.IsEmpty())
+            {
+                return CreateCompletedStep(lastStepSuccessful);
+            }
+            var nextStep = SetupSequenceWithSuccessful(lastStepSuccessful, 
+                parserReturns.Skip(1).ToList());
+            var @return = parserReturns.First();
+            var parser = MockConstantParser("stat", "remaining", 42, @return);
+            return MockStep(parser, @return, nextStep);
         }
     }
 }

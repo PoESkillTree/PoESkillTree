@@ -102,13 +102,7 @@ Recover #% of Life and Mana when you use a Warcry
 // (except for 'matchesIf', which is another condition that must be satisfied for the entry 
 // to be considered a match).
 
-/* Order of matcher application:
- * 
- * First: try to find a match in SpecialMatchers against the whole mod line.
- * If success: no further matching
- * If no success: proceed below with unchanged mod line
- * 
- * Then: try the below matchers in order. 
+/* For everything but SpecialMatchers:
  * - Each matcher regex is appended and prepended by "\b" to make sure they only match whole
  *   words
  * - If one matcher collection has multiple matches, take the one with the longest regex or 
@@ -118,17 +112,7 @@ Recover #% of Life and Mana when you use a Warcry
  *   (or replace by substitution string if one is specified)
  * - Once the mod line is empty or consists only of whitespace, the mod line was successfully 
  *   matched.
- * - Merge multiple spaces to a single space before each matching step
- * - If FormAndStatMatchers matches, skip FormMatchers, StatMatchers and all XStatMatchers
- * StatManipulationMatchers
- * FormAndStatMatchers
- * ValueConversionMatchers (order between this and FormAndStatMatchers doesn't matter yet)
- * FormMatchers
- * GeneralStatMatchers
- * DamageStatMatchers
- * PoolStatMatchers        (order between this and DamageStatMatchers doesn't matter yet)
- * ConditionMatchers until no more match
- * remove "(Hidden)"
+ * - Merge multiple spaces to a single space before/after each matching step
  */
 // As another form of showing that a mod is not supported, matcher implementations 
 // themselves may signal that
