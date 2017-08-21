@@ -14,8 +14,7 @@ namespace PoESkillTree.Computation.Console
                     new StatNormalizingParser<string>(
                         new DummyParser(statMatchers))); // TODO
 
-            // TODO change IStatMatchers implementation to lazily create their collections
-            var statMatchersFactory = new StatMatchersSelector();//CreateStatMatchers());
+            var statMatchersFactory = new StatMatchersSelector(CreateStatMatchers());
             IStep<IParser<string>, bool> initialStep =
                 new MappingStep<IStatMatchers, IParser<string>, bool>(
                     new MappingStep<ParsingStep, IStatMatchers, bool>(

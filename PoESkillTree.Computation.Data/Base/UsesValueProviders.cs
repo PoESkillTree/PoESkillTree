@@ -7,9 +7,11 @@ namespace PoESkillTree.Computation.Data.Base
     {
         protected UsesValueProviders(IProviderFactories providerFactories)
         {
-            ValueFactory = providerFactories.ValueProviderFactory;
+            ProviderFactories = providerFactories;
         }
 
-        protected IValueProviderFactory ValueFactory { get; }
+        protected IProviderFactories ProviderFactories { get; }
+
+        protected IValueProviderFactory ValueFactory => ProviderFactories.ValueProviderFactory;
     }
 }

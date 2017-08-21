@@ -11,10 +11,9 @@ namespace PoESkillTree.Computation.Data.Base
         protected UsesConditionProviders(IProviderFactories providerFactories) 
             : base(providerFactories)
         {
-            Condition = providerFactories.ConditionProviderFactory;
         }
 
-        protected IConditionProviderFactory Condition { get; }
+        protected IConditionProviderFactory Condition => ProviderFactories.ConditionProviderFactory;
 
         protected IConditionProvider With(ISkillProviderCollection skills) =>
             Condition.With(skills);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -9,9 +10,12 @@ namespace PoESkillTree.Computation.Data
     // see https://pathofexile.gamepedia.com/Monster and Metadata/Monsters/Monster.ot in GGPK
     public class MonsterGivenStats : UsesStatProviders, IGivenStats
     {
+        private readonly Lazy<IReadOnlyList<GivenStatData>> _lazyGivenStats;
+
         public MonsterGivenStats(IProviderFactories providerFactories) : base(providerFactories)
         {
-            GivenStats = CreateCollection().ToList();
+            _lazyGivenStats =
+                new Lazy<IReadOnlyList<GivenStatData>>(() => CreateCollection().ToList());
         }
 
         public IReadOnlyList<string> GivenStatLines { get; } = new[]
@@ -25,7 +29,7 @@ namespace PoESkillTree.Computation.Data
             "200% increased Critical Strike Chance per Power Charge",
         };
 
-        public IReadOnlyList<GivenStatData> GivenStats { get; }
+        public IReadOnlyList<GivenStatData> GivenStats => _lazyGivenStats.Value;
 
         private GivenStatCollection CreateCollection() => new GivenStatCollection
         {

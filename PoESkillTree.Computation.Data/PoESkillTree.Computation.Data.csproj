@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="ActionMatchers.cs" />
     <Compile Include="AilmentMatchers.cs" />
+    <Compile Include="Base\ReferencedMatchersBase.cs" />
     <Compile Include="ChargeTypeMatchers.cs" />
     <Compile Include="Collections\ConditionMatcherCollection.cs" />
     <Compile Include="Collections\FormAndStatMatcherCollection.cs" />

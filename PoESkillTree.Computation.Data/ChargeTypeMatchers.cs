@@ -1,26 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Providers.Charges;
+using System.Collections.Generic;
 
 namespace PoESkillTree.Computation.Data
 {
-    public class ChargeTypeMatchers : IReferencedMatchers<IChargeTypeProvider>
+    public class ChargeTypeMatchers : ReferencedMatchersBase<IChargeTypeProvider>
     {
         private IChargeTypeProviderFactory Charge { get; }
 
         public ChargeTypeMatchers(IChargeTypeProviderFactory chargeTypeProviderFactory)
         {
             Charge = chargeTypeProviderFactory;
-
-            Matchers = CreateCollection().ToList();
         }
 
-        public string ReferenceName { get; } = nameof(ChargeTypeMatchers);
-
-        public IReadOnlyList<ReferencedMatcherData<IChargeTypeProvider>> Matchers { get; }
-
-        private ReferencedMatcherCollection<IChargeTypeProvider> CreateCollection() =>
+        protected override IEnumerable<ReferencedMatcherData<IChargeTypeProvider>>
+            CreateCollection() =>
             new ReferencedMatcherCollection<IChargeTypeProvider>
             {
                 { "endurance charges?", Charge.Endurance },

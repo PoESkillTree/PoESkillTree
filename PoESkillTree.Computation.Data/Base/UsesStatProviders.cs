@@ -16,28 +16,14 @@ namespace PoESkillTree.Computation.Data.Base
 {
     public abstract class UsesStatProviders : UsesFormProviders
     {
-        private readonly IDamageTypeProviderFactory _damageTypeProviderFactory;
-        private readonly IEquipmentProviderFactory _equipmentProviderFactory;
-
         protected UsesStatProviders(IProviderFactories providerFactories)
             : base(providerFactories)
         {
-            Stat = providerFactories.StatProviderFactory;
-            Action = providerFactories.ActionProviderFactory;
-            Charge = providerFactories.ChargeTypeProviderFactory;
-            Buff = providerFactories.BuffProviderFactory;
-            _damageTypeProviderFactory = providerFactories.DamageTypeProviderFactory;
-            Keyword = providerFactories.KeywordProviderFactory;
-            Entity = providerFactories.EntityProviderFactory;
-            Skill = providerFactories.SkillProviderFactory;
-            Effect = providerFactories.EffectProviderFactory;
-            Source = providerFactories.DamageSourceProviderFactory;
-            _equipmentProviderFactory = providerFactories.EquipmentProviderFactory;
         }
 
         // Stats directly from IStatProviderFactory
 
-        protected IStatProviderFactory Stat { get; }
+        protected IStatProviderFactory Stat => ProviderFactories.StatProviderFactory;
 
         protected IAttributeStatProviderFactory Attribute => Stat.Attribute;
         protected IFlaskStatProviderFactory Flask => Stat.Flask;
@@ -55,7 +41,7 @@ namespace PoESkillTree.Computation.Data.Base
 
         // Actions
 
-        protected IActionProviderFactory Action { get; }
+        protected IActionProviderFactory Action => ProviderFactories.ActionProviderFactory;
 
         protected ISelfToAnyActionProvider Kill => Action.Kill;
         protected IBlockActionProvider Block => Action.Block;
@@ -64,7 +50,7 @@ namespace PoESkillTree.Computation.Data.Base
 
         // Buffs
 
-        protected IBuffProviderFactory Buff { get; }
+        protected IBuffProviderFactory Buff => ProviderFactories.BuffProviderFactory;
 
         protected IBuffProviderCollection Buffs(IEntityProvider source = null,
             IEntityProvider target = null) =>
@@ -72,27 +58,30 @@ namespace PoESkillTree.Computation.Data.Base
 
         // Charges
 
-        protected IChargeTypeProviderFactory Charge { get; }
+        protected IChargeTypeProviderFactory Charge => ProviderFactories.ChargeTypeProviderFactory;
 
         // Damage types
 
-        protected IDamageTypeProvider Physical => _damageTypeProviderFactory.Physical;
-        protected IDamageTypeProvider Fire => _damageTypeProviderFactory.Fire;
-        protected IDamageTypeProvider Lightning => _damageTypeProviderFactory.Lightning;
-        protected IDamageTypeProvider Cold => _damageTypeProviderFactory.Cold;
-        protected IDamageTypeProvider Chaos => _damageTypeProviderFactory.Chaos;
-        protected IDamageTypeProvider RandomElement => _damageTypeProviderFactory.RandomElement;
+        private IDamageTypeProviderFactory DamageTypeProviderFactory => 
+            ProviderFactories.DamageTypeProviderFactory;
+
+        protected IDamageTypeProvider Physical => DamageTypeProviderFactory.Physical;
+        protected IDamageTypeProvider Fire => DamageTypeProviderFactory.Fire;
+        protected IDamageTypeProvider Lightning => DamageTypeProviderFactory.Lightning;
+        protected IDamageTypeProvider Cold => DamageTypeProviderFactory.Cold;
+        protected IDamageTypeProvider Chaos => DamageTypeProviderFactory.Chaos;
+        protected IDamageTypeProvider RandomElement => DamageTypeProviderFactory.RandomElement;
 
         // Effects
 
-        protected IEffectProviderFactory Effect { get; }
+        protected IEffectProviderFactory Effect => ProviderFactories.EffectProviderFactory;
 
         protected IAilmentProviderFactory Ailment => Effect.Ailment;
         protected IGroundEffectProviderFactory Ground => Effect.Ground;
 
         // Entities
 
-        protected IEntityProviderFactory Entity { get; }
+        protected IEntityProviderFactory Entity => ProviderFactories.EntityProviderFactory;
 
         protected ISelfProvider Self => Entity.Self;
         protected IEnemyProvider Enemy => Entity.Enemy;
@@ -100,17 +89,20 @@ namespace PoESkillTree.Computation.Data.Base
 
         // Equipment
 
-        protected IEquipmentProviderCollection Equipment => _equipmentProviderFactory.Equipment;
+        private IEquipmentProviderFactory EquipmentProviderFactory =>
+            ProviderFactories.EquipmentProviderFactory;
 
-        protected IEquipmentProvider LocalHand => _equipmentProviderFactory.LocalHand;
+        protected IEquipmentProviderCollection Equipment => EquipmentProviderFactory.Equipment;
+
+        protected IEquipmentProvider LocalHand => EquipmentProviderFactory.LocalHand;
 
         // Keywords
 
-        protected IKeywordProviderFactory Keyword { get; }
+        protected IKeywordProviderFactory Keyword => ProviderFactories.KeywordProviderFactory;
 
         // Skills
 
-        protected ISkillProviderFactory Skill { get; }
+        protected ISkillProviderFactory Skill => ProviderFactories.SkillProviderFactory;
 
         protected ISkillProviderCollection Skills => Skill.Skills;
 
@@ -119,7 +111,8 @@ namespace PoESkillTree.Computation.Data.Base
 
         // Sources
 
-        protected IDamageSourceProviderFactory Source { get; }
+        protected IDamageSourceProviderFactory Source => 
+            ProviderFactories.DamageSourceProviderFactory;
 
         // Convenience methods
 

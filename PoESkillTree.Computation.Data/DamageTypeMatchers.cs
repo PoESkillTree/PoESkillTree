@@ -1,19 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Providers.Damage;
 
 namespace PoESkillTree.Computation.Data
 {
-    public class DamageTypeMatchers : IReferencedMatchers<IDamageTypeProvider>
+    public class DamageTypeMatchers : ReferencedMatchersBase<IDamageTypeProvider>
     {
         private readonly IDamageTypeProviderFactory _damageTypeProviderFactory;
 
         public DamageTypeMatchers(IDamageTypeProviderFactory damageTypeProviderFactory)
         {
             _damageTypeProviderFactory = damageTypeProviderFactory;
-
-            Matchers = CreateCollection().ToList();
         }
 
         private IDamageTypeProvider Physical => _damageTypeProviderFactory.Physical;
@@ -22,11 +20,8 @@ namespace PoESkillTree.Computation.Data
         private IDamageTypeProvider Cold => _damageTypeProviderFactory.Cold;
         private IDamageTypeProvider Chaos => _damageTypeProviderFactory.Chaos;
 
-        public string ReferenceName { get; } = nameof(DamageTypeMatchers);
-
-        public IReadOnlyList<ReferencedMatcherData<IDamageTypeProvider>> Matchers { get; }
-
-        private ReferencedMatcherCollection<IDamageTypeProvider> CreateCollection() => 
+        protected override IEnumerable<ReferencedMatcherData<IDamageTypeProvider>>
+            CreateCollection() =>
             new ReferencedMatcherCollection<IDamageTypeProvider>
             {
                 { "physical", Physical },

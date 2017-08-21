@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -14,16 +15,17 @@ namespace PoESkillTree.Computation.Data
         // element) before it gets here.
 
         private readonly IMatchBuilder _matchBuilder;
+        private readonly Lazy<IReadOnlyList<MatcherData>> _lazyMatchers;
 
         public PropertyMatchers(IProviderFactories providerFactories, 
             IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder)
             : base(providerFactories, matchContextFactory)
         {
             _matchBuilder = matchBuilder;
-            Matchers = CreateCollection().ToList();
+            _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
         }
 
-        public IReadOnlyList<MatcherData> Matchers { get; }
+        public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
 
         private PropertyMatcherCollection CreateCollection() => new PropertyMatcherCollection(
             _matchBuilder)

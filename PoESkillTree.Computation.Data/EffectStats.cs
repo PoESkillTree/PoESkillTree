@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -8,15 +9,20 @@ namespace PoESkillTree.Computation.Data
 {
     public class EffectStats : UsesStatProviders, IEffectStats
     {
+        private readonly Lazy<IReadOnlyList<EffectStatData>> _lazyEffects;
+        private readonly Lazy<IReadOnlyList<FlagStatData>> _lazyFlags;
+
         public EffectStats(IProviderFactories providerFactories)
             : base(providerFactories)
         {
-            Effects = CreateEffectCollection().ToList();
-            Flags = CreateFlagCollection().ToList();
+            _lazyEffects =
+                new Lazy<IReadOnlyList<EffectStatData>>(() => CreateEffectCollection().ToList());
+            _lazyFlags =
+                new Lazy<IReadOnlyList<FlagStatData>>(() => CreateFlagCollection().ToList());
         }
 
-        public IReadOnlyList<EffectStatData> Effects { get; }
-        public IReadOnlyList<FlagStatData> Flags { get; }
+        public IReadOnlyList<EffectStatData> Effects => _lazyEffects.Value;
+        public IReadOnlyList<FlagStatData> Flags => _lazyFlags.Value;
 
         private EffectStatCollection CreateEffectCollection() => new EffectStatCollection
         {
