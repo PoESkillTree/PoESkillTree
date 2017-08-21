@@ -56,7 +56,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Utils\IFactory.cs" />
     <Compile Include="Model\Items\Enums\FrameType.cs" />
     <Compile Include="Model\Items\Enums\ItemSlot.cs" />
     <Compile Include="Model\Items\Enums\Tags.cs" />

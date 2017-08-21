@@ -110,9 +110,6 @@ Recover #% of Life and Mana when you use a Warcry
  *   (longest regex or longest match?)
  * - If a matcher matches, remove the match in the mod line 
  *   (or replace by substitution string if one is specified)
- * - Once the mod line is empty or consists only of whitespace, the mod line was successfully 
- *   matched.
- * - Merge multiple spaces to a single space before/after each matching step
  */
 // As another form of showing that a mod is not supported, matcher implementations 
 // themselves may signal that

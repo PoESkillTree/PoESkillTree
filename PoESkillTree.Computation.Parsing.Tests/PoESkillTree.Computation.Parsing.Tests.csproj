@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CachingParserTest.cs" />
+    <Compile Include="StatMatchersSelectorTest.cs" />
     <Compile Include="Steps\CompletedStepTest.cs" />
     <Compile Include="CompositeParserTest.cs" />
     <Compile Include="StatNormalizingParserTest.cs" />
