@@ -45,7 +45,8 @@
                 <l:Catalog Message="Open in Browser"/>
             </Button>
         </Grid>
-        <TextBox Margin="5" TextWrapping="Wrap" Text="{Binding ItemsLink}" IsReadOnly="True"/>
+        <TextBox Margin="5" TextWrapping="Wrap" 
+                 Text="{Binding ItemsLink, Mode=OneWay}" IsReadOnly="True"/>
 
         <Label HorizontalAlignment="Left" Margin="5,5,0,0">
             <l:Catalog Message="Item data:"/>
