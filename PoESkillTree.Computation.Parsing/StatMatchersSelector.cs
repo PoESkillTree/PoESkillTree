@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Parsing
                 from c in _candidates
                 let name = c.GetType().Name
                 where name.StartsWith(parsingStep.ToString())
-                orderby name descending 
+                orderby name.Length
                 select c
             ).First();
         }

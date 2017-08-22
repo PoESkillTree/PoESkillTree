@@ -22,7 +22,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public Type GetWithKnownReturnsCorrectResult(ParsingStep parsingStep)
         {
             var sut = new StatMatchersSelector(new SpecialMatchers(), new ValueConversionMatchers(), 
-                new FormAndStatMatchers(), new FormMatchers());
+                new FormAndStatMatchers(), new FormMatchers(), new FormZMatchers());
 
             var statMatchers = sut.Get(parsingStep);
 
@@ -46,6 +46,11 @@ namespace PoESkillTree.Computation.Parsing.Tests
         }
 
         private class FormMatchers : IStatMatchers
+        {
+            public IReadOnlyList<MatcherData> Matchers { get; }
+        }
+
+        private class FormZMatchers : IStatMatchers
         {
             public IReadOnlyList<MatcherData> Matchers { get; }
         }
