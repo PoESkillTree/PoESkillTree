@@ -4,9 +4,10 @@ using System.Linq;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers;
-using PoESkillTree.Computation.Providers.Matching;
-using static PoESkillTree.Computation.Providers.Values.ValueProviderUtils;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
+using PoESkillTree.Computation.Parsing.Data;
+using static PoESkillTree.Computation.Parsing.Builders.Values.ValueBuilderUtils;
 
 namespace PoESkillTree.Computation.Data
 {
@@ -15,21 +16,21 @@ namespace PoESkillTree.Computation.Data
         // These apply to the main value of the modifier (or multiple e.g. for "Adds # to # ..."),
         // not to other values like in "for # seconds".
 
-        private readonly IMatchBuilder _matchBuilder;
+        private readonly IModifierBuilder _modifierBuilder;
         private readonly Lazy<IReadOnlyList<MatcherData>> _lazyMatchers;
 
-        public ValueConversionMatchers(IProviderFactories providerFactories,
-            IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder) 
-            : base(providerFactories, matchContextFactory)
+        public ValueConversionMatchers(IBuilderFactories builderFactories,
+            IMatchContexts matchContexts, IModifierBuilder modifierBuilder) 
+            : base(builderFactories, matchContexts)
         {
-            _matchBuilder = matchBuilder;
+            _modifierBuilder = modifierBuilder;
             _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
         }
 
         public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
 
         private ValueConversionMatcherCollection CreateCollection() =>
-            new ValueConversionMatcherCollection(_matchBuilder)
+            new ValueConversionMatcherCollection(_modifierBuilder)
             {
                 // action
                 { "for each enemy you've killed recently", Kill.CountRecently },

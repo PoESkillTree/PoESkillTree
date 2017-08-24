@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers.Values;
+using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
 {
@@ -15,7 +15,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [SetUp]
         public void SetUp()
         {
-            _sut = new ValueConversionMatcherCollection(new MatchBuilderStub());
+            _sut = new ValueConversionMatcherCollection(new ModifierBuilderStub());
         }
 
         [Test]

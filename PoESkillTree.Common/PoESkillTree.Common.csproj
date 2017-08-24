@@ -63,6 +63,7 @@
     <Compile Include="Model\Items\ItemConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Utils\IFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

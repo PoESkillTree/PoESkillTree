@@ -4,32 +4,30 @@ using System.Linq;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers;
-using PoESkillTree.Computation.Providers.Matching;
-using static PoESkillTree.Computation.Providers.Values.ValueProviderUtils;
-
-using DamageStat = PoESkillTree.Computation.Providers.Stats.IDamageStatProvider;
-using PoolStat = PoESkillTree.Computation.Providers.Stats.IPoolStatProvider;
-using FlagStat = PoESkillTree.Computation.Providers.Stats.IFlagStatProvider;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Data;
+using static PoESkillTree.Computation.Parsing.Builders.Values.ValueBuilderUtils;
 
 namespace PoESkillTree.Computation.Data
 {
     public class GeneralStatMatchers : UsesMatchContext, IStatMatchers
     {
-        private readonly IMatchBuilder _matchBuilder;
+        private readonly IModifierBuilder _modifierBuilder;
         private readonly Lazy<IReadOnlyList<MatcherData>> _lazyMatchers;
 
-        public GeneralStatMatchers(IProviderFactories providerFactories, 
-            IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder) 
-            : base(providerFactories, matchContextFactory)
+        public GeneralStatMatchers(IBuilderFactories builderFactories, 
+            IMatchContexts matchContexts, IModifierBuilder modifierBuilder) 
+            : base(builderFactories, matchContexts)
         {
-            _matchBuilder = matchBuilder;
+            _modifierBuilder = modifierBuilder;
             _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
         }
 
         public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
 
-        private StatMatcherCollection CreateCollection() => new StatMatcherCollection(_matchBuilder)
+        private StatMatcherCollection CreateCollection() => new StatMatcherCollection(_modifierBuilder)
         {
             // attributes
             { "strength", Attribute.Strength },
@@ -93,22 +91,22 @@ namespace PoESkillTree.Computation.Data
             // - leech
             {
                 @"({PoolStatMatchers}) per second to \1 Leech rate",
-                Group.As<PoolStat>().Leech.RateLimit
+                Group.As<IPoolStatBuilder>().Leech.RateLimit
             },
             {
                 "({DamageStatMatchers}) leeched as ({PoolStatMatchers})",
-                Groups[1].As<PoolStat>().Leech.Of(Groups[0].As<DamageStat>())
+                Groups[1].As<IPoolStatBuilder>().Leech.Of(Groups[0].As<IDamageStatBuilder>())
             },
             {
                 "({DamageStatMatchers}) leeched as ({PoolStatMatchers}) and ({PoolStatMatchers})",
-                Groups[1].As<PoolStat>().Leech.Of(Groups[0].As<DamageStat>()),
-                Groups[2].As<PoolStat>().Leech.Of(Groups[0].As<DamageStat>())
+                Groups[1].As<IPoolStatBuilder>().Leech.Of(Groups[0].As<IDamageStatBuilder>()),
+                Groups[2].As<IPoolStatBuilder>().Leech.Of(Groups[0].As<IDamageStatBuilder>())
             },
             {
                 "damage dealt by your totems is leeched to you as life",
                 Life.Leech.To(Self).Of(Damage), For(Entity.Totem)
             },
-            { "({PoolStatMatchers}) leeched per second", Group.As<PoolStat>().Leech.Rate },
+            { "({PoolStatMatchers}) leeched per second", Group.As<IPoolStatBuilder>().Leech.Rate },
             // - block
             { "chance to block", Block.AttackChance },
             { "block chance", Block.AttackChance },
@@ -130,12 +128,12 @@ namespace PoESkillTree.Computation.Data
             { "chance to evade melee attacks", Evasion.ChanceAgainstMeleeAttacks },
             {
                 "damage is taken from ({PoolStatMatchers}) before ({PoolStatMatchers})",
-                Damage.TakenFrom(Groups[0].As<PoolStat>()).Before(Groups[1].As<PoolStat>())
+                Damage.TakenFrom(Groups[0].As<IPoolStatBuilder>()).Before(Groups[1].As<IPoolStatBuilder>())
             },
             {
                 "({DamageTypeMatchers}) damage is taken from ({PoolStatMatchers}) before ({PoolStatMatchers})",
-                Groups[0].AsDamageType.Damage.TakenFrom(Groups[1].As<PoolStat>())
-                    .Before(Groups[2].As<PoolStat>())
+                Groups[0].AsDamageType.Damage.TakenFrom(Groups[1].As<IPoolStatBuilder>())
+                    .Before(Groups[2].As<IPoolStatBuilder>())
             },
             // speed
             { "attack speed", Skills[Keyword.Attack].Speed },
@@ -153,7 +151,7 @@ namespace PoESkillTree.Computation.Data
             },
             { "animation speed", Stat.AnimationSpeed },
             // regen and recharge
-            { "({PoolStatMatchers}) regeneration rate", Group.As<PoolStat>().Regen },
+            { "({PoolStatMatchers}) regeneration rate", Group.As<IPoolStatBuilder>().Regen },
             { "energy shield recharge rate", EnergyShield.Recharge },
             {
                 "recovery rate of life, mana and energy shield",
@@ -232,10 +230,10 @@ namespace PoESkillTree.Computation.Data
             // flags
             {
                 "chance to (gain|grant) ({FlagMatchers})",
-                Group.As<FlagStat>() // chance is handled by StatManipulationMatchers
+                Group.As<IFlagStatBuilder>() // chance is handled by StatManipulationMatchers
             },
-            { "({FlagMatchers}) duration", Group.As<FlagStat>().DurationIncrease },
-            { "({FlagMatchers}) effect", Group.As<FlagStat>().EffectIncrease },
+            { "({FlagMatchers}) duration", Group.As<IFlagStatBuilder>().DurationIncrease },
+            { "({FlagMatchers}) effect", Group.As<IFlagStatBuilder>().EffectIncrease },
             // ailments
             { "chance to ({AilmentMatchers})(the enemy)?", Group.AsAilment.Chance },
             {

@@ -1,30 +1,30 @@
-﻿using PoESkillTree.Computation.Providers;
-using PoESkillTree.Computation.Providers.Forms;
+﻿using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Forms;
 
 namespace PoESkillTree.Computation.Data.Base
 {
     public abstract class UsesFormProviders : UsesValueProviders
     {
-        protected UsesFormProviders(IProviderFactories providerFactories)
-            : base(providerFactories)
+        protected UsesFormProviders(IBuilderFactories builderFactories)
+            : base(builderFactories)
         {
         }
 
-        private IFormProviderFactory FormProviderFactory => ProviderFactories.FormProviderFactory;
+        private IFormBuilders FormBuilders => BuilderFactories.FormBuilders;
 
-        protected IFormProvider BaseSet => FormProviderFactory.BaseSet;
-        protected IFormProvider PercentIncrease => FormProviderFactory.PercentIncrease;
-        protected IFormProvider PercentMore => FormProviderFactory.PercentMore;
-        protected IFormProvider BaseAdd => FormProviderFactory.BaseAdd;
-        protected IFormProvider PercentReduce => FormProviderFactory.PercentReduce;
-        protected IFormProvider PercentLess => FormProviderFactory.PercentLess;
-        protected IFormProvider BaseSubtract => FormProviderFactory.BaseSubtract;
-        protected IFormProvider TotalOverride => FormProviderFactory.TotalOverride;
-        protected IFormProvider MinBaseAdd => FormProviderFactory.MinBaseAdd;
-        protected IFormProvider MaxBaseAdd => FormProviderFactory.MaxBaseAdd;
-        protected IFormProvider MaximumAdd => FormProviderFactory.MaximumAdd;
-        protected IFormProvider SetFlag => FormProviderFactory.SetFlag;
-        protected IFormProvider Zero => FormProviderFactory.Zero;
-        protected IFormProvider Always => FormProviderFactory.Always;
+        protected IFormBuilder BaseSet => FormBuilders.BaseSet;
+        protected IFormBuilder PercentIncrease => FormBuilders.PercentIncrease;
+        protected IFormBuilder PercentMore => FormBuilders.PercentMore;
+        protected IFormBuilder BaseAdd => FormBuilders.BaseAdd;
+        protected IFormBuilder PercentReduce => FormBuilders.PercentReduce;
+        protected IFormBuilder PercentLess => FormBuilders.PercentLess;
+        protected IFormBuilder BaseSubtract => FormBuilders.BaseSubtract;
+        protected IFormBuilder TotalOverride => FormBuilders.TotalOverride;
+        protected IFormBuilder MinBaseAdd => FormBuilders.MinBaseAdd;
+        protected IFormBuilder MaxBaseAdd => FormBuilders.MaxBaseAdd;
+        protected IFormBuilder MaximumAdd => FormBuilders.MaximumAdd;
+        protected IFormBuilder SetFlag => FormBuilders.SetFlag;
+        protected IFormBuilder Zero => FormBuilders.Zero;
+        protected IFormBuilder Always => FormBuilders.Always;
     }
 }

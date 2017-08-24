@@ -1,21 +1,23 @@
 using System.Collections.Generic;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers.Effects;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Effects;
+using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
-    public class AilmentMatchers : ReferencedMatchersBase<IAilmentProvider>
+    public class AilmentMatchers : ReferencedMatchersBase<IAilmentBuilder>
     {
-        private IAilmentProviderFactory Ailment { get; }
+        private IAilmentBuilders Ailment { get; }
 
-        public AilmentMatchers(IAilmentProviderFactory ailmentProviderFactory)
+        public AilmentMatchers(IAilmentBuilders ailmentBuilders)
         {
-            Ailment = ailmentProviderFactory;
+            Ailment = ailmentBuilders;
         }
 
-        protected override IEnumerable<ReferencedMatcherData<IAilmentProvider>> CreateCollection() =>
-            new ReferencedMatcherCollection<IAilmentProvider>
+        protected override IEnumerable<ReferencedMatcherData<IAilmentBuilder>> CreateCollection() =>
+            new ReferencedMatcherCollection<IAilmentBuilder>
             {
                 // chance to x/x duration
                 { "ignite", Ailment.Ignite },

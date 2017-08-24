@@ -2,7 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers.Conditions;
+using PoESkillTree.Computation.Parsing.Builders.Conditions;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
 {
@@ -16,7 +16,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [SetUp]
         public void SetUp()
         {
-            _sut = new ConditionMatcherCollection(new MatchBuilderStub());
+            _sut = new ConditionMatcherCollection(new ModifierBuilderStub());
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void Add()
         {
-            var condition = Mock.Of<IConditionProvider>();
+            var condition = Mock.Of<IConditionBuilder>();
 
             _sut.Add(Regex, condition);
 
@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddManyAddsToCount()
         {
-            var condition = Mock.Of<IConditionProvider>();
+            var condition = Mock.Of<IConditionBuilder>();
 
             _sut.Add(Regex, condition);
             _sut.Add(Regex, condition);

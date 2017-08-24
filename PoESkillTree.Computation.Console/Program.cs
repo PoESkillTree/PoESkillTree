@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Data;
 using PoESkillTree.Computation.Parsing;
+using PoESkillTree.Computation.Parsing.Data;
 using PoESkillTree.Computation.Parsing.Steps;
 
 namespace PoESkillTree.Computation.Console
@@ -66,11 +67,11 @@ namespace PoESkillTree.Computation.Console
         };
 
         /* Algorithm missing:
-         * - IMatchBuilder aggregator (Func<IReadOnlyList<IMatchBuilder>, IMatch>)
+         * - IModifierBuilder aggregator (Func<IReadOnlyList<IModifierBuilder>, IModifier>)
          *   (replacing second argument of CompositeParser constructor)
-         * - leaf parsers (some class implementing IParser<IMatchBuilder> and using an IStatMatcher)
+         * - leaf parsers (some class implementing IParser<IModifierBuilder> and using an IStatMatcher)
          *   (replacing DummyParser in InnerParser() function)
-         * - implementations of IProviderFactories, IMatchContextFactory, IMatchBuilder
+         * - implementations of IBuilderFactories, IMatchContexts, IModifierBuilder
          *   (replacing nulls in CreateStatMatchers())
          */
 

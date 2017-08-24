@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using PoESkillTree.Computation.Providers.Effects;
-using PoESkillTree.Computation.Providers.Stats;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Effects;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
@@ -19,12 +21,12 @@ namespace PoESkillTree.Computation.Data.Collections
             return GetEnumerator();
         }
 
-        public void Add(IEffectProvider effect, params string[] stats)
+        public void Add(IEffectBuilder effect, params string[] stats)
         {
             _data.Add(new EffectStatData(effect, stats));
         }
 
-        public void Add(IEffectProvider effect, params IFlagStatProvider[] stats)
+        public void Add(IEffectBuilder effect, params IFlagStatBuilder[] stats)
         {
             _data.Add(new EffectStatData(effect, stats));
         }

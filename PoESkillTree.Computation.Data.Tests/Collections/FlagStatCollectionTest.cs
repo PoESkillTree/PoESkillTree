@@ -2,7 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
 {
@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddAddsCorrectData()
         {
-            var flag = Mock.Of<IFlagStatProvider>();
+            var flag = Mock.Of<IFlagStatBuilder>();
 
             _sut.Add(flag, "s1", "s2", "s3");
 
@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddManyAddsToCount()
         {
-            var flag = Mock.Of<IFlagStatProvider>();
+            var flag = Mock.Of<IFlagStatBuilder>();
 
             _sut.Add(flag);
             _sut.Add(flag, "s1");

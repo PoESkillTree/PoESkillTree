@@ -134,7 +134,7 @@ Recover #% of Life and Mana when you use a Warcry
 
 /* Keystones:
  * - stats are automatically added to EffectMatchers (split at line breaks)
- * - a IFlagStatProvider is automatically created and added to FormAndStatMatchers 
+ * - a IFlagStatBuilder is automatically created and added to FormAndStatMatchers 
  *   in the form:
  *   { "keystone name", BaseOverride, KeystoneStat, 1 }
  */
@@ -154,6 +154,6 @@ Recover #% of Life and Mana when you use a Warcry
 // Stats can apply to specific levels and may get inherited by lower levels, e.g. 
 // "Raise Zombie deals 10% increased Damage" applies to both attacks,
 // but "Raised Zombies' Slam Attack deals 10% increased Damage" only applies to the slam attack.
-// SkillMatchers and ISkillProvider can represent any level in a skill's hierarchy.
+// SkillMatchers and ISkillBuilder can represent any level in a skill's hierarchy.
 // Each specific level has names it can be referenced by, e.g. 
 // "Raised Zombies' Slam Attack" and  "Shrapnel Shot's cone".

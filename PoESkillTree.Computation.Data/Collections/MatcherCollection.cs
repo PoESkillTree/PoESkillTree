@@ -1,27 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
     public abstract class MatcherCollection : IEnumerable<MatcherData>
     {
-        protected IMatchBuilder MatchBuilder { get; }
+        protected IModifierBuilder ModifierBuilder { get; }
 
         private readonly List<MatcherData> _matchers = new List<MatcherData>();
 
-        protected MatcherCollection(IMatchBuilder matchBuilder)
+        protected MatcherCollection(IModifierBuilder modifierBuilder)
         {
-            MatchBuilder = matchBuilder;
+            ModifierBuilder = modifierBuilder;
         }
 
-        protected void Add(string regex, IMatchBuilder matchBuilder)
+        protected void Add(string regex, IModifierBuilder modifierBuilder)
         {
-            _matchers.Add(new MatcherData(regex, matchBuilder));
+            _matchers.Add(new MatcherData(regex, modifierBuilder));
         }
 
-        protected void Add(string regex, IMatchBuilder matchBuilder, string matchSubstitution)
+        protected void Add(string regex, IModifierBuilder modifierBuilder, string matchSubstitution)
         {
-            _matchers.Add(new MatcherData(regex, matchBuilder, matchSubstitution));
+            _matchers.Add(new MatcherData(regex, modifierBuilder, matchSubstitution));
         }
 
         public IEnumerator<MatcherData> GetEnumerator()

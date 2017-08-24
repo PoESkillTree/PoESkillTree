@@ -2,8 +2,8 @@
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers.Effects;
-using PoESkillTree.Computation.Providers.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Effects;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
 {
@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddStringsAddsCorrectData()
         {
-            var effect = Mock.Of<IEffectProvider>();
+            var effect = Mock.Of<IEffectBuilder>();
 
             _sut.Add(effect, "s1", "s2", "s3");
 
@@ -40,11 +40,11 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddFlagsAddsCorrectData()
         {
-            var effect = Mock.Of<IEffectProvider>();
+            var effect = Mock.Of<IEffectBuilder>();
             var flags = new[]
             {
-                Mock.Of<IFlagStatProvider>(), Mock.Of<IFlagStatProvider>(),
-                Mock.Of<IFlagStatProvider>()
+                Mock.Of<IFlagStatBuilder>(), Mock.Of<IFlagStatBuilder>(),
+                Mock.Of<IFlagStatBuilder>()
             };
 
             _sut.Add(effect, flags);
@@ -58,11 +58,11 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddManyAddsToCount()
         {
-            var effect = Mock.Of<IEffectProvider>();
+            var effect = Mock.Of<IEffectBuilder>();
             var flags = new[]
             {
-                Mock.Of<IFlagStatProvider>(), Mock.Of<IFlagStatProvider>(),
-                Mock.Of<IFlagStatProvider>()
+                Mock.Of<IFlagStatBuilder>(), Mock.Of<IFlagStatBuilder>(),
+                Mock.Of<IFlagStatBuilder>()
             };
 
             _sut.Add(effect, "s1");

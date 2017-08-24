@@ -2,9 +2,9 @@
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers.Conditions;
-using PoESkillTree.Computation.Providers.Stats;
-using PoESkillTree.Computation.Providers.Values;
+using PoESkillTree.Computation.Parsing.Builders.Conditions;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
 {
@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [SetUp]
         public void SetUp()
         {
-            _sut = new StatMatcherCollection(new MatchBuilderStub());
+            _sut = new StatMatcherCollection(new ModifierBuilderStub());
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddSingle()
         {
-            var stat = Mock.Of<IStatProvider>();
+            var stat = Mock.Of<IStatBuilder>();
 
             _sut.Add(Regex, stat);
 
@@ -41,9 +41,9 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddArray()
         {
-            var stat1 = Mock.Of<IStatProvider>();
-            var stat2 = Mock.Of<IStatProvider>();
-            var stat3 = Mock.Of<IStatProvider>();
+            var stat1 = Mock.Of<IStatBuilder>();
+            var stat2 = Mock.Of<IStatBuilder>();
+            var stat3 = Mock.Of<IStatBuilder>();
 
             _sut.Add(Regex, stat1, stat2, stat3);
 
@@ -54,7 +54,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddEnumerable()
         {
-            var stats = Enumerable.Empty<IStatProvider>();
+            var stats = Enumerable.Empty<IStatBuilder>();
 
             _sut.Add(Regex, stats);
 
@@ -65,7 +65,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddWithSubstitution()
         {
-            var stat = Mock.Of<IStatProvider>();
+            var stat = Mock.Of<IStatBuilder>();
 
             _sut.Add(Regex, stat, "substitution");
 
@@ -76,8 +76,8 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddWithCondition()
         {
-            var stat = Mock.Of<IStatProvider>();
-            var condition = Mock.Of<IConditionProvider>();
+            var stat = Mock.Of<IStatBuilder>();
+            var condition = Mock.Of<IConditionBuilder>();
 
             _sut.Add(Regex, stat, condition);
 
@@ -89,7 +89,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddWithConverter()
         {
-            var stat = Mock.Of<IStatProvider>();
+            var stat = Mock.Of<IStatBuilder>();
             ValueFunc converter = v => null;
 
             _sut.Add(Regex, stat, converter);
@@ -102,13 +102,13 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddManyAddsToCount()
         {
-            var stat = Mock.Of<IStatProvider>();
-            var condition = Mock.Of<IConditionProvider>();
+            var stat = Mock.Of<IStatBuilder>();
+            var condition = Mock.Of<IConditionBuilder>();
             ValueFunc converter = v => null;
 
             _sut.Add(Regex, stat);
             _sut.Add(Regex, stat, stat);
-            _sut.Add(Regex, Enumerable.Empty<IStatProvider>());
+            _sut.Add(Regex, Enumerable.Empty<IStatBuilder>());
             _sut.Add(Regex, stat, "substitution");
             _sut.Add(Regex, stat, condition);
             _sut.Add(Regex, stat, converter);

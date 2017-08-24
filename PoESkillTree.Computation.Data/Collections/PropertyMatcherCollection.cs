@@ -1,28 +1,29 @@
 using JetBrains.Annotations;
-using PoESkillTree.Computation.Providers.Stats;
-using PoESkillTree.Computation.Providers.Values;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
     public class PropertyMatcherCollection : MatcherCollection
     {
-        public PropertyMatcherCollection(IMatchBuilder matchBuilder) : base(matchBuilder)
+        public PropertyMatcherCollection(IModifierBuilder modifierBuilder) : base(modifierBuilder)
         {
         }
 
         public void Add([RegexPattern] string regex)
         {
-            Add(regex, MatchBuilder);
+            Add(regex, ModifierBuilder);
         }
 
-        public void Add([RegexPattern] string regex, IStatProvider stat)
+        public void Add([RegexPattern] string regex, IStatBuilder stat)
         {
-            Add(regex, MatchBuilder.WithStat(stat));
+            Add(regex, ModifierBuilder.WithStat(stat));
         }
 
-        public void Add([RegexPattern] string regex, IStatProvider stat, ValueFunc converter)
+        public void Add([RegexPattern] string regex, IStatBuilder stat, ValueFunc converter)
         {
-            var builder = MatchBuilder
+            var builder = ModifierBuilder
                 .WithStat(stat)
                 .WithValueConverter(converter);
             Add(regex, builder);

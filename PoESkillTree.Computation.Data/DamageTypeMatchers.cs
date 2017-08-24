@@ -1,28 +1,30 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers.Damage;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Damage;
+using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
-    public class DamageTypeMatchers : ReferencedMatchersBase<IDamageTypeProvider>
+    public class DamageTypeMatchers : ReferencedMatchersBase<IDamageTypeBuilder>
     {
-        private readonly IDamageTypeProviderFactory _damageTypeProviderFactory;
+        private readonly IDamageTypeBuilders _damageTypeBuilders;
 
-        public DamageTypeMatchers(IDamageTypeProviderFactory damageTypeProviderFactory)
+        public DamageTypeMatchers(IDamageTypeBuilders damageTypeBuilders)
         {
-            _damageTypeProviderFactory = damageTypeProviderFactory;
+            _damageTypeBuilders = damageTypeBuilders;
         }
 
-        private IDamageTypeProvider Physical => _damageTypeProviderFactory.Physical;
-        private IDamageTypeProvider Fire => _damageTypeProviderFactory.Fire;
-        private IDamageTypeProvider Lightning => _damageTypeProviderFactory.Lightning;
-        private IDamageTypeProvider Cold => _damageTypeProviderFactory.Cold;
-        private IDamageTypeProvider Chaos => _damageTypeProviderFactory.Chaos;
+        private IDamageTypeBuilder Physical => _damageTypeBuilders.Physical;
+        private IDamageTypeBuilder Fire => _damageTypeBuilders.Fire;
+        private IDamageTypeBuilder Lightning => _damageTypeBuilders.Lightning;
+        private IDamageTypeBuilder Cold => _damageTypeBuilders.Cold;
+        private IDamageTypeBuilder Chaos => _damageTypeBuilders.Chaos;
 
-        protected override IEnumerable<ReferencedMatcherData<IDamageTypeProvider>>
+        protected override IEnumerable<ReferencedMatcherData<IDamageTypeBuilder>>
             CreateCollection() =>
-            new ReferencedMatcherCollection<IDamageTypeProvider>
+            new ReferencedMatcherCollection<IDamageTypeBuilder>
             {
                 { "physical", Physical },
                 { "fire", Fire },

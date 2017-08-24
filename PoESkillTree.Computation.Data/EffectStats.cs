@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
@@ -12,8 +13,8 @@ namespace PoESkillTree.Computation.Data
         private readonly Lazy<IReadOnlyList<EffectStatData>> _lazyEffects;
         private readonly Lazy<IReadOnlyList<FlagStatData>> _lazyFlags;
 
-        public EffectStats(IProviderFactories providerFactories)
-            : base(providerFactories)
+        public EffectStats(IBuilderFactories builderFactories)
+            : base(builderFactories)
         {
             _lazyEffects =
                 new Lazy<IReadOnlyList<EffectStatData>>(() => CreateEffectCollection().ToList());

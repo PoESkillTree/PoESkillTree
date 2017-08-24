@@ -1,141 +1,141 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Common.Model.Items.Enums;
-using PoESkillTree.Computation.Providers;
-using PoESkillTree.Computation.Providers.Actions;
-using PoESkillTree.Computation.Providers.Buffs;
-using PoESkillTree.Computation.Providers.Charges;
-using PoESkillTree.Computation.Providers.Damage;
-using PoESkillTree.Computation.Providers.Effects;
-using PoESkillTree.Computation.Providers.Entities;
-using PoESkillTree.Computation.Providers.Equipment;
-using PoESkillTree.Computation.Providers.Skills;
-using PoESkillTree.Computation.Providers.Stats;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Actions;
+using PoESkillTree.Computation.Parsing.Builders.Buffs;
+using PoESkillTree.Computation.Parsing.Builders.Charges;
+using PoESkillTree.Computation.Parsing.Builders.Damage;
+using PoESkillTree.Computation.Parsing.Builders.Effects;
+using PoESkillTree.Computation.Parsing.Builders.Entities;
+using PoESkillTree.Computation.Parsing.Builders.Equipment;
+using PoESkillTree.Computation.Parsing.Builders.Skills;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Data.Base
 {
     public abstract class UsesStatProviders : UsesFormProviders
     {
-        protected UsesStatProviders(IProviderFactories providerFactories)
-            : base(providerFactories)
+        protected UsesStatProviders(IBuilderFactories builderFactories)
+            : base(builderFactories)
         {
         }
 
-        // Stats directly from IStatProviderFactory
+        // Stats directly from IStatBuilders
 
-        protected IStatProviderFactory Stat => ProviderFactories.StatProviderFactory;
+        protected IStatBuilders Stat => BuilderFactories.StatBuilders;
 
-        protected IAttributeStatProviderFactory Attribute => Stat.Attribute;
-        protected IFlaskStatProviderFactory Flask => Stat.Flask;
-        protected IProjectileStatProviderFactory Projectile => Stat.Projectile;
-        protected IFlagStatProviderFactory Flag => Stat.Flag;
-        protected IGemStatProviderFactory Gem => Stat.Gem;
+        protected IAttributeStatBuilders Attribute => Stat.Attribute;
+        protected IFlaskStatBuilders Flask => Stat.Flask;
+        protected IProjectileStatBuilders Projectile => Stat.Projectile;
+        protected IFlagStatBuilders Flag => Stat.Flag;
+        protected IGemStatBuilders Gem => Stat.Gem;
 
-        protected IStatProvider ApplyOnce(params IStatProvider[] stats) => Stat.ApplyOnce(stats);
+        protected IStatBuilder ApplyOnce(params IStatBuilder[] stats) => Stat.ApplyOnce(stats);
 
-        protected IPoolStatProvider Life => Stat.Pool.Life;
-        protected IPoolStatProvider Mana => Stat.Pool.Mana;
-        protected IPoolStatProvider EnergyShield => Stat.Pool.EnergyShield;
-        protected IStatProvider Armour => Stat.Armour;
-        protected IEvasionStatProvider Evasion => Stat.Evasion;
+        protected IPoolStatBuilder Life => Stat.Pool.Life;
+        protected IPoolStatBuilder Mana => Stat.Pool.Mana;
+        protected IPoolStatBuilder EnergyShield => Stat.Pool.EnergyShield;
+        protected IStatBuilder Armour => Stat.Armour;
+        protected IEvasionStatBuilder Evasion => Stat.Evasion;
 
         // Actions
 
-        protected IActionProviderFactory Action => ProviderFactories.ActionProviderFactory;
+        protected IActionBuilders Action => BuilderFactories.ActionBuilders;
 
-        protected ISelfToAnyActionProvider Kill => Action.Kill;
-        protected IBlockActionProvider Block => Action.Block;
-        protected ISelfToAnyActionProvider Hit => Action.Hit;
-        protected ICriticalStrikeActionProvider CriticalStrike => Action.CriticalStrike;
+        protected ISelfToAnyActionBuilder Kill => Action.Kill;
+        protected IBlockActionBuilder Block => Action.Block;
+        protected ISelfToAnyActionBuilder Hit => Action.Hit;
+        protected ICriticalStrikeActionBuilder CriticalStrike => Action.CriticalStrike;
 
         // Buffs
 
-        protected IBuffProviderFactory Buff => ProviderFactories.BuffProviderFactory;
+        protected IBuffBuilders Buff => BuilderFactories.BuffBuilders;
 
-        protected IBuffProviderCollection Buffs(IEntityProvider source = null,
-            IEntityProvider target = null) =>
+        protected IBuffBuilderCollection Buffs(IEntityBuilder source = null,
+            IEntityBuilder target = null) =>
             Buff.Buffs(source, target);
 
         // Charges
 
-        protected IChargeTypeProviderFactory Charge => ProviderFactories.ChargeTypeProviderFactory;
+        protected IChargeTypeBuilders Charge => BuilderFactories.ChargeTypeBuilders;
 
         // Damage types
 
-        private IDamageTypeProviderFactory DamageTypeProviderFactory => 
-            ProviderFactories.DamageTypeProviderFactory;
+        private IDamageTypeBuilders DamageTypeBuilders => 
+            BuilderFactories.DamageTypeBuilders;
 
-        protected IDamageTypeProvider Physical => DamageTypeProviderFactory.Physical;
-        protected IDamageTypeProvider Fire => DamageTypeProviderFactory.Fire;
-        protected IDamageTypeProvider Lightning => DamageTypeProviderFactory.Lightning;
-        protected IDamageTypeProvider Cold => DamageTypeProviderFactory.Cold;
-        protected IDamageTypeProvider Chaos => DamageTypeProviderFactory.Chaos;
-        protected IDamageTypeProvider RandomElement => DamageTypeProviderFactory.RandomElement;
+        protected IDamageTypeBuilder Physical => DamageTypeBuilders.Physical;
+        protected IDamageTypeBuilder Fire => DamageTypeBuilders.Fire;
+        protected IDamageTypeBuilder Lightning => DamageTypeBuilders.Lightning;
+        protected IDamageTypeBuilder Cold => DamageTypeBuilders.Cold;
+        protected IDamageTypeBuilder Chaos => DamageTypeBuilders.Chaos;
+        protected IDamageTypeBuilder RandomElement => DamageTypeBuilders.RandomElement;
 
         // Effects
 
-        protected IEffectProviderFactory Effect => ProviderFactories.EffectProviderFactory;
+        protected IEffectBuilders Effect => BuilderFactories.EffectBuilders;
 
-        protected IAilmentProviderFactory Ailment => Effect.Ailment;
-        protected IGroundEffectProviderFactory Ground => Effect.Ground;
+        protected IAilmentBuilders Ailment => Effect.Ailment;
+        protected IGroundEffectBuilders Ground => Effect.Ground;
 
         // Entities
 
-        protected IEntityProviderFactory Entity => ProviderFactories.EntityProviderFactory;
+        protected IEntityBuilders Entity => BuilderFactories.EntityBuilders;
 
-        protected ISelfProvider Self => Entity.Self;
-        protected IEnemyProvider Enemy => Entity.Enemy;
-        protected IEntityProvider Ally => Entity.Ally;
+        protected ISelfBuilder Self => Entity.Self;
+        protected IEnemyBuilder Enemy => Entity.Enemy;
+        protected IEntityBuilder Ally => Entity.Ally;
 
         // Equipment
 
-        private IEquipmentProviderFactory EquipmentProviderFactory =>
-            ProviderFactories.EquipmentProviderFactory;
+        private IEquipmentBuilders EquipmentBuilders =>
+            BuilderFactories.EquipmentBuilders;
 
-        protected IEquipmentProviderCollection Equipment => EquipmentProviderFactory.Equipment;
+        protected IEquipmentBuilderCollection Equipment => EquipmentBuilders.Equipment;
 
-        protected IEquipmentProvider LocalHand => EquipmentProviderFactory.LocalHand;
+        protected IEquipmentBuilder LocalHand => EquipmentBuilders.LocalHand;
 
         // Keywords
 
-        protected IKeywordProviderFactory Keyword => ProviderFactories.KeywordProviderFactory;
+        protected IKeywordBuilders Keyword => BuilderFactories.KeywordBuilders;
 
         // Skills
 
-        protected ISkillProviderFactory Skill => ProviderFactories.SkillProviderFactory;
+        protected ISkillBuilders Skill => BuilderFactories.SkillBuilders;
 
-        protected ISkillProviderCollection Skills => Skill.Skills;
+        protected ISkillBuilderCollection Skills => Skill.Skills;
 
-        protected ISkillProviderCollection Combine(params ISkillProvider[] skills) =>
+        protected ISkillBuilderCollection Combine(params ISkillBuilder[] skills) =>
             Skill.Combine(skills);
 
         // Sources
 
-        protected IDamageSourceProviderFactory Source => 
-            ProviderFactories.DamageSourceProviderFactory;
+        protected IDamageSourceBuilders Source => 
+            BuilderFactories.DamageSourceBuilders;
 
         // Convenience methods
 
-        protected IEquipmentProvider MainHand => Equipment[ItemSlot.MainHand];
-        protected IEquipmentProvider OffHand => Equipment[ItemSlot.OffHand];
+        protected IEquipmentBuilder MainHand => Equipment[ItemSlot.MainHand];
+        protected IEquipmentBuilder OffHand => Equipment[ItemSlot.OffHand];
 
-        protected ISkillProviderCollection Traps => Skills[Keyword.Trap];
-        protected ISkillProviderCollection Mines => Skills[Keyword.Mine];
-        protected ISkillProviderCollection Totems => Skills[Keyword.Totem];
-        protected ISkillProviderCollection Golems => Skills[Keyword.Golem];
+        protected ISkillBuilderCollection Traps => Skills[Keyword.Trap];
+        protected ISkillBuilderCollection Mines => Skills[Keyword.Mine];
+        protected ISkillBuilderCollection Totems => Skills[Keyword.Totem];
+        protected ISkillBuilderCollection Golems => Skills[Keyword.Golem];
 
-        protected IDamageTypeProvider Elemental => Fire.And(Lightning).And(Cold);
+        protected IDamageTypeBuilder Elemental => Fire.And(Lightning).And(Cold);
 
-        protected IEnumerable<IDamageTypeProvider> AllDamageTypes => new[]
+        protected IEnumerable<IDamageTypeBuilder> AllDamageTypes => new[]
         {
             Physical, Fire, Lightning, Cold, Chaos
         };
-        protected IEnumerable<IDamageTypeProvider> ElementalDamageTypes => new[]
+        protected IEnumerable<IDamageTypeBuilder> ElementalDamageTypes => new[]
         {
             Fire, Lightning, Cold
         };
 
-        protected IDamageStatProvider Damage =>
+        protected IDamageStatBuilder Damage =>
             AllDamageTypes.Aggregate((l, r) => l.And(r)).Damage;
     }
 }

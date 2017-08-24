@@ -1,39 +1,39 @@
 using PoESkillTree.Common.Model.Items.Enums;
-using PoESkillTree.Computation.Providers;
-using PoESkillTree.Computation.Providers.Conditions;
-using PoESkillTree.Computation.Providers.Entities;
-using PoESkillTree.Computation.Providers.Skills;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Conditions;
+using PoESkillTree.Computation.Parsing.Builders.Entities;
+using PoESkillTree.Computation.Parsing.Builders.Skills;
 
 namespace PoESkillTree.Computation.Data.Base
 {
     public abstract class UsesConditionProviders : UsesStatProviders
     {
-        protected UsesConditionProviders(IProviderFactories providerFactories) 
-            : base(providerFactories)
+        protected UsesConditionProviders(IBuilderFactories builderFactories) 
+            : base(builderFactories)
         {
         }
 
-        protected IConditionProviderFactory Condition => ProviderFactories.ConditionProviderFactory;
+        protected IConditionBuilders Condition => BuilderFactories.ConditionBuilders;
 
-        protected IConditionProvider With(ISkillProviderCollection skills) =>
+        protected IConditionBuilder With(ISkillBuilderCollection skills) =>
             Condition.With(skills);
 
-        protected IConditionProvider With(ISkillProvider skill) => Condition.With(skill);
+        protected IConditionBuilder With(ISkillBuilder skill) => Condition.With(skill);
 
-        protected IConditionProvider For(params IEntityProvider[] targets) =>
+        protected IConditionBuilder For(params IEntityBuilder[] targets) =>
             Condition.For(targets);
 
-        protected IConditionProvider And(params IConditionProvider[] conditions) =>
+        protected IConditionBuilder And(params IConditionBuilder[] conditions) =>
             Condition.And(conditions);
 
-        protected IConditionProvider Or(params IConditionProvider[] conditions) =>
+        protected IConditionBuilder Or(params IConditionBuilder[] conditions) =>
             Condition.Or(conditions);
 
-        protected IConditionProvider Not(IConditionProvider condition) => Condition.Not(condition);
+        protected IConditionBuilder Not(IConditionBuilder condition) => Condition.Not(condition);
 
-        protected IConditionProvider LocalIsMelee =>
+        protected IConditionBuilder LocalIsMelee =>
             And(LocalHand.Has(Tags.Weapon), Not(LocalHand.Has(Tags.Ranged)));
 
-        protected IConditionProvider Unarmed => Not(MainHand.HasItem);
+        protected IConditionBuilder Unarmed => Not(MainHand.HasItem);
     }
 }

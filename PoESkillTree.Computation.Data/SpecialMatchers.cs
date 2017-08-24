@@ -4,32 +4,33 @@ using System.Linq;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers;
-using PoESkillTree.Computation.Providers.Conditions;
-using PoESkillTree.Computation.Providers.Forms;
-using PoESkillTree.Computation.Providers.Matching;
-using PoESkillTree.Computation.Providers.Stats;
-using PoESkillTree.Computation.Providers.Values;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Conditions;
+using PoESkillTree.Computation.Parsing.Builders.Forms;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Values;
+using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
     public class SpecialMatchers : UsesMatchContext, IStatMatchers
     {
-        private readonly IMatchBuilder _matchBuilder;
+        private readonly IModifierBuilder _modifierBuilder;
         private readonly Lazy<IReadOnlyList<MatcherData>> _lazyMatchers;
 
-        public SpecialMatchers(IProviderFactories providerFactories, 
-            IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder) 
-            : base(providerFactories, matchContextFactory)
+        public SpecialMatchers(IBuilderFactories builderFactories, 
+            IMatchContexts matchContexts, IModifierBuilder modifierBuilder) 
+            : base(builderFactories, matchContexts)
         {
-            _matchBuilder = matchBuilder;
+            _modifierBuilder = modifierBuilder;
             _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
         }
 
         public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
 
         private SpecialMatcherCollection CreateCollection() => new SpecialMatcherCollection(
-            _matchBuilder, ValueFactory)
+            _modifierBuilder, ValueFactory)
         {
             {
                 @"\+# to level of socketed support gems",
@@ -198,8 +199,8 @@ namespace PoESkillTree.Computation.Data
             },
         };
 
-        private IEnumerable<(IFormProvider form, IStatProvider stat, ValueProvider value,
-            IConditionProvider condition)> ElementalEquilibrium()
+        private IEnumerable<(IFormBuilder form, IStatBuilder stat, ValueBuilder value,
+            IConditionBuilder condition)> ElementalEquilibrium()
         {
             foreach (var type in ElementalDamageTypes)
             {
@@ -211,8 +212,8 @@ namespace PoESkillTree.Computation.Data
             }
         }
 
-        private IEnumerable<(IFormProvider form, IStatProvider stat, ValueProvider value,
-            IConditionProvider condition)> LiegeOfThePrimordialDamage()
+        private IEnumerable<(IFormBuilder form, IStatBuilder stat, ValueBuilder value,
+            IConditionBuilder condition)> LiegeOfThePrimordialDamage()
         {
             foreach (var type in AllDamageTypes)
             {
@@ -221,9 +222,9 @@ namespace PoESkillTree.Computation.Data
             }
         }
 
-        private IEnumerable<(IFormProvider form, IStatProvider stat, ValueProvider value,
-            IConditionProvider condition)> ParagonOfCalamity(IFormProvider form,
-            IStatProvider stat, ValueProvider value)
+        private IEnumerable<(IFormBuilder form, IStatBuilder stat, ValueBuilder value,
+            IConditionBuilder condition)> ParagonOfCalamity(IFormBuilder form,
+            IStatBuilder stat, ValueBuilder value)
         {
             foreach (var type in ElementalDamageTypes)
             {

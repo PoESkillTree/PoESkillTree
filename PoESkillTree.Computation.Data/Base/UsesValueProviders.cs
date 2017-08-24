@@ -1,17 +1,17 @@
-﻿using PoESkillTree.Computation.Providers;
-using PoESkillTree.Computation.Providers.Values;
+﻿using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Data.Base
 {
     public abstract class UsesValueProviders
     {
-        protected UsesValueProviders(IProviderFactories providerFactories)
+        protected UsesValueProviders(IBuilderFactories builderFactories)
         {
-            ProviderFactories = providerFactories;
+            BuilderFactories = builderFactories;
         }
 
-        protected IProviderFactories ProviderFactories { get; }
+        protected IBuilderFactories BuilderFactories { get; }
 
-        protected IValueProviderFactory ValueFactory => ProviderFactories.ValueProviderFactory;
+        protected IValueBuilders ValueFactory => BuilderFactories.ValueBuilders;
     }
 }

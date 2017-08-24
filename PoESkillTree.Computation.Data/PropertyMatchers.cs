@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers;
-using PoESkillTree.Computation.Providers.Matching;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
+using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
@@ -14,21 +15,21 @@ namespace PoESkillTree.Computation.Data
         // "Elemental Damage: ..." needs to be replaced by up to three properties (one for each 
         // element) before it gets here.
 
-        private readonly IMatchBuilder _matchBuilder;
+        private readonly IModifierBuilder _modifierBuilder;
         private readonly Lazy<IReadOnlyList<MatcherData>> _lazyMatchers;
 
-        public PropertyMatchers(IProviderFactories providerFactories, 
-            IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder)
-            : base(providerFactories, matchContextFactory)
+        public PropertyMatchers(IBuilderFactories builderFactories, 
+            IMatchContexts matchContexts, IModifierBuilder modifierBuilder)
+            : base(builderFactories, matchContexts)
         {
-            _matchBuilder = matchBuilder;
+            _modifierBuilder = modifierBuilder;
             _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
         }
 
         public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
 
         private PropertyMatcherCollection CreateCollection() => new PropertyMatcherCollection(
-            _matchBuilder)
+            _modifierBuilder)
         {
             { "quality" }, // do nothing with it
             { "attacks per second", Skills.Speed },

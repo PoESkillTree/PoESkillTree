@@ -1,22 +1,24 @@
 ﻿using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers.Charges;
 using System.Collections.Generic;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Charges;
+using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
-    public class ChargeTypeMatchers : ReferencedMatchersBase<IChargeTypeProvider>
+    public class ChargeTypeMatchers : ReferencedMatchersBase<IChargeTypeBuilder>
     {
-        private IChargeTypeProviderFactory Charge { get; }
+        private IChargeTypeBuilders Charge { get; }
 
-        public ChargeTypeMatchers(IChargeTypeProviderFactory chargeTypeProviderFactory)
+        public ChargeTypeMatchers(IChargeTypeBuilders chargeTypeBuilders)
         {
-            Charge = chargeTypeProviderFactory;
+            Charge = chargeTypeBuilders;
         }
 
-        protected override IEnumerable<ReferencedMatcherData<IChargeTypeProvider>>
+        protected override IEnumerable<ReferencedMatcherData<IChargeTypeBuilder>>
             CreateCollection() =>
-            new ReferencedMatcherCollection<IChargeTypeProvider>
+            new ReferencedMatcherCollection<IChargeTypeBuilder>
             {
                 { "endurance charges?", Charge.Endurance },
                 { "power charges?", Charge.Power },

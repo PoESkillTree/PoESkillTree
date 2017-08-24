@@ -4,29 +4,30 @@ using System.Linq;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers;
-using PoESkillTree.Computation.Providers.Matching;
-using PoESkillTree.Computation.Providers.Stats;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
     public class DamageStatMatchers : UsesMatchContext, IStatMatchers
     {
-        private readonly IMatchBuilder _matchBuilder;
+        private readonly IModifierBuilder _modifierBuilder;
         private readonly Lazy<IReadOnlyList<MatcherData>> _lazyMatchers;
 
-        public DamageStatMatchers(IProviderFactories providerFactories, 
-            IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder) 
-            : base(providerFactories, matchContextFactory)
+        public DamageStatMatchers(IBuilderFactories builderFactories, 
+            IMatchContexts matchContexts, IModifierBuilder modifierBuilder) 
+            : base(builderFactories, matchContexts)
         {
-            _matchBuilder = matchBuilder;
+            _modifierBuilder = modifierBuilder;
             _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
         }
 
         public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
 
-        private StatMatcherCollection<IDamageStatProvider> CreateCollection() =>
-            new StatMatcherCollection<IDamageStatProvider>(_matchBuilder)
+        private StatMatcherCollection<IDamageStatBuilder> CreateCollection() =>
+            new StatMatcherCollection<IDamageStatBuilder>(_modifierBuilder)
             {
                 // unspecific
                 { "damage", Damage },

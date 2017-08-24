@@ -3,30 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers;
-using PoESkillTree.Computation.Providers.Matching;
-
-using DamageStat = PoESkillTree.Computation.Providers.Stats.IDamageStatProvider;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
     public class StatManipulatorMatchers : UsesMatchContext, IStatMatchers
     {
-        private readonly IMatchBuilder _matchBuilder;
+        private readonly IModifierBuilder _modifierBuilder;
         private readonly Lazy<IReadOnlyList<MatcherData>> _lazyMatchers;
 
-        public StatManipulatorMatchers(IProviderFactories providerFactories, 
-            IMatchContextFactory matchContextFactory, IMatchBuilder matchBuilder) 
-            : base(providerFactories, matchContextFactory)
+        public StatManipulatorMatchers(IBuilderFactories builderFactories, 
+            IMatchContexts matchContexts, IModifierBuilder modifierBuilder) 
+            : base(builderFactories, matchContexts)
         {
-            _matchBuilder = matchBuilder;
+            _modifierBuilder = modifierBuilder;
             _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
         }
 
         public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
 
         private StatManipulatorMatcherCollection CreateCollection() =>
-            new StatManipulatorMatcherCollection(_matchBuilder)
+            new StatManipulatorMatcherCollection(_modifierBuilder)
             {
                 { "you and nearby allies( deal| have)?", s => s.AsAura(Self, Ally) },
                 {
@@ -42,14 +42,14 @@ namespace PoESkillTree.Computation.Data
                     s => Buff.Rotation(Values.First).Step(Values.Last, s.AsBuff), "$1"
                 },
                 { "nearby enemies (have|deal)", s => s.AsAura(Enemy) },
-                { "nearby enemies take", (DamageStat s) => s.Taken.AsAura(Enemy) },
+                { "nearby enemies take", (IDamageStatBuilder s) => s.Taken.AsAura(Enemy) },
                 { "enemies near your totems (have|deal)", s => Entity.Totem.Stat(s.AsAura(Enemy)) },
                 {
                     "enemies near your totems take",
-                    (DamageStat s) => Entity.Totem.Stat(s.Taken.AsAura(Enemy))
+                    (IDamageStatBuilder s) => Entity.Totem.Stat(s.Taken.AsAura(Enemy))
                 },
                 // Keep whole mod line, take is part of the condition matcher
-                { "enemies.* take", (DamageStat s) => s.Taken, "$0" },
+                { "enemies.* take", (IDamageStatBuilder s) => s.Taken, "$0" },
                 { "(chance to .*) for # seconds", s => s.ForXSeconds(Value).ChanceOn(Self), "$1" },
                 { "for # seconds", s => s.ForXSeconds(Value).On(Self) },
             };

@@ -2,8 +2,8 @@
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers.Forms;
-using PoESkillTree.Computation.Providers.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Forms;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
 {
@@ -27,8 +27,8 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddAddsCorrectData()
         {
-            var form = Mock.Of<IFormProvider>();
-            var stat = Mock.Of<IStatProvider>();
+            var form = Mock.Of<IFormBuilder>();
+            var stat = Mock.Of<IStatBuilder>();
 
             _sut.Add(form, stat, 3);
 
@@ -41,8 +41,8 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddManyAddsToCount()
         {
-            var form = Mock.Of<IFormProvider>();
-            var stat = Mock.Of<IStatProvider>();
+            var form = Mock.Of<IFormBuilder>();
+            var stat = Mock.Of<IStatBuilder>();
 
             _sut.Add(form, stat, 1);
             _sut.Add(form, stat, 2);

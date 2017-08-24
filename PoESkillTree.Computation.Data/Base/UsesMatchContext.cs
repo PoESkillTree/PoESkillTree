@@ -1,24 +1,24 @@
-﻿using PoESkillTree.Computation.Providers;
-using PoESkillTree.Computation.Providers.Matching;
-using PoESkillTree.Computation.Providers.Values;
+﻿using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
+using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Data.Base
 {
     public abstract class UsesMatchContext : UsesConditionProviders
     {
-        private readonly IMatchContextFactory _matchContextFactory;
+        private readonly IMatchContexts _matchContexts;
 
-        protected UsesMatchContext(IProviderFactories providerFactories,
-            IMatchContextFactory matchContextFactory)
-            : base(providerFactories)
+        protected UsesMatchContext(IBuilderFactories builderFactories,
+            IMatchContexts matchContexts)
+            : base(builderFactories)
         {
-            _matchContextFactory = matchContextFactory;
+            _matchContexts = matchContexts;
         }
 
-        protected IMatchContext<IGroupConverter> Groups => _matchContextFactory.Groups;
+        protected IMatchContext<IGroupConverter> Groups => _matchContexts.Groups;
         protected IGroupConverter Group => Groups.Single;
 
-        protected IMatchContext<ValueProvider> Values => _matchContextFactory.Values;
-        protected ValueProvider Value => Values.Single;
+        protected IMatchContext<ValueBuilder> Values => _matchContexts.Values;
+        protected ValueBuilder Value => Values.Single;
     }
 }

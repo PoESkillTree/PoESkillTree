@@ -3,25 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
     public class FormMatchers : UsesFormProviders, IStatMatchers
     {
-        private readonly IMatchBuilder _matchBuilder;
+        private readonly IModifierBuilder _modifierBuilder;
         private readonly Lazy<IReadOnlyList<MatcherData>> _lazyMatchers;
 
-        public FormMatchers(IProviderFactories providerFactories, IMatchBuilder matchBuilder) 
-            : base(providerFactories)
+        public FormMatchers(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder) 
+            : base(builderFactories)
         {
-            _matchBuilder = matchBuilder;
+            _modifierBuilder = modifierBuilder;
             _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
         }
 
         public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
 
-        private FormMatcherCollection CreateCollection() => new FormMatcherCollection(_matchBuilder,
+        private FormMatcherCollection CreateCollection() => new FormMatcherCollection(_modifierBuilder,
             ValueFactory)
         {
             { "#% increased", PercentIncrease },

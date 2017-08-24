@@ -1,22 +1,24 @@
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers.Skills;
 using System.Collections.Generic;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Skills;
+using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
-    public class KeywordMatchers : ReferencedMatchersBase<IKeywordProvider>
+    public class KeywordMatchers : ReferencedMatchersBase<IKeywordBuilder>
     {
-        private IKeywordProviderFactory Keyword { get; }
+        private IKeywordBuilders Keyword { get; }
 
-        public KeywordMatchers(IKeywordProviderFactory keywordProviderFactory)
+        public KeywordMatchers(IKeywordBuilders keywordBuilders)
         {
-            Keyword = keywordProviderFactory;
+            Keyword = keywordBuilders;
         }
 
-        protected override IEnumerable<ReferencedMatcherData<IKeywordProvider>>
+        protected override IEnumerable<ReferencedMatcherData<IKeywordBuilder>>
             CreateCollection() =>
-            new ReferencedMatcherCollection<IKeywordProvider>
+            new ReferencedMatcherCollection<IKeywordBuilder>
             {
                 { "melee", Keyword.Melee },
                 { "attacks?", Keyword.Attack },

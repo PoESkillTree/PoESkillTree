@@ -2,10 +2,10 @@
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers.Conditions;
-using PoESkillTree.Computation.Providers.Forms;
-using PoESkillTree.Computation.Providers.Stats;
-using PoESkillTree.Computation.Providers.Values;
+using PoESkillTree.Computation.Parsing.Builders.Conditions;
+using PoESkillTree.Computation.Parsing.Builders.Forms;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
 {
@@ -14,14 +14,14 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
     {
         private const string Regex = "regex";
 
-        private Mock<IValueProviderFactory> _valueFactory;
+        private Mock<IValueBuilders> _valueFactory;
         private FormAndStatMatcherCollection _sut;
 
         [SetUp]
         public void SetUp()
         {
-            _valueFactory = new Mock<IValueProviderFactory>();
-            _sut = new FormAndStatMatcherCollection(new MatchBuilderStub(), _valueFactory.Object);
+            _valueFactory = new Mock<IValueBuilders>();
+            _sut = new FormAndStatMatcherCollection(new ModifierBuilderStub(), _valueFactory.Object);
         }
 
         [Test]
@@ -33,9 +33,9 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddFormStatAndValueAddsCorrectMatcherData()
         {
-            var form = Mock.Of<IFormProvider>();
-            var stat = Mock.Of<IStatProvider>();
-            var value = new ValueProvider(Mock.Of<IValueProvider>());
+            var form = Mock.Of<IFormBuilder>();
+            var stat = Mock.Of<IStatBuilder>();
+            var value = new ValueBuilder(Mock.Of<IValueBuilder>());
             _valueFactory.Setup(v => v.Create(3)).Returns(value);
 
             _sut.Add(Regex, form, stat, 3);
@@ -49,11 +49,11 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddFormStatValueAndConditionAddsCorrectMatcherData()
         {
-            var form = Mock.Of<IFormProvider>();
-            var stat = Mock.Of<IStatProvider>();
-            var value = new ValueProvider(Mock.Of<IValueProvider>());
+            var form = Mock.Of<IFormBuilder>();
+            var stat = Mock.Of<IStatBuilder>();
+            var value = new ValueBuilder(Mock.Of<IValueBuilder>());
             _valueFactory.Setup(v => v.Create(3)).Returns(value);
-            var condition = Mock.Of<IConditionProvider>();
+            var condition = Mock.Of<IConditionBuilder>();
 
             _sut.Add(Regex, form, stat, 3, condition);
 
@@ -67,10 +67,10 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddFormAndManyStatsAddsCorrectMatcherData()
         {
-            var form = Mock.Of<IFormProvider>();
-            var stat1 = Mock.Of<IStatProvider>();
-            var stat2 = Mock.Of<IStatProvider>();
-            var stat3 = Mock.Of<IStatProvider>();
+            var form = Mock.Of<IFormBuilder>();
+            var stat1 = Mock.Of<IStatBuilder>();
+            var stat2 = Mock.Of<IStatBuilder>();
+            var stat3 = Mock.Of<IStatBuilder>();
 
             _sut.Add(Regex, form, stat1, stat2, stat3);
 
@@ -82,8 +82,8 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddFormAndSingleStatAddsCorrectMatcherData()
         {
-            var form = Mock.Of<IFormProvider>();
-            var stat = Mock.Of<IStatProvider>();
+            var form = Mock.Of<IFormBuilder>();
+            var stat = Mock.Of<IStatBuilder>();
 
             _sut.Add(Regex, form, stat);
 
@@ -95,8 +95,8 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddFormAndEnumerableStatsAddsCorrectMatcherData()
         {
-            var form = Mock.Of<IFormProvider>();
-            var stats = Enumerable.Empty<IStatProvider>();
+            var form = Mock.Of<IFormBuilder>();
+            var stats = Enumerable.Empty<IStatBuilder>();
 
             _sut.Add(Regex, form, stats);
 
@@ -108,15 +108,15 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddWithSubstitutionAddsCorrectMatcherData()
         {
-            var form = Mock.Of<IFormProvider>();
-            var stat = Mock.Of<IStatProvider>();
+            var form = Mock.Of<IFormBuilder>();
+            var stat = Mock.Of<IStatBuilder>();
 
             _sut.Add(Regex, form, stat, "substitution");
 
             var data = _sut.Single();
             Assert.AreEqual(Regex, data.Regex);
-            Assert.IsInstanceOf<MatchBuilderStub>(data.MatchBuilder);
-            var builder = (MatchBuilderStub) data.MatchBuilder;
+            Assert.IsInstanceOf<ModifierBuilderStub>(data.ModifierBuilder);
+            var builder = (ModifierBuilderStub) data.ModifierBuilder;
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
             Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));
             Assert.AreEqual("substitution", data.MatchSubstitution);
@@ -125,8 +125,8 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddWithConverter()
         {
-            var form = Mock.Of<IFormProvider>();
-            var stat = Mock.Of<IStatProvider>();
+            var form = Mock.Of<IFormBuilder>();
+            var stat = Mock.Of<IStatBuilder>();
             ValueFunc converter = v => null;
 
             _sut.Add(Regex, form, stat, converter);
@@ -140,9 +140,9 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddFormTuple()
         {
-            var firstForm = Mock.Of<IFormProvider>();
-            var secondForm = Mock.Of<IFormProvider>();
-            var stat = Mock.Of<IStatProvider>();
+            var firstForm = Mock.Of<IFormBuilder>();
+            var secondForm = Mock.Of<IFormBuilder>();
+            var stat = Mock.Of<IStatBuilder>();
 
             _sut.Add(Regex, (firstForm, secondForm), stat);
 
@@ -154,9 +154,9 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddManyAddsToCount()
         {
-            var form = Mock.Of<IFormProvider>();
-            var stat = Mock.Of<IStatProvider>();
-            var value = new ValueProvider(Mock.Of<IValueProvider>());
+            var form = Mock.Of<IFormBuilder>();
+            var stat = Mock.Of<IStatBuilder>();
+            var value = new ValueBuilder(Mock.Of<IValueBuilder>());
             _valueFactory.Setup(v => v.Create(5)).Returns(value);
 
             _sut.Add(Regex, form, stat, 5);

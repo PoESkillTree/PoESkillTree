@@ -1,20 +1,21 @@
 using JetBrains.Annotations;
-using PoESkillTree.Computation.Providers.Values;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
     public class ValueConversionMatcherCollection : MatcherCollection
     {
-        public ValueConversionMatcherCollection(IMatchBuilder matchBuilder) : base(matchBuilder)
+        public ValueConversionMatcherCollection(IModifierBuilder modifierBuilder) : base(modifierBuilder)
         {
         }
 
         public void Add([RegexPattern] string regex, ValueFunc func)
         {
-            Add(regex, MatchBuilder.WithValueConverter(func));
+            Add(regex, ModifierBuilder.WithValueConverter(func));
         }
 
-        public void Add([RegexPattern] string regex, ValueProvider multiplier)
+        public void Add([RegexPattern] string regex, ValueBuilder multiplier)
         {
             Add(regex, v => v * multiplier);
         }

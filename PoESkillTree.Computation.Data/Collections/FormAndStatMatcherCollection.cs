@@ -1,28 +1,29 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using MoreLinq;
-using PoESkillTree.Computation.Providers.Conditions;
-using PoESkillTree.Computation.Providers.Forms;
-using PoESkillTree.Computation.Providers.Stats;
-using PoESkillTree.Computation.Providers.Values;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Conditions;
+using PoESkillTree.Computation.Parsing.Builders.Forms;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
     public class FormAndStatMatcherCollection : MatcherCollection
     {
-        private readonly IValueProviderFactory _valueFactory;
+        private readonly IValueBuilders _valueFactory;
 
-        public FormAndStatMatcherCollection(IMatchBuilder matchBuilder,
-            IValueProviderFactory valueFactory)
-            : base(matchBuilder)
+        public FormAndStatMatcherCollection(IModifierBuilder modifierBuilder,
+            IValueBuilders valueFactory)
+            : base(modifierBuilder)
         {
             _valueFactory = valueFactory;
         }
 
-        public void Add([RegexPattern] string regex, IFormProvider form, IStatProvider stat, 
-            double value, IConditionProvider condition = null)
+        public void Add([RegexPattern] string regex, IFormBuilder form, IStatBuilder stat, 
+            double value, IConditionBuilder condition = null)
         {
-            var builder = MatchBuilder
+            var builder = ModifierBuilder
                 .WithForm(form)
                 .WithStat(stat)
                 .WithValue(_valueFactory.Create(value));
@@ -33,34 +34,34 @@ namespace PoESkillTree.Computation.Data.Collections
             Add(regex, builder);
         }
 
-        public void Add([RegexPattern] string regex, IFormProvider form, IStatProvider stat, 
-            params IStatProvider[] stats)
+        public void Add([RegexPattern] string regex, IFormBuilder form, IStatBuilder stat, 
+            params IStatBuilder[] stats)
         {
-            var builder = MatchBuilder
+            var builder = ModifierBuilder
                 .WithForm(form)
                 .WithStats(stat.Concat(stats));
             Add(regex, builder);
         }
 
-        public void Add([RegexPattern] string regex, IFormProvider form, IEnumerable<IStatProvider> stats)
+        public void Add([RegexPattern] string regex, IFormBuilder form, IEnumerable<IStatBuilder> stats)
         {
-            var builder = MatchBuilder
+            var builder = ModifierBuilder
                 .WithForm(form)
                 .WithStats(stats);
             Add(regex, builder);
         }
 
-        public void Add([RegexPattern] string regex, IFormProvider form, IStatProvider stat, string substitution)
+        public void Add([RegexPattern] string regex, IFormBuilder form, IStatBuilder stat, string substitution)
         {
-            var builder = MatchBuilder
+            var builder = ModifierBuilder
                 .WithForm(form)
                 .WithStat(stat);
             Add(regex, builder, substitution);
         }
 
-        public void Add([RegexPattern] string regex, IFormProvider form, IStatProvider stat, ValueFunc converter)
+        public void Add([RegexPattern] string regex, IFormBuilder form, IStatBuilder stat, ValueFunc converter)
         {
-            var builder = MatchBuilder
+            var builder = ModifierBuilder
                 .WithForm(form)
                 .WithStat(stat)
                 .WithValueConverter(converter);
@@ -68,9 +69,9 @@ namespace PoESkillTree.Computation.Data.Collections
         }
 
         public void Add([RegexPattern] string regex, 
-            (IFormProvider forFirstValue, IFormProvider forSecondValue) forms, IStatProvider stat)
+            (IFormBuilder forFirstValue, IFormBuilder forSecondValue) forms, IStatBuilder stat)
         {
-            var builder = MatchBuilder
+            var builder = ModifierBuilder
                 .WithForms(new[] { forms.forFirstValue, forms.forSecondValue })
                 .WithStat(stat);
             Add(regex, builder);

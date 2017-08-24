@@ -1,10 +1,10 @@
 ﻿using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers.Conditions;
-using PoESkillTree.Computation.Providers.Forms;
-using PoESkillTree.Computation.Providers.Stats;
-using PoESkillTree.Computation.Providers.Values;
+using PoESkillTree.Computation.Parsing.Builders.Conditions;
+using PoESkillTree.Computation.Parsing.Builders.Forms;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
 {
@@ -13,14 +13,14 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
     {
         private const string Regex = "regex";
 
-        private Mock<IValueProviderFactory> _valueFactory;
+        private Mock<IValueBuilders> _valueFactory;
         private SpecialMatcherCollection _sut;
 
         [SetUp]
         public void SetUp()
         {
-            _valueFactory = new Mock<IValueProviderFactory>();
-            _sut = new SpecialMatcherCollection(new MatchBuilderStub(), _valueFactory.Object);
+            _valueFactory = new Mock<IValueBuilders>();
+            _sut = new SpecialMatcherCollection(new ModifierBuilderStub(), _valueFactory.Object);
         }
 
         [Test]
@@ -32,8 +32,8 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddFormStat()
         {
-            var form = Mock.Of<IFormProvider>();
-            var stat = Mock.Of<IStatProvider>();
+            var form = Mock.Of<IFormBuilder>();
+            var stat = Mock.Of<IStatBuilder>();
 
             _sut.Add(Regex, form, stat);
 
@@ -45,9 +45,9 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddFormStatCondition()
         {
-            var form = Mock.Of<IFormProvider>();
-            var stat = Mock.Of<IStatProvider>();
-            var condition = Mock.Of<IConditionProvider>();
+            var form = Mock.Of<IFormBuilder>();
+            var stat = Mock.Of<IStatBuilder>();
+            var condition = Mock.Of<IConditionBuilder>();
 
             _sut.Add(Regex, form, stat, condition);
 
@@ -60,9 +60,9 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddFormStatValue()
         {
-            var form = Mock.Of<IFormProvider>();
-            var stat = Mock.Of<IStatProvider>();
-            var value = new ValueProvider(Mock.Of<IValueProvider>());
+            var form = Mock.Of<IFormBuilder>();
+            var stat = Mock.Of<IStatBuilder>();
+            var value = new ValueBuilder(Mock.Of<IValueBuilder>());
 
             _sut.Add(Regex, form, stat, value);
 
@@ -75,10 +75,10 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddFormStatValueCondition()
         {
-            var form = Mock.Of<IFormProvider>();
-            var stat = Mock.Of<IStatProvider>();
-            var value = new ValueProvider(Mock.Of<IValueProvider>());
-            var condition = Mock.Of<IConditionProvider>();
+            var form = Mock.Of<IFormBuilder>();
+            var stat = Mock.Of<IStatBuilder>();
+            var value = new ValueBuilder(Mock.Of<IValueBuilder>());
+            var condition = Mock.Of<IConditionBuilder>();
 
             _sut.Add(Regex, form, stat, value, condition);
 
@@ -92,11 +92,11 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddFormStatDoubleValueCondition()
         {
-            var form = Mock.Of<IFormProvider>();
-            var stat = Mock.Of<IStatProvider>();
-            var value = new ValueProvider(Mock.Of<IValueProvider>());
+            var form = Mock.Of<IFormBuilder>();
+            var stat = Mock.Of<IStatBuilder>();
+            var value = new ValueBuilder(Mock.Of<IValueBuilder>());
             _valueFactory.Setup(v => v.Create(3)).Returns(value);
-            var condition = Mock.Of<IConditionProvider>();
+            var condition = Mock.Of<IConditionBuilder>();
 
             _sut.Add(Regex, form, stat, 3, condition);
 
@@ -111,19 +111,19 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         public void AddTuplesWithValueProviders()
         {
             var forms = new[]
-                { Mock.Of<IFormProvider>(), Mock.Of<IFormProvider>(), Mock.Of<IFormProvider>() };
+                { Mock.Of<IFormBuilder>(), Mock.Of<IFormBuilder>(), Mock.Of<IFormBuilder>() };
             var stats = new[]
-                { Mock.Of<IStatProvider>(), Mock.Of<IStatProvider>(), Mock.Of<IStatProvider>() };
+                { Mock.Of<IStatBuilder>(), Mock.Of<IStatBuilder>(), Mock.Of<IStatBuilder>() };
             var values = new[]
             {
-                new ValueProvider(Mock.Of<IValueProvider>()),
-                new ValueProvider(Mock.Of<IValueProvider>()),
-                new ValueProvider(Mock.Of<IValueProvider>())
+                new ValueBuilder(Mock.Of<IValueBuilder>()),
+                new ValueBuilder(Mock.Of<IValueBuilder>()),
+                new ValueBuilder(Mock.Of<IValueBuilder>())
             };
             var conditions = new[]
             {
-                Mock.Of<IConditionProvider>(), Mock.Of<IConditionProvider>(),
-                Mock.Of<IConditionProvider>()
+                Mock.Of<IConditionBuilder>(), Mock.Of<IConditionBuilder>(),
+                Mock.Of<IConditionBuilder>()
             };
 
             _sut.Add(Regex, 
@@ -142,22 +142,22 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         public void AddTuplesWithDoubleValues()
         {
             var forms = new[]
-                { Mock.Of<IFormProvider>(), Mock.Of<IFormProvider>(), Mock.Of<IFormProvider>() };
+                { Mock.Of<IFormBuilder>(), Mock.Of<IFormBuilder>(), Mock.Of<IFormBuilder>() };
             var stats = new[]
-                { Mock.Of<IStatProvider>(), Mock.Of<IStatProvider>(), Mock.Of<IStatProvider>() };
+                { Mock.Of<IStatBuilder>(), Mock.Of<IStatBuilder>(), Mock.Of<IStatBuilder>() };
             var values = new[]
             {
-                new ValueProvider(Mock.Of<IValueProvider>()),
-                new ValueProvider(Mock.Of<IValueProvider>()),
-                new ValueProvider(Mock.Of<IValueProvider>())
+                new ValueBuilder(Mock.Of<IValueBuilder>()),
+                new ValueBuilder(Mock.Of<IValueBuilder>()),
+                new ValueBuilder(Mock.Of<IValueBuilder>())
             };
             _valueFactory.Setup(v => v.Create(0)).Returns(values[0]);
             _valueFactory.Setup(v => v.Create(1)).Returns(values[1]);
             _valueFactory.Setup(v => v.Create(2)).Returns(values[2]);
             var conditions = new[]
             {
-                Mock.Of<IConditionProvider>(), Mock.Of<IConditionProvider>(),
-                Mock.Of<IConditionProvider>()
+                Mock.Of<IConditionBuilder>(), Mock.Of<IConditionBuilder>(),
+                Mock.Of<IConditionBuilder>()
             };
 
             _sut.Add(Regex,

@@ -2,8 +2,8 @@
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers.Stats;
-using PoESkillTree.Computation.Providers.Values;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
 {
@@ -17,7 +17,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [SetUp]
         public void SetUp()
         {
-            _sut = new PropertyMatcherCollection(new MatchBuilderStub());
+            _sut = new PropertyMatcherCollection(new ModifierBuilderStub());
         }
 
         [Test]
@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddWithStat()
         {
-            var stat = Mock.Of<IStatProvider>();
+            var stat = Mock.Of<IStatBuilder>();
 
             _sut.Add(Regex, stat);
 
@@ -48,7 +48,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddWithStatAndConverter()
         {
-            var stat = Mock.Of<IStatProvider>();
+            var stat = Mock.Of<IStatBuilder>();
             ValueFunc converter = v => null;
 
             _sut.Add(Regex, stat, converter);
@@ -61,7 +61,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddManyAddsToCount()
         {
-            var stat = Mock.Of<IStatProvider>();
+            var stat = Mock.Of<IStatBuilder>();
             ValueFunc converter = v => null;
 
             _sut.Add(Regex);

@@ -2,7 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
 {
@@ -16,7 +16,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [SetUp]
         public void SetUp()
         {
-            _sut = new StatManipulatorMatcherCollection(new MatchBuilderStub());
+            _sut = new StatManipulatorMatcherCollection(new ModifierBuilderStub());
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddWithoutSubstitution()
         {
-            Func<IStatProvider, IStatProvider> manipulator = s => null;
+            Func<IStatBuilder, IStatBuilder> manipulator = s => null;
 
             _sut.Add(Regex, manipulator);
 
@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddWithSubstitution()
         {
-            Func<IStatProvider, IStatProvider> manipulator = s => null;
+            Func<IStatBuilder, IStatBuilder> manipulator = s => null;
 
             _sut.Add(Regex, manipulator, "substitution");
 
@@ -50,9 +50,9 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddGeneric()
         {
-            var inputStat = Mock.Of<IPoolStatProvider>();
-            var resultStat = Mock.Of<IPoolStatProvider>();
-            var converterMock = new Mock<Func<IPoolStatProvider, IStatProvider>>();
+            var inputStat = Mock.Of<IPoolStatBuilder>();
+            var resultStat = Mock.Of<IPoolStatBuilder>();
+            var converterMock = new Mock<Func<IPoolStatBuilder, IStatBuilder>>();
             converterMock.Setup(c => c(inputStat)).Returns(() => resultStat);
 
             _sut.Add(Regex, converterMock.Object, "substitution");
@@ -60,7 +60,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             var builder = _sut.AssertSingle(Regex, "substitution");
             var actualConverter = builder.StatConverter;
             Assert.AreSame(resultStat, actualConverter(inputStat));
-            Assert.Throws<NotSupportedException>(() => actualConverter(Mock.Of<IStatProvider>()));
+            Assert.Throws<NotSupportedException>(() => actualConverter(Mock.Of<IStatBuilder>()));
         }
     }
 }

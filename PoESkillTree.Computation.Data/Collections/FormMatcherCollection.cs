@@ -1,22 +1,23 @@
 using JetBrains.Annotations;
-using PoESkillTree.Computation.Providers.Forms;
-using PoESkillTree.Computation.Providers.Values;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Forms;
+using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
     public class FormMatcherCollection : MatcherCollection
     {
-        private readonly IValueProviderFactory _valueFactory;
+        private readonly IValueBuilders _valueFactory;
 
-        public FormMatcherCollection(IMatchBuilder matchBuilder, IValueProviderFactory valueFactory)
-            : base(matchBuilder)
+        public FormMatcherCollection(IModifierBuilder modifierBuilder, IValueBuilders valueFactory)
+            : base(modifierBuilder)
         {
             _valueFactory = valueFactory;
         }
 
-        public void Add([RegexPattern] string regex, IFormProvider form, double? value = null)
+        public void Add([RegexPattern] string regex, IFormBuilder form, double? value = null)
         {
-            var builder = MatchBuilder.WithForm(form);
+            var builder = ModifierBuilder.WithForm(form);
             if (value.HasValue)
             {
                 builder = builder.WithValue(_valueFactory.Create(value.Value));

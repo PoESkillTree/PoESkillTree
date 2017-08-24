@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using PoESkillTree.Computation.Providers.Stats;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
@@ -18,7 +20,7 @@ namespace PoESkillTree.Computation.Data.Collections
             return GetEnumerator();
         }
 
-        public void Add(IFlagStatProvider stat, params string[] stats)
+        public void Add(IFlagStatBuilder stat, params string[] stats)
         {
             _data.Add(new FlagStatData(stat, stats));
         }

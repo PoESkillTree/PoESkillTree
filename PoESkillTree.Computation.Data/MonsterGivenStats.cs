@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Providers;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
@@ -12,7 +13,7 @@ namespace PoESkillTree.Computation.Data
     {
         private readonly Lazy<IReadOnlyList<GivenStatData>> _lazyGivenStats;
 
-        public MonsterGivenStats(IProviderFactories providerFactories) : base(providerFactories)
+        public MonsterGivenStats(IBuilderFactories builderFactories) : base(builderFactories)
         {
             _lazyGivenStats =
                 new Lazy<IReadOnlyList<GivenStatData>>(() => CreateCollection().ToList());
