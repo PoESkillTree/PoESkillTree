@@ -1,173 +1,157 @@
-using System;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Values
 {
     public class ValueBuilder : IValueBuilder
     {
-        public ValueBuilder(IValueBuilder value)
+        private readonly IValueBuilder _value;
+        private readonly IConditionBuilders _conditionBuilders;
+
+        public ValueBuilder(IValueBuilder value, IConditionBuilders conditionBuilders)
         {
+            _value = value;
+            _conditionBuilders = conditionBuilders;
         }
 
-        // If the == and != overloads make implementing the class difficult, they can easily be
-        // removed and usages replaced by <= or >=
-        public static IConditionBuilder operator ==(ValueBuilder left, ValueBuilder right)
+        private ValueBuilder Wrap(IValueBuilder value)
         {
-            throw new NotImplementedException();
+            return new ValueBuilder(value, _conditionBuilders);
         }
 
-        public static IConditionBuilder operator ==(ValueBuilder left, double right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator ==(ValueBuilder left, ValueBuilder right) => 
+            Eq(left, right);
 
-        public static IConditionBuilder operator ==(double left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator ==(ValueBuilder left, double right) => 
+            Eq(left, right);
 
-        public static IConditionBuilder operator !=(ValueBuilder left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator ==(double left, ValueBuilder right) => 
+            Eq(right, left);
 
-        public static IConditionBuilder operator !=(ValueBuilder left, double right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator !=(ValueBuilder left, ValueBuilder right) => 
+            left._conditionBuilders.Not(left == right);
 
-        public static IConditionBuilder operator !=(double left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator !=(ValueBuilder left, double right) => 
+            left._conditionBuilders.Not(left == right);
 
-        public static IConditionBuilder operator >=(ValueBuilder left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator !=(double left, ValueBuilder right) => 
+            right._conditionBuilders.Not(left == right);
 
-        public static IConditionBuilder operator >=(ValueBuilder left, double right)
-        {
-            throw new NotImplementedException();
-        }
+        private static IConditionBuilder Eq(IValueBuilder left, IValueBuilder right) =>
+            left.Eq(right);
 
-        public static IConditionBuilder operator >=(double left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        private static IConditionBuilder Eq(IValueBuilder left, double right) => 
+            left.Eq(right);
 
-        public static IConditionBuilder operator <=(ValueBuilder left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        IConditionBuilder IValueBuilder.Eq(IValueBuilder other) => _value.Eq(other);
 
-        public static IConditionBuilder operator <=(ValueBuilder left, double right)
-        {
-            throw new NotImplementedException();
-        }
+        IConditionBuilder IValueBuilder.Eq(double other) => _value.Eq(other);
 
-        public static IConditionBuilder operator <=(double left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator >(ValueBuilder left, ValueBuilder right) => 
+            left._value.GreaterThen(right);
 
-        public static IConditionBuilder operator >(ValueBuilder left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator >(ValueBuilder left, double right) => 
+            left._value.GreaterThen(right);
 
-        public static IConditionBuilder operator >(ValueBuilder left, double right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator >=(ValueBuilder left, ValueBuilder right) => 
+            left._conditionBuilders.Or(left == right, left > right);
 
-        public static IConditionBuilder operator >(double left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator >=(ValueBuilder left, double right) => 
+            left._conditionBuilders.Or(left == right, left > right);
 
-        public static IConditionBuilder operator <(ValueBuilder left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator <=(ValueBuilder left, ValueBuilder right) => 
+            left._conditionBuilders.Not(left > right);
 
-        public static IConditionBuilder operator <(ValueBuilder left, double right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator <=(ValueBuilder left, double right) => 
+            left._conditionBuilders.Not(left > right);
 
-        public static IConditionBuilder operator <(double left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator <(ValueBuilder left, ValueBuilder right) => 
+            left._conditionBuilders.Not(left >= right);
 
-        public static ValueBuilder operator *(ValueBuilder left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator <(ValueBuilder left, double right) => 
+            left._conditionBuilders.Not(left >= right);
 
-        public static ValueBuilder operator *(ValueBuilder left, double right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator >=(double left, ValueBuilder right) => 
+            right < left;
 
-        public static ValueBuilder operator *(double left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator <=(double left, ValueBuilder right) => 
+            right > left;
 
-        public static ValueBuilder operator /(ValueBuilder left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator >(double left, ValueBuilder right) => 
+            right <= left;
 
-        public static ValueBuilder operator /(ValueBuilder left, double right)
-        {
-            throw new NotImplementedException();
-        }
+        public static IConditionBuilder operator <(double left, ValueBuilder right) => 
+            right >= left;
 
-        public static ValueBuilder operator /(double left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        IConditionBuilder IValueBuilder.GreaterThen(IValueBuilder other) =>
+            _value.GreaterThen(other);
 
-        public static ValueBuilder operator -(ValueBuilder left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        IConditionBuilder IValueBuilder.GreaterThen(double other) => 
+            _value.GreaterThen(other);
 
-        public static ValueBuilder operator -(ValueBuilder left, double right)
-        {
-            throw new NotImplementedException();
-        }
+        public static ValueBuilder operator *(ValueBuilder left, ValueBuilder right) => 
+            left.Wrap(left._value.Multiply(right));
 
-        public static ValueBuilder operator -(double left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        public static ValueBuilder operator *(ValueBuilder left, double right) => 
+            left.Wrap(left._value.Multiply(right));
 
-        public static ValueBuilder operator +(ValueBuilder left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        public static ValueBuilder operator *(double left, ValueBuilder right) => 
+            right * left;
 
-        public static ValueBuilder operator +(ValueBuilder left, double right)
-        {
-            throw new NotImplementedException();
-        }
+        public static ValueBuilder operator /(ValueBuilder left, ValueBuilder right) => 
+            left.Wrap(left._value.AsDividend(right));
 
-        public static ValueBuilder operator +(double left, ValueBuilder right)
-        {
-            throw new NotImplementedException();
-        }
+        public static ValueBuilder operator /(ValueBuilder left, double right) => 
+            left.Wrap(left._value.AsDividend(right));
+
+        public static ValueBuilder operator /(double left, ValueBuilder right) => 
+            right.Wrap(right._value.AsDivisor(left));
+
+        public static ValueBuilder operator -(ValueBuilder left, ValueBuilder right) => 
+            left + (-right);
+
+        public static ValueBuilder operator -(ValueBuilder left, double right) => 
+            left + (-right);
+
+        public static ValueBuilder operator -(double left, ValueBuilder right) => 
+            (-right) + left;
+
+        public static ValueBuilder operator -(ValueBuilder value) => 
+            value * -1;
+
+        public static ValueBuilder operator +(ValueBuilder left, ValueBuilder right) => 
+            left.Wrap(left._value.Add(right));
+
+        public static ValueBuilder operator +(ValueBuilder left, double right) => 
+            left.Wrap(left._value.Add(right));
+
+        public static ValueBuilder operator +(double left, ValueBuilder right) => 
+            right + left;
+
+        IValueBuilder IValueBuilder.Add(IValueBuilder other)=> _value.Add(other);
+
+        IValueBuilder IValueBuilder.Add(double other) => _value.Add(other);
+
+        IValueBuilder IValueBuilder.Multiply(IValueBuilder other) => _value.Multiply(other);
+
+        IValueBuilder IValueBuilder.Multiply(double other) => _value.Multiply(other);
+
+        IValueBuilder IValueBuilder.AsDividend(IValueBuilder divisor) => _value.AsDividend(divisor);
+
+        IValueBuilder IValueBuilder.AsDividend(double divisor) => _value.AsDividend(divisor);
+
+        IValueBuilder IValueBuilder.AsDivisor(double dividend) => _value.AsDivisor(dividend);
 
         public ValueBuilder AsPercentage => this / 100;
         public ValueBuilder Invert => 1 / this;
 
-        // to how many digits depends on the number of significant digits the value has
-        // they also need to be rounded to more digits before floored/ceiled to avoid e.g. 0.99999 being floored to 0
-        public ValueBuilder Rounded => throw new NotImplementedException();
-        public ValueBuilder Floored => throw new NotImplementedException();
-        public ValueBuilder Ceiled => throw new NotImplementedException();
+        IValueBuilder IValueBuilder.Rounded => _value.Rounded;
+        public ValueBuilder Rounded => Wrap(_value.Rounded);
+
+        IValueBuilder IValueBuilder.Floored => _value.Floored;
+        public ValueBuilder Floored => Wrap(_value.Floored);
+
+        IValueBuilder IValueBuilder.Ceiled => _value.Ceiled;
+        public ValueBuilder Ceiled => Wrap(_value.Ceiled);
+
     }
 }
