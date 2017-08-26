@@ -15,7 +15,10 @@ namespace PoESkillTree.Computation.Parsing.Builders.Entities
         IConditionBuilder HitByRecently(IDamageTypeBuilder damageType);
 
         // Changes the context of a stat in the same way as IConditionBuilders.For(target)
-        T Stat<T>(T stat) where T : IStatBuilder;
+        IDamageStatBuilder Stat(IDamageStatBuilder stat);
+        IFlagStatBuilder Stat(IFlagStatBuilder stat);
+        IPoolStatBuilder Stat(IPoolStatBuilder stat);
+        IStatBuilder Stat(IStatBuilder stat);
 
         IStatBuilder Level { get; }
     }

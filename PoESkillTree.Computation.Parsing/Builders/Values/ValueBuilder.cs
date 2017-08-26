@@ -153,5 +153,9 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
         IValueBuilder IValueBuilder.Ceiled => _value.Ceiled;
         public ValueBuilder Ceiled => Wrap(_value.Ceiled);
 
+        public override string ToString()
+        {
+            return _value.ToString();
+        }
     }
 }

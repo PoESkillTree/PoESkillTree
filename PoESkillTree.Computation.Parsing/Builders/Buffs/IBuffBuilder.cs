@@ -7,7 +7,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Buffs
 {
     public interface IBuffBuilder : IEffectBuilder
     {
-        IStatBuilder EffectIncrease { get; }
+        IStatBuilder Effect { get; }
 
         // action to gain/apply the buff
         IActionBuilder<ISelfBuilder, IEntityBuilder> Action { get; }

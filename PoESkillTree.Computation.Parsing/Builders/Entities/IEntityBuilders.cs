@@ -7,7 +7,7 @@
         ISelfBuilder Self { get; }
         IEnemyBuilder Enemy { get; }
         IEntityBuilder Ally { get; }
-        // Explicitly refers to the player character. Only use this Self on a modifier does not
+        // Explicitly refers to the player character. Only use this if Self on a modifier does not
         // refer to Character but you still need to reference the player character.
         IEntityBuilder Character { get; }
 

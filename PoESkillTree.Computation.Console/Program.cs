@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Console.Builders;
 using PoESkillTree.Computation.Data;
 using PoESkillTree.Computation.Parsing;
+using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Data;
 using PoESkillTree.Computation.Parsing.Steps;
 
@@ -15,7 +18,8 @@ namespace PoESkillTree.Computation.Console
                     new StatNormalizingParser<string>(
                         new DummyParser(statMatchers))); // TODO
 
-            var statMatchersFactory = new StatMatchersSelector(CreateStatMatchers());
+            var statMatchersFactory =
+                new StatMatchersSelector(CreateStatMatchers(new BuilderFactories(), null, null)); // TODO
             IStep<IParser<string>, bool> initialStep =
                 new MappingStep<IStatMatchers, IParser<string>, bool>(
                     new MappingStep<ParsingStep, IStatMatchers, bool>(
@@ -53,17 +57,19 @@ namespace PoESkillTree.Computation.Console
             }
         }
 
-        private static IReadOnlyList<IStatMatchers> CreateStatMatchers() => new IStatMatchers[]
+        private static IReadOnlyList<IStatMatchers> CreateStatMatchers(
+            IBuilderFactories builderFactories, IMatchContexts matchContexts,
+            IModifierBuilder modifierBuilder) => new IStatMatchers[]
         {
-            new SpecialMatchers(null, null, null),
-            new StatManipulatorMatchers(null, null, null), 
-            new ValueConversionMatchers(null, null, null),
-            new FormAndStatMatchers(null, null, null),
-            new FormMatchers(null, null),
-            new GeneralStatMatchers(null, null, null),
-            new DamageStatMatchers(null, null, null), 
-            new PoolStatMatchers(null, null, null),
-            new ConditionMatchers(null, null, null),
+            new SpecialMatchers(builderFactories, matchContexts, modifierBuilder),
+            new StatManipulatorMatchers(builderFactories, matchContexts, modifierBuilder),
+            new ValueConversionMatchers(builderFactories, matchContexts, modifierBuilder),
+            new FormAndStatMatchers(builderFactories, matchContexts, modifierBuilder),
+            new FormMatchers(builderFactories, modifierBuilder),
+            new GeneralStatMatchers(builderFactories, matchContexts, modifierBuilder),
+            new DamageStatMatchers(builderFactories, matchContexts, modifierBuilder),
+            new PoolStatMatchers(builderFactories, matchContexts, modifierBuilder),
+            new ConditionMatchers(builderFactories, matchContexts, modifierBuilder),
         };
 
         /* Algorithm missing:
@@ -71,8 +77,8 @@ namespace PoESkillTree.Computation.Console
          *   (replacing second argument of CompositeParser constructor)
          * - leaf parsers (some class implementing IParser<IModifierBuilder> and using an IStatMatcher)
          *   (replacing DummyParser in InnerParser() function)
-         * - implementations of IBuilderFactories, IMatchContexts, IModifierBuilder
-         *   (replacing nulls in CreateStatMatchers())
+         * - implementations of IMatchContexts, IModifierBuilder
+         *   (replacing nulls in call to CreateStatMatchers())
          */
 
         // Obviously only temporary until the actually useful classes exist

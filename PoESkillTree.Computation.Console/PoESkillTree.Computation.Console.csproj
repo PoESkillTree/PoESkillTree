@@ -42,6 +42,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builders\ActionBuilderStub.cs" />
+    <Compile Include="Builders\AilmentBuilderStub.cs" />
+    <Compile Include="Builders\BuffBuilderStub.cs" />
+    <Compile Include="Builders\BuilderCollectionStub.cs" />
+    <Compile Include="Builders\BuilderFactories.cs" />
+    <Compile Include="Builders\BuilderStub.cs" />
+    <Compile Include="Builders\ChargeTypeBuilderStub.cs" />
+    <Compile Include="Builders\ConditionBuilderStub.cs" />
+    <Compile Include="Builders\DamageSourceBuilderStub.cs" />
+    <Compile Include="Builders\DamageTypeBuilderStub.cs" />
+    <Compile Include="Builders\EffectBuilderStub.cs" />
+    <Compile Include="Builders\EntityBuilderStub.cs" />
+    <Compile Include="Builders\EquipmentBuilderStub.cs" />
+    <Compile Include="Builders\FlagStatBuilderStub.cs" />
+    <Compile Include="Builders\FormBuilderStub.cs" />
+    <Compile Include="Builders\GroundEffectBuilderStub.cs" />
+    <Compile Include="Builders\ItemSlotBuilderStub.cs" />
+    <Compile Include="Builders\KeywordBuilderStub.cs" />
+    <Compile Include="Builders\PoolStatBuilderStub.cs" />
+    <Compile Include="Builders\SkillBuilderStub.cs" />
+    <Compile Include="Builders\StatBuildersStub.cs" />
+    <Compile Include="Builders\StatBuilderStub.cs" />
+    <Compile Include="Builders\StunEffectBuilderStub.cs" />
+    <Compile Include="Builders\ValueBuilderStub.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

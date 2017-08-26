@@ -205,22 +205,22 @@ namespace PoESkillTree.Computation.Data
             // buffs
             {
                 "effect of buffs granted by your golems",
-                Buffs(Entity.Minion.With(Keyword.Golem)).EffectIncrease
+                Buffs(Entity.Minion.With(Keyword.Golem)).Effect
             },
             {
                 "effect of buffs granted by your elemental golems",
-                Buffs(Entity.Minion.With(Keyword.Golem, Elemental)).EffectIncrease
+                Buffs(Entity.Minion.With(Keyword.Golem, Elemental)).Effect
             },
-            { "effect of your curses", Buffs(Self).With(Keyword.Curse).EffectIncrease },
+            { "effect of your curses", Buffs(Self).With(Keyword.Curse).Effect },
             {
                 "effect of curses on you",
-                Buffs(target: Self).With(Keyword.Curse).EffectIncrease
+                Buffs(target: Self).With(Keyword.Curse).Effect
             },
             {
                 "effect of non-curse auras you cast",
-                Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).EffectIncrease
+                Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).Effect
             },
-            { "effect of fortify on you", Buff.Fortify.EffectIncrease },
+            { "effect of fortify on you", Buff.Fortify.Effect },
             { "fortify duration", Buff.Fortify.Duration },
             { "chance for attacks to maim", Buff.Maim.ChanceOn(Enemy), Damage.With(Source.Attack) },
             { "chance to taunt", Buff.Taunt.ChanceOn(Enemy) },
@@ -232,8 +232,8 @@ namespace PoESkillTree.Computation.Data
                 "chance to (gain|grant) ({FlagMatchers})",
                 Group.As<IFlagStatBuilder>() // chance is handled by StatManipulationMatchers
             },
-            { "({FlagMatchers}) duration", Group.As<IFlagStatBuilder>().DurationIncrease },
-            { "({FlagMatchers}) effect", Group.As<IFlagStatBuilder>().EffectIncrease },
+            { "({FlagMatchers}) duration", Group.As<IFlagStatBuilder>().Duration },
+            { "({FlagMatchers}) effect", Group.As<IFlagStatBuilder>().Effect },
             // ailments
             { "chance to ({AilmentMatchers})(the enemy)?", Group.AsAilment.Chance },
             {

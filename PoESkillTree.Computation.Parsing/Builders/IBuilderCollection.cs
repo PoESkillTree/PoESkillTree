@@ -10,5 +10,7 @@ namespace PoESkillTree.Computation.Parsing.Builders
         ValueBuilder Count(Func<T, IConditionBuilder> predicate = null);
 
         IConditionBuilder Any(Func<T, IConditionBuilder> predicate = null);
+
+        IBuilderCollection<TOut> Select<TOut>(Func<T, TOut> selector);
     }
 }

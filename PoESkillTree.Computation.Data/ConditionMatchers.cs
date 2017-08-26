@@ -135,6 +135,10 @@ namespace PoESkillTree.Computation.Data
                 "on melee critical strike",
                 And(CriticalStrike.On(), With(Skills[Keyword.Melee]))
             },
+            {
+                "projectiles have against targets they pierce",
+                And(Projectile.Pierce.On(), With(Skills[Keyword.Projectile]))
+            },
             // equipment
             { "while unarmed", Unarmed },
             { "while wielding a staff", MainHand.Has(Tags.Staff) },

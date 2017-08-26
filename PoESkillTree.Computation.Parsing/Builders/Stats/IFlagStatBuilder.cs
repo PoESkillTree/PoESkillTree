@@ -8,9 +8,9 @@ namespace PoESkillTree.Computation.Parsing.Builders.Stats
         // shortcut for Value == 1
         IConditionBuilder IsSet { get; }
 
-        IStatBuilder EffectIncrease { get; }
+        IStatBuilder Effect { get; }
 
         // Applies to buffs that grant this flag
-        IStatBuilder DurationIncrease { get; }
+        IStatBuilder Duration { get; }
     }
 }

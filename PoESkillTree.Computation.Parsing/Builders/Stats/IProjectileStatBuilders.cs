@@ -1,4 +1,4 @@
-using PoESkillTree.Computation.Parsing.Builders.Conditions;
+using PoESkillTree.Computation.Parsing.Builders.Actions;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Stats
 {
@@ -9,7 +9,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Stats
         IStatBuilder Count { get; }
 
         IStatBuilder PierceCount { get; }
-        IConditionBuilder Pierces { get; }
+        ISelfToAnyActionBuilder Pierce { get; }
 
         IStatBuilder ChainCount { get; }
 

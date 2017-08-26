@@ -6,7 +6,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Buffs
     public interface IBuffBuilderCollection : IBuilderCollection<IBuffBuilder>
     {
         IStatBuilder CombinedLimit { get; }
-        IStatBuilder EffectIncrease { get; }
+        IStatBuilder Effect { get; }
 
         IBuffBuilderCollection ExceptFrom(params ISkillBuilder[] skills);
 

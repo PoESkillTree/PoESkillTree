@@ -13,7 +13,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Effects
         IStatBuilder ChanceOn(IEntityBuilder target);
 
         // shortcut for On(target).IsSet
-        IConditionBuilder IsOn(IEntityBuilder entity);
+        IConditionBuilder IsOn(IEntityBuilder target);
 
         // duration when source is Self
         IStatBuilder Duration { get; }
