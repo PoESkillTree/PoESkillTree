@@ -6,7 +6,6 @@ using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
-using PoESkillTree.Computation.Parsing.Builders.Stats;
 using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
@@ -180,7 +179,7 @@ namespace PoESkillTree.Computation.Data
                 "if you have # primordial jewels,",
                 Stat.PrimordialJewelsSocketed.Value >= Value
             },
-            { "while you have ({FlagMatchers})", Group.As<IFlagStatBuilder>().IsSet },
+            { "while you have ({FlagMatchers})", Group.AsFlagStat.IsSet },
             { "during onslaught", Flag.Onslaught.IsSet },
             { "while phasing", Flag.Phasing.IsSet },
             // stats on enemy

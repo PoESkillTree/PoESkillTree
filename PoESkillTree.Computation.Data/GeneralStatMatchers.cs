@@ -6,7 +6,6 @@ using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
-using PoESkillTree.Computation.Parsing.Builders.Stats;
 using PoESkillTree.Computation.Parsing.Data;
 using static PoESkillTree.Computation.Parsing.Builders.Values.ValueBuilderUtils;
 
@@ -91,22 +90,22 @@ namespace PoESkillTree.Computation.Data
             // - leech
             {
                 @"({PoolStatMatchers}) per second to \1 Leech rate",
-                Group.As<IPoolStatBuilder>().Leech.RateLimit
+                Group.AsPoolStat.Leech.RateLimit
             },
             {
                 "({DamageStatMatchers}) leeched as ({PoolStatMatchers})",
-                Groups[1].As<IPoolStatBuilder>().Leech.Of(Groups[0].As<IDamageStatBuilder>())
+                Groups[1].AsPoolStat.Leech.Of(Groups[0].AsDamageStat)
             },
             {
                 "({DamageStatMatchers}) leeched as ({PoolStatMatchers}) and ({PoolStatMatchers})",
-                Groups[1].As<IPoolStatBuilder>().Leech.Of(Groups[0].As<IDamageStatBuilder>()),
-                Groups[2].As<IPoolStatBuilder>().Leech.Of(Groups[0].As<IDamageStatBuilder>())
+                Groups[1].AsPoolStat.Leech.Of(Groups[0].AsDamageStat),
+                Groups[2].AsPoolStat.Leech.Of(Groups[0].AsDamageStat)
             },
             {
                 "damage dealt by your totems is leeched to you as life",
                 Life.Leech.To(Self).Of(Damage), For(Entity.Totem)
             },
-            { "({PoolStatMatchers}) leeched per second", Group.As<IPoolStatBuilder>().Leech.Rate },
+            { "({PoolStatMatchers}) leeched per second", Group.AsPoolStat.Leech.Rate },
             // - block
             { "chance to block", Block.AttackChance },
             { "block chance", Block.AttackChance },
@@ -128,12 +127,12 @@ namespace PoESkillTree.Computation.Data
             { "chance to evade melee attacks", Evasion.ChanceAgainstMeleeAttacks },
             {
                 "damage is taken from ({PoolStatMatchers}) before ({PoolStatMatchers})",
-                Damage.TakenFrom(Groups[0].As<IPoolStatBuilder>()).Before(Groups[1].As<IPoolStatBuilder>())
+                Damage.TakenFrom(Groups[0].AsPoolStat).Before(Groups[1].AsPoolStat)
             },
             {
                 "({DamageTypeMatchers}) damage is taken from ({PoolStatMatchers}) before ({PoolStatMatchers})",
-                Groups[0].AsDamageType.Damage.TakenFrom(Groups[1].As<IPoolStatBuilder>())
-                    .Before(Groups[2].As<IPoolStatBuilder>())
+                Groups[0].AsDamageType.Damage.TakenFrom(Groups[1].AsPoolStat)
+                    .Before(Groups[2].AsPoolStat)
             },
             // speed
             { "attack speed", Skills[Keyword.Attack].Speed },
@@ -151,7 +150,7 @@ namespace PoESkillTree.Computation.Data
             },
             { "animation speed", Stat.AnimationSpeed },
             // regen and recharge
-            { "({PoolStatMatchers}) regeneration rate", Group.As<IPoolStatBuilder>().Regen },
+            { "({PoolStatMatchers}) regeneration rate", Group.AsPoolStat.Regen },
             { "energy shield recharge rate", EnergyShield.Recharge },
             {
                 "recovery rate of life, mana and energy shield",
@@ -230,10 +229,10 @@ namespace PoESkillTree.Computation.Data
             // flags
             {
                 "chance to (gain|grant) ({FlagMatchers})",
-                Group.As<IFlagStatBuilder>() // chance is handled by StatManipulationMatchers
+                Group.AsFlagStat // chance is handled by StatManipulationMatchers
             },
-            { "({FlagMatchers}) duration", Group.As<IFlagStatBuilder>().Duration },
-            { "({FlagMatchers}) effect", Group.As<IFlagStatBuilder>().Effect },
+            { "({FlagMatchers}) duration", Group.AsFlagStat.Duration },
+            { "({FlagMatchers}) effect", Group.AsFlagStat.Effect },
             // ailments
             { "chance to ({AilmentMatchers})(the enemy)?", Group.AsAilment.Chance },
             {

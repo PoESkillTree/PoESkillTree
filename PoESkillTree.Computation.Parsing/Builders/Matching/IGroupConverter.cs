@@ -10,8 +10,6 @@ namespace PoESkillTree.Computation.Parsing.Builders.Matching
 {
     public interface IGroupConverter
     {
-        T As<T>() where T : IStatBuilder;
-
         IDamageTypeBuilder AsDamageType { get; }
 
         IChargeTypeBuilder AsChargeType { get; }
@@ -25,6 +23,12 @@ namespace PoESkillTree.Computation.Parsing.Builders.Matching
         ISelfToAnyActionBuilder AsAction { get; }
 
         IStatBuilder AsStat { get; }
+
+        IFlagStatBuilder AsFlagStat { get; }
+
+        IPoolStatBuilder AsPoolStat { get; }
+
+        IDamageStatBuilder AsDamageStat { get; }
 
         ISkillBuilder AsSkill { get; }
     }

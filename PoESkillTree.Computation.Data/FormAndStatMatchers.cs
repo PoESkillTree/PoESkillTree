@@ -5,7 +5,6 @@ using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
-using PoESkillTree.Computation.Parsing.Builders.Stats;
 using PoESkillTree.Computation.Parsing.Data;
 using static PoESkillTree.Computation.Parsing.Builders.Values.ValueBuilderUtils;
 
@@ -123,21 +122,21 @@ namespace PoESkillTree.Computation.Data
             // (need to be FormAndStatMatcher because they also exist with flat values)
             {
                 "#% of ({PoolStatMatchers}) regenerated per second",
-                BaseAdd, Group.As<IPoolStatBuilder>().Regen.Percent
+                BaseAdd, Group.AsPoolStat.Regen.Percent
             },
             {
                 "#% of ({PoolStatMatchers}) and ({PoolStatMatchers}) regenerated per second",
                 BaseAdd,
-                Groups[0].As<IPoolStatBuilder>().Regen.Percent,
-                Groups[1].As<IPoolStatBuilder>().Regen.Percent
+                Groups[0].AsPoolStat.Regen.Percent,
+                Groups[1].AsPoolStat.Regen.Percent
             },
             {
                 "regenerate #%( of)?( their)? ({PoolStatMatchers}) per second",
-                BaseAdd, Group.As<IPoolStatBuilder>().Regen.Percent
+                BaseAdd, Group.AsPoolStat.Regen.Percent
             },
             {
                 "# ({PoolStatMatchers}) regenerated per second", BaseAdd,
-                Group.As<IPoolStatBuilder>().Regen
+                Group.AsPoolStat.Regen
             },
             {
                 "#% faster start of energy shield recharge", PercentIncrease,
@@ -151,17 +150,17 @@ namespace PoESkillTree.Computation.Data
             // gain (need to be FormAndStatMatcher because they also exist with flat values)
             {
                 "#% of ({PoolStatMatchers}) gained",
-                BaseAdd, Group.As<IPoolStatBuilder>().Gain, PercentOf(Group.AsStat)
+                BaseAdd, Group.AsPoolStat.Gain, PercentOf(Group.AsStat)
             },
             {
                 "recover #% of( their)? ({PoolStatMatchers})",
-                BaseAdd, Group.As<IPoolStatBuilder>().Gain, PercentOf(Group.AsStat)
+                BaseAdd, Group.AsPoolStat.Gain, PercentOf(Group.AsStat)
             },
             {
                 "removes #% of ({PoolStatMatchers})",
-                BaseSubtract, Group.As<IPoolStatBuilder>().Gain, PercentOf(Group.AsStat)
+                BaseSubtract, Group.AsPoolStat.Gain, PercentOf(Group.AsStat)
             },
-            { @"\+# ({PoolStatMatchers}) gained", BaseAdd, Group.As<IPoolStatBuilder>().Gain },
+            { @"\+# ({PoolStatMatchers}) gained", BaseAdd, Group.AsPoolStat.Gain },
             // charges
             // skills
             // traps, mines, totems
@@ -189,7 +188,7 @@ namespace PoESkillTree.Computation.Data
             // flags
             {
                 "(?<!while )(you have|gain) ({FlagMatchers})", SetFlag,
-                Group.As<IFlagStatBuilder>()
+                Group.AsFlagStat
             },
             // ailments
             { "causes bleeding", Always, Ailment.Bleed.Chance },

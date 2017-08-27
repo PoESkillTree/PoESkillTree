@@ -18,8 +18,10 @@ namespace PoESkillTree.Computation.Console
                     new StatNormalizingParser<string>(
                         new DummyParser(statMatchers))); // TODO
 
-            var statMatchersFactory =
-                new StatMatchersSelector(CreateStatMatchers(new BuilderFactories(), null, null)); // TODO
+            var builderFactories = new BuilderFactories();
+            var statMatchersList = CreateStatMatchers(builderFactories,
+                new MatchContextsStub(builderFactories.ConditionBuilders), null); // TODO
+            var statMatchersFactory = new StatMatchersSelector(statMatchersList);
             IStep<IParser<string>, bool> initialStep =
                 new MappingStep<IStatMatchers, IParser<string>, bool>(
                     new MappingStep<ParsingStep, IStatMatchers, bool>(
@@ -77,7 +79,7 @@ namespace PoESkillTree.Computation.Console
          *   (replacing second argument of CompositeParser constructor)
          * - leaf parsers (some class implementing IParser<IModifierBuilder> and using an IStatMatcher)
          *   (replacing DummyParser in InnerParser() function)
-         * - implementations of IMatchContexts, IModifierBuilder
+         * - implementation of IModifierBuilder
          *   (replacing nulls in call to CreateStatMatchers())
          */
 
