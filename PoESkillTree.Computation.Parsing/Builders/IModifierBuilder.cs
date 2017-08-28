@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Forms;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
@@ -8,7 +7,7 @@ using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Parsing.Builders
 {
-    public interface IModifierBuilder : IFactory<IModifier>
+    public interface IModifierBuilder
     {
         // All With methods return new IModifierBuilder instances
 

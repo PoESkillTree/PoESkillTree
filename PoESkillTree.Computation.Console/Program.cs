@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Console
 
             var builderFactories = new BuilderFactories();
             var statMatchersList = CreateStatMatchers(builderFactories,
-                new MatchContextsStub(builderFactories.ConditionBuilders), null); // TODO
+                new MatchContextsStub(builderFactories.ConditionBuilders), new ModifierBuilder());
             var statMatchersFactory = new StatMatchersSelector(statMatchersList);
             IStep<IParser<string>, bool> initialStep =
                 new MappingStep<IStatMatchers, IParser<string>, bool>(
@@ -79,8 +79,6 @@ namespace PoESkillTree.Computation.Console
          *   (replacing second argument of CompositeParser constructor)
          * - leaf parsers (some class implementing IParser<IModifierBuilder> and using an IStatMatcher)
          *   (replacing DummyParser in InnerParser() function)
-         * - implementation of IModifierBuilder
-         *   (replacing nulls in call to CreateStatMatchers())
          */
 
         // Obviously only temporary until the actually useful classes exist

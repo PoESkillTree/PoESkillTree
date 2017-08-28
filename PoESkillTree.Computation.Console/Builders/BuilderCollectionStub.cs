@@ -8,7 +8,7 @@ using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
-    public class BuilderCollectionStub<T> : BuilderStub, IBuilderCollection<T>
+    public class BuilderCollectionStub<T> : BuilderStub, IBuilderCollection<T>, IEnumerable<T>
     {
         protected IConditionBuilders ConditionBuilders { get; }
 
@@ -43,12 +43,6 @@ namespace PoESkillTree.Computation.Console.Builders
                 ? ToString()
                 : string.Join(", ", _elements.Select(predicate));
             return new ConditionBuilderStub($"Any({str})");
-        }
-
-        public IBuilderCollection<TOut> Select<TOut>(Func<T, TOut> selector)
-        {
-            return new BuilderCollectionStub<TOut>(_elements.Select(selector).ToList(),
-                ConditionBuilders);
         }
 
         public IEnumerator<T> GetEnumerator()

@@ -126,10 +126,5 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             ret.Values = values;
             return ret;
         }
-
-        public IModifier Create()
-        {
-            throw new InvalidOperationException();
-        }
     }
 }
