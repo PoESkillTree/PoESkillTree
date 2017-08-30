@@ -64,7 +64,10 @@
     <Compile Include="Builders\Damage\IDamageSourceBuilders.cs" />
     <Compile Include="Builders\Damage\IDamageTypeBuilder.cs" />
     <Compile Include="Builders\Damage\IDamageTypeBuilders.cs" />
-    <Compile Include="Builders\ModifierBuilder.cs" />
+    <Compile Include="ModifierBuilding\IModifierResult.cs" />
+    <Compile Include="ModifierBuilding\ModifierAggregator.cs" />
+    <Compile Include="ModifierBuilding\ModifierBuilderEntry.cs" />
+    <Compile Include="ModifierBuilding\ModifierBuilder.cs" />
     <Compile Include="Data\EffectStatData.cs" />
     <Compile Include="Builders\Effects\IAilmentBuilder.cs" />
     <Compile Include="Builders\Effects\IAilmentBuilderCollection.cs" />
@@ -91,7 +94,7 @@
     <Compile Include="Data\GivenStatData.cs" />
     <Compile Include="Data\IEffectStats.cs" />
     <Compile Include="Data\IGivenStats.cs" />
-    <Compile Include="Builders\IModifierBuilder.cs" />
+    <Compile Include="ModifierBuilding\IModifierBuilder.cs" />
     <Compile Include="Builders\IBuilderCollection.cs" />
     <Compile Include="Builders\IBuilderFactories.cs" />
     <Compile Include="Data\IReferencedMatchers.cs" />
@@ -129,6 +132,7 @@
     <Compile Include="Builders\Values\ValueBuilder.cs" />
     <Compile Include="Builders\Values\ValueBuilderUtils.cs" />
     <Compile Include="CachingParser.cs" />
+    <Compile Include="ParserWithResultSelector.cs" />
     <Compile Include="StatMatchersSelector.cs" />
     <Compile Include="Steps\CompletedStep.cs" />
     <Compile Include="CompositeParser.cs" />
@@ -165,5 +169,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

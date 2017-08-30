@@ -1,7 +1,6 @@
 ﻿using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using System.Collections.Generic;
-using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Charges;
 using PoESkillTree.Computation.Parsing.Data;
 

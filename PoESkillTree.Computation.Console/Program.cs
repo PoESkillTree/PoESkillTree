@@ -1,10 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Console.Builders;
 using PoESkillTree.Computation.Data;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Values;
 using PoESkillTree.Computation.Parsing.Data;
+using PoESkillTree.Computation.Parsing.ModifierBuilding;
 using PoESkillTree.Computation.Parsing.Steps;
 
 namespace PoESkillTree.Computation.Console
@@ -13,17 +19,17 @@ namespace PoESkillTree.Computation.Console
     {
         public static void Main(string[] args)
         {
-            IParser<string> InnerParser(IStatMatchers statMatchers) =>
-                new CachingParser<string>(
-                    new StatNormalizingParser<string>(
+            IParser<IModifierResult> InnerParser(IStatMatchers statMatchers) =>
+                new CachingParser<IModifierResult>(
+                    new StatNormalizingParser<IModifierResult>(
                         new DummyParser(statMatchers))); // TODO
 
             var builderFactories = new BuilderFactories();
             var statMatchersList = CreateStatMatchers(builderFactories,
                 new MatchContextsStub(builderFactories.ConditionBuilders), new ModifierBuilder());
             var statMatchersFactory = new StatMatchersSelector(statMatchersList);
-            IStep<IParser<string>, bool> initialStep =
-                new MappingStep<IStatMatchers, IParser<string>, bool>(
+            IStep<IParser<IModifierResult>, bool> initialStep =
+                new MappingStep<IStatMatchers, IParser<IModifierResult>, bool>(
                     new MappingStep<ParsingStep, IStatMatchers, bool>(
                         new SpecialStep(),
                         statMatchersFactory.Get
@@ -31,16 +37,20 @@ namespace PoESkillTree.Computation.Console
                     InnerParser
                 );
 
-            IParser<IReadOnlyList<string>> parser =
-                new CachingParser<IReadOnlyList<string>>(
-                    new ValidatingParser<IReadOnlyList<string>>(
-                        new StatNormalizingParser<IReadOnlyList<string>>(
-                            new StatReplacingParser<string>(
-                                new CompositeParser<string, string>(
-                                    initialStep,
-                                    l => string.Join("\n  ", l) // TODO
+            IParser<IReadOnlyList<Modifier>> parser =
+                new CachingParser<IReadOnlyList<Modifier>>(
+                    new ValidatingParser<IReadOnlyList<Modifier>>(
+                        new StatNormalizingParser<IReadOnlyList<Modifier>>(
+                            new ParserWithResultSelector<IReadOnlyList<IReadOnlyList<Modifier>>,
+                                IReadOnlyList<Modifier>>(
+                                new StatReplacingParser<IReadOnlyList<Modifier>>(
+                                    new ParserWithResultSelector<IReadOnlyList<IModifierResult>,
+                                        IReadOnlyList<Modifier>>(
+                                        new CompositeParser<IModifierResult>(initialStep),
+                                        l => throw new NotImplementedException()),
+                                    new StatReplacers().Replacers
                                 ),
-                                new StatReplacers().Replacers
+                                ls => ls.Flatten().ToList()
                             )
                         )
                     )
@@ -74,29 +84,33 @@ namespace PoESkillTree.Computation.Console
             new ConditionMatchers(builderFactories, matchContexts, modifierBuilder),
         };
 
-        /* Algorithm missing:
-         * - IModifierBuilder aggregator (Func<IReadOnlyList<IModifierBuilder>, IModifier>)
-         *   (replacing second argument of CompositeParser constructor)
+        /* Algorithm missing: (replacing DummyParser in InnerParser() function)
          * - leaf parsers (some class implementing IParser<IModifierBuilder> and using an IStatMatcher)
-         *   (replacing DummyParser in InnerParser() function)
+         * - some parser doing the match context resolving after leaf parser
+         *   (probably, depending on how the nested matcher regexes are implemented)
+         * - parser calling IModifierBuilder.Build() after leaf parser
          */
 
         // Obviously only temporary until the actually useful classes exist
-        private class DummyParser : IParser<string>
+        private class DummyParser : IParser<IModifierResult>
         {
-            private readonly IStatMatchers _statMatchers;
-
             public DummyParser(IStatMatchers statMatchers)
             {
-                _statMatchers = statMatchers;
             }
 
-            public bool TryParse(string stat, out string remaining, out string result)
+            public bool TryParse(string stat, out string remaining, out IModifierResult result)
             {
-                result = _statMatchers + ": " + stat;
+                result = new DummyResult();
                 remaining = string.Empty;
                 return true;
             }
+        }
+
+        private class DummyResult : IModifierResult
+        {
+            public IReadOnlyList<ModifierBuilderEntry> Entries { get; } = new ModifierBuilderEntry[0];
+            public Func<IStatBuilder, IStatBuilder> StatConverter { get; } = s => s;
+            public ValueFunc ValueConverter { get; } = v => v;
         }
     }
 }

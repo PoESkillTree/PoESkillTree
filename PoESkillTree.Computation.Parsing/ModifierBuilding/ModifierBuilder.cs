@@ -1,27 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Forms;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
 using PoESkillTree.Computation.Parsing.Builders.Values;
 
-namespace PoESkillTree.Computation.Parsing.Builders
+namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 {
-    public class ModifierBuilder : IModifierBuilder
+    public class ModifierBuilder : IModifierBuilder, IModifierResult
     {
-        public IReadOnlyList<Entry> Entries { get; }
-        public Func<IStatBuilder, IStatBuilder> StatConverter { get; }
-        public ValueFunc ValueConverter { get; }
+        public IReadOnlyList<ModifierBuilderEntry> Entries { get; }
+        public Func<IStatBuilder, IStatBuilder> StatConverter { get; } = s => s;
+        public ValueFunc ValueConverter { get; } = v => v;
 
         public ModifierBuilder()
         {
-            Entries = new Entry[0];
+            Entries = new ModifierBuilderEntry[0];
         }
 
-        private ModifierBuilder(IEnumerable<Entry> entries, 
+        private ModifierBuilder(IEnumerable<ModifierBuilderEntry> entries, 
             Func<IStatBuilder, IStatBuilder> statConverter, ValueFunc valueConverter)
         {
             Entries = entries.ToList();
@@ -29,13 +28,15 @@ namespace PoESkillTree.Computation.Parsing.Builders
             ValueConverter = valueConverter;
         }
 
-        private IModifierBuilder WithSingle<T>(T element, Func<Entry, T, Entry> entrySelector, 
-            Func<Entry, T> entryElementSelector, string elementName)
+        private IModifierBuilder WithSingle<T>(T element, 
+            Func<ModifierBuilderEntry, T, ModifierBuilderEntry> entrySelector, 
+            Func<ModifierBuilderEntry, T> entryElementSelector, string elementName)
         {
-            IEnumerable<Entry> entries;
+            IEnumerable<ModifierBuilderEntry> entries;
             if (Entries.IsEmpty())
             {
-                entries = new[] { new Entry() }.Select(e => entrySelector(e, element));
+                entries = new[] { new ModifierBuilderEntry() }
+                    .Select(e => entrySelector(e, element));
             }
             else if (Entries.Select(entryElementSelector).Any(t => t != null))
             {
@@ -49,14 +50,14 @@ namespace PoESkillTree.Computation.Parsing.Builders
         }
 
         private IModifierBuilder WithEnumerable<T>(IEnumerable<T> elements, 
-            Func<Entry, T, Entry> entrySelector,
-            Func<Entry, T> entryElementSelector, string elementName)
+            Func<ModifierBuilderEntry, T, ModifierBuilderEntry> entrySelector,
+            Func<ModifierBuilderEntry, T> entryElementSelector, string elementName)
         {
-            IEnumerable<Entry> entries;
+            IEnumerable<ModifierBuilderEntry> entries;
             var elementList = elements.ToList();
             if (Entries.IsEmpty())
             {
-                entries = elementList.Select(e => entrySelector(new Entry(), e));
+                entries = elementList.Select(e => entrySelector(new ModifierBuilderEntry(), e));
             }
             else if (Entries.Select(entryElementSelector).Any(t => t != null))
             {
@@ -132,74 +133,9 @@ namespace PoESkillTree.Computation.Parsing.Builders
                 "Condition");
         }
 
-
-        public class Entry
+        public IModifierResult Build()
         {
-            [CanBeNull]
-            public IFormBuilder Form { get; }
-
-            [CanBeNull]
-            public IStatBuilder Stat { get; }
-
-            [CanBeNull]
-            public ValueBuilder Value { get; }
-
-            [CanBeNull]
-            public IConditionBuilder Condition { get; }
-
-            public Entry()
-            {
-            }
-
-            private Entry(IFormBuilder form, IStatBuilder stat, ValueBuilder value, 
-                IConditionBuilder condition)
-            {
-                Form = form;
-                Stat = stat;
-                Value = value;
-                Condition = condition;
-            }
-
-            public Entry WithForm(IFormBuilder form)
-            {
-                return new Entry(form, Stat, Value, Condition);
-            }
-
-            public Entry WithStat(IStatBuilder stat)
-            {
-                return new Entry(Form, stat, Value, Condition);
-            }
-
-            public Entry WithValue(ValueBuilder value)
-            {
-                return new Entry(Form, Stat, value, Condition);
-            }
-
-            public Entry WithCondition(IConditionBuilder condition)
-            {
-                return new Entry(Form, Stat, Value, condition);
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (obj == this)
-                    return true;
-                if (!(obj is Entry other))
-                    return false;
-
-                return Equals(Form, other.Form)
-                    && Equals(Stat, other.Stat)
-                    && Equals(Value, other.Value)
-                    && Equals(Condition, other.Condition);
-            }
-
-            public override int GetHashCode()
-            {
-                return (Form != null ? Form.GetHashCode() : 0) ^
-                       (Stat != null ? Stat.GetHashCode() : 0) ^
-                       (!ReferenceEquals(Value, null) ? Value.GetHashCode() : 0) ^
-                       (Condition != null ? Condition.GetHashCode() : 0);
-            }
+            return this;
         }
     }
 }

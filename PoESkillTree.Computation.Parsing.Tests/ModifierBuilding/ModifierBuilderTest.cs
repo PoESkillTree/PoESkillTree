@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Forms;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
 using PoESkillTree.Computation.Parsing.Builders.Values;
+using PoESkillTree.Computation.Parsing.ModifierBuilding;
 
-namespace PoESkillTree.Computation.Parsing.Tests.Builders
+namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
 {
     [TestFixture]
     public class ModifierBuilderTest
@@ -282,7 +282,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.Builders
         public void WithStatConverterSetsStatConverter()
         {
             var sut = new ModifierBuilder();
-            Func<IStatBuilder, IStatBuilder> statConverter = s => s;
+            Func<IStatBuilder, IStatBuilder> statConverter = s => null;
 
             sut = (ModifierBuilder) sut.WithStatConverter(statConverter);
 
@@ -293,14 +293,54 @@ namespace PoESkillTree.Computation.Parsing.Tests.Builders
         public void WithValueConverterSetsValueConverter()
         {
             var sut = new ModifierBuilder();
-            ValueFunc valueConverter = v => v;
+            ValueFunc valueConverter = v => null;
 
             sut = (ModifierBuilder) sut.WithValueConverter(valueConverter);
 
             Assert.AreSame(valueConverter, sut.ValueConverter);
         }
 
-        private static ModifierBuilder.Entry Entry => new ModifierBuilder.Entry();
+        [Test]
+        public void InitialStatConverterIsIdentity()
+        {
+            var sut = new ModifierBuilder();
+            var stat = Mock.Of<IStatBuilder>();
+
+            var actual = sut.StatConverter(stat);
+
+            Assert.AreEqual(stat, actual);
+        }
+
+        [Test]
+        public void InitialValueConverterIsIdentity()
+        {
+            var sut = new ModifierBuilder();
+            var value = new ValueBuilder(Mock.Of<IValueBuilder>(), null);
+
+            var actual = sut.ValueConverter(value);
+
+            Assert.AreEqual(value, actual);
+        }
+
+        [Test]
+        public void IsIModifierBuilderResult()
+        {
+            var sut = new ModifierBuilder();
+
+            Assert.IsInstanceOf<IModifierResult>(sut);
+        }
+
+        [Test]
+        public void CreateReturnsSelf()
+        {
+            var sut = new ModifierBuilder();
+
+            var actual = sut.Build();
+
+            Assert.AreSame(sut, actual);
+        }
+
+        private static ModifierBuilderEntry Entry => new ModifierBuilderEntry();
 
         private static IReadOnlyList<T> Many<T>(int count = 3) where T : class =>
             Enumerable.Range(0, count).Select(_ => Mock.Of<T>()).ToList();

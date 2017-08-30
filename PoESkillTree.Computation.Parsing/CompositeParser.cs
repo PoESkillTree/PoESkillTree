@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Parsing.Steps;
 
 namespace PoESkillTree.Computation.Parsing
 {
-    public class CompositeParser<TInnerResult, TResult> : IParser<TResult>
+    public class CompositeParser<TInnerResult> : IParser<IReadOnlyList<TInnerResult>>
     {
         private readonly IStep<IParser<TInnerResult>, bool> _initialStep;
-        private readonly Func<IReadOnlyList<TInnerResult>, TResult> _resultAggregator;
 
-        public CompositeParser(IStep<IParser<TInnerResult>, bool> initialStep,
-            Func<IReadOnlyList<TInnerResult>, TResult> resultAggregator)
+        public CompositeParser(IStep<IParser<TInnerResult>, bool> initialStep)
         {
             _initialStep = initialStep;
-            _resultAggregator = resultAggregator;
         }
 
-        public bool TryParse(string stat, out string remaining, out TResult result)
+        public bool TryParse(string stat, out string remaining, out IReadOnlyList<TInnerResult> result)
         {
             var step = _initialStep;
             remaining = stat;
@@ -31,7 +27,7 @@ namespace PoESkillTree.Computation.Parsing
                 }
                 step = step.Next(parserReturn);
             }
-            result = _resultAggregator(results);
+            result = results;
             return step.Successful;
         }
     }

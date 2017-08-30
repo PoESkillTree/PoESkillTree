@@ -5,7 +5,7 @@ using PoESkillTree.Computation.Parsing.Builders.Forms;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
 using PoESkillTree.Computation.Parsing.Builders.Values;
 
-namespace PoESkillTree.Computation.Parsing.Builders
+namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 {
     public interface IModifierBuilder
     {
@@ -30,5 +30,7 @@ namespace PoESkillTree.Computation.Parsing.Builders
         IModifierBuilder WithCondition(IConditionBuilder condition);
 
         IModifierBuilder WithConditions(IEnumerable<IConditionBuilder> conditions);
+
+        IModifierResult Build();
     }
 }

@@ -58,8 +58,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builders\ModifierBuilderTest.cs" />
+    <Compile Include="ModifierBuilding\ModifierBuilderTest.cs" />
     <Compile Include="CachingParserTest.cs" />
+    <Compile Include="ParserWithResultSelectorTest.cs" />
     <Compile Include="StatMatchersSelectorTest.cs" />
     <Compile Include="Steps\CompletedStepTest.cs" />
     <Compile Include="CompositeParserTest.cs" />

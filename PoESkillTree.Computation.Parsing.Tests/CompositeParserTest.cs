@@ -15,7 +15,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var sut = CreateSut(null);
 
-            Assert.IsInstanceOf<IParser<string>>(sut);
+            Assert.IsInstanceOf<IParser<IReadOnlyList<int>>>(sut);
         }
 
         [TestCase(true, ExpectedResult = true)]
@@ -47,7 +47,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             sut.TryParse("stat", out var actualRemaining, out var actualResult);
 
             Assert.AreEqual("remaining", actualRemaining);
-            Assert.AreEqual("42", actualResult);
+            Assert.That(actualResult, Has.Exactly(1).EqualTo(42));
         }
 
         [Test]
@@ -84,14 +84,12 @@ namespace PoESkillTree.Computation.Parsing.Tests
             sut.TryParse("1 2 3", out var actualRemaining, out var actualResult);
 
             Assert.AreEqual("nothing", actualRemaining);
-            Assert.AreEqual("1,2,3", actualResult);
+            CollectionAssert.AreEqual(new[] { 1, 2, 3 }, actualResult);
         }
 
-        private static CompositeParser<int, string> CreateSut(IStep<IParser<int>, bool> initialStep)
+        private static CompositeParser<int> CreateSut(IStep<IParser<int>, bool> initialStep)
         {
-            string Aggregate(IEnumerable<int> results) => string.Join(",", results);
-
-            return new CompositeParser<int, string>(initialStep, Aggregate);
+            return new CompositeParser<int>(initialStep);
         }
 
         private static IParser<int> MockConstantParser(string stat, 
