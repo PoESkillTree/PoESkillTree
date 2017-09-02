@@ -11,6 +11,6 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 
         Func<IStatBuilder, IStatBuilder> StatConverter { get; }
 
-        ValueFunc ValueConverter { get; }
+        Func<IValueBuilder, IValueBuilder> ValueConverter { get; }
     }
 }

@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Data.Collections
         }
 
         public void Add([RegexPattern] string regex, IFormBuilder form, IStatBuilder stat,
-            ValueBuilder value, IConditionBuilder condition = null)
+            IValueBuilder value, IConditionBuilder condition = null)
         {
             var builder = ModifierBuilder
                 .WithForm(form)
@@ -53,12 +53,12 @@ namespace PoESkillTree.Computation.Data.Collections
         }
 
         public void Add([RegexPattern] string regex,
-            params (IFormBuilder form, IStatBuilder stat, ValueBuilder value,
+            params (IFormBuilder form, IStatBuilder stat, IValueBuilder value,
                 IConditionBuilder condition)[] stats)
         {
             var formList = new List<IFormBuilder>();
             var statList = new List<IStatBuilder>();
-            var valueList = new List<ValueBuilder>();
+            var valueList = new List<IValueBuilder>();
             var conditionList = new List<IConditionBuilder>();
             foreach (var (form, stat, value, condition) in stats)
             {
@@ -80,9 +80,9 @@ namespace PoESkillTree.Computation.Data.Collections
             params (IFormBuilder form, IStatBuilder stat, double value,
                 IConditionBuilder condition)[] stats)
         {
-            var withValueProviders =
+            var withIValueBuilders =
                 stats.Select(t => (t.form, t.stat, _valueFactory.Create(t.value), t.condition));
-            Add(regex, withValueProviders.ToArray());
+            Add(regex, withIValueBuilders.ToArray());
         }
     }
 }

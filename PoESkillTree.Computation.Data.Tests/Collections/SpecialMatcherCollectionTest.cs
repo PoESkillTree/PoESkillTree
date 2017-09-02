@@ -62,7 +62,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         {
             var form = Mock.Of<IFormBuilder>();
             var stat = Mock.Of<IStatBuilder>();
-            var value = new ValueBuilder(Mock.Of<IValueBuilder>(), null);
+            var value = Mock.Of<IValueBuilder>();
 
             _sut.Add(Regex, form, stat, value);
 
@@ -77,7 +77,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         {
             var form = Mock.Of<IFormBuilder>();
             var stat = Mock.Of<IStatBuilder>();
-            var value = new ValueBuilder(Mock.Of<IValueBuilder>(), null);
+            var value = Mock.Of<IValueBuilder>();
             var condition = Mock.Of<IConditionBuilder>();
 
             _sut.Add(Regex, form, stat, value, condition);
@@ -94,7 +94,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         {
             var form = Mock.Of<IFormBuilder>();
             var stat = Mock.Of<IStatBuilder>();
-            var value = new ValueBuilder(Mock.Of<IValueBuilder>(), null);
+            var value = Mock.Of<IValueBuilder>();
             _valueFactory.Setup(v => v.Create(3)).Returns(value);
             var condition = Mock.Of<IConditionBuilder>();
 
@@ -115,11 +115,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             var stats = new[]
                 { Mock.Of<IStatBuilder>(), Mock.Of<IStatBuilder>(), Mock.Of<IStatBuilder>() };
             var values = new[]
-            {
-                new ValueBuilder(Mock.Of<IValueBuilder>(), null),
-                new ValueBuilder(Mock.Of<IValueBuilder>(), null),
-                new ValueBuilder(Mock.Of<IValueBuilder>(), null)
-            };
+                { Mock.Of<IValueBuilder>(), Mock.Of<IValueBuilder>(), Mock.Of<IValueBuilder>() };
             var conditions = new[]
             {
                 Mock.Of<IConditionBuilder>(), Mock.Of<IConditionBuilder>(),
@@ -146,11 +142,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             var stats = new[]
                 { Mock.Of<IStatBuilder>(), Mock.Of<IStatBuilder>(), Mock.Of<IStatBuilder>() };
             var values = new[]
-            {
-                new ValueBuilder(Mock.Of<IValueBuilder>(), null),
-                new ValueBuilder(Mock.Of<IValueBuilder>(), null),
-                new ValueBuilder(Mock.Of<IValueBuilder>(), null)
-            };
+                { Mock.Of<IValueBuilder>(), Mock.Of<IValueBuilder>(), Mock.Of<IValueBuilder>() };
             _valueFactory.Setup(v => v.Create(0)).Returns(values[0]);
             _valueFactory.Setup(v => v.Create(1)).Returns(values[1]);
             _valueFactory.Setup(v => v.Create(2)).Returns(values[2]);

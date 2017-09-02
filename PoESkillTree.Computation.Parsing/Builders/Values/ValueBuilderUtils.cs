@@ -8,16 +8,16 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
 {
     public static class ValueBuilderUtils
     {
-        public static ValueFunc PerStat(IStatBuilder stat) => 
+        public static Func<ValueBuilder, ValueBuilder> PerStat(IStatBuilder stat) => 
             v => v * (stat.Value / 1).Floored;
 
-        public static ValueFunc PerStat(IStatBuilder stat, ValueBuilder divideBy) => 
+        public static Func<ValueBuilder, ValueBuilder> PerStat(IStatBuilder stat, ValueBuilder divideBy) => 
             v => v * (stat.Value / divideBy).Floored;
 
-        public static ValueFunc PerStatCeiled(IStatBuilder stat, ValueBuilder divideBy) =>
+        public static Func<ValueBuilder, ValueBuilder> PerStatCeiled(IStatBuilder stat, ValueBuilder divideBy) =>
             v => v * (stat.Value / divideBy).Ceiled;
 
-        public static ValueFunc PercentOf(IStatBuilder stat) =>
+        public static Func<ValueBuilder, ValueBuilder> PercentOf(IStatBuilder stat) =>
             v => stat.Value * v.AsPercentage;
 
         public static ValueBuilder LinearScale(this IValueBuilders valueFactory, 

@@ -31,7 +31,7 @@ namespace PoESkillTree.Computation.Data
         public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
 
         private ValueConversionMatcherCollection CreateCollection() =>
-            new ValueConversionMatcherCollection(_modifierBuilder)
+            new ValueConversionMatcherCollection(_modifierBuilder, ValueFactory)
             {
                 // action
                 { "for each enemy you've killed recently", Kill.CountRecently },

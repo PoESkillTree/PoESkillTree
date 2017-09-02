@@ -1,3 +1,4 @@
+using System;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Values
@@ -6,7 +7,10 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
     {
         IThenBuilder If(IConditionBuilder condition);
 
-        ValueBuilder Create(double value);
+        IValueBuilder Create(double value);
+
+        Func<IValueBuilder, IValueBuilder> WrapValueConverter(
+            Func<ValueBuilder, ValueBuilder> converter);
     }
     
     public interface IThenBuilder

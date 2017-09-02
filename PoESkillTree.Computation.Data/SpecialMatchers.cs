@@ -200,7 +200,7 @@ namespace PoESkillTree.Computation.Data
             },
         };
 
-        private IEnumerable<(IFormBuilder form, IStatBuilder stat, ValueBuilder value,
+        private IEnumerable<(IFormBuilder form, IStatBuilder stat, IValueBuilder value,
             IConditionBuilder condition)> ElementalEquilibrium()
         {
             foreach (var type in ElementalDamageTypes)
@@ -213,7 +213,7 @@ namespace PoESkillTree.Computation.Data
             }
         }
 
-        private IEnumerable<(IFormBuilder form, IStatBuilder stat, ValueBuilder value,
+        private IEnumerable<(IFormBuilder form, IStatBuilder stat, IValueBuilder value,
             IConditionBuilder condition)> LiegeOfThePrimordialDamage()
         {
             foreach (var type in AllDamageTypes)
@@ -223,9 +223,9 @@ namespace PoESkillTree.Computation.Data
             }
         }
 
-        private IEnumerable<(IFormBuilder form, IStatBuilder stat, ValueBuilder value,
+        private IEnumerable<(IFormBuilder form, IStatBuilder stat, IValueBuilder value,
             IConditionBuilder condition)> ParagonOfCalamity(IFormBuilder form,
-            IStatBuilder stat, ValueBuilder value)
+            IStatBuilder stat, IValueBuilder value)
         {
             foreach (var type in ElementalDamageTypes)
             {

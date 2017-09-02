@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Values;
 
@@ -63,12 +64,16 @@ namespace PoESkillTree.Computation.Console.Builders
             return new ThenBuilder($"if ({condition})", _conditionBuilders);
         }
 
-        public ValueBuilder Create(double value)
+        public IValueBuilder Create(double value)
         {
-            return new ValueBuilder(
-                new ValueBuilderStub(value.ToString(CultureInfo.InvariantCulture)),
-                _conditionBuilders);
+            return new ValueBuilderStub(value.ToString(CultureInfo.InvariantCulture));
         }
+
+        public Func<IValueBuilder, IValueBuilder> WrapValueConverter(
+            Func<ValueBuilder, ValueBuilder> converter) =>
+            iValue => iValue is ValueBuilder value
+                ? converter(value)
+                : converter(new ValueBuilder(iValue, _conditionBuilders));
 
 
         private class ThenBuilder : BuilderStub, IThenBuilder

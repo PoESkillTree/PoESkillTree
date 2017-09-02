@@ -27,7 +27,8 @@ namespace PoESkillTree.Computation.Data
 
         public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
 
-        private StatMatcherCollection CreateCollection() => new StatMatcherCollection(_modifierBuilder)
+        private StatMatcherCollection CreateCollection() => new StatMatcherCollection(
+            _modifierBuilder, ValueFactory)
         {
             // attributes
             { "strength", Attribute.Strength },

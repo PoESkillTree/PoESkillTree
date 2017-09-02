@@ -14,8 +14,8 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         internal IEnumerable<IFormBuilder> Forms { get; private set; }
         internal IEnumerable<IStatBuilder> Stats { get; private set; }
         internal Func<IStatBuilder, IStatBuilder> StatConverter { get; private set; }
-        internal IEnumerable<ValueBuilder> Values { get; private set; }
-        internal ValueFunc ValueConverter { get; private set; }
+        internal IEnumerable<IValueBuilder> Values { get; private set; }
+        internal Func<IValueBuilder, IValueBuilder> ValueConverter { get; private set; }
 
         public IModifierBuilder WithCondition(IConditionBuilder condition)
         {
@@ -94,7 +94,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             return ret;
         }
 
-        public IModifierBuilder WithValue(ValueBuilder value)
+        public IModifierBuilder WithValue(IValueBuilder value)
         {
             if (ReferenceEquals(value, null))
                 throw new ArgumentNullException(nameof(value));
@@ -105,7 +105,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             return ret;
         }
 
-        public IModifierBuilder WithValueConverter(ValueFunc converter)
+        public IModifierBuilder WithValueConverter(Func<IValueBuilder, IValueBuilder> converter)
         {
             if (converter == null)
                 throw new ArgumentNullException(nameof(converter));
@@ -116,7 +116,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             return ret;
         }
 
-        public IModifierBuilder WithValues(IEnumerable<ValueBuilder> values)
+        public IModifierBuilder WithValues(IEnumerable<IValueBuilder> values)
         {
             if (values == null)
                 throw new ArgumentNullException(nameof(values));

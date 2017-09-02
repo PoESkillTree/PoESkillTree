@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using MoreLinq;
@@ -59,12 +60,13 @@ namespace PoESkillTree.Computation.Data.Collections
             Add(regex, builder, substitution);
         }
 
-        public void Add([RegexPattern] string regex, IFormBuilder form, IStatBuilder stat, ValueFunc converter)
+        public void Add([RegexPattern] string regex, IFormBuilder form, IStatBuilder stat, 
+            Func<ValueBuilder, ValueBuilder> converter)
         {
             var builder = ModifierBuilder
                 .WithForm(form)
                 .WithStat(stat)
-                .WithValueConverter(converter);
+                .WithValueConverter(_valueFactory.WrapValueConverter(converter));
             Add(regex, builder);
         }
 

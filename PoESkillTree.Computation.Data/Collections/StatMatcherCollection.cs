@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
@@ -9,7 +10,8 @@ namespace PoESkillTree.Computation.Data.Collections
 {
     public class StatMatcherCollection : StatMatcherCollection<IStatBuilder>
     {
-        public StatMatcherCollection(IModifierBuilder modifierBuilder) : base(modifierBuilder)
+        public StatMatcherCollection(IModifierBuilder modifierBuilder,
+            IValueBuilders valueFactory) : base(modifierBuilder, valueFactory)
         {
         }
     }
@@ -17,8 +19,12 @@ namespace PoESkillTree.Computation.Data.Collections
 
     public class StatMatcherCollection<T> : MatcherCollection where T : class, IStatBuilder
     {
-        public StatMatcherCollection(IModifierBuilder modifierBuilder) : base(modifierBuilder)
+        private readonly IValueBuilders _valueFactory;
+
+        public StatMatcherCollection(IModifierBuilder modifierBuilder,
+            IValueBuilders valueFactory) : base(modifierBuilder)
         {
+            _valueFactory = valueFactory;
         }
 
         public void Add([RegexPattern] string regex, params T[] stats)
@@ -48,11 +54,12 @@ namespace PoESkillTree.Computation.Data.Collections
             Add(regex, builder);
         }
 
-        public void Add([RegexPattern] string regex, T stat, ValueFunc converter)
+        public void Add([RegexPattern] string regex, T stat, 
+            Func<ValueBuilder, ValueBuilder> converter)
         {
             var builder = ModifierBuilder
                 .WithStat(stat)
-                .WithValueConverter(converter);
+                .WithValueConverter(_valueFactory.WrapValueConverter(converter));
             Add(regex, builder);
         }
     }

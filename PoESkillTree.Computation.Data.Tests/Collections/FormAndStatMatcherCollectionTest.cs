@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         {
             var form = Mock.Of<IFormBuilder>();
             var stat = Mock.Of<IStatBuilder>();
-            var value = new ValueBuilder(Mock.Of<IValueBuilder>(), null);
+            var value = Mock.Of<IValueBuilder>();
             _valueFactory.Setup(v => v.Create(3)).Returns(value);
 
             _sut.Add(Regex, form, stat, 3);
@@ -51,7 +51,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         {
             var form = Mock.Of<IFormBuilder>();
             var stat = Mock.Of<IStatBuilder>();
-            var value = new ValueBuilder(Mock.Of<IValueBuilder>(), null);
+            var value = Mock.Of<IValueBuilder>();
             _valueFactory.Setup(v => v.Create(3)).Returns(value);
             var condition = Mock.Of<IConditionBuilder>();
 
@@ -127,7 +127,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         {
             var form = Mock.Of<IFormBuilder>();
             var stat = Mock.Of<IStatBuilder>();
-            ValueFunc converter = v => null;
+            var converter = _valueFactory.SetupConverter();
 
             _sut.Add(Regex, form, stat, converter);
 
@@ -156,14 +156,15 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         {
             var form = Mock.Of<IFormBuilder>();
             var stat = Mock.Of<IStatBuilder>();
-            var value = new ValueBuilder(Mock.Of<IValueBuilder>(), null);
+            var value = Mock.Of<IValueBuilder>();
             _valueFactory.Setup(v => v.Create(5)).Returns(value);
+            var converter = _valueFactory.SetupConverter();
 
             _sut.Add(Regex, form, stat, 5);
             _sut.Add(Regex, form, stat, stat);
             _sut.Add(Regex, form, new[] {stat, stat});
             _sut.Add(Regex, form, stat, "substitution");
-            _sut.Add(Regex, form, stat, v => null);
+            _sut.Add(Regex, form, stat, converter);
             _sut.Add(Regex, (form, form), stat);
 
             Assert.AreEqual(6, _sut.Count());

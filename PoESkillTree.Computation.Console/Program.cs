@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Console.Builders;
@@ -7,8 +6,6 @@ using PoESkillTree.Computation.Data;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
-using PoESkillTree.Computation.Parsing.Builders.Stats;
-using PoESkillTree.Computation.Parsing.Builders.Values;
 using PoESkillTree.Computation.Parsing.Data;
 using PoESkillTree.Computation.Parsing.ModifierBuilding;
 using PoESkillTree.Computation.Parsing.Steps;
@@ -47,7 +44,7 @@ namespace PoESkillTree.Computation.Console
                                     new ParserWithResultSelector<IReadOnlyList<IModifierResult>,
                                         IReadOnlyList<Modifier>>(
                                         new CompositeParser<IModifierResult>(initialStep),
-                                        l => throw new NotImplementedException()),
+                                        l => l.Aggregate().Build()),
                                     new StatReplacers().Replacers
                                 ),
                                 ls => ls.Flatten().ToList()
@@ -100,17 +97,10 @@ namespace PoESkillTree.Computation.Console
 
             public bool TryParse(string stat, out string remaining, out IModifierResult result)
             {
-                result = new DummyResult();
+                result = new EmptyModifierResult();
                 remaining = string.Empty;
                 return true;
             }
-        }
-
-        private class DummyResult : IModifierResult
-        {
-            public IReadOnlyList<ModifierBuilderEntry> Entries { get; } = new ModifierBuilderEntry[0];
-            public Func<IStatBuilder, IStatBuilder> StatConverter { get; } = s => s;
-            public ValueFunc ValueConverter { get; } = v => v;
         }
     }
 }

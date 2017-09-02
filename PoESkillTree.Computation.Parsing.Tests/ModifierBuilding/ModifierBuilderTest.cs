@@ -86,7 +86,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         public void WithValueReturnsModifierBuilder()
         {
             var sut = new ModifierBuilder();
-            var value = new ValueBuilder(null, null);
+            var value = Mock.Of<IValueBuilder>();
 
             var actual = sut.WithValue(value);
 
@@ -98,7 +98,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         {
             var sut = new ModifierBuilder();
 
-            var actual = sut.WithValues(Enumerable.Empty<ValueBuilder>());
+            var actual = sut.WithValues(Enumerable.Empty<IValueBuilder>());
 
             Assert.IsInstanceOf<ModifierBuilder>(actual);
         }
@@ -239,7 +239,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             var sut = new ModifierBuilder();
             var forms = Many<IFormBuilder>();
             var stats = Many<IStatBuilder>();
-            var values = ManyValues();
+            var values = Many<IValueBuilder>();
             var conditions = Many<IConditionBuilder>();
             var expected = forms.Select(f => Entry.WithForm(f))
                 .Zip(stats, (e, s) => e.WithStat(s))
@@ -262,7 +262,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             var sut = new ModifierBuilder();
             var forms = Many<IFormBuilder>();
             var stat = Mock.Of<IStatBuilder>();
-            var value = new ValueBuilder(Mock.Of<IValueBuilder>(), null);
+            var value = Mock.Of<IValueBuilder>();
             var condition = Mock.Of<IConditionBuilder>();
             var expexted = forms
                 .Select(f =>
@@ -293,7 +293,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         public void WithValueConverterSetsValueConverter()
         {
             var sut = new ModifierBuilder();
-            ValueFunc valueConverter = v => null;
+            Func<IValueBuilder, IValueBuilder> valueConverter = v => null;
 
             sut = (ModifierBuilder) sut.WithValueConverter(valueConverter);
 
@@ -315,7 +315,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         public void InitialValueConverterIsIdentity()
         {
             var sut = new ModifierBuilder();
-            var value = new ValueBuilder(Mock.Of<IValueBuilder>(), null);
+            var value = Mock.Of<IValueBuilder>();
 
             var actual = sut.ValueConverter(value);
 
@@ -344,8 +344,5 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
 
         private static IReadOnlyList<T> Many<T>(int count = 3) where T : class =>
             Enumerable.Range(0, count).Select(_ => Mock.Of<T>()).ToList();
-
-        private static IReadOnlyList<ValueBuilder> ManyValues(int count = 3) =>
-            Many<IValueBuilder>(count).Select(v => new ValueBuilder(v, null)).ToList();
     }
 }

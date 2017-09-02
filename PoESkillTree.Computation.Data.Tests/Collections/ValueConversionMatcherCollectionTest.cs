@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Parsing.Builders.Values;
@@ -10,12 +11,14 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
     {
         private const string Regex = "regex";
 
+        private Mock<IValueBuilders> _valueFactory;
         private ValueConversionMatcherCollection _sut;
 
         [SetUp]
         public void SetUp()
         {
-            _sut = new ValueConversionMatcherCollection(new ModifierBuilderStub());
+            _valueFactory = new Mock<IValueBuilders>();
+            _sut = new ValueConversionMatcherCollection(new ModifierBuilderStub(), _valueFactory.Object);
         }
 
         [Test]
@@ -27,7 +30,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void Add()
         {
-            ValueFunc converter = v => null;
+            var converter = _valueFactory.SetupConverter();
 
             _sut.Add(Regex, converter);
 
@@ -38,9 +41,11 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddManyAddsToCount()
         {
-            _sut.Add(Regex, v => null);
-            _sut.Add(Regex, v => null);
-            _sut.Add(Regex, v => null);
+            var converter = _valueFactory.SetupConverter();
+
+            _sut.Add(Regex, converter);
+            _sut.Add(Regex, converter);
+            _sut.Add(Regex, converter);
 
             Assert.AreEqual(3, _sut.Count());
         }

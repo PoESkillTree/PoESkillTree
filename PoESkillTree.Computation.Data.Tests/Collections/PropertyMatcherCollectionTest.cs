@@ -12,12 +12,14 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
     {
         private const string Regex = "regex";
 
+        private Mock<IValueBuilders> _valueFactory;
         private PropertyMatcherCollection _sut;
 
         [SetUp]
         public void SetUp()
         {
-            _sut = new PropertyMatcherCollection(new ModifierBuilderStub());
+            _valueFactory = new Mock<IValueBuilders>();
+            _sut = new PropertyMatcherCollection(new ModifierBuilderStub(), _valueFactory.Object);
         }
 
         [Test]
@@ -49,7 +51,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         public void AddWithStatAndConverter()
         {
             var stat = Mock.Of<IStatBuilder>();
-            ValueFunc converter = v => null;
+            var converter = _valueFactory.SetupConverter();
 
             _sut.Add(Regex, stat, converter);
 
@@ -62,7 +64,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         public void AddManyAddsToCount()
         {
             var stat = Mock.Of<IStatBuilder>();
-            ValueFunc converter = v => null;
+            var converter = _valueFactory.SetupConverter();
 
             _sut.Add(Regex);
             _sut.Add(Regex, stat);

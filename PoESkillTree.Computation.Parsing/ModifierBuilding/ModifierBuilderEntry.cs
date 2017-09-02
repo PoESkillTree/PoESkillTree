@@ -15,7 +15,7 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
         public IStatBuilder Stat { get; }
 
         [CanBeNull]
-        public ValueBuilder Value { get; }
+        public IValueBuilder Value { get; }
 
         [CanBeNull]
         public IConditionBuilder Condition { get; }
@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
         {
         }
 
-        private ModifierBuilderEntry(IFormBuilder form, IStatBuilder stat, ValueBuilder value, 
+        private ModifierBuilderEntry(IFormBuilder form, IStatBuilder stat, IValueBuilder value, 
             IConditionBuilder condition)
         {
             Form = form;
@@ -43,7 +43,7 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
             return new ModifierBuilderEntry(Form, stat, Value, Condition);
         }
 
-        public ModifierBuilderEntry WithValue(ValueBuilder value)
+        public ModifierBuilderEntry WithValue(IValueBuilder value)
         {
             return new ModifierBuilderEntry(Form, Stat, value, Condition);
         }
@@ -70,7 +70,7 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
         {
             return (Form != null ? Form.GetHashCode() : 0) ^
                    (Stat != null ? Stat.GetHashCode() : 0) ^
-                   (!ReferenceEquals(Value, null) ? Value.GetHashCode() : 0) ^
+                   (Value != null ? Value.GetHashCode() : 0) ^
                    (Condition != null ? Condition.GetHashCode() : 0);
         }
     }

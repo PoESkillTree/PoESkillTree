@@ -21,11 +21,11 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 
         IModifierBuilder WithStatConverter(Func<IStatBuilder, IStatBuilder> converter);
 
-        IModifierBuilder WithValue(ValueBuilder value);
+        IModifierBuilder WithValue(IValueBuilder value);
 
-        IModifierBuilder WithValues(IEnumerable<ValueBuilder> values);
+        IModifierBuilder WithValues(IEnumerable<IValueBuilder> values);
 
-        IModifierBuilder WithValueConverter(ValueFunc converter);
+        IModifierBuilder WithValueConverter(Func<IValueBuilder, IValueBuilder> converter);
 
         IModifierBuilder WithCondition(IConditionBuilder condition);
 

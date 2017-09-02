@@ -64,8 +64,9 @@
     <Compile Include="Builders\Damage\IDamageSourceBuilders.cs" />
     <Compile Include="Builders\Damage\IDamageTypeBuilder.cs" />
     <Compile Include="Builders\Damage\IDamageTypeBuilders.cs" />
+    <Compile Include="ModifierBuilding\EmptyModifierResult.cs" />
     <Compile Include="ModifierBuilding\IModifierResult.cs" />
-    <Compile Include="ModifierBuilding\ModifierAggregator.cs" />
+    <Compile Include="ModifierBuilding\ModifierResultExtensions.cs" />
     <Compile Include="ModifierBuilding\ModifierBuilderEntry.cs" />
     <Compile Include="ModifierBuilding\ModifierBuilder.cs" />
     <Compile Include="Data\EffectStatData.cs" />
@@ -128,7 +129,6 @@
     <Compile Include="Builders\Stats\IStatBuilders.cs" />
     <Compile Include="Builders\Values\IValueBuilder.cs" />
     <Compile Include="Builders\Values\IValueBuilders.cs" />
-    <Compile Include="Builders\Values\ValueFunc.cs" />
     <Compile Include="Builders\Values\ValueBuilder.cs" />
     <Compile Include="Builders\Values\ValueBuilderUtils.cs" />
     <Compile Include="CachingParser.cs" />

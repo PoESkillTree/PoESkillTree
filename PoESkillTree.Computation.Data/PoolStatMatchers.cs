@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Data
         public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
 
         private StatMatcherCollection<IPoolStatBuilder> CreateCollection() =>
-            new StatMatcherCollection<IPoolStatBuilder>(_modifierBuilder)
+            new StatMatcherCollection<IPoolStatBuilder>(_modifierBuilder, ValueFactory)
             {
                 { "(maximum )?life", Life },
                 { "(maximum )?mana", Mana },

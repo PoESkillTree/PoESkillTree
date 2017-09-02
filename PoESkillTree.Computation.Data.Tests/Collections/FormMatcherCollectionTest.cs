@@ -55,7 +55,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         public void AddWithValueAddsCorrectMatcherData()
         {
             var form = Mock.Of<IFormBuilder>();
-            var value = new ValueBuilder(Mock.Of<IValueBuilder>(), null);
+            var value = Mock.Of<IValueBuilder>();
             _valueFactory.Setup(v => v.Create(3)).Returns(value);
 
             _sut.Add("regex", form, 3);

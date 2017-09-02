@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Data
         public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
 
         private PropertyMatcherCollection CreateCollection() => new PropertyMatcherCollection(
-            _modifierBuilder)
+            _modifierBuilder, ValueFactory)
         {
             { "quality" }, // do nothing with it
             { "attacks per second", Skills.Speed },
