@@ -64,7 +64,7 @@
     <Compile Include="Builders\Damage\IDamageSourceBuilders.cs" />
     <Compile Include="Builders\Damage\IDamageTypeBuilder.cs" />
     <Compile Include="Builders\Damage\IDamageTypeBuilders.cs" />
-    <Compile Include="ModifierBuilding\EmptyModifierResult.cs" />
+    <Compile Include="ModifierBuilding\SimpleModifierResult.cs" />
     <Compile Include="ModifierBuilding\IModifierResult.cs" />
     <Compile Include="ModifierBuilding\ModifierResultExtensions.cs" />
     <Compile Include="ModifierBuilding\ModifierBuilderEntry.cs" />

@@ -73,5 +73,10 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
                    (Value != null ? Value.GetHashCode() : 0) ^
                    (Condition != null ? Condition.GetHashCode() : 0);
         }
+
+        public override string ToString()
+        {
+            return $"ModifierBuilderEntry(Form={Form},Stat={Stat},Value={Value},Condition={Condition})";
+        }
     }
 }

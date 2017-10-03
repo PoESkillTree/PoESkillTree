@@ -96,7 +96,7 @@ namespace PoESkillTree.Computation.Console
 
             public bool TryParse(string stat, out string remaining, out IModifierResult result)
             {
-                result = new EmptyModifierResult();
+                result = SimpleModifierResult.Empty;
                 remaining = string.Empty;
                 return true;
             }

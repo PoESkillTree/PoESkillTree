@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="ModifierBuilding\ModifierBuilderTest.cs" />
     <Compile Include="CachingParserTest.cs" />
+    <Compile Include="ModifierBuilding\ModifierResultExtensionsTest.cs" />
     <Compile Include="ParserWithResultSelectorTest.cs" />
     <Compile Include="StatMatchersSelectorTest.cs" />
     <Compile Include="Steps\CompletedStepTest.cs" />
