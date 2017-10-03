@@ -33,7 +33,7 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
             }
 
             var leftEntry = left.Entries.Single();
-            IReadOnlyList<ModifierBuilderEntry> entries;
+            IReadOnlyList<ModifierResultEntry> entries;
             if (right.Entries.Count == 1)
             {
                 entries = new[] { Merge(leftEntry, right.Entries[0]) };
@@ -45,8 +45,8 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
             return new SimpleModifierResult(entries, ConvertStat, ConvertValue);
         }
 
-        private static ModifierBuilderEntry Merge(ModifierBuilderEntry left,
-            ModifierBuilderEntry right)
+        private static ModifierResultEntry Merge(ModifierResultEntry left,
+            ModifierResultEntry right)
         {
             if (left.Form != null && right.Form != null)
                 throw new ArgumentException("Form may only be set once");
@@ -69,7 +69,7 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
                 condition = left.Condition.And(right.Condition);
             }
 
-            return new ModifierBuilderEntry()
+            return new ModifierResultEntry()
                 .WithForm(left.Form ?? right.Form)
                 .WithStat(left.Stat ?? right.Stat)
                 .WithValue(left.Value ?? right.Value)

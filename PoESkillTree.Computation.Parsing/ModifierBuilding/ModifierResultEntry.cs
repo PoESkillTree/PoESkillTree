@@ -6,7 +6,7 @@ using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 {
-    public class ModifierBuilderEntry
+    public class ModifierResultEntry
     {
         [CanBeNull]
         public IFormBuilder Form { get; }
@@ -20,11 +20,11 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
         [CanBeNull]
         public IConditionBuilder Condition { get; }
 
-        public ModifierBuilderEntry()
+        public ModifierResultEntry()
         {
         }
 
-        private ModifierBuilderEntry(IFormBuilder form, IStatBuilder stat, IValueBuilder value, 
+        private ModifierResultEntry(IFormBuilder form, IStatBuilder stat, IValueBuilder value, 
             IConditionBuilder condition)
         {
             Form = form;
@@ -33,31 +33,31 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
             Condition = condition;
         }
 
-        public ModifierBuilderEntry WithForm(IFormBuilder form)
+        public ModifierResultEntry WithForm(IFormBuilder form)
         {
-            return new ModifierBuilderEntry(form, Stat, Value, Condition);
+            return new ModifierResultEntry(form, Stat, Value, Condition);
         }
 
-        public ModifierBuilderEntry WithStat(IStatBuilder stat)
+        public ModifierResultEntry WithStat(IStatBuilder stat)
         {
-            return new ModifierBuilderEntry(Form, stat, Value, Condition);
+            return new ModifierResultEntry(Form, stat, Value, Condition);
         }
 
-        public ModifierBuilderEntry WithValue(IValueBuilder value)
+        public ModifierResultEntry WithValue(IValueBuilder value)
         {
-            return new ModifierBuilderEntry(Form, Stat, value, Condition);
+            return new ModifierResultEntry(Form, Stat, value, Condition);
         }
 
-        public ModifierBuilderEntry WithCondition(IConditionBuilder condition)
+        public ModifierResultEntry WithCondition(IConditionBuilder condition)
         {
-            return new ModifierBuilderEntry(Form, Stat, Value, condition);
+            return new ModifierResultEntry(Form, Stat, Value, condition);
         }
 
         public override bool Equals(object obj)
         {
             if (obj == this)
                 return true;
-            if (!(obj is ModifierBuilderEntry other))
+            if (!(obj is ModifierResultEntry other))
                 return false;
 
             return Equals(Form, other.Form)
@@ -76,7 +76,7 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 
         public override string ToString()
         {
-            return $"ModifierBuilderEntry(Form={Form},Stat={Stat},Value={Value},Condition={Condition})";
+            return $"ModifierResultEntry(Form={Form},Stat={Stat},Value={Value},Condition={Condition})";
         }
     }
 }

@@ -227,15 +227,15 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             CollectionAssert.AreEqual(expected, result.Entries);
         }
 
-        private static readonly ModifierBuilderEntry EmptyEntry = new ModifierBuilderEntry();
+        private static readonly ModifierResultEntry EmptyEntry = new ModifierResultEntry();
 
-        private static readonly ModifierBuilderEntry DefaultEntry = EmptyEntry
+        private static readonly ModifierResultEntry DefaultEntry = EmptyEntry
             .WithStat(Mock.Of<IStatBuilder>())
             .WithForm(Mock.Of<IFormBuilder>())
             .WithValue(Mock.Of<IValueBuilder>())
             .WithCondition(Mock.Of<IConditionBuilder>());
 
-        private static ModifierBuilderEntry[] CreateManyEntries()
+        private static ModifierResultEntry[] CreateManyEntries()
         {
             var entry0 = DefaultEntry;
             var entry1 = DefaultEntry;
@@ -253,16 +253,16 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             return CreateResult(null, valueConverter: valueConverter);
         }
 
-        private static IModifierResult CreateResult(params ModifierBuilderEntry[] entries)
+        private static IModifierResult CreateResult(params ModifierResultEntry[] entries)
         {
             return CreateResult(entries, null);
         }
 
-        private static IModifierResult CreateResult(IReadOnlyList<ModifierBuilderEntry> entries = null,
+        private static IModifierResult CreateResult(IReadOnlyList<ModifierResultEntry> entries = null,
             Func<IStatBuilder, IStatBuilder> statConverter = null,
             Func<IValueBuilder, IValueBuilder> valueConverter = null)
         {
-            return new SimpleModifierResult(entries ?? new ModifierBuilderEntry[0],
+            return new SimpleModifierResult(entries ?? new ModifierResultEntry[0],
                 statConverter ?? (s => s),
                 valueConverter ?? (v => v));
         }

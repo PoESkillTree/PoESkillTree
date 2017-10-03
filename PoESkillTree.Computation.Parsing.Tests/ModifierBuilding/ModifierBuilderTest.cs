@@ -340,7 +340,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             Assert.AreSame(sut, actual);
         }
 
-        private static ModifierBuilderEntry Entry => new ModifierBuilderEntry();
+        private static ModifierResultEntry Entry => new ModifierResultEntry();
 
         private static IReadOnlyList<T> Many<T>(int count = 3) where T : class =>
             Enumerable.Range(0, count).Select(_ => Mock.Of<T>()).ToList();

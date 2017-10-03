@@ -7,7 +7,7 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 {
     public interface IModifierResult
     {
-        IReadOnlyList<ModifierBuilderEntry> Entries { get; }
+        IReadOnlyList<ModifierResultEntry> Entries { get; }
 
         Func<IStatBuilder, IStatBuilder> StatConverter { get; }
 

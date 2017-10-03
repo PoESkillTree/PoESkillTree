@@ -11,16 +11,16 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 {
     public class ModifierBuilder : IModifierBuilder, IModifierResult
     {
-        public IReadOnlyList<ModifierBuilderEntry> Entries { get; }
+        public IReadOnlyList<ModifierResultEntry> Entries { get; }
         public Func<IStatBuilder, IStatBuilder> StatConverter { get; } = s => s;
         public Func<IValueBuilder, IValueBuilder> ValueConverter { get; } = v => v;
 
         public ModifierBuilder()
         {
-            Entries = new ModifierBuilderEntry[0];
+            Entries = new ModifierResultEntry[0];
         }
 
-        private ModifierBuilder(IEnumerable<ModifierBuilderEntry> entries, 
+        private ModifierBuilder(IEnumerable<ModifierResultEntry> entries, 
             Func<IStatBuilder, IStatBuilder> statConverter, 
             Func<IValueBuilder, IValueBuilder> valueConverter)
         {
@@ -30,13 +30,13 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
         }
 
         private IModifierBuilder WithSingle<T>(T element, 
-            Func<ModifierBuilderEntry, T, ModifierBuilderEntry> entrySelector, 
-            Func<ModifierBuilderEntry, T> entryElementSelector, string elementName)
+            Func<ModifierResultEntry, T, ModifierResultEntry> entrySelector, 
+            Func<ModifierResultEntry, T> entryElementSelector, string elementName)
         {
-            IEnumerable<ModifierBuilderEntry> entries;
+            IEnumerable<ModifierResultEntry> entries;
             if (Entries.IsEmpty())
             {
-                entries = new[] { new ModifierBuilderEntry() }
+                entries = new[] { new ModifierResultEntry() }
                     .Select(e => entrySelector(e, element));
             }
             else if (Entries.Select(entryElementSelector).Any(t => t != null))
@@ -51,14 +51,14 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
         }
 
         private IModifierBuilder WithEnumerable<T>(IEnumerable<T> elements, 
-            Func<ModifierBuilderEntry, T, ModifierBuilderEntry> entrySelector,
-            Func<ModifierBuilderEntry, T> entryElementSelector, string elementName)
+            Func<ModifierResultEntry, T, ModifierResultEntry> entrySelector,
+            Func<ModifierResultEntry, T> entryElementSelector, string elementName)
         {
-            IEnumerable<ModifierBuilderEntry> entries;
+            IEnumerable<ModifierResultEntry> entries;
             var elementList = elements.ToList();
             if (Entries.IsEmpty())
             {
-                entries = elementList.Select(e => entrySelector(new ModifierBuilderEntry(), e));
+                entries = elementList.Select(e => entrySelector(new ModifierResultEntry(), e));
             }
             else if (Entries.Select(entryElementSelector).Any(t => t != null))
             {

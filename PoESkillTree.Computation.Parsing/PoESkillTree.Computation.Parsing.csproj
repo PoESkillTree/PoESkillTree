@@ -67,7 +67,7 @@
     <Compile Include="ModifierBuilding\SimpleModifierResult.cs" />
     <Compile Include="ModifierBuilding\IModifierResult.cs" />
     <Compile Include="ModifierBuilding\ModifierResultExtensions.cs" />
-    <Compile Include="ModifierBuilding\ModifierBuilderEntry.cs" />
+    <Compile Include="ModifierBuilding\ModifierResultEntry.cs" />
     <Compile Include="ModifierBuilding\ModifierBuilder.cs" />
     <Compile Include="Data\EffectStatData.cs" />
     <Compile Include="Builders\Effects\IAilmentBuilder.cs" />
