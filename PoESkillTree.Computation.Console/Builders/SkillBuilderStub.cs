@@ -12,52 +12,48 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class SkillBuilderStub : BuilderStub, ISkillBuilder
     {
-        private readonly IConditionBuilders _conditionBuilders;
-
-        public SkillBuilderStub(string stringRepresentation, IConditionBuilders conditionBuilders) 
+        public SkillBuilderStub(string stringRepresentation) 
             : base(stringRepresentation)
         {
-            _conditionBuilders = conditionBuilders;
         }
 
         public IActionBuilder<ISelfBuilder, IEntityBuilder> Cast =>
-            new SelfToAnyActionBuilderStub($"{this} cast", _conditionBuilders);
+            new SelfToAnyActionBuilderStub($"{this} cast");
 
         public IStatBuilder Instances =>
-            new StatBuilderStub($"{this} instance count", _conditionBuilders);
+            new StatBuilderStub($"{this} instance count");
 
         public IConditionBuilder HasInstance =>
             new ConditionBuilderStub($"{this} has any instances");
 
         public IStatBuilder Duration =>
-            new StatBuilderStub($"{this} duration", _conditionBuilders);
+            new StatBuilderStub($"{this} duration");
 
         public IStatBuilder Cost =>
-            new StatBuilderStub($"{this} cost", _conditionBuilders);
+            new StatBuilderStub($"{this} cost");
 
         public IStatBuilder Reservation =>
-            new StatBuilderStub($"{this} reservation", _conditionBuilders);
+            new StatBuilderStub($"{this} reservation");
 
         public IStatBuilder CooldownRecoverySpeed =>
-            new StatBuilderStub($"{this} cooldown recovery speed", _conditionBuilders);
+            new StatBuilderStub($"{this} cooldown recovery speed");
 
         public IStatBuilder DamageEffectiveness =>
-            new StatBuilderStub($"{this} effectiveness of added damage", _conditionBuilders);
+            new StatBuilderStub($"{this} effectiveness of added damage");
 
         public IStatBuilder Speed =>
-            new StatBuilderStub($"{this} cast/attack speed", _conditionBuilders);
+            new StatBuilderStub($"{this} cast/attack speed");
 
         public IStatBuilder AreaOfEffect =>
-            new StatBuilderStub($"{this} area of effect", _conditionBuilders);
+            new StatBuilderStub($"{this} area of effect");
     }
 
 
     public class SkillBuilderCollectionStub : BuilderCollectionStub<ISkillBuilder>, 
         ISkillBuilderCollection
     {
-        public SkillBuilderCollectionStub(IReadOnlyList<ISkillBuilder> elements,
-            IConditionBuilders conditionBuilders) 
-            : base(elements, conditionBuilders)
+        public SkillBuilderCollectionStub(IReadOnlyList<ISkillBuilder> elements) 
+            : base(elements)
         {
         }
 
@@ -81,92 +77,88 @@ namespace PoESkillTree.Computation.Console.Builders
                 $"{this}.Where(is socketed in {slot})");
 
         public IStatBuilder CombinedInstances =>
-            new StatBuilderStub($"{this} combined instance count", ConditionBuilders);
+            new StatBuilderStub($"{this} combined instance count");
 
         public IStatBuilder Duration =>
-            new StatBuilderStub($"{this} duration", ConditionBuilders);
+            new StatBuilderStub($"{this} duration");
 
         public IStatBuilder Cost =>
-            new StatBuilderStub($"{this} cost", ConditionBuilders);
+            new StatBuilderStub($"{this} cost");
 
         public IStatBuilder Reservation =>
-            new StatBuilderStub($"{this} reservation", ConditionBuilders);
+            new StatBuilderStub($"{this} reservation");
 
         public IStatBuilder CooldownRecoverySpeed =>
-            new StatBuilderStub($"{this} cooldown recovery speed", ConditionBuilders);
+            new StatBuilderStub($"{this} cooldown recovery speed");
 
         public IStatBuilder DamageEffectiveness =>
-            new StatBuilderStub($"{this} damage effectiveness", ConditionBuilders);
+            new StatBuilderStub($"{this} damage effectiveness");
 
         public IStatBuilder Speed =>
-            new StatBuilderStub($"{this} attack/cast speed", ConditionBuilders);
+            new StatBuilderStub($"{this} attack/cast speed");
 
         public IStatBuilder AreaOfEffect =>
-            new StatBuilderStub($"{this} area of effect", ConditionBuilders);
+            new StatBuilderStub($"{this} area of effect");
 
         public IFlagStatBuilder ApplyStatsToEntity(IEntityBuilder entity) =>
-            new FlagStatBuilderStub($"apply stats of {this} to {entity}", ConditionBuilders);
+            new FlagStatBuilderStub($"apply stats of {this} to {entity}");
 
         public ISkillBuilderCollection Where(Func<ISkillBuilder, IConditionBuilder> predicate) =>
             new SkillBuilderCollectionStub(this,
-                $"{this}.Where({predicate(new SkillBuilderStub("skill", ConditionBuilders))})");
+                $"{this}.Where({predicate(new SkillBuilderStub("skill"))})");
 
         public IActionBuilder<ISelfBuilder, IEntityBuilder> Cast =>
-            new SelfToAnyActionBuilderStub($"{this} cast", ConditionBuilders);
+            new SelfToAnyActionBuilderStub($"{this} cast");
     }
 
 
     public class SkillBuildersStub : ISkillBuilders
     {
-        private readonly IConditionBuilders _conditionBuilders;
-
-        public SkillBuildersStub(IConditionBuilders conditionBuilders)
+        public SkillBuildersStub()
         {
-            _conditionBuilders = conditionBuilders;
-
             ISkillBuilder[] skills =
             {
-                new SkillBuilderStub("skill1", _conditionBuilders),
-                new SkillBuilderStub("skill2", _conditionBuilders),
-                new SkillBuilderStub("skill3", _conditionBuilders),
-                new SkillBuilderStub("...", _conditionBuilders),
+                new SkillBuilderStub("skill1"),
+                new SkillBuilderStub("skill2"),
+                new SkillBuilderStub("skill3"),
+                new SkillBuilderStub("..."),
             };
-            Skills = new SkillBuilderCollectionStub(skills, _conditionBuilders);
+            Skills = new SkillBuilderCollectionStub(skills);
         }
 
         public ISkillBuilderCollection Skills { get; }
 
         public ISkillBuilderCollection Combine(params ISkillBuilder[] skills) =>
-            new SkillBuilderCollectionStub(skills, _conditionBuilders);
+            new SkillBuilderCollectionStub(skills);
 
         public ISkillBuilder SummonSkeleton =>
-            new SkillBuilderStub("Summon Skeleton", _conditionBuilders);
+            new SkillBuilderStub("Summon Skeleton");
 
         public ISkillBuilder VaalSummonSkeletons =>
-            new SkillBuilderStub("Vaal Summon Skeletons", _conditionBuilders);
+            new SkillBuilderStub("Vaal Summon Skeletons");
 
         public ISkillBuilder RaiseSpectre =>
-            new SkillBuilderStub("Raise Spectre", _conditionBuilders);
+            new SkillBuilderStub("Raise Spectre");
 
         public ISkillBuilder RaiseZombie =>
-            new SkillBuilderStub("Raise Zombie", _conditionBuilders);
+            new SkillBuilderStub("Raise Zombie");
 
         public ISkillBuilder DetonateMines =>
-            new SkillBuilderStub("Detonate Mines", _conditionBuilders);
+            new SkillBuilderStub("Detonate Mines");
 
         public ISkillBuilder BloodRage =>
-            new SkillBuilderStub("Blood Rage", _conditionBuilders);
+            new SkillBuilderStub("Blood Rage");
 
         public ISkillBuilder MoltenShell =>
-            new SkillBuilderStub("Molten Shell", _conditionBuilders);
+            new SkillBuilderStub("Molten Shell");
 
         public ISkillBuilder BoneOffering =>
-            new SkillBuilderStub("Bone Offering", _conditionBuilders);
+            new SkillBuilderStub("Bone Offering");
 
         public ISkillBuilder FleshOffering =>
-            new SkillBuilderStub("Flesh Offering", _conditionBuilders);
+            new SkillBuilderStub("Flesh Offering");
 
         public ISkillBuilder SpiritOffering =>
-            new SkillBuilderStub("Spirit Offering", _conditionBuilders);
+            new SkillBuilderStub("Spirit Offering");
     }
 }

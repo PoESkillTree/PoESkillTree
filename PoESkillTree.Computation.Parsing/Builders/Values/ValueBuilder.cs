@@ -5,17 +5,15 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
     public class ValueBuilder : IValueBuilder
     {
         private readonly IValueBuilder _value;
-        private readonly IConditionBuilders _conditionBuilders;
 
-        public ValueBuilder(IValueBuilder value, IConditionBuilders conditionBuilders)
+        public ValueBuilder(IValueBuilder value)
         {
             _value = value;
-            _conditionBuilders = conditionBuilders;
         }
 
         private ValueBuilder Wrap(IValueBuilder value)
         {
-            return new ValueBuilder(value, _conditionBuilders);
+            return new ValueBuilder(value);
         }
 
         public override bool Equals(object obj)
@@ -41,13 +39,13 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
             Eq(right, left);
 
         public static IConditionBuilder operator !=(ValueBuilder left, ValueBuilder right) => 
-            left._conditionBuilders.Not(left == right);
+            (left == right).Not;
 
         public static IConditionBuilder operator !=(ValueBuilder left, double right) => 
-            left._conditionBuilders.Not(left == right);
+            (left == right).Not;
 
         public static IConditionBuilder operator !=(double left, ValueBuilder right) => 
-            right._conditionBuilders.Not(left == right);
+            (left == right).Not;
 
         private static IConditionBuilder Eq(IValueBuilder left, IValueBuilder right) =>
             left.Eq(right);
@@ -66,22 +64,22 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
             left._value.GreaterThen(right);
 
         public static IConditionBuilder operator >=(ValueBuilder left, ValueBuilder right) => 
-            left._conditionBuilders.Or(left == right, left > right);
+            (left == right).Or(left > right);
 
         public static IConditionBuilder operator >=(ValueBuilder left, double right) => 
-            left._conditionBuilders.Or(left == right, left > right);
+            (left == right).Or(left > right);
 
         public static IConditionBuilder operator <=(ValueBuilder left, ValueBuilder right) => 
-            left._conditionBuilders.Not(left > right);
+            (left > right).Not;
 
         public static IConditionBuilder operator <=(ValueBuilder left, double right) => 
-            left._conditionBuilders.Not(left > right);
+            (left > right).Not;
 
         public static IConditionBuilder operator <(ValueBuilder left, ValueBuilder right) => 
-            left._conditionBuilders.Not(left >= right);
+            (left >= right).Not;
 
         public static IConditionBuilder operator <(ValueBuilder left, double right) => 
-            left._conditionBuilders.Not(left >= right);
+            (left >= right).Not;
 
         public static IConditionBuilder operator >=(double left, ValueBuilder right) => 
             right < left;

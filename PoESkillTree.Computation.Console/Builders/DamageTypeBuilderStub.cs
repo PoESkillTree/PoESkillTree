@@ -7,65 +7,54 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class DamageTypeBuilderStub : BuilderStub, IDamageTypeBuilder
     {
-        private readonly IConditionBuilders _conditionBuilders;
-
-        public DamageTypeBuilderStub(string stringRepresentation,
-            IConditionBuilders conditionBuilders) : base(stringRepresentation)
+        public DamageTypeBuilderStub(string stringRepresentation) : base(stringRepresentation)
         {
-            _conditionBuilders = conditionBuilders;
         }
 
         public IDamageTypeBuilder And(IDamageTypeBuilder type) =>
-            new DamageTypeBuilderStub($"{this}, {type}", _conditionBuilders);
+            new DamageTypeBuilderStub($"{this}, {type}");
 
         public IDamageTypeBuilder Invert =>
-            new DamageTypeBuilderStub($"Invert({this})", _conditionBuilders);
+            new DamageTypeBuilderStub($"Invert({this})");
 
         public IDamageTypeBuilder Except(IDamageTypeBuilder type) =>
-            new DamageTypeBuilderStub($"({this}).Except({type})", _conditionBuilders);
+            new DamageTypeBuilderStub($"({this}).Except({type})");
 
         public IStatBuilder Resistance =>
-            new StatBuilderStub($"{this} Resistance", _conditionBuilders);
+            new StatBuilderStub($"{this} Resistance");
 
         public IDamageStatBuilder Damage =>
-            new DamageStatBuilderStub($"{this} Damage", _conditionBuilders);
+            new DamageStatBuilderStub($"{this} Damage");
 
         public IConditionBuilder DamageOverTimeIsOn(IEntityBuilder entity) =>
             new ConditionBuilderStub($"{entity} is affected by {this} Damage over Time");
 
         public IStatBuilder Penetration =>
-            new StatBuilderStub($"{this} Penetration", _conditionBuilders);
+            new StatBuilderStub($"{this} Penetration");
 
         public IFlagStatBuilder IgnoreResistance =>
-            new FlagStatBuilderStub($"Ignore {this} Resistance", _conditionBuilders);
+            new FlagStatBuilderStub($"Ignore {this} Resistance");
     }
 
 
     public class DamageTypeBuildersStub : IDamageTypeBuilders
     {
-        private readonly IConditionBuilders _conditionBuilders;
-
-        public DamageTypeBuildersStub(IConditionBuilders conditionBuilders)
-        {
-            _conditionBuilders = conditionBuilders;
-        }
-
         public IDamageTypeBuilder Physical =>
-            new DamageTypeBuilderStub("Physical", _conditionBuilders);
+            new DamageTypeBuilderStub("Physical");
 
         public IDamageTypeBuilder Fire => 
-            new DamageTypeBuilderStub("Fire", _conditionBuilders);
+            new DamageTypeBuilderStub("Fire");
 
         public IDamageTypeBuilder Lightning =>
-            new DamageTypeBuilderStub("Lightning", _conditionBuilders);
+            new DamageTypeBuilderStub("Lightning");
 
         public IDamageTypeBuilder Cold => 
-            new DamageTypeBuilderStub("Cold", _conditionBuilders);
+            new DamageTypeBuilderStub("Cold");
 
         public IDamageTypeBuilder Chaos => 
-            new DamageTypeBuilderStub("Chaos", _conditionBuilders);
+            new DamageTypeBuilderStub("Chaos");
 
         public IDamageTypeBuilder RandomElement =>
-            new DamageTypeBuilderStub("Random Element", _conditionBuilders);
+            new DamageTypeBuilderStub("Random Element");
     }
 }

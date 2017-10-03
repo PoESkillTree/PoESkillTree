@@ -10,6 +10,15 @@ namespace PoESkillTree.Computation.Console.Builders
         public ConditionBuilderStub(string stringRepresentation) : base(stringRepresentation)
         {
         }
+
+        public IConditionBuilder And(IConditionBuilder condition) => 
+            new ConditionBuilderStub(this + " and " + condition);
+
+        public IConditionBuilder Or(IConditionBuilder condition) => 
+            new ConditionBuilderStub(this + " or " + condition);
+
+        public IConditionBuilder Not => 
+            new ConditionBuilderStub("not " + this);
     }
 
 
@@ -32,15 +41,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IConditionBuilder Unique(string name = "$0") =>
             new ConditionBuilderStub(name);
-
-        public IConditionBuilder And(params IConditionBuilder[] conditions) =>
-            new ConditionBuilderStub(string.Join<IConditionBuilder>(" and ", conditions));
-
-        public IConditionBuilder Or(params IConditionBuilder[] conditions) =>
-            new ConditionBuilderStub(string.Join<IConditionBuilder>(" or ", conditions));
-
-        public IConditionBuilder Not(IConditionBuilder condition) =>
-            new ConditionBuilderStub("not " + condition);
 
         public IConditionBuilder True =>
             new ConditionBuilderStub("unconditional");

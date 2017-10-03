@@ -12,24 +12,21 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class StatBuilderStub : BuilderStub, IStatBuilder
     {
-        protected IConditionBuilders ConditionBuilders { get; }
-
-        public StatBuilderStub(string stringRepresentation, IConditionBuilders conditionBuilders) 
+        public StatBuilderStub(string stringRepresentation) 
             : base(stringRepresentation)
         {
-            ConditionBuilders = conditionBuilders;
         }
 
-        protected IStatBuilder Create(string stringRepresentation)
+        protected static IStatBuilder Create(string stringRepresentation)
         {
-            return new StatBuilderStub(stringRepresentation, ConditionBuilders);
+            return new StatBuilderStub(stringRepresentation);
         }
 
         public IStatBuilder Minimum => Create("Minimum" + this);
         public IStatBuilder Maximum => Create("Maximum " + this);
 
         public ValueBuilder Value =>
-            new ValueBuilder(new ValueBuilderStub("Value of " + this), ConditionBuilders);
+            new ValueBuilder(new ValueBuilderStub("Value of " + this));
 
         public IStatBuilder ConvertTo(IStatBuilder stat) =>
             Create($"% of {this} converted to {stat}");
@@ -40,42 +37,39 @@ namespace PoESkillTree.Computation.Console.Builders
         public IFlagStatBuilder ApplyModifiersTo(IStatBuilder stat,
             ValueBuilder percentOfTheirValue) =>
             new FlagStatBuilderStub(
-                $"Modifiers to {this} apply to {stat} at {percentOfTheirValue}% of their value",
-                ConditionBuilders);
+                $"Modifiers to {this} apply to {stat} at {percentOfTheirValue}% of their value");
 
         public IStatBuilder ChanceToDouble =>
             Create($"Chance to double {this}");
 
         public IBuffBuilder ForXSeconds(ValueBuilder seconds) =>
-            new BuffBuilderStub($"{this} as Buff for {seconds} seconds", ConditionBuilders);
+            new BuffBuilderStub($"{this} as Buff for {seconds} seconds");
 
         public IBuffBuilder AsBuff =>
-            new BuffBuilderStub($"{this} as Buff", ConditionBuilders);
+            new BuffBuilderStub($"{this} as Buff");
 
         public IFlagStatBuilder AsAura(params IEntityBuilder[] affectedEntities) =>
             new FlagStatBuilderStub(
-                $"{this} as Aura affecting [{string.Join<IEntityBuilder>(", ", affectedEntities)}]",
-                ConditionBuilders);
+                $"{this} as Aura affecting [{string.Join<IEntityBuilder>(", ", affectedEntities)}]");
 
         public IFlagStatBuilder AddTo(ISkillBuilderCollection skills) =>
-            new FlagStatBuilderStub($"{this} added to skills {skills}", ConditionBuilders);
+            new FlagStatBuilderStub($"{this} added to skills {skills}");
 
         public IFlagStatBuilder AddTo(IEffectBuilder effect) =>
-            new FlagStatBuilderStub($"{this} added to effect {effect}", ConditionBuilders);
+            new FlagStatBuilderStub($"{this} added to effect {effect}");
     }
 
 
     public class DamageStatBuilderStub : StatBuilderStub, IDamageStatBuilder
     {
-        public DamageStatBuilderStub(string stringRepresentation, 
-            IConditionBuilders conditionBuilders) : base(stringRepresentation, conditionBuilders)
+        public DamageStatBuilderStub(string stringRepresentation) : base(stringRepresentation)
         {
         }
 
         public IStatBuilder Taken => Create($"{this} taken");
 
         public IDamageTakenConversionBuilder TakenFrom(IPoolStatBuilder pool) =>
-            new DamageTakenConversionBuilder($"{this} taken from {pool}", ConditionBuilders);
+            new DamageTakenConversionBuilder($"{this} taken from {pool}");
 
         public IConditionBuilder With() =>
             new ConditionBuilderStub($"With {this}");
@@ -95,25 +89,20 @@ namespace PoESkillTree.Computation.Console.Builders
 
         private class DamageTakenConversionBuilder : BuilderStub, IDamageTakenConversionBuilder
         {
-            private readonly IConditionBuilders _conditionBuilders;
-
-            public DamageTakenConversionBuilder(string stringRepresentation,
-                IConditionBuilders conditionBuilders) 
+            public DamageTakenConversionBuilder(string stringRepresentation) 
                 : base(stringRepresentation)
             {
-                _conditionBuilders = conditionBuilders;
             }
 
             public IStatBuilder Before(IPoolStatBuilder pool) 
-                => new StatBuilderStub($"{this} before {pool}", _conditionBuilders);
+                => new StatBuilderStub($"{this} before {pool}");
         }
     }
 
 
     public class EvasionStatBuilderStub : StatBuilderStub, IEvasionStatBuilder
     {
-        public EvasionStatBuilderStub(string stringRepresentation,
-            IConditionBuilders conditionBuilders) : base(stringRepresentation, conditionBuilders)
+        public EvasionStatBuilderStub(string stringRepresentation) : base(stringRepresentation)
         {
         }
 

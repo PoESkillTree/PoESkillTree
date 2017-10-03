@@ -9,12 +9,9 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class EntityBuilderStub : BuilderStub, IEntityBuilder
     {
-        protected IConditionBuilders ConditionBuilders { get; }
-
-        public EntityBuilderStub(string stringRepresentation, IConditionBuilders conditionBuilders) 
+        public EntityBuilderStub(string stringRepresentation) 
             : base(stringRepresentation)
         {
-            ConditionBuilders = conditionBuilders;
         }
 
         public IConditionBuilder
@@ -32,49 +29,42 @@ namespace PoESkillTree.Computation.Console.Builders
                 $"{this} hit by {damageType} Damage recently");
 
         public IDamageStatBuilder Stat(IDamageStatBuilder stat)
-            => new DamageStatBuilderStub($"{stat} for {this}", ConditionBuilders);
+            => new DamageStatBuilderStub($"{stat} for {this}");
 
         public IFlagStatBuilder Stat(IFlagStatBuilder stat)
-            => new FlagStatBuilderStub($"{stat} for {this}", ConditionBuilders);
+            => new FlagStatBuilderStub($"{stat} for {this}");
 
         public IPoolStatBuilder Stat(IPoolStatBuilder stat)
-            => new PoolStatBuilderStub($"{stat} for {this}", ConditionBuilders);
+            => new PoolStatBuilderStub($"{stat} for {this}");
 
         public IStatBuilder Stat(IStatBuilder stat)
-            => new StatBuilderStub($"{stat} for {this}", ConditionBuilders);
+            => new StatBuilderStub($"{stat} for {this}");
 
         public IStatBuilder Level =>
-            new StatBuilderStub($"{this} Level", ConditionBuilders);
+            new StatBuilderStub($"{this} Level");
     }
 
 
     public class EntityBuildersStub : IEntityBuilders
     {
-        private readonly IConditionBuilders _conditionBuilders;
+        public ISelfBuilder Self => new SelfBuilderStub();
+        public IEnemyBuilder Enemy => new EnemyBuilderStub();
+        public IEntityBuilder Ally => new EntityBuilderStub("Ally");
+        public IEntityBuilder Character => new EntityBuilderStub("Character");
 
-        public EntityBuildersStub(IConditionBuilders conditionBuilders)
-        {
-            _conditionBuilders = conditionBuilders;
-        }
-
-        public ISelfBuilder Self => new SelfBuilderStub(_conditionBuilders);
-        public IEnemyBuilder Enemy => new EnemyBuilderStub(_conditionBuilders);
-        public IEntityBuilder Ally => new EntityBuilderStub("Ally", _conditionBuilders);
-        public IEntityBuilder Character => new EntityBuilderStub("Character", _conditionBuilders);
-
-        public ISkillEntityBuilder Totem => new SkillEntityBuilderStub("Totem", _conditionBuilders);
+        public ISkillEntityBuilder Totem => new SkillEntityBuilderStub("Totem");
 
         public ISkillEntityBuilder Minion =>
-            new SkillEntityBuilderStub("Minion", _conditionBuilders);
+            new SkillEntityBuilderStub("Minion");
 
-        public IEntityBuilder Any => new EntityBuilderStub("Any Entity", _conditionBuilders);
+        public IEntityBuilder Any => new EntityBuilderStub("Any Entity");
     }
 
 
     public class SelfBuilderStub : EntityBuilderStub, ISelfBuilder
     {
-        public SelfBuilderStub(IConditionBuilders conditionBuilders) 
-            : base("Self", conditionBuilders)
+        public SelfBuilderStub() 
+            : base("Self")
         {
         }
     }
@@ -82,8 +72,8 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class EnemyBuilderStub : EntityBuilderStub, IEnemyBuilder
     {
-        public EnemyBuilderStub(IConditionBuilders conditionBuilders) 
-            : base("Enemy", conditionBuilders)
+        public EnemyBuilderStub() 
+            : base("Enemy")
         {
         }
 
@@ -103,18 +93,17 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class SkillEntityBuilderStub : EntityBuilderStub, ISkillEntityBuilder
     {
-        public SkillEntityBuilderStub(string stringRepresentation, 
-            IConditionBuilders conditionBuilders) : base(stringRepresentation, conditionBuilders)
+        public SkillEntityBuilderStub(string stringRepresentation) : base(stringRepresentation)
         {
         }
 
         public ISkillEntityBuilder With(IKeywordBuilder keyword) =>
-            new SkillEntityBuilderStub($"{this} with {keyword}", ConditionBuilders);
+            new SkillEntityBuilderStub($"{this} with {keyword}");
 
         public ISkillEntityBuilder With(params IKeywordBuilder[] keywords) =>
-            new SkillEntityBuilderStub($"{this} with {keywords}", ConditionBuilders);
+            new SkillEntityBuilderStub($"{this} with {keywords}");
 
         public ISkillEntityBuilder From(ISkillBuilder skill) =>
-            new SkillEntityBuilderStub($"{this} from {skill}", ConditionBuilders);
+            new SkillEntityBuilderStub($"{this} from {skill}");
     }
 }

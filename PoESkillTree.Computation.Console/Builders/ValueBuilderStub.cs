@@ -52,16 +52,9 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class ValueBuildersStub : IValueBuilders
     {
-        private readonly IConditionBuilders _conditionBuilders;
-
-        public ValueBuildersStub(IConditionBuilders conditionBuilders)
-        {
-            _conditionBuilders = conditionBuilders;
-        }
-
         public IThenBuilder If(IConditionBuilder condition)
         {
-            return new ThenBuilder($"if ({condition})", _conditionBuilders);
+            return new ThenBuilder($"if ({condition})");
         }
 
         public IValueBuilder Create(double value)
@@ -73,56 +66,47 @@ namespace PoESkillTree.Computation.Console.Builders
             Func<ValueBuilder, ValueBuilder> converter) =>
             iValue => iValue is ValueBuilder value
                 ? converter(value)
-                : converter(new ValueBuilder(iValue, _conditionBuilders));
+                : converter(new ValueBuilder(iValue));
 
 
         private class ThenBuilder : BuilderStub, IThenBuilder
         {
-            private readonly IConditionBuilders _conditionBuilders;
-
-            public ThenBuilder(string stringRepresentation, IConditionBuilders conditionBuilders)
+            public ThenBuilder(string stringRepresentation)
                 : base(stringRepresentation)
             {
-                _conditionBuilders = conditionBuilders;
             }
 
             public IConditionalValueBuilder Then(ValueBuilder value)
             {
-                return new ConditionalValueBuilder(this + " {" + value + "}", _conditionBuilders);
+                return new ConditionalValueBuilder(this + " {" + value + "}");
             }
 
             public IConditionalValueBuilder Then(double value)
             {
-                return new ConditionalValueBuilder(this + " {" + value + "}", _conditionBuilders);
+                return new ConditionalValueBuilder(this + " {" + value + "}");
             }
         }
 
 
         private class ConditionalValueBuilder : BuilderStub, IConditionalValueBuilder
         {
-            private readonly IConditionBuilders _conditionBuilders;
-
-            public ConditionalValueBuilder(string stringRepresentation,
-                IConditionBuilders conditionBuilders) : base(stringRepresentation)
+            public ConditionalValueBuilder(string stringRepresentation) : base(stringRepresentation)
             {
-                _conditionBuilders = conditionBuilders;
             }
 
             public IThenBuilder ElseIf(IConditionBuilder condition)
             {
-                return new ThenBuilder($"{this} else if ({condition})", _conditionBuilders);
+                return new ThenBuilder($"{this} else if ({condition})");
             }
 
             public ValueBuilder Else(ValueBuilder value)
             {
-                return new ValueBuilder(new ValueBuilderStub(this + " else { " + value + " }"),
-                    _conditionBuilders);
+                return new ValueBuilder(new ValueBuilderStub(this + " else { " + value + " }"));
             }
 
             public ValueBuilder Else(double value)
             {
-                return new ValueBuilder(new ValueBuilderStub(this + " else { " + value + " }"),
-                    _conditionBuilders);
+                return new ValueBuilder(new ValueBuilderStub(this + " else { " + value + " }"));
             }
         }
     }

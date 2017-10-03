@@ -27,10 +27,6 @@ namespace PoESkillTree.Computation.Parsing.Builders.Conditions
         // Name may be a regex replacement.
         IConditionBuilder Unique(string name = "$0");
 
-        IConditionBuilder And(params IConditionBuilder[] conditions);
-        IConditionBuilder Or(params IConditionBuilder[] conditions);
-        IConditionBuilder Not(IConditionBuilder condition);
-
         IConditionBuilder True { get; }
     }
 }

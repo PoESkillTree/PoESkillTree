@@ -13,25 +13,24 @@ namespace PoESkillTree.Computation.Console.Builders
     {
         private readonly IActionBuilder<ISelfBuilder, IEnemyBuilder> _actionBuilder;
 
-        public StunEffectBuilderStub(IConditionBuilders conditionBuilders) 
-            : base("Stun", conditionBuilders)
+        public StunEffectBuilderStub() 
+            : base("Stun")
         {
             _actionBuilder =
                 new ActionBuilderStub<ISelfBuilder, IEnemyBuilder>(
-                    new SelfBuilderStub(conditionBuilders), 
-                    new EnemyBuilderStub(conditionBuilders), 
-                    "Stun", conditionBuilders);
+                    new SelfBuilderStub(), 
+                    new EnemyBuilderStub(), 
+                    "Stun");
         }
 
         public IStatBuilder Threshold =>
-            new StatBuilderStub($"{this} threshold", ConditionBuilders);
+            new StatBuilderStub($"{this} threshold");
 
         public IStatBuilder Recovery =>
-            new StatBuilderStub($"{this} recovery", ConditionBuilders);
+            new StatBuilderStub($"{this} recovery");
 
         public IStatBuilder ChanceToAvoidInterruptionWhileCasting =>
-            new StatBuilderStub($"Chance to avoid interruption from {this} while casting",
-                ConditionBuilders);
+            new StatBuilderStub($"Chance to avoid interruption from {this} while casting");
 
         public IConditionBuilder On(IKeywordBuilder withKeyword) => _actionBuilder.On(withKeyword);
 

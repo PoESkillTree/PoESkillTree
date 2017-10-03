@@ -5,8 +5,7 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class FlagStatBuilderStub : StatBuilderStub, IFlagStatBuilder
     {
-        public FlagStatBuilderStub(string stringRepresentation,
-            IConditionBuilders conditionBuilders) : base(stringRepresentation, conditionBuilders)
+        public FlagStatBuilderStub(string stringRepresentation) : base(stringRepresentation)
         {
         }
 
@@ -20,16 +19,9 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class FlagStatBuildersStub : IFlagStatBuilders
     {
-        private readonly IConditionBuilders _conditionBuilders;
-
-        public FlagStatBuildersStub(IConditionBuilders conditionBuilders)
+        private static IFlagStatBuilder Create(string s)
         {
-            _conditionBuilders = conditionBuilders;
-        }
-
-        private IFlagStatBuilder Create(string s)
-        {
-            return new FlagStatBuilderStub(s, _conditionBuilders);
+            return new FlagStatBuilderStub(s);
         }
 
         public IFlagStatBuilder Onslaught => Create("Onslaught");

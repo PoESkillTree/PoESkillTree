@@ -6,29 +6,18 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public abstract class StatBuildersStubBase
     {
-        protected IConditionBuilders ConditionBuilders { get; }
-
-        protected StatBuildersStubBase(IConditionBuilders conditionBuilders)
+        protected static IStatBuilder Create(string stringRepresentation)
         {
-            ConditionBuilders = conditionBuilders;
-        }
-
-        protected IStatBuilder Create(string stringRepresentation)
-        {
-            return new StatBuilderStub(stringRepresentation, ConditionBuilders);
+            return new StatBuilderStub(stringRepresentation);
         }
     }
 
     public class StatBuildersStub : StatBuildersStubBase, IStatBuilders
     {
-        public StatBuildersStub(IConditionBuilders conditionBuilders) : base(conditionBuilders)
-        {
-        }
-
         public IStatBuilder Armour => Create("Armour");
 
         public IEvasionStatBuilder Evasion =>
-            new EvasionStatBuilderStub("Evasion", ConditionBuilders);
+            new EvasionStatBuilderStub("Evasion");
 
         public IStatBuilder Accuracy => Create("Accuracy");
 
@@ -48,13 +37,13 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder RampageStacks => Create("Rampage Stacks");
 
-        public IAttributeStatBuilders Attribute => new AttributeStatBuildersStub(ConditionBuilders);
-        public IPoolStatBuilders Pool => new PoolStatBuildersStub(ConditionBuilders);
-        public IDodgeStatBuilders Dodge => new DodgeStatBuildersStub(ConditionBuilders);
-        public IFlaskStatBuilders Flask => new FlaskStatBuildersStub(ConditionBuilders);
-        public IProjectileStatBuilders Projectile => new ProjectileStatBuildersStub(ConditionBuilders);
-        public IFlagStatBuilders Flag => new FlagStatBuildersStub(ConditionBuilders);
-        public IGemStatBuilders Gem => new GemStatBuildersStub(ConditionBuilders);
+        public IAttributeStatBuilders Attribute => new AttributeStatBuildersStub();
+        public IPoolStatBuilders Pool => new PoolStatBuildersStub();
+        public IDodgeStatBuilders Dodge => new DodgeStatBuildersStub();
+        public IFlaskStatBuilders Flask => new FlaskStatBuildersStub();
+        public IProjectileStatBuilders Projectile => new ProjectileStatBuildersStub();
+        public IFlagStatBuilders Flag => new FlagStatBuildersStub();
+        public IGemStatBuilders Gem => new GemStatBuildersStub();
 
         public IStatBuilder ApplyOnce(params IStatBuilder[] stats) =>
             Create($"ApplyOnce({string.Join<IStatBuilder>(", ", stats)})");
@@ -65,10 +54,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class AttributeStatBuildersStub : StatBuildersStubBase, IAttributeStatBuilders
     {
-        public AttributeStatBuildersStub(IConditionBuilders conditionBuilders) : base(conditionBuilders)
-        {
-        }
-
         public IStatBuilder Strength => Create("Strength");
         public IStatBuilder Dexterity => Create("Dexterity");
         public IStatBuilder Intelligence => Create("Intelligence");
@@ -79,10 +64,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class DodgeStatBuildersStub : StatBuildersStubBase, IDodgeStatBuilders
     {
-        public DodgeStatBuildersStub(IConditionBuilders conditionBuilders) : base(conditionBuilders)
-        {
-        }
-
         public IStatBuilder AttackChance => Create("Chance to dodge attacks");
         public IStatBuilder SpellChance => Create("Chance to dodge spells");
     }
@@ -90,10 +71,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class FlaskStatBuildersStub : StatBuildersStubBase, IFlaskStatBuilders
     {
-        public FlaskStatBuildersStub(IConditionBuilders conditionBuilders) : base(conditionBuilders)
-        {
-        }
-
         public IStatBuilder Effect => Create("Flask effect");
         public IStatBuilder Duration => Create("Flask effect duration");
         public IStatBuilder LifeRecovery => Create("Flask life recovery");
@@ -109,10 +86,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class GemStatBuildersStub : StatBuildersStubBase, IGemStatBuilders
     {
-        public GemStatBuildersStub(IConditionBuilders conditionBuilders) : base(conditionBuilders)
-        {
-        }
-
         public IStatBuilder IncreaseLevel(bool onlySupportGems = false) => 
             Create(onlySupportGems ? "Level of socketed support gems" : "Level of socketed gems");
     }
@@ -120,17 +93,13 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class ProjectileStatBuildersStub : StatBuildersStubBase, IProjectileStatBuilders
     {
-        public ProjectileStatBuildersStub(IConditionBuilders conditionBuilders) : base(conditionBuilders)
-        {
-        }
-
         public IStatBuilder Speed => Create("Projectile speed");
         public IStatBuilder Count => Create("Projectile count");
 
         public IStatBuilder PierceCount => Create("Projectile pierce count");
 
         public ISelfToAnyActionBuilder Pierce =>
-            new SelfToAnyActionBuilderStub("Projectile pierce", ConditionBuilders);
+            new SelfToAnyActionBuilderStub("Projectile pierce");
 
         public IStatBuilder ChainCount => Create("Projectile chain count");
         public IStatBuilder TravelDistance => Create("Projectile travel distance");

@@ -10,23 +10,18 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class BuilderCollectionStub<T> : BuilderStub, IBuilderCollection<T>, IEnumerable<T>
     {
-        protected IConditionBuilders ConditionBuilders { get; }
-
         private readonly IReadOnlyList<T> _elements;
 
-        protected BuilderCollectionStub(IReadOnlyList<T> elements, 
-            IConditionBuilders conditionBuilders)
+        protected BuilderCollectionStub(IReadOnlyList<T> elements)
             : base("[" + string.Join(", ", elements) + "]")
         {
             _elements = elements;
-            ConditionBuilders = conditionBuilders;
         }
 
         protected BuilderCollectionStub(BuilderCollectionStub<T> source, string stringRepresentation)
             : base(stringRepresentation)
         {
             _elements = source._elements;
-            ConditionBuilders = source.ConditionBuilders;
         }
 
         public ValueBuilder Count(Func<T, IConditionBuilder> predicate = null)
@@ -34,7 +29,7 @@ namespace PoESkillTree.Computation.Console.Builders
             var str = predicate == null
                 ? ToString()
                 : string.Join(", ", _elements.Select(predicate));
-            return new ValueBuilder(new ValueBuilderStub($"Count({str})"), ConditionBuilders);
+            return new ValueBuilder(new ValueBuilderStub($"Count({str})"));
         }
 
         public IConditionBuilder Any(Func<T, IConditionBuilder> predicate = null)

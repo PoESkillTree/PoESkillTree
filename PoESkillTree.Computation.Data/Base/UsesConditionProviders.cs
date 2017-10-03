@@ -1,3 +1,4 @@
+using System.Linq;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
@@ -8,7 +9,7 @@ namespace PoESkillTree.Computation.Data.Base
 {
     public abstract class UsesConditionProviders : UsesStatProviders
     {
-        protected UsesConditionProviders(IBuilderFactories builderFactories) 
+        protected UsesConditionProviders(IBuilderFactories builderFactories)
             : base(builderFactories)
         {
         }
@@ -23,13 +24,15 @@ namespace PoESkillTree.Computation.Data.Base
         protected IConditionBuilder For(params IEntityBuilder[] targets) =>
             Condition.For(targets);
 
-        protected IConditionBuilder And(params IConditionBuilder[] conditions) =>
-            Condition.And(conditions);
+        protected static IConditionBuilder And(IConditionBuilder condition1,
+            params IConditionBuilder[] conditions) =>
+            conditions.Aggregate(condition1, (l, r) => l.And(r));
 
-        protected IConditionBuilder Or(params IConditionBuilder[] conditions) =>
-            Condition.Or(conditions);
+        protected static IConditionBuilder Or(IConditionBuilder condition1,
+            params IConditionBuilder[] conditions) =>
+            conditions.Aggregate(condition1, (l, r) => l.Or(r));
 
-        protected IConditionBuilder Not(IConditionBuilder condition) => Condition.Not(condition);
+        protected static IConditionBuilder Not(IConditionBuilder condition) => condition.Not;
 
         protected IConditionBuilder LocalIsMelee =>
             And(LocalHand.Has(Tags.Weapon), Not(LocalHand.Has(Tags.Ranged)));

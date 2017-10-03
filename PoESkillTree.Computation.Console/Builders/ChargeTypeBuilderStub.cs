@@ -1,44 +1,32 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders.Charges;
-using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
     public class ChargeTypeBuilderStub : BuilderStub, IChargeTypeBuilder
     {
-        private readonly IConditionBuilders _conditionBuilders;
-
-        public ChargeTypeBuilderStub(string stringRepresentation, 
-            IConditionBuilders conditionBuilders) : base(stringRepresentation)
+        public ChargeTypeBuilderStub(string stringRepresentation) : base(stringRepresentation)
         {
-            _conditionBuilders = conditionBuilders;
         }
 
-        public IStatBuilder Amount => new StatBuilderStub(this + " amount", _conditionBuilders);
+        public IStatBuilder Amount => new StatBuilderStub(this + " amount");
 
-        public IStatBuilder Duration => new StatBuilderStub(this + " duration", _conditionBuilders);
+        public IStatBuilder Duration => new StatBuilderStub(this + " duration");
 
         public IStatBuilder ChanceToGain =>
-            new StatBuilderStub(this + " chance to gain", _conditionBuilders);
+            new StatBuilderStub(this + " chance to gain");
     }
 
 
     public class ChargeTypeBuildersStub : IChargeTypeBuilders
     {
-        private readonly IConditionBuilders _conditionBuilders;
-
-        public ChargeTypeBuildersStub(IConditionBuilders conditionBuilders)
-        {
-            _conditionBuilders = conditionBuilders;
-        }
-
         public IChargeTypeBuilder Endurance =>
-            new ChargeTypeBuilderStub("Endurance Charge", _conditionBuilders);
+            new ChargeTypeBuilderStub("Endurance Charge");
 
         public IChargeTypeBuilder Frenzy =>
-            new ChargeTypeBuilderStub("Frenzy Charge", _conditionBuilders);
+            new ChargeTypeBuilderStub("Frenzy Charge");
 
         public IChargeTypeBuilder Power =>
-            new ChargeTypeBuilderStub("Power Charge", _conditionBuilders);
+            new ChargeTypeBuilderStub("Power Charge");
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Parsing.Builders.Actions;
 using PoESkillTree.Computation.Parsing.Builders.Buffs;
-using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
@@ -11,27 +10,25 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class BuffBuilderStub : EffectBuilderStub, IBuffBuilder
     {
-        public BuffBuilderStub(string stringRepresentation,
-            IConditionBuilders conditionBuilders) : base(stringRepresentation, conditionBuilders)
+        public BuffBuilderStub(string stringRepresentation) : base(stringRepresentation)
         {
         }
 
         public IStatBuilder Effect =>
-            new StatBuilderStub($"Effect of {this}", ConditionBuilders);
+            new StatBuilderStub($"Effect of {this}");
 
         public IActionBuilder<ISelfBuilder, IEntityBuilder> Action =>
             new ActionBuilderStub<ISelfBuilder, IEntityBuilder>(
-                new SelfBuilderStub(ConditionBuilders), 
-                new EntityBuilderStub("Any Entity", ConditionBuilders), 
-                $"{this} application", ConditionBuilders);
+                new SelfBuilderStub(), 
+                new EntityBuilderStub("Any Entity"), 
+                $"{this} application");
     }
 
 
     public class BuffBuilderCollectionStub : BuilderCollectionStub<IBuffBuilder>, 
         IBuffBuilderCollection
     {
-        public BuffBuilderCollectionStub(IReadOnlyList<IBuffBuilder> elements, 
-            IConditionBuilders conditionBuilders) : base(elements, conditionBuilders)
+        public BuffBuilderCollectionStub(IReadOnlyList<IBuffBuilder> elements) : base(elements)
         {
         }
 
@@ -41,10 +38,10 @@ namespace PoESkillTree.Computation.Console.Builders
         }
 
         public IStatBuilder CombinedLimit =>
-            new StatBuilderStub($"{this} combined limit", ConditionBuilders);
+            new StatBuilderStub($"{this} combined limit");
 
         public IStatBuilder Effect =>
-            new StatBuilderStub($"Effect of {this}", ConditionBuilders);
+            new StatBuilderStub($"Effect of {this}");
 
         public IBuffBuilderCollection ExceptFrom(params ISkillBuilder[] skills) =>
             new BuffBuilderCollectionStub(this,
@@ -60,27 +57,19 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class BuffBuildersStub : IBuffBuilders
     {
-        private readonly IConditionBuilders _conditionBuilders;
+        public IBuffBuilder Fortify => new BuffBuilderStub("Fortify");
+        public IBuffBuilder Maim => new BuffBuilderStub("Maim");
+        public IBuffBuilder Intimidate => new BuffBuilderStub("Intimidate");
+        public IBuffBuilder Taunt => new BuffBuilderStub("Taunt");
+        public IBuffBuilder Blind => new BuffBuilderStub("Blind");
 
-        public BuffBuildersStub(IConditionBuilders conditionBuilders)
-        {
-            _conditionBuilders = conditionBuilders;
-        }
-
-        public IBuffBuilder Fortify => new BuffBuilderStub("Fortify", _conditionBuilders);
-        public IBuffBuilder Maim => new BuffBuilderStub("Maim", _conditionBuilders);
-        public IBuffBuilder Intimidate => new BuffBuilderStub("Intimidate", _conditionBuilders);
-        public IBuffBuilder Taunt => new BuffBuilderStub("Taunt", _conditionBuilders);
-        public IBuffBuilder Blind => new BuffBuilderStub("Blind", _conditionBuilders);
-
-        public IConfluxBuffBuilderFactory Conflux =>
-            new ConfluxBuffBuilderFactory(_conditionBuilders);
+        public IConfluxBuffBuilderFactory Conflux => new ConfluxBuffBuilderFactory();
 
         public IBuffBuilder Curse(ISkillBuilder skill, ValueBuilder level) =>
-            new BuffBuilderStub($"Curse with level {level} {skill}", _conditionBuilders);
+            new BuffBuilderStub($"Curse with level {level} {skill}");
 
         public IBuffRotation Rotation(ValueBuilder duration) =>
-            new BuffRotation($"Buff rotation for {duration} seconds:", _conditionBuilders);
+            new BuffRotation($"Buff rotation for {duration} seconds:");
 
         public IBuffBuilderCollection Buffs(IEntityBuilder source = null,
             IEntityBuilder target = null)
@@ -94,46 +83,38 @@ namespace PoESkillTree.Computation.Console.Builders
             {
                 str += " against " + target;
             }
-            var buff = new BuffBuilderStub(str, _conditionBuilders);
-            return new BuffBuilderCollectionStub(new[] { buff }, _conditionBuilders);
+            var buff = new BuffBuilderStub(str);
+            return new BuffBuilderCollectionStub(new[] { buff });
         }
 
 
         private class ConfluxBuffBuilderFactory : IConfluxBuffBuilderFactory
         {
-            private readonly IConditionBuilders _conditionBuilders;
-
-            public ConfluxBuffBuilderFactory(IConditionBuilders conditionBuilders)
-            {
-                _conditionBuilders = conditionBuilders;
-            }
-
             public IBuffBuilder Igniting =>
-                new BuffBuilderStub("Igniting Conflux", _conditionBuilders);
+                new BuffBuilderStub("Igniting Conflux");
 
             public IBuffBuilder Shocking =>
-                new BuffBuilderStub("Shocking Conflux", _conditionBuilders);
+                new BuffBuilderStub("Shocking Conflux");
 
             public IBuffBuilder Chilling =>
-                new BuffBuilderStub("Chilling Conflux", _conditionBuilders);
+                new BuffBuilderStub("Chilling Conflux");
 
             public IBuffBuilder Elemental =>
-                new BuffBuilderStub("Elemental Conflux", _conditionBuilders);
+                new BuffBuilderStub("Elemental Conflux");
         }
 
 
         private class BuffRotation : FlagStatBuilderStub, IBuffRotation
         {
-            public BuffRotation(string stringRepresentation, 
-                IConditionBuilders conditionBuilders) 
-                : base(stringRepresentation, conditionBuilders)
+            public BuffRotation(string stringRepresentation) 
+                : base(stringRepresentation)
             {
             }
 
             public IBuffRotation Step(ValueBuilder duration, params IBuffBuilder[] buffs)
             {
                 var str = $"{string.Join<IBuffBuilder>(", ", buffs)} for {duration} seconds";
-                return new BuffRotation(this + " { " + str + " }", ConditionBuilders);
+                return new BuffRotation(this + " { " + str + " }");
             }
         }
     }

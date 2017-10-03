@@ -1,6 +1,5 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders.Actions;
 using PoESkillTree.Computation.Parsing.Builders.Charges;
-using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Damage;
 using PoESkillTree.Computation.Parsing.Builders.Effects;
 using PoESkillTree.Computation.Parsing.Builders.Equipment;
@@ -12,22 +11,19 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class GroupConverterStub : BuilderStub, IGroupConverter
     {
-        private readonly IConditionBuilders _conditionBuilders;
-
-        public GroupConverterStub(string stringRepresentation, IConditionBuilders conditionBuilders)
+        public GroupConverterStub(string stringRepresentation)
             : base(stringRepresentation)
         {
-            _conditionBuilders = conditionBuilders;
         }
 
         public IDamageTypeBuilder AsDamageType =>
-            new DamageTypeBuilderStub($"{this}.AsDamageType", _conditionBuilders);
+            new DamageTypeBuilderStub($"{this}.AsDamageType");
 
         public IChargeTypeBuilder AsChargeType =>
-            new ChargeTypeBuilderStub($"{this}.AsChargeType", _conditionBuilders);
+            new ChargeTypeBuilderStub($"{this}.AsChargeType");
 
         public IAilmentBuilder AsAilment =>
-            new AilmentBuilderStub($"{this}.AsAilment", _conditionBuilders);
+            new AilmentBuilderStub($"{this}.AsAilment");
 
         public IKeywordBuilder AsKeyword =>
             new KeywordBuilderStub($"{this}.AsKeyword");
@@ -36,21 +32,21 @@ namespace PoESkillTree.Computation.Console.Builders
             new ItemSlotBuilderStub($"{this}.AsItemSlot");
 
         public ISelfToAnyActionBuilder AsAction =>
-            new SelfToAnyActionBuilderStub($"{this}.AsAction", _conditionBuilders);
+            new SelfToAnyActionBuilderStub($"{this}.AsAction");
 
         public IStatBuilder AsStat =>
-            new StatBuilderStub($"{this}.AsStat", _conditionBuilders);
+            new StatBuilderStub($"{this}.AsStat");
 
         public IFlagStatBuilder AsFlagStat =>
-            new FlagStatBuilderStub($"{this}.AsFlagStat", _conditionBuilders);
+            new FlagStatBuilderStub($"{this}.AsFlagStat");
 
         public IPoolStatBuilder AsPoolStat =>
-            new PoolStatBuilderStub($"{this}.AsPoolStat", _conditionBuilders);
+            new PoolStatBuilderStub($"{this}.AsPoolStat");
 
         public IDamageStatBuilder AsDamageStat =>
-            new DamageStatBuilderStub($"{this}.AsDamageStat", _conditionBuilders);
+            new DamageStatBuilderStub($"{this}.AsDamageStat");
 
         public ISkillBuilder AsSkill =>
-            new SkillBuilderStub($"{this}.AsSkill", _conditionBuilders);
+            new SkillBuilderStub($"{this}.AsSkill");
     }
 }

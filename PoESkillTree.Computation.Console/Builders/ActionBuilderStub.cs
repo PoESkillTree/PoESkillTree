@@ -15,34 +15,28 @@ namespace PoESkillTree.Computation.Console.Builders
     {
         private readonly TSource _source;
         private readonly TTarget _target;
-        protected IConditionBuilders ConditionBuilders { get; }
 
-        public ActionBuilderStub(TSource source, TTarget target, string stringRepresentation,
-            IConditionBuilders conditionBuilders) 
+        public ActionBuilderStub(TSource source, TTarget target, string stringRepresentation) 
             : base(stringRepresentation)
         {
             _source = source;
             _target = target;
-            ConditionBuilders = conditionBuilders;
         }
 
         public IActionBuilder<TNewSource, TTarget> By<TNewSource>(TNewSource source)
             where TNewSource : IEntityBuilder
         {
-            return new ActionBuilderStub<TNewSource, TTarget>(source, _target, ToString(),
-                ConditionBuilders);
+            return new ActionBuilderStub<TNewSource, TTarget>(source, _target, ToString());
         }
 
         public IActionBuilder<TSource, TNewTarget> Against<TNewTarget>(TNewTarget target) 
             where TNewTarget : IEntityBuilder
         {
-            return new ActionBuilderStub<TSource, TNewTarget>(_source, target, ToString(),
-                ConditionBuilders);
+            return new ActionBuilderStub<TSource, TNewTarget>(_source, target, ToString());
         }
 
         public IActionBuilder<TTarget, TSource> Taken =>
-            new ActionBuilderStub<TTarget, TSource>(_target, _source, ToString(),
-                ConditionBuilders);
+            new ActionBuilderStub<TTarget, TSource>(_target, _source, ToString());
 
         public IConditionBuilder On(IKeywordBuilder withKeyword) =>
             new ConditionBuilderStub($"On {withKeyword} {this} by {_source} against {_target}");
@@ -56,7 +50,8 @@ namespace PoESkillTree.Computation.Console.Builders
                 $"On {this} by {_source}{sourceCondition} against {_target}{targetCondition}");
         }
 
-        public IConditionBuilder InPastXSeconds(ValueBuilder seconds, Func<TTarget, IConditionBuilder> targetPredicate = null,
+        public IConditionBuilder InPastXSeconds(ValueBuilder seconds, 
+            Func<TTarget, IConditionBuilder> targetPredicate = null,
             Func<TSource, IConditionBuilder> sourcePredicate = null)
         {
             var sourceCondition = SourcePredicateToString(sourcePredicate);
@@ -93,19 +88,17 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public ValueBuilder CountRecently =>
             new ValueBuilder(
-                new ValueBuilderStub($"Number of {this} recently by {_source} against {_target}"),
-                ConditionBuilders);
+                new ValueBuilderStub($"Number of {this} recently by {_source} against {_target}"));
     }
 
 
     public class SelfToAnyActionBuilderStub 
         : ActionBuilderStub<ISelfBuilder, IEntityBuilder>, ISelfToAnyActionBuilder
     {
-        public SelfToAnyActionBuilderStub(string stringRepresentation,
-            IConditionBuilders conditionBuilders)
-            : base(new SelfBuilderStub(conditionBuilders),
-                new EntityBuilderStub("Any Entity", conditionBuilders),
-                stringRepresentation, conditionBuilders)
+        public SelfToAnyActionBuilderStub(string stringRepresentation)
+            : base(new SelfBuilderStub(),
+                new EntityBuilderStub("Any Entity"),
+                stringRepresentation)
         {
         }
     }
@@ -113,75 +106,68 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class BlockActionBuilderStub : SelfToAnyActionBuilderStub, IBlockActionBuilder
     {
-        public BlockActionBuilderStub(IConditionBuilders conditionBuilders) 
-            : base("Block", conditionBuilders)
+        public BlockActionBuilderStub() 
+            : base("Block")
         {
         }
 
-        public IStatBuilder Recovery => new StatBuilderStub("Block Recovery", ConditionBuilders);
+        public IStatBuilder Recovery => new StatBuilderStub("Block Recovery");
 
         public IStatBuilder AttackChance =>
-            new StatBuilderStub("Chance to Block Attacks", ConditionBuilders);
+            new StatBuilderStub("Chance to Block Attacks");
 
         public IStatBuilder SpellChance =>
-            new StatBuilderStub("Chance to Block Spells", ConditionBuilders);
+            new StatBuilderStub("Chance to Block Spells");
     }
 
 
     public class CriticalStrikeActionBuilderStub : SelfToAnyActionBuilderStub, 
         ICriticalStrikeActionBuilder
     {
-        public CriticalStrikeActionBuilderStub(IConditionBuilders conditionBuilders) 
-            : base("Critical Strike", conditionBuilders)
+        public CriticalStrikeActionBuilderStub() 
+            : base("Critical Strike")
         {
         }
 
         public IStatBuilder Chance =>
-            new StatBuilderStub("Critical Strike Chance", ConditionBuilders);
+            new StatBuilderStub("Critical Strike Chance");
 
         public IStatBuilder Multiplier =>
-            new StatBuilderStub("Critical Strike Multiplier", ConditionBuilders);
+            new StatBuilderStub("Critical Strike Multiplier");
 
         public IStatBuilder AilmentMultiplier =>
-            new StatBuilderStub("Ailment Critical Strike Multipler", ConditionBuilders);
+            new StatBuilderStub("Ailment Critical Strike Multipler");
 
         public IStatBuilder ExtraDamageTaken =>
-            new StatBuilderStub("Extra damage taken from Critical Strikes", ConditionBuilders);
+            new StatBuilderStub("Extra damage taken from Critical Strikes");
     }
 
 
     public class ActionBuildersStub : IActionBuilders
     {
-        private readonly IConditionBuilders _conditionBuilders;
-
-        public ActionBuildersStub(IConditionBuilders conditionBuilders)
-        {
-            _conditionBuilders = conditionBuilders;
-        }
-
         public ISelfToAnyActionBuilder Kill =>
-            new SelfToAnyActionBuilderStub("Kill", _conditionBuilders);
+            new SelfToAnyActionBuilderStub("Kill");
 
-        public IBlockActionBuilder Block => new BlockActionBuilderStub(_conditionBuilders);
+        public IBlockActionBuilder Block => new BlockActionBuilderStub();
 
         public ISelfToAnyActionBuilder Hit =>
-            new SelfToAnyActionBuilderStub("Hit", _conditionBuilders);
+            new SelfToAnyActionBuilderStub("Hit");
 
         public ISelfToAnyActionBuilder SavageHit =>
-            new SelfToAnyActionBuilderStub("Savage Hit", _conditionBuilders);
+            new SelfToAnyActionBuilderStub("Savage Hit");
 
         public ICriticalStrikeActionBuilder CriticalStrike =>
-            new CriticalStrikeActionBuilderStub(_conditionBuilders);
+            new CriticalStrikeActionBuilderStub();
 
         public ISelfToAnyActionBuilder NonCriticalStrike =>
-            new SelfToAnyActionBuilderStub("Non-critical Strike", _conditionBuilders);
+            new SelfToAnyActionBuilderStub("Non-critical Strike");
 
         public ISelfToAnyActionBuilder Shatter =>
-            new SelfToAnyActionBuilderStub("Shatter", _conditionBuilders);
+            new SelfToAnyActionBuilderStub("Shatter");
         public ISelfToAnyActionBuilder ConsumeCorpse =>
-            new SelfToAnyActionBuilderStub("Consuming Corpses", _conditionBuilders);
+            new SelfToAnyActionBuilderStub("Consuming Corpses");
 
         public ISelfToAnyActionBuilder SpendMana(ValueBuilder amount) => 
-            new SelfToAnyActionBuilderStub($"Spending {amount} mana", _conditionBuilders);
+            new SelfToAnyActionBuilderStub($"Spending {amount} mana");
     }
 }

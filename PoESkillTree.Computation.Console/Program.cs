@@ -21,9 +21,8 @@ namespace PoESkillTree.Computation.Console
                     new StatNormalizingParser<IModifierResult>(
                         new DummyParser(statMatchers))); // TODO
 
-            var builderFactories = new BuilderFactories();
-            var statMatchersList = CreateStatMatchers(builderFactories,
-                new MatchContextsStub(builderFactories.ConditionBuilders), new ModifierBuilder());
+            var statMatchersList = CreateStatMatchers(new BuilderFactories(),
+                new MatchContextsStub(), new ModifierBuilder());
             var statMatchersFactory = new StatMatchersSelector(statMatchersList);
             IStep<IParser<IModifierResult>, bool> initialStep =
                 new MappingStep<IStatMatchers, IParser<IModifierResult>, bool>(

@@ -1,5 +1,4 @@
 ﻿using System;
-using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Values;
 
@@ -25,19 +24,12 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class MatchContextsStub : IMatchContexts
     {
-        private readonly IConditionBuilders _conditionBuilders;
-
-        public MatchContextsStub(IConditionBuilders conditionBuilders)
-        {
-            _conditionBuilders = conditionBuilders;
-        }
-
         public IMatchContext<IGroupConverter> Groups =>
             new MatchContextStub<IGroupConverter>("Groups",
-                s => new GroupConverterStub(s, _conditionBuilders));
+                s => new GroupConverterStub(s));
 
         public IMatchContext<ValueBuilder> Values =>
             new MatchContextStub<ValueBuilder>("Values",
-                s => new ValueBuilder(new ValueBuilderStub(s), _conditionBuilders));
+                s => new ValueBuilder(new ValueBuilderStub(s)));
     }
 }

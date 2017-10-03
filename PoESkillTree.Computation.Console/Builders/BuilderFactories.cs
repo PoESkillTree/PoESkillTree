@@ -16,34 +16,32 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class BuilderFactories : IBuilderFactories
     {
-        public IActionBuilders ActionBuilders => new ActionBuildersStub(ConditionBuilders);
+        public IActionBuilders ActionBuilders => new ActionBuildersStub();
 
-        public IBuffBuilders BuffBuilders => new BuffBuildersStub(ConditionBuilders);
+        public IBuffBuilders BuffBuilders => new BuffBuildersStub();
 
-        public IChargeTypeBuilders ChargeTypeBuilders =>
-            new ChargeTypeBuildersStub(ConditionBuilders);
+        public IChargeTypeBuilders ChargeTypeBuilders => new ChargeTypeBuildersStub();
 
         public IConditionBuilders ConditionBuilders => new ConditionBuildersStub();
 
         public IDamageSourceBuilders DamageSourceBuilders => new DamageSourceBuildersStub();
 
-        public IDamageTypeBuilders DamageTypeBuilders =>
-            new DamageTypeBuildersStub(ConditionBuilders);
+        public IDamageTypeBuilders DamageTypeBuilders => new DamageTypeBuildersStub();
 
-        public IEffectBuilders EffectBuilders => new EffectBuildersStub(ConditionBuilders);
+        public IEffectBuilders EffectBuilders => new EffectBuildersStub();
 
-        public IEntityBuilders EntityBuilders => new EntityBuildersStub(ConditionBuilders);
+        public IEntityBuilders EntityBuilders => new EntityBuildersStub();
 
-        public IEquipmentBuilders EquipmentBuilders => new EquipmentBuildersStub(ConditionBuilders);
+        public IEquipmentBuilders EquipmentBuilders => new EquipmentBuildersStub();
 
         public IFormBuilders FormBuilders => new FormBuildersStub();
 
         public IKeywordBuilders KeywordBuilders => new KeywordBuildersStub();
 
-        public ISkillBuilders SkillBuilders => new SkillBuildersStub(ConditionBuilders);
+        public ISkillBuilders SkillBuilders => new SkillBuildersStub();
 
-        public IStatBuilders StatBuilders => new StatBuildersStub(ConditionBuilders);
+        public IStatBuilders StatBuilders => new StatBuildersStub();
 
-        public IValueBuilders ValueBuilders => new ValueBuildersStub(ConditionBuilders);
+        public IValueBuilders ValueBuilders => new ValueBuildersStub();
     }
 }

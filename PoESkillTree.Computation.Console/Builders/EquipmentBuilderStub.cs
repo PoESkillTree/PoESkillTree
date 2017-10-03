@@ -9,12 +9,8 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class EquipmentBuilderStub : BuilderStub, IEquipmentBuilder
     {
-        private readonly IConditionBuilders _conditionBuilders;
-
-        public EquipmentBuilderStub(string stringRepresentation, 
-            IConditionBuilders conditionBuilders) : base(stringRepresentation)
+        public EquipmentBuilderStub(string stringRepresentation) : base(stringRepresentation)
         {
-            _conditionBuilders = conditionBuilders;
         }
 
         public IConditionBuilder Has(Tags tag) =>
@@ -27,10 +23,10 @@ namespace PoESkillTree.Computation.Console.Builders
         public IConditionBuilder IsCorrupted => new ConditionBuilderStub($"{this} is corrupted");
 
         public IFlagStatBuilder AppliesToSelf => 
-            new FlagStatBuilderStub($"{this} applies to self", _conditionBuilders);
+            new FlagStatBuilderStub($"{this} applies to self");
 
         public IFlagStatBuilder AppliesToMinions => 
-            new FlagStatBuilderStub($"{this} applies to minions", _conditionBuilders);
+            new FlagStatBuilderStub($"{this} applies to minions");
     }
 
 
@@ -40,9 +36,8 @@ namespace PoESkillTree.Computation.Console.Builders
         private readonly IReadOnlyDictionary<ItemSlot, IEquipmentBuilder> _elements;
 
         public EquipmentBuilderCollectionStub(
-            IReadOnlyDictionary<ItemSlot, IEquipmentBuilder> elements,
-            IConditionBuilders conditionBuilders) 
-            : base(elements.Values.ToList(), conditionBuilders)
+            IReadOnlyDictionary<ItemSlot, IEquipmentBuilder> elements) 
+            : base(elements.Values.ToList())
         {
             _elements = elements;
         }
@@ -53,23 +48,20 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class EquipmentBuildersStub : IEquipmentBuilders
     {
-        private readonly IConditionBuilders _conditionBuilders;
-
-        public EquipmentBuildersStub(IConditionBuilders conditionBuilders)
+        public EquipmentBuildersStub()
         {
-            _conditionBuilders = conditionBuilders;
             var elements = new Dictionary<ItemSlot, IEquipmentBuilder>();
             foreach (var itemSlot in typeof(ItemSlot).GetEnumValues().Cast<ItemSlot>())
             {
                 elements[itemSlot] =
-                    new EquipmentBuilderStub(itemSlot.ToString(), conditionBuilders);
+                    new EquipmentBuilderStub(itemSlot.ToString());
             }
-            Equipment = new EquipmentBuilderCollectionStub(elements, conditionBuilders);
+            Equipment = new EquipmentBuilderCollectionStub(elements);
         }
 
         public IEquipmentBuilderCollection Equipment { get; }
 
         public IEquipmentBuilder LocalHand =>
-            new EquipmentBuilderStub("Local Hand", _conditionBuilders);
+            new EquipmentBuilderStub("Local Hand");
     }
 }

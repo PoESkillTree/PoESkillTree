@@ -2,6 +2,8 @@
 {
     public interface IConditionBuilder
     {
-
+        IConditionBuilder And(IConditionBuilder condition);
+        IConditionBuilder Or(IConditionBuilder condition);
+        IConditionBuilder Not { get; }
     }
 }

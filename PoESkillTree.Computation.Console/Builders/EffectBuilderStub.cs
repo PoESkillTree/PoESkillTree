@@ -7,67 +7,55 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class EffectBuilderStub : BuilderStub, IEffectBuilder
     {
-        protected IConditionBuilders ConditionBuilders { get; }
-
-        public EffectBuilderStub(string stringRepresentation, IConditionBuilders conditionBuilders) 
+        public EffectBuilderStub(string stringRepresentation) 
             : base(stringRepresentation)
         {
-            ConditionBuilders = conditionBuilders;
         }
 
         public IFlagStatBuilder On(IEntityBuilder target) =>
-            new FlagStatBuilderStub($"Apply {this} to {target}", ConditionBuilders);
+            new FlagStatBuilderStub($"Apply {this} to {target}");
 
         public IStatBuilder ChanceOn(IEntityBuilder target) =>
-            new StatBuilderStub($"Chance to apply {this} to {target}", ConditionBuilders);
+            new StatBuilderStub($"Chance to apply {this} to {target}");
 
         public IConditionBuilder IsOn(IEntityBuilder target) =>
             new ConditionBuilderStub($"{this} is applied to {target}");
 
         public IStatBuilder Duration =>
-            new StatBuilderStub($"{this} duration", ConditionBuilders);
+            new StatBuilderStub($"{this} duration");
     }
 
 
     public class EffectBuildersStub : IEffectBuilders
     {
-        private readonly IConditionBuilders _conditionBuilders;
+        public IStunEffectBuilder Stun => new StunEffectBuilderStub();
 
-        public EffectBuildersStub(IConditionBuilders conditionBuilders)
-        {
-            _conditionBuilders = conditionBuilders;
-        }
+        public IKnockbackEffectBuilder Knockback => new KnockbackEffectBuilderStub();
 
-        public IStunEffectBuilder Stun => new StunEffectBuilderStub(_conditionBuilders);
+        public IAilmentBuilders Ailment => new AilmentBuildersStub();
 
-        public IKnockbackEffectBuilder Knockback =>
-            new KnockbackEffectBuilderStub(_conditionBuilders);
-
-        public IAilmentBuilders Ailment => new AilmentBuildersStub(_conditionBuilders);
-
-        public IGroundEffectBuilders Ground => new GroundEffectBuildersStub(_conditionBuilders);
+        public IGroundEffectBuilders Ground => new GroundEffectBuildersStub();
     }
 
 
     public class AvoidableEffectBuilderStub : EffectBuilderStub, IAvoidableEffectBuilder
     {
-        public AvoidableEffectBuilderStub(string stringRepresentation, 
-            IConditionBuilders conditionBuilders) : base(stringRepresentation, conditionBuilders)
+        public AvoidableEffectBuilderStub(string stringRepresentation) 
+            : base(stringRepresentation)
         {
         }
 
-        public IStatBuilder Avoidance =>
-            new StatBuilderStub($"{this} avoidance", ConditionBuilders);
+        public IStatBuilder Avoidance => new StatBuilderStub($"{this} avoidance");
     }
 
 
     public class KnockbackEffectBuilderStub : EffectBuilderStub, IKnockbackEffectBuilder
     {
-        public KnockbackEffectBuilderStub(IConditionBuilders conditionBuilders) 
-            : base("Knockback", conditionBuilders)
+        public KnockbackEffectBuilderStub() 
+            : base("Knockback")
         {
         }
 
-        public IStatBuilder Distance => new StatBuilderStub($"{this} distance", ConditionBuilders);
+        public IStatBuilder Distance => new StatBuilderStub($"{this} distance");
     }
 }
