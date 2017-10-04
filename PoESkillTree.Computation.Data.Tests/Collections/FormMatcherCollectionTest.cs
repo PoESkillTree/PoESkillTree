@@ -30,29 +30,34 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         public void AddAddsToCount()
         {
             var form = Mock.Of<IFormBuilder>();
-            _sut.Add("", form);
-            _sut.Add("", form);
-            _sut.Add("", form);
+            var value = Mock.Of<IValueBuilder>();
+            _valueFactory.Setup(v => v.Create(1)).Returns(value);
+            _sut.Add("", form, 1);
+            _sut.Add("", form, 1);
+            _sut.Add("", form, 1);
 
             Assert.AreEqual(3, _sut.Count());
         }
 
         [Test]
-        public void AddWithoutValueAddsCorrectMatcherData()
+        public void AddWithValueBuilderAddsCorrectMatcherData()
         {
             var form = Mock.Of<IFormBuilder>();
+            var value = Mock.Of<IValueBuilder>();
 
-            _sut.Add("regex", form);
+            _sut.Add("regex", form, value);
 
             var data = _sut.Single();
             Assert.AreEqual("regex", data.Regex);
             Assert.IsInstanceOf<ModifierBuilderStub>(data.ModifierBuilder);
             var builder = (ModifierBuilderStub) data.ModifierBuilder;
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
+            Assert.AreEqual(1, builder.Values.Count());
+            Assert.AreSame(value, builder.Values.Single());
         }
 
         [Test]
-        public void AddWithValueAddsCorrectMatcherData()
+        public void AddWithDoubleValueAddsCorrectMatcherData()
         {
             var form = Mock.Of<IFormBuilder>();
             var value = Mock.Of<IValueBuilder>();

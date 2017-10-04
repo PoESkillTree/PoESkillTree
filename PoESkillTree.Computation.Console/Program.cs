@@ -73,7 +73,7 @@ namespace PoESkillTree.Computation.Console
             new StatManipulatorMatchers(builderFactories, matchContexts, modifierBuilder),
             new ValueConversionMatchers(builderFactories, matchContexts, modifierBuilder),
             new FormAndStatMatchers(builderFactories, matchContexts, modifierBuilder),
-            new FormMatchers(builderFactories, modifierBuilder),
+            new FormMatchers(builderFactories, matchContexts, modifierBuilder),
             new GeneralStatMatchers(builderFactories, matchContexts, modifierBuilder),
             new DamageStatMatchers(builderFactories, matchContexts, modifierBuilder),
             new PoolStatMatchers(builderFactories, matchContexts, modifierBuilder),

@@ -19,8 +19,8 @@ namespace PoESkillTree.Computation.Data.Collections
             _valueFactory = valueFactory;
         }
 
-        public void Add([RegexPattern] string regex, IFormBuilder form, IStatBuilder stat,
-            IValueBuilder value, IConditionBuilder condition = null)
+        public void Add([RegexPattern] string regex, IFormBuilder form, IValueBuilder value, 
+            IStatBuilder stat, IConditionBuilder condition = null)
         {
             var builder = ModifierBuilder
                 .WithForm(form)
@@ -33,23 +33,10 @@ namespace PoESkillTree.Computation.Data.Collections
             Add(regex, builder);
         }
 
-        public void Add([RegexPattern] string regex, IFormBuilder form, IStatBuilder stat,
-            double value, IConditionBuilder condition = null)
+        public void Add([RegexPattern] string regex, IFormBuilder form, double value, 
+            IStatBuilder stat, IConditionBuilder condition = null)
         {
-            Add(regex, form, stat, _valueFactory.Create(value), condition);
-        }
-
-        public void Add([RegexPattern] string regex, IFormBuilder form, IStatBuilder stat,
-            IConditionBuilder condition = null)
-        {
-            var builder = ModifierBuilder
-                .WithForm(form)
-                .WithStat(stat);
-            if (condition != null)
-            {
-                builder = builder.WithCondition(condition);
-            }
-            Add(regex, builder);
+            Add(regex, form, _valueFactory.Create(value), stat, condition);
         }
 
         public void Add([RegexPattern] string regex,

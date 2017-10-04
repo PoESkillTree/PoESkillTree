@@ -31,14 +31,14 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         }
 
         [Test]
-        public void AddFormStatAndValueAddsCorrectMatcherData()
+        public void AddFormStatAndDoubleValueAddsCorrectMatcherData()
         {
             var form = Mock.Of<IFormBuilder>();
             var stat = Mock.Of<IStatBuilder>();
             var value = Mock.Of<IValueBuilder>();
             _valueFactory.Setup(v => v.Create(3)).Returns(value);
 
-            _sut.Add(Regex, form, stat, 3);
+            _sut.Add(Regex, form, 3, stat);
 
             var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
@@ -47,7 +47,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         }
 
         [Test]
-        public void AddFormStatValueAndConditionAddsCorrectMatcherData()
+        public void AddFormStatDoubleValueAndConditionAddsCorrectMatcherData()
         {
             var form = Mock.Of<IFormBuilder>();
             var stat = Mock.Of<IStatBuilder>();
@@ -55,7 +55,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             _valueFactory.Setup(v => v.Create(3)).Returns(value);
             var condition = Mock.Of<IConditionBuilder>();
 
-            _sut.Add(Regex, form, stat, 3, condition);
+            _sut.Add(Regex, form, 3, stat, condition);
 
             var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
@@ -65,43 +65,50 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         }
 
         [Test]
-        public void AddFormAndManyStatsAddsCorrectMatcherData()
+        public void AddFormValueBuilderAndManyStatsAddsCorrectMatcherData()
         {
             var form = Mock.Of<IFormBuilder>();
+            var value = new ValueBuilder(Mock.Of<IValueBuilder>());
             var stat1 = Mock.Of<IStatBuilder>();
             var stat2 = Mock.Of<IStatBuilder>();
             var stat3 = Mock.Of<IStatBuilder>();
 
-            _sut.Add(Regex, form, stat1, stat2, stat3);
+            _sut.Add(Regex, form, value, stat1, stat2, stat3);
 
             var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
+            Assert.That(builder.Values, Has.Exactly(1).SameAs(value));
             CollectionAssert.AreEqual(new[] { stat1, stat2, stat3 }, builder.Stats);
         }
 
         [Test]
-        public void AddFormAndSingleStatAddsCorrectMatcherData()
+        public void AddFormValueBuilderAndSingleStatAddsCorrectMatcherData()
         {
             var form = Mock.Of<IFormBuilder>();
+            var value = new ValueBuilder(Mock.Of<IValueBuilder>());
             var stat = Mock.Of<IStatBuilder>();
 
-            _sut.Add(Regex, form, stat);
+            _sut.Add(Regex, form, value, stat);
 
             var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
+            Assert.That(builder.Values, Has.Exactly(1).SameAs(value));
             Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));
         }
 
         [Test]
-        public void AddFormAndEnumerableStatsAddsCorrectMatcherData()
+        public void AddFormDoubleValueAndEnumerableStatsAddsCorrectMatcherData()
         {
             var form = Mock.Of<IFormBuilder>();
+            var value = Mock.Of<IValueBuilder>();
+            _valueFactory.Setup(v => v.Create(3)).Returns(value);
             var stats = Enumerable.Empty<IStatBuilder>();
 
-            _sut.Add(Regex, form, stats);
+            _sut.Add(Regex, form, 3, stats);
 
             var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
+            Assert.That(builder.Values, Has.Exactly(1).SameAs(value));
             Assert.AreSame(stats, builder.Stats);
         }
 
@@ -109,15 +116,17 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         public void AddWithSubstitutionAddsCorrectMatcherData()
         {
             var form = Mock.Of<IFormBuilder>();
+            var value = new ValueBuilder(Mock.Of<IValueBuilder>());
             var stat = Mock.Of<IStatBuilder>();
 
-            _sut.Add(Regex, form, stat, "substitution");
+            _sut.Add(Regex, form, value, stat, "substitution");
 
             var data = _sut.Single();
             Assert.AreEqual(Regex, data.Regex);
             Assert.IsInstanceOf<ModifierBuilderStub>(data.ModifierBuilder);
             var builder = (ModifierBuilderStub) data.ModifierBuilder;
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
+            Assert.That(builder.Values, Has.Exactly(1).SameAs(value));
             Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));
             Assert.AreEqual("substitution", data.MatchSubstitution);
         }
@@ -126,28 +135,33 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         public void AddWithConverter()
         {
             var form = Mock.Of<IFormBuilder>();
+            var value = new ValueBuilder(Mock.Of<IValueBuilder>());
             var stat = Mock.Of<IStatBuilder>();
             var converter = _valueFactory.SetupConverter();
 
-            _sut.Add(Regex, form, stat, converter);
+            _sut.Add(Regex, form, value, stat, converter);
 
             var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
+            Assert.That(builder.Values, Has.Exactly(1).SameAs(value));
             Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));
             Assert.AreSame(converter, builder.ValueConverter);
         }
 
         [Test]
-        public void AddFormTuple()
+        public void AddTuple()
         {
             var firstForm = Mock.Of<IFormBuilder>();
             var secondForm = Mock.Of<IFormBuilder>();
+            var firstValue = new ValueBuilder(Mock.Of<IValueBuilder>());
+            var secondValue = new ValueBuilder(Mock.Of<IValueBuilder>());
             var stat = Mock.Of<IStatBuilder>();
 
-            _sut.Add(Regex, (firstForm, secondForm), stat);
+            _sut.Add(Regex, (firstForm, secondForm), (firstValue, secondValue), stat);
 
             var builder = _sut.AssertSingle(Regex);
-            CollectionAssert.AreEqual(new[] {firstForm, secondForm}, builder.Forms);
+            CollectionAssert.AreEqual(new[] { firstForm, secondForm }, builder.Forms);
+            CollectionAssert.AreEqual(new[] { firstValue, secondValue }, builder.Values);
             Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));
         }
 
@@ -157,15 +171,16 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             var form = Mock.Of<IFormBuilder>();
             var stat = Mock.Of<IStatBuilder>();
             var value = Mock.Of<IValueBuilder>();
+            var valueBuilder = new ValueBuilder(value);
             _valueFactory.Setup(v => v.Create(5)).Returns(value);
             var converter = _valueFactory.SetupConverter();
 
-            _sut.Add(Regex, form, stat, 5);
-            _sut.Add(Regex, form, stat, stat);
-            _sut.Add(Regex, form, new[] {stat, stat});
-            _sut.Add(Regex, form, stat, "substitution");
-            _sut.Add(Regex, form, stat, converter);
-            _sut.Add(Regex, (form, form), stat);
+            _sut.Add(Regex, form, 5, stat);
+            _sut.Add(Regex, form, valueBuilder, stat, stat);
+            _sut.Add(Regex, form, 5, new[] {stat, stat});
+            _sut.Add(Regex, form, valueBuilder, stat, "substitution");
+            _sut.Add(Regex, form, valueBuilder, stat, converter);
+            _sut.Add(Regex, (form, form), (valueBuilder, valueBuilder), stat);
 
             Assert.AreEqual(6, _sut.Count());
         }

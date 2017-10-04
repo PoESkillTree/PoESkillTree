@@ -15,13 +15,19 @@ namespace PoESkillTree.Computation.Data.Collections
             _valueFactory = valueFactory;
         }
 
-        public void Add([RegexPattern] string regex, IFormBuilder form, double? value = null)
+        public void Add([RegexPattern] string regex, IFormBuilder form, double value)
         {
-            var builder = ModifierBuilder.WithForm(form);
-            if (value.HasValue)
-            {
-                builder = builder.WithValue(_valueFactory.Create(value.Value));
-            }
+            var builder = ModifierBuilder
+                .WithForm(form)
+                .WithValue(_valueFactory.Create(value));
+            Add(regex, builder);
+        }
+
+        public void Add([RegexPattern] string regex, IFormBuilder form, IValueBuilder value)
+        {
+            var builder = ModifierBuilder
+                .WithForm(form)
+                .WithValue(value);
             Add(regex, builder);
         }
     }

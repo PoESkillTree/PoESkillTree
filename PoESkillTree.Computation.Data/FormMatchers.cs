@@ -4,18 +4,20 @@ using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Data;
 using PoESkillTree.Computation.Parsing.ModifierBuilding;
 
 namespace PoESkillTree.Computation.Data
 {
-    public class FormMatchers : UsesFormProviders, IStatMatchers
+    public class FormMatchers : UsesMatchContext, IStatMatchers
     {
         private readonly IModifierBuilder _modifierBuilder;
         private readonly Lazy<IReadOnlyList<MatcherData>> _lazyMatchers;
 
-        public FormMatchers(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder) 
-            : base(builderFactories)
+        public FormMatchers(IBuilderFactories builderFactories,
+            IMatchContexts matchContexts, IModifierBuilder modifierBuilder) 
+            : base(builderFactories, matchContexts)
         {
             _modifierBuilder = modifierBuilder;
             _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
@@ -26,20 +28,20 @@ namespace PoESkillTree.Computation.Data
         private FormMatcherCollection CreateCollection() => new FormMatcherCollection(_modifierBuilder,
             ValueFactory)
         {
-            { "#% increased", PercentIncrease },
-            { "#% reduced", PercentReduce },
-            { "#% more", PercentMore },
-            { "#% less", PercentLess },
-            { @"\+#%? to", BaseAdd },
-            { @"\+?#%?(?= chance)", BaseAdd },
-            { @"\+?#% of", BaseAdd },
-            { "gain #% of", BaseAdd },
-            { "gain #", BaseAdd },
-            { "#% additional", BaseAdd },
+            { "#% increased", PercentIncrease, Value },
+            { "#% reduced", PercentReduce, Value },
+            { "#% more", PercentMore, Value },
+            { "#% less", PercentLess, Value },
+            { @"\+#%? to", BaseAdd, Value },
+            { @"\+?#%?(?= chance)", BaseAdd, Value },
+            { @"\+?#% of", BaseAdd, Value },
+            { "gain #% of", BaseAdd, Value },
+            { "gain #", BaseAdd, Value },
+            { "#% additional", BaseAdd, Value },
             { "an additional", BaseAdd, 1 },
-            { @"-#% of", BaseSubtract },
-            { "-#%? to", BaseSubtract },
-            { "can (have|summon) up to # additional", MaximumAdd },
+            { @"-#% of", BaseSubtract, Value },
+            { "-#%? to", BaseSubtract, Value },
+            { "can (have|summon) up to # additional", MaximumAdd, Value },
         };
     }
 }

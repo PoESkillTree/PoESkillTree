@@ -23,8 +23,5 @@ namespace PoESkillTree.Computation.Data.Base
         protected IFormBuilder MinBaseAdd => FormBuilders.MinBaseAdd;
         protected IFormBuilder MaxBaseAdd => FormBuilders.MaxBaseAdd;
         protected IFormBuilder MaximumAdd => FormBuilders.MaximumAdd;
-        protected IFormBuilder SetFlag => FormBuilders.SetFlag;
-        protected IFormBuilder Zero => FormBuilders.Zero;
-        protected IFormBuilder Always => FormBuilders.Always;
     }
 }

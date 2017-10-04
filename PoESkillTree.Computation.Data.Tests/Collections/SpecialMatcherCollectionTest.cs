@@ -30,41 +30,13 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         }
 
         [Test]
-        public void AddFormStat()
-        {
-            var form = Mock.Of<IFormBuilder>();
-            var stat = Mock.Of<IStatBuilder>();
-
-            _sut.Add(Regex, form, stat);
-
-            var builder = _sut.AssertSingle(Regex);
-            Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
-            Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));
-        }
-
-        [Test]
-        public void AddFormStatCondition()
-        {
-            var form = Mock.Of<IFormBuilder>();
-            var stat = Mock.Of<IStatBuilder>();
-            var condition = Mock.Of<IConditionBuilder>();
-
-            _sut.Add(Regex, form, stat, condition);
-
-            var builder = _sut.AssertSingle(Regex);
-            Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
-            Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));
-            Assert.That(builder.Conditions, Has.Exactly(1).SameAs(condition));
-        }
-
-        [Test]
         public void AddFormStatValue()
         {
             var form = Mock.Of<IFormBuilder>();
             var stat = Mock.Of<IStatBuilder>();
             var value = Mock.Of<IValueBuilder>();
 
-            _sut.Add(Regex, form, stat, value);
+            _sut.Add(Regex, form, value, stat);
 
             var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
@@ -80,7 +52,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             var value = Mock.Of<IValueBuilder>();
             var condition = Mock.Of<IConditionBuilder>();
 
-            _sut.Add(Regex, form, stat, value, condition);
+            _sut.Add(Regex, form, value, stat, condition);
 
             var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
@@ -98,7 +70,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             _valueFactory.Setup(v => v.Create(3)).Returns(value);
             var condition = Mock.Of<IConditionBuilder>();
 
-            _sut.Add(Regex, form, stat, 3, condition);
+            _sut.Add(Regex, form, 3, stat, condition);
 
             var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));

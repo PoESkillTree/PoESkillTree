@@ -25,12 +25,5 @@ namespace PoESkillTree.Computation.Parsing.Builders.Forms
 
         // BaseAdd for stat.Maximum
         IFormBuilder MaximumAdd { get; }
-
-        // Shortcut for TotalOverride with value 1
-        IFormBuilder SetFlag { get; }
-        // Shortcuts for TotalOverride with value 0
-        IFormBuilder Zero { get; }
-        // Shortcut for TotalOverride with value 100
-        IFormBuilder Always { get; }
     }
 }

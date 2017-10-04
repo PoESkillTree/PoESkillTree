@@ -96,12 +96,6 @@ Recover #% of Life and Mana when you use a Warcry
 #% chance that if you would gain Endurance Charges, you instead gain up to your maximum number of Endurance Charges
  */
 
-// Each entry in the matchers arrays is one matcher.
-// The first value of a matcher is the (case-insensitive) regex that has to be matched.
-// The other values specify the effects should a stat line match the regex
-// (except for 'matchesIf', which is another condition that must be satisfied for the entry 
-// to be considered a match).
-
 /* For everything but SpecialMatchers:
  * - Each matcher regex is appended and prepended by "\b" to make sure they only match whole
  *   words

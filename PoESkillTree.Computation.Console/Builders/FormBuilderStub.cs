@@ -23,8 +23,5 @@ namespace PoESkillTree.Computation.Console.Builders
         public IFormBuilder MinBaseAdd => new FormBuilderStub("Minimum base add");
         public IFormBuilder MaxBaseAdd => new FormBuilderStub("Maximum base add");
         public IFormBuilder MaximumAdd => new FormBuilderStub("Maximum add");
-        public IFormBuilder SetFlag => new FormBuilderStub("Set flag");
-        public IFormBuilder Zero => new FormBuilderStub("Zero");
-        public IFormBuilder Always => new FormBuilderStub("Always");
     }
 }
