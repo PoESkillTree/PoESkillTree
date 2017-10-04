@@ -10,7 +10,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.Steps
             new SpecialStep();
 
         protected override IStep<ParsingStep, bool> ExpectedNextFalse => 
-            new StatManipulationStep();
+            new StatManipulatorStep();
 
         protected override IStep<ParsingStep, bool> ExpectedNextTrue =>
             new CompletedStep<ParsingStep, bool>(true, ParsingStep.Invalid);

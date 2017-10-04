@@ -4,7 +4,7 @@
     {
         Invalid,
         Special,
-        StatManipulation,
+        StatManipulator,
         ValueConversion,
         FormAndStat,
         Form,

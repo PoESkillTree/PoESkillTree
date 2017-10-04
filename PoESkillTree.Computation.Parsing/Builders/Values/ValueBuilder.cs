@@ -1,3 +1,4 @@
+using System;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Values
@@ -8,10 +9,10 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
 
         public ValueBuilder(IValueBuilder value)
         {
-            _value = value;
+            _value = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        private ValueBuilder Wrap(IValueBuilder value)
+        private static ValueBuilder Wrap(IValueBuilder value)
         {
             return new ValueBuilder(value);
         }
@@ -100,22 +101,22 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
             _value.GreaterThen(other);
 
         public static ValueBuilder operator *(ValueBuilder left, ValueBuilder right) => 
-            left.Wrap(left._value.Multiply(right));
+            Wrap(left._value.Multiply(right));
 
         public static ValueBuilder operator *(ValueBuilder left, double right) => 
-            left.Wrap(left._value.Multiply(right));
+            Wrap(left._value.Multiply(right));
 
         public static ValueBuilder operator *(double left, ValueBuilder right) => 
             right * left;
 
         public static ValueBuilder operator /(ValueBuilder left, ValueBuilder right) => 
-            left.Wrap(left._value.AsDividend(right));
+            Wrap(left._value.AsDividend(right));
 
         public static ValueBuilder operator /(ValueBuilder left, double right) => 
-            left.Wrap(left._value.AsDividend(right));
+            Wrap(left._value.AsDividend(right));
 
         public static ValueBuilder operator /(double left, ValueBuilder right) => 
-            right.Wrap(right._value.AsDivisor(left));
+            Wrap(right._value.AsDivisor(left));
 
         public static ValueBuilder operator -(ValueBuilder left, ValueBuilder right) => 
             left + (-right);
@@ -130,10 +131,10 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
             value * -1;
 
         public static ValueBuilder operator +(ValueBuilder left, ValueBuilder right) => 
-            left.Wrap(left._value.Add(right));
+            Wrap(left._value.Add(right));
 
         public static ValueBuilder operator +(ValueBuilder left, double right) => 
-            left.Wrap(left._value.Add(right));
+            Wrap(left._value.Add(right));
 
         public static ValueBuilder operator +(double left, ValueBuilder right) => 
             right + left;

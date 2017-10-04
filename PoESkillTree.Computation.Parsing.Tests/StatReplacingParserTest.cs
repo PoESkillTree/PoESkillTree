@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Parsing.Tests
@@ -176,6 +175,24 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 string _;
                 innerMock.Verify(p => p.TryParse(expectedPart, out _, out _));
             }
+        }
+
+        [Test]
+        public void TryParseIgnoresEmptyRemainings()
+        {
+            var innerMock = new Mock<IParser<string>>();
+            string _;
+            var remaining1 = "";
+            innerMock.Setup(p => p.TryParse("stat1", out remaining1, out _));
+            var remaining2 = "";
+            innerMock.Setup(p => p.TryParse("stat2", out remaining2, out _));
+            var remaining3 = "r3";
+            innerMock.Setup(p => p.TryParse("stat3", out remaining3, out _));
+            var sut = new StatReplacingParser<string>(innerMock.Object, _statReplacers);
+
+            sut.TryParse("plain stat", out var actual, out var _);
+
+            Assert.AreEqual(remaining3, actual);
         }
     }
 }

@@ -10,7 +10,7 @@
             {
                 return new CompletedStep<ParsingStep, bool>(true, ParsingStep.Invalid);
             }
-            return new StatManipulationStep();
+            return new StatManipulatorStep();
         }
 
         public override bool Equals(object obj)

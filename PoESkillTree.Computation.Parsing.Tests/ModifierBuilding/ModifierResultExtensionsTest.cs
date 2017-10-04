@@ -227,6 +227,30 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             CollectionAssert.AreEqual(expected, result.Entries);
         }
 
+        [Test]
+        public void BuildDoesNotConvertNullStats()
+        {
+            var input = CreateResult(
+                new[] { DefaultEntry.WithStat(null) },
+                statConverter: s => s ?? throw new ArgumentNullException());
+
+            var result = input.Build();
+
+            Assert.Null(result[0].Stat);
+        }
+
+        [Test]
+        public void BuildDoesNotConvertNullValues()
+        {
+            var input = CreateResult(
+                new[] { DefaultEntry.WithValue(null) },
+                valueConverter: v => v ?? throw new ArgumentNullException());
+
+            var result = input.Build();
+
+            Assert.Null(result[0].Value);
+        }
+
         private static readonly ModifierResultEntry EmptyEntry = new ModifierResultEntry();
 
         private static readonly ModifierResultEntry DefaultEntry = EmptyEntry

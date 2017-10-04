@@ -83,9 +83,15 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 
         public static IReadOnlyList<Modifier> Build(this IModifierResult result)
         {
+            IStatBuilder ConvertStat(IModifierResult r, IStatBuilder s) =>
+                s == null ? null : r.StatConverter(s);
+
+            IValueBuilder ConvertValue(IModifierResult r, IValueBuilder v) =>
+                v == null ? null : r.ValueConverter(v);
+
             return (from entry in result.Entries
-                    let stat = result.StatConverter(entry.Stat)
-                    let value = result.ValueConverter(entry.Value)
+                    let stat = ConvertStat(result, entry.Stat)
+                    let value = ConvertValue(result, entry.Value)
                     select new Modifier(stat, entry.Form, value, entry.Condition))
                 .ToList();
         }

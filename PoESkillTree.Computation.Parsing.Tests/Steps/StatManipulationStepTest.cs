@@ -7,7 +7,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.Steps
     public class StatManipulationStepTest : ParsingStepTest
     {
         protected override IStep<ParsingStep, bool> Sut =>
-            new StatManipulationStep();
+            new StatManipulatorStep();
 
         protected override IStep<ParsingStep, bool> ExpectedNextFalse => 
             new ValueConversionStep();

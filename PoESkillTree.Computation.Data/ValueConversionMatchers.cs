@@ -57,7 +57,7 @@ namespace PoESkillTree.Computation.Data
                     PerStatCeiled(stat: Group.AsStat, divideBy: Value)
                 },
                 { "per ({StatMatchers})", PerStat(stat: Group.AsStat) },
-                { "per Level", PerStat(Self.Level) },
+                { "per level", PerStat(Self.Level) },
                 // buffs
                 {
                     "per buff on you",
