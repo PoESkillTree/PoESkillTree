@@ -40,7 +40,7 @@
                     <l:Catalog Message="League"/>
                 </metroControls:TextBoxHelper.Watermark>
             </ComboBox>
-            <TextBox Grid.Column="1" Margin="3,5,5,5" Text="{Binding Build.AccountName}" MaxLength="24">
+            <TextBox Grid.Column="1" Margin="3,5,5,5" Text="{Binding Build.AccountName}" MaxLength="30">
                 <metroControls:TextBoxHelper.Watermark>
                     <l:Catalog Message="Account name"/>
                 </metroControls:TextBoxHelper.Watermark>
