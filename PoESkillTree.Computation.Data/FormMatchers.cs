@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Parsing.Builders;
@@ -13,19 +11,17 @@ namespace PoESkillTree.Computation.Data
     public class FormMatchers : UsesMatchContext, IStatMatchers
     {
         private readonly IModifierBuilder _modifierBuilder;
-        private readonly Lazy<IReadOnlyList<MatcherData>> _lazyMatchers;
 
         public FormMatchers(IBuilderFactories builderFactories,
             IMatchContexts matchContexts, IModifierBuilder modifierBuilder) 
             : base(builderFactories, matchContexts)
         {
             _modifierBuilder = modifierBuilder;
-            _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
         }
 
-        public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
+        public bool MatchesWholeLineOnly => false;
 
-        private FormMatcherCollection CreateCollection() => new FormMatcherCollection(_modifierBuilder,
+        public IEnumerable<MatcherData> Matchers => new FormMatcherCollection(_modifierBuilder,
             ValueFactory)
         {
             { "#% increased", PercentIncrease, Value },

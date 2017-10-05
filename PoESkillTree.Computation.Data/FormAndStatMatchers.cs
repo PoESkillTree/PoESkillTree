@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -14,19 +13,17 @@ namespace PoESkillTree.Computation.Data
     public class FormAndStatMatchers : UsesMatchContext, IStatMatchers
     {
         private readonly IModifierBuilder _modifierBuilder;
-        private readonly Lazy<IReadOnlyList<MatcherData>> _lazyMatchers;
 
         public FormAndStatMatchers(IBuilderFactories builderFactories,
             IMatchContexts matchContexts, IModifierBuilder modifierBuilder)
             : base(builderFactories, matchContexts)
         {
             _modifierBuilder = modifierBuilder;
-            _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
         }
 
-        public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
+        public bool MatchesWholeLineOnly => false;
 
-        private FormAndStatMatcherCollection CreateCollection() => new FormAndStatMatcherCollection(
+        public IEnumerable<MatcherData> Matchers => new FormAndStatMatcherCollection(
             _modifierBuilder, ValueFactory)
         {
             // attributes

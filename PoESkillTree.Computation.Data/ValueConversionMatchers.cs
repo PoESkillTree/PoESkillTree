@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -18,19 +16,17 @@ namespace PoESkillTree.Computation.Data
         // not to other values like in "for # seconds".
 
         private readonly IModifierBuilder _modifierBuilder;
-        private readonly Lazy<IReadOnlyList<MatcherData>> _lazyMatchers;
 
         public ValueConversionMatchers(IBuilderFactories builderFactories,
             IMatchContexts matchContexts, IModifierBuilder modifierBuilder) 
             : base(builderFactories, matchContexts)
         {
             _modifierBuilder = modifierBuilder;
-            _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
         }
 
-        public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
+        public bool MatchesWholeLineOnly => false;
 
-        private ValueConversionMatcherCollection CreateCollection() =>
+        public IEnumerable<MatcherData> Matchers => 
             new ValueConversionMatcherCollection(_modifierBuilder, ValueFactory)
             {
                 // action

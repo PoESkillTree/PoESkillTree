@@ -96,15 +96,6 @@ Recover #% of Life and Mana when you use a Warcry
 #% chance that if you would gain Endurance Charges, you instead gain up to your maximum number of Endurance Charges
  */
 
-/* For everything but SpecialMatchers:
- * - Each matcher regex is appended and prepended by "\b" to make sure they only match whole
- *   words
- * - If one matcher collection has multiple matches, take the one with the longest regex or 
- *   matched substring (first match if multiple of same length) 
- *   (longest regex or longest match?)
- * - If a matcher matches, remove the match in the mod line 
- *   (or replace by substitution string if one is specified)
- */
 // As another form of showing that a mod is not supported, matcher implementations 
 // themselves may signal that
 // they are not yet supported, e.g. by throwing an exception.

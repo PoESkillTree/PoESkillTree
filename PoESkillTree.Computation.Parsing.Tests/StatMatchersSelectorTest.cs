@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Data;
 using PoESkillTree.Computation.Parsing.Steps;
 
@@ -34,27 +33,37 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private class SpecialMatchers : IStatMatchers
         {
-            public IReadOnlyList<MatcherData> Matchers { get; }
+            public IEnumerable<MatcherData> Matchers { get; }
+
+            public bool MatchesWholeLineOnly => false;
         }
 
         private class ValueConversionMatchers : IStatMatchers
         {
-            public IReadOnlyList<MatcherData> Matchers { get; }
+            public IEnumerable<MatcherData> Matchers { get; }
+
+            public bool MatchesWholeLineOnly => false;
         }
 
         private class FormAndStatMatchers : IStatMatchers
         {
-            public IReadOnlyList<MatcherData> Matchers { get; }
+            public IEnumerable<MatcherData> Matchers { get; }
+
+            public bool MatchesWholeLineOnly => false;
         }
 
         private class FormMatchers : IStatMatchers
         {
-            public IReadOnlyList<MatcherData> Matchers { get; }
+            public IEnumerable<MatcherData> Matchers { get; }
+
+            public bool MatchesWholeLineOnly => false;
         }
 
         private class FormZMatchers : IStatMatchers
         {
-            public IReadOnlyList<MatcherData> Matchers { get; }
+            public IEnumerable<MatcherData> Matchers { get; }
+
+            public bool MatchesWholeLineOnly => false;
         }
     }
 }

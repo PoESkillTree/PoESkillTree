@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using POESKillTree.Utils.Extensions;
+using PoESkillTree.Common.Utils.Extensions;
 
 namespace POESKillTree.Common.ViewModels
 {

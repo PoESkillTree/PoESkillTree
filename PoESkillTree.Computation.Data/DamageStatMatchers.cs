@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -15,19 +13,17 @@ namespace PoESkillTree.Computation.Data
     public class DamageStatMatchers : UsesMatchContext, IStatMatchers
     {
         private readonly IModifierBuilder _modifierBuilder;
-        private readonly Lazy<IReadOnlyList<MatcherData>> _lazyMatchers;
 
         public DamageStatMatchers(IBuilderFactories builderFactories, 
             IMatchContexts matchContexts, IModifierBuilder modifierBuilder) 
             : base(builderFactories, matchContexts)
         {
             _modifierBuilder = modifierBuilder;
-            _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
         }
 
-        public IReadOnlyList<MatcherData> Matchers => _lazyMatchers.Value;
+        public bool MatchesWholeLineOnly => false;
 
-        private StatMatcherCollection<IDamageStatBuilder> CreateCollection() =>
+        public IEnumerable<MatcherData> Matchers =>
             new StatMatcherCollection<IDamageStatBuilder>(_modifierBuilder, ValueFactory)
             {
                 // unspecific

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Console.Builders;
 using PoESkillTree.Computation.Data;
@@ -16,21 +17,24 @@ namespace PoESkillTree.Computation.Console
     {
         public static void Main(string[] args)
         {
-            IParser<IModifierResult> InnerParser(IStatMatchers statMatchers) =>
+            IParser<IModifierResult> CreateInnerParser(IStatMatchers statMatchers) =>
                 new CachingParser<IModifierResult>(
                     new StatNormalizingParser<IModifierResult>(
-                        new DummyParser(statMatchers))); // TODO
+                        new ParserWithResultSelector<IModifierBuilder,IModifierResult>(
+                            new DummyParser(new StatMatcherRegexExpander(statMatchers)), // TODO
+                            b => b?.Build())));
 
             var statMatchersList = CreateStatMatchers(new BuilderFactories(),
                 new MatchContextsStub(), new ModifierBuilder());
             var statMatchersFactory = new StatMatchersSelector(statMatchersList);
+            var innerParserCache = new Dictionary<IStatMatchers, IParser<IModifierResult>>();
             IStep<IParser<IModifierResult>, bool> initialStep =
                 new MappingStep<IStatMatchers, IParser<IModifierResult>, bool>(
                     new MappingStep<ParsingStep, IStatMatchers, bool>(
                         new SpecialStep(),
                         statMatchersFactory.Get
                     ),
-                    InnerParser
+                    statMatchers => innerParserCache.GetOrAdd(statMatchers, CreateInnerParser)
                 );
 
             IParser<IReadOnlyList<Modifier>> parser =
@@ -84,20 +88,39 @@ namespace PoESkillTree.Computation.Console
          * - leaf parsers (some class implementing IParser<IModifierBuilder> and using an IStatMatcher)
          * - some parser doing the match context resolving after leaf parser
          *   (probably, depending on how the nested matcher regexes are implemented)
-         * - parser calling IModifierBuilder.Build() after leaf parser
          */
 
         // Obviously only temporary until the actually useful classes exist
-        private class DummyParser : IParser<IModifierResult>
+        private class DummyParser : IParser<IModifierBuilder>
         {
-            public DummyParser(IStatMatchers statMatchers)
+            private readonly IEnumerable<MatcherData> _statMatchers;
+
+            public DummyParser(IEnumerable<MatcherData> statMatchers)
             {
+                _statMatchers = statMatchers;
             }
 
-            public bool TryParse(string stat, out string remaining, out IModifierResult result)
+            public bool TryParse(string stat, out string remaining, out IModifierBuilder result)
             {
-                result = SimpleModifierResult.Empty;
-                remaining = string.Empty;
+                var xs =
+                    from m in _statMatchers
+                    let match = Regex.Match(stat, m.Regex) // TODO regex should be cached
+                    where match.Success
+                    orderby match.Length descending
+                    let replaced = stat.Substring(0, match.Index)
+                                   + match.Result(m.MatchSubstitution)
+                                   + stat.Substring(match.Index + match.Length)
+                    select new { m.ModifierBuilder, match.Value, Result = replaced, match.Groups };
+
+                var x = xs.FirstOrDefault();
+                if (x == null)
+                {
+                    result = null;
+                    remaining = stat;
+                    return false;
+                }
+                result = x.ModifierBuilder;
+                remaining = x.Result;
                 return true;
             }
         }
