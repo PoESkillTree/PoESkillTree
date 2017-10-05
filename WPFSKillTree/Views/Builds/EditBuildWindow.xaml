@@ -46,7 +46,7 @@
                 <Label Margin="4,4,4,2">
                     <l:Catalog Message="Account name"/>
                 </Label>
-                <TextBox Height="23" Margin="4,2,4,4" MaxLength="24"
+                <TextBox Height="23" Margin="4,2,4,4" MaxLength="30"
                          Text="{Binding AccountName}"/>
             </StackPanel>
         </GroupBox>
