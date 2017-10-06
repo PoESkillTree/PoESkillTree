@@ -1,5 +1,6 @@
 using System;
 using JetBrains.Annotations;
+using PoESkillTree.Computation.Parsing;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
 using PoESkillTree.Computation.Parsing.ModifierBuilding;
 
@@ -25,8 +26,11 @@ namespace PoESkillTree.Computation.Data.Collections
             string substitution = "") where T: IStatBuilder
         {
             // needs to verify that the matched mod line's stat is of type T
-            Add(regex, 
-                s => (s is T t) ? manipulateStat(t) : throw new NotSupportedException(), 
+            Add(regex,
+                s => (s is T t)
+                    ? manipulateStat(t)
+                    : throw new ParseException(
+                        $"Can only manipulate stats of type {typeof(T)}, was {s?.GetType()} (regex={regex}, stat={s})"),
                 substitution);
         }
     }

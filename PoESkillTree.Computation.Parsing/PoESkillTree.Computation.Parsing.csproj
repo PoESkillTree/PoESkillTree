@@ -132,6 +132,7 @@
     <Compile Include="Builders\Values\ValueBuilder.cs" />
     <Compile Include="Builders\Values\ValueBuilderUtils.cs" />
     <Compile Include="CachingParser.cs" />
+    <Compile Include="ParseException.cs" />
     <Compile Include="ParserWithResultSelector.cs" />
     <Compile Include="StatMatcherRegexExpander.cs" />
     <Compile Include="StatMatchersSelector.cs" />

@@ -98,7 +98,7 @@ Recover #% of Life and Mana when you use a Warcry
 
 // As another form of showing that a mod is not supported, matcher implementations 
 // themselves may signal that
-// they are not yet supported, e.g. by throwing an exception.
+// they are not yet supported, e.g. by throwing a ParseException that is caught somewhere.
 
 // Groups like "({DamageStatMatchers})" in regexes need to be replaced by all regex strings
 // from the specified matcher collection joined with "|" characters. Group() returns the 

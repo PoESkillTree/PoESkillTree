@@ -2,6 +2,7 @@
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.Computation.Parsing;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
@@ -60,7 +61,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             var builder = _sut.AssertSingle(Regex, "substitution");
             var actualConverter = builder.StatConverter;
             Assert.AreSame(resultStat, actualConverter(inputStat));
-            Assert.Throws<NotSupportedException>(() => actualConverter(Mock.Of<IStatBuilder>()));
+            Assert.Throws<ParseException>(() => actualConverter(Mock.Of<IStatBuilder>()));
         }
     }
 }
