@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,10 +50,12 @@
     <Compile Include="Builders\BuffBuilderStub.cs" />
     <Compile Include="Builders\BuilderCollectionStub.cs" />
     <Compile Include="Builders\BuilderFactories.cs" />
+    <Compile Include="Builders\BuilderFactory.cs" />
     <Compile Include="Builders\BuilderStub.cs" />
     <Compile Include="Builders\ChargeTypeBuilderStub.cs" />
     <Compile Include="Builders\ConditionBuilderStub.cs" />
     <Compile Include="Builders\DamageSourceBuilderStub.cs" />
+    <Compile Include="Builders\DamageStatBuilderStub.cs" />
     <Compile Include="Builders\DamageTypeBuilderStub.cs" />
     <Compile Include="Builders\EffectBuilderStub.cs" />
     <Compile Include="Builders\EntityBuilderStub.cs" />
@@ -73,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Common.csproj">

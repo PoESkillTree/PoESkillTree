@@ -2,26 +2,54 @@
 using PoESkillTree.Computation.Parsing.Builders.Actions;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
 using PoESkillTree.Computation.Parsing.Builders.Values;
+using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
-    public class ActionBuilderStub<TSource, TTarget> : BuilderStub, 
-        IActionBuilder<TSource, TTarget>
+    public class ActionBuilderStub<TSource, TTarget> 
+        : BuilderStub, IActionBuilder<TSource, TTarget>
         where TSource : IEntityBuilder
         where TTarget : IEntityBuilder
     {
         private readonly TSource _source;
         private readonly TTarget _target;
 
-        public ActionBuilderStub(TSource source, TTarget target, string stringRepresentation) 
+        private readonly Resolver<IActionBuilder> _resolver;
+
+        public ActionBuilderStub(TSource source, TTarget target, string stringRepresentation, 
+            Resolver<IActionBuilder> resolver) 
             : base(stringRepresentation)
         {
             _source = source;
             _target = target;
+            _resolver = resolver;
         }
+
+        private ActionBuilderStub(TSource source, TTarget target, string stringRepresentation)
+            : this(source, target, stringRepresentation, Resolve)
+        {
+        }
+
+        private static IActionBuilder Resolve(
+            IActionBuilder current,
+            IMatchContext<IValueBuilder> valueContext)
+        {
+            return new ActionBuilderStub<IEntityBuilder, IEntityBuilder>(
+                current.Source.Resolve(valueContext),
+                current.Target.Resolve(valueContext),
+                current.ToString(),
+                (c, _) => c);
+        }
+
+        public IEntityBuilder Source => _source;
+
+        public IEntityBuilder Target => _target;
+
+        private IActionBuilder This => this;
 
         public IActionBuilder<TNewSource, TTarget> By<TNewSource>(TNewSource source)
             where TNewSource : IEntityBuilder
@@ -39,66 +67,80 @@ namespace PoESkillTree.Computation.Console.Builders
             new ActionBuilderStub<TTarget, TSource>(_target, _source, ToString());
 
         public IConditionBuilder On(IKeywordBuilder withKeyword) =>
-            new ConditionBuilderStub($"On {withKeyword} {this} by {_source} against {_target}");
+            CreateCondition(This, withKeyword,
+                (a, keword) => $"On {keword} {a} by {a.Source} against {a.Target}");
 
-        public IConditionBuilder On(Func<TTarget, IConditionBuilder> targetPredicate = null,
-            Func<TSource, IConditionBuilder> sourcePredicate = null)
-        {
-            var sourceCondition = SourcePredicateToString(sourcePredicate);
-            var targetCondition = TargetPredicateToString(targetPredicate);
-            return new ConditionBuilderStub(
-                $"On {this} by {_source}{sourceCondition} against {_target}{targetCondition}");
-        }
-
-        public IConditionBuilder InPastXSeconds(ValueBuilder seconds, 
+        public IConditionBuilder On(
             Func<TTarget, IConditionBuilder> targetPredicate = null,
             Func<TSource, IConditionBuilder> sourcePredicate = null)
         {
-            var sourceCondition = SourcePredicateToString(sourcePredicate);
-            var targetCondition = TargetPredicateToString(targetPredicate);
-            return new ConditionBuilderStub(
-                $"If any {this} in the past {seconds} seconds by {_source}{sourceCondition} " +
-                $"against {_target}{targetCondition}");
+            string StringRepresentation(IActionBuilder current, IConditionBuilder sourceCond,
+                IConditionBuilder targetCond) =>
+                $"On {current}" +
+                $" by {current.Source}{ConditionToString(sourceCond)}" +
+                $" against {current.Target}{ConditionToString(targetCond)}";
+
+            var sourceCondition = sourcePredicate?.Invoke(_source);
+            var targetCondition = targetPredicate?.Invoke(_target);
+
+            return CreateCondition(This, sourceCondition, targetCondition, StringRepresentation);
         }
 
-        public IConditionBuilder Recently(Func<TTarget, IConditionBuilder> targetPredicate = null, 
+        public IConditionBuilder InPastXSeconds(
+            IValueBuilder seconds, 
+            Func<TTarget, IConditionBuilder> targetPredicate = null,
             Func<TSource, IConditionBuilder> sourcePredicate = null)
         {
-            var sourceCondition = SourcePredicateToString(sourcePredicate);
-            var targetCondition = TargetPredicateToString(targetPredicate);
-            return new ConditionBuilderStub(
-                $"If any {this} recently by {_source}{sourceCondition} " +
-                $"against {_target}{targetCondition}");
+            string StringRepresentation(IActionBuilder current, IValueBuilder secondsValue,
+                IConditionBuilder sourceCond, IConditionBuilder targetCond) => 
+                $"If any {current} in the past {secondsValue}" +
+                $" by {current.Source}{ConditionToString(sourceCond)}" +
+                $" against {current.Target}{ConditionToString(targetCond)}";
+
+            var sourceCondition = sourcePredicate?.Invoke(_source);
+            var targetCondition = targetPredicate?.Invoke(_target);
+
+            return CreateCondition(This, seconds, sourceCondition, targetCondition,
+                StringRepresentation);
         }
 
-        private string SourcePredicateToString(Func<TSource, IConditionBuilder> predicate) => 
-            PredicateToString(predicate, _source);
-
-        private string TargetPredicateToString(Func<TTarget, IConditionBuilder> predicate) =>
-            PredicateToString(predicate, _target);
-
-        private static string PredicateToString<T>(Func<T, IConditionBuilder> predicate, T entity)
+        public IConditionBuilder Recently(
+            Func<TTarget, IConditionBuilder> targetPredicate = null, 
+            Func<TSource, IConditionBuilder> sourcePredicate = null)
         {
-            if (predicate == null)
-            {
-                return "";
-            }
-            return " (" + predicate(entity) + ")";
+            string StringRepresentation(IActionBuilder current, IConditionBuilder sourceCond,
+                IConditionBuilder targetCond) =>
+                $"If any {current} recently" +
+                $" by {current.Source}{ConditionToString(sourceCond)}" +
+                $" against {current.Target}{ConditionToString(targetCond)}";
+
+            var sourceCondition = sourcePredicate?.Invoke(_source);
+            var targetCondition = targetPredicate?.Invoke(_target);
+
+            return CreateCondition(This, sourceCondition, targetCondition, StringRepresentation);
         }
+
+        private static string ConditionToString(IConditionBuilder condition) =>
+            condition == null ? "" : $"({condition}";
 
         public ValueBuilder CountRecently =>
             new ValueBuilder(
-                new ValueBuilderStub($"Number of {this} recently by {_source} against {_target}"));
+                CreateValue($"Number of {this} recently by {Source} against {Target}"));
+
+        public IActionBuilder Resolve(IMatchContext<IValueBuilder> valueContext) => 
+            _resolver(this, valueContext);
     }
 
 
     public class SelfToAnyActionBuilderStub 
         : ActionBuilderStub<ISelfBuilder, IEntityBuilder>, ISelfToAnyActionBuilder
     {
-        public SelfToAnyActionBuilderStub(string stringRepresentation)
+        public SelfToAnyActionBuilderStub(string stringRepresentation, 
+            Resolver<IActionBuilder> resolver)
             : base(new SelfBuilderStub(),
-                new EntityBuilderStub("Any Entity"),
-                stringRepresentation)
+                new EntityBuilderStub("Any Entity", (c, _) => c),
+                stringRepresentation,
+                resolver)
         {
         }
     }
@@ -107,17 +149,15 @@ namespace PoESkillTree.Computation.Console.Builders
     public class BlockActionBuilderStub : SelfToAnyActionBuilderStub, IBlockActionBuilder
     {
         public BlockActionBuilderStub() 
-            : base("Block")
+            : base("Block", (current, _) => current)
         {
         }
 
-        public IStatBuilder Recovery => new StatBuilderStub("Block Recovery");
+        public IStatBuilder Recovery => CreateStat("Block Recovery");
 
-        public IStatBuilder AttackChance =>
-            new StatBuilderStub("Chance to Block Attacks");
+        public IStatBuilder AttackChance => CreateStat("Chance to Block Attacks");
 
-        public IStatBuilder SpellChance =>
-            new StatBuilderStub("Chance to Block Spells");
+        public IStatBuilder SpellChance => CreateStat("Chance to Block Spells");
     }
 
 
@@ -125,49 +165,46 @@ namespace PoESkillTree.Computation.Console.Builders
         ICriticalStrikeActionBuilder
     {
         public CriticalStrikeActionBuilderStub() 
-            : base("Critical Strike")
+            : base("Critical Strike", (current, _) => current)
         {
         }
 
-        public IStatBuilder Chance =>
-            new StatBuilderStub("Critical Strike Chance");
+        public IStatBuilder Chance => CreateStat("Critical Strike Chance");
 
-        public IStatBuilder Multiplier =>
-            new StatBuilderStub("Critical Strike Multiplier");
+        public IStatBuilder Multiplier => CreateStat("Critical Strike Multiplier");
 
-        public IStatBuilder AilmentMultiplier =>
-            new StatBuilderStub("Ailment Critical Strike Multipler");
+        public IStatBuilder AilmentMultiplier => CreateStat("Ailment Critical Strike Multipler");
 
         public IStatBuilder ExtraDamageTaken =>
-            new StatBuilderStub("Extra damage taken from Critical Strikes");
+            CreateStat("Extra damage taken from Critical Strikes");
     }
 
 
     public class ActionBuildersStub : IActionBuilders
     {
-        public ISelfToAnyActionBuilder Kill =>
-            new SelfToAnyActionBuilderStub("Kill");
+        private static ISelfToAnyActionBuilder Create(string stringRepresentation) =>
+            new SelfToAnyActionBuilderStub(stringRepresentation, (current, _) => current);
+
+        public ISelfToAnyActionBuilder Kill => Create("Kill");
 
         public IBlockActionBuilder Block => new BlockActionBuilderStub();
 
-        public ISelfToAnyActionBuilder Hit =>
-            new SelfToAnyActionBuilderStub("Hit");
+        public ISelfToAnyActionBuilder Hit => Create("Hit");
 
-        public ISelfToAnyActionBuilder SavageHit =>
-            new SelfToAnyActionBuilderStub("Savage Hit");
+        public ISelfToAnyActionBuilder SavageHit => Create("Savage Hit");
 
         public ICriticalStrikeActionBuilder CriticalStrike =>
             new CriticalStrikeActionBuilderStub();
 
-        public ISelfToAnyActionBuilder NonCriticalStrike =>
-            new SelfToAnyActionBuilderStub("Non-critical Strike");
+        public ISelfToAnyActionBuilder NonCriticalStrike => Create("Non-critical Strike");
 
-        public ISelfToAnyActionBuilder Shatter =>
-            new SelfToAnyActionBuilderStub("Shatter");
-        public ISelfToAnyActionBuilder ConsumeCorpse =>
-            new SelfToAnyActionBuilderStub("Consuming Corpses");
+        public ISelfToAnyActionBuilder Shatter => Create("Shatter");
+        public ISelfToAnyActionBuilder ConsumeCorpse => Create("Consuming Corpses");
 
-        public ISelfToAnyActionBuilder SpendMana(ValueBuilder amount) => 
-            new SelfToAnyActionBuilderStub($"Spending {amount} mana");
+        public ISelfToAnyActionBuilder SpendMana(IValueBuilder amount) => 
+            (ISelfToAnyActionBuilder) Create<IActionBuilder, IValueBuilder>(
+                (s, r) => new SelfToAnyActionBuilderStub(s, r),
+                amount, 
+                o => $"Spending {o} mana");
     }
 }

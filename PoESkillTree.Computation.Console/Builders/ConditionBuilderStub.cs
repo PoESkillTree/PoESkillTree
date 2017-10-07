@@ -1,48 +1,61 @@
-﻿using PoESkillTree.Computation.Parsing.Builders.Conditions;
+﻿using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
 using PoESkillTree.Computation.Parsing.Builders.Equipment;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
+using PoESkillTree.Computation.Parsing.Builders.Values;
+using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
     public class ConditionBuilderStub : BuilderStub, IConditionBuilder
     {
-        public ConditionBuilderStub(string stringRepresentation) : base(stringRepresentation)
+        private readonly Resolver<IConditionBuilder> _resolver;
+
+        public ConditionBuilderStub(string stringRepresentation, Resolver<IConditionBuilder> resolver) 
+            : base(stringRepresentation)
         {
+            _resolver = resolver;
         }
 
-        public IConditionBuilder And(IConditionBuilder condition) => 
-            new ConditionBuilderStub(this + " and " + condition);
+        private IConditionBuilder This => this;
 
-        public IConditionBuilder Or(IConditionBuilder condition) => 
-            new ConditionBuilderStub(this + " or " + condition);
+        public IConditionBuilder And(IConditionBuilder condition) =>
+            CreateCondition(This, condition, (l, r) => $"{l} and {condition}");
 
-        public IConditionBuilder Not => 
-            new ConditionBuilderStub("not " + this);
+        public IConditionBuilder Or(IConditionBuilder condition) =>
+            CreateCondition(This, condition, (l, r) => $"{l} or {condition}");
+
+        public IConditionBuilder Not =>
+            CreateCondition(This, o => $"not {o}");
+
+        public IConditionBuilder Resolve(IMatchContext<IValueBuilder> valueContext) => 
+            _resolver(this, valueContext);
     }
 
 
     public class ConditionBuildersStub : IConditionBuilders
     {
-        public IConditionBuilder WhileLeeching => 
-            new ConditionBuilderStub("While Leeching");
+        public IConditionBuilder WhileLeeching =>
+            CreateCondition("While Leeching");
 
         public IConditionBuilder With(ISkillBuilderCollection skills) =>
-            new ConditionBuilderStub("With " + skills);
+            CreateCondition((IBuilderCollection<ISkillBuilder>) skills, o => $"With {skills}");
 
         public IConditionBuilder With(ISkillBuilder skill) =>
-            new ConditionBuilderStub("With " + skill);
+            CreateCondition(skill, o => $"With {skill}");
 
-        public IConditionBuilder For(params IEntityBuilder[] entities) => 
-            new ConditionBuilderStub("For " + string.Join<IEntityBuilder>(", ", entities));
+        public IConditionBuilder For(params IEntityBuilder[] entities) =>
+            CreateCondition(entities, os => "For " + string.Join(", ", os));
 
         public IConditionBuilder BaseValueComesFrom(IEquipmentBuilder equipment) =>
-            new ConditionBuilderStub("If base value comes from " + equipment);
+            CreateCondition(equipment, o => $"If base value comes from {equipment}");
 
         public IConditionBuilder Unique(string name = "$0") =>
-            new ConditionBuilderStub(name);
+            CreateCondition(name);
 
         public IConditionBuilder True =>
-            new ConditionBuilderStub("unconditional");
+            CreateCondition("unconditional");
     }
 }

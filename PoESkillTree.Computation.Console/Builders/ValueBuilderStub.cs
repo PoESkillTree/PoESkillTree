@@ -1,52 +1,63 @@
 ﻿using System;
 using System.Globalization;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Values;
+using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
     public class ValueBuilderStub : BuilderStub, IValueBuilder
     {
-        public ValueBuilderStub(string stringRepresentation) : base(stringRepresentation)
+        private readonly Resolver<IValueBuilder> _resolver;
+
+        public ValueBuilderStub(string stringRepresentation, Resolver<IValueBuilder> resolver)
+            : base(stringRepresentation)
         {
+            _resolver = resolver;
         }
 
-        public IConditionBuilder Eq(IValueBuilder other) => 
-            new ConditionBuilderStub($"({this} == {other})");
+        private IValueBuilder This => this;
 
-        public IConditionBuilder Eq(double other) => 
-            new ConditionBuilderStub($"({this} == {other})");
+        public IConditionBuilder Eq(IValueBuilder other) =>
+            CreateCondition(This, other, (l, r) => $"({l} == {r})");
 
-        public IConditionBuilder GreaterThen(IValueBuilder other) => 
-            new ConditionBuilderStub($"({this} > {other})");
+        public IConditionBuilder Eq(double other) =>
+            CreateCondition(This, o => $"({o} == {other})");
 
-        public IConditionBuilder GreaterThen(double other) => 
-            new ConditionBuilderStub($"({this} > {other})");
+        public IConditionBuilder GreaterThen(IValueBuilder other) =>
+            CreateCondition(This, other, (l, r) => $"({l} > {r})");
 
-        public IValueBuilder Add(IValueBuilder other) => 
-            new ValueBuilderStub($"({this} + {other})");
+        public IConditionBuilder GreaterThen(double other) =>
+            CreateCondition(This, o => $"({o} > {other})");
 
-        public IValueBuilder Add(double other) => 
-            new ValueBuilderStub($"({this} + {other})");
+        public IValueBuilder Add(IValueBuilder other) =>
+            CreateValue(This, other, (l, r) => $"({l} + {r})");
 
-        public IValueBuilder Multiply(IValueBuilder other) => 
-            new ValueBuilderStub($"({this} * {other})");
+        public IValueBuilder Add(double other) =>
+            CreateValue(This, o => $"({o} + {other})");
 
-        public IValueBuilder Multiply(double other) => 
-            new ValueBuilderStub($"({this} * {other})");
+        public IValueBuilder Multiply(IValueBuilder other) =>
+            CreateValue(This, other, (l, r) => $"({l} * {r})");
 
-        public IValueBuilder AsDividend(IValueBuilder divisor) => 
-            new ValueBuilderStub($"({this} / {divisor})");
+        public IValueBuilder Multiply(double other) =>
+            CreateValue(This, o => $"({o} * {other})");
 
-        public IValueBuilder AsDividend(double divisor) => 
-            new ValueBuilderStub($"({this} / {divisor})");
+        public IValueBuilder AsDividend(IValueBuilder divisor) =>
+            CreateValue(This, divisor, (l, r) => $"({l} / {r})");
 
-        public IValueBuilder AsDivisor(double dividend) => 
-            new ValueBuilderStub($"({dividend} / {this})");
+        public IValueBuilder AsDividend(double divisor) =>
+            CreateValue(This, o => $"({o} / {divisor})");
 
-        public IValueBuilder Rounded => new ValueBuilderStub($"Round({this})");
-        public IValueBuilder Floored => new ValueBuilderStub($"Floor({this})");
-        public IValueBuilder Ceiled => new ValueBuilderStub($"Ceil({this})");
+        public IValueBuilder AsDivisor(double dividend) =>
+            CreateValue(This, o => $"({dividend} / {o})");
+
+        public IValueBuilder Rounded => CreateValue(This, o => $"Round({o})");
+        public IValueBuilder Floored => CreateValue(This, o => $"Floor({o})");
+        public IValueBuilder Ceiled => CreateValue(This, o => $"Ceil({o})");
+
+        public IValueBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
+            _resolver(this, valueContext);
     }
 
 
@@ -54,60 +65,100 @@ namespace PoESkillTree.Computation.Console.Builders
     {
         public IThenBuilder If(IConditionBuilder condition)
         {
-            return new ThenBuilder($"if ({condition})");
+            IThenBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
+                new ThenBuilder($"if ({condition.Resolve(valueContext)})", (current, _) => current);
+
+            return new ThenBuilder($"if ({condition})", (_, context) => Resolve(context));
         }
 
-        public IValueBuilder Create(double value)
-        {
-            return new ValueBuilderStub(value.ToString(CultureInfo.InvariantCulture));
-        }
+        public IValueBuilder Create(double value) =>
+            CreateValue(value.ToString(CultureInfo.InvariantCulture));
 
         public Func<IValueBuilder, IValueBuilder> WrapValueConverter(
-            Func<ValueBuilder, ValueBuilder> converter) =>
-            iValue => iValue is ValueBuilder value
+            Func<ValueBuilder, ValueBuilder> converter)
+        {
+            return iValue => iValue is ValueBuilder value
                 ? converter(value)
                 : converter(new ValueBuilder(iValue));
+        }
 
 
         private class ThenBuilder : BuilderStub, IThenBuilder
         {
-            public ThenBuilder(string stringRepresentation)
+            private readonly Resolver<IThenBuilder> _resolver;
+
+            public ThenBuilder(string stringRepresentation, Resolver<IThenBuilder> resolver)
                 : base(stringRepresentation)
             {
+                _resolver = resolver;
             }
 
-            public IConditionalValueBuilder Then(ValueBuilder value)
+            public IConditionalValueBuilder Then(IValueBuilder value)
             {
-                return new ConditionalValueBuilder(this + " {" + value + "}");
+                IConditionalValueBuilder Resolve(IMatchContext<IValueBuilder> valueContext)
+                {
+                    return new ConditionalValueBuilder(
+                        $"{this.Resolve(valueContext)} else if ({value.Resolve(valueContext)})",
+                        (current, _) => current);
+                }
+
+                return new ConditionalValueBuilder($"{this} else if ({value})",
+                    (_, context) => Resolve(context));
             }
 
             public IConditionalValueBuilder Then(double value)
             {
-                return new ConditionalValueBuilder(this + " {" + value + "}");
+                IConditionalValueBuilder Resolve(IMatchContext<IValueBuilder> valueContext)
+                {
+                    return new ConditionalValueBuilder(
+                        $"{this.Resolve(valueContext)} else if ({value})",
+                        (current, _) => current);
+                }
+
+                return new ConditionalValueBuilder($"{this} else if ({value})",
+                    (_, context) => Resolve(context));
             }
+
+            public IThenBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
+                _resolver(this, valueContext);
         }
 
 
         private class ConditionalValueBuilder : BuilderStub, IConditionalValueBuilder
         {
-            public ConditionalValueBuilder(string stringRepresentation) : base(stringRepresentation)
+            private readonly Resolver<IConditionalValueBuilder> _resolver;
+
+            public ConditionalValueBuilder(
+                string stringRepresentation,
+                Resolver<IConditionalValueBuilder> resolver)
+                : base(stringRepresentation)
             {
+                _resolver = resolver;
             }
+
+            private IConditionalValueBuilder This => this;
 
             public IThenBuilder ElseIf(IConditionBuilder condition)
             {
-                return new ThenBuilder($"{this} else if ({condition})");
+                IThenBuilder Resolve(IMatchContext<IValueBuilder> valueContext)
+                {
+                    return new ThenBuilder(
+                        $"{this.Resolve(valueContext)} else if ({condition.Resolve(valueContext)})",
+                        (current, _) => current);
+                }
+
+                return new ThenBuilder($"{this} else if ({condition})",
+                    (_, context) => Resolve(context));
             }
 
-            public ValueBuilder Else(ValueBuilder value)
-            {
-                return new ValueBuilder(new ValueBuilderStub(this + " else { " + value + " }"));
-            }
+            public ValueBuilder Else(IValueBuilder value) =>
+                new ValueBuilder(CreateValue(This, value, (l, r) => $"{l} else {{ {r} }}"));
 
-            public ValueBuilder Else(double value)
-            {
-                return new ValueBuilder(new ValueBuilderStub(this + " else { " + value + " }"));
-            }
+            public ValueBuilder Else(double value) =>
+                new ValueBuilder(CreateValue(This, o => $"{o} else {{ {value} }}"));
+
+            public IConditionalValueBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
+                _resolver(this, valueContext);
         }
     }
 }

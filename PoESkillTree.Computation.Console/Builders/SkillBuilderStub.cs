@@ -1,164 +1,168 @@
 ﻿using System;
-using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Actions;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
 using PoESkillTree.Computation.Parsing.Builders.Equipment;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Values;
+using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
     public class SkillBuilderStub : BuilderStub, ISkillBuilder
     {
-        public SkillBuilderStub(string stringRepresentation) 
+        private readonly Resolver<ISkillBuilder> _resolver;
+
+        public SkillBuilderStub(string stringRepresentation, Resolver<ISkillBuilder> resolver) 
             : base(stringRepresentation)
         {
+            _resolver = resolver;
         }
 
+        private ISkillBuilder This => this;
+
         public IActionBuilder<ISelfBuilder, IEntityBuilder> Cast =>
-            new SelfToAnyActionBuilderStub($"{this} cast");
+            (ISelfToAnyActionBuilder) Create<IActionBuilder, ISkillBuilder>(
+                (s, r) => new SelfToAnyActionBuilderStub(s, r),
+                This, o => $"{o} cast");
 
         public IStatBuilder Instances =>
-            new StatBuilderStub($"{this} instance count");
+            CreateStat(This, o => $"{o} instance count");
 
         public IConditionBuilder HasInstance =>
-            new ConditionBuilderStub($"{this} has any instances");
+            CreateCondition(This, o => $"{o} has any instances");
 
         public IStatBuilder Duration =>
-            new StatBuilderStub($"{this} duration");
+            CreateStat(This, o => $"{o} duration");
 
         public IStatBuilder Cost =>
-            new StatBuilderStub($"{this} cost");
+            CreateStat(This, o => $"{o} cost");
 
         public IStatBuilder Reservation =>
-            new StatBuilderStub($"{this} reservation");
+            CreateStat(This, o => $"{o} reservation");
 
         public IStatBuilder CooldownRecoverySpeed =>
-            new StatBuilderStub($"{this} cooldown recovery speed");
+            CreateStat(This, o => $"{o} cooldown recovery speed");
 
         public IStatBuilder DamageEffectiveness =>
-            new StatBuilderStub($"{this} effectiveness of added damage");
+            CreateStat(This, o => $"{o} effectiveness of added damage");
 
         public IStatBuilder Speed =>
-            new StatBuilderStub($"{this} cast/attack speed");
+            CreateStat(This, o => $"{o} cast/attack speed");
 
         public IStatBuilder AreaOfEffect =>
-            new StatBuilderStub($"{this} area of effect");
+            CreateStat(This, o => $"{o} area of effect");
+
+        public ISkillBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
+            _resolver(this, valueContext);
     }
 
 
     public class SkillBuilderCollectionStub : BuilderCollectionStub<ISkillBuilder>, 
         ISkillBuilderCollection
     {
-        public SkillBuilderCollectionStub(IReadOnlyList<ISkillBuilder> elements) 
-            : base(elements)
+        public SkillBuilderCollectionStub(string stringRepresentation,
+            Resolver<IBuilderCollection<ISkillBuilder>> resolver) 
+            : base(new SkillBuilderStub("Skill", (c, _) => c), stringRepresentation, resolver)
         {
         }
 
-        private SkillBuilderCollectionStub(SkillBuilderCollectionStub source,
-            string stringRepresentation)
-            : base(source, stringRepresentation)
-        {
-            
-        }
+        private IBuilderCollection<ISkillBuilder> This => this;
 
         public ISkillBuilderCollection this[params IKeywordBuilder[] keywords] =>
-            new SkillBuilderCollectionStub(this, 
-                $"{this}.Where(has keywords [{string.Join<IKeywordBuilder>(", ", keywords)}])");
+            (ISkillBuilderCollection) Create(
+                (s, r) => new SkillBuilderCollectionStub(s, r), 
+                This, keywords,
+                (o1, os) => $"{o1}.Where(has keywords [{string.Join(", ", os)}])");
 
         public ISkillBuilderCollection this[ItemSlot slot] =>
-            new SkillBuilderCollectionStub(this,
-                $"{this}.Where(is socketed in {slot})");
+            (ISkillBuilderCollection) Create(
+                (s, r) => new SkillBuilderCollectionStub(s, r),
+                This,
+                o => $"{o}.Where(is socketed in {slot})");
 
         public ISkillBuilderCollection this[IItemSlotBuilder slot] =>
-            new SkillBuilderCollectionStub(this,
-                $"{this}.Where(is socketed in {slot})");
+            (ISkillBuilderCollection) Create(
+                (s, r) => new SkillBuilderCollectionStub(s, r),
+                This, slot,
+                (o1, o2) => $"{o1}.Where(is socketed in {o2})");
+
+        public ISkillBuilderCollection Where(Func<ISkillBuilder, IConditionBuilder> predicate) => 
+            (ISkillBuilderCollection) Create(
+                (s, r) => new SkillBuilderCollectionStub(s, r),
+                This, predicate(DummyElement),
+                (o1, o2) => $"{o1}.Where({o2})");
 
         public IStatBuilder CombinedInstances =>
-            new StatBuilderStub($"{this} combined instance count");
+            CreateStat(This, o => $"{o} combined instance count");
 
         public IStatBuilder Duration =>
-            new StatBuilderStub($"{this} duration");
+            CreateStat(This, o => $"{o} duration");
 
         public IStatBuilder Cost =>
-            new StatBuilderStub($"{this} cost");
+            CreateStat(This, o => $"{o} cost");
 
         public IStatBuilder Reservation =>
-            new StatBuilderStub($"{this} reservation");
+            CreateStat(This, o => $"{o} reservation");
 
         public IStatBuilder CooldownRecoverySpeed =>
-            new StatBuilderStub($"{this} cooldown recovery speed");
+            CreateStat(This, o => $"{o} cooldown recovery speed");
 
         public IStatBuilder DamageEffectiveness =>
-            new StatBuilderStub($"{this} damage effectiveness");
+            CreateStat(This, o => $"{o} damage effectiveness");
 
         public IStatBuilder Speed =>
-            new StatBuilderStub($"{this} attack/cast speed");
+            CreateStat(This, o => $"{o} attack/cast speed");
 
         public IStatBuilder AreaOfEffect =>
-            new StatBuilderStub($"{this} area of effect");
+            CreateStat(This, o => $"{o} area of effect");
 
         public IFlagStatBuilder ApplyStatsToEntity(IEntityBuilder entity) =>
-            new FlagStatBuilderStub($"apply stats of {this} to {entity}");
-
-        public ISkillBuilderCollection Where(Func<ISkillBuilder, IConditionBuilder> predicate) =>
-            new SkillBuilderCollectionStub(this,
-                $"{this}.Where({predicate(new SkillBuilderStub("skill"))})");
+            CreateFlagStat(This, entity, (o1, o2) => $"apply stats of {o1} to {o2}");
 
         public IActionBuilder<ISelfBuilder, IEntityBuilder> Cast =>
-            new SelfToAnyActionBuilderStub($"{this} cast");
+            (ISelfToAnyActionBuilder) Create<IActionBuilder, IBuilderCollection<ISkillBuilder>>(
+                (s, r) => new SelfToAnyActionBuilderStub(s, r),
+                This, o => $"{o} cast");
     }
 
 
     public class SkillBuildersStub : ISkillBuilders
     {
-        public SkillBuildersStub()
-        {
-            ISkillBuilder[] skills =
-            {
-                new SkillBuilderStub("skill1"),
-                new SkillBuilderStub("skill2"),
-                new SkillBuilderStub("skill3"),
-                new SkillBuilderStub("..."),
-            };
-            Skills = new SkillBuilderCollectionStub(skills);
-        }
+        private static ISkillBuilder Create(string s)
+            => new SkillBuilderStub(s, (c, _) => c);
 
-        public ISkillBuilderCollection Skills { get; }
+        public ISkillBuilderCollection Skills =>
+            new SkillBuilderCollectionStub("Skills", (current, _) => current);
 
         public ISkillBuilderCollection Combine(params ISkillBuilder[] skills) =>
-            new SkillBuilderCollectionStub(skills);
+            (ISkillBuilderCollection) Create<IBuilderCollection<ISkillBuilder>, ISkillBuilder>(
+                (s, r) => new SkillBuilderCollectionStub(s, r), 
+                skills,
+                os => $"[{string.Join(", ", os)}]");
 
-        public ISkillBuilder SummonSkeleton =>
-            new SkillBuilderStub("Summon Skeleton");
+        public ISkillBuilder SummonSkeleton => Create("Summon Skeleton");
 
-        public ISkillBuilder VaalSummonSkeletons =>
-            new SkillBuilderStub("Vaal Summon Skeletons");
+        public ISkillBuilder VaalSummonSkeletons => Create("Vaal Summon Skeletons");
 
-        public ISkillBuilder RaiseSpectre =>
-            new SkillBuilderStub("Raise Spectre");
+        public ISkillBuilder RaiseSpectre => Create("Raise Spectre");
 
-        public ISkillBuilder RaiseZombie =>
-            new SkillBuilderStub("Raise Zombie");
+        public ISkillBuilder RaiseZombie => Create("Raise Zombie");
 
-        public ISkillBuilder DetonateMines =>
-            new SkillBuilderStub("Detonate Mines");
+        public ISkillBuilder DetonateMines => Create("Detonate Mines");
 
-        public ISkillBuilder BloodRage =>
-            new SkillBuilderStub("Blood Rage");
+        public ISkillBuilder BloodRage => Create("Blood Rage");
 
-        public ISkillBuilder MoltenShell =>
-            new SkillBuilderStub("Molten Shell");
+        public ISkillBuilder MoltenShell => Create("Molten Shell");
 
-        public ISkillBuilder BoneOffering =>
-            new SkillBuilderStub("Bone Offering");
+        public ISkillBuilder BoneOffering => Create("Bone Offering");
 
-        public ISkillBuilder FleshOffering =>
-            new SkillBuilderStub("Flesh Offering");
+        public ISkillBuilder FleshOffering => Create("Flesh Offering");
 
-        public ISkillBuilder SpiritOffering =>
-            new SkillBuilderStub("Spirit Offering");
+        public ISkillBuilder SpiritOffering => Create("Spirit Offering");
     }
 }

@@ -1,11 +1,12 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders.Actions;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Skills
 {
-    public interface ISkillBuilder
+    public interface ISkillBuilder : IResolvable<ISkillBuilder>
     {
         IActionBuilder<ISelfBuilder, IEntityBuilder> Cast { get; }
 

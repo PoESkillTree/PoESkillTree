@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.Common.Utils.Extensions;
@@ -7,6 +8,7 @@ using PoESkillTree.Computation.Data;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
+using PoESkillTree.Computation.Parsing.Builders.Values;
 using PoESkillTree.Computation.Parsing.Data;
 using PoESkillTree.Computation.Parsing.ModifierBuilding;
 using PoESkillTree.Computation.Parsing.Steps;
@@ -27,14 +29,15 @@ namespace PoESkillTree.Computation.Console
             var statMatchersList = CreateStatMatchers(new BuilderFactories(),
                 new MatchContextsStub(), new ModifierBuilder());
             var statMatchersFactory = new StatMatchersSelector(statMatchersList);
-            var innerParserCache = new Dictionary<IStatMatchers, IParser<IModifierResult>>();
+            var innerParserCache = 
+                new Cache<IStatMatchers, IParser<IModifierResult>>(CreateInnerParser);
             IStep<IParser<IModifierResult>, bool> initialStep =
                 new MappingStep<IStatMatchers, IParser<IModifierResult>, bool>(
                     new MappingStep<ParsingStep, IStatMatchers, bool>(
                         new SpecialStep(),
                         statMatchersFactory.Get
                     ),
-                    statMatchers => innerParserCache.GetOrAdd(statMatchers, CreateInnerParser)
+                    innerParserCache.Get
                 );
 
             IParser<IReadOnlyList<Modifier>> parser =
@@ -87,30 +90,56 @@ namespace PoESkillTree.Computation.Console
         /* Algorithm missing: (replacing DummyParser in InnerParser() function)
          * - leaf parsers (some class implementing IParser<IModifierBuilder> and using an IStatMatcher)
          * - some parser doing the match context resolving after leaf parser
-         *   (probably, depending on how the nested matcher regexes are implemented)
+         *   (MatchContextResolvingParser)
          */
+
+        private class Cache<TKey, TValue>
+        {
+            private readonly Func<TKey, TValue> _valueFactory;
+            private readonly Dictionary<TKey, TValue> _cache = new Dictionary<TKey, TValue>();
+
+            public Cache(Func<TKey, TValue> valueFactory)
+            {
+                _valueFactory = valueFactory;
+            }
+
+            public TValue this[TKey key] => Get(key);
+
+            public TValue Get(TKey key) => _cache.GetOrAdd(key, _valueFactory);
+        }
 
         // Obviously only temporary until the actually useful classes exist
         private class DummyParser : IParser<IModifierBuilder>
         {
             private readonly IEnumerable<MatcherData> _statMatchers;
 
+            private readonly Cache<string, Regex> _regexCache =
+                new Cache<string, Regex>(CreateRegex);
+
             public DummyParser(IEnumerable<MatcherData> statMatchers)
             {
                 _statMatchers = statMatchers;
+            }
+
+            private static Regex CreateRegex(string regex)
+            {
+                return new Regex(regex,
+                    RegexOptions.CultureInvariant & RegexOptions.IgnoreCase &
+                    RegexOptions.Compiled);
             }
 
             public bool TryParse(string stat, out string remaining, out IModifierBuilder result)
             {
                 var xs =
                     from m in _statMatchers
-                    let match = Regex.Match(stat, m.Regex) // TODO regex should be cached
+                    let regex = _regexCache[m.Regex]
+                    let match = regex.Match(stat)
                     where match.Success
                     orderby match.Length descending
                     let replaced = stat.Substring(0, match.Index)
                                    + match.Result(m.MatchSubstitution)
                                    + stat.Substring(match.Index + match.Length)
-                    select new { m.ModifierBuilder, match.Value, Result = replaced, match.Groups };
+                    select new { m.ModifierBuilder, match.Value, Result = replaced, Groups = SelectGroups(regex, match.Groups) };
 
                 var x = xs.FirstOrDefault();
                 if (x == null)
@@ -119,10 +148,37 @@ namespace PoESkillTree.Computation.Console
                     remaining = stat;
                     return false;
                 }
-                result = x.ModifierBuilder;
+                result = Resolve(x.ModifierBuilder, x.Groups);
                 remaining = x.Result;
                 return true;
             }
+
+            private static IReadOnlyDictionary<string, string> SelectGroups(
+                Regex regex,
+                GroupCollection groups)
+            {
+                return regex.GetGroupNames().ToDictionary(gn => gn, gn => groups[gn].Value);
+            }
+        }
+
+        private static IModifierBuilder Resolve(
+            IModifierBuilder builder, 
+            IReadOnlyDictionary<string, string> groups)
+        {
+            var values =
+                from pair in groups
+                let groupName = pair.Key
+                where groupName.StartsWith("value")
+                select BuilderFactory.CreateValue(pair.Value);
+            var valueContext = new ResolvedMatchContext<IValueBuilder>(values.ToList());
+            var oldResult = builder.Build();
+            return new ModifierBuilder()
+                .WithValues(oldResult.Entries.Select(e => e.Value?.Resolve(valueContext)))
+                .WithForms(oldResult.Entries.Select(e => e.Form?.Resolve(valueContext)))
+                .WithStats(oldResult.Entries.Select(e => e.Stat?.Resolve(valueContext)))
+                .WithConditions(oldResult.Entries.Select(e => e.Condition?.Resolve(valueContext)))
+                .WithValueConverter(v => oldResult.ValueConverter(v)?.Resolve(valueContext))
+                .WithStatConverter(s => oldResult.StatConverter(s)?.Resolve(valueContext));
         }
     }
 }

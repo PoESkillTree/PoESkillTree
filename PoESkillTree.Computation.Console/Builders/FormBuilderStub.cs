@@ -1,27 +1,39 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders.Forms;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
+using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
     public class FormBuilderStub : BuilderStub, IFormBuilder
     {
-        public FormBuilderStub(string stringRepresentation) : base(stringRepresentation)
+        private readonly Resolver<IFormBuilder> _resolver;
+
+        public FormBuilderStub(string stringRepresentation, Resolver<IFormBuilder> resolver)
+            : base(stringRepresentation)
         {
+            _resolver = resolver;
         }
+
+        public IFormBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
+            _resolver(this, valueContext);
     }
 
 
     public class FormBuildersStub : IFormBuilders
     {
-        public IFormBuilder BaseSet => new FormBuilderStub("Base set");
-        public IFormBuilder PercentIncrease => new FormBuilderStub("Percent increase");
-        public IFormBuilder PercentMore => new FormBuilderStub("Percent more");
-        public IFormBuilder BaseAdd => new FormBuilderStub("Base add");
-        public IFormBuilder PercentReduce => new FormBuilderStub("Percent reduce");
-        public IFormBuilder PercentLess => new FormBuilderStub("Percent less");
-        public IFormBuilder BaseSubtract => new FormBuilderStub("Base subtract");
-        public IFormBuilder TotalOverride => new FormBuilderStub("Total override");
-        public IFormBuilder MinBaseAdd => new FormBuilderStub("Minimum base add");
-        public IFormBuilder MaxBaseAdd => new FormBuilderStub("Maximum base add");
-        public IFormBuilder MaximumAdd => new FormBuilderStub("Maximum add");
+        private static IFormBuilder Create(string s)
+            => new FormBuilderStub(s, (c, _) => c);
+
+        public IFormBuilder BaseSet => Create("Base set");
+        public IFormBuilder PercentIncrease => Create("Percent increase");
+        public IFormBuilder PercentMore => Create("Percent more");
+        public IFormBuilder BaseAdd => Create("Base add");
+        public IFormBuilder PercentReduce => Create("Percent reduce");
+        public IFormBuilder PercentLess => Create("Percent less");
+        public IFormBuilder BaseSubtract => Create("Base subtract");
+        public IFormBuilder TotalOverride => Create("Total override");
+        public IFormBuilder MinBaseAdd => Create("Minimum base add");
+        public IFormBuilder MaxBaseAdd => Create("Maximum base add");
+        public IFormBuilder MaximumAdd => Create("Maximum add");
     }
 }

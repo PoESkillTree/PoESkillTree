@@ -1,32 +1,44 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders.Charges;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Values;
+using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
     public class ChargeTypeBuilderStub : BuilderStub, IChargeTypeBuilder
     {
-        public ChargeTypeBuilderStub(string stringRepresentation) : base(stringRepresentation)
+        private readonly Resolver<IChargeTypeBuilder> _resolver;
+
+        public ChargeTypeBuilderStub(string stringRepresentation, 
+            Resolver<IChargeTypeBuilder> resolver) 
+            : base(stringRepresentation)
         {
+            _resolver = resolver;
         }
 
-        public IStatBuilder Amount => new StatBuilderStub(this + " amount");
+        private IChargeTypeBuilder This => this;
 
-        public IStatBuilder Duration => new StatBuilderStub(this + " duration");
+        public IStatBuilder Amount => CreateStat(This, o => $"{o} amount");
 
-        public IStatBuilder ChanceToGain =>
-            new StatBuilderStub(this + " chance to gain");
+        public IStatBuilder Duration => CreateStat(This, o => $"{o} duration");
+
+        public IStatBuilder ChanceToGain => CreateStat(This, o => $"{o} chance to gain");
+
+        public IChargeTypeBuilder Resolve(IMatchContext<IValueBuilder> valueContext) => 
+            _resolver(this, valueContext);
     }
 
 
     public class ChargeTypeBuildersStub : IChargeTypeBuilders
     {
-        public IChargeTypeBuilder Endurance =>
-            new ChargeTypeBuilderStub("Endurance Charge");
+        private static IChargeTypeBuilder Create(string stringRepresentation) =>
+            new ChargeTypeBuilderStub(stringRepresentation, (current, _) => current);
 
-        public IChargeTypeBuilder Frenzy =>
-            new ChargeTypeBuilderStub("Frenzy Charge");
+        public IChargeTypeBuilder Endurance => Create("Endurance Charge");
 
-        public IChargeTypeBuilder Power =>
-            new ChargeTypeBuilderStub("Power Charge");
+        public IChargeTypeBuilder Frenzy => Create("Frenzy Charge");
+
+        public IChargeTypeBuilder Power => Create("Power Charge");
     }
 }

@@ -1,8 +1,9 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders.Conditions;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Values
 {
-    public interface IValueBuilder
+    public interface IValueBuilder : IResolvable<IValueBuilder>
     {
         IConditionBuilder Eq(IValueBuilder other);
         IConditionBuilder Eq(double other);

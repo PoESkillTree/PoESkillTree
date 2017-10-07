@@ -2,6 +2,7 @@ using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Damage;
 using PoESkillTree.Computation.Parsing.Builders.Effects;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Stats
 {
@@ -19,7 +20,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Stats
     }
 
 
-    public interface IDamageTakenConversionBuilder
+    public interface IDamageTakenConversionBuilder : IResolvable<IDamageTakenConversionBuilder>
     {
         IStatBuilder Before(IPoolStatBuilder pool);
     }

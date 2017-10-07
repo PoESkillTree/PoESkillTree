@@ -17,36 +17,36 @@ namespace PoESkillTree.Computation.Console.Builders
         }
 
         public IDamageTypeBuilder AsDamageType =>
-            new DamageTypeBuilderStub($"{this}.AsDamageType");
+            new DamageTypeBuilderStub($"{this}.AsDamageType", (c, _) => c);
 
         public IChargeTypeBuilder AsChargeType =>
-            new ChargeTypeBuilderStub($"{this}.AsChargeType");
+            new ChargeTypeBuilderStub($"{this}.AsChargeType", (c, _) => c);
 
         public IAilmentBuilder AsAilment =>
-            new AilmentBuilderStub($"{this}.AsAilment");
+            new AilmentBuilderStub($"{this}.AsAilment", (c, _) => c);
 
         public IKeywordBuilder AsKeyword =>
-            new KeywordBuilderStub($"{this}.AsKeyword");
+            new KeywordBuilderStub($"{this}.AsKeyword", (c, _) => c);
 
         public IItemSlotBuilder AsItemSlot =>
-            new ItemSlotBuilderStub($"{this}.AsItemSlot");
+            new ItemSlotBuilderStub($"{this}.AsItemSlot", (c, _) => c);
 
         public ISelfToAnyActionBuilder AsAction =>
-            new SelfToAnyActionBuilderStub($"{this}.AsAction");
+            new SelfToAnyActionBuilderStub($"{this}.AsAction", (c, _) => c);
 
         public IStatBuilder AsStat =>
-            new StatBuilderStub($"{this}.AsStat");
+            new StatBuilderStub($"{this}.AsStat", (c, _) => c);
 
         public IFlagStatBuilder AsFlagStat =>
-            new FlagStatBuilderStub($"{this}.AsFlagStat");
+            new FlagStatBuilderStub($"{this}.AsFlagStat", (c, _) => c);
 
         public IPoolStatBuilder AsPoolStat =>
-            new PoolStatBuilderStub($"{this}.AsPoolStat");
+            new PoolStatBuilderStub($"{this}.AsPoolStat", (c, _) => c);
 
         public IDamageStatBuilder AsDamageStat =>
-            new DamageStatBuilderStub($"{this}.AsDamageStat");
+            new DamageStatBuilderStub($"{this}.AsDamageStat", (c, _) => c);
 
         public ISkillBuilder AsSkill =>
-            new SkillBuilderStub($"{this}.AsSkill");
+            new SkillBuilderStub($"{this}.AsSkill", (c, _) => c);
     }
 }

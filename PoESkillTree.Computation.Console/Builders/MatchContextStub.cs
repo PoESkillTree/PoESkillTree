@@ -28,8 +28,26 @@ namespace PoESkillTree.Computation.Console.Builders
             new MatchContextStub<IGroupConverter>("Groups",
                 s => new GroupConverterStub(s));
 
-        public IMatchContext<ValueBuilder> Values =>
-            new MatchContextStub<ValueBuilder>("Values",
-                s => new ValueBuilder(new ValueBuilderStub(s)));
+        public IMatchContext<ValueBuilder> Values => new ValueMatchContext();
+
+
+        private class ValueMatchContext : BuilderStub, IMatchContext<ValueBuilder>
+        {
+            public ValueMatchContext() : base("Values")
+            {
+            }
+
+            public ValueBuilder this[int index] =>
+                new ValueBuilder(new ValueBuilderStub($"{this}[{index}]", (_, c) => c[index]));
+
+            public ValueBuilder First =>
+                new ValueBuilder(new ValueBuilderStub($"{this}.First", (_, c) => c.First));
+
+            public ValueBuilder Last =>
+                new ValueBuilder(new ValueBuilderStub($"{this}.Last", (_, c) => c.Last));
+
+            public ValueBuilder Single =>
+                new ValueBuilder(new ValueBuilderStub($"{this}.Single", (_, c) => c.Single));
+        }
     }
 }

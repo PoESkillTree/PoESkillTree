@@ -1,12 +1,13 @@
 using PoESkillTree.Computation.Parsing.Builders.Buffs;
 using PoESkillTree.Computation.Parsing.Builders.Effects;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
 using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Stats
 {
-    public interface IStatBuilder
+    public interface IStatBuilder : IResolvable<IStatBuilder>
     {
         // Minimum has no effect if stat has default value 0 and no base modifiers (BaseSet or 
         // BaseAdd). That is necessary to make sure Unarmed and Incinerate can't crit as long they 
@@ -20,7 +21,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Stats
         IStatBuilder ConvertTo(IStatBuilder stat);
         IStatBuilder AddAs(IStatBuilder stat);
         // All modifiers that do not have Form.BaseSet are also applied to stat at percentOfTheirValue
-        IFlagStatBuilder ApplyModifiersTo(IStatBuilder stat, ValueBuilder percentOfTheirValue);
+        IFlagStatBuilder ApplyModifiersTo(IStatBuilder stat, IValueBuilder percentOfTheirValue);
 
         // chance to double Value
         IStatBuilder ChanceToDouble { get; }
@@ -31,7 +32,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Stats
         // That point must be before the conditions are combined into one.
         // Probably as a property inherent in conditions, i.e. decided on condition construction.
 
-        IBuffBuilder ForXSeconds(ValueBuilder seconds);
+        IBuffBuilder ForXSeconds(IValueBuilder seconds);
         // similar to ForXSeconds(), just with the duration set elsewhere
         IBuffBuilder AsBuff { get; }
 

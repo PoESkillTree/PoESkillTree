@@ -3,30 +3,46 @@ using System.Linq;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Equipment;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Values;
+using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
     public class EquipmentBuilderStub : BuilderStub, IEquipmentBuilder
     {
-        public EquipmentBuilderStub(string stringRepresentation) : base(stringRepresentation)
+        private readonly Resolver<IEquipmentBuilder> _resolver;
+
+        public EquipmentBuilderStub(string stringRepresentation, 
+            Resolver<IEquipmentBuilder> resolver) 
+            : base(stringRepresentation)
         {
+            _resolver = resolver;
         }
 
+        private IEquipmentBuilder This => this;
+
         public IConditionBuilder Has(Tags tag) =>
-            new ConditionBuilderStub($"{this} has tag {tag}");
+            CreateCondition(This, o => $"{o} has tag {tag}");
 
         public IConditionBuilder Has(FrameType frameType) =>
-            new ConditionBuilderStub($"{this} has frame type {frameType}");
+            CreateCondition(This, o => $"{o} has frame type {frameType}");
 
-        public IConditionBuilder HasItem => new ConditionBuilderStub($"{this} has item");
-        public IConditionBuilder IsCorrupted => new ConditionBuilderStub($"{this} is corrupted");
+        public IConditionBuilder HasItem => 
+            CreateCondition(This, o => $"{o} has item");
+
+        public IConditionBuilder IsCorrupted => 
+            CreateCondition(This, o => $"{o} is corrupted");
 
         public IFlagStatBuilder AppliesToSelf => 
-            new FlagStatBuilderStub($"{this} applies to self");
+            CreateFlagStat(This, o => $"{o} applies to self");
 
-        public IFlagStatBuilder AppliesToMinions => 
-            new FlagStatBuilderStub($"{this} applies to minions");
+        public IFlagStatBuilder AppliesToMinions =>
+            CreateFlagStat(This, o => $"{o} applies to minions");
+
+        public IEquipmentBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
+            _resolver(this, valueContext);
     }
 
 
@@ -37,7 +53,8 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public EquipmentBuilderCollectionStub(
             IReadOnlyDictionary<ItemSlot, IEquipmentBuilder> elements) 
-            : base(elements.Values.ToList())
+            : base(new EquipmentBuilderStub("Item", (c, _) => c), 
+                  "{Equipped Items}", (c, _) => c)
         {
             _elements = elements;
         }
@@ -54,7 +71,7 @@ namespace PoESkillTree.Computation.Console.Builders
             foreach (var itemSlot in typeof(ItemSlot).GetEnumValues().Cast<ItemSlot>())
             {
                 elements[itemSlot] =
-                    new EquipmentBuilderStub(itemSlot.ToString());
+                    new EquipmentBuilderStub(itemSlot.ToString(), (c, _) => c);
             }
             Equipment = new EquipmentBuilderCollectionStub(elements);
         }
@@ -62,6 +79,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IEquipmentBuilderCollection Equipment { get; }
 
         public IEquipmentBuilder LocalHand =>
-            new EquipmentBuilderStub("Local Hand");
+            new EquipmentBuilderStub("Local Hand", (c, _) => c);
     }
 }

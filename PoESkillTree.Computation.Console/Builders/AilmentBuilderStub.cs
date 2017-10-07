@@ -1,58 +1,78 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Parsing.Builders.Damage;
 using PoESkillTree.Computation.Parsing.Builders.Effects;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
+using PoESkillTree.Computation.Parsing.Builders.Skills;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
+using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
     public class AilmentBuilderStub : AvoidableEffectBuilderStub, IAilmentBuilder
     {
-        public AilmentBuilderStub(string stringRepresentation) : base(stringRepresentation)
+        public AilmentBuilderStub(string stringRepresentation, Resolver<IEffectBuilder> resolver) 
+            : base(stringRepresentation, resolver)
         {
         }
 
         public IStatBuilder Chance => ChanceOn(new EnemyBuilderStub());
 
         public IStatBuilder InstancesOn(IEntityBuilder target) =>
-            new StatBuilderStub($"Number of {this} instances on {target}");
+            CreateStat(This, target, (o1, o2) => $"Number of {o1} instances on {o2}");
 
         public IFlagStatBuilder AddSource(IDamageTypeBuilder type) =>
-            new FlagStatBuilderStub($"{type} can apply {this}");
+            CreateFlagStat(This, (IKeywordBuilder) type, (o1, o2) => $"{type} can apply {this}");
 
         public IFlagStatBuilder AddSources(IEnumerable<IDamageTypeBuilder> types) =>
-            new FlagStatBuilderStub($"[{string.Join(", ", types)}] can apply {this}");
+            CreateFlagStat(This, types.Cast<IKeywordBuilder>(), 
+                (o1, o2) => $"[{string.Join(", ", o2)}] can apply {o1}");
     }
 
 
     public class AilmentBuilderCollectionStub 
         : BuilderCollectionStub<IAilmentBuilder>, IAilmentBuilderCollection
     {
-        public AilmentBuilderCollectionStub(IReadOnlyList<IAilmentBuilder> elements) 
-            : base(elements)
+        private readonly IReadOnlyList<IAilmentBuilder> _elements;
+
+        public AilmentBuilderCollectionStub(params IAilmentBuilder[] elements) 
+            : base(new AilmentBuilderStub("Ailment", (current, _) => current), 
+                  $"[{string.Join<IAilmentBuilder>(", ", elements)}]", 
+                  (current, _) => current)
         {
+            _elements = elements;
+        }
+
+        public IEnumerator<IAilmentBuilder> GetEnumerator()
+        {
+            return _elements.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 
 
     public class AilmentBuildersStub : IAilmentBuilders
     {
-        public AilmentBuildersStub()
-        {
-            IAilmentBuilder[] all = { Ignite, Shock, Chill, Freeze, Bleed, Poison };
-            All = new AilmentBuilderCollectionStub(all);
-            IAilmentBuilder[] elemental = { Ignite, Shock, Chill, Freeze };
-            Elemental = new AilmentBuilderCollectionStub(elemental);
-        }
+        private static IAilmentBuilder Create(string stringRepresentation) =>
+            new AilmentBuilderStub(stringRepresentation, (current, _) => current);
 
-        public IAilmentBuilder Ignite => new AilmentBuilderStub("Ignite");
-        public IAilmentBuilder Shock => new AilmentBuilderStub("Shock");
-        public IAilmentBuilder Chill => new AilmentBuilderStub("Chill");
-        public IAilmentBuilder Freeze => new AilmentBuilderStub("Freeze");
-        public IAilmentBuilder Bleed => new AilmentBuilderStub("Bleed");
-        public IAilmentBuilder Poison => new AilmentBuilderStub("Poison");
+        public IAilmentBuilder Ignite => Create("Ignite");
+        public IAilmentBuilder Shock => Create("Shock");
+        public IAilmentBuilder Chill => Create("Chill");
+        public IAilmentBuilder Freeze => Create("Freeze");
+        public IAilmentBuilder Bleed => Create("Bleed");
+        public IAilmentBuilder Poison => Create("Poison");
 
-        public IAilmentBuilderCollection All { get; }
-        public IAilmentBuilderCollection Elemental { get; }
+        public IAilmentBuilderCollection All =>
+            new AilmentBuilderCollectionStub(Ignite, Shock, Chill, Freeze, Bleed, Poison);
+
+        public IAilmentBuilderCollection Elemental =>
+            new AilmentBuilderCollectionStub(Ignite, Shock, Chill, Freeze);
     }
 }

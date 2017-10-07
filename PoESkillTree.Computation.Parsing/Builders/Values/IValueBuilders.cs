@@ -1,5 +1,6 @@
 using System;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Values
 {
@@ -13,17 +14,17 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
             Func<ValueBuilder, ValueBuilder> converter);
     }
     
-    public interface IThenBuilder
+    public interface IThenBuilder : IResolvable<IThenBuilder>
     {
-        IConditionalValueBuilder Then(ValueBuilder value);
+        IConditionalValueBuilder Then(IValueBuilder value);
         IConditionalValueBuilder Then(double value);
     }
 
-    public interface IConditionalValueBuilder
+    public interface IConditionalValueBuilder : IResolvable<IConditionalValueBuilder>
     {
         IThenBuilder ElseIf(IConditionBuilder condition);
 
-        ValueBuilder Else(ValueBuilder value);
+        ValueBuilder Else(IValueBuilder value);
         ValueBuilder Else(double value);
     }
 }

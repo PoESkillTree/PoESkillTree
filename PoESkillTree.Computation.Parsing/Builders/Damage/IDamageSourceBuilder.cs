@@ -1,6 +1,8 @@
-﻿namespace PoESkillTree.Computation.Parsing.Builders.Damage
+﻿using PoESkillTree.Computation.Parsing.Builders.Matching;
+
+namespace PoESkillTree.Computation.Parsing.Builders.Damage
 {
-    public interface IDamageSourceBuilder
+    public interface IDamageSourceBuilder : IResolvable<IDamageSourceBuilder>
     {
 
     }

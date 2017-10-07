@@ -1,53 +1,47 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Values;
+using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
-    public class BuilderCollectionStub<T> : BuilderStub, IBuilderCollection<T>, IEnumerable<T>
+    public abstract class BuilderCollectionStub<T> : BuilderStub, IBuilderCollection<T>
     {
-        private readonly IReadOnlyList<T> _elements;
+        protected T DummyElement { get; }
 
-        protected BuilderCollectionStub(IReadOnlyList<T> elements)
-            : base("[" + string.Join(", ", elements) + "]")
-        {
-            _elements = elements;
-        }
+        private readonly Resolver<IBuilderCollection<T>> _resolver;
 
-        protected BuilderCollectionStub(BuilderCollectionStub<T> source, string stringRepresentation)
+        protected BuilderCollectionStub(T dummyElement, string stringRepresentation, 
+            Resolver<IBuilderCollection<T>> resolver)
             : base(stringRepresentation)
         {
-            _elements = source._elements;
+            DummyElement = dummyElement;
+            _resolver = resolver;
         }
+
+        private IBuilderCollection<T> This => this;
 
         public ValueBuilder Count(Func<T, IConditionBuilder> predicate = null)
         {
-            var str = predicate == null
-                ? ToString()
-                : string.Join(", ", _elements.Select(predicate));
-            return new ValueBuilder(new ValueBuilderStub($"Count({str})"));
+            string StringRepresentation(IBuilderCollection<T> coll, IConditionBuilder cond) =>
+                $"Count({coll}" + (cond == null ? "" : $".Where({cond})") + ")";
+
+            var condition = predicate?.Invoke(DummyElement);
+            return new ValueBuilder(CreateValue(This, condition, StringRepresentation));
         }
 
         public IConditionBuilder Any(Func<T, IConditionBuilder> predicate = null)
         {
-            var str = predicate == null
-                ? ToString()
-                : string.Join(", ", _elements.Select(predicate));
-            return new ConditionBuilderStub($"Any({str})");
+            string StringRepresentation(IBuilderCollection<T> coll, IConditionBuilder cond) =>
+                $"Any({coll}" + (cond == null ? "" : $".Where({cond})") + ")";
+
+            var condition = predicate?.Invoke(DummyElement);
+            return CreateCondition(This, condition, StringRepresentation);
         }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return _elements.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        public IBuilderCollection<T> Resolve(IMatchContext<IValueBuilder> valueContext)
+            => _resolver(this, valueContext);
     }
 }

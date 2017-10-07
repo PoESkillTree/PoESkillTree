@@ -1,24 +1,36 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders.Damage;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
+using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
     public class DamageSourceBuilderStub : BuilderStub, IDamageSourceBuilder
     {
-        public DamageSourceBuilderStub(string stringRepresentation) : base(stringRepresentation)
+        private readonly Resolver<IDamageSourceBuilder> _resolver;
+
+        public DamageSourceBuilderStub(string stringRepresentation,
+            Resolver<IDamageSourceBuilder> resolver) 
+            : base(stringRepresentation)
         {
+            _resolver = resolver;
         }
+
+        public IDamageSourceBuilder Resolve(IMatchContext<IValueBuilder> valueContext) => 
+            _resolver(this, valueContext);
     }
 
 
     public class DamageSourceBuildersStub : IDamageSourceBuilders
     {
-        public IDamageSourceBuilder Attack => new DamageSourceBuilderStub("Attack");
+        private static IDamageSourceBuilder Create(string stringRepresentation) =>
+            new DamageSourceBuilderStub(stringRepresentation, (current, _) => current);
 
-        public IDamageSourceBuilder Spell => new DamageSourceBuilderStub("Spell");
+        public IDamageSourceBuilder Attack => Create("Attack");
 
-        public IDamageSourceBuilder Secondary => new DamageSourceBuilderStub("Secondary");
+        public IDamageSourceBuilder Spell => Create("Spell");
 
-        public IDamageSourceBuilder DamageOverTime =>
-            new DamageSourceBuilderStub("Damage over Time");
+        public IDamageSourceBuilder Secondary => Create("Secondary");
+
+        public IDamageSourceBuilder DamageOverTime => Create("Damage over Time");
     }
 }

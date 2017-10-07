@@ -13,6 +13,6 @@ namespace PoESkillTree.Computation.Parsing.Builders.Actions
         ISelfToAnyActionBuilder Shatter { get; }
         ISelfToAnyActionBuilder ConsumeCorpse { get; }
 
-        ISelfToAnyActionBuilder SpendMana(ValueBuilder amount);
+        ISelfToAnyActionBuilder SpendMana(IValueBuilder amount);
     }
 }

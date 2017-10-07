@@ -1,9 +1,10 @@
 using PoESkillTree.Computation.Parsing.Builders.Damage;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Stats
 {
-    public interface ILeechStatBuilder
+    public interface ILeechStatBuilder : IResolvable<ILeechStatBuilder>
     {
         IStatBuilder Of(IDamageStatBuilder damage);
 

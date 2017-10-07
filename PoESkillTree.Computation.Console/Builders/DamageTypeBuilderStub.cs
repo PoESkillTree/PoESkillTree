@@ -1,60 +1,77 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Damage;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
+using PoESkillTree.Computation.Parsing.Builders.Skills;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
+using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
-    public class DamageTypeBuilderStub : BuilderStub, IDamageTypeBuilder
+    public class DamageTypeBuilderStub : KeywordBuilderStub, IDamageTypeBuilder
     {
-        public DamageTypeBuilderStub(string stringRepresentation) : base(stringRepresentation)
+        public DamageTypeBuilderStub(string stringRepresentation, 
+            Resolver<IKeywordBuilder> resolver)
+            : base(stringRepresentation, resolver)
         {
         }
 
-        public IDamageTypeBuilder And(IDamageTypeBuilder type) =>
-            new DamageTypeBuilderStub($"{this}, {type}");
+        private IKeywordBuilder This => this;
 
-        public IDamageTypeBuilder Invert =>
-            new DamageTypeBuilderStub($"Invert({this})");
+        private static IKeywordBuilder Construct(string stringRepresentation,
+            Resolver<IKeywordBuilder> resolver) =>
+            new DamageTypeBuilderStub(stringRepresentation, resolver);
+
+        public IDamageTypeBuilder And(IDamageTypeBuilder type) => 
+            (IDamageTypeBuilder) Create(
+                Construct, This, (IKeywordBuilder) type,
+                (l, r) => $"{l}, {r}");
+
+        public IDamageTypeBuilder Invert => 
+            (IDamageTypeBuilder) Create(
+                Construct, This,
+                o => $"Invert({o})");
 
         public IDamageTypeBuilder Except(IDamageTypeBuilder type) =>
-            new DamageTypeBuilderStub($"({this}).Except({type})");
+            (IDamageTypeBuilder) Create(
+                Construct, This, (IKeywordBuilder) type,
+                (l, r) => $"({l}).Except({r})");
 
         public IStatBuilder Resistance =>
-            new StatBuilderStub($"{this} Resistance");
+            CreateStat(This, o => $"{o} Resistance");
 
         public IDamageStatBuilder Damage =>
-            new DamageStatBuilderStub($"{this} Damage");
+            (IDamageStatBuilder) Create<IStatBuilder, IKeywordBuilder>(
+                (s, r) => new DamageStatBuilderStub(s, r),
+                This, o => $"{o} Damage");
 
         public IConditionBuilder DamageOverTimeIsOn(IEntityBuilder entity) =>
-            new ConditionBuilderStub($"{entity} is affected by {this} Damage over Time");
+            CreateCondition(This, entity,
+                (o1, o2) => $"{o2} is affected by {o1} Damage over Time");
 
         public IStatBuilder Penetration =>
-            new StatBuilderStub($"{this} Penetration");
+            CreateStat(This, o => $"{o} Penetration");
 
         public IFlagStatBuilder IgnoreResistance =>
-            new FlagStatBuilderStub($"Ignore {this} Resistance");
+            CreateFlagStat(This, o => $"Ignore {o} Resistance");
     }
 
 
     public class DamageTypeBuildersStub : IDamageTypeBuilders
     {
-        public IDamageTypeBuilder Physical =>
-            new DamageTypeBuilderStub("Physical");
+        private static IDamageTypeBuilder Create(string stringRepresentation) =>
+            new DamageTypeBuilderStub(stringRepresentation, (current, _) => current);
 
-        public IDamageTypeBuilder Fire => 
-            new DamageTypeBuilderStub("Fire");
+        public IDamageTypeBuilder Physical => Create("Physical");
 
-        public IDamageTypeBuilder Lightning =>
-            new DamageTypeBuilderStub("Lightning");
+        public IDamageTypeBuilder Fire => Create("Fire");
 
-        public IDamageTypeBuilder Cold => 
-            new DamageTypeBuilderStub("Cold");
+        public IDamageTypeBuilder Lightning => Create("Lightning");
 
-        public IDamageTypeBuilder Chaos => 
-            new DamageTypeBuilderStub("Chaos");
+        public IDamageTypeBuilder Cold => Create("Cold");
 
-        public IDamageTypeBuilder RandomElement =>
-            new DamageTypeBuilderStub("Random Element");
+        public IDamageTypeBuilder Chaos => Create("Chaos");
+
+        public IDamageTypeBuilder RandomElement => Create("Random Element");
     }
 }

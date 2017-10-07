@@ -17,11 +17,11 @@ namespace PoESkillTree.Computation.Parsing.Builders.Buffs
 
         // TODO this probably needs changes when other skills from items are added
         // stats of the skill starting with "cursed enemies ..." are the (de)buff
-        IBuffBuilder Curse(ISkillBuilder skill, ValueBuilder level);
+        IBuffBuilder Curse(ISkillBuilder skill, IValueBuilder level);
 
         // source and target: Self
         // user needs to select the currently active step in the rotation
-        IBuffRotation Rotation(ValueBuilder duration);
+        IBuffRotation Rotation(IValueBuilder duration);
 
         IBuffBuilderCollection Buffs(IEntityBuilder source = null,
             IEntityBuilder target = null);
@@ -39,6 +39,6 @@ namespace PoESkillTree.Computation.Parsing.Builders.Buffs
 
     public interface IBuffRotation : IFlagStatBuilder
     {
-        IBuffRotation Step(ValueBuilder duration, params IBuffBuilder[] buffs);
+        IBuffRotation Step(IValueBuilder duration, params IBuffBuilder[] buffs);
     }
 }

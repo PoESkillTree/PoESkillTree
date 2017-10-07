@@ -1,5 +1,6 @@
 using System;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Values
 {
@@ -164,6 +165,9 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
 
         IValueBuilder IValueBuilder.Ceiled => _value.Ceiled;
         public ValueBuilder Ceiled => Wrap(_value.Ceiled);
+
+        public IValueBuilder Resolve(IMatchContext<IValueBuilder> valueContext) => 
+            _value.Resolve(valueContext);
 
         public override string ToString()
         {

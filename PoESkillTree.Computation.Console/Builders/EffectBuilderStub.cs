@@ -1,28 +1,39 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Effects;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
+using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Parsing.Builders.Values;
+using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
-    public class EffectBuilderStub : BuilderStub, IEffectBuilder
+    public abstract class EffectBuilderStub : BuilderStub, IEffectBuilder
     {
-        public EffectBuilderStub(string stringRepresentation) 
+        private readonly Resolver<IEffectBuilder> _resolver;
+
+        protected EffectBuilderStub(string stringRepresentation, Resolver<IEffectBuilder> resolver) 
             : base(stringRepresentation)
         {
+            _resolver = resolver;
         }
 
+        protected IEffectBuilder This => this;
+
         public IFlagStatBuilder On(IEntityBuilder target) =>
-            new FlagStatBuilderStub($"Apply {this} to {target}");
+            CreateFlagStat(This, target, (o1, o2) => $"Apply {o1} to {o2}");
 
         public IStatBuilder ChanceOn(IEntityBuilder target) =>
-            new StatBuilderStub($"Chance to apply {this} to {target}");
+            CreateStat(This, target, (o1, o2) => $"Chance to apply {o1} to {o2}");
 
         public IConditionBuilder IsOn(IEntityBuilder target) =>
-            new ConditionBuilderStub($"{this} is applied to {target}");
+            CreateCondition(This, target, (l, r) => $"{l} is applied to {r}");
 
         public IStatBuilder Duration =>
-            new StatBuilderStub($"{this} duration");
+            CreateStat(This, o => $"{o} duration");
+
+        public IEffectBuilder Resolve(IMatchContext<IValueBuilder> valueContext)
+            => _resolver(this, valueContext);
     }
 
 
@@ -38,24 +49,25 @@ namespace PoESkillTree.Computation.Console.Builders
     }
 
 
-    public class AvoidableEffectBuilderStub : EffectBuilderStub, IAvoidableEffectBuilder
+    public abstract class AvoidableEffectBuilderStub : EffectBuilderStub, IAvoidableEffectBuilder
     {
-        public AvoidableEffectBuilderStub(string stringRepresentation) 
-            : base(stringRepresentation)
+        protected AvoidableEffectBuilderStub(string stringRepresentation, 
+            Resolver<IEffectBuilder> resolver) 
+            : base(stringRepresentation, resolver)
         {
         }
 
-        public IStatBuilder Avoidance => new StatBuilderStub($"{this} avoidance");
+        public IStatBuilder Avoidance => CreateStat(This, o => $"{o} avoidance");
     }
 
 
     public class KnockbackEffectBuilderStub : EffectBuilderStub, IKnockbackEffectBuilder
     {
         public KnockbackEffectBuilderStub() 
-            : base("Knockback")
+            : base("Knockback", (current, _) => current)
         {
         }
 
-        public IStatBuilder Distance => new StatBuilderStub($"{this} distance");
+        public IStatBuilder Distance => CreateStat(This, o => $"{o} distance");
     }
 }
