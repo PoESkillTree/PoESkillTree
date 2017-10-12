@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -21,9 +22,12 @@ namespace PoESkillTree.Computation.Data
             _modifierBuilder = modifierBuilder;
         }
 
+        public override IReadOnlyList<string> ReferenceNames { get; } =
+            new[] { "StatMatchers", nameof(DamageStatMatchers) };
+
         public bool MatchesWholeLineOnly => false;
 
-        public IEnumerable<MatcherData> Matchers =>
+        public IEnumerator<MatcherData> GetEnumerator() =>
             new StatMatcherCollection<IDamageStatBuilder>(_modifierBuilder, ValueFactory)
             {
                 // unspecific
@@ -33,22 +37,22 @@ namespace PoESkillTree.Computation.Data
                 { "spell damage", Damage, Damage.With(Source.Spell) },
                 { "damage over time", Damage, Damage.With(Source.DamageOverTime) },
                 // by type
-                { "({DamageTypeMatchers}) damage", Group.AsDamageType.Damage },
+                { "({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage },
                 { "damage of a random element", RandomElement.Damage },
                 // by source and type
                 { "attack physical damage", Physical.Damage, Damage.With(Source.Attack) },
                 { "physical attack damage", Physical.Damage, Damage.With(Source.Attack) },
                 {
                     "({DamageTypeMatchers}) damage to attacks",
-                    Group.AsDamageType.Damage, Damage.With(Source.Attack)
+                    Reference.AsDamageType.Damage, Damage.With(Source.Attack)
                 },
                 {
                     "({DamageTypeMatchers}) attack damage",
-                    Group.AsDamageType.Damage, Damage.With(Source.Attack)
+                    Reference.AsDamageType.Damage, Damage.With(Source.Attack)
                 },
                 {
                     "({DamageTypeMatchers}) spell damage",
-                    Group.AsDamageType.Damage, Damage.With(Source.Spell)
+                    Reference.AsDamageType.Damage, Damage.With(Source.Spell)
                 },
                 { "burning damage", Fire.Damage, Damage.With(Source.DamageOverTime) },
                 // other combinations
@@ -60,6 +64,11 @@ namespace PoESkillTree.Computation.Data
                     Physical.Damage,
                     And(Damage.With(Source.Attack), With(Skills[Keyword.Projectile]))
                 },
-            };
+            }.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

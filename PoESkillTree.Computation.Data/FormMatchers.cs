@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Parsing.Builders;
@@ -21,7 +22,7 @@ namespace PoESkillTree.Computation.Data
 
         public bool MatchesWholeLineOnly => false;
 
-        public IEnumerable<MatcherData> Matchers => new FormMatcherCollection(_modifierBuilder,
+        public IEnumerator<MatcherData> GetEnumerator() => new FormMatcherCollection(_modifierBuilder,
             ValueFactory)
         {
             { "#% increased", PercentIncrease, Value },
@@ -38,6 +39,11 @@ namespace PoESkillTree.Computation.Data
             { @"-#% of", BaseSubtract, Value },
             { "-#%? to", BaseSubtract, Value },
             { "can (have|summon) up to # additional", MaximumAdd, Value },
-        };
+        }.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

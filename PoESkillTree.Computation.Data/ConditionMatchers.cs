@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -22,18 +23,18 @@ namespace PoESkillTree.Computation.Data
 
         public bool MatchesWholeLineOnly => false;
 
-        public IEnumerable<MatcherData> Matchers => new ConditionMatcherCollection(
+        public IEnumerator<MatcherData> GetEnumerator() => new ConditionMatcherCollection(
             _modifierBuilder)
         {
             // actions
-            { "on ({ActionMatchers})", Group.AsAction.On() },
-            { "if you've ({ActionMatchers}) recently", Group.AsAction.Recently() },
-            { "if you haven't ({ActionMatchers}) recently", Not(Group.AsAction.Recently()) },
+            { "on ({ActionMatchers})", Reference.AsAction.On() },
+            { "if you've ({ActionMatchers}) recently", Reference.AsAction.Recently() },
+            { "if you haven't ({ActionMatchers}) recently", Not(Reference.AsAction.Recently()) },
             {
                 "when you ({ActionMatchers}) a rare or unique enemy",
-                Group.AsAction.Against(Enemy).On(t => t.IsRareOrUnique)
+                Reference.AsAction.Against(Enemy).On(t => t.IsRareOrUnique)
             },
-            { "on ({KeywordMatchers}) kill", Kill.On(withKeyword: Group.AsKeyword) },
+            { "on ({KeywordMatchers}) kill", Kill.On(withKeyword: Reference.AsKeyword) },
             { "when you kill an enemy,", Kill.Against(Enemy).On() },
             {
                 "if you've killed a maimed enemy recently",
@@ -65,7 +66,7 @@ namespace PoESkillTree.Computation.Data
             { "if you haven't been hit recently", Not(Hit.Taken.Recently()) },
             { "if you were damaged by a hit recently", Hit.Taken.Recently() },
             { "if you've taken no damage from hits recently", Not(Hit.Taken.Recently()) },
-            { "if you've taken a savage hit recently", Action.SavageHit.Taken.Recently()  },
+            { "if you've taken a savage hit recently", Action.SavageHit.Taken.Recently() },
             { "when you deal a critical strike", CriticalStrike.On() },
             {
                 "if you've crit in the past # seconds",
@@ -166,17 +167,17 @@ namespace PoESkillTree.Computation.Data
             },
             {
                 "while you have no ({ChargeTypeMatchers})",
-                Group.AsChargeType.Amount.Value == 0
+                Reference.AsChargeType.Amount.Value == 0
             },
             {
                 "while (at maximum|on full) ({ChargeTypeMatchers})",
-                Group.AsChargeType.Amount.Value == Group.AsChargeType.Amount.Maximum.Value
+                Reference.AsChargeType.Amount.Value == Reference.AsChargeType.Amount.Maximum.Value
             },
             {
                 "if you have # primordial jewels,",
                 Stat.PrimordialJewelsSocketed.Value >= Value
             },
-            { "while you have ({FlagMatchers})", Group.AsFlagStat.IsSet },
+            { "while you have ({FlagMatchers})", Reference.AsFlagStat.IsSet },
             { "during onslaught", Flag.Onslaught.IsSet },
             { "while phasing", Flag.Phasing.IsSet },
             // stats on enemy
@@ -204,13 +205,14 @@ namespace PoESkillTree.Computation.Data
                     And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
             },
             // ailments
-            { "while ({AilmentMatchers})", Group.AsAilment.IsOn(Self) },
-            { "(against|from) ({AilmentMatchers}) enemies", Group.AsAilment.IsOn(Enemy) },
+            { "while ({AilmentMatchers})", Reference.AsAilment.IsOn(Self) },
+            { "(against|from) ({AilmentMatchers}) enemies", Reference.AsAilment.IsOn(Enemy) },
             {
                 "against frozen, shocked or ignited enemies",
-                Or(Ailment.Freeze.IsOn(Enemy), Ailment.Shock.IsOn(Enemy), Ailment.Ignite.IsOn(Enemy))
+                Or(Ailment.Freeze.IsOn(Enemy), Ailment.Shock.IsOn(Enemy),
+                    Ailment.Ignite.IsOn(Enemy))
             },
-            { "enemies which are ({AilmentMatchers})", Group.AsAilment.IsOn(Enemy) },
+            { "enemies which are ({AilmentMatchers})", Reference.AsAilment.IsOn(Enemy) },
             {
                 "against enemies( that are)? affected by elemental ailments",
                 Ailment.Elemental.Any(a => a.IsOn(Enemy))
@@ -228,7 +230,7 @@ namespace PoESkillTree.Computation.Data
                 And(Damage.With(Ailment.Bleed), Buff.Maim.IsOn(Enemy))
             },
             {
-                "with ({AilmentMatchers})", Damage.With(Group.AsAilment)
+                "with ({AilmentMatchers})", Damage.With(Reference.AsAilment)
             },
             // ground effects
             { "while on consecrated ground", Ground.Consecrated.IsOn(Self) },
@@ -236,37 +238,39 @@ namespace PoESkillTree.Computation.Data
             { "against burning enemies", Fire.DamageOverTimeIsOn(Enemy) },
             // skills
             { "vaal( skill)?", With(Skills[Keyword.Vaal]) },
-            { "({KeywordMatchers})", With(Skills[Group.AsKeyword]) },
+            { "({KeywordMatchers})", With(Skills[Reference.AsKeyword]) },
             {
                 "({KeywordMatchers}) and ({KeywordMatchers})",
-                Or(With(Skills[Groups[0].AsKeyword]), With(Skills[Groups[1].AsKeyword]))
+                Or(With(Skills[References[0].AsKeyword]), With(Skills[References[1].AsKeyword]))
             },
-            { "with ({KeywordMatchers}) skills", With(Skills[Group.AsKeyword]) },
-            { "({KeywordMatchers}) skills have", With(Skills[Group.AsKeyword]) },
-            { "of ({KeywordMatchers}) skills", With(Skills[Group.AsKeyword]) },
-            { "for ({KeywordMatchers})", With(Skills[Group.AsKeyword]) },
+            { "with ({KeywordMatchers}) skills", With(Skills[Reference.AsKeyword]) },
+            { "({KeywordMatchers}) skills have", With(Skills[Reference.AsKeyword]) },
+            { "of ({KeywordMatchers}) skills", With(Skills[Reference.AsKeyword]) },
+            { "for ({KeywordMatchers})", With(Skills[Reference.AsKeyword]) },
             { "with traps", With(Traps) },
             { "with mines", With(Mines) },
-            { "with ({DamageTypeMatchers}) skills", With(Skills[Group.AsDamageType]) },
+            { "with ({DamageTypeMatchers}) skills", With(Skills[Reference.AsDamageType]) },
             {
                 "of totem skills that cast an aura",
                 With(Skills[Keyword.Totem, Keyword.Aura])
             },
             {
-                "({SkillMatchers})('|s)?( fires| has a| have a| has| deals|gain)?",
-                With(Group.AsSkill)
+                "({SkillMatchers})('|s)?( fires| has a| have a| has| deals| gain)?",
+                With(Reference.AsSkill)
             },
             {
                 "skills (in|from) your ({ItemSlotMatchers})(can have| have)?",
-                With(Skills[Group.AsItemSlot])
+                With(Skills[Reference.AsItemSlot])
             },
             { "if you've cast a spell recently", Skills[Keyword.Spell].Cast.Recently() },
             { "if you've attacked recently", Skills[Keyword.Attack].Cast.Recently() },
-            { "if you've used a movement skill recently", Skills[Keyword.Movement].Cast.Recently() },
+            {
+                "if you've used a movement skill recently", Skills[Keyword.Movement].Cast.Recently()
+            },
             { "if you've used a warcry recently", Skills[Keyword.Warcry].Cast.Recently() },
             {
                 "if you've used a ({DamageTypeMatchers}) skill in the past # seconds",
-                Skills[Group.AsDamageType].Cast.InPastXSeconds(Value)
+                Skills[Reference.AsDamageType].Cast.InPastXSeconds(Value)
             },
             // traps and mines
             {
@@ -321,6 +325,11 @@ namespace PoESkillTree.Computation.Data
                 "if you've (killed an enemy affected by your damage over time recently)",
                 Condition.Unique("Have you $1?")
             },
-        };
+        }.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

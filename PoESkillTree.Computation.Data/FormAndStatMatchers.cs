@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -23,7 +24,7 @@ namespace PoESkillTree.Computation.Data
 
         public bool MatchesWholeLineOnly => false;
 
-        public IEnumerable<MatcherData> Matchers => new FormAndStatMatcherCollection(
+        public IEnumerator<MatcherData> GetEnumerator() => new FormAndStatMatcherCollection(
             _modifierBuilder, ValueFactory)
         {
             // attributes
@@ -31,29 +32,29 @@ namespace PoESkillTree.Computation.Data
             // - damage
             {
                 @"adds # to # ({DamageTypeMatchers}) damage",
-                (MinBaseAdd, MaximumAdd), (Values[0], Values[1]), Group.AsDamageType.Damage
+                (MinBaseAdd, MaximumAdd), (Values[0], Values[1]), Reference.AsDamageType.Damage
             },
             {
                 @"# to # additional ({DamageTypeMatchers}) damage",
-                (MinBaseAdd, MaximumAdd), (Values[0], Values[1]), Group.AsDamageType.Damage
+                (MinBaseAdd, MaximumAdd), (Values[0], Values[1]), Reference.AsDamageType.Damage
             },
             {
                 @"adds # maximum ({DamageTypeMatchers}) damage",
-                MaxBaseAdd, Value, Group.AsDamageType.Damage
+                MaxBaseAdd, Value, Reference.AsDamageType.Damage
             },
-            { "deal no ({DamageTypeMatchers}) damage", TotalOverride, 0, Group.AsDamageType.Damage },
+            { "deal no ({DamageTypeMatchers}) damage", TotalOverride, 0, Reference.AsDamageType.Damage },
             // - penetration
             {
                 "damage penetrates #% ({DamageTypeMatchers}) resistances?",
-                BaseAdd, Value, Group.AsDamageType.Penetration
+                BaseAdd, Value, Reference.AsDamageType.Penetration
             },
             {
-                "damage (with .*) penetrates #% ({DamageTypeMatchers}) resistances?",
-                BaseAdd, Value, Group.AsDamageType.Penetration, "$1"
+                "damage (?<inner>with .*) penetrates #% ({DamageTypeMatchers}) resistances?",
+                BaseAdd, Value, Reference.AsDamageType.Penetration, "${inner}"
             },
             {
                 "penetrate #% ({DamageTypeMatchers}) resistances?",
-                BaseAdd, Value, Group.AsDamageType.Penetration, "$1"
+                BaseAdd, Value, Reference.AsDamageType.Penetration
             },
             // - crit
             { @"\+#% critical strike chance", BaseAdd, Value, CriticalStrike.Chance },
@@ -88,7 +89,7 @@ namespace PoESkillTree.Computation.Data
             // - resistances
             {
                 "immune to ({DamageTypeMatchers}) damage",
-                TotalOverride, 100, Group.AsDamageType.Resistance
+                TotalOverride, 100, Reference.AsDamageType.Resistance
             },
             // - leech
             {
@@ -120,21 +121,21 @@ namespace PoESkillTree.Computation.Data
             // (need to be FormAndStatMatcher because they also exist with flat values)
             {
                 "#% of ({PoolStatMatchers}) regenerated per second",
-                BaseAdd, Value, Group.AsPoolStat.Regen.Percent
+                BaseAdd, Value, Reference.AsPoolStat.Regen.Percent
             },
             {
                 "#% of ({PoolStatMatchers}) and ({PoolStatMatchers}) regenerated per second",
                 BaseAdd, Value,
-                Groups[0].AsPoolStat.Regen.Percent,
-                Groups[1].AsPoolStat.Regen.Percent
+                References[0].AsPoolStat.Regen.Percent,
+                References[1].AsPoolStat.Regen.Percent
             },
             {
                 "regenerate #%( of)?( their)? ({PoolStatMatchers}) per second",
-                BaseAdd, Value, Group.AsPoolStat.Regen.Percent
+                BaseAdd, Value, Reference.AsPoolStat.Regen.Percent
             },
             {
                 "# ({PoolStatMatchers}) regenerated per second", BaseAdd, Value,
-                Group.AsPoolStat.Regen
+                Reference.AsPoolStat.Regen
             },
             {
                 "#% faster start of energy shield recharge", PercentIncrease, Value,
@@ -148,17 +149,17 @@ namespace PoESkillTree.Computation.Data
             // gain (need to be FormAndStatMatcher because they also exist with flat values)
             {
                 "#% of ({PoolStatMatchers}) gained",
-                BaseAdd, Value, Group.AsPoolStat.Gain, PercentOf(Group.AsStat)
+                BaseAdd, Value, Reference.AsPoolStat.Gain, PercentOf(Reference.AsStat)
             },
             {
                 "recover #% of( their)? ({PoolStatMatchers})",
-                BaseAdd, Value, Group.AsPoolStat.Gain, PercentOf(Group.AsStat)
+                BaseAdd, Value, Reference.AsPoolStat.Gain, PercentOf(Reference.AsStat)
             },
             {
                 "removes #% of ({PoolStatMatchers})",
-                BaseSubtract, Value, Group.AsPoolStat.Gain, PercentOf(Group.AsStat)
+                BaseSubtract, Value, Reference.AsPoolStat.Gain, PercentOf(Reference.AsStat)
             },
-            { @"\+# ({PoolStatMatchers}) gained", BaseAdd, Value, Group.AsPoolStat.Gain },
+            { @"\+# ({PoolStatMatchers}) gained", BaseAdd, Value, Reference.AsPoolStat.Gain },
             // charges
             // skills
             // traps, mines, totems
@@ -180,13 +181,13 @@ namespace PoESkillTree.Computation.Data
             { "you have fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
             {
                 @"curse enemies with level # ({SkillMatchers})",
-                TotalOverride, 1, Buff.Curse(skill: Group.AsSkill, level: Value).On(Enemy)
+                TotalOverride, 1, Buff.Curse(skill: Reference.AsSkill, level: Value).On(Enemy)
             },
             { "gain elemental conflux", TotalOverride, 1, Buff.Conflux.Elemental.On(Self) },
             // flags
             {
                 "(?<!while )(you have|gain) ({FlagMatchers})", TotalOverride, 1,
-                Group.AsFlagStat
+                Reference.AsFlagStat
             },
             // ailments
             { "causes bleeding", TotalOverride, 100, Ailment.Bleed.Chance },
@@ -195,8 +196,8 @@ namespace PoESkillTree.Computation.Data
                 "(you )?can afflict an additional ignite on an enemy",
                 BaseAdd, 1, Ailment.Ignite.InstancesOn(Enemy).Maximum
             },
-            { "you are immune to ({AilmentMatchers})", TotalOverride, 100, Group.AsAilment.Avoidance },
-            { "cannot be ({AilmentMatchers})", TotalOverride, 100, Group.AsAilment.Avoidance },
+            { "you are immune to ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
+            { "cannot be ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
             {
                 "(immune to|cannot be affected by) elemental ailments",
                 TotalOverride, 100, Ailment.Elemental.Select(a => a.Avoidance)
@@ -208,6 +209,11 @@ namespace PoESkillTree.Computation.Data
             // range and area of effect
             // other
             { "knocks back enemies", TotalOverride, 100, Effect.Knockback.ChanceOn(Enemy) },
-        };
+        }.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

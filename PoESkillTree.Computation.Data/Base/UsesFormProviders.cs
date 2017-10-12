@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Parsing.Builders;
+﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Forms;
 
 namespace PoESkillTree.Computation.Data.Base
@@ -9,6 +10,8 @@ namespace PoESkillTree.Computation.Data.Base
             : base(builderFactories)
         {
         }
+
+        public virtual IReadOnlyList<string> ReferenceNames { get; } = new string[0];
 
         private IFormBuilders FormBuilders => BuilderFactories.FormBuilders;
 

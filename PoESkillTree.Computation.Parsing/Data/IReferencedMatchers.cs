@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PoESkillTree.Computation.Parsing.Data
 {
-    public interface IReferencedMatchers<T>
+    public interface IReferencedMatchers : IEnumerable<ReferencedMatcherData>
     {
         string ReferenceName { get; }
 
-        IReadOnlyList<ReferencedMatcherData<T>> Matchers { get; }
+        Type MatchType { get; }
     }
 }

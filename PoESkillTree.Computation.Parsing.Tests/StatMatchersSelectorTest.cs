@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Parsing.Data;
 using PoESkillTree.Computation.Parsing.Steps;
@@ -31,39 +33,42 @@ namespace PoESkillTree.Computation.Parsing.Tests
         }
 
 
-        private class SpecialMatchers : IStatMatchers
+        private class StatMatchersStub : IStatMatchers
         {
-            public IEnumerable<MatcherData> Matchers { get; }
+            public IEnumerator<MatcherData> GetEnumerator()
+            {
+                return Enumerable.Empty<MatcherData>().GetEnumerator();
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+
+            public IReadOnlyList<string> ReferenceNames { get; } = new string[0];
 
             public bool MatchesWholeLineOnly => false;
         }
 
-        private class ValueConversionMatchers : IStatMatchers
-        {
-            public IEnumerable<MatcherData> Matchers { get; }
 
-            public bool MatchesWholeLineOnly => false;
+        private class SpecialMatchers : StatMatchersStub
+        {
         }
 
-        private class FormAndStatMatchers : IStatMatchers
+        private class ValueConversionMatchers : StatMatchersStub
         {
-            public IEnumerable<MatcherData> Matchers { get; }
-
-            public bool MatchesWholeLineOnly => false;
         }
 
-        private class FormMatchers : IStatMatchers
+        private class FormAndStatMatchers : StatMatchersStub
         {
-            public IEnumerable<MatcherData> Matchers { get; }
-
-            public bool MatchesWholeLineOnly => false;
         }
 
-        private class FormZMatchers : IStatMatchers
+        private class FormMatchers : StatMatchersStub
         {
-            public IEnumerable<MatcherData> Matchers { get; }
+        }
 
-            public bool MatchesWholeLineOnly => false;
+        private class FormZMatchers : StatMatchersStub
+        {
         }
     }
 }

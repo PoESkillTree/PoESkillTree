@@ -1,25 +1,36 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data.Base
 {
-    public abstract class ReferencedMatchersBase<T> : IReferencedMatchers<T>
+    public abstract class ReferencedMatchersBase<T> : IReferencedMatchers
     {
-        private readonly Lazy<IReadOnlyList<ReferencedMatcherData<T>>> _lazyMatchers;
+        private readonly Lazy<IReadOnlyList<ReferencedMatcherData>> _lazyMatchers;
 
         protected ReferencedMatchersBase()
         {
             _lazyMatchers =
-                new Lazy<IReadOnlyList<ReferencedMatcherData<T>>>(() => CreateCollection()
+                new Lazy<IReadOnlyList<ReferencedMatcherData>>(() => CreateCollection()
                     .ToList());
         }
 
         public string ReferenceName => GetType().Name;
 
-        public IReadOnlyList<ReferencedMatcherData<T>> Matchers => _lazyMatchers.Value;
+        public Type MatchType => typeof(T);
 
-        protected abstract IEnumerable<ReferencedMatcherData<T>> CreateCollection();
+        public IEnumerator<ReferencedMatcherData> GetEnumerator()
+        {
+            return _lazyMatchers.Value.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        protected abstract IEnumerable<ReferencedMatcherData> CreateCollection();
     }
 }

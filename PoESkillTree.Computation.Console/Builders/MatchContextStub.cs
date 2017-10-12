@@ -24,9 +24,9 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class MatchContextsStub : IMatchContexts
     {
-        public IMatchContext<IGroupConverter> Groups =>
-            new MatchContextStub<IGroupConverter>("Groups",
-                s => new GroupConverterStub(s));
+        public IMatchContext<IReferenceConverter> References =>
+            new MatchContextStub<IReferenceConverter>("References",
+                s => new ReferenceConverterStub(s));
 
         public IMatchContext<ValueBuilder> Values => new ValueMatchContext();
 

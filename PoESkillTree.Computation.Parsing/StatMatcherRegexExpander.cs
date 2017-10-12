@@ -4,24 +4,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.Computation.Parsing.Data;
+using PoESkillTree.Computation.Parsing.Referencing;
 
 namespace PoESkillTree.Computation.Parsing
 {
     public class StatMatcherRegexExpander : IEnumerable<MatcherData>
     {
-        public const string ValueRegex = @"\d+(?:\.\d+)?";
+        public const string ValueRegex = @"\d+(\.\d+)?";
         public const string LeftDelimiterRegex = @"(?<=^|\s)";
         public const string RightDelimiterRegex = @"(?=$|\s)";
 
         private readonly IStatMatchers _statMatchers;
+        private readonly IReferencedRegexes _referencedRegexes;
         private readonly Lazy<IReadOnlyList<MatcherData>> _expanded;
 
-        private string _leftDelimiter;
-        private string _rightDelimiter;
-
-        public StatMatcherRegexExpander(IStatMatchers statMatchers)
+        public StatMatcherRegexExpander(IStatMatchers statMatchers, 
+            IReferencedRegexes referencedRegexes)
         {
             _statMatchers = statMatchers;
+            _referencedRegexes = referencedRegexes;
             _expanded = new Lazy<IReadOnlyList<MatcherData>>(() => Expand().ToList());
         }
 
@@ -37,20 +38,62 @@ namespace PoESkillTree.Computation.Parsing
 
         private IEnumerable<MatcherData> Expand()
         {
-            _leftDelimiter = _statMatchers.MatchesWholeLineOnly ? "^" : LeftDelimiterRegex;
-            _rightDelimiter = _statMatchers.MatchesWholeLineOnly ? "$" : RightDelimiterRegex;
+            var leftDelimiter = _statMatchers.MatchesWholeLineOnly ? "^" : LeftDelimiterRegex;
+            var rightDelimiter = _statMatchers.MatchesWholeLineOnly ? "$" : RightDelimiterRegex;
             return
-                from data in _statMatchers.Matchers
-                let regex = Expand(data.Regex)
+                from data in _statMatchers
+                let regex = Expand(data.Regex, leftDelimiter, rightDelimiter)
                 select new MatcherData(regex, data.ModifierBuilder, data.MatchSubstitution);
         }
 
-        private string Expand(string regex)
+        private string Expand(string regex, string leftDelimiter, string rightDelimiter)
+        {
+            ValidateRegex(regex);
+            return leftDelimiter
+                   + ExpandGroups(ExpandValues(regex))
+                   + rightDelimiter;
+        }
+
+        private void ValidateRegex(string regexString)
+        {
+            var regex = new Regex(regexString);
+            foreach (var groupName in regex.GetGroupNames())
+            {
+                if (groupName.StartsWith("value") || groupName.StartsWith("reference"))
+                {
+                    throw new ParseException(
+                        $"Regex {regexString} contains invalid group name {groupName}");
+                }
+            }
+
+            foreach (Match match in ReferenceConstants.ReferenceRegex.Matches(regexString))
+            {
+                var referenceName = match.Groups[1].Value;
+                if (!_referencedRegexes.ContainsReference(referenceName))
+                {
+                    throw new ParseException(
+                        $"Regex {regexString} contains unknown reference {referenceName}");
+                }
+            }
+        }
+
+        private static string ExpandValues(string regex)
         {
             var valueIndex = 0;
-            return _leftDelimiter
-                   + Regex.Replace(regex, "#", match => $@"(?<value{valueIndex++}>{ValueRegex})")
-                   + _rightDelimiter;
+            return Regex.Replace(regex, "#", match => $@"(?<value{valueIndex++}>{ValueRegex})");
+        }
+
+        private string ExpandGroups(string regex)
+        {
+            var groupIndex = 0;
+            return ReferenceConstants.ReferenceRegex.Replace(regex, match =>
+            {
+                var referenceName = match.Groups[1].Value;
+                var joinedRegex = string.Join("|",
+                    _referencedRegexes.GetRegexes(referenceName).Select(m => $"({m})"));
+                // TODO recursive references
+                return $@"(?<reference{groupIndex++}_{referenceName}>{joinedRegex})";
+            });
         }
     }
 }

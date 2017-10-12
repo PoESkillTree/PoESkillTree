@@ -15,7 +15,7 @@ namespace PoESkillTree.Computation.Data
             Ailment = ailmentBuilders;
         }
 
-        protected override IEnumerable<ReferencedMatcherData<IAilmentBuilder>> CreateCollection() =>
+        protected override IEnumerable<ReferencedMatcherData> CreateCollection() =>
             new ReferencedMatcherCollection<IAilmentBuilder>
             {
                 // chance to x/x duration

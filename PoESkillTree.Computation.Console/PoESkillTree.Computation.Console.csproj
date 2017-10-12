@@ -63,7 +63,7 @@
     <Compile Include="Builders\FlagStatBuilderStub.cs" />
     <Compile Include="Builders\FormBuilderStub.cs" />
     <Compile Include="Builders\GroundEffectBuilderStub.cs" />
-    <Compile Include="Builders\GroupConverterStub.cs" />
+    <Compile Include="Builders\ReferenceConverterStub.cs" />
     <Compile Include="Builders\ItemSlotBuilderStub.cs" />
     <Compile Include="Builders\KeywordBuilderStub.cs" />
     <Compile Include="Builders\MatchContextStub.cs" />
@@ -75,6 +75,7 @@
     <Compile Include="Builders\ValueBuilderStub.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SkillMatchers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

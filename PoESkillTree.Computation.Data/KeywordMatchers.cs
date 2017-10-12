@@ -15,8 +15,7 @@ namespace PoESkillTree.Computation.Data
             Keyword = keywordBuilders;
         }
 
-        protected override IEnumerable<ReferencedMatcherData<IKeywordBuilder>>
-            CreateCollection() =>
+        protected override IEnumerable<ReferencedMatcherData> CreateCollection() =>
             new ReferencedMatcherCollection<IKeywordBuilder>
             {
                 { "melee", Keyword.Melee },

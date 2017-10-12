@@ -4,8 +4,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Matching
 {
     public interface IMatchContexts
     {
-        // includes only regex groups of from ({FooMatchers})
-        IMatchContext<IGroupConverter> Groups { get; }
+        IMatchContext<IReferenceConverter> References { get; }
 
         IMatchContext<ValueBuilder> Values { get; }
     }

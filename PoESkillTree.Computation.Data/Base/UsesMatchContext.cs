@@ -15,8 +15,8 @@ namespace PoESkillTree.Computation.Data.Base
             _matchContexts = matchContexts;
         }
 
-        protected IMatchContext<IGroupConverter> Groups => _matchContexts.Groups;
-        protected IGroupConverter Group => Groups.Single;
+        protected IMatchContext<IReferenceConverter> References => _matchContexts.References;
+        protected IReferenceConverter Reference => References.Single;
 
         protected IMatchContext<ValueBuilder> Values => _matchContexts.Values;
         protected ValueBuilder Value => Values.Single;

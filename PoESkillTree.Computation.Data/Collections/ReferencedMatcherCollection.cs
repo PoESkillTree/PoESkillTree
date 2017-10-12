@@ -5,17 +5,17 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
-    public class ReferencedMatcherCollection<T> : IEnumerable<ReferencedMatcherData<T>>
+    public class ReferencedMatcherCollection<T> : IEnumerable<ReferencedMatcherData>
     {
-        private readonly List<ReferencedMatcherData<T>> _matchers =
-            new List<ReferencedMatcherData<T>>();
+        private readonly List<ReferencedMatcherData> _matchers =
+            new List<ReferencedMatcherData>();
 
         public void Add([RegexPattern] string regex, T element)
         {
-            _matchers.Add(new ReferencedMatcherData<T>(regex, element));
+            _matchers.Add(new ReferencedMatcherData(regex, element));
         }
 
-        public IEnumerator<ReferencedMatcherData<T>> GetEnumerator()
+        public IEnumerator<ReferencedMatcherData> GetEnumerator()
         {
             return _matchers.GetEnumerator();
         }

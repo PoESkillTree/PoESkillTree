@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -26,7 +27,7 @@ namespace PoESkillTree.Computation.Data
 
         public bool MatchesWholeLineOnly => false;
 
-        public IEnumerable<MatcherData> Matchers => 
+        public IEnumerator<MatcherData> GetEnumerator() => 
             new ValueConversionMatcherCollection(_modifierBuilder, ValueFactory)
             {
                 // action
@@ -46,13 +47,13 @@ namespace PoESkillTree.Computation.Data
                 // stats
                 {
                     "per # ({StatMatchers})",
-                    PerStat(stat: Group.AsStat, divideBy: Value)
+                    PerStat(stat: Reference.AsStat, divideBy: Value)
                 },
                 {
                     "per # ({StatMatchers}) ceiled",
-                    PerStatCeiled(stat: Group.AsStat, divideBy: Value)
+                    PerStatCeiled(stat: Reference.AsStat, divideBy: Value)
                 },
-                { "per ({StatMatchers})", PerStat(stat: Group.AsStat) },
+                { "per ({StatMatchers})", PerStat(stat: Reference.AsStat) },
                 { "per level", PerStat(Self.Level) },
                 // buffs
                 {
@@ -77,6 +78,11 @@ namespace PoESkillTree.Computation.Data
                     Traps.CombinedInstances.Value + Mines.CombinedInstances.Value
                 },
                 { "per totem", Totems.CombinedInstances.Value },
-            };
+            }.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

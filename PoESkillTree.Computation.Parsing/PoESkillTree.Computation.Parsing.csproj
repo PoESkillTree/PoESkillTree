@@ -103,7 +103,7 @@
     <Compile Include="Data\IReferencedMatchers.cs" />
     <Compile Include="Data\IStatMatchers.cs" />
     <Compile Include="Data\MatcherData.cs" />
-    <Compile Include="Builders\Matching\IGroupConverter.cs" />
+    <Compile Include="Builders\Matching\IReferenceConverter.cs" />
     <Compile Include="Builders\Matching\IMatchContext.cs" />
     <Compile Include="Builders\Matching\IMatchContexts.cs" />
     <Compile Include="Data\ReferencedMatcherData.cs" />
@@ -136,6 +136,9 @@
     <Compile Include="CachingParser.cs" />
     <Compile Include="ParseException.cs" />
     <Compile Include="ParserWithResultSelector.cs" />
+    <Compile Include="Referencing\IReferencedRegexes.cs" />
+    <Compile Include="Referencing\ReferenceConstants.cs" />
+    <Compile Include="Referencing\ReferenceManager.cs" />
     <Compile Include="StatMatcherRegexExpander.cs" />
     <Compile Include="StatMatchersSelector.cs" />
     <Compile Include="Steps\CompletedStep.cs" />

@@ -15,8 +15,7 @@ namespace PoESkillTree.Computation.Data
             Flag = flagStatBuilders;
         }
 
-        protected override IEnumerable<ReferencedMatcherData<IFlagStatBuilder>>
-            CreateCollection() =>
+        protected override IEnumerable<ReferencedMatcherData> CreateCollection() =>
             new ReferencedMatcherCollection<IFlagStatBuilder>
             {
                 { "onslaught", Flag.Onslaught },

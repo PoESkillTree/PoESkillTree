@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Parsing.Builders;
@@ -25,7 +26,7 @@ namespace PoESkillTree.Computation.Data
 
         public bool MatchesWholeLineOnly => false;
 
-        public IEnumerable<MatcherData> Matchers =>  new PropertyMatcherCollection(
+        public IEnumerator<MatcherData> GetEnumerator() => new PropertyMatcherCollection(
             _modifierBuilder, ValueFactory)
         {
             { "quality" }, // do nothing with it
@@ -33,6 +34,11 @@ namespace PoESkillTree.Computation.Data
             { "cast time", Skills.Speed, v => v.Invert },
             { "fire damage", Fire.Damage },
             { "damage effectiveness", Skills.DamageEffectiveness }
-        };
+        }.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
     }
 }

@@ -9,9 +9,9 @@ using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
-    public class GroupConverterStub : BuilderStub, IGroupConverter
+    public class ReferenceConverterStub : BuilderStub, IReferenceConverter
     {
-        public GroupConverterStub(string stringRepresentation)
+        public ReferenceConverterStub(string stringRepresentation)
             : base(stringRepresentation)
         {
         }

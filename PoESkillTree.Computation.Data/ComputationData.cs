@@ -98,13 +98,9 @@ Recover #% of Life and Mana when you use a Warcry
 
 // As another form of showing that a mod is not supported, matcher implementations 
 // themselves may signal that
-// they are not yet supported, e.g. by throwing a ParseException that is caught somewhere.
+// they are not yet supported by throwing a ParseException that is caught somewhere.
 
-// Groups like "({DamageStatMatchers})" in regexes need to be replaced by all regex strings
-// from the specified matcher collection joined with "|" characters. Group() returns the 
-// matched entry of the matcher collection and is cast to the appropriate Provider type.
-// "{StatMatchers}" matches General-, Damage- and PoolStatMatchers
-/* Order of matcher referencing: 
+/* Order of matcher referencing:
  * 
  * Can be referenced by everything else: Action-, Ailment-, ChargeType-, Damage-, Flag-, ItemSlot-
  * and KeywordMatchers
@@ -115,6 +111,10 @@ Recover #% of Life and Mana when you use a Warcry
  * FormAndStatMatchers: can also reference StatMatchers
  * ValueConversionMatchers: can also reference StatMatchers
  * GeneralStatMatchers: can also reference DamageStatMatchers and PoolStatMatchers
+ * 
+ * Other matchers can be set referenceable by overriding their "ReferenceNames" property. This is
+ * only allowed as long as none of their matchers contains values and as long as no cyclical
+ * reference chains are created.
  */
 
 /* Keystones:

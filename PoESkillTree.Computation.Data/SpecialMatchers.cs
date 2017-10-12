@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Data.Base;
@@ -27,7 +28,7 @@ namespace PoESkillTree.Computation.Data
 
         public bool MatchesWholeLineOnly => true;
 
-        public IEnumerable<MatcherData> Matchers => new SpecialMatcherCollection(
+        public IEnumerator<MatcherData> GetEnumerator() => new SpecialMatcherCollection(
             _modifierBuilder, ValueFactory)
         {
             {
@@ -195,7 +196,7 @@ namespace PoESkillTree.Computation.Data
                 PercentMore, 100,
                 Armour, Condition.BaseValueComesFrom(Equipment[ItemSlot.BodyArmour])
             },
-        };
+        }.GetEnumerator();
 
         private IEnumerable<(IFormBuilder form, IStatBuilder stat, IValueBuilder value,
             IConditionBuilder condition)> ElementalEquilibrium()
@@ -229,6 +230,11 @@ namespace PoESkillTree.Computation.Data
                 yield return (form, stat, value,
                     And(type.Damage.With(), Self.HitByRecently(type)));
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

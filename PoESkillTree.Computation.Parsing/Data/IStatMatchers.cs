@@ -2,9 +2,9 @@
 
 namespace PoESkillTree.Computation.Parsing.Data
 {
-    public interface IStatMatchers
+    public interface IStatMatchers : IEnumerable<MatcherData>
     {
-        IEnumerable<MatcherData> Matchers { get; }
+        IReadOnlyList<string> ReferenceNames { get; }
 
         bool MatchesWholeLineOnly { get; }
     }

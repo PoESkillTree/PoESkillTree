@@ -11,6 +11,7 @@ using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Values;
 using PoESkillTree.Computation.Parsing.Data;
 using PoESkillTree.Computation.Parsing.ModifierBuilding;
+using PoESkillTree.Computation.Parsing.Referencing;
 using PoESkillTree.Computation.Parsing.Steps;
 
 namespace PoESkillTree.Computation.Console
@@ -19,15 +20,20 @@ namespace PoESkillTree.Computation.Console
     {
         public static void Main(string[] args)
         {
+            var builderFactories = new BuilderFactories();
+            var statMatchersList = CreateStatMatchers(builderFactories,
+                new MatchContextsStub(), new ModifierBuilder());
+            var referenceManager = new ReferenceManager(CreateReferencedMatchers(builderFactories),
+                statMatchersList);
+
             IParser<IModifierResult> CreateInnerParser(IStatMatchers statMatchers) =>
                 new CachingParser<IModifierResult>(
                     new StatNormalizingParser<IModifierResult>(
                         new ParserWithResultSelector<IModifierBuilder,IModifierResult>(
-                            new DummyParser(new StatMatcherRegexExpander(statMatchers)), // TODO
+                            new DummyParser( // TODO
+                                new StatMatcherRegexExpander(statMatchers, referenceManager)),
                             b => b?.Build())));
 
-            var statMatchersList = CreateStatMatchers(new BuilderFactories(),
-                new MatchContextsStub(), new ModifierBuilder());
             var statMatchersFactory = new StatMatchersSelector(statMatchersList);
             var innerParserCache = 
                 new Cache<IStatMatchers, IParser<IModifierResult>>(CreateInnerParser);
@@ -59,6 +65,8 @@ namespace PoESkillTree.Computation.Console
                     )
                 );
 
+            referenceManager.Validate();
+
             System.Console.Write("> ");
             string statLine;
             while ((statLine = System.Console.ReadLine()) != "")
@@ -87,10 +95,23 @@ namespace PoESkillTree.Computation.Console
             new ConditionMatchers(builderFactories, matchContexts, modifierBuilder),
         };
 
+        private static IReadOnlyList<IReferencedMatchers> CreateReferencedMatchers(
+            IBuilderFactories builderFactories) => new IReferencedMatchers[]
+        {
+            new ActionMatchers(builderFactories.ActionBuilders),
+            new AilmentMatchers(builderFactories.EffectBuilders.Ailment), 
+            new ChargeTypeMatchers(builderFactories.ChargeTypeBuilders), 
+            new DamageTypeMatchers(builderFactories.DamageTypeBuilders), 
+            new FlagMatchers(builderFactories.StatBuilders.Flag),
+            new ItemSlotMatchers(), 
+            new KeywordMatchers(builderFactories.KeywordBuilders), 
+            new SkillMatchers(builderFactories.SkillBuilders),
+        };
+
         /* Algorithm missing: (replacing DummyParser in InnerParser() function)
-         * - leaf parsers (some class implementing IParser<IModifierBuilder> and using an IStatMatcher)
+         * - leaf parsers (what DummyParser does)
          * - some parser doing the match context resolving after leaf parser
-         *   (MatchContextResolvingParser)
+         *   (what Resolve() does)
          */
 
         private class Cache<TKey, TValue>
@@ -124,8 +145,8 @@ namespace PoESkillTree.Computation.Console
             private static Regex CreateRegex(string regex)
             {
                 return new Regex(regex,
-                    RegexOptions.CultureInvariant & RegexOptions.IgnoreCase &
-                    RegexOptions.Compiled);
+                    RegexOptions.CultureInvariant | RegexOptions.IgnoreCase |
+                    RegexOptions.Compiled | RegexOptions.ExplicitCapture);
             }
 
             public bool TryParse(string stat, out string remaining, out IModifierBuilder result)

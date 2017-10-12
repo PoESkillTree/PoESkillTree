@@ -8,7 +8,7 @@ using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Matching
 {
-    public interface IGroupConverter
+    public interface IReferenceConverter
     {
         IDamageTypeBuilder AsDamageType { get; }
 
