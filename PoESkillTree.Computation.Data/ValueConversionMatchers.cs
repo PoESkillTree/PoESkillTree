@@ -54,6 +54,7 @@ namespace PoESkillTree.Computation.Data
                     PerStatCeiled(stat: Reference.AsStat, divideBy: Value)
                 },
                 { "per ({StatMatchers})", PerStat(stat: Reference.AsStat) },
+                { "per grand spectrum", PerStat(stat: Stat.GrandSpectrumJewelsSocketed) },
                 { "per level", PerStat(Self.Level) },
                 // buffs
                 {

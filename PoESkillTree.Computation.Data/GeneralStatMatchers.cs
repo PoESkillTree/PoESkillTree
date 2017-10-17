@@ -285,7 +285,7 @@ namespace PoESkillTree.Computation.Data
             { "character size", Stat.Unique() },
             { "reduced reflected elemental damage taken", Stat.Unique() },
             { "reduced reflected physical damage taken", Stat.Unique() },
-            { "damage taken gained as mana over # seconds when hit", Stat.Unique() },
+            { "damage taken gained as mana over 4 seconds when hit", Stat.Unique() },
             { "light radius", Stat.Unique() },
         }.GetEnumerator();
 
