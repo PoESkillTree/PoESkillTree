@@ -50,7 +50,7 @@ namespace PoESkillTree.Computation.Parsing
         {
             ValidateRegex(regex);
             return leftDelimiter
-                   + ExpandGroups(ExpandValues(regex))
+                   + ExpandReferences(ExpandValues(regex), "reference")
                    + rightDelimiter;
         }
 
@@ -83,16 +83,18 @@ namespace PoESkillTree.Computation.Parsing
             return Regex.Replace(regex, "#", match => $@"(?<value{valueIndex++}>{ValueRegex})");
         }
 
-        private string ExpandGroups(string regex)
+        private string ExpandReferences(string regex, string referencePrefix)
         {
-            var groupIndex = 0;
+            var referenceIndex = 0;
             return ReferenceConstants.ReferenceRegex.Replace(regex, match =>
             {
                 var referenceName = match.Groups[1].Value;
+                var prefix = referencePrefix + referenceIndex;
+                referenceIndex++;
                 var joinedRegex = string.Join("|",
-                    _referencedRegexes.GetRegexes(referenceName).Select(m => $"({m})"));
-                // TODO recursive references
-                return $@"(?<reference{groupIndex++}_{referenceName}>{joinedRegex})";
+                    _referencedRegexes.GetRegexes(referenceName)
+                        .Select(m => "(" + ExpandReferences(m, prefix + "_") + ")"));
+                return $@"(?<{prefix}__{referenceName}>{joinedRegex})";
             });
         }
     }
