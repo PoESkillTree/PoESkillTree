@@ -8,8 +8,8 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
         IConditionBuilder Eq(IValueBuilder other);
         IConditionBuilder Eq(double other);
 
-        IConditionBuilder GreaterThen(IValueBuilder other);
-        IConditionBuilder GreaterThen(double other);
+        IConditionBuilder GreaterThan(IValueBuilder other);
+        IConditionBuilder GreaterThan(double other);
 
         IValueBuilder Add(IValueBuilder other);
         IValueBuilder Add(double other);

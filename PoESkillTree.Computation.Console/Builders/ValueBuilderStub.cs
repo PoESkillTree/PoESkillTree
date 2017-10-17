@@ -25,10 +25,10 @@ namespace PoESkillTree.Computation.Console.Builders
         public IConditionBuilder Eq(double other) =>
             CreateCondition(This, o => $"({o} == {other})");
 
-        public IConditionBuilder GreaterThen(IValueBuilder other) =>
+        public IConditionBuilder GreaterThan(IValueBuilder other) =>
             CreateCondition(This, other, (l, r) => $"({l} > {r})");
 
-        public IConditionBuilder GreaterThen(double other) =>
+        public IConditionBuilder GreaterThan(double other) =>
             CreateCondition(This, o => $"({o} > {other})");
 
         public IValueBuilder Add(IValueBuilder other) =>

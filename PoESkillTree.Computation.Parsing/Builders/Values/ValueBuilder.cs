@@ -60,10 +60,10 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
         IConditionBuilder IValueBuilder.Eq(double other) => _value.Eq(other);
 
         public static IConditionBuilder operator >(ValueBuilder left, ValueBuilder right) => 
-            left._value.GreaterThen(right);
+            left._value.GreaterThan(right);
 
         public static IConditionBuilder operator >(ValueBuilder left, double right) => 
-            left._value.GreaterThen(right);
+            left._value.GreaterThan(right);
 
         public static IConditionBuilder operator >=(ValueBuilder left, ValueBuilder right) => 
             (left == right).Or(left > right);
@@ -95,11 +95,11 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
         public static IConditionBuilder operator <(double left, ValueBuilder right) => 
             right >= left;
 
-        IConditionBuilder IValueBuilder.GreaterThen(IValueBuilder other) =>
-            _value.GreaterThen(other);
+        IConditionBuilder IValueBuilder.GreaterThan(IValueBuilder other) =>
+            _value.GreaterThan(other);
 
-        IConditionBuilder IValueBuilder.GreaterThen(double other) => 
-            _value.GreaterThen(other);
+        IConditionBuilder IValueBuilder.GreaterThan(double other) => 
+            _value.GreaterThan(other);
 
         public static ValueBuilder operator *(ValueBuilder left, ValueBuilder right) => 
             Wrap(left._value.Multiply(right));
