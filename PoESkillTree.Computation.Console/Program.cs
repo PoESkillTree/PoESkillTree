@@ -23,8 +23,8 @@ namespace PoESkillTree.Computation.Console
             var builderFactories = new BuilderFactories();
             var statMatchersList = CreateStatMatchers(builderFactories,
                 new MatchContextsStub(), new ModifierBuilder());
-            var referenceManager = new ReferenceManager(CreateReferencedMatchers(builderFactories),
-                statMatchersList);
+            var referencedMatchersList = CreateReferencedMatchers(builderFactories);
+            var referenceManager = new ReferenceManager(referencedMatchersList, statMatchersList);
 
             IParser<IModifierResult> CreateInnerParser(IStatMatchers statMatchers) =>
                 new CachingParser<IModifierResult>(
@@ -65,7 +65,7 @@ namespace PoESkillTree.Computation.Console
                     )
                 );
 
-            referenceManager.Validate();
+            ReferenceValidator.Validate(referencedMatchersList, statMatchersList);
 
             System.Console.Write("> ");
             string statLine;
