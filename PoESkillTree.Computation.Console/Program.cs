@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.Common.Utils.Extensions;
@@ -35,15 +34,14 @@ namespace PoESkillTree.Computation.Console
                             b => b?.Build())));
 
             var statMatchersFactory = new StatMatchersSelector(statMatchersList);
-            var innerParserCache = 
-                new Cache<IStatMatchers, IParser<IModifierResult>>(CreateInnerParser);
+            var innerParserCache = new Dictionary<IStatMatchers, IParser<IModifierResult>>();
             IStep<IParser<IModifierResult>, bool> initialStep =
                 new MappingStep<IStatMatchers, IParser<IModifierResult>, bool>(
                     new MappingStep<ParsingStep, IStatMatchers, bool>(
                         new SpecialStep(),
                         statMatchersFactory.Get
                     ),
-                    innerParserCache.Get
+                    k => innerParserCache.GetOrAdd(k, CreateInnerParser)
                 );
 
             IParser<IReadOnlyList<Modifier>> parser =
@@ -114,28 +112,10 @@ namespace PoESkillTree.Computation.Console
          *   (what Resolve() does)
          */
 
-        private class Cache<TKey, TValue>
-        {
-            private readonly Func<TKey, TValue> _valueFactory;
-            private readonly Dictionary<TKey, TValue> _cache = new Dictionary<TKey, TValue>();
-
-            public Cache(Func<TKey, TValue> valueFactory)
-            {
-                _valueFactory = valueFactory;
-            }
-
-            public TValue this[TKey key] => Get(key);
-
-            public TValue Get(TKey key) => _cache.GetOrAdd(key, _valueFactory);
-        }
-
         // Obviously only temporary until the actually useful classes exist
         private class DummyParser : IParser<IModifierBuilder>
         {
             private readonly IEnumerable<MatcherData> _statMatchers;
-
-            private readonly Cache<string, Regex> _regexCache =
-                new Cache<string, Regex>(CreateRegex);
 
             public DummyParser(IEnumerable<MatcherData> statMatchers)
             {
@@ -145,15 +125,14 @@ namespace PoESkillTree.Computation.Console
             private static Regex CreateRegex(string regex)
             {
                 return new Regex(regex,
-                    RegexOptions.CultureInvariant | RegexOptions.IgnoreCase |
-                    RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+                    RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
             }
 
             public bool TryParse(string stat, out string remaining, out IModifierBuilder result)
             {
                 var xs =
                     from m in _statMatchers
-                    let regex = _regexCache[m.Regex]
+                    let regex = CreateRegex(m.Regex)
                     let match = regex.Match(stat)
                     where match.Success
                     orderby match.Length descending
