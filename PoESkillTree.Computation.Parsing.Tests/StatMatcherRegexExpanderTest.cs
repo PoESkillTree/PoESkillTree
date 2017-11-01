@@ -65,14 +65,14 @@ namespace PoESkillTree.Computation.Parsing.Tests
             "^(?<value0>" + ValueRegex + ") (?<value1>" + ValueRegex + ")$")]
         [TestCase("test # (.*) # (test2)+", ExpectedResult =
             "^test (?<value0>" + ValueRegex + ") (.*) (?<value1>" + ValueRegex + ") (test2)+$")]
-        [TestCase("({Matchers1})", ExpectedResult = 
-            "^(?<reference0__Matchers1>(0+)|([1-9])|((01)+))$")]
+        [TestCase("({Matchers1})", ExpectedResult =
+            "^((?<reference0_Matchers1_0>0+)|(?<reference0_Matchers1_1>[1-9])|(?<reference0_Matchers1_2>(01)+))$")]
         [TestCase("test # ({Matchers1}) (.*) # ({Matchers2}) ({Matchers1})", ExpectedResult =
             "^test (?<value0>" + ValueRegex + ")" +
-            " (?<reference0__Matchers1>(0+)|([1-9])|((01)+))" +
+            " ((?<reference0_Matchers1_0>0+)|(?<reference0_Matchers1_1>[1-9])|(?<reference0_Matchers1_2>(01)+))" +
             " (.*) (?<value1>" + ValueRegex + ")" +
-            " (?<reference1__Matchers2>(a)|(b)|(c)|(d))" +
-            " (?<reference2__Matchers1>(0+)|([1-9])|((01)+))$")]
+            " ((?<reference1_Matchers2_0>a)|(?<reference1_Matchers2_1>b)|(?<reference1_Matchers2_2>c)|(?<reference1_Matchers2_3>d))" +
+            " ((?<reference2_Matchers1_0>0+)|(?<reference2_Matchers1_1>[1-9])|(?<reference2_Matchers1_2>(01)+))$")]
         public string ExpandsCorrectly(string inputRegex)
         {
             var inputData = new MatcherData(inputRegex, new ModifierBuilder());
@@ -85,30 +85,30 @@ namespace PoESkillTree.Computation.Parsing.Tests
         }
 
         [TestCase("({Matchers3})", ExpectedResult =
-            "^(?<reference0__Matchers3>((?<reference0_0__Matchers2>(a)|(b)|(c)|(d)))" +
-            "|(c)" +
-            "|(d (?<reference0_0__Matchers1>(0+)|([1-9])|((01)+)) (?<reference0_1__Matchers2>(a)|(b)|(c)|(d))))$")]
+            "^((?<reference0_Matchers3_0>((?<reference0_0_Matchers2_0>a)))" +
+            "|(?<reference0_Matchers3_1>c)" +
+            "|(?<reference0_Matchers3_2>d ((?<reference0_0_Matchers1_0>0+)|(?<reference0_0_Matchers1_1>[1-9])) ((?<reference0_1_Matchers2_0>a))))$")]
         [TestCase("({Matchers4})", ExpectedResult = 
-            "^(?<reference0__Matchers4>((?<reference0_0__Matchers2>(a)|(b)|(c)|(d))))$")]
-        [TestCase("({Matchers5})", ExpectedResult = 
-            "^(?<reference0__Matchers5>((?<reference0_0__Matchers1>(0+)|([1-9])|((01)+)))" +
-            "|((?<reference0_0__Matchers2>(a)|(b)|(c)|(d)))" +
-            "|((?<reference0_0__Matchers3>((?<reference0_0_0__Matchers2>(a)|(b)|(c)|(d)))|(c)|(d (?<reference0_0_0__Matchers1>(0+)|([1-9])|((01)+)) (?<reference0_0_1__Matchers2>(a)|(b)|(c)|(d)))))" +
-            "|((?<reference0_0__Matchers4>((?<reference0_0_0__Matchers2>(a)|(b)|(c)|(d))))))$")]
+            "^((?<reference0_Matchers4_0>((?<reference0_0_Matchers2_0>a))))$")]
+        [TestCase("({Matchers5})", ExpectedResult =
+            "^((?<reference0_Matchers5_0>((?<reference0_0_Matchers1_0>0+)|(?<reference0_0_Matchers1_1>[1-9])))" +
+            "|(?<reference0_Matchers5_1>((?<reference0_0_Matchers2_0>a)))" +
+            "|(?<reference0_Matchers5_2>((?<reference0_0_Matchers3_0>((?<reference0_0_0_Matchers2_0>a)))|(?<reference0_0_Matchers3_1>c)|(?<reference0_0_Matchers3_2>d ((?<reference0_0_0_Matchers1_0>0+)|(?<reference0_0_0_Matchers1_1>[1-9])) ((?<reference0_0_1_Matchers2_0>a)))))" +
+            "|(?<reference0_Matchers5_3>((?<reference0_0_Matchers4_0>((?<reference0_0_0_Matchers2_0>a))))))$")]
         [TestCase("({Matchers6})", ExpectedResult =
-            "^(?<reference0__Matchers6>((?<reference0_0__Matchers2>(a)|(b)|(c)|(d))" +
-            " (?<reference0_1__Matchers2>(a)|(b)|(c)|(d))" +
-            " (?<reference0_2__Matchers2>(a)|(b)|(c)|(d))" +
-            " (?<reference0_3__Matchers2>(a)|(b)|(c)|(d))))$")]
+            "^((?<reference0_Matchers6_0>((?<reference0_0_Matchers2_0>a))" +
+            " ((?<reference0_1_Matchers2_0>a))" +
+            " ((?<reference0_2_Matchers2_0>a))" +
+            " ((?<reference0_3_Matchers2_0>a))))$")]
         public string ExpandsReferencesRecursively(string inputRegex)
         {
             var inputData = new MatcherData(inputRegex, new ModifierBuilder());
             var statMatchers = MockStatMatchers(true, inputData);
             var referencedRegexes = Mock.Of<IReferencedRegexes>(r =>
                 r.ContainsReference("Matchers1") &&
-                r.GetRegexes("Matchers1") == new[] { "0+", "[1-9]", "(01)+" } &&
+                r.GetRegexes("Matchers1") == new[] { "0+", "[1-9]" } &&
                 r.ContainsReference("Matchers2") &&
-                r.GetRegexes("Matchers2") == new[] { "a", "b", "c", "d" } &&
+                r.GetRegexes("Matchers2") == new[] { "a" } &&
                 r.ContainsReference("Matchers3") &&
                 r.GetRegexes("Matchers3") == new[] { "({Matchers2})", "c", "d ({Matchers1}) ({Matchers2})" } &&
                 r.ContainsReference("Matchers4") &&

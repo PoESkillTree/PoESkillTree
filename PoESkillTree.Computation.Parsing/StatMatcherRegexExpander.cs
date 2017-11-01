@@ -91,10 +91,10 @@ namespace PoESkillTree.Computation.Parsing
                 var referenceName = match.Groups[1].Value;
                 var prefix = referencePrefix + referenceIndex;
                 referenceIndex++;
-                var joinedRegex = string.Join("|",
-                    _referencedRegexes.GetRegexes(referenceName)
-                        .Select(m => "(" + ExpandReferences(m, prefix + "_") + ")"));
-                return $@"(?<{prefix}__{referenceName}>{joinedRegex})";
+                var regexes = _referencedRegexes.GetRegexes(referenceName)
+                    .Select((m, i) => $"(?<{prefix}_{referenceName}_{i}>{ExpandReferences(m, prefix + "_")})");
+                var joinedRegex = string.Join("|", regexes);
+                return $@"({joinedRegex})";
             });
         }
     }

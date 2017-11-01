@@ -157,7 +157,9 @@ namespace PoESkillTree.Computation.Console
                 Regex regex,
                 GroupCollection groups)
             {
-                return regex.GetGroupNames().ToDictionary(gn => gn, gn => groups[gn].Value);
+                return regex.GetGroupNames()
+                    .Where(gn => !string.IsNullOrEmpty(groups[gn].Value))
+                    .ToDictionary(gn => gn, gn => groups[gn].Value);
             }
         }
 

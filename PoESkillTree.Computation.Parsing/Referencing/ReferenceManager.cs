@@ -16,8 +16,6 @@ namespace PoESkillTree.Computation.Parsing.Referencing
             _statMatchersList = statMatchersList;
         }
 
-        // TODO caching for ContainsReferences and GetRegexes?
-
         public bool ContainsReference(string referenceName)
         {
             return _referencedMatchersList.Any(r => r.ReferenceName == referenceName) ||
