@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Parsing.Referencing
 {
-    public class ReferenceManager : IReferencedRegexes
+    public class ReferenceManager : IReferencedRegexes, IReferenceToMatcherDataResolver
     {
         private readonly IReadOnlyList<IReferencedMatchers> _referencedMatchersList;
         private readonly IReadOnlyList<IStatMatchers> _statMatchersList;
@@ -33,6 +34,25 @@ namespace PoESkillTree.Computation.Parsing.Referencing
             return _statMatchersList
                 .Where(r => r.ReferenceNames.Contains(referenceName))
                 .SelectMany(r => r.Select(d => d.Regex));
+        }
+
+        public bool TryGetReferencedMatcherData(
+            string referenceName, int matcherIndex, out ReferencedMatcherData matcherData)
+        {
+            matcherData = _referencedMatchersList
+                .Where(r => r.ReferenceName == referenceName)
+                .Flatten()
+                .ElementAtOrDefault(matcherIndex);
+            return matcherData != null;
+        }
+
+        public bool TryGetMatcherData(string referenceName, int matcherIndex, out MatcherData matcherData)
+        {
+            matcherData = _statMatchersList
+                .Where(r => r.ReferenceNames.Contains(referenceName))
+                .Flatten()
+                .ElementAtOrDefault(matcherIndex);
+            return matcherData != null;
         }
     }
 }

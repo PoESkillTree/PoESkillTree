@@ -136,7 +136,9 @@
     <Compile Include="CachingParser.cs" />
     <Compile Include="ParseException.cs" />
     <Compile Include="ParserWithResultSelector.cs" />
+    <Compile Include="Builders\Matching\ReferenceConverter.cs" />
     <Compile Include="Referencing\IReferencedRegexes.cs" />
+    <Compile Include="Referencing\IReferenceToMatcherDataResolver.cs" />
     <Compile Include="Referencing\ReferenceConstants.cs" />
     <Compile Include="Referencing\ReferenceManager.cs" />
     <Compile Include="Referencing\ReferenceValidator.cs" />

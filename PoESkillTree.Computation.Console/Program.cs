@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Console
                     new StatNormalizingParser<IModifierResult>(
                         new ParserWithResultSelector<IModifierBuilder,IModifierResult>(
                             new DummyParser( // TODO
-                                new StatMatcherRegexExpander(statMatchers, referenceManager)),
+                                new StatMatcherRegexExpander(statMatchers, referenceManager), referenceManager),
                             b => b?.Build())));
 
             var statMatchersFactory = new StatMatchersSelector(statMatchersList);
@@ -106,20 +106,21 @@ namespace PoESkillTree.Computation.Console
             new SkillMatchers(builderFactories.SkillBuilders),
         };
 
-        /* Algorithm missing: (replacing DummyParser in InnerParser() function)
+        /* Proper implementation missing: (replacing DummyParser in InnerParser() function)
          * - leaf parsers (what DummyParser does)
          * - some parser doing the match context resolving after leaf parser
          *   (what Resolve() does)
          */
 
-        // Obviously only temporary until the actually useful classes exist
         private class DummyParser : IParser<IModifierBuilder>
         {
             private readonly IEnumerable<MatcherData> _statMatchers;
+            private readonly IReferenceToMatcherDataResolver _referenceManager;
 
-            public DummyParser(IEnumerable<MatcherData> statMatchers)
+            public DummyParser(IEnumerable<MatcherData> statMatchers, IReferenceToMatcherDataResolver referenceManager)
             {
                 _statMatchers = statMatchers;
+                _referenceManager = referenceManager;
             }
 
             private static Regex CreateRegex(string regex)
@@ -148,7 +149,7 @@ namespace PoESkillTree.Computation.Console
                     remaining = stat;
                     return false;
                 }
-                result = Resolve(x.ModifierBuilder, x.Groups);
+                result = Resolve(x.ModifierBuilder, x.Groups, _referenceManager);
                 remaining = x.Result;
                 return true;
             }
@@ -164,8 +165,9 @@ namespace PoESkillTree.Computation.Console
         }
 
         private static IModifierBuilder Resolve(
-            IModifierBuilder builder, 
-            IReadOnlyDictionary<string, string> groups)
+            IModifierBuilder builder,
+            IReadOnlyDictionary<string, string> groups,
+            IReferenceToMatcherDataResolver referenceManager)
         {
             var values =
                 from pair in groups
@@ -173,6 +175,20 @@ namespace PoESkillTree.Computation.Console
                 where groupName.StartsWith("value")
                 select BuilderFactory.CreateValue(pair.Value);
             var valueContext = new ResolvedMatchContext<IValueBuilder>(values.ToList());
+
+            var references =
+                from groupName in groups.Keys
+                where groupName.StartsWith("reference")
+                let parts = groupName.Split('_')
+                where parts.Length == 3
+                let referenceName = parts[1]
+                let matcherIndex = int.Parse(parts[2])
+                select Resolve(referenceManager, referenceName, matcherIndex);
+            var referenceContext = new ResolvedMatchContext<IReferenceConverter>(references.ToList());
+            // TODO recursive references
+
+            // TODO add referenceContext parameter to IResolvable
+            // TODO do reference resolving in MatchContextStub.References and/or ReferenceConverterStuv
             var oldResult = builder.Build();
             return new ModifierBuilder()
                 .WithValues(oldResult.Entries.Select(e => e.Value?.Resolve(valueContext)))
@@ -181,6 +197,22 @@ namespace PoESkillTree.Computation.Console
                 .WithConditions(oldResult.Entries.Select(e => e.Condition?.Resolve(valueContext)))
                 .WithValueConverter(v => oldResult.ValueConverter(v)?.Resolve(valueContext))
                 .WithStatConverter(s => oldResult.StatConverter(s)?.Resolve(valueContext));
+        }
+
+        private static IReferenceConverter Resolve(
+            IReferenceToMatcherDataResolver referenceManager, string referenceName, int matcherIndex)
+        {
+            if (referenceManager.TryGetReferencedMatcherData(referenceName, matcherIndex, out var referencedMatcherData))
+            {
+                return new ReferenceConverter(referencedMatcherData.Match);
+            }
+            if (referenceManager.TryGetMatcherData(referenceName, matcherIndex, out var matcherData))
+            {
+                // TODO ModifierBuilder may contain a condition that also needs to be taken into account
+                // TODO validate that it only has one entry with stat and optionally condition and no converters?
+                return new ReferenceConverter(matcherData.ModifierBuilder.Build().Entries.First().Stat);
+            }
+            return new ReferenceConverter(null);
         }
     }
 }
