@@ -40,16 +40,16 @@ namespace PoESkillTree.Computation.Console.Builders
             CreateCondition("While Leeching");
 
         public IConditionBuilder With(ISkillBuilderCollection skills) =>
-            CreateCondition((IBuilderCollection<ISkillBuilder>) skills, o => $"With {skills}");
+            CreateCondition((IBuilderCollection<ISkillBuilder>) skills, o => $"With {o}");
 
         public IConditionBuilder With(ISkillBuilder skill) =>
-            CreateCondition(skill, o => $"With {skill}");
+            CreateCondition(skill, o => $"With {o}");
 
         public IConditionBuilder For(params IEntityBuilder[] entities) =>
             CreateCondition(entities, os => "For " + string.Join(", ", os));
 
         public IConditionBuilder BaseValueComesFrom(IEquipmentBuilder equipment) =>
-            CreateCondition(equipment, o => $"If base value comes from {equipment}");
+            CreateCondition(equipment, o => $"If base value comes from {o}");
 
         public IConditionBuilder Unique(string name = "$0") =>
             CreateCondition(name);

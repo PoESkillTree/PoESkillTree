@@ -16,6 +16,6 @@ namespace PoESkillTree.Computation.Console.Builders
     public class GroundEffectBuildersStub : IGroundEffectBuilders
     {
         public IGroundEffectBuilder Consecrated =>
-            new GroundEffectBuilderStub("Consecrated", (current, _) => current);
+            new GroundEffectBuilderStub("Consecrated Ground", (current, _) => current);
     }
 }

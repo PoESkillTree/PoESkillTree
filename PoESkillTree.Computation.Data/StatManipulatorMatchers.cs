@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Data
                     s => s.AddTo(Skills[Keyword.Aura]), "${inner}"
                 },
                 {
-                    "consecrated ground you create grant (?<inner>.*) to you and allies",
+                    "consecrated ground you create grants (?<inner>.*) to you and allies",
                     s => s.AddTo(Ground.Consecrated), "${inner}"
                 },
                 {
