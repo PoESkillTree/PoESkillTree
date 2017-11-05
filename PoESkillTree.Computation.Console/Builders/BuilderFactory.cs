@@ -208,8 +208,8 @@ namespace PoESkillTree.Computation.Console.Builders
             Func<T, string> stringRepresentation)
             where T : class, IResolvable<T>
         {
-            TOut Resolve(IMatchContext<IValueBuilder> valueContext) =>
-                Create(constructor, stringRepresentation(operand?.Resolve(valueContext)));
+            TOut Resolve(ResolveContext context) =>
+                Create(constructor, stringRepresentation(operand?.Resolve(context)));
 
             return Create(constructor, stringRepresentation(operand), Resolve);
         }
@@ -220,8 +220,8 @@ namespace PoESkillTree.Computation.Console.Builders
             Func<T, string> stringRepresentation)
             where T : class, IResolvable<T>
         {
-            T Resolve(IMatchContext<IValueBuilder> valueContext) =>
-                Create(constructor, stringRepresentation(operand?.Resolve(valueContext)));
+            T Resolve(ResolveContext context) =>
+                Create(constructor, stringRepresentation(operand?.Resolve(context)));
 
             return Create(constructor, stringRepresentation(operand), Resolve);
         }
@@ -234,10 +234,10 @@ namespace PoESkillTree.Computation.Console.Builders
             where T1 : class, IResolvable<T1>
             where T2 : class, IResolvable<T2>
         {
-            TOut Resolve(IMatchContext<IValueBuilder> valueContext) =>
+            TOut Resolve(ResolveContext context) =>
                 Create(constructor, stringRepresentation(
-                    operand1?.Resolve(valueContext),
-                    operand2?.Resolve(valueContext)));
+                    operand1?.Resolve(context),
+                    operand2?.Resolve(context)));
 
             return Create(constructor, stringRepresentation(operand1, operand2), Resolve);
         }
@@ -250,10 +250,10 @@ namespace PoESkillTree.Computation.Console.Builders
             where T1 : class, IResolvable<T1>
             where T2 : class, IResolvable<T2>
         {
-            T1 Resolve(IMatchContext<IValueBuilder> valueContext) =>
+            T1 Resolve(ResolveContext context) =>
                 Create(constructor, stringRepresentation(
-                    operand1?.Resolve(valueContext),
-                    operand2?.Resolve(valueContext)));
+                    operand1?.Resolve(context),
+                    operand2?.Resolve(context)));
 
             return Create(constructor, stringRepresentation(operand1, operand2), Resolve);
         }
@@ -268,11 +268,11 @@ namespace PoESkillTree.Computation.Console.Builders
             where T2 : class, IResolvable<T2>
             where T3 : class, IResolvable<T3>
         {
-            TOut Resolve(IMatchContext<IValueBuilder> valueContext) =>
+            TOut Resolve(ResolveContext context) =>
                 Create(constructor, stringRepresentation(
-                    operand1?.Resolve(valueContext),
-                    operand2?.Resolve(valueContext),
-                    operand3?.Resolve(valueContext)));
+                    operand1?.Resolve(context),
+                    operand2?.Resolve(context),
+                    operand3?.Resolve(context)));
 
             return Create(constructor, stringRepresentation(operand1, operand2, operand3), Resolve);
         }
@@ -289,12 +289,12 @@ namespace PoESkillTree.Computation.Console.Builders
             where T3 : class, IResolvable<T3>
             where T4 : class, IResolvable<T4>
         {
-            TOut Resolve(IMatchContext<IValueBuilder> valueContext) =>
+            TOut Resolve(ResolveContext context) =>
                 Create(constructor, stringRepresentation(
-                    operand1?.Resolve(valueContext),
-                    operand2?.Resolve(valueContext),
-                    operand3?.Resolve(valueContext),
-                    operand4?.Resolve(valueContext)));
+                    operand1?.Resolve(context),
+                    operand2?.Resolve(context),
+                    operand3?.Resolve(context),
+                    operand4?.Resolve(context)));
 
             return Create(constructor, 
                 stringRepresentation(operand1, operand2, operand3, operand4), Resolve);
@@ -308,9 +308,9 @@ namespace PoESkillTree.Computation.Console.Builders
         {
             var os = operands.ToList();
 
-            TOut Resolve(IMatchContext<IValueBuilder> valueContext) =>
+            TOut Resolve(ResolveContext context) =>
                 Create(constructor, stringRepresentation(
-                    os.Select(o => o?.Resolve(valueContext))));
+                    os.Select(o => o?.Resolve(context))));
 
             return Create(constructor, stringRepresentation(os), Resolve);
         }
@@ -325,10 +325,10 @@ namespace PoESkillTree.Computation.Console.Builders
         {
             var os = operands.ToList();
 
-            TOut Resolve(IMatchContext<IValueBuilder> valueContext) =>
+            TOut Resolve(ResolveContext context) =>
                 Create(constructor, stringRepresentation(
-                    operand1?.Resolve(valueContext),
-                    os.Select(o => o?.Resolve(valueContext))));
+                    operand1?.Resolve(context),
+                    os.Select(o => o?.Resolve(context))));
 
             return Create(constructor, stringRepresentation(operand1, os), Resolve);
         }
@@ -343,10 +343,10 @@ namespace PoESkillTree.Computation.Console.Builders
         {
             var os = operands.ToList();
 
-            T1 Resolve(IMatchContext<IValueBuilder> valueContext) =>
+            T1 Resolve(ResolveContext context) =>
                 Create(constructor, stringRepresentation(
-                    operand1?.Resolve(valueContext),
-                    os.Select(o => o?.Resolve(valueContext))));
+                    operand1?.Resolve(context),
+                    os.Select(o => o?.Resolve(context))));
 
             return Create(constructor, stringRepresentation(operand1, os), Resolve);
         }
@@ -363,11 +363,11 @@ namespace PoESkillTree.Computation.Console.Builders
         {
             var os = operands.ToList();
 
-            T1 Resolve(IMatchContext<IValueBuilder> valueContext) =>
+            T1 Resolve(ResolveContext context) =>
                 Create(constructor, stringRepresentation(
-                    operand1?.Resolve(valueContext),
-                    operand2?.Resolve(valueContext),
-                    os.Select(o => o?.Resolve(valueContext))));
+                    operand1?.Resolve(context),
+                    operand2?.Resolve(context),
+                    os.Select(o => o?.Resolve(context))));
 
             return Create(constructor, stringRepresentation(operand1, operand2, os), Resolve);
         }
@@ -382,7 +382,7 @@ namespace PoESkillTree.Computation.Console.Builders
         private static T Create<T>(
             Func<string, Resolver<T>, T> constructor,
             string stringRepresentation,
-            Func<IMatchContext<IValueBuilder>, T> resolver)
+            Func<ResolveContext, T> resolver)
         {
             return constructor(stringRepresentation, (_, context) => resolver(context));
         }

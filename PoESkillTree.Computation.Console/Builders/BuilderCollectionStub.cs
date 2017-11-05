@@ -41,7 +41,7 @@ namespace PoESkillTree.Computation.Console.Builders
             return CreateCondition(This, condition, StringRepresentation);
         }
 
-        public IBuilderCollection<T> Resolve(IMatchContext<IValueBuilder> valueContext)
-            => _resolver(this, valueContext);
+        public IBuilderCollection<T> Resolve(ResolveContext context) =>
+            _resolver(this, context);
     }
 }

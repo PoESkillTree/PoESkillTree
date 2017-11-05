@@ -1,7 +1,6 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders.Charges;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
-using PoESkillTree.Computation.Parsing.Builders.Values;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
@@ -25,8 +24,8 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder ChanceToGain => CreateStat(This, o => $"{o} chance to gain");
 
-        public IChargeTypeBuilder Resolve(IMatchContext<IValueBuilder> valueContext) => 
-            _resolver(this, valueContext);
+        public IChargeTypeBuilder Resolve(ResolveContext context) =>
+            _resolver(this, context);
     }
 
 

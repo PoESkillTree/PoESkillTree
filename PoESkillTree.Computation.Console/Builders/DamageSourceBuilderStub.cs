@@ -1,6 +1,5 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders.Damage;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
-using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
@@ -15,8 +14,8 @@ namespace PoESkillTree.Computation.Console.Builders
             _resolver = resolver;
         }
 
-        public IDamageSourceBuilder Resolve(IMatchContext<IValueBuilder> valueContext) => 
-            _resolver(this, valueContext);
+        public IDamageSourceBuilder Resolve(ResolveContext context) =>
+            _resolver(this, context);
     }
 
 

@@ -54,8 +54,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Level =>
             CreateStat(This, o => $"{o} Level");
 
-        public IEntityBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
-            _resolver(this, valueContext);
+        public IEntityBuilder Resolve(ResolveContext context) =>
+            _resolver(this, context);
     }
 
 

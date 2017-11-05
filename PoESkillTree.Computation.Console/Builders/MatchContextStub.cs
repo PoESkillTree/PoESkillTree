@@ -38,16 +38,16 @@ namespace PoESkillTree.Computation.Console.Builders
             }
 
             public ValueBuilder this[int index] =>
-                new ValueBuilder(new ValueBuilderStub($"{this}[{index}]", (_, c) => c[index]));
+                new ValueBuilder(new ValueBuilderStub($"{this}[{index}]", (_, c) => c.ValueContext[index]));
 
             public ValueBuilder First =>
-                new ValueBuilder(new ValueBuilderStub($"{this}.First", (_, c) => c.First));
+                new ValueBuilder(new ValueBuilderStub($"{this}.First", (_, c) => c.ValueContext.First));
 
             public ValueBuilder Last =>
-                new ValueBuilder(new ValueBuilderStub($"{this}.Last", (_, c) => c.Last));
+                new ValueBuilder(new ValueBuilderStub($"{this}.Last", (_, c) => c.ValueContext.Last));
 
             public ValueBuilder Single =>
-                new ValueBuilder(new ValueBuilderStub($"{this}.Single", (_, c) => c.Single));
+                new ValueBuilder(new ValueBuilderStub($"{this}.Single", (_, c) => c.ValueContext.Single));
         }
     }
 }

@@ -78,8 +78,7 @@ namespace PoESkillTree.Computation.Console.Builders
             return _actionBuilder.Recently(targetPredicate, sourcePredicate);
         }
 
-        IActionBuilder IResolvable<IActionBuilder>.Resolve(
-            IMatchContext<IValueBuilder> valueContext)
+        IActionBuilder IResolvable<IActionBuilder>.Resolve(ResolveContext context)
         {
             return this;
         }

@@ -4,7 +4,6 @@ using PoESkillTree.Computation.Parsing.Builders.Entities;
 using PoESkillTree.Computation.Parsing.Builders.Equipment;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
-using PoESkillTree.Computation.Parsing.Builders.Values;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
@@ -30,8 +29,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IConditionBuilder Not =>
             CreateCondition(This, o => $"not {o}");
 
-        public IConditionBuilder Resolve(IMatchContext<IValueBuilder> valueContext) => 
-            _resolver(this, valueContext);
+        public IConditionBuilder Resolve(ResolveContext context) =>
+            _resolver(this, context);
     }
 
 

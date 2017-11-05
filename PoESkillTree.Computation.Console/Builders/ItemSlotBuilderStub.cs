@@ -1,6 +1,5 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders.Equipment;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
-using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
@@ -15,7 +14,7 @@ namespace PoESkillTree.Computation.Console.Builders
             _resolver = resolver;
         }
 
-        public IItemSlotBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
-            _resolver(this, valueContext);
+        public IItemSlotBuilder Resolve(ResolveContext context) =>
+            _resolver(this, context);
     }
 }

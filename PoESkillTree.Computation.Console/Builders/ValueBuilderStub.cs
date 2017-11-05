@@ -56,8 +56,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IValueBuilder Floored => CreateValue(This, o => $"Floor({o})");
         public IValueBuilder Ceiled => CreateValue(This, o => $"Ceil({o})");
 
-        public IValueBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
-            _resolver(this, valueContext);
+        public IValueBuilder Resolve(ResolveContext context) =>
+            _resolver(this, context);
     }
 
 
@@ -65,8 +65,8 @@ namespace PoESkillTree.Computation.Console.Builders
     {
         public IThenBuilder If(IConditionBuilder condition)
         {
-            IThenBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
-                new ThenBuilder($"if ({condition.Resolve(valueContext)})", (current, _) => current);
+            IThenBuilder Resolve(ResolveContext context) =>
+                new ThenBuilder($"if ({condition.Resolve(context)})", (current, _) => current);
 
             return new ThenBuilder($"if ({condition})", (_, context) => Resolve(context));
         }
@@ -95,10 +95,10 @@ namespace PoESkillTree.Computation.Console.Builders
 
             public IConditionalValueBuilder Then(IValueBuilder value)
             {
-                IConditionalValueBuilder Resolve(IMatchContext<IValueBuilder> valueContext)
+                IConditionalValueBuilder Resolve(ResolveContext context)
                 {
                     return new ConditionalValueBuilder(
-                        $"{this.Resolve(valueContext)} else if ({value.Resolve(valueContext)})",
+                        $"{this.Resolve(context)} else if ({value.Resolve(context)})",
                         (current, _) => current);
                 }
 
@@ -108,10 +108,10 @@ namespace PoESkillTree.Computation.Console.Builders
 
             public IConditionalValueBuilder Then(double value)
             {
-                IConditionalValueBuilder Resolve(IMatchContext<IValueBuilder> valueContext)
+                IConditionalValueBuilder Resolve(ResolveContext context)
                 {
                     return new ConditionalValueBuilder(
-                        $"{this.Resolve(valueContext)} else if ({value})",
+                        $"{this.Resolve(context)} else if ({value})",
                         (current, _) => current);
                 }
 
@@ -119,8 +119,8 @@ namespace PoESkillTree.Computation.Console.Builders
                     (_, context) => Resolve(context));
             }
 
-            public IThenBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
-                _resolver(this, valueContext);
+            public IThenBuilder Resolve(ResolveContext context) =>
+                _resolver(this, context);
         }
 
 
@@ -140,10 +140,10 @@ namespace PoESkillTree.Computation.Console.Builders
 
             public IThenBuilder ElseIf(IConditionBuilder condition)
             {
-                IThenBuilder Resolve(IMatchContext<IValueBuilder> valueContext)
+                IThenBuilder Resolve(ResolveContext context)
                 {
                     return new ThenBuilder(
-                        $"{this.Resolve(valueContext)} else if ({condition.Resolve(valueContext)})",
+                        $"{this.Resolve(context)} else if ({condition.Resolve(context)})",
                         (current, _) => current);
                 }
 
@@ -157,8 +157,8 @@ namespace PoESkillTree.Computation.Console.Builders
             public ValueBuilder Else(double value) =>
                 new ValueBuilder(CreateValue(This, o => $"{o} else {{ {value} }}"));
 
-            public IConditionalValueBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
-                _resolver(this, valueContext);
+            public IConditionalValueBuilder Resolve(ResolveContext context) =>
+                _resolver(this, context);
         }
     }
 }

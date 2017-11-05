@@ -34,13 +34,11 @@ namespace PoESkillTree.Computation.Console.Builders
         {
         }
 
-        private static IActionBuilder Resolve(
-            IActionBuilder current,
-            IMatchContext<IValueBuilder> valueContext)
+        private static IActionBuilder Resolve(IActionBuilder current, ResolveContext context)
         {
             return new ActionBuilderStub<IEntityBuilder, IEntityBuilder>(
-                current.Source.Resolve(valueContext),
-                current.Target.Resolve(valueContext),
+                current.Source.Resolve(context),
+                current.Target.Resolve(context),
                 current.ToString(),
                 (c, _) => c);
         }
@@ -127,8 +125,8 @@ namespace PoESkillTree.Computation.Console.Builders
             new ValueBuilder(
                 CreateValue($"Number of {this} recently by {Source} against {Target}"));
 
-        public IActionBuilder Resolve(IMatchContext<IValueBuilder> valueContext) => 
-            _resolver(this, valueContext);
+        public IActionBuilder Resolve(ResolveContext context) =>
+            _resolver(this, context);
     }
 
 

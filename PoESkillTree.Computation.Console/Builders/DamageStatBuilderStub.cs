@@ -4,7 +4,6 @@ using PoESkillTree.Computation.Parsing.Builders.Damage;
 using PoESkillTree.Computation.Parsing.Builders.Effects;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
-using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
@@ -54,8 +53,8 @@ namespace PoESkillTree.Computation.Console.Builders
                 BuilderFactory.CreateStat((IDamageTakenConversionBuilder) this, (IStatBuilder) pool,
                     (o1, o2) => $"{o1} before {o2}");
 
-            public IDamageTakenConversionBuilder
-                Resolve(IMatchContext<IValueBuilder> valueContext) => _resolver(this, valueContext);
+            public IDamageTakenConversionBuilder Resolve(ResolveContext context) =>
+                _resolver(this, context);
         }
     }
 }

@@ -5,7 +5,6 @@ using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Equipment;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
-using PoESkillTree.Computation.Parsing.Builders.Values;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
@@ -41,8 +40,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IFlagStatBuilder AppliesToMinions =>
             CreateFlagStat(This, o => $"{o} applies to minions");
 
-        public IEquipmentBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
-            _resolver(this, valueContext);
+        public IEquipmentBuilder Resolve(ResolveContext context) =>
+            _resolver(this, context);
     }
 
 

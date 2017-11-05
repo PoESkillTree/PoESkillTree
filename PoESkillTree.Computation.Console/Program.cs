@@ -187,16 +187,16 @@ namespace PoESkillTree.Computation.Console
             var referenceContext = new ResolvedMatchContext<IReferenceConverter>(references.ToList());
             // TODO recursive references
 
-            // TODO add referenceContext parameter to IResolvable
-            // TODO do reference resolving in MatchContextStub.References and/or ReferenceConverterStuv
+            // TODO do reference resolving in MatchContextStub.References and/or ReferenceConverterStub
+            var context = new ResolveContext(valueContext, referenceContext);
             var oldResult = builder.Build();
             return new ModifierBuilder()
-                .WithValues(oldResult.Entries.Select(e => e.Value?.Resolve(valueContext)))
-                .WithForms(oldResult.Entries.Select(e => e.Form?.Resolve(valueContext)))
-                .WithStats(oldResult.Entries.Select(e => e.Stat?.Resolve(valueContext)))
-                .WithConditions(oldResult.Entries.Select(e => e.Condition?.Resolve(valueContext)))
-                .WithValueConverter(v => oldResult.ValueConverter(v)?.Resolve(valueContext))
-                .WithStatConverter(s => oldResult.StatConverter(s)?.Resolve(valueContext));
+                .WithValues(oldResult.Entries.Select(e => e.Value?.Resolve(context)))
+                .WithForms(oldResult.Entries.Select(e => e.Form?.Resolve(context)))
+                .WithStats(oldResult.Entries.Select(e => e.Stat?.Resolve(context)))
+                .WithConditions(oldResult.Entries.Select(e => e.Condition?.Resolve(context)))
+                .WithValueConverter(v => oldResult.ValueConverter(v)?.Resolve(context))
+                .WithStatConverter(s => oldResult.StatConverter(s)?.Resolve(context));
         }
 
         private static IReferenceConverter Resolve(

@@ -64,8 +64,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IFlagStatBuilder AddTo(IEffectBuilder effect) =>
             CreateFlagStat(This, effect, (o1, o2) => $"{o1} added to effect {o2}");
 
-        public IStatBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
-            _resolver(this, valueContext);
+        public IStatBuilder Resolve(ResolveContext context) =>
+            _resolver(this, context);
     }
 
 

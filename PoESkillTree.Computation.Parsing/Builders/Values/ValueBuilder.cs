@@ -166,8 +166,8 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
         IValueBuilder IValueBuilder.Ceiled => _value.Ceiled;
         public ValueBuilder Ceiled => Wrap(_value.Ceiled);
 
-        public IValueBuilder Resolve(IMatchContext<IValueBuilder> valueContext) => 
-            _value.Resolve(valueContext);
+        public IValueBuilder Resolve(ResolveContext context) => 
+            _value.Resolve(context);
 
         public override string ToString()
         {

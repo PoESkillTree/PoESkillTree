@@ -4,7 +4,6 @@ using PoESkillTree.Computation.Parsing.Builders.Entities;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
-using PoESkillTree.Computation.Parsing.Builders.Values;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
@@ -116,7 +115,7 @@ namespace PoESkillTree.Computation.Console.Builders
             CreateFlagStat(This, (IKeywordBuilder) damageType, 
                 (o1, o2) => $"{o1} recovers based on {o2} instead");
 
-        public ILeechStatBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
-            _resolver(this, valueContext);
+        public ILeechStatBuilder Resolve(ResolveContext context) =>
+            _resolver(this, context);
     }
 }

@@ -8,7 +8,6 @@ using PoESkillTree.Computation.Parsing.Builders.Equipment;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
-using PoESkillTree.Computation.Parsing.Builders.Values;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
@@ -57,8 +56,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder AreaOfEffect =>
             CreateStat(This, o => $"{o} area of effect");
 
-        public ISkillBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
-            _resolver(this, valueContext);
+        public ISkillBuilder Resolve(ResolveContext context) =>
+            _resolver(this, context);
     }
 
 

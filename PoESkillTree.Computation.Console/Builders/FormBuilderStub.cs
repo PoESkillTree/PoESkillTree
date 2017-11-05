@@ -1,6 +1,5 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders.Forms;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
-using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
@@ -14,8 +13,8 @@ namespace PoESkillTree.Computation.Console.Builders
             _resolver = resolver;
         }
 
-        public IFormBuilder Resolve(IMatchContext<IValueBuilder> valueContext) =>
-            _resolver(this, valueContext);
+        public IFormBuilder Resolve(ResolveContext context) =>
+            _resolver(this, context);
     }
 
 
