@@ -64,6 +64,7 @@
     <Compile Include="Builders\Damage\IDamageSourceBuilders.cs" />
     <Compile Include="Builders\Damage\IDamageTypeBuilder.cs" />
     <Compile Include="Builders\Damage\IDamageTypeBuilders.cs" />
+    <Compile Include="Builders\Equipment\IItemSlotBuilders.cs" />
     <Compile Include="Builders\Matching\IResolvable.cs" />
     <Compile Include="Builders\Matching\ResolvedMatchContext.cs" />
     <Compile Include="ModifierBuilding\SimpleModifierResult.cs" />

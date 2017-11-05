@@ -101,7 +101,7 @@ namespace PoESkillTree.Computation.Console
             new ChargeTypeMatchers(builderFactories.ChargeTypeBuilders), 
             new DamageTypeMatchers(builderFactories.DamageTypeBuilders), 
             new FlagMatchers(builderFactories.StatBuilders.Flag),
-            new ItemSlotMatchers(), 
+            new ItemSlotMatchers(new ItemSlotBuildersStub()), 
             new KeywordMatchers(builderFactories.KeywordBuilders), 
             new SkillMatchers(builderFactories.SkillBuilders),
         };

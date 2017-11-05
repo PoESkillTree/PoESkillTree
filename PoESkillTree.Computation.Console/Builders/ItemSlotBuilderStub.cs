@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Parsing.Builders.Equipment;
+﻿using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.Computation.Parsing.Builders.Equipment;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 
 namespace PoESkillTree.Computation.Console.Builders
@@ -16,5 +17,13 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IItemSlotBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
+    }
+
+    public class ItemSlotBuildersStub : IItemSlotBuilders
+    {
+        public IItemSlotBuilder From(ItemSlot slot)
+        {
+            return new ItemSlotBuilderStub(slot.ToString(), (c, _) => c);
+        }
     }
 }
