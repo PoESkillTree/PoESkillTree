@@ -176,19 +176,25 @@ namespace PoESkillTree.Computation.Console
                 select BuilderFactory.CreateValue(pair.Value);
             var valueContext = new ResolvedMatchContext<IValueBuilder>(values.ToList());
 
+            var groupNames = groups.Keys.ToList();
             var references =
-                from groupName in groups.Keys
+                from groupName in groupNames
                 where groupName.StartsWith("reference")
                 let parts = groupName.Split('_')
                 where parts.Length == 3
                 let referenceName = parts[1]
                 let matcherIndex = int.Parse(parts[2])
-                select Resolve(referenceManager, referenceName, matcherIndex);
+                let referencePrefix = parts[0] + "_"
+                select Resolve(referenceManager, referenceName, matcherIndex, referencePrefix, groupNames);
             var referenceContext = new ResolvedMatchContext<IReferenceConverter>(references.ToList());
-            // TODO recursive references
 
             var context = new ResolveContext(valueContext, referenceContext);
-            var oldResult = builder.Build();
+            return Resolve(builder, context);
+        }
+
+        private static IModifierBuilder Resolve(IModifierBuilder unresolvedBuilder, ResolveContext context)
+        {
+            var oldResult = unresolvedBuilder.Build();
             return new ModifierBuilder()
                 .WithValues(oldResult.Entries.Select(e => e.Value?.Resolve(context)))
                 .WithForms(oldResult.Entries.Select(e => e.Form?.Resolve(context)))
@@ -199,7 +205,11 @@ namespace PoESkillTree.Computation.Console
         }
 
         private static IReferenceConverter Resolve(
-            IReferenceToMatcherDataResolver referenceManager, string referenceName, int matcherIndex)
+            IReferenceToMatcherDataResolver referenceManager, 
+            string referenceName, 
+            int matcherIndex, 
+            string referencePrefix,
+            IReadOnlyList<string> groups)
         {
             if (referenceManager.TryGetReferencedMatcherData(referenceName, matcherIndex, out var referencedMatcherData))
             {
@@ -207,9 +217,25 @@ namespace PoESkillTree.Computation.Console
             }
             if (referenceManager.TryGetMatcherData(referenceName, matcherIndex, out var matcherData))
             {
+                var valueContext = new ResolvedMatchContext<IValueBuilder>(new IValueBuilder[0]);
+
+                var nestedReferences =
+                    from groupName in groups
+                    where groupName.StartsWith(referencePrefix)
+                    let suffix = groupName.Substring(referencePrefix.Length)
+                    let parts = suffix.Split('_')
+                    where parts.Length == 3
+                    let nestedReferenceName = parts[1]
+                    let nestedMatcherIndex = int.Parse(parts[2])
+                    let nestedReferencePrefix = referencePrefix + parts[0] + "_"
+                    select Resolve(referenceManager, nestedReferenceName, nestedMatcherIndex, nestedReferencePrefix, groups);
+                var referenceContext = new ResolvedMatchContext<IReferenceConverter>(nestedReferences.ToList());
+
+                var context = new ResolveContext(valueContext, referenceContext);
+                var builder = Resolve(matcherData.ModifierBuilder, context);
                 // TODO ModifierBuilder may contain a condition that also needs to be taken into account
                 // TODO validate that it only has one entry with stat and optionally condition and no converters?
-                return new ReferenceConverter(matcherData.ModifierBuilder.Build().Entries.First().Stat);
+                return new ReferenceConverter(builder.Build().Entries.First().Stat);
             }
             return new ReferenceConverter(null);
         }
