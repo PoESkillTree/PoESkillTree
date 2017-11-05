@@ -1,32 +1,11 @@
-﻿using System;
-using PoESkillTree.Computation.Parsing.Builders.Matching;
+﻿using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
-    public class MatchContextStub<T> : BuilderStub, IMatchContext<T>
-    {
-        private readonly Func<string, T> _tFactory;
-
-        public MatchContextStub(string stringRepresentation, Func<string, T> tFactory) 
-            : base(stringRepresentation)
-        {
-            _tFactory = tFactory;
-        }
-
-        public T this[int index] => _tFactory($"{this}[{index}]");
-
-        public T First => _tFactory($"{this}.First");
-        public T Last => _tFactory($"{this}.Last");
-        public T Single => _tFactory($"{this}.Single");
-    }
-
-
     public class MatchContextsStub : IMatchContexts
     {
-        public IMatchContext<IReferenceConverter> References =>
-            new MatchContextStub<IReferenceConverter>("References",
-                s => new ReferenceConverterStub(s));
+        public IMatchContext<IReferenceConverter> References => new ReferenceMatchContext();
 
         public IMatchContext<ValueBuilder> Values => new ValueMatchContext();
 
@@ -48,6 +27,26 @@ namespace PoESkillTree.Computation.Console.Builders
 
             public ValueBuilder Single =>
                 new ValueBuilder(new ValueBuilderStub($"{this}.Single", (_, c) => c.ValueContext.Single));
+        }
+
+
+        private class ReferenceMatchContext : BuilderStub, IMatchContext<IReferenceConverter>
+        {
+            public ReferenceMatchContext() : base("References")
+            {
+            }
+
+            public IReferenceConverter this[int index] =>
+                new ReferenceConverterStub($"{this}[{index}]", (_, c) => c.ReferenceContext[index]);
+
+            public IReferenceConverter First =>
+                new ReferenceConverterStub($"{this}.First", (_, c) => c.ReferenceContext.First);
+
+            public IReferenceConverter Last =>
+                new ReferenceConverterStub($"{this}.Last", (_, c) => c.ReferenceContext.Last);
+
+            public IReferenceConverter Single =>
+                new ReferenceConverterStub($"{this}.Single", (_, c) => c.ReferenceContext.Single);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Minimum => CreateStat(This, o => $"Minimum {o}");
         public IStatBuilder Maximum => CreateStat(This, o => $"Maximum {o}");
 
-        public ValueBuilder Value => new ValueBuilder(CreateValue("Value of " + this));
+        public ValueBuilder Value => new ValueBuilder(CreateValue(This, o => $"Value of {o}"));
 
         public IStatBuilder ConvertTo(IStatBuilder stat) =>
             CreateStat(This, stat, (o1, o2) => $"% of {o1} converted to {o2}");

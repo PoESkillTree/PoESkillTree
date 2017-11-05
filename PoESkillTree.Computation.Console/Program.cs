@@ -187,7 +187,6 @@ namespace PoESkillTree.Computation.Console
             var referenceContext = new ResolvedMatchContext<IReferenceConverter>(references.ToList());
             // TODO recursive references
 
-            // TODO do reference resolving in MatchContextStub.References and/or ReferenceConverterStub
             var context = new ResolveContext(valueContext, referenceContext);
             var oldResult = builder.Build();
             return new ModifierBuilder()

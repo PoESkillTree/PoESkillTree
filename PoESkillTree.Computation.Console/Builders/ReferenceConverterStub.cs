@@ -6,47 +6,54 @@ using PoESkillTree.Computation.Parsing.Builders.Equipment;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
+using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
     public class ReferenceConverterStub : BuilderStub, IReferenceConverter
     {
-        public ReferenceConverterStub(string stringRepresentation)
+        private readonly Resolver<IReferenceConverter> _resolver;
+
+        public ReferenceConverterStub(string stringRepresentation, Resolver<IReferenceConverter> resolver)
             : base(stringRepresentation)
         {
+            _resolver = resolver;
         }
 
         public IDamageTypeBuilder AsDamageType =>
-            new DamageTypeBuilderStub($"{this}.AsDamageType", (c, _) => c);
+            new DamageTypeBuilderStub($"{this}.AsDamageType", (_, context) => Resolve(context).AsDamageType);
 
         public IChargeTypeBuilder AsChargeType =>
-            new ChargeTypeBuilderStub($"{this}.AsChargeType", (c, _) => c);
+            new ChargeTypeBuilderStub($"{this}.AsChargeType", (_, context) => Resolve(context).AsChargeType);
 
         public IAilmentBuilder AsAilment =>
-            new AilmentBuilderStub($"{this}.AsAilment", (c, _) => c);
+            new AilmentBuilderStub($"{this}.AsAilment", (_, context) => Resolve(context).AsAilment);
 
         public IKeywordBuilder AsKeyword =>
-            new KeywordBuilderStub($"{this}.AsKeyword", (c, _) => c);
+            new KeywordBuilderStub($"{this}.AsKeyword", (_, context) => Resolve(context).AsKeyword);
 
         public IItemSlotBuilder AsItemSlot =>
-            new ItemSlotBuilderStub($"{this}.AsItemSlot", (c, _) => c);
+            new ItemSlotBuilderStub($"{this}.AsItemSlot", (_, context) => Resolve(context).AsItemSlot);
 
         public ISelfToAnyActionBuilder AsAction =>
-            new SelfToAnyActionBuilderStub($"{this}.AsAction", (c, _) => c);
+            new SelfToAnyActionBuilderStub($"{this}.AsAction", (_, context) => Resolve(context).AsAction);
 
         public IStatBuilder AsStat =>
-            new StatBuilderStub($"{this}.AsStat", (c, _) => c);
+            new StatBuilderStub($"{this}.AsStat", (_, context) => Resolve(context).AsStat);
 
         public IFlagStatBuilder AsFlagStat =>
-            new FlagStatBuilderStub($"{this}.AsFlagStat", (c, _) => c);
+            new FlagStatBuilderStub($"{this}.AsFlagStat", (_, context) => Resolve(context).AsFlagStat);
 
         public IPoolStatBuilder AsPoolStat =>
-            new PoolStatBuilderStub($"{this}.AsPoolStat", (c, _) => c);
+            new PoolStatBuilderStub($"{this}.AsPoolStat", (_, context) => Resolve(context).AsPoolStat);
 
         public IDamageStatBuilder AsDamageStat =>
-            new DamageStatBuilderStub($"{this}.AsDamageStat", (c, _) => c);
+            new DamageStatBuilderStub($"{this}.AsDamageStat", (_, context) => Resolve(context).AsDamageStat);
 
         public ISkillBuilder AsSkill =>
-            new SkillBuilderStub($"{this}.AsSkill", (c, _) => c);
+            new SkillBuilderStub($"{this}.AsSkill", (_, context) => Resolve(context).AsSkill);
+
+        private IReferenceConverter Resolve(ResolveContext context) =>
+            _resolver(this, context);
     }
 }
