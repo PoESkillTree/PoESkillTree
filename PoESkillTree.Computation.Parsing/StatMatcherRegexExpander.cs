@@ -92,7 +92,9 @@ namespace PoESkillTree.Computation.Parsing
                 var prefix = referencePrefix + referenceIndex;
                 referenceIndex++;
                 var regexes = _referencedRegexes.GetRegexes(referenceName)
-                    .Select((m, i) => $"(?<{prefix}_{referenceName}_{i}>{ExpandReferences(m, prefix + "_")})");
+                    .Select((matcher, index) => (matcher, index))
+                    .OrderByDescending(t => t.matcher.Length)
+                    .Select(t => $"(?<{prefix}_{referenceName}_{t.index}>{ExpandReferences(t.matcher, prefix + "_")})");
                 var joinedRegex = string.Join("|", regexes);
                 return $@"({joinedRegex})";
             });

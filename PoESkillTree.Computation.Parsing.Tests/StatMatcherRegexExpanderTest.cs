@@ -66,13 +66,13 @@ namespace PoESkillTree.Computation.Parsing.Tests
         [TestCase("test # (.*) # (test2)+", ExpectedResult =
             "^test (?<value0>" + ValueRegex + ") (.*) (?<value1>" + ValueRegex + ") (test2)+$")]
         [TestCase("({Matchers1})", ExpectedResult =
-            "^((?<reference0_Matchers1_0>0+)|(?<reference0_Matchers1_1>[1-9])|(?<reference0_Matchers1_2>(01)+))$")]
+            "^((?<reference0_Matchers1_1>[1-9])|(?<reference0_Matchers1_2>(01)+)|(?<reference0_Matchers1_0>0+))$")]
         [TestCase("test # ({Matchers1}) (.*) # ({Matchers2}) ({Matchers1})", ExpectedResult =
             "^test (?<value0>" + ValueRegex + ")" +
-            " ((?<reference0_Matchers1_0>0+)|(?<reference0_Matchers1_1>[1-9])|(?<reference0_Matchers1_2>(01)+))" +
+            " ((?<reference0_Matchers1_1>[1-9])|(?<reference0_Matchers1_2>(01)+)|(?<reference0_Matchers1_0>0+))" +
             " (.*) (?<value1>" + ValueRegex + ")" +
             " ((?<reference1_Matchers2_0>a)|(?<reference1_Matchers2_1>b)|(?<reference1_Matchers2_2>c)|(?<reference1_Matchers2_3>d))" +
-            " ((?<reference2_Matchers1_0>0+)|(?<reference2_Matchers1_1>[1-9])|(?<reference2_Matchers1_2>(01)+))$")]
+            " ((?<reference2_Matchers1_1>[1-9])|(?<reference2_Matchers1_2>(01)+)|(?<reference2_Matchers1_0>0+))$")]
         public string ExpandsCorrectly(string inputRegex)
         {
             var inputData = new MatcherData(inputRegex, new ModifierBuilder());
@@ -85,15 +85,15 @@ namespace PoESkillTree.Computation.Parsing.Tests
         }
 
         [TestCase("({Matchers3})", ExpectedResult =
-            "^((?<reference0_Matchers3_0>((?<reference0_0_Matchers2_0>a)))" +
-            "|(?<reference0_Matchers3_1>c)" +
-            "|(?<reference0_Matchers3_2>d ((?<reference0_0_Matchers1_0>0+)|(?<reference0_0_Matchers1_1>[1-9])) ((?<reference0_1_Matchers2_0>a))))$")]
+            "^((?<reference0_Matchers3_2>d ((?<reference0_0_Matchers1_1>[1-9])|(?<reference0_0_Matchers1_0>0+)) ((?<reference0_1_Matchers2_0>a)))" +
+            "|(?<reference0_Matchers3_0>((?<reference0_0_Matchers2_0>a)))" +
+            "|(?<reference0_Matchers3_1>c))$")]
         [TestCase("({Matchers4})", ExpectedResult = 
             "^((?<reference0_Matchers4_0>((?<reference0_0_Matchers2_0>a))))$")]
         [TestCase("({Matchers5})", ExpectedResult =
-            "^((?<reference0_Matchers5_0>((?<reference0_0_Matchers1_0>0+)|(?<reference0_0_Matchers1_1>[1-9])))" +
+            "^((?<reference0_Matchers5_0>((?<reference0_0_Matchers1_1>[1-9])|(?<reference0_0_Matchers1_0>0+)))" +
             "|(?<reference0_Matchers5_1>((?<reference0_0_Matchers2_0>a)))" +
-            "|(?<reference0_Matchers5_2>((?<reference0_0_Matchers3_0>((?<reference0_0_0_Matchers2_0>a)))|(?<reference0_0_Matchers3_1>c)|(?<reference0_0_Matchers3_2>d ((?<reference0_0_0_Matchers1_0>0+)|(?<reference0_0_0_Matchers1_1>[1-9])) ((?<reference0_0_1_Matchers2_0>a)))))" +
+            "|(?<reference0_Matchers5_2>((?<reference0_0_Matchers3_2>d ((?<reference0_0_0_Matchers1_1>[1-9])|(?<reference0_0_0_Matchers1_0>0+)) ((?<reference0_0_1_Matchers2_0>a)))|(?<reference0_0_Matchers3_0>((?<reference0_0_0_Matchers2_0>a)))|(?<reference0_0_Matchers3_1>c)))" +
             "|(?<reference0_Matchers5_3>((?<reference0_0_Matchers4_0>((?<reference0_0_0_Matchers2_0>a))))))$")]
         [TestCase("({Matchers6})", ExpectedResult =
             "^((?<reference0_Matchers6_0>((?<reference0_0_Matchers2_0>a))" +
