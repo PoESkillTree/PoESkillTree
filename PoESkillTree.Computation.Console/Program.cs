@@ -69,11 +69,18 @@ namespace PoESkillTree.Computation.Console
             string statLine;
             while ((statLine = System.Console.ReadLine()) != "")
             {
-                if (!parser.TryParse(statLine, out var remaining, out var result))
+                try
                 {
-                    System.Console.WriteLine($"Not recognized: '{remaining}' could not be parsed.");
+                    if (!parser.TryParse(statLine, out var remaining, out var result))
+                    {
+                        System.Console.WriteLine($"Not recognized: '{remaining}' could not be parsed.");
+                    }
+                    System.Console.WriteLine(result == null ? "null" : string.Join("\n", result));
                 }
-                System.Console.WriteLine(result == null ? "null" : string.Join("\n", result));
+                catch (ParseException e)
+                {
+                    System.Console.WriteLine("Parsing failed: " + e.Message);
+                }
                 System.Console.Write("> ");
             }
         }

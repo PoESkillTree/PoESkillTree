@@ -47,7 +47,7 @@ namespace PoESkillTree.Computation.Data
                     (IDamageStatBuilder s) => Entity.Totem.Stat(s.Taken.AsAura(Enemy))
                 },
                 // Keep whole mod line, take is part of the condition matcher
-                { "enemies.* take", (IDamageStatBuilder s) => s.Taken, "$0" },
+                { "enemies .+ take", (IDamageStatBuilder s) => s.Taken, "$0" },
                 {
                     "(?<inner>chance to .*) for # seconds",
                     s => s.ForXSeconds(Value).ChanceOn(Self), "${inner}"

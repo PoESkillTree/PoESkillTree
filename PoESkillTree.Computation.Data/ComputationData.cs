@@ -96,10 +96,6 @@ Recover #% of Life and Mana when you use a Warcry
 #% chance that if you would gain Endurance Charges, you instead gain up to your maximum number of Endurance Charges
  */
 
-// As another form of showing that a mod is not supported, matcher implementations 
-// themselves may signal that
-// they are not yet supported by throwing a ParseException that is caught somewhere.
-
 /* Order of matcher referencing:
  * 
  * Can be referenced by everything else: Action-, Ailment-, ChargeType-, Damage-, Flag-, ItemSlot-
