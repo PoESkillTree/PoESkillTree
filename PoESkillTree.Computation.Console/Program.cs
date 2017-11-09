@@ -6,7 +6,9 @@ using PoESkillTree.Computation.Console.Builders;
 using PoESkillTree.Computation.Data;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.Computation.Parsing.Builders;
+using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
+using PoESkillTree.Computation.Parsing.Builders.Stats;
 using PoESkillTree.Computation.Parsing.Builders.Values;
 using PoESkillTree.Computation.Parsing.Data;
 using PoESkillTree.Computation.Parsing.ModifierBuilding;
@@ -240,11 +242,44 @@ namespace PoESkillTree.Computation.Console
 
                 var context = new ResolveContext(valueContext, referenceContext);
                 var builder = Resolve(matcherData.ModifierBuilder, context);
-                // TODO ModifierBuilder may contain a condition that also needs to be taken into account
-                // TODO validate that it only has one entry with stat and optionally condition and no converters?
-                return new ReferenceConverter(builder.Build().Entries.First().Stat);
+                var modifierResult = builder.Build();
+                if (modifierResult.Entries.Count != 1)
+                    throw new ParseException(
+                        $"Referenced matchers must have exactly one ModifierResultEntry, {modifierResult.Entries.Count} given ({modifierResult})");
+
+                var entry = modifierResult.Entries.Single();
+                if (entry.Value != null)
+                    throw new ParseException($"Referenced matchers may not have values ({entry})");
+                if (entry.Form != null)
+                    throw new ParseException($"Referenced matchers may not have forms ({entry})");
+                if (entry.Stat == null)
+                    throw new ParseException($"Referenced matchers must have stats ({entry})");
+                var stat = modifierResult.StatConverter(entry.Stat);
+                if (entry.Condition != null)
+                {
+                    stat = AddCondition(stat, entry.Condition);
+                }
+                return new ReferenceConverter(stat);
             }
             return new ReferenceConverter(null);
+        }
+
+        private static IStatBuilder AddCondition(IStatBuilder stat, IConditionBuilder condition)
+        {
+            // TODO not pretty, but conditions in stats will have to be properly implemented anyway
+            var stringRepresentation = $"{stat} ({condition})";
+            IStatBuilder Resolve(IStatBuilder s, ResolveContext _) => s;
+            switch (stat)
+            {
+                case IFlagStatBuilder _:
+                    return new FlagStatBuilderStub(stringRepresentation, Resolve);
+                case IPoolStatBuilder _:
+                    return new PoolStatBuilderStub(stringRepresentation, Resolve);
+                case IDamageStatBuilder _:
+                    return new DamageStatBuilderStub(stringRepresentation, Resolve);
+                default:
+                    return new StatBuilderStub(stringRepresentation, Resolve);
+            }
         }
     }
 }
