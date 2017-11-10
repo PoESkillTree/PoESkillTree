@@ -68,6 +68,7 @@
     <Compile Include="Builders\Equipment\IItemSlotBuilders.cs" />
     <Compile Include="Builders\Matching\IResolvable.cs" />
     <Compile Include="Builders\Matching\ResolvedMatchContext.cs" />
+    <Compile Include="MatcherDataParser.cs" />
     <Compile Include="ModifierBuilding\SimpleModifierResult.cs" />
     <Compile Include="ModifierBuilding\IModifierResult.cs" />
     <Compile Include="ModifierBuilding\ModifierResultExtensions.cs" />

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Console.Builders;
 using PoESkillTree.Computation.Data;
@@ -30,9 +29,11 @@ namespace PoESkillTree.Computation.Console
             IParser<IModifierResult> CreateInnerParser(IStatMatchers statMatchers) =>
                 new CachingParser<IModifierResult>(
                     new StatNormalizingParser<IModifierResult>(
-                        new ParserWithResultSelector<IModifierBuilder,IModifierResult>(
+                        new ParserWithResultSelector<IModifierBuilder, IModifierResult>(
                             new DummyParser( // TODO
-                                new StatMatcherRegexExpander(statMatchers, referenceManager), referenceManager),
+                                new MatcherDataParser(
+                                    new StatMatcherRegexExpander(statMatchers, referenceManager)),
+                                referenceManager),
                             b => b?.Build())));
 
             var statMatchersFactory = new StatMatchersSelector(statMatchersList);
@@ -116,60 +117,30 @@ namespace PoESkillTree.Computation.Console
         };
 
         /* Proper implementation missing: (replacing DummyParser in InnerParser() function)
-         * - leaf parsers (what DummyParser does)
          * - some parser doing the match context resolving after leaf parser
          *   (what Resolve() does)
          */
 
         private class DummyParser : IParser<IModifierBuilder>
         {
-            private readonly IEnumerable<MatcherData> _statMatchers;
+            private readonly IParser<MatcherDataParser.Result> _innerParser;
             private readonly IReferenceToMatcherDataResolver _referenceManager;
 
-            public DummyParser(IEnumerable<MatcherData> statMatchers, IReferenceToMatcherDataResolver referenceManager)
+            public DummyParser(IParser<MatcherDataParser.Result> innerParser, IReferenceToMatcherDataResolver referenceManager)
             {
-                _statMatchers = statMatchers;
+                _innerParser = innerParser;
                 _referenceManager = referenceManager;
-            }
-
-            private static Regex CreateRegex(string regex)
-            {
-                return new Regex(regex,
-                    RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
             }
 
             public bool TryParse(string stat, out string remaining, out IModifierBuilder result)
             {
-                var xs =
-                    from m in _statMatchers
-                    let regex = CreateRegex(m.Regex)
-                    let match = regex.Match(stat)
-                    where match.Success
-                    orderby match.Length descending
-                    let replaced = stat.Substring(0, match.Index)
-                                   + match.Result(m.MatchSubstitution)
-                                   + stat.Substring(match.Index + match.Length)
-                    select new { m.ModifierBuilder, match.Value, Result = replaced, Groups = SelectGroups(regex, match.Groups) };
-
-                var x = xs.FirstOrDefault();
-                if (x == null)
+                if (!_innerParser.TryParse(stat, out remaining, out var innerResult))
                 {
-                    result = null;
-                    remaining = stat;
+                    result = innerResult?.ModifierBuilder;
                     return false;
                 }
-                result = Resolve(x.ModifierBuilder, x.Groups, _referenceManager);
-                remaining = x.Result;
+                result = Resolve(innerResult.ModifierBuilder, innerResult.Groups, _referenceManager);
                 return true;
-            }
-
-            private static IReadOnlyDictionary<string, string> SelectGroups(
-                Regex regex,
-                GroupCollection groups)
-            {
-                return regex.GetGroupNames()
-                    .Where(gn => !string.IsNullOrEmpty(groups[gn].Value))
-                    .ToDictionary(gn => gn, gn => groups[gn].Value);
             }
         }
 
@@ -267,6 +238,7 @@ namespace PoESkillTree.Computation.Console
         private static IStatBuilder AddCondition(IStatBuilder stat, IConditionBuilder condition)
         {
             // TODO not pretty, but conditions in stats will have to be properly implemented anyway
+            //      (IStatBuilder WithCondition(IConditionBuilder) as new method in IStatBuilder or something)
             var stringRepresentation = $"{stat} ({condition})";
             IStatBuilder Resolve(IStatBuilder s, ResolveContext _) => s;
             switch (stat)
