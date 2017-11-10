@@ -1,5 +1,6 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Buffs;
+using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Effects;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
@@ -63,6 +64,9 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IFlagStatBuilder AddTo(IEffectBuilder effect) =>
             CreateFlagStat(This, effect, (o1, o2) => $"{o1} added to effect {o2}");
+
+        public virtual IStatBuilder WithCondition(IConditionBuilder condition) => 
+            CreateStat(This, condition, (s, c) => $"{s} ({c})");
 
         public IStatBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);

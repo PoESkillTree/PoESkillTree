@@ -202,6 +202,55 @@ namespace PoESkillTree.Computation.Console.Builders
 
         #endregion
 
+        #region IPoolStatBuilder
+
+        public static IPoolStatBuilder CreatePoolStat<T1, T2>(
+            [CanBeNull] T1 operand1, [CanBeNull] T2 operand2,
+            Func<T1, T2, string> stringRepresentation)
+            where T1 : class, IResolvable<T1>
+            where T2 : class, IResolvable<T2>
+        {
+            return (IPoolStatBuilder) Create<IStatBuilder, T1, T2>(CreatePoolStat, operand1,
+                operand2, stringRepresentation);
+        }
+
+        private static IPoolStatBuilder CreatePoolStat(string stringRepresentation,
+            Resolver<IStatBuilder> resolver)
+        {
+            return new PoolStatBuilderStub(stringRepresentation, resolver);
+        }
+
+        #endregion
+
+        #region IDamageStatBuilder
+
+        public static IDamageStatBuilder CreateDamageStat<T>(
+            [CanBeNull] T operand,
+            Func<T, string> stringRepresentation)
+            where T : class, IResolvable<T>
+        {
+            return (IDamageStatBuilder) Create<IStatBuilder, T>(CreateDamageStat, operand,
+                stringRepresentation);
+        }
+
+        public static IDamageStatBuilder CreateDamageStat<T1, T2>(
+            [CanBeNull] T1 operand1, [CanBeNull] T2 operand2,
+            Func<T1, T2, string> stringRepresentation)
+            where T1 : class, IResolvable<T1>
+            where T2 : class, IResolvable<T2>
+        {
+            return (IDamageStatBuilder) Create<IStatBuilder, T1, T2>(CreateDamageStat, operand1,
+                operand2, stringRepresentation);
+        }
+
+        private static IDamageStatBuilder CreateDamageStat(string stringRepresentation,
+            Resolver<IStatBuilder> resolver)
+        {
+            return new DamageStatBuilderStub(stringRepresentation, resolver);
+        }
+
+        #endregion
+
         public static TOut Create<TOut, T>(
             Func<string, Resolver<TOut>, TOut> constructor,
             [CanBeNull] T operand,

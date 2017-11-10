@@ -16,6 +16,9 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder Effect => CreateStat(This, o => $"Effect of {o}");
         public IStatBuilder Duration => CreateStat(This, o => $"Duration of {o}");
+
+        public override IStatBuilder WithCondition(IConditionBuilder condition) => 
+            CreateFlagStat(This, condition, (s, c) => $"{s} ({c})");
     }
 
 

@@ -41,9 +41,7 @@ namespace PoESkillTree.Computation.Console.Builders
             CreateStat(This, o => $"{o} Resistance");
 
         public IDamageStatBuilder Damage =>
-            (IDamageStatBuilder) Create<IStatBuilder, IKeywordBuilder>(
-                (s, r) => new DamageStatBuilderStub(s, r),
-                This, o => $"{o} Damage");
+            CreateDamageStat(This, o => $"{o} Damage");
 
         public IConditionBuilder DamageOverTimeIsOn(IEntityBuilder entity) =>
             CreateCondition(This, entity,

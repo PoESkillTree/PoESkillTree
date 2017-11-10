@@ -36,17 +36,13 @@ namespace PoESkillTree.Computation.Console.Builders
                 (o1, o2) => $"{o1} hit by {o2} Damage recently");
 
         public IDamageStatBuilder Stat(IDamageStatBuilder stat) =>
-            (IDamageStatBuilder) Create<IStatBuilder, IEntityBuilder, IStatBuilder>(
-                (s, r) => new DamageStatBuilderStub(s, r),
-                This, stat, (o1, o2) => $"{o2} for {o1}");
+            CreateDamageStat(This, (IStatBuilder) stat, (o1, o2) => $"{o2} for {o1}");
 
         public IFlagStatBuilder Stat(IFlagStatBuilder stat) =>
             CreateFlagStat(This, (IStatBuilder) stat, (o1, o2) => $"{o2} for {o1}");
 
         public IPoolStatBuilder Stat(IPoolStatBuilder stat) =>
-            (IPoolStatBuilder) Create<IStatBuilder, IEntityBuilder, IStatBuilder>(
-                (s, r) => new PoolStatBuilderStub(s, r),
-                This, stat, (o1, o2) => $"{o2} for {o1}");
+            CreatePoolStat(This, (IStatBuilder) stat, (o1, o2) => $"{o2} for {o1}");
 
         public IStatBuilder Stat(IStatBuilder stat) =>
             CreateStat(This, stat, (o1, o2) => $"{o2} for {o1}");

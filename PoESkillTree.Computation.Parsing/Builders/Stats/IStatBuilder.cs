@@ -1,4 +1,5 @@
 using PoESkillTree.Computation.Parsing.Builders.Buffs;
+using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Effects;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
@@ -43,5 +44,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Stats
         IFlagStatBuilder AddTo(ISkillBuilderCollection skills);
         // add stat to an effect, e.g. "Consecrated Ground you create grants ... to you and Allies"
         IFlagStatBuilder AddTo(IEffectBuilder effect);
+
+        IStatBuilder WithCondition(IConditionBuilder condition);
     }
 }

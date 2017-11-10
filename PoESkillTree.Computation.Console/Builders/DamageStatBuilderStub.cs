@@ -4,6 +4,7 @@ using PoESkillTree.Computation.Parsing.Builders.Damage;
 using PoESkillTree.Computation.Parsing.Builders.Effects;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
+using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
@@ -14,28 +15,31 @@ namespace PoESkillTree.Computation.Console.Builders
         {
         }
 
-        public IStatBuilder Taken => BuilderFactory.CreateStat(This, o => $"{o} taken");
+        public IStatBuilder Taken => CreateStat(This, o => $"{o} taken");
 
         public IDamageTakenConversionBuilder TakenFrom(IPoolStatBuilder pool) =>
-            BuilderFactory.Create<IDamageTakenConversionBuilder, IStatBuilder, IStatBuilder>(
+            Create<IDamageTakenConversionBuilder, IStatBuilder, IStatBuilder>(
                 (s, r) => new DamageTakenConversionBuilder(s, r),
                 This, pool,
                 (o1, o2) => $"{o1} taken from {o2}");
 
         public IConditionBuilder With() =>
-            BuilderFactory.CreateCondition(This, o => $"With {o}");
+            CreateCondition(This, o => $"With {o}");
 
         public IConditionBuilder With(IDamageSourceBuilder source) =>
-            BuilderFactory.CreateCondition(This, source, (o1, o2) => $"With {o2} {o1}");
+            CreateCondition(This, source, (o1, o2) => $"With {o2} {o1}");
 
         public IConditionBuilder With(Tags tags) =>
-            BuilderFactory.CreateCondition(This, o => $"With {tags} {o}");
+            CreateCondition(This, o => $"With {tags} {o}");
 
         public IConditionBuilder With(IAilmentBuilder ailment) =>
-            BuilderFactory.CreateCondition(This, (IEffectBuilder) ailment, (o1, o2) => $"With {o2} {o1}");
+            CreateCondition(This, (IEffectBuilder) ailment, (o1, o2) => $"With {o2} {o1}");
 
         public IConditionBuilder With(ItemSlot slot) =>
-            BuilderFactory.CreateCondition(This, o => $"With {slot} {o}");
+            CreateCondition(This, o => $"With {slot} {o}");
+
+        public override IStatBuilder WithCondition(IConditionBuilder condition) =>
+            CreateDamageStat(This, condition, (s, c) => $"{s} ({c})");
 
 
         private class DamageTakenConversionBuilder : BuilderStub, IDamageTakenConversionBuilder
@@ -50,7 +54,7 @@ namespace PoESkillTree.Computation.Console.Builders
             }
 
             public IStatBuilder Before(IPoolStatBuilder pool) =>
-                BuilderFactory.CreateStat((IDamageTakenConversionBuilder) this, (IStatBuilder) pool,
+                CreateStat((IDamageTakenConversionBuilder) this, (IStatBuilder) pool,
                     (o1, o2) => $"{o1} before {o2}");
 
             public IDamageTakenConversionBuilder Resolve(ResolveContext context) =>
