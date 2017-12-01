@@ -12,7 +12,6 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 
     public class ModifierResultResolver : IModifierResultResolver
     {
-        // TODO tests
         private readonly IModifierBuilder _builder;
 
         public ModifierResultResolver(IModifierBuilder builder)
@@ -34,26 +33,24 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 
         public IStatBuilder ResolveToReferencedBuilder(IModifierResult unresolvedResult, ResolveContext context)
         {
-            var result = Resolve(unresolvedResult, context);
-
-            if (result.Entries.Count != 1)
+            if (unresolvedResult.Entries.Count != 1)
                 throw new ParseException(
-                    $"Referenced matchers must have exactly one ModifierResultEntry, {result.Entries.Count} given ({result})");
+                    $"Referenced matchers must have exactly one ModifierResultEntry, {unresolvedResult.Entries.Count} given ({unresolvedResult})");
 
-            var entry = result.Entries.Single();
+            var entry = unresolvedResult.Entries.Single();
             if (entry.Value != null)
                 throw new ParseException($"Referenced matchers may not have values ({entry})");
             if (entry.Form != null)
                 throw new ParseException($"Referenced matchers may not have forms ({entry})");
             if (entry.Stat == null)
                 throw new ParseException($"Referenced matchers must have stats ({entry})");
-            var stat = result.StatConverter(entry.Stat);
+            var stat = unresolvedResult.StatConverter(entry.Stat);
             if (entry.Condition != null)
             {
                 stat = stat.WithCondition(entry.Condition);
             }
 
-            return stat;
+            return stat.Resolve(context);
         }
     }
 }
