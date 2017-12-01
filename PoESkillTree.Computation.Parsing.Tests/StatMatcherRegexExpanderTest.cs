@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
             var data = sut.First();
 
-            Assert.AreSame(DefaultMatcherData.ModifierBuilder, data.ModifierBuilder);
+            Assert.AreSame(DefaultMatcherData.ModifierResult, data.ModifierResult);
         }
 
         [Test]

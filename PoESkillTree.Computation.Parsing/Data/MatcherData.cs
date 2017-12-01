@@ -8,14 +8,14 @@ namespace PoESkillTree.Computation.Parsing.Data
     {
         public string Regex { get; }
 
-        public IModifierBuilder ModifierBuilder { get; }
+        public IModifierResult ModifierResult { get; }
 
         public string MatchSubstitution { get; }
 
-        public MatcherData(string regex, IModifierBuilder modifierBuilder, string matchSubstitution = "")
+        public MatcherData(string regex, IModifierResult modifierResult, string matchSubstitution = "")
         {
             Regex = regex;
-            ModifierBuilder = modifierBuilder;
+            ModifierResult = modifierResult;
             MatchSubstitution = matchSubstitution;
         }
     }

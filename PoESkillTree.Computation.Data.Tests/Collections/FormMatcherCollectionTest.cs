@@ -49,8 +49,8 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
 
             var data = _sut.Single();
             Assert.AreEqual("regex", data.Regex);
-            Assert.IsInstanceOf<ModifierBuilderStub>(data.ModifierBuilder);
-            var builder = (ModifierBuilderStub) data.ModifierBuilder;
+            Assert.IsInstanceOf<ModifierBuilderStub>(data.ModifierResult);
+            var builder = (ModifierBuilderStub) data.ModifierResult;
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
             Assert.AreEqual(1, builder.Values.Count());
             Assert.AreSame(value, builder.Values.Single());
@@ -67,8 +67,8 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
 
             var data = _sut.Single();
             Assert.AreEqual("regex", data.Regex);
-            Assert.IsInstanceOf<ModifierBuilderStub>(data.ModifierBuilder);
-            var builder = (ModifierBuilderStub) data.ModifierBuilder;
+            Assert.IsInstanceOf<ModifierBuilderStub>(data.ModifierResult);
+            var builder = (ModifierBuilderStub) data.ModifierResult;
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
             Assert.AreEqual(1, builder.Values.Count());
             Assert.AreSame(value, builder.Values.Single());

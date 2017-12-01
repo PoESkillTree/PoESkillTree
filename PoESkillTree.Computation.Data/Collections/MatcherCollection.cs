@@ -18,12 +18,12 @@ namespace PoESkillTree.Computation.Data.Collections
 
         protected void Add(string regex, IModifierBuilder modifierBuilder)
         {
-            _matchers.Add(new MatcherData(regex, modifierBuilder));
+            _matchers.Add(new MatcherData(regex, modifierBuilder.Build()));
         }
 
         protected void Add(string regex, IModifierBuilder modifierBuilder, string matchSubstitution)
         {
-            _matchers.Add(new MatcherData(regex, modifierBuilder, matchSubstitution));
+            _matchers.Add(new MatcherData(regex, modifierBuilder.Build(), matchSubstitution));
         }
 
         public IEnumerator<MatcherData> GetEnumerator()

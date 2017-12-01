@@ -4,37 +4,37 @@ using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 {
-    public interface IModifierBuilderResolver
+    public interface IModifierResultResolver
     {
-        IModifierBuilder Resolve(IModifierBuilder unresolvedBuilder, ResolveContext context);
-        IStatBuilder ResolveToReferencedBuilder(IModifierBuilder unresolvedBuilder, ResolveContext context);
+        IModifierResult Resolve(IModifierResult unresolvedResult, ResolveContext context);
+        IStatBuilder ResolveToReferencedBuilder(IModifierResult unresolvedResult, ResolveContext context);
     }
 
-    // TODO tests
-    public class ModifierBuilderResolver : IModifierBuilderResolver
+    public class ModifierResultResolver : IModifierResultResolver
     {
+        // TODO tests
         private readonly IModifierBuilder _builder;
 
-        public ModifierBuilderResolver(IModifierBuilder builder)
+        public ModifierResultResolver(IModifierBuilder builder)
         {
             _builder = builder;
         }
 
-        public IModifierBuilder Resolve(IModifierBuilder unresolvedBuilder, ResolveContext context)
+        public IModifierResult Resolve(IModifierResult unresolvedResult, ResolveContext context)
         {
-            var oldResult = unresolvedBuilder.Build();
             return _builder
-                .WithValues(oldResult.Entries.Select(e => e.Value?.Resolve(context)))
-                .WithForms(oldResult.Entries.Select(e => e.Form?.Resolve(context)))
-                .WithStats(oldResult.Entries.Select(e => e.Stat?.Resolve(context)))
-                .WithConditions(oldResult.Entries.Select(e => e.Condition?.Resolve(context)))
-                .WithValueConverter(v => oldResult.ValueConverter(v)?.Resolve(context))
-                .WithStatConverter(s => oldResult.StatConverter(s)?.Resolve(context));
+                .WithValues(unresolvedResult.Entries.Select(e => e.Value?.Resolve(context)))
+                .WithForms(unresolvedResult.Entries.Select(e => e.Form?.Resolve(context)))
+                .WithStats(unresolvedResult.Entries.Select(e => e.Stat?.Resolve(context)))
+                .WithConditions(unresolvedResult.Entries.Select(e => e.Condition?.Resolve(context)))
+                .WithValueConverter(v => unresolvedResult.ValueConverter(v)?.Resolve(context))
+                .WithStatConverter(s => unresolvedResult.StatConverter(s)?.Resolve(context))
+                .Build();
         }
 
-        public IStatBuilder ResolveToReferencedBuilder(IModifierBuilder unresolvedBuilder, ResolveContext context)
+        public IStatBuilder ResolveToReferencedBuilder(IModifierResult unresolvedResult, ResolveContext context)
         {
-            var result = Resolve(unresolvedBuilder, context).Build();
+            var result = Resolve(unresolvedResult, context);
 
             if (result.Entries.Count != 1)
                 throw new ParseException(

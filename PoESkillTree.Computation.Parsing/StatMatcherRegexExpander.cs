@@ -43,7 +43,7 @@ namespace PoESkillTree.Computation.Parsing
             return
                 from data in _statMatchers
                 let regex = Expand(data.Regex, leftDelimiter, rightDelimiter)
-                select new MatcherData(regex, data.ModifierBuilder, data.MatchSubstitution);
+                select new MatcherData(regex, data.ModifierResult, data.MatchSubstitution);
         }
 
         private string Expand(string regex, string leftDelimiter, string rightDelimiter)

@@ -25,7 +25,7 @@ namespace PoESkillTree.Computation.Parsing
                 let replaced = stat.Substring(0, match.Index)
                                + match.Result(m.MatchSubstitution)
                                + stat.Substring(match.Index + match.Length)
-                select new { m.ModifierBuilder, Result = replaced, Groups = SelectGroups(regex, match.Groups) };
+                select new { m.ModifierResult, Result = replaced, Groups = SelectGroups(regex, match.Groups) };
 
             var x = xs.FirstOrDefault();
             if (x == null)
@@ -34,7 +34,7 @@ namespace PoESkillTree.Computation.Parsing
                 remaining = stat;
                 return false;
             }
-            result = new MatcherDataParseResult(x.ModifierBuilder, x.Groups);
+            result = new MatcherDataParseResult(x.ModifierResult, x.Groups);
             remaining = x.Result;
             return true;
         }

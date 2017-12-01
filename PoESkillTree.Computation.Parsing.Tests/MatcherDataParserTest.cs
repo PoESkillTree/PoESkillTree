@@ -46,12 +46,12 @@ namespace PoESkillTree.Computation.Parsing.Tests
         [TestCase("xabx", 2)]
         public void TryParseOutputsCorrectModifierBuilder(string stat, int matcherDataIndex)
         {
-            var expected = DefaultMatcherData[matcherDataIndex].ModifierBuilder;
+            var expected = DefaultMatcherData[matcherDataIndex].ModifierResult;
             var sut = DefaultSut;
 
             sut.TryParse(stat, out var _, out var result);
 
-            Assert.AreEqual(expected, result.ModifierBuilder);
+            Assert.AreEqual(expected, result.ModifierResult);
         }
 
         [TestCase("ac", new[] {"ac", "c"})]
@@ -96,8 +96,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private static MatcherData CreateMatcherData(string regex, string matchSubstitution = "")
         {
-            var modifierBuilder = Mock.Of<IModifierBuilder>();
-            return new MatcherData(regex, modifierBuilder, matchSubstitution);
+            var modifierResult = Mock.Of<IModifierResult>();
+            return new MatcherData(regex, modifierResult, matchSubstitution);
         }
     }
 }

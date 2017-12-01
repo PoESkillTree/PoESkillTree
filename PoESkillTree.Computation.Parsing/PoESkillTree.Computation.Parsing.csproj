@@ -69,7 +69,7 @@
     <Compile Include="Builders\Matching\IResolvable.cs" />
     <Compile Include="Builders\Matching\ResolvedMatchContext.cs" />
     <Compile Include="MatcherDataParser.cs" />
-    <Compile Include="ModifierBuilding\ModifierBuilderResolver.cs" />
+    <Compile Include="ModifierBuilding\ModifierResultResolver.cs" />
     <Compile Include="ModifierBuilding\SimpleModifierResult.cs" />
     <Compile Include="ModifierBuilding\IModifierResult.cs" />
     <Compile Include="ModifierBuilding\ModifierResultExtensions.cs" />

@@ -8,12 +8,12 @@ using PoESkillTree.Computation.Parsing.Referencing;
 namespace PoESkillTree.Computation.Parsing
 {
     // TODO tests
-    public class ResolvingParser : IParser<IModifierBuilder>
+    public class ResolvingParser : IParser<IModifierResult>
     {
         private readonly IParser<MatcherDataParseResult> _innerParser;
         private readonly IReferenceToMatcherDataResolver _referenceManager;
 
-        private readonly IModifierBuilderResolver _modifierBuilderResolver;
+        private readonly IModifierResultResolver _modifierResultResolver;
 
         private readonly IRegexGroupParser _regexGroupParser;
 
@@ -22,25 +22,25 @@ namespace PoESkillTree.Computation.Parsing
         public ResolvingParser(
             IParser<MatcherDataParseResult> innerParser,
             IReferenceToMatcherDataResolver referenceManager, 
-            IModifierBuilderResolver modifierBuilderResolver,
+            IModifierResultResolver modifierResultResolver,
             IRegexGroupParser regexGroupParser)
         {
             _innerParser = innerParser;
             _referenceManager = referenceManager;
-            _modifierBuilderResolver = modifierBuilderResolver;
+            _modifierResultResolver = modifierResultResolver;
             _regexGroupParser = regexGroupParser;
         }
 
-        public bool TryParse(string stat, out string remaining, out IModifierBuilder result)
+        public bool TryParse(string stat, out string remaining, out IModifierResult result)
         {
             if (!_innerParser.TryParse(stat, out remaining, out var innerResult))
             {
-                result = innerResult?.ModifierBuilder;
+                result = innerResult?.ModifierResult;
                 return false;
             }
             _groups = innerResult.Groups;
             var context = CreateContext("");
-            result = _modifierBuilderResolver.Resolve(innerResult.ModifierBuilder, context);
+            result = _modifierResultResolver.Resolve(innerResult.ModifierResult, context);
             return true;
         }
 
@@ -74,7 +74,7 @@ namespace PoESkillTree.Computation.Parsing
             {
                 var context = CreateContext(groupPrefix);
                 var referencedBuilder = 
-                    _modifierBuilderResolver.ResolveToReferencedBuilder(matcherData.ModifierBuilder, context);
+                    _modifierResultResolver.ResolveToReferencedBuilder(matcherData.ModifierResult, context);
                 return new ReferenceConverter(referencedBuilder);
             }
             return new ReferenceConverter(null);

@@ -15,9 +15,9 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         {
             var data = sut.Single();
             Assert.AreEqual(regex, data.Regex);
-            Assert.IsInstanceOf<ModifierBuilderStub>(data.ModifierBuilder);
+            Assert.IsInstanceOf<ModifierBuilderStub>(data.ModifierResult);
             Assert.AreEqual(substitution, data.MatchSubstitution);
-            return (ModifierBuilderStub) data.ModifierBuilder;
+            return (ModifierBuilderStub) data.ModifierResult;
         }
 
         internal static Func<IValueBuilder, ValueBuilder> SetupConverter(

@@ -26,14 +26,15 @@ namespace PoESkillTree.Computation.Console
             IParser<IModifierResult> CreateInnerParser(IStatMatchers statMatchers) =>
                 new CachingParser<IModifierResult>(
                     new StatNormalizingParser<IModifierResult>(
-                        new ParserWithResultSelector<IModifierBuilder, IModifierResult>(
-                            new ResolvingParser(
-                                new MatcherDataParser(
-                                    new StatMatcherRegexExpander(statMatchers, referenceManager)),
-                                referenceManager, 
-                                new ModifierBuilderResolver(new ModifierBuilder()), 
-                                new RegexGroupService(builderFactories.ValueBuilders)), 
-                            b => b?.Build())));
+                        new ResolvingParser(
+                            new MatcherDataParser(
+                                new StatMatcherRegexExpander(statMatchers, referenceManager)),
+                            referenceManager,
+                            new ModifierResultResolver(new ModifierBuilder()),
+                            new RegexGroupService(builderFactories.ValueBuilders)
+                        )
+                    )
+                );
 
             var statMatchersFactory = new StatMatchersSelector(statMatchersList);
             var innerParserCache = new Dictionary<IStatMatchers, IParser<IModifierResult>>();

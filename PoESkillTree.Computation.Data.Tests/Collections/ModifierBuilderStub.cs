@@ -8,14 +8,17 @@ using PoESkillTree.Computation.Parsing.ModifierBuilding;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
 {
-    internal class ModifierBuilderStub : IModifierBuilder
+    internal class ModifierBuilderStub : IModifierBuilder, IModifierResult
     {
         internal IEnumerable<IConditionBuilder> Conditions { get; private set; }
         internal IEnumerable<IFormBuilder> Forms { get; private set; }
         internal IEnumerable<IStatBuilder> Stats { get; private set; }
-        internal Func<IStatBuilder, IStatBuilder> StatConverter { get; private set; }
         internal IEnumerable<IValueBuilder> Values { get; private set; }
-        internal Func<IValueBuilder, IValueBuilder> ValueConverter { get; private set; }
+
+        public IReadOnlyList<ModifierResultEntry> Entries => throw new InvalidOperationException();
+
+        public Func<IStatBuilder, IStatBuilder> StatConverter { get; private set; }
+        public Func<IValueBuilder, IValueBuilder> ValueConverter { get; private set; }
 
         public IModifierBuilder WithCondition(IConditionBuilder condition)
         {
@@ -129,7 +132,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
 
         public IModifierResult Build()
         {
-            throw new InvalidOperationException();
+            return this;
         }
     }
 }

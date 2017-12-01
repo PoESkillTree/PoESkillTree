@@ -5,13 +5,13 @@ namespace PoESkillTree.Computation.Parsing
 {
     public class MatcherDataParseResult
     {
-        public MatcherDataParseResult(IModifierBuilder modifierBuilder, IReadOnlyDictionary<string, string> groups)
+        public MatcherDataParseResult(IModifierResult modifierResult, IReadOnlyDictionary<string, string> groups)
         {
-            ModifierBuilder = modifierBuilder;
+            ModifierResult = modifierResult;
             Groups = groups;
         }
 
-        public IModifierBuilder ModifierBuilder { get; }
+        public IModifierResult ModifierResult { get; }
 
         public IReadOnlyDictionary<string, string> Groups { get; }
     }
