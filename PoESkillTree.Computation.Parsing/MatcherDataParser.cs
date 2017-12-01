@@ -2,11 +2,10 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.Computation.Parsing.Data;
-using PoESkillTree.Computation.Parsing.ModifierBuilding;
 
 namespace PoESkillTree.Computation.Parsing
 {
-    public class MatcherDataParser : IParser<MatcherDataParser.Result>
+    public class MatcherDataParser : IParser<MatcherDataParseResult>
     {
         private readonly IEnumerable<MatcherData> _statMatchers;
 
@@ -15,7 +14,7 @@ namespace PoESkillTree.Computation.Parsing
             _statMatchers = statMatchers;
         }
 
-        public bool TryParse(string stat, out string remaining, out Result result)
+        public bool TryParse(string stat, out string remaining, out MatcherDataParseResult result)
         {
             var xs =
                 from m in _statMatchers
@@ -35,7 +34,7 @@ namespace PoESkillTree.Computation.Parsing
                 remaining = stat;
                 return false;
             }
-            result = new Result(x.ModifierBuilder, x.Groups);
+            result = new MatcherDataParseResult(x.ModifierBuilder, x.Groups);
             remaining = x.Result;
             return true;
         }
@@ -51,19 +50,6 @@ namespace PoESkillTree.Computation.Parsing
             return regex.GetGroupNames()
                 .Where(gn => !string.IsNullOrEmpty(groups[gn].Value))
                 .ToDictionary(gn => gn, gn => groups[gn].Value);
-        }
-
-        public class Result
-        {
-            public Result(IModifierBuilder modifierBuilder, IReadOnlyDictionary<string, string> groups)
-            {
-                ModifierBuilder = modifierBuilder;
-                Groups = groups;
-            }
-
-            public IModifierBuilder ModifierBuilder { get; }
-
-            public IReadOnlyDictionary<string, string> Groups { get; }
         }
     }
 }

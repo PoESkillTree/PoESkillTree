@@ -31,7 +31,8 @@ namespace PoESkillTree.Computation.Console
                                 new MatcherDataParser(
                                     new StatMatcherRegexExpander(statMatchers, referenceManager)),
                                 referenceManager, 
-                                builderFactories.ValueBuilders), 
+                                new ModifierBuilderResolver(new ModifierBuilder()), 
+                                new RegexGroupService(builderFactories.ValueBuilders)), 
                             b => b?.Build())));
 
             var statMatchersFactory = new StatMatchersSelector(statMatchersList);

@@ -6,7 +6,6 @@ using PoESkillTree.Computation.Parsing.Builders.Equipment;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
-using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {

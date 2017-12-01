@@ -69,6 +69,7 @@
     <Compile Include="Builders\Matching\IResolvable.cs" />
     <Compile Include="Builders\Matching\ResolvedMatchContext.cs" />
     <Compile Include="MatcherDataParser.cs" />
+    <Compile Include="ModifierBuilding\ModifierBuilderResolver.cs" />
     <Compile Include="ModifierBuilding\SimpleModifierResult.cs" />
     <Compile Include="ModifierBuilding\IModifierResult.cs" />
     <Compile Include="ModifierBuilding\ModifierResultExtensions.cs" />
@@ -145,7 +146,9 @@
     <Compile Include="Referencing\ReferenceConstants.cs" />
     <Compile Include="Referencing\ReferenceManager.cs" />
     <Compile Include="Referencing\ReferenceValidator.cs" />
+    <Compile Include="Referencing\RegexGroupService.cs" />
     <Compile Include="ResolvingParser.cs" />
+    <Compile Include="MatcherDataParseResult.cs" />
     <Compile Include="StatMatcherRegexExpander.cs" />
     <Compile Include="StatMatchersSelector.cs" />
     <Compile Include="Steps\CompletedStep.cs" />
