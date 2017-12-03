@@ -4,12 +4,6 @@ using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 {
-    public interface IModifierResultResolver
-    {
-        IModifierResult Resolve(IModifierResult unresolvedResult, ResolveContext context);
-        IStatBuilder ResolveToReferencedBuilder(IModifierResult unresolvedResult, ResolveContext context);
-    }
-
     public class ModifierResultResolver : IModifierResultResolver
     {
         private readonly IModifierBuilder _builder;

@@ -1,25 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Parsing.Builders.Values;
+using static PoESkillTree.Computation.Parsing.Referencing.ReferenceConstants;
 
 namespace PoESkillTree.Computation.Parsing.Referencing
 {
-    public interface IRegexGroupParser
-    {
-        IEnumerable<IValueBuilder> ParseValues(
-            IReadOnlyDictionary<string, string> groups, string groupPrefix = "");
-
-        IEnumerable<(string referenceName, int matcherIndex, string groupPrefix)> ParseReferences(
-            IReadOnlyDictionary<string, string> groups, string groupPrefix = "");
-    }
-
     public class RegexGroupService : IRegexGroupParser
     {
         // TODO This depends too heavily on how StatMatcherRegexExpander expands.
         //      Extract group naming into this class (implementing two interfaces)
-        // TODO tests
-        private const string ValueGroupPrefix = "value";
-        private const string ReferenceGroupPrefix = "reference";
 
         private readonly IValueBuilders _valueBuilders;
 
@@ -43,19 +32,25 @@ namespace PoESkillTree.Computation.Parsing.Referencing
         }
 
         public IEnumerable<(string referenceName, int matcherIndex, string groupPrefix)> ParseReferences(
-            IReadOnlyDictionary<string, string> groups, string groupPrefix = "")
+            IEnumerable<string> groupNames, string groupPrefix = "")
         {
             var fullPrefix = ReferenceGroupPrefix + groupPrefix;
             return
-                from groupName in groups.Keys
+                from groupName in groupNames
                 where groupName.StartsWith(fullPrefix)
                 let suffix = groupName.Substring(fullPrefix.Length)
                 let parts = suffix.Split('_')
                 where parts.Length == 3
                 let nestedReferenceName = parts[1]
-                let nestedMatcherIndex = int.Parse(parts[2])
+                let nestedMatcherIndex = TryGet(parts[2])
+                where nestedMatcherIndex.HasValue
                 let nestedGroupPrefix = groupPrefix + parts[0] + "_"
-                select (nestedReferenceName, nestedMatcherIndex, nestedGroupPrefix);
+                select (nestedReferenceName, nestedMatcherIndex.Value, nestedGroupPrefix);
+        }
+
+        private static int? TryGet(string s)
+        {
+            return int.TryParse(s, out var r) ? (int?) r : null;
         }
     }
 }

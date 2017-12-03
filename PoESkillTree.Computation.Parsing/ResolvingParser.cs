@@ -52,7 +52,7 @@ namespace PoESkillTree.Computation.Parsing
             var valueContext = new ResolvedMatchContext<IValueBuilder>(values);
 
             var references = _regexGroupParser
-                .ParseReferences(_groups, groupPrefix)
+                .ParseReferences(_groups.Keys, groupPrefix)
                 .Select(t => ResolveNested(t.referenceName, t.matcherIndex, t.groupPrefix))
                 .ToList();
             var referenceContext = new ResolvedMatchContext<IReferenceConverter>(references);
@@ -60,10 +60,7 @@ namespace PoESkillTree.Computation.Parsing
             return new ResolveContext(valueContext, referenceContext);
         }
 
-        private IReferenceConverter ResolveNested(
-            string referenceName,
-            int matcherIndex,
-            string groupPrefix)
+        private IReferenceConverter ResolveNested(string referenceName, int matcherIndex, string groupPrefix)
         {
             if (_referenceManager.TryGetReferencedMatcherData(referenceName, matcherIndex,
                 out var referencedMatcherData))
