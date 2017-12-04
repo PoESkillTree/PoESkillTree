@@ -22,16 +22,17 @@ namespace PoESkillTree.Computation.Console
                 new MatchContextsStub(), new ModifierBuilder());
             var referencedMatchersList = CreateReferencedMatchers(builderFactories);
             var referenceManager = new ReferenceManager(referencedMatchersList, statMatchersList);
+            var regexGroupService = new RegexGroupService(builderFactories.ValueBuilders);
 
             IParser<IModifierResult> CreateInnerParser(IStatMatchers statMatchers) =>
                 new CachingParser<IModifierResult>(
                     new StatNormalizingParser<IModifierResult>(
                         new ResolvingParser(
                             new MatcherDataParser(
-                                new StatMatcherRegexExpander(statMatchers, referenceManager)),
+                                new StatMatcherRegexExpander(statMatchers, referenceManager, regexGroupService)),
                             referenceManager,
                             new ModifierResultResolver(new ModifierBuilder()),
-                            new RegexGroupService(builderFactories.ValueBuilders)
+                            regexGroupService
                         )
                     )
                 );

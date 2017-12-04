@@ -9,7 +9,7 @@ using static PoESkillTree.Computation.Parsing.Referencing.ReferenceConstants;
 namespace PoESkillTree.Computation.Parsing.Tests.Referencing
 {
     [TestFixture]
-    public class RegexGroupServiceTest
+    public class RegexGroupServiceParserTest
     {
         [Test]
         public void ParseValuesParsesAllGroups()

@@ -25,12 +25,12 @@ namespace PoESkillTree.Computation.Parsing.Referencing
             {
                 var referenceName = referencedMatchers.ReferenceName;
                 var regexes = referencedMatchers.Select(d => d.Regex).ToList();
-                if (regexes.Any(s => s.Contains("#")))
+                if (regexes.Any(s => s.Contains(ValuePlaceholder)))
                 {
                     throw new ParseException(
                         $"A regex of reference {referenceName} contains values");
                 }
-                if (regexes.Any(s => ReferenceRegex.IsMatch(s)))
+                if (regexes.Any(s => ReferencePlaceholderRegex.IsMatch(s)))
                 {
                     throw new ParseException(
                         $"A regex of reference {referenceName} contains references");
@@ -56,7 +56,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
                     continue;
                 }
                 var regexes = statMatchers.Select(d => d.Regex).ToList();
-                if (regexes.Any(s => s.Contains("#")))
+                if (regexes.Any(s => s.Contains(ValuePlaceholder)))
                 {
                     throw new ParseException(
                         $"A regex of reference {string.Join(",", referenceNames)} contains values");
@@ -69,7 +69,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
                             $"The reference name {referenceName} is used by both an IReferencedMatchers and an IStatMatchers");
                     }
                     var containedReferences = regexes
-                        .SelectMany(r => ReferenceRegex.Matches(r).Cast<Match>())
+                        .SelectMany(r => ReferencePlaceholderRegex.Matches(r).Cast<Match>())
                         .Select(m => m.Groups[1].Value);
                     recursiveReferences.GetOrAdd(referenceName, _ => new HashSet<string>())
                         .UnionWith(containedReferences);

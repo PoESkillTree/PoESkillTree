@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.Computation.Parsing.Data;
 using PoESkillTree.Computation.Parsing.Referencing;
+using static PoESkillTree.Computation.Parsing.Referencing.ReferenceConstants;
 
 namespace PoESkillTree.Computation.Parsing
 {
@@ -16,13 +17,17 @@ namespace PoESkillTree.Computation.Parsing
 
         private readonly IStatMatchers _statMatchers;
         private readonly IReferencedRegexes _referencedRegexes;
+        private readonly IRegexGroupFactory _regexGroupFactory;
         private readonly Lazy<IReadOnlyList<MatcherData>> _expanded;
 
-        public StatMatcherRegexExpander(IStatMatchers statMatchers, 
-            IReferencedRegexes referencedRegexes)
+        public StatMatcherRegexExpander(
+            IStatMatchers statMatchers, 
+            IReferencedRegexes referencedRegexes,
+            IRegexGroupFactory regexGroupFactory)
         {
             _statMatchers = statMatchers;
             _referencedRegexes = referencedRegexes;
+            _regexGroupFactory = regexGroupFactory;
             _expanded = new Lazy<IReadOnlyList<MatcherData>>(() => Expand().ToList());
         }
 
@@ -50,7 +55,7 @@ namespace PoESkillTree.Computation.Parsing
         {
             ValidateRegex(regex);
             return leftDelimiter
-                   + ExpandReferences(ExpandValues(regex), "reference")
+                   + ExpandReferences(ExpandValues(regex), "")
                    + rightDelimiter;
         }
 
@@ -59,14 +64,14 @@ namespace PoESkillTree.Computation.Parsing
             var regex = new Regex(regexString);
             foreach (var groupName in regex.GetGroupNames())
             {
-                if (groupName.StartsWith("value") || groupName.StartsWith("reference"))
+                if (groupName.StartsWith(ValueGroupPrefix) || groupName.StartsWith(ReferenceGroupPrefix))
                 {
                     throw new ParseException(
                         $"Regex {regexString} contains invalid group name {groupName}");
                 }
             }
 
-            foreach (Match match in ReferenceConstants.ReferenceRegex.Matches(regexString))
+            foreach (Match match in ReferencePlaceholderRegex.Matches(regexString))
             {
                 var referenceName = match.Groups[1].Value;
                 if (!_referencedRegexes.ContainsReference(referenceName))
@@ -77,24 +82,32 @@ namespace PoESkillTree.Computation.Parsing
             }
         }
 
-        private static string ExpandValues(string regex)
+        private string ExpandValues(string regex)
         {
             var valueIndex = 0;
-            return Regex.Replace(regex, "#", match => $@"(?<value{valueIndex++}>{ValueRegex})");
+            return ValuePlaceholderRegex.Replace(regex, match =>
+            {
+                var prefix = valueIndex.ToString();
+                valueIndex++;
+                return _regexGroupFactory.CreateValueGroup(prefix, ValueRegex);
+            });
         }
 
         private string ExpandReferences(string regex, string referencePrefix)
         {
             var referenceIndex = 0;
-            return ReferenceConstants.ReferenceRegex.Replace(regex, match =>
+            return ReferencePlaceholderRegex.Replace(regex, match =>
             {
                 var referenceName = match.Groups[1].Value;
-                var prefix = referencePrefix + referenceIndex;
+                var prefix = _regexGroupFactory.CombineGroupPrefixes(referencePrefix, referenceIndex.ToString());
                 referenceIndex++;
-                var regexes = _referencedRegexes.GetRegexes(referenceName)
-                    .Select((matcher, index) => (matcher, index))
-                    .OrderByDescending(t => t.matcher.Length)
-                    .Select(t => $"(?<{prefix}_{referenceName}_{t.index}>{ExpandReferences(t.matcher, prefix + "_")})");
+                var indexedReferencedRegexes = _referencedRegexes.GetRegexes(referenceName)
+                    .Select((matcher, index) => (matcher, index));
+                var regexes =
+                    from t in indexedReferencedRegexes
+                    orderby t.matcher.Length descending
+                    let innerRegex = ExpandReferences(t.matcher, prefix)
+                    select _regexGroupFactory.CreateReferenceGroup(prefix, referenceName, t.index, innerRegex);
                 var joinedRegex = string.Join("|", regexes);
                 return $@"({joinedRegex})";
             });

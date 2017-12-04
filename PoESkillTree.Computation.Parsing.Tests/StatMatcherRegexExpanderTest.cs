@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -16,7 +17,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void OnlyExpandsOnce()
         {
             var statMatchers = MockStatMatchers(false);
-            var sut = new StatMatcherRegexExpander(statMatchers, DefaultReferencedRegexes);
+            var sut = CreateSut(statMatchers);
 
             sut.GetEnumerator();
             sut.GetEnumerator();
@@ -29,7 +30,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public string RespectsMatchesWholeLineOnlyProperty(bool matchesWholeLineOnly)
         {
             var statMatchers = MockStatMatchers(matchesWholeLineOnly, DefaultMatcherData);
-            var sut = new StatMatcherRegexExpander(statMatchers, DefaultReferencedRegexes);
+            var sut = CreateSut(statMatchers);
 
             var data = sut.First();
 
@@ -39,8 +40,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         [Test]
         public void DoesNotModifyModifierBuilder()
         {
-            var sut = new StatMatcherRegexExpander(DefaultStatMatchers,
-                DefaultReferencedRegexes);
+            var sut = CreateSut(DefaultStatMatchers);
 
             var data = sut.First();
 
@@ -50,8 +50,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         [Test]
         public void DoesNotModifyMatchSubstitution()
         {
-            var sut = new StatMatcherRegexExpander(DefaultStatMatchers,
-                DefaultReferencedRegexes);
+            var sut = CreateSut(DefaultStatMatchers);
 
             var data = sut.First();
 
@@ -77,7 +76,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var inputData = new MatcherData(inputRegex, new ModifierBuilder());
             var statMatchers = MockStatMatchers(true, inputData);
-            var sut = new StatMatcherRegexExpander(statMatchers, DefaultReferencedRegexes);
+            var sut = CreateSut(statMatchers);
 
             var data = sut.First();
 
@@ -117,7 +116,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 r.GetRegexes("Matchers5") == new[] { "({Matchers1})", "({Matchers2})", "({Matchers3})", "({Matchers4})" } &&
                 r.ContainsReference("Matchers6") &&
                 r.GetRegexes("Matchers6") == new[] { "({Matchers2}) ({Matchers2}) ({Matchers2}) ({Matchers2})" });
-            var sut = new StatMatcherRegexExpander(statMatchers, referencedRegexes);
+            var sut = CreateSut(statMatchers, referencedRegexes);
 
             var data = sut.First();
 
@@ -131,7 +130,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void ThrowsIfRegexContainsInvalidGroupNames(string groupName)
         {
             var statMatcher = MockStatMatchers($"text (?<{groupName}>stuff)");
-            var sut = new StatMatcherRegexExpander(statMatcher, DefaultReferencedRegexes);
+            var sut = CreateSut(statMatcher);
 
             Assert.Throws<ParseException>(() => sut.GetEnumerator());
         }
@@ -140,7 +139,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void ThrowsIfRegexContainsUnknownReference()
         {
             var statMatcher = MockStatMatchers("text ({Matchers3}) stuff");
-            var sut = new StatMatcherRegexExpander(statMatcher, DefaultReferencedRegexes);
+            var sut = CreateSut(statMatcher);
 
             Assert.Throws<ParseException>(() => sut.GetEnumerator());
         }
@@ -173,5 +172,16 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 r.GetRegexes("Matchers1") == new[] { "0+", "[1-9]", "(01)+" } &&
                 r.ContainsReference("Matchers2") &&
                 r.GetRegexes("Matchers2") == new[] { "a", "b", "c", "d" });
+
+        private static IEnumerable<MatcherData> CreateSut(IStatMatchers statMatchers)
+        {
+            return CreateSut(statMatchers, DefaultReferencedRegexes);
+        }
+
+        private static IEnumerable<MatcherData> CreateSut(
+            IStatMatchers statMatchers, IReferencedRegexes referencedRegexe)
+        {
+            return new StatMatcherRegexExpander(statMatchers, referencedRegexe, new RegexGroupService(null));
+        }
     }
 }

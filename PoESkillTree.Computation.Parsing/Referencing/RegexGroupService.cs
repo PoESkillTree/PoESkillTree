@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Parsing.Builders.Values;
 using static PoESkillTree.Computation.Parsing.Referencing.ReferenceConstants;
 
 namespace PoESkillTree.Computation.Parsing.Referencing
 {
-    public class RegexGroupService : IRegexGroupParser
+    public class RegexGroupService : IRegexGroupParser, IRegexGroupFactory
     {
-        // TODO This depends too heavily on how StatMatcherRegexExpander expands.
-        //      Extract group naming into this class (implementing two interfaces)
-
         private readonly IValueBuilders _valueBuilders;
 
         public RegexGroupService(IValueBuilders valueBuilders)
@@ -26,7 +25,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
                 let groupName = pair.Key
                 where groupName.StartsWith(fullPrefix)
                 let suffix = groupName.Substring(fullPrefix.Length)
-                where suffix.Count(c => c == '_') == 0
+                where suffix.Count(c => c == GroupNamePartDelimiter) == 0
                 let value = double.Parse(pair.Value)
                 select _valueBuilders.Create(value);
         }
@@ -39,18 +38,50 @@ namespace PoESkillTree.Computation.Parsing.Referencing
                 from groupName in groupNames
                 where groupName.StartsWith(fullPrefix)
                 let suffix = groupName.Substring(fullPrefix.Length)
-                let parts = suffix.Split('_')
+                let parts = suffix.Split(GroupNamePartDelimiter)
                 where parts.Length == 3
                 let nestedReferenceName = parts[1]
                 let nestedMatcherIndex = TryGet(parts[2])
                 where nestedMatcherIndex.HasValue
-                let nestedGroupPrefix = groupPrefix + parts[0] + "_"
+                let nestedGroupPrefix = groupPrefix + parts[0] + GroupNamePartDelimiter
                 select (nestedReferenceName, nestedMatcherIndex.Value, nestedGroupPrefix);
         }
 
         private static int? TryGet(string s)
         {
             return int.TryParse(s, out var r) ? (int?) r : null;
+        }
+
+        public string CreateValueGroup(string groupPrefix, string innerRegex)
+        {
+            if (innerRegex.IsEmpty())
+                throw new ArgumentException("must not be empty", nameof(innerRegex));
+
+            return $"(?<{ValueGroupPrefix}{groupPrefix}>{innerRegex})";
+        }
+
+        public string CreateReferenceGroup(
+            string groupPrefix, string referenceName, int matcherIndex, string innerRegex)
+        {
+            if (innerRegex.IsEmpty())
+                throw new ArgumentException("must not be empty", nameof(innerRegex));
+            if (referenceName.IsEmpty())
+                throw new ArgumentException("must not be empty", nameof(referenceName));
+
+            return "(?<" + ReferenceGroupPrefix + groupPrefix
+                   + GroupNamePartDelimiter + referenceName
+                   + GroupNamePartDelimiter + matcherIndex
+                   + ">" + innerRegex + ")";
+        }
+
+        public string CombineGroupPrefixes(string left, string right)
+        {
+            if (right.IsEmpty())
+                throw new ArgumentException("must not be empty", nameof(right));
+            if (left.IsEmpty())
+                return right;
+
+            return left + GroupNamePartDelimiter + right;
         }
     }
 }
