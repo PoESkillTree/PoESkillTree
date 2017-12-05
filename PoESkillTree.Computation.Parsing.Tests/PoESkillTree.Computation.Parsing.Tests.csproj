@@ -70,6 +70,7 @@
     <Compile Include="Referencing\ReferenceValidatorTest.cs" />
     <Compile Include="Referencing\RegexGroupServiceFactoryTest.cs" />
     <Compile Include="Referencing\RegexGroupServiceParserTest.cs" />
+    <Compile Include="ResolvingParserTest.cs" />
     <Compile Include="StatMatcherRegexExpanderTest.cs" />
     <Compile Include="StatMatchersSelectorTest.cs" />
     <Compile Include="Steps\CompletedStepTest.cs" />

@@ -39,5 +39,22 @@ namespace PoESkillTree.Computation.Parsing.Builders.Matching
             throw new ParseException(
                 $"Can't convert reference of type {_referencedBuilder?.GetType()} to {typeof(TTarget)}");
         }
+
+        private bool Equals(ReferenceConverter other)
+        {
+            return Equals(_referencedBuilder, other._referencedBuilder);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+                return true;
+            return obj is ReferenceConverter other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return (_referencedBuilder != null ? _referencedBuilder.GetHashCode() : 0);
+        }
     }
 }

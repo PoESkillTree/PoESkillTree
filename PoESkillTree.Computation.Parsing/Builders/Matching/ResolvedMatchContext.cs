@@ -59,5 +59,22 @@ namespace PoESkillTree.Computation.Parsing.Builders.Matching
                 return _values.Single();
             }
         }
+
+        private bool Equals(ResolvedMatchContext<T> other)
+        {
+            return _values.SequenceEqual(other._values);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+                return true;
+            return obj is ResolvedMatchContext<T> other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return _values.GetHashCode();
+        }
     }
 }

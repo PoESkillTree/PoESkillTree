@@ -7,14 +7,11 @@ using PoESkillTree.Computation.Parsing.Referencing;
 
 namespace PoESkillTree.Computation.Parsing
 {
-    // TODO tests
     public class ResolvingParser : IParser<IModifierResult>
     {
         private readonly IParser<MatcherDataParseResult> _innerParser;
         private readonly IReferenceToMatcherDataResolver _referenceManager;
-
         private readonly IModifierResultResolver _modifierResultResolver;
-
         private readonly IRegexGroupParser _regexGroupParser;
 
         private IReadOnlyDictionary<string, string> _groups;
@@ -47,7 +44,7 @@ namespace PoESkillTree.Computation.Parsing
         private ResolveContext CreateContext(string groupPrefix)
         {
             var values = _regexGroupParser
-                .ParseValues(_groups)
+                .ParseValues(_groups, groupPrefix)
                 .ToList();
             var valueContext = new ResolvedMatchContext<IValueBuilder>(values);
 
