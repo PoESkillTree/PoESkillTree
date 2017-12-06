@@ -19,7 +19,7 @@ namespace POESKillTree.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Version {
@@ -61,7 +61,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {3CAA9AFE-7355-4E10-A183-89849968729E}.
+        ///   Looks up a localized string similar to {10A38BF2-2854-4B8C-A393-2D9F595EF6AC}.
         /// </summary>
         public static string AppId {
             get {
@@ -79,7 +79,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copyright © 2012-2016 PoESkillTree Team.
+        ///   Looks up a localized string similar to Copyright © 2012-2018 PoESkillTree Team.
         /// </summary>
         public static string AssemblyCopyright {
             get {
@@ -106,7 +106,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3.0.0.
+        ///   Looks up a localized string similar to 3.1.0.
         /// </summary>
         public static string GGGPatchVersion {
             get {
@@ -115,7 +115,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PoESkillTree - The Fall of Oriath.
+        ///   Looks up a localized string similar to PoESkillTree - War for the Atlas.
         /// </summary>
         public static string ProductName {
             get {
@@ -124,7 +124,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://github.com/EmmittJ/PoESkillTree.
+        ///   Looks up a localized string similar to https://github.com/PoESkillTree/PoESkillTree/.
         /// </summary>
         public static string ProductURL {
             get {
@@ -133,7 +133,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2.7.3.
+        ///   Looks up a localized string similar to 2.7.4.
         /// </summary>
         public static string ProductVersion {
             get {
