@@ -1,4 +1,6 @@
 ﻿using NUnit.Framework;
+using PoESkillTree.Computation.Console;
+using PoESkillTree.Computation.Parsing.Referencing;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {
@@ -6,9 +8,13 @@ namespace PoESkillTree.Computation.IntegrationTests
     public class DataValidatingTest
     {
         [Test]
-        public void DataValidates()
+        public void ReferencesAreValid()
         {
-            Assert.Fail();
+            var compositionRoot = new CompositionRoot();
+            var referencedMatchers = compositionRoot.ReferencedMatchers;
+            var statMatchers = compositionRoot.StatMatchers;
+
+            Assert.DoesNotThrow(() => ReferenceValidator.Validate(referencedMatchers, statMatchers));
         }
     }
 }
