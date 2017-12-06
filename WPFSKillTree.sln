@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.16
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFSKillTree", "WPFSKillTree\WPFSKillTree.csproj", "{FCDA18D8-4FD9-484B-B7DC-DBF771B3AEC7}"
 EndProject
@@ -22,6 +22,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Console", "PoESkillTree.Computation.Console\PoESkillTree.Computation.Console.csproj", "{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Parsing.Tests", "PoESkillTree.Computation.Parsing.Tests\PoESkillTree.Computation.Parsing.Tests.csproj", "{0EFA2885-50A9-45C9-B1A1-701A83681C90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.IntegrationTests", "PoESkillTree.Computation.IntegrationTests\PoESkillTree.Computation.IntegrationTests.csproj", "{CE77F246-871D-4E8C-8E5F-B44EBDBF2541}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1F11D13C-9039-40AB-8B91-8A03E4DA934A} = {1F11D13C-9039-40AB-8B91-8A03E4DA934A}
+		{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA} = {AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}
+		{1E573C72-9B7F-40AF-A5E8-739F90B50690} = {1E573C72-9B7F-40AF-A5E8-739F90B50690}
+		{E9C0CF81-6800-4461-8897-F8B569C7CDD0} = {E9C0CF81-6800-4461-8897-F8B569C7CDD0}
+		{85CF9690-7EB9-42CB-9574-ADF4239CFFBE} = {85CF9690-7EB9-42CB-9574-ADF4239CFFBE}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,8 +120,19 @@ Global
 		{0EFA2885-50A9-45C9-B1A1-701A83681C90}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0EFA2885-50A9-45C9-B1A1-701A83681C90}.Release|x86.ActiveCfg = Release|Any CPU
 		{0EFA2885-50A9-45C9-B1A1-701A83681C90}.Release|x86.Build.0 = Release|Any CPU
+		{CE77F246-871D-4E8C-8E5F-B44EBDBF2541}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE77F246-871D-4E8C-8E5F-B44EBDBF2541}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE77F246-871D-4E8C-8E5F-B44EBDBF2541}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CE77F246-871D-4E8C-8E5F-B44EBDBF2541}.Debug|x86.Build.0 = Debug|Any CPU
+		{CE77F246-871D-4E8C-8E5F-B44EBDBF2541}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE77F246-871D-4E8C-8E5F-B44EBDBF2541}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE77F246-871D-4E8C-8E5F-B44EBDBF2541}.Release|x86.ActiveCfg = Release|Any CPU
+		{CE77F246-871D-4E8C-8E5F-B44EBDBF2541}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4EB43752-7DA5-4EFF-839E-071F6D701D35}
 	EndGlobalSection
 EndGlobal
