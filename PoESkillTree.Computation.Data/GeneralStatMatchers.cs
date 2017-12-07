@@ -49,7 +49,7 @@ namespace PoESkillTree.Computation.Data
             // - damage: see also DamageStatMatchers
             { "chance to deal double damage", Damage.ChanceToDouble },
             {
-                "({DamageTypeMatchers}) damage as extra ({DamageTypeMatchers}) damage",
+                "({DamageTypeMatchers}) damage (gained )?as extra ({DamageTypeMatchers}) damage",
                 References[0].AsDamageType.Damage.AddAs(References[1].AsDamageType.Damage)
             },
             {
@@ -58,19 +58,23 @@ namespace PoESkillTree.Computation.Data
                 Damage.With(Tags.Wand)
             },
             {
+                "({DamageTypeMatchers}) damage as extra damage of a random element",
+                Reference.AsDamageType.Damage.AddAs(RandomElement.Damage)
+            },
+            {
                 "({DamageTypeMatchers}) damage converted to ({DamageTypeMatchers}) damage",
                 References[0].AsDamageType.Damage.ConvertTo(References[1].AsDamageType.Damage)
             },
             { "({DamageTypeMatchers}) damage taken", Reference.AsDamageType.Damage.Taken },
+            { "take ({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage.Taken },
             { "damage taken", Damage.Taken },
             // - penetration
             // - crit
-            { "critical strike multiplier", CriticalStrike.Multiplier },
+            { "(global )?critical strike multiplier", CriticalStrike.Multiplier },
             { "(global )?critical strike chance", CriticalStrike.Chance },
             // - projectiles
             { "projectile speed", Projectile.Speed },
             { "arrow speed", Projectile.Speed, Damage.With(Tags.Bow) },
-            { "projectiles?", Projectile.Count },
             // - other
             { "accuracy rating", Stat.Accuracy },
             // defense
@@ -78,6 +82,7 @@ namespace PoESkillTree.Computation.Data
             { "armour", Armour },
             { "evasion( rating)?", Evasion },
             { "evasion rating and armour", ApplyOnce(Armour, Evasion) },
+            { "armour and evasion( rating)?", ApplyOnce(Armour, Evasion) },
             { "armour and energy shield", ApplyOnce(Armour, EnergyShield) },
             { "(global )?defences", ApplyOnce(Armour, Evasion, EnergyShield) },
             // - resistances
@@ -147,7 +152,7 @@ namespace PoESkillTree.Computation.Data
             },
             { "attack and cast speed", Skills.Speed },
             {
-                "attack, cast speed and movement speed",
+                "attack, cast( speed)? and movement speed",
                 ApplyOnce(Skills.Speed, Stat.MovementSpeed)
             },
             { "animation speed", Stat.AnimationSpeed },
@@ -160,11 +165,19 @@ namespace PoESkillTree.Computation.Data
             },
             // gain
             // charges
-            { "({ChargeTypeMatchers})", Reference.AsChargeType.Amount },
-            { "maximum ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Maximum },
+            { "(?<!maximum )({ChargeTypeMatchers})", Reference.AsChargeType.Amount },
+            { "(?<!while at )maximum ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Maximum },
             {
-                "chance to (gain|grant) a ({ChargeTypeMatchers})",
+                "maximum ({ChargeTypeMatchers}) and maximum ({ChargeTypeMatchers})",
+                ApplyOnce(References[0].AsChargeType.Amount.Maximum, References[1].AsChargeType.Amount.Maximum)
+            },
+            {
+                "chance to (gain|grant) an? ({ChargeTypeMatchers})",
                 Reference.AsChargeType.ChanceToGain
+            },
+            {
+                "chance to (gain|grant) an? ({ChargeTypeMatchers}) and an? ({ChargeTypeMatchers})",
+                References[0].AsChargeType.ChanceToGain, References[1].AsChargeType.ChanceToGain
             },
             { "({ChargeTypeMatchers}) duration", Reference.AsChargeType.Duration },
             {
@@ -183,8 +196,8 @@ namespace PoESkillTree.Computation.Data
             { "({KeywordMatchers}) duration", Skills[Reference.AsKeyword].Duration },
             // traps, mines, totems
             { "traps? placed at a time", Traps.CombinedInstances.Maximum },
-            { "remote mines placed at a time", Mines.CombinedInstances.Maximum },
-            { "totem summoned at a time", Totems.CombinedInstances.Maximum },
+            { "remote mines? placed at a time", Mines.CombinedInstances.Maximum },
+            { "totems? summoned at a time", Totems.CombinedInstances.Maximum },
             { "trap trigger area of effect", Stat.TrapTriggerAoE },
             { "mine detonation area of effect", Stat.MineDetonationAoE },
             { "trap throwing speed", Traps.Speed },
@@ -221,6 +234,7 @@ namespace PoESkillTree.Computation.Data
                 "effect of non-curse auras you cast",
                 Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).Effect
             },
+            { "chance to fortify", Buff.Fortify.ChanceOn(Self) },
             { "effect of fortify on you", Buff.Fortify.Effect },
             { "fortify duration", Buff.Fortify.Duration },
             { "chance for attacks to maim", Buff.Maim.ChanceOn(Enemy), Damage.With(Source.Attack) },
@@ -236,7 +250,7 @@ namespace PoESkillTree.Computation.Data
             { "({FlagMatchers}) duration", Reference.AsFlagStat.Duration },
             { "({FlagMatchers}) effect", Reference.AsFlagStat.Effect },
             // ailments
-            { "chance to ({AilmentMatchers})(the enemy)?", Reference.AsAilment.Chance },
+            { "chance to ({AilmentMatchers})( the enemy)?", Reference.AsAilment.Chance },
             {
                 "chance to freeze, shock and ignite",
                 Ailment.Freeze.Chance, Ailment.Shock.Chance, Ailment.Ignite.Chance
@@ -262,13 +276,13 @@ namespace PoESkillTree.Computation.Data
             },
             { "chance to double stun duration", Effect.Stun.Duration.ChanceToDouble },
             // flasks
-            { "effect of flasks", Flask.Effect },
+            { "effect of flasks( on you)?", Flask.Effect },
             { "flask effect duration", Flask.Duration },
             { "life recovery from flasks", Flask.LifeRecovery },
             { "mana recovery from flasks", Flask.ManaRecovery },
             { "flask charges used", Flask.ChargesUsed },
             { "flask charges gained", Flask.ChargesGained },
-            { "flask recovery speed", Flask.RecoverySpeed },
+            { "flask recovery (speed|rate)", Flask.RecoverySpeed },
             // item quantity/quality
             { "quantity of items found", Stat.ItemQuantity },
             { "rarity of items found", Stat.ItemRarity },
@@ -283,8 +297,8 @@ namespace PoESkillTree.Computation.Data
             { "knockback distance", Effect.Knockback.Distance },
             // Not really anything that can be done with them (yet), but should still be summed up
             { "character size", Stat.Unique() },
-            { "reduced reflected elemental damage taken", Stat.Unique() },
-            { "reduced reflected physical damage taken", Stat.Unique() },
+            { "reflected elemental damage taken", Stat.Unique() },
+            { "reflected physical damage taken", Stat.Unique() },
             { "damage taken gained as mana over 4 seconds when hit", Stat.Unique() },
             { "light radius", Stat.Unique() },
         }.GetEnumerator();

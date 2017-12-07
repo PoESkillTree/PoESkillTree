@@ -17,18 +17,21 @@ Magma Orb has 10% increased Area of Effect per Chain
 // passive skills:
 10% Chance for Traps to Trigger an additional time
 Spend Energy Shield before Mana for Skill Costs
-Spend Life instead of Mana for Skills
 Share Endurance, Frenzy and Power Charges with nearby party members
-You can't deal Damage with your Skills yourself
 2% chance to gain a Power, Frenzy or Endurance Charge on Kill
 8% chance to gain a Power, Frenzy or Endurance Charge on Kill
 Enemies Become Chilled as they Unfreeze
 Light Radius is based on Energy Shield instead of Life
 Traps cannot be Damaged for 5 seconds after being Thrown
 Mines cannot be Damaged for 5 seconds after being Placed
-25% chance to Steal Power, Frenzy and Endurance Charges on Hit with Claws
+25% chance to Steal Power, Frenzy, and Endurance Charges on Hit with Claws
 Enemies Cannot Leech Life From You
 Hits that Stun Enemies have Culling Strike
+removes bleeding when you use a flask
+// It's split into two stats but the second one isn't supported
+removes all mana. Spend Life instead of Mana for Skills
+// Side effect from how jewels are currently handled, the stat doesn't actually exist
++1 Jewel Socket
 // Ascendancies:
 Bleeding Enemies you Kill Explode, dealing 10% of their Maximum Life as Physical Damage
 Elemental Ailments are removed when you reach Low Life
@@ -49,7 +52,7 @@ When your Traps Trigger, your nearby Traps also Trigger
 20% chance when Placing Mines to Place an additional Mine
 100% increased Mine Arming Speed
 Cannot be Blinded
-20% chance to create a Smoke Cloud when Hit
+25% chance to create a Smoke Cloud when Hit
 20% chance to create a Smoke Cloud when you place a Mine or throw a Trap
 20% chance to Recover 10% of Maximum Mana when you use a Skill
 Critical Strikes have Culling Strike
@@ -67,3 +70,10 @@ When you or your Totems Kill a Burning Enemy, 20% chance for you and your Totems
 Totems Reflect 15% of their maximum Life as Fire Damage to nearby Enemies when Hit
 Recover 25% of Life and Mana when you Warcry
 25% chance that if you would gain Endurance Charges, you instead gain up to your maximum number of Endurance Charges
+Cursed Enemies you Kill have a 20% chance to Explode, dealing a quarter of their maximum Life as Chaos Damage
+can allocate passives from the marauder's starting point
+can allocate passives from the duelist's starting point
+can allocate passives from the ranger's starting point
+can allocate passives from the shadow's starting point
+can allocate passives from the witch's starting point
+can allocate passives from the templar's starting point

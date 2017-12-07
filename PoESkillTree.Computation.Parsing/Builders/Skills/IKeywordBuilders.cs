@@ -32,6 +32,8 @@ namespace PoESkillTree.Computation.Parsing.Builders.Skills
         IKeywordBuilder Aura { get; }
         // ActiveSkillType
         IKeywordBuilder Golem { get; }
+        // ActiveSkillType
+        IKeywordBuilder Minion { get; }
         // Gem Tag
         IKeywordBuilder Warcry { get; }
 

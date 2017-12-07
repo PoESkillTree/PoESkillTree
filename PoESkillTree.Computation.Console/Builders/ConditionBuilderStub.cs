@@ -21,10 +21,10 @@ namespace PoESkillTree.Computation.Console.Builders
         private IConditionBuilder This => this;
 
         public IConditionBuilder And(IConditionBuilder condition) =>
-            CreateCondition(This, condition, (l, r) => $"{l} and {condition}");
+            CreateCondition(This, condition, (l, r) => $"{l} and {r}");
 
         public IConditionBuilder Or(IConditionBuilder condition) =>
-            CreateCondition(This, condition, (l, r) => $"{l} or {condition}");
+            CreateCondition(This, condition, (l, r) => $"{l} or {r}");
 
         public IConditionBuilder Not =>
             CreateCondition(This, o => $"not {o}");

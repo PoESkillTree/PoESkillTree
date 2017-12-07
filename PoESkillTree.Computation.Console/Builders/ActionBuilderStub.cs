@@ -29,20 +29,6 @@ namespace PoESkillTree.Computation.Console.Builders
             _resolver = resolver;
         }
 
-        private ActionBuilderStub(TSource source, TTarget target, string stringRepresentation)
-            : this(source, target, stringRepresentation, Resolve)
-        {
-        }
-
-        private static IActionBuilder Resolve(IActionBuilder current, ResolveContext context)
-        {
-            return new ActionBuilderStub<IEntityBuilder, IEntityBuilder>(
-                current.Source.Resolve(context),
-                current.Target.Resolve(context),
-                current.ToString(),
-                (c, _) => c);
-        }
-
         public IEntityBuilder Source => _source;
 
         public IEntityBuilder Target => _target;
@@ -52,17 +38,49 @@ namespace PoESkillTree.Computation.Console.Builders
         public IActionBuilder<TNewSource, TTarget> By<TNewSource>(TNewSource source)
             where TNewSource : IEntityBuilder
         {
-            return new ActionBuilderStub<TNewSource, TTarget>(source, _target, ToString());
+            IActionBuilder Resolve(IActionBuilder current, ResolveContext context)
+            {
+                var inner = _resolver(current, context);
+                return new ActionBuilderStub<IEntityBuilder, IEntityBuilder>(
+                    source.Resolve(context),
+                    inner.Target,
+                    inner.ToString(),
+                    (c, _) => c);
+            }
+            return new ActionBuilderStub<TNewSource, TTarget>(source, _target, ToString(), Resolve);
         }
 
         public IActionBuilder<TSource, TNewTarget> Against<TNewTarget>(TNewTarget target) 
             where TNewTarget : IEntityBuilder
         {
-            return new ActionBuilderStub<TSource, TNewTarget>(_source, target, ToString());
+            IActionBuilder Resolve(IActionBuilder current, ResolveContext context)
+            {
+                var inner = _resolver(current, context);
+                return new ActionBuilderStub<IEntityBuilder, IEntityBuilder>(
+                    inner.Source,
+                    target.Resolve(context),
+                    inner.ToString(),
+                    (c, _) => c);
+            }
+            return new ActionBuilderStub<TSource, TNewTarget>(_source, target, ToString(), Resolve);
         }
 
-        public IActionBuilder<TTarget, TSource> Taken =>
-            new ActionBuilderStub<TTarget, TSource>(_target, _source, ToString());
+        public IActionBuilder<TTarget, TSource> Taken
+        {
+            get
+            {
+                IActionBuilder Resolve(IActionBuilder current, ResolveContext context)
+                {
+                    var inner = _resolver(current, context);
+                    return new ActionBuilderStub<IEntityBuilder, IEntityBuilder>(
+                        inner.Target,
+                        inner.Source,
+                        inner.ToString(),
+                        (c, _) => c);
+                }
+                return new ActionBuilderStub<TTarget, TSource>(_target, _source, ToString(), Resolve);
+            }
+        }
 
         public IConditionBuilder On(IKeywordBuilder withKeyword) =>
             CreateCondition(This, withKeyword,
@@ -119,7 +137,7 @@ namespace PoESkillTree.Computation.Console.Builders
         }
 
         private static string ConditionToString(IConditionBuilder condition) =>
-            condition == null ? "" : $"({condition}";
+            condition == null ? "" : $"({condition})";
 
         public ValueBuilder CountRecently =>
             new ValueBuilder(

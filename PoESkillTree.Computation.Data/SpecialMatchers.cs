@@ -54,17 +54,17 @@ namespace PoESkillTree.Computation.Data
             // Keystones
             {
                 // Point Blank
-                "projectile attacks deal up to #% more damage to targets at the start of their movement, " +
+                "projectile attack hits deal up to #% more damage to targets at the start of their movement, " +
                 "dealing less damage to targets as the projectile travels farther",
                 PercentMore,
                 // 0 to 10: Value; 10 to 35: Value to 0; 35 to 150: 0 to -Value
                 Value * ValueFactory.LinearScale(Projectile.TravelDistance,
                     (0, 1), (10, 1), (35, 0), (150, -1)),
-                Damage, And(Damage.With(Source.Attack), With(Skills[Keyword.Projectile]))
+                Damage, And(Damage.With(Source.Attack), With(Skills[Keyword.Projectile]), Hit.On())
             },
             {
                 // Elemental Equilibrium
-                "enemies you hit with elemental damage temporarily get +#% resistance to those elements " +
+                @"enemies you hit with elemental damage temporarily get \+#% resistance to those elements " +
                 "and -#% resistance to other elements",
                 ElementalEquilibrium().ToArray()
             },
@@ -81,6 +81,17 @@ namespace PoESkillTree.Computation.Data
                 TotalOverride,
                 1, CriticalStrike.Multiplier.ApplyModifiersTo(CriticalStrike.AilmentMultiplier,
                     percentOfTheirValue: Value)
+            },
+            {
+                // Vaal Pact
+                "maximum life leech rate is doubled",
+                PercentMore, 100, Life.Leech.RateLimit
+            },
+            {
+                // Ancestral Bond
+                "you can't deal damage with skills yourself",
+                TotalOverride, 0, Damage,
+                Not(Or(With(Totems), With(Traps), With(Mines), With(Minions)))
             },
             // Ascendancies
             {
@@ -102,10 +113,10 @@ namespace PoESkillTree.Computation.Data
                 Damage, And(Damage.With(Source.Attack), With(Skills[Keyword.Projectile]))
             },
             {
-                "projectiles gain damage as they travel further, dealing up to #% increased damage to targets",
+                "projectiles gain damage as they travel further, dealing up to #% increased damage with hits to targets",
                 PercentIncrease,
                 Value * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
-                Damage, With(Skills[Keyword.Projectile])
+                Damage, And(With(Skills[Keyword.Projectile]), Hit.On())
             },
             {
                 "your critical strikes with attacks maim enemies",
@@ -117,7 +128,7 @@ namespace PoESkillTree.Computation.Data
                 BaseAdd, Value, Mana.ConvertTo(EnergyShield)
             },
             {
-                "critical strikes ignore enemy monster elemental resistance",
+                "critical strikes ignore enemy monster elemental resistances",
                 TotalOverride, 1, Elemental.IgnoreResistance, CriticalStrike.Against(Enemy).On()
             },
             {

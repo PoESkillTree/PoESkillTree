@@ -23,7 +23,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             var r = _parser.TryParse(statLine, out var remaining, out var result);
 
-            Assert.IsTrue(r, remaining);
+            Assert.IsTrue(r, $"{remaining}\nResult:\n  {string.Join("\n  ", result)}");
             CollectionAssert.IsEmpty(remaining);
             foreach (var modifier in result)
             {
@@ -40,7 +40,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             var r = _parser.TryParse(statLine, out var remaining, out var result);
 
-            Assert.IsFalse(r, remaining);
+            Assert.IsFalse(r, $"{remaining}\nResult:\n  {string.Join("\n  ", result)}");
             foreach (var modifier in result)
             {
                 var s = modifier?.ToString();
@@ -54,9 +54,8 @@ namespace PoESkillTree.Computation.IntegrationTests
             var unparsable = ReadUnparsableStatLines().ToHashSet();
 
             return ReadStatLines("AllSkillTreeStatLines")
-                .Concat("ParsableStatLines")
+                .Concat(ReadStatLines("ParsableStatLines"))
                 .Where(s => !unparsable.Contains(s))
-                .Take(50) // TODO remove
                 .ToArray();
         }
 

@@ -37,6 +37,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IKeywordBuilder Vaal { get; } = Create("Vaal");
         public IKeywordBuilder Aura { get; } = Create("Aura");
         public IKeywordBuilder Golem { get; } = Create("Golem");
+        public IKeywordBuilder Minion { get; } = Create("Minion");
         public IKeywordBuilder Warcry { get; } = Create("Warcry");
     }
 }

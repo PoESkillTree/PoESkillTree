@@ -123,6 +123,7 @@ namespace PoESkillTree.Computation.Data.Base
         protected ISkillBuilderCollection Mines => Skills[Keyword.Mine];
         protected ISkillBuilderCollection Totems => Skills[Keyword.Totem];
         protected ISkillBuilderCollection Golems => Skills[Keyword.Golem];
+        protected ISkillBuilderCollection Minions => Skills[Keyword.Minion];
 
         protected IDamageTypeBuilder Elemental => Fire.And(Lightning).And(Cold);
 

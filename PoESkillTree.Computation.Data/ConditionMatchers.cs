@@ -82,18 +82,22 @@ namespace PoESkillTree.Computation.Data
             { "with bows", Damage.With(Tags.Bow) },
             { "with swords", Damage.With(Tags.Sword) },
             { "with claws", Damage.With(Tags.Claw) },
+            { "claw", Damage.With(Tags.Claw) },
             { "with daggers", Damage.With(Tags.Dagger) },
             { "with wands", Damage.With(Tags.Wand) },
+            { "wand", Damage.With(Tags.Wand) },
             { "with axes", Damage.With(Tags.Axe) },
             { "with staves", Damage.With(Tags.Staff) },
             {
                 "with maces",
                 Or(Damage.With(Tags.Mace), Damage.With(Tags.Sceptre))
             },
+            { "with one handed weapons", Damage.With(Tags.OneHandWeapon) },
             {
                 "with one handed melee weapons",
                 And(Damage.With(Tags.OneHandWeapon), Not(Damage.With(Tags.Ranged)))
             },
+            { "with two handed weapons", Damage.With(Tags.TwoHandWeapon) },
             {
                 "with two handed melee weapons",
                 And(Damage.With(Tags.TwoHandWeapon), Not(Damage.With(Tags.Ranged)))
@@ -102,6 +106,8 @@ namespace PoESkillTree.Computation.Data
             { "with main hand", Damage.With(ItemSlot.MainHand) },
             { "with off hand", Damage.With(ItemSlot.OffHand) },
             { "attacks have", Damage.With(Source.Attack) },
+            { "bow attacks have", And(Damage.With(Tags.Bow), Damage.With(Source.Attack)) },
+            { "with attacks", Damage.With(Source.Attack) },
             { "from damage over time", Damage.With(Source.DamageOverTime) },
             {
                 "with hits and ailments",
@@ -139,6 +145,15 @@ namespace PoESkillTree.Computation.Data
             // equipment
             { "while unarmed", Unarmed },
             { "while wielding a staff", MainHand.Has(Tags.Staff) },
+            { "while wielding a dagger", MainHand.Has(Tags.Dagger) },
+            { "while wielding a bow", MainHand.Has(Tags.Bow) },
+            { "while wielding a sword", MainHand.Has(Tags.Sword) },
+            { "while wielding a claw", MainHand.Has(Tags.Claw) },
+            { "while wielding an axe", MainHand.Has(Tags.Axe) },
+            { "while wielding a mace", Or(MainHand.Has(Tags.Mace), MainHand.Has(Tags.Sceptre)) },
+            { "while wielding a melee weapon", And(MainHand.Has(Tags.Weapon), Not(MainHand.Has(Tags.Ranged))) },
+            { "while wielding a one handed weapon", MainHand.Has(Tags.OneHandWeapon) },
+            { "while wielding a two handed weapon", MainHand.Has(Tags.TwoHandWeapon) },
             { "while dual wielding", OffHand.Has(Tags.Weapon) },
             { "while holding a shield", OffHand.Has(Tags.Shield) },
             {
@@ -187,7 +202,7 @@ namespace PoESkillTree.Computation.Data
             // buffs
             { "while you have fortify", Buff.Fortify.IsOn(Self) },
             { "if you've taunted an enemy recently", Buff.Taunt.Action.Recently() },
-            { "enemies you taunt( deal)?", And(For(Enemy), Buff.Taunt.IsOn(Enemy)) },
+            { "enemies you taunt( deal| take)?", And(For(Enemy), Buff.Taunt.IsOn(Enemy)) },
             {
                 "enemies you curse (take|have)",
                 And(For(Enemy), Buffs(Self, Enemy).With(Keyword.Curse).Any())
@@ -232,6 +247,7 @@ namespace PoESkillTree.Computation.Data
             {
                 "with ({AilmentMatchers})", Damage.With(Reference.AsAilment)
             },
+            { "with ailments", Ailment.All.Any(Damage.With) },
             // ground effects
             { "while on consecrated ground", Ground.Consecrated.IsOn(Self) },
             // other effects
@@ -244,9 +260,10 @@ namespace PoESkillTree.Computation.Data
                 Or(With(Skills[References[0].AsKeyword]), With(Skills[References[1].AsKeyword]))
             },
             { "with ({KeywordMatchers}) skills", With(Skills[Reference.AsKeyword]) },
-            { "({KeywordMatchers}) skills have", With(Skills[Reference.AsKeyword]) },
+            { "({KeywordMatchers}) skills (have|deal)", With(Skills[Reference.AsKeyword]) },
             { "of ({KeywordMatchers}) skills", With(Skills[Reference.AsKeyword]) },
             { "for ({KeywordMatchers})", With(Skills[Reference.AsKeyword]) },
+            { "from ({KeywordMatchers}) skills", With(Skills[Reference.AsKeyword]) },
             { "with traps", With(Traps) },
             { "with mines", With(Mines) },
             { "with ({DamageTypeMatchers}) skills", With(Skills[Reference.AsDamageType]) },
@@ -313,6 +330,7 @@ namespace PoESkillTree.Computation.Data
             },
             // flasks
             { "while using a flask", Flask.IsAnyActive },
+            { "during any flask effect", Flask.IsAnyActive },
             // other
             { "while leeching", Condition.WhileLeeching },
             { "(you )?gain", Condition.True }, // may be left over at the end, does nothing

@@ -45,7 +45,7 @@ namespace PoESkillTree.Computation.Data
             { "deal no ({DamageTypeMatchers}) damage", TotalOverride, 0, Reference.AsDamageType.Damage },
             // - penetration
             {
-                "damage penetrates #% ({DamageTypeMatchers}) resistances?",
+                "damage penetrates #% (of enemy )?({DamageTypeMatchers}) resistances?",
                 BaseAdd, Value, Reference.AsDamageType.Penetration
             },
             {
@@ -69,7 +69,7 @@ namespace PoESkillTree.Computation.Data
             { "skills fire an additional projectile", BaseAdd, 1, Projectile.Count },
             { "pierces # additional targets", BaseAdd, Value, Projectile.PierceCount },
             { "projectiles pierce an additional target", BaseAdd, 1, Projectile.PierceCount },
-            { "projectiles pierce # targets", BaseAdd, Value, Projectile.PierceCount },
+            { "projectiles pierce # (additional )?targets", BaseAdd, Value, Projectile.PierceCount },
             {
                 "projectiles pierce all nearby targets",
                 TotalOverride, double.PositiveInfinity, Projectile.PierceCount, Enemy.IsNearby
@@ -91,6 +91,8 @@ namespace PoESkillTree.Computation.Data
                 "immune to ({DamageTypeMatchers}) damage",
                 TotalOverride, 100, Reference.AsDamageType.Resistance
             },
+            { @"\+#% elemental resistances", BaseAdd, Value, Elemental.Resistance },
+            { @"\+?#% physical damage reduction", BaseAdd, Value, Physical.Resistance },
             // - leech
             {
                 "life leech is applied to energy shield instead", TotalOverride, 1,
@@ -130,7 +132,7 @@ namespace PoESkillTree.Computation.Data
                 References[1].AsPoolStat.Regen.Percent
             },
             {
-                "regenerate #%( of)?( their)? ({PoolStatMatchers}) per second",
+                "regenerate #%( of)?( their| your)? ({PoolStatMatchers}) per second",
                 BaseAdd, Value, Reference.AsPoolStat.Regen.Percent
             },
             {
@@ -141,7 +143,7 @@ namespace PoESkillTree.Computation.Data
                 "#% faster start of energy shield recharge", PercentIncrease, Value,
                 EnergyShield.Recharge.Start
             },
-            { "life regeneration has no effect", PercentLess, 100, Life.Regen },
+            { "life regeneration has no effect", TotalOverride, 0, Life.Regen },
             {
                 "life regeneration is applied to energy shield instead", TotalOverride, 1,
                 Life.Regen.AppliesTo(EnergyShield)
@@ -178,7 +180,7 @@ namespace PoESkillTree.Computation.Data
                 BaseAdd, Value, Buffs(target: Enemy).With(Keyword.Curse).CombinedLimit
             },
             { "grants fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
-            { "you have fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
+            { "(?<!while )you have fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
             {
                 @"curse enemies with level # ({SkillMatchers})",
                 TotalOverride, 1, Buff.Curse(skill: Reference.AsSkill, level: Value).On(Enemy)
@@ -186,7 +188,7 @@ namespace PoESkillTree.Computation.Data
             { "gain elemental conflux", TotalOverride, 1, Buff.Conflux.Elemental.On(Self) },
             // flags
             {
-                "(?<!while )(you have|gain) ({FlagMatchers})", TotalOverride, 1,
+                "(?<!while |chance to )(you have|gain) ({FlagMatchers})", TotalOverride, 1,
                 Reference.AsFlagStat
             },
             // ailments

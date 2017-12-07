@@ -19,8 +19,8 @@ namespace PoESkillTree.Computation.Data
             new ReferencedMatcherCollection<IChargeTypeBuilder>
             {
                 { "endurance charges?", Charge.Endurance },
+                { "frenzy charges?", Charge.Frenzy },
                 { "power charges?", Charge.Power },
-                { "endurance charges?", Charge.Endurance },
             };
     }
 }
