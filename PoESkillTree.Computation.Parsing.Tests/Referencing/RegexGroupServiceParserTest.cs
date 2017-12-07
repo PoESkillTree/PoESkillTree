@@ -76,7 +76,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
 
             var actual = ParseReferences(groupNames);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestCase("name0", 0, "0")]
@@ -98,7 +98,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
 
             var actual = ParseReferences(groupNames, groupPrefix);
 
-            CollectionAssert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestCase("x" + ReferenceGroupPrefix + "0_name0_0")]

@@ -1,0 +1,19 @@
+﻿// TODO not handled yet
+// - unique complex value conversion
+each Spectral Throw Projectile gains 5% increased Damage each time it Hits
+// - unique complex condition
+// - adds new sub skill
+can summon up to 3 Skeleton Mages with Summon Skeletons
+Animate Weapon can Animate up to 8 Ranged Weapons
+Minions explode when reduced to Low Life, dealing 33% of their maximum Life as Fire Damage to surrounding Enemies
+Your Minions spread Caustic Cloud on Death, dealing #% of their maximum Life as Chaos Damage per second
+// - adds new parts for skills
+Barrage fires an additional 2 projectiles simultaneously on the first and final attacks
+Burning Arrow has a 10% chance to spread Burning Ground if it Ignites an Enemy
+// - adds new parts for skills: splash damage
+Dual Strike deals Off-Hand Splash Damage to surrounding targets
+Glacial Hammer deals Cold-only Splash Damage to surrounding targets
+Single-target Melee attacks deal Splash Damage to surrounding targets
+50% less Damage to surrounding targets
+// - modifies skills
+Desecrate creates 3 additional Corpses
