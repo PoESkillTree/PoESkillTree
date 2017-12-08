@@ -366,9 +366,19 @@ namespace POESKillTree.SkillTreeFiles
                         optimized.Add(new ValuePerQuality { Text = gain.ToString(System.Globalization.CultureInfo.InvariantCulture) });
                     }
                 }
+                else if (values.Count > 2)
+                {
+                    // All values must have the same text
+                    var firstText = values[0].Text;
+                    if (values.Skip(1).All(v => v.Text == firstText))
+                    {
+                        Values.RemoveAll(v => ((ValueAt) v).QualitySpecified);
+                        optimized.Add(new ValuePerQuality { Text = firstText });
+                    }
+                }
 
                 // Try for level range.
-                values = Values.Cast<ValueAt>().Where(v => v.LevelSpecified).ToList();
+                values = Values.Cast<ValueAt>().Where(v => v.LevelSpecified && !v.QualitySpecified).ToList();
                 if (values.Count > 2) // Don't convert 2 or less values.
                 {
                     values.Sort(new ValueLogicalComparer());
@@ -403,7 +413,7 @@ namespace POESKillTree.SkillTreeFiles
                 }
 
                 // Try for quality range.
-                values = Values.Cast<ValueAt>().Where(v => v.QualitySpecified).ToList();
+                values = Values.Cast<ValueAt>().Where(v => !v.LevelSpecified && v.QualitySpecified).ToList();
                 if (values.Count > 2) // Don't convert 2 or less values.
                 {
                     values.Sort(new ValueLogicalComparer());

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MoreLinq;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils;
@@ -245,18 +246,17 @@ namespace UnitTests.Model.Items.Mods
         public async Task JsonMod_UnknownTags()
         {
             await _initialization;
-            foreach (var mod in _mods.Values
-                .Where(m => m.Domain != ModDomain.Area && m.Domain != ModDomain.Atlas))
-            {
-                foreach (var spawnWeight in mod.SpawnWeights)
-                {
-                    Tags tag;
-                    if (!TagsEx.TryParse(spawnWeight.Tag, out tag))
-                    {
-                        Assert.IsTrue(UnknownTags.Contains(spawnWeight.Tag), spawnWeight.Tag + " unknown");
-                    }
-                }
-            }
+            var unexpectedTags = (
+                from mod in _mods.Values
+                where mod.Domain != ModDomain.Area && mod.Domain != ModDomain.Atlas
+                from spawnWeight in mod.SpawnWeights
+                let tag = spawnWeight.Tag
+                where !tag.EndsWith("_shaper") && !tag.EndsWith("_elder")
+                      && !TagsEx.TryParse(tag, out var _)
+                      && !UnknownTags.Contains(tag)
+                select tag
+            ).ToHashSet();
+            Assert.AreEqual(0, unexpectedTags.Count, string.Join(", ", unexpectedTags));
         }
 
         [TestMethod]

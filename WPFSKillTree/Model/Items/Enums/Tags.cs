@@ -93,6 +93,11 @@ namespace POESKillTree.Model.Items.Enums
         NotForSale = 1L << 50,
         // Prevents Diamond Flask from getting the increased effect mod
         NoEffectFlaskMod = 1L << 51,
+
+        AbyssJewelMelee = 1L << 52,
+        AbyssJewelRanged = 1L << 53,
+        AbyssJewelCaster = 1L << 54,
+        AbyssJewelSummoner = 1L << 55,
     }
 
 
