@@ -772,7 +772,12 @@ namespace POESKillTree.ItemFilter.Model
                                 Id = "Card",
                                 IsEnabled = false,
                                 Name = "Divination Card",
-                                Matches = new List<Match> { new MatchClass(new string[]{ "Divination Card" }) }
+                                Description = "Divination Card, Stacked Deck",
+                                Set = new List<Match>[]
+                                {
+                                    new List<Match> { new MatchClass(new string[]{ "Divination Card" }) },
+                                    new List<Match> { new MatchBaseType(new string[]{ "Stacked Deck" }) }
+                                }
                             },
                             new Rule
                             {
