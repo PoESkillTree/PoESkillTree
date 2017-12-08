@@ -270,8 +270,8 @@ namespace POESKillTree.ItemFilter.Model
                                 Description = "Blessing of Xoph, Tul, Esh, Uul-Netol or Chayula",
                                 Matches = new List<Match> { new MatchClass(new string[] { "Currency" }), new MatchBaseType(new string[] { "Blessing of" }) }
                             },
-                            // XXX: Harbringer
-                            new Rule
+                            /*
+                            new Rule // XXX: Harbinger
                             {
                                 Id = "TransmutationShard",
                                 IsEnabled = false,
@@ -335,15 +335,17 @@ namespace POESKillTree.ItemFilter.Model
                                 Description = "A currency item obtained from harbingers in Harbinger league",
                                 Matches = new List<Match> { new MatchBaseType(new string[]{ "Ancient Shard", "Ancient Orb" }) }
                             },
+                            */
                             new Rule
                             {
-                                Id = "AnnulmentShardOrb",
+                                Id = "AnnulmentShardOrb",  // Orb of Annulment is now in core game.
                                 IsEnabled = false,
-                                Name = "Annulment Shard & Orb",
-                                Description = "A currency item obtained from harbingers in Harbinger league",
-                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Annulment Shard", "Orb of Annulment" }) }
+                                Name = "Orb of Annulment",
+                                // Description = "A currency item obtained from harbingers in Harbinger league",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ /*"Annulment Shard",*/ "Orb of Annulment" }) }
                             },
-                            new Rule
+                            /*
+                            new Rule // XXX: Harbinger
                             {
                                 Id = "BindingShardOrb",
                                 IsEnabled = false,
@@ -375,6 +377,7 @@ namespace POESKillTree.ItemFilter.Model
                                 Description = "A currency item obtained from harbingers in Harbinger league",
                                 Matches = new List<Match> { new MatchBaseType(new string[]{ "Horizon Shard", "Orb of Horizons" }) }
                             }
+                            */
                         }
                     },
                     new RuleGroup
@@ -785,6 +788,14 @@ namespace POESKillTree.ItemFilter.Model
                                 Name = "Jewel",
                                 Matches = new List<Match> { new MatchClass(new string[]{ "Jewel" }) }
                             },
+                            new Rule // XXX: Abyss
+                            {
+                                Id = "AbyssJewel",
+                                IsEnabled = false,
+                                Name = "Abyss Jewel",
+                                Description = "Unlike other Jewels, they have a set of exclusive new properties and can also be placed in Abyssal Sockets on your items.",
+                                Matches = new List<Match> { new MatchClass(new string[]{ "Abyss Jewel" }) }
+                            },
                             new Rule
                             {
                                 Id = "LabyrinthKey",
@@ -835,7 +846,7 @@ namespace POESKillTree.ItemFilter.Model
                                 Name = "Breachstones",
                                 Description = "Xoph's, Tul's, Esh's, Uul-Netol's or Chayula's Breachstone",
                                 Matches = new List<Match> { new MatchClass(new string[]{ "Misc Map Items" }), new MatchBaseType(new string[] { "Breachstone" }) }
-                            },
+                            }
                             /*
                             new Rule // XXX: Legacy
                             {
@@ -851,8 +862,7 @@ namespace POESKillTree.ItemFilter.Model
                                 Name = "Ancient Reliquary Key",
                                 Matches = new List<Match> { new MatchClass(new string[]{ "Misc Map Items" }), new MatchBaseType(new string[]{ "Ancient Reliquary Key" }) }
                             }
-                            */
-                            new Rule // XXX: Harbringer
+                            new Rule // XXX: Harbinger
                             {
                                 Id = "Piece",
                                 IsEnabled = false,
@@ -860,6 +870,7 @@ namespace POESKillTree.ItemFilter.Model
                                 Description = "Unique item fragments found exclusively in the Harbinger league.\nAll pieces of an particular item can be forged into the full unique item.",
                                 Matches = new List<Match> { new MatchClass(new string[]{ "Piece" }) }
                             }
+                            */
                         }
                     },
                     new RuleGroup
