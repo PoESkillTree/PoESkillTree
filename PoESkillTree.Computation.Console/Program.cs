@@ -58,13 +58,16 @@ namespace PoESkillTree.Computation.Console
             var stopwatch = Stopwatch.StartNew();
             parser.TryParse("Made-up", out var _, out var _);
             stopwatch.Stop();
-            System.Console.WriteLine($"Initialization: {stopwatch.ElapsedMilliseconds} ms (parsing 1 made-up stat)");
+            System.Console.WriteLine($"Initialization (parsing 1 made-up stat):\n  {stopwatch.ElapsedMilliseconds} ms");
             stopwatch.Reset();
 
             var rng = new Random(1);
             var lines = ReadStatLines().OrderBy(e => rng.Next()).ToList();
             var distinct = new HashSet<string>();
             var batchCounter = 1;
+            var successCounter = 0;
+            var distinctSuccessCounter = 0;
+
             System.Console.WriteLine(
                 "Batch | Total ms | ms/line | ms/distinct | Batch size | #Distinct\n" +
                 "=================================================================");
@@ -73,17 +76,27 @@ namespace PoESkillTree.Computation.Console
                 var batchStart = stopwatch.ElapsedMilliseconds;
                 var batchSize = 0;
                 var newLines = 0;
+
                 foreach (var line in batch)
                 {
                     stopwatch.Start();
-                    parser.TryParse(line, out var _, out var _);
+                    var parsable = parser.TryParse(line, out var _, out var _);
                     stopwatch.Stop();
                     batchSize++;
+                    if (parsable)
+                    {
+                        successCounter++;
+                    }
                     if (distinct.Add(line))
                     {
                         newLines++;
+                        if (parsable)
+                        {
+                            distinctSuccessCounter++;
+                        }
                     }
                 }
+
                 var elapsed = stopwatch.ElapsedMilliseconds - batchStart;
                 System.Console.WriteLine(
                     $"{batchCounter,5} " +
@@ -101,6 +114,11 @@ namespace PoESkillTree.Computation.Console
                 $"| {(stopwatch.ElapsedMilliseconds / (double) distinct.Count),11:F} " +
                 $"| {lines.Count,10} " +
                 $"| {distinct.Count,9} ");
+            System.Console.WriteLine(
+                "Successfully parsed lines:\n" +
+                $"  {successCounter}/{lines.Count} ({successCounter * 100.0 / lines.Count:F1}%)\n" +
+                "Successfully parsed distinct lines:\n" +
+                $"  {distinctSuccessCounter}/{distinct.Count} ({distinctSuccessCounter * 100.0 / distinct.Count:F1}%)");
         }
 
         // For CPU profiling without the output overhead of Benchmark()
