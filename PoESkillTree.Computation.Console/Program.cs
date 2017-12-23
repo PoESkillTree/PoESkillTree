@@ -1,5 +1,10 @@
-﻿using PoESkillTree.Computation.Parsing;
-using PoESkillTree.Computation.Parsing.Referencing;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using MoreLinq;
+using PoESkillTree.Computation.Parsing;
 
 namespace PoESkillTree.Computation.Console
 {
@@ -9,29 +14,108 @@ namespace PoESkillTree.Computation.Console
         {
             var compositionRoot = new CompositionRoot();
 
-            ReferenceValidator.Validate(compositionRoot.ReferencedMatchers, compositionRoot.StatMatchers);
-
             var parser = compositionRoot.CreateParser();
 
-            System.Console.WriteLine("Enter a stat line");
+            System.Console.WriteLine("Enter a stat line to be parsed (or 'benchmark' to time stat parsing)");
             System.Console.Write("> ");
             string statLine;
             while ((statLine = System.Console.ReadLine()) != "")
             {
-                try
+                switch (statLine)
                 {
-                    if (!parser.TryParse(statLine, out var remaining, out var result))
-                    {
-                        System.Console.WriteLine($"Not recognized: '{remaining}' could not be parsed.");
-                    }
-                    System.Console.WriteLine(result == null ? "null" : string.Join("\n", result));
-                }
-                catch (ParseException e)
-                {
-                    System.Console.WriteLine("Parsing failed: " + e.Message);
+                    case "benchmark":
+                        Benchmark(parser);
+                        break;
+                    case "profile":
+                        Profile(parser);
+                        break;
+                    default:
+                        Parse(parser, statLine);
+                        break;
                 }
                 System.Console.Write("> ");
             }
+        }
+
+        private static void Parse(IParser<IReadOnlyList<Modifier>> parser, string statLine)
+        {
+            try
+            {
+                if (!parser.TryParse(statLine, out var remaining, out var result))
+                {
+                    System.Console.WriteLine($"Not recognized: '{remaining}' could not be parsed.");
+                }
+                System.Console.WriteLine(result == null ? "null" : string.Join("\n", result));
+            }
+            catch (ParseException e)
+            {
+                System.Console.WriteLine("Parsing failed: " + e.Message);
+            }
+        }
+
+        private static void Benchmark(IParser<IReadOnlyList<Modifier>> parser)
+        {
+            var stopwatch = Stopwatch.StartNew();
+            parser.TryParse("Made-up", out var _, out var _);
+            stopwatch.Stop();
+            System.Console.WriteLine($"Initialization: {stopwatch.ElapsedMilliseconds} ms (parsing 1 made-up stat)");
+            stopwatch.Reset();
+
+            var rng = new Random(1);
+            var lines = ReadStatLines().OrderBy(e => rng.Next()).ToList();
+            var distinct = new HashSet<string>();
+            var batchCounter = 1;
+            System.Console.WriteLine(
+                "Batch | Total ms | ms/line | ms/distinct | Batch size | #Distinct\n" +
+                "=================================================================");
+            foreach (var batch in lines.Batch((int) Math.Ceiling(lines.Count / 10.0)))
+            {
+                var batchStart = stopwatch.ElapsedMilliseconds;
+                var batchSize = 0;
+                var newLines = 0;
+                foreach (var line in batch)
+                {
+                    stopwatch.Start();
+                    parser.TryParse(line, out var _, out var _);
+                    stopwatch.Stop();
+                    batchSize++;
+                    if (distinct.Add(line))
+                    {
+                        newLines++;
+                    }
+                }
+                var elapsed = stopwatch.ElapsedMilliseconds - batchStart;
+                System.Console.WriteLine(
+                    $"{batchCounter,5} " +
+                    $"| {elapsed,8} " +
+                    $"| {(elapsed / (double) batchSize),7:F} " +
+                    $"| {(elapsed / (double) newLines),11:F} " +
+                    $"| {batchSize,10} " +
+                    $"| {newLines,9} ");
+                batchCounter++;
+            }
+            System.Console.WriteLine(
+                "Total " +
+                $"| {stopwatch.ElapsedMilliseconds,8} " +
+                $"| {(stopwatch.ElapsedMilliseconds / (double) lines.Count),7:F} " +
+                $"| {(stopwatch.ElapsedMilliseconds / (double) distinct.Count),11:F} " +
+                $"| {lines.Count,10} " +
+                $"| {distinct.Count,9} ");
+        }
+
+        // For CPU profiling without the output overhead of Benchmark()
+        private static void Profile(IParser<IReadOnlyList<Modifier>> parser)
+        {
+            foreach (var line in ReadStatLines())
+            {
+                parser.TryParse(line, out var _, out var _);
+            }
+        }
+
+        private static IEnumerable<string> ReadStatLines()
+        {
+            return File.ReadAllLines("Data/AllSkillTreeStatLines.txt")
+                .Where(s => !s.StartsWith("//"));
         }
     }
 }

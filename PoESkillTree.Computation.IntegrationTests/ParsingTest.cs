@@ -68,7 +68,7 @@ namespace PoESkillTree.Computation.IntegrationTests
 
         private static IEnumerable<string> ReadStatLines(string fileName)
         {
-            return File.ReadAllLines(TestContext.CurrentContext.TestDirectory + $"/TestData/{fileName}.txt")
+            return File.ReadAllLines(TestContext.CurrentContext.TestDirectory + $"/Data/{fileName}.txt")
                 .Where(s => !s.StartsWith("//"))
                 .Distinct()
                 .Select(s => s.ToLowerInvariant());

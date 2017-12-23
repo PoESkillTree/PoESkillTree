@@ -91,16 +91,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TestData\AllSkillTreeStatLines.txt">
+    <Content Include="Data\NotYetParsableStatLines.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\NotYetParsableStatLines.txt">
+    <Content Include="Data\ParsableStatLines.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestData\ParsableStatLines.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestData\UnparsableStatLines.txt">
+    <Content Include="Data\UnparsableStatLines.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
