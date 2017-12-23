@@ -21,10 +21,11 @@ namespace PoESkillTree.Computation.Parsing
 
         public IStatMatchers Get(ParsingStep parsingStep)
         {
+            var asString = parsingStep.ToString();
             return (
                 from c in _candidates
                 let name = c.GetType().Name
-                where name.StartsWith(parsingStep.ToString())
+                where name.StartsWith(asString)
                 orderby name.Length
                 select c
             ).First();

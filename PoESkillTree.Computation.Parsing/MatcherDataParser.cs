@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Parsing
@@ -8,6 +9,9 @@ namespace PoESkillTree.Computation.Parsing
     public class MatcherDataParser : IParser<MatcherDataParseResult>
     {
         private readonly IEnumerable<MatcherData> _statMatchers;
+
+        private readonly RegexCache _regexCache = 
+            new RegexCache(RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
 
         public MatcherDataParser(IEnumerable<MatcherData> statMatchers)
         {
@@ -18,7 +22,7 @@ namespace PoESkillTree.Computation.Parsing
         {
             var xs =
                 from m in _statMatchers
-                let regex = CreateRegex(m.Regex)
+                let regex = _regexCache[m.Regex]
                 let match = regex.Match(stat)
                 where match.Success
                 orderby match.Length descending
@@ -37,12 +41,6 @@ namespace PoESkillTree.Computation.Parsing
             result = new MatcherDataParseResult(x.ModifierResult, x.Groups);
             remaining = x.Result;
             return true;
-        }
-
-        private static Regex CreateRegex(string regex)
-        {
-            return new Regex(regex,
-                RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
         }
 
         private static IReadOnlyDictionary<string, string> SelectGroups(Regex regex, GroupCollection groups)

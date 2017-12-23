@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Parsing
@@ -10,6 +11,9 @@ namespace PoESkillTree.Computation.Parsing
         private readonly IParser<TResult> _inner;
 
         private readonly IReadOnlyList<StatReplacerData> _statReplacerData;
+
+        private readonly RegexCache _regexCache = 
+            new RegexCache(RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
         public StatReplacingParser(IParser<TResult> inner, 
             IReadOnlyList<StatReplacerData> statReplacerData)
@@ -41,7 +45,7 @@ namespace PoESkillTree.Computation.Parsing
         {
             var allMatches =
                 from data in _statReplacerData
-                let match = Regex.Match(stat, data.OriginalStatRegex)
+                let match = _regexCache[data.OriginalStatRegex].Match(stat)
                 where match.Success
                 select data.Replacements.Select(match.Result);
             return allMatches
