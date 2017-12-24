@@ -9,6 +9,23 @@
             _stringRepresentation = stringRepresentation;
         }
 
+        private bool Equals(BuilderStub other)
+        {
+            return string.Equals(_stringRepresentation, other._stringRepresentation);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj.GetType() == GetType() && Equals((BuilderStub) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return _stringRepresentation.GetHashCode();
+        }
+
         public override string ToString()
         {
             return _stringRepresentation;

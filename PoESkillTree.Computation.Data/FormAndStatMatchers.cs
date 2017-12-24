@@ -108,8 +108,7 @@ namespace PoESkillTree.Computation.Data
             },
             {
                 "#% of chaos damage does not bypass energy shield",
-                BaseAdd, Value, Chaos.Damage.TakenFrom(EnergyShield).Before(Life),
-                Chaos.Damage.TakenFrom(EnergyShield).Before(Mana)
+                BaseAdd, Value, Chaos.Damage.TakenFrom(EnergyShield).Before(Life)
             },
             {
                 "#% of physical damage bypasses energy shield",

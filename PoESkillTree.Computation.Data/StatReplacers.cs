@@ -59,7 +59,7 @@ namespace PoESkillTree.Computation.Data
             {
                 // Vaal Pact
                 @"life leeched per second is doubled\. (maximum life leech rate is doubled)\. (life regeneration has no effect)\.",
-                "100% increased life leeched per second", "$1", "$2"
+                "100% more life leeched per second", "$1", "$2"
             },
             {
                 // Ancestral Bond

@@ -9,7 +9,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
     public static class ValueBuilderUtils
     {
         public static Func<ValueBuilder, ValueBuilder> PerStat(IStatBuilder stat) => 
-            v => v * (stat.Value / 1).Floored;
+            v => v * stat.Value;
 
         public static Func<ValueBuilder, ValueBuilder> PerStat(IStatBuilder stat, ValueBuilder divideBy) => 
             v => v * (stat.Value / divideBy).Floored;

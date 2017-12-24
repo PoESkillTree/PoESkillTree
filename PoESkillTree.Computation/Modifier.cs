@@ -1,4 +1,6 @@
-﻿namespace PoESkillTree.Computation
+﻿using JetBrains.Annotations;
+
+namespace PoESkillTree.Computation
 {
     public class Modifier
     {
@@ -6,12 +8,16 @@
         // and Computation.Parsing.
         // The actual types for the properties are yet to be determined.
 
+        [CanBeNull]
         public object Stat { get; }
 
+        [CanBeNull]
         public object Form { get; }
 
+        [CanBeNull]
         public object Value { get; }
 
+        [CanBeNull]
         public object Condition { get; }
 
         public Modifier(object stat, object form, object value, object condition)
@@ -24,10 +30,10 @@
 
         private bool Equals(Modifier other)
         {
-            return Stat.Equals(other.Stat) 
-                && Form.Equals(other.Form) 
-                && Value.Equals(other.Value) 
-                && Condition.Equals(other.Condition);
+            return Equals(Stat, other.Stat)
+                   && Equals(Form, other.Form)
+                   && Equals(Value, other.Value)
+                   && Equals(Condition, other.Condition);
         }
 
         public override bool Equals(object obj)
@@ -41,10 +47,10 @@
         {
             unchecked
             {
-                var hashCode = Stat.GetHashCode();
-                hashCode = (hashCode * 397) ^ Form.GetHashCode();
-                hashCode = (hashCode * 397) ^ Value.GetHashCode();
-                hashCode = (hashCode * 397) ^ Condition.GetHashCode();
+                var hashCode = (Stat != null ? Stat.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Form != null ? Form.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Value != null ? Value.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Condition != null ? Condition.GetHashCode() : 0);
                 return hashCode;
             }
         }
