@@ -36,6 +36,7 @@ namespace PoESkillTree.Computation.Data
             { "(?<!chance to )gain #", BaseAdd, Value },
             { "#% additional", BaseAdd, Value },
             { "an additional", BaseAdd, 1 },
+            { "adds # to", BaseAdd, Value },
             { @"-#% of", BaseSubtract, Value },
             { "-#%? to", BaseSubtract, Value },
             { "can (have|summon) up to # additional", MaximumAdd, Value },

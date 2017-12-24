@@ -49,7 +49,7 @@ namespace PoESkillTree.Computation.Data
                 BaseAdd, Value, Reference.AsDamageType.Penetration
             },
             {
-                "damage (?<inner>with .*) penetrates #% ({DamageTypeMatchers}) resistances?",
+                "damage (?<inner>with .*|dealt by .*) penetrates #% ({DamageTypeMatchers}) resistances?",
                 BaseAdd, Value, Reference.AsDamageType.Penetration, "${inner}"
             },
             {

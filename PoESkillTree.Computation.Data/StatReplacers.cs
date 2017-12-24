@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Data
             },
             {
                 // Corrupted Energy Cobalt Jewel
-                @"(with \d corrupted items Equipped:) (\d+% of chaos damage does not bypass energy shield), and (\d+% of physical damage bypasses energy shield)",
+                @"(with \d corrupted items equipped): (\d+% of chaos damage does not bypass energy shield), and (\d+% of physical damage bypasses energy shield)",
                 "$1 $2", "$1 $3"
             },
             // keystones

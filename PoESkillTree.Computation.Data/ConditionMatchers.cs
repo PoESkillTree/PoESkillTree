@@ -80,6 +80,7 @@ namespace PoESkillTree.Computation.Data
             { "with weapons", Damage.With(Tags.Weapon) },
             { "weapon", Damage.With(Tags.Weapon) },
             { "with bows", Damage.With(Tags.Bow) },
+            { "bow", Damage.With(Tags.Bow) },
             { "with swords", Damage.With(Tags.Sword) },
             { "with claws", Damage.With(Tags.Claw) },
             { "claw", Damage.With(Tags.Claw) },
@@ -106,7 +107,6 @@ namespace PoESkillTree.Computation.Data
             { "with main hand", Damage.With(ItemSlot.MainHand) },
             { "with off hand", Damage.With(ItemSlot.OffHand) },
             { "attacks have", Damage.With(Source.Attack) },
-            { "bow attacks have", And(Damage.With(Tags.Bow), Damage.With(Source.Attack)) },
             { "with attacks", Damage.With(Source.Attack) },
             { "from damage over time", Damage.With(Source.DamageOverTime) },
             {
@@ -114,10 +114,6 @@ namespace PoESkillTree.Computation.Data
                 Or(Hit.On(), Ailment.All.Any(Damage.With))
             },
             // action and damage combinations
-            {
-                "on melee hit",
-                And(Hit.On(), With(Skills[Keyword.Melee]))
-            },
             {
                 "for each enemy hit by your attacks",
                 And(Hit.Against(Enemy).On(), Damage.With(Source.Attack))
@@ -133,10 +129,6 @@ namespace PoESkillTree.Computation.Data
             {
                 "critical strikes with daggers have a",
                 And(CriticalStrike.On(), Damage.With(Tags.Dagger))
-            },
-            {
-                "on melee critical strike",
-                And(CriticalStrike.On(), With(Skills[Keyword.Melee]))
             },
             {
                 "projectiles have against targets they pierce",
@@ -273,6 +265,10 @@ namespace PoESkillTree.Computation.Data
             },
             {
                 "({SkillMatchers})('|s)?( fires| has a| have a| has| deals| gain)?",
+                With(Reference.AsSkill)
+            },
+            {
+                "(dealt by) ({SkillMatchers})",
                 With(Reference.AsSkill)
             },
             {

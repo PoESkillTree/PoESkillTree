@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Console.Builders;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
@@ -8,26 +9,19 @@ namespace PoESkillTree.Computation.Console
 {
     public class SkillMatchers : ReferencedMatchersBase<ISkillBuilder>
     {
-        private readonly ISkillBuilders _skillBuilders;
-
-        public SkillMatchers(ISkillBuilders skillBuilders)
+        protected override IEnumerable<ReferencedMatcherData> CreateCollection()
         {
-            _skillBuilders = skillBuilders;
-        }
-
-        protected override IEnumerable<ReferencedMatcherData> CreateCollection() =>
-            new ReferencedMatcherCollection<ISkillBuilder>
+            string[] skills =
             {
-                { "Blood Rage", _skillBuilders.BloodRage },
-                { "Bone Offering", _skillBuilders.BoneOffering },
-                { "Detonate Mines", _skillBuilders.DetonateMines },
-                { "Flesh Offering", _skillBuilders.FleshOffering },
-                { "Molten Shell", _skillBuilders.MoltenShell },
-                { "Raise Spectre", _skillBuilders.RaiseSpectre },
-                { "Raise Zombie", _skillBuilders.RaiseZombie },
-                { "Spirit Offering", _skillBuilders.SpiritOffering },
-                { "Summon Skeleton", _skillBuilders.SummonSkeleton },
-                { "Vaal Summon Skeleton", _skillBuilders.VaalSummonSkeletons }
+                "Blood Rage", "Bone Offering", "Detonate Mines", "Flesh Offering", "Molten Shell", "Raise Spectre",
+                "Raise Zombie", "Spirit Offering", "Summon Skeleton", "Vaal Summon Skeleton", "Frost Blades"
             };
+            var coll = new ReferencedMatcherCollection<ISkillBuilder>();
+            foreach (var skill in skills)
+            {
+                coll.Add(skill, new SkillBuilderStub(skill, (c, _) => c));
+            }
+            return coll;
+        }
     }
 }

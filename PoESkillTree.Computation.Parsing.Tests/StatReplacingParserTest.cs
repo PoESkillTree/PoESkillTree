@@ -15,7 +15,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             _statReplacers = new[]
             {
-                new StatReplacerData("plain stat", new[] { "stat1", "stat2", "stat3" }),
+                new StatReplacerData("Plain Stat", new[] { "stat1", "stat2", "stat3" }),
                 new StatReplacerData("(grouped) (stat)", new[] { "$1", "$2", "$0" }),
                 new StatReplacerData(".*[ck]omplex (.*) (regexp|regex)",
                     new[] { "complex", "$1", "$2" }),
@@ -159,6 +159,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         }
 
         [TestCase("plain stat", new[] { "stat1", "stat2", "stat3" })]
+        [TestCase("Plain Stat", new[] { "stat1", "stat2", "stat3" })]
         [TestCase("grouped stat", new[] { "grouped", "stat", "grouped stat" })]
         [TestCase("very complex asd regex", new[] { "complex", "asd", "regex" })]
         [TestCase("removed", new string[0])]

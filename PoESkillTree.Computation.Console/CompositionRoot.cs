@@ -58,7 +58,7 @@ namespace PoESkillTree.Computation.Console
             new FlagMatchers(builderFactories.StatBuilders.Flag),
             new ItemSlotMatchers(new ItemSlotBuildersStub()),
             new KeywordMatchers(builderFactories.KeywordBuilders),
-            new SkillMatchers(builderFactories.SkillBuilders),
+            new SkillMatchers(),
         };
 
         public IParser<IReadOnlyList<Modifier>> CreateParser()
