@@ -5,18 +5,19 @@ using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Console;
 using PoESkillTree.Computation.Console.Builders;
+using PoESkillTree.Computation.Parsing;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {
     [TestFixture]
     public class ParsingTest
     {
-        private static IParser<IReadOnlyList<Modifier>> _parser;
+        private static IParser _parser;
 
         [OneTimeSetUp]
         public static void ClassInit()
         {
-            _parser = new CompositionRoot().CreateParser();
+            _parser = new CompositionRoot().Parser;
         }
 
         [Test, TestCaseSource(nameof(ReadParsableStatLines))]
@@ -29,6 +30,10 @@ namespace PoESkillTree.Computation.IntegrationTests
             foreach (var modifier in result)
             {
                 Assert.NotNull(modifier);
+                Assert.NotNull(modifier.Stat);
+                Assert.NotNull(modifier.Form);
+                Assert.NotNull(modifier.Value);
+                Assert.NotNull(modifier.Condition);
                 var s = modifier.ToString();
                 // Assert it has no unresolved references or values
                 StringAssert.DoesNotContain("References", s);
@@ -91,7 +96,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     f.StatBuilders.Attribute.Dexterity,
                     f.FormBuilders.BaseAdd,
                     f.ValueBuilders.Create(10),
-                    null)
+                    f.ConditionBuilders.True)
             });
             yield return new TestCaseData("Gain 30 Mana per Grand Spectrum").Returns(new[]
             {
@@ -99,12 +104,12 @@ namespace PoESkillTree.Computation.IntegrationTests
                     f.StatBuilders.GrandSpectrumJewelsSocketed,
                     f.FormBuilders.BaseAdd,
                     f.ValueBuilders.Create(1),
-                    null),
+                    f.ConditionBuilders.True),
                 new Modifier(
                     f.StatBuilders.Pool.Mana,
                     f.FormBuilders.BaseAdd,
                     f.ValueBuilders.Create(30).Multiply(f.StatBuilders.GrandSpectrumJewelsSocketed.Value),
-                    null),
+                    f.ConditionBuilders.True),
             });
             yield return new TestCaseData(
                     "With 5 Corrupted Items Equipped: 50% of Chaos Damage does not bypass Energy Shield, and 50% of Physical Damage bypasses Energy Shield")
@@ -131,17 +136,17 @@ namespace PoESkillTree.Computation.IntegrationTests
                         f.StatBuilders.Pool.Life.Leech.Rate,
                         f.FormBuilders.PercentMore,
                         f.ValueBuilders.Create(100),
-                        null),
+                        f.ConditionBuilders.True),
                     new Modifier(
                         f.StatBuilders.Pool.Life.Leech.RateLimit,
                         f.FormBuilders.PercentMore,
                         f.ValueBuilders.Create(100),
-                        null), 
+                        f.ConditionBuilders.True), 
                     new Modifier(
                         f.StatBuilders.Pool.Life.Regen,
                         f.FormBuilders.TotalOverride,
                         f.ValueBuilders.Create(0),
-                        null)
+                        f.ConditionBuilders.True)
                 });
         }
     }

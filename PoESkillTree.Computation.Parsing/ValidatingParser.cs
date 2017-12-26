@@ -14,18 +14,15 @@ namespace PoESkillTree.Computation.Parsing
 
         public bool TryParse(string stat, out string remaining, out TResult result)
         {
-            if (!_inner.TryParse(stat, out remaining, out result))
+            var ret = _inner.TryParse(stat, out remaining, out result);
+
+            if (remaining.EndsWith(ItemConstants.HiddenStatSuffix, StringComparison.InvariantCultureIgnoreCase))
             {
-                return false;
+                remaining = remaining.Remove(remaining.Length - ItemConstants.HiddenStatSuffix.Length);
             }
-            var processed = remaining;
-            if (processed.EndsWith(ItemConstants.HiddenStatSuffix,
-                StringComparison.InvariantCultureIgnoreCase))
-            {
-                processed =
-                    processed.Remove(processed.Length - ItemConstants.HiddenStatSuffix.Length);
-            }
-            return processed.Trim() == string.Empty;
+
+            remaining = remaining.Trim();
+            return ret && remaining == string.Empty;
         }
     }
 }

@@ -81,7 +81,7 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
             return results.Aggregate(SimpleModifierResult.Empty, Merge);
         }
 
-        public static IReadOnlyList<Modifier> Build(this IModifierResult result)
+        public static IReadOnlyList<Modifier> Build(this IModifierResult result, object defaultCondition)
         {
             IStatBuilder ConvertStat(IModifierResult r, IStatBuilder s) =>
                 s == null ? null : r.StatConverter(s);
@@ -92,7 +92,7 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
             return (from entry in result.Entries
                     let stat = ConvertStat(result, entry.Stat)
                     let value = ConvertValue(result, entry.Value)
-                    select new Modifier(stat, entry.Form, value, entry.Condition))
+                    select new Modifier(stat, entry.Form, value, entry.Condition ?? defaultCondition))
                 .ToList();
         }
     }

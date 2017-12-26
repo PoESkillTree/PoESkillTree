@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Parsing.Data;
-using PoESkillTree.Computation.Parsing.Steps;
 
-namespace PoESkillTree.Computation.Parsing
+namespace PoESkillTree.Computation.Parsing.Steps
 {
     public class StatMatchersSelector
     {

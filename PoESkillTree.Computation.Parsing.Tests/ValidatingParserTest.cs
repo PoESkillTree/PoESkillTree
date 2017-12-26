@@ -16,7 +16,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         }
 
         [Test]
-        public void TryParsePassesOutputsOnUnchanged()
+        public void TryParsePassesResultOnUnchanged()
         {
             var innerMock = new Mock<IParser<string>>();
             var remaining = "remaining";
@@ -25,9 +25,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 .Returns(true);
             var sut = new ValidatingParser<string>(innerMock.Object);
 
-            sut.TryParse("stat", out var actualRemaining, out var actualResult);
+            sut.TryParse("stat", out var _, out var actualResult);
 
-            Assert.AreEqual(remaining, actualRemaining);
             Assert.AreEqual(result, actualResult);
         }
 
@@ -35,8 +34,9 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void TryParseReturnsFalseIfInnerReturnsFalse()
         {
             var innerMock = new Mock<IParser<string>>();
+            var remaining = "remaining";
             string _;
-            innerMock.Setup(p => p.TryParse("stat", out _, out _))
+            innerMock.Setup(p => p.TryParse("stat", out remaining, out _))
                 .Returns(false);
             var sut = new ValidatingParser<string>(innerMock.Object);
 
@@ -118,6 +118,51 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var actual = sut.TryParse("stat", out var _, out var _);
 
             Assert.True(actual);
+        }
+
+        [TestCase("a b c")]
+        [TestCase(ItemConstants.HiddenStatSuffix + " a")]
+        public void TryParseOutputsCorrectUnchangedRemaining(string remaining)
+        {
+            var innerMock = new Mock<IParser<string>>();
+            string _;
+            innerMock.Setup(p => p.TryParse("stat", out remaining, out _)).Returns(true);
+            var sut = new ValidatingParser<string>(innerMock.Object);
+
+            sut.TryParse("stat", out var actualRemaining, out var _);
+
+            Assert.AreEqual(remaining, actualRemaining);
+        }
+
+        [TestCase(" r ", ExpectedResult = "r")]
+        [TestCase(ItemConstants.HiddenStatSuffix + " ", ExpectedResult = ItemConstants.HiddenStatSuffix)]
+        [TestCase(" \n\t\r", ExpectedResult = "")]
+        [TestCase(" \n\t\r " + ItemConstants.HiddenStatSuffix, ExpectedResult = "")]
+        [TestCase(" \ntest\t\r " + ItemConstants.HiddenStatSuffix, ExpectedResult = "test")]
+        public string TryParseOutputsCorrectRemaining(string innerRemaining)
+        {
+            var innerMock = new Mock<IParser<string>>();
+            string _;
+            innerMock.Setup(p => p.TryParse("stat", out innerRemaining, out _)).Returns(true);
+            var sut = new ValidatingParser<string>(innerMock.Object);
+
+            sut.TryParse("stat", out var remaining, out var _);
+
+            return remaining;
+        }
+
+        [Test]
+        public void TryParseCleansIfInnerReturnsFalse()
+        {
+            var innerMock = new Mock<IParser<string>>();
+            string _;
+            var innerRemaining = " \ntest\t\r " + ItemConstants.HiddenStatSuffix;
+            innerMock.Setup(p => p.TryParse("stat", out innerRemaining, out _)).Returns(false);
+            var sut = new ValidatingParser<string>(innerMock.Object);
+
+            sut.TryParse("stat", out var remaining, out var _);
+
+            Assert.AreEqual("test", remaining);
         }
     }
 }

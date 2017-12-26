@@ -6,7 +6,7 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Parsing.Data;
 using PoESkillTree.Computation.Parsing.Steps;
 
-namespace PoESkillTree.Computation.Parsing.Tests
+namespace PoESkillTree.Computation.Parsing.Tests.Steps
 {
     [TestFixture]
     public class StatMatchersSelectorTest

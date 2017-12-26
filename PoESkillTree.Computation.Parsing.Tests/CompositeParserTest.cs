@@ -141,5 +141,16 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var parser = MockConstantParser("stat", "remaining", 42, @return);
             return MockStep(parser, @return, nextStep);
         }
+
+
+        private class NoOpParser<TResult> : IParser<TResult>
+        {
+            public bool TryParse(string stat, out string remaining, out TResult result)
+            {
+                remaining = stat;
+                result = default;
+                return false;
+            }
+        }
     }
 }

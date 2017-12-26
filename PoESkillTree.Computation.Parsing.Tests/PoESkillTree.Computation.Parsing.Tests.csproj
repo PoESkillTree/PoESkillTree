@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -72,9 +73,8 @@
     <Compile Include="Referencing\ReferenceValidatorTest.cs" />
     <Compile Include="Referencing\RegexGroupServiceFactoryTest.cs" />
     <Compile Include="Referencing\RegexGroupServiceParserTest.cs" />
+    <Compile Include="Referencing\StatMatcherRegexExpanderTest.cs" />
     <Compile Include="ResolvingParserTest.cs" />
-    <Compile Include="StatMatcherRegexExpanderTest.cs" />
-    <Compile Include="StatMatchersSelectorTest.cs" />
     <Compile Include="Steps\CompletedStepTest.cs" />
     <Compile Include="CompositeParserTest.cs" />
     <Compile Include="StatNormalizingParserTest.cs" />
@@ -90,6 +90,7 @@
     <Compile Include="Steps\PoolStatStepTest.cs" />
     <Compile Include="Steps\SpecialStepTest.cs" />
     <Compile Include="Steps\StatManipulationStepTest.cs" />
+    <Compile Include="Steps\StatMatchersSelectorTest.cs" />
     <Compile Include="Steps\ValueConversionStepTest.cs" />
     <Compile Include="ValidatingParserTest.cs" />
   </ItemGroup>

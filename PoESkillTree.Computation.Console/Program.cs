@@ -13,8 +13,7 @@ namespace PoESkillTree.Computation.Console
         public static void Main(string[] args)
         {
             var compositionRoot = new CompositionRoot();
-
-            var parser = compositionRoot.CreateParser();
+            var parser = compositionRoot.Parser;
 
             System.Console.WriteLine("Enter a stat line to be parsed (or 'benchmark' to time stat parsing)");
             System.Console.Write("> ");
@@ -37,7 +36,7 @@ namespace PoESkillTree.Computation.Console
             }
         }
 
-        private static void Parse(IParser<IReadOnlyList<Modifier>> parser, string statLine)
+        private static void Parse(IParser parser, string statLine)
         {
             try
             {
@@ -53,7 +52,7 @@ namespace PoESkillTree.Computation.Console
             }
         }
 
-        private static void Benchmark(IParser<IReadOnlyList<Modifier>> parser)
+        private static void Benchmark(IParser parser)
         {
             var stopwatch = Stopwatch.StartNew();
             parser.TryParse("Made-up", out var _, out var _);
@@ -122,7 +121,7 @@ namespace PoESkillTree.Computation.Console
         }
 
         // For CPU profiling without the output overhead of Benchmark()
-        private static void Profile(IParser<IReadOnlyList<Modifier>> parser)
+        private static void Profile(IParser parser)
         {
             foreach (var line in ReadStatLines())
             {

@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.Computation.Parsing.Data;
-using PoESkillTree.Computation.Parsing.Referencing;
-using static PoESkillTree.Computation.Parsing.Referencing.ReferenceConstants;
 
-namespace PoESkillTree.Computation.Parsing
+namespace PoESkillTree.Computation.Parsing.Referencing
 {
     public class StatMatcherRegexExpander : IEnumerable<MatcherData>
     {
@@ -64,14 +62,14 @@ namespace PoESkillTree.Computation.Parsing
             var regex = new Regex(regexString);
             foreach (var groupName in regex.GetGroupNames())
             {
-                if (groupName.StartsWith(ValueGroupPrefix) || groupName.StartsWith(ReferenceGroupPrefix))
+                if (groupName.StartsWith(ReferenceConstants.ValueGroupPrefix) || groupName.StartsWith(ReferenceConstants.ReferenceGroupPrefix))
                 {
                     throw new ParseException(
                         $"Regex {regexString} contains invalid group name {groupName}");
                 }
             }
 
-            foreach (Match match in ReferencePlaceholderRegex.Matches(regexString))
+            foreach (Match match in ReferenceConstants.ReferencePlaceholderRegex.Matches(regexString))
             {
                 var referenceName = match.Groups[1].Value;
                 if (!_referencedRegexes.ContainsReference(referenceName))
@@ -85,7 +83,7 @@ namespace PoESkillTree.Computation.Parsing
         private string ExpandValues(string regex)
         {
             var valueIndex = 0;
-            return ValuePlaceholderRegex.Replace(regex, match =>
+            return ReferenceConstants.ValuePlaceholderRegex.Replace(regex, match =>
             {
                 var prefix = valueIndex.ToString();
                 valueIndex++;
@@ -96,7 +94,7 @@ namespace PoESkillTree.Computation.Parsing
         private string ExpandReferences(string regex, string referencePrefix)
         {
             var referenceIndex = 0;
-            return ReferencePlaceholderRegex.Replace(regex, match =>
+            return ReferenceConstants.ReferencePlaceholderRegex.Replace(regex, match =>
             {
                 var referenceName = match.Groups[1].Value;
                 var prefix = _regexGroupFactory.CombineGroupPrefixes(referencePrefix, referenceIndex.ToString());

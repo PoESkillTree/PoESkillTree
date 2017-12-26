@@ -6,9 +6,8 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Parsing.Data;
 using PoESkillTree.Computation.Parsing.ModifierBuilding;
 using PoESkillTree.Computation.Parsing.Referencing;
-using static PoESkillTree.Computation.Parsing.StatMatcherRegexExpander;
 
-namespace PoESkillTree.Computation.Parsing.Tests
+namespace PoESkillTree.Computation.Parsing.Tests.Referencing
 {
     [TestFixture]
     public class StatMatcherRegexExpanderTest
@@ -26,7 +25,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         }
 
         [TestCase(true, ExpectedResult = "^test$")]
-        [TestCase(false, ExpectedResult = LeftDelimiterRegex + "test" + RightDelimiterRegex)]
+        [TestCase(false, ExpectedResult = StatMatcherRegexExpander.LeftDelimiterRegex + "test" + StatMatcherRegexExpander.RightDelimiterRegex)]
         public string RespectsMatchesWholeLineOnlyProperty(bool matchesWholeLineOnly)
         {
             var statMatchers = MockStatMatchers(matchesWholeLineOnly, DefaultMatcherData);
@@ -59,17 +58,17 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         [TestCase("test", ExpectedResult = "^test$")]
         [TestCase("test1 (.*) test2", ExpectedResult = "^test1 (.*) test2$")]
-        [TestCase("#", ExpectedResult = "^(?<value0>" + ValueRegex + ")$")]
+        [TestCase("#", ExpectedResult = "^(?<value0>" + StatMatcherRegexExpander.ValueRegex + ")$")]
         [TestCase("# #", ExpectedResult =
-            "^(?<value0>" + ValueRegex + ") (?<value1>" + ValueRegex + ")$")]
+            "^(?<value0>" + StatMatcherRegexExpander.ValueRegex + ") (?<value1>" + StatMatcherRegexExpander.ValueRegex + ")$")]
         [TestCase("test # (.*) # (test2)+", ExpectedResult =
-            "^test (?<value0>" + ValueRegex + ") (.*) (?<value1>" + ValueRegex + ") (test2)+$")]
+            "^test (?<value0>" + StatMatcherRegexExpander.ValueRegex + ") (.*) (?<value1>" + StatMatcherRegexExpander.ValueRegex + ") (test2)+$")]
         [TestCase("({Matchers1})", ExpectedResult =
             "^((?<reference0_Matchers1_1>[1-9])|(?<reference0_Matchers1_2>(01)+)|(?<reference0_Matchers1_0>0+))$")]
         [TestCase("test # ({Matchers1}) (.*) # ({Matchers2}) ({Matchers1})", ExpectedResult =
-            "^test (?<value0>" + ValueRegex + ")" +
+            "^test (?<value0>" + StatMatcherRegexExpander.ValueRegex + ")" +
             " ((?<reference0_Matchers1_1>[1-9])|(?<reference0_Matchers1_2>(01)+)|(?<reference0_Matchers1_0>0+))" +
-            " (.*) (?<value1>" + ValueRegex + ")" +
+            " (.*) (?<value1>" + StatMatcherRegexExpander.ValueRegex + ")" +
             " ((?<reference1_Matchers2_0>a)|(?<reference1_Matchers2_1>b)|(?<reference1_Matchers2_2>c)|(?<reference1_Matchers2_3>d))" +
             " ((?<reference2_Matchers1_1>[1-9])|(?<reference2_Matchers1_2>(01)+)|(?<reference2_Matchers1_0>0+))$")]
         public string ExpandsCorrectly(string inputRegex)

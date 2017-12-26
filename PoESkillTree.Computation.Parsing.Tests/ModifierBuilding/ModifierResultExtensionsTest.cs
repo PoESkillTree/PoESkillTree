@@ -234,7 +234,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
                 new[] { DefaultEntry.WithStat(null) },
                 statConverter: s => s ?? throw new ArgumentNullException());
 
-            var result = input.Build();
+            var result = input.Build(null);
 
             Assert.Null(result[0].Stat);
         }
@@ -246,9 +246,36 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
                 new[] { DefaultEntry.WithValue(null) },
                 valueConverter: v => v ?? throw new ArgumentNullException());
 
-            var result = input.Build();
+            var result = input.Build(null);
 
             Assert.Null(result[0].Value);
+        }
+
+        [Test]
+        public void BuildReturnsCorrectModifiers()
+        {
+            var stat = Mock.Of<IStatBuilder>();
+            var value = Mock.Of<IValueBuilder>();
+            var input = CreateResult(
+                new[] { DefaultEntry },
+                s => s == DefaultEntry.Stat ? stat : s,
+                v => v == DefaultEntry.Value ? value : v);
+
+            var result = input.Build(null);
+
+            Assert.That(result,
+                Has.Exactly(1).Items.EqualTo(new Modifier(stat, DefaultEntry.Form, value, DefaultEntry.Condition)));
+        }
+
+        [Test]
+        public void BuildUsesDefaultConditionIfEntryHasNullCondition()
+        {
+            var input = CreateResult(DefaultEntry.WithCondition(null));
+            const string expected = "default condition";
+
+            var result = input.Build(expected);
+
+            Assert.AreEqual(expected, result[0].Condition);
         }
 
         private static readonly ModifierResultEntry EmptyEntry = new ModifierResultEntry();

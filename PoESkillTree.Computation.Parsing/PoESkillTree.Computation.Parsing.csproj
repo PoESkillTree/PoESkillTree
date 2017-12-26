@@ -72,6 +72,7 @@
     <Compile Include="Builders\Equipment\IItemSlotBuilders.cs" />
     <Compile Include="Builders\Matching\IResolvable.cs" />
     <Compile Include="Builders\Matching\ResolvedMatchContext.cs" />
+    <Compile Include="IParser.cs" />
     <Compile Include="MatcherDataParser.cs" />
     <Compile Include="ModifierBuilding\IModifierResultResolver.cs" />
     <Compile Include="ModifierBuilding\ModifierResultResolver.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Builders\Values\ValueBuilderUtils.cs" />
     <Compile Include="CachingParser.cs" />
     <Compile Include="ParseException.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="ParserWithResultSelector.cs" />
     <Compile Include="Builders\Matching\ReferenceConverter.cs" />
     <Compile Include="Referencing\IReferencedRegexes.cs" />
@@ -156,8 +158,7 @@
     <Compile Include="Referencing\RegexGroupService.cs" />
     <Compile Include="ResolvingParser.cs" />
     <Compile Include="MatcherDataParseResult.cs" />
-    <Compile Include="StatMatcherRegexExpander.cs" />
-    <Compile Include="StatMatchersSelector.cs" />
+    <Compile Include="Referencing\StatMatcherRegexExpander.cs" />
     <Compile Include="Steps\CompletedStep.cs" />
     <Compile Include="CompositeParser.cs" />
     <Compile Include="Steps\ConditionStep.cs" />
@@ -166,7 +167,6 @@
     <Compile Include="Steps\FormStep.cs" />
     <Compile Include="Steps\GeneralStatStep.cs" />
     <Compile Include="Steps\IStep.cs" />
-    <Compile Include="NoOpParser.cs" />
     <Compile Include="Steps\MappingStep.cs" />
     <Compile Include="Steps\NotCompletedStep.cs" />
     <Compile Include="Steps\ParsingStep.cs" />
@@ -176,6 +176,7 @@
     <Compile Include="Steps\PoolStatStep.cs" />
     <Compile Include="Steps\SpecialStep.cs" />
     <Compile Include="Steps\StatManipulationStep.cs" />
+    <Compile Include="Steps\StatMatchersSelector.cs" />
     <Compile Include="Steps\ValueConversionStep.cs" />
     <Compile Include="ValidatingParser.cs" />
   </ItemGroup>

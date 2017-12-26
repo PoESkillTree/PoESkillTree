@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Console.Builders;
 using PoESkillTree.Computation.Data;
 using PoESkillTree.Computation.Parsing;
@@ -9,8 +7,6 @@ using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Data;
 using PoESkillTree.Computation.Parsing.ModifierBuilding;
-using PoESkillTree.Computation.Parsing.Referencing;
-using PoESkillTree.Computation.Parsing.Steps;
 
 namespace PoESkillTree.Computation.Console
 {
@@ -22,16 +18,23 @@ namespace PoESkillTree.Computation.Console
         private readonly Lazy<IReadOnlyList<IStatMatchers>> _statMatchers;
         private readonly Lazy<IReadOnlyList<IReferencedMatchers>> _referencedMatchers;
 
+        private readonly Lazy<IParser> _parser;
+
         public CompositionRoot()
         {
             _statMatchers = new Lazy<IReadOnlyList<IStatMatchers>>(
                 () => CreateStatMatchers(_builderFactories.Value, new MatchContextsStub(), new ModifierBuilder()));
             _referencedMatchers = new Lazy<IReadOnlyList<IReferencedMatchers>>(
                 () => CreateReferencedMatchers(_builderFactories.Value));
+            _parser = new Lazy<IParser>(
+                () => new Parser(ReferencedMatchers, StatMatchers, new StatReplacers().Replacers,
+                    _builderFactories.Value));
         }
 
         public IReadOnlyList<IStatMatchers> StatMatchers => _statMatchers.Value;
         public IReadOnlyList<IReferencedMatchers> ReferencedMatchers => _referencedMatchers.Value;
+
+        public IParser Parser => _parser.Value;
 
         private static IReadOnlyList<IStatMatchers> CreateStatMatchers(
             IBuilderFactories builderFactories, IMatchContexts matchContexts,
@@ -60,54 +63,5 @@ namespace PoESkillTree.Computation.Console
             new KeywordMatchers(builderFactories.KeywordBuilders),
             new SkillMatchers(),
         };
-
-        public IParser<IReadOnlyList<Modifier>> CreateParser()
-        {
-            var referenceManager = new ReferenceManager(ReferencedMatchers, StatMatchers);
-            var regexGroupService = new RegexGroupService(_builderFactories.Value.ValueBuilders);
-
-            IParser<IModifierResult> CreateInnerParser(IStatMatchers statMatchers) =>
-                new CachingParser<IModifierResult>(
-                    new StatNormalizingParser<IModifierResult>(
-                        new ResolvingParser(
-                            new MatcherDataParser(
-                                new StatMatcherRegexExpander(statMatchers, referenceManager, regexGroupService)),
-                            referenceManager,
-                            new ModifierResultResolver(new ModifierBuilder()),
-                            regexGroupService
-                        )
-                    )
-                );
-
-            var statMatchersFactory = new StatMatchersSelector(StatMatchers);
-            var innerParserCache = new Dictionary<IStatMatchers, IParser<IModifierResult>>();
-            IStep<IParser<IModifierResult>, bool> initialStep =
-                new MappingStep<IStatMatchers, IParser<IModifierResult>, bool>(
-                    new MappingStep<ParsingStep, IStatMatchers, bool>(
-                        new SpecialStep(),
-                        statMatchersFactory.Get
-                    ),
-                    k => innerParserCache.GetOrAdd(k, CreateInnerParser)
-                );
-
-            return
-                new CachingParser<IReadOnlyList<Modifier>>(
-                    new ValidatingParser<IReadOnlyList<Modifier>>(
-                        new StatNormalizingParser<IReadOnlyList<Modifier>>(
-                            new ParserWithResultSelector<IReadOnlyList<IReadOnlyList<Modifier>>,
-                                IReadOnlyList<Modifier>>(
-                                new StatReplacingParser<IReadOnlyList<Modifier>>(
-                                    new ParserWithResultSelector<IReadOnlyList<IModifierResult>,
-                                        IReadOnlyList<Modifier>>(
-                                        new CompositeParser<IModifierResult>(initialStep),
-                                        l => l.Aggregate().Build()),
-                                    new StatReplacers().Replacers
-                                ),
-                                ls => ls.Flatten().ToList()
-                            )
-                        )
-                    )
-                );
-        }
     }
 }
