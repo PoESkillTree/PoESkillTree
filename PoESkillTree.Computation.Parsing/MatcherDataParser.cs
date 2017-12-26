@@ -6,30 +6,40 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Parsing
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// The leaf parser in the parser hierarchy. Parses stats by iterating through <see cref="MatcherData"/> instances
+    /// to find the matching <see cref="MatcherData.Regex"/> with the longest match. The output remaining is
+    /// the input stat but having the matched substring replaced by <see cref="MatcherData.MatchSubstitution"/>.
+    /// The output result contains the matched <see cref="MatcherData"/>'s <see cref="MatcherData.ModifierResult"/> and
+    /// the group names of <see cref="MatcherData.Regex"/> with their captured substrings.
+    /// </summary>
     public class MatcherDataParser : IParser<MatcherDataParseResult>
     {
-        private readonly IEnumerable<MatcherData> _statMatchers;
+        private readonly IEnumerable<MatcherData> _matcherData;
 
         private readonly RegexCache _regexCache = 
             new RegexCache(RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
 
-        public MatcherDataParser(IEnumerable<MatcherData> statMatchers)
+        public MatcherDataParser(IEnumerable<MatcherData> matcherData)
         {
-            _statMatchers = statMatchers;
+            _matcherData = matcherData;
         }
 
         public bool TryParse(string stat, out string remaining, out MatcherDataParseResult result)
         {
             var xs =
-                from m in _statMatchers
-                let regex = _regexCache[m.Regex]
+                from matcherData in _matcherData
+                let regex = _regexCache[matcherData.Regex]
                 let match = regex.Match(stat)
                 where match.Success
                 orderby match.Length descending
-                let replaced = stat.Substring(0, match.Index)
-                               + match.Result(m.MatchSubstitution)
-                               + stat.Substring(match.Index + match.Length)
-                select new { m.ModifierResult, Result = replaced, Groups = SelectGroups(regex, match.Groups) };
+                select new
+                {
+                    matcherData.ModifierResult,
+                    Remaining = GetRemaining(matcherData, stat, match),
+                    Groups = SelectGroups(regex, match.Groups)
+                };
 
             var x = xs.FirstOrDefault();
             if (x == null)
@@ -38,9 +48,17 @@ namespace PoESkillTree.Computation.Parsing
                 remaining = stat;
                 return false;
             }
+
             result = new MatcherDataParseResult(x.ModifierResult, x.Groups);
-            remaining = x.Result;
+            remaining = x.Remaining;
             return true;
+        }
+
+        private static string GetRemaining(MatcherData matcherData, string stat, Match match)
+        {
+            return stat.Substring(0, match.Index)
+                   + match.Result(matcherData.MatchSubstitution)
+                   + stat.Substring(match.Index + match.Length);
         }
 
         private static IReadOnlyDictionary<string, string> SelectGroups(Regex regex, GroupCollection groups)

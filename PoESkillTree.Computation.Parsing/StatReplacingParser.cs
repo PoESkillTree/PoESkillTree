@@ -6,6 +6,15 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Parsing
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// Decorating parser that potentially splits the input stat into multiple using a list of
+    /// <see cref="StatReplacerData"/>, passes each of those stats to the decorated parser and outputs all results.
+    /// <para>The output remaining is created by joining all stats' remaining outputs that are not only whitespace
+    /// with newlines.</para>
+    /// <para>Parsing is successful if all stats coulc be parsed successfully.</para>
+    /// </summary>
+    /// <typeparam name="TResult">Type of the decorated parser's results</typeparam>
     public class StatReplacingParser<TResult> : IParser<IReadOnlyList<TResult>>
     {
         private readonly IParser<TResult> _inner;
@@ -31,7 +40,7 @@ namespace PoESkillTree.Computation.Parsing
             {
                 ret &= _inner.TryParse(subStat, out var singleRemaining, out var singleResult);
                 results.Add(singleResult);
-                if (singleRemaining != string.Empty)
+                if (!string.IsNullOrWhiteSpace(singleRemaining))
                 {
                     remainings.Add(singleRemaining);
                 }
@@ -43,7 +52,7 @@ namespace PoESkillTree.Computation.Parsing
 
         private IEnumerable<string> GetReplacements(string stat)
         {
-            var allMatches =
+            IEnumerable<IEnumerable<string>> allMatches =
                 from data in _statReplacerData
                 let match = _regexCache[data.OriginalStatRegex].Match(stat)
                 where match.Success

@@ -68,7 +68,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
             sut.TryParse(stat, out var _, out var result);
 
-            CollectionAssert.AreEqual(expected, result.Groups);
+            CollectionAssert.AreEqual(expected, result.RegexGroups);
         }
 
         [TestCase("a b", "a b")]
@@ -80,7 +80,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var sut = DefaultSut;
 
             sut.TryParse(stat, out var _, out var result);
-            var groups = result.Groups;
+            var groups = result.RegexGroups;
 
             Assert.That(groups, Has.Exactly(1).Items.EqualTo(new KeyValuePair<string, string>("0", fullGroup)));
         }

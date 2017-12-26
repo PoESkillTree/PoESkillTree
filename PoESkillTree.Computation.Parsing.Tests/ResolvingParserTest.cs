@@ -108,15 +108,17 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var referenceManager = Mock.Of<IReferenceToMatcherDataResolver>(m =>
                 m.TryGetReferencedMatcherData("r0", 0, out rootReferencedMatcherData) &&
                 m.TryGetMatcherData("r1", 1, out rootMatcherData) &&
-                m.TryGetReferencedMatcherData("r5", 5, out nestedReferencedMatcherData) &&
-                m.TryGetMatcherData("r3", 3, out nestedMatcherData));
+                m.TryGetReferencedMatcherData("r2", 2, out rootReferencedMatcherData) &&
+                m.TryGetMatcherData("r3", 3, out nestedMatcherData) &&
+                m.TryGetReferencedMatcherData("r4", 4, out nestedReferencedMatcherData) &&
+                m.TryGetReferencedMatcherData("r5", 5, out nestedReferencedMatcherData));
 
             var rootResolvedBuilder = Mock.Of<IStatBuilder>();
             var rootReferenceConverters = new[]
             {
                 new ReferenceConverter(rootReferencedMatch),
                 new ReferenceConverter(rootResolvedBuilder),
-                new ReferenceConverter(null),
+                new ReferenceConverter(rootReferencedMatch),
             };
             var context = new ResolveContext(
                 new ResolvedMatchContext<IValueBuilder>(rootValues),
@@ -126,7 +128,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var nestedReferenceConverters = new[]
             {
                 new ReferenceConverter(nestedResolvedBuilder),
-                new ReferenceConverter(null),
+                new ReferenceConverter(nestedReferencedMatch),
                 new ReferenceConverter(nestedReferencedMatch),
             };
             var nestedContext = new ResolveContext(
@@ -151,6 +153,25 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var _ = sut.TryParse(SuccessfulStat, out var _, out var actual);
 
             Assert.AreSame(ResolvedModifierResult, actual);
+        }
+
+        [Test]
+        public void TryParseThrowsOnUnknownReference()
+        {
+            var groups = new Dictionary<string, string>();
+            var references = new[] { ("r0", 0, "p0") };
+            var remaining = "";
+            var result = new MatcherDataParseResult(DefaultModifierResult, groups);
+            var innerParser = Mock.Of<IParser<MatcherDataParseResult>>(p =>
+                p.TryParse(SuccessfulStat, out remaining, out result) == true);
+            var regexGroupParser = Mock.Of<IRegexGroupParser>(p =>
+                p.ParseValues(groups, "") == new IValueBuilder[0] &&
+                p.ParseReferences(groups.Keys, "") == references);
+
+            var sut = new ResolvingParser(innerParser, Mock.Of<IReferenceToMatcherDataResolver>(),
+                Mock.Of<IModifierResultResolver>(), regexGroupParser);
+
+            Assert.Throws<ParseException>(() => sut.TryParse(SuccessfulStat, out var _, out var _));
         }
 
         private const string FailingStat = "fail";

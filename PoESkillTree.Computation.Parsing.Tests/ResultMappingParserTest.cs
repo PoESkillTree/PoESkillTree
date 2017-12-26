@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace PoESkillTree.Computation.Parsing.Tests
 {
     [TestFixture]
-    public class ParserWithResultSelectorTest
+    public class ResultMappingParserTest
     {
         [Test]
         public void IsIParser()
@@ -62,15 +62,15 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.AreEqual(expected, actual);
         }
 
-        private static ParserWithResultSelector<int, string> Create(IParser<int> inner)
+        private static ResultMappingParser<int, string> Create(IParser<int> inner)
         {
             return Create(inner, i => i.ToString());
         }
 
-        private static ParserWithResultSelector<int, string> Create(IParser<int> inner, 
+        private static ResultMappingParser<int, string> Create(IParser<int> inner, 
             Func<int, string> selector)
         {
-            return new ParserWithResultSelector<int, string>(inner, selector);
+            return new ResultMappingParser<int, string>(inner, selector);
         }
     }
 }

@@ -179,11 +179,11 @@ namespace PoESkillTree.Computation.Parsing.Tests
         }
 
         [Test]
-        public void TryParseIgnoresEmptyRemainings()
+        public void TryParseIgnoresWhitespaceRemainings()
         {
             var innerMock = new Mock<IParser<string>>();
             string _;
-            var remaining1 = "";
+            var remaining1 = "\t \n";
             innerMock.Setup(p => p.TryParse("stat1", out remaining1, out _));
             var remaining2 = "";
             innerMock.Setup(p => p.TryParse("stat2", out remaining2, out _));

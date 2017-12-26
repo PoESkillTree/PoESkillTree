@@ -67,7 +67,7 @@
     <Compile Include="ModifierBuilding\ModifierBuilderTest.cs" />
     <Compile Include="CachingParserTest.cs" />
     <Compile Include="ModifierBuilding\ModifierResultExtensionsTest.cs" />
-    <Compile Include="ParserWithResultSelectorTest.cs" />
+    <Compile Include="ResultMappingParserTest.cs" />
     <Compile Include="Referencing\MatcherMocks.cs" />
     <Compile Include="Referencing\ReferenceManagerTest.cs" />
     <Compile Include="Referencing\ReferenceValidatorTest.cs" />

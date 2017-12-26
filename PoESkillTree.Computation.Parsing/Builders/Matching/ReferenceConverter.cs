@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using PoESkillTree.Computation.Parsing.Builders.Actions;
+﻿using PoESkillTree.Computation.Parsing.Builders.Actions;
 using PoESkillTree.Computation.Parsing.Builders.Charges;
 using PoESkillTree.Computation.Parsing.Builders.Damage;
 using PoESkillTree.Computation.Parsing.Builders.Effects;
@@ -11,7 +10,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Matching
 {
     public class ReferenceConverter : IReferenceConverter
     {
-        [CanBeNull] private readonly object _referencedBuilder;
+        private readonly object _referencedBuilder;
 
         public IDamageTypeBuilder AsDamageType => As<IDamageTypeBuilder>();
         public IChargeTypeBuilder AsChargeType => As<IChargeTypeBuilder>();
@@ -25,7 +24,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Matching
         public IDamageStatBuilder AsDamageStat => As<IDamageStatBuilder>();
         public ISkillBuilder AsSkill => As<ISkillBuilder>();
 
-        public ReferenceConverter([CanBeNull] object referencedBuilder)
+        public ReferenceConverter(object referencedBuilder)
         {
             _referencedBuilder = referencedBuilder;
         }
@@ -37,7 +36,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Matching
                 return target;
             }
             throw new ParseException(
-                $"Can't convert reference of type {_referencedBuilder?.GetType()} to {typeof(TTarget)}");
+                $"Can't convert reference of type {_referencedBuilder.GetType()} to {typeof(TTarget)}");
         }
 
         private bool Equals(ReferenceConverter other)
@@ -54,7 +53,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Matching
 
         public override int GetHashCode()
         {
-            return (_referencedBuilder != null ? _referencedBuilder.GetHashCode() : 0);
+            return _referencedBuilder.GetHashCode();
         }
     }
 }
