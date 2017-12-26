@@ -82,6 +82,7 @@
     <Compile Include="KeywordMatchers.cs" />
     <Compile Include="Collections\MatcherCollection.cs" />
     <Compile Include="MonsterGivenStats.cs" />
+    <Compile Include="Steps\ParsingStep.cs" />
     <Compile Include="PoolStatMatchers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CharacterGivenStats.cs" />
@@ -94,7 +95,9 @@
     <Compile Include="Base\UsesMatchContext.cs" />
     <Compile Include="Base\UsesStatProviders.cs" />
     <Compile Include="Base\UsesValueProviders.cs" />
+    <Compile Include="Steps\StatMatchersSelector.cs" />
     <Compile Include="StatReplacers.cs" />
+    <Compile Include="Steps\Stepper.cs" />
     <Compile Include="ValueConversionMatchers.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -6,7 +6,6 @@ using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Data;
 using PoESkillTree.Computation.Parsing.ModifierBuilding;
 using PoESkillTree.Computation.Parsing.Referencing;
-using PoESkillTree.Computation.Parsing.Steps;
 
 namespace PoESkillTree.Computation.Parsing
 {
@@ -25,24 +24,16 @@ namespace PoESkillTree.Computation.Parsing
     /// <remarks>
     /// <see cref="CreateParser" /> is a good overview to learn how the parts in this project interact.
     /// </remarks>
-    public class Parser : IParser
+    public class Parser<TStep> : IParser
     {
-        private readonly IReadOnlyList<IReferencedMatchers> _referencedMatchers;
-        private readonly IReadOnlyList<IStatMatchers> _statMatchers;
-        private readonly IReadOnlyList<StatReplacerData> _statReplacers;
+        private readonly IParsingData<TStep> _parsingData;
         private readonly IBuilderFactories _builderFactories;
 
         private readonly Lazy<IParser<IReadOnlyList<Modifier>>> _parser;
 
-        public Parser(
-            IReadOnlyList<IReferencedMatchers> referencedMatchers,
-            IReadOnlyList<IStatMatchers> statMatchers,
-            IReadOnlyList<StatReplacerData> statReplacers,
-            IBuilderFactories builderFactories)
+        public Parser(IParsingData<TStep> parsingData, IBuilderFactories builderFactories)
         {
-            _referencedMatchers = referencedMatchers;
-            _statMatchers = statMatchers;
-            _statReplacers = statReplacers;
+            _parsingData = parsingData;
             _builderFactories = builderFactories;
             _parser = new Lazy<IParser<IReadOnlyList<Modifier>>>(CreateParser);
         }
@@ -54,7 +45,7 @@ namespace PoESkillTree.Computation.Parsing
 
         private IParser<IReadOnlyList<Modifier>> CreateParser()
         {
-            var referenceManager = new ReferenceManager(_referencedMatchers, _statMatchers);
+            var referenceManager = new ReferenceManager(_parsingData.ReferencedMatchers, _parsingData.StatMatchers);
             var regexGroupService = new RegexGroupService(_builderFactories.ValueBuilders);
 
             // The parsing pipeline using one IStatMatchers instance to parse a part of the stat.
@@ -71,17 +62,10 @@ namespace PoESkillTree.Computation.Parsing
                     )
                 );
 
-            var statMatchersFactory = new StatMatchersSelector(_statMatchers);
             var innerParserCache = new Dictionary<IStatMatchers, IParser<IModifierResult>>();
             // The steps define the order in which the inner parsers, and by extent the IStatMatchers, are executed.
-            IStep<IParser<IModifierResult>, bool> initialStep =
-                new MappingStep<IStatMatchers, IParser<IModifierResult>, bool>(
-                    new MappingStep<ParsingStep, IStatMatchers, bool>(
-                        new SpecialStep(),
-                        statMatchersFactory.Get
-                    ),
-                    k => innerParserCache.GetOrAdd(k, CreateInnerParser)
-                );
+            IParser<IModifierResult> StepToParser(TStep step) =>
+                innerParserCache.GetOrAdd(_parsingData.SelectStatMatcher(step), CreateInnerParser);
 
             // The full parsing pipeline.
             return
@@ -91,9 +75,9 @@ namespace PoESkillTree.Computation.Parsing
                             new ResultMappingParser<IReadOnlyList<IReadOnlyList<Modifier>>, IReadOnlyList<Modifier>>(
                                 new StatReplacingParser<IReadOnlyList<Modifier>>(
                                     new ResultMappingParser<IReadOnlyList<IModifierResult>, IReadOnlyList<Modifier>>(
-                                        new CompositeParser<IModifierResult>(initialStep),
+                                        new CompositeParser<IModifierResult, TStep>(_parsingData.Stepper, StepToParser),
                                         l => l.Aggregate().Build(_builderFactories.ConditionBuilders.True)),
-                                    _statReplacers
+                                    _parsingData.StatReplacers
                                 ),
                                 ls => ls.Flatten().ToList()
                             )

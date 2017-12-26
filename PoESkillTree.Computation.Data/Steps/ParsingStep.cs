@@ -1,8 +1,9 @@
-﻿namespace PoESkillTree.Computation.Parsing.Steps
+﻿namespace PoESkillTree.Computation.Data.Steps
 {
     public enum ParsingStep
     {
-        Invalid,
+        Success,
+        Failure,
         Special,
         StatManipulator,
         ValueConversion,

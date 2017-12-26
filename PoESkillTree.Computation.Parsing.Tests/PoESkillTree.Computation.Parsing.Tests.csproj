@@ -75,23 +75,10 @@
     <Compile Include="Referencing\RegexGroupServiceParserTest.cs" />
     <Compile Include="Referencing\StatMatcherRegexExpanderTest.cs" />
     <Compile Include="ResolvingParserTest.cs" />
-    <Compile Include="Steps\CompletedStepTest.cs" />
     <Compile Include="CompositeParserTest.cs" />
     <Compile Include="StatNormalizingParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatReplacingParserTest.cs" />
-    <Compile Include="Steps\ConditionStepTest.cs" />
-    <Compile Include="Steps\DamageStatStepTest.cs" />
-    <Compile Include="Steps\FormAndStatStepTest.cs" />
-    <Compile Include="Steps\FormStepTest.cs" />
-    <Compile Include="Steps\GeneralStatStepTest.cs" />
-    <Compile Include="Steps\MappingStepTest.cs" />
-    <Compile Include="Steps\ParsingStepTest.cs" />
-    <Compile Include="Steps\PoolStatStepTest.cs" />
-    <Compile Include="Steps\SpecialStepTest.cs" />
-    <Compile Include="Steps\StatManipulationStepTest.cs" />
-    <Compile Include="Steps\StatMatchersSelectorTest.cs" />
-    <Compile Include="Steps\ValueConversionStepTest.cs" />
     <Compile Include="ValidatingParserTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +102,7 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

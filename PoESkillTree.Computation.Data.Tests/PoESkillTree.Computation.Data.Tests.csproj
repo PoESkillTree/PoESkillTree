@@ -72,6 +72,7 @@
     <Compile Include="Collections\StatReplacerCollectionTest.cs" />
     <Compile Include="Collections\ValueConversionMatcherCollectionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Steps\StatMatchersSelectorTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

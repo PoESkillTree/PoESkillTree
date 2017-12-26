@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using MoreLinq;
+using PoESkillTree.Computation.Console.Builders;
+using PoESkillTree.Computation.Data.Steps;
 using PoESkillTree.Computation.Parsing;
 
 namespace PoESkillTree.Computation.Console
@@ -12,8 +14,8 @@ namespace PoESkillTree.Computation.Console
     {
         public static void Main(string[] args)
         {
-            var compositionRoot = new CompositionRoot();
-            var parser = compositionRoot.Parser;
+            var builderFactories = new BuilderFactories();
+            var parser = new Parser<ParsingStep>(new ParsingData(builderFactories), builderFactories);
 
             System.Console.WriteLine("Enter a stat line to be parsed (or 'benchmark' to time stat parsing)");
             System.Console.Write("> ");

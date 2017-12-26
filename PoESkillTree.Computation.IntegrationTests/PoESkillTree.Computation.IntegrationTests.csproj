@@ -81,6 +81,10 @@
       <Project>{aadcc052-3a9d-4513-9eae-7aeacbf2dbca}</Project>
       <Name>PoESkillTree.Computation.Console</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Data\PoESkillTree.Computation.Data.csproj">
+      <Project>{85CF9690-7EB9-42CB-9574-ADF4239CFFBE}</Project>
+      <Name>PoESkillTree.Computation.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PoESkillTree.Computation.Parsing\PoESkillTree.Computation.Parsing.csproj">
       <Project>{1E573C72-9B7F-40AF-A5E8-739F90B50690}</Project>
       <Name>PoESkillTree.Computation.Parsing</Name>

@@ -2,16 +2,11 @@
 using System.Linq;
 using PoESkillTree.Computation.Parsing.Data;
 
-namespace PoESkillTree.Computation.Parsing.Steps
+namespace PoESkillTree.Computation.Data.Steps
 {
     public class StatMatchersSelector
     {
         private readonly IReadOnlyList<IStatMatchers> _candidates;
-
-        public StatMatchersSelector(params IStatMatchers[] candidates)
-            : this((IReadOnlyList<IStatMatchers>) candidates)
-        {
-        }
 
         public StatMatchersSelector(IReadOnlyList<IStatMatchers> candidates)
         {

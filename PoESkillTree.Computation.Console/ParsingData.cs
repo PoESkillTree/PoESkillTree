@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using PoESkillTree.Computation.Console.Builders;
 using PoESkillTree.Computation.Data;
-using PoESkillTree.Computation.Parsing;
+using PoESkillTree.Computation.Data.Steps;
 using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Data;
@@ -10,31 +10,41 @@ using PoESkillTree.Computation.Parsing.ModifierBuilding;
 
 namespace PoESkillTree.Computation.Console
 {
-    public class CompositionRoot
+    // TODO move this to Computation.Data (or somewhere else) once a proper SkillMatchers class exists
+    //      (then the IItemSlotBuilders instance needs to be passed or added to IBuilderFactories)
+    public class ParsingData : IParsingData<ParsingStep>
     {
-        private readonly Lazy<IBuilderFactories> _builderFactories =
-            new Lazy<IBuilderFactories>(() => new BuilderFactories());
-
         private readonly Lazy<IReadOnlyList<IStatMatchers>> _statMatchers;
+
         private readonly Lazy<IReadOnlyList<IReferencedMatchers>> _referencedMatchers;
 
-        private readonly Lazy<IParser> _parser;
+        private readonly Lazy<IReadOnlyList<StatReplacerData>> _statReplacers =
+            new Lazy<IReadOnlyList<StatReplacerData>>(() => new StatReplacers().Replacers);
 
-        public CompositionRoot()
+        private readonly Lazy<IStepper<ParsingStep>> _stepper = 
+            new Lazy<IStepper<ParsingStep>>(() => new Stepper());
+
+        private readonly Lazy<StatMatchersSelector> _statMatchersSelector;
+
+        public ParsingData(IBuilderFactories builderFactories)
         {
             _statMatchers = new Lazy<IReadOnlyList<IStatMatchers>>(
-                () => CreateStatMatchers(_builderFactories.Value, new MatchContextsStub(), new ModifierBuilder()));
+                () => CreateStatMatchers(builderFactories, new MatchContextsStub(), new ModifierBuilder()));
             _referencedMatchers = new Lazy<IReadOnlyList<IReferencedMatchers>>(
-                () => CreateReferencedMatchers(_builderFactories.Value));
-            _parser = new Lazy<IParser>(
-                () => new Parser(ReferencedMatchers, StatMatchers, new StatReplacers().Replacers,
-                    _builderFactories.Value));
+                () => CreateReferencedMatchers(builderFactories));
+            _statMatchersSelector = new Lazy<StatMatchersSelector>(
+                () => new StatMatchersSelector(StatMatchers));
         }
 
         public IReadOnlyList<IStatMatchers> StatMatchers => _statMatchers.Value;
+
         public IReadOnlyList<IReferencedMatchers> ReferencedMatchers => _referencedMatchers.Value;
 
-        public IParser Parser => _parser.Value;
+        public IReadOnlyList<StatReplacerData> StatReplacers => _statReplacers.Value;
+
+        public IStepper<ParsingStep> Stepper => _stepper.Value;
+
+        public IStatMatchers SelectStatMatcher(ParsingStep step) => _statMatchersSelector.Value.Get(step);
 
         private static IReadOnlyList<IStatMatchers> CreateStatMatchers(
             IBuilderFactories builderFactories, IMatchContexts matchContexts,

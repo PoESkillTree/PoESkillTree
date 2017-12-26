@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Data.Steps;
 using PoESkillTree.Computation.Parsing.Data;
-using PoESkillTree.Computation.Parsing.Steps;
 
-namespace PoESkillTree.Computation.Parsing.Tests.Steps
+namespace PoESkillTree.Computation.Data.Tests.Steps
 {
     [TestFixture]
     public class StatMatchersSelectorTest
@@ -14,9 +14,9 @@ namespace PoESkillTree.Computation.Parsing.Tests.Steps
         [Test]
         public void GetWithUnknownThrows()
         {
-            var sut = new StatMatchersSelector();
+            var sut = CreateSut();
 
-            Assert.Throws<InvalidOperationException>(() => sut.Get(ParsingStep.Invalid));
+            Assert.Throws<InvalidOperationException>(() => sut.Get(ParsingStep.Success));
         }
 
         [TestCase(ParsingStep.ValueConversion, ExpectedResult = typeof(ValueConversionMatchers))]
@@ -24,12 +24,17 @@ namespace PoESkillTree.Computation.Parsing.Tests.Steps
         [TestCase(ParsingStep.Form, ExpectedResult = typeof(FormMatchers))]
         public Type GetWithKnownReturnsCorrectResult(ParsingStep parsingStep)
         {
-            var sut = new StatMatchersSelector(new SpecialMatchers(), new ValueConversionMatchers(), 
+            var sut = CreateSut(new SpecialMatchers(), new ValueConversionMatchers(), 
                 new FormAndStatMatchers(), new FormMatchers(), new FormZMatchers());
 
             var statMatchers = sut.Get(parsingStep);
 
             return statMatchers.GetType();
+        }
+
+        private static StatMatchersSelector CreateSut(params IStatMatchers[] candidates)
+        {
+            return new StatMatchersSelector(candidates);
         }
 
 

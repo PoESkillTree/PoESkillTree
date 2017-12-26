@@ -82,7 +82,7 @@
     <Compile Include="Builders\StatBuilderStub.cs" />
     <Compile Include="Builders\StunEffectBuilderStub.cs" />
     <Compile Include="Builders\ValueBuilderStub.cs" />
-    <Compile Include="CompositionRoot.cs" />
+    <Compile Include="ParsingData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkillMatchers.cs" />
