@@ -7,10 +7,22 @@ using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 {
+    /// <summary>
+    /// Fluent interface that constructs an <see cref="IIntermediateModifier"/> instance from builders and
+    /// converters.
+    /// </summary>
+    /// <remarks>
+    /// All methods are pure and implementations must be immutable, meaning all methods must return new instances 
+    /// instead of mutating the current instance.
+    /// <para>Each type of builder may only be set once. I.e. starting with an empty builder,
+    /// only one method of WithX and WithXs may be called and that method may only be called once for each X.
+    /// </para>
+    /// <para>All calls to methods with an <see cref="IEnumerable{T}"/> parameter must be made with enumerables of the
+    /// same size.
+    /// </para>
+    /// </remarks>
     public interface IModifierBuilder
     {
-        // All With methods return new IModifierBuilder instances
-
         IModifierBuilder WithForm(IFormBuilder form);
 
         IModifierBuilder WithForms(IEnumerable<IFormBuilder> forms);
@@ -31,6 +43,9 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 
         IModifierBuilder WithConditions(IEnumerable<IConditionBuilder> conditions);
 
-        IModifierResult Build();
+        /// <summary>
+        /// Builds this instance to an <see cref="IIntermediateModifier"/>.
+        /// </summary>
+        IIntermediateModifier Build();
     }
 }

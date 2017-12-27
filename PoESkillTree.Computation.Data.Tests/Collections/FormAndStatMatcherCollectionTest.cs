@@ -123,8 +123,8 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
 
             var data = _sut.Single();
             Assert.AreEqual(Regex, data.Regex);
-            Assert.IsInstanceOf<ModifierBuilderStub>(data.ModifierResult);
-            var builder = (ModifierBuilderStub) data.ModifierResult;
+            Assert.IsInstanceOf<ModifierBuilderStub>(data.Modifier);
+            var builder = (ModifierBuilderStub) data.Modifier;
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
             Assert.That(builder.Values, Has.Exactly(1).SameAs(value));
             Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));

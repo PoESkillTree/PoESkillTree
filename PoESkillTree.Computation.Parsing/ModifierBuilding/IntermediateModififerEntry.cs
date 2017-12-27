@@ -6,7 +6,12 @@ using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 {
-    public class ModifierResultEntry
+    /// <summary>
+    /// Entries of <see cref="IIntermediateModifier"/>. Implemented as an immutable class that allows changes
+    /// through a fluent interface creating new instances on each method call. Since <see cref="IIntermediateModifier"/>
+    /// is for partial modifiers, every property can be null.
+    /// </summary>
+    public class IntermediateModififerEntry
     {
         [CanBeNull]
         public IFormBuilder Form { get; }
@@ -20,11 +25,11 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
         [CanBeNull]
         public IConditionBuilder Condition { get; }
 
-        public ModifierResultEntry()
+        public IntermediateModififerEntry()
         {
         }
 
-        private ModifierResultEntry(IFormBuilder form, IStatBuilder stat, IValueBuilder value, 
+        private IntermediateModififerEntry(IFormBuilder form, IStatBuilder stat, IValueBuilder value, 
             IConditionBuilder condition)
         {
             Form = form;
@@ -33,31 +38,31 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
             Condition = condition;
         }
 
-        public ModifierResultEntry WithForm(IFormBuilder form)
+        public IntermediateModififerEntry WithForm(IFormBuilder form)
         {
-            return new ModifierResultEntry(form, Stat, Value, Condition);
+            return new IntermediateModififerEntry(form, Stat, Value, Condition);
         }
 
-        public ModifierResultEntry WithStat(IStatBuilder stat)
+        public IntermediateModififerEntry WithStat(IStatBuilder stat)
         {
-            return new ModifierResultEntry(Form, stat, Value, Condition);
+            return new IntermediateModififerEntry(Form, stat, Value, Condition);
         }
 
-        public ModifierResultEntry WithValue(IValueBuilder value)
+        public IntermediateModififerEntry WithValue(IValueBuilder value)
         {
-            return new ModifierResultEntry(Form, Stat, value, Condition);
+            return new IntermediateModififerEntry(Form, Stat, value, Condition);
         }
 
-        public ModifierResultEntry WithCondition(IConditionBuilder condition)
+        public IntermediateModififerEntry WithCondition(IConditionBuilder condition)
         {
-            return new ModifierResultEntry(Form, Stat, Value, condition);
+            return new IntermediateModififerEntry(Form, Stat, Value, condition);
         }
 
         public override bool Equals(object obj)
         {
             if (obj == this)
                 return true;
-            if (!(obj is ModifierResultEntry other))
+            if (!(obj is IntermediateModififerEntry other))
                 return false;
 
             return Equals(Form, other.Form)
@@ -76,7 +81,7 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 
         public override string ToString()
         {
-            return $"ModifierResultEntry(Form={Form},Stat={Stat},Value={Value},Condition={Condition})";
+            return $"IntermediateModififerEntry(Form={Form},Stat={Stat},Value={Value},Condition={Condition})";
         }
     }
 }

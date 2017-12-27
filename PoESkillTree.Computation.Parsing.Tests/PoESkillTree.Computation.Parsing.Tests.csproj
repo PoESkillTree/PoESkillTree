@@ -63,13 +63,13 @@
   <ItemGroup>
     <Compile Include="Builders\Matching\ResolvedMatchContextTest.cs" />
     <Compile Include="MatcherDataParserTest.cs" />
-    <Compile Include="ModifierBuilding\ModifierResultResolverTest.cs" />
+    <Compile Include="ModifierBuilding\IntermediateModifierResolverTest.cs" />
     <Compile Include="ModifierBuilding\ModifierBuilderTest.cs" />
     <Compile Include="CachingParserTest.cs" />
-    <Compile Include="ModifierBuilding\ModifierResultExtensionsTest.cs" />
+    <Compile Include="ModifierBuilding\IntermediateModifierExtensionsTest.cs" />
     <Compile Include="ResultMappingParserTest.cs" />
     <Compile Include="Referencing\MatcherMocks.cs" />
-    <Compile Include="Referencing\ReferenceManagerTest.cs" />
+    <Compile Include="Referencing\ReferenceServiceTest.cs" />
     <Compile Include="Referencing\ReferenceValidatorTest.cs" />
     <Compile Include="Referencing\RegexGroupServiceFactoryTest.cs" />
     <Compile Include="Referencing\RegexGroupServiceParserTest.cs" />

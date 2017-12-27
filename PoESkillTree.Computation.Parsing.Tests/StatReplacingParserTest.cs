@@ -195,5 +195,17 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
             Assert.AreEqual(remaining3, actual);
         }
+
+        [Test]
+        public void TryParseMustFindFullMatchToReplaceStat()
+        {
+            var innerMock = new Mock<IParser<string>>();
+            var sut = new StatReplacingParser<string>(innerMock.Object, _statReplacers);
+
+            sut.TryParse("plain stat something", out var _, out var _);
+            
+            string _;
+            innerMock.Verify(p => p.TryParse("plain stat something", out _, out _));
+        }
     }
 }

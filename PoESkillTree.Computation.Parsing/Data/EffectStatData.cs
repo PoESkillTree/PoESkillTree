@@ -4,6 +4,10 @@ using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Parsing.Data
 {
+    /// <summary>
+    /// Data that specifies the unparsed stat lines that should be applied and the flag stat whose values should be
+    /// set to on if an effect is active.
+    /// </summary>
     public class EffectStatData
     {
         public EffectStatData(IEffectBuilder effect, IReadOnlyList<string> statLines)

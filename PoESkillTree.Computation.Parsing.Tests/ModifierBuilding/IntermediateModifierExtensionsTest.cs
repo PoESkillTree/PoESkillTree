@@ -12,7 +12,7 @@ using PoESkillTree.Computation.Parsing.ModifierBuilding;
 namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
 {
     [TestFixture]
-    public class ModifierResultExtensionsTest
+    public class IntermediateModifierExtensionsTest
     {
         [Test]
         public void MergeChainsStatConverters()
@@ -25,7 +25,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             var left = CreateResult(LeftConverter);
             var right = CreateResult(RightConverter);
 
-            var result = ModifierResultExtensions.Merge(left, right);
+            var result = left.MergeWith(right);
             var output = result.StatConverter(leftInput);
 
             Assert.AreEqual(rightOutput, output);
@@ -42,7 +42,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             var left = CreateResult(LeftConverter);
             var right = CreateResult(RightConverter);
 
-            var result = ModifierResultExtensions.Merge(left, right);
+            var result = left.MergeWith(right);
             var output = result.ValueConverter(leftInput);
 
             Assert.AreEqual(rightOutput, output);
@@ -52,10 +52,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         public void MergeWithLeftEmptyReturnsRightEntries()
         {
             var entries = CreateManyEntries();
-            var left = SimpleModifierResult.Empty;
+            var left = SimpleIntermediateModifier.Empty;
             var right = CreateResult(entries);
 
-            var result = ModifierResultExtensions.Merge(left, right);
+            var result = left.MergeWith(right);
 
             CollectionAssert.AreEqual(entries, result.Entries);
         }
@@ -65,9 +65,9 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         {
             var entries = CreateManyEntries();
             var left = CreateResult(entries);
-            var right = SimpleModifierResult.Empty;
+            var right = SimpleIntermediateModifier.Empty;
 
-            var result = ModifierResultExtensions.Merge(left, right);
+            var result = left.MergeWith(right);
 
             CollectionAssert.AreEqual(entries, result.Entries);
         }
@@ -78,7 +78,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             var left = CreateResult(CreateManyEntries());
             var right = CreateResult(CreateManyEntries());
 
-            Assert.Throws<ArgumentException>(() => ModifierResultExtensions.Merge(left, right));
+            Assert.Throws<ArgumentException>(() => left.MergeWith(right));
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             var left = CreateResult(entryLeft);
             var right = CreateResult(entryRight);
 
-            var result = ModifierResultExtensions.Merge(left, right);
+            var result = left.MergeWith(right);
 
             Assert.That(result.Entries, Has.Exactly(1).Items);
         }
@@ -102,7 +102,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             var left = CreateResult(entryLeft);
             var right = CreateResult(entryRight);
 
-            var result = ModifierResultExtensions.Merge(left, right);
+            var result = left.MergeWith(right);
 
             Assert.AreEqual(entryRight, result.Entries.Single());
         }
@@ -115,7 +115,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             var left = CreateResult(entryLeft);
             var right = CreateResult(entryRight);
 
-            var result = ModifierResultExtensions.Merge(left, right);
+            var result = left.MergeWith(right);
 
             Assert.AreEqual(entryLeft, result.Entries.Single());
         }
@@ -129,7 +129,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             var left = CreateResult(entryLeft);
             var right = CreateResult(entryRight);
 
-            Assert.Throws<ArgumentException>(() => ModifierResultExtensions.Merge(left, right));
+            Assert.Throws<ArgumentException>(() => left.MergeWith(right));
         }
 
         [Test]
@@ -141,7 +141,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             var left = CreateResult(entryLeft);
             var right = CreateResult(entryRight);
 
-            Assert.Throws<ArgumentException>(() => ModifierResultExtensions.Merge(left, right));
+            Assert.Throws<ArgumentException>(() => left.MergeWith(right));
         }
 
         [Test]
@@ -153,7 +153,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             var left = CreateResult(entryLeft);
             var right = CreateResult(entryRight);
 
-            Assert.Throws<ArgumentException>(() => ModifierResultExtensions.Merge(left, right));
+            Assert.Throws<ArgumentException>(() => left.MergeWith(right));
         }
 
         [Test]
@@ -169,7 +169,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             var left = CreateResult(entryLeft);
             var right = CreateResult(entryRight);
 
-            var result = ModifierResultExtensions.Merge(left, right);
+            var result = left.MergeWith(right);
 
             Assert.AreEqual(expected, result.Entries.Single().Condition);
         }
@@ -180,7 +180,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             var left = CreateResult(CreateManyEntries());
             var right = CreateResult(EmptyEntry);
 
-            var result = ModifierResultExtensions.Merge(left, right);
+            var result = left.MergeWith(right);
 
             Assert.That(result.Entries, Has.Exactly(left.Entries.Count).Items);
         }
@@ -191,7 +191,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             var left = CreateResult(EmptyEntry);
             var right = CreateResult(CreateManyEntries());
 
-            var result = ModifierResultExtensions.Merge(left, right);
+            var result = left.MergeWith(right);
 
             Assert.That(result.Entries, Has.Exactly(right.Entries.Count).Items);
         }
@@ -222,7 +222,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
                 entry2.WithStat(stat).WithCondition(rightCondition)
             };
 
-            var result = ModifierResultExtensions.Merge(left, right);
+            var result = left.MergeWith(right);
 
             CollectionAssert.AreEqual(expected, result.Entries);
         }
@@ -278,15 +278,15 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             Assert.AreEqual(expected, result[0].Condition);
         }
 
-        private static readonly ModifierResultEntry EmptyEntry = new ModifierResultEntry();
+        private static readonly IntermediateModififerEntry EmptyEntry = new IntermediateModififerEntry();
 
-        private static readonly ModifierResultEntry DefaultEntry = EmptyEntry
+        private static readonly IntermediateModififerEntry DefaultEntry = EmptyEntry
             .WithStat(Mock.Of<IStatBuilder>())
             .WithForm(Mock.Of<IFormBuilder>())
             .WithValue(Mock.Of<IValueBuilder>())
             .WithCondition(Mock.Of<IConditionBuilder>());
 
-        private static ModifierResultEntry[] CreateManyEntries()
+        private static IntermediateModififerEntry[] CreateManyEntries()
         {
             var entry0 = DefaultEntry;
             var entry1 = DefaultEntry;
@@ -294,26 +294,26 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             return new[] { entry0, entry1, entry2 };
         }
 
-        private static IModifierResult CreateResult(Func<IStatBuilder, IStatBuilder> statConverter)
+        private static IIntermediateModifier CreateResult(Func<IStatBuilder, IStatBuilder> statConverter)
         {
             return CreateResult(null, statConverter);
         }
 
-        private static IModifierResult CreateResult(Func<IValueBuilder, IValueBuilder> valueConverter)
+        private static IIntermediateModifier CreateResult(Func<IValueBuilder, IValueBuilder> valueConverter)
         {
             return CreateResult(null, valueConverter: valueConverter);
         }
 
-        private static IModifierResult CreateResult(params ModifierResultEntry[] entries)
+        private static IIntermediateModifier CreateResult(params IntermediateModififerEntry[] entries)
         {
             return CreateResult(entries, null);
         }
 
-        private static IModifierResult CreateResult(IReadOnlyList<ModifierResultEntry> entries = null,
+        private static IIntermediateModifier CreateResult(IReadOnlyList<IntermediateModififerEntry> entries = null,
             Func<IStatBuilder, IStatBuilder> statConverter = null,
             Func<IValueBuilder, IValueBuilder> valueConverter = null)
         {
-            return new SimpleModifierResult(entries ?? new ModifierResultEntry[0],
+            return new SimpleIntermediateModifier(entries ?? new IntermediateModififerEntry[0],
                 statConverter ?? (s => s),
                 valueConverter ?? (v => v));
         }

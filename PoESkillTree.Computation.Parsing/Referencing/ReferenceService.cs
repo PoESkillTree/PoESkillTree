@@ -5,22 +5,20 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Parsing.Referencing
 {
-    public class ReferenceManager : IReferencedRegexes, IReferenceToMatcherDataResolver
+    /// <summary>
+    /// Implementation of <see cref="IReferencedRegexes"/> and <see cref="IReferenceToMatcherDataResolver"/> based
+    /// on <see cref="IReferencedMatchers"/> and <see cref="IStatMatchers"/> instances.
+    /// </summary>
+    public class ReferenceService : IReferencedRegexes, IReferenceToMatcherDataResolver
     {
         private readonly IReadOnlyList<IReferencedMatchers> _referencedMatchersList;
         private readonly IReadOnlyList<IStatMatchers> _statMatchersList;
 
-        public ReferenceManager(IReadOnlyList<IReferencedMatchers> referencedMatchersList,
+        public ReferenceService(IReadOnlyList<IReferencedMatchers> referencedMatchersList,
             IReadOnlyList<IStatMatchers> statMatchersList)
         {
             _referencedMatchersList = referencedMatchersList;
             _statMatchersList = statMatchersList;
-        }
-
-        public bool ContainsReference(string referenceName)
-        {
-            return _referencedMatchersList.Any(r => r.ReferenceName == referenceName) ||
-                   _statMatchersList.Any(r => r.ReferenceNames.Contains(referenceName));
         }
 
         public IEnumerable<string> GetRegexes(string referenceName)

@@ -54,7 +54,7 @@ namespace PoESkillTree.Computation.Parsing
         {
             IEnumerable<IEnumerable<string>> allMatches =
                 from data in _statReplacerData
-                let match = _regexCache[data.OriginalStatRegex].Match(stat)
+                let match = _regexCache["^" + data.OriginalStatRegex + "$"].Match(stat)
                 where match.Success
                 select data.Replacements.Select(match.Result);
             return allMatches

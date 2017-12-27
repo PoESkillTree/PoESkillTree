@@ -6,26 +6,13 @@ using static PoESkillTree.Computation.Parsing.Tests.Referencing.MatcherMocks;
 namespace PoESkillTree.Computation.Parsing.Tests.Referencing
 {
     [TestFixture]
-    public class ReferenceManagerTest
+    public class ReferenceServiceTest
     {
-        [TestCase("Matchers1", ExpectedResult = true)]
-        [TestCase("Matchers2", ExpectedResult = true)]
-        [TestCase("Matchers3", ExpectedResult = false)]
-        [TestCase("SMatchers1", ExpectedResult = true)]
-        [TestCase("SMatchers2", ExpectedResult = true)]
-        [TestCase("SMatchers3", ExpectedResult = true)]
-        public bool ContainsReferenceReturnsCorrectResult(string referenceName)
-        {
-            var sut = new ReferenceManager(DefaultReferencedMatchersList, DefaultStatMatchersList);
-
-            return sut.ContainsReference(referenceName);
-        }
-
         [TestCase("Matchers1")]
         [TestCase("Matchers2")]
         public void GetReferencesReturnsCorrectResultForReferencedMatchersName(string referenceName)
         {
-            var sut = new ReferenceManager(DefaultReferencedMatchersList, DefaultStatMatchersList);
+            var sut = new ReferenceService(DefaultReferencedMatchersList, DefaultStatMatchersList);
             var expected = DefaultReferencedMatchersList
                 .First(r => r.ReferenceName == referenceName)
                 .Select(d => d.Regex);
@@ -38,7 +25,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
         [TestCase("SMatchers3")]
         public void GetReferencesReturnsCorrectResultForStatMatchersName(string referenceName)
         {
-            var sut = new ReferenceManager(DefaultReferencedMatchersList, DefaultStatMatchersList);
+            var sut = new ReferenceService(DefaultReferencedMatchersList, DefaultStatMatchersList);
             var expected = DefaultStatMatchersList
                 .Where(r => r.ReferenceNames.Contains(referenceName))
                 .SelectMany(r => r.Select(d => d.Regex));
@@ -50,7 +37,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
         [TestCase("SMatchers4")]
         public void GetReferencesReturnsEmptyEnumerableIfReferenceNameIsUnknown(string referenceName)
         {
-            var sut = new ReferenceManager(DefaultReferencedMatchersList, DefaultStatMatchersList);
+            var sut = new ReferenceService(DefaultReferencedMatchersList, DefaultStatMatchersList);
 
             CollectionAssert.IsEmpty(sut.GetRegexes(referenceName));
         }
@@ -61,7 +48,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
         [TestCase("SMatchers1", 1, ExpectedResult = null)]
         public string TryGetReferencedMatcherDataOutputsCorrectMatcherData(string referenceName, int matcherIndex)
         {
-            var sut = new ReferenceManager(DefaultReferencedMatchersList, DefaultStatMatchersList);
+            var sut = new ReferenceService(DefaultReferencedMatchersList, DefaultStatMatchersList);
 
             sut.TryGetReferencedMatcherData(referenceName, matcherIndex, out var matcherData);
             return matcherData?.Regex;
@@ -73,7 +60,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
         [TestCase("SMatchers1", 1, ExpectedResult = false)]
         public bool TryGetReferencedMatcherDataReturnsCorrectResult(string referenceName, int matcherIndex)
         {
-            var sut = new ReferenceManager(DefaultReferencedMatchersList, DefaultStatMatchersList);
+            var sut = new ReferenceService(DefaultReferencedMatchersList, DefaultStatMatchersList);
 
             return sut.TryGetReferencedMatcherData(referenceName, matcherIndex, out var _);
         }
@@ -85,7 +72,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
         [TestCase("Matchers1", 1, ExpectedResult = null)]
         public string TryGetMatcherDataOutputsCorrectMatcherData(string referenceName, int matcherIndex)
         {
-            var sut = new ReferenceManager(DefaultReferencedMatchersList, DefaultStatMatchersList);
+            var sut = new ReferenceService(DefaultReferencedMatchersList, DefaultStatMatchersList);
 
             sut.TryGetMatcherData(referenceName, matcherIndex, out var matcherData);
             return matcherData?.Regex;
@@ -98,7 +85,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
         [TestCase("Matchers1", 1, ExpectedResult = false)]
         public bool TryGetMatcherDataReturnsCorrectResult(string referenceName, int matcherIndex)
         {
-            var sut = new ReferenceManager(DefaultReferencedMatchersList, DefaultStatMatchersList);
+            var sut = new ReferenceService(DefaultReferencedMatchersList, DefaultStatMatchersList);
 
             return sut.TryGetMatcherData(referenceName, matcherIndex, out var _);
         }

@@ -14,14 +14,14 @@ using PoESkillTree.Computation.Parsing.ModifierBuilding;
 namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
 {
     [TestFixture]
-    public class ModifierResultResolverTest
+    public class IntermediateModifierResolverTest
     {
         [Test]
         public void ResolveReturnsCorrectValueConverter()
         {
             var values = DefaultValues;
-            var resultMock = new Mock<IModifierResult>();
-            resultMock.SetupGet(r => r.Entries).Returns(new ModifierResultEntry[0]);
+            var resultMock = new Mock<IIntermediateModifier>();
+            resultMock.SetupGet(r => r.Entries).Returns(new IntermediateModififerEntry[0]);
             resultMock.SetupGet(r => r.ValueConverter).Returns(v => v == values[0] ? values[1] : values[0]);
             resultMock.SetupGet(r => r.StatConverter).Returns(Funcs.Identity);
 
@@ -38,8 +38,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         public void ResolveReturnsCorrectStatConverter()
         {
             var stats = DefaultStats;
-            var resultMock = new Mock<IModifierResult>();
-            resultMock.SetupGet(r => r.Entries).Returns(new ModifierResultEntry[0]);
+            var resultMock = new Mock<IIntermediateModifier>();
+            resultMock.SetupGet(r => r.Entries).Returns(new IntermediateModififerEntry[0]);
             resultMock.SetupGet(r => r.ValueConverter).Returns(Funcs.Identity);
             resultMock.SetupGet(r => r.StatConverter).Returns(s => s == stats[0] ? stats[1] : stats[0]);
 
@@ -57,13 +57,13 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         {
             var sut = CreateSut();
 
-            var resolved = sut.Resolve(DefaultResult, DefaultContext);
+            var resolved = sut.Resolve(DefaultModifier, DefaultContext);
 
             Assert.That(resolved.Entries, Has.Exactly(3).Items);
         }
 
         private static readonly
-            (Func<IReadOnlyList<object>> expectedSelector, Func<ModifierResultEntry, object> actualSelector)[]
+            (Func<IReadOnlyList<object>> expectedSelector, Func<IntermediateModififerEntry, object> actualSelector)[]
             ResolveReturnsCorrectEntryElementsCases =
             {
                 (() => DefaultValues, e => e.Value),
@@ -81,7 +81,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             var actualSelector = ResolveReturnsCorrectEntryElementsCases[testCaseIndex].actualSelector;
             var sut = CreateSut();
 
-            var resolved = sut.Resolve(DefaultResult, DefaultContext);
+            var resolved = sut.Resolve(DefaultModifier, DefaultContext);
 
             var entries = resolved.Entries;
             Assert.AreSame(expectedElements[1], actualSelector(entries[0]));
@@ -92,8 +92,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         [Test]
         public void ResolveToReferencedBuilderThrowsIfNoEntries()
         {
-            var result = Mock.Of<IModifierResult>(r =>
-                r.Entries == new ModifierResultEntry[0] &&
+            var result = Mock.Of<IIntermediateModifier>(r =>
+                r.Entries == new IntermediateModififerEntry[0] &&
                 r.ValueConverter == Funcs.Identity &&
                 r.StatConverter == Funcs.Identity);
             var sut = CreateSut();
@@ -104,7 +104,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         [Test]
         public void ResolveToReferencedBuilderThrowsIfMultipleEntries()
         {
-            var result = Mock.Of<IModifierResult>(r =>
+            var result = Mock.Of<IIntermediateModifier>(r =>
                 r.Entries == DefaultEntries &&
                 r.ValueConverter == Funcs.Identity &&
                 r.StatConverter == Funcs.Identity);
@@ -116,10 +116,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         [Test]
         public void ResolveToReferencedBuilderThrowsIfEntryHasValue()
         {
-            var entry = new ModifierResultEntry()
+            var entry = new IntermediateModififerEntry()
                 .WithValue(DefaultValues[0])
                 .WithStat(DefaultStats[0]);
-            var result = Mock.Of<IModifierResult>(r =>
+            var result = Mock.Of<IIntermediateModifier>(r =>
                 r.Entries == new[] {entry} &&
                 r.ValueConverter == Funcs.Identity &&
                 r.StatConverter == Funcs.Identity);
@@ -131,10 +131,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         [Test]
         public void ResolveToReferencedBuilderThrowsIfEntryHasForm()
         {
-            var entry = new ModifierResultEntry()
+            var entry = new IntermediateModififerEntry()
                 .WithForm(DefaultForms[0])
                 .WithStat(DefaultStats[0]);
-            var result = Mock.Of<IModifierResult>(r =>
+            var result = Mock.Of<IIntermediateModifier>(r =>
                 r.Entries == new[] { entry } &&
                 r.ValueConverter == Funcs.Identity &&
                 r.StatConverter == Funcs.Identity);
@@ -146,11 +146,11 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         [Test]
         public void ResolveToReferencedBuilderThrowsIfEntryHasNoStat()
         {
-            var entry = new ModifierResultEntry()
+            var entry = new IntermediateModififerEntry()
                 .WithValue(DefaultValues[0])
                 .WithForm(DefaultForms[0])
                 .WithCondition(DefaultConditions[0]);
-            var result = Mock.Of<IModifierResult>(r =>
+            var result = Mock.Of<IIntermediateModifier>(r =>
                 r.Entries == new[] { entry } &&
                 r.ValueConverter == Funcs.Identity &&
                 r.StatConverter == Funcs.Identity);
@@ -162,9 +162,9 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         [Test]
         public void ResolveToReferencedBuilderReturnsResolvedStat()
         {
-            var entry = new ModifierResultEntry()
+            var entry = new IntermediateModififerEntry()
                 .WithStat(DefaultStats[0]);
-            var result = Mock.Of<IModifierResult>(r =>
+            var result = Mock.Of<IIntermediateModifier>(r =>
                 r.Entries == new[] { entry } &&
                 r.ValueConverter == Funcs.Identity &&
                 r.StatConverter == Funcs.Identity);
@@ -178,10 +178,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         [Test]
         public void ResolveToReferencedBuilderAppliesStatConverter()
         {
-            var entry = new ModifierResultEntry()
+            var entry = new IntermediateModififerEntry()
                 .WithStat(DefaultStats[0]);
             Func<IStatBuilder, IStatBuilder> statConverter = s => s == DefaultStats[0] ? DefaultStats[1] : null;
-            var result = Mock.Of<IModifierResult>(r =>
+            var result = Mock.Of<IIntermediateModifier>(r =>
                 r.Entries == new[] { entry } &&
                 r.ValueConverter == Funcs.Identity &&
                 r.StatConverter == statConverter);
@@ -196,10 +196,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         public void ResolveToReferencedBuilderAddsCondition()
         {
             var stat = Mock.Of<IStatBuilder>(s => s.WithCondition(DefaultConditions[0]) == DefaultStats[1]);
-            var entry = new ModifierResultEntry()
+            var entry = new IntermediateModififerEntry()
                 .WithStat(stat)
                 .WithCondition(DefaultConditions[0]);
-            var result = Mock.Of<IModifierResult>(r =>
+            var result = Mock.Of<IIntermediateModifier>(r =>
                 r.Entries == new[] { entry } &&
                 r.ValueConverter == Funcs.Identity &&
                 r.StatConverter == Funcs.Identity);
@@ -210,7 +210,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             Assert.AreSame(DefaultStats[2], resolved);
         }
 
-        private static IModifierResultResolver CreateSut() => new ModifierResultResolver(new ModifierBuilder());
+        private static IIntermediateModifierResolver CreateSut() => new IntermediateModifierResolver(new ModifierBuilder());
 
         private static readonly ResolveContext DefaultContext = 
             new ResolveContext(
@@ -230,17 +230,17 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         private static readonly IStatBuilder[] DefaultStats = CreateMocks<IStatBuilder>();
         private static readonly IConditionBuilder[] DefaultConditions = CreateMocks<IConditionBuilder>();
 
-        private static readonly IReadOnlyList<ModifierResultEntry> DefaultEntries =
+        private static readonly IReadOnlyList<IntermediateModififerEntry> DefaultEntries =
             Enumerable.Range(0, 3)
-                .Select(_ => new ModifierResultEntry())
+                .Select(_ => new IntermediateModififerEntry())
                 .Zip(DefaultValues, (e, v) => e.WithValue(v))
                 .Zip(DefaultForms, (e, f) => e.WithForm(f))
                 .Zip(DefaultStats, (e, s) => e.WithStat(s))
                 .Zip(DefaultConditions, (e, c) => e.WithCondition(c))
                 .ToList();
 
-        private static readonly IModifierResult DefaultResult =
-            Mock.Of<IModifierResult>(r =>
+        private static readonly IIntermediateModifier DefaultModifier =
+            Mock.Of<IIntermediateModifier>(r =>
                 r.Entries == DefaultEntries &&
                 r.ValueConverter == Funcs.Identity &&
                 r.StatConverter == Funcs.Identity);

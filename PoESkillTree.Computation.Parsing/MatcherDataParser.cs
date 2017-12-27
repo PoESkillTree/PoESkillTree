@@ -11,7 +11,7 @@ namespace PoESkillTree.Computation.Parsing
     /// The leaf parser in the parser hierarchy. Parses stats by iterating through <see cref="MatcherData"/> instances
     /// to find the matching <see cref="MatcherData.Regex"/> with the longest match. The output remaining is
     /// the input stat but having the matched substring replaced by <see cref="MatcherData.MatchSubstitution"/>.
-    /// The output result contains the matched <see cref="MatcherData"/>'s <see cref="MatcherData.ModifierResult"/> and
+    /// The output result contains the matched <see cref="MatcherData"/>'s <see cref="MatcherData.Modifier"/> and
     /// the group names of <see cref="MatcherData.Regex"/> with their captured substrings.
     /// </summary>
     public class MatcherDataParser : IParser<MatcherDataParseResult>
@@ -36,7 +36,7 @@ namespace PoESkillTree.Computation.Parsing
                 orderby match.Length descending
                 select new
                 {
-                    matcherData.ModifierResult,
+                    matcherData.Modifier,
                     Remaining = GetRemaining(matcherData, stat, match),
                     Groups = SelectGroups(regex, match.Groups)
                 };
@@ -49,7 +49,7 @@ namespace PoESkillTree.Computation.Parsing
                 return false;
             }
 
-            result = new MatcherDataParseResult(x.ModifierResult, x.Groups);
+            result = new MatcherDataParseResult(x.Modifier, x.Groups);
             remaining = x.Remaining;
             return true;
         }

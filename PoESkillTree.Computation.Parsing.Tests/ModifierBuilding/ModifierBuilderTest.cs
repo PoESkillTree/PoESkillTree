@@ -323,11 +323,11 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
         }
 
         [Test]
-        public void IsIModifierBuilderResult()
+        public void IsIIntermediateModifier()
         {
             var sut = new ModifierBuilder();
 
-            Assert.IsInstanceOf<IModifierResult>(sut);
+            Assert.IsInstanceOf<IIntermediateModifier>(sut);
         }
 
         [Test]
@@ -340,7 +340,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ModifierBuilding
             Assert.AreSame(sut, actual);
         }
 
-        private static ModifierResultEntry Entry => new ModifierResultEntry();
+        private static IntermediateModififerEntry Entry => new IntermediateModififerEntry();
 
         private static IReadOnlyList<T> Many<T>(int count = 3) where T : class =>
             Enumerable.Range(0, count).Select(_ => Mock.Of<T>()).ToList();

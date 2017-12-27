@@ -11,6 +11,7 @@ using PoESkillTree.Computation.Parsing.ModifierBuilding;
 namespace PoESkillTree.Computation.Console
 {
     // TODO move this to Computation.Data (or somewhere else) once a proper SkillMatchers class exists
+    //      or pass the SkillMatchers
     //      (then the IItemSlotBuilders instance needs to be passed or added to IBuilderFactories)
     public class ParsingData : IParsingData<ParsingStep>
     {

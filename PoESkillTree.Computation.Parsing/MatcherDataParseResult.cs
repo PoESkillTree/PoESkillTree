@@ -8,16 +8,16 @@ namespace PoESkillTree.Computation.Parsing
     /// </summary>
     public class MatcherDataParseResult
     {
-        public MatcherDataParseResult(IModifierResult modifierResult, IReadOnlyDictionary<string, string> regexGroups)
+        public MatcherDataParseResult(IIntermediateModifier modifier, IReadOnlyDictionary<string, string> regexGroups)
         {
-            ModifierResult = modifierResult;
+            Modifier = modifier;
             RegexGroups = regexGroups;
         }
 
         /// <summary>
-        /// <see cref="Data.MatcherData.ModifierResult"/> of the matched <see cref="Data.MatcherData"/>
+        /// <see cref="Data.MatcherData.Modifier"/> of the matched <see cref="Data.MatcherData"/>
         /// </summary>
-        public IModifierResult ModifierResult { get; }
+        public IIntermediateModifier Modifier { get; }
 
         /// <summary>
         /// Regex group names of the matched <see cref="Data.MatcherData"/>'s <see cref="Data.MatcherData.Regex"/>

@@ -45,26 +45,26 @@ namespace PoESkillTree.Computation.Parsing
 
         private IParser<IReadOnlyList<Modifier>> CreateParser()
         {
-            var referenceManager = new ReferenceManager(_parsingData.ReferencedMatchers, _parsingData.StatMatchers);
+            var referenceService = new ReferenceService(_parsingData.ReferencedMatchers, _parsingData.StatMatchers);
             var regexGroupService = new RegexGroupService(_builderFactories.ValueBuilders);
 
             // The parsing pipeline using one IStatMatchers instance to parse a part of the stat.
-            IParser<IModifierResult> CreateInnerParser(IStatMatchers statMatchers) =>
-                new CachingParser<IModifierResult>(
-                    new StatNormalizingParser<IModifierResult>(
+            IParser<IIntermediateModifier> CreateInnerParser(IStatMatchers statMatchers) =>
+                new CachingParser<IIntermediateModifier>(
+                    new StatNormalizingParser<IIntermediateModifier>(
                         new ResolvingParser(
                             new MatcherDataParser(
-                                new StatMatcherRegexExpander(statMatchers, referenceManager, regexGroupService)),
-                            referenceManager,
-                            new ModifierResultResolver(new ModifierBuilder()),
+                                new StatMatcherRegexExpander(statMatchers, referenceService, regexGroupService)),
+                            referenceService,
+                            new IntermediateModifierResolver(new ModifierBuilder()),
                             regexGroupService
                         )
                     )
                 );
 
-            var innerParserCache = new Dictionary<IStatMatchers, IParser<IModifierResult>>();
+            var innerParserCache = new Dictionary<IStatMatchers, IParser<IIntermediateModifier>>();
             // The steps define the order in which the inner parsers, and by extent the IStatMatchers, are executed.
-            IParser<IModifierResult> StepToParser(TStep step) =>
+            IParser<IIntermediateModifier> StepToParser(TStep step) =>
                 innerParserCache.GetOrAdd(_parsingData.SelectStatMatcher(step), CreateInnerParser);
 
             // The full parsing pipeline.
@@ -74,8 +74,8 @@ namespace PoESkillTree.Computation.Parsing
                         new StatNormalizingParser<IReadOnlyList<Modifier>>(
                             new ResultMappingParser<IReadOnlyList<IReadOnlyList<Modifier>>, IReadOnlyList<Modifier>>(
                                 new StatReplacingParser<IReadOnlyList<Modifier>>(
-                                    new ResultMappingParser<IReadOnlyList<IModifierResult>, IReadOnlyList<Modifier>>(
-                                        new CompositeParser<IModifierResult, TStep>(_parsingData.Stepper, StepToParser),
+                                    new ResultMappingParser<IReadOnlyList<IIntermediateModifier>, IReadOnlyList<Modifier>>(
+                                        new CompositeParser<IIntermediateModifier, TStep>(_parsingData.Stepper, StepToParser),
                                         l => l.Aggregate().Build(_builderFactories.ConditionBuilders.True)),
                                     _parsingData.StatReplacers
                                 ),

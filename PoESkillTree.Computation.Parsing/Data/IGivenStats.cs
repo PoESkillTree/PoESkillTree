@@ -2,13 +2,19 @@
 
 namespace PoESkillTree.Computation.Parsing.Data
 {
-    // Stats that are always given
+    /// <summary>
+    /// Collection of the stats that are always applied (to the entity the collection belongs to)
+    /// </summary>
     public interface IGivenStats
     {
-        // Not processed, need matching
+        /// <summary>
+        /// The unparsed stat lines that are always active.
+        /// </summary>
         IReadOnlyList<string> GivenStatLines { get; }
 
-        // Already processed into providers
+        /// <summary>
+        /// The parsed stats that are always active.
+        /// </summary>
         IReadOnlyList<GivenStatData> GivenStats { get; }
     }
 }

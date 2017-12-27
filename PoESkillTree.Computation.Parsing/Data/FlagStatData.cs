@@ -3,6 +3,9 @@ using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Parsing.Data
 {
+    /// <summary>
+    /// Data that specifies the stat lines that should be applied if a flag stat's value is set to on.
+    /// </summary>
     public class FlagStatData
     {
         public FlagStatData(IFlagStatBuilder flag, IReadOnlyList<string> statLines)

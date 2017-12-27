@@ -17,5 +17,21 @@ namespace PoESkillTree.Computation.IntegrationTests
 
             Assert.DoesNotThrow(() => ReferenceValidator.Validate(referencedMatchers, statMatchers));
         }
+
+        [Test]
+        public void ReferencedMatchersHaveCorrectlyTypedData()
+        {
+            var parsingData = new ParsingData(new BuilderFactories());
+            var referencedMatchers = parsingData.ReferencedMatchers;
+
+            foreach (var matchers in referencedMatchers)
+            {
+                var type = matchers.MatchType;
+                foreach (var data in matchers)
+                {
+                    Assert.IsInstanceOf(type, data.Match);
+                }
+            }
+        }
     }
 }

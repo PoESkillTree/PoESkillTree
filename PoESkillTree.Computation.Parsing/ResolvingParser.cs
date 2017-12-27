@@ -10,8 +10,8 @@ namespace PoESkillTree.Computation.Parsing
     /// <inheritdoc />
     /// <summary>
     /// Wraps an <c>IParser&lt;MatcherDataParseResult&gt;</c> and resolves
-    /// <see cref="MatcherDataParseResult.ModifierResult"/> using references and values specified by 
-    /// <see cref="MatcherDataParseResult.RegexGroups"/> before outputing the resolved <see cref="IModifierResult"/>.
+    /// <see cref="MatcherDataParseResult.Modifier"/> using references and values specified by 
+    /// <see cref="MatcherDataParseResult.RegexGroups"/> before outputing the resolved <see cref="IIntermediateModifier"/>.
     /// </summary>
     /// <remarks>
     /// Values can simply be parsed from the regex group's captured substring. References are resolved to 
@@ -19,11 +19,11 @@ namespace PoESkillTree.Computation.Parsing
     /// <see cref="IReferenceToMatcherDataResolver"/>. Referenced <see cref="Data.MatcherData"/> may itself contain
     /// references, requiring recursion.
     /// </remarks>
-    public class ResolvingParser : IParser<IModifierResult>
+    public class ResolvingParser : IParser<IIntermediateModifier>
     {
         private readonly IParser<MatcherDataParseResult> _innerParser;
         private readonly IReferenceToMatcherDataResolver _referenceManager;
-        private readonly IModifierResultResolver _modifierResultResolver;
+        private readonly IIntermediateModifierResolver _modifierResolver;
         private readonly IRegexGroupParser _regexGroupParser;
 
         private IReadOnlyDictionary<string, string> _groups;
@@ -31,26 +31,26 @@ namespace PoESkillTree.Computation.Parsing
         public ResolvingParser(
             IParser<MatcherDataParseResult> innerParser,
             IReferenceToMatcherDataResolver referenceManager,
-            IModifierResultResolver modifierResultResolver,
+            IIntermediateModifierResolver modifierResolver,
             IRegexGroupParser regexGroupParser)
         {
             _innerParser = innerParser;
             _referenceManager = referenceManager;
-            _modifierResultResolver = modifierResultResolver;
+            _modifierResolver = modifierResolver;
             _regexGroupParser = regexGroupParser;
         }
 
-        public bool TryParse(string stat, out string remaining, out IModifierResult result)
+        public bool TryParse(string stat, out string remaining, out IIntermediateModifier result)
         {
             if (!_innerParser.TryParse(stat, out remaining, out var innerResult))
             {
-                result = innerResult?.ModifierResult;
+                result = innerResult?.Modifier;
                 return false;
             }
 
             _groups = innerResult.RegexGroups;
             var context = CreateContext("");
-            result = _modifierResultResolver.Resolve(innerResult.ModifierResult, context);
+            result = _modifierResolver.Resolve(innerResult.Modifier, context);
             return true;
         }
 
@@ -82,7 +82,7 @@ namespace PoESkillTree.Computation.Parsing
             {
                 var context = CreateContext(groupPrefix);
                 var referencedBuilder =
-                    _modifierResultResolver.ResolveToReferencedBuilder(matcherData.ModifierResult, context);
+                    _modifierResolver.ResolveToReferencedBuilder(matcherData.Modifier, context);
                 return new ReferenceConverter(referencedBuilder);
             }
 

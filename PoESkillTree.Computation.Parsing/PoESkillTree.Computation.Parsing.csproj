@@ -76,12 +76,12 @@
     <Compile Include="Data\IStepper.cs" />
     <Compile Include="IParser.cs" />
     <Compile Include="MatcherDataParser.cs" />
-    <Compile Include="ModifierBuilding\IModifierResultResolver.cs" />
-    <Compile Include="ModifierBuilding\ModifierResultResolver.cs" />
-    <Compile Include="ModifierBuilding\SimpleModifierResult.cs" />
-    <Compile Include="ModifierBuilding\IModifierResult.cs" />
-    <Compile Include="ModifierBuilding\ModifierResultExtensions.cs" />
-    <Compile Include="ModifierBuilding\ModifierResultEntry.cs" />
+    <Compile Include="ModifierBuilding\IIntermediateModifierResolver.cs" />
+    <Compile Include="ModifierBuilding\IntermediateModifierResolver.cs" />
+    <Compile Include="ModifierBuilding\SimpleIntermediateModifier.cs" />
+    <Compile Include="ModifierBuilding\IIntermediateModifier.cs" />
+    <Compile Include="ModifierBuilding\IntermediateModifierExtensions.cs" />
+    <Compile Include="ModifierBuilding\IntermediateModififerEntry.cs" />
     <Compile Include="ModifierBuilding\ModifierBuilder.cs" />
     <Compile Include="Data\EffectStatData.cs" />
     <Compile Include="Builders\Effects\IAilmentBuilder.cs" />
@@ -155,7 +155,7 @@
     <Compile Include="Referencing\IRegexGroupFactory.cs" />
     <Compile Include="Referencing\IRegexGroupParser.cs" />
     <Compile Include="Referencing\ReferenceConstants.cs" />
-    <Compile Include="Referencing\ReferenceManager.cs" />
+    <Compile Include="Referencing\ReferenceService.cs" />
     <Compile Include="Referencing\ReferenceValidator.cs" />
     <Compile Include="Referencing\RegexGroupService.cs" />
     <Compile Include="ResolvingParser.cs" />

@@ -3,6 +3,9 @@ using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Parsing.Data
 {
+    /// <summary>
+    /// Data that specifies stats that are always active.
+    /// </summary>
     public class GivenStatData
     {
         public GivenStatData(IFormBuilder form, IStatBuilder stat, double value)

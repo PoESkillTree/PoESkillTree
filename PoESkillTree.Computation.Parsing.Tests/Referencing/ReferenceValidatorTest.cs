@@ -148,5 +148,35 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
             Assert.Throws<ParseException>(() =>
                 ReferenceValidator.Validate(DefaultReferencedMatchersList, statMatchersList));
         }
+
+        [TestCase("value")]
+        [TestCase("value5_xyz")]
+        [TestCase("reference")]
+        [TestCase("reference_groupNameX")]
+        public void ValidateThrowsIfStatMatcherContainsInvalidGroupNames(string groupName)
+        {
+            var statMatchersList = new[]
+            {
+                MockStatMatchers(new string[0], $"text (?<{groupName}>stuff)")
+            };
+
+            Assert.Throws<ParseException>(() =>
+                ReferenceValidator.Validate(DefaultReferencedMatchersList, statMatchersList));
+        }
+
+        [TestCase("value")]
+        [TestCase("value5_xyz")]
+        [TestCase("reference")]
+        [TestCase("reference_groupNameX")]
+        public void ValidateThrowsIfReferencedMatcherContainsInvalidGroupNames(string groupName)
+        {
+            var referencedMatchersList = new[]
+            {
+                MockReferencedMatchers("Matchers1", $"text (?<{groupName}>stuff)")
+            };
+
+            Assert.Throws<ParseException>(() =>
+                ReferenceValidator.Validate(referencedMatchersList, DefaultStatMatchersList));
+        }
     }
 }

@@ -43,7 +43,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
 
             var data = sut.First();
 
-            Assert.AreSame(DefaultMatcherData.ModifierResult, data.ModifierResult);
+            Assert.AreSame(DefaultMatcherData.Modifier, data.Modifier);
         }
 
         [Test]
@@ -103,44 +103,17 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
             var inputData = new MatcherData(inputRegex, new ModifierBuilder());
             var statMatchers = MockStatMatchers(true, inputData);
             var referencedRegexes = Mock.Of<IReferencedRegexes>(r =>
-                r.ContainsReference("Matchers1") &&
                 r.GetRegexes("Matchers1") == new[] { "0+", "[1-9]" } &&
-                r.ContainsReference("Matchers2") &&
                 r.GetRegexes("Matchers2") == new[] { "a" } &&
-                r.ContainsReference("Matchers3") &&
                 r.GetRegexes("Matchers3") == new[] { "({Matchers2})", "c", "d ({Matchers1}) ({Matchers2})" } &&
-                r.ContainsReference("Matchers4") &&
                 r.GetRegexes("Matchers4") == new[] { "({Matchers2})" } &&
-                r.ContainsReference("Matchers5") &&
                 r.GetRegexes("Matchers5") == new[] { "({Matchers1})", "({Matchers2})", "({Matchers3})", "({Matchers4})" } &&
-                r.ContainsReference("Matchers6") &&
                 r.GetRegexes("Matchers6") == new[] { "({Matchers2}) ({Matchers2}) ({Matchers2}) ({Matchers2})" });
             var sut = CreateSut(statMatchers, referencedRegexes);
 
             var data = sut.First();
 
             return data.Regex;
-        }
-
-        [TestCase("value")]
-        [TestCase("value5_xyz")]
-        [TestCase("reference")]
-        [TestCase("reference_groupNameX")]
-        public void ThrowsIfRegexContainsInvalidGroupNames(string groupName)
-        {
-            var statMatcher = MockStatMatchers($"text (?<{groupName}>stuff)");
-            var sut = CreateSut(statMatcher);
-
-            Assert.Throws<ParseException>(() => sut.GetEnumerator());
-        }
-
-        [Test]
-        public void ThrowsIfRegexContainsUnknownReference()
-        {
-            var statMatcher = MockStatMatchers("text ({Matchers3}) stuff");
-            var sut = CreateSut(statMatcher);
-
-            Assert.Throws<ParseException>(() => sut.GetEnumerator());
         }
 
         private static readonly MatcherData DefaultMatcherData =
@@ -160,16 +133,9 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
             return mock.Object;
         }
 
-        private static IStatMatchers MockStatMatchers(string regex)
-        {
-            return MockStatMatchers(false, new MatcherData(regex, new ModifierBuilder()));
-        }
-
         private static readonly IReferencedRegexes DefaultReferencedRegexes =
             Mock.Of<IReferencedRegexes>(r =>
-                r.ContainsReference("Matchers1") &&
                 r.GetRegexes("Matchers1") == new[] { "0+", "[1-9]", "(01)+" } &&
-                r.ContainsReference("Matchers2") &&
                 r.GetRegexes("Matchers2") == new[] { "a", "b", "c", "d" });
 
         private static IEnumerable<MatcherData> CreateSut(IStatMatchers statMatchers)

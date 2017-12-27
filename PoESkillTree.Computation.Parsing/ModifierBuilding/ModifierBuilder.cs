@@ -9,18 +9,19 @@ using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 {
-    public class ModifierBuilder : IModifierBuilder, IModifierResult
+    /// <inheritdoc cref="IModifierBuilder" />
+    public class ModifierBuilder : IModifierBuilder, IIntermediateModifier
     {
-        public IReadOnlyList<ModifierResultEntry> Entries { get; }
+        public IReadOnlyList<IntermediateModififerEntry> Entries { get; }
         public Func<IStatBuilder, IStatBuilder> StatConverter { get; } = s => s;
         public Func<IValueBuilder, IValueBuilder> ValueConverter { get; } = v => v;
 
         public ModifierBuilder()
         {
-            Entries = new ModifierResultEntry[0];
+            Entries = new IntermediateModififerEntry[0];
         }
 
-        private ModifierBuilder(IEnumerable<ModifierResultEntry> entries, 
+        private ModifierBuilder(IEnumerable<IntermediateModififerEntry> entries, 
             Func<IStatBuilder, IStatBuilder> statConverter, 
             Func<IValueBuilder, IValueBuilder> valueConverter)
         {
@@ -30,14 +31,13 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
         }
 
         private IModifierBuilder WithSingle<T>(T element, 
-            Func<ModifierResultEntry, T, ModifierResultEntry> entrySelector, 
-            Func<ModifierResultEntry, T> entryElementSelector, string elementName)
+            Func<IntermediateModififerEntry, T, IntermediateModififerEntry> entrySelector, 
+            Func<IntermediateModififerEntry, T> entryElementSelector, string elementName)
         {
-            IEnumerable<ModifierResultEntry> entries;
+            IEnumerable<IntermediateModififerEntry> entries;
             if (Entries.IsEmpty())
             {
-                entries = new[] { new ModifierResultEntry() }
-                    .Select(e => entrySelector(e, element));
+                entries = new[] { entrySelector(new IntermediateModififerEntry(), element) };
             }
             else if (Entries.Select(entryElementSelector).Any(t => t != null))
             {
@@ -51,14 +51,14 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
         }
 
         private IModifierBuilder WithEnumerable<T>(IEnumerable<T> elements, 
-            Func<ModifierResultEntry, T, ModifierResultEntry> entrySelector,
-            Func<ModifierResultEntry, T> entryElementSelector, string elementName)
+            Func<IntermediateModififerEntry, T, IntermediateModififerEntry> entrySelector,
+            Func<IntermediateModififerEntry, T> entryElementSelector, string elementName)
         {
-            IEnumerable<ModifierResultEntry> entries;
+            IEnumerable<IntermediateModififerEntry> entries;
             var elementList = elements.ToList();
             if (Entries.IsEmpty())
             {
-                entries = elementList.Select(e => entrySelector(new ModifierResultEntry(), e));
+                entries = elementList.Select(e => entrySelector(new IntermediateModififerEntry(), e));
             }
             else if (Entries.Select(entryElementSelector).Any(t => t != null))
             {
@@ -72,8 +72,8 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
             else if (Entries.Count != elementList.Count)
             {
                 throw new ArgumentException(
-                    "All calls to WithXs methods must be made with parameters with the " +
-                    "same amount of elements", nameof(elements));
+                    "All calls to WithXs methods must be made with parameters with the same amount of elements", 
+                    nameof(elements));
             }
             else
             {
@@ -124,17 +124,15 @@ namespace PoESkillTree.Computation.Parsing.ModifierBuilding
 
         public IModifierBuilder WithCondition(IConditionBuilder condition)
         {
-            return WithSingle(condition, (e, c) => e.WithCondition(c), e => e.Condition,
-                "Condition");
+            return WithSingle(condition, (e, c) => e.WithCondition(c), e => e.Condition, "Condition");
         }
 
         public IModifierBuilder WithConditions(IEnumerable<IConditionBuilder> conditions)
         {
-            return WithEnumerable(conditions, (e, c) => e.WithCondition(c), e => e.Condition,
-                "Condition");
+            return WithEnumerable(conditions, (e, c) => e.WithCondition(c), e => e.Condition, "Condition");
         }
 
-        public IModifierResult Build()
+        public IIntermediateModifier Build()
         {
             return this;
         }
