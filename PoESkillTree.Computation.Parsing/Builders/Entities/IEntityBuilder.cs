@@ -1,26 +1,37 @@
-using PoESkillTree.Computation.Parsing.Builders.Conditions;
-using PoESkillTree.Computation.Parsing.Builders.Damage;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
-using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Entities
 {
+    /// <summary>
+    /// Represents an entity that is source and target of modifier applications, can be affected by effect, 
+    /// can be source and target of actions and similar.
+    /// </summary>
     public interface IEntityBuilder : IResolvable<IEntityBuilder>
     {
-        IConditionBuilder HitByInPastXSeconds(IDamageTypeBuilder damageType, 
-            IValueBuilder seconds);
-
-        IConditionBuilder HitByInPastXSeconds(IDamageTypeBuilder damageType, double seconds);
-
-        IConditionBuilder HitByRecently(IDamageTypeBuilder damageType);
-
-        // Changes the context of a stat in the same way as IConditionBuilders.For(target)
+        /// <summary>
+        /// Returns <paramref name="stat"/> from the context of this entity instead of the default Self.
+        /// </summary>
         IDamageStatBuilder Stat(IDamageStatBuilder stat);
+
+        /// <summary>
+        /// Returns <paramref name="stat"/> from the context of this entity instead of the default Self.
+        /// </summary>
         IFlagStatBuilder Stat(IFlagStatBuilder stat);
+
+        /// <summary>
+        /// Returns <paramref name="stat"/> from the context of this entity instead of the default Self.
+        /// </summary>
         IPoolStatBuilder Stat(IPoolStatBuilder stat);
+
+        /// <summary>
+        /// Returns <paramref name="stat"/> from the context of this entity instead of the default Self.
+        /// </summary>
         IStatBuilder Stat(IStatBuilder stat);
 
+        /// <summary>
+        /// Gets a stat representing the level of this entity.
+        /// </summary>
         IStatBuilder Level { get; }
     }
 }

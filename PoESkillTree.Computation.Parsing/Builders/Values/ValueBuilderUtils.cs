@@ -6,6 +6,9 @@ using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Values
 {
+    /// <summary>
+    /// Contains utility methods related to <see cref="ValueBuilder"/>s.
+    /// </summary>
     public static class ValueBuilderUtils
     {
         public static Func<ValueBuilder, ValueBuilder> PerStat(IStatBuilder stat) => 

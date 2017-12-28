@@ -43,5 +43,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilders StatBuilders => new StatBuildersStub();
 
         public IValueBuilders ValueBuilders => new ValueBuildersStub();
+
+        public IItemSlotBuilders ItemSlotBuilders => new ItemSlotBuildersStub();
     }
 }

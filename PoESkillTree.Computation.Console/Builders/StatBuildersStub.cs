@@ -40,7 +40,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder ApplyOnce(params IStatBuilder[] stats) =>
             CreateStat(stats, os => $"ApplyOnce({string.Join(", ", os)})");
 
-        public IStatBuilder Unique(string name = "$0") => CreateStat(name);
+        public IStatBuilder Unique(string name) => CreateStat(name);
     }
 
 
@@ -89,8 +89,8 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder PierceCount => CreateStat("Projectile pierce count");
 
-        public ISelfToAnyActionBuilder Pierce =>
-            new SelfToAnyActionBuilderStub("Projectile pierce", (c, _) => c);
+        public IActionBuilder Pierce =>
+            ActionBuilderStub.SelfToAny("Projectile pierce", (c, _) => c);
 
         public IStatBuilder ChainCount => CreateStat("Projectile chain count");
         public IStatBuilder TravelDistance => CreateStat("Projectile travel distance");

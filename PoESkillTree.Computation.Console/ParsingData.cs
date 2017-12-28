@@ -10,9 +10,8 @@ using PoESkillTree.Computation.Parsing.ModifierBuilding;
 
 namespace PoESkillTree.Computation.Console
 {
-    // TODO move this to Computation.Data (or somewhere else) once a proper SkillMatchers class exists
-    //      or pass the SkillMatchers
-    //      (then the IItemSlotBuilders instance needs to be passed or added to IBuilderFactories)
+    // TODO do something with SkillMatchers to remove dependencies to the Console project
+    //      and move this to Computation.Data
     public class ParsingData : IParsingData<ParsingStep>
     {
         private readonly Lazy<IReadOnlyList<IStatMatchers>> _statMatchers;
@@ -70,7 +69,7 @@ namespace PoESkillTree.Computation.Console
             new ChargeTypeMatchers(builderFactories.ChargeTypeBuilders),
             new DamageTypeMatchers(builderFactories.DamageTypeBuilders),
             new FlagMatchers(builderFactories.StatBuilders.Flag),
-            new ItemSlotMatchers(new ItemSlotBuildersStub()),
+            new ItemSlotMatchers(builderFactories.ItemSlotBuilders),
             new KeywordMatchers(builderFactories.KeywordBuilders),
             new SkillMatchers(),
         };

@@ -31,8 +31,9 @@ namespace PoESkillTree.Computation.Data
                 "$1", "$2", "$3"
             },
             {
-                // Eldritch Battery, second stat
-                "energy shield protects mana instead of life",
+                // Eldritch Battery
+                "(Spend Energy Shield before Mana for Skill Costs) energy shield protects mana instead of life",
+                "$1",
                 "100% of non-chaos damage is taken from energy shield before mana",
                 "-100% of non-chaos damage is taken from energy shield before life"
             },

@@ -36,13 +36,13 @@ namespace PoESkillTree.Computation.Data
             { Buff.Maim, "30% reduced movement speed" },
             { Buff.Intimidate, "10% increased damage taken" },
             { Buff.Blind, "50% less chance to hit" },
-            { Buff.Conflux.Igniting, Ailment.Ignite.AddSources(AllDamageTypes) },
-            { Buff.Conflux.Shocking, Ailment.Shock.AddSources(AllDamageTypes) },
-            { Buff.Conflux.Chilling, Ailment.Chill.AddSources(AllDamageTypes) },
+            { Buff.Conflux.Igniting, Ailment.Ignite.Sources(AllDamageTypes) },
+            { Buff.Conflux.Shocking, Ailment.Shock.Sources(AllDamageTypes) },
+            { Buff.Conflux.Chilling, Ailment.Chill.Sources(AllDamageTypes) },
             {
                 Buff.Conflux.Elemental,
-                Ailment.Ignite.AddSources(AllDamageTypes), Ailment.Shock.AddSources(AllDamageTypes),
-                Ailment.Chill.AddSources(AllDamageTypes)
+                Ailment.Ignite.Sources(AllDamageTypes), Ailment.Shock.Sources(AllDamageTypes),
+                Ailment.Chill.Sources(AllDamageTypes)
             },
         };
 

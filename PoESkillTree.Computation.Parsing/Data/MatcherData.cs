@@ -30,6 +30,7 @@ namespace PoESkillTree.Computation.Parsing.Data
         /// <item>Regex group names must not start with <see cref="Referencing.ReferenceConstants.ValueGroupPrefix"/>
         /// or <see cref="Referencing.ReferenceConstants.ReferenceGroupPrefix"/>.</item>
         /// </list>
+        /// <para>The regex pattern is used with the IgnoreCase, CultureInvariant and ExplicitCapture options.</para>
         /// </remarks>
         public string Regex { get; }
 
@@ -45,7 +46,8 @@ namespace PoESkillTree.Computation.Parsing.Data
         /// <summary>
         /// Used as parameter for <see cref="System.Text.RegularExpressions.Match.Result"/> to replace the matched
         /// substring in the stat line. References to group names in <see cref="Regex"/> must be to named groups,
-        /// groups without names (numbered groups) are not captured.
+        /// groups without names (numbered groups) are not captured (see 
+        /// <see cref="System.Text.RegularExpressions.RegexOptions.ExplicitCapture"/>).
         /// </summary>
         public string MatchSubstitution { get; }
 

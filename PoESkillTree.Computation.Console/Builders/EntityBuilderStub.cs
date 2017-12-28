@@ -4,7 +4,6 @@ using PoESkillTree.Computation.Parsing.Builders.Entities;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
-using PoESkillTree.Computation.Parsing.Builders.Values;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
@@ -19,21 +18,10 @@ namespace PoESkillTree.Computation.Console.Builders
             _resolver = resolver;
         }
 
+        public static EntityBuilderStub Self() => new EntityBuilderStub("Self", (c, _) => c);
+        public static EntityBuilderStub Any() => new EntityBuilderStub("Any Entity", (c, _) => c);
+
         protected IEntityBuilder This => this;
-
-        public IConditionBuilder
-            HitByInPastXSeconds(IDamageTypeBuilder damageType, IValueBuilder seconds) =>
-            CreateCondition(This, (IKeywordBuilder) damageType, seconds,
-                (o1, o2, o3) => $"{o1} hit by {o2} Damage in the past {o3} seconds");
-
-        public IConditionBuilder
-            HitByInPastXSeconds(IDamageTypeBuilder damageType, double seconds) =>
-            CreateCondition(This, (IKeywordBuilder) damageType,
-                (o1, o2) => $"{o1} hit by {o2} Damage in the past {seconds} seconds");
-
-        public IConditionBuilder HitByRecently(IDamageTypeBuilder damageType) =>
-            CreateCondition(This, (IKeywordBuilder) damageType,
-                (o1, o2) => $"{o1} hit by {o2} Damage recently");
 
         public IDamageStatBuilder Stat(IDamageStatBuilder stat) =>
             CreateDamageStat(This, (IStatBuilder) stat, (o1, o2) => $"{o2} for {o1}");
@@ -57,25 +45,16 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class EntityBuildersStub : IEntityBuilders
     {
-        public ISelfBuilder Self => new SelfBuilderStub();
+        public IEntityBuilder Self => EntityBuilderStub.Self();
         public IEnemyBuilder Enemy => new EnemyBuilderStub();
         public IEntityBuilder Ally => new EntityBuilderStub("Ally", (c, _) => c);
-        public IEntityBuilder Character => new EntityBuilderStub("Character", (c, _) => c);
+        public IEntityBuilder ModififerSource => new EntityBuilderStub("Modififer Source", (c, _) => c);
 
         public ISkillEntityBuilder Totem => new SkillEntityBuilderStub("Totem", (c, _) => c);
 
         public ISkillEntityBuilder Minion => new SkillEntityBuilderStub("Minion", (c, _) => c);
 
-        public IEntityBuilder Any => new EntityBuilderStub("Any Entity", (c, _) => c);
-    }
-
-
-    public class SelfBuilderStub : EntityBuilderStub, ISelfBuilder
-    {
-        public SelfBuilderStub() 
-            : base("Self", (c, _) => c)
-        {
-        }
+        public IEntityBuilder Any => EntityBuilderStub.Any();
     }
 
 

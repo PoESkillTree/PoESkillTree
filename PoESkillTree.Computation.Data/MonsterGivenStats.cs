@@ -70,7 +70,7 @@ namespace PoESkillTree.Computation.Data
             { BaseSet, Totems.CombinedInstances.Maximum, 1 },
             // - buffs
             { BaseSet, Buffs(target: Self).With(Keyword.Curse).CombinedLimit, 1 },
-            // movement speed
+            // - movement speed
             { BaseSet, Stat.MovementSpeed.Maximum, 128 },
         };
     }

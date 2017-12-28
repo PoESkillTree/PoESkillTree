@@ -51,7 +51,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IConditionBuilder BaseValueComesFrom(IEquipmentBuilder equipment) =>
             CreateCondition(equipment, o => $"If base value comes from {o}");
 
-        public IConditionBuilder Unique(string name = "$0") =>
+        public IConditionBuilder Unique(string name) =>
             CreateCondition(name);
 
         public IConditionBuilder True =>

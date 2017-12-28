@@ -8,6 +8,12 @@ using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Matching
 {
+    /// <summary>
+    /// Converts objects referenced from other matcher collections to their types.
+    /// <para>Because getting the actual referenced objects requires matching the stat line, these methods can not
+    /// throw exceptions on invalid casts when first called. Exceptions will only be thrown once the context has been
+    /// resolved.</para>
+    /// </summary>
     public interface IReferenceConverter
     {
         IDamageTypeBuilder AsDamageType { get; }
@@ -20,7 +26,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Matching
 
         IItemSlotBuilder AsItemSlot { get; }
 
-        ISelfToAnyActionBuilder AsAction { get; }
+        IActionBuilder AsAction { get; }
 
         IStatBuilder AsStat { get; }
 

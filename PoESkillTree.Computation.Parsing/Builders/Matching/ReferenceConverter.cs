@@ -8,6 +8,14 @@ using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Matching
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// Implementation of <see cref="IReferenceConverter"/> that simply casts the referenced value passed to its
+    /// constructor, i.e. it is already resolved.
+    /// </summary>
+    /// <remarks>
+    /// Throws <see cref="ParseException"/> if the referenced value can not be cast to the type of the called property.
+    /// </remarks>
     public class ReferenceConverter : IReferenceConverter
     {
         private readonly object _referencedBuilder;
@@ -17,7 +25,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Matching
         public IAilmentBuilder AsAilment => As<IAilmentBuilder>();
         public IKeywordBuilder AsKeyword => As<IKeywordBuilder>();
         public IItemSlotBuilder AsItemSlot => As<IItemSlotBuilder>();
-        public ISelfToAnyActionBuilder AsAction => As<ISelfToAnyActionBuilder>();
+        public IActionBuilder AsAction => As<IActionBuilder>();
         public IStatBuilder AsStat => As<IStatBuilder>();
         public IFlagStatBuilder AsFlagStat => As<IFlagStatBuilder>();
         public IPoolStatBuilder AsPoolStat => As<IPoolStatBuilder>();

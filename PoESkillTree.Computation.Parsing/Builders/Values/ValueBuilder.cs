@@ -4,6 +4,11 @@ using PoESkillTree.Computation.Parsing.Builders.Matching;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Values
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// Implementation of <see cref="IValueBuilder" /> that overloads conditional and arithmetic operators to allow
+    /// much better readable interaction with values.
+    /// </summary>
     public class ValueBuilder : IValueBuilder
     {
         private readonly IValueBuilder _value;
@@ -154,7 +159,14 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
 
         IValueBuilder IValueBuilder.AsDivisor(double dividend) => _value.AsDivisor(dividend);
 
+        /// <summary>
+        /// Divides this value by 100.
+        /// </summary>
         public ValueBuilder AsPercentage => this / 100;
+
+        /// <summary>
+        /// Divides 1 by this value.
+        /// </summary>
         public ValueBuilder Invert => 1 / this;
 
         IValueBuilder IValueBuilder.Rounded => _value.Rounded;

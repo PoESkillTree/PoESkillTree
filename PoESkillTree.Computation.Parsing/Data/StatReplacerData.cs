@@ -11,6 +11,9 @@ namespace PoESkillTree.Computation.Parsing.Data
         /// The regex pattern the stat line must match to be replaced. The pattern must match the whole stat line,
         /// i.e. it must match <c>"^" + OriginalStatRegex + "$"</c>.
         /// </summary>
+        /// <remarks>
+        /// The regex pattern is used with the IgnoreCase and CultureInvariant options.
+        /// </remarks>
         public string OriginalStatRegex { get; }
 
         /// <summary>

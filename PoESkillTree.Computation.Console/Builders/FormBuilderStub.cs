@@ -33,6 +33,5 @@ namespace PoESkillTree.Computation.Console.Builders
         public IFormBuilder TotalOverride => Create("Total override");
         public IFormBuilder MinBaseAdd => Create("Minimum base add");
         public IFormBuilder MaxBaseAdd => Create("Maximum base add");
-        public IFormBuilder MaximumAdd => Create("Maximum add");
     }
 }

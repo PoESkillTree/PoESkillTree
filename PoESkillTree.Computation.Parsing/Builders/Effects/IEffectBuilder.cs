@@ -5,18 +5,33 @@ using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Effects
 {
+    /// <summary>
+    /// Represents an effect entities can be affected by, e.g. buffs, ailments or stun.
+    /// </summary>
     public interface IEffectBuilder : IResolvable<IEffectBuilder>
     {
+        /// <summary>
+        /// Returns a flag stat representing whether <paramref name="target"/> is currently affected by this effect.
+        /// </summary>
         IFlagStatBuilder On(IEntityBuilder target);
 
-        // needs to be entered by user if this sets On(target) to 1?
-        // (default action is Hit if non is specified)
+        /// <summary>
+        /// Returns a stat representing the chance to inflict this effect upon entities of type 
+        /// <paramref name="target"/>. The type of action the chance applies to must be specified with a condition.
+        /// </summary>
         IStatBuilder ChanceOn(IEntityBuilder target);
 
-        // shortcut for On(target).IsSet
+        /// <summary>
+        /// Returns a condition that is satisfied if <paramref name="target"/> is currently affected by this effect.
+        /// </summary>
+        /// <remarks>
+        /// Equivalent to <c>On(target).IsSet</c>
+        /// </remarks>
         IConditionBuilder IsOn(IEntityBuilder target);
 
-        // duration when source is Self
+        /// <summary>
+        /// Gets a stat representing the duration of this effect when inflicted by Self (not necessarily upon Self).
+        /// </summary>
         IStatBuilder Duration { get; }
     }
 }

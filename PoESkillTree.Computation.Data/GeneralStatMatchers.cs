@@ -110,7 +110,7 @@ namespace PoESkillTree.Computation.Data
             },
             {
                 "damage dealt by your totems is leeched to you as life",
-                Life.Leech.To(Self).Of(Damage), For(Entity.Totem)
+                Life.Leech.To(Entity.ModififerSource).Of(Damage), For(Entity.Totem)
             },
             { "({PoolStatMatchers}) leeched per second", Reference.AsPoolStat.Leech.Rate },
             // - block
@@ -288,19 +288,21 @@ namespace PoESkillTree.Computation.Data
             { "rarity of items found", Stat.ItemRarity },
             // range and area of effect
             { "area of effect", Skills.AreaOfEffect },
-            { "melee weapon and unarmed range", Stat.Range, Or(LocalIsMelee, Unarmed) },
-            { "melee weapon range", Stat.Range, LocalIsMelee },
-            { "weapon range", Stat.Range, LocalHand.HasItem },
+            { "melee weapon and unarmed range", Stat.Range, Not(MainHand.Has(Tags.Ranged)) },
+            { "melee weapon range", Stat.Range, And(MainHand.Has(Tags.Weapon), Not(MainHand.Has(Tags.Ranged))) },
             // other
             { "rampage stacks", Stat.RampageStacks },
             { "chance to knock enemies back", Effect.Knockback.ChanceOn(Enemy) },
             { "knockback distance", Effect.Knockback.Distance },
             // Not really anything that can be done with them (yet), but should still be summed up
-            { "character size", Stat.Unique() },
-            { "reflected elemental damage taken", Stat.Unique() },
-            { "reflected physical damage taken", Stat.Unique() },
-            { "damage taken gained as mana over 4 seconds when hit", Stat.Unique() },
-            { "light radius", Stat.Unique() },
+            { "character size", Stat.Unique("Character Size") },
+            { "reflected elemental damage taken", Stat.Unique("Reduced Reflected Elemental Damage taken") },
+            { "reflected physical damage taken", Stat.Unique("Reduced Reflected Physical Damage taken") },
+            {
+                "damage taken gained as mana over 4 seconds when hit", 
+                Stat.Unique("#% of Damage taken gained as Mana over 4 seconds when Hit")
+            },
+            { "light radius", Stat.Unique("Light Radius") },
         }.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()

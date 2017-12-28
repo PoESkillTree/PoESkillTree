@@ -24,9 +24,9 @@ namespace PoESkillTree.Computation.Console.Builders
 
         private ISkillBuilder This => this;
 
-        public IActionBuilder<ISelfBuilder, IEntityBuilder> Cast =>
-            (ISelfToAnyActionBuilder) Create<IActionBuilder, ISkillBuilder>(
-                (s, r) => new SelfToAnyActionBuilderStub(s, r),
+        public IActionBuilder Cast =>
+            Create<IActionBuilder, ISkillBuilder>(
+                ActionBuilderStub.SelfToAny,
                 This, o => $"{o} cast");
 
         public IStatBuilder Instances =>
@@ -123,9 +123,9 @@ namespace PoESkillTree.Computation.Console.Builders
         public IFlagStatBuilder ApplyStatsToEntity(IEntityBuilder entity) =>
             CreateFlagStat(This, entity, (o1, o2) => $"apply stats of {o1} to {o2}");
 
-        public IActionBuilder<ISelfBuilder, IEntityBuilder> Cast =>
-            (ISelfToAnyActionBuilder) Create<IActionBuilder, IBuilderCollection<ISkillBuilder>>(
-                (s, r) => new SelfToAnyActionBuilderStub(s, r),
+        public IActionBuilder Cast =>
+            Create<IActionBuilder, IBuilderCollection<ISkillBuilder>>(
+                ActionBuilderStub.SelfToAny,
                 This, o => $"{o} cast");
     }
 

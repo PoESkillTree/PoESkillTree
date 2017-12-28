@@ -34,8 +34,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IItemSlotBuilder AsItemSlot =>
             new ItemSlotBuilderStub($"{this}.AsItemSlot", (_, context) => Resolve(context).AsItemSlot);
 
-        public ISelfToAnyActionBuilder AsAction =>
-            new SelfToAnyActionBuilderStub($"{this}.AsAction", (_, context) => Resolve(context).AsAction);
+        public IActionBuilder AsAction =>
+            ActionBuilderStub.SelfToAny($"{this}.AsAction", (_, context) => Resolve(context).AsAction);
 
         public IStatBuilder AsStat =>
             new StatBuilderStub($"{this}.AsStat", (_, context) => Resolve(context).AsStat);

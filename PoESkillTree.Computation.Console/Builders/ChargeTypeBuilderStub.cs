@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Parsing.Builders.Charges;
+﻿using PoESkillTree.Computation.Parsing.Builders.Actions;
+using PoESkillTree.Computation.Parsing.Builders.Charges;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
@@ -23,6 +24,9 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Duration => CreateStat(This, o => $"{o} duration");
 
         public IStatBuilder ChanceToGain => CreateStat(This, o => $"{o} chance to gain");
+
+        public IActionBuilder GainAction  =>
+            Create<IActionBuilder, IChargeTypeBuilder>(ActionBuilderStub.SelfToAny, this, b => $"gaining a {b}");
 
         public IChargeTypeBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);

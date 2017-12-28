@@ -23,10 +23,10 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder InstancesOn(IEntityBuilder target) =>
             CreateStat(This, target, (o1, o2) => $"Number of {o1} instances on {o2}");
 
-        public IFlagStatBuilder AddSource(IDamageTypeBuilder type) =>
+        public IFlagStatBuilder Source(IDamageTypeBuilder type) =>
             CreateFlagStat(This, (IKeywordBuilder) type, (o1, o2) => $"{type} can apply {this}");
 
-        public IFlagStatBuilder AddSources(IEnumerable<IDamageTypeBuilder> types) =>
+        public IFlagStatBuilder Sources(IEnumerable<IDamageTypeBuilder> types) =>
             CreateFlagStat(This, types.Cast<IKeywordBuilder>(), 
                 (o1, o2) => $"[{string.Join(", ", o2)}] can apply {o1}");
     }

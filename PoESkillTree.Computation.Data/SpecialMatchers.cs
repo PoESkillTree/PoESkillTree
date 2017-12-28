@@ -6,6 +6,7 @@ using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
+using PoESkillTree.Computation.Parsing.Builders.Damage;
 using PoESkillTree.Computation.Parsing.Builders.Forms;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
@@ -141,7 +142,7 @@ namespace PoESkillTree.Computation.Data
             },
             {
                 "totems have #% of your armour",
-                BaseAdd, Value.AsPercentage * Entity.Character.Stat(Armour).Value,
+                BaseAdd, Value.AsPercentage * Entity.ModififerSource.Stat(Armour).Value,
                 Armour, For(Entity.Totem)
             },
             // Elementalist
@@ -209,37 +210,36 @@ namespace PoESkillTree.Computation.Data
             },
         }.GetEnumerator();
 
-        private IEnumerable<(IFormBuilder form, IStatBuilder stat, IValueBuilder value,
-            IConditionBuilder condition)> ElementalEquilibrium()
+        private IEnumerable<(IFormBuilder form, IStatBuilder stat, IValueBuilder value, IConditionBuilder condition)> 
+            ElementalEquilibrium()
         {
             foreach (var type in ElementalDamageTypes)
             {
+                IConditionBuilder EnemyHitBy(IDamageTypeBuilder damageType) =>
+                    Hit.With(damageType).Against(Enemy).InPastXSeconds(ValueFactory.Create(5));
+
                 yield return (BaseAdd, Enemy.Stat(type.Resistance), Values[0],
-                    Enemy.HitByInPastXSeconds(type, 5));
+                    EnemyHitBy(type));
                 yield return (BaseSubtract, Enemy.Stat(type.Resistance), Values[1],
-                    And(Not(Enemy.HitByInPastXSeconds(type, 5)),
-                        Enemy.HitByInPastXSeconds(Elemental.Except(type), 5)));
+                    And(Not(EnemyHitBy(type)), EnemyHitBy(Elemental.Except(type))));
             }
         }
 
-        private IEnumerable<(IFormBuilder form, IStatBuilder stat, IValueBuilder value,
-            IConditionBuilder condition)> LiegeOfThePrimordialDamage()
+        private IEnumerable<(IFormBuilder form, IStatBuilder stat, IValueBuilder value, IConditionBuilder condition)> 
+            LiegeOfThePrimordialDamage()
         {
             foreach (var type in AllDamageTypes)
             {
-                yield return (PercentIncrease, type.Damage, Value,
-                    Golems[type].Any(s => s.HasInstance));
+                yield return (PercentIncrease, type.Damage, Value, Golems[type].Any(s => s.HasInstance));
             }
         }
 
-        private IEnumerable<(IFormBuilder form, IStatBuilder stat, IValueBuilder value,
-            IConditionBuilder condition)> ParagonOfCalamity(IFormBuilder form,
-            IStatBuilder stat, IValueBuilder value)
+        private IEnumerable<(IFormBuilder form, IStatBuilder stat, IValueBuilder value, IConditionBuilder condition)>
+            ParagonOfCalamity(IFormBuilder form, IStatBuilder stat, IValueBuilder value)
         {
             foreach (var type in ElementalDamageTypes)
             {
-                yield return (form, stat, value,
-                    And(type.Damage.With(), Self.HitByRecently(type)));
+                yield return (form, stat, value, And(type.Damage.With(), Hit.With(type).Taken.Recently));
             }
         }
 

@@ -43,9 +43,9 @@ namespace PoESkillTree.Computation.Data.Base
 
         protected IActionBuilders Action => BuilderFactories.ActionBuilders;
 
-        protected ISelfToAnyActionBuilder Kill => Action.Kill;
+        protected IActionBuilder Kill => Action.Kill;
         protected IBlockActionBuilder Block => Action.Block;
-        protected ISelfToAnyActionBuilder Hit => Action.Hit;
+        protected IActionBuilder Hit => Action.Hit;
         protected ICriticalStrikeActionBuilder CriticalStrike => Action.CriticalStrike;
 
         // Buffs
@@ -83,7 +83,7 @@ namespace PoESkillTree.Computation.Data.Base
 
         protected IEntityBuilders Entity => BuilderFactories.EntityBuilders;
 
-        protected ISelfBuilder Self => Entity.Self;
+        protected IEntityBuilder Self => Entity.Self;
         protected IEnemyBuilder Enemy => Entity.Enemy;
         protected IEntityBuilder Ally => Entity.Ally;
 
@@ -93,8 +93,6 @@ namespace PoESkillTree.Computation.Data.Base
             BuilderFactories.EquipmentBuilders;
 
         protected IEquipmentBuilderCollection Equipment => EquipmentBuilders.Equipment;
-
-        protected IEquipmentBuilder LocalHand => EquipmentBuilders.LocalHand;
 
         // Keywords
 

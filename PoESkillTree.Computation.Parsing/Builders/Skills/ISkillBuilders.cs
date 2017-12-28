@@ -1,10 +1,18 @@
 namespace PoESkillTree.Computation.Parsing.Builders.Skills
 {
+    /// <summary>
+    /// Factory interface for skills.
+    /// </summary>
     public interface ISkillBuilders
     {
-        // All available skills
+        /// <summary>
+        /// Gets a collection of all existing skills.
+        /// </summary>
         ISkillBuilderCollection Skills { get; }
 
+        /// <summary>
+        /// Returns a collection consisting of the given skills.
+        /// </summary>
         ISkillBuilderCollection Combine(params ISkillBuilder[] skills);
 
         // Single skills that need to be individually referenced

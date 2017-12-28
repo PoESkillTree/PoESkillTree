@@ -8,7 +8,10 @@
 10% increased effect of non-damaging ailments on enemies
 15% increased effect of non-damaging ailments on enemies
 20% increased effect of non-damaging ailments on enemies
-// - Perfect Agony's bleed mechanics (this is already split into two stats)
+// - some concept for mana spending (the other stat is supported)
+removes all mana. Spend Life instead of Mana for Skills
+Spend Energy Shield before Mana for Skill Costs Energy Shield protects Mana instead of Life
+// - Crimson Dance's bleed mechanics (this is already split into two stats)
 you can inflict bleeding on an enemy up to 8 times your bleeding does not deal extra damage while the enemy is moving
 // - unique complex value conversion
 each Spectral Throw Projectile gains 5% increased Damage each time it Hits

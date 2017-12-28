@@ -1,5 +1,8 @@
 namespace PoESkillTree.Computation.Parsing.Builders.Damage
 {
+    /// <summary>
+    /// Factory interface for damage sources.
+    /// </summary>
     public interface IDamageSourceBuilders
     {
         IDamageSourceBuilder Attack { get; }

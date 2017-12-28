@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Data
             { "adds # to", BaseAdd, Value },
             { @"-#% of", BaseSubtract, Value },
             { "-#%? to", BaseSubtract, Value },
-            { "can (have|summon) up to # additional", MaximumAdd, Value },
+            { "can (have|summon) up to # additional", BaseAdd, Value },
         }.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()

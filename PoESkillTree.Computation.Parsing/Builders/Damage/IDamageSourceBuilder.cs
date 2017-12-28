@@ -2,6 +2,9 @@
 
 namespace PoESkillTree.Computation.Parsing.Builders.Damage
 {
+    /// <summary>
+    /// Represents a damage source, e.g. Attack or Spell.
+    /// </summary>
     public interface IDamageSourceBuilder : IResolvable<IDamageSourceBuilder>
     {
 

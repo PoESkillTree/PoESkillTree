@@ -57,12 +57,12 @@ namespace PoESkillTree.Computation.Parsing.Tests
             return actual;
         }
 
-        [TestCase("StAt In wEirD CaseS", "stat in weird cases")]
+        [TestCase("StAt In wEirD CaseS", "StAt In wEirD CaseS")]
         [TestCase(" white-space enclosed ", "white-space enclosed")]
         [TestCase("many\n  \t spaces", "many spaces")]
         [TestCase(" \n\t\r", "")]
-        [TestCase(" A\n lot Of\t\t pOinTleSS   White-space\t",
-            "a lot of pointless white-space")]
+        [TestCase(" A\n lot Of\t\t pointless   White-space\t",
+            "A lot Of pointless White-space")]
         public void TryParseNormalizesStat(string input, string expected)
         {
             var innerMock = new Mock<IParser<string>>();

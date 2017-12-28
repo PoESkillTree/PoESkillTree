@@ -20,16 +20,8 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder Effect => CreateStat(This, o => $"Effect of {o}");
 
-        public IActionBuilder<ISelfBuilder, IEntityBuilder> Action => 
-            new ActionBuilderStub<ISelfBuilder, IEntityBuilder>(
-                new SelfBuilderStub(),
-                new EntityBuilderStub("Any Entity", (c, _) => c),
-                $"{this} application",
-                (current, context) => new ActionBuilderStub<IEntityBuilder, IEntityBuilder>(
-                    current.Source.Resolve(context), 
-                    current.Target.Resolve(context),
-                    $"{Resolve(context)} application", 
-                    (c, _) => c));
+        public IActionBuilder Action =>
+            Create<IActionBuilder, IEffectBuilder>(ActionBuilderStub.SelfToAny, this, b => $"{b} application");
     }
 
 

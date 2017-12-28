@@ -28,54 +28,55 @@ namespace PoESkillTree.Computation.Data
         {
             // actions
             { "on ({ActionMatchers})", Reference.AsAction.On() },
-            { "if you've ({ActionMatchers}) recently", Reference.AsAction.Recently() },
-            { "if you haven't ({ActionMatchers}) recently", Not(Reference.AsAction.Recently()) },
+            { "if you've ({ActionMatchers}) recently", Reference.AsAction.Recently },
+            { "if you haven't ({ActionMatchers}) recently", Not(Reference.AsAction.Recently) },
             {
                 "when you ({ActionMatchers}) a rare or unique enemy",
-                Reference.AsAction.Against(Enemy).On(t => t.IsRareOrUnique)
+                And(Reference.AsAction.Against(Enemy).On(), Enemy.IsRareOrUnique)
             },
-            { "on ({KeywordMatchers}) kill", Kill.On(withKeyword: Reference.AsKeyword) },
+            { "on ({KeywordMatchers}) kill", Kill.On( Reference.AsKeyword) },
             { "when you kill an enemy,", Kill.Against(Enemy).On() },
             {
                 "if you've killed a maimed enemy recently",
-                Kill.Against(Enemy).Recently(Buff.Maim.IsOn)
+                And(Kill.Against(Enemy).Recently, Buff.Maim.IsOn(Enemy))
             },
             {
                 "if you've killed a bleeding enemy recently",
-                Kill.Against(Enemy).Recently(Ailment.Bleed.IsOn)
+                And(Kill.Against(Enemy).Recently, Ailment.Bleed.IsOn(Enemy))
             },
             {
                 "if you've killed a cursed enemy recently",
-                Kill.Against(Enemy).Recently(
-                    e => Buffs(target: e).With(Keyword.Curse).Any())
+                And(Kill.Against(Enemy).Recently, Buffs(target: Enemy).With(Keyword.Curse).Any())
             },
             {
                 "if you or your totems have killed recently",
-                Or(Kill.Recently(), Kill.By(Entity.Totem).Recently())
+                Or(Kill.Recently, Kill.By(Entity.Totem).Recently)
             },
+            { "if you or your totems kill an enemy", Or(Kill.On(), Kill.By(Entity.Totem).On()) },
             { "when they block", Block.On() },
             { "when you block", Block.On() },
             {
                 "if you've blocked a hit from a unique enemy recently",
-                Block.Against(Enemy).Recently(s => s.IsUnique)
+                And(Block.Against(Enemy).Recently, Enemy.IsUnique)
             },
             { "(from|with) hits", Hit.On() },
             { "hits deal", Hit.On() },
             { "when you are hit", Hit.Taken.On() },
-            { "if you've been hit recently", Hit.Taken.Recently() },
-            { "if you haven't been hit recently", Not(Hit.Taken.Recently()) },
-            { "if you were damaged by a hit recently", Hit.Taken.Recently() },
-            { "if you've taken no damage from hits recently", Not(Hit.Taken.Recently()) },
-            { "if you've taken a savage hit recently", Action.SavageHit.Taken.Recently() },
+            { "if you've been hit recently", Hit.Taken.Recently },
+            { "if you haven't been hit recently", Not(Hit.Taken.Recently) },
+            { "if you were damaged by a hit recently", Hit.Taken.Recently },
+            { "if you've taken no damage from hits recently", Not(Hit.Taken.Recently) },
+            { "if you've taken a savage hit recently", Action.SavageHit.Taken.Recently },
             { "when you deal a critical strike", CriticalStrike.On() },
             {
                 "if you've crit in the past # seconds",
                 CriticalStrike.InPastXSeconds(Value)
             },
-            { "if you've shattered an enemy recently", Action.Shatter.Against(Enemy).Recently() },
+            { "if you've shattered an enemy recently", Action.Shatter.Against(Enemy).Recently },
             { "when you stun an enemy", Effect.Stun.On() },
             { "after spending # mana", Action.SpendMana(Value).On() },
-            { "if you have consumed a corpse recently", Action.ConsumeCorpse.Recently() },
+            { "if you have consumed a corpse recently", Action.ConsumeCorpse.Recently },
+            { "when you gain a ({ChargeTypeMatchers})", Reference.AsChargeType.GainAction.On() },
             // damage
             { "with weapons", Damage.With(Tags.Weapon) },
             { "weapon", Damage.With(Tags.Weapon) },
@@ -193,7 +194,7 @@ namespace PoESkillTree.Computation.Data
             { "against rare and unique enemies", Enemy.IsRareOrUnique },
             // buffs
             { "while you have fortify", Buff.Fortify.IsOn(Self) },
-            { "if you've taunted an enemy recently", Buff.Taunt.Action.Recently() },
+            { "if you've taunted an enemy recently", Buff.Taunt.Action.Recently },
             { "enemies you taunt( deal| take)?", And(For(Enemy), Buff.Taunt.IsOn(Enemy)) },
             {
                 "enemies you curse (take|have)",
@@ -203,12 +204,12 @@ namespace PoESkillTree.Computation.Data
             { "from taunted enemies", Buff.Taunt.IsOn(Enemy) },
             {
                 "you and allies affected by your auras have",
-                Or(For(Self),
+                Or(For(Entity.ModififerSource),
                     And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
             },
             {
                 "you and allies deal while affected by auras you cast",
-                Or(For(Self),
+                Or(For(Entity.ModififerSource),
                     And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
             },
             // ailments
@@ -275,12 +276,12 @@ namespace PoESkillTree.Computation.Data
                 "skills (in|from) your ({ItemSlotMatchers})(can have| have)?",
                 With(Skills[Reference.AsItemSlot])
             },
-            { "if you've cast a spell recently", Skills[Keyword.Spell].Cast.Recently() },
-            { "if you've attacked recently", Skills[Keyword.Attack].Cast.Recently() },
+            { "if you've cast a spell recently", Skills[Keyword.Spell].Cast.Recently },
+            { "if you've attacked recently", Skills[Keyword.Attack].Cast.Recently },
             {
-                "if you've used a movement skill recently", Skills[Keyword.Movement].Cast.Recently()
+                "if you've used a movement skill recently", Skills[Keyword.Movement].Cast.Recently
             },
-            { "if you've used a warcry recently", Skills[Keyword.Warcry].Cast.Recently() },
+            { "if you've used a warcry recently", Skills[Keyword.Warcry].Cast.Recently },
             {
                 "if you've used a ({DamageTypeMatchers}) skill in the past # seconds",
                 Skills[Reference.AsDamageType].Cast.InPastXSeconds(Value)
@@ -295,22 +296,22 @@ namespace PoESkillTree.Computation.Data
                 Or(With(Traps), With(Mines))
             },
             { "for throwing traps", With(Traps) },
-            { "if you detonated mines recently", Skill.DetonateMines.Cast.Recently() },
+            { "if you detonated mines recently", Skill.DetonateMines.Cast.Recently },
             {
                 "if you've placed a mine or thrown a trap recently",
-                Or(Traps.Cast.Recently(), Mines.Cast.Recently())
+                Or(Traps.Cast.Recently, Mines.Cast.Recently)
             },
             // totems
             { "totems", For(Entity.Totem) },
             { "totems (fire|gain|have)", With(Totems) },
             { "(spells cast|attacks used|skills used) by totems (have a|have)", With(Totems) },
             { "while you have a totem", Totems.Any(s => s.HasInstance) },
-            { "if you've summoned a totem recently", Totems.Cast.Recently() },
+            { "if you've summoned a totem recently", Totems.Cast.Recently },
             { "when you place a totem", Totems.Cast.On() },
             // minions
             { "minions", For(Entity.Minion) },
             { "minions (deal|have|gain)", For(Entity.Minion) },
-            { "you and your minions have", For(Entity.Minion, Self) },
+            { "you and your minions have", For(Entity.Minion, Entity.ModififerSource) },
             { "golem", For(Entity.Minion.With(Keyword.Golem)) },
             { "golems have", For(Entity.Minion.With(Keyword.Golem)) },
             { "spectres have", For(Entity.Minion.From(Skill.RaiseSpectre)) },
@@ -331,13 +332,11 @@ namespace PoESkillTree.Computation.Data
             { "while leeching", Condition.WhileLeeching },
             { "(you )?gain", Condition.True }, // may be left over at the end, does nothing
             // unique
-            { "when your trap is triggered by an enemy", Condition.Unique() },
-            { "when your mine is detonated targeting an enemy", Condition.Unique() },
-            { "when you gain a ({ChargeTypeMatchers})", Condition.Unique() },
-            { "if you or your totems kill an enemy", Condition.Unique() },
+            { "when your trap is triggered by an enemy", Condition.Unique("When your Trap is triggered by an Enemy") },
+            { "when your mine is detonated targeting an enemy", Condition.Unique("When your Mine is detonated targeting an Enemy") },
             {
-                "if you've (killed an enemy affected by your damage over time recently)",
-                Condition.Unique("Have you $1?")
+                "if you've killed an enemy affected by your damage over time recently",
+                Condition.Unique("Have you recently killed an Enemy affected by your Damage over Time?")
             },
         }.GetEnumerator();
 

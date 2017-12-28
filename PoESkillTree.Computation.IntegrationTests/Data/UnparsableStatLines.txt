@@ -16,7 +16,6 @@ Burning Arrow has a 10% chance to spread Tar if it does not Ignite an Enemy
 Magma Orb has 10% increased Area of Effect per Chain
 // passive skills:
 10% Chance for Traps to Trigger an additional time
-Spend Energy Shield before Mana for Skill Costs
 Share Endurance, Frenzy and Power Charges with nearby party members
 2% chance to gain a Power, Frenzy or Endurance Charge on Kill
 8% chance to gain a Power, Frenzy or Endurance Charge on Kill
@@ -28,8 +27,6 @@ Mines cannot be Damaged for 5 seconds after being Placed
 Enemies Cannot Leech Life From You
 Hits that Stun Enemies have Culling Strike
 removes bleeding when you use a flask
-// It's split into two stats but the second one isn't supported
-removes all mana. Spend Life instead of Mana for Skills
 // Side effect from how jewels are currently handled, the stat doesn't actually exist
 +1 Jewel Socket
 // Ascendancies:

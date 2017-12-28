@@ -4,22 +4,51 @@ using PoESkillTree.Computation.Parsing.Builders.Matching;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Stats
 {
+    /// <summary>
+    /// Represents the leech stats related to a pool.
+    /// </summary>
     public interface ILeechStatBuilder : IResolvable<ILeechStatBuilder>
     {
+        /// <summary>
+        /// Returns a stat representing the percentage of damage done matching <paramref name="damage"/> that leeched
+        /// to the pool this instance applies to.
+        /// </summary>
+        /// <param name="damage"></param>
+        /// <returns></returns>
         IStatBuilder Of(IDamageStatBuilder damage);
 
+        /// <summary>
+        /// Gets a stat representing the percentage of this instance's pool that can be leeched per second at most
+        /// (over all active leech instances).
+        /// </summary>
         IStatBuilder RateLimit { get; }
+        /// <summary>
+        /// Gets a stat representing the percentage of this instance's pool that is leeched by a single leech instance
+        /// per second.
+        /// </summary>
         IStatBuilder Rate { get; }
 
-        // Set to 1 with Form.BaseSet for the pool stat from whose Leech property this instance originated.
-        // If 1 (with Form.TotalOverride) for any other pool stat, that one applies.
+        /// <summary>
+        /// Returns a flag stat indicating whether this stat's leech value applies to the given pool.
+        /// <para>The flag for the pool this stat is obtained from is activated by default. If this is activated
+        /// for any other pool, this stat's leech applies to that pool instead.</para>
+        /// </summary>
         IFlagStatBuilder AppliesTo(IPoolStatBuilder stat);
 
-        // This is the entity that deals the damage by default. Can be changed leech to a different
-        // target, e.g. Chieftain's "1% of Damage dealt by your Totems is Leeched to you as Life".
+        /// <summary>
+        /// Returns a leech object through damge done by Self can be additionally leeched to the given entity.
+        /// The given entities normally other Leech properties (e.g. Rate) also apply to this leech.
+        /// </summary>
+        /// <remarks>
+        /// E.g. Chieftain's "1% of Damage dealt by your Totems is Leeched to you as Life" leeches totem damage to the
+        /// character.
+        /// </remarks>
         ILeechStatBuilder To(IEntityBuilder entity);
 
-        // If set, all DamageStats from "Of(damage)" have their DamageType changed to the parameter
+        /// <summary>
+        /// Returns a flag stat indicating whether all leech of this instance's pool is based on the given damage type
+        /// instead of the damage types of damage stats passed to <see cref="Of"/>.
+        /// </summary>
         IFlagStatBuilder BasedOn(IDamageTypeBuilder damageType);
     }
 }

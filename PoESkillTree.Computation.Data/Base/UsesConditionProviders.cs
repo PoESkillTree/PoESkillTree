@@ -1,5 +1,4 @@
 using System.Linq;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
@@ -33,9 +32,6 @@ namespace PoESkillTree.Computation.Data.Base
             conditions.Aggregate(condition1, (l, r) => l.Or(r));
 
         protected static IConditionBuilder Not(IConditionBuilder condition) => condition.Not;
-
-        protected IConditionBuilder LocalIsMelee =>
-            And(LocalHand.Has(Tags.Weapon), Not(LocalHand.Has(Tags.Ranged)));
 
         protected IConditionBuilder Unarmed => Not(MainHand.HasItem);
     }

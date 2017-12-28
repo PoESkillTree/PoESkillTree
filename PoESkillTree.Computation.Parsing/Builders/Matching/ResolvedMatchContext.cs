@@ -4,6 +4,14 @@ using PoESkillTree.Common.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Matching
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// <see cref="IMatchContext{T}"/> implementation that directly accesses a list of values passed to its constructor,
+    /// i.e. it is already resolved.
+    /// </summary>
+    /// <remarks>
+    /// Throws <see cref="ParseException"/>s on out of bound list accesses.
+    /// </remarks>
     public class ResolvedMatchContext<T> : IMatchContext<T>
     {
         private readonly IReadOnlyList<T> _values;

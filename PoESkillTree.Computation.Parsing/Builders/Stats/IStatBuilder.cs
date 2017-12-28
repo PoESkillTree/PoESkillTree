@@ -8,43 +8,95 @@ using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Parsing.Builders.Stats
 {
+    /// <summary>
+    /// Represents a modifiable statistic of an entity.
+    /// </summary>
     public interface IStatBuilder : IResolvable<IStatBuilder>
     {
-        // Minimum has no effect if stat has default value 0 and no base modifiers (BaseSet or 
-        // BaseAdd). That is necessary to make sure Unarmed and Incinerate can't crit as long they 
-        // don't get base crit chance.
-        IStatBuilder Minimum { get; } // default value: negative infinity
-        IStatBuilder Maximum { get; } // default value: positive infinity
+        /// <summary>
+        /// Gets a stat representing the minimum value this stat can be modified to.
+        /// Defaults to negative infinity.
+        /// </summary>
+        /// <remarks>
+        /// The minimum has no effect if this stat has a base value (through BaseSet, BaseAdd and BaseSubtract forms)
+        /// of 0. That is necessary to make sure Unarmed and Incinerate can't crit as long they don't get base crit 
+        /// chance.
+        /// </remarks>
+        IStatBuilder Minimum { get; }
 
-        ValueBuilder Value { get; } // default: 0
+        /// <summary>
+        /// Gets a stat representing the maximum value this stat can be modified to.
+        /// Defaults to positive infinity.
+        /// </summary>
+        IStatBuilder Maximum { get; }
 
-        // returned stat has the converted percentage as value
+        /// <summary>
+        /// Gets this stats value. Defaults to 0.
+        /// </summary>
+        ValueBuilder Value { get; }
+
+        /// <summary>
+        /// Returns a stat that represents the percentage of this stat's value that is converted to the given stat.
+        /// </summary>
         IStatBuilder ConvertTo(IStatBuilder stat);
+        
+        /// <summary>
+        /// Returns a stat that represents the percentage of this stat's value that is added to the given stat.
+        /// </summary>
         IStatBuilder AddAs(IStatBuilder stat);
-        // All modifiers that do not have Form.BaseSet are also applied to stat at percentOfTheirValue
+
+        /// <summary>
+        /// Returns a stat representing whether modifiers (except of BaseSet and TotalOverride forms) to this stat's 
+        /// value also apply to the given stat (at <paramref name="percentOfTheirValue"/> percent of their value).
+        /// </summary>
         IFlagStatBuilder ApplyModifiersTo(IStatBuilder stat, IValueBuilder percentOfTheirValue);
 
-        // chance to double Value
+        /// <summary>
+        /// Gets a stat representing the chance to double this stat's value (does not make sense without an action
+        /// condition. E.g. damage has a 20% chance to be doubled on hit.
+        /// </summary>
         IStatBuilder ChanceToDouble { get; }
 
-        // For Buffs and Auras: some conditions apply to this stat (e.g. the "Attack" from 
-        // "Attack Speed"), others specify whether the buff/aura is granted (e.g. "if you've Blocked 
-        // Recently"). It has to be decided at some point which conditions to and which don't.
-        // That point must be before the conditions are combined into one.
+        // For Buffs and Auras: some conditions apply to this stat (e.g. the "Attack" from "Attack Speed"), others 
+        // specify whether the buff/aura is granted (e.g. "if you've Blocked Recently"). It has to be decided at some 
+        // point which conditions do and which don't. That point must be before the conditions are combined into one.
         // Probably as a property inherent in conditions, i.e. decided on condition construction.
 
+        /// <summary>
+        /// Returns a buff that grants this stat for <paramref name="seconds"/> seconds.
+        /// </summary>
         IBuffBuilder ForXSeconds(IValueBuilder seconds);
-        // similar to ForXSeconds(), just with the duration set elsewhere
+
+        /// <summary>
+        /// Gets a buff that grants this stat. If the buff is not permanent, the duration will be specified elsewhere,
+        /// e.g. as part of a buff rotation.
+        /// </summary>
         IBuffBuilder AsBuff { get; }
 
+        /// <summary>
+        /// Returns an aura affecting the given entities that grants these stats.
+        /// </summary>
         IFlagStatBuilder AsAura(params IEntityBuilder[] affectedEntities);
 
-        // add stat to skills instead of the stat applying as is, 
-        // e.g. "Auras you Cast grant ... to you and Allies"
+        /// <summary>
+        /// Returns a flag stat representing whether the given skills apply this stat as part of their effects
+        /// (unaffected by effect increases).
+        /// <para>E.g. "Auras you Cast grant 3% increased Attack and Cast Speed to you and Allies"</para>
+        /// </summary>
         IFlagStatBuilder AddTo(ISkillBuilderCollection skills);
-        // add stat to an effect, e.g. "Consecrated Ground you create grants ... to you and Allies"
+
+        /// <summary>
+        /// Returns a flag stat representing whether the given effect applies this stat as part of its effects
+        /// (unaffected by effect increases).
+        /// <para>E.g. "Consecrated Ground you create grants 40% increased Damage to you and Allies"</para>
+        /// </summary>
         IFlagStatBuilder AddTo(IEffectBuilder effect);
 
+        /// <summary>
+        /// Returns a stat that is identical to this stat but only apply if the given condition is satisfied.
+        /// <para>Should generally not be used but is necessary for including conditions in resolved stat references.
+        /// </para>
+        /// </summary>
         IStatBuilder WithCondition(IConditionBuilder condition);
     }
 }

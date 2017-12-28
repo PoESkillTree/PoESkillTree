@@ -1,5 +1,8 @@
 namespace PoESkillTree.Computation.Parsing.Builders.Damage
 {
+    /// <summary>
+    /// Factory interface for damage types.
+    /// </summary>
     public interface IDamageTypeBuilders
     {
         IDamageTypeBuilder Physical { get; }
@@ -12,6 +15,9 @@ namespace PoESkillTree.Computation.Parsing.Builders.Damage
 
         IDamageTypeBuilder Chaos { get; }
 
+        /// <summary>
+        /// Gets a special elemental damage type that is handled differently depending on the user's settings.
+        /// </summary>
         IDamageTypeBuilder RandomElement { get; }
     }
 }

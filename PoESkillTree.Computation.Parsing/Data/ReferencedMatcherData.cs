@@ -21,6 +21,7 @@ namespace PoESkillTree.Computation.Parsing.Data
         /// <item>Regex group names must not start with <see cref="Referencing.ReferenceConstants.ValueGroupPrefix"/>
         /// or <see cref="Referencing.ReferenceConstants.ReferenceGroupPrefix"/>.</item>
         /// </list>
+        /// <para>The regex pattern is used with the IgnoreCase, CultureInvariant and ExplicitCapture options.</para>
         /// </remarks>
         public string Regex { get; }
 

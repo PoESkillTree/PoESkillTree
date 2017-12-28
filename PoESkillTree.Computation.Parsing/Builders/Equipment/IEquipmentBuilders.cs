@@ -1,11 +1,13 @@
 namespace PoESkillTree.Computation.Parsing.Builders.Equipment
 {
+    /// <summary>
+    /// Factory interface for equipment.
+    /// </summary>
     public interface IEquipmentBuilders
     {
-        // does not include flasks and jewels
+        /// <summary>
+        /// Gets an equipment collection for all slots except flasks and jewels.
+        /// </summary>
         IEquipmentBuilderCollection Equipment { get; }
-
-        // Hand the mod line comes from. Does not do anything if mod is not on a weapon.
-        IEquipmentBuilder LocalHand { get; }
     }
 }

@@ -2,13 +2,22 @@
 
 namespace PoESkillTree.Computation.Parsing.Builders.Matching
 {
+    /// <summary>
+    /// Interface for objects that can be resolved using a <see cref="ResolveContext"/>.
+    /// </summary>
+    /// <typeparam name="T">The resulting type of resolving. Generally this is the type that is implementing this
+    /// interface.</typeparam>
     public interface IResolvable<out T>
     {
+        /// <summary>
+        /// Resolves this instance using the given match context.
+        /// </summary>
         T Resolve(ResolveContext context);
     }
 
-    public delegate T Resolver<T>(T current, ResolveContext context);
-
+    /// <summary>
+    /// Class holding the context instances required for <see cref="IResolvable{T}.Resolve"/>.
+    /// </summary>
     public class ResolveContext
     {
         public ResolveContext(
@@ -18,8 +27,14 @@ namespace PoESkillTree.Computation.Parsing.Builders.Matching
             ReferenceContext = referenceContext;
         }
 
+        /// <summary>
+        /// Gets the context holding the resolved values.
+        /// </summary>
         public IMatchContext<IValueBuilder> ValueContext { get; }
 
+        /// <summary>
+        /// Gets the context holding the resolved references.
+        /// </summary>
         public IMatchContext<IReferenceConverter> ReferenceContext { get; }
 
         private bool Equals(ResolveContext other)

@@ -32,11 +32,11 @@ namespace PoESkillTree.Computation.Data
             // - damage
             {
                 @"adds # to # ({DamageTypeMatchers}) damage",
-                (MinBaseAdd, MaximumAdd), (Values[0], Values[1]), Reference.AsDamageType.Damage
+                (MinBaseAdd, MaxBaseAdd), (Values[0], Values[1]), Reference.AsDamageType.Damage
             },
             {
                 @"# to # additional ({DamageTypeMatchers}) damage",
-                (MinBaseAdd, MaximumAdd), (Values[0], Values[1]), Reference.AsDamageType.Damage
+                (MinBaseAdd, MaxBaseAdd), (Values[0], Values[1]), Reference.AsDamageType.Damage
             },
             {
                 @"adds # maximum ({DamageTypeMatchers}) damage",
@@ -205,7 +205,7 @@ namespace PoESkillTree.Computation.Data
             },
             // stun
             { "(you )?cannot be stunned", TotalOverride, 100, Effect.Stun.Avoidance },
-            { "your damaging hits always stun enemies", TotalOverride, 100, Effect.Stun.ChanceOn(Enemy) },
+            { "your damaging hits always stun enemies", TotalOverride, 100, Effect.Stun.ChanceOn(Enemy), Hit.On() },
             // item quantity/quality
             // range and area of effect
             // other
