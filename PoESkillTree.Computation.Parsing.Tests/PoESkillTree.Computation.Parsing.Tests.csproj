@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\Matching\ResolvedMatchContextTest.cs" />
+    <Compile Include="Builders\Values\ValueBuilderUtilsTest.cs" />
     <Compile Include="MatcherDataParserTest.cs" />
     <Compile Include="ModifierBuilding\IntermediateModifierResolverTest.cs" />
     <Compile Include="ModifierBuilding\ModifierBuilderTest.cs" />

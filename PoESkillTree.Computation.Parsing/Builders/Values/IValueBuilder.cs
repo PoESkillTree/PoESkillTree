@@ -6,10 +6,6 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
     /// <summary>
     /// Represents a value.
     /// </summary>
-    /// <remarks>
-    /// Values have a specific amount of significant digits depending on the stat they are for. This amount is relevant
-    /// for the rounding methods.
-    /// </remarks>
     public interface IValueBuilder : IResolvable<IValueBuilder>
     {
         /// <summary>
@@ -68,22 +64,18 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
         IValueBuilder AsDivisor(double dividend);
 
         /// <summary>
-        /// Returns a value that is equal to this value rounded to its amount of significant digits.
+        /// Returns a value that is equal to this value rounded to the nearest integral value.
         /// </summary>
-        IValueBuilder Rounded { get; }
+        IValueBuilder Round { get; }
 
         /// <summary>
-        /// Returns a value that is equal to this value floored to its amount of significant digits. It is first
-        /// rounded to a higher amount of significant digits to prevent issues with floating point accuracy 
-        /// like 0.99999 being floored to 0.
+        /// Returns a value that is equal to the largest integer less than or equal to this value.
         /// </summary>
-        IValueBuilder Floored { get; }
+        IValueBuilder Floor { get; }
 
         /// <summary>
-        /// Returns a value that is equal to this value ceiled to its amount of significant digits. It is first
-        /// rounded to a higher amount of significant digits to prevent issues with floating point accuracy
-        /// like 1.000001 being ceiled to 2.
+        /// Returns a value that is equal to the smallest integer greater than or equal to this value.
         /// </summary>
-        IValueBuilder Ceiled { get; }
+        IValueBuilder Ceiling { get; }
     }
 }

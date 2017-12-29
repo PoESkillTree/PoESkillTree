@@ -169,14 +169,14 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
         /// </summary>
         public ValueBuilder Invert => 1 / this;
 
-        IValueBuilder IValueBuilder.Rounded => _value.Rounded;
-        public ValueBuilder Rounded => Wrap(_value.Rounded);
+        IValueBuilder IValueBuilder.Round => _value.Round;
+        public ValueBuilder Round => Wrap(_value.Round);
 
-        IValueBuilder IValueBuilder.Floored => _value.Floored;
-        public ValueBuilder Floored => Wrap(_value.Floored);
+        IValueBuilder IValueBuilder.Floor => _value.Floor;
+        public ValueBuilder Floor => Wrap(_value.Floor);
 
-        IValueBuilder IValueBuilder.Ceiled => _value.Ceiled;
-        public ValueBuilder Ceiled => Wrap(_value.Ceiled);
+        IValueBuilder IValueBuilder.Ceiling => _value.Ceiling;
+        public ValueBuilder Ceiling => Wrap(_value.Ceiling);
 
         public IValueBuilder Resolve(ResolveContext context) => 
             _value.Resolve(context);
