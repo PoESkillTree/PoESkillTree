@@ -7,6 +7,10 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Console
 {
+    /// <summary>
+    /// <see cref="IReferencedMatchers"/> implementation containing <see cref="ISkillBuilder"/>. The contained skills
+    /// are simply created from a fixed array of a few skill names.
+    /// </summary>
     public class SkillMatchers : ReferencedMatchersBase<ISkillBuilder>
     {
         protected override IEnumerable<ReferencedMatcherData> CreateCollection()

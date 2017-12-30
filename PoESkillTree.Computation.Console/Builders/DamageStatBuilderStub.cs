@@ -10,7 +10,7 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class DamageStatBuilderStub : StatBuilderStub, IDamageStatBuilder
     {
-        public DamageStatBuilderStub(string stringRepresentation, Resolver<IStatBuilder> resolver) 
+        public DamageStatBuilderStub(string stringRepresentation, Resolver<IStatBuilder> resolver)
             : base(stringRepresentation, resolver)
         {
         }
@@ -46,8 +46,8 @@ namespace PoESkillTree.Computation.Console.Builders
         {
             private readonly Resolver<IDamageTakenConversionBuilder> _resolver;
 
-            public DamageTakenConversionBuilder(string stringRepresentation,
-                Resolver<IDamageTakenConversionBuilder> resolver) 
+            public DamageTakenConversionBuilder(
+                string stringRepresentation, Resolver<IDamageTakenConversionBuilder> resolver)
                 : base(stringRepresentation)
             {
                 _resolver = resolver;

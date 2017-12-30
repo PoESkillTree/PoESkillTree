@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using PoESkillTree.Computation.Console;
-using PoESkillTree.Computation.Console.Builders;
 using PoESkillTree.Computation.Parsing.Referencing;
 
 namespace PoESkillTree.Computation.IntegrationTests
@@ -11,7 +10,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void ReferencesAreValid()
         {
-            var parsingData = new ParsingData(new BuilderFactories());
+            var parsingData = Program.CreateParsingData();
             var referencedMatchers = parsingData.ReferencedMatchers;
             var statMatchers = parsingData.StatMatchers;
 
@@ -21,7 +20,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void ReferencedMatchersHaveCorrectlyTypedData()
         {
-            var parsingData = new ParsingData(new BuilderFactories());
+            var parsingData = Program.CreateParsingData();
             var referencedMatchers = parsingData.ReferencedMatchers;
 
             foreach (var matchers in referencedMatchers)

@@ -13,15 +13,13 @@ namespace PoESkillTree.Computation.Console.Builders
             _resolver = resolver;
         }
 
-        public IKeywordBuilder Resolve(ResolveContext context) =>
-            _resolver(this, context);
+        public IKeywordBuilder Resolve(ResolveContext context) => _resolver(this, context);
     }
 
 
     public class KeywordBuildersStub : IKeywordBuilders
     {
-        private static IKeywordBuilder Create(string s)
-            => new KeywordBuilderStub(s, (c, _) => c);
+        private static IKeywordBuilder Create(string s) => new KeywordBuilderStub(s, (c, _) => c);
 
         public IKeywordBuilder Attack { get; } = Create("Attack");
         public IKeywordBuilder Spell { get; } = Create("Spell");

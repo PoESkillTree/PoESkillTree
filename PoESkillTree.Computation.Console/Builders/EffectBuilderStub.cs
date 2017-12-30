@@ -50,8 +50,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public abstract class AvoidableEffectBuilderStub : EffectBuilderStub, IAvoidableEffectBuilder
     {
-        protected AvoidableEffectBuilderStub(string stringRepresentation, 
-            Resolver<IEffectBuilder> resolver) 
+        protected AvoidableEffectBuilderStub(string stringRepresentation, Resolver<IEffectBuilder> resolver) 
             : base(stringRepresentation, resolver)
         {
         }

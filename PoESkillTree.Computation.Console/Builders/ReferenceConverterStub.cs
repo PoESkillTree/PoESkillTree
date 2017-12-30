@@ -19,6 +19,10 @@ namespace PoESkillTree.Computation.Console.Builders
             _resolver = resolver;
         }
 
+        /*
+         * When the objects returned by these properties are resolved, the new objects are retrieved from the context.
+         */
+
         public IDamageTypeBuilder AsDamageType =>
             new DamageTypeBuilderStub($"{this}.AsDamageType", (_, context) => Resolve(context).AsDamageType);
 

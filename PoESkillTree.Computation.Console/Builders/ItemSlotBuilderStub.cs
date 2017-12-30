@@ -8,15 +8,13 @@ namespace PoESkillTree.Computation.Console.Builders
     {
         private readonly Resolver<IItemSlotBuilder> _resolver;
 
-        public ItemSlotBuilderStub(string stringRepresentation, 
-            Resolver<IItemSlotBuilder> resolver) 
+        public ItemSlotBuilderStub(string stringRepresentation, Resolver<IItemSlotBuilder> resolver)
             : base(stringRepresentation)
         {
             _resolver = resolver;
         }
 
-        public IItemSlotBuilder Resolve(ResolveContext context) =>
-            _resolver(this, context);
+        public IItemSlotBuilder Resolve(ResolveContext context) => _resolver(this, context);
     }
 
     public class ItemSlotBuildersStub : IItemSlotBuilders

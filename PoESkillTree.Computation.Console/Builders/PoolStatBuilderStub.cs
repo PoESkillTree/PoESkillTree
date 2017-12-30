@@ -10,7 +10,7 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class PoolStatBuilderStub : StatBuilderStub, IPoolStatBuilder
     {
-        public PoolStatBuilderStub(string stringRepresentation, Resolver<IStatBuilder> resolver) 
+        public PoolStatBuilderStub(string stringRepresentation, Resolver<IStatBuilder> resolver)
             : base(stringRepresentation, resolver)
         {
         }
@@ -48,7 +48,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class PoolStatBuildersStub : IPoolStatBuilders
     {
-        private static IPoolStatBuilder Create(string stringRepresentation) => 
+        private static IPoolStatBuilder Create(string stringRepresentation) =>
             new PoolStatBuilderStub(stringRepresentation, (c, _) => c);
 
         public IPoolStatBuilder Life => Create("Life");
@@ -59,22 +59,21 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class RechargeStatBuilderStub : StatBuilderStub, IRechargeStatBuilder
     {
-        public RechargeStatBuilderStub(string stringRepresentation, 
-            Resolver<IStatBuilder> resolver) 
+        public RechargeStatBuilderStub(string stringRepresentation, Resolver<IStatBuilder> resolver)
             : base(stringRepresentation, resolver)
         {
         }
 
         public IStatBuilder Start => CreateStat(This, o => $"Start of {o}");
 
-        public IConditionBuilder StartedRecently => 
+        public IConditionBuilder StartedRecently =>
             CreateCondition(This, o => $"{o} started recently");
     }
 
 
     public class RegenStatBuilderStub : StatBuilderStub, IRegenStatBuilder
     {
-        public RegenStatBuilderStub(string stringRepresentation, Resolver<IStatBuilder> resolver) 
+        public RegenStatBuilderStub(string stringRepresentation, Resolver<IStatBuilder> resolver)
             : base(stringRepresentation, resolver)
         {
         }
@@ -90,8 +89,7 @@ namespace PoESkillTree.Computation.Console.Builders
     {
         private readonly Resolver<ILeechStatBuilder> _resolver;
 
-        public LeechStatBuilderStub(string stringRepresentation, 
-            Resolver<ILeechStatBuilder> resolver) 
+        public LeechStatBuilderStub(string stringRepresentation, Resolver<ILeechStatBuilder> resolver)
             : base(stringRepresentation)
         {
             _resolver = resolver;
@@ -104,6 +102,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder RateLimit =>
             CreateStat(This, o => $"Maximum {o} rate per second");
+
         public IStatBuilder Rate =>
             CreateStat(This, o => $"{o} per second");
 
@@ -115,7 +114,7 @@ namespace PoESkillTree.Computation.Console.Builders
                 This, entity, (o1, o2) => $"{o1} leeched to {o2}");
 
         public IFlagStatBuilder BasedOn(IDamageTypeBuilder damageType) =>
-            CreateFlagStat(This, (IKeywordBuilder) damageType, 
+            CreateFlagStat(This, (IKeywordBuilder) damageType,
                 (o1, o2) => $"{o1} recovers based on {o2} instead");
 
         public ILeechStatBuilder Resolve(ResolveContext context) =>

@@ -5,7 +5,6 @@ using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Console;
 using PoESkillTree.Computation.Console.Builders;
-using PoESkillTree.Computation.Data.Steps;
 using PoESkillTree.Computation.Parsing;
 
 namespace PoESkillTree.Computation.IntegrationTests
@@ -18,8 +17,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [OneTimeSetUp]
         public static void ClassInit()
         {
-            var builderFactories = new BuilderFactories();
-            _parser = new Parser<ParsingStep>(new ParsingData(builderFactories), builderFactories);
+            _parser = Program.CreateParser();
         }
 
         [Test, TestCaseSource(nameof(ReadParsableStatLines))]

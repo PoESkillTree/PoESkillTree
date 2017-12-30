@@ -14,8 +14,8 @@ namespace PoESkillTree.Computation.Console.Builders
     {
         private readonly Resolver<IActionBuilder> _resolver;
 
-        public ActionBuilderStub(IEntityBuilder source, IEntityBuilder target, string stringRepresentation, 
-            Resolver<IActionBuilder> resolver) 
+        public ActionBuilderStub(IEntityBuilder source, IEntityBuilder target, string stringRepresentation,
+            Resolver<IActionBuilder> resolver)
             : base(stringRepresentation)
         {
             Source = source;
@@ -43,6 +43,7 @@ namespace PoESkillTree.Computation.Console.Builders
                     inner.ToString(),
                     (c, _) => c);
             }
+
             return new ActionBuilderStub(source, Target, ToString(), Resolve);
         }
 
@@ -57,6 +58,7 @@ namespace PoESkillTree.Computation.Console.Builders
                     inner.ToString(),
                     (c, _) => c);
             }
+
             return new ActionBuilderStub(Source, target, ToString(), Resolve);
         }
 
@@ -73,6 +75,7 @@ namespace PoESkillTree.Computation.Console.Builders
                         inner.ToString(),
                         (c, _) => c);
                 }
+
                 return new ActionBuilderStub(Target, Source, ToString(), Resolve);
             }
         }
@@ -88,37 +91,36 @@ namespace PoESkillTree.Computation.Console.Builders
                     $"{inner} (with {damageType.Resolve(context)} damage)",
                     (c, _) => c);
             }
+
             return new ActionBuilderStub(Target, Source, $"{this} (with {damageType} damage)", Resolve);
         }
 
-        public IConditionBuilder On() => 
-            CreateCondition(This, 
+        public IConditionBuilder On() =>
+            CreateCondition(This,
                 a => $"On {a} by {a.Source} against {a.Target}");
 
-        public IConditionBuilder On(IKeywordBuilder withKeyword) => 
-            CreateCondition(This, withKeyword, 
+        public IConditionBuilder On(IKeywordBuilder withKeyword) =>
+            CreateCondition(This, withKeyword,
                 (a, keyword) => $"On {keyword} {a} by {a.Source} against {a.Target}");
 
-        public IConditionBuilder InPastXSeconds(IValueBuilder seconds) => 
-            CreateCondition(This, seconds, 
+        public IConditionBuilder InPastXSeconds(IValueBuilder seconds) =>
+            CreateCondition(This, seconds,
                 (a, o) => $"If any {a} in the past {o} by {a.Source} against {a.Target}");
 
-        public IConditionBuilder Recently => 
-            CreateCondition(This, 
+        public IConditionBuilder Recently =>
+            CreateCondition(This,
                 a => $"If any {a} recently by {a.Source} against {a.Target}");
 
         public ValueBuilder CountRecently =>
-            new ValueBuilder(
-                CreateValue($"Number of {this} recently by {Source} against {Target}"));
+            new ValueBuilder(CreateValue($"Number of {this} recently by {Source} against {Target}"));
 
-        public IActionBuilder Resolve(ResolveContext context) =>
-            _resolver(this, context);
+        public IActionBuilder Resolve(ResolveContext context) => _resolver(this, context);
     }
 
 
     public class BlockActionBuilderStub : ActionBuilderStub, IBlockActionBuilder
     {
-        public BlockActionBuilderStub() 
+        public BlockActionBuilderStub()
             : base(EntityBuilderStub.Self(), EntityBuilderStub.Any(), "Block", (current, _) => current)
         {
         }
@@ -133,7 +135,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class CriticalStrikeActionBuilderStub : ActionBuilderStub, ICriticalStrikeActionBuilder
     {
-        public CriticalStrikeActionBuilderStub() 
+        public CriticalStrikeActionBuilderStub()
             : base(EntityBuilderStub.Self(), EntityBuilderStub.Any(), "Critical Strike", (current, _) => current)
         {
         }
@@ -144,8 +146,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder AilmentMultiplier => CreateStat("Ailment Critical Strike Multipler");
 
-        public IStatBuilder ExtraDamageTaken =>
-            CreateStat("Extra damage taken from Critical Strikes");
+        public IStatBuilder ExtraDamageTaken => CreateStat("Extra damage taken from Critical Strikes");
     }
 
 
@@ -162,18 +163,14 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IActionBuilder SavageHit => Create("Savage Hit");
 
-        public ICriticalStrikeActionBuilder CriticalStrike =>
-            new CriticalStrikeActionBuilderStub();
+        public ICriticalStrikeActionBuilder CriticalStrike => new CriticalStrikeActionBuilderStub();
 
         public IActionBuilder NonCriticalStrike => Create("Non-critical Strike");
 
         public IActionBuilder Shatter => Create("Shatter");
         public IActionBuilder ConsumeCorpse => Create("Consuming Corpses");
 
-        public IActionBuilder SpendMana(IValueBuilder amount) => 
-            Create<IActionBuilder, IValueBuilder>(
-                ActionBuilderStub.SelfToAny,
-                amount, 
-                o => $"Spending {o} mana");
+        public IActionBuilder SpendMana(IValueBuilder amount) =>
+            Create<IActionBuilder, IValueBuilder>(ActionBuilderStub.SelfToAny, amount, o => $"Spending {o} mana");
     }
 }

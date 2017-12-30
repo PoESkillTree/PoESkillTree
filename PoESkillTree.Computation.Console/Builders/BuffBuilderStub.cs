@@ -3,7 +3,6 @@ using PoESkillTree.Computation.Parsing.Builders.Actions;
 using PoESkillTree.Computation.Parsing.Builders.Buffs;
 using PoESkillTree.Computation.Parsing.Builders.Effects;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
-using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
 using PoESkillTree.Computation.Parsing.Builders.Values;
@@ -13,8 +12,8 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class BuffBuilderStub : EffectBuilderStub, IBuffBuilder
     {
-        public BuffBuilderStub(string stringRepresentation, 
-            Resolver<IEffectBuilder> resolver) : base(stringRepresentation, resolver)
+        public BuffBuilderStub(string stringRepresentation, Resolver<IEffectBuilder> resolver)
+            : base(stringRepresentation, resolver)
         {
         }
 
@@ -25,39 +24,38 @@ namespace PoESkillTree.Computation.Console.Builders
     }
 
 
-    public class BuffBuilderCollectionStub : BuilderCollectionStub<IBuffBuilder>, 
+    public class BuffBuilderCollectionStub : BuilderCollectionStub<IBuffBuilder>,
         IBuffBuilderCollection
     {
-        public BuffBuilderCollectionStub(string stringRepresentation, 
-            Resolver<IBuilderCollection<IBuffBuilder>> resolver) 
-            : base(new BuffBuilderStub("Buff", (current, _) => current), 
-                  stringRepresentation, resolver)
+        public BuffBuilderCollectionStub(
+            string stringRepresentation, Resolver<IBuilderCollection<IBuffBuilder>> resolver)
+            : base(new BuffBuilderStub("Buff", (current, _) => current), stringRepresentation, resolver)
         {
         }
 
         private IBuilderCollection<IBuffBuilder> This => this;
 
-        private static IBuilderCollection<IBuffBuilder> Construct(string stringRepresentation,
-            Resolver<IBuilderCollection<IBuffBuilder>> resolver) =>
-            new BuffBuilderCollectionStub(stringRepresentation, resolver);
+        private static IBuilderCollection<IBuffBuilder> Construct(
+            string stringRepresentation, Resolver<IBuilderCollection<IBuffBuilder>> resolver)
+        {
+            return new BuffBuilderCollectionStub(stringRepresentation, resolver);
+        }
 
-        public IStatBuilder CombinedLimit =>
-            CreateStat(This, o => $"{o} combined limit");
+        public IStatBuilder CombinedLimit => CreateStat(This, o => $"{o} combined limit");
 
-        public IStatBuilder Effect =>
-            CreateStat(This, o => $"Effect of {o}");
+        public IStatBuilder Effect => CreateStat(This, o => $"Effect of {o}");
 
         public IBuffBuilderCollection ExceptFrom(params ISkillBuilder[] skills) =>
             (IBuffBuilderCollection) Create(
                 Construct, This, skills,
                 (o1, os) => $"{o1}.Where(was not gained from [{string.Join(", ", os)}])");
 
-        public IBuffBuilderCollection With(IKeywordBuilder keyword) => 
+        public IBuffBuilderCollection With(IKeywordBuilder keyword) =>
             (IBuffBuilderCollection) Create(
-                Construct, This, keyword, 
+                Construct, This, keyword,
                 (o1, o2) => $"{o1}.Where(has keyword {o2}]");
 
-        public IBuffBuilderCollection Without(IKeywordBuilder keyword) => 
+        public IBuffBuilderCollection Without(IKeywordBuilder keyword) =>
             (IBuffBuilderCollection) Create(
                 Construct, This, keyword,
                 (o1, o2) => $"{o1}.Where(does not have keyword {o2}]");
@@ -88,8 +86,7 @@ namespace PoESkillTree.Computation.Console.Builders
                 (s, r) => new BuffRotation(s, r),
                 duration, o => $"Buff rotation for {o} seconds");
 
-        public IBuffBuilderCollection Buffs(IEntityBuilder source = null,
-            IEntityBuilder target = null)
+        public IBuffBuilderCollection Buffs(IEntityBuilder source = null, IEntityBuilder target = null)
         {
             string StringRepresentation(IEntityBuilder s, IEntityBuilder t)
             {
@@ -98,10 +95,12 @@ namespace PoESkillTree.Computation.Console.Builders
                 {
                     str += " by " + source;
                 }
+
                 if (target != null)
                 {
                     str += " against " + target;
                 }
+
                 return str;
             }
 
@@ -126,14 +125,14 @@ namespace PoESkillTree.Computation.Console.Builders
 
         private class BuffRotation : FlagStatBuilderStub, IBuffRotation
         {
-            public BuffRotation(string stringRepresentation, Resolver<IStatBuilder> resolver) 
+            public BuffRotation(string stringRepresentation, Resolver<IStatBuilder> resolver)
                 : base(stringRepresentation, resolver)
             {
             }
 
-            public IBuffRotation Step(IValueBuilder duration, params IBuffBuilder[] buffs) => 
+            public IBuffRotation Step(IValueBuilder duration, params IBuffBuilder[] buffs) =>
                 (IBuffRotation) Create<IStatBuilder, IValueBuilder, IEffectBuilder>(
-                    (s, r) => new BuffRotation(s, r), 
+                    (s, r) => new BuffRotation(s, r),
                     this, duration, buffs,
                     (o1, o2, o3) => $"{o1} {{ {string.Join(", ", o3)} for {o2} seconds }}");
         }

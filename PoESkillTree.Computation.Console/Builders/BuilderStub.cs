@@ -1,5 +1,9 @@
 ﻿namespace PoESkillTree.Computation.Console.Builders
 {
+    /// <summary>
+    /// Base class for builder implementations consisting of a string that is returned by <see cref="ToString"/> and
+    /// is used to implement structural equality.
+    /// </summary>
     public abstract class BuilderStub
     {
         private readonly string _stringRepresentation;

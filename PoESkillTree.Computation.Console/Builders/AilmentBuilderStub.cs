@@ -4,7 +4,6 @@ using System.Linq;
 using PoESkillTree.Computation.Parsing.Builders.Damage;
 using PoESkillTree.Computation.Parsing.Builders.Effects;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
-using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
@@ -13,7 +12,7 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class AilmentBuilderStub : AvoidableEffectBuilderStub, IAilmentBuilder
     {
-        public AilmentBuilderStub(string stringRepresentation, Resolver<IEffectBuilder> resolver) 
+        public AilmentBuilderStub(string stringRepresentation, Resolver<IEffectBuilder> resolver)
             : base(stringRepresentation, resolver)
         {
         }
@@ -32,15 +31,15 @@ namespace PoESkillTree.Computation.Console.Builders
     }
 
 
-    public class AilmentBuilderCollectionStub 
+    public class AilmentBuilderCollectionStub
         : BuilderCollectionStub<IAilmentBuilder>, IAilmentBuilderCollection
     {
         private readonly IReadOnlyList<IAilmentBuilder> _elements;
 
-        public AilmentBuilderCollectionStub(params IAilmentBuilder[] elements) 
-            : base(new AilmentBuilderStub("Ailment", (current, _) => current), 
-                  $"[{string.Join<IAilmentBuilder>(", ", elements)}]", 
-                  (current, _) => current)
+        public AilmentBuilderCollectionStub(params IAilmentBuilder[] elements)
+            : base(new AilmentBuilderStub("Ailment", (current, _) => current),
+                $"[{string.Join<IAilmentBuilder>(", ", elements)}]",
+                (current, _) => current)
         {
             _elements = elements;
         }

@@ -12,7 +12,7 @@ namespace PoESkillTree.Computation.Console.Builders
     {
         private readonly Resolver<IConditionBuilder> _resolver;
 
-        public ConditionBuilderStub(string stringRepresentation, Resolver<IConditionBuilder> resolver) 
+        public ConditionBuilderStub(string stringRepresentation, Resolver<IConditionBuilder> resolver)
             : base(stringRepresentation)
         {
             _resolver = resolver;

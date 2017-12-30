@@ -1,7 +1,6 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Damage;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
-using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
@@ -10,24 +9,22 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class DamageTypeBuilderStub : KeywordBuilderStub, IDamageTypeBuilder
     {
-        public DamageTypeBuilderStub(string stringRepresentation, 
-            Resolver<IKeywordBuilder> resolver)
+        public DamageTypeBuilderStub(string stringRepresentation, Resolver<IKeywordBuilder> resolver)
             : base(stringRepresentation, resolver)
         {
         }
 
         private IKeywordBuilder This => this;
 
-        private static IKeywordBuilder Construct(string stringRepresentation,
-            Resolver<IKeywordBuilder> resolver) =>
+        private static IKeywordBuilder Construct(string stringRepresentation, Resolver<IKeywordBuilder> resolver) =>
             new DamageTypeBuilderStub(stringRepresentation, resolver);
 
-        public IDamageTypeBuilder And(IDamageTypeBuilder type) => 
+        public IDamageTypeBuilder And(IDamageTypeBuilder type) =>
             (IDamageTypeBuilder) Create(
                 Construct, This, (IKeywordBuilder) type,
                 (l, r) => $"{l}, {r}");
 
-        public IDamageTypeBuilder Invert => 
+        public IDamageTypeBuilder Invert =>
             (IDamageTypeBuilder) Create(
                 Construct, This,
                 o => $"Invert({o})");

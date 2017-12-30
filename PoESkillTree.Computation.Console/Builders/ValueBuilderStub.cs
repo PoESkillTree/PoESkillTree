@@ -102,8 +102,7 @@ namespace PoESkillTree.Computation.Console.Builders
                         (current, _) => current);
                 }
 
-                return new ConditionalValueBuilder($"{this} else if ({value})",
-                    (_, context) => Resolve(context));
+                return new ConditionalValueBuilder($"{this} else if ({value})", (_, context) => Resolve(context));
             }
 
             public IConditionalValueBuilder Then(double value)
@@ -115,8 +114,7 @@ namespace PoESkillTree.Computation.Console.Builders
                         (current, _) => current);
                 }
 
-                return new ConditionalValueBuilder($"{this} else if ({value})",
-                    (_, context) => Resolve(context));
+                return new ConditionalValueBuilder($"{this} else if ({value})", (_, context) => Resolve(context));
             }
 
             public IThenBuilder Resolve(ResolveContext context) =>
@@ -128,9 +126,7 @@ namespace PoESkillTree.Computation.Console.Builders
         {
             private readonly Resolver<IConditionalValueBuilder> _resolver;
 
-            public ConditionalValueBuilder(
-                string stringRepresentation,
-                Resolver<IConditionalValueBuilder> resolver)
+            public ConditionalValueBuilder(string stringRepresentation, Resolver<IConditionalValueBuilder> resolver)
                 : base(stringRepresentation)
             {
                 _resolver = resolver;

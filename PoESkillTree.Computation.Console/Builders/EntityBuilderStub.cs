@@ -1,5 +1,4 @@
 ﻿using PoESkillTree.Computation.Parsing.Builders.Conditions;
-using PoESkillTree.Computation.Parsing.Builders.Damage;
 using PoESkillTree.Computation.Parsing.Builders.Entities;
 using PoESkillTree.Computation.Parsing.Builders.Matching;
 using PoESkillTree.Computation.Parsing.Builders.Skills;
@@ -12,7 +11,7 @@ namespace PoESkillTree.Computation.Console.Builders
     {
         private readonly Resolver<IEntityBuilder> _resolver;
 
-        public EntityBuilderStub(string stringRepresentation, Resolver<IEntityBuilder> resolver) 
+        public EntityBuilderStub(string stringRepresentation, Resolver<IEntityBuilder> resolver)
             : base(stringRepresentation)
         {
             _resolver = resolver;
@@ -60,7 +59,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class EnemyBuilderStub : EntityBuilderStub, IEnemyBuilder
     {
-        public EnemyBuilderStub() 
+        public EnemyBuilderStub()
             : base("Enemy", (c, _) => c)
         {
         }
@@ -81,19 +80,19 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class SkillEntityBuilderStub : EntityBuilderStub, ISkillEntityBuilder
     {
-        public SkillEntityBuilderStub(string stringRepresentation, 
-            Resolver<IEntityBuilder> resolver) 
+        public SkillEntityBuilderStub(string stringRepresentation,
+            Resolver<IEntityBuilder> resolver)
             : base(stringRepresentation, resolver)
         {
         }
 
-        private static IEntityBuilder Construct(string stringRepresentation, 
+        private static IEntityBuilder Construct(string stringRepresentation,
             Resolver<IEntityBuilder> resolver)
             => new SkillEntityBuilderStub(stringRepresentation, resolver);
 
         public ISkillEntityBuilder With(IKeywordBuilder keyword) =>
             (ISkillEntityBuilder) Create(
-                Construct, This, keyword, 
+                Construct, This, keyword,
                 (o1, o2) => $"{o1} with {o2}");
 
         public ISkillEntityBuilder With(params IKeywordBuilder[] keywords) =>

@@ -15,14 +15,14 @@ namespace PoESkillTree.Computation.Console.Builders
     {
         private readonly IActionBuilder _actionBuilder;
 
-        public StunEffectBuilderStub() 
+        public StunEffectBuilderStub()
             : base("Stun", (c, _) => c)
         {
             _actionBuilder =
                 new ActionBuilderStub(
-                    EntityBuilderStub.Self(), 
-                    new EnemyBuilderStub(), 
-                    "Stun", 
+                    EntityBuilderStub.Self(),
+                    new EnemyBuilderStub(),
+                    "Stun",
                     (c, _) => c);
         }
 

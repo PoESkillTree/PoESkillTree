@@ -13,15 +13,13 @@ namespace PoESkillTree.Computation.Console.Builders
             _resolver = resolver;
         }
 
-        public IFormBuilder Resolve(ResolveContext context) =>
-            _resolver(this, context);
+        public IFormBuilder Resolve(ResolveContext context) => _resolver(this, context);
     }
 
 
     public class FormBuildersStub : IFormBuilders
     {
-        private static IFormBuilder Create(string s)
-            => new FormBuilderStub(s, (c, _) => c);
+        private static IFormBuilder Create(string s) => new FormBuilderStub(s, (c, _) => c);
 
         public IFormBuilder BaseSet => Create("Base set");
         public IFormBuilder PercentIncrease => Create("Percent increase");

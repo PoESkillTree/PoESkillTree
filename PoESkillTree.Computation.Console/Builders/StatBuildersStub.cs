@@ -5,7 +5,7 @@ using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
-    public class StatBuildersStub :  IStatBuilders
+    public class StatBuildersStub : IStatBuilders
     {
         public IStatBuilder Armour => CreateStat("Armour");
 
@@ -75,7 +75,7 @@ namespace PoESkillTree.Computation.Console.Builders
     }
 
 
-    public class GemStatBuildersStub :  IGemStatBuilders
+    public class GemStatBuildersStub : IGemStatBuilders
     {
         public IStatBuilder IncreaseLevel(bool onlySupportGems = false) =>
             CreateStat(onlySupportGems ? "Level of socketed support gems" : "Level of socketed gems");
@@ -89,8 +89,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder PierceCount => CreateStat("Projectile pierce count");
 
-        public IActionBuilder Pierce =>
-            ActionBuilderStub.SelfToAny("Projectile pierce", (c, _) => c);
+        public IActionBuilder Pierce => ActionBuilderStub.SelfToAny("Projectile pierce", (c, _) => c);
 
         public IStatBuilder ChainCount => CreateStat("Projectile chain count");
         public IStatBuilder TravelDistance => CreateStat("Projectile travel distance");
