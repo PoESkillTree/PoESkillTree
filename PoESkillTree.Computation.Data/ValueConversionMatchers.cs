@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -11,23 +10,23 @@ using static PoESkillTree.Computation.Parsing.Builders.Values.ValueBuilderUtils;
 
 namespace PoESkillTree.Computation.Data
 {
-    public class ValueConversionMatchers : UsesMatchContext, IStatMatchers
+    /// <inheritdoc />
+    /// <summary>
+    /// <see cref="IStatMatchers"/> implementation matching stat parts specifying converters to the modifier's
+    /// main value (at the moment, these are all multipliers).
+    /// </summary>
+    public class ValueConversionMatchers : StatMatchersBase
     {
-        // These apply to the main value of the modifier (or multiple e.g. for "Adds # to # ..."),
-        // not to other values like in "for # seconds".
-
         private readonly IModifierBuilder _modifierBuilder;
 
-        public ValueConversionMatchers(IBuilderFactories builderFactories,
-            IMatchContexts matchContexts, IModifierBuilder modifierBuilder) 
+        public ValueConversionMatchers(
+            IBuilderFactories builderFactories, IMatchContexts matchContexts, IModifierBuilder modifierBuilder)
             : base(builderFactories, matchContexts)
         {
             _modifierBuilder = modifierBuilder;
         }
 
-        public bool MatchesWholeLineOnly => false;
-
-        public IEnumerator<MatcherData> GetEnumerator() => 
+        protected override IEnumerable<MatcherData> CreateCollection() =>
             new ValueConversionMatcherCollection(_modifierBuilder, ValueFactory)
             {
                 // action
@@ -40,32 +39,17 @@ namespace PoESkillTree.Computation.Data
                 { "for each corpse consumed recently", Action.ConsumeCorpse.CountRecently },
                 // equipment
                 { "for each type of golem you have summoned", Golems.Count(s => s.HasInstance) },
-                {
-                    "for each magic item you have equipped",
-                    Equipment.Count(e => e.Has(FrameType.Magic))
-                },
+                { "for each magic item you have equipped", Equipment.Count(e => e.Has(FrameType.Magic)) },
                 // stats
-                {
-                    "per # ({StatMatchers})",
-                    PerStat(stat: Reference.AsStat, divideBy: Value)
-                },
-                {
-                    "per # ({StatMatchers}) ceiled",
-                    PerStatCeiled(stat: Reference.AsStat, divideBy: Value)
-                },
+                { "per # ({StatMatchers})", PerStat(stat: Reference.AsStat, divideBy: Value) },
+                { "per # ({StatMatchers}) ceiled", PerStatCeiled(stat: Reference.AsStat, divideBy: Value) },
                 { "per ({StatMatchers})", PerStat(stat: Reference.AsStat) },
                 { "per grand spectrum", PerStat(stat: Stat.GrandSpectrumJewelsSocketed) },
                 { "per level", PerStat(Self.Level) },
                 // buffs
-                {
-                    "per buff on you",
-                    Buffs(target: Self).ExceptFrom(Skill.BloodRage, Skill.MoltenShell).Count()
-                },
+                { "per buff on you", Buffs(target: Self).ExceptFrom(Skill.BloodRage, Skill.MoltenShell).Count() },
                 { "per curse on you", Buffs(target: Self).With(Keyword.Curse).Count() },
-                {
-                    "for each curse on that enemy,",
-                    Buffs(target: Enemy).With(Keyword.Curse).Count()
-                },
+                { "for each curse on that enemy,", Buffs(target: Enemy).With(Keyword.Curse).Count() },
                 // ailments
                 { "for each poison on the enemy", Ailment.Poison.InstancesOn(Enemy).Value },
                 { "per poison on enemy", Ailment.Poison.InstancesOn(Enemy).Value },
@@ -74,16 +58,8 @@ namespace PoESkillTree.Computation.Data
                 // traps, mines, totems
                 { "for each trap", Traps.CombinedInstances.Value },
                 { "for each mine", Mines.CombinedInstances.Value },
-                {
-                    "for each trap and mine you have",
-                    Traps.CombinedInstances.Value + Mines.CombinedInstances.Value
-                },
+                { "for each trap and mine you have", Traps.CombinedInstances.Value + Mines.CombinedInstances.Value },
                 { "per totem", Totems.CombinedInstances.Value },
-            }.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+            };
     }
 }

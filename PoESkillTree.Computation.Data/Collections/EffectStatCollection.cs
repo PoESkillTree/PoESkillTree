@@ -6,6 +6,9 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
+    /// <summary>
+    /// Collection of <see cref="EffectStatData"/> that allows collection initialization syntax for adding entries.
+    /// </summary>
     public class EffectStatCollection : IEnumerable<EffectStatData>
     {
         private readonly List<EffectStatData> _data = new List<EffectStatData>();

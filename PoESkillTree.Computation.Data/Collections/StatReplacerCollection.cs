@@ -5,6 +5,10 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
+    /// <summary>
+    /// Collection of <see cref="StatReplacerData"/> that allows collection initialization syntax for adding entries.
+    /// See <see cref="StatReplacerData"/> for documentation of <see cref="Add"/>'s parameters.
+    /// </summary>
     public class StatReplacerCollection : IEnumerable<StatReplacerData>
     {
         private readonly List<StatReplacerData> _data = new List<StatReplacerData>();

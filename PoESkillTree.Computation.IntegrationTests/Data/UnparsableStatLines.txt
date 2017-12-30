@@ -17,8 +17,6 @@ Magma Orb has 10% increased Area of Effect per Chain
 // passive skills:
 10% Chance for Traps to Trigger an additional time
 Share Endurance, Frenzy and Power Charges with nearby party members
-2% chance to gain a Power, Frenzy or Endurance Charge on Kill
-8% chance to gain a Power, Frenzy or Endurance Charge on Kill
 Enemies Become Chilled as they Unfreeze
 Light Radius is based on Energy Shield instead of Life
 Traps cannot be Damaged for 5 seconds after being Thrown

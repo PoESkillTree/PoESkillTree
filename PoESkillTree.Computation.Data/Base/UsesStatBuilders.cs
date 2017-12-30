@@ -14,9 +14,19 @@ using PoESkillTree.Computation.Parsing.Builders.Stats;
 
 namespace PoESkillTree.Computation.Data.Base
 {
-    public abstract class UsesStatProviders : UsesFormProviders
+    /// <inheritdoc />
+    /// <summary>
+    /// Base class for matcher implementations providing direct access to <see cref="IStatBuilders"/>,
+    /// <see cref="IActionBuilders"/>, <see cref="IBuffBuilders"/>, <see cref="IChargeTypeBuilders"/>,
+    /// <see cref="IDamageTypeBuilders"/>, <see cref="IEffectBuilders"/>, <see cref="IEntityBuilders"/>,
+    /// <see cref="IEquipmentBuilders"/>, <see cref="IKeywordBuilders"/>, <see cref="ISkillBuilders"/>,
+    /// <see cref="IDamageSourceBuilders"/>, and some of their properties and methods,
+    /// in addition to the properties provided by <see cref="UsesFormBuilders"/>.
+    /// <para>Also contains a few convenience properties/methods located at the end of the class.</para>
+    /// </summary>
+    public abstract class UsesStatBuilders : UsesFormBuilders
     {
-        protected UsesStatProviders(IBuilderFactories builderFactories)
+        protected UsesStatBuilders(IBuilderFactories builderFactories)
             : base(builderFactories)
         {
         }
@@ -52,8 +62,7 @@ namespace PoESkillTree.Computation.Data.Base
 
         protected IBuffBuilders Buff => BuilderFactories.BuffBuilders;
 
-        protected IBuffBuilderCollection Buffs(IEntityBuilder source = null,
-            IEntityBuilder target = null) =>
+        protected IBuffBuilderCollection Buffs(IEntityBuilder source = null, IEntityBuilder target = null) =>
             Buff.Buffs(source, target);
 
         // Charges
@@ -62,8 +71,7 @@ namespace PoESkillTree.Computation.Data.Base
 
         // Damage types
 
-        private IDamageTypeBuilders DamageTypeBuilders => 
-            BuilderFactories.DamageTypeBuilders;
+        private IDamageTypeBuilders DamageTypeBuilders => BuilderFactories.DamageTypeBuilders;
 
         protected IDamageTypeBuilder Physical => DamageTypeBuilders.Physical;
         protected IDamageTypeBuilder Fire => DamageTypeBuilders.Fire;
@@ -89,8 +97,7 @@ namespace PoESkillTree.Computation.Data.Base
 
         // Equipment
 
-        private IEquipmentBuilders EquipmentBuilders =>
-            BuilderFactories.EquipmentBuilders;
+        private IEquipmentBuilders EquipmentBuilders => BuilderFactories.EquipmentBuilders;
 
         protected IEquipmentBuilderCollection Equipment => EquipmentBuilders.Equipment;
 
@@ -109,32 +116,73 @@ namespace PoESkillTree.Computation.Data.Base
 
         // Sources
 
-        protected IDamageSourceBuilders Source => 
-            BuilderFactories.DamageSourceBuilders;
+        protected IDamageSourceBuilders Source => BuilderFactories.DamageSourceBuilders;
+
 
         // Convenience methods
 
+
+        /// <summary>
+        /// Shortcut for <c>Equipment[ItemSlot.MainHand]</c>.
+        /// </summary>
         protected IEquipmentBuilder MainHand => Equipment[ItemSlot.MainHand];
+
+        /// <summary>
+        /// Shortcut for <c>Equipment[ItemSlot.OffHand]</c>.
+        /// </summary>
         protected IEquipmentBuilder OffHand => Equipment[ItemSlot.OffHand];
 
+
+        /// <summary>
+        /// Shortcut for <c>Skills[Keyword.Trap]</c>.
+        /// </summary>
         protected ISkillBuilderCollection Traps => Skills[Keyword.Trap];
+
+        /// <summary>
+        /// Shortcut for <c>Skills[Keyword.Mine]</c>.
+        /// </summary>
         protected ISkillBuilderCollection Mines => Skills[Keyword.Mine];
+
+        /// <summary>
+        /// Shortcut for <c>Skills[Keyword.Totem]</c>.
+        /// </summary>
         protected ISkillBuilderCollection Totems => Skills[Keyword.Totem];
+
+        /// <summary>
+        /// Shortcut for <c>Skills[Keyword.Golem]</c>.
+        /// </summary>
         protected ISkillBuilderCollection Golems => Skills[Keyword.Golem];
+
+        /// <summary>
+        /// Shortcut for <c>Skills[Keyword.Minion]</c>.
+        /// </summary>
         protected ISkillBuilderCollection Minions => Skills[Keyword.Minion];
 
+        /// <summary>
+        /// Shortcut for <c>Fire.And(Lightning).And(Cold)</c>.
+        /// </summary>
         protected IDamageTypeBuilder Elemental => Fire.And(Lightning).And(Cold);
 
+
+        /// <summary>
+        /// Gets an enumerable of all damage types.
+        /// </summary>
         protected IEnumerable<IDamageTypeBuilder> AllDamageTypes => new[]
         {
             Physical, Fire, Lightning, Cold, Chaos
         };
+
+        /// <summary>
+        /// Gets an enumerable of the elemental damage types.
+        /// </summary>
         protected IEnumerable<IDamageTypeBuilder> ElementalDamageTypes => new[]
         {
             Fire, Lightning, Cold
         };
 
-        protected IDamageStatBuilder Damage =>
-            AllDamageTypes.Aggregate((l, r) => l.And(r)).Damage;
+        /// <summary>
+        /// Gets a stat for damage with all damage types.
+        /// </summary>
+        protected IDamageStatBuilder Damage => AllDamageTypes.Aggregate((l, r) => l.And(r)).Damage;
     }
 }

@@ -5,6 +5,9 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
+    /// <summary>
+    /// Collection of <see cref="FlagStatData"/> that allows collection initialization syntax for adding entries.
+    /// </summary>
     public class FlagStatCollection : IEnumerable<FlagStatData>
     {
         private readonly List<FlagStatData> _data = new List<FlagStatData>();

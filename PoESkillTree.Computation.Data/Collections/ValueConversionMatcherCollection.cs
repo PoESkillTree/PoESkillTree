@@ -5,6 +5,12 @@ using PoESkillTree.Computation.Parsing.ModifierBuilding;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// Collection of <see cref="PoESkillTree.Computation.Parsing.Data.MatcherData"/>, with 
+    /// <see cref="IIntermediateModifier"/>s consisting only of a value converter, that allows collection 
+    /// initialization syntax for adding entries.
+    /// </summary>
     public class ValueConversionMatcherCollection : MatcherCollection
     {
         private readonly IValueBuilders _valueFactory;

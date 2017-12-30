@@ -95,9 +95,9 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             };
 
             _sut.Add(Regex, 
-                (forms[0], stats[0], values[0], conditions[0]),
-                (forms[1], stats[1], values[1], conditions[1]),
-                (forms[2], stats[2], values[2], conditions[2]));
+                (forms[0], values[0], stats[0], conditions[0]),
+                (forms[1], values[1], stats[1], conditions[1]),
+                (forms[2], values[2], stats[2], conditions[2]));
 
             var builder = _sut.AssertSingle(Regex);
             CollectionAssert.AreEqual(forms, builder.Forms);
@@ -125,9 +125,9 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             };
 
             _sut.Add(Regex,
-                (forms[0], stats[0], 0, conditions[0]),
-                (forms[1], stats[1], 1, conditions[1]),
-                (forms[2], stats[2], 2, conditions[2]));
+                (forms[0], 0, stats[0], conditions[0]),
+                (forms[1], 1, stats[1], conditions[1]),
+                (forms[2], 2, stats[2], conditions[2]));
 
             var builder = _sut.AssertSingle(Regex);
             CollectionAssert.AreEqual(forms, builder.Forms);

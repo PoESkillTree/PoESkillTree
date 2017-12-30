@@ -4,7 +4,6 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Parsing.Builders.Conditions;
 using PoESkillTree.Computation.Parsing.Builders.Stats;
-using PoESkillTree.Computation.Parsing.Builders.Values;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
 {
@@ -13,14 +12,12 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
     {
         private const string Regex = "regex";
 
-        private Mock<IValueBuilders> _valueFactory;
-        private StatMatcherCollection _sut;
+        private StatMatcherCollection<IStatBuilder> _sut;
 
         [SetUp]
         public void SetUp()
         {
-            _valueFactory = new Mock<IValueBuilders>();
-            _sut = new StatMatcherCollection(new ModifierBuilderStub(), _valueFactory.Object);
+            _sut = new StatMatcherCollection<IStatBuilder>(new ModifierBuilderStub());
         }
 
         [Test]
@@ -89,33 +86,18 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         }
 
         [Test]
-        public void AddWithConverter()
-        {
-            var stat = Mock.Of<IStatBuilder>();
-            var converter = _valueFactory.SetupConverter();
-
-            _sut.Add(Regex, stat, converter);
-
-            var builder = _sut.AssertSingle(Regex);
-            Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));
-            Assert.AreSame(converter, builder.ValueConverter);
-        }
-
-        [Test]
         public void AddManyAddsToCount()
         {
             var stat = Mock.Of<IStatBuilder>();
             var condition = Mock.Of<IConditionBuilder>();
-            var converter = _valueFactory.SetupConverter();
 
             _sut.Add(Regex, stat);
             _sut.Add(Regex, stat, stat);
             _sut.Add(Regex, Enumerable.Empty<IStatBuilder>());
             _sut.Add(Regex, stat, "substitution");
             _sut.Add(Regex, stat, condition);
-            _sut.Add(Regex, stat, converter);
 
-            Assert.AreEqual(6, _sut.Count());
+            Assert.AreEqual(5, _sut.Count());
         }
     }
 }

@@ -5,16 +5,21 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
+    /// <summary>
+    /// Provides a collection of <see cref="StatReplacerData"/>. Mostly handles keystones, they often contain multiple
+    /// stats in a single translation. Besides splitting stats, some parts are also replaced by formulations that can
+    /// be parsed without adding a new matcher.
+    /// </summary>
+    /// <remarks>
+    /// Regex patterns here are different from the patterns in matchers. These don't support expansion (no value
+    /// placeholders, no references to other matchers) but allow referencing groups by index.
+    /// </remarks>
     public class StatReplacers
     {
-        // These simply replace a stat line that would get thrown into the matchers with another
-        // Reduces redundant handling in some cases and allows elegantly solving other cases
-        // As opposed to the matchers, values are not replaced by # placeholders here
-
         public IReadOnlyList<StatReplacerData> Replacers { get; } = new StatReplacerCollection
         {
             {
-                // Grand Spectrum
+                // Grand Spectrum: Add an additional stat line that increases the Grand Spectrum counter.
                 @"(.+) per grand spectrum",
                 "grand spectrum", "$0"
             },
@@ -24,7 +29,6 @@ namespace PoESkillTree.Computation.Data
                 "$1 $2", "$1 $3"
             },
             // keystones
-            // (some need to be manually split, others are renamed to need no further custom handling)
             {
                 // Acrobatics
                 @"(\d+% chance to dodge attacks)\. (\d+% less armour and energy shield), (\d+% less chance to block spells and attacks)",

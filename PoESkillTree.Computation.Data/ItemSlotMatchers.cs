@@ -7,6 +7,9 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
+    /// <summary>
+    /// <see cref="IReferencedMatchers"/> implementation for <see cref="IItemSlotBuilder"/>s.
+    /// </summary>
     public class ItemSlotMatchers : ReferencedMatchersBase<IItemSlotBuilder>
     {
         private readonly IItemSlotBuilders _itemSlotBuilders;

@@ -6,6 +6,9 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
+    /// <summary>
+    /// <see cref="IReferencedMatchers"/> implementation for <see cref="IAilmentBuilder"/>s.
+    /// </summary>
     public class AilmentMatchers : ReferencedMatchersBase<IAilmentBuilder>
     {
         private IAilmentBuilders Ailment { get; }

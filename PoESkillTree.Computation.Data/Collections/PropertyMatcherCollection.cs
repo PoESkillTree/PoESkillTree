@@ -6,6 +6,12 @@ using PoESkillTree.Computation.Parsing.ModifierBuilding;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// Collection of <see cref="PoESkillTree.Computation.Parsing.Data.MatcherData"/> for parsing properties that 
+    /// allows collection initialization syntax for adding entries.
+    /// </summary>
+    /// <remarks>No property parsing happens yet, take this class with a grain of salt.</remarks>
     public class PropertyMatcherCollection : MatcherCollection
     {
         private readonly IValueBuilders _valueFactory;
@@ -26,8 +32,7 @@ namespace PoESkillTree.Computation.Data.Collections
             Add(regex, ModifierBuilder.WithStat(stat));
         }
 
-        public void Add([RegexPattern] string regex, IStatBuilder stat, 
-            Func<ValueBuilder, ValueBuilder> converter)
+        public void Add([RegexPattern] string regex, IStatBuilder stat, Func<ValueBuilder, ValueBuilder> converter)
         {
             var builder = ModifierBuilder
                 .WithStat(stat)

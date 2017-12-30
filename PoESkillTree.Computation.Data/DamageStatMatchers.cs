@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -11,12 +10,18 @@ using PoESkillTree.Computation.Parsing.ModifierBuilding;
 
 namespace PoESkillTree.Computation.Data
 {
-    public class DamageStatMatchers : UsesMatchContext, IStatMatchers
+    /// <inheritdoc />
+    /// <summary>
+    /// <see cref="IStatMatchers"/> implementation matching stat parts specifying damage stats.
+    /// <para>These matchers are referenceable and don't reference any non-<see cref="IReferencedMatchers"/> 
+    /// themselves.</para>
+    /// </summary>
+    public class DamageStatMatchers : StatMatchersBase
     {
         private readonly IModifierBuilder _modifierBuilder;
 
-        public DamageStatMatchers(IBuilderFactories builderFactories, 
-            IMatchContexts matchContexts, IModifierBuilder modifierBuilder) 
+        public DamageStatMatchers(
+            IBuilderFactories builderFactories, IMatchContexts matchContexts, IModifierBuilder modifierBuilder)
             : base(builderFactories, matchContexts)
         {
             _modifierBuilder = modifierBuilder;
@@ -25,10 +30,8 @@ namespace PoESkillTree.Computation.Data
         public override IReadOnlyList<string> ReferenceNames { get; } =
             new[] { "StatMatchers", nameof(DamageStatMatchers) };
 
-        public bool MatchesWholeLineOnly => false;
-
-        public IEnumerator<MatcherData> GetEnumerator() =>
-            new StatMatcherCollection<IDamageStatBuilder>(_modifierBuilder, ValueFactory)
+        protected override IEnumerable<MatcherData> CreateCollection() =>
+            new StatMatcherCollection<IDamageStatBuilder>(_modifierBuilder)
             {
                 // unspecific
                 { "damage", Damage },
@@ -57,18 +60,11 @@ namespace PoESkillTree.Computation.Data
                 { "burning damage", Fire.Damage, Damage.With(Source.DamageOverTime) },
                 // other combinations
                 { "physical melee damage", Physical.Damage, With(Skills[Keyword.Melee]) },
-                { "claw physical damage", Physical.Damage, Damage.With(Tags.Claw) },
                 { "physical weapon damage", Physical.Damage, Damage.With(Tags.Weapon) },
                 {
                     "physical projectile attack damage",
-                    Physical.Damage,
-                    And(Damage.With(Source.Attack), With(Skills[Keyword.Projectile]))
+                    Physical.Damage, And(Damage.With(Source.Attack), With(Skills[Keyword.Projectile]))
                 },
-            }.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+            };
     }
 }

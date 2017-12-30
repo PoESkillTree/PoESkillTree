@@ -8,16 +8,20 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
-    // see http://pathofexile.gamepedia.com/Character and Metadata/Characters/Character.ot in GGPK
-    public class CharacterGivenStats : UsesStatProviders, IGivenStats
+    /// <summary>
+    /// Given stats of player characters.
+    /// </summary>
+    /// <remarks>
+    /// See http://pathofexile.gamepedia.com/Character and Metadata/Characters/Character.ot in GGPK.
+    /// </remarks>
+    public class CharacterGivenStats : UsesStatBuilders, IGivenStats
     {
         private readonly Lazy<IReadOnlyList<GivenStatData>> _lazyGivenStats;
 
         public CharacterGivenStats(IBuilderFactories builderFactories)
             : base(builderFactories)
         {
-            _lazyGivenStats =
-                new Lazy<IReadOnlyList<GivenStatData>>(() => CreateCollection().ToList());
+            _lazyGivenStats = new Lazy<IReadOnlyList<GivenStatData>>(() => CreateCollection().ToList());
         }
 
         public IReadOnlyList<string> GivenStatLines { get; } = new[]

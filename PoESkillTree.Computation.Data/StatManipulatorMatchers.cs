@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.Computation.Parsing.Builders;
@@ -10,20 +9,22 @@ using PoESkillTree.Computation.Parsing.ModifierBuilding;
 
 namespace PoESkillTree.Computation.Data
 {
-    public class StatManipulatorMatchers : UsesMatchContext, IStatMatchers
+    /// <inheritdoc />
+    /// <summary>
+    /// <see cref="IStatMatchers"/> implementation matching stat parts specifying converters to the modifier's stats.
+    /// </summary>
+    public class StatManipulatorMatchers : StatMatchersBase
     {
         private readonly IModifierBuilder _modifierBuilder;
 
-        public StatManipulatorMatchers(IBuilderFactories builderFactories, 
-            IMatchContexts matchContexts, IModifierBuilder modifierBuilder) 
+        public StatManipulatorMatchers(
+            IBuilderFactories builderFactories, IMatchContexts matchContexts, IModifierBuilder modifierBuilder)
             : base(builderFactories, matchContexts)
         {
             _modifierBuilder = modifierBuilder;
         }
 
-        public bool MatchesWholeLineOnly => false;
-
-        public IEnumerator<MatcherData> GetEnumerator() =>
+        protected override IEnumerable<MatcherData> CreateCollection() =>
             new StatManipulatorMatcherCollection(_modifierBuilder)
             {
                 { "you and nearby allies( deal| have)?", s => s.AsAura(Self, Ally) },
@@ -53,11 +54,6 @@ namespace PoESkillTree.Computation.Data
                     s => s.ForXSeconds(Value).ChanceOn(Self), "${inner}"
                 },
                 { "for # seconds", s => s.ForXSeconds(Value).On(Self) },
-            }.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+            };
     }
 }

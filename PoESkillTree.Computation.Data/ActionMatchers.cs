@@ -6,6 +6,9 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
+    /// <summary>
+    /// <see cref="IReferencedMatchers"/> implementation for <see cref="IActionBuilder"/>s.
+    /// </summary>
     public class ActionMatchers : ReferencedMatchersBase<IActionBuilder>
     {
         private IActionBuilders Action { get; }

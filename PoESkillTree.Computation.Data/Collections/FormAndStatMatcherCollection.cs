@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using MoreLinq;
@@ -10,19 +9,27 @@ using PoESkillTree.Computation.Parsing.ModifierBuilding;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// Collection of <see cref="PoESkillTree.Computation.Parsing.Data.MatcherData"/>, with 
+    /// <see cref="IIntermediateModifier"/>s consisting only of forms, values, stats and sometimes conditions,
+    /// that allows collection initialization syntax for adding entries.
+    /// </summary>
     public class FormAndStatMatcherCollection : MatcherCollection
     {
         private readonly IValueBuilders _valueFactory;
 
-        public FormAndStatMatcherCollection(IModifierBuilder modifierBuilder,
-            IValueBuilders valueFactory)
+        public FormAndStatMatcherCollection(IModifierBuilder modifierBuilder, IValueBuilders valueFactory)
             : base(modifierBuilder)
         {
             _valueFactory = valueFactory;
         }
 
-        public void Add([RegexPattern] string regex, IFormBuilder form, double value, 
-            IStatBuilder stat, IConditionBuilder condition = null)
+        /// <summary>
+        /// Adds a matcher with a form, value, stat and optionally a condition.
+        /// </summary>
+        public void Add([RegexPattern] string regex, IFormBuilder form, double value, IStatBuilder stat,
+            IConditionBuilder condition = null)
         {
             var builder = ModifierBuilder
                 .WithForm(form)
@@ -32,11 +39,15 @@ namespace PoESkillTree.Computation.Data.Collections
             {
                 builder = builder.WithCondition(condition);
             }
+
             Add(regex, builder);
         }
 
-        public void Add([RegexPattern] string regex, IFormBuilder form, IValueBuilder value, 
-            IStatBuilder stat, params IStatBuilder[] stats)
+        /// <summary>
+        /// Adds a matcher with a form, value and one or more stats.
+        /// </summary>
+        public void Add([RegexPattern] string regex, IFormBuilder form, IValueBuilder value, IStatBuilder stat,
+            params IStatBuilder[] stats)
         {
             var builder = ModifierBuilder
                 .WithForm(form)
@@ -45,8 +56,10 @@ namespace PoESkillTree.Computation.Data.Collections
             Add(regex, builder);
         }
 
-        public void Add([RegexPattern] string regex, IFormBuilder form, double value, 
-            IEnumerable<IStatBuilder> stats)
+        /// <summary>
+        /// Adds a matcher with a form, value and one or more stats.
+        /// </summary>
+        public void Add([RegexPattern] string regex, IFormBuilder form, double value, IEnumerable<IStatBuilder> stats)
         {
             var builder = ModifierBuilder
                 .WithForm(form)
@@ -55,8 +68,11 @@ namespace PoESkillTree.Computation.Data.Collections
             Add(regex, builder);
         }
 
-        public void Add([RegexPattern] string regex, IFormBuilder form, IValueBuilder value, 
-            IStatBuilder stat, string substitution)
+        /// <summary>
+        /// Adds a substituing matcher with a form, value and stat.
+        /// </summary>
+        public void Add([RegexPattern] string regex, IFormBuilder form, IValueBuilder value, IStatBuilder stat,
+            string substitution)
         {
             var builder = ModifierBuilder
                 .WithForm(form)
@@ -65,20 +81,14 @@ namespace PoESkillTree.Computation.Data.Collections
             Add(regex, builder, substitution);
         }
 
-        public void Add([RegexPattern] string regex, IFormBuilder form, IValueBuilder value, 
-            IStatBuilder stat, Func<ValueBuilder, ValueBuilder> converter)
-        {
-            var builder = ModifierBuilder
-                .WithForm(form)
-                .WithValue(value)
-                .WithStat(stat)
-                .WithValueConverter(_valueFactory.WrapValueConverter(converter));
-            Add(regex, builder);
-        }
-
-        public void Add([RegexPattern] string regex, 
+        /// <summary>
+        /// Adds a substituing matcher with two form/value pairs and a stat.
+        /// </summary>
+        public void Add(
+            [RegexPattern] string regex,
             (IFormBuilder forFirstValue, IFormBuilder forSecondValue) forms,
-            (IValueBuilder first, IValueBuilder second) values, IStatBuilder stat)
+            (IValueBuilder first, IValueBuilder second) values,
+            IStatBuilder stat)
         {
             var builder = ModifierBuilder
                 .WithForms(new[] { forms.forFirstValue, forms.forSecondValue })

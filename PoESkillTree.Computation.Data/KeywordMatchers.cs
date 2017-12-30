@@ -6,6 +6,9 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
+    /// <summary>
+    /// <see cref="IReferencedMatchers"/> implementation for <see cref="IKeywordBuilder"/>s.
+    /// </summary>
     public class KeywordMatchers : ReferencedMatchersBase<IKeywordBuilder>
     {
         private IKeywordBuilders Keyword { get; }

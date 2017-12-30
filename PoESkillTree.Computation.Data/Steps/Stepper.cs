@@ -4,8 +4,20 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data.Steps
 {
+    /// <summary>
+    /// Implementation of <see cref="IStepper{T}"/> using <see cref="ParsingStep"/>.
+    /// <para><see cref="ParsingStep.Success"/> and <see cref="ParsingStep.Failure"/> are the two terminal states.
+    /// For the transitions between the steps (with <see cref="ParsingStep.Special"/> being the initial state),
+    /// see <see cref="SuccessTransitions"/> and <see cref="FailureTransitions"/>.</para>
+    /// </summary>
     public class Stepper : IStepper<ParsingStep>
     {
+        /*
+         * Special matches either everything or nothing.
+         * StatManipulator and ValueConversion are optional.
+         * Either FormAndStat or Form and one of GeneralStat, DamageStat and PoolStat must match (if Special doesn't).
+         * Condition can be matched multiple times (if Special doesn't).
+         */
         private static readonly IReadOnlyDictionary<ParsingStep, ParsingStep> SuccessTransitions =
             new Dictionary<ParsingStep, ParsingStep>
             {

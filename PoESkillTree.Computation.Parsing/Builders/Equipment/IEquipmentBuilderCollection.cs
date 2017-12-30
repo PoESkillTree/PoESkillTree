@@ -8,7 +8,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Equipment
     public interface IEquipmentBuilderCollection : IBuilderCollection<IEquipmentBuilder>
     {
         /// <summary>
-        /// Gets the given slot.
+        /// Gets the equipment of the given slot.
         /// </summary>
         IEquipmentBuilder this[ItemSlot slot] { get; }
     }

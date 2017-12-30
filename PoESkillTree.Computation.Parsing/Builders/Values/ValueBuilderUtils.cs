@@ -30,10 +30,10 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
             v => v * (stat.Value / divideBy).Ceiling;
 
         /// <summary>
-        /// Returns a value converter dividing values by 100 and multiplying them by <paramref name="stat"/>'s value.
+        /// Returns <c>value.AsPercentage * stat.Value</c>.
         /// </summary>
-        public static Func<ValueBuilder, ValueBuilder> PercentOf(IStatBuilder stat) =>
-            v => stat.Value * v.AsPercentage;
+        public static ValueBuilder PercentOf(this ValueBuilder value, IStatBuilder stat) =>
+            value.AsPercentage * stat.Value;
 
         /// <summary>
         /// Builds a function from <paramref name="points"/> by interpolating linearly between each two consecutive

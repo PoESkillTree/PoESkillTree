@@ -8,7 +8,10 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
-    public class EffectStats : UsesStatProviders, IEffectStats
+    /// <summary>
+    /// <see cref="IEffectStats"/> implementation. Provides the stats applied when effects and flags are active.
+    /// </summary>
+    public class EffectStats : UsesStatBuilders, IEffectStats
     {
         private readonly Lazy<IReadOnlyList<EffectStatData>> _lazyEffects;
         private readonly Lazy<IReadOnlyList<FlagStatData>> _lazyFlags;
@@ -16,10 +19,8 @@ namespace PoESkillTree.Computation.Data
         public EffectStats(IBuilderFactories builderFactories)
             : base(builderFactories)
         {
-            _lazyEffects =
-                new Lazy<IReadOnlyList<EffectStatData>>(() => CreateEffectCollection().ToList());
-            _lazyFlags =
-                new Lazy<IReadOnlyList<FlagStatData>>(() => CreateFlagCollection().ToList());
+            _lazyEffects = new Lazy<IReadOnlyList<EffectStatData>>(() => CreateEffectCollection().ToList());
+            _lazyFlags = new Lazy<IReadOnlyList<FlagStatData>>(() => CreateFlagCollection().ToList());
         }
 
         public IReadOnlyList<EffectStatData> Effects => _lazyEffects.Value;

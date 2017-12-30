@@ -6,6 +6,9 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
+    /// <summary>
+    /// <see cref="IReferencedMatchers"/> implementation for <see cref="IDamageTypeBuilder"/>s.
+    /// </summary>
     public class DamageTypeMatchers : ReferencedMatchersBase<IDamageTypeBuilder>
     {
         private readonly IDamageTypeBuilders _damageTypeBuilders;

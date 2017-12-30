@@ -56,6 +56,7 @@
     <Compile Include="ActionMatchers.cs" />
     <Compile Include="AilmentMatchers.cs" />
     <Compile Include="Base\ReferencedMatchersBase.cs" />
+    <Compile Include="Base\StatMatchersBase.cs" />
     <Compile Include="ChargeTypeMatchers.cs" />
     <Compile Include="Collections\ConditionMatcherCollection.cs" />
     <Compile Include="Collections\FormAndStatMatcherCollection.cs" />
@@ -90,11 +91,11 @@
     <Compile Include="PropertyMatchers.cs" />
     <Compile Include="SpecialMatchers.cs" />
     <Compile Include="StatManipulatorMatchers.cs" />
-    <Compile Include="Base\UsesConditionProviders.cs" />
-    <Compile Include="Base\UsesFormProviders.cs" />
+    <Compile Include="Base\UsesConditionBuilders.cs" />
+    <Compile Include="Base\UsesFormBuilders.cs" />
     <Compile Include="Base\UsesMatchContext.cs" />
-    <Compile Include="Base\UsesStatProviders.cs" />
-    <Compile Include="Base\UsesValueProviders.cs" />
+    <Compile Include="Base\UsesStatBuilders.cs" />
+    <Compile Include="Base\UsesValueBuilders.cs" />
     <Compile Include="Steps\StatMatchersSelector.cs" />
     <Compile Include="StatReplacers.cs" />
     <Compile Include="Steps\Stepper.cs" />

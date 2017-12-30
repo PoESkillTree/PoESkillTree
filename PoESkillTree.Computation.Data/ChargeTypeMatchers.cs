@@ -6,6 +6,9 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
+    /// <summary>
+    /// <see cref="IReferencedMatchers"/> implementation for <see cref="IChargeTypeBuilder"/>s.
+    /// </summary>
     public class ChargeTypeMatchers : ReferencedMatchersBase<IChargeTypeBuilder>
     {
         private IChargeTypeBuilders Charge { get; }

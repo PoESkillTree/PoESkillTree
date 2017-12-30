@@ -6,13 +6,23 @@ using PoESkillTree.Computation.Parsing.ModifierBuilding;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
+    /// <inheritdoc />
+    /// <summary>
+    /// Collection of <see cref="PoESkillTree.Computation.Parsing.Data.MatcherData"/>, with 
+    /// <see cref="IIntermediateModifier"/>s consisting only of a stat converter, that allows collection 
+    /// initialization syntax for adding entries.
+    /// </summary>
     public class StatManipulatorMatcherCollection : MatcherCollection
     {
         public StatManipulatorMatcherCollection(IModifierBuilder modifierBuilder) : base(modifierBuilder)
         {
         }
 
-        public void Add([RegexPattern] string regex,
+        /// <summary>
+        /// Adds a matcher applying a stat converter.
+        /// </summary>
+        public void Add(
+            [RegexPattern] string regex,
             Func<IStatBuilder, IStatBuilder> manipulateStat,
             string substitution = "")
         {
@@ -21,17 +31,28 @@ namespace PoESkillTree.Computation.Data.Collections
             Add(regex, builder, substitution);
         }
 
-        public void Add<T>([RegexPattern] string regex, 
-            Func<T, IStatBuilder> manipulateStat, 
-            string substitution = "") where T: IStatBuilder
+        /// <summary>
+        /// Adds a matcher applying a stat converter to stats of type <typeparamref name="T"/>. If the converter
+        /// is applied to a stat that is not of type <typeparamref name="T"/>, a <see cref="ParseException"/> is thrown
+        /// when trying to convert it.
+        /// </summary>
+        public void Add<T>(
+            [RegexPattern] string regex,
+            Func<T, IStatBuilder> manipulateStat,
+            string substitution = "") where T : IStatBuilder
         {
-            // needs to verify that the matched mod line's stat is of type T
-            Add(regex,
-                s => (s is T t)
-                    ? manipulateStat(t)
-                    : throw new ParseException(
-                        $"Can only manipulate stats of type {typeof(T)}, was {s?.GetType()} (regex={regex}, stat={s})"),
-                substitution);
+            IStatBuilder ConvertStat(IStatBuilder stat)
+            {
+                if (stat is T t)
+                {
+                    return manipulateStat(t);
+                }
+
+                throw new ParseException(
+                    $"Can only manipulate stats of type {typeof(T)}, was {stat?.GetType()} (regex={regex}, stat={stat})");
+            }
+
+            Add(regex, ConvertStat, substitution);
         }
     }
 }

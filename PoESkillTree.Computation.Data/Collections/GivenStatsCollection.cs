@@ -6,6 +6,9 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
+    /// <summary>
+    /// Collection of <see cref="StatReplacerData"/> that allows collection initialization syntax for adding entries.
+    /// </summary>
     public class GivenStatCollection : IEnumerable<GivenStatData>
     {
         private readonly List<GivenStatData> _data = new List<GivenStatData>();

@@ -5,32 +5,14 @@
 // (those stats are handled elsewhere and don't even get here)
 // locality information for local stats not handled elsewhere gets passed to Computation
 
-/* Order of matcher referencing:
- * 
- * Can be referenced by everything else: Action-, Ailment-, ChargeType-, Damage-, Flag-, ItemSlot-
- * and KeywordMatchers
- * 
- * "StatMatchers" implies that General-, Damage- and PoolStatMatchers can be referenced
- * 
- * SpecialMatchers: can also reference StatMatchers
- * FormAndStatMatchers: can also reference StatMatchers
- * ValueConversionMatchers: can also reference StatMatchers
- * GeneralStatMatchers: can also reference DamageStatMatchers and PoolStatMatchers
- * 
- * Other matchers can be set referenceable by overriding their "ReferenceNames" property. This is
- * only allowed as long as none of their matchers contains values and as long as no cyclical
- * reference chains are created.
- */
-
 /* Keystones:
  * - stats are automatically added to EffectMatchers (split at line breaks)
  * - a IFlagStatBuilder is automatically created and added to FormAndStatMatchers 
  *   in the form:
- *   { "keystone name", BaseOverride, KeystoneStat, 1 }
+ *   { "keystone name", TotalOverride, KeystoneStat, 1 }
  */
 
-// "{SkillMatchers}" mostly matches skills by name, which does not need to be implemented 
-// in ComputationData
+// "{SkillMatchers}" mostly matches skills by name, which does not need to be implemented in ComputationData
 // TODO something needs to be done to match things like below (specify aliases for skills?)
 //      and parts need to be defined somewhere
 

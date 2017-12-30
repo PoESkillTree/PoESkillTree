@@ -1,17 +1,19 @@
-﻿using System.Collections.Generic;
-using PoESkillTree.Computation.Parsing.Builders;
+﻿using PoESkillTree.Computation.Parsing.Builders;
 using PoESkillTree.Computation.Parsing.Builders.Forms;
 
 namespace PoESkillTree.Computation.Data.Base
 {
-    public abstract class UsesFormProviders : UsesValueProviders
+    /// <inheritdoc />
+    /// <summary>
+    /// Base class for matcher implementations providing direct access to the properties of <see cref="IFormBuilders" />
+    /// in addition to the properties provided by <see cref="UsesValueBuilders"/>.
+    /// </summary>
+    public abstract class UsesFormBuilders : UsesValueBuilders
     {
-        protected UsesFormProviders(IBuilderFactories builderFactories)
+        protected UsesFormBuilders(IBuilderFactories builderFactories)
             : base(builderFactories)
         {
         }
-
-        public virtual IReadOnlyList<string> ReferenceNames { get; } = new string[0];
 
         private IFormBuilders FormBuilders => BuilderFactories.FormBuilders;
 

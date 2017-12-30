@@ -6,6 +6,9 @@ using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {
+    /// <summary>
+    /// <see cref="IReferencedMatchers"/> implementation for <see cref="IFlagStatBuilder"/>s.
+    /// </summary>
     public class FlagMatchers : ReferencedMatchersBase<IFlagStatBuilder>
     {
         private IFlagStatBuilders Flag { get; }
