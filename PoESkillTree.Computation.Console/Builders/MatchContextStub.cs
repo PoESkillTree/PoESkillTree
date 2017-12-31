@@ -10,7 +10,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IMatchContext<ValueBuilder> Values => new ValueMatchContext();
 
         /*
-         * These clases are the leaf nodes of resolve method chains. Resolving actually does something here, which
+         * These classes are the leaf nodes of resolve method chains. Resolving actually does something here, which
          * is why the properties look slightly different and use the passed context to return resolved objects.
          */
 

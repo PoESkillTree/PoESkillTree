@@ -22,7 +22,7 @@ namespace PoESkillTree.Computation.Parsing
         /// <remarks>
         /// Throws <see cref="ParseException"/> if the data specification is erroneous, e.g. it tries to reference
         /// values that don't occur in the matched stat. You'll want to handle stats that throw a
-        /// <see cref="ParseException"/> on being parsed like unparsable stats.
+        /// <see cref="ParseException"/> on being parsed like not parsable stats.
         /// </remarks>
         ParseResult<TResult> Parse(string stat);
     }
@@ -46,7 +46,7 @@ namespace PoESkillTree.Computation.Parsing
         /// <remarks>
         /// Throws <see cref="ParseException"/> if the data specification is erroneous, e.g. it tries to reference
         /// values that don't occur in the matched stat. You'll want to handle stats that throw a
-        /// <see cref="ParseException"/> on being parsed like unparsable stats.
+        /// <see cref="ParseException"/> on being parsed like not parsable stats.
         /// </remarks>
         new ParseResult Parse(string stat);
     }

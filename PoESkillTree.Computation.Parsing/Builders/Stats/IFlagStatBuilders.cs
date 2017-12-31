@@ -6,7 +6,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Stats
     public interface IFlagStatBuilders
     {
         /// <summary>
-        /// Gets a flag stat indicating whether Onslaugt's stats should be applied to Self.
+        /// Gets a flag stat indicating whether Onslaught's stats should be applied to Self.
         /// </summary>
         IFlagStatBuilder Onslaught { get; }
 

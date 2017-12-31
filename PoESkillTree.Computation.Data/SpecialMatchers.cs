@@ -117,7 +117,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "totems have #% of your armour",
-                    BaseAdd, Value.AsPercentage * Entity.ModififerSource.Stat(Armour).Value, Armour, For(Entity.Totem)
+                    BaseAdd, Value.AsPercentage * Entity.ModifierSource.Stat(Armour).Value, Armour, For(Entity.Totem)
                 },
                 // - Deadeye
                 {

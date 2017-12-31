@@ -11,7 +11,7 @@ namespace PoESkillTree.Computation.Parsing
     /// <summary>
     /// Wraps an <c>IParser&lt;MatcherDataParseResult&gt;</c> and resolves
     /// <see cref="MatcherDataParseResult.Modifier"/> using references and values specified by 
-    /// <see cref="MatcherDataParseResult.RegexGroups"/> before outputing the resolved <see cref="IIntermediateModifier"/>.
+    /// <see cref="MatcherDataParseResult.RegexGroups"/> before outputting the resolved <see cref="IIntermediateModifier"/>.
     /// </summary>
     /// <remarks>
     /// Values can simply be parsed from the regex group's captured substring. References are resolved to 

@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder ItemQuantity => CreateStat("Item Quantity");
         public IStatBuilder ItemRarity => CreateStat("Item Rarity");
 
-        public IStatBuilder PrimordialJewelsSocketed => CreateStat("Socketed Primoridal jewels");
+        public IStatBuilder PrimordialJewelsSocketed => CreateStat("Socketed Primordial jewels");
         public IStatBuilder GrandSpectrumJewelsSocketed => CreateStat("Socketed Grand Spectrum jewels");
 
         public IStatBuilder RampageStacks => CreateStat("Rampage Stacks");

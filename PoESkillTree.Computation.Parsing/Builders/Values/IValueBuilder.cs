@@ -9,22 +9,22 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
     public interface IValueBuilder : IResolvable<IValueBuilder>
     {
         /// <summary>
-        /// Returns a conditiosn that is satisifed if this value is equal to the given value.
+        /// Returns a condition that is satisfied if this value is equal to the given value.
         /// </summary>
         IConditionBuilder Eq(IValueBuilder other);
 
         /// <summary>
-        /// Returns a conditiosn that is satisifed if this value is equal to the given value.
+        /// Returns a condition that is satisfied if this value is equal to the given value.
         /// </summary>
         IConditionBuilder Eq(double other);
 
         /// <summary>
-        /// Returns a conditiosn that is satisifed if this value is greater than to the given value.
+        /// Returns a condition that is satisfied if this value is greater than to the given value.
         /// </summary>
         IConditionBuilder GreaterThan(IValueBuilder other);
 
         /// <summary>
-        /// Returns a conditiosn that is satisifed if this value is greater than to the given value.
+        /// Returns a condition that is satisfied if this value is greater than to the given value.
         /// </summary>
         IConditionBuilder GreaterThan(double other);
 

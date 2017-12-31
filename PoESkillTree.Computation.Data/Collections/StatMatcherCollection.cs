@@ -11,7 +11,7 @@ namespace PoESkillTree.Computation.Data.Collections
     /// Collection of <see cref="PoESkillTree.Computation.Parsing.Data.MatcherData"/>, with 
     /// <see cref="IIntermediateModifier"/>s consisting only of one or more stats or a stat and a condition, 
     /// that allows collection initialization syntax for adding entries.
-    /// <para>The stats must be of of type <typeparamref name="T"/>.</para>
+    /// <para>The stats must be of type <typeparamref name="T"/>.</para>
     /// </summary>
     /// <typeparam name="T">The type of stats passed to methods of this class.</typeparam>
     public class StatMatcherCollection<T> : MatcherCollection where T : class, IStatBuilder

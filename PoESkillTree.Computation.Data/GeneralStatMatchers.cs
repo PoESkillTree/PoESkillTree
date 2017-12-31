@@ -14,7 +14,7 @@ namespace PoESkillTree.Computation.Data
     /// <inheritdoc />
     /// <summary>
     /// <see cref="IStatMatchers"/> implementation matching stat parts specifying stats 
-    /// (excluding pool and damge stats).
+    /// (excluding pool and damage stats).
     /// <para>These matchers are referenceable. They can reference <see cref="DamageStatMatchers"/> and
     /// <see cref="PoolStatMatchers"/> in addition to the <see cref="IReferencedMatchers"/> themselves.</para>
     /// </summary>
@@ -101,7 +101,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "damage dealt by your totems is leeched to you as life",
-                    Life.Leech.To(Entity.ModififerSource).Of(Damage), For(Entity.Totem)
+                    Life.Leech.To(Entity.ModifierSource).Of(Damage), For(Entity.Totem)
                 },
                 { "({PoolStatMatchers}) leeched per second", Reference.AsPoolStat.Leech.Rate },
                 // - block

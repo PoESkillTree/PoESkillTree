@@ -47,7 +47,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IEntityBuilder Self => EntityBuilderStub.Self();
         public IEnemyBuilder Enemy => new EnemyBuilderStub();
         public IEntityBuilder Ally => new EntityBuilderStub("Ally", (c, _) => c);
-        public IEntityBuilder ModififerSource => new EntityBuilderStub("Modififer Source", (c, _) => c);
+        public IEntityBuilder ModifierSource => new EntityBuilderStub("Modifier Source", (c, _) => c);
 
         public ISkillEntityBuilder Totem => new SkillEntityBuilderStub("Totem", (c, _) => c);
 

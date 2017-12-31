@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Charges
         IStatBuilder ChanceToGain { get; }
 
         /// <summary>
-        /// Gets an action occuring when Self gains a charge of this type.
+        /// Gets an action occurring when Self gains a charge of this type.
         /// </summary>
         IActionBuilder GainAction { get; }
     }

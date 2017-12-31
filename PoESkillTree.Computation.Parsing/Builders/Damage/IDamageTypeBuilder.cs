@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Damage
         /// <summary>
         /// Returns a collection that contains all damage types of this collection that are not contained in
         /// <paramref name="type"/>.
-        /// <para>E.g. (Fire, Lighhtning, Cold).Except(Fire) -> (Lightning, Cold)</para>
+        /// <para>E.g. (Fire, Lightning, Cold).Except(Fire) -> (Lightning, Cold)</para>
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>

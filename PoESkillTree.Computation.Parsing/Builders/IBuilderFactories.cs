@@ -17,7 +17,7 @@ namespace PoESkillTree.Computation.Parsing.Builders
     // to make it easier to read from the point of view of someone adding entries in the Computation.Data project.
 
     /// <summary>
-    /// Contains all IXBuilders as properties that are not themself part of other IXBuilders. Therefore provides
+    /// Contains all IXBuilders as properties that are not themselves part of other IXBuilders. Therefore provides
     /// access to all interfaces in the Builders namespace.
     /// </summary>
     public interface IBuilderFactories

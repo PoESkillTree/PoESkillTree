@@ -6,7 +6,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Forms
     public interface IFormBuilders
     {
         /// <summary>
-        /// Gets a form for setting the intial base value. It can only be set once. The base value defaults to 0 if not
+        /// Gets a form for setting the initial base value. It can only be set once. The base value defaults to 0 if not
         /// explicitly set.
         /// </summary>
         IFormBuilder BaseSet { get; }

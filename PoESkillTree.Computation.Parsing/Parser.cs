@@ -11,7 +11,7 @@ namespace PoESkillTree.Computation.Parsing
 {
     /// <inheritdoc />
     /// <summary>
-    /// Implementation of <see cref="IParser" /> using the parsing pipeline layed out by this project.
+    /// Implementation of <see cref="IParser" /> using the parsing pipeline laid out by this project.
     /// <para> Dependencies not instantiated here are the actual data (lists of <see cref="IReferencedMatchers" />,
     /// <see cref="IStatMatchers" /> and <see cref="StatReplacerData" />), contained in the <c>Computation.Data</c>
     /// project, and an implementation of the interfaces in <see cref="Builders" />. These must be passed to the

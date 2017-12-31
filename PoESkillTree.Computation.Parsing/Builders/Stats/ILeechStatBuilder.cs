@@ -36,7 +36,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Stats
         IFlagStatBuilder AppliesTo(IPoolStatBuilder stat);
 
         /// <summary>
-        /// Returns a leech object through damge done by Self can be additionally leeched to the given entity.
+        /// Returns a leech object through damage done by Self can be additionally leeched to the given entity.
         /// The given entities normally other Leech properties (e.g. Rate) also apply to this leech.
         /// </summary>
         /// <remarks>

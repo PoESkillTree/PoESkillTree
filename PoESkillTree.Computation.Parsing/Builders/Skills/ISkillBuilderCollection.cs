@@ -17,9 +17,8 @@ namespace PoESkillTree.Computation.Parsing.Builders.Skills
     /// </remarks>
     public interface ISkillBuilderCollection : IBuilderCollection<ISkillBuilder>
     {
-        // Returns a new collection with all skills in this collection that have all the keywords
         /// <summary>
-        /// Gets a new collection including all skills in this collection that have alll the given keywords.
+        /// Gets a new collection including all skills in this collection that have all the given keywords.
         /// </summary>
         ISkillBuilderCollection this[params IKeywordBuilder[] keywords] { get; }
 

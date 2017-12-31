@@ -6,7 +6,7 @@
     public interface IEntityBuilders
     {
         /// <summary>
-        /// Gets the entity whose stats are currently calculated. This normally is <see cref="ModififerSource"/>,
+        /// Gets the entity whose stats are currently calculated. This normally is <see cref="ModifierSource"/>,
         /// except when stats apply to other entities via <see cref="Conditions.IConditionBuilders.For"/>.
         /// </summary>
         IEntityBuilder Self { get; }
@@ -24,11 +24,11 @@
         /// <summary>
         /// Gets an entity explicitly representing the entity the modifier originates from.
         /// <para>Only use this if <see cref="Self"/> refers to another entity but you still need to reference the
-        /// modifier's sourc entity.</para>
+        /// modifier's source entity.</para>
         /// <para>E.g. when applying stats from one entity to another or when a stat applies to both another entity and
-        /// the modififer's source entity.</para>
+        /// the modifier's source entity.</para>
         /// </summary>
-        IEntityBuilder ModififerSource { get; }
+        IEntityBuilder ModifierSource { get; }
 
         /// <summary>
         /// Gets an entity representing all of Self's totems.

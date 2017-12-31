@@ -144,7 +144,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder Multiplier => CreateStat("Critical Strike Multiplier");
 
-        public IStatBuilder AilmentMultiplier => CreateStat("Ailment Critical Strike Multipler");
+        public IStatBuilder AilmentMultiplier => CreateStat("Ailment Critical Strike Multiplier");
 
         public IStatBuilder ExtraDamageTaken => CreateStat("Extra damage taken from Critical Strikes");
     }
@@ -171,6 +171,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IActionBuilder ConsumeCorpse => Create("Consuming Corpses");
 
         public IActionBuilder SpendMana(IValueBuilder amount) =>
-            Create<IActionBuilder, IValueBuilder>(ActionBuilderStub.SelfToAny, amount, o => $"Spending {o} mana");
+            Create<IActionBuilder, IValueBuilder>(ActionBuilderStub.SelfToAny, amount, o => $"Spending {o} Mana");
     }
 }

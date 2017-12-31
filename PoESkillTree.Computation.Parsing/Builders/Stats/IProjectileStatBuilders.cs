@@ -33,7 +33,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Stats
         IStatBuilder ChainCount { get; }
 
         /// <summary>
-        /// Gets a stat representing the distance travelled by projectiles.
+        /// Gets a stat representing the distance traveled by projectiles.
         /// </summary>
         IStatBuilder TravelDistance { get; }
     }

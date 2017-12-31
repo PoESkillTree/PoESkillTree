@@ -3,7 +3,7 @@
 namespace PoESkillTree.Computation.Parsing.Referencing
 {
     /// <summary>
-    /// Resolves references names with a matcher index back to the referenced matcher data. The indices refer
+    /// Resolves references names with a matcher index back to the referenced matcher data. The indexes refer
     /// to the enumerable returned by <see cref="IReferencedRegexes.GetRegexes"/>.
     /// </summary>
     public interface IReferenceToMatcherDataResolver

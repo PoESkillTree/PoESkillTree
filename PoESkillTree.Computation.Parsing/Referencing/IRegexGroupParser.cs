@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
             IReadOnlyDictionary<string, string> groups, string groupPrefix = "");
 
         /// <summary>
-        /// Parses the given regex group names into reference names and matcher indices.
+        /// Parses the given regex group names into reference names and matcher indexes.
         /// </summary>
         /// <param name="groupNames">The names of all regex groups that were matched.</param>
         /// <param name="groupPrefix">The prefix group names must have to be parsed. Group names must also be on

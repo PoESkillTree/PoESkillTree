@@ -13,7 +13,7 @@ namespace PoESkillTree.Computation.Parsing
     /// </para>
     /// <para> The results of successful parses are added to a list that is returned at the end. The output remaining of 
     /// one step serves as the input stat of the next. The last step's remaining is used as the method's output.
-    /// <see cref="Parse"/> returns <see cref="ParseResult{T}.SuccessfullyParsed"/> iff the Stepper ends in a success
+    /// <see cref="Parse"/> returns <see cref="ParseResult{T}.SuccessfullyParsed"/> if the Stepper ends in a success
     /// step.
     /// </para>
     /// </summary>

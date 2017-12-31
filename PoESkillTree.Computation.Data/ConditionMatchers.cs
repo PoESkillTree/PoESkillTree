@@ -182,11 +182,11 @@ namespace PoESkillTree.Computation.Data
                 { "from taunted enemies", Buff.Taunt.IsOn(Enemy) },
                 {
                     "you and allies affected by your auras have",
-                    Or(For(Entity.ModififerSource), And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
+                    Or(For(Entity.ModifierSource), And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
                 },
                 {
                     "you and allies deal while affected by auras you cast",
-                    Or(For(Entity.ModififerSource), And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
+                    Or(For(Entity.ModifierSource), And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
                 },
                 // buff and damage combinations
                 {
@@ -263,7 +263,7 @@ namespace PoESkillTree.Computation.Data
                 // minions
                 { "minions", For(Entity.Minion) },
                 { "minions (deal|have|gain)", For(Entity.Minion) },
-                { "you and your minions have", For(Entity.Minion, Entity.ModififerSource) },
+                { "you and your minions have", For(Entity.Minion, Entity.ModifierSource) },
                 { "golem", For(Entity.Minion.With(Keyword.Golem)) },
                 { "golems have", For(Entity.Minion.With(Keyword.Golem)) },
                 { "spectres have", For(Entity.Minion.From(Skill.RaiseSpectre)) },

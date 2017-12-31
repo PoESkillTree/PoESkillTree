@@ -12,7 +12,7 @@ namespace PoESkillTree.Computation.Parsing
     /// <see cref="StatReplacerData"/>, passes each of those stats to the decorated parser and outputs all results.
     /// <para>The output remaining is created by joining all stats' remaining outputs that are not only whitespace
     /// with newlines.</para>
-    /// <para>Parsing is successful if all stats coulc be parsed successfully.</para>
+    /// <para>Parsing is successful if all stats could be parsed successfully.</para>
     /// </summary>
     /// <typeparam name="TResult">Type of the decorated parser's results</typeparam>
     public class StatReplacingParser<TResult> : IParser<IReadOnlyList<TResult>>

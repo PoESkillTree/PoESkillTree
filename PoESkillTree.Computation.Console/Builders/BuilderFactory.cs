@@ -230,7 +230,7 @@ namespace PoESkillTree.Computation.Console.Builders
         /// <summary>
         /// Creates a <typeparamref name="TOut"/> with the given constructor that has the string representation
         /// <c>stringRepresentation(operand)</c>. It resolves to a new instance created with the given constructor
-        /// and the string represenation <c>stringRepresentation(operand?.Resolve())</c>, which resolves to itself.
+        /// and the string representation <c>stringRepresentation(operand?.Resolve())</c>, which resolves to itself.
         /// </summary>
         public static TOut Create<TOut, T>(
             Func<string, Resolver<TOut>, TOut> constructor,
@@ -247,7 +247,7 @@ namespace PoESkillTree.Computation.Console.Builders
         /// <summary>
         /// Creates a <typeparamref name="T"/> with the given constructor that has the string representation
         /// <c>stringRepresentation(operand)</c>. It resolves to a new instance created with the given constructor
-        /// and the string represenation <c>stringRepresentation(operand?.Resolve())</c>, which resolves to itself.
+        /// and the string representation <c>stringRepresentation(operand?.Resolve())</c>, which resolves to itself.
         /// </summary>
         public static T Create<T>(
             Func<string, Resolver<T>, T> constructor,
@@ -264,7 +264,7 @@ namespace PoESkillTree.Computation.Console.Builders
         /// <summary>
         /// Creates a <typeparamref name="TOut"/> with the given constructor that has the string representation
         /// <c>stringRepresentation(operand1, operand2)</c>. It resolves to a new instance created with the given 
-        /// constructor and the string represenation 
+        /// constructor and the string representation 
         /// <c>stringRepresentation(operand1?.Resolve(), operand2?.Resolve())</c>, which resolves to itself.
         /// </summary>
         public static TOut Create<TOut, T1, T2>(
@@ -286,7 +286,7 @@ namespace PoESkillTree.Computation.Console.Builders
         /// <summary>
         /// Creates a <typeparamref name="T1"/> with the given constructor that has the string representation
         /// <c>stringRepresentation(operand1, operand2)</c>. It resolves to a new instance created with the given 
-        /// constructor and the string represenation 
+        /// constructor and the string representation 
         /// <c>stringRepresentation(operand1?.Resolve(), operand2?.Resolve())</c>, which resolves to itself.
         /// </summary>
         public static T1 Create<T1, T2>(
@@ -308,7 +308,7 @@ namespace PoESkillTree.Computation.Console.Builders
         /// <summary>
         /// Creates a <typeparamref name="TOut"/> with the given constructor that has the string representation
         /// <c>stringRepresentation(operand1, operand2, operand3)</c>. It resolves to a new instance created with the 
-        /// given constructor and the string represenation 
+        /// given constructor and the string representation 
         /// <c>stringRepresentation(operand1?.Resolve(), operand2?.Resolve(), operand3?.Resolve())</c>, which resolves
         /// to itself.
         /// </summary>
@@ -334,7 +334,7 @@ namespace PoESkillTree.Computation.Console.Builders
         /// <summary>
         /// Creates a <typeparamref name="TOut"/> with the given constructor that has the string representation
         /// <c>stringRepresentation(operands)</c>. It resolves to a new instance created with the 
-        /// given constructor and the string represenation
+        /// given constructor and the string representation
         /// <c>stringRepresentation(operands.Select(o => o?.Resolve()))</c>, which resolves to itself.
         /// </summary>
         /// <remarks>
@@ -358,7 +358,7 @@ namespace PoESkillTree.Computation.Console.Builders
         /// <summary>
         /// Creates a <typeparamref name="TOut"/> with the given constructor that has the string representation
         /// <c>stringRepresentation(operand1, operands)</c>. It resolves to a new instance created with the 
-        /// given constructor and the string represenation
+        /// given constructor and the string representation
         /// <c>stringRepresentation(operand1?.Resolve(), operands.Select(o => o?.Resolve()))</c>, which resolves to 
         /// itself.
         /// </summary>
@@ -386,7 +386,7 @@ namespace PoESkillTree.Computation.Console.Builders
         /// <summary>
         /// Creates a <typeparamref name="T1"/> with the given constructor that has the string representation
         /// <c>stringRepresentation(operand1, operands)</c>. It resolves to a new instance created with the 
-        /// given constructor and the string represenation
+        /// given constructor and the string representation
         /// <c>stringRepresentation(operand1?.Resolve(), operands.Select(o => o?.Resolve()))</c>, which resolves to 
         /// itself.
         /// </summary>
@@ -414,7 +414,7 @@ namespace PoESkillTree.Computation.Console.Builders
         /// <summary>
         /// Creates a <typeparamref name="T1"/> with the given constructor that has the string representation
         /// <c>stringRepresentation(operand1, operand2, operands)</c>. It resolves to a new instance created with the 
-        /// given constructor and the string represenation
+        /// given constructor and the string representation
         /// <c>stringRepresentation(operand1?.Resolve(), operand2?.Resolve(), operands.Select(o => o?.Resolve()))</c>,
         /// which resolves to itself.
         /// </summary>

@@ -13,32 +13,32 @@ namespace PoESkillTree.Computation.Parsing.Builders.Stats
         IStatBuilder Effect { get; }
 
         /// <summary>
-        /// Gets a stat representing the modififer to the duration of flasks.
+        /// Gets a stat representing the modifier to the duration of flasks.
         /// </summary>
         IStatBuilder Duration { get; }
 
         /// <summary>
-        /// Gets a stat representing the modififer to the life recovered by flasks.
+        /// Gets a stat representing the modifier to the life recovered by flasks.
         /// </summary>
         IStatBuilder LifeRecovery { get; }
 
         /// <summary>
-        /// Gets a stat representing the modififer to the mana recovered by flasks.
+        /// Gets a stat representing the modifier to the mana recovered by flasks.
         /// </summary>
         IStatBuilder ManaRecovery { get; }
 
         /// <summary>
-        /// Gets a stat representing the modififer to the life and mana recovery speed of flasks.
+        /// Gets a stat representing the modifier to the life and mana recovery speed of flasks.
         /// </summary>
         IStatBuilder RecoverySpeed { get; }
 
         /// <summary>
-        /// Gets a stat representing the modififer to the charges used by activating a flask.
+        /// Gets a stat representing the modifier to the charges used by activating a flask.
         /// </summary>
         IStatBuilder ChargesUsed { get; }
 
         /// <summary>
-        /// Gets a stat representing the modififer to flask charges gained.
+        /// Gets a stat representing the modifier to flask charges gained.
         /// </summary>
         IStatBuilder ChargesGained { get; }
 

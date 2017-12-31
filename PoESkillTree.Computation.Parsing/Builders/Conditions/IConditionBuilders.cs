@@ -27,16 +27,16 @@ namespace PoESkillTree.Computation.Parsing.Builders.Conditions
 
         /// <summary>
         /// Returns a condition that is satisfied if Self is equivalent to any entity in <paramref name="entities"/>.
-        /// If this method is not called when creating a modifiier, a condition 
-        /// <c>For(<see cref="IEntityBuilders.ModififerSource"/>)</c> is implicitly added. I.e. modifiers only apply
-        /// to the the entity they are gained from by default.
+        /// If this method is not called when creating a modifier, a condition 
+        /// <c>For(<see cref="IEntityBuilders.ModifierSource"/>)</c> is implicitly added. I.e. modifiers only apply
+        /// to the entity they are gained from by default.
         /// </summary>
         /// <remarks>
         /// <c>For(<see cref="IEntityBuilders.Self"/>)</c> is always satisfied.
-        /// <para>Can be used to apply stats to Enemey, e.g. "Enemies take 10% increased Damage".</para>
-        /// <para>Minions have their own offensive and defensive stats. Modififers only apply to minions when they
-        /// have this this condition (probably with some exceptions).</para>
-        /// <para>Totems have their own defensive stats. Defensive modififers only apply to totems when they have
+        /// <para>Can be used to apply stats to Enemy, e.g. "Enemies take 10% increased Damage".</para>
+        /// <para>Minions have their own offensive and defensive stats. Modifiers only apply to minions when they
+        /// have this condition (probably with some exceptions).</para>
+        /// <para>Totems have their own defensive stats. Defensive modifiers only apply to totems when they have
         /// this condition.</para>
         /// </remarks>
         IConditionBuilder For(params IEntityBuilder[] entities);

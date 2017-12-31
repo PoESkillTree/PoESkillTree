@@ -69,7 +69,7 @@ namespace PoESkillTree.Computation.Data.Collections
         }
 
         /// <summary>
-        /// Adds a substituing matcher with a form, value and stat.
+        /// Adds a substituting matcher with a form, value and stat.
         /// </summary>
         public void Add([RegexPattern] string regex, IFormBuilder form, IValueBuilder value, IStatBuilder stat,
             string substitution)
@@ -82,7 +82,7 @@ namespace PoESkillTree.Computation.Data.Collections
         }
 
         /// <summary>
-        /// Adds a substituing matcher with two form/value pairs and a stat.
+        /// Adds a substituting matcher with two form/value pairs and a stat.
         /// </summary>
         public void Add(
             [RegexPattern] string regex,

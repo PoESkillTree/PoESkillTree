@@ -1,7 +1,7 @@
 ﻿namespace PoESkillTree.Computation.Data.Steps
 {
     /// <summary>
-    /// Enumeration of the parsing steps, each reprenting an IStatMatchers instance (except <see cref="Success"/> and
+    /// Enumeration of the parsing steps, each representing an IStatMatchers instance (except <see cref="Success"/> and
     /// <see cref="Failure"/>)
     /// </summary>
     public enum ParsingStep
