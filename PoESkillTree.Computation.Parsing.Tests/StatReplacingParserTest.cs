@@ -19,7 +19,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new StatReplacerData("(grouped) (stat)", new[] { "$1", "$2", "$0" }),
                 new StatReplacerData(".*[ck]omplex (.*) (regexp|regex)",
                     new[] { "complex", "$1", "$2" }),
-                new StatReplacerData("removed", new string[0]), 
+                new StatReplacerData("removed", new string[0]),
             };
         }
 
@@ -33,43 +33,41 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         [TestCase(true, ExpectedResult = true)]
         [TestCase(false, ExpectedResult = false)]
-        public bool TryParseWithoutReplacementReturnsInnerReturn(bool innerReturn)
+        public bool TryParseWithoutReplacementPassesSuccessfullyParsed(bool innerSuccess)
         {
-            var innerMock = new Mock<IParser<string>>();
-            string _;
-            innerMock.Setup(p => p.TryParse("stat", out _, out _))
-                .Returns(innerReturn);
-            var sut = new StatReplacingParser<string>(innerMock.Object, _statReplacers);
+            var inner = Mock.Of<IParser<string>>(p =>
+                p.Parse("stat") == new ParseResult<string>(innerSuccess, default, default));
+            var sut = new StatReplacingParser<string>(inner, _statReplacers);
 
-            return sut.TryParse("stat", out var _, out var _);
+            var (actual, _, _) = sut.Parse("stat");
+
+            return actual;
         }
 
         [Test]
-        public void TryParseWithoutReplacementOutputsInnerResult()
+        public void TryParseWithoutReplacementPassesRemaining()
         {
-            var innerMock = new Mock<IParser<string>>();
-            var result = "result";
-            string _;
-            innerMock.Setup(p => p.TryParse("stat", out _, out result));
-            var sut = new StatReplacingParser<string>(innerMock.Object, _statReplacers);
+            const string expected = "remaining";
+            var inner = Mock.Of<IParser<string>>(p =>
+                p.Parse("stat") == new ParseResult<string>(default, expected, default));
+            var sut = new StatReplacingParser<string>(inner, _statReplacers);
 
-            sut.TryParse("stat", out var _, out var actualResult);
+            var (_, actual, _) = sut.Parse("stat");
 
-            Assert.That(actualResult, Has.Exactly(1).EqualTo(result));
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void TryParseWithoutReplacementOutputsInnerRemaining()
+        public void TryParseWithoutReplacementPassesResult()
         {
-            var innerMock = new Mock<IParser<string>>();
-            var remaining = "remaining";
-            string _;
-            innerMock.Setup(p => p.TryParse("stat", out remaining, out _));
-            var sut = new StatReplacingParser<string>(innerMock.Object, _statReplacers);
+            const string expected = "result";
+            var inner = Mock.Of<IParser<string>>(p =>
+                p.Parse("stat") == new ParseResult<string>(default, default, expected));
+            var sut = new StatReplacingParser<string>(inner, _statReplacers);
 
-            sut.TryParse("stat", out var actualRemaining, out var _);
+            var (_, _, actual) = sut.Parse("stat");
 
-            Assert.AreEqual(remaining, actualRemaining);
+            Assert.That(actual, Has.Exactly(1).EqualTo(expected));
         }
 
         [TestCase(true, true, true, ExpectedResult = true)]
@@ -77,83 +75,75 @@ namespace PoESkillTree.Computation.Parsing.Tests
         [TestCase(true, false, true, ExpectedResult = false)]
         [TestCase(false, true, true, ExpectedResult = false)]
         [TestCase(false, false, false, ExpectedResult = false)]
-        public bool TryParseWithManyReplacementsReturnsCorrectValue(params bool[] returns)
+        public bool TryParseWithManyReplacementsReturnsCorrectSuccessfullyParsed(params bool[] successes)
         {
-            var innerMock = new Mock<IParser<string>>();
-            string _;
-            innerMock.Setup(p => p.TryParse("stat1", out _, out _))
-                .Returns(returns[0]);
-            innerMock.Setup(p => p.TryParse("stat2", out _, out _))
-                .Returns(returns[1]);
-            innerMock.Setup(p => p.TryParse("stat3", out _, out _))
-                .Returns(returns[2]);
-            var sut = new StatReplacingParser<string>(innerMock.Object, _statReplacers);
+            var inner = Mock.Of<IParser<string>>(p =>
+                p.Parse("stat1") == new ParseResult<string>(successes[0], default, default) &&
+                p.Parse("stat2") == new ParseResult<string>(successes[1], default, default) &&
+                p.Parse("stat3") == new ParseResult<string>(successes[2], default, default));
+            var sut = new StatReplacingParser<string>(inner, _statReplacers);
 
-            return sut.TryParse("plain stat", out var _, out var _);
+            var (actual, _, _) = sut.Parse("plain stat");
+
+            return actual;
         }
 
         [Test]
-        public void TryParseWithManyReplacementsOutputsListOfInnerResults()
+        public void TryParseWithManyReplacementsJoinsInnerRemainings()
         {
-            var innerMock = new Mock<IParser<string>>();
-            string _;
-            var result1 = "r1";
-            innerMock.Setup(p => p.TryParse("stat1", out _, out result1));
-            var result2 = "r2";
-            innerMock.Setup(p => p.TryParse("stat2", out _, out result2));
-            var result3 = "r3";
-            innerMock.Setup(p => p.TryParse("stat3", out _, out result3));
-            var sut = new StatReplacingParser<string>(innerMock.Object, _statReplacers);
+            string[] remainings = { "r1", "r2", "r3" };
+            var inner = Mock.Of<IParser<string>>(p =>
+                p.Parse("stat1") == new ParseResult<string>(default, remainings[0], default) &&
+                p.Parse("stat2") == new ParseResult<string>(default, remainings[1], default) &&
+                p.Parse("stat3") == new ParseResult<string>(default, remainings[2], default));
+            var sut = new StatReplacingParser<string>(inner, _statReplacers);
 
-            sut.TryParse("plain stat", out var _, out var actual);
+            var (_, actual, _) = sut.Parse("plain stat");
 
-            CollectionAssert.AreEqual(new[] { result1, result2, result3 }, actual);
+            Assert.AreEqual(string.Join("\n", remainings), actual);
         }
 
         [Test]
-        public void TryParseWithManyReplacementsOutputsJoinedInnerRemaining()
+        public void TryParseWithManyReplacementsReturnsListOfInnerResults()
         {
-            var innerMock = new Mock<IParser<string>>();
-            string _;
-            var remaining1 = "r1";
-            innerMock.Setup(p => p.TryParse("stat1", out remaining1, out _));
-            var remaining2 = "r2";
-            innerMock.Setup(p => p.TryParse("stat2", out remaining2, out _));
-            var remaining3 = "r3";
-            innerMock.Setup(p => p.TryParse("stat3", out remaining3, out _));
-            var sut = new StatReplacingParser<string>(innerMock.Object, _statReplacers);
+            string[] results = { "r1", "r2", "r3" };
+            var inner = Mock.Of<IParser<string>>(p =>
+                p.Parse("stat1") == new ParseResult<string>(default, default, results[0]) &&
+                p.Parse("stat2") == new ParseResult<string>(default, default, results[1]) &&
+                p.Parse("stat3") == new ParseResult<string>(default, default, results[2]));
+            var sut = new StatReplacingParser<string>(inner, _statReplacers);
 
-            sut.TryParse("plain stat", out var actual, out var _);
+            var (_, _, actual) = sut.Parse("plain stat");
 
-            Assert.AreEqual(remaining1 + "\n" + remaining2 + "\n" + remaining3, actual);
+            CollectionAssert.AreEqual(results, actual);
         }
 
         [Test]
-        public void TryParseWithEmptyReplacementReturnsTrue()
+        public void TryParseWithEmptyReplacementReturnsSuccess()
         {
             var sut = new StatReplacingParser<string>(null, _statReplacers);
 
-            var actual = sut.TryParse("removed", out var _, out var _);
+            var (actual, _, _) = sut.Parse("removed");
 
             Assert.True(actual);
         }
 
         [Test]
-        public void TryParseWithEmptyReplacementOutputsEmptyListAsResult()
+        public void TryParseWithEmptyReplacementReturnsEmptyStringAsRemaining()
         {
             var sut = new StatReplacingParser<string>(null, _statReplacers);
 
-            sut.TryParse("removed", out var _, out var actual);
+            var (_, actual, _) = sut.Parse("removed");
 
             CollectionAssert.IsEmpty(actual);
         }
 
         [Test]
-        public void TryParseWithEmptyReplacementOutputsEmptyStringAsRemaining()
+        public void TryParseWithEmptyReplacementReturnsEmptyListAsResult()
         {
             var sut = new StatReplacingParser<string>(null, _statReplacers);
 
-            sut.TryParse("removed", out var actual, out var _);
+            var (_, _, actual) = sut.Parse("removed");
 
             CollectionAssert.IsEmpty(actual);
         }
@@ -167,45 +157,48 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void TryParseCallsInnerCorrectly(string stat, string[] expectedParts)
         {
             var innerMock = new Mock<IParser<string>>();
+            foreach (var expectedPart in expectedParts)
+            {
+                innerMock.Setup(p => p.Parse(expectedPart))
+                    .Returns(new ParseResult<string>(default, default, default));
+            }
+
             var sut = new StatReplacingParser<string>(innerMock.Object, _statReplacers);
 
-            sut.TryParse(stat, out var _, out var _);
+            sut.Parse(stat);
 
             foreach (var expectedPart in expectedParts)
             {
-                string _;
-                innerMock.Verify(p => p.TryParse(expectedPart, out _, out _));
+                innerMock.Verify(p => p.Parse(expectedPart));
             }
         }
 
         [Test]
         public void TryParseIgnoresWhitespaceRemainings()
         {
-            var innerMock = new Mock<IParser<string>>();
-            string _;
-            var remaining1 = "\t \n";
-            innerMock.Setup(p => p.TryParse("stat1", out remaining1, out _));
-            var remaining2 = "";
-            innerMock.Setup(p => p.TryParse("stat2", out remaining2, out _));
-            var remaining3 = "r3";
-            innerMock.Setup(p => p.TryParse("stat3", out remaining3, out _));
-            var sut = new StatReplacingParser<string>(innerMock.Object, _statReplacers);
+            string[] remainings = { "\t \n", "", "r3" };
+            var inner = Mock.Of<IParser<string>>(p =>
+                p.Parse("stat1") == new ParseResult<string>(default, remainings[0], default) &&
+                p.Parse("stat2") == new ParseResult<string>(default, remainings[1], default) &&
+                p.Parse("stat3") == new ParseResult<string>(default, remainings[2], default));
+            var sut = new StatReplacingParser<string>(inner, _statReplacers);
 
-            sut.TryParse("plain stat", out var actual, out var _);
+            var (_, actual, _) = sut.Parse("plain stat");
 
-            Assert.AreEqual(remaining3, actual);
+            Assert.AreEqual(remainings[2], actual);
         }
 
         [Test]
         public void TryParseMustFindFullMatchToReplaceStat()
         {
             var innerMock = new Mock<IParser<string>>();
+            innerMock.Setup(p => p.Parse("plain stat something"))
+                .Returns(new ParseResult<string>(default, default, default));
             var sut = new StatReplacingParser<string>(innerMock.Object, _statReplacers);
 
-            sut.TryParse("plain stat something", out var _, out var _);
-            
-            string _;
-            innerMock.Verify(p => p.TryParse("plain stat something", out _, out _));
+            sut.Parse("plain stat something");
+
+            innerMock.Verify(p => p.Parse("plain stat something"));
         }
     }
 }

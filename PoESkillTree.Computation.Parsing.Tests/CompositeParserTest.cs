@@ -26,7 +26,9 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var stepper = MockStepper("s", "s", stepSuccessful);
             var sut = CreateSut(stepper, null);
 
-            return sut.TryParse("", out var _, out var _);
+            var (actual, _, _) = sut.Parse("");
+
+            return actual;
         }
 
         [TestCase(true, ExpectedResult = true)]
@@ -35,33 +37,35 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var sut = SetupSequenceWithSuccessful(lastStepSuccessful, true, false);
 
-            return sut.TryParse("stat", out var _, out var _);
+            var (actual, _, _) = sut.Parse("stat0");
+
+            return actual;
         }
 
         [Test]
-        public void TryParseOutputsCorrectValuesWithSingleInnerParse()
+        public void TryParseReturnsCorrectRemainingAndStatWithSingleInnerParse()
         {
             var sut = SetupSequence(true);
 
-            sut.TryParse("stat", out var actualRemaining, out var actualResult);
+            var (_, actualRemaining, actualResult) = sut.Parse("stat0");
 
-            Assert.AreEqual("remaining", actualRemaining);
+            Assert.AreEqual("stat1", actualRemaining);
             Assert.That(actualResult, Has.Exactly(1).EqualTo(42));
         }
 
         [Test]
-        public void TryParseOutputsCorrectValuesWithSingleFailedInnerParse()
+        public void TryParseReturnsCorrectRemainingAndStatWithSingleFailedInnerParse()
         {
             var sut = SetupSequence(false);
 
-            sut.TryParse("stat", out var actualRemaining, out var actualResult);
+            var (_, actualRemaining, actualResult) = sut.Parse("stat0");
 
-            Assert.AreEqual("remaining", actualRemaining);
+            Assert.AreEqual("stat1", actualRemaining);
             CollectionAssert.IsEmpty(actualResult);
         }
 
         [Test]
-        public void TryParseOutputsCorrectValuesWithManyInnerParses()
+        public void TryParseReturnsCorrectRemainingAndStatWithManyInnerParses()
         {
             IParser<int>[] parsers =
             {
@@ -91,7 +95,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
             var sut = CreateSut(stepper, StepToParser);
 
-            sut.TryParse("1 2 3", out var actualRemaining, out var actualResult);
+            var (_, actualRemaining, actualResult) = sut.Parse("1 2 3");
 
             Assert.AreEqual("nothing", actualRemaining);
             CollectionAssert.AreEqual(new[] { 1, 2, 3 }, actualResult);
@@ -106,11 +110,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         private static IParser<int> MockConstantParser(string stat, 
             string remaining = "remaining", int result = 42, bool @return = true)
         {
-            var mock = new Mock<IParser<int>>();
-
-            mock.Setup(p => p.TryParse(stat, out remaining, out result)).Returns(@return);
-
-            return mock.Object;
+            return Mock.Of<IParser<int>>(p => p.Parse(stat) == new ParseResult<int>(@return, remaining, result));
         }
 
         private static IStepper<string> MockStepper(
@@ -173,7 +173,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
                     failureTransitions[step] = nextStep;
                 }
 
-                parsers[step] = MockConstantParser("stat", @return: parserReturn);
+                parsers[step] = MockConstantParser("stat" + step, "stat" + nextStep, @return: parserReturn);
             }
 
             var stepper = MockStepper("0", parserReturns.Count.ToString(), lastStepSuccessful, successTransitions,

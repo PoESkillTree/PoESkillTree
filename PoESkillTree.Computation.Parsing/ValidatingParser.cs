@@ -5,11 +5,11 @@ namespace PoESkillTree.Computation.Parsing
 {
     /// <inheritdoc />
     /// <summary>
-    /// Decorating parser that makes sure stats were parsed completely and remaining is always empty when 
-    /// <see cref="TryParse"/> returns true.
+    /// Decorating parser that makes sure stats were parsed completely and <see cref="ParseResult{T}.RemainingStat"/>
+    /// is always empty when <see cref="ParseResult{T}.SuccessfullyParsed"/> is true.
     /// It removes <see cref="ItemConstants.HiddenStatSuffix"/> from the decorated parser's remaining and trims it.
-    /// If remaining is still not empty, <see cref="TryParse"/> returns false even if the decorated parser returned
-    /// true.
+    /// If remaining is still not empty, <see cref="Parse"/> sets <see cref="ParseResult{T}.SuccessfullyParsed"/> to
+    /// false even if the decorated parser's was true.
     /// </summary>
     public class ValidatingParser<TResult> : IParser<TResult>
     {
@@ -20,9 +20,9 @@ namespace PoESkillTree.Computation.Parsing
             _inner = inner;
         }
 
-        public bool TryParse(string stat, out string remaining, out TResult result)
+        public ParseResult<TResult> Parse(string stat)
         {
-            var ret = _inner.TryParse(stat, out remaining, out result);
+            var (successfullyParsed, remaining, result) = _inner.Parse(stat);
 
             if (remaining.EndsWith(ItemConstants.HiddenStatSuffix, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Parsing
             }
 
             remaining = remaining.Trim();
-            return ret && remaining == string.Empty;
+            return (successfullyParsed && remaining == string.Empty, remaining, result);
         }
     }
 }

@@ -11,9 +11,10 @@ namespace PoESkillTree.Computation.Parsing
     /// <para> The <see cref="IStepper{TStep}"/> is used like a state machine. At each step, the parser for the
     /// current step is executed and the returned value is used as a (boolean) state transition.
     /// </para>
-    /// <para> The results of successful parses are added to a list that is output at the end. The output remaining of 
+    /// <para> The results of successful parses are added to a list that is returned at the end. The output remaining of 
     /// one step serves as the input stat of the next. The last step's remaining is used as the method's output.
-    /// <see cref="TryParse"/> returns true iff the Stepper ends in a success step.
+    /// <see cref="Parse"/> returns <see cref="ParseResult{T}.SuccessfullyParsed"/> iff the Stepper ends in a success
+    /// step.
     /// </para>
     /// </summary>
     public class CompositeParser<TInnerResult, TStep> : IParser<IReadOnlyList<TInnerResult>>
@@ -27,17 +28,18 @@ namespace PoESkillTree.Computation.Parsing
             _stepToParserFunc = stepToParserFunc;
         }
 
-        public bool TryParse(string stat, out string remaining, out IReadOnlyList<TInnerResult> result)
+        public ParseResult<IReadOnlyList<TInnerResult>> Parse(string stat)
         {
             var step = _stepper.InitialStep;
-            remaining = stat;
+            var remaining = stat;
             var results = new List<TInnerResult>();
             while (!_stepper.IsTerminal(step))
             {
-                IParser<TInnerResult> parser = _stepToParserFunc(step);
-                if (parser.TryParse(remaining, out remaining, out var singleResult))
+                var (innerSuccess, innerRemaining, innerResult) = _stepToParserFunc(step).Parse(remaining);
+                remaining = innerRemaining;
+                if (innerSuccess)
                 {
-                    results.Add(singleResult);
+                    results.Add(innerResult);
                     step = _stepper.NextOnSuccess(step);
                 }
                 else
@@ -46,8 +48,7 @@ namespace PoESkillTree.Computation.Parsing
                 }
             }
 
-            result = results;
-            return _stepper.IsSuccess(step);
+            return (_stepper.IsSuccess(step), remaining, results);
         }
     }
 }

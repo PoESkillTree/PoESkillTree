@@ -20,14 +20,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void SetUp()
         {
             _innerMock = new Mock<IParser<string>>();
-            var trueRemaining = TrueRemaining;
-            var trueParsed = TrueParsed;
-            var falseRemaining = FalseRemaining;
-            var falseParsed = FalseParsed;
-            _innerMock.Setup(p => p.TryParse(TrueStat, out trueRemaining, out trueParsed))
-                .Returns(true);
-            _innerMock.Setup(p => p.TryParse(FalseStat, out falseRemaining, out falseParsed))
-                .Returns(false);
+            _innerMock.Setup(p => p.Parse(TrueStat))
+                .Returns(new ParseResult<string>(true, TrueRemaining, TrueParsed));
+            _innerMock.Setup(p => p.Parse(FalseStat))
+                .Returns(new ParseResult<string>(false, FalseRemaining, FalseParsed));
             _inner = _innerMock.Object;
         }
 
@@ -47,35 +43,35 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.IsInstanceOf<IParser<int>>(sut);
         }
 
-        [Test]
-        public void TryParseReturnsTrueIfInjectedReturnsTrue()
+        [TestCase(TrueStat, ExpectedResult = true)]
+        [TestCase(FalseStat, ExpectedResult = false)]
+        public bool TryParsePassesSuccessfullyParsed(string stat)
         {
             var sut = new CachingParser<string>(_inner);
 
-            var actual = sut.TryParse(TrueStat, out var _, out var _);
+            var (actual, _, _) = sut.Parse(stat);
 
-            Assert.True(actual);
+            return actual;
         }
 
-        [Test]
-        public void TryParseReturnsFalseIfInjectedReturnsFalse()
+        [TestCase(TrueStat, ExpectedResult = TrueRemaining)]
+        public string TryParsePassesRemaining(string stat)
         {
             var sut = new CachingParser<string>(_inner);
 
-            var actual = sut.TryParse(FalseStat, out var _, out var _);
+            var (_, actual, _) = sut.Parse(stat);
 
-            Assert.False(actual);
+            return actual;
         }
 
-        [Test]
-        public void TryParseOutputsInjectedOutput()
+        [TestCase(TrueStat, ExpectedResult = TrueParsed)]
+        public string TryParsePassesResult(string stat)
         {
             var sut = new CachingParser<string>(_inner);
 
-            sut.TryParse(TrueStat, out var actualRemaining, out var actualParsed);
+            var (_, _, actual) = sut.Parse(stat);
 
-            Assert.AreEqual(TrueRemaining, actualRemaining);
-            Assert.AreEqual(TrueParsed, actualParsed);
+            return actual;
         }
 
         [Test]
@@ -83,11 +79,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var sut = new CachingParser<string>(_inner);
 
-            sut.TryParse(TrueStat, out var _, out var _);
-            sut.TryParse(TrueStat, out var _, out var _);
+            sut.Parse(TrueStat);
+            sut.Parse(TrueStat);
 
-            string _;
-            _innerMock.Verify(p => p.TryParse(TrueStat, out _, out _), Times.Once);
+            _innerMock.Verify(p => p.Parse(TrueStat), Times.Once);
         }
 
         [Test]
@@ -95,18 +90,17 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var sut = new CachingParser<string>(_inner);
 
-            sut.TryParse(TrueStat, out var _, out var _);
-            sut.TryParse(FalseStat, out var _, out var _);
-            sut.TryParse(FalseStat, out var _, out var _);
-            sut.TryParse("whatever", out var _, out var _);
-            sut.TryParse(TrueStat, out var _, out var _);
-            sut.TryParse(TrueStat, out var _, out var _);
-            sut.TryParse("whatever", out var _, out var _);
+            sut.Parse(TrueStat);
+            sut.Parse(FalseStat);
+            sut.Parse(FalseStat);
+            sut.Parse("whatever");
+            sut.Parse(TrueStat);
+            sut.Parse(TrueStat);
+            sut.Parse("whatever");
 
-            string _;
-            _innerMock.Verify(p => p.TryParse(TrueStat, out _, out _), Times.Once);
-            _innerMock.Verify(p => p.TryParse(FalseStat, out _, out _), Times.Once);
-            _innerMock.Verify(p => p.TryParse("whatever", out _, out _), Times.Once);
+            _innerMock.Verify(p => p.Parse(TrueStat), Times.Once);
+            _innerMock.Verify(p => p.Parse(FalseStat), Times.Once);
+            _innerMock.Verify(p => p.Parse("whatever"), Times.Once);
         }
     }
 }

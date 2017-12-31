@@ -5,26 +5,26 @@ namespace PoESkillTree.Computation.Parsing
     /// <summary>
     /// Generic interface for parsing stat lines.
     /// </summary>
-    /// <typeparam name="TResult">The type of parsing results</typeparam>
+    /// <typeparam name="TResult">The type of parsing results.</typeparam>
     public interface IParser<TResult>
     {
         /// <summary>
-        /// Returns true and outputs the parsing <c>result</c> if <c>stat</c> could be parsed.
+        /// If <paramref name="stat"/> was parsed successfully, the return value's 
+        /// <see cref="ParseResult{T}.SuccessfullyParsed"/> is true and <see cref="ParseResult{T}.Result"/>
+        /// contains the parsing result.
+        /// <para>If <paramref name="stat"/> could not be parsed, <see cref="ParseResult{T}.SuccessfullyParsed"/> is
+        /// false and <see cref="ParseResult{T}.Result"/> is undefined. It may be null or a partial result containing
+        /// null properties and should only be used for debugging purposes.</para>
+        /// <para><see cref="ParseResult{T}.RemainingStat"/> contains the parts of <paramref name="stat"/> that were
+        /// not parsed into <see cref="ParseResult{T}.Result"/>.</para>
         /// </summary>
         /// <param name="stat">the stat line that should be parsed</param>
-        /// <param name="remaining">the parts of <c>stat</c> that were not parsed into <c>result</c>.</param>
-        /// <param name="result">the parsing result. May be null if the function returns false.</param>
-        /// <returns>True if <c>stat</c> was parsed successfully and completely.</returns>
         /// <remarks>
-        /// If false is returned, <c>result</c> is undefined and should only be used for debugging purposes
-        /// (it may be a partial result containing null properties, it may be null).
-        /// <para>
         /// Throws <see cref="ParseException"/> if the data specification is erroneous, e.g. it tries to reference
         /// values that don't occur in the matched stat. You'll want to handle stats that throw a
         /// <see cref="ParseException"/> on being parsed like unparsable stats.
-        /// </para>
         /// </remarks>
-        bool TryParse(string stat, out string remaining, out TResult result);
+        ParseResult<TResult> Parse(string stat);
     }
 
     /// <summary>
@@ -33,22 +33,21 @@ namespace PoESkillTree.Computation.Parsing
     public interface IParser : IParser<IReadOnlyList<Modifier>>
     {
         /// <summary>
-        /// Returns true and outputs the parsed <see cref="Modifier"/>s if <c>stat</c> could be parsed.
+        /// If <paramref name="stat"/> was parsed successfully and completely, the return value's 
+        /// <see cref="ParseResult.SuccessfullyParsed"/> is true, <see cref="ParseResult.Result"/>
+        /// contains the parsing result and <see cref="ParseResult.RemainingStat"/> is empty.
+        /// <para>If <paramref name="stat"/> could not be parsed, <see cref="ParseResult.SuccessfullyParsed"/> is
+        /// false and <see cref="ParseResult.Result"/> is undefined. It may be null or contain partial
+        /// <see cref="Modifier"/>s with null properties and should only be used for debugging purposes.</para>
+        /// <para><see cref="ParseResult.RemainingStat"/> contains the parts of <paramref name="stat"/> that were
+        /// not parsed into <see cref="ParseResult.Result"/>.</para>
         /// </summary>
         /// <param name="stat">the stat line that should be parsed</param>
-        /// <param name="remaining">the parts of <c>stat</c> that were not parsed into <c>result</c>. 
-        /// Empty if true is returned.</param>
-        /// <param name="result">the parsing result. May be null if the function returns false.</param>
-        /// <returns>True if <c>stat</c> was parsed successfully and completely.</returns>
         /// <remarks>
-        /// If false is returned, <c>result</c> is undefined and should only be used for debugging purposes
-        /// (it may contain partial <see cref="Modifier"/>s with null properties, it may be null).
-        /// <para>
         /// Throws <see cref="ParseException"/> if the data specification is erroneous, e.g. it tries to reference
         /// values that don't occur in the matched stat. You'll want to handle stats that throw a
         /// <see cref="ParseException"/> on being parsed like unparsable stats.
-        /// </para>
         /// </remarks>
-        new bool TryParse(string stat, out string remaining, out IReadOnlyList<Modifier> result);
+        new ParseResult Parse(string stat);
     }
 }

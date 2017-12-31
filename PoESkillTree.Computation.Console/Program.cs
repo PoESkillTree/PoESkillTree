@@ -60,7 +60,8 @@ namespace PoESkillTree.Computation.Console
         {
             try
             {
-                if (!parser.TryParse(statLine, out var remaining, out IReadOnlyList<Modifier> result))
+                var (success, remaining, result) = parser.Parse(statLine);
+                if (!success)
                 {
                     System.Console.WriteLine($"Not recognized: '{remaining}' could not be parsed.");
                 }
@@ -79,7 +80,7 @@ namespace PoESkillTree.Computation.Console
         private static void Benchmark(IParser parser)
         {
             var stopwatch = Stopwatch.StartNew();
-            parser.TryParse("Made-up", out var _, out var _);
+            parser.Parse("Made-up");
             stopwatch.Stop();
             System.Console.WriteLine($"Initialization (parsing 1 made-up stat):\n  {stopwatch.ElapsedMilliseconds} ms");
             stopwatch.Reset();
@@ -103,7 +104,7 @@ namespace PoESkillTree.Computation.Console
                 foreach (var line in batch)
                 {
                     stopwatch.Start();
-                    var parsable = parser.TryParse(line, out var _, out var _);
+                    var (parsable, _, _) = parser.Parse(line);
                     stopwatch.Stop();
                     batchSize++;
                     if (parsable)
@@ -154,7 +155,7 @@ namespace PoESkillTree.Computation.Console
         {
             foreach (var line in ReadStatLines())
             {
-                parser.TryParse(line, out var _, out var _);
+                parser.Parse(line);
             }
         }
 

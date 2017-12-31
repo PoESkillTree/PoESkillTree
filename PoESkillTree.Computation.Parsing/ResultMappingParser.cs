@@ -19,11 +19,10 @@ namespace PoESkillTree.Computation.Parsing
             _mapper = mapper;
         }
 
-        public bool TryParse(string stat, out string remaining, out TResult result)
+        public ParseResult<TResult> Parse(string stat)
         {
-            var ret = _inner.TryParse(stat, out remaining, out var source);
-            result = _mapper(source);
-            return ret;
+            var (successfullyParsed, remaining, innerResult) = _inner.Parse(stat);
+            return (successfullyParsed, remaining, _mapper(innerResult));
         }
     }
 }

@@ -147,6 +147,7 @@
     <Compile Include="CachingParser.cs" />
     <Compile Include="ParseException.cs" />
     <Compile Include="Parser.cs" />
+    <Compile Include="ParseResult.cs" />
     <Compile Include="ResultMappingParser.cs" />
     <Compile Include="Builders\Matching\ReferenceConverter.cs" />
     <Compile Include="Referencing\IReferencedRegexes.cs" />

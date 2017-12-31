@@ -17,15 +17,12 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         [TestCase(true)]
         [TestCase(false)]
-        public void TryParsePassesReturn(bool expected)
+        public void TryParsePassesSuccessfullyParsed(bool expected)
         {
-            var innerMock = new Mock<IParser<int>>();
-            string _;
-            int innerResult;
-            innerMock.Setup(p => p.TryParse("stat", out _, out innerResult)).Returns(expected);
-            var sut = Create(innerMock.Object);
+            var inner = Mock.Of<IParser<int>>(p => p.Parse("stat") == new ParseResult<int>(expected, default, default));
+            var sut = Create(inner);
 
-            var actual = sut.TryParse("stat", out var _, out var _);
+            var (actual, _, _) = sut.Parse("stat");
 
             Assert.AreEqual(expected, actual);
         }
@@ -34,12 +31,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
         [TestCase("re mai ning")]
         public void TryParsesPassesRemaining(string expected)
         {
-            var innerMock = new Mock<IParser<int>>();
-            int _;
-            innerMock.Setup(p => p.TryParse("stat", out expected, out _));
-            var sut = Create(innerMock.Object);
+            var inner = Mock.Of<IParser<int>>(p => p.Parse("stat") == new ParseResult<int>(default, expected, default));
+            var sut = Create(inner);
 
-            sut.TryParse("stat", out var actual, out var _);
+            var (_, actual, _) = sut.Parse("stat");
 
             Assert.AreEqual(expected, actual);
         }
@@ -52,12 +47,11 @@ namespace PoESkillTree.Computation.Parsing.Tests
             string Select(int i) => (i + summand).ToString();
 
             var expected = Select(innerResult);
-            var innerMock = new Mock<IParser<int>>();
-            string _;
-            innerMock.Setup(p => p.TryParse("stat", out _, out innerResult));
-            var sut = Create(innerMock.Object, Select);
+            var inner = Mock.Of<IParser<int>>(p =>
+                p.Parse("stat") == new ParseResult<int>(default, default, innerResult));
+            var sut = Create(inner, Select);
 
-            sut.TryParse("stat", out var _, out var actual);
+            var (_, _, actual) = sut.Parse("stat");
 
             Assert.AreEqual(expected, actual);
         }

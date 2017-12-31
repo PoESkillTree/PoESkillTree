@@ -17,10 +17,10 @@ namespace PoESkillTree.Computation.Parsing
             _inner = inner;
         }
 
-        public bool TryParse(string stat, out string remaining, out TResult result)
+        public ParseResult<TResult> Parse(string stat)
         {
             var processed = Regex.Replace(stat.Trim(), @"\s+", " ");
-            return _inner.TryParse(processed, out remaining, out result);
+            return _inner.Parse(processed);
         }
     }
 }

@@ -23,9 +23,9 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test, TestCaseSource(nameof(ReadParsableStatLines))]
         public void Parses(string statLine)
         {
-            var r = _parser.TryParse(statLine, out var remaining, out var result);
+            var (success, remaining, result) = _parser.Parse(statLine);
 
-            Assert.IsTrue(r, $"{remaining}\nResult:\n  {string.Join("\n  ", result)}");
+            Assert.IsTrue(success, $"{remaining}\nResult:\n  {string.Join("\n  ", result)}");
             CollectionAssert.IsEmpty(remaining);
             foreach (var modifier in result)
             {
@@ -44,9 +44,9 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test, TestCaseSource(nameof(ReadUnparsableStatLines))]
         public void DoesNotParse(string statLine)
         {
-            var r = _parser.TryParse(statLine, out var remaining, out var result);
+            var (success, remaining, result) = _parser.Parse(statLine);
 
-            Assert.IsFalse(r, $"{remaining}\nResult:\n  {string.Join("\n  ", result)}");
+            Assert.IsFalse(success, $"{remaining}\nResult:\n  {string.Join("\n  ", result)}");
             foreach (var modifier in result)
             {
                 var s = modifier?.ToString();
@@ -83,7 +83,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test, TestCaseSource(nameof(ParsingReturnsCorrectModifiers_TestCases))]
         public IEnumerable<Modifier> ParsingReturnsCorrectModifiers(string statLine)
         {
-            _parser.TryParse(statLine, out var _, out var result);
+            var (_, _, result) = _parser.Parse(statLine);
             return result;
         }
 
@@ -141,7 +141,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                         f.StatBuilders.Pool.Life.Leech.RateLimit,
                         f.FormBuilders.PercentMore,
                         f.ValueBuilders.Create(100),
-                        f.ConditionBuilders.True), 
+                        f.ConditionBuilders.True),
                     new Modifier(
                         f.StatBuilders.Pool.Life.Regen,
                         f.FormBuilders.TotalOverride,

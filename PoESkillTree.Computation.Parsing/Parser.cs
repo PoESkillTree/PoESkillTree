@@ -38,9 +38,15 @@ namespace PoESkillTree.Computation.Parsing
             _parser = new Lazy<IParser<IReadOnlyList<Modifier>>>(CreateParser);
         }
 
-        public bool TryParse(string stat, out string remaining, out IReadOnlyList<Modifier> result)
+        public ParseResult Parse(string stat)
         {
-            return _parser.Value.TryParse(stat, out remaining, out result);
+            var (success, remaining, result) = _parser.Value.Parse(stat);
+            return new ParseResult(success, remaining, result);
+        }
+
+        ParseResult<IReadOnlyList<Modifier>> IParser<IReadOnlyList<Modifier>>.Parse(string stat)
+        {
+            return Parse(stat);
         }
 
         private IParser<IReadOnlyList<Modifier>> CreateParser()

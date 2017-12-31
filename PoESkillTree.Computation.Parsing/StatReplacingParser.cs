@@ -21,33 +21,33 @@ namespace PoESkillTree.Computation.Parsing
 
         private readonly IReadOnlyList<StatReplacerData> _statReplacerData;
 
-        private readonly RegexCache _regexCache = 
+        private readonly RegexCache _regexCache =
             new RegexCache(RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
-        public StatReplacingParser(IParser<TResult> inner, 
+        public StatReplacingParser(IParser<TResult> inner,
             IReadOnlyList<StatReplacerData> statReplacerData)
         {
             _inner = inner;
             _statReplacerData = statReplacerData;
         }
 
-        public bool TryParse(string stat, out string remaining, out IReadOnlyList<TResult> result)
+        public ParseResult<IReadOnlyList<TResult>> Parse(string stat)
         {
-            var ret = true;
-            var results = new List<TResult>();
+            var successfullyParsed = true;
             var remainings = new List<string>();
-            foreach (var subStat in GetReplacements(stat))
+            var results = new List<TResult>();
+            foreach (var replacementStat in GetReplacements(stat))
             {
-                ret &= _inner.TryParse(subStat, out var singleRemaining, out var singleResult);
-                results.Add(singleResult);
-                if (!string.IsNullOrWhiteSpace(singleRemaining))
+                var (innerSuccess, innerRemaining, innerResult) = _inner.Parse(replacementStat);
+                successfullyParsed &= innerSuccess;
+                results.Add(innerResult);
+                if (!string.IsNullOrWhiteSpace(innerRemaining))
                 {
-                    remainings.Add(singleRemaining);
+                    remainings.Add(innerRemaining);
                 }
             }
-            result = results;
-            remaining = string.Join("\n", remainings);
-            return ret;
+
+            return (successfullyParsed, string.Join("\n", remainings), results);
         }
 
         private IEnumerable<string> GetReplacements(string stat)

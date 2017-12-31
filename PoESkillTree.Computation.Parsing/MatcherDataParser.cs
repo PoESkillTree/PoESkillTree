@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Parsing
     {
         private readonly IEnumerable<MatcherData> _matcherData;
 
-        private readonly RegexCache _regexCache = 
+        private readonly RegexCache _regexCache =
             new RegexCache(RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
 
         public MatcherDataParser(IEnumerable<MatcherData> matcherData)
@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.Parsing
             _matcherData = matcherData;
         }
 
-        public bool TryParse(string stat, out string remaining, out MatcherDataParseResult result)
+        public ParseResult<MatcherDataParseResult> Parse(string stat)
         {
             var xs =
                 from matcherData in _matcherData
@@ -42,16 +42,9 @@ namespace PoESkillTree.Computation.Parsing
                 };
 
             var x = xs.FirstOrDefault();
-            if (x == null)
-            {
-                result = null;
-                remaining = stat;
-                return false;
-            }
-
-            result = new MatcherDataParseResult(x.Modifier, x.Groups);
-            remaining = x.Remaining;
-            return true;
+            return x == null
+                ? (successfullyParsed: false, remaining: stat, null)
+                : (successfullyParsed: true, remaining: x.Remaining, new MatcherDataParseResult(x.Modifier, x.Groups));
         }
 
         private static string GetRemaining(MatcherData matcherData, string stat, Match match)

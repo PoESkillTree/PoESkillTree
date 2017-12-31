@@ -40,18 +40,23 @@ namespace PoESkillTree.Computation.Parsing
             _regexGroupParser = regexGroupParser;
         }
 
-        public bool TryParse(string stat, out string remaining, out IIntermediateModifier result)
+        public ParseResult<IIntermediateModifier> Parse(string stat)
         {
-            if (!_innerParser.TryParse(stat, out remaining, out var innerResult))
+            var (successfullyParsed, remaining, innerResult) = _innerParser.Parse(stat);
+            IIntermediateModifier result;
+
+            if (successfullyParsed)
+            {
+                _groups = innerResult.RegexGroups;
+                var context = CreateContext("");
+                result = _modifierResolver.Resolve(innerResult.Modifier, context);
+            }
+            else
             {
                 result = innerResult?.Modifier;
-                return false;
             }
 
-            _groups = innerResult.RegexGroups;
-            var context = CreateContext("");
-            result = _modifierResolver.Resolve(innerResult.Modifier, context);
-            return true;
+            return (successfullyParsed, remaining, result);
         }
 
         private ResolveContext CreateContext(string groupPrefix)
