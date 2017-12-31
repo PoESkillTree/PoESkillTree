@@ -9,7 +9,7 @@ namespace PoESkillTree.Computation.Parsing.Builders.Values
     /// Implementation of <see cref="IValueBuilder" /> that overloads conditional and arithmetic operators to allow
     /// much better readable interaction with values.
     /// </summary>
-    public class ValueBuilder : IValueBuilder
+    public sealed class ValueBuilder : IValueBuilder
     {
         private readonly IValueBuilder _value;
 

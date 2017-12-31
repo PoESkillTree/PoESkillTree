@@ -61,7 +61,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
             return
                 from pair in groups
                 let groupName = pair.Key
-                where groupName.StartsWith(fullPrefix)
+                where groupName.StartsWith(fullPrefix, StringComparison.Ordinal)
                 let suffix = groupName.Substring(fullPrefix.Length)
                 where suffix.Count(c => c == GroupNamePartDelimiter) == 0 // Ignore nested values
                 let value = double.Parse(pair.Value)
@@ -74,7 +74,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
             var fullPrefix = ReferenceGroupPrefix + groupPrefix;
             return
                 from groupName in groupNames
-                where groupName.StartsWith(fullPrefix)
+                where groupName.StartsWith(fullPrefix, StringComparison.Ordinal)
                 let suffix = groupName.Substring(fullPrefix.Length)
                 let parts = suffix.Split(GroupNamePartDelimiter)
                 where parts.Length == 3 // Ignore nested values

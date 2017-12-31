@@ -24,13 +24,13 @@ namespace PoESkillTree.Computation.Parsing
         {
             var (successfullyParsed, remaining, result) = _inner.Parse(stat);
 
-            if (remaining.EndsWith(ItemConstants.HiddenStatSuffix, StringComparison.InvariantCultureIgnoreCase))
+            if (remaining.EndsWith(ItemConstants.HiddenStatSuffix, StringComparison.OrdinalIgnoreCase))
             {
                 remaining = remaining.Remove(remaining.Length - ItemConstants.HiddenStatSuffix.Length);
             }
 
             remaining = remaining.Trim();
-            return (successfullyParsed && remaining == string.Empty, remaining, result);
+            return (successfullyParsed && remaining.Length == 0, remaining, result);
         }
     }
 }

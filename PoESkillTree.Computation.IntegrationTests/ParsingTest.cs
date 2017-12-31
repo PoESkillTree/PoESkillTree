@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MoreLinq;
@@ -75,7 +76,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         private static IEnumerable<string> ReadStatLines(string fileName)
         {
             return File.ReadAllLines(TestContext.CurrentContext.TestDirectory + $"/Data/{fileName}.txt")
-                .Where(s => !s.StartsWith("//"))
+                .Where(s => !s.StartsWith("//", StringComparison.Ordinal))
                 .Distinct()
                 .Select(s => s.ToLowerInvariant());
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Parsing.Data;
 
@@ -26,7 +27,7 @@ namespace PoESkillTree.Computation.Data.Steps
             return (
                 from c in _candidates
                 let name = c.GetType().Name
-                where name.StartsWith(asString)
+                where name.StartsWith(asString, StringComparison.Ordinal)
                 orderby name.Length
                 select c
             ).First();

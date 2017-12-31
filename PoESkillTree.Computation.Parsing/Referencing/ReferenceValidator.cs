@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.Common.Utils.Extensions;
@@ -31,7 +32,8 @@ namespace PoESkillTree.Computation.Parsing.Referencing
                 var regex = new Regex(regexString);
                 foreach (var groupName in regex.GetGroupNames())
                 {
-                    if (groupName.StartsWith(ValueGroupPrefix) || groupName.StartsWith(ReferenceGroupPrefix))
+                    if (groupName.StartsWith(ValueGroupPrefix, StringComparison.Ordinal) 
+                        || groupName.StartsWith(ReferenceGroupPrefix, StringComparison.Ordinal))
                     {
                         throw new ParseException(
                             $"Regex {regexString} contains invalid group name {groupName}");
