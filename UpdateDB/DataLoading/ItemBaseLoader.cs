@@ -150,7 +150,7 @@ namespace UpdateDB.DataLoading
         private XmlItemBase PrintoutsToBase(ItemClass itemClass, JToken printouts)
         {
             // name, requirements and implicts; same for all categories
-            var implicits = PluralValue<string>(printouts, RdfImplicits).ToArray();
+            var implicits = PluralValue<string>(printouts, RdfImplicits).OrderBy(s => s).ToArray();
             var item = new XmlItemBase
             {
                 Level = SingularValue<int>(printouts, RdfLvlReq),

@@ -13,6 +13,7 @@
         Master,
         Area,
         Jewel,
+        Abyss_Jewel,
         Atlas,
     }
 }

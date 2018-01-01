@@ -96,7 +96,7 @@ namespace UpdateDB.DataLoading
 
         private static XmlUnique PrintoutsToUnique(JToken printouts)
         {
-            var explicits = PluralValue<string>(printouts, RdfExplicits).ToArray();
+            var explicits = PluralValue<string>(printouts, RdfExplicits).OrderBy(s => s).ToArray();
             var properties = new PropertyBuilder(printouts);
             if (printouts[RdfItemLimit]?.HasValues == true)
             {
