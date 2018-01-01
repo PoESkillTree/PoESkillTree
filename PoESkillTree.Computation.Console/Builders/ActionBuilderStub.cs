@@ -34,9 +34,9 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IActionBuilder By(IEntityBuilder source)
         {
-            IActionBuilder Resolve(IActionBuilder current, ResolveContext context)
+            IActionBuilder Resolve(ResolveContext context)
             {
-                var inner = _resolver(current, context);
+                var inner = _resolver(this, context);
                 return new ActionBuilderStub(
                     source.Resolve(context),
                     inner.Target,
@@ -44,14 +44,14 @@ namespace PoESkillTree.Computation.Console.Builders
                     (c, _) => c);
             }
 
-            return new ActionBuilderStub(source, Target, ToString(), Resolve);
+            return new ActionBuilderStub(source, Target, ToString(), (_, context) => Resolve(context));
         }
 
         public IActionBuilder Against(IEntityBuilder target)
         {
-            IActionBuilder Resolve(IActionBuilder current, ResolveContext context)
+            IActionBuilder Resolve(ResolveContext context)
             {
-                var inner = _resolver(current, context);
+                var inner = _resolver(this, context);
                 return new ActionBuilderStub(
                     inner.Source,
                     target.Resolve(context),
@@ -59,16 +59,16 @@ namespace PoESkillTree.Computation.Console.Builders
                     (c, _) => c);
             }
 
-            return new ActionBuilderStub(Source, target, ToString(), Resolve);
+            return new ActionBuilderStub(Source, target, ToString(), (_, context) => Resolve(context));
         }
 
         public IActionBuilder Taken
         {
             get
             {
-                IActionBuilder Resolve(IActionBuilder current, ResolveContext context)
+                IActionBuilder Resolve(ResolveContext context)
                 {
-                    var inner = _resolver(current, context);
+                    var inner = _resolver(this, context);
                     return new ActionBuilderStub(
                         inner.Target,
                         inner.Source,
@@ -76,15 +76,15 @@ namespace PoESkillTree.Computation.Console.Builders
                         (c, _) => c);
                 }
 
-                return new ActionBuilderStub(Target, Source, ToString(), Resolve);
+                return new ActionBuilderStub(Target, Source, ToString(), (_, context) => Resolve(context));
             }
         }
 
         public IActionBuilder With(IDamageTypeBuilder damageType)
         {
-            IActionBuilder Resolve(IActionBuilder current, ResolveContext context)
+            IActionBuilder Resolve(ResolveContext context)
             {
-                var inner = _resolver(current, context);
+                var inner = _resolver(this, context);
                 return new ActionBuilderStub(
                     inner.Source,
                     inner.Target,
@@ -92,7 +92,8 @@ namespace PoESkillTree.Computation.Console.Builders
                     (c, _) => c);
             }
 
-            return new ActionBuilderStub(Target, Source, $"{this} (with {damageType} damage)", Resolve);
+            return new ActionBuilderStub(
+                Source, Target, $"{this} (with {damageType} damage)", (_, context) => Resolve(context));
         }
 
         public IConditionBuilder On() =>

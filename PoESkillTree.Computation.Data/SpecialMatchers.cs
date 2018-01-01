@@ -158,12 +158,12 @@ namespace PoESkillTree.Computation.Data
                 {
                     "for each element you've been hit by damage of recently, " +
                     "#% increased damage of that element",
-                    ParagonOfCalamity(PercentIncrease, Damage).ToArray()
+                    ParagonOfCalamityDamage().ToArray()
                 },
                 {
                     "for each element you've been hit by damage of recently, " +
                     "#% reduced damage taken of that element",
-                    ParagonOfCalamity(PercentReduce, Damage.Taken).ToArray()
+                    ParagonOfCalamityDamageTaken().ToArray()
                 },
                 // - Necromancer
                 {
@@ -249,11 +249,20 @@ namespace PoESkillTree.Computation.Data
         }
 
         private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat, IConditionBuilder condition)>
-            ParagonOfCalamity(IFormBuilder form, IStatBuilder stat)
+            ParagonOfCalamityDamage()
         {
             foreach (var type in ElementalDamageTypes)
             {
-                yield return (form, Value, stat, And(type.Damage.With(), Hit.With(type).Taken.Recently));
+                yield return (PercentIncrease, Value, type.Damage, Hit.With(type).Taken.Recently);
+            }
+        }
+
+        private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat, IConditionBuilder condition)>
+            ParagonOfCalamityDamageTaken()
+        {
+            foreach (var type in ElementalDamageTypes)
+            {
+                yield return (PercentReduce, Value, type.Damage.Taken, Hit.With(type).Taken.Recently);
             }
         }
     }

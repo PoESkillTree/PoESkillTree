@@ -7,6 +7,7 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Console;
 using PoESkillTree.Computation.Console.Builders;
 using PoESkillTree.Computation.Parsing;
+using PoESkillTree.Computation.Parsing.Builders.Damage;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {
@@ -91,6 +92,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         private static IEnumerable<TestCaseData> ParsingReturnsCorrectModifiers_TestCases()
         {
             var f = new BuilderFactories();
+
             yield return new TestCaseData("+10 to Dexterity").Returns(new[]
             {
                 new Modifier(
@@ -99,6 +101,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     f.ValueBuilders.Create(10),
                     f.ConditionBuilders.True)
             });
+
             yield return new TestCaseData("Gain 30 Mana per Grand Spectrum").Returns(new[]
             {
                 new Modifier(
@@ -112,6 +115,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     f.ValueBuilders.Create(30).Multiply(f.StatBuilders.GrandSpectrumJewelsSocketed.Value),
                     f.ConditionBuilders.True),
             });
+
             yield return new TestCaseData(
                     "With 5 Corrupted Items Equipped: 50% of Chaos Damage does not bypass Energy Shield, and 50% of Physical Damage bypasses Energy Shield")
                 .Returns(new[]
@@ -129,6 +133,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                         f.ValueBuilders.Create(50),
                         f.EquipmentBuilders.Equipment.Count(e => e.IsCorrupted) >= 5)
                 });
+
             yield return new TestCaseData(
                     "Life Leeched per Second is doubled.\nMaximum Life Leech Rate is doubled.\nLife Regeneration has no effect.")
                 .Returns(new[]
@@ -147,6 +152,33 @@ namespace PoESkillTree.Computation.IntegrationTests
                         f.StatBuilders.Pool.Life.Regen,
                         f.FormBuilders.TotalOverride,
                         f.ValueBuilders.Create(0),
+                        f.ConditionBuilders.True)
+                });
+
+            Modifier ParagonOfCalamityFor(IDamageTypeBuilder damageType) =>
+                new Modifier(
+                    damageType.Damage.Taken,
+                    f.FormBuilders.PercentReduce,
+                    f.ValueBuilders.Create(8),
+                    f.ActionBuilders.Hit.With(damageType).Taken.Recently);
+
+            yield return new TestCaseData(
+                    "For each Element you've been hit by Damage of Recently, 8% reduced Damage taken of that Element")
+                .Returns(new[]
+                {
+                    ParagonOfCalamityFor(f.DamageTypeBuilders.Fire),
+                    ParagonOfCalamityFor(f.DamageTypeBuilders.Lightning),
+                    ParagonOfCalamityFor(f.DamageTypeBuilders.Cold),
+                });
+
+            yield return new TestCaseData(
+                    "Auras you Cast grant 3% increased Attack and Cast Speed to you and Allies")
+                .Returns(new[]
+                {
+                    new Modifier(
+                        f.SkillBuilders.Skills.Speed.AddTo(f.SkillBuilders.Skills[f.KeywordBuilders.Aura]),
+                        f.FormBuilders.PercentIncrease,
+                        f.ValueBuilders.Create(3),
                         f.ConditionBuilders.True)
                 });
         }
