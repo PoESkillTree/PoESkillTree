@@ -90,7 +90,7 @@ Note: Both these options require that you can access the official Path of Exile 
 ## Information for contributors
 
 * The code requires Visual Studio 2017 to be compiled and run
-* It is compiled to .NET 4.5 using C# 7
+* It is compiled to .NET 4.5.2 using C# 7.2
 * To run the batch scripts in WPFSKillTree (and by extension, compile the code in Run configuration), your Visual Studio installation's Common7/Tools/ folder must be added to the PATH environment variable
 
 ## Credits
