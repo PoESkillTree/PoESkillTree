@@ -607,10 +607,10 @@ namespace POESKillTree.ViewModels.Builds
             }
             else if (_clipboardIsCopy)
             {
-                var newBuild = _buildClipboard.Build.DeepClone() as PoEBuild;
-                if (newBuild == null)
+                if (!(_buildClipboard.Build is PoEBuild oldBuild))
                     throw new InvalidOperationException("Can only copy builds, not folders.");
-                newBuild.Name = Util.FindDistinctName(newBuild.Name, targetFolder.Children.Select(b => b.Build.Name));
+                var newName = Util.FindDistinctName(oldBuild.Name, targetFolder.Children.Select(b => b.Build.Name));
+                var newBuild = PoEBuild.CreateNotRevertableCopy(oldBuild, newName);
                 pasted = new BuildViewModel(newBuild, Filter);
             }
             else
