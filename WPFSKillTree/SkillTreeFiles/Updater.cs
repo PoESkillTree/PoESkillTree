@@ -20,7 +20,7 @@ namespace POESKillTree.SkillTreeFiles
     public class Updater
     {
         // Git API URL to fetch releases (the first one is latest one).
-        private static readonly string GitAPILatestReleaseURL = "https://api.github.com/repos/EmmittJ/PoESkillTree/releases";
+        private static readonly string GitAPILatestReleaseURL = "https://api.github.com/repos/PoESkillTree/PoESkillTree/releases";
         // The language value name of Uninstall registry key.
         private const string InnoSetupUninstallLanguageValue = "Inno Setup: Language";
         // The suffix added to AppId to form Uninstall registry key for an application.
@@ -34,7 +34,7 @@ namespace POESKillTree.SkillTreeFiles
         // Latest release.
         private static Release Latest;
         // Asset content type of package.
-        private const string PackageContentType = "application/octet-stream";
+        private const string PackageContentType = "application/x-msdownload";
         // Regular expression for a released package file name.
         private static readonly Regex RePackage = new Regex(@".*\.exe$", RegexOptions.IgnoreCase);
         // HTTP request timeout for release checks and downloads (in seconds).
