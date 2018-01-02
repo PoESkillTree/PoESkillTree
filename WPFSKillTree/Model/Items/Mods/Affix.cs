@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using MB.Algodat;
-using MoreLinq;
 
 namespace POESKillTree.Model.Items.Mods
 {
@@ -91,21 +90,19 @@ namespace POESKillTree.Model.Items.Mods
             return _trees[valueIndex].Query(value).Select(mw => mw.Mod);
         }
 
-        public IEnumerable<IMod> QueryMods(IEnumerable<int> values)
+        public IEnumerable<IMod> QueryMods(IEnumerable<(int valueIndex, int value)> values)
         {
             if (!_trees.Any())
             {
                 return Enumerable.Empty<IMod>();
             }
+
             // for each value: query matching tiers
-            return values.EquiZip(_trees, QueryForTree)
+            return values.Select(t => QueryModsSingleValue(t.valueIndex, t.value))
                 // aggregate to keep only tiers that match all values of all stats
                 .Aggregate((a, n) => a.Intersect(n))
                 .OrderBy(m => m.RequiredLevel);
         }
-
-        private static IEnumerable<IMod> QueryForTree(int value, IRangeTree<int, ModWrapper> tree)
-            => tree.Query(value).Select(w => w.Mod);
 
         public IReadOnlyList<Range<int>> GetRanges(int valueIndex)
             => _ranges[valueIndex];
