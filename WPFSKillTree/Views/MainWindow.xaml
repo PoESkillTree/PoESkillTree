@@ -660,13 +660,13 @@
                         </Label.ToolTip>
                     </Label>
                     <Label Content="/" Margin="-5,0,-5,0" Opacity="0.5" FontSize="14"/>
-                    <Label Content="123" Margin="0,0,0,0" x:Name="NormalTotalPoints" Opacity="0.50" FontSize="14"
+                    <Label Content="124" Margin="0,0,0,0" x:Name="NormalTotalPoints" Opacity="0.50" FontSize="14"
                            Width="34" HorizontalContentAlignment="Right">
                         <Label.ToolTip>
                             <l:Catalog Message="Total Passive Skill Points"/>
                         </Label.ToolTip>
                     </Label>
-                    <Label Content="[6]" Margin="-5,0,0,0" x:Name="AscendancyTotalPoints" Opacity="0.50" FontSize="14">
+                    <Label Content="[8]" Margin="-5,0,0,0" x:Name="AscendancyTotalPoints" Opacity="0.50" FontSize="14">
                         <Label.ToolTip>
                             <l:Catalog Message="Total Ascendancy Skill Points"/>
                         </Label.ToolTip>

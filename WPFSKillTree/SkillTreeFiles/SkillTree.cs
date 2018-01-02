@@ -486,7 +486,7 @@ namespace POESKillTree.SkillTreeFiles
             Dictionary<string, int> points = new Dictionary<string, int>()
             {
                 {"NormalUsed", 0},
-                {"NormalTotal", 21},
+                {"NormalTotal", 22},
                 {"AscendancyUsed", 0},
                 {"AscendancyTotal", 8},
                 {"ScionAscendancyChoices", 0}
