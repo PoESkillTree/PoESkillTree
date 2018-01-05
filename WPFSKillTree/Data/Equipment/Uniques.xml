@@ -3078,13 +3078,6 @@
     </Explicit>
     <Properties />
   </Unique>
-  <Unique Name="Band of the Victor" Level="1" DropDisabled="true" BaseMetadataId="Metadata/Items/Rings/RingVictor1">
-    <Explicit>
-      <string>AvoidStunUniqueRingVictors</string>
-      <string>ElementalDamageUniqueRingVictors</string>
-    </Explicit>
-    <Properties />
-  </Unique>
   <Unique Name="Berek's Grip" Level="20" BaseMetadataId="Metadata/Items/Rings/Ring13">
     <Explicit>
       <string>AddedLightningDamageUniqueRing19</string>

@@ -33,6 +33,8 @@ namespace POESKillTree.Model.Items.Mods
 
         private readonly IRangeTree<int, ModWrapper>[] _trees;
 
+        private readonly IEnumerable<IMod> _allMods;
+
         public Affix()
             : this(new IMod[0])
         {
@@ -83,6 +85,8 @@ namespace POESKillTree.Model.Items.Mods
                 _trees[i] = new RangeTree<int, ModWrapper>(wrapper, comparer);
                 _ranges[i] = wrapper.Select(w => w.Range).ToList();
             }
+
+            _allMods = mods.ToList();
         }
 
         public IEnumerable<IMod> QueryModsSingleValue(int valueIndex, int value)
@@ -100,7 +104,7 @@ namespace POESKillTree.Model.Items.Mods
             // for each value: query matching tiers
             return values.Select(t => QueryModsSingleValue(t.valueIndex, t.value))
                 // aggregate to keep only tiers that match all values of all stats
-                .Aggregate((a, n) => a.Intersect(n))
+                .Aggregate(_allMods, (a, n) => a.Intersect(n))
                 .OrderBy(m => m.RequiredLevel);
         }
 
