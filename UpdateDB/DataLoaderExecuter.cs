@@ -70,6 +70,8 @@ namespace UpdateDB
 
             // The Affix file is big enough to be starved by other requests sometimes.
             _httpClient.Timeout = TimeSpan.FromSeconds(120);
+            _httpClient.DefaultRequestHeaders.Add("User-Agent",
+                "PoESkillTree UpdateDB (https://github.com/PoESkillTree/PoESkillTree/tree/master/UpdateDB)");
         }
 
         /// <summary>

@@ -233,6 +233,8 @@
     <Compile Include="Model\Items\Enums\Tags.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
     <Compile Include="Model\Items\StatTranslation\Translation.cs" />
+    <Compile Include="Utils\WikiApi\CargoConstants.cs" />
+    <Compile Include="Utils\WikiApi\WhereBuilder.cs" />
     <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
     <Compile Include="Utils\Wpf\ScrollViewerBindableOffsetBehavior.cs" />
     <Compile Include="ViewModels\Crafting\AbstractCraftingViewModel.cs" />

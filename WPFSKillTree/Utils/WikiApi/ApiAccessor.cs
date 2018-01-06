@@ -17,12 +17,6 @@ namespace POESKillTree.Utils.WikiApi
     /// <summary>
     /// Provides access to the wiki's API.
     /// </summary>
-    /// <remarks>
-    /// Some RDF predicates for items are stored in <see cref="ItemRdfPredicates"/>. Those can be used in the
-    /// conditions and printouts for <see cref="AskArgs"/> and <see cref="Ask"/>.
-    /// 
-    /// To build the conditions, you can use <see cref="ConditionBuilder"/>.
-    /// </remarks>
     public class ApiAccessor
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ApiAccessor));
@@ -37,26 +31,40 @@ namespace POESKillTree.Utils.WikiApi
         }
 
         /// <summary>
-        /// Queries the API using the askargs action.
+        /// Queries the API using the cargoquery action.
         /// </summary>
-        /// <param name="conditions">the query conditions. A retrieved subject must satisfy all of them.</param>
-        /// <param name="printouts">the query printouts. These are the RDF predicates retrieved for each subject.
-        /// </param>
-        /// <returns>A task that returns an enumerable of the printouts of all subjects matching the conditions.
-        /// </returns>
-        /// <remarks>
-        /// Supports more conditions and printouts than args. Does not support disjunctions in conditions.
-        /// </remarks>
-        public async Task<IEnumerable<JToken>> AskArgs(IEnumerable<string> conditions, IEnumerable<string> printouts)
+        public async Task<IEnumerable<JToken>> CargoQuery(
+            IEnumerable<string> tables, IEnumerable<string> fields, string where, string joinOn = "")
         {
-            var queryString = new StringBuilder();
-            queryString.Append("&action=askargs");
-            queryString.Append("&conditions=");
-            queryString.Append(string.Join("|", conditions));
-            queryString.Append("&printouts=");
-            queryString.Append(string.Join("|", printouts));
-            queryString.Append("&parameters=limit=200");
-            return await AskApi(queryString.ToString());
+            var uri = BuildCargoQueryUri(tables, fields, where, joinOn);
+            try
+            {
+                var json = JObject.Parse(await _httpClient.GetStringAsync(uri).ConfigureAwait(false));
+                LogWarnings(json, uri);
+                if (!LogErrors(json, uri))
+                {
+                    return json["cargoquery"].Select(j => j["title"]).ToList();
+                }
+                return Enumerable.Empty<JToken>();
+            }
+            catch (JsonException e)
+            {
+                Log.Error($"Retrieving cargoquery results from {uri} failed", e);
+                return Enumerable.Empty<JToken>();
+            }
+        }
+
+        private static string BuildCargoQueryUri(
+            IEnumerable<string> tables, IEnumerable<string> fields, string where, string joinOn)
+        {
+            var queryString = new StringBuilder()
+                .Append("&action=cargoquery")
+                .Append("&limit=500")
+                .Append("&tables=").Append(string.Join(",", tables))
+                .Append("&fields=").Append(string.Join(",", fields.Select(s => s.Replace(' ', '_'))))
+                .Append("&where=").Append(where)
+                .Append("&join_on=").Append(joinOn);
+            return BaseUri + queryString;
         }
 
         /// <summary>
@@ -210,8 +218,7 @@ namespace POESKillTree.Utils.WikiApi
 
         private static bool LogErrors(JObject json, string uri)
         {
-            JToken errorToken;
-            if (json.TryGetValue("error", out errorToken))
+            if (json.TryGetValue("error", out var errorToken))
             {
                 var code = errorToken.Value<string>("code");
                 if (code != null)
@@ -229,11 +236,9 @@ namespace POESKillTree.Utils.WikiApi
 
         private static void LogWarnings(JObject json, string uri)
         {
-            JToken warningsToken;
-            if (json.TryGetValue("warnings", out warningsToken))
+            if (json.TryGetValue("warnings", out var warningsToken))
             {
-                var warnings = warningsToken as JContainer;
-                if (warnings != null)
+                if (warningsToken is JContainer warnings)
                 {
                     Log.Warn($"Api returned warnings for uri {uri}:");
                     // e.g. warnings.main.warnings.Value is the path to the first warning string
