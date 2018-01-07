@@ -234,7 +234,6 @@
     <Compile Include="Model\Items\IItemBase.cs" />
     <Compile Include="Model\Items\StatTranslation\Translation.cs" />
     <Compile Include="Utils\WikiApi\CargoConstants.cs" />
-    <Compile Include="Utils\WikiApi\WhereBuilder.cs" />
     <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
     <Compile Include="Utils\Wpf\ScrollViewerBindableOffsetBehavior.cs" />
     <Compile Include="ViewModels\Crafting\AbstractCraftingViewModel.cs" />
@@ -272,9 +271,7 @@
     <Compile Include="Model\Items\XmlUniqueList.cs" />
     <Compile Include="Utils\Extensions\NumberExtensions.cs" />
     <Compile Include="Utils\WikiApi\ApiAccessor.cs" />
-    <Compile Include="Utils\WikiApi\ConditionBuilder.cs" />
     <Compile Include="Utils\WikiApi\PoolingImageLoader.cs" />
-    <Compile Include="Utils\WikiApi\ItemRdfPredicates.cs" />
     <Compile Include="Utils\WikiApi\WikiApiUtils.cs" />
     <Compile Include="SkillTreeFiles\Class.cs" />
     <Compile Include="SkillTreeFiles\IAscendancyClasses.cs" />

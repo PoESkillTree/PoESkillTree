@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
-using MoreLinq;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Model.Items;
-using POESKillTree.Utils.WikiApi;
 using static POESKillTree.Utils.WikiApi.CargoConstants;
 
 namespace UpdateDB.DataLoading
@@ -18,11 +16,9 @@ namespace UpdateDB.DataLoading
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(UniqueLoader));
 
-        private const string PageNameAlias = "page_title";
-
         private static readonly IReadOnlyList<string> Fields = new[]
         {
-            Name, BaseItemId, RequiredLevel, ExplicitMods, DropEnabled, $"{ItemTableName}.{PageName}={PageNameAlias}"
+            Name, BaseItemId, RequiredLevel, ExplicitMods, DropEnabled
         };
 
         private static readonly IReadOnlyList<string> JewelFields = Fields.Concat(new[]
@@ -70,33 +66,33 @@ namespace UpdateDB.DataLoading
         private Task<IEnumerable<JToken>> QueryApiAsync(string wikiClass)
         {
             string[] tables = { ItemTableName };
-            var whereBuilder = new WhereBuilder()
-                .Add(Rarity, "Unique")
-                .Add(ItemClass, wikiClass);
-            return WikiApiAccessor.CargoQuery(tables, Fields, whereBuilder.ToString());
+            var where = GetWhereClause(wikiClass);
+            return WikiApiAccessor.CargoQueryAsync(tables, Fields, where);
         }
 
         private Task<IEnumerable<JToken>> QueryApiForJewelsAsync()
         {
             string[] tables = { ItemTableName, JewelTableName };
-            var whereBuilder = new WhereBuilder()
-                .Add(Rarity, "Unique")
-                .Add(ItemClass, JewelClass);
+            var where = GetWhereClause(JewelClass);
             var joinOn = $"{ItemTableName}.{PageName}={JewelTableName}.{PageName}";
-            return WikiApiAccessor.CargoQuery(tables, JewelFields, whereBuilder.ToString(), joinOn);
+            return WikiApiAccessor.CargoQueryAsync(tables, JewelFields, where, joinOn);
+        }
+
+        private static string GetWhereClause(string wikiClass)
+        {
+            return $"{Rarity}='Unique' AND {ItemClass}='{wikiClass}'";
         }
 
         private static IEnumerable<XmlUnique> ReadJson(string wikiClass, IEnumerable<JToken> results)
         {
-            var enumerable =
+            List<XmlUnique> uniques = (
                 from result in results
-                let pageName = result.Value<string>(PageNameAlias)
                 let unique = PrintoutsToUnique(result)
                 orderby unique.Name
-                select new {pageName, unique};
-            var ret = enumerable.DistinctBy(x => x.pageName).Select(x => x.unique).ToList();
-            Log.Info($"Retrieved {ret.Count} uniques of class {wikiClass}.");
-            return ret;
+                select unique
+            ).ToList();
+            Log.Info($"Retrieved {uniques.Count} uniques of class {wikiClass}.");
+            return uniques;
         }
 
         private static XmlUnique PrintoutsToUnique(JToken printouts)

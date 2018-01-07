@@ -5,8 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using log4net;
-using static POESKillTree.Utils.WikiApi.ItemRdfPredicates;
-using static POESKillTree.Utils.WikiApi.WikiApiUtils;
 
 namespace POESKillTree.Utils.WikiApi
 {
@@ -25,7 +23,7 @@ namespace POESKillTree.Utils.WikiApi
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(PoolingImageLoader));
 
-        // with more the queries for the 'ask' action are getting to big
+        // with more the queries for the 'cargoquery' action are getting to big
         private const int MaxBatchSize = 10;
         private static readonly TimeSpan MaxWaitTime = TimeSpan.FromMilliseconds(100);
         private static readonly TimeSpan InfiniteWaitTime = TimeSpan.FromMilliseconds(-1);
@@ -92,11 +90,8 @@ namespace POESKillTree.Utils.WikiApi
             {
                 var nameToItem = pool.ToDictionary(p => p.ItemName);
                 // retrieve urls of the items' icons
-                var conditions = new ConditionBuilder
-                {
-                    {RdfName, string.Join("||", pool.Select(p => p.ItemName))}
-                };
-                var imageInfo = await _apiAccessor.AskAndQueryImageInforUrls(conditions).ConfigureAwait(false);
+                var where = string.Join(" OR ", pool.Select(p => $"{CargoConstants.Name}='{p.ItemName}'"));
+                var imageInfo = await _apiAccessor.GetItemImageInfosAsync(where).ConfigureAwait(false);
 
                 // download and save icons
                 var saveTasks = new List<Task>();
@@ -135,7 +130,7 @@ namespace POESKillTree.Utils.WikiApi
             try
             {
                 var imgData = await _httpClient.GetByteArrayAsync(url).ConfigureAwait(false);
-                SaveImage(imgData, item.FileName, true);
+                WikiApiUtils.SaveImage(imgData, item.FileName, true);
                 Log.Info($"Downloaded item image for {item.ItemName} to the file system.");
                 item.Tcs.SetResult(item.ItemName);
             }

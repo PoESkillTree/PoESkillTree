@@ -17,6 +17,7 @@
         public const string DropEnabled = "drop enabled";
         public const string Rarity = "rarity";
         public const string ItemClass = "class";
+        public const string InventoryIcon = "inventory icon";
         
         public const string JewelTableName = "jewels";
 
