@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using MB.Algodat;
-using MoreLinq;
 
 namespace POESKillTree.Model.Items.Mods
 {
@@ -33,6 +32,8 @@ namespace POESKillTree.Model.Items.Mods
         private readonly IReadOnlyList<Range<int>>[] _ranges;
 
         private readonly IRangeTree<int, ModWrapper>[] _trees;
+
+        private readonly IEnumerable<IMod> _allMods;
 
         public Affix()
             : this(new IMod[0])
@@ -84,6 +85,8 @@ namespace POESKillTree.Model.Items.Mods
                 _trees[i] = new RangeTree<int, ModWrapper>(wrapper, comparer);
                 _ranges[i] = wrapper.Select(w => w.Range).ToList();
             }
+
+            _allMods = mods.ToList();
         }
 
         public IEnumerable<IMod> QueryModsSingleValue(int valueIndex, int value)
@@ -91,21 +94,19 @@ namespace POESKillTree.Model.Items.Mods
             return _trees[valueIndex].Query(value).Select(mw => mw.Mod);
         }
 
-        public IEnumerable<IMod> QueryMods(IEnumerable<int> values)
+        public IEnumerable<IMod> QueryMods(IEnumerable<(int valueIndex, int value)> values)
         {
             if (!_trees.Any())
             {
                 return Enumerable.Empty<IMod>();
             }
+
             // for each value: query matching tiers
-            return values.EquiZip(_trees, QueryForTree)
+            return values.Select(t => QueryModsSingleValue(t.valueIndex, t.value))
                 // aggregate to keep only tiers that match all values of all stats
-                .Aggregate((a, n) => a.Intersect(n))
+                .Aggregate(_allMods, (a, n) => a.Intersect(n))
                 .OrderBy(m => m.RequiredLevel);
         }
-
-        private static IEnumerable<IMod> QueryForTree(int value, IRangeTree<int, ModWrapper> tree)
-            => tree.Query(value).Select(w => w.Mod);
 
         public IReadOnlyList<Range<int>> GetRanges(int valueIndex)
             => _ranges[valueIndex];

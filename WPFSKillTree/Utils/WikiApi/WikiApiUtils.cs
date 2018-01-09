@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using Newtonsoft.Json.Linq;
 using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Utils.WikiApi
@@ -14,46 +12,6 @@ namespace POESKillTree.Utils.WikiApi
         /// The factor by which item images from the Wiki have to be resized to fit into the inventory/stash slots.
         /// </summary>
         private const double ItemImageResizeFactor = 0.6;
-
-        /// <summary>
-        /// Returns the singular value of the predicate in the printouts.
-        /// </summary>
-        public static T SingularValue<T>(JToken printouts, string rdfPredicate)
-        {
-            return printouts[rdfPredicate].First.Value<T>();
-        }
-
-        /// <summary>
-        /// Returns the singular boolean value of the predicate in the printouts.
-        /// </summary>
-        public static bool SingularBool(JToken printouts, string rdfPredicate, bool defaultValue)
-        {
-            var token = printouts[rdfPredicate];
-            if (!token.HasValues)
-            {
-                return defaultValue;
-            }
-            var value = token.First.Value<string>();
-            return value == "t";
-        }
-
-        /// <summary>
-        /// Returns the singular value of the predicate in the printouts or <paramref name="defaultValue"/> if the
-        /// predicate is not in the printouts.
-        /// </summary>
-        public static T SingularValue<T>(JToken printouts, string rdfPredicate, T defaultValue)
-        {
-            var token = printouts[rdfPredicate];
-            return token.HasValues ? token.First.Value<T>() : defaultValue;
-        }
-
-        /// <summary>
-        /// Returns the plural value of the predicate in the printouts.
-        /// </summary>
-        public static IEnumerable<T> PluralValue<T>(JToken printouts, string rdfPredicate)
-        {
-            return printouts[rdfPredicate].Values<T>();
-        }
 
         /// <summary>
         /// Saves the image to a file.

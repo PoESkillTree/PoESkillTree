@@ -20,7 +20,7 @@ namespace POESKillTree.Model.Items.Mods
         /// </summary>
         private static readonly ISet<string> IgnoredMasterCraftedGroups = new HashSet<string>
         {
-            "DefencesPercent"
+            "DefencesPercent", "BaseLocalDefences"
         };
 
         public string Id { get; }

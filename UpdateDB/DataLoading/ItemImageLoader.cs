@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using log4net;
 using POESKillTree.Utils.WikiApi;
 
-using static POESKillTree.Utils.WikiApi.ItemRdfPredicates;
-
 namespace UpdateDB.DataLoading
 {
     /// <summary>
@@ -47,12 +45,9 @@ namespace UpdateDB.DataLoading
         private async Task ReadJson(string wikiClass)
         {
             // for items that have the given class ...
-            var conditions = new ConditionBuilder
-            {
-                {RdfItemClass, wikiClass}
-            };
+            var where = $"{CargoConstants.ItemClass}='{wikiClass}'";
             // ... retrieve name and the icon url
-            var task = WikiApiAccessor.AskAndQueryImageInforUrls(conditions);
+            var task = WikiApiAccessor.GetItemImageInfosAsync(where);
             var results = (await task).ToList();
 
             // download the images from the urls and save them

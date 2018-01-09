@@ -264,6 +264,17 @@ namespace POESKillTree.Model.Builds
             IsDirty = false;
         }
 
+        /// <summary>
+        /// Creates a copy of <paramref name="toCopy"/> with the given name that is dirty but can not be reverted.
+        /// </summary>
+        public static PoEBuild CreateNotRevertableCopy(PoEBuild toCopy, string newName)
+        {
+            var copy = toCopy.DeepClone();
+            copy.Name = newName;
+            copy._memento = null;
+            return copy;
+        }
+
         protected override Notifier SafeMemberwiseClone()
         {
             var o = (PoEBuild) base.SafeMemberwiseClone();

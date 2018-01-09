@@ -361,7 +361,7 @@ namespace POESKillTree.Model.Items
                     CraftedMods.Add(ItemModFromString(FixOldRanges(s), ModLocation.Crafted));
                 }
 
-            if (val["flavourText"] != null)
+            if (val["flavourText"] != null && val["flavourText"].HasValues)
                 FlavourText = string.Join("\r\n", val["flavourText"].Values<string>().Select(s => s.Replace("\r", "")));
 
             var sockets = new List<int>();

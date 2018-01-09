@@ -555,7 +555,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
             Action<GeneratorTabViewModel> runCallback)
             : base(tree, dialogCoordinator, dialogContext, 3, runCallback)
         {
-            AdditionalPoints = new LeafSetting<int>(nameof(AdditionalPoints), 21,
+            AdditionalPoints = new LeafSetting<int>(nameof(AdditionalPoints), 22,
                 () => TotalPoints = Tree.Level - 1 + AdditionalPoints.Value);
             TotalPoints = Tree.Level - 1 + AdditionalPoints.Value;
             TreePlusItemsMode = new LeafSetting<bool>(nameof(TreePlusItemsMode), false);

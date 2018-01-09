@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -9,20 +8,11 @@ using MoreLinq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-using static POESKillTree.Utils.WikiApi.ItemRdfPredicates;
-using static POESKillTree.Utils.WikiApi.WikiApiUtils;
-
 namespace POESKillTree.Utils.WikiApi
 {
     /// <summary>
     /// Provides access to the wiki's API.
     /// </summary>
-    /// <remarks>
-    /// Some RDF predicates for items are stored in <see cref="ItemRdfPredicates"/>. Those can be used in the
-    /// conditions and printouts for <see cref="AskArgs"/> and <see cref="Ask"/>.
-    /// 
-    /// To build the conditions, you can use <see cref="ConditionBuilder"/>.
-    /// </remarks>
     public class ApiAccessor
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ApiAccessor));
@@ -37,80 +27,74 @@ namespace POESKillTree.Utils.WikiApi
         }
 
         /// <summary>
-        /// Queries the API using the askargs action.
+        /// Queries the API using the cargoquery action.
         /// </summary>
-        /// <param name="conditions">the query conditions. A retrieved subject must satisfy all of them.</param>
-        /// <param name="printouts">the query printouts. These are the RDF predicates retrieved for each subject.
-        /// </param>
-        /// <returns>A task that returns an enumerable of the printouts of all subjects matching the conditions.
-        /// </returns>
-        /// <remarks>
-        /// Supports more conditions and printouts than args. Does not support disjunctions in conditions.
-        /// </remarks>
-        public async Task<IEnumerable<JToken>> AskArgs(IEnumerable<string> conditions, IEnumerable<string> printouts)
+        public async Task<IEnumerable<JToken>> CargoQueryAsync(
+            IEnumerable<string> tables, IEnumerable<string> fields, string where, string joinOn = "")
         {
-            var queryString = new StringBuilder();
-            queryString.Append("&action=askargs");
-            queryString.Append("&conditions=");
-            queryString.Append(string.Join("|", conditions));
-            queryString.Append("&printouts=");
-            queryString.Append(string.Join("|", printouts));
-            queryString.Append("&parameters=limit=200");
-            return await AskApi(queryString.ToString());
-        }
-
-        /// <summary>
-        /// Queries the API using the args action.
-        /// </summary>
-        /// <param name="conditions">the query conditions. A retrieved subject must satisfy all of them.</param>
-        /// <param name="printouts">the query printouts. These are the RDF properties retrieved for each subject.
-        /// </param>
-        /// <returns>A task that returns an enumerable of the printouts of all subjects matching the conditions.
-        /// </returns>
-        /// <remarks>
-        /// Only supports short queries (combination of conditions and printouts). Does support disjunctions in
-        /// conditions.
-        /// </remarks>
-        public async Task<IEnumerable<JToken>> Ask(IEnumerable<string> conditions, IEnumerable<string> printouts)
-        {
-            var queryString = new StringBuilder();
-            queryString.Append("&action=ask");
-            queryString.Append("&query=");
-            conditions.Select(s => $"[[{s}]]").ForEach(s => queryString.Append(s));
-            printouts.Select(s => $"|?{s}").ForEach(s => queryString.Append(s));
-            queryString.Append("|limit=200");
-            return await AskApi(queryString.ToString());
-        }
-
-        private async Task<IEnumerable<JToken>> AskApi(string queryString)
-        {
-            var initialUri = BaseUri + queryString;
-            var uri = initialUri;
+            var enumeratedTables = tables.ToList();
+            var uri = BuildCargoQueryUri(enumeratedTables, fields, where, joinOn);
             try
             {
-                var results = new List<JToken>();
-                while (true)
+                var json = JObject.Parse(await _httpClient.GetStringAsync(uri).ConfigureAwait(false));
+                LogWarnings(json, uri);
+                if (!LogErrors(json, uri))
                 {
-                    var json = JObject.Parse(await _httpClient.GetStringAsync(uri).ConfigureAwait(false));
-                    if (!LogErrors(json, uri))
-                    {
-                        results.AddRange(json["query"]["results"].Cast<JProperty>().Select(p => p.Value["printouts"]));
-                    }
-                    LogWarnings(json, uri);
-
-                    JToken offsetToken;
-                    if (!json.TryGetValue("query-continue-offset", out offsetToken))
-                        break;
-                    var offset = offsetToken.Value<int>();
-                    uri = initialUri + "|offset=" + offset;
+                    var result = json["cargoquery"].Select(j => j["title"]);
+                    return SelectDistinctPageNames(result, enumeratedTables).ToList();
                 }
-                return results;
+                return Enumerable.Empty<JToken>();
             }
             catch (JsonException e)
             {
-                Log.Error($"Retrieving askargs results from {uri} failed", e);
-                return Enumerable.Empty<JProperty>();
+                Log.Error($"Retrieving cargoquery results from {uri} failed", e);
+                return Enumerable.Empty<JToken>();
             }
+        }
+
+        private static string BuildCargoQueryUri(
+            IReadOnlyList<string> tables, IEnumerable<string> fields, string where, string joinOn)
+        {
+            var allFields = fields
+                .Union(tables.Select(GetPageNameField))
+                .Select(s => s.Replace(' ', '_'));
+            var queryString = new StringBuilder()
+                .Append("&action=cargoquery")
+                .Append("&limit=500")
+                .Append("&tables=").Append(string.Join(",", tables))
+                .Append("&fields=").Append(string.Join(",", allFields))
+                .Append("&where=").Append(AddValidPageNameConditionToWhereClause(where, tables))
+                .Append("&join_on=").Append(joinOn);
+            return BaseUri + queryString;
+        }
+
+        private static string AddValidPageNameConditionToWhereClause(string where, IEnumerable<string> tables)
+        {
+            var validPageNameCondition = tables.Select(t => $"{t}.{CargoConstants.PageName} NOT LIKE 'User:%'");
+            return $"({where}) AND {string.Join(" AND ", validPageNameCondition)}";
+        }
+
+        private static IEnumerable<JToken> SelectDistinctPageNames(
+            IEnumerable<JToken> cargoQueryResult, IEnumerable<string> tables)
+        {
+            var result = cargoQueryResult;
+            foreach (var table in tables)
+            {
+                var pageNameField = GetPageNameFieldAlias(table);
+                result = result.DistinctBy(token => token.Value<string>(pageNameField));
+            }
+
+            return result;
+        }
+
+        private static string GetPageNameField(string table)
+        {
+            return $"{table}.{CargoConstants.PageName}={GetPageNameFieldAlias(table)}";
+        }
+
+        private static string GetPageNameFieldAlias(string table)
+        {
+            return $"{table}_page_name";
         }
 
         /// <summary>
@@ -120,15 +104,12 @@ namespace POESKillTree.Utils.WikiApi
         /// <returns>
         /// A task that returns an enumerable of tuples of titles and their imageinfo.url property.
         /// </returns>
-        public async Task<IEnumerable<Tuple<string, string>>> QueryImageInfoUrls(IEnumerable<string> titles)
+        private async Task<IEnumerable<(string title, string url)>> QueryImageInfoUrlsAsync(IEnumerable<string> titles)
         {
             const int maxTitlesPerRequest = 50;
-            var batches = titles
-                .Batch(maxTitlesPerRequest)
-                .Select(QueryImageInfoUrlsBatch)
-                .ToList();
+            var batches = titles.Batch(maxTitlesPerRequest, QueryImageInfoUrlsBatchAsync);
 
-            var results = new List<Tuple<string, string>>();
+            var results = new List<(string title, string url)>();
             foreach (var batch in batches)
             {
                 results.AddRange(await batch.ConfigureAwait(false));
@@ -136,7 +117,7 @@ namespace POESKillTree.Utils.WikiApi
             return results;
         }
 
-        private async Task<IEnumerable<Tuple<string, string>>> QueryImageInfoUrlsBatch(IEnumerable<string> titles)
+        private async Task<IEnumerable<(string title, string url)>> QueryImageInfoUrlsBatchAsync(IEnumerable<string> titles)
         {
             var uriBuilder = new StringBuilder(BaseUri);
             uriBuilder.Append("&action=query&prop=imageinfo&iiprop=url");
@@ -154,7 +135,7 @@ namespace POESKillTree.Utils.WikiApi
                         let title = result.Value<string>("title")
                         where HasImageInfo(result, title)
                         let url = result["imageinfo"].First.Value<string>("url")
-                        select Tuple.Create(title, url);
+                        select (title, url);
                 }
                 LogWarnings(json, uri);
             }
@@ -162,16 +143,11 @@ namespace POESKillTree.Utils.WikiApi
             {
                 Log.Error($"Retrieving query-imageinfo-url results from {uri} failed", e);
             }
-            return Enumerable.Empty<Tuple<string, string>>();
+            return Enumerable.Empty<(string, string)>();
         }
 
         private static bool HasImageInfo(JToken imageInfoEntry, string title)
         {
-            if (imageInfoEntry.Value<bool>("missing"))
-            {
-                Log.Warn("Missing image for " + title);
-                return false;
-            }
             if (imageInfoEntry["imageinfo"] == null)
             {
                 Log.Error("No imageinfo entry for " + title);
@@ -181,37 +157,31 @@ namespace POESKillTree.Utils.WikiApi
         }
 
         /// <summary>
-        /// First queries the API using the 'ask' action, the given conditions and RdfName and RdfIcon printouts.
-        /// The queries the API using the 'query' action, 'imageinfo' prop and 'url' iiprop with the icon page titles
-        /// from the first query.
+        /// Asynchronously returns <see cref="ItemImageInfoResult"/> for all items matching the given condition.
         /// </summary>
-        /// <param name="conditions">the conditions items have to much to have their icon urls retrieved</param>
-        /// <returns>
-        /// A task that returns an enumerable of ItemImageInfoResults.
-        /// </returns>
-        public async Task<IEnumerable<ItemImageInfoResult>> AskAndQueryImageInforUrls(
-            IEnumerable<string> conditions)
+        public async Task<IEnumerable<ItemImageInfoResult>> GetItemImageInfosAsync(string where)
         {
-            // Ask: retrieve page titles of the icons
-            string[] printouts = { RdfName, RdfIcon };
-            var results = (from ps in await Ask(conditions, printouts).ConfigureAwait(false)
-                           where ps[RdfIcon].Any()
-                           let title = ps[RdfIcon].First.Value<string>("fulltext")
-                           let name = SingularValue<string>(ps, RdfName)
-                           select new { name, title }).ToList();
-            var titleToName = results.ToLookup(x => x.title, x => x.name);
+            // CargoQuery: retrieve page titles of the icons
+            string[] tables = { CargoConstants.ItemTableName };
+            string[] fields = { CargoConstants.Name, CargoConstants.InventoryIcon };
+            var results = (
+                from cargoResult in await CargoQueryAsync(tables, fields, @where).ConfigureAwait(false)
+                let name = cargoResult.Value<string>(CargoConstants.Name)
+                let iconPageTitle = cargoResult.Value<string>(CargoConstants.InventoryIcon)
+                select new { name, iconPageTitle }
+            ).ToList();
+            var titleToName = results.ToLookup(x => x.iconPageTitle, x => x.name);
 
             // QueryImageInfoUrls: retrieve urls of the icons
-            var task = QueryImageInfoUrls(results.Select(t => t.title));
+            var task = QueryImageInfoUrlsAsync(results.Select(t => t.iconPageTitle));
             return
                 from tuple in await task.ConfigureAwait(false)
-                select new ItemImageInfoResult(titleToName[tuple.Item1], tuple.Item2);
+                select new ItemImageInfoResult(titleToName[tuple.title], tuple.url);
         }
 
         private static bool LogErrors(JObject json, string uri)
         {
-            JToken errorToken;
-            if (json.TryGetValue("error", out errorToken))
+            if (json.TryGetValue("error", out var errorToken))
             {
                 var code = errorToken.Value<string>("code");
                 if (code != null)
@@ -229,11 +199,9 @@ namespace POESKillTree.Utils.WikiApi
 
         private static void LogWarnings(JObject json, string uri)
         {
-            JToken warningsToken;
-            if (json.TryGetValue("warnings", out warningsToken))
+            if (json.TryGetValue("warnings", out var warningsToken))
             {
-                var warnings = warningsToken as JContainer;
-                if (warnings != null)
+                if (warningsToken is JContainer warnings)
                 {
                     Log.Warn($"Api returned warnings for uri {uri}:");
                     // e.g. warnings.main.warnings.Value is the path to the first warning string

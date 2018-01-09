@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
 using Newtonsoft.Json.Linq;
 using POESKillTree.Model.Items;
-using POESKillTree.Utils.WikiApi;
-using static POESKillTree.Utils.WikiApi.WikiApiUtils;
-using static POESKillTree.Utils.WikiApi.ItemRdfPredicates;
+using static POESKillTree.Utils.WikiApi.CargoConstants;
 
 namespace UpdateDB.DataLoading
 {
@@ -15,43 +14,17 @@ namespace UpdateDB.DataLoading
     /// </summary>
     public class UniqueLoader : XmlDataLoader<XmlUniqueList>
     {
-        /* Conditions:
-         * - Has rarity::Unique
-         * - Has item class::{itemClass}
-         * Printout:
-         * - Has name
-         * - Has base item metadata id
-         * - Has level requirement
-         * - Has explicit mod ids
-         * - Is drop enabled
-         * Printout Jewel:
-         * - Has item limit
-         * - Has jewel radius
-         * Possibly useful printouts not yet used:
-         * - Is corrupted
-         * Possible item classes not used here:
-         * - Life Flasks, Mana Flasks, Hybrid Flasks, Utility Flasks, Critical Utility Flasks,
-         * - Currency, Stackable Currency,
-         * - Active Skill Gems, Support Skill Gems,
-         * - Small Relics, Medium Relics, Large Relics,
-         * - Quest Items, 
-         * - Maps, Map Fragments,
-         * - Unarmed, Fishing Rods,
-         * - Hideout Doodads, Microtransactions, Divination Card,
-         * - Labyrinth Item, Labyrinth Trinket, Labyrinth Map Item
-         */
-
         private static readonly ILog Log = LogManager.GetLogger(typeof(UniqueLoader));
 
-        private static readonly IReadOnlyList<string> Printouts = new[]
+        private static readonly IReadOnlyList<string> Fields = new[]
         {
-            RdfName, RdfBaseMetadataId, RdfLvlReq, RdfExplicits, RdfDropEnabled
+            Name, BaseItemId, RequiredLevel, ExplicitMods, DropEnabled
         };
 
-        private static readonly IReadOnlyList<string> PrintoutsJewel = new[]
+        private static readonly IReadOnlyList<string> JewelFields = Fields.Concat(new[]
         {
-            RdfItemLimit, RdfJewelRadius
-        };
+            JewelLimit
+        }).ToList();
 
         private static readonly IReadOnlyList<string> RelevantWikiClasses = new[]
         {
@@ -59,59 +32,85 @@ namespace UpdateDB.DataLoading
             "One Hand Maces", "Sceptres", "Two Hand Maces", "Staves",
             "One Hand Swords", "Thrusting One Hand Swords", "Two Hand Swords", "Wands",
             "Amulets", "Belts", "Quivers", "Rings",
-            "Body Armours", "Boots", "Helmets", "Gloves", "Shields", "Jewel",
+            "Body Armours", "Boots", "Helmets", "Gloves", "Shields",
         };
+
+        private const string JewelClass = "Jewel";
 
         protected override async Task LoadAsync()
         {
-            var tasks = RelevantWikiClasses.Select(ReadJson).ToList();
             var uniques = new List<XmlUnique>();
-            foreach (var task in tasks)
+            foreach (var wikiClass in RelevantWikiClasses)
             {
-                uniques.AddRange(await task);
+                uniques.AddRange(await LoadAsync(wikiClass));
             }
+            uniques.AddRange(await LoadJewelsAsync());
             Data = new XmlUniqueList
             {
                 Uniques = uniques.ToArray()
             };
         }
 
-        private async Task<IEnumerable<XmlUnique>> ReadJson(string wikiClass)
+        private async Task<IEnumerable<XmlUnique>> LoadAsync(string wikiClass)
         {
-            var conditions = new ConditionBuilder
-            {
-                {RdfRarity, "Unique"},
-                {RdfItemClass, wikiClass}
-            };
-            var printouts = wikiClass == "Jewel"
-                ? Printouts.Concat(PrintoutsJewel)
-                : Printouts;
-            IEnumerable<XmlUnique> enumerable =
-                from result in await WikiApiAccessor.AskArgs(conditions, printouts)
-                select PrintoutsToUnique(result);
-            var ret = enumerable.ToList();
-            Log.Info($"Retrieved {ret.Count} bases of class {wikiClass}.");
-            return ret.OrderBy(b => b.Name);
+            var results = await QueryApiAsync(wikiClass);
+            return ReadJson(wikiClass, results);
+        }
+
+        private async Task<IEnumerable<XmlUnique>> LoadJewelsAsync()
+        {
+            var results = await QueryApiForJewelsAsync();
+            return ReadJson(JewelClass, results);
+        }
+
+        private Task<IEnumerable<JToken>> QueryApiAsync(string wikiClass)
+        {
+            string[] tables = { ItemTableName };
+            var where = GetWhereClause(wikiClass);
+            return WikiApiAccessor.CargoQueryAsync(tables, Fields, where);
+        }
+
+        private Task<IEnumerable<JToken>> QueryApiForJewelsAsync()
+        {
+            string[] tables = { ItemTableName, JewelTableName };
+            var where = GetWhereClause(JewelClass);
+            var joinOn = $"{ItemTableName}.{PageName}={JewelTableName}.{PageName}";
+            return WikiApiAccessor.CargoQueryAsync(tables, JewelFields, where, joinOn);
+        }
+
+        private static string GetWhereClause(string wikiClass)
+        {
+            return $"{Rarity}='Unique' AND {ItemClass}='{wikiClass}'";
+        }
+
+        private static IEnumerable<XmlUnique> ReadJson(string wikiClass, IEnumerable<JToken> results)
+        {
+            List<XmlUnique> uniques = (
+                from result in results
+                let unique = PrintoutsToUnique(result)
+                orderby unique.Name
+                select unique
+            ).ToList();
+            Log.Info($"Retrieved {uniques.Count} uniques of class {wikiClass}.");
+            return uniques;
         }
 
         private static XmlUnique PrintoutsToUnique(JToken printouts)
         {
-            var explicits = PluralValue<string>(printouts, RdfExplicits).OrderBy(s => s).ToArray();
-            var properties = new PropertyBuilder(printouts);
-            if (printouts[RdfItemLimit]?.HasValues == true)
+            string[] explicits = printouts.Value<string>(ExplicitMods)
+                .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToArray();
+            var properties = new List<string>();
+            if (printouts[JewelLimit]?.Value<string>() is string itemLimit && itemLimit.Length > 0)
             {
-                properties.Add("Limited to: {0}", RdfItemLimit);
+                properties.Add($"Limited to: {itemLimit}");
             }
-            if (printouts[RdfJewelRadius]?.HasValues == true)
-            {
-                properties.Add("Radius: {0}", RdfJewelRadius);
-            }
+
             return new XmlUnique
             {
-                Level = SingularValue<int>(printouts, RdfLvlReq),
-                Name = SingularValue<string>(printouts, RdfName),
-                DropDisabled = !SingularBool(printouts, RdfDropEnabled, true),
-                BaseMetadataId = SingularValue<string>(printouts, RdfBaseMetadataId),
+                Level = int.Parse(printouts.Value<string>(RequiredLevel)),
+                Name = printouts.Value<string>(Name),
+                DropDisabled = printouts.Value<string>(DropEnabled) == "0",
+                BaseMetadataId = printouts.Value<string>(BaseItemId),
                 Explicit = explicits,
                 Properties = properties.ToArray()
             };

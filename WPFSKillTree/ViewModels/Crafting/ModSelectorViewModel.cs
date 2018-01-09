@@ -70,7 +70,7 @@ namespace POESKillTree.ViewModels.Crafting
                                 && matchingAffix.QueryMods(valuesBefore).Any())
                             {
                                 _sliders.Zip(valuesBefore, Tuple.Create)
-                                    .ForEach(t => t.Item1.Value = t.Item2);
+                                    .ForEach(t => t.Item1.Value = t.Item2.value);
                             }
                             return;
                         }
@@ -98,7 +98,7 @@ namespace POESKillTree.ViewModels.Crafting
             private set { SetProperty(ref _affixText, value); }
         }
 
-        public IEnumerable<int> SelectedValues => _sliders.Select(s => s.Value);
+        public IEnumerable<(int valueIndex, int value)> SelectedValues => _sliders.Select(s => (s.ValueIndex, s.Value));
 
         private readonly ObservableCollection<SliderGroupViewModel> _sliderGroups =
             new ObservableCollection<SliderGroupViewModel>();
@@ -212,7 +212,13 @@ namespace POESKillTree.ViewModels.Crafting
             {
                 return Enumerable.Empty<StatIdValuePair>();
             }
-            return firstMatch.Stats.EquiZip(SelectedValues, (s, v) => new StatIdValuePair(s.Id, v));
+
+            return
+                from t in SelectedValues
+                let valueIndex = t.valueIndex
+                let value = t.value
+                let stat = firstMatch.Stats[valueIndex]
+                select new StatIdValuePair(stat.Id, value);
         }
 
         /// <summary>
