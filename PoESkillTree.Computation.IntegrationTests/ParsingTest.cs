@@ -150,7 +150,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                         f.ConditionBuilders.True),
                     new Modifier(
                         f.StatBuilders.Pool.Life.Regen,
-                        f.FormBuilders.TotalOverride,
+                        f.FormBuilders.BaseOverride,
                         f.ValueBuilders.Create(0),
                         f.ConditionBuilders.True)
                 });

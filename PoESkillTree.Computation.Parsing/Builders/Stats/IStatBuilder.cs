@@ -46,8 +46,9 @@ namespace PoESkillTree.Computation.Parsing.Builders.Stats
         IStatBuilder AddAs(IStatBuilder stat);
 
         /// <summary>
-        /// Returns a stat representing whether modifiers (except of BaseSet and TotalOverride forms) to this stat's 
-        /// value also apply to the given stat (at <paramref name="percentOfTheirValue"/> percent of their value).
+        /// Returns a stat representing whether modifiers (except of BaseSet, BaseOverride and TotalOverride forms)
+        /// to this stat's value also apply to the given stat
+        /// (at <paramref name="percentOfTheirValue"/> percent of their value).
         /// </summary>
         IFlagStatBuilder ApplyModifiersTo(IStatBuilder stat, IValueBuilder percentOfTheirValue);
 

@@ -56,9 +56,16 @@ namespace PoESkillTree.Computation.Parsing.Builders.Forms
 
 
         /// <summary>
-        /// Gets a form for overriding the value (and discarding all other values). For damage stats, this applies
-        /// after conversion. This form disregards the maximum and minimum values of stats.
+        /// Gets a form for overriding the value (and discarding all other values). This applies after conversion.
+        /// This form disregards the maximum and minimum values of stats.
         /// </summary>
         IFormBuilder TotalOverride { get; }
+
+        /// <summary>
+        /// Gets a form for overriding the base value (and discarding all BaseSet, BaseAdd, BaseSubtract, MinBaseAdd
+        /// and MaxBaseAdd values). This form only makes sense with a value of 0 in most/all cases because percent forms
+        /// still apply.
+        /// </summary>
+        IFormBuilder BaseOverride { get; }
     }
 }

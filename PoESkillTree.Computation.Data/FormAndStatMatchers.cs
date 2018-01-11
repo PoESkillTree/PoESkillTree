@@ -81,7 +81,7 @@ namespace PoESkillTree.Computation.Data
                 // defense
                 // - life, mana, defences
                 { "maximum life becomes #", TotalOverride, Value, Life },
-                { "removes all mana", TotalOverride, 0, Mana },
+                { "removes all mana", BaseOverride, 0, Mana },
                 { "converts all evasion rating to armour", TotalOverride, 100, Evasion.ConvertTo(Armour) },
                 { "cannot evade enemy attacks", TotalOverride, 0, Evasion.Chance },
                 // - resistances
@@ -139,7 +139,7 @@ namespace PoESkillTree.Computation.Data
                     "#% faster start of energy shield recharge", PercentIncrease, Value,
                     EnergyShield.Recharge.Start
                 },
-                { "life regeneration has no effect", TotalOverride, 0, Life.Regen },
+                { "life regeneration has no effect", BaseOverride, 0, Life.Regen },
                 {
                     "life regeneration is applied to energy shield instead",
                     TotalOverride, 1, Life.Regen.AppliesTo(EnergyShield)

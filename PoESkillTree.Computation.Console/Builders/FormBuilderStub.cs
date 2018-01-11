@@ -29,6 +29,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IFormBuilder PercentLess => Create("Percent less");
         public IFormBuilder BaseSubtract => Create("Base subtract");
         public IFormBuilder TotalOverride => Create("Total override");
+        public IFormBuilder BaseOverride => Create("Base override");
         public IFormBuilder MinBaseAdd => Create("Minimum base add");
         public IFormBuilder MaxBaseAdd => Create("Maximum base add");
     }
