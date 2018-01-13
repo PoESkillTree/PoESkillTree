@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -57,107 +57,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builders\Actions\IActionBuilder.cs" />
-    <Compile Include="Builders\Actions\IActionBuilders.cs" />
-    <Compile Include="Builders\Actions\IBlockActionBuilder.cs" />
-    <Compile Include="Builders\Actions\ICriticalStrikeActionBuilder.cs" />
-    <Compile Include="Builders\Buffs\IBuffBuilder.cs" />
-    <Compile Include="Builders\Buffs\IBuffBuilderCollection.cs" />
-    <Compile Include="Builders\Buffs\IBuffBuilders.cs" />
-    <Compile Include="Builders\Charges\IChargeTypeBuilder.cs" />
-    <Compile Include="Builders\Charges\IChargeTypeBuilders.cs" />
-    <Compile Include="Builders\Conditions\IConditionBuilder.cs" />
-    <Compile Include="Builders\Conditions\IConditionBuilders.cs" />
-    <Compile Include="Builders\Damage\IDamageSourceBuilder.cs" />
-    <Compile Include="Builders\Damage\IDamageSourceBuilders.cs" />
-    <Compile Include="Builders\Damage\IDamageTypeBuilder.cs" />
-    <Compile Include="Builders\Damage\IDamageTypeBuilders.cs" />
-    <Compile Include="Builders\Equipment\IItemSlotBuilders.cs" />
-    <Compile Include="Builders\Matching\IResolvable.cs" />
-    <Compile Include="Builders\Matching\ResolvedMatchContext.cs" />
-    <Compile Include="Data\IParsingData.cs" />
-    <Compile Include="Data\IStepper.cs" />
+    <Compile Include="Referencing\ResolvedMatchContext.cs" />
     <Compile Include="IParser.cs" />
     <Compile Include="MatcherDataParser.cs" />
-    <Compile Include="ModifierBuilding\IIntermediateModifierResolver.cs" />
-    <Compile Include="ModifierBuilding\IntermediateModifierResolver.cs" />
-    <Compile Include="ModifierBuilding\SimpleIntermediateModifier.cs" />
-    <Compile Include="ModifierBuilding\IIntermediateModifier.cs" />
-    <Compile Include="ModifierBuilding\IntermediateModifierExtensions.cs" />
-    <Compile Include="ModifierBuilding\IntermediateModififerEntry.cs" />
-    <Compile Include="ModifierBuilding\ModifierBuilder.cs" />
-    <Compile Include="Data\EffectStatData.cs" />
-    <Compile Include="Builders\Effects\IAilmentBuilder.cs" />
-    <Compile Include="Builders\Effects\IAilmentBuilderCollection.cs" />
-    <Compile Include="Builders\Effects\IAilmentBuilders.cs" />
-    <Compile Include="Builders\Effects\IAvoidableEffectBuilder.cs" />
-    <Compile Include="Builders\Effects\IEffectBuilder.cs" />
-    <Compile Include="Builders\Effects\IEffectBuilders.cs" />
-    <Compile Include="Builders\Effects\IGroundEffectBuilder.cs" />
-    <Compile Include="Builders\Effects\IGroundEffectBuilders.cs" />
-    <Compile Include="Builders\Effects\IKnockbackEffectBuilder.cs" />
-    <Compile Include="Builders\Effects\IStunEffectBuilder.cs" />
-    <Compile Include="Builders\Entities\IEnemyBuilder.cs" />
-    <Compile Include="Builders\Entities\IEntityBuilder.cs" />
-    <Compile Include="Builders\Entities\IEntityBuilders.cs" />
-    <Compile Include="Builders\Entities\ISkillEntityBuilder.cs" />
-    <Compile Include="Builders\Equipment\IEquipmentBuilder.cs" />
-    <Compile Include="Builders\Equipment\IEquipmentBuilderCollection.cs" />
-    <Compile Include="Builders\Equipment\IEquipmentBuilders.cs" />
-    <Compile Include="Builders\Equipment\IItemSlotBuilder.cs" />
-    <Compile Include="Data\FlagStatData.cs" />
-    <Compile Include="Builders\Forms\IFormBuilder.cs" />
-    <Compile Include="Builders\Forms\IFormBuilders.cs" />
-    <Compile Include="Data\GivenStatData.cs" />
-    <Compile Include="Data\IEffectStats.cs" />
-    <Compile Include="Data\IGivenStats.cs" />
-    <Compile Include="ModifierBuilding\IModifierBuilder.cs" />
-    <Compile Include="Builders\IBuilderCollection.cs" />
-    <Compile Include="Builders\IBuilderFactories.cs" />
-    <Compile Include="Data\IReferencedMatchers.cs" />
-    <Compile Include="Data\IStatMatchers.cs" />
-    <Compile Include="Data\MatcherData.cs" />
-    <Compile Include="Builders\Matching\IReferenceConverter.cs" />
-    <Compile Include="Builders\Matching\IMatchContext.cs" />
-    <Compile Include="Builders\Matching\IMatchContexts.cs" />
-    <Compile Include="Data\ReferencedMatcherData.cs" />
-    <Compile Include="Builders\Skills\IKeywordBuilder.cs" />
-    <Compile Include="Builders\Skills\IKeywordBuilders.cs" />
-    <Compile Include="Builders\Skills\ISkillBuilder.cs" />
-    <Compile Include="Builders\Skills\ISkillBuilderCollection.cs" />
-    <Compile Include="Builders\Skills\ISkillBuilders.cs" />
-    <Compile Include="Data\StatReplacerData.cs" />
-    <Compile Include="Builders\Stats\IAttributeStatBuilders.cs" />
-    <Compile Include="Builders\Stats\IDamageStatBuilder.cs" />
-    <Compile Include="Builders\Stats\IDodgeStatBuilders.cs" />
-    <Compile Include="Builders\Stats\IEvasionStatBuilder.cs" />
-    <Compile Include="Builders\Stats\IFlagStatBuilder.cs" />
-    <Compile Include="Builders\Stats\IFlagStatBuilders.cs" />
-    <Compile Include="Builders\Stats\IFlaskStatBuilders.cs" />
-    <Compile Include="Builders\Stats\IGemStatBuilders.cs" />
-    <Compile Include="Builders\Stats\ILeechStatBuilder.cs" />
-    <Compile Include="Builders\Stats\IPoolStatBuilder.cs" />
-    <Compile Include="Builders\Stats\IPoolStatBuilders.cs" />
-    <Compile Include="Builders\Stats\IProjectileStatBuilders.cs" />
-    <Compile Include="Builders\Stats\IRechargeStatBuilder.cs" />
-    <Compile Include="Builders\Stats\IRegenStatBuilder.cs" />
-    <Compile Include="Builders\Stats\IStatBuilder.cs" />
-    <Compile Include="Builders\Stats\IStatBuilders.cs" />
-    <Compile Include="Builders\Values\IValueBuilder.cs" />
-    <Compile Include="Builders\Values\IValueBuilders.cs" />
-    <Compile Include="Builders\Values\ValueBuilder.cs" />
-    <Compile Include="Builders\Values\ValueBuilderUtils.cs" />
     <Compile Include="CachingParser.cs" />
-    <Compile Include="ParseException.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="ParseResult.cs" />
     <Compile Include="ResultMappingParser.cs" />
-    <Compile Include="Builders\Matching\ReferenceConverter.cs" />
+    <Compile Include="Referencing\ReferenceConverter.cs" />
     <Compile Include="Referencing\IReferencedRegexes.cs" />
     <Compile Include="Referencing\IReferenceToMatcherDataResolver.cs" />
     <Compile Include="Referencing\IRegexGroupFactory.cs" />
     <Compile Include="Referencing\IRegexGroupParser.cs" />
-    <Compile Include="Referencing\ReferenceConstants.cs" />
     <Compile Include="Referencing\ReferenceService.cs" />
     <Compile Include="Referencing\ReferenceValidator.cs" />
     <Compile Include="Referencing\RegexGroupService.cs" />
@@ -175,9 +86,9 @@
       <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
       <Name>PoESkillTree.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PoESkillTree.Computation\PoESkillTree.Computation.csproj">
-      <Project>{e9c0cf81-6800-4461-8897-f8b569c7cdd0}</Project>
-      <Name>PoESkillTree.Computation</Name>
+    <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj">
+      <Project>{827be52d-878c-45f0-afc0-75b5385aad53}</Project>
+      <Name>PoESkillTree.Computation.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +101,6 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
 </Project>

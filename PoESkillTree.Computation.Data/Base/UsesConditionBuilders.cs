@@ -1,8 +1,8 @@
 using System.Linq;
-using PoESkillTree.Computation.Parsing.Builders;
-using PoESkillTree.Computation.Parsing.Builders.Conditions;
-using PoESkillTree.Computation.Parsing.Builders.Entities;
-using PoESkillTree.Computation.Parsing.Builders.Skills;
+using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Entities;
+using PoESkillTree.Computation.Common.Builders.Skills;
 
 namespace PoESkillTree.Computation.Data.Base
 {

@@ -4,10 +4,11 @@ using System.IO;
 using System.Linq;
 using MoreLinq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Console;
 using PoESkillTree.Computation.Console.Builders;
 using PoESkillTree.Computation.Parsing;
-using PoESkillTree.Computation.Parsing.Builders.Damage;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using PoESkillTree.Computation.Parsing.Builders.Conditions;
-using PoESkillTree.Computation.Parsing.Builders.Forms;
-using PoESkillTree.Computation.Parsing.Builders.Stats;
-using PoESkillTree.Computation.Parsing.Builders.Values;
-using PoESkillTree.Computation.Parsing.ModifierBuilding;
+using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Forms;
+using PoESkillTree.Computation.Common.Builders.Modifiers;
+using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
 {
@@ -15,7 +15,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         internal IEnumerable<IStatBuilder> Stats { get; private set; }
         internal IEnumerable<IValueBuilder> Values { get; private set; }
 
-        public IReadOnlyList<IntermediateModififerEntry> Entries => throw new InvalidOperationException();
+        public IReadOnlyList<IntermediateModifierEntry> Entries => throw new InvalidOperationException();
 
         public Func<IStatBuilder, IStatBuilder> StatConverter { get; private set; }
         public Func<IValueBuilder, IValueBuilder> ValueConverter { get; private set; }

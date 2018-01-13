@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Modifiers;
+using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Parsing.Builders;
-using PoESkillTree.Computation.Parsing.Builders.Matching;
-using PoESkillTree.Computation.Parsing.Data;
-using PoESkillTree.Computation.Parsing.ModifierBuilding;
 
 namespace PoESkillTree.Computation.Data
 {

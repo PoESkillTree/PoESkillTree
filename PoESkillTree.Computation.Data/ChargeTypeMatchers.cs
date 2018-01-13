@@ -1,8 +1,8 @@
-﻿using PoESkillTree.Computation.Data.Base;
+﻿using PoESkillTree.Computation.Common.Builders.Charges;
+using PoESkillTree.Computation.Common.Data;
+using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using System.Collections.Generic;
-using PoESkillTree.Computation.Parsing.Builders.Charges;
-using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Data
 {

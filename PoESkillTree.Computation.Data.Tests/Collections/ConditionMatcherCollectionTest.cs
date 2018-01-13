@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using Moq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Parsing.Builders.Conditions;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
 {

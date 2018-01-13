@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using PoESkillTree.Computation.Parsing.Builders.Conditions;
-using PoESkillTree.Computation.Parsing.Builders.Matching;
-using PoESkillTree.Computation.Parsing.Builders.Stats;
-using PoESkillTree.Computation.Parsing.Builders.Values;
+using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Console.Builders
 {

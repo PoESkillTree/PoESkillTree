@@ -1,4 +1,4 @@
-﻿using PoESkillTree.Computation.Parsing.Builders.Effects;
+﻿using PoESkillTree.Computation.Common.Builders.Effects;
 
 namespace PoESkillTree.Computation.Console.Builders
 {

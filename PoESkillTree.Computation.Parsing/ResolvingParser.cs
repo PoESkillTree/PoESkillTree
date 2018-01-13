@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Computation.Parsing.Builders.Matching;
-using PoESkillTree.Computation.Parsing.Builders.Values;
-using PoESkillTree.Computation.Parsing.ModifierBuilding;
+using PoESkillTree.Computation.Common.Builders.Modifiers;
+using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Parsing.Referencing;
 
 namespace PoESkillTree.Computation.Parsing
@@ -15,9 +16,9 @@ namespace PoESkillTree.Computation.Parsing
     /// </summary>
     /// <remarks>
     /// Values can simply be parsed from the regex group's captured substring. References are resolved to 
-    /// <see cref="Data.ReferencedMatcherData"/> or <see cref="Data.MatcherData"/> using a 
-    /// <see cref="IReferenceToMatcherDataResolver"/>. Referenced <see cref="Data.MatcherData"/> may itself contain
-    /// references, requiring recursion.
+    /// <see cref="Common.Data.ReferencedMatcherData"/> or <see cref="Common.Data.MatcherData"/> using a 
+    /// <see cref="IReferenceToMatcherDataResolver"/>. Referenced <see cref="Common.Data.MatcherData"/> may itself
+    /// contain references, requiring recursion.
     /// </remarks>
     public class ResolvingParser : IParser<IIntermediateModifier>
     {

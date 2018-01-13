@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Common.Utils.Extensions;
-using PoESkillTree.Computation.Parsing.Builders.Values;
-using static PoESkillTree.Computation.Parsing.Referencing.ReferenceConstants;
+using PoESkillTree.Computation.Common.Builders.Values;
+using static PoESkillTree.Computation.Common.Parsing.ReferenceConstants;
 
 namespace PoESkillTree.Computation.Parsing.Referencing
 {
     /// <summary>
     /// Implementation of both <see cref="IRegexGroupFactory"/> and <see cref="IRegexGroupParser"/> to keep everything
-    /// related to regex group naming in one place (plus <see cref="ReferenceConstants"/>).
+    /// related to regex group naming in one place (plus <see cref="Common.Parsing.ReferenceConstants"/>).
     /// </summary>
     public class RegexGroupService : IRegexGroupParser, IRegexGroupFactory
     {

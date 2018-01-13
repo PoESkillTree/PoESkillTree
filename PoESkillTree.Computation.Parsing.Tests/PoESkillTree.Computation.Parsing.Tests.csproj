@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props')" />
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -65,13 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builders\Matching\ResolvedMatchContextTest.cs" />
-    <Compile Include="Builders\Values\ValueBuilderUtilsTest.cs" />
     <Compile Include="MatcherDataParserTest.cs" />
-    <Compile Include="ModifierBuilding\IntermediateModifierResolverTest.cs" />
-    <Compile Include="ModifierBuilding\ModifierBuilderTest.cs" />
     <Compile Include="CachingParserTest.cs" />
-    <Compile Include="ModifierBuilding\IntermediateModifierExtensionsTest.cs" />
+    <Compile Include="Referencing\ResolvedMatchContextTest.cs" />
     <Compile Include="ResultMappingParserTest.cs" />
     <Compile Include="Referencing\MatcherMocks.cs" />
     <Compile Include="Referencing\ReferenceServiceTest.cs" />
@@ -95,13 +91,13 @@
       <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
       <Name>PoESkillTree.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj">
+      <Project>{827be52d-878c-45f0-afc0-75b5385aad53}</Project>
+      <Name>PoESkillTree.Computation.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PoESkillTree.Computation.Parsing\PoESkillTree.Computation.Parsing.csproj">
       <Project>{1e573c72-9b7f-40af-a5e8-739f90b50690}</Project>
       <Name>PoESkillTree.Computation.Parsing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PoESkillTree.Computation\PoESkillTree.Computation.csproj">
-      <Project>{e9c0cf81-6800-4461-8897-f8b569c7cdd0}</Project>
-      <Name>PoESkillTree.Computation</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -113,12 +109,12 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props'))" />
     <Error Condition="!Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <Import Project="..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
   <Target Name="Test">
-   <NUnit3 Assemblies="$(OutputPath)/$(TargetFileName)" ToolPath="..\packages\NUnit.ConsoleRunner.3.7.0\tools\" />
+    <NUnit3 Assemblies="$(OutputPath)/$(TargetFileName)" ToolPath="..\packages\NUnit.ConsoleRunner.3.7.0\tools\" />
   </Target>
 </Project>

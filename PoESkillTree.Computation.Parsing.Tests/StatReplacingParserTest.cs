@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Parsing.Data;
+using PoESkillTree.Computation.Common.Data;
 
 namespace PoESkillTree.Computation.Parsing.Tests
 {

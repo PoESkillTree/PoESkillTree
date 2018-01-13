@@ -1,16 +1,16 @@
-﻿using PoESkillTree.Computation.Parsing.Builders;
-using PoESkillTree.Computation.Parsing.Builders.Actions;
-using PoESkillTree.Computation.Parsing.Builders.Buffs;
-using PoESkillTree.Computation.Parsing.Builders.Charges;
-using PoESkillTree.Computation.Parsing.Builders.Conditions;
-using PoESkillTree.Computation.Parsing.Builders.Damage;
-using PoESkillTree.Computation.Parsing.Builders.Effects;
-using PoESkillTree.Computation.Parsing.Builders.Entities;
-using PoESkillTree.Computation.Parsing.Builders.Equipment;
-using PoESkillTree.Computation.Parsing.Builders.Forms;
-using PoESkillTree.Computation.Parsing.Builders.Skills;
-using PoESkillTree.Computation.Parsing.Builders.Stats;
-using PoESkillTree.Computation.Parsing.Builders.Values;
+﻿using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Actions;
+using PoESkillTree.Computation.Common.Builders.Buffs;
+using PoESkillTree.Computation.Common.Builders.Charges;
+using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Effects;
+using PoESkillTree.Computation.Common.Builders.Entities;
+using PoESkillTree.Computation.Common.Builders.Equipment;
+using PoESkillTree.Computation.Common.Builders.Forms;
+using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Console.Builders
 {

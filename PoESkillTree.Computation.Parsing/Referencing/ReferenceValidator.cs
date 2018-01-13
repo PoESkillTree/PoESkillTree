@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.Common.Utils.Extensions;
-using PoESkillTree.Computation.Parsing.Data;
-using static PoESkillTree.Computation.Parsing.Referencing.ReferenceConstants;
+using PoESkillTree.Computation.Common.Data;
+using PoESkillTree.Computation.Common.Parsing;
+using static PoESkillTree.Computation.Common.Parsing.ReferenceConstants;
 
 namespace PoESkillTree.Computation.Parsing.Referencing
 {

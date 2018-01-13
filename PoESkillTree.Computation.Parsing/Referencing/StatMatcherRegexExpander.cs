@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Computation.Parsing.Data;
-using static PoESkillTree.Computation.Parsing.Referencing.ReferenceConstants;
+using PoESkillTree.Computation.Common.Data;
+using static PoESkillTree.Computation.Common.Parsing.ReferenceConstants;
 
 namespace PoESkillTree.Computation.Parsing.Referencing
 {
@@ -15,7 +15,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
     public class StatMatcherRegexExpander : IEnumerable<MatcherData>
     {
         /// <summary>
-        /// The pattern <see cref="ReferenceConstants.ValuePlaceholder"/> is expanded to.
+        /// The pattern <see cref="ValuePlaceholder"/> is expanded to.
         /// </summary>
         public const string ValueRegex = @"\d+(\.\d+)?";
         // Matches must have whitespace left and right of them, or the input string must end there.

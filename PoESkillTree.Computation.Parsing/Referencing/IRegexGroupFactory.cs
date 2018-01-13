@@ -2,7 +2,7 @@
 {
     /// <summary>
     /// Creates regex groups to use when creating valid expanded regex strings from
-    /// <see cref="Data.MatcherData.Regex"/> values.
+    /// <see cref="Common.Data.MatcherData.Regex"/> values.
     /// </summary>
     /// <remarks>
     /// <see cref="IRegexGroupParser"/> parses groups created by <see cref="IRegexGroupFactory"/> instances.

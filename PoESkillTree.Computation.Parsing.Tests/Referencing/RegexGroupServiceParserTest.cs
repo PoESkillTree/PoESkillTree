@@ -2,9 +2,9 @@
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Parsing.Builders.Values;
+using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Parsing.Referencing;
-using static PoESkillTree.Computation.Parsing.Referencing.ReferenceConstants;
+using static PoESkillTree.Computation.Common.Parsing.ReferenceConstants;
 
 namespace PoESkillTree.Computation.Parsing.Tests.Referencing
 {

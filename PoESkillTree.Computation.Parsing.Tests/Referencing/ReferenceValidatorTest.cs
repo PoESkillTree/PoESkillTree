@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Parsing.Referencing;
 using static PoESkillTree.Computation.Parsing.Tests.Referencing.MatcherMocks;
 

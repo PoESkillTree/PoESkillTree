@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Console.Builders;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
-using PoESkillTree.Computation.Parsing.Builders.Skills;
-using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Console
 {

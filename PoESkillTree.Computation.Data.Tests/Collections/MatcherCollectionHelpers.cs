@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Parsing.Builders.Values;
-using PoESkillTree.Computation.Parsing.Data;
+using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.Computation.Common.Data;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
 {

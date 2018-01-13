@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using PoESkillTree.Computation.Parsing.Data;
+using PoESkillTree.Computation.Common.Data;
 
 namespace PoESkillTree.Computation.Data.Collections
 {

@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Computation.Parsing.Builders.Damage;
-using PoESkillTree.Computation.Parsing.Builders.Effects;
-using PoESkillTree.Computation.Parsing.Builders.Entities;
-using PoESkillTree.Computation.Parsing.Builders.Skills;
-using PoESkillTree.Computation.Parsing.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Effects;
+using PoESkillTree.Computation.Common.Builders.Entities;
+using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders

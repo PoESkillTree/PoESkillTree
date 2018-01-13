@@ -1,4 +1,4 @@
-﻿using PoESkillTree.Computation.Parsing.Data;
+﻿using PoESkillTree.Computation.Common.Data;
 
 namespace PoESkillTree.Computation.Parsing.Referencing
 {

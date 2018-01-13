@@ -1,14 +1,14 @@
 using System;
 using JetBrains.Annotations;
-using PoESkillTree.Computation.Parsing;
-using PoESkillTree.Computation.Parsing.Builders.Stats;
-using PoESkillTree.Computation.Parsing.ModifierBuilding;
+using PoESkillTree.Computation.Common.Builders.Modifiers;
+using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
     /// <inheritdoc />
     /// <summary>
-    /// Collection of <see cref="PoESkillTree.Computation.Parsing.Data.MatcherData"/>, with 
+    /// Collection of <see cref="Common.Data.MatcherData"/>, with 
     /// <see cref="IIntermediateModifier"/>s consisting only of a stat converter, that allows collection 
     /// initialization syntax for adding entries.
     /// </summary>

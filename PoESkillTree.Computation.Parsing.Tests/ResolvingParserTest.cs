@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Parsing.Builders.Matching;
-using PoESkillTree.Computation.Parsing.Builders.Stats;
-using PoESkillTree.Computation.Parsing.Builders.Values;
-using PoESkillTree.Computation.Parsing.Data;
-using PoESkillTree.Computation.Parsing.ModifierBuilding;
+using PoESkillTree.Computation.Common.Builders.Modifiers;
+using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.Computation.Common.Data;
+using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Parsing.Referencing;
 
 namespace PoESkillTree.Computation.Parsing.Tests

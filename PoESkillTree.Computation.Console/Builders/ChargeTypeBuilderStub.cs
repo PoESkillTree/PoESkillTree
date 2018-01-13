@@ -1,7 +1,7 @@
-﻿using PoESkillTree.Computation.Parsing.Builders.Actions;
-using PoESkillTree.Computation.Parsing.Builders.Charges;
-using PoESkillTree.Computation.Parsing.Builders.Matching;
-using PoESkillTree.Computation.Parsing.Builders.Stats;
+﻿using PoESkillTree.Computation.Common.Builders.Actions;
+using PoESkillTree.Computation.Common.Builders.Charges;
+using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders

@@ -4,7 +4,7 @@ using Moq;
 using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Common.Utils.Extensions;
-using PoESkillTree.Computation.Parsing.Data;
+using PoESkillTree.Computation.Common.Data;
 
 namespace PoESkillTree.Computation.Parsing.Tests
 {

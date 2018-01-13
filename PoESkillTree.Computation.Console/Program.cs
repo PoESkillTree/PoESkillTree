@@ -4,11 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using MoreLinq;
+using PoESkillTree.Computation.Common.Data;
+using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Console.Builders;
 using PoESkillTree.Computation.Data;
 using PoESkillTree.Computation.Data.Steps;
 using PoESkillTree.Computation.Parsing;
-using PoESkillTree.Computation.Parsing.Data;
 
 namespace PoESkillTree.Computation.Console
 {

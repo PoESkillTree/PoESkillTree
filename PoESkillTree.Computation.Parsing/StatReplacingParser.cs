@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.Common.Utils;
-using PoESkillTree.Computation.Parsing.Data;
+using PoESkillTree.Computation.Common.Data;
 
 namespace PoESkillTree.Computation.Parsing
 {

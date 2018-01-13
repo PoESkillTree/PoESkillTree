@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using PoESkillTree.Computation.Parsing.Referencing;
-using static PoESkillTree.Computation.Parsing.Referencing.ReferenceConstants;
+using static PoESkillTree.Computation.Common.Parsing.ReferenceConstants;
 
 namespace PoESkillTree.Computation.Parsing.Tests.Referencing
 {

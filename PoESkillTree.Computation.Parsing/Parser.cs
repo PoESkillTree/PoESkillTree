@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Common.Utils.Extensions;
-using PoESkillTree.Computation.Parsing.Builders;
-using PoESkillTree.Computation.Parsing.Data;
-using PoESkillTree.Computation.Parsing.ModifierBuilding;
+using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Modifiers;
+using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Parsing.Referencing;
 
 namespace PoESkillTree.Computation.Parsing
@@ -14,7 +15,7 @@ namespace PoESkillTree.Computation.Parsing
     /// Implementation of <see cref="IParser" /> using the parsing pipeline laid out by this project.
     /// <para> Dependencies not instantiated here are the actual data (lists of <see cref="IReferencedMatchers" />,
     /// <see cref="IStatMatchers" /> and <see cref="StatReplacerData" />), contained in the <c>Computation.Data</c>
-    /// project, and an implementation of the interfaces in <see cref="Builders" />. These must be passed to the
+    /// project, and an implementation of the interfaces in <see cref="Common.Builders" />. These must be passed to the
     /// constructor.
     /// </para>
     /// <para> This should be the only <see cref="IParser{TResult}" /> implementation that is relevant outside of

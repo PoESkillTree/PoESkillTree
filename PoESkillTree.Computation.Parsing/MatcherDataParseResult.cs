@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using PoESkillTree.Computation.Parsing.ModifierBuilding;
+using PoESkillTree.Computation.Common.Builders.Modifiers;
 
 namespace PoESkillTree.Computation.Parsing
 {
@@ -15,13 +15,13 @@ namespace PoESkillTree.Computation.Parsing
         }
 
         /// <summary>
-        /// <see cref="Data.MatcherData.Modifier"/> of the matched <see cref="Data.MatcherData"/>
+        /// <see cref="Common.Data.MatcherData.Modifier"/> of the matched <see cref="Common.Data.MatcherData"/>
         /// </summary>
         public IIntermediateModifier Modifier { get; }
 
         /// <summary>
-        /// Regex group names of the matched <see cref="Data.MatcherData"/>'s <see cref="Data.MatcherData.Regex"/>
-        /// and their captured substrings.
+        /// Regex group names of the matched <see cref="Common.Data.MatcherData"/>'s
+        /// <see cref="Common.Data.MatcherData.Regex"/> and their captured substrings.
         /// </summary>
         public IReadOnlyDictionary<string, string> RegexGroups { get; }
     }

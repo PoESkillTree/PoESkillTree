@@ -1,5 +1,5 @@
-﻿using PoESkillTree.Computation.Parsing.Builders.Matching;
-using PoESkillTree.Computation.Parsing.Builders.Skills;
+﻿using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Skills;
 
 namespace PoESkillTree.Computation.Console.Builders
 {

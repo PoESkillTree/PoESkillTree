@@ -1,5 +1,5 @@
-﻿using PoESkillTree.Computation.Parsing.Builders;
-using PoESkillTree.Computation.Parsing.Builders.Forms;
+﻿using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Forms;
 
 namespace PoESkillTree.Computation.Data.Base
 {
