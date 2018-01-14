@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateDB", "UpdateDB\UpdateDB.csproj", "{E69F0C33-980E-4A6B-BAEA-B8D41A93A481}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation", "PoESkillTree.Computation\PoESkillTree.Computation.csproj", "{E9C0CF81-6800-4461-8897-F8B569C7CDD0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Core", "PoESkillTree.Computation.Core\PoESkillTree.Computation.Core.csproj", "{E9C0CF81-6800-4461-8897-F8B569C7CDD0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{827BE52D-878C-45F0-AFC0-75B5385AAD53} = {827BE52D-878C-45F0-AFC0-75B5385AAD53}
 	EndProjectSection

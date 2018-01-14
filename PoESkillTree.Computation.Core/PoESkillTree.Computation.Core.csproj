@@ -8,8 +8,8 @@
     <ProjectGuid>{E9C0CF81-6800-4461-8897-F8B569C7CDD0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PoESkillTree.Computation</RootNamespace>
-    <AssemblyName>PoESkillTree.Computation</AssemblyName>
+    <RootNamespace>PoESkillTree.Computation.Core</RootNamespace>
+    <AssemblyName>PoESkillTree.Computation.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
