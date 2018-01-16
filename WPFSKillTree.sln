@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Common.Tests", "PoESkillTree.Computation.Common.Tests\PoESkillTree.Computation.Common.Tests.csproj", "{844B58AB-4D91-4567-BCA9-F3E1B2A29444}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Core.Tests", "PoESkillTree.Computation.Core.Tests\PoESkillTree.Computation.Core.Tests.csproj", "{02676C0A-817C-4D1D-BE32-640D6D5A9937}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -163,6 +165,14 @@ Global
 		{844B58AB-4D91-4567-BCA9-F3E1B2A29444}.Release|Any CPU.Build.0 = Release|Any CPU
 		{844B58AB-4D91-4567-BCA9-F3E1B2A29444}.Release|x86.ActiveCfg = Release|Any CPU
 		{844B58AB-4D91-4567-BCA9-F3E1B2A29444}.Release|x86.Build.0 = Release|Any CPU
+		{02676C0A-817C-4D1D-BE32-640D6D5A9937}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02676C0A-817C-4D1D-BE32-640D6D5A9937}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02676C0A-817C-4D1D-BE32-640D6D5A9937}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{02676C0A-817C-4D1D-BE32-640D6D5A9937}.Debug|x86.Build.0 = Debug|Any CPU
+		{02676C0A-817C-4D1D-BE32-640D6D5A9937}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02676C0A-817C-4D1D-BE32-640D6D5A9937}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02676C0A-817C-4D1D-BE32-640D6D5A9937}.Release|x86.ActiveCfg = Release|Any CPU
+		{02676C0A-817C-4D1D-BE32-640D6D5A9937}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
