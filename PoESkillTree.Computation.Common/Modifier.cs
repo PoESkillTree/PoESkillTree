@@ -1,35 +1,31 @@
-﻿namespace PoESkillTree.Computation.Common
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace PoESkillTree.Computation.Common
 {
     /// <summary>
-    /// Represents a single parsed Modifier including a Stat, Form, Value and Condition.
+    /// Represents a single parsed Modifier including a Stat, Form and Value.
     /// </summary>
-    /// <remarks>
-    /// The actual types of the properties are yet to be determined.
-    /// </remarks>
     public class Modifier
     {
-        public object Stat { get; }
+        public IReadOnlyList<IStat> Stats { get; }
 
-        public object Form { get; }
+        public Form Form { get; }
 
-        public object Value { get; }
+        public IValue Value { get; }
 
-        public object Condition { get; }
-
-        public Modifier(object stat, object form, object value, object condition)
+        public Modifier(IReadOnlyList<IStat> stats, Form form, IValue value)
         {
-            Stat = stat;
+            Stats = stats;
             Form = form;
             Value = value;
-            Condition = condition;
         }
 
         private bool Equals(Modifier other)
         {
-            return Stat.Equals(other.Stat) 
+            return Stats.SequenceEqual(other.Stats) 
                    && Form.Equals(other.Form) 
-                   && Value.Equals(other.Value) 
-                   && Condition.Equals(other.Condition);
+                   && Value.Equals(other.Value);
         }
 
         public override bool Equals(object obj)
@@ -43,17 +39,16 @@
         {
             unchecked
             {
-                var hashCode = Stat.GetHashCode();
+                var hashCode = Stats.GetHashCode();
                 hashCode = (hashCode * 397) ^ Form.GetHashCode();
                 hashCode = (hashCode * 397) ^ Value.GetHashCode();
-                hashCode = (hashCode * 397) ^ Condition.GetHashCode();
                 return hashCode;
             }
         }
 
         public override string ToString()
         {
-            return $"Stat: {Stat}\n  Form: {Form}\n  Value: {Value}\n  Condition: {Condition}";
+            return $"Stats: {Stats}\n  Form: {Form}\n  Value: {Value}";
         }
     }
 }

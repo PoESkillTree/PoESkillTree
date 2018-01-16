@@ -1,4 +1,6 @@
-﻿using PoESkillTree.Computation.Common.Builders;
+﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Effects;
@@ -66,10 +68,21 @@ namespace PoESkillTree.Computation.Console.Builders
             CreateFlagStat(This, effect, (o1, o2) => $"{o1} added to effect {o2}");
 
         public virtual IStatBuilder WithCondition(IConditionBuilder condition) =>
-            CreateStat(This, condition, (s, c) => $"{s} ({c})");
+            CreateStat(This, condition, (s, c) => $"{s}\n  Condition: {c}");
 
         public IStatBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
+
+        public (IReadOnlyList<IStat> stats, ValueConverter valueConverter) Build() =>
+            (new[] { new StatStub(this) }, v => v);
+
+
+        private class StatStub : BuilderStub, IStat
+        {
+            public StatStub(BuilderStub toCopy) : base(toCopy)
+            {
+            }
+        }
     }
 
 

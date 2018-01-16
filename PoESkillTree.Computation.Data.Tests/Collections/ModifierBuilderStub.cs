@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
@@ -17,8 +18,8 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
 
         public IReadOnlyList<IntermediateModifierEntry> Entries => throw new InvalidOperationException();
 
-        public Func<IStatBuilder, IStatBuilder> StatConverter { get; private set; }
-        public Func<IValueBuilder, IValueBuilder> ValueConverter { get; private set; }
+        public StatConverter StatConverter { get; private set; }
+        public ValueConverter ValueConverter { get; private set; }
 
         public IModifierBuilder WithCondition(IConditionBuilder condition)
         {
@@ -75,7 +76,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             return ret;
         }
 
-        public IModifierBuilder WithStatConverter(Func<IStatBuilder, IStatBuilder> converter)
+        public IModifierBuilder WithStatConverter(StatConverter converter)
         {
             if (converter == null)
                 throw new ArgumentNullException(nameof(converter));
@@ -108,7 +109,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             return ret;
         }
 
-        public IModifierBuilder WithValueConverter(Func<IValueBuilder, IValueBuilder> converter)
+        public IModifierBuilder WithValueConverter(ValueConverter converter)
         {
             if (converter == null)
                 throw new ArgumentNullException(nameof(converter));

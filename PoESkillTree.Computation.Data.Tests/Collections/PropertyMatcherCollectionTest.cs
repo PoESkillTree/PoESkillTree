@@ -51,20 +51,20 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         public void AddWithStatAndConverter()
         {
             var stat = Mock.Of<IStatBuilder>();
-            var converter = _valueFactory.SetupConverter();
+            var (converterIn, converterOut) = _valueFactory.SetupConverter();
 
-            _sut.Add(Regex, stat, converter);
+            _sut.Add(Regex, stat, converterIn);
 
             var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));
-            Assert.AreSame(converter, builder.ValueConverter);
+            Assert.AreSame(converterOut, builder.ValueConverter);
         }
 
         [Test]
         public void AddManyAddsToCount()
         {
             var stat = Mock.Of<IStatBuilder>();
-            var converter = _valueFactory.SetupConverter();
+            var (converter, _) = _valueFactory.SetupConverter();
 
             _sut.Add(Regex);
             _sut.Add(Regex, stat);

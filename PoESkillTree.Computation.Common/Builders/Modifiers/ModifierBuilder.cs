@@ -13,8 +13,8 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
     public class ModifierBuilder : IModifierBuilder, IIntermediateModifier
     {
         public IReadOnlyList<IntermediateModifierEntry> Entries { get; }
-        public Func<IStatBuilder, IStatBuilder> StatConverter { get; } = s => s;
-        public Func<IValueBuilder, IValueBuilder> ValueConverter { get; } = v => v;
+        public StatConverter StatConverter { get; } = s => s;
+        public ValueConverter ValueConverter { get; } = v => v;
 
         public ModifierBuilder()
         {
@@ -22,8 +22,8 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
         }
 
         private ModifierBuilder(IEnumerable<IntermediateModifierEntry> entries, 
-            Func<IStatBuilder, IStatBuilder> statConverter, 
-            Func<IValueBuilder, IValueBuilder> valueConverter)
+            StatConverter statConverter, 
+            ValueConverter valueConverter)
         {
             Entries = entries.ToList();
             StatConverter = statConverter;
@@ -102,7 +102,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             return WithEnumerable(stats, (e, s) => e.WithStat(s), e => e.Stat, "Stat");
         }
 
-        public IModifierBuilder WithStatConverter(Func<IStatBuilder, IStatBuilder> converter)
+        public IModifierBuilder WithStatConverter(StatConverter converter)
         {
             return new ModifierBuilder(Entries, converter, ValueConverter);
         }
@@ -117,7 +117,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             return WithEnumerable(values, (e, v) => e.WithValue(v), e => e.Value, "Value");
         }
 
-        public IModifierBuilder WithValueConverter(Func<IValueBuilder, IValueBuilder> converter)
+        public IModifierBuilder WithValueConverter(ValueConverter converter)
         {
             return new ModifierBuilder(Entries, StatConverter, converter);
         }

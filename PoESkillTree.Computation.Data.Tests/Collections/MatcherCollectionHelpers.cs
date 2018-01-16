@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
 
@@ -20,12 +21,13 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             return (ModifierBuilderStub) data.Modifier;
         }
 
-        internal static Func<IValueBuilder, ValueBuilder> SetupConverter(
+        internal static (Func<ValueBuilder, ValueBuilder> converterIn, ValueConverter converterOut) SetupConverter(
             this Mock<IValueBuilders> valueBuildersMock)
         {
-            Func<IValueBuilder, ValueBuilder> converter = v => null;
-            valueBuildersMock.Setup(v => v.WrapValueConverter(converter)).Returns(converter);
-            return converter;
+            Func<ValueBuilder, ValueBuilder> converterIn = v => null;
+            ValueConverter converterOut = v => null;
+            valueBuildersMock.Setup(v => v.WrapValueConverter(converterIn)).Returns(converterOut);
+            return (converterIn, converterOut);
         }
     }
 }

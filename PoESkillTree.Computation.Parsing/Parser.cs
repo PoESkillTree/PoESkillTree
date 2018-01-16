@@ -83,7 +83,7 @@ namespace PoESkillTree.Computation.Parsing
                                 new StatReplacingParser<IReadOnlyList<Modifier>>(
                                     new ResultMappingParser<IReadOnlyList<IIntermediateModifier>, IReadOnlyList<Modifier>>(
                                         new CompositeParser<IIntermediateModifier, TStep>(_parsingData.Stepper, StepToParser),
-                                        l => l.Aggregate().Build(_builderFactories.ConditionBuilders.True)),
+                                        l => l.Aggregate().Build()),
                                     _parsingData.StatReplacers
                                 ),
                                 ls => ls.Flatten().ToList()

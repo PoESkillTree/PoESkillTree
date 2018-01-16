@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -31,13 +30,13 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
 
         IModifierBuilder WithStats(IEnumerable<IStatBuilder> stats);
 
-        IModifierBuilder WithStatConverter(Func<IStatBuilder, IStatBuilder> converter);
+        IModifierBuilder WithStatConverter(StatConverter converter);
 
         IModifierBuilder WithValue(IValueBuilder value);
 
         IModifierBuilder WithValues(IEnumerable<IValueBuilder> values);
 
-        IModifierBuilder WithValueConverter(Func<IValueBuilder, IValueBuilder> converter);
+        IModifierBuilder WithValueConverter(ValueConverter converter);
 
         IModifierBuilder WithCondition(IConditionBuilder condition);
 

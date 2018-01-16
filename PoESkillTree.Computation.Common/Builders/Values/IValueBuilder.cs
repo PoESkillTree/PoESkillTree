@@ -77,5 +77,7 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// Returns a value that is equal to the smallest integer greater than or equal to this value.
         /// </summary>
         IValueBuilder Ceiling { get; }
+
+        IValue Build();
     }
 }

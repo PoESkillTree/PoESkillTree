@@ -176,10 +176,13 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         public ValueBuilder Floor => Wrap(_value.Floor);
 
         IValueBuilder IValueBuilder.Ceiling => _value.Ceiling;
+
         public ValueBuilder Ceiling => Wrap(_value.Ceiling);
 
         public IValueBuilder Resolve(ResolveContext context) => 
             _value.Resolve(context);
+
+        IValue IValueBuilder.Build() => _value.Build();
 
         public override string ToString()
         {

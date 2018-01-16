@@ -29,7 +29,7 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// <see cref="ValueBuilder"/> as type) to <see cref="Builders.Modifiers.IModifierBuilder"/> (which uses
         /// <see cref="IValueBuilder"/>).
         /// </remarks>
-        Func<IValueBuilder, IValueBuilder> WrapValueConverter(Func<ValueBuilder, ValueBuilder> converter);
+        ValueConverter WrapValueConverter(Func<ValueBuilder, ValueBuilder> converter);
     }
 
     public interface IThenBuilder : IResolvable<IThenBuilder>

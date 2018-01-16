@@ -108,23 +108,42 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
 
         /// <summary>
         /// Builds <paramref name="modifier"/> by creating a <see cref="Modifier"/> from each of its entries.
-        /// The <see cref="IIntermediateModifier.StatConverter"/> is applied to each non-null stat and
-        /// <see cref="IIntermediateModifier.ValueConverter"/> to each non-null value.
-        /// <paramref name="defaultCondition"/> is set as the condition for each entry that has a null condition.
+        /// The <see cref="IIntermediateModifier.StatConverter"/> is applied to each stat and
+        /// <see cref="IIntermediateModifier.ValueConverter"/> to each value. Entries with null form, stat or value
+        /// are ignored.
         /// </summary>
-        public static IReadOnlyList<Modifier> Build(this IIntermediateModifier modifier, object defaultCondition)
+        public static IReadOnlyList<Modifier> Build(this IIntermediateModifier modifier)
         {
-            IStatBuilder ConvertStat(IIntermediateModifier r, IStatBuilder s) =>
-                s == null ? null : r.StatConverter(s);
+            return (
+                from entry in modifier.Entries
+                let m = Build(modifier, entry)
+                where m != null
+                select m
+            ).ToList();
+        }
 
-            IValueBuilder ConvertValue(IIntermediateModifier r, IValueBuilder v) =>
-                v == null ? null : r.ValueConverter(v);
+        private static Modifier Build(IIntermediateModifier modifier, IntermediateModifierEntry entry)
+        {
+            if (entry.Form == null || entry.Stat == null || entry.Value == null)
+            {
+                return null;
+            }
 
-            return (from entry in modifier.Entries
-                    let stat = ConvertStat(modifier, entry.Stat)
-                    let value = ConvertValue(modifier, entry.Value)
-                    select new Modifier(stat, entry.Form, value, entry.Condition ?? defaultCondition))
-                .ToList();
+            var statBuilder = modifier.StatConverter(entry.Stat);
+            if (entry.Condition != null)
+            {
+                statBuilder = statBuilder.WithCondition(entry.Condition);
+            }
+            var (stats, statValueConverter) = statBuilder.Build();
+
+            var (form, formValueConverter) = entry.Form.Build();
+
+            var value =
+                formValueConverter(
+                    statValueConverter(
+                        modifier.ValueConverter(entry.Value))).Build();
+
+            return new Modifier(stats, form, value);
         }
     }
 }

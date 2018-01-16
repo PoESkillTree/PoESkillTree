@@ -13,6 +13,11 @@
             _stringRepresentation = stringRepresentation;
         }
 
+        protected BuilderStub(BuilderStub toCopy)
+        {
+            _stringRepresentation = toCopy._stringRepresentation;
+        }
+
         private bool Equals(BuilderStub other)
         {
             return string.Equals(_stringRepresentation, other._stringRepresentation);

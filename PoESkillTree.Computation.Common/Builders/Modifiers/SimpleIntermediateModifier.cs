@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Common.Builders.Values;
+﻿using System.Collections.Generic;
 
 namespace PoESkillTree.Computation.Common.Builders.Modifiers
 {
@@ -19,12 +16,12 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             new SimpleIntermediateModifier(new IntermediateModifierEntry[0], s => s, v => v);
 
         public IReadOnlyList<IntermediateModifierEntry> Entries { get; }
-        public Func<IStatBuilder, IStatBuilder> StatConverter { get; }
-        public Func<IValueBuilder, IValueBuilder> ValueConverter { get; }
+        public StatConverter StatConverter { get; }
+        public ValueConverter ValueConverter { get; }
 
         public SimpleIntermediateModifier(IReadOnlyList<IntermediateModifierEntry> entries,
-            Func<IStatBuilder, IStatBuilder> statConverter,
-            Func<IValueBuilder, IValueBuilder> valueConverter)
+            StatConverter statConverter,
+            ValueConverter valueConverter)
         {
             Entries = entries;
             StatConverter = statConverter;

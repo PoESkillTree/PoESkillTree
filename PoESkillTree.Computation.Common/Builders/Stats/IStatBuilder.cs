@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Effects;
@@ -99,5 +100,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </para>
         /// </summary>
         IStatBuilder WithCondition(IConditionBuilder condition);
+
+        (IReadOnlyList<IStat> stats, ValueConverter valueConverter) Build();
     }
 }

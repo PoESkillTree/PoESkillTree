@@ -50,16 +50,8 @@ namespace PoESkillTree.Computation.Core
      *   - The ValueChanged events can easily be used by the UI (transformed to PropertyChanged events in ViewModels)
      *
      * Builder implementations:
-     * - Define the types for Modifier
-     *   - IStatBuilder: builds to IStat[], and Func<IValueBuilder, IValueBuilder>
-     *   - IFormBuilder: builds to Form (Enum) and Func<IValueBuilder, IValueBuilder>
-     *   - IValueBuilder: builds to IValue
-     *   - Modifier.Stats: statBuilder.Build().Stats
-     *   - Modifier.Form: formBuilder.Build().Form
-     *   - Modifier.Value: formBuilder.Build().Converter(statBuilder.Build().Converter(valueBuilder).Build())
-     *   - Modifier will need new property "Source" (or passed as separate parameter): Enum or something between
-     *     Given, Tree, Skill and the equipped items, also containing e.g. tree node names, "Dexterity", item slots
-     *     and names, ...
+     * - "Source" needs to be passed together with Modifier: Can be Given, Tree, Skill or Item (or maybe something
+     *   else). Also contains information about e.g. tree node names, "Dexterity", item slots and names, ...
      * - What IStat and IValue represent will be different from how they are used in the data
      *   - IStat defines the subgraph of the calculation graph the modifier affects
      *     (for non-data-driven modifiers like conversion: a special property of IStat defines what type of special
@@ -69,6 +61,8 @@ namespace PoESkillTree.Computation.Core
      *     and references to other nodes (mainly to nodes defined as IStat)
      *     - This is used to calculate ICalculationNode.Value. The value is nullable, allowing the representation
      *       of modifiers that aren't applied, e.g. because of their conditions.
+     * - IStat may need to include further modifiers, e.g. for aura modifiers to count towards the aura count,
+     *   depending on how they are implemented (i.e. multiple stats without being modified by the same form and value).
      *
      * Data-driven Mechanics:
      * - New "CommonGivenStats" data class

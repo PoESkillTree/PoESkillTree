@@ -38,8 +38,8 @@ namespace PoESkillTree.Computation.Parsing
         /// <see cref="ParseResult.SuccessfullyParsed"/> is true, <see cref="ParseResult.Result"/>
         /// contains the parsing result and <see cref="ParseResult.RemainingStat"/> is empty.
         /// <para>If <paramref name="stat"/> could not be parsed, <see cref="ParseResult.SuccessfullyParsed"/> is
-        /// false and <see cref="ParseResult.Result"/> is undefined. It may be null or contain partial
-        /// <see cref="Modifier"/>s with null properties and should only be used for debugging purposes.</para>
+        /// false and <see cref="ParseResult.Result"/> only contains <see cref="Modifier"/>s for which a stat, form
+        /// and value could be parsed.</para>
         /// <para><see cref="ParseResult.RemainingStat"/> contains the parts of <paramref name="stat"/> that were
         /// not parsed into <see cref="ParseResult.Result"/>.</para>
         /// </summary>

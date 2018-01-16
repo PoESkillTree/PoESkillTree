@@ -7,6 +7,6 @@ namespace PoESkillTree.Computation.Common.Builders.Forms
     /// </summary>
     public interface IFormBuilder : IResolvable<IFormBuilder>
     {
-
+        (Form form, ValueConverter valueConverter) Build();
     }
 }
