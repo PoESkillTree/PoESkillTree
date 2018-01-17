@@ -5,49 +5,32 @@ namespace PoESkillTree.Computation.Core
     /*
      * Core interface: ICalculationNode
      * - Value gets the node's value based on its child nodes
-     *   - For nodes not directly used by other projects and not implementing IRecalculatableNode, this is not cached,
+     *   - For nodes not directly used by other projects and not implementing ICachingNode, this is not cached,
      *     i.e. it calculates the value based on the children with every call
-     * - ValueChanged is raised when Value changes
+     *   - Even for ICachingNodes, the value is calculated lazily, i.e. not when ValueChanged is raised
      * - Will have many different implementations depending on how the value is calculated
      * - Value will not throw exceptions, they should be thrown on construction
+     * - For a core node N:
+     *   - N is decorated by a CachingNode, which is used instead of it
+     *   - Children of N are CachingNodeAdapters to the decorators of the actual children
+     *   - N subscribes to ValueChanged of its children
+     *   - N raises ValueChanged when
+     *     - ValueChanged of a child is raised, or
+     *     - N itself changed, e.g. a child was added
      *
      * (Re-)Calculating values efficiently:
-     * - Easy solution: Don't. Just call Value on the node you need the value of and wait for the entire recalculation.
-     *   - ValueChanged will be raised when a node itself changes (e.g. children are added) or when the event of a
-     *     child has been raised
-     * - Proposal: Event based, two pass
-     *   1. Nodes raise "RecalculationRequired" events when being changed directly or when their children raise
-     *     this event
+     * Event based, two pass:
+     *   1. Core nodes raise "ValueChanged" when being changed directly or when a child raises this event
+     *     - This leads to decorating nodes (CachingNode) raising "ValueChangeReceived", which in turn
+     *       leads to their parent core nodes raising "ValueChanged" (through CachingNodeAdapter)
      *     - These events will go through the graph marking nodes as dirty
-     *     - If a node is already marked as dirty (i.e. was not recalculated since the last time it raised the event),
-     *       it doesn't raise more events
-     *     - Additionally, some object subscribes to all nodes and saves which nodes raised events
-     *   2. That object then triggers recalculation on all these nodes (if order matters for speed, this should be done
-     *     in a particular order)
-     *     - Recalculation raises "ValueChanged" events on all nodes that are recalculated
+     *     - Each CachingNode raises "ValueChangeReceived" at most once
+     *     - Some object subscribes to all CachingNodes and saves which nodes raised events
+     *   2. That object then raises "ValueChanged" on all these nodes (through ICachingNode.RaiseValueChanged())
      *     - These events can be subscribed to by the UI to update displayed values, they will only be raised once
      *       for each node
-     *   - With batch updates, the second step only has to be done at the end
-     *   - Decorators of the core nodes implement IRecalculatableNode
-     *     (CalculateValue and RecalculationRequired)
-     *     - Core calculation node N calculates its value each time Value is called
-     *     - Children of N are Proxies of the actual children
-     *       - Proxy.Value calls Value of the decorator (for caching)
-     *       - Proxy.ValueChanged is raised when RecalculationRequired of the decorator is raised, because ValueChanged
-     *         of the decorator is only raised after recalculation
-     *     - N subscribes to ValueChanged of its children
-     *     - N raises ValueChanged when
-     *       - ValueChanged of a child is raised, or
-     *       - N itself changed, e.g. a child was added
-     *     - The decorator node D of N caches N's value
-     *       - D is created in a dirty state without a value (parents will themselves raise events when D is added to
-     *         them, and the object holding dirty nodes will mark D dirty when D is added)
-     *       - D.RecalculationRequired is raised when N.ValueChanged is raised
-     *       - D.CalculateValue() sets D.Value to N.Value and raises D.ValueChanged
-     *       - D.CalculateValue() does nothing if D is not dirty
-     *       - Calling D.Value will first call D.CalculateValue()
-     *         (makes the recalculation pass unnecessary for pull-based previews)
-     *   - The ValueChanged events can easily be used by the UI (transformed to PropertyChanged events in ViewModels)
+     * - With batch updates, the second step only has to be done at the end
+     * - The ValueChanged events can easily be used by the UI (transformed to PropertyChanged events in ViewModels)
      *
      * Builder implementations:
      * - "Source" needs to be passed together with Modifier: Can be Given, Tree, Skill or Item (or maybe something
@@ -76,6 +59,7 @@ namespace PoESkillTree.Computation.Core
      * - will mostly be handled outside of ICalculationNode implementations
      *   (except when adding children to existing nodes)
      * - Needs to make sure events are properly unsubscribed from
+     *   (ICalculationNode implements IDisposable for this reason)
      * - Core calculation node implementations need some kind of context as parameter providing information that can
      *   not be expressed as connections to other nodes, e.g. global condition specified by the user and allowing
      *   connecting to other nodes
@@ -134,7 +118,7 @@ namespace PoESkillTree.Computation.Core
      *     i.e. parameterless change notifications)
      */
 
-    public interface ICalculationNode
+    public interface ICalculationNode : IDisposable
     {
         double? Value { get; }
 
@@ -142,10 +126,10 @@ namespace PoESkillTree.Computation.Core
     }
 
 
-    public interface IRecalculatableNode : ICalculationNode
+    public interface ICachingNode : ICalculationNode
     {
-        void CalculateValue();
+        void RaiseValueChanged();
 
-        event EventHandler RecalculationRequired;
+        event EventHandler ValueChangeReceived;
     }
 }
