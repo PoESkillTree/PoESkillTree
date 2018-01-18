@@ -98,7 +98,25 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         [Test]
-        public void ValueChangeReceivedIsNotRaisedWhenItWasNotPropagated()
+        public void ValueChangeReceivedIsRaisedWhenValueWasCalled()
+        {
+            var nodeMock = new Mock<ICalculationNode>();
+            var sut = CreateSut(nodeMock.Object);
+            var _ = sut.Value;
+            var raised = false;
+            sut.ValueChangeReceived += (sender, args) =>
+            {
+                Assert.AreEqual(sut, sender);
+                raised = true;
+            };
+
+            nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
+
+            Assert.IsTrue(raised);
+        }
+
+        [Test]
+        public void ValueChangeReceivedIsNotRaisedWhenItWasNotPropagatedAndValueWasNotCalled()
         {
             var nodeMock = new Mock<ICalculationNode>();
             var sut = CreateSut(nodeMock.Object);

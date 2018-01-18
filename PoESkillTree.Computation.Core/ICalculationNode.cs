@@ -29,12 +29,10 @@ namespace PoESkillTree.Computation.Core
      *   2. That object then raises "ValueChanged" on all these nodes (through ICachingNode.RaiseValueChanged())
      *     - These events can be subscribed to by the UI to update displayed values, they will only be raised once
      *       for each node
-     * - With batch updates, the second step only has to be done at the end
-     * - The ValueChanged events can easily be used by the UI (transformed to PropertyChanged events in ViewModels)
+     * - All other API-sided events, i.e. those of collections in ICalculationGraph.NodeRepository and
+     *   .ExternalStatRegistry, will only be raised after both passes (or at least only after the first pass).
      *
      * Builder implementations:
-     * - "Source" needs to be passed together with Modifier: Can be Given, Tree, Skill or Item (or maybe something
-     *   else). Also contains information about e.g. tree node names, "Dexterity", item slots and names, ...
      * - What IStat and IValue represent will be different from how they are used in the data
      *   - IStat defines the subgraph of the calculation graph the modifier affects
      *     (for non-data-driven modifiers like conversion: a special property of IStat defines what type of special
@@ -44,6 +42,9 @@ namespace PoESkillTree.Computation.Core
      *     and references to other nodes (mainly to nodes defined as IStat)
      *     - This is used to calculate ICalculationNode.Value. The value is nullable, allowing the representation
      *       of modifiers that aren't applied, e.g. because of their conditions.
+     *   - Conditions are IStats themselves and be referenced the same way from IValue
+     *     - Their IStat implementation decides whether the value is user entered or calculated
+     *     - User entered conditions can be registered using IExternalStatRegistry
      * - IStat may need to include further modifiers, e.g. for aura modifiers to count towards the aura count,
      *   depending on how they are implemented (i.e. multiple stats without being modified by the same form and value).
      *
@@ -51,24 +52,10 @@ namespace PoESkillTree.Computation.Core
      * - New "CommonGivenStats" data class
      *   (can also contain things common between CharacterGivenStats and MonsterGivenStats)
      *
-     * Construction of the graph:
-     * - Batch update:
-     *   - pass all modifiers to construction object at once
-     *   - order the passed modifiers to make construction as fast as possible
-     *   - only recalculate values once batch is done
-     * - will mostly be handled outside of ICalculationNode implementations
-     *   (except when adding children to existing nodes)
+     * Construction of the graph: (see ICalculationGraph)
      * - Needs to make sure events are properly unsubscribed from
      *   (ICalculationNode implements IDisposable for this reason)
-     * - Core calculation node implementations need some kind of context as parameter providing information that can
-     *   not be expressed as connections to other nodes, e.g. global condition specified by the user and allowing
-     *   connecting to other nodes
-     *   - Adding nodes for this kind of information allows other nodes to use it in a way fitting everything else
-     *   - Changes to the context need to trigger ValueChanged (in the nodes representing the information)
-     *   - Some "GetOrAdd" as the method to retrieve nodes from the context
-     *   - Conditions can be added both ways:
-     *     - In the UI. No nodes are created until it is referenced.
-     *     - When adding nodes. The UI adds the condition if it can be user specified.
+     * - When constructing nodes from a Modifier, it can use INodeRepository to access referenced nodes
      * - To allow for removing modifiers, each modifier source has to store its modifiers
      * - Adding "special" modifiers (non-data-driven, e.g. conversion):
      *   - These modifiers are triggered by a special property of IStat
@@ -76,7 +63,7 @@ namespace PoESkillTree.Computation.Core
      *   - Mod source based conditions:
      *     - Splits up the form collections
      *     - Behaves like a normal modifier with the above addition
-     *     - For the main calculation graph (not preview), it might be useful to always split by source (for breakdowns)
+     *     - For the main calculation graph (not preview), it might be useful for breakdowns to always split by source
      *   - "Modifiers to Bar also apply to Foo":
      *     - Adds links from Foo's form collection using nodes to the form collections of Bar (with a multiplier)
      *     - The modifier's form and value are irrelevant (should always be TotalOverride and 1)
@@ -107,15 +94,11 @@ namespace PoESkillTree.Computation.Core
      *       corresponding skill tree nodes/items/... must be selected. Though, I don't think that makes sense for
      *       anything except maybe tree nodes.
      * - Removing modifiers: The reverse of adding them.
-     * - Retrieving nodes to subscribe to:
-     *   - ICalculationNode GetNode(IStat stat) (stat subgraph, {Total, Subtotal, Uncapped Subtotal, Base})
-     *     (with conversions, this returns the unconverted Base node)
-     *   - [...] GetNodes(IStat, Form) (returns the form nodes of stat subgraph for each conversion/source path)
-     *     (the caller needs to figure out when the returned collection, not the nodes in it, change by themselves)
-     *   - [...] GetNodeCollection(IStat, Form) (returns the form node collection of stat)
-     *     (whatever the type of node collections is, it needs to implement an interface that is returned here that
-     *     supports everything the UI requires, including change notifications. Re-rendering the whole table is fine,
-     *     i.e. parameterless change notifications)
+     *
+     * UI notes:
+     * - The ValueChanged events can easily be used by the UI (transformed to PropertyChanged events in ViewModels)
+     * - Values for user specified conditions/stats can be set using modifiers with TotalOverride form
+     *   and read/subscribed to in the usual manner (UI needs to make sure writing and reading doesn't loop)
      */
 
     public interface ICalculationNode : IDisposable
@@ -123,13 +106,5 @@ namespace PoESkillTree.Computation.Core
         double? Value { get; }
 
         event EventHandler ValueChanged;
-    }
-
-
-    public interface ICachingNode : ICalculationNode
-    {
-        void RaiseValueChanged();
-
-        event EventHandler ValueChangeReceived;
     }
 }

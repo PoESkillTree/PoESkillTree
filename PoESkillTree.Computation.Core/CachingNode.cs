@@ -6,7 +6,7 @@ namespace PoESkillTree.Computation.Core
     {
         private readonly ICalculationNode _decoratedNode;
 
-        private bool _cacheInvalid = true;
+        private bool _calculatedValue;
         private double? _value;
         private bool _propagatedValueChange;
 
@@ -20,10 +20,10 @@ namespace PoESkillTree.Computation.Core
         {
             get
             {
-                if (_cacheInvalid)
+                if (!_calculatedValue)
                 {
                     _value = _decoratedNode.Value;
-                    _cacheInvalid = false;
+                    _calculatedValue = true;
                 }
                 return _value;
             }
@@ -49,10 +49,11 @@ namespace PoESkillTree.Computation.Core
 
         private void DecoratedNodeOnValueChanged(object sender, EventArgs args)
         {
-            _cacheInvalid = true;
-            if (_propagatedValueChange)
+            var raiseValueChangeReceived = _calculatedValue || _propagatedValueChange;
+            _calculatedValue = false;
+            _propagatedValueChange = false;
+            if (raiseValueChangeReceived)
             {
-                _propagatedValueChange = false;
                 ValueChangeReceived?.Invoke(this, EventArgs.Empty);
             }
         }

@@ -147,6 +147,7 @@
     <Compile Include="Data\ReferencedMatcherData.cs" />
     <Compile Include="Data\StatReplacerData.cs" />
     <Compile Include="Form.cs" />
+    <Compile Include="IModifierSource.cs" />
     <Compile Include="IStat.cs" />
     <Compile Include="IValue.cs" />
     <Compile Include="Modifier.cs" />
