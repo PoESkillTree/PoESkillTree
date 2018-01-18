@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
@@ -17,10 +18,7 @@ namespace PoESkillTree.Computation.Core
         IExternalStatRegistry ExternalStatRegistry { get; }
     }
 
-    
-    // The most convenient solution to create these would probably be an extension method on ICalculationGraph
-    // ("StartBatchUpdate" or something), returning a class with AddModifier(), RemoveModifier(), Swap() and
-    // Commit() methods.
+
     public class CalculationGraphUpdate
     {
         public CalculationGraphUpdate(
@@ -33,5 +31,26 @@ namespace PoESkillTree.Computation.Core
 
         public IReadOnlyCollection<(Modifier modifier, IModifierSource source)> AddedModifiers { get; }
         public IReadOnlyCollection<(Modifier modifier, IModifierSource source)> RemovedModifiers { get; }
+
+        private bool Equals(CalculationGraphUpdate other)
+        {
+            return AddedModifiers.SequenceEqual(other.AddedModifiers)
+                   && RemovedModifiers.SequenceEqual(other.RemovedModifiers);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj is CalculationGraphUpdate other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (AddedModifiers.GetHashCode() * 397) ^ RemovedModifiers.GetHashCode();
+            }
+        }
     }
 }

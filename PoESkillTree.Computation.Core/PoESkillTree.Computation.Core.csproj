@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalculationGraphExtensions.cs" />
     <Compile Include="ICachingNode.cs" />
     <Compile Include="ICalculationGraph.cs" />
     <Compile Include="ICalculationNode.cs" />
