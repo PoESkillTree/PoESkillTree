@@ -85,14 +85,14 @@ namespace PoESkillTree.Computation.Core
      *     complicated this way, otherwise changing conditions could require larger changes to the graph.
      *     - Conditions should be the first things checked when calculating values so the calculation can be shortcut.
      *     - Only the children necessary to calculate the value should be subscribed to and be evaluated.
-     *       - This can only be decided after the value is calculated the first time. Initially, nodes must subscribe
-     *         to all their children.
+     *       - This can only be decided after the value is calculated the first time. Initially, nodes don't subscribe
+     *         to children. They are created in a dirty state anyway.
      *       - When calculating the value, subscribe/unsubscribe to children as required.
      *       - E.g. If a condition to the modifier's application is false and the value is therefore null,
      *         only this condition needs to be subscribed to.
      *     - This allows the entire graph being pre-built and all modifiers having conditions stating that their
      *       corresponding skill tree nodes/items/... must be selected. Though, I don't think that makes sense for
-     *       anything except maybe tree nodes.
+     *       anything except maybe tree nodes. This will probably be useful of the tree generator.
      * - Removing modifiers: The reverse of adding them.
      *
      * UI notes:
@@ -103,7 +103,16 @@ namespace PoESkillTree.Computation.Core
 
     public interface ICalculationNode : IDisposable
     {
+        // Core nodes supporting values in the format "MinValue to MaxValue" return (MinValue + MaxValue) / 2 as Value.
+        // (this is the case for the building block nodes except Increase, More and TotalOverride)
+        // Nodes not supporting min and max values return the same value from all three properties.
+        // (this is the case for Increase, More and TotalOverride building block nodes and for modifier nodes)
+
         double? Value { get; }
+
+        double? MinValue { get; }
+
+        double? MaxValue { get; }
 
         event EventHandler ValueChanged;
     }

@@ -13,6 +13,8 @@ namespace PoESkillTree.Computation.Core
         }
 
         public double? Value => _adaptedNode.Value;
+        public double? MinValue => _adaptedNode.MinValue;
+        public double? MaxValue => _adaptedNode.MaxValue;
 
         public event EventHandler ValueChanged;
 

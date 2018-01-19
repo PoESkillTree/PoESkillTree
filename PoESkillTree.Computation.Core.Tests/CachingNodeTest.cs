@@ -40,6 +40,52 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         [Test]
+        public void MinValueCachesDecoratedNodesMinValue()
+        {
+            const int expected = 43;
+            var nodeMock = new Mock<ICalculationNode>();
+            nodeMock.SetupGet(n => n.MinValue).Returns(expected);
+            var sut = CreateSut(nodeMock.Object);
+            var _ = sut.MinValue;
+            nodeMock.SetupGet(n => n.MinValue).Returns(40);
+
+            var actual = sut.MinValue;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void MaxValueCachesDecoratedNodesMaxValue()
+        {
+            const int expected = 44;
+            var nodeMock = new Mock<ICalculationNode>();
+            nodeMock.SetupGet(n => n.MaxValue).Returns(expected);
+            var sut = CreateSut(nodeMock.Object);
+            var _ = sut.MaxValue;
+            nodeMock.SetupGet(n => n.MinValue).Returns(39);
+
+            var actual = sut.MaxValue;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void AccessingMinValueCachesDecoratedNodesValue()
+        {
+            const int expected = 42;
+            var nodeMock = new Mock<ICalculationNode>();
+            nodeMock.SetupGet(n => n.Value).Returns(expected);
+            nodeMock.SetupGet(n => n.MinValue).Returns(43);
+            var sut = CreateSut(nodeMock.Object);
+            var _ = sut.MinValue;
+            nodeMock.SetupGet(n => n.Value).Returns(41);
+
+            var actual = sut.Value;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void DecoratedNodesValueChangedInvalidatesCache()
         {
             const int expected = 42;

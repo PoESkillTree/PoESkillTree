@@ -26,6 +26,30 @@ namespace PoESkillTree.Computation.Core.Tests
             Assert.AreEqual(value, actual);
         }
 
+        [TestCase(43)]
+        [TestCase(null)]
+        public void MinValueReturnsAdaptedNodesMinValue(double? value)
+        {
+            var recalculatableNode = Mock.Of<ICachingNode>(n => n.MinValue == value);
+            var sut = CreateSut(recalculatableNode);
+
+            var actual = sut.MinValue;
+
+            Assert.AreEqual(value, actual);
+        }
+
+        [TestCase(44)]
+        [TestCase(null)]
+        public void MaxValueReturnsAdaptedNodesMinValue(double? value)
+        {
+            var recalculatableNode = Mock.Of<ICachingNode>(n => n.MaxValue == value);
+            var sut = CreateSut(recalculatableNode);
+
+            var actual = sut.MaxValue;
+
+            Assert.AreEqual(value, actual);
+        }
+
         [Test]
         public void ValueChangedIsRaisedWhenAdaptedNodesValueChangeReceivedIsRaised()
         {
