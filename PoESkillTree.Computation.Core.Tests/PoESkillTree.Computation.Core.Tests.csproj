@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculationGraphExtensionsTest.cs" />
+    <Compile Include="ExternalStatRegistryText.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CachingNodeAdapterTest.cs" />
     <Compile Include="CachingNodeTest.cs" />

@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculationGraphExtensions.cs" />
+    <Compile Include="ExternalStatRegistry.cs" />
     <Compile Include="ICachingNode.cs" />
     <Compile Include="ICalculationGraph.cs" />
     <Compile Include="ICalculationNode.cs" />
