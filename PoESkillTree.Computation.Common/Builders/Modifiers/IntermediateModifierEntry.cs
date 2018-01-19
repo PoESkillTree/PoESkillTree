@@ -58,30 +58,16 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             return new IntermediateModifierEntry(Form, Stat, Value, condition);
         }
 
-        public override bool Equals(object obj)
-        {
-            if (obj == this)
-                return true;
-            if (!(obj is IntermediateModifierEntry other))
-                return false;
+        public override bool Equals(object obj) =>
+            (obj == this) || (obj is IntermediateModifierEntry other && Equals(other));
 
-            return Equals(Form, other.Form)
-                   && Equals(Stat, other.Stat)
-                   && Equals(Value, other.Value)
-                   && Equals(Condition, other.Condition);
-        }
+        private bool Equals(IntermediateModifierEntry other) =>
+            (Form, Stat, Value, Condition).Equals((other.Form, other.Stat, other.Value, other.Condition));
 
-        public override int GetHashCode()
-        {
-            return (Form != null ? Form.GetHashCode() : 0) ^
-                   (Stat != null ? Stat.GetHashCode() : 0) ^
-                   (Value != null ? Value.GetHashCode() : 0) ^
-                   (Condition != null ? Condition.GetHashCode() : 0);
-        }
+        public override int GetHashCode() =>
+            (Form, Stat, Value, Condition).GetHashCode();
 
-        public override string ToString()
-        {
-            return $"IntermediateModifierEntry(Form={Form},Stat={Stat},Value={Value},Condition={Condition})";
-        }
+        public override string ToString() =>
+            $"IntermediateModifierEntry(Form={Form},Stat={Stat},Value={Value},Condition={Condition})";
     }
 }

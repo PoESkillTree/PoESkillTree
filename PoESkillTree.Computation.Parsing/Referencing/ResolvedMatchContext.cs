@@ -70,21 +70,11 @@ namespace PoESkillTree.Computation.Parsing.Referencing
             }
         }
 
-        private bool Equals(ResolvedMatchContext<T> other)
-        {
-            return _values.SequenceEqual(other._values);
-        }
+        public override bool Equals(object obj) => 
+            (this == obj) || (obj is ResolvedMatchContext<T> other && Equals(other));
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(this, obj))
-                return true;
-            return obj is ResolvedMatchContext<T> other && Equals(other);
-        }
+        private bool Equals(ResolvedMatchContext<T> other) => _values.SequenceEqual(other._values);
 
-        public override int GetHashCode()
-        {
-            return _values.GetHashCode();
-        }
+        public override int GetHashCode() => _values.GetHashCode();
     }
 }

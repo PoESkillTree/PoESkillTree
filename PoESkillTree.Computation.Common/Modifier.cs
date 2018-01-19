@@ -21,34 +21,16 @@ namespace PoESkillTree.Computation.Common
             Value = value;
         }
 
-        private bool Equals(Modifier other)
-        {
-            return Stats.SequenceEqual(other.Stats) 
-                   && Form.Equals(other.Form) 
-                   && Value.Equals(other.Value);
-        }
+        public override bool Equals(object obj) =>
+            (obj == this) || (obj is Modifier other && Equals(other));
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Modifier) obj);
-        }
+        private bool Equals(Modifier other) =>
+            Stats.SequenceEqual(other.Stats) && Form.Equals(other.Form) && Value.Equals(other.Value);
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = Stats.GetHashCode();
-                hashCode = (hashCode * 397) ^ Form.GetHashCode();
-                hashCode = (hashCode * 397) ^ Value.GetHashCode();
-                return hashCode;
-            }
-        }
+        public override int GetHashCode() =>
+            (Stats, Form, Value).GetHashCode();
 
-        public override string ToString()
-        {
-            return $"Stats: {Stats}\n  Form: {Form}\n  Value: {Value}";
-        }
+        public override string ToString() =>
+            $"Stats: {Stats}\n  Form: {Form}\n  Value: {Value}";
     }
 }

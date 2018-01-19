@@ -23,18 +23,10 @@ namespace PoESkillTree.Computation.Common.Builders.Values
             return new ValueBuilder(value);
         }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals(_value, ((ValueBuilder) obj)._value);
-        }
+        public override bool Equals(object obj) => 
+            ReferenceEquals(this, obj) || (obj is ValueBuilder other && Equals(_value, other._value));
 
-        public override int GetHashCode()
-        {
-            return _value.GetHashCode();
-        }
+        public override int GetHashCode() => _value.GetHashCode();
 
         public static IConditionBuilder operator ==(ValueBuilder left, ValueBuilder right) => 
             Eq(left, right);
@@ -184,9 +176,6 @@ namespace PoESkillTree.Computation.Common.Builders.Values
 
         IValue IValueBuilder.Build() => _value.Build();
 
-        public override string ToString()
-        {
-            return _value.ToString();
-        }
+        public override string ToString() => _value.ToString();
     }
 }

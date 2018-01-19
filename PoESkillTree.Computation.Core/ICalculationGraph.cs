@@ -32,25 +32,13 @@ namespace PoESkillTree.Computation.Core
         public IReadOnlyCollection<(Modifier modifier, IModifierSource source)> AddedModifiers { get; }
         public IReadOnlyCollection<(Modifier modifier, IModifierSource source)> RemovedModifiers { get; }
 
-        private bool Equals(CalculationGraphUpdate other)
-        {
-            return AddedModifiers.SequenceEqual(other.AddedModifiers)
-                   && RemovedModifiers.SequenceEqual(other.RemovedModifiers);
-        }
+        public override bool Equals(object obj) => 
+            (this == obj) || (obj is CalculationGraphUpdate other && Equals(other));
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj is CalculationGraphUpdate other && Equals(other);
-        }
+        private bool Equals(CalculationGraphUpdate other) =>
+            AddedModifiers.SequenceEqual(other.AddedModifiers)
+            && RemovedModifiers.SequenceEqual(other.RemovedModifiers);
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (AddedModifiers.GetHashCode() * 397) ^ RemovedModifiers.GetHashCode();
-            }
-        }
+        public override int GetHashCode() => (AddedModifiers, RemovedModifiers).GetHashCode();
     }
 }
