@@ -82,6 +82,11 @@ namespace PoESkillTree.Computation.Console.Builders
             public StatStub(BuilderStub toCopy) : base(toCopy)
             {
             }
+
+            public bool Equals(IStat other) => Equals(ToString(), other?.ToString());
+
+            public IStat Minimum => null;
+            public IStat Maximum => null;
         }
     }
 

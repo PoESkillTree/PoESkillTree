@@ -70,9 +70,11 @@
     <Compile Include="IFormNodeCollection.cs" />
     <Compile Include="INodeRepository.cs" />
     <Compile Include="IPathNodeCollection.cs" />
+    <Compile Include="NodeValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CachingNode.cs" />
     <Compile Include="CachingNodeAdapter.cs" />
+    <Compile Include="TotalNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

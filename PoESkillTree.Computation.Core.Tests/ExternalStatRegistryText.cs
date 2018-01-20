@@ -104,12 +104,21 @@ namespace PoESkillTree.Computation.Core.Tests
 
         private static KeyValuePair<IStat, double?> Register(IExternalStatRegistry sut)
         {
-            var stat = Mock.Of<IStat>();
+            var stat = new StatStub();
             var defaultValue = 42;
 
             sut.Register(stat, defaultValue);
 
             return new KeyValuePair<IStat, double?>(stat, defaultValue);
+        }
+
+
+        private class StatStub : IStat
+        {
+            public bool Equals(IStat other) => Equals((object) other);
+
+            public IStat Minimum => null;
+            public IStat Maximum => null;
         }
     }
 }

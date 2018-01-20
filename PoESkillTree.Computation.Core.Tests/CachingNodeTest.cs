@@ -21,9 +21,7 @@ namespace PoESkillTree.Computation.Core.Tests
         {
             var sut = CreateSut(value);
 
-            var actual = sut.Value;
-
-            Assert.AreEqual(value, actual);
+            sut.AssertValueEquals(value);
         }
 
         [Test]
@@ -32,57 +30,9 @@ namespace PoESkillTree.Computation.Core.Tests
             const int expected = 42;
             var nodeMock = new Mock<ICalculationNode>();
             var sut = CreateCachedSut(nodeMock, expected);
-            nodeMock.SetupGet(n => n.Value).Returns(41);
+            nodeMock.SetupGet(n => n.Value).Returns((NodeValue) 41);
 
-            var actual = sut.Value;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void MinValueCachesDecoratedNodesMinValue()
-        {
-            const int expected = 43;
-            var nodeMock = new Mock<ICalculationNode>();
-            nodeMock.SetupGet(n => n.MinValue).Returns(expected);
-            var sut = CreateSut(nodeMock.Object);
-            var _ = sut.MinValue;
-            nodeMock.SetupGet(n => n.MinValue).Returns(40);
-
-            var actual = sut.MinValue;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void MaxValueCachesDecoratedNodesMaxValue()
-        {
-            const int expected = 44;
-            var nodeMock = new Mock<ICalculationNode>();
-            nodeMock.SetupGet(n => n.MaxValue).Returns(expected);
-            var sut = CreateSut(nodeMock.Object);
-            var _ = sut.MaxValue;
-            nodeMock.SetupGet(n => n.MinValue).Returns(39);
-
-            var actual = sut.MaxValue;
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void AccessingMinValueCachesDecoratedNodesValue()
-        {
-            const int expected = 42;
-            var nodeMock = new Mock<ICalculationNode>();
-            nodeMock.SetupGet(n => n.Value).Returns(expected);
-            nodeMock.SetupGet(n => n.MinValue).Returns(43);
-            var sut = CreateSut(nodeMock.Object);
-            var _ = sut.MinValue;
-            nodeMock.SetupGet(n => n.Value).Returns(41);
-
-            var actual = sut.Value;
-
-            Assert.AreEqual(expected, actual);
+            sut.AssertValueEquals(expected);
         }
 
         [Test]
@@ -91,12 +41,11 @@ namespace PoESkillTree.Computation.Core.Tests
             const int expected = 42;
             var nodeMock = new Mock<ICalculationNode>();
             var sut = CreateCachedSut(nodeMock, 41);
-            nodeMock.SetupGet(n => n.Value).Returns(expected);
+            nodeMock.SetupGet(n => n.Value).Returns((NodeValue) expected);
 
             nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
-            var actual = sut.Value;
 
-            Assert.AreEqual(expected, actual);
+            sut.AssertValueEquals(expected);
         }
 
         [Test]
@@ -104,11 +53,7 @@ namespace PoESkillTree.Computation.Core.Tests
         {
             var sut = CreateSut();
             var raised = false;
-            sut.ValueChanged += (sender, args) =>
-            {
-                Assert.AreEqual(sut, sender);
-                raised = true;
-            };
+            sut.SubscribeToValueChanged(() => raised = true);
 
             sut.RaiseValueChanged();
 
@@ -120,7 +65,7 @@ namespace PoESkillTree.Computation.Core.Tests
         {
             var sut = CreateSut();
             sut.RaiseValueChanged();
-            sut.ValueChanged += (sender, args) => Assert.Fail();
+            sut.AssertValueChangedWillNotBeInvoked();
 
             sut.RaiseValueChanged();
         }
@@ -185,7 +130,7 @@ namespace PoESkillTree.Computation.Core.Tests
 
         private static CachingNode CreateCachedSut(Mock<ICalculationNode> decoratedNodeMock, double? cachedValue)
         {
-            decoratedNodeMock.SetupGet(n => n.Value).Returns(cachedValue);
+            decoratedNodeMock.SetupGet(n => n.Value).Returns((NodeValue?) cachedValue);
             var sut = CreateSut(decoratedNodeMock.Object);
             var _ = sut.Value;
             return sut;
@@ -193,7 +138,7 @@ namespace PoESkillTree.Computation.Core.Tests
 
         private static CachingNode CreateSut(double? value = null)
         {
-            var decoratedNode = Mock.Of<ICalculationNode>(n => n.Value == value);
+            var decoratedNode = NodeHelper.MockNode(value);
             return CreateSut(decoratedNode);
         }
 

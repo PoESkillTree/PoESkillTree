@@ -7,9 +7,7 @@ namespace PoESkillTree.Computation.Core
         private readonly ICalculationNode _decoratedNode;
 
         private bool _calculatedValue;
-        private double? _value;
-        private double? _minValue;
-        private double? _maxValue;
+        private NodeValue? _value;
         private bool _propagatedValueChange;
 
         public CachingNode(ICalculationNode decoratedNode)
@@ -18,41 +16,16 @@ namespace PoESkillTree.Computation.Core
             _decoratedNode.ValueChanged += DecoratedNodeOnValueChanged;
         }
 
-        public double? Value
+        public NodeValue? Value
         {
             get
             {
-                CalculateValuesIfNecessary();
+                if (!_calculatedValue)
+                {
+                    _value = _decoratedNode.Value;
+                    _calculatedValue = true;
+                }
                 return _value;
-            }
-        }
-
-        public double? MinValue
-        {
-            get
-            {
-                CalculateValuesIfNecessary();
-                return _minValue;
-            }
-        }
-
-        public double? MaxValue
-        {
-            get
-            {
-                CalculateValuesIfNecessary();
-                return _maxValue;
-            }
-        }
-
-        private void CalculateValuesIfNecessary()
-        {
-            if (!_calculatedValue)
-            {
-                _value = _decoratedNode.Value;
-                _minValue = _decoratedNode.MinValue;
-                _maxValue = _decoratedNode.MaxValue;
-                _calculatedValue = true;
             }
         }
 

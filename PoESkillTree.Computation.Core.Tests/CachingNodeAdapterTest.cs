@@ -21,33 +21,7 @@ namespace PoESkillTree.Computation.Core.Tests
         {
             var sut = CreateSut(value);
 
-            var actual = sut.Value;
-
-            Assert.AreEqual(value, actual);
-        }
-
-        [TestCase(43)]
-        [TestCase(null)]
-        public void MinValueReturnsAdaptedNodesMinValue(double? value)
-        {
-            var recalculatableNode = Mock.Of<ICachingNode>(n => n.MinValue == value);
-            var sut = CreateSut(recalculatableNode);
-
-            var actual = sut.MinValue;
-
-            Assert.AreEqual(value, actual);
-        }
-
-        [TestCase(44)]
-        [TestCase(null)]
-        public void MaxValueReturnsAdaptedNodesMinValue(double? value)
-        {
-            var recalculatableNode = Mock.Of<ICachingNode>(n => n.MaxValue == value);
-            var sut = CreateSut(recalculatableNode);
-
-            var actual = sut.MaxValue;
-
-            Assert.AreEqual(value, actual);
+            sut.AssertValueEquals(value);
         }
 
         [Test]
@@ -55,16 +29,12 @@ namespace PoESkillTree.Computation.Core.Tests
         {
             var adaptedNodeMock = new Mock<ICachingNode>();
             var sut = CreateSut(adaptedNodeMock.Object);
-            var valueChangedFired = false;
-            sut.ValueChanged += (sender, args) =>
-            {
-                Assert.AreSame(sut, sender);
-                valueChangedFired = true;
-            };
+            var raised = false;
+            sut.SubscribeToValueChanged(() => raised = true);
 
             adaptedNodeMock.Raise(n => n.ValueChangeReceived += null, EventArgs.Empty);
 
-            Assert.IsTrue(valueChangedFired);
+            Assert.IsTrue(raised);
         }
 
         [Test]
@@ -72,7 +42,7 @@ namespace PoESkillTree.Computation.Core.Tests
         {
             var adaptedNodeMock = new Mock<ICachingNode>();
             var sut = CreateSut(adaptedNodeMock.Object);
-            sut.ValueChanged += (sender, args) => Assert.Fail();
+            sut.AssertValueChangedWillNotBeInvoked();
 
             sut.Dispose();
             adaptedNodeMock.Raise(n => n.ValueChangeReceived += null, EventArgs.Empty);
@@ -81,8 +51,9 @@ namespace PoESkillTree.Computation.Core.Tests
 
         private static CachingNodeAdapter CreateSut(double? recalculatableNodeValue = 0)
         {
-            var recalculatableNode = Mock.Of<ICachingNode>(n => n.Value == recalculatableNodeValue);
-            return CreateSut(recalculatableNode);
+            var mock = new Mock<ICachingNode>();
+            mock.SetupGet(n => n.Value).Returns((NodeValue?) recalculatableNodeValue);
+            return CreateSut(mock.Object);
         }
 
         private static CachingNodeAdapter CreateSut(ICachingNode adaptedNode)

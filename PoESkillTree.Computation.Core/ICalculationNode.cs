@@ -13,7 +13,7 @@ namespace PoESkillTree.Computation.Core
        4. Two-pass recalculation class
        5. ICalculationGraph implementation(s) (mainly Update(), the properties should be trivial)
        6. or 7. Usage from Console and/or integration tests (not using Data and Parsing, just example implementation of some builders)
-       7. or 6. Add support for multiple paths to the stat subgraphs 
+       7. or 6. Add support for multiple paths and other "specialties" to stat subgraphs (all remaining notes on stat subgraphs)
        (see the thoughts below and the thoughts scattered around in other files for details)
      */
 
@@ -91,32 +91,49 @@ namespace PoESkillTree.Computation.Core
      *       corresponding skill tree nodes/items/... must be selected. Though, I don't think that makes sense for
      *       anything except maybe tree nodes. This will probably be useful of the tree generator.
      * - Removing modifiers: The reverse of adding them.
-     * - For details on the subgraph of a stat, see NodeType.cs
-     * - Stat subgraphs
-     *   - For the nodes in them, see NodeType.cs
-     *   - Per default, a path for each source (Global, and each Local source that has modifiers) is created.
-     *     (using unconverted Base values)
-     *     - The IModifierSource that was passed to ICalculationGraph.Update() together with the Modifier
-     *       decides the form collection the node created from the Modifier is added to
-     *       - Modifiers with a mod source condition overwrite the IModifierSource passed with them
-     *       - Where that mod source condition is stored is not yet determined (either as property of IStat or Modifier)
-     *         (downside of being stored in IStat: contradicts the equality concept of IStat)
-     *     - Increase and More nodes on all paths link to the respective form collection of the Global path
-     *   - Some stats require being subscribed to from other stat's subgraphs before modifiers to them exist:
-     *     - "Modifiers to Bar also apply to Foo":
-     *       - Adding a modifier with this stat leads to the BaseAdd, Increase and More nodes (of all paths) of Foo
-     *         also subscribing to the respective IFormNodeCollection of Bar
-     *       - The stat's total value is used as multiplier
-     *     - Conversions and Gains (from Bar to Foo):
-     *       - Adding a modifier with this stat leads to the UncappedSubtotal node of Foo adding a node path for each
-     *         path of Bar
-     *       - and to the Base nodes of Bar adding a parent node for Foo
-     *       - the values between converting parent nodes need to be redistributed to achieve a sum of 100%
-     *        (with modifiers with a skill gem source having precedence)
-     *     These subscriptions can be provided similar to other collections in INodeRepository
-     *     How do stats end up in these special collections? There needs to be information in IStat to decide that.
-     *     - Without these special stats, IStat doesn't need properties and is completely usable just by having
-     *       something that can be referenced because it can be compared properly.
+     *
+     * Stat subgraphs:
+     * - For details on the main nodes, see NodeType.cs
+     * - Per default, a path for each source (Global, and each Local source that has modifiers) is created.
+     *   (using unconverted Base values)
+     *   - The IModifierSource that was passed to ICalculationGraph.Update() together with the Modifier
+     *     decides the form collection the node created from the Modifier is added to
+     *     - Modifiers with a mod source condition overwrite the IModifierSource passed with them
+     *     - Where that mod source condition is stored is not yet determined (either as property of IStat or Modifier)
+     *       (downside of being stored in IStat: contradicts the equality concept of IStat)
+     *   - Increase and More nodes on all paths link to the respective form collection of the Global path
+     * - Some stats require being subscribed to from other stat's subgraphs before modifiers to them exist:
+     *   (or they need to be added to other subgraph automatically)
+     *   - "Modifiers to Bar also apply to Foo":
+     *     - Adding a modifier with this stat leads to the BaseAdd, Increase and More nodes (of all paths) of Foo
+     *       also subscribing to the respective IFormNodeCollection of Bar
+     *     - The stat's total value is used as multiplier
+     *   - Conversions and Gains (from Bar to Foo):
+     *     - Adding a modifier with this stat leads to the UncappedSubtotal node of Foo adding a node path for each
+     *       path of Bar
+     *     - and to the Base nodes of Bar adding a parent node for Foo
+     *     - the values between converting parent nodes need to be redistributed to achieve a sum of 100%
+     *      (with modifiers with a skill gem source having precedence)
+     *   This must be implemented by adding something to IStat.
+     *   Ideas:
+     *   - Stat subgraphs subscribe to collections in INodeRepository that contain the special stats (they are empty
+     *     initially). Adding special modifiers leads to their stats being added to the respective collection, in
+     *     addition to the normal behavior.
+     *     - IStat has a method an interface is passed to. That interface has one method for each special stat,
+     *       which is called by the method it is passed to.
+     *     - IStat has a subclass for each special stat and has a "void Visit(IStatVisitor)" method. Subclasses
+     *       implement it by calling "IStatVisitor.Accept(this)". IStatVisitor has a method for each subclass.
+     *       The subclasses need to have properties describing the special stat. E.g. the source and target IStat
+     *       for conversions.
+     *   - Nodes of stat subgraphs support a "customizable" concept. IStats can define the affected stat subgraphs
+     *     and are then run over all nodes to customize them. This can be implemented using one of the two ideas
+     *     from above.
+     *   - All types of additional behavior when adding modifiers to a stat for the first time can be modeled in this
+     *     way. E.g. registering stats in IExternalStatRegistry and registering named IStats (see below).
+     * - The IStat representing Damage Effectiveness needs to be passed to calculation somehow. The subgraph nodes
+     *   can't access it otherwise. Probably some interface containing named IStats that is passed by constructor.
+     * - Each stat can have different rounding behavior. Can be implemented either as an additional property of IStat
+     *   or as a behavior, see the ideas above.
      *
      * UI notes:
      * - The ValueChanged events can easily be used by the UI (transformed to PropertyChanged events in ViewModels)
@@ -126,16 +143,7 @@ namespace PoESkillTree.Computation.Core
 
     public interface ICalculationNode : IDisposable
     {
-        // Core nodes supporting values in the format "MinValue to MaxValue" return (MinValue + MaxValue) / 2 as Value.
-        // (this is the case for the building block nodes except Increase, More and TotalOverride)
-        // Nodes not supporting min and max values return the same value from all three properties.
-        // (this is the case for Increase, More and TotalOverride building block nodes and for modifier nodes)
-
-        double? Value { get; }
-
-        double? MinValue { get; }
-
-        double? MaxValue { get; }
+        NodeValue? Value { get; }
 
         event EventHandler ValueChanged;
     }
