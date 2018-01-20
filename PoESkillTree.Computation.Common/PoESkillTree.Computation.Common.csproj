@@ -151,6 +151,7 @@
     <Compile Include="IStat.cs" />
     <Compile Include="IValue.cs" />
     <Compile Include="Modifier.cs" />
+    <Compile Include="NodeType.cs" />
     <Compile Include="Parsing\ParseException.cs" />
     <Compile Include="Parsing\ReferenceConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

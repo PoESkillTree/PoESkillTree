@@ -26,6 +26,7 @@ namespace PoESkillTree.Computation.Core
         public IModifierSource Source { get; }
         
         // Conversion/gain path: The stats on the conversion path, in order beginning with the original stat.
+        // For unconverted paths this only contains the target stat.
         // The type is not final, a string representation might be enough.
         public IReadOnlyList<IStat> ConversionPath { get; }
     }

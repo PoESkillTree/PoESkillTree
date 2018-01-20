@@ -3,6 +3,21 @@
 namespace PoESkillTree.Computation.Core
 {
     /*
+       Overall plan: Complete implementation of ICalculationGraph
+       1. ICalculationNode implementations for building block
+       2. INodeRepository implementation(s)
+         - Need to support different "views": 
+           - One returning Adapters (for graph construction and single-pass-API)
+           - One returning CachingNodes (for two-pass-API)
+       3. ICalculationNode implementations for modifiers (using IValue to calculate a value)
+       4. Two-pass recalculation class
+       5. ICalculationGraph implementation(s) (mainly Update(), the properties should be trivial)
+       6. or 7. Usage from Console and/or integration tests (not using Data and Parsing, just example implementation of some builders)
+       7. or 6. Add support for multiple paths to the stat subgraphs 
+       (see the thoughts below and the thoughts scattered around in other files for details)
+     */
+
+    /*
      * Core interface: ICalculationNode
      * - Value gets the node's value based on its child nodes
      *   - For nodes not directly used by other projects and not implementing ICachingNode, this is not cached,
@@ -42,11 +57,10 @@ namespace PoESkillTree.Computation.Core
      *     and references to other nodes (mainly to nodes defined as IStat)
      *     - This is used to calculate ICalculationNode.Value. The value is nullable, allowing the representation
      *       of modifiers that aren't applied, e.g. because of their conditions.
-     *   - Conditions are IStats themselves and be referenced the same way from IValue
+     *   - Conditions are IStats themselves and can be referenced the same way from IValue
      *     - Their IStat implementation decides whether the value is user entered or calculated
      *     - User entered conditions can be registered using IExternalStatRegistry
-     * - IStat may need to include further modifiers, e.g. for aura modifiers to count towards the aura count,
-     *   depending on how they are implemented (i.e. multiple stats without being modified by the same form and value).
+     * - Mod source based conditions:
      *
      * Data-driven Mechanics:
      * - New "CommonGivenStats" data class
@@ -56,31 +70,14 @@ namespace PoESkillTree.Computation.Core
      * - Needs to make sure events are properly unsubscribed from
      *   (ICalculationNode implements IDisposable for this reason)
      * - When constructing nodes from a Modifier, it can use INodeRepository to access referenced nodes
-     * - To allow for removing modifiers, each modifier source has to store its modifiers
-     * - Adding "special" modifiers (non-data-driven, e.g. conversion):
-     *   - These modifiers are triggered by a special property of IStat
-     *   - Implemented in whatever is responsible for creating the stat subgraph
-     *   - Mod source based conditions:
-     *     - Splits up the form collections
-     *     - Behaves like a normal modifier with the above addition
-     *     - For the main calculation graph (not preview), it might be useful for breakdowns to always split by source
-     *   - "Modifiers to Bar also apply to Foo":
-     *     - Adds links from Foo's form collection using nodes to the form collections of Bar (with a multiplier)
-     *     - The modifier's form and value are irrelevant (should always be TotalOverride and 1)
-     *     - The main property of IStat defines the affected subgraph (Foo)
-     *   - Conversions and Gains
-     *     - Affects both the source and the target stat's subgraphs (and further targets in case of chains)
-     *     - The main property of IStat defines the conversion (source and target)
-     *     - Need a lot of special handling (e.g. they can be conditional).
-     * - Adding normal modifiers:
+     * - To allow removing modifiers, each modifier source has to store its modifiers
+     * - Adding modifiers:
      *   - Get the subgraph for each stat (or create them)
      *   - Select the collection for the form
      *   - Create the rooted DAG for the modifier from the value
      *   - Add the root node to the collection
      *   This implies the following
-     *   - The whole subgraph for a stat is built when creating it. This can probably be improved by referencing
-     *     the form collections in the root node until it they are no longer empty and the corresponding node needs
-     *     to be created.
+     *   - The whole subgraph for a stat is built when creating it.
      *   - All modifiers are added to the graph, even if their conditions are false. I think it is less
      *     complicated this way, otherwise changing conditions could require larger changes to the graph.
      *     - Conditions should be the first things checked when calculating values so the calculation can be shortcut.
@@ -94,6 +91,32 @@ namespace PoESkillTree.Computation.Core
      *       corresponding skill tree nodes/items/... must be selected. Though, I don't think that makes sense for
      *       anything except maybe tree nodes. This will probably be useful of the tree generator.
      * - Removing modifiers: The reverse of adding them.
+     * - For details on the subgraph of a stat, see NodeType.cs
+     * - Stat subgraphs
+     *   - For the nodes in them, see NodeType.cs
+     *   - Per default, a path for each source (Global, and each Local source that has modifiers) is created.
+     *     (using unconverted Base values)
+     *     - The IModifierSource that was passed to ICalculationGraph.Update() together with the Modifier
+     *       decides the form collection the node created from the Modifier is added to
+     *       - Modifiers with a mod source condition overwrite the IModifierSource passed with them
+     *       - Where that mod source condition is stored is not yet determined (either as property of IStat or Modifier)
+     *         (downside of being stored in IStat: contradicts the equality concept of IStat)
+     *     - Increase and More nodes on all paths link to the respective form collection of the Global path
+     *   - Some stats require being subscribed to from other stat's subgraphs before modifiers to them exist:
+     *     - "Modifiers to Bar also apply to Foo":
+     *       - Adding a modifier with this stat leads to the BaseAdd, Increase and More nodes (of all paths) of Foo
+     *         also subscribing to the respective IFormNodeCollection of Bar
+     *       - The stat's total value is used as multiplier
+     *     - Conversions and Gains (from Bar to Foo):
+     *       - Adding a modifier with this stat leads to the UncappedSubtotal node of Foo adding a node path for each
+     *         path of Bar
+     *       - and to the Base nodes of Bar adding a parent node for Foo
+     *       - the values between converting parent nodes need to be redistributed to achieve a sum of 100%
+     *        (with modifiers with a skill gem source having precedence)
+     *     These subscriptions can be provided similar to other collections in INodeRepository
+     *     How do stats end up in these special collections? There needs to be information in IStat to decide that.
+     *     - Without these special stats, IStat doesn't need properties and is completely usable just by having
+     *       something that can be referenced because it can be compared properly.
      *
      * UI notes:
      * - The ValueChanged events can easily be used by the UI (transformed to PropertyChanged events in ViewModels)

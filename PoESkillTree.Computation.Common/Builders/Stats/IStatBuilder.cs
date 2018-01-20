@@ -65,37 +65,37 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         // Probably as a property inherent in conditions, i.e. decided on condition construction.
 
         /// <summary>
-        /// Returns a buff that grants this stat for <paramref name="seconds"/> seconds.
+        /// Returns a buff that modifies this stat for <paramref name="seconds"/> seconds.
         /// </summary>
         IBuffBuilder ForXSeconds(IValueBuilder seconds);
 
         /// <summary>
-        /// Gets a buff that grants this stat. If the buff is not permanent, the duration will be specified elsewhere,
+        /// Gets a buff that modifies this stat. If the buff is not permanent, the duration will be specified elsewhere,
         /// e.g. as part of a buff rotation.
         /// </summary>
         IBuffBuilder AsBuff { get; }
 
         /// <summary>
-        /// Returns an aura affecting the given entities that grants these stats.
+        /// Returns an aura affecting the given entities that modifies these stats.
         /// </summary>
         IFlagStatBuilder AsAura(params IEntityBuilder[] affectedEntities);
 
         /// <summary>
-        /// Returns a flag stat representing whether the given skills apply this stat as part of their effects
+        /// Returns a flag stat representing whether the given skills modifies this stat as part of their effects
         /// (unaffected by effect increases).
         /// <para>E.g. "Auras you Cast grant 3% increased Attack and Cast Speed to you and Allies"</para>
         /// </summary>
         IFlagStatBuilder AddTo(ISkillBuilderCollection skills);
 
         /// <summary>
-        /// Returns a flag stat representing whether the given effect applies this stat as part of its effects
+        /// Returns a flag stat representing whether the given effect modifies this stat as part of its effects
         /// (unaffected by effect increases).
         /// <para>E.g. "Consecrated Ground you create grants 40% increased Damage to you and Allies"</para>
         /// </summary>
         IFlagStatBuilder AddTo(IEffectBuilder effect);
 
         /// <summary>
-        /// Returns a stat that is identical to this stat but only apply if the given condition is satisfied.
+        /// Returns a stat that is identical to this stat but is only modified if the given condition is satisfied.
         /// <para>Should generally not be used but is necessary for including conditions in resolved stat references.
         /// </para>
         /// </summary>
