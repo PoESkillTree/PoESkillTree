@@ -21,6 +21,12 @@ namespace PoESkillTree.Computation.Console.Builders
 
         private IValueBuilder This => this;
 
+        public IValueBuilder MinimumOnly =>
+            CreateValue(This, o => $"{o} (minimum value only)");
+
+        public IValueBuilder MaximumOnly =>
+            CreateValue(This, o => $"{o} (maximum value only)");
+
         public IConditionBuilder Eq(IValueBuilder other) =>
             CreateCondition(This, other, (l, r) => $"({l} == {r})");
 

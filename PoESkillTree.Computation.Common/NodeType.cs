@@ -12,7 +12,6 @@
         // On paths with a converted base value, this node simply links to the conversion output node of the source.
         Base,
         BaseOverride,
-        EffectiveBaseAdd,
         BaseAdd,
         Increase,
         More,

@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using static PoESkillTree.Computation.Core.Tests.NodeHelper;
 
 namespace PoESkillTree.Computation.Core.Tests
 {
     [TestFixture]
-    public class OverrideNodeTest
+    public class FormNodeAggregatingNodeTest
     {
         [Test]
         public void SutIsCalculationNode()
@@ -16,39 +18,24 @@ namespace PoESkillTree.Computation.Core.Tests
             Assert.IsInstanceOf<ICalculationNode>(sut);
         }
 
-        [Test]
-        public void ValueReturnsNullWithoutChildren()
+        [TestCase(3, 1.0, null, 4.0, -2.0)]
+        [TestCase(1, 5.0, -4.0)]
+        [TestCase(0)]
+        public void ValueIsSumAggregationResult(double? expected, params double?[] values)
         {
-            var sut = CreateSut();
+            var formNodes = MockFormNodeCollection(values);
+            var sut = CreateSut(formNodes, AggregateBySum);
 
-            Assert.IsNull(sut.Value);
+            sut.AssertValueEquals(expected);
         }
 
-        [TestCase(42)]
-        public void ValueReturnsValueOfSingleChildWithOneChild(int value)
+        [TestCase(-8, 1.0, null, 4.0, -2.0)]
+        public void ValueIsProductAggregationResult(double? expected, params double?[] values)
         {
-            var formNodes = MockFormNodeCollection(value);
-            var sut = CreateSut(formNodes);
+            var formNodes = MockFormNodeCollection(values);
+            var sut = CreateSut(formNodes, AggregateByProduct);
 
-            sut.AssertValueEquals(value);
-        }
-
-        [Test]
-        public void ValueReturns0IfAChildHasValue0()
-        {
-            var formNodes = MockFormNodeCollection(42, 43, 0, 4);
-            var sut = CreateSut(formNodes);
-
-            sut.AssertValueEquals(0);
-        }
-
-        [Test]
-        public void ValueThrowsExceptionIfItHasMultipleChildrenAndNoneHasValue0()
-        {
-            var formNodes = MockFormNodeCollection(42, 43, null, 4, -3);
-            var sut = CreateSut(formNodes);
-
-            Assert.Throws<NotSupportedException>(() => { var _ = sut.Value; });
+            sut.AssertValueEquals(expected);
         }
 
         [Test]
@@ -129,7 +116,7 @@ namespace PoESkillTree.Computation.Core.Tests
             sut.SubscribeToValueChanged(() => incovations++);
             var removedNode = formNodes.Items[0].Node;
             var keptNode = formNodes.Items[1].Node;
-            var addedNode = new FormNodeCollectionItem(NodeHelper.MockNode(2), null, null);
+            var addedNode = new FormNodeCollectionItem(MockNode(2), null, null);
             var updatedNodes = formNodes.Items.Skip(1).Union(new[] { addedNode }).ToList();
             var formNodesMock = Mock.Get(formNodes);
             formNodesMock.Setup(c => c.Items).Returns(updatedNodes);
@@ -144,15 +131,16 @@ namespace PoESkillTree.Computation.Core.Tests
             Assert.AreEqual(2, incovations);
         }
 
-        private static IFormNodeCollection MockFormNodeCollection(params double?[] values)
+        private static FormNodeAggregatingNode CreateSut(
+            IFormNodeCollection formNodes = null, NodeValueAggregator aggregator = null)
         {
-            var items = values
-                .Select(v => new FormNodeCollectionItem(NodeHelper.MockNode(v), null, null))
-                .ToList();
-            return Mock.Of<IFormNodeCollection>(c => c.Items == items);
+            return new FormNodeAggregatingNode(formNodes, aggregator ?? AggregateBySum);
         }
 
-        private static OverrideNode CreateSut(IFormNodeCollection formNodes = null) =>
-            new OverrideNode(formNodes ?? MockFormNodeCollection());
+        private static NodeValue? AggregateBySum(IEnumerable<NodeValue?> values) => 
+            values.OfType<NodeValue>().Aggregate(new NodeValue(), (l, r) => l + r);
+
+        private static NodeValue? AggregateByProduct(IEnumerable<NodeValue?> values) => 
+            values.OfType<NodeValue>().Aggregate(new NodeValue(1), (l, r) => l * r);
     }
 }

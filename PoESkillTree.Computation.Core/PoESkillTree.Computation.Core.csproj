@@ -63,6 +63,8 @@
   <ItemGroup>
     <Compile Include="CalculationGraphExtensions.cs" />
     <Compile Include="ExternalStatRegistry.cs" />
+    <Compile Include="FormNodeAggregatingNode.cs" />
+    <Compile Include="NodeValueAggregators.cs" />
     <Compile Include="ICachingNode.cs" />
     <Compile Include="ICalculationGraph.cs" />
     <Compile Include="ICalculationNode.cs" />
@@ -75,7 +77,6 @@
     <Compile Include="CachingNode.cs" />
     <Compile Include="CachingNodeAdapter.cs" />
     <Compile Include="TotalNode.cs" />
-    <Compile Include="OverrideNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

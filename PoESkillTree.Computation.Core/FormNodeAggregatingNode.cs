@@ -4,47 +4,28 @@ using System.Linq;
 
 namespace PoESkillTree.Computation.Core
 {
-    // For both BaseOverride and TotalOverride
-    public class OverrideNode : ICalculationNode
+    public delegate NodeValue? NodeValueAggregator(IEnumerable<NodeValue?> values);
+
+    public class FormNodeAggregatingNode : ICalculationNode
     {
         private readonly IFormNodeCollection _formNodes;
+        private readonly NodeValueAggregator _aggregator;
         private List<ICalculationNode> _subscribedNodes;
 
-        public OverrideNode(IFormNodeCollection formNodes)
+        public FormNodeAggregatingNode(IFormNodeCollection formNodes, NodeValueAggregator aggregator)
         {
             _formNodes = formNodes;
+            _aggregator = aggregator;
         }
 
         public NodeValue? Value
         {
             get
             {
-                if (_subscribedNodes == null)
-                {
-                    _formNodes.ItemsChanged += FormNodesOnItemsChanged;
-                    SubscribeToFormNodes();
-                }
-                switch (_formNodes.Items.Count)
-                {
-                    case 0:
-                        return null;
-                    case 1:
-                        return _formNodes.Items[0].Node.Value;
-                    default:
-                        return CalculateValueFromManyItems();
-                }
+                SubscribeIfRequired();
+                return _aggregator(_formNodes.Items.Select(n => n.Node.Value));
             }
         }
-
-        private NodeValue? CalculateValueFromManyItems() =>
-            IsAnyItemZero()
-                ? new NodeValue(0)
-                : throw new NotSupportedException();
-
-        private bool IsAnyItemZero() =>
-            _formNodes.Items
-                .Select(i => i.Node.Value)
-                .Any(v => v.HasValue && v.Value.AlmostEquals(0, 1e-10));
 
         public event EventHandler ValueChanged;
 
@@ -59,6 +40,15 @@ namespace PoESkillTree.Computation.Core
             UnsubscribeFromFormNodes();
             SubscribeToFormNodes();
             OnValueChanged(sender, args);
+        }
+
+        private void SubscribeIfRequired()
+        {
+            if (_subscribedNodes == null)
+            {
+                _formNodes.ItemsChanged += FormNodesOnItemsChanged;
+                SubscribeToFormNodes();
+            }
         }
 
         private void UnsubscribeFromFormNodes()

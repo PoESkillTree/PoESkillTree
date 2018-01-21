@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 
@@ -28,5 +29,13 @@ namespace PoESkillTree.Computation.Core.Tests
 
         public static void AssertValueChangedWillNotBeInvoked(this ICalculationNode node) => 
             node.SubscribeToValueChanged(Assert.Fail);
+
+        public static IFormNodeCollection MockFormNodeCollection(params double?[] values)
+        {
+            var items = values
+                .Select(v => new FormNodeCollectionItem(NodeHelper.MockNode(v), null, null))
+                .ToList();
+            return Mock.Of<IFormNodeCollection>(c => c.Items == items);
+        }
     }
 }

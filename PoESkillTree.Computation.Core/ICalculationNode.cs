@@ -24,7 +24,6 @@ namespace PoESkillTree.Computation.Core
      *     i.e. it calculates the value based on the children with every call
      *   - Even for ICachingNodes, the value is calculated lazily, i.e. not when ValueChanged is raised
      * - Will have many different implementations depending on how the value is calculated
-     * - Value will not throw exceptions, they should be thrown on construction
      * - For a core node N:
      *   - N is decorated by a CachingNode, which is used instead of it
      *   - Children of N are CachingNodeAdapters to the decorators of the actual children
@@ -131,7 +130,9 @@ namespace PoESkillTree.Computation.Core
      *   - All types of additional behavior when adding modifiers to a stat for the first time can be modeled in this
      *     way. E.g. registering stats in IExternalStatRegistry and registering named IStats (see below).
      * - The IStat representing Damage Effectiveness needs to be passed to calculation somehow. The subgraph nodes
-     *   can't access it otherwise. Probably some interface containing named IStats that is passed by constructor.
+     *   can't access it otherwise. Either some interface containing named IStats that is passed by constructor
+     *   or done as a behavior, see above.
+     *   - It is used as a multiplier to the value of BaseAdd nodes
      * - Each stat can have different rounding behavior. Can be implemented either as an additional property of IStat
      *   or as a behavior, see the ideas above.
      *

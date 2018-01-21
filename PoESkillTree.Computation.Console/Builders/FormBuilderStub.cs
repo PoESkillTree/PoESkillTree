@@ -10,8 +10,8 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class FormBuildersStub : IFormBuilders
     {
-        private static IFormBuilder Create(string s, Form form)
-            => new FormBuilderStub(s, form);
+        private static IFormBuilder Create(string s, Form form, ValueConverter valueConverter = null)
+            => new FormBuilderStub(s, form, valueConverter);
 
         private static IFormBuilder CreateNegated(string s, Form form)
             => new FormBuilderStub(s, form, v => v.Multiply(-1));
@@ -25,8 +25,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IFormBuilder BaseSubtract => CreateNegated("Base subtract", Form.BaseAdd);
         public IFormBuilder TotalOverride => Create("Total override", Form.TotalOverride);
         public IFormBuilder BaseOverride => Create("Base override", Form.BaseOverride);
-        public IFormBuilder MinBaseAdd => Create("Minimum base add", Form.MinBaseAdd);
-        public IFormBuilder MaxBaseAdd => Create("Maximum base add", Form.MaxBaseAdd);
+        public IFormBuilder MinBaseAdd => Create("Minimum base add", Form.BaseAdd, v => v.MinimumOnly);
+        public IFormBuilder MaxBaseAdd => Create("Maximum base add", Form.BaseAdd, v => v.MaximumOnly);
 
 
         private class FormBuilderStub : BuilderStub, IFormBuilder

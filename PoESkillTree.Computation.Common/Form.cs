@@ -4,11 +4,7 @@
     {
         BaseOverride,
         BaseSet,
-        MinBaseSet,
-        MaxBaseSet,
         BaseAdd,
-        MinBaseAdd,
-        MaxBaseAdd,
         Increase,
         More,
         TotalOverride

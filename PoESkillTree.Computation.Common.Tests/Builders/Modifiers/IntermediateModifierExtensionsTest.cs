@@ -299,8 +299,11 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
 
             var result = input.Build();
 
-            Assert.That(result,
-                Has.Exactly(1).Items.EqualTo(new Modifier(stats, form, value)));
+            Assert.AreEqual(1, result.Count);
+            var item = result[0];
+            Assert.AreEqual(stats, item.Stats);
+            Assert.AreEqual(form, item.Form);
+            Assert.AreEqual(value, item.Value);
         }
 
         private static readonly IntermediateModifierEntry EmptyEntry = new IntermediateModifierEntry();

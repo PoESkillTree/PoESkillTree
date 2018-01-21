@@ -181,6 +181,9 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
 
             public IValueBuilder Resolve(ResolveContext context) => this;
 
+            public IValueBuilder MinimumOnly => throw new NotSupportedException();
+            public IValueBuilder MaximumOnly => throw new NotSupportedException();
+
             public IConditionBuilder Eq(IValueBuilder other) =>
                 new ConditionBuilderStub(Value == Convert(other));
 
@@ -223,7 +226,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
             public IValueBuilder Ceiling =>
                 new ValueBuilderStub(Math.Ceiling(Value));
 
-            public IValue Build() => throw new NotImplementedException();
+            public IValue Build() => throw new NotSupportedException();
         }
 
 
