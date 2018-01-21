@@ -1,4 +1,6 @@
-﻿namespace PoESkillTree.Computation.Core
+﻿using PoESkillTree.Common.Utils.Extensions;
+
+namespace PoESkillTree.Computation.Core
 {
     public struct NodeValue
     {
@@ -30,5 +32,8 @@
         public static explicit operator NodeValue(double value) => new NodeValue(value);
 
         //public static explicit operator double(NodeValue value) => (value.Minimum + value.Maximum) / 2;
+
+        public bool AlmostEquals(double value, double delta) => 
+            Minimum.AlmostEquals(value, delta) && Maximum.AlmostEquals(value, delta);
     }
 }

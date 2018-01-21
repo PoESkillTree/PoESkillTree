@@ -72,6 +72,7 @@
     <Compile Include="CachingNodeAdapterTest.cs" />
     <Compile Include="CachingNodeTest.cs" />
     <Compile Include="TotalNodeTest.cs" />
+    <Compile Include="OverrideNodeTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Common.csproj">
