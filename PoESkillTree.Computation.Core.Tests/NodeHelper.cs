@@ -30,12 +30,12 @@ namespace PoESkillTree.Computation.Core.Tests
         public static void AssertValueChangedWillNotBeInvoked(this ICalculationNode node) => 
             node.SubscribeToValueChanged(Assert.Fail);
 
-        public static IFormNodeCollection MockFormNodeCollection(params double?[] values)
+        public static INodeCollection<NodeCollectionItem> MockNodeCollection(params double?[] values)
         {
             var items = values
-                .Select(v => new FormNodeCollectionItem(NodeHelper.MockNode(v), null, null))
+                .Select(v => new NodeCollectionItem(MockNode(v)))
                 .ToList();
-            return Mock.Of<IFormNodeCollection>(c => c.Items == items);
+            return Mock.Of<INodeCollection<NodeCollectionItem>>(c => c.Items == items);
         }
     }
 }

@@ -65,15 +65,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AggregatingNodeTest.cs" />
     <Compile Include="CalculationGraphExtensionsTest.cs" />
     <Compile Include="ExternalStatRegistryText.cs" />
-    <Compile Include="FormNodeAggregatingNodeTest.cs" />
     <Compile Include="NodeValueAggregatorsTest.cs" />
     <Compile Include="NodeHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CachingNodeAdapterTest.cs" />
     <Compile Include="CachingNodeTest.cs" />
-    <Compile Include="TotalNodeTest.cs" />
+    <Compile Include="OverwritableNodeTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Common.csproj">

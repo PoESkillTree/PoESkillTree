@@ -6,15 +6,15 @@ namespace PoESkillTree.Computation.Core
 {
     public delegate NodeValue? NodeValueAggregator(IEnumerable<NodeValue?> values);
 
-    public class FormNodeAggregatingNode : ICalculationNode
+    public class AggregatingNode : ICalculationNode
     {
-        private readonly IFormNodeCollection _formNodes;
+        private readonly INodeCollection<NodeCollectionItem> _nodes;
         private readonly NodeValueAggregator _aggregator;
         private List<ICalculationNode> _subscribedNodes;
 
-        public FormNodeAggregatingNode(IFormNodeCollection formNodes, NodeValueAggregator aggregator)
+        public AggregatingNode(INodeCollection<NodeCollectionItem> formNodes, NodeValueAggregator aggregator)
         {
-            _formNodes = formNodes;
+            _nodes = formNodes;
             _aggregator = aggregator;
         }
 
@@ -23,7 +23,7 @@ namespace PoESkillTree.Computation.Core
             get
             {
                 SubscribeIfRequired();
-                return _aggregator(_formNodes.Items.Select(n => n.Node.Value));
+                return _aggregator(_nodes.Items.Select(n => n.Node.Value));
             }
         }
 
@@ -31,7 +31,7 @@ namespace PoESkillTree.Computation.Core
 
         public void Dispose()
         {
-            _formNodes.ItemsChanged -= FormNodesOnItemsChanged;
+            _nodes.ItemsChanged -= FormNodesOnItemsChanged;
             UnsubscribeFromFormNodes();
         }
 
@@ -46,7 +46,7 @@ namespace PoESkillTree.Computation.Core
         {
             if (_subscribedNodes == null)
             {
-                _formNodes.ItemsChanged += FormNodesOnItemsChanged;
+                _nodes.ItemsChanged += FormNodesOnItemsChanged;
                 SubscribeToFormNodes();
             }
         }
@@ -63,7 +63,7 @@ namespace PoESkillTree.Computation.Core
         private void SubscribeToFormNodes()
         {
             _subscribedNodes = new List<ICalculationNode>();
-            foreach (var item in _formNodes.Items)
+            foreach (var item in _nodes.Items)
             {
                 item.Node.ValueChanged += OnValueChanged;
                 _subscribedNodes.Add(item.Node);

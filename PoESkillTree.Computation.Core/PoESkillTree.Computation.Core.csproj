@@ -61,22 +61,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AggregatingNode.cs" />
     <Compile Include="CalculationGraphExtensions.cs" />
     <Compile Include="ExternalStatRegistry.cs" />
-    <Compile Include="FormNodeAggregatingNode.cs" />
+    <Compile Include="INodeCollection.cs" />
     <Compile Include="NodeValueAggregators.cs" />
     <Compile Include="ICachingNode.cs" />
     <Compile Include="ICalculationGraph.cs" />
     <Compile Include="ICalculationNode.cs" />
     <Compile Include="IExternalStatRegistry.cs" />
-    <Compile Include="IFormNodeCollection.cs" />
     <Compile Include="INodeRepository.cs" />
-    <Compile Include="IPathNodeCollection.cs" />
     <Compile Include="NodeValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CachingNode.cs" />
     <Compile Include="CachingNodeAdapter.cs" />
-    <Compile Include="TotalNode.cs" />
+    <Compile Include="OverwritableNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

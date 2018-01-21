@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace PoESkillTree.Computation.Core.Tests
 {
     [TestFixture]
-    public class TotalNodeTest
+    public class OverwritableNodeTest
     {
         [Test]
         public void SutIsCalculationNode()
@@ -17,7 +17,7 @@ namespace PoESkillTree.Computation.Core.Tests
 
         [TestCase(42)]
         [TestCase(null)]
-        public void ValueIsSubtotalValueIfTotalOverrideValueIsNull(double? value)
+        public void ValueIsDefaultIfOverrideIsNull(double? value)
         {
             var subtotal = NodeHelper.MockNode(value);
             var sut = CreateSut(subtotal);
@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         [TestCase(32)]
-        public void ValueIsTotalOverrideValueIfNotNull(double? value)
+        public void ValueIsOverrideIfNotNull(double? value)
         {
             var totalOverride = NodeHelper.MockNode(value);
             var sut = CreateSut(null, totalOverride);
@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         [Test]
-        public void ValueChangedIsRaisedWhenTotalOverrideValueChangedIsRaised()
+        public void ValueChangedIsRaisedWhenOverrideValueChangedIsRaised()
         {
             var totalOverrideMock = new Mock<ICalculationNode>();
             var sut = CreateSut(null, totalOverrideMock.Object);
@@ -49,7 +49,7 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         [Test]
-        public void ValueChangedIsRaisedWhenSubtotalValueChangedIsRaised()
+        public void ValueChangedIsRaisedWhenDefaultValueChangedIsRaised()
         {
             var subtotalMock = new Mock<ICalculationNode>();
             var sut = CreateSut(subtotalMock.Object);
@@ -73,7 +73,7 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         [Test]
-        public void SubtotalValueChangedIsNotSubscribedToIfTotalOverrideIsNotNull()
+        public void DefaultValueChangedIsNotSubscribedToIfOverrideIsNotNull()
         {
             var subtotalMock = new Mock<ICalculationNode>();
             var sut = CreateSut(subtotalMock.Object);
@@ -83,7 +83,7 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         [Test]
-        public void DisposeUnsubscribesFromSubtotal()
+        public void DisposeUnsubscribesFromDefault()
         {
             var subtotalMock = new Mock<ICalculationNode>();
             var sut = CreateSut(subtotalMock.Object);
@@ -96,7 +96,7 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         [Test]
-        public void DisposeUnsubscribesFromTotalOverride()
+        public void DisposeUnsubscribesFromOverride()
         {
             var totalOverrideMock = new Mock<ICalculationNode>();
             var sut = CreateSut(null, totalOverrideMock.Object);
@@ -109,7 +109,7 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         [Test]
-        public void SubtotalIsUnsubscribedFromIfNoLongerRequiredForValueCalculation()
+        public void DefaultIsUnsubscribedFromIfNoLongerRequiredForValueCalculation()
         {
             var subtotalMock = new Mock<ICalculationNode>();
             var totalOverrideMock = new Mock<ICalculationNode>();
@@ -140,7 +140,7 @@ namespace PoESkillTree.Computation.Core.Tests
             Assert.AreEqual(2, invocations);
         }
 
-        private static TotalNode CreateSut(ICalculationNode subtotal = null, ICalculationNode totalOverride = null) => 
-            new TotalNode(subtotal ?? Mock.Of<ICalculationNode>(), totalOverride ?? Mock.Of<ICalculationNode>());
+        private static OverwritableNode CreateSut(ICalculationNode subtotal = null, ICalculationNode totalOverride = null) => 
+            new OverwritableNode(subtotal ?? Mock.Of<ICalculationNode>(), totalOverride ?? Mock.Of<ICalculationNode>());
     }
 }

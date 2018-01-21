@@ -19,9 +19,9 @@ namespace PoESkillTree.Computation.Core
         // that's where these path subgraphs end up. BaseOverride, BaseSet, BaseAdd and
         // TotalOverride don't make sense.
         // Returns all nodes by conversion path and source.
-        IPathNodeCollection GetPathNodesForStat(IStat stat, NodeType nodeType = NodeType.Total);
+        INodeCollection<PathNodeCollectionItem> GetPathNodesForStat(IStat stat, NodeType nodeType = NodeType.Total);
 
         // Returns the form node collection of stat
-        IFormNodeCollection GetFormNodesForStat(IStat stat, Form form);
+        INodeCollection<FormNodeCollectionItem> GetFormNodesForStat(IStat stat, Form form);
     }
 }

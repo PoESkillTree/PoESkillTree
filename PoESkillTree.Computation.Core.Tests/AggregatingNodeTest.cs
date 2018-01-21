@@ -8,7 +8,7 @@ using static PoESkillTree.Computation.Core.Tests.NodeHelper;
 namespace PoESkillTree.Computation.Core.Tests
 {
     [TestFixture]
-    public class FormNodeAggregatingNodeTest
+    public class AggregatingNodeTest
     {
         [Test]
         public void SutIsCalculationNode()
@@ -23,8 +23,8 @@ namespace PoESkillTree.Computation.Core.Tests
         [TestCase(0)]
         public void ValueIsSumAggregationResult(double? expected, params double?[] values)
         {
-            var formNodes = MockFormNodeCollection(values);
-            var sut = CreateSut(formNodes, AggregateBySum);
+            var nodes = MockNodeCollection(values);
+            var sut = CreateSut(nodes, AggregateBySum);
 
             sut.AssertValueEquals(expected);
         }
@@ -32,8 +32,8 @@ namespace PoESkillTree.Computation.Core.Tests
         [TestCase(-8, 1.0, null, 4.0, -2.0)]
         public void ValueIsProductAggregationResult(double? expected, params double?[] values)
         {
-            var formNodes = MockFormNodeCollection(values);
-            var sut = CreateSut(formNodes, AggregateByProduct);
+            var nodes = MockNodeCollection(values);
+            var sut = CreateSut(nodes, AggregateByProduct);
 
             sut.AssertValueEquals(expected);
         }
@@ -41,13 +41,13 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void ValueChangedIsRaisedWhenFormItemsChangedIsRaised()
         {
-            var formNodes = MockFormNodeCollection(42);
-            var sut = CreateSut(formNodes);
+            var nodes = MockNodeCollection(42);
+            var sut = CreateSut(nodes);
             var _ = sut.Value;
             var raised = false;
             sut.SubscribeToValueChanged(() => raised = true);
 
-            Mock.Get(formNodes).Raise(c => c.ItemsChanged += null, EventArgs.Empty);
+            Mock.Get(nodes).Raise(c => c.ItemsChanged += null, EventArgs.Empty);
 
             Assert.IsTrue(raised);
         }
@@ -55,39 +55,39 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void ValueChangedIsNotRaisedBeforeValueWasAccessed()
         {
-            var formNodes = MockFormNodeCollection(42);
-            var sut = CreateSut(formNodes);
+            var nodes = MockNodeCollection(42);
+            var sut = CreateSut(nodes);
 
             sut.AssertValueChangedWillNotBeInvoked();
-            Mock.Get(formNodes).Raise(c => c.ItemsChanged += null, EventArgs.Empty);
+            Mock.Get(nodes).Raise(c => c.ItemsChanged += null, EventArgs.Empty);
         }
 
         [Test]
         public void DisposeUnsubscribesFromItemsChanged()
         {
-            var formNodes = MockFormNodeCollection(42);
-            var sut = CreateSut(formNodes);
+            var nodes = MockNodeCollection(42);
+            var sut = CreateSut(nodes);
             var _ = sut.Value;
 
             sut.Dispose();
 
             sut.AssertValueChangedWillNotBeInvoked();
-            Mock.Get(formNodes).Raise(c => c.ItemsChanged += null, EventArgs.Empty);
-            Mock.Get(formNodes.Items[0].Node).Raise(n => n.ValueChanged += null, EventArgs.Empty);
+            Mock.Get(nodes).Raise(c => c.ItemsChanged += null, EventArgs.Empty);
+            Mock.Get(nodes.Items[0].Node).Raise(n => n.ValueChanged += null, EventArgs.Empty);
         }
 
         [Test]
         public void HandlersAreNotSubscribedToMultipleTimes()
         {
-            var formNodes = MockFormNodeCollection(42);
-            var sut = CreateSut(formNodes);
+            var nodes = MockNodeCollection(42);
+            var sut = CreateSut(nodes);
             var incovations = 0;
             sut.SubscribeToValueChanged(() => incovations++);
             var _ = sut.Value;
             _ = sut.Value;
 
-            Mock.Get(formNodes).Raise(c => c.ItemsChanged += null, EventArgs.Empty);
-            Mock.Get(formNodes.Items[0].Node).Raise(n => n.ValueChanged += null, EventArgs.Empty);
+            Mock.Get(nodes).Raise(c => c.ItemsChanged += null, EventArgs.Empty);
+            Mock.Get(nodes.Items[0].Node).Raise(n => n.ValueChanged += null, EventArgs.Empty);
 
             Assert.AreEqual(2, incovations);
         }
@@ -95,33 +95,33 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void ValueChangedIsRaisedWhenAnItemsValueChangedIsRaised()
         {
-            var formNodes = MockFormNodeCollection(42, 0);
-            var sut = CreateSut(formNodes);
+            var nodes = MockNodeCollection(42, 0);
+            var sut = CreateSut(nodes);
             var _ = sut.Value;
             var raised = false;
             sut.SubscribeToValueChanged(() => raised = true);
 
-            Mock.Get(formNodes.Items[1].Node).Raise(n => n.ValueChanged += null, EventArgs.Empty);
+            Mock.Get(nodes.Items[1].Node).Raise(n => n.ValueChanged += null, EventArgs.Empty);
 
             Assert.IsTrue(raised);
         }
 
         [Test]
-        public void FormNodesItemsChangedCausesResubscribingToChildren()
+        public void NodesItemsChangedCausesResubscribingToChildren()
         {
-            var formNodes = MockFormNodeCollection(0, 1);
-            var sut = CreateSut(formNodes);
+            var nodes = MockNodeCollection(0, 1);
+            var sut = CreateSut(nodes);
             var _ = sut.Value;
             var incovations = 0;
             sut.SubscribeToValueChanged(() => incovations++);
-            var removedNode = formNodes.Items[0].Node;
-            var keptNode = formNodes.Items[1].Node;
-            var addedNode = new FormNodeCollectionItem(MockNode(2), null, null);
-            var updatedNodes = formNodes.Items.Skip(1).Union(new[] { addedNode }).ToList();
-            var formNodesMock = Mock.Get(formNodes);
-            formNodesMock.Setup(c => c.Items).Returns(updatedNodes);
+            var removedNode = nodes.Items[0].Node;
+            var keptNode = nodes.Items[1].Node;
+            var addedNode = new NodeCollectionItem(MockNode(2));
+            var updatedNodes = nodes.Items.Skip(1).Union(new[] { addedNode }).ToList();
+            var nodesMock = Mock.Get(nodes);
+            nodesMock.Setup(c => c.Items).Returns(updatedNodes);
 
-            formNodesMock.Raise(c => c.ItemsChanged += null, EventArgs.Empty);
+            nodesMock.Raise(c => c.ItemsChanged += null, EventArgs.Empty);
 
             incovations = 0;
             Mock.Get(removedNode).Raise(n => n.ValueChanged += null, EventArgs.Empty);
@@ -131,10 +131,10 @@ namespace PoESkillTree.Computation.Core.Tests
             Assert.AreEqual(2, incovations);
         }
 
-        private static FormNodeAggregatingNode CreateSut(
-            IFormNodeCollection formNodes = null, NodeValueAggregator aggregator = null)
+        private static AggregatingNode CreateSut(
+            INodeCollection<NodeCollectionItem> nodes = null, NodeValueAggregator aggregator = null)
         {
-            return new FormNodeAggregatingNode(formNodes, aggregator ?? AggregateBySum);
+            return new AggregatingNode(nodes, aggregator ?? AggregateBySum);
         }
 
         private static NodeValue? AggregateBySum(IEnumerable<NodeValue?> values) => 

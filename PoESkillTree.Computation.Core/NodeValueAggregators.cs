@@ -29,7 +29,7 @@ namespace PoESkillTree.Computation.Core
                     "Multiple modifiers to BaseOverride or TotalOverride with none having value 0 are not supported");
 
         public static NodeValue? CalculateMore(IEnumerable<NodeValue?> values) => 
-            values.AggregateOrNull(vs => vs.Select(v => 1 + v / 100).Aggregate((l , r) => l * r));
+            values.AggregateOrNull(vs => vs.Select(v => 1 + v / 100).Product());
 
         public static NodeValue? CalculateIncrease(IEnumerable<NodeValue?> values) => 
             values.AggregateOrNull(vs => 1 + vs.Select(v => v / 100).Sum());
@@ -46,16 +46,24 @@ namespace PoESkillTree.Computation.Core
                 throw new NotSupportedException("Multiple modifiers to BaseSet are not supported");
             }
 
-            if (enumerated.Any())
-            {
-                return enumerated.Sum();
-            }
-
-            return null;
+            return enumerated.Any() ? enumerated.Sum() : new NodeValue(0);
         }
+
+        // This only has BaseSet and BaseAdd as children and is not identical to the Base node.
+        // The Base node is an OverwritableNode with this and BaseOverride as children.
+        // Base is never null because BaseSet is never null.
+        public static NodeValue? CalculateBase(IEnumerable<NodeValue?> values) => 
+            values.AggregateOrNull(Sum);
+
+        // UncappedSubtotal has Base, Increase and More as children. It is never null because Base is never null.
+        public static NodeValue? CalculateUncappedSubtotal(IEnumerable<NodeValue?> values) => 
+            values.AggregateOrNull(Product);
 
         private static NodeValue Sum(this IEnumerable<NodeValue> values) =>
             values.Aggregate((l, r) => l + r);
+
+        private static NodeValue Product(this IEnumerable<NodeValue> values) =>
+            values.Aggregate((l, r) => l * r);
 
         private static NodeValue? AggregateOrNull(
             this IEnumerable<NodeValue?> values, Func<IEnumerable<NodeValue>, NodeValue> aggregator)

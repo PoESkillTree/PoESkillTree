@@ -49,7 +49,7 @@ namespace PoESkillTree.Computation.Core.Tests
             AssertReturnsCorrectResult(NodeValueAggregators.CalculateBaseAdd, expected, values);
         }
         
-        [TestCase(null)]
+        [TestCase(0)]
         [TestCase(42, 42.0)]
         public void CalculateBaseSetReturnsCorrectResult(double? expected, params double?[] values)
         {
@@ -80,6 +80,22 @@ namespace PoESkillTree.Computation.Core.Tests
             var actual = NodeValueAggregators.CalculateBaseSet(values);
 
             Assert.AreEqual(new NodeValue(42, -5), actual);
+        }
+
+        [TestCase(null)]
+        [TestCase(42, 42.0)]
+        [TestCase(100, 50.0, 100.0, -50.0)]
+        public void CalculateBaseReturnsCorrectResult(double? expected, params double?[] values)
+        {
+            AssertReturnsCorrectResult(NodeValueAggregators.CalculateBase, expected, values);
+        }
+
+        [TestCase(null)]
+        [TestCase(42, 42.0)]
+        [TestCase(1.5, 2.0, 1.5, 0.5)]
+        public void CalculateUncappedSubtotalReturnsCorrectResult(double? expected, params double?[] values)
+        {
+            AssertReturnsCorrectResult(NodeValueAggregators.CalculateUncappedSubtotal, expected, values);
         }
 
         private static void AssertReturnsCorrectResult(
