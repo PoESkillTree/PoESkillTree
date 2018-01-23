@@ -76,6 +76,7 @@
     <Compile Include="CachingNode.cs" />
     <Compile Include="CachingNodeAdapter.cs" />
     <Compile Include="OverwritableNode.cs" />
+    <Compile Include="SubtotalNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -74,6 +74,7 @@
     <Compile Include="CachingNodeAdapterTest.cs" />
     <Compile Include="CachingNodeTest.cs" />
     <Compile Include="OverwritableNodeTest.cs" />
+    <Compile Include="SubtotalNodeTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Common.csproj">

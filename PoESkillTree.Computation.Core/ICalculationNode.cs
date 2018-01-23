@@ -124,8 +124,10 @@ namespace PoESkillTree.Computation.Core
      *       implement it by calling "IStatVisitor.Accept(this)". IStatVisitor has a method for each subclass.
      *       The subclasses need to have properties describing the special stat. E.g. the source and target IStat
      *       for conversions.
+     *     - IStat has a method/property returning a collection of "IBehavior"s. IBehavior has methods to check whether
+     *       it affects a node (by IStat and NodeType, probably) and a method specifying how it affects nodes.
      *   - Nodes of stat subgraphs support a "customizable" concept. IStats can define the affected stat subgraphs
-     *     and are then run over all nodes to customize them. This can be implemented using one of the two ideas
+     *     and are then run over all nodes to customize them. This can be implemented using one of the ideas
      *     from above.
      *   - All types of additional behavior when adding modifiers to a stat for the first time can be modeled in this
      *     way. E.g. registering stats in IExternalStatRegistry and registering named IStats (see below).

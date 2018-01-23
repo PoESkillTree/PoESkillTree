@@ -10,7 +10,7 @@ namespace PoESkillTree.Computation.Core.Tests
         public static ICalculationNode MockNode(double? value) => 
             MockNode((NodeValue?) value);
 
-        public static ICalculationNode MockNode(NodeValue? value)
+        public static ICalculationNode MockNode(NodeValue? value = null)
         {
             var mock = new Mock<ICalculationNode>();
             mock.SetupGet(n => n.Value).Returns(value);

@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Common.Utils.Extensions;
+﻿using System;
+using PoESkillTree.Common.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Core
 {
@@ -38,9 +39,12 @@ namespace PoESkillTree.Computation.Core
         public static NodeValue operator /(NodeValue left, double right) =>
             new NodeValue(left.Minimum / right, left.Maximum / right);
 
+        public static NodeValue Combine(NodeValue left, NodeValue right, Func<double, double, double> operation) => 
+            new NodeValue(operation(left.Minimum, right.Minimum), operation(left.Maximum, right.Maximum));
+
         public static explicit operator NodeValue(double value) => new NodeValue(value);
 
-        public bool AlmostEquals(double value, double delta) => 
+        public bool AlmostEquals(double value, double delta = 1e-10) => 
             Minimum.AlmostEquals(value, delta) && Maximum.AlmostEquals(value, delta);
 
         public override string ToString() => $"{Minimum} to {Maximum}";
