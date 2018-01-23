@@ -1,7 +1,7 @@
 ﻿using System;
 using PoESkillTree.Common.Utils.Extensions;
 
-namespace PoESkillTree.Computation.Core
+namespace PoESkillTree.Computation.Common
 {
     public struct NodeValue
     {

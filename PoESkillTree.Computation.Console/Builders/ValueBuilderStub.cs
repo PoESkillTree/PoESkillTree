@@ -75,6 +75,11 @@ namespace PoESkillTree.Computation.Console.Builders
             public ValueStub(BuilderStub builderStub) : base(builderStub)
             {
             }
+
+            public NodeValue? Calculate(IValueCalculationContext valueCalculationContext)
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 

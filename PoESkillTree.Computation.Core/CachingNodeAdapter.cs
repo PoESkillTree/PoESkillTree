@@ -1,4 +1,5 @@
 ﻿using System;
+using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {

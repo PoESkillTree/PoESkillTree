@@ -1,4 +1,5 @@
 ﻿using System;
+using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
@@ -22,7 +23,6 @@ namespace PoESkillTree.Computation.Core
      *   - For nodes not directly used by other projects and not implementing ICachingNode, this is not cached,
      *     i.e. it calculates the value based on the children with every call
      *   - Even for ICachingNodes, the value is calculated lazily, i.e. not when ValueChanged is raised
-     * - Will have many different implementations depending on how the value is calculated
      * - For a core node N:
      *   - N is decorated by a CachingNode, which is used instead of it
      *   - Children of N are CachingNodeAdapters to the decorators of the actual children
@@ -44,20 +44,6 @@ namespace PoESkillTree.Computation.Core
      *       for each node
      * - All other API-sided events, i.e. those of collections in ICalculationGraph.NodeRepository and
      *   .ExternalStatRegistry, will only be raised after both passes (or at least only after the first pass).
-     *
-     * Builder implementations:
-     * - What IStat and IValue represent will be different from how they are used in the data
-     *   - IStat defines the subgraph of the calculation graph the modifier affects
-     *     (for non-data-driven modifiers like conversion: a special property of IStat defines what type of special
-     *      mechanic they are)
-     *   - Form defines where in the subgraph the modifier is applied
-     *   - IValue defines the formula to calculate the modifier's value. This can include branches, arithmetic operators
-     *     and references to other nodes (mainly to nodes defined as IStat)
-     *     - This is used to calculate ICalculationNode.Value. The value is nullable, allowing the representation
-     *       of modifiers that aren't applied, e.g. because of their conditions.
-     *   - Conditions are IStats themselves and can be referenced the same way from IValue
-     *     - Their IStat implementation decides whether the value is user entered or calculated
-     *     - User entered conditions can be registered using IExternalStatRegistry
      *
      * Data-driven Mechanics:
      * - New "CommonGivenStats" data class
@@ -135,6 +121,10 @@ namespace PoESkillTree.Computation.Core
      *   - It is used as a multiplier to the value of BaseAdd nodes
      * - Each stat can have different rounding behavior. Can be implemented either as an additional property of IStat
      *   or as a behavior, see the ideas above.
+     * - Conditions are handled the same way as other stats. They have a stat subgraph and it can be referenced from
+     *   value calculations.
+     * - User entered conditions/stats must be able to register themselves, i.e. IExternalStatRegistry and IStat must be
+     *   connected in some way. This doesn't seem to fit the behavior concept.
      *
      * UI notes:
      * - The ValueChanged events can easily be used by the UI (transformed to PropertyChanged events in ViewModels)

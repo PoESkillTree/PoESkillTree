@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Common;
 using static PoESkillTree.Computation.Core.Tests.NodeHelper;
 
 namespace PoESkillTree.Computation.Core.Tests

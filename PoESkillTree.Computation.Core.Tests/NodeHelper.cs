@@ -2,6 +2,7 @@
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Tests
 {
