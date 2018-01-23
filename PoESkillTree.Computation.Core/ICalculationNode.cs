@@ -3,17 +3,16 @@
 namespace PoESkillTree.Computation.Core
 {
     /*
-       Overall plan: Complete implementation of ICalculationGraph
-       1. ICalculationNode implementations for building block
-       2. INodeRepository implementation(s)
+       TODO: Complete implementation of ICalculationGraph
+       - INodeRepository implementation(s)
          - Need to support different "views": 
            - One returning Adapters (for graph construction and single-pass-API)
            - One returning CachingNodes (for two-pass-API)
-       3. ICalculationNode implementations for modifiers (using IValue to calculate a value)
-       4. Two-pass recalculation class
-       5. ICalculationGraph implementation(s) (mainly Update(), the properties should be trivial)
-       6. or 7. Usage from Console and/or integration tests (not using Data and Parsing, just example implementation of some builders)
-       7. or 6. Add support for multiple paths and other "specialties" to stat subgraphs (all remaining notes on stat subgraphs)
+       - ICalculationNode implementations for modifiers (using IValue to calculate a value)
+       - Two-pass recalculation class
+       - ICalculationGraph implementation(s) (mainly Update(), the properties should be trivial)
+       - Usage from Console and/or integration tests (not using Data and Parsing, just example implementation of some builders)
+       - Add support for multiple paths and other "specialties" to stat subgraphs
        (see the thoughts below and the thoughts scattered around in other files for details)
      */
 
@@ -59,7 +58,6 @@ namespace PoESkillTree.Computation.Core
      *   - Conditions are IStats themselves and can be referenced the same way from IValue
      *     - Their IStat implementation decides whether the value is user entered or calculated
      *     - User entered conditions can be registered using IExternalStatRegistry
-     * - Mod source based conditions:
      *
      * Data-driven Mechanics:
      * - New "CommonGivenStats" data class

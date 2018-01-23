@@ -8,13 +8,13 @@ namespace PoESkillTree.Computation.Core
 
     public class AggregatingNode : ICalculationNode
     {
-        private readonly INodeCollection<NodeCollectionItem> _nodes;
+        private readonly INodeCollection _nodes;
         private readonly NodeValueAggregator _aggregator;
         private List<ICalculationNode> _subscribedNodes;
 
-        public AggregatingNode(INodeCollection<NodeCollectionItem> formNodes, NodeValueAggregator aggregator)
+        public AggregatingNode(INodeCollection nodes, NodeValueAggregator aggregator)
         {
-            _nodes = formNodes;
+            _nodes = nodes;
             _aggregator = aggregator;
         }
 

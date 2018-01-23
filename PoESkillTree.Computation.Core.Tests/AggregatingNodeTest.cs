@@ -132,7 +132,7 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         private static AggregatingNode CreateSut(
-            INodeCollection<NodeCollectionItem> nodes = null, NodeValueAggregator aggregator = null)
+            INodeCollection nodes = null, NodeValueAggregator aggregator = null)
         {
             return new AggregatingNode(nodes, aggregator ?? AggregateBySum);
         }

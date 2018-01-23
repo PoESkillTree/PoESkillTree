@@ -4,11 +4,16 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
-    public interface INodeCollection<out T> where T: NodeCollectionItem
+    public interface INodeCollection
     {
-        IReadOnlyList<T> Items { get; }
+        IReadOnlyList<NodeCollectionItem> Items { get; }
 
         event EventHandler ItemsChanged;
+    }
+
+    public interface INodeCollection<out T> : INodeCollection where T: NodeCollectionItem
+    {
+        new IReadOnlyList<T> Items { get; }
     }
 
 
