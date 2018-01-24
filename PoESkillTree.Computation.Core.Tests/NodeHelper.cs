@@ -38,5 +38,10 @@ namespace PoESkillTree.Computation.Core.Tests
                 .ToList();
             return Mock.Of<INodeCollection>(c => c.Items == items);
         }
+
+        public static void RaiseValueChanged(this Mock<ICalculationNode> nodeMock)
+        {
+            nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
+        }
     }
 }

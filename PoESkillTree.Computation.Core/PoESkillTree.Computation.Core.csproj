@@ -77,6 +77,8 @@
     <Compile Include="OverwritableNode.cs" />
     <Compile Include="NodeFactory.cs" />
     <Compile Include="SubtotalNode.cs" />
+    <Compile Include="ValueCalculationContext.cs" />
+    <Compile Include="ValueNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

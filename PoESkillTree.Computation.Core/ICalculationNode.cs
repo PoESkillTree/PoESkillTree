@@ -9,7 +9,6 @@ namespace PoESkillTree.Computation.Core
          - Need to support different "views": 
            - One returning Adapters (for graph construction and single-pass-API)
            - One returning CachingNodes (for two-pass-API)
-       - ICalculationNode implementations for modifiers (using IValue to calculate a value)
        - Two-pass recalculation class
        - ICalculationGraph implementation(s) (mainly Update(), the properties should be trivial)
        - Usage from Console and/or integration tests (not using Data and Parsing, just example implementation of some builders)
@@ -52,24 +51,16 @@ namespace PoESkillTree.Computation.Core
      * Construction of the graph: (see ICalculationGraph)
      * - Needs to make sure events are properly unsubscribed from
      *   (ICalculationNode implements IDisposable for this reason)
-     * - When constructing nodes from a Modifier, it can use INodeRepository to access referenced nodes
      * - To allow removing modifiers, each modifier source has to store its modifiers
      * - Adding modifiers:
-     *   - Get the subgraph for each stat (or create them)
-     *   - Select the collection for the form
-     *   - Create the rooted DAG for the modifier from the value
-     *   - Add the root node to the collection
+     *   - Call INodeRepository.GetFormNodes(stat, form)
+     *   - Create a ValueNode from value
+     *   - Add the node to the collection
      *   This implies the following
-     *   - The whole subgraph for a stat is built when creating it.
      *   - All modifiers are added to the graph, even if their conditions are false. I think it is less
      *     complicated this way, otherwise changing conditions could require larger changes to the graph.
      *     - Conditions should be the first things checked when calculating values so the calculation can be shortcut.
-     *     - Only the children necessary to calculate the value should be subscribed to and be evaluated.
-     *       - This can only be decided after the value is calculated the first time. Initially, nodes don't subscribe
-     *         to children. They are created in a dirty state anyway.
-     *       - When calculating the value, subscribe/unsubscribe to children as required.
-     *       - E.g. If a condition to the modifier's application is false and the value is therefore null,
-     *         only this condition needs to be subscribed to.
+     *     - If only the children necessary to calculate the value are evaluated, only those are subscribed to.
      *     - This allows the entire graph being pre-built and all modifiers having conditions stating that their
      *       corresponding skill tree nodes/items/... must be selected. Though, I don't think that makes sense for
      *       anything except maybe tree nodes. This will probably be useful of the tree generator.

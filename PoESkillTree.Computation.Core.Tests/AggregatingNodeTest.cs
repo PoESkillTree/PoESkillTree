@@ -132,6 +132,15 @@ namespace PoESkillTree.Computation.Core.Tests
             Assert.AreEqual(2, incovations);
         }
 
+        [Test]
+        public void DisposeDoesNothingIfValueWasNotAccessed()
+        {
+            var sut = CreateSut(MockNodeCollection());
+            sut.AssertValueChangedWillNotBeInvoked();
+
+            sut.Dispose();
+        }
+
         private static AggregatingNode CreateSut(
             INodeCollection nodes = null, NodeValueAggregator aggregator = null)
         {

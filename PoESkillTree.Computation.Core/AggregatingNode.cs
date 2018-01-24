@@ -32,14 +32,17 @@ namespace PoESkillTree.Computation.Core
 
         public void Dispose()
         {
-            _nodes.ItemsChanged -= FormNodesOnItemsChanged;
-            UnsubscribeFromFormNodes();
+            if (_subscribedNodes != null)
+            {
+                _nodes.ItemsChanged -= FormNodesOnItemsChanged;
+                UnsubscribeFromNodes();
+            }
         }
 
         private void FormNodesOnItemsChanged(object sender, EventArgs args)
         {
-            UnsubscribeFromFormNodes();
-            SubscribeToFormNodes();
+            UnsubscribeFromNodes();
+            SubscribeToNodes();
             OnValueChanged(sender, args);
         }
 
@@ -48,11 +51,11 @@ namespace PoESkillTree.Computation.Core
             if (_subscribedNodes == null)
             {
                 _nodes.ItemsChanged += FormNodesOnItemsChanged;
-                SubscribeToFormNodes();
+                SubscribeToNodes();
             }
         }
 
-        private void UnsubscribeFromFormNodes()
+        private void UnsubscribeFromNodes()
         {
             foreach (var node in _subscribedNodes)
             {
@@ -61,7 +64,7 @@ namespace PoESkillTree.Computation.Core
             _subscribedNodes = new List<ICalculationNode>();
         }
 
-        private void SubscribeToFormNodes()
+        private void SubscribeToNodes()
         {
             _subscribedNodes = new List<ICalculationNode>();
             foreach (var item in _nodes.Items)

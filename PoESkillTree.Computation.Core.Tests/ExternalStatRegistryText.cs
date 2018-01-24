@@ -7,7 +7,7 @@ using PoESkillTree.Computation.Common;
 namespace PoESkillTree.Computation.Core.Tests
 {
     [TestFixture]
-    public class ExternalStatRegistryText
+    public partial class ExternalStatRegistryText
     {
         [Test]
         public void SutIsExternalStatRegistry()
@@ -110,15 +110,6 @@ namespace PoESkillTree.Computation.Core.Tests
             sut.Register(stat, defaultValue);
 
             return new KeyValuePair<IStat, double?>(stat, defaultValue);
-        }
-
-
-        private class StatStub : IStat
-        {
-            public bool Equals(IStat other) => Equals((object) other);
-
-            public IStat Minimum => null;
-            public IStat Maximum => null;
         }
     }
 }
