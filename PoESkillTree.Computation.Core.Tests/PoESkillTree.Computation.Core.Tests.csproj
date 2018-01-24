@@ -76,6 +76,7 @@
     <Compile Include="CachingNodeTest.cs" />
     <Compile Include="StatStub.cs" />
     <Compile Include="SubtotalValueTest.cs" />
+    <Compile Include="SuspendableNotificationsCompositeTest.cs" />
     <Compile Include="TotalValueTest.cs" />
     <Compile Include="UncappedSubtotalValueTest.cs" />
     <Compile Include="ValueCalculationContextTest.cs" />

@@ -78,6 +78,7 @@
     <Compile Include="CachingNodeAdapter.cs" />
     <Compile Include="NodeFactory.cs" />
     <Compile Include="SubtotalValue.cs" />
+    <Compile Include="SuspendableNotificationsComposite.cs" />
     <Compile Include="TotalValue.cs" />
     <Compile Include="UncappedSubtotalValue.cs" />
     <Compile Include="ValueCalculationContext.cs" />

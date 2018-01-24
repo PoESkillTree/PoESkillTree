@@ -9,9 +9,7 @@ namespace PoESkillTree.Computation.Core
          - Need to support different "views": 
            - One returning Adapters (for graph construction and single-pass ICalculationGraph.NodeRepository)
            - One returning CachingNodes (for two-pass ICalculationGraph, both .NodeRepository and to delay events in two-pass updates)
-       - Two-pass recalculation class (see "(Re-)Calculating values efficiently")
-       - Construction class and ICalculationGraph implementation(s)
-         (see "(Re-)Calculating values efficiently" and "Construction of the graph")
+       - Construction class and ICalculationGraph implementation(s) (see "Construction of the graph")
        - Usage from Console and/or integration tests (not using Data and Parsing, just example implementation of some builders)
        - Support for multiple paths and other "specialties"/behaviors in stat subgraphs (see "Stat subgraphs")
        (see the thoughts below and the thoughts scattered around in other files for details)
@@ -27,19 +25,6 @@ namespace PoESkillTree.Computation.Core
      *     - ValueChanged of a child is raised, or
      *     - N itself changed, e.g. a child was added
      *
-     * (Re-)Calculating values efficiently:
-     * Event based, two pass:
-     *   1. SuspendNotifications() is called
-     *     - on all ICachingNodes and other API surface events, i.e. those of collections in
-     *      ICalculationGraph.NodeRepository and .ExternalStatRegistry
-     *   2. Modifiers are added/removed
-     *     - Core nodes raise ValueChanged when being changed directly or when a child raises this event
-     *     - These events will go through the graph marking nodes as dirty (through CachingNode and CachingNodeAdapter)
-     *     - Each CachingNode raises ValueChangeReceived at most once. Therefore each core node receives and raises
-     *       ValueChanged at most once per child.
-     *   3. ResumeNotifications() is called
-     *     - All CachingNodes that received ValueChanged events raise their ValueChanged events
-     *
      * Construction of the graph:
      * - Needs to make sure events are properly unsubscribed from
      *   (ICalculationNode implements IDisposable for this reason)
@@ -51,6 +36,18 @@ namespace PoESkillTree.Computation.Core
      *   - The reverse of adding them.
      *   - If a stat is neither referenced nor modified (has empty form collections), its subgraph can be removed
      *     - How to check whether a node is referenced or not? -> ValueChanged.GetInvocationList().Length
+     * - Batch updates:
+     *   1. SuspendNotifications() is called
+     *     - on all ICachingNodes and other API surface events, i.e. those of collections in
+     *       ICalculationGraph.NodeRepository and .ExternalStatRegistry
+     *     - These are all added to one SuspendableNotificationsComposite
+     *   2. Modifiers are added/removed
+     *     - Core nodes raise ValueChanged when being changed directly or when a child raises this event
+     *     - These events will propagate through the graph (through CachingNode and CachingNodeAdapter)
+     *     - Each CachingNode raises ValueChangeReceived at most once. Therefore each core node receives and raises
+     *       ValueChanged at most once per child.
+     *   3. ResumeNotifications() is called
+     *     - All CachingNodes that received ValueChanged events raise their ValueChanged events
      *
      * Stat subgraphs:
      * - Per default, a path for each source (Global, and each Local source that has modifiers) is created.
