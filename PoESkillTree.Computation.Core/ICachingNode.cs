@@ -2,10 +2,10 @@
 
 namespace PoESkillTree.Computation.Core
 {
-    public interface ICachingNode : ICalculationNode
+    public interface ICachingNode : ICalculationNode, ISuspendableNotifications
     {
-        void RaiseValueChanged();
-
+        // ValueChangeReceived is exempt from ISuspendableNotifications.
+        // This allows caching nodes to still propagate events through the graph.
         event EventHandler ValueChangeReceived;
     }
 }

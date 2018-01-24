@@ -66,6 +66,7 @@
     <Compile Include="CalculationGraphExtensions.cs" />
     <Compile Include="ExternalStatRegistry.cs" />
     <Compile Include="INodeCollection.cs" />
+    <Compile Include="ISuspendableNotifications.cs" />
     <Compile Include="NodeValueAggregators.cs" />
     <Compile Include="ICachingNode.cs" />
     <Compile Include="ICalculationGraph.cs" />

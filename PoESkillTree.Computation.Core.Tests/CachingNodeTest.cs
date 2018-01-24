@@ -50,47 +50,7 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         [Test]
-        public void RaiseValueChangedRaisesValueChangedy()
-        {
-            var sut = CreateSut();
-            var raised = false;
-            sut.SubscribeToValueChanged(() => raised = true);
-
-            sut.RaiseValueChanged();
-
-            Assert.IsTrue(raised);
-        }
-
-        [Test]
-        public void RaiseValueChangedDoesNotRaiseValueChangedOnSubsequentCalls()
-        {
-            var sut = CreateSut();
-            sut.RaiseValueChanged();
-            sut.AssertValueChangedWillNotBeInvoked();
-
-            sut.RaiseValueChanged();
-        }
-
-        [Test]
         public void ValueChangeReceivedIsRaisedWhenDecoratedNodeRaisesValueChanged()
-        {
-            var nodeMock = new Mock<ICalculationNode>();
-            var sut = CreateSut(nodeMock.Object);
-            sut.RaiseValueChanged();
-            var raised = false;
-            sut.ValueChangeReceived += (sender, args) =>
-            {
-                Assert.AreEqual(sut, sender);
-                raised = true;
-            };
-
-            nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
-
-            Assert.IsTrue(raised);
-        }
-
-        [Test]
-        public void ValueChangeReceivedIsRaisedWhenValueWasCalled()
         {
             var nodeMock = new Mock<ICalculationNode>();
             var sut = CreateSut(nodeMock.Object);
@@ -108,7 +68,7 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         [Test]
-        public void ValueChangeReceivedIsNotRaisedWhenItWasNotPropagatedAndValueWasNotCalled()
+        public void ValueChangeReceivedIsNotRaisedWhendValueWasNotCalled()
         {
             var nodeMock = new Mock<ICalculationNode>();
             var sut = CreateSut(nodeMock.Object);
@@ -122,11 +82,70 @@ namespace PoESkillTree.Computation.Core.Tests
         {
             var nodeMock = new Mock<ICalculationNode>();
             var sut = CreateSut(nodeMock.Object);
-            sut.RaiseValueChanged();
+            var _ = sut.Value;
             sut.ValueChangeReceived += (sender, args) => Assert.Fail();
 
             sut.Dispose();
             nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
+        }
+
+        [Test]
+        public void ValueChangedIsRaisedWhenNotificationsAreNotSuspended()
+        {
+            var nodeMock = new Mock<ICalculationNode>();
+            var sut = CreateSut(nodeMock.Object);
+            var _ = sut.Value;
+            var raised = false;
+            sut.SubscribeToValueChanged(() => raised = true);
+
+            nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
+
+            Assert.IsTrue(raised);
+        }
+
+        [Test]
+        public void ValueChangedIsNotRaisedWhenNotificationsAreSuspended()
+        {
+            var nodeMock = new Mock<ICalculationNode>();
+            var sut = CreateSut(nodeMock.Object);
+            var _ = sut.Value;
+
+            sut.SuspendNotifications();
+
+            sut.AssertValueChangedWillNotBeInvoked();
+            nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
+        }
+
+        [Test]
+        public void ResumeAllowsValueChangedToBeRaisedAgain()
+        {
+            var nodeMock = new Mock<ICalculationNode>();
+            var sut = CreateSut(nodeMock.Object);
+            var _ = sut.Value;
+            var raised = false;
+            sut.SubscribeToValueChanged(() => raised = true);
+            sut.SuspendNotifications();
+
+            sut.ResumeNotifications();
+
+            nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
+            Assert.IsTrue(raised);
+        }
+
+        [Test]
+        public void ResumeRaisesValueChangedIfValueChangeReceivedWasRaisedAfterSuspend()
+        {
+            var nodeMock = new Mock<ICalculationNode>();
+            var sut = CreateSut(nodeMock.Object);
+            var _ = sut.Value;
+            var raised = false;
+            sut.SubscribeToValueChanged(() => raised = true);
+            sut.SuspendNotifications();
+            nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
+
+            sut.ResumeNotifications();
+
+            Assert.IsTrue(raised);
         }
 
         private static CachingNode CreateCachedSut(Mock<ICalculationNode> decoratedNodeMock, double? cachedValue)

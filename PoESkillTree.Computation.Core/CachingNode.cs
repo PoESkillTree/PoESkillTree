@@ -9,7 +9,8 @@ namespace PoESkillTree.Computation.Core
 
         private bool _calculatedValue;
         private NodeValue? _value;
-        private bool _propagatedValueChange;
+        private bool _suspendNotifications;
+        private bool _suppressedValueChanged;
 
         public CachingNode(ICalculationNode decoratedNode)
         {
@@ -26,16 +27,8 @@ namespace PoESkillTree.Computation.Core
                     _value = _decoratedNode.Value;
                     _calculatedValue = true;
                 }
-                return _value;
-            }
-        }
 
-        public void RaiseValueChanged()
-        {
-            if (!_propagatedValueChange)
-            {
-                _propagatedValueChange = true;
-                ValueChanged?.Invoke(this, EventArgs.Empty);
+                return _value;
             }
         }
 
@@ -48,14 +41,42 @@ namespace PoESkillTree.Computation.Core
             _decoratedNode.ValueChanged -= DecoratedNodeOnValueChanged;
         }
 
+        public void SuspendNotifications()
+        {
+            _suspendNotifications = true;
+        }
+
+        public void ResumeNotifications()
+        {
+            _suspendNotifications = false;
+            if (_suppressedValueChanged)
+            {
+                _suppressedValueChanged = false;
+                OnValueChanged();
+            }
+        }
+
         private void DecoratedNodeOnValueChanged(object sender, EventArgs args)
         {
-            var raiseValueChangeReceived = _calculatedValue || _propagatedValueChange;
-            _calculatedValue = false;
-            _propagatedValueChange = false;
-            if (raiseValueChangeReceived)
+            if (!_calculatedValue)
             {
-                ValueChangeReceived?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+            _calculatedValue = false;
+            ValueChangeReceived?.Invoke(this, EventArgs.Empty);
+            OnValueChanged();
+        }
+
+        private void OnValueChanged()
+        {
+            if (_suspendNotifications)
+            {
+                _suppressedValueChanged = true;
+            }
+            else
+            {
+                ValueChanged?.Invoke(this, EventArgs.Empty);
             }
         }
     }

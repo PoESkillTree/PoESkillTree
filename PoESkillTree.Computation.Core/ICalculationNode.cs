@@ -7,21 +7,18 @@ namespace PoESkillTree.Computation.Core
        TODO: Complete implementation of ICalculationGraph
        - INodeRepository implementation(s)
          - Need to support different "views": 
-           - One returning Adapters (for graph construction and single-pass-API)
-           - One returning CachingNodes (for two-pass-API)
-       - Two-pass recalculation class
-       - ICalculationGraph implementation(s) (mainly Update(), the properties should be trivial)
+           - One returning Adapters (for graph construction and single-pass ICalculationGraph.NodeRepository)
+           - One returning CachingNodes (for two-pass ICalculationGraph, both .NodeRepository and to delay events in two-pass updates)
+       - Two-pass recalculation class (see "(Re-)Calculating values efficiently")
+       - Construction class and ICalculationGraph implementation(s)
+         (see "(Re-)Calculating values efficiently" and "Construction of the graph")
        - Usage from Console and/or integration tests (not using Data and Parsing, just example implementation of some builders)
-       - Support for multiple paths and other "specialties"/behaviors in stat subgraphs
+       - Support for multiple paths and other "specialties"/behaviors in stat subgraphs (see "Stat subgraphs")
        (see the thoughts below and the thoughts scattered around in other files for details)
      */
 
     /*
      * Core interface: ICalculationNode
-     * - Value gets the node's value based on its child nodes
-     *   - For nodes not directly used by other projects and not implementing ICachingNode, this is not cached,
-     *     i.e. it calculates the value based on the children with every call
-     *   - Even for ICachingNodes, the value is calculated lazily, i.e. not when ValueChanged is raised
      * - For a core node N:
      *   - N is decorated by a CachingNode, which is used instead of it
      *   - Children of N are CachingNodeAdapters to the decorators of the actual children
@@ -32,39 +29,28 @@ namespace PoESkillTree.Computation.Core
      *
      * (Re-)Calculating values efficiently:
      * Event based, two pass:
-     *   1. Core nodes raise "ValueChanged" when being changed directly or when a child raises this event
-     *     - This leads to decorating nodes (CachingNode) raising "ValueChangeReceived", which in turn
-     *       leads to their parent core nodes raising "ValueChanged" (through CachingNodeAdapter)
-     *     - These events will go through the graph marking nodes as dirty
-     *     - Each CachingNode raises "ValueChangeReceived" at most once
-     *     - Some object subscribes to all CachingNodes and saves which nodes raised events
-     *   2. That object then raises "ValueChanged" on all these nodes (through ICachingNode.RaiseValueChanged())
-     *     - These events can be subscribed to by the UI to update displayed values, they will only be raised once
-     *       for each node
-     * - All other API-sided events, i.e. those of collections in ICalculationGraph.NodeRepository and
-     *   .ExternalStatRegistry, will only be raised after both passes (or at least only after the first pass).
+     *   1. SuspendNotifications() is called
+     *     - on all ICachingNodes and other API surface events, i.e. those of collections in
+     *      ICalculationGraph.NodeRepository and .ExternalStatRegistry
+     *   2. Modifiers are added/removed
+     *     - Core nodes raise ValueChanged when being changed directly or when a child raises this event
+     *     - These events will go through the graph marking nodes as dirty (through CachingNode and CachingNodeAdapter)
+     *     - Each CachingNode raises ValueChangeReceived at most once. Therefore each core node receives and raises
+     *       ValueChanged at most once per child.
+     *   3. ResumeNotifications() is called
+     *     - All CachingNodes that received ValueChanged events raise their ValueChanged events
      *
-     * Data-driven Mechanics:
-     * - New "CommonGivenStats" data class
-     *   (can also contain things common between CharacterGivenStats and MonsterGivenStats)
-     *
-     * Construction of the graph: (see ICalculationGraph)
+     * Construction of the graph:
      * - Needs to make sure events are properly unsubscribed from
      *   (ICalculationNode implements IDisposable for this reason)
-     * - To allow removing modifiers, each modifier source has to store its modifiers
      * - Adding modifiers:
      *   - Call INodeRepository.GetFormNodes(stat, form)
      *   - Create a ValueNode from value
      *   - Add the node to the collection
-     *   This implies the following
-     *   - All modifiers are added to the graph, even if their conditions are false. I think it is less
-     *     complicated this way, otherwise changing conditions could require larger changes to the graph.
-     *     - Conditions should be the first things checked when calculating values so the calculation can be shortcut.
-     *     - If only the children necessary to calculate the value are evaluated, only those are subscribed to.
-     *     - This allows the entire graph being pre-built and all modifiers having conditions stating that their
-     *       corresponding skill tree nodes/items/... must be selected. Though, I don't think that makes sense for
-     *       anything except maybe tree nodes. This will probably be useful of the tree generator.
-     * - Removing modifiers: The reverse of adding them.
+     * - Removing modifiers:
+     *   - The reverse of adding them.
+     *   - If a stat is neither referenced nor modified (has empty form collections), its subgraph can be removed
+     *     - How to check whether a node is referenced or not? -> ValueChanged.GetInvocationList().Length
      *
      * Stat subgraphs:
      * - Per default, a path for each source (Global, and each Local source that has modifiers) is created.
@@ -105,6 +91,7 @@ namespace PoESkillTree.Computation.Core
      *     from above.
      *   - All types of additional behavior when adding modifiers to a stat for the first time can be modeled in this
      *     way. E.g. registering stats in IExternalStatRegistry and registering named IStats (see below).
+     *   - When removing a stat subgraph, behaviors caused by it must also be removed
      * - The IStat representing Damage Effectiveness needs to be passed to calculation somehow. The subgraph nodes
      *   can't access it otherwise. Either some interface containing named IStats that is passed by constructor
      *   or done as a behavior, see above.
@@ -116,6 +103,10 @@ namespace PoESkillTree.Computation.Core
      * - User entered conditions/stats must be able to register themselves, i.e. IExternalStatRegistry and IStat must be
      *   connected in some way. This doesn't seem to fit the behavior concept.
      *
+     * Data-driven Mechanics:
+     * - New "CommonGivenStats" data class
+     *   (can also contain things common between CharacterGivenStats and MonsterGivenStats)
+     *
      * UI notes:
      * - The ValueChanged events can easily be used by the UI (transformed to PropertyChanged events in ViewModels)
      * - Values for user specified conditions/stats can be set using modifiers with TotalOverride form
@@ -124,6 +115,8 @@ namespace PoESkillTree.Computation.Core
 
     public interface ICalculationNode : IDisposable
     {
+        // Gets the node's value based on its child nodes
+        // This value is not cached, except for ICachingNodes, in which case it is still calculated lazily.
         NodeValue? Value { get; }
 
         event EventHandler ValueChanged;

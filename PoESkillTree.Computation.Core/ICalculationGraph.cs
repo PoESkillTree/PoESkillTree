@@ -7,7 +7,7 @@ namespace PoESkillTree.Computation.Core
     // Main interface of Computation.Core (better name? clients don't care that it's a graph)
     // Two implementations:
     // - For push-based usage: Two-pass update as written down in ICalculationNode.cs. Returned nodes are CachingNodes.
-    // - For pull-based usage: Single-pass update (only first step of two-pass). Returned nodes CachningNodeAdapters.
+    // - For pull-based usage: Single-pass update (no suspend/resume). Returned nodes are CachningNodeAdapters.
     public interface ICalculationGraph
     {
         // The order in which modifiers are added/removed may be changed to speed up the update process
