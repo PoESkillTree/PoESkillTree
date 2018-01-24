@@ -12,7 +12,7 @@ namespace PoESkillTree.Computation.Core
        - Two-pass recalculation class
        - ICalculationGraph implementation(s) (mainly Update(), the properties should be trivial)
        - Usage from Console and/or integration tests (not using Data and Parsing, just example implementation of some builders)
-       - Add support for multiple paths and other "specialties" to stat subgraphs
+       - Support for multiple paths and other "specialties"/behaviors in stat subgraphs
        (see the thoughts below and the thoughts scattered around in other files for details)
      */
 
@@ -67,7 +67,6 @@ namespace PoESkillTree.Computation.Core
      * - Removing modifiers: The reverse of adding them.
      *
      * Stat subgraphs:
-     * - For details on the main nodes, see NodeType.cs
      * - Per default, a path for each source (Global, and each Local source that has modifiers) is created.
      *   (using unconverted Base values)
      *   - The IModifierSource that was passed to ICalculationGraph.Update() together with the Modifier

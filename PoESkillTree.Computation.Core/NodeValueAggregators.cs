@@ -50,16 +50,6 @@ namespace PoESkillTree.Computation.Core
             return enumerated.Any() ? enumerated.Sum() : new NodeValue(0);
         }
 
-        // This only has BaseSet and BaseAdd as children and is not identical to the Base node.
-        // The Base node is an OverwritableNode with this and BaseOverride as children.
-        // Base is never null because BaseSet is never null.
-        public static NodeValue? CalculateBase(IEnumerable<NodeValue?> values) => 
-            values.AggregateOrNull(Sum);
-
-        // UncappedSubtotal has Base, Increase and More as children. It is never null because Base is never null.
-        public static NodeValue? CalculateUncappedSubtotal(IEnumerable<NodeValue?> values) => 
-            values.AggregateOrNull(Product);
-
         private static NodeValue Sum(this IEnumerable<NodeValue> values) =>
             values.Aggregate((l, r) => l + r);
 

@@ -10,14 +10,16 @@ namespace PoESkillTree.Computation.Core.Tests
 
         private readonly int _instance;
 
-        public StatStub()
+        public StatStub(IStat minimum = null, IStat maximum = null)
         {
             _instance = _instanceCounter++;
+            Minimum = minimum;
+            Maximum = maximum;
         }
 
         public bool Equals(IStat other) => Equals((object) other);
 
-        public IStat Minimum => null;
-        public IStat Maximum => null;
+        public IStat Minimum { get; }
+        public IStat Maximum { get; }
     }
 }

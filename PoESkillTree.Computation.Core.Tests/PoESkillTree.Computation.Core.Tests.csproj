@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AggregatingNodeTest.cs" />
+    <Compile Include="BaseValueTest.cs" />
     <Compile Include="CalculationGraphExtensionsTest.cs" />
     <Compile Include="ExternalStatRegistryText.cs" />
     <Compile Include="NodeValueAggregatorsTest.cs" />
@@ -73,9 +74,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CachingNodeAdapterTest.cs" />
     <Compile Include="CachingNodeTest.cs" />
-    <Compile Include="OverwritableNodeTest.cs" />
     <Compile Include="StatStub.cs" />
-    <Compile Include="SubtotalNodeTest.cs" />
+    <Compile Include="SubtotalValueTest.cs" />
+    <Compile Include="TotalValueTest.cs" />
+    <Compile Include="UncappedSubtotalValueTest.cs" />
     <Compile Include="ValueCalculationContextTest.cs" />
     <Compile Include="ValueNodeTest.cs" />
   </ItemGroup>

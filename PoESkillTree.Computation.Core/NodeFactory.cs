@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
@@ -46,22 +44,16 @@ namespace PoESkillTree.Computation.Core
         }
 
         private ICalculationNode CreateTotalNode(IStat stat) => 
-            new OverwritableNode(GetNode(stat, NodeType.Subtotal), GetNode(stat, NodeType.TotalOverride));
+            new ValueNode(_nodeRepository, new TotalValue(stat));
 
         private ICalculationNode CreateSubtotalNode(IStat stat) =>
-            new SubtotalNode(GetNode(stat, NodeType.UncappedSubtotal), GetNode(stat.Minimum), GetNode(stat.Maximum));
+            new ValueNode(_nodeRepository, new SubtotalValue(stat));
 
         private ICalculationNode CreateUncappedsubtotalNode(IStat stat) =>
-            new AggregatingNode(
-                GetNodes(stat, NodeType.Base, NodeType.Increase, NodeType.More),
-                NodeValueAggregators.CalculateUncappedSubtotal);
+            new ValueNode(_nodeRepository, new UncappedSubtotalValue(stat));
 
         private ICalculationNode CreateBaseNode(IStat stat) =>
-            new OverwritableNode(
-                new AggregatingNode(
-                    GetNodes(stat, NodeType.BaseSet, NodeType.BaseAdd),
-                    NodeValueAggregators.CalculateUncappedSubtotal),
-                GetNode(stat, NodeType.BaseOverride));
+            new ValueNode(_nodeRepository, new BaseValue(stat));
 
         private ICalculationNode CreateBaseOverrideNode(IStat stat) =>
             new AggregatingNode(GetFormNodes(stat, Form.BaseOverride), NodeValueAggregators.CalculateOverride);
@@ -81,31 +73,7 @@ namespace PoESkillTree.Computation.Core
         private ICalculationNode CreateTotalOverrideNode(IStat stat) =>
             new AggregatingNode(GetFormNodes(stat, Form.TotalOverride), NodeValueAggregators.CalculateOverride);
 
-        private INodeCollection GetNodes(IStat stat, params NodeType[] nodeTypes)
-        {
-            var nodes = nodeTypes
-                .Select(t => GetNode(stat, t))
-                .Select(n => new NodeCollectionItem(n))
-                .ToList();
-            return new FixedNodeCollection(nodes);
-        }
-
-        private ICalculationNode GetNode(IStat stat, NodeType nodeType = NodeType.Total) => 
-            _nodeRepository.GetNode(stat, nodeType);
-
         private INodeCollection GetFormNodes(IStat stat, Form form) =>
             _nodeRepository.GetFormNodes(stat, form);
-
-
-        private class FixedNodeCollection : INodeCollection
-        {
-            public FixedNodeCollection(IReadOnlyList<NodeCollectionItem> items)
-            {
-                Items = items;
-            }
-
-            public IReadOnlyList<NodeCollectionItem> Items { get; }
-            public event EventHandler ItemsChanged;
-        }
     }
 }

@@ -3,7 +3,7 @@ using PoESkillTree.Common.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Common
 {
-    public struct NodeValue
+    public struct NodeValue : IEquatable<NodeValue>
     {
         // Most use cases don't need separate Minimum and Maximum values. In those cases, this behaves almost the same
         // as a standard double (but needs to be converted explicitly)
@@ -26,6 +26,21 @@ namespace PoESkillTree.Computation.Common
         public double Minimum { get; }
 
         public double Maximum { get; }
+
+        public static bool operator ==(NodeValue left, NodeValue right) => 
+            left.Equals(right);
+
+        public static bool operator !=(NodeValue left, NodeValue right) => 
+            !left.Equals(right);
+
+        public override bool Equals(object obj) => 
+            obj is NodeValue other && Equals(other);
+
+        public bool Equals(NodeValue other) => 
+            Minimum.Equals(other.Minimum) && Maximum.Equals(other.Maximum);
+
+        public override int GetHashCode() => 
+            (Minimum, Maximum).GetHashCode();
 
         public static NodeValue operator +(NodeValue left, NodeValue right) =>
             new NodeValue(left.Minimum + right.Minimum, left.Maximum + right.Maximum);
