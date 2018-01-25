@@ -17,8 +17,7 @@ namespace PoESkillTree.Computation.Core
 
         // stat selects the stat subgraph, nodeType the node in it.
         // Only one NodeType from Total, Subtotal and UncappedSubtotal make sense, probably Uncapped Subtotal as
-        // that's where these path subgraphs end up. BaseOverride, BaseSet, BaseAdd and
-        // TotalOverride don't make sense.
+        // that's where these path subgraphs end up. BaseOverride, BaseSet, BaseAdd and TotalOverride don't make sense.
         // Returns all nodes by conversion path and source.
         //INodeCollection<PathNodeCollectionItem> GetPathNodes(IStat stat, NodeType nodeType = NodeType.Total);
 

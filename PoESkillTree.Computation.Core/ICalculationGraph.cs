@@ -22,15 +22,15 @@ namespace PoESkillTree.Computation.Core
     public class CalculationGraphUpdate
     {
         public CalculationGraphUpdate(
-            IReadOnlyCollection<(Modifier modifier, IModifierSource source)> addedModifiers, 
-            IReadOnlyCollection<(Modifier modifier, IModifierSource source)> removedModifiers)
+            IReadOnlyCollection<Modifier> addedModifiers, 
+            IReadOnlyCollection<Modifier> removedModifiers)
         {
             AddedModifiers = addedModifiers;
             RemovedModifiers = removedModifiers;
         }
 
-        public IReadOnlyCollection<(Modifier modifier, IModifierSource source)> AddedModifiers { get; }
-        public IReadOnlyCollection<(Modifier modifier, IModifierSource source)> RemovedModifiers { get; }
+        public IReadOnlyCollection<Modifier> AddedModifiers { get; }
+        public IReadOnlyCollection<Modifier> RemovedModifiers { get; }
 
         public override bool Equals(object obj) => 
             (this == obj) || (obj is CalculationGraphUpdate other && Equals(other));

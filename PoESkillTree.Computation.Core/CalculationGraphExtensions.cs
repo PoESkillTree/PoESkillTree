@@ -6,47 +6,37 @@ namespace PoESkillTree.Computation.Core
 {
     public static class CalculationGraphExtensions
     {
-        public static BatchUpdate NewBatchUpdate(this ICalculationGraph graph)
-        {
-            return new BatchUpdate(graph, 
-                new (Modifier modifier, IModifierSource source)[0], new (Modifier modifier, IModifierSource source)[0]);
-        }
+        public static BatchUpdate NewBatchUpdate(this ICalculationGraph graph) => 
+            new BatchUpdate(graph, new Modifier[0], new Modifier[0]);
 
 
         public class BatchUpdate
         {
             private readonly ICalculationGraph _graph;
 
-            private readonly IReadOnlyList<(Modifier modifier, IModifierSource source)> _added;
-            private readonly IReadOnlyList<(Modifier modifier, IModifierSource source)> _removed;
+            private readonly IReadOnlyList<Modifier> _added;
+            private readonly IReadOnlyList<Modifier> _removed;
 
-            public BatchUpdate(
-                ICalculationGraph graph,
-                IReadOnlyList<(Modifier modifier, IModifierSource source)> added,
-                IReadOnlyList<(Modifier modifier, IModifierSource source)> removed)
+            public BatchUpdate(ICalculationGraph graph, IReadOnlyList<Modifier> added, IReadOnlyList<Modifier> removed)
             {
                 _graph = graph;
                 _added = added;
                 _removed = removed;
             }
 
-            public BatchUpdate AddModifier(Modifier modifier, IModifierSource source)
-            {
-                return AddModifiers(new[] { (modifier, source) });
-            }
+            public BatchUpdate AddModifier(Modifier modifier) => 
+                AddModifiers(new[] { modifier });
 
-            public BatchUpdate AddModifiers(IEnumerable<(Modifier modifier, IModifierSource source)> added)
+            public BatchUpdate AddModifiers(IEnumerable<Modifier> added)
             {
                 var newAdded = _added.Concat(added).ToList();
                 return new BatchUpdate(_graph, newAdded, _removed);
             }
 
-            public BatchUpdate RemoveModifier(Modifier modifier, IModifierSource source)
-            {
-                return RemoveModifiers(new[] { (modifier, source) });
-            }
+            public BatchUpdate RemoveModifier(Modifier modifier) => 
+                RemoveModifiers(new[] { modifier });
 
-            public BatchUpdate RemoveModifiers(IEnumerable<(Modifier modifier, IModifierSource source)> removed)
+            public BatchUpdate RemoveModifiers(IEnumerable<Modifier> removed)
             {
                 var newRemoved = _removed.Concat(removed).ToList();
                 return new BatchUpdate(_graph, _added, newRemoved);

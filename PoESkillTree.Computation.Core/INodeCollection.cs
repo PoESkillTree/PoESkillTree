@@ -55,15 +55,15 @@ namespace PoESkillTree.Computation.Core
 
     public class FormNodeCollectionItem : NodeCollectionItem
     {
-        public FormNodeCollectionItem(ICalculationNode node, IModifierSource source, object notes)
+        public FormNodeCollectionItem(ICalculationNode node, Modifier modifier, object notes)
             : base(node)
         {
-            Source = source;
+            Modifier = modifier;
             Notes = notes;
         }
 
-        // IModifierSource of the modifier that lead to the creation of the node
-        public IModifierSource Source { get; }
+        // The modifier that lead to the creation of the node
+        public Modifier Modifier { get; }
 
         // Notes about the modifiers application, e.g. conditions, whether it is provided by a buff/aura, ...
         // Actual type is not yet determined.
