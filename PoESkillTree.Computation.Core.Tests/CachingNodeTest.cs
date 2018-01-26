@@ -90,7 +90,7 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         [Test]
-        public void ValueChangedIsRaisedWhenNotificationsAreNotSuspended()
+        public void ValueChangedIsRaisedWhenEventsAreNotSuspended()
         {
             var nodeMock = new Mock<ICalculationNode>();
             var sut = CreateSut(nodeMock.Object);
@@ -104,13 +104,13 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         [Test]
-        public void ValueChangedIsNotRaisedWhenNotificationsAreSuspended()
+        public void ValueChangedIsNotRaisedWhenEventsAreSuspended()
         {
             var nodeMock = new Mock<ICalculationNode>();
             var sut = CreateSut(nodeMock.Object);
             var _ = sut.Value;
 
-            sut.SuspendNotifications();
+            sut.SuspendEvents();
 
             sut.AssertValueChangedWillNotBeInvoked();
             nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
@@ -124,9 +124,9 @@ namespace PoESkillTree.Computation.Core.Tests
             var _ = sut.Value;
             var raised = false;
             sut.SubscribeToValueChanged(() => raised = true);
-            sut.SuspendNotifications();
+            sut.SuspendEvents();
 
-            sut.ResumeNotifications();
+            sut.ResumeEvents();
 
             nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
             Assert.IsTrue(raised);
@@ -140,10 +140,10 @@ namespace PoESkillTree.Computation.Core.Tests
             var _ = sut.Value;
             var raised = false;
             sut.SubscribeToValueChanged(() => raised = true);
-            sut.SuspendNotifications();
+            sut.SuspendEvents();
             nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
 
-            sut.ResumeNotifications();
+            sut.ResumeEvents();
 
             Assert.IsTrue(raised);
         }

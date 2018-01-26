@@ -6,48 +6,26 @@ namespace PoESkillTree.Computation.Core
     /*
        TODO: Complete implementation of ICalculationGraph
        - INodeRepository implementation(s)
-         - Need to support different "views": 
-           - One returning Adapters (for graph construction and single-pass ICalculationGraph.NodeRepository)
-           - One returning CachingNodes (for two-pass ICalculationGraph, both .NodeRepository and to delay events in two-pass updates)
-       - Construction class and ICalculationGraph implementation(s) (see "Construction of the graph")
+       - ICalculationGraph implementation(s) (see "Construction of the graph")
        - Usage from Console and/or integration tests (not using Data and Parsing, just example implementation of some builders)
        - Support for multiple paths and other "specialties"/behaviors in stat subgraphs (see "Stat subgraphs")
        (see the thoughts below and the thoughts scattered around in other files for details)
      */
 
     /*
-     * Core interface: ICalculationNode
-     * - For a core node N:
-     *   - N is decorated by a CachingNode, which is used instead of it
-     *   - Children of N are CachingNodeAdapters to the decorators of the actual children
-     *   - N subscribes to ValueChanged of its children
-     *   - N raises ValueChanged when
-     *     - ValueChanged of a child is raised, or
-     *     - N itself changed, e.g. a child was added
-     *
      * Construction of the graph:
-     * - Needs to make sure events are properly unsubscribed from
-     *   (ICalculationNode implements IDisposable for this reason)
-     * - Adding modifiers:
-     *   - Call INodeRepository.GetFormNodes(stat, form)
-     *   - Create a ValueNode from value
-     *   - Add the node to the collection
-     * - Removing modifiers:
-     *   - The reverse of adding them.
-     *   - If a stat is neither referenced nor modified (has empty form collections), its subgraph can be removed
-     *     - How to check whether a node is referenced or not? -> ValueChanged.GetInvocationList().Length
      * - Batch updates:
-     *   1. SuspendNotifications() is called
-     *     - on all ICachingNodes and other API surface events, i.e. those of collections in
-     *       ICalculationGraph.NodeRepository and .ExternalStatRegistry
-     *     - These are all added to one SuspendableNotificationsComposite
-     *   2. Modifiers are added/removed
-     *     - Core nodes raise ValueChanged when being changed directly or when a child raises this event
-     *     - These events will propagate through the graph (through CachingNode and CachingNodeAdapter)
-     *     - Each CachingNode raises ValueChangeReceived at most once. Therefore each core node receives and raises
-     *       ValueChanged at most once per child.
-     *   3. ResumeNotifications() is called
+     *   1. MainNodeRepository.Suspender.SuspendEvents()
+     *   2. Modifiers are added/removed to MainNodeRepository
+     *     - All changed core nodes raise ValueChanged. This passes through the graph.
+     *   3. MainNodeRepository.RemoveUnusedNodes()
+     *   4. MainNodeRepository.Suspender.ResumeEvents()
      *     - All CachingNodes that received ValueChanged events raise their ValueChanged events
+     * - Views:
+     *   - MainNodeRepository.DefaultView is used for graph construction, the single-pass
+     *     ICalculationGraph.NodeRepository and everywhere else where the SuspendableView is not used.
+     *   - MainNodeRepository.SuspendableView is used for the two-pass ICalculationGraph.NodeRepository.
+     *     It only raises events with the 4. step.
      *
      * Stat subgraphs:
      * - Can contain multiple "paths"
@@ -88,6 +66,12 @@ namespace PoESkillTree.Computation.Core
      * - User entered conditions/stats must be able to register themselves, i.e. IExternalStatRegistry and IStat must be
      *   connected in some way. This doesn't seem to fit the behavior concept. Add an "IsExternal" property to IStat?
      *   - With such a property and a default value behavior, default values don't need to be stored explicitly.
+     *   - With external stats, determining when a stat is no longer used gets more complicated. It can not be
+     *     determined which references are only because the stat is external. To solve this, IExternalStatRegistry
+     *     needs to supply a ValueChanged event for each external stat, which in turn subscribes to the node that would
+     *     be accessible by the client side view (ICalculationGraph.NodeRepository). The graph internal and real client
+     *     side references can then be determined by simply subtracting 1 from the count that would normally be used.
+     *   - IExternalStatRegistry needs to be suspended/resumed in ICalculationGraph.Update()
      * -> Support needs to be implemented for:
      *    - A general concept of paths
      *    - Separating paths by Modifier.Source (which also does not yet exist) by default
@@ -111,8 +95,7 @@ namespace PoESkillTree.Computation.Core
 
     public interface ICalculationNode : IDisposable
     {
-        // Gets the node's value based on its child nodes
-        // This value is not cached, except for ICachingNodes, in which case it is still calculated lazily.
+        // Gets the node's value based on its child nodes. It is calculated lazily.
         NodeValue? Value { get; }
 
         event EventHandler ValueChanged;

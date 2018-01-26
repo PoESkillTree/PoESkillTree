@@ -7,7 +7,7 @@ using PoESkillTree.Computation.Common;
 namespace PoESkillTree.Computation.Core.Tests
 {
     [TestFixture]
-    public partial class ExternalStatRegistryText
+    public class ExternalStatRegistryText
     {
         [Test]
         public void SutIsExternalStatRegistry()

@@ -9,7 +9,7 @@ namespace PoESkillTree.Computation.Core
 
         private bool _calculatedValue;
         private NodeValue? _value;
-        private bool _suspendNotifications;
+        private bool _suspendEvents;
         private bool _suppressedValueChanged;
 
         public CachingNode(ICalculationNode decoratedNode)
@@ -41,14 +41,14 @@ namespace PoESkillTree.Computation.Core
             _decoratedNode.ValueChanged -= DecoratedNodeOnValueChanged;
         }
 
-        public void SuspendNotifications()
+        public void SuspendEvents()
         {
-            _suspendNotifications = true;
+            _suspendEvents = true;
         }
 
-        public void ResumeNotifications()
+        public void ResumeEvents()
         {
-            _suspendNotifications = false;
+            _suspendEvents = false;
             if (_suppressedValueChanged)
             {
                 _suppressedValueChanged = false;
@@ -70,7 +70,7 @@ namespace PoESkillTree.Computation.Core
 
         private void OnValueChanged()
         {
-            if (_suspendNotifications)
+            if (_suspendEvents)
             {
                 _suppressedValueChanged = true;
             }

@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common;
+﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
@@ -23,5 +24,94 @@ namespace PoESkillTree.Computation.Core
 
         // Returns the form node collection of stat
         INodeCollection<FormNodeCollectionItem> GetFormNodes(IStat stat, Form form);
+    }
+
+    // Should probably be split up into multiple classes (it even needs to be split up, currently NodeFactory and this
+    // would need to be passed as constructor parameters to each other)
+    public class MainNodeRepository : ISuspendableEventViewProvider<INodeRepository>
+    {
+        private readonly Dictionary<IStat, int> _modifierCounts;
+        private readonly HashSet<IStat> _statsWithoutModifiers;
+
+        private readonly Dictionary<IStat, Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>>>
+            _subgraphNodes;
+
+        private readonly Dictionary<IStat, Dictionary<Form, ModifierNodeCollection>> _formCollections;
+
+        /*
+         * CalculationNode GetNode(IStat, NodeType):
+         * - If entry does not exist in _subgraphNodes:
+         *   - Create nodes with INodeFactory.Create(IStat, NodeType
+         *   - Add dictionary entry
+         * - Return node from entry that is relevant to the view
+         * INodeCollection<FormNodeCollectionItem> GetFormNodes(IStat, Form)
+         * - If entry does not exist in _formCollections:
+         *   - Create ModifierNodeCollection
+         *   - Add dictionary entry
+         * - Return relevant view to ModifierNodeCollection
+         */
+        public INodeRepository DefaultView { get; }
+        public INodeRepository SuspendableView { get; }
+        public ISuspendableEvents Suspender { get; }
+
+        public void AddModifier(Modifier modifier)
+        {
+            /* - For each stat in Modifier.Stats
+             *   - Retrieve (and potentially create, see above) ModifierNodeCollection for stat and Modifier.Form
+             *   - Create nodes with INodeFactory.Create(Modifier.Value)
+             *   - Call ModifierNodeCollection.AddModifier
+             *   - Increment _modifierCounts
+             *   - Remove stat from _statsWithoutModifiers
+             */
+        }
+
+        public void RemoveModifier(Modifier modifier)
+        {
+            /* - For each stat in Modifier.Stats
+             *   - Retrieve  ModifierNodeCollection for stat and Modifier.Form
+             *   - Call ModifierNodeCollection.RemoveModifier
+             *   - Dispose nodes
+             *   - Decrement _modifierCounts
+             *   - Add stat to _statsWithoutModifiers if _modifierCounts[stat] == 0
+             */
+        }
+
+        public void RemoveUnusedNodes()
+        {
+            /* - For each stat in _statsWithoutModifiers
+             *   - Go top-down through the stat subgraph nodes
+             *     - Nodes from the (IStat, NodeType) dictionary:
+             *       - Sum CachingNodeAdapter. and CachingNode.ValueChanged.GetInvocationList().Length
+             *       - If it is 0, the client and no stat subgraph references the node. It can be removed.
+             *     - Form collections (they should all be empty):
+             *       - Sum CachingNodeView. and CachingNodeAdapterView.ItemsChanged.GetInvocationList().Length
+             *       - If it is 0, it can be removed
+             *     - Removing means calling Dispose and removing from the dictionary
+             *   - If the stat no longer has nodes and collections, remove it from _statsWithoutModifiers
+             * (needs a sub interface for ICalculationNode and INodeCollection that counts the ValueChanged/ItemsChanged subscribers
+             */
+        }
+    }
+
+    public class ModifierNodeCollection : ISuspendableEventViewProvider<INodeCollection<FormNodeCollectionItem>>
+    {
+        private readonly Dictionary<Modifier, ISuspendableEventViewProvider<ICalculationNode>> _items;
+
+        public INodeCollection<FormNodeCollectionItem> DefaultView { get; }
+        public INodeCollection<FormNodeCollectionItem> SuspendableView { get; }
+        public ISuspendableEvents Suspender { get; }
+
+        public void AddModifier(Modifier modifier, ISuspendableEventViewProvider<ICalculationNode> node)
+        {
+            // - Add node to _items
+        }
+
+        public ISuspendableEventViewProvider<ICalculationNode> RemoveModifier(Modifier modifier)
+        {
+            // - Get nodes
+            // - _items.Remove(modifier)
+            // - Return nodes
+            throw new System.NotImplementedException();
+        }
     }
 }

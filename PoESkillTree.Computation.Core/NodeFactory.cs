@@ -3,9 +3,7 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
-    // Creates the ICalculationNodes for the stat subgraph by NodeType
-    // It might be a good idea for this to implement INodeRepository
-    public class NodeFactory
+    public class NodeFactory : INodeFactory
     {
         private readonly INodeRepository _nodeRepository;
 
@@ -14,7 +12,20 @@ namespace PoESkillTree.Computation.Core
             _nodeRepository = nodeRepository;
         }
 
-        public ICalculationNode Create(IStat stat, NodeType nodeType)
+        public ISuspendableEventViewProvider<ICalculationNode> Create(IValue value) => 
+            WrapCoreNode(CreateCoreNode(value));
+
+        public ISuspendableEventViewProvider<ICalculationNode> Create(IStat stat, NodeType nodeType) => 
+            WrapCoreNode(CreateCoreNode(stat, nodeType));
+
+        private static ISuspendableEventViewProvider<ICalculationNode> WrapCoreNode(ICalculationNode coreNode)
+        {
+            var cachingNode = new CachingNode(coreNode);
+            var cachingNodeAdapter = new CachingNodeAdapter(cachingNode);
+            return SuspendableEventViewProvider.Create<ICalculationNode, ICachingNode>(cachingNodeAdapter, cachingNode);
+        }
+
+        private ICalculationNode CreateCoreNode(IStat stat, NodeType nodeType)
         {
             switch (nodeType)
             {
@@ -43,17 +54,20 @@ namespace PoESkillTree.Computation.Core
             }
         }
 
+        private ICalculationNode CreateCoreNode(IValue value) =>
+            new ValueNode(_nodeRepository, value);
+
         private ICalculationNode CreateTotalNode(IStat stat) => 
-            new ValueNode(_nodeRepository, new TotalValue(stat));
+            CreateCoreNode(new TotalValue(stat));
 
         private ICalculationNode CreateSubtotalNode(IStat stat) =>
-            new ValueNode(_nodeRepository, new SubtotalValue(stat));
+            CreateCoreNode(new SubtotalValue(stat));
 
         private ICalculationNode CreateUncappedsubtotalNode(IStat stat) =>
-            new ValueNode(_nodeRepository, new UncappedSubtotalValue(stat));
+            CreateCoreNode(new UncappedSubtotalValue(stat));
 
         private ICalculationNode CreateBaseNode(IStat stat) =>
-            new ValueNode(_nodeRepository, new BaseValue(stat));
+            CreateCoreNode(new BaseValue(stat));
 
         private ICalculationNode CreateBaseOverrideNode(IStat stat) =>
             new AggregatingNode(GetFormNodes(stat, Form.BaseOverride), NodeValueAggregators.CalculateOverride);
