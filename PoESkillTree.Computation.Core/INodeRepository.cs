@@ -99,6 +99,8 @@ namespace PoESkillTree.Computation.Core
     public class ModifierNodeCollection : ISuspendableEventViewProvider<INodeCollection<Modifier>>
     {
         private readonly Dictionary<Modifier, ISuspendableEventViewProvider<ICalculationNode>> _items;
+        private readonly NodeCollection<Modifier> _defaultView;
+        private readonly NodeCollection<Modifier> _suspendableView;
 
         public INodeCollection<Modifier> DefaultView { get; }
         public INodeCollection<Modifier> SuspendableView { get; }
