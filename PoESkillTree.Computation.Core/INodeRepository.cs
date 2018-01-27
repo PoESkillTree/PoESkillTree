@@ -95,28 +95,4 @@ namespace PoESkillTree.Computation.Core
              */
         }
     }
-
-    public class ModifierNodeCollection : ISuspendableEventViewProvider<INodeCollection<Modifier>>
-    {
-        private readonly Dictionary<Modifier, ISuspendableEventViewProvider<ICalculationNode>> _items;
-        private readonly NodeCollection<Modifier> _defaultView;
-        private readonly NodeCollection<Modifier> _suspendableView;
-
-        public INodeCollection<Modifier> DefaultView { get; }
-        public INodeCollection<Modifier> SuspendableView { get; }
-        public ISuspendableEvents Suspender { get; }
-
-        public void AddModifier(Modifier modifier, ISuspendableEventViewProvider<ICalculationNode> node)
-        {
-            // - Add node to _items
-        }
-
-        public ISuspendableEventViewProvider<ICalculationNode> RemoveModifier(Modifier modifier)
-        {
-            // - Get nodes
-            // - _items.Remove(modifier)
-            // - Return nodes
-            throw new System.NotImplementedException();
-        }
-    }
 }

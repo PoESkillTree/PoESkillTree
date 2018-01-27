@@ -69,6 +69,7 @@
     <Compile Include="INodeFactory.cs" />
     <Compile Include="ISuspendableEvents.cs" />
     <Compile Include="ISuspendableEventViewProvider.cs" />
+    <Compile Include="ModifierNodeCollection.cs" />
     <Compile Include="NodeCollection.cs" />
     <Compile Include="NodeValueAggregators.cs" />
     <Compile Include="ICachingNode.cs" />

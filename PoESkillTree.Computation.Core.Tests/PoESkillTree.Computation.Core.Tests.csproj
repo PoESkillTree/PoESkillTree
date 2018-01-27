@@ -69,6 +69,7 @@
     <Compile Include="BaseValueTest.cs" />
     <Compile Include="CalculationGraphExtensionsTest.cs" />
     <Compile Include="ExternalStatRegistryText.cs" />
+    <Compile Include="ModifierNodeCollectionTest.cs" />
     <Compile Include="NodeCollectionTest.cs" />
     <Compile Include="NodeValueAggregatorsTest.cs" />
     <Compile Include="NodeHelper.cs" />

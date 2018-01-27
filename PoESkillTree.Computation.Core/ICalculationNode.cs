@@ -6,7 +6,7 @@ namespace PoESkillTree.Computation.Core
     /*
        TODO: Complete implementation of ICalculationGraph
        - INodeRepository implementation(s)
-       - ICalculationGraph implementation(s) (see "Construction of the graph")
+       - ICalculationGraph implementation (see "Construction of the graph")
        - Usage from Console and/or integration tests (not using Data and Parsing, just example implementation of some builders)
        - Support for multiple paths and other "specialties"/behaviors in stat subgraphs (see "Stat subgraphs")
        (see the thoughts below and the thoughts scattered around in other files for details)
@@ -14,7 +14,7 @@ namespace PoESkillTree.Computation.Core
 
     /*
      * Construction of the graph:
-     * - Batch updates:
+     * - ICalculationGraph.Update():
      *   1. MainNodeRepository.Suspender.SuspendEvents()
      *   2. Modifiers are added/removed to MainNodeRepository
      *     - All changed core nodes raise ValueChanged. This passes through the graph.
@@ -22,10 +22,9 @@ namespace PoESkillTree.Computation.Core
      *   4. MainNodeRepository.Suspender.ResumeEvents()
      *     - All CachingNodes that received ValueChanged events raise their ValueChanged events
      * - Views:
-     *   - MainNodeRepository.DefaultView is used for graph construction, the single-pass
-     *     ICalculationGraph.NodeRepository and everywhere else where the SuspendableView is not used.
-     *   - MainNodeRepository.SuspendableView is used for the two-pass ICalculationGraph.NodeRepository.
-     *     It only raises events with the 4. step.
+     *   - MainNodeRepository.DefaultView is used for everything internal, e.g. graph construction.
+     *   - MainNodeRepository.SuspendableView is used for ICalculationGraph.NodeRepository.
+     *     It only raises events at the 4th step.
      *
      * Stat subgraphs:
      * - Can contain multiple "paths"
@@ -86,6 +85,12 @@ namespace PoESkillTree.Computation.Core
      *
      * UI notes:
      * - The ValueChanged events can easily be used by the UI (transformed to PropertyChanged events in ViewModels)
+     *   - They (and other events exposed by ICalculationGraph) are only raised at the end of updates.
+     * - ICalculationGraph can be used pull- or push-based: Call Value on interesting nodes yourself after Update or
+     *   only call it on nodes you are subscribed to that raise events.
+     *   - For pull-based usage: If it leads to performance improvements, ICalculationGraph could have a property to
+     *     disable it calling SuspendEvents/ResumeEvents in Update. (sending events doesn't take time if no one is
+     *     subscribed, but calling SuspendEvents/ResumeEvents on all nodes may take too long)
      * - Values for user specified conditions/stats can be set using modifiers with TotalOverride form
      *   and read/subscribed to in the usual manner (UI needs to make sure writing and reading doesn't loop)
      * - A "DataType"/"ValueType" property would probably be useful in IStat. Without it, the UI can't decide how to
