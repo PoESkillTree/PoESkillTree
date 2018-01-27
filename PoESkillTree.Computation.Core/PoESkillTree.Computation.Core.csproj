@@ -83,6 +83,7 @@
     <Compile Include="SubtotalValue.cs" />
     <Compile Include="SuspendableEventsComposite.cs" />
     <Compile Include="SuspendableEventViewProvider.cs" />
+    <Compile Include="SuspendableNodeCollection.cs" />
     <Compile Include="TotalValue.cs" />
     <Compile Include="UncappedSubtotalValue.cs" />
     <Compile Include="ValueCalculationContext.cs" />

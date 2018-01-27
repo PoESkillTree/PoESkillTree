@@ -79,6 +79,7 @@
     <Compile Include="SubtotalValueTest.cs" />
     <Compile Include="SuspendableEventsCompositeTest.cs" />
     <Compile Include="SuspendableEventViewProviderTest.cs" />
+    <Compile Include="SuspendableNodeCollectionTest.cs" />
     <Compile Include="TotalValueTest.cs" />
     <Compile Include="UncappedSubtotalValueTest.cs" />
     <Compile Include="ValueCalculationContextTest.cs" />

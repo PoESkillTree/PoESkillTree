@@ -22,6 +22,9 @@ namespace PoESkillTree.Computation.Core
 
     public class NodeCollectionChangeEventArgs : EventArgs
     {
+        public static readonly NodeCollectionChangeEventArgs ResetEventArgs =
+            new NodeCollectionChangeEventArgs(NodeCollectionChangeAction.Reset, null);
+
         public NodeCollectionChangeEventArgs(NodeCollectionChangeAction action, ICalculationNode element)
         {
             Action = action;

@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Core
 
         public IReadOnlyDictionary<ICalculationNode, TProperty> NodeProperties => _nodeProperties;
 
-        private void OnCollectionChanged(NodeCollectionChangeEventArgs e)
+        protected virtual void OnCollectionChanged(NodeCollectionChangeEventArgs e)
         {
             CollectionChanged?.Invoke(this, e);
         }
