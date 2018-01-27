@@ -1,67 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
-using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
-    public interface INodeCollection
+    public interface INodeCollection : IReadOnlyCollection<ICalculationNode>
     {
-        IReadOnlyList<NodeCollectionItem> Items { get; }
-
-        event EventHandler ItemsChanged;
+        event EventHandler<NodeCollectionChangeEventArgs> CollectionChanged;
     }
 
-    public interface INodeCollection<out T> : INodeCollection where T: NodeCollectionItem
+    public interface INodeCollection<TProperty> : INodeCollection
     {
-        new IReadOnlyList<T> Items { get; }
+        IReadOnlyDictionary<ICalculationNode, TProperty> NodeProperties { get; }
     }
 
-
-    public class NodeCollectionItem
+    public enum NodeCollectionChangeAction
     {
-        public NodeCollectionItem(ICalculationNode node)
+        Add,
+        Remove,
+        Reset
+    }
+
+    public class NodeCollectionChangeEventArgs : EventArgs
+    {
+        public NodeCollectionChangeEventArgs(NodeCollectionChangeAction action, ICalculationNode element)
         {
-            Node = node;
+            Action = action;
+            Element = element;
         }
 
-        public ICalculationNode Node { get; }
-    }
-
-
-    public class PathNodeCollectionItem : NodeCollectionItem
-    {
-        public PathNodeCollectionItem(
-            ICalculationNode node, IModifierSource source, IReadOnlyList<IStat> conversionPath)
-            : base(node)
-        {
-            Source = source;
-            ConversionPath = conversionPath;
-        }
-        
-        // Modifier source:
-        // - One PathNodeCollectionItem with Global in most cases
-        // - Local should only be items, which are then distinguished by their slot
-        // - The object only holds information that is the same for the sources of all modifiers applying to the path
-        //   E.g. the Global source will generally not hold additional information, and item local sources will contain
-        //   the item's name.
-        public IModifierSource Source { get; }
-        
-        // Conversion/gain path: The stats on the conversion path, in order beginning with the original stat.
-        // For unconverted paths this only contains the target stat.
-        // The type is not final, a string representation might be enough.
-        public IReadOnlyList<IStat> ConversionPath { get; }
-    }
-
-
-    public class FormNodeCollectionItem : NodeCollectionItem
-    {
-        public FormNodeCollectionItem(ICalculationNode node, Modifier modifier)
-            : base(node)
-        {
-            Modifier = modifier;
-        }
-
-        // The modifier that lead to the creation of the node
-        public Modifier Modifier { get; }
+        public NodeCollectionChangeAction Action { get; }
+        public ICalculationNode Element { get; }
     }
 }

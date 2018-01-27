@@ -11,7 +11,7 @@ namespace PoESkillTree.Computation.Core
     {
         private readonly INodeCollection _nodes;
         private readonly NodeValueAggregator _aggregator;
-        private List<ICalculationNode> _subscribedNodes;
+        private ICollection<ICalculationNode> _subscribedNodes;
 
         public AggregatingNode(INodeCollection nodes, NodeValueAggregator aggregator)
         {
@@ -24,7 +24,17 @@ namespace PoESkillTree.Computation.Core
             get
             {
                 SubscribeIfRequired();
-                return _aggregator(_nodes.Items.Select(n => n.Node.Value));
+                return _aggregator(_nodes.Select(n => n.Value));
+            }
+        }
+
+        private void SubscribeIfRequired()
+        {
+            if (_subscribedNodes == null)
+            {
+                _nodes.CollectionChanged += NodesOnCollectionChanged;
+                _subscribedNodes = new HashSet<ICalculationNode>();
+                SubscribeToNodes();
             }
         }
 
@@ -34,44 +44,60 @@ namespace PoESkillTree.Computation.Core
         {
             if (_subscribedNodes != null)
             {
-                _nodes.ItemsChanged -= FormNodesOnItemsChanged;
+                _nodes.CollectionChanged -= NodesOnCollectionChanged;
                 UnsubscribeFromNodes();
             }
         }
 
-        private void FormNodesOnItemsChanged(object sender, EventArgs args)
+        private void NodesOnCollectionChanged(object sender, NodeCollectionChangeEventArgs args)
         {
-            UnsubscribeFromNodes();
-            SubscribeToNodes();
+            switch (args.Action)
+            {
+                case NodeCollectionChangeAction.Add:
+                    SubscribeTo(args.Element);
+                    break;
+                case NodeCollectionChangeAction.Remove:
+                    UnsubscribeFrom(args.Element);
+                    break;
+                default:
+                    ResubscribeToNodes();
+                    break;
+            }
             OnValueChanged(sender, args);
         }
 
-        private void SubscribeIfRequired()
+        private void ResubscribeToNodes()
         {
-            if (_subscribedNodes == null)
-            {
-                _nodes.ItemsChanged += FormNodesOnItemsChanged;
-                SubscribeToNodes();
-            }
+            UnsubscribeFromNodes();
+            SubscribeToNodes();
         }
 
         private void UnsubscribeFromNodes()
         {
-            foreach (var node in _subscribedNodes)
+            foreach (var node in _subscribedNodes.ToList())
             {
-                node.ValueChanged -= OnValueChanged;
+                UnsubscribeFrom(node);
             }
-            _subscribedNodes = new List<ICalculationNode>();
+        }
+
+        private void UnsubscribeFrom(ICalculationNode node)
+        {
+            node.ValueChanged -= OnValueChanged;
+            _subscribedNodes.Remove(node);
         }
 
         private void SubscribeToNodes()
         {
-            _subscribedNodes = new List<ICalculationNode>();
-            foreach (var item in _nodes.Items)
+            foreach (var node in _nodes)
             {
-                item.Node.ValueChanged += OnValueChanged;
-                _subscribedNodes.Add(item.Node);
+                SubscribeTo(node);
             }
+        }
+
+        private void SubscribeTo(ICalculationNode node)
+        {
+            node.ValueChanged += OnValueChanged;
+            _subscribedNodes.Add(node);
         }
 
         private void OnValueChanged(object sender, EventArgs args)

@@ -20,10 +20,13 @@ namespace PoESkillTree.Computation.Core
         // Only one NodeType from Total, Subtotal and UncappedSubtotal make sense, probably Uncapped Subtotal as
         // that's where these path subgraphs end up. BaseOverride, BaseSet, BaseAdd and TotalOverride don't make sense.
         // Returns all nodes by conversion path and source.
-        //INodeCollection<PathNodeCollectionItem> GetPathNodes(IStat stat, NodeType nodeType = NodeType.Total);
+        //INodeCollection<NodePathProperty> GetPathNodes(IStat stat, NodeType nodeType = NodeType.Total);
+        // NodePathProperty: Contains the path's definition
+        // - Its IModifierSource (only with the information that is the same for all modifiers of the path)
+        // - The IStats on its conversion path (the node's IStat itself if unconverted)
 
         // Returns the form node collection of stat
-        INodeCollection<FormNodeCollectionItem> GetFormNodes(IStat stat, Form form);
+        INodeCollection<Modifier> GetFormNodes(IStat stat, Form form);
     }
 
     // Should probably be split up into multiple classes (it even needs to be split up, currently NodeFactory and this
@@ -93,12 +96,12 @@ namespace PoESkillTree.Computation.Core
         }
     }
 
-    public class ModifierNodeCollection : ISuspendableEventViewProvider<INodeCollection<FormNodeCollectionItem>>
+    public class ModifierNodeCollection : ISuspendableEventViewProvider<INodeCollection<Modifier>>
     {
         private readonly Dictionary<Modifier, ISuspendableEventViewProvider<ICalculationNode>> _items;
 
-        public INodeCollection<FormNodeCollectionItem> DefaultView { get; }
-        public INodeCollection<FormNodeCollectionItem> SuspendableView { get; }
+        public INodeCollection<Modifier> DefaultView { get; }
+        public INodeCollection<Modifier> SuspendableView { get; }
         public ISuspendableEvents Suspender { get; }
 
         public void AddModifier(Modifier modifier, ISuspendableEventViewProvider<ICalculationNode> node)

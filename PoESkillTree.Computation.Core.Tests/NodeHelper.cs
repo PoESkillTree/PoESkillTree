@@ -29,10 +29,11 @@ namespace PoESkillTree.Computation.Core.Tests
 
         public static INodeCollection MockNodeCollection(params double?[] values)
         {
-            var items = values
-                .Select(v => new NodeCollectionItem(MockNode(v)))
-                .ToList();
-            return Mock.Of<INodeCollection>(c => c.Items == items);
+            var items = values.Select(MockNode).ToList();
+            var mock = new Mock<INodeCollection>();
+            mock.Setup(c => c.GetEnumerator()).Returns(() => items.GetEnumerator());
+            mock.Setup(c => c.Count).Returns(items.Count);
+            return mock.Object;
         }
 
         public static void RaiseValueChanged(this Mock<ICalculationNode> nodeMock)

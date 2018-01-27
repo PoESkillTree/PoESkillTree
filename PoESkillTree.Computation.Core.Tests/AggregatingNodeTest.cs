@@ -40,7 +40,7 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         [Test]
-        public void ValueChangedIsRaisedWhenFormItemsChangedIsRaised()
+        public void ValueChangedIsRaisedWhenCollectionChangedIsRaised()
         {
             var nodes = MockNodeCollection(42);
             var sut = CreateSut(nodes);
@@ -48,7 +48,7 @@ namespace PoESkillTree.Computation.Core.Tests
             var raised = false;
             sut.SubscribeToValueChanged(() => raised = true);
 
-            Mock.Get(nodes).Raise(c => c.ItemsChanged += null, EventArgs.Empty);
+            Mock.Get(nodes).Raise(c => c.CollectionChanged += null, DefaultCollectionChangeArgs);
 
             Assert.IsTrue(raised);
         }
@@ -60,11 +60,11 @@ namespace PoESkillTree.Computation.Core.Tests
             var sut = CreateSut(nodes);
 
             sut.AssertValueChangedWillNotBeInvoked();
-            Mock.Get(nodes).Raise(c => c.ItemsChanged += null, EventArgs.Empty);
+            Mock.Get(nodes).Raise(c => c.CollectionChanged += null, DefaultCollectionChangeArgs);
         }
 
         [Test]
-        public void DisposeUnsubscribesFromItemsChanged()
+        public void DisposeUnsubscribesFromCollectionChanged()
         {
             var nodes = MockNodeCollection(42);
             var sut = CreateSut(nodes);
@@ -73,8 +73,8 @@ namespace PoESkillTree.Computation.Core.Tests
             sut.Dispose();
 
             sut.AssertValueChangedWillNotBeInvoked();
-            Mock.Get(nodes).Raise(c => c.ItemsChanged += null, EventArgs.Empty);
-            Mock.Get(nodes.Items[0].Node).Raise(n => n.ValueChanged += null, EventArgs.Empty);
+            Mock.Get(nodes).Raise(c => c.CollectionChanged += null, DefaultCollectionChangeArgs);
+            Mock.Get(nodes.First()).Raise(n => n.ValueChanged += null, EventArgs.Empty);
         }
 
         [Test]
@@ -82,15 +82,15 @@ namespace PoESkillTree.Computation.Core.Tests
         {
             var nodes = MockNodeCollection(42);
             var sut = CreateSut(nodes);
-            var incovations = 0;
-            sut.SubscribeToValueChanged(() => incovations++);
+            var invocations = 0;
+            sut.SubscribeToValueChanged(() => invocations++);
             var _ = sut.Value;
             _ = sut.Value;
 
-            Mock.Get(nodes).Raise(c => c.ItemsChanged += null, EventArgs.Empty);
-            Mock.Get(nodes.Items[0].Node).Raise(n => n.ValueChanged += null, EventArgs.Empty);
+            Mock.Get(nodes).Raise(c => c.CollectionChanged += null, DefaultCollectionChangeArgs);
+            Mock.Get(nodes.First()).Raise(n => n.ValueChanged += null, EventArgs.Empty);
 
-            Assert.AreEqual(2, incovations);
+            Assert.AreEqual(2, invocations);
         }
         
         [Test]
@@ -102,34 +102,67 @@ namespace PoESkillTree.Computation.Core.Tests
             var raised = false;
             sut.SubscribeToValueChanged(() => raised = true);
 
-            Mock.Get(nodes.Items[1].Node).Raise(n => n.ValueChanged += null, EventArgs.Empty);
+            Mock.Get(nodes.Last()).Raise(n => n.ValueChanged += null, EventArgs.Empty);
 
             Assert.IsTrue(raised);
         }
 
         [Test]
-        public void NodesItemsChangedCausesResubscribingToChildren()
+        public void NodesCollectionChangedWithResetCausesResubscribingToChildren()
         {
             var nodes = MockNodeCollection(0, 1);
             var sut = CreateSut(nodes);
             var _ = sut.Value;
-            var incovations = 0;
-            sut.SubscribeToValueChanged(() => incovations++);
-            var removedNode = nodes.Items[0].Node;
-            var keptNode = nodes.Items[1].Node;
-            var addedNode = new NodeCollectionItem(MockNode(2));
-            var updatedNodes = nodes.Items.Skip(1).Union(new[] { addedNode }).ToList();
+            var removedNode = nodes.First();
+            var keptNode = nodes.Last();
+            var addedNode = MockNode(2);
+            var updatedNodes = nodes.Skip(1).Union(new[] { addedNode }).ToList();
             var nodesMock = Mock.Get(nodes);
-            nodesMock.Setup(c => c.Items).Returns(updatedNodes);
+            nodesMock.Setup(c => c.GetEnumerator()).Returns(() => updatedNodes.GetEnumerator());
 
-            nodesMock.Raise(c => c.ItemsChanged += null, EventArgs.Empty);
-
-            incovations = 0;
+            nodesMock.Raise(c => c.CollectionChanged += null, DefaultCollectionChangeArgs);
+            
+            var invocations = 0;
+            sut.SubscribeToValueChanged(() => invocations++);
             Mock.Get(removedNode).Raise(n => n.ValueChanged += null, EventArgs.Empty);
-            Assert.AreEqual(0, incovations);
+            Assert.AreEqual(0, invocations);
             Mock.Get(keptNode).Raise(n => n.ValueChanged += null, EventArgs.Empty);
-            Mock.Get(addedNode.Node).Raise(n => n.ValueChanged += null, EventArgs.Empty);
-            Assert.AreEqual(2, incovations);
+            Mock.Get(addedNode).Raise(n => n.ValueChanged += null, EventArgs.Empty);
+            Assert.AreEqual(2, invocations);
+        }
+
+        [Test]
+        public void NodesCollectionChangedWithAddCausesSubscribingToAddedNode()
+        {
+            var nodes = MockNodeCollection(0, 1);
+            var sut = CreateSut(nodes);
+            var _ = sut.Value;
+            var addedNode = MockNode(1);
+            var nodesMock = Mock.Get(nodes);
+
+            nodesMock.Raise(c => c.CollectionChanged += null, 
+                new NodeCollectionChangeEventArgs(NodeCollectionChangeAction.Add, addedNode));
+            
+            var invocations = 0;
+            sut.SubscribeToValueChanged(() => invocations++);
+            Mock.Get(addedNode).Raise(n => n.ValueChanged += null, EventArgs.Empty);
+            Assert.AreEqual(1, invocations);
+        }
+
+        [Test]
+        public void NodesCollectionChangedWithRemoveCausesUnsubscribingFromRemovedNode()
+        {
+            var nodes = MockNodeCollection(0, 1);
+            var sut = CreateSut(nodes);
+            var _ = sut.Value;
+            var removedNode = nodes.First();
+            var nodesMock = Mock.Get(nodes);
+
+            nodesMock.Raise(c => c.CollectionChanged += null, 
+                new NodeCollectionChangeEventArgs(NodeCollectionChangeAction.Remove, removedNode));
+
+            sut.AssertValueChangedWillNotBeInvoked();
+            Mock.Get(removedNode).Raise(n => n.ValueChanged += null, EventArgs.Empty);
         }
 
         [Test]
@@ -141,11 +174,12 @@ namespace PoESkillTree.Computation.Core.Tests
             sut.Dispose();
         }
 
+        private static readonly NodeCollectionChangeEventArgs DefaultCollectionChangeArgs =
+            new NodeCollectionChangeEventArgs(NodeCollectionChangeAction.Reset, null);
+
         private static AggregatingNode CreateSut(
-            INodeCollection nodes = null, NodeValueAggregator aggregator = null)
-        {
-            return new AggregatingNode(nodes, aggregator ?? AggregateBySum);
-        }
+            INodeCollection nodes = null, NodeValueAggregator aggregator = null) => 
+            new AggregatingNode(nodes, aggregator ?? AggregateBySum);
 
         private static NodeValue? AggregateBySum(IEnumerable<NodeValue?> values) => 
             values.OfType<NodeValue>().Aggregate(new NodeValue(), (l, r) => l + r);
