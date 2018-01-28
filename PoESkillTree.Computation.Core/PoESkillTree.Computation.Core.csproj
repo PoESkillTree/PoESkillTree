@@ -63,8 +63,11 @@
   <ItemGroup>
     <Compile Include="AggregatingNode.cs" />
     <Compile Include="BaseValue.cs" />
-    <Compile Include="CalculationGraphExtensions.cs" />
+    <Compile Include="CalculatorExtensions.cs" />
     <Compile Include="ExternalStatRegistry.cs" />
+    <Compile Include="ICalculationGraph.cs" />
+    <Compile Include="ICalculationGraphCleaner.cs" />
+    <Compile Include="IModifierCollection.cs" />
     <Compile Include="INodeCollection.cs" />
     <Compile Include="INodeCollectionFactory.cs" />
     <Compile Include="INodeFactory.cs" />
@@ -77,7 +80,7 @@
     <Compile Include="NodeRepositoryViewProvider.cs" />
     <Compile Include="NodeValueAggregators.cs" />
     <Compile Include="ICachingNode.cs" />
-    <Compile Include="ICalculationGraph.cs" />
+    <Compile Include="ICalculator.cs" />
     <Compile Include="ICalculationNode.cs" />
     <Compile Include="IExternalStatRegistry.cs" />
     <Compile Include="INodeRepository.cs" />

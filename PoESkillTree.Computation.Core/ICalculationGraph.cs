@@ -1,41 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
-    // Main interface of Computation.Core (better name? clients don't care that it's a graph)
-    public interface ICalculationGraph
+    public interface ICalculationGraph : INodeViewProviderRepository, IModifierCollection
     {
-        // The order in which modifiers are added/removed may be changed to speed up the update process
-        void Update(CalculationGraphUpdate update);
-
-        INodeRepository NodeRepository { get; }
-
-        IExternalStatRegistry ExternalStatRegistry { get; }
-    }
-
-
-    public class CalculationGraphUpdate
-    {
-        public CalculationGraphUpdate(
-            IReadOnlyCollection<Modifier> addedModifiers, 
-            IReadOnlyCollection<Modifier> removedModifiers)
-        {
-            AddedModifiers = addedModifiers;
-            RemovedModifiers = removedModifiers;
-        }
-
-        public IReadOnlyCollection<Modifier> AddedModifiers { get; }
-        public IReadOnlyCollection<Modifier> RemovedModifiers { get; }
-
-        public override bool Equals(object obj) => 
-            (this == obj) || (obj is CalculationGraphUpdate other && Equals(other));
-
-        private bool Equals(CalculationGraphUpdate other) =>
-            AddedModifiers.SequenceEqual(other.AddedModifiers)
-            && RemovedModifiers.SequenceEqual(other.RemovedModifiers);
-
-        public override int GetHashCode() => (AddedModifiers, RemovedModifiers).GetHashCode();
+        IReadOnlyDictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>> GetNodes(IStat stat);
+        void RemoveNode(IStat node, NodeType nodeType);
+        IReadOnlyDictionary<Form, ModifierNodeCollection> GetFormNodeCollections(IStat stat);
+        void RemoveFormNodeCollection(IStat stat, Form form);
     }
 }

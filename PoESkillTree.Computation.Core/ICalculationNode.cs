@@ -4,9 +4,9 @@ using PoESkillTree.Computation.Common;
 namespace PoESkillTree.Computation.Core
 {
     /*
-       TODO: Complete implementation of ICalculationGraph
-       - INodeRepository implementation(s)
-       - ICalculationGraph implementation (see "Construction of the graph")
+       TODO: Complete implementation of ICalculator
+       - ICalculator implementation (see "Construction of the graph")
+       - ICalculationGraph implementation(s) (see INodeRepository.cs)
        - Usage from Console and/or integration tests (not using Data and Parsing, just example implementation of some builders)
        - Support for multiple paths and other "specialties"/behaviors in stat subgraphs (see "Stat subgraphs")
        (see the thoughts below and the thoughts scattered around in other files for details)
@@ -14,17 +14,18 @@ namespace PoESkillTree.Computation.Core
 
     /*
      * Construction of the graph:
-     * - ICalculationGraph.Update():
-     *   1. NodeRepositoryViewProvider.Suspender.SuspendEvents()
-     *   2. For each modifier: RemovingNodeRepository.Add/RemoveModifier()
-     *     - All changed core nodes raise ValueChanged. This passes through the graph.
-     *   3. RemovingNodeRepository.RemoveUnusedNodes()
-     *   4. NodeRepositoryViewProvider.Suspender.ResumeEvents()
-     *     - All CachingNodes that received ValueChanged events raise their ValueChanged events
-     * - Views:
-     *   - NodeRepositoryViewProvider.DefaultView is used in NodeFactory
-     *   - NodeRepositoryViewProvider.SuspendableView is used for ICalculationGraph.NodeRepository.
-     *     It only raises events at the 4th step.
+     * - ICalculator has constructor parameters:
+     *   - INodeRepository, returned by NodeRepository        (NodeRepositoryViewProvider.SuspendableView)
+     *     (it only raises events in Update() step 4)
+     *   - ISuspendableEvents, used in Update() steps 1 and 4 (NodeRepositoryViewProvider.Suspender)
+     *   - IModifierCollection, used in Update() step 2       (CleanableCalculationGraph)
+     *   - ICalculationGraphCleaner, used in Update() step 3  (CleanableCalculationGraph)
+     * - ICalculator.Update():
+     *   1. ISuspendableEvents.SuspendEvents()
+     *   2. For each modifier: IModifierCollection.Add/RemoveModifier()
+     *   3. ICalculationGraphCleaner.RemoveUnusedNodes()
+     *   4. ISuspendableEvents.ResumeEvents()
+     * - NodeRepositoryViewProvider.DefaultView is used as parameter for NodeFactory.SetNodeRepository()
      *
      * Stat subgraphs:
      * - Can contain multiple "paths"
@@ -68,9 +69,9 @@ namespace PoESkillTree.Computation.Core
      *   - With external stats, determining when a stat is no longer used gets more complicated. It can not be
      *     determined which references are only because the stat is external. To solve this, IExternalStatRegistry
      *     needs to supply a ValueChanged event for each external stat, which in turn subscribes to the node that would
-     *     be accessible by the client side view (ICalculationGraph.NodeRepository). The graph internal and real client
+     *     be accessible by the client side view (ICalculator.NodeRepository). The graph internal and real client
      *     side references can then be determined by simply subtracting 1 from the count that would normally be used.
-     *   - IExternalStatRegistry needs to be suspended/resumed in ICalculationGraph.Update()
+     *   - IExternalStatRegistry needs to be suspended/resumed in ICalculator.Update()
      * -> Support needs to be implemented for:
      *    - A general concept of paths
      *    - Separating paths by Modifier.Source (which also does not yet exist) by default
@@ -85,10 +86,10 @@ namespace PoESkillTree.Computation.Core
      *
      * UI notes:
      * - The ValueChanged events can easily be used by the UI (transformed to PropertyChanged events in ViewModels)
-     *   - They (and other events exposed by ICalculationGraph) are only raised at the end of updates.
-     * - ICalculationGraph can be used pull- or push-based: Call Value on interesting nodes yourself after Update or
+     *   - They (and other events exposed by ICalculator) are only raised at the end of updates.
+     * - ICalculator can be used pull- or push-based: Call Value on interesting nodes yourself after Update or
      *   only call it on nodes you are subscribed to that raise events.
-     *   - For pull-based usage: If it leads to performance improvements, ICalculationGraph could have a property to
+     *   - For pull-based usage: If it leads to performance improvements, ICalculator could have a property to
      *     disable it calling SuspendEvents/ResumeEvents in Update. (sending events doesn't take time if no one is
      *     subscribed, but calling SuspendEvents/ResumeEvents on all nodes may take too long)
      * - Values for user specified conditions/stats can be set using modifiers with TotalOverride form

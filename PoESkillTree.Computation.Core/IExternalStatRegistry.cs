@@ -7,7 +7,7 @@ namespace PoESkillTree.Computation.Core
     // Holds the IStats that have externally (user) specified values.
     // These will be conditions in most cases.
     // Their value should be set using TotalOverride form and should not reference other nodes.
-    // This interface will change when implementing support for external stats in ICalculationGraph.Update().
+    // This interface will change when implementing support for external stats in ICalculator.Update().
     public interface IExternalStatRegistry
     {
         // Register/Unregister is called when the node for the respective IStat is created/disposed

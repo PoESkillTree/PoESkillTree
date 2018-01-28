@@ -5,23 +5,23 @@ using PoESkillTree.Computation.Common;
 namespace PoESkillTree.Computation.Core.Tests
 {
     [TestFixture]
-    public class CalculationGraphExtensionsTest
+    public class CalculatorExtensionsTest
     {
         [Test]
         public void EndBatchUpdateCallsGraphUpdate()
         {
-            var graphMock = new Mock<ICalculationGraph>();
+            var graphMock = new Mock<ICalculator>();
 
             graphMock.Object.NewBatchUpdate()
                 .DoUpdate();
 
-            graphMock.Verify(g => g.Update(It.IsAny<CalculationGraphUpdate>()));
+            graphMock.Verify(g => g.Update(It.IsAny<CalculatorUpdate>()));
         }
 
         [Test]
         public void DoUpdateWithoutAddingModifiersIsEmptyUpdate()
         {
-            var graphMock = new Mock<ICalculationGraph>();
+            var graphMock = new Mock<ICalculator>();
 
             graphMock.Object.NewBatchUpdate()
                 .DoUpdate();
@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void DoUpdateAfterAddModifierIsCorrectUpdate()
         {
-            var graphMock = new Mock<ICalculationGraph>();
+            var graphMock = new Mock<ICalculator>();
             var mod = MockModifier();
 
             graphMock.Object.NewBatchUpdate()
@@ -45,7 +45,7 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void DoUpdateAfterRemoveModifierIsCorrectUpdate()
         {
-            var graphMock = new Mock<ICalculationGraph>();
+            var graphMock = new Mock<ICalculator>();
             var mod = MockModifier();
 
             graphMock.Object.NewBatchUpdate()
@@ -58,7 +58,7 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void DoUpdateAfterManyAddsAndRemovesIsCorrectUpdate()
         {
-            var graphMock = new Mock<ICalculationGraph>();
+            var graphMock = new Mock<ICalculator>();
             var added = MockManyModifiers();
             var removed = MockManyModifiers();
 
@@ -77,7 +77,7 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void DoUpdateAfterAddModifiersIsCorrectUpdate()
         {
-            var graphMock = new Mock<ICalculationGraph>();
+            var graphMock = new Mock<ICalculator>();
             var added = MockManyModifiers();
 
             graphMock.Object.NewBatchUpdate()
@@ -90,7 +90,7 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void DoUpdateAfterRemoveModifiersIsCorrectUpdate()
         {
-            var graphMock = new Mock<ICalculationGraph>();
+            var graphMock = new Mock<ICalculator>();
             var removed = MockManyModifiers();
 
             graphMock.Object.NewBatchUpdate()
@@ -101,11 +101,11 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
 
-        private static readonly CalculationGraphUpdate EmptyUpdate =
-            new CalculationGraphUpdate(new Modifier[0], new Modifier[0]);
+        private static readonly CalculatorUpdate EmptyUpdate =
+            new CalculatorUpdate(new Modifier[0], new Modifier[0]);
 
-        private static CalculationGraphUpdate ExpectUpdateFor(Modifier[] adds = null, Modifier[] removes = null) => 
-            new CalculationGraphUpdate(adds ?? new Modifier[0], removes ?? new Modifier[0]);
+        private static CalculatorUpdate ExpectUpdateFor(Modifier[] adds = null, Modifier[] removes = null) => 
+            new CalculatorUpdate(adds ?? new Modifier[0], removes ?? new Modifier[0]);
 
         private static Modifier[] MockManyModifiers() =>
             new[] { MockModifier(), MockModifier(), MockModifier() };

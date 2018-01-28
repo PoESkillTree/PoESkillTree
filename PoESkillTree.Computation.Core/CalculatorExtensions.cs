@@ -4,20 +4,20 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
-    public static class CalculationGraphExtensions
+    public static class CalculatorExtensions
     {
-        public static BatchUpdate NewBatchUpdate(this ICalculationGraph graph) => 
+        public static BatchUpdate NewBatchUpdate(this ICalculator graph) => 
             new BatchUpdate(graph, new Modifier[0], new Modifier[0]);
 
 
         public class BatchUpdate
         {
-            private readonly ICalculationGraph _graph;
+            private readonly ICalculator _graph;
 
             private readonly IReadOnlyList<Modifier> _added;
             private readonly IReadOnlyList<Modifier> _removed;
 
-            public BatchUpdate(ICalculationGraph graph, IReadOnlyList<Modifier> added, IReadOnlyList<Modifier> removed)
+            public BatchUpdate(ICalculator graph, IReadOnlyList<Modifier> added, IReadOnlyList<Modifier> removed)
             {
                 _graph = graph;
                 _added = added;
@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Core
 
             public void DoUpdate()
             {
-                _graph.Update(new CalculationGraphUpdate(_added, _removed));
+                _graph.Update(new CalculatorUpdate(_added, _removed));
             }
         }
     }
