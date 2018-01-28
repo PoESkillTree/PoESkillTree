@@ -39,6 +39,7 @@ namespace PoESkillTree.Computation.Core
         public void Dispose()
         {
             _decoratedNode.ValueChanged -= DecoratedNodeOnValueChanged;
+            _decoratedNode.Dispose();
         }
 
         public void SuspendEvents()

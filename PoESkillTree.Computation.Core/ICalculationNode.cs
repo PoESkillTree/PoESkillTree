@@ -16,7 +16,7 @@ namespace PoESkillTree.Computation.Core
      * Construction of the graph:
      * - ICalculationGraph.Update():
      *   1. MainNodeRepository.Suspender.SuspendEvents()
-     *   2. Modifiers are added/removed to MainNodeRepository
+     *   2. For each modifier: MainNodeRepository.Add/RemoveModifier()
      *     - All changed core nodes raise ValueChanged. This passes through the graph.
      *   3. MainNodeRepository.RemoveUnusedNodes()
      *   4. MainNodeRepository.Suspender.ResumeEvents()

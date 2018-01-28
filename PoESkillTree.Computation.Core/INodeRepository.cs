@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
@@ -14,7 +15,7 @@ namespace PoESkillTree.Computation.Core
         // - UncappedSubtotal: The node that sums all paths.
         // - Subtotal, TotalOverride, Total: There should only be one.
         // If stat is null, this returns a node that always has a value of null
-        ICalculationNode GetNode(IStat stat, NodeType nodeType = NodeType.Total);
+        ICalculationNode GetNode([CanBeNull] IStat stat, NodeType nodeType = NodeType.Total);
 
         // stat selects the stat subgraph, nodeType the node in it.
         // Only one NodeType from Total, Subtotal and UncappedSubtotal make sense, probably Uncapped Subtotal as
@@ -26,7 +27,7 @@ namespace PoESkillTree.Computation.Core
         // - The IStats on its conversion path (the node's IStat itself if unconverted)
 
         // Returns the form node collection of stat
-        INodeCollection<Modifier> GetFormNodes(IStat stat, Form form);
+        INodeCollection<Modifier> GetFormNodeCollection(IStat stat, Form form);
     }
 
     // Should probably be split up into multiple classes (it even needs to be split up, currently NodeFactory and this

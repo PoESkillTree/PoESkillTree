@@ -1,21 +1,20 @@
 ﻿using System;
+using JetBrains.Annotations;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
     public class NodeFactory : INodeFactory
     {
-        private readonly INodeRepository _nodeRepository;
+        private INodeRepository _nodeRepository;
 
-        public NodeFactory(INodeRepository nodeRepository)
-        {
+        public void SetNodeRepository(INodeRepository nodeRepository) => 
             _nodeRepository = nodeRepository;
-        }
 
         public ISuspendableEventViewProvider<ICalculationNode> Create(IValue value) => 
             WrapCoreNode(CreateCoreNode(value));
 
-        public ISuspendableEventViewProvider<ICalculationNode> Create(IStat stat, NodeType nodeType) => 
+        public ISuspendableEventViewProvider<ICalculationNode> Create( IStat stat, NodeType nodeType) => 
             WrapCoreNode(CreateCoreNode(stat, nodeType));
 
         private static ISuspendableEventViewProvider<ICalculationNode> WrapCoreNode(ICalculationNode coreNode)
@@ -25,8 +24,10 @@ namespace PoESkillTree.Computation.Core
             return SuspendableEventViewProvider.Create<ICalculationNode, ICachingNode>(cachingNodeAdapter, cachingNode);
         }
 
-        private ICalculationNode CreateCoreNode(IStat stat, NodeType nodeType)
+        private ICalculationNode CreateCoreNode([CanBeNull] IStat stat, NodeType nodeType)
         {
+            if (stat is null)
+                return new NullNode();
             switch (nodeType)
             {
                 case NodeType.Total:
@@ -88,6 +89,6 @@ namespace PoESkillTree.Computation.Core
             new AggregatingNode(GetFormNodes(stat, Form.TotalOverride), NodeValueAggregators.CalculateOverride);
 
         private INodeCollection GetFormNodes(IStat stat, Form form) =>
-            _nodeRepository.GetFormNodes(stat, form);
+            _nodeRepository.GetFormNodeCollection(stat, form);
     }
 }

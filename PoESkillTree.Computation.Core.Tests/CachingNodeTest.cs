@@ -148,6 +148,17 @@ namespace PoESkillTree.Computation.Core.Tests
             Assert.IsTrue(raised);
         }
 
+        [Test]
+        public void DisposeCallsDecoratedNodesDispose()
+        {
+            var nodeMock = new Mock<ICalculationNode>();
+            var sut = CreateSut(nodeMock.Object);
+
+            sut.Dispose();
+
+            nodeMock.Verify(n => n.Dispose());
+        }
+
         private static CachingNode CreateCachedSut(Mock<ICalculationNode> decoratedNodeMock, double? cachedValue)
         {
             decoratedNodeMock.SetupGet(n => n.Value).Returns((NodeValue?) cachedValue);
