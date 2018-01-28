@@ -15,15 +15,15 @@ namespace PoESkillTree.Computation.Core
     /*
      * Construction of the graph:
      * - ICalculationGraph.Update():
-     *   1. MainNodeRepository.Suspender.SuspendEvents()
-     *   2. For each modifier: MainNodeRepository.Add/RemoveModifier()
+     *   1. NodeRepositoryViewProvider.Suspender.SuspendEvents()
+     *   2. For each modifier: RemovingNodeRepository.Add/RemoveModifier()
      *     - All changed core nodes raise ValueChanged. This passes through the graph.
-     *   3. MainNodeRepository.RemoveUnusedNodes()
-     *   4. MainNodeRepository.Suspender.ResumeEvents()
+     *   3. RemovingNodeRepository.RemoveUnusedNodes()
+     *   4. NodeRepositoryViewProvider.Suspender.ResumeEvents()
      *     - All CachingNodes that received ValueChanged events raise their ValueChanged events
      * - Views:
-     *   - MainNodeRepository.DefaultView is used for everything internal, e.g. graph construction.
-     *   - MainNodeRepository.SuspendableView is used for ICalculationGraph.NodeRepository.
+     *   - NodeRepositoryViewProvider.DefaultView is used in NodeFactory
+     *   - NodeRepositoryViewProvider.SuspendableView is used for ICalculationGraph.NodeRepository.
      *     It only raises events at the 4th step.
      *
      * Stat subgraphs:

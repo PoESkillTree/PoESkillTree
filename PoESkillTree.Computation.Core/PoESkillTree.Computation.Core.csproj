@@ -68,11 +68,13 @@
     <Compile Include="INodeCollection.cs" />
     <Compile Include="INodeCollectionFactory.cs" />
     <Compile Include="INodeFactory.cs" />
+    <Compile Include="INodeViewProviderRepository.cs" />
     <Compile Include="ISuspendableEvents.cs" />
     <Compile Include="ISuspendableEventViewProvider.cs" />
     <Compile Include="ModifierNodeCollection.cs" />
     <Compile Include="NodeCollection.cs" />
     <Compile Include="NodeCollectionFactory.cs" />
+    <Compile Include="NodeRepositoryViewProvider.cs" />
     <Compile Include="NodeValueAggregators.cs" />
     <Compile Include="ICachingNode.cs" />
     <Compile Include="ICalculationGraph.cs" />
