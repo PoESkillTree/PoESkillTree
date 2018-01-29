@@ -5,7 +5,6 @@ namespace PoESkillTree.Computation.Core
 {
     /*
        TODO: Complete implementation of ICalculator
-       - ICalculator implementation (see "Construction of the graph")
        - ICalculationGraph implementation(s) (see INodeRepository.cs)
        - Usage from Console and/or integration tests (not using Data and Parsing, just example implementation of some builders)
        - Support for multiple paths and other "specialties"/behaviors in stat subgraphs (see "Stat subgraphs")
@@ -13,20 +12,6 @@ namespace PoESkillTree.Computation.Core
      */
 
     /*
-     * Construction of the graph:
-     * - ICalculator has constructor parameters:
-     *   - INodeRepository, returned by NodeRepository        (NodeRepositoryViewProvider.SuspendableView)
-     *     (it only raises events in Update() step 4)
-     *   - ISuspendableEvents, used in Update() steps 1 and 4 (NodeRepositoryViewProvider.Suspender)
-     *   - IModifierCollection, used in Update() step 2       (CleanableCalculationGraph)
-     *   - ICalculationGraphCleaner, used in Update() step 3  (CleanableCalculationGraph)
-     * - ICalculator.Update():
-     *   1. ISuspendableEvents.SuspendEvents()
-     *   2. For each modifier: IModifierCollection.Add/RemoveModifier()
-     *   3. ICalculationGraphCleaner.RemoveUnusedNodes()
-     *   4. ISuspendableEvents.ResumeEvents()
-     * - NodeRepositoryViewProvider.DefaultView is used as parameter for NodeFactory.SetNodeRepository()
-     *
      * Stat subgraphs:
      * - Can contain multiple "paths"
      *   - Per default, a path for each source (Global, and each Local source that has modifiers) is created.

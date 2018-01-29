@@ -31,17 +31,24 @@ namespace PoESkillTree.Computation.Core
     }
 
 
-    public class CleanableCalculationGraph
-        : ICalculationGraph, ICalculationGraphCleaner
+    public class PrunableCalculationGraph
+        : ICalculationGraph, ICalculationGraphPruner
     {
         private readonly Dictionary<IStat, int> _modifierCounts;
         private readonly HashSet<IStat> _statsWithoutModifiers;
         private readonly HashSet<IStat> _knownStats;
 
         // decoratedGraph will be a SuspendableCalculationGraph
-        public CleanableCalculationGraph(ICalculationGraph decoratedGraph)
+        public PrunableCalculationGraph(ICalculationGraph decoratedGraph)
         {
+            TopGraph = this;
         }
+
+        // For multiple ICalculationGraphs in a decoration chain, lower levels need to call methods on the top level
+        // when calling other methods than the currently decorated one.
+        // E.g. if an instance decorating a PrunableCalculationGraph does something when RemoveNode() is called, that
+        // also needs to be done when RemoveNode() is called from PrunableCalculationGraph.RemoveUnusedNodes()
+        public ICalculationGraph TopGraph { private get; set; }
 
         public ISuspendableEvents Suspender { get; } // => _decoratedGraphy.Suspender
 
@@ -107,20 +114,18 @@ namespace PoESkillTree.Computation.Core
         public void RemoveUnusedNodes()
         {
             /* - For each stat in _statsWithoutModifiers
-             *   - subgraphNodes = _decoratedGraph.GetNodes(stat)
+             *   - subgraphNodes = TopGraph.GetNodes(stat)
              *   - For each NodeType (top-down):
              *     - If subgraphNodes.TryGetNode(stat, nodeType, out var node)
-             *       - If SubscriberCount == 0: _decoratedGraph.RemoveNode(stat, nodeType)
-             *   - formNodeCollections = _decoratedGraphy.GetFormNodeCollections(stat)
+             *       - If SubscriberCount == 0: TopGraph.RemoveNode(stat, nodeType)
+             *   - formNodeCollections = TopGraph.GetFormNodeCollections(stat)
              *   - For each (form, nodeCollection) in formCollections:
-             *     - If SubscriberCount == 0: _decoratedGraph.Remove(form, nodeCollection)
+             *     - If SubscriberCount == 0: TopGraph.Remove(form, nodeCollection)
              *   - If subgraphNodes.IsEmpty() && formNodeCollections.IsEmpty():
              *     - _statsWithoutModifiers.Remove(stat), _knownStats.Remove(stat)
              * (remove calls need to be done after iterating)
-             * (ISuspendableEventViewProvider, ICalculationNode and INodeCollection need to implement "ICountsSubscribers"
-             *  ISuspendableEventViewProvider sums those of both views, the others return
-             *  ValueChanged/CollectionChanged.GetInvocationList().Length
-             *  (or just "HasSubscribers"))
+             * (ISuspendableEventViewProvider and/or ICalculationNode and INodeCollection need to implement
+             *  "ICountsSubscribers". SubscriberCount returns ValueChanged/CollectionChanged.GetInvocationList().Length)
              */
         }
     }
@@ -132,7 +137,10 @@ namespace PoESkillTree.Computation.Core
         // decoratedGraph will be a CoreCalculationGraph
         public SuspendableCalculationGraph(ICalculationGraph decoratedGraph)
         {
+            TopGraph = this;
         }
+
+        public ICalculationGraph TopGraph { private get; set; }
 
         public ISuspendableEvents Suspender { get; } // => _suspendable
 
@@ -160,7 +168,7 @@ namespace PoESkillTree.Computation.Core
 
         public void RemoveNode(IStat node, NodeType nodeType)
         {
-            // r = _decoratedGraph.GetNode(stat, noeType)
+            // r = TopGraph.GetNode(stat, noeType)
             // _suspendable.Remove(r.Suspender)
             // _decoratedProviderRepository.RemoveNode(stat, nodeType)
             throw new System.NotImplementedException();
@@ -174,7 +182,7 @@ namespace PoESkillTree.Computation.Core
 
         public void RemoveFormNodeCollection(IStat stat, Form form)
         {
-            // r = _decoratedGraph.GetFormNodeCollection(stat, form)
+            // r = TopGraph.GetFormNodeCollection(stat, form)
             // _suspendable.Remove(r.Suspender)
             // _decoratedGraph.RemoveFormNodeCollection(stat, form)
         }
@@ -182,6 +190,9 @@ namespace PoESkillTree.Computation.Core
         public void AddModifier(Modifier modifier)
         {
             // _decoratedGraph.AddModifier(modifier)
+            // For each stat in modifier.Stats:
+            // - r = TopGraph.GetFormNodeCollection(stat, modifier.Form)
+            // - _suspendable.Add(r.Suspender)
         }
 
         public void RemoveModifier(Modifier modifier)
@@ -257,7 +268,7 @@ namespace PoESkillTree.Computation.Core
             /* - For each stat in modifier.Stats
              *   - collection = GetModifierNodeCollection(stat, modifier.Form)
              *   - node = _nodeFactory.Create(modifier.Value)
-             *   - ModifierNodeCollection.AddModifier(modifier, node)
+             *   - collection.AddModifier(modifier, node)
              */
         }
 
@@ -265,7 +276,7 @@ namespace PoESkillTree.Computation.Core
         {
             /* - For each stat in modifier.Stats
              *   - collection = GetModifierNodeCollection(stat, modifier.Form)
-             *   - node = ModifierNodeCollection.RemoveModifier(modifier)
+             *   - node = collection.RemoveModifier(modifier)
              *   - node.DefaultView.Dispose(), node.SuspendableView.Dispose()
              */
         }

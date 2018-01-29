@@ -63,10 +63,11 @@
   <ItemGroup>
     <Compile Include="AggregatingNode.cs" />
     <Compile Include="BaseValue.cs" />
+    <Compile Include="Calculator.cs" />
     <Compile Include="CalculatorExtensions.cs" />
     <Compile Include="ExternalStatRegistry.cs" />
     <Compile Include="ICalculationGraph.cs" />
-    <Compile Include="ICalculationGraphCleaner.cs" />
+    <Compile Include="ICalculationGraphPruner.cs" />
     <Compile Include="IModifierCollection.cs" />
     <Compile Include="INodeCollection.cs" />
     <Compile Include="INodeCollectionFactory.cs" />

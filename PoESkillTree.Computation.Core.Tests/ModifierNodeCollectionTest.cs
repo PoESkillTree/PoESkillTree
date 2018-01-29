@@ -174,8 +174,6 @@ namespace PoESkillTree.Computation.Core.Tests
             ISuspendableEventViewProvider<NodeCollection<Modifier>> viewProvider) =>
             new ModifierNodeCollection(viewProvider);
 
-        private static Modifier MockModifier() => new Modifier(new IStat[0], Form.BaseAdd, Mock.Of<IValue>());
-
         private static ISuspendableEventViewProvider<ICalculationNode> MockNodeProvider(
             ICalculationNode defaultNode = null, ICalculationNode suspendableNode = null, 
             ISuspendableEvents suspender = null)

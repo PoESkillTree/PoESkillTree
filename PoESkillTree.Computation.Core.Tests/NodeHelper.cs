@@ -40,5 +40,9 @@ namespace PoESkillTree.Computation.Core.Tests
         {
             nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
         }
+
+        public static Modifier[] MockManyModifiers() => new[] { MockModifier(), MockModifier(), MockModifier() };
+
+        public static Modifier MockModifier() => new Modifier(new IStat[0], Form.BaseAdd, Mock.Of<IValue>());
     }
 }

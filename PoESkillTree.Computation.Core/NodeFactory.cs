@@ -6,10 +6,7 @@ namespace PoESkillTree.Computation.Core
 {
     public class NodeFactory : INodeFactory
     {
-        private INodeRepository _nodeRepository;
-
-        public void SetNodeRepository(INodeRepository nodeRepository) => 
-            _nodeRepository = nodeRepository;
+        public INodeRepository NodeRepository { private get; set; }
 
         public ISuspendableEventViewProvider<ICalculationNode> Create(IValue value) => 
             WrapCoreNode(CreateCoreNode(value));
@@ -56,7 +53,7 @@ namespace PoESkillTree.Computation.Core
         }
 
         private ICalculationNode CreateCoreNode(IValue value) =>
-            new ValueNode(_nodeRepository, value);
+            new ValueNode(NodeRepository, value);
 
         private ICalculationNode CreateTotalNode(IStat stat) => 
             CreateCoreNode(new TotalValue(stat));
@@ -89,6 +86,6 @@ namespace PoESkillTree.Computation.Core
             new AggregatingNode(GetFormNodes(stat, Form.TotalOverride), NodeValueAggregators.CalculateOverride);
 
         private INodeCollection GetFormNodes(IStat stat, Form form) =>
-            _nodeRepository.GetFormNodeCollection(stat, form);
+            NodeRepository.GetFormNodeCollection(stat, form);
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace PoESkillTree.Computation.Core
 {
-    public interface ICalculationGraphCleaner
+    public interface ICalculationGraphPruner
     {
         void RemoveUnusedNodes();
     }

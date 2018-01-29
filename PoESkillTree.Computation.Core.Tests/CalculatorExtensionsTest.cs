@@ -1,6 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
+using static PoESkillTree.Computation.Core.Tests.NodeHelper;
 
 namespace PoESkillTree.Computation.Core.Tests
 {
@@ -106,11 +107,5 @@ namespace PoESkillTree.Computation.Core.Tests
 
         private static CalculatorUpdate ExpectUpdateFor(Modifier[] adds = null, Modifier[] removes = null) => 
             new CalculatorUpdate(adds ?? new Modifier[0], removes ?? new Modifier[0]);
-
-        private static Modifier[] MockManyModifiers() =>
-            new[] { MockModifier(), MockModifier(), MockModifier() };
-
-        private static Modifier MockModifier() =>
-            new Modifier(new IStat[0], Form.Increase, Mock.Of<IValue>());
     }
 }

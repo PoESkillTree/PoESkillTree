@@ -7,12 +7,11 @@ namespace PoESkillTree.Computation.Core
     // Main interface of Computation.Core
     public interface ICalculator
     {
-        // The order in which modifiers are added/removed may be changed to speed up the update process
         void Update(CalculatorUpdate update);
 
         INodeRepository NodeRepository { get; }
 
-        IExternalStatRegistry ExternalStatRegistry { get; }
+        //IExternalStatRegistry ExternalStatRegistry { get; }
     }
 
 
