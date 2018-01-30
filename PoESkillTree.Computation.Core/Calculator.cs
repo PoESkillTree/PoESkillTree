@@ -24,11 +24,17 @@
             // If the remove/add order matters for performance, ordering logic could be added.
             foreach (var modifier in update.RemovedModifiers)
             {
-                _modifierCollection.RemoveModifier(modifier);
+                foreach (var stat in modifier.Stats)
+                {
+                    _modifierCollection.RemoveModifier(stat, modifier);
+                }
             }
             foreach (var modifier in update.AddedModifiers)
             {
-                _modifierCollection.AddModifier(modifier);
+                foreach (var stat in modifier.Stats)
+                {
+                    _modifierCollection.AddModifier(stat, modifier);
+                }
             }
             _graphPruner.RemoveUnusedNodes();
             _suspender.ResumeEvents();

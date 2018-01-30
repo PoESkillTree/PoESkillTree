@@ -41,14 +41,13 @@ namespace PoESkillTree.Computation.Core
         // decoratedGraph will be a SuspendableCalculationGraph
         public PrunableCalculationGraph(ICalculationGraph decoratedGraph)
         {
-            TopGraph = this;
         }
 
         // For multiple ICalculationGraphs in a decoration chain, lower levels need to call methods on the top level
         // when calling other methods than the currently decorated one.
         // E.g. if an instance decorating a PrunableCalculationGraph does something when RemoveNode() is called, that
         // also needs to be done when RemoveNode() is called from PrunableCalculationGraph.RemoveUnusedNodes()
-        public ICalculationGraph TopGraph { private get; set; }
+        public ICalculationGraph TopGraph { get; set; }
 
         public ISuspendableEvents Suspender { get; } // => _decoratedGraphy.Suspender
 
@@ -74,13 +73,14 @@ namespace PoESkillTree.Computation.Core
             throw new System.NotImplementedException();
         }
 
-        public void RemoveNode(IStat node, NodeType nodeType)
+        public void RemoveNode(IStat stat, NodeType nodeType)
         {
             // Call decoratedGraph
             throw new System.NotImplementedException();
         }
 
-        public IReadOnlyDictionary<Form, ModifierNodeCollection> GetFormNodeCollections(IStat stat)
+        public IReadOnlyDictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
+            GetFormNodeCollections(IStat stat)
         {
             // Call decoratedGraph
             throw new System.NotImplementedException();
@@ -92,23 +92,30 @@ namespace PoESkillTree.Computation.Core
             throw new System.NotImplementedException();
         }
 
-        public void AddModifier(Modifier modifier)
+        public void RemoveStat(IStat stat)
+        {
+            // _statsWithoutModifiers.Remove(stat), _knownStats.Remove(stat)
+            // Call decoratedGraph
+            throw new System.NotImplementedException();
+        }
+
+        public void AddModifier(IStat stat, Modifier modifier)
         {
             /* _decoratedGraph.AddModifier(modifier)
-             * - For each stat in Modifier.Stats
              *   - Increment _modifierCounts
              *   - Remove stat from _statsWithoutModifiers
              *   - Add stat to _knownStats
              */
+            throw new System.NotImplementedException();
         }
 
-        public void RemoveModifier(Modifier modifier)
+        public bool RemoveModifier(IStat stat, Modifier modifier)
         {
-            /* _decoratedGraph.RemoveModifier(modifier)
-             * - For each stat in Modifier.Stats
+            /* if _decoratedGraph.RemoveModifier(modifier):
              *   - Decrement _modifierCounts
              *   - Add stat to _statsWithoutModifiers if _modifierCounts[stat] == 0
              */
+            throw new System.NotImplementedException();
         }
 
         public void RemoveUnusedNodes()
@@ -117,16 +124,17 @@ namespace PoESkillTree.Computation.Core
              *   - subgraphNodes = TopGraph.GetNodes(stat)
              *   - For each NodeType (top-down):
              *     - If subgraphNodes.TryGetNode(stat, nodeType, out var node)
-             *       - If SubscriberCount == 0: TopGraph.RemoveNode(stat, nodeType)
+             *       - If node.SubscriberCount == 0: TopGraph.RemoveNode(stat, nodeType)
              *   - formNodeCollections = TopGraph.GetFormNodeCollections(stat)
              *   - For each (form, nodeCollection) in formCollections:
-             *     - If SubscriberCount == 0: TopGraph.Remove(form, nodeCollection)
+             *     - If nodeCollection.SubscriberCount == 0: TopGraph.Remove(stat, form)
              *   - If subgraphNodes.IsEmpty() && formNodeCollections.IsEmpty():
-             *     - _statsWithoutModifiers.Remove(stat), _knownStats.Remove(stat)
+             *     - TopGraph.RemoveStat(stat)
              * (remove calls need to be done after iterating)
              * (ISuspendableEventViewProvider and/or ICalculationNode and INodeCollection need to implement
              *  "ICountsSubscribers". SubscriberCount returns ValueChanged/CollectionChanged.GetInvocationList().Length)
              */
+            throw new System.NotImplementedException();
         }
     }
 
@@ -137,10 +145,9 @@ namespace PoESkillTree.Computation.Core
         // decoratedGraph will be a CoreCalculationGraph
         public SuspendableCalculationGraph(ICalculationGraph decoratedGraph)
         {
-            TopGraph = this;
         }
 
-        public ICalculationGraph TopGraph { private get; set; }
+        public ICalculationGraph TopGraph { get; set; }
 
         public ISuspendableEvents Suspender { get; } // => _suspendable
 
@@ -166,7 +173,7 @@ namespace PoESkillTree.Computation.Core
             throw new System.NotImplementedException();
         }
 
-        public void RemoveNode(IStat node, NodeType nodeType)
+        public void RemoveNode(IStat stat, NodeType nodeType)
         {
             // r = TopGraph.GetNode(stat, noeType)
             // _suspendable.Remove(r.Suspender)
@@ -174,7 +181,8 @@ namespace PoESkillTree.Computation.Core
             throw new System.NotImplementedException();
         }
 
-        public IReadOnlyDictionary<Form, ModifierNodeCollection> GetFormNodeCollections(IStat stat)
+        public IReadOnlyDictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
+            GetFormNodeCollections(IStat stat)
         {
             // return _decoratedGraph.GetFormNodeCollections(stat)
             throw new System.NotImplementedException();
@@ -185,100 +193,27 @@ namespace PoESkillTree.Computation.Core
             // r = TopGraph.GetFormNodeCollection(stat, form)
             // _suspendable.Remove(r.Suspender)
             // _decoratedGraph.RemoveFormNodeCollection(stat, form)
+            throw new System.NotImplementedException();
         }
 
-        public void AddModifier(Modifier modifier)
+        public void RemoveStat(IStat stat)
+        {
+            // Call _decoratedGraph
+            throw new System.NotImplementedException();
+        }
+
+        public void AddModifier(IStat stat, Modifier modifier)
         {
             // _decoratedGraph.AddModifier(modifier)
-            // For each stat in modifier.Stats:
             // - r = TopGraph.GetFormNodeCollection(stat, modifier.Form)
             // - _suspendable.Add(r.Suspender)
+            throw new System.NotImplementedException();
         }
 
-        public void RemoveModifier(Modifier modifier)
+        public bool RemoveModifier(IStat stat, Modifier modifier)
         {
             // _decoratedGraph.RemoveModifier(modifier)
-        }
-    }
-
-    public class CoreCalculationGraph : ICalculationGraph
-    {
-        private readonly Dictionary<IStat, Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>>>
-            _subgraphNodes;
-
-        private readonly Dictionary<IStat, Dictionary<Form, ModifierNodeCollection>> _formCollections;
-
-        public CoreCalculationGraph(INodeFactory nodeFactory, INodeCollectionFactory nodeCollectionFactory)
-        {
-        }
-
-        public ISuspendableEvents Suspender { get; } // NullSuspendableEvents
-
-        public ISuspendableEventViewProvider<ICalculationNode> GetNode(IStat stat, NodeType nodeType)
-        {
-            //- If entry does not exist in _subgraphNodes:
-            //  - Create nodes with _nodeFactory.Create(IStat, NodeType)
-            //  - Add dictionary entry
-            //- Return entry
             throw new System.NotImplementedException();
-        }
-
-        private ModifierNodeCollection GetModifierNodeCollection(IStat stat, Form form)
-        {
-            //- If entry does not exist in _formCollections:
-            //  - Create nodes with _nodeCollectionFactory.Create(IStat, Form)
-            //  - Add dictionary entry
-            //- Return entry
-            throw new System.NotImplementedException();
-        }
-
-        public ISuspendableEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(IStat stat, Form form)
-        {
-            // return GetModifierNodeCollection(stat, form);
-            throw new System.NotImplementedException();
-        }
-
-        public IReadOnlyDictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>> GetNodes(IStat stat)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void RemoveNode(IStat node, NodeType nodeType)
-        {
-            // - node = _subgraphNodes[stat][nodeType]
-            // - node.DefaultView.Dispose(), node.SuspendableView.Dispose()
-            // - _subgraphNodes[stat].Remove(nodeType)
-            // - If _subgraphNodes[stat].IsEmpty(): _subgraphNodes.Remove(stat)
-            throw new System.NotImplementedException();
-        }
-
-        public IReadOnlyDictionary<Form, ModifierNodeCollection> GetFormNodeCollections(IStat stat)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void RemoveFormNodeCollection(IStat stat, Form form)
-        {
-            // - _formCollections[stat].Remove(form)
-            // - If _formCollections[stat].IsEmpty(): _formCollections.Remove(stat)
-        }
-
-        public void AddModifier(Modifier modifier)
-        {
-            /* - For each stat in modifier.Stats
-             *   - collection = GetModifierNodeCollection(stat, modifier.Form)
-             *   - node = _nodeFactory.Create(modifier.Value)
-             *   - collection.AddModifier(modifier, node)
-             */
-        }
-
-        public void RemoveModifier(Modifier modifier)
-        {
-            /* - For each stat in modifier.Stats
-             *   - collection = GetModifierNodeCollection(stat, modifier.Form)
-             *   - node = collection.RemoveModifier(modifier)
-             *   - node.DefaultView.Dispose(), node.SuspendableView.Dispose()
-             */
         }
     }
 }
