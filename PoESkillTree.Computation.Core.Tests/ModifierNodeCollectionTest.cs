@@ -39,6 +39,19 @@ namespace PoESkillTree.Computation.Core.Tests
             suspenderMock.Verify(s => s.SuspendEvents());
         }
 
+        [TestCase(0)]
+        [TestCase(42)]
+        public void SubscriberCountReturnsInjectedResult(int expected)
+        {
+            var provider = Mock.Of<ISuspendableEventViewProvider<NodeCollection<Modifier>>>(
+                p => p.SubscriberCount == expected);
+            var sut = CreateSut(provider);
+
+            var actual = sut.SubscriberCount;
+
+            Assert.AreEqual(expected, actual);
+        }
+
         [Test]
         public void AddAddsToDefaultView()
         {

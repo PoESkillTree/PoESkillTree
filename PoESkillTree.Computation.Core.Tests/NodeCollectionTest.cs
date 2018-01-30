@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MoreLinq;
 using NUnit.Framework;
 using static PoESkillTree.Computation.Core.Tests.NodeHelper;
 
@@ -143,6 +144,18 @@ namespace PoESkillTree.Computation.Core.Tests
             sut.Remove(removed);
 
             CollectionAssert.AreEquivalent(expected, sut.NodeProperties);
+        }
+
+        [TestCase(3)]
+        [TestCase(0)]
+        public void SubscriberCountReturnsCorrectResult(int expected)
+        {
+            var sut = CreateSut();
+            Enumerable.Repeat(0, expected).ForEach(_ => sut.CollectionChanged += (sender, args) => { });
+
+            var actual = sut.SubscriberCount;
+
+            Assert.AreEqual(expected, actual);
         }
 
         private static NodeCollection<int> CreateSut() =>

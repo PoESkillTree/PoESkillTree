@@ -3,7 +3,7 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
-    public class CachingNodeAdapter : ICalculationNode
+    public class CachingNodeAdapter : SubscriberCountingNode
     {
         private readonly ICachingNode _adaptedNode;
 
@@ -13,18 +13,13 @@ namespace PoESkillTree.Computation.Core
             _adaptedNode.ValueChangeReceived += AdaptedNodeOnValueChangeReceived;
         }
 
-        public NodeValue? Value => _adaptedNode.Value;
+        public override NodeValue? Value => _adaptedNode.Value;
 
-        public event EventHandler ValueChanged;
-
-        public void Dispose()
+        public override void Dispose()
         {
             _adaptedNode.ValueChangeReceived -= AdaptedNodeOnValueChangeReceived;
         }
 
-        private void AdaptedNodeOnValueChangeReceived(object sender, EventArgs args)
-        {
-            ValueChanged?.Invoke(this, EventArgs.Empty);
-        }
+        private void AdaptedNodeOnValueChangeReceived(object sender, EventArgs args) => OnValueChanged();
     }
 }

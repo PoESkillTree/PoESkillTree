@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Moq;
+using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 
@@ -47,6 +49,26 @@ namespace PoESkillTree.Computation.Core.Tests
 
             sut.Dispose();
             adaptedNodeMock.Raise(n => n.ValueChangeReceived += null, EventArgs.Empty);
+        }
+
+        [Test]
+        public void SutIsCountsSubscribers()
+        {
+            var sut = CreateSut();
+
+            Assert.IsInstanceOf<ICountsSubsribers>(sut);
+        }
+
+        [TestCase(3)]
+        [TestCase(0)]
+        public void SubscriberCountReturnsCorrectResult(int expected)
+        {
+            var sut = CreateSut();
+            Enumerable.Repeat(0, expected).ForEach(_ => sut.ValueChanged += (sender, args) => { });
+
+            var actual = sut.SubscriberCount;
+
+            Assert.AreEqual(expected, actual);
         }
 
 

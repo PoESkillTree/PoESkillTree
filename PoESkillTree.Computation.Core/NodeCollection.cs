@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PoESkillTree.Computation.Core
 {
-    public class NodeCollection<TProperty> : INodeCollection<TProperty>
+    public class NodeCollection<TProperty> : INodeCollection<TProperty>, ICountsSubsribers
     {
         private readonly ICollection<ICalculationNode> _nodes = new HashSet<ICalculationNode>();
 
@@ -32,6 +32,8 @@ namespace PoESkillTree.Computation.Core
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public int Count => _nodes.Count;
+
+        public int SubscriberCount => CollectionChanged?.GetInvocationList().Length ?? 0;
 
         public event EventHandler<NodeCollectionChangeEventArgs> CollectionChanged;
 

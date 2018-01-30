@@ -31,6 +31,7 @@ namespace PoESkillTree.Computation.Core
         public INodeCollection<Modifier> DefaultView => _viewProvider.DefaultView;
         public INodeCollection<Modifier> SuspendableView => _viewProvider.SuspendableView;
         public ISuspendableEvents Suspender => _suspenderComposite.Value;
+        public int SubscriberCount => _viewProvider.SubscriberCount;
 
         public void Add(Modifier modifier, ISuspendableEventViewProvider<ICalculationNode> node)
         {

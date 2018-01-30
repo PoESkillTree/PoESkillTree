@@ -3,7 +3,7 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
-    public class CachingNode : ICachingNode
+    public class CachingNode : SubscriberCountingNode, ICachingNode
     {
         private readonly ICalculationNode _decoratedNode;
 
@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Core
             _decoratedNode.ValueChanged += DecoratedNodeOnValueChanged;
         }
 
-        public NodeValue? Value
+        public override NodeValue? Value
         {
             get
             {
@@ -32,11 +32,9 @@ namespace PoESkillTree.Computation.Core
             }
         }
 
-        public event EventHandler ValueChanged;
-
         public event EventHandler ValueChangeReceived;
 
-        public void Dispose()
+        public override void Dispose()
         {
             _decoratedNode.ValueChanged -= DecoratedNodeOnValueChanged;
             _decoratedNode.Dispose();
@@ -69,7 +67,7 @@ namespace PoESkillTree.Computation.Core
             OnValueChanged();
         }
 
-        private void OnValueChanged()
+        protected override void OnValueChanged()
         {
             if (_suspendEvents)
             {
@@ -77,7 +75,7 @@ namespace PoESkillTree.Computation.Core
             }
             else
             {
-                ValueChanged?.Invoke(this, EventArgs.Empty);
+                base.OnValueChanged();
             }
         }
     }

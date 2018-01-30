@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
@@ -29,82 +27,5 @@ namespace PoESkillTree.Computation.Core
 
         // Returns the form node collection of stat
         INodeCollection<Modifier> GetFormNodeCollection(IStat stat, Form form);
-    }
-
-
-    public class PrunableCalculationGraph
-        : ICalculationGraph, ICalculationGraphPruner
-    {
-        private readonly HashSet<IStat> _statsWithoutModifiers;
-
-        public PrunableCalculationGraph(ICalculationGraph decoratedGraph)
-        {
-        }
-
-        public IEnumerator<IReadOnlyStatGraph> GetEnumerator()
-        {
-            // Call _decoratedGraph
-            throw new System.NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        // Call _decoratedGraph
-        public IReadOnlyDictionary<IStat, IStatGraph> StatGraphs { get; }
-
-        public IReadOnlyStatGraph GetOrAdd(IStat stat)
-        {
-            /* - If !StatGraphs.Contains(stat): _statsWithoutModifiers.Add(stat)
-             * - Return _decoratedGraph.GetOrAdd(NodeType)
-             */
-            throw new System.NotImplementedException();
-        }
-
-        public void Remove(IStat stat)
-        {
-            // _statsWithoutModifiers.Remove(stat)
-            // Call decoratedGraph
-            throw new System.NotImplementedException();
-        }
-
-        public void AddModifier(Modifier modifier)
-        {
-            /* For each stat in modifier.Stats:
-             *   _statsWithoutModifiers.Remove(stat)
-             * _decoratedGraph.AddModifier(modifier)
-             */
-            throw new System.NotImplementedException();
-        }
-
-        public void RemoveModifier(Modifier modifier)
-        {
-            /* _decoratedGraph.RemoveModifier(modifier)
-             * For each stat in modifier.Stats:
-             *   If StatGraphs.Contains(stat) && StatGraphs[stat].ModifierCount == 0:
-             *     _statsWithoutModifiers.Add(stat)
-             */
-            throw new System.NotImplementedException();
-        }
-
-        public void RemoveUnusedNodes()
-        {
-            /* - For each stat in _statsWithoutModifiers
-             *   - statGraph = StatGraphs[stat]
-             *   - For each NodeType (top-down):
-             *     - If statGraph.Nodes.TryGetNode(stat, nodeType, out var node)
-             *       - If node.SubscriberCount == 0: statGraph.RemoveNode(nodeType)
-             *   - For each (form, nodeCollection) in statGraph.FormNodeCollections:
-             *     - If nodeCollection.SubscriberCount == 0: statGraph.Remove(form)
-             *   - If statGraph.Nodes.IsEmpty() && statGraph.FormNodeCollections.IsEmpty():
-             *     - TopGraph.RemoveStat(stat)
-             * (remove calls need to be done after iterating)
-             * (ISuspendableEventViewProvider and/or ICalculationNode and INodeCollection need to implement
-             *  "ICountsSubscribers". SubscriberCount returns ValueChanged/CollectionChanged.GetInvocationList().Length)
-             */
-            throw new System.NotImplementedException();
-        }
     }
 }

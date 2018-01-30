@@ -18,7 +18,8 @@ namespace PoESkillTree.Computation.Core
         {
             var cachingNode = new CachingNode(coreNode);
             var cachingNodeAdapter = new CachingNodeAdapter(cachingNode);
-            return SuspendableEventViewProvider.Create<ICalculationNode, ICachingNode>(cachingNodeAdapter, cachingNode);
+            return SuspendableEventViewProvider.Create<SubscriberCountingNode, CachingNode>(
+                cachingNodeAdapter, cachingNode);
         }
 
         private ICalculationNode CreateCoreNode([CanBeNull] IStat stat, NodeType nodeType)

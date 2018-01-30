@@ -71,6 +71,7 @@
     <Compile Include="ExternalStatRegistry.cs" />
     <Compile Include="ICalculationGraph.cs" />
     <Compile Include="ICalculationGraphPruner.cs" />
+    <Compile Include="ICountsSubsribers.cs" />
     <Compile Include="IModifierCollection.cs" />
     <Compile Include="INodeCollection.cs" />
     <Compile Include="INodeCollectionFactory.cs" />
@@ -93,6 +94,8 @@
     <Compile Include="CachingNode.cs" />
     <Compile Include="CachingNodeAdapter.cs" />
     <Compile Include="NodeFactory.cs" />
+    <Compile Include="PrunableCalculationGraph.cs" />
+    <Compile Include="SubscriberCountingNode.cs" />
     <Compile Include="SubtotalValue.cs" />
     <Compile Include="SuspendableEventsComposite.cs" />
     <Compile Include="SuspendableEventViewProvider.cs" />

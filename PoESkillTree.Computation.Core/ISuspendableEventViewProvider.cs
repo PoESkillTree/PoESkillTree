@@ -1,6 +1,6 @@
 ﻿namespace PoESkillTree.Computation.Core
 {
-    public interface ISuspendableEventViewProvider<out T>
+    public interface ISuspendableEventViewProvider<out T> : ICountsSubsribers
     {
         // Events raised by T are not subject to Suspender. T raises events as they are received.
         T DefaultView { get; }
