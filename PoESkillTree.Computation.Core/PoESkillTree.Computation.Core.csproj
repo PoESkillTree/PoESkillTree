@@ -67,6 +67,7 @@
     <Compile Include="CalculatorExtensions.cs" />
     <Compile Include="CoreCalculationGraph.cs" />
     <Compile Include="CoreStatGraph.cs" />
+    <Compile Include="DefaultViewNodeRepository.cs" />
     <Compile Include="ExternalStatRegistry.cs" />
     <Compile Include="ICalculationGraph.cs" />
     <Compile Include="ICalculationGraphPruner.cs" />
@@ -80,7 +81,7 @@
     <Compile Include="ModifierNodeCollection.cs" />
     <Compile Include="NodeCollection.cs" />
     <Compile Include="NodeCollectionFactory.cs" />
-    <Compile Include="NodeRepositoryViewProvider.cs" />
+    <Compile Include="StatGraphCollectionSuspender.cs" />
     <Compile Include="NodeValueAggregators.cs" />
     <Compile Include="ICachingNode.cs" />
     <Compile Include="ICalculator.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="SuspendableEventsComposite.cs" />
     <Compile Include="SuspendableEventViewProvider.cs" />
     <Compile Include="SuspendableNodeCollection.cs" />
+    <Compile Include="SuspendableViewNodeRepository.cs" />
     <Compile Include="TotalValue.cs" />
     <Compile Include="UncappedSubtotalValue.cs" />
     <Compile Include="ValueCalculationContext.cs" />

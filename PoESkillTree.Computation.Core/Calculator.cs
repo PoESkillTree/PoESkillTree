@@ -36,6 +36,7 @@
 
         // Passing an empty SuspendableEventsComposite instead of NodeRepositoryViewProvider.Suspender
         // might be a significant performance improvement for "preview" calculations, where events are not used.
+        // (or add a property to ICalculator to disable/enable suspender usage)
         public static Calculator CreateCalculator()
         {
             var nodeFactory = new NodeFactory();
@@ -43,10 +44,10 @@
             var coreGraph = new CoreCalculationGraph(s => new CoreStatGraph(s, nodeFactory, nodeCollectionFactory));
             var prunableGraph = new PrunableCalculationGraph(coreGraph);
 
-            var nodeRepositoryViewProvider = new NodeRepositoryViewProvider(prunableGraph);
-            nodeFactory.NodeRepository = nodeRepositoryViewProvider.DefaultView;
+            nodeFactory.NodeRepository = new DefaultViewNodeRepository(prunableGraph);
             return new Calculator(
-                nodeRepositoryViewProvider.SuspendableView, nodeRepositoryViewProvider.Suspender,
+                new SuspendableViewNodeRepository(prunableGraph),
+                new StatGraphCollectionSuspender(prunableGraph), 
                 prunableGraph, prunableGraph);
         }
     }

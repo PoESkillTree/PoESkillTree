@@ -71,10 +71,11 @@
     <Compile Include="CalculatorTest.cs" />
     <Compile Include="CoreCalculationGraphTest.cs" />
     <Compile Include="CoreStatGraphTest.cs" />
+    <Compile Include="DefaultViewRepositoryTest.cs" />
     <Compile Include="ExternalStatRegistryText.cs" />
     <Compile Include="ModifierNodeCollectionTest.cs" />
     <Compile Include="NodeCollectionTest.cs" />
-    <Compile Include="NodeRepositoryViewProviderTest.cs" />
+    <Compile Include="StatGraphCollectionSuspenderTest.cs" />
     <Compile Include="NodeValueAggregatorsTest.cs" />
     <Compile Include="NodeHelper.cs" />
     <Compile Include="NullNodeTest.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="SuspendableEventsCompositeTest.cs" />
     <Compile Include="SuspendableEventViewProviderTest.cs" />
     <Compile Include="SuspendableNodeCollectionTest.cs" />
+    <Compile Include="SuspendableViewNodeRepositoryTest.cs" />
     <Compile Include="TotalValueTest.cs" />
     <Compile Include="UncappedSubtotalValueTest.cs" />
     <Compile Include="ValueCalculationContextTest.cs" />
