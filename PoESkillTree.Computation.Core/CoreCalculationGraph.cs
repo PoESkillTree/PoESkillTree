@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MoreLinq;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 
@@ -8,97 +10,41 @@ namespace PoESkillTree.Computation.Core
 {
     public class CoreCalculationGraph : ICalculationGraph
     {
-        private readonly INodeFactory _nodeFactory;
-        private readonly INodeCollectionFactory _nodeCollectionFactory;
+        private readonly Func<IStat, IStatGraph> _statGraphFactory;
+        private readonly Dictionary<IStat, IStatGraph> _statGraphs = new Dictionary<IStat, IStatGraph>();
 
-        private readonly Dictionary<IStat, Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>>>
-            _subgraphNodes =
-                new Dictionary<IStat, Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>>>();
-
-        // Values are of type ModifierNodeCollection. Using it as TValue would break GetFormNodeCollections().
-        private readonly Dictionary<IStat, Dictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>>
-            _formCollections =
-                new Dictionary<IStat, Dictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>>();
-
-        public CoreCalculationGraph(INodeFactory nodeFactory, INodeCollectionFactory nodeCollectionFactory)
+        public CoreCalculationGraph(Func<IStat, IStatGraph> statGraphFactory)
         {
-            _nodeFactory = nodeFactory;
-            _nodeCollectionFactory = nodeCollectionFactory;
+            _statGraphFactory = statGraphFactory;
         }
 
-        public ISuspendableEvents Suspender { get; } = new NullSuspendableEvents();
+        public IEnumerator<IReadOnlyStatGraph> GetEnumerator() => 
+            _statGraphs.Values.GetEnumerator();
 
-        public ISuspendableEventViewProvider<ICalculationNode> GetNode(IStat stat, NodeType nodeType) =>
-            _subgraphNodes
-                .GetOrAdd(stat, _ => CreateNodeDictionary())
-                .GetOrAdd(nodeType, _ => _nodeFactory.Create(stat, nodeType));
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public IReadOnlyDictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>> GetNodes(IStat stat) =>
-            _subgraphNodes
-                .GetOrAdd(stat, _ => CreateNodeDictionary());
+        private IStatGraph GetOrAddStatGraph(IStat stat) => 
+            _statGraphs.GetOrAdd(stat, _statGraphFactory);
 
-        private Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>> CreateNodeDictionary() =>
-            new Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>>();
+        public IReadOnlyStatGraph GetOrAdd(IStat stat) => GetOrAddStatGraph(stat);
 
-        private ModifierNodeCollection GetModifierNodeCollection(IStat stat, Form form) =>
-            (ModifierNodeCollection) _formCollections
-                .GetOrAdd(stat, _ => CreateFormNodeDictionary())
-                .GetOrAdd(form, _ => _nodeCollectionFactory.Create());
+        public IReadOnlyDictionary<IStat, IStatGraph> StatGraphs => _statGraphs;
 
-        public ISuspendableEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(IStat stat, Form form) =>
-            GetModifierNodeCollection(stat, form);
+        public void Remove(IStat stat) => _statGraphs.Remove(stat);
 
-        public IReadOnlyDictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
-            GetFormNodeCollections(IStat stat) => 
-            _formCollections.GetOrAdd(stat, _ => CreateFormNodeDictionary());
-
-        private static Dictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
-            CreateFormNodeDictionary() =>
-            new Dictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>();
-
-        public void RemoveNode(IStat stat, NodeType nodeType)
+        public void AddModifier(Modifier modifier)
         {
-            if (!_subgraphNodes.TryGetValue(stat, out var statNodes))
-                return;
-            if (!statNodes.TryGetValue(nodeType, out var node))
-                return;
-            node.DefaultView.Dispose();
-            node.SuspendableView.Dispose();
-            statNodes.Remove(nodeType);
+            modifier.Stats
+                .Select(GetOrAddStatGraph)
+                .ForEach(g => g.AddModifier(modifier));
         }
 
-        public void RemoveFormNodeCollection(IStat stat, Form form)
+        public void RemoveModifier(Modifier modifier)
         {
-            if (_formCollections.TryGetValue(stat, out var formCollection))
-            {
-                formCollection.Remove(form);
-            }
-        }
-
-        public void RemoveStat(IStat stat)
-        {
-            if (_subgraphNodes.TryGetValue(stat, out var statNodes) && statNodes.Any())
-                throw new ArgumentException("Stats can only be removed when they have no nodes", nameof(stat));
-            if (_formCollections.TryGetValue(stat, out var formCollections) && formCollections.Any())
-                throw new ArgumentException("Stats can only be removed when they have no nodes", nameof(stat));
-            _subgraphNodes.Remove(stat);
-            _formCollections.Remove(stat);
-        }
-
-        public void AddModifier(IStat stat, Modifier modifier)
-        {
-            var collection = GetModifierNodeCollection(stat, modifier.Form);
-            var node = _nodeFactory.Create(modifier.Value);
-            collection.Add(modifier, node);
-        }
-
-        public bool RemoveModifier(IStat stat, Modifier modifier)
-        {
-            var collection = GetModifierNodeCollection(stat, modifier.Form);
-            var node = collection.Remove(modifier);
-            node?.DefaultView.Dispose();
-            node?.SuspendableView.Dispose();
-            return node != null;
+            modifier.Stats
+                .Where(s => _statGraphs.ContainsKey(s))
+                .Select(s => _statGraphs[s])
+                .ForEach(g => g.RemoveModifier(modifier));
         }
     }
 }

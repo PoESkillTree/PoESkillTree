@@ -4,7 +4,7 @@ namespace PoESkillTree.Computation.Core
 {
     public interface IModifierCollection
     {
-        void AddModifier(IStat stat, Modifier modifier);
-        bool RemoveModifier(IStat stat, Modifier modifier);
+        void AddModifier(Modifier modifier);
+        void RemoveModifier(Modifier modifier);
     }
 }

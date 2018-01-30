@@ -3,13 +3,14 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
-    public interface ICalculationGraph : INodeViewProviderRepository, IModifierCollection
+    public interface ICalculationGraph : IReadOnlyStatGraphCollection, IModifierCollection
     {
-        IReadOnlyDictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>> GetNodes(IStat stat);
-        void RemoveNode(IStat stat, NodeType nodeType);
-        IReadOnlyDictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>> 
-            GetFormNodeCollections(IStat stat);
-        void RemoveFormNodeCollection(IStat stat, Form form);
-        void RemoveStat(IStat stat);
+        IReadOnlyDictionary<IStat, IStatGraph> StatGraphs { get; }
+        void Remove(IStat stat);
+    }
+
+    public interface IReadOnlyStatGraphCollection : IEnumerable<IReadOnlyStatGraph>
+    {
+        IReadOnlyStatGraph GetOrAdd(IStat stat);
     }
 }

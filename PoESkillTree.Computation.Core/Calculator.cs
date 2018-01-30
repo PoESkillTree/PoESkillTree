@@ -24,31 +24,24 @@
             // If the remove/add order matters for performance, ordering logic could be added.
             foreach (var modifier in update.RemovedModifiers)
             {
-                foreach (var stat in modifier.Stats)
-                {
-                    _modifierCollection.RemoveModifier(stat, modifier);
-                }
+                _modifierCollection.RemoveModifier(modifier);
             }
             foreach (var modifier in update.AddedModifiers)
             {
-                foreach (var stat in modifier.Stats)
-                {
-                    _modifierCollection.AddModifier(stat, modifier);
-                }
+                _modifierCollection.AddModifier(modifier);
             }
             _graphPruner.RemoveUnusedNodes();
             _suspender.ResumeEvents();
         }
-        
-        // An overload without the SuspendableCalculationGraph would lead to a no-op _suspender.
-        // That might be a significant performance improvement for "preview" calculations, where events are not used.
+
+        // Passing an empty SuspendableEventsComposite instead of NodeRepositoryViewProvider.Suspender
+        // might be a significant performance improvement for "preview" calculations, where events are not used.
         public static Calculator CreateCalculator()
         {
             var nodeFactory = new NodeFactory();
-            var coreGraph = new CoreCalculationGraph(nodeFactory, new NodeCollectionFactory());
-            var suspendableGraph = new SuspendableCalculationGraph(coreGraph);
-            var prunableGraph = new PrunableCalculationGraph(suspendableGraph);
-            suspendableGraph.TopGraph = prunableGraph;
+            var nodeCollectionFactory = new NodeCollectionFactory();
+            var coreGraph = new CoreCalculationGraph(s => new CoreStatGraph(s, nodeFactory, nodeCollectionFactory));
+            var prunableGraph = new PrunableCalculationGraph(coreGraph);
 
             var nodeRepositoryViewProvider = new NodeRepositoryViewProvider(prunableGraph);
             nodeFactory.NodeRepository = nodeRepositoryViewProvider.DefaultView;
