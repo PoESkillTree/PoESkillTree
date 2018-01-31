@@ -5,7 +5,6 @@ namespace PoESkillTree.Computation.Core
 {
     /*
        TODO: Complete implementation of ICalculator
-       - ICalculationGraph implementation(s) (see INodeRepository.cs)
        - Usage from Console and/or integration tests (not using Data and Parsing, just example implementation of some builders)
        - Support for multiple paths and other "specialties"/behaviors in stat subgraphs (see "Stat subgraphs")
        (see the thoughts below and the thoughts scattered around in other files for details)

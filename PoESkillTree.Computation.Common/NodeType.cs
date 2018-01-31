@@ -1,7 +1,8 @@
 ﻿namespace PoESkillTree.Computation.Common
 {
-    // Node types in the main calculation building block, which is the same for each IStat.
-    // Each of these NodeType has one corresponding node implementation defining its behavior.
+    // Node types in the stat subgraph of each IStat.
+    // NodeTypes of parent nodes must be listed before their children. With that, iterating through NodeTypes can be 
+    // used for top-down stat subgraph iteration.
     public enum NodeType
     {
         Total,
