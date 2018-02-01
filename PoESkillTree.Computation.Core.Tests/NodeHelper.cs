@@ -8,11 +8,11 @@ namespace PoESkillTree.Computation.Core.Tests
 {
     internal static class NodeHelper
     {
-        public static ICalculationNode MockNode(double? value) => 
+        public static IDisposableNode MockNode(double? value) => 
             MockNode((NodeValue?) value);
 
-        public static ICalculationNode MockNode(NodeValue? value = null) => 
-            Mock.Of<ICalculationNode>(n => n.Value == value);
+        public static IDisposableNode MockNode(NodeValue? value = null) => 
+            Mock.Of<IDisposableNode>(n => n.Value == value);
 
         public static void AssertValueEquals(this ICalculationNode node, double? expected) => 
             Assert.AreEqual((NodeValue?) expected, node.Value);
@@ -36,7 +36,7 @@ namespace PoESkillTree.Computation.Core.Tests
             return mock.Object;
         }
 
-        public static void RaiseValueChanged(this Mock<ICalculationNode> nodeMock)
+        public static void RaiseValueChanged(this Mock<IDisposableNode> nodeMock)
         {
             nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
         }

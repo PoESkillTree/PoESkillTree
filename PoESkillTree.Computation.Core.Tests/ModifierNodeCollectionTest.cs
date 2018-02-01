@@ -187,14 +187,14 @@ namespace PoESkillTree.Computation.Core.Tests
             ISuspendableEventViewProvider<NodeCollection<Modifier>> viewProvider) =>
             new ModifierNodeCollection(viewProvider);
 
-        private static ISuspendableEventViewProvider<ICalculationNode> MockNodeProvider(
-            ICalculationNode defaultNode = null, ICalculationNode suspendableNode = null, 
+        private static ISuspendableEventViewProvider<IDisposableNode> MockNodeProvider(
+            IDisposableNode defaultNode = null, IDisposableNode suspendableNode = null, 
             ISuspendableEvents suspender = null)
         {
             defaultNode = defaultNode ?? MockNode();
             suspendableNode = suspendableNode ?? MockNode();
             suspender = suspender ?? Mock.Of<ISuspendableEvents>();
-            return Mock.Of<ISuspendableEventViewProvider<ICalculationNode>>(
+            return Mock.Of<ISuspendableEventViewProvider<IDisposableNode>>(
                 p => p.DefaultView == defaultNode && p.SuspendableView == suspendableNode && p.Suspender == suspender);
         }
     }

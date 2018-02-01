@@ -133,7 +133,7 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void RemoveNodesDisposesNode()
         {
-            var nodeMock = new Mock<ISuspendableEventViewProvider<ICalculationNode>>();
+            var nodeMock = new Mock<ISuspendableEventViewProvider<IDisposableNode>>();
             nodeMock.Setup(p => p.DefaultView.Dispose()).Verifiable();
             nodeMock.Setup(p => p.SuspendableView.Dispose()).Verifiable();
             var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(Stat, NodeType.Base) == nodeMock.Object);
@@ -277,8 +277,8 @@ namespace PoESkillTree.Computation.Core.Tests
             INodeFactory nodeFactory = null, INodeCollectionFactory nodeCollectionFactory = null) =>
             new CoreStatGraph(Stat, nodeFactory, nodeCollectionFactory);
 
-        private static ISuspendableEventViewProvider<ICalculationNode> MockNodeViewProvider() =>
-            Mock.Of<ISuspendableEventViewProvider<ICalculationNode>>(p => 
+        private static ISuspendableEventViewProvider<IDisposableNode> MockNodeViewProvider() =>
+            Mock.Of<ISuspendableEventViewProvider<IDisposableNode>>(p => 
                 p.DefaultView == MockNode(0) && p.SuspendableView == MockNode(0));
 
         private static ModifierNodeCollection MockModifierNodeCollection()

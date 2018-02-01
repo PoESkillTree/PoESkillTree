@@ -31,7 +31,7 @@ namespace PoESkillTree.Computation.Core.Tests
         public void ValueCachesDecoratedNodesValue()
         {
             const int expected = 42;
-            var nodeMock = new Mock<ICalculationNode>();
+            var nodeMock = new Mock<IDisposableNode>();
             var sut = CreateCachedSut(nodeMock, expected);
             nodeMock.SetupGet(n => n.Value).Returns((NodeValue) 41);
 
@@ -42,7 +42,7 @@ namespace PoESkillTree.Computation.Core.Tests
         public void DecoratedNodesValueChangedInvalidatesCache()
         {
             const int expected = 42;
-            var nodeMock = new Mock<ICalculationNode>();
+            var nodeMock = new Mock<IDisposableNode>();
             var sut = CreateCachedSut(nodeMock, 41);
             nodeMock.SetupGet(n => n.Value).Returns((NodeValue) expected);
 
@@ -54,7 +54,7 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void ValueChangeReceivedIsRaisedWhenDecoratedNodeRaisesValueChanged()
         {
-            var nodeMock = new Mock<ICalculationNode>();
+            var nodeMock = new Mock<IDisposableNode>();
             var sut = CreateSut(nodeMock.Object);
             var _ = sut.Value;
             var raised = false;
@@ -72,7 +72,7 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void ValueChangeReceivedIsNotRaisedWhendValueWasNotCalled()
         {
-            var nodeMock = new Mock<ICalculationNode>();
+            var nodeMock = new Mock<IDisposableNode>();
             var sut = CreateSut(nodeMock.Object);
             sut.ValueChangeReceived += (sender, args) => Assert.Fail();
 
@@ -82,7 +82,7 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void DisposeUnsubscribesFromDecoratedNode()
         {
-            var nodeMock = new Mock<ICalculationNode>();
+            var nodeMock = new Mock<IDisposableNode>();
             var sut = CreateSut(nodeMock.Object);
             var _ = sut.Value;
             sut.ValueChangeReceived += (sender, args) => Assert.Fail();
@@ -94,7 +94,7 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void ValueChangedIsRaisedWhenEventsAreNotSuspended()
         {
-            var nodeMock = new Mock<ICalculationNode>();
+            var nodeMock = new Mock<IDisposableNode>();
             var sut = CreateSut(nodeMock.Object);
             var _ = sut.Value;
             var raised = false;
@@ -108,7 +108,7 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void ValueChangedIsNotRaisedWhenEventsAreSuspended()
         {
-            var nodeMock = new Mock<ICalculationNode>();
+            var nodeMock = new Mock<IDisposableNode>();
             var sut = CreateSut(nodeMock.Object);
             var _ = sut.Value;
 
@@ -121,7 +121,7 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void ResumeAllowsValueChangedToBeRaisedAgain()
         {
-            var nodeMock = new Mock<ICalculationNode>();
+            var nodeMock = new Mock<IDisposableNode>();
             var sut = CreateSut(nodeMock.Object);
             var _ = sut.Value;
             var raised = false;
@@ -137,7 +137,7 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void ResumeRaisesValueChangedIfValueChangeReceivedWasRaisedAfterSuspend()
         {
-            var nodeMock = new Mock<ICalculationNode>();
+            var nodeMock = new Mock<IDisposableNode>();
             var sut = CreateSut(nodeMock.Object);
             var _ = sut.Value;
             var raised = false;
@@ -153,7 +153,7 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void DisposeCallsDecoratedNodesDispose()
         {
-            var nodeMock = new Mock<ICalculationNode>();
+            var nodeMock = new Mock<IDisposableNode>();
             var sut = CreateSut(nodeMock.Object);
 
             sut.Dispose();
@@ -181,7 +181,7 @@ namespace PoESkillTree.Computation.Core.Tests
             Assert.AreEqual(expected, actual);
         }
 
-        private static CachingNode CreateCachedSut(Mock<ICalculationNode> decoratedNodeMock, double? cachedValue)
+        private static CachingNode CreateCachedSut(Mock<IDisposableNode> decoratedNodeMock, double? cachedValue)
         {
             decoratedNodeMock.SetupGet(n => n.Value).Returns((NodeValue?) cachedValue);
             var sut = CreateSut(decoratedNodeMock.Object);
@@ -195,7 +195,7 @@ namespace PoESkillTree.Computation.Core.Tests
             return CreateSut(decoratedNode);
         }
 
-        private static CachingNode CreateSut(ICalculationNode decoratedNode)
+        private static CachingNode CreateSut(IDisposableNode decoratedNode)
         {
             return new CachingNode(decoratedNode);
         }

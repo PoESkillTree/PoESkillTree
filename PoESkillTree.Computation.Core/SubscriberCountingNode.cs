@@ -3,7 +3,7 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
-    public abstract class SubscriberCountingNode : ICalculationNode, ICountsSubsribers
+    public abstract class SubscriberCountingNode : IDisposableNode, ICountsSubsribers
     {
         public abstract NodeValue? Value { get; }
 

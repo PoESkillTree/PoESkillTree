@@ -3,7 +3,7 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
-    public class ValueNode : ICalculationNode
+    public class ValueNode : IDisposableNode
     {
         private readonly INodeRepository _nodeRepository;
         private readonly IValue _value;

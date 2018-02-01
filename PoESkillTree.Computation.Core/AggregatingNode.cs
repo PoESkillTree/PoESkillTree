@@ -7,7 +7,7 @@ namespace PoESkillTree.Computation.Core
 {
     public delegate NodeValue? NodeValueAggregator(IEnumerable<NodeValue?> values);
 
-    public class AggregatingNode : ICalculationNode
+    public class AggregatingNode : IDisposableNode
     {
         private readonly INodeCollection _nodes;
         private readonly NodeValueAggregator _aggregator;

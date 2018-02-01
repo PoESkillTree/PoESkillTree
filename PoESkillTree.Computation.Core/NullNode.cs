@@ -3,7 +3,7 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
-    public class NullNode : ICalculationNode
+    public class NullNode : IDisposableNode
     {
         public NodeValue? Value => null;
 

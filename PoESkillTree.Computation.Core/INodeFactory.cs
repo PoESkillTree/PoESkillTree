@@ -5,7 +5,7 @@ namespace PoESkillTree.Computation.Core
 {
     public interface INodeFactory
     {
-        ISuspendableEventViewProvider<ICalculationNode> Create(IValue value);
-        ISuspendableEventViewProvider<ICalculationNode> Create([CanBeNull] IStat stat, NodeType nodeType);
+        ISuspendableEventViewProvider<IDisposableNode> Create(IValue value);
+        ISuspendableEventViewProvider<IDisposableNode> Create([CanBeNull] IStat stat, NodeType nodeType);
     }
 }

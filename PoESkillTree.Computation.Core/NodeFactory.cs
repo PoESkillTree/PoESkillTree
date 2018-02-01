@@ -8,13 +8,13 @@ namespace PoESkillTree.Computation.Core
     {
         public INodeRepository NodeRepository { private get; set; }
 
-        public ISuspendableEventViewProvider<ICalculationNode> Create(IValue value) => 
+        public ISuspendableEventViewProvider<IDisposableNode> Create(IValue value) => 
             WrapCoreNode(CreateCoreNode(value));
 
-        public ISuspendableEventViewProvider<ICalculationNode> Create( IStat stat, NodeType nodeType) => 
+        public ISuspendableEventViewProvider<IDisposableNode> Create( IStat stat, NodeType nodeType) => 
             WrapCoreNode(CreateCoreNode(stat, nodeType));
 
-        private static ISuspendableEventViewProvider<ICalculationNode> WrapCoreNode(ICalculationNode coreNode)
+        private static ISuspendableEventViewProvider<IDisposableNode> WrapCoreNode(IDisposableNode coreNode)
         {
             var cachingNode = new CachingNode(coreNode);
             var cachingNodeAdapter = new CachingNodeAdapter(cachingNode);
@@ -22,7 +22,7 @@ namespace PoESkillTree.Computation.Core
                 cachingNodeAdapter, cachingNode);
         }
 
-        private ICalculationNode CreateCoreNode([CanBeNull] IStat stat, NodeType nodeType)
+        private IDisposableNode CreateCoreNode([CanBeNull] IStat stat, NodeType nodeType)
         {
             if (stat is null)
                 return new NullNode();
@@ -53,37 +53,37 @@ namespace PoESkillTree.Computation.Core
             }
         }
 
-        private ICalculationNode CreateCoreNode(IValue value) =>
+        private IDisposableNode CreateCoreNode(IValue value) =>
             new ValueNode(NodeRepository, value);
 
-        private ICalculationNode CreateTotalNode(IStat stat) => 
+        private IDisposableNode CreateTotalNode(IStat stat) => 
             CreateCoreNode(new TotalValue(stat));
 
-        private ICalculationNode CreateSubtotalNode(IStat stat) =>
+        private IDisposableNode CreateSubtotalNode(IStat stat) =>
             CreateCoreNode(new SubtotalValue(stat));
 
-        private ICalculationNode CreateUncappedsubtotalNode(IStat stat) =>
+        private IDisposableNode CreateUncappedsubtotalNode(IStat stat) =>
             CreateCoreNode(new UncappedSubtotalValue(stat));
 
-        private ICalculationNode CreateBaseNode(IStat stat) =>
+        private IDisposableNode CreateBaseNode(IStat stat) =>
             CreateCoreNode(new BaseValue(stat));
 
-        private ICalculationNode CreateBaseOverrideNode(IStat stat) =>
+        private IDisposableNode CreateBaseOverrideNode(IStat stat) =>
             new AggregatingNode(GetFormNodes(stat, Form.BaseOverride), NodeValueAggregators.CalculateOverride);
 
-        private ICalculationNode CreateBaseSetNode(IStat stat) =>
+        private IDisposableNode CreateBaseSetNode(IStat stat) =>
             new AggregatingNode(GetFormNodes(stat, Form.BaseSet), NodeValueAggregators.CalculateBaseAdd);
 
-        private ICalculationNode CreateBaseAddNode(IStat stat) =>
+        private IDisposableNode CreateBaseAddNode(IStat stat) =>
             new AggregatingNode(GetFormNodes(stat, Form.BaseAdd), NodeValueAggregators.CalculateBaseAdd);
 
-        private ICalculationNode CreateIncreaseNode(IStat stat) =>
+        private IDisposableNode CreateIncreaseNode(IStat stat) =>
             new AggregatingNode(GetFormNodes(stat, Form.Increase), NodeValueAggregators.CalculateIncrease);
 
-        private ICalculationNode CreateMoreNode(IStat stat) =>
+        private IDisposableNode CreateMoreNode(IStat stat) =>
             new AggregatingNode(GetFormNodes(stat, Form.More), NodeValueAggregators.CalculateMore);
 
-        private ICalculationNode CreateTotalOverrideNode(IStat stat) =>
+        private IDisposableNode CreateTotalOverrideNode(IStat stat) =>
             new AggregatingNode(GetFormNodes(stat, Form.TotalOverride), NodeValueAggregators.CalculateOverride);
 
         private INodeCollection GetFormNodes(IStat stat, Form form) =>

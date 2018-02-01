@@ -5,14 +5,14 @@ namespace PoESkillTree.Computation.Core
 {
     public class CachingNode : SubscriberCountingNode, ICachingNode
     {
-        private readonly ICalculationNode _decoratedNode;
+        private readonly IDisposableNode _decoratedNode;
 
         private bool _calculatedValue;
         private NodeValue? _value;
         private bool _suspendEvents;
         private bool _suppressedValueChanged;
 
-        public CachingNode(ICalculationNode decoratedNode)
+        public CachingNode(IDisposableNode decoratedNode)
         {
             _decoratedNode = decoratedNode;
             _decoratedNode.ValueChanged += DecoratedNodeOnValueChanged;

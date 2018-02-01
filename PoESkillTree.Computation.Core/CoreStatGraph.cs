@@ -23,15 +23,20 @@ namespace PoESkillTree.Computation.Core
             _nodeCollectionFactory = nodeCollectionFactory;
         }
 
+        private ISuspendableEventViewProvider<IDisposableNode> GetDisposableNode(NodeType nodeType) => 
+            (ISuspendableEventViewProvider<IDisposableNode>) _nodes
+                .GetOrAdd(nodeType, _ => _nodeFactory.Create(_stat, nodeType));
+
         public ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeType nodeType) => 
-            _nodes.GetOrAdd(nodeType, _ => _nodeFactory.Create(_stat, nodeType));
+            GetDisposableNode(nodeType);
 
         public IReadOnlyDictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>> Nodes => _nodes;
 
         public void RemoveNode(NodeType nodeType)
         {
-            if (!_nodes.TryGetValue(nodeType, out var node))
+            if (!_nodes.ContainsKey(nodeType))
                 return;
+            var node = GetDisposableNode(nodeType);
             node.DefaultView.Dispose();
             node.SuspendableView.Dispose();
             _nodes.Remove(nodeType);

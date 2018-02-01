@@ -12,8 +12,8 @@ namespace PoESkillTree.Computation.Core
 
         private readonly Lazy<SuspendableEventsComposite> _suspenderComposite;
 
-        private readonly Dictionary<Modifier, Stack<ISuspendableEventViewProvider<ICalculationNode>>> _items
-            = new Dictionary<Modifier, Stack<ISuspendableEventViewProvider<ICalculationNode>>>();
+        private readonly Dictionary<Modifier, Stack<ISuspendableEventViewProvider<IDisposableNode>>> _items
+            = new Dictionary<Modifier, Stack<ISuspendableEventViewProvider<IDisposableNode>>>();
 
         public ModifierNodeCollection(ISuspendableEventViewProvider<NodeCollection<Modifier>> viewProvider)
         {
@@ -33,16 +33,16 @@ namespace PoESkillTree.Computation.Core
         public ISuspendableEvents Suspender => _suspenderComposite.Value;
         public int SubscriberCount => _viewProvider.SubscriberCount;
 
-        public void Add(Modifier modifier, ISuspendableEventViewProvider<ICalculationNode> node)
+        public void Add(Modifier modifier, ISuspendableEventViewProvider<IDisposableNode> node)
         {
             _viewProvider.DefaultView.Add(node.DefaultView, modifier);
             _viewProvider.SuspendableView.Add(node.SuspendableView, modifier);
             _suspenderComposite.Value.Add(node.Suspender);
-            _items.GetOrAdd(modifier, k => new Stack<ISuspendableEventViewProvider<ICalculationNode>>()).Push(node);
+            _items.GetOrAdd(modifier, k => new Stack<ISuspendableEventViewProvider<IDisposableNode>>()).Push(node);
         }
 
         [CanBeNull]
-        public ISuspendableEventViewProvider<ICalculationNode> Remove(Modifier modifier)
+        public ISuspendableEventViewProvider<IDisposableNode> Remove(Modifier modifier)
         {
             if (!TryGetNodeProvider(modifier, out var node))
             {
@@ -56,7 +56,7 @@ namespace PoESkillTree.Computation.Core
         }
 
         private bool TryGetNodeProvider(
-            Modifier modifier, out ISuspendableEventViewProvider<ICalculationNode> nodeProvider)
+            Modifier modifier, out ISuspendableEventViewProvider<IDisposableNode> nodeProvider)
         {
             if (!_items.TryGetValue(modifier, out var stack))
             {
