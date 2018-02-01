@@ -56,6 +56,7 @@ namespace PoESkillTree.Computation.Core
      *     be accessible by the client side view (ICalculator.NodeRepository). The graph internal and real client
      *     side references can then be determined by simply subtracting 1 from the count that would normally be used.
      *   - IExternalStatRegistry needs to be suspended/resumed in ICalculator.Update()
+     *   - The data type must be specified.
      * -> Support needs to be implemented for:
      *    - A general concept of paths
      *    - Separating paths by Modifier.Source (which also does not yet exist) by default
@@ -89,10 +90,5 @@ namespace PoESkillTree.Computation.Core
         NodeValue? Value { get; }
 
         event EventHandler ValueChanged;
-    }
-
-
-    public interface IDisposableNode : ICalculationNode, IDisposable
-    {
     }
 }

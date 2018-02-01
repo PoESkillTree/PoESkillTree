@@ -1,6 +1,8 @@
 ﻿using Moq;
 using MoreLinq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Core.Events;
+using PoESkillTree.Computation.Core.Graphs;
 
 namespace PoESkillTree.Computation.Core.Tests
 {

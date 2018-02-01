@@ -1,4 +1,9 @@
-﻿namespace PoESkillTree.Computation.Core
+﻿using PoESkillTree.Computation.Core.Events;
+using PoESkillTree.Computation.Core.Graphs;
+using PoESkillTree.Computation.Core.NodeCollections;
+using PoESkillTree.Computation.Core.Nodes;
+
+namespace PoESkillTree.Computation.Core
 {
     public class Calculator : ICalculator
     {
