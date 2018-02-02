@@ -6,6 +6,8 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
+    public delegate NodeValue? NodeValueAggregator(IEnumerable<NodeValue?> values);
+
     public static class NodeValueAggregators
     {
         // For both BaseOverride and TotalOverride
@@ -29,13 +31,13 @@ namespace PoESkillTree.Computation.Core.Nodes
                 : throw new NotSupportedException(
                     "Multiple modifiers to BaseOverride or TotalOverride with none having value 0 are not supported");
 
-        public static NodeValue? CalculateMore(IEnumerable<NodeValue?> values) => 
+        public static NodeValue? CalculateMore(IEnumerable<NodeValue?> values) =>
             values.AggregateOrNull(vs => vs.Select(v => 1 + v / 100).Product());
 
-        public static NodeValue? CalculateIncrease(IEnumerable<NodeValue?> values) => 
+        public static NodeValue? CalculateIncrease(IEnumerable<NodeValue?> values) =>
             values.AggregateOrNull(vs => 1 + vs.Select(v => v / 100).Sum());
 
-        public static NodeValue? CalculateBaseAdd(IEnumerable<NodeValue?> values) => 
+        public static NodeValue? CalculateBaseAdd(IEnumerable<NodeValue?> values) =>
             values.AggregateOrNull(Sum);
 
         public static NodeValue? CalculateBaseSet(IEnumerable<NodeValue?> values)
@@ -67,7 +69,7 @@ namespace PoESkillTree.Computation.Core.Nodes
             return null;
         }
 
-        private static IReadOnlyList<NodeValue> EnumerateWhereNotNull(this IEnumerable<NodeValue?> values) => 
+        private static IReadOnlyList<NodeValue> EnumerateWhereNotNull(this IEnumerable<NodeValue?> values) =>
             values.OfType<NodeValue>().ToList();
     }
 }

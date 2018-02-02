@@ -65,7 +65,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Nodes\AggregatingNodeTest.cs" />
     <Compile Include="Nodes\BaseValueTest.cs" />
     <Compile Include="CalculatorExtensionsTest.cs" />
     <Compile Include="CalculatorTest.cs" />
@@ -76,6 +75,7 @@
     <Compile Include="NodeCollections\ModifierNodeCollectionTest.cs" />
     <Compile Include="NodeCollections\NodeCollectionTest.cs" />
     <Compile Include="Graphs\StatGraphCollectionSuspenderTest.cs" />
+    <Compile Include="Nodes\FormAggregatingValueTest.cs" />
     <Compile Include="Nodes\NodeValueAggregatorsTest.cs" />
     <Compile Include="NodeHelper.cs" />
     <Compile Include="Nodes\NullNodeTest.cs" />

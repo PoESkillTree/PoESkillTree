@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System.Linq;
+using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Nodes;
@@ -20,9 +21,9 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         [TestCase(3, 5)]
         public void ValueReturnsIValueCalculateValue(double value1, double value2)
         {
-            var (expected, sut) = CreateSut(value1, value2);
+            var sut = CreateSut(value1, value2);
 
-            sut.AssertValueEquals(expected);
+            sut.AssertValueEquals(value1 + value2);
         }
 
         [Test]
@@ -74,7 +75,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         }
 
         [Test]
-        public void DisposeUnsubscribesFromHandlers()
+        public void DisposeUnsubscribesFromNodes()
         {
             var node1 = NodeHelper.MockNode(0);
             var node2 = NodeHelper.MockNode(0);
@@ -91,16 +92,46 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         [Test]
         public void DisposeDoesNothingIfValueWasNotAccessed()
         {
-            var (_, sut) = CreateSut(0, 0);
+            var sut = CreateSut(0, 0);
             sut.AssertValueChangedWillNotBeInvoked();
 
             sut.Dispose();
         }
 
-        private static (double expected, ValueNode) CreateSut(double stat1Value, double stat2Value)
+        [Test]
+        public void ValueSubscribesToUsedNodeCollections()
         {
-            var sut = CreateSut(NodeHelper.MockNode(stat1Value), NodeHelper.MockNode(stat2Value));
-            return (stat1Value + stat2Value, sut);
+            var nodeCollectionMock = new Mock<INodeCollection<Modifier>>();
+            nodeCollectionMock.Setup(c => c.GetEnumerator())
+                .Returns(() => Enumerable.Empty<ICalculationNode>().GetEnumerator());
+            var sut = CreateAggregatingSut(nodeCollectionMock.Object);
+            var raised = false;
+            sut.SubscribeToValueChanged(() => raised = true);
+
+            var _ = sut.Value;
+
+            nodeCollectionMock.Raise(c => c.CollectionChanged += null, NodeCollectionChangeEventArgs.ResetEventArgs);
+            Assert.IsTrue(raised);
+        }
+
+        [Test]
+        public void DisposeUnsubscribesFromNodeCollections()
+        {
+            var nodeCollectionMock = new Mock<INodeCollection<Modifier>>();
+            nodeCollectionMock.Setup(c => c.GetEnumerator())
+                .Returns(() => Enumerable.Empty<ICalculationNode>().GetEnumerator());
+            var sut = CreateAggregatingSut(nodeCollectionMock.Object);
+            var _ = sut.Value;
+
+            sut.Dispose();
+
+            sut.AssertValueChangedWillNotBeInvoked();
+            nodeCollectionMock.Raise(c => c.CollectionChanged += null, NodeCollectionChangeEventArgs.ResetEventArgs);
+        }
+
+        private static ValueNode CreateSut(double stat1Value, double stat2Value)
+        {
+            return CreateSut(NodeHelper.MockNode(stat1Value), NodeHelper.MockNode(stat2Value));
         }
 
         private static ValueNode CreateSut(ICalculationNode node1, ICalculationNode node2)
@@ -116,7 +147,18 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             return CreateSut(nodeRepository, valueMock.Object);
         }
 
+        private static ValueNode CreateAggregatingSut(INodeCollection<Modifier> nodeCollection)
+        {
+            var stat = new StatStub();
+            var nodeRepository =
+                Mock.Of<INodeRepository>(r => r.GetFormNodeCollection(stat, Form.More) == nodeCollection);
+            var valueMock = new Mock<IValue>();
+            valueMock.Setup(v => v.Calculate(It.IsAny<IValueCalculationContext>()))
+                .Returns((IValueCalculationContext c) => c.GetValues(Form.More, stat).FirstOrDefault());
+            return CreateSut(nodeRepository, valueMock.Object);
+        }
+
         private static ValueNode CreateSut(INodeRepository nodeRepository = null, IValue value = null) =>
-            new ValueNode(nodeRepository, value);
+            new ValueNode(new ValueCalculationContext(nodeRepository), value);
     }
 }

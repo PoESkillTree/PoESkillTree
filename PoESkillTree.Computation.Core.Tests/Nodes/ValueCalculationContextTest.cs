@@ -1,8 +1,9 @@
-﻿using Moq;
-using MoreLinq;
+﻿using System.Linq;
+using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Nodes;
+using static PoESkillTree.Computation.Core.Tests.NodeHelper;
 
 namespace PoESkillTree.Computation.Core.Tests.Nodes
 {
@@ -22,7 +23,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         public void GetValueReturnsNodeRepositoryValue(double value)
         {
             var expected = new NodeValue(value);
-            var node = NodeHelper.MockNode(expected);
+            var node = MockNode(expected);
             var stat = Mock.Of<IStat>();
             var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Base) == node);
             var sut = CreateSut(nodeRepository);
@@ -32,68 +33,129 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
-        public void CallsIsEmptyIfGetValueWasNotCalled()
+        [TestCase(42)]
+        [TestCase(-5)]
+        public void GetValuesReturnsNodeRepositoryValue(double value)
         {
-            var sut = CreateSut();
-
-            var actual = sut.Calls;
-
-            CollectionAssert.IsEmpty(actual);
-        }
-
-        [Test]
-        public void CallsStoresGetValueCall()
-        {
-            var sut = CreateSut();
+            var expected = new NodeValue(value);
+            var nodeCollection = MockNodeCollection(MockNode(expected));
             var stat = new StatStub();
+            var nodeRepository =
+                Mock.Of<INodeRepository>(r => r.GetFormNodeCollection(stat, Form.Increase) == nodeCollection);
+            var sut = CreateSut(nodeRepository);
 
-            sut.GetValue(stat, NodeType.Base);
+            var actual = sut.GetValues(Form.Increase, stat);
 
-            Assert.That(sut.Calls, Has.Exactly(1).Items.EqualTo((stat, NodeType.Base)));
+            CollectionAssert.Contains(actual, expected);
         }
 
         [Test]
-        public void CallsStoresAllGetValueCalls()
+        public void GetValuesReturnsCorrectResult()
         {
-            var sut = CreateSut();
-            var expected = new[]
+            var expected = new NodeValue?[] { new NodeValue(0), new NodeValue(1), new NodeValue(2), new NodeValue(3), };
+            var nodes = expected.Select(MockNode).ToList();
+            var nodeCollections = new[]
             {
-                (new StatStub(), NodeType.Base),
-                (new StatStub(), NodeType.Total),
-                (new StatStub(), NodeType.TotalOverride),
+                MockNodeCollection(nodes[0], nodes[1]),
+                MockNodeCollection(nodes[1], nodes[2]),
+                MockNodeCollection(nodes[2], nodes[3]),
             };
-            
-            expected.ForEach(t => sut.GetValue(t.Item1, t.Item2));
+            var stats = new IStat[] { new StatStub(), new StatStub(), new StatStub(), };
+            var nodeRepositoryMock = new Mock<INodeRepository>();
+            for (var i = 0; i < stats.Length; i++)
+            {
+                var iClosure = i;
+                nodeRepositoryMock.Setup(r => r.GetFormNodeCollection(stats[iClosure], Form.More))
+                    .Returns(nodeCollections[i]);
+            }
+            var sut = CreateSut(nodeRepositoryMock.Object);
 
-            Assert.AreEqual(expected, sut.Calls);
+            var actual = sut.GetValues(Form.More, stats);
+
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void CallsIsSet()
+        public void UsedNodesReturnsCorrectResult()
         {
-            var sut = CreateSut();
+            var expected = new[] { MockNode(), MockNode(), MockNode(), MockNode() };
+            var nodeCollections = new[]
+            {
+                MockNodeCollection(expected[1], expected[2]),
+                MockNodeCollection(expected[2], expected[3])
+            };
+            var stats = new IStat[] { new StatStub(), new StatStub(), };
+            var nodeRepository =
+                Mock.Of<INodeRepository>(r =>
+                    r.GetFormNodeCollection(stats[0], Form.Increase) == nodeCollections[0] &&
+                    r.GetFormNodeCollection(stats[1], Form.Increase) == nodeCollections[1] &&
+                    r.GetNode(stats[0], NodeType.Base) == expected[0]);
+            var sut = CreateSut(nodeRepository);
+
+            sut.GetValue(stats[0], NodeType.Base);
+            sut.GetValues(Form.Increase, stats);
+            var actual = sut.UsedNodes;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ClearClearsUsedNodes()
+        {
             var stat = new StatStub();
-
+            var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total) == MockNode(0));
+            var sut = CreateSut(nodeRepository);
             sut.GetValue(stat);
-            sut.GetValue(stat);
-
-            Assert.That(sut.Calls, Has.Exactly(1).Items.EqualTo((stat, NodeType.Total)));
-        }
-
-        [Test]
-        public void ClearClearsCalls()
-        {
-            var sut = CreateSut();
-            sut.GetValue(new StatStub());
 
             sut.Clear();
 
-            CollectionAssert.IsEmpty(sut.Calls);
+            CollectionAssert.IsEmpty(sut.UsedNodes);
+        }
+
+        [Test]
+        public void UsedNodeCollectionsReturnsCorrectResult()
+        {
+            var expected = new[]
+            {
+                MockNodeCollection(MockNode()),
+                MockNodeCollection(MockNode())
+            };
+            var stats = new IStat[] { new StatStub(), new StatStub(), };
+            var nodeRepository =
+                Mock.Of<INodeRepository>(r =>
+                    r.GetFormNodeCollection(stats[0], Form.Increase) == expected[0] &&
+                    r.GetFormNodeCollection(stats[1], Form.Increase) == expected[1]);
+            var sut = CreateSut(nodeRepository);
+            
+            sut.GetValues(Form.Increase, stats);
+            var actual = sut.UsedNodeCollections;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ClearClearsUsedNodeCollections()
+        {
+            var stat = new StatStub();
+            var nodeRepository =
+                Mock.Of<INodeRepository>(r => r.GetFormNodeCollection(stat, Form.Increase) == MockNodeCollection());
+            var sut = CreateSut(nodeRepository);
+            sut.GetValues(Form.Increase, stat);
+
+            sut.Clear();
+
+            CollectionAssert.IsEmpty(sut.UsedNodeCollections);
         }
 
 
         private static ValueCalculationContext CreateSut(INodeRepository nodeRepository = null) =>
             new ValueCalculationContext(nodeRepository ?? Mock.Of<INodeRepository>());
+
+        private static INodeCollection<Modifier> MockNodeCollection(params ICalculationNode[] nodes)
+        {
+            var mock = new Mock<INodeCollection<Modifier>>();
+            mock.Setup(c => c.GetEnumerator()).Returns(() => nodes.AsEnumerable().GetEnumerator());
+            return mock.Object;
+        }
     }
 }

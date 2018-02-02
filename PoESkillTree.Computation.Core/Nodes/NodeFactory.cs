@@ -54,9 +54,6 @@ namespace PoESkillTree.Computation.Core.Nodes
             }
         }
 
-        private IDisposableNode CreateCoreNode(IValue value) =>
-            new ValueNode(NodeRepository, value);
-
         private IDisposableNode CreateTotalNode(IStat stat) => 
             CreateCoreNode(new TotalValue(stat));
 
@@ -70,24 +67,27 @@ namespace PoESkillTree.Computation.Core.Nodes
             CreateCoreNode(new BaseValue(stat));
 
         private IDisposableNode CreateBaseOverrideNode(IStat stat) =>
-            new AggregatingNode(GetFormNodes(stat, Form.BaseOverride), NodeValueAggregators.CalculateOverride);
+            CreateFormAggregatingNode(stat, Form.BaseOverride, NodeValueAggregators.CalculateOverride);
 
         private IDisposableNode CreateBaseSetNode(IStat stat) =>
-            new AggregatingNode(GetFormNodes(stat, Form.BaseSet), NodeValueAggregators.CalculateBaseAdd);
+            CreateFormAggregatingNode(stat, Form.BaseSet, NodeValueAggregators.CalculateBaseAdd);
 
         private IDisposableNode CreateBaseAddNode(IStat stat) =>
-            new AggregatingNode(GetFormNodes(stat, Form.BaseAdd), NodeValueAggregators.CalculateBaseAdd);
+            CreateFormAggregatingNode(stat, Form.BaseAdd, NodeValueAggregators.CalculateBaseAdd);
 
         private IDisposableNode CreateIncreaseNode(IStat stat) =>
-            new AggregatingNode(GetFormNodes(stat, Form.Increase), NodeValueAggregators.CalculateIncrease);
+            CreateFormAggregatingNode(stat, Form.Increase, NodeValueAggregators.CalculateIncrease);
 
         private IDisposableNode CreateMoreNode(IStat stat) =>
-            new AggregatingNode(GetFormNodes(stat, Form.More), NodeValueAggregators.CalculateMore);
+            CreateFormAggregatingNode(stat, Form.More, NodeValueAggregators.CalculateMore);
 
         private IDisposableNode CreateTotalOverrideNode(IStat stat) =>
-            new AggregatingNode(GetFormNodes(stat, Form.TotalOverride), NodeValueAggregators.CalculateOverride);
+            CreateFormAggregatingNode(stat, Form.TotalOverride, NodeValueAggregators.CalculateOverride);
 
-        private INodeCollection GetFormNodes(IStat stat, Form form) =>
-            NodeRepository.GetFormNodeCollection(stat, form);
+        private IDisposableNode CreateFormAggregatingNode(IStat stat, Form form, NodeValueAggregator aggregator) =>
+            CreateCoreNode(new FormAggregatingValue(stat, form, aggregator));
+
+        private IDisposableNode CreateCoreNode(IValue value) =>
+            new ValueNode(new ValueCalculationContext(NodeRepository), value);
     }
 }

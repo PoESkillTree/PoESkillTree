@@ -61,7 +61,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Nodes\AggregatingNode.cs" />
     <Compile Include="Nodes\BaseValue.cs" />
     <Compile Include="Calculator.cs" />
     <Compile Include="CalculatorExtensions.cs" />
@@ -75,6 +74,7 @@
     <Compile Include="Graphs\IModifierCollection.cs" />
     <Compile Include="INodeCollection.cs" />
     <Compile Include="NodeCollections\INodeCollectionFactory.cs" />
+    <Compile Include="Nodes\FormAggregatingValue.cs" />
     <Compile Include="Nodes\IDisposableNode.cs" />
     <Compile Include="Nodes\INodeFactory.cs" />
     <Compile Include="Graphs\IStatGraph.cs" />
