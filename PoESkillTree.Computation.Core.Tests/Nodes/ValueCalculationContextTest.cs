@@ -147,9 +147,19 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             CollectionAssert.IsEmpty(sut.UsedNodeCollections);
         }
 
+        [Test]
+        public void GetValueReturnsNullIfStatIsNull()
+        {
+            var sut = CreateSut();
+
+            var actual = sut.GetValue(null);
+
+            Assert.IsNull(actual);
+        }
+
 
         private static ValueCalculationContext CreateSut(INodeRepository nodeRepository = null) =>
-            new ValueCalculationContext(nodeRepository ?? Mock.Of<INodeRepository>());
+            new ValueCalculationContext(nodeRepository);
 
         private static INodeCollection<Modifier> MockNodeCollection(params ICalculationNode[] nodes)
         {

@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using PoESkillTree.Computation.Common;
+﻿using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
@@ -13,8 +12,7 @@ namespace PoESkillTree.Computation.Core
         // - Base, BaseOverride, BaseSet, Base Add: the unconverted base node.
         // - UncappedSubtotal: The node that sums all paths.
         // - Subtotal, TotalOverride, Total: There should only be one.
-        // If stat is null, this returns a node that always has a value of null
-        ICalculationNode GetNode([CanBeNull] IStat stat, NodeType nodeType = NodeType.Total);
+        ICalculationNode GetNode(IStat stat, NodeType nodeType = NodeType.Total);
 
         // stat selects the stat subgraph, nodeType the node in it.
         // Only one NodeType from Total, Subtotal and UncappedSubtotal make sense, probably Uncapped Subtotal as

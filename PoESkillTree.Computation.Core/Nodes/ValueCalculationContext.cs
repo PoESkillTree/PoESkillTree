@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using MoreLinq;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
@@ -17,8 +18,11 @@ namespace PoESkillTree.Computation.Core.Nodes
             _nodeRepository = nodeRepository;
         }
 
-        public NodeValue? GetValue(IStat stat, NodeType nodeType = NodeType.Total)
+        public NodeValue? GetValue([CanBeNull] IStat stat, NodeType nodeType = NodeType.Total)
         {
+            if (stat is null)
+                return null;
+
             var node = _nodeRepository.GetNode(stat, nodeType);
             _usedNodes.Add(node);
             return node.Value;
