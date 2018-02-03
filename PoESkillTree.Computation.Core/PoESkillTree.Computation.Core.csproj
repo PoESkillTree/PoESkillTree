@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NodeFactory.cs" />
     <Compile Include="Nodes\BaseValue.cs" />
     <Compile Include="Calculator.cs" />
     <Compile Include="CalculatorExtensions.cs" />
@@ -73,16 +74,15 @@
     <Compile Include="Events\ICountsSubsribers.cs" />
     <Compile Include="Graphs\IModifierCollection.cs" />
     <Compile Include="INodeCollection.cs" />
-    <Compile Include="NodeCollections\INodeCollectionFactory.cs" />
+    <Compile Include="Graphs\IStatNodeFactory.cs" />
     <Compile Include="Nodes\FormAggregatingValue.cs" />
     <Compile Include="Nodes\IDisposableNode.cs" />
-    <Compile Include="Nodes\INodeFactory.cs" />
+    <Compile Include="Graphs\INodeFactory.cs" />
     <Compile Include="Graphs\IStatGraph.cs" />
     <Compile Include="Events\ISuspendableEvents.cs" />
     <Compile Include="Events\ISuspendableEventViewProvider.cs" />
     <Compile Include="NodeCollections\ModifierNodeCollection.cs" />
     <Compile Include="NodeCollections\NodeCollection.cs" />
-    <Compile Include="NodeCollections\NodeCollectionFactory.cs" />
     <Compile Include="Graphs\StatGraphCollectionSuspender.cs" />
     <Compile Include="Nodes\NodeValueAggregators.cs" />
     <Compile Include="Nodes\ICachingNode.cs" />
@@ -90,11 +90,9 @@
     <Compile Include="ICalculationNode.cs" />
     <Compile Include="IExternalStatRegistry.cs" />
     <Compile Include="INodeRepository.cs" />
-    <Compile Include="Nodes\NullNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Nodes\CachingNode.cs" />
     <Compile Include="Nodes\CachingNodeAdapter.cs" />
-    <Compile Include="Nodes\NodeFactory.cs" />
     <Compile Include="Graphs\PrunableCalculationGraph.cs" />
     <Compile Include="Nodes\SubscriberCountingNode.cs" />
     <Compile Include="Nodes\SubtotalValue.cs" />
@@ -106,6 +104,7 @@
     <Compile Include="Nodes\UncappedSubtotalValue.cs" />
     <Compile Include="Nodes\ValueCalculationContext.cs" />
     <Compile Include="Nodes\ValueNode.cs" />
+    <Compile Include="StatNodeFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

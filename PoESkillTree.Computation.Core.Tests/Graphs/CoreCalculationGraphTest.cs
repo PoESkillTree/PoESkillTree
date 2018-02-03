@@ -3,7 +3,10 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Graphs;
+using PoESkillTree.Computation.Core.Nodes;
+using static PoESkillTree.Computation.Core.Tests.NodeHelper;
 
 namespace PoESkillTree.Computation.Core.Tests.Graphs
 {
@@ -89,34 +92,67 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void AddModifierCallsStatGraphCorrectly()
         {
+            var value = Mock.Of<IValue>();
             var stats = new IStat[] { new StatStub(), new StatStub() };
-            var modifier = new Modifier(stats, Form.More, null);
+            var modifier = new Modifier(stats, Form.More, value);
             var graphs = stats.ToDictionary(s => s, _ => Mock.Of<IStatGraph>());
-            var sut = CreateSut(s => graphs[s]);
+            var node = MockNodeProvider();
+            var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(value) == node);
+            var sut = CreateSut(s => graphs[s], nodeFactory);
 
             sut.AddModifier(modifier);
 
-            Mock.Get(graphs[stats[0]]).Verify(g => g.AddModifier(modifier));
-            Mock.Get(graphs[stats[1]]).Verify(g => g.AddModifier(modifier));
+            Mock.Get(graphs[stats[0]]).Verify(g => g.AddModifier(node, modifier));
+            Mock.Get(graphs[stats[1]]).Verify(g => g.AddModifier(node, modifier));
         }
 
         [Test]
         public void RemoveModifierCallsStatGraphCorrectly()
         {
+            var value = Mock.Of<IValue>();
             var stats = new IStat[] { new StatStub(), new StatStub(), new StatStub() };
-            var modifier = new Modifier(stats, Form.More, null);
+            var modifier = new Modifier(stats, Form.More, value);
             var graphs = stats.ToDictionary(s => s, _ => Mock.Of<IStatGraph>());
-            var sut = CreateSut(s => graphs[s]);
-            sut.AddModifier(new Modifier(stats.Take(2).ToList(), Form.More, null));
+            var node = MockNodeProvider();
+            var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(value) == node);
+            var sut = CreateSut(s => graphs[s], nodeFactory);
+            sut.AddModifier(modifier);
 
             sut.RemoveModifier(modifier);
 
-            Mock.Get(graphs[stats[0]]).Verify(g => g.RemoveModifier(modifier));
-            Mock.Get(graphs[stats[1]]).Verify(g => g.RemoveModifier(modifier));
-            Mock.Get(graphs[stats[2]]).Verify(g => g.RemoveModifier(modifier), Times.Never);
+            Mock.Get(graphs[stats[0]]).Verify(g => g.RemoveModifier(node, modifier));
+            Mock.Get(graphs[stats[1]]).Verify(g => g.RemoveModifier(node, modifier));
         }
 
-        private static CoreCalculationGraph CreateSut(Func<IStat, IStatGraph> graphFactory = null) =>
-            new CoreCalculationGraph(graphFactory);
+        [Test]
+        public void RemoveModifierDoesNothingIfParameterWasNotAdded()
+        {
+            var sut = CreateSut();
+
+            sut.RemoveModifier(new Modifier(new[] { new StatStub() }, Form.More, Mock.Of<IValue>()));
+        }
+
+        [Test]
+        public void RemoveModifierDisposesNode()
+        {
+            var value = Mock.Of<IValue>();
+            var stats = new IStat[] { new StatStub() };
+            var modifier = new Modifier(stats, Form.More, value);
+            var graphs = stats.ToDictionary(s => s, _ => Mock.Of<IStatGraph>());
+            var node = Mock.Of<ISuspendableEventViewProvider<IDisposableNode>>(p => 
+                p.DefaultView == MockNode(0) && p.SuspendableView == MockNode(0));
+            var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(value) == node);
+            var sut = CreateSut(s => graphs[s], nodeFactory);
+            sut.AddModifier(modifier);
+
+            sut.RemoveModifier(modifier);
+
+            Mock.Get(node.DefaultView).Verify(n => n.Dispose());
+            Mock.Get(node.SuspendableView).Verify(n => n.Dispose());
+        }
+
+        private static CoreCalculationGraph CreateSut(
+            Func<IStat, IStatGraph> graphFactory = null, INodeFactory nodeFactory = null) =>
+            new CoreCalculationGraph(graphFactory, nodeFactory);
     }
 }

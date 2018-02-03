@@ -45,8 +45,8 @@ namespace PoESkillTree.Computation.Core
         public static Calculator CreateCalculator()
         {
             var nodeFactory = new NodeFactory();
-            var nodeCollectionFactory = new NodeCollectionFactory();
-            var coreGraph = new CoreCalculationGraph(s => new CoreStatGraph(s, nodeFactory, nodeCollectionFactory));
+            var coreGraph = new CoreCalculationGraph(
+                s => new CoreStatGraph(new StatNodeFactory(nodeFactory, s)), nodeFactory);
             var prunableGraph = new PrunableCalculationGraph(coreGraph);
 
             nodeFactory.NodeRepository = new DefaultViewNodeRepository(prunableGraph);

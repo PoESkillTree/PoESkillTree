@@ -9,9 +9,7 @@ namespace PoESkillTree.Computation.Core.Graphs
 {
     public class CoreStatGraph : IStatGraph
     {
-        private readonly IStat _stat;
-        private readonly INodeFactory _nodeFactory;
-        private readonly INodeCollectionFactory _nodeCollectionFactory;
+        private readonly IStatNodeFactory _nodeFactory;
 
         private readonly Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>> _nodes =
             new Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>>();
@@ -19,16 +17,14 @@ namespace PoESkillTree.Computation.Core.Graphs
         private readonly Dictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>> _formNodeCollections
             = new Dictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>();
 
-        public CoreStatGraph(IStat stat, INodeFactory nodeFactory, INodeCollectionFactory nodeCollectionFactory)
+        public CoreStatGraph(IStatNodeFactory nodeFactory)
         {
-            _stat = stat;
             _nodeFactory = nodeFactory;
-            _nodeCollectionFactory = nodeCollectionFactory;
         }
 
         private ISuspendableEventViewProvider<IDisposableNode> GetDisposableNode(NodeType nodeType) => 
             (ISuspendableEventViewProvider<IDisposableNode>) _nodes
-                .GetOrAdd(nodeType, _ => _nodeFactory.Create(_stat, nodeType));
+                .GetOrAdd(nodeType, _ => _nodeFactory.Create(nodeType));
 
         public ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeType nodeType) => 
             GetDisposableNode(nodeType);
@@ -47,7 +43,7 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         private ModifierNodeCollection GetModifierNodeCollection(Form form) =>
             (ModifierNodeCollection) _formNodeCollections
-                .GetOrAdd(form, _ => _nodeCollectionFactory.Create());
+                .GetOrAdd(form, _ => _nodeFactory.Create(form));
 
         public ISuspendableEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(Form form) => 
             GetModifierNodeCollection(form);
@@ -58,26 +54,18 @@ namespace PoESkillTree.Computation.Core.Graphs
         public void RemoveFormNodeCollection(Form form) => 
             _formNodeCollections.Remove(form);
 
-        public void AddModifier(Modifier modifier)
+        public void AddModifier(ISuspendableEventViewProvider<IDisposableNode> node, Modifier modifier)
         {
             var collection = GetModifierNodeCollection(modifier.Form);
-            var node = _nodeFactory.Create(modifier.Value);
             collection.Add(modifier, node);
             ModifierCount++;
         }
 
-        public bool RemoveModifier(Modifier modifier)
+        public void RemoveModifier(ISuspendableEventViewProvider<IDisposableNode> node, Modifier modifier)
         {
             var collection = GetModifierNodeCollection(modifier.Form);
-            var node = collection.Remove(modifier);
-            if (node == null)
-            {
-                return false;
-            }
-            node.DefaultView.Dispose();
-            node.SuspendableView.Dispose();
+            collection.Remove(node);
             ModifierCount--;
-            return true;
         }
 
         public int ModifierCount { get; private set; }

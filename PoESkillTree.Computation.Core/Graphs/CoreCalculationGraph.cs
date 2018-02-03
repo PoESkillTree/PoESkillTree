@@ -5,25 +5,32 @@ using System.Linq;
 using MoreLinq;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Core.Events;
+using PoESkillTree.Computation.Core.Nodes;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
     public class CoreCalculationGraph : ICalculationGraph
     {
         private readonly Func<IStat, IStatGraph> _statGraphFactory;
+        private readonly INodeFactory _nodeFactory;
         private readonly Dictionary<IStat, IStatGraph> _statGraphs = new Dictionary<IStat, IStatGraph>();
 
-        public CoreCalculationGraph(Func<IStat, IStatGraph> statGraphFactory)
+        private readonly Dictionary<Modifier, Stack<ISuspendableEventViewProvider<IDisposableNode>>> _items
+            = new Dictionary<Modifier, Stack<ISuspendableEventViewProvider<IDisposableNode>>>();
+
+        public CoreCalculationGraph(Func<IStat, IStatGraph> statGraphFactory, INodeFactory nodeFactory)
         {
+            _nodeFactory = nodeFactory;
             _statGraphFactory = statGraphFactory;
         }
 
-        public IEnumerator<IReadOnlyStatGraph> GetEnumerator() => 
-            _statGraphs.Values.GetEnumerator();
+        public IEnumerator<IReadOnlyStatGraph> GetEnumerator() =>
+            StatGraphs.Values.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        private IStatGraph GetOrAddStatGraph(IStat stat) => 
+        private IStatGraph GetOrAddStatGraph(IStat stat) =>
             _statGraphs.GetOrAdd(stat, _statGraphFactory);
 
         public IReadOnlyStatGraph GetOrAdd(IStat stat) => GetOrAddStatGraph(stat);
@@ -34,17 +41,45 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         public void AddModifier(Modifier modifier)
         {
+            var node = _nodeFactory.Create(modifier.Value);
             modifier.Stats
                 .Select(GetOrAddStatGraph)
-                .ForEach(g => g.AddModifier(modifier));
+                .ForEach(g => g.AddModifier(node, modifier));
+            _items.GetOrAdd(modifier, k => new Stack<ISuspendableEventViewProvider<IDisposableNode>>())
+                .Push(node);
         }
 
         public void RemoveModifier(Modifier modifier)
         {
+            if (!TryGetNodeProvider(modifier, out var node))
+            {
+                return;
+            }
+
             modifier.Stats
-                .Where(s => _statGraphs.ContainsKey(s))
-                .Select(s => _statGraphs[s])
-                .ForEach(g => g.RemoveModifier(modifier));
+                .Where(s => StatGraphs.ContainsKey(s))
+                .Select(s => StatGraphs[s])
+                .ForEach(g => g.RemoveModifier(node, modifier));
+
+            node.DefaultView.Dispose();
+            node.SuspendableView.Dispose();
+        }
+
+        private bool TryGetNodeProvider(
+            Modifier modifier, out ISuspendableEventViewProvider<IDisposableNode> nodeProvider)
+        {
+            if (!_items.TryGetValue(modifier, out var stack))
+            {
+                nodeProvider = null;
+                return false;
+            }
+
+            nodeProvider = stack.Pop();
+            if (stack.IsEmpty())
+            {
+                _items.Remove(modifier);
+            }
+            return true;
         }
     }
 }

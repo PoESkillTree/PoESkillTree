@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Nodes;
 
 namespace PoESkillTree.Computation.Core.Tests
@@ -28,15 +28,6 @@ namespace PoESkillTree.Computation.Core.Tests
         public static void AssertValueChangedWillNotBeInvoked(this ICalculationNode node) => 
             node.SubscribeToValueChanged(Assert.Fail);
 
-        public static INodeCollection MockNodeCollection(params double?[] values)
-        {
-            var items = values.Select(MockNode).ToList();
-            var mock = new Mock<INodeCollection>();
-            mock.Setup(c => c.GetEnumerator()).Returns(() => items.GetEnumerator());
-            mock.Setup(c => c.Count).Returns(items.Count);
-            return mock.Object;
-        }
-
         public static void RaiseValueChanged(this Mock<IDisposableNode> nodeMock)
         {
             nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
@@ -45,5 +36,19 @@ namespace PoESkillTree.Computation.Core.Tests
         public static Modifier[] MockManyModifiers() => new[] { MockModifier(), MockModifier(), MockModifier() };
 
         public static Modifier MockModifier() => new Modifier(new IStat[0], Form.BaseAdd, Mock.Of<IValue>());
+
+        public static ISuspendableEventViewProvider<IDisposableNode> MockNodeProvider() =>
+            MockNodeProvider(null);
+
+        public static ISuspendableEventViewProvider<IDisposableNode> MockNodeProvider(
+            IDisposableNode defaultNode = null, IDisposableNode suspendableNode = null,
+            ISuspendableEvents suspender = null)
+        {
+            defaultNode = defaultNode ?? MockNode();
+            suspendableNode = suspendableNode ?? MockNode();
+            suspender = suspender ?? Mock.Of<ISuspendableEvents>();
+            return Mock.Of<ISuspendableEventViewProvider<IDisposableNode>>(
+                p => p.DefaultView == defaultNode && p.SuspendableView == suspendableNode && p.Suspender == suspender);
+        }
     }
 }

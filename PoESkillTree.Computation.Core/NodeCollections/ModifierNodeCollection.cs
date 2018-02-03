@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Events;
@@ -35,43 +34,26 @@ namespace PoESkillTree.Computation.Core.NodeCollections
         public ISuspendableEvents Suspender => _suspenderComposite.Value;
         public int SubscriberCount => _viewProvider.SubscriberCount;
 
+        public void Add(ISuspendableEventViewProvider<IDisposableNode> node, Modifier modifier)
+        {
+            _viewProvider.DefaultView.Add(node.DefaultView, modifier);
+            _viewProvider.SuspendableView.Add(node.SuspendableView, modifier);
+            _suspenderComposite.Value.Add(node.Suspender);
+        }
+
+        public void Remove(ISuspendableEventViewProvider<IDisposableNode> node)
+        {
+            _viewProvider.DefaultView.Remove(node.DefaultView);
+            _viewProvider.SuspendableView.Remove(node.SuspendableView);
+            _suspenderComposite.Value.Remove(node.Suspender);
+        }
+
         public void Add(Modifier modifier, ISuspendableEventViewProvider<IDisposableNode> node)
         {
             _viewProvider.DefaultView.Add(node.DefaultView, modifier);
             _viewProvider.SuspendableView.Add(node.SuspendableView, modifier);
             _suspenderComposite.Value.Add(node.Suspender);
             _items.GetOrAdd(modifier, k => new Stack<ISuspendableEventViewProvider<IDisposableNode>>()).Push(node);
-        }
-
-        [CanBeNull]
-        public ISuspendableEventViewProvider<IDisposableNode> Remove(Modifier modifier)
-        {
-            if (!TryGetNodeProvider(modifier, out var node))
-            {
-                return null;
-            }
-
-            _viewProvider.DefaultView.Remove(node.DefaultView);
-            _viewProvider.SuspendableView.Remove(node.SuspendableView);
-            _suspenderComposite.Value.Remove(node.Suspender);
-            return node;
-        }
-
-        private bool TryGetNodeProvider(
-            Modifier modifier, out ISuspendableEventViewProvider<IDisposableNode> nodeProvider)
-        {
-            if (!_items.TryGetValue(modifier, out var stack))
-            {
-                nodeProvider = null;
-                return false;
-            }
-
-            nodeProvider = stack.Pop();
-            if (stack.IsEmpty())
-            {
-                _items.Remove(modifier);
-            }
-            return true;
         }
     }
 }
