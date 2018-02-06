@@ -283,7 +283,17 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         }
 
         private static PrunableCalculationGraph CreateSut(ICalculationGraph decoratedGraph) =>
-            new PrunableCalculationGraph(decoratedGraph);
+            new PrunableCalculationGraph(decoratedGraph, MockDeterminesNodeRemoval());
+
+        private static IDeterminesNodeRemoval MockDeterminesNodeRemoval()
+        {
+            var mock = new Mock<IDeterminesNodeRemoval>();
+            mock.Setup(o => o.CanBeRemoved(It.IsAny<ICountsSubsribers>()))
+                .Returns((ICountsSubsribers c) => c.SubscriberCount == 0);
+            mock.Setup(o => o.CanBeRemoved(It.IsAny<ISuspendableEventViewProvider<ICalculationNode>>()))
+                .Returns((ICountsSubsribers c) => c.SubscriberCount == 0);
+            return mock.Object;
+        }
 
         private static Mock<ICalculationGraph> MockGraph(params IStat[] containedStats)
         {

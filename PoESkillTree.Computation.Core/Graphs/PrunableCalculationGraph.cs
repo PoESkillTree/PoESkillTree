@@ -12,11 +12,13 @@ namespace PoESkillTree.Computation.Core.Graphs
         : ICalculationGraph, ICalculationGraphPruner
     {
         private readonly ICalculationGraph _decoratedGraph;
+        private readonly IDeterminesNodeRemoval _nodeRemovalDeterminer;
         private readonly HashSet<IStat> _statsWithoutModifiers = new HashSet<IStat>();
 
-        public PrunableCalculationGraph(ICalculationGraph decoratedGraph)
+        public PrunableCalculationGraph(ICalculationGraph decoratedGraph, IDeterminesNodeRemoval nodeRemovalDeterminer)
         {
             _decoratedGraph = decoratedGraph;
+            _nodeRemovalDeterminer = nodeRemovalDeterminer;
         }
 
         public IEnumerator<IReadOnlyStatGraph> GetEnumerator() => _decoratedGraph.GetEnumerator();
@@ -43,17 +45,15 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         public void AddModifier(Modifier modifier)
         {
-            modifier.Stats
-                .ForEach(s => _statsWithoutModifiers.Remove(s));
+            _statsWithoutModifiers.ExceptWith(modifier.Stats);
             _decoratedGraph.AddModifier(modifier);
         }
 
         public void RemoveModifier(Modifier modifier)
         {
-            modifier.Stats
+            _statsWithoutModifiers.UnionWith(modifier.Stats
                 .Where(s => StatGraphs.ContainsKey(s))
-                .Where(s => StatGraphs[s].ModifierCount == 0)
-                .ForEach(s => _statsWithoutModifiers.Add(s));
+                .Where(s => StatGraphs[s].ModifierCount == 0));
             _decoratedGraph.RemoveModifier(modifier);
         }
 
@@ -73,15 +73,15 @@ namespace PoESkillTree.Computation.Core.Graphs
                 .ToList().ForEach(statGraph.RemoveFormNodeCollection);
         }
 
-        private static IEnumerable<NodeType> SelectRemovableNodesByNodeType(IReadOnlyStatGraph statGraph) =>
+        private IEnumerable<NodeType> SelectRemovableNodesByNodeType(IReadOnlyStatGraph statGraph) =>
             from nodeType in Enum.GetValues(typeof(NodeType)).Cast<NodeType>()
             where statGraph.Nodes.ContainsKey(nodeType)
-            where statGraph.Nodes[nodeType].SubscriberCount == 0
+            where _nodeRemovalDeterminer.CanBeRemoved(statGraph.Nodes[nodeType])
             select nodeType;
 
-        private static IEnumerable<Form> SelectRemovableNodesByForm(IReadOnlyStatGraph statGraph) =>
+        private IEnumerable<Form> SelectRemovableNodesByForm(IReadOnlyStatGraph statGraph) =>
             from pair in statGraph.FormNodeCollections
-            where pair.Value.SubscriberCount == 0
+            where _nodeRemovalDeterminer.CanBeRemoved(pair.Value)
             select pair.Key;
 
         private IEnumerable<IStat> SelectRemovableStats() =>

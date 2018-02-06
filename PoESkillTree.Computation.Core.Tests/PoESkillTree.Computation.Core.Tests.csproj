@@ -65,19 +65,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Graphs\CalculationGraphWithEventsTest.cs" />
+    <Compile Include="Graphs\StatRegistryTest.cs" />
     <Compile Include="Nodes\BaseValueTest.cs" />
     <Compile Include="CalculatorExtensionsTest.cs" />
     <Compile Include="CalculatorTest.cs" />
     <Compile Include="Graphs\CoreCalculationGraphTest.cs" />
     <Compile Include="Graphs\CoreStatGraphTest.cs" />
     <Compile Include="Graphs\DefaultViewRepositoryTest.cs" />
-    <Compile Include="ExternalStatRegistryText.cs" />
     <Compile Include="NodeCollections\ModifierNodeCollectionTest.cs" />
     <Compile Include="NodeCollections\NodeCollectionTest.cs" />
     <Compile Include="Graphs\StatGraphCollectionSuspenderTest.cs" />
     <Compile Include="Nodes\FormAggregatingValueTest.cs" />
     <Compile Include="Nodes\NodeValueAggregatorsTest.cs" />
     <Compile Include="NodeHelper.cs" />
+    <Compile Include="Nodes\WrappingNodeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Nodes\CachingNodeAdapterTest.cs" />
     <Compile Include="Nodes\CachingNodeTest.cs" />

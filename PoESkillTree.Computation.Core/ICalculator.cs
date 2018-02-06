@@ -11,7 +11,7 @@ namespace PoESkillTree.Computation.Core
 
         INodeRepository NodeRepository { get; }
 
-        //IExternalStatRegistry ExternalStatRegistry { get; }
+        INodeCollection<IStat> ExplicitlyRegisteredStats { get; }
     }
 
 

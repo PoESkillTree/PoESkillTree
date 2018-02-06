@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Buffs;
@@ -87,6 +88,8 @@ namespace PoESkillTree.Computation.Console.Builders
 
             public IStat Minimum => null;
             public IStat Maximum => null;
+            public bool IsRegisteredExplicitly => false;
+            public Type DataType => typeof(double);
         }
     }
 

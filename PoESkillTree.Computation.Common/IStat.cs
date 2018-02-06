@@ -20,6 +20,13 @@ namespace PoESkillTree.Computation.Common
         [CanBeNull]
         IStat Maximum { get; }
 
+        // True if the existence/usage of this stat should be explicitly announced to clients
+        bool IsRegisteredExplicitly { get; }
+
+        // The type of this stat's values. Can be double, int or bool (0 or 1).
+        // The value range is determined by Minimum and Maximum (which have the same DataType).
+        Type DataType { get; }
+
         // If there is only one IStat subclass:
         // The object determining equality can be passed to its constructor and can be used for ToString()
 

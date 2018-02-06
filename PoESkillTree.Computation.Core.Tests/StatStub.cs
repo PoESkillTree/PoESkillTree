@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Tests
@@ -21,5 +22,7 @@ namespace PoESkillTree.Computation.Core.Tests
 
         public IStat Minimum { get; }
         public IStat Maximum { get; }
+        public bool IsRegisteredExplicitly { get; set; }
+        public Type DataType => typeof(double);
     }
 }

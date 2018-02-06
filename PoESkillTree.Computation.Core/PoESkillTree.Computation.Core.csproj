@@ -61,6 +61,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Graphs\CalculationGraphWithEvents.cs" />
+    <Compile Include="Graphs\IDeterminesNodeRemoval.cs" />
+    <Compile Include="Graphs\StatRegistry.cs" />
     <Compile Include="NodeFactory.cs" />
     <Compile Include="Nodes\BaseValue.cs" />
     <Compile Include="Calculator.cs" />
@@ -68,7 +71,6 @@
     <Compile Include="Graphs\CoreCalculationGraph.cs" />
     <Compile Include="Graphs\CoreStatGraph.cs" />
     <Compile Include="Graphs\DefaultViewNodeRepository.cs" />
-    <Compile Include="ExternalStatRegistry.cs" />
     <Compile Include="Graphs\ICalculationGraph.cs" />
     <Compile Include="Graphs\ICalculationGraphPruner.cs" />
     <Compile Include="Events\ICountsSubsribers.cs" />
@@ -88,8 +90,8 @@
     <Compile Include="Nodes\ICachingNode.cs" />
     <Compile Include="ICalculator.cs" />
     <Compile Include="ICalculationNode.cs" />
-    <Compile Include="IExternalStatRegistry.cs" />
     <Compile Include="INodeRepository.cs" />
+    <Compile Include="Nodes\WrappingNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Nodes\CachingNode.cs" />
     <Compile Include="Nodes\CachingNodeAdapter.cs" />

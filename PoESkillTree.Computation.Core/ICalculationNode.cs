@@ -47,23 +47,12 @@ namespace PoESkillTree.Computation.Core
      *     - A method/property can be added to IStat that returns its behaviors (e.g. a collection of IBehavior)
      *     - IBehavior specifies the affected IStat and NodeType combinations and the effect it has
      *     - When removing a stat subgraph, behaviors caused by it must also be removed
-     * - User entered conditions/stats must be able to register themselves, i.e. IExternalStatRegistry and IStat must be
-     *   connected in some way. This doesn't seem to fit the behavior concept. Add an "IsExternal" property to IStat?
-     *   - With such a property and a default value behavior, default values don't need to be stored explicitly.
-     *   - With external stats, determining when a stat is no longer used gets more complicated. It can not be
-     *     determined which references are only because the stat is external. To solve this, IExternalStatRegistry
-     *     needs to supply a ValueChanged event for each external stat, which in turn subscribes to the node that would
-     *     be accessible by the client side view (ICalculator.NodeRepository). The graph internal and real client
-     *     side references can then be determined by simply subtracting 1 from the count that would normally be used.
-     *   - IExternalStatRegistry needs to be suspended/resumed in ICalculator.Update()
-     *   - The data type must be specified.
      * -> Support needs to be implemented for:
      *    - A general concept of paths
      *    - Separating paths by Modifier.Source (which also does not yet exist) by default
      *    - Specifying further paths in IStat, mostly conversion/gains but maybe more (e.g. the different DoT from ailment types)
      *    - A general concept of behaviors, which can be specified in IStat
      *      - These modify the input/output values of stat subgraph nodes
-     *    - External stats
      *
      * Data-driven Mechanics:
      * - New "CommonGivenStats" data class
