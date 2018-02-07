@@ -54,7 +54,10 @@ namespace PoESkillTree.Computation.Core
             var statRegistry = new StatRegistry(statRegistryCollection, n => new WrappingNode(n));
             var coreGraph = new CoreCalculationGraph(
                 s => new CoreStatGraph(new StatNodeFactory(nodeFactory, s)), nodeFactory);
-            var prunableGraph = new PrunableCalculationGraph(coreGraph, statRegistry);
+            var eventGraph = new CalculationGraphWithEvents(coreGraph);
+            eventGraph.StatAdded += (_, args) => statRegistry.Add(args.Stat);
+            eventGraph.StatRemoved += (_, args) => statRegistry.Remove(args.Stat);
+            var prunableGraph = new PrunableCalculationGraph(eventGraph, statRegistry);
 
             var defaultView = new DefaultViewNodeRepository(prunableGraph);
             var suspendableView = new SuspendableViewNodeRepository(prunableGraph);

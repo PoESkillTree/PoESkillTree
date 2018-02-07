@@ -77,7 +77,9 @@
     <Compile Include="Graphs\IModifierCollection.cs" />
     <Compile Include="INodeCollection.cs" />
     <Compile Include="Graphs\IStatNodeFactory.cs" />
+    <Compile Include="Nodes\CycleGuard.cs" />
     <Compile Include="Nodes\FormAggregatingValue.cs" />
+    <Compile Include="Nodes\ICycleGuard.cs" />
     <Compile Include="Nodes\IDisposableNode.cs" />
     <Compile Include="Graphs\INodeFactory.cs" />
     <Compile Include="Graphs\IStatGraph.cs" />

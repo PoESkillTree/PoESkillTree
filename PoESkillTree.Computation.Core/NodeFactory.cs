@@ -12,7 +12,7 @@ namespace PoESkillTree.Computation.Core
         public ISuspendableEventViewProvider<IDisposableNode> Create(IValue value)
         {
             var coreNode = new ValueNode(new ValueCalculationContext(NodeRepository), value);
-            var cachingNode = new CachingNode(coreNode);
+            var cachingNode = new CachingNode(coreNode, new CycleGuard());
             var cachingNodeAdapter = new CachingNodeAdapter(cachingNode);
             return SuspendableEventViewProvider.Create<SubscriberCountingNode, CachingNode>(
                 cachingNodeAdapter, cachingNode);

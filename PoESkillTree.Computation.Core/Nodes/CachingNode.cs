@@ -6,15 +6,17 @@ namespace PoESkillTree.Computation.Core.Nodes
     public class CachingNode : SubscriberCountingNode, ICachingNode
     {
         private readonly IDisposableNode _decoratedNode;
+        private readonly ICycleGuard _cycleGuard;
 
         private bool _calculatedValue;
         private NodeValue? _value;
         private bool _suspendEvents;
         private bool _suppressedValueChanged;
 
-        public CachingNode(IDisposableNode decoratedNode)
+        public CachingNode(IDisposableNode decoratedNode, ICycleGuard cycleGuard)
         {
             _decoratedNode = decoratedNode;
+            _cycleGuard = cycleGuard;
             _decoratedNode.ValueChanged += DecoratedNodeOnValueChanged;
         }
 
@@ -24,12 +26,20 @@ namespace PoESkillTree.Computation.Core.Nodes
             {
                 if (!_calculatedValue)
                 {
-                    _value = _decoratedNode.Value;
-                    _calculatedValue = true;
+                    CalculateValue();
                 }
 
                 return _value;
             }
+        }
+
+        private void CalculateValue()
+        {
+            using (_cycleGuard.Guard())
+            {
+                _value = _decoratedNode.Value;
+            }
+            _calculatedValue = true;
         }
 
         public event EventHandler ValueChangeReceived;

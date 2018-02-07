@@ -183,6 +183,18 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void ValueUsesCycleGuard()
+        {
+            var cycleGuardMock = new Mock<ICycleGuard>();
+            cycleGuardMock.Setup(g => g.Guard().Dispose()).Verifiable();
+            var sut = CreateSut(cycleGuard: cycleGuardMock.Object);
+
+            var _ = sut.Value;
+
+            cycleGuardMock.Verify();
+        }
+
         private static CachingNode CreateCachedSut(Mock<IDisposableNode> decoratedNodeMock, double? cachedValue)
         {
             decoratedNodeMock.SetupGet(n => n.Value).Returns((NodeValue?) cachedValue);
@@ -191,15 +203,15 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             return sut;
         }
 
-        private static CachingNode CreateSut(double? value = null)
+        private static CachingNode CreateSut(double? value = null, ICycleGuard cycleGuard = null)
         {
             var decoratedNode = NodeHelper.MockNode(value);
-            return CreateSut(decoratedNode);
+            return CreateSut(decoratedNode, cycleGuard);
         }
 
-        private static CachingNode CreateSut(IDisposableNode decoratedNode)
+        private static CachingNode CreateSut(IDisposableNode decoratedNode, ICycleGuard cycleGuard = null)
         {
-            return new CachingNode(decoratedNode);
+            return new CachingNode(decoratedNode, cycleGuard ?? Mock.Of<ICycleGuard>());
         }
     }
 }

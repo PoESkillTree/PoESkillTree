@@ -76,6 +76,7 @@
     <Compile Include="NodeCollections\ModifierNodeCollectionTest.cs" />
     <Compile Include="NodeCollections\NodeCollectionTest.cs" />
     <Compile Include="Graphs\StatGraphCollectionSuspenderTest.cs" />
+    <Compile Include="Nodes\CycleGuardTest.cs" />
     <Compile Include="Nodes\FormAggregatingValueTest.cs" />
     <Compile Include="Nodes\NodeValueAggregatorsTest.cs" />
     <Compile Include="NodeHelper.cs" />
