@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using PoESkillTree.Common.Model.Items.Enums;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
 
@@ -196,7 +197,7 @@ namespace POESKillTree.Model.Items
 
             if (quality > 0)
             {
-                var qProp = new ItemMod($"Quality: +{quality}%", true, ItemMod.ValueColoring.LocallyAffected);
+                var qProp = new ItemMod($"Quality: +{quality}%", true, ValueColoring.LocallyAffected);
                 props.Add(qProp);
             }
 

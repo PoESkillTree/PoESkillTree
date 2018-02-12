@@ -62,7 +62,8 @@
                 <l:Catalog Message="Open in Browser"/>
             </Button>
         </Grid>
-        <TextBox Margin="5" TextWrapping="Wrap" Text="{Binding TabsLink}" IsReadOnly="True"
+        <TextBox Margin="5" TextWrapping="Wrap" 
+                 Text="{Binding TabsLink, Mode=OneWay}" IsReadOnly="True"
                  Grid.Column="0" Grid.Row="3" MinLines="4"
                  metroControls:TextBoxHelper.SelectAllOnFocus="True" />
         <Button Command="{Binding LoadTabsCommand}"
@@ -110,7 +111,8 @@
                 <l:Catalog Message="Open in Browser"/>
             </Button>
         </Grid>
-        <TextBox Margin="5" TextWrapping="Wrap" Text="{Binding TabLink}" IsReadOnly="True"
+        <TextBox Margin="5" TextWrapping="Wrap" 
+                 Text="{Binding TabLink, Mode=OneWay}" IsReadOnly="True"
                  Grid.Column="1" Grid.Row="3" MinLines="4"
                  metroControls:TextBoxHelper.SelectAllOnFocus="True" />
         <Button Command="{Binding LoadTabContentsCommand}"

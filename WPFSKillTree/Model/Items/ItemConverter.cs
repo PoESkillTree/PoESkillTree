@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
+using PoESkillTree.Common.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
 
 namespace POESKillTree.Model.Items
@@ -112,15 +113,15 @@ namespace POESKillTree.Model.Items
             if (mod.ValueColors.Count > i && i >= 0)
                 switch (mod.ValueColors[i])
                 {
-                    case ItemMod.ValueColoring.LocallyAffected:
+                    case ValueColoring.LocallyAffected:
                         return LocallyAffectedColor;
-                    case ItemMod.ValueColoring.Fire:
+                    case ValueColoring.Fire:
                         return FireAffectedColor;
-                    case ItemMod.ValueColoring.Cold:
+                    case ValueColoring.Cold:
                         return ColdAffectedColor;
-                    case ItemMod.ValueColoring.Lightning:
+                    case ValueColoring.Lightning:
                         return LightningAffectedColor;
-                    case ItemMod.ValueColoring.Chaos:
+                    case ValueColoring.Chaos:
                         return ChaosAffectedColor;
                 }
 

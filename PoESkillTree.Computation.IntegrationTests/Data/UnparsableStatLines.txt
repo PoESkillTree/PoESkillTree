@@ -1,0 +1,74 @@
+﻿// not handled (no useful usage)
+// Jewels:
+Your Golems are aggressive
+#% chance to gain an additional Vaal Soul per Enemy Shattered
+#% chance to gain an additional Vaal Soul on Kill
+Frostbolt Projectiles gain 40% increased Projectile Speed per second
+Ethereal Knives fires Projectiles in a Nova
+#% increased Experience Gain for Corrupted Gems
+Fireball Projectiles gain Radius as they travel farther, up to +4 Radius
+Raised Spectres have a 50% chance to gain Soul Eater for 30 seconds on Kill
+Ground Slam has a 35% increased angle
+Vigilant Strike Fortifies you and Nearby Allies for 12 seconds
+Burning Arrow has a 10% chance to spread Tar if it does not Ignite an Enemy
+#% additional Chance to receive a Critical Strike
+#% increased Rarity of Items dropped by Enemies Shattered by Glacial Hammer
+Magma Orb has 10% increased Area of Effect per Chain
+// passive skills:
+10% Chance for Traps to Trigger an additional time
+Share Endurance, Frenzy and Power Charges with nearby party members
+Enemies Become Chilled as they Unfreeze
+Light Radius is based on Energy Shield instead of Life
+Traps cannot be Damaged for 5 seconds after being Thrown
+Mines cannot be Damaged for 5 seconds after being Placed
+25% chance to Steal Power, Frenzy, and Endurance Charges on Hit with Claws
+Enemies Cannot Leech Life From You
+Hits that Stun Enemies have Culling Strike
+removes bleeding when you use a flask
+// Side effect from how jewels are currently handled, the stat doesn't actually exist
++1 Jewel Socket
+// Ascendancies:
+Bleeding Enemies you Kill Explode, dealing 10% of their Maximum Life as Physical Damage
+Elemental Ailments are removed when you reach Low Life
+Enemies you Taunt deal 10% less Damage with Hits and Ailments against other targets
+Kill Enemies that have 20% or lower Life when Hit by your Skills
+20% of Overkill Damage is Leeched as Life
+Life Leech effects are not removed at Full Life
+Remove Bleeding on Flask use
+Gain a Flask Charge when you deal a Critical Strike
+50% chance to gain a Flask Charge when you deal a Critical Strike
+Flasks gain a Charge every 3 seconds
+20% chance for your Flasks to not consume Charges
+10% chance for your Flasks to not consume Charges
+Enemies you Kill that are affected by Elemental Ailments grant 100% increased Flask Charges
+Attack Projectiles Return to You after hitting targets
+Moving while Bleeding doesn't cause you to take extra Damage
+When your Traps Trigger, your nearby Traps also Trigger
+20% chance when Placing Mines to Place an additional Mine
+100% increased Mine Arming Speed
+Cannot be Blinded
+25% chance to create a Smoke Cloud when Hit
+20% chance to create a Smoke Cloud when you place a Mine or throw a Trap
+20% chance to Recover 10% of Maximum Mana when you use a Skill
+Critical Strikes have Culling Strike
+Elemental Ailments caused by your Skills spread to other nearby Enemies Radius: 12
+Energy Shield Recharge is not interrupted by Damage if Recharge began Recently
+Cursed Enemies you Kill Explode, dealing a quarter of their maximum Life as Chaos Damage
+Nearby Enemies cannot gain Power, Frenzy or Endurance Charges
+You and Nearby Party Members Share Power, Frenzy and Endurance Charges with each other
+Every 5 seconds, remove Curses and Elemental Ailments from you
+Every 5 seconds, 30% of Maximum Life Regenerated over one second
+50% additional Block Chance for 1 second every 5 seconds
+30% chance to create Consecrated Ground when Hit, lasting 8 seconds
+30% chance to create Consecrated Ground on Kill, lasting 8 seconds
+When you or your Totems Kill a Burning Enemy, 20% chance for you and your Totems to each gain an Endurance Charge
+Totems Reflect 15% of their maximum Life as Fire Damage to nearby Enemies when Hit
+Recover 25% of Life and Mana when you Warcry
+25% chance that if you would gain Endurance Charges, you instead gain up to your maximum number of Endurance Charges
+Cursed Enemies you Kill have a 20% chance to Explode, dealing a quarter of their maximum Life as Chaos Damage
+can allocate passives from the marauder's starting point
+can allocate passives from the duelist's starting point
+can allocate passives from the ranger's starting point
+can allocate passives from the shadow's starting point
+can allocate passives from the witch's starting point
+can allocate passives from the templar's starting point

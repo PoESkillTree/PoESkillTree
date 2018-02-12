@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using PoESkillTree.Common.Model.Items.Enums;
 using POESKillTree.Model.Items.Enums;
 
 namespace POESKillTree.Model.Items.Mods

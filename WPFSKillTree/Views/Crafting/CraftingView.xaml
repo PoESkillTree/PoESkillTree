@@ -10,6 +10,7 @@
                              xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Crafting"
                              xmlns:enums="clr-namespace:POESKillTree.Model.Items.Enums"
                              xmlns:mahApps="http://metro.mahapps.com/winfx/xaml/controls"
+                             xmlns:enums1="clr-namespace:PoESkillTree.Common.Model.Items.Enums;assembly=PoESkillTree.Common"
                              mc:Ignorable="d" 
                              d:DataContext="{d:DesignInstance viewModels:CraftingViewModel}"
                              CloseButtonVisibility="Collapsed"
@@ -54,7 +55,7 @@
                     <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
                         <Setter Property="Visibility" Value="Collapsed" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Item.Frame}" Value="{x:Static enums:FrameType.Rare}">
+                            <DataTrigger Binding="{Binding Item.Frame}" Value="{x:Static enums1:FrameType.Rare}">
                                 <Setter Property="Visibility" Value="Visible" />
                             </DataTrigger>
                         </Style.Triggers>

@@ -1,0 +1,23 @@
+// Example parsable stat lines (not including those in AllSkillTreeStatLines)
+10% increased armour per grand spectrum
+Gain 30 Mana per Grand Spectrum
+Adds 1 to Maximum Life
+60% reduced Mana Cost of Totem Skills that cast an Aura
+Can Summon up to 1 additional Golem at a time
+If you have 3 Primordial Jewels, can Summon up to 1 additional Golem at a time
+Minions have 4% additional chance to Dodge Attacks
+12% reduced Skeleton Duration
+20% increased Vaal Skill Effect Duration
+1% of maximum Mana gained on Kill
+Removes 1% of maximum Life on Kill
+Removes 1% of maximum Energy Shield on Kill
+Gain 5% of Lightning Damage as Extra Chaos Damage
+20% faster start of Energy Shield Recharge
+10% increased Damage Taken while Energy Shield is Full
+50% increased Spell Damage while no Mana is Reserved
+Traps and Mines deal 3 to 13 additional Physical Damage
+Traps and Mines have a 25% chance to Poison on Hit
+With 5 Corrupted Items Equipped: 50% of Chaos Damage does not bypass Energy Shield, and 50% of Physical Damage bypasses Energy Shield
+5% increased Defences
+Melee Damage dealt by Frost Blades Penetrates 15% Cold Resistance
+Frost Blades has 25% increased Projectile Speed

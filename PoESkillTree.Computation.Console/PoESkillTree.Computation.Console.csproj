@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AADCC052-3A9D-4513-9EAE-7AEACBF2DBCA}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>PoESkillTree.Computation.Console</RootNamespace>
+    <AssemblyName>PoESkillTree.Computation.Console</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="MoreLinq, Version=2.4.20801.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.2.4.1\lib\net40\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Builders\ActionBuilderStub.cs" />
+    <Compile Include="Builders\AilmentBuilderStub.cs" />
+    <Compile Include="Builders\BuffBuilderStub.cs" />
+    <Compile Include="Builders\BuilderCollectionStub.cs" />
+    <Compile Include="Builders\BuilderFactories.cs" />
+    <Compile Include="Builders\BuilderFactory.cs" />
+    <Compile Include="Builders\BuilderStub.cs" />
+    <Compile Include="Builders\ChargeTypeBuilderStub.cs" />
+    <Compile Include="Builders\ConditionBuilderStub.cs" />
+    <Compile Include="Builders\DamageSourceBuilderStub.cs" />
+    <Compile Include="Builders\DamageStatBuilderStub.cs" />
+    <Compile Include="Builders\DamageTypeBuilderStub.cs" />
+    <Compile Include="Builders\EffectBuilderStub.cs" />
+    <Compile Include="Builders\EntityBuilderStub.cs" />
+    <Compile Include="Builders\EquipmentBuilderStub.cs" />
+    <Compile Include="Builders\FlagStatBuilderStub.cs" />
+    <Compile Include="Builders\FormBuilderStub.cs" />
+    <Compile Include="Builders\GroundEffectBuilderStub.cs" />
+    <Compile Include="Builders\ReferenceConverterStub.cs" />
+    <Compile Include="Builders\ItemSlotBuilderStub.cs" />
+    <Compile Include="Builders\KeywordBuilderStub.cs" />
+    <Compile Include="Builders\MatchContextStub.cs" />
+    <Compile Include="Builders\PoolStatBuilderStub.cs" />
+    <Compile Include="Builders\Resolver.cs" />
+    <Compile Include="Builders\SkillBuilderStub.cs" />
+    <Compile Include="Builders\StatBuildersStub.cs" />
+    <Compile Include="Builders\StatBuilderStub.cs" />
+    <Compile Include="Builders\StunEffectBuilderStub.cs" />
+    <Compile Include="Builders\ValueBuilderStub.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SkillMatchers.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Common.csproj">
+      <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
+      <Name>PoESkillTree.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj">
+      <Project>{827be52d-878c-45f0-afc0-75b5385aad53}</Project>
+      <Name>PoESkillTree.Computation.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Data\PoESkillTree.Computation.Data.csproj">
+      <Project>{85cf9690-7eb9-42cb-9574-adf4239cffbe}</Project>
+      <Name>PoESkillTree.Computation.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Parsing\PoESkillTree.Computation.Parsing.csproj">
+      <Project>{1e573c72-9b7f-40af-a5e8-739f90b50690}</Project>
+      <Name>PoESkillTree.Computation.Parsing</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\AllSkillTreeStatLines.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
+  </Target>
+</Project>

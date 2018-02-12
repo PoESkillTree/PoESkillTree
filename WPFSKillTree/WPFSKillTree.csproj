@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props')" />
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>POESKillTree</RootNamespace>
     <AssemblyName>PoESkillTree</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -34,6 +34,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -230,7 +231,6 @@
     <Compile Include="Model\Items\StatTranslation\StatTranslator.cs" />
     <Compile Include="Model\Items\Enums\ItemClass.cs" />
     <Compile Include="Model\Items\Enums\ModLocation.cs" />
-    <Compile Include="Model\Items\Enums\Tags.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
     <Compile Include="Model\Items\StatTranslation\Translation.cs" />
     <Compile Include="Utils\WikiApi\CargoConstants.cs" />
@@ -363,8 +363,6 @@
     <Compile Include="Model\IMemento.cs" />
     <Compile Include="Model\IPersistentData.cs" />
     <Compile Include="Model\Items\Mods\ItemMod.cs" />
-    <Compile Include="Model\Items\Enums\FrameType.cs" />
-    <Compile Include="Model\Items\Enums\ItemSlot.cs" />
     <Compile Include="Model\Items\Enums\ModGenerationType.cs" />
     <Compile Include="Model\Items\EquipmentData.cs" />
     <Compile Include="Model\Items\ItemImage.cs" />
@@ -1074,6 +1072,12 @@
   <ItemGroup>
     <Folder Include="Data\Assets\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Common.csproj">
+      <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
+      <Name>PoESkillTree.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release call $(ProjectDir)build-locale.bat $(TargetDir)</PostBuildEvent>
@@ -1082,7 +1086,7 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.2.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

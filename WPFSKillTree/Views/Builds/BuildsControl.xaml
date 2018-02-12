@@ -183,7 +183,7 @@
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
                             <TextBlock FontWeight="Bold" FontSize="12" TextWrapping="NoWrap">
-                                <Run Text="{Binding Build.Name}" /><Run Text="{Binding Build.IsDirty, Converter={StaticResource DirtyBooleanConverter}}" />
+                                <Run Text="{Binding Build.Name}" /><Run Text="{Binding Build.IsDirty, Converter={StaticResource DirtyBooleanConverter}, Mode=OneWay}" />
                             </TextBlock>
                             <TextBlock Text="{Binding Description}" MaxHeight="60"/>
                         </StackPanel>

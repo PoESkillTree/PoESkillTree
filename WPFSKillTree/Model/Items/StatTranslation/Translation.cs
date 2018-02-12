@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using MoreLinq;
+using PoESkillTree.Common.Model.Items;
 using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items.StatTranslation
@@ -79,7 +80,9 @@ namespace POESKillTree.Model.Items.StatTranslation
                         }
                         formatInputs.Add(entry.Formats[i].Apply(value));
                     }
-                    var suffix = _jsonTranslation.IsHidden ? " (Hidden)" : "";
+                    var suffix = _jsonTranslation.IsHidden
+                        ? " " + ItemConstants.HiddenStatSuffix
+                        : "";
                     return string.Format(CultureInfo.InvariantCulture, entry.FormatString, 
                         formatInputs.ToArray<object>()) + suffix;
                 }
