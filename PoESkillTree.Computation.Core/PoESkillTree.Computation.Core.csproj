@@ -64,6 +64,7 @@
     <Compile Include="Graphs\CalculationGraphWithEvents.cs" />
     <Compile Include="Graphs\IDeterminesNodeRemoval.cs" />
     <Compile Include="Graphs\StatRegistry.cs" />
+    <Compile Include="Graphs\TransformableNodeFactory.cs" />
     <Compile Include="NodeFactory.cs" />
     <Compile Include="Nodes\BaseValue.cs" />
     <Compile Include="Calculator.cs" />
@@ -88,11 +89,13 @@
     <Compile Include="NodeCollections\ModifierNodeCollection.cs" />
     <Compile Include="NodeCollections\NodeCollection.cs" />
     <Compile Include="Graphs\StatGraphCollectionSuspender.cs" />
+    <Compile Include="Nodes\IValueTransformable.cs" />
     <Compile Include="Nodes\NodeValueAggregators.cs" />
     <Compile Include="Nodes\ICachingNode.cs" />
     <Compile Include="ICalculator.cs" />
     <Compile Include="ICalculationNode.cs" />
     <Compile Include="INodeRepository.cs" />
+    <Compile Include="Nodes\TransformableValue.cs" />
     <Compile Include="Nodes\WrappingNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Nodes\CachingNode.cs" />

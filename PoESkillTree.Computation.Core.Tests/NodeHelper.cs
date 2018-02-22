@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
@@ -50,5 +51,8 @@ namespace PoESkillTree.Computation.Core.Tests
             return Mock.Of<ISuspendableEventViewProvider<IDisposableNode>>(
                 p => p.DefaultView == defaultNode && p.SuspendableView == suspendableNode && p.Suspender == suspender);
         }
+
+        public static T[] MockMany<T>(int count = 3) where T : class =>
+            Enumerable.Range(0, count).Select(_ => Mock.Of<T>()).ToArray();
     }
 }

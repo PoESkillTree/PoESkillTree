@@ -49,7 +49,8 @@ namespace PoESkillTree.Computation.Core
         // (or add a property to ICalculator to disable/enable suspender usage)
         public static Calculator CreateCalculator()
         {
-            var nodeFactory = new NodeFactory();
+            var innerNodeFactory = new NodeFactory();
+            var nodeFactory = new TransformableNodeFactory(innerNodeFactory, v => new TransformableValue(v));
             var statRegistryCollection = new SuspendableNodeCollection<IStat>();
             var statRegistry = new StatRegistry(statRegistryCollection, n => new WrappingNode(n));
             var coreGraph = new CoreCalculationGraph(
@@ -61,7 +62,7 @@ namespace PoESkillTree.Computation.Core
 
             var defaultView = new DefaultViewNodeRepository(prunableGraph);
             var suspendableView = new SuspendableViewNodeRepository(prunableGraph);
-            nodeFactory.NodeRepository = defaultView;
+            innerNodeFactory.NodeRepository = defaultView;
             statRegistry.NodeRepository = suspendableView;
 
             var suspender = new SuspendableEventsComposite();

@@ -57,7 +57,7 @@ namespace PoESkillTree.Computation.Core.Graphs
         public void AddModifier(ISuspendableEventViewProvider<IDisposableNode> node, Modifier modifier)
         {
             var collection = GetModifierNodeCollection(modifier.Form);
-            collection.Add(modifier, node);
+            collection.Add(node, modifier);
             ModifierCount++;
         }
 
