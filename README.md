@@ -1,4 +1,5 @@
-# PoESkillTree    
+# PoESkillTree [![Discord](https://b.thumbs.redditmedia.com/YzI6TxCJcacCZw1sx1Z5tyy6YskyNiA84hn4WfPXaRM.png)](https://discord.gg/sC7cUHV)
+
 
 A Passive Skill Tree and Character Planner for Path of Exile
 
