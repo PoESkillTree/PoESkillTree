@@ -29,7 +29,7 @@ msgstr "OK"
 #: Controls\Dialogs\Views\MetroMessageBoxView.xaml:77
 #: Controls\Dialogs\Views\ValidatingInputDialogView.xaml:48
 #: ItemFilter\Views\ItemFilterEditWindow.xaml:138
-#: Views\Builds\EditBuildWindow.xaml:64 Views\Crafting\CraftingView.xaml:132
+#: Views\Builds\EditBuildWindow.xaml:64 Views\Crafting\CraftingView.xaml:133
 #: Views\Crafting\UniqueCraftingView.xaml:59
 #: Views\Equipment\SocketedGemsEditingView.xaml:187
 #: Views\Equipment\TabPicker.xaml:127
@@ -413,11 +413,11 @@ msgstr "Имя Героя"
 msgid "Account name"
 msgstr "Имя Аккаунта"
 
-#: Views\Crafting\CraftingView.xaml:30
+#: Views\Crafting\CraftingView.xaml:31
 msgid "Crafting Window"
 msgstr ""
 
-#: Views\Crafting\CraftingView.xaml:127
+#: Views\Crafting\CraftingView.xaml:128
 #: Views\Crafting\UniqueCraftingView.xaml:54
 msgid "Create Item"
 msgstr ""
@@ -446,11 +446,11 @@ msgstr ""
 
 #: Views\Equipment\DownloadItemsWindow.xaml:45
 #: Views\Equipment\DownloadStashWindow.xaml:62
-#: Views\Equipment\DownloadStashWindow.xaml:110
+#: Views\Equipment\DownloadStashWindow.xaml:111
 msgid "Open in Browser"
 msgstr "Открыть в браузере"
 
-#: Views\Equipment\DownloadItemsWindow.xaml:51
+#: Views\Equipment\DownloadItemsWindow.xaml:52
 #, fuzzy
 msgid "Item data:"
 msgstr "Данные о предметах"
@@ -478,31 +478,31 @@ msgstr "Лига"
 msgid "Link to stash tab list:"
 msgstr "Загрузить список секций личного сундука"
 
-#: Views\Equipment\DownloadStashWindow.xaml:71
+#: Views\Equipment\DownloadStashWindow.xaml:72
 #, fuzzy
 msgid "Load stash tab list from clipboard"
 msgstr "Загрузить список секций личного сундука"
 
-#: Views\Equipment\DownloadStashWindow.xaml:76
+#: Views\Equipment\DownloadStashWindow.xaml:77
 #, fuzzy
 msgid "Select a stash tab and click 'Open in browser' below"
 msgstr "Выбрать секцию и нажмите 'Открыть в браузере' "
 
-#: Views\Equipment\DownloadStashWindow.xaml:77
+#: Views\Equipment\DownloadStashWindow.xaml:78
 #, fuzzy
 msgid "This will open a page in your default Web-browser containing the item data of the selected stash."
 msgstr "Откроется страница в браузере содержащая данные о предметах."
 
-#: Views\Equipment\DownloadStashWindow.xaml:78
+#: Views\Equipment\DownloadStashWindow.xaml:79
 msgid "Copy the contents of that page and click 'Load stash tab'."
 msgstr ""
 
-#: Views\Equipment\DownloadStashWindow.xaml:105
+#: Views\Equipment\DownloadStashWindow.xaml:106
 #, fuzzy
 msgid "Link to stash tab:"
 msgstr "Загрузить секцию"
 
-#: Views\Equipment\DownloadStashWindow.xaml:119
+#: Views\Equipment\DownloadStashWindow.xaml:121
 #, fuzzy
 msgid "Load stash tab from clipboard"
 msgstr "Загрузить список секций личного сундука"
@@ -1049,7 +1049,7 @@ msgstr "Данные о предметах"
 msgid "Character Sheet"
 msgstr "Список характеристкик героя"
 
-#: Views\MainWindow.xaml:883 SkillTreeFiles\Compute.cs:2300
+#: Views\MainWindow.xaml:883 SkillTreeFiles\Compute.cs:2301
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:218
 #: Utils\Converter\GroupStringConverter.cs:31
 msgid "Defense"
@@ -1183,7 +1183,7 @@ msgstr ""
 msgid "Could not import build"
 msgstr ""
 
-#: SkillTreeFiles\Compute.cs:2299
+#: SkillTreeFiles\Compute.cs:2300
 msgid "Character"
 msgstr "Герой"
 
@@ -1324,7 +1324,7 @@ msgstr "Тотемы"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:231
 #: Utils\Converter\GroupStringConverter.cs:33
-#: ItemFilter\Model\FilterManager.cs:564
+#: ItemFilter\Model\FilterManager.cs:567
 msgid "Flasks"
 msgstr ""
 
@@ -1457,43 +1457,43 @@ msgstr ""
 msgid "Currency"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:383
+#: ItemFilter\Model\FilterManager.cs:386
 msgid "Recipes"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:390
+#: ItemFilter\Model\FilterManager.cs:393
 msgid "Any Normal item which vendor trades for Scroll Fragment."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:401
+#: ItemFilter\Model\FilterManager.cs:404
 msgid "Any Magic item which vendor trades for Transmutation Shard, Alteration Shard or Alchemy Shard."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:413
+#: ItemFilter\Model\FilterManager.cs:416
 msgid ""
 "A single Normal weapon with 20% quality.\n"
 "Weapons with a total of at least 40% quality."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:461
+#: ItemFilter\Model\FilterManager.cs:464
 msgid ""
 "1 Stone Hammer, Rock Breaker or Gavel with 20% quality\n"
 "1 Any Map"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:534
+#: ItemFilter\Model\FilterManager.cs:537
 msgid "Gems"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:757
+#: ItemFilter\Model\FilterManager.cs:760
 msgid "Miscellaneous"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:868
+#: ItemFilter\Model\FilterManager.cs:884
 msgid "Crafting"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:986
+#: ItemFilter\Model\FilterManager.cs:1002
 msgid "Chancing"
 msgstr ""
 

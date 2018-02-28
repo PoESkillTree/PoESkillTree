@@ -29,7 +29,7 @@ msgstr "OK"
 #: Controls\Dialogs\Views\MetroMessageBoxView.xaml:77
 #: Controls\Dialogs\Views\ValidatingInputDialogView.xaml:48
 #: ItemFilter\Views\ItemFilterEditWindow.xaml:138
-#: Views\Builds\EditBuildWindow.xaml:64 Views\Crafting\CraftingView.xaml:132
+#: Views\Builds\EditBuildWindow.xaml:64 Views\Crafting\CraftingView.xaml:133
 #: Views\Crafting\UniqueCraftingView.xaml:59
 #: Views\Equipment\SocketedGemsEditingView.xaml:187
 #: Views\Equipment\TabPicker.xaml:127
@@ -399,12 +399,12 @@ msgstr "Meno postavy"
 msgid "Account name"
 msgstr "Názov účtu"
 
-#: Views\Crafting\CraftingView.xaml:30
+#: Views\Crafting\CraftingView.xaml:31
 #, fuzzy
 msgid "Crafting Window"
 msgstr "Okno výroby"
 
-#: Views\Crafting\CraftingView.xaml:127
+#: Views\Crafting\CraftingView.xaml:128
 #: Views\Crafting\UniqueCraftingView.xaml:54
 #, fuzzy
 msgid "Create Item"
@@ -433,11 +433,11 @@ msgstr "Odkaz na údaje predmetov:"
 
 #: Views\Equipment\DownloadItemsWindow.xaml:45
 #: Views\Equipment\DownloadStashWindow.xaml:62
-#: Views\Equipment\DownloadStashWindow.xaml:110
+#: Views\Equipment\DownloadStashWindow.xaml:111
 msgid "Open in Browser"
 msgstr "Otvoriť v prehliadači"
 
-#: Views\Equipment\DownloadItemsWindow.xaml:51
+#: Views\Equipment\DownloadItemsWindow.xaml:52
 msgid "Item data:"
 msgstr "Údaje predmetov:"
 
@@ -461,27 +461,27 @@ msgstr "Liga"
 msgid "Link to stash tab list:"
 msgstr "Odkaz na zoznam Stash záložiek:"
 
-#: Views\Equipment\DownloadStashWindow.xaml:71
+#: Views\Equipment\DownloadStashWindow.xaml:72
 msgid "Load stash tab list from clipboard"
 msgstr "Načítať zoznam Stash záložiek zo Schránky"
 
-#: Views\Equipment\DownloadStashWindow.xaml:76
+#: Views\Equipment\DownloadStashWindow.xaml:77
 msgid "Select a stash tab and click 'Open in browser' below"
 msgstr "Zvoľte Stash záložku a stlačte „Otvoriť v prehliadači“ nižšie"
 
-#: Views\Equipment\DownloadStashWindow.xaml:77
+#: Views\Equipment\DownloadStashWindow.xaml:78
 msgid "This will open a page in your default Web-browser containing the item data of the selected stash."
 msgstr "Týmto sa otvorí stránka vo Vašom prehliadači obsahujúca údaje predmetov zvolenej Stash záložky."
 
-#: Views\Equipment\DownloadStashWindow.xaml:78
+#: Views\Equipment\DownloadStashWindow.xaml:79
 msgid "Copy the contents of that page and click 'Load stash tab'."
 msgstr "Skopírujte obsah danej stránky a stlačte „Načítať Stash záložku“."
 
-#: Views\Equipment\DownloadStashWindow.xaml:105
+#: Views\Equipment\DownloadStashWindow.xaml:106
 msgid "Link to stash tab:"
 msgstr "Odkaz na Stash záložku:"
 
-#: Views\Equipment\DownloadStashWindow.xaml:119
+#: Views\Equipment\DownloadStashWindow.xaml:121
 msgid "Load stash tab from clipboard"
 msgstr "Načítať Stash záložku zo Schránky"
 
@@ -1019,7 +1019,7 @@ msgstr "Údaje predmetov"
 msgid "Character Sheet"
 msgstr "Postava"
 
-#: Views\MainWindow.xaml:883 SkillTreeFiles\Compute.cs:2300
+#: Views\MainWindow.xaml:883 SkillTreeFiles\Compute.cs:2301
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:218
 #: Utils\Converter\GroupStringConverter.cs:31
 msgid "Defense"
@@ -1145,7 +1145,7 @@ msgstr ""
 msgid "Could not import build"
 msgstr ""
 
-#: SkillTreeFiles\Compute.cs:2299
+#: SkillTreeFiles\Compute.cs:2300
 msgid "Character"
 msgstr "Postava"
 
@@ -1286,7 +1286,7 @@ msgstr "Totem"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:231
 #: Utils\Converter\GroupStringConverter.cs:33
-#: ItemFilter\Model\FilterManager.cs:564
+#: ItemFilter\Model\FilterManager.cs:567
 msgid "Flasks"
 msgstr "Fľaše"
 
@@ -1420,19 +1420,19 @@ msgstr ""
 msgid "Currency"
 msgstr "Platidlo"
 
-#: ItemFilter\Model\FilterManager.cs:383
+#: ItemFilter\Model\FilterManager.cs:386
 msgid "Recipes"
 msgstr "Recepty"
 
-#: ItemFilter\Model\FilterManager.cs:390
+#: ItemFilter\Model\FilterManager.cs:393
 msgid "Any Normal item which vendor trades for Scroll Fragment."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:401
+#: ItemFilter\Model\FilterManager.cs:404
 msgid "Any Magic item which vendor trades for Transmutation Shard, Alteration Shard or Alchemy Shard."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:413
+#: ItemFilter\Model\FilterManager.cs:416
 msgid ""
 "A single Normal weapon with 20% quality.\n"
 "Weapons with a total of at least 40% quality."
@@ -1440,26 +1440,26 @@ msgstr ""
 "Jedna Normal zbraň s 20% kvalitou.\n"
 "Zbrane s celkovou kvalitou aspoň 40%."
 
-#: ItemFilter\Model\FilterManager.cs:461
+#: ItemFilter\Model\FilterManager.cs:464
 msgid ""
 "1 Stone Hammer, Rock Breaker or Gavel with 20% quality\n"
 "1 Any Map"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:534
+#: ItemFilter\Model\FilterManager.cs:537
 msgid "Gems"
 msgstr "Drahokamy"
 
-#: ItemFilter\Model\FilterManager.cs:757
+#: ItemFilter\Model\FilterManager.cs:760
 msgid "Miscellaneous"
 msgstr "Rôzne"
 
-#: ItemFilter\Model\FilterManager.cs:868
+#: ItemFilter\Model\FilterManager.cs:884
 #, fuzzy
 msgid "Crafting"
 msgstr "Okno výroby"
 
-#: ItemFilter\Model\FilterManager.cs:986
+#: ItemFilter\Model\FilterManager.cs:1002
 msgid "Chancing"
 msgstr "Riskovanie"
 
