@@ -143,6 +143,10 @@ namespace POESKillTree.Utils.WikiApi
             {
                 Log.Error($"Retrieving query-imageinfo-url results from {uri} failed", e);
             }
+            catch(HttpRequestException ex)
+            {
+                Log.Error($"Retrieving query-imageinfo-url results from {uri} failed", ex);
+            }
             return Enumerable.Empty<(string, string)>();
         }
 
