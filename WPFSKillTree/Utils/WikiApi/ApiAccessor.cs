@@ -106,7 +106,7 @@ namespace POESKillTree.Utils.WikiApi
         /// </returns>
         private async Task<IEnumerable<(string title, string url)>> QueryImageInfoUrlsAsync(IEnumerable<string> titles)
         {
-            const int maxTitlesPerRequest = 50;
+            const int maxTitlesPerRequest = 40;
             var batches = titles.Batch(maxTitlesPerRequest, QueryImageInfoUrlsBatchAsync);
 
             var results = new List<(string title, string url)>();
