@@ -22,6 +22,8 @@ namespace POESKillTree.ItemFilter.Views
 
         public event OnSelectedColorChangeEventHandler OnSelectedColorChange;
 
+        private static ObservableCollection<ColorItem> PersistentRecentColors = new ObservableCollection<ColorItem>();
+
         public ColorButtonDialog()
         {
             InitializeComponent();
@@ -32,11 +34,13 @@ namespace POESKillTree.ItemFilter.Views
             foreach (NamedColor nc in ColorUtils.StandardColors)
                 standard.Add(new ColorItem(nc.Color, nc.Name));
 
+
             BackgroundColorPicker.AvailableColorsHeader = BorderColorPicker.AvailableColorsHeader = TextColorPicker.AvailableColorsHeader = L10n.Message("Original color");
             BackgroundColorPicker.AvailableColors = BorderColorPicker.AvailableColors = TextColorPicker.AvailableColors = available;
             BackgroundColorPicker.StandardColorsHeader = BorderColorPicker.StandardColorsHeader = TextColorPicker.StandardColorsHeader = L10n.Message("Standard colors");
             BackgroundColorPicker.StandardColors = BorderColorPicker.StandardColors = TextColorPicker.StandardColors = standard;
             BackgroundColorPicker.RecentColorsHeader = BorderColorPicker.RecentColorsHeader = TextColorPicker.RecentColorsHeader = L10n.Message("Recent colors");
+            BackgroundColorPicker.RecentColors = BorderColorPicker.RecentColors = TextColorPicker.RecentColors = PersistentRecentColors;
             BackgroundColorPicker.AdvancedButtonHeader = BorderColorPicker.AdvancedButtonHeader = TextColorPicker.AdvancedButtonHeader = L10n.Message("Custom", "color");
             BackgroundColorPicker.StandardButtonHeader = BorderColorPicker.StandardButtonHeader = TextColorPicker.StandardButtonHeader = L10n.Message("Standard", "color");
         }
