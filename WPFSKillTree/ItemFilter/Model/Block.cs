@@ -23,9 +23,10 @@ namespace POESKillTree.ItemFilter.Model
             {
                 int pri = 0;
 
-                foreach (Match match in Matches)
-                    if (! match.IsImplicit())
-                        pri |= (int)match.Priority;
+                if (Matches != null)
+                    foreach (Match match in Matches)
+                        if (! match.IsImplicit())
+                            pri |= (int)match.Priority;
 
                 return pri;
             }
@@ -51,8 +52,9 @@ namespace POESKillTree.ItemFilter.Model
             {
                 int pri = 0;
 
-                foreach (Match match in Matches)
-                    pri |= (int)match.Priority;
+                if (Matches != null)
+                    foreach (Match match in Matches)
+                        pri |= (int)match.Priority;
 
                 return pri;
             }
@@ -177,8 +179,6 @@ namespace POESKillTree.ItemFilter.Model
 
             return 0;
         }
-
-
 
         public List<string> GetLines()
         {
