@@ -93,10 +93,24 @@ namespace POESKillTree.ItemFilter.Model
             }
 
             // Narrow Class matches with their BaseTypes within single rule (also learn BaseType containement in Class).
-            foreach (Rule rule in Rules.FindAll(r => r.HasAnyMatches && r.AnyMatches.Exists(m => m is MatchClass) && r.AnyMatches.Exists(m => m is MatchBaseType)))
+            foreach (Rule rule in Rules.FindAll(r => r.HasMatches && r.Matches.Exists(m => m is MatchClass) && r.Matches.Exists(m => m is MatchBaseType)))
             {
-                Match clazz = rule.AnyMatches.Find(m => m is MatchClass);
-                (clazz as MatchClass).NarrowBy(rule.AnyMatches.Find(m => m is MatchBaseType) as MatchBaseType);
+                Match clazz = rule.Matches.Find(m => m is MatchClass);
+                (clazz as MatchClass).NarrowBy(rule.Matches.Find(m => m is MatchBaseType) as MatchBaseType);
+            }
+            // Traverse lists of Set separately to not allow bogus cross-list narrowing.
+            foreach (Rule rule in Rules.FindAll(r => r.IsSet))
+            {
+                foreach (List<Match> matches in rule.Set)
+                {
+                    Match clazz = matches.Find(m => m is MatchClass);
+                    if (clazz != null)
+                    {
+                        Match baseType = matches.Find(m => m is MatchBaseType);
+                        if (baseType != null)
+                            (clazz as MatchClass).NarrowBy(baseType as MatchBaseType);
+                    }
+                }
             }
         }
 
