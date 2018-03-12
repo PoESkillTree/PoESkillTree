@@ -3,9 +3,9 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
-    public class CachingNode : SubscriberCountingNode, ICachingNode
+    public class CachingNode : SubscriberCountingNode, IDisposable, ICachingNode
     {
-        private readonly IDisposableNode _decoratedNode;
+        private readonly ICalculationNode _decoratedNode;
         private readonly ICycleGuard _cycleGuard;
 
         private bool _calculatedValue;
@@ -13,7 +13,7 @@ namespace PoESkillTree.Computation.Core.Nodes
         private bool _suspendEvents;
         private bool _suppressedValueChanged;
 
-        public CachingNode(IDisposableNode decoratedNode, ICycleGuard cycleGuard)
+        public CachingNode(ICalculationNode decoratedNode, ICycleGuard cycleGuard)
         {
             _decoratedNode = decoratedNode;
             _cycleGuard = cycleGuard;
@@ -44,10 +44,9 @@ namespace PoESkillTree.Computation.Core.Nodes
 
         public event EventHandler ValueChangeReceived;
 
-        public override void Dispose()
+        public void Dispose()
         {
             _decoratedNode.ValueChanged -= DecoratedNodeOnValueChanged;
-            _decoratedNode.Dispose();
         }
 
         public void SuspendEvents()

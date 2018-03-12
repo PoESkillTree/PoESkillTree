@@ -22,8 +22,8 @@ namespace PoESkillTree.Computation.Core.Graphs
             _nodeFactory = nodeFactory;
         }
 
-        private ISuspendableEventViewProvider<IDisposableNode> GetDisposableNode(NodeType nodeType) => 
-            (ISuspendableEventViewProvider<IDisposableNode>) _nodes
+        private IDisposableNodeViewProvider GetDisposableNode(NodeType nodeType) => 
+            (IDisposableNodeViewProvider) _nodes
                 .GetOrAdd(nodeType, _ => _nodeFactory.Create(nodeType));
 
         public ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeType nodeType) => 
@@ -36,8 +36,7 @@ namespace PoESkillTree.Computation.Core.Graphs
             if (!_nodes.ContainsKey(nodeType))
                 return;
             var node = GetDisposableNode(nodeType);
-            node.DefaultView.Dispose();
-            node.SuspendableView.Dispose();
+            node.Dispose();
             _nodes.Remove(nodeType);
         }
 
@@ -54,14 +53,14 @@ namespace PoESkillTree.Computation.Core.Graphs
         public void RemoveFormNodeCollection(Form form) => 
             _formNodeCollections.Remove(form);
 
-        public void AddModifier(ISuspendableEventViewProvider<IDisposableNode> node, Modifier modifier)
+        public void AddModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier)
         {
             var collection = GetModifierNodeCollection(modifier.Form);
             collection.Add(node, modifier);
             ModifierCount++;
         }
 
-        public void RemoveModifier(ISuspendableEventViewProvider<IDisposableNode> node, Modifier modifier)
+        public void RemoveModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier)
         {
             var collection = GetModifierNodeCollection(modifier.Form);
             collection.Remove(node);

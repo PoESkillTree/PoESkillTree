@@ -5,7 +5,6 @@ using System.Linq;
 using MoreLinq;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Nodes;
 
 namespace PoESkillTree.Computation.Core.Graphs
@@ -16,8 +15,8 @@ namespace PoESkillTree.Computation.Core.Graphs
         private readonly INodeFactory _nodeFactory;
         private readonly Dictionary<IStat, IStatGraph> _statGraphs = new Dictionary<IStat, IStatGraph>();
 
-        private readonly Dictionary<Modifier, Stack<ISuspendableEventViewProvider<IDisposableNode>>> _items
-            = new Dictionary<Modifier, Stack<ISuspendableEventViewProvider<IDisposableNode>>>();
+        private readonly Dictionary<Modifier, Stack<IDisposableNodeViewProvider>> _items
+            = new Dictionary<Modifier, Stack<IDisposableNodeViewProvider>>();
 
         public CoreCalculationGraph(Func<IStat, IStatGraph> statGraphFactory, INodeFactory nodeFactory)
         {
@@ -45,7 +44,7 @@ namespace PoESkillTree.Computation.Core.Graphs
             modifier.Stats
                 .Select(GetOrAddStatGraph)
                 .ForEach(g => g.AddModifier(node, modifier));
-            _items.GetOrAdd(modifier, k => new Stack<ISuspendableEventViewProvider<IDisposableNode>>())
+            _items.GetOrAdd(modifier, k => new Stack<IDisposableNodeViewProvider>())
                 .Push(node);
         }
 
@@ -61,12 +60,11 @@ namespace PoESkillTree.Computation.Core.Graphs
                 .Select(s => StatGraphs[s])
                 .ForEach(g => g.RemoveModifier(node, modifier));
 
-            node.DefaultView.Dispose();
-            node.SuspendableView.Dispose();
+            node.Dispose();
         }
 
         private bool TryGetNodeProvider(
-            Modifier modifier, out ISuspendableEventViewProvider<IDisposableNode> nodeProvider)
+            Modifier modifier, out IDisposableNodeViewProvider nodeProvider)
         {
             if (!_items.TryGetValue(modifier, out var stack))
             {

@@ -7,7 +7,7 @@ namespace PoESkillTree.Computation.Core.Nodes
     // instead of the unpredictable number that subscribes to this node.
     // This is necessary for nodes that are subscribed to when being exposed, independently of whether they would be
     // used without being exposed explicitly (through ICalculator.ExplicitlyRegisteredStats).
-    public class WrappingNode : IDisposableNode
+    public class WrappingNode : ICalculationNode, IDisposable
     {
         private readonly ICalculationNode _decoratedNode;
 

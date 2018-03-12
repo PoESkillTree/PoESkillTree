@@ -96,7 +96,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var stats = new IStat[] { new StatStub(), new StatStub() };
             var modifier = new Modifier(stats, Form.More, value);
             var graphs = stats.ToDictionary(s => s, _ => Mock.Of<IStatGraph>());
-            var node = MockNodeProvider();
+            var node = MockDisposableNodeProvider();
             var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(value) == node);
             var sut = CreateSut(s => graphs[s], nodeFactory);
 
@@ -113,7 +113,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var stats = new IStat[] { new StatStub(), new StatStub(), new StatStub() };
             var modifier = new Modifier(stats, Form.More, value);
             var graphs = stats.ToDictionary(s => s, _ => Mock.Of<IStatGraph>());
-            var node = MockNodeProvider();
+            var node = MockDisposableNodeProvider();
             var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(value) == node);
             var sut = CreateSut(s => graphs[s], nodeFactory);
             sut.AddModifier(modifier);
@@ -139,7 +139,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var stats = new IStat[] { new StatStub() };
             var modifier = new Modifier(stats, Form.More, value);
             var graphs = stats.ToDictionary(s => s, _ => Mock.Of<IStatGraph>());
-            var node = Mock.Of<ISuspendableEventViewProvider<IDisposableNode>>(p => 
+            var node = Mock.Of<IDisposableNodeViewProvider>(p => 
                 p.DefaultView == MockNode(0) && p.SuspendableView == MockNode(0));
             var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(value) == node);
             var sut = CreateSut(s => graphs[s], nodeFactory);
@@ -147,8 +147,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
 
             sut.RemoveModifier(modifier);
 
-            Mock.Get(node.DefaultView).Verify(n => n.Dispose());
-            Mock.Get(node.SuspendableView).Verify(n => n.Dispose());
+            Mock.Get(node).Verify(n => n.Dispose());
         }
 
         private static CoreCalculationGraph CreateSut(

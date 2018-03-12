@@ -81,7 +81,6 @@
     <Compile Include="Nodes\CycleGuard.cs" />
     <Compile Include="Nodes\FormAggregatingValue.cs" />
     <Compile Include="Nodes\ICycleGuard.cs" />
-    <Compile Include="Nodes\IDisposableNode.cs" />
     <Compile Include="Graphs\INodeFactory.cs" />
     <Compile Include="Graphs\IStatGraph.cs" />
     <Compile Include="Events\ISuspendableEvents.cs" />
@@ -89,6 +88,7 @@
     <Compile Include="NodeCollections\ModifierNodeCollection.cs" />
     <Compile Include="NodeCollections\NodeCollection.cs" />
     <Compile Include="Graphs\StatGraphCollectionSuspender.cs" />
+    <Compile Include="Nodes\IDisposableNodeViewProvider.cs" />
     <Compile Include="Nodes\IValueTransformable.cs" />
     <Compile Include="Nodes\NodeValueAggregators.cs" />
     <Compile Include="Nodes\ICachingNode.cs" />

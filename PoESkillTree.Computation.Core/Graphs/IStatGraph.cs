@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Events;
-using PoESkillTree.Computation.Core.Nodes;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
@@ -10,8 +9,8 @@ namespace PoESkillTree.Computation.Core.Graphs
         void RemoveNode(NodeType nodeType);
         void RemoveFormNodeCollection(Form form);
 
-        void AddModifier(ISuspendableEventViewProvider<IDisposableNode> node, Modifier modifier);
-        void RemoveModifier(ISuspendableEventViewProvider<IDisposableNode> node, Modifier modifier);
+        void AddModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier);
+        void RemoveModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier);
         int ModifierCount { get; }
     }
 

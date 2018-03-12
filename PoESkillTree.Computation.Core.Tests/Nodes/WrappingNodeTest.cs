@@ -13,7 +13,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         {
             var sut = CreateSut();
 
-            Assert.IsInstanceOf<IDisposableNode>(sut);
+            Assert.IsInstanceOf<ICalculationNode>(sut);
         }
 
         [TestCase(0)]

@@ -10,11 +10,11 @@ namespace PoESkillTree.Computation.Core.Tests
 {
     internal static class NodeHelper
     {
-        public static IDisposableNode MockNode(double? value) => 
+        public static ICalculationNode MockNode(double? value) => 
             MockNode((NodeValue?) value);
 
-        public static IDisposableNode MockNode(NodeValue? value = null) => 
-            Mock.Of<IDisposableNode>(n => n.Value == value);
+        public static ICalculationNode MockNode(NodeValue? value = null) => 
+            Mock.Of<ICalculationNode>(n => n.Value == value);
 
         public static void AssertValueEquals(this ICalculationNode node, double? expected) => 
             Assert.AreEqual((NodeValue?) expected, node.Value);
@@ -29,7 +29,7 @@ namespace PoESkillTree.Computation.Core.Tests
         public static void AssertValueChangedWillNotBeInvoked(this ICalculationNode node) => 
             node.SubscribeToValueChanged(Assert.Fail);
 
-        public static void RaiseValueChanged(this Mock<IDisposableNode> nodeMock)
+        public static void RaiseValueChanged(this Mock<ICalculationNode> nodeMock)
         {
             nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
         }
@@ -38,17 +38,19 @@ namespace PoESkillTree.Computation.Core.Tests
 
         public static Modifier MockModifier() => new Modifier(new IStat[0], Form.BaseAdd, Mock.Of<IValue>());
 
-        public static ISuspendableEventViewProvider<IDisposableNode> MockNodeProvider() =>
-            MockNodeProvider(null);
+        public static IDisposableNodeViewProvider MockDisposableNodeProvider() =>
+            Mock.Of<IDisposableNodeViewProvider>(p =>
+                p.DefaultView == MockNode(0) && p.SuspendableView == MockNode(0) &&
+                p.Suspender == Mock.Of<ISuspendableEvents>());
 
-        public static ISuspendableEventViewProvider<IDisposableNode> MockNodeProvider(
-            IDisposableNode defaultNode = null, IDisposableNode suspendableNode = null,
+        public static ISuspendableEventViewProvider<ICalculationNode> MockNodeProvider(
+            ICalculationNode defaultNode = null, ICalculationNode suspendableNode = null,
             ISuspendableEvents suspender = null)
         {
             defaultNode = defaultNode ?? MockNode();
             suspendableNode = suspendableNode ?? MockNode();
             suspender = suspender ?? Mock.Of<ISuspendableEvents>();
-            return Mock.Of<ISuspendableEventViewProvider<IDisposableNode>>(
+            return Mock.Of<ISuspendableEventViewProvider<ICalculationNode>>(
                 p => p.DefaultView == defaultNode && p.SuspendableView == suspendableNode && p.Suspender == suspender);
         }
 

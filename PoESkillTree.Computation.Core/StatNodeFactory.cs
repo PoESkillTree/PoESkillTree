@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Core
             _stat = stat;
         }
 
-        public ISuspendableEventViewProvider<IDisposableNode> Create(NodeType nodeType)
+        public IDisposableNodeViewProvider Create(NodeType nodeType)
         {
             switch (nodeType)
             {
@@ -47,11 +47,11 @@ namespace PoESkillTree.Computation.Core
             }
         }
 
-        private ISuspendableEventViewProvider<IDisposableNode> CreateFormAggregatingNode(
+        private IDisposableNodeViewProvider CreateFormAggregatingNode(
             IStat stat, Form form, NodeValueAggregator aggregator) =>
             Create(new FormAggregatingValue(stat, form, aggregator));
 
-        private ISuspendableEventViewProvider<IDisposableNode> Create(IValue value) => _nodeFactory.Create(value);
+        private IDisposableNodeViewProvider Create(IValue value) => _nodeFactory.Create(value);
 
         public ModifierNodeCollection Create(Form form)
         {

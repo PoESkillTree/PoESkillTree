@@ -23,7 +23,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void GetNodeReturnsInjectedNodeFactoryGetNode()
         {
-            var expected = MockNodeProvider();
+            var expected = MockDisposableNodeProvider();
             var nodeFactory = Mock.Of<IStatNodeFactory>(f => f.Create(NodeType.Base) == expected);
             var sut = CreateSut(nodeFactory);
 
@@ -35,12 +35,12 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void GetNodeCachesResult()
         {
-            var expected = MockNodeProvider();
+            var expected = MockDisposableNodeProvider();
             var nodeFactoryMock = new Mock<IStatNodeFactory>();
             nodeFactoryMock.Setup(f => f.Create(NodeType.Base)).Returns(expected);
             var sut = CreateSut(nodeFactoryMock.Object);
             sut.GetNode(NodeType.Base);
-            nodeFactoryMock.Setup(f => f.Create(NodeType.Base)).Returns(MockNodeProvider);
+            nodeFactoryMock.Setup(f => f.Create(NodeType.Base)).Returns(MockDisposableNodeProvider);
 
             var actual = sut.GetNode(NodeType.Base);
 
@@ -87,7 +87,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void NodesReturnsInternalDictionary()
         {
-            var expected = MockNodeProvider();
+            var expected = MockDisposableNodeProvider();
             var nodeFactory = Mock.Of<IStatNodeFactory>(f => f.Create(NodeType.Base) == expected);
             var sut = CreateSut(nodeFactory);
             var dict = sut.Nodes;
@@ -125,7 +125,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void RemoveNodeRemoves()
         {
-            var nodeFactory = Mock.Of<IStatNodeFactory>(f => f.Create(NodeType.Base) == MockNodeProvider());
+            var nodeFactory = Mock.Of<IStatNodeFactory>(f => f.Create(NodeType.Base) == MockDisposableNodeProvider());
             var sut = CreateSut(nodeFactory);
             sut.GetNode(NodeType.Base);
 
@@ -137,22 +137,20 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void RemoveNodesDisposesNode()
         {
-            var nodeMock = new Mock<ISuspendableEventViewProvider<IDisposableNode>>();
-            nodeMock.Setup(p => p.DefaultView.Dispose()).Verifiable();
-            nodeMock.Setup(p => p.SuspendableView.Dispose()).Verifiable();
+            var nodeMock = new Mock<IDisposableNodeViewProvider>();
             var nodeFactory = Mock.Of<IStatNodeFactory>(f => f.Create(NodeType.Base) == nodeMock.Object);
             var sut = CreateSut(nodeFactory);
             sut.GetNode(NodeType.Base);
 
             sut.RemoveNode(NodeType.Base);
 
-            nodeMock.Verify();
+            nodeMock.Verify(p => p.Dispose());
         }
 
         [Test]
         public void RemoveNodeDoesNothingIfNodeTypeIsUnknown()
         {
-            var nodeFactory = Mock.Of<IStatNodeFactory>(f => f.Create(NodeType.BaseAdd) == MockNodeProvider());
+            var nodeFactory = Mock.Of<IStatNodeFactory>(f => f.Create(NodeType.BaseAdd) == MockDisposableNodeProvider());
             var sut = CreateSut(nodeFactory);
             sut.GetNode(NodeType.BaseAdd);
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.NodeCollections;
@@ -10,19 +9,16 @@ namespace PoESkillTree.Computation.Core.Graphs
     public class StatRegistry : IDeterminesNodeRemoval
     {
         private readonly NodeCollection<IStat> _nodeCollection;
-        private readonly Func<ICalculationNode, IDisposableNode> _nodeWrapper;
 
-        private readonly Dictionary<IStat, IDisposableNode> _registeredWrappedNodes =
-            new Dictionary<IStat, IDisposableNode>();
+        private readonly Dictionary<IStat, WrappingNode> _registeredWrappedNodes =
+            new Dictionary<IStat, WrappingNode>();
 
         private readonly Dictionary<IStat, ICalculationNode> _registeredNodes =
             new Dictionary<IStat, ICalculationNode>();
 
-        public StatRegistry(
-            NodeCollection<IStat> nodeCollection, Func<ICalculationNode, IDisposableNode> nodeWrapper)
+        public StatRegistry(NodeCollection<IStat> nodeCollection)
         {
             _nodeCollection = nodeCollection;
-            _nodeWrapper = nodeWrapper;
         }
 
         public INodeRepository NodeRepository { private get; set; }
@@ -33,7 +29,7 @@ namespace PoESkillTree.Computation.Core.Graphs
                 return;
             var node = NodeRepository.GetNode(stat);
             _registeredNodes[stat] = node;
-            var wrappedNode = _nodeWrapper(node);
+            var wrappedNode = new WrappingNode(node);
             _registeredWrappedNodes[stat] = wrappedNode;
             _nodeCollection.Add(wrappedNode, stat);
         }

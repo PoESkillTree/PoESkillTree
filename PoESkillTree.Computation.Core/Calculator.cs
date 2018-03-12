@@ -52,7 +52,7 @@ namespace PoESkillTree.Computation.Core
             var innerNodeFactory = new NodeFactory();
             var nodeFactory = new TransformableNodeFactory(innerNodeFactory, v => new TransformableValue(v));
             var statRegistryCollection = new SuspendableNodeCollection<IStat>();
-            var statRegistry = new StatRegistry(statRegistryCollection, n => new WrappingNode(n));
+            var statRegistry = new StatRegistry(statRegistryCollection);
             var coreGraph = new CoreCalculationGraph(
                 s => new CoreStatGraph(new StatNodeFactory(nodeFactory, s)), nodeFactory);
             var eventGraph = new CalculationGraphWithEvents(coreGraph);

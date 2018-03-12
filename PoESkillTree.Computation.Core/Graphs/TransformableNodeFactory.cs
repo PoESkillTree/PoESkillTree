@@ -18,15 +18,16 @@ namespace PoESkillTree.Computation.Core.Graphs
             _transformableValueFactory = transformableValueFactory;
         }
 
-        public IDictionary<ISuspendableEventViewProvider<IDisposableNode>, IValueTransformable>
+        public IDictionary<ISuspendableEventViewProvider<ICalculationNode>, IValueTransformable>
             TransformableDictionary { get; } =
-            new Dictionary<ISuspendableEventViewProvider<IDisposableNode>, IValueTransformable>();
+            new Dictionary<ISuspendableEventViewProvider<ICalculationNode>, IValueTransformable>();
 
-        public ISuspendableEventViewProvider<IDisposableNode> Create(IValue value)
+        public IDisposableNodeViewProvider Create(IValue value)
         {
             var transformableValue = _transformableValueFactory(value);
             var result = _decoratedFactory.Create(transformableValue);
             TransformableDictionary[result] = transformableValue;
+            result.Disposed += (_, args) => TransformableDictionary.Remove(result);
             return result;
         }
     }

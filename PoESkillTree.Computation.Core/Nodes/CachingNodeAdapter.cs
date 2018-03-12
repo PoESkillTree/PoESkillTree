@@ -3,7 +3,7 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
-    public class CachingNodeAdapter : SubscriberCountingNode
+    public class CachingNodeAdapter : SubscriberCountingNode, IDisposable
     {
         private readonly ICachingNode _adaptedNode;
 
@@ -15,7 +15,7 @@ namespace PoESkillTree.Computation.Core.Nodes
 
         public override NodeValue? Value => _adaptedNode.Value;
 
-        public override void Dispose()
+        public void Dispose()
         {
             _adaptedNode.ValueChangeReceived -= AdaptedNodeOnValueChangeReceived;
         }
