@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -94,43 +95,40 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         }
 
         [Test]
-        public void GetOrAddRaisesStatAdded()
+        public void GetOrAddCallsStatAddedAction()
         {
             var stat = new StatStub();
-            var sut = CreateSut();
-            var raised = false;
-            sut.StatAdded += (sender, args) =>
+            var called = false;
+            var sut = CreateSut(actual =>
             {
-                Assert.AreSame(stat, args.Stat);
-                raised = true;
-            };
+                Assert.AreSame(stat, actual);
+                called = true;
+            });
 
             sut.GetOrAdd(stat);
 
-            Assert.IsTrue(raised);
+            Assert.IsTrue(called);
         }
 
         [Test]
-        public void GetOrAddDoesNotRaiseStatAddedIfInjectedGraphContainsStat()
+        public void GetOrAddDoesNotCallStatAddedActionIfInjectedGraphContainsStat()
         {
             var stat = new StatStub();
-            var sut = CreateSut(stat);
-            sut.StatAdded += (sender, args) => { Assert.Fail(); };
+            var sut = CreateSut(_ => Assert.Fail(), knownStats: stat);
 
             sut.GetOrAdd(stat);
         }
 
         [Test]
-        public void AddModifierRaisesStatAdded()
+        public void AddModifierCallsStatAddedAction()
         {
             var stats = new[] { new StatStub(), new StatStub(), };
-            var sut = CreateSut();
             var invocations = 0;
-            sut.StatAdded += (sender, args) =>
+            var sut = CreateSut(actual =>
             {
-                Assert.AreSame(stats[invocations], args.Stat);
+                Assert.AreSame(stats[invocations], actual);
                 invocations++;
-            };
+            });
 
             sut.AddModifier(new Modifier(stats, Form.More, null));
 
@@ -138,56 +136,53 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         }
 
         [Test]
-        public void AddModifierDoesNotRaiseStatAddedIfInjectedGraphContainsStat()
+        public void AddModifierDoesNotCallStatAddedActionIfInjectedGraphContainsStat()
         {
             var stat = new StatStub();
-            var sut = CreateSut(stat);
-            sut.StatAdded += (sender, args) => { Assert.Fail(); };
+            var sut = CreateSut(_ => Assert.Fail(), knownStats: stat);
 
             sut.AddModifier(new Modifier(new[] { stat }, Form.More, null));
         }
 
         [Test]
-        public void RemoveRaisesStatRemoved()
+        public void RemoveCallsStatRemovedAction()
         {
             var stat = new StatStub();
-            var sut = CreateSut();
-            var raised = false;
-            sut.StatRemoved += (sender, args) =>
+            var called = false;
+            var sut = CreateSut(statRemovedAction: actual =>
             {
-                Assert.AreSame(stat, args.Stat);
-                raised = true;
-            };
+                Assert.AreSame(stat, actual);
+                called = true;
+            });
 
             sut.Remove(stat);
 
-            Assert.IsTrue(raised);
+            Assert.IsTrue(called);
         }
 
         [Test]
-        public void GetOrAddRaisesStatAddedAfterCallingInjectedGraph()
+        public void GetOrAddCallsStatAddedActionAfterCallingInjectedGraph()
         {
             var stat = new StatStub();
             var graphMock = new Mock<ICalculationGraph>();
             var getOrAddCalled = false;
             graphMock.Setup(g => g.GetOrAdd(stat)).Callback(() => getOrAddCalled = false);
             graphMock.Setup(g => g.StatGraphs.ContainsKey(stat)).Returns(() => getOrAddCalled);
-            var sut = CreateSut(graphMock.Object);
-            var raised = false;
-            sut.StatAdded += (sender, args) =>
+            var called = false;
+            var sut = CreateSut(graphMock.Object, _ =>
             {
                 graphMock.Setup(g => g.GetOrAdd(stat))
-                    .Throws(new AssertionException("GetOrAdd called after raising StatAdded"));
-                raised = true;
-            };
+                    .Throws(new AssertionException("GetOrAdd called after action"));
+                called = true;
+            });
 
             sut.GetOrAdd(stat);
 
-            Assert.IsTrue(raised);
+            Assert.IsTrue(called);
         }
 
         [Test]
-        public void AddModifierRaisesStatAddedAfterCallingInjectedGraph()
+        public void AddModifierCallsStatAddedActionAfterCallingInjectedGraph()
         {
             var stat = new StatStub();
             var modifier = new Modifier(new[] { stat }, Form.More, null);
@@ -195,25 +190,29 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var addModifierCalled = false;
             graphMock.Setup(g => g.AddModifier(modifier)).Callback(() => addModifierCalled = true);
             graphMock.Setup(g => g.StatGraphs.ContainsKey(stat)).Returns(() => addModifierCalled);
-            var sut = CreateSut(graphMock.Object);
-            var raised = false;
-            sut.StatAdded += (sender, args) =>
+            var called = false;
+            var sut = CreateSut(graphMock.Object, _ =>
             {
                 graphMock.Setup(g => g.AddModifier(modifier))
-                    .Throws(new AssertionException("AddModifier called after raising StatAdded"));
-                raised = true;
-            };
+                    .Throws(new AssertionException("AddModifier called after action"));
+                called = true;
+            });
 
             sut.AddModifier(modifier);
 
-            Assert.IsTrue(raised);
+            Assert.IsTrue(called);
         }
 
-        private static CalculationGraphWithEvents CreateSut(params IStat[] knownStats) =>
-            CreateSut(MockGraph(knownStats));
+        private static CalculationGraphWithEvents CreateSut(
+            Action<IStat> statAddedAction = null, Action<IStat> statRemovedAction = null, params IStat[] knownStats) =>
+            CreateSut(MockGraph(knownStats), statAddedAction, statRemovedAction);
 
-        private static CalculationGraphWithEvents CreateSut(ICalculationGraph decoratedGraph) =>
-            new CalculationGraphWithEvents(decoratedGraph);
+        private static CalculationGraphWithEvents CreateSut(
+            ICalculationGraph decoratedGraph,
+            Action<IStat> statAddedAction = null, Action<IStat> statRemovedAction = null)
+        {
+            return new CalculationGraphWithEvents(decoratedGraph, statAddedAction, statRemovedAction ?? (_ => { }));
+        }
 
         private static ICalculationGraph MockGraph(params IStat[] knownStats)
         {

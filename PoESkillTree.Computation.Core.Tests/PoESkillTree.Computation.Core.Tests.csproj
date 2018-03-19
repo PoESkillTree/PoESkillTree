@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Graphs\CalculationGraphWithEventsTest.cs" />
+    <Compile Include="Graphs\StatGraphWithEventsTest.cs" />
     <Compile Include="Graphs\StatRegistryTest.cs" />
     <Compile Include="Graphs\TransformableNodeFactoryTest.cs" />
     <Compile Include="Nodes\BaseValueTest.cs" />

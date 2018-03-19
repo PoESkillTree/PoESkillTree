@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Graphs\CalculationGraphWithEvents.cs" />
     <Compile Include="Graphs\IDeterminesNodeRemoval.cs" />
+    <Compile Include="Graphs\StatGraphWithEvents.cs" />
     <Compile Include="Graphs\StatRegistry.cs" />
     <Compile Include="Graphs\TransformableNodeFactory.cs" />
     <Compile Include="NodeFactory.cs" />
