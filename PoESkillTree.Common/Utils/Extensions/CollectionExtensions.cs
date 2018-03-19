@@ -22,5 +22,14 @@ namespace PoESkillTree.Common.Utils.Extensions
             key = pair.Key;
             value = pair.Value;
         }
+
+        public static void ApplyIfPresent<TKey, TValue>(this IDictionary<TKey, TValue> dict,
+            TKey key, Action<TValue> action)
+        {
+            if (dict.TryGetValue(key, out var value))
+            {
+                action(value);
+            }
+        }
     }
 }

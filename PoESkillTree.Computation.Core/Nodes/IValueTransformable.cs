@@ -7,5 +7,7 @@ namespace PoESkillTree.Computation.Core.Nodes
         void Add(IValueTransformation transformation);
 
         void Remove(IValueTransformation transformation);
+
+        void RemoveAll();
     }
 }

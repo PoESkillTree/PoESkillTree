@@ -31,5 +31,11 @@ namespace PoESkillTree.Computation.Core.Nodes
             _transformations.Remove(transformation);
             _value = _transformations.Aggregate(_initialValue, (v, t) => t.Transform(v));
         }
+
+        public void RemoveAll()
+        {
+            _transformations.Clear();
+            _value = _initialValue;
+        }
     }
 }

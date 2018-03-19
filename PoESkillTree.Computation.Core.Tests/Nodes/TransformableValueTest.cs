@@ -76,6 +76,21 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void RemoveAllResetsToInitialValue()
+        {
+            var expected = new NodeValue(42);
+            var context = Mock.Of<IValueCalculationContext>();
+            var value = Mock.Of<IValue>(v => v.Calculate(context) == expected);
+            var sut = CreateSut(value);
+            sut.Add(Mock.Of<IValueTransformation>());
+
+            sut.RemoveAll();
+            var actual = sut.Calculate(context);
+
+            Assert.AreEqual(expected, actual);
+        }
+
         private static TransformableValue CreateSut(IValue value = null) => new TransformableValue(value);
     }
 }

@@ -69,6 +69,7 @@
     <Compile Include="Graphs\StatGraphWithEventsTest.cs" />
     <Compile Include="Graphs\StatRegistryTest.cs" />
     <Compile Include="Graphs\TransformableNodeFactoryTest.cs" />
+    <Compile Include="Graphs\ValueTransformerTest.cs" />
     <Compile Include="Nodes\BaseValueTest.cs" />
     <Compile Include="CalculatorExtensionsTest.cs" />
     <Compile Include="CalculatorTest.cs" />

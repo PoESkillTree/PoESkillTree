@@ -2,7 +2,7 @@
 
 namespace PoESkillTree.Computation.Common
 {
-    public interface IBehavior : IValueTransformation
+    public interface IBehavior
     {
         /*
          * "Modifiers to Foo also apply to Bar [at x% of their value]":
@@ -38,18 +38,11 @@ namespace PoESkillTree.Computation.Common
          * => Behaviors affect stat subgraph nodes (IStat, NodeType), overwrite IValueCalculationContext or IValue
          */
 
-        // This could be done the other way around (i.e. "bool Affects(IStat, NodeType)"), but that would require
-        // iterating through all nodes each time a behavior is added/removed.
-        // TODO Extract these into a new interface (IValueTransformationSpecification?)?
-        //      Rename IBehavior to something better (IValueTransformationSpecification?)?
-        //      Replace IStat.Behaviors by an enumerable of the new interface and IValueTransformation, i.e. remove IBehavior?
-        //      (decide once this is used)
         IEnumerable<IStat> AffectedStats { get; }
         IEnumerable<NodeType> AffectedNodeTypes { get; }
 
-        // Adding/Removing behaviors needs to raise ValueChanged events.
-        // When adding/removing a stat, its behaviors also need to be added/removed.
-        // Behaviors probably make checking whether a node can be removed more difficult, especially when stats have
-        // behaviors modifying themselves.
+        IValueTransformation Transformation { get; }
+
+        // TODO Adding/Removing behaviors needs to raise ValueChanged events.
     }
 }

@@ -66,6 +66,7 @@
     <Compile Include="Graphs\StatGraphWithEvents.cs" />
     <Compile Include="Graphs\StatRegistry.cs" />
     <Compile Include="Graphs\TransformableNodeFactory.cs" />
+    <Compile Include="Graphs\ValueTransformer.cs" />
     <Compile Include="NodeFactory.cs" />
     <Compile Include="Nodes\BaseValue.cs" />
     <Compile Include="Calculator.cs" />

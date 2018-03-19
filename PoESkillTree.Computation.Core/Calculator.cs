@@ -53,10 +53,9 @@ namespace PoESkillTree.Computation.Core
             var nodeFactory = new TransformableNodeFactory(innerNodeFactory, v => new TransformableValue(v));
             var statRegistryCollection = new SuspendableNodeCollection<IStat>();
             var statRegistry = new StatRegistry(statRegistryCollection);
-            var coreGraph = new CoreCalculationGraph(
-                s => new CoreStatGraph(new StatNodeFactory(nodeFactory, s)), nodeFactory);
-            var eventGraph = new CalculationGraphWithEvents(coreGraph, statRegistry.Add, statRegistry.Remove);
-            var prunableGraph = new PrunableCalculationGraph(eventGraph, statRegistry);
+            var valueTransformer = new ValueTransformer();
+
+            var prunableGraph = CreateCalculationGraph(nodeFactory, statRegistry, valueTransformer);
 
             var defaultView = new DefaultViewNodeRepository(prunableGraph);
             var suspendableView = new SuspendableViewNodeRepository(prunableGraph);
@@ -68,6 +67,43 @@ namespace PoESkillTree.Computation.Core
             suspender.Add(statRegistryCollection);
 
             return new Calculator(suspender, prunableGraph, prunableGraph, suspendableView, statRegistryCollection);
+        }
+
+        private static PrunableCalculationGraph CreateCalculationGraph(
+            TransformableNodeFactory nodeFactory, StatRegistry statRegistry, ValueTransformer valueTransformer)
+        {
+            var coreGraph =
+                new CoreCalculationGraph(s => CreateStatGraph(nodeFactory, valueTransformer, s), nodeFactory);
+            var eventGraph = new CalculationGraphWithEvents(coreGraph, StatAdded, StatRemoved);
+            return new PrunableCalculationGraph(eventGraph, statRegistry);
+
+            void StatAdded(IStat stat)
+            {
+                statRegistry.Add(stat);
+                valueTransformer.AddBehaviors(stat.Behaviors);
+            }
+
+            void StatRemoved(IStat stat)
+            {
+                statRegistry.Remove(stat);
+                valueTransformer.RemoveBehaviors(stat.Behaviors);
+            }
+        }
+
+        private static IStatGraph CreateStatGraph(
+            TransformableNodeFactory nodeFactory, ValueTransformer valueTransformer, IStat stat)
+        {
+            var coreGraph = new CoreStatGraph(new StatNodeFactory(nodeFactory, stat));
+            return new StatGraphWithEvents(coreGraph, NodeAdded, NodeRemoved);
+
+            void NodeAdded(NodeType nodeType)
+            {
+                var node = coreGraph.Nodes[nodeType];
+                var transformable = nodeFactory.TransformableDictionary[node];
+                valueTransformer.AddTransformable(stat, nodeType, transformable);
+            }
+
+            void NodeRemoved(NodeType nodeType) => valueTransformer.RemoveTransformable(stat, nodeType);
         }
     }
 }
