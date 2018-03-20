@@ -1,5 +1,4 @@
 ﻿using System;
-using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Graphs;
@@ -24,14 +23,14 @@ namespace PoESkillTree.Computation.Core
         {
             private readonly CachingNodeAdapter _defaultView;
             private readonly CachingNode _suspendableView;
-            private readonly IDisposable[] _disposables;
+            private readonly ValueNode _valueNode;
 
             public DisposableNodeViewProvider(
-                CachingNodeAdapter defaultView, CachingNode suspendableView, params IDisposable[] disposables)
+                CachingNodeAdapter defaultView, CachingNode suspendableView, ValueNode valueNode)
             {
                 _defaultView = defaultView;
                 _suspendableView = suspendableView;
-                _disposables = disposables;
+                _valueNode = valueNode;
             }
 
             public int SubscriberCount => _defaultView.SubscriberCount + _suspendableView.SubscriberCount;
@@ -43,11 +42,13 @@ namespace PoESkillTree.Computation.Core
             {
                 _defaultView.Dispose();
                 _suspendableView.Dispose();
-                _disposables.ForEach(d => d.Dispose());
+                _valueNode.Dispose();
                 Disposed?.Invoke(this, EventArgs.Empty);
             }
 
             public event EventHandler Disposed;
+
+            public void RaiseValueChanged() => _valueNode.OnValueChanged();
         }
     }
 }

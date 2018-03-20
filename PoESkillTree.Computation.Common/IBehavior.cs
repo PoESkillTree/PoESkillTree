@@ -42,7 +42,5 @@ namespace PoESkillTree.Computation.Common
         IEnumerable<NodeType> AffectedNodeTypes { get; }
 
         IValueTransformation Transformation { get; }
-
-        // TODO Adding/Removing behaviors needs to raise ValueChanged events.
     }
 }

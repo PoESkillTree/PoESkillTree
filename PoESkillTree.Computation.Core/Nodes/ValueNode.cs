@@ -60,9 +60,9 @@ namespace PoESkillTree.Computation.Core.Nodes
             }
         }
 
-        private void OnValueChanged(object sender, EventArgs args)
-        {
-            ValueChanged?.Invoke(this, args);
-        }
+        private void OnValueChanged(object sender, EventArgs args) => OnValueChanged();
+
+        // Public to allow invocation on conditions this class can't know about (e.g. state changes in _value)
+        public void OnValueChanged() => ValueChanged?.Invoke(this, EventArgs.Empty);
     }
 }

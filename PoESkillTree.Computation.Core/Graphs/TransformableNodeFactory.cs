@@ -27,8 +27,18 @@ namespace PoESkillTree.Computation.Core.Graphs
             var transformableValue = _transformableValueFactory(value);
             var result = _decoratedFactory.Create(transformableValue);
             TransformableDictionary[result] = transformableValue;
-            result.Disposed += (_, args) => TransformableDictionary.Remove(result);
+            transformableValue.ValueChanged += TransformableValueValueChanged;
+            result.Disposed += ResultDisposed;
             return result;
+
+            void TransformableValueValueChanged(object sender, EventArgs args) => result.RaiseValueChanged();
+
+            void ResultDisposed(object sender, EventArgs args)
+            {
+                TransformableDictionary.Remove(result);
+                transformableValue.ValueChanged -= TransformableValueValueChanged;
+                result.Disposed -= ResultDisposed;
+            }
         }
     }
 }

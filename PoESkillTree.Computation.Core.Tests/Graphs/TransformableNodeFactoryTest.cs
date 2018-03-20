@@ -2,7 +2,6 @@
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Graphs;
 using PoESkillTree.Computation.Core.Nodes;
 
@@ -62,6 +61,33 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             providerMock.Raise(p => p.Disposed += null, EventArgs.Empty);
 
             CollectionAssert.IsEmpty(sut.TransformableDictionary);
+        }
+
+        [Test]
+        public void RaisingTransformableValuesValueChangedCallsProvidersRaiseValueChanged()
+        {
+            var transformableValue = new TransformableValue(null);
+            var providerMock = new Mock<IDisposableNodeViewProvider>();
+            var sut = CreateSut(transformableValue, providerMock.Object);
+            sut.Create(null);
+
+            transformableValue.RemoveAll();
+
+            providerMock.Verify(p => p.RaiseValueChanged());
+        }
+
+        [Test]
+        public void RaisingTransformableValuesValueChangedDoesNotCallProvidersRaiseValueChangedAfterDisposal()
+        {
+            var transformableValue = new TransformableValue(null);
+            var providerMock = new Mock<IDisposableNodeViewProvider>();
+            var sut = CreateSut(transformableValue, providerMock.Object);
+            sut.Create(null);
+            
+            providerMock.Raise(p => p.Disposed += null, EventArgs.Empty);
+            transformableValue.RemoveAll();
+
+            providerMock.Verify(p => p.RaiseValueChanged(), Times.Never);
         }
 
         private static TransformableNodeFactory CreateSut(

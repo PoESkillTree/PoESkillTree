@@ -91,6 +91,42 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void AddRaisesValueChanged()
+        {
+            var sut = CreateSut();
+            var raised = false;
+            sut.ValueChanged += (sender, args) => raised = true;
+
+            sut.Add(Mock.Of<IValueTransformation>());
+            
+            Assert.IsTrue(raised);
+        }
+
+        [Test]
+        public void RemoveRaisesValueChanged()
+        {
+            var sut = CreateSut();
+            var raised = false;
+            sut.ValueChanged += (sender, args) => raised = true;
+
+            sut.Remove(null);
+            
+            Assert.IsTrue(raised);
+        }
+
+        [Test]
+        public void RemoveAllRaisesValueChanged()
+        {
+            var sut = CreateSut();
+            var raised = false;
+            sut.ValueChanged += (sender, args) => raised = true;
+
+            sut.RemoveAll();
+            
+            Assert.IsTrue(raised);
+        }
+
         private static TransformableValue CreateSut(IValue value = null) => new TransformableValue(value);
     }
 }
