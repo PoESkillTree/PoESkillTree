@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Core.Nodes
             values.AggregateOrNull(vs => vs.Select(v => 1 + v / 100).Product());
 
         public static NodeValue? CalculateIncrease(IEnumerable<NodeValue?> values) =>
-            values.AggregateOrNull(vs => 1 + vs.Select(v => v / 100).Sum());
+            values.AggregateOrNull(vs => vs.Select(v => v / 100).Sum());
 
         public static NodeValue? CalculateBaseAdd(IEnumerable<NodeValue?> values) =>
             values.AggregateOrNull(Sum);

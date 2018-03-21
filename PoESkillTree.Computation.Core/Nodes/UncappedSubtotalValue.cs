@@ -19,9 +19,9 @@ namespace PoESkillTree.Computation.Core.Nodes
                 return null;
             }
 
-            var increase = context.GetValue(_stat, NodeType.Increase) ?? new NodeValue(1);
+            var increase = context.GetValue(_stat, NodeType.Increase) ?? new NodeValue(0);
             var more = context.GetValue(_stat, NodeType.More) ?? new NodeValue(1);
-            return @base * increase * more;
+            return @base * (1 + increase) * more;
         }
     }
 }

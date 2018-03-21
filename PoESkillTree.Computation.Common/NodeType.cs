@@ -7,10 +7,7 @@
     {
         Total,
         Subtotal,
-        // UncappedSubtotal actually describes two types:
-        // The root node of each conversion/mod source path, and the node summing these up.
         UncappedSubtotal,
-        // On paths with a converted base value, this node simply links to the conversion output node of the source.
         Base,
         BaseOverride,
         BaseSet,

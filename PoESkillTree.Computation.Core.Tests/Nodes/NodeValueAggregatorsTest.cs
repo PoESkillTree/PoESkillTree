@@ -36,8 +36,8 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         }
 
         [TestCase(null)]
-        [TestCase(1.42, 42.0)]
-        [TestCase(2, 50.0, 100.0, -50.0)]
+        [TestCase(0.42, 42.0)]
+        [TestCase(1, 50.0, 100.0, -50.0)]
         public void CalculateIncreaseReturnsCorrectResult(double? expected, params double?[] values)
         {
             AssertReturnsCorrectResult(NodeValueAggregators.CalculateIncrease, expected, values);

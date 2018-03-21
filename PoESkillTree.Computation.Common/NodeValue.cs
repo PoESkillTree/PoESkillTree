@@ -7,7 +7,7 @@ namespace PoESkillTree.Computation.Common
     {
         // Most use cases don't need separate Minimum and Maximum values. In those cases, this behaves almost the same
         // as a standard double (but needs to be converted explicitly)
-        // In the some cases, differentiation between min and max is, however, necessary. BaseSet and BaseAdd forms have
+        // In some cases, differentiation between min and max is, however, necessary. BaseSet and BaseAdd forms have
         // variants for min and max values, in which case only one value is modified. These different values can
         // propagate all the way through the stat subgraph (and to other nodes referencing them).
 

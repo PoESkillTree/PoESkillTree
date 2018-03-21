@@ -18,8 +18,8 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
 
         [TestCase(null, null, null, null)]
         [TestCase(42, null, null, 42)]
-        [TestCase(1.5, 2.0, null, 3)]
-        [TestCase(1.5, 2.0, 0.5, 1.5)]
+        [TestCase(1.5, 1.0, null, 3)]
+        [TestCase(1.5, 1.0, 0.5, 1.5)]
         public void CalculateReturnsCorrectResult(double? @base, double? increase, double? more, double? expected)
         {
             var stat = new StatStub();

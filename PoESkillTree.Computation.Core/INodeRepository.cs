@@ -8,22 +8,24 @@ namespace PoESkillTree.Computation.Core
 
         // stat selects the stat subgraph, nodeType the node in it.
         // With conversions and/or sources:
-        // - Increase, More: the node on the unconverted, Global path.
-        // - Base, BaseOverride, BaseSet, Base Add: the unconverted base node.
+        // - Increase, More, Base, BaseOverride, BaseSet, Base Add: the node on the main path. (calls overload below)
         // - UncappedSubtotal: The node that sums all paths.
         // - Subtotal, TotalOverride, Total: There should only be one.
         ICalculationNode GetNode(IStat stat, NodeType nodeType = NodeType.Total);
+        // Like above but path-specific. Not usable with Total, Subtotal and TotalOverride.
+        //ICalculationNode GetNode(IStat stat, NodeType nodeType, PathProperty path);
 
-        // stat selects the stat subgraph, nodeType the node in it.
-        // Only one NodeType from Total, Subtotal and UncappedSubtotal make sense, probably Uncapped Subtotal as
-        // that's where these path subgraphs end up. BaseOverride, BaseSet, BaseAdd and TotalOverride don't make sense.
-        // Returns all nodes by conversion path and source.
-        //INodeCollection<NodePathProperty> GetPathNodes(IStat stat, NodeType nodeType = NodeType.Total);
-        // NodePathProperty: Contains the path's definition
-        // - Its IModifierSource (only with the information that is the same for all modifiers of the path)
-        // - The IStats on its conversion path (the node's IStat itself if unconverted)
+        // Returns a collection (with change events) of the paths of the given stat.
+        //ISomethingCollection<PathProperty> GetPaths(IStat stat);
 
-        // Returns the form node collection of stat
+        // Returns the form node collection of stat on the main path
         INodeCollection<Modifier> GetFormNodeCollection(IStat stat, Form form);
+        // Like above but path-specific. Makes above obsolete.
+        //INodeCollection<Modifier> GetFormNodeCollection(IStat stat, Form form, PathProperty path);
+
+        // PathProperty: Contains the path's definition
+        // - Its IModifierSource (only with the information that is the same for all modifiers of the path)
+        // - The IStats on its conversion path (empty if unconverted)
+        // - Main path: IModifierSource is Global, the conversion path is empty
     }
 }
