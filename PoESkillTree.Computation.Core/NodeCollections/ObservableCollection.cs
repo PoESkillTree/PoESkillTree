@@ -7,12 +7,14 @@ namespace PoESkillTree.Computation.Core.NodeCollections
 {
     public class ObservableCollection<T> : IObservableCollection<T>, ICountsSubsribers
     {
-        private readonly ICollection<T> _collection = new HashSet<T>();
+        private readonly ISet<T> _collection = new HashSet<T>();
 
         public void Add(T element)
         {
-            _collection.Add(element);
-            OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, element));
+            if (_collection.Add(element))
+            {
+                OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, element));
+            }
         }
 
         public void Remove(T element)

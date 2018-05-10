@@ -246,8 +246,69 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             Assert.AreEqual(1, actual);
         }
 
-        private static CoreStatGraph CreateSut(IStatNodeFactory nodeFactory = null) =>
-            new CoreStatGraph(nodeFactory);
+        [Test]
+        public void PathsIsInjectedInstance()
+        {
+            var paths = CreatePathDefinitionCollection();
+            var sut = CreateSut(paths: paths);
+
+            Assert.AreSame(paths, sut.Paths);
+        }
+
+        [Test]
+        public void GetNodeAddsPath()
+        {
+            var selector = Selector(NodeType.Base);
+            var paths = CreatePathDefinitionCollection();
+            var sut = CreateSut(paths: paths);
+
+            sut.GetNode(selector);
+
+            CollectionAssert.Contains(paths.DefaultView, selector.Path);
+        }
+
+        [Test]
+        public void RemoveNodeRemovesPath()
+        {
+            var selector = Selector(NodeType.Base);
+            var paths = CreatePathDefinitionCollection();
+            var nodeFactory = Mock.Of<IStatNodeFactory>(f => f.Create(selector) == MockDisposableNodeProvider());
+            var sut = CreateSut(nodeFactory, paths);
+            sut.GetNode(selector);
+
+            sut.RemoveNode(selector);
+
+            CollectionAssert.IsEmpty(paths.DefaultView);
+        }
+
+        [Test]
+        public void GetFormNodeCollectionAddsPath()
+        {
+            var selector = Selector(Form.More);
+            var paths = CreatePathDefinitionCollection();
+            var sut = CreateSut(paths: paths);
+
+            sut.GetFormNodeCollection(selector);
+
+            CollectionAssert.Contains(paths.DefaultView, selector.Path);
+        }
+
+        [Test]
+        public void RemoveFormNodeCollectionRemovesPath()
+        {
+            var selector = Selector(Form.More);
+            var paths = CreatePathDefinitionCollection();
+            var sut = CreateSut(paths: paths);
+            sut.GetFormNodeCollection(selector);
+
+            sut.RemoveFormNodeCollection(selector);
+
+            CollectionAssert.IsEmpty(paths.DefaultView);
+        }
+
+        private static CoreStatGraph CreateSut(
+            IStatNodeFactory nodeFactory = null, PathDefinitionCollection paths = null) =>
+            new CoreStatGraph(nodeFactory ?? Mock.Of<IStatNodeFactory>(), paths ?? CreatePathDefinitionCollection());
 
         private static ModifierNodeCollection MockModifierNodeCollection()
         {
@@ -261,6 +322,13 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var suspendableView = new NodeCollection<Modifier>();
             var nodeCollectionViewProvider = SuspendableEventViewProvider.Create(defaultView, suspendableView);
             return new ModifierNodeCollection(nodeCollectionViewProvider);
+        }
+
+        private static PathDefinitionCollection CreatePathDefinitionCollection()
+        {
+            var viewProvider = SuspendableEventViewProvider.Create(new ObservableCollection<PathDefinition>(),
+                new SuspendableObservableCollection<PathDefinition>());
+            return new PathDefinitionCollection(viewProvider);
         }
     }
 }

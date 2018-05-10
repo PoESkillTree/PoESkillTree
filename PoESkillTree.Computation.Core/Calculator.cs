@@ -93,7 +93,9 @@ namespace PoESkillTree.Computation.Core
         private static IStatGraph CreateStatGraph(
             TransformableNodeFactory nodeFactory, ValueTransformer valueTransformer, IStat stat)
         {
-            var coreGraph = new CoreStatGraph(new StatNodeFactory(nodeFactory, stat));
+            var paths = new PathDefinitionCollection(SuspendableEventViewProvider.Create(
+                new ObservableCollection<PathDefinition>(), new SuspendableObservableCollection<PathDefinition>()));
+            var coreGraph = new CoreStatGraph(new StatNodeFactory(nodeFactory, stat), paths);
             return new StatGraphWithEvents(coreGraph, NodeAdded, NodeRemoved);
 
             // TODO Behaviors on path nodes: Not sure how correct it is to pass NodeSelector.NodeType to

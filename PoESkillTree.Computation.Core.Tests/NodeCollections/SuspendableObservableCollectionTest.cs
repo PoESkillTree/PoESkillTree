@@ -154,7 +154,7 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
 
         private static void RaiseCollectionChanged(SuspendableObservableCollection<int> sut)
         {
-            sut.Add(0);
+            sut.Add(-1);
         }
     }
 }

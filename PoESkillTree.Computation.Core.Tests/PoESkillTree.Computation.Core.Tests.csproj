@@ -71,6 +71,7 @@
     <Compile Include="Graphs\StatRegistryTest.cs" />
     <Compile Include="Graphs\TransformableNodeFactoryTest.cs" />
     <Compile Include="Graphs\ValueTransformerTest.cs" />
+    <Compile Include="NodeCollections\PathDefinitionCollectionTest.cs" />
     <Compile Include="Nodes\BaseValueTest.cs" />
     <Compile Include="CalculatorExtensionsTest.cs" />
     <Compile Include="CalculatorTest.cs" />

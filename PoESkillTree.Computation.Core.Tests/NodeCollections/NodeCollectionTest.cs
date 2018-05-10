@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
 using MoreLinq;
 using NUnit.Framework;
@@ -149,6 +148,17 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
             var actual = sut.SubscriberCount;
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void AddDoesNotRaiseCollectionChangedIfPreviouslyAdded()
+        {
+            var node = NodeHelper.MockNode();
+            var sut = CreateSut();
+            sut.Add(node, 0);
+
+            sut.CollectionChanged += (sender, args) => Assert.Fail();
+            sut.Add(node, 0);
         }
 
         private static NodeCollection<int> CreateSut() =>
