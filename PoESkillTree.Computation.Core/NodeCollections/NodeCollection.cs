@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using PoESkillTree.Computation.Core.Events;
 
 namespace PoESkillTree.Computation.Core.NodeCollections
@@ -16,7 +16,7 @@ namespace PoESkillTree.Computation.Core.NodeCollections
         {
             _nodes.Add(node);
             _nodeProperties[node] = property;
-            OnCollectionChanged(new NodeCollectionChangeEventArgs(NodeCollectionChangeAction.Add, node));
+            OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, node));
         }
 
         public void Remove(ICalculationNode node)
@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Core.NodeCollections
             if (_nodes.Remove(node))
             {
                 _nodeProperties.Remove(node);
-                OnCollectionChanged(new NodeCollectionChangeEventArgs(NodeCollectionChangeAction.Remove, node));
+                OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Remove, node));
             }
         }
 
@@ -36,11 +36,11 @@ namespace PoESkillTree.Computation.Core.NodeCollections
 
         public int SubscriberCount => CollectionChanged?.GetInvocationList().Length ?? 0;
 
-        public event EventHandler<NodeCollectionChangeEventArgs> CollectionChanged;
+        public event CollectionChangeEventHandler CollectionChanged;
 
         public IReadOnlyDictionary<ICalculationNode, TProperty> NodeProperties => _nodeProperties;
 
-        protected virtual void OnCollectionChanged(NodeCollectionChangeEventArgs e)
+        protected virtual void OnCollectionChanged(CollectionChangeEventArgs e)
         {
             CollectionChanged?.Invoke(this, e);
         }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using MoreLinq;
 using NUnit.Framework;
@@ -87,7 +88,7 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
             sut.CollectionChanged += (sender, args) =>
             {
                 Assert.AreSame(sender, sut);
-                Assert.AreEqual(NodeCollectionChangeAction.Add, args.Action);
+                Assert.AreEqual(CollectionChangeAction.Add, args.Action);
                 Assert.AreEqual(node, args.Element);
                 raised = true;
             };
@@ -107,7 +108,7 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
             sut.CollectionChanged += (sender, args) =>
             {
                 Assert.AreSame(sender, sut);
-                Assert.AreEqual(NodeCollectionChangeAction.Remove, args.Action);
+                Assert.AreEqual(CollectionChangeAction.Remove, args.Action);
                 Assert.AreEqual(node, args.Element);
                 raised = true;
             };

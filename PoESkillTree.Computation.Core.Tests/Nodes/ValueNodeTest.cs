@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
@@ -110,7 +111,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
 
             var _ = sut.Value;
 
-            nodeCollectionMock.Raise(c => c.CollectionChanged += null, NodeCollectionChangeEventArgs.ResetEventArgs);
+            nodeCollectionMock.Raise(c => c.CollectionChanged += null, RefreshEventArgs);
             Assert.IsTrue(raised);
         }
 
@@ -126,7 +127,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             sut.Dispose();
 
             sut.AssertValueChangedWillNotBeInvoked();
-            nodeCollectionMock.Raise(c => c.CollectionChanged += null, NodeCollectionChangeEventArgs.ResetEventArgs);
+            nodeCollectionMock.Raise(c => c.CollectionChanged += null, RefreshEventArgs);
         }
 
         private static ValueNode CreateSut(double stat1Value, double stat2Value)
@@ -160,5 +161,8 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
 
         private static ValueNode CreateSut(INodeRepository nodeRepository = null, IValue value = null) =>
             new ValueNode(new ValueCalculationContext(nodeRepository), value);
+
+        private static readonly CollectionChangeEventArgs RefreshEventArgs =
+            new CollectionChangeEventArgs(CollectionChangeAction.Refresh, null);
     }
 }

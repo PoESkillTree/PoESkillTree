@@ -11,7 +11,7 @@ namespace PoESkillTree.Computation.Core.Nodes
     {
         private readonly INodeRepository _nodeRepository;
         private readonly ISet<ICalculationNode> _usedNodes = new HashSet<ICalculationNode>();
-        private readonly ISet<INodeCollection> _usedNodeCollections = new HashSet<INodeCollection>();
+        private readonly ISet<IObservableCollection> _usedNodeCollections = new HashSet<IObservableCollection>();
 
         public ValueCalculationContext(INodeRepository nodeRepository)
         {
@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Core.Nodes
         }
 
         public IEnumerable<ICalculationNode> UsedNodes => _usedNodes;
-        public IEnumerable<INodeCollection> UsedNodeCollections => _usedNodeCollections;
+        public IEnumerable<IObservableCollection> UsedNodeCollections => _usedNodeCollections;
 
         public void Clear()
         {

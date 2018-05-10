@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.ComponentModel;
+using NUnit.Framework;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.NodeCollections;
 
@@ -68,7 +69,7 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
             var raised = false;
             sut.CollectionChanged += (sender, args) =>
             {
-                Assert.AreEqual(NodeCollectionChangeAction.Add, args.Action);
+                Assert.AreEqual(CollectionChangeAction.Add, args.Action);
                 Assert.AreEqual(node, args.Element);
                 raised = true;
             };
@@ -119,7 +120,7 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
             var node = NodeHelper.MockNode();
             sut.CollectionChanged += (sender, args) =>
             {
-                Assert.AreEqual(NodeCollectionChangeAction.Reset, args.Action);
+                Assert.AreEqual(CollectionChangeAction.Refresh, args.Action);
                 Assert.IsNull(args.Element);
             };
 
@@ -142,7 +143,7 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
             var raised = false;
             sut.CollectionChanged += (sender, args) =>
             {
-                Assert.AreEqual(NodeCollectionChangeAction.Add, args.Action);
+                Assert.AreEqual(CollectionChangeAction.Add, args.Action);
                 Assert.AreEqual(node, args.Element);
                 raised = true;
             };
