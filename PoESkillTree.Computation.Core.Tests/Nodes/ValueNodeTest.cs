@@ -51,9 +51,9 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             var node3 = NodeHelper.MockNode(0);
             var stat = new StatStub();
             var nodeRepositoryMock = new Mock<INodeRepository>();
-            nodeRepositoryMock.Setup(r => r.GetNode(stat, NodeType.Total)).Returns(node1);
-            nodeRepositoryMock.Setup(r => r.GetNode(stat, NodeType.Base)).Returns(node2);
-            nodeRepositoryMock.Setup(r => r.GetNode(stat, NodeType.BaseSet)).Returns(node3);
+            nodeRepositoryMock.Setup(r => r.GetNode(stat, NodeType.Total, Path)).Returns(node1);
+            nodeRepositoryMock.Setup(r => r.GetNode(stat, NodeType.Base, Path)).Returns(node2);
+            nodeRepositoryMock.Setup(r => r.GetNode(stat, NodeType.BaseSet, Path)).Returns(node3);
             var valueMock = new Mock<IValue>();
             valueMock.Setup(v => v.Calculate(It.IsAny<IValueCalculationContext>()))
                 .Returns((IValueCalculationContext c) => c.GetValue(stat) + c.GetValue(stat, NodeType.Base));
@@ -140,8 +140,8 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             var stat1 = new StatStub();
             var stat2 = new StatStub();
             var nodeRepository = Mock.Of<INodeRepository>(r =>
-                r.GetNode(stat1, NodeType.Total) == node1 &&
-                r.GetNode(stat2, NodeType.Base) == node2);
+                r.GetNode(stat1, NodeType.Total, Path) == node1 &&
+                r.GetNode(stat2, NodeType.Base, Path) == node2);
             var valueMock = new Mock<IValue>();
             valueMock.Setup(v => v.Calculate(It.IsAny<IValueCalculationContext>()))
                 .Returns((IValueCalculationContext c) => c.GetValue(stat1) + c.GetValue(stat2, NodeType.Base));
@@ -152,7 +152,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         {
             var stat = new StatStub();
             var nodeRepository =
-                Mock.Of<INodeRepository>(r => r.GetFormNodeCollection(stat, Form.More) == nodeCollection);
+                Mock.Of<INodeRepository>(r => r.GetFormNodeCollection(stat, Form.More, Path) == nodeCollection);
             var valueMock = new Mock<IValue>();
             valueMock.Setup(v => v.Calculate(It.IsAny<IValueCalculationContext>()))
                 .Returns((IValueCalculationContext c) => c.GetValues(Form.More, stat).FirstOrDefault());
@@ -164,5 +164,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
 
         private static readonly CollectionChangeEventArgs RefreshEventArgs =
             new CollectionChangeEventArgs(CollectionChangeAction.Refresh, null);
+
+        private static readonly PathDefinition Path = PathDefinition.MainPath;
     }
 }

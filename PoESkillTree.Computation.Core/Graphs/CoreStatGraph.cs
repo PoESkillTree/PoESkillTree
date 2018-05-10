@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Events;
@@ -7,6 +8,7 @@ using PoESkillTree.Computation.Core.Nodes;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    // TODO Adjust for paths
     public class CoreStatGraph : IStatGraph
     {
         private readonly IStatNodeFactory _nodeFactory;
@@ -26,10 +28,13 @@ namespace PoESkillTree.Computation.Core.Graphs
             (IDisposableNodeViewProvider) _nodes
                 .GetOrAdd(nodeType, _ => _nodeFactory.Create(nodeType));
 
-        public ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeType nodeType) => 
+        public ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeType nodeType, PathDefinition path) => 
             GetDisposableNode(nodeType);
 
         public IReadOnlyDictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>> Nodes => _nodes;
+
+        public ISuspendableEventViewProvider<IObservableCollection<PathDefinition>> Paths =>
+            throw new NotImplementedException();
 
         public void RemoveNode(NodeType nodeType)
         {
@@ -44,7 +49,7 @@ namespace PoESkillTree.Computation.Core.Graphs
             (ModifierNodeCollection) _formNodeCollections
                 .GetOrAdd(form, _ => _nodeFactory.Create(form));
 
-        public ISuspendableEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(Form form) => 
+        public ISuspendableEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(Form form, PathDefinition path) => 
             GetModifierNodeCollection(form);
 
         public IReadOnlyDictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>

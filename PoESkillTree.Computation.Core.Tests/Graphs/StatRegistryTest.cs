@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             var stat = new StatStub { IsRegisteredExplicitly = true };
             var coreNode = Mock.Of<ICalculationNode>();
-            var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total) == coreNode);
+            var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == coreNode);
             var nodeCollection = new NodeCollection<IStat>();
             var sut = CreateSut(nodeCollection, nodeRepository);
 
@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             var stat = new StatStub { IsRegisteredExplicitly = true };
             var coreNode = Mock.Of<ICalculationNode>();
-            var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total) == coreNode);
+            var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == coreNode);
             var nodeCollection = new NodeCollection<IStat>();
             var sut = CreateSut(nodeCollection, nodeRepository);
             sut.Add(stat);
@@ -97,7 +97,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             var stat = new StatStub { IsRegisteredExplicitly = true };
             var coreNode = Mock.Of<ICalculationNode>();
-            var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total) == coreNode);
+            var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == coreNode);
             var sut = CreateSut(nodeRepository: nodeRepository);
             sut.Add(stat);
             var node = Mock.Of<ISuspendableEventViewProvider<ICalculationNode>>(c =>
@@ -111,7 +111,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             var stat = new StatStub { IsRegisteredExplicitly = true };
             var coreNode = Mock.Of<ICalculationNode>();
-            var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total) == coreNode);
+            var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == coreNode);
             var sut = CreateSut(nodeRepository: nodeRepository);
             sut.Add(stat);
             sut.Remove(stat);
@@ -127,7 +127,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var stat = new StatStub { IsRegisteredExplicitly = true };
             var nodeMock = new Mock<ICalculationNode>();
             var nodeCollection = new NodeCollection<IStat>();
-            var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total) == nodeMock.Object);
+            var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == nodeMock.Object);
             var sut = CreateSut(nodeCollection, nodeRepository);
             sut.Add(stat);
             var wrappingNode = nodeCollection.Single().node;
@@ -147,5 +147,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
                 NodeRepository = nodeRepository
             };
         }
+
+        private static readonly PathDefinition Path = PathDefinition.MainPath;
     }
 }

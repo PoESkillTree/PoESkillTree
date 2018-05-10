@@ -9,10 +9,13 @@ namespace PoESkillTree.Computation.Core.Graphs
         public SuspendableViewNodeRepository(IReadOnlyStatGraphCollection statGraphCollection) =>
             _statGraphCollection = statGraphCollection;
 
-        public ICalculationNode GetNode(IStat stat, NodeType nodeType) =>
-            _statGraphCollection.GetOrAdd(stat).GetNode(nodeType).SuspendableView;
+        public IObservableCollection<PathDefinition> GetPaths(IStat stat) =>
+            _statGraphCollection.GetOrAdd(stat).Paths.SuspendableView;
 
-        public INodeCollection<Modifier> GetFormNodeCollection(IStat stat, Form form) =>
-            _statGraphCollection.GetOrAdd(stat).GetFormNodeCollection(form).SuspendableView;
+        public ICalculationNode GetNode(IStat stat, NodeType nodeType, PathDefinition path) =>
+            _statGraphCollection.GetOrAdd(stat).GetNode(nodeType, path).SuspendableView;
+
+        public INodeCollection<Modifier> GetFormNodeCollection(IStat stat, Form form, PathDefinition path) =>
+            _statGraphCollection.GetOrAdd(stat).GetFormNodeCollection(form, path).SuspendableView;
     }
 }

@@ -8,6 +8,7 @@
         Total,
         Subtotal,
         UncappedSubtotal,
+        PathTotal,
         Base,
         BaseOverride,
         BaseSet,

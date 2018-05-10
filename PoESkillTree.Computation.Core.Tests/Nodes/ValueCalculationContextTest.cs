@@ -25,7 +25,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             var expected = new NodeValue(value);
             var node = MockNode(expected);
             var stat = Mock.Of<IStat>();
-            var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Base) == node);
+            var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Base, Path) == node);
             var sut = CreateSut(nodeRepository);
 
             var actual = sut.GetValue(stat, NodeType.Base);
@@ -41,7 +41,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             var nodeCollection = MockNodeCollection(MockNode(expected));
             var stat = new StatStub();
             var nodeRepository =
-                Mock.Of<INodeRepository>(r => r.GetFormNodeCollection(stat, Form.Increase) == nodeCollection);
+                Mock.Of<INodeRepository>(r => r.GetFormNodeCollection(stat, Form.Increase, Path) == nodeCollection);
             var sut = CreateSut(nodeRepository);
 
             var actual = sut.GetValues(Form.Increase, stat);
@@ -65,7 +65,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             for (var i = 0; i < stats.Length; i++)
             {
                 var iClosure = i;
-                nodeRepositoryMock.Setup(r => r.GetFormNodeCollection(stats[iClosure], Form.More))
+                nodeRepositoryMock.Setup(r => r.GetFormNodeCollection(stats[iClosure], Form.More, Path))
                     .Returns(nodeCollections[i]);
             }
             var sut = CreateSut(nodeRepositoryMock.Object);
@@ -87,9 +87,9 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             var stats = new IStat[] { new StatStub(), new StatStub(), };
             var nodeRepository =
                 Mock.Of<INodeRepository>(r =>
-                    r.GetFormNodeCollection(stats[0], Form.Increase) == nodeCollections[0] &&
-                    r.GetFormNodeCollection(stats[1], Form.Increase) == nodeCollections[1] &&
-                    r.GetNode(stats[0], NodeType.Base) == expected[0]);
+                    r.GetFormNodeCollection(stats[0], Form.Increase, Path) == nodeCollections[0] &&
+                    r.GetFormNodeCollection(stats[1], Form.Increase, Path) == nodeCollections[1] &&
+                    r.GetNode(stats[0], NodeType.Base, Path) == expected[0]);
             var sut = CreateSut(nodeRepository);
 
             sut.GetValue(stats[0], NodeType.Base);
@@ -103,7 +103,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         public void ClearClearsUsedNodes()
         {
             var stat = new StatStub();
-            var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total) == MockNode(0));
+            var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == MockNode(0));
             var sut = CreateSut(nodeRepository);
             sut.GetValue(stat);
 
@@ -123,8 +123,8 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             var stats = new IStat[] { new StatStub(), new StatStub(), };
             var nodeRepository =
                 Mock.Of<INodeRepository>(r =>
-                    r.GetFormNodeCollection(stats[0], Form.Increase) == expected[0] &&
-                    r.GetFormNodeCollection(stats[1], Form.Increase) == expected[1]);
+                    r.GetFormNodeCollection(stats[0], Form.Increase, Path) == expected[0] &&
+                    r.GetFormNodeCollection(stats[1], Form.Increase, Path) == expected[1]);
             var sut = CreateSut(nodeRepository);
             
             sut.GetValues(Form.Increase, stats);
@@ -138,7 +138,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         {
             var stat = new StatStub();
             var nodeRepository =
-                Mock.Of<INodeRepository>(r => r.GetFormNodeCollection(stat, Form.Increase) == MockNodeCollection());
+                Mock.Of<INodeRepository>(r => r.GetFormNodeCollection(stat, Form.Increase, Path) == MockNodeCollection());
             var sut = CreateSut(nodeRepository);
             sut.GetValues(Form.Increase, stat);
 
@@ -168,5 +168,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
                 .Returns(() => nodes.Select(n => (n, (Modifier) null)).AsEnumerable().GetEnumerator());
             return mock.Object;
         }
+
+        private static readonly PathDefinition Path = PathDefinition.MainPath;
     }
 }

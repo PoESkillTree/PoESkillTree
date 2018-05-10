@@ -13,11 +13,12 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             var expected = Mock.Of<ICalculationNode>();
             var stat = Mock.Of<IStat>();
+            var path = PathDefinition.MainPath;
             var graphCollection = Mock.Of<IReadOnlyStatGraphCollection>(
-                c => c.GetOrAdd(stat).GetNode(NodeType.Base).DefaultView == expected);
+                c => c.GetOrAdd(stat).GetNode(NodeType.Base, path).DefaultView == expected);
             var sut = new DefaultViewNodeRepository(graphCollection);
 
-            var actual = sut.GetNode(stat, NodeType.Base);
+            var actual = sut.GetNode(stat, NodeType.Base, path);
 
             Assert.AreSame(expected, actual);
         }
@@ -27,13 +28,28 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             var expected = Mock.Of<INodeCollection<Modifier>>();
             var stat = Mock.Of<IStat>();
+            var path = PathDefinition.MainPath;
             var graphCollection = Mock.Of<IReadOnlyStatGraphCollection>(
-                c => c.GetOrAdd(stat).GetFormNodeCollection(Form.BaseAdd).DefaultView == expected);
+                c => c.GetOrAdd(stat).GetFormNodeCollection(Form.BaseAdd, path).DefaultView == expected);
             var sut = new DefaultViewNodeRepository(graphCollection);
 
-            var actual = sut.GetFormNodeCollection(stat, Form.BaseAdd);
+            var actual = sut.GetFormNodeCollection(stat, Form.BaseAdd, path);
 
             Assert.AreSame(expected, actual);
+        }
+
+        [Test]
+        public void GetPathReturnsInjectedPathsDefaultView()
+        {
+            var expected = Mock.Of<IObservableCollection<PathDefinition>>();
+            var stat = Mock.Of<IStat>();
+            var graphCollection = Mock.Of<IReadOnlyStatGraphCollection>(
+                c => c.GetOrAdd(stat).Paths.DefaultView == expected);
+            var sut = new DefaultViewNodeRepository(graphCollection);
+
+            var actual = sut.GetPaths(stat);
+
+            Assert.AreSame(actual, expected);
         }
     }
 }

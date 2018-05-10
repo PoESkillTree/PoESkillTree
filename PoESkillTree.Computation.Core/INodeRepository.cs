@@ -4,23 +4,31 @@ namespace PoESkillTree.Computation.Core
 {
     public interface INodeRepository
     {
-        // Asking for non-existing nodes leads to their creation
+        // Asking for non-existing nodes leads to their creation.
 
-        // stat selects the stat subgraph, nodeType the node in it.
-        // With conversions and/or sources:
-        // - Increase, More, Base, BaseOverride, BaseSet, Base Add: the node on the main path. (calls overload below)
-        // - UncappedSubtotal: The node that sums all paths.
-        // - Subtotal, TotalOverride, Total: There should only be one.
-        ICalculationNode GetNode(IStat stat, NodeType nodeType = NodeType.Total);
-        // Like above but path-specific. Not usable with Total, Subtotal and TotalOverride.
-        //ICalculationNode GetNode(IStat stat, NodeType nodeType, PathDefinition path);
+        // Returns a collection of the paths of the given stat.
+        IObservableCollection<PathDefinition> GetPaths(IStat stat);
 
-        // Returns a collection (with change events) of the paths of the given stat.
-        //IObservableCollection<PathDefinition> GetPaths(IStat stat);
+        // Stat selects the stat subgraph, nodeType and path the node in it.
+        // TODO Non-main path with Total, Subtotal, UncappedSubtotal or TotalOverride throws.
+        ICalculationNode GetNode(IStat stat, NodeType nodeType, PathDefinition path);
 
-        // Returns the form node collection of stat on the main path
-        INodeCollection<Modifier> GetFormNodeCollection(IStat stat, Form form);
-        // Like above but path-specific. Makes above obsolete.
-        //INodeCollection<Modifier> GetFormNodeCollection(IStat stat, Form form, PathDefinition path);
+        // Returns the form node collection of stat on the given path.
+        // TODO Non-main path with TotalOverride throws.
+        INodeCollection<Modifier> GetFormNodeCollection(IStat stat, Form form, PathDefinition path);
+    }
+
+
+    public static class NodeRepositoryExtensions
+    {
+        // TODO Check everything using these methods to make sure they actually want the main path
+
+        public static ICalculationNode GetNode(
+            this INodeRepository repo, IStat stat, NodeType nodeType = NodeType.Total) => 
+            repo.GetNode(stat, nodeType, PathDefinition.MainPath);
+
+        public static INodeCollection<Modifier> GetFormNodeCollection(
+            this INodeRepository repo, IStat stat, Form form) =>
+            repo.GetFormNodeCollection(stat, form, PathDefinition.MainPath);
     }
 }

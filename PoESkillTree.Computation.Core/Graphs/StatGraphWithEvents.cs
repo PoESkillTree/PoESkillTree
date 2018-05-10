@@ -5,6 +5,7 @@ using PoESkillTree.Computation.Core.Events;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    // TODO Adjust for paths
     public class StatGraphWithEvents : IStatGraph
     {
         private readonly IStatGraph _decoratedGraph;
@@ -19,10 +20,12 @@ namespace PoESkillTree.Computation.Core.Graphs
             _nodeRemovedAction = nodeRemovedAction;
         }
 
-        public ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeType nodeType)
+        public ISuspendableEventViewProvider<IObservableCollection<PathDefinition>> Paths => _decoratedGraph.Paths;
+
+        public ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeType nodeType, PathDefinition path)
         {
             var nodeIsNew = !Nodes.ContainsKey(nodeType);
-            var node = _decoratedGraph.GetNode(nodeType);
+            var node = _decoratedGraph.GetNode(nodeType, path);
             if (nodeIsNew)
             {
                 _nodeAddedAction(nodeType);
@@ -33,8 +36,8 @@ namespace PoESkillTree.Computation.Core.Graphs
         public IReadOnlyDictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>> Nodes =>
             _decoratedGraph.Nodes;
 
-        public ISuspendableEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(Form form) =>
-            _decoratedGraph.GetFormNodeCollection(form);
+        public ISuspendableEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(Form form, PathDefinition path) =>
+            _decoratedGraph.GetFormNodeCollection(form, path);
 
         public IReadOnlyDictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
             FormNodeCollections => _decoratedGraph.FormNodeCollections;

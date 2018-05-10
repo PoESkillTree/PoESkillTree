@@ -28,6 +28,8 @@ namespace PoESkillTree.Computation.Core
                     return Create(new SubtotalValue(_stat));
                 case NodeType.UncappedSubtotal:
                     return Create(new UncappedSubtotalValue(_stat));
+                case NodeType.PathTotal:
+                    return Create(new UncappedSubtotalValue(_stat));
                 case NodeType.Base:
                     return Create(new BaseValue(_stat));
                 case NodeType.BaseOverride:

@@ -5,8 +5,9 @@ namespace PoESkillTree.Computation.Common
     public interface IValueCalculationContext
     {
         // For NodeTypes occurring on paths, refers to the non-path node or the main path if always a path-node.
+        // Obsolete with below overload and an extension method that makes NodeType and PathProperty optional.
         NodeValue? GetValue(IStat stat, NodeType nodeType = NodeType.Total);
-        // Refers to the given path. Not usable with Total, Subtotal and TotalOverride.
+        // Refers to the given path. Non-main path with Total, Subtotal or TotalOverride throws.
         //NodeValue? GetValue(IStat stat, NodeType nodeType, PathProperty);
 
         // Refers to the main path. Obsolete with below overload.
@@ -20,7 +21,7 @@ namespace PoESkillTree.Computation.Common
         //  (requires GetValue(IStat, NodeType), GetValues(Form, (IStat, PathDefinition)))
         // UncappedSubtotal outside of paths: Combines UncappedSubtotal of all paths
         //  (requires GetValues(IStat, NodeType))
-        // UncappedSubtotal in a path: same behavior but path-specific
+        // PathTotal in a path: same behavior as UncappedSubtotal before but path-specific
         //  (requires GetValue(IStat, NodeType, PathDefinition))
         // Base with conversion: value is the base value of the first stat in the conversion list with the same path
         //  except removing that from the conversion list.

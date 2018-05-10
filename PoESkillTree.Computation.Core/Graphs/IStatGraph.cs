@@ -6,6 +6,7 @@ namespace PoESkillTree.Computation.Core.Graphs
 {
     public interface IStatGraph : IReadOnlyStatGraph
     {
+        // TODO Add path parameter
         void RemoveNode(NodeType nodeType);
         void RemoveFormNodeCollection(Form form);
 
@@ -16,10 +17,14 @@ namespace PoESkillTree.Computation.Core.Graphs
 
     public interface IReadOnlyStatGraph
     {
-        ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeType nodeType);
+        ISuspendableEventViewProvider<IObservableCollection<PathDefinition>> Paths { get; }
+
+        ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeType nodeType, PathDefinition path);
+        // TODO Add path to dictionary
         IReadOnlyDictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>> Nodes { get; }
 
-        ISuspendableEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(Form form);
+        ISuspendableEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(Form form, PathDefinition path);
+        // TODO Add path to dictionary
         IReadOnlyDictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>> FormNodeCollections { get; }
     }
 

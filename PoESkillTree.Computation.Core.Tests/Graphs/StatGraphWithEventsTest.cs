@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
                 called = true;
             });
 
-            sut.GetNode(expected);
+            sut.GetNode(expected, null);
 
             Assert.IsTrue(called);
         }
@@ -42,7 +42,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var decoratedGraph = Mock.Of<IStatGraph>(g => g.Nodes.ContainsKey(nodeType));
             var sut = CreateSut(decoratedGraph, _ => Assert.Fail());
 
-            sut.GetNode(nodeType);
+            sut.GetNode(nodeType, null);
         }
 
         [Test]
@@ -53,10 +53,10 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             graphMock.Setup(g => g.Nodes.ContainsKey(nodeType)).Returns(false);
             var sut = CreateSut(graphMock.Object, _ =>
             {
-                graphMock.Setup(g => g.GetNode(nodeType)).Throws(new AssertionException("GetNode called after action"));
+                graphMock.Setup(g => g.GetNode(nodeType, null)).Throws(new AssertionException("GetNode called after action"));
             });
 
-            sut.GetNode(nodeType);
+            sut.GetNode(nodeType, null);
         }
 
         [Test]

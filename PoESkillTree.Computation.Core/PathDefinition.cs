@@ -25,6 +25,8 @@ namespace PoESkillTree.Computation.Core
         // The stats on the conversion path, not including the stat subgraph this path belongs to (empty if unconverted)
         public IReadOnlyList<IStat> ConversionStats { get; }
 
+        public bool IsMainPath => Equals(MainPath);
+
         public override bool Equals(object obj) => 
             (obj == this) || (obj is PathDefinition other && Equals(other));
 
