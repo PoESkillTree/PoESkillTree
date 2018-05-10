@@ -13,19 +13,14 @@ namespace PoESkillTree.Computation.Core
         // - Subtotal, TotalOverride, Total: There should only be one.
         ICalculationNode GetNode(IStat stat, NodeType nodeType = NodeType.Total);
         // Like above but path-specific. Not usable with Total, Subtotal and TotalOverride.
-        //ICalculationNode GetNode(IStat stat, NodeType nodeType, PathProperty path);
+        //ICalculationNode GetNode(IStat stat, NodeType nodeType, PathDefinition path);
 
         // Returns a collection (with change events) of the paths of the given stat.
-        //ISomethingCollection<PathProperty> GetPaths(IStat stat);
+        //IObservableCollection<PathDefinition> GetPaths(IStat stat);
 
         // Returns the form node collection of stat on the main path
         INodeCollection<Modifier> GetFormNodeCollection(IStat stat, Form form);
         // Like above but path-specific. Makes above obsolete.
-        //INodeCollection<Modifier> GetFormNodeCollection(IStat stat, Form form, PathProperty path);
-
-        // PathProperty: Contains the path's definition
-        // - Its IModifierSource (only with the information that is the same for all modifiers of the path)
-        // - The IStats on its conversion path (empty if unconverted)
-        // - Main path: IModifierSource is Global, the conversion path is empty
+        //INodeCollection<Modifier> GetFormNodeCollection(IStat stat, Form form, PathDefinition path);
     }
 }

@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PoESkillTree.Computation.Common
 {
-    public interface IModifierSource
+    public interface IModifierSource : IEquatable<IModifierSource>
     {
-        // First level: Global, Local, Ailment
+        // First level: ModifierSourceFirstLevel
         // Global and Local:
         // - Second level: Given, Tree, Skill or Item (maybe more).
         // - Third level: item slot for items
@@ -13,10 +15,7 @@ namespace PoESkillTree.Computation.Common
         // - Also contains information about e.g. tree node names, "Dexterity", item names, ...
         // Ailment second level: Poison, Bleed, Ignite
         // (if necessary, these could inherit further levels from the Hit type damage they originate from)
-
-        // 0th level: Any (for querying paths without specifying a modifier source)
-        // Specifying higher levels is optional.
-        // Sources can be merged together resulting in a source with the highest common level (requires 0th level).
+        ModifierSourceFirstLevel FirstLevel { get; }
 
         // The modifier sources of increase/more modifiers influence a base value of this source (including this source itself)
         // E.g.:
@@ -27,5 +26,29 @@ namespace PoESkillTree.Computation.Common
         // Returns an instance that only contains data necessary for determining equivalence and no additional infos.
         // Such instances are what's stored in stat graph paths.
         IModifierSource ToCanonical();
+    }
+
+
+    public enum ModifierSourceFirstLevel
+    {
+        Global,
+        Local,
+        Ailment
+    }
+
+
+    public class GlobalModifierSource : IModifierSource
+    {
+        public ModifierSourceFirstLevel FirstLevel => ModifierSourceFirstLevel.Global;
+        public IEnumerable<IModifierSource> InfluencingSources => new[] { this };
+        public IModifierSource ToCanonical() => this;
+
+        public override bool Equals(object other) => 
+            other is IModifierSource s && Equals(s);
+
+        public bool Equals(IModifierSource other) =>
+            (other != null) && (other.FirstLevel == ModifierSourceFirstLevel.Global);
+
+        public override int GetHashCode() => 1;
     }
 }
