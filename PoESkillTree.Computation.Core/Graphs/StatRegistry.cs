@@ -41,7 +41,7 @@ namespace PoESkillTree.Computation.Core.Graphs
             wrappedNode.Dispose();
             _registeredNodes.Remove(stat);
             _registeredWrappedNodes.Remove(stat);
-            _nodeCollection.Remove(wrappedNode);
+            _nodeCollection.Remove(wrappedNode, stat);
         }
 
         public bool CanBeRemoved(ISuspendableEventViewProvider<ICalculationNode> node)

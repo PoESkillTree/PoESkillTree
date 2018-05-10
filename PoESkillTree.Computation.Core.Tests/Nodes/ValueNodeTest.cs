@@ -104,7 +104,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         {
             var nodeCollectionMock = new Mock<INodeCollection<Modifier>>();
             nodeCollectionMock.Setup(c => c.GetEnumerator())
-                .Returns(() => Enumerable.Empty<ICalculationNode>().GetEnumerator());
+                .Returns(() => Enumerable.Empty<(ICalculationNode, Modifier)>().GetEnumerator());
             var sut = CreateAggregatingSut(nodeCollectionMock.Object);
             var raised = false;
             sut.SubscribeToValueChanged(() => raised = true);
@@ -120,7 +120,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         {
             var nodeCollectionMock = new Mock<INodeCollection<Modifier>>();
             nodeCollectionMock.Setup(c => c.GetEnumerator())
-                .Returns(() => Enumerable.Empty<ICalculationNode>().GetEnumerator());
+                .Returns(() => Enumerable.Empty<(ICalculationNode, Modifier)>().GetEnumerator());
             var sut = CreateAggregatingSut(nodeCollectionMock.Object);
             var _ = sut.Value;
 

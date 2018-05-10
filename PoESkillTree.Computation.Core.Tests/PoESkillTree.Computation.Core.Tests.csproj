@@ -93,7 +93,7 @@
     <Compile Include="Nodes\SubtotalValueTest.cs" />
     <Compile Include="Events\SuspendableEventsCompositeTest.cs" />
     <Compile Include="Events\SuspendableEventViewProviderTest.cs" />
-    <Compile Include="NodeCollections\SuspendableNodeCollectionTest.cs" />
+    <Compile Include="NodeCollections\SuspendableObservableCollectionTest.cs" />
     <Compile Include="Graphs\SuspendableViewNodeRepositoryTest.cs" />
     <Compile Include="Nodes\TotalValueTest.cs" />
     <Compile Include="Nodes\UncappedSubtotalValueTest.cs" />

@@ -56,7 +56,7 @@ namespace PoESkillTree.Computation.Core
         public ModifierNodeCollection Create(Form form)
         {
             var defaultView = new NodeCollection<Modifier>();
-            var suspendableView = new SuspendableNodeCollection<Modifier>();
+            var suspendableView = new NodeCollection<Modifier>();
             var viewProvider = SuspendableEventViewProvider.Create(defaultView, suspendableView);
             return new ModifierNodeCollection(viewProvider);
         }

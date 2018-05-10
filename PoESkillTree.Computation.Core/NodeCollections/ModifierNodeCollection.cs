@@ -35,10 +35,10 @@ namespace PoESkillTree.Computation.Core.NodeCollections
             _suspenderComposite.Value.Add(node.Suspender);
         }
 
-        public void Remove(ISuspendableEventViewProvider<ICalculationNode> node)
+        public void Remove(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier)
         {
-            _viewProvider.DefaultView.Remove(node.DefaultView);
-            _viewProvider.SuspendableView.Remove(node.SuspendableView);
+            _viewProvider.DefaultView.Remove(node.DefaultView, modifier);
+            _viewProvider.SuspendableView.Remove(node.SuspendableView, modifier);
             _suspenderComposite.Value.Remove(node.Suspender);
         }
     }

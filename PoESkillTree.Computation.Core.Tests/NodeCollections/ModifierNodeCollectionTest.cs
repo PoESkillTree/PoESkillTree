@@ -22,7 +22,7 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
         [Test]
         public void SuspendableViewReturnsConstructorParameter()
         {
-            var suspendableView = new SuspendableNodeCollection<Modifier>();
+            var suspendableView = new NodeCollection<Modifier>();
             var sut = CreateSut(null, suspendableView);
 
             Assert.AreSame(suspendableView, sut.SuspendableView);
@@ -64,8 +64,7 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
 
             sut.Add(node, modifier);
             
-            CollectionAssert.Contains(sut.DefaultView, defaultNode);
-            Assert.AreSame(modifier, sut.DefaultView.NodeProperties[defaultNode]);
+            CollectionAssert.Contains(sut.DefaultView, (defaultNode, modifier));
         }
 
         [Test]
@@ -78,8 +77,7 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
             
             sut.Add(node, modifier);
             
-            CollectionAssert.Contains(sut.SuspendableView, suspendableNode);
-            Assert.AreSame(modifier, sut.SuspendableView.NodeProperties[suspendableNode]);
+            CollectionAssert.Contains(sut.SuspendableView, (suspendableNode, modifier));
         }
 
         [Test]
@@ -102,12 +100,13 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
             var defaultNode = MockNode();
             var suspendableNode = MockNode();
             var node = MockNodeProvider(defaultNode, suspendableNode);
-            sut.Add(node, MockModifier());
+            var modifier = MockModifier();
+            sut.Add(node, modifier);
 
-            sut.Remove(node);
+            sut.Remove(node, modifier);
             
-            CollectionAssert.DoesNotContain(sut.DefaultView, defaultNode);
-            CollectionAssert.DoesNotContain(sut.SuspendableView, suspendableNode);
+            CollectionAssert.DoesNotContain(sut.DefaultView, (node, modifier));
+            CollectionAssert.DoesNotContain(sut.SuspendableView, (node, modifier));
         }
 
         [Test]
@@ -116,19 +115,20 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
             var sut = CreateSut();
             var suspenderMock = new Mock<ISuspendableEvents>();
             var node = MockNodeProvider(suspender: suspenderMock.Object);
-            sut.Add(node, MockModifier());
+            var modifier = MockModifier();
+            sut.Add(node, modifier);
 
-            sut.Remove(node);
+            sut.Remove(node, modifier);
 
             sut.Suspender.SuspendEvents();
             suspenderMock.Verify(s => s.SuspendEvents(), Times.Never);
         }
 
         private static ModifierNodeCollection CreateSut() =>
-            CreateSut(new NodeCollection<Modifier>(), new SuspendableNodeCollection<Modifier>());
+            CreateSut(new NodeCollection<Modifier>(), new NodeCollection<Modifier>());
 
         private static ModifierNodeCollection CreateSut(
-            NodeCollection<Modifier> defaultView, SuspendableNodeCollection<Modifier> suspendableView) => 
+            NodeCollection<Modifier> defaultView, NodeCollection<Modifier> suspendableView) => 
             CreateSut(SuspendableEventViewProvider.Create(defaultView, suspendableView));
 
         private static ModifierNodeCollection CreateSut(

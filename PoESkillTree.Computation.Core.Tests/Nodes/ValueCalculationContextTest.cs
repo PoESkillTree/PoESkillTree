@@ -164,7 +164,8 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         private static INodeCollection<Modifier> MockNodeCollection(params ICalculationNode[] nodes)
         {
             var mock = new Mock<INodeCollection<Modifier>>();
-            mock.Setup(c => c.GetEnumerator()).Returns(() => nodes.AsEnumerable().GetEnumerator());
+            mock.Setup(c => c.GetEnumerator())
+                .Returns(() => nodes.Select(n => (n, (Modifier) null)).AsEnumerable().GetEnumerator());
             return mock.Object;
         }
     }

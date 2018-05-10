@@ -51,7 +51,7 @@ namespace PoESkillTree.Computation.Core
         {
             var innerNodeFactory = new NodeFactory();
             var nodeFactory = new TransformableNodeFactory(innerNodeFactory, v => new TransformableValue(v));
-            var statRegistryCollection = new SuspendableNodeCollection<IStat>();
+            var statRegistryCollection = new NodeCollection<IStat>();
             var statRegistry = new StatRegistry(statRegistryCollection);
             var valueTransformer = new ValueTransformer();
 

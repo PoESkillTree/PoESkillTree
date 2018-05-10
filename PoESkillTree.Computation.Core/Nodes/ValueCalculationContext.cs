@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Core.Nodes
         {
             var nodeCollections = stats.Select(s => _nodeRepository.GetFormNodeCollection(s, form)).ToList();
             _usedNodeCollections.UnionWith(nodeCollections);
-            var nodes = nodeCollections.Flatten().ToHashSet();
+            var nodes = nodeCollections.Flatten().Select(t => t.node).ToHashSet();
             _usedNodes.UnionWith(nodes);
             return nodes.Select(n => n.Value);
         }

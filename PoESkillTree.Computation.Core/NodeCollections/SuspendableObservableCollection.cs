@@ -3,7 +3,7 @@ using PoESkillTree.Computation.Core.Events;
 
 namespace PoESkillTree.Computation.Core.NodeCollections
 {
-    public class SuspendableNodeCollection<TProperty> : NodeCollection<TProperty>, ISuspendableEvents
+    public class SuspendableObservableCollection<T> : ObservableCollection<T>, ISuspendableEvents
     {
         private bool _suppressEvents;
         private CollectionChangeEventArgs _suppressedArgs;

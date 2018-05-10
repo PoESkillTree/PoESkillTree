@@ -130,7 +130,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total) == nodeMock.Object);
             var sut = CreateSut(nodeCollection, nodeRepository);
             sut.Add(stat);
-            var wrappingNode = nodeCollection.Single();
+            var wrappingNode = nodeCollection.Single().node;
 
             sut.Remove(stat);
             

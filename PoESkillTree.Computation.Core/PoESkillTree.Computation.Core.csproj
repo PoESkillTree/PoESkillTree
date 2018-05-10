@@ -68,6 +68,7 @@
     <Compile Include="Graphs\TransformableNodeFactory.cs" />
     <Compile Include="Graphs\ValueTransformer.cs" />
     <Compile Include="IObservableCollection.cs" />
+    <Compile Include="NodeCollections\ObservableCollection.cs" />
     <Compile Include="NodeFactory.cs" />
     <Compile Include="Nodes\BaseValue.cs" />
     <Compile Include="Calculator.cs" />
@@ -109,7 +110,7 @@
     <Compile Include="Nodes\SubtotalValue.cs" />
     <Compile Include="Events\SuspendableEventsComposite.cs" />
     <Compile Include="Events\SuspendableEventViewProvider.cs" />
-    <Compile Include="NodeCollections\SuspendableNodeCollection.cs" />
+    <Compile Include="NodeCollections\SuspendableObservableCollection.cs" />
     <Compile Include="Graphs\SuspendableViewNodeRepository.cs" />
     <Compile Include="Nodes\TotalValue.cs" />
     <Compile Include="Nodes\UncappedSubtotalValue.cs" />

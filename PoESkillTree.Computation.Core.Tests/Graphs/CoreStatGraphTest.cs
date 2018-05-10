@@ -184,7 +184,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             sut.AddModifier(node, modifier);
 
             Assert.That(collection.DefaultView,
-                Has.Exactly(1).Items.SameAs(node.DefaultView));
+                Has.Exactly(1).Items.EqualTo((node.DefaultView, modifier)));
         }
 
         [Test]
@@ -247,7 +247,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         private static ModifierNodeCollection CreateModifierNodeCollection()
         {
             var defaultView = new NodeCollection<Modifier>();
-            var suspendableView = new SuspendableNodeCollection<Modifier>();
+            var suspendableView = new NodeCollection<Modifier>();
             var nodeCollectionViewProvider = SuspendableEventViewProvider.Create(defaultView, suspendableView);
             return new ModifierNodeCollection(nodeCollectionViewProvider);
         }

@@ -63,7 +63,7 @@ namespace PoESkillTree.Computation.Core.Graphs
         public void RemoveModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier)
         {
             var collection = GetModifierNodeCollection(modifier.Form);
-            collection.Remove(node);
+            collection.Remove(node, modifier);
             ModifierCount--;
         }
 

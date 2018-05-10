@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace PoESkillTree.Computation.Core
+﻿namespace PoESkillTree.Computation.Core
 {
-    public interface INodeCollection<TProperty> : IObservableCollection<ICalculationNode>
+    // This interface's purpose is to make the type more readable in signatures.
+    public interface INodeCollection<TProperty> : IObservableCollection<(ICalculationNode node, TProperty property)>
     {
-        IReadOnlyDictionary<ICalculationNode, TProperty> NodeProperties { get; }
     }
 }
