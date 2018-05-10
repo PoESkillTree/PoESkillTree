@@ -13,9 +13,9 @@ namespace PoESkillTree.Computation.Core.Graphs
             _statGraphCollection.GetOrAdd(stat).Paths.DefaultView;
 
         public ICalculationNode GetNode(IStat stat, NodeType nodeType, PathDefinition path) =>
-            _statGraphCollection.GetOrAdd(stat).GetNode(nodeType, path).DefaultView;
+            _statGraphCollection.GetOrAdd(stat).GetNode(new NodeSelector(nodeType, path)).DefaultView;
 
         public INodeCollection<Modifier> GetFormNodeCollection(IStat stat, Form form, PathDefinition path) =>
-            _statGraphCollection.GetOrAdd(stat).GetFormNodeCollection(form, path).DefaultView;
+            _statGraphCollection.GetOrAdd(stat).GetFormNodeCollection(new FormNodeSelector(form, path)).DefaultView;
     }
 }

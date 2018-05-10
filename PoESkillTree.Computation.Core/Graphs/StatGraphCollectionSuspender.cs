@@ -15,6 +15,8 @@ namespace PoESkillTree.Computation.Core.Graphs
         {
             foreach (var statGraph in _statGraphs)
             {
+                yield return statGraph.Paths.Suspender;
+
                 foreach (var node in statGraph.Nodes.Values)
                 {
                     yield return node.Suspender;

@@ -13,61 +13,65 @@ namespace PoESkillTree.Computation.Core.Graphs
     {
         private readonly IStatNodeFactory _nodeFactory;
 
-        private readonly Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>> _nodes =
-            new Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>>();
+        private readonly Dictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>> _nodes =
+            new Dictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>>();
 
-        private readonly Dictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>> _formNodeCollections
-            = new Dictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>();
+        private readonly Dictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
+            _formNodeCollections =
+                new Dictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>();
 
         public CoreStatGraph(IStatNodeFactory nodeFactory)
         {
             _nodeFactory = nodeFactory;
         }
 
-        private IDisposableNodeViewProvider GetDisposableNode(NodeType nodeType) => 
+        private IDisposableNodeViewProvider GetDisposableNode(NodeSelector selector) =>
             (IDisposableNodeViewProvider) _nodes
-                .GetOrAdd(nodeType, _ => _nodeFactory.Create(nodeType));
+                .GetOrAdd(selector, _nodeFactory.Create);
 
-        public ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeType nodeType, PathDefinition path) => 
-            GetDisposableNode(nodeType);
+        public ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeSelector selector) =>
+            GetDisposableNode(selector);
 
-        public IReadOnlyDictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>> Nodes => _nodes;
+        public IReadOnlyDictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>> Nodes => _nodes;
 
         public ISuspendableEventViewProvider<IObservableCollection<PathDefinition>> Paths =>
             throw new NotImplementedException();
 
-        public void RemoveNode(NodeType nodeType)
+        public void RemoveNode(NodeSelector selector)
         {
-            if (!_nodes.ContainsKey(nodeType))
+            if (!_nodes.ContainsKey(selector))
                 return;
-            var node = GetDisposableNode(nodeType);
+            var node = GetDisposableNode(selector);
             node.Dispose();
-            _nodes.Remove(nodeType);
+            _nodes.Remove(selector);
         }
 
-        private ModifierNodeCollection GetModifierNodeCollection(Form form) =>
+        private ModifierNodeCollection GetModifierNodeCollection(FormNodeSelector selector) =>
             (ModifierNodeCollection) _formNodeCollections
-                .GetOrAdd(form, _ => _nodeFactory.Create(form));
+                .GetOrAdd(selector, _nodeFactory.Create);
 
-        public ISuspendableEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(Form form, PathDefinition path) => 
-            GetModifierNodeCollection(form);
+        public ISuspendableEventViewProvider<INodeCollection<Modifier>>
+            GetFormNodeCollection(FormNodeSelector selector) =>
+            GetModifierNodeCollection(selector);
 
-        public IReadOnlyDictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
+        public IReadOnlyDictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
             FormNodeCollections => _formNodeCollections;
 
-        public void RemoveFormNodeCollection(Form form) => 
-            _formNodeCollections.Remove(form);
+        public void RemoveFormNodeCollection(FormNodeSelector selector) =>
+            _formNodeCollections.Remove(selector);
 
         public void AddModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier)
         {
-            var collection = GetModifierNodeCollection(modifier.Form);
+            var selector = new FormNodeSelector(modifier.Form, PathDefinition.MainPath);
+            var collection = GetModifierNodeCollection(selector);
             collection.Add(node, modifier);
             ModifierCount++;
         }
 
         public void RemoveModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier)
         {
-            var collection = GetModifierNodeCollection(modifier.Form);
+            var selector = new FormNodeSelector(modifier.Form, PathDefinition.MainPath);
+            var collection = GetModifierNodeCollection(selector);
             collection.Remove(node, modifier);
             ModifierCount--;
         }

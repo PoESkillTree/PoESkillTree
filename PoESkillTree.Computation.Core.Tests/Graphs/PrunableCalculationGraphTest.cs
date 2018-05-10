@@ -5,6 +5,7 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Graphs;
+using static PoESkillTree.Computation.Core.Tests.Graphs.NodeSelectorHelper;
 
 namespace PoESkillTree.Computation.Core.Tests.Graphs
 {
@@ -208,9 +209,9 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var graphMock = MockGraph();
             var sut = CreateSut(graphMock.Object);
             sut.GetOrAdd(stat);
-            var nodes = new Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>>
+            var nodes = new Dictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>>
             {
-                { NodeType.Base, Mock.Of<ISuspendableEventViewProvider<ICalculationNode>>() }
+                { Selector(NodeType.Base), Mock.Of<ISuspendableEventViewProvider<ICalculationNode>>() }
             };
             var statGraph = Mock.Of<IStatGraph>(g => g.Nodes == nodes);
             var statGraphs = new Dictionary<IStat, IStatGraph> { { stat, statGraph } };
@@ -232,12 +233,12 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var graphMock = MockGraph();
             var sut = CreateSut(graphMock.Object);
             sut.GetOrAdd(stat);
-            var formNodeCollection = new Dictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
+            var formNodeCollection = new Dictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
             {
-                { Form.More, Mock.Of<ISuspendableEventViewProvider<INodeCollection<Modifier>>>() }
+                { Selector(Form.More), Mock.Of<ISuspendableEventViewProvider<INodeCollection<Modifier>>>() }
             };
             var statGraph = Mock.Of<IStatGraph>(g => 
-                g.Nodes == new Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>>() &&
+                g.Nodes == new Dictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>>() &&
                 g.FormNodeCollections == formNodeCollection);
             var statGraphs = new Dictionary<IStat, IStatGraph> { { stat, statGraph } };
             graphMock.SetupGet(g => g.StatGraphs).Returns(statGraphs);
@@ -257,29 +258,31 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var statGraphMock = new Mock<IStatGraph>(MockBehavior.Strict);
             var statGraphs = new Dictionary<IStat, IStatGraph> { { stat, statGraphMock.Object } };
             graphMock.SetupGet(g => g.StatGraphs).Returns(statGraphs);
-            var nodes = new Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>>
+            var nodeSelectors = new[] { Selector(NodeType.Base), Selector(NodeType.More), Selector(NodeType.Total) };
+            var nodes = new Dictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>>
             {
-                { NodeType.Base, MockProvider<ICalculationNode>() },
-                { NodeType.More, MockProvider<ICalculationNode>(5) },
-                { NodeType.Total, MockProvider<ICalculationNode>() },
+                { nodeSelectors[0], MockProvider<ICalculationNode>() },
+                { nodeSelectors[1], MockProvider<ICalculationNode>(5) },
+                { nodeSelectors[2], MockProvider<ICalculationNode>() },
             };
             statGraphMock.SetupGet(g => g.Nodes).Returns(nodes);
-            var formNodeCollection = new Dictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
+            var formNodeSelectors = new[] { Selector(Form.Increase), Selector(Form.More) };
+            var formNodeCollection = new Dictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
             {
-                { Form.Increase, MockProvider<INodeCollection<Modifier>>(2) },
-                { Form.More, MockProvider<INodeCollection<Modifier>>() },
+                { formNodeSelectors[0], MockProvider<INodeCollection<Modifier>>(2) },
+                { formNodeSelectors[1], MockProvider<INodeCollection<Modifier>>() },
             };
             statGraphMock.SetupGet(g => g.FormNodeCollections).Returns(formNodeCollection);
 
             var seq = new MockSequence();
-            statGraphMock.InSequence(seq).Setup(g => g.RemoveNode(NodeType.Total)).Verifiable();
-            statGraphMock.InSequence(seq).Setup(g => g.RemoveNode(NodeType.Base)).Verifiable();
-            statGraphMock.InSequence(seq).Setup(g => g.RemoveFormNodeCollection(Form.More)).Verifiable();
+            statGraphMock.InSequence(seq).Setup(g => g.RemoveNode(nodeSelectors[2])).Verifiable();
+            statGraphMock.InSequence(seq).Setup(g => g.RemoveNode(nodeSelectors[0])).Verifiable();
+            statGraphMock.InSequence(seq).Setup(g => g.RemoveFormNodeCollection(formNodeSelectors[1])).Verifiable();
 
             sut.RemoveUnusedNodes();
 
             // Verify last step of sequence to force previous calls in sequence
-            statGraphMock.Verify(g => g.RemoveFormNodeCollection(Form.More));
+            statGraphMock.Verify(g => g.RemoveFormNodeCollection(formNodeSelectors[1]));
         }
 
         private static PrunableCalculationGraph CreateSut(ICalculationGraph decoratedGraph) =>
@@ -313,9 +316,9 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
 
         private static IStatGraph MockStatGraph() =>
             Mock.Of<IStatGraph>(g =>
-                g.Nodes == new Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>>() &&
+                g.Nodes == new Dictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>>() &&
                 g.FormNodeCollections ==
-                new Dictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>());
+                new Dictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>());
 
         private static ISuspendableEventViewProvider<T> MockProvider<T>(int subscriberCount = 0) =>
             Mock.Of<ISuspendableEventViewProvider<T>>(p => p.SubscriberCount == subscriberCount);

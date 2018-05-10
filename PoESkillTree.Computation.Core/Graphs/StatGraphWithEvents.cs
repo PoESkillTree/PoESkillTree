@@ -5,15 +5,14 @@ using PoESkillTree.Computation.Core.Events;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
-    // TODO Adjust for paths
     public class StatGraphWithEvents : IStatGraph
     {
         private readonly IStatGraph _decoratedGraph;
-        private readonly Action<NodeType> _nodeAddedAction;
-        private readonly Action<NodeType> _nodeRemovedAction;
+        private readonly Action<NodeSelector> _nodeAddedAction;
+        private readonly Action<NodeSelector> _nodeRemovedAction;
 
         public StatGraphWithEvents(
-            IStatGraph decoratedGraph, Action<NodeType> nodeAddedAction, Action<NodeType> nodeRemovedAction)
+            IStatGraph decoratedGraph, Action<NodeSelector> nodeAddedAction, Action<NodeSelector> nodeRemovedAction)
         {
             _decoratedGraph = decoratedGraph;
             _nodeAddedAction = nodeAddedAction;
@@ -22,33 +21,34 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         public ISuspendableEventViewProvider<IObservableCollection<PathDefinition>> Paths => _decoratedGraph.Paths;
 
-        public ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeType nodeType, PathDefinition path)
+        public ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeSelector selector)
         {
-            var nodeIsNew = !Nodes.ContainsKey(nodeType);
-            var node = _decoratedGraph.GetNode(nodeType, path);
+            var nodeIsNew = !Nodes.ContainsKey(selector);
+            var node = _decoratedGraph.GetNode(selector);
             if (nodeIsNew)
             {
-                _nodeAddedAction(nodeType);
+                _nodeAddedAction(selector);
             }
             return node;
         }
 
-        public IReadOnlyDictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>> Nodes =>
+        public IReadOnlyDictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>> Nodes =>
             _decoratedGraph.Nodes;
 
-        public ISuspendableEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(Form form, PathDefinition path) =>
-            _decoratedGraph.GetFormNodeCollection(form, path);
+        public ISuspendableEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(FormNodeSelector selector) =>
+            _decoratedGraph.GetFormNodeCollection(selector);
 
-        public IReadOnlyDictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
+        public IReadOnlyDictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
             FormNodeCollections => _decoratedGraph.FormNodeCollections;
 
-        public void RemoveNode(NodeType nodeType)
+        public void RemoveNode(NodeSelector selector)
         {
-            _decoratedGraph.RemoveNode(nodeType);
-            _nodeRemovedAction(nodeType);
+            _decoratedGraph.RemoveNode(selector);
+            _nodeRemovedAction(selector);
         }
 
-        public void RemoveFormNodeCollection(Form form) => _decoratedGraph.RemoveFormNodeCollection(form);
+        public void RemoveFormNodeCollection(FormNodeSelector selector) => 
+            _decoratedGraph.RemoveFormNodeCollection(selector);
 
         public void AddModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier) =>
             _decoratedGraph.AddModifier(node, modifier);

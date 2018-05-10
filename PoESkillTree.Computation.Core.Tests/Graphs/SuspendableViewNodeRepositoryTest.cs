@@ -15,7 +15,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var stat = Mock.Of<IStat>();
             var path = PathDefinition.MainPath;
             var graphCollection = Mock.Of<IReadOnlyStatGraphCollection>(
-                c => c.GetOrAdd(stat).GetNode(NodeType.Total, path).SuspendableView == expected);
+                c => c.GetOrAdd(stat).GetNode(new NodeSelector(NodeType.Total, path)).SuspendableView == expected);
             var sut = new SuspendableViewNodeRepository(graphCollection);
 
             var actual = sut.GetNode(stat, NodeType.Total, path);
@@ -30,7 +30,8 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var stat = Mock.Of<IStat>();
             var path = PathDefinition.MainPath;
             var graphCollection = Mock.Of<IReadOnlyStatGraphCollection>(
-                c => c.GetOrAdd(stat).GetFormNodeCollection(Form.BaseAdd, path).SuspendableView == expected);
+                c => c.GetOrAdd(stat).GetFormNodeCollection(new FormNodeSelector(Form.BaseAdd, path)).SuspendableView 
+                     == expected);
             var sut = new SuspendableViewNodeRepository(graphCollection);
 
             var actual = sut.GetFormNodeCollection(stat, Form.BaseAdd, path);

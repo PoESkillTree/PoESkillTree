@@ -96,14 +96,17 @@ namespace PoESkillTree.Computation.Core
             var coreGraph = new CoreStatGraph(new StatNodeFactory(nodeFactory, stat));
             return new StatGraphWithEvents(coreGraph, NodeAdded, NodeRemoved);
 
-            void NodeAdded(NodeType nodeType)
+            // TODO Behaviors on path nodes: Not sure how correct it is to pass NodeSelector.NodeType to
+            //      ValueTransformer. Even if behaviors always apply to all paths, at least the transformable dict
+            //      needs to use NodeSelector.
+            void NodeAdded(NodeSelector selector)
             {
-                var node = coreGraph.Nodes[nodeType];
+                var node = coreGraph.Nodes[selector];
                 var transformable = nodeFactory.TransformableDictionary[node];
-                valueTransformer.AddTransformable(stat, nodeType, transformable);
+                valueTransformer.AddTransformable(stat, selector.NodeType, transformable);
             }
 
-            void NodeRemoved(NodeType nodeType) => valueTransformer.RemoveTransformable(stat, nodeType);
+            void NodeRemoved(NodeSelector selector) => valueTransformer.RemoveTransformable(stat, selector.NodeType);
         }
     }
 }

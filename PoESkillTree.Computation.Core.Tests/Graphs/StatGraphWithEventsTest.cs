@@ -5,6 +5,7 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Graphs;
+using static PoESkillTree.Computation.Core.Tests.Graphs.NodeSelectorHelper;
 
 namespace PoESkillTree.Computation.Core.Tests.Graphs
 {
@@ -22,7 +23,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void GetNodeCallsNodeAddedAction()
         {
-            var expected = NodeType.Base;
+            var expected = Selector(NodeType.Base);
             var called = false;
             var sut = CreateSut(actual =>
             {
@@ -30,7 +31,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
                 called = true;
             });
 
-            sut.GetNode(expected, null);
+            sut.GetNode(expected);
 
             Assert.IsTrue(called);
         }
@@ -38,31 +39,31 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void GetNodeDoesNotCallNodeAddedActionIfNodeTypeIsInNodes()
         {
-            var nodeType = NodeType.BaseAdd;
-            var decoratedGraph = Mock.Of<IStatGraph>(g => g.Nodes.ContainsKey(nodeType));
+            var selector = Selector(NodeType.BaseAdd);
+            var decoratedGraph = Mock.Of<IStatGraph>(g => g.Nodes.ContainsKey(selector));
             var sut = CreateSut(decoratedGraph, _ => Assert.Fail());
 
-            sut.GetNode(nodeType, null);
+            sut.GetNode(selector);
         }
 
         [Test]
         public void GetNodeCallsActionAfterCallingDecoratedGraph()
         {
-            var nodeType = NodeType.BaseAdd;
+            var selector = Selector(NodeType.BaseAdd);
             var graphMock = new Mock<IStatGraph>();
-            graphMock.Setup(g => g.Nodes.ContainsKey(nodeType)).Returns(false);
+            graphMock.Setup(g => g.Nodes.ContainsKey(selector)).Returns(false);
             var sut = CreateSut(graphMock.Object, _ =>
             {
-                graphMock.Setup(g => g.GetNode(nodeType, null)).Throws(new AssertionException("GetNode called after action"));
+                graphMock.Setup(g => g.GetNode(selector)).Throws(new AssertionException("GetNode called after action"));
             });
 
-            sut.GetNode(nodeType, null);
+            sut.GetNode(selector);
         }
 
         [Test]
         public void RemoveNodeCallsNodeRemovedAction()
         {
-            var expected = NodeType.Base;
+            var expected = Selector(NodeType.Base);
             var called = false;
             var sut = CreateSut(nodeRemovedAction: actual =>
             {
@@ -76,14 +77,14 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         }
 
         private static StatGraphWithEvents CreateSut(
-            Action<NodeType> nodeAddedAction = null, Action<NodeType> nodeRemovedAction = null)
+            Action<NodeSelector> nodeAddedAction = null, Action<NodeSelector> nodeRemovedAction = null)
         {
-            var nodes = new Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>>();
+            var nodes = new Dictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>>();
             return CreateSut(Mock.Of<IStatGraph>(g => g.Nodes == nodes), nodeAddedAction, nodeRemovedAction);
         }
 
         private static StatGraphWithEvents CreateSut(IStatGraph decoratedGraph, 
-            Action<NodeType> nodeAddedAction = null, Action<NodeType> nodeRemovedAction = null)
+            Action<NodeSelector> nodeAddedAction = null, Action<NodeSelector> nodeRemovedAction = null)
         {
             return new StatGraphWithEvents(decoratedGraph, nodeAddedAction, nodeRemovedAction);
         }

@@ -5,6 +5,7 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Graphs;
+using static PoESkillTree.Computation.Core.Tests.Graphs.NodeSelectorHelper;
 
 namespace PoESkillTree.Computation.Core.Tests.Graphs
 {
@@ -45,17 +46,19 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
 
         private static IReadOnlyStatGraph MockStatGraph(List<Mock> mocks, bool setupResume)
         {
+            var paths = MockProvider<IObservableCollection<PathDefinition>>(mocks, setupResume);
             var nodes = new Dictionary<NodeType, ISuspendableEventViewProvider<ICalculationNode>>
             {
                 { NodeType.Base, MockProvider<ICalculationNode>(mocks, setupResume) },
                 { NodeType.Total, MockProvider<ICalculationNode>(mocks, setupResume) },
-            };
+            }.ToDictionary(p => Selector(p.Key), p => p.Value);
             var formCollections = new Dictionary<Form, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
             {
                 { Form.BaseAdd, MockProvider<INodeCollection<Modifier>>(mocks, setupResume) },
                 { Form.TotalOverride, MockProvider<INodeCollection<Modifier>>(mocks, setupResume) },
-            };
-            return Mock.Of<IReadOnlyStatGraph>(g => g.Nodes == nodes && g.FormNodeCollections == formCollections);
+            }.ToDictionary(p => Selector(p.Key), p => p.Value);
+            return Mock.Of<IReadOnlyStatGraph>(
+                g => g.Paths == paths && g.Nodes == nodes && g.FormNodeCollections == formCollections);
         }
 
         private static ISuspendableEventViewProvider<T> MockProvider<T>(List<Mock> mocks, bool setupResume)

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MoreLinq;
@@ -73,13 +72,13 @@ namespace PoESkillTree.Computation.Core.Graphs
                 .ToList().ForEach(statGraph.RemoveFormNodeCollection);
         }
 
-        private IEnumerable<NodeType> SelectRemovableNodesByNodeType(IReadOnlyStatGraph statGraph) =>
-            from nodeType in Enum.GetValues(typeof(NodeType)).Cast<NodeType>()
-            where statGraph.Nodes.ContainsKey(nodeType)
-            where _nodeRemovalDeterminer.CanBeRemoved(statGraph.Nodes[nodeType])
-            select nodeType;
+        private IEnumerable<NodeSelector> SelectRemovableNodesByNodeType(IReadOnlyStatGraph statGraph) =>
+            from pair in statGraph.Nodes
+            orderby pair.Key.NodeType
+            where _nodeRemovalDeterminer.CanBeRemoved(pair.Value)
+            select pair.Key;
 
-        private IEnumerable<Form> SelectRemovableNodesByForm(IReadOnlyStatGraph statGraph) =>
+        private IEnumerable<FormNodeSelector> SelectRemovableNodesByForm(IReadOnlyStatGraph statGraph) =>
             from pair in statGraph.FormNodeCollections
             where _nodeRemovalDeterminer.CanBeRemoved(pair.Value)
             select pair.Key;

@@ -18,9 +18,9 @@ namespace PoESkillTree.Computation.Core
             _stat = stat;
         }
 
-        public IDisposableNodeViewProvider Create(NodeType nodeType)
+        public IDisposableNodeViewProvider Create(NodeSelector selector)
         {
-            switch (nodeType)
+            switch (selector.NodeType)
             {
                 case NodeType.Total:
                     return Create(new TotalValue(_stat));
@@ -45,7 +45,7 @@ namespace PoESkillTree.Computation.Core
                 case NodeType.TotalOverride:
                     return CreateFormAggregatingNode(_stat, Form.TotalOverride, NodeValueAggregators.CalculateOverride);
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(nodeType), nodeType, null);
+                    throw new ArgumentOutOfRangeException(nameof(selector), selector.NodeType, null);
             }
         }
 
@@ -55,7 +55,7 @@ namespace PoESkillTree.Computation.Core
 
         private IDisposableNodeViewProvider Create(IValue value) => _nodeFactory.Create(value);
 
-        public ModifierNodeCollection Create(Form form)
+        public ModifierNodeCollection Create(FormNodeSelector selector)
         {
             var defaultView = new NodeCollection<Modifier>();
             var suspendableView = new NodeCollection<Modifier>();
