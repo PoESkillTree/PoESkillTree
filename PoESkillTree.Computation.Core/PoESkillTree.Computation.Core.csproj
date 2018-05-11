@@ -105,7 +105,6 @@
     <Compile Include="INodeRepository.cs" />
     <Compile Include="Nodes\TransformableValue.cs" />
     <Compile Include="Nodes\WrappingNode.cs" />
-    <Compile Include="PathDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Nodes\CachingNode.cs" />
     <Compile Include="Nodes\CachingNodeAdapter.cs" />

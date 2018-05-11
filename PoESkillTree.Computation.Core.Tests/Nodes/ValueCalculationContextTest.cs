@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Base, Path) == node);
             var sut = CreateSut(nodeRepository);
 
-            var actual = sut.GetValue(stat, NodeType.Base);
+            var actual = sut.GetValue(stat, NodeType.Base, Path);
 
             Assert.AreEqual(expected, actual);
         }
@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
                 Mock.Of<INodeRepository>(r => r.GetFormNodeCollection(stat, Form.Increase, Path) == nodeCollection);
             var sut = CreateSut(nodeRepository);
 
-            var actual = sut.GetValues(Form.Increase, stat);
+            var actual = sut.GetValues(Form.Increase, stat, Path);
 
             CollectionAssert.Contains(actual, expected);
         }
@@ -70,7 +70,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             }
             var sut = CreateSut(nodeRepositoryMock.Object);
 
-            var actual = sut.GetValues(Form.More, stats);
+            var actual = sut.GetValues(Form.More, Path, stats);
 
             Assert.AreEqual(expected, actual);
         }
@@ -92,8 +92,8 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
                     r.GetNode(stats[0], NodeType.Base, Path) == expected[0]);
             var sut = CreateSut(nodeRepository);
 
-            sut.GetValue(stats[0], NodeType.Base);
-            sut.GetValues(Form.Increase, stats);
+            sut.GetValue(stats[0], NodeType.Base, Path);
+            sut.GetValues(Form.Increase, Path, stats);
             var actual = sut.UsedNodes;
 
             Assert.AreEqual(expected, actual);
@@ -105,7 +105,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             var stat = new StatStub();
             var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == MockNode(0));
             var sut = CreateSut(nodeRepository);
-            sut.GetValue(stat);
+            sut.GetValue(stat, NodeType.Total, Path);
 
             sut.Clear();
 
@@ -113,7 +113,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         }
 
         [Test]
-        public void UsedNodeCollectionsReturnsCorrectResult()
+        public void UsedCollectionsReturnsCorrectResult()
         {
             var expected = new[]
             {
@@ -127,34 +127,72 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
                     r.GetFormNodeCollection(stats[1], Form.Increase, Path) == expected[1]);
             var sut = CreateSut(nodeRepository);
             
-            sut.GetValues(Form.Increase, stats);
-            var actual = sut.UsedNodeCollections;
+            sut.GetValues(Form.Increase, Path, stats);
+            var actual = sut.UsedCollections;
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void ClearClearsUsedNodeCollections()
+        public void ClearClearsUsedCollections()
         {
             var stat = new StatStub();
             var nodeRepository =
                 Mock.Of<INodeRepository>(r => r.GetFormNodeCollection(stat, Form.Increase, Path) == MockNodeCollection());
             var sut = CreateSut(nodeRepository);
-            sut.GetValues(Form.Increase, stat);
+            sut.GetValues(Form.Increase, Path, stat);
 
             sut.Clear();
 
-            CollectionAssert.IsEmpty(sut.UsedNodeCollections);
+            CollectionAssert.IsEmpty(sut.UsedCollections);
         }
 
         [Test]
-        public void GetValueReturnsNullIfStatIsNull()
+        public void GetValuesNodeTypeReturnsCorrectResult()
         {
-            var sut = CreateSut();
+            var nodes = new[] { MockNode(0), MockNode(1) };
+            var stat = new StatStub();
+            var paths = new[] { Path, PathDefinition.MainPath };
+            var nodeRepository = Mock.Of<INodeRepository>(r => 
+                r.GetPaths(stat) == MockPathCollection(paths) &&
+                r.GetNode(stat, NodeType.Base, paths[0]) == nodes[0] &&
+                r.GetNode(stat, NodeType.Base, paths[1]) == nodes[1]);
+            var sut = CreateSut(nodeRepository);
 
-            var actual = sut.GetValue(null);
+            var actual = sut.GetValues(stat, NodeType.Base);
 
-            Assert.IsNull(actual);
+            Assert.AreEqual(nodes.Select(n => n.Value), actual);
+        }
+
+        [Test]
+        public void GetValuesNodeTypeAddsToUsedCollections()
+        {
+            var expected = MockPathCollection();
+            var stat = new StatStub();
+            var nodeRepository = Mock.Of<INodeRepository>(r => 
+                r.GetPaths(stat) == expected);
+            var sut = CreateSut(nodeRepository);
+
+            sut.GetValues(stat, NodeType.Base);
+            
+            CollectionAssert.Contains(sut.UsedCollections, expected);
+        }
+
+        [Test]
+        public void GetValuesNodeTypeAddsToUsedNodes()
+        {
+            var expected = MockNode();
+            var stat = new StatStub();
+            var nodeRepository = Mock.Of<INodeRepository>(r => 
+                r.GetPaths(stat) == MockPathCollection(Path) &&
+                r.GetNode(stat, NodeType.Base, Path) == expected);
+            var sut = CreateSut(nodeRepository);
+
+            var values = sut.GetValues(stat, NodeType.Base);
+            // Forced enumeration because it makes sense to only add those nodes that were actually enumerated
+            foreach (var _ in values);
+
+            CollectionAssert.Contains(sut.UsedNodes, expected);
         }
 
 
@@ -165,10 +203,18 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         {
             var mock = new Mock<INodeCollection<Modifier>>();
             mock.Setup(c => c.GetEnumerator())
-                .Returns(() => nodes.Select(n => (n, (Modifier) null)).AsEnumerable().GetEnumerator());
+                .Returns(() => nodes.Select(n => (n, (Modifier) null)).GetEnumerator());
             return mock.Object;
         }
 
-        private static readonly PathDefinition Path = PathDefinition.MainPath;
+        private static IObservableCollection<PathDefinition> MockPathCollection(params PathDefinition[] paths)
+        {
+            var mock = new Mock<IObservableCollection<PathDefinition>>();
+            mock.Setup(c => c.GetEnumerator())
+                .Returns(() => paths.AsEnumerable().GetEnumerator());
+            return mock.Object;
+        }
+
+        private static readonly PathDefinition Path = new PathDefinition(new GlobalModifierSource(), new StatStub());
     }
 }

@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Computation.Common;
 
-namespace PoESkillTree.Computation.Core
+namespace PoESkillTree.Computation.Common
 {
     public class PathDefinition
     {

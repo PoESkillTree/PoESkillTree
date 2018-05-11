@@ -1,20 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace PoESkillTree.Computation.Common
 {
     public interface IValueCalculationContext
     {
-        // Refers to the main path.
-        // Obsolete with below overload and an extension method that makes NodeType and PathProperty optional.
-        NodeValue? GetValue(IStat stat, NodeType nodeType = NodeType.Total);
-        //NodeValue? GetValue(IStat stat, NodeType nodeType, PathProperty);
-
-        // Refers to the main path. Obsolete with below overload.
-        IEnumerable<NodeValue?> GetValues(Form form, params IStat[] stats);
-        //IEnumerable<NodeValue?> GetValues(Form, (IStat, PathDefinition)[])
+        NodeValue? GetValue(IStat stat, NodeType nodeType, PathDefinition path);
 
         // Returns the values of all paths.
-        //IEnumerable<NodeValue?> GetValues(IStat, NodeType nodeType);
+        IEnumerable<NodeValue?> GetValues(IStat stat, NodeType nodeType);
+
+        IEnumerable<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths);
 
         // Total, Subtotal, TotalOverride: behavior unchanged
         //  (requires GetValue(IStat, NodeType), GetValues(Form, (IStat, PathDefinition)))
@@ -39,10 +35,28 @@ namespace PoESkillTree.Computation.Common
     }
 
 
-    public static class ValueCalculationContextExt
+    public static class ValueCalculationContextExtensions
     {
-        //public static IEnumerable<NodeValue?> GetValues(
-        //    this IValueCalculationContext context, Form form, IStat stat, PathDefinition path) => 
-        //    context.GetValues(form, (stat, path));
+        // TODO Check everything using these methods to make sure they actually want the main path
+
+        public static NodeValue? GetValue(
+            this IValueCalculationContext context, IStat stat, NodeType nodeType = NodeType.Total) => 
+            context.GetValue(stat, nodeType, PathDefinition.MainPath);
+
+        public static IEnumerable<NodeValue?> GetValues(
+            this IValueCalculationContext context, Form form, params IStat[] stats) =>
+            context.GetValues(form, PathDefinition.MainPath, stats);
+
+        public static IEnumerable<NodeValue?> GetValues(
+            this IValueCalculationContext context, Form form, PathDefinition path, params IStat[] stats) =>
+            context.GetValues(form, stats.Select(s => (s, path)));
+
+        public static IEnumerable<NodeValue?> GetValues(
+            this IValueCalculationContext context, Form form, IStat stat, PathDefinition path) => 
+            context.GetValues(form, (stat, path));
+
+        public static IEnumerable<NodeValue?> GetValues(
+            this IValueCalculationContext context, Form form, params (IStat, PathDefinition)[] paths) =>
+            context.GetValues(form, paths);
     }
 }

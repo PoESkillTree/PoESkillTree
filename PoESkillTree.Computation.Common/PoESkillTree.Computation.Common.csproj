@@ -158,6 +158,7 @@
     <Compile Include="NodeValue.cs" />
     <Compile Include="Parsing\ParseException.cs" />
     <Compile Include="Parsing\ReferenceConstants.cs" />
+    <Compile Include="PathDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Events;
 
 namespace PoESkillTree.Computation.Core.NodeCollections

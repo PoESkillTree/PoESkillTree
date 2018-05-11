@@ -24,7 +24,9 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         {
             var stat = new StatStub();
             var vs = values.Select(v => new NodeValue(v)).Cast<NodeValue?>();
-            var context = Mock.Of<IValueCalculationContext>(c => c.GetValues(form, stat) == vs);
+            var paths = new (IStat stat, PathDefinition path)[] { (stat, PathDefinition.MainPath) };
+            var context = Mock.Of<IValueCalculationContext>(
+                c => c.GetValues(form, paths) == vs);
             var sut = CreateSut(stat);
 
             var actual = sut.Calculate(context);

@@ -24,9 +24,9 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         {
             var stat = new StatStub();
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValue(stat, NodeType.Base) == (NodeValue?) @base &&
-                c.GetValue(stat, NodeType.Increase) == (NodeValue?) increase &&
-                c.GetValue(stat, NodeType.More) == (NodeValue?) more);
+                c.GetValue(stat, NodeType.Base, Path) == (NodeValue?) @base &&
+                c.GetValue(stat, NodeType.Increase, Path) == (NodeValue?) increase &&
+                c.GetValue(stat, NodeType.More, Path) == (NodeValue?) more);
             var sut = CreateSut(stat);
 
             var actual = sut.Calculate(context);
@@ -36,5 +36,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
 
         private static UncappedSubtotalValue CreateSut(IStat stat = null) =>
             new UncappedSubtotalValue(stat);
+
+        private static readonly PathDefinition Path = PathDefinition.MainPath;
     }
 }

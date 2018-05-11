@@ -25,9 +25,9 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         {
             var stat = new StatStub();
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValue(stat, NodeType.BaseSet) == (NodeValue?) baseSet &&
-                c.GetValue(stat, NodeType.BaseAdd) == (NodeValue?) baseAdd &&
-                c.GetValue(stat, NodeType.BaseOverride) == (NodeValue?) baseOverride);
+                c.GetValue(stat, NodeType.BaseSet, Path) == (NodeValue?) baseSet &&
+                c.GetValue(stat, NodeType.BaseAdd, Path) == (NodeValue?) baseAdd &&
+                c.GetValue(stat, NodeType.BaseOverride, Path) == (NodeValue?) baseOverride);
             var sut = CreateSut(stat);
 
             var actual = sut.Calculate(context);
@@ -37,5 +37,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
 
         private static BaseValue CreateSut(IStat stat = null) =>
             new BaseValue(stat);
+
+        private static readonly PathDefinition Path = PathDefinition.MainPath;
     }
 }
