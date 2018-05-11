@@ -89,7 +89,8 @@ namespace PoESkillTree.Computation.Core.Graphs
             where CanStatGraphBeRemoved(statGraph)
             select stat;
 
-        private static bool CanStatGraphBeRemoved(IReadOnlyStatGraph statGraph) =>
-            statGraph.Nodes.IsEmpty() && statGraph.FormNodeCollections.IsEmpty();
+        private bool CanStatGraphBeRemoved(IReadOnlyStatGraph statGraph) =>
+            statGraph.Nodes.IsEmpty() && statGraph.FormNodeCollections.IsEmpty()
+                                      && _nodeRemovalDeterminer.CanBeRemoved(statGraph.Paths);
     }
 }
