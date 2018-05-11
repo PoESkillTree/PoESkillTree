@@ -4,10 +4,9 @@ namespace PoESkillTree.Computation.Common
 {
     public interface IValueCalculationContext
     {
-        // For NodeTypes occurring on paths, refers to the non-path node or the main path if always a path-node.
+        // Refers to the main path.
         // Obsolete with below overload and an extension method that makes NodeType and PathProperty optional.
         NodeValue? GetValue(IStat stat, NodeType nodeType = NodeType.Total);
-        // Refers to the given path. Non-main path with Total, Subtotal or TotalOverride throws.
         //NodeValue? GetValue(IStat stat, NodeType nodeType, PathProperty);
 
         // Refers to the main path. Obsolete with below overload.

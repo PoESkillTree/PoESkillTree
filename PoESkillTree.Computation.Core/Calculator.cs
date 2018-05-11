@@ -96,7 +96,8 @@ namespace PoESkillTree.Computation.Core
             var paths = new PathDefinitionCollection(SuspendableEventViewProvider.Create(
                 new ObservableCollection<PathDefinition>(), new SuspendableObservableCollection<PathDefinition>()));
             var coreGraph = new CoreStatGraph(new StatNodeFactory(nodeFactory, stat), paths);
-            return new StatGraphWithEvents(coreGraph, NodeAdded, NodeRemoved);
+            var eventGraph = new StatGraphWithEvents(coreGraph, NodeAdded, NodeRemoved);
+            return new SelectorValidatingStatGraph(eventGraph);
 
             // TODO Behaviors on path nodes: Not sure how correct it is to pass NodeSelector.NodeType to
             //      ValueTransformer. Even if behaviors always apply to all paths, at least the transformable dict

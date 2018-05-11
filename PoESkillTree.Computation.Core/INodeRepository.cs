@@ -10,11 +10,11 @@ namespace PoESkillTree.Computation.Core
         IObservableCollection<PathDefinition> GetPaths(IStat stat);
 
         // Stat selects the stat subgraph, nodeType and path the node in it.
-        // TODO Non-main path with Total, Subtotal, UncappedSubtotal or TotalOverride throws.
+        // NodeType.Total, .Subtotal, .UncappedSubtotal and .TotalOverride can only be used with the main path.
         ICalculationNode GetNode(IStat stat, NodeType nodeType, PathDefinition path);
 
         // Returns the form node collection of stat on the given path.
-        // TODO Non-main path with TotalOverride throws.
+        // Form.TotalOverride can only be used with the main path.
         INodeCollection<Modifier> GetFormNodeCollection(IStat stat, Form form, PathDefinition path);
     }
 
