@@ -70,7 +70,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             }
             var sut = CreateSut(nodeRepositoryMock.Object);
 
-            var actual = sut.GetValues(Form.More, Path, stats);
+            var actual = sut.GetValues(Form.More, stats, Path);
 
             Assert.AreEqual(expected, actual);
         }
@@ -93,7 +93,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             var sut = CreateSut(nodeRepository);
 
             sut.GetValue(stats[0], NodeType.Base, Path);
-            sut.GetValues(Form.Increase, Path, stats);
+            sut.GetValues(Form.Increase, stats, Path);
             var actual = sut.UsedNodes;
 
             Assert.AreEqual(expected, actual);
@@ -127,7 +127,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
                     r.GetFormNodeCollection(stats[1], Form.Increase, Path) == expected[1]);
             var sut = CreateSut(nodeRepository);
             
-            sut.GetValues(Form.Increase, Path, stats);
+            sut.GetValues(Form.Increase, stats, Path);
             var actual = sut.UsedCollections;
 
             Assert.AreEqual(expected, actual);
@@ -140,7 +140,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             var nodeRepository =
                 Mock.Of<INodeRepository>(r => r.GetFormNodeCollection(stat, Form.Increase, Path) == MockNodeCollection());
             var sut = CreateSut(nodeRepository);
-            sut.GetValues(Form.Increase, Path, stat);
+            sut.GetValues(Form.Increase, stat, Path);
 
             sut.Clear();
 

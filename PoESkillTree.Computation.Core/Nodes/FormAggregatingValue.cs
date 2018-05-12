@@ -18,6 +18,6 @@ namespace PoESkillTree.Computation.Core.Nodes
         }
 
         public NodeValue? Calculate(IValueCalculationContext valueCalculationContext) => 
-            _aggregator(valueCalculationContext.GetValues(_form, _path, _stat));
+            _aggregator(valueCalculationContext.GetValues(_form, _stat, _path));
     }
 }

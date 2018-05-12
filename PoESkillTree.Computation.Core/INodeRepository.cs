@@ -21,8 +21,6 @@ namespace PoESkillTree.Computation.Core
 
     public static class NodeRepositoryExtensions
     {
-        // TODO Check everything using these methods to make sure they actually want the main path
-
         public static ICalculationNode GetNode(
             this INodeRepository repo, IStat stat, NodeType nodeType = NodeType.Total) =>
             repo.GetNode(stat, nodeType, PathDefinition.MainPath);

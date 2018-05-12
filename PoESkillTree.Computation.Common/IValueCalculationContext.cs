@@ -16,26 +16,20 @@ namespace PoESkillTree.Computation.Common
 
     public static class ValueCalculationContextExtensions
     {
-        // TODO Check everything using these methods to make sure they actually want the main path
-
         public static NodeValue? GetValue(
             this IValueCalculationContext context, IStat stat, NodeType nodeType = NodeType.Total) => 
             context.GetValue(stat, nodeType, PathDefinition.MainPath);
 
         public static IEnumerable<NodeValue?> GetValues(
-            this IValueCalculationContext context, Form form, params IStat[] stats) =>
-            context.GetValues(form, PathDefinition.MainPath, stats);
+            this IValueCalculationContext context, Form form, IStat stat) =>
+            context.GetValues(form, stat, PathDefinition.MainPath);
 
         public static IEnumerable<NodeValue?> GetValues(
-            this IValueCalculationContext context, Form form, PathDefinition path, params IStat[] stats) =>
+            this IValueCalculationContext context, Form form, IStat stat, PathDefinition path) =>
+            context.GetValues(form, new[] { (stat, path) });
+
+        public static IEnumerable<NodeValue?> GetValues(
+            this IValueCalculationContext context, Form form, IEnumerable<IStat> stats, PathDefinition path) =>
             context.GetValues(form, stats.Select(s => (s, path)));
-
-        public static IEnumerable<NodeValue?> GetValues(
-            this IValueCalculationContext context, Form form, IStat stat, PathDefinition path) => 
-            context.GetValues(form, (stat, path));
-
-        public static IEnumerable<NodeValue?> GetValues(
-            this IValueCalculationContext context, Form form, params (IStat, PathDefinition)[] paths) =>
-            context.GetValues(form, paths);
     }
 }
