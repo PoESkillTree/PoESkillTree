@@ -15,7 +15,7 @@ namespace PoESkillTree.Computation.Core
      * - Can contain multiple "paths"
      *   - Conversions and Gains (from Bar to Foo) can add paths:
      *     - Adding a modifier with this stat adds a new path to Foo for each path of Bar
-     *     - Conversion rates can be done as behaviors to Base of Foo's new path and all of Bar's UncappedSubtotals
+     *     - Conversion rates can be done as behaviors to Base of Foo's new path and all of Bar's PathTotals
      *     - the values between converting parent nodes need to be redistributed to achieve a sum of 100%
      *       (with modifiers with a skill gem source having precedence)
      *   - Implementation ideas for conversion paths:
@@ -26,9 +26,7 @@ namespace PoESkillTree.Computation.Core
      *       The subclasses need to have properties specifying where to add the path. E.g. the source and target IStat
      *       for conversions.
      *     - A more general solution, which does not fix all types of path in interfaces, would be better.
-     * -> Support needs to be implemented for:s
-     *    - Interaction with behaviors might make things more difficult
-     *      (behaviors also need to apply to nodes on the non-main paths)
+     * -> Support needs to be implemented for:
      *    - Specifying conversion/gain paths in IStat
      *
      * Data-driven Mechanics:
