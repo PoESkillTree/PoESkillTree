@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Common
         // E.g.:
         // - Global: only Global
         // - Local->Item->BodyArmour: Local->Item->BodyArmour, Global, (Local->Item if such modifiers exist)
-        IEnumerable<IModifierSource> InfluencingSources { get; }
+        IReadOnlyList<IModifierSource> InfluencingSources { get; }
 
         // Returns an instance that only contains data necessary for determining equivalence and no additional infos.
         // Such instances are what's stored in stat graph paths.
@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Common
     public class GlobalModifierSource : IModifierSource
     {
         public ModifierSourceFirstLevel FirstLevel => ModifierSourceFirstLevel.Global;
-        public IEnumerable<IModifierSource> InfluencingSources => new[] { this };
+        public IReadOnlyList<IModifierSource> InfluencingSources => new[] { this };
         public IModifierSource ToCanonical() => this;
 
         public override bool Equals(object other) => 

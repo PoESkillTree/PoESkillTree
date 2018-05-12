@@ -11,12 +11,6 @@ namespace PoESkillTree.Computation.Common
         IEnumerable<NodeValue?> GetValues(IStat stat, NodeType nodeType);
 
         IEnumerable<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths);
-
-        // Increase, More: still form aggregating, but with multiple paths:
-        //  For each source in currentPath.Source.InfluencingSources:
-        //   paths.Add((source, currentStat))
-        //   For each stat in currentPath.Stats:
-        //    paths.Add((source, stat))
     }
 
 

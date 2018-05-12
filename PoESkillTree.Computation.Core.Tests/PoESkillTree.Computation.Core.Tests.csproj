@@ -72,6 +72,7 @@
     <Compile Include="Graphs\StatRegistryTest.cs" />
     <Compile Include="Graphs\TransformableNodeFactoryTest.cs" />
     <Compile Include="Graphs\ValueTransformerTest.cs" />
+    <Compile Include="ModifierSourceStub.cs" />
     <Compile Include="NodeCollections\PathDefinitionCollectionTest.cs" />
     <Compile Include="Nodes\BaseValueTest.cs" />
     <Compile Include="CalculatorExtensionsTest.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Nodes\ConvertedBaseValueTest.cs" />
     <Compile Include="Nodes\CycleGuardTest.cs" />
     <Compile Include="Nodes\FormAggregatingValueTest.cs" />
+    <Compile Include="Nodes\MultiPathFormAggregatingValueTest.cs" />
     <Compile Include="Nodes\NodeValueAggregatorsTest.cs" />
     <Compile Include="NodeHelper.cs" />
     <Compile Include="Nodes\TransformableValueTest.cs" />

@@ -38,25 +38,21 @@ namespace PoESkillTree.Computation.Core
                 case NodeType.Base:
                     return Create(new BaseValue(_stat, path));
                 case NodeType.BaseOverride:
-                    return CreateFormAggregatingNode(_stat, Form.BaseOverride, path, CalculateOverride);
+                    return Create(new FormAggregatingValue(_stat, Form.BaseOverride, path, CalculateOverride));
                 case NodeType.BaseSet:
-                    return CreateFormAggregatingNode(_stat, Form.BaseSet, path, CalculateBaseAdd);
+                    return Create(new FormAggregatingValue(_stat, Form.BaseSet, path, CalculateBaseAdd));
                 case NodeType.BaseAdd:
-                    return CreateFormAggregatingNode(_stat, Form.BaseAdd, path, CalculateBaseAdd);
+                    return Create(new FormAggregatingValue(_stat, Form.BaseAdd, path, CalculateBaseAdd));
                 case NodeType.Increase:
-                    return CreateFormAggregatingNode(_stat, Form.Increase, path, CalculateIncrease);
+                    return Create(new MultiPathFormAggregatingValue(_stat, Form.Increase, path, CalculateIncrease));
                 case NodeType.More:
-                    return CreateFormAggregatingNode(_stat, Form.More, path, CalculateMore);
+                    return Create(new MultiPathFormAggregatingValue(_stat, Form.More, path, CalculateMore));
                 case NodeType.TotalOverride:
-                    return CreateFormAggregatingNode(_stat, Form.TotalOverride, path, CalculateOverride);
+                    return Create(new FormAggregatingValue(_stat, Form.TotalOverride, path, CalculateOverride));
                 default:
                     throw new ArgumentOutOfRangeException(nameof(selector), nodeType, null);
             }
         }
-
-        private IDisposableNodeViewProvider CreateFormAggregatingNode(
-            IStat stat, Form form, PathDefinition path, NodeValueAggregator aggregator) =>
-            Create(new FormAggregatingValue(stat, form, path, aggregator));
 
         private IDisposableNodeViewProvider Create(IValue value) => _nodeFactory.Create(value);
 

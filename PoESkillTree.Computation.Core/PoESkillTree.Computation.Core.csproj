@@ -99,6 +99,7 @@
     <Compile Include="Graphs\StatGraphCollectionSuspender.cs" />
     <Compile Include="Nodes\IDisposableNodeViewProvider.cs" />
     <Compile Include="Nodes\IValueTransformable.cs" />
+    <Compile Include="Nodes\MultiPathFormAggregatingValue.cs" />
     <Compile Include="Nodes\NodeValueAggregators.cs" />
     <Compile Include="Nodes\ICachingNode.cs" />
     <Compile Include="ICalculator.cs" />
