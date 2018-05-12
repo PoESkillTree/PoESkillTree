@@ -39,9 +39,9 @@ namespace PoESkillTree.Computation.Core.Nodes
                 node.ValueChanged -= OnValueChanged;
             }
 
-            foreach (var nodeCollection in _context.UsedCollections)
+            foreach (var collection in _context.UsedCollections)
             {
-                nodeCollection.CollectionChanged -= OnValueChanged;
+                collection.CollectionChanged -= OnValueChanged;
             }
 
             _context.Clear();
@@ -54,9 +54,9 @@ namespace PoESkillTree.Computation.Core.Nodes
                 node.ValueChanged += OnValueChanged;
             }
 
-            foreach (var nodeCollection in _context.UsedCollections)
+            foreach (var collection in _context.UsedCollections)
             {
-                nodeCollection.CollectionChanged += OnValueChanged;
+                collection.CollectionChanged += OnValueChanged;
             }
         }
 

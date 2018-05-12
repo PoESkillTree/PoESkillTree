@@ -63,7 +63,6 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         private static SelectorValidatingStatGraph CreateSut() => 
             new SelectorValidatingStatGraph(Mock.Of<IStatGraph>());
 
-        private static readonly PathDefinition NotMainPath =
-            new PathDefinition(new GlobalModifierSource(), new StatStub());
+        private static readonly PathDefinition NotMainPath = NodeHelper.NotMainPath;
     }
 }

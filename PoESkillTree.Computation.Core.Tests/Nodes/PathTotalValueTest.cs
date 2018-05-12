@@ -6,7 +6,7 @@ using PoESkillTree.Computation.Core.Nodes;
 namespace PoESkillTree.Computation.Core.Tests.Nodes
 {
     [TestFixture]
-    public class BaseValueTest
+    public class PathTotalValueTest
     {
         [Test]
         public void SutIsValue()
@@ -18,16 +18,15 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
 
         [TestCase(null, null, null, null)]
         [TestCase(42, null, null, 42)]
-        [TestCase(42, 8, null, 50)]
-        [TestCase(42, 8, 3, 3)]
-        [TestCase(null, 8, null, 8)]
-        public void CalculateReturnsCorrectResult(double? baseSet, double? baseAdd, double? baseOverride, double? expected)
+        [TestCase(1.5, 1.0, null, 3)]
+        [TestCase(1.5, 1.0, 0.5, 1.5)]
+        public void CalculateReturnsCorrectResult(double? @base, double? increase, double? more, double? expected)
         {
             var stat = new StatStub();
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValue(stat, NodeType.BaseSet, Path) == (NodeValue?) baseSet &&
-                c.GetValue(stat, NodeType.BaseAdd, Path) == (NodeValue?) baseAdd &&
-                c.GetValue(stat, NodeType.BaseOverride, Path) == (NodeValue?) baseOverride);
+                c.GetValue(stat, NodeType.Base, Path) == (NodeValue?) @base &&
+                c.GetValue(stat, NodeType.Increase, Path) == (NodeValue?) increase &&
+                c.GetValue(stat, NodeType.More, Path) == (NodeValue?) more);
             var sut = CreateSut(stat);
 
             var actual = sut.Calculate(context);
@@ -35,8 +34,8 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             Assert.AreEqual((NodeValue?) expected, actual);
         }
 
-        private static BaseValue CreateSut(IStat stat = null) =>
-            new BaseValue(stat, Path);
+        private static PathTotalValue CreateSut(IStat stat = null) =>
+            new PathTotalValue(stat, Path);
 
         private static readonly PathDefinition Path = NodeHelper.NotMainPath;
     }

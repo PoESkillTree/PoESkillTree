@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Common.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Common
@@ -63,5 +65,21 @@ namespace PoESkillTree.Computation.Common
             Minimum.AlmostEquals(value, delta) && Maximum.AlmostEquals(value, delta);
 
         public override string ToString() => $"{Minimum} to {Maximum}";
+    }
+
+
+    public static class NodeValueExtensions
+    {
+        public static NodeValue Sum(this IEnumerable<NodeValue> values) => 
+            values.Aggregate((l, r) => l + r);
+
+        public static NodeValue? Sum(this IEnumerable<NodeValue?> values) => 
+            values.AggregateOnValues((l, r) => l + r);
+
+        public static NodeValue Product(this IEnumerable<NodeValue> values) => 
+            values.Aggregate((l, r) => l * r);
+
+        public static NodeValue? Product(this IEnumerable<NodeValue?> values) => 
+            values.AggregateOnValues((l, r) => l * r);
     }
 }

@@ -215,6 +215,6 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             return mock.Object;
         }
 
-        private static readonly PathDefinition Path = new PathDefinition(new GlobalModifierSource(), new StatStub());
+        private static readonly PathDefinition Path = NotMainPath;
     }
 }

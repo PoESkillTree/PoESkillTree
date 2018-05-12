@@ -32,13 +32,13 @@ namespace PoESkillTree.Computation.Core.Nodes
                     "Multiple modifiers to BaseOverride or TotalOverride with none having value 0 are not supported");
 
         public static NodeValue? CalculateMore(IEnumerable<NodeValue?> values) =>
-            values.AggregateOrNull(vs => vs.Select(v => 1 + v / 100).Product());
+            values.SelectOnValues(v => 1 + v / 100).Product();
 
         public static NodeValue? CalculateIncrease(IEnumerable<NodeValue?> values) =>
-            values.AggregateOrNull(vs => vs.Select(v => v / 100).Sum());
+            values.SelectOnValues(v => v / 100).Sum();
 
         public static NodeValue? CalculateBaseAdd(IEnumerable<NodeValue?> values) =>
-            values.AggregateOrNull(Sum);
+            values.Sum();
 
         public static NodeValue? CalculateBaseSet(IEnumerable<NodeValue?> values)
         {
@@ -50,23 +50,6 @@ namespace PoESkillTree.Computation.Core.Nodes
             }
 
             return enumerated.Any() ? enumerated.Sum() : new NodeValue(0);
-        }
-
-        private static NodeValue Sum(this IEnumerable<NodeValue> values) =>
-            values.Aggregate((l, r) => l + r);
-
-        private static NodeValue Product(this IEnumerable<NodeValue> values) =>
-            values.Aggregate((l, r) => l * r);
-
-        private static NodeValue? AggregateOrNull(
-            this IEnumerable<NodeValue?> values, Func<IEnumerable<NodeValue>, NodeValue> aggregator)
-        {
-            var enumerated = values.EnumerateWhereNotNull();
-            if (enumerated.Any())
-            {
-                return aggregator(enumerated);
-            }
-            return null;
         }
 
         private static IReadOnlyList<NodeValue> EnumerateWhereNotNull(this IEnumerable<NodeValue?> values) =>

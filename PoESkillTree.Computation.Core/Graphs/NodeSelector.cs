@@ -21,5 +21,8 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         public override int GetHashCode() =>
             (NodeType, Path).GetHashCode();
+
+        public void Deconstruct(out NodeType nodeType, out PathDefinition path) => 
+            (nodeType, path) = (NodeType, Path);
     }
 }

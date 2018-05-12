@@ -56,5 +56,7 @@ namespace PoESkillTree.Computation.Core.Tests
 
         public static T[] MockMany<T>(int count = 3) where T : class =>
             Enumerable.Range(0, count).Select(_ => Mock.Of<T>()).ToArray();
+
+        public static PathDefinition NotMainPath => new PathDefinition(new GlobalModifierSource(), new StatStub());
     }
 }

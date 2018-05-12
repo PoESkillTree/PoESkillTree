@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System.Linq;
+using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Nodes;
@@ -12,21 +13,19 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         public void SutIsValue()
         {
             var sut = CreateSut();
-
+            
             Assert.IsInstanceOf<IValue>(sut);
         }
 
-        [TestCase(null, null, null, null)]
-        [TestCase(42, null, null, 42)]
-        [TestCase(1.5, 1.0, null, 3)]
-        [TestCase(1.5, 1.0, 0.5, 1.5)]
-        public void CalculateReturnsCorrectResult(double? @base, double? increase, double? more, double? expected)
+        [TestCase(null)]
+        [TestCase(0, 0.0)]
+        [TestCase(0, null, 0.0)]
+        [TestCase(3, 1.0, 2.0)]
+        public void CalculateReturnsCorrectResult(double? expected, params double?[] pathTotals)
         {
             var stat = new StatStub();
-            var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValue(stat, NodeType.Base, Path) == (NodeValue?) @base &&
-                c.GetValue(stat, NodeType.Increase, Path) == (NodeValue?) increase &&
-                c.GetValue(stat, NodeType.More, Path) == (NodeValue?) more);
+            var values = pathTotals.Select(d => (NodeValue?) d);
+            var context = Mock.Of<IValueCalculationContext>(c => c.GetValues(stat, NodeType.PathTotal) == values);
             var sut = CreateSut(stat);
 
             var actual = sut.Calculate(context);
@@ -34,9 +33,6 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             Assert.AreEqual((NodeValue?) expected, actual);
         }
 
-        private static UncappedSubtotalValue CreateSut(IStat stat = null) =>
-            new UncappedSubtotalValue(stat);
-
-        private static readonly PathDefinition Path = PathDefinition.MainPath;
+        private static UncappedSubtotalValue CreateSut(IStat stat = null) => new UncappedSubtotalValue(stat);
     }
 }

@@ -21,5 +21,8 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         public override int GetHashCode() =>
             (Form, Path).GetHashCode();
+
+        public void Deconstruct(out Form form, out PathDefinition path) =>
+            (form, path) = (Form, Path);
     }
 }
