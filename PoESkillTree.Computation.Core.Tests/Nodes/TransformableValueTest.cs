@@ -1,6 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.Computation.Core.Nodes;
 
 namespace PoESkillTree.Computation.Core.Tests.Nodes
@@ -43,7 +44,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         {
             var expected = new NodeValue(42);
             var context = Mock.Of<IValueCalculationContext>();
-            var values = NodeHelper.MockMany<IValue>();
+            var values = Helper.MockMany<IValue>();
             var sut = CreateSut(values[0]);
             Mock.Get(values[2]).Setup(v => v.Calculate(context)).Returns(expected);
 
@@ -59,7 +60,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         {
             var expected = new NodeValue(42);
             var context = Mock.Of<IValueCalculationContext>();
-            var values = NodeHelper.MockMany<IValue>();
+            var values = Helper.MockMany<IValue>();
             var sut = CreateSut(values[0]);
             var transformations = new[]
             {

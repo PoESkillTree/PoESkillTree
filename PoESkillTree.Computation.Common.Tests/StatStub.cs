@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using PoESkillTree.Computation.Common;
 
-namespace PoESkillTree.Computation.Core.Tests
+namespace PoESkillTree.Computation.Common.Tests
 {
     [DebuggerDisplay("{" + nameof(_instance) + "}")]
-    internal class StatStub : IStat
+    public class StatStub : IStat
     {
         private static int _instanceCounter;
 

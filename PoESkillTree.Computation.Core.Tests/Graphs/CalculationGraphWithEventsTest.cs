@@ -4,6 +4,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.Computation.Core.Graphs;
 
 namespace PoESkillTree.Computation.Core.Tests.Graphs
@@ -73,7 +74,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void AddModifierCallsInjectedGraph()
         {
-            var modifier = NodeHelper.MockModifier();
+            var modifier = Helper.MockModifier();
             var graphMock = new Mock<ICalculationGraph>();
             var sut = CreateSut(graphMock.Object);
 
@@ -85,7 +86,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void RemoveModifierCallsInjectedGraph()
         {
-            var modifier = NodeHelper.MockModifier();
+            var modifier = Helper.MockModifier();
             var graphMock = new Mock<ICalculationGraph>();
             var sut = CreateSut(graphMock.Object);
 
@@ -130,7 +131,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
                 invocations++;
             });
 
-            sut.AddModifier(NodeHelper.MockModifier(stats));
+            sut.AddModifier(Helper.MockModifier(stats));
 
             Assert.AreEqual(2, invocations);
         }
@@ -141,7 +142,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var stat = new StatStub();
             var sut = CreateSut(_ => Assert.Fail(), knownStats: stat);
 
-            sut.AddModifier(NodeHelper.MockModifier(stat));
+            sut.AddModifier(Helper.MockModifier(stat));
         }
 
         [Test]
@@ -185,7 +186,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         public void AddModifierCallsStatAddedActionAfterCallingInjectedGraph()
         {
             var stat = new StatStub();
-            var modifier = NodeHelper.MockModifier(stat);
+            var modifier = Helper.MockModifier(stat);
             var graphMock = new Mock<ICalculationGraph>();
             var addModifierCalled = false;
             graphMock.Setup(g => g.AddModifier(modifier)).Callback(() => addModifierCalled = true);

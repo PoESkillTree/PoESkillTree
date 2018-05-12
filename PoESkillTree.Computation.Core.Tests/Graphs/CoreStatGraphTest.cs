@@ -1,10 +1,12 @@
 ﻿using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Graphs;
 using PoESkillTree.Computation.Core.NodeCollections;
 using PoESkillTree.Computation.Core.Nodes;
+using static PoESkillTree.Computation.Common.Tests.Helper;
 using static PoESkillTree.Computation.Core.Tests.NodeHelper;
 using static PoESkillTree.Computation.Core.Tests.Graphs.NodeSelectorHelper;
 
@@ -309,7 +311,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             var node = MockNodeProvider();
             var canonicalSource = new ModifierSourceStub();
-            var modifier = MockModifier(source: new ModifierSourceStub(canonicalSource));
+            var modifier = MockModifier(source: new ModifierSourceStub { CanonicalSource = canonicalSource });
             var collection = CreateModifierNodeCollection();
             var selector = new FormNodeSelector(modifier.Form, new PathDefinition(canonicalSource));
             var factory = Mock.Of<IStatNodeFactory>(f => f.Create(selector) == collection);

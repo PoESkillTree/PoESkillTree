@@ -34,6 +34,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Co
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Parsing.Tests", "PoESkillTree.Computation.Parsing.Tests\PoESkillTree.Computation.Parsing.Tests.csproj", "{0EFA2885-50A9-45C9-B1A1-701A83681C90}"
+	ProjectSection(ProjectDependencies) = postProject
+		{844B58AB-4D91-4567-BCA9-F3E1B2A29444} = {844B58AB-4D91-4567-BCA9-F3E1B2A29444}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.IntegrationTests", "PoESkillTree.Computation.IntegrationTests\PoESkillTree.Computation.IntegrationTests.csproj", "{CE77F246-871D-4E8C-8E5F-B44EBDBF2541}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -52,6 +55,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Common.Tests", "PoESkillTree.Computation.Common.Tests\PoESkillTree.Computation.Common.Tests.csproj", "{844B58AB-4D91-4567-BCA9-F3E1B2A29444}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Core.Tests", "PoESkillTree.Computation.Core.Tests\PoESkillTree.Computation.Core.Tests.csproj", "{02676C0A-817C-4D1D-BE32-640D6D5A9937}"
+	ProjectSection(ProjectDependencies) = postProject
+		{844B58AB-4D91-4567-BCA9-F3E1B2A29444} = {844B58AB-4D91-4567-BCA9-F3E1B2A29444}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

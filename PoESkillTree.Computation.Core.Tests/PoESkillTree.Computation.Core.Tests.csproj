@@ -72,7 +72,6 @@
     <Compile Include="Graphs\StatRegistryTest.cs" />
     <Compile Include="Graphs\TransformableNodeFactoryTest.cs" />
     <Compile Include="Graphs\ValueTransformerTest.cs" />
-    <Compile Include="ModifierSourceStub.cs" />
     <Compile Include="NodeCollections\PathDefinitionCollectionTest.cs" />
     <Compile Include="Nodes\BaseValueTest.cs" />
     <Compile Include="CalculatorExtensionsTest.cs" />
@@ -96,7 +95,6 @@
     <Compile Include="Nodes\CachingNodeAdapterTest.cs" />
     <Compile Include="Nodes\CachingNodeTest.cs" />
     <Compile Include="Graphs\PrunableCalculationGraphTest.cs" />
-    <Compile Include="StatStub.cs" />
     <Compile Include="Nodes\SubtotalValueTest.cs" />
     <Compile Include="Events\SuspendableEventsCompositeTest.cs" />
     <Compile Include="Events\SuspendableEventViewProviderTest.cs" />
@@ -111,6 +109,10 @@
     <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Common.csproj">
       <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
       <Name>PoESkillTree.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Common.Tests\PoESkillTree.Computation.Common.Tests.csproj">
+      <Project>{844b58ab-4d91-4567-bca9-f3e1b2a29444}</Project>
+      <Name>PoESkillTree.Computation.Common.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj">
       <Project>{827be52d-878c-45f0-afc0-75b5385aad53}</Project>

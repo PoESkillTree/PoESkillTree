@@ -3,8 +3,10 @@ using Moq;
 using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Graphs;
+using static PoESkillTree.Computation.Common.Tests.Helper;
 using static PoESkillTree.Computation.Core.Tests.Graphs.NodeSelectorHelper;
 
 namespace PoESkillTree.Computation.Core.Tests.Graphs
@@ -66,7 +68,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void AddModifierCallsInjectedGraph()
         {
-            var modifier = NodeHelper.MockModifier();
+            var modifier = MockModifier();
             var graphMock = new Mock<ICalculationGraph>();
             var sut = CreateSut(graphMock.Object);
 
@@ -78,7 +80,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void RemoveModifierCallsInjectedGraph()
         {
-            var modifier = NodeHelper.MockModifier();
+            var modifier = MockModifier();
             var graphMock = new Mock<ICalculationGraph>();
             var sut = CreateSut(graphMock.Object);
 
@@ -154,7 +156,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var sut = CreateSut(graphMock.Object);
             sut.GetOrAdd(stat);
 
-            sut.AddModifier(NodeHelper.MockModifier(stat));
+            sut.AddModifier(MockModifier(stat));
 
             sut.RemoveUnusedNodes();
             graphMock.Verify(g => g.Remove(stat), Times.Never);
@@ -168,7 +170,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var sut = CreateSut(graphMock.Object);
             SetStats(graphMock, stat);
 
-            sut.RemoveModifier(NodeHelper.MockModifier(stat));
+            sut.RemoveModifier(MockModifier(stat));
 
             sut.RemoveUnusedNodes();
             graphMock.Verify(g => g.Remove(stat));
@@ -181,7 +183,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var graphMock = MockGraph();
             var sut = CreateSut(graphMock.Object);
 
-            sut.RemoveModifier(NodeHelper.MockModifier(stat));
+            sut.RemoveModifier(MockModifier(stat));
 
             sut.RemoveUnusedNodes();
             graphMock.Verify(g => g.Remove(stat), Times.Never);
@@ -196,7 +198,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             graphMock.Setup(g => g.StatGraphs[stat].ModifierCount).Returns(5);
             var sut = CreateSut(graphMock.Object);
 
-            sut.RemoveModifier(NodeHelper.MockModifier(stat));
+            sut.RemoveModifier(MockModifier(stat));
 
             sut.RemoveUnusedNodes();
             graphMock.Verify(g => g.Remove(stat), Times.Never);

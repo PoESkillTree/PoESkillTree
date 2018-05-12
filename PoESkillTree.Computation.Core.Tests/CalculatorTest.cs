@@ -2,6 +2,7 @@
 using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Graphs;
 
@@ -32,7 +33,7 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void UpdateCallsInjectedInstancesInCorrectSequence()
         {
-            var modifier = NodeHelper.MockModifier();
+            var modifier = Helper.MockModifier();
             var suspenderMock = new Mock<ISuspendableEvents>(MockBehavior.Strict);
             var modifierCollectionMock = new Mock<IModifierCollection>(MockBehavior.Strict);
             var graphPrunerMock = new Mock<ICalculationGraphPruner>(MockBehavior.Strict);
@@ -51,8 +52,8 @@ namespace PoESkillTree.Computation.Core.Tests
         [Test]
         public void UpdateCallsInjectedModifierCollectionCorrectly()
         {
-            var addedModifiers = NodeHelper.MockManyModifiers();
-            var removedModifiers = NodeHelper.MockManyModifiers();
+            var addedModifiers = Helper.MockManyModifiers();
+            var removedModifiers = Helper.MockManyModifiers();
             var modifierCollectionMock = new Mock<IModifierCollection>();
             var sut = CreateSut(
                 Mock.Of<ISuspendableEvents>(), modifierCollectionMock.Object, Mock.Of<ICalculationGraphPruner>());

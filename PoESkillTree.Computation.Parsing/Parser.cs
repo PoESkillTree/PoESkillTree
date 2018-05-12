@@ -45,10 +45,8 @@ namespace PoESkillTree.Computation.Parsing
             return new ParseResult(success, remaining, result);
         }
 
-        ParseResult<IReadOnlyList<Modifier>> IParser<IReadOnlyList<Modifier>>.Parse(string stat)
-        {
-            return Parse(stat);
-        }
+        ParseResult<IReadOnlyList<Modifier>> IParser<IReadOnlyList<Modifier>>.Parse(string stat) => 
+            Parse(stat);
 
         private IParser<IReadOnlyList<Modifier>> CreateParser()
         {

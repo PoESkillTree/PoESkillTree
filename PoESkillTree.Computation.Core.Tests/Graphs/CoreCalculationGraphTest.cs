@@ -3,9 +3,10 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Core.Events;
+using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.Computation.Core.Graphs;
 using PoESkillTree.Computation.Core.Nodes;
+using static PoESkillTree.Computation.Common.Tests.Helper;
 using static PoESkillTree.Computation.Core.Tests.NodeHelper;
 
 namespace PoESkillTree.Computation.Core.Tests.Graphs

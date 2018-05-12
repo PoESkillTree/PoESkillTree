@@ -2,28 +2,27 @@
 using System.Diagnostics;
 using System.Linq;
 using MoreLinq;
-using PoESkillTree.Computation.Common;
 
-namespace PoESkillTree.Computation.Core.Tests
+namespace PoESkillTree.Computation.Common.Tests
 {
     [DebuggerDisplay("{" + nameof(_instance) + "}")]
-    internal class ModifierSourceStub : IModifierSource
+    public class ModifierSourceStub : IModifierSource
     {
         private static int _instanceCounter;
 
         private readonly int _instance;
 
-        public ModifierSourceStub(IModifierSource canonicalSource = null, params IModifierSource[] influencingSources)
+        public ModifierSourceStub(params IModifierSource[] influencingSources)
         {
             _instance = _instanceCounter++;
             InfluencingSources = this.Concat(influencingSources).ToList();
-            CanonicalSource = canonicalSource ?? this;
+            CanonicalSource = this;
         }
 
         public bool Equals(IModifierSource other) => Equals((object) other);
 
-        public ModifierSourceFirstLevel FirstLevel => ModifierSourceFirstLevel.Global;
+        public ModifierSourceFirstLevel FirstLevel { get; set; } = ModifierSourceFirstLevel.Global;
         public IReadOnlyList<IModifierSource> InfluencingSources { get; }
-        public IModifierSource CanonicalSource { get; }
+        public IModifierSource CanonicalSource { get; set; }
     }
 }

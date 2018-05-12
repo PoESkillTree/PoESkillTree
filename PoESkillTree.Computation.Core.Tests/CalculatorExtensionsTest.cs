@@ -1,7 +1,7 @@
 ﻿using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
-using static PoESkillTree.Computation.Core.Tests.NodeHelper;
+using static PoESkillTree.Computation.Common.Tests.Helper;
 
 namespace PoESkillTree.Computation.Core.Tests
 {

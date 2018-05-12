@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Nodes;
 
@@ -35,16 +34,6 @@ namespace PoESkillTree.Computation.Core.Tests
             nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
         }
 
-        public static Modifier[] MockManyModifiers() => new[] { MockModifier(), MockModifier(), MockModifier() };
-
-        public static Modifier MockModifier(
-            IStat stat, Form form = Form.BaseAdd, IValue value = null, IModifierSource source = null) =>
-            MockModifier(new[] { stat }, form, value, source);
-
-        public static Modifier MockModifier(
-            IReadOnlyList<IStat> stats = null, Form form = Form.BaseAdd, IValue value = null, IModifierSource source = null) => 
-            new Modifier(stats ?? new IStat[0], form, value ?? Mock.Of<IValue>(), source ?? new ModifierSourceStub());
-
         public static IDisposableNodeViewProvider MockDisposableNodeProvider() =>
             Mock.Of<IDisposableNodeViewProvider>(p =>
                 p.DefaultView == MockNode(0) && p.SuspendableView == MockNode(0) &&
@@ -60,9 +49,6 @@ namespace PoESkillTree.Computation.Core.Tests
             return Mock.Of<ISuspendableEventViewProvider<ICalculationNode>>(
                 p => p.DefaultView == defaultNode && p.SuspendableView == suspendableNode && p.Suspender == suspender);
         }
-
-        public static T[] MockMany<T>(int count = 3) where T : class =>
-            Enumerable.Range(0, count).Select(_ => Mock.Of<T>()).ToArray();
 
         public static PathDefinition NotMainPath => new PathDefinition(new GlobalModifierSource(), new StatStub());
     }
