@@ -47,6 +47,6 @@ namespace PoESkillTree.Computation.Common
             (Stats, Form, Value, Source).GetHashCode();
 
         public override string ToString() =>
-            $"Stats: {Stats}\n  Form: {Form}\n  Value: {Value}\n  Source: {Source}";
+            $"Stats: {string.Join("    \n", Stats)}\n  Form: {Form}\n  Value: {Value}\n  Source: {Source}";
     }
 }

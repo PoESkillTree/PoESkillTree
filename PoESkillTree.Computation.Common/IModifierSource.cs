@@ -49,5 +49,7 @@ namespace PoESkillTree.Computation.Common
             (other != null) && (other.FirstLevel == ModifierSourceFirstLevel.Global);
 
         public override int GetHashCode() => FirstLevel.GetHashCode();
+
+        public override string ToString() => FirstLevel.ToString();
     }
 }
