@@ -13,9 +13,6 @@ namespace PoESkillTree.Computation.Core
     /*
      * Stat subgraphs:
      * - Can contain multiple "paths"
-     *   - Per default, a path for each source (Global, and each Local source that has modifiers) is created.
-     *     - Add a IModifierSource property to Modifier. After parsing, the actual IModifierSource is set, if parsing did
-     *       not already determine a mod source condition (e.g. "from equipped shield" sets IModifierSource to Local->Item->OffHand)
      *   - Conversions and Gains (from Bar to Foo) can add paths:
      *     - Adding a modifier with this stat adds a new path to Foo for each path of Bar
      *     - Conversion rates can be done as behaviors to Base of Foo's new path and all of Bar's UncappedSubtotals

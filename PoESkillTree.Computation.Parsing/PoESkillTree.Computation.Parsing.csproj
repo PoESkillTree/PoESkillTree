@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ParserExtensions.cs" />
     <Compile Include="Referencing\ResolvedMatchContext.cs" />
     <Compile Include="IParser.cs" />
     <Compile Include="MatcherDataParser.cs" />

@@ -270,10 +270,11 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             var formConvertedValueBuilder = Mock.Of<IValueBuilder>(b => b.Build() == value);
 
             var stats = new[] { Mock.Of<IStat>() };
+            var source = new GlobalModifierSource();
             IValueBuilder StatConvertValue(IValueBuilder v) =>
                 v == convertedValueBuilder ? statConvertedValueBuilder : v;
             var statBuilderMock = new Mock<IStatBuilder>();
-            statBuilderMock.Setup(b => b.Build()).Returns((stats, StatConvertValue));
+            statBuilderMock.Setup(b => b.Build()).Returns((stats, source, StatConvertValue));
             var statBuilderWithCondition = statBuilderMock.Object;
             var statBuilder = Mock.Of<IStatBuilder>();
             var convertedStatBuilder =
@@ -304,6 +305,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             Assert.AreEqual(stats, item.Stats);
             Assert.AreEqual(form, item.Form);
             Assert.AreEqual(value, item.Value);
+            Assert.AreSame(source, item.Source);
         }
 
         private static readonly IntermediateModifierEntry EmptyEntry = new IntermediateModifierEntry();

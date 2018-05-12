@@ -34,9 +34,12 @@ namespace PoESkillTree.Computation.Parsing
     public interface IParser : IParser<IReadOnlyList<Modifier>>
     {
         /// <summary>
-        /// If <paramref name="stat"/> was parsed successfully and completely, the return value's 
+        /// Parses the given stat line into <see cref="Modifier"/>.
+        /// <para> In most use cases, e.g. when passing contained modifiers to calculation, use the extension method
+        /// <see cref="ParserExtensions.Parse"/> instead of this method. </para>
+        /// <para> If <paramref name="stat"/> was parsed successfully and completely, the return value's 
         /// <see cref="ParseResult.SuccessfullyParsed"/> is true, <see cref="ParseResult.Result"/>
-        /// contains the parsing result and <see cref="ParseResult.RemainingStat"/> is empty.
+        /// contains the parsing result and <see cref="ParseResult.RemainingStat"/> is empty. </para>
         /// <para>If <paramref name="stat"/> could not be parsed, <see cref="ParseResult.SuccessfullyParsed"/> is
         /// false and <see cref="ParseResult.Result"/> only contains <see cref="Modifier"/>s for which a stat, form
         /// and value could be parsed.</para>

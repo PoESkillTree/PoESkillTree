@@ -134,7 +134,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             {
                 statBuilder = statBuilder.WithCondition(entry.Condition);
             }
-            var (stats, statValueConverter) = statBuilder.Build();
+            var (stats, sourceOverride, statValueConverter) = statBuilder.Build();
 
             var (form, formValueConverter) = entry.Form.Build();
 
@@ -143,7 +143,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
                     statValueConverter(
                         modifier.ValueConverter(entry.Value))).Build();
 
-            return new Modifier(stats, form, value, new GlobalModifierSource());
+            return new Modifier(stats, form, value, sourceOverride ?? new GlobalModifierSource());
         }
     }
 }
