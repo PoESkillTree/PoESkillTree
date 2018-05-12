@@ -130,7 +130,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
                 invocations++;
             });
 
-            sut.AddModifier(new Modifier(stats, Form.More, null));
+            sut.AddModifier(NodeHelper.MockModifier(stats));
 
             Assert.AreEqual(2, invocations);
         }
@@ -141,7 +141,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var stat = new StatStub();
             var sut = CreateSut(_ => Assert.Fail(), knownStats: stat);
 
-            sut.AddModifier(new Modifier(new[] { stat }, Form.More, null));
+            sut.AddModifier(NodeHelper.MockModifier(stat));
         }
 
         [Test]
@@ -185,7 +185,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         public void AddModifierCallsStatAddedActionAfterCallingInjectedGraph()
         {
             var stat = new StatStub();
-            var modifier = new Modifier(new[] { stat }, Form.More, null);
+            var modifier = NodeHelper.MockModifier(stat);
             var graphMock = new Mock<ICalculationGraph>();
             var addModifierCalled = false;
             graphMock.Setup(g => g.AddModifier(modifier)).Callback(() => addModifierCalled = true);

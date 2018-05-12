@@ -77,18 +77,22 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         public void AddModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier)
         {
-            var selector = new FormNodeSelector(modifier.Form, PathDefinition.MainPath);
-            var collection = GetModifierNodeCollection(selector);
+            var collection = GetModifierNodeCollection(modifier);
             collection.Add(node, modifier);
             ModifierCount++;
         }
 
         public void RemoveModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier)
         {
-            var selector = new FormNodeSelector(modifier.Form, PathDefinition.MainPath);
-            var collection = GetModifierNodeCollection(selector);
+            var collection = GetModifierNodeCollection(modifier);
             collection.Remove(node, modifier);
             ModifierCount--;
+        }
+
+        private ModifierNodeCollection GetModifierNodeCollection(Modifier modifier)
+        {
+            var path = new PathDefinition(modifier.Source.CanonicalSource);
+            return GetModifierNodeCollection(new FormNodeSelector(modifier.Form, path));
         }
 
         public int ModifierCount { get; private set; }

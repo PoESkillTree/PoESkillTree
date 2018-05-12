@@ -94,7 +94,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             var value = Mock.Of<IValue>();
             var stats = new IStat[] { new StatStub(), new StatStub() };
-            var modifier = new Modifier(stats, Form.More, value);
+            var modifier = MockModifier(stats, Form.More, value);
             var graphs = stats.ToDictionary(s => s, _ => Mock.Of<IStatGraph>());
             var node = MockDisposableNodeProvider();
             var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(value) == node);
@@ -111,7 +111,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             var value = Mock.Of<IValue>();
             var stats = new IStat[] { new StatStub(), new StatStub(), new StatStub() };
-            var modifier = new Modifier(stats, Form.More, value);
+            var modifier = MockModifier(stats, Form.More, value);
             var graphs = stats.ToDictionary(s => s, _ => Mock.Of<IStatGraph>());
             var node = MockDisposableNodeProvider();
             var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(value) == node);
@@ -129,7 +129,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             var sut = CreateSut();
 
-            sut.RemoveModifier(new Modifier(new[] { new StatStub() }, Form.More, Mock.Of<IValue>()));
+            sut.RemoveModifier(MockModifier(new StatStub()));
         }
 
         [Test]
@@ -137,7 +137,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             var value = Mock.Of<IValue>();
             var stats = new IStat[] { new StatStub() };
-            var modifier = new Modifier(stats, Form.More, value);
+            var modifier = MockModifier(stats, Form.More, value);
             var graphs = stats.ToDictionary(s => s, _ => Mock.Of<IStatGraph>());
             var node = Mock.Of<IDisposableNodeViewProvider>(p => 
                 p.DefaultView == MockNode(0) && p.SuspendableView == MockNode(0));

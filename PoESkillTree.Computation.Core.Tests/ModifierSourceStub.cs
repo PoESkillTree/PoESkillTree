@@ -13,16 +13,17 @@ namespace PoESkillTree.Computation.Core.Tests
 
         private readonly int _instance;
 
-        public ModifierSourceStub(params IModifierSource[] influencingSources)
+        public ModifierSourceStub(IModifierSource canonicalSource = null, params IModifierSource[] influencingSources)
         {
             _instance = _instanceCounter++;
             InfluencingSources = this.Concat(influencingSources).ToList();
+            CanonicalSource = canonicalSource ?? this;
         }
 
         public bool Equals(IModifierSource other) => Equals((object) other);
 
         public ModifierSourceFirstLevel FirstLevel => ModifierSourceFirstLevel.Global;
         public IReadOnlyList<IModifierSource> InfluencingSources { get; }
-        public IModifierSource ToCanonical() => this;
+        public IModifierSource CanonicalSource { get; }
     }
 }

@@ -22,9 +22,9 @@ namespace PoESkillTree.Computation.Common
         // - Local->Item->BodyArmour: Local->Item->BodyArmour, Global, (Local->Item if such modifiers exist)
         IReadOnlyList<IModifierSource> InfluencingSources { get; }
 
-        // Returns an instance that only contains data necessary for determining equivalence and no additional infos.
-        // Such instances are what's stored in stat graph paths.
-        IModifierSource ToCanonical();
+        // The instance that only contains data necessary for determining equivalence and no additional infos.
+        // Such instances are stored in stat graph paths.
+        IModifierSource CanonicalSource { get; }
     }
 
 
@@ -40,7 +40,7 @@ namespace PoESkillTree.Computation.Common
     {
         public ModifierSourceFirstLevel FirstLevel => ModifierSourceFirstLevel.Global;
         public IReadOnlyList<IModifierSource> InfluencingSources => new[] { this };
-        public IModifierSource ToCanonical() => this;
+        public IModifierSource CanonicalSource => this;
 
         public override bool Equals(object other) => 
             other is IModifierSource s && Equals(s);
@@ -48,6 +48,6 @@ namespace PoESkillTree.Computation.Common
         public bool Equals(IModifierSource other) =>
             (other != null) && (other.FirstLevel == ModifierSourceFirstLevel.Global);
 
-        public override int GetHashCode() => 1;
+        public override int GetHashCode() => FirstLevel.GetHashCode();
     }
 }

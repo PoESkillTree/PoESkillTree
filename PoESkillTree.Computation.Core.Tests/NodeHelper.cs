@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -36,7 +37,13 @@ namespace PoESkillTree.Computation.Core.Tests
 
         public static Modifier[] MockManyModifiers() => new[] { MockModifier(), MockModifier(), MockModifier() };
 
-        public static Modifier MockModifier() => new Modifier(new IStat[0], Form.BaseAdd, Mock.Of<IValue>());
+        public static Modifier MockModifier(
+            IStat stat, Form form = Form.BaseAdd, IValue value = null, IModifierSource source = null) =>
+            MockModifier(new[] { stat }, form, value, source);
+
+        public static Modifier MockModifier(
+            IReadOnlyList<IStat> stats = null, Form form = Form.BaseAdd, IValue value = null, IModifierSource source = null) => 
+            new Modifier(stats ?? new IStat[0], form, value ?? Mock.Of<IValue>(), source ?? new ModifierSourceStub());
 
         public static IDisposableNodeViewProvider MockDisposableNodeProvider() =>
             Mock.Of<IDisposableNodeViewProvider>(p =>

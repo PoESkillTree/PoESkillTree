@@ -23,23 +23,30 @@ namespace PoESkillTree.Computation.Common
         /// </summary>
         public IValue Value { get; }
 
-        public Modifier(IReadOnlyList<IStat> stats, Form form, IValue value)
+        /// <summary>
+        /// Defines the source of this modifier.
+        /// </summary>
+        public IModifierSource Source { get; }
+
+        public Modifier(IReadOnlyList<IStat> stats, Form form, IValue value, IModifierSource source)
         {
             Stats = stats;
             Form = form;
             Value = value;
+            Source = source;
         }
 
         public override bool Equals(object obj) =>
             (obj == this) || (obj is Modifier other && Equals(other));
 
         private bool Equals(Modifier other) =>
-            Stats.SequenceEqual(other.Stats) && Form.Equals(other.Form) && Value.Equals(other.Value);
+            Stats.SequenceEqual(other.Stats) && Form.Equals(other.Form) && Value.Equals(other.Value)
+            && Source.Equals(other.Source);
 
         public override int GetHashCode() =>
-            (Stats, Form, Value).GetHashCode();
+            (Stats, Form, Value, Source).GetHashCode();
 
         public override string ToString() =>
-            $"Stats: {Stats}\n  Form: {Form}\n  Value: {Value}";
+            $"Stats: {Stats}\n  Form: {Form}\n  Value: {Value}\n  Source: {Source}";
     }
 }

@@ -184,12 +184,11 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void AddModifierAddsCorrectly()
         {
-            var value = Mock.Of<IValue>();
-            var modifier = new Modifier(new IStat[0], Form.BaseAdd, value);
+            var modifier = MockModifier();
 
             var node = MockNodeProvider();
             var collection = CreateModifierNodeCollection();
-            var factory = Mock.Of<IStatNodeFactory>(f => f.Create(Selector(Form.BaseAdd)) == collection);
+            var factory = Mock.Of<IStatNodeFactory>(f => f.Create(Selector(modifier.Form)) == collection);
             var sut = CreateSut(factory);
 
             sut.AddModifier(node, modifier);
@@ -201,12 +200,11 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void RemoveModifierRemovesCorrectly()
         {
-            var value = Mock.Of<IValue>();
-            var modifier = new Modifier(new IStat[0], Form.BaseAdd, value);
+            var modifier = MockModifier();
 
             var node = MockNodeProvider();
             var collection = CreateModifierNodeCollection();
-            var factory = Mock.Of<IStatNodeFactory>(f => f.Create(Selector(Form.BaseAdd)) == collection);
+            var factory = Mock.Of<IStatNodeFactory>(f => f.Create(Selector(modifier.Form)) == collection);
             var sut = CreateSut(factory);
             sut.AddModifier(node, modifier);
 
@@ -231,7 +229,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var values = new[] { Mock.Of<IValue>(), Mock.Of<IValue>() };
             var modifiers = new[]
             {
-                new Modifier(new IStat[0], Form.More, values[0]), new Modifier(new IStat[0], Form.More, values[1])
+                MockModifier(form: Form.More, value: values[0]), MockModifier(form: Form.More, value: values[1])
             };
 
             var nodes = new[] { MockNodeProvider(), MockNodeProvider() };
@@ -304,6 +302,22 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             sut.RemoveFormNodeCollection(selector);
 
             CollectionAssert.IsEmpty(paths.DefaultView);
+        }
+
+        [Test]
+        public void AddModifierUsesCorrectPath()
+        {
+            var node = MockNodeProvider();
+            var canonicalSource = new ModifierSourceStub();
+            var modifier = MockModifier(source: new ModifierSourceStub(canonicalSource));
+            var collection = CreateModifierNodeCollection();
+            var selector = new FormNodeSelector(modifier.Form, new PathDefinition(canonicalSource));
+            var factory = Mock.Of<IStatNodeFactory>(f => f.Create(selector) == collection);
+            var sut = CreateSut(factory);
+
+            sut.AddModifier(node, modifier);
+
+            CollectionAssert.Contains(collection.DefaultView, (node.DefaultView, modifier));
         }
 
         private static CoreStatGraph CreateSut(

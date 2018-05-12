@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             var expected = new NodeValue(2 * valueCount);
 
             var stats = new IStat[] { new StatStub(), new StatStub() };
-            var source = new ModifierSourceStub(new ModifierSourceStub());
+            var source = new ModifierSourceStub(influencingSources: new ModifierSourceStub());
             var path = new PathDefinition(source, stats.Skip(1).ToList());
             var sut = CreateSut(stats[0], path);
 

@@ -9,7 +9,6 @@ namespace PoESkillTree.Computation.Core.Graphs
         void RemoveNode(NodeSelector selector);
         void RemoveFormNodeCollection(FormNodeSelector selector);
 
-        // TODO Add path parameter?
         void AddModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier);
         void RemoveModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier);
         int ModifierCount { get; }

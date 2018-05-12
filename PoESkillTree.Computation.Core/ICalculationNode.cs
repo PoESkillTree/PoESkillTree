@@ -13,7 +13,6 @@ namespace PoESkillTree.Computation.Core
     /*
      * Stat subgraphs:
      * - Can contain multiple "paths"
-     *   - Change calculations and graph structure to match comments in IValueCalculationContext.cs
      *   - Per default, a path for each source (Global, and each Local source that has modifiers) is created.
      *     - Add a IModifierSource property to Modifier. After parsing, the actual IModifierSource is set, if parsing did
      *       not already determine a mod source condition (e.g. "from equipped shield" sets IModifierSource to Local->Item->OffHand)
@@ -30,11 +29,9 @@ namespace PoESkillTree.Computation.Core
      *       The subclasses need to have properties specifying where to add the path. E.g. the source and target IStat
      *       for conversions.
      *     - A more general solution, which does not fix all types of path in interfaces, would be better.
-     * -> Support needs to be implemented for:
-     *    - A general concept of paths
+     * -> Support needs to be implemented for:s
      *    - Interaction with behaviors might make things more difficult
      *      (behaviors also need to apply to nodes on the non-main paths)
-     *    - Separating paths by Modifier.Source (which also does not yet exist) by default
      *    - Specifying conversion/gain paths in IStat
      *
      * Data-driven Mechanics:

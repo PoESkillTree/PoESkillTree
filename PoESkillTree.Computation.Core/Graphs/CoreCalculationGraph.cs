@@ -15,7 +15,7 @@ namespace PoESkillTree.Computation.Core.Graphs
         private readonly INodeFactory _nodeFactory;
         private readonly Dictionary<IStat, IStatGraph> _statGraphs = new Dictionary<IStat, IStatGraph>();
 
-        private readonly Dictionary<Modifier, Stack<IDisposableNodeViewProvider>> _items
+        private readonly Dictionary<Modifier, Stack<IDisposableNodeViewProvider>> _modifierNodes
             = new Dictionary<Modifier, Stack<IDisposableNodeViewProvider>>();
 
         public CoreCalculationGraph(Func<IStat, IStatGraph> statGraphFactory, INodeFactory nodeFactory)
@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Core.Graphs
             modifier.Stats
                 .Select(GetOrAddStatGraph)
                 .ForEach(g => g.AddModifier(node, modifier));
-            _items.GetOrAdd(modifier, k => new Stack<IDisposableNodeViewProvider>())
+            _modifierNodes.GetOrAdd(modifier, k => new Stack<IDisposableNodeViewProvider>())
                 .Push(node);
         }
 
@@ -66,7 +66,7 @@ namespace PoESkillTree.Computation.Core.Graphs
         private bool TryGetNodeProvider(
             Modifier modifier, out IDisposableNodeViewProvider nodeProvider)
         {
-            if (!_items.TryGetValue(modifier, out var stack))
+            if (!_modifierNodes.TryGetValue(modifier, out var stack))
             {
                 nodeProvider = null;
                 return false;
@@ -75,7 +75,7 @@ namespace PoESkillTree.Computation.Core.Graphs
             nodeProvider = stack.Pop();
             if (stack.IsEmpty())
             {
-                _items.Remove(modifier);
+                _modifierNodes.Remove(modifier);
             }
             return true;
         }
