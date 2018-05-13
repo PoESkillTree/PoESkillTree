@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
@@ -103,8 +104,21 @@ namespace PoESkillTree.Computation.Core.Graphs
             public void RemoveFrom(IValueTransformable transformable) =>
                 transformable.Remove(_transformation);
 
-            public bool Affects(PathDefinition path) =>
-                _pathInteraction == BehaviorPathInteraction.AllPaths || path.IsMainPath;
+            public bool Affects(PathDefinition path)
+            {
+                switch (_pathInteraction)
+                {
+                    case BehaviorPathInteraction.AllPaths:
+                        return true;
+                    case BehaviorPathInteraction.MainPathOnly:
+                        return path.IsMainPath;
+                    case BehaviorPathInteraction.ConversionPathsOnly:
+                        return path.ConversionStats.Any();
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(_pathInteraction), _pathInteraction,
+                            "Unexpected _pathInteraction value");
+                }
+            }
         }
 
 

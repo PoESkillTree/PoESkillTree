@@ -7,27 +7,40 @@ namespace PoESkillTree.Computation.Core
        TODO: Complete implementation of ICalculator
        - Usage from Console and/or integration tests (not using Data and Parsing, just example implementation of some builders)
        - Support for multiple paths in stat subgraphs (see "Stat subgraphs")
-       (see the thoughts below and the thoughts scattered around in other files for details)
      */
 
     /*
      * Stat subgraphs:
-     * - Can contain multiple "paths"
-     *   - Conversions and Gains (from Bar to Foo) can add paths:
-     *     - Adding a modifier with this stat adds a new path to Foo for each path of Bar
-     *     - Conversion rates can be done as behaviors to Base of Foo's new path and all of Bar's PathTotals
-     *     - the values between converting parent nodes need to be redistributed to achieve a sum of 100%
-     *       (with modifiers with a skill gem source having precedence)
-     *   - Implementation ideas for conversion paths:
-     *     - IStat has a method an interface is passed to. That interface has one method for each kind of path,
-     *       which is called by the method it is passed to.
-     *     - IStat has a subclass for each special stat and has a "void Visit(IStatVisitor)" method. Subclasses
-     *       implement it by calling "IStatVisitor.Accept(this)". IStatVisitor has a method for each subclass.
-     *       The subclasses need to have properties specifying where to add the path. E.g. the source and target IStat
-     *       for conversions.
-     *     - A more general solution, which does not fix all types of path in interfaces, would be better.
-     * -> Support needs to be implemented for:
-     *    - Specifying conversion/gain paths in IStat
+     * - Conversion paths
+     *   (Conversions and Gains, from Bar to Foo; stats identifier used below: BarFooConversion, BarFooGain)
+     *   - Adding a modifier with this stat adds a new path to Foo for each path of Bar
+     *     - Afterwards, adding a new path to Bar adds a new one to Foo
+     *       (same for removing paths, but Bar's paths probably won't be removed anymore as they are used from Foo)
+     *     - Removing the stat again probably won't happen until Foo (and maybe Bar) is removed
+     *     - These things could be triggered by adding a `ConversionStats? TriggeredConversions` property
+     *       to IStat (with ConversionStats containing From and To IStat properties)
+     *
+     * Conversion support outside of the calculation graph itself (mostly behaviors):
+     * - Behavior of BarFooConversion: applies to Base of Foo (conversion paths only)
+     *   Multiply original result by (Total of BarFooConversion + Total of BarFooGain)
+     *   and query BarConversion to require its creation (don't use result)
+     * - Behavior of BarFooGain: applies to Base of Foo (conversion paths only)
+     *   Queries BarFooConversion to lead to its creation and returns original result
+     *   (I'm not really satisfied with this solution, but I found no way stack both behaviors in a way that the order
+     *    of application does not matter because they stack additively)
+     * - Behavior of BarConversion: applies to PathTotal of Bar (all paths)
+     *   Multiply original result by Total of BarConversion
+     * - The values between converting parent nodes need to be redistributed to achieve a sum of 100%
+     *   (with modifiers with a skill gem source having precedence)
+     *   - Each modifier to BarFooConversion also has FromBarConversion and FromBarSkillConversion in its stats
+     *     - UncappedSubtotal of FromBarSkillConversion has a behavior that sets all PathTotals to 0 that don't come
+     *       from skills
+     *   - The behavior applying to UncappedSubtotal of BarFooConversion sums all PathTotals with
+     *     - no multiplier if FromBarConversion < 1,
+     *     - a multiplier of 0 to non-skill PathTotals and 1 / FromBarSkillConversion if FromBarSkillConversion >= 1
+     *     - a multiplier of 1 / FromBarConversion otherwise
+     *   - The behavior applying to UncappedSubtotal of BarConversion returns Max(1 - FromBarConversion, 0)
+     *     (these behaviors can be part of the BarFooConversion and BarConversion stats)
      *
      * Data-driven Mechanics:
      * - New "CommonGivenStats" data class

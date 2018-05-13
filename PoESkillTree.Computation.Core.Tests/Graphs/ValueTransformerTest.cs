@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
@@ -31,7 +30,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
                 new NodeSelector(_nodeType, PathDefinition.MainPath),
                 new NodeSelector(_nodeType, new PathDefinition(new ModifierSourceStub(), new StatStub())),
             };
-            _transformations = Helper.MockMany<IValueTransformation>(2);
+            _transformations = Helper.MockMany<IValueTransformation>(3);
             _behaviors = new[]
             {
                 // _behaviors[0]/_transformations[0] affects both _selectors/_transformableMocks
@@ -42,6 +41,11 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
                 Mock.Of<IBehavior>(b =>
                     b.AffectedStats == new[] { _stat } && b.AffectedNodeTypes == new[] { _nodeType } &&
                     b.AffectedPaths == BehaviorPathInteraction.MainPathOnly && b.Transformation == _transformations[1]),
+                // _behaviors[2]/_transformations[2] only affects _selectors[1]/_transformableMocks[1]
+                Mock.Of<IBehavior>(b =>
+                    b.AffectedStats == new[] { _stat } && b.AffectedNodeTypes == new[] { _nodeType } &&
+                    b.AffectedPaths == BehaviorPathInteraction.ConversionPathsOnly && 
+                    b.Transformation == _transformations[2]),
             };
             _sut = new ValueTransformer();
         }
@@ -72,6 +76,8 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             _transformableMocks[1].Verify(t => t.Add(_transformations[0]));
             _transformableMocks[0].Verify(t => t.Add(_transformations[1]));
             _transformableMocks[1].Verify(t => t.Add(_transformations[1]), Times.Never);
+            _transformableMocks[0].Verify(t => t.Add(_transformations[2]), Times.Never);
+            _transformableMocks[1].Verify(t => t.Add(_transformations[2]));
         }
 
         [Test]

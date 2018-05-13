@@ -50,6 +50,7 @@ namespace PoESkillTree.Computation.Common
     public enum BehaviorPathInteraction
     {
         AllPaths,
-        MainPathOnly
+        MainPathOnly,
+        ConversionPathsOnly
     }
 }
