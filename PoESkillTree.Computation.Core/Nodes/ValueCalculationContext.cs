@@ -24,12 +24,11 @@ namespace PoESkillTree.Computation.Core.Nodes
             return node.Value;
         }
 
-        public IEnumerable<NodeValue?> GetValues(IStat stat, NodeType nodeType)
+        public IEnumerable<PathDefinition> GetPaths(IStat stat)
         {
             var paths = _nodeRepository.GetPaths(stat);
             _usedCollections.Add(paths);
-            // As opposed to form/modifier nodes, stat subgraph nodes are unique. No need for distinctness here.
-            return paths.Select(path => GetValue(stat, nodeType, path));
+            return paths;
         }
 
         public IEnumerable<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths)

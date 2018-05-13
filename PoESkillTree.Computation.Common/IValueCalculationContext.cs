@@ -5,10 +5,9 @@ namespace PoESkillTree.Computation.Common
 {
     public interface IValueCalculationContext
     {
+        IEnumerable<PathDefinition> GetPaths(IStat stat);
+        
         NodeValue? GetValue(IStat stat, NodeType nodeType, PathDefinition path);
-
-        // Returns the values of all paths.
-        IEnumerable<NodeValue?> GetValues(IStat stat, NodeType nodeType);
 
         IEnumerable<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths);
     }
@@ -19,6 +18,11 @@ namespace PoESkillTree.Computation.Common
         public static NodeValue? GetValue(
             this IValueCalculationContext context, IStat stat, NodeType nodeType = NodeType.Total) => 
             context.GetValue(stat, nodeType, PathDefinition.MainPath);
+        
+        // Returns the values of all paths.
+        public static IEnumerable<NodeValue?> GetValues(
+            this IValueCalculationContext context, IStat stat, NodeType nodeType) =>
+            context.GetPaths(stat).Select(p => context.GetValue(stat, nodeType, p));
 
         public static IEnumerable<NodeValue?> GetValues(
             this IValueCalculationContext context, Form form, IStat stat) =>

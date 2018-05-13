@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
@@ -26,10 +27,14 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         {
             var stat = new StatStub();
             var values = pathTotals.Select(d => (NodeValue?) d);
-            var context = Mock.Of<IValueCalculationContext>(c => c.GetValues(stat, NodeType.PathTotal) == values);
+            var contextMock = new Mock<IValueCalculationContext>();
+            contextMock.Setup(c => c.GetPaths(stat))
+                .Returns(Enumerable.Repeat(PathDefinition.MainPath, pathTotals.Length));
+            contextMock.Setup(c => c.GetValue(stat, NodeType.PathTotal, PathDefinition.MainPath))
+                .Returns(new Queue<NodeValue?>(values).Dequeue);
             var sut = CreateSut(stat);
 
-            var actual = sut.Calculate(context);
+            var actual = sut.Calculate(contextMock.Object);
 
             Assert.AreEqual((NodeValue?) expected, actual);
         }
