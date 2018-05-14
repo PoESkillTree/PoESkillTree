@@ -44,10 +44,7 @@ namespace PoESkillTree.Computation.Core
             _suspender.ResumeEvents();
         }
 
-        // Passing an empty SuspendableEventsComposite instead
-        // might be a significant performance improvement for "preview" calculations, where events are not used.
-        // (or add a property to ICalculator to disable/enable suspender usage)
-        public static Calculator CreateCalculator()
+        public static ICalculator CreateCalculator()
         {
             var innerNodeFactory = new NodeFactory();
             var nodeFactory = new TransformableNodeFactory(innerNodeFactory, v => new TransformableValue(v));
