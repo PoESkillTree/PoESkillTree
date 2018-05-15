@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.Common.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Common
 {
@@ -44,7 +45,7 @@ namespace PoESkillTree.Computation.Common
             && Source.Equals(other.Source);
 
         public override int GetHashCode() =>
-            (Stats, Form, Value, Source).GetHashCode();
+            (Stats.SequenceHash(), Form, Value, Source).GetHashCode();
 
         public override string ToString() =>
             $"Stats: {string.Join("    \n", Stats)}\n  Form: {Form}\n  Value: {Value}\n  Source: {Source}";

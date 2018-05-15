@@ -75,6 +75,6 @@ namespace PoESkillTree.Computation.Parsing.Referencing
 
         private bool Equals(ResolvedMatchContext<T> other) => _values.SequenceEqual(other._values);
 
-        public override int GetHashCode() => _values.GetHashCode();
+        public override int GetHashCode() => _values.SequenceHash();
     }
 }

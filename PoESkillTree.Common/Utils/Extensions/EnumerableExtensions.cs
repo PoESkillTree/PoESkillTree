@@ -32,5 +32,18 @@ namespace PoESkillTree.Common.Utils.Extensions
             }
             return result;
         }
+
+        public static int SequenceHash<T>(this IEnumerable<T> values)
+        {
+            unchecked
+            {
+                int hash = 19;
+                foreach (var value in values)
+                {
+                    hash = hash * 31 + (value?.GetHashCode() ?? 0);
+                }
+                return hash;
+            }
+        }
     }
 }

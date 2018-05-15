@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
@@ -56,6 +57,7 @@ namespace PoESkillTree.Computation.Core
             AddedModifiers.SequenceEqual(other.AddedModifiers)
             && RemovedModifiers.SequenceEqual(other.RemovedModifiers);
 
-        public override int GetHashCode() => (AddedModifiers, RemovedModifiers).GetHashCode();
+        public override int GetHashCode() =>
+            (AddedModifiers.SequenceHash(), RemovedModifiers.SequenceHash()).GetHashCode();
     }
 }

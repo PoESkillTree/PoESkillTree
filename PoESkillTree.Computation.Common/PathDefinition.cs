@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.Common.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Common
 {
@@ -33,6 +34,6 @@ namespace PoESkillTree.Computation.Common
             ModifierSource.Equals(other.ModifierSource) && ConversionStats.SequenceEqual(other.ConversionStats);
 
         public override int GetHashCode() => 
-            (ModifierSource, ConversionStats).GetHashCode();
+            (ModifierSource, ConversionStats.SequenceHash()).GetHashCode();
     }
 }
