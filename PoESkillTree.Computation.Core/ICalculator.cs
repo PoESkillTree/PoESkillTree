@@ -19,7 +19,7 @@ namespace PoESkillTree.Computation.Core
      * Something that might be counter-intuitive:
      * Don't store any node or collection you don't subscribe to. ICalculator can't know that you are still using
      * nodes you are not subscribed to, resulting in them being pruned from the calculation graph and you now holding
-     * a disposed instance.
+     * a disposed instance. (can only happen to nodes whose stat graph has no modifiers)
      * (if this turns into a usability problem, creating extension methods on the problematic interfaces, that subscribe
      * to the instance with no-ops and return IDisposable to unsubscribe when done using them, shouldn't be much work)
      *

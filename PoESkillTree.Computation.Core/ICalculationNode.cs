@@ -4,11 +4,6 @@ using PoESkillTree.Computation.Common;
 namespace PoESkillTree.Computation.Core
 {
     /*
-       TODO: Complete implementation of ICalculator
-       - Usage from Console and/or integration tests (not using Data and Parsing, just example implementation of some builders)
-     */
-
-    /*
      * TODO Conversion support outside of the calculation graph itself (mostly behaviors):
      * - Behavior of BarFooConversion: applies to Base of Foo (conversion paths only)
      *   Multiply original result by (Total of BarFooConversion + Total of BarFooGain)
