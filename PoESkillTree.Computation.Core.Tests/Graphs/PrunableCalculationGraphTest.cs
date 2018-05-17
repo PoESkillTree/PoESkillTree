@@ -304,6 +304,20 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             graphMock.Verify(g => g.Remove(stat), Times.Never);
         }
 
+        [Test]
+        public void RemoveModifierCallsDecoratedGraphFirst()
+        {
+            var stat = new StatStub();
+            var modifier = MockModifier(stat);
+            var graphMock = new Mock<ICalculationGraph>();
+            graphMock.Setup(g => g.RemoveModifier(modifier)).Callback(() => SetStats(graphMock));
+            var sut = CreateSut(graphMock.Object);
+
+            sut.RemoveModifier(modifier);
+
+            graphMock.Verify(g => g.RemoveModifier(modifier));
+        }
+
         private static PrunableCalculationGraph CreateSut(ICalculationGraph decoratedGraph) =>
             new PrunableCalculationGraph(decoratedGraph, MockDeterminesNodeRemoval());
 

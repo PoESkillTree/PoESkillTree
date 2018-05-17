@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
@@ -19,7 +20,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var stat = new Stat();
 
             sut.NewBatchUpdate()
-                .AddModifier(stat, Form.BaseAdd, new Constant(expected), new GlobalModifierSource())
+                .AddModifier(stat, Form.BaseAdd, new Constant(expected))
                 .DoUpdate();
 
             var actual = sut.NodeRepository.GetNode(stat).Value;
@@ -93,11 +94,87 @@ namespace PoESkillTree.Computation.IntegrationTests
             Assert.AreEqual(new NodeValue(evasionTotal), actual);
         }
 
+        [TestCase(5)]
+        [TestCase(15)]
+        [TestCase(25)]
+        public void Clip(double value)
+        {
+            var sut = Calculator.CreateCalculator();
+            var min = new Stat();
+            var max = new Stat();
+            var stat = new Stat { Minimum = min, Maximum = max };
+
+            sut.NewBatchUpdate()
+                .AddModifier(stat, Form.BaseAdd, new Constant(value))
+                .AddModifier(min, Form.BaseAdd, new Constant(10))
+                .AddModifier(max, Form.BaseAdd, new Constant(20))
+                .DoUpdate();
+            var expected = new NodeValue(Math.Max(Math.Min(value, 20), 10));
+
+            var actual = sut.NodeRepository.GetNode(stat).Value;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void Pruning()
+        {
+            var sut = Calculator.CreateCalculator();
+            var stat = new Stat();
+            var mod = new Modifier(new []{stat}, Form.BaseAdd, new Constant(1), new GlobalModifierSource());
+
+            sut.NewBatchUpdate().AddModifier(mod).DoUpdate();
+
+            var removedNode = sut.NodeRepository.GetNode(stat);
+            var keptNode = sut.NodeRepository.GetNode(stat, NodeType.Subtotal);
+            keptNode.ValueChanged += (sender, args) => { };
+
+            sut.NewBatchUpdate().RemoveModifier(mod).DoUpdate();
+
+            Assert.AreEqual(keptNode, sut.NodeRepository.GetNode(stat, NodeType.Subtotal));
+            Assert.AreNotEqual(removedNode, sut.NodeRepository.GetNode(stat));
+        }
+
+        [Test]
+        public void Events()
+        {
+            var sut = Calculator.CreateCalculator();
+            var stat = new Stat();
+            var mod = new Modifier(new []{stat}, Form.BaseAdd, new Constant(1), new GlobalModifierSource());
+            var node = sut.NodeRepository.GetNode(stat);
+            var invovcations = 0;
+            node.ValueChanged += (sender, args) => invovcations++;
+
+            Assert.IsNull(node.Value);
+            sut.NewBatchUpdate().AddModifier(mod).DoUpdate();
+            Assert.AreEqual(new NodeValue(1), node.Value);
+            sut.NewBatchUpdate().AddModifier(mod).DoUpdate();
+            Assert.AreEqual(new NodeValue(2), node.Value);
+            sut.NewBatchUpdate().AddModifier(mod).DoUpdate();
+            Assert.AreEqual(new NodeValue(3), node.Value);
+
+            Assert.AreEqual(3, invovcations);
+        }
+
+        [Test]
+        public void ExplicitlyRegistered()
+        {
+            var sut = Calculator.CreateCalculator();
+            var stat = new Stat { IsRegisteredExplicitly = true };
+            IStat actual = null;
+            sut.ExplicitlyRegisteredStats.CollectionChanged += (sender, args) =>
+            {
+                Assert.IsNull(actual);
+                Assert.AreEqual(CollectionChangeAction.Add, args.Action);
+                actual = (((ICalculationNode, IStat)) args.Element).Item2;
+            };
+
+            sut.NewBatchUpdate().AddModifier(stat, Form.BaseAdd, new Constant(0)).DoUpdate();
+
+            Assert.AreEqual(stat, actual);
+        }
+
         // Left to test:
-        // TODO Minimum and Maximum stats
-        // TODO Pruning
-        // TODO Events
-        // TODO Explicitly registered stats
         // TODO Behaviors
         // TODO Conversion paths (requires a bunch of behaviors)
 
@@ -106,9 +183,9 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             public bool Equals(IStat other) => Equals((object) other);
 
-            public IStat Minimum => null;
-            public IStat Maximum => null;
-            public bool IsRegisteredExplicitly => false;
+            public IStat Minimum { get; set; }
+            public IStat Maximum { get; set; }
+            public bool IsRegisteredExplicitly { get; set; }
             public Type DataType => typeof(double);
             public IEnumerable<IBehavior> Behaviors => Enumerable.Empty<IBehavior>();
         }
@@ -164,6 +241,10 @@ namespace PoESkillTree.Computation.IntegrationTests
 
     internal static class BatchUpdateExtensions
     {
+        public static CalculatorExtensions.BatchUpdate AddModifier(this CalculatorExtensions.BatchUpdate batch,
+            IStat stat, Form form, IValue value) =>
+            batch.AddModifier(new[] { stat }, form, value, new GlobalModifierSource());
+
         public static CalculatorExtensions.BatchUpdate AddModifier(this CalculatorExtensions.BatchUpdate batch,
             IStat stat, Form form, IValue value, IModifierSource source) =>
             batch.AddModifier(new[] { stat }, form, value, source);

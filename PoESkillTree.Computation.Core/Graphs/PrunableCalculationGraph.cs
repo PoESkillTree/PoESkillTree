@@ -50,10 +50,10 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         public void RemoveModifier(Modifier modifier)
         {
+            _decoratedGraph.RemoveModifier(modifier);
             _statsWithoutModifiers.UnionWith(modifier.Stats
                 .Where(s => StatGraphs.ContainsKey(s))
                 .Where(s => StatGraphs[s].ModifierCount == 0));
-            _decoratedGraph.RemoveModifier(modifier);
         }
 
         public void RemoveUnusedNodes()
