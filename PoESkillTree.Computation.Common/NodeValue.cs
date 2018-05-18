@@ -30,21 +30,41 @@ namespace PoESkillTree.Computation.Common
         public double Maximum { get; }
 
 
-        public static bool operator ==(NodeValue left, NodeValue right) => 
+        public static bool operator ==(NodeValue left, NodeValue right) =>
             left.Equals(right);
 
-        public static bool operator !=(NodeValue left, NodeValue right) => 
+        public static bool operator !=(NodeValue left, NodeValue right) =>
             !left.Equals(right);
 
-        public override bool Equals(object obj) => 
+        public override bool Equals(object obj) =>
             obj is NodeValue other && Equals(other);
 
-        public bool Equals(NodeValue other) => 
+        public bool Equals(NodeValue other) =>
             Minimum.Equals(other.Minimum) && Maximum.Equals(other.Maximum);
 
-        public override int GetHashCode() => 
+        public bool AlmostEquals(double value, double delta = 1e-10) =>
+            Minimum.AlmostEquals(value, delta) && Maximum.AlmostEquals(value, delta);
+
+        public override int GetHashCode() =>
             (Minimum, Maximum).GetHashCode();
 
+        public static bool operator <(NodeValue left, double right) =>
+            left.Maximum < right;
+
+        public static bool operator >(NodeValue left, double right) =>
+            left.Minimum > right;
+        
+        public static bool operator <=(NodeValue left, double right) =>
+            left.Maximum <= right;
+
+        public static bool operator >=(NodeValue left, double right) =>
+            left.Minimum >= right;
+
+
+        public static explicit operator NodeValue(double value) => new NodeValue(value);
+
+        public NodeValue Clip(double minValue, double maxValue) =>
+            Select(d => Math.Max(Math.Min(d, maxValue), minValue));
 
         public NodeValue Select(Func<double, double> operation) =>
             new NodeValue(operation(Minimum), operation(Maximum));
@@ -56,6 +76,12 @@ namespace PoESkillTree.Computation.Common
         public static NodeValue operator +(double left, NodeValue right) =>
             new NodeValue(left) + right;
 
+        public static NodeValue operator -(NodeValue left, NodeValue right) =>
+            new NodeValue(left.Minimum - right.Minimum, left.Maximum - right.Maximum);
+
+        public static NodeValue operator -(double left, NodeValue right) =>
+            new NodeValue(left) - right;
+
         public static NodeValue operator *(NodeValue left, NodeValue right) =>
             new NodeValue(left.Minimum * right.Minimum, left.Maximum * right.Maximum);
 
@@ -65,18 +91,15 @@ namespace PoESkillTree.Computation.Common
         public static NodeValue operator *(NodeValue left, double right) =>
             left * new NodeValue(right);
 
-        public static NodeValue operator /(NodeValue left, double right) =>
-            new NodeValue(left.Minimum / right, left.Maximum / right);
+        public static NodeValue operator /(NodeValue left, NodeValue right) =>
+            new NodeValue(left.Minimum / right.Minimum, left.Maximum / right.Maximum);
 
-        public static NodeValue Combine(NodeValue left, NodeValue right, Func<double, double, double> operation) => 
+        public static NodeValue operator /(NodeValue left, double right) =>
+            left / new NodeValue(right);
+
+        public static NodeValue Combine(NodeValue left, NodeValue right, Func<double, double, double> operation) =>
             new NodeValue(operation(left.Minimum, right.Minimum), operation(left.Maximum, right.Maximum));
 
-
-        public static explicit operator NodeValue(double value) => new NodeValue(value);
-
-
-        public bool AlmostEquals(double value, double delta = 1e-10) => 
-            Minimum.AlmostEquals(value, delta) && Maximum.AlmostEquals(value, delta);
 
         public override string ToString() => $"{Minimum} to {Maximum}";
     }
@@ -87,16 +110,16 @@ namespace PoESkillTree.Computation.Common
         public static NodeValue? Select(this NodeValue? value, Func<double, double> operation) =>
             value.Select(v => v.Select(operation));
 
-        public static NodeValue Sum(this IEnumerable<NodeValue> values) => 
+        public static NodeValue Sum(this IEnumerable<NodeValue> values) =>
             values.Aggregate((l, r) => l + r);
 
-        public static NodeValue? Sum(this IEnumerable<NodeValue?> values) => 
+        public static NodeValue? Sum(this IEnumerable<NodeValue?> values) =>
             values.AggregateOnValues((l, r) => l + r);
 
-        public static NodeValue Product(this IEnumerable<NodeValue> values) => 
+        public static NodeValue Product(this IEnumerable<NodeValue> values) =>
             values.Aggregate((l, r) => l * r);
 
-        public static NodeValue? Product(this IEnumerable<NodeValue?> values) => 
+        public static NodeValue? Product(this IEnumerable<NodeValue?> values) =>
             values.AggregateOnValues((l, r) => l * r);
     }
 }

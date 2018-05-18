@@ -2,6 +2,6 @@
 {
     public interface IValue
     {
-        NodeValue? Calculate(IValueCalculationContext valueCalculationContext);
+        NodeValue? Calculate(IValueCalculationContext context);
     }
 }

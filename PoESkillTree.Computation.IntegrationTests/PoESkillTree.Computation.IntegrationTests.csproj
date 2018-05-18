@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="Core\BatchUpdateExtensions.cs" />
     <Compile Include="Core\BasicCalculatorTest.cs" />
+    <Compile Include="Core\ConversionTest.cs" />
     <Compile Include="Core\LocalModifierSource.cs" />
     <Compile Include="Core\Stat.cs" />
     <Compile Include="Core\ValueTransformation.cs" />

@@ -187,8 +187,5 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
 
             Assert.AreEqual(new NodeValue(5), actual);
         }
-
-        // Left to test:
-        // TODO Conversion paths (requires a bunch of behaviors)
     }
 }
