@@ -15,6 +15,9 @@ namespace PoESkillTree.Computation.Core.Graphs
         private readonly Dictionary<(IStat, NodeType), List<Transformable>> _transformableLists =
             new Dictionary<(IStat, NodeType), List<Transformable>>();
 
+        private readonly Dictionary<Behavior, int> _behaviorMultiSet =
+            new Dictionary<Behavior, int>();
+
         private readonly Dictionary<Behavior, Transformation> _transformations =
             new Dictionary<Behavior, Transformation>();
 
@@ -25,6 +28,13 @@ namespace PoESkillTree.Computation.Core.Graphs
         {
             foreach (var behavior in behaviors)
             {
+                if (_behaviorMultiSet.ContainsKey(behavior))
+                {
+                    _behaviorMultiSet[behavior]++;
+                    continue;
+                }
+
+                _behaviorMultiSet[behavior] = 1;
                 var transformation = new Transformation(behavior.AffectedPaths, behavior.Transformation);
                 _transformations[behavior] = transformation;
 
@@ -43,6 +53,17 @@ namespace PoESkillTree.Computation.Core.Graphs
         {
             foreach (var behavior in behaviors)
             {
+                if (!_behaviorMultiSet.TryGetValue(behavior, out var count))
+                {
+                    continue;
+                }
+                if (count > 1)
+                {
+                    _behaviorMultiSet[behavior]--;
+                    continue;
+                }
+
+                _behaviorMultiSet.Remove(behavior);
                 var transformation = _transformations[behavior];
                 _transformations.Remove(behavior);
 

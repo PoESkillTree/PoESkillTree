@@ -16,7 +16,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         private NodeType _nodeType;
         private IReadOnlyList<NodeSelector> _selectors;
         private IReadOnlyList<IValueTransformation> _transformations;
-        private IEnumerable<Behavior> _behaviors;
+        private IReadOnlyList<Behavior> _behaviors;
         private ValueTransformer _sut;
 
         [SetUp]
@@ -121,6 +121,24 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             _sut.AddBehaviors(_behaviors);
 
             _transformableMocks[0].Verify(t => t.Add(_transformations[0]), Times.Never);
+        }
+
+        [Test]
+        public void RemoveBehaviorDoesNotRemoveIfRemovedLessThanAdded()
+        {
+            AddTransformables();
+
+            _sut.AddBehaviors(_behaviors);
+            _sut.AddBehaviors(new[] { _behaviors[0] });
+            _sut.RemoveBehaviors(new[] { _behaviors[0] });
+            
+            _transformableMocks[0].Verify(t => t.Remove(_transformations[0]), Times.Never);
+        }
+
+        [Test]
+        public void RemoveBehaviorDoesNothingIfNeverAdded()
+        {
+            _sut.RemoveBehaviors(_behaviors);
         }
 
         private void AddTransformables()
