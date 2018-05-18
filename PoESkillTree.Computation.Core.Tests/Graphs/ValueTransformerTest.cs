@@ -16,7 +16,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         private NodeType _nodeType;
         private IReadOnlyList<NodeSelector> _selectors;
         private IReadOnlyList<IValueTransformation> _transformations;
-        private IEnumerable<IBehavior> _behaviors;
+        private IEnumerable<Behavior> _behaviors;
         private ValueTransformer _sut;
 
         [SetUp]
@@ -34,18 +34,14 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             _behaviors = new[]
             {
                 // _behaviors[0]/_transformations[0] affects both _selectors/_transformableMocks
-                Mock.Of<IBehavior>(b =>
-                    b.AffectedStats == new[] { _stat } && b.AffectedNodeTypes == new[] { _nodeType } &&
-                    b.AffectedPaths == BehaviorPathInteraction.AllPaths && b.Transformation == _transformations[0]),
+                new Behavior(new[] { _stat }, new[] { _nodeType }, BehaviorPathInteraction.AllPaths,
+                    _transformations[0]),
                 // _behaviors[1]/_transformations[1] only affects _selectors[0]/_transformableMocks[0]
-                Mock.Of<IBehavior>(b =>
-                    b.AffectedStats == new[] { _stat } && b.AffectedNodeTypes == new[] { _nodeType } &&
-                    b.AffectedPaths == BehaviorPathInteraction.MainPathOnly && b.Transformation == _transformations[1]),
+                new Behavior(new[] { _stat }, new[] { _nodeType }, BehaviorPathInteraction.MainPathOnly,
+                    _transformations[1]),
                 // _behaviors[2]/_transformations[2] only affects _selectors[1]/_transformableMocks[1]
-                Mock.Of<IBehavior>(b =>
-                    b.AffectedStats == new[] { _stat } && b.AffectedNodeTypes == new[] { _nodeType } &&
-                    b.AffectedPaths == BehaviorPathInteraction.ConversionPathsOnly && 
-                    b.Transformation == _transformations[2]),
+                new Behavior(new[] { _stat }, new[] { _nodeType }, BehaviorPathInteraction.ConversionPathsOnly,
+                    _transformations[2]),
             };
             _sut = new ValueTransformer();
         }
@@ -66,7 +62,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             _sut.AddBehaviors(_behaviors);
 
             AddTransformables();
-            
+
             VerifyTransformationsWereAdded();
         }
 

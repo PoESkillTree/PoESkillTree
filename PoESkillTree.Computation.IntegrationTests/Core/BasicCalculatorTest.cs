@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 
-namespace PoESkillTree.Computation.IntegrationTests
+namespace PoESkillTree.Computation.IntegrationTests.Core
 {
     [TestFixture]
-    public class CalculatorTest
+    public class BasicCalculatorTest
     {
         [Test]
         public void SimpleCalculation()
@@ -174,83 +172,23 @@ namespace PoESkillTree.Computation.IntegrationTests
             Assert.AreEqual(stat, actual);
         }
 
+        [Test]
+        public void Behavior()
+        {
+            var sut = Calculator.CreateCalculator();
+            var transformedStat = new Stat();
+            var behavior = new Behavior(new[] { transformedStat }, new[] { NodeType.Subtotal },
+                BehaviorPathInteraction.AllPaths, new ValueTransformation(_ => new Constant(5)));
+            var stat = new Stat { Behaviors = new[] { behavior } };
+
+            sut.NewBatchUpdate().AddModifier(stat, Form.BaseAdd, new Constant(1)).DoUpdate();
+
+            var actual = sut.NodeRepository.GetNode(transformedStat).Value;
+
+            Assert.AreEqual(new NodeValue(5), actual);
+        }
+
         // Left to test:
-        // TODO Behaviors
         // TODO Conversion paths (requires a bunch of behaviors)
-
-
-        private class Stat : IStat
-        {
-            public bool Equals(IStat other) => Equals((object) other);
-
-            public IStat Minimum { get; set; }
-            public IStat Maximum { get; set; }
-            public bool IsRegisteredExplicitly { get; set; }
-            public Type DataType => typeof(double);
-            public IEnumerable<IBehavior> Behaviors => Enumerable.Empty<IBehavior>();
-        }
-
-
-        private class Constant : IValue
-        {
-            private readonly NodeValue? _value;
-
-            public Constant(double value) =>
-                _value = new NodeValue(value);
-
-            public Constant(NodeValue? value) =>
-                _value = value;
-
-            public NodeValue? Calculate(IValueCalculationContext valueCalculationContext) =>
-                _value;
-        }
-
-        private class PerStatValue : IValue
-        {
-            private readonly IStat _stat;
-            private readonly double _multiplier;
-            private readonly double _divisor;
-
-            public PerStatValue(IStat stat, double multiplier, double divisor = 1)
-            {
-                _stat = stat;
-                _multiplier = multiplier;
-                _divisor = divisor;
-            }
-
-            public NodeValue? Calculate(IValueCalculationContext valueCalculationContext) =>
-                _multiplier * (valueCalculationContext.GetValue(_stat) / _divisor).Select(Math.Ceiling);
-        }
-
-
-        private class LocalModifierSource : IModifierSource
-        {
-            public LocalModifierSource()
-            {
-                InfluencingSources = new IModifierSource[] { this, new GlobalModifierSource(), };
-            }
-
-            public bool Equals(IModifierSource other) => Equals((object) other);
-
-            public ModifierSourceFirstLevel FirstLevel => ModifierSourceFirstLevel.Local;
-            public IReadOnlyList<IModifierSource> InfluencingSources { get; }
-            public IModifierSource CanonicalSource => this;
-        }
-    }
-
-
-    internal static class BatchUpdateExtensions
-    {
-        public static CalculatorExtensions.BatchUpdate AddModifier(this CalculatorExtensions.BatchUpdate batch,
-            IStat stat, Form form, IValue value) =>
-            batch.AddModifier(new[] { stat }, form, value, new GlobalModifierSource());
-
-        public static CalculatorExtensions.BatchUpdate AddModifier(this CalculatorExtensions.BatchUpdate batch,
-            IStat stat, Form form, IValue value, IModifierSource source) =>
-            batch.AddModifier(new[] { stat }, form, value, source);
-
-        public static CalculatorExtensions.BatchUpdate AddModifier(this CalculatorExtensions.BatchUpdate batch,
-            IReadOnlyList<IStat> stats, Form form, IValue value, IModifierSource source) =>
-            batch.AddModifier(new Modifier(stats, form, value, source));
     }
 }

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using PoESkillTree.Common.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Common
 {
-    public interface IBehavior
+    public class Behavior
     {
         /*
          * "Modifiers to Foo also apply to Bar [at x% of their value]":
@@ -39,11 +41,32 @@ namespace PoESkillTree.Computation.Common
          * - Only affects the main path
          */
 
-        IEnumerable<IStat> AffectedStats { get; }
-        IEnumerable<NodeType> AffectedNodeTypes { get; }
-        BehaviorPathInteraction AffectedPaths { get; }
+        public Behavior(IEnumerable<IStat> affectedStats, IEnumerable<NodeType> affectedNodeTypes,
+            BehaviorPathInteraction affectedPaths, IValueTransformation transformation)
+        {
+            AffectedStats = affectedStats;
+            AffectedNodeTypes = affectedNodeTypes;
+            AffectedPaths = affectedPaths;
+            Transformation = transformation;
+        }
 
-        IValueTransformation Transformation { get; }
+        public IEnumerable<IStat> AffectedStats { get; }
+        public IEnumerable<NodeType> AffectedNodeTypes { get; }
+        public BehaviorPathInteraction AffectedPaths { get; }
+
+        public IValueTransformation Transformation { get; }
+
+        public override bool Equals(object obj) =>
+            (obj == this) || (obj is Behavior other && Equals(other));
+
+        private bool Equals(Behavior other) =>
+            Transformation.Equals(other.Transformation) && AffectedPaths.Equals(other.AffectedPaths) &&
+            AffectedStats.SequenceEqual(other.AffectedStats) &&
+            AffectedNodeTypes.SequenceEqual(other.AffectedNodeTypes);
+
+        public override int GetHashCode() =>
+            (AffectedStats.SequenceHash(), AffectedNodeTypes.SequenceHash(), AffectedPaths, Transformation)
+            .GetHashCode();
     }
 
 

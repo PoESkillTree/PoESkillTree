@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Common
         // The value range is determined by Minimum and Maximum (which have the same DataType).
         Type DataType { get; }
 
-        IEnumerable<IBehavior> Behaviors { get; }
+        IEnumerable<Behavior> Behaviors { get; }
 
         // If there is only one IStat subclass:
         // The object determining equality can be passed to its constructor and can be used for ToString()

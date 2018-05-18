@@ -25,6 +25,6 @@ namespace PoESkillTree.Computation.Common.Tests
         public IStat Maximum { get; }
         public bool IsRegisteredExplicitly { get; set; }
         public Type DataType => typeof(double);
-        public IEnumerable<IBehavior> Behaviors => Enumerable.Empty<IBehavior>();
+        public IEnumerable<Behavior> Behaviors => Enumerable.Empty<Behavior>();
     }
 }

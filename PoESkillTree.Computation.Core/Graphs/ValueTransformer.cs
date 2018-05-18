@@ -15,13 +15,13 @@ namespace PoESkillTree.Computation.Core.Graphs
         private readonly Dictionary<(IStat, NodeType), List<Transformable>> _transformableLists =
             new Dictionary<(IStat, NodeType), List<Transformable>>();
 
-        private readonly Dictionary<IBehavior, Transformation> _transformations =
-            new Dictionary<IBehavior, Transformation>();
+        private readonly Dictionary<Behavior, Transformation> _transformations =
+            new Dictionary<Behavior, Transformation>();
 
         private readonly Dictionary<(IStat, NodeType), List<Transformation>> _transformationLists =
             new Dictionary<(IStat, NodeType), List<Transformation>>();
 
-        public void AddBehaviors(IEnumerable<IBehavior> behaviors)
+        public void AddBehaviors(IEnumerable<Behavior> behaviors)
         {
             foreach (var behavior in behaviors)
             {
@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Core.Graphs
             }
         }
 
-        public void RemoveBehaviors(IEnumerable<IBehavior> behaviors)
+        public void RemoveBehaviors(IEnumerable<Behavior> behaviors)
         {
             foreach (var behavior in behaviors)
             {
@@ -55,7 +55,7 @@ namespace PoESkillTree.Computation.Core.Graphs
             }
         }
 
-        private static IEnumerable<(IStat, NodeType)> GetAffectedKeys(IBehavior behavior) =>
+        private static IEnumerable<(IStat, NodeType)> GetAffectedKeys(Behavior behavior) =>
             from stat in behavior.AffectedStats
             from nodeType in behavior.AffectedNodeTypes
             select (stat, nodeType);

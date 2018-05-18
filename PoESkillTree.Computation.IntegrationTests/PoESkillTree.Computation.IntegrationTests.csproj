@@ -65,7 +65,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CalculatorTest.cs" />
+    <Compile Include="Core\BatchUpdateExtensions.cs" />
+    <Compile Include="Core\BasicCalculatorTest.cs" />
+    <Compile Include="Core\LocalModifierSource.cs" />
+    <Compile Include="Core\Stat.cs" />
+    <Compile Include="Core\ValueTransformation.cs" />
+    <Compile Include="Core\Values.cs" />
     <Compile Include="DataValidatingTest.cs" />
     <Compile Include="ParsingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
