@@ -5,7 +5,7 @@ using PoESkillTree.Common.Utils.Extensions;
 namespace PoESkillTree.Computation.Common
 {
     /// <summary>
-    /// Represents a single parsed Modifier including a Stat, Form and Value.
+    /// Represents a single parsed Modifier.
     /// </summary>
     public class Modifier
     {

@@ -101,7 +101,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IStatBuilder WithCondition(IConditionBuilder condition);
 
-        // sourceOverride is usually null
+        /// <summary>
+        /// Builds this instance into a list of <see cref="IStat"/>s, an optional <see cref="IModifierSource"/> to
+        /// override the original modifier's source and a <see cref="ValueConverter"/> that should be applied
+        /// to <see cref="Values.IValueBuilder"/>s before building them.
+        /// </summary>
         (IReadOnlyList<IStat> stats, IModifierSource sourceOverride, ValueConverter valueConverter) Build();
     }
 }

@@ -3,42 +3,88 @@ using System.Collections.Generic;
 
 namespace PoESkillTree.Computation.Common
 {
+    /// <summary>
+    /// Interface for the sources of modifiers.
+    /// </summary>
     public interface IModifierSource : IEquatable<IModifierSource>
     {
-        // First level: ModifierSourceFirstLevel
-        // Global and Local:
-        // - Second level: Given, Tree, Skill or Item (maybe more).
-        // - Third level: item slot for items
-        // - For global, further levels are only for more detailed breakdowns. For calculation, all global sources are
-        //   considered the same.
-        // - Also contains information about e.g. tree node names, "Dexterity", item names, ...
-        // Ailment second level: Poison, Bleed, Ignite
-        // (if necessary, these could inherit further levels from the Hit type damage they originate from)
         ModifierSourceFirstLevel FirstLevel { get; }
+        // Representation of further levels is not yet decided. For most, it should be enough to simply include it
+        // in Equals() calculations.
+        // At least Local->Skill needs to be surfaced as conversion behaviors need to access it.
 
-        // The modifier sources of increase/more modifiers influence a base value of this source (including this source itself)
-        // E.g.:
-        // - Global: only Global
-        // - Local->Item->BodyArmour: Local->Item->BodyArmour, Global, (Local->Item if such modifiers exist)
+        /// <summary>
+        /// The last differentiation level of this source for UI display purposes. E.g. Given, Helmet or Skill.
+        /// </summary>
+        string LastLevel { get; }
+
+        /// <summary>
+        /// The detailed name of this source. E.g. tree node names, description of given mods like
+        /// "x per y dexterity", item names or skill names.
+        /// </summary>
+        string SourceName { get; }
+
+        /// <summary>
+        /// The (canonical) modifier sources of increase/more modifiers influencing base values of this source,
+        /// including this source itself.
+        /// </summary>
+        /// <remarks>
+        /// E.g.:
+        /// Global: Global
+        /// Local->Item->BodyArmour: Local->Item->BodyArmour, Global, (Local->Item if such modifiers exist)
+        /// </remarks>
         IReadOnlyList<IModifierSource> InfluencingSources { get; }
 
-        // The instance that only contains data necessary for determining equivalence and no additional infos.
-        // Such instances are stored in stat graph paths.
+        /// <summary>
+        /// This instance but only containing data necessary for determining equivalence, no additional infos.
+        /// E.g. <see cref="SourceName"/> returns an empty string and <see cref="LastLevel"/> will be Global if
+        /// <see cref="FirstLevel"/> is Global.
+        /// </summary>
+        /// <remarks>
+        /// These sources are stored in stat graph nodes and returned by <see cref="InfluencingSources"/>.
+        /// </remarks>
         IModifierSource CanonicalSource { get; }
     }
 
 
+    /// <summary>
+    /// The first level of differentiation for <see cref="IModifierSource"/>s.
+    /// </summary>
     public enum ModifierSourceFirstLevel
     {
+        /// <summary>
+        /// This modifier is global. Includes mods from the tree, given mods, most? mods on items and some mods from
+        /// skills.
+        /// <para>
+        /// All global mods are considered coming from the same source in calculations, independent of further
+        /// details contained in the source (like those for Local).
+        /// </para>
+        /// </summary>
         Global,
+        /// <summary>
+        /// This modifier is local. Includes some mods on items and most mods from skills.
+        /// <para>
+        /// The next level of differentiation is Given, Tree, Skill or Item. Item is further differentiated by item
+        /// slot.
+        /// </para>
+        /// </summary>
         Local,
+        // Not quite sure yet, probably necessary to allow separate calculations between damage over time directly from
+        // skills and from ailments.
+        // The second level specifies the ailment: Poison, Bleed or Ignite.
+        // Inheriting the source from the original Hit type damage might also be necessary.
         Ailment
     }
 
 
+    /// <summary>
+    /// The canonical <see cref="IModifierSource"/> with <see cref="ModifierSourceFirstLevel.Global"/>.
+    /// </summary>
     public class GlobalModifierSource : IModifierSource
     {
         public ModifierSourceFirstLevel FirstLevel => ModifierSourceFirstLevel.Global;
+        public string LastLevel => FirstLevel.ToString();
+        public string SourceName => "";
         public IReadOnlyList<IModifierSource> InfluencingSources => new[] { this };
         public IModifierSource CanonicalSource => this;
 
@@ -50,6 +96,6 @@ namespace PoESkillTree.Computation.Common
 
         public override int GetHashCode() => FirstLevel.GetHashCode();
 
-        public override string ToString() => FirstLevel.ToString();
+        public override string ToString() => LastLevel;
     }
 }

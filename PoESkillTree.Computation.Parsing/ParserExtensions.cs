@@ -5,6 +5,10 @@ namespace PoESkillTree.Computation.Parsing
 {
     public static class ParserExtensions
     {
+        /// <summary>
+        /// Calls <see cref="IParser.Parse"/> and sets <see cref="Modifier.Source"/> to the given source in all cases
+        /// where it was not overridden by parsing.
+        /// </summary>
         public static ParseResult Parse(this IParser parser, string stat, IModifierSource originalSource)
         {
             var innerResult = parser.Parse(stat);

@@ -4,6 +4,10 @@ using PoESkillTree.Common.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Common
 {
+    /// <summary>
+    /// Defines a behavior. A behavior applies an <see cref="IValueTransformation"/> to a defined set of calculation
+    /// graph nodes, thus modifying the values calculated by those nodes.
+    /// </summary>
     public class Behavior
     {
         /*
@@ -50,10 +54,24 @@ namespace PoESkillTree.Computation.Common
             Transformation = transformation;
         }
 
+        /// <summary>
+        /// The <see cref="IStat"/> subgraphs affected by this behavior.
+        /// </summary>
         public IEnumerable<IStat> AffectedStats { get; }
+
+        /// <summary>
+        /// The <see cref="NodeType"/>s of nodes affected by this behavior.
+        /// </summary>
         public IEnumerable<NodeType> AffectedNodeTypes { get; }
+
+        /// <summary>
+        /// The <see cref="PathDefinition"/>s of nodes affected by this behavior.
+        /// </summary>
         public BehaviorPathInteraction AffectedPaths { get; }
 
+        /// <summary>
+        /// The transformation applied by this behavior.
+        /// </summary>
         public IValueTransformation Transformation { get; }
 
         public override bool Equals(object obj) =>
@@ -70,10 +88,25 @@ namespace PoESkillTree.Computation.Common
     }
 
 
+    /// <summary>
+    /// Defines the <see cref="PathDefinition"/>s affected by a behavior.
+    /// </summary>
     public enum BehaviorPathInteraction
     {
+        /// <summary>
+        /// The behavior affects all paths.
+        /// </summary>
         AllPaths,
+
+        /// <summary>
+        /// The behavior only affects the main path (paths with <see cref="PathDefinition.IsMainPath"/>).
+        /// </summary>
         MainPathOnly,
+
+        /// <summary>
+        /// The behavior only affects conversion paths (paths where <see cref="PathDefinition.ConversionStats"/> is not
+        /// empty).
+        /// </summary>
         ConversionPathsOnly
     }
 }

@@ -22,6 +22,8 @@ namespace PoESkillTree.Computation.Common.Tests
         public bool Equals(IModifierSource other) => Equals((object) other);
 
         public ModifierSourceFirstLevel FirstLevel { get; set; } = ModifierSourceFirstLevel.Global;
+        public string LastLevel => FirstLevel.ToString();
+        public string SourceName => _instance.ToString();
         public IReadOnlyList<IModifierSource> InfluencingSources { get; }
         public IModifierSource CanonicalSource { get; set; }
     }

@@ -23,6 +23,9 @@ namespace PoESkillTree.Common.Utils.Extensions
             value = pair.Value;
         }
 
+        /// <summary>
+        /// Applies <paramref name="action"/> to <c>dict[key]</c> if <c>dict.ContainsKey(key)</c>.
+        /// </summary>
         public static void ApplyIfPresent<TKey, TValue>(this IDictionary<TKey, TValue> dict,
             TKey key, Action<TValue> action)
         {

@@ -69,7 +69,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         [Test]
         public void CalculateBaseSetThrowsExceptionIfMultipleValuesWithNonUZeroMaximumArePassed()
         {
-            var values = new NodeValue?[] { new NodeValue(0, -5), new NodeValue(0, 44)};
+            var values = new NodeValue?[] { new NodeValue(0, 5), new NodeValue(0, 44)};
 
             Assert.Throws<NotSupportedException>(() => NodeValueAggregators.CalculateBaseSet(values));
         }
@@ -77,11 +77,11 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         [Test]
         public void CalculateBaseSetCorrectlyAggregatesValuesThatArePartlyZero()
         {
-            var values = new NodeValue?[] { new NodeValue(42, 0), new NodeValue(0, -5), new NodeValue(0)};
+            var values = new NodeValue?[] { new NodeValue(-42, 0), new NodeValue(0, 5), new NodeValue(0)};
 
             var actual = NodeValueAggregators.CalculateBaseSet(values);
 
-            Assert.AreEqual(new NodeValue(42, -5), actual);
+            Assert.AreEqual(new NodeValue(-42, 5), actual);
         }
 
         private static void AssertReturnsCorrectResult(

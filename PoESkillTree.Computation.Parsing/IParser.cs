@@ -36,7 +36,10 @@ namespace PoESkillTree.Computation.Parsing
         /// <summary>
         /// Parses the given stat line into <see cref="Modifier"/>.
         /// <para> In most use cases, e.g. when passing contained modifiers to calculation, use the extension method
-        /// <see cref="ParserExtensions.Parse"/> instead of this method. </para>
+        /// <see cref="ParserExtensions.Parse"/> instead of this method.</para>
+        /// </summary>
+        /// <param name="stat">the stat line that should be parsed</param>
+        /// <remarks>
         /// <para> If <paramref name="stat"/> was parsed successfully and completely, the return value's 
         /// <see cref="ParseResult.SuccessfullyParsed"/> is true, <see cref="ParseResult.Result"/>
         /// contains the parsing result and <see cref="ParseResult.RemainingStat"/> is empty. </para>
@@ -45,12 +48,11 @@ namespace PoESkillTree.Computation.Parsing
         /// and value could be parsed.</para>
         /// <para><see cref="ParseResult.RemainingStat"/> contains the parts of <paramref name="stat"/> that were
         /// not parsed into <see cref="ParseResult.Result"/>.</para>
-        /// </summary>
-        /// <param name="stat">the stat line that should be parsed</param>
-        /// <remarks>
+        /// <para>
         /// Throws <see cref="Common.Parsing.ParseException"/> if the data specification is erroneous, e.g. it tries to
         /// reference values that don't occur in the matched stat. You'll want to handle stats that throw a
         /// <see cref="Common.Parsing.ParseException"/> on being parsed like not parsable stats.
+        /// </para>
         /// </remarks>
         new ParseResult Parse(string stat);
     }

@@ -4,37 +4,48 @@ using JetBrains.Annotations;
 
 namespace PoESkillTree.Computation.Common
 {
-    // Each IStat represents one calculation subgraph
-    // Object.Equals() and IEquatable.Equals() return true if the parameter is an IStat representing the same
-    // calculation subgraph.
+    /// <summary>
+    /// Each instance represents one calculation subgraph.
+    /// <para>
+    /// <see cref="object.Equals(object)"/> and <see cref="IEquatable{T}.Equals(T)"/> return <c>true</c> if the
+    /// parameter is an <see cref="IStat"/> instance representing the same calculation subgraph.
+    /// </para>
+    /// </summary>
     public interface IStat : IEquatable<IStat>
     {
-        // Returns a string naming the represented calculation subgraph.
+        /// <summary>
+        /// Returns a string naming the represented calculation subgraph.
+        /// </summary>
         string ToString();
 
-        // To avoid endless recursion, these can be null if the stat subgraph shouldn't reference them.
-        // They should only be null if the stat itself already represents a minimum/maximum subgraph.
+        /// <summary>
+        /// The <see cref="IStat"/> determining the minimum value of this stat or<c>null</c> if the stat can never
+        /// have an lower bound.
+        /// </summary>
         [CanBeNull]
         IStat Minimum { get; }
-
+        
+        /// <summary>
+        /// The <see cref="IStat"/> determining the maximum value of this stat or <c>null</c> if the stat can never
+        /// have an upper bound.
+        /// </summary>
         [CanBeNull]
         IStat Maximum { get; }
 
-        // True if the existence/usage of this stat should be explicitly announced to clients
+        /// <summary>
+        /// True if the existence/usage of this stat should be explicitly announced to clients
+        /// </summary>
         bool IsRegisteredExplicitly { get; }
 
-        // The type of this stat's values. Can be double, int or bool (0 or 1).
-        // The value range is determined by Minimum and Maximum (which have the same DataType).
+        /// <summary>
+        /// The type of this stat's values. Can be double, int or bool (0 or 1).
+        /// The value range is determined by Minimum and Maximum (which have the same DataType).
+        /// </summary>
         Type DataType { get; }
 
+        /// <summary>
+        /// The behaviors that should be applied to the calculation graph when this stat's subgraph is created.
+        /// </summary>
         IEnumerable<Behavior> Behaviors { get; }
-
-        // If there is only one IStat subclass:
-        // The object determining equality can be passed to its constructor and can be used for ToString()
-
-        // If there are multiple and instances of different subclasses can be equal:
-        // A property like "object Identity { get; }" is required to have different subclasses that can have instances
-        // representing the same subgraph.
-        // Whether this is required depends on how identification of special stats is implemented.
     }
 }

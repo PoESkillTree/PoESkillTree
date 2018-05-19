@@ -87,6 +87,9 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// </summary>
         IValueBuilder Ceiling { get; }
 
+        /// <summary>
+        /// Builds this instance into an <see cref="IValue"/>.
+        /// </summary>
         IValue Build();
     }
 }
