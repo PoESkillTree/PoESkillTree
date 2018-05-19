@@ -59,6 +59,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Co
 		{844B58AB-4D91-4567-BCA9-F3E1B2A29444} = {844B58AB-4D91-4567-BCA9-F3E1B2A29444}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Builders", "PoESkillTree.Computation.Builders\PoESkillTree.Computation.Builders.csproj", "{940A286A-BCA7-4C79-AC89-55C57C7D4784}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Builders.Tests", "PoESkillTree.Computation.Builders.Tests\PoESkillTree.Computation.Builders.Tests.csproj", "{D6ECC468-961D-4C72-8E8F-DA9037B9B200}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -179,6 +183,22 @@ Global
 		{02676C0A-817C-4D1D-BE32-640D6D5A9937}.Release|Any CPU.Build.0 = Release|Any CPU
 		{02676C0A-817C-4D1D-BE32-640D6D5A9937}.Release|x86.ActiveCfg = Release|Any CPU
 		{02676C0A-817C-4D1D-BE32-640D6D5A9937}.Release|x86.Build.0 = Release|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Debug|x86.Build.0 = Debug|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Release|Any CPU.Build.0 = Release|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Release|x86.ActiveCfg = Release|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Release|x86.Build.0 = Release|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Debug|x86.Build.0 = Debug|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Release|x86.ActiveCfg = Release|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
