@@ -1,4 +1,5 @@
-# PoESkillTree    
+# PoESkillTree [![Discord](https://b.thumbs.redditmedia.com/YzI6TxCJcacCZw1sx1Z5tyy6YskyNiA84hn4WfPXaRM.png)](https://discord.gg/sC7cUHV)
+
 
 A Passive Skill Tree and Character Planner for Path of Exile
 
@@ -84,6 +85,7 @@ Note: Both these options require that you can access the official Path of Exile 
   * [Thread in the official forum](https://www.pathofexile.com/forum/view-thread/996805/)
   * [Wiki on Github](https://github.com/EmmittJ/PoESkillTree/wiki)
   * [Open and closed issues on GitHub](https://github.com/EmmittJ/PoESkillTree/issues?utf8=%E2%9C%93&q=is%3Aissue)
+  * [PoESkillTree Discord](https://discord.gg/sC7cUHV)
 * If you find any bugs/faults please report it here on GitHub
 * Miss any features? Create an issue here or post in the forum thread
 
