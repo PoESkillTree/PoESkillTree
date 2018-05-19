@@ -4,6 +4,10 @@ using PoESkillTree.Computation.Core.Events;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
+    /// <summary>
+    /// Base class for <see cref="ICalculationNode"/> implementations that also implement
+    /// <see cref="ICountsSubsribers"/>.
+    /// </summary>
     public abstract class SubscriberCountingNode : ICalculationNode, ICountsSubsribers
     {
         public abstract NodeValue? Value { get; }

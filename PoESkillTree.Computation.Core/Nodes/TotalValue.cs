@@ -2,6 +2,9 @@
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
+    /// <summary>
+    /// <see cref="IValue"/> for <see cref="NodeType.Total"/>.
+    /// </summary>
     public class TotalValue : IValue
     {
         private readonly IStat _stat;

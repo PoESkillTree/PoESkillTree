@@ -6,6 +6,11 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
+    /// <summary>
+    /// Implementation of <see cref="IValueCalculationContext"/> using <see cref="INodeRepository"/>.
+    /// Stores the <see cref="ICalculationNode"/>s and <see cref="IObservableCollection"/>s used to allow subscribing
+    /// to them.
+    /// </summary>
     public class ValueCalculationContext : IValueCalculationContext
     {
         private readonly INodeRepository _nodeRepository;

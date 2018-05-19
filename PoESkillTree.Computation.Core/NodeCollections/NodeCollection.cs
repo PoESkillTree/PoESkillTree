@@ -1,11 +1,15 @@
 ﻿namespace PoESkillTree.Computation.Core.NodeCollections
 {
+    /// <summary>
+    /// Non-readonly implementation of <see cref="INodeCollection{TProperty}"/> using
+    /// <see cref="SuspendableObservableCollection{T}"/>.
+    /// </summary>
     public class NodeCollection<TProperty>
         : SuspendableObservableCollection<(ICalculationNode node, TProperty property)>, INodeCollection<TProperty>
     {
         // Making NodeCollection suspendable is not optimal, but everything else would lead to at least one
         // of the required classes being a duplicate because there is no multiple inheritance.
-        // (SuspendableNodeCollection, NodeCollection, SuspendableObservableCollection, ObservableCollection=
+        // (SuspendableNodeCollection, NodeCollection, SuspendableObservableCollection, ObservableCollection)
 
         public void Add(ICalculationNode node, TProperty property) => Add((node, property));
 

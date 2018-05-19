@@ -9,6 +9,9 @@ using static PoESkillTree.Computation.Core.Nodes.NodeValueAggregators;
 
 namespace PoESkillTree.Computation.Core
 {
+    /// <summary>
+    /// Implementation of <see cref="IStatNodeFactory"/> using the implementations of this project.
+    /// </summary>
     public class StatNodeFactory : IStatNodeFactory
     {
         private readonly INodeFactory _nodeFactory;

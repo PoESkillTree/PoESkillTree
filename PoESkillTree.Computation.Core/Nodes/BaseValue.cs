@@ -2,6 +2,9 @@
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
+    /// <summary>
+    /// <see cref="IValue"/> for <see cref="NodeType.Base"/> on non-conversion paths.
+    /// </summary>
     public class BaseValue : IValue
     {
         private readonly IStat _stat;

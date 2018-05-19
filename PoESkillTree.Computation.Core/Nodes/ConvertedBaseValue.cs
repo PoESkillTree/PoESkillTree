@@ -3,6 +3,9 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
+    /// <summary>
+    /// <see cref="IValue"/> for <see cref="NodeType.Base"/> on conversion paths.
+    /// </summary>
     public class ConvertedBaseValue : IValue
     {
         private readonly PathDefinition _path;

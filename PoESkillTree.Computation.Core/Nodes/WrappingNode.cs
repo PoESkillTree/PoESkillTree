@@ -3,10 +3,14 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
-    // Wrapped nodes will have a fixed number of subscribers from clients of this node (exactly 1 -- this node),
-    // instead of the unpredictable number that subscribes to this node.
-    // This is necessary for nodes that are subscribed to when being exposed, independently of whether they would be
-    // used without being exposed explicitly (through ICalculator.ExplicitlyRegisteredStats).
+    /// <summary>
+    /// Wrapped nodes will have a fixed number of subscribers from clients of this node (exactly 1 -- this node),
+    /// instead of the unpredictable number that subscribes to this node.
+    /// <para>
+    /// This is necessary for nodes that are subscribed to when being exposed, independently of whether they would be
+    /// used without being exposed explicitly (through <see cref="ICalculator.ExplicitlyRegisteredStats"/>).
+    /// </para>
+    /// </summary>
     public class WrappingNode : ICalculationNode, IDisposable
     {
         private readonly ICalculationNode _decoratedNode;

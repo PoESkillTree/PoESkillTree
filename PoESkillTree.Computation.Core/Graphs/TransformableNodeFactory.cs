@@ -6,6 +6,10 @@ using PoESkillTree.Computation.Core.Nodes;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    /// <summary>
+    /// Decorates an <see cref="INodeFactory"/> by replacing <see cref="IValue"/>s passed to it with
+    /// <see cref="TransformableValue"/>s initialized from those values.
+    /// </summary>
     public class TransformableNodeFactory : INodeFactory
     {
         private readonly INodeFactory _decoratedFactory;

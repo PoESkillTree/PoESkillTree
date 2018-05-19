@@ -6,6 +6,9 @@ using PoESkillTree.Computation.Core.Nodes;
 
 namespace PoESkillTree.Computation.Core
 {
+    /// <summary>
+    /// Implementation of <see cref="ICalculator"/> and composition root of Computation.Core.
+    /// </summary>
     public class Calculator : ICalculator
     {
         private readonly ISuspendableEvents _suspender;
@@ -44,6 +47,9 @@ namespace PoESkillTree.Computation.Core
             _suspender.ResumeEvents();
         }
 
+        /// <summary>
+        /// Creates an <see cref="ICalculator"/>.
+        /// </summary>
         public static ICalculator CreateCalculator()
         {
             var innerNodeFactory = new NodeFactory();

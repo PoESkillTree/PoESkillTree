@@ -2,6 +2,10 @@
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    /// <summary>
+    /// Selects a node in an <see cref="IReadOnlyStatGraph"/>/<see cref="IStatGraph"/> using
+    /// a <see cref="NodeType"/> and <see cref="PathDefinition"/>.
+    /// </summary>
     public class NodeSelector
     {
         public NodeSelector(NodeType nodeType, PathDefinition path)

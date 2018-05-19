@@ -2,11 +2,15 @@
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    /// <summary>
+    /// Implementation of <see cref="INodeRepository"/> using the suspendable views in an
+    /// <see cref="IStatGraphCollection"/>.
+    /// </summary>
     public class SuspendableViewNodeRepository : INodeRepository
     {
-        private readonly IReadOnlyStatGraphCollection _statGraphCollection;
+        private readonly IStatGraphCollection _statGraphCollection;
 
-        public SuspendableViewNodeRepository(IReadOnlyStatGraphCollection statGraphCollection) =>
+        public SuspendableViewNodeRepository(IStatGraphCollection statGraphCollection) =>
             _statGraphCollection = statGraphCollection;
 
         public IObservableCollection<PathDefinition> GetPaths(IStat stat) =>

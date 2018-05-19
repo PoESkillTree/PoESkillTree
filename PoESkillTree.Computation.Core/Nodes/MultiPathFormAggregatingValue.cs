@@ -4,6 +4,10 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
+    /// <summary>
+    /// <see cref="IValue"/> for <see cref="NodeType"/>s that aggregate <see cref="Form"/> nodes from multiple paths.
+    /// (<see cref="NodeType.Increase"/> and <see cref="NodeType.More"/>)
+    /// </summary>
     public class MultiPathFormAggregatingValue : IValue
     {
         private readonly IStat _stat;
@@ -21,10 +25,11 @@ namespace PoESkillTree.Computation.Core.Nodes
 
         public NodeValue? Calculate(IValueCalculationContext valueCalculationContext)
         {
-            var stats = _stat.Concat(_path.ConversionStats).ToList();
-            var paths = _path.ModifierSource.InfluencingSources
-                .Select(s => new PathDefinition(s))
-                .SelectMany(p => stats.Select(s => (s, p)));
+            var paths =
+                from source in _path.ModifierSource.InfluencingSources
+                let path = new PathDefinition(source)
+                from stat in _stat.Concat(_path.ConversionStats)
+                select (stat, path);
             return _aggregator(valueCalculationContext.GetValues(_form, paths));
         }
     }

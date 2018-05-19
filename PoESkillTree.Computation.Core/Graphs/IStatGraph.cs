@@ -4,6 +4,9 @@ using PoESkillTree.Computation.Core.Events;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    /// <summary>
+    /// Representation of the calculation subgraph of a stat.
+    /// </summary>
     public interface IStatGraph : IReadOnlyStatGraph
     {
         void RemoveNode(NodeSelector selector);
@@ -15,6 +18,9 @@ namespace PoESkillTree.Computation.Core.Graphs
     }
 
 
+    /// <summary>
+    /// Read-only representation of the calculation subgraph of a stat.
+    /// </summary>
     public interface IReadOnlyStatGraph
     {
         ISuspendableEventViewProvider<IObservableCollection<PathDefinition>> Paths { get; }

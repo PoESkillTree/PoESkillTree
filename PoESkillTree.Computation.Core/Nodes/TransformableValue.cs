@@ -5,6 +5,10 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
+    /// <summary>
+    /// Implementation of <see cref="IValue"/> that decorates a base <see cref="IValue"/> and applies
+    /// <see cref="IValueTransformation"/>s to it by implementing <see cref="IValueTransformable"/>.
+    /// </summary>
     public class TransformableValue : IValue, IValueTransformable
     {
         private readonly IValue _initialValue;

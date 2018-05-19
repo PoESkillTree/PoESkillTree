@@ -5,6 +5,9 @@ using PoESkillTree.Computation.Core.Events;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    /// <summary>
+    /// Decorating implementation of <see cref="IStatGraph"/> that triggers actions when nodes are added or removed.
+    /// </summary>
     public class StatGraphWithEvents : IStatGraph
     {
         private readonly IStatGraph _decoratedGraph;

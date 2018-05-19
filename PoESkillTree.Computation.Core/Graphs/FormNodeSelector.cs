@@ -2,6 +2,10 @@
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    /// <summary>
+    /// Selects a form node collection in an <see cref="IReadOnlyStatGraph"/>/<see cref="IStatGraph"/> using
+    /// a <see cref="Form"/> and <see cref="PathDefinition"/>.
+    /// </summary>
     public class FormNodeSelector
     {
         public FormNodeSelector(Form form, PathDefinition path)

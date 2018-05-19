@@ -4,6 +4,9 @@ using PoESkillTree.Computation.Core.Events;
 
 namespace PoESkillTree.Computation.Core.NodeCollections
 {
+    /// <summary>
+    /// Collection of <see cref="Modifier"/>s and their nodes
+    /// </summary>
     public class ModifierNodeCollection : ISuspendableEventViewProvider<INodeCollection<Modifier>>
     {
         private readonly ISuspendableEventViewProvider<NodeCollection<Modifier>> _viewProvider;

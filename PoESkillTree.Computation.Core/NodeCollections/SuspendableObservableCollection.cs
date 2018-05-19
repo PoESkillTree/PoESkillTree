@@ -3,6 +3,9 @@ using PoESkillTree.Computation.Core.Events;
 
 namespace PoESkillTree.Computation.Core.NodeCollections
 {
+    /// <summary>
+    /// Extends <see cref="ObservableCollection{T}"/> with <see cref="ISuspendableEvents"/>.
+    /// </summary>
     public class SuspendableObservableCollection<T> : ObservableCollection<T>, ISuspendableEvents
     {
         private bool _suppressEvents;

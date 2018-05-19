@@ -6,8 +6,7 @@ namespace PoESkillTree.Computation.Common
 {
     /// <summary>
     /// Defines a path in <see cref="IStat"/> calculation subgraphs. A node for each <see cref="NodeType"/> can exist
-    /// on each path. Except <see cref="NodeType.Total"/>, <see cref="NodeType.Subtotal"/> and
-    /// <see cref="NodeType.UncappedSubtotal"/>, these only exist on the main path.
+    /// on each path. Except the <see cref="NodeType"/>s with "Total" in their name, these only exist on the main path.
     /// <para>
     /// A path consists of its <see cref="IModifierSource"/> and the <see cref="IStat"/>s its
     /// <see cref="NodeType.Base"/> is converted from (which are none if no conversion is applied).

@@ -3,6 +3,10 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
+    /// <summary>
+    /// The core implementation of <see cref="ICalculationNode"/> that uses an <see cref="IValue"/> to calculate
+    /// its value. Saves the nodes and collections used in that calculation to subscribe to them after the calculation.
+    /// </summary>
     public class ValueNode : ICalculationNode, IDisposable
     {
         private readonly IValue _value;

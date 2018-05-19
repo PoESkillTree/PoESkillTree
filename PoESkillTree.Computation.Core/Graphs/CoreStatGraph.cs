@@ -7,6 +7,9 @@ using PoESkillTree.Computation.Core.Nodes;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    /// <summary>
+    /// Core implementation of <see cref="IStatGraph"/>.
+    /// </summary>
     public class CoreStatGraph : IStatGraph
     {
         private readonly IStatNodeFactory _nodeFactory;

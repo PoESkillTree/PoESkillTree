@@ -3,6 +3,10 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
+    /// <summary>
+    /// Implementation of <see cref="ICachingNode"/>.
+    /// Also uses <see cref="ICycleGuard"/> to guard against cycles in the calculation graph.
+    /// </summary>
     public class CachingNode : SubscriberCountingNode, IDisposable, ICachingNode
     {
         private readonly ICalculationNode _decoratedNode;

@@ -5,6 +5,9 @@ using PoESkillTree.Computation.Core.Events;
 
 namespace PoESkillTree.Computation.Core.NodeCollections
 {
+    /// <summary>
+    /// Non-readonly implementation of <see cref="IObservableCollection{T}"/> based on sets.
+    /// </summary>
     public class ObservableCollection<T> : IObservableCollection<T>, ICountsSubsribers
     {
         private readonly ISet<T> _collection = new HashSet<T>();

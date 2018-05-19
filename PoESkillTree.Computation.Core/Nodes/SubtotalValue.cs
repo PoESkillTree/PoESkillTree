@@ -3,6 +3,9 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
+    /// <summary>
+    /// <see cref="IValue"/> for <see cref="NodeType.Subtotal"/>.
+    /// </summary>
     public class SubtotalValue : IValue
     {
         private readonly IStat _stat;

@@ -6,6 +6,10 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    /// <summary>
+    /// Decorating implementation of <see cref="ICalculationGraph"/> that triggers actions when stat subgraphs are
+    /// added or removed.
+    /// </summary>
     public class CalculationGraphWithEvents : ICalculationGraph
     {
         private readonly ICalculationGraph _decoratedGraph;

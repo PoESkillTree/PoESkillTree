@@ -7,6 +7,9 @@ using PoESkillTree.Computation.Core.Nodes;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    /// <summary>
+    /// Transforms <see cref="IValueTransformable"/> using <see cref="Behavior"/>s.
+    /// </summary>
     public class ValueTransformer
     {
         private readonly Dictionary<(IStat, NodeSelector), Transformable> _transformables =
@@ -24,6 +27,12 @@ namespace PoESkillTree.Computation.Core.Graphs
         private readonly Dictionary<(IStat, NodeType), List<Transformation>> _transformationLists =
             new Dictionary<(IStat, NodeType), List<Transformation>>();
 
+        /// <summary>
+        /// Adds the given behaviors and applies their transformations to all matching transformables already stored.
+        /// <para>
+        /// Only adding a <see cref="Behavior"/> the first times applies its transformations.
+        /// </para>
+        /// </summary>
         public void AddBehaviors(IEnumerable<Behavior> behaviors)
         {
             foreach (var behavior in behaviors)
@@ -49,6 +58,14 @@ namespace PoESkillTree.Computation.Core.Graphs
             }
         }
 
+        /// <summary>
+        /// Removes the given behaviors and their transformations that were already applied.
+        /// <para>
+        /// If a <see cref="Behavior"/> was added multiple times, its transformations will only be removed when it is
+        /// removed as often as it was added.
+        /// </para>
+        /// </summary>
+        /// <param name="behaviors"></param>
         public void RemoveBehaviors(IEnumerable<Behavior> behaviors)
         {
             foreach (var behavior in behaviors)
@@ -81,6 +98,9 @@ namespace PoESkillTree.Computation.Core.Graphs
             from nodeType in behavior.AffectedNodeTypes
             select (stat, nodeType);
 
+        /// <summary>
+        /// Adds the given transformable and applies all matching transformations to it that are already saved.
+        /// </summary>
         public void AddTransformable(IStat stat, NodeSelector selector, IValueTransformable transformable)
         {
             var t = new Transformable(selector.Path, transformable);
@@ -98,6 +118,9 @@ namespace PoESkillTree.Computation.Core.Graphs
                 .Add(transformable);
         }
 
+        /// <summary>
+        /// Removes the transformable of the given stat and selector and removes all of its transformations.
+        /// </summary>
         public void RemoveTransformable(IStat stat, NodeSelector selector)
         {
             var transformable = _transformables[(stat, selector)];

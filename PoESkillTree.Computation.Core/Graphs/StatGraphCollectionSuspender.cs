@@ -4,6 +4,10 @@ using PoESkillTree.Computation.Core.Events;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    /// <summary>
+    /// Composite implementation of <see cref="ISuspendableEvents"/> that suspends/resumes
+    /// all <see cref="ISuspendableEvents"/>s in each <see cref="IReadOnlyStatGraph"/>.
+    /// </summary>
     public class StatGraphCollectionSuspender : ISuspendableEvents
     {
         private readonly IEnumerable<IReadOnlyStatGraph> _statGraphs;

@@ -6,6 +6,13 @@ using PoESkillTree.Computation.Core.Nodes;
 
 namespace PoESkillTree.Computation.Core
 {
+    /// <summary>
+    /// Implementation of <see cref="INodeFactory"/> using the node implementations of this project.
+    /// <para>
+    /// For each <see cref="IValue"/> (conceptual node) in the calculation graph, a stack of <see cref="ValueNode"/>,
+    /// <see cref="CachingNode"/> and <see cref="CachingNodeAdapter"/> is created.
+    /// </para>
+    /// </summary>
     public class NodeFactory : INodeFactory
     {
         public INodeRepository NodeRepository { private get; set; }

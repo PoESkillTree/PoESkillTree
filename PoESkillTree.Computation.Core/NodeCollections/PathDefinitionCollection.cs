@@ -4,6 +4,11 @@ using PoESkillTree.Computation.Core.Events;
 
 namespace PoESkillTree.Computation.Core.NodeCollections
 {
+    /// <summary>
+    /// Collection of <see cref="PathDefinition"/>s. Implemented as a multi-set: Only the first time a path is added
+    /// adds it to the <see cref="ISuspendableEventViewProvider{T}"/> views and its is only removed again the last time
+    /// it is removed using <see cref="Remove"/>.
+    /// </summary>
     public class PathDefinitionCollection : ISuspendableEventViewProvider<IObservableCollection<PathDefinition>>
     {
         private readonly ISuspendableEventViewProvider<ObservableCollection<PathDefinition>> _viewProvider;

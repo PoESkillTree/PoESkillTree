@@ -7,6 +7,10 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    /// <summary>
+    /// Decorating implementation of <see cref="ICalculationGraph"/> that stores stat subgraphs without modifiers and
+    /// implements <see cref="ICalculationGraphPruner"/> to remove their unused nodes.
+    /// </summary>
     public class PrunableCalculationGraph
         : ICalculationGraph, ICalculationGraphPruner
     {

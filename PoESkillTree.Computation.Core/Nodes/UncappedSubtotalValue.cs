@@ -2,6 +2,9 @@
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
+    /// <summary>
+    /// <see cref="IValue"/> for <see cref="NodeType.UncappedSubtotal"/>.
+    /// </summary>
     public class UncappedSubtotalValue : IValue
     {
         private readonly IStat _stat;

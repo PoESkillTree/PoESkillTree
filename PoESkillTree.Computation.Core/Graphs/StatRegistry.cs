@@ -6,6 +6,17 @@ using PoESkillTree.Computation.Core.Nodes;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    /// <summary>
+    /// Registry of explicitly registered stats used for <see cref="ICalculator.ExplicitlyRegisteredStats"/>.
+    /// <para>
+    /// Node exposed here are wrapped using <see cref="WrappingNode"/>.
+    /// </para>
+    /// <para>
+    /// Implements <see cref="IDeterminesNodeRemoval"/> by counting subscribers. Nodes can be removed when they
+    /// are not subscribed to, except for nodes registered here, those can also be removed when they have one
+    /// subscriber (the <see cref="WrappingNode"/>.
+    /// </para>
+    /// </summary>
     public class StatRegistry : IDeterminesNodeRemoval
     {
         private readonly NodeCollection<IStat> _nodeCollection;

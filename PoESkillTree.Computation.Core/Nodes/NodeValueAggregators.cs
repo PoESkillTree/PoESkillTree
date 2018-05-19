@@ -8,6 +8,10 @@ namespace PoESkillTree.Computation.Core.Nodes
 {
     public delegate NodeValue? NodeValueAggregator(IEnumerable<NodeValue?> values);
 
+    /// <summary>
+    /// Aggregator methods for the different <see cref="Form"/>s for <see cref="FormAggregatingValue"/> and
+    /// <see cref="MultiPathFormAggregatingValue"/>.
+    /// </summary>
     public static class NodeValueAggregators
     {
         // For both BaseOverride and TotalOverride

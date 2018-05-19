@@ -9,6 +9,9 @@ using PoESkillTree.Computation.Core.Nodes;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    /// <summary>
+    /// Core implementation of <see cref="ICalculationGraph"/>.
+    /// </summary>
     public class CoreCalculationGraph : ICalculationGraph
     {
         private readonly Func<IStat, IStatGraph> _statGraphFactory;

@@ -2,11 +2,15 @@
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    /// <summary>
+    /// Implementation of <see cref="INodeRepository"/> using the default views in an
+    /// <see cref="IStatGraphCollection"/>.
+    /// </summary>
     public class DefaultViewNodeRepository : INodeRepository
     {
-        private readonly IReadOnlyStatGraphCollection _statGraphCollection;
+        private readonly IStatGraphCollection _statGraphCollection;
 
-        public DefaultViewNodeRepository(IReadOnlyStatGraphCollection statGraphCollection) =>
+        public DefaultViewNodeRepository(IStatGraphCollection statGraphCollection) =>
             _statGraphCollection = statGraphCollection;
 
         public IObservableCollection<PathDefinition> GetPaths(IStat stat) => 
