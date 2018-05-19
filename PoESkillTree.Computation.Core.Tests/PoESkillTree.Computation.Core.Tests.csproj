@@ -67,7 +67,7 @@
   <ItemGroup>
     <Compile Include="Graphs\CalculationGraphWithEventsTest.cs" />
     <Compile Include="Graphs\NodeSelectorHelper.cs" />
-    <Compile Include="Graphs\SelectorValidatingStatGraphTest.cs" />
+    <Compile Include="Graphs\SelectorValidationTest.cs" />
     <Compile Include="Graphs\StatGraphWithEventsTest.cs" />
     <Compile Include="Graphs\StatRegistryTest.cs" />
     <Compile Include="Graphs\TransformableNodeFactoryTest.cs" />

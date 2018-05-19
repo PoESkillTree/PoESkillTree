@@ -99,8 +99,7 @@ namespace PoESkillTree.Computation.Core
             var paths = new PathDefinitionCollection(SuspendableEventViewProvider.Create(
                 new ObservableCollection<PathDefinition>(), new SuspendableObservableCollection<PathDefinition>()));
             var coreGraph = new CoreStatGraph(new StatNodeFactory(nodeFactory, stat), paths);
-            var eventGraph = new StatGraphWithEvents(coreGraph, NodeAdded, NodeRemoved);
-            return new SelectorValidatingStatGraph(eventGraph);
+            return new StatGraphWithEvents(coreGraph, NodeAdded, NodeRemoved);
 
             void NodeAdded(NodeSelector selector)
             {

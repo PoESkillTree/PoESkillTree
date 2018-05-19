@@ -1,4 +1,6 @@
-﻿using PoESkillTree.Computation.Common;
+﻿using System;
+using System.Linq;
+using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
@@ -8,8 +10,14 @@ namespace PoESkillTree.Computation.Core.Graphs
     /// </summary>
     public class NodeSelector
     {
+        private static readonly NodeType[] MainPathOnlyNodeTypes =
+            { NodeType.Total, NodeType.Subtotal, NodeType.UncappedSubtotal, NodeType.TotalOverride };
+
         public NodeSelector(NodeType nodeType, PathDefinition path)
         {
+            if (!path.IsMainPath && MainPathOnlyNodeTypes.Contains(nodeType))
+                throw new ArgumentException($"{nodeType} is only allowed with the main path");
+
             NodeType = nodeType;
             Path = path;
         }
