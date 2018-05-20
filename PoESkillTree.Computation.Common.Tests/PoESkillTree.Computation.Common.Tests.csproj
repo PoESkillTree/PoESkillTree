@@ -70,7 +70,6 @@
     <Compile Include="Builders\Modifiers\ModifierBuilderTest.cs" />
     <Compile Include="Builders\Values\ValueBuilderUtilsTest.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="ModifierSourceStub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatStub.cs" />
   </ItemGroup>

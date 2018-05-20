@@ -91,11 +91,12 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         public void Complex()
         {
             var barFooConversion = new[] { _barFooConversion, _barConversion, _barSkillConversion };
-            var localSource = new LocalModifierSource();
+            var localSource = new ModifierSource.Local.Given();
+            var skillSource = new ModifierSource.Local.Skill();
             _sut.NewBatchUpdate()
                 .AddModifier(_bar, Form.BaseAdd, 3)
                 .AddModifier(_bar, Form.BaseAdd, 2, localSource)
-                .AddModifier(barFooConversion, Form.BaseAdd, 0.5, localSource)
+                .AddModifier(barFooConversion, Form.BaseAdd, 0.5, skillSource)
                 .AddModifier(barFooConversion, Form.BaseAdd, 0.3)
                 .AddModifier(barFooConversion, Form.BaseAdd, 0.3)
                 .AddModifier(_barFooGain, Form.BaseAdd, 0.2)
@@ -284,8 +285,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
                     return value;
                 }
 
-                // TODO Check for Local first level and Skill second level
-                var isSkillPath = path.ModifierSource.FirstLevel == ModifierSourceFirstLevel.Local;
+                var isSkillPath = path.ModifierSource is ModifierSource.Local.Skill;
                 var barSkillConversion = _originalContext.GetValue(_barSkillConversion) ?? new NodeValue(0);
                 if (barSkillConversion >= 1)
                 {
@@ -348,9 +348,8 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
                 if (!_barSkillConversion.Equals(stat))
                     return _originalContext.GetPaths(stat);
 
-                // TODO Check for Local first level and Skill second level
                 return _originalContext.GetPaths(stat)
-                    .Where(p => p.ModifierSource.FirstLevel == ModifierSourceFirstLevel.Local);
+                    .Where(p => p.ModifierSource is ModifierSource.Local.Skill);
             }
 
             public NodeValue? GetValue(IStat stat, NodeType nodeType, PathDefinition path) =>

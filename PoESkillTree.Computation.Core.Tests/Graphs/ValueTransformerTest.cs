@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             _selectors = new[]
             {
                 new NodeSelector(_nodeType, PathDefinition.MainPath),
-                new NodeSelector(_nodeType, new PathDefinition(new ModifierSourceStub(), new StatStub())),
+                new NodeSelector(_nodeType, new PathDefinition(new ModifierSource.Local.Given(), new StatStub())),
             };
             _transformations = Helper.MockMany<IValueTransformation>(3);
             _behaviors = new[]

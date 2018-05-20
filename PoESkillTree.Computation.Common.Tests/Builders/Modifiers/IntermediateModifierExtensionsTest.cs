@@ -233,7 +233,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         {
             var input = CreateResult(DefaultEntry.WithStat(null));
 
-            var result = input.Build();
+            var result = input.Build(Source);
 
             CollectionAssert.IsEmpty(result);
         }
@@ -243,7 +243,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         {
             var input = CreateResult(DefaultEntry.WithForm(null));
 
-            var result = input.Build();
+            var result = input.Build(Source);
 
             CollectionAssert.IsEmpty(result);
         }
@@ -253,7 +253,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         {
             var input = CreateResult(DefaultEntry.WithValue(null));
 
-            var result = input.Build();
+            var result = input.Build(Source);
 
             CollectionAssert.IsEmpty(result);
         }
@@ -270,11 +270,11 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             var formConvertedValueBuilder = Mock.Of<IValueBuilder>(b => b.Build() == value);
 
             var stats = new[] { Mock.Of<IStat>() };
-            var source = new GlobalModifierSource();
+            var source = new ModifierSource.Local.Given();
             IValueBuilder StatConvertValue(IValueBuilder v) =>
                 v == convertedValueBuilder ? statConvertedValueBuilder : v;
             var statBuilderMock = new Mock<IStatBuilder>();
-            statBuilderMock.Setup(b => b.Build()).Returns((stats, source, StatConvertValue));
+            statBuilderMock.Setup(b => b.Build()).Returns((stats, _ => source, StatConvertValue));
             var statBuilderWithCondition = statBuilderMock.Object;
             var statBuilder = Mock.Of<IStatBuilder>();
             var convertedStatBuilder =
@@ -298,7 +298,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
                 s => s == statBuilder ? convertedStatBuilder : s,
                 v => v == valueBuilder ? convertedValueBuilder : v);
 
-            var result = input.Build();
+            var result = input.Build(Source);
 
             Assert.AreEqual(1, result.Count);
             var item = result[0];
@@ -323,6 +323,8 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             var entry2 = DefaultEntry;
             return new[] { entry0, entry1, entry2 };
         }
+
+        private static readonly ModifierSource Source = new ModifierSource.Global();
 
         private static IIntermediateModifier CreateResult(StatConverter statConverter)
         {

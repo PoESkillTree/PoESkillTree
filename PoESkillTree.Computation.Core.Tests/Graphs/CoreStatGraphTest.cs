@@ -310,10 +310,10 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         public void AddModifierUsesCorrectPath()
         {
             var node = MockNodeProvider();
-            var canonicalSource = new ModifierSourceStub();
-            var modifier = MockModifier(source: new ModifierSourceStub { CanonicalSource = canonicalSource });
+            var source = new ModifierSource.Global(new ModifierSource.Local.Given());
+            var modifier = MockModifier(source: source);
             var collection = CreateModifierNodeCollection();
-            var selector = new FormNodeSelector(modifier.Form, new PathDefinition(canonicalSource));
+            var selector = new FormNodeSelector(modifier.Form, new PathDefinition(source.CanonicalSource));
             var factory = Mock.Of<IStatNodeFactory>(f => f.Create(selector) == collection);
             var sut = CreateSut(factory);
 

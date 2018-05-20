@@ -50,6 +50,6 @@ namespace PoESkillTree.Computation.Core.Tests
                 p => p.DefaultView == defaultNode && p.SuspendableView == suspendableNode && p.Suspender == suspender);
         }
 
-        public static PathDefinition NotMainPath => new PathDefinition(new GlobalModifierSource(), new StatStub());
+        public static PathDefinition NotMainPath => new PathDefinition(new ModifierSource.Global(), new StatStub());
     }
 }

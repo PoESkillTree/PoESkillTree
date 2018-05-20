@@ -24,8 +24,8 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         {
             var expected = new NodeValue(value);
             var stats = new IStat[] { new StatStub(), new StatStub(), new StatStub(), };
-            var path = new PathDefinition(new GlobalModifierSource(), stats);
-            var innerPath = new PathDefinition(new GlobalModifierSource(), stats.Skip(1).ToArray());
+            var path = new PathDefinition(new ModifierSource.Global(), stats);
+            var innerPath = new PathDefinition(new ModifierSource.Global(), stats.Skip(1).ToArray());
             var context = Mock.Of<IValueCalculationContext>(
                 c => c.GetValue(stats[0], NodeType.Base, innerPath) == expected);
             var sut = CreateSut(path);
