@@ -188,7 +188,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var (stats, sourceOverride, statValueConverter) = statBuilder.Build();
             var (form, formValueConverter) = formBuilder.Build();
             var value = formValueConverter(statValueConverter(valueBuilder)).Build();
-            return new Modifier(stats, form, value, sourceOverride ?? new GlobalModifierSource());
+            return new Modifier(stats, form, value, sourceOverride ?? new ModifierSource.Global());
         }
 
         private static Modifier CreateModifier(

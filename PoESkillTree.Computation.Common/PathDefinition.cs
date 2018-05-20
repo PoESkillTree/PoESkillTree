@@ -8,24 +8,24 @@ namespace PoESkillTree.Computation.Common
     /// Defines a path in <see cref="IStat"/> calculation subgraphs. A node for each <see cref="NodeType"/> can exist
     /// on each path. Except the <see cref="NodeType"/>s with "Total" in their name, these only exist on the main path.
     /// <para>
-    /// A path consists of its <see cref="IModifierSource"/> and the <see cref="IStat"/>s its
+    /// A path consists of its <see cref="ModifierSource"/> and the <see cref="IStat"/>s its
     /// <see cref="NodeType.Base"/> is converted from (which are none if no conversion is applied).
-    /// The "main path" refers to the global <see cref="IModifierSource"/> without conversions.
+    /// The "main path" refers to the global <see cref="ModifierSource"/> without conversions.
     /// </para>
     /// </summary>
     public class PathDefinition
     {
         /// <summary>
-        /// An instance of the main path (global <see cref="IModifierSource"/>, no conversions).
+        /// An instance of the main path (global <see cref="ModifierSource"/>, no conversions).
         /// </summary>
-        public static readonly PathDefinition MainPath = new PathDefinition(new GlobalModifierSource());
+        public static readonly PathDefinition MainPath = new PathDefinition(new ModifierSource.Global());
 
-        public PathDefinition(IModifierSource modifierSource, params IStat[] conversiStats)
+        public PathDefinition(ModifierSource modifierSource, params IStat[] conversiStats)
             : this(modifierSource, (IReadOnlyList<IStat>) conversiStats)
         {
         }
 
-        public PathDefinition(IModifierSource modifierSource, IReadOnlyList<IStat> conversionStats)
+        public PathDefinition(ModifierSource modifierSource, IReadOnlyList<IStat> conversionStats)
         {
             ModifierSource = modifierSource;
             ConversionStats = conversionStats;
@@ -34,7 +34,7 @@ namespace PoESkillTree.Computation.Common
         /// <summary>
         /// The canonical modifier source of this path.
         /// </summary>
-        public IModifierSource ModifierSource { get; }
+        public ModifierSource ModifierSource { get; }
 
         /// <summary>
         /// The stats on the conversion path, not including the stat subgraph this path belongs to.

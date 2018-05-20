@@ -270,7 +270,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             var formConvertedValueBuilder = Mock.Of<IValueBuilder>(b => b.Build() == value);
 
             var stats = new[] { Mock.Of<IStat>() };
-            var source = new GlobalModifierSource();
+            var source = new ModifierSource.Global();
             IValueBuilder StatConvertValue(IValueBuilder v) =>
                 v == convertedValueBuilder ? statConvertedValueBuilder : v;
             var statBuilderMock = new Mock<IStatBuilder>();

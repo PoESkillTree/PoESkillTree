@@ -11,11 +11,11 @@ namespace PoESkillTree.Computation.Parsing.Tests
         [Test]
         public void ParseSetsSourceWhereGlobal()
         {
-            var originalSource = new ModifierSourceStub();
+            var originalSource = new ModifierSource.Local.Tree();
             var innerModifiers = new[]
             {
-                Helper.MockModifier(source: new ModifierSourceStub { FirstLevel = ModifierSourceFirstLevel.Local }),
-                Helper.MockModifier(source: new GlobalModifierSource()),
+                Helper.MockModifier(source: new ModifierSource.Local.Given()),
+                Helper.MockModifier(source: new ModifierSource.Global()),
             };
             var expectedModifiers = new[]
             {

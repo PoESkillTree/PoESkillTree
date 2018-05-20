@@ -13,11 +13,11 @@ namespace PoESkillTree.Computation.Common.Tests
         public static Modifier[] MockManyModifiers() => new[] { MockModifier(), MockModifier(), MockModifier() };
 
         public static Modifier MockModifier(
-            IStat stat, Form form = Form.BaseAdd, IValue value = null, IModifierSource source = null) =>
+            IStat stat, Form form = Form.BaseAdd, IValue value = null, ModifierSource source = null) =>
             MockModifier(new[] { stat }, form, value, source);
 
         public static Modifier MockModifier(
-            IReadOnlyList<IStat> stats = null, Form form = Form.BaseAdd, IValue value = null, IModifierSource source = null) => 
-            new Modifier(stats ?? new IStat[0], form, value ?? Mock.Of<IValue>(), source ?? new ModifierSourceStub());
+            IReadOnlyList<IStat> stats = null, Form form = Form.BaseAdd, IValue value = null, ModifierSource source = null) => 
+            new Modifier(stats ?? new IStat[0], form, value ?? Mock.Of<IValue>(), source ?? new ModifierSource.Global());
     }
 }

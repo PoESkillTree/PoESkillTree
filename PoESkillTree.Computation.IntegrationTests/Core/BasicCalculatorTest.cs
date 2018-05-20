@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using NUnit.Framework;
+using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 
@@ -31,7 +32,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         {
             var sut = Calculator.CreateCalculator();
             var stat = new Stat();
-            var source = new GlobalModifierSource();
+            var source = new ModifierSource.Global();
             var removedModifier = new Modifier(new[] { stat }, Form.BaseAdd, new Constant(100), source);
 
             sut.NewBatchUpdate()
@@ -59,9 +60,9 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
             var evasionStat = new Stat();
             var lvlStat = new Stat();
             var dexterityStat = new Stat();
-            var globalSource = new GlobalModifierSource();
-            var bodySource = new LocalModifierSource();
-            var shieldSource = new LocalModifierSource();
+            var globalSource = new ModifierSource.Global();
+            var bodySource = new ModifierSource.Local.Item(ItemSlot.BodyArmour);
+            var shieldSource = new ModifierSource.Local.Item(ItemSlot.OffHand);
 
             sut.NewBatchUpdate()
                 .AddModifier(evasionStat, Form.BaseSet, new Constant(53), globalSource)
@@ -119,7 +120,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         {
             var sut = Calculator.CreateCalculator();
             var stat = new Stat();
-            var mod = new Modifier(new []{stat}, Form.BaseAdd, new Constant(1), new GlobalModifierSource());
+            var mod = new Modifier(new []{stat}, Form.BaseAdd, new Constant(1), new ModifierSource.Global());
 
             sut.NewBatchUpdate().AddModifier(mod).DoUpdate();
 
@@ -138,7 +139,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         {
             var sut = Calculator.CreateCalculator();
             var stat = new Stat();
-            var mod = new Modifier(new []{stat}, Form.BaseAdd, new Constant(1), new GlobalModifierSource());
+            var mod = new Modifier(new []{stat}, Form.BaseAdd, new Constant(1), new ModifierSource.Global());
             var node = sut.NodeRepository.GetNode(stat);
             var invovcations = 0;
             node.ValueChanged += (sender, args) => invovcations++;

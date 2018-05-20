@@ -8,18 +8,18 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
     {
         public static CalculatorExtensions.BatchUpdate AddModifier(this CalculatorExtensions.BatchUpdate batch,
             IStat stat, Form form, double value) =>
-            batch.AddModifier(stat, form, new Constant(value), new GlobalModifierSource());
+            batch.AddModifier(stat, form, new Constant(value), new ModifierSource.Global());
 
         public static CalculatorExtensions.BatchUpdate AddModifier(this CalculatorExtensions.BatchUpdate batch,
             IStat stat, Form form, IValue value) =>
-            batch.AddModifier(stat, form, value, new GlobalModifierSource());
+            batch.AddModifier(stat, form, value, new ModifierSource.Global());
 
         public static CalculatorExtensions.BatchUpdate AddModifier(this CalculatorExtensions.BatchUpdate batch,
-            IStat stat, Form form, double value, IModifierSource source) =>
+            IStat stat, Form form, double value, ModifierSource source) =>
             batch.AddModifier(stat, form, new Constant(value), source);
 
         public static CalculatorExtensions.BatchUpdate AddModifier(this CalculatorExtensions.BatchUpdate batch,
-            IStat stat, Form form, IValue value, IModifierSource source) =>
+            IStat stat, Form form, IValue value, ModifierSource source) =>
             batch.AddModifier(new[] { stat }, form, value, source);
 
         public static CalculatorExtensions.BatchUpdate AddModifier(this CalculatorExtensions.BatchUpdate batch,
@@ -28,14 +28,14 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
 
         public static CalculatorExtensions.BatchUpdate AddModifier(this CalculatorExtensions.BatchUpdate batch,
             IReadOnlyList<IStat> stats, Form form, IValue value) =>
-            batch.AddModifier(stats, form, value, new GlobalModifierSource());
+            batch.AddModifier(stats, form, value, new ModifierSource.Global());
 
         public static CalculatorExtensions.BatchUpdate AddModifier(this CalculatorExtensions.BatchUpdate batch,
-            IReadOnlyList<IStat> stats, Form form, double value, IModifierSource source) =>
+            IReadOnlyList<IStat> stats, Form form, double value, ModifierSource source) =>
             batch.AddModifier(new Modifier(stats, form, new Constant(value), source));
 
         public static CalculatorExtensions.BatchUpdate AddModifier(this CalculatorExtensions.BatchUpdate batch,
-            IReadOnlyList<IStat> stats, Form form, IValue value, IModifierSource source) =>
+            IReadOnlyList<IStat> stats, Form form, IValue value, ModifierSource source) =>
             batch.AddModifier(new Modifier(stats, form, value, source));
     }
 }

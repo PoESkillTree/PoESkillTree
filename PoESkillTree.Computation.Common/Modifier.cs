@@ -27,9 +27,9 @@ namespace PoESkillTree.Computation.Common
         /// <summary>
         /// Defines the source of this modifier.
         /// </summary>
-        public IModifierSource Source { get; }
+        public ModifierSource Source { get; }
 
-        public Modifier(IReadOnlyList<IStat> stats, Form form, IValue value, IModifierSource source)
+        public Modifier(IReadOnlyList<IStat> stats, Form form, IValue value, ModifierSource source)
         {
             Stats = stats;
             Form = form;
