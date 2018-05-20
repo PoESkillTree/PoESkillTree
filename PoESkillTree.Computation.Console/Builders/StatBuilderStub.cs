@@ -75,8 +75,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
 
-        public (IReadOnlyList<IStat> stats, ModifierSource sourceOverride, ValueConverter valueConverter) Build() =>
-            (new[] { new StatStub(this) }, null, v => v);
+        public (IReadOnlyList<IStat> stats, Func<ModifierSource, ModifierSource> sourceConverter, ValueConverter valueConverter) Build() =>
+            (new[] { new StatStub(this) }, m => m, v => v);
 
 
         private class StatStub : BuilderStub, IStat

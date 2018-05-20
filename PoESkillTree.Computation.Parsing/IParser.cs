@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using PoESkillTree.Computation.Common;
+﻿using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Parsing
 {
@@ -31,14 +30,13 @@ namespace PoESkillTree.Computation.Parsing
     /// <summary>
     /// This is the main interface for using Computation.Parsing. It parses stat lines to <see cref="Modifier"/>s.
     /// </summary>
-    public interface IParser : IParser<IReadOnlyList<Modifier>>
+    public interface IParser
     {
         /// <summary>
         /// Parses the given stat line into <see cref="Modifier"/>.
-        /// <para> In most use cases, e.g. when passing contained modifiers to calculation, use the extension method
-        /// <see cref="ParserExtensions.Parse"/> instead of this method.</para>
         /// </summary>
         /// <param name="stat">the stat line that should be parsed</param>
+        /// <param name="modifierSource">the source of the modifier</param>
         /// <remarks>
         /// <para> If <paramref name="stat"/> was parsed successfully and completely, the return value's 
         /// <see cref="ParseResult.SuccessfullyParsed"/> is true, <see cref="ParseResult.Result"/>
@@ -54,6 +52,6 @@ namespace PoESkillTree.Computation.Parsing
         /// <see cref="Common.Parsing.ParseException"/> on being parsed like not parsable stats.
         /// </para>
         /// </remarks>
-        new ParseResult Parse(string stat);
+        ParseResult Parse(string stat, ModifierSource modifierSource);
     }
 }

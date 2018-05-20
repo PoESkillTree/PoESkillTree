@@ -67,7 +67,6 @@
   <ItemGroup>
     <Compile Include="MatcherDataParserTest.cs" />
     <Compile Include="CachingParserTest.cs" />
-    <Compile Include="ParserExtensionsTest.cs" />
     <Compile Include="Referencing\ResolvedMatchContextTest.cs" />
     <Compile Include="ResultMappingParserTest.cs" />
     <Compile Include="Referencing\MatcherMocks.cs" />
