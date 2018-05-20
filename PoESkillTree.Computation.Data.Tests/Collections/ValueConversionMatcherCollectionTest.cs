@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Moq;
 using NUnit.Framework;
+using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Data.Collections;
 
@@ -11,14 +12,12 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
     {
         private const string Regex = "regex";
 
-        private Mock<IValueBuilders> _valueFactory;
         private ValueConversionMatcherCollection _sut;
 
         [SetUp]
         public void SetUp()
         {
-            _valueFactory = new Mock<IValueBuilders>();
-            _sut = new ValueConversionMatcherCollection(new ModifierBuilderStub(), _valueFactory.Object);
+            _sut = new ValueConversionMatcherCollection(new ModifierBuilderStub());
         }
 
         [Test]
@@ -30,22 +29,22 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void Add()
         {
-            var (converterIn, converterOut) = _valueFactory.SetupConverter();
+            var inputValue = new ValueBuilder(Mock.Of<IValueBuilder>());
+            var expectedValue = new ValueBuilder(Mock.Of<IValueBuilder>());
 
-            _sut.Add(Regex, converterIn);
+            _sut.Add(Regex, _ => expectedValue);
 
             var builder = _sut.AssertSingle(Regex);
-            Assert.AreSame(converterOut, builder.ValueConverter);
+            var actualValue = builder.ValueConverter(inputValue);
+            Assert.AreEqual(expectedValue, actualValue);
         }
 
         [Test]
         public void AddManyAddsToCount()
         {
-            var (converter, _) = _valueFactory.SetupConverter();
-
-            _sut.Add(Regex, converter);
-            _sut.Add(Regex, converter);
-            _sut.Add(Regex, converter);
+            _sut.Add(Regex, Funcs.Identity);
+            _sut.Add(Regex, Funcs.Identity);
+            _sut.Add(Regex, Funcs.Identity);
 
             Assert.AreEqual(3, _sut.Count());
         }

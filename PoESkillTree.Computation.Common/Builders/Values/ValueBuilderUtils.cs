@@ -30,6 +30,23 @@ namespace PoESkillTree.Computation.Common.Builders.Values
             v => v * (stat.Value / divideBy).Ceiling;
 
         /// <summary>
+        /// Returns a value converter that behaves the same as the given converter but creates a 
+        /// <see cref="ValueBuilder"/> from parameters that are <see cref="IValueBuilder"/>s and not 
+        /// <see cref="ValueBuilder"/>s.
+        /// </summary>
+        /// <remarks>
+        /// This method can be used when passing converters created in matcher collections (using 
+        /// <see cref="ValueBuilder"/> as type) to <see cref="Builders.Modifiers.IModifierBuilder"/> (which uses
+        /// <see cref="IValueBuilder"/>).
+        /// </remarks>
+        public static ValueConverter ToValueConverter(this Func<ValueBuilder, ValueBuilder> @this)
+        {
+            return iValue => iValue is ValueBuilder value
+                ? @this(value)
+                : @this(new ValueBuilder(iValue));
+        }
+
+        /// <summary>
         /// Returns <c>value.AsPercentage * stat.Value</c>.
         /// </summary>
         public static ValueBuilder PercentOf(this ValueBuilder value, IStatBuilder stat) =>

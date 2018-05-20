@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -106,9 +105,6 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
 
             public IValueBuilder Create(double value) => 
                 new ValueBuilderStub(value);
-
-            public ValueConverter WrapValueConverter(Func<ValueBuilder, ValueBuilder> converter) => 
-                throw new NotSupportedException();
 
             private class ThenBuilderStub : IThenBuilder
             {

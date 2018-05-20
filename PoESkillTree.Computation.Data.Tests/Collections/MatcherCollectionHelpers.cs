@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
@@ -19,15 +15,6 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             Assert.IsInstanceOf<ModifierBuilderStub>(data.Modifier);
             Assert.AreEqual(substitution, data.MatchSubstitution);
             return (ModifierBuilderStub) data.Modifier;
-        }
-
-        internal static (Func<ValueBuilder, ValueBuilder> converterIn, ValueConverter converterOut) SetupConverter(
-            this Mock<IValueBuilders> valueBuildersMock)
-        {
-            Func<ValueBuilder, ValueBuilder> converterIn = v => null;
-            ValueConverter converterOut = v => null;
-            valueBuildersMock.Setup(v => v.WrapValueConverter(converterIn)).Returns(converterOut);
-            return (converterIn, converterOut);
         }
     }
 }

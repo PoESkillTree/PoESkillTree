@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
@@ -96,14 +95,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IValueBuilder Create(double value) =>
             CreateValue(value.ToString(CultureInfo.InvariantCulture));
-
-        public ValueConverter WrapValueConverter(
-            Func<ValueBuilder, ValueBuilder> converter)
-        {
-            return iValue => iValue is ValueBuilder value
-                ? converter(value)
-                : converter(new ValueBuilder(iValue));
-        }
 
 
         private class ThenBuilder : BuilderStub, IThenBuilder

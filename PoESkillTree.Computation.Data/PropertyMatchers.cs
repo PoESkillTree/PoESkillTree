@@ -31,7 +31,7 @@ namespace PoESkillTree.Computation.Data
         }
 
         protected override IEnumerable<MatcherData> CreateCollection() =>
-            new PropertyMatcherCollection(_modifierBuilder, ValueFactory)
+            new PropertyMatcherCollection(_modifierBuilder)
             {
                 { "quality" }, // do nothing with it
                 { "attacks per second", Skills.Speed },

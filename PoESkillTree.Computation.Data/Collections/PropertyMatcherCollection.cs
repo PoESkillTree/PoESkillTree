@@ -14,12 +14,8 @@ namespace PoESkillTree.Computation.Data.Collections
     /// <remarks>No property parsing happens yet, take this class with a grain of salt.</remarks>
     public class PropertyMatcherCollection : MatcherCollection
     {
-        private readonly IValueBuilders _valueFactory;
-
-        public PropertyMatcherCollection(IModifierBuilder modifierBuilder,
-            IValueBuilders valueFactory) : base(modifierBuilder)
+        public PropertyMatcherCollection(IModifierBuilder modifierBuilder) : base(modifierBuilder)
         {
-            _valueFactory = valueFactory;
         }
 
         public void Add([RegexPattern] string regex)
@@ -36,7 +32,7 @@ namespace PoESkillTree.Computation.Data.Collections
         {
             var builder = ModifierBuilder
                 .WithStat(stat)
-                .WithValueConverter(_valueFactory.WrapValueConverter(converter));
+                .WithValueConverter(converter.ToValueConverter());
             Add(regex, builder);
         }
     }

@@ -18,18 +18,6 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// Creates an <see cref="IValueBuilder"/> from the given value.
         /// </summary>
         IValueBuilder Create(double value);
-
-        /// <summary>
-        /// Returns a value converter that behaves the same as the given converter but creates a 
-        /// <see cref="ValueBuilder"/> from parameters that are <see cref="IValueBuilder"/>s and not 
-        /// <see cref="ValueBuilder"/>s.
-        /// </summary>
-        /// <remarks>
-        /// This method can be used when passing converters created in matcher collections (using 
-        /// <see cref="ValueBuilder"/> as type) to <see cref="Builders.Modifiers.IModifierBuilder"/> (which uses
-        /// <see cref="IValueBuilder"/>).
-        /// </remarks>
-        ValueConverter WrapValueConverter(Func<ValueBuilder, ValueBuilder> converter);
     }
 
     public interface IThenBuilder : IResolvable<IThenBuilder>

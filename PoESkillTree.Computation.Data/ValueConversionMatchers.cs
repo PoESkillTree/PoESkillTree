@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Data
         }
 
         protected override IEnumerable<MatcherData> CreateCollection() =>
-            new ValueConversionMatcherCollection(_modifierBuilder, ValueFactory)
+            new ValueConversionMatcherCollection(_modifierBuilder)
             {
                 // action
                 { "for each enemy you've killed recently", Kill.CountRecently },
