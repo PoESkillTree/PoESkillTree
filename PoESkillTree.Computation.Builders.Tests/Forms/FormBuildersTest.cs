@@ -52,6 +52,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Forms
 
         [TestCase(nameof(IFormBuilders.BaseSubtract))]
         [TestCase(nameof(IFormBuilders.PercentReduce))]
+        [TestCase(nameof(IFormBuilders.PercentLess))]
         public void PropertytBuildReturnsNegatingConverter(string propertyName)
         {
             var sut = CreateSut();
@@ -60,19 +61,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Forms
 
             var expected = Mock.Of<IValueBuilder>();
             var inputBuilder = Mock.Of<IValueBuilder>(v => v.Multiply(-1) == expected);
-            var actual = converter(inputBuilder);
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void PercentLessBuildReturnsCorrectConverter()
-        {
-            var sut = CreateSut();
-
-            var converter = sut.PercentLess.Build().valueConverter;
-
-            var expected = Mock.Of<IValueBuilder>();
-            var inputBuilder = Mock.Of<IValueBuilder>(v => v.Multiply(-1).Add(1) == expected);
             var actual = converter(inputBuilder);
             Assert.AreEqual(expected, actual);
         }

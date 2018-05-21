@@ -14,7 +14,7 @@ namespace PoESkillTree.Computation.Builders.Forms
         public IFormBuilder PercentIncrease { get; } = new FormBuilder(Form.Increase);
         public IFormBuilder PercentReduce { get; } = new FormBuilder(Form.Increase, v => v.Multiply(-1));
         public IFormBuilder PercentMore { get; } = new FormBuilder(Form.More);
-        public IFormBuilder PercentLess { get; } = new FormBuilder(Form.More, v => v.Multiply(-1).Add(1));
+        public IFormBuilder PercentLess { get; } = new FormBuilder(Form.More, v => v.Multiply(-1));
         public IFormBuilder TotalOverride { get; } = new FormBuilder(Form.TotalOverride);
         public IFormBuilder BaseOverride { get; } = new FormBuilder(Form.BaseOverride);
 

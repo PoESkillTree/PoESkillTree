@@ -15,6 +15,9 @@ namespace PoESkillTree.Common.Utils.Extensions
             return enumerable.SelectMany(ts => ts);
         }
 
+        public static IEnumerable<T> Append<T>(this IEnumerable<T> @this, T element) => 
+            @this.Union(new[] { element });
+
         /// <summary>
         /// Returns a hash code for <paramref name="values"/> that can be used in conjunction with
         /// <see cref="Enumerable.SequenceEqual{TSource}(IEnumerable{TSource},IEnumerable{TSource})"/>.

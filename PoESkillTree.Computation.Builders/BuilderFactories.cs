@@ -1,4 +1,5 @@
 ﻿using PoESkillTree.Computation.Builders.Forms;
+using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Buffs;
@@ -30,7 +31,7 @@ namespace PoESkillTree.Computation.Builders
         public IKeywordBuilders KeywordBuilders { get; }
         public ISkillBuilders SkillBuilders { get; }
         public IStatBuilders StatBuilders { get; }
-        public IValueBuilders ValueBuilders { get; }
+        public IValueBuilders ValueBuilders { get; } = new ValueBuilders();
         public IItemSlotBuilders ItemSlotBuilders { get; }
     }
 }

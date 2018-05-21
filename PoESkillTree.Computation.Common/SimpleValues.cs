@@ -21,10 +21,28 @@ namespace PoESkillTree.Computation.Common
     {
         private readonly Func<IValueCalculationContext, NodeValue?> _calculate;
 
-        public FunctionalValue(Func<IValueCalculationContext, NodeValue?> calculate) => 
+        public FunctionalValue(Func<IValueCalculationContext, NodeValue?> calculate) =>
             _calculate = calculate;
 
         public NodeValue? Calculate(IValueCalculationContext context) =>
             _calculate(context);
+    }
+
+
+    public class ConditionalValue : IValue
+    {
+        private readonly Predicate<IValueCalculationContext> _calculate;
+
+        public ConditionalValue(Predicate<IValueCalculationContext> calculate) =>
+            _calculate = calculate;
+
+        public NodeValue? Calculate(IValueCalculationContext context) =>
+            Calculate(_calculate(context));
+
+        public static NodeValue? Calculate(bool condition) =>
+            condition ? (NodeValue?) 1 : null;
+
+        public static bool IsTrue(NodeValue? value) =>
+            value.HasValue;
     }
 }

@@ -244,7 +244,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
             public IConditionBuilder Not =>
                 new ConditionBuilderStub(!Condition);
 
-            public (StatConverter statConverter, ValueConverter valueConverter) Build() => 
+            public (StatConverter statConverter, IValue value) Build() => 
                 throw new NotSupportedException();
         }
     }

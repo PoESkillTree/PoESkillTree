@@ -59,6 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conditions\AndCompositeConditionBuilderTest.cs" />
+    <Compile Include="Conditions\OrCompositeConditionBuilderTest.cs" />
+    <Compile Include="Conditions\ValueConditionBuilderTest.cs" />
     <Compile Include="Forms\FormBuildersTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Values\ValueBuilderTest.cs" />
@@ -85,9 +88,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Conditions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
