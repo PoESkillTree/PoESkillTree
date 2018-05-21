@@ -81,7 +81,7 @@ namespace PoESkillTree.Computation.Console.Builders
             CreateValue(minimumValue, maximumValue, (o1, o2) => $"Min: {o1}, Max: {o2}");
 
 
-        private class ThenBuilder : BuilderStub, IThenBuilder
+        private class ThenBuilder : BuilderStub, IThenBuilder, IResolvable<IThenBuilder>
         {
             private readonly Resolver<IThenBuilder> _resolver;
 
@@ -93,7 +93,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
             public IConditionalValueBuilder Then(IValueBuilder value)
             {
-                IConditionalValueBuilder Resolve(ResolveContext context)
+                ConditionalValueBuilder Resolve(ResolveContext context)
                 {
                     return new ConditionalValueBuilder(
                         $"{this.Resolve(context)} else if ({value.Resolve(context)})",
@@ -105,7 +105,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
             public IConditionalValueBuilder Then(double value)
             {
-                IConditionalValueBuilder Resolve(ResolveContext context)
+                ConditionalValueBuilder Resolve(ResolveContext context)
                 {
                     return new ConditionalValueBuilder(
                         $"{this.Resolve(context)} else if ({value})",
@@ -120,17 +120,17 @@ namespace PoESkillTree.Computation.Console.Builders
         }
 
 
-        private class ConditionalValueBuilder : BuilderStub, IConditionalValueBuilder
+        private class ConditionalValueBuilder : BuilderStub, IConditionalValueBuilder, IResolvable<ConditionalValueBuilder>
         {
-            private readonly Resolver<IConditionalValueBuilder> _resolver;
+            private readonly Resolver<ConditionalValueBuilder> _resolver;
 
-            public ConditionalValueBuilder(string stringRepresentation, Resolver<IConditionalValueBuilder> resolver)
+            public ConditionalValueBuilder(string stringRepresentation, Resolver<ConditionalValueBuilder> resolver)
                 : base(stringRepresentation)
             {
                 _resolver = resolver;
             }
 
-            private IConditionalValueBuilder This => this;
+            private ConditionalValueBuilder This => this;
 
             public IThenBuilder ElseIf(IConditionBuilder condition)
             {
@@ -151,7 +151,7 @@ namespace PoESkillTree.Computation.Console.Builders
             public ValueBuilder Else(double value) =>
                 new ValueBuilder(CreateValue(This, o => $"{o} else {{ {value} }}"));
 
-            public IConditionalValueBuilder Resolve(ResolveContext context) =>
+            public ConditionalValueBuilder Resolve(ResolveContext context) =>
                 _resolver(this, context);
         }
     }

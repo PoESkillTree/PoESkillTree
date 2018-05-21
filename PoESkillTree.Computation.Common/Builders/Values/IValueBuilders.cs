@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue);
     }
 
-    public interface IThenBuilder : IResolvable<IThenBuilder>
+    public interface IThenBuilder
     {
         /// <summary>
         /// Continues constructing an if/else if/else-construct with the given value as return value of the current 
@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         IConditionalValueBuilder Then(double value);
     }
 
-    public interface IConditionalValueBuilder : IResolvable<IConditionalValueBuilder>
+    public interface IConditionalValueBuilder
     {
         /// <summary>
         /// Continues constructing an if/else if/else-construct by adding an else-if-branch with the given condition

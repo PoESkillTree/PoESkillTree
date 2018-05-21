@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.Builders.Values
         {
         }
 
-        private ValueBuilderImpl(Func<IValue> buildValue)
+        public ValueBuilderImpl(Func<IValue> buildValue)
         {
             _buildValue = buildValue;
         }
