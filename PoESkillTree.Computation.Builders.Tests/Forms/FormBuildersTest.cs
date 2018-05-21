@@ -60,7 +60,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Forms
             var converter = GetProperty(sut, propertyName).Build().valueConverter;
 
             var expected = Mock.Of<IValueBuilder>();
-            var inputBuilder = Mock.Of<IValueBuilder>(v => v.Multiply(-1) == expected);
+            var inputBuilder = Mock.Of<IValueBuilder>(v => v.Multiply(v.Create(-1)) == expected);
             var actual = converter(inputBuilder);
             Assert.AreEqual(expected, actual);
         }

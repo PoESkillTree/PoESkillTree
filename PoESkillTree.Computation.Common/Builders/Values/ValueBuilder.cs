@@ -30,102 +30,76 @@ namespace PoESkillTree.Computation.Common.Builders.Values
 
         public override int GetHashCode() => _value.GetHashCode();
 
-        public static IConditionBuilder operator ==(ValueBuilder left, ValueBuilder right) =>
-            Eq(left, right);
 
-        public static IConditionBuilder operator ==(ValueBuilder left, double right) =>
-            Eq(left, right);
-
-        public static IConditionBuilder operator ==(double left, ValueBuilder right) =>
-            Eq(right, left);
-
-        public static IConditionBuilder operator !=(ValueBuilder left, ValueBuilder right) =>
-            (left == right).Not;
-
-        public static IConditionBuilder operator !=(ValueBuilder left, double right) =>
-            (left == right).Not;
-
-        public static IConditionBuilder operator !=(double left, ValueBuilder right) =>
-            (left == right).Not;
-
-        private static IConditionBuilder Eq(IValueBuilder left, IValueBuilder right) =>
-            left.Eq(right);
-
-        private static IConditionBuilder Eq(IValueBuilder left, double right) =>
-            left.Eq(right);
-
-        IConditionBuilder IValueBuilder.Eq(IValueBuilder other) => _value.Eq(other);
-
-        IConditionBuilder IValueBuilder.Eq(double other) => _value.Eq(other);
+        public IConditionBuilder Eq(IValueBuilder other) =>
+            _value.Eq(other);
 
         public static IConditionBuilder operator >(ValueBuilder left, ValueBuilder right) =>
             left._value.GreaterThan(right);
 
-        public static IConditionBuilder operator >(ValueBuilder left, double right) =>
-            left._value.GreaterThan(right);
-
         public static IConditionBuilder operator >=(ValueBuilder left, ValueBuilder right) =>
-            (left == right).Or(left > right);
-
-        public static IConditionBuilder operator >=(ValueBuilder left, double right) =>
-            (left == right).Or(left > right);
+            (right > left).Not;
 
         public static IConditionBuilder operator <=(ValueBuilder left, ValueBuilder right) =>
-            (left > right).Not;
-
-        public static IConditionBuilder operator <=(ValueBuilder left, double right) =>
-            (left > right).Not;
+            right >= left;
 
         public static IConditionBuilder operator <(ValueBuilder left, ValueBuilder right) =>
-            (left >= right).Not;
-
-        public static IConditionBuilder operator <(ValueBuilder left, double right) =>
-            (left >= right).Not;
-
-        public static IConditionBuilder operator >=(double left, ValueBuilder right) =>
             right < left;
 
-        public static IConditionBuilder operator <=(double left, ValueBuilder right) =>
-            right > left;
+        public static IConditionBuilder operator >(ValueBuilder left, double right) =>
+            left > left.Create(right);
+
+        public static IConditionBuilder operator >=(ValueBuilder left, double right) =>
+            left >= left.Create(right);
+
+        public static IConditionBuilder operator <=(ValueBuilder left, double right) =>
+            left <= left.Create(right);
+
+        public static IConditionBuilder operator <(ValueBuilder left, double right) =>
+            left < left.Create(right);
 
         public static IConditionBuilder operator >(double left, ValueBuilder right) =>
-            right <= left;
+            right.Create(left) > right;
+
+        public static IConditionBuilder operator >=(double left, ValueBuilder right) =>
+            right.Create(left) >= right;
+
+        public static IConditionBuilder operator <=(double left, ValueBuilder right) =>
+            right.Create(left) <= right;
 
         public static IConditionBuilder operator <(double left, ValueBuilder right) =>
-            right >= left;
+            right.Create(left) < right;
 
         IConditionBuilder IValueBuilder.GreaterThan(IValueBuilder other) =>
             _value.GreaterThan(other);
 
-        IConditionBuilder IValueBuilder.GreaterThan(double other) =>
-            _value.GreaterThan(other);
 
         public static ValueBuilder operator *(ValueBuilder left, ValueBuilder right) =>
             Wrap(left._value.Multiply(right));
 
         public static ValueBuilder operator *(ValueBuilder left, double right) =>
-            Wrap(left._value.Multiply(right));
+            left * left.Create(right);
 
         public static ValueBuilder operator *(double left, ValueBuilder right) =>
-            right * left;
+            right.Create(left) * right;
 
         public static ValueBuilder operator /(ValueBuilder left, ValueBuilder right) =>
-            Wrap(left._value.AsDividend(right));
+            Wrap(left._value.DivideBy(right));
 
         public static ValueBuilder operator /(ValueBuilder left, double right) =>
-            Wrap(left._value.AsDividend(right));
+            left / left.Create(right);
 
         public static ValueBuilder operator /(double left, ValueBuilder right) =>
-            Wrap(right._value.AsDivisor(left));
+            right.Create(left) / right;
 
         public static ValueBuilder operator -(ValueBuilder left, ValueBuilder right) =>
             left + (-right);
 
         public static ValueBuilder operator -(ValueBuilder left, double right) =>
-            left + (-right);
+            left - left.Create(right);
 
         public static ValueBuilder operator -(double left, ValueBuilder right) =>
-            (-right) + left;
+            right.Create(left) - right;
 
         public static ValueBuilder operator -(ValueBuilder value) =>
             value * -1;
@@ -134,24 +108,17 @@ namespace PoESkillTree.Computation.Common.Builders.Values
             Wrap(left._value.Add(right));
 
         public static ValueBuilder operator +(ValueBuilder left, double right) =>
-            Wrap(left._value.Add(right));
+            left + left.Create(right);
 
         public static ValueBuilder operator +(double left, ValueBuilder right) =>
-            right + left;
+            right.Create(left) + right;
 
         IValueBuilder IValueBuilder.Add(IValueBuilder other) => _value.Add(other);
 
-        IValueBuilder IValueBuilder.Add(double other) => _value.Add(other);
-
         IValueBuilder IValueBuilder.Multiply(IValueBuilder other) => _value.Multiply(other);
 
-        IValueBuilder IValueBuilder.Multiply(double other) => _value.Multiply(other);
+        IValueBuilder IValueBuilder.DivideBy(IValueBuilder divisor) => _value.DivideBy(divisor);
 
-        IValueBuilder IValueBuilder.AsDividend(IValueBuilder divisor) => _value.AsDividend(divisor);
-
-        IValueBuilder IValueBuilder.AsDividend(double divisor) => _value.AsDividend(divisor);
-
-        IValueBuilder IValueBuilder.AsDivisor(double dividend) => _value.AsDivisor(dividend);
 
         /// <summary>
         /// Divides this value by 100.
@@ -165,6 +132,9 @@ namespace PoESkillTree.Computation.Common.Builders.Values
 
         IValueBuilder IValueBuilder.Select(Func<double, double> selector) => _value.Select(selector);
         public ValueBuilder Select(Func<double, double> selector) => Wrap(_value.Select(selector));
+
+        IValueBuilder IValueBuilder.Create(double value) => _value.Create(value);
+        private ValueBuilder Create(double value) => Wrap(_value.Create(value));
 
         public IValueBuilder Resolve(ResolveContext context) =>
             _value.Resolve(context);

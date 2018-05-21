@@ -14,8 +14,8 @@ namespace PoESkillTree.Computation.Common
     /// <para>
     /// Converting from <see cref="double"/> is possible through constructors or an explicit
     /// conversion operator. Converting to a single <see cref="double"/> is not possible (except simply using either
-    /// <see cref="Minimum"/> or <see cref="Maximum"/>. <see cref="NodeValue"/> can be compared to a
-    /// <see cref="double"/> using <see cref="AlmostEquals"/>.
+    /// <see cref="Minimum"/> or <see cref="Maximum"/>. <see cref="NodeValue"/> can be compared directly to
+    /// <see cref="double"/>s.
     /// </para>
     /// <para>
     /// Comparison operators are overloaded assuming <see cref="Minimum"/> and <see cref="Maximum"/> define a range
@@ -63,13 +63,31 @@ namespace PoESkillTree.Computation.Common
             obj is NodeValue other && Equals(other);
 
         public bool Equals(NodeValue other) =>
-            Minimum.Equals(other.Minimum) && Maximum.Equals(other.Maximum);
+            Minimum.AlmostEquals(other.Minimum, 1e-10) && Maximum.AlmostEquals(other.Maximum, 1e-10);
+        
+        public static bool operator ==(NodeValue left, double right) =>
+            left.Equals(right);
 
-        public bool AlmostEquals(double value, double delta = 1e-10) =>
-            Minimum.AlmostEquals(value, delta) && Maximum.AlmostEquals(value, delta);
+        public static bool operator !=(NodeValue left, double right) =>
+            !left.Equals(right);
+
+        public bool Equals(double value) =>
+            Minimum.AlmostEquals(value, 1e-10) && Maximum.AlmostEquals(value, 1e-10);
 
         public override int GetHashCode() =>
             (Minimum, Maximum).GetHashCode();
+
+        public static bool operator <(NodeValue left, NodeValue right) =>
+            left.Maximum < right.Minimum;
+
+        public static bool operator >(NodeValue left, NodeValue right) =>
+            left.Minimum > right.Maximum;
+        
+        public static bool operator <=(NodeValue left, NodeValue right) =>
+            left.Maximum <= right.Minimum;
+
+        public static bool operator >=(NodeValue left, NodeValue right) =>
+            left.Minimum >= right.Maximum;
 
         public static bool operator <(NodeValue left, double right) =>
             left.Maximum < right;

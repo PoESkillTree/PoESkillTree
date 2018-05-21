@@ -8,15 +8,19 @@ namespace PoESkillTree.Computation.Builders.Forms
 {
     public class FormBuilders : IFormBuilders
     {
-        public IFormBuilder BaseSet { get; } = new FormBuilder(Form.BaseSet);
-        public IFormBuilder BaseAdd { get; } = new FormBuilder(Form.BaseAdd);
-        public IFormBuilder BaseSubtract { get; } = new FormBuilder(Form.BaseAdd, v => v.Multiply(-1));
-        public IFormBuilder PercentIncrease { get; } = new FormBuilder(Form.Increase);
-        public IFormBuilder PercentReduce { get; } = new FormBuilder(Form.Increase, v => v.Multiply(-1));
-        public IFormBuilder PercentMore { get; } = new FormBuilder(Form.More);
-        public IFormBuilder PercentLess { get; } = new FormBuilder(Form.More, v => v.Multiply(-1));
-        public IFormBuilder TotalOverride { get; } = new FormBuilder(Form.TotalOverride);
-        public IFormBuilder BaseOverride { get; } = new FormBuilder(Form.BaseOverride);
+        public IFormBuilder BaseSet { get; } = Create(Form.BaseSet);
+        public IFormBuilder BaseAdd { get; } = Create(Form.BaseAdd);
+        public IFormBuilder BaseSubtract { get; } = CreateNegating(Form.BaseAdd);
+        public IFormBuilder PercentIncrease { get; } = Create(Form.Increase);
+        public IFormBuilder PercentReduce { get; } = CreateNegating(Form.Increase);
+        public IFormBuilder PercentMore { get; } = Create(Form.More);
+        public IFormBuilder PercentLess { get; } = CreateNegating(Form.More);
+        public IFormBuilder TotalOverride { get; } = Create(Form.TotalOverride);
+        public IFormBuilder BaseOverride { get; } = Create(Form.BaseOverride);
+
+        private static IFormBuilder Create(Form form) => new FormBuilder(form);
+
+        private static IFormBuilder CreateNegating(Form form) => new FormBuilder(form, v => v.Multiply(v.Create(-1)));
 
 
         private class FormBuilder : IFormBuilder

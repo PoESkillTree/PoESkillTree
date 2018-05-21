@@ -152,16 +152,16 @@ namespace PoESkillTree.Computation.Data
                 // - pool
                 { "when on low life", Life.IsLow },
                 { "when not on low life", Not(Life.IsLow) },
-                { "while no mana is reserved", Mana.Reservation.Value == 0 },
+                { "while no mana is reserved", Mana.Reservation.Value <= 0 },
                 { "while energy shield is full", EnergyShield.IsFull },
                 { "while on full energy shield", EnergyShield.IsFull },
                 { "while not on full energy shield", Not(EnergyShield.IsFull) },
                 { "if energy shield recharge has started recently", EnergyShield.Recharge.StartedRecently },
                 // - charges
-                { "while you have no ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Value == 0 },
+                { "while you have no ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Value <= 0 },
                 {
                     "while (at maximum|on full) ({ChargeTypeMatchers})",
-                    Reference.AsChargeType.Amount.Value == Reference.AsChargeType.Amount.Maximum.Value
+                    Reference.AsChargeType.Amount.Value >= Reference.AsChargeType.Amount.Maximum.Value
                 },
                 // - flags
                 { "while you have ({FlagMatchers})", Reference.AsFlagStat.IsSet },

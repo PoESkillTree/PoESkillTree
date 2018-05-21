@@ -12,7 +12,7 @@ namespace PoESkillTree.Computation.Console.Builders
             => new FormBuilderStub(s, form, valueConverter);
 
         private static IFormBuilder CreateNegated(string s, Form form)
-            => new FormBuilderStub(s, form, v => v.Multiply(-1));
+            => new FormBuilderStub(s, form, v => v.Multiply(v.Create(-1)));
 
         public IFormBuilder BaseSet => Create("Base set", Form.BaseSet);
         public IFormBuilder PercentIncrease => Create("Percent increase", Form.Increase);

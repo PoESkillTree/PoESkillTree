@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Core.Nodes
         }
 
         private static NodeValue? CalculateOverrideFromMany(IEnumerable<NodeValue> values) =>
-            values.Any(v => v.AlmostEquals(0))
+            values.Any(v => v == 0)
                 ? new NodeValue(0)
                 : throw new NotSupportedException(
                     "Multiple modifiers to BaseOverride or TotalOverride with none having value 0 are not supported");

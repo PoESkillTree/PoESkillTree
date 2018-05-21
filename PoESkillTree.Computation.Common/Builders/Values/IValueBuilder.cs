@@ -14,25 +14,15 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// </summary>
         IValueBuilder MaximumOnly { get; }
 
-        /// <summary>
-        /// Returns a condition that is satisfied if this value is equal to the given value.
-        /// </summary>
+        /// <summary> 
+        /// Returns a condition that is satisfied if this value is equal to the given value. 
+        /// </summary> 
         IConditionBuilder Eq(IValueBuilder other);
 
         /// <summary>
-        /// Returns a condition that is satisfied if this value is equal to the given value.
-        /// </summary>
-        IConditionBuilder Eq(double other);
-
-        /// <summary>
-        /// Returns a condition that is satisfied if this value is greater than to the given value.
+        /// Returns a condition that is satisfied if this value is greater than the given value.
         /// </summary>
         IConditionBuilder GreaterThan(IValueBuilder other);
-
-        /// <summary>
-        /// Returns a condition that is satisfied if this value is greater than to the given value.
-        /// </summary>
-        IConditionBuilder GreaterThan(double other);
 
         /// <summary>
         /// Returns a new value that is equal to the sum of this and the given value.
@@ -40,39 +30,24 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         IValueBuilder Add(IValueBuilder other);
 
         /// <summary>
-        /// Returns a new value that is equal to the sum of this and the given value.
-        /// </summary>
-        IValueBuilder Add(double other);
-
-        /// <summary>
         /// Returns a new value that is equal to the product of this and the given value.
         /// </summary>
         IValueBuilder Multiply(IValueBuilder other);
 
         /// <summary>
-        /// Returns a new value that is equal to the product of this and the given value.
-        /// </summary>
-        IValueBuilder Multiply(double other);
-
-        /// <summary>
         /// Returns a new value that is equal to this value divided by the given value.
         /// </summary>
-        IValueBuilder AsDividend(IValueBuilder divisor);
-
-        /// <summary>
-        /// Returns a new value that is equal to this value divided by the given value.
-        /// </summary>
-        IValueBuilder AsDividend(double divisor);
-
-        /// <summary>
-        /// Returns a new value that is equal to the given value divided by this value.
-        /// </summary>
-        IValueBuilder AsDivisor(double dividend);
+        IValueBuilder DivideBy(IValueBuilder divisor);
 
         /// <summary>
         /// Returns a value that is equal to this value passed to <paramref name="selector"/>.
         /// </summary>
         IValueBuilder Select(Func<double, double> selector);
+
+        /// <summary>
+        /// Creates a value using the same implementation as this instance.
+        /// </summary>
+        IValueBuilder Create(double value);
 
         /// <summary>
         /// Builds this instance into an <see cref="IValue"/>.

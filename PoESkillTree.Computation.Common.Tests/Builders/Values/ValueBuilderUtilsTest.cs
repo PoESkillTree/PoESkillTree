@@ -181,44 +181,27 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
 
             public IValueBuilder Resolve(ResolveContext context) => this;
 
-            public IValueBuilder MinimumOnly => throw new NotSupportedException();
             public IValueBuilder MaximumOnly => throw new NotSupportedException();
 
             public IConditionBuilder Eq(IValueBuilder other) =>
                 new ConditionBuilderStub(Value == Convert(other));
 
-            public IConditionBuilder Eq(double other) =>
-                new ConditionBuilderStub(Value == other);
-
             public IConditionBuilder GreaterThan(IValueBuilder other) =>
                 new ConditionBuilderStub(Value > Convert(other));
-
-            public IConditionBuilder GreaterThan(double other) =>
-                new ConditionBuilderStub(Value > other);
 
             public IValueBuilder Add(IValueBuilder other) =>
                 new ValueBuilderStub(Value + Convert(other));
 
-            public IValueBuilder Add(double other) =>
-                new ValueBuilderStub(Value + other);
-
             public IValueBuilder Multiply(IValueBuilder other) =>
                 new ValueBuilderStub(Value * Convert(other));
 
-            public IValueBuilder Multiply(double other) =>
-                new ValueBuilderStub(Value * other);
-
-            public IValueBuilder AsDividend(IValueBuilder divisor) =>
+            public IValueBuilder DivideBy(IValueBuilder divisor) =>
                 new ValueBuilderStub(Value / Convert(divisor));
-
-            public IValueBuilder AsDividend(double divisor) =>
-                new ValueBuilderStub(Value / divisor);
-
-            public IValueBuilder AsDivisor(double dividend) =>
-                new ValueBuilderStub(dividend / Value);
 
             public IValueBuilder Select(Func<double, double> selector) => 
                 new ValueBuilderStub(selector(Value));
+
+            public IValueBuilder Create(double value) => new ValueBuilderStub(value);
 
             public IValue Build() => throw new NotSupportedException();
         }

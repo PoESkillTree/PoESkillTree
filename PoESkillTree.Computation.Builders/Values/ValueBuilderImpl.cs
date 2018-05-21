@@ -1,5 +1,6 @@
 ﻿using System;
 using PoESkillTree.Common.Utils.Extensions;
+using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -36,16 +37,10 @@ namespace PoESkillTree.Computation.Builders.Values
             new ValueBuilderImpl(c => Calculate(c).Select(v => new NodeValue(0, v.Maximum)));
 
         public IConditionBuilder Eq(IValueBuilder other) =>
-            throw new NotImplementedException();
-
-        public IConditionBuilder Eq(double other) =>
-            throw new NotImplementedException();
+            new ValueConditionBuilder(c => Calculate(c) == other.Build().Calculate(c));
 
         public IConditionBuilder GreaterThan(IValueBuilder other) =>
-            throw new NotImplementedException();
-
-        public IConditionBuilder GreaterThan(double other) =>
-            throw new NotImplementedException();
+            new ValueConditionBuilder(c => Calculate(c) > other.Build().Calculate(c));
 
         public IValueBuilder Add(IValueBuilder other) =>
             new ValueBuilderImpl(c =>
@@ -55,9 +50,6 @@ namespace PoESkillTree.Computation.Builders.Values
                 return new[] { left, right }.Sum();
             });
 
-        public IValueBuilder Add(double other) =>
-            Add(new ValueBuilderImpl(other));
-
         public IValueBuilder Multiply(IValueBuilder other) =>
             new ValueBuilderImpl(c =>
             {
@@ -66,10 +58,7 @@ namespace PoESkillTree.Computation.Builders.Values
                 return new[] { left, right }.Product();
             });
 
-        public IValueBuilder Multiply(double other) =>
-            Multiply(new ValueBuilderImpl(other));
-
-        public IValueBuilder AsDividend(IValueBuilder divisor) =>
+        public IValueBuilder DivideBy(IValueBuilder divisor) =>
             new ValueBuilderImpl(c =>
             {
                 var left = Calculate(c);
@@ -77,14 +66,10 @@ namespace PoESkillTree.Computation.Builders.Values
                 return left / right;
             });
 
-        public IValueBuilder AsDividend(double divisor) =>
-            AsDividend(new ValueBuilderImpl(divisor));
-
-        public IValueBuilder AsDivisor(double dividend) =>
-            new ValueBuilderImpl(dividend).AsDividend(this);
-
         public IValueBuilder Select(Func<double, double> selector) =>
             new ValueBuilderImpl(c => Calculate(c).Select(selector));
+
+        public IValueBuilder Create(double value) => new ValueBuilderImpl(value);
 
         public IValue Build() => _buildValue();
 

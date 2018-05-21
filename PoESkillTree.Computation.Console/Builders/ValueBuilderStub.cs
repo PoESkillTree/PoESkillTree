@@ -20,47 +20,29 @@ namespace PoESkillTree.Computation.Console.Builders
 
         private IValueBuilder This => this;
 
-        public IValueBuilder MinimumOnly =>
-            CreateValue(This, o => $"{o} (minimum value only)");
-
         public IValueBuilder MaximumOnly =>
             CreateValue(This, o => $"{o} (maximum value only)");
 
         public IConditionBuilder Eq(IValueBuilder other) =>
             CreateCondition(This, other, (l, r) => $"({l} == {r})");
 
-        public IConditionBuilder Eq(double other) =>
-            CreateCondition(This, o => $"({o} == {other})");
-
         public IConditionBuilder GreaterThan(IValueBuilder other) =>
             CreateCondition(This, other, (l, r) => $"({l} > {r})");
-
-        public IConditionBuilder GreaterThan(double other) =>
-            CreateCondition(This, o => $"({o} > {other})");
 
         public IValueBuilder Add(IValueBuilder other) =>
             CreateValue(This, other, (l, r) => $"({l} + {r})");
 
-        public IValueBuilder Add(double other) =>
-            CreateValue(This, o => $"({o} + {other})");
-
         public IValueBuilder Multiply(IValueBuilder other) =>
             CreateValue(This, other, (l, r) => $"({l} * {r})");
 
-        public IValueBuilder Multiply(double other) =>
-            CreateValue(This, o => $"({o} * {other})");
-
-        public IValueBuilder AsDividend(IValueBuilder divisor) =>
+        public IValueBuilder DivideBy(IValueBuilder divisor) =>
             CreateValue(This, divisor, (l, r) => $"({l} / {r})");
-
-        public IValueBuilder AsDividend(double divisor) =>
-            CreateValue(This, o => $"({o} / {divisor})");
-
-        public IValueBuilder AsDivisor(double dividend) =>
-            CreateValue(This, o => $"({dividend} / {o})");
 
         public IValueBuilder Select(Func<double, double> selector) => 
             CreateValue(This, o => $"{selector}({o})");
+
+        public IValueBuilder Create(double value) => 
+            new ValueBuilderStub(value.ToString(CultureInfo.InvariantCulture), (c, _) => c);
 
         public IValueBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
