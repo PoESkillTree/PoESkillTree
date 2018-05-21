@@ -41,8 +41,6 @@ namespace PoESkillTree.Computation.Data.Base
         protected IFlagStatBuilders Flag => Stat.Flag;
         protected IGemStatBuilders Gem => Stat.Gem;
 
-        protected IStatBuilder ApplyOnce(params IStatBuilder[] stats) => Stat.ApplyOnce(stats);
-
         protected IPoolStatBuilder Life => Stat.Pool.Life;
         protected IPoolStatBuilder Mana => Stat.Pool.Mana;
         protected IPoolStatBuilder EnergyShield => Stat.Pool.EnergyShield;
@@ -120,6 +118,13 @@ namespace PoESkillTree.Computation.Data.Base
 
 
         // Convenience methods
+        
+        /// <summary>
+        /// Returns a stat whose modifiers apply to all given stats, but only once.
+        /// (no multiple application if one of the stats is converted to another)
+        /// </summary>
+        protected static IStatBuilder ApplyOnce(IStatBuilder first, params IStatBuilder[] stats) => 
+            stats.Aggregate(first, (s1, s2) => s1.CombineWith(s2));
 
 
         /// <summary>

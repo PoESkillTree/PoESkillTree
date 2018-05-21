@@ -4,7 +4,9 @@ using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Tests;
 
 namespace PoESkillTree.Computation.Builders.Tests.Conditions
@@ -74,6 +76,33 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
 
             var actual = sut.Build().value.Calculate(null);
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void BuildReturnsCombinedStatConverters()
+        {
+            var expected = Mock.Of<IStatBuilder>();
+            var stats = Helper.MockMany<IStatBuilder>();
+            Mock.Get(stats[1]).Setup(s => s.CombineWith(stats[2])).Returns(expected);
+            var converters = new (StatConverter, IValue)[]
+            {
+                (s => s == stats[0] ? stats[1] : null, new Constant(1)),
+                (s => s, new Constant(1)),
+                (s => s == stats[0] ? stats[2] : null, new Constant(1)),
+            };
+            var conditions = converters.Select(CreateCondition);
+            var sut = CreateSut(conditions);
+
+            var actual = sut.Build().statConverter(stats[0]);
+
+            Assert.AreEqual(expected, actual);
+
+            IConditionBuilder CreateCondition((StatConverter, IValue) buildResult)
+            {
+                var cond = new Mock<IConditionBuilder>();
+                cond.Setup(c => c.Build()).Returns(buildResult);
+                return cond.Object;
+            }
         }
 
         private static OrCompositeConditionBuilder CreateSut(IEnumerable<IConditionBuilder> conditions) =>

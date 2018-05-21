@@ -84,12 +84,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         // Methods
 
         /// <summary>
-        /// Returns a stat whose modifiers apply to all given stats, but only once.
-        /// (no multiple application if one of the stats is converted to another)
-        /// </summary>
-        IStatBuilder ApplyOnce(params IStatBuilder[] stats);
-
-        /// <summary>
         /// Returns a unique stat that can not interact with any other stat. 
         /// These can still be calculated and displayed.
         /// </summary>

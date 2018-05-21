@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Conditions
 {
@@ -38,7 +38,14 @@ namespace PoESkillTree.Computation.Builders.Conditions
         public (StatConverter statConverter, IValue value) Build()
         {
             var builtConditions = Conditions.Select(c => c.Build()).ToList();
-            return (_ => throw new NotImplementedException(), new ConditionalValue(Calculate));
+            return (ConvertStat, new ConditionalValue(Calculate));
+
+            IStatBuilder ConvertStat(IStatBuilder stat) =>
+                builtConditions
+                    .Select(t => t.statConverter(stat))
+                    .Where(s => s != stat)
+                    .DefaultIfEmpty(stat)
+                    .Aggregate((s1, s2) => s1.CombineWith(s2));
 
             bool Calculate(IValueCalculationContext context) =>
                 builtConditions

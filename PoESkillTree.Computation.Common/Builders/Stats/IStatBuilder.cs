@@ -103,6 +103,12 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder WithCondition(IConditionBuilder condition);
 
         /// <summary>
+        /// Returns a stat that combines this and the given stat. Modifiers to the returned stat will apply to both,
+        /// but only once (no multiple application if one of the stats is converted to another).
+        /// </summary>
+        IStatBuilder CombineWith(IStatBuilder other);
+
+        /// <summary>
         /// Builds this instance into a list of <see cref="IStat"/>s, an <see cref="ModifierSource"/> converter to
         /// change the original modifier's source and a <see cref="ValueConverter"/> that should be applied
         /// to <see cref="IValueBuilder"/>s before building them.

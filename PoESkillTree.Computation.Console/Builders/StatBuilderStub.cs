@@ -72,6 +72,9 @@ namespace PoESkillTree.Computation.Console.Builders
         public virtual IStatBuilder WithCondition(IConditionBuilder condition) =>
             CreateStat(This, condition, (s, c) => $"{s}\n  Condition: {c}");
 
+        public IStatBuilder CombineWith(IStatBuilder other) =>
+            CreateStat(This, other, (o1, o2) => $"ApplyOnce({o1}, {o2})");
+
         public IStatBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
 
