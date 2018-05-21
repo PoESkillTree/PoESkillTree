@@ -28,10 +28,5 @@ namespace PoESkillTree.Computation.Common.Builders.Entities
         /// Returns <paramref name="stat"/> from the context of this entity instead of the default Self.
         /// </summary>
         IStatBuilder Stat(IStatBuilder stat);
-
-        /// <summary>
-        /// Gets a stat representing the level of this entity.
-        /// </summary>
-        IStatBuilder Level { get; }
     }
 }

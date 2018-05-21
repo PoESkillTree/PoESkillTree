@@ -96,6 +96,9 @@ namespace PoESkillTree.Computation.Console.Builders
         public IValueBuilder Create(double value) =>
             CreateValue(value.ToString(CultureInfo.InvariantCulture));
 
+        public IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue) => 
+            CreateValue(minimumValue, maximumValue, (o1, o2) => $"Min: {o1}, Max: {o2}");
+
 
         private class ThenBuilder : BuilderStub, IThenBuilder
         {

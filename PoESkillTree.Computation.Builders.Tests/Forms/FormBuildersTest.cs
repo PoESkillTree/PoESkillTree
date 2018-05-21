@@ -25,8 +25,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Forms
         [TestCase(nameof(IFormBuilders.PercentReduce), Form.Increase)]
         [TestCase(nameof(IFormBuilders.PercentMore), Form.More)]
         [TestCase(nameof(IFormBuilders.PercentLess), Form.More)]
-        [TestCase(nameof(IFormBuilders.MinBaseAdd), Form.BaseAdd)]
-        [TestCase(nameof(IFormBuilders.MaxBaseAdd), Form.BaseAdd)]
         [TestCase(nameof(IFormBuilders.TotalOverride), Form.TotalOverride)]
         [TestCase(nameof(IFormBuilders.BaseOverride), Form.BaseOverride)]
         public void PropertyBuildReturnsCorrectForm(string propertyName, Form expected)
@@ -75,32 +73,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Forms
 
             var expected = Mock.Of<IValueBuilder>();
             var inputBuilder = Mock.Of<IValueBuilder>(v => v.Multiply(-1).Add(1) == expected);
-            var actual = converter(inputBuilder);
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void MinBaseAddBuildReturnsCorrectConverter()
-        {
-            var sut = CreateSut();
-
-            var converter = sut.MinBaseAdd.Build().valueConverter;
-
-            var expected = Mock.Of<IValueBuilder>();
-            var inputBuilder = Mock.Of<IValueBuilder>(v => v.MinimumOnly == expected);
-            var actual = converter(inputBuilder);
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void MaxBaseAddBuildReturnsCorrectConverter()
-        {
-            var sut = CreateSut();
-
-            var converter = sut.MaxBaseAdd.Build().valueConverter;
-
-            var expected = Mock.Of<IValueBuilder>();
-            var inputBuilder = Mock.Of<IValueBuilder>(v => v.MaximumOnly == expected);
             var actual = converter(inputBuilder);
             Assert.AreEqual(expected, actual);
         }

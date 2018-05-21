@@ -34,9 +34,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Stat(IStatBuilder stat) =>
             CreateStat(This, stat, (o1, o2) => $"{o2} for {o1}");
 
-        public IStatBuilder Level =>
-            CreateStat(This, o => $"{o} Level");
-
         public IEntityBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
     }

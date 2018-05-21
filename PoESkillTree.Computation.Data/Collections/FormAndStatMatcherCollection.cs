@@ -80,21 +80,5 @@ namespace PoESkillTree.Computation.Data.Collections
                 .WithStat(stat);
             Add(regex, builder, substitution);
         }
-
-        /// <summary>
-        /// Adds a substituting matcher with two form/value pairs and a stat.
-        /// </summary>
-        public void Add(
-            [RegexPattern] string regex,
-            (IFormBuilder forFirstValue, IFormBuilder forSecondValue) forms,
-            (IValueBuilder first, IValueBuilder second) values,
-            IStatBuilder stat)
-        {
-            var builder = ModifierBuilder
-                .WithForms(new[] { forms.forFirstValue, forms.forSecondValue })
-                .WithValues(new[] { values.first, values.second })
-                .WithStat(stat);
-            Add(regex, builder);
-        }
     }
 }

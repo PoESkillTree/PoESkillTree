@@ -23,7 +23,6 @@ namespace PoESkillTree.Computation.Common.Builders.Values
             return new ValueBuilder(value);
         }
 
-        public IValueBuilder MinimumOnly => Wrap(_value.MinimumOnly);
         public IValueBuilder MaximumOnly => Wrap(_value.MaximumOnly);
 
         public override bool Equals(object obj) => 

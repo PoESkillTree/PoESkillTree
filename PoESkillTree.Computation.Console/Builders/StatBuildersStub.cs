@@ -7,6 +7,8 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class StatBuildersStub : IStatBuilders
     {
+        public IStatBuilder Level => CreateStat("Level");
+
         public IStatBuilder Armour => CreateStat("Armour");
 
         public IEvasionStatBuilder Evasion => new EvasionStatBuilderStub();

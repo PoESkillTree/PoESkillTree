@@ -1,4 +1,3 @@
-using System;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 
@@ -18,6 +17,11 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// Creates an <see cref="IValueBuilder"/> from the given value.
         /// </summary>
         IValueBuilder Create(double value);
+
+        /// <summary>
+        /// Creates an <see cref="IValueBuilder"/> using the first value as minimum and the second as maximum.
+        /// </summary>
+        IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue);
     }
 
     public interface IThenBuilder : IResolvable<IThenBuilder>

@@ -9,10 +9,6 @@ namespace PoESkillTree.Computation.Common.Builders.Values
     public interface IValueBuilder : IResolvable<IValueBuilder>
     {
         /// <summary>
-        /// Gets a value equivalent to this value but only affecting the minimum value of stats instead of both.
-        /// </summary>
-        IValueBuilder MinimumOnly { get; }
-        /// <summary>
         /// Gets a value equivalent to this value but only affecting the maximum value of stats instead of both.
         /// </summary>
         IValueBuilder MaximumOnly { get; }

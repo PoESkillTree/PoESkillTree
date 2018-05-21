@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -105,6 +106,9 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
 
             public IValueBuilder Create(double value) => 
                 new ValueBuilderStub(value);
+
+            public IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue) => 
+                throw new NotSupportedException();
 
             private class ThenBuilderStub : IThenBuilder
             {
@@ -245,6 +249,9 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
 
             public IConditionBuilder Not =>
                 new ConditionBuilderStub(!Condition);
+
+            public (StatConverter statConverter, ValueConverter valueConverter) Build() => 
+                throw new NotSupportedException();
         }
     }
 }

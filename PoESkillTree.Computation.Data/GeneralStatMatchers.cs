@@ -49,11 +49,11 @@ namespace PoESkillTree.Computation.Data
                 { "chance to deal double damage", Damage.ChanceToDouble },
                 {
                     "({DamageTypeMatchers}) damage (gained |added )?as (extra )?({DamageTypeMatchers}) damage",
-                    References[0].AsDamageType.Damage.AddAs(References[1].AsDamageType.Damage)
+                    References[0].AsDamageType.Damage.GainAs(References[1].AsDamageType.Damage)
                 },
                 {
                     "({DamageTypeMatchers}) damage as extra damage of a random element",
-                    Reference.AsDamageType.Damage.AddAs(RandomElement.Damage)
+                    Reference.AsDamageType.Damage.GainAs(RandomElement.Damage)
                 },
                 {
                     "({DamageTypeMatchers}) damage converted to ({DamageTypeMatchers}) damage",

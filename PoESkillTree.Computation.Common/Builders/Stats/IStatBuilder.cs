@@ -45,7 +45,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// <summary>
         /// Returns a stat that represents the percentage of this stat's value that is added to the given stat.
         /// </summary>
-        IStatBuilder AddAs(IStatBuilder stat);
+        IStatBuilder GainAs(IStatBuilder stat);
 
         /// <summary>
         /// Returns a stat representing whether modifiers (except of BaseSet, BaseOverride and TotalOverride forms)
@@ -82,7 +82,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IFlagStatBuilder AsAura(params IEntityBuilder[] affectedEntities);
 
         /// <summary>
-        /// Returns a flag stat representing whether the given skills modifies this stat as part of their effects
+        /// Returns a flag stat representing whether the given skills modify this stat as part of their effects
         /// (unaffected by effect increases).
         /// <para>E.g. "Auras you Cast grant 3% increased Attack and Cast Speed to you and Allies"</para>
         /// </summary>

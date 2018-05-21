@@ -5,6 +5,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     /// </summary>
     public interface IStatBuilders
     {
+        IStatBuilder Level { get; }
+
         IStatBuilder Armour { get; }
 
         IEvasionStatBuilder Evasion { get; }

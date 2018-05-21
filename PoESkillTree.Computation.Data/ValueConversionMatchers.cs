@@ -45,7 +45,7 @@ namespace PoESkillTree.Computation.Data
                 { "per # ({StatMatchers}) ceiled", PerStatCeiled(stat: Reference.AsStat, divideBy: Value) },
                 { "per ({StatMatchers})", PerStat(stat: Reference.AsStat) },
                 { "per grand spectrum", PerStat(stat: Stat.GrandSpectrumJewelsSocketed) },
-                { "per level", PerStat(Self.Level) },
+                { "per level", PerStat(Stat.Level) },
                 // buffs
                 { "per buff on you", Buffs(target: Self).ExceptFrom(Skill.BloodRage, Skill.MoltenShell).Count() },
                 { "per curse on you", Buffs(target: Self).With(Keyword.Curse).Count() },

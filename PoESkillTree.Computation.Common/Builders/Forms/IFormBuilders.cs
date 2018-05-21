@@ -44,16 +44,6 @@ namespace PoESkillTree.Computation.Common.Builders.Forms
         /// </summary>
         IFormBuilder PercentLess { get; }
 
-        /// <summary>
-        /// Gets a form for adding values to the damage stat's minimum base value.
-        /// </summary>
-        IFormBuilder MinBaseAdd { get; }
-
-        /// <summary>
-        /// Gets a form for adding values to the damage stat's maximum base value.
-        /// </summary>
-        IFormBuilder MaxBaseAdd { get; }
-
 
         /// <summary>
         /// Gets a form for overriding the value (and discarding all other values). This applies after conversion.

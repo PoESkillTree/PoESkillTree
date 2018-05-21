@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder ConvertTo(IStatBuilder stat) =>
             CreateStat(This, stat, (o1, o2) => $"% of {o1} converted to {o2}");
 
-        public IStatBuilder AddAs(IStatBuilder stat) =>
+        public IStatBuilder GainAs(IStatBuilder stat) =>
             CreateStat(This, stat, (o1, o2) => $"% of {o1} added as {o2}");
 
         public IFlagStatBuilder ApplyModifiersTo(IStatBuilder stat,
