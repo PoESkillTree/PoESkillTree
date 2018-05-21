@@ -50,7 +50,7 @@ namespace PoESkillTree.Computation.Builders.Conditions
             bool Calculate(IValueCalculationContext context) =>
                 builtConditions
                     .Select(t => t.value.Calculate(context))
-                    .Any(ConditionalValue.IsTrue);
+                    .Any(v => v.IsTrue());
         }
 
         public override bool Equals(object obj) =>

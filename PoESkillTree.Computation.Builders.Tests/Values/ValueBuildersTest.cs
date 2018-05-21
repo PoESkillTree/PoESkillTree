@@ -35,11 +35,11 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
             var sut = CreateSut();
 
             IValueBuilder valueBuilder = sut
-                .If(new ValueConditionBuilder(_ => trueBranch == 0))
+                .If(new ValueConditionBuilder(trueBranch == 0))
                 .Then(0)
-                .ElseIf(new ValueConditionBuilder(_ => trueBranch == 1))
-                .Then(new ValueBuilderImpl(_ => new NodeValue(1)))
-                .Else(new ValueBuilderImpl(_ => new NodeValue(2)));
+                .ElseIf(new ValueConditionBuilder(trueBranch == 1))
+                .Then(new ValueBuilderImpl(1))
+                .Else(new ValueBuilderImpl(2));
 
             var actual = valueBuilder.Build().Calculate(null);
             Assert.AreEqual(new NodeValue(trueBranch), actual);

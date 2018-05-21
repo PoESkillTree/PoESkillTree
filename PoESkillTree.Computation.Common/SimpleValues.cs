@@ -37,12 +37,6 @@ namespace PoESkillTree.Computation.Common
             _calculate = calculate;
 
         public NodeValue? Calculate(IValueCalculationContext context) =>
-            Calculate(_calculate(context));
-
-        public static NodeValue? Calculate(bool condition) =>
-            condition ? (NodeValue?) 1 : null;
-
-        public static bool IsTrue(NodeValue? value) =>
-            value.HasValue;
+            (NodeValue?) _calculate(context);
     }
 }

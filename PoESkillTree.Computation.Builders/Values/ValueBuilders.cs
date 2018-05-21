@@ -17,16 +17,12 @@ namespace PoESkillTree.Computation.Builders.Values
 
         public IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue)
         {
-            return new ValueBuilderImpl(Calculate);
+            return ValueBuilderImpl.Create(minimumValue, maximumValue, Calculate);
 
-            NodeValue? Calculate(IValueCalculationContext context)
-            {
-                var min = minimumValue.Build().Calculate(context);
-                var max = maximumValue.Build().Calculate(context);
-                return min.HasValue && max.HasValue
+            NodeValue? Calculate(NodeValue? min, NodeValue? max, IValueCalculationContext context) =>
+                min.HasValue && max.HasValue
                     ? new NodeValue(min.Value.Minimum, max.Value.Maximum)
                     : (NodeValue?) null;
-            }
         }
 
 
@@ -110,7 +106,7 @@ namespace PoESkillTree.Computation.Builders.Values
             {
                 foreach (var (c, v) in _conditionValuePairs)
                 {
-                    if (ConditionalValue.IsTrue(c.Calculate(context)))
+                    if (c.Calculate(context).IsTrue())
                     {
                         return v.Calculate(context);
                     }

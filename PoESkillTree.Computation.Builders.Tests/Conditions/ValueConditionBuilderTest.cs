@@ -33,7 +33,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
         [TestCase(false)]
         public void BuildReturnsCorrectValueConverter(bool condition)
         {
-            var expected = ConditionalValue.Calculate(condition);
+            var expected = (NodeValue?) condition;
             var sut = CreateSut(condition);
 
             var actual = sut.Build().value.Calculate(null);
@@ -45,7 +45,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
         [TestCase(false)]
         public void NotBuildsToCorrectValueConverter(bool condition)
         {
-            var expected = ConditionalValue.Calculate(!condition);
+            var expected = (NodeValue?) !condition;
             var sut = CreateSut(condition);
 
             var actual = sut.Not.Build().value.Calculate(null);
@@ -76,6 +76,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
         }
 
         private static ValueConditionBuilder CreateSut(bool condition = false) =>
-            new ValueConditionBuilder(_ => condition);
+            new ValueConditionBuilder(condition);
     }
 }

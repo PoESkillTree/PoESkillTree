@@ -21,11 +21,6 @@ namespace PoESkillTree.Computation.Builders.Values
         {
         }
 
-        public ValueBuilderImpl(Func<IValueCalculationContext, NodeValue?> calculateValue)
-            : this(() => new FunctionalValue(calculateValue))
-        {
-        }
-
         public ValueBuilderImpl(Func<IValue> buildValue)
         {
             _buildValue = buildValue;
@@ -33,46 +28,55 @@ namespace PoESkillTree.Computation.Builders.Values
 
         public IValueBuilder Resolve(ResolveContext context) => this;
 
-        public IValueBuilder MaximumOnly =>
-            new ValueBuilderImpl(c => Calculate(c).Select(v => new NodeValue(0, v.Maximum)));
+        public IValueBuilder MaximumOnly => 
+            Create(this, (o, c) => o.Select(v => new NodeValue(0, v.Maximum)));
 
         public IConditionBuilder Eq(IValueBuilder other) =>
-            new ValueConditionBuilder(c => Calculate(c) == other.Build().Calculate(c));
+            ValueConditionBuilder.Create(this, other, (left, right, c) => left == right);
 
         public IConditionBuilder GreaterThan(IValueBuilder other) =>
-            new ValueConditionBuilder(c => Calculate(c) > other.Build().Calculate(c));
+            ValueConditionBuilder.Create(this, other, (left, right, c) => left > right);
 
         public IValueBuilder Add(IValueBuilder other) =>
-            new ValueBuilderImpl(c =>
-            {
-                var left = Calculate(c);
-                var right = other.Build().Calculate(c);
-                return new[] { left, right }.Sum();
-            });
+            Create(this, other, (left, right, c) => new[] { left, right }.Sum());
 
         public IValueBuilder Multiply(IValueBuilder other) =>
-            new ValueBuilderImpl(c =>
-            {
-                var left = Calculate(c);
-                var right = other.Build().Calculate(c);
-                return new[] { left, right }.Product();
-            });
+            Create(this, other, (left, right, c) => new[] { left, right }.Product());
 
         public IValueBuilder DivideBy(IValueBuilder divisor) =>
-            new ValueBuilderImpl(c =>
-            {
-                var left = Calculate(c);
-                var right = divisor.Build().Calculate(c) ?? new NodeValue(1);
-                return left / right;
-            });
+            Create(this, divisor, (left, right, c) => left / (right ?? new NodeValue(1)));
 
         public IValueBuilder Select(Func<double, double> selector) =>
-            new ValueBuilderImpl(c => Calculate(c).Select(selector));
+            Create(this, (o, c) => o.Select(selector));
 
         public IValueBuilder Create(double value) => new ValueBuilderImpl(value);
 
         public IValue Build() => _buildValue();
 
-        private NodeValue? Calculate(IValueCalculationContext context) => Build().Calculate(context);
+
+        public static IValueBuilder Create(
+            IValueBuilder operand, Func<NodeValue?, IValueCalculationContext, NodeValue?> calculate) =>
+            new ValueBuilderImpl(() => Build(operand, calculate));
+
+        public static IValueBuilder Create(
+            IValueBuilder operand1, IValueBuilder operand2,
+            Func<NodeValue?, NodeValue?, IValueCalculationContext, NodeValue?> calculate) =>
+            new ValueBuilderImpl(() => Build(operand1, operand2, calculate));
+
+        private static IValue Build(
+            IValueBuilder operand, Func<NodeValue?, IValueCalculationContext, NodeValue?> calculate)
+        {
+            var builtOperand = operand.Build();
+            return new FunctionalValue(c => calculate(builtOperand.Calculate(c), c));
+        }
+
+        private static IValue Build(
+            IValueBuilder operand1, IValueBuilder operand2,
+            Func<NodeValue?, NodeValue?, IValueCalculationContext, NodeValue?> calculate)
+        {
+            var o1 = operand1.Build();
+            var o2 = operand2.Build();
+            return new FunctionalValue(c => calculate(o1.Calculate(c), o2.Calculate(c), c));
+        }
     }
 }

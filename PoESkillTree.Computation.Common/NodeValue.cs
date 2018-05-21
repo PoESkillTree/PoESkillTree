@@ -22,6 +22,10 @@ namespace PoESkillTree.Computation.Common
     /// of possible values. I.e. they only return true if the comparison is true for all possible values, not if
     /// the comparison has the possibility to be true.
     /// </para>
+    /// <para>
+    /// When <c>NodeValue?</c> represents a boolean value, use the explicit operator to convert from bool and
+    /// <see cref="NodeValueExtensions.IsTrue"/> to convert to bool.
+    /// </para>
     /// </summary>
     /// <remarks>
     /// The differentiation between min and max values is necessary, e.g. for BaseSet and BaseAdd damage values.
@@ -47,6 +51,10 @@ namespace PoESkillTree.Computation.Common
             Minimum = minimum;
             Maximum = maximum;
         }
+
+        public static explicit operator NodeValue(double value) => new NodeValue(value);
+
+        public static explicit operator NodeValue?(bool value) => value ? (NodeValue?) 1 : null;
 
         public double Minimum { get; }
 
@@ -101,8 +109,6 @@ namespace PoESkillTree.Computation.Common
         public static bool operator >=(NodeValue left, double right) =>
             left.Minimum >= right;
 
-
-        public static explicit operator NodeValue(double value) => new NodeValue(value);
 
         /// <summary>
         /// Returns a value that is at least <paramref name="minValue"/> and at most <paramref name="maxValue"/>.
@@ -159,6 +165,11 @@ namespace PoESkillTree.Computation.Common
 
     public static class NodeValueExtensions
     {
+        /// <summary>
+        /// Returns true if this <c>NodeValue?</c> representing a boolean value represents <c>true</c>.
+        /// </summary>
+        public static bool IsTrue(this NodeValue? @this) => @this.HasValue;
+
         /// <summary>
         /// Returns the value created by applying <paramref name="operation"/> to <paramref name="value"/> if
         /// <paramref name="value"/> is not <c>null</c>. Returns <c>null</c> otherwise.
