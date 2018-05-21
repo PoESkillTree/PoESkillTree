@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 
@@ -130,8 +131,8 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// </summary>
         public ValueBuilder Invert => 1 / this;
 
-        IValueBuilder IValueBuilder.Select(Func<double, double> selector) => _value.Select(selector);
-        public ValueBuilder Select(Func<double, double> selector) => Wrap(_value.Select(selector));
+        IValueBuilder IValueBuilder.Select(Expression<Func<double, double>> selector) => _value.Select(selector);
+        public ValueBuilder Select(Expression<Func<double, double>> selector) => Wrap(_value.Select(selector));
 
         IValueBuilder IValueBuilder.Create(double value) => _value.Create(value);
         private ValueBuilder Create(double value) => Wrap(_value.Create(value));

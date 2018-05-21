@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common.Builders;
@@ -198,8 +199,8 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
             public IValueBuilder DivideBy(IValueBuilder divisor) =>
                 new ValueBuilderStub(Value / Convert(divisor));
 
-            public IValueBuilder Select(Func<double, double> selector) => 
-                new ValueBuilderStub(selector(Value));
+            public IValueBuilder Select(Expression<Func<double, double>> selector) => 
+                new ValueBuilderStub(selector.Compile()(Value));
 
             public IValueBuilder Create(double value) => new ValueBuilderStub(value);
 

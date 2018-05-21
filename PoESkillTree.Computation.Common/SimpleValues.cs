@@ -2,41 +2,70 @@
 
 namespace PoESkillTree.Computation.Common
 {
-    public class Constant : IValue
+    public abstract class StringIdentityValue : IValue
+    {
+        private readonly string _identity;
+
+        protected StringIdentityValue(object identity) => 
+            _identity = identity?.ToString() ?? "null";
+
+        public abstract NodeValue? Calculate(IValueCalculationContext context);
+
+        public override bool Equals(object obj) =>
+            (obj == this) || (obj is StringIdentityValue other && Equals(other));
+
+        private bool Equals(StringIdentityValue other) =>
+            GetType() == other.GetType() && _identity.Equals(other._identity);
+
+        public override int GetHashCode() =>
+            _identity.GetHashCode();
+
+        public override string ToString() =>
+            _identity;
+    }
+
+    public class Constant : StringIdentityValue
     {
         private readonly NodeValue? _value;
 
-        public Constant(double? value) =>
-            _value = (NodeValue?) value;
+        public Constant(double? value) : this((NodeValue?) value)
+        {
+        }
 
-        public Constant(NodeValue? value) =>
+        public Constant(NodeValue? value) : base(value) =>
             _value = value;
 
-        public NodeValue? Calculate(IValueCalculationContext valueCalculationContext) =>
+        public override NodeValue? Calculate(IValueCalculationContext valueCalculationContext) =>
             _value;
     }
 
 
-    public class FunctionalValue : IValue
+    public class FunctionalValue : StringIdentityValue
     {
         private readonly Func<IValueCalculationContext, NodeValue?> _calculate;
 
-        public FunctionalValue(Func<IValueCalculationContext, NodeValue?> calculate) =>
+        public FunctionalValue(Func<IValueCalculationContext, NodeValue?> calculate, string identity) 
+            : base(identity) =>
             _calculate = calculate;
 
-        public NodeValue? Calculate(IValueCalculationContext context) =>
+        public override NodeValue? Calculate(IValueCalculationContext context) =>
             _calculate(context);
     }
 
 
-    public class ConditionalValue : IValue
+    public class ConditionalValue : StringIdentityValue
     {
         private readonly Predicate<IValueCalculationContext> _calculate;
 
-        public ConditionalValue(Predicate<IValueCalculationContext> calculate) =>
+        public ConditionalValue(bool value) : this(_ => value, value.ToString())
+        {
+        }
+
+        public ConditionalValue(Predicate<IValueCalculationContext> calculate, string identity) 
+            : base(identity) =>
             _calculate = calculate;
 
-        public NodeValue? Calculate(IValueCalculationContext context) =>
+        public override NodeValue? Calculate(IValueCalculationContext context) =>
             (NodeValue?) _calculate(context);
     }
 }

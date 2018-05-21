@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common;
+﻿using PoESkillTree.Common.Utils;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -30,8 +31,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IConditionBuilder Not =>
             CreateCondition(This, o => $"not {o}");
 
-        public (StatConverter statConverter, IValue value) Build() => 
-            throw new System.NotImplementedException();
+        public (StatConverter statConverter, IValue value) Build() =>
+            (Funcs.Identity, new ValueStub(this));
 
         public IConditionBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);

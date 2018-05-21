@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 
@@ -42,7 +43,7 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// <summary>
         /// Returns a value that is equal to this value passed to <paramref name="selector"/>.
         /// </summary>
-        IValueBuilder Select(Func<double, double> selector);
+        IValueBuilder Select(Expression<Func<double, double>> selector);
 
         /// <summary>
         /// Creates a value using the same implementation as this instance.

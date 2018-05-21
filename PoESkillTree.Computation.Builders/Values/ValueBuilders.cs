@@ -17,13 +17,13 @@ namespace PoESkillTree.Computation.Builders.Values
 
         public IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue)
         {
-            return ValueBuilderImpl.Create(minimumValue, maximumValue, Calculate);
-
-            NodeValue? Calculate(NodeValue? min, NodeValue? max, IValueCalculationContext context) =>
-                min.HasValue && max.HasValue
-                    ? new NodeValue(min.Value.Minimum, max.Value.Maximum)
-                    : (NodeValue?) null;
+            return ValueBuilderImpl.Create(minimumValue, maximumValue, (o1, o2) => CalculateFromMinAndMax(o1, o2));
         }
+
+        private static NodeValue? CalculateFromMinAndMax(NodeValue? min, NodeValue? max) =>
+            min.HasValue && max.HasValue
+                ? new NodeValue(min.Value.Minimum, max.Value.Maximum)
+                : (NodeValue?) null;
 
 
         private class ThenBuilder : IThenBuilder

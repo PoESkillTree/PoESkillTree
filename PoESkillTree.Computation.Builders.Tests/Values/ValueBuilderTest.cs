@@ -90,7 +90,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
             var expected = (NodeValue?) (value is null ? (double?) null : Math.Round(value.Value));
             var sut = CreateSut(value);
 
-            var actual = sut.Select(Math.Round).Build().Calculate(null);
+            var actual = sut.Select(d => Math.Round(d)).Build().Calculate(null);
 
             Assert.AreEqual(expected, actual);
         }
@@ -116,6 +116,16 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
             var actual = sut.GreaterThan(new ValueBuilderImpl(rightValue)).Build().value.Calculate(null);
 
             Assert.AreEqual((NodeValue?) expected, actual);
+        }
+
+        [Test]
+        public void SelectBuildsToCorrectToString()
+        {
+            var sut = CreateSut(5);
+
+            var value = sut.Select(d => 2 * d).Build();
+
+            Assert.AreEqual("(2 * (5 to 5))", value.ToString());
         }
 
         private static ValueBuilderImpl CreateSut(double? value = null) => new ValueBuilderImpl(value);

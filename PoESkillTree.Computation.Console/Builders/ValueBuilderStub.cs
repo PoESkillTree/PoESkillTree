@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq.Expressions;
+using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -38,29 +40,27 @@ namespace PoESkillTree.Computation.Console.Builders
         public IValueBuilder DivideBy(IValueBuilder divisor) =>
             CreateValue(This, divisor, (l, r) => $"({l} / {r})");
 
-        public IValueBuilder Select(Func<double, double> selector) => 
-            CreateValue(This, o => $"{selector}({o})");
+        public IValueBuilder Select(Expression<Func<double, double>> selector) =>
+            CreateValue(This, o => selector.ToString(o));
 
-        public IValueBuilder Create(double value) => 
+        public IValueBuilder Create(double value) =>
             new ValueBuilderStub(value.ToString(CultureInfo.InvariantCulture), (c, _) => c);
 
         public IValueBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
 
         public IValue Build() => new ValueStub(this);
+    }
 
 
-        private class ValueStub : BuilderStub, IValue
+    public class ValueStub : BuilderStub, IValue
+    {
+        public ValueStub(BuilderStub builderStub) : base(builderStub)
         {
-            public ValueStub(BuilderStub builderStub) : base(builderStub)
-            {
-            }
-
-            public NodeValue? Calculate(IValueCalculationContext valueCalculationContext)
-            {
-                throw new NotImplementedException();
-            }
         }
+
+        public NodeValue? Calculate(IValueCalculationContext valueCalculationContext) => 
+            throw new NotSupportedException();
     }
 
 
@@ -77,7 +77,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IValueBuilder Create(double value) =>
             CreateValue(value.ToString(CultureInfo.InvariantCulture));
 
-        public IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue) => 
+        public IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue) =>
             CreateValue(minimumValue, maximumValue, (o1, o2) => $"Min: {o1}, Max: {o2}");
 
 
@@ -120,7 +120,8 @@ namespace PoESkillTree.Computation.Console.Builders
         }
 
 
-        private class ConditionalValueBuilder : BuilderStub, IConditionalValueBuilder, IResolvable<ConditionalValueBuilder>
+        private class ConditionalValueBuilder : BuilderStub, IConditionalValueBuilder,
+            IResolvable<ConditionalValueBuilder>
         {
             private readonly Resolver<ConditionalValueBuilder> _resolver;
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -12,7 +13,7 @@ namespace PoESkillTree.Computation.Builders.Conditions
     {
         private readonly Func<IValue> _buildValue;
 
-        public ValueConditionBuilder(bool value) : this(new ConditionalValue(_ => value))
+        public ValueConditionBuilder(bool value) : this(new ConditionalValue(value))
         {
         }
 
@@ -33,44 +34,56 @@ namespace PoESkillTree.Computation.Builders.Conditions
         public IConditionBuilder Or(IConditionBuilder condition) =>
             new OrCompositeConditionBuilder(this, condition);
 
-        public IConditionBuilder Not => Create(this, (o, c) => !o);
+        public IConditionBuilder Not => Create(this, b => !b);
 
         public (StatConverter statConverter, IValue value) Build() =>
             (Funcs.Identity, _buildValue());
 
 
         private static IConditionBuilder Create(
-            ValueConditionBuilder operand, Func<bool, IValueCalculationContext, bool> calculate) => 
+            ValueConditionBuilder operand,
+            Expression<Func<bool, bool>> calculate) =>
             new ValueConditionBuilder(() => Build(operand, calculate));
 
         public static IConditionBuilder Create(
-            IValueBuilder operand, Func<NodeValue?, IValueCalculationContext, bool> calculate) => 
+            IValueBuilder operand,
+            Expression<Func<NodeValue?, bool>> calculate) =>
             new ValueConditionBuilder(() => Build(operand, calculate));
 
         public static IConditionBuilder Create(
-            IValueBuilder operand1, IValueBuilder operand2, 
-            Func<NodeValue?, NodeValue?, IValueCalculationContext, bool> calculate) => 
+            IValueBuilder operand1, IValueBuilder operand2,
+            Expression<Func<NodeValue?, NodeValue?, bool>> calculate) =>
             new ValueConditionBuilder(() => Build(operand1, operand2, calculate));
 
-        private static IValue Build(ValueConditionBuilder operand, Func<bool, IValueCalculationContext, bool> calculate)
+        private static IValue Build(
+            ValueConditionBuilder operand,
+            Expression<Func<bool, bool>> calculate)
         {
             var builtOperand = operand.Build().value;
-            return new ConditionalValue(c => calculate(builtOperand.Calculate(c).IsTrue(), c));
-        }
-
-        private static IValue Build(IValueBuilder operand, Func<NodeValue?, IValueCalculationContext, bool> calculate)
-        {
-            var builtOperand = operand.Build();
-            return new ConditionalValue(c => calculate(builtOperand.Calculate(c), c));
+            var func = calculate.Compile();
+            var identity = calculate.ToString(builtOperand);
+            return new ConditionalValue(c => func(builtOperand.Calculate(c).IsTrue()), identity);
         }
 
         private static IValue Build(
-            IValueBuilder operand1, IValueBuilder operand2, 
-            Func<NodeValue?, NodeValue?, IValueCalculationContext, bool> calculate)
+            IValueBuilder operand,
+            Expression<Func<NodeValue?, bool>> calculate)
+        {
+            var builtOperand = operand.Build();
+            var func = calculate.Compile();
+            var identity = calculate.ToString(builtOperand);
+            return new ConditionalValue(c => func(builtOperand.Calculate(c)), identity);
+        }
+
+        private static IValue Build(
+            IValueBuilder operand1, IValueBuilder operand2,
+            Expression<Func<NodeValue?, NodeValue?, bool>> calculate)
         {
             var o1 = operand1.Build();
             var o2 = operand2.Build();
-            return new ConditionalValue(c => calculate(o1.Calculate(c), o2.Calculate(c), c));
+            var func = calculate.Compile();
+            var identity = calculate.ToString(o1, o2);
+            return new ConditionalValue(c => func(o1.Calculate(c), o2.Calculate(c)), identity);
         }
     }
 }
