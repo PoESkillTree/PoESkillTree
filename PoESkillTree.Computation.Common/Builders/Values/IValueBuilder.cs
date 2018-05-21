@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Conditions;
+﻿using System;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 
 namespace PoESkillTree.Computation.Common.Builders.Values
@@ -69,19 +70,9 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         IValueBuilder AsDivisor(double dividend);
 
         /// <summary>
-        /// Returns a value that is equal to this value rounded to the nearest integral value.
+        /// Returns a value that is equal to this value passed to <paramref name="selector"/>.
         /// </summary>
-        IValueBuilder Round { get; }
-
-        /// <summary>
-        /// Returns a value that is equal to the largest integer less than or equal to this value.
-        /// </summary>
-        IValueBuilder Floor { get; }
-
-        /// <summary>
-        /// Returns a value that is equal to the smallest integer greater than or equal to this value.
-        /// </summary>
-        IValueBuilder Ceiling { get; }
+        IValueBuilder Select(Func<double, double> selector);
 
         /// <summary>
         /// Builds this instance into an <see cref="IValue"/>.

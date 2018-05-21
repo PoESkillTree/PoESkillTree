@@ -59,9 +59,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IValueBuilder AsDivisor(double dividend) =>
             CreateValue(This, o => $"({dividend} / {o})");
 
-        public IValueBuilder Round => CreateValue(This, o => $"Round({o})");
-        public IValueBuilder Floor => CreateValue(This, o => $"Floor({o})");
-        public IValueBuilder Ceiling => CreateValue(This, o => $"Ceiling({o})");
+        public IValueBuilder Select(Func<double, double> selector) => 
+            CreateValue(This, o => $"{selector}({o})");
 
         public IValueBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);

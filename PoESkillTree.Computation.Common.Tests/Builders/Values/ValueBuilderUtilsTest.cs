@@ -217,14 +217,8 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
             public IValueBuilder AsDivisor(double dividend) =>
                 new ValueBuilderStub(dividend / Value);
 
-            public IValueBuilder Round =>
-                new ValueBuilderStub(Math.Round(Value));
-
-            public IValueBuilder Floor =>
-                new ValueBuilderStub(Math.Floor(Value));
-
-            public IValueBuilder Ceiling =>
-                new ValueBuilderStub(Math.Ceiling(Value));
+            public IValueBuilder Select(Func<double, double> selector) => 
+                new ValueBuilderStub(selector(Value));
 
             public IValue Build() => throw new NotSupportedException();
         }

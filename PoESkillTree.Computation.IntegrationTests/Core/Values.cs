@@ -3,20 +3,6 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.IntegrationTests.Core
 {
-    internal class Constant : IValue
-    {
-        private readonly NodeValue? _value;
-
-        public Constant(double value) =>
-            _value = new NodeValue(value);
-
-        public Constant(NodeValue? value) =>
-            _value = value;
-
-        public NodeValue? Calculate(IValueCalculationContext valueCalculationContext) =>
-            _value;
-    }
-
     internal class PerStatValue : IValue
     {
         private readonly IStat _stat;
