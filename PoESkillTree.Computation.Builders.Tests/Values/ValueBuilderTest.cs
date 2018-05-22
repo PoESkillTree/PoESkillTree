@@ -4,6 +4,8 @@ using NUnit.Framework;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Builders.Tests.Values
 {
@@ -126,6 +128,21 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
             var value = sut.Select(d => 2 * d).Build();
 
             Assert.AreEqual("(2 * (5))", value.ToString());
+        }
+
+        [TestCase(1, 2)]
+        [TestCase(5, -3)]
+        public void AddResolveBuildsToCorrectValue(double? leftValue, double? rightValue)
+        {
+            var expected = (NodeValue?) new[] { leftValue, rightValue }.AggregateOnValues((l, r) => l + r);
+            var context = new ResolveContext(Mock.Of<IMatchContext<IValueBuilder>>(), Mock.Of<IMatchContext<IReferenceConverter>>());
+            var right = Mock.Of<IValueBuilder>(b => b.Resolve(context) == new ValueBuilderImpl(rightValue));
+            var sut = CreateSut(leftValue);
+
+            var resolved = sut.Add(right).Resolve(context);
+            var actual = resolved.Build().Calculate(null);
+
+            Assert.AreEqual(expected, actual);
         }
 
         private static ValueBuilderImpl CreateSut(double? value = null) => new ValueBuilderImpl(value);

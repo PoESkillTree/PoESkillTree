@@ -12,6 +12,7 @@ namespace PoESkillTree.Computation.Builders.Conditions
     public class ValueConditionBuilder : IConditionBuilder
     {
         private readonly Func<IValue> _buildValue;
+        private readonly Func<ResolveContext, IConditionBuilder> _resolve;
 
         public ValueConditionBuilder(bool value) : this(new ConditionalValue(value))
         {
@@ -21,12 +22,19 @@ namespace PoESkillTree.Computation.Builders.Conditions
         {
         }
 
-        public ValueConditionBuilder(Func<IValue> buildValue)
+        private ValueConditionBuilder(Func<IValue> buildValue)
         {
             _buildValue = buildValue;
+            _resolve = _ => this;
         }
 
-        public IConditionBuilder Resolve(ResolveContext context) => this;
+        public ValueConditionBuilder(Func<IValue> buildValue, Func<ResolveContext, Func<IValue>> resolve)
+        {
+            _buildValue = buildValue;
+            _resolve = c => new ValueConditionBuilder(resolve(c));
+        }
+
+        public IConditionBuilder Resolve(ResolveContext context) => _resolve(context);
 
         public IConditionBuilder And(IConditionBuilder condition) =>
             new AndCompositeConditionBuilder(this, condition);
@@ -43,20 +51,26 @@ namespace PoESkillTree.Computation.Builders.Conditions
         private static IConditionBuilder Create(
             ValueConditionBuilder operand,
             Expression<Func<bool, bool>> calculate) =>
-            new ValueConditionBuilder(() => Build(operand, calculate));
+            new ValueConditionBuilder(
+                () => Build(operand, calculate),
+                c => (() => Build(operand.Resolve(c), calculate)));
 
         public static IConditionBuilder Create(
             IValueBuilder operand,
             Expression<Func<NodeValue?, bool>> calculate) =>
-            new ValueConditionBuilder(() => Build(operand, calculate));
+            new ValueConditionBuilder(
+                () => Build(operand, calculate),
+                c => (() => Build(operand.Resolve(c), calculate)));
 
         public static IConditionBuilder Create(
             IValueBuilder operand1, IValueBuilder operand2,
             Expression<Func<NodeValue?, NodeValue?, bool>> calculate) =>
-            new ValueConditionBuilder(() => Build(operand1, operand2, calculate));
+            new ValueConditionBuilder(
+                () => Build(operand1, operand2, calculate),
+                c => (() => Build(operand1.Resolve(c), operand2.Resolve(c), calculate)));
 
         private static IValue Build(
-            ValueConditionBuilder operand,
+            IConditionBuilder operand,
             Expression<Func<bool, bool>> calculate)
         {
             var builtOperand = operand.Build().value;

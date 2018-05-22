@@ -17,6 +17,6 @@ namespace PoESkillTree.Computation.Builders.Conditions
         public IConditionBuilder Not { get; } = new ValueConditionBuilder(false);
 
         public (StatConverter statConverter, IValue value) Build() => 
-            (Funcs.Identity, new Constant(1));
+            (Funcs.Identity, new Constant((NodeValue?) true));
     }
 }

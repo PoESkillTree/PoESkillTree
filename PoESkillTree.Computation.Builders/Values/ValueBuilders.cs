@@ -4,6 +4,7 @@ using PoESkillTree.Common.Utils;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
 
@@ -15,7 +16,7 @@ namespace PoESkillTree.Computation.Builders.Values
 
         public IValueBuilder Create(double value) => new ValueBuilderImpl(value);
 
-        public IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue) => 
+        public IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue) =>
             ValueBuilderImpl.Create(minimumValue, maximumValue, (o1, o2) => CalculateFromMinAndMax(o1, o2));
 
         private static NodeValue? CalculateFromMinAndMax(NodeValue? min, NodeValue? max) =>
@@ -65,12 +66,24 @@ namespace PoESkillTree.Computation.Builders.Values
 
             public ValueBuilder Else(IValueBuilder value)
             {
-                return new ValueBuilder(new ValueBuilderImpl(Build));
+                var valueBuilder = new ValueBuilderImpl(
+                    () => Build(_conditionValuePairs, value),
+                    c => (() => Build(Resolve(c, _conditionValuePairs), value.Resolve(c))));
+                return new ValueBuilder(valueBuilder);
 
-                IValue Build()
+                IReadOnlyList<(IConditionBuilder condition, IValueBuilder value)> Resolve(
+                    ResolveContext context,
+                    IReadOnlyList<(IConditionBuilder condition, IValueBuilder value)> conditionValuePairs) =>
+                    (from t in conditionValuePairs
+                     select (t.condition.Resolve(context), t.value.Resolve(context))
+                    ).ToList();
+
+                IValue Build(
+                    IReadOnlyList<(IConditionBuilder condition, IValueBuilder value)> conditionValuePairs,
+                    IValueBuilder elseValue)
                 {
                     var pairs = new List<(IValue condition, IValue value)>();
-                    foreach (var (c, v) in _conditionValuePairs)
+                    foreach (var (c, v) in conditionValuePairs)
                     {
                         var condition = c.Build();
                         if (condition.statConverter != Funcs.Identity)
@@ -80,7 +93,7 @@ namespace PoESkillTree.Computation.Builders.Values
                         }
                         pairs.Add((condition.value, v.Build()));
                     }
-                    return new BranchingValue(pairs, value.Build());
+                    return new BranchingValue(pairs, elseValue.Build());
                 }
             }
 
