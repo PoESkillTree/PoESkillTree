@@ -73,7 +73,6 @@
     <Compile Include="Builders\EntityBuilderStub.cs" />
     <Compile Include="Builders\EquipmentBuilderStub.cs" />
     <Compile Include="Builders\FlagStatBuilderStub.cs" />
-    <Compile Include="Builders\FormBuilderStub.cs" />
     <Compile Include="Builders\GroundEffectBuilderStub.cs" />
     <Compile Include="Builders\ReferenceConverterStub.cs" />
     <Compile Include="Builders\ItemSlotBuilderStub.cs" />
@@ -98,6 +97,10 @@
     <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Common.csproj">
       <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
       <Name>PoESkillTree.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Builders\PoESkillTree.Computation.Builders.csproj">
+      <Project>{940a286a-bca7-4c79-ac89-55c57c7d4784}</Project>
+      <Name>PoESkillTree.Computation.Builders</Name>
     </ProjectReference>
     <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj">
       <Project>{827be52d-878c-45f0-afc0-75b5385aad53}</Project>

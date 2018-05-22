@@ -1,4 +1,6 @@
-﻿using PoESkillTree.Computation.Common.Builders;
+﻿using PoESkillTree.Computation.Builders.Forms;
+using PoESkillTree.Computation.Builders.Values;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Charges;
@@ -48,7 +50,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IEquipmentBuilders EquipmentBuilders => new EquipmentBuildersStub();
 
-        public IFormBuilders FormBuilders => new FormBuildersStub();
+        public IFormBuilders FormBuilders => new FormBuilders();
 
         public IKeywordBuilders KeywordBuilders => new KeywordBuildersStub();
 
@@ -56,7 +58,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilders StatBuilders => new StatBuildersStub();
 
-        public IValueBuilders ValueBuilders => new ValueBuildersStub();
+        public IValueBuilders ValueBuilders => new ValueBuilders();
 
         public IItemSlotBuilders ItemSlotBuilders => new ItemSlotBuildersStub();
     }
