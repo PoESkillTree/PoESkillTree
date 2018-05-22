@@ -15,10 +15,8 @@ namespace PoESkillTree.Computation.Builders.Values
 
         public IValueBuilder Create(double value) => new ValueBuilderImpl(value);
 
-        public IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue)
-        {
-            return ValueBuilderImpl.Create(minimumValue, maximumValue, (o1, o2) => CalculateFromMinAndMax(o1, o2));
-        }
+        public IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue) => 
+            ValueBuilderImpl.Create(minimumValue, maximumValue, (o1, o2) => CalculateFromMinAndMax(o1, o2));
 
         private static NodeValue? CalculateFromMinAndMax(NodeValue? min, NodeValue? max) =>
             min.HasValue && max.HasValue
@@ -112,6 +110,16 @@ namespace PoESkillTree.Computation.Builders.Values
                     }
                 }
                 return _elseValue.Calculate(context);
+            }
+
+            public override string ToString()
+            {
+                var s = $"If ({_conditionValuePairs[0].condition}): {_conditionValuePairs[0].value}\n";
+                foreach (var (c, v) in _conditionValuePairs.Skip(1))
+                {
+                    s += $"Else If ({c}): {v}\n";
+                }
+                return s + $"Else: {_elseValue}";
             }
         }
     }

@@ -125,7 +125,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
 
             var value = sut.Select(d => 2 * d).Build();
 
-            Assert.AreEqual("(2 * (5 to 5))", value.ToString());
+            Assert.AreEqual("(2 * (5))", value.ToString());
         }
 
         private static ValueBuilderImpl CreateSut(double? value = null) => new ValueBuilderImpl(value);

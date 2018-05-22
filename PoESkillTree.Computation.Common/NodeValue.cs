@@ -159,7 +159,8 @@ namespace PoESkillTree.Computation.Common
             new NodeValue(operation(left.Minimum, right.Minimum), operation(left.Maximum, right.Maximum));
 
 
-        public override string ToString() => $"{Minimum} to {Maximum}";
+        public override string ToString() =>
+            Minimum.AlmostEquals(Maximum, 1e-10) ? $"{Minimum}" : $"{Minimum} to {Maximum}";
     }
 
 
