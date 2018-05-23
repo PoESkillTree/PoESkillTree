@@ -38,8 +38,8 @@ namespace PoESkillTree.Computation.Builders.Conditions
         public (StatConverter statConverter, IValue value) Build()
         {
             var builtConditions = Conditions.Select(c => c.Build()).ToList();
-            var conditionsString = "{" + string.Join(", ", builtConditions.Select(t => t.value)) + "}";
-            return (ConvertStat, new ConditionalValue(Calculate, conditionsString + ".Any()"));
+            var conditionsString = "Any(" + string.Join(", ", builtConditions.Select(t => t.value)) + ")";
+            return (ConvertStat, new ConditionalValue(Calculate, conditionsString));
 
             IStatBuilder ConvertStat(IStatBuilder stat) =>
                 builtConditions

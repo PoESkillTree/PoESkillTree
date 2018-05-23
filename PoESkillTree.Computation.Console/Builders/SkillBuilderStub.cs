@@ -78,12 +78,6 @@ namespace PoESkillTree.Computation.Console.Builders
                 This, keywords,
                 (o1, os) => $"{o1}.Where(has keywords [{string.Join(", ", os)}])");
 
-        public ISkillBuilderCollection this[ItemSlot slot] =>
-            (ISkillBuilderCollection) Create(
-                (s, r) => new SkillBuilderCollectionStub(s, r),
-                This,
-                o => $"{o}.Where(is socketed in {slot})");
-
         public ISkillBuilderCollection this[IItemSlotBuilder slot] =>
             (ISkillBuilderCollection) Create(
                 (s, r) => new SkillBuilderCollectionStub(s, r),

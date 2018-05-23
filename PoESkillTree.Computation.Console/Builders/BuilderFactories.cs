@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Builders.Forms;
+﻿using PoESkillTree.Computation.Builders.Equipment;
+using PoESkillTree.Computation.Builders.Forms;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
@@ -60,6 +61,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IValueBuilders ValueBuilders => new ValueBuilders();
 
-        public IItemSlotBuilders ItemSlotBuilders => new ItemSlotBuildersStub();
+        public IItemSlotBuilders ItemSlotBuilders => new ItemSlotBuilders();
     }
 }

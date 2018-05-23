@@ -14,7 +14,7 @@ namespace PoESkillTree.Computation.Builders.Tests
 
             var actual = expression.ToString(1, 2);
 
-            Assert.AreEqual("((2 * (1)) + (2))", actual);
+            Assert.AreEqual("((2 * 1) + 2)", actual);
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Builders.Tests
 
             var actual = expression.ToString(3);
 
-            Assert.AreEqual("Abs((3))", actual);
+            Assert.AreEqual("Abs(3)", actual);
         }
     }
 }

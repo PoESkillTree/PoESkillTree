@@ -29,7 +29,7 @@ namespace PoESkillTree.Computation.Console.Builders
             CreateCondition(This, condition, (l, r) => $"{l} or {r}");
 
         public IConditionBuilder Not =>
-            CreateCondition(This, o => $"not {o}");
+            CreateCondition(This, o => $"Not({o})");
 
         public (StatConverter statConverter, IValue value) Build() =>
             (Funcs.Identity, new ValueStub(this));

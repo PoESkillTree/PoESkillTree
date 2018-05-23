@@ -1,5 +1,4 @@
 using System;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -21,11 +20,6 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         /// Gets a new collection including all skills in this collection that have all the given keywords.
         /// </summary>
         ISkillBuilderCollection this[params IKeywordBuilder[] keywords] { get; }
-
-        /// <summary>
-        /// Gets a new collection including all skills in this collection socketed in Self's item in the given item slot.
-        /// </summary>
-        ISkillBuilderCollection this[ItemSlot slot] { get; }
 
         /// <summary>
         /// Gets a new collection including all skills in this collection socketed in Self's item in the given item slot.

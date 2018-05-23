@@ -47,6 +47,8 @@ namespace PoESkillTree.Computation.Builders.Conditions
         public (StatConverter statConverter, IValue value) Build() =>
             (Funcs.Identity, _buildValue());
 
+        public override string ToString() => Build().value.ToString();
+
 
         private static IConditionBuilder Create(
             ValueConditionBuilder operand,

@@ -127,7 +127,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
 
             var value = sut.Select(d => 2 * d).Build();
 
-            Assert.AreEqual("(2 * (5))", value.ToString());
+            Assert.AreEqual("(2 * 5)", value.ToString());
         }
 
         [TestCase(1, 2)]
@@ -135,7 +135,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
         public void AddResolveBuildsToCorrectValue(double? leftValue, double? rightValue)
         {
             var expected = (NodeValue?) new[] { leftValue, rightValue }.AggregateOnValues((l, r) => l + r);
-            var context = new ResolveContext(Mock.Of<IMatchContext<IValueBuilder>>(), Mock.Of<IMatchContext<IReferenceConverter>>());
+            var context = BuildersHelper.MockResolveContext();
             var right = Mock.Of<IValueBuilder>(b => b.Resolve(context) == new ValueBuilderImpl(rightValue));
             var sut = CreateSut(leftValue);
 

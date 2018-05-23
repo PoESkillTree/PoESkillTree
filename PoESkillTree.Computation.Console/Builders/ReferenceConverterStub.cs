@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Actions;
+﻿using PoESkillTree.Computation.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Charges;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
@@ -36,7 +37,7 @@ namespace PoESkillTree.Computation.Console.Builders
             new KeywordBuilderStub($"{this}.AsKeyword", (_, context) => Resolve(context).AsKeyword);
 
         public IItemSlotBuilder AsItemSlot =>
-            new ItemSlotBuilderStub($"{this}.AsItemSlot", (_, context) => Resolve(context).AsItemSlot);
+            new UnresolvedItemSlotBuilder($"{this}.AsItemSlot", context => Resolve(context).AsItemSlot);
 
         public IActionBuilder AsAction =>
             ActionBuilderStub.SelfToAny($"{this}.AsAction", (_, context) => Resolve(context).AsAction);

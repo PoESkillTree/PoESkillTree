@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq.Expressions;
 using PoESkillTree.Computation.Builders;
+using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Console.Builders
             CreateValue(This, o => selector.ToString(o));
 
         public IValueBuilder Create(double value) =>
-            new ValueBuilderStub(value.ToString(CultureInfo.InvariantCulture), (c, _) => c);
+            new ValueBuilderImpl(value);
 
         public IValueBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);

@@ -12,7 +12,7 @@ namespace PoESkillTree.Computation.Builders
             for (var i = 0; i < exp.Parameters.Count; i++)
             {
                 var name = exp.Parameters[i].Name;
-                s = s.Replace(name, "(" + parameters[i] + ")");
+                s = s.Replace(name, parameters[i].ToString());
             }
             return s;
         }
