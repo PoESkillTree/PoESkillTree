@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Resolving;
+﻿using PoESkillTree.Computation.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Console.Builders
@@ -21,16 +22,16 @@ namespace PoESkillTree.Computation.Console.Builders
             }
 
             public ValueBuilder this[int index] =>
-                new ValueBuilder(new ValueBuilderStub($"{this}[{index}]", (_, c) => c.ValueContext[index]));
+                new ValueBuilder(new UnresolvedValueBuilder($"{this}[{index}]", c => c.ValueContext[index]));
 
             public ValueBuilder First =>
-                new ValueBuilder(new ValueBuilderStub($"{this}.First", (_, c) => c.ValueContext.First));
+                new ValueBuilder(new UnresolvedValueBuilder($"{this}.First", c => c.ValueContext.First));
 
             public ValueBuilder Last =>
-                new ValueBuilder(new ValueBuilderStub($"{this}.Last", (_, c) => c.ValueContext.Last));
+                new ValueBuilder(new UnresolvedValueBuilder($"{this}.Last", c => c.ValueContext.Last));
 
             public ValueBuilder Single =>
-                new ValueBuilder(new ValueBuilderStub($"{this}.Single", (_, c) => c.ValueContext.Single));
+                new ValueBuilder(new UnresolvedValueBuilder($"{this}.Single", c => c.ValueContext.Single));
         }
 
 

@@ -35,6 +35,12 @@ namespace PoESkillTree.Computation.Builders.Values
             _resolve = c => new ValueBuilderImpl(resolve(c));
         }
 
+        protected ValueBuilderImpl(Func<IValue> buildValue, Func<ResolveContext, IValueBuilder> resolve)
+        {
+            _buildValue = buildValue;
+            _resolve = resolve;
+        }
+
         public IValueBuilder Resolve(ResolveContext context) => _resolve(context);
 
         public IValueBuilder MaximumOnly =>
