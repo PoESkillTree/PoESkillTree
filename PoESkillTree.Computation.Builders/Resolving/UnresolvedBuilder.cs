@@ -23,15 +23,17 @@ namespace PoESkillTree.Computation.Builders.Resolving
             _resolver(context);
 
         public TBuild Build() => 
-            throw UnresolvedBuilder.UnresolvedException(_description);
+            throw new UnresolvedException(_description);
 
         public override string ToString() => _description;
     }
 
-    internal static class UnresolvedBuilder
+    public class UnresolvedException : ParseException
     {
-        public static ParseException UnresolvedException(string description) =>
-            throw new ParseException("Builder must be resolved before being built, " + description);
+        public UnresolvedException(string message) 
+            : base("Builder must be resolved before being built, " + message)
+        {
+        }
     }
 
     public class UnresolvedItemSlotBuilder : UnresolvedBuilder<IItemSlotBuilder, ItemSlot>, IItemSlotBuilder
@@ -47,7 +49,7 @@ namespace PoESkillTree.Computation.Builders.Resolving
         private readonly string _description;
 
         public UnresolvedValueBuilder(string description, Func<ResolveContext, IValueBuilder> resolver)
-            : base(() => throw UnresolvedBuilder.UnresolvedException(description), resolver)
+            : base(() => throw new UnresolvedException(description), resolver)
         {
             _description = description;
         }

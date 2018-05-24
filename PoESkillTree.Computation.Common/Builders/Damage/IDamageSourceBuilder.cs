@@ -7,6 +7,6 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
     /// </summary>
     public interface IDamageSourceBuilder : IResolvable<IDamageSourceBuilder>
     {
-
+        DamageSource Build();
     }
 }

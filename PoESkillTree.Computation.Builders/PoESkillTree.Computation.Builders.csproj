@@ -59,6 +59,8 @@
     <Compile Include="Conditions\OrCompositeConditionBuilder.cs" />
     <Compile Include="Conditions\TrueConditionBuilder.cs" />
     <Compile Include="Conditions\ValueConditionBuilder.cs" />
+    <Compile Include="ConstantBuilder.cs" />
+    <Compile Include="Damage\DamageSourceBuilders.cs" />
     <Compile Include="Equipment\ItemSlotBuilders.cs" />
     <Compile Include="ExpressionHelper.cs" />
     <Compile Include="Forms\FormBuilders.cs" />
@@ -81,6 +83,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

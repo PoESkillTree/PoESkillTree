@@ -68,6 +68,7 @@
     <Compile Include="Builders\Charges\IChargeTypeBuilders.cs" />
     <Compile Include="Builders\Conditions\IConditionBuilder.cs" />
     <Compile Include="Builders\Conditions\IConditionBuilders.cs" />
+    <Compile Include="Builders\Damage\DamageSource.cs" />
     <Compile Include="Builders\Damage\IDamageSourceBuilder.cs" />
     <Compile Include="Builders\Damage\IDamageSourceBuilders.cs" />
     <Compile Include="Builders\Damage\IDamageTypeBuilder.cs" />

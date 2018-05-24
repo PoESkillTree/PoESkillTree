@@ -5,9 +5,22 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
     /// </summary>
     public interface IDamageSourceBuilders
     {
-        IDamageSourceBuilder Attack { get; }
-        IDamageSourceBuilder Spell { get; }
-        IDamageSourceBuilder Secondary { get; }
-        IDamageSourceBuilder DamageOverTime { get; }
+        IDamageSourceBuilder From(DamageSource source);
+    }
+
+
+    public static class DamageSourceBuilderExtensions
+    {
+        public static IDamageSourceBuilder Attack(this IDamageSourceBuilders @this) => 
+            @this.From(DamageSource.Attack);
+        
+        public static IDamageSourceBuilder Spell(this IDamageSourceBuilders @this) => 
+            @this.From(DamageSource.Spell);
+        
+        public static IDamageSourceBuilder Secondary(this IDamageSourceBuilders @this) => 
+            @this.From(DamageSource.Secondary);
+        
+        public static IDamageSourceBuilder DamageOverTime(this IDamageSourceBuilders @this) => 
+            @this.From(DamageSource.DamageOverTime);
     }
 }

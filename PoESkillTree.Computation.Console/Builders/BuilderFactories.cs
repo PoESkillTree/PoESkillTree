@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Builders.Equipment;
+﻿using PoESkillTree.Computation.Builders.Damage;
+using PoESkillTree.Computation.Builders.Equipment;
 using PoESkillTree.Computation.Builders.Forms;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common.Builders;
@@ -41,7 +42,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IConditionBuilders ConditionBuilders => new ConditionBuildersStub();
 
-        public IDamageSourceBuilders DamageSourceBuilders => new DamageSourceBuildersStub();
+        public IDamageSourceBuilders DamageSourceBuilders => new DamageSourceBuilders();
 
         public IDamageTypeBuilders DamageTypeBuilders => new DamageTypeBuildersStub();
 

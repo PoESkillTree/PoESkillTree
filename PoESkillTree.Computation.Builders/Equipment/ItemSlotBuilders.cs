@@ -1,6 +1,5 @@
 ﻿using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders.Equipment;
-using PoESkillTree.Computation.Common.Builders.Resolving;
 
 namespace PoESkillTree.Computation.Builders.Equipment
 {
@@ -8,16 +7,11 @@ namespace PoESkillTree.Computation.Builders.Equipment
     {
         public IItemSlotBuilder From(ItemSlot slot) => new Builder(slot);
 
-
-        private class Builder : IItemSlotBuilder
+        private class Builder : ConstantBuilder<IItemSlotBuilder, ItemSlot>, IItemSlotBuilder
         {
-            private readonly ItemSlot _slot;
-
-            public Builder(ItemSlot slot) => _slot = slot;
-
-            public IItemSlotBuilder Resolve(ResolveContext context) => this;
-
-            public ItemSlot Build() => _slot;
+            public Builder(ItemSlot slot) : base(slot)
+            {
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Data;
@@ -110,9 +111,9 @@ namespace PoESkillTree.Computation.Data
                 { "with main hand", Damage.With(ItemSlot.MainHand) },
                 { "with off hand", Damage.With(ItemSlot.OffHand) },
                 // - by source
-                { "attacks have", Damage.With(Source.Attack) },
-                { "with attacks", Damage.With(Source.Attack) },
-                { "from damage over time", Damage.With(Source.DamageOverTime) },
+                { "attacks have", Damage.With(Source.Attack()) },
+                { "with attacks", Damage.With(Source.Attack()) },
+                { "from damage over time", Damage.With(Source.DamageOverTime()) },
                 // - by ailment
                 { "with ({AilmentMatchers})", Damage.With(Reference.AsAilment) },
                 { "with ailments", Ailment.All.Any(Damage.With) },
@@ -123,7 +124,7 @@ namespace PoESkillTree.Computation.Data
                 { "critical strikes with daggers have a", And(CriticalStrike.On(), Damage.With(Tags.Dagger)) },
                 // - by item slot
                 // - by source
-                { "for each enemy hit by your attacks", And(Hit.Against(Enemy).On(), Damage.With(Source.Attack)) },
+                { "for each enemy hit by your attacks", And(Hit.Against(Enemy).On(), Damage.With(Source.Attack())) },
                 // - by ailment
                 { "with hits and ailments", Or(Hit.On(), Ailment.All.Any(Damage.With)) },
                 {

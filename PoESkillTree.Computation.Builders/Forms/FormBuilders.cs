@@ -2,7 +2,6 @@
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Forms;
-using PoESkillTree.Computation.Common.Builders.Resolving;
 
 namespace PoESkillTree.Computation.Builders.Forms
 {
@@ -18,25 +17,17 @@ namespace PoESkillTree.Computation.Builders.Forms
         public IFormBuilder TotalOverride { get; } = Create(Form.TotalOverride);
         public IFormBuilder BaseOverride { get; } = Create(Form.BaseOverride);
 
-        private static IFormBuilder Create(Form form) => new FormBuilder(form);
+        private static IFormBuilder Create(Form form) => new FormBuilder(form, Funcs.Identity);
 
         private static IFormBuilder CreateNegating(Form form) => new FormBuilder(form, v => v.Multiply(v.Create(-1)));
 
 
-        private class FormBuilder : IFormBuilder
+        private class FormBuilder : ConstantBuilder<IFormBuilder, (Form, ValueConverter)>, IFormBuilder
         {
-            private readonly Form _form;
-            private readonly ValueConverter _valueConverter;
-
-            public FormBuilder(Form form, ValueConverter valueConverter = null)
+            public FormBuilder(Form form, ValueConverter valueConverter)
+                : base((form, valueConverter))
             {
-                _form = form;
-                _valueConverter = valueConverter ?? Funcs.Identity;
             }
-
-            public IFormBuilder Resolve(ResolveContext context) => this;
-
-            public (Form form, ValueConverter valueConverter) Build() => (_form, _valueConverter);
         }
     }
 }

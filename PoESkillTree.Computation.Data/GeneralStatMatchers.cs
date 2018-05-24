@@ -2,6 +2,7 @@
 using System.Linq;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -199,7 +200,7 @@ namespace PoESkillTree.Computation.Data
                 { "chance to fortify", Buff.Fortify.ChanceOn(Self) },
                 { "effect of fortify on you", Buff.Fortify.Effect },
                 { "fortify duration", Buff.Fortify.Duration },
-                { "chance for attacks to maim", Buff.Maim.ChanceOn(Enemy), Damage.With(Source.Attack) },
+                { "chance for attacks to maim", Buff.Maim.ChanceOn(Enemy), Damage.With(Source.Attack()) },
                 { "chance to taunt", Buff.Taunt.ChanceOn(Enemy) },
                 { "taunt duration", Buff.Taunt.Duration },
                 { "chance to blind enemies", Buff.Blind.ChanceOn(Enemy) },

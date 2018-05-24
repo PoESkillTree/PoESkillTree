@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Builders.Equipment;
+﻿using PoESkillTree.Computation.Builders.Damage;
+using PoESkillTree.Computation.Builders.Equipment;
 using PoESkillTree.Computation.Builders.Forms;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common.Builders;
@@ -23,7 +24,7 @@ namespace PoESkillTree.Computation.Builders
         public IBuffBuilders BuffBuilders { get; }
         public IChargeTypeBuilders ChargeTypeBuilders { get; }
         public IConditionBuilders ConditionBuilders { get; }
-        public IDamageSourceBuilders DamageSourceBuilders { get; }
+        public IDamageSourceBuilders DamageSourceBuilders { get; } = new DamageSourceBuilders();
         public IDamageTypeBuilders DamageTypeBuilders { get; }
         public IEffectBuilders EffectBuilders { get; }
         public IEntityBuilders EntityBuilders { get; }

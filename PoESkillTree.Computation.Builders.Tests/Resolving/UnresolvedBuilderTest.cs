@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Resolving;
-using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Builders.Tests.Resolving
 {
@@ -12,7 +11,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Resolving
         {
             var sut = CreateSut();
 
-            Assert.Throws<ParseException>(() => sut.Build());
+            Assert.Throws<UnresolvedException>(() => sut.Build());
         }
 
         [Test]
