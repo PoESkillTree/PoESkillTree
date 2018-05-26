@@ -83,6 +83,12 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
             where T: struct, Enum;
 
         /// <summary>
+        /// Returns an aura providing <paramref name="gainedStat"/> and affecting <paramref name="affectedEntites"/>
+        /// cast by Self.
+        /// </summary>
+        IStatBuilder Aura(IStatBuilder gainedStat, params IEntityBuilder[] affectedEntites);
+
+        /// <summary>
         /// Returns a collection of all buffs that currently affect <paramref name="target"/> and originate from
         /// <paramref name="source"/>. The parameters default to any entity, e.g. Buffs() without parameters returns
         /// every active buff.

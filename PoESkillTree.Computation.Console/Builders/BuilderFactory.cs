@@ -114,6 +114,15 @@ namespace PoESkillTree.Computation.Console.Builders
             return Create<IStatBuilder, T>(Construct, operands, stringRepresentation);
         }
 
+        public static IStatBuilder CreateStat<T1, T2>(
+            [CanBeNull] T1 operand1, [ItemCanBeNull] IEnumerable<T2> operand2,
+            Func<T1, IEnumerable<T2>, string> stringRepresentation)
+            where T1 : class, IResolvable<T1>
+            where T2 : class, IResolvable<T2>
+        {
+            return Create<IStatBuilder, T1, T2>(Construct, operand1, operand2, stringRepresentation);
+        }
+
         public static IStatBuilder CreateStat(string stringRepresentation)
         {
             return Create<IStatBuilder>(Construct, stringRepresentation);

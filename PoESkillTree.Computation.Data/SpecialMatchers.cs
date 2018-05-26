@@ -190,12 +190,12 @@ namespace PoESkillTree.Computation.Data
                 {
                     "grants armour equal to #% of your reserved life to you and nearby allies",
                     BaseAdd,
-                    Value.AsPercentage * Life.Value * Life.Reservation.Value, Armour.AsAura(Self, Ally)
+                    Value.AsPercentage * Life.Value * Life.Reservation.Value, Buff.Aura(Armour, Self, Ally)
                 },
                 {
                     "grants maximum energy shield equal to #% of your reserved mana to you and nearby allies",
                     BaseAdd,
-                    Value.AsPercentage * Mana.Value * Mana.Reservation.Value, EnergyShield.AsAura(Self, Ally)
+                    Value.AsPercentage * Mana.Value * Mana.Reservation.Value, Buff.Aura(EnergyShield, Self, Ally)
                 },
                 {
                     "warcries cost no mana",

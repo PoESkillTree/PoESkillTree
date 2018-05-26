@@ -46,10 +46,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder ChanceToDouble =>
             CreateStat(This, o => $"Chance to double {o}");
 
-        public IFlagStatBuilder AsAura(params IEntityBuilder[] affectedEntities) =>
-            CreateFlagStat(This, affectedEntities,
-                (o1, os) => $"{o1} as Aura affecting [{string.Join(", ", os)}]");
-
         public IFlagStatBuilder AddTo(ISkillBuilderCollection skills) =>
             CreateFlagStat(This, (IBuilderCollection<ISkillBuilder>) skills,
                 (o1, o2) => $"{o1} added to skills {o2}");

@@ -95,6 +95,9 @@ namespace PoESkillTree.Computation.Console.Builders
                 (o1, o2, o3) => $"Every {o1} seconds, gain {o3} for {o2} seconds " +
                                 $"(as part of the rotation {typeof(T)} when {condition})");
 
+        public IStatBuilder Aura(IStatBuilder gainedStat, params IEntityBuilder[] affectedEntites) =>
+            CreateStat(gainedStat, affectedEntites, (o1, os) => $"{o1} as Aura affecting [{string.Join(", ", os)}]");
+
         public IBuffBuilderCollection Buffs(IEntityBuilder source = null, IEntityBuilder target = null)
         {
             string StringRepresentation(IEntityBuilder s, IEntityBuilder t)

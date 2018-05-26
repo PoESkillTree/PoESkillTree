@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Data
         protected override IEnumerable<MatcherData> CreateCollection() =>
             new StatManipulatorMatcherCollection(_modifierBuilder)
             {
-                { "you and nearby allies( deal| have)?", s => s.AsAura(Self, Ally) },
+                { "you and nearby allies( deal| have)?", s => Buff.Aura(s, Self, Ally) },
                 {
                     "auras you cast grant (?<inner>.*) to you and allies",
                     s => s.AddTo(Skills[Keyword.Aura]), "${inner}"
@@ -40,12 +40,12 @@ namespace PoESkillTree.Computation.Data
                     "every # seconds, gain (?<inner>.*) for # seconds",
                     s => Buff.Temporary(Values.First, Values.Last, s), "${inner}"
                 },
-                { "nearby enemies (have|deal)", s => s.AsAura(Enemy) },
-                { "nearby enemies take", (IDamageStatBuilder s) => s.Taken.AsAura(Enemy) },
-                { "enemies near your totems (have|deal)", s => Entity.Totem.Stat(s.AsAura(Enemy)) },
+                { "nearby enemies (have|deal)", s => Buff.Aura(s, Enemy) },
+                { "nearby enemies take", (IDamageStatBuilder s) => Buff.Aura(s.Taken, Enemy) },
+                { "enemies near your totems (have|deal)", s => Entity.Totem.Stat(Buff.Aura(s, Enemy)) },
                 {
                     "enemies near your totems take",
-                    (IDamageStatBuilder s) => Entity.Totem.Stat(s.Taken.AsAura(Enemy))
+                    (IDamageStatBuilder s) => Entity.Totem.Stat(Buff.Aura(s.Taken, Enemy))
                 },
                 // Keep whole mod line, take is part of the condition matcher
                 { "enemies .+ take", (IDamageStatBuilder s) => s.Taken, "$0" },

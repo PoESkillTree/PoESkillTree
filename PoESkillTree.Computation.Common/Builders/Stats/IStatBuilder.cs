@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Effects;
-using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Values;
@@ -61,13 +59,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder ChanceToDouble { get; }
 
         /// <summary>
-        /// Returns an aura affecting the given entities that modifies these stats.
-        /// </summary>
-        IFlagStatBuilder AsAura(params IEntityBuilder[] affectedEntities);
-
-        /// <summary>
-        /// Returns a flag stat representing whether the given skills modify this stat as part of their effects
-        /// (unaffected by effect increases).
+        /// Returns a flag stat representing whether the given skills modify this stat as part of their effects.
         /// <para>E.g. "Auras you Cast grant 3% increased Attack and Cast Speed to you and Allies"</para>
         /// </summary>
         IFlagStatBuilder AddTo(ISkillBuilderCollection skills);
