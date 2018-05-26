@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Values;
+﻿using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Common.Builders.Actions
 {
@@ -51,5 +52,11 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         /// Gets an action that occurs when Self spends <paramref name="amount"/> mana.
         /// </summary>
         IActionBuilder SpendMana(IValueBuilder amount);
+
+        /// <summary>
+        /// Changes <see cref="IActionBuilder.On()"/> conditions to <see cref="IActionBuilder.InPastXSeconds"/>
+        /// conditions.
+        /// </summary>
+        IConditionBuilder InPastXSeconds(IValueBuilder seconds);
     }
 }

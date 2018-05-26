@@ -49,11 +49,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 // Keep whole mod line, take is part of the condition matcher
                 { "enemies .+ take", (IDamageStatBuilder s) => s.Taken, "$0" },
-                {
-                    "(?<inner>chance to .*) for # seconds",
-                    s => s.ForXSeconds(Value).ChanceOn(Self), "${inner}"
-                },
-                { "for # seconds", s => s.ForXSeconds(Value).On(Self) },
+                { "for # seconds", s => s.WithCondition(Action.InPastXSeconds(Value)) },
             };
     }
 }

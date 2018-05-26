@@ -66,11 +66,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         // Probably as a property inherent in conditions, i.e. decided on condition construction.
 
         /// <summary>
-        /// Returns a buff that modifies this stat for <paramref name="seconds"/> seconds.
-        /// </summary>
-        IBuffBuilder ForXSeconds(IValueBuilder seconds);
-
-        /// <summary>
         /// Gets a buff that modifies this stat. If the buff is not permanent, the duration will be specified elsewhere,
         /// e.g. as part of a buff rotation.
         /// </summary>

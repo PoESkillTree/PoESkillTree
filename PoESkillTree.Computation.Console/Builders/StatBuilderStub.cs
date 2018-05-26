@@ -46,12 +46,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder ChanceToDouble =>
             CreateStat(This, o => $"Chance to double {o}");
 
-        public IBuffBuilder ForXSeconds(IValueBuilder seconds) =>
-            (IBuffBuilder) Create<IEffectBuilder, IStatBuilder, IValueBuilder>(
-                (s, r) => new BuffBuilderStub(s, r),
-                This, seconds,
-                (o1, o2) => $"{o1} as Buff for {o2} seconds");
-
         public IBuffBuilder AsBuff =>
             (IBuffBuilder) Create<IEffectBuilder, IStatBuilder>(
                 (s, r) => new BuffBuilderStub(s, r),
