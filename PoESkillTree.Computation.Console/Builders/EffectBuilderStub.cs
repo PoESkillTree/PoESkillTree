@@ -31,6 +31,9 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Duration =>
             CreateStat(This, o => $"{o} duration");
 
+        public IStatBuilder AddStat(IStatBuilder stat) =>
+            CreateStat(This, stat, (o1, o2) => $"{o2} added to effect {o1}");
+
         public IEffectBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
     }

@@ -46,6 +46,9 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder Effect => CreateStat(This, o => $"Effect of {o}");
 
+        public IStatBuilder AddStat(IStatBuilder stat) =>
+            CreateStat(This, stat, (o1, o2) => $"{o2} added to buffs {o1}");
+
         public IBuffBuilderCollection ExceptFrom(params ISkillBuilder[] skills) =>
             (IBuffBuilderCollection) Create(
                 Construct, This, skills,
@@ -102,18 +105,9 @@ namespace PoESkillTree.Computation.Console.Builders
         {
             string StringRepresentation(IEntityBuilder s, IEntityBuilder t)
             {
-                var str = "All buffs";
-                if (source != null)
-                {
-                    str += " by " + source;
-                }
-
-                if (target != null)
-                {
-                    str += " against " + target;
-                }
-
-                return str;
+                var sStr = s is null ? "" : $" by {s}";
+                var tStr = t is null ? "" : $" against {t}";
+                return $"All buffs{sStr}{tStr}";
             }
 
             return (IBuffBuilderCollection)
@@ -121,6 +115,12 @@ namespace PoESkillTree.Computation.Console.Builders
                     (s, r) => new BuffBuilderCollectionStub(s, r),
                     source, target, StringRepresentation);
         }
+
+        public IBuffBuilderCollection Buffs(IEntityBuilder source, params IEntityBuilder[] targets) =>
+            (IBuffBuilderCollection) Create<IBuilderCollection<IBuffBuilder>, IEntityBuilder, IEntityBuilder>(
+                (s, r) => new BuffBuilderCollectionStub(s, r),
+                source, targets,
+                (s, ts) => $"All buffs by {s} against {string.Join(" or ", ts)}");
 
 
         private class ConfluxBuffBuilders : IConfluxBuffBuilders

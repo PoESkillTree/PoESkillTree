@@ -3,12 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Effects;
-using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
@@ -45,13 +41,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder ChanceToDouble =>
             CreateStat(This, o => $"Chance to double {o}");
-
-        public IFlagStatBuilder AddTo(ISkillBuilderCollection skills) =>
-            CreateFlagStat(This, (IBuilderCollection<ISkillBuilder>) skills,
-                (o1, o2) => $"{o1} added to skills {o2}");
-
-        public IFlagStatBuilder AddTo(IEffectBuilder effect) =>
-            CreateFlagStat(This, effect, (o1, o2) => $"{o1} added to effect {o2}");
 
         public virtual IStatBuilder WithCondition(IConditionBuilder condition) =>
             CreateStat(This, condition, (s, c) => $"{s}\n  Condition: {c}");

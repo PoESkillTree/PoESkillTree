@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Resolving;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
@@ -57,19 +55,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// condition. E.g. damage has a 20% chance to be doubled on hit.
         /// </summary>
         IStatBuilder ChanceToDouble { get; }
-
-        /// <summary>
-        /// Returns a flag stat representing whether the given skills modify this stat as part of their effects.
-        /// <para>E.g. "Auras you Cast grant 3% increased Attack and Cast Speed to you and Allies"</para>
-        /// </summary>
-        IFlagStatBuilder AddTo(ISkillBuilderCollection skills);
-
-        /// <summary>
-        /// Returns a flag stat representing whether the given effect modifies this stat as part of its effects
-        /// (unaffected by effect increases).
-        /// <para>E.g. "Consecrated Ground you create grants 40% increased Damage to you and Allies"</para>
-        /// </summary>
-        IFlagStatBuilder AddTo(IEffectBuilder effect);
 
         /// <summary>
         /// Returns a stat that is identical to this stat but is only modified if the given condition is satisfied.

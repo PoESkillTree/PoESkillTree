@@ -19,6 +19,14 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         IStatBuilder Effect { get; }
 
         /// <summary>
+        /// Adds <paramref name="stat"/> to the effects of all skills in this collection. Modifiers with stats built
+        /// from the returned stat will apply their value to <paramref name="stat"/> for each buff in this
+        /// collection, each application affected by the skill's effect increase.
+        /// <para>E.g. "Auras you Cast grant 3% increased Attack and Cast Speed to you and Allies"</para>
+        /// </summary>
+        IStatBuilder AddStat(IStatBuilder stat);
+
+        /// <summary>
         /// Returns a new collection that includes all buffs in this collection except those originating from any
         /// skill in <paramref name="skills"/>.
         /// </summary>

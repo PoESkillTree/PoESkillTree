@@ -94,6 +94,12 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         /// every active buff.
         /// </summary>
         IBuffBuilderCollection Buffs(IEntityBuilder source = null, IEntityBuilder target = null);
+
+        /// <summary>
+        /// Returns a collection of all buffs that currently affect any of <paramref name="targets"/> and originate from
+        /// <paramref name="source"/>.
+        /// </summary>
+        IBuffBuilderCollection Buffs(IEntityBuilder source, params IEntityBuilder[] targets);
     }
 
 

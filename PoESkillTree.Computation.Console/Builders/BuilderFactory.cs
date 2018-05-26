@@ -374,7 +374,7 @@ namespace PoESkillTree.Computation.Console.Builders
         /// <remarks>
         /// <paramref name="operands"/> is only enumerated once.
         /// </remarks>
-        private static TOut Create<TOut, T1, T2>(
+        public static TOut Create<TOut, T1, T2>(
             Func<string, Resolver<TOut>, TOut> constructor,
             [CanBeNull] T1 operand1,
             [ItemCanBeNull] IEnumerable<T2> operands,

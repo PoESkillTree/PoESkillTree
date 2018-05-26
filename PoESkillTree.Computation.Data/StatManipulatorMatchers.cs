@@ -30,11 +30,11 @@ namespace PoESkillTree.Computation.Data
                 { "you and nearby allies( deal| have)?", s => Buff.Aura(s, Self, Ally) },
                 {
                     "auras you cast grant (?<inner>.*) to you and allies",
-                    s => s.AddTo(Skills[Keyword.Aura]), "${inner}"
+                    s => Buffs(Self, Self, Ally).With(Keyword.Aura).Without(Keyword.Curse).AddStat(s), "${inner}"
                 },
                 {
                     "consecrated ground you create grants (?<inner>.*) to you and allies",
-                    s => s.AddTo(Ground.Consecrated), "${inner}"
+                    s => Ground.Consecrated.AddStat(s), "${inner}"
                 },
                 {
                     "every # seconds, gain (?<inner>.*) for # seconds",
