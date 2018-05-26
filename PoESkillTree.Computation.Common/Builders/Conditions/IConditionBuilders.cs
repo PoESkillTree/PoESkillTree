@@ -10,10 +10,9 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
     public interface IConditionBuilders
     {
         /// <summary>
-        /// Returns a condition that is satisfied if Self's current main skill is contained in
-        /// <paramref name="skills"/>.
+        /// Returns a condition that is satisfied if Self's current main skill has the given keyword.
         /// </summary>
-        IConditionBuilder With(ISkillBuilderCollection skills);
+        IConditionBuilder With(IKeywordBuilder keyword);
 
         /// <summary>
         /// Returns a conditions that is satisfied if Self's current main skill is <paramref name="skill"/>.
@@ -29,10 +28,9 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
         /// <remarks>
         /// <c>For(<see cref="IEntityBuilders.Self"/>)</c> is always satisfied.
         /// <para>Can be used to apply stats to Enemy, e.g. "Enemies take 10% increased Damage".</para>
-        /// <para>Minions have their own offensive and defensive stats. Modifiers only apply to minions when they
+        /// <para>Minions have their own stats. Modifiers only apply to minions when they 
         /// have this condition (probably with some exceptions).</para>
-        /// <para>Totems have their own defensive stats. Defensive modifiers only apply to totems when they have
-        /// this condition.</para>
+        /// <para>Totems, mines and traps have their own stats but copy the damage stats from the character.</para>
         /// </remarks>
         IConditionBuilder For(params IEntityBuilder[] entities);
 

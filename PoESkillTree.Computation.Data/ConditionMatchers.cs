@@ -113,7 +113,7 @@ namespace PoESkillTree.Computation.Data
                 // - by source
                 { "attacks have", Damage.With(Source.Attack()) },
                 { "with attacks", Damage.With(Source.Attack()) },
-                { "from damage over time", Damage.With(Source.DamageOverTime()) },
+                { "from damage over time", Damage.With(Source.OverTime()) },
                 // - by ailment
                 { "with ({AilmentMatchers})", Damage.With(Reference.AsAilment) },
                 { "with ailments", Ailment.All.Any(Damage.With) },
@@ -214,18 +214,16 @@ namespace PoESkillTree.Computation.Data
                 { "against burning enemies", Fire.DamageOverTimeIsOn(Enemy) },
                 // skills
                 // - by keyword
-                { "vaal( skill)?", With(Skills[Keyword.Vaal]) },
-                { "({KeywordMatchers})", With(Skills[Reference.AsKeyword]) },
+                { "vaal( skill)?", With(Keyword.Vaal) },
+                { "({KeywordMatchers})", With(Reference.AsKeyword) },
                 {
                     "({KeywordMatchers}) and ({KeywordMatchers})",
-                    Or(With(Skills[References[0].AsKeyword]), With(Skills[References[1].AsKeyword]))
+                    Or(With(References[0].AsKeyword), With(References[1].AsKeyword))
                 },
-                { "(with|of|for|from) ({KeywordMatchers})( skills)?", With(Skills[Reference.AsKeyword]) },
-                { "({KeywordMatchers}) skills (have|deal)", With(Skills[Reference.AsKeyword]) },
+                { "(with|of|for|from) ({KeywordMatchers})( skills)?", With(Reference.AsKeyword) },
+                { "({KeywordMatchers}) skills (have|deal)", With(Reference.AsKeyword) },
                 // - by damage type
-                { "with ({DamageTypeMatchers}) skills", With(Skills[Reference.AsDamageType]) },
-                // - by item slot
-                { "skills (in|from) your ({ItemSlotMatchers})(can have| have)?", With(Skills[Reference.AsItemSlot]) },
+                { "with ({DamageTypeMatchers}) skills", With(Reference.AsDamageType) },
                 // - by single skill
                 { "({SkillMatchers})('|s)?( fires| has a| have a| has| deals| gain)?", With(Reference.AsSkill) },
                 { "(dealt by) ({SkillMatchers})", With(Reference.AsSkill) },
@@ -241,21 +239,21 @@ namespace PoESkillTree.Computation.Data
                 // skill and action combinations
                 {
                     "projectiles have against targets they pierce",
-                    And(Projectile.Pierce.On(), With(Skills[Keyword.Projectile]))
+                    And(Projectile.Pierce.On(), With(Keyword.Projectile))
                 },
                 // traps and mines
-                { "with traps", With(Traps) },
-                { "with mines", With(Mines) },
-                { "traps and mines (deal|have a)", Or(With(Traps), With(Mines)) },
-                { "from traps and mines", Or(With(Traps), With(Mines)) },
-                { "for throwing traps", With(Traps) },
+                { "with traps", With(Keyword.Trap) },
+                { "with mines", With(Keyword.Mine) },
+                { "traps and mines (deal|have a)", Or(With(Keyword.Trap), With(Keyword.Mine)) },
+                { "for throwing traps", With(Keyword.Trap) },
                 { "if you detonated mines recently", Skill.DetonateMines.Cast.Recently },
                 { "if you've placed a mine or thrown a trap recently", Or(Traps.Cast.Recently, Mines.Cast.Recently) },
                 // totems
                 { "totems", For(Entity.Totem) },
-                { "totems (fire|gain|have)", With(Totems) },
-                { "(spells cast|attacks used|skills used) by totems (have a|have)", With(Totems) },
-                { "of totem skills that cast an aura", With(Skills[Keyword.Totem, Keyword.Aura]) },
+                { "totems (gain|have)", For(Entity.Totem) },
+                { "totems fire", With(Keyword.Totem) },
+                { "(spells cast|attacks used|skills used) by totems (have a|have)", With(Keyword.Totem) },
+                { "of totem skills that cast an aura", And(With(Keyword.Totem), With(Keyword.Aura)) },
                 { "while you have a totem", Totems.Any(s => s.HasInstance) },
                 { "if you've summoned a totem recently", Totems.Cast.Recently },
                 { "when you place a totem", Totems.Cast.On() },
@@ -270,7 +268,7 @@ namespace PoESkillTree.Computation.Data
                     // Technically this would be separate for each minion summoned by that skill, but DPS will 
                     // only be calculated for a single minion anyway.
                     "golems summoned in the past # seconds deal",
-                    With(Golems.Where(s => s.Cast.InPastXSeconds(Value)))
+                    And(With(Keyword.Golem), Skill.MainSkill.Cast.InPastXSeconds(Value))
                 },
                 { "if you Summoned a golem in the past # seconds", Golems.Cast.InPastXSeconds(Value) },
                 // flasks

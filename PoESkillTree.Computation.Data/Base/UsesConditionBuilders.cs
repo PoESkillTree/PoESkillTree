@@ -21,8 +21,7 @@ namespace PoESkillTree.Computation.Data.Base
 
         protected IConditionBuilders Condition => BuilderFactories.ConditionBuilders;
 
-        protected IConditionBuilder With(ISkillBuilderCollection skills) =>
-            Condition.With(skills);
+        protected IConditionBuilder With(IKeywordBuilder keyword) => Condition.With(keyword);
 
         protected IConditionBuilder With(ISkillBuilder skill) => Condition.With(skill);
 

@@ -127,16 +127,16 @@ namespace PoESkillTree.Computation.Data
                         .Before(References[2].AsPoolStat)
                 },
                 // speed
-                { "attack speed", Skills[Keyword.Attack].Speed },
-                { "cast speed", Skills.Speed, Not(With(Skills[Keyword.Attack])) },
+                { "attack speed", Stat.CastSpeed, With(Keyword.Attack) },
+                { "cast speed", Stat.CastSpeed, Not(With(Keyword.Attack)) },
                 { "movement speed", Stat.MovementSpeed },
                 {
                     // not the most elegant solution but by far the easiest
                     @"movement speed \(hidden\)",
                     Stat.MovementSpeed, Not(Flag.IgnoreMovementSpeedPenalties.IsSet)
                 },
-                { "attack and cast speed", Skills.Speed },
-                { "attack, cast( speed)? and movement speed", ApplyOnce(Skills.Speed, Stat.MovementSpeed) },
+                { "attack and cast speed", Stat.CastSpeed },
+                { "attack, cast( speed)? and movement speed", ApplyOnce(Stat.CastSpeed, Stat.MovementSpeed) },
                 { "animation speed", Stat.AnimationSpeed },
                 // regen and recharge
                 { "({PoolStatMatchers}) regeneration rate", Reference.AsPoolStat.Regen },
@@ -164,20 +164,24 @@ namespace PoESkillTree.Computation.Data
                     Charge.Endurance.Duration, Charge.Frenzy.Duration, Charge.Power.Duration
                 },
                 // skills
-                { "cooldown recovery speed", Skills.CooldownRecoverySpeed },
-                { "mana cost( of skills)?", Skills.Cost },
-                { "skill effect duration", Skills.Duration },
-                { "mana reserved", Skills.Reservation },
-                { "({KeywordMatchers}) duration", Skills[Reference.AsKeyword].Duration },
+                { "cooldown recovery speed", Stat.CooldownRecoverySpeed },
+                { "mana cost( of skills)?", Mana.Cost },
+                { "mana reserved", Mana.Reservation },
+                { "skill effect duration", Stat.Duration, Stat.Trap.Duration, Stat.Mine.Duration, Stat.Totem.Duration },
+                { "warcry duration", Stat.Duration, With(Keyword.Warcry) },
+                { "curse duration", Stat.Duration, With(Keyword.Curse) },
                 // traps, mines, totems
+                { "trap duration", Stat.Trap.Duration },
+                { "mine duration", Stat.Mine.Duration },
+                { "totem duration", Stat.Totem.Duration },
                 { "traps? placed at a time", Traps.CombinedInstances.Maximum },
                 { "remote mines? placed at a time", Mines.CombinedInstances.Maximum },
                 { "totems? summoned at a time", Totems.CombinedInstances.Maximum },
-                { "trap trigger area of effect", Stat.TrapTriggerAoE },
-                { "mine detonation area of effect", Stat.MineDetonationAoE },
-                { "trap throwing speed", Traps.Speed },
-                { "mine laying speed", Mines.Speed },
-                { "totem placement speed", Totems.Speed },
+                { "trap trigger area of effect", Stat.Trap.TriggerAoE },
+                { "mine detonation area of effect", Stat.Mine.DetonationAoE },
+                { "trap throwing speed", Stat.Trap.Speed },
+                { "mine laying speed", Stat.Mine.Speed },
+                { "totem placement speed", Stat.Totem.Speed },
                 { "totem life", Life, For(Entity.Totem) },
                 // minions
                 {
@@ -186,7 +190,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "maximum number of spectres", Skill.RaiseSpectre.Instances.Maximum },
                 { "maximum number of zombies", Skill.RaiseZombie.Instances.Maximum },
-                { "skeleton duration", Skill.SummonSkeleton.Duration, Skill.VaalSummonSkeletons.Duration },
+                { "skeleton duration", Stat.Duration, Or(With(Skill.SummonSkeleton), With(Skill.VaalSummonSkeletons)) },
                 { "golem at a time", Golems.CombinedInstances.Maximum },
                 // buffs
                 { "chance to gain ({BuffMatchers})", Reference.AsBuff.ChanceOn(Self) },
@@ -240,7 +244,7 @@ namespace PoESkillTree.Computation.Data
                 { "quantity of items found", Stat.ItemQuantity },
                 { "rarity of items found", Stat.ItemRarity },
                 // range and area of effect
-                { "area of effect", Skills.AreaOfEffect },
+                { "area of effect", Stat.AreaOfEffect },
                 { "melee weapon and unarmed range", Stat.Range, Not(MainHand.Has(Tags.Ranged)) },
                 { "melee weapon range", Stat.Range, And(MainHand.Has(Tags.Weapon), Not(MainHand.Has(Tags.Ranged))) },
                 // other

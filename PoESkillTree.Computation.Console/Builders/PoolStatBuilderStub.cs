@@ -26,6 +26,7 @@ namespace PoESkillTree.Computation.Console.Builders
                 This, o => $"{o} recharge");
 
         public IStatBuilder RecoveryRate => CreateStat(This, o => $"{o} recovery rate");
+        public IStatBuilder Cost => CreateStat(This, o => $"{o} cost");
         public IStatBuilder Reservation => CreateStat(This, o => $"{o} reservation");
 
         public ILeechStatBuilder Leech =>

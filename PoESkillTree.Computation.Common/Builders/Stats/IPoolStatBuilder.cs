@@ -29,6 +29,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder RecoveryRate { get; }
 
         /// <summary>
+        /// Gets a stat representing the amount of this pool spent when casting the main skill once.
+        /// </summary>
+        IStatBuilder Cost { get; }
+
+        /// <summary>
         /// Gets a stat representing the percentage of this pool that is reserved.
         /// </summary>
         IStatBuilder Reservation { get; }

@@ -4,7 +4,6 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
-using PoESkillTree.Computation.Common.Builders.Equipment;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
@@ -42,8 +41,8 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class ConditionBuildersStub : IConditionBuilders
     {
-        public IConditionBuilder With(ISkillBuilderCollection skills) =>
-            CreateCondition((IBuilderCollection<ISkillBuilder>) skills, o => $"With {o}");
+        public IConditionBuilder With(IKeywordBuilder keyword) =>
+            CreateCondition(keyword, o => $"With {o}");
 
         public IConditionBuilder With(ISkillBuilder skill) =>
             CreateCondition(skill, o => $"With {o}");

@@ -5,6 +5,6 @@
         Attack,
         Spell,
         Secondary,
-        DamageOverTime
+        OverTime
     }
 }

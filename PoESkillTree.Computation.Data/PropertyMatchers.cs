@@ -34,10 +34,10 @@ namespace PoESkillTree.Computation.Data
             new PropertyMatcherCollection(_modifierBuilder)
             {
                 { "quality" }, // do nothing with it
-                { "attacks per second", Skills.Speed },
-                { "cast time", Skills.Speed, v => v.Invert },
+                { "attacks per second", Stat.CastSpeed },
+                { "cast time", Stat.CastSpeed, v => v.Invert },
                 { "fire damage", Fire.Damage },
-                { "damage effectiveness", Skills.DamageEffectiveness }
+                { "damage effectiveness", Stat.EffectivenessOfAddedDamage }
             };
     }
 }

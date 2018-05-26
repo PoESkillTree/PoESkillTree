@@ -28,40 +28,5 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         /// Shortcut for <c>Instances.Value > 0</c>.
         /// </remarks>
         IConditionBuilder HasInstance { get; }
-
-        /// <summary>
-        /// Gets a stat representing the duration of this skill.
-        /// </summary>
-        IStatBuilder Duration { get; }
-
-        /// <summary>
-        /// Gets a stat representing the mana cost of this skill.
-        /// </summary>
-        IStatBuilder Cost { get; }
-
-        /// <summary>
-        /// Gets a stat representing the mana reservation of this skill.
-        /// </summary>
-        IStatBuilder Reservation { get; }
-
-        /// <summary>
-        /// Gets a stat representing the cooldown recovery speed of this skill.
-        /// </summary>
-        IStatBuilder CooldownRecoverySpeed { get; }
-
-        /// <summary>
-        /// Gets a stat representing the damage effectiveness of this skill.
-        /// </summary>
-        IStatBuilder DamageEffectiveness { get; }
-
-        /// <summary>
-        /// Gets a stat representing attack/cast rate of this skill (in casts per second).
-        /// </summary>
-        IStatBuilder Speed { get; }
-
-        /// <summary>
-        /// Gets a stat representing the area of effect of this skill.
-        /// </summary>
-        IStatBuilder AreaOfEffect { get; }
     }
 }

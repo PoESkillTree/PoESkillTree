@@ -72,3 +72,4 @@ can allocate passives from the ranger's starting point
 can allocate passives from the shadow's starting point
 can allocate passives from the witch's starting point
 can allocate passives from the templar's starting point
+10% reduced Damage taken from Traps and Mines

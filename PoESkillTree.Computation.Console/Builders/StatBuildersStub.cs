@@ -18,10 +18,16 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder MovementSpeed => CreateStat("Movement Speed");
         public IStatBuilder AnimationSpeed => CreateStat("Animation Speed");
 
+        public IStatBuilder CastSpeed => CreateStat("Attack/Cast Speed");
+        public IStatBuilder EffectivenessOfAddedDamage => CreateStat("Effectiveness of added damage");
+        public IStatBuilder AreaOfEffect => CreateStat("Area of effect");
         public IStatBuilder Range => CreateStat("Range");
+        public IStatBuilder CooldownRecoverySpeed => CreateStat("Cooldown recovery speed");
+        public IStatBuilder Duration => CreateStat("Duration");
 
-        public IStatBuilder TrapTriggerAoE => CreateStat("Trap trigger AoE");
-        public IStatBuilder MineDetonationAoE => CreateStat("Mine detonation AoE");
+        public ITrapStatBuilders Trap => new TrapStatBuildersStub();
+        public IMineStatBuilders Mine => new MineStatBuildersStub();
+        public ISkillEntityStatBuilders Totem => new TotemStatBuildersStub();
 
         public IStatBuilder ItemQuantity => CreateStat("Item Quantity");
         public IStatBuilder ItemRarity => CreateStat("Item Rarity");
@@ -95,5 +101,28 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder ChainCount => CreateStat("Projectile chain count");
         public IStatBuilder TravelDistance => CreateStat("Projectile travel distance");
+    }
+
+
+    public class TrapStatBuildersStub : ITrapStatBuilders
+    {
+        public IStatBuilder Speed => CreateStat("Trap throwing speed");
+        public IStatBuilder Duration => CreateStat("Trap duration");
+        public IStatBuilder TriggerAoE => CreateStat("Trap trigger AoE");
+    }
+
+
+    public class MineStatBuildersStub : IMineStatBuilders
+    {
+        public IStatBuilder Speed => CreateStat("Mine laying speed");
+        public IStatBuilder Duration => CreateStat("Mine duration");
+        public IStatBuilder DetonationAoE => CreateStat("Mine detonation AoE");
+    }
+
+
+    public class TotemStatBuildersStub : ISkillEntityStatBuilders
+    {
+        public IStatBuilder Speed => CreateStat("Totem placement speed");
+        public IStatBuilder Duration => CreateStat("Totem duration");
     }
 }

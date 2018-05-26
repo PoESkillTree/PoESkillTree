@@ -64,7 +64,7 @@ namespace PoESkillTree.Computation.Data
                     PercentMore,
                     // 0 to 10: Value; 10 to 35: Value to 0; 35 to 150: 0 to -Value
                     Value * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 1), (10, 1), (35, 0), (150, -1)),
-                    Damage, And(Damage.With(Source.Attack()), With(Skills[Keyword.Projectile]), Hit.On())
+                    Damage, And(Damage.With(Source.Attack()), With(Keyword.Projectile), Hit.On())
                 },
                 {
                     // Elemental Equilibrium
@@ -94,7 +94,7 @@ namespace PoESkillTree.Computation.Data
                 {
                     // Ancestral Bond
                     "you can't deal damage with skills yourself",
-                    TotalOverride, 0, Damage, Not(Or(With(Totems), With(Traps), With(Mines), With(Minions)))
+                    TotalOverride, 0, Damage, Not(Or(With(Keyword.Totem), With(Keyword.Trap), With(Keyword.Mine)))
                 },
                 // Ascendancies
                 // - Juggernaut
@@ -124,14 +124,14 @@ namespace PoESkillTree.Computation.Data
                     "far shot",
                     PercentMore,
                     30 * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
-                    Damage, And(Damage.With(Source.Attack()), With(Skills[Keyword.Projectile]))
+                    Damage, And(Damage.With(Source.Attack()), With(Keyword.Projectile))
                 },
                 {
                     // Ascendant
                     "projectiles gain damage as they travel further, dealing up to #% increased damage with hits to targets",
                     PercentIncrease,
                     Value * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
-                    Damage, And(With(Skills[Keyword.Projectile]), Hit.On())
+                    Damage, And(With(Keyword.Projectile), Hit.On())
                 },
                 // - Elementalist
                 {
@@ -199,11 +199,11 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "warcries cost no mana",
-                    TotalOverride, 0, Skills[Keyword.Warcry].Cost
+                    TotalOverride, 0, Mana.Cost, With(Keyword.Warcry)
                 },
                 {
                     "using warcries is instant",
-                    TotalOverride, double.PositiveInfinity, Skills[Keyword.Warcry].Speed
+                    TotalOverride, double.PositiveInfinity, Stat.CastSpeed, With(Keyword.Warcry)
                 },
                 // - Assassin
                 {
@@ -215,7 +215,7 @@ namespace PoESkillTree.Computation.Data
                 // - Trickster
                 {
                     "movement skills cost no mana",
-                    TotalOverride, 0, Skills[Keyword.Movement].Cost
+                    TotalOverride, 0, Mana.Cost, With(Keyword.Movement)
                 },
             };
 

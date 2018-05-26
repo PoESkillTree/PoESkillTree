@@ -1,10 +1,7 @@
-﻿using System;
-using PoESkillTree.Common.Model.Items.Enums;
-using PoESkillTree.Computation.Common.Builders;
+﻿using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
-using PoESkillTree.Computation.Common.Builders.Equipment;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -35,27 +32,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IConditionBuilder HasInstance =>
             CreateCondition(This, o => $"{o} has any instances");
 
-        public IStatBuilder Duration =>
-            CreateStat(This, o => $"{o} duration");
-
-        public IStatBuilder Cost =>
-            CreateStat(This, o => $"{o} cost");
-
-        public IStatBuilder Reservation =>
-            CreateStat(This, o => $"{o} reservation");
-
-        public IStatBuilder CooldownRecoverySpeed =>
-            CreateStat(This, o => $"{o} cooldown recovery speed");
-
-        public IStatBuilder DamageEffectiveness =>
-            CreateStat(This, o => $"{o} effectiveness of added damage");
-
-        public IStatBuilder Speed =>
-            CreateStat(This, o => $"{o} cast/attack speed");
-
-        public IStatBuilder AreaOfEffect =>
-            CreateStat(This, o => $"{o} area of effect");
-
         public ISkillBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
     }
@@ -78,41 +54,8 @@ namespace PoESkillTree.Computation.Console.Builders
                 This, keywords,
                 (o1, os) => $"{o1}.Where(has keywords [{string.Join(", ", os)}])");
 
-        public ISkillBuilderCollection this[IItemSlotBuilder slot] =>
-            (ISkillBuilderCollection) Create(
-                (s, r) => new SkillBuilderCollectionStub(s, r),
-                This, slot,
-                (o1, o2) => $"{o1}.Where(is socketed in {o2})");
-
-        public ISkillBuilderCollection Where(Func<ISkillBuilder, IConditionBuilder> predicate) =>
-            (ISkillBuilderCollection) Create(
-                (s, r) => new SkillBuilderCollectionStub(s, r),
-                This, predicate(DummyElement),
-                (o1, o2) => $"{o1}.Where({o2})");
-
         public IStatBuilder CombinedInstances =>
             CreateStat(This, o => $"{o} combined instance count");
-
-        public IStatBuilder Duration =>
-            CreateStat(This, o => $"{o} duration");
-
-        public IStatBuilder Cost =>
-            CreateStat(This, o => $"{o} cost");
-
-        public IStatBuilder Reservation =>
-            CreateStat(This, o => $"{o} reservation");
-
-        public IStatBuilder CooldownRecoverySpeed =>
-            CreateStat(This, o => $"{o} cooldown recovery speed");
-
-        public IStatBuilder DamageEffectiveness =>
-            CreateStat(This, o => $"{o} damage effectiveness");
-
-        public IStatBuilder Speed =>
-            CreateStat(This, o => $"{o} attack/cast speed");
-
-        public IStatBuilder AreaOfEffect =>
-            CreateStat(This, o => $"{o} area of effect");
 
         public IFlagStatBuilder ApplyStatsToEntity(IEntityBuilder entity) =>
             CreateFlagStat(This, entity, (o1, o2) => $"apply stats of {o1} to {o2}");
@@ -137,6 +80,8 @@ namespace PoESkillTree.Computation.Console.Builders
                 (s, r) => new SkillBuilderCollectionStub(s, r),
                 skills,
                 os => $"[{string.Join(", ", os)}]");
+
+        public ISkillBuilder MainSkill => Create("Main skill");
 
         public ISkillBuilder SummonSkeleton => Create("Summon Skeleton");
 

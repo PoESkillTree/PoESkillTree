@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Data
                 // by source
                 { "attack damage", Damage, Damage.With(Source.Attack()) },
                 { "spell damage", Damage, Damage.With(Source.Spell()) },
-                { "damage over time", Damage, Damage.With(Source.DamageOverTime()) },
+                { "damage over time", Damage, Damage.With(Source.OverTime()) },
                 // by type
                 { "({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage },
                 { "damage of a random element", RandomElement.Damage },
@@ -58,13 +58,13 @@ namespace PoESkillTree.Computation.Data
                     "({DamageTypeMatchers}) spell damage",
                     Reference.AsDamageType.Damage, Damage.With(Source.Spell())
                 },
-                { "burning damage", Fire.Damage, Damage.With(Source.DamageOverTime()) },
+                { "burning damage", Fire.Damage, Damage.With(Source.OverTime()) },
                 // other combinations
-                { "physical melee damage", Physical.Damage, With(Skills[Keyword.Melee]) },
+                { "physical melee damage", Physical.Damage, With(Keyword.Melee) },
                 { "physical weapon damage", Physical.Damage, Damage.With(Tags.Weapon) },
                 {
                     "physical projectile attack damage",
-                    Physical.Damage, And(Damage.With(Source.Attack()), With(Skills[Keyword.Projectile]))
+                    Physical.Damage, And(Damage.With(Source.Attack()), With(Keyword.Projectile))
                 },
             };
     }

@@ -21,26 +21,46 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder MovementSpeed { get; }
 
         /// <summary>
-        /// Gets a stat representing the multiplier to Self's animation speed.
+        /// Gets a stat representing the multiplier to Self's animation speed. This acts like a more modifier to all
+        /// kinds of speeds (movement, cast, trap throwing, ...).
         /// </summary>
         IStatBuilder AnimationSpeed { get; }
 
 
         /// <summary>
-        /// Gets a stat representing the main skill's range (only for skills that use the weapon's or the unarmed range)
+        /// The speed with which to cast (or attack with) the main skill
+        /// </summary>
+        IStatBuilder CastSpeed { get; }
+
+        IStatBuilder EffectivenessOfAddedDamage { get; }
+
+        /// <summary>
+        /// Gets a stat representing the main skill's area of effect. The square root of this stat is used as a
+        /// modifier to <see cref="Range"/>.
+        /// </summary>
+        IStatBuilder AreaOfEffect { get; }
+
+        /// <summary>
+        /// Gets a stat representing the main skill's range
         /// </summary>
         IStatBuilder Range { get; }
 
+        /// <summary>
+        /// The main skill's cooldown recovery speed
+        /// </summary>
+        IStatBuilder CooldownRecoverySpeed { get; }
 
         /// <summary>
-        /// Gets a stat representing the trap trigger area of effect.
+        /// The main skill's duration
         /// </summary>
-        IStatBuilder TrapTriggerAoE { get; }
+        IStatBuilder Duration { get; }
 
-        /// <summary>
-        /// Gets a stat representing the mine detonation area of effect.
-        /// </summary>
-        IStatBuilder MineDetonationAoE { get; }
+
+        ITrapStatBuilders Trap { get; }
+
+        IMineStatBuilders Mine { get; }
+
+        ISkillEntityStatBuilders Totem { get; }
 
 
         IStatBuilder ItemQuantity { get; }

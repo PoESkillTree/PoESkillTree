@@ -161,7 +161,10 @@ namespace PoESkillTree.Computation.Data
                 // charges
                 // skills
                 // traps, mines, totems
-                { "detonating mines is instant", TotalOverride, double.PositiveInfinity, Skill.DetonateMines.Speed },
+                {
+                    "detonating mines is instant", 
+                    TotalOverride, double.PositiveInfinity, Stat.CastSpeed, With(Skill.DetonateMines)
+                },
                 // minions
                 // buffs
                 {

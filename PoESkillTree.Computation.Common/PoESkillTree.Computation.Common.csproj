@@ -128,6 +128,7 @@
     <Compile Include="Builders\Stats\IProjectileStatBuilders.cs" />
     <Compile Include="Builders\Stats\IRechargeStatBuilder.cs" />
     <Compile Include="Builders\Stats\IRegenStatBuilder.cs" />
+    <Compile Include="Builders\Stats\ISkillEntityStatBuilders.cs" />
     <Compile Include="Builders\Stats\IStatBuilder.cs" />
     <Compile Include="Builders\Stats\IStatBuilders.cs" />
     <Compile Include="Builders\ValueConverter.cs" />

@@ -2520,7 +2520,6 @@ Attack Skills deal 20% increased Damage with Ailments while holding a Shield
 +10 to Dexterity
 +20 to Dexterity and Intelligence
 Can Allocate Passives from the Shadow's starting point
-Skills in your Helm can have up to 1 additional Totem Summoned at a time
 25% increased maximum Mana
 Gain 10% of Maximum Mana as Extra Maximum Energy Shield
 50% chance to gain a Power Charge when you place a Totem
@@ -2591,9 +2590,6 @@ Can have up to 2 additional Totems summoned at a time
 7% less Totem Damage per Totem
 6% increased Damage per Enemy Killed by you or your Totems Recently
 10% increased Attack and Cast Speed while you have a Totem
-Skills from your Helmet Penetrate 20% Elemental Resistances
-Skills from your Gloves have 40% increased Area of Effect
-Skills from your Boots Leech 2% of Damage as Life
 20% increased Mana Regeneration Rate
 10% increased Area Damage
 20% increased Mana Regeneration Rate

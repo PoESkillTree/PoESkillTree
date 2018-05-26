@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         public static IDamageSourceBuilder Secondary(this IDamageSourceBuilders @this) => 
             @this.From(DamageSource.Secondary);
         
-        public static IDamageSourceBuilder DamageOverTime(this IDamageSourceBuilders @this) => 
-            @this.From(DamageSource.DamageOverTime);
+        public static IDamageSourceBuilder OverTime(this IDamageSourceBuilders @this) => 
+            @this.From(DamageSource.OverTime);
     }
 }
