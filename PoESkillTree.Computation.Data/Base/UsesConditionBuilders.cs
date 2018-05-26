@@ -1,4 +1,5 @@
 using System.Linq;
+using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -46,5 +47,8 @@ namespace PoESkillTree.Computation.Data.Base
         /// Returns a condition that is satisfied if the given condition is not satisfied.
         /// </summary>
         protected static IConditionBuilder Not(IConditionBuilder condition) => condition.Not;
+
+        protected IConditionBuilder EitherHandHas(Tags tags) =>
+            Or(MainHand.Has(tags), OffHand.Has(tags));
     }
 }
