@@ -10,5 +10,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// speed mods) should be ignored.
         /// </summary>
         IFlagStatBuilder IgnoreMovementSpeedPenalties { get; }
+
+        IFlagStatBuilder ShieldModifiersApplyToMinionsInstead { get; }
     }
 }

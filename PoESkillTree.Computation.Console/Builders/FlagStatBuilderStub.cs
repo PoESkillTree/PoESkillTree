@@ -24,5 +24,8 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IFlagStatBuilder IgnoreMovementSpeedPenalties =>
             Create("Ignore movement speed penalties from equipped armor");
+
+        public IFlagStatBuilder ShieldModifiersApplyToMinionsInstead =>
+            Create("Modifiers on an equipped shield apply to your minions instead");
     }
 }

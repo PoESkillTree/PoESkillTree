@@ -75,8 +75,7 @@ namespace PoESkillTree.Computation.Data
                 {
                     // Necromantic Aegis
                     "all bonuses from an equipped shield apply to your minions instead of you",
-                    (TotalOverride, 1, OffHand.AppliesToMinions, OffHand.Has(Tags.Shield)),
-                    (TotalOverride, 0, OffHand.AppliesToSelf, OffHand.Has(Tags.Shield))
+                    TotalOverride, 1, Flag.ShieldModifiersApplyToMinionsInstead
                 },
                 {
                     // Perfect Agony
