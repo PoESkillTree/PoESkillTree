@@ -1,3 +1,4 @@
+using System.Linq;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
@@ -43,5 +44,13 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         /// skill with the keyword <paramref name="keyword"/>.
         /// </summary>
         IBuffBuilderCollection Without(IKeywordBuilder keyword);
+    }
+
+
+    public static class BuffBuilderCollectionExtensions
+    {
+        public static IBuffBuilderCollection With(
+            this IBuffBuilderCollection @this, params IKeywordBuilder[] keywords) =>
+            keywords.Aggregate(@this, (c, k) => c.With(k));
     }
 }

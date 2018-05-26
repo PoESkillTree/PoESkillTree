@@ -86,7 +86,6 @@
     <Compile Include="Builders\Entities\IEnemyBuilder.cs" />
     <Compile Include="Builders\Entities\IEntityBuilder.cs" />
     <Compile Include="Builders\Entities\IEntityBuilders.cs" />
-    <Compile Include="Builders\Entities\ISkillEntityBuilder.cs" />
     <Compile Include="Builders\Equipment\IEquipmentBuilder.cs" />
     <Compile Include="Builders\Equipment\IEquipmentBuilderCollection.cs" />
     <Compile Include="Builders\Equipment\IEquipmentBuilders.cs" />

@@ -33,12 +33,12 @@
         /// <summary>
         /// Gets an entity representing all of Self's totems.
         /// </summary>
-        ISkillEntityBuilder Totem { get; }
+        IEntityBuilder Totem { get; }
 
         /// <summary>
         /// Gets an entity representing all of Self's minions.
         /// </summary>
-        ISkillEntityBuilder Minion { get; }
+        IEntityBuilder Minion { get; }
 
         /// <summary>
         /// Gets an entity representing every entity.

@@ -2,6 +2,7 @@
 using System.Linq;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -196,10 +197,10 @@ namespace PoESkillTree.Computation.Data
                 { "chance to gain ({BuffMatchers})", Reference.AsBuff.ChanceOn(Self) },
                 { "({BuffMatchers}) duration", Reference.AsBuff.Duration },
                 { "({BuffMatchers}) effect", Reference.AsBuff.Effect },
-                { "effect of buffs granted by your golems", Buffs(Entity.Minion.With(Keyword.Golem)).Effect },
+                { "effect of buffs granted by your golems", Buffs(Entity.Minion).With(Keyword.Golem).Effect },
                 {
                     "effect of buffs granted by your elemental golems",
-                    Buffs(Entity.Minion.With(Keyword.Golem, Elemental)).Effect
+                    Buffs(Entity.Minion).With(Keyword.Golem, Elemental).Effect
                 },
                 { "effect of your curses", Buffs(Self).With(Keyword.Curse).Effect },
                 { "effect of curses on you", Buffs(target: Self).With(Keyword.Curse).Effect },

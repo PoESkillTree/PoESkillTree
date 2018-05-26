@@ -1,7 +1,6 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
@@ -33,9 +32,9 @@ namespace PoESkillTree.Computation.Console.Builders
         public IEntityBuilder Ally => new EntityBuilderStub("Ally", (c, _) => c);
         public IEntityBuilder ModifierSource => new EntityBuilderStub("Modifier Source", (c, _) => c);
 
-        public ISkillEntityBuilder Totem => new SkillEntityBuilderStub("Totem", (c, _) => c);
+        public IEntityBuilder Totem => new EntityBuilderStub("Totem", (c, _) => c);
 
-        public ISkillEntityBuilder Minion => new SkillEntityBuilderStub("Minion", (c, _) => c);
+        public IEntityBuilder Minion => new EntityBuilderStub("Minion", (c, _) => c);
 
         public IEntityBuilder Any => EntityBuilderStub.Any();
     }
@@ -59,34 +58,5 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IConditionBuilder IsRareOrUnique =>
             CreateCondition(This, o => $"{o} is rare or unique");
-    }
-
-
-    public class SkillEntityBuilderStub : EntityBuilderStub, ISkillEntityBuilder
-    {
-        public SkillEntityBuilderStub(string stringRepresentation,
-            Resolver<IEntityBuilder> resolver)
-            : base(stringRepresentation, resolver)
-        {
-        }
-
-        private static IEntityBuilder Construct(string stringRepresentation,
-            Resolver<IEntityBuilder> resolver)
-            => new SkillEntityBuilderStub(stringRepresentation, resolver);
-
-        public ISkillEntityBuilder With(IKeywordBuilder keyword) =>
-            (ISkillEntityBuilder) Create(
-                Construct, This, keyword,
-                (o1, o2) => $"{o1} with {o2}");
-
-        public ISkillEntityBuilder With(params IKeywordBuilder[] keywords) =>
-            (ISkillEntityBuilder) Create(
-                Construct, This, keywords,
-                (o1, os) => $"{o1} with ({string.Join(", ", os)})");
-
-        public ISkillEntityBuilder From(ISkillBuilder skill) =>
-            (ISkillEntityBuilder) Create(
-                Construct, This, skill,
-                (o1, o2) => $"{o1} from {o2}");
     }
 }

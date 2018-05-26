@@ -23,6 +23,9 @@ namespace PoESkillTree.Computation.Data.Base
 
         protected IConditionBuilder With(IKeywordBuilder keyword) => Condition.With(keyword);
 
+        protected IConditionBuilder With(IKeywordBuilder keyword, params IKeywordBuilder[] keywords) =>
+            And(With(keyword), keywords.Select(With).ToArray());
+
         protected IConditionBuilder With(ISkillBuilder skill) => Condition.With(skill);
 
         protected IConditionBuilder For(params IEntityBuilder[] targets) => Condition.For(targets);

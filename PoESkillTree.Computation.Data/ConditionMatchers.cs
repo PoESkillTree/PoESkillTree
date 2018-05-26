@@ -253,7 +253,7 @@ namespace PoESkillTree.Computation.Data
                 { "totems (gain|have)", For(Entity.Totem) },
                 { "totems fire", With(Keyword.Totem) },
                 { "(spells cast|attacks used|skills used) by totems (have a|have)", With(Keyword.Totem) },
-                { "of totem skills that cast an aura", And(With(Keyword.Totem), With(Keyword.Aura)) },
+                { "of totem skills that cast an aura", With(Keyword.Totem, Keyword.Aura) },
                 { "while you have a totem", Totems.Any(s => s.HasInstance) },
                 { "if you've summoned a totem recently", Totems.Cast.Recently },
                 { "when you place a totem", Totems.Cast.On() },
@@ -261,9 +261,9 @@ namespace PoESkillTree.Computation.Data
                 { "minions", For(Entity.Minion) },
                 { "minions (deal|have|gain)", For(Entity.Minion) },
                 { "you and your minions have", For(Entity.Minion, Entity.ModifierSource) },
-                { "golem", For(Entity.Minion.With(Keyword.Golem)) },
-                { "golems have", For(Entity.Minion.With(Keyword.Golem)) },
-                { "spectres have", For(Entity.Minion.From(Skill.RaiseSpectre)) },
+                { "golem", And(For(Entity.Minion), With(Keyword.Golem)) },
+                { "golems have", And(For(Entity.Minion), With(Keyword.Golem)) },
+                { "spectres have", And(For(Entity.Minion), With(Skill.RaiseSpectre)) },
                 {
                     // Technically this would be separate for each minion summoned by that skill, but DPS will 
                     // only be calculated for a single minion anyway.
