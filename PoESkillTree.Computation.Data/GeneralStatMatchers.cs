@@ -246,8 +246,8 @@ namespace PoESkillTree.Computation.Data
                 { "rarity of items found", Stat.ItemRarity },
                 // range and area of effect
                 { "area of effect", Stat.AreaOfEffect },
-                { "melee weapon and unarmed range", Stat.Range, Not(MainHand.Has(Tags.Ranged)) },
-                { "melee weapon range", Stat.Range, And(MainHand.Has(Tags.Weapon), Not(MainHand.Has(Tags.Ranged))) },
+                { "melee weapon and unarmed range", Stat.Range, With(Keyword.Melee) },
+                { "melee weapon range", Stat.Range, And(With(Keyword.Melee), MainHand.HasItem) },
                 // other
                 { "rampage stacks", Stat.RampageStacks },
                 { "chance to knock enemies back", Effect.Knockback.ChanceOn(Enemy) },
