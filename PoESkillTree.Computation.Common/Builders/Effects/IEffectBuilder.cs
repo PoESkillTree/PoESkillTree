@@ -24,9 +24,6 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         /// <summary>
         /// Returns a condition that is satisfied if <paramref name="target"/> is currently affected by this effect.
         /// </summary>
-        /// <remarks>
-        /// Equivalent to <c>On(target).IsSet</c>
-        /// </remarks>
         IConditionBuilder IsOn(IEntityBuilder target);
 
         /// <summary>

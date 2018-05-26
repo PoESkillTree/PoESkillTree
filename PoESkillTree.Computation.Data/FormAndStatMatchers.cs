@@ -165,7 +165,11 @@ namespace PoESkillTree.Computation.Data
                 // minions
                 // buffs
                 {
-                    "(?<!while |chance to )(you have|gain) ({BuffMatchers})",
+                    "(?<!while |chance to )you have ({BuffMatchers})",
+                    TotalOverride, 1, Reference.AsBuff.NotAsBuffOn(Self)
+                },
+                {
+                    "(?<!while |chance to )gain ({BuffMatchers})",
                     TotalOverride, 1, Reference.AsBuff.On(Self)
                 },
                 {

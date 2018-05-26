@@ -18,6 +18,9 @@ namespace PoESkillTree.Computation.Console.Builders
         {
         }
 
+        public IFlagStatBuilder NotAsBuffOn(IEntityBuilder target) =>
+            CreateFlagStat(This, target, (o1, o2) => $"Apply {o1} to {o2} (not as buff)");
+
         public IStatBuilder Effect => CreateStat(This, o => $"Effect of {o}");
 
         public IActionBuilder Action =>
