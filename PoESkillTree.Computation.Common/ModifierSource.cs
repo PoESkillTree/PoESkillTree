@@ -169,17 +169,5 @@ namespace PoESkillTree.Computation.Common
                 }
             }
         }
-
-
-        // Not quite sure yet, probably necessary to allow separate calculations between damage over time directly from
-        // skills and from ailments.
-        // This might need to be further differentiated by ailment type: Poison, Bleed or Ignite.
-        // Inheriting the source from the original Hit type damage might also be necessary.
-        public sealed class Ailment : ModifierSource
-        {
-            public Ailment() : base(new Global())
-            {
-            }
-        }
     }
 }

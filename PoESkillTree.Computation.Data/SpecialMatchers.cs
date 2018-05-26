@@ -113,11 +113,11 @@ namespace PoESkillTree.Computation.Data
                 // - Chieftain
                 {
                     "totems are immune to fire damage",
-                    TotalOverride, 100, Fire.Resistance, For(Entity.Totem)
+                    TotalOverride, 100, Fire.Resistance.For(Entity.Totem)
                 },
                 {
                     "totems have #% of your armour",
-                    BaseAdd, Value.AsPercentage * Entity.ModifierSource.Stat(Armour).Value, Armour, For(Entity.Totem)
+                    BaseAdd, Value.AsPercentage * Armour.For(Entity.ModifierSource).Value, Armour.For(Entity.Totem)
                 },
                 // - Deadeye
                 {
@@ -140,7 +140,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "your elemental golems are immune to elemental damage",
-                    TotalOverride, 100, Elemental.Resistance, For(Entity.Minion.With(Keyword.Golem, Elemental))
+                    TotalOverride, 100, Elemental.Resistance.For(Entity.Minion.With(Keyword.Golem, Elemental))
                 },
                 {
                     "every # seconds: " +
@@ -227,9 +227,9 @@ namespace PoESkillTree.Computation.Data
                 IConditionBuilder EnemyHitBy(IDamageTypeBuilder damageType) =>
                     Hit.With(damageType).Against(Enemy).InPastXSeconds(ValueFactory.Create(5));
 
-                yield return (BaseAdd, Values[0], Enemy.Stat(type.Resistance),
+                yield return (BaseAdd, Values[0], type.Resistance.For(Enemy),
                     EnemyHitBy(type));
-                yield return (BaseSubtract, Values[1], Enemy.Stat(type.Resistance),
+                yield return (BaseSubtract, Values[1], type.Resistance.For(Enemy),
                     And(Not(EnemyHitBy(type)), EnemyHitBy(Elemental.Except(type))));
             }
         }

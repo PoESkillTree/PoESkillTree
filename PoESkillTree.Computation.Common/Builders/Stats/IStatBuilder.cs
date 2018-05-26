@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
 
@@ -49,6 +50,12 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// (at <paramref name="percentOfTheirValue"/> percent of their value).
         /// </summary>
         IFlagStatBuilder ApplyModifiersTo(IStatBuilder stat, IValueBuilder percentOfTheirValue);
+
+        /// <summary>
+        /// Applies this stat to <paramref name="entity"/> instead of the currently modified entity.
+        /// See <see cref="IConditionBuilders.For"/> for more information.
+        /// </summary>
+        IStatBuilder For(IEntityBuilder entity);
 
         /// <summary>
         /// Gets a stat representing the chance to double this stat's value (does not make sense without an action

@@ -15,6 +15,10 @@ namespace PoESkillTree.Computation.Console.Builders
         {
         }
 
+        public new IPoolStatBuilder For(IEntityBuilder entity) =>
+            (IPoolStatBuilder) Create((s, r) => new PoolStatBuilderStub(s, r),
+                This, entity, (o1, o2) => $"{o1} for {o2}");
+
         public IRegenStatBuilder Regen =>
             (IRegenStatBuilder) Create(
                 (s, r) => new RegenStatBuilderStub(s, r),

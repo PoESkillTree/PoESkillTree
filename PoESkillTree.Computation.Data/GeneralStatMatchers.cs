@@ -102,7 +102,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "damage dealt by your totems is leeched to you as life",
-                    Life.Leech.To(Entity.ModifierSource).Of(Damage), For(Entity.Totem)
+                    Life.Leech.To(Entity.ModifierSource).Of(Damage).For(Entity.Totem)
                 },
                 { "({PoolStatMatchers}) leeched per second", Reference.AsPoolStat.Leech.Rate },
                 // - block
@@ -182,7 +182,7 @@ namespace PoESkillTree.Computation.Data
                 { "trap throwing speed", Stat.Trap.Speed },
                 { "mine laying speed", Stat.Mine.Speed },
                 { "totem placement speed", Stat.Totem.Speed },
-                { "totem life", Life, For(Entity.Totem) },
+                { "totem life", Life.For(Entity.Totem) },
                 // minions
                 {
                     "maximum number of skeletons",
@@ -224,9 +224,9 @@ namespace PoESkillTree.Computation.Data
                 { "stun and block recovery", Effect.Stun.Recovery, Block.Recovery },
                 { "block recovery", Block.Recovery },
                 { "stun threshold", Effect.Stun.Threshold },
-                { "enemy stun threshold", Enemy.Stat(Effect.Stun.Threshold) },
-                { "stun duration( on enemies)?", Enemy.Stat(Effect.Stun.Duration) },
-                { "stun duration (?<inner>with .*) on enemies", Enemy.Stat(Effect.Stun.Duration), "${inner}" },
+                { "enemy stun threshold", Effect.Stun.Threshold.For(Enemy) },
+                { "stun duration( on enemies)?", Effect.Stun.Duration },
+                { "stun duration (?<inner>with .*) on enemies", Effect.Stun.Duration, "${inner}" },
                 {
                     "chance to avoid interruption from stuns while casting",
                     Effect.Stun.ChanceToAvoidInterruptionWhileCasting

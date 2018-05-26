@@ -4,6 +4,7 @@ using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
@@ -38,6 +39,9 @@ namespace PoESkillTree.Computation.Console.Builders
             IValueBuilder percentOfTheirValue) =>
             CreateFlagStat(This, stat, percentOfTheirValue,
                 (o1, o2, o3) => $"Modifiers to {o1} apply to {o2} at {o3}% of their value");
+
+        public IStatBuilder For(IEntityBuilder entity) =>
+            CreateStat(This, entity, (o1, o2) => $"{o1} for {o2}");
 
         public IStatBuilder ChanceToDouble =>
             CreateStat(This, o => $"Chance to double {o}");

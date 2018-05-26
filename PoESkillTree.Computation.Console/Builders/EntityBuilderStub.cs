@@ -2,7 +2,6 @@
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
-using PoESkillTree.Computation.Common.Builders.Stats;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
@@ -21,18 +20,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public static EntityBuilderStub Any() => new EntityBuilderStub("Any Entity", (c, _) => c);
 
         protected IEntityBuilder This => this;
-
-        public IDamageStatBuilder Stat(IDamageStatBuilder stat) =>
-            CreateDamageStat(This, (IStatBuilder) stat, (o1, o2) => $"{o2} for {o1}");
-
-        public IFlagStatBuilder Stat(IFlagStatBuilder stat) =>
-            CreateFlagStat(This, (IStatBuilder) stat, (o1, o2) => $"{o2} for {o1}");
-
-        public IPoolStatBuilder Stat(IPoolStatBuilder stat) =>
-            CreatePoolStat(This, (IStatBuilder) stat, (o1, o2) => $"{o2} for {o1}");
-
-        public IStatBuilder Stat(IStatBuilder stat) =>
-            CreateStat(This, stat, (o1, o2) => $"{o2} for {o1}");
 
         public IEntityBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);

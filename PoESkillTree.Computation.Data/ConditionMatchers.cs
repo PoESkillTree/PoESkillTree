@@ -167,8 +167,8 @@ namespace PoESkillTree.Computation.Data
                 // - other
                 { "if you have # primordial jewels,", Stat.PrimordialJewelsSocketed.Value >= Value },
                 // - on enemy
-                { "(against enemies )?that are on low life", Enemy.Stat(Life).IsLow },
-                { "(against enemies )?that are on full life", Enemy.Stat(Life).IsFull },
+                { "(against enemies )?that are on low life", Life.For(Enemy).IsLow },
+                { "(against enemies )?that are on full life", Life.For(Enemy).IsFull },
                 { "against rare and unique enemies", Enemy.IsRareOrUnique },
                 // buffs
                 { "while you have ({BuffMatchers})", Reference.AsBuff.IsOn(Self) },

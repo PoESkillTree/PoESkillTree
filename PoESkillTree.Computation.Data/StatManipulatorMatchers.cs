@@ -42,10 +42,10 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "nearby enemies (have|deal)", s => Buff.Aura(s, Enemy) },
                 { "nearby enemies take", (IDamageStatBuilder s) => Buff.Aura(s.Taken, Enemy) },
-                { "enemies near your totems (have|deal)", s => Entity.Totem.Stat(Buff.Aura(s, Enemy)) },
+                { "enemies near your totems (have|deal)", s => Buff.Aura(s, Enemy).For(Entity.Totem) },
                 {
                     "enemies near your totems take",
-                    (IDamageStatBuilder s) => Entity.Totem.Stat(Buff.Aura(s.Taken, Enemy))
+                    (IDamageStatBuilder s) => Buff.Aura(s.Taken, Enemy).For(Entity.Totem)
                 },
                 // Keep whole mod line, take is part of the condition matcher
                 { "enemies .+ take", (IDamageStatBuilder s) => s.Taken, "$0" },

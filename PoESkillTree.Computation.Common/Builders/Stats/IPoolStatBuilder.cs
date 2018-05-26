@@ -1,4 +1,5 @@
 using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Entities;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
@@ -12,6 +13,12 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     /// </remarks>
     public interface IPoolStatBuilder : IStatBuilder
     {
+        /// <summary>
+        /// Applies this stat to <paramref name="entity"/> instead of the currently modified entity.
+        /// See <see cref="IConditionBuilders.For"/> for more information.
+        /// </summary>
+        new IPoolStatBuilder For(IEntityBuilder entity);
+
         /// <summary>
         /// Gets a stat representing the regeneration value of this pool.
         /// </summary>
