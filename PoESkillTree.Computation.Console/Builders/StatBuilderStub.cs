@@ -46,12 +46,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder ChanceToDouble =>
             CreateStat(This, o => $"Chance to double {o}");
 
-        public IBuffBuilder AsBuff =>
-            (IBuffBuilder) Create<IEffectBuilder, IStatBuilder>(
-                (s, r) => new BuffBuilderStub(s, r),
-                This,
-                o => $"{o} as Buff");
-
         public IFlagStatBuilder AsAura(params IEntityBuilder[] affectedEntities) =>
             CreateFlagStat(This, affectedEntities,
                 (o1, os) => $"{o1} as Aura affecting [{string.Join(", ", os)}]");

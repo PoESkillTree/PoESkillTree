@@ -148,12 +148,7 @@ namespace PoESkillTree.Computation.Data
                     "gain shocking conflux for # seconds " +
                     "gain igniting conflux for # seconds " +
                     "gain chilling, shocking and igniting conflux for # seconds",
-                    TotalOverride, 1, Buff.Rotation(Values[0])
-                        .Step(Values[1], Buff.Conflux.Chilling)
-                        .Step(Values[2], Buff.Conflux.Shocking)
-                        .Step(Values[3], Buff.Conflux.Igniting)
-                        .Step(Values[4], Buff.Conflux.Chilling, Buff.Conflux.Igniting,
-                            Buff.Conflux.Shocking)
+                    ShaperOfDesolation()
                 },
                 {
                     "for each element you've been hit by damage of recently, " +
@@ -246,6 +241,34 @@ namespace PoESkillTree.Computation.Data
             {
                 yield return (PercentIncrease, Value, type.Damage, Golems[type].Any(s => s.HasInstance));
             }
+        }
+
+        private (IFormBuilder form, double value, IStatBuilder stat, IConditionBuilder condition)[]
+            ShaperOfDesolation()
+        {
+            var stats = new IStatBuilder[]
+            {
+                Buff.Temporary(Values[0], Values[1], Buff.Conflux.Chilling, ShaperOfDesolationStep.Chilling),
+                Buff.Temporary(Values[0], Values[2], Buff.Conflux.Shocking, ShaperOfDesolationStep.Shocking),
+                Buff.Temporary(Values[0], Values[3], Buff.Conflux.Igniting, ShaperOfDesolationStep.Igniting),
+                Buff.Temporary(Values[0], Values[4], Buff.Conflux.Chilling, ShaperOfDesolationStep.All),
+                Buff.Temporary(Values[0], Values[4], Buff.Conflux.Shocking, ShaperOfDesolationStep.All),
+                Buff.Temporary(Values[0], Values[4], Buff.Conflux.Igniting, ShaperOfDesolationStep.All),
+            };
+
+            return (
+                from stat in stats
+                select (TotalOverride, 1.0, stat, Condition.True)
+            ).ToArray();
+        }
+
+        public enum ShaperOfDesolationStep
+        {
+            None,
+            Chilling,
+            Shocking,
+            Igniting,
+            All
         }
 
         private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat, IConditionBuilder condition)>

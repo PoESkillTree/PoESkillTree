@@ -1,3 +1,4 @@
+using System;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -66,15 +67,20 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         IBuffBuilder Curse(ISkillBuilder skill, IValueBuilder level);
 
         /// <summary>
-        /// Returns a buff factory that can be used to create a buff rotation through different buffs with a total
-        /// duration of <paramref name="duration"/> seconds.
+        /// Returns a flag stat indicating whether Self currently gains <paramref name="gainedStat"/> as a buff from
+        /// Self. Self gains the buff every <paramref name="period"/> seconds for <paramref name="uptime"/> seconds.
+        /// <para> Whether the buff is currently active needs to be selected by the user. </para>
         /// </summary>
-        /// <remarks>
-        /// Buff rotations originate from Self and target Self.
-        /// <para> The currently active step in the rotation will need to be selected by the user.
-        /// </para>
-        /// </remarks>
-        IBuffRotation Rotation(IValueBuilder duration);
+        IFlagStatBuilder Temporary(IValueBuilder period, IValueBuilder uptime, IStatBuilder gainedStat);
+
+        /// <summary>
+        /// Returns a flag stat indicating whether Self currently gains <paramref name="buff"/> from
+        /// Self. Self gains the buff every <paramref name="period"/> seconds for <paramref name="uptime"/> seconds.
+        /// <para> The buff is part of a buff rotation and is active when the current step is
+        /// <paramref name="condition"/>. The current step needs to be selected by the user. </para>
+        /// </summary>
+        IFlagStatBuilder Temporary<T>(IValueBuilder period, IValueBuilder uptime, IBuffBuilder buff, T condition) 
+            where T: struct, Enum;
 
         /// <summary>
         /// Returns a collection of all buffs that currently affect <paramref name="target"/> and originate from
@@ -109,20 +115,5 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         /// Gets a buff representing Elemental Conflux.
         /// </summary>
         IBuffBuilder Elemental { get; }
-    }
-
-
-    /// <summary>
-    /// Factory for buff rotations. Buff rotations are stats whose value indicates that the entity with the stat is
-    /// affected by the buff rotation.
-    /// </summary>
-    public interface IBuffRotation : IFlagStatBuilder
-    {
-        /// <summary>
-        /// Returns a new buff rotation that is created by adding a new step to this buff rotation.
-        /// </summary>
-        /// <param name="duration">The duration of the new step.</param>
-        /// <param name="buffs">The buffs gained while the new step is active.</param>
-        IBuffRotation Step(IValueBuilder duration, params IBuffBuilder[] buffs);
     }
 }

@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Common
         bool IsRegisteredExplicitly { get; }
 
         /// <summary>
-        /// The type of this stat's values. Can be double, int or bool (0 or 1).
+        /// The type of this stat's values. Can be double, int, bool (0 or 1) or an enum type.
         /// The value range is determined by Minimum and Maximum (which have the same DataType).
         /// </summary>
         Type DataType { get; }

@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "every # seconds, gain (?<inner>.*) for # seconds",
-                    s => Buff.Rotation(Values.First).Step(Values.Last, s.AsBuff), "${inner}"
+                    s => Buff.Temporary(Values.First, Values.Last, s), "${inner}"
                 },
                 { "nearby enemies (have|deal)", s => s.AsAura(Enemy) },
                 { "nearby enemies take", (IDamageStatBuilder s) => s.Taken.AsAura(Enemy) },

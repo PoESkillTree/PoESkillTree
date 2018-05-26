@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders;
+﻿using System;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Effects;
@@ -84,10 +85,15 @@ namespace PoESkillTree.Computation.Console.Builders
                 skill, level,
                 (o1, o2) => $"Curse with level {o2} {o1}");
 
-        public IBuffRotation Rotation(IValueBuilder duration) =>
-            (IBuffRotation) Create<IStatBuilder, IValueBuilder>(
-                (s, r) => new BuffRotation(s, r),
-                duration, o => $"Buff rotation for {o} seconds");
+        public IFlagStatBuilder Temporary(IValueBuilder period, IValueBuilder uptime, IStatBuilder gainedStat) =>
+            CreateFlagStat(period, uptime, gainedStat,
+                (o1, o2, o3) => $"Every {o1} seconds, gain {o3} for {o2} seconds");
+
+        public IFlagStatBuilder Temporary<T>(IValueBuilder period, IValueBuilder uptime, IBuffBuilder buff, T condition)
+            where T : struct, Enum =>
+            CreateFlagStat(period, uptime, (IEffectBuilder) buff,
+                (o1, o2, o3) => $"Every {o1} seconds, gain {o3} for {o2} seconds " +
+                                $"(as part of the rotation {typeof(T)} when {condition})");
 
         public IBuffBuilderCollection Buffs(IEntityBuilder source = null, IEntityBuilder target = null)
         {
@@ -123,21 +129,6 @@ namespace PoESkillTree.Computation.Console.Builders
             public IBuffBuilder Chilling => Create("Chilling Conflux");
 
             public IBuffBuilder Elemental => Create("Elemental Conflux");
-        }
-
-
-        private class BuffRotation : FlagStatBuilderStub, IBuffRotation
-        {
-            public BuffRotation(string stringRepresentation, Resolver<IStatBuilder> resolver)
-                : base(stringRepresentation, resolver)
-            {
-            }
-
-            public IBuffRotation Step(IValueBuilder duration, params IBuffBuilder[] buffs) =>
-                (IBuffRotation) Create<IStatBuilder, IValueBuilder, IEffectBuilder>(
-                    (s, r) => new BuffRotation(s, r),
-                    this, duration, buffs,
-                    (o1, o2, o3) => $"{o1} {{ {string.Join(", ", o3)} for {o2} seconds }}");
         }
     }
 }

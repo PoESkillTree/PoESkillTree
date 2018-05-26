@@ -60,17 +60,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IStatBuilder ChanceToDouble { get; }
 
-        // For Buffs and Auras: some conditions apply to this stat (e.g. the "Attack" from "Attack Speed"), others 
-        // specify whether the buff/aura is granted (e.g. "if you've Blocked Recently"). It has to be decided at some 
-        // point which conditions do and which don't. That point must be before the conditions are combined into one.
-        // Probably as a property inherent in conditions, i.e. decided on condition construction.
-
-        /// <summary>
-        /// Gets a buff that modifies this stat. If the buff is not permanent, the duration will be specified elsewhere,
-        /// e.g. as part of a buff rotation.
-        /// </summary>
-        IBuffBuilder AsBuff { get; }
-
         /// <summary>
         /// Returns an aura affecting the given entities that modifies these stats.
         /// </summary>
