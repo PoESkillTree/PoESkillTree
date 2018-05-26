@@ -79,7 +79,7 @@
     <Compile Include="DamageTypeMatchers.cs" />
     <Compile Include="Collections\EffectStatCollection.cs" />
     <Compile Include="EffectStats.cs" />
-    <Compile Include="FlagMatchers.cs" />
+    <Compile Include="BuffMatchers.cs" />
     <Compile Include="Collections\FlagStatCollection.cs" />
     <Compile Include="FormAndStatMatchers.cs" />
     <Compile Include="FormMatchers.cs" />

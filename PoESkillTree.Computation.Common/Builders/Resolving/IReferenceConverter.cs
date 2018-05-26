@@ -1,4 +1,5 @@
 using PoESkillTree.Computation.Common.Builders.Actions;
+using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Charges;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
@@ -30,11 +31,11 @@ namespace PoESkillTree.Computation.Common.Builders.Resolving
 
         IStatBuilder AsStat { get; }
 
-        IFlagStatBuilder AsFlagStat { get; }
-
         IPoolStatBuilder AsPoolStat { get; }
 
         IDamageStatBuilder AsDamageStat { get; }
+
+        IBuffBuilder AsBuff { get; }
 
         ISkillBuilder AsSkill { get; }
     }

@@ -72,8 +72,11 @@ namespace PoESkillTree.Computation.Console.Builders
         public IBuffBuilder Intimidate => Create("Intimidate");
         public IBuffBuilder Taunt => Create("Taunt");
         public IBuffBuilder Blind => Create("Blind");
+        public IBuffBuilder Onslaught => Create("Onslaught");
+        public IBuffBuilder UnholyMight => Create("UnholyMight");
+        public IBuffBuilder Phasing => Create("Phasing");
 
-        public IConfluxBuffBuilderFactory Conflux => new ConfluxBuffBuilderFactory();
+        public IConfluxBuffBuilders Conflux => new ConfluxBuffBuilders();
 
         public IBuffBuilder Curse(ISkillBuilder skill, IValueBuilder level) =>
             (IBuffBuilder) Create<IEffectBuilder, ISkillBuilder, IValueBuilder>(
@@ -111,7 +114,7 @@ namespace PoESkillTree.Computation.Console.Builders
         }
 
 
-        private class ConfluxBuffBuilderFactory : IConfluxBuffBuilderFactory
+        private class ConfluxBuffBuilders : IConfluxBuffBuilders
         {
             public IBuffBuilder Igniting => Create("Igniting Conflux");
 

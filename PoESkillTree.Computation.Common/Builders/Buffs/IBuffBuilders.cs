@@ -36,9 +36,24 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         IBuffBuilder Blind { get; }
 
         /// <summary>
+        /// Gets a buff representing Onslaught.
+        /// </summary>
+        IBuffBuilder Onslaught { get; }
+
+        /// <summary>
+        /// Gets a buff representing Unholy Might.
+        /// </summary>
+        IBuffBuilder UnholyMight { get; }
+
+        /// <summary>
+        /// Gets a buff representing Phasing.
+        /// </summary>
+        IBuffBuilder Phasing { get; }
+
+        /// <summary>
         /// Gets a buff factory that creates Conflux buffs.
         /// </summary>
-        IConfluxBuffBuilderFactory Conflux { get; }
+        IConfluxBuffBuilders Conflux { get; }
 
         // TODO this probably needs changes when other skills from items are added
         /// <summary>
@@ -73,7 +88,7 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
     /// <summary>
     /// Factory for Conflux buffs.
     /// </summary>
-    public interface IConfluxBuffBuilderFactory
+    public interface IConfluxBuffBuilders
     {
         /// <summary>
         /// Gets a buff representing Igniting Conflux.

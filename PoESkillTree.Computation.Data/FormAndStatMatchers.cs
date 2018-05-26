@@ -165,6 +165,10 @@ namespace PoESkillTree.Computation.Data
                 // minions
                 // buffs
                 {
+                    "(?<!while |chance to )(you have|gain) ({BuffMatchers})",
+                    TotalOverride, 1, Reference.AsBuff.On(Self)
+                },
+                {
                     "you can have one additional curse", 
                     BaseAdd, 1, Buffs(target: Self).With(Keyword.Curse).CombinedLimit
                 },
@@ -173,14 +177,12 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value, Buffs(target: Enemy).With(Keyword.Curse).CombinedLimit
                 },
                 { "grants fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
-                { "(?<!while )you have fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
                 {
                     "curse enemies with level # ({SkillMatchers})",
                     TotalOverride, 1, Buff.Curse(skill: Reference.AsSkill, level: Value).On(Enemy)
                 },
                 { "gain elemental conflux", TotalOverride, 1, Buff.Conflux.Elemental.On(Self) },
                 // flags
-                { "(?<!while |chance to )(you have|gain) ({FlagMatchers})", TotalOverride, 1, Reference.AsFlagStat },
                 // ailments
                 { "causes bleeding", TotalOverride, 100, Ailment.Bleed.Chance },
                 { "always poison", TotalOverride, 100, Ailment.Poison.Chance },

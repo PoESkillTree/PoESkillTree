@@ -108,7 +108,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "armour received from body armour is doubled",
-                    PercentMore, 100, Armour, Condition.BaseValueComesFrom(Equipment[ItemSlot.BodyArmour])
+                    PercentMore, 100, Armour, Condition.BaseValueComesFrom(ItemSlot.BodyArmour)
                 },
                 // - Chieftain
                 {

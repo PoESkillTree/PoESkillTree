@@ -1,4 +1,5 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Actions;
+using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Charges;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
@@ -29,9 +30,9 @@ namespace PoESkillTree.Computation.Parsing.Referencing
         public IItemSlotBuilder AsItemSlot => As<IItemSlotBuilder>();
         public IActionBuilder AsAction => As<IActionBuilder>();
         public IStatBuilder AsStat => As<IStatBuilder>();
-        public IFlagStatBuilder AsFlagStat => As<IFlagStatBuilder>();
         public IPoolStatBuilder AsPoolStat => As<IPoolStatBuilder>();
         public IDamageStatBuilder AsDamageStat => As<IDamageStatBuilder>();
+        public IBuffBuilder AsBuff => As<IBuffBuilder>();
         public ISkillBuilder AsSkill => As<ISkillBuilder>();
 
         public ReferenceConverter(object referencedBuilder)

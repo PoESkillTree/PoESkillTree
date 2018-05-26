@@ -1,5 +1,6 @@
 ﻿using PoESkillTree.Computation.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Actions;
+using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Charges;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
@@ -45,14 +46,14 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder AsStat =>
             new StatBuilderStub($"{this}.AsStat", (_, context) => Resolve(context).AsStat);
 
-        public IFlagStatBuilder AsFlagStat =>
-            new FlagStatBuilderStub($"{this}.AsFlagStat", (_, context) => Resolve(context).AsFlagStat);
-
         public IPoolStatBuilder AsPoolStat =>
             new PoolStatBuilderStub($"{this}.AsPoolStat", (_, context) => Resolve(context).AsPoolStat);
 
         public IDamageStatBuilder AsDamageStat =>
             new DamageStatBuilderStub($"{this}.AsDamageStat", (_, context) => Resolve(context).AsDamageStat);
+
+        public IBuffBuilder AsBuff =>
+            new BuffBuilderStub($"{this}.AsBuff", (_, context) => Resolve(context).AsBuff);
 
         public ISkillBuilder AsSkill =>
             new SkillBuilderStub($"{this}.AsSkill", (_, context) => Resolve(context).AsSkill);

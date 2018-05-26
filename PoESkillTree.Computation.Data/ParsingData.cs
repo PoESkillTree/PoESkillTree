@@ -74,7 +74,7 @@ namespace PoESkillTree.Computation.Data
                 new AilmentMatchers(_builderFactories.EffectBuilders.Ailment),
                 new ChargeTypeMatchers(_builderFactories.ChargeTypeBuilders),
                 new DamageTypeMatchers(_builderFactories.DamageTypeBuilders),
-                new FlagMatchers(_builderFactories.StatBuilders.Flag),
+                new BuffMatchers(_builderFactories.BuffBuilders),
                 new ItemSlotMatchers(_builderFactories.ItemSlotBuilders),
                 new KeywordMatchers(_builderFactories.KeywordBuilders),
                 skillMatchers,

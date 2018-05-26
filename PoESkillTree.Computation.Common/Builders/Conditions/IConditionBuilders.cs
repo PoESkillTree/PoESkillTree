@@ -1,5 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Entities;
-using PoESkillTree.Computation.Common.Builders.Equipment;
+﻿using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Skills;
 
 namespace PoESkillTree.Computation.Common.Builders.Conditions
@@ -9,11 +9,6 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
     /// </summary>
     public interface IConditionBuilders
     {
-        /// <summary>
-        /// Gets a condition that is satisfied if Self is currently leeching.
-        /// </summary>
-        IConditionBuilder WhileLeeching { get; }
-
         /// <summary>
         /// Returns a condition that is satisfied if Self's current main skill is contained in
         /// <paramref name="skills"/>.
@@ -42,10 +37,10 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
         IConditionBuilder For(params IEntityBuilder[] entities);
 
         /// <summary>
-        /// Returns a condition that is satisfied if the source of modified base values are the specified
-        /// <paramref name="equipment"/>.
+        /// Returns a condition that is satisfied if the source of modified base values is an item in the specified
+        /// <paramref name="slot"/>.
         /// </summary>
-        IConditionBuilder BaseValueComesFrom(IEquipmentBuilder equipment);
+        IConditionBuilder BaseValueComesFrom(ItemSlot slot);
 
         /// <summary>
         /// Returns a unique condition that is satisfied if explicitly set to be satisfied.

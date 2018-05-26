@@ -189,6 +189,9 @@ namespace PoESkillTree.Computation.Data
                 { "skeleton duration", Skill.SummonSkeleton.Duration, Skill.VaalSummonSkeletons.Duration },
                 { "golem at a time", Golems.CombinedInstances.Maximum },
                 // buffs
+                { "chance to gain ({BuffMatchers})", Reference.AsBuff.ChanceOn(Self) },
+                { "({BuffMatchers}) duration", Reference.AsBuff.Duration },
+                { "({BuffMatchers}) effect", Reference.AsBuff.Effect },
                 { "effect of buffs granted by your golems", Buffs(Entity.Minion.With(Keyword.Golem)).Effect },
                 {
                     "effect of buffs granted by your elemental golems",
@@ -199,19 +202,9 @@ namespace PoESkillTree.Computation.Data
                 { "effect of non-curse auras you cast", Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).Effect },
                 { "chance to fortify", Buff.Fortify.ChanceOn(Self) },
                 { "effect of fortify on you", Buff.Fortify.Effect },
-                { "fortify duration", Buff.Fortify.Duration },
                 { "chance for attacks to maim", Buff.Maim.ChanceOn(Enemy), Damage.With(Source.Attack()) },
                 { "chance to taunt", Buff.Taunt.ChanceOn(Enemy) },
-                { "taunt duration", Buff.Taunt.Duration },
                 { "chance to blind enemies", Buff.Blind.ChanceOn(Enemy) },
-                { "blind duration", Buff.Blind.Duration },
-                // flags
-                {
-                    "chance to (gain|grant) ({FlagMatchers})",
-                    Reference.AsFlagStat // chance is handled by StatManipulationMatchers
-                },
-                { "({FlagMatchers}) duration", Reference.AsFlagStat.Duration },
-                { "({FlagMatchers}) effect", Reference.AsFlagStat.Effect },
                 // ailments
                 { "chance to ({AilmentMatchers})( the enemy)?", Reference.AsAilment.Chance },
                 {

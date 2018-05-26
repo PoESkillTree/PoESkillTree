@@ -147,7 +147,7 @@ namespace PoESkillTree.Computation.Data
                 { "while holding a shield", OffHand.Has(Tags.Shield) },
                 { "while dual wielding or holding a shield", Or(OffHand.Has(Tags.Weapon), OffHand.Has(Tags.Shield)) },
                 { "with shields", OffHand.Has(Tags.Shield) },
-                { "from equipped shield", And(Condition.BaseValueComesFrom(OffHand), OffHand.Has(Tags.Shield)) },
+                { "from equipped shield", And(Condition.BaseValueComesFrom(ItemSlot.OffHand), OffHand.Has(Tags.Shield)) },
                 { "with # corrupted items equipped", Equipment.Count(e => e.IsCorrupted) >= Value },
                 // stats
                 // - pool
@@ -164,10 +164,6 @@ namespace PoESkillTree.Computation.Data
                     "while (at maximum|on full) ({ChargeTypeMatchers})",
                     Reference.AsChargeType.Amount.Value >= Reference.AsChargeType.Amount.Maximum.Value
                 },
-                // - flags
-                { "while you have ({FlagMatchers})", Reference.AsFlagStat.IsSet },
-                { "during onslaught", Flag.Onslaught.IsSet },
-                { "while phasing", Flag.Phasing.IsSet },
                 // - other
                 { "if you have # primordial jewels,", Stat.PrimordialJewelsSocketed.Value >= Value },
                 // - on enemy
@@ -175,7 +171,9 @@ namespace PoESkillTree.Computation.Data
                 { "(against enemies )?that are on full life", Enemy.Stat(Life).IsFull },
                 { "against rare and unique enemies", Enemy.IsRareOrUnique },
                 // buffs
-                { "while you have fortify", Buff.Fortify.IsOn(Self) },
+                { "while you have ({BuffMatchers})", Reference.AsBuff.IsOn(Self) },
+                { "during onslaught", Buff.Onslaught.IsOn(Self) },
+                { "while phasing", Buff.Phasing.IsOn(Self) },
                 { "if you've taunted an enemy recently", Buff.Taunt.Action.Recently },
                 { "enemies you taunt( deal| take)?", And(For(Enemy), Buff.Taunt.IsOn(Enemy)) },
                 { "enemies you curse (take|have)", And(For(Enemy), Buffs(Self, Enemy).With(Keyword.Curse).Any()) },
@@ -279,9 +277,9 @@ namespace PoESkillTree.Computation.Data
                 { "while using a flask", Flask.IsAnyActive },
                 { "during any flask effect", Flask.IsAnyActive },
                 // other
-                { "while leeching", Condition.WhileLeeching },
                 { "(you )?gain", Condition.True }, // may be left over at the end, does nothing
                 // unique
+                { "while leeching", Condition.Unique("Are you leeching?") },
                 {
                     "when your trap is triggered by an enemy",
                     Condition.Unique("When your Trap is triggered by an Enemy")

@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Common.Utils;
+﻿using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
@@ -41,9 +42,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class ConditionBuildersStub : IConditionBuilders
     {
-        public IConditionBuilder WhileLeeching =>
-            CreateCondition("While Leeching");
-
         public IConditionBuilder With(ISkillBuilderCollection skills) =>
             CreateCondition((IBuilderCollection<ISkillBuilder>) skills, o => $"With {o}");
 
@@ -53,8 +51,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IConditionBuilder For(params IEntityBuilder[] entities) =>
             CreateCondition(entities, os => "For " + string.Join(", ", os));
 
-        public IConditionBuilder BaseValueComesFrom(IEquipmentBuilder equipment) =>
-            CreateCondition(equipment, o => $"If base value comes from {o}");
+        public IConditionBuilder BaseValueComesFrom(ItemSlot slot) =>
+            CreateCondition($"If base value comes from {slot}");
 
         public IConditionBuilder Unique(string name) =>
             CreateCondition(name);
