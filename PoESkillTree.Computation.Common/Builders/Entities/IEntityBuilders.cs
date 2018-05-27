@@ -39,10 +39,5 @@
         /// Gets an entity representing all of Self's minions.
         /// </summary>
         IEntityBuilder Minion { get; }
-
-        /// <summary>
-        /// Gets an entity representing every entity.
-        /// </summary>
-        IEntityBuilder Any { get; }
     }
 }

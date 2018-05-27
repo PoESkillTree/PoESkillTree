@@ -21,7 +21,6 @@ namespace PoESkillTree.Computation.Console.Builders
             _actionBuilder =
                 new ActionBuilderStub(
                     EntityBuilderStub.Self(),
-                    new EnemyBuilderStub(),
                     "Stun",
                     (c, _) => c);
         }
@@ -37,13 +36,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IEntityBuilder Source => _actionBuilder.Source;
 
-        public IEntityBuilder Target => _actionBuilder.Target;
-
         public IActionBuilder By(IEntityBuilder source) => _actionBuilder.By(source);
-
-        public IActionBuilder Against(IEntityBuilder target) => _actionBuilder.Against(target);
-
-        public IActionBuilder Taken => _actionBuilder.Taken;
 
         public IActionBuilder With(IDamageTypeBuilder damageType) => _actionBuilder.With(damageType);
 

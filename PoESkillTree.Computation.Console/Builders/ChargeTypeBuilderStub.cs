@@ -25,7 +25,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder ChanceToGain => CreateStat(This, o => $"{o} chance to gain");
 
         public IActionBuilder GainAction =>
-            Create<IActionBuilder, IChargeTypeBuilder>(ActionBuilderStub.SelfToAny, this, b => $"gaining a {b}");
+            Create<IActionBuilder, IChargeTypeBuilder>(ActionBuilderStub.BySelf, this, b => $"gaining a {b}");
 
         public IChargeTypeBuilder Resolve(ResolveContext context) => _resolver(this, context);
     }

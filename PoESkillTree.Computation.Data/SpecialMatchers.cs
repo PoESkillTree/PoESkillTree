@@ -174,11 +174,11 @@ namespace PoESkillTree.Computation.Data
                 // - Inquisitor
                 {
                     "critical strikes ignore enemy monster elemental resistances",
-                    TotalOverride, 1, Elemental.IgnoreResistance, CriticalStrike.Against(Enemy).On()
+                    TotalOverride, 1, Elemental.IgnoreResistance, CriticalStrike.On()
                 },
                 {
                     "non-critical strikes penetrate #% of enemy elemental resistances",
-                    BaseAdd, Value, Elemental.Penetration, Action.NonCriticalStrike.Against(Enemy).On()
+                    BaseAdd, Value, Elemental.Penetration, Action.NonCriticalStrike.On()
                 },
                 // - Hierophant
                 {
@@ -209,7 +209,7 @@ namespace PoESkillTree.Computation.Data
                     // Ascendant
                     "your critical strikes with attacks maim enemies",
                     TotalOverride, 1, Buff.Maim.On(Enemy),
-                    CriticalStrike.Against(Enemy).On(Keyword.Attack)
+                    CriticalStrike.On(Keyword.Attack)
                 },
                 // - Trickster
                 {
@@ -224,10 +224,9 @@ namespace PoESkillTree.Computation.Data
             foreach (var type in ElementalDamageTypes)
             {
                 IConditionBuilder EnemyHitBy(IDamageTypeBuilder damageType) =>
-                    Hit.With(damageType).Against(Enemy).InPastXSeconds(ValueFactory.Create(5));
+                    Hit.With(damageType).InPastXSeconds(ValueFactory.Create(5));
 
-                yield return (BaseAdd, Values[0], type.Resistance.For(Enemy),
-                    EnemyHitBy(type));
+                yield return (BaseAdd, Values[0], type.Resistance.For(Enemy), EnemyHitBy(type));
                 yield return (BaseSubtract, Values[1], type.Resistance.For(Enemy),
                     And(Not(EnemyHitBy(type)), EnemyHitBy(Elemental.Except(type))));
             }
@@ -275,7 +274,7 @@ namespace PoESkillTree.Computation.Data
         {
             foreach (var type in ElementalDamageTypes)
             {
-                yield return (PercentIncrease, Value, type.Damage, Hit.With(type).Taken.Recently);
+                yield return (PercentIncrease, Value, type.Damage, Hit.With(type).By(Enemy).Recently);
             }
         }
 
@@ -284,7 +283,7 @@ namespace PoESkillTree.Computation.Data
         {
             foreach (var type in ElementalDamageTypes)
             {
-                yield return (PercentReduce, Value, type.Damage.Taken, Hit.With(type).Taken.Recently);
+                yield return (PercentReduce, Value, type.Damage.Taken, Hit.With(type).By(Enemy).Recently);
             }
         }
     }

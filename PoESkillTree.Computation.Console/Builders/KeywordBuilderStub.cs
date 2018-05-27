@@ -30,7 +30,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IKeywordBuilder Curse { get; } = Create("Curse");
         public IKeywordBuilder Trap { get; } = Create("Trap");
         public IKeywordBuilder Movement { get; } = Create("Movement");
-        public IKeywordBuilder Cast { get; } = Create("Cast");
         public IKeywordBuilder Mine { get; } = Create("Mine");
         public IKeywordBuilder Vaal { get; } = Create("Vaal");
         public IKeywordBuilder Aura { get; } = Create("Aura");

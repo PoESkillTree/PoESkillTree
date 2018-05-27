@@ -57,11 +57,6 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         IKeywordBuilder Movement { get; }
 
         /// <summary>
-        /// Equivalent to the ActiveSkillType "cast".
-        /// </summary>
-        IKeywordBuilder Cast { get; }
-
-        /// <summary>
         /// Equivalent to the ActiveSkillType "mine".
         /// </summary>
         IKeywordBuilder Mine { get; }

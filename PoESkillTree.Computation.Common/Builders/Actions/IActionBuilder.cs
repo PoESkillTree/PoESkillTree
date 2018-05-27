@@ -18,25 +18,9 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         IEntityBuilder Source { get; }
 
         /// <summary>
-        /// The target entity of the action.
-        /// </summary>
-        IEntityBuilder Target { get; }
-
-        /// <summary>
         /// Returns an action identical to this action but executed by <paramref name="source"/>.
         /// </summary>
         IActionBuilder By(IEntityBuilder source);
-
-        /// <summary>
-        /// Returns an action identical to this action but targeted against <paramref name="target"/>.
-        /// </summary>
-        IActionBuilder Against(IEntityBuilder target);
-
-        /// <summary>
-        /// Gets an action identical to this action but executed by <see cref="Target"/> and targeted against
-        /// <see cref="Source"/>.
-        /// </summary>
-        IActionBuilder Taken { get; }
 
         /// <summary>
         /// Returns an action identical to this action but with the additional condition that the action must occur

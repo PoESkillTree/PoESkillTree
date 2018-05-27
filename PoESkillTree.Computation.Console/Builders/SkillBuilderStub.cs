@@ -23,7 +23,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IActionBuilder Cast =>
             Create<IActionBuilder, ISkillBuilder>(
-                ActionBuilderStub.SelfToAny,
+                ActionBuilderStub.BySelf,
                 This, o => $"{o} cast");
 
         public IStatBuilder Instances =>
@@ -62,7 +62,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IActionBuilder Cast =>
             Create<IActionBuilder, IBuilderCollection<ISkillBuilder>>(
-                ActionBuilderStub.SelfToAny,
+                ActionBuilderStub.BySelf,
                 This, o => $"{o} cast");
     }
 

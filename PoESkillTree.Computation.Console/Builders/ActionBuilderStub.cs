@@ -14,21 +14,18 @@ namespace PoESkillTree.Computation.Console.Builders
     {
         private readonly Resolver<IActionBuilder> _resolver;
 
-        public ActionBuilderStub(IEntityBuilder source, IEntityBuilder target, string stringRepresentation,
+        public ActionBuilderStub(IEntityBuilder source, string stringRepresentation,
             Resolver<IActionBuilder> resolver)
             : base(stringRepresentation)
         {
             Source = source;
-            Target = target;
             _resolver = resolver;
         }
 
-        public static IActionBuilder SelfToAny(string stringRepresentation, Resolver<IActionBuilder> resolver) =>
-            new ActionBuilderStub(EntityBuilderStub.Self(), EntityBuilderStub.Any(), stringRepresentation, resolver);
+        public static IActionBuilder BySelf(string stringRepresentation, Resolver<IActionBuilder> resolver) =>
+            new ActionBuilderStub(EntityBuilderStub.Self(), stringRepresentation, resolver);
 
         public IEntityBuilder Source { get; }
-
-        public IEntityBuilder Target { get; }
 
         private IActionBuilder This => this;
 
@@ -39,45 +36,11 @@ namespace PoESkillTree.Computation.Console.Builders
                 var inner = _resolver(this, context);
                 return new ActionBuilderStub(
                     source.Resolve(context),
-                    inner.Target,
                     inner.ToString(),
                     (c, _) => c);
             }
 
-            return new ActionBuilderStub(source, Target, ToString(), (_, context) => Resolve(context));
-        }
-
-        public IActionBuilder Against(IEntityBuilder target)
-        {
-            IActionBuilder Resolve(ResolveContext context)
-            {
-                var inner = _resolver(this, context);
-                return new ActionBuilderStub(
-                    inner.Source,
-                    target.Resolve(context),
-                    inner.ToString(),
-                    (c, _) => c);
-            }
-
-            return new ActionBuilderStub(Source, target, ToString(), (_, context) => Resolve(context));
-        }
-
-        public IActionBuilder Taken
-        {
-            get
-            {
-                IActionBuilder Resolve(ResolveContext context)
-                {
-                    var inner = _resolver(this, context);
-                    return new ActionBuilderStub(
-                        inner.Target,
-                        inner.Source,
-                        inner.ToString(),
-                        (c, _) => c);
-                }
-
-                return new ActionBuilderStub(Target, Source, ToString(), (_, context) => Resolve(context));
-            }
+            return new ActionBuilderStub(source, ToString(), (_, context) => Resolve(context));
         }
 
         public IActionBuilder With(IDamageTypeBuilder damageType)
@@ -87,33 +50,32 @@ namespace PoESkillTree.Computation.Console.Builders
                 var inner = _resolver(this, context);
                 return new ActionBuilderStub(
                     inner.Source,
-                    inner.Target,
                     $"{inner} (with {damageType.Resolve(context)} damage)",
                     (c, _) => c);
             }
 
             return new ActionBuilderStub(
-                Source, Target, $"{this} (with {damageType} damage)", (_, context) => Resolve(context));
+                Source, $"{this} (with {damageType} damage)", (_, context) => Resolve(context));
         }
 
         public IConditionBuilder On() =>
             CreateCondition(This,
-                a => $"On {a} by {a.Source} against {a.Target}");
+                a => $"On {a} by {a.Source}");
 
         public IConditionBuilder On(IKeywordBuilder withKeyword) =>
             CreateCondition(This, withKeyword,
-                (a, keyword) => $"On {keyword} {a} by {a.Source} against {a.Target}");
+                (a, keyword) => $"On {keyword} {a} by {a.Source}");
 
         public IConditionBuilder InPastXSeconds(IValueBuilder seconds) =>
             CreateCondition(This, seconds,
-                (a, o) => $"If any {a} in the past {o} by {a.Source} against {a.Target}");
+                (a, o) => $"If any {a} in the past {o} by {a.Source}");
 
         public IConditionBuilder Recently =>
             CreateCondition(This,
-                a => $"If any {a} recently by {a.Source} against {a.Target}");
+                a => $"If any {a} recently by {a.Source}");
 
         public ValueBuilder CountRecently =>
-            new ValueBuilder(CreateValue($"Number of {this} recently by {Source} against {Target}"));
+            new ValueBuilder(CreateValue($"Number of {this} recently by {Source}"));
 
         public IActionBuilder Resolve(ResolveContext context) => _resolver(this, context);
     }
@@ -122,7 +84,7 @@ namespace PoESkillTree.Computation.Console.Builders
     public class BlockActionBuilderStub : ActionBuilderStub, IBlockActionBuilder
     {
         public BlockActionBuilderStub()
-            : base(EntityBuilderStub.Self(), EntityBuilderStub.Any(), "Block", (current, _) => current)
+            : base(EntityBuilderStub.Self(), "Block", (current, _) => current)
         {
         }
 
@@ -137,7 +99,7 @@ namespace PoESkillTree.Computation.Console.Builders
     public class CriticalStrikeActionBuilderStub : ActionBuilderStub, ICriticalStrikeActionBuilder
     {
         public CriticalStrikeActionBuilderStub()
-            : base(EntityBuilderStub.Self(), EntityBuilderStub.Any(), "Critical Strike", (current, _) => current)
+            : base(EntityBuilderStub.Self(), "Critical Strike", (current, _) => current)
         {
         }
 
@@ -154,7 +116,7 @@ namespace PoESkillTree.Computation.Console.Builders
     public class ActionBuildersStub : IActionBuilders
     {
         private static IActionBuilder Create(string stringRepresentation) =>
-            ActionBuilderStub.SelfToAny(stringRepresentation, (current, _) => current);
+            ActionBuilderStub.BySelf(stringRepresentation, (current, _) => current);
 
         public IActionBuilder Kill => Create("Kill");
 
@@ -172,7 +134,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IActionBuilder ConsumeCorpse => Create("Consuming Corpses");
 
         public IActionBuilder SpendMana(IValueBuilder amount) =>
-            Create<IActionBuilder, IValueBuilder>(ActionBuilderStub.SelfToAny, amount, o => $"Spending {o} Mana");
+            Create<IActionBuilder, IValueBuilder>(ActionBuilderStub.BySelf, amount, o => $"Spending {o} Mana");
 
         public IConditionBuilder InPastXSeconds(IValueBuilder seconds) =>
             CreateCondition(seconds, o => $"If the action condition happened in the past {o} seconds");

@@ -41,7 +41,7 @@ namespace PoESkillTree.Computation.Console.Builders
             new UnresolvedItemSlotBuilder($"{this}.AsItemSlot", context => Resolve(context).AsItemSlot);
 
         public IActionBuilder AsAction =>
-            ActionBuilderStub.SelfToAny($"{this}.AsAction", (_, context) => Resolve(context).AsAction);
+            ActionBuilderStub.BySelf($"{this}.AsAction", (_, context) => Resolve(context).AsAction);
 
         public IStatBuilder AsStat =>
             new StatBuilderStub($"{this}.AsStat", (_, context) => Resolve(context).AsStat);

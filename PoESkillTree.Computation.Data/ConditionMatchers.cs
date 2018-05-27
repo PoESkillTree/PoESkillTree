@@ -34,22 +34,22 @@ namespace PoESkillTree.Computation.Data
                 { "if you haven't ({ActionMatchers}) recently", Not(Reference.AsAction.Recently) },
                 {
                     "when you ({ActionMatchers}) a rare or unique enemy",
-                    And(Reference.AsAction.Against(Enemy).On(), Enemy.IsRareOrUnique)
+                    And(Reference.AsAction.On(), Enemy.IsRareOrUnique)
                 },
                 // - kill
                 { "on ({KeywordMatchers}) kill", Kill.On(Reference.AsKeyword) },
-                { "when you kill an enemy,", Kill.Against(Enemy).On() },
+                { "when you kill an enemy,", Kill.On() },
                 {
                     "if you've killed a maimed enemy recently",
-                    And(Kill.Against(Enemy).Recently, Buff.Maim.IsOn(Enemy))
+                    And(Kill.Recently, Buff.Maim.IsOn(Enemy))
                 },
                 {
                     "if you've killed a bleeding enemy recently",
-                    And(Kill.Against(Enemy).Recently, Ailment.Bleed.IsOn(Enemy))
+                    And(Kill.Recently, Ailment.Bleed.IsOn(Enemy))
                 },
                 {
                     "if you've killed a cursed enemy recently",
-                    And(Kill.Against(Enemy).Recently, Buffs(target: Enemy).With(Keyword.Curse).Any())
+                    And(Kill.Recently, Buffs(target: Enemy).With(Keyword.Curse).Any())
                 },
                 {
                     "if you or your totems have killed recently",
@@ -61,22 +61,22 @@ namespace PoESkillTree.Computation.Data
                 { "when you block", Block.On() },
                 {
                     "if you've blocked a hit from a unique enemy recently",
-                    And(Block.Against(Enemy).Recently, Enemy.IsUnique)
+                    And(Block.Recently, Enemy.IsUnique)
                 },
                 // - hit
                 { "(from|with) hits", Hit.On() },
                 { "hits deal", Hit.On() },
-                { "when you are hit", Hit.Taken.On() },
-                { "if you've been hit recently", Hit.Taken.Recently },
-                { "if you haven't been hit recently", Not(Hit.Taken.Recently) },
-                { "if you were damaged by a hit recently", Hit.Taken.Recently },
-                { "if you've taken no damage from hits recently", Not(Hit.Taken.Recently) },
-                { "for each enemy hit by your attacks", Hit.Against(Enemy).On(Keyword.Attack) },
+                { "when you are hit", Hit.By(Enemy).On() },
+                { "if you've been hit recently", Hit.By(Enemy).Recently },
+                { "if you haven't been hit recently", Not(Hit.By(Enemy).Recently) },
+                { "if you were damaged by a hit recently", Hit.By(Enemy).Recently },
+                { "if you've taken no damage from hits recently", Not(Hit.By(Enemy).Recently) },
+                { "for each enemy hit by your attacks", Hit.On(Keyword.Attack) },
                 // - other
-                { "if you've taken a savage hit recently", Action.SavageHit.Taken.Recently },
+                { "if you've taken a savage hit recently", Action.SavageHit.By(Enemy).Recently },
                 { "when you deal a critical strike", CriticalStrike.On() },
                 { "if you've crit in the past # seconds", CriticalStrike.InPastXSeconds(Value) },
-                { "if you've shattered an enemy recently", Action.Shatter.Against(Enemy).Recently },
+                { "if you've shattered an enemy recently", Action.Shatter.Recently },
                 { "when you stun an enemy", Effect.Stun.On() },
                 { "after spending # mana", Action.SpendMana(Value).On() },
                 { "if you have consumed a corpse recently", Action.ConsumeCorpse.Recently },

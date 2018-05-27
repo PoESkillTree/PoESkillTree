@@ -160,7 +160,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     damageType.Damage.Taken,
                     f.FormBuilders.PercentReduce,
                     f.ValueBuilders.Create(8),
-                    f.ActionBuilders.Hit.With(damageType).Taken.Recently);
+                    f.ActionBuilders.Hit.With(damageType).By(f.EntityBuilders.Enemy).Recently);
 
             yield return new TestCaseData(
                     "For each Element you've been hit by Damage of Recently, 8% reduced Damage taken of that Element")

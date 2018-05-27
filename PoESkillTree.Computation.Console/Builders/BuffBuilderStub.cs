@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Effect => CreateStat(This, o => $"Effect of {o}");
 
         public IActionBuilder Action =>
-            Create<IActionBuilder, IEffectBuilder>(ActionBuilderStub.SelfToAny, this, b => $"{b} application");
+            Create<IActionBuilder, IEffectBuilder>(ActionBuilderStub.BySelf, this, b => $"{b} application");
     }
 
 

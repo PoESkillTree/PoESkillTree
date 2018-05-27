@@ -16,7 +16,6 @@ namespace PoESkillTree.Computation.Console.Builders
         }
 
         public static EntityBuilderStub Self() => new EntityBuilderStub("Self", (c, _) => c);
-        public static EntityBuilderStub Any() => new EntityBuilderStub("Any Entity", (c, _) => c);
 
         protected IEntityBuilder This => this;
 
@@ -35,8 +34,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IEntityBuilder Totem => new EntityBuilderStub("Totem", (c, _) => c);
 
         public IEntityBuilder Minion => new EntityBuilderStub("Minion", (c, _) => c);
-
-        public IEntityBuilder Any => EntityBuilderStub.Any();
     }
 
 
