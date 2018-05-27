@@ -37,34 +37,38 @@ namespace PoESkillTree.Computation.Data
                 // unspecific
                 { "damage", Damage },
                 // by source
-                { "attack damage", Damage, Damage.With(Source.Attack()) },
-                { "spell damage", Damage, Damage.With(Source.Spell()) },
-                { "damage over time", Damage, Damage.With(Source.OverTime()) },
+                { "attack damage", Damage.With(Source.Attack()) },
+                { "spell damage", Damage.With(Source.Spell()) },
+                { "damage over time", Damage.With(Source.OverTime()) },
                 // by type
                 { "({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage },
                 { "damage of a random element", RandomElement.Damage },
+                // by skill vs. ailment
+                { "damage with hits and ailments", Damage.WithHitsAndAilments },
+                { "damage with hits", Damage.WithHits },
+                { "damage with ailments", Damage.WithAilments },
+                { "damage with ({AilmentMatchers})", Damage.With(Reference.AsAilment) },
                 // by source and type
-                { "attack physical damage", Physical.Damage, Damage.With(Source.Attack()) },
-                { "physical attack damage", Physical.Damage, Damage.With(Source.Attack()) },
+                { "attack physical damage", Physical.Damage.With(Source.Attack()) },
                 {
                     "({DamageTypeMatchers}) damage to attacks",
-                    Reference.AsDamageType.Damage, Damage.With(Source.Attack())
+                    Reference.AsDamageType.Damage.With(Source.Attack())
                 },
                 {
                     "({DamageTypeMatchers}) attack damage",
-                    Reference.AsDamageType.Damage, Damage.With(Source.Attack())
+                    Reference.AsDamageType.Damage.With(Source.Attack())
                 },
                 {
                     "({DamageTypeMatchers}) spell damage",
-                    Reference.AsDamageType.Damage, Damage.With(Source.Spell())
+                    Reference.AsDamageType.Damage.With(Source.Spell())
                 },
-                { "burning damage", Fire.Damage, Damage.With(Source.OverTime()) },
+                { "burning damage", Fire.Damage.With(Source.OverTime()) },
                 // other combinations
                 { "physical melee damage", Physical.Damage, With(Keyword.Melee) },
                 { "physical weapon damage", Physical.Damage, Damage.With(Tags.Weapon) },
                 {
                     "physical projectile attack damage",
-                    Physical.Damage, And(Damage.With(Source.Attack()), With(Keyword.Projectile))
+                    Physical.Damage.With(Source.Attack()), With(Keyword.Projectile)
                 },
             };
     }

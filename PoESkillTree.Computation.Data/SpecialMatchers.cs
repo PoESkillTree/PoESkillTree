@@ -64,7 +64,7 @@ namespace PoESkillTree.Computation.Data
                     PercentMore,
                     // 0 to 10: Value; 10 to 35: Value to 0; 35 to 150: 0 to -Value
                     Value * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 1), (10, 1), (35, 0), (150, -1)),
-                    Damage, And(Damage.With(Source.Attack()), With(Keyword.Projectile), Hit.On())
+                    Damage.With(Source.Attack()), With(Keyword.Projectile)
                 },
                 {
                     // Elemental Equilibrium
@@ -123,14 +123,14 @@ namespace PoESkillTree.Computation.Data
                     "far shot",
                     PercentMore,
                     30 * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
-                    Damage, And(Damage.With(Source.Attack()), With(Keyword.Projectile))
+                    Damage.With(Source.Attack()), With(Keyword.Projectile)
                 },
                 {
                     // Ascendant
                     "projectiles gain damage as they travel further, dealing up to #% increased damage with hits to targets",
                     PercentIncrease,
                     Value * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
-                    Damage, And(With(Keyword.Projectile), Hit.On())
+                    Damage.WithHits, With(Keyword.Projectile)
                 },
                 // - Elementalist
                 {
@@ -209,7 +209,7 @@ namespace PoESkillTree.Computation.Data
                     // Ascendant
                     "your critical strikes with attacks maim enemies",
                     TotalOverride, 1, Buff.Maim.On(Enemy),
-                    And(Damage.With(Source.Attack()), CriticalStrike.Against(Enemy).On())
+                    CriticalStrike.Against(Enemy).On(Keyword.Attack)
                 },
                 // - Trickster
                 {

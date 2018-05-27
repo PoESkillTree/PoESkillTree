@@ -68,9 +68,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IAilmentBuilder Bleed => Create("Bleed");
         public IAilmentBuilder Poison => Create("Poison");
 
-        public IAilmentBuilderCollection All =>
-            new AilmentBuilderCollectionStub(Ignite, Shock, Chill, Freeze, Bleed, Poison);
-
         public IAilmentBuilderCollection Elemental =>
             new AilmentBuilderCollectionStub(Ignite, Shock, Chill, Freeze);
     }

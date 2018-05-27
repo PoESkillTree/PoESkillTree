@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -47,8 +48,7 @@ namespace PoESkillTree.Computation.Data
                     "enemies near your totems take",
                     (IDamageStatBuilder s) => Buff.Aura(s.Taken, Enemy).For(Entity.Totem)
                 },
-                // Keep whole mod line, take is part of the condition matcher
-                { "enemies .+ take", (IDamageStatBuilder s) => s.Taken, "$0" },
+                { "(?<condition>enemies you .+) take (?<inner>.*)", (IDamageStatBuilder s) => s.Taken, "${condition} ${inner}" },
                 { "for # seconds", s => s.WithCondition(Action.InPastXSeconds(Value)) },
             };
     }

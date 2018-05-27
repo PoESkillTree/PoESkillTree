@@ -7,7 +7,7 @@ using PoESkillTree.Computation.Common.Builders.Resolving;
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
     /// <summary>
-    /// Represents a stat for damage with specific (or all) damage type(s).
+    /// Represents a stat for damage. Damage can be limited by damage type and source, and skill vs. ailment.
     /// </summary>
     public interface IDamageStatBuilder : IStatBuilder
     {
@@ -23,27 +23,35 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IDamageTakenConversionBuilder TakenFrom(IPoolStatBuilder pool);
 
         /// <summary>
-        /// Returns a condition that is satisfied if damage dealt is of (any of) this stat's damage types.
+        /// Limits the damage by source.
         /// </summary>
-        IConditionBuilder With();
+        IDamageStatBuilder With(IDamageSourceBuilder source);
 
         /// <summary>
-        /// Returns a condition that is satisfied if damage dealt is of (any of) this stat's damage types and of the
-        /// given damage source.
+        /// Limits the damage to not apply to damage over time.
         /// </summary>
-        IConditionBuilder With(IDamageSourceBuilder source);
+        IDamageStatBuilder WithHits { get; }
+
+        /// <summary>
+        /// Limits the damage to not apply to non-ailment damage over time.
+        /// </summary>
+        IDamageStatBuilder WithHitsAndAilments { get; }
+
+        /// <summary>
+        /// Limits the damage to only apply to ailments.
+        /// </summary>
+        IDamageStatBuilder WithAilments { get; }
+
+        /// <summary>
+        /// Limits the damage to only apply to the given ailment.
+        /// </summary>
+        IDamageStatBuilder With(IAilmentBuilder ailment);
 
         /// <summary>
         /// Returns a condition that is satisfied if damage dealt is of (any of) this stat's damage types and if
         /// the damage is dealt with a weapon having the given tags.
         /// </summary>
         IConditionBuilder With(Tags tags);
-
-        /// <summary>
-        /// Returns a condition that is satisfied if damage dealt is of (any of) this stat's damage types and if
-        /// the damage is inflicted by the given ailment.
-        /// </summary>
-        IConditionBuilder With(IAilmentBuilder ailment);
 
         /// <summary>
         /// Returns a condition that is satisfied if damage dealt is of (any of) this stat's damage types and if

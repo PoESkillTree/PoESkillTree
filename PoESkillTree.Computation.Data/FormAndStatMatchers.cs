@@ -203,6 +203,11 @@ namespace PoESkillTree.Computation.Data
                     "(immune to|cannot be affected by) elemental ailments",
                     TotalOverride, 100, Ailment.Elemental.Select(a => a.Avoidance)
                 },
+                {
+                    "poison you inflict with critical strikes deals #% more damage",
+                    PercentMore, Value, CriticalStrike.AilmentMultiplier
+                    // TODO Limit to poison
+                },
                 // stun
                 { "(you )?cannot be stunned", TotalOverride, 100, Effect.Stun.Avoidance },
                 { "your damaging hits always stun enemies", TotalOverride, 100, Effect.Stun.ChanceOn(Enemy), Hit.On() },

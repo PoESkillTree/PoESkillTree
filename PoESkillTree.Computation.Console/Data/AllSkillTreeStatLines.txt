@@ -1581,7 +1581,6 @@ Attacks have 30% chance to cause Bleeding
 10% reduced Damage taken from Damage Over Time
 20% of Physical Damage gained as Extra Chaos Damage against Bleeding Enemies
 Poison you inflict with Critical Strikes deals 30% more Damage
-Bleeding you inflict on Maimed Enemies deals 30% more Damage
 15% increased Damage over Time
 15% increased Critical Strike Chance
 +10 to Strength

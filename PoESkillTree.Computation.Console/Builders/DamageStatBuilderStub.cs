@@ -23,17 +23,23 @@ namespace PoESkillTree.Computation.Console.Builders
                 This, pool,
                 (o1, o2) => $"{o1} taken from {o2}");
 
-        public IConditionBuilder With() =>
-            CreateCondition(This, o => $"With {o}");
+        public IDamageStatBuilder With(IDamageSourceBuilder source) =>
+            CreateDamageStat(This, source, (o1, o2) => $"With {o2} {o1}");
 
-        public IConditionBuilder With(IDamageSourceBuilder source) =>
-            CreateCondition(This, source, (o1, o2) => $"With {o2} {o1}");
+        public IDamageStatBuilder WithHits =>
+            CreateDamageStat(This, o => $"With {o} from hits");
+
+        public IDamageStatBuilder WithHitsAndAilments =>
+            CreateDamageStat(This, o => $"With {o} from hits or ailments");
+
+        public IDamageStatBuilder WithAilments =>
+            CreateDamageStat(This, o => $"With {o} from ailments");
 
         public IConditionBuilder With(Tags tags) =>
             CreateCondition(This, o => $"With {tags} {o}");
 
-        public IConditionBuilder With(IAilmentBuilder ailment) =>
-            CreateCondition(This, (IEffectBuilder) ailment, (o1, o2) => $"With {o2} {o1}");
+        public IDamageStatBuilder With(IAilmentBuilder ailment) =>
+            CreateDamageStat(This, (IEffectBuilder) ailment, (o1, o2) => $"With {o2} {o1}");
 
         public IConditionBuilder With(ItemSlot slot) =>
             CreateCondition(This, o => $"With {slot} {o}");

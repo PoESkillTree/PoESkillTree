@@ -14,11 +14,6 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         IAilmentBuilder Poison { get; }
 
         /// <summary>
-        /// Gets a collection of all ailments.
-        /// </summary>
-        IAilmentBuilderCollection All { get; }
-
-        /// <summary>
         /// Gets a collection of all elemental ailments.
         /// </summary>
         IAilmentBuilderCollection Elemental { get; }

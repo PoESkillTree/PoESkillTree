@@ -64,6 +64,7 @@ namespace PoESkillTree.Computation.Data
                 { "({DamageTypeMatchers}) damage taken", Reference.AsDamageType.Damage.Taken },
                 { "take ({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage.Taken },
                 { "damage taken", Damage.Taken },
+                { "damage taken from damage over time", Damage.With(Source.OverTime()).Taken },
                 // - penetration
                 // - crit
                 { "(global )?critical strike multiplier", CriticalStrike.Multiplier },
@@ -207,7 +208,7 @@ namespace PoESkillTree.Computation.Data
                 { "effect of non-curse auras you cast", Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).Effect },
                 { "chance to fortify", Buff.Fortify.ChanceOn(Self) },
                 { "effect of fortify on you", Buff.Fortify.Effect },
-                { "chance for attacks to maim", Buff.Maim.ChanceOn(Enemy), Damage.With(Source.Attack()) },
+                { "chance for attacks to maim on hit", Buff.Maim.ChanceOn(Enemy), Hit.On(Keyword.Attack) },
                 { "chance to taunt", Buff.Taunt.ChanceOn(Enemy) },
                 { "chance to blind enemies", Buff.Blind.ChanceOn(Enemy) },
                 // ailments

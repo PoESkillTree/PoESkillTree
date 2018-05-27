@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Data;
@@ -72,6 +71,7 @@ namespace PoESkillTree.Computation.Data
                 { "if you haven't been hit recently", Not(Hit.Taken.Recently) },
                 { "if you were damaged by a hit recently", Hit.Taken.Recently },
                 { "if you've taken no damage from hits recently", Not(Hit.Taken.Recently) },
+                { "for each enemy hit by your attacks", Hit.Against(Enemy).On(Keyword.Attack) },
                 // - other
                 { "if you've taken a savage hit recently", Action.SavageHit.Taken.Recently },
                 { "when you deal a critical strike", CriticalStrike.On() },
@@ -110,27 +110,12 @@ namespace PoESkillTree.Computation.Data
                 { "with the main-hand weapon", Damage.With(ItemSlot.MainHand) },
                 { "with main hand", Damage.With(ItemSlot.MainHand) },
                 { "with off hand", Damage.With(ItemSlot.OffHand) },
-                // - by source
-                { "attacks have", Damage.With(Source.Attack()) },
-                { "with attacks", Damage.With(Source.Attack()) },
-                { "from damage over time", Damage.With(Source.OverTime()) },
-                // - by ailment
-                { "with ({AilmentMatchers})", Damage.With(Reference.AsAilment) },
-                { "with ailments", Ailment.All.Any(Damage.With) },
                 // action and damage combinations
                 // - by item tag
                 { "if you get a critical strike with a bow", And(CriticalStrike.On(), Damage.With(Tags.Bow)) },
                 { "if you get a critical strike with a staff", And(CriticalStrike.On(), Damage.With(Tags.Staff)) },
                 { "critical strikes with daggers have a", And(CriticalStrike.On(), Damage.With(Tags.Dagger)) },
                 // - by item slot
-                // - by source
-                { "for each enemy hit by your attacks", And(Hit.Against(Enemy).On(), Damage.With(Source.Attack())) },
-                // - by ailment
-                { "with hits and ailments", Or(Hit.On(), Ailment.All.Any(Damage.With)) },
-                {
-                    "poison you inflict with critical strikes deals",
-                    And(Damage.With(Ailment.Poison), CriticalStrike.On())
-                },
                 // equipment
                 { "while unarmed", Not(MainHand.HasItem) },
                 { "while wielding a staff", MainHand.Has(Tags.Staff) },
@@ -175,8 +160,8 @@ namespace PoESkillTree.Computation.Data
                 { "during onslaught", Buff.Onslaught.IsOn(Self) },
                 { "while phasing", Buff.Phasing.IsOn(Self) },
                 { "if you've taunted an enemy recently", Buff.Taunt.Action.Recently },
-                { "enemies you taunt( deal| take)?", And(For(Enemy), Buff.Taunt.IsOn(Enemy)) },
-                { "enemies you curse (take|have)", And(For(Enemy), Buffs(Self, Enemy).With(Keyword.Curse).Any()) },
+                { "enemies you taunt( deal)?", And(For(Enemy), Buff.Taunt.IsOn(Enemy)) },
+                { "enemies you curse( have)?", And(For(Enemy), Buffs(Self, Enemy).With(Keyword.Curse).Any()) },
                 { "(against|from) blinded enemies", Buff.Blind.IsOn(Enemy) },
                 { "from taunted enemies", Buff.Taunt.IsOn(Enemy) },
                 {
@@ -186,11 +171,6 @@ namespace PoESkillTree.Computation.Data
                 {
                     "you and allies deal while affected by auras you cast",
                     Or(For(Entity.ModifierSource), And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
-                },
-                // buff and damage combinations
-                {
-                    "bleeding you inflict on maimed enemies deals",
-                    And(Damage.With(Ailment.Bleed), Buff.Maim.IsOn(Enemy))
                 },
                 // ailments
                 { "while ({AilmentMatchers})", Reference.AsAilment.IsOn(Self) },
@@ -222,6 +202,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "(with|of|for|from) ({KeywordMatchers})( skills)?", With(Reference.AsKeyword) },
                 { "({KeywordMatchers}) skills (have|deal)", With(Reference.AsKeyword) },
+                { "attacks have", With(Keyword.Attack) },
                 // - by damage type
                 { "with ({DamageTypeMatchers}) skills", With(Reference.AsDamageType) },
                 // - by single skill
