@@ -1,5 +1,3 @@
-using PoESkillTree.Computation.Common.Builders.Actions;
-
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
     /// <summary>
@@ -21,11 +19,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// Gets a stat representing the amount targets pierced by projectiles.
         /// </summary>
         IStatBuilder PierceCount { get; }
-
-        /// <summary>
-        /// Gets an action that occurs when a projectile fired by Self pierces Any target.
-        /// </summary>
-        IActionBuilder Pierce { get; }
 
         /// <summary>
         /// Gets a stat representing the number of times projectile chain.

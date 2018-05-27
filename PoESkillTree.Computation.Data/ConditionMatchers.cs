@@ -64,8 +64,7 @@ namespace PoESkillTree.Computation.Data
                     And(Block.Recently, Enemy.IsUnique)
                 },
                 // - hit
-                { "(from|with) hits", Hit.On() },
-                { "hits deal", Hit.On() },
+                { "from hits", Hit.On() },
                 { "when you are hit", Hit.By(Enemy).On() },
                 { "if you've been hit recently", Hit.By(Enemy).Recently },
                 { "if you haven't been hit recently", Not(Hit.By(Enemy).Recently) },
@@ -74,6 +73,7 @@ namespace PoESkillTree.Computation.Data
                 { "for each enemy hit by your attacks", Hit.On(Keyword.Attack) },
                 // - other
                 { "if you've taken a savage hit recently", Action.SavageHit.By(Enemy).Recently },
+                { "critical strikes have a", CriticalStrike.On() },
                 { "when you deal a critical strike", CriticalStrike.On() },
                 { "if you've crit in the past # seconds", CriticalStrike.InPastXSeconds(Value) },
                 { "if you've shattered an enemy recently", Action.Shatter.Recently },
@@ -114,7 +114,6 @@ namespace PoESkillTree.Computation.Data
                 // - by item tag
                 { "if you get a critical strike with a bow", And(CriticalStrike.On(), Damage.With(Tags.Bow)) },
                 { "if you get a critical strike with a staff", And(CriticalStrike.On(), Damage.With(Tags.Staff)) },
-                { "critical strikes with daggers have a", And(CriticalStrike.On(), Damage.With(Tags.Dagger)) },
                 // - by item slot
                 // equipment
                 { "while unarmed", Not(MainHand.HasItem) },
@@ -190,8 +189,6 @@ namespace PoESkillTree.Computation.Data
                 },
                 // ground effects
                 { "while on consecrated ground", Ground.Consecrated.IsOn(Self) },
-                // other effects
-                { "against burning enemies", Fire.DamageOverTimeIsOn(Enemy) },
                 // skills
                 // - by keyword
                 { "vaal( skill)?", With(Keyword.Vaal) },
@@ -216,11 +213,6 @@ namespace PoESkillTree.Computation.Data
                 {
                     "if you've used a ({DamageTypeMatchers}) skill in the past # seconds",
                     Skills[Reference.AsDamageType].Cast.InPastXSeconds(Value)
-                },
-                // skill and action combinations
-                {
-                    "projectiles have against targets they pierce",
-                    And(Projectile.Pierce.On(), With(Keyword.Projectile))
                 },
                 // traps and mines
                 { "with traps", With(Keyword.Trap) },
@@ -256,6 +248,7 @@ namespace PoESkillTree.Computation.Data
                 { "while using a flask", Flask.IsAnyActive },
                 { "during any flask effect", Flask.IsAnyActive },
                 // other
+                { "have against targets they pierce", Projectile.PierceCount.Value >= 1 },
                 { "(you )?gain", Condition.True }, // may be left over at the end, does nothing
                 // unique
                 { "while leeching", Condition.Unique("Are you leeching?") },

@@ -49,12 +49,6 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         IDamageStatBuilder Damage { get; }
 
         /// <summary>
-        /// Returns a collection that is satisfied if <paramref name="entity"/> is affected by damage over time
-        /// of any damage type in this collection.
-        /// </summary>
-        IConditionBuilder DamageOverTimeIsOn(IEntityBuilder entity);
-
-        /// <summary>
         /// Gets a stat representing the amount of enemy resistances of the damage types in this collection penetrated
         /// by damage.
         /// </summary>

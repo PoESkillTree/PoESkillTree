@@ -45,7 +45,7 @@ namespace PoESkillTree.Computation.Data
                 { "damage of a random element", RandomElement.Damage },
                 // by skill vs. ailment
                 { "damage with hits and ailments", Damage.WithHitsAndAilments },
-                { "damage with hits", Damage.WithHits },
+                { "(?<!no )damage (with|from) hits", Damage.WithHits },
                 { "damage with ailments", Damage.WithAilments },
                 { "damage with ({AilmentMatchers})", Damage.With(Reference.AsAilment) },
                 // by source and type
@@ -64,12 +64,13 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "burning damage", Fire.Damage.With(Source.OverTime()) },
                 // other combinations
+                { "(?<!no )({DamageTypeMatchers}) damage (with|from) hits", Reference.AsDamageType.Damage.WithHits },
                 { "physical melee damage", Physical.Damage, With(Keyword.Melee) },
                 { "physical weapon damage", Physical.Damage, Damage.With(Tags.Weapon) },
                 {
                     "physical projectile attack damage",
                     Physical.Damage.With(Source.Attack()), With(Keyword.Projectile)
                 },
-            };
+            }; //add
     }
 }

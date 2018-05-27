@@ -1,6 +1,4 @@
-﻿using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Damage;
-using PoESkillTree.Computation.Common.Builders.Entities;
+﻿using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
@@ -39,10 +37,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IDamageStatBuilder Damage =>
             CreateDamageStat(This, o => $"{o} Damage");
-
-        public IConditionBuilder DamageOverTimeIsOn(IEntityBuilder entity) =>
-            CreateCondition(This, entity,
-                (o1, o2) => $"{o2} is affected by {o1} Damage over Time");
 
         public IStatBuilder Penetration =>
             CreateStat(This, o => $"{o} Penetration");

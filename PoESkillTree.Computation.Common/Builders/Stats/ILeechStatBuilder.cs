@@ -13,8 +13,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// Returns a stat representing the percentage of damage done matching <paramref name="damage"/> that leeched
         /// to the pool this instance applies to.
         /// </summary>
-        /// <param name="damage"></param>
-        /// <returns></returns>
         IStatBuilder Of(IDamageStatBuilder damage);
 
         /// <summary>

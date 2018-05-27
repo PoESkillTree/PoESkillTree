@@ -1,5 +1,4 @@
-﻿using PoESkillTree.Computation.Common.Builders.Actions;
-using PoESkillTree.Computation.Common.Builders.Conditions;
+﻿using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
@@ -93,9 +92,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Count => CreateStat("Projectile count");
 
         public IStatBuilder PierceCount => CreateStat("Projectile pierce count");
-
-        public IActionBuilder Pierce => ActionBuilderStub.BySelf("Projectile pierce", (c, _) => c);
-
         public IStatBuilder ChainCount => CreateStat("Projectile chain count");
         public IStatBuilder TravelDistance => CreateStat("Projectile travel distance");
     }

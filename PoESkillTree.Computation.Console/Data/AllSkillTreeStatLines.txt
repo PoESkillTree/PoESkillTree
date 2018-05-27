@@ -787,7 +787,6 @@ When you or your Totems Kill a Burning Enemy, 20% chance for you and your Totems
 Enemies near your Totems deal 8% less Damage
 Enemies near your Totems take 16% increased Physical and Fire Damage
 15% chance to Ignite
-35% increased Damage with Hits and Ailments against Burning Enemies
 1% of Fire Damage Leeched as Life
 Damage Penetrates 10% Fire Resistance
 1% of Damage dealt by your Totems is Leeched to you as Life
