@@ -103,11 +103,9 @@ namespace PoESkillTree.Computation.Console.Builders
         {
         }
 
-        public IStatBuilder Chance => CreateStat("Critical Strike Chance");
+        public IDamageRelatedStatBuilder Chance => CreateDamageStat("Critical Strike Chance");
 
-        public IStatBuilder Multiplier => CreateStat("Critical Strike Multiplier");
-
-        public IStatBuilder AilmentMultiplier => CreateStat("Ailment Critical Strike Multiplier");
+        public IDamageRelatedStatBuilder Multiplier => CreateDamageStat("Critical Strike Multiplier");
 
         public IStatBuilder ExtraDamageTaken => CreateStat("Extra damage taken from Critical Strikes");
     }

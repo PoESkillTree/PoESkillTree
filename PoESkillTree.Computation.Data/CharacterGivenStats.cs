@@ -77,7 +77,6 @@ namespace PoESkillTree.Computation.Data
             { BaseSet, Mana.Regen.Percent, 1.75 },
             { BaseSet, EnergyShield.Recharge, 20 },
             { BaseSet, CriticalStrike.Multiplier, 150 },
-            { BaseSet, CriticalStrike.AilmentMultiplier, 150 },
             // minima and maxima
             // - crit
             { BaseSet, CriticalStrike.Chance.Maximum, 95 },

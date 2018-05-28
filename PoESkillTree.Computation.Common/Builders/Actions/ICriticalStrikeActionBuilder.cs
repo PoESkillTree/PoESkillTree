@@ -12,17 +12,12 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         /// <summary>
         /// Gets a stat representing the critical strike chance.
         /// </summary>
-        IStatBuilder Chance { get; }
+        IDamageRelatedStatBuilder Chance { get; }
         
         /// <summary>
         /// Gets a stat representing the critical strike multiplier.
         /// </summary>
-        IStatBuilder Multiplier { get; }
-        
-        /// <summary>
-        /// Gets a stat representing the multiplier for ailments from critical strikes.
-        /// </summary>
-        IStatBuilder AilmentMultiplier { get; }
+        IDamageRelatedStatBuilder Multiplier { get; }
         
         /// <summary>
         /// Gets a stat representing the extra damage taken from critical strikes.

@@ -1,6 +1,4 @@
-﻿using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Entities;
-using PoESkillTree.Computation.Common.Builders.Skills;
+﻿using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Common.Builders.Damage
@@ -52,7 +50,7 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         /// Gets a stat representing the amount of enemy resistances of the damage types in this collection penetrated
         /// by damage.
         /// </summary>
-        IStatBuilder Penetration { get; }
+        IDamageRelatedStatBuilder Penetration { get; }
 
         /// <summary>
         /// Gets a flag stat representing whether damage ignores enemy resistances of the damage types in this

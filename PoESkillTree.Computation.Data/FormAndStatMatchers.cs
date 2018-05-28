@@ -59,10 +59,9 @@ namespace PoESkillTree.Computation.Data
                 },
                 // - crit
                 { @"\+#% critical strike chance", BaseAdd, Value, CriticalStrike.Chance },
-                { "no critical strike multiplier", TotalOverride, 0, CriticalStrike.Multiplier },
                 {
-                    "no damage multiplier for ailments from critical strikes",
-                    TotalOverride, 0, CriticalStrike.AilmentMultiplier
+                    "no critical strike multiplier, no damage multiplier for ailments from critical strikes",
+                    TotalOverride, 0, CriticalStrike.Multiplier
                 },
                 { "never deal critical strikes", TotalOverride, 0, CriticalStrike.Chance },
                 // - speed
@@ -205,8 +204,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "poison you inflict with critical strikes deals #% more damage",
-                    PercentMore, Value, CriticalStrike.AilmentMultiplier
-                    // TODO Limit to poison
+                    PercentMore, Value, CriticalStrike.Multiplier.With(Ailment.Poison)
                 },
                 // stun
                 { "(you )?cannot be stunned", TotalOverride, 100, Effect.Stun.Avoidance },

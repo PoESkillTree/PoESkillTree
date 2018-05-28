@@ -17,10 +17,5 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         /// Gets a stat representing the stun recovery.
         /// </summary>
         IStatBuilder Recovery { get; }
-
-        /// <summary>
-        /// Gets a stat representing the chance to avoid interruption from stuns while casting.
-        /// </summary>
-        IStatBuilder ChanceToAvoidInterruptionWhileCasting { get; }
     }
 }

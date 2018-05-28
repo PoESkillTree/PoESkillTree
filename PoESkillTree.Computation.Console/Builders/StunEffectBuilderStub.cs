@@ -31,9 +31,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Recovery =>
             CreateStat(This, o => $"{o} recovery");
 
-        public IStatBuilder ChanceToAvoidInterruptionWhileCasting =>
-            CreateStat(This, o => $"Chance to avoid interruption from {o} while casting");
-
         public IEntityBuilder Source => _actionBuilder.Source;
 
         public IActionBuilder By(IEntityBuilder source) => _actionBuilder.By(source);

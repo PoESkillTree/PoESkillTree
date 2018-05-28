@@ -12,7 +12,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IEvasionStatBuilder Evasion { get; }
 
 
-        IStatBuilder Accuracy { get; }
+        IDamageRelatedStatBuilder Accuracy { get; }
 
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// <summary>
         /// The speed with which to cast (or attack with) the main skill
         /// </summary>
-        IStatBuilder CastSpeed { get; }
+        IDamageRelatedStatBuilder CastSpeed { get; }
 
         IStatBuilder EffectivenessOfAddedDamage { get; }
 

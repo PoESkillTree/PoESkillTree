@@ -38,8 +38,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IDamageStatBuilder Damage =>
             CreateDamageStat(This, o => $"{o} Damage");
 
-        public IStatBuilder Penetration =>
-            CreateStat(This, o => $"{o} Penetration");
+        public IDamageRelatedStatBuilder Penetration =>
+            CreateDamageStat(This, o => $"{o} Penetration");
 
         public IFlagStatBuilder IgnoreResistance =>
             CreateFlagStat(This, o => $"Ignore {o} Resistance");

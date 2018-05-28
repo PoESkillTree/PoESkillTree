@@ -12,12 +12,12 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IEvasionStatBuilder Evasion => new EvasionStatBuilderStub();
 
-        public IStatBuilder Accuracy => CreateStat("Accuracy");
+        public IDamageRelatedStatBuilder Accuracy => CreateDamageStat("Accuracy");
 
         public IStatBuilder MovementSpeed => CreateStat("Movement Speed");
         public IStatBuilder AnimationSpeed => CreateStat("Animation Speed");
 
-        public IStatBuilder CastSpeed => CreateStat("Attack/Cast Speed");
+        public IDamageRelatedStatBuilder CastSpeed => CreateDamageStat("Attack/Cast Speed");
         public IStatBuilder EffectivenessOfAddedDamage => CreateStat("Effectiveness of added damage");
         public IStatBuilder AreaOfEffect => CreateStat("Area of effect");
         public IStatBuilder Range => CreateStat("Range");

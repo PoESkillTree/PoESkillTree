@@ -228,6 +228,11 @@ namespace PoESkillTree.Computation.Console.Builders
                 ConstructDamage, operand1, operand2, stringRepresentation);
         }
 
+        public static IDamageStatBuilder CreateDamageStat(string stringRepresentation)
+        {
+            return (IDamageStatBuilder) Create<IStatBuilder>(ConstructDamage, stringRepresentation);
+        }
+
         private static IDamageStatBuilder ConstructDamage(string stringRepresentation,
             Resolver<IStatBuilder> resolver)
         {

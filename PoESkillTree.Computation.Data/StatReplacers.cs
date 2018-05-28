@@ -84,7 +84,7 @@ namespace PoESkillTree.Computation.Data
             {
                 // Elemental Overload
                 @"(\d+% more elemental damage if you've crit in the past \d+ seconds) (no critical strike multiplier) (no damage multiplier for ailments from critical strikes)",
-                "$1", "$2", "$3"
+                "$1", "$2, $3"
             },
             {
                 // Avatar of Fire

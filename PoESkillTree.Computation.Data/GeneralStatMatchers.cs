@@ -67,7 +67,7 @@ namespace PoESkillTree.Computation.Data
                 { "damage taken from damage over time", Damage.With(Source.OverTime()).Taken },
                 // - penetration
                 // - crit
-                { "(global )?critical strike multiplier", CriticalStrike.Multiplier },
+                { "(global )?critical strike multiplier", CriticalStrike.Multiplier.WithHits },
                 { "(global )?critical strike chance", CriticalStrike.Chance },
                 // - projectiles
                 { "projectile speed", Projectile.Speed },
@@ -129,8 +129,8 @@ namespace PoESkillTree.Computation.Data
                         .Before(References[2].AsPoolStat)
                 },
                 // speed
-                { "attack speed", Stat.CastSpeed, With(Keyword.Attack) },
-                { "cast speed", Stat.CastSpeed, Not(With(Keyword.Attack)) },
+                { "attack speed", Stat.CastSpeed.With(Source.Attack()) },
+                { "cast speed", Stat.CastSpeed.With(Source.Spell()), Stat.CastSpeed.With(Source.Secondary()) },
                 { "movement speed", Stat.MovementSpeed },
                 {
                     // not the most elegant solution but by far the easiest
@@ -231,7 +231,7 @@ namespace PoESkillTree.Computation.Data
                 { "stun duration (?<inner>with .*) on enemies", Effect.Stun.Duration, "${inner}" },
                 {
                     "chance to avoid interruption from stuns while casting",
-                    Effect.Stun.ChanceToAvoidInterruptionWhileCasting
+                    Stat.Unique("Chance to Avoid interruption from Stuns while Casting")
                 },
                 { "chance to double stun duration", Effect.Stun.Duration.ChanceToDouble },
                 // flasks
