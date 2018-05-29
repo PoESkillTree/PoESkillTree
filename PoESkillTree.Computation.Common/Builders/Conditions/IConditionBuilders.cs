@@ -1,4 +1,5 @@
 ﻿using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Skills;
 
@@ -15,9 +16,15 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
         IConditionBuilder With(IKeywordBuilder keyword);
 
         /// <summary>
-        /// Returns a conditions that is satisfied if Self's current main skill is <paramref name="skill"/>.
+        /// Returns a condition that is satisfied if Self's current main skill is <paramref name="skill"/>.
         /// </summary>
         IConditionBuilder With(ISkillBuilder skill);
+
+        /// <summary>
+        /// Returns a condition that is satisfied if the damage related stat or action is done as an attack with
+        /// the given hand.
+        /// </summary>
+        IConditionBuilder AttackWith(AttackDamageHand hand);
 
         /// <summary>
         /// Returns a condition that is satisfied if Self is equivalent to any entity in <paramref name="entities"/>.

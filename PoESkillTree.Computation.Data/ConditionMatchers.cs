@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Data;
@@ -107,9 +108,9 @@ namespace PoESkillTree.Computation.Data
                     And(Damage.With(Tags.TwoHandWeapon), Not(Damage.With(Tags.Ranged)))
                 },
                 // - by item slot
-                { "with the main-hand weapon", Damage.With(ItemSlot.MainHand) },
-                { "with main hand", Damage.With(ItemSlot.MainHand) },
-                { "with off hand", Damage.With(ItemSlot.OffHand) },
+                { "with the main-hand weapon", Condition.AttackWith(AttackDamageHand.MainHand) },
+                { "with main hand", Condition.AttackWith(AttackDamageHand.MainHand) },
+                { "with off hand", Condition.AttackWith(AttackDamageHand.OffHand) },
                 // action and damage combinations
                 // - by item tag
                 { "if you get a critical strike with a bow", And(CriticalStrike.On(), Damage.With(Tags.Bow)) },

@@ -13,7 +13,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// <summary>
         /// Gets a stat representing the modifier to damage taken of this stat's damage types.
         /// </summary>
-        IStatBuilder Taken { get; }
+        IDamageRelatedStatBuilder Taken { get; }
 
         /// <summary>
         /// Starts constructing a stat representing the percentage of damage of this stat's damage types that is taken
@@ -26,12 +26,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// the damage is dealt with a weapon having the given tags.
         /// </summary>
         IConditionBuilder With(Tags tags);
-
-        /// <summary>
-        /// Returns a condition that is satisfied if damage dealt is of (any of) this stat's damage types and if
-        /// the damage is dealt with a weapon in the given slot (either MainHand or OffHand).
-        /// </summary>
-        IConditionBuilder With(ItemSlot slot);
     }
 
 

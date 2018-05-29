@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Data
             new[] { "StatMatchers", nameof(DamageStatMatchers) };
 
         protected override IEnumerable<MatcherData> CreateCollection() =>
-            new StatMatcherCollection<IDamageStatBuilder>(_modifierBuilder)
+            new StatMatcherCollection<IDamageRelatedStatBuilder>(_modifierBuilder)
             {
                 // unspecific
                 { "damage", Damage },

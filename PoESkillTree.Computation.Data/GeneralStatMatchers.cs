@@ -64,7 +64,7 @@ namespace PoESkillTree.Computation.Data
                 { "({DamageTypeMatchers}) damage taken", Reference.AsDamageType.Damage.Taken },
                 { "take ({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage.Taken },
                 { "damage taken", Damage.Taken },
-                { "damage taken from damage over time", Damage.With(Source.OverTime()).Taken },
+                { "damage taken from damage over time", Damage.Taken.With(Source.OverTime()) },
                 // - penetration
                 // - crit
                 { "(global )?critical strike multiplier", CriticalStrike.Multiplier.WithHits },

@@ -13,26 +13,31 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// <summary>
         /// Limits the damage by source.
         /// </summary>
-        IDamageStatBuilder With(IDamageSourceBuilder source);
+        IDamageRelatedStatBuilder With(IDamageSourceBuilder source);
 
         /// <summary>
         /// Limits the damage to not apply to damage over time.
         /// </summary>
-        IDamageStatBuilder WithHits { get; }
+        IDamageRelatedStatBuilder WithHits { get; }
 
         /// <summary>
         /// Limits the damage to not apply to non-ailment damage over time.
         /// </summary>
-        IDamageStatBuilder WithHitsAndAilments { get; }
+        IDamageRelatedStatBuilder WithHitsAndAilments { get; }
 
         /// <summary>
         /// Limits the damage to only apply to ailments.
         /// </summary>
-        IDamageStatBuilder WithAilments { get; }
+        IDamageRelatedStatBuilder WithAilments { get; }
 
         /// <summary>
         /// Limits the damage to only apply to the given ailment.
         /// </summary>
-        IDamageStatBuilder With(IAilmentBuilder ailment);
+        IDamageRelatedStatBuilder With(IAilmentBuilder ailment);
+
+        /// <summary>
+        /// Limits the damage to only apply to attacks with the given hand.
+        /// </summary>
+        IDamageRelatedStatBuilder With(AttackDamageHand hand);
     }
 }

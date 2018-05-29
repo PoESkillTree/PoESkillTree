@@ -3,6 +3,7 @@ using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
@@ -46,6 +47,9 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IConditionBuilder With(ISkillBuilder skill) =>
             CreateCondition(skill, o => $"With {o}");
+
+        public IConditionBuilder AttackWith(AttackDamageHand hand) =>
+            CreateCondition($"Attack with {hand}");
 
         public IConditionBuilder For(params IEntityBuilder[] entities) =>
             CreateCondition(entities, os => "For " + string.Join(", ", os));
