@@ -32,6 +32,9 @@ namespace PoESkillTree.Computation.Parsing
 
         private readonly Lazy<IParser<IReadOnlyList<Modifier>>> _parser;
 
+        private readonly Dictionary<(string, ModifierSource), ParseResult> _cache =
+            new Dictionary<(string, ModifierSource), ParseResult>();
+
         private ModifierSource _currentModifierSource;
 
         public Parser(IParsingData<TStep> parsingData, IBuilderFactories builderFactories)
@@ -43,8 +46,13 @@ namespace PoESkillTree.Computation.Parsing
 
         public ParseResult Parse(string stat, ModifierSource modifierSource)
         {
-            _currentModifierSource = modifierSource;
-            var (success, remaining, result) = _parser.Value.Parse(stat);
+            return _cache.GetOrAdd((stat, modifierSource), Parse);
+        }
+
+        private ParseResult Parse((string stat, ModifierSource modifierSource) key)
+        {
+            _currentModifierSource = key.modifierSource;
+            var (success, remaining, result) = _parser.Value.Parse(key.stat);
             return new ParseResult(success, remaining, result);
         }
 
@@ -74,18 +82,18 @@ namespace PoESkillTree.Computation.Parsing
 
             // The full parsing pipeline.
             return
-                new CachingParser<IReadOnlyList<Modifier>>(
-                    new ValidatingParser<IReadOnlyList<Modifier>>(
-                        new StatNormalizingParser<IReadOnlyList<Modifier>>(
-                            new ResultMappingParser<IReadOnlyList<IReadOnlyList<Modifier>>, IReadOnlyList<Modifier>>(
-                                new StatReplacingParser<IReadOnlyList<Modifier>>(
-                                    new ResultMappingParser<IReadOnlyList<IIntermediateModifier>, IReadOnlyList<Modifier>>(
-                                        new CompositeParser<IIntermediateModifier, TStep>(_parsingData.Stepper, StepToParser),
-                                        l => l.Aggregate().Build(_currentModifierSource)),
-                                    _parsingData.StatReplacers
-                                ),
-                                ls => ls.Flatten().ToList()
-                            )
+                new ValidatingParser<IReadOnlyList<Modifier>>(
+                    new StatNormalizingParser<IReadOnlyList<Modifier>>(
+                        new ResultMappingParser<IReadOnlyList<IReadOnlyList<Modifier>>, IReadOnlyList<Modifier>>(
+                            new StatReplacingParser<IReadOnlyList<Modifier>>(
+                                new ResultMappingParser<IReadOnlyList<IIntermediateModifier>,
+                                    IReadOnlyList<Modifier>>(
+                                    new CompositeParser<IIntermediateModifier, TStep>(_parsingData.Stepper,
+                                        StepToParser),
+                                    l => l.Aggregate().Build(_currentModifierSource)),
+                                _parsingData.StatReplacers
+                            ),
+                            ls => ls.Flatten().ToList()
                         )
                     )
                 );
