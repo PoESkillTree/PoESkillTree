@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using MoreLinq;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Console.Builders;
@@ -165,5 +166,12 @@ namespace PoESkillTree.Computation.Console
             return File.ReadAllLines("Data/AllSkillTreeStatLines.txt")
                 .Where(s => !s.StartsWith("//"));
         }
+    }
+
+
+    public static class ParserExtensions
+    {
+        public static ParseResult Parse(this IParser @this, string stat) => 
+            @this.Parse(stat, new ModifierSource.Global());
     }
 }

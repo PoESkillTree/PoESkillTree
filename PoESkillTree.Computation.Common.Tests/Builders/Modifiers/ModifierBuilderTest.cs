@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
@@ -282,7 +283,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         public void WithStatConverterSetsStatConverter()
         {
             var sut = new ModifierBuilder();
-            Func<IStatBuilder, IStatBuilder> statConverter = s => null;
+            StatConverter statConverter = s => null;
 
             sut = (ModifierBuilder) sut.WithStatConverter(statConverter);
 
@@ -293,7 +294,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         public void WithValueConverterSetsValueConverter()
         {
             var sut = new ModifierBuilder();
-            Func<IValueBuilder, IValueBuilder> valueConverter = v => null;
+            ValueConverter valueConverter = v => null;
 
             sut = (ModifierBuilder) sut.WithValueConverter(valueConverter);
 

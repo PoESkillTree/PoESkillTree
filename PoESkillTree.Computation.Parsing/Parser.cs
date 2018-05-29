@@ -32,6 +32,8 @@ namespace PoESkillTree.Computation.Parsing
 
         private readonly Lazy<IParser<IReadOnlyList<Modifier>>> _parser;
 
+        private ModifierSource _currentModifierSource;
+
         public Parser(IParsingData<TStep> parsingData, IBuilderFactories builderFactories)
         {
             _parsingData = parsingData;
@@ -39,15 +41,11 @@ namespace PoESkillTree.Computation.Parsing
             _parser = new Lazy<IParser<IReadOnlyList<Modifier>>>(CreateParser);
         }
 
-        public ParseResult Parse(string stat)
+        public ParseResult Parse(string stat, ModifierSource modifierSource)
         {
+            _currentModifierSource = modifierSource;
             var (success, remaining, result) = _parser.Value.Parse(stat);
             return new ParseResult(success, remaining, result);
-        }
-
-        ParseResult<IReadOnlyList<Modifier>> IParser<IReadOnlyList<Modifier>>.Parse(string stat)
-        {
-            return Parse(stat);
         }
 
         private IParser<IReadOnlyList<Modifier>> CreateParser()
@@ -83,7 +81,7 @@ namespace PoESkillTree.Computation.Parsing
                                 new StatReplacingParser<IReadOnlyList<Modifier>>(
                                     new ResultMappingParser<IReadOnlyList<IIntermediateModifier>, IReadOnlyList<Modifier>>(
                                         new CompositeParser<IIntermediateModifier, TStep>(_parsingData.Stepper, StepToParser),
-                                        l => l.Aggregate().Build(_builderFactories.ConditionBuilders.True)),
+                                        l => l.Aggregate().Build(_currentModifierSource)),
                                     _parsingData.StatReplacers
                                 ),
                                 ls => ls.Flatten().ToList()

@@ -65,6 +65,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\BatchUpdateExtensions.cs" />
+    <Compile Include="Core\BasicCalculatorTest.cs" />
+    <Compile Include="Core\ConversionTest.cs" />
+    <Compile Include="Core\Stat.cs" />
+    <Compile Include="Core\ValueTransformation.cs" />
+    <Compile Include="Core\Values.cs" />
     <Compile Include="DataValidatingTest.cs" />
     <Compile Include="ParsingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,6 +94,10 @@
     <ProjectReference Include="..\PoESkillTree.Computation.Console\PoESkillTree.Computation.Console.csproj">
       <Project>{aadcc052-3a9d-4513-9eae-7aeacbf2dbca}</Project>
       <Name>PoESkillTree.Computation.Console</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Core\PoESkillTree.Computation.Core.csproj">
+      <Project>{e9c0cf81-6800-4461-8897-f8b569c7cdd0}</Project>
+      <Name>PoESkillTree.Computation.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\PoESkillTree.Computation.Data\PoESkillTree.Computation.Data.csproj">
       <Project>{85CF9690-7EB9-42CB-9574-ADF4239CFFBE}</Project>

@@ -14,5 +14,22 @@ namespace PoESkillTree.Common.Utils.Extensions
         {
             return enumerable.SelectMany(ts => ts);
         }
+
+        /// <summary>
+        /// Returns a hash code for <paramref name="values"/> that can be used in conjunction with
+        /// <see cref="Enumerable.SequenceEqual{TSource}(IEnumerable{TSource},IEnumerable{TSource})"/>.
+        /// </summary>
+        public static int SequenceHash<T>(this IEnumerable<T> values)
+        {
+            unchecked
+            {
+                int hash = 19;
+                foreach (var value in values)
+                {
+                    hash = hash * 31 + (value?.GetHashCode() ?? 0);
+                }
+                return hash;
+            }
+        }
     }
 }

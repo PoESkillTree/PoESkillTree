@@ -1,5 +1,6 @@
 using System;
 using JetBrains.Annotations;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
@@ -23,7 +24,7 @@ namespace PoESkillTree.Computation.Data.Collections
         /// </summary>
         public void Add(
             [RegexPattern] string regex,
-            Func<IStatBuilder, IStatBuilder> manipulateStat,
+            StatConverter manipulateStat,
             string substitution = "")
         {
             var builder = ModifierBuilder

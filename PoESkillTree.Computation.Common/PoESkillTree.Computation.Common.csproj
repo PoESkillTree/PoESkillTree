@@ -112,6 +112,7 @@
     <Compile Include="Builders\Skills\ISkillBuilder.cs" />
     <Compile Include="Builders\Skills\ISkillBuilderCollection.cs" />
     <Compile Include="Builders\Skills\ISkillBuilders.cs" />
+    <Compile Include="Builders\StatConverter.cs" />
     <Compile Include="Builders\Stats\IAttributeStatBuilders.cs" />
     <Compile Include="Builders\Stats\IDamageStatBuilder.cs" />
     <Compile Include="Builders\Stats\IDodgeStatBuilders.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="Builders\Stats\IRegenStatBuilder.cs" />
     <Compile Include="Builders\Stats\IStatBuilder.cs" />
     <Compile Include="Builders\Stats\IStatBuilders.cs" />
+    <Compile Include="Builders\ValueConverter.cs" />
     <Compile Include="Builders\Values\IValueBuilder.cs" />
     <Compile Include="Builders\Values\IValueBuilders.cs" />
     <Compile Include="Builders\Values\ValueBuilder.cs" />
@@ -144,9 +146,19 @@
     <Compile Include="Data\MatcherData.cs" />
     <Compile Include="Data\ReferencedMatcherData.cs" />
     <Compile Include="Data\StatReplacerData.cs" />
+    <Compile Include="Form.cs" />
+    <Compile Include="Behavior.cs" />
+    <Compile Include="IValueCalculationContext.cs" />
+    <Compile Include="IStat.cs" />
+    <Compile Include="IValue.cs" />
+    <Compile Include="IValueTransformation.cs" />
     <Compile Include="Modifier.cs" />
+    <Compile Include="ModifierSource.cs" />
+    <Compile Include="NodeType.cs" />
+    <Compile Include="NodeValue.cs" />
     <Compile Include="Parsing\ParseException.cs" />
     <Compile Include="Parsing\ReferenceConstants.cs" />
+    <Compile Include="PathDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

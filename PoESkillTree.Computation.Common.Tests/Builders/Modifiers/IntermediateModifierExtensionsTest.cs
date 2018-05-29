@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
@@ -228,54 +229,83 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         }
 
         [Test]
-        public void BuildDoesNotConvertNullStats()
+        public void BuildSkipsEntriesWithNullStats()
         {
-            var input = CreateResult(
-                new[] { DefaultEntry.WithStat(null) },
-                statConverter: s => s ?? throw new ArgumentNullException());
+            var input = CreateResult(DefaultEntry.WithStat(null));
 
-            var result = input.Build(null);
+            var result = input.Build(Source);
 
-            Assert.Null(result[0].Stat);
+            CollectionAssert.IsEmpty(result);
         }
 
         [Test]
-        public void BuildDoesNotConvertNullValues()
+        public void BuildSkipsEntriesWithNullForms()
         {
-            var input = CreateResult(
-                new[] { DefaultEntry.WithValue(null) },
-                valueConverter: v => v ?? throw new ArgumentNullException());
+            var input = CreateResult(DefaultEntry.WithForm(null));
 
-            var result = input.Build(null);
+            var result = input.Build(Source);
 
-            Assert.Null(result[0].Value);
+            CollectionAssert.IsEmpty(result);
+        }
+
+        [Test]
+        public void BuildSkipsEntriesWithNullValues()
+        {
+            var input = CreateResult(DefaultEntry.WithValue(null));
+
+            var result = input.Build(Source);
+
+            CollectionAssert.IsEmpty(result);
         }
 
         [Test]
         public void BuildReturnsCorrectModifiers()
         {
-            var stat = Mock.Of<IStatBuilder>();
-            var value = Mock.Of<IValueBuilder>();
+            var conditionBuilder = Mock.Of<IConditionBuilder>();
+
+            var value = Mock.Of<IValue>();
+            var valueBuilder = Mock.Of<IValueBuilder>();
+            var convertedValueBuilder = Mock.Of<IValueBuilder>();
+            var statConvertedValueBuilder = Mock.Of<IValueBuilder>();
+            var formConvertedValueBuilder = Mock.Of<IValueBuilder>(b => b.Build() == value);
+
+            var stats = new[] { Mock.Of<IStat>() };
+            var source = new ModifierSource.Local.Given();
+            IValueBuilder StatConvertValue(IValueBuilder v) =>
+                v == convertedValueBuilder ? statConvertedValueBuilder : v;
+            var statBuilderMock = new Mock<IStatBuilder>();
+            statBuilderMock.Setup(b => b.Build()).Returns((stats, _ => source, StatConvertValue));
+            var statBuilderWithCondition = statBuilderMock.Object;
+            var statBuilder = Mock.Of<IStatBuilder>();
+            var convertedStatBuilder =
+                Mock.Of<IStatBuilder>(s => s.WithCondition(conditionBuilder) == statBuilderWithCondition);
+
+            var form = Form.More;
+            IValueBuilder FormConvertValue(IValueBuilder v) =>
+                v == statConvertedValueBuilder ? formConvertedValueBuilder : v;
+            var formBuilderMock = new Mock<IFormBuilder>();
+            formBuilderMock.Setup(b => b.Build()).Returns((form, FormConvertValue));
+            var formBuilder = formBuilderMock.Object;
+
+            var entry = EmptyEntry
+                .WithStat(statBuilder)
+                .WithForm(formBuilder)
+                .WithValue(valueBuilder)
+                .WithCondition(conditionBuilder);
+
             var input = CreateResult(
-                new[] { DefaultEntry },
-                s => s == DefaultEntry.Stat ? stat : s,
-                v => v == DefaultEntry.Value ? value : v);
+                new[] { entry },
+                s => s == statBuilder ? convertedStatBuilder : s,
+                v => v == valueBuilder ? convertedValueBuilder : v);
 
-            var result = input.Build(null);
+            var result = input.Build(Source);
 
-            Assert.That(result,
-                Has.Exactly(1).Items.EqualTo(new Modifier(stat, DefaultEntry.Form, value, DefaultEntry.Condition)));
-        }
-
-        [Test]
-        public void BuildUsesDefaultConditionIfEntryHasNullCondition()
-        {
-            var input = CreateResult(DefaultEntry.WithCondition(null));
-            const string expected = "default condition";
-
-            var result = input.Build(expected);
-
-            Assert.AreEqual(expected, result[0].Condition);
+            Assert.AreEqual(1, result.Count);
+            var item = result[0];
+            Assert.AreEqual(stats, item.Stats);
+            Assert.AreEqual(form, item.Form);
+            Assert.AreEqual(value, item.Value);
+            Assert.AreSame(source, item.Source);
         }
 
         private static readonly IntermediateModifierEntry EmptyEntry = new IntermediateModifierEntry();
@@ -294,12 +324,14 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             return new[] { entry0, entry1, entry2 };
         }
 
-        private static IIntermediateModifier CreateResult(Func<IStatBuilder, IStatBuilder> statConverter)
+        private static readonly ModifierSource Source = new ModifierSource.Global();
+
+        private static IIntermediateModifier CreateResult(StatConverter statConverter)
         {
             return CreateResult(null, statConverter);
         }
 
-        private static IIntermediateModifier CreateResult(Func<IValueBuilder, IValueBuilder> valueConverter)
+        private static IIntermediateModifier CreateResult(ValueConverter valueConverter)
         {
             return CreateResult(null, valueConverter: valueConverter);
         }
@@ -310,8 +342,8 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         }
 
         private static IIntermediateModifier CreateResult(IReadOnlyList<IntermediateModifierEntry> entries = null,
-            Func<IStatBuilder, IStatBuilder> statConverter = null,
-            Func<IValueBuilder, IValueBuilder> valueConverter = null)
+            StatConverter statConverter = null,
+            ValueConverter valueConverter = null)
         {
             return new SimpleIntermediateModifier(entries ?? new IntermediateModifierEntry[0],
                 statConverter ?? (s => s),

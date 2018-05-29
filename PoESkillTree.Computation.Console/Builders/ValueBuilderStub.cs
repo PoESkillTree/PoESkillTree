@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Globalization;
+using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
@@ -18,6 +20,12 @@ namespace PoESkillTree.Computation.Console.Builders
         }
 
         private IValueBuilder This => this;
+
+        public IValueBuilder MinimumOnly =>
+            CreateValue(This, o => $"{o} (minimum value only)");
+
+        public IValueBuilder MaximumOnly =>
+            CreateValue(This, o => $"{o} (maximum value only)");
 
         public IConditionBuilder Eq(IValueBuilder other) =>
             CreateCondition(This, other, (l, r) => $"({l} == {r})");
@@ -58,6 +66,21 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IValueBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
+
+        public IValue Build() => new ValueStub(this);
+
+
+        private class ValueStub : BuilderStub, IValue
+        {
+            public ValueStub(BuilderStub builderStub) : base(builderStub)
+            {
+            }
+
+            public NodeValue? Calculate(IValueCalculationContext valueCalculationContext)
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 
 
@@ -74,7 +97,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IValueBuilder Create(double value) =>
             CreateValue(value.ToString(CultureInfo.InvariantCulture));
 
-        public Func<IValueBuilder, IValueBuilder> WrapValueConverter(
+        public ValueConverter WrapValueConverter(
             Func<ValueBuilder, ValueBuilder> converter)
         {
             return iValue => iValue is ValueBuilder value

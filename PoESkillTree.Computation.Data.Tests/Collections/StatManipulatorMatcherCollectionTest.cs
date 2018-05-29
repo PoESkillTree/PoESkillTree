@@ -1,6 +1,7 @@
 ﻿using System;
 using Moq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Data.Collections;
@@ -29,7 +30,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddWithoutSubstitution()
         {
-            Func<IStatBuilder, IStatBuilder> manipulator = s => null;
+            StatConverter manipulator = s => null;
 
             _sut.Add(Regex, manipulator);
 
@@ -40,7 +41,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void AddWithSubstitution()
         {
-            Func<IStatBuilder, IStatBuilder> manipulator = s => null;
+            StatConverter manipulator = s => null;
 
             _sut.Add(Regex, manipulator, "substitution");
 

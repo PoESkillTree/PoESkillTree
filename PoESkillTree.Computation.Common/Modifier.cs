@@ -1,59 +1,53 @@
-﻿namespace PoESkillTree.Computation.Common
+﻿using System.Collections.Generic;
+using System.Linq;
+using PoESkillTree.Common.Utils.Extensions;
+
+namespace PoESkillTree.Computation.Common
 {
     /// <summary>
-    /// Represents a single parsed Modifier including a Stat, Form, Value and Condition.
+    /// Represents a single parsed Modifier.
     /// </summary>
-    /// <remarks>
-    /// The actual types of the properties are yet to be determined.
-    /// </remarks>
     public class Modifier
     {
-        public object Stat { get; }
+        /// <summary>
+        /// Defines the subgraphs of the calculation graph this modifier applies to.
+        /// </summary>
+        public IReadOnlyList<IStat> Stats { get; }
 
-        public object Form { get; }
+        /// <summary>
+        /// Defines the form in which this modifier applies to stat subgraphs.
+        /// </summary>
+        public Form Form { get; }
 
-        public object Value { get; }
+        /// <summary>
+        /// Defines the formula to calculate the value of this modifier.
+        /// </summary>
+        public IValue Value { get; }
 
-        public object Condition { get; }
+        /// <summary>
+        /// Defines the source of this modifier.
+        /// </summary>
+        public ModifierSource Source { get; }
 
-        public Modifier(object stat, object form, object value, object condition)
+        public Modifier(IReadOnlyList<IStat> stats, Form form, IValue value, ModifierSource source)
         {
-            Stat = stat;
+            Stats = stats;
             Form = form;
             Value = value;
-            Condition = condition;
+            Source = source;
         }
 
-        private bool Equals(Modifier other)
-        {
-            return Stat.Equals(other.Stat) 
-                   && Form.Equals(other.Form) 
-                   && Value.Equals(other.Value) 
-                   && Condition.Equals(other.Condition);
-        }
+        public override bool Equals(object obj) =>
+            (obj == this) || (obj is Modifier other && Equals(other));
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            return obj.GetType() == GetType() && Equals((Modifier) obj);
-        }
+        private bool Equals(Modifier other) =>
+            Stats.SequenceEqual(other.Stats) && Form.Equals(other.Form) && Value.Equals(other.Value)
+            && Source.Equals(other.Source);
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = Stat.GetHashCode();
-                hashCode = (hashCode * 397) ^ Form.GetHashCode();
-                hashCode = (hashCode * 397) ^ Value.GetHashCode();
-                hashCode = (hashCode * 397) ^ Condition.GetHashCode();
-                return hashCode;
-            }
-        }
+        public override int GetHashCode() =>
+            (Stats.SequenceHash(), Form, Value, Source).GetHashCode();
 
-        public override string ToString()
-        {
-            return $"Stat: {Stat}\n  Form: {Form}\n  Value: {Value}\n  Condition: {Condition}";
-        }
+        public override string ToString() =>
+            $"Stats: {string.Join("    \n", Stats)}\n  Form: {Form}\n  Value: {Value}\n  Source: {Source}";
     }
 }

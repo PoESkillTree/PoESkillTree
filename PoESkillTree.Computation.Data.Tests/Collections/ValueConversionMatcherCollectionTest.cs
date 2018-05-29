@@ -30,18 +30,18 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         [Test]
         public void Add()
         {
-            var converter = _valueFactory.SetupConverter();
+            var (converterIn, converterOut) = _valueFactory.SetupConverter();
 
-            _sut.Add(Regex, converter);
+            _sut.Add(Regex, converterIn);
 
             var builder = _sut.AssertSingle(Regex);
-            Assert.AreSame(converter, builder.ValueConverter);
+            Assert.AreSame(converterOut, builder.ValueConverter);
         }
 
         [Test]
         public void AddManyAddsToCount()
         {
-            var converter = _valueFactory.SetupConverter();
+            var (converter, _) = _valueFactory.SetupConverter();
 
             _sut.Add(Regex, converter);
             _sut.Add(Regex, converter);

@@ -4,6 +4,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Common.Utils;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
@@ -181,7 +182,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         {
             var entry = new IntermediateModifierEntry()
                 .WithStat(DefaultStats[0]);
-            Func<IStatBuilder, IStatBuilder> statConverter = s => s == DefaultStats[0] ? DefaultStats[1] : null;
+            StatConverter statConverter = s => s == DefaultStats[0] ? DefaultStats[1] : null;
             var result = Mock.Of<IIntermediateModifier>(r =>
                 r.Entries == new[] { entry } &&
                 r.ValueConverter == Funcs.Identity &&

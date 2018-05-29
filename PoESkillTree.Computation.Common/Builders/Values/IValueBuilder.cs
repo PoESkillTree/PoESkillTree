@@ -9,6 +9,15 @@ namespace PoESkillTree.Computation.Common.Builders.Values
     public interface IValueBuilder : IResolvable<IValueBuilder>
     {
         /// <summary>
+        /// Gets a value equivalent to this value but only affecting the minimum value of stats instead of both.
+        /// </summary>
+        IValueBuilder MinimumOnly { get; }
+        /// <summary>
+        /// Gets a value equivalent to this value but only affecting the maximum value of stats instead of both.
+        /// </summary>
+        IValueBuilder MaximumOnly { get; }
+
+        /// <summary>
         /// Returns a condition that is satisfied if this value is equal to the given value.
         /// </summary>
         IConditionBuilder Eq(IValueBuilder other);
@@ -77,5 +86,10 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// Returns a value that is equal to the smallest integer greater than or equal to this value.
         /// </summary>
         IValueBuilder Ceiling { get; }
+
+        /// <summary>
+        /// Builds this instance into an <see cref="IValue"/>.
+        /// </summary>
+        IValue Build();
     }
 }

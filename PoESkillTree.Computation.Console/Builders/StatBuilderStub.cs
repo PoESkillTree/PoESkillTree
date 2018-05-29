@@ -1,4 +1,8 @@
-﻿using PoESkillTree.Computation.Common.Builders;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Effects;
@@ -66,10 +70,29 @@ namespace PoESkillTree.Computation.Console.Builders
             CreateFlagStat(This, effect, (o1, o2) => $"{o1} added to effect {o2}");
 
         public virtual IStatBuilder WithCondition(IConditionBuilder condition) =>
-            CreateStat(This, condition, (s, c) => $"{s} ({c})");
+            CreateStat(This, condition, (s, c) => $"{s}\n  Condition: {c}");
 
         public IStatBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
+
+        public (IReadOnlyList<IStat> stats, Func<ModifierSource, ModifierSource> sourceConverter, ValueConverter valueConverter) Build() =>
+            (new[] { new StatStub(this) }, m => m, v => v);
+
+
+        private class StatStub : BuilderStub, IStat
+        {
+            public StatStub(BuilderStub toCopy) : base(toCopy)
+            {
+            }
+
+            public bool Equals(IStat other) => Equals(ToString(), other?.ToString());
+
+            public IStat Minimum => null;
+            public IStat Maximum => null;
+            public bool IsRegisteredExplicitly => false;
+            public Type DataType => typeof(double);
+            public IEnumerable<Behavior> Behaviors => Enumerable.Empty<Behavior>();
+        }
     }
 
 
