@@ -43,7 +43,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
 
             _sut.Add(Regex, condition);
             _sut.Add(Regex, condition);
-            _sut.Add(Regex, condition);
+            _sut.Add(Regex, (condition, condition));
 
             Assert.AreEqual(3, _sut.Count());
         }

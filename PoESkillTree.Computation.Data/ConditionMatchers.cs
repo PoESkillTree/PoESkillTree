@@ -84,28 +84,33 @@ namespace PoESkillTree.Computation.Data
                 { "when you gain a ({ChargeTypeMatchers})", Reference.AsChargeType.GainAction.On() },
                 // damage
                 // - by item tag
-                { "with weapons", Damage.With(Tags.Weapon) },
-                { "weapon", Damage.With(Tags.Weapon) },
-                { "with bows", Damage.With(Tags.Bow) },
-                { "bow", Damage.With(Tags.Bow) },
-                { "with swords", Damage.With(Tags.Sword) },
-                { "with claws", Damage.With(Tags.Claw) },
-                { "claw", Damage.With(Tags.Claw) },
-                { "with daggers", Damage.With(Tags.Dagger) },
-                { "with wands", Damage.With(Tags.Wand) },
-                { "wand", Damage.With(Tags.Wand) },
-                { "with axes", Damage.With(Tags.Axe) },
-                { "with staves", Damage.With(Tags.Staff) },
-                { "with maces", Or(Damage.With(Tags.Mace), Damage.With(Tags.Sceptre)) },
-                { "with one handed weapons", Damage.With(Tags.OneHandWeapon) },
+                { "with weapons", AttackWith(Tags.Weapon) },
+                { "weapon", AttackWith(Tags.Weapon) },
+                { "with bows", AttackWith(Tags.Bow) },
+                { "bow", AttackWith(Tags.Bow) },
+                { "with swords", AttackWith(Tags.Sword) },
+                { "with claws", AttackWith(Tags.Claw) },
+                { "claw", AttackWith(Tags.Claw) },
+                { "with daggers", AttackWith(Tags.Dagger) },
+                { "with wands", AttackWith(Tags.Wand) },
+                { "wand", AttackWith(Tags.Wand) },
+                { "with axes", AttackWith(Tags.Axe) },
+                { "with staves", AttackWith(Tags.Staff) },
+                {
+                    "with maces",
+                    (Or(MainHandAttackWith(Tags.Mace), MainHandAttackWith(Tags.Sceptre)),
+                        Or(OffHandAttackWith(Tags.Mace), OffHandAttackWith(Tags.Sceptre)))
+                },
+                { "with one handed weapons", AttackWith(Tags.OneHandWeapon) },
                 {
                     "with one handed melee weapons",
-                    And(Damage.With(Tags.OneHandWeapon), Not(Damage.With(Tags.Ranged)))
+                    (And(MainHandAttackWith(Tags.OneHandWeapon), Not(MainHand.Has(Tags.Ranged))),
+                        And(OffHandAttackWith(Tags.OneHandWeapon), Not(OffHand.Has(Tags.Ranged))))
                 },
-                { "with two handed weapons", Damage.With(Tags.TwoHandWeapon) },
+                { "with two handed weapons", AttackWith(Tags.TwoHandWeapon) },
                 {
                     "with two handed melee weapons",
-                    And(Damage.With(Tags.TwoHandWeapon), Not(Damage.With(Tags.Ranged)))
+                    And(MainHandAttackWith(Tags.TwoHandWeapon), Not(MainHand.Has(Tags.Ranged)))
                 },
                 // - by item slot
                 { "with the main-hand weapon", Condition.AttackWith(AttackDamageHand.MainHand) },
@@ -113,8 +118,11 @@ namespace PoESkillTree.Computation.Data
                 { "with off hand", Condition.AttackWith(AttackDamageHand.OffHand) },
                 // action and damage combinations
                 // - by item tag
-                { "if you get a critical strike with a bow", And(CriticalStrike.On(), Damage.With(Tags.Bow)) },
-                { "if you get a critical strike with a staff", And(CriticalStrike.On(), Damage.With(Tags.Staff)) },
+                { "if you get a critical strike with a bow", And(CriticalStrike.On(), MainHandAttackWith(Tags.Bow)) },
+                {
+                    "if you get a critical strike with a staff",
+                    And(CriticalStrike.On(), MainHandAttackWith(Tags.Staff))
+                },
                 // - by item slot
                 // equipment
                 { "while unarmed", Not(MainHand.HasItem) },
@@ -132,7 +140,10 @@ namespace PoESkillTree.Computation.Data
                 { "while holding a shield", OffHand.Has(Tags.Shield) },
                 { "while dual wielding or holding a shield", Or(OffHand.Has(Tags.Weapon), OffHand.Has(Tags.Shield)) },
                 { "with shields", OffHand.Has(Tags.Shield) },
-                { "from equipped shield", And(Condition.BaseValueComesFrom(ItemSlot.OffHand), OffHand.Has(Tags.Shield)) },
+                {
+                    "from equipped shield",
+                    And(Condition.BaseValueComesFrom(ItemSlot.OffHand), OffHand.Has(Tags.Shield))
+                },
                 { "with # corrupted items equipped", Equipment.Count(e => e.IsCorrupted) >= Value },
                 // stats
                 // - pool

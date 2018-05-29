@@ -2,6 +2,7 @@ using System.Linq;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Skills;
 
@@ -28,6 +29,15 @@ namespace PoESkillTree.Computation.Data.Base
             And(With(keyword), keywords.Select(With).ToArray());
 
         protected IConditionBuilder With(ISkillBuilder skill) => Condition.With(skill);
+
+        protected IConditionBuilder MainHandAttackWith(Tags tags) =>
+            Condition.AttackWith(AttackDamageHand.MainHand).And(MainHand.Has(tags));
+
+        protected IConditionBuilder OffHandAttackWith(Tags tags) =>
+            Condition.AttackWith(AttackDamageHand.OffHand).And(OffHand.Has(tags));
+
+        protected (IConditionBuilder mainHand, IConditionBuilder offHand) AttackWith(Tags tags) =>
+            (MainHandAttackWith(tags), OffHandAttackWith(tags));
 
         protected IConditionBuilder For(params IEntityBuilder[] targets) => Condition.For(targets);
 

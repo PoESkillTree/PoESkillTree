@@ -1,5 +1,4 @@
-﻿using PoESkillTree.Common.Model.Items.Enums;
-using PoESkillTree.Computation.Common.Builders.Conditions;
+﻿using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -34,9 +33,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IDamageRelatedStatBuilder WithAilments =>
             CreateDamageStat(This, o => $"With {o} from ailments");
-
-        public IConditionBuilder With(Tags tags) =>
-            CreateCondition(This, o => $"With {tags} {o}");
 
         public IDamageRelatedStatBuilder With(IAilmentBuilder ailment) =>
             CreateDamageStat(This, (IEffectBuilder) ailment, (o1, o2) => $"With {o2} {o1}");

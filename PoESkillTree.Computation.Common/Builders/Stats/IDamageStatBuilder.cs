@@ -1,5 +1,3 @@
-using PoESkillTree.Common.Model.Items.Enums;
-using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
@@ -20,12 +18,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// from the given pool before being taken from another pool.
         /// </summary>
         IDamageTakenConversionBuilder TakenFrom(IPoolStatBuilder pool);
-
-        /// <summary>
-        /// Returns a condition that is satisfied if damage dealt is of (any of) this stat's damage types and if
-        /// the damage is dealt with a weapon having the given tags.
-        /// </summary>
-        IConditionBuilder With(Tags tags);
     }
 
 

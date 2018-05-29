@@ -71,7 +71,7 @@ namespace PoESkillTree.Computation.Data
                 { "(global )?critical strike chance", CriticalStrike.Chance },
                 // - projectiles
                 { "projectile speed", Projectile.Speed },
-                { "arrow speed", Projectile.Speed, Damage.With(Tags.Bow) },
+                { "arrow speed", Projectile.Speed, MainHandAttackWith(Tags.Bow) },
                 // - other
                 { "accuracy rating", Stat.Accuracy },
                 // defense

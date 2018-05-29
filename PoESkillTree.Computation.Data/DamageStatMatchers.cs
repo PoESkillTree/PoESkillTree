@@ -66,7 +66,7 @@ namespace PoESkillTree.Computation.Data
                 // other combinations
                 { "(?<!no )({DamageTypeMatchers}) damage (with|from) hits", Reference.AsDamageType.Damage.WithHits },
                 { "physical melee damage", Physical.Damage, With(Keyword.Melee) },
-                { "physical weapon damage", Physical.Damage, Damage.With(Tags.Weapon) },
+                { "physical weapon damage", Physical.Damage.With(Source.Attack()), MainHand.HasItem },
                 {
                     "physical projectile attack damage",
                     Physical.Damage.With(Source.Attack()), With(Keyword.Projectile)
