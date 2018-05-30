@@ -35,6 +35,8 @@ namespace UpdateDB.DataLoading
             "Body Armours", "Boots", "Helmets", "Gloves", "Shields",
         };
 
+        private static readonly IReadOnlyList<string> Blacklist = new[] { "Band of the Victor" };
+
         private const string JewelClass = "Jewel";
 
         protected override async Task LoadAsync()
@@ -88,6 +90,7 @@ namespace UpdateDB.DataLoading
             List<XmlUnique> uniques = (
                 from result in results
                 let unique = PrintoutsToUnique(result)
+                where !Blacklist.Contains(unique.Name)
                 orderby unique.Name
                 select unique
             ).ToList();

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ItemDB xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ItemDB xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Gem Name="Abyssal Cry" Tags="Warcry, AoE, Duration, Chaos">
     <Attribute Name="Mana Cost: #">
       <Value Level="1">26</Value>
@@ -987,7 +987,7 @@
     <Attribute Name="Arcane Surge lasts # seconds">
       <ValueForLevel From="1" To="30">4</ValueForLevel>
     </Attribute>
-    <Attribute Name="Gain Arcane Surge when you spend # Mana with Supported Skills">
+    <Attribute Name="Gain Arcane Surge when you Spend # Mana with Supported Skills">
       <Value Level="1">15</Value>
       <Value Level="2">16</Value>
       <Value Level="3">17</Value>
@@ -1467,11 +1467,11 @@
       <Value Level="29">66.8</Value>
       <Value Level="30">67.4</Value>
     </Attribute>
-    <Attribute Name="# additional Projectiles">
+    <Attribute Name="Fires # additional Projectiles">
       <ValueForLevel From="1" To="30">3</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Bear Trap" Tags="Trap, Duration, Cast">
+  <Gem Name="Bear Trap" Tags="Trap, Spell, Duration">
     <Attribute Name="Mana Cost: #">
       <Value Level="1">11</Value>
       <Value Level="2">13</Value>
@@ -1520,7 +1520,7 @@
       <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Trap lasts # seconds">
-      <ValueForLevel From="1" To="30">16</ValueForLevel>
+      <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
     <Attribute Name="Deals # to # Physical Damage">
       <Value Level="1">16 22</Value>
@@ -1555,6 +1555,9 @@
       <Value Level="30">4162 5826</Value>
     </Attribute>
     <Attribute Name="Locks enemy in place">
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Traps do not Trigger at the end of their Duration">
       <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
@@ -2065,7 +2068,7 @@
     <Attribute Name="Supported Skills have #% reduced Mana Cost">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
-    <Attribute Name="Supported Skills spend Life instead of Mana">
+    <Attribute Name="Supported Skills Spend Life instead of Mana">
       <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
@@ -2580,6 +2583,14 @@
       <Value Level="28">62</Value>
       <Value Level="29">63</Value>
       <Value Level="30">64</Value>
+    </Attribute>
+  </Gem>
+  <Gem Name="Capture Monster" Tags="">
+    <Attribute Name="Cooldown Time: # sec">
+      <Value Level="1">2.4</Value>
+    </Attribute>
+    <Attribute Name="Cast Time: # sec">
+      <Value Level="1">1</Value>
     </Attribute>
   </Gem>
   <Gem Name="Cast On Critical Strike Support" Tags="Support, Spell, Trigger">
@@ -4094,7 +4105,7 @@
       <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Trap lasts # seconds">
-      <ValueForLevel From="1" To="30">16</ValueForLevel>
+      <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
     <Attribute Name="Base duration is # seconds">
       <Value Level="1">5.3</Value>
@@ -4127,6 +4138,9 @@
       <Value Level="28">12</Value>
       <Value Level="29">12.3</Value>
       <Value Level="30">12.5</Value>
+    </Attribute>
+    <Attribute Name="Traps do not Trigger at the end of their Duration">
+      <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Convocation" Tags="Minion, Spell, Duration">
@@ -4261,7 +4275,7 @@
     <Attribute Name="Explosion deals base Fire Damage equal to #% of the corpse's maximum Life">
       <ValueForLevel From="1" To="30">4</ValueForLevel>
     </Attribute>
-    <Attribute Name="# additional Projectiles">
+    <Attribute Name="Fires # additional Projectiles">
       <ValueForLevel From="1" To="30">3</ValueForLevel>
     </Attribute>
   </Gem>
@@ -6070,6 +6084,9 @@
     <Attribute Name="Supported Skills have #% reduced Enemy Stun Threshold">
       <ValuePerLevel>1</ValuePerLevel>
     </Attribute>
+    <Attribute Name="#% more Damage per Endurance Charge">
+      <ValueForLevel From="1" To="30">3</ValueForLevel>
+    </Attribute>
     <Attribute Name="Gain an Endurance Charge when you Stun an Enemy with Melee Damage from Supported Skills">
       <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
@@ -6527,7 +6544,7 @@
       <Value Level="29">1134 1701</Value>
       <Value Level="30">1251 1876</Value>
     </Attribute>
-    <Attribute Name="# additional Projectiles">
+    <Attribute Name="Fires # additional Projectiles">
       <ValueForLevel From="1" To="30">9</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Projectile Speed">
@@ -6922,7 +6939,7 @@
       <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Trap lasts # seconds">
-      <ValueForLevel From="1" To="30">16</ValueForLevel>
+      <ValueForLevel From="1" To="30">4</ValueForLevel>
     </Attribute>
     <Attribute Name="Base duration is # seconds">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
@@ -7447,10 +7464,10 @@
       <Value Level="29">303 455</Value>
       <Value Level="30">335 502</Value>
     </Attribute>
-    <Attribute Name="# additional Projectiles">
+    <Attribute Name="Fires # additional Projectiles">
       <ValueForLevel From="9" To="30">2</ValueForLevel>
     </Attribute>
-    <Attribute Name="Adds an additional Projectile">
+    <Attribute Name="Fires an additional Projectile">
       <ValueForLevel From="5" To="8">_</ValueForLevel>
     </Attribute>
     <Attribute Name="Summons a Totem which uses this Skill">
@@ -8253,7 +8270,7 @@
       <Value Level="29">161.6</Value>
       <Value Level="30">163.8</Value>
     </Attribute>
-    <Attribute Name="# additional Projectiles">
+    <Attribute Name="Fires # additional Projectiles">
       <ValueForLevel From="1" To="5">4</ValueForLevel>
       <ValueForLevel From="6" To="10">5</ValueForLevel>
       <ValueForLevel From="11" To="15">6</ValueForLevel>
@@ -8965,7 +8982,7 @@
     <Attribute Name="Supported Skills have #% increased Cast Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
-    <Attribute Name="Supported Skills have # additional Projectiles">
+    <Attribute Name="Supported Skills fire # additional Projectiles">
       <ValueForLevel From="1" To="30">4</ValueForLevel>
     </Attribute>
     <Attribute Name="Supported Skills deal #% less Projectile Damage">
@@ -9272,8 +9289,16 @@
     <Attribute Name="Base Burning Damage is #% of Overkill Damage">
       <ValueForLevel From="1" To="30">25</ValueForLevel>
     </Attribute>
+    <Attribute Name="#% more Spell Fire Damage">
+      <ValueForLevel From="1" To="5">9</ValueForLevel>
+      <ValueForLevel From="6" To="10">10</ValueForLevel>
+      <ValueForLevel From="11" To="15">11</ValueForLevel>
+      <ValueForLevel From="16" To="20">12</ValueForLevel>
+      <ValueForLevel From="21" To="25">13</ValueForLevel>
+      <ValueForLevel From="26" To="30">14</ValueForLevel>
+    </Attribute>
   </Gem>
-  <Gem Name="Herald of Ice" Tags="Cast, AoE, Cold, Herald">
+  <Gem Name="Herald of Ice" Tags="Spell, AoE, Cold, Herald">
     <Attribute Name="Mana Reserved: #%">
       <ValueForLevel From="1" To="30">25</ValueForLevel>
     </Attribute>
@@ -9389,7 +9414,7 @@
       <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Herald of Thunder" Tags="Cast, AoE, Duration, Lightning, Herald">
+  <Gem Name="Herald of Thunder" Tags="Spell, AoE, Duration, Lightning, Herald">
     <Attribute Name="Mana Reserved: #%">
       <ValueForLevel From="1" To="30">25</ValueForLevel>
     </Attribute>
@@ -10086,7 +10111,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
     <Attribute Name="Trap lasts # seconds">
-      <ValueForLevel From="1" To="30">16</ValueForLevel>
+      <ValueForLevel From="1" To="30">4</ValueForLevel>
     </Attribute>
     <Attribute Name="Deals # to # Cold Damage">
       <Value Level="1">60 90</Value>
@@ -11093,7 +11118,7 @@
     <Attribute Name="Supported Skills have #% increased Cast Speed">
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
-    <Attribute Name="Supported Skills have # additional Projectiles">
+    <Attribute Name="Supported Skills fire # additional Projectiles">
       <ValueForLevel From="1" To="30">2</ValueForLevel>
     </Attribute>
     <Attribute Name="Supported Skills deal #% less Projectile Damage">
@@ -11414,7 +11439,7 @@
     <Attribute Name="#% of Physical Damage Converted to Lightning Damage">
       <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
-    <Attribute Name="# additional Projectiles">
+    <Attribute Name="Fires # additional Projectiles">
       <ValueForLevel From="1" To="5">4</ValueForLevel>
       <ValueForLevel From="6" To="10">5</ValueForLevel>
       <ValueForLevel From="11" To="15">6</ValueForLevel>
@@ -11575,9 +11600,9 @@
       <Value Level="30">106 2021</Value>
     </Attribute>
     <Attribute Name="Trap lasts # seconds">
-      <ValueForLevel From="1" To="30">16</ValueForLevel>
+      <ValueForLevel From="1" To="30">4</ValueForLevel>
     </Attribute>
-    <Attribute Name="# additional Projectiles">
+    <Attribute Name="Fires # additional Projectiles">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
     <Attribute Name="#% chance to Shock enemies">
@@ -12526,7 +12551,7 @@
     <Attribute Name="#% of Physical Damage Converted to Fire Damage">
       <ValueForLevel From="1" To="30">60</ValueForLevel>
     </Attribute>
-    <Attribute Name="# additional Projectiles">
+    <Attribute Name="Fires # additional Projectiles">
       <ValueForLevel From="1" To="30">2</ValueForLevel>
     </Attribute>
     <Attribute Name="Projectiles deal #% less Damage">
@@ -15343,7 +15368,7 @@
       <Value Level="30">109</Value>
     </Attribute>
     <Attribute Name="#% of Physical Damage Converted to Lightning Damage">
-      <ValueForLevel From="1" To="30">40</ValueForLevel>
+      <ValueForLevel From="1" To="30">50</ValueForLevel>
     </Attribute>
     <Attribute Name="+# to radius">
       <ValueForLevel From="4" To="7">1</ValueForLevel>
@@ -15651,11 +15676,89 @@
     <Attribute Name="Base duration is # seconds">
       <ValueForLevel From="1" To="30">1.5</ValueForLevel>
     </Attribute>
-    <Attribute Name="# additional Projectiles">
+    <Attribute Name="Fires # additional Projectiles">
       <ValueForLevel From="1" To="8">4</ValueForLevel>
       <ValueForLevel From="9" To="16">5</ValueForLevel>
       <ValueForLevel From="17" To="24">6</ValueForLevel>
       <ValueForLevel From="25" To="30">7</ValueForLevel>
+    </Attribute>
+  </Gem>
+  <Gem Name="Spectral Shield Throw" RequiredWeapon="Shield" Tags="Projectile, Attack">
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="6">7</ValueForLevel>
+      <ValueForLevel From="7" To="12">8</ValueForLevel>
+      <ValueForLevel From="13" To="18">9</ValueForLevel>
+      <ValueForLevel From="19" To="24">10</ValueForLevel>
+      <ValueForLevel From="25" To="30">11</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Cast Time: # sec">
+      <ValueForLevel From="1" To="30">1</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% increased Projectile Damage">
+      <ValuePerQuality>1</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="# to # Base Off Hand Physical Damage">
+      <Value Level="1">13 19</Value>
+      <Value Level="2">16 23</Value>
+      <Value Level="3">19 29</Value>
+      <Value Level="4">24 36</Value>
+      <Value Level="5">29 43</Value>
+      <Value Level="6">34 51</Value>
+      <Value Level="7">40 60</Value>
+      <Value Level="8">45 67</Value>
+      <Value Level="9">50 76</Value>
+      <Value Level="10">56 84</Value>
+      <Value Level="11">63 94</Value>
+      <Value Level="12">70 104</Value>
+      <Value Level="13">77 115</Value>
+      <Value Level="14">85 128</Value>
+      <Value Level="15">94 141</Value>
+      <Value Level="16">103 155</Value>
+      <Value Level="17">110 165</Value>
+      <Value Level="18">117 175</Value>
+      <Value Level="19">124 186</Value>
+      <Value Level="20">132 198</Value>
+      <Value Level="21">140 210</Value>
+      <Value Level="22">149 223</Value>
+      <Value Level="23">158 237</Value>
+      <Value Level="24">167 251</Value>
+      <Value Level="25">177 266</Value>
+      <Value Level="26">188 282</Value>
+      <Value Level="27">199 298</Value>
+      <Value Level="28">210 315</Value>
+      <Value Level="29">222 334</Value>
+      <Value Level="30">235 353</Value>
+    </Attribute>
+    <Attribute Name="# to # Added Physical Damage per # Armour or Evasion Rating on Shield">
+      <ValueForLevel From="1" To="30">2 3 15</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Fires # additional Projectiles">
+      <ValueForLevel From="1" To="30">8</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Shard Projectiles Deal #% less Damage">
+      <ValueForLevel From="1" To="30">25</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base Off Hand Attack time is # seconds">
+      <ValueForLevel From="1" To="2">0.7</ValueForLevel>
+      <ValueForLevel From="3" To="4">0.69</ValueForLevel>
+      <ValueForLevel From="5" To="6">0.68</ValueForLevel>
+      <ValueForLevel From="7" To="8">0.67</ValueForLevel>
+      <ValueForLevel From="9" To="10">0.66</ValueForLevel>
+      <ValueForLevel From="11" To="12">0.65</ValueForLevel>
+      <ValueForLevel From="13" To="14">0.64</ValueForLevel>
+      <ValueForLevel From="15" To="16">0.63</ValueForLevel>
+      <ValueForLevel From="17" To="18">0.62</ValueForLevel>
+      <ValueForLevel From="19" To="21">0.61</ValueForLevel>
+      <ValueForLevel From="22" To="23">0.6</ValueForLevel>
+      <ValueForLevel From="24" To="25">0.59</ValueForLevel>
+      <ValueForLevel From="26" To="28">0.58</ValueForLevel>
+      <ValueForLevel From="29" To="30">0.57</ValueForLevel>
+    </Attribute>
+    <Attribute Name="+#% to Critical Strike Chance per # Maximum Energy Shield on Shield">
+      <ValueForLevel From="1" To="30">0.1 10</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Base Off Hand Critical Strike Chance is #%">
+      <ValueForLevel From="1" To="30">5</ValueForLevel>
     </Attribute>
   </Gem>
   <Gem Name="Spectral Throw" RequiredWeapon="Melee" Tags="Projectile, Attack">
@@ -16036,7 +16139,7 @@
       <Value Level="29">118</Value>
       <Value Level="30">119</Value>
     </Attribute>
-    <Attribute Name="# additional Arrows">
+    <Attribute Name="Fires # additional Arrows">
       <ValueForLevel From="1" To="7">4</ValueForLevel>
       <ValueForLevel From="8" To="14">5</ValueForLevel>
       <ValueForLevel From="15" To="21">6</ValueForLevel>
@@ -16240,7 +16343,7 @@
     <Attribute Name="#% more Area Damage">
       <ValueForLevel From="1" To="30">250</ValueForLevel>
     </Attribute>
-    <Attribute Name="Adds an additional Projectile">
+    <Attribute Name="Fires an additional Projectile">
       <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
@@ -16780,6 +16883,59 @@
       <Value Level="30">88</Value>
     </Attribute>
   </Gem>
+  <Gem Name="Summon Phantasm on Kill Support" Tags="Support, Minion">
+    <Attribute Name="Mana Multiplier: #%">
+      <ValueForLevel From="1" To="30">120</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% chance to Summon a Phantasm when Supported Skills, or Non-Phantasm Minions&#xA;from Supported Skills, deal a Killing Blow">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="#% chance to Summon a Phantasm when Supported Skills, or Non-Phantasm Minions&#xA;from Supported Skills, deal a Killing Blow">
+      <Value Level="1">50</Value>
+      <Value Level="2">51</Value>
+      <Value Level="3">52</Value>
+      <Value Level="4">53</Value>
+      <Value Level="5">54</Value>
+      <Value Level="6">55</Value>
+      <Value Level="7">56</Value>
+      <Value Level="8">57</Value>
+      <Value Level="9">58</Value>
+      <Value Level="10">59</Value>
+      <Value Level="11">60</Value>
+      <Value Level="12">61</Value>
+      <Value Level="13">62</Value>
+      <Value Level="14">63</Value>
+      <Value Level="15">64</Value>
+      <Value Level="16">65</Value>
+      <Value Level="17">66</Value>
+      <Value Level="18">67</Value>
+      <Value Level="19">68</Value>
+      <Value Level="20">69</Value>
+      <Value Level="21">70</Value>
+      <Value Level="22">71</Value>
+      <Value Level="23">72</Value>
+      <Value Level="24">73</Value>
+      <Value Level="25">74</Value>
+      <Value Level="26">75</Value>
+      <Value Level="27">76</Value>
+      <Value Level="28">77</Value>
+      <Value Level="29">78</Value>
+      <Value Level="30">79</Value>
+    </Attribute>
+    <Attribute Name="Phantasms last # seconds">
+      <ValueForLevel From="1" To="30">15</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Can have up to # Phantasms Summoned at a time">
+      <ValueForLevel From="1" To="3">5</ValueForLevel>
+      <ValueForLevel From="4" To="6">6</ValueForLevel>
+      <ValueForLevel From="7" To="9">7</ValueForLevel>
+      <ValueForLevel From="10" To="12">8</ValueForLevel>
+      <ValueForLevel From="13" To="16">9</ValueForLevel>
+      <ValueForLevel From="17" To="20">10</ValueForLevel>
+      <ValueForLevel From="21" To="25">11</ValueForLevel>
+      <ValueForLevel From="26" To="30">12</ValueForLevel>
+    </Attribute>
+  </Gem>
   <Gem Name="Summon Raging Spirit" Tags="Spell, Minion, Duration, Fire">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="2">4</ValueForLevel>
@@ -17204,6 +17360,87 @@
       <ValueForLevel From="1" To="30">15</ValueForLevel>
     </Attribute>
   </Gem>
+  <Gem Name="Tectonic Slam" RequiredHand="Main" RequiredWeapon="OneHandAxe OneHandMace OneHandSword Staff TwoHandAxe TwoHandMace TwoHandSword Unarmed" Tags="Fire, Attack, AoE, Melee">
+    <Attribute Name="Mana Cost: #">
+      <ValueForLevel From="1" To="30">10</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Cast Time: # sec">
+      <ValueForLevel From="1" To="30">1</ValueForLevel>
+    </Attribute>
+    <Attribute Name="Damage Effectiveness: #%">
+      <Value Level="1">130</Value>
+      <Value Level="2">132</Value>
+      <Value Level="3">133</Value>
+      <Value Level="4">135</Value>
+      <Value Level="5">136</Value>
+      <Value Level="6">138</Value>
+      <Value Level="7">140</Value>
+      <Value Level="8">141</Value>
+      <Value Level="9">143</Value>
+      <Value Level="10">144</Value>
+      <Value Level="11">146</Value>
+      <Value Level="12">148</Value>
+      <Value Level="13">149</Value>
+      <Value Level="14">151</Value>
+      <Value Level="15">152</Value>
+      <Value Level="16">154</Value>
+      <Value Level="17">156</Value>
+      <Value Level="18">157</Value>
+      <Value Level="19">159</Value>
+      <Value Level="20">160</Value>
+      <Value Level="21">162</Value>
+      <Value Level="22">164</Value>
+      <Value Level="23">165</Value>
+      <Value Level="24">167</Value>
+      <Value Level="25">168</Value>
+      <Value Level="26">170</Value>
+      <Value Level="27">172</Value>
+      <Value Level="28">173</Value>
+      <Value Level="29">175</Value>
+      <Value Level="30">176</Value>
+    </Attribute>
+    <Attribute Name="#% increased Area of Effect">
+      <ValuePerQuality>0.5</ValuePerQuality>
+    </Attribute>
+    <Attribute Name="Deals #% of Base Attack Damage">
+      <Value Level="1">130</Value>
+      <Value Level="2">131.6</Value>
+      <Value Level="3">133.2</Value>
+      <Value Level="4">134.8</Value>
+      <Value Level="5">136.4</Value>
+      <Value Level="6">138</Value>
+      <Value Level="7">139.6</Value>
+      <Value Level="8">141.2</Value>
+      <Value Level="9">142.8</Value>
+      <Value Level="10">144.4</Value>
+      <Value Level="11">146</Value>
+      <Value Level="12">147.6</Value>
+      <Value Level="13">149.2</Value>
+      <Value Level="14">150.8</Value>
+      <Value Level="15">152.4</Value>
+      <Value Level="16">154</Value>
+      <Value Level="17">155.6</Value>
+      <Value Level="18">157.2</Value>
+      <Value Level="19">158.8</Value>
+      <Value Level="20">160.4</Value>
+      <Value Level="21">162</Value>
+      <Value Level="22">163.6</Value>
+      <Value Level="23">165.2</Value>
+      <Value Level="24">166.8</Value>
+      <Value Level="25">168.4</Value>
+      <Value Level="26">170</Value>
+      <Value Level="27">171.6</Value>
+      <Value Level="28">173.2</Value>
+      <Value Level="29">174.8</Value>
+      <Value Level="30">176.4</Value>
+    </Attribute>
+    <Attribute Name="Deals #% more Damage if you have an Endurance Charge">
+      <ValueForLevel From="1" To="30">18</ValueForLevel>
+    </Attribute>
+    <Attribute Name="#% of Physical Damage Converted to Fire Damage">
+      <ValueForLevel From="1" To="30">60</ValueForLevel>
+    </Attribute>
+  </Gem>
   <Gem Name="Tempest Shield" RequiresEquippedShield="true" Tags="Spell, Lightning, Chaining, Duration">
     <Attribute Name="Mana Cost: #">
       <ValueForLevel From="1" To="3">17</ValueForLevel>
@@ -17453,7 +17690,7 @@
       <Value Level="29">118</Value>
       <Value Level="30">119</Value>
     </Attribute>
-    <Attribute Name="# secondary Tornado Shot Projectiles">
+    <Attribute Name="Fires # secondary Projectiles">
       <ValueForLevel From="1" To="30">3</ValueForLevel>
     </Attribute>
   </Gem>
@@ -17554,7 +17791,7 @@
       <ValuePerQuality>0.5</ValuePerQuality>
     </Attribute>
     <Attribute Name="Trap lasts # seconds">
-      <ValueForLevel From="1" To="30">16</ValueForLevel>
+      <ValueForLevel From="1" To="30">4</ValueForLevel>
     </Attribute>
     <Attribute Name="Supported Skills deal #% more Trap Damage">
       <Value Level="1">20</Value>
@@ -18174,7 +18411,7 @@
       <ValueForLevel From="1" To="30">_</ValueForLevel>
     </Attribute>
   </Gem>
-  <Gem Name="Vaal Detonate Dead" Tags="Vaal, Cast, AoE, Fire">
+  <Gem Name="Vaal Detonate Dead" Tags="Vaal, Spell, AoE, Fire">
     <Attribute Name="Souls Per Use: #">
       <ValueForLevel From="1" To="30">48</ValueForLevel>
     </Attribute>
@@ -19086,9 +19323,9 @@
       <Value Level="30">106 2021</Value>
     </Attribute>
     <Attribute Name="Trap lasts # seconds">
-      <ValueForLevel From="1" To="30">16</ValueForLevel>
+      <ValueForLevel From="1" To="30">4</ValueForLevel>
     </Attribute>
-    <Attribute Name="# additional Projectiles">
+    <Attribute Name="Fires # additional Projectiles">
       <ValueForLevel From="1" To="30">8</ValueForLevel>
     </Attribute>
     <Attribute Name="Base duration is # seconds">
@@ -20401,7 +20638,7 @@
     <Attribute Name="Supported Skills also fire Projectiles from up to # points on each side of you">
       <ValueForLevel From="1" To="30">2</ValueForLevel>
     </Attribute>
-    <Attribute Name="Supported Skills have # additional Projectiles">
+    <Attribute Name="Supported Skills fire # additional Projectiles">
       <ValueForLevel From="1" To="30">2</ValueForLevel>
     </Attribute>
     <Attribute Name="Supported Skills deal #% less Projectile Damage">
@@ -20901,7 +21138,7 @@
       <ValueForLevel From="19" To="24">7</ValueForLevel>
       <ValueForLevel From="25" To="30">8</ValueForLevel>
     </Attribute>
-    <Attribute Name="# additional Projectiles">
+    <Attribute Name="Fires # additional Projectiles">
       <ValueForLevel From="1" To="30">2</ValueForLevel>
     </Attribute>
     <Attribute Name="#% increased Area of Effect">

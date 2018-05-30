@@ -1191,32 +1191,32 @@ msgstr "Герой"
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:116 SkillTreeFiles\Updater.cs:237
+#: SkillTreeFiles\Updater.cs:125 SkillTreeFiles\Updater.cs:246
 msgid "Download already in progress"
 msgstr "Идет агрузка"
 
-#: SkillTreeFiles\Updater.cs:118
+#: SkillTreeFiles\Updater.cs:127
 msgid "Download already completed"
 msgstr "Загрузка завершена"
 
-#: SkillTreeFiles\Updater.cs:160 SkillTreeFiles\Updater.cs:353
-#: SkillTreeFiles\Updater.cs:427
+#: SkillTreeFiles\Updater.cs:169 SkillTreeFiles\Updater.cs:362
+#: SkillTreeFiles\Updater.cs:436
 msgid "Download still in progress"
 msgstr "Идет загрузка"
 
-#: SkillTreeFiles\Updater.cs:163 SkillTreeFiles\Updater.cs:429
+#: SkillTreeFiles\Updater.cs:172 SkillTreeFiles\Updater.cs:438
 msgid "No package downloaded"
 msgstr "Загрузка не осуществлена"
 
-#: SkillTreeFiles\Updater.cs:261
+#: SkillTreeFiles\Updater.cs:270
 msgid "No release found"
 msgstr "Обровления не найдены"
 
-#: SkillTreeFiles\Updater.cs:369
+#: SkillTreeFiles\Updater.cs:378
 msgid "Download completed or still in progress"
 msgstr "Загрузка завершена"
 
-#: SkillTreeFiles\Updater.cs:409
+#: SkillTreeFiles\Updater.cs:418
 msgid "The application is not correctly installed"
 msgstr "Приложение не установлено"
 
@@ -1324,7 +1324,7 @@ msgstr "Тотемы"
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:231
 #: Utils\Converter\GroupStringConverter.cs:33
-#: ItemFilter\Model\FilterManager.cs:567
+#: ItemFilter\Model\FilterManager.cs:602
 msgid "Flasks"
 msgstr ""
 
@@ -1457,65 +1457,65 @@ msgstr ""
 msgid "Currency"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:386
+#: ItemFilter\Model\FilterManager.cs:421
 msgid "Recipes"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:393
+#: ItemFilter\Model\FilterManager.cs:428
 msgid "Any Normal item which vendor trades for Scroll Fragment."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:404
+#: ItemFilter\Model\FilterManager.cs:439
 msgid "Any Magic item which vendor trades for Transmutation Shard, Alteration Shard or Alchemy Shard."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:416
+#: ItemFilter\Model\FilterManager.cs:451
 msgid ""
 "A single Normal weapon with 20% quality.\n"
 "Weapons with a total of at least 40% quality."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:464
+#: ItemFilter\Model\FilterManager.cs:499
 msgid ""
 "1 Stone Hammer, Rock Breaker or Gavel with 20% quality\n"
 "1 Any Map"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:537
+#: ItemFilter\Model\FilterManager.cs:572
 msgid "Gems"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:760
+#: ItemFilter\Model\FilterManager.cs:795
 msgid "Miscellaneous"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:884
+#: ItemFilter\Model\FilterManager.cs:919
 msgid "Crafting"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:1002
+#: ItemFilter\Model\FilterManager.cs:1037
 msgid "Chancing"
 msgstr ""
 
-#: ItemFilter\Views\ColorButtonDialog.xaml.cs:35
+#: ItemFilter\Views\ColorButtonDialog.xaml.cs:38
 #, fuzzy
 msgid "Original color"
 msgstr "Оригинальный автор"
 
-#: ItemFilter\Views\ColorButtonDialog.xaml.cs:37
+#: ItemFilter\Views\ColorButtonDialog.xaml.cs:40
 msgid "Standard colors"
 msgstr ""
 
-#: ItemFilter\Views\ColorButtonDialog.xaml.cs:39
+#: ItemFilter\Views\ColorButtonDialog.xaml.cs:42
 msgid "Recent colors"
 msgstr ""
 
-#: ItemFilter\Views\ColorButtonDialog.xaml.cs:40
+#: ItemFilter\Views\ColorButtonDialog.xaml.cs:44
 msgctxt "color"
 msgid "Custom"
 msgstr ""
 
-#: ItemFilter\Views\ColorButtonDialog.xaml.cs:41
+#: ItemFilter\Views\ColorButtonDialog.xaml.cs:45
 msgctxt "color"
 msgid "Standard"
 msgstr ""
