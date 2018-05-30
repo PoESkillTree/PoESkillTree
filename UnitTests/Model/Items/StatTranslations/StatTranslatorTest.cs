@@ -67,7 +67,7 @@ namespace UnitTests.Model.Items.StatTranslations
                 "Adds 10 to 20 Physical Damage",
                 "13% increased Attack Speed",
                 "30% increased Critical Strike Chance",
-                "Gain 110% of Bow Physical Damage as Extra Damage of each Element",
+                "Gain 110% of Weapon Physical Damage as Extra Damage of each Element",
                 null,
             };
             var actual = (await _translator).GetTranslations(statDict);
@@ -90,7 +90,7 @@ namespace UnitTests.Model.Items.StatTranslations
             {
                 "+25 to maximum Life",
                 "Adds 1 to 3 Chaos Damage to Attacks",
-                "5% increased Physical Damage",
+                "5% increased Global Physical Damage",
                 "2.1 Life Regenerated per second",
                 "10% chance to Cause Monsters to Flee",
             };

@@ -20,8 +20,12 @@ namespace UnitTests.Model.Items.Mods
             "no_attack_mods", "no_caster_mods",
             // - jewel mods
             "specific_weapon", "two_handed_mod", "shield_mod", "dual_wielding_mod", "one_handed_mod", "melee_mod",
+            // - crit/spell crit shaper mod
+            "grants_crit_chance_support",
             // map crafting is not supported
             "map",
+            // no idea where these come from
+            "no_elemental_damage_mods", "no_physical_damage_mods",
         };
         private static readonly ISet<string> UnknownItemClasses = new HashSet<string>
         {
