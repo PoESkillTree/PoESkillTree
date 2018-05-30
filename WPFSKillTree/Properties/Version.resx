@@ -138,7 +138,7 @@
     <comment>The assembly version used by CLR to resolve dependencies. Change only when public API has changed and all client assemblies has to be recompiled.</comment>
   </data>
   <data name="GGGPatchVersion" xml:space="preserve">
-    <value>3.2.0</value>
+    <value>3.3.0</value>
     <comment>The current patch version, without letters, that GGG is on (i.e. 3.0.0). </comment>
   </data>
   <data name="ProductName" xml:space="preserve">
