@@ -1128,7 +1128,7 @@ msgstr ""
 msgid "Character"
 msgstr "角色"
 
-#: SkillTreeFiles\SkillTree.cs:1230
+#: SkillTreeFiles\SkillTree.cs:1237
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr ""
 

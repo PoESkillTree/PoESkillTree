@@ -1134,7 +1134,7 @@ msgstr "Konnte Build nicht importieren"
 msgid "Character"
 msgstr "Charakter"
 
-#: SkillTreeFiles\SkillTree.cs:1230
+#: SkillTreeFiles\SkillTree.cs:1237
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr "Manche Knoten ({unknownNodes}) sind unbekannt und wurden weggelassen."
 
