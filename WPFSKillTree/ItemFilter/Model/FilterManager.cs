@@ -374,6 +374,7 @@ namespace POESKillTree.ItemFilter.Model
                                 Description = "A currency item obtained from harbingers in Harbinger league",
                                 Matches = new List<Match> { new MatchBaseType(new string[]{ "Horizon Shard", "Orb of Horizons" }) }
                             },
+                            /*
                             new Rule // XXX: Bestiary
                             {
                                 Id = "BestiaryOrb",
@@ -412,6 +413,77 @@ namespace POESKillTree.ItemFilter.Model
                                 IsEnabled = false,
                                 Name = "Thaumaturgical Net",
                                 Matches = new List<Match> { new MatchBaseType(new string[]{ "Thaumaturgical Net" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "NecromancyNet",
+                                IsEnabled = false,
+                                Name = "Necromancy Net",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Necromancy Net" }) }
+                            }
+                            */
+                            new Rule // XXX: Incursion
+                            {
+                                Id = "VialOfDominance",
+                                IsEnabled = true,
+                                Name = "Vial of Dominance",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Vial of Dominance" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "VialOfSummoning",
+                                IsEnabled = true,
+                                Name = "Vial of Summoning",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Vial of Summoning" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "VialOfAwakening",
+                                IsEnabled = true,
+                                Name = "Vial of Awakening",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Vial of Awakening" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "VialOfRitual",
+                                IsEnabled = true,
+                                Name = "Vial of the Ritual",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Vial of the Ritual" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "VialOfFate",
+                                IsEnabled = true,
+                                Name = "Vial of Fate",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Vial of Fate" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "VialOfConsequence",
+                                IsEnabled = true,
+                                Name = "Vial of Consequence",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Vial of Consequence" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "VialOfGhost",
+                                IsEnabled = true,
+                                Name = "Vial of the Ghost",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Vial of the Ghost" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "VialOfTranscendence",
+                                IsEnabled = true,
+                                Name = "Vial of Transcendence",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Vial of Transcendence" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "VialOfSacrifice",
+                                IsEnabled = true,
+                                Name = "Vial of Sacrifice",
+                                Matches = new List<Match> { new MatchBaseType(new string[]{ "Vial of Sacrifice" }) }
                             }
                         }
                     },
@@ -910,6 +982,22 @@ namespace POESKillTree.ItemFilter.Model
                                 Name = "Piece of unique item",
                                 Description = "Unique item fragments found exclusively in the Harbinger league.\nAll pieces of an particular item can be forged into the full unique item.",
                                 Matches = new List<Match> { new MatchClass(new string[]{ "Piece" }) }
+                            },
+                            new Rule // XXX: Incursion
+                            {
+                                Id = "StoneOfPassage",
+                                IsEnabled = false,
+                                Name = "Stone of Passage",
+                                Description = "Incursion league item.",
+                                Matches = new List<Match> { new MatchClass(new string[]{ "Incursion Item" }), new MatchBaseType(new string[] { "Stone of Passage" }) }
+                            },
+                            new Rule
+                            {
+                                Id = "FlashpowderKeg",
+                                IsEnabled = false,
+                                Name = "Flashpowder Keg",
+                                Description = "Incursion league item.",
+                                Matches = new List<Match> { new MatchClass(new string[]{ "Incursion Item" }), new MatchBaseType(new string[] { "Flashpowder Keg" }) }
                             }
                         }
                     },
