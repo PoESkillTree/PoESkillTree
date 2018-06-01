@@ -106,7 +106,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3.2.0.
+        ///   Looks up a localized string similar to 3.3.0.
         /// </summary>
         public static string GGGPatchVersion {
             get {
@@ -133,7 +133,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2.7.5.
+        ///   Looks up a localized string similar to 2.7.6.
         /// </summary>
         public static string ProductVersion {
             get {

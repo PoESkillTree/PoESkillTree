@@ -90,7 +90,7 @@ namespace POESKillTree.Utils.WikiApi
             {
                 var nameToItem = pool.ToDictionary(p => p.ItemName);
                 // retrieve urls of the items' icons
-                var where = string.Join(" OR ", pool.Select(p => $"{CargoConstants.Name}='{p.ItemName}'"));
+                var where = string.Join(" OR ", pool.Select(p => $"{CargoConstants.Name}=\"{p.ItemName}\""));
                 var imageInfo = await _apiAccessor.GetItemImageInfosAsync(where).ConfigureAwait(false);
 
                 // download and save icons

@@ -190,7 +190,7 @@ namespace POESKillTree.SkillTreeFiles
                         args.ErrorContext.Handled = true;
                     }
                 };
-
+                treestring = treestring.Replace("\"nodes\":{", "\"nodesDict\":{");
                 var inTree = JsonConvert.DeserializeObject<PoESkillTree>(treestring, jss);
                 var inOpts = JsonConvert.DeserializeObject<Opts>(opsstring, jss);
 
@@ -286,80 +286,87 @@ namespace POESKillTree.SkillTreeFiles
                 StartNodeDictionary = new Dictionary<int, int>();
                 AscRootNodeList = new HashSet<SkillNode>();
 
-                foreach (var nd in inTree.nodes)
+                if (inTree.nodes != null && inTree.nodes.Any())
+                    BuildNodeList(inTree.nodes);
+                else if (inTree.nodesDict != null && inTree.nodesDict.Any())
+                    BuildNodeList(inTree.nodesDict.Values.ToArray());
+
+                void BuildNodeList(Node[] nodes)
                 {
-                    var skillNode = new SkillNode
+                    foreach (var nd in nodes)
                     {
-                        Id = nd.id,
-                        Name = nd.dn,
-                        //this value should not be split on '\n' as it causes the attribute list to separate nodes
-                        attributes = nd.dn.Contains("Jewel Socket") ? new[] { "+1 Jewel Socket" } : nd.sd,
-                        Orbit = nd.o,
-                        OrbitIndex = nd.oidx,
-                        Icon = nd.icon,
-                        LinkId = nd.ot,
-                        G = nd.g,
-                        Da = nd.da,
-                        Ia = nd.ia,
-                        Sa = nd.sa,
-                        Spc = nd.spc.Length > 0 ? (int?)nd.spc[0] : null,
-                        IsMultipleChoice = nd.isMultipleChoice,
-                        IsMultipleChoiceOption = nd.isMultipleChoiceOption,
-                        passivePointsGranted = nd.passivePointsGranted,
-                        ascendancyName = nd.ascendancyName,
-                        IsAscendancyStart = nd.isAscendancyStart,
-                        reminderText = nd.reminderText
-                    };
-                    if (nd.ks && !nd.not && !nd.isJewelSocket && !nd.m)
-                    {
-                        skillNode.Type = NodeType.Keystone;
-                    }
-                    else if (!nd.ks && nd.not && !nd.isJewelSocket && !nd.m)
-                    {
-                        skillNode.Type = NodeType.Notable;
-                    }
-                    else if (!nd.ks && !nd.not && nd.isJewelSocket && !nd.m)
-                    {
-                        skillNode.Type = NodeType.JewelSocket;
-                    }
-                    else if (!nd.ks && !nd.not && !nd.isJewelSocket && nd.m)
-                    {
-                        skillNode.Type = NodeType.Mastery;
-                    }
-                    else if (!nd.ks && !nd.not && !nd.isJewelSocket && !nd.m)
-                    {
-                        skillNode.Type = NodeType.Normal;
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException($"Invalid node type for node {skillNode.Name}");
-                    }
-                    Skillnodes.Add(nd.id, skillNode);
-                    if(skillNode.IsAscendancyStart)
-                        if(!AscRootNodeList.Contains(skillNode))
-                            AscRootNodeList.Add(skillNode);
-                    if (RootNodeList.Contains(nd.id))
-                    {
-                        if (!RootNodeClassDictionary.ContainsKey(nd.dn.ToUpperInvariant()))
+                        var skillNode = new SkillNode
                         {
-                            RootNodeClassDictionary.Add(nd.dn.ToUpperInvariant(), nd.id);
+                            Id = nd.id,
+                            Name = nd.dn,
+                            //this value should not be split on '\n' as it causes the attribute list to separate nodes
+                            attributes = nd.dn.Contains("Jewel Socket") ? new[] { "+1 Jewel Socket" } : nd.sd,
+                            Orbit = nd.o,
+                            OrbitIndex = nd.oidx,
+                            Icon = nd.icon,
+                            LinkId = nd._out,
+                            G = nd.g,
+                            Da = nd.da,
+                            Ia = nd.ia,
+                            Sa = nd.sa,
+                            Spc = nd.spc.Length > 0 ? (int?)nd.spc[0] : null,
+                            IsMultipleChoice = nd.isMultipleChoice,
+                            IsMultipleChoiceOption = nd.isMultipleChoiceOption,
+                            passivePointsGranted = nd.passivePointsGranted,
+                            ascendancyName = nd.ascendancyName,
+                            IsAscendancyStart = nd.isAscendancyStart,
+                            reminderText = nd.reminderText
+                        };
+                        if (nd.ks && !nd.not && !nd.isJewelSocket && !nd.m)
+                        {
+                            skillNode.Type = NodeType.Keystone;
                         }
-                        foreach (var linkedNode in nd.ot)
+                        else if (!nd.ks && nd.not && !nd.isJewelSocket && !nd.m)
                         {
-                            if (!StartNodeDictionary.ContainsKey(nd.id) && !nd.isAscendancyStart)
+                            skillNode.Type = NodeType.Notable;
+                        }
+                        else if (!nd.ks && !nd.not && nd.isJewelSocket && !nd.m)
+                        {
+                            skillNode.Type = NodeType.JewelSocket;
+                        }
+                        else if (!nd.ks && !nd.not && !nd.isJewelSocket && nd.m)
+                        {
+                            skillNode.Type = NodeType.Mastery;
+                        }
+                        else if (!nd.ks && !nd.not && !nd.isJewelSocket && !nd.m)
+                        {
+                            skillNode.Type = NodeType.Normal;
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException($"Invalid node type for node {skillNode.Name}");
+                        }
+                        Skillnodes.Add(nd.id, skillNode);
+                        if (skillNode.IsAscendancyStart)
+                            if (!AscRootNodeList.Contains(skillNode))
+                                AscRootNodeList.Add(skillNode);
+                        if (RootNodeList.Contains(nd.id))
+                        {
+                            if (!RootNodeClassDictionary.ContainsKey(nd.dn.ToUpperInvariant()))
                             {
-                                StartNodeDictionary.Add(linkedNode, nd.id);
+                                RootNodeClassDictionary.Add(nd.dn.ToUpperInvariant(), nd.id);
+                            }
+                            foreach (var linkedNode in nd._out)
+                            {
+                                if (!StartNodeDictionary.ContainsKey(nd.id) && !nd.isAscendancyStart)
+                                {
+                                    StartNodeDictionary.Add(linkedNode, nd.id);
+                                }
+                            }
+                        }
+                        foreach (var node in nd._out)
+                        {
+                            if (!StartNodeDictionary.ContainsKey(nd.id) && RootNodeList.Contains(node))
+                            {
+                                StartNodeDictionary.Add(nd.id, node);
                             }
                         }
                     }
-                    foreach (var node in nd.ot)
-                    {
-                        if (!StartNodeDictionary.ContainsKey(nd.id) && RootNodeList.Contains(node))
-                        {
-                            StartNodeDictionary.Add(nd.id, node);
-                        }
-                    }
-
                 }
 
                 foreach (var skillNode in Skillnodes)

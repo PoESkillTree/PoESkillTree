@@ -62,7 +62,7 @@ namespace POESKillTree.SkillTreeFiles
     internal class Node
     {
         public ushort id { get; set; }
-        public string icon { get; set; } 
+        public string icon { get; set; }
         public bool ks { get; set; }
         public bool not { get; set; }
         public string dn { get; set; }
@@ -84,7 +84,9 @@ namespace POESKillTree.SkillTreeFiles
         public int ia { get; set; }
 
         [JsonProperty("out")]
-        public List<ushort> ot { get; set; }
+        public List<ushort> _out { get; set; }
+        [JsonProperty("in")]
+        public List<ushort> _in { get; set; }
     }
 
     internal class JsonConstants
@@ -127,6 +129,8 @@ namespace POESKillTree.SkillTreeFiles
 
         public Node[] nodes { get; set; }
 
+        public Dictionary<string, Node> nodesDict { get; set; }
+
         public int min_x { get; set; }
 
         public int min_y { get; set; }
@@ -157,7 +161,7 @@ namespace POESKillTree.SkillTreeFiles
         public Dictionary<int, classes> classes { get; set; }
     }
 
-    internal class classes 
+    internal class classes
     {
         [JsonProperty("name")]
         public string name { get; set; }
