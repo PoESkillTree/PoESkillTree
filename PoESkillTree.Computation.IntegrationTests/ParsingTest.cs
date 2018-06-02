@@ -187,10 +187,10 @@ namespace PoESkillTree.Computation.IntegrationTests
         private static Modifier CreateModifier(
             IStatBuilder statBuilder, IFormBuilder formBuilder, IValueBuilder valueBuilder)
         {
-            var (stats, sourceConverter, statValueConverter) = statBuilder.Build();
+            var (stats, source, statValueConverter) = statBuilder.Build(new ModifierSource.Global());
             var (form, formValueConverter) = formBuilder.Build();
             var value = formValueConverter(statValueConverter(valueBuilder)).Build();
-            return new Modifier(stats, form, value, sourceConverter(new ModifierSource.Global()));
+            return new Modifier(stats, form, value, source);
         }
 
         private static Modifier CreateModifier(

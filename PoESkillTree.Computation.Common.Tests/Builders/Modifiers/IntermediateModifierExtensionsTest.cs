@@ -274,7 +274,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             IValueBuilder StatConvertValue(IValueBuilder v) =>
                 v == convertedValueBuilder ? statConvertedValueBuilder : v;
             var statBuilderMock = new Mock<IStatBuilder>();
-            statBuilderMock.Setup(b => b.Build()).Returns((stats, _ => source, StatConvertValue));
+            statBuilderMock.Setup(b => b.Build(Source)).Returns((stats, source, StatConvertValue));
             var statBuilderWithCondition = statBuilderMock.Object;
             var statBuilder = Mock.Of<IStatBuilder>();
             var convertedStatBuilder =

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -77,11 +76,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder CombineWith(IStatBuilder other);
 
         /// <summary>
-        /// Builds this instance into a list of <see cref="IStat"/>s, an <see cref="ModifierSource"/> converter to
-        /// change the original modifier's source and a <see cref="ValueConverter"/> that should be applied
+        /// Builds this instance into a list of <see cref="IStat"/>s, an <see cref="ModifierSource"/> based on
+        /// the original modifier's source and a <see cref="ValueConverter"/> that should be applied
         /// to <see cref="IValueBuilder"/>s before building them.
         /// </summary>
-        (IReadOnlyList<IStat> stats, Func<ModifierSource, ModifierSource> sourceConverter,
-            ValueConverter valueConverter) Build();
+        (IReadOnlyList<IStat> stats, ModifierSource modifierSource, ValueConverter valueConverter)
+            Build(ModifierSource originalModifierSource);
     }
 }
