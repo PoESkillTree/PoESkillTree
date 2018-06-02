@@ -37,6 +37,9 @@ namespace PoESkillTree.Computation.Console.Builders
         public IDamageRelatedStatBuilder With(IAilmentBuilder ailment) =>
             CreateDamageStat(This, (IEffectBuilder) ailment, (o1, o2) => $"With {o2} {o1}");
 
+        public IDamageRelatedStatBuilder WithSkills =>
+            CreateDamageStat(This, o => $"With {o} from skills");
+
         public IDamageRelatedStatBuilder With(AttackDamageHand hand) =>
             CreateDamageStat(This, o => $"With {hand} {o}");
 

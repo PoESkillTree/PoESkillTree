@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
@@ -62,7 +61,7 @@ namespace PoESkillTree.Computation.Data
                     "({DamageTypeMatchers}) spell damage",
                     Reference.AsDamageType.Damage.With(Source.Spell())
                 },
-                { "burning damage", Fire.Damage.With(Source.OverTime()) },
+                { "burning damage", Fire.Damage.With(Source.OverTime()).WithSkills, Fire.Damage.With(Ailment.Ignite) },
                 // other combinations
                 { "(?<!no )({DamageTypeMatchers}) damage (with|from) hits", Reference.AsDamageType.Damage.WithHits },
                 { "physical melee damage", Physical.Damage, With(Keyword.Melee) },

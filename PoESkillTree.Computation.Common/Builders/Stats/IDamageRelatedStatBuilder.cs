@@ -36,6 +36,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IDamageRelatedStatBuilder With(IAilmentBuilder ailment);
 
         /// <summary>
+        /// Limits the damage to not apply to ailments.
+        /// </summary>
+        IDamageRelatedStatBuilder WithSkills { get; }
+
+        /// <summary>
         /// Limits the damage to only apply to attacks with the given hand.
         /// </summary>
         IDamageRelatedStatBuilder With(AttackDamageHand hand);
