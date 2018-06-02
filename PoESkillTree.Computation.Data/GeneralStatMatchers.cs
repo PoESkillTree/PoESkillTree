@@ -169,7 +169,7 @@ namespace PoESkillTree.Computation.Data
                 { "cooldown recovery speed", Stat.CooldownRecoverySpeed },
                 { "mana cost( of skills)?", Mana.Cost },
                 { "mana reserved", Mana.Reservation },
-                { "skill effect duration", Stat.Duration, Stat.Trap.Duration, Stat.Mine.Duration, Stat.Totem.Duration },
+                { "skill effect duration", Stat.Duration },
                 { "warcry duration", Stat.Duration, With(Keyword.Warcry) },
                 { "curse duration", Stat.Duration, With(Keyword.Curse) },
                 // traps, mines, totems
