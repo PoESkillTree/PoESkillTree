@@ -55,7 +55,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
 
-        public (IReadOnlyList<IStat>, ModifierSource, ValueConverter) Build(ModifierSource originalSource) =>
+        public (IReadOnlyList<IStat>, ModifierSource, ValueConverter)
+            Build(ModifierSource originalSource, Entity modifierSourceEntity) =>
             (new[] { new StatStub(this) }, originalSource, v => v);
 
 

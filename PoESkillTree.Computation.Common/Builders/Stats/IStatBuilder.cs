@@ -81,6 +81,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// to <see cref="IValueBuilder"/>s before building them.
         /// </summary>
         (IReadOnlyList<IStat> stats, ModifierSource modifierSource, ValueConverter valueConverter)
-            Build(ModifierSource originalModifierSource);
+            Build(ModifierSource originalModifierSource, Entity modifierSourceEntity);
     }
 }

@@ -172,6 +172,6 @@ namespace PoESkillTree.Computation.Console
     public static class ParserExtensions
     {
         public static ParseResult Parse(this IParser @this, string stat) => 
-            @this.Parse(stat, new ModifierSource.Global());
+            @this.Parse(stat, new ModifierSource.Global(), Entity.Character);
     }
 }

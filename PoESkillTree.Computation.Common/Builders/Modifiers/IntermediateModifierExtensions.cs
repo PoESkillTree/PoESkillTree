@@ -114,18 +114,20 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
         /// <see cref="IIntermediateModifier.ValueConverter"/> to each value. Entries with null form, stat or value
         /// are ignored.
         /// </summary>
-        public static IReadOnlyList<Modifier> Build(this IIntermediateModifier modifier, ModifierSource originalSource)
+        public static IReadOnlyList<Modifier> Build(this IIntermediateModifier modifier, 
+            ModifierSource originalSource, Entity modifierSourceEntity)
         {
             return (
                 from entry in modifier.Entries
-                let m = Build(modifier, entry, originalSource)
+                let m = Build(modifier, entry, originalSource, modifierSourceEntity)
                 where m != null
                 select m
             ).ToList();
         }
 
         private static Modifier Build(
-            IIntermediateModifier modifier, IntermediateModifierEntry entry, ModifierSource originalSource)
+            IIntermediateModifier modifier, IntermediateModifierEntry entry, ModifierSource originalSource,
+            Entity modifierSourceEntity)
         {
             if (entry.Form == null || entry.Stat == null || entry.Value == null)
             {
@@ -137,7 +139,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             {
                 statBuilder = statBuilder.WithCondition(entry.Condition);
             }
-            var (stats, source, statValueConverter) = statBuilder.Build(originalSource);
+            var (stats, source, statValueConverter) = statBuilder.Build(originalSource, modifierSourceEntity);
 
             var (form, formValueConverter) = entry.Form.Build();
 

@@ -32,10 +32,9 @@ namespace PoESkillTree.Computation.Parsing
 
         private readonly Lazy<IParser<IReadOnlyList<Modifier>>> _parser;
 
-        private readonly Dictionary<(string, ModifierSource), ParseResult> _cache =
-            new Dictionary<(string, ModifierSource), ParseResult>();
+        private readonly Dictionary<CacheKey, ParseResult> _cache = new Dictionary<CacheKey, ParseResult>();
 
-        private ModifierSource _currentModifierSource;
+        private CacheKey _currentKey;
 
         public Parser(IParsingData<TStep> parsingData, IBuilderFactories builderFactories)
         {
@@ -44,15 +43,15 @@ namespace PoESkillTree.Computation.Parsing
             _parser = new Lazy<IParser<IReadOnlyList<Modifier>>>(CreateParser);
         }
 
-        public ParseResult Parse(string stat, ModifierSource modifierSource)
+        public ParseResult Parse(string stat, ModifierSource modifierSource, Entity modifierSourceEntity)
         {
-            return _cache.GetOrAdd((stat, modifierSource), Parse);
+            _currentKey = new CacheKey(stat, modifierSource, modifierSourceEntity);
+            return _cache.GetOrAdd(_currentKey, Parse);
         }
 
-        private ParseResult Parse((string stat, ModifierSource modifierSource) key)
+        private ParseResult Parse(CacheKey key)
         {
-            _currentModifierSource = key.modifierSource;
-            var (success, remaining, result) = _parser.Value.Parse(key.stat);
+            var (success, remaining, result) = _parser.Value.Parse(key.Stat);
             return new ParseResult(success, remaining, result);
         }
 
@@ -90,13 +89,32 @@ namespace PoESkillTree.Computation.Parsing
                                     IReadOnlyList<Modifier>>(
                                     new CompositeParser<IIntermediateModifier, TStep>(_parsingData.Stepper,
                                         StepToParser),
-                                    l => l.Aggregate().Build(_currentModifierSource)),
+                                    AggregateAndBuild),
                                 _parsingData.StatReplacers
                             ),
                             ls => ls.Flatten().ToList()
                         )
                     )
                 );
+        }
+
+        private IReadOnlyList<Modifier> AggregateAndBuild(IReadOnlyList<IIntermediateModifier> intermediates) =>
+            intermediates
+                .Aggregate()
+                .Build(_currentKey.ModifierSource, _currentKey.ModifierSourcEntity);
+
+        private struct CacheKey
+        {
+            public CacheKey(string stat, ModifierSource modifierSource, Entity modifierSourcEntity)
+            {
+                Stat = stat;
+                ModifierSource = modifierSource;
+                ModifierSourcEntity = modifierSourcEntity;
+            }
+
+            public string Stat { get; }
+            public ModifierSource ModifierSource { get; }
+            public Entity ModifierSourcEntity { get; }
         }
     }
 }
