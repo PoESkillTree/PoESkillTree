@@ -17,6 +17,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
 
         public IStat Minimum { get; set; }
         public IStat Maximum { get; set; }
+        public Entity Entity => Entity.Character;
         public bool IsRegisteredExplicitly { get; set; }
         public Type DataType => typeof(double);
         public IEnumerable<Behavior> Behaviors { get; set; } = Enumerable.Empty<Behavior>();

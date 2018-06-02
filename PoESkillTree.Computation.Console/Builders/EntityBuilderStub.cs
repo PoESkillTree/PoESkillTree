@@ -1,4 +1,6 @@
-﻿using PoESkillTree.Computation.Common.Builders.Conditions;
+﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
@@ -21,6 +23,8 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IEntityBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
+
+        public IReadOnlyCollection<Entity> Build(Entity modifierSourceEntity) => new Entity[0];
     }
 
 

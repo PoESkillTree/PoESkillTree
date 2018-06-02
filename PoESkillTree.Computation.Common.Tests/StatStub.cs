@@ -23,6 +23,7 @@ namespace PoESkillTree.Computation.Common.Tests
 
         public IStat Minimum { get; }
         public IStat Maximum { get; }
+        public Entity Entity => Entity.Character;
         public bool IsRegisteredExplicitly { get; set; }
         public Type DataType => typeof(double);
         public IEnumerable<Behavior> Behaviors => Enumerable.Empty<Behavior>();

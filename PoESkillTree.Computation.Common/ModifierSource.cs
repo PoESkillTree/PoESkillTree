@@ -7,7 +7,7 @@ using PoESkillTree.Common.Model.Items.Enums;
 namespace PoESkillTree.Computation.Common
 {
     /// <summary>
-    /// Abstract data type representing a source of a modifier.
+    /// Union data type representing a source of a modifier.
     /// <para>
     /// Generally, each instance of a leaf ModifierSource class is considered the same, e.g. all instances of
     /// <see cref="Global"/> are equal to each other. The only exception to this is <see cref="Local.Item"/>, which

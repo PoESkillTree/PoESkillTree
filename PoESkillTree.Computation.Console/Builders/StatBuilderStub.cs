@@ -69,6 +69,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
             public IStat Minimum => null;
             public IStat Maximum => null;
+            public Entity Entity => Entity.Character;
             public bool IsRegisteredExplicitly => false;
             public Type DataType => typeof(double);
             public IEnumerable<Behavior> Behaviors => Enumerable.Empty<Behavior>();

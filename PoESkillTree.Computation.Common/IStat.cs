@@ -33,6 +33,11 @@ namespace PoESkillTree.Computation.Common
         IStat Maximum { get; }
 
         /// <summary>
+        /// The <see cref="Entity"/> this stat belongs to.
+        /// </summary>
+        Entity Entity { get; }
+
+        /// <summary>
         /// True if the existence/usage of this stat should be explicitly announced to clients
         /// </summary>
         bool IsRegisteredExplicitly { get; }
