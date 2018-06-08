@@ -49,7 +49,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IValueBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
 
-        public IValue Build() => new ValueStub(this);
+        public IValue Build(Entity modifierSourceEntity) => new ValueStub(this);
     }
 
 

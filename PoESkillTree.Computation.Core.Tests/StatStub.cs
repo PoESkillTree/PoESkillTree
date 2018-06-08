@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+using PoESkillTree.Computation.Common;
 
-namespace PoESkillTree.Computation.Common.Tests
+namespace PoESkillTree.Computation.Core.Tests
 {
     [DebuggerDisplay("{" + nameof(_instance) + "}")]
     public class StatStub : IStat
@@ -26,6 +26,6 @@ namespace PoESkillTree.Computation.Common.Tests
         public Entity Entity => Entity.Character;
         public bool IsRegisteredExplicitly { get; set; }
         public Type DataType => typeof(double);
-        public IEnumerable<Behavior> Behaviors => Enumerable.Empty<Behavior>();
+        public IReadOnlyCollection<Behavior> Behaviors => new Behavior[0];
     }
 }

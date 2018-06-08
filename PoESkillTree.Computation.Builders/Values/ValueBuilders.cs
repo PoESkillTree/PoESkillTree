@@ -67,8 +67,8 @@ namespace PoESkillTree.Computation.Builders.Values
             public ValueBuilder Else(IValueBuilder value)
             {
                 var valueBuilder = new ValueBuilderImpl(
-                    () => Build(_conditionValuePairs, value),
-                    c => (() => Build(Resolve(c, _conditionValuePairs), value.Resolve(c))));
+                    entity => Build(entity, _conditionValuePairs, value),
+                    c => (entity => Build(entity, Resolve(c, _conditionValuePairs), value.Resolve(c))));
                 return new ValueBuilder(valueBuilder);
 
                 IReadOnlyList<(IConditionBuilder condition, IValueBuilder value)> Resolve(
@@ -79,21 +79,22 @@ namespace PoESkillTree.Computation.Builders.Values
                     ).ToList();
 
                 IValue Build(
+                    Entity modifierSourceEntity,
                     IReadOnlyList<(IConditionBuilder condition, IValueBuilder value)> conditionValuePairs,
                     IValueBuilder elseValue)
                 {
                     var pairs = new List<(IValue condition, IValue value)>();
                     foreach (var (c, v) in conditionValuePairs)
                     {
-                        var condition = c.Build();
+                        var condition = c.Build(modifierSourceEntity);
                         if (condition.statConverter != Funcs.Identity)
                         {
                             throw new ParseException(
                                 $"Conditions for building conditional values must be value conditions. {c}");
                         }
-                        pairs.Add((condition.value, v.Build()));
+                        pairs.Add((condition.value, v.Build(modifierSourceEntity)));
                     }
-                    return new BranchingValue(pairs, elseValue.Build());
+                    return new BranchingValue(pairs, elseValue.Build(modifierSourceEntity));
                 }
             }
 

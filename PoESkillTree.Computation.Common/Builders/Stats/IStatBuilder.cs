@@ -51,16 +51,16 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IFlagStatBuilder ApplyModifiersTo(IStatBuilder stat, IValueBuilder percentOfTheirValue);
 
         /// <summary>
-        /// Applies this stat to <paramref name="entity"/> instead of the currently modified entity.
-        /// See <see cref="IConditionBuilders.For"/> for more information.
-        /// </summary>
-        IStatBuilder For(IEntityBuilder entity);
-
-        /// <summary>
         /// Gets a stat representing the chance to double this stat's value (does not make sense without an action
         /// condition. E.g. damage has a 20% chance to be doubled on hit.
         /// </summary>
         IStatBuilder ChanceToDouble { get; }
+
+        /// <summary>
+        /// Applies this stat to <paramref name="entity"/> instead of the currently modified entity.
+        /// See <see cref="IConditionBuilders.For"/> for more information.
+        /// </summary>
+        IStatBuilder For(IEntityBuilder entity);
 
         /// <summary>
         /// Returns a stat that is identical to this stat but is only modified if the given condition is satisfied.

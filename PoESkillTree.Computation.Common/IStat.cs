@@ -15,8 +15,14 @@ namespace PoESkillTree.Computation.Common
     {
         /// <summary>
         /// Returns a string naming the represented calculation subgraph.
+        /// <para>This string and <see cref="Entity"/> are used in the Equals methods.</para>
         /// </summary>
         string ToString();
+
+        /// <summary>
+        /// The <see cref="Entity"/> this stat belongs to.
+        /// </summary>
+        Entity Entity { get; }
 
         /// <summary>
         /// The <see cref="IStat"/> determining the minimum value of this stat or<c>null</c> if the stat can never
@@ -33,11 +39,6 @@ namespace PoESkillTree.Computation.Common
         IStat Maximum { get; }
 
         /// <summary>
-        /// The <see cref="Entity"/> this stat belongs to.
-        /// </summary>
-        Entity Entity { get; }
-
-        /// <summary>
         /// True if the existence/usage of this stat should be explicitly announced to clients
         /// </summary>
         bool IsRegisteredExplicitly { get; }
@@ -51,6 +52,6 @@ namespace PoESkillTree.Computation.Common
         /// <summary>
         /// The behaviors that should be applied to the calculation graph when this stat's subgraph is created.
         /// </summary>
-        IEnumerable<Behavior> Behaviors { get; }
+        IReadOnlyCollection<Behavior> Behaviors { get; }
     }
 }

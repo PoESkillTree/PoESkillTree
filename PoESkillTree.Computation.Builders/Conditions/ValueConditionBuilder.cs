@@ -11,24 +11,25 @@ namespace PoESkillTree.Computation.Builders.Conditions
 {
     public class ValueConditionBuilder : IConditionBuilder
     {
-        private readonly Func<IValue> _buildValue;
+        private readonly Func<Entity, IValue> _buildValue;
         private readonly Func<ResolveContext, IConditionBuilder> _resolve;
 
         public ValueConditionBuilder(bool value) : this(new ConditionalValue(value))
         {
         }
 
-        public ValueConditionBuilder(IValue value) : this(() => value)
+        private ValueConditionBuilder(IValue value) : this(_ => value)
         {
         }
 
-        private ValueConditionBuilder(Func<IValue> buildValue)
+        private ValueConditionBuilder(Func<Entity, IValue> buildValue)
         {
             _buildValue = buildValue;
             _resolve = _ => this;
         }
 
-        public ValueConditionBuilder(Func<IValue> buildValue, Func<ResolveContext, Func<IValue>> resolve)
+        private ValueConditionBuilder(
+            Func<Entity, IValue> buildValue, Func<ResolveContext, Func<Entity, IValue>> resolve)
         {
             _buildValue = buildValue;
             _resolve = c => new ValueConditionBuilder(resolve(c));
@@ -44,59 +45,63 @@ namespace PoESkillTree.Computation.Builders.Conditions
 
         public IConditionBuilder Not => Create(this, b => !b);
 
-        public (StatConverter statConverter, IValue value) Build() =>
-            (Funcs.Identity, _buildValue());
-
-        public override string ToString() => Build().value.ToString();
+        public (StatConverter statConverter, IValue value) Build(Entity modifierSourceEntity) =>
+            (Funcs.Identity, _buildValue(modifierSourceEntity));
+        
+        // TODO Only here for compatibility with stubs in Console. Remove once those are removed.
+        public override string ToString() => Build(Entity.Character).value.ToString();
 
 
         private static IConditionBuilder Create(
             ValueConditionBuilder operand,
             Expression<Func<bool, bool>> calculate) =>
             new ValueConditionBuilder(
-                () => Build(operand, calculate),
-                c => (() => Build(operand.Resolve(c), calculate)));
+                entity => Build(entity, operand, calculate),
+                c => (entity => Build(entity, operand.Resolve(c), calculate)));
 
         public static IConditionBuilder Create(
             IValueBuilder operand,
             Expression<Func<NodeValue?, bool>> calculate) =>
             new ValueConditionBuilder(
-                () => Build(operand, calculate),
-                c => (() => Build(operand.Resolve(c), calculate)));
+                entity => Build(entity, operand, calculate),
+                c => (entity => Build(entity, operand.Resolve(c), calculate)));
 
         public static IConditionBuilder Create(
             IValueBuilder operand1, IValueBuilder operand2,
             Expression<Func<NodeValue?, NodeValue?, bool>> calculate) =>
             new ValueConditionBuilder(
-                () => Build(operand1, operand2, calculate),
-                c => (() => Build(operand1.Resolve(c), operand2.Resolve(c), calculate)));
+                entity => Build(entity, operand1, operand2, calculate),
+                c => (entity => Build(entity, operand1.Resolve(c), operand2.Resolve(c), calculate)));
 
         private static IValue Build(
+            Entity modifierSourceEntity,
             IConditionBuilder operand,
             Expression<Func<bool, bool>> calculate)
         {
-            var builtOperand = operand.Build().value;
+            var builtOperand = operand.Build(modifierSourceEntity).value;
             var func = calculate.Compile();
             var identity = calculate.ToString(builtOperand);
             return new ConditionalValue(c => func(builtOperand.Calculate(c).IsTrue()), identity);
         }
 
         private static IValue Build(
+            Entity modifierSourceEntity,
             IValueBuilder operand,
             Expression<Func<NodeValue?, bool>> calculate)
         {
-            var builtOperand = operand.Build();
+            var builtOperand = operand.Build(modifierSourceEntity);
             var func = calculate.Compile();
             var identity = calculate.ToString(builtOperand);
             return new ConditionalValue(c => func(builtOperand.Calculate(c)), identity);
         }
 
         private static IValue Build(
+            Entity modifierSourceEntity,
             IValueBuilder operand1, IValueBuilder operand2,
             Expression<Func<NodeValue?, NodeValue?, bool>> calculate)
         {
-            var o1 = operand1.Build();
-            var o2 = operand2.Build();
+            var o1 = operand1.Build(modifierSourceEntity);
+            var o2 = operand2.Build(modifierSourceEntity);
             var func = calculate.Compile();
             var identity = calculate.ToString(o1, o2);
             return new ConditionalValue(c => func(o1.Calculate(c), o2.Calculate(c)), identity);

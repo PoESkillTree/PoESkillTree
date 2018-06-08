@@ -267,7 +267,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             var valueBuilder = Mock.Of<IValueBuilder>();
             var convertedValueBuilder = Mock.Of<IValueBuilder>();
             var statConvertedValueBuilder = Mock.Of<IValueBuilder>();
-            var formConvertedValueBuilder = Mock.Of<IValueBuilder>(b => b.Build() == value);
+            var formConvertedValueBuilder = Mock.Of<IValueBuilder>(b => b.Build(Entity) == value);
 
             var stats = new[] { Mock.Of<IStat>() };
             var source = new ModifierSource.Local.Given();

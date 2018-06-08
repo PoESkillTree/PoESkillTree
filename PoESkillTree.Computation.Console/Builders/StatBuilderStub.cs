@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
@@ -57,24 +56,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public (IReadOnlyList<IStat>, ModifierSource, ValueConverter)
             Build(ModifierSource originalSource, Entity modifierSourceEntity) =>
-            (new[] { new StatStub(this) }, originalSource, v => v);
-
-
-        private class StatStub : BuilderStub, IStat
-        {
-            public StatStub(BuilderStub toCopy) : base(toCopy)
-            {
-            }
-
-            public bool Equals(IStat other) => Equals(ToString(), other?.ToString());
-
-            public IStat Minimum => null;
-            public IStat Maximum => null;
-            public Entity Entity => Entity.Character;
-            public bool IsRegisteredExplicitly => false;
-            public Type DataType => typeof(double);
-            public IEnumerable<Behavior> Behaviors => Enumerable.Empty<Behavior>();
-        }
+            (new[] { new Stat(ToString(), default) }, originalSource, v => v);
     }
 
 

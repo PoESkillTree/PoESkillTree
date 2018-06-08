@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IConditionBuilder Not =>
             CreateCondition(This, o => $"Not({o})");
 
-        public (StatConverter statConverter, IValue value) Build() =>
+        public (StatConverter statConverter, IValue value) Build(Entity modifierSourceEntity) =>
             (Funcs.Identity, new ValueStub(this));
 
         public IConditionBuilder Resolve(ResolveContext context) =>

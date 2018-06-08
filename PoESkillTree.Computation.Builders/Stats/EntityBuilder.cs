@@ -9,7 +9,7 @@ namespace PoESkillTree.Computation.Builders.Stats
     {
         private readonly IReadOnlyCollection<Entity> _entities;
 
-        public EntityBuilder(IReadOnlyCollection<Entity> entities) => _entities = entities;
+        public EntityBuilder(params Entity[] entities) => _entities = entities;
 
         public IEntityBuilder Resolve(ResolveContext context) => this;
 

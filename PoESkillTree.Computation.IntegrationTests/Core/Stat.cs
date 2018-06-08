@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.IntegrationTests.Core
@@ -20,6 +19,6 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         public Entity Entity => Entity.Character;
         public bool IsRegisteredExplicitly { get; set; }
         public Type DataType => typeof(double);
-        public IEnumerable<Behavior> Behaviors { get; set; } = Enumerable.Empty<Behavior>();
+        public IReadOnlyCollection<Behavior> Behaviors { get; set; } = new Behavior[0];
     }
 }

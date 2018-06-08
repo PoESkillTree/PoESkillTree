@@ -146,7 +146,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             var value =
                 formValueConverter(
                     statValueConverter(
-                        modifier.ValueConverter(entry.Value))).Build();
+                        modifier.ValueConverter(entry.Value))).Build(modifierSourceEntity);
 
             return new Modifier(stats, form, value, source);
         }

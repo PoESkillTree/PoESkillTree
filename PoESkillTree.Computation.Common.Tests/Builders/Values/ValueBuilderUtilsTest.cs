@@ -204,7 +204,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
 
             public IValueBuilder Create(double value) => new ValueBuilderStub(value);
 
-            public IValue Build() => throw new NotSupportedException();
+            public IValue Build(Entity modifierSourceEntity) => throw new NotSupportedException();
         }
 
 
@@ -228,7 +228,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
             public IConditionBuilder Not =>
                 new ConditionBuilderStub(!Condition);
 
-            public (StatConverter statConverter, IValue value) Build() => 
+            public (StatConverter statConverter, IValue value) Build(Entity modifierSourceEntity) => 
                 throw new NotSupportedException();
         }
     }

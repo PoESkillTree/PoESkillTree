@@ -140,7 +140,7 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         public IValueBuilder Resolve(ResolveContext context) =>
             _value.Resolve(context);
 
-        IValue IValueBuilder.Build() => _value.Build();
+        public IValue Build(Entity modifierSourceEntity) => _value.Build(modifierSourceEntity);
 
         public override string ToString() => _value.ToString();
     }

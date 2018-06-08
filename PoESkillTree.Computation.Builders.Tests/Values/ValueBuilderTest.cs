@@ -4,7 +4,6 @@ using NUnit.Framework;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Builders.Tests.Values

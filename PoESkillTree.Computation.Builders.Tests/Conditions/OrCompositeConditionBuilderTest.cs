@@ -100,7 +100,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             IConditionBuilder CreateCondition((StatConverter, IValue) buildResult)
             {
                 var cond = new Mock<IConditionBuilder>();
-                cond.Setup(c => c.Build()).Returns(buildResult);
+                cond.Setup(c => c.Build(default)).Returns(buildResult);
                 return cond.Object;
             }
         }

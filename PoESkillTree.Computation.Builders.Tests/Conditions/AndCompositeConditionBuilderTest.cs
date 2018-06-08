@@ -71,9 +71,9 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
                 (s => s == stats[1] ? stats[2] : null, new Constant(1)),
             };
             var condition1 = new Mock<IConditionBuilder>();
-            condition1.Setup(c => c.Build()).Returns(converters[0]);
+            condition1.Setup(c => c.Build(default)).Returns(converters[0]);
             var condition2 = new Mock<IConditionBuilder>();
-            condition2.Setup(c => c.Build()).Returns(converters[1]);
+            condition2.Setup(c => c.Build(default)).Returns(converters[1]);
             var conditions = new[] { condition1.Object, condition2.Object };
             var sut = CreateSut(conditions);
 

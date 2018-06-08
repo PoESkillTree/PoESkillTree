@@ -49,7 +49,7 @@ namespace PoESkillTree.Computation.Builders.Resolving
         private readonly string _description;
 
         public UnresolvedValueBuilder(string description, Func<ResolveContext, IValueBuilder> resolver)
-            : base(() => throw new UnresolvedException(description), resolver)
+            : base(_ => throw new UnresolvedException(description), resolver)
         {
             _description = description;
         }
