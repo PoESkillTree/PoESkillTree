@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -15,56 +13,20 @@ namespace PoESkillTree.Computation.Builders.Stats
 {
     public class StatBuilder : IStatBuilder
     {
-        private readonly string _identity;
-        private readonly IEntityBuilder _entityBuilder;
-        private readonly bool _isRegisteredExplicitly;
-        private readonly Type _dataType;
-        private readonly IReadOnlyCollection<Behavior> _behaviors;
-        private readonly Func<IStat, IStat> _statConverter;
+        private readonly ICoreStatBuilder _coreStatBuilder;
 
-        public StatBuilder(
-            string identity, IEntityBuilder entityBuilder, bool isRegisteredExplicitly = false, Type dataType = null,
-            IReadOnlyCollection<Behavior> behaviors = null)
-            : this(identity, entityBuilder, isRegisteredExplicitly, dataType, behaviors, null)
+        public StatBuilder(ICoreStatBuilder coreStatBuilder)
         {
+            _coreStatBuilder = coreStatBuilder;
         }
 
-        private StatBuilder(
-            string identity, IEntityBuilder entityBuilder, bool isRegisteredExplicitly, Type dataType,
-            IReadOnlyCollection<Behavior> behaviors, Func<IStat, IStat> statConverter)
-        {
-            _identity = identity;
-            _entityBuilder = entityBuilder;
-            _isRegisteredExplicitly = isRegisteredExplicitly;
-            _dataType = dataType;
-            _behaviors = behaviors;
-            _statConverter = statConverter ?? Funcs.Identity;
-        }
+        public IStatBuilder Resolve(ResolveContext context) => new StatBuilder(_coreStatBuilder.Resolve(context));
 
-        private StatBuilder With(IEntityBuilder entityBuilder) =>
-            new StatBuilder(_identity, entityBuilder, _isRegisteredExplicitly, _dataType, _behaviors, _statConverter);
-
-        private StatBuilder With(Func<IStat, IStat> statConverter) =>
-            new StatBuilder(_identity, _entityBuilder, _isRegisteredExplicitly, _dataType, _behaviors, 
-                s => statConverter(_statConverter(s)));
-
-        public IStatBuilder Resolve(ResolveContext context) => With(_entityBuilder.Resolve(context));
-
-        public IStatBuilder Minimum => With(s => s.Minimum);
-        public IStatBuilder Maximum => With(s => s.Maximum);
+        public IStatBuilder Minimum => new StatBuilder(_coreStatBuilder.WithStatConverter(s => s.Minimum));
+        public IStatBuilder Maximum => new StatBuilder(_coreStatBuilder.WithStatConverter(s => s.Maximum));
 
         public ValueBuilder Value =>
-            new ValueBuilder(new ValueBuilderImpl(BuildValue, c => Resolve(c).Value));
-
-        private IValue BuildValue(Entity modifierSourceEntity)
-        {
-            var stats = BuildStats(modifierSourceEntity);
-            if (stats.Count != 1)
-                throw new InvalidOperationException(
-                    "Can only access the value of IStatBuilders that represent a single stat");
-
-            return new FunctionalValue(c => c.GetValue(stats.Single()), $"{_identity}.Value");
-        }
+            new ValueBuilder(new ValueBuilderImpl(_coreStatBuilder.BuildValue, c => Resolve(c).Value));
 
         public IStatBuilder ConvertTo(IStatBuilder stat) => throw new NotImplementedException();
         public IStatBuilder GainAs(IStatBuilder stat) => throw new NotImplementedException();
@@ -74,26 +36,18 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder ChanceToDouble => throw new NotImplementedException();
 
-        public IStatBuilder For(IEntityBuilder entity) => With(entity);
+        public IStatBuilder For(IEntityBuilder entity) => new StatBuilder(_coreStatBuilder.WithEntity(entity));
 
         public IStatBuilder WithCondition(IConditionBuilder condition) => throw new NotImplementedException();
 
-        public IStatBuilder CombineWith(IStatBuilder other) => throw new NotImplementedException();
+        public IStatBuilder CombineWith(IStatBuilder other) =>
+            new StatBuilder(_coreStatBuilder.CombineWith(new StatBuilderAdapter(other)));
 
         public (IReadOnlyList<IStat> stats, ModifierSource modifierSource, ValueConverter valueConverter)
             Build(ModifierSource originalModifierSource, Entity modifierSourceEntity)
         {
-            var stats = BuildStats(modifierSourceEntity);
-            return (stats, originalModifierSource, Funcs.Identity);
+            var result = _coreStatBuilder.Build(originalModifierSource, modifierSourceEntity);
+            return (result.Stats, result.ModifierSource, result.ValueConverter);
         }
-
-        private IReadOnlyList<IStat> BuildStats(Entity modifierSourceEntity)
-        {
-            var entities = _entityBuilder.Build(modifierSourceEntity).DefaultIfEmpty(modifierSourceEntity);
-            return entities.Select(CreateStat).Select(_statConverter).ToList();
-        }
-
-        private IStat CreateStat(Entity modifierSourceEntity) =>
-            new Stat(_identity, modifierSourceEntity, _isRegisteredExplicitly, _dataType, _behaviors);
     }
 }

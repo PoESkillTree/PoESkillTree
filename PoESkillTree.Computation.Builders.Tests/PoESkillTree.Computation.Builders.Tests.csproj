@@ -71,6 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolving\UnresolvedBuilderTest.cs" />
     <Compile Include="Stats\EntityBuilderTest.cs" />
+    <Compile Include="Stats\StatBuilderAdapterTest.cs" />
     <Compile Include="Stats\StatBuilderTest.cs" />
     <Compile Include="Values\ValueBuildersTest.cs" />
     <Compile Include="Values\ValueBuilderTest.cs" />

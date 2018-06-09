@@ -9,9 +9,12 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.Computation.Common.Tests;
 
 namespace PoESkillTree.Computation.Builders.Tests.Stats
 {
+    // Also tests Stat and the ICoreStatBuilder implementations through StatBuilder
     [TestFixture]
     public class StatBuilderTest
     {
@@ -65,8 +68,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             bool isRegisteredExplicitly, Type dataType, int behaviorCount)
         {
             var behaviors = new List<Behavior>();
-            var sut = new StatBuilder("", new EntityBuilder(), isRegisteredExplicitly, dataType,
-                behaviors);
+            var sut = new StatBuilder(new LeafCoreStatBuilder("", new EntityBuilder(), isRegisteredExplicitly, dataType,
+                behaviors));
 
             var actual = BuildToSingleStat(sut);
 
@@ -232,9 +235,113 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void CombineWithBuildsToBothStats()
+        {
+            var left = CreateSut("left");
+            var right = CreateSut("right");
+            var expected = new[] { new Stat("left", default), new Stat("right", default), };
+
+            var combined = left.CombineWith(right);
+            var (actual, _, _) = combined.Build(ModifierSource, default);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void CombineWithChainsValueConverters()
+        {
+            var valueBuilders = Helper.MockMany<IValueBuilder>();
+            var expected = valueBuilders[2];
+            var sut = CreateSut();
+            var other1Mock = new Mock<IStatBuilder>();
+            other1Mock.Setup(b => b.Build(ModifierSource, default))
+                .Returns((new IStat[0], ModifierSource, _ => valueBuilders[1]));
+            var other2Mock = new Mock<IStatBuilder>();
+            other2Mock.Setup(b => b.Build(ModifierSource, default))
+                .Returns((new IStat[0], ModifierSource, _ => valueBuilders[2]));
+
+            var combined = sut.CombineWith(other1Mock.Object).CombineWith(other2Mock.Object);
+            var (_, _, actualConverter) = combined.Build(ModifierSource, default);
+            var actual = actualConverter(valueBuilders[0]);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void CombineWithChainsModifierSource()
+        {
+            var sources = new[] { ModifierSource, new ModifierSource.Local.Given(), new ModifierSource.Local.Tree(), };
+            var sut = CreateSut();
+            var other1Mock = new Mock<IStatBuilder>();
+            other1Mock.Setup(b => b.Build(sources[0], default))
+                .Returns((new IStat[0], sources[1], Funcs.Identity));
+            var other2Mock = new Mock<IStatBuilder>();
+            other2Mock.Setup(b => b.Build(sources[1], default))
+                .Returns((new IStat[0], sources[2], Funcs.Identity));
+
+            var combined = sut.CombineWith(other1Mock.Object).CombineWith(other2Mock.Object);
+            var (_, actual, _) = combined.Build(sources[0], default);
+
+            Assert.AreEqual(sources[2], actual);
+        }
+
+        [Test]
+        public void CombineWithResolveResolvesOther()
+        {
+            var sut = CreateSut();
+            var otherMock = new Mock<IStatBuilder>();
+
+            var combined = sut.CombineWith(otherMock.Object);
+            combined.Resolve(null);
+
+            otherMock.Verify(b => b.Resolve(null));
+        }
+
+        [Test]
+        public void CombineWithForAppliesToOther()
+        {
+            var sut = CreateSut();
+            var otherMock = new Mock<IStatBuilder>();
+            var entity = Mock.Of<IEntityBuilder>();
+
+            var combined = sut.CombineWith(otherMock.Object);
+            combined.For(entity);
+
+            otherMock.Verify(b => b.For(entity));
+        }
+
+        [Test]
+        public void CombineWithMinimumAppliesToOther()
+        {
+            var sut = CreateSut();
+            var stat = new Stat("", default);
+            var expected = stat.Minimum;
+            var otherMock = new Mock<IStatBuilder>();
+            otherMock.Setup(b => b.Build(ModifierSource, default))
+                .Returns((new[] { stat }, ModifierSource, Funcs.Identity));
+
+            var combined = sut.CombineWith(otherMock.Object);
+            var min = combined.Minimum;
+            var actual = min.Build(ModifierSource, default).stats[1];
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void CombineWithValueBuildThrows()
+        {
+            var sut = CreateSut();
+            var other = Mock.Of<IStatBuilder>();
+
+            var combined = sut.CombineWith(other);
+
+            Assert.Throws<InvalidOperationException>(() => combined.Value.Build());
+        }
+
         private static IStat BuildToSingleStat(IStatBuilder statBuilder, Entity entity = Entity.Character)
         {
-            var (stats, _, _) = statBuilder.Build(new ModifierSource.Global(), entity);
+            var (stats, _, _) = statBuilder.Build(ModifierSource, entity);
             Assert.That(stats, Has.One.Items);
             return stats.Single();
         }
@@ -245,6 +352,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             CreateSut(identity, new EntityBuilder(entities));
 
         private static StatBuilder CreateSut(string identity, IEntityBuilder entityBuilder) =>
-            new StatBuilder(identity, entityBuilder);
+            new StatBuilder(new LeafCoreStatBuilder(identity, entityBuilder));
+
+        private static readonly ModifierSource ModifierSource = new ModifierSource.Global();
     }
 }

@@ -14,7 +14,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             _hasRange = hasRange;
             Entity = entity;
             IsRegisteredExplicitly = isRegisteredExplicitly;
-            DataType = dataType;
+            DataType = dataType ?? typeof(double);
             Behaviors = behaviors ?? new Behavior[0];
         }
         

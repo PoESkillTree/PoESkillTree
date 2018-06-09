@@ -66,9 +66,13 @@
     <Compile Include="Forms\FormBuilders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolving\UnresolvedBuilder.cs" />
+    <Compile Include="Stats\CompositeCoreStatBuilder.cs" />
     <Compile Include="Stats\EntityBuilder.cs" />
+    <Compile Include="Stats\ICoreStatBuilder.cs" />
+    <Compile Include="Stats\LeafCoreStatBuilder.cs" />
     <Compile Include="Stats\Stat.cs" />
     <Compile Include="Stats\StatBuilder.cs" />
+    <Compile Include="Stats\StatBuilderAdapter.cs" />
     <Compile Include="Values\ValueBuilderImpl.cs" />
     <Compile Include="Values\ValueBuilders.cs" />
   </ItemGroup>
