@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 
@@ -13,7 +14,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
     public class StatBuilderAdapterTest
     {
         [Test]
-        public void StatBuilderAdapterCombineWithReturnsComposite()
+        public void CombineWithReturnsComposite()
         {
             var statBuilder = Mock.Of<IStatBuilder>();
             var sut = new StatBuilderAdapter(statBuilder);
@@ -24,7 +25,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         }
 
         [Test]
-        public void StatBuilderAdapterBuildValueReturnsStatBuilderValueBuild()
+        public void BuildValueReturnsStatBuilderValueBuild()
         {
             var expected = Mock.Of<IValue>();
             var valueBuilder = Mock.Of<IValueBuilder>(b => b.Build(default) == expected);
@@ -36,6 +37,16 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.AreEqual(expected, actual);
         }
 
-        private static readonly ModifierSource ModifierSource = new ModifierSource.Global();
+        [Test]
+        public void ResolveResolvesCondition()
+        {
+            var statBuilder = Mock.Of<IStatBuilder>();
+            var conditionBuilder = new Mock<IConditionBuilder>();
+            var sut = new StatBuilderAdapter(statBuilder, conditionBuilder.Object);
+
+            sut.Resolve(null);
+
+            conditionBuilder.Verify(b => b.Resolve(null));
+        }
     }
 }

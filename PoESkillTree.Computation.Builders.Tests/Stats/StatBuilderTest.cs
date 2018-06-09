@@ -5,8 +5,10 @@ using Moq;
 using NUnit.Framework;
 using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Builders.Stats;
+using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
@@ -337,6 +339,30 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var combined = sut.CombineWith(other);
 
             Assert.Throws<InvalidOperationException>(() => combined.Value.Build());
+        }
+
+        [Test]
+        public void WithConditionBuildReturnsCorrectResult()
+        {
+            var expectedStat = new Stat("1", default);
+            var inputValue = new Constant(2);
+            var inputValueBuilder = new ValueBuilderImpl(inputValue);
+            var conditionValue = new Constant(3);
+            var expectedValue = new ValueBuilderImpl(conditionValue).Multiply(inputValueBuilder).Build(default);
+            var convertedStatBuilder = new Mock<IStatBuilder>();
+            convertedStatBuilder.Setup(b => b.Build(ModifierSource, default))
+                .Returns((new[] { expectedStat }, ModifierSource, Funcs.Identity));
+            var condition = new Mock<IConditionBuilder>();
+            condition.Setup(b => b.Build(default)).Returns((_ => convertedStatBuilder.Object, conditionValue));
+            var sut = CreateSut();
+
+            var sutWithCondition = sut.WithCondition(condition.Object);
+            var actual = sutWithCondition.Build(ModifierSource, default);
+            var actualStat = actual.stats.Single();
+            var actualValue = actual.valueConverter(inputValueBuilder).Build(default);
+
+            Assert.AreEqual(expectedStat, actualStat);
+            Assert.AreEqual(expectedValue, actualValue);
         }
 
         private static IStat BuildToSingleStat(IStatBuilder statBuilder, Entity entity = Entity.Character)

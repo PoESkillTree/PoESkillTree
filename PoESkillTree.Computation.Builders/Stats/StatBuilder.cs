@@ -38,7 +38,8 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder For(IEntityBuilder entity) => new StatBuilder(_coreStatBuilder.WithEntity(entity));
 
-        public IStatBuilder WithCondition(IConditionBuilder condition) => throw new NotImplementedException();
+        public IStatBuilder WithCondition(IConditionBuilder condition) =>
+            new StatBuilder(new StatBuilderAdapter(this, condition));
 
         public IStatBuilder CombineWith(IStatBuilder other) =>
             new StatBuilder(_coreStatBuilder.CombineWith(new StatBuilderAdapter(other)));
