@@ -20,21 +20,29 @@ namespace PoESkillTree.Computation.Builders.Stats
             _coreStatBuilder = coreStatBuilder;
         }
 
+        private IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
+            new StatBuilder(_coreStatBuilder.WithStatConverter(statConverter));
+
         public IStatBuilder Resolve(ResolveContext context) => new StatBuilder(_coreStatBuilder.Resolve(context));
 
-        public IStatBuilder Minimum => new StatBuilder(_coreStatBuilder.WithStatConverter(s => s.Minimum));
-        public IStatBuilder Maximum => new StatBuilder(_coreStatBuilder.WithStatConverter(s => s.Maximum));
+        public IStatBuilder Minimum => WithStatConverter(s => s.Minimum);
+        public IStatBuilder Maximum => WithStatConverter(s => s.Maximum);
 
         public ValueBuilder Value =>
             new ValueBuilder(new ValueBuilderImpl(_coreStatBuilder.BuildValue, c => Resolve(c).Value));
 
-        public IStatBuilder ConvertTo(IStatBuilder stat) => throw new NotImplementedException();
-        public IStatBuilder GainAs(IStatBuilder stat) => throw new NotImplementedException();
+        public IStatBuilder ConvertTo(IStatBuilder stat) =>
+            new StatBuilder(new ConversionStatBuilder(_coreStatBuilder, new StatBuilderAdapter(stat)));
+
+        public IStatBuilder GainAs(IStatBuilder stat) =>
+            new StatBuilder(new ConversionStatBuilder(_coreStatBuilder, new StatBuilderAdapter(stat),
+                ConversionStatBuilder.Mode.GainAs));
 
         public IFlagStatBuilder ApplyModifiersTo(IStatBuilder stat, IValueBuilder percentOfTheirValue) =>
             throw new NotImplementedException();
 
-        public IStatBuilder ChanceToDouble => throw new NotImplementedException();
+        public IStatBuilder ChanceToDouble =>
+            WithStatConverter(s => Stat.CopyWithSuffix(s, nameof(ChanceToDouble), dataType: typeof(int)));
 
         public IStatBuilder For(IEntityBuilder entity) => new StatBuilder(_coreStatBuilder.WithEntity(entity));
 

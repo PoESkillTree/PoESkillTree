@@ -366,6 +366,61 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.AreEqual(expectedValue, actualValue);
         }
 
+        [Test]
+        public void ChanceToDoubleBuildsToCorrectStats()
+        {
+            var expected = new Stat("stat.ChanceToDouble");
+            var sut = CreateSut("stat");
+
+            var statBuilder = sut.ChanceToDouble;
+            var actual = BuildToSingleStat(statBuilder);
+
+            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(typeof(int), actual.DataType);
+        }
+
+        [Test]
+        public void ConvertToBuildsToCorrectStats()
+        {
+            var expected = new[]
+            {
+                new Stat("s1.ConvertTo(t)"), new Stat("s1.Conversion"), new Stat("s1.SkillConversion"),
+                new Stat("s2.ConvertTo(t)"), new Stat("s2.Conversion"), new Stat("s2.SkillConversion"),
+            };
+            var entityBuilder = new EntityBuilder();
+            var sources = new[]
+                { new LeafCoreStatBuilder("s1", entityBuilder), new LeafCoreStatBuilder("s2", entityBuilder), };
+            var target = new LeafCoreStatBuilder("t", entityBuilder);
+            var sut = new StatBuilder(sources[0]).CombineWith(new StatBuilder(sources[1]));
+
+            var statBuilder = sut.ConvertTo(new StatBuilder(target));
+            var actual = statBuilder.Build(ModifierSource, default).stats;
+
+            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.Select(_ => typeof(int)), actual.Select(s => s.DataType));
+        }
+
+        [Test]
+        public void GainsAsBuildsToCorrectStats()
+        {
+            var expected = new[]
+            {
+                new Stat("s1.GainAs(t)"),
+                new Stat("s2.GainAs(t)"),
+            };
+            var entityBuilder = new EntityBuilder();
+            var sources = new[]
+                { new LeafCoreStatBuilder("s1", entityBuilder), new LeafCoreStatBuilder("s2", entityBuilder), };
+            var target = new LeafCoreStatBuilder("t", entityBuilder);
+            var sut = new StatBuilder(sources[0]).CombineWith(new StatBuilder(sources[1]));
+
+            var statBuilder = sut.GainAs(new StatBuilder(target));
+            var actual = statBuilder.Build(ModifierSource, default).stats;
+
+            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected.Select(_ => typeof(int)), actual.Select(s => s.DataType));
+        }
+
         private static IStat BuildToSingleStat(IStatBuilder statBuilder, Entity entity = Entity.Character)
         {
             var (stats, _, _) = statBuilder.Build(ModifierSource, entity);

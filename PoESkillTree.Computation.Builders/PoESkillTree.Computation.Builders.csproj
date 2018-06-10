@@ -67,6 +67,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolving\UnresolvedBuilder.cs" />
     <Compile Include="Stats\CompositeCoreStatBuilder.cs" />
+    <Compile Include="Stats\ConversionStatBuilder.cs" />
     <Compile Include="Stats\EntityBuilder.cs" />
     <Compile Include="Stats\ICoreStatBuilder.cs" />
     <Compile Include="Stats\LeafCoreStatBuilder.cs" />
