@@ -40,9 +40,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
             new StatBuilderAdapter(_statBuilder, _conditionBuilder, statConverter);
 
-        public ICoreStatBuilder CombineWith(ICoreStatBuilder other) =>
-            new CompositeCoreStatBuilder(this, other);
-
         public IValue BuildValue(Entity modifierSourceEntity) =>
             _statBuilder.Value.Build(modifierSourceEntity);
 

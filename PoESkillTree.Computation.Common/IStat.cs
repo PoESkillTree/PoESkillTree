@@ -14,8 +14,13 @@ namespace PoESkillTree.Computation.Common
     public interface IStat : IEquatable<IStat>
     {
         /// <summary>
-        /// Returns a string naming the represented calculation subgraph.
+        /// A string naming the represented calculation subgraph.
         /// <para>This string and <see cref="Entity"/> are used in the Equals methods.</para>
+        /// </summary>
+        string Identity { get; }
+
+        /// <summary>
+        /// Returns <see cref="Identity"/>.
         /// </summary>
         string ToString();
 

@@ -14,17 +14,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
     public class StatBuilderAdapterTest
     {
         [Test]
-        public void CombineWithReturnsComposite()
-        {
-            var statBuilder = Mock.Of<IStatBuilder>();
-            var sut = new StatBuilderAdapter(statBuilder);
-
-            var actual = sut.CombineWith(new LeafCoreStatBuilder("", null));
-
-            Assert.IsInstanceOf<CompositeCoreStatBuilder>(actual);
-        }
-
-        [Test]
         public void BuildValueReturnsStatBuilderValueBuild()
         {
             var expected = Mock.Of<IValue>();

@@ -12,6 +12,7 @@ using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Common.Tests;
 
 namespace PoESkillTree.Computation.Builders.Tests.Stats
@@ -141,7 +142,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var sut = CreateSut(Entity.Character, Entity.Enemy);
 
-            Assert.Throws<InvalidOperationException>(() => sut.Value.Build());
+            Assert.Throws<ParseException>(() => sut.Value.Build());
         }
 
         [Test]
@@ -165,7 +166,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [TestCase("test")]
         public void MinimumBuildIsCorrectStat(string identity)
         {
-            var expected = new Stat(identity + ".Minimum", default);
+            var expected = new Stat(identity + ".Minimum");
             var sut = CreateSut(identity);
 
             var actual = BuildToSingleStat(sut.Minimum);
@@ -176,7 +177,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [TestCase("stat")]
         public void MaximumBuildIsCorrectStat(string identity)
         {
-            var expected = new Stat(identity + ".Maximum", default);
+            var expected = new Stat(identity + ".Maximum");
             var sut = CreateSut(identity);
 
             var actual = BuildToSingleStat(sut.Maximum);
@@ -187,7 +188,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [TestCase("stat")]
         public void BuildMinimumIsCorrectStat(string identity)
         {
-            var expected = new Stat(identity + ".Minimum", default);
+            var expected = new Stat(identity + ".Minimum");
             var sut = BuildToSingleStat(CreateSut(identity));
 
             var actual = sut.Minimum;
@@ -198,7 +199,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [TestCase("stat")]
         public void BuildMaximumIsCorrectStat(string identity)
         {
-            var expected = new Stat(identity + ".Maximum", default);
+            var expected = new Stat(identity + ".Maximum");
             var sut = BuildToSingleStat(CreateSut(identity));
 
             var actual = sut.Maximum;
@@ -242,7 +243,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var left = CreateSut("left");
             var right = CreateSut("right");
-            var expected = new[] { new Stat("left", default), new Stat("right", default), };
+            var expected = new[] { new Stat("left"), new Stat("right"), };
 
             var combined = left.CombineWith(right);
             var (actual, _, _) = combined.Build(ModifierSource, default);
@@ -317,7 +318,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         public void CombineWithMinimumAppliesToOther()
         {
             var sut = CreateSut();
-            var stat = new Stat("", default);
+            var stat = new Stat("");
             var expected = stat.Minimum;
             var otherMock = new Mock<IStatBuilder>();
             otherMock.Setup(b => b.Build(ModifierSource, default))
@@ -338,13 +339,13 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
 
             var combined = sut.CombineWith(other);
 
-            Assert.Throws<InvalidOperationException>(() => combined.Value.Build());
+            Assert.Throws<ParseException>(() => combined.Value.Build());
         }
 
         [Test]
         public void WithConditionBuildReturnsCorrectResult()
         {
-            var expectedStat = new Stat("1", default);
+            var expectedStat = new Stat("1");
             var inputValue = new Constant(2);
             var inputValueBuilder = new ValueBuilderImpl(inputValue);
             var conditionValue = new Constant(3);

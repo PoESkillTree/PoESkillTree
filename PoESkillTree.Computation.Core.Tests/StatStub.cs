@@ -23,6 +23,7 @@ namespace PoESkillTree.Computation.Core.Tests
 
         public IStat Minimum { get; }
         public IStat Maximum { get; }
+        public string Identity => _instance.ToString();
         public Entity Entity => Entity.Character;
         public bool IsRegisteredExplicitly { get; set; }
         public Type DataType => typeof(double);

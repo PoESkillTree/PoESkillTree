@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Common.Utils;
-using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
@@ -29,12 +29,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
             Select(i => i.WithStatConverter(statConverter));
 
-        public ICoreStatBuilder CombineWith(ICoreStatBuilder other) =>
-            new CompositeCoreStatBuilder(_items.Append(other).ToArray());
-
         public IValue BuildValue(Entity modifierSourceEntity) =>
-            throw new InvalidOperationException(
-                "Can only access the value of IStatBuilders that represent a single stat");
+            throw new ParseException("Can only access the value of stat builders that represent a single stat");
 
         public StatBuilderResult Build(ModifierSource originalModifierSource, Entity modifierSourceEntity)
         {

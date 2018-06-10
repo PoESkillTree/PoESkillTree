@@ -5,6 +5,7 @@ using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
@@ -46,17 +47,14 @@ namespace PoESkillTree.Computation.Builders.Stats
             new LeafCoreStatBuilder(_identity, _entityBuilder, _isRegisteredExplicitly, _dataType, _behaviors,
                 s => statConverter(_statConverter(s)));
 
-        public ICoreStatBuilder CombineWith(ICoreStatBuilder other) =>
-            new CompositeCoreStatBuilder(this, other);
-
         public IValue BuildValue(Entity modifierSourceEntity)
         {
             var stats = BuildStats(modifierSourceEntity);
             if (stats.Count != 1)
-                throw new InvalidOperationException(
-                    "Can only access the value of IStatBuilders that represent a single stat");
+                throw new ParseException("Can only access the value of stat builders that represent a single stat");
 
-            return new FunctionalValue(c => c.GetValue(stats.Single()), $"{_identity}.Value");
+            var stat = stats.Single();
+            return new FunctionalValue(c => c.GetValue(stat), $"{stat}.Value");
         }
 
         public StatBuilderResult Build(ModifierSource originalModifierSource, Entity modifierSourceEntity)

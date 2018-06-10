@@ -13,8 +13,6 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter);
 
-        ICoreStatBuilder CombineWith(ICoreStatBuilder other);
-
         IValue BuildValue(Entity modifierSourceEntity);
 
         StatBuilderResult Build(ModifierSource originalModifierSource, Entity modifierSourceEntity);
