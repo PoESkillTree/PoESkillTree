@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -11,7 +12,7 @@ using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
-    public class StatBuilder : IStatBuilder
+    public class StatBuilder : IFlagStatBuilder
     {
         private readonly ICoreStatBuilder _coreStatBuilder;
 
@@ -30,6 +31,9 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public ValueBuilder Value =>
             new ValueBuilder(new ValueBuilderImpl(_coreStatBuilder.BuildValue, c => Resolve(c).Value));
+
+        public IConditionBuilder IsSet =>
+            ValueConditionBuilder.Create(Value, v => v.IsTrue());
 
         public IStatBuilder ConvertTo(IStatBuilder stat) =>
             new StatBuilder(new ConversionStatBuilder(_coreStatBuilder, new StatBuilderAdapter(stat)));

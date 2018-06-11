@@ -421,6 +421,19 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.AreEqual(expected.Select(_ => typeof(int)), actual.Select(s => s.DataType));
         }
 
+        [TestCase(null, false)]
+        [TestCase(1.0, true)]
+        public void IsSetCalculatesCorrectValue(double? input, bool expected)
+        {
+            var coreStatBuilder = Mock.Of<ICoreStatBuilder>(b => b.BuildValue(default) == new Constant(input));
+            var sut = new StatBuilder(coreStatBuilder);
+
+            var conditionBuilder = sut.IsSet;
+            var actual = conditionBuilder.Build().value.Calculate(null);
+
+            Assert.AreEqual(expected, actual.IsTrue());
+        }
+
         private static IStat BuildToSingleStat(IStatBuilder statBuilder, Entity entity = Entity.Character)
         {
             var (stats, _, _) = statBuilder.Build(ModifierSource, entity);
