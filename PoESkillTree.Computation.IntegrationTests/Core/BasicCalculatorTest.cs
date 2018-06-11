@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using NUnit.Framework;
 using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 
@@ -16,13 +17,12 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
             var sut = Calculator.CreateCalculator();
 
             var expected = new NodeValue(5);
-            var stat = new Stat();
 
             sut.NewBatchUpdate()
-                .AddModifier(stat, Form.BaseAdd, new Constant(expected))
+                .AddModifier(Stat, Form.BaseAdd, new Constant(expected))
                 .DoUpdate();
 
-            var actual = sut.NodeRepository.GetNode(stat).Value;
+            var actual = sut.NodeRepository.GetNode(Stat).Value;
 
             Assert.AreEqual(expected, actual);
         }
@@ -31,23 +31,22 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         public void MultipleUpdates()
         {
             var sut = Calculator.CreateCalculator();
-            var stat = new Stat();
             var source = new ModifierSource.Global();
-            var removedModifier = new Modifier(new[] { stat }, Form.BaseAdd, new Constant(100), source);
+            var removedModifier = new Modifier(new[] { Stat }, Form.BaseAdd, new Constant(100), source);
 
             sut.NewBatchUpdate()
-                .AddModifier(stat, Form.BaseAdd, new Constant(10), source)
+                .AddModifier(Stat, Form.BaseAdd, new Constant(10), source)
                 .DoUpdate();
             sut.NewBatchUpdate()
-                .AddModifier(stat, Form.BaseAdd, new Constant(1), source)
+                .AddModifier(Stat, Form.BaseAdd, new Constant(1), source)
                 .AddModifier(removedModifier)
                 .DoUpdate();
             sut.NewBatchUpdate()
                 .RemoveModifier(removedModifier)
-                .AddModifier(stat, Form.BaseAdd, new Constant(1000), source)
+                .AddModifier(Stat, Form.BaseAdd, new Constant(1000), source)
                 .DoUpdate();
 
-            var actual = sut.NodeRepository.GetNode(stat).Value;
+            var actual = sut.NodeRepository.GetNode(Stat).Value;
 
             Assert.AreEqual(new NodeValue(1011), actual);
         }
@@ -57,9 +56,9 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         {
             var sut = Calculator.CreateCalculator();
 
-            var evasionStat = new Stat();
-            var lvlStat = new Stat();
-            var dexterityStat = new Stat();
+            var evasionStat = new Stat("evasion");
+            var lvlStat = new Stat("lvl");
+            var dexterityStat = new Stat("dexterity");
             var globalSource = new ModifierSource.Global();
             var bodySource = new ModifierSource.Local.Item(ItemSlot.BodyArmour);
             var shieldSource = new ModifierSource.Local.Item(ItemSlot.OffHand);
@@ -99,18 +98,15 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         public void Clip(double value)
         {
             var sut = Calculator.CreateCalculator();
-            var min = new Stat();
-            var max = new Stat();
-            var stat = new Stat { Minimum = min, Maximum = max };
 
             sut.NewBatchUpdate()
-                .AddModifier(stat, Form.BaseAdd, new Constant(value))
-                .AddModifier(min, Form.BaseAdd, new Constant(10))
-                .AddModifier(max, Form.BaseAdd, new Constant(20))
+                .AddModifier(Stat, Form.BaseAdd, new Constant(value))
+                .AddModifier(Stat.Minimum, Form.BaseAdd, new Constant(10))
+                .AddModifier(Stat.Maximum, Form.BaseAdd, new Constant(20))
                 .DoUpdate();
             var expected = new NodeValue(Math.Max(Math.Min(value, 20), 10));
 
-            var actual = sut.NodeRepository.GetNode(stat).Value;
+            var actual = sut.NodeRepository.GetNode(Stat).Value;
 
             Assert.AreEqual(expected, actual);
         }
@@ -119,28 +115,26 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         public void Pruning()
         {
             var sut = Calculator.CreateCalculator();
-            var stat = new Stat();
-            var mod = new Modifier(new []{stat}, Form.BaseAdd, new Constant(1), new ModifierSource.Global());
+            var mod = new Modifier(new[] { Stat }, Form.BaseAdd, new Constant(1), new ModifierSource.Global());
 
             sut.NewBatchUpdate().AddModifier(mod).DoUpdate();
 
-            var removedNode = sut.NodeRepository.GetNode(stat);
-            var keptNode = sut.NodeRepository.GetNode(stat, NodeType.Subtotal);
+            var removedNode = sut.NodeRepository.GetNode(Stat);
+            var keptNode = sut.NodeRepository.GetNode(Stat, NodeType.Subtotal);
             keptNode.ValueChanged += (sender, args) => { };
 
             sut.NewBatchUpdate().RemoveModifier(mod).DoUpdate();
 
-            Assert.AreEqual(keptNode, sut.NodeRepository.GetNode(stat, NodeType.Subtotal));
-            Assert.AreNotEqual(removedNode, sut.NodeRepository.GetNode(stat));
+            Assert.AreEqual(keptNode, sut.NodeRepository.GetNode(Stat, NodeType.Subtotal));
+            Assert.AreNotEqual(removedNode, sut.NodeRepository.GetNode(Stat));
         }
 
         [Test]
         public void Events()
         {
             var sut = Calculator.CreateCalculator();
-            var stat = new Stat();
-            var mod = new Modifier(new []{stat}, Form.BaseAdd, new Constant(1), new ModifierSource.Global());
-            var node = sut.NodeRepository.GetNode(stat);
+            var mod = new Modifier(new[] { Stat }, Form.BaseAdd, new Constant(1), new ModifierSource.Global());
+            var node = sut.NodeRepository.GetNode(Stat);
             var invovcations = 0;
             node.ValueChanged += (sender, args) => invovcations++;
 
@@ -159,7 +153,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         public void ExplicitlyRegistered()
         {
             var sut = Calculator.CreateCalculator();
-            var stat = new Stat { IsRegisteredExplicitly = true };
+            var stat = new Stat("stat", isRegisteredExplicitly: true);
             IStat actual = null;
             sut.ExplicitlyRegisteredStats.CollectionChanged += (sender, args) =>
             {
@@ -177,10 +171,10 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         public void Behavior()
         {
             var sut = Calculator.CreateCalculator();
-            var transformedStat = new Stat();
+            var transformedStat = new Stat("transformed");
             var behavior = new Behavior(new[] { transformedStat }, new[] { NodeType.Subtotal },
                 BehaviorPathInteraction.AllPaths, new ValueTransformation(_ => new Constant(5)));
-            var stat = new Stat { Behaviors = new[] { behavior } };
+            var stat = new Stat("stat", behaviors: new[] { behavior });
 
             sut.NewBatchUpdate().AddModifier(stat, Form.BaseAdd, new Constant(1)).DoUpdate();
 
@@ -188,5 +182,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
 
             Assert.AreEqual(new NodeValue(5), actual);
         }
+
+        private static readonly IStat Stat = new Stat("stat");
     }
 }

@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using MoreLinq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 
@@ -25,43 +28,49 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         [SetUp]
         public void SetUp()
         {
-            _sut = Calculator.CreateCalculator();
-            _bar = new Stat("Bar");
-            _foo = new Stat("Foo");
-            _barFooConversion = new Stat("BarFooConversion");
-            _barFooGain = new Stat("BarFooGain");
-            _barConversion = new Stat("BarConversion");
-            _barSkillConversion = new Stat("BarSkillConversion");
-            var fooPathTotalBehavior = new Behavior(new[] { _foo }, new[] { NodeType.PathTotal },
+            var fooPathTotalBehavior = new Behavior(
+                new LazyStatEnumerable(() => _foo),
+                new[] { NodeType.PathTotal },
                 BehaviorPathInteraction.ConversionPathsOnly,
                 new ValueTransformation(v => new FooPathTotalValue(_barFooConversion, _barFooGain, v)));
-            var fooUncappedSubtotalBehavior = new Behavior(new[] { _foo }, new[] { NodeType.UncappedSubtotal },
+            var fooUncappedSubtotalBehavior = new Behavior(
+                new LazyStatEnumerable(() => _foo),
+                new[] { NodeType.UncappedSubtotal },
                 BehaviorPathInteraction.AllPaths,
                 new ValueTransformation(v => new FooUncappedSubtotalValue(_foo, _bar, v)));
-            var barPathTotalBehavior = new Behavior(new[] { _bar }, new[] { NodeType.PathTotal },
+            var barPathTotalBehavior = new Behavior(
+                new LazyStatEnumerable(() => _bar),
+                new[] { NodeType.PathTotal },
                 BehaviorPathInteraction.AllPaths,
                 new ValueTransformation(v => new BarPathTotalValue(_barConversion, v)));
-            var barFooConversionUncappedSubtotalValue = new Behavior(new[] { _barFooConversion },
+            var barFooConversionUncappedSubtotalValue = new Behavior(
+                new LazyStatEnumerable(() => _barFooConversion),
                 new[] { NodeType.UncappedSubtotal }, BehaviorPathInteraction.AllPaths,
                 new ValueTransformation(v =>
                     new BarFooConversionUncappedSubtotalValue(_barFooConversion, _barConversion, _barSkillConversion,
                         v)));
-            var barSkillConversionUncappedSubtotalBehavior = new Behavior(new[] { _barSkillConversion },
+            var barSkillConversionUncappedSubtotalBehavior = new Behavior(
+                new LazyStatEnumerable(() => _barSkillConversion),
                 new[] { NodeType.UncappedSubtotal }, BehaviorPathInteraction.AllPaths,
                 new ValueTransformation(v => new BarSkillConversionUncappedSubtotalValue(_barSkillConversion, v)));
-            ((Stat) _barFooConversion).Behaviors = new[]
+
+            _sut = Calculator.CreateCalculator();
+            _bar = new Stat("Bar");
+            _foo = new Stat("Foo");
+            _barFooConversion = new Stat("BarFooConversion", behaviors: new[]
             {
                 fooPathTotalBehavior, fooUncappedSubtotalBehavior, barPathTotalBehavior,
                 barFooConversionUncappedSubtotalValue
-            };
-            ((Stat) _barFooGain).Behaviors = new[]
+            });
+            _barFooGain = new Stat("BarFooGain", behaviors: new[]
             {
                 fooPathTotalBehavior, fooUncappedSubtotalBehavior, barPathTotalBehavior
-            };
-            ((Stat) _barSkillConversion).Behaviors = new[]
+            });
+            _barConversion = new Stat("BarConversion");
+            _barSkillConversion = new Stat("BarSkillConversion", behaviors: new[]
             {
                 barSkillConversionUncappedSubtotalBehavior
-            };
+            });
         }
 
         [Test]
@@ -69,7 +78,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         {
             _sut.NewBatchUpdate()
                 .AddModifier(_bar, Form.BaseAdd, 3)
-                .AddModifier(_barFooGain, Form.BaseAdd, 0.5)
+                .AddModifier(_barFooGain, Form.BaseAdd, 50)
                 .DoUpdate();
 
             Assert.AreEqual(new NodeValue(1.5), GetValue(_foo));
@@ -80,7 +89,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         {
             _sut.NewBatchUpdate()
                 .AddModifier(_bar, Form.BaseAdd, 3)
-                .AddModifier(new[] { _barFooConversion, _barConversion, _barSkillConversion }, Form.BaseAdd, 1.0 / 3)
+                .AddModifier(new[] { _barFooConversion, _barConversion, _barSkillConversion }, Form.BaseAdd, 100.0 / 3)
                 .DoUpdate();
 
             Assert.AreEqual(new NodeValue(1), GetValue(_foo));
@@ -96,10 +105,10 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
             _sut.NewBatchUpdate()
                 .AddModifier(_bar, Form.BaseAdd, 3)
                 .AddModifier(_bar, Form.BaseAdd, 2, localSource)
-                .AddModifier(barFooConversion, Form.BaseAdd, 0.5, skillSource)
-                .AddModifier(barFooConversion, Form.BaseAdd, 0.3)
-                .AddModifier(barFooConversion, Form.BaseAdd, 0.3)
-                .AddModifier(_barFooGain, Form.BaseAdd, 0.2)
+                .AddModifier(barFooConversion, Form.BaseAdd, 50, skillSource)
+                .AddModifier(barFooConversion, Form.BaseAdd, 30)
+                .AddModifier(barFooConversion, Form.BaseAdd, 30)
+                .AddModifier(_barFooGain, Form.BaseAdd, 20)
                 .AddModifier(_foo, Form.Increase, 50)
                 .AddModifier(_foo, Form.Increase, 50, localSource)
                 .AddModifier(_foo, Form.BaseAdd, 1)
@@ -113,6 +122,20 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         }
 
         private NodeValue? GetValue(IStat stat) => _sut.NodeRepository.GetNode(stat).Value;
+
+        private class LazyStatEnumerable : IEnumerable<IStat>
+        {
+            private readonly Lazy<IEnumerable<IStat>> _lazyStats;
+
+            public LazyStatEnumerable(Func<IStat> statFactory)
+            {
+                _lazyStats = new Lazy<IEnumerable<IStat>>(() => new[] { statFactory() });
+            }
+
+            public IEnumerator<IStat> GetEnumerator() => _lazyStats.Value.GetEnumerator();
+
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        }
     }
 
 
@@ -140,7 +163,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
 
             var conversion = context.GetValue(_barFooConversion) ?? new NodeValue(0);
             var gain = context.GetValue(_barFooGain) ?? new NodeValue(0);
-            return value * (conversion + gain);
+            return value * (conversion + gain) / 100;
         }
     }
 
@@ -222,7 +245,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
                 return null;
 
             var conversion = context.GetValue(_barConversion) ?? new NodeValue(0);
-            return value * (1 - conversion).Clip(0, 1);
+            return value * (1 - conversion / 100).Clip(0, 1);
         }
     }
 
@@ -279,7 +302,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
                     return value;
 
                 var barConversion = _originalContext.GetValue(_barConversion) ?? new NodeValue(0);
-                if (barConversion <= 1)
+                if (barConversion <= 100)
                 {
                     // Conversions don't exceed 100%, No scaling required
                     return value;
@@ -287,14 +310,14 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
 
                 var isSkillPath = path.ModifierSource is ModifierSource.Local.Skill;
                 var barSkillConversion = _originalContext.GetValue(_barSkillConversion) ?? new NodeValue(0);
-                if (barSkillConversion >= 1)
+                if (barSkillConversion >= 100)
                 {
                     // Conversions from skills are or exceed 100%
                     // Non-skill conversions don't apply
                     if (!isSkillPath)
                         return new NodeValue(0);
                     // Skill conversions are scaled to sum to 100%
-                    return value / barSkillConversion;
+                    return value / barSkillConversion * 100;
                 }
 
                 // Conversions exceed 100%
@@ -302,7 +325,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
                 if (isSkillPath)
                     return value;
                 // Non-skill conversions are scaled to sum to 100% - skill conversions
-                return value * (1 - barSkillConversion) / (barConversion - barSkillConversion);
+                return value * (100 - barSkillConversion) / (barConversion - barSkillConversion);
             }
 
             public IEnumerable<NodeValue?> GetValues(
