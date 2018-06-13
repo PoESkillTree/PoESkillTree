@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Builders.Values;
@@ -43,14 +44,15 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IValue BuildValue(Entity modifierSourceEntity) =>
             _statBuilder.Value.Build(modifierSourceEntity);
 
-        public StatBuilderResult Build(ModifierSource originalModifierSource, Entity modifierSourceEntity)
+        public IReadOnlyList<StatBuilderResult> Build(
+            ModifierSource originalModifierSource, Entity modifierSourceEntity)
         {
             var (statBuilder, conditionValueConverter) = BuildCondition(modifierSourceEntity);
             var (stats, modifierSource, statValueConverter) =
-                statBuilder.Build(originalModifierSource, modifierSourceEntity);
+                statBuilder.Build(originalModifierSource, modifierSourceEntity).Single(); // TODO
             stats = stats.Select(_statConverter).ToList();
             IValueBuilder ConvertValue(IValueBuilder v) => conditionValueConverter(statValueConverter(v));
-            return new StatBuilderResult(stats, modifierSource, ConvertValue);
+            return new[] { new StatBuilderResult(stats, modifierSource, ConvertValue) }; // TODO
         }
 
         private (IStatBuilder, ValueConverter) BuildCondition(Entity modifierSourceEntity)

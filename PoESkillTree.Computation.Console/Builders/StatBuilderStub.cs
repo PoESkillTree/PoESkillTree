@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -49,9 +49,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
 
-        public (IReadOnlyList<IStat>, ModifierSource, ValueConverter)
-            Build(ModifierSource originalSource, Entity modifierSourceEntity) =>
-            (new[] { new Stat(ToString(), default) }, originalSource, v => v);
+        public IReadOnlyList<StatBuilderResult> Build(ModifierSource originalSource, Entity modifierSourceEntity) =>
+            new[] { new StatBuilderResult(new[] { new Stat(ToString()) }, originalSource, Funcs.Identity), };
     }
 
 

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using MoreLinq;
 using NUnit.Framework;
+using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -99,13 +100,11 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             var f = new BuilderFactories();
 
-            yield return new TestCaseData("+10 to Dexterity").Returns(new[]
-            {
+            yield return new TestCaseData("+10 to Dexterity").Returns(
                 CreateModifier(
                     f.StatBuilders.Attribute.Dexterity,
                     f.FormBuilders.BaseAdd,
-                    f.ValueBuilders.Create(10))
-            });
+                    f.ValueBuilders.Create(10)).ToArray());
 
             yield return new TestCaseData("Gain 30 Mana per Grand Spectrum").Returns(new[]
             {
@@ -117,7 +116,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     f.StatBuilders.Pool.Mana,
                     f.FormBuilders.BaseAdd,
                     f.ValueBuilders.Create(30).Multiply(f.StatBuilders.GrandSpectrumJewelsSocketed.Value)),
-            });
+            }.SelectMany(Funcs.Identity).ToArray());
 
             yield return new TestCaseData(
                     "With 5 Corrupted Items Equipped: 50% of Chaos Damage does not bypass Energy Shield, and 50% of Physical Damage bypasses Energy Shield")
@@ -135,7 +134,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                         f.FormBuilders.BaseSubtract,
                         f.ValueBuilders.Create(50),
                         f.EquipmentBuilders.Equipment.Count(e => e.IsCorrupted) >= 5)
-                });
+                }.SelectMany(Funcs.Identity).ToArray());
 
             yield return new TestCaseData(
                     "Life Leeched per Second is doubled.\nMaximum Life Leech Rate is doubled.\nLife Regeneration has no effect.")
@@ -153,9 +152,9 @@ namespace PoESkillTree.Computation.IntegrationTests
                         f.StatBuilders.Pool.Life.Regen,
                         f.FormBuilders.BaseOverride,
                         f.ValueBuilders.Create(0))
-                });
+                }.SelectMany(Funcs.Identity).ToArray());
 
-            Modifier ParagonOfCalamityFor(IDamageTypeBuilder damageType) =>
+            IEnumerable<Modifier> ParagonOfCalamityFor(IDamageTypeBuilder damageType) =>
                 CreateModifier(
                     damageType.Damage.Taken,
                     f.FormBuilders.PercentReduce,
@@ -169,32 +168,33 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ParagonOfCalamityFor(f.DamageTypeBuilders.Fire),
                     ParagonOfCalamityFor(f.DamageTypeBuilders.Lightning),
                     ParagonOfCalamityFor(f.DamageTypeBuilders.Cold),
-                });
+                }.SelectMany(Funcs.Identity).ToArray());
 
             yield return new TestCaseData(
                     "Auras you Cast grant 3% increased Attack and Cast Speed to you and Allies")
-                .Returns(new[]
-                {
-                    CreateModifier(
+                .Returns(CreateModifier(
                         f.BuffBuilders.Buffs(f.EntityBuilders.Self, f.EntityBuilders.Self, f.EntityBuilders.Ally)
                             .With(f.KeywordBuilders.Aura).Without(f.KeywordBuilders.Curse)
                             .AddStat(f.StatBuilders.CastSpeed),
                         f.FormBuilders.PercentIncrease,
                         f.ValueBuilders.Create(3))
-                });
+                    .ToArray());
         }
 
-        private static Modifier CreateModifier(
+        private static IEnumerable<Modifier> CreateModifier(
             IStatBuilder statBuilder, IFormBuilder formBuilder, IValueBuilder valueBuilder)
         {
             var entity = Entity.Character;
-            var (stats, source, statValueConverter) = statBuilder.Build(new ModifierSource.Global(), entity);
+            var statBuilderResults = statBuilder.Build(new ModifierSource.Global(), entity);
             var (form, formValueConverter) = formBuilder.Build();
-            var value = formValueConverter(statValueConverter(valueBuilder)).Build(entity);
-            return new Modifier(stats, form, value, source);
+            foreach (var (stats, source, statValueConverter) in statBuilderResults)
+            {
+                var value = formValueConverter(statValueConverter(valueBuilder)).Build(entity);
+                yield return new Modifier(stats, form, value, source);
+            }
         }
 
-        private static Modifier CreateModifier(
+        private static IEnumerable<Modifier> CreateModifier(
             IStatBuilder statBuilder, IFormBuilder formBuilder, IValueBuilder valueBuilder, 
             IConditionBuilder conditionBuilder)
         {

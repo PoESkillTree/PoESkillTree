@@ -5,6 +5,7 @@ using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
 
@@ -32,14 +33,15 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IValue BuildValue(Entity modifierSourceEntity) =>
             throw new ParseException("Can only access the value of stat builders that represent a single stat");
 
-        public StatBuilderResult Build(ModifierSource originalModifierSource, Entity modifierSourceEntity)
+        public IReadOnlyList<StatBuilderResult> Build(
+            ModifierSource originalModifierSource, Entity modifierSourceEntity)
         {
             var seed = new StatBuilderResult(new IStat[0], originalModifierSource, Funcs.Identity);
-            return _items.Aggregate(seed, Aggregate);
+            return new[] { _items.Aggregate(seed, Aggregate) }; // TODO
 
             StatBuilderResult Aggregate(StatBuilderResult previous, ICoreStatBuilder item)
             {
-                var built = item.Build(previous.ModifierSource, modifierSourceEntity);
+                var built = item.Build(previous.ModifierSource, modifierSourceEntity).Single(); // TODO
                 var stats = previous.Stats.Concat(built.Stats).ToList();
                 var source = built.ModifierSource;
                 IValueBuilder ConvertValue(IValueBuilder v) => built.ValueConverter(previous.ValueConverter(v));

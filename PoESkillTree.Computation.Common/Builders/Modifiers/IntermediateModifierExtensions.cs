@@ -119,19 +119,18 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
         {
             return (
                 from entry in modifier.Entries
-                let m = Build(modifier, entry, originalSource, modifierSourceEntity)
-                where m != null
+                from m in Build(modifier, entry, originalSource, modifierSourceEntity)
                 select m
             ).ToList();
         }
 
-        private static Modifier Build(
+        private static IEnumerable<Modifier> Build(
             IIntermediateModifier modifier, IntermediateModifierEntry entry, ModifierSource originalSource,
             Entity modifierSourceEntity)
         {
             if (entry.Form == null || entry.Stat == null || entry.Value == null)
             {
-                return null;
+                yield break;
             }
 
             var statBuilder = modifier.StatConverter(entry.Stat);
@@ -139,16 +138,16 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             {
                 statBuilder = statBuilder.WithCondition(entry.Condition);
             }
-            var (stats, source, statValueConverter) = statBuilder.Build(originalSource, modifierSourceEntity);
+            var statBuilderResults = statBuilder.Build(originalSource, modifierSourceEntity);
 
             var (form, formValueConverter) = entry.Form.Build();
 
-            var value =
-                formValueConverter(
-                    statValueConverter(
-                        modifier.ValueConverter(entry.Value))).Build(modifierSourceEntity);
-
-            return new Modifier(stats, form, value, source);
+            foreach (var (stats, source, statValueConverter) in statBuilderResults)
+            {
+                var valueBuilder = formValueConverter(statValueConverter(modifier.ValueConverter(entry.Value)));
+                var value = valueBuilder.Build(modifierSourceEntity);
+                yield return new Modifier(stats, form, value, source);
+            }
         }
     }
 }

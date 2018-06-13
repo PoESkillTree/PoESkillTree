@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Common.Utils;
@@ -6,6 +7,7 @@ using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Common.Tests;
@@ -35,7 +37,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var target = new LeafCoreStatBuilder("t", new EntityBuilder(Entity.Enemy, Entity.Character));
             var sut = new ConversionStatBuilder(source, target);
 
-            var actual = sut.Build(ModifierSource, default).Stats;
+            var actual = sut.Build(ModifierSource, default).Single().Stats;
 
             Assert.AreEqual(6, actual.Count);
             CollectionAssert.IsSubsetOf(expected, actual);
@@ -49,7 +51,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var target = MockStatBuilder(valueConverter: _ => valueBuilders[2]);
             var sut = new ConversionStatBuilder(source, target);
 
-            var valueConverter = sut.Build(ModifierSource, default).ValueConverter;
+            var valueConverter = sut.Build(ModifierSource, default).Single().ValueConverter;
             var actual = valueConverter(valueBuilders[0]);
 
             Assert.AreEqual(valueBuilders[2], actual);

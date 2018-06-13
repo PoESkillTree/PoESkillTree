@@ -5,6 +5,7 @@ using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -57,10 +58,11 @@ namespace PoESkillTree.Computation.Builders.Stats
             return new FunctionalValue(c => c.GetValue(stat), $"{stat}.Value");
         }
 
-        public StatBuilderResult Build(ModifierSource originalModifierSource, Entity modifierSourceEntity)
+        public IReadOnlyList<StatBuilderResult> Build(
+            ModifierSource originalModifierSource, Entity modifierSourceEntity)
         {
             var stats = BuildStats(modifierSourceEntity);
-            return new StatBuilderResult(stats, originalModifierSource, Funcs.Identity);
+            return new[] { new StatBuilderResult(stats, originalModifierSource, Funcs.Identity) };
         }
 
         private IReadOnlyList<IStat> BuildStats(Entity modifierSourceEntity)

@@ -69,11 +69,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder CombineWith(IStatBuilder other);
 
         /// <summary>
-        /// Builds this instance into a list of <see cref="IStat"/>s, an <see cref="ModifierSource"/> based on
-        /// the original modifier's source and a <see cref="ValueConverter"/> that should be applied
-        /// to <see cref="IValueBuilder"/>s before building them.
+        /// Builds this instance into a list of <see cref="StatBuilderResult"/>s.
         /// </summary>
-        (IReadOnlyList<IStat> stats, ModifierSource modifierSource, ValueConverter valueConverter)
-            Build(ModifierSource originalModifierSource, Entity modifierSourceEntity);
+        IReadOnlyList<StatBuilderResult> Build(ModifierSource originalModifierSource, Entity modifierSourceEntity);
     }
 }

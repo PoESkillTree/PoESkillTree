@@ -6,6 +6,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -44,17 +45,18 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IValue BuildValue(Entity modifierSourceEntity) =>
             throw new ParseException("Can't access the value of conversion stats directly (yet)");
 
-        public StatBuilderResult Build(ModifierSource originalModifierSource, Entity modifierSourceEntity)
+        public IReadOnlyList<StatBuilderResult> Build(
+            ModifierSource originalModifierSource, Entity modifierSourceEntity)
         {
-            var source = _source.Build(originalModifierSource, modifierSourceEntity);
-            var target = _target.Build(originalModifierSource, modifierSourceEntity);
+            var source = _source.Build(originalModifierSource, modifierSourceEntity).Single(); // TODO
+            var target = _target.Build(originalModifierSource, modifierSourceEntity).Single(); // TODO
 
             VerifyStats(source.Stats, target.Stats);
             VerifyModifierSource(originalModifierSource, source.ModifierSource, target.ModifierSource);
 
             var stats = BuildStats(source.Stats, target.Stats);
             var valueConverter = BuildValueConverter(source.ValueConverter, target.ValueConverter);
-            return new StatBuilderResult(stats.ToList(), originalModifierSource, valueConverter);
+            return new[] { new StatBuilderResult(stats.ToList(), originalModifierSource, valueConverter) }; // TODO
         }
 
         private static void VerifyStats(IReadOnlyList<IStat> sourceStats, IReadOnlyList<IStat> targetStats)

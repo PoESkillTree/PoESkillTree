@@ -132,6 +132,7 @@
     <Compile Include="Builders\Stats\ISkillEntityStatBuilders.cs" />
     <Compile Include="Builders\Stats\IStatBuilder.cs" />
     <Compile Include="Builders\Stats\IStatBuilders.cs" />
+    <Compile Include="Builders\Stats\StatBuilderResult.cs" />
     <Compile Include="Builders\ValueConverter.cs" />
     <Compile Include="Builders\Values\IValueBuilder.cs" />
     <Compile Include="Builders\Values\IValueBuilders.cs" />
