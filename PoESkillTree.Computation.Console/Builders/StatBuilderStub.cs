@@ -34,11 +34,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder GainAs(IStatBuilder stat) =>
             CreateStat(This, stat, (o1, o2) => $"% of {o1} added as {o2}");
 
-        public IFlagStatBuilder ApplyModifiersTo(IStatBuilder stat,
-            IValueBuilder percentOfTheirValue) =>
-            CreateFlagStat(This, stat, percentOfTheirValue,
-                (o1, o2, o3) => $"Modifiers to {o1} apply to {o2} at {o3}% of their value");
-
         public IStatBuilder For(IEntityBuilder entity) =>
             CreateStat(This, entity, (o1, o2) => $"{o1} for {o2}");
 

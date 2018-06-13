@@ -81,9 +81,8 @@ namespace PoESkillTree.Computation.Data
                     // Perfect Agony
                     "modifiers to critical strike multiplier also apply to damage multiplier for " +
                     "ailments from critical strikes at #% of their value",
-                    TotalOverride, 1,
-                    CriticalStrike.Multiplier.WithHits.ApplyModifiersTo(CriticalStrike.Multiplier.WithAilments,
-                        percentOfTheirValue: Value)
+                    TotalOverride, Value,
+                    CriticalStrike.Multiplier.WithSkills.ApplyModifiersToAilments()
                 },
                 {
                     // Vaal Pact

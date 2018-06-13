@@ -11,23 +11,6 @@ namespace PoESkillTree.Computation.Common
     public class Behavior
     {
         /*
-         * "Modifiers to Foo also apply to Bar [at x% of their value]":
-         * - Applies to NodeType.Base and PathTotal of Bar.
-         * - When those nodes request the value of BaseAdd, Increase or More the respective value of
-         *   Foo is multiplied by x/100 and added to the original value.
-         *   (some do not apply to Base/BaseAdd)
-         * - Each Foo, Bar combination will result in one stat with the respective behavior. The value of that stat is
-         *   used as the multiplier.
-         *   - These stats are explicitly registered so that UI can add the newly affecting modifiers to its tables
-         *   - This explicit registration is handled differently by the UI (they are not stats that need to be set by
-         *     users). More specialized registration may be necessary.
-         * - Also works for "Modifiers to Spell Damage apply to this Skill's Damage Over Time effect".
-         *   "this Skill's" is part of the condition (modifier source Local->Skill), everything else is the same
-         * - Affects all paths (if behaviors applying to Base of stats partaking in conversions exist, I don't know
-         *   whether they should apply to conversion paths)
-         * "Modifiers to Claw Foo also apply to Unarmed":
-         * - Affecting form nodes open a whole bunch of new issues, e.g. the same form node can be used in different
-         *   stats, so this can't be done as a behavior. Solutions need to be solely in the builder implementations.
          * Effectiveness of Added Damage:
          * - Applies to NodeType.BaseAdd of all damage stats
          * - Values of requested form nodes are multiplied by the effectiveness stat's value

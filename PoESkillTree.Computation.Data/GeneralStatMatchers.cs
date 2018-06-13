@@ -67,7 +67,7 @@ namespace PoESkillTree.Computation.Data
                 { "damage taken from damage over time", Damage.Taken.With(Source.OverTime()) },
                 // - penetration
                 // - crit
-                { "(global )?critical strike multiplier", CriticalStrike.Multiplier.WithHits },
+                { "(global )?critical strike multiplier", CriticalStrike.Multiplier.WithSkills },
                 { "(global )?critical strike chance", CriticalStrike.Chance },
                 // - projectiles
                 { "projectile speed", Projectile.Speed },

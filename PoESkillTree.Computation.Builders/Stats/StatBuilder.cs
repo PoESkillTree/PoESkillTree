@@ -42,9 +42,6 @@ namespace PoESkillTree.Computation.Builders.Stats
             new StatBuilder(new ConversionStatBuilder(_coreStatBuilder, new StatBuilderAdapter(stat),
                 ConversionStatBuilder.Mode.GainAs));
 
-        public IFlagStatBuilder ApplyModifiersTo(IStatBuilder stat, IValueBuilder percentOfTheirValue) =>
-            throw new NotImplementedException();
-
         public IStatBuilder ChanceToDouble =>
             WithStatConverter(s => Stat.CopyWithSuffix(s, nameof(ChanceToDouble), dataType: typeof(int)));
 

@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Conditions;
+﻿using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -42,6 +43,14 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IDamageRelatedStatBuilder With(AttackDamageHand hand) =>
             CreateDamageStat(This, o => $"With {hand} {o}");
+
+        public IStatBuilder ApplyModifiersTo(IDamageSourceBuilder source, params Form[] forms) =>
+            CreateStat(This, source,
+                (o1, o2) => $"Modifiers to {o1} apply to source {o2} for forms [{string.Join(", ", forms)}]");
+
+        public IStatBuilder ApplyModifiersToAilments(params Form[] forms) =>
+            CreateStat(This,
+                o => $"Modifiers to {o} apply to ailments for forms [{string.Join(", ", forms)}]");
 
         public override IStatBuilder WithCondition(IConditionBuilder condition) =>
             CreateDamageStat(This, condition, (s, c) => $"{s} ({c})");

@@ -44,13 +44,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder GainAs(IStatBuilder stat);
 
         /// <summary>
-        /// Returns a stat representing whether modifiers (except of BaseSet, BaseOverride and TotalOverride forms)
-        /// to this stat's value also apply to the given stat
-        /// (at <paramref name="percentOfTheirValue"/> percent of their value).
-        /// </summary>
-        IFlagStatBuilder ApplyModifiersTo(IStatBuilder stat, IValueBuilder percentOfTheirValue);
-
-        /// <summary>
         /// Gets a stat representing the chance to double this stat's value (does not make sense without an action
         /// condition. E.g. damage has a 20% chance to be doubled on hit.
         /// </summary>
