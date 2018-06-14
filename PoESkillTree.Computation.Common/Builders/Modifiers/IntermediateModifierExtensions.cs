@@ -133,19 +133,20 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
                 yield break;
             }
 
+            var (form, formValueConverter) = entry.Form.Build();
+            var buildParameters = new BuildParameters(modifierSourceEntity, form);
+
             var statBuilder = modifier.StatConverter(entry.Stat);
             if (entry.Condition != null)
             {
                 statBuilder = statBuilder.WithCondition(entry.Condition);
             }
-            var statBuilderResults = statBuilder.Build(originalSource, modifierSourceEntity);
-
-            var (form, formValueConverter) = entry.Form.Build();
+            var statBuilderResults = statBuilder.Build(buildParameters, originalSource);
 
             foreach (var (stats, source, statValueConverter) in statBuilderResults)
             {
                 var valueBuilder = formValueConverter(statValueConverter(modifier.ValueConverter(entry.Value)));
-                var value = valueBuilder.Build(modifierSourceEntity);
+                var value = valueBuilder.Build(buildParameters);
                 yield return new Modifier(stats, form, value, source);
             }
         }

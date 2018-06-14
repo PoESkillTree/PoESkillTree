@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -53,7 +54,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             new StatBuilder(new CompositeCoreStatBuilder(_coreStatBuilder, new StatBuilderAdapter(other)));
 
         public IEnumerable<StatBuilderResult> Build(
-            ModifierSource originalModifierSource, Entity modifierSourceEntity) =>
-            _coreStatBuilder.Build(originalModifierSource, modifierSourceEntity);
+            BuildParameters parameters, ModifierSource originalModifierSource) =>
+            _coreStatBuilder.Build(parameters, originalModifierSource);
     }
 }

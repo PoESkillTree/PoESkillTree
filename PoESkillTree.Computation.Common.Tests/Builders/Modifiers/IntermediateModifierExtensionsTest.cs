@@ -262,12 +262,13 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         public void BuildReturnsCorrectModifiers()
         {
             var conditionBuilder = Mock.Of<IConditionBuilder>();
+            var buildParameters = new BuildParameters(Entity, Form.More);
 
             var value = Mock.Of<IValue>();
             var valueBuilder = Mock.Of<IValueBuilder>();
             var convertedValueBuilder = Mock.Of<IValueBuilder>();
             var statConvertedValueBuilder = Mock.Of<IValueBuilder>();
-            var formConvertedValueBuilder = Mock.Of<IValueBuilder>(b => b.Build(Entity) == value);
+            var formConvertedValueBuilder = Mock.Of<IValueBuilder>(b => b.Build(buildParameters) == value);
 
             var stats = new[] { Mock.Of<IStat>() };
             var source = new ModifierSource.Local.Given();
@@ -275,16 +276,15 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
                 v == convertedValueBuilder ? statConvertedValueBuilder : v;
             var statBuilderResult = new StatBuilderResult(stats, source, StatConvertValue);
             var statBuilderWithCondition =
-                Mock.Of<IStatBuilder>(b => b.Build(Source, Entity) == new[] { statBuilderResult });
+                Mock.Of<IStatBuilder>(b => b.Build(buildParameters, Source) == new[] { statBuilderResult });
             var statBuilder = Mock.Of<IStatBuilder>();
             var convertedStatBuilder =
                 Mock.Of<IStatBuilder>(s => s.WithCondition(conditionBuilder) == statBuilderWithCondition);
 
-            var form = Form.More;
             IValueBuilder FormConvertValue(IValueBuilder v) =>
                 v == statConvertedValueBuilder ? formConvertedValueBuilder : v;
             var formBuilderMock = new Mock<IFormBuilder>();
-            formBuilderMock.Setup(b => b.Build()).Returns((form, FormConvertValue));
+            formBuilderMock.Setup(b => b.Build()).Returns((buildParameters.ModifierForm, FormConvertValue));
             var formBuilder = formBuilderMock.Object;
 
             var entry = EmptyEntry
@@ -303,7 +303,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             Assert.AreEqual(1, result.Count);
             var item = result[0];
             Assert.AreEqual(stats, item.Stats);
-            Assert.AreEqual(form, item.Form);
+            Assert.AreEqual(buildParameters.ModifierForm, item.Form);
             Assert.AreEqual(value, item.Value);
             Assert.AreSame(source, item.Source);
         }

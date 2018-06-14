@@ -3,6 +3,7 @@ using System.Linq;
 using PoESkillTree.Common.Utils;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
@@ -67,8 +68,8 @@ namespace PoESkillTree.Computation.Builders.Values
             public ValueBuilder Else(IValueBuilder value)
             {
                 var valueBuilder = new ValueBuilderImpl(
-                    entity => Build(entity, _conditionValuePairs, value),
-                    c => (entity => Build(entity, Resolve(c, _conditionValuePairs), value.Resolve(c))));
+                    ps => Build(ps, _conditionValuePairs, value),
+                    c => (ps => Build(ps, Resolve(c, _conditionValuePairs), value.Resolve(c))));
                 return new ValueBuilder(valueBuilder);
 
                 IReadOnlyList<(IConditionBuilder condition, IValueBuilder value)> Resolve(
@@ -79,22 +80,22 @@ namespace PoESkillTree.Computation.Builders.Values
                     ).ToList();
 
                 IValue Build(
-                    Entity modifierSourceEntity,
+                    BuildParameters parameters,
                     IReadOnlyList<(IConditionBuilder condition, IValueBuilder value)> conditionValuePairs,
                     IValueBuilder elseValue)
                 {
                     var pairs = new List<(IValue condition, IValue value)>();
                     foreach (var (c, v) in conditionValuePairs)
                     {
-                        var condition = c.Build(modifierSourceEntity);
+                        var condition = c.Build(parameters);
                         if (condition.statConverter != Funcs.Identity)
                         {
                             throw new ParseException(
                                 $"Conditions for building conditional values must be value conditions. {c}");
                         }
-                        pairs.Add((condition.value, v.Build(modifierSourceEntity)));
+                        pairs.Add((condition.value, v.Build(parameters)));
                     }
-                    return new BranchingValue(pairs, elseValue.Build(modifierSourceEntity));
+                    return new BranchingValue(pairs, elseValue.Build(parameters));
                 }
             }
 

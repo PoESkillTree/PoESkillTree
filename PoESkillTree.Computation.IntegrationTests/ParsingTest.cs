@@ -184,12 +184,11 @@ namespace PoESkillTree.Computation.IntegrationTests
         private static IEnumerable<Modifier> CreateModifier(
             IStatBuilder statBuilder, IFormBuilder formBuilder, IValueBuilder valueBuilder)
         {
-            var entity = Entity.Character;
-            var statBuilderResults = statBuilder.Build(new ModifierSource.Global(), entity);
+            var statBuilderResults = statBuilder.Build(default, new ModifierSource.Global());
             var (form, formValueConverter) = formBuilder.Build();
             foreach (var (stats, source, statValueConverter) in statBuilderResults)
             {
-                var value = formValueConverter(statValueConverter(valueBuilder)).Build(entity);
+                var value = formValueConverter(statValueConverter(valueBuilder)).Build(default);
                 yield return new Modifier(stats, form, value, source);
             }
         }

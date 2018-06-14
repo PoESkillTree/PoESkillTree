@@ -34,6 +34,6 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
         /// from and to <c>NodeValue?</c> follows the rules of <see cref="ConditionalValue"/>.
         /// </para>
         /// </summary>
-        (StatConverter statConverter, IValue value) Build(Entity modifierSourceEntity);
+        (StatConverter statConverter, IValue value) Build(BuildParameters parameters);
     }
 }

@@ -122,8 +122,6 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
                     _value = value;
                 }
 
-                public IThenBuilder Resolve(ResolveContext context) => this;
-
                 public IConditionalValueBuilder Then(IValueBuilder value) =>
                     _branchCondition
                         ? new ConditionalValueBuilderStub(ValueBuilderStub.Convert(value))
@@ -143,8 +141,6 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
                 {
                     _value = value;
                 }
-
-                public IConditionalValueBuilder Resolve(ResolveContext context) => this;
 
                 public IThenBuilder ElseIf(IConditionBuilder condition) => 
                     new ThenBuilderStub(((ConditionBuilderStub) condition).Condition && !_value.HasValue, _value);
@@ -204,7 +200,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
 
             public IValueBuilder Create(double value) => new ValueBuilderStub(value);
 
-            public IValue Build(Entity modifierSourceEntity) => throw new NotSupportedException();
+            public IValue Build(BuildParameters parameters) => throw new NotSupportedException();
         }
 
 
@@ -228,7 +224,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
             public IConditionBuilder Not =>
                 new ConditionBuilderStub(!Condition);
 
-            public (StatConverter statConverter, IValue value) Build(Entity modifierSourceEntity) => 
+            public (StatConverter statConverter, IValue value) Build(BuildParameters parameters) => 
                 throw new NotSupportedException();
         }
     }

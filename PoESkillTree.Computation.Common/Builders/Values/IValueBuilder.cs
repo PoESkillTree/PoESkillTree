@@ -53,6 +53,6 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// <summary>
         /// Builds this instance into an <see cref="IValue"/>.
         /// </summary>
-        IValue Build(Entity modifierSourceEntity);
+        IValue Build(BuildParameters parameters);
     }
 }

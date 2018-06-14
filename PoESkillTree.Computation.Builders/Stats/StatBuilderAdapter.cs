@@ -41,13 +41,13 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
             new StatBuilderAdapter(_statBuilder, _conditionBuilder, statConverter);
 
-        public IValue BuildValue(Entity modifierSourceEntity) =>
-            _statBuilder.Value.Build(modifierSourceEntity);
+        public IValue BuildValue(BuildParameters parameters) =>
+            _statBuilder.Value.Build(parameters);
 
-        public IEnumerable<StatBuilderResult> Build(ModifierSource originalModifierSource, Entity modifierSourceEntity)
+        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)
         {
-            var (statBuilder, conditionValueConverter) = BuildCondition(modifierSourceEntity);
-            var statBuilderResults = statBuilder.Build(originalModifierSource, modifierSourceEntity);
+            var (statBuilder, conditionValueConverter) = BuildCondition(parameters);
+            var statBuilderResults = statBuilder.Build(parameters, originalModifierSource);
             foreach (var (stats, modifierSource, statValueConverter) in statBuilderResults)
             {
                 var convertedStats = stats.Select(_statConverter).ToList();
@@ -56,13 +56,13 @@ namespace PoESkillTree.Computation.Builders.Stats
             }
         }
 
-        private (IStatBuilder, ValueConverter) BuildCondition(Entity modifierSourceEntity)
+        private (IStatBuilder, ValueConverter) BuildCondition(BuildParameters parameters)
         {
             if (_conditionBuilder is null)
             {
                 return (_statBuilder, Funcs.Identity);
             }
-            var (statConverter, value) = _conditionBuilder.Build(modifierSourceEntity);
+            var (statConverter, value) = _conditionBuilder.Build(parameters);
             return (statConverter(_statBuilder), v => new ValueBuilderImpl(value).Multiply(v));
         }
     }

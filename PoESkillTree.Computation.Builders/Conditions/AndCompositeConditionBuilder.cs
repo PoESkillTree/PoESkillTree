@@ -35,9 +35,9 @@ namespace PoESkillTree.Computation.Builders.Conditions
         public IConditionBuilder Not =>
             new OrCompositeConditionBuilder(Conditions.Select(c => c.Not).ToList());
 
-        public (StatConverter statConverter, IValue value) Build(Entity modifierSourceEntity)
+        public (StatConverter statConverter, IValue value) Build(BuildParameters parameters)
         {
-            var builtConditions = Conditions.Select(c => c.Build(modifierSourceEntity)).ToList();
+            var builtConditions = Conditions.Select(c => c.Build(parameters)).ToList();
             var conditionsString = "All(" + string.Join(", ", builtConditions.Select(t => t.value)) + ")";
             return (ConvertStat, new ConditionalValue(Calculate, conditionsString));
 

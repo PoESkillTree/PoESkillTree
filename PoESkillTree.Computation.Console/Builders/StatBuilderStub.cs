@@ -2,6 +2,7 @@
 using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -49,7 +50,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
 
-        public IEnumerable<StatBuilderResult> Build(ModifierSource originalSource, Entity modifierSourceEntity) =>
+        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalSource) =>
             new[] { new StatBuilderResult(new[] { new Stat(ToString()) }, originalSource, Funcs.Identity), };
     }
 

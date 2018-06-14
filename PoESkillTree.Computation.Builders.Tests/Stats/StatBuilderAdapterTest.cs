@@ -47,10 +47,10 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
                 new StatBuilderResult(new IStat[0], new ModifierSource.Global(), Funcs.Identity),
                 new StatBuilderResult(new IStat[0], new ModifierSource.Local.Given(), Funcs.Identity),
             };
-            var statBuilder = Mock.Of<IStatBuilder>(b => b.Build(null, default) == results);
+            var statBuilder = Mock.Of<IStatBuilder>(b => b.Build(default, null) == results);
             var sut = new StatBuilderAdapter(statBuilder);
 
-            var actual = sut.Build(null, default);
+            var actual = sut.Build(default, null);
 
             Assert.That(actual, Has.Exactly(2).Items);
         }

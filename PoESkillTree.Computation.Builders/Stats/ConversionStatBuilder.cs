@@ -42,13 +42,13 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
             Select(b => b.WithStatConverter(statConverter));
 
-        public IValue BuildValue(Entity modifierSourceEntity) =>
+        public IValue BuildValue(BuildParameters parameters) =>
             throw new ParseException("Can't access the value of conversion stats directly (yet)");
 
-        public IEnumerable<StatBuilderResult> Build(ModifierSource originalModifierSource, Entity modifierSourceEntity)
+        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)
         {
-            var sourceResults = _source.Build(originalModifierSource, modifierSourceEntity).ToList();
-            var targetResults = _target.Build(originalModifierSource, modifierSourceEntity).ToList();
+            var sourceResults = _source.Build(parameters, originalModifierSource).ToList();
+            var targetResults = _target.Build(parameters, originalModifierSource).ToList();
             if (sourceResults.Count != targetResults.Count)
                 throw new ParseException("Source and target stats of conversion must build to same amount of mods");
             return sourceResults.Zip(targetResults, (s, t) => Build(originalModifierSource, s, t));

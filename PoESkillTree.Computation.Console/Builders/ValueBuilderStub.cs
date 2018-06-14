@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
@@ -49,7 +50,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IValueBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
 
-        public IValue Build(Entity modifierSourceEntity) => new ValueStub(this);
+        public IValue Build(BuildParameters parameters) => new ValueStub(this);
     }
 
 

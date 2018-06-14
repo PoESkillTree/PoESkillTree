@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var target = new LeafCoreStatBuilder("t", new EntityBuilder(Entity.Enemy, Entity.Character));
             var sut = new ConversionStatBuilder(source, target);
 
-            var actual = sut.Build(ModifierSource, default).Single().Stats;
+            var actual = sut.Build(default, ModifierSource).Single().Stats;
 
             Assert.AreEqual(6, actual.Count);
             CollectionAssert.IsSubsetOf(expected, actual);
@@ -51,7 +51,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var target = MockStatBuilder(valueConverter: _ => valueBuilders[2]);
             var sut = new ConversionStatBuilder(source, target);
 
-            var valueConverter = sut.Build(ModifierSource, default).Single().ValueConverter;
+            var valueConverter = sut.Build(default, ModifierSource).Single().ValueConverter;
             var actual = valueConverter(valueBuilders[0]);
 
             Assert.AreEqual(valueBuilders[2], actual);
@@ -129,7 +129,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var target = MockStatBuilder(CreateStatBuilderResult(), CreateStatBuilderResult());
             var sut = new ConversionStatBuilder(source, target);
 
-            var actual = sut.Build(ModifierSource, default);
+            var actual = sut.Build(default, ModifierSource);
 
             Assert.That(actual, Has.Exactly(2).Items);
         }
@@ -146,7 +146,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
 
         private static void AssertBuildThrows(ICoreStatBuilder sut)
         {
-            Assert.Throws<ParseException>(() => sut.Build(ModifierSource, default).ToList());
+            Assert.Throws<ParseException>(() => sut.Build(default, ModifierSource).ToList());
         }
 
         private static ICoreStatBuilder MockStatBuilder(
@@ -154,7 +154,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             MockStatBuilder(CreateStatBuilderResult(modifierSource, valueConverter));
 
         private static ICoreStatBuilder MockStatBuilder(params StatBuilderResult[] results) =>
-            Mock.Of<ICoreStatBuilder>(b => b.Build(ModifierSource, default) == results);
+            Mock.Of<ICoreStatBuilder>(b => b.Build(default, ModifierSource) == results);
 
         private static StatBuilderResult CreateStatBuilderResult(
             ModifierSource modifierSource = null, ValueConverter valueConverter = null) =>
