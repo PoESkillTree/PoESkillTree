@@ -44,15 +44,16 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IValue BuildValue(Entity modifierSourceEntity) =>
             _statBuilder.Value.Build(modifierSourceEntity);
 
-        public IReadOnlyList<StatBuilderResult> Build(
-            ModifierSource originalModifierSource, Entity modifierSourceEntity)
+        public IEnumerable<StatBuilderResult> Build(ModifierSource originalModifierSource, Entity modifierSourceEntity)
         {
             var (statBuilder, conditionValueConverter) = BuildCondition(modifierSourceEntity);
-            var (stats, modifierSource, statValueConverter) =
-                statBuilder.Build(originalModifierSource, modifierSourceEntity).Single(); // TODO
-            stats = stats.Select(_statConverter).ToList();
-            IValueBuilder ConvertValue(IValueBuilder v) => conditionValueConverter(statValueConverter(v));
-            return new[] { new StatBuilderResult(stats, modifierSource, ConvertValue) }; // TODO
+            var statBuilderResults = statBuilder.Build(originalModifierSource, modifierSourceEntity);
+            foreach (var (stats, modifierSource, statValueConverter) in statBuilderResults)
+            {
+                var convertedStats = stats.Select(_statConverter).ToList();
+                IValueBuilder ConvertValue(IValueBuilder v) => conditionValueConverter(statValueConverter(v));
+                yield return new StatBuilderResult(convertedStats, modifierSource, ConvertValue);
+            }
         }
 
         private (IStatBuilder, ValueConverter) BuildCondition(Entity modifierSourceEntity)

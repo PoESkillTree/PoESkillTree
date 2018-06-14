@@ -25,7 +25,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var target = new LeafCoreStatBuilder("t", new EntityBuilder(Entity.Enemy));
             var sut = new ConversionStatBuilder(source, target);
 
-            Assert.Throws<ParseException>(() => sut.Build(ModifierSource, default));
+            AssertBuildThrows(sut);
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var target = MockStatBuilder();
             var sut = new ConversionStatBuilder(source, target);
 
-            Assert.Throws<ParseException>(() => sut.Build(ModifierSource, default));
+            AssertBuildThrows(sut);
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var target = MockStatBuilder(new ModifierSource.Local.Given());
             var sut = new ConversionStatBuilder(source, target);
 
-            Assert.Throws<ParseException>(() => sut.Build(ModifierSource, default));
+            AssertBuildThrows(sut);
         }
 
         [Test]
@@ -122,13 +122,43 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.Throws<ParseException>(() => sut.BuildValue(default));
         }
 
-        private static ICoreStatBuilder MockStatBuilder(
-            ModifierSource modifierSource = null, ValueConverter valueConverter = null)
+        [Test]
+        public void BuildZipsSourceAndTargetResults()
         {
-            var result = new StatBuilderResult(new IStat[0], modifierSource ?? ModifierSource,
-                valueConverter ?? Funcs.Identity);
-            return Mock.Of<ICoreStatBuilder>(b => b.Build(ModifierSource, default) == result);
+            var source = MockStatBuilder(CreateStatBuilderResult(), CreateStatBuilderResult());
+            var target = MockStatBuilder(CreateStatBuilderResult(), CreateStatBuilderResult());
+            var sut = new ConversionStatBuilder(source, target);
+
+            var actual = sut.Build(ModifierSource, default);
+
+            Assert.That(actual, Has.Exactly(2).Items);
         }
+
+        [Test]
+        public void BuildThrowsIfSourceAndTargetHaveDifferentResultCounts()
+        {
+            var source = MockStatBuilder(CreateStatBuilderResult(), CreateStatBuilderResult());
+            var target = MockStatBuilder(CreateStatBuilderResult());
+            var sut = new ConversionStatBuilder(source, target);
+            
+            AssertBuildThrows(sut);
+        }
+
+        private static void AssertBuildThrows(ICoreStatBuilder sut)
+        {
+            Assert.Throws<ParseException>(() => sut.Build(ModifierSource, default).ToList());
+        }
+
+        private static ICoreStatBuilder MockStatBuilder(
+            ModifierSource modifierSource = null, ValueConverter valueConverter = null) =>
+            MockStatBuilder(CreateStatBuilderResult(modifierSource, valueConverter));
+
+        private static ICoreStatBuilder MockStatBuilder(params StatBuilderResult[] results) =>
+            Mock.Of<ICoreStatBuilder>(b => b.Build(ModifierSource, default) == results);
+
+        private static StatBuilderResult CreateStatBuilderResult(
+            ModifierSource modifierSource = null, ValueConverter valueConverter = null) =>
+            new StatBuilderResult(new IStat[0], modifierSource ?? ModifierSource, valueConverter ?? Funcs.Identity);
 
         private static readonly ModifierSource ModifierSource = new ModifierSource.Global();
     }

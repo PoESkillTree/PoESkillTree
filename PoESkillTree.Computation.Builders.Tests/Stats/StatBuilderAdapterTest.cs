@@ -1,5 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
+using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
@@ -36,6 +37,22 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             sut.Resolve(null);
 
             conditionBuilder.Verify(b => b.Resolve(null));
+        }
+
+        [Test]
+        public void BuildReturnsAllResults()
+        {
+            var results = new[]
+            {
+                new StatBuilderResult(new IStat[0], new ModifierSource.Global(), Funcs.Identity),
+                new StatBuilderResult(new IStat[0], new ModifierSource.Local.Given(), Funcs.Identity),
+            };
+            var statBuilder = Mock.Of<IStatBuilder>(b => b.Build(null, default) == results);
+            var sut = new StatBuilderAdapter(statBuilder);
+
+            var actual = sut.Build(null, default);
+
+            Assert.That(actual, Has.Exactly(2).Items);
         }
     }
 }

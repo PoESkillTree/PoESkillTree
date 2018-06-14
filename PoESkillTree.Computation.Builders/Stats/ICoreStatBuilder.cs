@@ -15,6 +15,6 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         IValue BuildValue(Entity modifierSourceEntity);
 
-        IReadOnlyList<StatBuilderResult> Build(ModifierSource originalModifierSource, Entity modifierSourceEntity);
+        IEnumerable<StatBuilderResult> Build(ModifierSource originalModifierSource, Entity modifierSourceEntity);
     }
 }

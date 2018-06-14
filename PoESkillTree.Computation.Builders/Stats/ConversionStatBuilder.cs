@@ -45,18 +45,24 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IValue BuildValue(Entity modifierSourceEntity) =>
             throw new ParseException("Can't access the value of conversion stats directly (yet)");
 
-        public IReadOnlyList<StatBuilderResult> Build(
-            ModifierSource originalModifierSource, Entity modifierSourceEntity)
+        public IEnumerable<StatBuilderResult> Build(ModifierSource originalModifierSource, Entity modifierSourceEntity)
         {
-            var source = _source.Build(originalModifierSource, modifierSourceEntity).Single(); // TODO
-            var target = _target.Build(originalModifierSource, modifierSourceEntity).Single(); // TODO
+            var sourceResults = _source.Build(originalModifierSource, modifierSourceEntity).ToList();
+            var targetResults = _target.Build(originalModifierSource, modifierSourceEntity).ToList();
+            if (sourceResults.Count != targetResults.Count)
+                throw new ParseException("Source and target stats of conversion must build to same amount of mods");
+            return sourceResults.Zip(targetResults, (s, t) => Build(originalModifierSource, s, t));
+        }
 
+        private StatBuilderResult Build(
+            ModifierSource originalModifierSource, StatBuilderResult source, StatBuilderResult target)
+        {
             VerifyStats(source.Stats, target.Stats);
             VerifyModifierSource(originalModifierSource, source.ModifierSource, target.ModifierSource);
 
             var stats = BuildStats(source.Stats, target.Stats);
             var valueConverter = BuildValueConverter(source.ValueConverter, target.ValueConverter);
-            return new[] { new StatBuilderResult(stats.ToList(), originalModifierSource, valueConverter) }; // TODO
+            return new StatBuilderResult(stats.ToList(), originalModifierSource, valueConverter);
         }
 
         private static void VerifyStats(IReadOnlyList<IStat> sourceStats, IReadOnlyList<IStat> targetStats)

@@ -58,8 +58,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             return new FunctionalValue(c => c.GetValue(stat), $"{stat}.Value");
         }
 
-        public IReadOnlyList<StatBuilderResult> Build(
-            ModifierSource originalModifierSource, Entity modifierSourceEntity)
+        public IEnumerable<StatBuilderResult> Build(ModifierSource originalModifierSource, Entity modifierSourceEntity)
         {
             var stats = BuildStats(modifierSourceEntity);
             return new[] { new StatBuilderResult(stats, originalModifierSource, Funcs.Identity) };

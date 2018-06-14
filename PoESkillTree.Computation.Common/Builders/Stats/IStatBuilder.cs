@@ -71,6 +71,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// <summary>
         /// Builds this instance into a list of <see cref="StatBuilderResult"/>s.
         /// </summary>
-        IReadOnlyList<StatBuilderResult> Build(ModifierSource originalModifierSource, Entity modifierSourceEntity);
+        IEnumerable<StatBuilderResult> Build(ModifierSource originalModifierSource, Entity modifierSourceEntity);
     }
 }

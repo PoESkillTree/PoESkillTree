@@ -52,7 +52,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder CombineWith(IStatBuilder other) =>
             new StatBuilder(new CompositeCoreStatBuilder(_coreStatBuilder, new StatBuilderAdapter(other)));
 
-        public IReadOnlyList<StatBuilderResult> Build(
+        public IEnumerable<StatBuilderResult> Build(
             ModifierSource originalModifierSource, Entity modifierSourceEntity) =>
             _coreStatBuilder.Build(originalModifierSource, modifierSourceEntity);
     }

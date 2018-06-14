@@ -49,7 +49,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
 
-        public IReadOnlyList<StatBuilderResult> Build(ModifierSource originalSource, Entity modifierSourceEntity) =>
+        public IEnumerable<StatBuilderResult> Build(ModifierSource originalSource, Entity modifierSourceEntity) =>
             new[] { new StatBuilderResult(new[] { new Stat(ToString()) }, originalSource, Funcs.Identity), };
     }
 
