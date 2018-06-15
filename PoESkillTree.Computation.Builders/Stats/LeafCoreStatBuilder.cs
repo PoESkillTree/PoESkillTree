@@ -13,41 +13,22 @@ namespace PoESkillTree.Computation.Builders.Stats
 {
     public class LeafCoreStatBuilder : ICoreStatBuilder
     {
-        private readonly string _identity;
+        private readonly Func<Entity, IStat> _statFactory;
         private readonly IEntityBuilder _entityBuilder;
-        private readonly bool _isRegisteredExplicitly;
-        private readonly Type _dataType;
-        private readonly IReadOnlyCollection<Behavior> _behaviors;
-        private readonly Func<IStat, IStat> _statConverter;
 
-        public LeafCoreStatBuilder(
-            string identity, IEntityBuilder entityBuilder, bool isRegisteredExplicitly = false, Type dataType = null,
-            IReadOnlyCollection<Behavior> behaviors = null)
-            : this(identity, entityBuilder, isRegisteredExplicitly, dataType, behaviors, Funcs.Identity)
+        public LeafCoreStatBuilder(Func<Entity, IStat> statFactory, IEntityBuilder entityBuilder)
         {
-        }
-
-        private LeafCoreStatBuilder(
-            string identity, IEntityBuilder entityBuilder, bool isRegisteredExplicitly, Type dataType,
-            IReadOnlyCollection<Behavior> behaviors, Func<IStat, IStat> statConverter)
-        {
-            _identity = identity;
+            _statFactory = statFactory;
             _entityBuilder = entityBuilder;
-            _isRegisteredExplicitly = isRegisteredExplicitly;
-            _dataType = dataType;
-            _behaviors = behaviors;
-            _statConverter = statConverter;
         }
 
         public ICoreStatBuilder Resolve(ResolveContext context) => WithEntity(_entityBuilder.Resolve(context));
 
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
-            new LeafCoreStatBuilder(_identity, entityBuilder, _isRegisteredExplicitly, _dataType, _behaviors,
-                _statConverter);
+            new LeafCoreStatBuilder(_statFactory, entityBuilder);
 
         public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
-            new LeafCoreStatBuilder(_identity, _entityBuilder, _isRegisteredExplicitly, _dataType, _behaviors,
-                s => statConverter(_statConverter(s)));
+            new LeafCoreStatBuilder(_statFactory.AndThen(statConverter), _entityBuilder);
 
         public IValue BuildValue(BuildParameters parameters)
         {
@@ -69,10 +50,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
             var modifierSourceEntity = parameters.ModifierSourceEntity;
             var entities = _entityBuilder.Build(modifierSourceEntity).DefaultIfEmpty(modifierSourceEntity);
-            return entities.Select(CreateStat).Select(_statConverter).ToList();
+            return entities.Select(_statFactory).ToList();
         }
-
-        private IStat CreateStat(Entity modifierSourceEntity) =>
-            new Stat(_identity, modifierSourceEntity, _isRegisteredExplicitly, _dataType, _behaviors);
     }
 }

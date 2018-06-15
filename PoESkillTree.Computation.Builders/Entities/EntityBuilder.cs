@@ -3,7 +3,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 
-namespace PoESkillTree.Computation.Builders.Stats
+namespace PoESkillTree.Computation.Builders.Entities
 {
     public class EntityBuilder : IEntityBuilder
     {

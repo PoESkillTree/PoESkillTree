@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Common.Utils;
@@ -11,6 +10,7 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Common.Tests;
+using static PoESkillTree.Computation.Builders.Tests.Stats.StatBuilderHelper;
 
 namespace PoESkillTree.Computation.Builders.Tests.Stats
 {
@@ -21,9 +21,9 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [Test]
         public void BuildThrowsIfSourceAndTargetEntityDoNotMatch()
         {
-            var source = new LeafCoreStatBuilder("s", new EntityBuilder(Entity.Character));
-            var target = new LeafCoreStatBuilder("t", new EntityBuilder(Entity.Enemy));
-            var sut = new ConversionStatBuilder(source, target);
+            var source = CreateStatBuilder("s", Entity.Character);
+            var target = CreateStatBuilder("t", Entity.Enemy);
+            var sut = CreateSut(source, target);
 
             AssertBuildThrows(sut);
         }
@@ -33,9 +33,9 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var expected = new[]
                 { new Stat("s.ConvertTo(t)", Entity.Character), new Stat("s.ConvertTo(t)", Entity.Enemy) };
-            var source = new LeafCoreStatBuilder("s", new EntityBuilder(Entity.Character, Entity.Enemy));
-            var target = new LeafCoreStatBuilder("t", new EntityBuilder(Entity.Enemy, Entity.Character));
-            var sut = new ConversionStatBuilder(source, target);
+            var source = CreateStatBuilder("s", Entity.Character, Entity.Enemy);
+            var target = CreateStatBuilder("t", Entity.Enemy, Entity.Character);
+            var sut = CreateSut(source, target);
 
             var actual = sut.Build(default, ModifierSource).Single().Stats;
 
@@ -49,7 +49,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var valueBuilders = Helper.MockMany<IValueBuilder>();
             var source = MockStatBuilder(valueConverter: _ => valueBuilders[1]);
             var target = MockStatBuilder(valueConverter: _ => valueBuilders[2]);
-            var sut = new ConversionStatBuilder(source, target);
+            var sut = CreateSut(source, target);
 
             var valueConverter = sut.Build(default, ModifierSource).Single().ValueConverter;
             var actual = valueConverter(valueBuilders[0]);
@@ -62,7 +62,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var source = MockStatBuilder(new ModifierSource.Local.Given());
             var target = MockStatBuilder();
-            var sut = new ConversionStatBuilder(source, target);
+            var sut = CreateSut(source, target);
 
             AssertBuildThrows(sut);
         }
@@ -72,7 +72,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var source = MockStatBuilder();
             var target = MockStatBuilder(new ModifierSource.Local.Given());
-            var sut = new ConversionStatBuilder(source, target);
+            var sut = CreateSut(source, target);
 
             AssertBuildThrows(sut);
         }
@@ -82,7 +82,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var source = new Mock<ICoreStatBuilder>();
             var target = new Mock<ICoreStatBuilder>();
-            var sut = new ConversionStatBuilder(source.Object, target.Object);
+            var sut = CreateSut(source.Object, target.Object);
 
             sut.Resolve(null);
 
@@ -95,7 +95,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var entityBuilder = Mock.Of<IEntityBuilder>();
             var source = new Mock<ICoreStatBuilder>();
-            var sut = new ConversionStatBuilder(source.Object, MockStatBuilder());
+            var sut = CreateSut(source.Object, MockStatBuilder());
 
             sut.WithEntity(entityBuilder);
 
@@ -103,21 +103,23 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         }
 
         [Test]
-        public void WithStatConverterAppliesToSource()
+        public void WithStatConverterAppliesToResultStats()
         {
-            Func<IStat, IStat> statConverter = Funcs.Identity;
-            var source = new Mock<ICoreStatBuilder>();
-            var sut = new ConversionStatBuilder(source.Object, MockStatBuilder());
+            var expected = Mock.Of<IStat>();
+            var sourceTargetResult = CreateStatBuilderResult(stats: Mock.Of<IStat>());
+            var sut = CreateSut(MockStatBuilder(sourceTargetResult), MockStatBuilder(sourceTargetResult));
 
-            sut.WithStatConverter(statConverter);
+            var actual = sut.WithStatConverter(_ => expected)
+                .Build(default, ModifierSource)
+                .SelectMany(r => r.Stats);
 
-            source.Verify(b => b.WithStatConverter(statConverter));
+            Assert.AreEqual(Enumerable.Repeat(expected, 3), actual);
         }
 
         [Test]
         public void BuildValueThrows()
         {
-            var sut = new ConversionStatBuilder(MockStatBuilder(), MockStatBuilder());
+            var sut = CreateSut(MockStatBuilder(), MockStatBuilder());
 
             Assert.Throws<ParseException>(() => sut.BuildValue(default));
         }
@@ -127,7 +129,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var source = MockStatBuilder(CreateStatBuilderResult(), CreateStatBuilderResult());
             var target = MockStatBuilder(CreateStatBuilderResult(), CreateStatBuilderResult());
-            var sut = new ConversionStatBuilder(source, target);
+            var sut = CreateSut(source, target);
 
             var actual = sut.Build(default, ModifierSource);
 
@@ -139,10 +141,13 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var source = MockStatBuilder(CreateStatBuilderResult(), CreateStatBuilderResult());
             var target = MockStatBuilder(CreateStatBuilderResult());
-            var sut = new ConversionStatBuilder(source, target);
-            
+            var sut = CreateSut(source, target);
+
             AssertBuildThrows(sut);
         }
+
+        private static ConversionStatBuilder CreateSut(ICoreStatBuilder source, ICoreStatBuilder target) =>
+            new ConversionStatBuilder((s, ts) => new StatFactory().ConvertTo(s, ts), source, target);
 
         private static void AssertBuildThrows(ICoreStatBuilder sut)
         {
@@ -157,8 +162,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Mock.Of<ICoreStatBuilder>(b => b.Build(default, ModifierSource) == results);
 
         private static StatBuilderResult CreateStatBuilderResult(
-            ModifierSource modifierSource = null, ValueConverter valueConverter = null) =>
-            new StatBuilderResult(new IStat[0], modifierSource ?? ModifierSource, valueConverter ?? Funcs.Identity);
+            ModifierSource modifierSource = null, ValueConverter valueConverter = null, params IStat[] stats) =>
+            new StatBuilderResult(stats, modifierSource ?? ModifierSource, valueConverter ?? Funcs.Identity);
 
         private static readonly ModifierSource ModifierSource = new ModifierSource.Global();
     }

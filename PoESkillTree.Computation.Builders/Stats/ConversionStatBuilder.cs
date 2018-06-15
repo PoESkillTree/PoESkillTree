@@ -13,25 +13,22 @@ namespace PoESkillTree.Computation.Builders.Stats
 {
     public class ConversionStatBuilder : ICoreStatBuilder
     {
-        public enum Mode
-        {
-            ConvertTo,
-            GainAs
-        }
-
+        public delegate IEnumerable<IStat> ConversionStatFactory(IStat sourceStat, IEnumerable<IStat> targetStats);
+        
+        private readonly ConversionStatFactory _statFactory;
         private readonly ICoreStatBuilder _source;
         private readonly ICoreStatBuilder _target;
-        private readonly Mode _mode;
 
-        public ConversionStatBuilder(ICoreStatBuilder source, ICoreStatBuilder target, Mode mode = Mode.ConvertTo)
+        public ConversionStatBuilder(
+            ConversionStatFactory statFactory, ICoreStatBuilder source, ICoreStatBuilder target)
         {
+            _statFactory = statFactory;
             _source = source;
             _target = target;
-            _mode = mode;
         }
 
         private ICoreStatBuilder Select(Func<ICoreStatBuilder, ICoreStatBuilder> selector) =>
-            new ConversionStatBuilder(selector(_source), selector(_target), _mode);
+            new ConversionStatBuilder(_statFactory, selector(_source), selector(_target));
 
         public ICoreStatBuilder Resolve(ResolveContext context) =>
             Select(b => b.Resolve(context));
@@ -40,7 +37,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             Select(b => b.WithEntity(entityBuilder));
 
         public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
-            Select(b => b.WithStatConverter(statConverter));
+            new ConversionStatBuilder((s, ts) => _statFactory(s, ts).Select(statConverter), _source, _target);
 
         public IValue BuildValue(BuildParameters parameters) =>
             throw new ParseException("Can't access the value of conversion stats directly (yet)");
@@ -76,19 +73,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         private IEnumerable<IStat> BuildStats(IReadOnlyList<IStat> sourceStats, IReadOnlyList<IStat> targetStats)
         {
             var targetStatsByEntity = targetStats.ToLookup(s => s.Entity);
-            foreach (var sourceStat in sourceStats)
-            {
-                // TODO behaviors (pass something like IBehaviorFactory?)
-                foreach (var targetStat in targetStatsByEntity[sourceStat.Entity])
-                {
-                    yield return Stat.CopyWithSuffix(sourceStat, $"{_mode}({targetStat})", dataType: typeof(int));
-                }
-                if (_mode == Mode.ConvertTo)
-                {
-                    yield return Stat.CopyWithSuffix(sourceStat, "Conversion", dataType: typeof(int));
-                    yield return Stat.CopyWithSuffix(sourceStat, "SkillConversion", dataType: typeof(int));
-                }
-            }
+            return sourceStats.SelectMany(s => _statFactory(s, targetStatsByEntity[s.Entity]));
         }
 
         private static void VerifyModifierSource(

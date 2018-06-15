@@ -14,17 +14,21 @@ namespace PoESkillTree.Computation.Builders.Stats
 {
     public class StatBuilder : IFlagStatBuilder
     {
+        private readonly IStatFactory _statFactory;
         private readonly ICoreStatBuilder _coreStatBuilder;
 
-        public StatBuilder(ICoreStatBuilder coreStatBuilder)
+        public StatBuilder(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder)
         {
+            _statFactory = statFactory;
             _coreStatBuilder = coreStatBuilder;
         }
 
-        private IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
-            new StatBuilder(_coreStatBuilder.WithStatConverter(statConverter));
+        private StatBuilder With(ICoreStatBuilder coreStatBuilder) => new StatBuilder(_statFactory, coreStatBuilder);
 
-        public IStatBuilder Resolve(ResolveContext context) => new StatBuilder(_coreStatBuilder.Resolve(context));
+        private IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
+            With(_coreStatBuilder.WithStatConverter(statConverter));
+
+        public IStatBuilder Resolve(ResolveContext context) => With(_coreStatBuilder.Resolve(context));
 
         public IStatBuilder Minimum => WithStatConverter(s => s.Minimum);
         public IStatBuilder Maximum => WithStatConverter(s => s.Maximum);
@@ -36,22 +40,20 @@ namespace PoESkillTree.Computation.Builders.Stats
             ValueConditionBuilder.Create(Value, v => v.IsTrue());
 
         public IStatBuilder ConvertTo(IStatBuilder stat) =>
-            new StatBuilder(new ConversionStatBuilder(_coreStatBuilder, new StatBuilderAdapter(stat)));
+            With(new ConversionStatBuilder(_statFactory.ConvertTo, _coreStatBuilder, new StatBuilderAdapter(stat)));
 
         public IStatBuilder GainAs(IStatBuilder stat) =>
-            new StatBuilder(new ConversionStatBuilder(_coreStatBuilder, new StatBuilderAdapter(stat),
-                ConversionStatBuilder.Mode.GainAs));
+            With(new ConversionStatBuilder(_statFactory.GainAs, _coreStatBuilder, new StatBuilderAdapter(stat)));
 
-        public IStatBuilder ChanceToDouble =>
-            WithStatConverter(s => Stat.CopyWithSuffix(s, nameof(ChanceToDouble), dataType: typeof(int)));
+        public IStatBuilder ChanceToDouble => WithStatConverter(_statFactory.ChanceToDouble);
 
-        public IStatBuilder For(IEntityBuilder entity) => new StatBuilder(_coreStatBuilder.WithEntity(entity));
+        public IStatBuilder For(IEntityBuilder entity) => With(_coreStatBuilder.WithEntity(entity));
 
         public IStatBuilder WithCondition(IConditionBuilder condition) =>
-            new StatBuilder(new StatBuilderAdapter(this, condition));
+            With(new StatBuilderAdapter(this, condition));
 
         public IStatBuilder CombineWith(IStatBuilder other) =>
-            new StatBuilder(new CompositeCoreStatBuilder(_coreStatBuilder, new StatBuilderAdapter(other)));
+            With(new CompositeCoreStatBuilder(_coreStatBuilder, new StatBuilderAdapter(other)));
 
         public IEnumerable<StatBuilderResult> Build(
             BuildParameters parameters, ModifierSource originalModifierSource) =>

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Stats;
+using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Builders.Tests.Stats

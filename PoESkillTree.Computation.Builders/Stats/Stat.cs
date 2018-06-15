@@ -19,14 +19,6 @@ namespace PoESkillTree.Computation.Builders.Stats
             Behaviors = behaviors ?? new Behavior[0];
         }
 
-        public static IStat CopyWithSuffix(
-            IStat source, string identitySuffix, bool isRegisteredExplicitly = false, Type dataType = null,
-            IReadOnlyCollection<Behavior> behaviors = null, bool hasRange = true)
-        {
-            return new Stat(source.Identity + "." + identitySuffix, source.Entity, isRegisteredExplicitly,
-                dataType ?? source.DataType, behaviors, hasRange);
-        }
-
         private readonly bool _hasRange;
         public string Identity { get; }
         public Entity Entity { get; }
@@ -38,7 +30,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat Maximum => MinOrMax();
 
         private IStat MinOrMax([CallerMemberName] string identitySuffix = null) =>
-            _hasRange ? CopyWithSuffix(this, identitySuffix, hasRange: false) : null;
+            _hasRange ? CopyWithSuffix(identitySuffix, hasRange: false) : null;
+
+        private IStat CopyWithSuffix(string identitySuffix, bool hasRange = true) =>
+            new Stat(Identity + "." + identitySuffix, Entity, dataType: DataType, hasRange: hasRange);
 
         public override string ToString() => Identity;
 

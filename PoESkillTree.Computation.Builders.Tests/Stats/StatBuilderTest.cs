@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Common.Utils;
+using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
@@ -14,6 +14,7 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Common.Tests;
+using static PoESkillTree.Computation.Builders.Tests.Stats.StatBuilderHelper;
 
 namespace PoESkillTree.Computation.Builders.Tests.Stats
 {
@@ -65,20 +66,15 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.AreEqual(expected, actual.Entity);
         }
 
-        [TestCase(true, typeof(int), 0)]
-        [TestCase(false, typeof(double), 3)]
-        public void BuildReturnsStatWithPropertiesCopiedFromSelf(
-            bool isRegisteredExplicitly, Type dataType, int behaviorCount)
+        [Test]
+        public void BuildReturnsStatFactoryResult()
         {
-            var behaviors = new List<Behavior>();
-            var sut = new StatBuilder(new LeafCoreStatBuilder("", new EntityBuilder(), isRegisteredExplicitly, dataType,
-                behaviors));
+            var expected = Mock.Of<IStat>();
+            var sut = CreateSut(new LeafCoreStatBuilder(_ => expected, new EntityBuilder()));
 
             var actual = BuildToSingleStat(sut);
 
-            Assert.AreEqual(isRegisteredExplicitly, actual.IsRegisteredExplicitly);
-            Assert.AreEqual(dataType, actual.DataType);
-            Assert.AreSame(behaviors, actual.Behaviors);
+            Assert.AreSame(expected, actual);
         }
 
         [TestCase("1234")]
@@ -388,12 +384,11 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
                 new Stat("s2.ConvertTo(t)"), new Stat("s2.Conversion"), new Stat("s2.SkillConversion"),
             };
             var entityBuilder = new EntityBuilder();
-            var sources = new[]
-                { new LeafCoreStatBuilder("s1", entityBuilder), new LeafCoreStatBuilder("s2", entityBuilder), };
-            var target = new LeafCoreStatBuilder("t", entityBuilder);
-            var sut = new StatBuilder(sources[0]).CombineWith(new StatBuilder(sources[1]));
+            var sources = new[] { CreateStatBuilder("s1", entityBuilder), CreateStatBuilder("s2", entityBuilder), };
+            var target = CreateStatBuilder("t", entityBuilder);
+            var sut = CreateSut(sources[0]).CombineWith(CreateSut(sources[1]));
 
-            var statBuilder = sut.ConvertTo(new StatBuilder(target));
+            var statBuilder = sut.ConvertTo(CreateSut(target));
             var actual = statBuilder.Build(default, ModifierSource).Single().Stats;
 
             Assert.AreEqual(expected, actual);
@@ -409,12 +404,11 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
                 new Stat("s2.GainAs(t)"),
             };
             var entityBuilder = new EntityBuilder();
-            var sources = new[]
-                { new LeafCoreStatBuilder("s1", entityBuilder), new LeafCoreStatBuilder("s2", entityBuilder), };
-            var target = new LeafCoreStatBuilder("t", entityBuilder);
-            var sut = new StatBuilder(sources[0]).CombineWith(new StatBuilder(sources[1]));
+            var sources = new[] { CreateStatBuilder("s1", entityBuilder), CreateStatBuilder("s2", entityBuilder), };
+            var target = CreateStatBuilder("t", entityBuilder);
+            var sut = CreateSut(sources[0]).CombineWith(CreateSut(sources[1]));
 
-            var statBuilder = sut.GainAs(new StatBuilder(target));
+            var statBuilder = sut.GainAs(CreateSut(target));
             var actual = statBuilder.Build(default, ModifierSource).Single().Stats;
 
             Assert.AreEqual(expected, actual);
@@ -426,7 +420,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         public void IsSetCalculatesCorrectValue(double? input, bool expected)
         {
             var coreStatBuilder = Mock.Of<ICoreStatBuilder>(b => b.BuildValue(default) == new Constant(input));
-            var sut = new StatBuilder(coreStatBuilder);
+            var sut = CreateSut(coreStatBuilder);
 
             var conditionBuilder = sut.IsSet;
             var actual = conditionBuilder.Build().value.Calculate(null);
@@ -449,7 +443,10 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             CreateSut(identity, new EntityBuilder(entities));
 
         private static StatBuilder CreateSut(string identity, IEntityBuilder entityBuilder) =>
-            new StatBuilder(new LeafCoreStatBuilder(identity, entityBuilder));
+            CreateSut(CreateStatBuilder(identity, entityBuilder));
+
+        private static StatBuilder CreateSut(ICoreStatBuilder coreStatBuilder) =>
+            new StatBuilder(new StatFactory(), coreStatBuilder);
 
         private static IReadOnlyList<StatBuilderResult> CreateResult(
             IStat stat = null, ModifierSource modifierSource = null,
