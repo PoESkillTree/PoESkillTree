@@ -27,6 +27,6 @@ namespace PoESkillTree.Computation.Core.Tests
         public Entity Entity => Entity.Character;
         public bool IsRegisteredExplicitly { get; set; }
         public Type DataType => typeof(double);
-        public IReadOnlyCollection<Behavior> Behaviors => new Behavior[0];
+        public IReadOnlyList<Behavior> Behaviors => new Behavior[0];
     }
 }

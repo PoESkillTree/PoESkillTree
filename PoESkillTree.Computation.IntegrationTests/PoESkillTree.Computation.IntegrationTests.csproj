@@ -68,7 +68,6 @@
     <Compile Include="Core\BatchUpdateExtensions.cs" />
     <Compile Include="Core\BasicCalculatorTest.cs" />
     <Compile Include="Core\ConversionTest.cs" />
-    <Compile Include="Core\ValueTransformation.cs" />
     <Compile Include="Core\PerStatValue.cs" />
     <Compile Include="DataValidatingTest.cs" />
     <Compile Include="ParsingTest.cs" />

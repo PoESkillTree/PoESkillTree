@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using NUnit.Framework;
-using PoESkillTree.Computation.Builders.Behaviors;
+﻿using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
@@ -12,7 +8,8 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
     [TestFixture]
     public class ConversionTest
     {
-        // This test tests the behaviors necessary for stat conversions.
+        // This test tests the behaviors necessary for stat conversions
+        // (located in PoESkillTree.Computation.Builders.Behaviors).
 
         private ICalculator _sut;
         private IStat _bar;
@@ -25,48 +22,14 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         [SetUp]
         public void SetUp()
         {
-            var fooPathTotalBehavior = new Behavior(
-                new LazyStatEnumerable(() => _foo),
-                new[] { NodeType.PathTotal },
-                BehaviorPathInteraction.ConversionPathsOnly,
-                new ValueTransformation(v => new ConversionTargetPathTotalValue(_barFooConversion, _barFooGain, v)));
-            var fooUncappedSubtotalBehavior = new Behavior(
-                new LazyStatEnumerable(() => _foo),
-                new[] { NodeType.UncappedSubtotal },
-                BehaviorPathInteraction.AllPaths,
-                new ValueTransformation(v => new ConversionTargeUncappedSubtotalValue(_foo, _bar, v)));
-            var barPathTotalBehavior = new Behavior(
-                new LazyStatEnumerable(() => _bar),
-                new[] { NodeType.PathTotal },
-                BehaviorPathInteraction.AllPaths,
-                new ValueTransformation(v => new ConversionSourcePathTotalValue(_barConversion, v)));
-            var barFooConversionUncappedSubtotalValue = new Behavior(
-                new LazyStatEnumerable(() => _barFooConversion),
-                new[] { NodeType.UncappedSubtotal }, BehaviorPathInteraction.AllPaths,
-                new ValueTransformation(v => new ConvertToUncappedSubtotalValue(
-                    _barFooConversion, _barConversion, _barSkillConversion, v)));
-            var barSkillConversionUncappedSubtotalBehavior = new Behavior(
-                new LazyStatEnumerable(() => _barSkillConversion),
-                new[] { NodeType.UncappedSubtotal }, BehaviorPathInteraction.AllPaths,
-                new ValueTransformation(v => new SkillConversionUncappedSubtotalValue(_barSkillConversion, v)));
-
             _sut = Calculator.CreateCalculator();
             _bar = new Stat("Bar");
             _foo = new Stat("Foo");
-            _barFooConversion = new Stat("BarFooConversion", behaviors: new[]
-            {
-                fooPathTotalBehavior, fooUncappedSubtotalBehavior, barPathTotalBehavior,
-                barFooConversionUncappedSubtotalValue
-            });
-            _barFooGain = new Stat("BarFooGain", behaviors: new[]
-            {
-                fooPathTotalBehavior, fooUncappedSubtotalBehavior
-            });
-            _barConversion = new Stat("BarConversion");
-            _barSkillConversion = new Stat("BarSkillConversion", behaviors: new[]
-            {
-                barSkillConversionUncappedSubtotalBehavior
-            });
+            var statFactory = new StatFactory();
+            _barFooConversion = statFactory.ConvertTo(_bar, _foo);
+            _barFooGain = statFactory.GainAs(_bar, _foo);
+            _barConversion = statFactory.Conversion(_bar);
+            _barSkillConversion = statFactory.SkillConversion(_bar);
         }
 
         [Test]
@@ -113,24 +76,14 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
 
             var globalPath = (3 * (1 + 0.2) + 1) * 1.5;
             var localPath = (2 * (1 + 0.2) + 2) * 2;
-            Assert.AreEqual(new NodeValue(globalPath + localPath), GetValue(_foo));
+            Assert.AreEqual(new NodeValue(110), GetValue(_barConversion));
+            Assert.AreEqual(new NodeValue(50), GetValue(_barSkillConversion));
             Assert.AreEqual(new NodeValue(0), GetValue(_bar));
+            Assert.AreEqual(new NodeValue(20), GetValue(_barFooGain));
+            Assert.AreEqual(new NodeValue(100), GetValue(_barFooConversion));
+            Assert.AreEqual(new NodeValue(globalPath + localPath), GetValue(_foo));
         }
 
         private NodeValue? GetValue(IStat stat) => _sut.NodeRepository.GetNode(stat).Value;
-
-        private class LazyStatEnumerable : IEnumerable<IStat>
-        {
-            private readonly Lazy<IEnumerable<IStat>> _lazyStats;
-
-            public LazyStatEnumerable(Func<IStat> statFactory)
-            {
-                _lazyStats = new Lazy<IEnumerable<IStat>>(() => new[] { statFactory() });
-            }
-
-            public IEnumerator<IStat> GetEnumerator() => _lazyStats.Value.GetEnumerator();
-
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-        }
     }
 }

@@ -1,41 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
+using PoESkillTree.Common.Utils.Extensions;
+using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
     public class StatFactory : IStatFactory
     {
+        private readonly IDictionary<(string, Entity), IStat> _cache = new Dictionary<(string, Entity), IStat>();
+        private readonly BehaviorFactory _behaviorFactory;
+
+        public StatFactory()
+        {
+            _behaviorFactory = new BehaviorFactory(this);
+        }
+
         public IStat ChanceToDouble(IStat stat) =>
             CopyWithSuffix(stat, nameof(ChanceToDouble), dataType: typeof(int));
 
-        // TODO behaviors
-        public IEnumerable<IStat> ConvertTo(IStat sourceStat, IEnumerable<IStat> targetStats)
+        public IEnumerable<IStat> ConvertTo(IStat source, IEnumerable<IStat> targets)
         {
-            foreach (var targetStat in targetStats)
+            foreach (var target in targets)
             {
-                yield return CopyWithSuffix(sourceStat, $"{nameof(ConvertTo)}({targetStat})",
-                    dataType: typeof(int));
+                yield return ConvertTo(source, target);
             }
-            yield return CopyWithSuffix(sourceStat, "Conversion", dataType: typeof(int));
-            yield return CopyWithSuffix(sourceStat, "SkillConversion", dataType: typeof(int));
+            yield return Conversion(source);
+            yield return SkillConversion(source);
         }
-        
-        // TODO behaviors
-        public IEnumerable<IStat> GainAs(IStat sourceStat, IEnumerable<IStat> targetStats)
+
+        public IEnumerable<IStat> GainAs(IStat source, IEnumerable<IStat> targets)
         {
-            foreach (var targetStat in targetStats)
+            foreach (var target in targets)
             {
-                yield return CopyWithSuffix(sourceStat, $"{nameof(GainAs)}({targetStat})", dataType: typeof(int));
+                yield return GainAs(source, target);
             }
         }
 
-        private static IStat CopyWithSuffix(
+        public IStat ConvertTo(IStat source, IStat target) =>
+            CopyWithSuffix(source, $"{nameof(ConvertTo)}({target})", dataType: typeof(int),
+                behaviors: _behaviorFactory.ConvertTo(source, target));
+
+        public IStat GainAs(IStat source, IStat target) =>
+            CopyWithSuffix(source, $"{nameof(GainAs)}({target})", dataType: typeof(int),
+                behaviors: _behaviorFactory.GainAs(source, target));
+
+        public IStat Conversion(IStat source) =>
+            CopyWithSuffix(source, "Conversion", dataType: typeof(int));
+
+        public IStat SkillConversion(IStat source) =>
+            CopyWithSuffix(source, "SkillConversion", dataType: typeof(int),
+                behaviors: _behaviorFactory.SkillConversion(source));
+
+        private IStat CopyWithSuffix(
             IStat source, string identitySuffix, bool isRegisteredExplicitly = false, Type dataType = null,
-            IReadOnlyCollection<Behavior> behaviors = null)
+            IReadOnlyList<Behavior> behaviors = null)
         {
-            return new Stat(source.Identity + "." + identitySuffix, source.Entity, isRegisteredExplicitly,
+            return GetOrAdd(source.Identity + "." + identitySuffix, source.Entity, isRegisteredExplicitly,
                 dataType ?? source.DataType, behaviors);
+        }
+
+        private IStat GetOrAdd(
+            string identity, Entity entity, bool isRegisteredExplicitly = false, Type dataType = null,
+            IReadOnlyList<Behavior> behaviors = null)
+        {
+            return _cache.GetOrAdd((identity, entity), _ =>
+                new Stat(identity, entity, isRegisteredExplicitly, dataType, behaviors));
         }
     }
 }

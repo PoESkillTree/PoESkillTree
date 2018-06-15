@@ -9,14 +9,14 @@ namespace PoESkillTree.Computation.Builders.Behaviors
     /// </summary>
     public class ConversionTargetPathTotalValue : IValue
     {
-        private readonly IStat _convertTo;
-        private readonly IStat _gainAs;
+        public IStat ConvertTo { get; }
+        public IStat GainAs { get; }
         private readonly IValue _transformedValue;
 
         public ConversionTargetPathTotalValue(IStat convertTo, IStat gainAs, IValue transformedValue)
         {
-            _convertTo = convertTo;
-            _gainAs = gainAs;
+            ConvertTo = convertTo;
+            GainAs = gainAs;
             _transformedValue = transformedValue;
         }
 
@@ -26,8 +26,8 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             if (value is null)
                 return null;
 
-            var conversion = context.GetValue(_convertTo) ?? new NodeValue(0);
-            var gain = context.GetValue(_gainAs) ?? new NodeValue(0);
+            var conversion = context.GetValue(ConvertTo) ?? new NodeValue(0);
+            var gain = context.GetValue(GainAs) ?? new NodeValue(0);
             return value * (conversion + gain) / 100;
         }
     }

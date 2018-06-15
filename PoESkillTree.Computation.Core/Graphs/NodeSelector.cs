@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using PoESkillTree.Computation.Common;
 
@@ -8,6 +9,7 @@ namespace PoESkillTree.Computation.Core.Graphs
     /// Selects a node in an <see cref="IReadOnlyStatGraph"/>/<see cref="IStatGraph"/> using
     /// a <see cref="NodeType"/> and <see cref="PathDefinition"/>.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(NodeType) + "}, {" + nameof(Path) + "}")]
     public class NodeSelector
     {
         private static readonly NodeType[] MainPathOnlyNodeTypes =

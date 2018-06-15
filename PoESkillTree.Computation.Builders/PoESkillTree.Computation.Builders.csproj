@@ -54,11 +54,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\BehaviorFactory.cs" />
     <Compile Include="Behaviors\ConversionSourcePathTotalValue.cs" />
     <Compile Include="Behaviors\ConversionTargetPathTotalValue.cs" />
     <Compile Include="Behaviors\ConversionTargeUncappedSubtotalValue.cs" />
     <Compile Include="Behaviors\ConvertToUncappedSubtotalValue.cs" />
     <Compile Include="Behaviors\SkillConversionUncappedSubtotalValue.cs" />
+    <Compile Include="Behaviors\ValueTransformation.cs" />
     <Compile Include="BuilderFactories.cs" />
     <Compile Include="Conditions\AndCompositeConditionBuilder.cs" />
     <Compile Include="Conditions\OrCompositeConditionBuilder.cs" />

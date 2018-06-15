@@ -1,9 +1,9 @@
 ﻿using System;
 using PoESkillTree.Computation.Common;
 
-namespace PoESkillTree.Computation.IntegrationTests.Core
+namespace PoESkillTree.Computation.Builders.Behaviors
 {
-    internal class ValueTransformation : IValueTransformation
+    public class ValueTransformation : IValueTransformation
     {
         private readonly Func<IValue, IValue> _transformation;
 

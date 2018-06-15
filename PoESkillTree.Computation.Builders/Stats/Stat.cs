@@ -9,7 +9,7 @@ namespace PoESkillTree.Computation.Builders.Stats
     {
         public Stat(
             string identity, Entity entity = default, bool isRegisteredExplicitly = false, Type dataType = null,
-            IReadOnlyCollection<Behavior> behaviors = null, bool hasRange = true)
+            IReadOnlyList<Behavior> behaviors = null, bool hasRange = true)
         {
             Identity = identity;
             _hasRange = hasRange;
@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public Entity Entity { get; }
         public bool IsRegisteredExplicitly { get; }
         public Type DataType { get; }
-        public IReadOnlyCollection<Behavior> Behaviors { get; }
+        public IReadOnlyList<Behavior> Behaviors { get; }
 
         public IStat Minimum => MinOrMax();
         public IStat Maximum => MinOrMax();

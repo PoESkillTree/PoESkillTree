@@ -57,6 +57,6 @@ namespace PoESkillTree.Computation.Common
         /// <summary>
         /// The behaviors that should be applied to the calculation graph when this stat's subgraph is created.
         /// </summary>
-        IReadOnlyCollection<Behavior> Behaviors { get; }
+        IReadOnlyList<Behavior> Behaviors { get; }
     }
 }

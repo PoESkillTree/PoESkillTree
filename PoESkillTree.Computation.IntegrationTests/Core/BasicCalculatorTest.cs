@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using NUnit.Framework;
 using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;

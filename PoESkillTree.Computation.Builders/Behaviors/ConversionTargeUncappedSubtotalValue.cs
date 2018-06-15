@@ -16,7 +16,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
         private readonly IStat _source;
         private readonly IValue _transformedValue;
 
-        public ConversionTargeUncappedSubtotalValue(IStat target, IStat source, IValue transformedValue)
+        public ConversionTargeUncappedSubtotalValue(IStat source, IStat target, IValue transformedValue)
         {
             _target = target;
             _source = source;

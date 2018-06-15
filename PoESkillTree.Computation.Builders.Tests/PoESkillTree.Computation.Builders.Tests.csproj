@@ -75,6 +75,7 @@
     <Compile Include="Stats\StatBuilderAdapterTest.cs" />
     <Compile Include="Stats\StatBuilderHelper.cs" />
     <Compile Include="Stats\StatBuilderTest.cs" />
+    <Compile Include="Stats\StatFactoryTest.cs" />
     <Compile Include="Values\ValueBuildersTest.cs" />
     <Compile Include="Values\ValueBuilderTest.cs" />
   </ItemGroup>
