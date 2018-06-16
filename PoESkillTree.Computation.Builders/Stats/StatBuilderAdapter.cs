@@ -63,7 +63,7 @@ namespace PoESkillTree.Computation.Builders.Stats
                 return (_statBuilder, Funcs.Identity);
             }
             var (statConverter, value) = _conditionBuilder.Build(parameters);
-            return (statConverter(_statBuilder), v => new ValueBuilderImpl(value).Multiply(v));
+            return (statConverter(_statBuilder), v => v.If(new ValueBuilderImpl(value)));
         }
     }
 }

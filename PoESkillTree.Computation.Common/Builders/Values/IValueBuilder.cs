@@ -41,6 +41,11 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         IValueBuilder DivideBy(IValueBuilder divisor);
 
         /// <summary>
+        /// Returns a new value that is equal to this value if the given value is true and null otherwise.
+        /// </summary>
+        IValueBuilder If(IValueBuilder condition);
+
+        /// <summary>
         /// Returns a value that is equal to this value passed to <paramref name="selector"/>.
         /// </summary>
         IValueBuilder Select(Expression<Func<double, double>> selector);

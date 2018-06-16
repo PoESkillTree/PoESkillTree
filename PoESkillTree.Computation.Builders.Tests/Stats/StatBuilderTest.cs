@@ -338,14 +338,15 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.Throws<ParseException>(() => combined.Value.Build());
         }
 
-        [Test]
-        public void WithConditionBuildReturnsCorrectResult()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void WithConditionBuildReturnsCorrectResult(bool cond)
         {
             var expectedStat = new Stat("1");
             var inputValue = new Constant(2);
             var inputValueBuilder = new ValueBuilderImpl(inputValue);
-            var conditionValue = new Constant(3);
-            var expectedValue = new ValueBuilderImpl(conditionValue).Multiply(inputValueBuilder).Build(default);
+            var conditionValue = new ConditionalValue(cond);
+            var expectedValue = cond ? (NodeValue?) 2 : null;
             var convertedStatBuilder = new Mock<IStatBuilder>();
             convertedStatBuilder.Setup(b => b.Build(default, ModifierSource))
                 .Returns(CreateResult(expectedStat));
@@ -356,7 +357,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var sutWithCondition = sut.WithCondition(condition.Object);
             var actual = sutWithCondition.Build(default, ModifierSource).Single();
             var actualStat = actual.Stats.Single();
-            var actualValue = actual.ValueConverter(inputValueBuilder).Build(default);
+            var actualValue = actual.ValueConverter(inputValueBuilder).Build(default).Calculate(null);
 
             Assert.AreEqual(expectedStat, actualStat);
             Assert.AreEqual(expectedValue, actualValue);

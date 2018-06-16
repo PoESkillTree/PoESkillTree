@@ -41,6 +41,9 @@ namespace PoESkillTree.Computation.Console.Builders
         public IValueBuilder DivideBy(IValueBuilder divisor) =>
             CreateValue(This, divisor, (l, r) => $"({l} / {r})");
 
+        public IValueBuilder If(IValueBuilder condition) =>
+            CreateValue(This, condition, (l, r) => $"{l} if {r} else null");
+
         public IValueBuilder Select(Expression<Func<double, double>> selector) =>
             CreateValue(This, o => selector.ToString(o));
 

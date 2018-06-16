@@ -120,6 +120,8 @@ namespace PoESkillTree.Computation.Common.Builders.Values
 
         IValueBuilder IValueBuilder.DivideBy(IValueBuilder divisor) => _value.DivideBy(divisor);
 
+        IValueBuilder IValueBuilder.If(IValueBuilder condition) => _value.If(condition);
+
 
         /// <summary>
         /// Divides this value by 100.
