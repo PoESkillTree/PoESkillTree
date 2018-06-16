@@ -53,12 +53,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class PoolStatBuildersStub : IPoolStatBuilders
     {
-        private static IPoolStatBuilder Create(string stringRepresentation) =>
-            new PoolStatBuilderStub(stringRepresentation, (c, _) => c);
-
-        public IPoolStatBuilder Life => Create("Life");
-        public IPoolStatBuilder Mana => Create("Mana");
-        public IPoolStatBuilder EnergyShield => Create("Energy Shield");
+        public IPoolStatBuilder From(Pool pool) => new PoolStatBuilderStub(pool.ToString(), (c, _) => c);
     }
 
 
@@ -85,8 +80,8 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder Percent => CreateStat(This, o => $"Percent {o}");
 
-        public IFlagStatBuilder AppliesTo(IPoolStatBuilder stat) =>
-            CreateFlagStat(This, (IStatBuilder) stat, (o1, o2) => $"{o1} applies to {o2} instead");
+        public IFlagStatBuilder AppliesToInstead(Pool pool) =>
+            CreateFlagStat(This, o1 => $"{o1} applies to {pool} instead");
     }
 
 
@@ -111,12 +106,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Rate =>
             CreateStat(This, o => $"{o} per second");
 
-        public IFlagStatBuilder AppliesTo(IPoolStatBuilder stat) =>
-            CreateFlagStat(This, (IStatBuilder) stat, (o1, o2) => $"{o1} applies to {o2} instead");
-
-        public ILeechStatBuilder To(IEntityBuilder entity) =>
-            Create((s, r) => new LeechStatBuilderStub(s, r),
-                This, entity, (o1, o2) => $"{o1} leeched to {o2}");
+        public IFlagStatBuilder AppliesToInstead(Pool pool) =>
+            CreateFlagStat(This, o1 => $"{o1} applies to {pool} instead");
 
         public IFlagStatBuilder BasedOn(IDamageTypeBuilder damageType) =>
             CreateFlagStat(This, (IKeywordBuilder) damageType,

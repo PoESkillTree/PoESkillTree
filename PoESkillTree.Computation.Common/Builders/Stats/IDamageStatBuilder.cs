@@ -1,3 +1,4 @@
+using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
@@ -8,6 +9,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     /// </summary>
     public interface IDamageStatBuilder : IDamageRelatedStatBuilder
     {
+        new IDamageStatBuilder For(IEntityBuilder entity);
+
         /// <summary>
         /// Gets a stat representing the modifier to damage taken of this stat's damage types.
         /// </summary>

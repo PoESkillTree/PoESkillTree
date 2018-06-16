@@ -12,10 +12,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder Percent { get; }
 
         /// <summary>
-        /// Returns a flag stat indicating whether this stat's regeneration value applies to the given pool.
-        /// <para>The flag for the pool this stat is obtained from is activated by default. If this is activated
-        /// for any other pool, this stat's regeneration applies to that pool instead.</para>
+        /// Returns a flag stat indicating whether this stat's regeneration value applies to the given pool instead.
         /// </summary>
-        IFlagStatBuilder AppliesTo(IPoolStatBuilder stat);
+        IFlagStatBuilder AppliesToInstead(Pool pool);
     }
 }

@@ -4,7 +4,7 @@ using PoESkillTree.Computation.Common.Builders.Entities;
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
     /// <summary>
-    /// Represents pool stats -- life, mana and energy shield -- that have values, and support things like
+    /// Represents stats for a <see cref="Pool"/> that have values, and support things like
     /// regeneration, gain and leech.
     /// </summary>
     /// <remarks>

@@ -1,5 +1,4 @@
 using PoESkillTree.Computation.Common.Builders.Damage;
-using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
@@ -27,21 +26,9 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder Rate { get; }
 
         /// <summary>
-        /// Returns a flag stat indicating whether this stat's leech value applies to the given pool.
-        /// <para>The flag for the pool this stat is obtained from is activated by default. If this is activated
-        /// for any other pool, this stat's leech applies to that pool instead.</para>
+        /// Returns a flag stat indicating whether this stat's leech value applies to the given pool instead.
         /// </summary>
-        IFlagStatBuilder AppliesTo(IPoolStatBuilder stat);
-
-        /// <summary>
-        /// Returns a leech object through damage done by Self can be additionally leeched to the given entity.
-        /// The given entities normally other Leech properties (e.g. Rate) also apply to this leech.
-        /// </summary>
-        /// <remarks>
-        /// E.g. Chieftain's "1% of Damage dealt by your Totems is Leeched to you as Life" leeches totem damage to the
-        /// character.
-        /// </remarks>
-        ILeechStatBuilder To(IEntityBuilder entity);
+        IFlagStatBuilder AppliesToInstead(Pool pool);
 
         /// <summary>
         /// Returns a flag stat indicating whether all leech of this instance's pool is based on the given damage type

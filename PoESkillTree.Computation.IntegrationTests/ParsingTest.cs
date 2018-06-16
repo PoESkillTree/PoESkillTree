@@ -99,6 +99,8 @@ namespace PoESkillTree.Computation.IntegrationTests
         private static IEnumerable<TestCaseData> ParsingReturnsCorrectModifiers_TestCases()
         {
             var f = new BuilderFactories();
+            var life = f.StatBuilders.Pool.From(Pool.Life);
+            var energyShield = f.StatBuilders.Pool.From(Pool.EnergyShield);
 
             yield return new TestCaseData("+10 to Dexterity").Returns(
                 CreateModifier(
@@ -113,7 +115,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     f.FormBuilders.BaseAdd,
                     f.ValueBuilders.Create(1)),
                 CreateModifier(
-                    f.StatBuilders.Pool.Mana,
+                    f.StatBuilders.Pool.From(Pool.Mana),
                     f.FormBuilders.BaseAdd,
                     f.ValueBuilders.Create(30).Multiply(f.StatBuilders.GrandSpectrumJewelsSocketed.Value)),
             }.SelectMany(Funcs.Identity).ToArray());
@@ -123,14 +125,12 @@ namespace PoESkillTree.Computation.IntegrationTests
                 .Returns(new[]
                 {
                     CreateModifier(
-                        f.DamageTypeBuilders.Chaos.Damage.TakenFrom(f.StatBuilders.Pool.EnergyShield)
-                            .Before(f.StatBuilders.Pool.Life),
+                        f.DamageTypeBuilders.Chaos.Damage.TakenFrom(energyShield).Before(life),
                         f.FormBuilders.BaseAdd,
                         f.ValueBuilders.Create(50),
                         f.EquipmentBuilders.Equipment.Count(e => e.IsCorrupted) >= 5),
                     CreateModifier(
-                        f.DamageTypeBuilders.Physical.Damage.TakenFrom(f.StatBuilders.Pool.EnergyShield)
-                            .Before(f.StatBuilders.Pool.Life),
+                        f.DamageTypeBuilders.Physical.Damage.TakenFrom(energyShield).Before(life),
                         f.FormBuilders.BaseSubtract,
                         f.ValueBuilders.Create(50),
                         f.EquipmentBuilders.Equipment.Count(e => e.IsCorrupted) >= 5)
@@ -141,15 +141,15 @@ namespace PoESkillTree.Computation.IntegrationTests
                 .Returns(new[]
                 {
                     CreateModifier(
-                        f.StatBuilders.Pool.Life.Leech.Rate,
+                        life.Leech.Rate,
                         f.FormBuilders.PercentMore,
                         f.ValueBuilders.Create(100)),
                     CreateModifier(
-                        f.StatBuilders.Pool.Life.Leech.RateLimit,
+                        life.Leech.RateLimit,
                         f.FormBuilders.PercentMore,
                         f.ValueBuilders.Create(100)),
                     CreateModifier(
-                        f.StatBuilders.Pool.Life.Regen,
+                        life.Regen,
                         f.FormBuilders.BaseOverride,
                         f.ValueBuilders.Create(0))
                 }.SelectMany(Funcs.Identity).ToArray());

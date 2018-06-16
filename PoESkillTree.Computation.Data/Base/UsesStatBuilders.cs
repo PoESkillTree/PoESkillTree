@@ -41,9 +41,9 @@ namespace PoESkillTree.Computation.Data.Base
         protected IFlagStatBuilders Flag => Stat.Flag;
         protected IGemStatBuilders Gem => Stat.Gem;
 
-        protected IPoolStatBuilder Life => Stat.Pool.Life;
-        protected IPoolStatBuilder Mana => Stat.Pool.Mana;
-        protected IPoolStatBuilder EnergyShield => Stat.Pool.EnergyShield;
+        protected IPoolStatBuilder Life => Stat.Pool.From(Pool.Life);
+        protected IPoolStatBuilder Mana => Stat.Pool.From(Pool.Mana);
+        protected IPoolStatBuilder EnergyShield => Stat.Pool.From(Pool.EnergyShield);
         protected IStatBuilder Armour => Stat.Armour;
         protected IEvasionStatBuilder Evasion => Stat.Evasion;
 

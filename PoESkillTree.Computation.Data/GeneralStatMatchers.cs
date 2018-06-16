@@ -104,7 +104,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "damage dealt by your totems is leeched to you as life",
-                    Life.Leech.To(Entity.ModifierSource).Of(Damage).For(Entity.Totem)
+                    Life.Leech.Of(Damage.For(Entity.Totem))
                 },
                 { "({PoolStatMatchers}) leeched per second", Reference.AsPoolStat.Leech.Rate },
                 // - block

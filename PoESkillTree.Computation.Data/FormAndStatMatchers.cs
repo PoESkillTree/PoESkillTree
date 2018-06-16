@@ -3,6 +3,7 @@ using System.Linq;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -90,7 +91,7 @@ namespace PoESkillTree.Computation.Data
                 // - leech
                 {
                     "life leech is applied to energy shield instead",
-                    TotalOverride, 1, Life.Leech.AppliesTo(EnergyShield)
+                    TotalOverride, 1, Life.Leech.AppliesToInstead(Pool.EnergyShield)
                 },
                 { "gain life from leech instantly", TotalOverride, 1, Life.InstantLeech },
                 { "leech #% of damage as life", BaseAdd, Value, Life.Leech.Of(Damage) },
@@ -141,7 +142,7 @@ namespace PoESkillTree.Computation.Data
                 { "life regeneration has no effect", BaseOverride, 0, Life.Regen },
                 {
                     "life regeneration is applied to energy shield instead",
-                    TotalOverride, 1, Life.Regen.AppliesTo(EnergyShield)
+                    TotalOverride, 1, Life.Regen.AppliesToInstead(Pool.EnergyShield)
                 },
                 // gain (need to be FormAndStatMatcher because they also exist with flat values)
                 {

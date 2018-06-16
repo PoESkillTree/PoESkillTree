@@ -2,6 +2,7 @@
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
+using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
@@ -14,6 +15,9 @@ namespace PoESkillTree.Computation.Console.Builders
             : base(stringRepresentation, resolver)
         {
         }
+
+        public new IDamageStatBuilder For(IEntityBuilder entity) =>
+            CreateDamageStat(This, entity, (o1, o2) => $"{o1} for {o2}");
 
         public IDamageRelatedStatBuilder Taken => CreateDamageStat(This, o => $"{o} taken");
 
