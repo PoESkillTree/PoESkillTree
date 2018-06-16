@@ -72,6 +72,7 @@
     <Compile Include="Resolving\UnresolvedBuilderTest.cs" />
     <Compile Include="Stats\ConversionStatBuilderTest.cs" />
     <Compile Include="Stats\EntityBuilderTest.cs" />
+    <Compile Include="Stats\LeafCoreStatBuilderTest.cs" />
     <Compile Include="Stats\StatBuilderAdapterTest.cs" />
     <Compile Include="Stats\StatBuilderHelper.cs" />
     <Compile Include="Stats\StatBuilderTest.cs" />

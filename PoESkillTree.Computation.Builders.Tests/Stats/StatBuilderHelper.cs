@@ -15,5 +15,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             IStat CreateStat(Entity entity) => new Stat(identity, entity);
             return new LeafCoreStatBuilder(CreateStat, entityBuilder);
         }
+
+        public static ICoreStatBuilder CreateStatBuilder(IStat stat, IEntityBuilder entityBuilder) =>
+            new LeafCoreStatBuilder(_ => stat, entityBuilder);
     }
 }

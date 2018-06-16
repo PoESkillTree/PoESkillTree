@@ -7,16 +7,26 @@ namespace PoESkillTree.Computation.Builders.Stats
 {
     public class Stat : IStat
     {
-        public Stat(
-            string identity, Entity entity = default, bool isRegisteredExplicitly = false, Type dataType = null,
-            IReadOnlyList<Behavior> behaviors = null, bool hasRange = true)
+        public Stat(string identity, Entity entity = default, Type dataType = null,
+            bool isRegisteredExplicitly = false, IReadOnlyList<Behavior> behaviors = null, bool hasRange = true)
         {
+            if (!IsDataTypeValid(dataType))
+                throw new ArgumentException($"Stats only support double, int, bool or enum data types, {dataType} given",
+                    nameof(dataType));
+
             Identity = identity;
             _hasRange = hasRange;
             Entity = entity;
             IsRegisteredExplicitly = isRegisteredExplicitly;
             DataType = dataType ?? typeof(double);
             Behaviors = behaviors ?? new Behavior[0];
+        }
+
+        private static bool IsDataTypeValid(Type dataType)
+        {
+            return dataType == null
+                   || dataType == typeof(int) || dataType == typeof(double) || dataType == typeof(bool)
+                   || dataType.IsEnum;
         }
 
         private readonly bool _hasRange;
@@ -33,7 +43,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             _hasRange ? CopyWithSuffix(identitySuffix, hasRange: false) : null;
 
         private IStat CopyWithSuffix(string identitySuffix, bool hasRange = true) =>
-            new Stat(Identity + "." + identitySuffix, Entity, dataType: DataType, hasRange: hasRange);
+            new Stat(Identity + "." + identitySuffix, Entity, DataType, hasRange: hasRange);
 
         public override string ToString() => Identity;
 

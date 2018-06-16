@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Common.Utils;
+using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -21,6 +22,11 @@ namespace PoESkillTree.Computation.Builders.Stats
             _statFactory = statFactory;
             _entityBuilder = entityBuilder;
         }
+
+        public static ICoreStatBuilder FromIdentity(IStatFactory statFactory, string identity, Type dataType) =>
+            new LeafCoreStatBuilder(
+                entity => statFactory.FromIdentity(identity, entity, dataType),
+                new EntityBuilder(default(Entity)));
 
         public ICoreStatBuilder Resolve(ResolveContext context) => WithEntity(_entityBuilder.Resolve(context));
 

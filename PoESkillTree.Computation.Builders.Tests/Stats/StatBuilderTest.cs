@@ -70,7 +70,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         public void BuildReturnsStatFactoryResult()
         {
             var expected = Mock.Of<IStat>();
-            var sut = CreateSut(new LeafCoreStatBuilder(_ => expected, new EntityBuilder()));
+            var sut = CreateSut(CreateStatBuilder(expected, new EntityBuilder()));
 
             var actual = BuildToSingleStat(sut);
 

@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NUnit.Framework;
+using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
@@ -102,6 +104,39 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             return (T) value;
         }
 
-        private StatFactory CreateSut() => new StatFactory();
+        [Test]
+        public void FromIdentityReturnsCorrectStat()
+        {
+            var sut = CreateSut();
+
+            var actual = sut.FromIdentity("test", Entity.Enemy, typeof(int));
+
+            Assert.AreEqual("test", actual.Identity);
+            Assert.AreEqual(Entity.Enemy, actual.Entity);
+            Assert.AreEqual(typeof(int), actual.DataType);
+        }
+
+        [TestCase(typeof(string))]
+        [TestCase(typeof(object))]
+        [TestCase(typeof(float))]
+        public void FromIdentityThrowsIfDataTypeIsInvalid(Type dataType)
+        {
+            var sut = CreateSut();
+
+            Assert.Throws<ArgumentException>(() => sut.FromIdentity("", default, dataType));
+        }
+        
+        [TestCase(typeof(double))]
+        [TestCase(typeof(int))]
+        [TestCase(typeof(bool))]
+        [TestCase(typeof(Tags))]
+        public void FromIdentityDoesNotThrowIfDataTypeIsValid(Type dataType)
+        {
+            var sut = CreateSut();
+
+            Assert.DoesNotThrow(() => sut.FromIdentity("", default, dataType));
+        }
+
+        private static StatFactory CreateSut() => new StatFactory();
     }
 }

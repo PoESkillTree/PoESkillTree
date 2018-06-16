@@ -16,6 +16,9 @@ namespace PoESkillTree.Computation.Builders.Stats
             _behaviorFactory = new BehaviorFactory(this);
         }
 
+        public IStat FromIdentity(string identity, Entity entity, Type dataType) =>
+            GetOrAdd(identity, entity, dataType);
+
         public IStat ChanceToDouble(IStat stat) =>
             CopyWithSuffix(stat, nameof(ChanceToDouble), dataType: typeof(int));
 
@@ -52,20 +55,18 @@ namespace PoESkillTree.Computation.Builders.Stats
             CopyWithSuffix(source, "SkillConversion", dataType: typeof(int),
                 behaviors: _behaviorFactory.SkillConversion(source));
 
-        private IStat CopyWithSuffix(
-            IStat source, string identitySuffix, bool isRegisteredExplicitly = false, Type dataType = null,
-            IReadOnlyList<Behavior> behaviors = null)
+        private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,
+            bool isRegisteredExplicitly = false, IReadOnlyList<Behavior> behaviors = null)
         {
-            return GetOrAdd(source.Identity + "." + identitySuffix, source.Entity, isRegisteredExplicitly,
-                dataType ?? source.DataType, behaviors);
+            return GetOrAdd(source.Identity + "." + identitySuffix, source.Entity,
+                dataType ?? source.DataType, isRegisteredExplicitly, behaviors);
         }
 
-        private IStat GetOrAdd(
-            string identity, Entity entity, bool isRegisteredExplicitly = false, Type dataType = null,
-            IReadOnlyList<Behavior> behaviors = null)
+        private IStat GetOrAdd(string identity, Entity entity, Type dataType,
+            bool isRegisteredExplicitly = false, IReadOnlyList<Behavior> behaviors = null)
         {
             return _cache.GetOrAdd((identity, entity), _ =>
-                new Stat(identity, entity, isRegisteredExplicitly, dataType, behaviors));
+                new Stat(identity, entity, dataType, isRegisteredExplicitly, behaviors));
         }
     }
 }
