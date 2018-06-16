@@ -38,6 +38,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder GrandSpectrumJewelsSocketed => FromIdentity(typeof(int));
 
         public IStatBuilder RampageStacks => FromIdentity(typeof(int));
+        public IStatBuilder CharacterSize => FromIdentity(typeof(double));
+        public IStatBuilder LightRadius => FromIdentity(typeof(double));
+        public IStatBuilder DamageTakenGainedAsMana =>
+            FromIdentity("% of damage taken gained as mana over 4 seconds", typeof(int));
 
         public IAttributeStatBuilders Attribute => new AttributeStatBuilders(StatFactory);
         public abstract IPoolStatBuilders Pool { get; }
@@ -46,8 +50,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IProjectileStatBuilders Projectile => new ProjectileStatBuilders(StatFactory);
         public IFlagStatBuilders Flag => new FlagStatBuilders(StatFactory);
         public IGemStatBuilders Gem => new GemStatBuilders(StatFactory);
-
-        public IStatBuilder Unique(string name) => FromIdentity(name, null, true);
     }
 
     internal class TrapStatBuilders : StatBuildersBase, ITrapStatBuilders

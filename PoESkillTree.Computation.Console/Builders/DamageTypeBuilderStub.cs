@@ -43,6 +43,9 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IFlagStatBuilder IgnoreResistance =>
             CreateFlagStat(This, o => $"Ignore {o} Resistance");
+
+        public IDamageRelatedStatBuilder ReflectedDamageTaken =>
+            CreateDamageStat(This, o => $"Reflected {o} Damage Taken");
     }
 
 

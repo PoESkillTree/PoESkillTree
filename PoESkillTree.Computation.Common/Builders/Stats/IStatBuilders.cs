@@ -83,6 +83,15 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IStatBuilder RampageStacks { get; }
 
+        IStatBuilder CharacterSize { get; }
+
+        /// <summary>
+        /// The percentage of damage taken gained as mana over 4 seconds.
+        /// </summary>
+        IStatBuilder DamageTakenGainedAsMana { get; }
+
+        IStatBuilder LightRadius { get; }
+
 
         // Stats from sub factories
 
@@ -99,14 +108,5 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IFlagStatBuilders Flag { get; }
 
         IGemStatBuilders Gem { get; }
-
-
-        // Methods
-
-        /// <summary>
-        /// Returns a unique stat that can not interact with any other stat. 
-        /// These can still be calculated and displayed.
-        /// </summary>
-        IStatBuilder Unique(string name);
     }
 }

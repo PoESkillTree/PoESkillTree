@@ -57,5 +57,7 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         /// collection.
         /// </summary>
         IFlagStatBuilder IgnoreResistance { get; }
+
+        IDamageRelatedStatBuilder ReflectedDamageTaken { get; }
     }
 }

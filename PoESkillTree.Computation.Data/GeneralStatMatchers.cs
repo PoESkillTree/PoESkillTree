@@ -231,7 +231,7 @@ namespace PoESkillTree.Computation.Data
                 { "stun duration (?<inner>with .*) on enemies", Effect.Stun.Duration, "${inner}" },
                 {
                     "chance to avoid interruption from stuns while casting",
-                    Stat.Unique("Chance to Avoid interruption from Stuns while Casting")
+                    Effect.Stun.ChanceToAvoidInterruptionWhileCasting
                 },
                 { "chance to double stun duration", Effect.Stun.Duration.ChanceToDouble },
                 // flasks
@@ -253,15 +253,11 @@ namespace PoESkillTree.Computation.Data
                 { "rampage stacks", Stat.RampageStacks },
                 { "chance to knock enemies back", Effect.Knockback.ChanceOn(Enemy) },
                 { "knockback distance", Effect.Knockback.Distance },
-                // Not really anything that can be done with them (yet), but should still be summed up
-                { "character size", Stat.Unique("Character Size") },
-                { "reflected elemental damage taken", Stat.Unique("Reduced Reflected Elemental Damage taken") },
-                { "reflected physical damage taken", Stat.Unique("Reduced Reflected Physical Damage taken") },
-                {
-                    "damage taken gained as mana over 4 seconds when hit",
-                    Stat.Unique("#% of Damage taken gained as Mana over 4 seconds when Hit")
-                },
-                { "light radius", Stat.Unique("Light Radius") },
+                { "character size", Stat.CharacterSize },
+                { "reflected elemental damage taken", Elemental.ReflectedDamageTaken },
+                { "reflected physical damage taken", Physical.ReflectedDamageTaken },
+                { "damage taken gained as mana over 4 seconds when hit", Stat.DamageTakenGainedAsMana },
+                { "light radius", Stat.LightRadius },
             };
     }
 }
