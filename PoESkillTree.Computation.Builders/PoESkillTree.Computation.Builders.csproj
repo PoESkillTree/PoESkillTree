@@ -76,6 +76,7 @@
     <Compile Include="Stats\CompositeCoreStatBuilder.cs" />
     <Compile Include="Stats\ConversionStatBuilder.cs" />
     <Compile Include="Entities\EntityBuilder.cs" />
+    <Compile Include="Stats\EvasionStatBuilder.cs" />
     <Compile Include="Stats\ICoreStatBuilder.cs" />
     <Compile Include="Stats\IStatFactory.cs" />
     <Compile Include="Stats\LeafCoreStatBuilder.cs" />

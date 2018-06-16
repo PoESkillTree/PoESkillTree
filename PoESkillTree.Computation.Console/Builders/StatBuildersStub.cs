@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Conditions;
+﻿using PoESkillTree.Computation.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
@@ -6,11 +7,13 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class StatBuildersStub : IStatBuilders
     {
+        private readonly IStatFactory _statFactory = new StatFactory();
+
         public IStatBuilder Level => CreateStat("Level");
 
         public IStatBuilder Armour => CreateStat("Armour");
 
-        public IEvasionStatBuilder Evasion => new EvasionStatBuilderStub();
+        public IEvasionStatBuilder Evasion => new EvasionStatBuilder(_statFactory);
 
         public IDamageRelatedStatBuilder Accuracy => CreateDamageStat("Accuracy");
 

@@ -53,20 +53,4 @@ namespace PoESkillTree.Computation.Console.Builders
         public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalSource) =>
             new[] { new StatBuilderResult(new[] { new Stat(ToString()) }, originalSource, Funcs.Identity), };
     }
-
-
-    public class EvasionStatBuilderStub : StatBuilderStub, IEvasionStatBuilder
-    {
-        public EvasionStatBuilderStub() : base("Evasion", (c, _) => c)
-        {
-        }
-
-        public IStatBuilder Chance => CreateStat(This, o => $"{o} chance");
-
-        public IStatBuilder ChanceAgainstProjectileAttacks =>
-            CreateStat(This, o => $"{o} chance against projectile attacks");
-
-        public IStatBuilder ChanceAgainstMeleeAttacks =>
-            CreateStat(This, o => $"{o} chance against melee attacks");
-    }
 }

@@ -23,6 +23,9 @@ namespace PoESkillTree.Computation.Builders.Stats
             _coreStatBuilder = coreStatBuilder;
         }
 
+        protected IFlagStatBuilder FromIdentity(string identity, Type dataType) =>
+            With(LeafCoreStatBuilder.FromIdentity(_statFactory, identity, dataType));
+
         private StatBuilder With(ICoreStatBuilder coreStatBuilder) => new StatBuilder(_statFactory, coreStatBuilder);
 
         private IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
