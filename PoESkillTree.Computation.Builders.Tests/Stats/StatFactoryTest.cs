@@ -73,6 +73,17 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.AreEqual(convertTo.Behaviors.Take(2), gainAs.Behaviors);
         }
 
+        [Test]
+        public void BehaviorsWithDifferentParametersAreNotEqual()
+        {
+            var sut = CreateSut();
+
+            var first = sut.SkillConversion(new Stat("a")).Behaviors[0];
+            var second = sut.SkillConversion(new Stat("b")).Behaviors[0];
+
+            Assert.AreNotEqual(first, second);
+        }
+
         private static ConversionTargetPathTotalValue AssertIsConversionTargetPathTotalBehavior(Behavior actual)
         {
             Assert.AreEqual("target", actual.AffectedStats.Single().Identity);
