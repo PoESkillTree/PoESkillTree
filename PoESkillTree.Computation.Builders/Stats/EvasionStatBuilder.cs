@@ -14,9 +14,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder Chance => ChanceAgainstProjectileAttacks.CombineWith(ChanceAgainstMeleeAttacks);
 
         public IStatBuilder ChanceAgainstProjectileAttacks =>
-            FromIdentity($"{Prefix} chance against projectile attacks", typeof(double));
+            FromIdentity($"{Prefix} chance against projectile attacks", typeof(int));
 
         public IStatBuilder ChanceAgainstMeleeAttacks =>
-            FromIdentity($"{Prefix} chance against melee attacks", typeof(double));
+            FromIdentity($"{Prefix} chance against melee attacks", typeof(int));
     }
 }

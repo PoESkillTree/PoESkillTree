@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Data
             {
                 {
                     @"\+# to level of socketed support gems",
-                    BaseAdd, Value, Gem.IncreaseLevel(onlySupportGems: true)
+                    BaseAdd, Value, Gem.IncreaseSupportLevel
                 },
                 {
                     "primordial",

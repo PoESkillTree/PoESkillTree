@@ -6,7 +6,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 {
     public interface IStatFactory
     {
-        IStat FromIdentity(string identity, Entity entity, Type dataType);
+        IStat FromIdentity(string identity, Entity entity, Type dataType, bool isExplicitlyRegistered = false);
 
         IStat ChanceToDouble(IStat stat);
 

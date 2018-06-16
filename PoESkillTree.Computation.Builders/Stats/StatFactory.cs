@@ -16,8 +16,8 @@ namespace PoESkillTree.Computation.Builders.Stats
             _behaviorFactory = new BehaviorFactory(this);
         }
 
-        public IStat FromIdentity(string identity, Entity entity, Type dataType) =>
-            GetOrAdd(identity, entity, dataType);
+        public IStat FromIdentity(string identity, Entity entity, Type dataType, bool isExplicitlyRegistered = false) =>
+            GetOrAdd(identity, entity, dataType, isExplicitlyRegistered);
 
         public IStat ChanceToDouble(IStat stat) =>
             CopyWithSuffix(stat, nameof(ChanceToDouble), dataType: typeof(int));

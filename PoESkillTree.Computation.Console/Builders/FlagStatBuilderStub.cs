@@ -16,16 +16,4 @@ namespace PoESkillTree.Computation.Console.Builders
         public override IStatBuilder WithCondition(IConditionBuilder condition) =>
             CreateFlagStat(This, condition, (s, c) => $"{s} ({c})");
     }
-
-
-    public class FlagStatBuildersStub : IFlagStatBuilders
-    {
-        private static IFlagStatBuilder Create(string s) => new FlagStatBuilderStub(s, (c, _) => c);
-
-        public IFlagStatBuilder IgnoreMovementSpeedPenalties =>
-            Create("Ignore movement speed penalties from equipped armor");
-
-        public IFlagStatBuilder ShieldModifiersApplyToMinionsInstead =>
-            Create("Modifiers on an equipped shield apply to your minions instead");
-    }
 }
