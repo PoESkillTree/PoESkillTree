@@ -18,11 +18,6 @@ namespace PoESkillTree.Computation.Core.Nodes
 
         public NodeValue? Calculate(IValueCalculationContext context)
         {
-            if (context.GetValue(_stat, NodeType.BaseOverride, _path) is NodeValue baseOverride)
-            {
-                return baseOverride;
-            }
-
             if (context.GetValue(_stat, NodeType.BaseSet, _path) is NodeValue baseSet)
             {
                 var baseAdd = context.GetValue(_stat, NodeType.BaseAdd, _path) ?? new NodeValue(0);

@@ -9,7 +9,6 @@
     /// </remarks>
     public enum Form
     {
-        BaseOverride,
         BaseSet,
         BaseAdd,
         Increase,

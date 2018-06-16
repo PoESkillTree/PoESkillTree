@@ -4,8 +4,7 @@ namespace PoESkillTree.Computation.Core.Nodes
 {
     /// <summary>
     /// <see cref="IValue"/> for <see cref="NodeType"/>s that aggregate <see cref="Form"/> nodes from a single path.
-    /// (<see cref="NodeType.BaseSet"/>, <see cref="NodeType.BaseAdd"/>, <see cref="NodeType.BaseOverride"/> and
-    /// <see cref="NodeType.TotalOverride"/>)
+    /// (<see cref="NodeType.BaseSet"/>, <see cref="NodeType.BaseAdd"/> and <see cref="NodeType.TotalOverride"/>)
     /// </summary>
     public class FormAggregatingValue : IValue
     {

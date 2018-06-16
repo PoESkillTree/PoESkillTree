@@ -14,8 +14,7 @@ namespace PoESkillTree.Computation.Core.Nodes
     /// </summary>
     public static class NodeValueAggregators
     {
-        // For both BaseOverride and TotalOverride
-        public static NodeValue? CalculateOverride(IEnumerable<NodeValue?> values)
+        public static NodeValue? CalculateTotalOverride(IEnumerable<NodeValue?> values)
         {
             var enumerated = values.EnumerateWhereNotNull();
             switch (enumerated.Count)

@@ -150,8 +150,8 @@ namespace PoESkillTree.Computation.IntegrationTests
                         f.ValueBuilders.Create(100)),
                     CreateModifier(
                         life.Regen,
-                        f.FormBuilders.BaseOverride,
-                        f.ValueBuilders.Create(0))
+                        f.FormBuilders.PercentLess,
+                        f.ValueBuilders.Create(100))
                 }.SelectMany(Funcs.Identity).ToArray());
 
             IEnumerable<Modifier> ParagonOfCalamityFor(IDamageTypeBuilder damageType) =>

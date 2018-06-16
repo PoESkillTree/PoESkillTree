@@ -26,7 +26,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Forms
         [TestCase(nameof(IFormBuilders.PercentMore), Form.More)]
         [TestCase(nameof(IFormBuilders.PercentLess), Form.More)]
         [TestCase(nameof(IFormBuilders.TotalOverride), Form.TotalOverride)]
-        [TestCase(nameof(IFormBuilders.BaseOverride), Form.BaseOverride)]
         public void PropertyBuildReturnsCorrectForm(string propertyName, Form expected)
         {
             var sut = CreateSut();
