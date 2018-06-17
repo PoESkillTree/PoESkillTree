@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Actions;
+﻿using PoESkillTree.Computation.Builders.Entities;
+using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
@@ -20,7 +21,7 @@ namespace PoESkillTree.Computation.Console.Builders
         {
             _actionBuilder =
                 new ActionBuilderStub(
-                    EntityBuilderStub.Self(),
+                    new EntityBuilder(), 
                     "Stun",
                     (c, _) => c);
         }

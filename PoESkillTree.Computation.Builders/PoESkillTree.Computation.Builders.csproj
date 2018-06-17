@@ -69,6 +69,7 @@
     <Compile Include="Conditions\ValueConditionBuilder.cs" />
     <Compile Include="ConstantBuilder.cs" />
     <Compile Include="Damage\DamageSourceBuilders.cs" />
+    <Compile Include="Entities\EntityBuilders.cs" />
     <Compile Include="Equipment\ItemSlotBuilders.cs" />
     <Compile Include="ExpressionHelper.cs" />
     <Compile Include="Forms\FormBuilders.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Stats\StatBuilder.cs" />
     <Compile Include="Stats\StatBuilderAdapter.cs" />
     <Compile Include="Stats\StatBuildersBase.cs" />
+    <Compile Include="Stats\StatBuilderUtils.cs" />
     <Compile Include="Stats\StatFactory.cs" />
     <Compile Include="Values\ValueBuilderImpl.cs" />
     <Compile Include="Values\ValueBuilders.cs" />

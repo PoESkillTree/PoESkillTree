@@ -1,6 +1,8 @@
 ﻿using PoESkillTree.Computation.Builders.Damage;
+using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Equipment;
 using PoESkillTree.Computation.Builders.Forms;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
@@ -48,7 +50,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IEffectBuilders EffectBuilders => new EffectBuildersStub();
 
-        public IEntityBuilders EntityBuilders => new EntityBuildersStub();
+        public IEntityBuilders EntityBuilders => new EntityBuilders(new StatFactory());
 
         public IEquipmentBuilders EquipmentBuilders => new EquipmentBuildersStub();
 

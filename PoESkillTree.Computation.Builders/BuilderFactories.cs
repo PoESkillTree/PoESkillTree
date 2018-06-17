@@ -1,6 +1,8 @@
 ﻿using PoESkillTree.Computation.Builders.Damage;
+using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Equipment;
 using PoESkillTree.Computation.Builders.Forms;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
@@ -20,6 +22,8 @@ namespace PoESkillTree.Computation.Builders
 {
     public class BuilderFactories : IBuilderFactories
     {
+        private readonly IStatFactory _statFactory = new StatFactory();
+
         public IActionBuilders ActionBuilders { get; }
         public IBuffBuilders BuffBuilders { get; }
         public IChargeTypeBuilders ChargeTypeBuilders { get; }
@@ -27,7 +31,7 @@ namespace PoESkillTree.Computation.Builders
         public IDamageSourceBuilders DamageSourceBuilders { get; } = new DamageSourceBuilders();
         public IDamageTypeBuilders DamageTypeBuilders { get; }
         public IEffectBuilders EffectBuilders { get; }
-        public IEntityBuilders EntityBuilders { get; }
+        public IEntityBuilders EntityBuilders => new EntityBuilders(_statFactory);
         public IEquipmentBuilders EquipmentBuilders { get; }
         public IFormBuilders FormBuilders { get; } = new FormBuilders();
         public IKeywordBuilders KeywordBuilders { get; }

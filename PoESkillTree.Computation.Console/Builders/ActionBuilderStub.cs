@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Actions;
+﻿using PoESkillTree.Computation.Builders.Entities;
+using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -23,7 +24,7 @@ namespace PoESkillTree.Computation.Console.Builders
         }
 
         public static IActionBuilder BySelf(string stringRepresentation, Resolver<IActionBuilder> resolver) =>
-            new ActionBuilderStub(EntityBuilderStub.Self(), stringRepresentation, resolver);
+            new ActionBuilderStub(new EntityBuilder(), stringRepresentation, resolver);
 
         public IEntityBuilder Source { get; }
 
@@ -84,7 +85,7 @@ namespace PoESkillTree.Computation.Console.Builders
     public class BlockActionBuilderStub : ActionBuilderStub, IBlockActionBuilder
     {
         public BlockActionBuilderStub()
-            : base(EntityBuilderStub.Self(), "Block", (current, _) => current)
+            : base(new EntityBuilder(), "Block", (current, _) => current)
         {
         }
 
@@ -99,7 +100,7 @@ namespace PoESkillTree.Computation.Console.Builders
     public class CriticalStrikeActionBuilderStub : ActionBuilderStub, ICriticalStrikeActionBuilder
     {
         public CriticalStrikeActionBuilderStub()
-            : base(EntityBuilderStub.Self(), "Critical Strike", (current, _) => current)
+            : base(new EntityBuilder(), "Critical Strike", (current, _) => current)
         {
         }
 

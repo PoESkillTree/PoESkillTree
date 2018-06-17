@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.Computation.Builders.Entities;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -17,7 +19,7 @@ namespace PoESkillTree.Computation.Console.Builders
         {
         }
 
-        public IStatBuilder Chance => ChanceOn(new EnemyBuilderStub());
+        public IStatBuilder Chance => ChanceOn(new EntityBuilder(Entity.Enemy));
 
         public IStatBuilder InstancesOn(IEntityBuilder target) =>
             CreateStat(This, target, (o1, o2) => $"Number of {o1} instances on {o2}");
