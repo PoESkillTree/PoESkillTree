@@ -14,19 +14,20 @@ namespace PoESkillTree.Computation.Builders.Stats
 {
     public class StatBuilder : IFlagStatBuilder
     {
-        private readonly IStatFactory _statFactory;
+        protected IStatFactory StatFactory { get; }
         private readonly ICoreStatBuilder _coreStatBuilder;
 
         public StatBuilder(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder)
         {
-            _statFactory = statFactory;
+            StatFactory = statFactory;
             _coreStatBuilder = coreStatBuilder;
         }
 
-        protected IFlagStatBuilder FromIdentity(string identity, Type dataType) =>
-            With(LeafCoreStatBuilder.FromIdentity(_statFactory, identity, dataType));
+        protected IFlagStatBuilder FromIdentity(string identity, Type dataType, bool isExplicitlyRegistered = false) =>
+            With(LeafCoreStatBuilder.FromIdentity(StatFactory, identity, dataType, isExplicitlyRegistered));
 
-        private StatBuilder With(ICoreStatBuilder coreStatBuilder) => new StatBuilder(_statFactory, coreStatBuilder);
+        protected IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
+            new StatBuilder(StatFactory, coreStatBuilder);
 
         private IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
             With(_coreStatBuilder.WithStatConverter(statConverter));
@@ -43,12 +44,12 @@ namespace PoESkillTree.Computation.Builders.Stats
             ValueConditionBuilder.Create(Value, v => v.IsTrue());
 
         public IStatBuilder ConvertTo(IStatBuilder stat) =>
-            With(new ConversionStatBuilder(_statFactory.ConvertTo, _coreStatBuilder, new StatBuilderAdapter(stat)));
+            With(new ConversionStatBuilder(StatFactory.ConvertTo, _coreStatBuilder, new StatBuilderAdapter(stat)));
 
         public IStatBuilder GainAs(IStatBuilder stat) =>
-            With(new ConversionStatBuilder(_statFactory.GainAs, _coreStatBuilder, new StatBuilderAdapter(stat)));
+            With(new ConversionStatBuilder(StatFactory.GainAs, _coreStatBuilder, new StatBuilderAdapter(stat)));
 
-        public IStatBuilder ChanceToDouble => WithStatConverter(_statFactory.ChanceToDouble);
+        public IStatBuilder ChanceToDouble => WithStatConverter(StatFactory.ChanceToDouble);
 
         public IStatBuilder For(IEntityBuilder entity) => With(_coreStatBuilder.WithEntity(entity));
 

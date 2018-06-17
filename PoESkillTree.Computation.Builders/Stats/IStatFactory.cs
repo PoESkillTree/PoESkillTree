@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
@@ -16,5 +17,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat GainAs(IStat source, IStat target);
         IStat Conversion(IStat source);
         IStat SkillConversion(IStat source);
+
+        IStat Regen(Pool pool, Entity entity);
+        IStat RegenTargetPool(Pool regenPool, Entity entity);
     }
 }

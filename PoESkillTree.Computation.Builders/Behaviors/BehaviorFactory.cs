@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Behaviors
 {
@@ -66,6 +67,15 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             v => new SkillConversionUncappedSubtotalValue(_statFactory.SkillConversion(source), v),
             new CacheKey(source));
 
+        public IReadOnlyList<Behavior> Regen(Pool pool, Entity entity) =>
+            new[] { RegenUncappedSubtotalBehavor(pool, entity) };
+
+        private Behavior RegenUncappedSubtotalBehavor(Pool pool, Entity entity) => GetOrAdd(
+            () => _statFactory.Regen(pool, entity), NodeType.UncappedSubtotal, BehaviorPathInteraction.AllPaths,
+            v => new RegenUncappedSubtotalValue(
+                pool, p => _statFactory.Regen(p, entity), p => _statFactory.RegenTargetPool(p, entity), v),
+            new CacheKey(pool, entity));
+
         private Behavior GetOrAdd(
             IStat affectedStat, NodeType affectNodeType, BehaviorPathInteraction affectedPaths,
             Func<IValue, IValue> valueTransformation, CacheKey cacheKey)
@@ -93,30 +103,30 @@ namespace PoESkillTree.Computation.Builders.Behaviors
         private struct CacheKey
         {
             private readonly string _behaviorName;
-            private readonly IReadOnlyList<IStat> _statParameters;
+            private readonly IReadOnlyList<object> _parameters;
 
-            public CacheKey(IStat statParameter, [CallerMemberName] string behaviorName = null)
-                : this(behaviorName, statParameter)
+            public CacheKey(object parameter, [CallerMemberName] string behaviorName = null)
+                : this(behaviorName, parameter)
             {
             }
 
-            public CacheKey(IStat statParameter1, IStat statParameter2, [CallerMemberName] string behaviorName = null)
-                : this(behaviorName, statParameter1, statParameter2)
+            public CacheKey(object parameter1, object parameter2, [CallerMemberName] string behaviorName = null)
+                : this(behaviorName, parameter1, parameter2)
             {
             }
 
-            private CacheKey(string behaviorName, params IStat[] statParameters)
+            private CacheKey(string behaviorName, params object[] parameters)
             {
                 _behaviorName = behaviorName;
-                _statParameters = statParameters;
+                _parameters = parameters;
             }
 
             public override bool Equals(object obj) =>
                 obj is CacheKey other && _behaviorName == other._behaviorName &&
-                _statParameters.SequenceEqual(other._statParameters);
+                _parameters.SequenceEqual(other._parameters);
 
             public override int GetHashCode() =>
-                (_behaviorName, _statParameters.SequenceHash()).GetHashCode();
+                (_behaviorName, _parameters.SequenceHash()).GetHashCode();
         }
 
         private class LazyStatEnumerable : IEnumerable<IStat>

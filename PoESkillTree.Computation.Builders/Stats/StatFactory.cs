@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
@@ -20,7 +21,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             GetOrAdd(identity, entity, dataType, isExplicitlyRegistered);
 
         public IStat ChanceToDouble(IStat stat) =>
-            CopyWithSuffix(stat, nameof(ChanceToDouble), dataType: typeof(int));
+            CopyWithSuffix(stat, nameof(ChanceToDouble), typeof(int));
 
         public IEnumerable<IStat> ConvertTo(IStat source, IEnumerable<IStat> targets)
         {
@@ -41,19 +42,26 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         public IStat ConvertTo(IStat source, IStat target) =>
-            CopyWithSuffix(source, $"{nameof(ConvertTo)}({target})", dataType: typeof(int),
+            CopyWithSuffix(source, $"{nameof(ConvertTo)}({target})", typeof(int),
                 behaviors: _behaviorFactory.ConvertTo(source, target));
 
         public IStat GainAs(IStat source, IStat target) =>
-            CopyWithSuffix(source, $"{nameof(GainAs)}({target})", dataType: typeof(int),
+            CopyWithSuffix(source, $"{nameof(GainAs)}({target})", typeof(int),
                 behaviors: _behaviorFactory.GainAs(source, target));
 
         public IStat Conversion(IStat source) =>
-            CopyWithSuffix(source, "Conversion", dataType: typeof(int));
+            CopyWithSuffix(source, "Conversion", typeof(int));
 
         public IStat SkillConversion(IStat source) =>
-            CopyWithSuffix(source, "SkillConversion", dataType: typeof(int),
+            CopyWithSuffix(source, "SkillConversion", typeof(int),
                 behaviors: _behaviorFactory.SkillConversion(source));
+
+        public IStat Regen(Pool pool, Entity entity) =>
+            GetOrAdd($"{pool}.Regen", entity, typeof(double), behaviors: _behaviorFactory.Regen(pool, entity));
+
+        public IStat RegenTargetPool(Pool regenPool, Entity entity) =>
+            GetOrAdd($"{regenPool}.Regen.TargetPool", entity, typeof(Pool));
+            
 
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,
             bool isRegisteredExplicitly = false, IReadOnlyList<Behavior> behaviors = null)

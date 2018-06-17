@@ -17,17 +17,16 @@ namespace PoESkillTree.Computation.Builders.Stats
         private readonly Func<Entity, IStat> _statFactory;
         private readonly IEntityBuilder _entityBuilder;
 
-        public LeafCoreStatBuilder(Func<Entity, IStat> statFactory, IEntityBuilder entityBuilder)
+        public LeafCoreStatBuilder(Func<Entity, IStat> statFactory, IEntityBuilder entityBuilder = null)
         {
             _statFactory = statFactory;
-            _entityBuilder = entityBuilder;
+            _entityBuilder = entityBuilder ?? new EntityBuilder();
         }
 
         public static ICoreStatBuilder FromIdentity(
             IStatFactory statFactory, string identity, Type dataType, bool isExplicitlyRegistered = false) =>
             new LeafCoreStatBuilder(
-                entity => statFactory.FromIdentity(identity, entity, dataType, isExplicitlyRegistered),
-                new EntityBuilder(default(Entity)));
+                entity => statFactory.FromIdentity(identity, entity, dataType, isExplicitlyRegistered));
 
         public ICoreStatBuilder Resolve(ResolveContext context) => WithEntity(_entityBuilder.Resolve(context));
 

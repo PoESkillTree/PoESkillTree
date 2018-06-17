@@ -5,6 +5,7 @@ using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Tests.Stats
 {
@@ -97,13 +98,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             return typedValue;
         }
 
-        private static T AssertTransformedValueIs<T>(Behavior actual) where T : IValue
-        {
-            var value = actual.Transformation.Transform(null);
-            Assert.IsInstanceOf<T>(value);
-            return (T) value;
-        }
-
         [Test]
         public void FromIdentityReturnsCorrectStat()
         {
@@ -135,6 +129,35 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var sut = CreateSut();
 
             Assert.DoesNotThrow(() => sut.FromIdentity("", default, dataType));
+        }
+
+        [Test]
+        public void RegenReturnsCorrectStat()
+        {
+            var sut = CreateSut();
+
+            var actual = sut.Regen(Pool.Life, default);
+
+            Assert.AreEqual("Life.Regen", actual.Identity);
+            Assert.AreEqual(typeof(double), actual.DataType);
+        }
+
+        [Test]
+        public void RegenHasCorrectBehaviors()
+        {
+            var sut = CreateSut();
+
+            var actual = sut.Regen(Pool.Life, default).Behaviors;
+
+            Assert.That(actual, Has.One.Items);
+            AssertTransformedValueIs<RegenUncappedSubtotalValue>(actual[0]);
+        }
+
+        private static T AssertTransformedValueIs<T>(Behavior actual) where T : IValue
+        {
+            var value = actual.Transformation.Transform(null);
+            Assert.IsInstanceOf<T>(value);
+            return (T) value;
         }
 
         private static StatFactory CreateSut() => new StatFactory();

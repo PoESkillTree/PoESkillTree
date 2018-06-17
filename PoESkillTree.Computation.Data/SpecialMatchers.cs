@@ -53,7 +53,7 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 1, Flag.IgnoreMovementSpeedPenalties
                 },
                 {
-                    "life leech is based on your chaos damage instead",
+                    "life leech recovers based on your chaos damage instead",
                     TotalOverride, 1, Life.Leech.BasedOn(Chaos)
                 },
                 // Keystones

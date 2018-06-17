@@ -26,9 +26,9 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder Rate { get; }
 
         /// <summary>
-        /// Returns a flag stat indicating whether this stat's leech value applies to the given pool instead.
+        /// A stat specifying the Pool this stat's leech value is applied to
         /// </summary>
-        IFlagStatBuilder AppliesToInstead(Pool pool);
+        IStatBuilder TargetPool { get; }
 
         /// <summary>
         /// Returns a flag stat indicating whether all leech of this instance's pool is based on the given damage type

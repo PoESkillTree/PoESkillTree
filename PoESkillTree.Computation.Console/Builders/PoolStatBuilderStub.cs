@@ -80,8 +80,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder Percent => CreateStat(This, o => $"Percent {o}");
 
-        public IFlagStatBuilder AppliesToInstead(Pool pool) =>
-            CreateFlagStat(This, o1 => $"{o1} applies to {pool} instead");
+        public IStatBuilder TargetPool => CreateStat(This, o1 => $"{o1}.TargetPool");
     }
 
 
@@ -106,8 +105,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Rate =>
             CreateStat(This, o => $"{o} per second");
 
-        public IFlagStatBuilder AppliesToInstead(Pool pool) =>
-            CreateFlagStat(This, o1 => $"{o1} applies to {pool} instead");
+        public IStatBuilder TargetPool =>
+            CreateStat(This, o => $"{o}.TargetPool");
 
         public IFlagStatBuilder BasedOn(IDamageTypeBuilder damageType) =>
             CreateFlagStat(This, (IKeywordBuilder) damageType,

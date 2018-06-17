@@ -91,7 +91,7 @@ namespace PoESkillTree.Computation.Data
                 // - leech
                 {
                     "life leech is applied to energy shield instead",
-                    TotalOverride, 1, Life.Leech.AppliesToInstead(Pool.EnergyShield)
+                    TotalOverride, (int) Pool.EnergyShield, Life.Leech.TargetPool
                 },
                 { "gain life from leech instantly", TotalOverride, 1, Life.InstantLeech },
                 { "leech #% of damage as life", BaseAdd, Value, Life.Leech.Of(Damage) },
@@ -142,7 +142,7 @@ namespace PoESkillTree.Computation.Data
                 { "life regeneration has no effect", PercentLess, 100, Life.Regen },
                 {
                     "life regeneration is applied to energy shield instead",
-                    TotalOverride, 1, Life.Regen.AppliesToInstead(Pool.EnergyShield)
+                    TotalOverride, (int) Pool.EnergyShield, Life.Regen.TargetPool
                 },
                 // gain (need to be FormAndStatMatcher because they also exist with flat values)
                 {

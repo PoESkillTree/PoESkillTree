@@ -2,7 +2,7 @@
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
-    public class EvasionStatBuilder : StatBuilder, IEvasionStatBuilder
+    internal class EvasionStatBuilder : StatBuilder, IEvasionStatBuilder
     {
         private const string Prefix = "Evasion";
 

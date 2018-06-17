@@ -59,6 +59,7 @@
     <Compile Include="Behaviors\ConversionTargetPathTotalValue.cs" />
     <Compile Include="Behaviors\ConversionTargeUncappedSubtotalValue.cs" />
     <Compile Include="Behaviors\ConvertToUncappedSubtotalValue.cs" />
+    <Compile Include="Behaviors\RegenUncappedSubtotalValue.cs" />
     <Compile Include="Behaviors\SkillConversionUncappedSubtotalValue.cs" />
     <Compile Include="Behaviors\ValueTransformation.cs" />
     <Compile Include="BuilderFactories.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Stats\ICoreStatBuilder.cs" />
     <Compile Include="Stats\IStatFactory.cs" />
     <Compile Include="Stats\LeafCoreStatBuilder.cs" />
+    <Compile Include="Stats\PoolStatBuilder.cs" />
     <Compile Include="Stats\StatBuilders.cs" />
     <Compile Include="Stats\Stat.cs" />
     <Compile Include="Stats\StatBuilder.cs" />
