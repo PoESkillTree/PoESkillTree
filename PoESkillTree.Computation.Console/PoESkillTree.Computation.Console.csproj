@@ -69,7 +69,6 @@
     <Compile Include="Builders\DamageStatBuilderStub.cs" />
     <Compile Include="Builders\DamageTypeBuilderStub.cs" />
     <Compile Include="Builders\EffectBuilderStub.cs" />
-    <Compile Include="Builders\EquipmentBuilderStub.cs" />
     <Compile Include="Builders\FlagStatBuilderStub.cs" />
     <Compile Include="Builders\GroundEffectBuilderStub.cs" />
     <Compile Include="Builders\ReferenceConverterStub.cs" />

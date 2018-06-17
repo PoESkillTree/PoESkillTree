@@ -43,7 +43,7 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// <summary>
         /// Returns a new value that is equal to this value if the given value is true and null otherwise.
         /// </summary>
-        IValueBuilder If(IValueBuilder condition);
+        IValueBuilder If(IValue condition);
 
         /// <summary>
         /// Returns a value that is equal to this value passed to <paramref name="selector"/>.

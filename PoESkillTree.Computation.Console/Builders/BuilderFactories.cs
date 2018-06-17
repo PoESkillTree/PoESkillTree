@@ -1,22 +1,11 @@
-﻿using PoESkillTree.Computation.Builders.Damage;
-using PoESkillTree.Computation.Builders.Entities;
-using PoESkillTree.Computation.Builders.Equipment;
-using PoESkillTree.Computation.Builders.Forms;
-using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Builders.Values;
-using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Common.Builders.Actions;
+﻿using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Charges;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
-using PoESkillTree.Computation.Common.Builders.Entities;
-using PoESkillTree.Computation.Common.Builders.Equipment;
-using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
@@ -34,36 +23,24 @@ namespace PoESkillTree.Computation.Console.Builders
      * MatchContextStub and ReferenceConverterStub are the classes where resolving is not just passing the call on.
      */
 
-    public class BuilderFactories : IBuilderFactories
+    public class BuilderFactories : Computation.Builders.BuilderFactories
     {
-        public IActionBuilders ActionBuilders => new ActionBuildersStub();
+        public override IActionBuilders ActionBuilders => new ActionBuildersStub();
 
-        public IBuffBuilders BuffBuilders => new BuffBuildersStub();
+        public override IBuffBuilders BuffBuilders => new BuffBuildersStub();
 
-        public IChargeTypeBuilders ChargeTypeBuilders => new ChargeTypeBuildersStub();
+        public override IChargeTypeBuilders ChargeTypeBuilders => new ChargeTypeBuildersStub();
 
-        public IConditionBuilders ConditionBuilders => new ConditionBuildersStub();
+        public override IConditionBuilders ConditionBuilders => new ConditionBuildersStub();
 
-        public IDamageSourceBuilders DamageSourceBuilders => new DamageSourceBuilders();
+        public override IDamageTypeBuilders DamageTypeBuilders => new DamageTypeBuildersStub();
 
-        public IDamageTypeBuilders DamageTypeBuilders => new DamageTypeBuildersStub();
+        public override IEffectBuilders EffectBuilders => new EffectBuildersStub();
 
-        public IEffectBuilders EffectBuilders => new EffectBuildersStub();
+        public override IKeywordBuilders KeywordBuilders => new KeywordBuildersStub();
 
-        public IEntityBuilders EntityBuilders => new EntityBuilders(new StatFactory());
+        public override ISkillBuilders SkillBuilders => new SkillBuildersStub();
 
-        public IEquipmentBuilders EquipmentBuilders => new EquipmentBuildersStub();
-
-        public IFormBuilders FormBuilders => new FormBuilders();
-
-        public IKeywordBuilders KeywordBuilders => new KeywordBuildersStub();
-
-        public ISkillBuilders SkillBuilders => new SkillBuildersStub();
-
-        public IStatBuilders StatBuilders => new StatBuildersStub();
-
-        public IValueBuilders ValueBuilders => new ValueBuilders();
-
-        public IItemSlotBuilders ItemSlotBuilders => new ItemSlotBuilders();
+        public override IStatBuilders StatBuilders => new StatBuildersStub();
     }
 }

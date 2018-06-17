@@ -70,6 +70,9 @@
     <Compile Include="ConstantBuilder.cs" />
     <Compile Include="Damage\DamageSourceBuilders.cs" />
     <Compile Include="Entities\EntityBuilders.cs" />
+    <Compile Include="Equipment\EquipmentBuilder.cs" />
+    <Compile Include="Equipment\EquipmentBuilderCollection.cs" />
+    <Compile Include="Equipment\EquipmentBuilders.cs" />
     <Compile Include="Equipment\ItemSlotBuilders.cs" />
     <Compile Include="ExpressionHelper.cs" />
     <Compile Include="Forms\FormBuilders.cs" />

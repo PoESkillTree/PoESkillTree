@@ -35,6 +35,9 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         public IConditionBuilder Eq(IValueBuilder other) =>
             _value.Eq(other);
 
+        public IConditionBuilder Eq(double other) =>
+            _value.Eq(Create(other));
+
         public static IConditionBuilder operator >(ValueBuilder left, ValueBuilder right) =>
             left._value.GreaterThan(right);
 
@@ -120,7 +123,7 @@ namespace PoESkillTree.Computation.Common.Builders.Values
 
         IValueBuilder IValueBuilder.DivideBy(IValueBuilder divisor) => _value.DivideBy(divisor);
 
-        IValueBuilder IValueBuilder.If(IValueBuilder condition) => _value.If(condition);
+        IValueBuilder IValueBuilder.If(IValue condition) => _value.If(condition);
 
 
         /// <summary>

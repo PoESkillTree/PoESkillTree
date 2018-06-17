@@ -1,7 +1,9 @@
-﻿using PoESkillTree.Computation.Builders.Entities;
+﻿using System.Linq;
+using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Entities;
+using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Tests.Stats
 {
@@ -18,5 +20,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
 
         public static ICoreStatBuilder CreateStatBuilder(IStat stat, IEntityBuilder entityBuilder) =>
             new LeafCoreStatBuilder(_ => stat, entityBuilder);
+
+        public static IStat BuildToSingleStat(this IStatBuilder @this) =>
+            @this.Build(default, null).Single().Stats.Single();
     }
 }

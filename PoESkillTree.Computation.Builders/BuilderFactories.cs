@@ -20,24 +20,33 @@ using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Builders
 {
-    public class BuilderFactories : IBuilderFactories
+    public abstract class BuilderFactories : IBuilderFactories
     {
-        private readonly IStatFactory _statFactory = new StatFactory();
+        public BuilderFactories()
+        {
+            var statFactory = new StatFactory();
+            DamageSourceBuilders = new DamageSourceBuilders();
+            EntityBuilders = new EntityBuilders(statFactory);
+            EquipmentBuilders = new EquipmentBuilders(statFactory);
+            FormBuilders = new FormBuilders();
+            ValueBuilders = new ValueBuilders();
+            ItemSlotBuilders = new ItemSlotBuilders();
+        }
 
-        public IActionBuilders ActionBuilders { get; }
-        public IBuffBuilders BuffBuilders { get; }
-        public IChargeTypeBuilders ChargeTypeBuilders { get; }
-        public IConditionBuilders ConditionBuilders { get; }
-        public IDamageSourceBuilders DamageSourceBuilders { get; } = new DamageSourceBuilders();
-        public IDamageTypeBuilders DamageTypeBuilders { get; }
-        public IEffectBuilders EffectBuilders { get; }
-        public IEntityBuilders EntityBuilders => new EntityBuilders(_statFactory);
+        public abstract IActionBuilders ActionBuilders { get; }
+        public abstract IBuffBuilders BuffBuilders { get; }
+        public abstract IChargeTypeBuilders ChargeTypeBuilders { get; }
+        public abstract IConditionBuilders ConditionBuilders { get; }
+        public IDamageSourceBuilders DamageSourceBuilders { get; }
+        public abstract IDamageTypeBuilders DamageTypeBuilders { get; }
+        public abstract IEffectBuilders EffectBuilders { get; }
+        public IEntityBuilders EntityBuilders { get; }
         public IEquipmentBuilders EquipmentBuilders { get; }
-        public IFormBuilders FormBuilders { get; } = new FormBuilders();
-        public IKeywordBuilders KeywordBuilders { get; }
-        public ISkillBuilders SkillBuilders { get; }
-        public IStatBuilders StatBuilders { get; }
-        public IValueBuilders ValueBuilders { get; } = new ValueBuilders();
-        public IItemSlotBuilders ItemSlotBuilders { get; } = new ItemSlotBuilders();
+        public IFormBuilders FormBuilders { get; }
+        public abstract IKeywordBuilders KeywordBuilders { get; }
+        public abstract ISkillBuilders SkillBuilders { get; }
+        public abstract IStatBuilders StatBuilders { get; }
+        public IValueBuilders ValueBuilders { get; }
+        public IItemSlotBuilders ItemSlotBuilders { get; }
     }
 }

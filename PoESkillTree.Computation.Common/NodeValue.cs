@@ -130,6 +130,9 @@ namespace PoESkillTree.Computation.Common
         public static NodeValue operator +(double left, NodeValue right) =>
             new NodeValue(left) + right;
 
+        public static NodeValue operator +(NodeValue left, double right) =>
+            left + new NodeValue(right);
+
         public static NodeValue operator -(NodeValue left, NodeValue right) =>
             new NodeValue(left.Minimum - right.Minimum, left.Maximum - right.Maximum);
 

@@ -62,8 +62,8 @@ namespace PoESkillTree.Computation.Builders.Values
         public IValueBuilder DivideBy(IValueBuilder divisor) =>
             Create(this, divisor, (left, right) => left / (right ?? new NodeValue(1)));
 
-        public IValueBuilder If(IValueBuilder condition) =>
-            Create(this, condition, (l, r) => r.IsTrue() ? l : null);
+        public IValueBuilder If(IValue condition) =>
+            Create(this, new ValueBuilderImpl(condition), (l, r) => r.IsTrue() ? l : null);
 
         public IValueBuilder Select(Expression<Func<double, double>> selector) =>
             Create(this, o => o.Select(selector.Compile()), o => selector.ToString(o));

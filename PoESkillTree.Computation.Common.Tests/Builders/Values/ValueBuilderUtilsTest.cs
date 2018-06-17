@@ -195,7 +195,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
             public IValueBuilder DivideBy(IValueBuilder divisor) =>
                 new ValueBuilderStub(Value / Convert(divisor));
 
-            public IValueBuilder If(IValueBuilder condition) => throw new NotSupportedException();
+            public IValueBuilder If(IValue condition) => throw new NotSupportedException();
 
             public IValueBuilder Select(Expression<Func<double, double>> selector) => 
                 new ValueBuilderStub(selector.Compile()(Value));
