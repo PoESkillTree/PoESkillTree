@@ -9,7 +9,5 @@ namespace PoESkillTree.Computation.Console.Builders
         public override IDamageRelatedStatBuilder Accuracy => CreateDamageStat("Accuracy");
 
         public override IDamageRelatedStatBuilder CastSpeed => CreateDamageStat("Attack/Cast Speed");
-
-        public override IPoolStatBuilders Pool => new PoolStatBuildersStub();
     }
 }

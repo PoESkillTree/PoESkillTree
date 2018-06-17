@@ -15,52 +15,52 @@ namespace PoESkillTree.Computation.Builders.Stats
     public class StatBuilder : IFlagStatBuilder
     {
         protected IStatFactory StatFactory { get; }
-        private readonly ICoreStatBuilder _coreStatBuilder;
+        protected ICoreStatBuilder CoreStatBuilder { get; }
 
         public StatBuilder(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder)
         {
             StatFactory = statFactory;
-            _coreStatBuilder = coreStatBuilder;
+            CoreStatBuilder = coreStatBuilder;
         }
 
         protected IFlagStatBuilder FromIdentity(string identity, Type dataType, bool isExplicitlyRegistered = false) =>
             With(LeafCoreStatBuilder.FromIdentity(StatFactory, identity, dataType, isExplicitlyRegistered));
 
-        protected IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
+        protected virtual IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
             new StatBuilder(StatFactory, coreStatBuilder);
 
         private IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
-            With(_coreStatBuilder.WithStatConverter(statConverter));
+            With(CoreStatBuilder.WithStatConverter(statConverter));
 
-        public IStatBuilder Resolve(ResolveContext context) => With(_coreStatBuilder.Resolve(context));
+        public IStatBuilder Resolve(ResolveContext context) => With(CoreStatBuilder.Resolve(context));
 
         public IStatBuilder Minimum => WithStatConverter(s => s.Minimum);
         public IStatBuilder Maximum => WithStatConverter(s => s.Maximum);
 
         public ValueBuilder Value =>
-            new ValueBuilder(new ValueBuilderImpl(_coreStatBuilder.BuildValue, c => Resolve(c).Value));
+            new ValueBuilder(new ValueBuilderImpl(CoreStatBuilder.BuildValue, c => Resolve(c).Value));
 
         public IConditionBuilder IsSet =>
             ValueConditionBuilder.Create(Value, v => v.IsTrue());
 
         public IStatBuilder ConvertTo(IStatBuilder stat) =>
-            With(new ConversionStatBuilder(StatFactory.ConvertTo, _coreStatBuilder, new StatBuilderAdapter(stat)));
+            With(new ConversionStatBuilder(StatFactory.ConvertTo, CoreStatBuilder, new StatBuilderAdapter(stat)));
 
         public IStatBuilder GainAs(IStatBuilder stat) =>
-            With(new ConversionStatBuilder(StatFactory.GainAs, _coreStatBuilder, new StatBuilderAdapter(stat)));
+            With(new ConversionStatBuilder(StatFactory.GainAs, CoreStatBuilder, new StatBuilderAdapter(stat)));
 
         public IStatBuilder ChanceToDouble => WithStatConverter(StatFactory.ChanceToDouble);
 
-        public IStatBuilder For(IEntityBuilder entity) => With(_coreStatBuilder.WithEntity(entity));
+        public IStatBuilder For(IEntityBuilder entity) => With(CoreStatBuilder.WithEntity(entity));
 
         public IStatBuilder WithCondition(IConditionBuilder condition) =>
             With(new StatBuilderAdapter(this, condition));
 
         public IStatBuilder CombineWith(IStatBuilder other) =>
-            With(new CompositeCoreStatBuilder(_coreStatBuilder, new StatBuilderAdapter(other)));
+            With(new CompositeCoreStatBuilder(CoreStatBuilder, new StatBuilderAdapter(other)));
 
         public IEnumerable<StatBuilderResult> Build(
             BuildParameters parameters, ModifierSource originalModifierSource) =>
-            _coreStatBuilder.Build(parameters, originalModifierSource);
+            CoreStatBuilder.Build(parameters, originalModifierSource);
     }
 }

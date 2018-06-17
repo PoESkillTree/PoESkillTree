@@ -34,7 +34,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public ILeechStatBuilder Leech =>
             Create<ILeechStatBuilder, IStatBuilder>(
                 (s, r) => new LeechStatBuilderStub(s, r),
-                This, o => $"{o} Leech");
+                This, o => $"{o}.Leech");
 
         public IFlagStatBuilder InstantLeech =>
             CreateFlagStat(This, o => $"{o} gained from Leech instantly");
@@ -46,12 +46,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public override IStatBuilder WithCondition(IConditionBuilder condition) =>
             CreatePoolStat(This, condition, (s, c) => $"{s} ({c})");
-    }
-
-
-    public class PoolStatBuildersStub : IPoolStatBuilders
-    {
-        public IPoolStatBuilder From(Pool pool) => new PoolStatBuilderStub(pool.ToString(), (c, _) => c);
     }
 
 
@@ -101,7 +95,7 @@ namespace PoESkillTree.Computation.Console.Builders
             CreateStat(This, o => $"Maximum {o} rate per second");
 
         public IStatBuilder Rate =>
-            CreateStat(This, o => $"{o} per second");
+            CreateStat(This, o => $"{o}.Rate");
 
         public IStatBuilder TargetPool =>
             CreateStat(This, o => $"{o}.TargetPool");

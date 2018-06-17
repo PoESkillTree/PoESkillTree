@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             FromIdentity("% of damage taken gained as mana over 4 seconds", typeof(int));
 
         public IAttributeStatBuilders Attribute => new AttributeStatBuilders(StatFactory);
-        public abstract IPoolStatBuilders Pool { get; }
+        public IPoolStatBuilders Pool => new PoolStatBuilders(StatFactory);
         public IDodgeStatBuilders Dodge => new DodgeStatBuilders(StatFactory);
         public IFlaskStatBuilders Flask => new FlaskStatBuilders(StatFactory);
         public IProjectileStatBuilders Projectile => new ProjectileStatBuilders(StatFactory);
