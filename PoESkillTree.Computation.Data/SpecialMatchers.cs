@@ -54,7 +54,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "life leech recovers based on your chaos damage instead",
-                    TotalOverride, 1, Life.Leech.BasedOn(Chaos)
+                    BaseAdd, 100, Life.Leech.Of(Chaos.Invert.Damage).ConvertTo(Life.Leech.Of(Chaos.Damage))
                 },
                 // Keystones
                 {

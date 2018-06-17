@@ -106,14 +106,6 @@ namespace PoESkillTree.Computation.Console.Builders
             return Create<IStatBuilder, T1, T2>(Construct, operand1, operand2, stringRepresentation);
         }
 
-        public static IStatBuilder CreateStat<T>(
-            [ItemCanBeNull] IEnumerable<T> operands,
-            Func<IEnumerable<T>, string> stringRepresentation)
-            where T : class, IResolvable<T>
-        {
-            return Create<IStatBuilder, T>(Construct, operands, stringRepresentation);
-        }
-
         public static IStatBuilder CreateStat<T1, T2>(
             [CanBeNull] T1 operand1, [ItemCanBeNull] IEnumerable<T2> operand2,
             Func<T1, IEnumerable<T2>, string> stringRepresentation)
@@ -423,37 +415,6 @@ namespace PoESkillTree.Computation.Console.Builders
                     os.Select(o => o?.Resolve(context))));
 
             return Create(constructor, stringRepresentation(operand1, os), Resolve);
-        }
-
-        /// <summary>
-        /// Creates a <typeparamref name="T1"/> with the given constructor that has the string representation
-        /// <c>stringRepresentation(operand1, operand2, operands)</c>. It resolves to a new instance created with the 
-        /// given constructor and the string representation
-        /// <c>stringRepresentation(operand1?.Resolve(), operand2?.Resolve(), operands.Select(o => o?.Resolve()))</c>,
-        /// which resolves to itself.
-        /// </summary>
-        /// <remarks>
-        /// <paramref name="operands"/> is only enumerated once.
-        /// </remarks>
-        public static T1 Create<T1, T2, T3>(
-            Func<string, Resolver<T1>, T1> constructor,
-            [CanBeNull] T1 operand1,
-            [CanBeNull] T2 operand2,
-            [ItemCanBeNull] IEnumerable<T3> operands,
-            Func<T1, T2, IEnumerable<T3>, string> stringRepresentation)
-            where T1 : class, IResolvable<T1>
-            where T2 : class, IResolvable<T2>
-            where T3 : class, IResolvable<T3>
-        {
-            var os = operands.ToList();
-
-            T1 Resolve(ResolveContext context) =>
-                Create(constructor, stringRepresentation(
-                    operand1?.Resolve(context),
-                    operand2?.Resolve(context),
-                    os.Select(o => o?.Resolve(context))));
-
-            return Create(constructor, stringRepresentation(operand1, operand2, os), Resolve);
         }
 
         /// <summary>

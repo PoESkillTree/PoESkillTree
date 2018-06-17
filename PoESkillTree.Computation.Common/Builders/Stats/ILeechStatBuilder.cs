@@ -1,4 +1,3 @@
-using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
@@ -29,11 +28,5 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// A stat specifying the Pool this stat's leech value is applied to
         /// </summary>
         IStatBuilder TargetPool { get; }
-
-        /// <summary>
-        /// Returns a flag stat indicating whether all leech of this instance's pool is based on the given damage type
-        /// instead of the damage types of damage stats passed to <see cref="Of"/>.
-        /// </summary>
-        IFlagStatBuilder BasedOn(IDamageTypeBuilder damageType);
     }
 }

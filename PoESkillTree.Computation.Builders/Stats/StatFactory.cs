@@ -61,7 +61,10 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStat RegenTargetPool(Pool regenPool, Entity entity) =>
             GetOrAdd($"{regenPool}.Regen.TargetPool", entity, typeof(Pool));
-            
+
+        public IStat LeechPercentage(IStat damage) =>
+            CopyWithSuffix(damage, "Leech", typeof(int));
+
 
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,
             bool isRegisteredExplicitly = false, IReadOnlyList<Behavior> behaviors = null)

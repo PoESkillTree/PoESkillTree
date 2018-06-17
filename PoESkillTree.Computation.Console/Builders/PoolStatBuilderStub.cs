@@ -1,8 +1,6 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
@@ -107,10 +105,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder TargetPool =>
             CreateStat(This, o => $"{o}.TargetPool");
-
-        public IFlagStatBuilder BasedOn(IDamageTypeBuilder damageType) =>
-            CreateFlagStat(This, (IKeywordBuilder) damageType,
-                (o1, o2) => $"{o1} recovers based on {o2} instead");
 
         public ILeechStatBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);

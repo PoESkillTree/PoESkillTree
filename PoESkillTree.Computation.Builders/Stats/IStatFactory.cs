@@ -20,5 +20,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         IStat Regen(Pool pool, Entity entity);
         IStat RegenTargetPool(Pool regenPool, Entity entity);
+
+        IStat LeechPercentage(IStat damage);
     }
 }

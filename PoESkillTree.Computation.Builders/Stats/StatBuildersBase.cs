@@ -18,5 +18,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         protected IFlagStatBuilder FromIdentity(string identity, Type dataType, bool isExplicitlyRegistered = false) =>
             new StatBuilder(StatFactory,
                 LeafCoreStatBuilder.FromIdentity(StatFactory, identity, dataType, isExplicitlyRegistered));
+
+        protected IFlagStatBuilder FromCore(ICoreStatBuilder coreStatBuilder) =>
+            new StatBuilder(StatFactory, coreStatBuilder);
     }
 }
