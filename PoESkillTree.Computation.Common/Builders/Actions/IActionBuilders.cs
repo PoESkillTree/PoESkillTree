@@ -53,6 +53,8 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         /// </summary>
         IActionBuilder SpendMana(IValueBuilder amount);
 
+        IActionBuilder Unique(string description);
+
         /// <summary>
         /// Changes <see cref="IActionBuilder.On()"/> conditions to <see cref="IActionBuilder.InPastXSeconds"/>
         /// conditions.

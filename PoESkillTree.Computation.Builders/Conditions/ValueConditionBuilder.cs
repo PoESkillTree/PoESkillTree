@@ -14,7 +14,7 @@ namespace PoESkillTree.Computation.Builders.Conditions
         private readonly Func<BuildParameters, IValue> _buildValue;
         private readonly Func<ResolveContext, IConditionBuilder> _resolve;
 
-        public ValueConditionBuilder(bool value) : this(new ConditionalValue(value))
+        public ValueConditionBuilder(bool value) : this(new Constant(value))
         {
         }
 

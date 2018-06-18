@@ -32,6 +32,10 @@ namespace PoESkillTree.Computation.Common
         {
         }
 
+        public Constant(bool value) : this((NodeValue?) value)
+        {
+        }
+
         public Constant(NodeValue? value) : base(value) =>
             _value = value;
 
@@ -56,10 +60,6 @@ namespace PoESkillTree.Computation.Common
     public class ConditionalValue : StringIdentityValue
     {
         private readonly Predicate<IValueCalculationContext> _calculate;
-
-        public ConditionalValue(bool value) : this(_ => value, value.ToString())
-        {
-        }
 
         public ConditionalValue(Predicate<IValueCalculationContext> calculate, string identity) 
             : base(identity) =>

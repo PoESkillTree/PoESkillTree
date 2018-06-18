@@ -245,7 +245,7 @@ namespace PoESkillTree.Computation.Data
                 // minions
                 { "minions", For(Entity.Minion) },
                 { "minions (deal|have|gain)", For(Entity.Minion) },
-                { "you and your minions have", For(Entity.Minion, Entity.ModifierSource) },
+                { "you and your minions have", For(Entity.Minion).Or(For(Entity.ModifierSource)) },
                 { "golem", And(For(Entity.Minion), With(Keyword.Golem)) },
                 { "golems have", And(For(Entity.Minion), With(Keyword.Golem)) },
                 { "spectres have", And(For(Entity.Minion), With(Skill.RaiseSpectre)) },
@@ -266,11 +266,11 @@ namespace PoESkillTree.Computation.Data
                 { "while leeching", Condition.Unique("Are you leeching?") },
                 {
                     "when your trap is triggered by an enemy",
-                    Condition.Unique("When your Trap is triggered by an Enemy")
+                    Action.Unique("When your Trap is triggered by an Enemy").On()
                 },
                 {
                     "when your mine is detonated targeting an enemy",
-                    Condition.Unique("When your Mine is detonated targeting an Enemy")
+                    Action.Unique("When your Mine is detonated targeting an Enemy").On()
                 },
                 {
                     "if you've killed an enemy affected by your damage over time recently",

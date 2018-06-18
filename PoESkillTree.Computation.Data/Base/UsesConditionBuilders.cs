@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Data.Base
         protected (IConditionBuilder mainHand, IConditionBuilder offHand) AttackWith(Tags tags) =>
             (MainHandAttackWith(tags), OffHandAttackWith(tags));
 
-        protected IConditionBuilder For(params IEntityBuilder[] targets) => Condition.For(targets);
+        protected IConditionBuilder For(IEntityBuilder target) => Condition.For(target);
 
         /// <summary>
         /// Returns a condition that is satisfied if all given conditions are satisfied.

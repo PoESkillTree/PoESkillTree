@@ -168,7 +168,7 @@ namespace PoESkillTree.Computation.Data
                 {
                     "your hits permanently intimidate enemies that are on full life",
                     TotalOverride, 1, Buff.Intimidate.On(Enemy),
-                    Condition.Unique("on Hit against Enemies that are on Full Life")
+                    Hit.On().And(Life.For(Enemy).IsFull)
                 },
                 // - Inquisitor
                 {

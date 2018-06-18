@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
         IConditionBuilder AttackWith(AttackDamageHand hand);
 
         /// <summary>
-        /// Returns a condition that is satisfied if Self is equivalent to any entity in <paramref name="entities"/>.
+        /// Returns a condition that is satisfied if Self is equivalent to <paramref name="entity"/>.
         /// If this method is not called when creating a modifier, a condition 
         /// <c>For(<see cref="IEntityBuilders.ModifierSource"/>)</c> is implicitly added. I.e. modifiers only apply
         /// to the entity they are gained from by default.
@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
         /// have this condition (probably with some exceptions).</para>
         /// <para>Totems, mines and traps have their own stats but copy the damage stats from the character.</para>
         /// </remarks>
-        IConditionBuilder For(params IEntityBuilder[] entities);
+        IConditionBuilder For(IEntityBuilder entity);
 
         /// <summary>
         /// Returns a condition that is satisfied if the source of modified base values is an item in the specified

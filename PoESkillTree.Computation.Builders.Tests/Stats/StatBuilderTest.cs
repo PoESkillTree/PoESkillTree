@@ -345,7 +345,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var expectedStat = new Stat("1");
             var inputValue = new Constant(2);
             var inputValueBuilder = new ValueBuilderImpl(inputValue);
-            var conditionValue = new ConditionalValue(cond);
+            var conditionValue = new Constant(cond);
             var expectedValue = cond ? (NodeValue?) 2 : null;
             var convertedStatBuilder = new Mock<IStatBuilder>();
             convertedStatBuilder.Setup(b => b.Build(default, ModifierSource))

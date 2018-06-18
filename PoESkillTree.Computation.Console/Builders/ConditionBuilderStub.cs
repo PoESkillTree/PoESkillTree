@@ -51,8 +51,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IConditionBuilder AttackWith(AttackDamageHand hand) =>
             CreateCondition($"Attack with {hand}");
 
-        public IConditionBuilder For(params IEntityBuilder[] entities) =>
-            CreateCondition(entities, os => "For " + string.Join(", ", os));
+        public IConditionBuilder For(IEntityBuilder entity) =>
+            CreateCondition(entity, o => "For " + o);
 
         public IConditionBuilder BaseValueComesFrom(ItemSlot slot) =>
             CreateCondition($"If base value comes from {slot}");
