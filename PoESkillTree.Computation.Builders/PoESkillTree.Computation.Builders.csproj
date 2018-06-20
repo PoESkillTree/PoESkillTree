@@ -68,7 +68,7 @@
     <Compile Include="Conditions\ConditionBuilders.cs" />
     <Compile Include="Conditions\OrCompositeConditionBuilder.cs" />
     <Compile Include="Conditions\StatConvertingConditionBuilder.cs" />
-    <Compile Include="Conditions\TrueConditionBuilder.cs" />
+    <Compile Include="Conditions\ConstantConditionBuilder.cs" />
     <Compile Include="Conditions\ValueConditionBuilder.cs" />
     <Compile Include="ConstantBuilder.cs" />
     <Compile Include="Damage\DamageSourceBuilders.cs" />

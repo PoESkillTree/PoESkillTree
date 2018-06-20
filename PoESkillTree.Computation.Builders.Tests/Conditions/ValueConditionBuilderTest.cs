@@ -53,29 +53,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             Assert.AreEqual(expected, actual);
         }
 
-        [Test]
-        public void AndCreatesCompositeConditionBuilder()
-        {
-            var sut = CreateSut();
-            var other = Mock.Of<IConditionBuilder>();
-
-            var actual = sut.And(other);
-
-            Assert.AreEqual(new AndCompositeConditionBuilder(sut, other), actual);
-        }
-
-        [Test]
-        public void OrCreatesCompositeConditionBuilder()
-        {
-            var sut = CreateSut();
-            var other = Mock.Of<IConditionBuilder>();
-
-            var actual = sut.Or(other);
-
-            Assert.AreEqual(new OrCompositeConditionBuilder(sut, other), actual);
-        }
-
-        private static ValueConditionBuilder CreateSut(bool condition = false) =>
-            new ValueConditionBuilder(condition);
+        private static IConditionBuilder CreateSut(bool condition = false) =>
+            ConstantConditionBuilder.Create(condition);
     }
 }

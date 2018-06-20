@@ -87,11 +87,11 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
         public void BuildReturnsTrueValueIfAllAreTrue(bool condition)
         {
             var expected = (NodeValue?) condition;
-            var conditions = new IConditionBuilder[]
+            var conditions = new[]
             {
-                new TrueConditionBuilder(),
-                new ValueConditionBuilder(condition),
-                new TrueConditionBuilder(),
+                ConstantConditionBuilder.True,
+                ConstantConditionBuilder.Create(condition),
+                ConstantConditionBuilder.True,
             };
             var sut = CreateSut(conditions);
 

@@ -68,9 +68,9 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             var expected = (NodeValue?) condition;
             var conditions = new[]
             {
-                new TrueConditionBuilder().Not,
-                new ValueConditionBuilder(condition),
-                new TrueConditionBuilder().Not,
+                ConstantConditionBuilder.False,
+                ConstantConditionBuilder.Create(condition),
+                ConstantConditionBuilder.False,
             };
             var sut = CreateSut(conditions);
 

@@ -35,9 +35,9 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
             var sut = CreateSut();
 
             IValueBuilder valueBuilder = sut
-                .If(new ValueConditionBuilder(trueBranch == 0))
+                .If(ConstantConditionBuilder.Create(trueBranch == 0))
                 .Then(0)
-                .ElseIf(new ValueConditionBuilder(trueBranch == 1))
+                .ElseIf(ConstantConditionBuilder.Create(trueBranch == 1))
                 .Then(new ValueBuilderImpl(1))
                 .Else(new ValueBuilderImpl(2));
 

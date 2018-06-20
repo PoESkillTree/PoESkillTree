@@ -9,70 +9,10 @@ using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Builders.Conditions
 {
-    public class ValueConditionBuilder : ConditionBuilderBase
+    public static class ValueConditionBuilder
     {
-        private readonly Func<BuildParameters, IValue> _buildValue;
-        private readonly Func<ResolveContext, IConditionBuilder> _resolve;
-
-        public ValueConditionBuilder(bool value) : this(_ => new Constant(value))
-        {
-        }
-
-        private ValueConditionBuilder(Func<BuildParameters, IValue> buildValue)
-        {
-            _buildValue = buildValue;
-            _resolve = _ => this;
-        }
-
-        private ValueConditionBuilder(
-            Func<BuildParameters, IValue> buildValue, Func<ResolveContext, Func<BuildParameters, IValue>> resolve)
-        {
-            _buildValue = buildValue;
-            _resolve = c => new ValueConditionBuilder(resolve(c));
-        }
-
-        public override IConditionBuilder Resolve(ResolveContext context) => _resolve(context);
-
-        public override IConditionBuilder Not => Create(this, b => !b);
-
-        public override (StatConverter statConverter, IValue value) Build(BuildParameters parameters) =>
-            (Funcs.Identity, _buildValue(parameters));
-
-        // TODO Only here for compatibility with stubs in Console. Remove once those are removed.
-        public override string ToString() => Build(default).value.ToString();
-
-
-        private static IConditionBuilder Create(
-            ValueConditionBuilder operand,
-            Expression<Func<bool, bool>> calculate) =>
-            new ValueConditionBuilder(
-                ps => Build(ps, operand, calculate),
-                c => (ps => Build(ps, operand.Resolve(c), calculate)));
-
-        public static IConditionBuilder Create(
-            IValueBuilder operand,
-            Expression<Func<NodeValue?, bool>> calculate) =>
-            new ValueConditionBuilder(
-                ps => Build(ps, operand, calculate),
-                c => (ps => Build(ps, operand.Resolve(c), calculate)));
-
-        public static IConditionBuilder Create(
-            IValueBuilder operand1, IValueBuilder operand2,
-            Expression<Func<NodeValue?, NodeValue?, bool>> calculate) =>
-            new ValueConditionBuilder(
-                ps => Build(ps, operand1, operand2, calculate),
-                c => (ps => Build(ps, operand1.Resolve(c), operand2.Resolve(c), calculate)));
-
-        private static IValue Build(
-            BuildParameters parameters,
-            IConditionBuilder operand,
-            Expression<Func<bool, bool>> calculate)
-        {
-            var builtOperand = operand.Build(parameters).value;
-            var func = calculate.Compile();
-            var identity = calculate.ToString(builtOperand);
-            return new ConditionalValue(c => func(builtOperand.Calculate(c).IsTrue()), identity);
-        }
+        public static IConditionBuilder Create(IValueBuilder operand, Expression<Func<NodeValue?, bool>> calculate) =>
+            new ValueConditionBuilder<IValueBuilder>((p, o) => Build(p, o, calculate), operand);
 
         private static IValue Build(
             BuildParameters parameters,
@@ -85,6 +25,12 @@ namespace PoESkillTree.Computation.Builders.Conditions
             return new ConditionalValue(c => func(builtOperand.Calculate(c)), identity);
         }
 
+        public static IConditionBuilder Create(
+            IValueBuilder operand1, IValueBuilder operand2,
+            Expression<Func<NodeValue?, NodeValue?, bool>> calculate) =>
+            new ValueConditionBuilder<IValueBuilder, IValueBuilder>(
+                (p, o1, o2) => Build(p, o1, o2, calculate), operand1, operand2);
+
         private static IValue Build(
             BuildParameters parameters,
             IValueBuilder operand1, IValueBuilder operand2,
@@ -95,6 +41,13 @@ namespace PoESkillTree.Computation.Builders.Conditions
             var func = calculate.Compile();
             var identity = calculate.ToString(o1, o2);
             return new ConditionalValue(c => func(o1.Calculate(c), o2.Calculate(c)), identity);
+        }
+
+        public static IConditionBuilder Create<TParameter>(
+            Func<BuildParameters, TParameter, IStat> buildStat, TParameter parameter)
+            where TParameter : IResolvable<TParameter>
+        {
+            return new ValueConditionBuilder<TParameter>((p, t) => new StatValue(buildStat(p, t)), parameter);
         }
     }
 
@@ -114,12 +67,44 @@ namespace PoESkillTree.Computation.Builders.Conditions
             new ValueConditionBuilder<TParameter>(_buildValue, _parameter.Resolve(context));
 
         public override IConditionBuilder Not =>
-            new ValueConditionBuilder<TParameter>((b, p) => NotValue(_buildValue(b, p)), _parameter);
-
-        private static IValue NotValue(IValue value) =>
-            new ConditionalValue(c => !value.Calculate(c).IsTrue(), $"Not({value})");
+            new ValueConditionBuilder<TParameter>((b, p) => new NotValue(_buildValue(b, p)), _parameter);
 
         public override (StatConverter statConverter, IValue value) Build(BuildParameters parameters) =>
             (Funcs.Identity, _buildValue(parameters, _parameter));
+
+        // TODO Only here for compatibility with stubs in Console. Remove once those are removed.
+        public override string ToString() => Build(default).value.ToString();
+    }
+
+    public class ValueConditionBuilder<TParameter1, TParameter2> : ConditionBuilderBase
+        where TParameter1 : IResolvable<TParameter1>
+        where TParameter2 : IResolvable<TParameter2>
+    {
+        private readonly Func<BuildParameters, TParameter1, TParameter2, IValue> _buildValue;
+        private readonly TParameter1 _parameter1;
+        private readonly TParameter2 _parameter2;
+
+        public ValueConditionBuilder(
+            Func<BuildParameters, TParameter1, TParameter2, IValue> buildValue,
+            TParameter1 parameter1, TParameter2 parameter2)
+        {
+            _buildValue = buildValue;
+            _parameter1 = parameter1;
+            _parameter2 = parameter2;
+        }
+
+        public override IConditionBuilder Resolve(ResolveContext context) =>
+            new ValueConditionBuilder<TParameter1, TParameter2>(
+                _buildValue, _parameter1.Resolve(context), _parameter2.Resolve(context));
+
+        public override IConditionBuilder Not =>
+            new ValueConditionBuilder<TParameter1, TParameter2>(
+                (b, p1, p2) => new NotValue(_buildValue(b, p1, p2)), _parameter1, _parameter2);
+
+        public override (StatConverter statConverter, IValue value) Build(BuildParameters parameters) =>
+            (Funcs.Identity, _buildValue(parameters, _parameter1, _parameter2));
+
+        // TODO Only here for compatibility with stubs in Console. Remove once those are removed.
+        public override string ToString() => Build(default).value.ToString();
     }
 }

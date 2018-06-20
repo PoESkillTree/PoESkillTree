@@ -65,7 +65,7 @@ namespace PoESkillTree.Computation.Builders.Equipment
 
         private IReadOnlyList<IConditionBuilder> Select(Func<IEquipmentBuilder, IConditionBuilder> predicate)
         {
-            predicate = predicate ?? (_ => new TrueConditionBuilder());
+            predicate = predicate ?? (_ => ConstantConditionBuilder.True);
             return ItemSlotValues.Select(s => predicate(this[s])).ToList();
         }
 

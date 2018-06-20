@@ -64,6 +64,12 @@ namespace PoESkillTree.Computation.Common
             _calculate(context);
     }
 
+    public class NotValue : ConditionalValue
+    {
+        public NotValue(IValue value) : base(c => !value.Calculate(c).IsTrue(), $"Not({value})")
+        {
+        }
+    }
 
     public class ConditionalValue : StringIdentityValue
     {
