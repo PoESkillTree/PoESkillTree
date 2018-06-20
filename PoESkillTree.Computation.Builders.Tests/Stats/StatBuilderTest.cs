@@ -10,6 +10,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
+using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
@@ -79,13 +80,14 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
 
         [TestCase("1234")]
         [TestCase("test")]
-        public void StatToStringReturnsPassedIdentity(string identity)
+        public void StatToStringReturnsPassedIdentityAndEntity(string identity)
         {
+            var expected = $"{default(Entity)}.{identity}";
             var sut = CreateSut(identity);
 
             var actual = BuildToSingleStat(sut).ToString();
 
-            Assert.AreEqual(identity, actual);
+            Assert.AreEqual(expected, actual);
         }
 
         [TestCase("1", Entity.Enemy)]
@@ -93,7 +95,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [TestCase("2", Entity.Character)]
         public void StatEqualsComparesIdentityAndEntity(string identity, Entity entity)
         {
-            var comparedStat = Mock.Of<IStat>(s => s.ToString() == identity && s.Entity == entity);
+            var comparedStat = Mock.Of<IStat>(s => s.Identity == identity && s.Entity == entity);
             var statBuilder = CreateSut("1", Entity.Enemy);
             var sut = BuildToSingleStat(statBuilder);
             var expected = identity == "1" && entity == Entity.Enemy;
@@ -429,13 +431,35 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.AreEqual(expected, actual.IsTrue());
         }
 
-        private static IStat BuildToSingleStat(IStatBuilder statBuilder, Entity entity = Entity.Character)
+        [TestCase(true)]
+        [TestCase(false)]
+        public void WithKeywordBuildsToCorrectValueConverter(bool hasKeyword)
+        {
+            var expected = new Constant(hasKeyword).Calculate(null);
+            var keyword = Mock.Of<IKeywordBuilder>(b => b.Build() == Keyword.Projectile);
+            var hasKeywordStat = new StatFactory().ActiveSkillHasKeyword(default, keyword.Build());
+            var context = Mock.Of<IValueCalculationContext>(c =>
+                c.GetValue(hasKeywordStat, NodeType.Total, PathDefinition.MainPath) == expected);
+            var sut = CreateSut();
+
+            var (_, _, valueConverter) = BuildToSingle(sut.With(keyword));
+            var actual = valueConverter(new ValueBuilderImpl(1)).Build().Calculate(context);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        private static IStat BuildToSingleStat(IStatBuilder statBuilder, Entity entity = default)
+        {
+            var (stats, _, _) = BuildToSingle(statBuilder, entity);
+            Assert.That(stats, Has.One.Items);
+            return stats.Single();
+        }
+
+        private static StatBuilderResult BuildToSingle(IStatBuilder statBuilder, Entity entity = default)
         {
             var results = statBuilder.Build(new BuildParameters(entity, default), ModifierSource).ToList();
             Assert.That(results, Has.One.Items);
-            var (stats, _, _) = results.Single();
-            Assert.That(stats, Has.One.Items);
-            return stats.Single();
+            return results.Single();
         }
 
         private static StatBuilder CreateSut(params Entity[] entities) => CreateSut("", entities);

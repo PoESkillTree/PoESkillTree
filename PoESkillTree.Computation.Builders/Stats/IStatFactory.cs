@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -22,5 +23,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat RegenTargetPool(Pool regenPool, Entity entity);
 
         IStat LeechPercentage(IStat damage);
+
+        IStat ActiveSkillId(Entity entity);
+        IStat ActiveSkillHasKeyword(Entity entity, Keyword keyword);
     }
 }

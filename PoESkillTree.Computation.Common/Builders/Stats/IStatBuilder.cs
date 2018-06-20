@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
@@ -54,6 +55,17 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// See <see cref="IConditionBuilders.For"/> for more information.
         /// </summary>
         IStatBuilder For(IEntityBuilder entity);
+
+        /// <summary>
+        /// This stat only applies if the active skill has the given keyword. Normally refers to the selected skill
+        /// part, but some damage related stats can have separate keywords.
+        /// </summary>
+        IStatBuilder With(IKeywordBuilder keyword);
+
+        /// <summary>
+        /// This stat only applies if the active skill does not have the given keyword.
+        /// </summary>
+        IStatBuilder NotWith(IKeywordBuilder keyword);
 
         /// <summary>
         /// Returns a stat that is identical to this stat but is only modified if the given condition is satisfied.

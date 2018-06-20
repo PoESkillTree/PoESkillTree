@@ -20,11 +20,6 @@ namespace PoESkillTree.Computation.Common
         string Identity { get; }
 
         /// <summary>
-        /// Returns <see cref="Identity"/>.
-        /// </summary>
-        string ToString();
-
-        /// <summary>
         /// The <see cref="Entity"/> this stat belongs to.
         /// </summary>
         Entity Entity { get; }

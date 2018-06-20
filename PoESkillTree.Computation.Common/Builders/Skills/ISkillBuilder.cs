@@ -2,6 +2,7 @@
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Common.Builders.Skills
 {
@@ -28,5 +29,10 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         /// Shortcut for <c>Instances.Value > 0</c>.
         /// </remarks>
         IConditionBuilder HasInstance { get; }
+
+        /// <summary>
+        /// This skill's identifier.
+        /// </summary>
+        ValueBuilder SkillId { get; }
     }
 }

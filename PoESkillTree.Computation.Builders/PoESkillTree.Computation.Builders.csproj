@@ -64,7 +64,10 @@
     <Compile Include="Behaviors\ValueTransformation.cs" />
     <Compile Include="BuilderFactories.cs" />
     <Compile Include="Conditions\AndCompositeConditionBuilder.cs" />
+    <Compile Include="Conditions\ConditionBuilderBase.cs" />
+    <Compile Include="Conditions\ConditionBuilders.cs" />
     <Compile Include="Conditions\OrCompositeConditionBuilder.cs" />
+    <Compile Include="Conditions\StatConvertingConditionBuilder.cs" />
     <Compile Include="Conditions\TrueConditionBuilder.cs" />
     <Compile Include="Conditions\ValueConditionBuilder.cs" />
     <Compile Include="ConstantBuilder.cs" />
@@ -92,6 +95,7 @@
     <Compile Include="Stats\StatBuilderAdapter.cs" />
     <Compile Include="Stats\StatBuildersBase.cs" />
     <Compile Include="Stats\StatBuilderUtils.cs" />
+    <Compile Include="Stats\StatBuilderWithModifierSource.cs" />
     <Compile Include="Stats\StatFactory.cs" />
     <Compile Include="Values\ValueBuilderImpl.cs" />
     <Compile Include="Values\ValueBuilders.cs" />

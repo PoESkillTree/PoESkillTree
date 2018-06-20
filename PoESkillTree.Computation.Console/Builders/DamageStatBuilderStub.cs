@@ -30,6 +30,9 @@ namespace PoESkillTree.Computation.Console.Builders
         public IDamageRelatedStatBuilder With(IDamageSourceBuilder source) =>
             CreateDamageStat(This, source, (o1, o2) => $"With {o2} {o1}");
 
+        public IDamageRelatedStatBuilder With(DamageSource source)=>
+            CreateDamageStat(This, o1 => $"With {source} {o1}");
+
         public IDamageRelatedStatBuilder WithHits =>
             CreateDamageStat(This, o => $"With {o} from hits");
 

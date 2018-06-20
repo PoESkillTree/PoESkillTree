@@ -45,13 +45,13 @@ namespace PoESkillTree.Computation.Builders.Stats
         private IStat CopyWithSuffix(string identitySuffix, bool hasRange = true) =>
             new Stat(Identity + "." + identitySuffix, Entity, DataType, hasRange: hasRange);
 
-        public override string ToString() => Identity;
+        public override string ToString() => Entity + "." + Identity;
 
         public override bool Equals(object obj) =>
             (obj == this) || (obj is IStat other && Equals(other));
 
         public bool Equals(IStat other) =>
-            (other != null) && ToString().Equals(other.ToString()) && Entity == other.Entity;
+            (other != null) && Identity.Equals(other.Identity) && Entity == other.Entity;
 
         public override int GetHashCode() =>
             (Identity, Entity).GetHashCode();

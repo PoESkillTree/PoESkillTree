@@ -9,16 +9,12 @@ using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Builders.Conditions
 {
-    public class ValueConditionBuilder : IConditionBuilder
+    public class ValueConditionBuilder : ConditionBuilderBase
     {
         private readonly Func<BuildParameters, IValue> _buildValue;
         private readonly Func<ResolveContext, IConditionBuilder> _resolve;
 
-        public ValueConditionBuilder(bool value) : this(new Constant(value))
-        {
-        }
-
-        private ValueConditionBuilder(IValue value) : this(_ => value)
+        public ValueConditionBuilder(bool value) : this(_ => new Constant(value))
         {
         }
 
@@ -35,17 +31,11 @@ namespace PoESkillTree.Computation.Builders.Conditions
             _resolve = c => new ValueConditionBuilder(resolve(c));
         }
 
-        public IConditionBuilder Resolve(ResolveContext context) => _resolve(context);
+        public override IConditionBuilder Resolve(ResolveContext context) => _resolve(context);
 
-        public IConditionBuilder And(IConditionBuilder condition) =>
-            new AndCompositeConditionBuilder(this, condition);
+        public override IConditionBuilder Not => Create(this, b => !b);
 
-        public IConditionBuilder Or(IConditionBuilder condition) =>
-            new OrCompositeConditionBuilder(this, condition);
-
-        public IConditionBuilder Not => Create(this, b => !b);
-
-        public (StatConverter statConverter, IValue value) Build(BuildParameters parameters) =>
+        public override (StatConverter statConverter, IValue value) Build(BuildParameters parameters) =>
             (Funcs.Identity, _buildValue(parameters));
 
         // TODO Only here for compatibility with stubs in Console. Remove once those are removed.
@@ -106,5 +96,30 @@ namespace PoESkillTree.Computation.Builders.Conditions
             var identity = calculate.ToString(o1, o2);
             return new ConditionalValue(c => func(o1.Calculate(c), o2.Calculate(c)), identity);
         }
+    }
+
+    public class ValueConditionBuilder<TParameter> : ConditionBuilderBase
+        where TParameter : IResolvable<TParameter>
+    {
+        private readonly Func<BuildParameters, TParameter, IValue> _buildValue;
+        private readonly TParameter _parameter;
+
+        public ValueConditionBuilder(Func<BuildParameters, TParameter, IValue> buildValue, TParameter parameter)
+        {
+            _buildValue = buildValue;
+            _parameter = parameter;
+        }
+
+        public override IConditionBuilder Resolve(ResolveContext context) =>
+            new ValueConditionBuilder<TParameter>(_buildValue, _parameter.Resolve(context));
+
+        public override IConditionBuilder Not =>
+            new ValueConditionBuilder<TParameter>((b, p) => NotValue(_buildValue(b, p)), _parameter);
+
+        private static IValue NotValue(IValue value) =>
+            new ConditionalValue(c => !value.Calculate(c).IsTrue(), $"Not({value})");
+
+        public override (StatConverter statConverter, IValue value) Build(BuildParameters parameters) =>
+            (Funcs.Identity, _buildValue(parameters, _parameter));
     }
 }

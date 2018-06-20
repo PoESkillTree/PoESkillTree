@@ -5,6 +5,7 @@ using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Values;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
@@ -31,6 +32,9 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IConditionBuilder HasInstance =>
             CreateCondition(This, o => $"{o} has any instances");
+
+        public ValueBuilder SkillId =>
+            new ValueBuilder(CreateValue(This, o => $"{o}.SkillId"));
 
         public ISkillBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);

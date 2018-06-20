@@ -63,6 +63,7 @@
     <Compile Include="BuilderExtensions.cs" />
     <Compile Include="BuildersHelper.cs" />
     <Compile Include="Conditions\AndCompositeConditionBuilderTest.cs" />
+    <Compile Include="Conditions\ConditionBuildersTest.cs" />
     <Compile Include="Conditions\OrCompositeConditionBuilderTest.cs" />
     <Compile Include="Conditions\ValueConditionBuilderTest.cs" />
     <Compile Include="Damage\DamageSourceBuildersTest.cs" />

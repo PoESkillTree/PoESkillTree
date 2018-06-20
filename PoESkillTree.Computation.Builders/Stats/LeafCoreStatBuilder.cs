@@ -42,8 +42,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             if (stats.Count != 1)
                 throw new ParseException("Can only access the value of stat builders that represent a single stat");
 
-            var stat = stats.Single();
-            return new FunctionalValue(c => c.GetValue(stat), $"{stat}.Value");
+            return new StatValue(stats.Single());
         }
 
         public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)

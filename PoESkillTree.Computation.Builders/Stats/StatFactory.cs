@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -42,11 +43,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         public IStat ConvertTo(IStat source, IStat target) =>
-            CopyWithSuffix(source, $"{nameof(ConvertTo)}({target})", typeof(int),
+            CopyWithSuffix(source, $"{nameof(ConvertTo)}({target.Identity})", typeof(int),
                 behaviors: _behaviorFactory.ConvertTo(source, target));
 
         public IStat GainAs(IStat source, IStat target) =>
-            CopyWithSuffix(source, $"{nameof(GainAs)}({target})", typeof(int),
+            CopyWithSuffix(source, $"{nameof(GainAs)}({target.Identity})", typeof(int),
                 behaviors: _behaviorFactory.GainAs(source, target));
 
         public IStat Conversion(IStat source) =>
@@ -64,6 +65,12 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStat LeechPercentage(IStat damage) =>
             CopyWithSuffix(damage, "Leech", typeof(int));
+
+        public IStat ActiveSkillId(Entity entity) =>
+            GetOrAdd(nameof(ActiveSkillId), entity, typeof(int));
+
+        public IStat ActiveSkillHasKeyword(Entity entity, Keyword keyword) =>
+            GetOrAdd($"ActiveSkillHas.{keyword}", entity, typeof(bool));
 
 
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,

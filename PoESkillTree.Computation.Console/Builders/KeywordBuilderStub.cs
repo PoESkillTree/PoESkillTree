@@ -14,6 +14,8 @@ namespace PoESkillTree.Computation.Console.Builders
         }
 
         public IKeywordBuilder Resolve(ResolveContext context) => _resolver(this, context);
+
+        public Keyword Build() => throw new System.NotImplementedException();
     }
 
 

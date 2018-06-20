@@ -1,5 +1,6 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
+using PoESkillTree.Computation.Common.Builders.Skills;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
@@ -14,6 +15,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// Limits the damage by source.
         /// </summary>
         IDamageRelatedStatBuilder With(IDamageSourceBuilder source);
+        IDamageRelatedStatBuilder With(DamageSource source);
 
         /// <summary>
         /// Limits the damage to not apply to damage over time.

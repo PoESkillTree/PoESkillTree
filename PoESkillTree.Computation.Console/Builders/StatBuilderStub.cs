@@ -6,6 +6,7 @@ using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
@@ -37,6 +38,12 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder For(IEntityBuilder entity) =>
             CreateStat(This, entity, (o1, o2) => $"{o1} for {o2}");
+
+        public IStatBuilder With(IKeywordBuilder keyword) =>
+            CreateStat(This, keyword, (o1, o2) => $"{o1} (with {o2} skills)");
+
+        public IStatBuilder NotWith(IKeywordBuilder keyword) =>
+            CreateStat(This, keyword, (o1, o2) => $"{o1} (not with {o2} skills)");
 
         public IStatBuilder ChanceToDouble =>
             CreateStat(This, o => $"Chance to double {o}");

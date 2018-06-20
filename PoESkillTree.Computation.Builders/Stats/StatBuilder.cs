@@ -7,6 +7,7 @@ using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 
@@ -52,6 +53,18 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder ChanceToDouble => WithStatConverter(StatFactory.ChanceToDouble);
 
         public IStatBuilder For(IEntityBuilder entity) => With(CoreStatBuilder.WithEntity(entity));
+
+        public IStatBuilder With(IKeywordBuilder keyword) => WithCondition(KeywordCondition(keyword));
+
+        public IStatBuilder NotWith(IKeywordBuilder keyword) => WithCondition(KeywordCondition(keyword).Not);
+
+        private IConditionBuilder KeywordCondition(IKeywordBuilder keyword)
+        {
+            IValue Build(BuildParameters p, IKeywordBuilder k) =>
+                new StatValue(StatFactory.ActiveSkillHasKeyword(p.ModifierSourceEntity, k.Build()));
+
+            return new ValueConditionBuilder<IKeywordBuilder>(Build, keyword);
+        }
 
         public IStatBuilder WithCondition(IConditionBuilder condition) =>
             With(new StatBuilderAdapter(this, condition));

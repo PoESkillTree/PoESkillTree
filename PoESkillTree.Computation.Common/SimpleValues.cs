@@ -44,6 +44,14 @@ namespace PoESkillTree.Computation.Common
     }
 
 
+    public class StatValue : FunctionalValue
+    {
+        public StatValue(IStat stat) : base(c => c.GetValue(stat), $"{stat}.Value")
+        {
+        }
+    }
+
+
     public class FunctionalValue : StringIdentityValue
     {
         private readonly Func<IValueCalculationContext, NodeValue?> _calculate;
