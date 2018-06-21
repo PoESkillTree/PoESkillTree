@@ -74,7 +74,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             };
             var sut = CreateSut(conditions);
 
-            var actual = sut.Build().value.Calculate(null);
+            var actual = sut.Build().Value.Calculate(null);
             Assert.AreEqual(expected, actual);
         }
 
@@ -93,7 +93,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             var conditions = converters.Select(CreateCondition);
             var sut = CreateSut(conditions);
 
-            var actual = sut.Build().statConverter(stats[0]);
+            var actual = sut.Build().StatConverter(stats[0]);
 
             Assert.AreEqual(expected, actual);
 

@@ -22,7 +22,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Equipment
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(tagsStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue((double) slotTags));
 
-            var value = sut.Has(queryTags).Build(default).value;
+            var value = sut.Has(queryTags).Build(default).Value;
             var actual = value.Calculate(context);
 
             Assert.AreEqual(slotTags.HasFlag(queryTags), actual.IsTrue());

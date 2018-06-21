@@ -88,12 +88,12 @@ namespace PoESkillTree.Computation.Builders.Values
                     foreach (var (c, v) in conditionValuePairs)
                     {
                         var condition = c.Build(parameters);
-                        if (condition.statConverter != Funcs.Identity)
+                        if (condition.HasStatConverter)
                         {
                             throw new ParseException(
                                 $"Conditions for building conditional values must be value conditions. {c}");
                         }
-                        pairs.Add((condition.value, v.Build(parameters)));
+                        pairs.Add((condition.Value, v.Build(parameters)));
                     }
                     return new BranchingValue(pairs, elseValue.Build(parameters));
                 }

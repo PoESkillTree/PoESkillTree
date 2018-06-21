@@ -103,7 +103,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
         {
             var sut = CreateSut(leftValue);
 
-            var actual = sut.Eq(new ValueBuilderImpl(rightValue)).Build().value.Calculate(null);
+            var actual = sut.Eq(new ValueBuilderImpl(rightValue)).Build().Value.Calculate(null);
 
             Assert.AreEqual((NodeValue?) expected, actual);
         }
@@ -114,7 +114,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
         {
             var sut = CreateSut(leftValue);
 
-            var actual = sut.GreaterThan(new ValueBuilderImpl(rightValue)).Build().value.Calculate(null);
+            var actual = sut.GreaterThan(new ValueBuilderImpl(rightValue)).Build().Value.Calculate(null);
 
             Assert.AreEqual((NodeValue?) expected, actual);
         }

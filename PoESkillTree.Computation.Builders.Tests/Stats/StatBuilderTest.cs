@@ -353,7 +353,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             convertedStatBuilder.Setup(b => b.Build(default, ModifierSource))
                 .Returns(CreateResult(expectedStat));
             var condition = new Mock<IConditionBuilder>();
-            condition.Setup(b => b.Build(default)).Returns((_ => convertedStatBuilder.Object, conditionValue));
+            condition.Setup(b => b.Build(default))
+                .Returns(new ConditionBuilderResult(_ => convertedStatBuilder.Object, conditionValue));
             var sut = CreateSut();
 
             var sutWithCondition = sut.WithCondition(condition.Object);
@@ -426,7 +427,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var sut = CreateSut(coreStatBuilder);
 
             var conditionBuilder = sut.IsSet;
-            var actual = conditionBuilder.Build().value.Calculate(null);
+            var actual = conditionBuilder.Build().Value.Calculate(null);
 
             Assert.AreEqual(expected, actual.IsTrue());
         }

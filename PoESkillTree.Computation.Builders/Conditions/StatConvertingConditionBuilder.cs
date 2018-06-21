@@ -1,5 +1,4 @@
-﻿using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Builders;
+﻿using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -25,8 +24,8 @@ namespace PoESkillTree.Computation.Builders.Conditions
 
         public override IConditionBuilder Not => this;
 
-        public override (StatConverter statConverter, IValue value) Build(BuildParameters parameters) =>
-            (s => _statConverter(s, _parameter), new Constant(true));
+        public override ConditionBuilderResult Build(BuildParameters parameters) =>
+            new ConditionBuilderResult(s => _statConverter(s, _parameter));
     }
 
     public class StatConvertingConditionBuilder : ConditionBuilderBase
@@ -49,7 +48,7 @@ namespace PoESkillTree.Computation.Builders.Conditions
         public override IConditionBuilder Not =>
             new StatConvertingConditionBuilder(_negatedStatConverter, _statConverter);
 
-        public override (StatConverter statConverter, IValue value) Build(BuildParameters parameters) =>
-            (_statConverter, new Constant(true));
+        public override ConditionBuilderResult Build(BuildParameters parameters) =>
+            new ConditionBuilderResult(_statConverter);
     }
 }

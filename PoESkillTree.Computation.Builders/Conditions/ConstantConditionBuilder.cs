@@ -1,5 +1,4 @@
-﻿using PoESkillTree.Common.Utils;
-using PoESkillTree.Computation.Common;
+﻿using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -25,7 +24,7 @@ namespace PoESkillTree.Computation.Builders.Conditions
 
         public IConditionBuilder Not => Create(!_value);
 
-        public (StatConverter statConverter, IValue value) Build(BuildParameters parameters) =>
-            (Funcs.Identity, new Constant(_value));
+        public ConditionBuilderResult Build(BuildParameters parameters) =>
+            new ConditionBuilderResult(new Constant(_value));
     }
 }

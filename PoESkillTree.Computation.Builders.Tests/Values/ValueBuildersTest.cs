@@ -50,7 +50,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
         {
             var sut = CreateSut();
             var conditionMock = new Mock<IConditionBuilder>();
-            conditionMock.Setup(b => b.Build(default)).Returns((_ => Mock.Of<IStatBuilder>(), new Constant(0)));
+            conditionMock.Setup(b => b.Build(default))
+                .Returns(new ConditionBuilderResult(_ => Mock.Of<IStatBuilder>(), new Constant(0)));
 
             IValueBuilder valueBuilder = sut.If(conditionMock.Object).Then(1).Else(0);
 

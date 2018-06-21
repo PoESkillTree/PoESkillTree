@@ -17,6 +17,6 @@ namespace PoESkillTree.Computation.Builders.Conditions
 
         public abstract IConditionBuilder Not { get; }
 
-        public abstract (StatConverter statConverter, IValue value) Build(BuildParameters parameters);
+        public abstract ConditionBuilderResult Build(BuildParameters parameters);
     }
 }

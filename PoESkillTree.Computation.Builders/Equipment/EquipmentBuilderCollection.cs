@@ -45,7 +45,8 @@ namespace PoESkillTree.Computation.Builders.Equipment
 
             IValue Build(BuildParameters parameters, IEnumerable<IConditionBuilder> cs)
             {
-                var builtConditions = cs.Select(c => c.Build(parameters).value).ToList();
+                // TODO Throw if c.HasStatConverter
+                var builtConditions = cs.Select(c => c.Build(parameters).Value).ToList();
                 return new FunctionalValue(
                     c => Calculate(c, builtConditions),
                     $"Count({string.Join(", ", builtConditions)})");

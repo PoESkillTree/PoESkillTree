@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             var sut = CreateSut();
 
             var condition = sut.For(entity);
-            var statConverter = condition.Build().statConverter;
+            var statConverter = condition.Build().StatConverter;
             var actual = statConverter(inStat);
 
             Assert.AreEqual(expected, actual);
@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
         {
             var sut = CreateSut();
 
-            var value = sut.For(Mock.Of<IEntityBuilder>()).Build().value;
+            var value = sut.For(Mock.Of<IEntityBuilder>()).Build().Value;
 
             Assert.IsTrue(value.Calculate(null).IsTrue());
         }
@@ -65,7 +65,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             var sut = CreateSut();
 
             var condition = sut.BaseValueComesFrom(slot);
-            var stat = condition.Build().statConverter(inStat);
+            var stat = condition.Build().StatConverter(inStat);
             var (_, actual, _) = stat.Build(default, new ModifierSource.Global()).Single();
             
             Assert.AreEqual(expected, actual);
@@ -79,7 +79,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             var inStat = Mock.Of<IDamageRelatedStatBuilder>(b => b.With(DamageSource.Attack).With(hand) == expected);
             var sut = CreateSut();
 
-            var statConverter = sut.AttackWith(hand).Build().statConverter;
+            var statConverter = sut.AttackWith(hand).Build().StatConverter;
             var actual = statConverter(inStat);
 
             Assert.AreEqual(expected, actual);
@@ -91,7 +91,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             var inStat = Mock.Of<IStatBuilder>();
             var sut = CreateSut();
 
-            var statConverter = sut.AttackWith(AttackDamageHand.MainHand).Build().statConverter;
+            var statConverter = sut.AttackWith(AttackDamageHand.MainHand).Build().StatConverter;
 
             Assert.Throws<ParseException>(() => statConverter(inStat));
         }
@@ -104,7 +104,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             var inStat = Mock.Of<IDamageRelatedStatBuilder>(b => b.WithSkills == expected);
             var sut = CreateSut();
 
-            var statConverter = sut.With(skill).Build().statConverter;
+            var statConverter = sut.With(skill).Build().StatConverter;
             var actual = statConverter(inStat);
 
             Assert.AreEqual(expected, actual);
@@ -117,7 +117,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             var skill = MockSkillBuilder();
             var sut = CreateSut();
 
-            var statConverter = sut.With(skill).Build().statConverter;
+            var statConverter = sut.With(skill).Build().StatConverter;
             var actual = statConverter(expected);
 
             Assert.AreEqual(expected, actual);
@@ -134,7 +134,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
                 c.GetValue(activeSkillStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(activeSkillId));
             var sut = CreateSut();
 
-            var value = sut.With(skill).Build().value;
+            var value = sut.With(skill).Build().Value;
             var actual = value.Calculate(context);
 
             Assert.AreEqual(expected, actual.IsTrue());
@@ -148,7 +148,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             var inStat = Mock.Of<IStatBuilder>(b => b.With(keyword) == expected);
             var sut = CreateSut();
 
-            var statConverter = sut.With(keyword).Build().statConverter;
+            var statConverter = sut.With(keyword).Build().StatConverter;
             var actual = statConverter(inStat);
 
             Assert.AreEqual(expected, actual);
@@ -162,7 +162,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             var inStat = Mock.Of<IStatBuilder>(b => b.NotWith(keyword) == expected);
             var sut = CreateSut();
 
-            var statConverter = sut.With(keyword).Not.Build().statConverter;
+            var statConverter = sut.With(keyword).Not.Build().StatConverter;
             var actual = statConverter(inStat);
 
             Assert.AreEqual(expected, actual);

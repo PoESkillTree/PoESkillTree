@@ -58,7 +58,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Equipment
         {
             var sut = CreateSut();
 
-            var actual = sut.Any().Build().value.Calculate(null);
+            var actual = sut.Any().Build().Value.Calculate(null);
 
             Assert.IsTrue(actual.IsTrue());
         }
@@ -79,7 +79,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Equipment
             }
 
             var builder = sut.Any(b => b.HasItem);
-            var actual = builder.Build().value.Calculate(contextMock.Object);
+            var actual = builder.Build().Value.Calculate(contextMock.Object);
 
             Assert.AreEqual(expected, actual.IsTrue());
         }

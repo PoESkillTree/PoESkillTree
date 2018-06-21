@@ -35,18 +35,24 @@ namespace PoESkillTree.Computation.Builders.Conditions
         public IConditionBuilder Not =>
             new OrCompositeConditionBuilder(Conditions.Select(c => c.Not).ToList());
 
-        public (StatConverter statConverter, IValue value) Build(BuildParameters parameters)
+        public ConditionBuilderResult Build(BuildParameters parameters)
         {
             var builtConditions = Conditions.Select(c => c.Build(parameters)).ToList();
-            var conditionsString = "All(" + string.Join(", ", builtConditions.Select(t => t.value)) + ")";
+            var conditionsString = "All(" + string.Join(", ", builtConditions.Select(t => t.Value)) + ")";
             return (ConvertStat, new ConditionalValue(Calculate, conditionsString));
 
             IStatBuilder ConvertStat(IStatBuilder stat) =>
-                builtConditions.Select(t => t.statConverter).Aggregate(stat, (s, c) => c(s));
+                builtConditions
+                    // TODO if empty, don't create result with converter
+                    .Where(t => t.HasStatConverter)
+                    .Select(t => t.StatConverter)
+                    .Aggregate(stat, (s, c) => c(s));
 
             bool Calculate(IValueCalculationContext context) =>
                 builtConditions
-                    .Select(t => t.value.Calculate(context))
+                    // TODO if empty, don't create result with value
+                    .Where(t => t.HasValue)
+                    .Select(t => t.Value.Calculate(context))
                     .All(v => v.IsTrue());
         }
 

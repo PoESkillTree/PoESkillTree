@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             var expected = Mock.Of<IStatBuilder>();
             var sut = CreateSut();
 
-            var actual = sut.Build().statConverter(expected);
+            var actual = sut.Build().StatConverter(expected);
 
             Assert.AreSame(expected, actual);
         }
@@ -36,7 +36,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             var expected = (NodeValue?) condition;
             var sut = CreateSut(condition);
 
-            var actual = sut.Build().value.Calculate(null);
+            var actual = sut.Build().Value.Calculate(null);
 
             Assert.AreEqual(expected, actual);
         }
@@ -48,7 +48,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             var expected = (NodeValue?) !condition;
             var sut = CreateSut(condition);
 
-            var actual = sut.Not.Build().value.Calculate(null);
+            var actual = sut.Not.Build().Value.Calculate(null);
 
             Assert.AreEqual(expected, actual);
         }

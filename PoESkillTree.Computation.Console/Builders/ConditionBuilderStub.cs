@@ -1,6 +1,4 @@
 ﻿using PoESkillTree.Common.Model.Items.Enums;
-using PoESkillTree.Common.Utils;
-using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -32,8 +30,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IConditionBuilder Not =>
             CreateCondition(This, o => $"Not({o})");
 
-        public (StatConverter statConverter, IValue value) Build(BuildParameters parameters) =>
-            (Funcs.Identity, new ValueStub(this));
+        public ConditionBuilderResult Build(BuildParameters parameters) =>
+            new ConditionBuilderResult(new ValueStub(this));
 
         public IConditionBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
