@@ -38,24 +38,23 @@ namespace PoESkillTree.Computation.Builders.Conditions
         public ConditionBuilderResult Build(BuildParameters parameters)
         {
             var builtConditions = Conditions.Select(c => c.Build(parameters)).ToList();
-            var conditionsString = "Any(" + string.Join(", ", builtConditions.Select(t => t.Value)) + ")";
-            return (ConvertStat, new ConditionalValue(Calculate, conditionsString));
+            var statConverters = builtConditions.Where(t => t.HasStatConverter).Select(t => t.StatConverter).ToList();
+            var values = builtConditions.Where(t => t.HasValue).Select(t => t.Value).ToList();
+
+            var statConverter = statConverters.Any() ? (StatConverter) ConvertStat : null;
+            var conditionsString = "Any(" + string.Join(", ", values) + ")";
+            var value = values.Any() ? new ConditionalValue(Calculate, conditionsString) : null;
+            return new ConditionBuilderResult(statConverter, value);
 
             IStatBuilder ConvertStat(IStatBuilder stat) =>
-                builtConditions
-                    // TODO if empty, don't create result with converter
-                    .Where(t => t.HasStatConverter)
-                    .Select(t => t.StatConverter(stat))
+                statConverters
+                    .Select(c => c(stat))
                     .Where(s => s != stat)
                     .DefaultIfEmpty(stat)
                     .Aggregate((s1, s2) => s1.CombineWith(s2));
 
             bool Calculate(IValueCalculationContext context) =>
-                builtConditions
-                    // TODO if empty, don't create result with value
-                    .Where(t => t.HasValue)
-                    .Select(t => t.Value.Calculate(context))
-                    .Any(v => v.IsTrue());
+                values.Any(v => v.Calculate(context).IsTrue());
         }
 
         public override bool Equals(object obj) =>

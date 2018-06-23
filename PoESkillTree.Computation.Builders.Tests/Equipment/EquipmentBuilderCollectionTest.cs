@@ -3,10 +3,13 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.Common.Utils;
+using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Equipment;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Builders.Tests.Equipment
 {
@@ -51,6 +54,17 @@ namespace PoESkillTree.Computation.Builders.Tests.Equipment
             var actual = builder.Build().Calculate(contextMock.Object);
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void CountBuildThrowsIfConditionHasNoValue()
+        {
+            var condition = new StatConvertingConditionBuilder(Funcs.Identity);
+            var sut = CreateSut();
+
+            var builder = sut.Count(_ => condition);
+
+            Assert.Throws<ParseException>(() => builder.Build());
         }
 
         [Test]

@@ -2,6 +2,7 @@
 using System.Linq;
 using Moq;
 using NUnit.Framework;
+using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -98,6 +99,26 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             var actual = sut.Build().Value.Calculate(null);
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void BuildDoesNotHaveStatConverterIfNoPartHas()
+        {
+            var sut = CreateSut(new[] { ConstantConditionBuilder.True, });
+
+            var actual = sut.Build();
+
+            Assert.IsFalse(actual.HasStatConverter);
+        }
+
+        [Test]
+        public void BuildDoesNotHaveValueIfNoPartHas()
+        {
+            var sut = CreateSut(new[] { new StatConvertingConditionBuilder(Funcs.Identity), });
+
+            var actual = sut.Build();
+
+            Assert.IsFalse(actual.HasValue);
         }
 
         private static AndCompositeConditionBuilder CreateSut(IEnumerable<IConditionBuilder> conditions) =>

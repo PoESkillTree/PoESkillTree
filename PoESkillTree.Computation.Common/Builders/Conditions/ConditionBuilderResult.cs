@@ -5,23 +5,21 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
     public class ConditionBuilderResult
     {
         public ConditionBuilderResult(StatConverter statConverter)
-            : this(statConverter, new Constant(true))
+            : this(statConverter, null)
         {
-            HasValue = false;
         }
 
         public ConditionBuilderResult(IValue value)
-            : this(Funcs.Identity, value)
+            : this(null, value)
         {
-            HasStatConverter = false;
         }
 
-        public ConditionBuilderResult(StatConverter statConverter, IValue value)
+        public ConditionBuilderResult(StatConverter statConverter = null, IValue value = null)
         {
-            HasStatConverter = true;
-            StatConverter = statConverter;
-            HasValue = true;
-            Value = value;
+            HasStatConverter = !(statConverter is null);
+            StatConverter = statConverter ?? Funcs.Identity;
+            HasValue = !(value is null);
+            Value = value ?? new Constant(true);
         }
 
         public bool HasStatConverter { get; }

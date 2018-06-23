@@ -12,6 +12,7 @@ using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Equipment;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Builders.Equipment
 {
@@ -45,8 +46,7 @@ namespace PoESkillTree.Computation.Builders.Equipment
 
             IValue Build(BuildParameters parameters, IEnumerable<IConditionBuilder> cs)
             {
-                // TODO Throw if c.HasStatConverter
-                var builtConditions = cs.Select(c => c.Build(parameters).Value).ToList();
+                var builtConditions = cs.Select(c => BuildConditionToValue(c, parameters)).ToList();
                 return new FunctionalValue(
                     c => Calculate(c, builtConditions),
                     $"Count({string.Join(", ", builtConditions)})");
@@ -57,6 +57,15 @@ namespace PoESkillTree.Computation.Builders.Equipment
                     .Select(v => v.Calculate(context))
                     .Select(v => new NodeValue(v.IsTrue() ? 1 : 0))
                     .Sum();
+        }
+
+        private IValue BuildConditionToValue(IConditionBuilder condition, BuildParameters parameters)
+        {
+            var result = condition.Build(parameters);
+            if (!result.HasValue)
+                throw new ParseException(
+                    $"Can only use value conditions in {nameof(IEquipmentBuilderCollection.Count)}");
+            return result.Value;
         }
 
         public IConditionBuilder Any(Func<IEquipmentBuilder, IConditionBuilder> predicate = null)

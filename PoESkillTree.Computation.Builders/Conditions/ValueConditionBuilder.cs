@@ -70,7 +70,7 @@ namespace PoESkillTree.Computation.Builders.Conditions
             new ValueConditionBuilder<TParameter>((b, p) => new NotValue(_buildValue(b, p)), _parameter);
 
         public override ConditionBuilderResult Build(BuildParameters parameters) =>
-            (Funcs.Identity, _buildValue(parameters, _parameter));
+            new ConditionBuilderResult(_buildValue(parameters, _parameter));
 
         // TODO Only here for compatibility with stubs in Console. Remove once those are removed.
         public override string ToString() => Build(default).Value.ToString();
@@ -102,7 +102,7 @@ namespace PoESkillTree.Computation.Builders.Conditions
                 (b, p1, p2) => new NotValue(_buildValue(b, p1, p2)), _parameter1, _parameter2);
 
         public override ConditionBuilderResult Build(BuildParameters parameters) =>
-            (Funcs.Identity, _buildValue(parameters, _parameter1, _parameter2));
+            new ConditionBuilderResult(_buildValue(parameters, _parameter1, _parameter2));
 
         // TODO Only here for compatibility with stubs in Console. Remove once those are removed.
         public override string ToString() => Build(default).Value.ToString();
