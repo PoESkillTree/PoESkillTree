@@ -1,7 +1,6 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Charges;
-using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Skills;
@@ -30,8 +29,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public override IBuffBuilders BuffBuilders => new BuffBuildersStub();
 
         public override IChargeTypeBuilders ChargeTypeBuilders => new ChargeTypeBuildersStub();
-
-        public override IConditionBuilders ConditionBuilders => new ConditionBuildersStub();
 
         public override IDamageTypeBuilders DamageTypeBuilders => new DamageTypeBuildersStub();
 

@@ -27,6 +27,11 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         IKeywordBuilder Projectile { get; }
 
         /// <summary>
+        /// Equivalent to the ActiveSkillType "explicit_deals_projectile_damage"? (gem tag is "Bow")
+        /// </summary>
+        IKeywordBuilder Bow { get; }
+
+        /// <summary>
         /// Equivalent to the ActiveSkillType "aoe".
         /// </summary>
         IKeywordBuilder AreaOfEffect { get; }

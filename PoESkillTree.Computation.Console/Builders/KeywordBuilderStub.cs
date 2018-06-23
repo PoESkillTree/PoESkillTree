@@ -15,7 +15,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IKeywordBuilder Resolve(ResolveContext context) => _resolver(this, context);
 
-        public Keyword Build() => throw new System.NotImplementedException();
+        public Keyword Build() => Keyword.Projectile;
     }
 
 
@@ -26,6 +26,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IKeywordBuilder Attack { get; } = Create("Attack");
         public IKeywordBuilder Spell { get; } = Create("Spell");
         public IKeywordBuilder Projectile { get; } = Create("Projectile");
+        public IKeywordBuilder Bow { get; } = Create("Bow");
         public IKeywordBuilder AreaOfEffect { get; } = Create("Area of Effect");
         public IKeywordBuilder Melee { get; } = Create("Melee");
         public IKeywordBuilder Totem { get; } = Create("Totem");

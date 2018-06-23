@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -71,7 +70,7 @@ namespace PoESkillTree.Computation.Data
                 { "(global )?critical strike chance", CriticalStrike.Chance },
                 // - projectiles
                 { "projectile speed", Projectile.Speed },
-                { "arrow speed", Projectile.Speed, MainHandAttackWith(Tags.Bow) },
+                { "arrow speed", Projectile.Speed, With(Keyword.Bow) },
                 // - other
                 { "accuracy rating", Stat.Accuracy },
                 // defense

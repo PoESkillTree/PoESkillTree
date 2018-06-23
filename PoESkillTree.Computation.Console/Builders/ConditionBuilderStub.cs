@@ -1,10 +1,6 @@
-﻿using PoESkillTree.Common.Model.Items.Enums;
-using PoESkillTree.Computation.Common.Builders;
+﻿using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Damage;
-using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
@@ -35,30 +31,5 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IConditionBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
-    }
-
-
-    public class ConditionBuildersStub : IConditionBuilders
-    {
-        public IConditionBuilder With(IKeywordBuilder keyword) =>
-            CreateCondition(keyword, o => $"With {o}");
-
-        public IConditionBuilder With(ISkillBuilder skill) =>
-            CreateCondition(skill, o => $"With {o}");
-
-        public IConditionBuilder AttackWith(AttackDamageHand hand) =>
-            CreateCondition($"Attack with {hand}");
-
-        public IConditionBuilder For(IEntityBuilder entity) =>
-            CreateCondition(entity, o => "For " + o);
-
-        public IConditionBuilder BaseValueComesFrom(ItemSlot slot) =>
-            CreateCondition($"If base value comes from {slot}");
-
-        public IConditionBuilder Unique(string name) =>
-            CreateCondition(name);
-
-        public IConditionBuilder True =>
-            CreateCondition("unconditional");
     }
 }

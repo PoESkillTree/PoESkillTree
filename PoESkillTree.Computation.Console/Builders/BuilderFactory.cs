@@ -65,19 +65,6 @@ namespace PoESkillTree.Computation.Console.Builders
             return Create<IConditionBuilder, T1, T2>(Construct, operand1, operand2, stringRepresentation);
         }
 
-        public static IConditionBuilder CreateCondition<T>(
-            [ItemCanBeNull] IEnumerable<T> operands,
-            Func<IEnumerable<T>, string> stringRepresentation)
-            where T : class, IResolvable<T>
-        {
-            return Create<IConditionBuilder, T>(Construct, operands, stringRepresentation);
-        }
-
-        public static IConditionBuilder CreateCondition(string stringRepresentation)
-        {
-            return Create<IConditionBuilder>(Construct, stringRepresentation);
-        }
-
         private static IConditionBuilder Construct(string stringRepresentation, Resolver<IConditionBuilder> resolver)
         {
             return new ConditionBuilderStub(stringRepresentation, resolver);
