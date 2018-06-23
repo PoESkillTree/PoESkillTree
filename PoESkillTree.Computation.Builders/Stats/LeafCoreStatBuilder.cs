@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public LeafCoreStatBuilder(Func<Entity, IStat> statFactory, IEntityBuilder entityBuilder = null)
         {
             _statFactory = statFactory;
-            _entityBuilder = entityBuilder ?? new EntityBuilder();
+            _entityBuilder = entityBuilder ?? new ModifierSourceEntityBuilder();
         }
 
         public static ICoreStatBuilder FromIdentity(
@@ -53,8 +53,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         private IReadOnlyList<IStat> BuildStats(BuildParameters parameters)
         {
-            var modifierSourceEntity = parameters.ModifierSourceEntity;
-            var entities = _entityBuilder.Build(modifierSourceEntity).DefaultIfEmpty(modifierSourceEntity);
+            var entities = _entityBuilder.Build(parameters.ModifierSourceEntity);
             return entities.Select(_statFactory).ToList();
         }
     }

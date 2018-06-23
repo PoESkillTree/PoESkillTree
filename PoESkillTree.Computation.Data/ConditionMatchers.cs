@@ -177,11 +177,11 @@ namespace PoESkillTree.Computation.Data
                 { "from taunted enemies", Buff.Taunt.IsOn(Enemy) },
                 {
                     "you and allies affected by your auras have",
-                    Or(For(Entity.ModifierSource), And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
+                    Or(For(Self), And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
                 },
                 {
                     "you and allies deal while affected by auras you cast",
-                    Or(For(Entity.ModifierSource), And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
+                    Or(For(Self), And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
                 },
                 // ailments
                 { "while ({AilmentMatchers})", Reference.AsAilment.IsOn(Self) },
@@ -244,8 +244,7 @@ namespace PoESkillTree.Computation.Data
                 // minions
                 { "minions", For(Entity.Minion) },
                 { "minions (deal|have|gain)", For(Entity.Minion) },
-                { "you and your minions have", For(Entity.Minion).Or(For(Entity.ModifierSource)) },
-                { "golem", And(For(Entity.Minion), With(Keyword.Golem)) },
+                { "you and your minions have", For(Entity.Minion).Or(For(Self)) },
                 { "golems have", And(For(Entity.Minion), With(Keyword.Golem)) },
                 { "spectres have", And(For(Entity.Minion), With(Skill.RaiseSpectre)) },
                 {

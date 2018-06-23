@@ -11,10 +11,9 @@ namespace PoESkillTree.Computation.Builders.Entities
 
         public EntityBuilders(IStatFactory statFactory) => _statFactory = statFactory;
 
-        public IEntityBuilder Self => new EntityBuilder();
+        public IEntityBuilder Self => new ModifierSourceEntityBuilder();
         public IEnemyBuilder Enemy => new EnemyBuilder(_statFactory);
         public IEntityBuilder Ally => new EntityBuilder(Entity.Minion, Entity.Totem);
-        public IEntityBuilder ModifierSource => new ModifierSourceEntityBuilder();
         public IEntityBuilder Totem => new EntityBuilder(Entity.Totem);
         public IEntityBuilder Minion => new EntityBuilder(Entity.Minion);
 

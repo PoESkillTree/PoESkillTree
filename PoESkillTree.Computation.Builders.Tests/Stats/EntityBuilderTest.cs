@@ -11,7 +11,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [Test]
         public void ResolveReturnsSelf()
         {
-            var sut = new EntityBuilder();
+            var sut = new EntityBuilder(default(Entity));
 
             var actual = sut.Resolve(null);
 

@@ -71,7 +71,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         public void BuildReturnsStatFactoryResult()
         {
             var expected = Mock.Of<IStat>();
-            var sut = CreateSut(CreateStatBuilder(expected, new EntityBuilder()));
+            var sut = CreateSut(CreateStatBuilder(expected));
 
             var actual = BuildToSingleStat(sut);
 
@@ -387,9 +387,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
                 new Stat("s1.ConvertTo(t)"), new Stat("s1.Conversion"), new Stat("s1.SkillConversion"),
                 new Stat("s2.ConvertTo(t)"), new Stat("s2.Conversion"), new Stat("s2.SkillConversion"),
             };
-            var entityBuilder = new EntityBuilder();
-            var sources = new[] { CreateStatBuilder("s1", entityBuilder), CreateStatBuilder("s2", entityBuilder), };
-            var target = CreateStatBuilder("t", entityBuilder);
+            var sources = new[] { CreateStatBuilder("s1"), CreateStatBuilder("s2"), };
+            var target = CreateStatBuilder("t");
             var sut = CreateSut(sources[0]).CombineWith(CreateSut(sources[1]));
 
             var statBuilder = sut.ConvertTo(CreateSut(target));
@@ -407,9 +406,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
                 new Stat("s1.GainAs(t)"),
                 new Stat("s2.GainAs(t)"),
             };
-            var entityBuilder = new EntityBuilder();
-            var sources = new[] { CreateStatBuilder("s1", entityBuilder), CreateStatBuilder("s2", entityBuilder), };
-            var target = CreateStatBuilder("t", entityBuilder);
+            var sources = new[] { CreateStatBuilder("s1"), CreateStatBuilder("s2"), };
+            var target = CreateStatBuilder("t");
             var sut = CreateSut(sources[0]).CombineWith(CreateSut(sources[1]));
 
             var statBuilder = sut.GainAs(CreateSut(target));
@@ -465,8 +463,13 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
 
         private static StatBuilder CreateSut(params Entity[] entities) => CreateSut("", entities);
 
-        private static StatBuilder CreateSut(string identity, params Entity[] entities) =>
-            CreateSut(identity, new EntityBuilder(entities));
+        private static StatBuilder CreateSut(string identity, params Entity[] entities)
+        {
+            var entityBuilder = entities.Any()
+                ? (IEntityBuilder) new EntityBuilder(entities)
+                : new ModifierSourceEntityBuilder();
+            return CreateSut(identity, entityBuilder);
+        }
 
         private static StatBuilder CreateSut(string identity, IEntityBuilder entityBuilder) =>
             CreateSut(CreateStatBuilder(identity, entityBuilder));

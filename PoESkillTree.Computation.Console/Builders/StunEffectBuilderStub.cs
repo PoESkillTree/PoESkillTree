@@ -21,7 +21,7 @@ namespace PoESkillTree.Computation.Console.Builders
         {
             _actionBuilder =
                 new ActionBuilderStub(
-                    new EntityBuilder(), 
+                    new ModifierSourceEntityBuilder(), 
                     "Stun",
                     (c, _) => c);
         }

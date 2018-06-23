@@ -10,8 +10,7 @@ namespace PoESkillTree.Computation.Common.Builders.Entities
     public interface IEntityBuilder : IResolvable<IEntityBuilder>
     {
         /// <summary>
-        /// Builds to a collection of entities. The collection is empty if this entity doesn't restrict the entity,
-        /// i.e. <see cref="IEntityBuilders.Self"/>.
+        /// Builds to a non-empty collection of entities.
         /// </summary>
         IReadOnlyCollection<Entity> Build(Entity modifierSourceEntity);
     }

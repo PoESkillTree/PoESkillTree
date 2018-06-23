@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Console.Builders
         }
 
         public static IActionBuilder BySelf(string stringRepresentation, Resolver<IActionBuilder> resolver) =>
-            new ActionBuilderStub(new EntityBuilder(), stringRepresentation, resolver);
+            new ActionBuilderStub(new ModifierSourceEntityBuilder(), stringRepresentation, resolver);
 
         public IEntityBuilder Source { get; }
 
@@ -85,7 +85,7 @@ namespace PoESkillTree.Computation.Console.Builders
     public class BlockActionBuilderStub : ActionBuilderStub, IBlockActionBuilder
     {
         public BlockActionBuilderStub()
-            : base(new EntityBuilder(), "Block", (current, _) => current)
+            : base(new ModifierSourceEntityBuilder(), "Block", (current, _) => current)
         {
         }
 
@@ -100,7 +100,7 @@ namespace PoESkillTree.Computation.Console.Builders
     public class CriticalStrikeActionBuilderStub : ActionBuilderStub, ICriticalStrikeActionBuilder
     {
         public CriticalStrikeActionBuilderStub()
-            : base(new EntityBuilder(), "Critical Strike", (current, _) => current)
+            : base(new ModifierSourceEntityBuilder(), "Critical Strike", (current, _) => current)
         {
         }
 
