@@ -447,6 +447,28 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void ConvertToIsNotSubClass()
+        {
+            var sut = new SubStatBuilder(new StatFactory(), null);
+
+            var actual = sut.ConvertTo(Mock.Of<IStatBuilder>());
+
+            Assert.IsInstanceOf<StatBuilder>(actual);
+            Assert.IsNotInstanceOf<SubStatBuilder>(actual);
+        }
+
+        [Test]
+        public void GainAsIsNotSubClass()
+        {
+            var sut = new SubStatBuilder(new StatFactory(), null);
+
+            var actual = sut.GainAs(Mock.Of<IStatBuilder>());
+
+            Assert.IsInstanceOf<StatBuilder>(actual);
+            Assert.IsNotInstanceOf<SubStatBuilder>(actual);
+        }
+
         private static IStat BuildToSingleStat(IStatBuilder statBuilder, Entity entity = default)
         {
             var (stats, _, _) = BuildToSingle(statBuilder, entity);
@@ -489,5 +511,16 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         }
 
         private static readonly ModifierSource ModifierSource = new ModifierSource.Global();
+
+        private class SubStatBuilder : StatBuilder
+        {
+            public SubStatBuilder(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder)
+                : base(statFactory, coreStatBuilder)
+            {
+            }
+
+            protected override IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
+                new SubStatBuilder(StatFactory, coreStatBuilder);
+        }
     }
 }

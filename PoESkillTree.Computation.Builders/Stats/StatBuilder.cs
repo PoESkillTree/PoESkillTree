@@ -45,10 +45,12 @@ namespace PoESkillTree.Computation.Builders.Stats
             ValueConditionBuilder.Create(Value, v => v.IsTrue());
 
         public IStatBuilder ConvertTo(IStatBuilder stat) =>
-            With(new ConversionStatBuilder(StatFactory.ConvertTo, CoreStatBuilder, new StatBuilderAdapter(stat)));
+            new StatBuilder(StatFactory,
+                new ConversionStatBuilder(StatFactory.ConvertTo, CoreStatBuilder, new StatBuilderAdapter(stat)));
 
         public IStatBuilder GainAs(IStatBuilder stat) =>
-            With(new ConversionStatBuilder(StatFactory.GainAs, CoreStatBuilder, new StatBuilderAdapter(stat)));
+            new StatBuilder(StatFactory,
+                new ConversionStatBuilder(StatFactory.GainAs, CoreStatBuilder, new StatBuilderAdapter(stat)));
 
         public IStatBuilder ChanceToDouble => WithStatConverter(StatFactory.ChanceToDouble);
 
