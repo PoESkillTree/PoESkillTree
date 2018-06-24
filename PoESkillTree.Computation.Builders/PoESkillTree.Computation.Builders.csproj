@@ -71,7 +71,6 @@
     <Compile Include="Conditions\ConstantConditionBuilder.cs" />
     <Compile Include="Conditions\ValueConditionBuilder.cs" />
     <Compile Include="ConstantBuilder.cs" />
-    <Compile Include="Damage\DamageSourceBuilders.cs" />
     <Compile Include="Entities\EntityBuilders.cs" />
     <Compile Include="Equipment\EquipmentBuilder.cs" />
     <Compile Include="Equipment\EquipmentBuilderCollection.cs" />

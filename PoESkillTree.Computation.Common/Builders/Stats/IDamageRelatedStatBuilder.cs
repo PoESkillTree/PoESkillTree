@@ -1,6 +1,5 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
-using PoESkillTree.Computation.Common.Builders.Skills;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
@@ -14,7 +13,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// <summary>
         /// Limits the damage by source.
         /// </summary>
-        IDamageRelatedStatBuilder With(IDamageSourceBuilder source);
         IDamageRelatedStatBuilder With(DamageSource source);
 
         /// <summary>
@@ -52,7 +50,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// the given source (but not ailments) if they have any of the given forms.
         /// <para>The stat's value specifies a multiplier. It should be 1 in most cases.</para>
         /// </summary>
-        IStatBuilder ApplyModifiersTo(IDamageSourceBuilder source, params Form[] forms);
+        IStatBuilder ApplyModifiersTo(DamageSource source, params Form[] forms);
 
         /// <summary>
         /// Returns a stat that specifies whether modifiers to this stat under the current limitations also apply to

@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Data.Base
     /// <see cref="IActionBuilders"/>, <see cref="IBuffBuilders"/>, <see cref="IChargeTypeBuilders"/>,
     /// <see cref="IDamageTypeBuilders"/>, <see cref="IEffectBuilders"/>, <see cref="IEntityBuilders"/>,
     /// <see cref="IEquipmentBuilders"/>, <see cref="IKeywordBuilders"/>, <see cref="ISkillBuilders"/>,
-    /// <see cref="IDamageSourceBuilders"/>, and some of their properties and methods,
+    /// and some of their properties and methods,
     /// in addition to the properties provided by <see cref="UsesFormBuilders"/>.
     /// <para>Also contains a few convenience properties/methods located at the end of the class.</para>
     /// </summary>
@@ -114,10 +114,6 @@ namespace PoESkillTree.Computation.Data.Base
 
         protected ISkillBuilderCollection Combine(params ISkillBuilder[] skills) =>
             Skill.Combine(skills);
-
-        // Sources
-
-        protected IDamageSourceBuilders Source => BuilderFactories.DamageSourceBuilders;
 
 
         // Convenience methods

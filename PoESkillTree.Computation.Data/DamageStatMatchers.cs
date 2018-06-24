@@ -36,9 +36,9 @@ namespace PoESkillTree.Computation.Data
                 // unspecific
                 { "damage", Damage },
                 // by source
-                { "attack damage", Damage.With(Source.Attack()) },
-                { "spell damage", Damage.With(Source.Spell()) },
-                { "damage over time", Damage.With(Source.OverTime()) },
+                { "attack damage", Damage.With(DamageSource.Attack) },
+                { "spell damage", Damage.With(DamageSource.Spell) },
+                { "damage over time", Damage.With(DamageSource.OverTime) },
                 // by type
                 { "({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage },
                 { "damage of a random element", RandomElement.Damage },
@@ -48,27 +48,27 @@ namespace PoESkillTree.Computation.Data
                 { "damage with ailments", Damage.WithAilments },
                 { "damage with ({AilmentMatchers})", Damage.With(Reference.AsAilment) },
                 // by source and type
-                { "attack physical damage", Physical.Damage.With(Source.Attack()) },
+                { "attack physical damage", Physical.Damage.With(DamageSource.Attack) },
                 {
                     "({DamageTypeMatchers}) damage to attacks",
-                    Reference.AsDamageType.Damage.With(Source.Attack())
+                    Reference.AsDamageType.Damage.With(DamageSource.Attack)
                 },
                 {
                     "({DamageTypeMatchers}) attack damage",
-                    Reference.AsDamageType.Damage.With(Source.Attack())
+                    Reference.AsDamageType.Damage.With(DamageSource.Attack)
                 },
                 {
                     "({DamageTypeMatchers}) spell damage",
-                    Reference.AsDamageType.Damage.With(Source.Spell())
+                    Reference.AsDamageType.Damage.With(DamageSource.Spell)
                 },
-                { "burning damage", Fire.Damage.With(Source.OverTime()).WithSkills, Fire.Damage.With(Ailment.Ignite) },
+                { "burning damage", Fire.Damage.With(DamageSource.OverTime).WithSkills, Fire.Damage.With(Ailment.Ignite) },
                 // other combinations
                 { "(?<!no )({DamageTypeMatchers}) damage (with|from) hits", Reference.AsDamageType.Damage.WithHits },
                 { "physical melee damage", Physical.Damage, With(Keyword.Melee) },
-                { "physical weapon damage", Physical.Damage.With(Source.Attack()), MainHand.HasItem },
+                { "physical weapon damage", Physical.Damage.With(DamageSource.Attack), MainHand.HasItem },
                 {
                     "physical projectile attack damage",
-                    Physical.Damage.With(Source.Attack()), With(Keyword.Projectile)
+                    Physical.Damage.With(DamageSource.Attack), With(Keyword.Projectile)
                 },
             }; //add
     }

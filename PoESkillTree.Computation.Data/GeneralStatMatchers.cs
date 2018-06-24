@@ -63,7 +63,7 @@ namespace PoESkillTree.Computation.Data
                 { "({DamageTypeMatchers}) damage taken", Reference.AsDamageType.Damage.Taken },
                 { "take ({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage.Taken },
                 { "damage taken", Damage.Taken },
-                { "damage taken from damage over time", Damage.Taken.With(Source.OverTime()) },
+                { "damage taken from damage over time", Damage.Taken.With(DamageSource.OverTime) },
                 // - penetration
                 // - crit
                 { "(global )?critical strike multiplier", CriticalStrike.Multiplier.WithSkills },
@@ -128,8 +128,8 @@ namespace PoESkillTree.Computation.Data
                         .Before(References[2].AsPoolStat)
                 },
                 // speed
-                { "attack speed", Stat.CastSpeed.With(Source.Attack()) },
-                { "cast speed", Stat.CastSpeed.With(Source.Spell()), Stat.CastSpeed.With(Source.Secondary()) },
+                { "attack speed", Stat.CastSpeed.With(DamageSource.Attack) },
+                { "cast speed", Stat.CastSpeed.With(DamageSource.Spell), Stat.CastSpeed.With(DamageSource.Secondary) },
                 { "movement speed", Stat.MovementSpeed },
                 {
                     // not the most elegant solution but by far the easiest

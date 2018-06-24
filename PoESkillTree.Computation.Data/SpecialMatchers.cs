@@ -64,7 +64,7 @@ namespace PoESkillTree.Computation.Data
                     PercentMore,
                     // 0 to 10: Value; 10 to 35: Value to 0; 35 to 150: 0 to -Value
                     Value * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 1), (10, 1), (35, 0), (150, -1)),
-                    Damage.With(Source.Attack()), With(Keyword.Projectile)
+                    Damage.With(DamageSource.Attack), With(Keyword.Projectile)
                 },
                 {
                     // Elemental Equilibrium
@@ -122,7 +122,7 @@ namespace PoESkillTree.Computation.Data
                     "far shot",
                     PercentMore,
                     30 * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
-                    Damage.With(Source.Attack()), With(Keyword.Projectile)
+                    Damage.With(DamageSource.Attack), With(Keyword.Projectile)
                 },
                 {
                     // Ascendant

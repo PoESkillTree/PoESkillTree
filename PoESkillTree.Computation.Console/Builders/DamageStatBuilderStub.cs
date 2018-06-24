@@ -27,9 +27,6 @@ namespace PoESkillTree.Computation.Console.Builders
                 This, pool,
                 (o1, o2) => $"{o1} taken from {o2}");
 
-        public IDamageRelatedStatBuilder With(IDamageSourceBuilder source) =>
-            CreateDamageStat(This, source, (o1, o2) => $"With {o2} {o1}");
-
         public IDamageRelatedStatBuilder With(DamageSource source)=>
             CreateDamageStat(This, o1 => $"With {source} {o1}");
 
@@ -51,9 +48,9 @@ namespace PoESkillTree.Computation.Console.Builders
         public IDamageRelatedStatBuilder With(AttackDamageHand hand) =>
             CreateDamageStat(This, o => $"With {hand} {o}");
 
-        public IStatBuilder ApplyModifiersTo(IDamageSourceBuilder source, params Form[] forms) =>
-            CreateStat(This, source,
-                (o1, o2) => $"Modifiers to {o1} apply to source {o2} for forms [{string.Join(", ", forms)}]");
+        public IStatBuilder ApplyModifiersTo(DamageSource source, params Form[] forms) =>
+            CreateStat(This,
+                o => $"Modifiers to {o} apply to source {source} for forms [{string.Join(", ", forms)}]");
 
         public IStatBuilder ApplyModifiersToAilments(params Form[] forms) =>
             CreateStat(This,
