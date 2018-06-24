@@ -14,5 +14,10 @@ namespace PoESkillTree.Computation.Builders.Stats
             IStatFactory statFactory, string identity, Type dataType, bool isExplicitlyRegistered = false) =>
             new StatBuilder(statFactory,
                 LeafCoreStatBuilder.FromIdentity(statFactory, identity, dataType, isExplicitlyRegistered));
+
+        public static IDamageRelatedStatBuilder DamageRelatedFromIdentity(
+            IStatFactory statFactory, string identity, Type dataType) =>
+            new DamageRelatedStatBuilder(statFactory,
+                LeafCoreStatBuilder.FromIdentity(statFactory, identity, dataType));
     }
 }

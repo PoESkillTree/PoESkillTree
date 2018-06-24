@@ -18,6 +18,9 @@ namespace PoESkillTree.Common.Utils.Extensions
         public static IEnumerable<T> Append<T>(this IEnumerable<T> @this, T element) => 
             @this.Union(new[] { element });
 
+        public static IEnumerable<T> Except<T>(this IEnumerable<T> @this, T element) =>
+            @this.Except(new[] { element });
+
         /// <summary>
         /// Returns a hash code for <paramref name="values"/> that can be used in conjunction with
         /// <see cref="Enumerable.SequenceEqual{TSource}(IEnumerable{TSource},IEnumerable{TSource})"/>.

@@ -26,5 +26,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         IStat ActiveSkillId(Entity entity);
         IStat ActiveSkillHasKeyword(Entity entity, Keyword keyword);
+
+        IStat ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification);
     }
 }

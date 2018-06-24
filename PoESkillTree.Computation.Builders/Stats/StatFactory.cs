@@ -72,6 +72,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat ActiveSkillHasKeyword(Entity entity, Keyword keyword) =>
             GetOrAdd($"ActiveSkillHas.{keyword}", entity, typeof(bool));
 
+        public IStat ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification) =>
+            CopyWithSuffix(stat, damageSpecification.StatIdentitySuffix, stat.DataType, behaviors: stat.Behaviors);
 
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,
             bool isRegisteredExplicitly = false, IReadOnlyList<Behavior> behaviors = null)

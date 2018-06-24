@@ -71,7 +71,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder CombineWith(IStatBuilder other) =>
             With(new CompositeCoreStatBuilder(CoreStatBuilder, new StatBuilderAdapter(other)));
 
-        public IEnumerable<StatBuilderResult> Build(
+        public virtual IEnumerable<StatBuilderResult> Build(
             BuildParameters parameters, ModifierSource originalModifierSource) =>
             CoreStatBuilder.Build(parameters, originalModifierSource);
     }
