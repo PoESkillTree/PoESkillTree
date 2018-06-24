@@ -30,6 +30,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IFlagStatBuilder Sources(IEnumerable<IDamageTypeBuilder> types) =>
             CreateFlagStat(This, types.Cast<IKeywordBuilder>(), 
                 (o1, o2) => $"[{string.Join(", ", o2)}] can apply {o1}");
+
+        public Ailment Build() => throw new System.NotImplementedException();
     }
 
 

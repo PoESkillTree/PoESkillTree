@@ -17,8 +17,6 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         /// </summary>
         IStatBuilder Chance { get; }
 
-        // default maximum value is 1 for everything except poison
-        // default maximum value is positive infinity for poison
         /// <summary>
         /// Returns a stat representing the number of instances of this ailment currently affecting
         /// <paramref name="target"/>.
@@ -34,5 +32,7 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         /// Returns a flag stat representing whether the types in <paramref name="types"/> can inflict this ailment.
         /// </summary>
         IFlagStatBuilder Sources(IEnumerable<IDamageTypeBuilder> types);
+
+        Ailment Build();
     }
 }
