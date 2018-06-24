@@ -72,7 +72,6 @@
     <Compile Include="Builders\FlagStatBuilderStub.cs" />
     <Compile Include="Builders\GroundEffectBuilderStub.cs" />
     <Compile Include="Builders\ReferenceConverterStub.cs" />
-    <Compile Include="Builders\KeywordBuilderStub.cs" />
     <Compile Include="Builders\MatchContextStub.cs" />
     <Compile Include="Builders\PoolStatBuilderStub.cs" />
     <Compile Include="Builders\Resolver.cs" />

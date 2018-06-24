@@ -3,6 +3,7 @@ using PoESkillTree.Computation.Builders.Damage;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Equipment;
 using PoESkillTree.Computation.Builders.Forms;
+using PoESkillTree.Computation.Builders.Skills;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common.Builders;
@@ -31,6 +32,7 @@ namespace PoESkillTree.Computation.Builders
             EntityBuilders = new EntityBuilders(statFactory);
             EquipmentBuilders = new EquipmentBuilders(statFactory);
             FormBuilders = new FormBuilders();
+            KeywordBuilders = new KeywordBuilders();
             ValueBuilders = new ValueBuilders();
             ItemSlotBuilders = new ItemSlotBuilders();
         }
@@ -45,7 +47,7 @@ namespace PoESkillTree.Computation.Builders
         public IEntityBuilders EntityBuilders { get; }
         public IEquipmentBuilders EquipmentBuilders { get; }
         public IFormBuilders FormBuilders { get; }
-        public abstract IKeywordBuilders KeywordBuilders { get; }
+        public IKeywordBuilders KeywordBuilders { get; }
         public abstract ISkillBuilders SkillBuilders { get; }
         public abstract IStatBuilders StatBuilders { get; }
         public IValueBuilders ValueBuilders { get; }

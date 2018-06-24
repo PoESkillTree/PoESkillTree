@@ -34,8 +34,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public override IEffectBuilders EffectBuilders => new EffectBuildersStub();
 
-        public override IKeywordBuilders KeywordBuilders => new KeywordBuildersStub();
-
         public override ISkillBuilders SkillBuilders => new SkillBuildersStub();
 
         public override IStatBuilders StatBuilders => new StatBuildersStub();

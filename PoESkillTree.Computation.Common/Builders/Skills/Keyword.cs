@@ -2,6 +2,21 @@
 {
     public enum Keyword
     {
-        Projectile
+        Attack,
+        Spell,
+        Projectile,
+        Bow,
+        AreaOfEffect,
+        Melee,
+        Totem,
+        Curse,
+        Trap,
+        Movement,
+        Mine,
+        Vaal,
+        Aura,
+        Golem,
+        Minion,
+        Warcry
     }
 }

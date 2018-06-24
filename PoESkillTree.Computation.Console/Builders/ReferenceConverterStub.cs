@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Console.Builders
             new AilmentBuilderStub($"{this}.AsAilment", (_, context) => Resolve(context).AsAilment);
 
         public IKeywordBuilder AsKeyword =>
-            new KeywordBuilderStub($"{this}.AsKeyword", (_, context) => Resolve(context).AsKeyword);
+            new UnresolvedKeywordBuilder($"{this}.AsKeyword", context => Resolve(context).AsKeyword);
 
         public IItemSlotBuilder AsItemSlot =>
             new UnresolvedItemSlotBuilder($"{this}.AsItemSlot", context => Resolve(context).AsItemSlot);

@@ -1,15 +1,19 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
-    public class DamageTypeBuilderStub : KeywordBuilderStub, IDamageTypeBuilder
+    public class DamageTypeBuilderStub : BuilderStub, IDamageTypeBuilder
     {
+        private readonly Resolver<IKeywordBuilder> _resolver;
+
         public DamageTypeBuilderStub(string stringRepresentation, Resolver<IKeywordBuilder> resolver)
-            : base(stringRepresentation, resolver)
+            : base(stringRepresentation)
         {
+            _resolver = resolver;
         }
 
         private IKeywordBuilder This => this;
@@ -46,6 +50,10 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IDamageRelatedStatBuilder ReflectedDamageTaken =>
             CreateDamageStat(This, o => $"Reflected {o} Damage Taken");
+
+        public IKeywordBuilder Resolve(ResolveContext context) => _resolver(this, context);
+
+        public Keyword Build() => Keyword.Projectile;
     }
 
 

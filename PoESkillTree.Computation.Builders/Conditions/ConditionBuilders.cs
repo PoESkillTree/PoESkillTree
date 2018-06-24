@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Builders.Conditions
         public ConditionBuilders(IStatFactory statFactory) => _statFactory = statFactory;
 
         public IConditionBuilder With(IKeywordBuilder keyword) =>
-            new StatConvertingConditionBuilder(d => d.With(keyword), d => d.NotWith(keyword));
+            new StatConvertingConditionBuilder<IKeywordBuilder>((d, k) => d.With(k), (d, k) => d.NotWith(k), keyword);
 
         public IConditionBuilder With(ISkillBuilder skill)
         {

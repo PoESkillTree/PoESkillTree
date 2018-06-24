@@ -168,6 +168,19 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void WithKeywordResolvesKeyword()
+        {
+            var keywordMock = new Mock<IKeywordBuilder>();
+            var context = BuildersHelper.MockResolveContext();
+            var sut = CreateSut();
+            var condition = sut.With(keywordMock.Object);
+
+            condition.Resolve(context);
+
+            keywordMock.Verify(b => b.Resolve(context));
+        }
+
         private static ISkillBuilder MockSkillBuilder(int skillId = 42) =>
             Mock.Of<ISkillBuilder>(b => b.SkillId == new ValueBuilder(new ValueBuilderImpl(skillId)));
 

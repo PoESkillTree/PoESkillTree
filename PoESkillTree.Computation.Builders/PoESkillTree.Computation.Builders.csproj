@@ -81,6 +81,7 @@
     <Compile Include="Forms\FormBuilders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolving\UnresolvedBuilder.cs" />
+    <Compile Include="Skills\KeywordBuilders.cs" />
     <Compile Include="Stats\CompositeCoreStatBuilder.cs" />
     <Compile Include="Stats\ConversionStatBuilder.cs" />
     <Compile Include="Entities\EntityBuilder.cs" />
