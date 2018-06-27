@@ -4,43 +4,51 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
+using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
     public class DamageRelatedStatBuilder : StatBuilder, IDamageRelatedStatBuilder
     {
-        private readonly DamageStatConcretizer _damageStatConcretizer;
+        private readonly DamageSpecificationBuilder _specificationBuilder;
 
         public DamageRelatedStatBuilder(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder)
+            : this(statFactory, coreStatBuilder, new DamageSpecificationBuilder())
+        {
+        }
+
+        private DamageRelatedStatBuilder(
+            IStatFactory statFactory, ICoreStatBuilder coreStatBuilder,
+            DamageSpecificationBuilder specificationBuilder)
             : base(statFactory, coreStatBuilder)
         {
-            _damageStatConcretizer = new DamageStatConcretizer(statFactory);
+            _specificationBuilder = specificationBuilder;
         }
 
         protected override IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
-            new DamageRelatedStatBuilder(StatFactory, coreStatBuilder);
+            new DamageRelatedStatBuilder(StatFactory, coreStatBuilder, _specificationBuilder);
 
-        public IDamageRelatedStatBuilder With(DamageSource source)
-        {
-            throw new System.NotImplementedException();
-        }
+        private IDamageRelatedStatBuilder With(DamageSpecificationBuilder specificationBuilder) =>
+            new DamageRelatedStatBuilder(StatFactory, CoreStatBuilder, specificationBuilder);
 
-        public IDamageRelatedStatBuilder WithHits { get; }
-        public IDamageRelatedStatBuilder WithHitsAndAilments { get; }
-        public IDamageRelatedStatBuilder WithAilments { get; }
+        public override IStatBuilder Resolve(ResolveContext context) =>
+            new DamageRelatedStatBuilder(StatFactory, CoreStatBuilder.Resolve(context),
+                _specificationBuilder.Resolve(context));
 
-        public IDamageRelatedStatBuilder With(IAilmentBuilder ailment)
-        {
-            throw new System.NotImplementedException();
-        }
+        public IDamageRelatedStatBuilder With(DamageSource source) => With(_specificationBuilder.With(source));
 
-        public IDamageRelatedStatBuilder WithSkills { get; }
+        public IDamageRelatedStatBuilder WithHits => With(_specificationBuilder.WithHits());
 
-        public IDamageRelatedStatBuilder With(AttackDamageHand hand)
-        {
-            throw new System.NotImplementedException();
-        }
+        public IDamageRelatedStatBuilder WithHitsAndAilments => With(_specificationBuilder.WithHitsAndAilments());
+
+        public IDamageRelatedStatBuilder WithAilments => With(_specificationBuilder.WithAilments());
+
+        public IDamageRelatedStatBuilder With(IAilmentBuilder ailment) => With(_specificationBuilder.With(ailment));
+
+        public IDamageRelatedStatBuilder WithSkills => With(_specificationBuilder.WithSkills());
+
+        public IDamageRelatedStatBuilder With(AttackDamageHand hand) => With(_specificationBuilder.With(hand));
 
         public IStatBuilder ApplyModifiersTo(DamageSource source, params Form[] forms)
         {
@@ -52,9 +60,15 @@ namespace PoESkillTree.Computation.Builders.Stats
             throw new System.NotImplementedException();
         }
 
-        public override IEnumerable<StatBuilderResult> Build(
-            BuildParameters parameters, ModifierSource originalModifierSource) =>
-            base.Build(parameters, originalModifierSource)
-                .SelectMany(_damageStatConcretizer.Concretize);
+        public override IEnumerable<StatBuilderResult>
+            Build(BuildParameters parameters, ModifierSource originalModifierSource) =>
+            from baseResult in base.Build(parameters, originalModifierSource)
+            from result in Concretize(baseResult)
+            select result;
+
+        private IEnumerable<StatBuilderResult> Concretize(StatBuilderResult result) =>
+            from spec in _specificationBuilder.Build()
+            let stats = result.Stats.Select(s => StatFactory.ConcretizeDamage(s, spec)).ToList()
+            select new StatBuilderResult(stats, result.ModifierSource, result.ValueConverter);
     }
 }

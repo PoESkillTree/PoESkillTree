@@ -33,7 +33,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         private IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
             With(CoreStatBuilder.WithStatConverter(statConverter));
 
-        public IStatBuilder Resolve(ResolveContext context) => With(CoreStatBuilder.Resolve(context));
+        public virtual IStatBuilder Resolve(ResolveContext context) => With(CoreStatBuilder.Resolve(context));
 
         public IStatBuilder Minimum => WithStatConverter(s => s.Minimum);
         public IStatBuilder Maximum => WithStatConverter(s => s.Maximum);
