@@ -48,14 +48,14 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// <summary>
         /// Returns a stat that specifies whether modifiers to this stat under the current limitations also apply to
         /// the given source (but not ailments) if they have any of the given forms.
-        /// <para>The stat's value specifies a multiplier. It should be 1 in most cases.</para>
+        /// <para>The stat's value specifies a multiplier. It should be 100% in most cases.</para>
         /// </summary>
         IStatBuilder ApplyModifiersTo(DamageSource source, params Form[] forms);
 
         /// <summary>
         /// Returns a stat that specifies whether modifiers to this stat under the current limitations also apply to
         /// ailments if they have any of the given forms.
-        /// <para>The stat's value specifies a multiplier. It should be 1 in most cases.</para>
+        /// <para>The stat's value specifies a multiplier. It should be 100% in most cases.</para>
         /// </summary>
         IStatBuilder ApplyModifiersToAilments(params Form[] forms);
     }

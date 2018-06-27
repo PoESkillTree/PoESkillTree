@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
@@ -74,6 +75,12 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStat ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification) =>
             CopyWithSuffix(stat, damageSpecification.StatIdentitySuffix, stat.DataType, behaviors: stat.Behaviors);
+
+        public IStat ApplyModifiersToSkillDamage(IStat stat, DamageSource damageSource, Form form) =>
+            CopyWithSuffix(stat, $"ApplyModifiersToSkills({damageSource} for form {form})", typeof(int));
+
+        public IStat ApplyModifiersToAilmentDamage(IStat stat, Form form) =>
+            CopyWithSuffix(stat, $"ApplyModifiersToAilments(for form {form})", typeof(int));
 
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,
             bool isRegisteredExplicitly = false, IReadOnlyList<Behavior> behaviors = null)

@@ -52,12 +52,20 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder ApplyModifiersTo(DamageSource source, params Form[] forms)
         {
-            throw new System.NotImplementedException();
+            var coreStatBuilders = forms.Select(ConvertCore).ToList();
+            return With(new CompositeCoreStatBuilder(coreStatBuilders));
+
+            ICoreStatBuilder ConvertCore(Form form) =>
+                CoreStatBuilder.WithStatConverter(s => StatFactory.ApplyModifiersToSkillDamage(s, source, form));
         }
 
         public IStatBuilder ApplyModifiersToAilments(params Form[] forms)
         {
-            throw new System.NotImplementedException();
+            var coreStatBuilders = forms.Select(ConvertCore).ToList();
+            return With(new CompositeCoreStatBuilder(coreStatBuilders));
+
+            ICoreStatBuilder ConvertCore(Form form) =>
+                CoreStatBuilder.WithStatConverter(s => StatFactory.ApplyModifiersToAilmentDamage(s, form));
         }
 
         public override IEnumerable<StatBuilderResult>

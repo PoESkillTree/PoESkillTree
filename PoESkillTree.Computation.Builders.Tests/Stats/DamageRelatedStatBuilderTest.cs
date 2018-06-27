@@ -162,6 +162,26 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             StringAssert.Contains(ailment.ToString(), stat.Identity);
         }
 
+        [Test]
+        public void ApplyModifiersToBuildsToCorrectResults()
+        {
+            var sut = CreateSut().With(DamageSource.Spell);
+
+            var stats = BuildToStats(sut.ApplyModifiersTo(DamageSource.Attack, Form.Increase, Form.More), 1);
+
+            Assert.That(stats, Has.Exactly(2).Items);
+        }
+
+        [Test]
+        public void ApplyModifiersToAilmentsBuildsToCorrectResults()
+        {
+            var sut = CreateSut().With(DamageSource.Spell);
+
+            var stats = BuildToStats(sut.ApplyModifiersToAilments(Form.Increase, Form.More), 1);
+
+            Assert.That(stats, Has.Exactly(2).Items);
+        }
+
         private static IDamageRelatedStatBuilder CreateSut(string identity = "test") =>
             StatBuilderUtils.DamageRelatedFromIdentity(new StatFactory(), identity, typeof(double));
 

@@ -19,6 +19,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public CompositeCoreStatBuilder(params ICoreStatBuilder[] items) =>
             _items = items;
 
+        public CompositeCoreStatBuilder(IReadOnlyList<ICoreStatBuilder> items) =>
+            _items = items;
+
         private CompositeCoreStatBuilder Select(Func<ICoreStatBuilder, ICoreStatBuilder> selector) =>
             new CompositeCoreStatBuilder(_items.Select(selector).ToArray());
 
