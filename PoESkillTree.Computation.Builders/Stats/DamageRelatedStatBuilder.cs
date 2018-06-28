@@ -7,6 +7,7 @@ using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
@@ -15,10 +16,15 @@ namespace PoESkillTree.Computation.Builders.Stats
         private readonly DamageStatConcretizer _statConcretizer;
         private readonly Func<IStat, IEnumerable<IStat>> _statConverter;
 
-        public static IDamageRelatedStatBuilder Create(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder) =>
-            new DamageRelatedStatBuilder(statFactory, coreStatBuilder,
-                new DamageStatConcretizer(statFactory, new DamageSpecificationBuilder()),
+        public static IDamageRelatedStatBuilder Create(
+            IStatFactory statFactory, ICoreStatBuilder coreStatBuilder,
+            bool canApplyToSkillDamage = false, bool canApplyToAilmentDamage = false)
+        {
+            return new DamageRelatedStatBuilder(statFactory, coreStatBuilder,
+                new DamageStatConcretizer(statFactory, new DamageSpecificationBuilder(), canApplyToSkillDamage,
+                    canApplyToAilmentDamage),
                 s => new[] { s });
+        }
 
         private DamageRelatedStatBuilder(
             IStatFactory statFactory, ICoreStatBuilder coreStatBuilder,
@@ -41,7 +47,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         private IStatBuilder With(Func<IStat, IEnumerable<IStat>> statConverter) =>
             new DamageRelatedStatBuilder(StatFactory, CoreStatBuilder, _statConcretizer.NotDamageRelated(),
-                statConverter ?? _statConverter);
+                statConverter);
 
         public override IStatBuilder Resolve(ResolveContext context) =>
             new DamageRelatedStatBuilder(StatFactory, CoreStatBuilder.Resolve(context),
@@ -61,11 +67,19 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IDamageRelatedStatBuilder With(AttackDamageHand hand) => With(_statConcretizer.With(hand));
 
-        public IStatBuilder ApplyModifiersToSkills(DamageSource source, params Form[] forms) =>
-            With(s => forms.Select(f => StatFactory.ApplyModifiersToSkillDamage(s, source, f)));
+        public IStatBuilder ApplyModifiersToSkills(DamageSource source, params Form[] forms)
+        {
+            if (!_statConcretizer.CanApplyToSkillDamage)
+                throw new ParseException("Can't apply skill damage modifiers to this stat to other damage sources");
+            return With(s => forms.Select(f => StatFactory.ApplyModifiersToSkillDamage(s, source, f)));
+        }
 
-        public IStatBuilder ApplyModifiersToAilments(params Form[] forms) =>
-            With(s => forms.Select(f => StatFactory.ApplyModifiersToAilmentDamage(s, f)));
+        public IStatBuilder ApplyModifiersToAilments(params Form[] forms)
+        {
+            if (!_statConcretizer.CanApplyToAilmentDamage)
+                throw new ParseException("Can't apply skill damage modifiers to this stat to ailments");
+            return With(s => forms.Select(f => StatFactory.ApplyModifiersToAilmentDamage(s, f)));
+        }
 
         public override IEnumerable<StatBuilderResult>
             Build(BuildParameters parameters, ModifierSource originalModifierSource) =>

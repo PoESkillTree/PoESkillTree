@@ -61,8 +61,14 @@ namespace PoESkillTree.Computation.Builders.Stats
             {
                 return (_statBuilder, Funcs.Identity);
             }
-            var (statConverter, value) = _conditionBuilder.Build(parameters);
-            return (statConverter(_statBuilder), v => v.If(value));
+
+            var result = _conditionBuilder.Build(parameters);
+            var statBuilder = result.StatConverter(_statBuilder);
+            if (result.HasValue)
+            {
+                return (statBuilder, v => v.If(result.Value));
+            }
+            return (statBuilder, Funcs.Identity);
         }
     }
 }

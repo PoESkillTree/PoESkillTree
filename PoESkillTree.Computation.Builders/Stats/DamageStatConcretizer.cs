@@ -17,17 +17,23 @@ namespace PoESkillTree.Computation.Builders.Stats
     {
         private readonly IStatFactory _statFactory;
         private readonly DamageSpecificationBuilder _specificationBuilder;
-        private readonly bool _applyToSkillDamage;
-        private readonly bool _applyToAilmentDamage;
 
-        public DamageStatConcretizer(IStatFactory statFactory, DamageSpecificationBuilder specificationBuilder)
-            : this(statFactory, specificationBuilder, false, false)
+        // Null for never apply (don't ever set to true)
+        private readonly bool? _applyToSkillDamage;
+        private readonly bool? _applyToAilmentDamage;
+
+        public DamageStatConcretizer(IStatFactory statFactory, DamageSpecificationBuilder specificationBuilder,
+            bool canApplyToSkillDamage = false, bool canApplyToAilmentDamage = false)
+            : this(statFactory, specificationBuilder,
+                CanApplyToDefault(canApplyToSkillDamage), CanApplyToDefault(canApplyToAilmentDamage))
         {
         }
 
+        private static bool? CanApplyToDefault(bool canApply) => canApply ? false : (bool?) null;
+
         private DamageStatConcretizer(
             IStatFactory statFactory, DamageSpecificationBuilder specificationBuilder,
-            bool applyToSkillDamage, bool applyToAilmentDamage)
+            bool? applyToSkillDamage, bool? applyToAilmentDamage)
         {
             _statFactory = statFactory;
             _specificationBuilder = specificationBuilder;
@@ -36,12 +42,22 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         private DamageStatConcretizer With(DamageSpecificationBuilder specificationBuilder) =>
-            new DamageStatConcretizer(_statFactory, specificationBuilder, _applyToSkillDamage, _applyToAilmentDamage);
+            new DamageStatConcretizer(_statFactory, specificationBuilder, null, null);
+
+        private DamageStatConcretizer WithCanApply(DamageSpecificationBuilder specificationBuilder,
+            bool applyToSkillDamage = false, bool applyToAilmentDamage = false)
+        {
+            return new DamageStatConcretizer(_statFactory, specificationBuilder,
+                CanApplyToSkillDamage && applyToSkillDamage ? true : _applyToSkillDamage,
+                CanApplyToAilmentDamage && applyToAilmentDamage ? true : _applyToAilmentDamage);
+        }
+
+        public bool CanApplyToSkillDamage => _applyToSkillDamage.HasValue;
+        public bool CanApplyToAilmentDamage => _applyToAilmentDamage.HasValue;
 
         public DamageStatConcretizer With(DamageSource source)
         {
-            var concretizer = new DamageStatConcretizer(_statFactory, _specificationBuilder.With(source), true,
-                _applyToAilmentDamage);
+            var concretizer = WithCanApply(_specificationBuilder.With(source), applyToSkillDamage: true);
             return source == DamageSource.OverTime ? concretizer : concretizer.WithSkills();
         }
 
@@ -54,12 +70,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         public DamageStatConcretizer With(IAilmentBuilder ailment) => With(_specificationBuilder.With(ailment));
 
         public DamageStatConcretizer WithSkills() =>
-            new DamageStatConcretizer(_statFactory, _specificationBuilder.WithSkills(), _applyToSkillDamage, true);
+            WithCanApply(_specificationBuilder.WithSkills(), applyToAilmentDamage: true);
 
-        public DamageStatConcretizer With(AttackDamageHand hand) => With(_specificationBuilder.With(hand));
+        public DamageStatConcretizer With(AttackDamageHand hand) => WithCanApply(_specificationBuilder.With(hand));
 
-        public DamageStatConcretizer NotDamageRelated() =>
-            new DamageStatConcretizer(_statFactory, _specificationBuilder);
+        public DamageStatConcretizer NotDamageRelated() => With(_specificationBuilder);
 
         public DamageStatConcretizer Resolve(ResolveContext context) => With(_specificationBuilder.Resolve(context));
 
@@ -75,11 +90,11 @@ namespace PoESkillTree.Computation.Builders.Stats
                 sourceStats.AddRange(stats);
                 results.Add(new StatBuilderResult(stats, result.ModifierSource, result.ValueConverter));
             }
-            if (_applyToSkillDamage)
+            if (_applyToSkillDamage.GetValueOrDefault(false))
             {
                 results.AddRange(ApplyToSkillDamage(modifierForm, result, sourceStats, sourceDamageSources));
             }
-            if (_applyToAilmentDamage)
+            if (_applyToAilmentDamage.GetValueOrDefault(false))
             {
                 results.AddRange(ApplyToAilmentDamage(modifierForm, result, sourceStats));
             }
@@ -96,9 +111,8 @@ namespace PoESkillTree.Computation.Builders.Stats
                 var stats = ConcretizeStats(spec, result.Stats);
                 var applyStats = sourceStats.Select(
                     s => _statFactory.ApplyModifiersToSkillDamage(s, spec.DamageSource, modifierForm));
-                var valueConverter = ApplyToDamageValueConverter(applyStats);
-                yield return new StatBuilderResult(stats, result.ModifierSource,
-                    v => valueConverter(result.ValueConverter(v)));
+                var valueConverter = result.ValueConverter.AndThen(ApplyToDamageValueConverter(applyStats));
+                yield return new StatBuilderResult(stats, result.ModifierSource, valueConverter);
             }
         }
 
@@ -108,12 +122,11 @@ namespace PoESkillTree.Computation.Builders.Stats
             var specBuilder = new DamageSpecificationBuilder().WithAilments();
             var applyStats = sourceStats.Select(
                 s => _statFactory.ApplyModifiersToAilmentDamage(s, modifierForm));
-            var valueConverter = ApplyToDamageValueConverter(applyStats);
+            var valueConverter = result.ValueConverter.AndThen(ApplyToDamageValueConverter(applyStats));
             foreach (var spec in specBuilder.Build())
             {
                 var stats = ConcretizeStats(spec, result.Stats);
-                yield return new StatBuilderResult(stats, result.ModifierSource,
-                    v => valueConverter(result.ValueConverter(v)));
+                yield return new StatBuilderResult(stats, result.ModifierSource, valueConverter);
             }
         }
 

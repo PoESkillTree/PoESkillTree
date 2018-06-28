@@ -1,11 +1,12 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
-    public abstract class StatBuilders : StatBuildersBase, IStatBuilders
+    public class StatBuilders : StatBuildersBase, IStatBuilders
     {
-        protected StatBuilders() : base(new StatFactory())
+        public StatBuilders() : base(new StatFactory())
         {
         }
 
@@ -15,12 +16,12 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IEvasionStatBuilder Evasion => new EvasionStatBuilder(StatFactory);
 
-        public abstract IDamageRelatedStatBuilder Accuracy { get; }
+        public IDamageRelatedStatBuilder Accuracy => DamageRelatedFromIdentity(typeof(int)).With(DamageSource.Attack);
 
         public IStatBuilder MovementSpeed => FromIdentity(typeof(double));
         public IStatBuilder AnimationSpeed => FromIdentity(typeof(double));
 
-        public abstract IDamageRelatedStatBuilder CastSpeed { get; }
+        public IDamageRelatedStatBuilder CastSpeed => DamageRelatedFromIdentity(typeof(double)).WithHits;
         public IStatBuilder EffectivenessOfAddedDamage => FromIdentity(typeof(double));
         public IStatBuilder AreaOfEffect => FromIdentity(typeof(int));
         public IStatBuilder Range => FromIdentity(typeof(int));

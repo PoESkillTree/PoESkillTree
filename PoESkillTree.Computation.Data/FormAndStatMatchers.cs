@@ -34,15 +34,15 @@ namespace PoESkillTree.Computation.Data
                 // - damage
                 {
                     @"adds # to # ({DamageTypeMatchers}) damage",
-                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]), Reference.AsDamageType.Damage
+                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]), Reference.AsDamageType.Damage.WithHits
                 },
                 {
                     @"# to # additional ({DamageTypeMatchers}) damage",
-                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]), Reference.AsDamageType.Damage
+                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]), Reference.AsDamageType.Damage.WithHits
                 },
                 {
                     @"adds # maximum ({DamageTypeMatchers}) damage",
-                    BaseAdd, Value.MaximumOnly, Reference.AsDamageType.Damage
+                    BaseAdd, Value.MaximumOnly, Reference.AsDamageType.Damage.WithHits
                 },
                 { "deal no ({DamageTypeMatchers}) damage", TotalOverride, 0, Reference.AsDamageType.Damage },
                 // - penetration

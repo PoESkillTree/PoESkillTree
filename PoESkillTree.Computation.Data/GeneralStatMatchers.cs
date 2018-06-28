@@ -137,7 +137,7 @@ namespace PoESkillTree.Computation.Data
                     Stat.MovementSpeed, Not(Flag.IgnoreMovementSpeedPenalties.IsSet)
                 },
                 { "attack and cast speed", Stat.CastSpeed },
-                { "attack, cast( speed)? and movement speed", ApplyOnce(Stat.CastSpeed, Stat.MovementSpeed) },
+                { "attack, cast( speed)? and movement speed", Stat.CastSpeed, Stat.MovementSpeed },
                 { "animation speed", Stat.AnimationSpeed },
                 // regen and recharge
                 { "({PoolStatMatchers}) regeneration rate", Reference.AsPoolStat.Regen },

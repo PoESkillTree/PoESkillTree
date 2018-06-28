@@ -28,6 +28,9 @@ namespace PoESkillTree.Computation.Builders.Stats
             With(LeafCoreStatBuilder.FromIdentity(StatFactory, identity, dataType, isExplicitlyRegistered));
 
         protected virtual IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
+            WithUntyped(coreStatBuilder);
+
+        private IFlagStatBuilder WithUntyped(ICoreStatBuilder coreStatBuilder) =>
             new StatBuilder(StatFactory, coreStatBuilder);
 
         protected virtual IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
@@ -66,10 +69,10 @@ namespace PoESkillTree.Computation.Builders.Stats
                 keyword);
 
         public IStatBuilder WithCondition(IConditionBuilder condition) =>
-            With(new StatBuilderAdapter(this, condition));
+            WithUntyped(new StatBuilderAdapter(this, condition));
 
         public IStatBuilder CombineWith(IStatBuilder other) =>
-            With(new CompositeCoreStatBuilder(CoreStatBuilder, new StatBuilderAdapter(other)));
+            WithUntyped(new CompositeCoreStatBuilder(new StatBuilderAdapter(this), new StatBuilderAdapter(other)));
 
         public virtual IEnumerable<StatBuilderResult> Build(
             BuildParameters parameters, ModifierSource originalModifierSource) =>

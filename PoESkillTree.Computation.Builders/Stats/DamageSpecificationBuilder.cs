@@ -43,12 +43,12 @@ namespace PoESkillTree.Computation.Builders.Stats
         public DamageSpecificationBuilder Resolve(ResolveContext context)
         {
             return new DamageSpecificationBuilder(_mode, _damageSources,
-                _ailments.Select(b => b.Resolve(context)).Cast<IAilmentBuilder>().ToList(), _hands);
+                _ailments?.Select(b => b.Resolve(context)).Cast<IAilmentBuilder>().ToList(), _hands);
         }
 
         public DamageSpecificationBuilder With(params DamageSource[] damageSources)
         {
-            if (_damageSources != null)
+            if (_damageSources != null && _damageSources.Intersect(damageSources).Count() != damageSources.Length)
                 throw new ParseException(
                     $"Damage sources were already restricted to {string.Join(", ", _damageSources)}");
             return new DamageSpecificationBuilder(_mode, damageSources, _ailments, _hands);
@@ -56,9 +56,12 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public DamageSpecificationBuilder With(AttackDamageHand hand)
         {
-            if (_damageSources != null)
+            if (_damageSources != null && !_damageSources.Contains(DamageSource.Attack))
                 throw new ParseException(
                     $"Damage sources were already restricted to {string.Join(", ", _damageSources)}");
+            if (_hands != null && !_hands.Contains(hand))
+                throw new ParseException(
+                    $"Hands were already restricted to {string.Join(", ", _hands)}");
             return new DamageSpecificationBuilder(_mode, new[] { DamageSource.Attack }, _ailments, new[] { hand });
         }
 

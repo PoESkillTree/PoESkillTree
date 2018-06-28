@@ -167,6 +167,14 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         }
 
         [Test]
+        public void WithAttackDamageHandThrowsIfRestrictedToOtherDamageSource()
+        {
+            var sut = CreateSut().With(DamageSource.Spell);
+
+            Assert.Throws<ParseException>(() => sut.With(AttackDamageHand.OffHand));
+        }
+
+        [Test]
         public void WithAilmentCanBeResolved()
         {
             var ailment = Ailment.Bleed;
@@ -258,7 +266,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
                     NodeType.Total, PathDefinition.MainPath) == new NodeValue(20));
             var sut = DamageRelatedStatBuilder.Create(statFactory, new CompositeCoreStatBuilder(
                 LeafCoreStatBuilder.FromIdentity(statFactory, "1", typeof(double)),
-                LeafCoreStatBuilder.FromIdentity(statFactory, "2", typeof(double))));
+                LeafCoreStatBuilder.FromIdentity(statFactory, "2", typeof(double))),
+                canApplyToSkillDamage: true);
 
             var values = sut.With(DamageSource.Spell)
                 .Build(default, ModifierSource)
@@ -267,8 +276,37 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.Throws<ParseException>(() => values[1].Calculate(context));
         }
 
-        private static IDamageRelatedStatBuilder CreateSut(string identity = "test") =>
-            StatBuilderUtils.DamageRelatedFromIdentity(new StatFactory(), identity, typeof(double));
+        [Test]
+        public void WithHitsAndSpellsBuildsToCorrectResult()
+        {
+            var expectedCount = 1;
+            var sut = CreateSut();
+
+            var stats = BuildToStats(sut.WithHits.With(DamageSource.Spell), expectedCount);
+
+            Assert.That(stats, Has.Exactly(expectedCount).Items);
+        }
+
+        [Test]
+        public void ApplyModifiersToSkillsThrowsIfCantApplyToSkillDamage()
+        {
+            var sut = CreateSut(canApplyToSkillDamage: false);
+
+            Assert.Throws<ParseException>(() => sut.ApplyModifiersToSkills(DamageSource.Attack, Form.More));
+        }
+
+        [Test]
+        public void ApplyModifiersToAilmentsThrowsIfCantApplyToSkillDamage()
+        {
+            var sut = CreateSut(canApplyToAilmentDamage: false);
+
+            Assert.Throws<ParseException>(() => sut.ApplyModifiersToAilments(Form.More));
+        }
+
+        private static IDamageRelatedStatBuilder CreateSut(string identity = "test",
+            bool canApplyToSkillDamage = true, bool canApplyToAilmentDamage = true) =>
+            StatBuilderUtils.DamageRelatedFromIdentity(new StatFactory(), identity, typeof(double),
+                canApplyToSkillDamage, canApplyToAilmentDamage);
 
         private static readonly ModifierSource ModifierSource = new ModifierSource.Global();
 

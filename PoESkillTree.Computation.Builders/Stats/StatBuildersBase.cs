@@ -20,5 +20,9 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         protected IFlagStatBuilder FromCore(ICoreStatBuilder coreStatBuilder) =>
             new StatBuilder(StatFactory, coreStatBuilder);
+
+        protected IDamageRelatedStatBuilder DamageRelatedFromIdentity(
+            Type dataType, [CallerMemberName] string identity = null) =>
+            StatBuilderUtils.DamageRelatedFromIdentity(StatFactory, identity, dataType);
     }
 }

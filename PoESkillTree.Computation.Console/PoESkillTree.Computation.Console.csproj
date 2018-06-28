@@ -76,7 +76,6 @@
     <Compile Include="Builders\PoolStatBuilderStub.cs" />
     <Compile Include="Builders\Resolver.cs" />
     <Compile Include="Builders\SkillBuilderStub.cs" />
-    <Compile Include="Builders\StatBuildersStub.cs" />
     <Compile Include="Builders\StatBuilderStub.cs" />
     <Compile Include="Builders\StunEffectBuilderStub.cs" />
     <Compile Include="Builders\ValueBuilderStub.cs" />

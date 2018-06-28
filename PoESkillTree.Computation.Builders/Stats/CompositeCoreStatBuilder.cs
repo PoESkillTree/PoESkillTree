@@ -7,7 +7,6 @@ using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -17,9 +16,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         private readonly IReadOnlyList<ICoreStatBuilder> _items;
 
         public CompositeCoreStatBuilder(params ICoreStatBuilder[] items) =>
-            _items = items;
-
-        public CompositeCoreStatBuilder(IReadOnlyList<ICoreStatBuilder> items) =>
             _items = items;
 
         private CompositeCoreStatBuilder Select(Func<ICoreStatBuilder, ICoreStatBuilder> selector) =>
@@ -39,17 +35,19 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)
         {
-            var seed = new StatBuilderResult(new IStat[0], originalModifierSource, Funcs.Identity);
-            return new[] { _items.Aggregate(seed, Aggregate) };
-
-            StatBuilderResult Aggregate(StatBuilderResult previous, ICoreStatBuilder item)
+            IEnumerable<StatBuilderResult> seed = new[]
             {
-                var built = item.Build(parameters, previous.ModifierSource).Single();
-                var stats = previous.Stats.Concat(built.Stats).ToList();
-                var source = built.ModifierSource;
-                IValueBuilder ConvertValue(IValueBuilder v) => built.ValueConverter(previous.ValueConverter(v));
-                return new StatBuilderResult(stats, source, ConvertValue);
-            }
+                new StatBuilderResult(new IStat[0], originalModifierSource, Funcs.Identity)
+            };
+            return _items.Aggregate(seed, Aggregate);
+
+            IEnumerable<StatBuilderResult> Aggregate(IEnumerable<StatBuilderResult> previous, ICoreStatBuilder item) =>
+                from p in previous
+                from c in item.Build(parameters, p.ModifierSource).ToList()
+                let stats = p.Stats.Concat(c.Stats).ToList()
+                let source = c.ModifierSource
+                let valueConverter = p.ValueConverter.AndThen(c.ValueConverter)
+                select new StatBuilderResult(stats, source, valueConverter);
         }
     }
 }
