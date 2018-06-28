@@ -48,7 +48,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IDamageRelatedStatBuilder With(AttackDamageHand hand) =>
             CreateDamageStat(This, o => $"With {hand} {o}");
 
-        public IStatBuilder ApplyModifiersTo(DamageSource source, params Form[] forms) =>
+        public IStatBuilder ApplyModifiersToSkills(DamageSource source, params Form[] forms) =>
             CreateStat(This,
                 o => $"Modifiers to {o} apply to source {source} for forms [{string.Join(", ", forms)}]");
 

@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         protected virtual IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
             new StatBuilder(StatFactory, coreStatBuilder);
 
-        private IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
+        protected virtual IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
             With(CoreStatBuilder.WithStatConverter(statConverter));
 
         public virtual IStatBuilder Resolve(ResolveContext context) => With(CoreStatBuilder.Resolve(context));

@@ -6,14 +6,21 @@ namespace PoESkillTree.Computation.Builders.Stats
     public interface IDamageSpecification
     {
         string StatIdentitySuffix { get; }
+
+        DamageSource DamageSource { get; }
     }
 
     public class SkillDamageSpecification : IDamageSpecification
     {
-        public SkillDamageSpecification(DamageSource damageSource) =>
+        public SkillDamageSpecification(DamageSource damageSource)
+        {
             StatIdentitySuffix = $"{damageSource}.Skill";
+            DamageSource = damageSource;
+        }
 
         public string StatIdentitySuffix { get; }
+
+        public DamageSource DamageSource { get; }
     }
 
     public class AttackDamageSpecification : IDamageSpecification
@@ -22,6 +29,8 @@ namespace PoESkillTree.Computation.Builders.Stats
             StatIdentitySuffix = $"{DamageSource.Attack}.{attackDamageHand}.Skill";
 
         public string StatIdentitySuffix { get; }
+
+        public DamageSource DamageSource => DamageSource.Attack;
     }
 
     public class AilmentDamageSpecification : IDamageSpecification
@@ -30,5 +39,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             StatIdentitySuffix = $"{DamageSource.OverTime}.{ailment}";
 
         public string StatIdentitySuffix { get; }
+
+        public DamageSource DamageSource => DamageSource.OverTime;
     }
 }

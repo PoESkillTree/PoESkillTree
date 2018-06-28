@@ -17,7 +17,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public static IDamageRelatedStatBuilder DamageRelatedFromIdentity(
             IStatFactory statFactory, string identity, Type dataType) =>
-            new DamageRelatedStatBuilder(statFactory,
+            DamageRelatedStatBuilder.Create(statFactory,
                 LeafCoreStatBuilder.FromIdentity(statFactory, identity, dataType));
     }
 }
