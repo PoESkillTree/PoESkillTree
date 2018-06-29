@@ -78,6 +78,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolving\UnresolvedBuilderTest.cs" />
     <Compile Include="Stats\CastSpeedStatBuilderTest.cs" />
+    <Compile Include="Stats\DamageStatBuilderTest.cs" />
     <Compile Include="Stats\CompositeCoreStatBuilderTest.cs" />
     <Compile Include="Stats\ConversionStatBuilderTest.cs" />
     <Compile Include="Stats\DamageRelatedStatBuilderTest.cs" />

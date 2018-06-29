@@ -91,6 +91,7 @@
     <Compile Include="Entities\EntityBuilder.cs" />
     <Compile Include="Stats\DamageRelatedStatBuilder.cs" />
     <Compile Include="Stats\DamageSpecificationBuilder.cs" />
+    <Compile Include="Stats\DamageStatBuilder.cs" />
     <Compile Include="Stats\DamageStatConcretizer.cs" />
     <Compile Include="Stats\EvasionStatBuilder.cs" />
     <Compile Include="Stats\ICoreStatBuilder.cs" />

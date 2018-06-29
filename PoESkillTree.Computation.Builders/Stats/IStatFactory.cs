@@ -32,5 +32,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification);
         IStat ApplyModifiersToSkillDamage(IStat stat, DamageSource damageSource, Form form);
         IStat ApplyModifiersToAilmentDamage(IStat stat, Form form);
+        IStat DamageTaken(IStat damage);
     }
 }

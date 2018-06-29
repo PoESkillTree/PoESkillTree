@@ -85,11 +85,14 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat ApplyModifiersToAilmentDamage(IStat stat, Form form) =>
             CopyWithSuffix(stat, $"ApplyModifiersToAilments(for form {form})", typeof(int));
 
+        public IStat DamageTaken(IStat damage) =>
+            CopyWithSuffix(damage, "Taken", damage.DataType);
+
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,
             bool isRegisteredExplicitly = false, IReadOnlyList<Behavior> behaviors = null)
         {
             return GetOrAdd(source.Identity + "." + identitySuffix, source.Entity,
-                dataType ?? source.DataType, isRegisteredExplicitly, behaviors);
+                dataType, isRegisteredExplicitly, behaviors);
         }
 
         private IStat GetOrAdd(string identity, Entity entity, Type dataType,
