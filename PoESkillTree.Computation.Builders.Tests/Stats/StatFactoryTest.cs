@@ -5,6 +5,8 @@ using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Tests.Stats
@@ -151,6 +153,46 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
 
             Assert.That(actual, Has.One.Items);
             AssertTransformedValueIs<RegenUncappedSubtotalValue>(actual[0]);
+        }
+
+        [TestCase(DamageType.Fire)]
+        [TestCase(DamageType.Cold)]
+        public void ConcretizeDamageHasCorrectBehaviorsIfStatIsDamage(DamageType damageType)
+        {
+            var inputStat = new StatFactory().Damage(damageType, default);
+            var spec = new AilmentDamageSpecification(Ailment.Bleed);
+            var sut = CreateSut();
+
+            var actual = sut.ConcretizeDamage(inputStat, spec).Behaviors;
+
+            Assert.That(actual, Has.Exactly(3).Items);
+            AssertTransformedValueIs<AilmentDamageUncappedSubtotalValue>(actual[0]);
+            AssertTransformedValueIs<AilmentDamageBaseValue>(actual[1]);
+            AssertTransformedValueIs<AilmentDamageIncreaseMoreValue>(actual[2]);
+        }
+
+        [Test]
+        public void ConcretizeDamageHasNoBehaviorsIfSpecificationIsNotAilment()
+        {
+            var inputStat = new StatFactory().Damage(DamageType.Fire, default);
+            var spec = new SkillDamageSpecification(DamageSource.OverTime);
+            var sut = CreateSut();
+
+            var actual = sut.ConcretizeDamage(inputStat, spec).Behaviors;
+
+            CollectionAssert.IsEmpty(actual);
+        }
+
+        [Test]
+        public void ConcretizeDamageHasNoBehaviorsIfStatIsNotDamage()
+        {
+            var inputStat = new Stat("CritChance");
+            var spec = new AilmentDamageSpecification(Ailment.Bleed);
+            var sut = CreateSut();
+
+            var actual = sut.ConcretizeDamage(inputStat, spec).Behaviors;
+
+            CollectionAssert.IsEmpty(actual);
         }
 
         private static T AssertTransformedValueIs<T>(Behavior actual) where T : IValue

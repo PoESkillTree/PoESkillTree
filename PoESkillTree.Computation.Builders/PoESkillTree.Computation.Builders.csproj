@@ -58,6 +58,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\AilmentDamageBaseValue.cs" />
+    <Compile Include="Behaviors\AilmentDamageIncreaseMoreValue.cs" />
+    <Compile Include="Behaviors\AilmentDamageUncappedSubtotalValue.cs" />
     <Compile Include="Behaviors\BehaviorFactory.cs" />
     <Compile Include="Behaviors\ConversionSourcePathTotalValue.cs" />
     <Compile Include="Behaviors\ConversionTargetPathTotalValue.cs" />

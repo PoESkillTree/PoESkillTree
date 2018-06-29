@@ -8,6 +8,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         string StatIdentitySuffix { get; }
 
         DamageSource DamageSource { get; }
+
+        bool IsSkillDamage { get; }
     }
 
     public class SkillDamageSpecification : IDamageSpecification
@@ -21,6 +23,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public string StatIdentitySuffix { get; }
 
         public DamageSource DamageSource { get; }
+
+        public bool IsSkillDamage => true;
     }
 
     public class AttackDamageSpecification : IDamageSpecification
@@ -31,6 +35,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public string StatIdentitySuffix { get; }
 
         public DamageSource DamageSource => DamageSource.Attack;
+
+        public bool IsSkillDamage => true;
     }
 
     public class AilmentDamageSpecification : IDamageSpecification
@@ -41,5 +47,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public string StatIdentitySuffix { get; }
 
         public DamageSource DamageSource => DamageSource.OverTime;
+
+        public bool IsSkillDamage => false;
     }
 }

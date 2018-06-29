@@ -76,8 +76,12 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat ActiveSkillCastSpeedHasKeyword(Entity entity, Keyword keyword) =>
             GetOrAdd($"ActiveSkill.CastSpeed.Has.{keyword}", entity, typeof(bool));
 
+        public IStat Damage(DamageType damageType, Entity entity) =>
+            GetOrAdd($"{damageType}.Damage", entity, typeof(int));
+
         public IStat ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification) =>
-            CopyWithSuffix(stat, damageSpecification.StatIdentitySuffix, stat.DataType, behaviors: stat.Behaviors);
+            CopyWithSuffix(stat, damageSpecification.StatIdentitySuffix, stat.DataType,
+                behaviors: _behaviorFactory.ConcretizeDamage(stat, damageSpecification));
 
         public IStat ApplyModifiersToSkillDamage(IStat stat, DamageSource damageSource, Form form) =>
             CopyWithSuffix(stat, $"ApplyModifiersToSkills({damageSource} for form {form})", typeof(int));

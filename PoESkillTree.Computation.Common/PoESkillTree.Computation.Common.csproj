@@ -72,6 +72,7 @@
     <Compile Include="Builders\Conditions\IConditionBuilders.cs" />
     <Compile Include="Builders\Damage\AttackDamageHand.cs" />
     <Compile Include="Builders\Damage\DamageSource.cs" />
+    <Compile Include="Builders\Damage\DamageType.cs" />
     <Compile Include="Builders\Damage\IDamageTypeBuilder.cs" />
     <Compile Include="Builders\Damage\IDamageTypeBuilders.cs" />
     <Compile Include="Builders\Effects\Ailment.cs" />
