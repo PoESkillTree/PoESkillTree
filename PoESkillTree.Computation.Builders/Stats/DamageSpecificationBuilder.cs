@@ -21,9 +21,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         private readonly Mode _mode;
-        private readonly IReadOnlyList<DamageSource> _damageSources;
-        private readonly IReadOnlyList<AttackDamageHand> _hands;
-        private readonly IReadOnlyList<IAilmentBuilder> _ailments;
+        private readonly DamageSource? _damageSource;
+        private readonly AttackDamageHand? _hand;
+        private readonly IAilmentBuilder _ailment;
 
         public DamageSpecificationBuilder()
             : this(Mode.Skills | Mode.Ailments, null, null, null)
@@ -31,64 +31,64 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         private DamageSpecificationBuilder(
-            Mode mode, IReadOnlyList<DamageSource> damageSources, IReadOnlyList<IAilmentBuilder> ailments,
-            IReadOnlyList<AttackDamageHand> hands)
+            Mode mode, DamageSource? damageSource, IAilmentBuilder ailment, AttackDamageHand? hand)
         {
             _mode = mode;
-            _damageSources = damageSources;
-            _ailments = ailments;
-            _hands = hands;
+            _damageSource = damageSource;
+            _ailment = ailment;
+            _hand = hand;
         }
 
         public DamageSpecificationBuilder Resolve(ResolveContext context)
         {
-            return new DamageSpecificationBuilder(_mode, _damageSources,
-                _ailments?.Select(b => b.Resolve(context)).Cast<IAilmentBuilder>().ToList(), _hands);
+            return new DamageSpecificationBuilder(_mode, _damageSource,
+                (IAilmentBuilder) _ailment?.Resolve(context), _hand);
         }
 
-        public DamageSpecificationBuilder With(params DamageSource[] damageSources)
+        public DamageSpecificationBuilder With(DamageSource damageSource)
         {
-            if (_damageSources != null && _damageSources.Intersect(damageSources).Count() != damageSources.Length)
+            if (_damageSource is DamageSource s && s != damageSource)
                 throw new ParseException(
-                    $"Damage sources were already restricted to {string.Join(", ", _damageSources)}");
-            return new DamageSpecificationBuilder(_mode, damageSources, _ailments, _hands);
+                    $"Damage source was already restricted to {_damageSource}");
+            return new DamageSpecificationBuilder(_mode, damageSource, _ailment, _hand);
         }
 
         public DamageSpecificationBuilder With(AttackDamageHand hand)
         {
-            if (_damageSources != null && !_damageSources.Contains(DamageSource.Attack))
+            if (_damageSource is DamageSource s && s != DamageSource.Attack)
                 throw new ParseException(
-                    $"Damage sources were already restricted to {string.Join(", ", _damageSources)}");
-            if (_hands != null && !_hands.Contains(hand))
+                    $"Damage source was already restricted to {_damageSource}");
+            if (_hand is AttackDamageHand h && h != hand)
                 throw new ParseException(
-                    $"Hands were already restricted to {string.Join(", ", _hands)}");
-            return new DamageSpecificationBuilder(_mode, new[] { DamageSource.Attack }, _ailments, new[] { hand });
+                    $"Hand was already restricted to {_hand}");
+            return new DamageSpecificationBuilder(_mode, DamageSource.Attack, _ailment, hand);
         }
 
-        public DamageSpecificationBuilder With(params IAilmentBuilder[] ailments)
+        public DamageSpecificationBuilder With(IAilmentBuilder ailment)
         {
-            if (_ailments != null)
-                throw new ParseException($"Ailments were already restricted to {string.Join(", ", _ailments)}");
-            return new DamageSpecificationBuilder(_mode.RemoveFlags(Mode.Skills), _damageSources, ailments, _hands);
+            if (_ailment != null)
+                throw new ParseException($"Ailment was already restricted to {_ailment}");
+            return new DamageSpecificationBuilder(_mode.RemoveFlags(Mode.Skills), _damageSource, ailment, _hand);
         }
 
         public DamageSpecificationBuilder WithHits() =>
-            new DamageSpecificationBuilder(_mode.RemoveFlags(Mode.SkillDoT | Mode.Ailments), _damageSources, _ailments,
-                _hands);
+            new DamageSpecificationBuilder(_mode.RemoveFlags(Mode.SkillDoT | Mode.Ailments), _damageSource, _ailment,
+                _hand);
 
         public DamageSpecificationBuilder WithAilments() =>
-            new DamageSpecificationBuilder(_mode.RemoveFlags(Mode.Skills), _damageSources, _ailments, _hands);
+            new DamageSpecificationBuilder(_mode.RemoveFlags(Mode.Skills), _damageSource, _ailment, _hand);
 
         public DamageSpecificationBuilder WithHitsAndAilments() =>
-            new DamageSpecificationBuilder(_mode.RemoveFlags(Mode.SkillDoT), _damageSources, _ailments, _hands);
+            new DamageSpecificationBuilder(_mode.RemoveFlags(Mode.SkillDoT), _damageSource, _ailment, _hand);
 
         public DamageSpecificationBuilder WithSkills() =>
-            new DamageSpecificationBuilder(_mode.RemoveFlags(Mode.Ailments), _damageSources, _ailments, _hands);
+            new DamageSpecificationBuilder(_mode.RemoveFlags(Mode.Ailments), _damageSource, _ailment, _hand);
 
         public IEnumerable<IDamageSpecification> Build()
         {
-            var sources = _damageSources ?? Enums.GetValues<DamageSource>();
-            return sources.SelectMany(Build);
+            if (_damageSource is DamageSource s)
+                return Build(s);
+            return Enums.GetValues<DamageSource>().SelectMany(Build);
         }
 
         private IEnumerable<IDamageSpecification> Build(DamageSource damageSource)
@@ -110,9 +110,18 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         private IEnumerable<IDamageSpecification> BuildAttackDamage()
         {
-            if (_mode.HasFlag(Mode.Hits))
-                foreach (var attackDamageHand in _hands ?? Enums.GetValues<AttackDamageHand>())
+            if (!_mode.HasFlag(Mode.Hits))
+                yield break;
+
+            if (_hand is AttackDamageHand hand)
+            {
+                yield return new AttackDamageSpecification(hand);
+            }
+            else
+            {
+                foreach (var attackDamageHand in Enums.GetValues<AttackDamageHand>())
                     yield return new AttackDamageSpecification(attackDamageHand);
+            }
         }
 
         private IEnumerable<IDamageSpecification> BuildSpelllDamage()
@@ -132,9 +141,18 @@ namespace PoESkillTree.Computation.Builders.Stats
             if (_mode.HasFlag(Mode.SkillDoT))
                 yield return new SkillDamageSpecification(DamageSource.OverTime);
 
-            if (_mode.HasFlag(Mode.Ailments))
-                foreach (var ailment in _ailments?.Select(b => b.Build()) ?? Enums.GetValues<Ailment>())
+            if (!_mode.HasFlag(Mode.Ailments))
+                yield break;
+
+            if (_ailment is null)
+            {
+                foreach (var ailment in Enums.GetValues<Ailment>())
                     yield return new AilmentDamageSpecification(ailment);
+            }
+            else
+            {
+                yield return new AilmentDamageSpecification(_ailment.Build());
+            }
         }
     }
 }

@@ -104,9 +104,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         private IEnumerable<StatBuilderResult> ApplyToSkillDamage(Form modifierForm, StatBuilderResult result,
             IReadOnlyList<IStat> sourceStats, IEnumerable<DamageSource> sourceDamageSources)
         {
-            var specBuilder = new DamageSpecificationBuilder().WithSkills()
-                .With(Enums.GetValues<DamageSource>().Except(sourceDamageSources).ToArray());
-            foreach (var spec in specBuilder.Build())
+            var specs = Enums.GetValues<DamageSource>()
+                .Except(sourceDamageSources)
+                .Select(source => new DamageSpecificationBuilder().WithSkills().With(source))
+                .SelectMany(specBuilder => specBuilder.Build());
+            foreach (var spec in specs)
             {
                 var stats = ConcretizeStats(spec, result.Stats);
                 var applyStats = sourceStats.Select(
