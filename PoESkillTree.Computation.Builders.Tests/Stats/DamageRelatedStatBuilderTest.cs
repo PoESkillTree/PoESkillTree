@@ -21,7 +21,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [Test]
         public void BuildReturnsCorrectResult()
         {
-            var expectedCount = SkillResultCount + Ailments.Count;
+            var expectedCount = FullResultCount;
             var sut = CreateSut();
 
             var stats = BuildToStats(sut, expectedCount);
@@ -39,17 +39,30 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
                 Assert.AreEqual(expected, stats[i + offset].Identity);
             }
             offset += DamageSources.Count - 1;
-            foreach (var (i, ailment) in Ailments.Index())
+            foreach (var attackDamageHand in AttackDamageHands)
             {
-                var expected = $"test.{DamageSource.OverTime}.{ailment}";
-                Assert.AreEqual(expected, stats[offset + i].Identity);
+                foreach (var (i, ailment) in Ailments.Index())
+                {
+                    var expected = $"test.{DamageSource.Attack}.{attackDamageHand}.{ailment}";
+                    Assert.AreEqual(expected, stats[offset + i].Identity);
+                }
+                offset += Ailments.Count;
+            }
+            foreach (var damageSource in DamageSources.Except(DamageSource.Attack, DamageSource.OverTime))
+            {
+                foreach (var (i, ailment) in Ailments.Index())
+                {
+                    var expected = $"test.{damageSource}.{ailment}";
+                    Assert.AreEqual(expected, stats[offset + i].Identity);
+                }
+                offset += Ailments.Count;
             }
         }
 
         [Test]
         public void WithSpellBuildsToCorrectResult()
         {
-            var expectedCount = SkillResultCount + Ailments.Count;
+            var expectedCount = FullResultCount;
             var sut = CreateSut();
 
             var stats = BuildToStats(sut.With(DamageSource.Spell), expectedCount);
@@ -57,21 +70,21 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.That(stats, Has.Exactly(expectedCount).Items);
             Assert.AreEqual("test.Spell.Skill", stats[0].Identity);
             Assert.AreEqual("test.Attack.MainHand.Skill", stats[1].Identity);
-            Assert.AreEqual("test.OverTime.Ignite", stats[SkillResultCount].Identity);
+            Assert.AreEqual("test.Attack.MainHand.Ignite", stats[SkillResultCount].Identity);
         }
 
         [Test]
         public void WithOverTimeBuildsToCorrectResult()
         {
-            var expectedCount = SkillResultCount + Ailments.Count;
+            var expectedCount = FullResultCount;
             var sut = CreateSut();
 
             var stats = BuildToStats(sut.With(DamageSource.OverTime), expectedCount);
 
             Assert.That(stats, Has.Exactly(expectedCount).Items);
             Assert.AreEqual("test.OverTime.Skill", stats[0].Identity);
-            Assert.AreEqual("test.OverTime.Ignite", stats[1].Identity);
-            Assert.AreEqual("test.Attack.MainHand.Skill", stats[1 + Ailments.Count].Identity);
+            Assert.AreEqual("test.Attack.MainHand.Ignite", stats[1].Identity);
+            Assert.AreEqual("test.Attack.MainHand.Skill", stats[1 + AilmentsResultCount].Identity);
         }
 
         [Test]
@@ -96,7 +109,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [Test]
         public void WithHitsAndAilmentsBuildsToCorrectResult()
         {
-            var expectedCount = SkillResultCount - 1 + Ailments.Count;
+            var expectedCount = FullResultCount - 1;
             var sut = CreateSut();
 
             var stats = BuildToStats(sut.WithHitsAndAilments, expectedCount);
@@ -107,7 +120,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [Test]
         public void WithAilmentBuildsToCorrectResult()
         {
-            var expectedCount = 1;
+            var expectedCount = SkillResultCount - 1;
             var sut = CreateSut();
             var ailmentBuilder = Mock.Of<IAilmentBuilder>(b => b.Build() == Ailment.Bleed);
 
@@ -128,7 +141,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [Test]
         public void WithAilmentsBuildsToCorrectResult()
         {
-            var expectedCount = Ailments.Count;
+            var expectedCount = AilmentsResultCount;
             var sut = CreateSut();
 
             var stats = BuildToStats(sut.WithAilments, expectedCount);
@@ -139,7 +152,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [Test]
         public void WithSkillsBuildsToCorrectResult()
         {
-            var expectedCount = SkillResultCount + Ailments.Count;
+            var expectedCount = FullResultCount;
             var sut = CreateSut();
 
             var stats = BuildToStats(sut.WithSkills, expectedCount);
@@ -150,7 +163,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [Test]
         public void WithAttackDamageHandBuildsToCorrectResult()
         {
-            var expectedCount = 1;
+            var expectedCount = 1 + Ailments.Count;
             var sut = CreateSut();
 
             var stats = BuildToStats(sut.With(AttackDamageHand.OffHand), expectedCount);
@@ -183,7 +196,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var sut = CreateSut();
 
             var resolved = sut.With(ailmentBuilder).Resolve(null);
-            var stat = BuildToStats(resolved, 1)[0];
+            var stat = BuildToStats(resolved, SkillResultCount - 1)[0];
 
             StringAssert.Contains(ailment.ToString(), stat.Identity);
         }
@@ -215,7 +228,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var sut = CreateSut().With(DamageSource.Spell);
 
             var stats = BuildToStats(sut.Minimum, 1);
-            
+
             Assert.That(stats, Has.Exactly(1).Items);
             Assert.AreEqual("test.Spell.Skill.Minimum", stats[0].Identity);
         }
@@ -244,11 +257,11 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
                 .Select(b => b.Build().Calculate(context))
                 .ToList();
 
-            Assert.AreEqual(new NodeValue(10), values[0]);  // Spell
-            Assert.AreEqual(new NodeValue(5), values[1]);  // Attack.MainHand
-            Assert.AreEqual(new NodeValue(2), values[3]);  // Secondary
-            Assert.AreEqual(null, values[4]);  // OverTime
-            Assert.AreEqual(new NodeValue(1), values[Ailments.Count]);  // Ailment.Ignite
+            Assert.AreEqual(new NodeValue(10), values[0]); // Spell
+            Assert.AreEqual(new NodeValue(5), values[1]); // Attack.MainHand
+            Assert.AreEqual(new NodeValue(2), values[3]); // Secondary
+            Assert.AreEqual(null, values[4]); // OverTime
+            Assert.AreEqual(new NodeValue(1), values[SkillResultCount]); // Ailment.Ignite
             // ... other ApplyModifiersToAilmentDamage
         }
 
@@ -265,8 +278,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
                 c.GetValue(statFactory.ApplyModifiersToSkillDamage(stat2, DamageSource.Attack, default),
                     NodeType.Total, PathDefinition.MainPath) == new NodeValue(20));
             var sut = DamageRelatedStatBuilder.Create(statFactory, new CompositeCoreStatBuilder(
-                LeafCoreStatBuilder.FromIdentity(statFactory, "1", typeof(double)),
-                LeafCoreStatBuilder.FromIdentity(statFactory, "2", typeof(double))),
+                    LeafCoreStatBuilder.FromIdentity(statFactory, "1", typeof(double)),
+                    LeafCoreStatBuilder.FromIdentity(statFactory, "2", typeof(double))),
                 canApplyToSkillDamage: true);
 
             var values = sut.With(DamageSource.Spell)
@@ -313,13 +326,16 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         private static readonly IReadOnlyList<DamageSource> DamageSources =
             Enums.GetValues<DamageSource>().ToList();
 
-        private static readonly IReadOnlyList<Ailment> Ailments =
-            Enums.GetValues<Ailment>().ToList();
+        private static readonly IReadOnlyList<Ailment> Ailments = AilmentConstants.DamagingAilments;
 
         private static readonly IReadOnlyList<AttackDamageHand> AttackDamageHands =
             Enums.GetValues<AttackDamageHand>().ToList();
 
         private static readonly int SkillResultCount = AttackDamageHands.Count + DamageSources.Count - 1;
+
+        private static readonly int AilmentsResultCount = (SkillResultCount - 1) * Ailments.Count;
+
+        private static readonly int FullResultCount = SkillResultCount + AilmentsResultCount;
 
         private static IReadOnlyList<IStat>
             BuildToStats(IStatBuilder statBuilder, int expectedResultCount)

@@ -84,75 +84,91 @@ namespace PoESkillTree.Computation.Builders.Stats
         public DamageSpecificationBuilder WithSkills() =>
             new DamageSpecificationBuilder(_mode.RemoveFlags(Mode.Ailments), _damageSource, _ailment, _hand);
 
-        public IEnumerable<IDamageSpecification> Build()
+        public IEnumerable<IDamageSpecification> Build() => BuildSkillDamage().Concat(BuildAilmentDamage());
+
+        private IEnumerable<IDamageSpecification> BuildSkillDamage()
         {
-            if (_damageSource is DamageSource s)
-                return Build(s);
-            return Enums.GetValues<DamageSource>().SelectMany(Build);
+            var sources = SingleOrAll(_damageSource, Enums.GetValues<DamageSource>);
+            return sources.SelectMany(BuildSkillDamage);
         }
 
-        private IEnumerable<IDamageSpecification> Build(DamageSource damageSource)
+        private IEnumerable<IDamageSpecification> BuildSkillDamage(DamageSource damageSource)
         {
+            if (damageSource == DamageSource.OverTime && !_mode.HasFlag(Mode.SkillDoT))
+                return Enumerable.Empty<IDamageSpecification>();
+            if (damageSource != DamageSource.OverTime && !_mode.HasFlag(Mode.Hits))
+                return Enumerable.Empty<IDamageSpecification>();
             switch (damageSource)
             {
                 case DamageSource.Attack:
-                    return BuildAttackDamage();
+                    return BuildSkillAttackDamage();
                 case DamageSource.Spell:
-                    return BuildSpelllDamage();
+                    return BuildSkillSpelllDamage();
                 case DamageSource.Secondary:
-                    return BuildSecondaryDamage();
+                    return BuildSkillSecondaryDamage();
                 case DamageSource.OverTime:
-                    return BuildDamageOverTime();
+                    return BuildSkillDamageOverTime();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(damageSource), damageSource, null);
             }
         }
 
-        private IEnumerable<IDamageSpecification> BuildAttackDamage()
-        {
-            if (!_mode.HasFlag(Mode.Hits))
-                yield break;
+        private IEnumerable<IDamageSpecification> BuildSkillAttackDamage() =>
+            Hands().Select(hand => new SkillAttackDamageSpecification(hand));
 
-            if (_hand is AttackDamageHand hand)
-            {
-                yield return new AttackDamageSpecification(hand);
-            }
-            else
-            {
-                foreach (var attackDamageHand in Enums.GetValues<AttackDamageHand>())
-                    yield return new AttackDamageSpecification(attackDamageHand);
-            }
+        private IEnumerable<IDamageSpecification> BuildSkillSpelllDamage() =>
+            new[] { new SkillDamageSpecification(DamageSource.Spell) };
+
+        private IEnumerable<IDamageSpecification> BuildSkillSecondaryDamage() =>
+            new[] { new SkillDamageSpecification(DamageSource.Secondary) };
+
+        private IEnumerable<IDamageSpecification> BuildSkillDamageOverTime() =>
+            new[] { new SkillDamageSpecification(DamageSource.OverTime) };
+
+        private IEnumerable<IDamageSpecification> BuildAilmentDamage()
+        {
+            if (_damageSource is DamageSource source && source != DamageSource.OverTime)
+                return BuildAilmentDamage(source);
+            return Enums.GetValues<DamageSource>().SelectMany(BuildAilmentDamage);
         }
 
-        private IEnumerable<IDamageSpecification> BuildSpelllDamage()
+        private IEnumerable<IDamageSpecification> BuildAilmentDamage(DamageSource damageSource)
         {
-            if (_mode.HasFlag(Mode.Hits))
-                yield return new SkillDamageSpecification(DamageSource.Spell);
-        }
-
-        private IEnumerable<IDamageSpecification> BuildSecondaryDamage()
-        {
-            if (_mode.HasFlag(Mode.Hits))
-                yield return new SkillDamageSpecification(DamageSource.Secondary);
-        }
-
-        private IEnumerable<IDamageSpecification> BuildDamageOverTime()
-        {
-            if (_mode.HasFlag(Mode.SkillDoT))
-                yield return new SkillDamageSpecification(DamageSource.OverTime);
-
             if (!_mode.HasFlag(Mode.Ailments))
-                yield break;
-
-            if (_ailment is null)
+                return Enumerable.Empty<IDamageSpecification>();
+            switch (damageSource)
             {
-                foreach (var ailment in Enums.GetValues<Ailment>())
-                    yield return new AilmentDamageSpecification(ailment);
-            }
-            else
-            {
-                yield return new AilmentDamageSpecification(_ailment.Build());
+                case DamageSource.Attack:
+                    return BuildAilmentAttackDamage();
+                case DamageSource.Spell:
+                    return BuildAilmentSpelllDamage();
+                case DamageSource.Secondary:
+                    return BuildAilmentSecondaryDamage();
+                case DamageSource.OverTime:
+                    return Enumerable.Empty<IDamageSpecification>();
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(damageSource), damageSource, null);
             }
         }
+
+        private IEnumerable<IDamageSpecification> BuildAilmentAttackDamage() =>
+            from hand in Hands()
+            from ailment in Ailments()
+            select new AilmentAttackDamageSpecification(hand, ailment);
+
+        private IEnumerable<IDamageSpecification> BuildAilmentSpelllDamage() =>
+            Ailments().Select(a => new AilmentDamageSpecification(DamageSource.Spell, a));
+
+        private IEnumerable<IDamageSpecification> BuildAilmentSecondaryDamage() =>
+            Ailments().Select(a => new AilmentDamageSpecification(DamageSource.Secondary, a));
+
+        private IEnumerable<AttackDamageHand> Hands() =>
+            SingleOrAll(_hand, Enums.GetValues<AttackDamageHand>);
+
+        private IEnumerable<Ailment> Ailments() =>
+            SingleOrAll(_ailment?.Build(), () => AilmentConstants.DamagingAilments);
+
+        private static IEnumerable<T> SingleOrAll<T>(T? single, Func<IEnumerable<T>> all) where T : struct =>
+            single.HasValue ? new[] { single.Value } : all();
     }
 }

@@ -9,8 +9,13 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         DamageSource DamageSource { get; }
 
-        bool IsSkillDamage { get; }
         Ailment? Ailment { get; }
+    }
+
+    public static class DamageSpecificationExtensions
+    {
+        public static bool IsSkillDamage(this IDamageSpecification @this) =>
+            !@this.Ailment.HasValue;
     }
 
     public class SkillDamageSpecification : IDamageSpecification
@@ -25,36 +30,49 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public DamageSource DamageSource { get; }
 
-        public bool IsSkillDamage => true;
         public Ailment? Ailment => null;
     }
 
-    public class AttackDamageSpecification : IDamageSpecification
+    public class SkillAttackDamageSpecification : IDamageSpecification
     {
-        public AttackDamageSpecification(AttackDamageHand attackDamageHand) =>
+        public SkillAttackDamageSpecification(AttackDamageHand attackDamageHand) =>
             StatIdentitySuffix = $"{DamageSource.Attack}.{attackDamageHand}.Skill";
 
         public string StatIdentitySuffix { get; }
 
         public DamageSource DamageSource => DamageSource.Attack;
 
-        public bool IsSkillDamage => true;
         public Ailment? Ailment => null;
     }
 
     public class AilmentDamageSpecification : IDamageSpecification
     {
-        public AilmentDamageSpecification(Ailment ailment)
+        public AilmentDamageSpecification(DamageSource damageSource, Ailment ailment)
         {
-            StatIdentitySuffix = $"{DamageSource.OverTime}.{ailment}";
+            StatIdentitySuffix = $"{damageSource}.{ailment}";
+            DamageSource = damageSource;
             Ailment = ailment;
         }
 
         public string StatIdentitySuffix { get; }
 
-        public DamageSource DamageSource => DamageSource.OverTime;
+        public DamageSource DamageSource { get; }
 
-        public bool IsSkillDamage => false;
+        public Ailment? Ailment { get; }
+    }
+
+    public class AilmentAttackDamageSpecification : IDamageSpecification
+    {
+        public AilmentAttackDamageSpecification(AttackDamageHand attackDamageHand, Ailment ailment)
+        {
+            StatIdentitySuffix = $"{DamageSource.Attack}.{attackDamageHand}.{ailment}";
+            Ailment = ailment;
+        }
+
+        public string StatIdentitySuffix { get; }
+
+        public DamageSource DamageSource => DamageSource.Attack;
+
         public Ailment? Ailment { get; }
     }
 }

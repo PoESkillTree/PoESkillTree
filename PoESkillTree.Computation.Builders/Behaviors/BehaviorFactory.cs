@@ -80,7 +80,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         public IReadOnlyList<Behavior> ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification)
         {
-            if (damageSpecification.IsSkillDamage)
+            if (damageSpecification.IsSkillDamage())
                 return new Behavior[0];
             if (!Enums.GetValues<DamageType>().Any(t => _statFactory.Damage(t, stat.Entity).Equals(stat)))
                 return new Behavior[0];

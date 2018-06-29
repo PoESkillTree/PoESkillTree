@@ -15,11 +15,11 @@ namespace PoESkillTree.Common.Utils.Extensions
             return enumerable.SelectMany(ts => ts);
         }
 
-        public static IEnumerable<T> Append<T>(this IEnumerable<T> @this, T element) => 
-            @this.Union(new[] { element });
+        public static IEnumerable<T> Append<T>(this IEnumerable<T> @this, params T[] elements) => 
+            @this.Union(elements);
 
-        public static IEnumerable<T> Except<T>(this IEnumerable<T> @this, T element) =>
-            @this.Except(new[] { element });
+        public static IEnumerable<T> Except<T>(this IEnumerable<T> @this, params T[] elements) =>
+            @this.Except((IEnumerable<T>) elements);
 
         /// <summary>
         /// Returns a hash code for <paramref name="values"/> that can be used in conjunction with

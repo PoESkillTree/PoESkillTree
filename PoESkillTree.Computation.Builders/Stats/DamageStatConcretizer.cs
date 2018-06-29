@@ -82,17 +82,20 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
             var results = new List<StatBuilderResult>();
             var sourceStats = new List<IStat>();
-            var sourceDamageSources = new HashSet<DamageSource>();
+            var sourceSkillDamageSources = new HashSet<DamageSource>();
             foreach (var spec in _specificationBuilder.Build())
             {
-                sourceDamageSources.Add(spec.DamageSource);
+                if (spec.IsSkillDamage())
+                {
+                    sourceSkillDamageSources.Add(spec.DamageSource);
+                }
                 var stats = ConcretizeStats(spec, result.Stats);
                 sourceStats.AddRange(stats);
                 results.Add(new StatBuilderResult(stats, result.ModifierSource, result.ValueConverter));
             }
             if (_applyToSkillDamage.GetValueOrDefault(false))
             {
-                results.AddRange(ApplyToSkillDamage(modifierForm, result, sourceStats, sourceDamageSources));
+                results.AddRange(ApplyToSkillDamage(modifierForm, result, sourceStats, sourceSkillDamageSources));
             }
             if (_applyToAilmentDamage.GetValueOrDefault(false))
             {
@@ -102,10 +105,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         private IEnumerable<StatBuilderResult> ApplyToSkillDamage(Form modifierForm, StatBuilderResult result,
-            IReadOnlyList<IStat> sourceStats, IEnumerable<DamageSource> sourceDamageSources)
+            IReadOnlyList<IStat> sourceStats, IEnumerable<DamageSource> sourceSkillDamageSources)
         {
             var specs = Enums.GetValues<DamageSource>()
-                .Except(sourceDamageSources)
+                .Except(sourceSkillDamageSources)
                 .Select(source => new DamageSpecificationBuilder().WithSkills().With(source))
                 .SelectMany(specBuilder => specBuilder.Build());
             foreach (var spec in specs)

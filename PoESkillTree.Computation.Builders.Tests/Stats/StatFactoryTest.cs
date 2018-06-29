@@ -160,7 +160,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         public void ConcretizeDamageHasCorrectBehaviorsIfStatIsDamage(DamageType damageType)
         {
             var inputStat = new StatFactory().Damage(damageType, default);
-            var spec = new AilmentDamageSpecification(Ailment.Bleed);
+            var spec = new AilmentDamageSpecification(DamageSource.Spell, Ailment.Bleed);
             var sut = CreateSut();
 
             var actual = sut.ConcretizeDamage(inputStat, spec).Behaviors;
@@ -187,7 +187,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         public void ConcretizeDamageHasNoBehaviorsIfStatIsNotDamage()
         {
             var inputStat = new Stat("CritChance");
-            var spec = new AilmentDamageSpecification(Ailment.Bleed);
+            var spec = new AilmentDamageSpecification(DamageSource.Spell, Ailment.Bleed);
             var sut = CreateSut();
 
             var actual = sut.ConcretizeDamage(inputStat, spec).Behaviors;
