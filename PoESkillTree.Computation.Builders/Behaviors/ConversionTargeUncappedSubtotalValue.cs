@@ -25,39 +25,19 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         public NodeValue? Calculate(IValueCalculationContext context)
         {
-            var modifiedContext = new ModifiedContext(_target, _source, context);
+            var modifiedContext = new ModifiedValueCalculationContext(context, GetPaths);
             return _transformedValue.Calculate(modifiedContext);
         }
 
-        private class ModifiedContext : IValueCalculationContext
+        private IEnumerable<PathDefinition> GetPaths(IValueCalculationContext context, IStat stat)
         {
-            private readonly IStat _target;
-            private readonly IStat _source;
-            private readonly IValueCalculationContext _originalContext;
+            if (!_target.Equals(stat))
+                return context.GetPaths(stat);
 
-            public ModifiedContext(IStat target, IStat source, IValueCalculationContext originalContext)
-            {
-                _target = target;
-                _source = source;
-                _originalContext = originalContext;
-            }
-
-            public IEnumerable<PathDefinition> GetPaths(IStat stat)
-            {
-                if (!_target.Equals(stat))
-                    return _originalContext.GetPaths(stat);
-
-                var originalPaths = _originalContext.GetPaths(_target);
-                var conversionPaths = _originalContext.GetPaths(_source)
-                    .Select(p => new PathDefinition(p.ModifierSource, _source.Concat(p.ConversionStats).ToList()));
-                return originalPaths.Concat(conversionPaths).Distinct();
-            }
-
-            public NodeValue? GetValue(IStat stat, NodeType nodeType, PathDefinition path) =>
-                _originalContext.GetValue(stat, nodeType, path);
-
-            public IEnumerable<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths) =>
-                _originalContext.GetValues(form, paths);
+            var originalPaths = context.GetPaths(_target);
+            var conversionPaths = context.GetPaths(_source)
+                .Select(p => new PathDefinition(p.ModifierSource, _source.Concat(p.ConversionStats).ToList()));
+            return originalPaths.Concat(conversionPaths).Distinct();
         }
     }
 }

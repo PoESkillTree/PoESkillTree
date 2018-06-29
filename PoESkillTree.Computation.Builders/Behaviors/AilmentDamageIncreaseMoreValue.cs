@@ -23,47 +23,29 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         public NodeValue? Calculate(IValueCalculationContext context)
         {
-            var dealtDamageType = (DamageType) context.GetValue(_dealtDamageType).Single();
-            var dealtDamageStat = _ailmentDamageFactory(dealtDamageType);
-            var modifiedContext = new ModifiedContext(_ailmentDamage, dealtDamageStat, context);
+            var modifiedContext = new ModifiedValueCalculationContext(context, getValues: GetValues);
             return _transformedValue.Calculate(modifiedContext);
         }
 
-        private class ModifiedContext : IValueCalculationContext
+        private IEnumerable<NodeValue?>
+            GetValues(IValueCalculationContext context, Form form, IEnumerable<(IStat stat, PathDefinition path)> paths)
         {
-            private readonly IStat _ailmentDamage;
-            private readonly IStat _dealtDamage;
-            private readonly IValueCalculationContext _originalContext;
+            if (form != Form.Increase && form != Form.More)
+                return context.GetValues(form, paths);
 
-            public ModifiedContext(IStat ailmentDamage, IStat dealtDamageType, IValueCalculationContext originalContext)
+            var dealtDamageType = (DamageType) context.GetValue(_dealtDamageType).Single();
+            var dealtDamageStat = _ailmentDamageFactory(dealtDamageType);
+            return context.GetValues(form, AppendDealtDamage(dealtDamageStat, paths));
+        }
+
+        private IEnumerable<(IStat stat, PathDefinition path)>
+            AppendDealtDamage(IStat dealtDamageStat, IEnumerable<(IStat stat, PathDefinition path)> paths)
+        {
+            foreach (var (stat, path) in paths)
             {
-                _originalContext = originalContext;
-                _ailmentDamage = ailmentDamage;
-                _dealtDamage = dealtDamageType;
-            }
-
-            public IEnumerable<PathDefinition> GetPaths(IStat stat) =>
-                _originalContext.GetPaths(stat);
-
-            public NodeValue? GetValue(IStat stat, NodeType nodeType, PathDefinition path) =>
-                _originalContext.GetValue(stat, nodeType, path);
-
-            public IEnumerable<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths)
-            {
-                if (form == Form.Increase || form == Form.More)
-                    return _originalContext.GetValues(form, AppendDealtDamage(paths));
-                return _originalContext.GetValues(form, paths);
-            }
-
-            private IEnumerable<(IStat stat, PathDefinition path)>
-                AppendDealtDamage(IEnumerable<(IStat stat, PathDefinition path)> paths)
-            {
-                foreach (var (stat, path) in paths)
-                {
-                    yield return (stat, path);
-                    if (stat.Equals(_ailmentDamage))
-                        yield return (_dealtDamage, path);
-                }
+                yield return (stat, path);
+                if (stat.Equals(_ailmentDamage))
+                    yield return (dealtDamageStat, path);
             }
         }
     }

@@ -22,35 +22,17 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         public NodeValue? Calculate(IValueCalculationContext context)
         {
-            var modifiedContext = new ModifiedContext(_skillConversion, context);
+            var modifiedContext = new ModifiedValueCalculationContext(context, GetPaths);
             return _transformedValue.Calculate(modifiedContext);
         }
 
-        private class ModifiedContext : IValueCalculationContext
+        private IEnumerable<PathDefinition> GetPaths(IValueCalculationContext context, IStat stat)
         {
-            private readonly IStat _skillConversion;
-            private readonly IValueCalculationContext _originalContext;
+            if (!_skillConversion.Equals(stat))
+                return context.GetPaths(stat);
 
-            public ModifiedContext(IStat skillConversion, IValueCalculationContext originalContext)
-            {
-                _skillConversion = skillConversion;
-                _originalContext = originalContext;
-            }
-
-            public IEnumerable<PathDefinition> GetPaths(IStat stat)
-            {
-                if (!_skillConversion.Equals(stat))
-                    return _originalContext.GetPaths(stat);
-
-                return _originalContext.GetPaths(stat)
-                    .Where(p => p.ModifierSource is ModifierSource.Local.Skill);
-            }
-
-            public NodeValue? GetValue(IStat stat, NodeType nodeType, PathDefinition path) =>
-                _originalContext.GetValue(stat, nodeType, path);
-
-            public IEnumerable<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths) =>
-                _originalContext.GetValues(form, paths);
+            return context.GetPaths(stat)
+                .Where(p => p.ModifierSource is ModifierSource.Local.Skill);
         }
     }
 }

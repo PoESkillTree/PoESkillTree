@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using PoESkillTree.Computation.Common;
+﻿using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Builders.Behaviors
 {
@@ -26,65 +25,42 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         public NodeValue? Calculate(IValueCalculationContext context)
         {
-            var modifiedContext =
-                new ModifiedContext(_convertTo, _conversion, _skillConversion, context);
+            var modifiedContext = new ModifiedValueCalculationContext(context, getValue: GetValue);
             return _transformedValue.Calculate(modifiedContext);
         }
 
-        private class ModifiedContext : IValueCalculationContext
+        private NodeValue?
+            GetValue(IValueCalculationContext context, IStat stat, NodeType nodeType, PathDefinition path)
         {
-            private readonly IStat _convertTo;
-            private readonly IStat _conversion;
-            private readonly IStat _skillConversion;
-            private readonly IValueCalculationContext _originalContext;
+            var value = context.GetValue(stat, nodeType, path);
+            if (value is null || !_convertTo.Equals(stat) || nodeType != NodeType.PathTotal)
+                return value;
 
-            public ModifiedContext(
-                IStat convertTo, IStat conversion, IStat skillConversion, IValueCalculationContext originalContext)
+            var sourceConversion = context.GetValue(_conversion) ?? new NodeValue(0);
+            if (sourceConversion <= 100)
             {
-                _convertTo = convertTo;
-                _conversion = conversion;
-                _skillConversion = skillConversion;
-                _originalContext = originalContext;
+                // Conversions don't exceed 100%, No scaling required
+                return value;
             }
 
-            public IEnumerable<PathDefinition> GetPaths(IStat stat) =>
-                _originalContext.GetPaths(stat);
-
-            public NodeValue? GetValue(IStat stat, NodeType nodeType, PathDefinition path)
+            var isSkillPath = path.ModifierSource is ModifierSource.Local.Skill;
+            var sourceSkillConversion = context.GetValue(_skillConversion) ?? new NodeValue(0);
+            if (sourceSkillConversion >= 100)
             {
-                var value = _originalContext.GetValue(stat, nodeType, path);
-                if (value is null || !_convertTo.Equals(stat) || nodeType != NodeType.PathTotal)
-                    return value;
-
-                var sourceConversion = _originalContext.GetValue(_conversion) ?? new NodeValue(0);
-                if (sourceConversion <= 100)
-                {
-                    // Conversions don't exceed 100%, No scaling required
-                    return value;
-                }
-
-                var isSkillPath = path.ModifierSource is ModifierSource.Local.Skill;
-                var sourceSkillConversion = _originalContext.GetValue(_skillConversion) ?? new NodeValue(0);
-                if (sourceSkillConversion >= 100)
-                {
-                    // Conversions from skills are or exceed 100%
-                    // Non-skill conversions don't apply
-                    if (!isSkillPath)
-                        return new NodeValue(0);
-                    // Skill conversions are scaled to sum to 100%
-                    return value / sourceSkillConversion * 100;
-                }
-
-                // Conversions exceed 100%
-                // Skill conversions don't scale (they themselves don't exceed 100%)
-                if (isSkillPath)
-                    return value;
-                // Non-skill conversions are scaled to sum to 100% - skill conversions
-                return value * (100 - sourceSkillConversion) / (sourceConversion - sourceSkillConversion);
+                // Conversions from skills are or exceed 100%
+                // Non-skill conversions don't apply
+                if (!isSkillPath)
+                    return new NodeValue(0);
+                // Skill conversions are scaled to sum to 100%
+                return value / sourceSkillConversion * 100;
             }
 
-            public IEnumerable<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths) =>
-                _originalContext.GetValues(form, paths);
+            // Conversions exceed 100%
+            // Skill conversions don't scale (they themselves don't exceed 100%)
+            if (isSkillPath)
+                return value;
+            // Non-skill conversions are scaled to sum to 100% - skill conversions
+            return value * (100 - sourceSkillConversion) / (sourceConversion - sourceSkillConversion);
         }
     }
 }
