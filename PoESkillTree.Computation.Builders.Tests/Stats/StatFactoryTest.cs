@@ -91,7 +91,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             Assert.AreEqual("target", actual.AffectedStats.Single().Identity);
             Assert.AreEqual(NodeType.PathTotal, actual.AffectedNodeTypes.Single());
-            Assert.AreEqual(BehaviorPathInteraction.ConversionPathsOnly, actual.AffectedPaths);
+            Assert.AreEqual(BehaviorPathInteraction.Conversion, actual.AffectedPaths);
             var typedValue = AssertTransformedValueIs<ConversionTargetPathTotalValue>(actual);
             Assert.AreEqual("source.ConvertTo(target)", typedValue.ConvertTo.Identity);
             Assert.AreEqual("source.GainAs(target)", typedValue.GainAs.Identity);

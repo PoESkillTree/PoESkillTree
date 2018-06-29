@@ -40,30 +40,30 @@ namespace PoESkillTree.Computation.Builders.Behaviors
         };
 
         private Behavior ConversionTargetPathTotal(IStat source, IStat target) => GetOrAdd(
-            target, NodeType.PathTotal, BehaviorPathInteraction.ConversionPathsOnly,
+            target, NodeType.PathTotal, BehaviorPathInteraction.Conversion,
             v => new ConversionTargetPathTotalValue(
                 _statFactory.ConvertTo(source, target), _statFactory.GainAs(source, target), v),
             new CacheKey(source, target));
 
         private Behavior ConversionTargeUncappedSubtotal(IStat source, IStat target) => GetOrAdd(
-            target, NodeType.UncappedSubtotal, BehaviorPathInteraction.AllPaths,
+            target, NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
             v => new ConversionTargeUncappedSubtotalValue(source, target, v),
             new CacheKey(source, target));
 
         private Behavior ConversionSourcePathTotal(IStat source) => GetOrAdd(
-            source, NodeType.PathTotal, BehaviorPathInteraction.AllPaths,
+            source, NodeType.PathTotal, BehaviorPathInteraction.All,
             v => new ConversionSourcePathTotalValue(_statFactory.Conversion(source), v),
             new CacheKey(source));
 
         private Behavior ConvertToUncappedSubtotal(IStat source, IStat target) => GetOrAdd(
-            () => _statFactory.ConvertTo(source, target), NodeType.UncappedSubtotal, BehaviorPathInteraction.AllPaths,
+            () => _statFactory.ConvertTo(source, target), NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
             v => new ConvertToUncappedSubtotalValue(
                 _statFactory.ConvertTo(source, target), _statFactory.Conversion(source),
                 _statFactory.SkillConversion(source), v),
             new CacheKey(source, target));
 
         private Behavior SkillConversionUncappedSubtotal(IStat source) => GetOrAdd(
-            () => _statFactory.SkillConversion(source), NodeType.UncappedSubtotal, BehaviorPathInteraction.AllPaths,
+            () => _statFactory.SkillConversion(source), NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
             v => new SkillConversionUncappedSubtotalValue(_statFactory.SkillConversion(source), v),
             new CacheKey(source));
 
@@ -71,7 +71,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             new[] { RegenUncappedSubtotalBehavor(pool, entity) };
 
         private Behavior RegenUncappedSubtotalBehavor(Pool pool, Entity entity) => GetOrAdd(
-            () => _statFactory.Regen(pool, entity), NodeType.UncappedSubtotal, BehaviorPathInteraction.AllPaths,
+            () => _statFactory.Regen(pool, entity), NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
             v => new RegenUncappedSubtotalValue(
                 pool, p => _statFactory.Regen(p, entity), p => _statFactory.RegenTargetPool(p, entity), v),
             new CacheKey(pool, entity));

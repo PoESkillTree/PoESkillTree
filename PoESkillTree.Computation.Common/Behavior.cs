@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Common.Utils.Extensions;
 
@@ -74,22 +75,29 @@ namespace PoESkillTree.Computation.Common
     /// <summary>
     /// Defines the <see cref="PathDefinition"/>s affected by a behavior.
     /// </summary>
+    [Flags]
     public enum BehaviorPathInteraction
     {
         /// <summary>
-        /// The behavior affects all paths.
+        /// The behavior affects the main path (paths with <see cref="PathDefinition.IsMainPath"/>).
         /// </summary>
-        AllPaths,
+        Main = 1,
 
         /// <summary>
-        /// The behavior only affects the main path (paths with <see cref="PathDefinition.IsMainPath"/>).
-        /// </summary>
-        MainPathOnly,
-
-        /// <summary>
-        /// The behavior only affects conversion paths (paths where <see cref="PathDefinition.ConversionStats"/> is not
+        /// The behavior affects conversion paths (paths where <see cref="PathDefinition.ConversionStats"/> is not
         /// empty).
         /// </summary>
-        ConversionPathsOnly
+        Conversion = 2,
+
+        /// <summary>
+        /// The behavior affects non-conversion paths (paths where <see cref="PathDefinition.ConversionStats"/> is
+        /// empty).
+        /// </summary>
+        NonConversion = 4,
+
+        /// <summary>
+        /// The behavior affects all paths.
+        /// </summary>
+        All = Main | Conversion | NonConversion,
     }
 }

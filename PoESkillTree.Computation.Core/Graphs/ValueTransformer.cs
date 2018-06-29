@@ -150,18 +150,13 @@ namespace PoESkillTree.Computation.Core.Graphs
 
             public bool Affects(PathDefinition path)
             {
-                switch (_pathInteraction)
-                {
-                    case BehaviorPathInteraction.AllPaths:
-                        return true;
-                    case BehaviorPathInteraction.MainPathOnly:
-                        return path.IsMainPath;
-                    case BehaviorPathInteraction.ConversionPathsOnly:
-                        return path.ConversionStats.Any();
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(_pathInteraction), _pathInteraction,
-                            "Unexpected _pathInteraction value");
-                }
+                if (_pathInteraction.HasFlag(BehaviorPathInteraction.Main) && path.IsMainPath)
+                    return true;
+                if (_pathInteraction.HasFlag(BehaviorPathInteraction.Conversion) && path.ConversionStats.Any())
+                    return true;
+                if (_pathInteraction.HasFlag(BehaviorPathInteraction.NonConversion) && path.ConversionStats.IsEmpty())
+                    return true;
+                return false;
             }
         }
 

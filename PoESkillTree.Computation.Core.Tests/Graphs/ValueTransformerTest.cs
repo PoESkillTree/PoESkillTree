@@ -22,26 +22,32 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [SetUp]
         public void SetUp()
         {
-            _transformableMocks = new[] { new Mock<IValueTransformable>(), new Mock<IValueTransformable>() };
+            _transformableMocks = new[]
+                { new Mock<IValueTransformable>(), new Mock<IValueTransformable>(), new Mock<IValueTransformable>() };
             _stat = new StatStub();
             _nodeType = NodeType.Base;
             _selectors = new[]
             {
                 new NodeSelector(_nodeType, PathDefinition.MainPath),
                 new NodeSelector(_nodeType, new PathDefinition(new ModifierSource.Local.Given(), new StatStub())),
+                new NodeSelector(_nodeType, new PathDefinition(new ModifierSource.Local.Given())),
             };
-            _transformations = Helper.MockMany<IValueTransformation>(3);
+            _transformations = Helper.MockMany<IValueTransformation>(4);
             _behaviors = new[]
             {
-                // _behaviors[0]/_transformations[0] affects both _selectors/_transformableMocks
-                new Behavior(new[] { _stat }, new[] { _nodeType }, BehaviorPathInteraction.AllPaths,
+                // _behaviors[0]/_transformations[0] affects all _selectors/_transformableMocks
+                new Behavior(new[] { _stat }, new[] { _nodeType }, BehaviorPathInteraction.All,
                     _transformations[0]),
-                // _behaviors[1]/_transformations[1] only affects _selectors[0]/_transformableMocks[0]
-                new Behavior(new[] { _stat }, new[] { _nodeType }, BehaviorPathInteraction.MainPathOnly,
+                // _behaviors[1]/_transformations[1] affects _selectors/_transformableMocks 0 and 1
+                new Behavior(new[] { _stat }, new[] { _nodeType },
+                    BehaviorPathInteraction.Main | BehaviorPathInteraction.Conversion,
                     _transformations[1]),
                 // _behaviors[2]/_transformations[2] only affects _selectors[1]/_transformableMocks[1]
-                new Behavior(new[] { _stat }, new[] { _nodeType }, BehaviorPathInteraction.ConversionPathsOnly,
+                new Behavior(new[] { _stat }, new[] { _nodeType }, BehaviorPathInteraction.Conversion,
                     _transformations[2]),
+                // _behaviors[3]/_transformations[3] affects _selectors/_transformableMocks 0 and 2
+                new Behavior(new[] { _stat }, new[] { _nodeType }, BehaviorPathInteraction.NonConversion,
+                    _transformations[3]),
             };
             _sut = new ValueTransformer();
         }
@@ -70,10 +76,19 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             _transformableMocks[0].Verify(t => t.Add(_transformations[0]));
             _transformableMocks[1].Verify(t => t.Add(_transformations[0]));
+            _transformableMocks[2].Verify(t => t.Add(_transformations[0]));
+
             _transformableMocks[0].Verify(t => t.Add(_transformations[1]));
-            _transformableMocks[1].Verify(t => t.Add(_transformations[1]), Times.Never);
+            _transformableMocks[1].Verify(t => t.Add(_transformations[1]));
+            _transformableMocks[2].Verify(t => t.Add(_transformations[1]), Times.Never);
+
             _transformableMocks[0].Verify(t => t.Add(_transformations[2]), Times.Never);
             _transformableMocks[1].Verify(t => t.Add(_transformations[2]));
+            _transformableMocks[2].Verify(t => t.Add(_transformations[2]), Times.Never);
+
+            _transformableMocks[0].Verify(t => t.Add(_transformations[3]));
+            _transformableMocks[1].Verify(t => t.Add(_transformations[3]), Times.Never);
+            _transformableMocks[2].Verify(t => t.Add(_transformations[3]));
         }
 
         [Test]
@@ -87,7 +102,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             _transformableMocks[0].Verify(t => t.Remove(_transformations[0]));
             _transformableMocks[1].Verify(t => t.Remove(_transformations[0]));
             _transformableMocks[0].Verify(t => t.Remove(_transformations[1]));
-            _transformableMocks[1].Verify(t => t.Remove(_transformations[1]), Times.Never);
+            _transformableMocks[2].Verify(t => t.Remove(_transformations[1]), Times.Never);
         }
 
         [Test]
@@ -145,12 +160,14 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             _sut.AddTransformable(_stat, _selectors[0], _transformableMocks[0].Object);
             _sut.AddTransformable(_stat, _selectors[1], _transformableMocks[1].Object);
+            _sut.AddTransformable(_stat, _selectors[2], _transformableMocks[2].Object);
         }
 
         private void RemoveTransformables()
         {
             _sut.RemoveTransformable(_stat, _selectors[0]);
             _sut.RemoveTransformable(_stat, _selectors[1]);
+            _sut.RemoveTransformable(_stat, _selectors[2]);
         }
     }
 }
