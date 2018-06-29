@@ -16,7 +16,7 @@ namespace PoESkillTree.Common.Utils.Extensions
         }
 
         public static IEnumerable<T> Append<T>(this IEnumerable<T> @this, params T[] elements) => 
-            @this.Union(elements);
+            @this.Concat(elements);
 
         public static IEnumerable<T> Except<T>(this IEnumerable<T> @this, params T[] elements) =>
             @this.Except((IEnumerable<T>) elements);

@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Behaviors\AilmentDamageBaseValueTest.cs" />
     <Compile Include="Behaviors\AilmentDamageIncreaseMoreValueTest.cs" />
+    <Compile Include="Behaviors\AilmentDamageUncappedSubtotalValueTest.cs" />
     <Compile Include="Behaviors\RegenUncappedSubtotalValueTest.cs" />
     <Compile Include="BuilderExtensions.cs" />
     <Compile Include="BuildersHelper.cs" />

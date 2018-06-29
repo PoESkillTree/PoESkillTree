@@ -95,15 +95,16 @@ namespace PoESkillTree.Computation.Builders.Behaviors
         private Behavior AilmentDamageUncappedSubtotalBehavior(IStat stat, IDamageSpecification damageSpecification) =>
             GetOrAdd(() => _statFactory.ConcretizeDamage(stat, damageSpecification),
                 NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
-                v => new AilmentDamageUncappedSubtotalValue(v),
+                v => new AilmentDamageUncappedSubtotalValue(
+                    _statFactory.ConcretizeDamage(stat, damageSpecification),
+                    _statFactory.ConcretizeDamage(stat, damageSpecification.ForSkills()), v),
                 new CacheKey(stat, damageSpecification));
 
         private Behavior AilmentDamageBaseBehavior(IStat stat, IDamageSpecification damageSpecification) =>
             GetOrAdd(() => _statFactory.ConcretizeDamage(stat, damageSpecification),
                 NodeType.Base, BehaviorPathInteraction.NonConversion,
                 v => new AilmentDamageBaseValue(
-                    _statFactory.ConcretizeDamage(stat, damageSpecification.ForSkills()),
-                    v),
+                    _statFactory.ConcretizeDamage(stat, damageSpecification.ForSkills()), v),
                 new CacheKey(stat, damageSpecification));
 
         private Behavior AilmentDamageIncreaseMoreBehavior(IStat stat, IDamageSpecification damageSpecification) =>

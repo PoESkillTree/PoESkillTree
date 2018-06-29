@@ -72,7 +72,7 @@ namespace PoESkillTree.Computation.Common
 
         public bool Equals(NodeValue other) =>
             Minimum.AlmostEquals(other.Minimum, 1e-10) && Maximum.AlmostEquals(other.Maximum, 1e-10);
-        
+
         public static bool operator ==(NodeValue left, double right) =>
             left.Equals(right);
 
@@ -90,7 +90,7 @@ namespace PoESkillTree.Computation.Common
 
         public static bool operator >(NodeValue left, NodeValue right) =>
             left.Minimum > right.Maximum;
-        
+
         public static bool operator <=(NodeValue left, NodeValue right) =>
             left.Maximum <= right.Minimum;
 
@@ -102,7 +102,7 @@ namespace PoESkillTree.Computation.Common
 
         public static bool operator >(NodeValue left, double right) =>
             left.Minimum > right;
-        
+
         public static bool operator <=(NodeValue left, double right) =>
             left.Maximum <= right;
 
@@ -138,6 +138,9 @@ namespace PoESkillTree.Computation.Common
 
         public static NodeValue operator -(double left, NodeValue right) =>
             new NodeValue(left) - right;
+
+        public static NodeValue operator -(NodeValue left, double right) =>
+            left - new NodeValue(right);
 
         public static NodeValue operator *(NodeValue left, NodeValue right) =>
             new NodeValue(left.Minimum * right.Minimum, left.Maximum * right.Maximum);
