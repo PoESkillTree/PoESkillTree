@@ -4,6 +4,7 @@ using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
@@ -91,6 +92,9 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStat DamageTaken(IStat damage) =>
             CopyWithSuffix(damage, "Taken", damage.DataType);
+
+        public IStat AilmentDealtDamageType(Ailment ailment, Entity entity) =>
+            GetOrAdd($"{ailment}.DamageType", entity, typeof(DamageType));
 
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,
             bool isRegisteredExplicitly = false, IReadOnlyList<Behavior> behaviors = null)

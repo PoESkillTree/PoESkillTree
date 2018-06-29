@@ -174,6 +174,15 @@ namespace PoESkillTree.Computation.Common
         /// </summary>
         public static bool IsTrue(this NodeValue? @this) => @this.HasValue;
 
+        public static double Single(this NodeValue? @this)
+        {
+            if (!(@this is NodeValue value))
+                throw new InvalidOperationException("NodeValue? has no value");
+            if (!value.Minimum.AlmostEquals(value.Maximum, 1e-10))
+                throw new InvalidOperationException("Minimum and Maximum are not equal");
+            return value.Maximum;
+        }
+
         /// <summary>
         /// Returns the value created by applying <paramref name="operation"/> to <paramref name="value"/> if
         /// <paramref name="value"/> is not <c>null</c>. Returns <c>null</c> otherwise.

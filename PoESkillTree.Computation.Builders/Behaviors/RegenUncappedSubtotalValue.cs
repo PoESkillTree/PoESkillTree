@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                 from pool in Enum.GetValues(typeof(Pool)).Cast<Pool>()
                 let targetPoolStat = _targetPools(pool)
                 let targetPoolValue = context.GetValue(targetPoolStat)
-                where targetPoolValue.HasValue && (Pool) targetPoolValue.Value.Maximum == _pool
+                where targetPoolValue.HasValue && (Pool) targetPoolValue.Single() == _pool
                 select pool;
             var modifiedContext = new ModifiedContext(this, applyingPools.ToList(), context);
             return _transformedValue.Calculate(modifiedContext);

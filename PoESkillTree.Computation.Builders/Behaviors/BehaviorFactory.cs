@@ -107,7 +107,10 @@ namespace PoESkillTree.Computation.Builders.Behaviors
         private Behavior AilmentDamageIncreaseMoreBehavior(IStat stat, IDamageSpecification damageSpecification) =>
             GetOrAdd(new LazyStatEnumerable(() => _statFactory.ConcretizeDamage(stat, damageSpecification)),
                 new[] { NodeType.Increase, NodeType.More }, BehaviorPathInteraction.All,
-                v => new AilmentDamageIncreaseMoreValue(v),
+                v => new AilmentDamageIncreaseMoreValue(
+                    _statFactory.ConcretizeDamage(stat, damageSpecification),
+                    _statFactory.AilmentDealtDamageType(damageSpecification.Ailment.Value, stat.Entity),
+                    t => _statFactory.ConcretizeDamage(_statFactory.Damage(t, stat.Entity), damageSpecification), v),
                 new CacheKey(stat, damageSpecification));
 
         private Behavior GetOrAdd(

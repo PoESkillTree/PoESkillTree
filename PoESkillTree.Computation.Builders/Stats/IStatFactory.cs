@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
@@ -34,5 +35,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat ApplyModifiersToSkillDamage(IStat stat, DamageSource damageSource, Form form);
         IStat ApplyModifiersToAilmentDamage(IStat stat, Form form);
         IStat DamageTaken(IStat damage);
+        IStat AilmentDealtDamageType(Ailment ailment, Entity entity);
     }
 }
