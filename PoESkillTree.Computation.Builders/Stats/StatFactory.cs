@@ -68,10 +68,13 @@ namespace PoESkillTree.Computation.Builders.Stats
             CopyWithSuffix(damage, "Leech", typeof(int));
 
         public IStat ActiveSkillId(Entity entity) =>
-            GetOrAdd(nameof(ActiveSkillId), entity, typeof(int));
+            GetOrAdd("ActiveSkill.Id", entity, typeof(int));
 
         public IStat ActiveSkillHasKeyword(Entity entity, Keyword keyword) =>
-            GetOrAdd($"ActiveSkillHas.{keyword}", entity, typeof(bool));
+            GetOrAdd($"ActiveSkill.Has.{keyword}", entity, typeof(bool));
+
+        public IStat ActiveSkillCastSpeedHasKeyword(Entity entity, Keyword keyword) =>
+            GetOrAdd($"ActiveSkill.CastSpeed.Has.{keyword}", entity, typeof(bool));
 
         public IStat ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification) =>
             CopyWithSuffix(stat, damageSpecification.StatIdentitySuffix, stat.DataType, behaviors: stat.Behaviors);

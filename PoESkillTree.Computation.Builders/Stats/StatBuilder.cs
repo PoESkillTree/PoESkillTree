@@ -64,9 +64,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder NotWith(IKeywordBuilder keyword) => WithCondition(KeywordCondition(keyword).Not);
 
         private IConditionBuilder KeywordCondition(IKeywordBuilder keyword) =>
-            ValueConditionBuilder.Create(
-                (p, k) => StatFactory.ActiveSkillHasKeyword(p.ModifierSourceEntity, k.Build()),
-                keyword);
+            ValueConditionBuilder.Create(BuildKeywordStat, keyword);
+
+        protected virtual IStat BuildKeywordStat(BuildParameters parameters, IKeywordBuilder keyword) =>
+            StatFactory.ActiveSkillHasKeyword(parameters.ModifierSourceEntity, keyword.Build());
 
         public IStatBuilder WithCondition(IConditionBuilder condition) =>
             WithUntyped(new StatBuilderAdapter(this, condition));

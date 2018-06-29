@@ -21,13 +21,13 @@ namespace PoESkillTree.Computation.Builders.Skills
         public IKeywordBuilder Minion { get; } = From(Keyword.Minion);
         public IKeywordBuilder Warcry { get; } = From(Keyword.Warcry);
 
-        private static IKeywordBuilder From(Keyword keyword) => new Builder(keyword);
+        private static IKeywordBuilder From(Keyword keyword) => new KeywordBuilder(keyword);
+    }
 
-        private class Builder : ConstantBuilder<IKeywordBuilder, Keyword>, IKeywordBuilder
+    public class KeywordBuilder : ConstantBuilder<IKeywordBuilder, Keyword>, IKeywordBuilder
+    {
+        public KeywordBuilder(Keyword keyword) : base(keyword)
         {
-            public Builder(Keyword keyword) : base(keyword)
-            {
-            }
         }
     }
 }

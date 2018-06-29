@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.Builders.Stats
                 s => new[] { s });
         }
 
-        private DamageRelatedStatBuilder(
+        private protected DamageRelatedStatBuilder(
             IStatFactory statFactory, ICoreStatBuilder coreStatBuilder,
             DamageStatConcretizer statConcretizer,
             Func<IStat, IEnumerable<IStat>> statConverter)
@@ -36,22 +36,26 @@ namespace PoESkillTree.Computation.Builders.Stats
             _statConverter = statConverter;
         }
 
+        private protected virtual DamageRelatedStatBuilder Create(
+            ICoreStatBuilder coreStatBuilder,
+            DamageStatConcretizer statConcretizer,
+            Func<IStat, IEnumerable<IStat>> statConverter) =>
+            new DamageRelatedStatBuilder(StatFactory, coreStatBuilder, statConcretizer, statConverter);
+
         protected override IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
-            new DamageRelatedStatBuilder(StatFactory, coreStatBuilder, _statConcretizer, _statConverter);
+            Create(coreStatBuilder, _statConcretizer, _statConverter);
 
         private IDamageRelatedStatBuilder With(DamageStatConcretizer statConcretizer) =>
-            new DamageRelatedStatBuilder(StatFactory, CoreStatBuilder, statConcretizer, _statConverter);
+            Create(CoreStatBuilder, statConcretizer, _statConverter);
 
         protected override IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
             With(s => new[] { statConverter(s) });
 
         private IStatBuilder With(Func<IStat, IEnumerable<IStat>> statConverter) =>
-            new DamageRelatedStatBuilder(StatFactory, CoreStatBuilder, _statConcretizer.NotDamageRelated(),
-                statConverter);
+            Create(CoreStatBuilder, _statConcretizer.NotDamageRelated(), statConverter);
 
         public override IStatBuilder Resolve(ResolveContext context) =>
-            new DamageRelatedStatBuilder(StatFactory, CoreStatBuilder.Resolve(context),
-                _statConcretizer.Resolve(context), _statConverter);
+            Create(CoreStatBuilder.Resolve(context), _statConcretizer.Resolve(context), _statConverter);
 
         public IDamageRelatedStatBuilder With(DamageSource source) => With(_statConcretizer.With(source));
 

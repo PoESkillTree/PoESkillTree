@@ -3,7 +3,7 @@ using PoESkillTree.Computation.Common.Builders.Resolving;
 
 namespace PoESkillTree.Computation.Builders
 {
-    internal abstract class ConstantBuilder<TResolve, TBuild> : IResolvable<TResolve> where TResolve : class
+    public abstract class ConstantBuilder<TResolve, TBuild> : IResolvable<TResolve> where TResolve : class
     {
         private readonly TBuild _buildResult;
 

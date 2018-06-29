@@ -21,7 +21,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder MovementSpeed => FromIdentity(typeof(double));
         public IStatBuilder AnimationSpeed => FromIdentity(typeof(double));
 
-        public IDamageRelatedStatBuilder CastSpeed => DamageRelatedFromIdentity(typeof(double)).WithHits;
+        public IDamageRelatedStatBuilder CastSpeed => new CastSpeedStatBuilder(StatFactory);
         public IStatBuilder EffectivenessOfAddedDamage => FromIdentity(typeof(double));
         public IStatBuilder AreaOfEffect => FromIdentity(typeof(int));
         public IStatBuilder Range => FromIdentity(typeof(int));
