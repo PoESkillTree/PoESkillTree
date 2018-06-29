@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -27,11 +26,6 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         /// Returns a flag stat representing whether <paramref name="type"/> can inflict this ailment.
         /// </summary>
         IFlagStatBuilder Source(IDamageTypeBuilder type);
-
-        /// <summary>
-        /// Returns a flag stat representing whether the types in <paramref name="types"/> can inflict this ailment.
-        /// </summary>
-        IFlagStatBuilder Sources(IEnumerable<IDamageTypeBuilder> types);
 
         Ailment Build();
     }

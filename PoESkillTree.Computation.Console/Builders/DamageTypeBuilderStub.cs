@@ -42,6 +42,12 @@ namespace PoESkillTree.Computation.Console.Builders
         public IDamageStatBuilder Damage =>
             CreateDamageStat(This, o => $"{o} Damage");
 
+        public IDamageTakenConversionBuilder DamageTakenFrom(IPoolStatBuilder pool) =>
+            Create<IDamageTakenConversionBuilder, IKeywordBuilder, IStatBuilder>(
+                (s, r) => new DamageTakenConversionBuilder(s, r),
+                This, pool,
+                (o1, o2) => $"{o1} taken from {o2}");
+
         public IDamageRelatedStatBuilder Penetration =>
             CreateDamageStat(This, o => $"{o} Penetration");
 
@@ -54,6 +60,26 @@ namespace PoESkillTree.Computation.Console.Builders
         public IKeywordBuilder Resolve(ResolveContext context) => _resolver(this, context);
 
         public Keyword Build() => Keyword.Projectile;
+
+
+        private class DamageTakenConversionBuilder : BuilderStub, IDamageTakenConversionBuilder
+        {
+            private readonly Resolver<IDamageTakenConversionBuilder> _resolver;
+
+            public DamageTakenConversionBuilder(
+                string stringRepresentation, Resolver<IDamageTakenConversionBuilder> resolver)
+                : base(stringRepresentation)
+            {
+                _resolver = resolver;
+            }
+
+            public IStatBuilder Before(IPoolStatBuilder pool) =>
+                CreateStat((IDamageTakenConversionBuilder) this, (IStatBuilder) pool,
+                    (o1, o2) => $"{o1} before {o2}");
+
+            public IDamageTakenConversionBuilder Resolve(ResolveContext context) =>
+                _resolver(this, context);
+        }
     }
 
 

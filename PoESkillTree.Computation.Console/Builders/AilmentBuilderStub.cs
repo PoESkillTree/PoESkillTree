@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -26,10 +25,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IFlagStatBuilder Source(IDamageTypeBuilder type) =>
             CreateFlagStat(This, (IKeywordBuilder) type, (o1, o2) => $"{type} can apply {this}");
-
-        public IFlagStatBuilder Sources(IEnumerable<IDamageTypeBuilder> types) =>
-            CreateFlagStat(This, types.Cast<IKeywordBuilder>(), 
-                (o1, o2) => $"[{string.Join(", ", o2)}] can apply {o1}");
 
         public Ailment Build() => throw new System.NotImplementedException();
     }

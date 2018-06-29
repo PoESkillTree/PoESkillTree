@@ -165,7 +165,9 @@ namespace PoESkillTree.Computation.Data.Base
         /// <summary>
         /// Shortcut for <c>Fire.And(Lightning).And(Cold)</c>.
         /// </summary>
-        protected IDamageTypeBuilder Elemental => Fire.And(Lightning).And(Cold);
+        protected IDamageTypeBuilder Elemental => ElementalDamageTypes.Aggregate((l, r) => l.And(r));
+
+        protected IDamageTypeBuilder AnyDamageType => AllDamageTypes.Aggregate((l, r) => l.And(r));
 
 
         /// <summary>
@@ -187,6 +189,6 @@ namespace PoESkillTree.Computation.Data.Base
         /// <summary>
         /// Gets a stat for damage with all damage types.
         /// </summary>
-        protected IDamageStatBuilder Damage => AllDamageTypes.Aggregate((l, r) => l.And(r)).Damage;
+        protected IDamageStatBuilder Damage => AnyDamageType.Damage;
     }
 }

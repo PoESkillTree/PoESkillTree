@@ -120,11 +120,11 @@ namespace PoESkillTree.Computation.Data
                 { "chance to evade melee attacks", Evasion.ChanceAgainstMeleeAttacks },
                 {
                     "damage is taken from ({PoolStatMatchers}) before ({PoolStatMatchers})",
-                    Damage.TakenFrom(References[0].AsPoolStat).Before(References[1].AsPoolStat)
+                    AnyDamageType.DamageTakenFrom(References[0].AsPoolStat).Before(References[1].AsPoolStat)
                 },
                 {
                     "({DamageTypeMatchers}) damage is taken from ({PoolStatMatchers}) before ({PoolStatMatchers})",
-                    References[0].AsDamageType.Damage.TakenFrom(References[1].AsPoolStat)
+                    References[0].AsDamageType.DamageTakenFrom(References[1].AsPoolStat)
                         .Before(References[2].AsPoolStat)
                 },
                 // speed

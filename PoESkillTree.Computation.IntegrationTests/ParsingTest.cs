@@ -125,12 +125,12 @@ namespace PoESkillTree.Computation.IntegrationTests
                 .Returns(new[]
                 {
                     CreateModifier(
-                        f.DamageTypeBuilders.Chaos.Damage.TakenFrom(energyShield).Before(life),
+                        f.DamageTypeBuilders.Chaos.DamageTakenFrom(energyShield).Before(life),
                         f.FormBuilders.BaseAdd,
                         f.ValueBuilders.Create(50),
                         f.EquipmentBuilders.Equipment.Count(e => e.IsCorrupted) >= 5),
                     CreateModifier(
-                        f.DamageTypeBuilders.Physical.Damage.TakenFrom(energyShield).Before(life),
+                        f.DamageTypeBuilders.Physical.DamageTakenFrom(energyShield).Before(life),
                         f.FormBuilders.BaseSubtract,
                         f.ValueBuilders.Create(50),
                         f.EquipmentBuilders.Equipment.Count(e => e.IsCorrupted) >= 5)

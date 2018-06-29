@@ -36,13 +36,13 @@ namespace PoESkillTree.Computation.Data
             { Buff.Blind, "50% less chance to hit" },
             { Buff.Onslaught, "20% increased attack, cast and movement speed" },
             { Buff.UnholyMight, "gain 30% of physical damage as extra chaos damage" },
-            { Buff.Conflux.Igniting, Ailment.Ignite.Sources(AllDamageTypes) },
-            { Buff.Conflux.Shocking, Ailment.Shock.Sources(AllDamageTypes) },
-            { Buff.Conflux.Chilling, Ailment.Chill.Sources(AllDamageTypes) },
+            { Buff.Conflux.Igniting, Ailment.Ignite.Source(AnyDamageType) },
+            { Buff.Conflux.Shocking, Ailment.Shock.Source(AnyDamageType) },
+            { Buff.Conflux.Chilling, Ailment.Chill.Source(AnyDamageType) },
             {
                 Buff.Conflux.Elemental,
-                Ailment.Ignite.Sources(AllDamageTypes), Ailment.Shock.Sources(AllDamageTypes),
-                Ailment.Chill.Sources(AllDamageTypes)
+                Ailment.Ignite.Source(AnyDamageType), Ailment.Shock.Source(AnyDamageType),
+                Ailment.Chill.Source(AnyDamageType)
             },
         };
     }

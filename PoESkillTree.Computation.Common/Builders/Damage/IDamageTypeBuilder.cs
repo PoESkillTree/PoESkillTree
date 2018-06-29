@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Skills;
+﻿using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Common.Builders.Damage
@@ -47,6 +48,12 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         IDamageStatBuilder Damage { get; }
 
         /// <summary>
+        /// Starts constructing a stat representing the percentage of damage of this stat's damage types that is taken
+        /// from the given pool before being taken from another pool.
+        /// </summary>
+        IDamageTakenConversionBuilder DamageTakenFrom(IPoolStatBuilder pool);
+
+        /// <summary>
         /// Gets a stat representing the amount of enemy resistances of the damage types in this collection penetrated
         /// by damage.
         /// </summary>
@@ -59,5 +66,14 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         IFlagStatBuilder IgnoreResistance { get; }
 
         IDamageRelatedStatBuilder ReflectedDamageTaken { get; }
+    }
+
+    public interface IDamageTakenConversionBuilder : IResolvable<IDamageTakenConversionBuilder>
+    {
+        /// <summary>
+        /// Returns a stat representing the percentage of damage of specific types that is taken from a specific pool
+        /// before being taken from the given pool.
+        /// </summary>
+        IStatBuilder Before(IPoolStatBuilder pool);
     }
 }
