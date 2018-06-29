@@ -101,7 +101,9 @@ namespace PoESkillTree.Computation.Builders.Behaviors
         private Behavior AilmentDamageBaseBehavior(IStat stat, IDamageSpecification damageSpecification) =>
             GetOrAdd(() => _statFactory.ConcretizeDamage(stat, damageSpecification),
                 NodeType.Base, BehaviorPathInteraction.NonConversion,
-                v => new AilmentDamageBaseValue(v),
+                v => new AilmentDamageBaseValue(
+                    _statFactory.ConcretizeDamage(stat, damageSpecification.ForSkills()),
+                    v),
                 new CacheKey(stat, damageSpecification));
 
         private Behavior AilmentDamageIncreaseMoreBehavior(IStat stat, IDamageSpecification damageSpecification) =>

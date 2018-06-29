@@ -10,6 +10,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         DamageSource DamageSource { get; }
 
         Ailment? Ailment { get; }
+
+        IDamageSpecification ForSkills();
     }
 
     public static class DamageSpecificationExtensions
@@ -27,10 +29,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         public string StatIdentitySuffix { get; }
-
         public DamageSource DamageSource { get; }
-
         public Ailment? Ailment => null;
+        public IDamageSpecification ForSkills() => this;
     }
 
     public class SkillAttackDamageSpecification : IDamageSpecification
@@ -39,10 +40,9 @@ namespace PoESkillTree.Computation.Builders.Stats
             StatIdentitySuffix = $"{DamageSource.Attack}.{attackDamageHand}.Skill";
 
         public string StatIdentitySuffix { get; }
-
         public DamageSource DamageSource => DamageSource.Attack;
-
         public Ailment? Ailment => null;
+        public IDamageSpecification ForSkills() => this;
     }
 
     public class AilmentDamageSpecification : IDamageSpecification
@@ -55,24 +55,25 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         public string StatIdentitySuffix { get; }
-
         public DamageSource DamageSource { get; }
-
         public Ailment? Ailment { get; }
+        public IDamageSpecification ForSkills() => new SkillDamageSpecification(DamageSource);
     }
 
     public class AilmentAttackDamageSpecification : IDamageSpecification
     {
+        private readonly AttackDamageHand _attackDamageHand;
+
         public AilmentAttackDamageSpecification(AttackDamageHand attackDamageHand, Ailment ailment)
         {
+            _attackDamageHand = attackDamageHand;
             StatIdentitySuffix = $"{DamageSource.Attack}.{attackDamageHand}.{ailment}";
             Ailment = ailment;
         }
 
         public string StatIdentitySuffix { get; }
-
         public DamageSource DamageSource => DamageSource.Attack;
-
         public Ailment? Ailment { get; }
+        public IDamageSpecification ForSkills() => new SkillAttackDamageSpecification(_attackDamageHand);
     }
 }
