@@ -20,60 +20,70 @@ namespace PoESkillTree.Computation.Builders.Stats
             !@this.Ailment.HasValue;
     }
 
-    public class SkillDamageSpecification : IDamageSpecification
+    public class SkillDamageSpecification : DamageSpecificationBase
     {
         public SkillDamageSpecification(DamageSource damageSource)
+            : base($"{damageSource}.Skill", damageSource, null)
         {
-            StatIdentitySuffix = $"{damageSource}.Skill";
-            DamageSource = damageSource;
         }
 
-        public string StatIdentitySuffix { get; }
-        public DamageSource DamageSource { get; }
-        public Ailment? Ailment => null;
-        public IDamageSpecification ForSkills() => this;
+        public override IDamageSpecification ForSkills() => this;
     }
 
-    public class SkillAttackDamageSpecification : IDamageSpecification
+    public class SkillAttackDamageSpecification : DamageSpecificationBase
     {
-        public SkillAttackDamageSpecification(AttackDamageHand attackDamageHand) =>
-            StatIdentitySuffix = $"{DamageSource.Attack}.{attackDamageHand}.Skill";
+        public SkillAttackDamageSpecification(AttackDamageHand attackDamageHand)
+            : base($"{DamageSource.Attack}.{attackDamageHand}.Skill", DamageSource.Attack, null)
+        {
+        }
 
-        public string StatIdentitySuffix { get; }
-        public DamageSource DamageSource => DamageSource.Attack;
-        public Ailment? Ailment => null;
-        public IDamageSpecification ForSkills() => this;
+        public override IDamageSpecification ForSkills() => this;
     }
 
-    public class AilmentDamageSpecification : IDamageSpecification
+    public class AilmentDamageSpecification : DamageSpecificationBase
     {
         public AilmentDamageSpecification(DamageSource damageSource, Ailment ailment)
+            : base($"{damageSource}.{ailment}", damageSource, ailment)
         {
-            StatIdentitySuffix = $"{damageSource}.{ailment}";
-            DamageSource = damageSource;
-            Ailment = ailment;
         }
 
-        public string StatIdentitySuffix { get; }
-        public DamageSource DamageSource { get; }
-        public Ailment? Ailment { get; }
-        public IDamageSpecification ForSkills() => new SkillDamageSpecification(DamageSource);
+        public override IDamageSpecification ForSkills() => new SkillDamageSpecification(DamageSource);
     }
 
-    public class AilmentAttackDamageSpecification : IDamageSpecification
+    public class AilmentAttackDamageSpecification : DamageSpecificationBase
     {
         private readonly AttackDamageHand _attackDamageHand;
 
         public AilmentAttackDamageSpecification(AttackDamageHand attackDamageHand, Ailment ailment)
+            : base($"{DamageSource.Attack}.{attackDamageHand}.{ailment}", DamageSource.Attack, ailment)
         {
             _attackDamageHand = attackDamageHand;
-            StatIdentitySuffix = $"{DamageSource.Attack}.{attackDamageHand}.{ailment}";
+        }
+
+        public override IDamageSpecification ForSkills() => new SkillAttackDamageSpecification(_attackDamageHand);
+    }
+
+    public abstract class DamageSpecificationBase : IDamageSpecification
+    {
+        protected DamageSpecificationBase(string statIdentitySuffix, DamageSource damageSource, Ailment? ailment)
+        {
+            StatIdentitySuffix = statIdentitySuffix;
+            DamageSource = damageSource;
             Ailment = ailment;
         }
 
         public string StatIdentitySuffix { get; }
-        public DamageSource DamageSource => DamageSource.Attack;
+        public DamageSource DamageSource { get; }
         public Ailment? Ailment { get; }
-        public IDamageSpecification ForSkills() => new SkillAttackDamageSpecification(_attackDamageHand);
+        public abstract IDamageSpecification ForSkills();
+
+        public override bool Equals(object obj) =>
+            (obj == this) || (obj is IDamageSpecification other && Equals(other));
+
+        private bool Equals(IDamageSpecification other) =>
+            StatIdentitySuffix == other.StatIdentitySuffix;
+
+        public override int GetHashCode() =>
+            StatIdentitySuffix.GetHashCode();
     }
 }
