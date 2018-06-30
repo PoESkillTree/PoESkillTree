@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             GetOrAdd(identity, entity, dataType, isExplicitlyRegistered);
 
         public IStat CopyWithSuffix(IStat stat, string identitySuffix, Type dataType) =>
-            CopyWithSuffix(stat, identitySuffix, dataType, new Behavior[0]);
+            CopyWithSuffix(stat, identitySuffix, dataType, null);
 
         public IStat ChanceToDouble(IStat stat) =>
             CopyWithSuffix(stat, nameof(ChanceToDouble), typeof(int));
@@ -49,21 +49,21 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStat ConvertTo(IStat source, IStat target) =>
             CopyWithSuffix(source, $"{nameof(ConvertTo)}({target.Identity})", typeof(int),
-                _behaviorFactory.ConvertTo(source, target));
+                () => _behaviorFactory.ConvertTo(source, target));
 
         public IStat GainAs(IStat source, IStat target) =>
             CopyWithSuffix(source, $"{nameof(GainAs)}({target.Identity})", typeof(int),
-                _behaviorFactory.GainAs(source, target));
+                () => _behaviorFactory.GainAs(source, target));
 
         public IStat Conversion(IStat source) =>
             CopyWithSuffix(source, "Conversion", typeof(int));
 
         public IStat SkillConversion(IStat source) =>
             CopyWithSuffix(source, "SkillConversion", typeof(int),
-                _behaviorFactory.SkillConversion(source));
+                () => _behaviorFactory.SkillConversion(source));
 
         public IStat Regen(Entity entity, Pool pool) =>
-            GetOrAdd($"{pool}.Regen", entity, typeof(double), behaviors: _behaviorFactory.Regen(pool, entity));
+            GetOrAdd($"{pool}.Regen", entity, typeof(double), behaviors: () => _behaviorFactory.Regen(pool, entity));
 
         public IStat RegenTargetPool(Entity entity, Pool regenPool) =>
             GetOrAdd($"{regenPool}.Regen.TargetPool", entity, typeof(Pool));
@@ -84,11 +84,11 @@ namespace PoESkillTree.Computation.Builders.Stats
             GetOrAdd($"ActiveSkillPart.Damage.{damageSource}.Has.{keyword}", entity, typeof(bool));
 
         public IStat Damage(Entity entity, DamageType damageType) =>
-            GetOrAdd($"{damageType}.Damage", entity, typeof(int));
+            GetOrAdd(damageType + ".Damage", entity, typeof(int));
 
         public IStat ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification) =>
             CopyWithSuffix(stat, damageSpecification.StatIdentitySuffix, stat.DataType,
-                _behaviorFactory.ConcretizeDamage(stat, damageSpecification));
+                () => _behaviorFactory.ConcretizeDamage(stat, damageSpecification));
 
         public IStat ApplyModifiersToSkillDamage(IStat stat, DamageSource damageSource, Form form) =>
             CopyWithSuffix(stat, $"ApplyModifiersToSkills({damageSource} for form {form})", typeof(int));
@@ -103,17 +103,18 @@ namespace PoESkillTree.Computation.Builders.Stats
             GetOrAdd($"{ailment}.DamageType", entity, typeof(DamageType));
 
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,
-            IReadOnlyList<Behavior> behaviors, bool isRegisteredExplicitly = false)
+            Func<IReadOnlyList<Behavior>> behaviors, bool isRegisteredExplicitly = false)
         {
             return GetOrAdd(source.Identity + "." + identitySuffix, source.Entity,
                 dataType, isRegisteredExplicitly, behaviors);
         }
 
         private IStat GetOrAdd(string identity, Entity entity, Type dataType,
-            bool isRegisteredExplicitly = false, IReadOnlyList<Behavior> behaviors = null)
+            bool isRegisteredExplicitly = false, Func<IReadOnlyList<Behavior>> behaviors = null)
         {
+            // Func<IReadOnlyList<Behavior>> for performance reasons: Only retrieve behaviors if necessary.
             return _cache.GetOrAdd((identity, entity), _ =>
-                new Stat(identity, entity, dataType, isRegisteredExplicitly, behaviors));
+                new Stat(identity, entity, dataType, isRegisteredExplicitly, behaviors?.Invoke()));
         }
     }
 }

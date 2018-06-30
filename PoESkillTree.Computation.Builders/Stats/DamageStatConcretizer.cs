@@ -97,25 +97,36 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IEnumerable<StatBuilderResult> Concretize(BuildParameters parameters, StatBuilderResult result)
         {
+            var applyToSkillDamage = _applyToSkillDamage.GetValueOrDefault(false);
+            var applyToAilmentDamage = _applyToAilmentDamage.GetValueOrDefault(false);
+            var applyToAny = applyToSkillDamage || applyToAilmentDamage;
+
             var results = new List<StatBuilderResult>();
             var sourceStats = new List<IStat>();
-            var sourceSkillDamageSources = new HashSet<DamageSource>();
+            // This method is the hot path of building modifiers from builders. Using HashSet instead of this array
+            // would be much slower (HashSet.Add() would be 60% of this method's execution time, array is negligible).
+            var sourceSkillDamageSources = new bool[Enums.GetMemberCount<DamageSource>()];
             foreach (var spec in _specificationBuilder.Build())
             {
-                if (spec.IsSkillDamage())
-                {
-                    sourceSkillDamageSources.Add(spec.DamageSource);
-                }
                 var stats = ConcretizeStats(spec, result.Stats);
-                sourceStats.AddRange(stats);
                 var valueConverter = ValueConverterForResult(parameters, result, spec);
                 results.Add(new StatBuilderResult(stats, result.ModifierSource, valueConverter));
+
+                if (applyToSkillDamage && spec.IsSkillDamage())
+                {
+                    sourceSkillDamageSources[(int) spec.DamageSource] = true;
+                }
+                if (applyToAny)
+                {
+                    sourceStats.AddRange(stats);
+                }
             }
-            if (_applyToSkillDamage.GetValueOrDefault(false))
+
+            if (applyToSkillDamage)
             {
                 results.AddRange(ApplyToSkillDamage(parameters, result, sourceStats, sourceSkillDamageSources));
             }
-            if (_applyToAilmentDamage.GetValueOrDefault(false))
+            if (applyToAilmentDamage)
             {
                 results.AddRange(ApplyToAilmentDamage(parameters, result, sourceStats));
             }
@@ -124,10 +135,10 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         private IEnumerable<StatBuilderResult> ApplyToSkillDamage(
             BuildParameters parameters, StatBuilderResult result,
-            IReadOnlyList<IStat> sourceStats, IEnumerable<DamageSource> sourceSkillDamageSources)
+            IReadOnlyList<IStat> sourceStats, IReadOnlyList<bool> sourceSkillDamageSources)
         {
             var specs = Enums.GetValues<DamageSource>()
-                .Except(sourceSkillDamageSources)
+                .Where(s => !sourceSkillDamageSources[(int) s])
                 .Select(source => new DamageSpecificationBuilder().WithSkills().With(source))
                 .SelectMany(specBuilder => specBuilder.Build());
             foreach (var spec in specs)
