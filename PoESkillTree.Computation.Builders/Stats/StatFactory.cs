@@ -62,10 +62,10 @@ namespace PoESkillTree.Computation.Builders.Stats
             CopyWithSuffix(source, "SkillConversion", typeof(int),
                 _behaviorFactory.SkillConversion(source));
 
-        public IStat Regen(Pool pool, Entity entity) =>
+        public IStat Regen(Entity entity, Pool pool) =>
             GetOrAdd($"{pool}.Regen", entity, typeof(double), behaviors: _behaviorFactory.Regen(pool, entity));
 
-        public IStat RegenTargetPool(Pool regenPool, Entity entity) =>
+        public IStat RegenTargetPool(Entity entity, Pool regenPool) =>
             GetOrAdd($"{regenPool}.Regen.TargetPool", entity, typeof(Pool));
 
         public IStat LeechPercentage(IStat damage) =>
@@ -83,7 +83,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat ActiveSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource) =>
             GetOrAdd($"ActiveSkillPart.Damage.{damageSource}.Has.{keyword}", entity, typeof(bool));
 
-        public IStat Damage(DamageType damageType, Entity entity) =>
+        public IStat Damage(Entity entity, DamageType damageType) =>
             GetOrAdd($"{damageType}.Damage", entity, typeof(int));
 
         public IStat ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification) =>
@@ -99,7 +99,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat DamageTaken(IStat damage) =>
             CopyWithSuffix(damage, "Taken", damage.DataType);
 
-        public IStat AilmentDealtDamageType(Ailment ailment, Entity entity) =>
+        public IStat AilmentDealtDamageType(Entity entity, Ailment ailment) =>
             GetOrAdd($"{ailment}.DamageType", entity, typeof(DamageType));
 
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,

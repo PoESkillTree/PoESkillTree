@@ -22,8 +22,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat Conversion(IStat source);
         IStat SkillConversion(IStat source);
 
-        IStat Regen(Pool pool, Entity entity);
-        IStat RegenTargetPool(Pool regenPool, Entity entity);
+        IStat Regen(Entity entity, Pool pool);
+        IStat RegenTargetPool(Entity entity, Pool regenPool);
 
         IStat LeechPercentage(IStat damage);
 
@@ -32,11 +32,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat ActiveSkillPartCastSpeedHasKeyword(Entity entity, Keyword keyword);
         IStat ActiveSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource);
 
-        IStat Damage(DamageType damageType, Entity entity);
+        IStat Damage(Entity entity, DamageType damageType);
         IStat ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification);
         IStat ApplyModifiersToSkillDamage(IStat stat, DamageSource damageSource, Form form);
         IStat ApplyModifiersToAilmentDamage(IStat stat, Form form);
         IStat DamageTaken(IStat damage);
-        IStat AilmentDealtDamageType(Ailment ailment, Entity entity);
+        IStat AilmentDealtDamageType(Entity entity, Ailment ailment);
     }
 }

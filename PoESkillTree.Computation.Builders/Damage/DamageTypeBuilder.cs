@@ -63,11 +63,11 @@ namespace PoESkillTree.Computation.Builders.Damage
             new StatBuilder(_statFactory, CoreStat(typeof(int)));
 
         public IDamageStatBuilder Damage =>
-            new DamageStatBuilder(_statFactory, CoreStat((e, t) => _statFactory.Damage(t, e)));
+            new DamageStatBuilder(_statFactory, CoreStat(_statFactory.Damage));
 
         public IDamageTakenConversionBuilder DamageTakenFrom(IPoolStatBuilder pool)
         {
-            var damage = CoreStat((e, t) => _statFactory.Damage(t, e));
+            var damage = CoreStat(_statFactory.Damage);
             var takenFrom = new ParametrisedCoreStatBuilder<IStatBuilder>(damage, pool,
                 (p, s) => _statFactory.CopyWithSuffix(s, $"TakenFrom({((IPoolStatBuilder) p).BuildPool()})",
                     typeof(int)));

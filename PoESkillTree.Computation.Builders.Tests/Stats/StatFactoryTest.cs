@@ -138,7 +138,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var sut = CreateSut();
 
-            var actual = sut.Regen(Pool.Life, default);
+            var actual = sut.Regen(default, Pool.Life);
 
             Assert.AreEqual("Life.Regen", actual.Identity);
             Assert.AreEqual(typeof(double), actual.DataType);
@@ -149,7 +149,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var sut = CreateSut();
 
-            var actual = sut.Regen(Pool.Life, default).Behaviors;
+            var actual = sut.Regen(default, Pool.Life).Behaviors;
 
             Assert.That(actual, Has.One.Items);
             AssertTransformedValueIs<RegenUncappedSubtotalValue>(actual[0]);
@@ -159,7 +159,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [TestCase(DamageType.Cold)]
         public void ConcretizeDamageHasCorrectBehaviorsIfStatIsDamage(DamageType damageType)
         {
-            var inputStat = new StatFactory().Damage(damageType, default);
+            var inputStat = new StatFactory().Damage(default, damageType);
             var spec = new AilmentDamageSpecification(DamageSource.Spell, Ailment.Bleed);
             var sut = CreateSut();
 
@@ -174,7 +174,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [Test]
         public void ConcretizeDamageHasNoBehaviorsIfSpecificationIsNotAilment()
         {
-            var inputStat = new StatFactory().Damage(DamageType.Fire, default);
+            var inputStat = new StatFactory().Damage(default, DamageType.Fire);
             var spec = new SkillDamageSpecification(DamageSource.OverTime);
             var sut = CreateSut();
 

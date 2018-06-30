@@ -73,16 +73,16 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             new[] { RegenUncappedSubtotalBehavor(pool, entity) };
 
         private Behavior RegenUncappedSubtotalBehavor(Pool pool, Entity entity) => GetOrAdd(
-            () => _statFactory.Regen(pool, entity), NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
+            () => _statFactory.Regen(entity, pool), NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
             v => new RegenUncappedSubtotalValue(
-                pool, p => _statFactory.Regen(p, entity), p => _statFactory.RegenTargetPool(p, entity), v),
+                pool, p => _statFactory.Regen(entity, p), p => _statFactory.RegenTargetPool(entity, p), v),
             new CacheKey(pool, entity));
 
         public IReadOnlyList<Behavior> ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification)
         {
             if (damageSpecification.IsSkillDamage())
                 return new Behavior[0];
-            if (!Enums.GetValues<DamageType>().Any(t => _statFactory.Damage(t, stat.Entity).Equals(stat)))
+            if (!Enums.GetValues<DamageType>().Any(t => _statFactory.Damage(stat.Entity, t).Equals(stat)))
                 return new Behavior[0];
             return new[]
             {
@@ -112,8 +112,8 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                 new[] { NodeType.Increase, NodeType.More }, BehaviorPathInteraction.All,
                 v => new AilmentDamageIncreaseMoreValue(
                     _statFactory.ConcretizeDamage(stat, damageSpecification),
-                    _statFactory.AilmentDealtDamageType(damageSpecification.Ailment.Value, stat.Entity),
-                    t => _statFactory.ConcretizeDamage(_statFactory.Damage(t, stat.Entity), damageSpecification), v),
+                    _statFactory.AilmentDealtDamageType(stat.Entity, damageSpecification.Ailment.Value),
+                    t => _statFactory.ConcretizeDamage(_statFactory.Damage(stat.Entity, t), damageSpecification), v),
                 new CacheKey(stat, damageSpecification));
 
         private Behavior GetOrAdd(

@@ -76,13 +76,13 @@ namespace PoESkillTree.Computation.Builders.Stats
         private readonly Pool _pool;
 
         public RegenStatBuilder(IStatFactory statFactory, Pool pool)
-            : base(statFactory, new LeafCoreStatBuilder(e => statFactory.Regen(pool, e)))
+            : base(statFactory, new LeafCoreStatBuilder(e => statFactory.Regen(e, pool)))
         {
             _pool = pool;
         }
 
         public IStatBuilder Percent => FromIdentity($"{_pool}.Regen.Percent", typeof(int));
-        public IStatBuilder TargetPool => With(new LeafCoreStatBuilder(e => StatFactory.RegenTargetPool(_pool, e)));
+        public IStatBuilder TargetPool => With(new LeafCoreStatBuilder(e => StatFactory.RegenTargetPool(e, _pool)));
     }
 
     internal class LeechStatBuilder : StatBuildersBase, ILeechStatBuilder
