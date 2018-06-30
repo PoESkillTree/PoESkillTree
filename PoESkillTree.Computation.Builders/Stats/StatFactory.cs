@@ -77,6 +77,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat ActiveSkillPartCastSpeedHasKeyword(Entity entity, Keyword keyword) =>
             GetOrAdd($"ActiveSkillPart.CastSpeed.Has.{keyword}", entity, typeof(bool));
 
+        public IStat ActiveSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource) =>
+            GetOrAdd($"ActiveSkillPart.Damage.{damageSource}.Has.{keyword}", entity, typeof(bool));
+
         public IStat Damage(DamageType damageType, Entity entity) =>
             GetOrAdd($"{damageType}.Damage", entity, typeof(int));
 

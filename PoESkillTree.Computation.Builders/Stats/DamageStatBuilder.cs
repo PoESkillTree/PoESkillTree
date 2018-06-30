@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
+using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
-    public class DamageStatBuilder : DamageRelatedStatBuilder, IDamageStatBuilder
+    public sealed class DamageStatBuilder : DamageRelatedStatBuilder, IDamageStatBuilder
     {
         public DamageStatBuilder(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder)
             : this(statFactory, coreStatBuilder,
@@ -23,7 +27,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        private protected override DamageRelatedStatBuilder Create(
+        protected override DamageRelatedStatBuilder Create(
             ICoreStatBuilder coreStatBuilder,
             DamageStatConcretizer statConcretizer,
             Func<IStat, IEnumerable<IStat>> statConverter) =>
@@ -34,5 +38,20 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IDamageRelatedStatBuilder Taken =>
             (IDamageRelatedStatBuilder) WithStatConverter(StatFactory.DamageTaken);
+
+        public override IStatBuilder With(IKeywordBuilder keyword) =>
+            With(StatConcretizer.With(spec => KeywordCondition(spec, keyword)));
+
+        public override IStatBuilder NotWith(IKeywordBuilder keyword) =>
+            With(StatConcretizer.With(spec => KeywordCondition(spec, keyword).Not));
+
+        private IConditionBuilder KeywordCondition(IDamageSpecification spec, IKeywordBuilder keyword) =>
+            ValueConditionBuilder.Create((ps, k) => BuildKeywordStat(spec, ps, k), keyword);
+
+        private IStat BuildKeywordStat(IDamageSpecification spec, BuildParameters parameters, IKeywordBuilder keyword)
+        {
+            return StatFactory.ActiveSkillPartDamageHasKeyword(parameters.ModifierSourceEntity, keyword.Build(),
+                spec.DamageSource);
+        }
     }
 }

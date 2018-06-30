@@ -9,7 +9,7 @@ using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
-    internal class DamageSpecificationBuilder : IResolvable<DamageSpecificationBuilder>
+    public class DamageSpecificationBuilder : IResolvable<DamageSpecificationBuilder>
     {
         [Flags]
         private enum Mode

@@ -59,9 +59,9 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder For(IEntityBuilder entity) => With(CoreStatBuilder.WithEntity(entity));
 
-        public IStatBuilder With(IKeywordBuilder keyword) => WithCondition(KeywordCondition(keyword));
+        public virtual IStatBuilder With(IKeywordBuilder keyword) => WithCondition(KeywordCondition(keyword));
 
-        public IStatBuilder NotWith(IKeywordBuilder keyword) => WithCondition(KeywordCondition(keyword).Not);
+        public virtual IStatBuilder NotWith(IKeywordBuilder keyword) => WithCondition(KeywordCondition(keyword).Not);
 
         private IConditionBuilder KeywordCondition(IKeywordBuilder keyword) =>
             ValueConditionBuilder.Create(BuildKeywordStat, keyword);

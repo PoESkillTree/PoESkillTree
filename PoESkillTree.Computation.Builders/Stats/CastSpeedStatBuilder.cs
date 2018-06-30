@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        private protected override DamageRelatedStatBuilder Create(
+        protected override DamageRelatedStatBuilder Create(
             ICoreStatBuilder coreStatBuilder,
             DamageStatConcretizer statConcretizer,
             Func<IStat, IEnumerable<IStat>> statConverter) =>
