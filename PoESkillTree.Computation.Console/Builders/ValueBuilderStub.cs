@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
-using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -44,8 +42,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IValueBuilder If(IValue condition) =>
             CreateValue(This, (IValueBuilder) new ValueBuilderImpl(condition), (l, r) => $"{l} if {r} else null");
 
-        public IValueBuilder Select(Expression<Func<double, double>> selector) =>
-            CreateValue(This, o => selector.ToString(o));
+        public IValueBuilder Select(Func<double, double> selector, Func<IValue, string> identity) =>
+            CreateValue(This, o => identity(o.Build(default)));
 
         public IValueBuilder Create(double value) =>
             new ValueBuilderImpl(value);

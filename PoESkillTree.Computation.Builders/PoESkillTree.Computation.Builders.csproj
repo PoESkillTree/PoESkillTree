@@ -88,7 +88,6 @@
     <Compile Include="Equipment\EquipmentBuilderCollection.cs" />
     <Compile Include="Equipment\EquipmentBuilders.cs" />
     <Compile Include="Equipment\ItemSlotBuilders.cs" />
-    <Compile Include="ExpressionHelper.cs" />
     <Compile Include="Forms\FormBuilders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolving\UnresolvedBuilder.cs" />

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Common;
@@ -48,10 +47,10 @@ namespace PoESkillTree.Computation.Builders.Values
             Create(this, o => o.Select(v => new NodeValue(0, v.Maximum)), o => $"{o}.MaximumOnly");
 
         public IConditionBuilder Eq(IValueBuilder other) =>
-            ValueConditionBuilder.Create(this, other, (left, right) => left == right);
+            ValueConditionBuilder.Create(this, other, (left, right) => left == right, (l, r) => $"{l} == {r}");
 
         public IConditionBuilder GreaterThan(IValueBuilder other) =>
-            ValueConditionBuilder.Create(this, other, (left, right) => left > right);
+            ValueConditionBuilder.Create(this, other, (left, right) => left > right, (l, r) => $"{l} > {r}");
 
         public IValueBuilder Add(IValueBuilder other) =>
             Create(this, other, (left, right) => new[] { left, right }.Sum(), (l, r) => $"{l} + {r}");
@@ -60,13 +59,14 @@ namespace PoESkillTree.Computation.Builders.Values
             Create(this, other, (left, right) => new[] { left, right }.Product(), (l, r) => $"{l} * {r}");
 
         public IValueBuilder DivideBy(IValueBuilder divisor) =>
-            Create(this, divisor, (left, right) => left / (right ?? new NodeValue(1)));
+            Create(this, divisor, (left, right) => left / (right ?? new NodeValue(1)), (l, r) => $"{l} / {r}");
 
         public IValueBuilder If(IValue condition) =>
-            Create(this, new ValueBuilderImpl(condition), (l, r) => r.IsTrue() ? l : null);
+            Create(this, new ValueBuilderImpl(condition), (l, r) => r.IsTrue() ? l : null,
+                (l, r) => $"{r}.IsTrue ? {l} : null");
 
-        public IValueBuilder Select(Expression<Func<double, double>> selector) =>
-            Create(this, o => o.Select(selector.Compile()), o => selector.ToString(o));
+        public IValueBuilder Select(Func<double, double> selector, Func<IValue, string> identity) =>
+            Create(this, o => o.Select(selector), identity);
 
         public IValueBuilder Create(double value) => new ValueBuilderImpl(value);
 
@@ -78,43 +78,39 @@ namespace PoESkillTree.Computation.Builders.Values
 
         public static IValueBuilder Create(
             IValueBuilder operand,
-            Expression<Func<NodeValue?, NodeValue?>> calculate,
-            Func<IValue, string> identityOverride = null) =>
+            Func<NodeValue?, NodeValue?> calculate,
+            Func<IValue, string> identity) =>
             new ValueBuilderImpl(
-                ps => Build(ps, operand, calculate, identityOverride),
-                c => (ps => Build(ps, operand.Resolve(c), calculate, identityOverride)));
+                ps => Build(ps, operand, calculate, identity),
+                c => (ps => Build(ps, operand.Resolve(c), calculate, identity)));
 
         public static IValueBuilder Create(
-            IValueBuilder operand1, IValueBuilder operand2,
-            Expression<Func<NodeValue?, NodeValue?, NodeValue?>> calculate,
-            Func<IValue, IValue, string> identityOverride = null) =>
+            IValueBuilder left, IValueBuilder right,
+            Func<NodeValue?, NodeValue?, NodeValue?> calculate,
+            Func<IValue, IValue, string> identity) =>
             new ValueBuilderImpl(
-                ps => Build(ps, operand1, operand2, calculate, identityOverride),
-                c => (ps => Build(ps, operand1.Resolve(c), operand2.Resolve(c), calculate, identityOverride)));
+                ps => Build(ps, left, right, calculate, identity),
+                c => (ps => Build(ps, left.Resolve(c), right.Resolve(c), calculate, identity)));
 
         private static IValue Build(
             BuildParameters parameters,
             IValueBuilder operand,
-            Expression<Func<NodeValue?, NodeValue?>> calculate,
-            Func<IValue, string> identityOverride = null)
+            Func<NodeValue?, NodeValue?> calculate,
+            Func<IValue, string> identity)
         {
             var builtOperand = operand.Build(parameters);
-            var func = calculate.Compile();
-            var identity = identityOverride is null ? calculate.ToString(builtOperand) : identityOverride(builtOperand);
-            return new FunctionalValue(c => func(builtOperand.Calculate(c)), identity);
+            return new FunctionalValue(c => calculate(builtOperand.Calculate(c)), identity(builtOperand));
         }
 
         private static IValue Build(
             BuildParameters parameters,
-            IValueBuilder operand1, IValueBuilder operand2,
-            Expression<Func<NodeValue?, NodeValue?, NodeValue?>> calculate,
-            Func<IValue, IValue, string> identityOverride = null)
+            IValueBuilder left, IValueBuilder right,
+            Func<NodeValue?, NodeValue?, NodeValue?> calculate,
+            Func<IValue, IValue, string> identity)
         {
-            var o1 = operand1.Build(parameters);
-            var o2 = operand2.Build(parameters);
-            var func = calculate.Compile();
-            var identity = identityOverride is null ? calculate.ToString(o1, o2) : identityOverride(o1, o2);
-            return new FunctionalValue(c => func(o1.Calculate(c), o2.Calculate(c)), identity);
+            var l = left.Build(parameters);
+            var r = right.Build(parameters);
+            return new FunctionalValue(c => calculate(l.Calculate(c), r.Calculate(c)), identity(l, r));
         }
     }
 }

@@ -21,13 +21,13 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// Returns a value converter multiplying values by <c>(stat.Value / divideBy).Floor</c>.
         /// </summary>
         public static Func<ValueBuilder, ValueBuilder> PerStat(IStatBuilder stat, ValueBuilder divideBy) =>
-            v => v * (stat.Value / divideBy).Select(d => Math.Floor(d));
+            v => v * (stat.Value / divideBy).Select(Math.Floor, o => $"Floor({o})");
 
         /// <summary>
         /// Returns a value converter multiplying values by <c>(stat.Value / divideBy).Ceiling</c>.
         /// </summary>
         public static Func<ValueBuilder, ValueBuilder> PerStatCeiled(IStatBuilder stat, ValueBuilder divideBy) =>
-            v => v * (stat.Value / divideBy).Select(d => Math.Ceiling(d));
+            v => v * (stat.Value / divideBy).Select(Math.Ceiling, o => $"Ceiling({o})");
 
         /// <summary>
         /// Returns a value converter that behaves the same as the given converter but creates a 

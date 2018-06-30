@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
-using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
@@ -11,36 +9,38 @@ namespace PoESkillTree.Computation.Builders.Conditions
 {
     public static class ValueConditionBuilder
     {
-        public static IConditionBuilder Create(IValueBuilder operand, Expression<Func<NodeValue?, bool>> calculate) =>
-            new ValueConditionBuilder<IValueBuilder>((p, o) => Build(p, o, calculate), operand);
+        public static IConditionBuilder Create(
+            IValueBuilder operand,
+            Func<NodeValue?, bool> calculate,
+            Func<IValue, string> identity) =>
+            new ValueConditionBuilder<IValueBuilder>((p, o) => Build(p, o, calculate, identity), operand);
 
         private static IValue Build(
             BuildParameters parameters,
             IValueBuilder operand,
-            Expression<Func<NodeValue?, bool>> calculate)
+            Func<NodeValue?, bool> calculate,
+            Func<IValue, string> identity)
         {
             var builtOperand = operand.Build(parameters);
-            var func = calculate.Compile();
-            var identity = calculate.ToString(builtOperand);
-            return new ConditionalValue(c => func(builtOperand.Calculate(c)), identity);
+            return new ConditionalValue(c => calculate(builtOperand.Calculate(c)), identity(builtOperand));
         }
 
         public static IConditionBuilder Create(
-            IValueBuilder operand1, IValueBuilder operand2,
-            Expression<Func<NodeValue?, NodeValue?, bool>> calculate) =>
+            IValueBuilder left, IValueBuilder right,
+            Func<NodeValue?, NodeValue?, bool> calculate,
+            Func<IValue, IValue, string> identity) =>
             new ValueConditionBuilder<IValueBuilder, IValueBuilder>(
-                (p, o1, o2) => Build(p, o1, o2, calculate), operand1, operand2);
+                (p, o1, o2) => Build(p, o1, o2, calculate, identity), left, right);
 
         private static IValue Build(
             BuildParameters parameters,
-            IValueBuilder operand1, IValueBuilder operand2,
-            Expression<Func<NodeValue?, NodeValue?, bool>> calculate)
+            IValueBuilder left, IValueBuilder right,
+            Func<NodeValue?, NodeValue?, bool> calculate,
+            Func<IValue, IValue, string> identity)
         {
-            var o1 = operand1.Build(parameters);
-            var o2 = operand2.Build(parameters);
-            var func = calculate.Compile();
-            var identity = calculate.ToString(o1, o2);
-            return new ConditionalValue(c => func(o1.Calculate(c), o2.Calculate(c)), identity);
+            var l = left.Build(parameters);
+            var r = right.Build(parameters);
+            return new ConditionalValue(c => calculate(l.Calculate(c), r.Calculate(c)), identity(l, r));
         }
 
         public static IConditionBuilder Create<TParameter>(

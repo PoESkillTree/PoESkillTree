@@ -45,7 +45,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             new ValueBuilder(new ValueBuilderImpl(CoreStatBuilder.BuildValue, c => Resolve(c).Value));
 
         public IConditionBuilder IsSet =>
-            ValueConditionBuilder.Create(Value, v => v.IsTrue());
+            ValueConditionBuilder.Create(Value, v => v.IsTrue(), v => $"{v}.IsSet");
 
         public IStatBuilder ConvertTo(IStatBuilder stat) =>
             new StatBuilder(StatFactory,

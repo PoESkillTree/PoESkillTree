@@ -26,7 +26,8 @@ namespace PoESkillTree.Computation.Builders.Equipment
             StatBuilderUtils.FromIdentity(_statFactory, $"{_slot}.ItemTags", typeof(Tags));
 
         public IConditionBuilder Has(Tags tag) =>
-            ValueConditionBuilder.Create(ItemTags.Value, v => ToTags(v).HasFlag(tag));
+            ValueConditionBuilder.Create(ItemTags.Value, v => ToTags(v).HasFlag(tag),
+                v => $"((Tags) {v}).HasFlag({tag})");
 
         private static Tags ToTags(NodeValue? value) =>
             value is NodeValue v ? ((Tags) (int) v.Maximum) : Tags.Default;
@@ -36,7 +37,7 @@ namespace PoESkillTree.Computation.Builders.Equipment
                 .Value.Eq((int) frameType);
 
         public IConditionBuilder HasItem =>
-            ValueConditionBuilder.Create(ItemTags.Value, v => v.HasValue);
+            ValueConditionBuilder.Create(ItemTags.Value, v => v.HasValue, v => $"{v}.HasValue");
 
         public IConditionBuilder IsCorrupted =>
             StatBuilderUtils.ConditionFromIdentity(_statFactory, $"{_slot}.ItemIsCorrupted");
