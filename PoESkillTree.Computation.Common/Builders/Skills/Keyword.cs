@@ -17,6 +17,11 @@
         Aura,
         Golem,
         Minion,
-        Warcry
+        Warcry,
+        Physical,
+        Lightning,
+        Cold,
+        Fire,
+        Chaos,
     }
 }

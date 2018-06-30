@@ -79,6 +79,10 @@
     <Compile Include="Conditions\ConstantConditionBuilder.cs" />
     <Compile Include="Conditions\ValueConditionBuilder.cs" />
     <Compile Include="ConstantBuilder.cs" />
+    <Compile Include="Damage\DamageTypeBuilder.cs" />
+    <Compile Include="Damage\DamageTypeBuilders.cs" />
+    <Compile Include="Damage\DamageTypeCoreStatBuilder.cs" />
+    <Compile Include="Damage\ICoreDamageTypeBuilder.cs" />
     <Compile Include="Entities\EntityBuilders.cs" />
     <Compile Include="Equipment\EquipmentBuilder.cs" />
     <Compile Include="Equipment\EquipmentBuilderCollection.cs" />
@@ -102,6 +106,7 @@
     <Compile Include="Stats\IDamageSpecification.cs" />
     <Compile Include="Stats\IStatFactory.cs" />
     <Compile Include="Stats\LeafCoreStatBuilder.cs" />
+    <Compile Include="Stats\ParametrisedCoreStatBuilder.cs" />
     <Compile Include="Stats\PoolStatBuilder.cs" />
     <Compile Include="Stats\StatBuilders.cs" />
     <Compile Include="Stats\Stat.cs" />

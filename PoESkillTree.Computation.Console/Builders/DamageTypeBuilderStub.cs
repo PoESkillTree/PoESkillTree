@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Damage;
+﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -43,7 +44,7 @@ namespace PoESkillTree.Computation.Console.Builders
             CreateDamageStat(This, o => $"{o} Damage");
 
         public IDamageTakenConversionBuilder DamageTakenFrom(IPoolStatBuilder pool) =>
-            Create<IDamageTakenConversionBuilder, IKeywordBuilder, IStatBuilder>(
+            Create<DamageTakenConversionBuilder, IKeywordBuilder, IStatBuilder>(
                 (s, r) => new DamageTakenConversionBuilder(s, r),
                 This, pool,
                 (o1, o2) => $"{o1} taken from {o2}");
@@ -54,50 +55,34 @@ namespace PoESkillTree.Computation.Console.Builders
         public IFlagStatBuilder IgnoreResistance =>
             CreateFlagStat(This, o => $"Ignore {o} Resistance");
 
-        public IDamageRelatedStatBuilder ReflectedDamageTaken =>
+        public IStatBuilder ReflectedDamageTaken =>
             CreateDamageStat(This, o => $"Reflected {o} Damage Taken");
 
         public IKeywordBuilder Resolve(ResolveContext context) => _resolver(this, context);
 
         public Keyword Build() => Keyword.Projectile;
 
+        public IReadOnlyList<DamageType> BuildDamageTypes() => new DamageType[0];
 
-        private class DamageTakenConversionBuilder : BuilderStub, IDamageTakenConversionBuilder
+
+        private class DamageTakenConversionBuilder : BuilderStub, IDamageTakenConversionBuilder,
+            IResolvable<DamageTakenConversionBuilder>
         {
-            private readonly Resolver<IDamageTakenConversionBuilder> _resolver;
+            private readonly Resolver<DamageTakenConversionBuilder> _resolver;
 
             public DamageTakenConversionBuilder(
-                string stringRepresentation, Resolver<IDamageTakenConversionBuilder> resolver)
+                string stringRepresentation, Resolver<DamageTakenConversionBuilder> resolver)
                 : base(stringRepresentation)
             {
                 _resolver = resolver;
             }
 
             public IStatBuilder Before(IPoolStatBuilder pool) =>
-                CreateStat((IDamageTakenConversionBuilder) this, (IStatBuilder) pool,
+                CreateStat(this, (IStatBuilder) pool,
                     (o1, o2) => $"{o1} before {o2}");
 
-            public IDamageTakenConversionBuilder Resolve(ResolveContext context) =>
+            public DamageTakenConversionBuilder Resolve(ResolveContext context) =>
                 _resolver(this, context);
         }
-    }
-
-
-    public class DamageTypeBuildersStub : IDamageTypeBuilders
-    {
-        private static IDamageTypeBuilder Create(string stringRepresentation) =>
-            new DamageTypeBuilderStub(stringRepresentation, (current, _) => current);
-
-        public IDamageTypeBuilder Physical => Create("Physical");
-
-        public IDamageTypeBuilder Fire => Create("Fire");
-
-        public IDamageTypeBuilder Lightning => Create("Lightning");
-
-        public IDamageTypeBuilder Cold => Create("Cold");
-
-        public IDamageTypeBuilder Chaos => Create("Chaos");
-
-        public IDamageTypeBuilder RandomElement => Create("Random Element");
     }
 }

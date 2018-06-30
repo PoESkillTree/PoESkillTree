@@ -73,6 +73,7 @@
     <Compile Include="Conditions\ConditionBuildersTest.cs" />
     <Compile Include="Conditions\OrCompositeConditionBuilderTest.cs" />
     <Compile Include="Conditions\ValueConditionBuilderTest.cs" />
+    <Compile Include="Damage\DamageTypeBuilderTest.cs" />
     <Compile Include="Equipment\EquipmentBuilderCollectionTest.cs" />
     <Compile Include="Equipment\EquipmentBuilderTest.cs" />
     <Compile Include="Equipment\ItemSlotBuildersTest.cs" />

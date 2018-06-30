@@ -138,7 +138,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "your elemental golems are immune to elemental damage",
-                    TotalOverride, 100, Elemental.Resistance.For(Entity.Minion), With(Keyword.Golem, Elemental)
+                    TotalOverride, 100, Elemental.Resistance.For(Entity.Minion), And(With(Keyword.Golem), WithElemental)
                 },
                 {
                     "every # seconds: " +

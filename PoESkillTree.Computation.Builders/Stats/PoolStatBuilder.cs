@@ -50,6 +50,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IConditionBuilder IsLow =>
             (Reservation.Value >= 65).Or(FromIdentity($"{_pool}.IsLow", typeof(bool), true).IsSet);
 
+        public Pool BuildPool() => _pool;
+
         public override string ToString() => _pool.ToString();
     }
 

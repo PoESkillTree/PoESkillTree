@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Resolving;
+﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
@@ -23,7 +24,7 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         IDamageTypeBuilder And(IDamageTypeBuilder type);
 
         /// <summary>
-        /// Gets a collection that contains all damage types not in this collection.
+        /// Gets a collection that contains all damage types not in this collection (except RandomElement).
         /// <para>E.g. (Fire, Cold).Invert -> (Physical, Lighting, Chaos)</para>
         /// </summary>
         IDamageTypeBuilder Invert { get; }
@@ -65,10 +66,12 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         /// </summary>
         IFlagStatBuilder IgnoreResistance { get; }
 
-        IDamageRelatedStatBuilder ReflectedDamageTaken { get; }
+        IStatBuilder ReflectedDamageTaken { get; }
+
+        IReadOnlyList<DamageType> BuildDamageTypes();
     }
 
-    public interface IDamageTakenConversionBuilder : IResolvable<IDamageTakenConversionBuilder>
+    public interface IDamageTakenConversionBuilder
     {
         /// <summary>
         /// Returns a stat representing the percentage of damage of specific types that is taken from a specific pool

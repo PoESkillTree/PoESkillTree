@@ -44,6 +44,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IConditionBuilder IsFull => CreateCondition(This, o => $"{o} is full");
         public IConditionBuilder IsLow => CreateCondition(This, o => $"{o} is low");
 
+        public Pool BuildPool() => default;
+
         public override IStatBuilder WithCondition(IConditionBuilder condition) =>
             CreatePoolStat(This, condition, (s, c) => $"{s} ({c})");
     }

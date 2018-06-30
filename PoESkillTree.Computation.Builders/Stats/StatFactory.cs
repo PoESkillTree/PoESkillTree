@@ -23,6 +23,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat FromIdentity(string identity, Entity entity, Type dataType, bool isExplicitlyRegistered = false) =>
             GetOrAdd(identity, entity, dataType, isExplicitlyRegistered);
 
+        public IStat CopyWithSuffix(IStat stat, string identitySuffix, Type dataType) =>
+            CopyWithSuffix(stat, identitySuffix, dataType, new Behavior[0]);
+
         public IStat ChanceToDouble(IStat stat) =>
             CopyWithSuffix(stat, nameof(ChanceToDouble), typeof(int));
 
@@ -46,18 +49,18 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStat ConvertTo(IStat source, IStat target) =>
             CopyWithSuffix(source, $"{nameof(ConvertTo)}({target.Identity})", typeof(int),
-                behaviors: _behaviorFactory.ConvertTo(source, target));
+                _behaviorFactory.ConvertTo(source, target));
 
         public IStat GainAs(IStat source, IStat target) =>
             CopyWithSuffix(source, $"{nameof(GainAs)}({target.Identity})", typeof(int),
-                behaviors: _behaviorFactory.GainAs(source, target));
+                _behaviorFactory.GainAs(source, target));
 
         public IStat Conversion(IStat source) =>
             CopyWithSuffix(source, "Conversion", typeof(int));
 
         public IStat SkillConversion(IStat source) =>
             CopyWithSuffix(source, "SkillConversion", typeof(int),
-                behaviors: _behaviorFactory.SkillConversion(source));
+                _behaviorFactory.SkillConversion(source));
 
         public IStat Regen(Pool pool, Entity entity) =>
             GetOrAdd($"{pool}.Regen", entity, typeof(double), behaviors: _behaviorFactory.Regen(pool, entity));
@@ -85,7 +88,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStat ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification) =>
             CopyWithSuffix(stat, damageSpecification.StatIdentitySuffix, stat.DataType,
-                behaviors: _behaviorFactory.ConcretizeDamage(stat, damageSpecification));
+                _behaviorFactory.ConcretizeDamage(stat, damageSpecification));
 
         public IStat ApplyModifiersToSkillDamage(IStat stat, DamageSource damageSource, Form form) =>
             CopyWithSuffix(stat, $"ApplyModifiersToSkills({damageSource} for form {form})", typeof(int));
@@ -100,7 +103,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             GetOrAdd($"{ailment}.DamageType", entity, typeof(DamageType));
 
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,
-            bool isRegisteredExplicitly = false, IReadOnlyList<Behavior> behaviors = null)
+            IReadOnlyList<Behavior> behaviors, bool isRegisteredExplicitly = false)
         {
             return GetOrAdd(source.Identity + "." + identitySuffix, source.Entity,
                 dataType, isRegisteredExplicitly, behaviors);

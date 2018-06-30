@@ -7,5 +7,6 @@
         Cold,
         Fire,
         Chaos,
+        RandomElement,
     }
 }
