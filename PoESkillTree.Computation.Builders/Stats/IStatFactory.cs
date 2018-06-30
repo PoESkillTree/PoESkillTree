@@ -27,8 +27,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat LeechPercentage(IStat damage);
 
         IStat ActiveSkillId(Entity entity);
-        IStat ActiveSkillHasKeyword(Entity entity, Keyword keyword);
-        IStat ActiveSkillCastSpeedHasKeyword(Entity entity, Keyword keyword);
+        IStat ActiveSkillPartHasKeyword(Entity entity, Keyword keyword);
+        IStat ActiveSkillPartCastSpeedHasKeyword(Entity entity, Keyword keyword);
 
         IStat Damage(DamageType damageType, Entity entity);
         IStat ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification);

@@ -71,11 +71,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat ActiveSkillId(Entity entity) =>
             GetOrAdd("ActiveSkill.Id", entity, typeof(int));
 
-        public IStat ActiveSkillHasKeyword(Entity entity, Keyword keyword) =>
-            GetOrAdd($"ActiveSkill.Has.{keyword}", entity, typeof(bool));
+        public IStat ActiveSkillPartHasKeyword(Entity entity, Keyword keyword) =>
+            GetOrAdd($"ActiveSkillPart.Has.{keyword}", entity, typeof(bool));
 
-        public IStat ActiveSkillCastSpeedHasKeyword(Entity entity, Keyword keyword) =>
-            GetOrAdd($"ActiveSkill.CastSpeed.Has.{keyword}", entity, typeof(bool));
+        public IStat ActiveSkillPartCastSpeedHasKeyword(Entity entity, Keyword keyword) =>
+            GetOrAdd($"ActiveSkillPart.CastSpeed.Has.{keyword}", entity, typeof(bool));
 
         public IStat Damage(DamageType damageType, Entity entity) =>
             GetOrAdd($"{damageType}.Damage", entity, typeof(int));
