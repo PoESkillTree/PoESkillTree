@@ -82,7 +82,6 @@
     <Compile Include="Builders\Effects\IAvoidableEffectBuilder.cs" />
     <Compile Include="Builders\Effects\IEffectBuilder.cs" />
     <Compile Include="Builders\Effects\IEffectBuilders.cs" />
-    <Compile Include="Builders\Effects\IGroundEffectBuilder.cs" />
     <Compile Include="Builders\Effects\IGroundEffectBuilders.cs" />
     <Compile Include="Builders\Effects\IKnockbackEffectBuilder.cs" />
     <Compile Include="Builders\Effects\IStunEffectBuilder.cs" />

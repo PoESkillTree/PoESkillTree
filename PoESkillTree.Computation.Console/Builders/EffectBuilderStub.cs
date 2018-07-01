@@ -7,11 +7,11 @@ using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
-    public abstract class EffectBuilderStub : BuilderStub, IEffectBuilder
+    public class EffectBuilderStub : BuilderStub, IEffectBuilder
     {
         private readonly Resolver<IEffectBuilder> _resolver;
 
-        protected EffectBuilderStub(string stringRepresentation, Resolver<IEffectBuilder> resolver) 
+        public EffectBuilderStub(string stringRepresentation, Resolver<IEffectBuilder> resolver) 
             : base(stringRepresentation)
         {
             _resolver = resolver;

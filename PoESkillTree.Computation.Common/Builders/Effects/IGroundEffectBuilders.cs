@@ -5,6 +5,6 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
     /// </summary>
     public interface IGroundEffectBuilders
     {
-        IGroundEffectBuilder Consecrated { get; }
+        IEffectBuilder Consecrated { get; }
     }
 }
