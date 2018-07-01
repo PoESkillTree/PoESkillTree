@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
@@ -10,6 +12,7 @@ using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
@@ -42,7 +45,16 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder Maximum => WithStatConverter(s => s.Maximum);
 
         public ValueBuilder Value =>
-            new ValueBuilder(new ValueBuilderImpl(CoreStatBuilder.BuildValue, c => Resolve(c).Value));
+            new ValueBuilder(new ValueBuilderImpl(BuildVallue, c => Resolve(c).Value));
+
+        private IValue BuildVallue(BuildParameters parameters)
+        {
+            var stats = Build(parameters, null).Select(r => r.Stats).Flatten().ToList();
+            if (stats.Count != 1)
+                throw new ParseException("Can only access the value of stat builders that represent a single stat");
+
+            return new StatValue(stats.Single());
+        }
 
         public IConditionBuilder IsSet =>
             ValueConditionBuilder.Create(Value, v => v.IsTrue(), v => $"{v}.IsSet");

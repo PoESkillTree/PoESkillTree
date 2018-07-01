@@ -40,9 +40,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
             new StatBuilderAdapter(_statBuilder, _conditionBuilder, statConverter);
 
-        public IValue BuildValue(BuildParameters parameters) =>
-            _statBuilder.Value.Build(parameters);
-
         public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)
         {
             var (statBuilder, conditionValueConverter) = BuildCondition(parameters);

@@ -9,7 +9,6 @@ using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Builders.Damage
 {
@@ -36,16 +35,6 @@ namespace PoESkillTree.Computation.Builders.Damage
 
         public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
             new DamageTypeCoreStatBuilder(_statFactory.AndThen(statConverter), _damageType, _entityBuilder);
-
-        public IValue BuildValue(BuildParameters parameters)
-        {
-            var stats = BuildStats(parameters).ToList();
-            if (stats.Count != 1)
-                throw new ParseException(
-                    "Can only access the value of damage type specific stat builders that have a single damage type and entity");
-
-            return new StatValue(stats.Single());
-        }
 
         public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)
         {

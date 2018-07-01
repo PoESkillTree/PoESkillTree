@@ -7,7 +7,6 @@ using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
@@ -29,9 +28,6 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
             Select(i => i.WithStatConverter(statConverter));
-
-        public IValue BuildValue(BuildParameters parameters) =>
-            throw new ParseException("Can only access the value of stat builders that represent a single stat");
 
         public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)
         {

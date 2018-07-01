@@ -16,19 +16,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
     public class StatBuilderAdapterTest
     {
         [Test]
-        public void BuildValueReturnsStatBuilderValueBuild()
-        {
-            var expected = Mock.Of<IValue>();
-            var valueBuilder = Mock.Of<IValueBuilder>(b => b.Build(default) == expected);
-            var statBuilder = Mock.Of<IStatBuilder>(b => b.Value == new ValueBuilder(valueBuilder));
-            var sut = new StatBuilderAdapter(statBuilder);
-
-            var actual = sut.BuildValue(default);
-
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
         public void ResolveResolvesCondition()
         {
             var statBuilder = Mock.Of<IStatBuilder>();

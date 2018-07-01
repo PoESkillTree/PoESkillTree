@@ -421,11 +421,15 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [TestCase(1.0, true)]
         public void IsSetCalculatesCorrectValue(double? input, bool expected)
         {
-            var coreStatBuilder = Mock.Of<ICoreStatBuilder>(b => b.BuildValue(default) == new Constant(input));
+            var stat = new Stat("s");
+            var results = new[] { new StatBuilderResult(new[] { stat }, null, Funcs.Identity), };
+            var coreStatBuilder = Mock.Of<ICoreStatBuilder>(b => b.Build(default, null) == results);
+            var context = Mock.Of<IValueCalculationContext>(c =>
+                c.GetValue(stat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) input);
             var sut = CreateSut(coreStatBuilder);
 
             var conditionBuilder = sut.IsSet;
-            var actual = conditionBuilder.Build().Value.Calculate(null);
+            var actual = conditionBuilder.Build().Value.Calculate(context);
 
             Assert.AreEqual(expected, actual.IsTrue());
         }

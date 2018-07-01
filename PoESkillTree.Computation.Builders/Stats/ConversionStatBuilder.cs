@@ -39,9 +39,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
             new ConversionStatBuilder((s, ts) => _statFactory(s, ts).Select(statConverter), _source, _target);
 
-        public IValue BuildValue(BuildParameters parameters) =>
-            throw new ParseException("Can't access the value of conversion stats directly (yet)");
-
         public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)
         {
             var sourceResults = _source.Build(parameters, originalModifierSource).ToList();

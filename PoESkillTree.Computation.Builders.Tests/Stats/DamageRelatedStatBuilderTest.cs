@@ -316,6 +316,16 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.Throws<ParseException>(() => sut.ApplyModifiersToAilments(Form.More));
         }
 
+        [Test]
+        public void ValueBuildThrowsParseException()
+        {
+            var sut = CreateSut(canApplyToSkillDamage: false, canApplyToAilmentDamage: false);
+
+            var value = sut.Value;
+
+            Assert.Throws<ParseException>(() => value.Build());
+        }
+
         private static IDamageRelatedStatBuilder CreateSut(string identity = "test",
             bool canApplyToSkillDamage = true, bool canApplyToAilmentDamage = true) =>
             StatBuilderUtils.DamageRelatedFromIdentity(new StatFactory(), identity, typeof(double),

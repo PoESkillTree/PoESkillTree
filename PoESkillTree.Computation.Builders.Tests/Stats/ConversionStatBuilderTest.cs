@@ -117,14 +117,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         }
 
         [Test]
-        public void BuildValueThrows()
-        {
-            var sut = CreateSut(MockStatBuilder(), MockStatBuilder());
-
-            Assert.Throws<ParseException>(() => sut.BuildValue(default));
-        }
-
-        [Test]
         public void BuildZipsSourceAndTargetResults()
         {
             var source = MockStatBuilder(CreateStatBuilderResult(), CreateStatBuilderResult());

@@ -34,9 +34,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
             new ParametrisedCoreStatBuilder<TParameter>(_inner, _parameter, _statConverter.AndThen(statConverter));
 
-        public IValue BuildValue(BuildParameters parameters) =>
-            ApplyParameterToInner().BuildValue(parameters);
-
         public IEnumerable<StatBuilderResult>
             Build(BuildParameters parameters, ModifierSource originalModifierSource) =>
             ApplyParameterToInner().Build(parameters, originalModifierSource);
