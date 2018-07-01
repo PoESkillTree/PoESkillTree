@@ -7,7 +7,7 @@ using PoESkillTree.Computation.Common.Builders.Resolving;
 
 namespace PoESkillTree.Computation.Builders.Damage
 {
-    internal interface ICoreDamageTypeBuilder : IResolvable<ICoreDamageTypeBuilder>
+    public interface ICoreDamageTypeBuilder : IResolvable<ICoreDamageTypeBuilder>
     {
         IEnumerable<DamageType> Build();
     }
@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Builders.Damage
         public IEnumerable<DamageType> Build() => _damageTypes;
     }
 
-    internal class ProxyDamageTypeBuilder : ICoreDamageTypeBuilder
+    public class ProxyDamageTypeBuilder : ICoreDamageTypeBuilder
     {
         private readonly IDamageTypeBuilder _proxiedBuilder;
 

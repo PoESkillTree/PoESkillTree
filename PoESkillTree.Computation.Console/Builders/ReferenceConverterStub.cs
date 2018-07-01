@@ -1,4 +1,6 @@
-﻿using PoESkillTree.Computation.Builders.Resolving;
+﻿using PoESkillTree.Computation.Builders.Damage;
+using PoESkillTree.Computation.Builders.Resolving;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Charges;
@@ -13,6 +15,7 @@ namespace PoESkillTree.Computation.Console.Builders
 {
     public class ReferenceConverterStub : BuilderStub, IReferenceConverter
     {
+        private readonly IStatFactory _statFactory = new StatFactory();
         private readonly Resolver<IReferenceConverter> _resolver;
 
         public ReferenceConverterStub(string stringRepresentation, Resolver<IReferenceConverter> resolver)
@@ -25,8 +28,15 @@ namespace PoESkillTree.Computation.Console.Builders
          * When the objects returned by these properties are resolved, the new objects are retrieved from the context.
          */
 
-        public IDamageTypeBuilder AsDamageType =>
-            new DamageTypeBuilderStub($"{this}.AsDamageType", (_, context) => Resolve(context).AsDamageType);
+        public IDamageTypeBuilder AsDamageType
+        {
+            get
+            {
+                var core = new UnresolvedDamageTypeBuilder($"{this}.AsDamageType", 
+                    context => new ProxyDamageTypeBuilder(Resolve(context).AsDamageType));
+                return new DamageTypeBuilder(_statFactory, core);
+            }
+        }
 
         public IChargeTypeBuilder AsChargeType =>
             new ChargeTypeBuilderStub($"{this}.AsChargeType", (_, context) => Resolve(context).AsChargeType);

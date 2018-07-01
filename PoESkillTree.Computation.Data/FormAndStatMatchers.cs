@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -45,6 +47,32 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value.MaximumOnly, Reference.AsDamageType.Damage.WithHits
                 },
                 { "deal no ({DamageTypeMatchers}) damage", TotalOverride, 0, Reference.AsDamageType.Damage },
+                // - conversion and gain
+                {
+                    "(gain )?#% of ({DamageTypeMatchers}) damage (gained |added )?as (extra )?({DamageTypeMatchers}) damage",
+                    BaseAdd, Value, References[0].AsDamageType.Damage.WithHitsAndAilments
+                        .GainAs(References[1].AsDamageType.Damage.WithHitsAndAilments)
+                },
+                {
+                    "gain #% of ({DamageTypeMatchers}) damage as extra damage of a random element",
+                    BaseAdd, Value, Reference.AsDamageType.Damage.WithHitsAndAilments
+                        .GainAs(RandomElement.Damage.WithHitsAndAilments)
+                },
+                {
+                    "gain #% of wand ({DamageTypeMatchers}) damage as extra ({DamageTypeMatchers}) damage",
+                    BaseAdd, Value,
+                    References[0].AsDamageType.Damage.With(AttackDamageHand.MainHand)
+                        .GainAs(References[1].AsDamageType.Damage.With(AttackDamageHand.MainHand))
+                        .WithCondition(MainHand.Has(Tags.Wand)),
+                    References[0].AsDamageType.Damage.With(AttackDamageHand.OffHand)
+                        .GainAs(References[1].AsDamageType.Damage.With(AttackDamageHand.OffHand))
+                        .WithCondition(OffHand.Has(Tags.Wand))
+                },
+                {
+                    "#% of ({DamageTypeMatchers}) damage converted to ({DamageTypeMatchers}) damage",
+                    BaseAdd, Value, References[0].AsDamageType.Damage.WithHitsAndAilments
+                        .ConvertTo(References[1].AsDamageType.Damage.WithHitsAndAilments)
+                },
                 // - penetration
                 {
                     "damage penetrates #% (of enemy )?({DamageTypeMatchers}) resistances?",

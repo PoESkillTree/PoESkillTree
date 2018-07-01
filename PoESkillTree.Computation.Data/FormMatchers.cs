@@ -33,7 +33,6 @@ namespace PoESkillTree.Computation.Data
                 { @"\+#%? to", BaseAdd, Value },
                 { @"\+?#%?(?= chance)", BaseAdd, Value },
                 { @"\+?#% of", BaseAdd, Value },
-                { "gain #% of", BaseAdd, Value },
                 { "(?<!chance to )gain #", BaseAdd, Value },
                 { "#% additional", BaseAdd, Value },
                 { "an additional", BaseAdd, 1 },

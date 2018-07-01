@@ -48,12 +48,12 @@ namespace PoESkillTree.Computation.Builders.Stats
             ValueConditionBuilder.Create(Value, v => v.IsTrue(), v => $"{v}.IsSet");
 
         public IStatBuilder ConvertTo(IStatBuilder stat) =>
-            new StatBuilder(StatFactory,
-                new ConversionStatBuilder(StatFactory.ConvertTo, CoreStatBuilder, new StatBuilderAdapter(stat)));
+            WithUntyped(new ConversionStatBuilder(StatFactory.ConvertTo,
+                new StatBuilderAdapter(this), new StatBuilderAdapter(stat)));
 
         public IStatBuilder GainAs(IStatBuilder stat) =>
-            new StatBuilder(StatFactory,
-                new ConversionStatBuilder(StatFactory.GainAs, CoreStatBuilder, new StatBuilderAdapter(stat)));
+            WithUntyped(new ConversionStatBuilder(StatFactory.GainAs,
+                new StatBuilderAdapter(this), new StatBuilderAdapter(stat)));
 
         public IStatBuilder ChanceToDouble => WithStatConverter(StatFactory.ChanceToDouble);
 

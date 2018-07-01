@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Builders.Damage
         {
         }
 
-        private DamageTypeBuilder(IStatFactory statFactory, ICoreDamageTypeBuilder coreDamageType)
+        public DamageTypeBuilder(IStatFactory statFactory, ICoreDamageTypeBuilder coreDamageType)
         {
             _coreDamageType = coreDamageType;
             _statFactory = statFactory;
