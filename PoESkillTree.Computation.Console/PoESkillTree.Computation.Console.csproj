@@ -67,7 +67,6 @@
     <Compile Include="Builders\ChargeTypeBuilderStub.cs" />
     <Compile Include="Builders\ConditionBuilderStub.cs" />
     <Compile Include="Builders\DamageStatBuilderStub.cs" />
-    <Compile Include="Builders\DamageTypeBuilderStub.cs" />
     <Compile Include="Builders\EffectBuilderStub.cs" />
     <Compile Include="Builders\FlagStatBuilderStub.cs" />
     <Compile Include="Builders\GroundEffectBuilderStub.cs" />

@@ -147,16 +147,6 @@ namespace PoESkillTree.Computation.Console.Builders
                 ConstructFlag, operand1, operand2, operand3, stringRepresentation);
         }
 
-        public static IFlagStatBuilder CreateFlagStat<T1, T2>(
-            [CanBeNull] T1 operand1, [ItemCanBeNull] IEnumerable<T2> operand2,
-            Func<T1, IEnumerable<T2>, string> stringRepresentation)
-            where T1 : class, IResolvable<T1>
-            where T2 : class, IResolvable<T2>
-        {
-            return (IFlagStatBuilder) Create<IStatBuilder, T1, T2>(
-                ConstructFlag, operand1, operand2, stringRepresentation);
-        }
-
         private static IFlagStatBuilder ConstructFlag(string stringRepresentation, Resolver<IStatBuilder> resolver)
         {
             return new FlagStatBuilderStub(stringRepresentation, resolver);
