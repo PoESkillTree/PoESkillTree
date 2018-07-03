@@ -23,7 +23,8 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         IStatBuilder InstancesOn(IEntityBuilder target);
 
         /// <summary>
-        /// Returns a flag stat representing whether <paramref name="type"/> can inflict this ailment.
+        /// Returns a flag stat representing whether all of the damage types in <paramref name="type"/> can inflict
+        /// this ailment.
         /// </summary>
         IFlagStatBuilder Source(IDamageTypeBuilder type);
 

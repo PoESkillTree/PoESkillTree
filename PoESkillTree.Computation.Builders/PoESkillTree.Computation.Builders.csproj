@@ -83,6 +83,7 @@
     <Compile Include="Damage\DamageTypeBuilders.cs" />
     <Compile Include="Damage\DamageTypeCoreStatBuilder.cs" />
     <Compile Include="Damage\ICoreDamageTypeBuilder.cs" />
+    <Compile Include="Effects\AilmentBuilder.cs" />
     <Compile Include="Effects\EffectBuilder.cs" />
     <Compile Include="Entities\EntityBuilders.cs" />
     <Compile Include="Equipment\EquipmentBuilder.cs" />

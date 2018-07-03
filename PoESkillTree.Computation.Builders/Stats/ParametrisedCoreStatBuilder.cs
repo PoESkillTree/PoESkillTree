@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -10,14 +11,20 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 namespace PoESkillTree.Computation.Builders.Stats
 {
     internal class ParametrisedCoreStatBuilder<TParameter> : ICoreStatBuilder
-        where TParameter: IResolvable<TParameter>
+        where TParameter : IResolvable<TParameter>
     {
         private readonly ICoreStatBuilder _inner;
         private readonly TParameter _parameter;
-        private readonly Func<TParameter, IStat, IStat> _statConverter;
+        private readonly Func<TParameter, IStat, IEnumerable<IStat>> _statConverter;
 
         public ParametrisedCoreStatBuilder(ICoreStatBuilder inner, TParameter parameter,
             Func<TParameter, IStat, IStat> statConverter)
+            : this(inner, parameter, (ps, s) => new[] { statConverter(ps, s) })
+        {
+        }
+
+        public ParametrisedCoreStatBuilder(ICoreStatBuilder inner, TParameter parameter,
+            Func<TParameter, IStat, IEnumerable<IStat>> statConverter)
         {
             _inner = inner;
             _parameter = parameter;
@@ -32,13 +39,13 @@ namespace PoESkillTree.Computation.Builders.Stats
             new ParametrisedCoreStatBuilder<TParameter>(_inner.WithEntity(entityBuilder), _parameter, _statConverter);
 
         public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
-            new ParametrisedCoreStatBuilder<TParameter>(_inner, _parameter, _statConverter.AndThen(statConverter));
+            new ParametrisedCoreStatBuilder<TParameter>(_inner, _parameter,
+                _statConverter.AndThen(ss => ss.Select(statConverter)));
 
         public IEnumerable<StatBuilderResult>
             Build(BuildParameters parameters, ModifierSource originalModifierSource) =>
-            ApplyParameterToInner().Build(parameters, originalModifierSource);
-
-        private ICoreStatBuilder ApplyParameterToInner() =>
-            _inner.WithStatConverter(s => _statConverter(_parameter, s));
+            from result in _inner.Build(parameters, originalModifierSource)
+            let stats = result.Stats.SelectMany(s => _statConverter(_parameter, s))
+            select new StatBuilderResult(stats.ToList(), result.ModifierSource, result.ValueConverter);
     }
 }
