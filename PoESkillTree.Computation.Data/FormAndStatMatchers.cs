@@ -237,7 +237,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 // stun
                 { "(you )?cannot be stunned", TotalOverride, 100, Effect.Stun.Avoidance },
-                { "your damaging hits always stun enemies", TotalOverride, 100, Effect.Stun.ChanceOn(Enemy), Hit.On() },
+                { "your damaging hits always stun enemies", TotalOverride, 100, Effect.Stun.ChanceOn(Enemy), Hit.On },
                 // item quantity/quality
                 // range and area of effect
                 // other

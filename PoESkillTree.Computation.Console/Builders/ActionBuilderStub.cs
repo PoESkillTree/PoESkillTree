@@ -4,7 +4,6 @@ using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
@@ -59,13 +58,9 @@ namespace PoESkillTree.Computation.Console.Builders
                 Source, $"{this} (with {damageType} damage)", (_, context) => Resolve(context));
         }
 
-        public IConditionBuilder On() =>
+        public IConditionBuilder On =>
             CreateCondition(This,
                 a => $"On {a} by {a.Source}");
-
-        public IConditionBuilder On(IKeywordBuilder withKeyword) =>
-            CreateCondition(This, withKeyword,
-                (a, keyword) => $"On {keyword} {a} by {a.Source}");
 
         public IConditionBuilder InPastXSeconds(IValueBuilder seconds) =>
             CreateCondition(This, seconds,
@@ -131,6 +126,7 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IActionBuilder Shatter => Create("Shatter");
         public IActionBuilder ConsumeCorpse => Create("Consuming Corpses");
+        public IActionBuilder Stun => Create("Stun");
 
         public IActionBuilder SpendMana(IValueBuilder amount) =>
             Create<IActionBuilder, IValueBuilder>(ActionBuilderStub.BySelf, amount, o => $"Spending {o} Mana");

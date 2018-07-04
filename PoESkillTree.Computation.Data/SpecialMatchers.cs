@@ -168,16 +168,16 @@ namespace PoESkillTree.Computation.Data
                 {
                     "your hits permanently intimidate enemies that are on full life",
                     TotalOverride, 1, Buff.Intimidate.On(Enemy),
-                    Hit.On().And(Life.For(Enemy).IsFull)
+                    Hit.On.And(Life.For(Enemy).IsFull)
                 },
                 // - Inquisitor
                 {
                     "critical strikes ignore enemy monster elemental resistances",
-                    TotalOverride, 1, Elemental.IgnoreResistance, CriticalStrike.On()
+                    TotalOverride, 1, Elemental.IgnoreResistance, CriticalStrike.On
                 },
                 {
                     "non-critical strikes penetrate #% of enemy elemental resistances",
-                    BaseAdd, Value, Elemental.Penetration, Action.NonCriticalStrike.On()
+                    BaseAdd, Value, Elemental.Penetration, Action.NonCriticalStrike.On
                 },
                 // - Hierophant
                 {
@@ -208,7 +208,7 @@ namespace PoESkillTree.Computation.Data
                     // Ascendant
                     "your critical strikes with attacks maim enemies",
                     TotalOverride, 1, Buff.Maim.On(Enemy),
-                    CriticalStrike.On(Keyword.Attack)
+                    And(CriticalStrike.On, With(Keyword.Attack))
                 },
                 // - Trickster
                 {

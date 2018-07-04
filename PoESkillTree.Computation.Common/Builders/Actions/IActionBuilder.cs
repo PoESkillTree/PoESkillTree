@@ -2,7 +2,6 @@
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Common.Builders.Actions
@@ -32,13 +31,7 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         /// <summary>
         /// Returns a condition that is satisfied when this action is executed.
         /// </summary>
-        IConditionBuilder On();
-
-        /// <summary>
-        /// Returns a condition that is satisfied when this action is executed by a skill having the keyword
-        /// <paramref name="withKeyword"/>.
-        /// </summary>
-        IConditionBuilder On(IKeywordBuilder withKeyword);
+        IConditionBuilder On { get; }
 
         // seconds for all actions need to be specified by the user
         /// <summary>
