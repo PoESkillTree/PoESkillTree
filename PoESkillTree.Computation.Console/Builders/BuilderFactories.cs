@@ -1,10 +1,8 @@
-﻿using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Common.Builders.Actions;
+﻿using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Charges;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Skills;
-using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
@@ -33,7 +31,5 @@ namespace PoESkillTree.Computation.Console.Builders
         public override IEffectBuilders EffectBuilders => new EffectBuildersStub();
 
         public override ISkillBuilders SkillBuilders => new SkillBuildersStub();
-
-        public override IStatBuilders StatBuilders => new StatBuilders();
     }
 }

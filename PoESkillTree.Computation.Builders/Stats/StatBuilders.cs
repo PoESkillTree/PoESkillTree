@@ -4,9 +4,9 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
-    public class StatBuilders : StatBuildersBase, IStatBuilders
+    internal class StatBuilders : StatBuildersBase, IStatBuilders
     {
-        public StatBuilders() : base(new StatFactory())
+        public StatBuilders(IStatFactory statFactory) : base(statFactory)
         {
         }
 

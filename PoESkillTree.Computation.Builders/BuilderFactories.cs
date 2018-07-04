@@ -33,6 +33,7 @@ namespace PoESkillTree.Computation.Builders
             EquipmentBuilders = new EquipmentBuilders(statFactory);
             FormBuilders = new FormBuilders();
             KeywordBuilders = new KeywordBuilders();
+            StatBuilders = new StatBuilders(statFactory);
             ValueBuilders = new ValueBuilders();
             ItemSlotBuilders = new ItemSlotBuilders();
         }
@@ -48,7 +49,7 @@ namespace PoESkillTree.Computation.Builders
         public IFormBuilders FormBuilders { get; }
         public IKeywordBuilders KeywordBuilders { get; }
         public abstract ISkillBuilders SkillBuilders { get; }
-        public abstract IStatBuilders StatBuilders { get; }
+        public IStatBuilders StatBuilders { get; }
         public IValueBuilders ValueBuilders { get; }
         public IItemSlotBuilders ItemSlotBuilders { get; }
     }
