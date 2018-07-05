@@ -1,5 +1,6 @@
 ﻿using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Damage;
+using PoESkillTree.Computation.Builders.Effects;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Equipment;
 using PoESkillTree.Computation.Builders.Forms;
@@ -29,6 +30,7 @@ namespace PoESkillTree.Computation.Builders
             var statFactory = new StatFactory();
             ConditionBuilders = new ConditionBuilders(statFactory);
             DamageTypeBuilders = new DamageTypeBuilders(statFactory);
+            EffectBuilders = new EffectBuilders(statFactory);
             EntityBuilders = new EntityBuilders(statFactory);
             EquipmentBuilders = new EquipmentBuilders(statFactory);
             FormBuilders = new FormBuilders();
@@ -43,7 +45,7 @@ namespace PoESkillTree.Computation.Builders
         public abstract IChargeTypeBuilders ChargeTypeBuilders { get; }
         public IConditionBuilders ConditionBuilders { get; }
         public IDamageTypeBuilders DamageTypeBuilders { get; }
-        public abstract IEffectBuilders EffectBuilders { get; }
+        public IEffectBuilders EffectBuilders { get; }
         public IEntityBuilders EntityBuilders { get; }
         public IEquipmentBuilders EquipmentBuilders { get; }
         public IFormBuilders FormBuilders { get; }

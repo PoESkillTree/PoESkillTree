@@ -27,14 +27,14 @@ namespace PoESkillTree.Computation.Builders.Effects
 
         public IConditionBuilder IsOn(IEntityBuilder target) => On(target).IsSet;
 
-        public IStatBuilder Duration =>
+        public virtual IStatBuilder Duration =>
             FromIdentity($"{Identity}.Duration", typeof(double));
 
         public IStatBuilder AddStat(IStatBuilder stat) =>
             stat.WithCondition(IsOn(new ModifierSourceEntityBuilder()));
     }
 
-    public class KnockbackEffectBuilder : EffectBuilder, IKnockbackEffectBuilder
+    internal class KnockbackEffectBuilder : EffectBuilder, IKnockbackEffectBuilder
     {
         public KnockbackEffectBuilder(IStatFactory statFactory) : base(statFactory, "Knockback")
         {
@@ -54,7 +54,7 @@ namespace PoESkillTree.Computation.Builders.Effects
             FromIdentity($"{Identity}.ChanceToAvoid", typeof(int));
     }
 
-    public class GroundEffectBuilders : IGroundEffectBuilders
+    internal class GroundEffectBuilders : IGroundEffectBuilders
     {
         public GroundEffectBuilders(IStatFactory statFactory)
         {
@@ -62,5 +62,23 @@ namespace PoESkillTree.Computation.Builders.Effects
         }
 
         public IEffectBuilder Consecrated { get; }
+    }
+
+    internal class StunEffectBuilder : AvoidableEffectBuilder, IStunEffectBuilder
+    {
+        public StunEffectBuilder(IStatFactory statFactory) : base(statFactory, "Stun")
+        {
+        }
+
+        public override IStatBuilder Duration =>
+            DamageRelatedFromIdentity($"{Identity}.Duration", typeof(double)).WithHits;
+
+        public IDamageRelatedStatBuilder Threshold =>
+            DamageRelatedFromIdentity($"{Identity}.ThresholdModifier", typeof(double)).WithHits;
+
+        public IStatBuilder Recovery => FromIdentity($"{Identity}.RecoveryModifier", typeof(double));
+
+        public IStatBuilder ChanceToAvoidInterruptionWhileCasting =>
+            FromIdentity($"{Identity}.ChanceToAvoidInterruptionWhileCasting", typeof(int));
     }
 }

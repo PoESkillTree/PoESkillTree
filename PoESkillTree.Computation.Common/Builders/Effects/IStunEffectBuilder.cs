@@ -10,7 +10,7 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         /// <summary>
         /// Gets a stat representing the stun threshold.
         /// </summary>
-        IStatBuilder Threshold { get; }
+        IDamageRelatedStatBuilder Threshold { get; }
 
         /// <summary>
         /// Gets a stat representing the stun recovery.

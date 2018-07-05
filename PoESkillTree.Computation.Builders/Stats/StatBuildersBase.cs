@@ -23,6 +23,9 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         protected IDamageRelatedStatBuilder DamageRelatedFromIdentity(
             Type dataType, [CallerMemberName] string identity = null) =>
+            DamageRelatedFromIdentity(identity, dataType);
+
+        protected IDamageRelatedStatBuilder DamageRelatedFromIdentity(string identity, Type dataType) =>
             StatBuilderUtils.DamageRelatedFromIdentity(StatFactory, identity, dataType);
     }
 }

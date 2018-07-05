@@ -39,18 +39,6 @@ namespace PoESkillTree.Computation.Console.Builders
     }
 
 
-    public class EffectBuildersStub : IEffectBuilders
-    {
-        public IStunEffectBuilder Stun => new StunEffectBuilderStub();
-
-        public IKnockbackEffectBuilder Knockback => new KnockbackEffectBuilderStub();
-
-        public IAilmentBuilders Ailment => new AilmentBuildersStub();
-
-        public IGroundEffectBuilders Ground => new GroundEffectBuildersStub();
-    }
-
-
     public abstract class AvoidableEffectBuilderStub : EffectBuilderStub, IAvoidableEffectBuilder
     {
         protected AvoidableEffectBuilderStub(string stringRepresentation, Resolver<IEffectBuilder> resolver) 
@@ -59,16 +47,5 @@ namespace PoESkillTree.Computation.Console.Builders
         }
 
         public IStatBuilder Avoidance => CreateStat(This, o => $"{o} avoidance");
-    }
-
-
-    public class KnockbackEffectBuilderStub : EffectBuilderStub, IKnockbackEffectBuilder
-    {
-        public KnockbackEffectBuilderStub() 
-            : base("Knockback", (current, _) => current)
-        {
-        }
-
-        public IStatBuilder Distance => CreateStat(This, o => $"{o} distance");
     }
 }
