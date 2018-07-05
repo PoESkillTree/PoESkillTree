@@ -1,5 +1,4 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
@@ -20,13 +19,6 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         /// Returns an action identical to this action but executed by <paramref name="source"/>.
         /// </summary>
         IActionBuilder By(IEntityBuilder source);
-
-        /// <summary>
-        /// Returns an action identical to this action but with the additional condition that the action must occur
-        /// by damage of type <paramref name="damageType"/> (by damage of any type in <paramref name="damageType"/> if
-        /// it is a collection).
-        /// </summary>
-        IActionBuilder With(IDamageTypeBuilder damageType);
 
         /// <summary>
         /// Returns a condition that is satisfied when this action is executed.

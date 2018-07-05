@@ -223,7 +223,7 @@ namespace PoESkillTree.Computation.Data
             foreach (var type in ElementalDamageTypes)
             {
                 IConditionBuilder EnemyHitBy(IDamageTypeBuilder damageType) =>
-                    Hit.With(damageType).InPastXSeconds(ValueFactory.Create(5));
+                    Action.HitWith(damageType).InPastXSeconds(ValueFactory.Create(5));
 
                 yield return (BaseAdd, Values[0], type.Resistance.For(Enemy), EnemyHitBy(type));
                 yield return (BaseSubtract, Values[1], type.Resistance.For(Enemy),
@@ -273,7 +273,7 @@ namespace PoESkillTree.Computation.Data
         {
             foreach (var type in ElementalDamageTypes)
             {
-                yield return (PercentIncrease, Value, type.Damage, Hit.With(type).By(Enemy).Recently);
+                yield return (PercentIncrease, Value, type.Damage, Action.HitWith(type).By(Enemy).Recently);
             }
         }
 
@@ -282,7 +282,7 @@ namespace PoESkillTree.Computation.Data
         {
             foreach (var type in ElementalDamageTypes)
             {
-                yield return (PercentReduce, Value, type.Damage.Taken, Hit.With(type).By(Enemy).Recently);
+                yield return (PercentReduce, Value, type.Damage.Taken, Action.HitWith(type).By(Enemy).Recently);
             }
         }
     }

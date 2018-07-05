@@ -1,4 +1,5 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Common.Builders.Actions
@@ -22,6 +23,11 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         /// Gets an action that occurs when Self hits any entity.
         /// </summary>
         IActionBuilder Hit { get; }
+
+        /// <summary>
+        /// Gets an action that occurs when Self hits any entity with any of the given damage types.
+        /// </summary>
+        IActionBuilder HitWith(IDamageTypeBuilder damageType);
 
         /// <summary>
         /// Gets an action that occurs when Self savagely hits any entity.

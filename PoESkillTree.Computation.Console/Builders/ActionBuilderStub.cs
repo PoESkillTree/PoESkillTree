@@ -43,21 +43,6 @@ namespace PoESkillTree.Computation.Console.Builders
             return new ActionBuilderStub(source, ToString(), (_, context) => Resolve(context));
         }
 
-        public IActionBuilder With(IDamageTypeBuilder damageType)
-        {
-            IActionBuilder Resolve(ResolveContext context)
-            {
-                var inner = _resolver(this, context);
-                return new ActionBuilderStub(
-                    inner.Source,
-                    $"{inner} (with {damageType.Resolve(context)} damage)",
-                    (c, _) => c);
-            }
-
-            return new ActionBuilderStub(
-                Source, $"{this} (with {damageType} damage)", (_, context) => Resolve(context));
-        }
-
         public IConditionBuilder On =>
             CreateCondition(This,
                 a => $"On {a} by {a.Source}");
@@ -117,6 +102,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IBlockActionBuilder Block => new BlockActionBuilderStub();
 
         public IActionBuilder Hit => Create("Hit");
+
+        public IActionBuilder HitWith(IDamageTypeBuilder damageType) => Create($"Hit with {damageType}");
 
         public IActionBuilder SavageHit => Create("Savage Hit");
 
