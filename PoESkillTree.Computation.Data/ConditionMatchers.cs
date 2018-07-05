@@ -30,16 +30,9 @@ namespace PoESkillTree.Computation.Data
             {
                 // actions
                 // - generic
-                { "on ({ActionMatchers})", Reference.AsAction.On },
                 { "if you've ({ActionMatchers}) recently", Reference.AsAction.Recently },
                 { "if you haven't ({ActionMatchers}) recently", Not(Reference.AsAction.Recently) },
-                {
-                    "when you ({ActionMatchers}) a rare or unique enemy",
-                    And(Reference.AsAction.On, Enemy.IsRareOrUnique)
-                },
                 // - kill
-                { "on ({KeywordMatchers}) kill", And(CriticalStrike.On, With(Reference.AsKeyword)) },
-                { "when you kill an enemy,", Kill.On },
                 {
                     "if you've killed a maimed enemy recently",
                     And(Kill.Recently, Buff.Maim.IsOn(Enemy))
@@ -56,37 +49,23 @@ namespace PoESkillTree.Computation.Data
                     "if you or your totems have killed recently",
                     Or(Kill.Recently, Kill.By(Entity.Totem).Recently)
                 },
-                { "if you or your totems kill an enemy", Or(Kill.On, Kill.By(Entity.Totem).On) },
-                // - block
-                { "when they block", Block.On },
-                { "when you block", Block.On },
-                {
-                    "if you've blocked a hit from a unique enemy recently",
-                    And(Block.Recently, Enemy.IsUnique)
-                },
                 // - hit
-                { "from hits", Hit.On },
-                { "when you are hit", Hit.By(Enemy).On },
                 { "if you've been hit recently", Hit.By(Enemy).Recently },
                 { "if you haven't been hit recently", Not(Hit.By(Enemy).Recently) },
                 { "if you were damaged by a hit recently", Hit.By(Enemy).Recently },
                 { "if you've taken no damage from hits recently", Not(Hit.By(Enemy).Recently) },
-                { "for each enemy hit by your attacks", And(Hit.On, With(Keyword.Attack)) },
                 // - other
+                { "if you've blocked a hit from a unique enemy recently", And(Block.Recently, Enemy.IsUnique) },
                 { "if you've taken a savage hit recently", Action.SavageHit.By(Enemy).Recently },
-                { "critical strikes have a", CriticalStrike.On },
-                { "when you deal a critical strike", CriticalStrike.On },
                 { "if you've crit in the past # seconds", CriticalStrike.InPastXSeconds(Value) },
                 { "if you've shattered an enemy recently", Action.Shatter.Recently },
-                { "when you stun an enemy", Action.Stun.On },
-                { "after spending # mana", Action.SpendMana(Value).On },
                 { "if you have consumed a corpse recently", Action.ConsumeCorpse.Recently },
-                { "when you gain a ({ChargeTypeMatchers})", Reference.AsChargeType.GainAction.On },
                 // damage
                 // - by item tag
                 { "with weapons", AttackWith(Tags.Weapon) },
                 { "weapon", AttackWith(Tags.Weapon) },
                 { "with bows", AttackWith(Tags.Bow) },
+                { "with a bow", And(With(Keyword.Attack), MainHand.Has(Tags.Bow)) },
                 { "bow", AttackWith(Tags.Bow) },
                 { "with swords", AttackWith(Tags.Sword) },
                 { "with claws", AttackWith(Tags.Claw) },
@@ -96,6 +75,7 @@ namespace PoESkillTree.Computation.Data
                 { "wand", AttackWith(Tags.Wand) },
                 { "with axes", AttackWith(Tags.Axe) },
                 { "with staves", AttackWith(Tags.Staff) },
+                { "with a staff", And(With(Keyword.Attack), MainHand.Has(Tags.Staff)) },
                 {
                     "with maces",
                     (Or(MainHandAttackWith(Tags.Mace), MainHandAttackWith(Tags.Sceptre)),
@@ -116,14 +96,6 @@ namespace PoESkillTree.Computation.Data
                 { "with the main-hand weapon", Condition.AttackWith(AttackDamageHand.MainHand) },
                 { "with main hand", Condition.AttackWith(AttackDamageHand.MainHand) },
                 { "with off hand", Condition.AttackWith(AttackDamageHand.OffHand) },
-                // action and damage combinations
-                // - by item tag
-                { "if you get a critical strike with a bow", And(CriticalStrike.On, MainHandAttackWith(Tags.Bow)) },
-                {
-                    "if you get a critical strike with a staff",
-                    And(CriticalStrike.On, MainHandAttackWith(Tags.Staff))
-                },
-                // - by item slot
                 // equipment
                 { "while unarmed", Not(MainHand.HasItem) },
                 { "while wielding a staff", MainHand.Has(Tags.Staff) },
@@ -204,7 +176,7 @@ namespace PoESkillTree.Computation.Data
                 // skills
                 // - by keyword
                 { "vaal( skill)?", With(Keyword.Vaal) },
-                { "({KeywordMatchers})", With(Reference.AsKeyword) },
+                { "(?<!your |a )({KeywordMatchers})", With(Reference.AsKeyword) },
                 {
                     "({KeywordMatchers}) and ({KeywordMatchers})",
                     Or(With(References[0].AsKeyword), With(References[1].AsKeyword))
@@ -240,7 +212,6 @@ namespace PoESkillTree.Computation.Data
                 { "of totem skills that cast an aura", With(Keyword.Totem, Keyword.Aura) },
                 { "while you have a totem", Totems.Any(s => s.HasInstance) },
                 { "if you've summoned a totem recently", Totems.Cast.Recently },
-                { "when you place a totem", Totems.Cast.On },
                 // minions
                 { "minions", For(Entity.Minion) },
                 { "minions (deal|have|gain)", For(Entity.Minion) },
@@ -259,17 +230,8 @@ namespace PoESkillTree.Computation.Data
                 { "during any flask effect", Flask.IsAnyActive },
                 // other
                 { "have against targets they pierce", Projectile.PierceCount.Value >= 1 },
-                { "(you )?gain", Condition.True }, // may be left over at the end, does nothing
                 // unique
                 { "while leeching", Condition.Unique("Are you leeching?") },
-                {
-                    "when your trap is triggered by an enemy",
-                    Action.Unique("When your Trap is triggered by an Enemy").On
-                },
-                {
-                    "when your mine is detonated targeting an enemy",
-                    Action.Unique("When your Mine is detonated targeting an Enemy").On
-                },
                 {
                     "if you've killed an enemy affected by your damage over time recently",
                     Condition.Unique("Have you recently killed an Enemy affected by your Damage over Time?")

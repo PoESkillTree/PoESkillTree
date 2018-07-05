@@ -195,7 +195,7 @@ namespace PoESkillTree.Computation.Data
                 { "effect of non-curse auras you cast", Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).Effect },
                 { "chance to fortify", Buff.Fortify.ChanceOn(Self) },
                 { "effect of fortify on you", Buff.Fortify.Effect },
-                { "chance for attacks to maim on hit", Buff.Maim.ChanceOn(Enemy), And(Hit.On, With(Keyword.Attack)) },
+                { "chance for attacks to maim on hit", Buff.Maim.ChanceOn(Enemy), With(Keyword.Attack) },
                 { "chance to taunt", Buff.Taunt.ChanceOn(Enemy) },
                 { "chance to blind enemies", Buff.Blind.ChanceOn(Enemy) },
                 // ailments

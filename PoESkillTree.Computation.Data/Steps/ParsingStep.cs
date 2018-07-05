@@ -22,6 +22,7 @@
         GeneralStat,
         DamageStat,
         PoolStat,
-        Condition
+        Condition,
+        ActionCondition,
     }
 }

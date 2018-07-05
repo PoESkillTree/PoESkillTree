@@ -21,7 +21,8 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         IActionBuilder By(IEntityBuilder source);
 
         /// <summary>
-        /// Returns a condition that is satisfied when this action is executed.
+        /// Returns a condition that is satisfied when this action is executed. Needs to be applied after all other
+        /// conditions.
         /// </summary>
         IConditionBuilder On { get; }
 

@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionConditionMatchers.cs" />
     <Compile Include="ActionMatchers.cs" />
     <Compile Include="AilmentMatchers.cs" />
     <Compile Include="Base\ReferencedMatchersBase.cs" />

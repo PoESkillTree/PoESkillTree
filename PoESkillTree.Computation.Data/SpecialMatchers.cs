@@ -168,7 +168,13 @@ namespace PoESkillTree.Computation.Data
                 {
                     "your hits permanently intimidate enemies that are on full life",
                     TotalOverride, 1, Buff.Intimidate.On(Enemy),
-                    Hit.On.And(Life.For(Enemy).IsFull)
+                    Action.Unique("On Hit against a full life Enemy").On
+                },
+                // - Slayer
+                { 
+                    "your damaging hits always stun enemies that are on full life", 
+                    TotalOverride, 100, Effect.Stun.ChanceOn(Enemy),
+                    Action.Unique("On damaging Hit against a full life Enemy").On
                 },
                 // - Inquisitor
                 {
@@ -208,7 +214,7 @@ namespace PoESkillTree.Computation.Data
                     // Ascendant
                     "your critical strikes with attacks maim enemies",
                     TotalOverride, 1, Buff.Maim.On(Enemy),
-                    And(CriticalStrike.On, With(Keyword.Attack))
+                    And(With(Keyword.Attack), CriticalStrike.On)
                 },
                 // - Trickster
                 {

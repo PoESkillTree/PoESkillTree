@@ -65,6 +65,7 @@ namespace PoESkillTree.Computation.Data
                 new DamageStatMatchers(_builderFactories, _matchContexts, modifierBuilder),
                 new PoolStatMatchers(_builderFactories, _matchContexts, modifierBuilder),
                 new ConditionMatchers(_builderFactories, _matchContexts, modifierBuilder),
+                new ActionConditionMatchers(_builderFactories, _matchContexts, modifierBuilder),
             };
 
         private IReadOnlyList<IReferencedMatchers> CreateReferencedMatchers(IReferencedMatchers skillMatchers) =>
