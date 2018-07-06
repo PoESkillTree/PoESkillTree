@@ -161,6 +161,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
         }
 
         private static ActionBuilder CreateSut(IEntityBuilder entity = null) =>
-            new ActionBuilder(new StatFactory(), "test", entity ?? new ModifierSourceEntityBuilder());
+            new ActionBuilder(new StatFactory(), new ConstantStringBuilder("test"),
+                entity ?? new ModifierSourceEntityBuilder());
     }
 }

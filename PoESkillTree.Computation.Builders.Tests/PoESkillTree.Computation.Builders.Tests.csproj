@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\ActionBuildersTest.cs" />
     <Compile Include="Actions\ActionBuilderTest.cs" />
     <Compile Include="Behaviors\AilmentDamageBaseValueTest.cs" />
     <Compile Include="Behaviors\AilmentDamageIncreaseMoreValueTest.cs" />

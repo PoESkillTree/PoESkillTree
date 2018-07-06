@@ -18,21 +18,21 @@ namespace PoESkillTree.Computation.Builders.Actions
         private const int RecentlySeconds = 4;
 
         protected IStatFactory StatFactory { get; }
-        protected string Identity { get; }
+        private readonly IStringBuilder _identity;
         private readonly IEntityBuilder _entity;
 
-        public ActionBuilder(IStatFactory statFactory, string identity, IEntityBuilder entity)
+        public ActionBuilder(IStatFactory statFactory, IStringBuilder identity, IEntityBuilder entity)
         {
             StatFactory = statFactory;
-            Identity = identity;
+            _identity = identity;
             _entity = entity;
         }
 
         public IActionBuilder Resolve(ResolveContext context) =>
-            new ActionBuilder(StatFactory, Identity, _entity.Resolve(context));
+            new ActionBuilder(StatFactory, _identity.Resolve(context), _entity.Resolve(context));
 
         public IActionBuilder By(IEntityBuilder source) =>
-            new ActionBuilder(StatFactory, Identity, source);
+            new ActionBuilder(StatFactory, _identity, source);
 
         public IConditionBuilder On =>
             new StatConvertingConditionBuilder(b => new StatBuilder(StatFactory,
@@ -41,7 +41,7 @@ namespace PoESkillTree.Computation.Builders.Actions
 
         private IEnumerable<IStat> ConvertStat(IEntityBuilder entity, IStat stat) =>
             from e in entity.Build(stat.Entity)
-            let identity = $"On.{Identity}.By.{e}"
+            let identity = $"On.{BuildIdentity()}.By.{e}"
             select StatFactory.CopyWithSuffix(stat, identity, stat.DataType, true);
 
         public IConditionBuilder InPastXSeconds(IValueBuilder seconds) =>
@@ -77,12 +77,14 @@ namespace PoESkillTree.Computation.Builders.Actions
             new StatValue(BuildRecentOccurencesStat(BuildEntity(parameters, _entity)));
 
         private IStat BuildLastOccurenceStat(Entity entity) =>
-            StatFactory.FromIdentity($"{Identity}.LastOccurence", entity, typeof(int), true);
+            StatFactory.FromIdentity($"{BuildIdentity()}.LastOccurence", entity, typeof(int), true);
 
         private IStat BuildRecentOccurencesStat(Entity entity) =>
-            StatFactory.FromIdentity($"{Identity}.RecentOccurences", entity, typeof(int), true);
+            StatFactory.FromIdentity($"{BuildIdentity()}.RecentOccurences", entity, typeof(int), true);
 
         private static Entity BuildEntity(BuildParameters parameters, IEntityBuilder entity) =>
             entity.Build(parameters.ModifierSourceEntity).Single();
+
+        protected string BuildIdentity() => _identity.Build();
     }
 }
