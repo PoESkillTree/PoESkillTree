@@ -109,6 +109,18 @@ namespace PoESkillTree.Computation.Common
         public static bool operator >=(NodeValue left, double right) =>
             left.Minimum >= right;
 
+        public static bool operator <(double left, NodeValue right) =>
+            left < right.Minimum;
+
+        public static bool operator >(double left, NodeValue right) =>
+            left > right.Maximum;
+
+        public static bool operator <=(double left, NodeValue right) =>
+            left <= right.Minimum;
+
+        public static bool operator >=(double left, NodeValue right) =>
+            left >= right.Maximum;
+
 
         /// <summary>
         /// Returns a value that is at least <paramref name="minValue"/> and at most <paramref name="maxValue"/>.

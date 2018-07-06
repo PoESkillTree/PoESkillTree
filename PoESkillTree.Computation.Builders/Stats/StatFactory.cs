@@ -23,8 +23,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat FromIdentity(string identity, Entity entity, Type dataType, bool isExplicitlyRegistered = false) =>
             GetOrAdd(identity, entity, dataType, isExplicitlyRegistered);
 
-        public IStat CopyWithSuffix(IStat stat, string identitySuffix, Type dataType) =>
-            CopyWithSuffix(stat, identitySuffix, dataType, null);
+        public IStat CopyWithSuffix(IStat stat, string identitySuffix, Type dataType,
+            bool isExplicitlyRegistered = false) =>
+            CopyWithSuffix(stat, identitySuffix, dataType, null, isExplicitlyRegistered);
 
         public IStat ChanceToDouble(IStat stat) =>
             CopyWithSuffix(stat, nameof(ChanceToDouble), typeof(int));

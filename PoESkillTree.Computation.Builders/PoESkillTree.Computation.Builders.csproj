@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\ActionBuilder.cs" />
     <Compile Include="Behaviors\AilmentDamageBaseValue.cs" />
     <Compile Include="Behaviors\AilmentDamageIncreaseMoreValue.cs" />
     <Compile Include="Behaviors\AilmentDamageUncappedSubtotalValue.cs" />
