@@ -17,32 +17,32 @@ namespace PoESkillTree.Computation.Builders.Actions
     {
         private const int RecentlySeconds = 4;
 
-        private readonly IStatFactory _statFactory;
-        private readonly string _identity;
+        protected IStatFactory StatFactory { get; }
+        protected string Identity { get; }
         private readonly IEntityBuilder _entity;
 
         public ActionBuilder(IStatFactory statFactory, string identity, IEntityBuilder entity)
         {
-            _statFactory = statFactory;
-            _identity = identity;
+            StatFactory = statFactory;
+            Identity = identity;
             _entity = entity;
         }
 
         public IActionBuilder Resolve(ResolveContext context) =>
-            new ActionBuilder(_statFactory, _identity, _entity.Resolve(context));
+            new ActionBuilder(StatFactory, Identity, _entity.Resolve(context));
 
         public IActionBuilder By(IEntityBuilder source) =>
-            new ActionBuilder(_statFactory, _identity, source);
+            new ActionBuilder(StatFactory, Identity, source);
 
         public IConditionBuilder On =>
-            new StatConvertingConditionBuilder(b => new StatBuilder(_statFactory,
+            new StatConvertingConditionBuilder(b => new StatBuilder(StatFactory,
                 new ParametrisedCoreStatBuilder<IEntityBuilder>(new StatBuilderAdapter(b), _entity,
                     (e, s) => ConvertStat(e, s))));
 
         private IEnumerable<IStat> ConvertStat(IEntityBuilder entity, IStat stat) =>
             from e in entity.Build(stat.Entity)
-            let identity = $"On.{_identity}.By.{e}"
-            select _statFactory.CopyWithSuffix(stat, identity, stat.DataType, true);
+            let identity = $"On.{Identity}.By.{e}"
+            select StatFactory.CopyWithSuffix(stat, identity, stat.DataType, true);
 
         public IConditionBuilder InPastXSeconds(IValueBuilder seconds) =>
             new ValueConditionBuilder<IEntityBuilder, IValueBuilder>(BuildInPastXSecondsValue, _entity, seconds);
@@ -77,10 +77,10 @@ namespace PoESkillTree.Computation.Builders.Actions
             new StatValue(BuildRecentOccurencesStat(BuildEntity(parameters, _entity)));
 
         private IStat BuildLastOccurenceStat(Entity entity) =>
-            _statFactory.FromIdentity($"{_identity}.LastOccurence", entity, typeof(int), true);
+            StatFactory.FromIdentity($"{Identity}.LastOccurence", entity, typeof(int), true);
 
         private IStat BuildRecentOccurencesStat(Entity entity) =>
-            _statFactory.FromIdentity($"{_identity}.RecentOccurences", entity, typeof(int), true);
+            StatFactory.FromIdentity($"{Identity}.RecentOccurences", entity, typeof(int), true);
 
         private static Entity BuildEntity(BuildParameters parameters, IEntityBuilder entity) =>
             entity.Build(parameters.ModifierSourceEntity).Single();
