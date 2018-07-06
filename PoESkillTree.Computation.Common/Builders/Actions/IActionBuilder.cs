@@ -11,11 +11,6 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
     public interface IActionBuilder : IResolvable<IActionBuilder>
     {
         /// <summary>
-        /// The entity executing the action.
-        /// </summary>
-        IEntityBuilder Source { get; }
-
-        /// <summary>
         /// Returns an action identical to this action but executed by <paramref name="source"/>.
         /// </summary>
         IActionBuilder By(IEntityBuilder source);

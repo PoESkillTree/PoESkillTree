@@ -18,14 +18,14 @@ namespace PoESkillTree.Computation.Console.Builders
             Resolver<IActionBuilder> resolver)
             : base(stringRepresentation)
         {
-            Source = source;
+            _source = source;
             _resolver = resolver;
         }
 
         public static IActionBuilder BySelf(string stringRepresentation, Resolver<IActionBuilder> resolver) =>
             new ActionBuilderStub(new ModifierSourceEntityBuilder(), stringRepresentation, resolver);
 
-        public IEntityBuilder Source { get; }
+        private readonly IEntityBuilder _source;
 
         private IActionBuilder This => this;
 
@@ -45,18 +45,18 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IConditionBuilder On =>
             CreateCondition(This,
-                a => $"On {a} by {a.Source}");
+                a => $"On {a} by {((ActionBuilderStub) a)._source}");
 
         public IConditionBuilder InPastXSeconds(IValueBuilder seconds) =>
             CreateCondition(This, seconds,
-                (a, o) => $"If any {a} in the past {o} by {a.Source}");
+                (a, o) => $"If any {a} in the past {o} by {((ActionBuilderStub) a)._source}");
 
         public IConditionBuilder Recently =>
             CreateCondition(This,
-                a => $"If any {a} recently by {a.Source}");
+                a => $"If any {a} recently by {((ActionBuilderStub) a)._source}");
 
         public ValueBuilder CountRecently =>
-            new ValueBuilder(CreateValue($"Number of {this} recently by {Source}"));
+            new ValueBuilder(CreateValue($"Number of {this} recently by {_source}"));
 
         public IActionBuilder Resolve(ResolveContext context) => _resolver(this, context);
     }
