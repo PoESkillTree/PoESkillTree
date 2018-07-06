@@ -181,6 +181,30 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             keywordMock.Verify(b => b.Resolve(context));
         }
 
+        [Test]
+        public void DamageTakenConvertsStatsCorrectly()
+        {
+            var expected = Mock.Of<IDamageStatBuilder>();
+            var inStat = Mock.Of<IDamageStatBuilder>(b => b.Taken == expected);
+            var sut = CreateSut();
+
+            var statConverter = sut.DamageTaken.Build().StatConverter;
+            var actual = statConverter(inStat);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void DamageTakenThrowsWhenConvertingNonDamagedStat()
+        {
+            var inStat = Mock.Of<IDamageRelatedStatBuilder>();
+            var sut = CreateSut();
+
+            var statConverter = sut.DamageTaken.Build().StatConverter;
+
+            Assert.Throws<ParseException>(() => statConverter(inStat));
+        }
+
         private static ISkillBuilder MockSkillBuilder(int skillId = 42) =>
             Mock.Of<ISkillBuilder>(b => b.SkillId == new ValueBuilder(new ValueBuilderImpl(skillId)));
 

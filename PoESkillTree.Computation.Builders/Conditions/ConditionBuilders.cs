@@ -42,6 +42,11 @@ namespace PoESkillTree.Computation.Builders.Conditions
             Func<IDamageRelatedStatBuilder, IStatBuilder> then, Func<IStatBuilder, IStatBuilder> otherwise) =>
             s => s is IDamageRelatedStatBuilder d ? then(d) : otherwise(s);
 
+        public IConditionBuilder DamageTaken =>
+            new StatConvertingConditionBuilder(s => s is IDamageStatBuilder d
+                ? d.Taken
+                : throw new ParseException($"IConditionBuilders.{nameof(DamageTaken)} only works with damage stats"));
+
         public IConditionBuilder For(IEntityBuilder entity) =>
             new StatConvertingConditionBuilder<IEntityBuilder>((s, e) => s.For(e), entity);
 

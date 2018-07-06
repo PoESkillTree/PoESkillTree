@@ -26,6 +26,8 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
         /// </summary>
         IConditionBuilder AttackWith(AttackDamageHand hand);
 
+        IConditionBuilder DamageTaken { get; }
+
         /// <summary>
         /// Returns a condition that is satisfied if Self is equivalent to <paramref name="entity"/>.
         /// If this method is not called when creating a modifier, modifiers only apply

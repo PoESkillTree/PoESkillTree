@@ -136,11 +136,12 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             var (form, formValueConverter) = entry.Form.Build();
             var buildParameters = new BuildParameters(modifierSourceEntity, form);
 
-            var statBuilder = modifier.StatConverter(entry.Stat);
+            var statBuilder = entry.Stat;
             if (entry.Condition != null)
             {
                 statBuilder = statBuilder.WithCondition(entry.Condition);
             }
+            statBuilder = modifier.StatConverter(statBuilder);
             var statBuilderResults = statBuilder.Build(buildParameters, originalSource);
 
             foreach (var (stats, source, statValueConverter) in statBuilderResults)

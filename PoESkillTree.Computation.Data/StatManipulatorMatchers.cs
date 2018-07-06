@@ -2,7 +2,6 @@
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
-using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -40,14 +39,8 @@ namespace PoESkillTree.Computation.Data
                     "every # seconds, gain (?<inner>.*) for # seconds",
                     s => Buff.Temporary(Values.First, Values.Last, s), "${inner}"
                 },
-                { "nearby enemies (have|deal)", s => Buff.Aura(s, Enemy) },
-                { "nearby enemies take", (IDamageStatBuilder s) => Buff.Aura(s.Taken, Enemy) },
-                { "enemies near your totems (have|deal)", s => Buff.Aura(s, Enemy).For(Entity.Totem) },
-                {
-                    "enemies near your totems take",
-                    (IDamageStatBuilder s) => Buff.Aura(s.Taken, Enemy).For(Entity.Totem)
-                },
-                { "(?<condition>enemies you .+) take (?<inner>.*)", (IDamageStatBuilder s) => s.Taken, "${condition} ${inner}" },
+                { "nearby enemies( have| deal)?", s => Buff.Aura(s, Enemy) },
+                { "enemies near your totems( have| deal)?", s => Buff.Aura(s, Enemy).For(Entity.Totem) },
                 { "for # seconds", s => s.WithCondition(Action.InPastXSeconds(Value)) },
             };
     }

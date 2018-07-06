@@ -96,6 +96,8 @@ namespace PoESkillTree.Computation.Data
                 { "with the main-hand weapon", Condition.AttackWith(AttackDamageHand.MainHand) },
                 { "with main hand", Condition.AttackWith(AttackDamageHand.MainHand) },
                 { "with off hand", Condition.AttackWith(AttackDamageHand.OffHand) },
+                // - taken
+                { "take", Condition.DamageTaken },
                 // equipment
                 { "while unarmed", Not(MainHand.HasItem) },
                 { "while wielding a staff", MainHand.Has(Tags.Staff) },

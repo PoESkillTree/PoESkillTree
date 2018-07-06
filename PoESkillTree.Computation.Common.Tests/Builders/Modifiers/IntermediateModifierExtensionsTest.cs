@@ -275,11 +275,10 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             IValueBuilder StatConvertValue(IValueBuilder v) =>
                 v == convertedValueBuilder ? statConvertedValueBuilder : v;
             var statBuilderResult = new StatBuilderResult(stats, source, StatConvertValue);
-            var statBuilderWithCondition =
-                Mock.Of<IStatBuilder>(b => b.Build(buildParameters, Source) == new[] { statBuilderResult });
-            var statBuilder = Mock.Of<IStatBuilder>();
             var convertedStatBuilder =
-                Mock.Of<IStatBuilder>(s => s.WithCondition(conditionBuilder) == statBuilderWithCondition);
+                Mock.Of<IStatBuilder>(b => b.Build(buildParameters, Source) == new[] { statBuilderResult });
+            var statBuilderWithCondition = Mock.Of<IStatBuilder>();
+            var statBuilder = Mock.Of<IStatBuilder>(s => s.WithCondition(conditionBuilder) == statBuilderWithCondition);
 
             IValueBuilder FormConvertValue(IValueBuilder v) =>
                 v == statConvertedValueBuilder ? formConvertedValueBuilder : v;
@@ -295,7 +294,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
 
             var input = CreateResult(
                 new[] { entry },
-                s => s == statBuilder ? convertedStatBuilder : s,
+                s => s == statBuilderWithCondition ? convertedStatBuilder : s,
                 v => v == valueBuilder ? convertedValueBuilder : v);
 
             var result = input.Build(Source, Entity);
