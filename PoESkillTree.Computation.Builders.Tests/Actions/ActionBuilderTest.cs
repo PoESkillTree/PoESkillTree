@@ -9,6 +9,7 @@ using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Entities;
+using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Tests.Actions
 {
@@ -105,7 +106,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
             var lastOccurenceStat = new Stat("test.LastOccurence", Entity.Enemy);
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(lastOccurenceStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(1));
-            var sut = CreateSut(unresolvedEntityBuilder);
+            var sut = CreateSut(entity: unresolvedEntityBuilder);
 
             var result = sut.Resolve(null).Recently.Build();
             var actual = result.Value.Calculate(context);
@@ -116,12 +117,14 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
         [Test]
         public void RecentlyResolveBuildsToCorrectResult()
         {
+            var identityBuilder = new ConstantStringBuilder("test");
+            var unresolvedIdentityBuilder = Mock.Of<IStringBuilder>(b => b.Resolve(null) == identityBuilder);
             var entityBuilder = new EntityBuilder(Entity.Enemy);
             var unresolvedEntityBuilder = Mock.Of<IEntityBuilder>(b => b.Resolve(null) == entityBuilder);
             var lastOccurenceStat = new Stat("test.LastOccurence", Entity.Enemy);
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(lastOccurenceStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(1));
-            var sut = CreateSut(unresolvedEntityBuilder);
+            var sut = CreateSut(unresolvedIdentityBuilder, unresolvedEntityBuilder);
 
             var result = sut.Recently.Resolve(null).Build();
             var actual = result.Value.Calculate(context);
@@ -148,7 +151,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
         public void ByOnBuildsToCorrectResult()
         {
             var entityBuilder = new EntityBuilder(Entity.Enemy, Entity.Totem);
-            var inputStatBuilder = StatBuilderUtils.FromIdentity(new StatFactory(), "stat", null);
+            var inputStatBuilder = InputStat;
             var sut = CreateSut();
 
             var result = sut.By(entityBuilder).On.Build();
@@ -160,8 +163,23 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
             Assert.AreEqual("Character.stat.On.test.By.Totem", stats[1].ToString());
         }
 
-        private static ActionBuilder CreateSut(IEntityBuilder entity = null) =>
-            new ActionBuilder(new StatFactory(), new ConstantStringBuilder("test"),
+        [Test]
+        public void OnResolvesIdentity()
+        {
+            var identityBuilder = new ConstantStringBuilder("test");
+            var unresolvedBuilder = Mock.Of<IStringBuilder>(b => b.Resolve(null) == identityBuilder);
+            var sut = CreateSut(unresolvedBuilder);
+
+            var result = sut.On.Resolve(null).Build();
+            var stat = result.StatConverter(InputStat).BuildToSingleStat();
+
+            Assert.AreEqual("stat.On.test.By.Character", stat.Identity);
+        }
+
+        private static ActionBuilder CreateSut(IStringBuilder identity = null, IEntityBuilder entity = null) =>
+            new ActionBuilder(new StatFactory(), identity ?? new ConstantStringBuilder("test"),
                 entity ?? new ModifierSourceEntityBuilder());
+
+        private static IFlagStatBuilder InputStat => StatBuilderUtils.FromIdentity(new StatFactory(), "stat", null);
     }
 }

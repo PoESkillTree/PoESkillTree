@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -232,8 +233,9 @@ namespace PoESkillTree.Computation.Data
                     Action.HitWith(damageType).InPastXSeconds(ValueFactory.Create(5));
 
                 yield return (BaseAdd, Values[0], type.Resistance.For(Enemy), EnemyHitBy(type));
+                var otherTypes = ElementalDamageTypes.Except(type);
                 yield return (BaseSubtract, Values[1], type.Resistance.For(Enemy),
-                    And(Not(EnemyHitBy(type)), EnemyHitBy(Elemental.Except(type))));
+                    And(Not(EnemyHitBy(type)), otherTypes.Select(EnemyHitBy).ToArray()));
             }
         }
 

@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         IActionBuilder Hit { get; }
 
         /// <summary>
-        /// Gets an action that occurs when Self hits any entity with any of the given damage types.
+        /// Gets an action that occurs when Self hits any entity with the single given damage types.
         /// </summary>
         IActionBuilder HitWith(IDamageTypeBuilder damageType);
 

@@ -17,8 +17,8 @@ namespace PoESkillTree.Computation.Builders.Actions
                 .WithHits;
 
         public IDamageRelatedStatBuilder Multiplier =>
-            StatBuilderUtils.DamageRelatedFromIdentity(StatFactory, $"{BuildIdentity()}.Multiplier", typeof(double))
-                .WithHitsAndAilments;
+            StatBuilderUtils.DamageRelatedFromIdentity(StatFactory, $"{BuildIdentity()}.Multiplier", typeof(double),
+                    canApplyToAilmentDamage: true);
 
         public IStatBuilder ExtraDamageTaken =>
             StatBuilderUtils.FromIdentity(StatFactory, $"{BuildIdentity()}.ExtraDamageTaken", typeof(int));

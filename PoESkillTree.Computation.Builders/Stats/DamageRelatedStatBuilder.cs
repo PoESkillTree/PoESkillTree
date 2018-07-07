@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EnumsNET;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -13,6 +14,8 @@ namespace PoESkillTree.Computation.Builders.Stats
 {
     public class DamageRelatedStatBuilder : StatBuilder, IDamageRelatedStatBuilder
     {
+        private static readonly IReadOnlyList<Form> AllForms = Enums.GetValues<Form>().ToList();
+
         protected DamageStatConcretizer StatConcretizer { get; }
         private readonly Func<IStat, IEnumerable<IStat>> _statConverter;
 
@@ -75,15 +78,21 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
             if (!StatConcretizer.CanApplyToSkillDamage)
                 throw new ParseException("Can't apply skill damage modifiers to this stat to other damage sources");
-            return With(s => forms.Select(f => StatFactory.ApplyModifiersToSkillDamage(s, source, f)));
+            return InternalApplyModifiersToSkills(source, forms.Any() ? forms : AllForms);
         }
+
+        private IStatBuilder InternalApplyModifiersToSkills(DamageSource source, IReadOnlyList<Form> forms) =>
+            With(s => forms.Select(f => StatFactory.ApplyModifiersToSkillDamage(s, source, f)));
 
         public IStatBuilder ApplyModifiersToAilments(params Form[] forms)
         {
             if (!StatConcretizer.CanApplyToAilmentDamage)
                 throw new ParseException("Can't apply skill damage modifiers to this stat to ailments");
-            return With(s => forms.Select(f => StatFactory.ApplyModifiersToAilmentDamage(s, f)));
+            return InternalApplyModifiersToAilments(forms.Any() ? forms : AllForms);
         }
+
+        private IStatBuilder InternalApplyModifiersToAilments(IReadOnlyList<Form> forms) =>
+            With(s => forms.Select(f => StatFactory.ApplyModifiersToAilmentDamage(s, f)));
 
         public override IEnumerable<StatBuilderResult>
             Build(BuildParameters parameters, ModifierSource originalModifierSource) =>

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -97,6 +98,7 @@ namespace PoESkillTree.Computation.Data
                 // - block
                 { "chance to block", Block.AttackChance },
                 { "block chance", Block.AttackChance },
+                { "block chance with staves", Block.AttackChance, MainHand.Has(Tags.Staff) },
                 { "maximum block chance", Block.AttackChance.Maximum },
                 { "chance to block spells", Block.SpellChance },
                 { "chance to block spells and attacks", ApplyOnce(Block.SpellChance, Block.AttackChance) },

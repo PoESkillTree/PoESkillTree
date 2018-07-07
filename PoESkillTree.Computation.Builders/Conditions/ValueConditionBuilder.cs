@@ -1,4 +1,5 @@
 ﻿using System;
+using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
@@ -7,8 +8,26 @@ using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Builders.Conditions
 {
-    public static class ValueConditionBuilder
+    public class ValueConditionBuilder : ConditionBuilderBase
     {
+        private readonly Func<BuildParameters, IValue> _buildValue;
+        private readonly Func<ResolveContext, IConditionBuilder> _resolver;
+
+        public ValueConditionBuilder(
+            Func<BuildParameters, IValue> buildValue, Func<ResolveContext, IConditionBuilder> resolver)
+        {
+            _buildValue = buildValue;
+            _resolver = resolver;
+        }
+
+        public override IConditionBuilder Resolve(ResolveContext context) => _resolver(context);
+
+        public override IConditionBuilder Not =>
+            new ValueConditionBuilder(ps => new NotValue(_buildValue(ps)), _resolver.AndThen(b => b.Not));
+
+        public override ConditionBuilderResult Build(BuildParameters parameters) =>
+            new ConditionBuilderResult(_buildValue(parameters));
+
         public static IConditionBuilder Create(
             IValueBuilder operand,
             Func<NodeValue?, bool> calculate,

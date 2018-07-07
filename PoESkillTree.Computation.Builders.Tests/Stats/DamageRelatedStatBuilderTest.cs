@@ -326,6 +326,27 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.Throws<ParseException>(() => value.Build());
         }
 
+        [Test]
+        public void ApplyModifiersToBuildsToCorrectResultsWithNoFormsGiven()
+        {
+            var sut = CreateSut().With(DamageSource.Spell);
+
+            var stats = BuildToStats(sut.ApplyModifiersToSkills(DamageSource.Attack), 1);
+
+            Assert.That(stats, Has.Exactly(Enums.GetMemberCount<Form>()).Items);
+        }
+
+        [Test]
+        public void ApplyModifiersToAilmentsBuildsToCorrectResultsWithNoFormsGiven()
+        {
+            var sut = CreateSut().With(DamageSource.Spell);
+
+            var stats = BuildToStats(sut.ApplyModifiersToAilments(), 1);
+
+            Assert.That(stats, Has.Exactly(Enums.GetMemberCount<Form>()).Items);
+        }
+
+
         private static IDamageRelatedStatBuilder CreateSut(string identity = "test",
             bool canApplyToSkillDamage = true, bool canApplyToAilmentDamage = true) =>
             StatBuilderUtils.DamageRelatedFromIdentity(new StatFactory(), identity, typeof(double),

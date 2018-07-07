@@ -36,21 +36,22 @@ namespace PoESkillTree.Computation.Builders.Actions
 
         public IConditionBuilder On =>
             new StatConvertingConditionBuilder(b => new StatBuilder(StatFactory,
-                new ParametrisedCoreStatBuilder<IEntityBuilder>(new StatBuilderAdapter(b), _entity,
-                    (e, s) => ConvertStat(e, s))));
+                new ParametrisedCoreStatBuilder<IStringBuilder, IEntityBuilder>(
+                    new StatBuilderAdapter(b), _identity, _entity, ConvertStat)),
+                c => Resolve(c).On);
 
-        private IEnumerable<IStat> ConvertStat(IEntityBuilder entity, IStat stat) =>
+        private IEnumerable<IStat> ConvertStat(IStringBuilder identity, IEntityBuilder entity, IStat stat) =>
             from e in entity.Build(stat.Entity)
-            let identity = $"On.{BuildIdentity()}.By.{e}"
-            select StatFactory.CopyWithSuffix(stat, identity, stat.DataType, true);
+            let i = $"On.{identity.Build()}.By.{e}"
+            select StatFactory.CopyWithSuffix(stat, i, stat.DataType, true);
 
         public IConditionBuilder InPastXSeconds(IValueBuilder seconds) =>
-            new ValueConditionBuilder<IEntityBuilder, IValueBuilder>(BuildInPastXSecondsValue, _entity, seconds);
+            new ValueConditionBuilder(ps => BuildInPastXSecondsValue(ps, seconds),
+                c => Resolve(c).InPastXSeconds(seconds.Resolve(c)));
 
-        private IValue BuildInPastXSecondsValue(BuildParameters parameters, IEntityBuilder entity,
-            IValueBuilder seconds)
+        private IValue BuildInPastXSecondsValue(BuildParameters parameters, IValueBuilder seconds)
         {
-            var builtEntity = BuildEntity(parameters, entity);
+            var builtEntity = BuildEntity(parameters, _entity);
             var recentOccurencesStat = BuildRecentOccurencesStat(builtEntity);
             var lastOccurenceStat = BuildLastOccurenceStat(builtEntity);
             var secondsValue = seconds.Build(parameters);
