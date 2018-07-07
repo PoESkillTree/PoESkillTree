@@ -65,6 +65,7 @@
     <Compile Include="Builders\Buffs\IBuffBuilderCollection.cs" />
     <Compile Include="Builders\Buffs\IBuffBuilders.cs" />
     <Compile Include="Builders\BuildParameters.cs" />
+    <Compile Include="Builders\Charges\ChargeType.cs" />
     <Compile Include="Builders\Charges\IChargeTypeBuilder.cs" />
     <Compile Include="Builders\Charges\IChargeTypeBuilders.cs" />
     <Compile Include="Builders\Conditions\ConditionBuilderResult.cs" />

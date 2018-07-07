@@ -1,5 +1,4 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Buffs;
-using PoESkillTree.Computation.Common.Builders.Charges;
 using PoESkillTree.Computation.Common.Builders.Skills;
 
 namespace PoESkillTree.Computation.Console.Builders
@@ -21,8 +20,6 @@ namespace PoESkillTree.Computation.Console.Builders
     public class BuilderFactories : Computation.Builders.BuilderFactories
     {
         public override IBuffBuilders BuffBuilders => new BuffBuildersStub();
-
-        public override IChargeTypeBuilders ChargeTypeBuilders => new ChargeTypeBuildersStub();
 
         public override ISkillBuilders SkillBuilders => new SkillBuildersStub();
     }

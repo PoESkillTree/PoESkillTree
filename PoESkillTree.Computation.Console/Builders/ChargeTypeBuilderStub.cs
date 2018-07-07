@@ -29,17 +29,4 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IChargeTypeBuilder Resolve(ResolveContext context) => _resolver(this, context);
     }
-
-
-    public class ChargeTypeBuildersStub : IChargeTypeBuilders
-    {
-        private static IChargeTypeBuilder Create(string stringRepresentation) =>
-            new ChargeTypeBuilderStub(stringRepresentation, (current, _) => current);
-
-        public IChargeTypeBuilder Endurance => Create("Endurance Charge");
-
-        public IChargeTypeBuilder Frenzy => Create("Frenzy Charge");
-
-        public IChargeTypeBuilder Power => Create("Power Charge");
-    }
 }

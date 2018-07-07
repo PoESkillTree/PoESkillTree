@@ -1,4 +1,5 @@
 ﻿using PoESkillTree.Computation.Builders.Actions;
+using PoESkillTree.Computation.Builders.Charges;
 using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Damage;
 using PoESkillTree.Computation.Builders.Effects;
@@ -30,6 +31,7 @@ namespace PoESkillTree.Computation.Builders
         {
             var statFactory = new StatFactory();
             ActionBuilders = new ActionBuilders(statFactory);
+            ChargeTypeBuilders = new ChargeTypeBuilders(statFactory);
             ConditionBuilders = new ConditionBuilders(statFactory);
             DamageTypeBuilders = new DamageTypeBuilders(statFactory);
             EffectBuilders = new EffectBuilders(statFactory);
@@ -44,7 +46,7 @@ namespace PoESkillTree.Computation.Builders
 
         public IActionBuilders ActionBuilders { get; }
         public abstract IBuffBuilders BuffBuilders { get; }
-        public abstract IChargeTypeBuilders ChargeTypeBuilders { get; }
+        public IChargeTypeBuilders ChargeTypeBuilders { get; }
         public IConditionBuilders ConditionBuilders { get; }
         public IDamageTypeBuilders DamageTypeBuilders { get; }
         public IEffectBuilders EffectBuilders { get; }

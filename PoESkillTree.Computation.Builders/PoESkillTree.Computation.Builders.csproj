@@ -76,6 +76,8 @@
     <Compile Include="Behaviors\SkillConversionUncappedSubtotalValue.cs" />
     <Compile Include="Behaviors\ValueTransformation.cs" />
     <Compile Include="BuilderFactories.cs" />
+    <Compile Include="Charges\ChargeTypeBuilder.cs" />
+    <Compile Include="Charges\ChargeTypeBuilders.cs" />
     <Compile Include="Conditions\AndCompositeConditionBuilder.cs" />
     <Compile Include="Conditions\ConditionBuilderBase.cs" />
     <Compile Include="Conditions\ConditionBuilders.cs" />
