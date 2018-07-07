@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Damage;
+using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Resolving;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Actions;
@@ -51,8 +53,15 @@ namespace PoESkillTree.Computation.Console.Builders
         public IItemSlotBuilder AsItemSlot =>
             new UnresolvedItemSlotBuilder($"{this}.AsItemSlot", context => Resolve(context).AsItemSlot);
 
-        public IActionBuilder AsAction =>
-            ActionBuilderStub.BySelf($"{this}.AsAction", (_, context) => Resolve(context).AsAction);
+        public IActionBuilder AsAction
+        {
+            get
+            {
+                var core = new UnresolvedCoreBuilder<string>($"{this}.AsAction", 
+                    context => new ProxyActionBuilder(Resolve(context).AsAction));
+                return new ActionBuilder(_statFactory, core, new ModifierSourceEntityBuilder());
+            }
+        }
 
         public IStatBuilder AsStat =>
             new StatBuilderStub($"{this}.AsStat", (_, context) => Resolve(context).AsStat);

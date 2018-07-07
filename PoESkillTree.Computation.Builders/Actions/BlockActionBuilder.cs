@@ -13,12 +13,12 @@ namespace PoESkillTree.Computation.Builders.Actions
         }
 
         public IStatBuilder Recovery =>
-            StatBuilderUtils.FromIdentity(StatFactory, $"{BuildIdentity()}.Recovery", typeof(int));
+            StatBuilderUtils.FromIdentity(StatFactory, $"{Build()}.Recovery", typeof(int));
 
         public IStatBuilder AttackChance =>
-            StatBuilderUtils.FromIdentity(StatFactory, $"{BuildIdentity()}.ChanceAgainstAttacks", typeof(int));
+            StatBuilderUtils.FromIdentity(StatFactory, $"{Build()}.ChanceAgainstAttacks", typeof(int));
 
         public IStatBuilder SpellChance =>
-            StatBuilderUtils.FromIdentity(StatFactory, $"{BuildIdentity()}.ChanceAgainstSpells", typeof(int));
+            StatBuilderUtils.FromIdentity(StatFactory, $"{Build()}.ChanceAgainstSpells", typeof(int));
     }
 }

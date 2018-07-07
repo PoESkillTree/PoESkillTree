@@ -37,5 +37,10 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         /// Returns a value indicating how often this action was executed in the past 4 seconds
         /// </summary>
         ValueBuilder CountRecently { get; }
+
+        /// <summary>
+        /// Builds the represented action.
+        /// </summary>
+        string Build();
     }
 }

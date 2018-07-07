@@ -78,14 +78,14 @@ namespace PoESkillTree.Computation.Builders.Actions
             new StatValue(BuildRecentOccurencesStat(BuildEntity(parameters, _entity)));
 
         private IStat BuildLastOccurenceStat(Entity entity) =>
-            StatFactory.FromIdentity($"{BuildIdentity()}.LastOccurence", entity, typeof(int), true);
+            StatFactory.FromIdentity($"{Build()}.LastOccurence", entity, typeof(int), true);
 
         private IStat BuildRecentOccurencesStat(Entity entity) =>
-            StatFactory.FromIdentity($"{BuildIdentity()}.RecentOccurences", entity, typeof(int), true);
+            StatFactory.FromIdentity($"{Build()}.RecentOccurences", entity, typeof(int), true);
 
         private static Entity BuildEntity(BuildParameters parameters, IEntityBuilder entity) =>
             entity.Build(parameters.ModifierSourceEntity).Single();
 
-        protected string BuildIdentity() => _identity.Build();
+        public string Build() => _identity.Build();
     }
 }

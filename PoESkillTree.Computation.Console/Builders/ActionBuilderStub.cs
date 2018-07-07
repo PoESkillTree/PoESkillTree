@@ -56,6 +56,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public ValueBuilder CountRecently =>
             new ValueBuilder(CreateValue($"Number of {this} recently"));
 
+        public string Build() => ToString();
+
         public IActionBuilder Resolve(ResolveContext context) => _resolver(this, context);
     }
 }
