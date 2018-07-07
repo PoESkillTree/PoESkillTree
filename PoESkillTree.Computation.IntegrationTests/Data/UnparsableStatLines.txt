@@ -21,7 +21,6 @@ Enemies Become Chilled as they Unfreeze
 Light Radius is based on Energy Shield instead of Life
 Traps cannot be Damaged for 5 seconds after being Thrown
 Mines cannot be Damaged for 5 seconds after being Placed
-25% chance to Steal Power, Frenzy, and Endurance Charges on Hit with Claws
 Enemies Cannot Leech Life From You
 Hits that Stun Enemies have Culling Strike
 removes bleeding when you use a flask

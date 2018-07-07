@@ -149,6 +149,12 @@ namespace PoESkillTree.Computation.Data
                     "chance to (gain|grant) an? ({ChargeTypeMatchers}) and an? ({ChargeTypeMatchers})",
                     References[0].AsChargeType.ChanceToGain, References[1].AsChargeType.ChanceToGain
                 },
+                {
+                    // Isn't really useful to parse, but if not, no damage related stat would be parsed, leading to
+                    // a ParseException because this is "on Hit with Claws".
+                    "chance to steal power, frenzy, and endurance charges",
+                    Charge.ChanceToSteal
+                },
                 { "({ChargeTypeMatchers}) duration", Reference.AsChargeType.Duration },
                 {
                     "endurance, frenzy and power charge duration",

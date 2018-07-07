@@ -203,9 +203,9 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             var stat = Mock.Of<IStatBuilder>();
             var form1 = Mock.Of<IFormBuilder>();
             var leftAndRightCondition = Mock.Of<IConditionBuilder>();
-            var leftCondition = Mock.Of<IConditionBuilder>();
-            var rightCondition = Mock.Of<IConditionBuilder>(
-                c => c.And(leftCondition) == leftAndRightCondition);
+            var rightCondition = Mock.Of<IConditionBuilder>();
+            var leftCondition = Mock.Of<IConditionBuilder>(
+                c => c.And(rightCondition) == leftAndRightCondition);
             var entry0 = EmptyEntry
                 .WithCondition(leftCondition);
             var entry1 = EmptyEntry
@@ -226,6 +226,24 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             var result = left.MergeWith(right);
 
             CollectionAssert.AreEqual(expected, result.Entries);
+        }
+
+        [Test]
+        public void MergeWithDoesNotSwapLeftAndRight()
+        {
+            var expected = Mock.Of<IConditionBuilder>();
+            var rightCondition = Mock.Of<IConditionBuilder>();
+            var leftCondition = Mock.Of<IConditionBuilder>(
+                c => c.And(rightCondition) == expected);
+            var leftEntry = EmptyEntry.WithCondition(leftCondition);
+            var left = CreateResult(leftEntry, leftEntry);
+            var rightEntry = EmptyEntry.WithCondition(rightCondition);
+            var right = CreateResult(rightEntry);
+
+            var result = left.MergeWith(right);
+            var actual = result.Entries[0].Condition;
+
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]

@@ -42,25 +42,26 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             IValueBuilder ConvertValue(IValueBuilder v) =>
                 right.ValueConverter(left.ValueConverter(v));
 
-            if (left.Entries.Count > right.Entries.Count)
-            {
-                (left, right) = (right, left);
-            }
-
-            if (left.Entries.Count > 1)
+            if (left.Entries.Count > 1 && right.Entries.Count > 1)
             {
                 // TODO This simple solution will fail once there are stat lines that parse into multiple stats
                 //      and have a condition requiring splitting by main hand and off hand.
                 throw new ArgumentException("There may only be one IIntermediateModifier with multiple entries");
             }
 
+            IEnumerable<IntermediateModifierEntry> entries;
             if (left.Entries.IsEmpty())
             {
-                return new SimpleIntermediateModifier(right.Entries, ConvertStat, ConvertValue);
+                entries = right.Entries;
             }
-
-            var leftEntry = left.Entries.Single();
-            IEnumerable<IntermediateModifierEntry> entries = right.Entries.Select(r => Merge(leftEntry, r));
+            else if (right.Entries.IsEmpty())
+            {
+                entries = left.Entries;
+            }
+            else
+            {
+                entries = left.Entries.SelectMany(l => right.Entries.Select(r => Merge(l, r)));
+            }
             return new SimpleIntermediateModifier(entries.ToList(), ConvertStat, ConvertValue);
         }
 
@@ -114,7 +115,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
         /// <see cref="IIntermediateModifier.ValueConverter"/> to each value. Entries with null form, stat or value
         /// are ignored.
         /// </summary>
-        public static IReadOnlyList<Modifier> Build(this IIntermediateModifier modifier, 
+        public static IReadOnlyList<Modifier> Build(this IIntermediateModifier modifier,
             ModifierSource originalSource, Entity modifierSourceEntity)
         {
             return (
