@@ -6,6 +6,7 @@ using PoESkillTree.Computation.Builders.Damage;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Builders.Values;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
@@ -50,6 +51,19 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
             var stat = result.StatConverter(InputStat).BuildToSingleStat();
 
             Assert.AreEqual("stat.On.Spend42Mana.By.Character", stat.Identity);
+        }
+
+        [Test]
+        public void SpendManaOnBuildThrowsWithNonConstantValue()
+        {
+            var stat = new Stat("");
+            var valueBuilder = new ValueBuilderImpl(new StatValue(stat));
+            var sut = CreateSut();
+
+            var result = sut.SpendMana(valueBuilder).On.Build();
+            var statBuilder = result.StatConverter(InputStat);
+
+            Assert.Throws<ParseException>(() => statBuilder.Build(default, null).Consume());
         }
 
         private static ActionBuilders CreateSut() =>

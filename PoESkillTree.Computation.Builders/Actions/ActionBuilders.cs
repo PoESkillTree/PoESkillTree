@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -62,7 +64,7 @@ namespace PoESkillTree.Computation.Builders.Actions
         }
 
         private static string BuildSpendManaIdentity(IValueBuilder builder) =>
-            $"Spend{builder.Build(default).Calculate(null)}Mana";
+            $"Spend{builder.Build(default).Calculate(new ThrowingContext())}Mana";
 
         public IActionBuilder Unique(string description) => Create(description);
 
@@ -73,5 +75,21 @@ namespace PoESkillTree.Computation.Builders.Actions
 
         private IActionBuilder Create(string identity) =>
             new ActionBuilder(_statFactory, new ConstantStringBuilder(identity), _entity);
+
+        private class ThrowingContext : IValueCalculationContext
+        {
+            public IEnumerable<PathDefinition> GetPaths(IStat stat) =>
+                throw CreateException();
+
+            public NodeValue? GetValue(IStat stat, NodeType nodeType, PathDefinition path) =>
+                throw CreateException();
+
+            public IEnumerable<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths) =>
+                throw CreateException();
+
+            private static ParseException CreateException() =>
+                new ParseException(
+                    $"Value builders passed to {nameof(SpendMana)} must not use the IValueCalculationContext");
+        }
     }
 }
