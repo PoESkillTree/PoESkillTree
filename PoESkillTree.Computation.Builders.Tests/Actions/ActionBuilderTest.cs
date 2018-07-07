@@ -144,7 +144,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
 
             Assert.IsTrue(result.HasStatConverter);
             Assert.IsFalse(result.HasValue);
-            Assert.AreEqual("stat.On.test.By.Character", stat.Identity);
+            Assert.AreEqual("stat.On(test).By(Character)", stat.Identity);
         }
 
         [Test]
@@ -159,8 +159,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
             IReadOnlyList<IStat> stats = statBuilder.Build(default, null).Single().Stats;
 
             Assert.That(stats, Has.Exactly(2).Items);
-            Assert.AreEqual("Character.stat.On.test.By.Enemy", stats[0].ToString());
-            Assert.AreEqual("Character.stat.On.test.By.Totem", stats[1].ToString());
+            Assert.AreEqual("Character.stat.On(test).By(Enemy)", stats[0].ToString());
+            Assert.AreEqual("Character.stat.On(test).By(Totem)", stats[1].ToString());
         }
 
         [Test]
@@ -173,7 +173,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
             var result = sut.On.Resolve(null).Build();
             var stat = result.StatConverter(InputStat).BuildToSingleStat();
 
-            Assert.AreEqual("stat.On.test.By.Character", stat.Identity);
+            Assert.AreEqual("stat.On(test).By(Character)", stat.Identity);
         }
 
         private static ActionBuilder CreateSut(ICoreBuilder<string> identity = null, IEntityBuilder entity = null) =>

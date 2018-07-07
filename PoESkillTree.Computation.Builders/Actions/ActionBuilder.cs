@@ -42,7 +42,7 @@ namespace PoESkillTree.Computation.Builders.Actions
 
         private IEnumerable<IStat> ConvertStat(ICoreBuilder<string> identity, IEntityBuilder entity, IStat stat) =>
             from e in entity.Build(stat.Entity)
-            let i = $"On.{identity.Build()}.By.{e}"
+            let i = $"On({identity.Build()}).By({e})"
             select StatFactory.CopyWithSuffix(stat, i, stat.DataType, true);
 
         public IConditionBuilder InPastXSeconds(IValueBuilder seconds) =>

@@ -25,7 +25,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
             var result = sut.HitWith(damageTypeBuilder).On.Build();
             var stat = result.StatConverter(InputStat).BuildToSingleStat();
 
-            Assert.AreEqual("stat.On.FireHit.By.Character", stat.Identity);
+            Assert.AreEqual("stat.On(FireHit).By(Character)", stat.Identity);
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
             var result = sut.SpendMana(valueBuilder).On.Build();
             var stat = result.StatConverter(InputStat).BuildToSingleStat();
 
-            Assert.AreEqual("stat.On.Spend42Mana.By.Character", stat.Identity);
+            Assert.AreEqual("stat.On(Spend42Mana).By(Character)", stat.Identity);
         }
 
         [Test]
