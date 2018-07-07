@@ -32,6 +32,12 @@ namespace PoESkillTree.Computation.Data
                 // - generic
                 { "if you've ({ActionMatchers}) recently", Reference.AsAction.Recently },
                 { "if you haven't ({ActionMatchers}) recently", Not(Reference.AsAction.Recently) },
+                { "for # seconds on ({ActionMatchers})", Reference.AsAction.InPastXSeconds(Value) },
+                { 
+                    "for # seconds when you ({ActionMatchers}) a rare or unique enemy",
+                    And(Enemy.IsRareOrUnique, Reference.AsAction.InPastXSeconds(Value))
+                },
+                { "when you ({ActionMatchers}) an enemy, for # seconds", Reference.AsAction.InPastXSeconds(Value) },
                 // - kill
                 {
                     "if you've killed a maimed enemy recently",
@@ -54,11 +60,14 @@ namespace PoESkillTree.Computation.Data
                 { "if you haven't been hit recently", Not(Hit.By(Enemy).Recently) },
                 { "if you were damaged by a hit recently", Hit.By(Enemy).Recently },
                 { "if you've taken no damage from hits recently", Not(Hit.By(Enemy).Recently) },
-                // - other
-                { "if you've blocked a hit from a unique enemy recently", And(Block.Recently, Enemy.IsUnique) },
-                { "if you've taken a savage hit recently", Action.SavageHit.By(Enemy).Recently },
+                // - critical strike
                 { "if you've crit in the past # seconds", CriticalStrike.InPastXSeconds(Value) },
+                // - block
+                { "if you've blocked a hit from a unique enemy recently", And(Block.Recently, Enemy.IsUnique) },
+                // - other
+                { "if you've taken a savage hit recently", Action.SavageHit.By(Enemy).Recently },
                 { "if you've shattered an enemy recently", Action.Shatter.Recently },
+                { "for # seconds after spending # mana", Action.SpendMana(Values[1]).InPastXSeconds(Values[0]) },
                 { "if you have consumed a corpse recently", Action.ConsumeCorpse.Recently },
                 // damage
                 // - by item tag

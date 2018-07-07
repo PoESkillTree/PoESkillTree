@@ -119,8 +119,5 @@ namespace PoESkillTree.Computation.Console.Builders
             Create<IActionBuilder, IValueBuilder>(ActionBuilderStub.BySelf, amount, o => $"Spending {o} Mana");
 
         public IActionBuilder Unique(string description) => Create(description);
-
-        public IConditionBuilder InPastXSeconds(IValueBuilder seconds) =>
-            CreateCondition(seconds, o => $"If the action condition happened in the past {o} seconds");
     }
 }

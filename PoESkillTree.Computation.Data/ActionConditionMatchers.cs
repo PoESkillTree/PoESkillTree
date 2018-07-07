@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -37,7 +36,6 @@ namespace PoESkillTree.Computation.Data
                 },
                 // kill
                 { "on ({KeywordMatchers}) kill", And(With(Reference.AsKeyword), Kill.On) },
-                { "when you kill an enemy,", Kill.On },
                 { "if you or your totems kill an enemy", Or(Kill.On, Kill.By(Entity.Totem).On) },
                 // hit
                 { "from hits", Hit.On },
@@ -49,11 +47,11 @@ namespace PoESkillTree.Computation.Data
                 { "if you get a critical strike", CriticalStrike.On },
                 // skill cast
                 { "when you place a totem", Totems.Cast.On },
-                // other
+                // block
                 { "when they block", Block.On },
                 { "when you block", Block.On },
+                // other
                 { "when you stun an enemy", Action.Stun.On },
-                { "after spending # mana", Action.SpendMana(Value).On },
                 { "when you gain a ({ChargeTypeMatchers})", Reference.AsChargeType.GainAction.On },
                 { "you gain", Condition.True }, // may be left over at the end, does nothing
                 // unique

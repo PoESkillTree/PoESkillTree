@@ -1,5 +1,4 @@
-﻿using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Damage;
+﻿using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Common.Builders.Actions
@@ -65,11 +64,5 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         IActionBuilder SpendMana(IValueBuilder amount);
 
         IActionBuilder Unique(string description);
-
-        /// <summary>
-        /// Changes <see cref="IActionBuilder.On()"/> conditions to <see cref="IActionBuilder.InPastXSeconds"/>
-        /// conditions.
-        /// </summary>
-        IConditionBuilder InPastXSeconds(IValueBuilder seconds);
     }
 }
