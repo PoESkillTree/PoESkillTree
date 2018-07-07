@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Builders.Damage;
+﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Builders.Damage;
 using PoESkillTree.Computation.Builders.Resolving;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Actions;
@@ -32,7 +33,7 @@ namespace PoESkillTree.Computation.Console.Builders
         {
             get
             {
-                var core = new UnresolvedDamageTypeBuilder($"{this}.AsDamageType", 
+                var core = new UnresolvedCoreBuilder<IEnumerable<DamageType>>($"{this}.AsDamageType", 
                     context => new ProxyDamageTypeBuilder(Resolve(context).AsDamageType));
                 return new DamageTypeBuilder(_statFactory, core);
             }

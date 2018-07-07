@@ -62,7 +62,6 @@
     <Compile Include="Actions\ActionBuilders.cs" />
     <Compile Include="Actions\BlockActionBuilder.cs" />
     <Compile Include="Actions\CriticalStrikeActionBuilder.cs" />
-    <Compile Include="Actions\IStringBuilder.cs" />
     <Compile Include="Behaviors\AilmentDamageBaseValue.cs" />
     <Compile Include="Behaviors\AilmentDamageIncreaseMoreValue.cs" />
     <Compile Include="Behaviors\AilmentDamageUncappedSubtotalValue.cs" />
@@ -87,7 +86,7 @@
     <Compile Include="Damage\DamageTypeBuilder.cs" />
     <Compile Include="Damage\DamageTypeBuilders.cs" />
     <Compile Include="Damage\DamageTypeCoreStatBuilder.cs" />
-    <Compile Include="Damage\ICoreDamageTypeBuilder.cs" />
+    <Compile Include="Damage\ProxyDamageTypeBuilder.cs" />
     <Compile Include="Effects\AilmentBuilder.cs" />
     <Compile Include="Effects\AilmentBuilders.cs" />
     <Compile Include="Effects\EffectBuilder.cs" />
@@ -99,6 +98,7 @@
     <Compile Include="Equipment\ItemSlotBuilders.cs" />
     <Compile Include="FixedBuilderCollection.cs" />
     <Compile Include="Forms\FormBuilders.cs" />
+    <Compile Include="ICoreBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolving\UnresolvedBuilder.cs" />
     <Compile Include="Skills\KeywordBuilders.cs" />

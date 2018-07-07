@@ -117,8 +117,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
         [Test]
         public void RecentlyResolveBuildsToCorrectResult()
         {
-            var identityBuilder = new ConstantStringBuilder("test");
-            var unresolvedIdentityBuilder = Mock.Of<IStringBuilder>(b => b.Resolve(null) == identityBuilder);
+            var identityBuilder = CoreBuilder.Create("test");
+            var unresolvedIdentityBuilder = Mock.Of<ICoreBuilder<string>>(b => b.Resolve(null) == identityBuilder);
             var entityBuilder = new EntityBuilder(Entity.Enemy);
             var unresolvedEntityBuilder = Mock.Of<IEntityBuilder>(b => b.Resolve(null) == entityBuilder);
             var lastOccurenceStat = new Stat("test.LastOccurence", Entity.Enemy);
@@ -166,8 +166,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
         [Test]
         public void OnResolvesIdentity()
         {
-            var identityBuilder = new ConstantStringBuilder("test");
-            var unresolvedBuilder = Mock.Of<IStringBuilder>(b => b.Resolve(null) == identityBuilder);
+            var identityBuilder = CoreBuilder.Create("test");
+            var unresolvedBuilder = Mock.Of<ICoreBuilder<string>>(b => b.Resolve(null) == identityBuilder);
             var sut = CreateSut(unresolvedBuilder);
 
             var result = sut.On.Resolve(null).Build();
@@ -176,8 +176,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
             Assert.AreEqual("stat.On.test.By.Character", stat.Identity);
         }
 
-        private static ActionBuilder CreateSut(IStringBuilder identity = null, IEntityBuilder entity = null) =>
-            new ActionBuilder(new StatFactory(), identity ?? new ConstantStringBuilder("test"),
+        private static ActionBuilder CreateSut(ICoreBuilder<string> identity = null, IEntityBuilder entity = null) =>
+            new ActionBuilder(new StatFactory(), identity ?? CoreBuilder.Create("test"),
                 entity ?? new ModifierSourceEntityBuilder());
 
         private static IFlagStatBuilder InputStat => StatBuilderUtils.FromIdentity(new StatFactory(), "stat", null);

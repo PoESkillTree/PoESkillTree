@@ -8,7 +8,7 @@ namespace PoESkillTree.Computation.Builders.Actions
     internal class CriticalStrikeActionBuilder : ActionBuilder, ICriticalStrikeActionBuilder
     {
         public CriticalStrikeActionBuilder(IStatFactory statFactory, IEntityBuilder entity)
-            : base(statFactory, new ConstantStringBuilder("CriticalStrike"), entity)
+            : base(statFactory, CoreBuilder.Create("CriticalStrike"), entity)
         {
         }
 

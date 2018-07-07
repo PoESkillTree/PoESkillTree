@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
-using PoESkillTree.Computation.Builders.Damage;
 using PoESkillTree.Computation.Builders.Values;
-using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Equipment;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
@@ -69,10 +66,10 @@ namespace PoESkillTree.Computation.Builders.Resolving
         public override string ToString() => _description;
     }
 
-    public class UnresolvedDamageTypeBuilder
-        : UnresolvedBuilder<ICoreDamageTypeBuilder, IEnumerable<DamageType>>, ICoreDamageTypeBuilder
+    public class UnresolvedCoreBuilder<TResult>
+        : UnresolvedBuilder<ICoreBuilder<TResult>, TResult>, ICoreBuilder<TResult>
     {
-        public UnresolvedDamageTypeBuilder(string description, Func<ResolveContext, ICoreDamageTypeBuilder> resolver)
+        public UnresolvedCoreBuilder(string description, Func<ResolveContext, ICoreBuilder<TResult>> resolver)
             : base(description, resolver)
         {
         }

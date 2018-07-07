@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using EnumsNET;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
@@ -16,21 +17,24 @@ namespace PoESkillTree.Computation.Builders.Damage
 {
     public class DamageTypeBuilder : IDamageTypeBuilder
     {
+        private static readonly IReadOnlyList<DamageType> NonRandomDamageTypes =
+            Enums.GetValues<DamageType>().Except(DamageType.RandomElement).ToList();
+
         private readonly IStatFactory _statFactory;
-        private readonly ICoreDamageTypeBuilder _coreDamageType;
+        private readonly ICoreBuilder<IEnumerable<DamageType>> _coreDamageType;
 
         public DamageTypeBuilder(IStatFactory statFactory, DamageType damageType)
-            : this(statFactory, new LeafDamageTypeBuilder(damageType))
+            : this(statFactory, CoreBuilder.Create(new[] { damageType }))
         {
         }
 
-        public DamageTypeBuilder(IStatFactory statFactory, ICoreDamageTypeBuilder coreDamageType)
+        public DamageTypeBuilder(IStatFactory statFactory, ICoreBuilder<IEnumerable<DamageType>> coreDamageType)
         {
             _coreDamageType = coreDamageType;
             _statFactory = statFactory;
         }
 
-        private IDamageTypeBuilder With(ICoreDamageTypeBuilder coreDamageType) =>
+        private IDamageTypeBuilder With(ICoreBuilder<IEnumerable<DamageType>> coreDamageType) =>
             new DamageTypeBuilder(_statFactory, coreDamageType);
 
         public IKeywordBuilder Resolve(ResolveContext context) =>
@@ -51,13 +55,13 @@ namespace PoESkillTree.Computation.Builders.Damage
         public IReadOnlyList<DamageType> BuildDamageTypes() => _coreDamageType.Build().ToList();
 
         public IDamageTypeBuilder And(IDamageTypeBuilder type) =>
-            With(new AndDamageTypeBuilder(_coreDamageType, new ProxyDamageTypeBuilder(type)));
+            With(CoreBuilder.BinaryOperation(_coreDamageType, new ProxyDamageTypeBuilder(type), Enumerable.Union));
 
         public IDamageTypeBuilder Invert =>
-            With(new InvertDamageTypeBuilder(_coreDamageType));
+            With(CoreBuilder.UnaryOperation(_coreDamageType, NonRandomDamageTypes.Except));
 
         public IDamageTypeBuilder Except(IDamageTypeBuilder type) =>
-            With(new ExceptDamageTypeBuilder(_coreDamageType, new ProxyDamageTypeBuilder(type)));
+            With(CoreBuilder.BinaryOperation(_coreDamageType, new ProxyDamageTypeBuilder(type), Enumerable.Except));
 
         public IStatBuilder Resistance =>
             new StatBuilder(_statFactory, CoreStat(typeof(int)));

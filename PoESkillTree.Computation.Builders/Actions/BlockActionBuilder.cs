@@ -8,7 +8,7 @@ namespace PoESkillTree.Computation.Builders.Actions
     internal class BlockActionBuilder : ActionBuilder, IBlockActionBuilder
     {
         public BlockActionBuilder(IStatFactory statFactory, IEntityBuilder entity)
-            : base(statFactory, new ConstantStringBuilder("Block"), entity)
+            : base(statFactory, CoreBuilder.Create("Block"), entity)
         {
         }
 

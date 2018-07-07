@@ -18,10 +18,10 @@ namespace PoESkillTree.Computation.Builders.Actions
         private const int RecentlySeconds = 4;
 
         protected IStatFactory StatFactory { get; }
-        private readonly IStringBuilder _identity;
+        private readonly ICoreBuilder<string> _identity;
         private readonly IEntityBuilder _entity;
 
-        public ActionBuilder(IStatFactory statFactory, IStringBuilder identity, IEntityBuilder entity)
+        public ActionBuilder(IStatFactory statFactory, ICoreBuilder<string> identity, IEntityBuilder entity)
         {
             StatFactory = statFactory;
             _identity = identity;
@@ -36,11 +36,11 @@ namespace PoESkillTree.Computation.Builders.Actions
 
         public IConditionBuilder On =>
             new StatConvertingConditionBuilder(b => new StatBuilder(StatFactory,
-                new ParametrisedCoreStatBuilder<IStringBuilder, IEntityBuilder>(
+                new ParametrisedCoreStatBuilder<ICoreBuilder<string>, IEntityBuilder>(
                     new StatBuilderAdapter(b), _identity, _entity, ConvertStat)),
                 c => Resolve(c).On);
 
-        private IEnumerable<IStat> ConvertStat(IStringBuilder identity, IEntityBuilder entity, IStat stat) =>
+        private IEnumerable<IStat> ConvertStat(ICoreBuilder<string> identity, IEntityBuilder entity, IStat stat) =>
             from e in entity.Build(stat.Entity)
             let i = $"On.{identity.Build()}.By.{e}"
             select StatFactory.CopyWithSuffix(stat, i, stat.DataType, true);

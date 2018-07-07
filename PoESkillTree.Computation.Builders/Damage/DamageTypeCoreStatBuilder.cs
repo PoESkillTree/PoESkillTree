@@ -15,11 +15,11 @@ namespace PoESkillTree.Computation.Builders.Damage
     internal class DamageTypeCoreStatBuilder : ICoreStatBuilder
     {
         private readonly Func<Entity, DamageType, IStat> _statFactory;
-        private readonly ICoreDamageTypeBuilder _damageType;
+        private readonly ICoreBuilder<IEnumerable<DamageType>> _damageType;
         private readonly IEntityBuilder _entityBuilder;
 
         public DamageTypeCoreStatBuilder(
-            Func<Entity, DamageType, IStat> statFactory, ICoreDamageTypeBuilder damageType,
+            Func<Entity, DamageType, IStat> statFactory, ICoreBuilder<IEnumerable<DamageType>> damageType,
             IEntityBuilder entityBuilder)
         {
             _statFactory = statFactory;

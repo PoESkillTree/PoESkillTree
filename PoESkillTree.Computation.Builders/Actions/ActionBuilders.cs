@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Builders.Actions
 
         public IActionBuilder HitWith(IDamageTypeBuilder damageType)
         {
-            var stringBuilder = new ParametrisedStringBuilder<IKeywordBuilder>(damageType, BuildHitWithIdentity);
+            var stringBuilder = CoreBuilder.Create<IKeywordBuilder, string>(damageType, BuildHitWithIdentity);
             return new ActionBuilder(_statFactory, stringBuilder, _entity);
         }
 
@@ -58,7 +58,7 @@ namespace PoESkillTree.Computation.Builders.Actions
 
         public IActionBuilder SpendMana(IValueBuilder amount)
         {
-            var stringBuilder = new ParametrisedStringBuilder<IValueBuilder>(amount, BuildSpendManaIdentity);
+            var stringBuilder = CoreBuilder.Create(amount, BuildSpendManaIdentity);
             return new ActionBuilder(_statFactory, stringBuilder, _entity);
         }
 
@@ -68,7 +68,7 @@ namespace PoESkillTree.Computation.Builders.Actions
         public IActionBuilder Unique(string description) => Create(description);
 
         private IActionBuilder Create(string identity) =>
-            new ActionBuilder(_statFactory, new ConstantStringBuilder(identity), _entity);
+            new ActionBuilder(_statFactory, CoreBuilder.Create(identity), _entity);
 
         private class ThrowingContext : IValueCalculationContext
         {
