@@ -17,7 +17,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Equipment
             var slotTags = Tags.Armour | Tags.BodyArmour | Tags.StrArmour;
             var tagsStat = new Stat("BodyArmour.ItemTags");
             var statFactory = Mock.Of<IStatFactory>(f =>
-                f.FromIdentity("BodyArmour.ItemTags", default, typeof(Tags), false) == tagsStat);
+                f.FromIdentity("BodyArmour.ItemTags", default, typeof(Tags), null) == tagsStat);
             var sut = new EquipmentBuilder(statFactory, ItemSlot.BodyArmour);
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(tagsStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue((double) slotTags));

@@ -61,7 +61,7 @@ namespace PoESkillTree.Computation.Builders.Conditions
         }
 
         public IConditionBuilder Unique(string name) =>
-            StatBuilderUtils.ConditionFromIdentity(_statFactory, name, true);
+            StatBuilderUtils.ConditionFromIdentity(_statFactory, name, ExplicitRegistrationTypes.UserSpecifiedValue());
 
         public IConditionBuilder True => ConstantConditionBuilder.True;
     }

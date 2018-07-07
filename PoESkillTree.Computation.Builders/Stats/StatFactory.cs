@@ -20,12 +20,13 @@ namespace PoESkillTree.Computation.Builders.Stats
             _behaviorFactory = new BehaviorFactory(this);
         }
 
-        public IStat FromIdentity(string identity, Entity entity, Type dataType, bool isExplicitlyRegistered = false) =>
-            GetOrAdd(identity, entity, dataType, isExplicitlyRegistered);
+        public IStat FromIdentity(string identity, Entity entity, Type dataType,
+            ExplicitRegistrationType explicitRegistrationType = null) =>
+            GetOrAdd(identity, entity, dataType, explicitRegistrationType);
 
         public IStat CopyWithSuffix(IStat stat, string identitySuffix, Type dataType,
-            bool isExplicitlyRegistered = false) =>
-            CopyWithSuffix(stat, identitySuffix, dataType, null, isExplicitlyRegistered);
+            ExplicitRegistrationType explicitRegistrationType = null) =>
+            CopyWithSuffix(stat, identitySuffix, dataType, null, explicitRegistrationType);
 
         public IStat ChanceToDouble(IStat stat) =>
             CopyWithSuffix(stat, nameof(ChanceToDouble), typeof(int));
@@ -104,18 +105,18 @@ namespace PoESkillTree.Computation.Builders.Stats
             GetOrAdd($"{ailment}.DamageType", entity, typeof(DamageType));
 
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,
-            Func<IReadOnlyList<Behavior>> behaviors, bool isRegisteredExplicitly = false)
+            Func<IReadOnlyList<Behavior>> behaviors, ExplicitRegistrationType explicitRegistrationType = null)
         {
             return GetOrAdd(source.Identity + "." + identitySuffix, source.Entity,
-                dataType, isRegisteredExplicitly, behaviors);
+                dataType, explicitRegistrationType, behaviors);
         }
 
         private IStat GetOrAdd(string identity, Entity entity, Type dataType,
-            bool isRegisteredExplicitly = false, Func<IReadOnlyList<Behavior>> behaviors = null)
+            ExplicitRegistrationType explicitRegistrationType = null, Func<IReadOnlyList<Behavior>> behaviors = null)
         {
             // Func<IReadOnlyList<Behavior>> for performance reasons: Only retrieve behaviors if necessary.
             return _cache.GetOrAdd((identity, entity), _ =>
-                new Stat(identity, entity, dataType, isRegisteredExplicitly, behaviors?.Invoke()));
+                new Stat(identity, entity, dataType, explicitRegistrationType, behaviors?.Invoke()));
         }
     }
 }

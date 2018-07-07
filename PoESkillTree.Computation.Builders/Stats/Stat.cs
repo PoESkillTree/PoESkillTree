@@ -8,7 +8,8 @@ namespace PoESkillTree.Computation.Builders.Stats
     public class Stat : IStat
     {
         public Stat(string identity, Entity entity = default, Type dataType = null,
-            bool isRegisteredExplicitly = false, IReadOnlyList<Behavior> behaviors = null, bool hasRange = true)
+            ExplicitRegistrationType explicitRegistrationType = null, IReadOnlyList<Behavior> behaviors = null,
+            bool hasRange = true)
         {
             if (!IsDataTypeValid(dataType))
                 throw new ArgumentException($"Stats only support double, int, bool or enum data types, {dataType} given",
@@ -17,7 +18,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             Identity = identity;
             _hasRange = hasRange;
             Entity = entity;
-            IsRegisteredExplicitly = isRegisteredExplicitly;
+            ExplicitRegistrationType = explicitRegistrationType;
             DataType = dataType ?? typeof(double);
             Behaviors = behaviors ?? new Behavior[0];
         }
@@ -32,7 +33,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         private readonly bool _hasRange;
         public string Identity { get; }
         public Entity Entity { get; }
-        public bool IsRegisteredExplicitly { get; }
+        public ExplicitRegistrationType ExplicitRegistrationType { get; }
         public Type DataType { get; }
         public IReadOnlyList<Behavior> Behaviors { get; }
 

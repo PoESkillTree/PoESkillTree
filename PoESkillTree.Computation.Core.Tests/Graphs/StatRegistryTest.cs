@@ -2,7 +2,6 @@
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Graphs;
 using PoESkillTree.Computation.Core.NodeCollections;
@@ -23,7 +22,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void AddAddsCorrectNodeToNodeCollection()
         {
-            var stat = new StatStub { IsRegisteredExplicitly = true };
+            var stat = new StatStub { ExplicitRegistrationType = Registered };
             var coreNode = Mock.Of<ICalculationNode>();
             var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == coreNode);
             var nodeCollection = new NodeCollection<IStat>();
@@ -38,7 +37,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void RemoveRemovesCorrectNodeFromNodeCollection()
         {
-            var stat = new StatStub { IsRegisteredExplicitly = true };
+            var stat = new StatStub { ExplicitRegistrationType = Registered };
             var coreNode = Mock.Of<ICalculationNode>();
             var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == coreNode);
             var nodeCollection = new NodeCollection<IStat>();
@@ -53,7 +52,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void AddDoesNotAddIfStatIsNotRegisteredExplicitly()
         {
-            var stat = new StatStub { IsRegisteredExplicitly = false };
+            var stat = new StatStub();
             var nodeCollection = new NodeCollection<IStat>();
             var sut = CreateSut(nodeCollection);
 
@@ -65,7 +64,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void RemoveDoesNothingIfStatWasNotAdded()
         {
-            var stat = new StatStub { IsRegisteredExplicitly = true };
+            var stat = new StatStub { ExplicitRegistrationType = Registered };
             var sut = CreateSut();
 
             sut.Remove(stat);
@@ -96,7 +95,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [TestCase(2, ExpectedResult = false)]
         public bool CanBeRemovedWithKnownNodeReturnsCorrectResult(int subscriberCount)
         {
-            var stat = new StatStub { IsRegisteredExplicitly = true };
+            var stat = new StatStub { ExplicitRegistrationType = Registered };
             var coreNode = Mock.Of<ICalculationNode>();
             var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == coreNode);
             var sut = CreateSut(nodeRepository: nodeRepository);
@@ -110,7 +109,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [TestCase(1, ExpectedResult = false)]
         public bool CanBeRemovedWithRemovedNodeReturnsCorrectResult(int subscriberCount)
         {
-            var stat = new StatStub { IsRegisteredExplicitly = true };
+            var stat = new StatStub { ExplicitRegistrationType = Registered };
             var coreNode = Mock.Of<ICalculationNode>();
             var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == coreNode);
             var sut = CreateSut(nodeRepository: nodeRepository);
@@ -125,7 +124,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         [Test]
         public void RemoveDisposesWrappingNode()
         {
-            var stat = new StatStub { IsRegisteredExplicitly = true };
+            var stat = new StatStub { ExplicitRegistrationType = Registered };
             var nodeMock = new Mock<ICalculationNode>();
             var nodeCollection = new NodeCollection<IStat>();
             var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == nodeMock.Object);
@@ -150,5 +149,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         }
 
         private static readonly PathDefinition Path = PathDefinition.MainPath;
+
+        private static readonly ExplicitRegistrationType Registered = ExplicitRegistrationTypes.UserSpecifiedValue();
     }
 }

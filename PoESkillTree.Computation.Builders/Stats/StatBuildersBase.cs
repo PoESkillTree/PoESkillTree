@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -12,11 +13,14 @@ namespace PoESkillTree.Computation.Builders.Stats
             StatFactory = statFactory;
 
         protected IFlagStatBuilder FromIdentity(
-            Type dataType, bool isExplicitlyRegistered = false, [CallerMemberName] string identity = null) =>
-            FromIdentity(identity, dataType, isExplicitlyRegistered);
+            Type dataType, ExplicitRegistrationType explicitRegistrationType = null,
+            [CallerMemberName] string identity = null) =>
+            FromIdentity(identity, dataType, explicitRegistrationType);
 
-        protected IFlagStatBuilder FromIdentity(string identity, Type dataType, bool isExplicitlyRegistered = false) =>
-            StatBuilderUtils.FromIdentity(StatFactory, identity, dataType, isExplicitlyRegistered);
+        protected IFlagStatBuilder FromIdentity(
+            string identity, Type dataType,
+            ExplicitRegistrationType explicitRegistrationType = null) =>
+            StatBuilderUtils.FromIdentity(StatFactory, identity, dataType, explicitRegistrationType);
 
         protected IFlagStatBuilder FromCore(ICoreStatBuilder coreStatBuilder) =>
             new StatBuilder(StatFactory, coreStatBuilder);

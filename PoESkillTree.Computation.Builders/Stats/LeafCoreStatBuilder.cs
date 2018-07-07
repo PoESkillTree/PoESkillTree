@@ -23,9 +23,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         public static ICoreStatBuilder FromIdentity(
-            IStatFactory statFactory, string identity, Type dataType, bool isExplicitlyRegistered = false) =>
+            IStatFactory statFactory, string identity, Type dataType,
+            ExplicitRegistrationType explicitRegistrationType = null) =>
             new LeafCoreStatBuilder(
-                entity => statFactory.FromIdentity(identity, entity, dataType, isExplicitlyRegistered));
+                entity => statFactory.FromIdentity(identity, entity, dataType, explicitRegistrationType));
 
         public ICoreStatBuilder Resolve(ResolveContext context) => WithEntity(_entityBuilder.Resolve(context));
 

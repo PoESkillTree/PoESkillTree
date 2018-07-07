@@ -2,6 +2,7 @@
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using static PoESkillTree.Computation.Common.ExplicitRegistrationTypes;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
@@ -45,10 +46,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder Gain => FromIdentity($"{_pool}.Gain", typeof(int));
 
         public IConditionBuilder IsFull =>
-            (Reservation.Value <= 0).And(FromIdentity($"{_pool}.IsFull", typeof(bool), true).IsSet);
+            (Reservation.Value <= 0).And(FromIdentity($"{_pool}.IsFull", typeof(bool), UserSpecifiedValue()).IsSet);
 
         public IConditionBuilder IsLow =>
-            (Reservation.Value >= 65).Or(FromIdentity($"{_pool}.IsLow", typeof(bool), true).IsSet);
+            (Reservation.Value >= 65).Or(FromIdentity($"{_pool}.IsLow", typeof(bool), UserSpecifiedValue()).IsSet);
 
         public Pool BuildPool() => _pool;
 
@@ -68,7 +69,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder Start => FromIdentity($"{_pool}.Recharge.Start", typeof(double));
 
         public IConditionBuilder StartedRecently =>
-            FromIdentity($"{_pool}.Recharge.StartedRecently", typeof(bool), true).IsSet;
+            FromIdentity($"{_pool}.Recharge.StartedRecently", typeof(bool), UserSpecifiedValue()).IsSet;
     }
 
     internal class RegenStatBuilder : StatBuilder, IRegenStatBuilder

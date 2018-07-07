@@ -36,7 +36,7 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         public void Add(IStat stat)
         {
-            if (!stat.IsRegisteredExplicitly)
+            if (stat.ExplicitRegistrationType is null)
                 return;
             var node = NodeRepository.GetNode(stat);
             _registeredNodes[stat] = node;

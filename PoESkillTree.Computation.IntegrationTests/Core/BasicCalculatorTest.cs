@@ -154,7 +154,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         public void ExplicitlyRegistered()
         {
             var sut = Calculator.CreateCalculator();
-            var stat = new Stat("stat", isRegisteredExplicitly: true);
+            var stat = new Stat("stat", explicitRegistrationType: ExplicitRegistrationTypes.UserSpecifiedValue());
             IStat actual = null;
             sut.ExplicitlyRegisteredStats.CollectionChanged += (sender, args) =>
             {

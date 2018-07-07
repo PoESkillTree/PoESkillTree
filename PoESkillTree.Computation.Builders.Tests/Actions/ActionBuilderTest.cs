@@ -135,27 +135,27 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
         [Test]
         public void OnBuildsToCorrectResult()
         {
-            var inputStatBuilder = StatBuilderUtils.FromIdentity(new StatFactory(), "stat", null);
             var sut = CreateSut();
 
             var result = sut.On.Build();
-            var statBuilder = result.StatConverter(inputStatBuilder);
+            var statBuilder = result.StatConverter(InputStat);
             var stat = statBuilder.BuildToSingleStat();
 
             Assert.IsTrue(result.HasStatConverter);
             Assert.IsFalse(result.HasValue);
             Assert.AreEqual("stat.On(test).By(Character)", stat.Identity);
+            Assert.AreEqual(new ExplicitRegistrationType.GainOnAction(new Stat("stat"), "test", Entity.Character),
+                stat.ExplicitRegistrationType);
         }
 
         [Test]
         public void ByOnBuildsToCorrectResult()
         {
             var entityBuilder = new EntityBuilder(Entity.Enemy, Entity.Totem);
-            var inputStatBuilder = InputStat;
             var sut = CreateSut();
 
             var result = sut.By(entityBuilder).On.Build();
-            var statBuilder = result.StatConverter(inputStatBuilder);
+            var statBuilder = result.StatConverter(InputStat);
             IReadOnlyList<IStat> stats = statBuilder.Build(default, null).Single().Stats;
 
             Assert.That(stats, Has.Exactly(2).Items);

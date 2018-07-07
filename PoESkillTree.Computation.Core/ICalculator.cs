@@ -53,7 +53,7 @@ namespace PoESkillTree.Computation.Core
 
         /// <summary>
         /// Collection of all <see cref="IStat"/>s and their (<see cref="NodeType.Total"/>) nodes that are part of
-        /// the calculation graph and have a <see cref="IStat.IsRegisteredExplicitly"/> value of <c>true</c>. These
+        /// the calculation graph and have a <see cref="IStat.ExplicitRegistrationType"/> value. These
         /// are stats that need their values to be set explicitly by users.
         /// </summary>
         /// <remarks>

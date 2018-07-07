@@ -39,9 +39,10 @@ namespace PoESkillTree.Computation.Common
         IStat Maximum { get; }
 
         /// <summary>
-        /// True if the existence/usage of this stat should be explicitly announced to clients
+        /// Not null if the existence/usage of this stat should be explicitly announced to clients
         /// </summary>
-        bool IsRegisteredExplicitly { get; }
+        [CanBeNull]
+        ExplicitRegistrationType ExplicitRegistrationType { get; }
 
         /// <summary>
         /// The type of this stat's values. Can be double, int, bool (0 or 1) or an enum type.

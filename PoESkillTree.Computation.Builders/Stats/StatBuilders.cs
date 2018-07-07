@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Conditions;
+﻿using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
@@ -122,7 +123,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder ChargesUsed => FromIdentity("Flask charges used", typeof(int));
         public IStatBuilder ChargesGained => FromIdentity("Flask charges gained", typeof(double));
 
-        public IConditionBuilder IsAnyActive => FromIdentity("Is any flask active?", typeof(bool), true).IsSet;
+        public IConditionBuilder IsAnyActive =>
+            FromIdentity("Is any flask active?", typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue()).IsSet;
     }
 
     internal class ProjectileStatBuilders : StatBuildersBase, IProjectileStatBuilders
