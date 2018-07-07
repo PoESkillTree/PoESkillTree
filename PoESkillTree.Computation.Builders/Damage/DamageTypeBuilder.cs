@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using EnumsNET;
 using PoESkillTree.Common.Utils.Extensions;
-using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -91,7 +90,8 @@ namespace PoESkillTree.Computation.Builders.Damage
             CoreStat((e, t) => _statFactory.FromIdentity($"{t}.{identitySuffix}", e, dataType));
 
         private ICoreStatBuilder CoreStat(Func<Entity, DamageType, IStat> statFactory) =>
-            new DamageTypeCoreStatBuilder(statFactory, _coreDamageType, new ModifierSourceEntityBuilder());
+            new CoreStatBuilderFromCoreBuilder<IEnumerable<DamageType>>(_coreDamageType,
+                (e, ts) => ts.Select(t => statFactory(e, t)));
 
         private class DamageTakenConversionBuilder : IDamageTakenConversionBuilder
         {

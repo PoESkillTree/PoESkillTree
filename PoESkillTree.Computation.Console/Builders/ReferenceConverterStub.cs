@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Builders.Actions;
+using PoESkillTree.Computation.Builders.Charges;
 using PoESkillTree.Computation.Builders.Damage;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Resolving;
@@ -41,8 +42,15 @@ namespace PoESkillTree.Computation.Console.Builders
             }
         }
 
-        public IChargeTypeBuilder AsChargeType =>
-            new ChargeTypeBuilderStub($"{this}.AsChargeType", (_, context) => Resolve(context).AsChargeType);
+        public IChargeTypeBuilder AsChargeType
+        {
+            get
+            {
+                var core = new UnresolvedCoreBuilder<ChargeType>($"{this}.AsChargeType", 
+                    context => new ProxyChargeTypeBuilder(Resolve(context).AsChargeType));
+                return new ChargeTypeBuilder(_statFactory, core);
+            }
+        }
 
         public IAilmentBuilder AsAilment =>
             new AilmentBuilderStub($"{this}.AsAilment", (_, context) => Resolve(context).AsAilment);

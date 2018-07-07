@@ -78,6 +78,7 @@
     <Compile Include="BuilderFactories.cs" />
     <Compile Include="Charges\ChargeTypeBuilder.cs" />
     <Compile Include="Charges\ChargeTypeBuilders.cs" />
+    <Compile Include="Charges\ProxyChargeTypeBuilder.cs" />
     <Compile Include="Conditions\AndCompositeConditionBuilder.cs" />
     <Compile Include="Conditions\ConditionBuilderBase.cs" />
     <Compile Include="Conditions\ConditionBuilders.cs" />
@@ -88,7 +89,6 @@
     <Compile Include="ConstantBuilder.cs" />
     <Compile Include="Damage\DamageTypeBuilder.cs" />
     <Compile Include="Damage\DamageTypeBuilders.cs" />
-    <Compile Include="Damage\DamageTypeCoreStatBuilder.cs" />
     <Compile Include="Damage\ProxyDamageTypeBuilder.cs" />
     <Compile Include="Effects\AilmentBuilder.cs" />
     <Compile Include="Effects\AilmentBuilders.cs" />
@@ -109,6 +109,7 @@
     <Compile Include="Stats\CompositeCoreStatBuilder.cs" />
     <Compile Include="Stats\ConversionStatBuilder.cs" />
     <Compile Include="Entities\EntityBuilder.cs" />
+    <Compile Include="Stats\CoreStatBuilderFromCoreBuilder.cs" />
     <Compile Include="Stats\DamageRelatedStatBuilder.cs" />
     <Compile Include="Stats\DamageSpecificationBuilder.cs" />
     <Compile Include="Stats\DamageStatBuilder.cs" />

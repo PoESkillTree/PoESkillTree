@@ -7,9 +7,9 @@ namespace PoESkillTree.Computation.Builders.Charges
     {
         public ChargeTypeBuilders(IStatFactory statFactory)
         {
-            Endurance = new ChargeTypeBuilder(statFactory, ChargeType.Endurance);
-            Frenzy = new ChargeTypeBuilder(statFactory, ChargeType.Frenzy);
-            Power = new ChargeTypeBuilder(statFactory, ChargeType.Power);
+            Endurance = new ChargeTypeBuilder(statFactory, CoreBuilder.Create(ChargeType.Endurance));
+            Frenzy = new ChargeTypeBuilder(statFactory, CoreBuilder.Create(ChargeType.Frenzy));
+            Power = new ChargeTypeBuilder(statFactory, CoreBuilder.Create(ChargeType.Power));
         }
 
         public IChargeTypeBuilder Endurance { get; }

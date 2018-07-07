@@ -21,10 +21,9 @@ namespace PoESkillTree.Computation.Builders
             return new ParametrisedCoreBuilder<TParameter, TResult>(parameter, build);
         }
 
-        public static ICoreBuilder<TResult> UnaryOperation<TResult>(
-            ICoreBuilder<TResult> operand, Func<TResult, TResult> @operator)
+        public static ICoreBuilder<TOut> UnaryOperation<TIn, TOut>(ICoreBuilder<TIn> operand, Func<TIn, TOut> @operator)
         {
-            return new UnaryOperatorCoreBuilder<TResult>(operand, @operator);
+            return new UnaryOperatorCoreBuilder<TIn, TOut>(operand, @operator);
         }
 
         public static ICoreBuilder<TResult> BinaryOperation<TResult>(
@@ -63,21 +62,21 @@ namespace PoESkillTree.Computation.Builders
         public TResult Build() => _build(_parameter);
     }
 
-    internal class UnaryOperatorCoreBuilder<TResult> : ICoreBuilder<TResult>
+    internal class UnaryOperatorCoreBuilder<TIn, TOut> : ICoreBuilder<TOut>
     {
-        private readonly ICoreBuilder<TResult> _operand;
-        private readonly Func<TResult, TResult> _operator;
+        private readonly ICoreBuilder<TIn> _operand;
+        private readonly Func<TIn, TOut> _operator;
 
-        public UnaryOperatorCoreBuilder(ICoreBuilder<TResult> operand, Func<TResult, TResult> @operator)
+        public UnaryOperatorCoreBuilder(ICoreBuilder<TIn> operand, Func<TIn, TOut> @operator)
         {
             _operand = operand;
             _operator = @operator;
         }
 
-        public ICoreBuilder<TResult> Resolve(ResolveContext context) =>
-            new UnaryOperatorCoreBuilder<TResult>(_operand.Resolve(context), _operator);
+        public ICoreBuilder<TOut> Resolve(ResolveContext context) =>
+            new UnaryOperatorCoreBuilder<TIn, TOut>(_operand.Resolve(context), _operator);
 
-        public TResult Build() =>
+        public TOut Build() =>
             _operator(_operand.Build());
     }
 
