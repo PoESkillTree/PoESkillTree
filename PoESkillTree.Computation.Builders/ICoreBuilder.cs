@@ -31,6 +31,13 @@ namespace PoESkillTree.Computation.Builders
         {
             return new BinaryOperatorCoreBuilder<TResult>(left, right, @operator);
         }
+
+        public static ICoreBuilder<TResult> Proxy<TProxied, TResult>(
+            TProxied proxiedBuilder, Func<TProxied, TResult> build)
+            where TProxied : IResolvable<TProxied>
+        {
+            return new ProxyCoreBuilder<TProxied, TResult>(proxiedBuilder, build);
+        }
     }
 
     internal class ConstantCoreBuilder<TResult> : ICoreBuilder<TResult>
@@ -99,5 +106,23 @@ namespace PoESkillTree.Computation.Builders
 
         public TResult Build() =>
             _operator(_left.Build(), _right.Build());
+    }
+
+    internal class ProxyCoreBuilder<TProxied, TResult> : ICoreBuilder<TResult>
+        where TProxied : IResolvable<TProxied>
+    {
+        private readonly TProxied _proxiedBuilder;
+        private readonly Func<TProxied, TResult> _build;
+
+        public ProxyCoreBuilder(TProxied proxiedBuilder, Func<TProxied, TResult> build)
+        {
+            _proxiedBuilder = proxiedBuilder;
+            _build = build;
+        }
+
+        public ICoreBuilder<TResult> Resolve(ResolveContext context) =>
+            new ProxyCoreBuilder<TProxied, TResult>(_proxiedBuilder.Resolve(context), _build);
+
+        public TResult Build() => _build(_proxiedBuilder);
     }
 }

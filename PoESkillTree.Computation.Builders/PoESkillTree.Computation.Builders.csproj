@@ -62,7 +62,6 @@
     <Compile Include="Actions\ActionBuilders.cs" />
     <Compile Include="Actions\BlockActionBuilder.cs" />
     <Compile Include="Actions\CriticalStrikeActionBuilder.cs" />
-    <Compile Include="Actions\ProxyActionBuilder.cs" />
     <Compile Include="Behaviors\AilmentDamageBaseValue.cs" />
     <Compile Include="Behaviors\AilmentDamageIncreaseMoreValue.cs" />
     <Compile Include="Behaviors\AilmentDamageUncappedSubtotalValue.cs" />
@@ -78,7 +77,6 @@
     <Compile Include="BuilderFactories.cs" />
     <Compile Include="Charges\ChargeTypeBuilder.cs" />
     <Compile Include="Charges\ChargeTypeBuilders.cs" />
-    <Compile Include="Charges\ProxyChargeTypeBuilder.cs" />
     <Compile Include="Conditions\AndCompositeConditionBuilder.cs" />
     <Compile Include="Conditions\ConditionBuilderBase.cs" />
     <Compile Include="Conditions\ConditionBuilders.cs" />

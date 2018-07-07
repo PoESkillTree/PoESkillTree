@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Charges;
 using PoESkillTree.Computation.Builders.Damage;
@@ -47,7 +48,7 @@ namespace PoESkillTree.Computation.Console.Builders
             get
             {
                 var core = new UnresolvedCoreBuilder<ChargeType>($"{this}.AsChargeType", 
-                    context => new ProxyChargeTypeBuilder(Resolve(context).AsChargeType));
+                    context => CoreBuilder.Proxy(Resolve(context).AsChargeType, b => b.Build()));
                 return new ChargeTypeBuilder(_statFactory, core);
             }
         }
@@ -66,7 +67,7 @@ namespace PoESkillTree.Computation.Console.Builders
             get
             {
                 var core = new UnresolvedCoreBuilder<string>($"{this}.AsAction", 
-                    context => new ProxyActionBuilder(Resolve(context).AsAction));
+                    context => CoreBuilder.Proxy(Resolve(context).AsAction, b => b.Build()));
                 return new ActionBuilder(_statFactory, core, new ModifierSourceEntityBuilder());
             }
         }
