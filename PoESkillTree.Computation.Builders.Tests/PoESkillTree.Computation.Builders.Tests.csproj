@@ -69,6 +69,7 @@
     <Compile Include="Behaviors\AilmentDamageIncreaseMoreValueTest.cs" />
     <Compile Include="Behaviors\AilmentDamageUncappedSubtotalValueTest.cs" />
     <Compile Include="Behaviors\RegenUncappedSubtotalValueTest.cs" />
+    <Compile Include="Buffs\BuffBuilderTest.cs" />
     <Compile Include="BuilderExtensions.cs" />
     <Compile Include="BuildersHelper.cs" />
     <Compile Include="Conditions\AndCompositeConditionBuilderTest.cs" />

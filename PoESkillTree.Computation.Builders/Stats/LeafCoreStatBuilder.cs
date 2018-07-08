@@ -13,10 +13,17 @@ namespace PoESkillTree.Computation.Builders.Stats
 {
     public class LeafCoreStatBuilder : ICoreStatBuilder
     {
-        private readonly Func<Entity, IStat> _statFactory;
+        public delegate IStat StatFactory(BuildParameters parameters, Entity entity);
+
+        private readonly StatFactory _statFactory;
         private readonly IEntityBuilder _entityBuilder;
 
         public LeafCoreStatBuilder(Func<Entity, IStat> statFactory, IEntityBuilder entityBuilder = null)
+            : this((ps, e) => statFactory(e), entityBuilder)
+        {
+        }
+
+        public LeafCoreStatBuilder(StatFactory statFactory, IEntityBuilder entityBuilder = null)
         {
             _statFactory = statFactory;
             _entityBuilder = entityBuilder ?? new ModifierSourceEntityBuilder();
@@ -34,7 +41,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             new LeafCoreStatBuilder(_statFactory, entityBuilder);
 
         public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
-            new LeafCoreStatBuilder(_statFactory.AndThen(statConverter), _entityBuilder);
+            new LeafCoreStatBuilder((ps, e) => statConverter(_statFactory(ps, e)), _entityBuilder);
 
         public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)
         {
@@ -45,7 +52,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         private IReadOnlyList<IStat> BuildStats(BuildParameters parameters)
         {
             var entities = _entityBuilder.Build(parameters.ModifierSourceEntity);
-            return entities.Select(_statFactory).ToList();
+            return entities.Select(e => _statFactory(parameters, e)).ToList();
         }
     }
 }

@@ -19,18 +19,21 @@ namespace PoESkillTree.Computation.Builders.Effects
 
         public IEffectBuilder Resolve(ResolveContext context) => this;
 
-        public IFlagStatBuilder On(IEntityBuilder target) =>
+        public virtual IFlagStatBuilder On(IEntityBuilder target) =>
+            InternalOn(target);
+
+        protected IFlagStatBuilder InternalOn(IEntityBuilder target) =>
             (IFlagStatBuilder) FromIdentity($"{Identity}.Active", typeof(bool)).For(target);
 
         public IStatBuilder ChanceOn(IEntityBuilder target) =>
             FromIdentity($"{Identity}.ChanceToBecomeActive", typeof(int)).For(target);
 
-        public IConditionBuilder IsOn(IEntityBuilder target) => On(target).IsSet;
+        public IConditionBuilder IsOn(IEntityBuilder target) => InternalOn(target).IsSet;
 
         public virtual IStatBuilder Duration =>
             FromIdentity($"{Identity}.Duration", typeof(double));
 
-        public IStatBuilder AddStat(IStatBuilder stat) =>
+        public virtual IStatBuilder AddStat(IStatBuilder stat) =>
             stat.WithCondition(IsOn(new ModifierSourceEntityBuilder()));
     }
 
