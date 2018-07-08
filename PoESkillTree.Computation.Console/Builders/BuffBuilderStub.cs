@@ -80,12 +80,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IConfluxBuffBuilders Conflux => new ConfluxBuffBuilders();
 
-        public IBuffBuilder Curse(ISkillBuilder skill, IValueBuilder level) =>
-            (IBuffBuilder) Create<IEffectBuilder, ISkillBuilder, IValueBuilder>(
-                (s, r) => new BuffBuilderStub(s, r),
-                skill, level,
-                (o1, o2) => $"Curse with level {o2} {o1}");
-
         public IFlagStatBuilder Temporary(IValueBuilder period, IValueBuilder uptime, IStatBuilder gainedStat) =>
             CreateFlagStat(period, uptime, gainedStat,
                 (o1, o2, o3) => $"Every {o1} seconds, gain {o3} for {o2} seconds");

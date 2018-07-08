@@ -212,10 +212,6 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value, Buffs(target: Enemy).With(Keyword.Curse).CombinedLimit
                 },
                 { "grants fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
-                {
-                    "curse enemies with level # ({SkillMatchers})",
-                    TotalOverride, 1, Buff.Curse(skill: Reference.AsSkill, level: Value).On(Enemy)
-                },
                 { "gain elemental conflux", TotalOverride, 1, Buff.Conflux.Elemental.On(Self) },
                 // flags
                 // ailments

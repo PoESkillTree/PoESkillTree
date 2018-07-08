@@ -1,6 +1,5 @@
 using System;
 using PoESkillTree.Computation.Common.Builders.Entities;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 
@@ -55,16 +54,6 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         /// Gets a buff factory that creates Conflux buffs.
         /// </summary>
         IConfluxBuffBuilders Conflux { get; }
-
-        // TODO this probably needs changes when other skills from items are added
-        /// <summary>
-        /// Returns a buff representing the curse (de-)buff applied by the skill <paramref name="skill"/> at level
-        /// <paramref name="level"/>.
-        /// </summary>
-        /// <remarks>
-        /// The stats of the skill starting with "cursed enemies ..." are the (de-)buff.
-        /// </remarks>
-        IBuffBuilder Curse(ISkillBuilder skill, IValueBuilder level);
 
         /// <summary>
         /// Returns a flag stat indicating whether Self currently gains <paramref name="gainedStat"/> as a buff from
