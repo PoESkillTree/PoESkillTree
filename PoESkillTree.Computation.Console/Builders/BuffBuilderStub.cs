@@ -45,8 +45,6 @@ namespace PoESkillTree.Computation.Console.Builders
             return new BuffBuilderCollectionStub(stringRepresentation, resolver);
         }
 
-        public IStatBuilder CombinedLimit => CreateStat(This, o => $"{o} combined limit");
-
         public IStatBuilder Effect => CreateStat(This, o => $"Effect of {o}");
 
         public IStatBuilder AddStat(IStatBuilder stat) =>
@@ -113,6 +111,8 @@ namespace PoESkillTree.Computation.Console.Builders
                 (s, r) => new BuffBuilderCollectionStub(s, r),
                 source, targets,
                 (s, ts) => $"All buffs by {s} against {string.Join(" or ", ts)}");
+
+        public IStatBuilder CurseLimit => CreateStat("CurseLimit");
 
 
         private class ConfluxBuffBuilders : IConfluxBuffBuilders

@@ -205,11 +205,11 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "you can have one additional curse", 
-                    BaseAdd, 1, Buffs(target: Self).With(Keyword.Curse).CombinedLimit
+                    BaseAdd, 1, Buff.CurseLimit
                 },
                 {
                     "enemies can have # additional curse",
-                    BaseAdd, Value, Buffs(target: Enemy).With(Keyword.Curse).CombinedLimit
+                    BaseAdd, Value, Buff.CurseLimit.For(Enemy)
                 },
                 { "grants fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
                 { "gain elemental conflux", TotalOverride, 1, Buff.Conflux.Elemental.On(Self) },

@@ -72,7 +72,7 @@ namespace PoESkillTree.Computation.Data
             { BaseSet, Mines.CombinedInstances.Maximum, 5 },
             { BaseSet, Totems.CombinedInstances.Maximum, 1 },
             // - buffs
-            { BaseSet, Buffs(target: Self).With(Keyword.Curse).CombinedLimit, 1 },
+            { BaseSet, Buff.CurseLimit, 1 },
             // - movement speed
             { BaseSet, Stat.MovementSpeed.Maximum, 128 },
         };

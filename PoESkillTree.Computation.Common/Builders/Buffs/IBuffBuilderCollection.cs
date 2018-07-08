@@ -10,11 +10,6 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
     public interface IBuffBuilderCollection : IBuilderCollection<IBuffBuilder>
     {
         /// <summary>
-        /// Gets a stat representing the combined limit of active instances of the buffs in this collection.
-        /// </summary>
-        IStatBuilder CombinedLimit { get; }
-
-        /// <summary>
         /// Gets a stat representing the effect modifier that is applied to all buffs in this collection.
         /// </summary>
         IStatBuilder Effect { get; }

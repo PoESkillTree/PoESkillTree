@@ -89,6 +89,8 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         /// <paramref name="source"/>.
         /// </summary>
         IBuffBuilderCollection Buffs(IEntityBuilder source, params IEntityBuilder[] targets);
+
+        IStatBuilder CurseLimit { get; } 
     }
 
 
