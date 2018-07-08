@@ -28,12 +28,6 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         IStatBuilder AddStat(IStatBuilder stat);
 
         /// <summary>
-        /// Returns a new collection that includes all buffs in this collection except those originating from any
-        /// skill in <paramref name="skills"/>.
-        /// </summary>
-        IBuffBuilderCollection ExceptFrom(params ISkillBuilder[] skills);
-
-        /// <summary>
         /// Returns a new collection that includes all buffs in this collection that originate from any skill
         /// with the keyword <paramref name="keyword"/>.
         /// </summary>

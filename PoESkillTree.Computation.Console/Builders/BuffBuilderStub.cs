@@ -52,11 +52,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder AddStat(IStatBuilder stat) =>
             CreateStat(This, stat, (o1, o2) => $"{o2} added to buffs {o1}");
 
-        public IBuffBuilderCollection ExceptFrom(params ISkillBuilder[] skills) =>
-            (IBuffBuilderCollection) Create(
-                Construct, This, skills,
-                (o1, os) => $"{o1}.Where(was not gained from [{string.Join(", ", os)}])");
-
         public IBuffBuilderCollection With(IKeywordBuilder keyword) =>
             (IBuffBuilderCollection) Create(
                 Construct, This, keyword,
