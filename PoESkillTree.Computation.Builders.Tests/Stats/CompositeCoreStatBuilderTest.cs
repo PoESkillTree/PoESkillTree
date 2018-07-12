@@ -17,23 +17,21 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var multiResults = new[]
             {
-                new StatBuilderResult(new IStat[0], ModifierSource, Funcs.Identity),
-                new StatBuilderResult(new IStat[0], ModifierSource, Funcs.Identity),
+                new StatBuilderResult(new IStat[0], null, Funcs.Identity),
+                new StatBuilderResult(new IStat[0], null, Funcs.Identity),
             };
             var singleResults = new[]
             {
-                new StatBuilderResult(new IStat[0], ModifierSource, Funcs.Identity),
+                new StatBuilderResult(new IStat[0], null, Funcs.Identity),
             };
-            var multiCoreStatBuilder = Mock.Of<ICoreStatBuilder>(b => b.Build(default, ModifierSource) == multiResults);
+            var multiCoreStatBuilder = Mock.Of<ICoreStatBuilder>(b => b.Build(default) == multiResults);
             var singleCoreStatBuilder =
-                Mock.Of<ICoreStatBuilder>(b => b.Build(default, ModifierSource) == singleResults);
+                Mock.Of<ICoreStatBuilder>(b => b.Build(default) == singleResults);
             var sut = new CompositeCoreStatBuilder(multiCoreStatBuilder, singleCoreStatBuilder);
 
-            var results = sut.Build(default, ModifierSource).ToList();
+            var results = sut.Build(default).ToList();
 
             Assert.That(results, Has.Exactly(2).Items);
         }
-
-        private static readonly ModifierSource ModifierSource = new ModifierSource.Global();
     }
 }

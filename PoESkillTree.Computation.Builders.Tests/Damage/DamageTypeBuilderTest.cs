@@ -133,7 +133,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
             var sut = CreateSut(DamageType.Fire).And(unresolved);
 
             var resolved = sut.Resistance.Resolve(null);
-            var (stats, _, _) = resolved.Build(default, null).Single();
+            var (stats, _, _) = resolved.BuildToSingleResult();
 
             Assert.AreEqual("Fire.Resistance", stats[0].Identity);
             Assert.AreEqual("Chaos.Resistance", stats[1].Identity);
@@ -201,7 +201,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
         {
             var sut = CreateSut(DamageType.Fire);
 
-            var results = sut.Penetration.Build(default, null).ToList();
+            var results = sut.Penetration.Build(default).ToList();
 
             Assert.That(results, Has.Exactly(4).Items); // Restricted to hits
             var (stats, _, _) = results[0];
@@ -213,7 +213,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
         {
             var sut = CreateSut(DamageType.Fire);
 
-            var results = sut.Damage.Build(default, null).ToList();
+            var results = sut.Damage.Build(default).ToList();
 
             var (stats, _, _) = results[0];
             Assert.AreEqual("Fire.Damage.Attack.MainHand.Skill", stats[0].Identity);

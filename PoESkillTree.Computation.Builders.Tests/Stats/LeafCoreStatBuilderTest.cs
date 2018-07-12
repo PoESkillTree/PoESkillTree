@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var statFactory = Mock.Of<IStatFactory>(f => f.FromIdentity("test", default, typeof(int), null) == expected);
 
             var statBuilder = LeafCoreStatBuilder.FromIdentity(statFactory, "test", typeof(int));
-            var stats = statBuilder.Build(default, new ModifierSource.Global()).Single().Stats;
+            var stats = statBuilder.Build(default).Single().Stats;
 
             Assert.AreEqual(expected, stats.Single());
         }

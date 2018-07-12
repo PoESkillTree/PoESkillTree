@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -57,7 +56,7 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
 
-        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalSource) =>
-            new[] { new StatBuilderResult(new[] { new Stat(ToString()) }, originalSource, Funcs.Identity), };
+        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters) =>
+            new[] { new StatBuilderResult(new[] { new Stat(ToString()) }, parameters.ModifierSource, Funcs.Identity), };
     }
 }

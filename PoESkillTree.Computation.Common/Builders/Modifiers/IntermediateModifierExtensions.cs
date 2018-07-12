@@ -135,7 +135,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             }
 
             var (form, formValueConverter) = entry.Form.Build();
-            var buildParameters = new BuildParameters(modifierSourceEntity, form);
+            var buildParameters = new BuildParameters(originalSource, modifierSourceEntity, form);
 
             var statBuilder = entry.Stat;
             if (entry.Condition != null)
@@ -143,7 +143,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
                 statBuilder = statBuilder.WithCondition(entry.Condition);
             }
             statBuilder = modifier.StatConverter(statBuilder);
-            var statBuilderResults = statBuilder.Build(buildParameters, originalSource);
+            var statBuilderResults = statBuilder.Build(buildParameters);
 
             foreach (var (stats, source, statValueConverter) in statBuilderResults)
             {

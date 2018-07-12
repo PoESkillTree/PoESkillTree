@@ -2,6 +2,7 @@
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
@@ -21,10 +22,12 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         public static ICoreStatBuilder CreateStatBuilder(IStat stat, IEntityBuilder entityBuilder = null) =>
             new LeafCoreStatBuilder(_ => stat, entityBuilder);
 
-        public static IStat BuildToSingleStat(this IStatBuilder @this) =>
-            @this.BuildToSingleResult().Stats.Single();
+        public static IStat BuildToSingleStat(this IStatBuilder @this,
+            ModifierSource modifierSource = null, Entity entity = default) =>
+            @this.BuildToSingleResult(modifierSource, entity).Stats.Single();
 
-        public static StatBuilderResult BuildToSingleResult(this IStatBuilder @this) =>
-            @this.Build(default, null).Single();
+        public static StatBuilderResult BuildToSingleResult(this IStatBuilder @this,
+            ModifierSource modifierSource = null, Entity entity = default) =>
+            @this.Build(new BuildParameters(modifierSource, entity, default)).Single();
     }
 }

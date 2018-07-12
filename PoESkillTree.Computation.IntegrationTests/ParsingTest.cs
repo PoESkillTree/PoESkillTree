@@ -6,6 +6,7 @@ using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Forms;
@@ -184,7 +185,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         private static IEnumerable<Modifier> CreateModifier(
             IStatBuilder statBuilder, IFormBuilder formBuilder, IValueBuilder valueBuilder)
         {
-            var statBuilderResults = statBuilder.Build(default, new ModifierSource.Global());
+            var statBuilderResults = statBuilder.Build(default(BuildParameters).With(new ModifierSource.Global()));
             var (form, formValueConverter) = formBuilder.Build();
             foreach (var (stats, source, statValueConverter) in statBuilderResults)
             {

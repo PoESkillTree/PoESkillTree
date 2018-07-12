@@ -40,10 +40,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
             new LeafCoreStatBuilder(_statFactory, entityBuilder);
 
-        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)
+        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters)
         {
             var stats = BuildStats(parameters);
-            return new[] { new StatBuilderResult(stats, originalModifierSource, Funcs.Identity) };
+            return new[] { new StatBuilderResult(stats, parameters.ModifierSource, Funcs.Identity) };
         }
 
         private IReadOnlyList<IStat> BuildStats(BuildParameters parameters)

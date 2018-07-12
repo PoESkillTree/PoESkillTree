@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Effects
             var sut = CreateSut();
 
             var addedStat = sut.AddStat(statBuilder);
-            var (stats, _, valueConverter) = addedStat.Build(default, null).Single();
+            var (stats, _, valueConverter) = addedStat.BuildToSingleResult();
             var actualStat = stats.Single().Identity;
             var actualValue = valueConverter(valueBuilder).Build().Calculate(context);
 

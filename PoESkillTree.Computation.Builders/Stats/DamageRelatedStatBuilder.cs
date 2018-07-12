@@ -95,8 +95,8 @@ namespace PoESkillTree.Computation.Builders.Stats
             With(s => forms.Select(f => StatFactory.ApplyModifiersToAilmentDamage(s, f)));
 
         public override IEnumerable<StatBuilderResult>
-            Build(BuildParameters parameters, ModifierSource originalModifierSource) =>
-            from baseResult in base.Build(parameters, originalModifierSource)
+            Build(BuildParameters parameters) =>
+            from baseResult in base.Build(parameters)
             from result in StatConcretizer.Concretize(parameters, baseResult)
             select new StatBuilderResult(result.Stats.SelectMany(_statConverter).ToList(), result.ModifierSource,
                 result.ValueConverter);

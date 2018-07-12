@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
             var result = sut.HitWith(damageTypeBuilder).On.Build();
             var statBuilder = result.StatConverter(InputStat);
 
-            Assert.Throws<ParseException>(() => statBuilder.Build(default, null).Consume());
+            Assert.Throws<ParseException>(() => statBuilder.Build(default).Consume());
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
             var result = sut.SpendMana(valueBuilder).On.Build();
             var statBuilder = result.StatConverter(InputStat);
 
-            Assert.Throws<ParseException>(() => statBuilder.Build(default, null).Consume());
+            Assert.Throws<ParseException>(() => statBuilder.Build(default).Consume());
         }
 
         private static ActionBuilders CreateSut() =>

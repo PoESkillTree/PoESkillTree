@@ -58,8 +58,14 @@ namespace PoESkillTree.Computation.Common
         /// </remarks>
         public ModifierSource CanonicalSource { get; }
 
+        public static bool operator ==(ModifierSource left, ModifierSource right) =>
+            left?.Equals(right) ?? right is null;
+
+        public static bool operator !=(ModifierSource left, ModifierSource right) =>
+            !(left == right);
+
         public sealed override bool Equals(object obj) => 
-            (obj == this) || (obj is ModifierSource other && Equals(other));
+            ReferenceEquals(obj, this) || (obj is ModifierSource other && Equals(other));
 
         public virtual bool Equals(ModifierSource other) =>
             GetType() == other?.GetType();

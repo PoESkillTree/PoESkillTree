@@ -252,7 +252,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var sut = CreateSut();
 
             var values = sut.With(DamageSource.Spell)
-                .Build(default, ModifierSource)
+                .Build(default)
                 .Select(r => r.ValueConverter(valueBuilder))
                 .Select(b => b.Build().Calculate(context))
                 .ToList();
@@ -283,7 +283,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
                 canApplyToSkillDamage: true);
 
             var values = sut.With(DamageSource.Spell)
-                .Build(default, ModifierSource)
+                .Build(default)
                 .Select(r => r.ValueConverter(valueBuilder).Build()).ToList();
 
             Assert.Throws<ParseException>(() => values[1].Calculate(context));
@@ -352,8 +352,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             StatBuilderUtils.DamageRelatedFromIdentity(new StatFactory(), identity, typeof(double),
                 canApplyToSkillDamage, canApplyToAilmentDamage);
 
-        private static readonly ModifierSource ModifierSource = new ModifierSource.Global();
-
         private static readonly IReadOnlyList<DamageSource> DamageSources =
             Enums.GetValues<DamageSource>().ToList();
 
@@ -371,7 +369,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         private static IReadOnlyList<IStat>
             BuildToStats(IStatBuilder statBuilder, int expectedResultCount)
         {
-            var results = statBuilder.Build(default, ModifierSource).Select(r => r.Stats).ToList();
+            var results = statBuilder.Build(default).Select(r => r.Stats).ToList();
             Assert.That(results, Has.Exactly(expectedResultCount).Items);
             return results.Flatten().ToList();
         }

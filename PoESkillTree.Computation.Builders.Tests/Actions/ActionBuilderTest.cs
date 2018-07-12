@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Actions;
@@ -156,7 +155,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
 
             var result = sut.By(entityBuilder).On.Build();
             var statBuilder = result.StatConverter(InputStat);
-            IReadOnlyList<IStat> stats = statBuilder.Build(default, null).Single().Stats;
+            IReadOnlyList<IStat> stats = statBuilder.BuildToSingleResult().Stats;
 
             Assert.That(stats, Has.Exactly(2).Items);
             Assert.AreEqual("Character.stat.On(test).By(Enemy)", stats[0].ToString());

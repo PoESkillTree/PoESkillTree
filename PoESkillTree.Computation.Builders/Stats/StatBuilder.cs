@@ -50,7 +50,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         private IValue BuildVallue(BuildParameters parameters)
         {
-            var stats = Build(parameters, null).Select(r => r.Stats).Flatten().ToList();
+            var stats = Build(parameters).Select(r => r.Stats).Flatten().ToList();
             if (stats.Count != 1)
                 throw new ParseException("Can only access the value of stat builders that represent a single stat");
 
@@ -88,8 +88,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder CombineWith(IStatBuilder other) =>
             WithUntyped(new CompositeCoreStatBuilder(new StatBuilderAdapter(this), new StatBuilderAdapter(other)));
 
-        public virtual IEnumerable<StatBuilderResult> Build(
-            BuildParameters parameters, ModifierSource originalModifierSource) =>
-            CoreStatBuilder.Build(parameters, originalModifierSource);
+        public virtual IEnumerable<StatBuilderResult> Build(BuildParameters parameters) =>
+            CoreStatBuilder.Build(parameters);
     }
 }

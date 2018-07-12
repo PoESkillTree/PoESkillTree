@@ -37,10 +37,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
             new StatBuilderAdapter(_statBuilder.For(entityBuilder), _conditionBuilder, _statConverter);
 
-        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)
+        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters)
         {
             var (statBuilder, conditionValueConverter) = BuildCondition(parameters);
-            var statBuilderResults = statBuilder.Build(parameters, originalModifierSource);
+            var statBuilderResults = statBuilder.Build(parameters);
             foreach (var (stats, modifierSource, statValueConverter) in statBuilderResults)
             {
                 var convertedStats = stats.Select(_statConverter).ToList();

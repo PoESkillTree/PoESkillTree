@@ -83,6 +83,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// <summary>
         /// Builds this instance into a list of <see cref="StatBuilderResult"/>s.
         /// </summary>
-        IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource);
+        IEnumerable<StatBuilderResult> Build(BuildParameters parameters);
     }
 }

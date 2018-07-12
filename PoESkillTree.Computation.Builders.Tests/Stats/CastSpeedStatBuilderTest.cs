@@ -17,7 +17,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var sut = new CastSpeedStatBuilder(statFactoryMock.Object);
 
             var withKeyword = sut.With(new KeywordBuilder(Keyword.Projectile));
-            withKeyword.Build(default, null).Consume();
+            withKeyword.Build(default).Consume();
 
             statFactoryMock.Verify(f => f.ActiveSkillPartCastSpeedHasKeyword(default, Keyword.Projectile));
         }

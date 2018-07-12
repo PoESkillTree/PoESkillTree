@@ -6,6 +6,7 @@ using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Skills;
@@ -60,13 +61,15 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
         {
             var slot = ItemSlot.Amulet;
             var expected = new ModifierSource.Local.Item(slot);
+            var expectedParameters = new BuildParameters(expected, default, default);
             var result = new StatBuilderResult(new IStat[0], expected, null);
-            var inStat = Mock.Of<IStatBuilder>(b => b.Build(default, expected) == new[] { result });
+            var inStat = Mock.Of<IStatBuilder>(b => b.Build(expectedParameters) == new[] { result });
             var sut = CreateSut();
 
             var condition = sut.BaseValueComesFrom(slot);
             var stat = condition.Build().StatConverter(inStat);
-            var (_, actual, _) = stat.Build(default, new ModifierSource.Global()).Single();
+            var (_, actual, _) =
+                stat.Build(new BuildParameters(new ModifierSource.Global(), default, default)).Single();
             
             Assert.AreEqual(expected, actual);
         }

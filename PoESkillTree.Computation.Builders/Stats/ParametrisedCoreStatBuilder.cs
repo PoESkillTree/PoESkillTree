@@ -37,9 +37,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
             new ParametrisedCoreStatBuilder<TParameter>(_inner.WithEntity(entityBuilder), _parameter, _statConverter);
 
-        public IEnumerable<StatBuilderResult>
-            Build(BuildParameters parameters, ModifierSource originalModifierSource) =>
-            from result in _inner.Build(parameters, originalModifierSource)
+        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters) =>
+            from result in _inner.Build(parameters)
             let stats = result.Stats.SelectMany(s => _statConverter(_parameter, s))
             select new StatBuilderResult(stats.ToList(), result.ModifierSource, result.ValueConverter);
     }
@@ -70,9 +69,8 @@ namespace PoESkillTree.Computation.Builders.Stats
             new ParametrisedCoreStatBuilder<T1, T2>(_inner.WithEntity(entityBuilder), _parameter1, _parameter2,
                 _statConverter);
 
-        public IEnumerable<StatBuilderResult>
-            Build(BuildParameters parameters, ModifierSource originalModifierSource) =>
-            from result in _inner.Build(parameters, originalModifierSource)
+        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters) =>
+            from result in _inner.Build(parameters)
             let stats = result.Stats.SelectMany(s => _statConverter(_parameter1, _parameter2, s))
             select new StatBuilderResult(stats.ToList(), result.ModifierSource, result.ValueConverter);
     }

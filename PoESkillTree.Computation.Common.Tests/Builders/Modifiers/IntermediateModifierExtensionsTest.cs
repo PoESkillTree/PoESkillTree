@@ -280,7 +280,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         public void BuildReturnsCorrectModifiers()
         {
             var conditionBuilder = Mock.Of<IConditionBuilder>();
-            var buildParameters = new BuildParameters(Entity, Form.More);
+            var buildParameters = new BuildParameters(Source, Entity, Form.More);
 
             var value = Mock.Of<IValue>();
             var valueBuilder = Mock.Of<IValueBuilder>();
@@ -294,7 +294,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
                 v == convertedValueBuilder ? statConvertedValueBuilder : v;
             var statBuilderResult = new StatBuilderResult(stats, source, StatConvertValue);
             var convertedStatBuilder =
-                Mock.Of<IStatBuilder>(b => b.Build(buildParameters, Source) == new[] { statBuilderResult });
+                Mock.Of<IStatBuilder>(b => b.Build(buildParameters) == new[] { statBuilderResult });
             var statBuilderWithCondition = Mock.Of<IStatBuilder>();
             var statBuilder = Mock.Of<IStatBuilder>(s => s.WithCondition(conditionBuilder) == statBuilderWithCondition);
 

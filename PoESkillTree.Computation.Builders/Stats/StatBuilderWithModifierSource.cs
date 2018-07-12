@@ -28,8 +28,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
             Select(b => b.WithEntity(entityBuilder));
 
-        public IEnumerable<StatBuilderResult>
-            Build(BuildParameters parameters, ModifierSource originalModifierSource) =>
-            _statBuilder.Build(parameters, _modifierSource);
+        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters) =>
+            _statBuilder.Build(parameters.With(_modifierSource));
     }
 }

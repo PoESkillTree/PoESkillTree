@@ -4,6 +4,7 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Buffs;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
+using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 
@@ -19,7 +20,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var sut = CreateSut();
 
             var on = sut.On(entityBuilder);
-            var stats = on.Build(default, null).Single().Stats;
+            var stats = on.BuildToSingleResult().Stats;
 
             Assert.That(stats, Has.Exactly(3).Items);
             Assert.AreEqual("Enemy.test.Active", stats[0].ToString());
@@ -46,7 +47,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var sut = CreateSut();
 
             var addStat = sut.AddStat(statBuilder);
-            var (stats, _, valueConverter) = addStat.Build(default, null).Single();
+            var (stats, _, valueConverter) = addStat.BuildToSingleResult();
             var actualStat = stats.Single().Identity;
             var actualValue = valueConverter(valueBuilder).Build().Calculate(context);
 
@@ -69,7 +70,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var sut = CreateSut();
 
             var addStat = sut.AddStat(statBuilder);
-            var (stats, _, valueConverter) = addStat.Build(default, null).Single();
+            var (stats, _, valueConverter) = addStat.BuildToSingleResult();
             var actualStat = stats.Single().Identity;
             var actualValue = valueConverter(valueBuilder).Build().Calculate(context);
 

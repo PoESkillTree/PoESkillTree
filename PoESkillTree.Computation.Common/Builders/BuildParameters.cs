@@ -10,11 +10,17 @@
     /// </remarks>
     public struct BuildParameters
     {
-        public BuildParameters(Entity modifierSourceEntity, Form modifierForm)
+        public BuildParameters(ModifierSource modifierSource, Entity modifierSourceEntity, Form modifierForm)
         {
+            ModifierSource = modifierSource;
             ModifierSourceEntity = modifierSourceEntity;
             ModifierForm = modifierForm;
         }
+
+        /// <summary>
+        /// The source of the modifier.
+        /// </summary>
+        public ModifierSource ModifierSource { get; }
 
         /// <summary>
         /// The entity the modifier comes from.
@@ -26,13 +32,20 @@
         /// </summary>
         public Form ModifierForm { get; }
 
+        public BuildParameters With(ModifierSource modifierSource) =>
+            new BuildParameters(modifierSource, ModifierSourceEntity, ModifierForm);
+
+        public BuildParameters With(Entity entity) =>
+            new BuildParameters(ModifierSource, entity, ModifierForm);
+
         public override bool Equals(object obj) =>
             obj is BuildParameters other && Equals(other);
 
         private bool Equals(BuildParameters other) =>
-            ModifierSourceEntity == other.ModifierSourceEntity && ModifierForm == other.ModifierForm;
+            ModifierSource == other.ModifierSource && ModifierSourceEntity == other.ModifierSourceEntity &&
+            ModifierForm == other.ModifierForm;
 
         public override int GetHashCode() =>
-            (ModifierSourceEntity, ModifierForm).GetHashCode();
+            (ModifierSource, ModifierSourceEntity, ModifierForm).GetHashCode();
     }
 }

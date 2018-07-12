@@ -32,10 +32,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
             new StatBuilderWithValueConverter(_inner.WithEntity(entityBuilder), _buildValue, _combineValues);
 
-        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters,
-            ModifierSource originalModifierSource)
+        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters)
         {
-            return _inner.Build(parameters, originalModifierSource)
+            return _inner.Build(parameters)
                 .Select(r =>
                     new StatBuilderResult(r.Stats, r.ModifierSource, r.ValueConverter.AndThen(ConvertValue)));
 

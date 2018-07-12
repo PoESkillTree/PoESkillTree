@@ -35,10 +35,10 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
                 new StatBuilderResult(new IStat[0], new ModifierSource.Global(), Funcs.Identity),
                 new StatBuilderResult(new IStat[0], new ModifierSource.Local.Given(), Funcs.Identity),
             };
-            var statBuilder = Mock.Of<IStatBuilder>(b => b.Build(default, null) == results);
+            var statBuilder = Mock.Of<IStatBuilder>(b => b.Build(default) == results);
             var sut = new StatBuilderAdapter(statBuilder);
 
-            var actual = sut.Build(default, null);
+            var actual = sut.Build(default);
 
             Assert.That(actual, Has.Exactly(2).Items);
         }
@@ -51,12 +51,12 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             {
                 new StatBuilderResult(new IStat[0], new ModifierSource.Global(), Funcs.Identity),
             };
-            var statBuilder = Mock.Of<IStatBuilder>(b => b.Build(default, null) == results);
+            var statBuilder = Mock.Of<IStatBuilder>(b => b.Build(default) == results);
             var conditionBuilder =
                 Mock.Of<IConditionBuilder>(b => b.Build(default) == new ConditionBuilderResult(null, null));
             var sut = new StatBuilderAdapter(statBuilder, conditionBuilder);
 
-            var (_, _, valueConverter) = sut.Build(default, null).ToList()[0];
+            var (_, _, valueConverter) = sut.Build(default).ToList()[0];
             var actual = valueConverter(expected);
 
             Assert.AreEqual(expected, actual);

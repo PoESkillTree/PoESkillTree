@@ -19,7 +19,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var sut = CreateSut();
 
             var taken = sut.Taken.With(DamageSource.Spell);
-            var results = taken.Build(default, null).ToList();
+            var results = taken.Build(default).ToList();
             
             Assert.That(results, Has.One.Items);
             var (stats, _, _) = results.Single();
@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var context = SetupKeywordContext(keyword);
             var sut = CreateSut();
 
-            var results = sut.WithHits.With(keywordBuilder).Build(default, null).ToList();
+            var results = sut.WithHits.With(keywordBuilder).Build(default).ToList();
 
             Assert.That(results, Has.Exactly(4).Items);
             var attackValue = results[0].ValueConverter(valueBuilder).Build().Calculate(context);
@@ -55,7 +55,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var context = SetupKeywordContext(keyword);
             var sut = CreateSut();
 
-            var results = sut.WithHits.NotWith(keywordBuilder).Build(default, null).ToList();
+            var results = sut.WithHits.NotWith(keywordBuilder).Build(default).ToList();
 
             Assert.That(results, Has.Exactly(4).Items);
             var attackValue = results[0].ValueConverter(valueBuilder).Build().Calculate(context);
@@ -75,7 +75,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var sut = CreateSut();
 
             var resolved = sut.WithHits.With(unresolvedKeywordBuilder).Resolve(null);
-            var results = resolved.Build(default, null).ToList();
+            var results = resolved.Build(default).ToList();
 
             Assert.That(results, Has.Exactly(4).Items);
             var attackValue = results[0].ValueConverter(valueBuilder).Build().Calculate(context);

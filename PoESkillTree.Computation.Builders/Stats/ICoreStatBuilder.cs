@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -11,6 +10,6 @@ namespace PoESkillTree.Computation.Builders.Stats
     {
         ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder);
 
-        IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource);
+        IEnumerable<StatBuilderResult> Build(BuildParameters parameters);
     }
 }

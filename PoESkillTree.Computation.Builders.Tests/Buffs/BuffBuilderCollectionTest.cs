@@ -73,7 +73,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var keyword = KeywordBuilder(2);
             var sut = CreateSut(1);
 
-            var results = sut.With(keyword).Effect.Build(default, null);
+            var results = sut.With(keyword).Effect.Build(default);
 
             Assert.IsEmpty(results);
         }

@@ -4,7 +4,6 @@ using System.Linq;
 using PoESkillTree.Common.Utils;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -37,7 +36,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
             new BuffCoreStatBuilder(_buffs, _statFactory.AndThen(b => b.For(entityBuilder)), _restrictionsBuilder);
 
-        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)
+        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters)
         {
             var restrictions = _restrictionsBuilder.Build();
             var selectedBuffs = _buffs.Where(restrictions.AllowsBuff).ToList();
@@ -46,7 +45,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
             return selectedBuffs
                 .Select(b => _statFactory(b.Buff))
                 .Aggregate((l, r) => l.CombineWith(r))
-                .Build(parameters, originalModifierSource);
+                .Build(parameters);
         }
     }
 }

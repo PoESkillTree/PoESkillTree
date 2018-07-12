@@ -19,7 +19,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Effects
             var sut = new AilmentBuilder(new StatFactory(), Ailment.Bleed);
 
             var statBuilder = sut.Source(damageTypes);
-            var results = statBuilder.Build(default, null).ToList();
+            var results = statBuilder.Build(default).ToList();
 
             Assert.That(results, Has.One.Items);
             var stats = results.Single().Stats;

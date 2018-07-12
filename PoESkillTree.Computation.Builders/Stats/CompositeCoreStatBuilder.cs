@@ -26,17 +26,18 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
             Select(i => i.WithEntity(entityBuilder));
 
-        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)
+        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters)
         {
             IEnumerable<StatBuilderResult> seed = new[]
             {
-                new StatBuilderResult(new IStat[0], originalModifierSource, Funcs.Identity)
+                new StatBuilderResult(new IStat[0], parameters.ModifierSource, Funcs.Identity)
             };
             return _items.Aggregate(seed, Aggregate);
 
             IEnumerable<StatBuilderResult> Aggregate(IEnumerable<StatBuilderResult> previous, ICoreStatBuilder item) =>
                 from p in previous
-                from c in item.Build(parameters, p.ModifierSource).ToList()
+                let ps = parameters.With(p.ModifierSource)
+                from c in item.Build(ps).ToList()
                 let stats = p.Stats.Concat(c.Stats).ToList()
                 let source = c.ModifierSource
                 let valueConverter = p.ValueConverter.AndThen(c.ValueConverter)
