@@ -98,6 +98,7 @@ namespace PoESkillTree.Computation.Common
         public override NodeValue? Calculate(IValueCalculationContext context) =>
             _values.Select(v => v.Calculate(context))
                 .Select(v => new NodeValue(v.IsTrue() ? 1 : 0))
+                .DefaultIfEmpty()
                 .Sum();
     }
 }

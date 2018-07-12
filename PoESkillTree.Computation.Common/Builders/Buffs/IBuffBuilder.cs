@@ -25,5 +25,10 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         /// Gets an action that occurs when Self gains this buff.
         /// </summary>
         IActionBuilder Action { get; }
+
+        /// <summary>
+        /// Builds this buff to its identity string.
+        /// </summary>
+        string Build();
     }
 }

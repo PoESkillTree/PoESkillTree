@@ -70,6 +70,7 @@
     <Compile Include="Behaviors\AilmentDamageUncappedSubtotalValueTest.cs" />
     <Compile Include="Behaviors\RegenUncappedSubtotalValueTest.cs" />
     <Compile Include="Buffs\BuffBuilderCollectionTest.cs" />
+    <Compile Include="Buffs\BuffBuildersTest.cs" />
     <Compile Include="Buffs\BuffBuilderTest.cs" />
     <Compile Include="BuilderExtensions.cs" />
     <Compile Include="BuildersHelper.cs" />

@@ -7,6 +7,11 @@ namespace PoESkillTree.Computation.Builders.Buffs
 {
     public class BuffBuilderWithKeywords : IResolvable<BuffBuilderWithKeywords>
     {
+        public BuffBuilderWithKeywords(IBuffBuilder buff, params Keyword[] keywords)
+            : this(buff, (IReadOnlyList<Keyword>) keywords)
+        {
+        }
+
         public BuffBuilderWithKeywords(IBuffBuilder buff, IReadOnlyList<Keyword> keywords)
         {
             Buff = buff;

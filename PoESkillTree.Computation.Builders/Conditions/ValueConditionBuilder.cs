@@ -13,6 +13,12 @@ namespace PoESkillTree.Computation.Builders.Conditions
         private readonly Func<BuildParameters, IValue> _buildValue;
         private readonly Func<ResolveContext, IConditionBuilder> _resolver;
 
+        public ValueConditionBuilder(Func<BuildParameters, IValue> buildValue)
+        {
+            _buildValue = buildValue;
+            _resolver = _ => this;
+        }
+
         public ValueConditionBuilder(
             Func<BuildParameters, IValue> buildValue, Func<ResolveContext, IConditionBuilder> resolver)
         {

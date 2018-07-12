@@ -149,8 +149,11 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var contextMock = new Mock<IValueCalculationContext>();
             foreach (var activeBuff in activeBuffs)
             {
-                var activeStat = new Stat($"b{activeBuff}.Active");
+                var activeStat = StatFactory.BuffIsActive(default, $"b{activeBuff}");
                 contextMock.Setup(c => c.GetValue(activeStat, NodeType.Total, PathDefinition.MainPath))
+                    .Returns((NodeValue?) true);
+                var sourceStat = StatFactory.BuffSourceIs(default, $"b{activeBuff}", default);
+                contextMock.Setup(c => c.GetValue(sourceStat, NodeType.Total, PathDefinition.MainPath))
                     .Returns((NodeValue?) true);
             }
             var sut = CreateSut(3);
@@ -170,8 +173,11 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var contextMock = new Mock<IValueCalculationContext>();
             foreach (var activeBuff in activeBuffs)
             {
-                var activeStat = new Stat($"b{activeBuff}.Active");
+                var activeStat = StatFactory.BuffIsActive(default, $"b{activeBuff}");
                 contextMock.Setup(c => c.GetValue(activeStat, NodeType.Total, PathDefinition.MainPath))
+                    .Returns((NodeValue?) true);
+                var sourceStat = StatFactory.BuffSourceIs(default, $"b{activeBuff}", default);
+                contextMock.Setup(c => c.GetValue(sourceStat, NodeType.Total, PathDefinition.MainPath))
                     .Returns((NodeValue?) true);
             }
             var sut = CreateSut(3);
@@ -188,9 +194,11 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         {
             var keyword = KeywordBuilder(2);
             var unresolved = Mock.Of<IKeywordBuilder>(b => b.Resolve(null) == keyword);
-            var activeStat = new Stat("b0.Active");
+            var activeStat = StatFactory.BuffIsActive(default, "b0");
+            var sourceStat = StatFactory.BuffSourceIs(default, "b0", default);
             var context = Mock.Of<IValueCalculationContext>(c => 
-                c.GetValue(activeStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true);
+                c.GetValue(activeStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true &&
+                c.GetValue(sourceStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true);
             var sut = CreateSut(1);
 
             var any = sut.With(unresolved).Any();
@@ -214,7 +222,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             CreateSut(buffs.Select(b => new BuffBuilderWithKeywords(b, new Keyword[0])));
 
         private static BuffBuilderCollection CreateSut(IEnumerable<BuffBuilderWithKeywords> buffs) =>
-            new BuffBuilderCollection(StatFactory, buffs.ToList());
+            new BuffBuilderCollection(StatFactory, buffs.ToList(), new ModifierSourceEntityBuilder(),
+                new ModifierSourceEntityBuilder());
 
         private static readonly StatFactory StatFactory = new StatFactory();
 

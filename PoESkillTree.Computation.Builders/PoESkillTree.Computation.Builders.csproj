@@ -76,6 +76,7 @@
     <Compile Include="Behaviors\ValueTransformation.cs" />
     <Compile Include="Buffs\BuffBuilder.cs" />
     <Compile Include="Buffs\BuffBuilderCollection.cs" />
+    <Compile Include="Buffs\BuffBuilders.cs" />
     <Compile Include="Buffs\BuffBuilderWithKeywords.cs" />
     <Compile Include="Buffs\BuffCoreStatBuilder.cs" />
     <Compile Include="Buffs\BuffRestrictions.cs" />

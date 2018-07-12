@@ -24,6 +24,8 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IActionBuilder Action =>
             Create<IActionBuilder, IEffectBuilder>(ActionBuilderStub.BySelf, this, b => $"{b} application");
+
+        public string Build() => throw new NotImplementedException();
     }
 
 

@@ -35,6 +35,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat ActiveSkillPartCastSpeedHasKeyword(Entity entity, Keyword keyword);
         IStat ActiveSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource);
 
+        IStat BuffEffect(Entity entity, string buffIdentity);        
+        IStat BuffIsActive(Entity entity, string buffIdentity);
+        IStat BuffSourceIs(Entity target, string buffIdentity, Entity source);
+
         IStat Damage(Entity entity, DamageType damageType);
         IStat ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification);
         IStat ApplyModifiersToSkillDamage(IStat stat, DamageSource damageSource, Form form);

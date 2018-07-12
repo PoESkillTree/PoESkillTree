@@ -74,13 +74,14 @@ namespace PoESkillTree.Computation.Builders.Buffs
         }
 
         private IStat BuildEffectStat(Entity entity) =>
-            StatFactory.FromIdentity($"{Identity}.Effect", entity, typeof(int));
+            StatFactory.BuffEffect(entity, Identity);
 
         private IStat BuildBuffActiveStat(Entity entity) =>
-            StatFactory.FromIdentity($"{Identity}.BuffActive", entity, typeof(bool));
+            StatFactory.BuffIsActive(entity, Identity);
 
         private IStat BuildBuffSourceStat(Entity modifierSourceEntity, Entity entity) =>
-            StatFactory.FromIdentity($"{Identity}.BuffSourceIs({modifierSourceEntity})", entity,
-                typeof(bool));
+            StatFactory.BuffSourceIs(entity, Identity, modifierSourceEntity);
+
+        public string Build() => Identity;
     }
 }
