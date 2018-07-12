@@ -47,9 +47,9 @@ namespace PoESkillTree.Computation.Data
                 { "per grand spectrum", PerStat(stat: Stat.GrandSpectrumJewelsSocketed) },
                 { "per level", PerStat(Stat.Level) },
                 // buffs
-                { "per buff on you", Buffs(target: Self).Count() },
-                { "per curse on you", Buffs(target: Self).With(Keyword.Curse).Count() },
-                { "for each curse on that enemy,", Buffs(target: Enemy).With(Keyword.Curse).Count() },
+                { "per buff on you", Buffs(targets: Self).Count() },
+                { "per curse on you", Buffs(targets: Self).With(Keyword.Curse).Count() },
+                { "for each curse on that enemy,", Buffs(targets: Enemy).With(Keyword.Curse).Count() },
                 // ailments
                 { "for each poison on the enemy", Ailment.Poison.InstancesOn(Enemy).Value },
                 { "per poison on enemy", Ailment.Poison.InstancesOn(Enemy).Value },

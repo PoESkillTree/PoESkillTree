@@ -199,7 +199,7 @@ namespace PoESkillTree.Computation.Data
                     Buffs(Entity.Minion).With(Keyword.Golem, Elemental).Effect
                 },
                 { "effect of your curses", Buffs(Self).With(Keyword.Curse).Effect },
-                { "effect of curses on you", Buffs(target: Self).With(Keyword.Curse).Effect },
+                { "effect of curses on you", Buffs(targets: Self).With(Keyword.Curse).Effect },
                 { "effect of non-curse auras you cast", Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).Effect },
                 { "chance to fortify", Buff.Fortify.ChanceOn(Self) },
                 { "effect of fortify on you", Buff.Fortify.Effect },

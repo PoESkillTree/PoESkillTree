@@ -49,7 +49,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "if you've killed a cursed enemy recently",
-                    And(Kill.Recently, Buffs(target: Enemy).With(Keyword.Curse).Any())
+                    And(Kill.Recently, Buffs(targets: Enemy).With(Keyword.Curse).Any())
                 },
                 {
                     "if you or your totems have killed recently",
@@ -160,11 +160,11 @@ namespace PoESkillTree.Computation.Data
                 { "from taunted enemies", Buff.Taunt.IsOn(Enemy) },
                 {
                     "you and allies affected by your auras have",
-                    Or(For(Self), And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
+                    Or(For(Self), And(For(Ally), Buffs(targets: Ally).With(Keyword.Aura).Any()))
                 },
                 {
                     "you and allies deal while affected by auras you cast",
-                    Or(For(Self), And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
+                    Or(For(Self), And(For(Ally), Buffs(targets: Ally).With(Keyword.Aura).Any()))
                 },
                 // ailments
                 { "while ({AilmentMatchers})", Reference.AsAilment.IsOn(Self) },

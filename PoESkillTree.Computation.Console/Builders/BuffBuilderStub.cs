@@ -6,7 +6,6 @@ using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Common.Builders.Values;
 using static PoESkillTree.Computation.Console.Builders.BuilderFactory;
 
 namespace PoESkillTree.Computation.Console.Builders
@@ -78,35 +77,18 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IConfluxBuffBuilders Conflux => new ConfluxBuffBuilders();
 
-        public IFlagStatBuilder Temporary(IValueBuilder period, IValueBuilder uptime, IStatBuilder gainedStat) =>
-            CreateFlagStat(period, uptime, gainedStat,
-                (o1, o2, o3) => $"Every {o1} seconds, gain {o3} for {o2} seconds");
+        public IStatBuilder Temporary(IStatBuilder gainedStat) =>
+            CreateFlagStat(gainedStat, o => $"Every x seconds, gain {o} for y seconds");
 
-        public IFlagStatBuilder Temporary<T>(IValueBuilder period, IValueBuilder uptime, IBuffBuilder buff, T condition)
-            where T : struct, Enum =>
-            CreateFlagStat(period, uptime, (IEffectBuilder) buff,
-                (o1, o2, o3) => $"Every {o1} seconds, gain {o3} for {o2} seconds " +
-                                $"(as part of the rotation {typeof(T)} when {condition})");
+        public IStatBuilder Temporary<T>(IBuffBuilder buff, T condition) where T : struct, Enum =>
+            CreateFlagStat((IEffectBuilder) buff,
+                o => $"Every x seconds, gain {o} for y seconds " +
+                     $"(as part of the rotation {typeof(T)} when {condition})");
 
         public IStatBuilder Aura(IStatBuilder gainedStat, params IEntityBuilder[] affectedEntites) =>
             CreateStat(gainedStat, affectedEntites, (o1, os) => $"{o1} as Aura affecting [{string.Join(", ", os)}]");
 
-        public IBuffBuilderCollection Buffs(IEntityBuilder source = null, IEntityBuilder target = null)
-        {
-            string StringRepresentation(IEntityBuilder s, IEntityBuilder t)
-            {
-                var sStr = s is null ? "" : $" by {s}";
-                var tStr = t is null ? "" : $" against {t}";
-                return $"All buffs{sStr}{tStr}";
-            }
-
-            return (IBuffBuilderCollection)
-                Create<IBuilderCollection, IEntityBuilder, IEntityBuilder>(
-                    (s, r) => new BuffBuilderCollectionStub(s, r),
-                    source, target, StringRepresentation);
-        }
-
-        public IBuffBuilderCollection Buffs(IEntityBuilder source, params IEntityBuilder[] targets) =>
+        public IBuffBuilderCollection Buffs(IEntityBuilder source = null, params IEntityBuilder[] targets) =>
             (IBuffBuilderCollection) Create<IBuilderCollection, IEntityBuilder, IEntityBuilder>(
                 (s, r) => new BuffBuilderCollectionStub(s, r),
                 source, targets,

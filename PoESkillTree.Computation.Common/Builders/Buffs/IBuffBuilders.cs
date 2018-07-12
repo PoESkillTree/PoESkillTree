@@ -1,7 +1,6 @@
 using System;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Common.Builders.Buffs
 {
@@ -56,20 +55,17 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         IConfluxBuffBuilders Conflux { get; }
 
         /// <summary>
-        /// Returns a flag stat indicating whether Self currently gains <paramref name="gainedStat"/> as a buff from
-        /// Self. Self gains the buff every <paramref name="period"/> seconds for <paramref name="uptime"/> seconds.
+        /// Returns a buff providing <paramref name="gainedStat"/>. Self gains the buff temporarily in some interval.
         /// <para> Whether the buff is currently active needs to be selected by the user. </para>
         /// </summary>
-        IFlagStatBuilder Temporary(IValueBuilder period, IValueBuilder uptime, IStatBuilder gainedStat);
+        IStatBuilder Temporary(IStatBuilder gainedStat);
 
         /// <summary>
-        /// Returns a flag stat indicating whether Self currently gains <paramref name="buff"/> from
-        /// Self. Self gains the buff every <paramref name="period"/> seconds for <paramref name="uptime"/> seconds.
+        /// Returns a stat representing Self gaining <paramref name="buff"/> gained as part of a rotation.
         /// <para> The buff is part of a buff rotation and is active when the current step is
         /// <paramref name="condition"/>. The current step needs to be selected by the user. </para>
         /// </summary>
-        IFlagStatBuilder Temporary<T>(IValueBuilder period, IValueBuilder uptime, IBuffBuilder buff, T condition) 
-            where T: struct, Enum;
+        IStatBuilder Temporary<T>(IBuffBuilder buff, T condition) where T : struct, Enum;
 
         /// <summary>
         /// Returns an aura providing <paramref name="gainedStat"/> and affecting <paramref name="affectedEntites"/>
@@ -78,19 +74,14 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         IStatBuilder Aura(IStatBuilder gainedStat, params IEntityBuilder[] affectedEntites);
 
         /// <summary>
-        /// Returns a collection of all buffs that currently affect <paramref name="target"/> and originate from
-        /// <paramref name="source"/>. The parameters default to any entity, e.g. Buffs() without parameters returns
-        /// every active buff.
-        /// </summary>
-        IBuffBuilderCollection Buffs(IEntityBuilder source = null, IEntityBuilder target = null);
-
-        /// <summary>
         /// Returns a collection of all buffs that currently affect any of <paramref name="targets"/> and originate from
         /// <paramref name="source"/>.
+        /// <para>If no source and/or target is given, it defaults to any entity, e.g. Buffs() without parameters
+        /// returns every active buff.</para>
         /// </summary>
-        IBuffBuilderCollection Buffs(IEntityBuilder source, params IEntityBuilder[] targets);
+        IBuffBuilderCollection Buffs(IEntityBuilder source = null, params IEntityBuilder[] targets);
 
-        IStatBuilder CurseLimit { get; } 
+        IStatBuilder CurseLimit { get; }
     }
 
 

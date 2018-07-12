@@ -251,14 +251,14 @@ namespace PoESkillTree.Computation.Data
         private (IFormBuilder form, double value, IStatBuilder stat, IConditionBuilder condition)[]
             ShaperOfDesolation()
         {
-            var stats = new IStatBuilder[]
+            var stats = new[]
             {
-                Buff.Temporary(Values[0], Values[1], Buff.Conflux.Chilling, ShaperOfDesolationStep.Chilling),
-                Buff.Temporary(Values[0], Values[2], Buff.Conflux.Shocking, ShaperOfDesolationStep.Shocking),
-                Buff.Temporary(Values[0], Values[3], Buff.Conflux.Igniting, ShaperOfDesolationStep.Igniting),
-                Buff.Temporary(Values[0], Values[4], Buff.Conflux.Chilling, ShaperOfDesolationStep.All),
-                Buff.Temporary(Values[0], Values[4], Buff.Conflux.Shocking, ShaperOfDesolationStep.All),
-                Buff.Temporary(Values[0], Values[4], Buff.Conflux.Igniting, ShaperOfDesolationStep.All),
+                Buff.Temporary(Buff.Conflux.Chilling, ShaperOfDesolationStep.Chilling),
+                Buff.Temporary(Buff.Conflux.Shocking, ShaperOfDesolationStep.Shocking),
+                Buff.Temporary(Buff.Conflux.Igniting, ShaperOfDesolationStep.Igniting),
+                Buff.Temporary(Buff.Conflux.Chilling, ShaperOfDesolationStep.All),
+                Buff.Temporary(Buff.Conflux.Shocking, ShaperOfDesolationStep.All),
+                Buff.Temporary(Buff.Conflux.Igniting, ShaperOfDesolationStep.All),
             };
 
             return (

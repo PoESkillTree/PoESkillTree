@@ -60,10 +60,7 @@ namespace PoESkillTree.Computation.Data.Base
 
         protected IBuffBuilders Buff => BuilderFactories.BuffBuilders;
 
-        protected IBuffBuilderCollection Buffs(IEntityBuilder source = null, IEntityBuilder target = null) =>
-            Buff.Buffs(source, target);
-
-        protected IBuffBuilderCollection Buffs(IEntityBuilder source, params IEntityBuilder[] targets) =>
+        protected IBuffBuilderCollection Buffs(IEntityBuilder source = null, params IEntityBuilder[] targets) =>
             Buff.Buffs(source, targets);
 
         // Charges
