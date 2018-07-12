@@ -37,9 +37,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
             new StatBuilderAdapter(_statBuilder.For(entityBuilder), _conditionBuilder, _statConverter);
 
-        public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
-            new StatBuilderAdapter(_statBuilder, _conditionBuilder, statConverter);
-
         public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)
         {
             var (statBuilder, conditionValueConverter) = BuildCondition(parameters);

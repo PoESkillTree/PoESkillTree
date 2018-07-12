@@ -14,36 +14,40 @@ namespace PoESkillTree.Computation.Console.Builders
         /// </summary>
         protected T DummyElement { get; }
 
-        private readonly Resolver<IBuilderCollection<T>> _resolver;
+        private readonly Resolver<IBuilderCollection> _resolver;
 
         protected BuilderCollectionStub(
-            T dummyElement, string stringRepresentation, Resolver<IBuilderCollection<T>> resolver)
+            T dummyElement, string stringRepresentation, Resolver<IBuilderCollection> resolver)
             : base(stringRepresentation)
         {
             DummyElement = dummyElement;
             _resolver = resolver;
         }
 
-        private IBuilderCollection<T> This => this;
+        private IBuilderCollection This => this;
 
-        public ValueBuilder Count(Func<T, IConditionBuilder> predicate = null)
+        public ValueBuilder Count() => new ValueBuilder(CreateValue(This, o => $"Count({o})"));
+
+        public IConditionBuilder Any() => CreateCondition(This, o => $"Any({o})");
+
+        public ValueBuilder Count(Func<T, IConditionBuilder> predicate)
         {
-            string StringRepresentation(IBuilderCollection<T> coll, IConditionBuilder cond) =>
-                $"Count({coll}" + (cond == null ? "" : $".Where({cond})") + ")";
+            string StringRepresentation(IBuilderCollection coll, IConditionBuilder cond) =>
+                $"Count({coll}.Where({cond}))";
 
-            var condition = predicate?.Invoke(DummyElement);
+            var condition = predicate.Invoke(DummyElement);
             return new ValueBuilder(CreateValue(This, condition, StringRepresentation));
         }
 
-        public IConditionBuilder Any(Func<T, IConditionBuilder> predicate = null)
+        public IConditionBuilder Any(Func<T, IConditionBuilder> predicate)
         {
-            string StringRepresentation(IBuilderCollection<T> coll, IConditionBuilder cond) =>
-                $"Any({coll}" + (cond == null ? "" : $".Where({cond})") + ")";
+            string StringRepresentation(IBuilderCollection coll, IConditionBuilder cond) =>
+                $"Any({coll}.Where({cond}))";
 
-            var condition = predicate?.Invoke(DummyElement);
+            var condition = predicate.Invoke(DummyElement);
             return CreateCondition(This, condition, StringRepresentation);
         }
 
-        public IBuilderCollection<T> Resolve(ResolveContext context) => _resolver(this, context);
+        public IBuilderCollection Resolve(ResolveContext context) => _resolver(this, context);
     }
 }

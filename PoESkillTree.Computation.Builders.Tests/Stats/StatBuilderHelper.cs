@@ -22,6 +22,9 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             new LeafCoreStatBuilder(_ => stat, entityBuilder);
 
         public static IStat BuildToSingleStat(this IStatBuilder @this) =>
-            @this.Build(default, null).Single().Stats.Single();
+            @this.BuildToSingleResult().Stats.Single();
+
+        public static StatBuilderResult BuildToSingleResult(this IStatBuilder @this) =>
+            @this.Build(default, null).Single();
     }
 }

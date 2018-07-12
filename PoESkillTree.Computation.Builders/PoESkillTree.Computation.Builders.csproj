@@ -75,6 +75,11 @@
     <Compile Include="Behaviors\SkillConversionUncappedSubtotalValue.cs" />
     <Compile Include="Behaviors\ValueTransformation.cs" />
     <Compile Include="Buffs\BuffBuilder.cs" />
+    <Compile Include="Buffs\BuffBuilderCollection.cs" />
+    <Compile Include="Buffs\BuffBuilderWithKeywords.cs" />
+    <Compile Include="Buffs\BuffCoreStatBuilder.cs" />
+    <Compile Include="Buffs\BuffRestrictions.cs" />
+    <Compile Include="Buffs\BuffRestrictionsBuilder.cs" />
     <Compile Include="BuilderFactories.cs" />
     <Compile Include="Charges\ChargeTypeBuilder.cs" />
     <Compile Include="Charges\ChargeTypeBuilders.cs" />
@@ -127,6 +132,7 @@
     <Compile Include="Stats\StatBuildersBase.cs" />
     <Compile Include="Stats\StatBuilderUtils.cs" />
     <Compile Include="Stats\StatBuilderWithModifierSource.cs" />
+    <Compile Include="Stats\StatBuilderWithStatConverter.cs" />
     <Compile Include="Stats\StatBuilderWithValueConverter.cs" />
     <Compile Include="Stats\StatFactory.cs" />
     <Compile Include="Values\ValueBuilderImpl.cs" />

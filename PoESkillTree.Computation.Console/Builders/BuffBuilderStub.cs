@@ -32,15 +32,15 @@ namespace PoESkillTree.Computation.Console.Builders
         IBuffBuilderCollection
     {
         public BuffBuilderCollectionStub(
-            string stringRepresentation, Resolver<IBuilderCollection<IBuffBuilder>> resolver)
+            string stringRepresentation, Resolver<IBuilderCollection> resolver)
             : base(new BuffBuilderStub("Buff", (current, _) => current), stringRepresentation, resolver)
         {
         }
 
-        private IBuilderCollection<IBuffBuilder> This => this;
+        private IBuilderCollection This => this;
 
-        private static IBuilderCollection<IBuffBuilder> Construct(
-            string stringRepresentation, Resolver<IBuilderCollection<IBuffBuilder>> resolver)
+        private static IBuilderCollection Construct(
+            string stringRepresentation, Resolver<IBuilderCollection> resolver)
         {
             return new BuffBuilderCollectionStub(stringRepresentation, resolver);
         }
@@ -101,13 +101,13 @@ namespace PoESkillTree.Computation.Console.Builders
             }
 
             return (IBuffBuilderCollection)
-                Create<IBuilderCollection<IBuffBuilder>, IEntityBuilder, IEntityBuilder>(
+                Create<IBuilderCollection, IEntityBuilder, IEntityBuilder>(
                     (s, r) => new BuffBuilderCollectionStub(s, r),
                     source, target, StringRepresentation);
         }
 
         public IBuffBuilderCollection Buffs(IEntityBuilder source, params IEntityBuilder[] targets) =>
-            (IBuffBuilderCollection) Create<IBuilderCollection<IBuffBuilder>, IEntityBuilder, IEntityBuilder>(
+            (IBuffBuilderCollection) Create<IBuilderCollection, IEntityBuilder, IEntityBuilder>(
                 (s, r) => new BuffBuilderCollectionStub(s, r),
                 source, targets,
                 (s, ts) => $"All buffs by {s} against {string.Join(" or ", ts)}");

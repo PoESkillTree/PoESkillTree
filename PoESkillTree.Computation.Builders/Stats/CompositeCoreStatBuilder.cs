@@ -26,9 +26,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
             Select(i => i.WithEntity(entityBuilder));
 
-        public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
-            Select(i => i.WithStatConverter(statConverter));
-
         public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)
         {
             IEnumerable<StatBuilderResult> seed = new[]

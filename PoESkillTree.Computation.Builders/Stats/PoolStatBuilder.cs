@@ -98,7 +98,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ILeechStatBuilder Resolve(ResolveContext context) => this;
 
         public IStatBuilder Of(IDamageStatBuilder damage) =>
-            FromCore(new StatBuilderAdapter(damage.WithHits).WithStatConverter(StatFactory.LeechPercentage));
+            FromCore(new StatBuilderWithStatConverter(new StatBuilderAdapter(damage.WithHits),
+                StatFactory.LeechPercentage));
 
         public IStatBuilder RateLimit => FromIdentity($"{_pool}.Leech.RateLimit", typeof(int));
         public IStatBuilder Rate => FromIdentity($"{_pool}.Leech.Rate", typeof(double));

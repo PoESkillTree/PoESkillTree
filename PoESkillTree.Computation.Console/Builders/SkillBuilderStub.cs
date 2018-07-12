@@ -45,12 +45,12 @@ namespace PoESkillTree.Computation.Console.Builders
         ISkillBuilderCollection
     {
         public SkillBuilderCollectionStub(
-            string stringRepresentation, Resolver<IBuilderCollection<ISkillBuilder>> resolver)
+            string stringRepresentation, Resolver<IBuilderCollection> resolver)
             : base(new SkillBuilderStub("Skill", (c, _) => c), stringRepresentation, resolver)
         {
         }
 
-        private IBuilderCollection<ISkillBuilder> This => this;
+        private IBuilderCollection This => this;
 
         public ISkillBuilderCollection this[params IKeywordBuilder[] keywords] =>
             (ISkillBuilderCollection) Create(
@@ -65,7 +65,7 @@ namespace PoESkillTree.Computation.Console.Builders
             CreateFlagStat(This, entity, (o1, o2) => $"apply stats of {o1} to {o2}");
 
         public IActionBuilder Cast =>
-            Create<IActionBuilder, IBuilderCollection<ISkillBuilder>>(
+            Create<IActionBuilder, IBuilderCollection>(
                 ActionBuilderStub.BySelf,
                 This, o => $"{o} cast");
     }
@@ -80,7 +80,7 @@ namespace PoESkillTree.Computation.Console.Builders
             new SkillBuilderCollectionStub("Skills", (current, _) => current);
 
         public ISkillBuilderCollection Combine(params ISkillBuilder[] skills) =>
-            (ISkillBuilderCollection) Create<IBuilderCollection<ISkillBuilder>, ISkillBuilder>(
+            (ISkillBuilderCollection) Create<IBuilderCollection, ISkillBuilder>(
                 (s, r) => new SkillBuilderCollectionStub(s, r),
                 skills,
                 os => $"[{string.Join(", ", os)}]");

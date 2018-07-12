@@ -40,9 +40,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
             new CoreStatBuilderFromCoreBuilder<T>(_coreBuilder, _statFactory, entityBuilder);
 
-        public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
-            new CoreStatBuilderFromCoreBuilder<T>(_coreBuilder, _statFactory.AndThen(ss => ss.Select(statConverter)));
-
         public IEnumerable<StatBuilderResult> Build(BuildParameters parameters, ModifierSource originalModifierSource)
         {
             var stats = BuildStats(parameters).ToList();

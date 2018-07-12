@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PoESkillTree.Computation.Common
 {
@@ -81,5 +83,21 @@ namespace PoESkillTree.Computation.Common
 
         public override NodeValue? Calculate(IValueCalculationContext context) =>
             (NodeValue?) _calculate(context);
+    }
+
+    public class CountingValue : StringIdentityValue
+    {
+        private readonly IReadOnlyList<IValue> _values;
+
+        public CountingValue(IReadOnlyList<IValue> values)
+            : base($"Count({string.Join(", ", values)})")
+        {
+            _values = values;
+        }
+
+        public override NodeValue? Calculate(IValueCalculationContext context) =>
+            _values.Select(v => v.Calculate(context))
+                .Select(v => new NodeValue(v.IsTrue() ? 1 : 0))
+                .Sum();
     }
 }

@@ -26,35 +26,27 @@ namespace PoESkillTree.Computation.Builders
             _builderFactory = builderFactory;
         }
 
-        public IBuilderCollection<TBuilder> Resolve(ResolveContext context) => this;
+        public IBuilderCollection Resolve(ResolveContext context) => this;
 
-        public ValueBuilder Count(Func<TBuilder, IConditionBuilder> predicate = null)
+        public ValueBuilder Count() =>
+            new ValueBuilder(new ValueBuilderImpl(_keys.Count));
+
+        public IConditionBuilder Any() =>
+            ConstantConditionBuilder.Create(_keys.Any());
+
+        public ValueBuilder Count(Func<TBuilder, IConditionBuilder> predicate)
         {
-            if (predicate is null)
-                return new ValueBuilder(new ValueBuilderImpl(_keys.Count));
-
             var conditions = this.Select(predicate).ToList();
             var valueBuilder = new ValueBuilderImpl(
                 ps => Build(ps, conditions),
-                c => (ps => Build(ps, Resolve(c, conditions))));
+                c => ((IBuilderCollection<TBuilder>) Resolve(c)).Count(predicate));
             return new ValueBuilder(valueBuilder);
-
-            IEnumerable<IConditionBuilder> Resolve(ResolveContext context, IEnumerable<IConditionBuilder> cs) =>
-                cs.Select(c => c.Resolve(context));
 
             IValue Build(BuildParameters parameters, IEnumerable<IConditionBuilder> cs)
             {
                 var builtConditions = cs.Select(c => BuildConditionToValue(c, parameters)).ToList();
-                return new FunctionalValue(
-                    c => Calculate(c, builtConditions),
-                    $"Count({string.Join(", ", builtConditions)})");
+                return new CountingValue(builtConditions);
             }
-
-            NodeValue? Calculate(IValueCalculationContext context, IEnumerable<IValue> values) =>
-                values
-                    .Select(v => v.Calculate(context))
-                    .Select(v => new NodeValue(v.IsTrue() ? 1 : 0))
-                    .Sum();
         }
 
         private IValue BuildConditionToValue(IConditionBuilder condition, BuildParameters parameters)
@@ -66,12 +58,8 @@ namespace PoESkillTree.Computation.Builders
             return result.Value;
         }
 
-        public IConditionBuilder Any(Func<TBuilder, IConditionBuilder> predicate = null)
-        {
-            if (predicate is null)
-                return ConstantConditionBuilder.Create(_keys.Any());
-            return this.Select(predicate).Aggregate((l, r) => l.Or(r));
-        }
+        public IConditionBuilder Any(Func<TBuilder, IConditionBuilder> predicate) =>
+            this.Select(predicate).Aggregate((l, r) => l.Or(r));
 
         public IEnumerator<TBuilder> GetEnumerator() =>
             _keys.Select(k => this[k]).GetEnumerator();

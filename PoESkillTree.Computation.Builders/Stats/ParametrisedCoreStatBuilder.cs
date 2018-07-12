@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -38,10 +37,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
             new ParametrisedCoreStatBuilder<TParameter>(_inner.WithEntity(entityBuilder), _parameter, _statConverter);
 
-        public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
-            new ParametrisedCoreStatBuilder<TParameter>(_inner, _parameter,
-                _statConverter.AndThen(ss => ss.Select(statConverter)));
-
         public IEnumerable<StatBuilderResult>
             Build(BuildParameters parameters, ModifierSource originalModifierSource) =>
             from result in _inner.Build(parameters, originalModifierSource)
@@ -74,10 +69,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
             new ParametrisedCoreStatBuilder<T1, T2>(_inner.WithEntity(entityBuilder), _parameter1, _parameter2,
                 _statConverter);
-
-        public ICoreStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
-            new ParametrisedCoreStatBuilder<T1, T2>(_inner,  _parameter1, _parameter2,
-                (p1, p2, s) => _statConverter(p1, p2, s).Select(statConverter));
 
         public IEnumerable<StatBuilderResult>
             Build(BuildParameters parameters, ModifierSource originalModifierSource) =>

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Moq;
+using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Builders.Stats;
@@ -103,20 +104,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         }
 
         [Test]
-        public void WithStatConverterAppliesToResultStats()
-        {
-            var expected = Mock.Of<IStat>();
-            var sourceTargetResult = CreateStatBuilderResult(stats: Mock.Of<IStat>());
-            var sut = CreateSut(MockStatBuilder(sourceTargetResult), MockStatBuilder(sourceTargetResult));
-
-            var actual = sut.WithStatConverter(_ => expected)
-                .Build(default, ModifierSource)
-                .SelectMany(r => r.Stats);
-
-            Assert.AreEqual(Enumerable.Repeat(expected, 3), actual);
-        }
-
-        [Test]
         public void BuildZipsSourceAndTargetResults()
         {
             var source = MockStatBuilder(CreateStatBuilderResult(), CreateStatBuilderResult());
@@ -143,7 +130,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
 
         private static void AssertBuildThrows(ICoreStatBuilder sut)
         {
-            Assert.Throws<ParseException>(() => sut.Build(default, ModifierSource).ToList());
+            Assert.Throws<ParseException>(() => sut.Build(default, ModifierSource).Consume());
         }
 
         private static ICoreStatBuilder MockStatBuilder(

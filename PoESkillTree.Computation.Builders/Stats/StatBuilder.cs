@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             new StatBuilder(StatFactory, coreStatBuilder);
 
         protected virtual IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
-            With(CoreStatBuilder.WithStatConverter(statConverter));
+            With(new StatBuilderWithStatConverter(CoreStatBuilder, statConverter));
 
         public virtual IStatBuilder Resolve(ResolveContext context) => With(CoreStatBuilder.Resolve(context));
 
