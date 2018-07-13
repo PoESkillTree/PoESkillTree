@@ -6,6 +6,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
+using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
@@ -44,6 +45,9 @@ namespace PoESkillTree.Computation.Builders.Stats
             DamageStatConcretizer statConcretizer,
             Func<IStat, IEnumerable<IStat>> statConverter) =>
             new DamageRelatedStatBuilder(StatFactory, coreStatBuilder, statConcretizer, statConverter);
+
+        public new IDamageRelatedStatBuilder For(IEntityBuilder entity) =>
+            (IDamageRelatedStatBuilder) base.For(entity);
 
         protected override IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
             Create(coreStatBuilder, StatConcretizer, _statConverter);

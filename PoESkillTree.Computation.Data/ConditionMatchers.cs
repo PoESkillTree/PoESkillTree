@@ -70,11 +70,12 @@ namespace PoESkillTree.Computation.Data
                 { "for # seconds after spending # mana", Action.SpendMana(Values[1]).InPastXSeconds(Values[0]) },
                 { "if you have consumed a corpse recently", Action.ConsumeCorpse.Recently },
                 // damage
+                { "attacks have", Condition.With(DamageSource.Attack) },
                 // - by item tag
                 { "with weapons", AttackWith(Tags.Weapon) },
                 { "weapon", AttackWith(Tags.Weapon) },
                 { "with bows", AttackWith(Tags.Bow) },
-                { "with a bow", And(With(Keyword.Attack), MainHand.Has(Tags.Bow)) },
+                { "with a bow", AttackWith(Tags.Bow) },
                 { "bow", AttackWith(Tags.Bow) },
                 { "with swords", AttackWith(Tags.Sword) },
                 { "with claws", AttackWith(Tags.Claw) },
@@ -84,7 +85,7 @@ namespace PoESkillTree.Computation.Data
                 { "wand", AttackWith(Tags.Wand) },
                 { "with axes", AttackWith(Tags.Axe) },
                 { "with staves", AttackWith(Tags.Staff) },
-                { "with a staff", And(With(Keyword.Attack), MainHand.Has(Tags.Staff)) },
+                { "with a staff", AttackWith(Tags.Staff) },
                 {
                     "with maces",
                     (Or(MainHandAttackWith(Tags.Mace), MainHandAttackWith(Tags.Sceptre)),
@@ -194,7 +195,6 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "(with|of|for|from) ({KeywordMatchers})( skills)?", With(Reference.AsKeyword) },
                 { "({KeywordMatchers}) skills (have|deal)", With(Reference.AsKeyword) },
-                { "attacks have", With(Keyword.Attack) },
                 // - by damage type
                 { "with ({DamageTypeMatchers}) skills", With(Reference.AsDamageType) },
                 // - by single skill

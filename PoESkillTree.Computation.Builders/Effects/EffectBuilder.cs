@@ -29,8 +29,8 @@ namespace PoESkillTree.Computation.Builders.Effects
         protected IFlagStatBuilder InternalOn(IEntityBuilder target) =>
             (IFlagStatBuilder) FromIdentity("Active", typeof(bool)).For(target);
 
-        public IStatBuilder ChanceOn(IEntityBuilder target) =>
-            FromIdentity("ChanceToBecomeActive", typeof(int)).For(target);
+        public IDamageRelatedStatBuilder ChanceOn(IEntityBuilder target) =>
+            DamageRelatedFromIdentity("ChanceToBecomeActive", typeof(int)).For(target).WithHits;
 
         public IConditionBuilder IsOn(IEntityBuilder target) => InternalOn(target).IsSet;
 

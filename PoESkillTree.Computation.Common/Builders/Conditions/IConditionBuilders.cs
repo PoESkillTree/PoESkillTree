@@ -26,6 +26,11 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
         /// </summary>
         IConditionBuilder AttackWith(AttackDamageHand hand);
 
+        /// <summary>
+        /// Returns a condition that is satisfied if the damage related stat or action is done as the given source.
+        /// </summary>
+        IConditionBuilder With(DamageSource damageSource);
+
         IConditionBuilder DamageTaken { get; }
 
         /// <summary>

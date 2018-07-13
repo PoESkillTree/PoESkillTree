@@ -30,10 +30,14 @@ namespace PoESkillTree.Computation.Builders.Conditions
         }
 
         public IConditionBuilder AttackWith(AttackDamageHand hand) =>
+            With(DamageSource.Attack)
+                .And(new StatConvertingConditionBuilder(IfIsDamageStat(d => d.With(hand))));
+
+        public IConditionBuilder With(DamageSource damageSource) =>
             new StatConvertingConditionBuilder(IfIsDamageStat(
-                d => d.With(DamageSource.Attack).With(hand),
+                d => d.With(DamageSource.Attack),
                 _ => throw new ParseException(
-                    $"IConditionBuilders.{nameof(AttackWith)} only works with damage related stats")));
+                    $"IConditionBuilders.{nameof(With)} only works with damage related stats")));
 
         private static StatConverter IfIsDamageStat(Func<IDamageRelatedStatBuilder, IStatBuilder> then) =>
             IfIsDamageStat(then, Funcs.Identity);

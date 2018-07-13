@@ -1,5 +1,6 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
+using PoESkillTree.Computation.Common.Builders.Entities;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
@@ -10,6 +11,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     /// </summary>
     public interface IDamageRelatedStatBuilder : IStatBuilder
     {
+        new IDamageRelatedStatBuilder For(IEntityBuilder entity);
+
         /// <summary>
         /// Limits the damage by source.
         /// </summary>

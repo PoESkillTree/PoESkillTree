@@ -15,6 +15,9 @@ namespace PoESkillTree.Computation.Console.Builders
         {
         }
 
+        IDamageRelatedStatBuilder IDamageRelatedStatBuilder.For(IEntityBuilder entity) =>
+            For(entity);
+
         public new IDamageStatBuilder For(IEntityBuilder entity) =>
             CreateDamageStat(This, entity, (o1, o2) => $"{o1} for {o2}");
 
