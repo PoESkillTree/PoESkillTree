@@ -4,6 +4,7 @@ using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Buffs;
 using PoESkillTree.Computation.Builders.Charges;
 using PoESkillTree.Computation.Builders.Damage;
+using PoESkillTree.Computation.Builders.Effects;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Resolving;
 using PoESkillTree.Computation.Builders.Stats;
@@ -54,8 +55,16 @@ namespace PoESkillTree.Computation.Console.Builders
             }
         }
 
-        public IAilmentBuilder AsAilment =>
-            new AilmentBuilderStub($"{this}.AsAilment", (_, context) => Resolve(context).AsAilment);
+        public IAilmentBuilder AsAilment
+        {
+            get
+            {
+                var core = new UnresolvedCoreBuilder<Ailment>($"{this}.AsAilment",
+                    context => CoreBuilder.Proxy<IAilmentBuilder, IEffectBuilder, Ailment>(
+                        Resolve(context).AsAilment, b => b.Build()));
+                return new AilmentBuilder(_statFactory, core);
+            }
+        }
 
         public IKeywordBuilder AsKeyword =>
             new UnresolvedKeywordBuilder($"{this}.AsKeyword", context => Resolve(context).AsKeyword);

@@ -14,15 +14,16 @@ namespace PoESkillTree.Computation.Builders.Effects
 {
     public class AilmentBuilder : AvoidableEffectBuilder, IAilmentBuilder
     {
-        private readonly Ailment _ailment;
+        private readonly ICoreBuilder<Ailment> _ailment;
 
-        public AilmentBuilder(IStatFactory statFactory, Ailment ailment)
-            : base(statFactory, CoreBuilder.Create(ailment.ToString()))
+        public AilmentBuilder(IStatFactory statFactory, ICoreBuilder<Ailment> ailment)
+            : base(statFactory, CoreBuilder.UnaryOperation(ailment, a => a.ToString()))
         {
             _ailment = ailment;
         }
 
-        public override IEffectBuilder Resolve(ResolveContext context) => this;
+        public override IEffectBuilder Resolve(ResolveContext context) =>
+            new AilmentBuilder(StatFactory, _ailment.Resolve(context));
 
         public IStatBuilder Chance => ChanceOn(new EntityBuilder(Entity.Enemy));
 
@@ -40,6 +41,6 @@ namespace PoESkillTree.Computation.Builders.Effects
         private IEnumerable<IStat> ConcretizeSourceStat(IDamageTypeBuilder type, IStat stat) =>
             type.BuildDamageTypes().Select(t => StatFactory.CopyWithSuffix(stat, t.ToString(), typeof(bool)));
 
-        public new Ailment Build() => _ailment;
+        public new Ailment Build() => _ailment.Build();
     }
 }

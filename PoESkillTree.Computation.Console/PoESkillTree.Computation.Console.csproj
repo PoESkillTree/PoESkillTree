@@ -58,14 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\ActionBuilderStub.cs" />
-    <Compile Include="Builders\AilmentBuilderStub.cs" />
     <Compile Include="Builders\BuilderCollectionStub.cs" />
     <Compile Include="Builders\BuilderFactories.cs" />
     <Compile Include="Builders\BuilderFactory.cs" />
     <Compile Include="Builders\BuilderStub.cs" />
     <Compile Include="Builders\ConditionBuilderStub.cs" />
     <Compile Include="Builders\DamageStatBuilderStub.cs" />
-    <Compile Include="Builders\EffectBuilderStub.cs" />
     <Compile Include="Builders\FlagStatBuilderStub.cs" />
     <Compile Include="Builders\ReferenceConverterStub.cs" />
     <Compile Include="Builders\MatchContextStub.cs" />

@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Builders.Effects
         : FixedBuilderCollection<Ailment, IAilmentBuilder>, IAilmentBuilderCollection
     {
         public AilmentBuilderCollection(IStatFactory statFactory, IReadOnlyList<Ailment> keys)
-            : base(keys, a => new AilmentBuilder(statFactory, a))
+            : base(keys, a => new AilmentBuilder(statFactory, CoreBuilder.Create(a)))
         {
         }
     }
