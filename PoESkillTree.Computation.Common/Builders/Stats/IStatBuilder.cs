@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder Maximum { get; }
 
         /// <summary>
-        /// Gets this stat's value. Defaults to 0.
+        /// Gets this stat's value. Defaults to null.
         /// </summary>
         ValueBuilder Value { get; }
 

@@ -184,7 +184,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             var multiplier = new FunctionalValue(
                 c => values.Select(v => v.Calculate(c)).AggregateOnValues(Combine),
                 $"RequireEqualWhereNotNull({string.Join(",", values)})");
-            return v => v.Multiply(new ValueBuilderImpl(multiplier)).If(multiplier);
+            return v => v.Multiply(new ValueBuilderImpl(multiplier));
             
             // There isn't any obvious way to combine different values but it currently can't happen:
             // - More than one source damage source for ApplyModifiersToSkillDamage can't happen because

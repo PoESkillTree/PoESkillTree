@@ -42,46 +42,46 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
             Assert.AreEqual(expected, actual);
         }
 
-        [TestCase(1, 2)]
-        [TestCase(5, -3)]
-        [TestCase(6, null)]
-        [TestCase(null, 7)]
-        [TestCase(null, null)]
-        public void AddBuildsToCorrectValue(double? leftValue, double? rightValue)
+        [TestCase(1, 2, 3)]
+        [TestCase(5, -3, 2)]
+        [TestCase(6, null, 6)]
+        [TestCase(null, 7, 7)]
+        [TestCase(null, null, null)]
+        public void AddBuildsToCorrectValue(double? left, double? right, double? expected)
         {
-            var expected = (NodeValue?) new[] { leftValue, rightValue }.AggregateOnValues((l, r) => l + r);
-            var sut = CreateSut(leftValue);
+            var sut = CreateSut(left);
 
-            var actual = sut.Add(new ValueBuilderImpl(rightValue)).Build().Calculate(null);
+            var actual = sut.Add(new ValueBuilderImpl(right)).Build().Calculate(null);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual((NodeValue?) expected, actual);
         }
 
-        [TestCase(1, 2)]
-        [TestCase(5, -3)]
-        [TestCase(6, null)]
-        public void MultiplyBuildsToCorrectValue(double? leftValue, double? rightValue)
+        [TestCase(1, 2, 2)]
+        [TestCase(5, -3, -15)]
+        [TestCase(6, null, null)]
+        [TestCase(null, 7, null)]
+        [TestCase(null, null, null)]
+        public void MultiplyBuildsToCorrectValue(double? left, double? right, double? expected)
         {
-            var expected = (NodeValue?) new[] { leftValue, rightValue }.AggregateOnValues((l, r) => l * r);
-            var sut = CreateSut(leftValue);
+            var sut = CreateSut(left);
 
-            var actual = sut.Multiply(new ValueBuilderImpl(rightValue)).Build().Calculate(null);
+            var actual = sut.Multiply(new ValueBuilderImpl(right)).Build().Calculate(null);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual((NodeValue?) expected, actual);
         }
 
-        [TestCase(1, 2)]
-        [TestCase(5, -3)]
-        [TestCase(6, null)]
-        [TestCase(null, 7)]
-        public void DivideByBuildsToCorrectValue(double? leftValue, double? rightValue)
+        [TestCase(1, 2, 0.5)]
+        [TestCase(5, -3, -5.0/3)]
+        [TestCase(6, null, null)]
+        [TestCase(null, 7, null)]
+        [TestCase(null, null, null)]
+        public void DivideByBuildsToCorrectValue(double? left, double? right, double? expected)
         {
-            var expected = (NodeValue?) (leftValue / (rightValue ?? 1));
-            var sut = CreateSut(leftValue);
+            var sut = CreateSut(left);
 
-            var actual = sut.DivideBy(new ValueBuilderImpl(rightValue)).Build().Calculate(null);
+            var actual = sut.DivideBy(new ValueBuilderImpl(right)).Build().Calculate(null);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual((NodeValue?) expected, actual);
         }
 
         [TestCase(1)]
@@ -110,6 +110,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
 
         [TestCase(5, 5, false)]
         [TestCase(6, 5, true)]
+        [TestCase(1, null, true)]
+        [TestCase(null, -1, true)]
         public void GreaterThanBuildsToCorrectValue(double? leftValue, double? rightValue, bool expected)
         {
             var sut = CreateSut(leftValue);

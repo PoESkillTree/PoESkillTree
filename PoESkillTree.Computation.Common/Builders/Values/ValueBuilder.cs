@@ -1,5 +1,4 @@
 using System;
-using System.Linq.Expressions;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 
@@ -48,7 +47,7 @@ namespace PoESkillTree.Computation.Common.Builders.Values
             right >= left;
 
         public static IConditionBuilder operator <(ValueBuilder left, ValueBuilder right) =>
-            right < left;
+            right > left;
 
         public static IConditionBuilder operator >(ValueBuilder left, double right) =>
             left > left.Create(right);

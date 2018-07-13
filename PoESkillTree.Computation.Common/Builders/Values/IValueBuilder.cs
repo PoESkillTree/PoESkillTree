@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 
@@ -22,21 +21,26 @@ namespace PoESkillTree.Computation.Common.Builders.Values
 
         /// <summary>
         /// Returns a condition that is satisfied if this value is greater than the given value.
+        /// Null values are interpreted as 0.
         /// </summary>
         IConditionBuilder GreaterThan(IValueBuilder other);
 
         /// <summary>
         /// Returns a new value that is equal to the sum of this and the given value.
+        /// If this or other has a value of null, the non-null value is used. If both have null values, the result is
+        /// also null.
         /// </summary>
         IValueBuilder Add(IValueBuilder other);
 
         /// <summary>
         /// Returns a new value that is equal to the product of this and the given value.
+        /// If one or both operands are null, the result is also null.
         /// </summary>
         IValueBuilder Multiply(IValueBuilder other);
 
         /// <summary>
         /// Returns a new value that is equal to this value divided by the given value.
+        /// If one or both operands are null, the result is also null.
         /// </summary>
         IValueBuilder DivideBy(IValueBuilder divisor);
 

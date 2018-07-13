@@ -50,16 +50,17 @@ namespace PoESkillTree.Computation.Builders.Values
             ValueConditionBuilder.Create(this, other, (left, right) => left == right, (l, r) => $"{l} == {r}");
 
         public IConditionBuilder GreaterThan(IValueBuilder other) =>
-            ValueConditionBuilder.Create(this, other, (left, right) => left > right, (l, r) => $"{l} > {r}");
+            ValueConditionBuilder.Create(this, other, 
+                (left, right) => left.GetValueOrDefault() > right.GetValueOrDefault(), (l, r) => $"{l} > {r}");
 
         public IValueBuilder Add(IValueBuilder other) =>
             Create(this, other, (left, right) => new[] { left, right }.Sum(), (l, r) => $"{l} + {r}");
 
         public IValueBuilder Multiply(IValueBuilder other) =>
-            Create(this, other, (left, right) => new[] { left, right }.Product(), (l, r) => $"{l} * {r}");
+            Create(this, other, (left, right) => left * right, (l, r) => $"{l} * {r}");
 
         public IValueBuilder DivideBy(IValueBuilder divisor) =>
-            Create(this, divisor, (left, right) => left / (right ?? new NodeValue(1)), (l, r) => $"{l} / {r}");
+            Create(this, divisor, (left, right) => left / right, (l, r) => $"{l} / {r}");
 
         public IValueBuilder If(IValue condition) =>
             Create(this, new ValueBuilderImpl(condition), (l, r) => r.IsTrue() ? l : null,
