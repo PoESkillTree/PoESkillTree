@@ -196,7 +196,9 @@ namespace PoESkillTree.Computation.Data
                 { "effect of buffs granted by your golems", Buffs(Entity.Minion).With(Keyword.Golem).Effect },
                 {
                     "effect of buffs granted by your elemental golems",
-                    Buffs(Entity.Minion).With(Keyword.Golem, Elemental).Effect
+                    Buffs(Entity.Minion).With(Keyword.Golem, Fire).Effect,
+                    Buffs(Entity.Minion).With(Keyword.Golem, Cold).Effect,
+                    Buffs(Entity.Minion).With(Keyword.Golem, Lightning).Effect
                 },
                 { "effect of your curses", Buffs(Self).With(Keyword.Curse).Effect },
                 { "effect of curses on you", Buffs(targets: Self).With(Keyword.Curse).Effect },

@@ -93,20 +93,6 @@ namespace PoESkillTree.Computation.Console.Builders
             return Create<IStatBuilder, T1, T2>(Construct, operand1, operand2, stringRepresentation);
         }
 
-        public static IStatBuilder CreateStat<T1, T2>(
-            [CanBeNull] T1 operand1, [ItemCanBeNull] IEnumerable<T2> operand2,
-            Func<T1, IEnumerable<T2>, string> stringRepresentation)
-            where T1 : class, IResolvable<T1>
-            where T2 : class, IResolvable<T2>
-        {
-            return Create<IStatBuilder, T1, T2>(Construct, operand1, operand2, stringRepresentation);
-        }
-
-        public static IStatBuilder CreateStat(string stringRepresentation)
-        {
-            return Create<IStatBuilder>(Construct, stringRepresentation);
-        }
-
         private static IStatBuilder Construct(string stringRepresentation, Resolver<IStatBuilder> resolver)
         {
             return new StatBuilderStub(stringRepresentation, resolver);
@@ -134,17 +120,6 @@ namespace PoESkillTree.Computation.Console.Builders
         {
             return (IFlagStatBuilder) Create<IStatBuilder, T1, T2>(
                 ConstructFlag, operand1, operand2, stringRepresentation);
-        }
-
-        public static IFlagStatBuilder CreateFlagStat<T1, T2, T3>(
-            [CanBeNull] T1 operand1, [CanBeNull] T2 operand2, [CanBeNull] T3 operand3,
-            Func<T1, T2, T3, string> stringRepresentation)
-            where T1 : class, IResolvable<T1>
-            where T2 : class, IResolvable<T2>
-            where T3 : class, IResolvable<T3>
-        {
-            return (IFlagStatBuilder) Create<IStatBuilder, T1, T2, T3>(
-                ConstructFlag, operand1, operand2, operand3, stringRepresentation);
         }
 
         private static IFlagStatBuilder ConstructFlag(string stringRepresentation, Resolver<IStatBuilder> resolver)
@@ -197,11 +172,6 @@ namespace PoESkillTree.Computation.Console.Builders
                 ConstructDamage, operand1, operand2, stringRepresentation);
         }
 
-        public static IDamageStatBuilder CreateDamageStat(string stringRepresentation)
-        {
-            return (IDamageStatBuilder) Create<IStatBuilder>(ConstructDamage, stringRepresentation);
-        }
-
         private static IDamageStatBuilder ConstructDamage(string stringRepresentation,
             Resolver<IStatBuilder> resolver)
         {
@@ -250,7 +220,7 @@ namespace PoESkillTree.Computation.Console.Builders
         /// constructor and the string representation 
         /// <c>stringRepresentation(operand1?.Resolve(), operand2?.Resolve())</c>, which resolves to itself.
         /// </summary>
-        public static TOut Create<TOut, T1, T2>(
+        private static TOut Create<TOut, T1, T2>(
             Func<string, Resolver<TOut>, TOut> constructor,
             [CanBeNull] T1 operand1,
             [CanBeNull] T2 operand2,
@@ -290,32 +260,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
         /// <summary>
         /// Creates a <typeparamref name="TOut"/> with the given constructor that has the string representation
-        /// <c>stringRepresentation(operand1, operand2, operand3)</c>. It resolves to a new instance created with the 
-        /// given constructor and the string representation 
-        /// <c>stringRepresentation(operand1?.Resolve(), operand2?.Resolve(), operand3?.Resolve())</c>, which resolves
-        /// to itself.
-        /// </summary>
-        private static TOut Create<TOut, T1, T2, T3>(
-            Func<string, Resolver<TOut>, TOut> constructor,
-            [CanBeNull] T1 operand1,
-            [CanBeNull] T2 operand2,
-            [CanBeNull] T3 operand3,
-            Func<T1, T2, T3, string> stringRepresentation)
-            where T1 : class, IResolvable<T1>
-            where T2 : class, IResolvable<T2>
-            where T3 : class, IResolvable<T3>
-        {
-            TOut Resolve(ResolveContext context) =>
-                Create(constructor, stringRepresentation(
-                    operand1?.Resolve(context),
-                    operand2?.Resolve(context),
-                    operand3?.Resolve(context)));
-
-            return Create(constructor, stringRepresentation(operand1, operand2, operand3), Resolve);
-        }
-
-        /// <summary>
-        /// Creates a <typeparamref name="TOut"/> with the given constructor that has the string representation
         /// <c>stringRepresentation(operands)</c>. It resolves to a new instance created with the 
         /// given constructor and the string representation
         /// <c>stringRepresentation(operands.Select(o => o?.Resolve()))</c>, which resolves to itself.
@@ -336,34 +280,6 @@ namespace PoESkillTree.Computation.Console.Builders
                     os.Select(o => o?.Resolve(context))));
 
             return Create(constructor, stringRepresentation(os), Resolve);
-        }
-
-        /// <summary>
-        /// Creates a <typeparamref name="TOut"/> with the given constructor that has the string representation
-        /// <c>stringRepresentation(operand1, operands)</c>. It resolves to a new instance created with the 
-        /// given constructor and the string representation
-        /// <c>stringRepresentation(operand1?.Resolve(), operands.Select(o => o?.Resolve()))</c>, which resolves to 
-        /// itself.
-        /// </summary>
-        /// <remarks>
-        /// <paramref name="operands"/> is only enumerated once.
-        /// </remarks>
-        public static TOut Create<TOut, T1, T2>(
-            Func<string, Resolver<TOut>, TOut> constructor,
-            [CanBeNull] T1 operand1,
-            [ItemCanBeNull] IEnumerable<T2> operands,
-            Func<T1, IEnumerable<T2>, string> stringRepresentation)
-            where T1 : class, IResolvable<T1>
-            where T2 : class, IResolvable<T2>
-        {
-            var os = operands.ToList();
-
-            TOut Resolve(ResolveContext context) =>
-                Create(constructor, stringRepresentation(
-                    operand1?.Resolve(context),
-                    os.Select(o => o?.Resolve(context))));
-
-            return Create(constructor, stringRepresentation(operand1, os), Resolve);
         }
 
         /// <summary>

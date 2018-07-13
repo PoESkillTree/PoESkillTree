@@ -1,5 +1,4 @@
-﻿using PoESkillTree.Computation.Common.Builders.Buffs;
-using PoESkillTree.Computation.Common.Builders.Skills;
+﻿using PoESkillTree.Computation.Common.Builders.Skills;
 
 namespace PoESkillTree.Computation.Console.Builders
 {
@@ -19,8 +18,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
     public class BuilderFactories : Computation.Builders.BuilderFactories
     {
-        public override IBuffBuilders BuffBuilders => new BuffBuildersStub();
-
         public override ISkillBuilders SkillBuilders => new SkillBuildersStub();
     }
 }

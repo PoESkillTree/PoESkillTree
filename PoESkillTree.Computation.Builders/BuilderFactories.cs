@@ -1,4 +1,7 @@
-﻿using PoESkillTree.Computation.Builders.Actions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using PoESkillTree.Computation.Builders.Actions;
+using PoESkillTree.Computation.Builders.Buffs;
 using PoESkillTree.Computation.Builders.Charges;
 using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Damage;
@@ -31,6 +34,9 @@ namespace PoESkillTree.Computation.Builders
         {
             var statFactory = new StatFactory();
             ActionBuilders = new ActionBuilders(statFactory);
+            // TODO Do properly once ISkillBuilders is implemented
+            var skillBuffs = Enumerable.Empty<(string identifier, IReadOnlyList<Keyword> keywords)>();
+            BuffBuilders = new BuffBuilders(statFactory, skillBuffs);
             ChargeTypeBuilders = new ChargeTypeBuilders(statFactory);
             ConditionBuilders = new ConditionBuilders(statFactory);
             DamageTypeBuilders = new DamageTypeBuilders(statFactory);
@@ -45,7 +51,7 @@ namespace PoESkillTree.Computation.Builders
         }
 
         public IActionBuilders ActionBuilders { get; }
-        public abstract IBuffBuilders BuffBuilders { get; }
+        public IBuffBuilders BuffBuilders { get; }
         public IChargeTypeBuilders ChargeTypeBuilders { get; }
         public IConditionBuilders ConditionBuilders { get; }
         public IDamageTypeBuilders DamageTypeBuilders { get; }
