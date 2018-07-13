@@ -183,11 +183,11 @@ namespace PoESkillTree.Computation.Data
                 // minions
                 {
                     "maximum number of skeletons",
-                    Combine(Skill.SummonSkeleton, Skill.VaalSummonSkeletons).CombinedInstances.Maximum
+                    Skills.SummonSkeleton.Instances.Maximum, Skills.VaalSummonSkeletons.Instances.Maximum
                 },
-                { "maximum number of spectres", Skill.RaiseSpectre.Instances.Maximum },
-                { "maximum number of zombies", Skill.RaiseZombie.Instances.Maximum },
-                { "skeleton duration", Stat.Duration, Or(With(Skill.SummonSkeleton), With(Skill.VaalSummonSkeletons)) },
+                { "maximum number of spectres", Skills.RaiseSpectre.Instances.Maximum },
+                { "maximum number of zombies", Skills.RaiseZombie.Instances.Maximum },
+                { "skeleton duration", Stat.Duration, Or(With(Skills.SummonSkeleton), With(Skills.VaalSummonSkeletons)) },
                 { "golem at a time", Golems.CombinedInstances.Maximum },
                 // buffs
                 { "chance to gain ({BuffMatchers})", Reference.AsBuff.ChanceOn(Self) },

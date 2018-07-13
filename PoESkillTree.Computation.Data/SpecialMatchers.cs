@@ -163,7 +163,7 @@ namespace PoESkillTree.Computation.Data
                 {
                     "your offering skills also affect you",
                     TotalOverride, 1,
-                    Combine(Skill.BoneOffering, Skill.FleshOffering, Skill.SpiritOffering).ApplyStatsToEntity(Self)
+                    Skills[Keyword.Offering].ApplyStatsToEntity(Self)
                 },
                 // - Champion
                 {
@@ -244,7 +244,7 @@ namespace PoESkillTree.Computation.Data
         {
             foreach (var type in AllDamageTypes)
             {
-                yield return (PercentIncrease, Value, type.Damage, Golems[type].Any(s => s.HasInstance));
+                yield return (PercentIncrease, Value, type.Damage, Skills[Keyword.Golem, type].Any(s => s.HasInstance));
             }
         }
 

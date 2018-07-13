@@ -14,11 +14,6 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
     public interface ISkillBuilderCollection : IBuilderCollection<ISkillBuilder>
     {
         /// <summary>
-        /// Gets a new collection including all skills in this collection that have all the given keywords.
-        /// </summary>
-        ISkillBuilderCollection this[params IKeywordBuilder[] keywords] { get; }
-
-        /// <summary>
         /// Gets an action that occurs when Self casts any skill in this collection.
         /// </summary>
         IActionBuilder Cast { get; }

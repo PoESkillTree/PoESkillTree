@@ -6,14 +6,9 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
     public interface ISkillBuilders
     {
         /// <summary>
-        /// Gets a collection of all existing skills.
+        /// Gets a collection of all skills that have the given keyword.
         /// </summary>
-        ISkillBuilderCollection Skills { get; }
-
-        /// <summary>
-        /// Returns a collection consisting of the given skills.
-        /// </summary>
-        ISkillBuilderCollection Combine(params ISkillBuilder[] skills);
+        ISkillBuilderCollection this[params IKeywordBuilder[] keywords] { get; }
 
         /// <summary>
         /// The currently selected main skill.
@@ -28,12 +23,5 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         ISkillBuilder RaiseZombie { get; }
 
         ISkillBuilder DetonateMines { get; }
-
-        ISkillBuilder BloodRage { get; }
-        ISkillBuilder MoltenShell { get; }
-
-        ISkillBuilder BoneOffering { get; }
-        ISkillBuilder FleshOffering { get; }
-        ISkillBuilder SpiritOffering { get; }
     }
 }

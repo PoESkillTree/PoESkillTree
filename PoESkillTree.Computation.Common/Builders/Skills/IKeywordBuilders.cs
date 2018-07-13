@@ -90,5 +90,10 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         /// Equivalent to the gem tag "Warcry".
         /// </summary>
         IKeywordBuilder Warcry { get; }
+
+        /// <summary>
+        /// Has no equivalent gem tag or ActiveSkillType.
+        /// </summary>
+        IKeywordBuilder Offering { get; }
     }
 }

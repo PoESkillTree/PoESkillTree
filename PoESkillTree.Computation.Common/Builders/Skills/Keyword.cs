@@ -18,6 +18,7 @@
         Golem,
         Minion,
         Warcry,
+        Offering,
         Physical,
         Lightning,
         Cold,

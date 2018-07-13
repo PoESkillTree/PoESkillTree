@@ -105,12 +105,7 @@ namespace PoESkillTree.Computation.Data.Base
 
         // Skills
 
-        protected ISkillBuilders Skill => BuilderFactories.SkillBuilders;
-
-        protected ISkillBuilderCollection Skills => Skill.Skills;
-
-        protected ISkillBuilderCollection Combine(params ISkillBuilder[] skills) =>
-            Skill.Combine(skills);
+        protected ISkillBuilders Skills => BuilderFactories.SkillBuilders;
 
 
         // Convenience methods
