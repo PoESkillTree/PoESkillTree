@@ -60,6 +60,28 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         }
 
         [Test]
+        public void BuffBuildsToCorrectResult()
+        {
+            var gainedStatBuilder = StatBuilderUtils.FromIdentity(StatFactory, "s", null);
+            var entityBuilders = new IEntityBuilder[]
+                { new ModifierSourceEntityBuilder(), new EntityBuilder(Entity.Enemy), };
+            var buffEffectStat = new Stat("Buff.Effect");
+            var context = Mock.Of<IValueCalculationContext>(c =>
+                c.GetValue(buffEffectStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(2));
+            var sut = CreateSut();
+
+            var (stats, _, valueConverter) = sut.Buff(gainedStatBuilder, entityBuilders).BuildToSingleResult();
+            var value = valueConverter(new ValueBuilderImpl(2)).Build();
+            var actualValue = value.Calculate(context);
+
+            Assert.That(stats, Has.Exactly(2).Items);
+            Assert.AreEqual("s", stats[0].Identity);
+            Assert.AreEqual(default(Entity), stats[0].Entity);
+            Assert.AreEqual(Entity.Enemy, stats[1].Entity);
+            Assert.AreEqual((NodeValue?) 4, actualValue);
+        }
+
+        [Test]
         public void AuraBuildsToCorrectResults()
         {
             var gainedStatBuilder = StatBuilderUtils.FromIdentity(StatFactory, "s", null);
@@ -84,8 +106,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         [Test]
         public void BuffsWithoutParametersCountBuildsToCorrectValue()
         {
-            // Buff properties + conflux + dummy aura + passed buff skills
-            var expected = 8 + 4 + 1 + 3;
+            // Buff properties + conflux + dummy buff and aura + passed buff skills
+            var expected = 8 + 4 + 2 + 3;
             // For every source entity
             expected *= Enums.GetMemberCount<Entity>();
             var context = Mock.Of<IValueCalculationContext>(c =>
@@ -100,8 +122,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         [Test]
         public void BuffsWithParamtersCountBuildsToCorrectValue()
         {
-            // Buff properties + conflux + dummy aura + passed buff skills
-            var expected = 8 + 4 + 1 + 3;
+            // Buff properties + conflux + dummy buff and aura + passed buff skills
+            var expected = 8 + 4 + 2 + 3;
             var source = new ModifierSourceEntityBuilder();
             var target = new ModifierSourceEntityBuilder();
             var context = Mock.Of<IValueCalculationContext>(c =>

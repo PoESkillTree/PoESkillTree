@@ -68,6 +68,12 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         IStatBuilder Temporary<T>(IBuffBuilder buff, T condition) where T : struct, Enum;
 
         /// <summary>
+        /// Returns a buff providing <paramref name="gainedStat"/> and affecting <paramref name="affectedEntites"/>
+        /// cast by Self.
+        /// </summary>
+        IStatBuilder Buff(IStatBuilder gainedStat, params IEntityBuilder[] affectedEntites);
+
+        /// <summary>
         /// Returns an aura providing <paramref name="gainedStat"/> and affecting <paramref name="affectedEntites"/>
         /// cast by Self.
         /// </summary>

@@ -48,7 +48,10 @@ namespace PoESkillTree.Computation.Builders.Buffs
                 new BuffBuilderWithKeywords(Conflux.Elemental),
                 new BuffBuilderWithKeywords(Conflux.Igniting),
                 new BuffBuilderWithKeywords(Conflux.Shocking),
-                new BuffBuilderWithKeywords(new BuffBuilder(statFactory, "Aura"), Keyword.Aura)
+                // Generic buff effect increase
+                new BuffBuilderWithKeywords(new BuffBuilder(statFactory, "Buff")),
+                // Aura effect increase
+                new BuffBuilderWithKeywords(new BuffBuilder(statFactory, "Aura"), Keyword.Aura),
             };
             var skillBuffBuilders = skillBuffs.Select(t =>
                 new BuffBuilderWithKeywords(new BuffBuilder(statFactory, t.identifier), t.keywords));
@@ -91,11 +94,22 @@ namespace PoESkillTree.Computation.Builders.Buffs
             }
         }
 
+        public IStatBuilder Buff(IStatBuilder gainedStat, params IEntityBuilder[] affectedEntites)
+        {
+            var statBuilder = gainedStat.For(new CompositeEntityBuilder(affectedEntites));
+            return MultiplyValueByEffectModifier(statBuilder, "Buff");
+        }
+
         public IStatBuilder Aura(IStatBuilder gainedStat, params IEntityBuilder[] affectedEntites)
         {
             var statBuilder = gainedStat.For(new CompositeEntityBuilder(affectedEntites));
-            var coreStatBuilder = new StatBuilderWithValueConverter(new StatBuilderAdapter(statBuilder),
-                e => new StatValue(_statFactory.BuffEffect(e, "Aura")),
+            return MultiplyValueByEffectModifier(statBuilder, "Aura");
+        }
+
+        private IStatBuilder MultiplyValueByEffectModifier(IStatBuilder gainedStat, string buffIdentity)
+        {
+            var coreStatBuilder = new StatBuilderWithValueConverter(new StatBuilderAdapter(gainedStat),
+                e => new StatValue(_statFactory.BuffEffect(e, buffIdentity)),
                 (l, r) => l.Multiply(r));
             return new StatBuilder(_statFactory, coreStatBuilder);
         }
