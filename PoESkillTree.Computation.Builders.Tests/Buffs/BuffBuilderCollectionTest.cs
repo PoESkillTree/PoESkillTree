@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         [Test]
         public void ResolveEffectBuildsToCorrectResult()
         {
-            var buff = new BuffBuilder(StatFactory, "b");
+            var buff = new BuffBuilder(StatFactory, CoreBuilder.Create("b"));
             var unresolvedBuff = Mock.Of<IBuffBuilder>(b => b.Resolve(null) == buff);
             var sut = CreateSut(unresolvedBuff);
 
@@ -212,7 +212,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         {
             var buffs =
                 from i in Enumerable.Range(0, buffCount)
-                let buff = new BuffBuilder(StatFactory, $"b{i}")
+                let buff = new BuffBuilder(StatFactory, CoreBuilder.Create($"b{i}"))
                 let keywords = new[] { Keyword(i), Keyword(i + 1) }
                 select new BuffBuilderWithKeywords(buff, keywords);
             return CreateSut(buffs);

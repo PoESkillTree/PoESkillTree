@@ -23,14 +23,14 @@ namespace PoESkillTree.Computation.Builders.Buffs
             IStatFactory statFactory, IEnumerable<(string identifier, IReadOnlyList<Keyword> keywords)> skillBuffs)
         {
             _statFactory = statFactory;
-            Fortify = new BuffBuilder(statFactory, "Fortify");
-            Maim = new BuffBuilder(statFactory, "Maim");
-            Intimidate = new BuffBuilder(statFactory, "Intimidate");
-            Taunt = new BuffBuilder(statFactory, "Taunt");
-            Blind = new BuffBuilder(statFactory, "Blind");
-            Onslaught = new BuffBuilder(statFactory, "Onslaught");
-            UnholyMight = new BuffBuilder(statFactory, "UnholyMight");
-            Phasing = new BuffBuilder(statFactory, "Phasing");
+            Fortify = Create("Fortify");
+            Maim = Create("Maim");
+            Intimidate = Create("Intimidate");
+            Taunt = Create("Taunt");
+            Blind = Create("Blind");
+            Onslaught = Create("Onslaught");
+            UnholyMight = Create("UnholyMight");
+            Phasing = Create("Phasing");
             Conflux = new ConfluxBuffBuilders(statFactory);
             CurseLimit = StatBuilderUtils.FromIdentity(statFactory, "CurseLimit", typeof(int));
 
@@ -49,15 +49,18 @@ namespace PoESkillTree.Computation.Builders.Buffs
                 new BuffBuilderWithKeywords(Conflux.Igniting),
                 new BuffBuilderWithKeywords(Conflux.Shocking),
                 // Generic buff effect increase
-                new BuffBuilderWithKeywords(new BuffBuilder(statFactory, "Buff")),
+                new BuffBuilderWithKeywords(Create("Buff")),
                 // Aura effect increase
-                new BuffBuilderWithKeywords(new BuffBuilder(statFactory, "Aura"), Keyword.Aura),
+                new BuffBuilderWithKeywords(Create("Aura"), Keyword.Aura),
             };
             var skillBuffBuilders = skillBuffs.Select(t =>
-                new BuffBuilderWithKeywords(new BuffBuilder(statFactory, t.identifier), t.keywords));
+                new BuffBuilderWithKeywords(Create(t.identifier), t.keywords));
             allBuffs.AddRange(skillBuffBuilders);
             _allBuffs = allBuffs;
         }
+
+        private BuffBuilder Create(string buffIdentity) =>
+            new BuffBuilder(_statFactory, CoreBuilder.Create(buffIdentity));
 
         public IBuffBuilder Fortify { get; }
         public IBuffBuilder Maim { get; }
@@ -129,10 +132,10 @@ namespace PoESkillTree.Computation.Builders.Buffs
         {
             public ConfluxBuffBuilders(IStatFactory statFactory)
             {
-                Igniting = new BuffBuilder(statFactory, "IgnitingConflux");
-                Shocking = new BuffBuilder(statFactory, "ShockingConflux");
-                Chilling = new BuffBuilder(statFactory, "ChillingConflux");
-                Elemental = new BuffBuilder(statFactory, "ElementalConflux");
+                Igniting = new BuffBuilder(statFactory, CoreBuilder.Create("IgnitingConflux"));
+                Shocking = new BuffBuilder(statFactory, CoreBuilder.Create("ShockingConflux"));
+                Chilling = new BuffBuilder(statFactory, CoreBuilder.Create("ChillingConflux"));
+                Elemental = new BuffBuilder(statFactory, CoreBuilder.Create("ElementalConflux"));
             }
 
             public IBuffBuilder Igniting { get; }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Builders.Actions;
+using PoESkillTree.Computation.Builders.Buffs;
 using PoESkillTree.Computation.Builders.Charges;
 using PoESkillTree.Computation.Builders.Damage;
 using PoESkillTree.Computation.Builders.Entities;
@@ -81,8 +82,15 @@ namespace PoESkillTree.Computation.Console.Builders
         public IDamageStatBuilder AsDamageStat =>
             new DamageStatBuilderStub($"{this}.AsDamageStat", (_, context) => Resolve(context).AsDamageStat);
 
-        public IBuffBuilder AsBuff =>
-            new BuffBuilderStub($"{this}.AsBuff", (_, context) => Resolve(context).AsBuff);
+        public IBuffBuilder AsBuff
+        {
+            get
+            {
+                var core = new UnresolvedCoreBuilder<string>($"{this}.AsBuff", 
+                    context => CoreBuilder.Proxy((IEffectBuilder) Resolve(context).AsBuff, b => b.Build()));
+                return new BuffBuilder(_statFactory, core);
+            }
+        }
 
         public ISkillBuilder AsSkill =>
             new SkillBuilderStub($"{this}.AsSkill", (_, context) => Resolve(context).AsSkill);

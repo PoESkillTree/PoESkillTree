@@ -24,6 +24,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IFlagStatBuilder Source(IDamageTypeBuilder type) =>
             CreateFlagStat(This, (IKeywordBuilder) type, (o1, o2) => $"{type} can apply {this}");
 
-        public Ailment Build() => default;
+        public new Ailment Build() => default;
     }
 }

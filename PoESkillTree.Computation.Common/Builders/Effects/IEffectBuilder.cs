@@ -38,5 +38,10 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         /// <para>E.g. "Consecrated Ground you create grants 40% increased Damage to you and Allies"</para>
         /// </summary>
         IStatBuilder AddStat(IStatBuilder stat);
+
+        /// <summary>
+        /// Builds this effect to its identity string.
+        /// </summary>
+        string Build();
     }
 }

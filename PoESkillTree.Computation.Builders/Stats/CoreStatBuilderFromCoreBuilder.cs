@@ -13,19 +13,28 @@ namespace PoESkillTree.Computation.Builders.Stats
 {
     internal class CoreStatBuilderFromCoreBuilder<T> : ICoreStatBuilder
     {
+        public delegate IEnumerable<IStat> StatFactory(BuildParameters parameters, Entity entity, T coreResult);
+
         private readonly ICoreBuilder<T> _coreBuilder;
-        private readonly Func<Entity, T, IEnumerable<IStat>> _statFactory;
+        private readonly StatFactory _statFactory;
         private readonly IEntityBuilder _entityBuilder;
 
         public CoreStatBuilderFromCoreBuilder(
             ICoreBuilder<T> coreBuilder, Func<Entity, T, IStat> statFactory, IEntityBuilder entityBuilder = null)
-            : this(coreBuilder, (e, t) => new []{statFactory(e, t)}, entityBuilder)
+            : this(coreBuilder, (ps, e, t) => new[] { statFactory(e, t) }, entityBuilder)
+        {
+        }
+
+        public CoreStatBuilderFromCoreBuilder(
+            ICoreBuilder<T> coreBuilder, Func<BuildParameters, Entity, T, IStat> statFactory,
+            IEntityBuilder entityBuilder = null)
+            : this(coreBuilder, (ps, e, t) => new[] { statFactory(ps, e, t) }, entityBuilder)
         {
         }
 
         public CoreStatBuilderFromCoreBuilder(
             ICoreBuilder<T> coreBuilder,
-            Func<Entity, T, IEnumerable<IStat>> statFactory,
+            StatFactory statFactory,
             IEntityBuilder entityBuilder = null)
         {
             _coreBuilder = coreBuilder;
@@ -50,7 +59,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
             var entities = _entityBuilder.Build(parameters.ModifierSourceEntity);
             var t = _coreBuilder.Build();
-            return entities.SelectMany(e => _statFactory(e, t));
+            return entities.SelectMany(e => _statFactory(parameters, e, t));
         }
     }
 }

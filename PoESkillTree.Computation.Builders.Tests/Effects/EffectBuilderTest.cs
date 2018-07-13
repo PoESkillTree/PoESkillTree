@@ -48,6 +48,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Effects
         }
 
         private static EffectBuilder CreateSut() =>
-            new EffectBuilder(new StatFactory(), "test");
+            new EffectBuilder(new StatFactory(), CoreBuilder.Create("test"));
     }
 }

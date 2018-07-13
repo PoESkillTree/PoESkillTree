@@ -91,7 +91,7 @@ namespace PoESkillTree.Computation.Builders.Damage
 
         private ICoreStatBuilder CoreStat(Func<Entity, DamageType, IStat> statFactory) =>
             new CoreStatBuilderFromCoreBuilder<IEnumerable<DamageType>>(_coreDamageType,
-                (e, ts) => ts.Select(t => statFactory(e, t)));
+                (_, e, ts) => ts.Select(t => statFactory(e, t)));
 
         private class DamageTakenConversionBuilder : IDamageTakenConversionBuilder
         {

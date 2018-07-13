@@ -79,7 +79,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         }
 
         private static BuffBuilder CreateSut() =>
-            new BuffBuilder(StatFactory, "test");
+            new BuffBuilder(StatFactory, CoreBuilder.Create("test"));
 
         private static readonly IStatFactory StatFactory = new StatFactory();
     }

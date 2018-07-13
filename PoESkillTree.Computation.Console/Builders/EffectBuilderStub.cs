@@ -34,6 +34,8 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder AddStat(IStatBuilder stat) =>
             CreateStat(This, stat, (o1, o2) => $"{o2} added to effect {o1}");
 
+        public string Build() => throw new System.NotImplementedException();
+
         public IEffectBuilder Resolve(ResolveContext context) =>
             _resolver(this, context);
     }

@@ -28,6 +28,6 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         /// </summary>
         IFlagStatBuilder Source(IDamageTypeBuilder type);
 
-        Ailment Build();
+        new Ailment Build();
     }
 }
