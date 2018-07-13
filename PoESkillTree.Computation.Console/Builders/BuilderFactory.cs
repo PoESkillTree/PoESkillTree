@@ -283,34 +283,6 @@ namespace PoESkillTree.Computation.Console.Builders
         }
 
         /// <summary>
-        /// Creates a <typeparamref name="T1"/> with the given constructor that has the string representation
-        /// <c>stringRepresentation(operand1, operands)</c>. It resolves to a new instance created with the 
-        /// given constructor and the string representation
-        /// <c>stringRepresentation(operand1?.Resolve(), operands.Select(o => o?.Resolve()))</c>, which resolves to 
-        /// itself.
-        /// </summary>
-        /// <remarks>
-        /// <paramref name="operands"/> is only enumerated once.
-        /// </remarks>
-        public static T1 Create<T1, T2>(
-            Func<string, Resolver<T1>, T1> constructor,
-            [CanBeNull] T1 operand1,
-            [ItemCanBeNull] IEnumerable<T2> operands,
-            Func<T1, IEnumerable<T2>, string> stringRepresentation)
-            where T1 : class, IResolvable<T1>
-            where T2 : class, IResolvable<T2>
-        {
-            var os = operands.ToList();
-
-            T1 Resolve(ResolveContext context) =>
-                Create(constructor, stringRepresentation(
-                    operand1?.Resolve(context),
-                    os.Select(o => o?.Resolve(context))));
-
-            return Create(constructor, stringRepresentation(operand1, os), Resolve);
-        }
-
-        /// <summary>
         /// Creates a <typeparamref name="T"/> with the given constructor that has the given string representation
         /// and resolves to itself.
         /// </summary>

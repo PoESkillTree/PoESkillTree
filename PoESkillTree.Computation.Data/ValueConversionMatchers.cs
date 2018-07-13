@@ -38,7 +38,6 @@ namespace PoESkillTree.Computation.Data
                 { "for each hit you've blocked recently", Block.CountRecently },
                 { "for each corpse consumed recently", Action.ConsumeCorpse.CountRecently },
                 // equipment
-                { "for each type of golem you have summoned", Golems.Count(s => s.HasInstance) },
                 { "for each magic item you have equipped", Equipment.Count(e => e.Has(FrameType.Magic)) },
                 // stats
                 { "per # ({StatMatchers})", PerStat(stat: Reference.AsStat, divideBy: Value) },
@@ -55,6 +54,7 @@ namespace PoESkillTree.Computation.Data
                 { "per poison on enemy", Ailment.Poison.InstancesOn(Enemy).Value },
                 // skills
                 { "for each zombie you own", Skills.RaiseZombie.Instances.Value },
+                { "for each type of golem you have summoned", Golems.CombinedInstances.Value },
                 // traps, mines, totems
                 { "for each trap", Traps.CombinedInstances.Value },
                 { "for each mine", Mines.CombinedInstances.Value },

@@ -221,7 +221,7 @@ namespace PoESkillTree.Computation.Data
                 { "totems fire", With(Keyword.Totem) },
                 { "(spells cast|attacks used|skills used) by totems (have a|have)", With(Keyword.Totem) },
                 { "of totem skills that cast an aura", With(Keyword.Totem, Keyword.Aura) },
-                { "while you have a totem", Totems.Any(s => s.HasInstance) },
+                { "while you have a totem", Totems.CombinedInstances.Value > 0 },
                 { "if you've summoned a totem recently", Totems.Cast.Recently },
                 // minions
                 { "minions", For(Entity.Minion) },

@@ -1,6 +1,4 @@
-﻿using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Common.Builders.Actions;
-using PoESkillTree.Computation.Common.Builders.Conditions;
+﻿using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -29,9 +27,6 @@ namespace PoESkillTree.Computation.Console.Builders
         public IStatBuilder Instances =>
             CreateStat(This, o => $"{o} instance count");
 
-        public IConditionBuilder HasInstance =>
-            CreateCondition(This, o => $"{o} has any instances");
-
         public ValueBuilder SkillId =>
             new ValueBuilder(CreateValue(This, o => $"{o}.SkillId"));
 
@@ -40,24 +35,27 @@ namespace PoESkillTree.Computation.Console.Builders
     }
 
 
-    public class SkillBuilderCollectionStub : BuilderCollectionStub<ISkillBuilder>,
-        ISkillBuilderCollection
+    public class SkillBuilderCollectionStub : BuilderStub, ISkillBuilderCollection
     {
-        public SkillBuilderCollectionStub(
-            string stringRepresentation, Resolver<IBuilderCollection> resolver)
-            : base(new SkillBuilderStub("Skill", (c, _) => c), stringRepresentation, resolver)
+        private readonly Resolver<ISkillBuilderCollection> _resolver;
+
+        public SkillBuilderCollectionStub(string stringRepresentation, Resolver<ISkillBuilderCollection> resolver)
+            : base(stringRepresentation)
         {
+            _resolver = resolver;
         }
 
-        private IBuilderCollection This => this;
+        private ISkillBuilderCollection This => this;
 
         public IStatBuilder CombinedInstances =>
             CreateStat(This, o => $"{o} combined instance count");
 
         public IActionBuilder Cast =>
-            Create<IActionBuilder, IBuilderCollection>(
+            Create<IActionBuilder, ISkillBuilderCollection>(
                 ActionBuilderStub.BySelf,
                 This, o => $"{o} cast");
+
+        public ISkillBuilderCollection Resolve(ResolveContext context) => _resolver(this, context);
     }
 
 
@@ -67,7 +65,7 @@ namespace PoESkillTree.Computation.Console.Builders
             => new SkillBuilderStub(s, (c, _) => c);
 
         public ISkillBuilderCollection this[params IKeywordBuilder[] keywords] =>
-            (ISkillBuilderCollection) Create<IBuilderCollection, IKeywordBuilder>(
+            Create<ISkillBuilderCollection, IKeywordBuilder>(
                 (s, r) => new SkillBuilderCollectionStub(s, r),
                 keywords,
                 os => $"Skills.Where(has keywords [{string.Join(", ", os)}])");

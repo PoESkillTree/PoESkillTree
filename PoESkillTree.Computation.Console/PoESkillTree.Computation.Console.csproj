@@ -58,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\ActionBuilderStub.cs" />
-    <Compile Include="Builders\BuilderCollectionStub.cs" />
     <Compile Include="Builders\BuilderFactories.cs" />
     <Compile Include="Builders\BuilderFactory.cs" />
     <Compile Include="Builders\BuilderStub.cs" />

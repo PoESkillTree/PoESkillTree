@@ -1,4 +1,5 @@
 using PoESkillTree.Computation.Common.Builders.Actions;
+using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Common.Builders.Skills
@@ -10,7 +11,7 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
     /// The stat properties that are the same as in <see cref="ISkillBuilder"/> only make sense as modifiers applied
     /// to the stats of skills in the collection.
     /// </remarks>
-    public interface ISkillBuilderCollection : IBuilderCollection<ISkillBuilder>
+    public interface ISkillBuilderCollection : IResolvable<ISkillBuilderCollection>
     {
         /// <summary>
         /// Gets an action that occurs when Self casts any skill in this collection.

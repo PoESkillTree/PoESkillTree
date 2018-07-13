@@ -244,7 +244,8 @@ namespace PoESkillTree.Computation.Data
         {
             foreach (var type in AllDamageTypes)
             {
-                yield return (PercentIncrease, Value, type.Damage, Skills[Keyword.Golem, type].Any(s => s.HasInstance));
+                var condition = Skills[Keyword.Golem, type].CombinedInstances.Value > 0;
+                yield return (PercentIncrease, Value, type.Damage, condition);
             }
         }
 
