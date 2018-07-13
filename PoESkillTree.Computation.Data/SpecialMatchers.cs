@@ -163,7 +163,7 @@ namespace PoESkillTree.Computation.Data
                 {
                     "your offering skills also affect you",
                     TotalOverride, 1,
-                    Skills[Keyword.Offering].ApplyStatsToEntity(Self)
+                    Buffs(Self, Entity.Minion).With(Keyword.Offering).ApplyToEntity(Self)
                 },
                 // - Champion
                 {

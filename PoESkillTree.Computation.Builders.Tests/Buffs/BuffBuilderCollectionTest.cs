@@ -7,6 +7,7 @@ using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Skills;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Tests.Stats;
+using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Skills;
@@ -208,6 +209,33 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             Assert.IsFalse(actual.IsTrue());
         }
 
+        [Test]
+        public void ApplyToEntityBuildsToCorrectResult()
+        {
+            var target = new EntityBuilder(Entity.Minion);
+            var active = Enumerable.Range(0, 3).Select(i => new Stat($"b{i}.Active")).ToList();
+            var source = Enumerable.Range(0, 3)
+                .Select(i => StatFactory.BuffSourceIs(default, $"b{i}", Entity.Character)).ToList();
+            var context = Mock.Of<IValueCalculationContext>(c => 
+                c.GetValue(active[0], NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true &&
+                c.GetValue(active[1], NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true &&
+                c.GetValue(source[1], NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true &&
+                c.GetValue(source[2], NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true);
+            var inputValue = new ValueBuilderImpl(1);
+            var sut = CreateSut(3);
+
+            var results = sut.ApplyToEntity(target).Build(default).ToList();
+            var values = results.Select(r => r.ValueConverter(inputValue).Build().Calculate(context)).ToList();
+
+            Assert.That(results, Has.Exactly(3).Items);
+            Assert.That(results[0].Stats, Has.Exactly(3).Items);
+            Assert.AreEqual("Minion.b0.Active", results[0].Stats[0].ToString());
+            Assert.AreEqual("Minion.b0.BuffSourceIs(Character)", results[0].Stats[2].ToString());
+            Assert.IsFalse(values[0].IsTrue());
+            Assert.IsTrue(values[1].IsTrue());
+            Assert.IsFalse(values[2].IsTrue());
+        }
+
         private static BuffBuilderCollection CreateSut(int buffCount)
         {
             var buffs =
@@ -219,7 +247,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         }
 
         private static BuffBuilderCollection CreateSut(params IBuffBuilder[] buffs) =>
-            CreateSut(buffs.Select(b => new BuffBuilderWithKeywords(b, new Keyword[0])));
+            CreateSut(buffs.Select(b => new BuffBuilderWithKeywords(b)));
 
         private static BuffBuilderCollection CreateSut(IEnumerable<BuffBuilderWithKeywords> buffs) =>
             new BuffBuilderCollection(StatFactory, buffs.ToList(), new ModifierSourceEntityBuilder(),

@@ -1,4 +1,5 @@
 using System.Linq;
+using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
@@ -21,6 +22,12 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         /// <para>E.g. "Auras you Cast grant 3% increased Attack and Cast Speed to you and Allies"</para>
         /// </summary>
         IStatBuilder AddStat(IStatBuilder stat);
+
+        /// <summary>
+        /// Returns a flag stat indicating whether activating buffs in this collection will also activate them on
+        /// the given entity.
+        /// </summary>
+        IFlagStatBuilder ApplyToEntity(IEntityBuilder target);
 
         /// <summary>
         /// Returns a new collection that includes all buffs in this collection that originate from any skill

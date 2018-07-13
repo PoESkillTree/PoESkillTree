@@ -1,4 +1,5 @@
 using PoESkillTree.Computation.Common.Builders.Actions;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -15,6 +16,12 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         /// This affection does not count as a buff and generic buff effect modifiers do not apply.
         /// </summary>
         IFlagStatBuilder NotAsBuffOn(IEntityBuilder target);
+        
+        /// <summary>
+        /// Returns a condition that is satisfied if <paramref name="target"/> is currently affected by this buff
+        /// and <paramref name="source"/> applied the buff to <paramref name="target"/>.
+        /// </summary>
+        IConditionBuilder IsOn(IEntityBuilder source, IEntityBuilder target);
 
         /// <summary>
         /// Gets a stat representing the effect modifier of this buff.

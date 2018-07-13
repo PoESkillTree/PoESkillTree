@@ -92,6 +92,18 @@ namespace PoESkillTree.Computation.Builders.Buffs
             new StatBuilder(_statFactory, new BuffCoreStatBuilder(_buffs, b => b.AddStat(stat), _restrictionsBuilder))
                 .For(_source);
 
+        public IFlagStatBuilder ApplyToEntity(IEntityBuilder target)
+        {
+            var coreStats = _buffs
+                .Select(b => ApplyToEntity(b.Buff, target))
+                .Select(b => new StatBuilderAdapter(b))
+                .ToList();
+            return new StatBuilder(_statFactory, new ConcatCompositeCoreStatBuilder(coreStats));
+        }
+
+        private IStatBuilder ApplyToEntity(IBuffBuilder buff, IEntityBuilder target) =>
+            buff.On(target).WithCondition(buff.IsOn(_source, _target));
+
         public IBuffBuilderCollection With(IKeywordBuilder keyword) =>
             new BuffBuilderCollection(_statFactory, _buffs, _restrictionsBuilder.With(keyword), _source, _target);
 

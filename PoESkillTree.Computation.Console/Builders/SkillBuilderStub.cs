@@ -1,7 +1,6 @@
 ﻿using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -54,9 +53,6 @@ namespace PoESkillTree.Computation.Console.Builders
 
         public IStatBuilder CombinedInstances =>
             CreateStat(This, o => $"{o} combined instance count");
-
-        public IFlagStatBuilder ApplyStatsToEntity(IEntityBuilder entity) =>
-            CreateFlagStat(This, entity, (o1, o2) => $"apply stats of {o1} to {o2}");
 
         public IActionBuilder Cast =>
             Create<IActionBuilder, IBuilderCollection>(

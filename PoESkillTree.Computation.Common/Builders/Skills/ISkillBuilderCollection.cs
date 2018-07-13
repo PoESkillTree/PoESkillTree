@@ -1,5 +1,4 @@
 using PoESkillTree.Computation.Common.Builders.Actions;
-using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Common.Builders.Skills
@@ -23,18 +22,5 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         /// (cast by Self).
         /// </summary>
         IStatBuilder CombinedInstances { get; }
-
-        /// <summary>
-        /// Returns a flag stat representing whether stats granted by skills in this collection additionally apply to 
-        /// <paramref name="entity"/>.
-        /// <para>I.e. stats granted by skills in this collection that do not apply to <paramref name="entity"/> are 
-        /// copied to also apply to <paramref name="entity"/>.</para>
-        /// </summary>
-        /// <remarks>
-        /// See "Your Offering Skills also affect you".
-        /// <para>This is similar to <see cref="Conditions.IConditionBuilders.For"/> but for the stats granted by skills in this 
-        /// collection instead of the currently parsed stat itself.</para>
-        /// </remarks>
-        IFlagStatBuilder ApplyStatsToEntity(IEntityBuilder entity);
     }
 }

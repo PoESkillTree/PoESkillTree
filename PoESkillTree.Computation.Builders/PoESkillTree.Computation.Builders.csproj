@@ -112,6 +112,7 @@
     <Compile Include="Skills\KeywordBuilders.cs" />
     <Compile Include="Stats\CastSpeedStatBuilder.cs" />
     <Compile Include="Stats\CompositeCoreStatBuilder.cs" />
+    <Compile Include="Stats\ConcatCompositeCoreStatBuilder.cs" />
     <Compile Include="Stats\ConversionStatBuilder.cs" />
     <Compile Include="Entities\EntityBuilder.cs" />
     <Compile Include="Stats\CoreStatBuilderFromCoreBuilder.cs" />
