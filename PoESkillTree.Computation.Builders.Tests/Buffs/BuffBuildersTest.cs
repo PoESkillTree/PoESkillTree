@@ -20,21 +20,23 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         [TestCase(false)]
         public void TemporaryBuildsToCorrectResult(bool expectedCondition)
         {
+            var expectedValue = expectedCondition ? (NodeValue?) 3 : null;
             var gainedStatBuilder = StatBuilderUtils.FromIdentity(StatFactory, "s", null);
             var modifierSource = new ModifierSource.Local.Skill("skill node");
             var conditionStat = new Stat($"Is {modifierSource} active?");
+            var buffEffectStat = new Stat("Buff.Effect");
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValue(conditionStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) expectedCondition);
+                c.GetValue(conditionStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) expectedCondition &&
+                c.GetValue(buffEffectStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(1.5));
             var sut = CreateSut();
 
             var (stats, _, valueConverter) = sut.Temporary(gainedStatBuilder)
                 .BuildToSingleResult(modifierSource);
-            var value = valueConverter(new ValueBuilderImpl(1)).Build();
-            var actualCondition = value.Calculate(context).IsTrue();
+            var actualValue = valueConverter(new ValueBuilderImpl(2)).Build().Calculate(context);
 
             Assert.That(stats, Has.One.Items);
             Assert.AreEqual("s", stats[0].Identity);
-            Assert.AreEqual(expectedCondition, actualCondition);
+            Assert.AreEqual(expectedValue, actualValue);
         }
 
         [TestCase(BuffRotationStage.Stage0)]

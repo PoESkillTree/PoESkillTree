@@ -71,7 +71,8 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
         public IStatBuilder Temporary(IStatBuilder gainedStat)
         {
-            return gainedStat.WithCondition(new ValueConditionBuilder(BuildCondition));
+            var statBuilder = gainedStat.WithCondition(new ValueConditionBuilder(BuildCondition));
+            return MultiplyValueByEffectModifier(statBuilder, "Buff");
 
             IValue BuildCondition(BuildParameters parameters)
             {
