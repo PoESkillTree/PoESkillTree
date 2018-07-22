@@ -10,11 +10,6 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         /// </summary>
         ISkillBuilderCollection this[params IKeywordBuilder[] keywords] { get; }
 
-        /// <summary>
-        /// The currently selected main skill.
-        /// </summary>
-        ISkillBuilder MainSkill { get; }
-
         // Single skills that need to be individually referenced
 
         ISkillBuilder SummonSkeleton { get; }

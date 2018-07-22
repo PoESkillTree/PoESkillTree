@@ -70,8 +70,6 @@ namespace PoESkillTree.Computation.Console.Builders
                 keywords,
                 os => $"Skills.Where(has keywords [{string.Join(", ", os)}])");
 
-        public ISkillBuilder MainSkill => Create("Main skill");
-
         public ISkillBuilder SummonSkeleton => Create("Summon Skeleton");
 
         public ISkillBuilder VaalSummonSkeletons => Create("Vaal Summon Skeletons");

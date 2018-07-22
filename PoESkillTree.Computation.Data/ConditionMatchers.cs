@@ -229,12 +229,6 @@ namespace PoESkillTree.Computation.Data
                 { "you and your minions have", For(Entity.Minion).Or(For(Self)) },
                 { "golems have", And(For(Entity.Minion), With(Keyword.Golem)) },
                 { "spectres have", And(For(Entity.Minion), With(Skills.RaiseSpectre)) },
-                {
-                    // Technically this would be separate for each minion summoned by that skill, but DPS will 
-                    // only be calculated for a single minion anyway.
-                    "golems summoned in the past # seconds deal",
-                    And(With(Keyword.Golem), Skills.MainSkill.Cast.InPastXSeconds(Value))
-                },
                 { "if you Summoned a golem in the past # seconds", Golems.Cast.InPastXSeconds(Value) },
                 // flasks
                 { "while using a flask", Flask.IsAnyActive },
