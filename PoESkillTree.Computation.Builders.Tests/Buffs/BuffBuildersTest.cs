@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using EnumsNET;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Buffs;
 using PoESkillTree.Computation.Builders.Entities;
+using PoESkillTree.Computation.Builders.Skills;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Builders.Values;
@@ -144,7 +146,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
                 ("wrath", new[] { Keyword.Aura, Keyword.AreaOfEffect, Keyword.Lightning }),
                 ("herald", new[] { Keyword.Spell }),
                 ("frostbite", new[] { Keyword.Curse })
-            };
+            }.Select(t => new SkillDefinition(t.identifier, 0, t.keywords, true));
             return new BuffBuilders(StatFactory, buffSkills);
         }
 

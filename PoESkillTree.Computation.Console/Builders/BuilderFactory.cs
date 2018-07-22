@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using JetBrains.Annotations;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -256,30 +254,6 @@ namespace PoESkillTree.Computation.Console.Builders
                     operand2?.Resolve(context)));
 
             return Create(constructor, stringRepresentation(operand1, operand2), Resolve);
-        }
-
-        /// <summary>
-        /// Creates a <typeparamref name="TOut"/> with the given constructor that has the string representation
-        /// <c>stringRepresentation(operands)</c>. It resolves to a new instance created with the 
-        /// given constructor and the string representation
-        /// <c>stringRepresentation(operands.Select(o => o?.Resolve()))</c>, which resolves to itself.
-        /// </summary>
-        /// <remarks>
-        /// <paramref name="operands"/> is only enumerated once.
-        /// </remarks>
-        public static TOut Create<TOut, T>(
-            Func<string, Resolver<TOut>, TOut> constructor,
-            [ItemCanBeNull] IEnumerable<T> operands,
-            Func<IEnumerable<T>, string> stringRepresentation)
-            where T : class, IResolvable<T>
-        {
-            var os = operands.ToList();
-
-            TOut Resolve(ResolveContext context) =>
-                Create(constructor, stringRepresentation(
-                    os.Select(o => o?.Resolve(context))));
-
-            return Create(constructor, stringRepresentation(os), Resolve);
         }
 
         /// <summary>

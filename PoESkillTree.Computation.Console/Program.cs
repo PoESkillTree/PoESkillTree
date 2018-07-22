@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using MoreLinq;
+using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Common.Parsing;
@@ -47,12 +48,13 @@ namespace PoESkillTree.Computation.Console
 
         public static IParser CreateParser()
         {
-            return new Parser<ParsingStep>(CreateParsingData(), new BuilderFactories());
+            return new Parser<ParsingStep>(CreateParsingData(), new BuilderFactories(SkillDefinitions.Skills));
         }
 
         public static IParsingData<ParsingStep> CreateParsingData()
         {
-            return new ParsingData(new BuilderFactories(), new MatchContextsStub(), new SkillMatchers());
+            return new ParsingData(new BuilderFactories(SkillDefinitions.Skills), new MatchContextsStub(), 
+                SkillDefinitions.SkillNames);
         }
 
         /// <summary>

@@ -90,6 +90,7 @@
     <Compile Include="Collections\MatcherCollection.cs" />
     <Compile Include="MonsterGivenStats.cs" />
     <Compile Include="ParsingData.cs" />
+    <Compile Include="SkillMatchers.cs" />
     <Compile Include="Steps\ParsingStep.cs" />
     <Compile Include="PoolStatMatchers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

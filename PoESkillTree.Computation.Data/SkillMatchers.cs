@@ -1,29 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Data;
-using PoESkillTree.Computation.Console.Builders;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 
-namespace PoESkillTree.Computation.Console
+namespace PoESkillTree.Computation.Data
 {
     /// <summary>
     /// <see cref="IReferencedMatchers"/> implementation containing <see cref="ISkillBuilder"/>. The contained skills
-    /// are simply created from a fixed array of a few skill names.
+    /// are created from passed skill names.
     /// </summary>
     public class SkillMatchers : ReferencedMatchersBase<ISkillBuilder>
     {
+        private readonly IReadOnlyList<string> _skillNames;
+        private readonly Func<string, ISkillBuilder> _builderFactory;
+
+        public SkillMatchers(IReadOnlyList<string> skillNames, Func<string, ISkillBuilder> builderFactory)
+        {
+            _skillNames = skillNames;
+            _builderFactory = builderFactory;
+        }
+
         protected override IEnumerable<ReferencedMatcherData> CreateCollection()
         {
-            string[] skills =
-            {
-                "Blood Rage", "Bone Offering", "Detonate Mines", "Flesh Offering", "Molten Shell", "Raise Spectre",
-                "Raise Zombie", "Spirit Offering", "Summon Skeleton", "Vaal Summon Skeleton", "Frost Blades"
-            };
             var coll = new ReferencedMatcherCollection<ISkillBuilder>();
-            foreach (var skill in skills)
+            foreach (var skill in _skillNames)
             {
-                coll.Add(skill, new SkillBuilderStub(skill, (c, _) => c));
+                coll.Add(skill.ToLowerInvariant(), _builderFactory(skill));
             }
             return coll;
         }

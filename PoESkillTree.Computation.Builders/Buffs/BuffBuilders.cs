@@ -4,6 +4,7 @@ using System.Linq;
 using EnumsNET;
 using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Entities;
+using PoESkillTree.Computation.Builders.Skills;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -20,7 +21,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
         private readonly IReadOnlyList<BuffBuilderWithKeywords> _allBuffs;
 
         public BuffBuilders(
-            IStatFactory statFactory, IEnumerable<(string identifier, IReadOnlyList<Keyword> keywords)> skillBuffs)
+            IStatFactory statFactory, IEnumerable<SkillDefinition> skillBuffs)
         {
             _statFactory = statFactory;
             Fortify = Create("Fortify");
@@ -53,8 +54,9 @@ namespace PoESkillTree.Computation.Builders.Buffs
                 // Aura effect increase
                 new BuffBuilderWithKeywords(Create("Aura"), Keyword.Aura),
             };
-            var skillBuffBuilders = skillBuffs.Select(t =>
-                new BuffBuilderWithKeywords(Create(t.identifier), t.keywords));
+            var skillBuffBuilders = skillBuffs
+                .Where(s => s.ProvidesBuff)
+                .Select(s => new BuffBuilderWithKeywords(Create(s.SkillName), s.Keywords));
             allBuffs.AddRange(skillBuffBuilders);
             _allBuffs = allBuffs;
         }

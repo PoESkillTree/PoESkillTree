@@ -26,12 +26,12 @@ namespace PoESkillTree.Computation.Builders.Skills
             new SkillBuilder(_statFactory, _coreBuilder.Resolve(context));
 
         public IActionBuilder Cast =>
-            new ActionBuilder(_statFactory, CoreBuilder.UnaryOperation(_coreBuilder, d => $"{d.Identifier}.Cast"),
+            new ActionBuilder(_statFactory, CoreBuilder.UnaryOperation(_coreBuilder, d => $"{d.SkillName}.Cast"),
                 new ModifierSourceEntityBuilder());
 
         public IStatBuilder Instances =>
             new StatBuilder(_statFactory, new CoreStatBuilderFromCoreBuilder<SkillDefinition>(_coreBuilder,
-                    (e, d) => _statFactory.FromIdentity($"{d.Identifier}.Instances", e, typeof(int))));
+                    (e, d) => _statFactory.FromIdentity($"{d.SkillName}.Instances", e, typeof(int))));
 
         public ValueBuilder SkillId =>
             new ValueBuilder(new ValueBuilderImpl(

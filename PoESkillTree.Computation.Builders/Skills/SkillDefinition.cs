@@ -1,14 +1,21 @@
-﻿namespace PoESkillTree.Computation.Builders.Skills
+﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Common.Builders.Skills;
+
+namespace PoESkillTree.Computation.Builders.Skills
 {
-    public struct SkillDefinition
+    public class SkillDefinition
     {
-        public SkillDefinition(string identifier, int numericId)
+        public SkillDefinition(string skillName, int numericId, IReadOnlyList<Keyword> keywords, bool providesBuff)
         {
-            Identifier = identifier;
+            SkillName = skillName;
             NumericId = numericId;
+            Keywords = keywords;
+            ProvidesBuff = providesBuff;
         }
 
-        public string Identifier { get; }
+        public string SkillName { get; }
         public int NumericId { get; }
+        public IReadOnlyList<Keyword> Keywords { get; }
+        public bool ProvidesBuff { get; }
     }
 }

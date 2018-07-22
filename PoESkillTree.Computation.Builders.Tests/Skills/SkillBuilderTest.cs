@@ -4,6 +4,7 @@ using PoESkillTree.Computation.Builders.Skills;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Skills;
 
 namespace PoESkillTree.Computation.Builders.Tests.Skills
 {
@@ -14,7 +15,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Skills
         [TestCase(1)]
         public void SkillIdBuildsToCorrectValue(int expected)
         {
-            var coreBuilder = CoreBuilder.Create(new SkillDefinition("", expected));
+            var coreBuilder = CreateCoreBuilder("", expected);
             var sut = CreateSut(coreBuilder);
 
             var actual = sut.SkillId.Build().Calculate(null);
@@ -26,7 +27,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Skills
         public void SkillIdResolveBuildsToCorrectValue()
         {
             var expected = 42;
-            var coreBuilder = CoreBuilder.Create(new SkillDefinition("", expected));
+            var coreBuilder = CreateCoreBuilder("", expected);
             var unresolved = Mock.Of<ICoreBuilder<SkillDefinition>>(b => b.Resolve(null) == coreBuilder);
             var sut = CreateSut(unresolved);
 
@@ -38,7 +39,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Skills
         [Test]
         public void InstancesBuildsToCorrectResults()
         {
-            var coreBuilder = CoreBuilder.Create(new SkillDefinition("skill", 0));
+            var coreBuilder = CreateCoreBuilder("skill");
             var sut = CreateSut(coreBuilder);
 
             var stat = sut.Instances.BuildToSingleStat();
@@ -49,13 +50,16 @@ namespace PoESkillTree.Computation.Builders.Tests.Skills
         [Test]
         public void CastBuildsToCorrectResult()
         {
-            var coreBuilder = CoreBuilder.Create(new SkillDefinition("skill", 0));
+            var coreBuilder = CreateCoreBuilder("skill");
             var sut = CreateSut(coreBuilder);
 
             var actual = sut.Cast.Build();
 
             Assert.AreEqual("skill.Cast", actual);
         }
+
+        private static ICoreBuilder<SkillDefinition> CreateCoreBuilder(string identifier, int numericId = 0) =>
+            CoreBuilder.Create(new SkillDefinition(identifier, numericId, new Keyword[0], false));
 
         private static SkillBuilder CreateSut(ICoreBuilder<SkillDefinition> coreBuilder) =>
             new SkillBuilder(new StatFactory(), coreBuilder);

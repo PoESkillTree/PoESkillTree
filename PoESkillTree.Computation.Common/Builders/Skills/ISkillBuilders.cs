@@ -18,5 +18,7 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         ISkillBuilder RaiseZombie { get; }
 
         ISkillBuilder DetonateMines { get; }
+
+        ISkillBuilder FromName(string skillName);
     }
 }
