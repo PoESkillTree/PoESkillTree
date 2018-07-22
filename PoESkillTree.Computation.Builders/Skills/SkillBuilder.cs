@@ -37,5 +37,7 @@ namespace PoESkillTree.Computation.Builders.Skills
             new ValueBuilder(new ValueBuilderImpl(
                 ps => new Constant(_coreBuilder.Build().NumericId),
                 c => Resolve(c).SkillId));
+
+        public SkillDefinition Build() => _coreBuilder.Build();
     }
 }

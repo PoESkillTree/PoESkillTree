@@ -7,6 +7,7 @@ using PoESkillTree.Computation.Builders.Damage;
 using PoESkillTree.Computation.Builders.Effects;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Resolving;
+using PoESkillTree.Computation.Builders.Skills;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Buffs;
@@ -101,8 +102,15 @@ namespace PoESkillTree.Computation.Console.Builders
             }
         }
 
-        public ISkillBuilder AsSkill =>
-            new SkillBuilderStub($"{this}.AsSkill", (_, context) => Resolve(context).AsSkill);
+        public ISkillBuilder AsSkill
+        {
+            get
+            {
+                var core = new UnresolvedCoreBuilder<SkillDefinition>($"{this}.AsSkill",
+                    context => CoreBuilder.Proxy(Resolve(context).AsSkill, b => b.Build()));
+                return new SkillBuilder(_statFactory, core);
+            }
+        }
 
         private IReferenceConverter Resolve(ResolveContext context) =>
             _resolver(this, context);

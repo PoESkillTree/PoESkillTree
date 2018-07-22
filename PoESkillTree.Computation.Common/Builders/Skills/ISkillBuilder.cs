@@ -25,5 +25,7 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         /// This skill's identifier.
         /// </summary>
         ValueBuilder SkillId { get; }
+
+        SkillDefinition Build();
     }
 }

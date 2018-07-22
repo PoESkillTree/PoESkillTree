@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using PoESkillTree.Computation.Common.Builders.Skills;
 
-namespace PoESkillTree.Computation.Builders.Skills
+namespace PoESkillTree.Computation.Common.Builders.Skills
 {
     public class SkillDefinition
     {

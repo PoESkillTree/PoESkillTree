@@ -57,7 +57,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Builders\ActionBuilderStub.cs" />
     <Compile Include="Builders\BuilderFactory.cs" />
     <Compile Include="Builders\BuilderStub.cs" />
     <Compile Include="Builders\ConditionBuilderStub.cs" />
@@ -67,7 +66,6 @@
     <Compile Include="Builders\MatchContextStub.cs" />
     <Compile Include="Builders\PoolStatBuilderStub.cs" />
     <Compile Include="Builders\Resolver.cs" />
-    <Compile Include="Builders\SkillBuilderStub.cs" />
     <Compile Include="Builders\StatBuilderStub.cs" />
     <Compile Include="Builders\ValueBuilderStub.cs" />
     <Compile Include="Program.cs" />
