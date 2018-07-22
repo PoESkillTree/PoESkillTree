@@ -87,6 +87,7 @@
     <Compile Include="Forms\FormBuildersTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolving\UnresolvedBuilderTest.cs" />
+    <Compile Include="Skills\SkillBuilderTest.cs" />
     <Compile Include="Stats\CastSpeedStatBuilderTest.cs" />
     <Compile Include="Stats\DamageStatBuilderTest.cs" />
     <Compile Include="Stats\CompositeCoreStatBuilderTest.cs" />

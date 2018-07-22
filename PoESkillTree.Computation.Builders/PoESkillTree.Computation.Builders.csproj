@@ -110,6 +110,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolving\UnresolvedBuilder.cs" />
     <Compile Include="Skills\KeywordBuilders.cs" />
+    <Compile Include="Skills\SkillBuilder.cs" />
+    <Compile Include="Skills\SkillDefinition.cs" />
     <Compile Include="Stats\CastSpeedStatBuilder.cs" />
     <Compile Include="Stats\CompositeCoreStatBuilder.cs" />
     <Compile Include="Stats\ConcatCompositeCoreStatBuilder.cs" />
