@@ -111,6 +111,7 @@
     <Compile Include="Resolving\UnresolvedBuilder.cs" />
     <Compile Include="Skills\KeywordBuilders.cs" />
     <Compile Include="Skills\SkillBuilder.cs" />
+    <Compile Include="Skills\SkillBuilderCollection.cs" />
     <Compile Include="Skills\SkillDefinition.cs" />
     <Compile Include="Stats\CastSpeedStatBuilder.cs" />
     <Compile Include="Stats\CompositeCoreStatBuilder.cs" />
