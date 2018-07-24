@@ -30,11 +30,6 @@ namespace PoESkillTree.Computation.Console.Builders
             return Create<IValueBuilder, T1, T2>(Construct, operand1, operand2, stringRepresentation);
         }
 
-        public static IValueBuilder CreateValue(string stringRepresentation)
-        {
-            return Create<IValueBuilder>(Construct, stringRepresentation);
-        }
-
         private static IValueBuilder Construct(string stringRepresentation, Resolver<IValueBuilder> resolver)
         {
             return new ValueBuilderStub(stringRepresentation, resolver);
@@ -144,36 +139,6 @@ namespace PoESkillTree.Computation.Console.Builders
         private static IPoolStatBuilder ConstructPool(string stringRepresentation, Resolver<IStatBuilder> resolver)
         {
             return new PoolStatBuilderStub(stringRepresentation, resolver);
-        }
-
-        #endregion
-
-        #region IDamageStatBuilder
-
-        // Identical to the Create<> methods at the bottom but with `new DamageStatBuilderStub()` as constructor.
-
-        public static IDamageStatBuilder CreateDamageStat<T>(
-            [CanBeNull] T operand,
-            Func<T, string> stringRepresentation)
-            where T : class, IResolvable<T>
-        {
-            return (IDamageStatBuilder) Create<IStatBuilder, T>(ConstructDamage, operand, stringRepresentation);
-        }
-
-        public static IDamageStatBuilder CreateDamageStat<T1, T2>(
-            [CanBeNull] T1 operand1, [CanBeNull] T2 operand2,
-            Func<T1, T2, string> stringRepresentation)
-            where T1 : class, IResolvable<T1>
-            where T2 : class, IResolvable<T2>
-        {
-            return (IDamageStatBuilder) Create<IStatBuilder, T1, T2>(
-                ConstructDamage, operand1, operand2, stringRepresentation);
-        }
-
-        private static IDamageStatBuilder ConstructDamage(string stringRepresentation,
-            Resolver<IStatBuilder> resolver)
-        {
-            return new DamageStatBuilderStub(stringRepresentation, resolver);
         }
 
         #endregion

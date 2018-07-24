@@ -96,8 +96,15 @@ namespace PoESkillTree.Computation.Console.Builders
         public IPoolStatBuilder AsPoolStat =>
             new PoolStatBuilderStub($"{this}.AsPoolStat", (_, context) => Resolve(context).AsPoolStat);
 
-        public IDamageStatBuilder AsDamageStat =>
-            new DamageStatBuilderStub($"{this}.AsDamageStat", (_, context) => Resolve(context).AsDamageStat);
+        public IDamageStatBuilder AsDamageStat
+        {
+            get
+            {
+                var core = new UnresolvedCoreStatBuilder($"{this}.AsDamageStat",
+                    context => new StatBuilderAdapter(Resolve(context).AsDamageStat));
+                return new DamageStatBuilder(_statFactory, core);
+            }
+        }
 
         public IBuffBuilder AsBuff
         {

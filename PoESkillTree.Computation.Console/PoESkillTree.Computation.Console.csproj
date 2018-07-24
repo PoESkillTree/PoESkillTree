@@ -60,7 +60,6 @@
     <Compile Include="Builders\BuilderFactory.cs" />
     <Compile Include="Builders\BuilderStub.cs" />
     <Compile Include="Builders\ConditionBuilderStub.cs" />
-    <Compile Include="Builders\DamageStatBuilderStub.cs" />
     <Compile Include="Builders\FlagStatBuilderStub.cs" />
     <Compile Include="Builders\ReferenceConverterStub.cs" />
     <Compile Include="Builders\MatchContextStub.cs" />
