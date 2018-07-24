@@ -83,8 +83,15 @@ namespace PoESkillTree.Computation.Console.Builders
             }
         }
 
-        public IStatBuilder AsStat =>
-            new StatBuilderStub($"{this}.AsStat", (_, context) => Resolve(context).AsStat);
+        public IStatBuilder AsStat
+        {
+            get
+            {
+                var core = new UnresolvedCoreStatBuilder($"{this}.AsStat",
+                    context => new StatBuilderAdapter(Resolve(context).AsStat));
+                return new StatBuilder(_statFactory, core);
+            }
+        }
 
         public IPoolStatBuilder AsPoolStat =>
             new PoolStatBuilderStub($"{this}.AsPoolStat", (_, context) => Resolve(context).AsPoolStat);

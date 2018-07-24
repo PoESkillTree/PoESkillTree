@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.Common.Utils;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Values;
+using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Equipment;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
 
@@ -11,22 +17,22 @@ namespace PoESkillTree.Computation.Builders.Resolving
 {
     public class UnresolvedBuilder<TResolve, TBuild> : IResolvable<TResolve>
     {
-        private readonly string _description;
-        private readonly Func<ResolveContext, TResolve> _resolver;
+        protected string Description { get; }
+        protected Func<ResolveContext, TResolve> Resolver { get; }
 
         public UnresolvedBuilder(string description, Func<ResolveContext, TResolve> resolver)
         {
-            _description = description;
-            _resolver = resolver;
+            Description = description;
+            Resolver = resolver;
         }
 
         public TResolve Resolve(ResolveContext context) =>
-            _resolver(context);
+            Resolver(context);
 
         public TBuild Build() => 
-            throw new UnresolvedException(_description);
+            throw new UnresolvedException(Description);
 
-        public override string ToString() => _description;
+        public override string ToString() => Description;
     }
 
     public class UnresolvedException : ParseException
@@ -73,5 +79,19 @@ namespace PoESkillTree.Computation.Builders.Resolving
             : base(description, resolver)
         {
         }
+    }
+
+    public class UnresolvedCoreStatBuilder
+        : UnresolvedBuilder<ICoreStatBuilder, IEnumerable<StatBuilderResult>>, ICoreStatBuilder
+    {
+        public UnresolvedCoreStatBuilder(string description, Func<ResolveContext, ICoreStatBuilder> resolver)
+            : base(description, resolver)
+        {
+        }
+
+        public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
+            new UnresolvedCoreStatBuilder(Description, Resolver.AndThen(b => b.WithEntity(entityBuilder)));
+
+        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters) => Build();
     }
 }

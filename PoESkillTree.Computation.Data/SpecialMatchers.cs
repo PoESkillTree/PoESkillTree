@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EnumsNET;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common.Builders;
@@ -109,6 +110,7 @@ namespace PoESkillTree.Computation.Data
                     "armour received from body armour is doubled",
                     PercentMore, 100, Armour, Condition.BaseValueComesFrom(ItemSlot.BodyArmour)
                 },
+                { "#% increased attack speed per # accuracy rating", UndeniableAttackSpeed().ToArray() },
                 // - Chieftain
                 {
                     "totems are immune to fire damage",
@@ -223,6 +225,18 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 0, Mana.Cost, With(Keyword.Movement)
                 },
             };
+
+        private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat, IConditionBuilder condition)>
+            UndeniableAttackSpeed()
+        {
+            var attackSpeed = Stat.CastSpeed.With(DamageSource.Attack);
+            foreach (var hand in Enums.GetValues<AttackDamageHand>())
+            {
+                IValueBuilder PerAccuracy(ValueBuilder value) =>
+                    ValueBuilderUtils.PerStat(Stat.Accuracy.With(hand), Values[1])(value);
+                yield return (PercentIncrease, PerAccuracy(Values[0]), attackSpeed.With(hand), Condition.True);
+            }
+        }
 
         private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat, IConditionBuilder condition)>
             ElementalEquilibrium()
