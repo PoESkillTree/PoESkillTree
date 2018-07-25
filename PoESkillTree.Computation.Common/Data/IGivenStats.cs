@@ -3,10 +3,15 @@
 namespace PoESkillTree.Computation.Common.Data
 {
     /// <summary>
-    /// Collection of the stats that are always applied (to the entity the collection belongs to)
+    /// Collection of stats that are always applied
     /// </summary>
     public interface IGivenStats
     {
+        /// <summary>
+        /// The entities these stats are applied to
+        /// </summary>
+        IReadOnlyList<Entity> AffectedEntities { get; }
+
         /// <summary>
         /// The unparsed stat lines that are always active.
         /// </summary>
