@@ -82,13 +82,24 @@ namespace PoESkillTree.Computation.Data
                     Reference.AsPoolStat.Leech.RateLimit
                 },
                 {
-                    "({DamageStatMatchers}) leeched as ({PoolStatMatchers})",
-                    References[1].AsPoolStat.Leech.Of(References[0].AsDamageStat)
+                    "damage leeched as ({PoolStatMatchers})",
+                    Reference.AsPoolStat.Leech.Of(Damage)
                 },
                 {
-                    "({DamageStatMatchers}) leeched as ({PoolStatMatchers}) and ({PoolStatMatchers})",
-                    References[1].AsPoolStat.Leech.Of(References[0].AsDamageStat),
-                    References[2].AsPoolStat.Leech.Of(References[0].AsDamageStat)
+                    "attack damage leeched as ({PoolStatMatchers})",
+                    Reference.AsPoolStat.Leech.Of(Damage.With(DamageSource.Attack))
+                },
+                {
+                    "({DamageTypeMatchers}) damage leeched as ({PoolStatMatchers})",
+                    References[1].AsPoolStat.Leech.Of(References[0].AsDamageType.Damage)
+                },
+                {
+                    "({DamageTypeMatchers}) attack damage leeched as ({PoolStatMatchers})",
+                    References[1].AsPoolStat.Leech.Of(References[0].AsDamageType.Damage.With(DamageSource.Attack))
+                },
+                {
+                    "damage leeched as ({PoolStatMatchers}) and ({PoolStatMatchers})",
+                    References[0].AsPoolStat.Leech.Of(Damage), References[1].AsPoolStat.Leech.Of(Damage)
                 },
                 {
                     "damage dealt by your totems is leeched to you as life",
@@ -187,7 +198,10 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "maximum number of spectres", Skills.RaiseSpectre.Instances.Maximum },
                 { "maximum number of zombies", Skills.RaiseZombie.Instances.Maximum },
-                { "skeleton duration", Stat.Duration, Or(With(Skills.SummonSkeleton), With(Skills.VaalSummonSkeletons)) },
+                {
+                    "skeleton duration",
+                    Stat.Duration, Or(With(Skills.SummonSkeleton), With(Skills.VaalSummonSkeletons))
+                },
                 { "golem at a time", Golems.CombinedInstances.Maximum },
                 // buffs
                 { "chance to gain ({BuffMatchers})", Reference.AsBuff.ChanceOn(Self) },

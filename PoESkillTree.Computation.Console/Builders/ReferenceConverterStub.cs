@@ -104,16 +104,6 @@ namespace PoESkillTree.Computation.Console.Builders
             }
         }
 
-        public IDamageStatBuilder AsDamageStat
-        {
-            get
-            {
-                var core = new UnresolvedCoreStatBuilder($"{this}.AsDamageStat",
-                    context => new StatBuilderAdapter(Resolve(context).AsDamageStat));
-                return new DamageStatBuilder(_statFactory, core);
-            }
-        }
-
         public IBuffBuilder AsBuff
         {
             get

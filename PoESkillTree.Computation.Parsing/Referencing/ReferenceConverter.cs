@@ -31,7 +31,6 @@ namespace PoESkillTree.Computation.Parsing.Referencing
         public IActionBuilder AsAction => As<IActionBuilder>();
         public IStatBuilder AsStat => As<IStatBuilder>();
         public IPoolStatBuilder AsPoolStat => As<IPoolStatBuilder>();
-        public IDamageStatBuilder AsDamageStat => As<IDamageStatBuilder>();
         public IBuffBuilder AsBuff => As<IBuffBuilder>();
         public ISkillBuilder AsSkill => As<ISkillBuilder>();
 

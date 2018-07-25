@@ -27,8 +27,7 @@ namespace PoESkillTree.Computation.Data
             _modifierBuilder = modifierBuilder;
         }
 
-        public override IReadOnlyList<string> ReferenceNames { get; } =
-            new[] { "StatMatchers", nameof(DamageStatMatchers) };
+        public override IReadOnlyList<string> ReferenceNames { get; } = new[] { "StatMatchers" };
 
         protected override IEnumerable<MatcherData> CreateCollection() =>
             new StatMatcherCollection<IDamageRelatedStatBuilder>(_modifierBuilder)

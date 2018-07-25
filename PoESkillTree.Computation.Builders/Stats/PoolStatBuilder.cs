@@ -112,7 +112,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public new ILeechStatBuilder Resolve(ResolveContext context) => (ILeechStatBuilder) base.Resolve(context);
 
-        public IStatBuilder Of(IDamageStatBuilder damage)
+        public IStatBuilder Of(IDamageRelatedStatBuilder damage)
         {
             var damageCoreBuilder = new StatBuilderAdapter(damage.WithHits);
             var coreBuilder = new ParametrisedCoreStatBuilder<ICoreBuilder<Pool>>(damageCoreBuilder, Pool,

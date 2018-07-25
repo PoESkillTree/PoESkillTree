@@ -33,8 +33,6 @@ namespace PoESkillTree.Computation.Common.Builders.Resolving
 
         IPoolStatBuilder AsPoolStat { get; }
 
-        IDamageStatBuilder AsDamageStat { get; }
-
         IBuffBuilder AsBuff { get; }
 
         ISkillBuilder AsSkill { get; }
