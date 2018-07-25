@@ -1,4 +1,7 @@
-﻿using PoESkillTree.Computation.Common.Builders.Conditions;
+﻿using System;
+using System.Runtime.CompilerServices;
+using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -12,97 +15,153 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        public IPoolStatBuilder From(Pool pool) => new PoolStatBuilder(StatFactory, pool);
+        public IPoolStatBuilder From(Pool pool) => new PoolStatBuilder(StatFactory, CoreBuilder.Create(pool));
     }
 
-    internal class PoolStatBuilder : StatBuilder, IPoolStatBuilder
+    public class PoolStatBuilder : StatBuilderWithPool, IPoolStatBuilder
     {
-        private readonly Pool _pool;
-
-        public PoolStatBuilder(IStatFactory statFactory, Pool pool)
-            : this(statFactory, LeafCoreStatBuilder.FromIdentity(statFactory, pool.ToString(), typeof(int)), pool)
+        public PoolStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
+            : base(statFactory, pool, "")
         {
         }
 
-        private PoolStatBuilder(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder, Pool pool)
-            : base(statFactory, coreStatBuilder)
+        private PoolStatBuilder(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool)
+            : base(statFactory, coreStatBuilder, pool, "")
         {
-            _pool = pool;
         }
 
-        protected override IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
-            new PoolStatBuilder(StatFactory, coreStatBuilder, _pool);
+        protected override IFlagStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool) =>
+            new PoolStatBuilder(StatFactory, coreStatBuilder, pool);
 
         public new IPoolStatBuilder For(IEntityBuilder entity) =>
             (IPoolStatBuilder) base.For(entity);
 
-        public IRegenStatBuilder Regen => new RegenStatBuilder(StatFactory, _pool);
-        public IRechargeStatBuilder Recharge => new RechargeStatBuilder(StatFactory, _pool);
-        public IStatBuilder RecoveryRate => FromIdentity($"{_pool}.RecoveryRate", typeof(double));
-        public IStatBuilder Cost => FromIdentity($"{_pool}.Cost", typeof(int));
-        public IStatBuilder Reservation => FromIdentity($"{_pool}.Reservation", typeof(int));
-        public ILeechStatBuilder Leech => new LeechStatBuilder(StatFactory, _pool);
-        public IFlagStatBuilder InstantLeech => FromIdentity($"{_pool}.InstantLeech", typeof(bool));
-        public IStatBuilder Gain => FromIdentity($"{_pool}.Gain", typeof(int));
+        public IRegenStatBuilder Regen => new RegenStatBuilder(StatFactory, Pool);
+        public IRechargeStatBuilder Recharge => new RechargeStatBuilder(StatFactory, Pool);
+        public IStatBuilder RecoveryRate => FromIdentity(typeof(double));
+        public IStatBuilder Cost => FromIdentity(typeof(int));
+        public IStatBuilder Reservation => FromIdentity(typeof(int));
+        public ILeechStatBuilder Leech => new LeechStatBuilder(StatFactory, Pool);
+        public IFlagStatBuilder InstantLeech => FromIdentity(typeof(bool));
+        public IStatBuilder Gain => FromIdentity(typeof(int));
 
         public IConditionBuilder IsFull =>
-            (Reservation.Value <= 0).And(FromIdentity($"{_pool}.IsFull", typeof(bool), UserSpecifiedValue()).IsSet);
+            (Reservation.Value <= 0).And(FromIdentity(typeof(bool), UserSpecifiedValue()).IsSet);
 
         public IConditionBuilder IsLow =>
-            (Reservation.Value >= 65).Or(FromIdentity($"{_pool}.IsLow", typeof(bool), UserSpecifiedValue()).IsSet);
+            (Reservation.Value >= 65).Or(FromIdentity(typeof(bool), UserSpecifiedValue()).IsSet);
 
-        public Pool BuildPool() => _pool;
-
-        public override string ToString() => _pool.ToString();
+        public Pool BuildPool() => Pool.Build();
     }
 
-    internal class RechargeStatBuilder : StatBuilder, IRechargeStatBuilder
+    internal class RechargeStatBuilder : StatBuilderWithPool, IRechargeStatBuilder
     {
-        private readonly Pool _pool;
-
-        public RechargeStatBuilder(IStatFactory statFactory, Pool pool)
-            : base(statFactory, LeafCoreStatBuilder.FromIdentity(statFactory, $"{pool}.Recharge", typeof(int)))
+        public RechargeStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
+            : base(statFactory, pool, "Recharge")
         {
-            _pool = pool;
         }
 
-        public IStatBuilder Start => FromIdentity($"{_pool}.Recharge.Start", typeof(double));
+        private RechargeStatBuilder(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool)
+            : base(statFactory, coreStatBuilder, pool, "Recharge")
+        {
+        }
 
-        public IConditionBuilder StartedRecently =>
-            FromIdentity($"{_pool}.Recharge.StartedRecently", typeof(bool), UserSpecifiedValue()).IsSet;
+        protected override IFlagStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool) =>
+            new RechargeStatBuilder(StatFactory, coreStatBuilder, pool);
+
+        public IStatBuilder Start => FromIdentity(typeof(double));
+
+        public IConditionBuilder StartedRecently => FromIdentity(typeof(bool), UserSpecifiedValue()).IsSet;
     }
 
-    internal class RegenStatBuilder : StatBuilder, IRegenStatBuilder
+    internal class RegenStatBuilder : StatBuilderWithPool, IRegenStatBuilder
     {
-        private readonly Pool _pool;
-
-        public RegenStatBuilder(IStatFactory statFactory, Pool pool)
-            : base(statFactory, new LeafCoreStatBuilder(e => statFactory.Regen(e, pool)))
+        public RegenStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
+            : base(statFactory, pool, "Regen")
         {
-            _pool = pool;
         }
 
-        public IStatBuilder Percent => FromIdentity($"{_pool}.Regen.Percent", typeof(int));
-        public IStatBuilder TargetPool => With(new LeafCoreStatBuilder(e => StatFactory.RegenTargetPool(e, _pool)));
+        private RegenStatBuilder(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool)
+            : base(statFactory, coreStatBuilder, pool, "Regen")
+        {
+        }
+
+        protected override IFlagStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool) =>
+            new RegenStatBuilder(StatFactory, coreStatBuilder, pool);
+
+        public IStatBuilder Percent => FromIdentity(typeof(int));
+
+        public IStatBuilder TargetPool =>
+            new StatBuilder(StatFactory, new CoreStatBuilderFromCoreBuilder<Pool>(Pool, StatFactory.RegenTargetPool));
     }
 
-    internal class LeechStatBuilder : StatBuildersBase, ILeechStatBuilder
+    internal class LeechStatBuilder : StatBuilderWithPool, ILeechStatBuilder
     {
-        private readonly Pool _pool;
-
-        public LeechStatBuilder(IStatFactory statFactory, Pool pool) : base(statFactory)
+        public LeechStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
+            : base(statFactory, pool, "Leech")
         {
-            _pool = pool;
         }
 
-        public ILeechStatBuilder Resolve(ResolveContext context) => this;
+        private LeechStatBuilder(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool)
+            : base(statFactory, coreStatBuilder, pool, "Leech")
+        {
+        }
 
-        public IStatBuilder Of(IDamageStatBuilder damage) =>
-            FromCore(new StatBuilderWithStatConverter(new StatBuilderAdapter(damage.WithHits),
-                StatFactory.LeechPercentage));
+        protected override IFlagStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool) =>
+            new LeechStatBuilder(StatFactory, coreStatBuilder, pool);
 
-        public IStatBuilder RateLimit => FromIdentity($"{_pool}.Leech.RateLimit", typeof(int));
-        public IStatBuilder Rate => FromIdentity($"{_pool}.Leech.Rate", typeof(double));
-        public IStatBuilder TargetPool => FromIdentity($"{_pool}.Leech.TargetPool", typeof(Pool));
+        public new ILeechStatBuilder Resolve(ResolveContext context) => (ILeechStatBuilder) base.Resolve(context);
+
+        public IStatBuilder Of(IDamageStatBuilder damage)
+        {
+            var damageCoreBuilder = new StatBuilderAdapter(damage.WithHits);
+            var coreBuilder = new ParametrisedCoreStatBuilder<ICoreBuilder<Pool>>(damageCoreBuilder, Pool,
+                (p, s) => StatFactory.CopyWithSuffix(s, $"LeechTo({p.Build()})", typeof(int)));
+            return new StatBuilder(StatFactory, coreBuilder);
+        }
+
+        public IStatBuilder RateLimit => FromIdentity(typeof(int));
+        public IStatBuilder Rate => FromIdentity(typeof(double));
+        public IStatBuilder TargetPool => FromIdentity(typeof(Pool));
+    }
+
+    public abstract class StatBuilderWithPool : StatBuilder
+    {
+        private readonly string _identitySuffix;
+        protected ICoreBuilder<Pool> Pool { get; }
+
+        protected StatBuilderWithPool(IStatFactory statFactory, ICoreBuilder<Pool> pool, string identitySuffix)
+            : this(statFactory,
+                new CoreStatBuilderFromCoreBuilder<Pool>(pool,
+                    (e, p) => statFactory.FromIdentity(p.ToString() + identitySuffix, e, typeof(int))),
+                pool,
+                identitySuffix)
+        {
+        }
+
+        protected StatBuilderWithPool(
+            IStatFactory statFactory, ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool, string identitySuffix)
+            : base(statFactory, coreStatBuilder)
+        {
+            Pool = pool;
+            _identitySuffix = identitySuffix;
+        }
+
+        protected override IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
+            Create(coreStatBuilder, Pool);
+
+        public override IStatBuilder Resolve(ResolveContext context) =>
+            Create(CoreStatBuilder.Resolve(context), Pool.Resolve(context));
+
+        protected abstract IFlagStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool);
+
+        protected IFlagStatBuilder FromIdentity(
+            Type dataType, ExplicitRegistrationType explicitRegistrationType = null,
+            [CallerMemberName] string identitySuffix = null)
+        {
+            return new StatBuilder(StatFactory, new CoreStatBuilderFromCoreBuilder<Pool>(Pool,
+                (e, p) => StatFactory.FromIdentity($"{p}.{_identitySuffix}.{identitySuffix}", e, dataType,
+                    explicitRegistrationType)));
+        }
     }
 }

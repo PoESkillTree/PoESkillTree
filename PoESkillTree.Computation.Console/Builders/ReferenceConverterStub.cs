@@ -93,8 +93,16 @@ namespace PoESkillTree.Computation.Console.Builders
             }
         }
 
-        public IPoolStatBuilder AsPoolStat =>
-            new PoolStatBuilderStub($"{this}.AsPoolStat", (_, context) => Resolve(context).AsPoolStat);
+        public IPoolStatBuilder AsPoolStat
+        {
+            get
+            {
+                var core = new UnresolvedCoreBuilder<Pool>($"{this}.AsPoolStat",
+                    context => CoreBuilder.Proxy<IPoolStatBuilder, IStatBuilder, Pool>(
+                        Resolve(context).AsPoolStat, b => b.BuildPool()));
+                return new PoolStatBuilder(_statFactory, core);
+            }
+        }
 
         public IDamageStatBuilder AsDamageStat
         {

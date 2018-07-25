@@ -27,10 +27,6 @@ namespace PoESkillTree.Computation.Builders.Stats
             CoreStatBuilder = coreStatBuilder;
         }
 
-        protected IFlagStatBuilder FromIdentity(
-            string identity, Type dataType, ExplicitRegistrationType explicitRegistrationType = null) =>
-            With(LeafCoreStatBuilder.FromIdentity(StatFactory, identity, dataType, explicitRegistrationType));
-
         protected virtual IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
             WithUntyped(coreStatBuilder);
 

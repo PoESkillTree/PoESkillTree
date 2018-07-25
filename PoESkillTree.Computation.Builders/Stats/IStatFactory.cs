@@ -28,8 +28,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat Regen(Entity entity, Pool pool);
         IStat RegenTargetPool(Entity entity, Pool regenPool);
 
-        IStat LeechPercentage(IStat damage);
-
         IStat ActiveSkillId(Entity entity);
         IStat ActiveSkillPartHasKeyword(Entity entity, Keyword keyword);
         IStat ActiveSkillPartCastSpeedHasKeyword(Entity entity, Keyword keyword);
