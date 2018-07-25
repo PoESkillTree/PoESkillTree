@@ -44,8 +44,8 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
 
             if (left.Entries.Count > 1 && right.Entries.Count > 1)
             {
-                // TODO This simple solution will fail once there are stat lines that parse into multiple stats
-                //      and have a condition requiring splitting by main hand and off hand.
+                // This simple solution will fail once there are stat lines that parse into multiple stats
+                // and have a condition requiring splitting by main hand and off hand.
                 throw new ArgumentException("There may only be one IIntermediateModifier with multiple entries");
             }
 

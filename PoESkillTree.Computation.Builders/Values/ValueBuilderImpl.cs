@@ -73,11 +73,8 @@ namespace PoESkillTree.Computation.Builders.Values
 
         public IValue Build(BuildParameters parameters) => _buildValue(parameters);
 
-        // TODO Only here for compatibility with stubs in Console. Remove once those are removed.
-        public override string ToString() => Build(default).ToString();
 
-
-        public static IValueBuilder Create(
+        private static IValueBuilder Create(
             IValueBuilder operand,
             Func<NodeValue?, NodeValue?> calculate,
             Func<IValue, string> identity) =>

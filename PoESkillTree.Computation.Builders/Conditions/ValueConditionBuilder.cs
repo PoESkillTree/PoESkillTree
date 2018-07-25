@@ -96,9 +96,6 @@ namespace PoESkillTree.Computation.Builders.Conditions
 
         public override ConditionBuilderResult Build(BuildParameters parameters) =>
             new ConditionBuilderResult(_buildValue(parameters, _parameter));
-
-        // TODO Only here for compatibility with stubs in Console. Remove once those are removed.
-        public override string ToString() => Build(default).Value.ToString();
     }
 
     public class ValueConditionBuilder<TParameter1, TParameter2> : ConditionBuilderBase
@@ -128,8 +125,5 @@ namespace PoESkillTree.Computation.Builders.Conditions
 
         public override ConditionBuilderResult Build(BuildParameters parameters) =>
             new ConditionBuilderResult(_buildValue(parameters, _parameter1, _parameter2));
-
-        // TODO Only here for compatibility with stubs in Console. Remove once those are removed.
-        public override string ToString() => Build(default).Value.ToString();
     }
 }
