@@ -58,9 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Builders\BuilderStub.cs" />
-    <Compile Include="Builders\ReferenceConverterStub.cs" />
     <Compile Include="Builders\MatchContextStub.cs" />
-    <Compile Include="Builders\Resolver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SkillDefinitions.cs" />

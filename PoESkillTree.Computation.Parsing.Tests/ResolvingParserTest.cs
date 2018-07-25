@@ -120,9 +120,9 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var rootResolvedBuilder = Mock.Of<IStatBuilder>();
             var rootReferenceConverters = new[]
             {
-                new ReferenceConverter(rootReferencedMatch),
-                new ReferenceConverter(rootResolvedBuilder),
-                new ReferenceConverter(rootReferencedMatch),
+                new ResolvedReferenceConverter(rootReferencedMatch),
+                new ResolvedReferenceConverter(rootResolvedBuilder),
+                new ResolvedReferenceConverter(rootReferencedMatch),
             };
             var context = new ResolveContext(
                 new ResolvedMatchContext<IValueBuilder>(rootValues),
@@ -131,9 +131,9 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var nestedResolvedBuilder = Mock.Of<IStatBuilder>();
             var nestedReferenceConverters = new[]
             {
-                new ReferenceConverter(nestedResolvedBuilder),
-                new ReferenceConverter(nestedReferencedMatch),
-                new ReferenceConverter(nestedReferencedMatch),
+                new ResolvedReferenceConverter(nestedResolvedBuilder),
+                new ResolvedReferenceConverter(nestedReferencedMatch),
+                new ResolvedReferenceConverter(nestedReferencedMatch),
             };
             var nestedContext = new ResolveContext(
                 new ResolvedMatchContext<IValueBuilder>(nestedValues),

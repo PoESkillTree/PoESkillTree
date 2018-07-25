@@ -43,7 +43,7 @@ namespace PoESkillTree.Computation.Builders.Resolving
         }
     }
 
-    public class UnresolvedItemSlotBuilder : UnresolvedBuilder<IItemSlotBuilder, ItemSlot>, IItemSlotBuilder
+    internal class UnresolvedItemSlotBuilder : UnresolvedBuilder<IItemSlotBuilder, ItemSlot>, IItemSlotBuilder
     {
         public UnresolvedItemSlotBuilder(string description, Func<ResolveContext, IItemSlotBuilder> resolver) 
             : base(description, resolver)
@@ -51,7 +51,7 @@ namespace PoESkillTree.Computation.Builders.Resolving
         }
     }
 
-    public class UnresolvedKeywordBuilder : UnresolvedBuilder<IKeywordBuilder, Keyword>, IKeywordBuilder
+    internal class UnresolvedKeywordBuilder : UnresolvedBuilder<IKeywordBuilder, Keyword>, IKeywordBuilder
     {
         public UnresolvedKeywordBuilder(string description, Func<ResolveContext, IKeywordBuilder> resolver) 
             : base(description, resolver)
@@ -72,7 +72,7 @@ namespace PoESkillTree.Computation.Builders.Resolving
         public override string ToString() => _description;
     }
 
-    public class UnresolvedCoreBuilder<TResult>
+    internal class UnresolvedCoreBuilder<TResult>
         : UnresolvedBuilder<ICoreBuilder<TResult>, TResult>, ICoreBuilder<TResult>
     {
         public UnresolvedCoreBuilder(string description, Func<ResolveContext, ICoreBuilder<TResult>> resolver)
@@ -81,7 +81,7 @@ namespace PoESkillTree.Computation.Builders.Resolving
         }
     }
 
-    public class UnresolvedCoreStatBuilder
+    internal class UnresolvedCoreStatBuilder
         : UnresolvedBuilder<ICoreStatBuilder, IEnumerable<StatBuilderResult>>, ICoreStatBuilder
     {
         public UnresolvedCoreStatBuilder(string description, Func<ResolveContext, ICoreStatBuilder> resolver)

@@ -1,4 +1,5 @@
 ﻿using PoESkillTree.Computation.Builders.Resolving;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
 
@@ -37,21 +38,23 @@ namespace PoESkillTree.Computation.Console.Builders
 
         private class ReferenceMatchContext : BuilderStub, IMatchContext<IReferenceConverter>
         {
+            private readonly IStatFactory _statFactory = new StatFactory();
+
             public ReferenceMatchContext() : base("References")
             {
             }
 
             public IReferenceConverter this[int index] =>
-                new ReferenceConverterStub($"{this}[{index}]", (_, c) => c.ReferenceContext[index]);
+                new UnresolvedReferenceConverter(_statFactory, $"{this}[{index}]", c => c.ReferenceContext[index]);
 
             public IReferenceConverter First =>
-                new ReferenceConverterStub($"{this}.First", (_, c) => c.ReferenceContext.First);
+                new UnresolvedReferenceConverter(_statFactory, $"{this}.First", c => c.ReferenceContext.First);
 
             public IReferenceConverter Last =>
-                new ReferenceConverterStub($"{this}.Last", (_, c) => c.ReferenceContext.Last);
+                new UnresolvedReferenceConverter(_statFactory, $"{this}.Last", c => c.ReferenceContext.Last);
 
             public IReferenceConverter Single =>
-                new ReferenceConverterStub($"{this}.Single", (_, c) => c.ReferenceContext.Single);
+                new UnresolvedReferenceConverter(_statFactory, $"{this}.Single", c => c.ReferenceContext.Single);
         }
     }
 }

@@ -64,7 +64,7 @@
     <Compile Include="Parser.cs" />
     <Compile Include="ParseResult.cs" />
     <Compile Include="ResultMappingParser.cs" />
-    <Compile Include="Referencing\ReferenceConverter.cs" />
+    <Compile Include="Referencing\ResolvedReferenceConverter.cs" />
     <Compile Include="Referencing\IReferencedRegexes.cs" />
     <Compile Include="Referencing\IReferenceToMatcherDataResolver.cs" />
     <Compile Include="Referencing\IRegexGroupFactory.cs" />

@@ -19,7 +19,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
     /// <remarks>
     /// Throws <see cref="ParseException"/> if the referenced value can not be cast to the type of the called property.
     /// </remarks>
-    public class ReferenceConverter : IReferenceConverter
+    public class ResolvedReferenceConverter : IReferenceConverter
     {
         private readonly object _referencedBuilder;
 
@@ -34,7 +34,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
         public IBuffBuilder AsBuff => As<IBuffBuilder>();
         public ISkillBuilder AsSkill => As<ISkillBuilder>();
 
-        public ReferenceConverter(object referencedBuilder)
+        public ResolvedReferenceConverter(object referencedBuilder)
         {
             _referencedBuilder = referencedBuilder;
         }
@@ -49,7 +49,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
                 $"Can't convert reference of type {_referencedBuilder.GetType()} to {typeof(TTarget)}");
         }
 
-        private bool Equals(ReferenceConverter other)
+        private bool Equals(ResolvedReferenceConverter other)
         {
             return Equals(_referencedBuilder, other._referencedBuilder);
         }
@@ -58,7 +58,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
         {
             if (ReferenceEquals(this, obj))
                 return true;
-            return obj is ReferenceConverter other && Equals(other);
+            return obj is ResolvedReferenceConverter other && Equals(other);
         }
 
         public override int GetHashCode()
