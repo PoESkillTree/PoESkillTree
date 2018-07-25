@@ -6,6 +6,7 @@ using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Builders;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
@@ -99,7 +100,7 @@ namespace PoESkillTree.Computation.IntegrationTests
 
         private static IEnumerable<TestCaseData> ParsingReturnsCorrectModifiers_TestCases()
         {
-            var f = new BuilderFactories(SkillDefinitions.Skills);
+            var f = new BuilderFactories(new StatFactory(), SkillDefinitions.Skills);
             var life = f.StatBuilders.Pool.From(Pool.Life);
             var energyShield = f.StatBuilders.Pool.From(Pool.EnergyShield);
 

@@ -5,10 +5,11 @@ using System.IO;
 using System.Linq;
 using MoreLinq;
 using PoESkillTree.Computation.Builders;
+using PoESkillTree.Computation.Builders.Resolving;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Common.Parsing;
-using PoESkillTree.Computation.Console.Builders;
 using PoESkillTree.Computation.Data;
 using PoESkillTree.Computation.Data.Steps;
 using PoESkillTree.Computation.Parsing;
@@ -48,12 +49,22 @@ namespace PoESkillTree.Computation.Console
 
         public static IParser CreateParser()
         {
-            return new Parser<ParsingStep>(CreateParsingData(), new BuilderFactories(SkillDefinitions.Skills));
+            var statFactory = new StatFactory();
+            return new Parser<ParsingStep>(
+                CreateParsingData(statFactory),
+                new BuilderFactories(statFactory, SkillDefinitions.Skills));
         }
 
         public static IParsingData<ParsingStep> CreateParsingData()
         {
-            return new ParsingData(new BuilderFactories(SkillDefinitions.Skills), new MatchContextsStub(), 
+            return CreateParsingData(new StatFactory());
+        }
+
+        private static IParsingData<ParsingStep> CreateParsingData(IStatFactory statFactory)
+        {
+            return new ParsingData(
+                new BuilderFactories(statFactory, SkillDefinitions.Skills),
+                new MatchContexts(statFactory),
                 SkillDefinitions.SkillNames);
         }
 

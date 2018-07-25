@@ -108,6 +108,7 @@
     <Compile Include="Forms\FormBuilders.cs" />
     <Compile Include="ICoreBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resolving\MatchContexts.cs" />
     <Compile Include="Resolving\UnresolvedBuilder.cs" />
     <Compile Include="Resolving\UnresolvedReferenceConverter.cs" />
     <Compile Include="Skills\KeywordBuilders.cs" />

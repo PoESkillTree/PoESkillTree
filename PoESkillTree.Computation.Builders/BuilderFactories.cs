@@ -29,9 +29,8 @@ namespace PoESkillTree.Computation.Builders
 {
     public class BuilderFactories : IBuilderFactories
     {
-        public BuilderFactories(IReadOnlyList<SkillDefinition> skills)
+        public BuilderFactories(IStatFactory statFactory, IReadOnlyList<SkillDefinition> skills)
         {
-            var statFactory = new StatFactory();
             ActionBuilders = new ActionBuilders(statFactory);
             BuffBuilders = new BuffBuilders(statFactory, skills);
             ChargeTypeBuilders = new ChargeTypeBuilders(statFactory);
