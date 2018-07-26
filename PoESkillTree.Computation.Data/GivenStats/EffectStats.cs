@@ -9,7 +9,7 @@ using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 
-namespace PoESkillTree.Computation.Data
+namespace PoESkillTree.Computation.Data.GivenStats
 {
     /// <summary>
     /// <see cref="IGivenStats"/> implementation that provides the stats applied when effects are active.
