@@ -60,16 +60,16 @@ namespace PoESkillTree.Computation.Data.GivenStats
 
         private GivenStatCollection CreateCollection() => new GivenStatCollection
         {
-            // base stats
+            // pools
             { BaseSet, Life, 38 },
             { BaseSet, Mana, 34 },
+            { BaseSet, Mana.Regen.Percent, 1.75 },
+            // other basic stats
             { BaseSet, Evasion, 53 },
             { BaseSet, Stat.Accuracy, -2 }, // 0 at level 1 with no dexterity
-            { BaseSet, Mana.Regen.Percent, 1.75 },
-            // minima and maxima
-            // - resistances
+            // resistances
             { BaseSet, Physical.Resistance.Maximum, 90 },
-            // - traps, mines and totems
+            // traps, mines and totems
             { BaseSet, Traps.CombinedInstances.Maximum, 15 },
             { BaseSet, Mines.CombinedInstances.Maximum, 5 },
             { BaseSet, Totems.CombinedInstances.Maximum, 1 },

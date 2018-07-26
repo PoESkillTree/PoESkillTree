@@ -41,17 +41,15 @@ namespace PoESkillTree.Computation.Data.GivenStats
 
         private GivenStatCollection CreateCollection() => new GivenStatCollection
         {
-            // base stats
+            // pools
             { BaseSet, Mana, 200 },
             { BaseSet, Mana.Regen.Percent, 100 / 60.0 },
-            // minima and maxima
+            // resistances
             { BaseSet, Physical.Resistance.Maximum, 75 },
-            // - traps, mines and totems
+            // traps, mines and totems
             { BaseSet, Traps.CombinedInstances.Maximum, 3 },
             { BaseSet, Mines.CombinedInstances.Maximum, 5 },
             { BaseSet, Totems.CombinedInstances.Maximum, 1 },
-            // - movement speed
-            { BaseSet, Stat.MovementSpeed.Maximum, 128 },
         };
     }
 }
