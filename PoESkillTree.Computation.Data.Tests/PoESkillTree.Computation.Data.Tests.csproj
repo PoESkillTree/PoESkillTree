@@ -64,7 +64,6 @@
   <ItemGroup>
     <Compile Include="Collections\ConditionMatcherCollectionTest.cs" />
     <Compile Include="Collections\EffectStatCollectionTest.cs" />
-    <Compile Include="Collections\FlagStatCollectionTest.cs" />
     <Compile Include="Collections\FormAndStatMatcherCollectionTest.cs" />
     <Compile Include="Collections\FormMatcherCollectionTest.cs" />
     <Compile Include="Collections\GivenStatsCollectionTest.cs" />

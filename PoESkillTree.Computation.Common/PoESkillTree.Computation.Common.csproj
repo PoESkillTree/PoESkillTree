@@ -146,7 +146,6 @@
     <Compile Include="Entity.cs" />
     <Compile Include="ExplicitRegistrationType.cs" />
     <Compile Include="SimpleValues.cs" />
-    <Compile Include="Data\FlagStatData.cs" />
     <Compile Include="Data\GivenStatData.cs" />
     <Compile Include="Data\IGivenStats.cs" />
     <Compile Include="Data\IParsingData.cs" />
