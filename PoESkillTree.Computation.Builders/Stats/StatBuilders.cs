@@ -138,7 +138,9 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder PierceCount => FromIdentity("Projectile pierce count", typeof(int));
         public IStatBuilder ChainCount => FromIdentity("Projectile chain count", typeof(int));
-        public IStatBuilder TravelDistance => FromIdentity("Projectile travel distance", typeof(int));
+
+        public IStatBuilder TravelDistance =>
+            FromIdentity("Projectile travel distance", typeof(int), ExplicitRegistrationTypes.UserSpecifiedValue(35));
     }
 
     internal class FlagStatBuilders : StatBuildersBase, IFlagStatBuilders

@@ -28,6 +28,22 @@ namespace PoESkillTree.Computation.Common
         /// </summary>
         public sealed class UserSpecifiedValue : ExplicitRegistrationType
         {
+            public UserSpecifiedValue(double? defaultValue = null)
+            {
+                DefaultValue = defaultValue;
+            }
+
+            public double? DefaultValue { get; }
+
+            public override bool Equals(ExplicitRegistrationType other) =>
+                other is UserSpecifiedValue o &&
+                DefaultValue.Equals(o.DefaultValue);
+
+            public override int GetHashCode() =>
+                (base.GetHashCode(), DefaultValue).GetHashCode();
+
+            public override string ToString() =>
+                base.ToString() + $"({DefaultValue})";
         }
 
         /// <summary>
@@ -61,8 +77,8 @@ namespace PoESkillTree.Computation.Common
 
     public static class ExplicitRegistrationTypes
     {
-        public static ExplicitRegistrationType.UserSpecifiedValue UserSpecifiedValue() =>
-            new ExplicitRegistrationType.UserSpecifiedValue();
+        public static ExplicitRegistrationType.UserSpecifiedValue UserSpecifiedValue(double? defaultValue = null) =>
+            new ExplicitRegistrationType.UserSpecifiedValue(defaultValue);
 
         public static ExplicitRegistrationType.GainOnAction GainOnAction(
             IStat gainedStat, string action, Entity actionEntity) =>
