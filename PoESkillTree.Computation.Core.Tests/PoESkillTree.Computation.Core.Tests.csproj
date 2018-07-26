@@ -104,7 +104,6 @@
     <Compile Include="Nodes\PathTotalValueTest.cs" />
     <Compile Include="Nodes\ValueCalculationContextTest.cs" />
     <Compile Include="Nodes\ValueNodeTest.cs" />
-    <Compile Include="StatStub.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Common.csproj">

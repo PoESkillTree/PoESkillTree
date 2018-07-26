@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using PoESkillTree.Computation.Common;
 
-namespace PoESkillTree.Computation.Core.Tests
+namespace PoESkillTree.Computation.Common.Tests
 {
     [DebuggerDisplay("{" + nameof(_instance) + "}")]
     public class StatStub : IStat

@@ -103,7 +103,7 @@ namespace PoESkillTree.Computation.Parsing
                 .Aggregate()
                 .Build(_currentKey.ModifierSource, _currentKey.ModifierSourcEntity);
 
-        private struct CacheKey
+        private struct CacheKey : IEquatable<CacheKey>
         {
             public CacheKey(string stat, ModifierSource modifierSource, Entity modifierSourcEntity)
             {
@@ -115,6 +115,15 @@ namespace PoESkillTree.Computation.Parsing
             public string Stat { get; }
             public ModifierSource ModifierSource { get; }
             public Entity ModifierSourcEntity { get; }
+
+            public override bool Equals(object obj) =>
+                obj is CacheKey other && Equals(other);
+
+            public bool Equals(CacheKey other) =>
+                Stat == other.Stat && ModifierSource == other.ModifierSource &&
+                ModifierSourcEntity == other.ModifierSourcEntity;
+
+            public override int GetHashCode() => (Stat, ModifierSource, ModifierSourcEntity).GetHashCode();
         }
     }
 }

@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GivenStatsParserTest.cs" />
     <Compile Include="MatcherDataParserTest.cs" />
     <Compile Include="CachingParserTest.cs" />
     <Compile Include="Referencing\ResolvedMatchContextTest.cs" />
