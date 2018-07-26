@@ -4,14 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using MoreLinq;
-using PoESkillTree.Computation.Builders;
-using PoESkillTree.Computation.Builders.Resolving;
-using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Common.Parsing;
-using PoESkillTree.Computation.Data;
-using PoESkillTree.Computation.Data.Steps;
 using PoESkillTree.Computation.Parsing;
 
 namespace PoESkillTree.Computation.Console
@@ -24,7 +18,8 @@ namespace PoESkillTree.Computation.Console
         /// </summary>
         public static void Main(string[] args)
         {
-            var parser = CreateParser();
+            var compRoot = new CompositionRoot();
+            var parser = compRoot.Parser;
 
             System.Console.WriteLine("Enter a stat line to be parsed (or 'benchmark' to time stat parsing)");
             System.Console.Write("> ");
@@ -45,27 +40,6 @@ namespace PoESkillTree.Computation.Console
                 }
                 System.Console.Write("> ");
             }
-        }
-
-        public static IParser CreateParser()
-        {
-            var statFactory = new StatFactory();
-            return new Parser<ParsingStep>(
-                CreateParsingData(statFactory),
-                new BuilderFactories(statFactory, SkillDefinitions.Skills));
-        }
-
-        public static IParsingData<ParsingStep> CreateParsingData()
-        {
-            return CreateParsingData(new StatFactory());
-        }
-
-        private static IParsingData<ParsingStep> CreateParsingData(IStatFactory statFactory)
-        {
-            return new ParsingData(
-                new BuilderFactories(statFactory, SkillDefinitions.Skills),
-                new MatchContexts(statFactory),
-                SkillDefinitions.SkillNames);
         }
 
         /// <summary>

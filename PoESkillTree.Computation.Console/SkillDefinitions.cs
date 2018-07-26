@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Computation.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Skills;
 
 namespace PoESkillTree.Computation.Console

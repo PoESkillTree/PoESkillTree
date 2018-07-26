@@ -10,7 +10,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void ReferencesAreValid()
         {
-            var parsingData = Program.CreateParsingData();
+            var parsingData = new CompositionRoot().ParsingData;
             var referencedMatchers = parsingData.ReferencedMatchers;
             var statMatchers = parsingData.StatMatchers;
 
@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void ReferencedMatchersHaveCorrectlyTypedData()
         {
-            var parsingData = Program.CreateParsingData();
+            var parsingData = new CompositionRoot().ParsingData;
             var referencedMatchers = parsingData.ReferencedMatchers;
 
             foreach (var matchers in referencedMatchers)

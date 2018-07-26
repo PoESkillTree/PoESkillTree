@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [OneTimeSetUp]
         public static void ClassInit()
         {
-            _parser = Program.CreateParser();
+            _parser = new CompositionRoot().Parser;
         }
 
         [Test, TestCaseSource(nameof(ReadParsableStatLines))]
