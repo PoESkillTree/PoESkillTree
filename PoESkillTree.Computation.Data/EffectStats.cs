@@ -4,6 +4,7 @@ using System.Linq;
 using EnumsNET;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -15,21 +16,23 @@ namespace PoESkillTree.Computation.Data
     /// </summary>
     public class EffectStats : UsesStatBuilders, IGivenStats
     {
-        private readonly Lazy<IReadOnlyList<GivenStatData>> _lazyGivenStats;
+        private readonly IModifierBuilder _modifierBuilder;
+        private readonly Lazy<IReadOnlyList<IIntermediateModifier>> _lazyGivenStats;
 
-        public EffectStats(IBuilderFactories builderFactories)
+        public EffectStats(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder)
             : base(builderFactories)
         {
-            _lazyGivenStats = new Lazy<IReadOnlyList<GivenStatData>>(() => CreateCollection().ToList());
+            _modifierBuilder = modifierBuilder;
+            _lazyGivenStats = new Lazy<IReadOnlyList<IIntermediateModifier>>(() => CreateCollection().ToList());
         }
 
         public IReadOnlyList<Entity> AffectedEntities { get; } = Enums.GetValues<Entity>().ToList();
 
         public IReadOnlyList<string> GivenStatLines { get; } = new string[0];
 
-        public IReadOnlyList<GivenStatData> GivenStats => _lazyGivenStats.Value;
+        public IReadOnlyList<IIntermediateModifier> GivenModifiers => _lazyGivenStats.Value;
 
-        private EffectStatCollection CreateCollection() => new EffectStatCollection
+        private EffectStatCollection CreateCollection() => new EffectStatCollection(_modifierBuilder, ValueFactory)
         {
             // ailments
             { Ailment.Shock, PercentIncrease, Damage.Taken, 50 },

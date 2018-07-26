@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Common.Builders.Modifiers;
 
 namespace PoESkillTree.Computation.Common.Data
 {
@@ -18,8 +19,8 @@ namespace PoESkillTree.Computation.Common.Data
         IReadOnlyList<string> GivenStatLines { get; }
 
         /// <summary>
-        /// The parsed stats that are always active.
+        /// The parsed modifiers that are always active.
         /// </summary>
-        IReadOnlyList<GivenStatData> GivenStats { get; }
+        IReadOnlyList<IIntermediateModifier> GivenModifiers { get; }
     }
 }

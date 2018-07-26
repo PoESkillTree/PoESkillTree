@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -17,11 +18,14 @@ namespace PoESkillTree.Computation.Data.GivenStats
     /// </remarks>
     public class MonsterGivenStats : UsesStatBuilders, IGivenStats
     {
-        private readonly Lazy<IReadOnlyList<GivenStatData>> _lazyGivenStats;
+        private readonly IModifierBuilder _modifierBuilder;
+        private readonly Lazy<IReadOnlyList<IIntermediateModifier>> _lazyGivenStats;
 
-        public MonsterGivenStats(IBuilderFactories builderFactories) : base(builderFactories)
+        public MonsterGivenStats(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder)
+            : base(builderFactories)
         {
-            _lazyGivenStats = new Lazy<IReadOnlyList<GivenStatData>>(() => CreateCollection().ToList());
+            _modifierBuilder = modifierBuilder;
+            _lazyGivenStats = new Lazy<IReadOnlyList<IIntermediateModifier>>(() => CreateCollection().ToList());
         }
 
         public IReadOnlyList<Entity> AffectedEntities { get; } =
@@ -37,9 +41,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
             "200% increased Critical Strike Chance per Power Charge",
         };
 
-        public IReadOnlyList<GivenStatData> GivenStats => _lazyGivenStats.Value;
+        public IReadOnlyList<IIntermediateModifier> GivenModifiers => _lazyGivenStats.Value;
 
-        private GivenStatCollection CreateCollection() => new GivenStatCollection
+        private GivenStatCollection CreateCollection() => new GivenStatCollection(_modifierBuilder, ValueFactory)
         {
             // pools
             { BaseSet, Mana, 200 },

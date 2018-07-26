@@ -4,6 +4,7 @@ using System.Linq;
 using EnumsNET;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
@@ -16,11 +17,14 @@ namespace PoESkillTree.Computation.Data.GivenStats
     /// </summary>
     public class CommonGivenStats : UsesStatBuilders, IGivenStats
     {
-        private readonly Lazy<IReadOnlyList<GivenStatData>> _lazyGivenStats;
+        private readonly IModifierBuilder _modifierBuilder;
+        private readonly Lazy<IReadOnlyList<IIntermediateModifier>> _lazyGivenStats;
 
-        public CommonGivenStats(IBuilderFactories builderFactories) : base(builderFactories)
+        public CommonGivenStats(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder)
+            : base(builderFactories)
         {
-            _lazyGivenStats = new Lazy<IReadOnlyList<GivenStatData>>(() => CreateCollection().ToList());
+            _modifierBuilder = modifierBuilder;
+            _lazyGivenStats = new Lazy<IReadOnlyList<IIntermediateModifier>>(() => CreateCollection().ToList());
         }
 
         public IReadOnlyList<Entity> AffectedEntities { get; } = Enums.GetValues<Entity>().ToList();
@@ -41,9 +45,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
             "100% of non-chaos damage is taken from energy shield before life",
         };
 
-        public IReadOnlyList<GivenStatData> GivenStats => _lazyGivenStats.Value;
+        public IReadOnlyList<IIntermediateModifier> GivenModifiers => _lazyGivenStats.Value;
 
-        private GivenStatCollection CreateCollection() => new GivenStatCollection
+        private GivenStatCollection CreateCollection() => new GivenStatCollection(_modifierBuilder, ValueFactory)
         {
             // pools
             { BaseSet, EnergyShield.Recharge, 20 },
