@@ -54,10 +54,10 @@ namespace PoESkillTree.Computation.Data.GivenStats
             "+2 to Accuracy Rating per 1 Dexterity",
             "+1 to Dexterity Evasion Bonus per Dexterity",
             "1% increased Evasion Rating per 5 Dexterity Evasion Bonus ceiled",
-            "+1 Mana per 2 Intelligence ceiled",
+            "+1 to Mana per 2 Intelligence ceiled",
             "1% increased maximum Energy Shield per 5 Intelligence ceiled",
             "-60% to all Elemental Resistances",
-            "-60& to Chaos Resistance",
+            "-60% to Chaos Resistance",
         };
         
         public IReadOnlyList<IIntermediateModifier> GivenModifiers => _lazyGivenStats.Value;

@@ -15,6 +15,7 @@ using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Console;
+using PoESkillTree.Computation.Data.GivenStats;
 using PoESkillTree.Computation.Parsing;
 
 namespace PoESkillTree.Computation.IntegrationTests
@@ -70,8 +71,10 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             var unparsable = ReadUnparsableStatLines().ToHashSet();
 
+            var unparsedGivenStats = new GivenStatsCollection(null).SelectMany(s => s.GivenStatLines);
             return ReadStatLines("AllSkillTreeStatLines")
                 .Concat(ReadStatLines("ParsableStatLines"))
+                .Concat(unparsedGivenStats)
                 .Where(s => !unparsable.Contains(s))
                 .ToArray();
         }

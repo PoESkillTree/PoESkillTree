@@ -90,6 +90,7 @@
     <Compile Include="Collections\GivenStatsCollection.cs" />
     <Compile Include="GivenStats\CharacterGivenStats.cs" />
     <Compile Include="GivenStats\CommonGivenStats.cs" />
+    <Compile Include="GivenStats\GivenStatsCollection.cs" />
     <Compile Include="GivenStats\MonsterGivenStats.cs" />
     <Compile Include="GivenStats\TotemGivenStats.cs" />
     <Compile Include="ItemSlotMatchers.cs" />
