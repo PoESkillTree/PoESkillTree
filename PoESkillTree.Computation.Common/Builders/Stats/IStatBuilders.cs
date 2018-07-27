@@ -14,6 +14,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         IDamageRelatedStatBuilder Accuracy { get; }
 
+        IDamageRelatedStatBuilder ChanceToHit { get; }
+
 
         /// <summary>
         /// Gets a stat representing the multiplier to Self's movement speed.

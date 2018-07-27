@@ -57,6 +57,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder AilmentDealtDamageType(Ailment ailment)
             => FromStatFactory(e => StatFactory.AilmentDealtDamageType(e, ailment));
 
+        public IDamageRelatedStatBuilder EffectiveCritChance
+            => DamageRelatedFromIdentity("CriticalStrike.EffectiveChance", typeof(double)).WithHits;
+
         public IStatBuilder HitsPerSecond => FromIdentity(typeof(double));
 
         public IDamageRelatedStatBuilder EffectiveStunThreshold

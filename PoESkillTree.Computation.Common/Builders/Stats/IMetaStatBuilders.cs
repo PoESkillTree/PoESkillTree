@@ -25,6 +25,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         IDamageRelatedStatBuilder AverageEffectiveDamage { get; }
         IStatBuilder AilmentDealtDamageType(Ailment ailment);
+        IDamageRelatedStatBuilder EffectiveCritChance { get; }
 
         IStatBuilder HitsPerSecond { get; }
 

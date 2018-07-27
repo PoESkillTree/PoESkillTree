@@ -19,6 +19,9 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IDamageRelatedStatBuilder Accuracy => DamageRelatedFromIdentity(typeof(int)).With(DamageSource.Attack);
 
+        public IDamageRelatedStatBuilder ChanceToHit
+            => DamageRelatedFromIdentity(typeof(int)).With(DamageSource.Attack);
+
         public IStatBuilder MovementSpeed => FromIdentity(typeof(double));
         public IStatBuilder AnimationSpeed => FromIdentity(typeof(double));
 

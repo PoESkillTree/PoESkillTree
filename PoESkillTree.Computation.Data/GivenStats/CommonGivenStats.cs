@@ -71,6 +71,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             // evasion
             { BaseSet, Evasion.Chance.Maximum, 95 },
             { BaseSet, Evasion.Chance.Minimum, 5 },
+            { BaseSet, Stat.ChanceToHit.Maximum, 95 },
+            { BaseSet, Stat.ChanceToHit.Minimum, 5 },
             // block
             { BaseSet, Block.AttackChance.Maximum, 75 },
             { BaseSet, Block.SpellChance.Maximum, 75 },

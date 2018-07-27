@@ -4,6 +4,7 @@ using System.Linq;
 using EnumsNET;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
@@ -39,6 +40,41 @@ namespace PoESkillTree.Computation.Data.GivenStats
         private IEnumerable<IIntermediateModifier> CreateCollection()
             => new DataDrivenMechanicCollection(_modifierBuilder, BuilderFactories)
             {
+                // chance to hit/evade
+                {
+                    BaseSet, Evasion.Chance,
+                    100 - ChanceToHitValue(Stat.Accuracy.With(AttackDamageHand.MainHand).For(Enemy), Evasion,
+                        Buff.Blind.IsOn(Enemy))
+                },
+                {
+                    BaseSet, Stat.ChanceToHit.With(AttackDamageHand.MainHand),
+                    ChanceToHitValue(Stat.Accuracy.With(AttackDamageHand.MainHand), Evasion.For(Enemy),
+                        Buff.Blind.IsOn(Self))
+                },
+                {
+                    BaseSet, Stat.ChanceToHit.With(AttackDamageHand.OffHand),
+                    ChanceToHitValue(Stat.Accuracy.With(AttackDamageHand.OffHand), Evasion.For(Enemy),
+                        Buff.Blind.IsOn(Self))
+                },
+                // chance to crit
+                {
+                    TotalOverride, _stat.EffectiveCritChance.With(AttackDamageHand.MainHand),
+                    CriticalStrike.Chance.With(AttackDamageHand.MainHand).Value *
+                    Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value
+                },
+                {
+                    TotalOverride, _stat.EffectiveCritChance.With(AttackDamageHand.OffHand),
+                    CriticalStrike.Chance.With(AttackDamageHand.OffHand).Value *
+                    Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value
+                },
+                {
+                    TotalOverride, _stat.EffectiveCritChance.With(DamageSource.Spell),
+                    CriticalStrike.Chance.With(DamageSource.Spell).Value
+                },
+                {
+                    TotalOverride, _stat.EffectiveCritChance.With(DamageSource.Secondary),
+                    CriticalStrike.Chance.With(DamageSource.Secondary).Value
+                },
                 // pools
                 { BaseAdd, p => p.Regen, p => _stat.RegenTargetPoolValue(p.BuildPool()) * p.Regen.Percent.Value / 100 },
                 { TotalOverride, _stat.EffectiveRegen, p => p.Regen.Value * p.RecoveryRate.Value },
@@ -92,6 +128,16 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     (1 - Effect.Stun.Avoidance.Value) * (1 - Effect.Stun.ChanceToAvoidInterruptionWhileCasting.Value)
                 },
             }.Concat(CreateAilmentSourceDamageTypeModifiers());
+
+        private ValueBuilder ChanceToHitValue(
+            IStatBuilder accuracyStat, IStatBuilder evasionStat, IConditionBuilder isBlinded)
+        {
+            var accuracy = accuracyStat.Value;
+            var evasion = evasionStat.Value;
+            var blindMultiplier = ValueFactory.If(isBlinded).Then(0.5).Else(1);
+            return 100 * blindMultiplier * accuracy /
+                   (accuracy + (evasion / 4).Select(d => Math.Pow(d, 0.8), v => $"{v}^0.8"));
+        }
 
         private IEnumerable<IIntermediateModifier> CreateAilmentSourceDamageTypeModifiers()
         {
