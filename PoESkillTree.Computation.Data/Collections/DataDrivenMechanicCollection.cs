@@ -60,12 +60,19 @@ namespace PoESkillTree.Computation.Data.Collections
         private IPoolStatBuilder PoolStatFrom(Pool pool)
             => _builderFactories.StatBuilders.Pool.From(pool);
 
-        public void Add(
-            IFormBuilder form, Func<Pool, IStatBuilder> stat, Func<Pool, IValueBuilder> value)
+        public void Add(IFormBuilder form, Func<Pool, IStatBuilder> stat, Func<Pool, IValueBuilder> value)
         {
             foreach (var pool in Enums.GetValues<Pool>())
             {
                 Add(form, stat(pool), value(pool));
+            }
+        }
+
+        public void Add(IFormBuilder form, Func<DamageType, IStatBuilder> stat, Func<DamageType, IValueBuilder> value)
+        {
+            foreach (var damageType in Enums.GetValues<DamageType>())
+            {
+                Add(form, stat(damageType), value(damageType));
             }
         }
     }

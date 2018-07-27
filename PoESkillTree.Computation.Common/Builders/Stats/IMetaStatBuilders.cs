@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Effects;
+﻿using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
@@ -23,9 +24,17 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         ValueBuilder LeechTargetPoolValue(Pool sourcePool);
 
+        IDamageRelatedStatBuilder AverageDamage(DamageType damageType);
         IDamageRelatedStatBuilder AverageEffectiveDamage { get; }
         IStatBuilder AilmentDealtDamageType(Ailment ailment);
         IDamageRelatedStatBuilder EffectiveCritChance { get; }
+
+        IStatBuilder ResistanceAgainstHits(DamageType damageType);
+        IStatBuilder MitigationAgainstHits(DamageType damageType);
+        IStatBuilder MitigationAgainstDoTs(DamageType damageType);
+        IStatBuilder ChanceToAvoidMeleeAttacks { get; }
+        IStatBuilder ChanceToAvoidProjectileAttacks { get; }
+        IStatBuilder ChanceToAvoidSpells { get; }
 
         IStatBuilder HitsPerSecond { get; }
 

@@ -1,6 +1,7 @@
 ﻿using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
@@ -52,6 +53,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder TimeToReachLeechRateLimit(Pool pool)
             => FromIdentity($"{pool}.Leech.SecondsToReachRateLimit", typeof(double));
 
+        public IDamageRelatedStatBuilder AverageDamage(DamageType damageType)
+            => DamageRelatedFromIdentity($"{damageType}.AverageDamage", typeof(double)).WithHits;
+
         public IDamageRelatedStatBuilder AverageEffectiveDamage => DamageRelatedFromIdentity(typeof(double));
 
         public IStatBuilder AilmentDealtDamageType(Ailment ailment)
@@ -59,6 +63,19 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IDamageRelatedStatBuilder EffectiveCritChance
             => DamageRelatedFromIdentity("CriticalStrike.EffectiveChance", typeof(double)).WithHits;
+
+        public IStatBuilder ResistanceAgainstHits(DamageType damageType)
+            => FromIdentity($"{damageType}.ResistanceAgainstHits", typeof(int));
+
+        public IStatBuilder MitigationAgainstHits(DamageType damageType)
+            => FromIdentity($"{damageType}.MitigationAgainstHits", typeof(int));
+
+        public IStatBuilder MitigationAgainstDoTs(DamageType damageType)
+            => FromIdentity($"{damageType}.MitigationAgainstDoTs", typeof(int));
+
+        public IStatBuilder ChanceToAvoidMeleeAttacks => FromIdentity(typeof(int));
+        public IStatBuilder ChanceToAvoidProjectileAttacks => FromIdentity(typeof(int));
+        public IStatBuilder ChanceToAvoidSpells => FromIdentity(typeof(int));
 
         public IStatBuilder HitsPerSecond => FromIdentity(typeof(double));
 

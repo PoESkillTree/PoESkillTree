@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             (IDamageStatBuilder) base.For(entity);
 
         public IDamageRelatedStatBuilder Taken =>
-            (IDamageRelatedStatBuilder) WithStatConverter(StatFactory.DamageTaken);
+            ((IDamageRelatedStatBuilder) WithStatConverter(StatFactory.DamageTaken)).WithSkills;
 
         public override IStatBuilder With(IKeywordBuilder keyword) =>
             With(StatConcretizer.With(spec => KeywordCondition(spec, keyword)));

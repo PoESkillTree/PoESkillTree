@@ -38,7 +38,6 @@ namespace PoESkillTree.Computation.Data
                 { "on ({KeywordMatchers}) kill", And(With(Reference.AsKeyword), Kill.On) },
                 { "if you or your totems kill an enemy", Or(Kill.On, Kill.By(Entity.Totem).On) },
                 // hit
-                { "from hits", Hit.On },
                 { "when you are hit", Hit.By(Enemy).On },
                 { "for each enemy hit by your attacks", And(With(Keyword.Attack), Hit.On) },
                 // critical strike

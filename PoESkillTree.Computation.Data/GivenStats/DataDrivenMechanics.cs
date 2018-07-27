@@ -40,6 +40,28 @@ namespace PoESkillTree.Computation.Data.GivenStats
         private IEnumerable<IIntermediateModifier> CreateCollection()
             => new DataDrivenMechanicCollection(_modifierBuilder, BuilderFactories)
             {
+                // resistances/damage reduction
+                { BaseSet, _stat.ResistanceAgainstHits(DamageType.Physical), Physical.Resistance.Value },
+                {
+                    BaseAdd, _stat.ResistanceAgainstHits(DamageType.Physical),
+                    100 * Armour.Value / (Armour.Value + 10 * _stat.AverageDamage(DamageType.Physical).For(Enemy).Value)
+                },
+                { BaseSet, _stat.ResistanceAgainstHits(DamageType.Physical).Maximum, 90 },
+                { TotalOverride, _stat.ResistanceAgainstHits(DamageType.Lightning), Lightning.Resistance.Value },
+                { TotalOverride, _stat.ResistanceAgainstHits(DamageType.Cold), Cold.Resistance.Value },
+                { TotalOverride, _stat.ResistanceAgainstHits(DamageType.Fire), Fire.Resistance.Value },
+                { TotalOverride, _stat.ResistanceAgainstHits(DamageType.Chaos), Chaos.Resistance.Value },
+                // damage mitigation ((1 - resistance / 100) * damage taken)
+                {
+                    TotalOverride, _stat.MitigationAgainstHits,
+                    dt => (1 - _stat.ResistanceAgainstHits(dt).Value / 100) *
+                          DamageTypeBuilders.From(dt).Damage.Taken.With(DamageSource.Secondary).Value
+                },
+                {
+                    TotalOverride, _stat.MitigationAgainstDoTs,
+                    dt => (1 - DamageTypeBuilders.From(dt).Resistance.Value / 100) *
+                          DamageTypeBuilders.From(dt).Damage.Taken.With(DamageSource.OverTime).Value
+                },
                 // chance to hit/evade
                 {
                     BaseSet, Evasion.Chance,
@@ -56,7 +78,22 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     ChanceToHitValue(Stat.Accuracy.With(AttackDamageHand.OffHand), Evasion.For(Enemy),
                         Buff.Blind.IsOn(Self))
                 },
-                // chance to crit
+                // chance to avoid
+                {
+                    TotalOverride, _stat.ChanceToAvoidMeleeAttacks,
+                    100 - 100 * (FailureProbability(Evasion.ChanceAgainstMeleeAttacks) *
+                                 FailureProbability(Stat.Dodge.AttackChance) * FailureProbability(Block.AttackChance))
+                },
+                {
+                    TotalOverride, _stat.ChanceToAvoidProjectileAttacks,
+                    100 - 100 * (FailureProbability(Evasion.ChanceAgainstProjectileAttacks) *
+                                 FailureProbability(Stat.Dodge.AttackChance) * FailureProbability(Block.AttackChance))
+                },
+                {
+                    TotalOverride, _stat.ChanceToAvoidSpells,
+                    100 - 100 * (FailureProbability(Stat.Dodge.SpellChance) * FailureProbability(Block.SpellChance))
+                },
+                // crit
                 {
                     TotalOverride, _stat.EffectiveCritChance.With(AttackDamageHand.MainHand),
                     CriticalStrike.Chance.With(AttackDamageHand.MainHand).Value *
@@ -138,6 +175,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
             return 100 * blindMultiplier * accuracy /
                    (accuracy + (evasion / 4).Select(d => Math.Pow(d, 0.8), v => $"{v}^0.8"));
         }
+
+        private static ValueBuilder FailureProbability(IStatBuilder percentageChanceStat)
+            => 1 - percentageChanceStat.Value / 100;
 
         private IEnumerable<IIntermediateModifier> CreateAilmentSourceDamageTypeModifiers()
         {

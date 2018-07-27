@@ -95,6 +95,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             // resistances
             { BaseSet, Elemental.Resistance.Maximum, 75 },
             { BaseSet, Chaos.Resistance.Maximum, 75 },
+            { BaseSet, Damage.Taken, 1 },
             // ailments
             { BaseSet, Ailment.Ignite.InstancesOn(Self).Maximum, 1 },
             { BaseSet, Ailment.Ignite.Source(Fire), 1 },
