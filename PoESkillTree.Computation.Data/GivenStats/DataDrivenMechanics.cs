@@ -37,12 +37,32 @@ namespace PoESkillTree.Computation.Data.GivenStats
         public IReadOnlyList<IIntermediateModifier> GivenModifiers => _lazyGivenStats.Value;
 
         private IEnumerable<IIntermediateModifier> CreateCollection()
-            => new DataDrivenMechanicCollection(_modifierBuilder, ValueFactory)
+            => new DataDrivenMechanicCollection(_modifierBuilder, BuilderFactories)
             {
                 // pools
-                { BaseAdd, Life.Regen, RegenFromPercentValue(Life) },
-                { BaseAdd, Mana.Regen, RegenFromPercentValue(Mana) },
-                { BaseAdd, EnergyShield.Regen, RegenFromPercentValue(EnergyShield) },
+                { BaseAdd, p => p.Regen, p => _stat.RegenTargetPoolValue(p.BuildPool()) * p.Regen.Percent.Value / 100 },
+                { TotalOverride, _stat.EffectiveRegen, p => p.Regen.Value * p.RecoveryRate.Value },
+                { TotalOverride, _stat.EffectiveRecharge, p => p.Recharge.Value * p.RecoveryRate.Value },
+                { TotalOverride, _stat.RechargeStartDelay, p => 2 / p.Recharge.Start.Value },
+                { TotalOverride, _stat.EffectiveLeechRate, p => p.Leech.Rate.Value * p.RecoveryRate.Value },
+                {
+                    TotalOverride, _stat.AbsoluteLeechRate,
+                    p => _stat.LeechTargetPoolValue(p) * _stat.EffectiveLeechRate(p).Value / 100
+                },
+                {
+                    TotalOverride, _stat.AbsoluteLeechRateLimit,
+                    p => _stat.LeechTargetPoolValue(p.BuildPool()) * p.Leech.RateLimit.Value / 100
+                },
+                {
+                    TotalOverride, _stat.TimeToReachLeechRateLimit,
+                    p => p.Leech.RateLimit.Value / p.Leech.Rate.Value / _stat.HitsPerSecond.Value
+                },
+                // flasks
+                { PercentMore, Flask.LifeRecovery, Flask.Effect.Value * 100 },
+                { PercentMore, Flask.ManaRecovery, Flask.Effect.Value * 100 },
+                { PercentMore, Flask.LifeRecovery, Flask.RecoverySpeed.Value * 100 },
+                { PercentMore, Flask.ManaRecovery, Flask.RecoverySpeed.Value * 100 },
+                { PercentMore, Flask.Duration, (100 / Flask.RecoverySpeed.Value) - 100 },
                 // ailments
                 {
                     TotalOverride, _stat.AilmentDealtDamageType(Common.Builders.Effects.Ailment.Ignite),
@@ -72,9 +92,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     (1 - Effect.Stun.Avoidance.Value) * (1 - Effect.Stun.ChanceToAvoidInterruptionWhileCasting.Value)
                 },
             }.Concat(CreateAilmentSourceDamageTypeModifiers());
-
-        private IValueBuilder RegenFromPercentValue(IPoolStatBuilder pool)
-            => _stat.RegenTargetPoolValue(pool) * pool.Regen.Percent.Value / 100;
 
         private IEnumerable<IIntermediateModifier> CreateAilmentSourceDamageTypeModifiers()
         {

@@ -15,7 +15,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         public void RegenTargetPoolValueCalculatesCorrectly(Pool targetPool, double expected)
         {
             var statFactory = new StatFactory();
-            var sourcePool = new PoolStatBuilder(statFactory, CoreBuilder.Create(Pool.Life));
             var targetPoolStat = statFactory.RegenTargetPool(default, Pool.Life);
             var targetPoolValueStat = statFactory.FromIdentity(targetPool.ToString(), default, typeof(int));
             var context = Mock.Of<IValueCalculationContext>(c =>
@@ -23,7 +22,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
                 c.GetValue(targetPoolValueStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) expected);
             var sut = new MetaStatBuilders(statFactory);
 
-            var valueBuilder = sut.RegenTargetPoolValue(sourcePool);
+            var valueBuilder = sut.RegenTargetPoolValue(Pool.Life);
             var actual = valueBuilder.Build().Calculate(context);
 
             Assert.AreEqual(expected, actual.Single());

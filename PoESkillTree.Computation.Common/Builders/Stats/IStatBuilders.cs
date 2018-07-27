@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
 
         /// <summary>
-        /// The speed with which to cast (or attack with) the main skill
+        /// The speed with which to cast (or attack with) the main skill (casts per second)
         /// </summary>
         IDamageRelatedStatBuilder CastSpeed { get; }
 

@@ -13,33 +13,51 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        public ValueBuilder RegenTargetPoolValue(IPoolStatBuilder regenSourcePool)
+        public ValueBuilder RegenTargetPoolValue(Pool sourcePool) =>
+            new ValueBuilder(new ValueBuilderImpl(
+                ps => BuildTargetPoolValue(ps, StatFactory.RegenTargetPool(ps.ModifierSourceEntity, sourcePool)),
+                _ => RegenTargetPoolValue(sourcePool)));
+
+        public ValueBuilder LeechTargetPoolValue(Pool sourcePool) =>
+            new ValueBuilder(new ValueBuilderImpl(
+                ps => BuildTargetPoolValue(ps, StatFactory.LeechTargetPool(ps.ModifierSourceEntity, sourcePool)),
+                _ => LeechTargetPoolValue(sourcePool)));
+
+        private IValue BuildTargetPoolValue(BuildParameters parameters, IStat targetPoolStat)
         {
-            return new ValueBuilder(new ValueBuilderImpl(BuildValue,
-                c => RegenTargetPoolValue((IPoolStatBuilder) regenSourcePool.Resolve(c))));
+            var entity = parameters.ModifierSourceEntity;
+            var targetPoolValue = new StatValue(targetPoolStat);
+            return new FunctionalValue(
+                c => c.GetValue(TargetPoolValueStat(targetPoolValue.Calculate(c))),
+                $"Value of Pool {targetPoolValue}");
 
-            IValue BuildValue(BuildParameters parameters)
+            IStat TargetPoolValueStat(NodeValue? targetPool)
             {
-                var entity = parameters.ModifierSourceEntity;
-                var sourcePool = regenSourcePool.BuildPool();
-                var targetPoolStat = StatFactory.RegenTargetPool(entity, sourcePool);
-                var targetPoolValue = new StatValue(targetPoolStat);
-                return new FunctionalValue(
-                    c => c.GetValue(TargetPoolValueStat(targetPoolValue.Calculate(c))),
-                    $"Value of Pool {targetPoolValue}");
-
-                IStat TargetPoolValueStat(NodeValue? targetPool)
-                {
-                    var targetPoolString = ((Pool) targetPool.Single()).ToString();
-                    return StatFactory.FromIdentity(targetPoolString, entity, typeof(int));
-                }
+                var targetPoolString = ((Pool) targetPool.Single()).ToString();
+                return StatFactory.FromIdentity(targetPoolString, entity, typeof(int));
             }
         }
+
+        public IStatBuilder EffectiveRegen(Pool pool) => FromIdentity($"{pool}.EffectiveRegen", typeof(int));
+        public IStatBuilder EffectiveRecharge(Pool pool) => FromIdentity($"{pool}.EffectiveRecharge", typeof(int));
+        public IStatBuilder RechargeStartDelay(Pool pool) => FromIdentity($"{pool}.RechargeStartDelay", typeof(double));
+
+        public IStatBuilder EffectiveLeechRate(Pool pool) => FromIdentity($"{pool}.Leech.EffectiveRate", typeof(int));
+
+        public IStatBuilder AbsoluteLeechRate(Pool pool) => FromIdentity($"{pool}.Leech.AbsoluteRate", typeof(double));
+
+        public IStatBuilder AbsoluteLeechRateLimit(Pool pool)
+            => FromIdentity($"{pool}.Leech.AbsoluteRateLimit", typeof(double));
+
+        public IStatBuilder TimeToReachLeechRateLimit(Pool pool)
+            => FromIdentity($"{pool}.Leech.SecondsToReachRateLimit", typeof(double));
 
         public IDamageRelatedStatBuilder AverageEffectiveDamage => DamageRelatedFromIdentity(typeof(double));
 
         public IStatBuilder AilmentDealtDamageType(Ailment ailment)
             => FromStatFactory(e => StatFactory.AilmentDealtDamageType(e, ailment));
+
+        public IStatBuilder HitsPerSecond => FromIdentity(typeof(double));
 
         public IDamageRelatedStatBuilder EffectiveStunThreshold
             => DamageRelatedFromIdentity("Stun.EffectiveThreshold", typeof(double)).WithHits;

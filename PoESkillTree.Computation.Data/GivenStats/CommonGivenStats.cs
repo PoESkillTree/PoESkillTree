@@ -58,6 +58,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Mana.Regen.TargetPool, (int) Pool.Mana },
             { BaseSet, EnergyShield.Regen.TargetPool, (int) Pool.EnergyShield },
             { BaseSet, EnergyShield.Recharge.Start, 1 },
+            // flasks
+            { BaseSet, Flask.Effect, 1 },
+            { BaseSet, Flask.RecoverySpeed, 1 },
             // speed
             { BaseSet, Stat.AnimationSpeed, 1 },
             { BaseSet, Stat.MovementSpeed, 1 },

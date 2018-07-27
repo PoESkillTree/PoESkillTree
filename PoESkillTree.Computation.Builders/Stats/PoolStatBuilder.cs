@@ -57,12 +57,12 @@ namespace PoESkillTree.Computation.Builders.Stats
     internal class RechargeStatBuilder : StatBuilderWithPool, IRechargeStatBuilder
     {
         public RechargeStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
-            : base(statFactory, pool, "Recharge")
+            : base(statFactory, pool, ".Recharge")
         {
         }
 
         private RechargeStatBuilder(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool)
-            : base(statFactory, coreStatBuilder, pool, "Recharge")
+            : base(statFactory, coreStatBuilder, pool, ".Recharge")
         {
         }
 
@@ -77,12 +77,12 @@ namespace PoESkillTree.Computation.Builders.Stats
     internal class RegenStatBuilder : StatBuilderWithPool, IRegenStatBuilder
     {
         public RegenStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
-            : base(statFactory, pool, "Regen")
+            : base(statFactory, pool, ".Regen")
         {
         }
 
         private RegenStatBuilder(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool)
-            : base(statFactory, coreStatBuilder, pool, "Regen")
+            : base(statFactory, coreStatBuilder, pool, ".Regen")
         {
         }
 
@@ -98,12 +98,12 @@ namespace PoESkillTree.Computation.Builders.Stats
     internal class LeechStatBuilder : StatBuilderWithPool, ILeechStatBuilder
     {
         public LeechStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
-            : base(statFactory, pool, "Leech")
+            : base(statFactory, pool, ".Leech")
         {
         }
 
         private LeechStatBuilder(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool)
-            : base(statFactory, coreStatBuilder, pool, "Leech")
+            : base(statFactory, coreStatBuilder, pool, ".Leech")
         {
         }
 
@@ -122,7 +122,9 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder RateLimit => FromIdentity(typeof(int));
         public IStatBuilder Rate => FromIdentity(typeof(double));
-        public IStatBuilder TargetPool => FromIdentity(typeof(Pool));
+
+        public IStatBuilder TargetPool =>
+            new StatBuilder(StatFactory, new CoreStatBuilderFromCoreBuilder<Pool>(Pool, StatFactory.LeechTargetPool));
     }
 
     public abstract class StatBuilderWithPool : StatBuilder

@@ -18,12 +18,12 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder Duration { get; }
 
         /// <summary>
-        /// Gets a stat representing the modifier to the life recovered by flasks.
+        /// Gets a stat representing the modifier to the life recovered by flasks per second.
         /// </summary>
         IStatBuilder LifeRecovery { get; }
 
         /// <summary>
-        /// Gets a stat representing the modifier to the mana recovered by flasks.
+        /// Gets a stat representing the modifier to the mana recovered by flasks per second.
         /// </summary>
         IStatBuilder ManaRecovery { get; }
 

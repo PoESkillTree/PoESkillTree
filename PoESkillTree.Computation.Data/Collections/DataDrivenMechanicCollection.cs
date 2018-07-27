@@ -1,4 +1,6 @@
 using System;
+using EnumsNET;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
@@ -9,9 +11,12 @@ namespace PoESkillTree.Computation.Data.Collections
 {
     public class DataDrivenMechanicCollection : GivenStatCollection
     {
-        public DataDrivenMechanicCollection(IModifierBuilder modifierBuilder, IValueBuilders valueFactory)
-            : base(modifierBuilder, valueFactory)
+        private readonly IBuilderFactories _builderFactories;
+
+        public DataDrivenMechanicCollection(IModifierBuilder modifierBuilder, IBuilderFactories builderFactories)
+            : base(modifierBuilder, builderFactories.ValueBuilders)
         {
+            _builderFactories = builderFactories;
         }
 
         public void Add(
@@ -42,6 +47,26 @@ namespace PoESkillTree.Computation.Data.Collections
                 valueParameter1.With(DamageSource.Spell), valueParameter2.With(DamageSource.Spell)));
             Add(form, stat.With(DamageSource.Secondary), value(
                 valueParameter1.With(DamageSource.Secondary), valueParameter2.With(DamageSource.Secondary)));
+        }
+
+        public void Add(
+            IFormBuilder form, Func<IPoolStatBuilder, IStatBuilder> stat, Func<IPoolStatBuilder, IValueBuilder> value)
+            => Add(form, p => stat(PoolStatFrom(p)), value);
+
+        public void Add(
+            IFormBuilder form, Func<Pool, IStatBuilder> stat, Func<IPoolStatBuilder, IValueBuilder> value)
+            => Add(form, stat, p => value(PoolStatFrom(p)));
+
+        private IPoolStatBuilder PoolStatFrom(Pool pool)
+            => _builderFactories.StatBuilders.Pool.From(pool);
+
+        public void Add(
+            IFormBuilder form, Func<Pool, IStatBuilder> stat, Func<Pool, IValueBuilder> value)
+        {
+            foreach (var pool in Enums.GetValues<Pool>())
+            {
+                Add(form, stat(pool), value(pool));
+            }
         }
     }
 }
