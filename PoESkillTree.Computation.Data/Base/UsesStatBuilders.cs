@@ -69,7 +69,7 @@ namespace PoESkillTree.Computation.Data.Base
 
         // Damage types
 
-        private IDamageTypeBuilders DamageTypeBuilders => BuilderFactories.DamageTypeBuilders;
+        protected IDamageTypeBuilders DamageTypeBuilders => BuilderFactories.DamageTypeBuilders;
 
         protected IDamageTypeBuilder Physical => DamageTypeBuilders.Physical;
         protected IDamageTypeBuilder Fire => DamageTypeBuilders.Fire;

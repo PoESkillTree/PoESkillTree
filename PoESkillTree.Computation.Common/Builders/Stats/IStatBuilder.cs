@@ -30,9 +30,14 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder Maximum { get; }
 
         /// <summary>
-        /// Gets this stat's value. Defaults to null.
+        /// Gets this stat's total value. Defaults to null.
         /// </summary>
         ValueBuilder Value { get; }
+
+        /// <summary>
+        /// Gets this stat's value for the given type. Defaults to null.
+        /// </summary>
+        ValueBuilder ValueFor(NodeType nodeType);
 
         /// <summary>
         /// Returns a stat that represents the percentage of this stat's value that is converted to the given stat.

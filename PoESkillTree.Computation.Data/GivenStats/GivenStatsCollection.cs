@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Data;
 
 namespace PoESkillTree.Computation.Data.GivenStats
@@ -10,11 +11,13 @@ namespace PoESkillTree.Computation.Data.GivenStats
     public class GivenStatsCollection : IReadOnlyCollection<IGivenStats>
     {
         private readonly IBuilderFactories _builderFactories;
+        private readonly IMetaStatBuilders _metaStatBuilders;
         private readonly Lazy<IReadOnlyList<IGivenStats>> _lazyCollection;
 
-        public GivenStatsCollection(IBuilderFactories builderFactories)
+        public GivenStatsCollection(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
         {
             _builderFactories = builderFactories;
+            _metaStatBuilders = metaStatBuilders;
             _lazyCollection = new Lazy<IReadOnlyList<IGivenStats>>(() => CreateCollection(new ModifierBuilder()));
         }
 
@@ -32,6 +35,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 new MonsterGivenStats(_builderFactories, modifierBuilder),
                 new TotemGivenStats(_builderFactories, modifierBuilder),
                 new EffectStats(_builderFactories, modifierBuilder),
+                new DataDrivenMechanics(_builderFactories, modifierBuilder, _metaStatBuilders),
             };
     }
 }

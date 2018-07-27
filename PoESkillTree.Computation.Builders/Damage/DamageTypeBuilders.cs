@@ -5,16 +5,17 @@ namespace PoESkillTree.Computation.Builders.Damage
 {
     public class DamageTypeBuilders : IDamageTypeBuilders
     {
+        private readonly IStatFactory _statFactory;
+
         public DamageTypeBuilders(IStatFactory statFactory)
         {
+            _statFactory = statFactory;
             Physical = From(DamageType.Physical);
             Fire = From(DamageType.Fire);
             Lightning = From(DamageType.Lightning);
             Cold = From(DamageType.Cold);
             Chaos = From(DamageType.Chaos);
             RandomElement = From(DamageType.RandomElement);
-
-            IDamageTypeBuilder From(DamageType damageType) => new DamageTypeBuilder(statFactory, damageType);
         }
 
         public IDamageTypeBuilder Physical { get; }
@@ -23,5 +24,8 @@ namespace PoESkillTree.Computation.Builders.Damage
         public IDamageTypeBuilder Cold { get; }
         public IDamageTypeBuilder Chaos { get; }
         public IDamageTypeBuilder RandomElement { get; }
+
+        public IDamageTypeBuilder From(DamageType damageType) =>
+            new DamageTypeBuilder(_statFactory, damageType);
     }
 }

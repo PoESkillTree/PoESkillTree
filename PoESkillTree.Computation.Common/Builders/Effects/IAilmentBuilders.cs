@@ -13,6 +13,8 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         IAilmentBuilder Bleed { get; }
         IAilmentBuilder Poison { get; }
 
+        IAilmentBuilder From(Ailment ailment);
+
         /// <summary>
         /// Gets a collection of all elemental ailments.
         /// </summary>

@@ -35,11 +35,14 @@ namespace PoESkillTree.Computation.Data.Collections
         }
 
         public void Add(IFormBuilder form, IStatBuilder stat, double value)
+            => Add(form, stat, _valueFactory.Create(value));
+
+        public void Add(IFormBuilder form, IStatBuilder stat, IValueBuilder value)
         {
             var builder = _modifierBuilder
                 .WithForm(form)
                 .WithStat(stat)
-                .WithValue(_valueFactory.Create(value));
+                .WithValue(value);
             _data.Add(builder.Build());
         }
     }

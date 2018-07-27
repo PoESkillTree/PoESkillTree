@@ -41,16 +41,18 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder Minimum => WithStatConverter(s => s.Minimum);
         public IStatBuilder Maximum => WithStatConverter(s => s.Maximum);
 
-        public ValueBuilder Value =>
-            new ValueBuilder(new ValueBuilderImpl(BuildVallue, c => Resolve(c).Value));
+        public ValueBuilder Value => ValueFor(NodeType.Total);
 
-        private IValue BuildVallue(BuildParameters parameters)
+        public ValueBuilder ValueFor(NodeType nodeType)
+            => new ValueBuilder(new ValueBuilderImpl(ps => BuildValue(nodeType, ps), c => Resolve(c).Value));
+
+        private IValue BuildValue(NodeType nodeType, BuildParameters parameters)
         {
             var stats = Build(parameters).Select(r => r.Stats).Flatten().ToList();
             if (stats.Count != 1)
                 throw new ParseException("Can only access the value of stat builders that represent a single stat");
 
-            return new StatValue(stats.Single());
+            return new StatValue(stats.Single(), nodeType);
         }
 
         public IConditionBuilder IsSet =>

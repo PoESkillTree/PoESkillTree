@@ -22,8 +22,8 @@ namespace PoESkillTree.Computation.Builders.Stats
             ExplicitRegistrationType explicitRegistrationType = null) =>
             StatBuilderUtils.FromIdentity(StatFactory, identity, dataType, explicitRegistrationType);
 
-        protected IFlagStatBuilder FromCore(ICoreStatBuilder coreStatBuilder) =>
-            new StatBuilder(StatFactory, coreStatBuilder);
+        protected IFlagStatBuilder FromStatFactory(Func<Entity, IStat> statFactory)
+            => new StatBuilder(StatFactory, new LeafCoreStatBuilder(statFactory));
 
         protected IDamageRelatedStatBuilder DamageRelatedFromIdentity(
             Type dataType, [CallerMemberName] string identity = null) =>

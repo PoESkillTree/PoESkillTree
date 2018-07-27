@@ -69,6 +69,7 @@
     <Compile Include="Base\StatMatchersBase.cs" />
     <Compile Include="ChargeTypeMatchers.cs" />
     <Compile Include="Collections\ConditionMatcherCollection.cs" />
+    <Compile Include="Collections\DataDrivenMechanicCollection.cs" />
     <Compile Include="Collections\FormAndStatMatcherCollection.cs" />
     <Compile Include="Collections\FormMatcherCollection.cs" />
     <Compile Include="Collections\PropertyMatcherCollection.cs" />
@@ -83,11 +84,12 @@
     <Compile Include="DamageStatMatchers.cs" />
     <Compile Include="DamageTypeMatchers.cs" />
     <Compile Include="Collections\EffectStatCollection.cs" />
+    <Compile Include="GivenStats\DataDrivenMechanics.cs" />
     <Compile Include="GivenStats\EffectStats.cs" />
     <Compile Include="BuffMatchers.cs" />
     <Compile Include="FormAndStatMatchers.cs" />
     <Compile Include="FormMatchers.cs" />
-    <Compile Include="Collections\GivenStatsCollection.cs" />
+    <Compile Include="Collections\GivenStatCollection.cs" />
     <Compile Include="GivenStats\CharacterGivenStats.cs" />
     <Compile Include="GivenStats\CommonGivenStats.cs" />
     <Compile Include="GivenStats\GivenStatsCollection.cs" />

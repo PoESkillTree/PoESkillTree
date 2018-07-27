@@ -19,5 +19,7 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         /// Gets a special elemental damage type that is handled differently depending on the user's settings.
         /// </summary>
         IDamageTypeBuilder RandomElement { get; }
+
+        IDamageTypeBuilder From(DamageType damageType);
     }
 }

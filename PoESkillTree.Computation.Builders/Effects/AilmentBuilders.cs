@@ -23,6 +23,7 @@ namespace PoESkillTree.Computation.Builders.Effects
         public IAilmentBuilder Freeze => _allAilments[Ailment.Freeze];
         public IAilmentBuilder Bleed => _allAilments[Ailment.Bleed];
         public IAilmentBuilder Poison => _allAilments[Ailment.Poison];
+        public IAilmentBuilder From(Ailment ailment) => _allAilments[ailment];
         public IAilmentBuilderCollection Elemental { get; }
     }
 

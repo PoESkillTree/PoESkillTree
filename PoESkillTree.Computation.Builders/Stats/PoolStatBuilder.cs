@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IPoolStatBuilder From(Pool pool) => new PoolStatBuilder(StatFactory, CoreBuilder.Create(pool));
     }
 
-    internal class PoolStatBuilder : StatBuilderWithPool, IPoolStatBuilder
+    public class PoolStatBuilder : StatBuilderWithPool, IPoolStatBuilder
     {
         public PoolStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
             : base(statFactory, pool, "")
@@ -125,7 +125,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder TargetPool => FromIdentity(typeof(Pool));
     }
 
-    internal abstract class StatBuilderWithPool : StatBuilder
+    public abstract class StatBuilderWithPool : StatBuilder
     {
         private readonly string _identitySuffix;
         protected ICoreBuilder<Pool> Pool { get; }

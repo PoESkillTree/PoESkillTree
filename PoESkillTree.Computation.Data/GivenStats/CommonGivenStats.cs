@@ -114,7 +114,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Buff.Fortify.Duration, 4000 },
             { BaseSet, Buff.Maim.Duration, 4000 },
             { BaseSet, Buff.Taunt.Duration, 3000 },
-            // other effects
+            // stun
             { BaseSet, Effect.Stun.Threshold, 1 },
             { BaseSet, Effect.Stun.Recovery, 1 },
             { BaseSet, Effect.Stun.Duration, 350 },

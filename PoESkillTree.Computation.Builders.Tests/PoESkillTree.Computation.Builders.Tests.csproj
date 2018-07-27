@@ -96,6 +96,7 @@
     <Compile Include="Stats\DamageRelatedStatBuilderTest.cs" />
     <Compile Include="Stats\EntityBuilderTest.cs" />
     <Compile Include="Stats\LeafCoreStatBuilderTest.cs" />
+    <Compile Include="Stats\MetaStatBuildersTest.cs" />
     <Compile Include="Stats\StatBuilderAdapterTest.cs" />
     <Compile Include="Stats\StatBuilderHelper.cs" />
     <Compile Include="Stats\StatBuilderTest.cs" />
