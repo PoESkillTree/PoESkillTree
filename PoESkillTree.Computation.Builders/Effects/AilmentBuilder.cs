@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -24,8 +23,6 @@ namespace PoESkillTree.Computation.Builders.Effects
 
         public override IEffectBuilder Resolve(ResolveContext context) =>
             new AilmentBuilder(StatFactory, _ailment.Resolve(context));
-
-        public IStatBuilder Chance => ChanceOn(new EntityBuilder(Entity.Enemy));
 
         public IStatBuilder InstancesOn(IEntityBuilder target) =>
             FromIdentity("InstanceCount", typeof(int)).For(target);

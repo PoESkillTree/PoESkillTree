@@ -176,7 +176,7 @@ namespace PoESkillTree.Computation.Data
                 // - Slayer
                 { 
                     "your damaging hits always stun enemies that are on full life", 
-                    TotalOverride, 100, Effect.Stun.ChanceOn(Enemy),
+                    TotalOverride, 100, Effect.Stun.Chance,
                     Action.Unique("On damaging Hit against a full life Enemy").On
                 },
                 // - Inquisitor

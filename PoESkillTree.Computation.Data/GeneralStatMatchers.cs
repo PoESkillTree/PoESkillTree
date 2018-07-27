@@ -204,7 +204,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "golem at a time", Golems.CombinedInstances.Maximum },
                 // buffs
-                { "chance to gain ({BuffMatchers})", Reference.AsBuff.ChanceOn(Self) },
+                { "chance to gain ({BuffMatchers})", Reference.AsBuff.Chance },
                 { "({BuffMatchers}) duration", Reference.AsBuff.Duration },
                 { "({BuffMatchers}) effect", Reference.AsBuff.Effect },
                 { "effect of buffs granted by your golems", Buffs(Entity.Minion).With(Keyword.Golem).Effect },
@@ -217,11 +217,11 @@ namespace PoESkillTree.Computation.Data
                 { "effect of your curses", Buffs(Self).With(Keyword.Curse).Effect },
                 { "effect of curses on you", Buffs(targets: Self).With(Keyword.Curse).Effect },
                 { "effect of non-curse auras you cast", Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).Effect },
-                { "chance to fortify", Buff.Fortify.ChanceOn(Self) },
+                { "chance to fortify", Buff.Fortify.Chance },
                 { "effect of fortify on you", Buff.Fortify.Effect },
-                { "chance for attacks to maim on hit", Buff.Maim.ChanceOn(Enemy), With(Keyword.Attack) },
-                { "chance to taunt", Buff.Taunt.ChanceOn(Enemy) },
-                { "chance to blind enemies", Buff.Blind.ChanceOn(Enemy) },
+                { "chance for attacks to maim on hit", Buff.Maim.Chance, With(Keyword.Attack) },
+                { "chance to taunt", Buff.Taunt.Chance },
+                { "chance to blind enemies", Buff.Blind.Chance },
                 // ailments
                 { "chance to ({AilmentMatchers})( the enemy)?", Reference.AsAilment.Chance },
                 {
@@ -262,7 +262,7 @@ namespace PoESkillTree.Computation.Data
                 { "melee weapon range", Stat.Range, And(With(Keyword.Melee), MainHand.HasItem) },
                 // other
                 { "rampage stacks", Stat.RampageStacks },
-                { "chance to knock enemies back", Effect.Knockback.ChanceOn(Enemy) },
+                { "chance to knock enemies back", Effect.Knockback.Chance },
                 { "knockback distance", Effect.Knockback.Distance },
                 { "character size", Stat.CharacterSize },
                 { "reflected elemental damage taken", Elemental.ReflectedDamageTaken },

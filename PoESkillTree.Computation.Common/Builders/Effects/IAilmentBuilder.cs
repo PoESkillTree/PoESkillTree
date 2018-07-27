@@ -11,12 +11,6 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
     public interface IAilmentBuilder : IAvoidableEffectBuilder
     {
         /// <summary>
-        /// Gets a stat representing the chance to inflict this effect upon Enemies. This chance only applies to hits if
-        /// not set differently via conditions.
-        /// </summary>
-        IStatBuilder Chance { get; }
-
-        /// <summary>
         /// Returns a stat representing the number of instances of this ailment currently affecting
         /// <paramref name="target"/>.
         /// </summary>

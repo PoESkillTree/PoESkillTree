@@ -236,7 +236,7 @@ namespace PoESkillTree.Computation.Data
                 // item quantity/quality
                 // range and area of effect
                 // other
-                { "knocks back enemies", TotalOverride, 100, Effect.Knockback.ChanceOn(Enemy) },
+                { "knocks back enemies", TotalOverride, 100, Effect.Knockback.Chance },
             };
     }
 }
