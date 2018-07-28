@@ -24,7 +24,9 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         }
 
         public IValueBuilder MaximumOnly => Wrap(_value.MaximumOnly);
-        public IValueBuilder Average => Wrap(_value.Average);
+
+        public ValueBuilder Average => Wrap(_value.Average);
+        IValueBuilder IValueBuilder.Average => _value.Average;
 
         public override bool Equals(object obj) =>
             ReferenceEquals(this, obj) || (obj is ValueBuilder other && Equals(_value, other._value));

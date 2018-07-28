@@ -22,6 +22,8 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         /// </summary>
         IStatBuilder Source(IDamageTypeBuilder type);
 
+        IStatBuilder CriticalStrikesAlwaysInflict { get; }
+
         new Ailment Build();
     }
 }

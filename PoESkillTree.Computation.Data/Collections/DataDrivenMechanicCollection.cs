@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
-using PoESkillTree.Common.Utils;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -46,6 +46,15 @@ namespace PoESkillTree.Computation.Data.Collections
             Add(form, stat, new[] { vp1, vp2, vp3 }, ss => value(ss[0], ss[1], ss[2]));
         }
 
+        public void Add(
+            IFormBuilder form, IDamageRelatedStatBuilder stat,
+            IDamageRelatedStatBuilder vp1, IDamageRelatedStatBuilder vp2, IDamageRelatedStatBuilder vp3,
+            IDamageRelatedStatBuilder vp4, IDamageRelatedStatBuilder vp5,
+            Func<IStatBuilder, IStatBuilder, IStatBuilder, IStatBuilder, IStatBuilder, IValueBuilder> value)
+        {
+            Add(form, stat, new[] { vp1, vp2, vp3, vp4, vp5 }, ss => value(ss[0], ss[1], ss[2], ss[3], ss[4]));
+        }
+
         private void Add(
             IFormBuilder form, IDamageRelatedStatBuilder stat,
             IReadOnlyList<IDamageRelatedStatBuilder> valueParameters,
@@ -64,20 +73,26 @@ namespace PoESkillTree.Computation.Data.Collections
         public void Add(
             IFormBuilder form, IDamageRelatedStatBuilder stat, Func<DamageType, IDamageRelatedStatBuilder> value)
         {
-            Add(form, _ => stat, value);
+            Add(form, _ => stat.With(AttackDamageHand.MainHand), dt => value(dt).With(AttackDamageHand.MainHand).Value);
+            Add(form, _ => stat.With(AttackDamageHand.OffHand), dt => value(dt).With(AttackDamageHand.OffHand).Value);
+            Add(form, _ => stat.With(DamageSource.Spell), dt => value(dt).With(DamageSource.Spell).Value);
+            Add(form, _ => stat.With(DamageSource.Secondary), dt => value(dt).With(DamageSource.Secondary).Value);
         }
 
         public void Add(
-            IFormBuilder form,
-            Func<DamageType, IDamageRelatedStatBuilder> stat,
-            Func<DamageType, IDamageRelatedStatBuilder> value)
+            IFormBuilder form, Func<Ailment, IDamageRelatedStatBuilder> stat,
+            Func<Ailment, IDamageRelatedStatBuilder> vp,
+            Func<Ailment, IStatBuilder, IValueBuilder> value)
         {
-            Add(form, dt => stat(dt).With(AttackDamageHand.MainHand),
-                dt => value(dt).With(AttackDamageHand.MainHand).Value);
-            Add(form, dt => stat(dt).With(AttackDamageHand.OffHand),
-                dt => value(dt).With(AttackDamageHand.OffHand).Value);
-            Add(form, dt => stat(dt).With(DamageSource.Spell), dt => value(dt).With(DamageSource.Spell).Value);
-            Add(form, dt => stat(dt).With(DamageSource.Secondary), dt => value(dt).With(DamageSource.Secondary).Value);
+            Add(form, stat, a => new[] { vp(a) }, (a, ss) => value(a, ss.Single()));
+        }
+
+        public void Add(
+            IFormBuilder form, Func<DamageType, IDamageRelatedStatBuilder> stat,
+            Func<DamageType, IDamageRelatedStatBuilder> vp,
+            Func<DamageType, IStatBuilder, IValueBuilder> value)
+        {
+            Add(form, stat, a => new[] { vp(a) }, (a, ss) => value(a, ss.Single()));
         }
 
         public void Add(
@@ -97,19 +112,20 @@ namespace PoESkillTree.Computation.Data.Collections
             Add(form, stat, dt => new[] { vp1(dt), vp2(dt), vp3(dt) }, (dt, ss) => value(dt, ss[0], ss[1], ss[2]));
         }
 
-        private void Add(
+        private void Add<TEnum>(
             IFormBuilder form,
-            Func<DamageType, IDamageRelatedStatBuilder> stat,
-            Func<DamageType, IEnumerable<IDamageRelatedStatBuilder>> valueParameters,
-            Func<DamageType, IReadOnlyList<IStatBuilder>, IValueBuilder> value)
+            Func<TEnum, IDamageRelatedStatBuilder> stat,
+            Func<TEnum, IEnumerable<IDamageRelatedStatBuilder>> valueParameters,
+            Func<TEnum, IReadOnlyList<IStatBuilder>, IValueBuilder> value)
+            where TEnum : struct, Enum
         {
-            Add(form, dt => stat(dt).With(AttackDamageHand.MainHand),
+            Add<TEnum>(form, dt => stat(dt).With(AttackDamageHand.MainHand),
                 dt => value(dt, valueParameters(dt).Select(s => s.With(AttackDamageHand.MainHand)).ToList()));
-            Add(form, dt => stat(dt).With(AttackDamageHand.OffHand),
+            Add<TEnum>(form, dt => stat(dt).With(AttackDamageHand.OffHand),
                 dt => value(dt, valueParameters(dt).Select(s => s.With(AttackDamageHand.OffHand)).ToList()));
-            Add(form, dt => stat(dt).With(DamageSource.Spell),
+            Add<TEnum>(form, dt => stat(dt).With(DamageSource.Spell),
                 dt => value(dt, valueParameters(dt).Select(s => s.With(DamageSource.Spell)).ToList()));
-            Add(form, dt => stat(dt).With(DamageSource.Secondary),
+            Add<TEnum>(form, dt => stat(dt).With(DamageSource.Secondary),
                 dt => value(dt, valueParameters(dt).Select(s => s.With(DamageSource.Secondary)).ToList()));
         }
 
@@ -125,18 +141,25 @@ namespace PoESkillTree.Computation.Data.Collections
             => _builderFactories.StatBuilders.Pool.From(pool);
 
         public void Add(IFormBuilder form, Func<Pool, IStatBuilder> stat, Func<Pool, IValueBuilder> value)
-        {
-            foreach (var pool in Enums.GetValues<Pool>())
-            {
-                Add(form, stat(pool), value(pool));
-            }
-        }
+            => Add<Pool>(form, stat, value);
+
+        public void Add(IFormBuilder form, Func<Ailment, IStatBuilder> stat, Func<Ailment, IValueBuilder> value)
+            => Add<Ailment>(form, stat, value);
 
         public void Add(IFormBuilder form, Func<DamageType, IStatBuilder> stat, Func<DamageType, IValueBuilder> value)
+            => Add<DamageType>(form, stat, value);
+
+        private void Add<TEnum>(IFormBuilder form, Func<TEnum, IStatBuilder> stat, Func<TEnum, IValueBuilder> value)
+            where TEnum : struct, Enum
         {
-            foreach (var damageType in Enums.GetValues<DamageType>().Except(DamageType.RandomElement))
+            var ts = Enums.GetValues<TEnum>();
+            if (typeof(TEnum) == typeof(DamageType))
             {
-                Add(form, stat(damageType), value(damageType));
+                ts = ts.Except((TEnum) (object) DamageType.RandomElement);
+            }
+            foreach (var t in ts)
+            {
+                Add(form, stat(t), value(t));
             }
         }
     }

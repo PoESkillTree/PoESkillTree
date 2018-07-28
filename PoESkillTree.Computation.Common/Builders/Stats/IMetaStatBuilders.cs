@@ -7,6 +7,10 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     /// <summary>
     /// Contains stat builders that do not partake in parsing but are relevant for calculations.
     /// </summary>
+    /// <remarks>
+    /// "EffectiveChance" stats are probabilities between 0 and 1. "Chance" stats are percentages between 0 and 100,
+    /// same as for non-meta stats.
+    /// </remarks>
     public interface IMetaStatBuilders
     {
         IStatBuilder EffectiveRegen(Pool pool);
@@ -24,7 +28,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         ValueBuilder LeechTargetPoolValue(Pool sourcePool);
 
-        // Skill damage calculation
+        // Damage calculation
         IDamageRelatedStatBuilder EnemyResistanceAgainstNonCrits(DamageType damageType);  // with hits
         IDamageRelatedStatBuilder EnemyResistanceAgainstCrits(DamageType damageType);  // with hits
         IDamageRelatedStatBuilder EffectiveDamageMultiplierWithNonCrits(DamageType damageType);
@@ -35,14 +39,20 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IDamageRelatedStatBuilder DamageWithCrits();  // with hits and ailments
         IDamageRelatedStatBuilder AverageDamagePerHit { get; }  // with hits
         IDamageRelatedStatBuilder AverageDamage { get; }
-        IStatBuilder AverageDamageWithHits { get; }
+        IStatBuilder AverageHitDamage { get; }
         IStatBuilder SkillDpsWithHits { get; }
         IStatBuilder SkillDpsWithDoTs { get; }
+        IStatBuilder AverageIgniteDamage { get; }
+        IStatBuilder IgniteDps { get; }
 
         IStatBuilder CastRate { get; }
         IStatBuilder CastTime { get; }
 
         IStatBuilder AilmentDealtDamageType(Ailment ailment);
+        IDamageRelatedStatBuilder AilmentChanceWithCrits(Ailment ailment);
+        IDamageRelatedStatBuilder AilmentEffectiveChance(Ailment ailment);
+        IStatBuilder AilmentCombinedEffectiveChance(Ailment ailment);
+
         IDamageRelatedStatBuilder EffectiveCritChance { get; }
 
         IStatBuilder ResistanceAgainstHits(DamageType damageType);

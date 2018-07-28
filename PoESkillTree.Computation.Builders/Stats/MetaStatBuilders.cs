@@ -83,9 +83,11 @@ namespace PoESkillTree.Computation.Builders.Stats
             => DamageRelatedFromIdentity(typeof(double)).WithHits;
 
         public IDamageRelatedStatBuilder AverageDamage => DamageRelatedFromIdentity(typeof(double));
-        public IStatBuilder AverageDamageWithHits => FromIdentity("AverageDamage.Hit", typeof(double));
+        public IStatBuilder AverageHitDamage => FromIdentity("AverageDamage.Hit", typeof(double));
         public IStatBuilder SkillDpsWithHits => FromIdentity("Dps.Hit", typeof(double));
-        public IStatBuilder SkillDpsWithDoTs => FromIdentity("Dps.OverTime.Skill", typeof(double));
+        public IStatBuilder SkillDpsWithDoTs => FromIdentity("Dps.OverTime", typeof(double));
+        public IStatBuilder AverageIgniteDamage => FromIdentity("AverageDamage.Ignite", typeof(double));
+        public IStatBuilder IgniteDps => FromIdentity("Dps.Ignite", typeof(double));
 
 
         public IStatBuilder CastRate => FromIdentity(typeof(double));
@@ -93,6 +95,15 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder AilmentDealtDamageType(Ailment ailment)
             => FromStatFactory(e => StatFactory.AilmentDealtDamageType(e, ailment));
+
+        public IDamageRelatedStatBuilder AilmentChanceWithCrits(Ailment ailment)
+            => DamageRelatedFromIdentity($"{ailment}.ChanceWithCrits", typeof(double)).WithHits;
+
+        public IDamageRelatedStatBuilder AilmentEffectiveChance(Ailment ailment)
+            => DamageRelatedFromIdentity($"{ailment}.EffectiveChance", typeof(double)).WithHits;
+
+        public IStatBuilder AilmentCombinedEffectiveChance(Ailment ailment)
+            => FromIdentity($"{ailment}.EffectiveChance", typeof(double));
 
         public IDamageRelatedStatBuilder EffectiveCritChance
             => DamageRelatedFromIdentity("CriticalStrike.EffectiveChance", typeof(double)).WithHits;
