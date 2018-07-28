@@ -42,7 +42,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { Buff.Fortify, PercentReduce, Damage.Taken.WithHits, 20 },
             { Buff.Maim, PercentReduce, Stat.MovementSpeed, 30 },
             { Buff.Intimidate, PercentIncrease, Damage.Taken, 10 },
-            { Buff.Onslaught, PercentIncrease, Stat.CastSpeed, 20 },
+            { Buff.Onslaught, PercentIncrease, Stat.CastRate, 20 },
             { Buff.Onslaught, PercentIncrease, Stat.MovementSpeed, 20 },
             {
                 Buff.UnholyMight,

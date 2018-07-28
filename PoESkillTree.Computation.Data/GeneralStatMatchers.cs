@@ -129,16 +129,16 @@ namespace PoESkillTree.Computation.Data
                         .Before(References[2].AsPoolStat)
                 },
                 // speed
-                { "attack speed", Stat.CastSpeed.With(DamageSource.Attack) },
-                { "cast speed", Stat.CastSpeed.With(DamageSource.Spell), Stat.CastSpeed.With(DamageSource.Secondary) },
+                { "attack speed", Stat.CastRate.With(DamageSource.Attack) },
+                { "cast speed", Stat.CastRate.With(DamageSource.Spell), Stat.CastRate.With(DamageSource.Secondary) },
                 { "movement speed", Stat.MovementSpeed },
                 {
                     // not the most elegant solution but by far the easiest
                     @"movement speed \(hidden\)",
                     Stat.MovementSpeed, Not(Flag.IgnoreMovementSpeedPenalties.IsSet)
                 },
-                { "attack and cast speed", Stat.CastSpeed },
-                { "attack, cast( speed)? and movement speed", Stat.CastSpeed, Stat.MovementSpeed },
+                { "attack and cast speed", Stat.CastRate },
+                { "attack, cast( speed)? and movement speed", Stat.CastRate, Stat.MovementSpeed },
                 { "animation speed", Stat.AnimationSpeed },
                 // regen and recharge
                 { "({PoolStatMatchers}) regeneration rate", Reference.AsPoolStat.Regen },

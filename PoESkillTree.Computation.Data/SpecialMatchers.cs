@@ -210,7 +210,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "using warcries is instant",
-                    TotalOverride, double.PositiveInfinity, Stat.CastSpeed, With(Keyword.Warcry)
+                    TotalOverride, double.PositiveInfinity, Stat.CastRate, With(Keyword.Warcry)
                 },
                 // - Assassin
                 {
@@ -229,7 +229,7 @@ namespace PoESkillTree.Computation.Data
         private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat, IConditionBuilder condition)>
             UndeniableAttackSpeed()
         {
-            var attackSpeed = Stat.CastSpeed.With(DamageSource.Attack);
+            var attackSpeed = Stat.CastRate.With(DamageSource.Attack);
             foreach (var hand in Enums.GetValues<AttackDamageHand>())
             {
                 IValueBuilder PerAccuracy(ValueBuilder value) =>

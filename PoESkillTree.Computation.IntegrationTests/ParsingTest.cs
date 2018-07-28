@@ -180,7 +180,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                 .Returns(CreateModifier(
                         f.BuffBuilders.Buffs(f.EntityBuilders.Self, f.EntityBuilders.Self, f.EntityBuilders.Ally)
                             .With(f.KeywordBuilders.Aura).Without(f.KeywordBuilders.Curse)
-                            .AddStat(f.StatBuilders.CastSpeed),
+                            .AddStat(f.StatBuilders.CastRate),
                         f.FormBuilders.PercentIncrease,
                         f.ValueBuilders.Create(3))
                     .ToArray());

@@ -40,26 +40,36 @@ namespace PoESkillTree.Computation.Data.GivenStats
         private IEnumerable<IIntermediateModifier> CreateCollection()
             => new DataDrivenMechanicCollection(_modifierBuilder, BuilderFactories)
             {
+                // speed
+                {
+                    // This assumes cast rate is only set for the skill's hit damage source.
+                    TotalOverride, _stat.CastRate,
+                    (Stat.CastRate.With(AttackDamageHand.MainHand).Value +
+                     Stat.CastRate.With(AttackDamageHand.OffHand).Value) / 2
+                    + Stat.CastRate.With(DamageSource.Spell).Value + Stat.CastRate.With(DamageSource.Secondary).Value
+                },
+                { TotalOverride, _stat.CastTime, _stat.CastRate.Value.Invert },
                 // resistances/damage reduction
                 { BaseSet, _stat.ResistanceAgainstHits(DamageType.Physical), Physical.Resistance.Value },
                 {
                     BaseAdd, _stat.ResistanceAgainstHits(DamageType.Physical),
-                    100 * Armour.Value / (Armour.Value + 10 * _stat.AverageDamage(DamageType.Physical).For(Enemy).Value)
+                    100 * Armour.Value /
+                    (Armour.Value + 10 * Physical.Damage.With(AttackDamageHand.MainHand).For(Enemy).Value)
                 },
                 { BaseSet, _stat.ResistanceAgainstHits(DamageType.Physical).Maximum, 90 },
                 { TotalOverride, _stat.ResistanceAgainstHits(DamageType.Lightning), Lightning.Resistance.Value },
                 { TotalOverride, _stat.ResistanceAgainstHits(DamageType.Cold), Cold.Resistance.Value },
                 { TotalOverride, _stat.ResistanceAgainstHits(DamageType.Fire), Fire.Resistance.Value },
                 { TotalOverride, _stat.ResistanceAgainstHits(DamageType.Chaos), Chaos.Resistance.Value },
-                // damage mitigation ((1 - resistance / 100) * damage taken)
+                // damage mitigation (1 - (1 - resistance / 100) * damage taken)
                 {
                     TotalOverride, _stat.MitigationAgainstHits,
-                    dt => (1 - _stat.ResistanceAgainstHits(dt).Value / 100) *
+                    dt => 1 - (1 - _stat.ResistanceAgainstHits(dt).Value / 100) *
                           DamageTypeBuilders.From(dt).Damage.Taken.With(DamageSource.Secondary).Value
                 },
                 {
                     TotalOverride, _stat.MitigationAgainstDoTs,
-                    dt => (1 - DamageTypeBuilders.From(dt).Resistance.Value / 100) *
+                    dt => 1 - (1 - DamageTypeBuilders.From(dt).Resistance.Value / 100) *
                           DamageTypeBuilders.From(dt).Damage.Taken.With(DamageSource.OverTime).Value
                 },
                 // chance to hit/evade
@@ -128,7 +138,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 {
                     TotalOverride, _stat.TimeToReachLeechRateLimit,
-                    p => p.Leech.RateLimit.Value / p.Leech.Rate.Value / _stat.HitsPerSecond.Value
+                    p => p.Leech.RateLimit.Value / p.Leech.Rate.Value / _stat.CastRate.Value
                 },
                 // flasks
                 { PercentMore, Flask.LifeRecovery, Flask.Effect.Value * 100 },
@@ -157,7 +167,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 {
                     BaseSet, Effect.Stun.Chance,
-                    _stat.AverageEffectiveDamage, _stat.EffectiveStunThreshold, StunChanceValue
+                    _stat.AverageDamage, _stat.EffectiveStunThreshold, StunChanceValue
                 },
                 {
                     TotalOverride, _stat.StunAvoidanceWhileCasting,

@@ -1,5 +1,6 @@
 using System;
 using EnumsNET;
+using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Forms;
@@ -70,7 +71,7 @@ namespace PoESkillTree.Computation.Data.Collections
 
         public void Add(IFormBuilder form, Func<DamageType, IStatBuilder> stat, Func<DamageType, IValueBuilder> value)
         {
-            foreach (var damageType in Enums.GetValues<DamageType>())
+            foreach (var damageType in Enums.GetValues<DamageType>().Except(DamageType.RandomElement))
             {
                 Add(form, stat(damageType), value(damageType));
             }

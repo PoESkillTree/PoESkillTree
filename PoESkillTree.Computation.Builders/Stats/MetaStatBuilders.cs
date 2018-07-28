@@ -53,10 +53,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder TimeToReachLeechRateLimit(Pool pool)
             => FromIdentity($"{pool}.Leech.SecondsToReachRateLimit", typeof(double));
 
-        public IDamageRelatedStatBuilder AverageDamage(DamageType damageType)
-            => DamageRelatedFromIdentity($"{damageType}.AverageDamage", typeof(double)).WithHits;
+        public IDamageRelatedStatBuilder AverageDamage => DamageRelatedFromIdentity(typeof(double));
 
-        public IDamageRelatedStatBuilder AverageEffectiveDamage => DamageRelatedFromIdentity(typeof(double));
 
         public IStatBuilder AilmentDealtDamageType(Ailment ailment)
             => FromStatFactory(e => StatFactory.AilmentDealtDamageType(e, ailment));
@@ -77,7 +75,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder ChanceToAvoidProjectileAttacks => FromIdentity(typeof(int));
         public IStatBuilder ChanceToAvoidSpells => FromIdentity(typeof(int));
 
-        public IStatBuilder HitsPerSecond => FromIdentity(typeof(double));
+        public IStatBuilder CastRate => FromIdentity(typeof(double));
+        public IStatBuilder CastTime => FromIdentity(typeof(double));
 
         public IDamageRelatedStatBuilder EffectiveStunThreshold
             => DamageRelatedFromIdentity("Stun.EffectiveThreshold", typeof(double)).WithHits;

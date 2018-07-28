@@ -24,8 +24,10 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         ValueBuilder LeechTargetPoolValue(Pool sourcePool);
 
-        IDamageRelatedStatBuilder AverageDamage(DamageType damageType);
-        IDamageRelatedStatBuilder AverageEffectiveDamage { get; }
+        IStatBuilder AverageDamageWithHits { get; }
+        IStatBuilder CastRate { get; }
+        IStatBuilder CastTime { get; }
+
         IStatBuilder AilmentDealtDamageType(Ailment ailment);
         IDamageRelatedStatBuilder EffectiveCritChance { get; }
 
@@ -35,8 +37,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder ChanceToAvoidMeleeAttacks { get; }
         IStatBuilder ChanceToAvoidProjectileAttacks { get; }
         IStatBuilder ChanceToAvoidSpells { get; }
-
-        IStatBuilder HitsPerSecond { get; }
 
         IDamageRelatedStatBuilder EffectiveStunThreshold { get; }
         IStatBuilder StunAvoidanceWhileCasting { get; }
