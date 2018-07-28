@@ -48,11 +48,9 @@ namespace PoESkillTree.Computation.Data.Collections
 
         private void Add(
             IFormBuilder form, IDamageRelatedStatBuilder stat,
-            IEnumerable<IDamageRelatedStatBuilder> valueParameters,
+            IReadOnlyList<IDamageRelatedStatBuilder> valueParameters,
             Func<IReadOnlyList<IStatBuilder>, IValueBuilder> value)
         {
-            stat = stat.WithSkills;
-            valueParameters = valueParameters.Select(s => s.WithHits).ToList();
             Add(form, stat.With(AttackDamageHand.MainHand),
                 value(valueParameters.Select(s => s.With(AttackDamageHand.MainHand)).ToList()));
             Add(form, stat.With(AttackDamageHand.OffHand),
@@ -74,8 +72,6 @@ namespace PoESkillTree.Computation.Data.Collections
             Func<DamageType, IDamageRelatedStatBuilder> stat,
             Func<DamageType, IDamageRelatedStatBuilder> value)
         {
-            stat = stat.AndThen(s => s.WithHits);
-            value = value.AndThen(v => v.WithHits);
             Add(form, dt => stat(dt).With(AttackDamageHand.MainHand),
                 dt => value(dt).With(AttackDamageHand.MainHand).Value);
             Add(form, dt => stat(dt).With(AttackDamageHand.OffHand),
@@ -107,8 +103,6 @@ namespace PoESkillTree.Computation.Data.Collections
             Func<DamageType, IEnumerable<IDamageRelatedStatBuilder>> valueParameters,
             Func<DamageType, IReadOnlyList<IStatBuilder>, IValueBuilder> value)
         {
-            stat = stat.AndThen(s => s.WithHits);
-            valueParameters = valueParameters.AndThen(ss => ss.Select(s => s.WithHits));
             Add(form, dt => stat(dt).With(AttackDamageHand.MainHand),
                 dt => value(dt, valueParameters(dt).Select(s => s.With(AttackDamageHand.MainHand)).ToList()));
             Add(form, dt => stat(dt).With(AttackDamageHand.OffHand),

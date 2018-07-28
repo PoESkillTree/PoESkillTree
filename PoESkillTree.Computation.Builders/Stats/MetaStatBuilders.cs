@@ -55,33 +55,34 @@ namespace PoESkillTree.Computation.Builders.Stats
         
 
         public IDamageRelatedStatBuilder EnemyResistanceAgainstNonCrits(DamageType damageType)
-            => DamageRelatedFromIdentity($"{damageType}.EnemyResistance.NonCrits", typeof(int));
+            => DamageRelatedFromIdentity($"{damageType}.EnemyResistance.NonCrits", typeof(int)).WithHits;
 
         public IDamageRelatedStatBuilder EnemyResistanceAgainstCrits(DamageType damageType)
-            => DamageRelatedFromIdentity($"{damageType}.EnemyResistance.NonCrits", typeof(int));
+            => DamageRelatedFromIdentity($"{damageType}.EnemyResistance.NonCrits", typeof(int)).WithHits;
 
         public IDamageRelatedStatBuilder EffectiveDamageMultiplierWithNonCrits(DamageType damageType)
             => DamageRelatedFromIdentity($"{damageType}.EffectiveDamageMultiplier.NonCrits", typeof(double));
 
         public IDamageRelatedStatBuilder EffectiveDamageMultiplierWithCrits(DamageType damageType)
-            => DamageRelatedFromIdentity($"{damageType}.EffectiveDamageMultiplier.Crits", typeof(double));
+            => DamageRelatedFromIdentity($"{damageType}.EffectiveDamageMultiplier.Crits", typeof(double))
+                .WithHitsAndAilments;
 
         public IDamageRelatedStatBuilder DamageWithNonCrits(DamageType damageType)
             => DamageRelatedFromIdentity($"{damageType}.Damage.NonCrits", typeof(int));
 
         public IDamageRelatedStatBuilder DamageWithCrits(DamageType damageType)
-            => DamageRelatedFromIdentity($"{damageType}.Damage.Crits", typeof(int));
+            => DamageRelatedFromIdentity($"{damageType}.Damage.Crits", typeof(int)).WithHitsAndAilments;
 
         public IDamageRelatedStatBuilder DamageWithNonCrits()
             => DamageRelatedFromIdentity("Damage.NonCrits", typeof(int));
 
         public IDamageRelatedStatBuilder DamageWithCrits()
-            => DamageRelatedFromIdentity("Damage.Crits", typeof(int));
+            => DamageRelatedFromIdentity("Damage.Crits", typeof(int)).WithHitsAndAilments;
 
         public IDamageRelatedStatBuilder AverageDamagePerHit
             => DamageRelatedFromIdentity(typeof(double)).WithHits;
 
-        public IDamageRelatedStatBuilder AverageDamage => DamageRelatedFromIdentity(typeof(double)).WithSkills;
+        public IDamageRelatedStatBuilder AverageDamage => DamageRelatedFromIdentity(typeof(double));
         public IStatBuilder AverageDamageWithHits => FromIdentity("AverageDamage.Hit", typeof(double));
         public IStatBuilder SkillDpsWithHits => FromIdentity("Dps.Hit", typeof(double));
         public IStatBuilder SkillDpsWithDoTs => FromIdentity("Dps.OverTime.Skill", typeof(double));

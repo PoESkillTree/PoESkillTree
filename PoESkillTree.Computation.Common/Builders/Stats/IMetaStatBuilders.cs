@@ -25,15 +25,15 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         ValueBuilder LeechTargetPoolValue(Pool sourcePool);
 
         // Skill damage calculation
-        IDamageRelatedStatBuilder EnemyResistanceAgainstNonCrits(DamageType damageType);
-        IDamageRelatedStatBuilder EnemyResistanceAgainstCrits(DamageType damageType);
+        IDamageRelatedStatBuilder EnemyResistanceAgainstNonCrits(DamageType damageType);  // with hits
+        IDamageRelatedStatBuilder EnemyResistanceAgainstCrits(DamageType damageType);  // with hits
         IDamageRelatedStatBuilder EffectiveDamageMultiplierWithNonCrits(DamageType damageType);
-        IDamageRelatedStatBuilder EffectiveDamageMultiplierWithCrits(DamageType damageType);
+        IDamageRelatedStatBuilder EffectiveDamageMultiplierWithCrits(DamageType damageType);  // with hits and ailments
         IDamageRelatedStatBuilder DamageWithNonCrits(DamageType damageType);
-        IDamageRelatedStatBuilder DamageWithCrits(DamageType damageType);
+        IDamageRelatedStatBuilder DamageWithCrits(DamageType damageType);  // with hits and ailments
         IDamageRelatedStatBuilder DamageWithNonCrits();
-        IDamageRelatedStatBuilder DamageWithCrits();
-        IDamageRelatedStatBuilder AverageDamagePerHit { get; }
+        IDamageRelatedStatBuilder DamageWithCrits();  // with hits and ailments
+        IDamageRelatedStatBuilder AverageDamagePerHit { get; }  // with hits
         IDamageRelatedStatBuilder AverageDamage { get; }
         IStatBuilder AverageDamageWithHits { get; }
         IStatBuilder SkillDpsWithHits { get; }
