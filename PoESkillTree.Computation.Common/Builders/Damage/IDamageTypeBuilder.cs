@@ -59,11 +59,15 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         /// by damage.
         /// </summary>
         IDamageRelatedStatBuilder Penetration { get; }
+        IDamageRelatedStatBuilder PenetrationWithCrits { get; }
+        IDamageRelatedStatBuilder PenetrationWithNonCrits { get; }
 
         /// <summary>
         /// Gets a stat representing whether damage ignores enemy resistances of the damage types in this collection.
         /// </summary>
         IDamageRelatedStatBuilder IgnoreResistance { get; }
+        IDamageRelatedStatBuilder IgnoreResistanceWithCrits { get; }
+        IDamageRelatedStatBuilder IgnoreResistanceWithNonCrits { get; }
 
         IStatBuilder ReflectedDamageTaken { get; }
 

@@ -182,11 +182,11 @@ namespace PoESkillTree.Computation.Data
                 // - Inquisitor
                 {
                     "critical strikes ignore enemy monster elemental resistances",
-                    TotalOverride, 1, Elemental.IgnoreResistance, CriticalStrike.On
+                    TotalOverride, 1, Elemental.IgnoreResistanceWithCrits
                 },
                 {
                     "non-critical strikes penetrate #% of enemy elemental resistances",
-                    BaseAdd, Value, Elemental.Penetration, Action.NonCriticalStrike.On
+                    BaseAdd, Value, Elemental.PenetrationWithNonCrits
                 },
                 // - Hierophant
                 {

@@ -191,11 +191,11 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
         {
             var sut = CreateSut(DamageType.Fire);
 
-            var results = sut.IgnoreResistance.Build(default).ToList();
+            var stats = sut.IgnoreResistance.Build(default).SelectMany(r => r.Stats).ToList();
 
-            Assert.That(results, Has.Exactly(4).Items); // Restricted to hits
-            var (stats, _, _) = results[0];
-            Assert.AreEqual("Fire.IgnoreResistance.Attack.MainHand.Skill", stats[0].Identity);
+            Assert.That(stats, Has.Exactly(8).Items); // Restricted to hits
+            Assert.AreEqual("Fire.IgnoreResistanceWithCrits.Attack.MainHand.Skill", stats[0].Identity);
+            Assert.AreEqual("Fire.IgnoreResistanceWithNonCrits.Attack.MainHand.Skill", stats[1].Identity);
         }
 
         [Test]
@@ -203,11 +203,11 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
         {
             var sut = CreateSut(DamageType.Fire);
 
-            var results = sut.Penetration.Build(default).ToList();
+            var stats = sut.Penetration.Build(default).SelectMany(r => r.Stats).ToList();
 
-            Assert.That(results, Has.Exactly(4).Items); // Restricted to hits
-            var (stats, _, _) = results[0];
-            Assert.AreEqual("Fire.Penetration.Attack.MainHand.Skill", stats[0].Identity);
+            Assert.That(stats, Has.Exactly(8).Items); // Restricted to hits
+            Assert.AreEqual("Fire.PenetrationWithCrits.Attack.MainHand.Skill", stats[0].Identity);
+            Assert.AreEqual("Fire.PenetrationWithNonCrits.Attack.MainHand.Skill", stats[1].Identity);
         }
 
         [Test]

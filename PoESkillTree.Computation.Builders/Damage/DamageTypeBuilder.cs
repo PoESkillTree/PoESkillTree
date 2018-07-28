@@ -77,11 +77,29 @@ namespace PoESkillTree.Computation.Builders.Damage
             return new DamageTakenConversionBuilder(_statFactory, takenFrom);
         }
 
+
         public IDamageRelatedStatBuilder Penetration =>
+            DamageRelatedStatBuilder.Create(_statFactory, new CompositeCoreStatBuilder(
+                CoreStat(typeof(int), nameof(PenetrationWithCrits)),
+                CoreStat(typeof(int), nameof(PenetrationWithNonCrits)))).WithHits;
+
+        public IDamageRelatedStatBuilder PenetrationWithCrits =>
+            DamageRelatedStatBuilder.Create(_statFactory, CoreStat(typeof(int))).WithHits;
+
+        public IDamageRelatedStatBuilder PenetrationWithNonCrits =>
             DamageRelatedStatBuilder.Create(_statFactory, CoreStat(typeof(int))).WithHits;
 
         public IDamageRelatedStatBuilder IgnoreResistance =>
+            DamageRelatedStatBuilder.Create(_statFactory, new CompositeCoreStatBuilder(
+                CoreStat(typeof(bool), nameof(IgnoreResistanceWithCrits)),
+                CoreStat(typeof(bool), nameof(IgnoreResistanceWithNonCrits)))).WithHits;
+
+        public IDamageRelatedStatBuilder IgnoreResistanceWithCrits =>
             DamageRelatedStatBuilder.Create(_statFactory, CoreStat(typeof(bool))).WithHits;
+
+        public IDamageRelatedStatBuilder IgnoreResistanceWithNonCrits =>
+            DamageRelatedStatBuilder.Create(_statFactory, CoreStat(typeof(bool))).WithHits;
+
 
         public IStatBuilder ReflectedDamageTaken =>
             new StatBuilder(_statFactory, CoreStat(typeof(int)));

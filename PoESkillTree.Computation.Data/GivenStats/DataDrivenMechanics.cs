@@ -112,16 +112,16 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 // - enemy resistance against crit/non-crit hits per source and type
                 {
                     TotalOverride, dt => _stat.EnemyResistanceAgainstNonCrits(dt),
-                    dt => DamageTypeBuilders.From(dt).IgnoreResistance,
-                    dt => DamageTypeBuilders.From(dt).Penetration,
+                    dt => DamageTypeBuilders.From(dt).IgnoreResistanceWithNonCrits,
+                    dt => DamageTypeBuilders.From(dt).PenetrationWithNonCrits,
                     (dt, ignoreResistance, penetration)
                         => ValueFactory.If(ignoreResistance.IsSet).Then(0)
                             .Else(DamageTypeBuilders.From(dt).Resistance.For(Enemy).Value - penetration.Value)
                 },
                 {
                     TotalOverride, dt => _stat.EnemyResistanceAgainstCrits(dt),
-                    dt => DamageTypeBuilders.From(dt).IgnoreResistance,
-                    dt => DamageTypeBuilders.From(dt).Penetration,
+                    dt => DamageTypeBuilders.From(dt).IgnoreResistanceWithCrits,
+                    dt => DamageTypeBuilders.From(dt).PenetrationWithCrits,
                     (dt, ignoreResistance, penetration)
                         => ValueFactory.If(ignoreResistance.Value.Eq(1)).Then(0)
                             .Else(DamageTypeBuilders.From(dt).Resistance.For(Enemy).Value - penetration.Value)
