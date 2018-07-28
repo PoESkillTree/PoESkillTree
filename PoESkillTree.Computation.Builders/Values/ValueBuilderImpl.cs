@@ -46,6 +46,9 @@ namespace PoESkillTree.Computation.Builders.Values
         public IValueBuilder MaximumOnly =>
             Create(this, o => o.Select(v => new NodeValue(0, v.Maximum)), o => $"{o}.MaximumOnly");
 
+        public IValueBuilder Average =>
+            Create(this, o => o.Select(v => new NodeValue((v.Minimum + v.Maximum) / 2)), o => $"{o}.Average");
+
         public IConditionBuilder Eq(IValueBuilder other) =>
             ValueConditionBuilder.Create(this, other, (left, right) => left == right, (l, r) => $"{l} == {r}");
 

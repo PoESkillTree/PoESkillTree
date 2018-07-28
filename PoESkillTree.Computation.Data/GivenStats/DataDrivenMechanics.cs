@@ -40,6 +40,92 @@ namespace PoESkillTree.Computation.Data.GivenStats
         private IEnumerable<IIntermediateModifier> CreateCollection()
             => new DataDrivenMechanicCollection(_modifierBuilder, BuilderFactories)
             {
+                // skill hit damage
+                // - DPS
+                { TotalOverride, _stat.DpsWithHits, _stat.AverageDamageWithHits.Value * _stat.CastRate.Value },
+                // - average damage
+                {
+                    TotalOverride, _stat.AverageDamageWithHits,
+                    ValueFactory.If(_stat.SkillHitDamageSource.Value.Eq((int) DamageSource.Attack))
+                        .Then((_stat.AverageDamage.With(AttackDamageHand.MainHand).Value +
+                               _stat.AverageDamage.With(AttackDamageHand.OffHand).Value) / 2)
+                        .ElseIf(_stat.SkillHitDamageSource.Value.Eq((int) DamageSource.Spell))
+                        .Then(_stat.AverageDamage.With(DamageSource.Spell).Value)
+                        .ElseIf(_stat.SkillHitDamageSource.Value.Eq((int) DamageSource.Secondary))
+                        .Then(_stat.AverageDamage.With(DamageSource.Secondary).Value)
+                        .Else(0)
+                },
+                // - average damage per source
+                {
+                    TotalOverride, _stat.AverageDamage.With(AttackDamageHand.MainHand),
+                    _stat.AverageDamagePerHit.With(AttackDamageHand.MainHand).Value *
+                    Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value
+                },
+                {
+                    TotalOverride, _stat.AverageDamage.With(AttackDamageHand.OffHand),
+                    _stat.AverageDamagePerHit.With(AttackDamageHand.OffHand).Value *
+                    Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value
+                },
+                {
+                    TotalOverride, _stat.AverageDamage.With(DamageSource.Spell),
+                    _stat.AverageDamagePerHit.With(DamageSource.Spell).Value
+                },
+                {
+                    TotalOverride, _stat.AverageDamage.With(DamageSource.Secondary),
+                    _stat.AverageDamagePerHit.With(DamageSource.Secondary).Value
+                },
+                // - average damage of a successful hit per source
+                {
+                    TotalOverride, _stat.AverageDamagePerHit,
+                    _stat.DamageWithNonCrits(), _stat.DamageWithCrits(), _stat.EffectiveCritChance,
+                    (nonCritDamage, critDamage, critChance)
+                        => (nonCritDamage.Value * (1 - critChance.Value) + critDamage.Value * critChance.Value).Average
+                },
+                // - damage of a critical/non-critical hit per source
+                { BaseAdd, _stat.DamageWithNonCrits(), dt => _stat.DamageWithNonCrits(dt) },
+                { BaseAdd, _stat.DamageWithCrits(), dt => _stat.DamageWithCrits(dt) },
+                // - damage of a critical/non-critical hit per source and type
+                {
+                    TotalOverride, dt => _stat.DamageWithNonCrits(dt),
+                    dt => DamageTypeBuilders.From(dt).Damage, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt),
+                    (_, damage, mult) => damage.Value * mult.Value
+                },
+                {
+                    TotalOverride, dt => _stat.DamageWithCrits(dt),
+                    dt => DamageTypeBuilders.From(dt).Damage, dt => _stat.EffectiveDamageMultiplierWithCrits(dt),
+                    (_, damage, mult) => damage.Value * mult.Value
+                },
+                // - effective crit/non-crit hit damage multiplier per source and type
+                {
+                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt),
+                    dt => _stat.EnemyResistanceAgainstNonCrits(dt),
+                    dt => DamageTypeBuilders.From(dt).Damage.Taken.For(Enemy),
+                    (_, resistance, damageTaken) => (1 - resistance.Value / 100) * damageTaken.Value
+                },
+                {
+                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt),
+                    dt => _stat.EnemyResistanceAgainstCrits(dt),
+                    dt => DamageTypeBuilders.From(dt).Damage.Taken.For(Enemy),
+                    _ => CriticalStrike.Multiplier,
+                    (_, resistance, damageTaken, mult) => (1 - resistance.Value / 100) * damageTaken.Value * mult.Value
+                },
+                // - enemy resistance against crit/non-crit hits per source and type
+                {
+                    TotalOverride, dt => _stat.EnemyResistanceAgainstNonCrits(dt),
+                    dt => DamageTypeBuilders.From(dt).IgnoreResistance,
+                    dt => DamageTypeBuilders.From(dt).Penetration,
+                    (dt, ignoreResistance, penetration)
+                        => ValueFactory.If(ignoreResistance.Value.Eq(1)).Then(0)
+                            .Else(DamageTypeBuilders.From(dt).Resistance.For(Enemy).Value - penetration.Value)
+                },
+                {
+                    TotalOverride, dt => _stat.EnemyResistanceAgainstCrits(dt),
+                    dt => DamageTypeBuilders.From(dt).IgnoreResistance,
+                    dt => DamageTypeBuilders.From(dt).Penetration,
+                    (dt, ignoreResistance, penetration)
+                        => ValueFactory.If(ignoreResistance.Value.Eq(1)).Then(0)
+                            .Else(DamageTypeBuilders.From(dt).Resistance.For(Enemy).Value - penetration.Value)
+                },
                 // speed
                 {
                     // This assumes cast rate is only set for the skill's hit damage source.
@@ -167,7 +253,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 {
                     BaseSet, Effect.Stun.Chance,
-                    _stat.AverageDamage, _stat.EffectiveStunThreshold, StunChanceValue
+                    _stat.AverageDamage, _stat.EffectiveStunThreshold,
+                    (damage, threshold)
+                        => 200 * damage.Value / (Life.For(Enemy).ValueFor(NodeType.Subtotal) * threshold.Value)
                 },
                 {
                     TotalOverride, _stat.StunAvoidanceWhileCasting,
@@ -216,9 +304,5 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 .If(stunThreshold >= 0.25).Then(stunThreshold)
                 .Else(0.25 - 0.25 * (0.25 - stunThreshold) / (0.5 - stunThreshold));
         }
-
-        private IValueBuilder StunChanceValue(IStatBuilder damageStat, IStatBuilder stunThresholdStat)
-            => 200 * damageStat.Value /
-               (Life.For(Enemy).ValueFor(NodeType.Subtotal) * stunThresholdStat.Value);
     }
 }

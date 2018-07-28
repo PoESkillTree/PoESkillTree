@@ -191,9 +191,11 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
         {
             var sut = CreateSut(DamageType.Fire);
 
-            var stat = sut.IgnoreResistance.BuildToSingleStat();
+            var results = sut.IgnoreResistance.Build(default).ToList();
 
-            Assert.AreEqual("Fire.IgnoreResistance", stat.Identity);
+            Assert.That(results, Has.Exactly(4).Items); // Restricted to hits
+            var (stats, _, _) = results[0];
+            Assert.AreEqual("Fire.IgnoreResistance.Attack.MainHand.Skill", stats[0].Identity);
         }
 
         [Test]

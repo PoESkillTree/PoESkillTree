@@ -52,15 +52,49 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder TimeToReachLeechRateLimit(Pool pool)
             => FromIdentity($"{pool}.Leech.SecondsToReachRateLimit", typeof(double));
+        
 
-        public IDamageRelatedStatBuilder AverageDamage => DamageRelatedFromIdentity(typeof(double));
+        public IDamageRelatedStatBuilder EnemyResistanceAgainstNonCrits(DamageType damageType)
+            => DamageRelatedFromIdentity($"{damageType}.EnemyResistance.NonCrits", typeof(int));
 
+        public IDamageRelatedStatBuilder EnemyResistanceAgainstCrits(DamageType damageType)
+            => DamageRelatedFromIdentity($"{damageType}.EnemyResistance.NonCrits", typeof(int));
+
+        public IDamageRelatedStatBuilder EffectiveDamageMultiplierWithNonCrits(DamageType damageType)
+            => DamageRelatedFromIdentity($"{damageType}.EffectiveDamageMultiplier.NonCrits", typeof(double));
+
+        public IDamageRelatedStatBuilder EffectiveDamageMultiplierWithCrits(DamageType damageType)
+            => DamageRelatedFromIdentity($"{damageType}.EffectiveDamageMultiplier.Crits", typeof(double));
+
+        public IDamageRelatedStatBuilder DamageWithNonCrits(DamageType damageType)
+            => DamageRelatedFromIdentity($"{damageType}.Damage.NonCrits", typeof(int));
+
+        public IDamageRelatedStatBuilder DamageWithCrits(DamageType damageType)
+            => DamageRelatedFromIdentity($"{damageType}.Damage.Crits", typeof(int));
+
+        public IDamageRelatedStatBuilder DamageWithNonCrits()
+            => DamageRelatedFromIdentity("Damage.NonCrits", typeof(int));
+
+        public IDamageRelatedStatBuilder DamageWithCrits()
+            => DamageRelatedFromIdentity("Damage.Crits", typeof(int));
+
+        public IDamageRelatedStatBuilder AverageDamagePerHit
+            => DamageRelatedFromIdentity(typeof(double)).WithHits;
+
+        public IDamageRelatedStatBuilder AverageDamage => DamageRelatedFromIdentity(typeof(double)).WithSkills;
+        public IStatBuilder AverageDamageWithHits => FromIdentity("AverageDamage.Hit", typeof(double));
+        public IStatBuilder DpsWithHits => FromIdentity("Dps.Hit", typeof(double));
+
+
+        public IStatBuilder CastRate => FromIdentity(typeof(double));
+        public IStatBuilder CastTime => FromIdentity(typeof(double));
 
         public IStatBuilder AilmentDealtDamageType(Ailment ailment)
             => FromStatFactory(e => StatFactory.AilmentDealtDamageType(e, ailment));
 
         public IDamageRelatedStatBuilder EffectiveCritChance
             => DamageRelatedFromIdentity("CriticalStrike.EffectiveChance", typeof(double)).WithHits;
+
 
         public IStatBuilder ResistanceAgainstHits(DamageType damageType)
             => FromIdentity($"{damageType}.ResistanceAgainstHits", typeof(int));
@@ -75,12 +109,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder ChanceToAvoidProjectileAttacks => FromIdentity(typeof(int));
         public IStatBuilder ChanceToAvoidSpells => FromIdentity(typeof(int));
 
-        public IStatBuilder CastRate => FromIdentity(typeof(double));
-        public IStatBuilder CastTime => FromIdentity(typeof(double));
-
         public IDamageRelatedStatBuilder EffectiveStunThreshold
             => DamageRelatedFromIdentity("Stun.EffectiveThreshold", typeof(double)).WithHits;
 
         public IStatBuilder StunAvoidanceWhileCasting => FromIdentity("Stun.ChanceToAvoidWhileCasting", typeof(double));
+
+        public IStatBuilder SkillHitDamageSource => FromIdentity(typeof(DamageSource));
     }
 }

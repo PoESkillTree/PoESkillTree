@@ -24,7 +24,20 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         ValueBuilder LeechTargetPoolValue(Pool sourcePool);
 
+        // Skill hit damage calculation
+        IDamageRelatedStatBuilder EnemyResistanceAgainstNonCrits(DamageType damageType);
+        IDamageRelatedStatBuilder EnemyResistanceAgainstCrits(DamageType damageType);
+        IDamageRelatedStatBuilder EffectiveDamageMultiplierWithNonCrits(DamageType damageType);
+        IDamageRelatedStatBuilder EffectiveDamageMultiplierWithCrits(DamageType damageType);
+        IDamageRelatedStatBuilder DamageWithNonCrits(DamageType damageType);
+        IDamageRelatedStatBuilder DamageWithCrits(DamageType damageType);
+        IDamageRelatedStatBuilder DamageWithNonCrits();
+        IDamageRelatedStatBuilder DamageWithCrits();
+        IDamageRelatedStatBuilder AverageDamagePerHit { get; }
+        IDamageRelatedStatBuilder AverageDamage { get; }
         IStatBuilder AverageDamageWithHits { get; }
+        IStatBuilder DpsWithHits { get; }
+
         IStatBuilder CastRate { get; }
         IStatBuilder CastTime { get; }
 
@@ -40,5 +53,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         IDamageRelatedStatBuilder EffectiveStunThreshold { get; }
         IStatBuilder StunAvoidanceWhileCasting { get; }
+
+        IStatBuilder SkillHitDamageSource { get; }
     }
 }

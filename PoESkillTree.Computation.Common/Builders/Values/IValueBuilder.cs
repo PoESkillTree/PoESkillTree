@@ -14,6 +14,11 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// </summary>
         IValueBuilder MaximumOnly { get; }
 
+        /// <summary>
+        /// Gets a value equal to the average of this value's minimum and maximum.
+        /// </summary>
+        IValueBuilder Average { get; }
+
         /// <summary> 
         /// Returns a condition that is satisfied if this value is equal to the given value. 
         /// </summary> 

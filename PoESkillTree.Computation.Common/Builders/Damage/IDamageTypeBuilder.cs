@@ -61,10 +61,9 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         IDamageRelatedStatBuilder Penetration { get; }
 
         /// <summary>
-        /// Gets a flag stat representing whether damage ignores enemy resistances of the damage types in this
-        /// collection.
+        /// Gets a stat representing whether damage ignores enemy resistances of the damage types in this collection.
         /// </summary>
-        IFlagStatBuilder IgnoreResistance { get; }
+        IDamageRelatedStatBuilder IgnoreResistance { get; }
 
         IStatBuilder ReflectedDamageTaken { get; }
 

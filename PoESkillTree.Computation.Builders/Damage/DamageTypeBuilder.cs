@@ -80,8 +80,8 @@ namespace PoESkillTree.Computation.Builders.Damage
         public IDamageRelatedStatBuilder Penetration =>
             DamageRelatedStatBuilder.Create(_statFactory, CoreStat(typeof(int))).WithHits;
 
-        public IFlagStatBuilder IgnoreResistance =>
-            new StatBuilder(_statFactory, CoreStat(typeof(bool)));
+        public IDamageRelatedStatBuilder IgnoreResistance =>
+            DamageRelatedStatBuilder.Create(_statFactory, CoreStat(typeof(bool))).WithHits;
 
         public IStatBuilder ReflectedDamageTaken =>
             new StatBuilder(_statFactory, CoreStat(typeof(int)));
