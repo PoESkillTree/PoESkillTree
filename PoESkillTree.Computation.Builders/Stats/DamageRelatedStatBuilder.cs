@@ -49,7 +49,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public new IDamageRelatedStatBuilder For(IEntityBuilder entity) =>
             (IDamageRelatedStatBuilder) base.For(entity);
 
-        protected override IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
+        protected override IStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
             Create(coreStatBuilder, StatConcretizer, _statConverter);
 
         protected IDamageRelatedStatBuilder With(DamageStatConcretizer statConcretizer) =>

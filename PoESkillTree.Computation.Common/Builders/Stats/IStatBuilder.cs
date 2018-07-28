@@ -40,6 +40,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         ValueBuilder ValueFor(NodeType nodeType);
 
         /// <summary>
+        /// Gets a condition that is satisfied if this stat's value is set, i.e. is not null.
+        /// </summary>
+        IConditionBuilder IsSet { get; }
+
+        /// <summary>
         /// Returns a stat that represents the percentage of this stat's value that is converted to the given stat.
         /// </summary>
         IStatBuilder ConvertTo(IStatBuilder stat);

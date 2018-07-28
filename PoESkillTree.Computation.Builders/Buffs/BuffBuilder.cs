@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
         public override IEffectBuilder Resolve(ResolveContext context) =>
             new BuffBuilder(StatFactory, Identity.Resolve(context));
 
-        public IFlagStatBuilder NotAsBuffOn(IEntityBuilder target) =>
+        public IStatBuilder NotAsBuffOn(IEntityBuilder target) =>
             InternalOn(target);
 
         public IStatBuilder Effect =>
@@ -36,8 +36,8 @@ namespace PoESkillTree.Computation.Builders.Buffs
         public IActionBuilder Action =>
             new ActionBuilder(StatFactory, Identity, new ModifierSourceEntityBuilder());
 
-        public override IFlagStatBuilder On(IEntityBuilder target) =>
-            (IFlagStatBuilder) base.On(target)
+        public override IStatBuilder On(IEntityBuilder target) =>
+            base.On(target)
                 .CombineWith(new StatBuilder(StatFactory, FromStatFactory(BuildBuffActiveStat)))
                 .CombineWith(new StatBuilder(StatFactory, FromStatFactory(BuildBuffSourceStat)))
                 .For(target);
@@ -53,7 +53,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
             var core = FromStatFactory((e, id) => StatFactory.FromIdentity(id, e, typeof(double)));
             core = new ParametrisedCoreStatBuilder<IEntityBuilder>(core, source,
                 (eb, s) => eb.Build(s.Entity).Select(e => BuildBuffSourceStat(e, s.Entity, s.Identity)));
-            return ((IFlagStatBuilder) new StatBuilder(StatFactory, core).For(target)).IsSet;
+            return new StatBuilder(StatFactory, core).For(target).IsSet;
         }
 
         public override IStatBuilder AddStat(IStatBuilder stat)

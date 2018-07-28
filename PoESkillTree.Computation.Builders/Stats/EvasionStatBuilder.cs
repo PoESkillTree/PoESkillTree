@@ -21,7 +21,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder ChanceAgainstMeleeAttacks =>
             FromIdentity($"{Prefix} chance against melee attacks", typeof(int));
 
-        private IFlagStatBuilder FromIdentity(
+        private IStatBuilder FromIdentity(
             string identity, Type dataType, ExplicitRegistrationType explicitRegistrationType = null) =>
             With(LeafCoreStatBuilder.FromIdentity(StatFactory, identity, dataType, explicitRegistrationType));
     }

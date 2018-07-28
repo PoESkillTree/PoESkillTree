@@ -23,11 +23,11 @@ namespace PoESkillTree.Computation.Builders.Effects
         public virtual IEffectBuilder Resolve(ResolveContext context) =>
             new EffectBuilder(StatFactory, Identity.Resolve(context));
 
-        public virtual IFlagStatBuilder On(IEntityBuilder target) =>
+        public virtual IStatBuilder On(IEntityBuilder target) =>
             InternalOn(target);
 
-        protected IFlagStatBuilder InternalOn(IEntityBuilder target) =>
-            (IFlagStatBuilder) FromIdentity("Active", typeof(bool)).For(target);
+        protected IStatBuilder InternalOn(IEntityBuilder target) =>
+            FromIdentity("Active", typeof(bool)).For(target);
 
         public IDamageRelatedStatBuilder Chance =>
             DamageRelatedFromIdentity("ChanceToActivate", typeof(int)).WithHits;

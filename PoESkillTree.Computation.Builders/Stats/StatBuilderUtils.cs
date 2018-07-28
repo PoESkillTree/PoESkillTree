@@ -12,7 +12,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             ExplicitRegistrationType explicitRegistrationType = null) =>
             FromIdentity(statFactory, identity, typeof(bool), explicitRegistrationType).IsSet;
 
-        public static IFlagStatBuilder FromIdentity(
+        public static IStatBuilder FromIdentity(
             IStatFactory statFactory, string identity, Type dataType,
             ExplicitRegistrationType explicitRegistrationType = null) =>
             new StatBuilder(statFactory,

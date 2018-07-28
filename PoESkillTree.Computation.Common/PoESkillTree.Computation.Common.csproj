@@ -123,7 +123,6 @@
     <Compile Include="Builders\Stats\IDamageStatBuilder.cs" />
     <Compile Include="Builders\Stats\IDodgeStatBuilders.cs" />
     <Compile Include="Builders\Stats\IEvasionStatBuilder.cs" />
-    <Compile Include="Builders\Stats\IFlagStatBuilder.cs" />
     <Compile Include="Builders\Stats\IFlagStatBuilders.cs" />
     <Compile Include="Builders\Stats\IFlaskStatBuilders.cs" />
     <Compile Include="Builders\Stats\IGemStatBuilders.cs" />

@@ -511,7 +511,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             {
             }
 
-            protected override IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
+            protected override IStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
                 new SubStatBuilder(StatFactory, coreStatBuilder);
         }
     }

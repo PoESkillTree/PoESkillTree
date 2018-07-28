@@ -152,10 +152,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        public IFlagStatBuilder IgnoreMovementSpeedPenalties =>
+        public IStatBuilder IgnoreMovementSpeedPenalties =>
             FromIdentity("Ignore movement speed penalties from equipped armor", typeof(bool));
 
-        public IFlagStatBuilder ShieldModifiersApplyToMinionsInstead =>
+        public IStatBuilder ShieldModifiersApplyToMinionsInstead =>
             FromIdentity("Modifiers on an equipped shield apply to your minions instead", typeof(bool));
     }
 

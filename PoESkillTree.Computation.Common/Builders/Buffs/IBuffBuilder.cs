@@ -12,10 +12,10 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
     public interface IBuffBuilder : IEffectBuilder
     {
         /// <summary>
-        /// Returns a flag stat representing whether <paramref name="target"/> is currently affected by this effect.
+        /// Returns a stat representing whether <paramref name="target"/> is currently affected by this effect.
         /// This affection does not count as a buff and generic buff effect modifiers do not apply.
         /// </summary>
-        IFlagStatBuilder NotAsBuffOn(IEntityBuilder target);
+        IStatBuilder NotAsBuffOn(IEntityBuilder target);
         
         /// <summary>
         /// Returns a condition that is satisfied if <paramref name="target"/> is currently affected by this buff

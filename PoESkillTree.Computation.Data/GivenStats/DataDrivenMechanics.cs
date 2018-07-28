@@ -115,7 +115,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     dt => DamageTypeBuilders.From(dt).IgnoreResistance,
                     dt => DamageTypeBuilders.From(dt).Penetration,
                     (dt, ignoreResistance, penetration)
-                        => ValueFactory.If(ignoreResistance.Value.Eq(1)).Then(0)
+                        => ValueFactory.If(ignoreResistance.IsSet).Then(0)
                             .Else(DamageTypeBuilders.From(dt).Resistance.For(Enemy).Value - penetration.Value)
                 },
                 {

@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        protected override IFlagStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool) =>
+        protected override IStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool) =>
             new PoolStatBuilder(StatFactory, coreStatBuilder, pool);
 
         public new IPoolStatBuilder For(IEntityBuilder entity) =>
@@ -42,7 +42,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder Cost => FromIdentity(typeof(int));
         public IStatBuilder Reservation => FromIdentity(typeof(int));
         public ILeechStatBuilder Leech => new LeechStatBuilder(StatFactory, Pool);
-        public IFlagStatBuilder InstantLeech => FromIdentity(typeof(bool));
+        public IStatBuilder InstantLeech => FromIdentity(typeof(bool));
         public IStatBuilder Gain => FromIdentity(typeof(int));
 
         public IConditionBuilder IsFull =>
@@ -66,7 +66,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        protected override IFlagStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool) =>
+        protected override IStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool) =>
             new RechargeStatBuilder(StatFactory, coreStatBuilder, pool);
 
         public IStatBuilder Start => FromIdentity(typeof(double));
@@ -86,7 +86,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        protected override IFlagStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool) =>
+        protected override IStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool) =>
             new RegenStatBuilder(StatFactory, coreStatBuilder, pool);
 
         public IStatBuilder Percent => FromIdentity(typeof(int));
@@ -107,7 +107,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        protected override IFlagStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool) =>
+        protected override IStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool) =>
             new LeechStatBuilder(StatFactory, coreStatBuilder, pool);
 
         public new ILeechStatBuilder Resolve(ResolveContext context) => (ILeechStatBuilder) base.Resolve(context);
@@ -149,15 +149,15 @@ namespace PoESkillTree.Computation.Builders.Stats
             _identitySuffix = identitySuffix;
         }
 
-        protected override IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
+        protected override IStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
             Create(coreStatBuilder, Pool);
 
         public override IStatBuilder Resolve(ResolveContext context) =>
             Create(CoreStatBuilder.Resolve(context), Pool.Resolve(context));
 
-        protected abstract IFlagStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool);
+        protected abstract IStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool);
 
-        protected IFlagStatBuilder FromIdentity(
+        protected IStatBuilder FromIdentity(
             Type dataType, ExplicitRegistrationType explicitRegistrationType = null,
             [CallerMemberName] string identitySuffix = null)
         {

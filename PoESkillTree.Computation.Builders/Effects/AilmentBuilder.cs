@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Builders.Effects
         public IStatBuilder InstancesOn(IEntityBuilder target) =>
             FromIdentity("InstanceCount", typeof(int)).For(target);
 
-        public IFlagStatBuilder Source(IDamageTypeBuilder type)
+        public IStatBuilder Source(IDamageTypeBuilder type)
         {
             var inner = CoreStatBuilderFromIdentity("HasSource", typeof(bool));
             var coreStat = new ParametrisedCoreStatBuilder<IKeywordBuilder>(inner, type,

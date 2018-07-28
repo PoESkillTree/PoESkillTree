@@ -6,11 +6,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     public interface IFlagStatBuilders
     {
         /// <summary>
-        /// Gets a flag stat indicating whether the movement speed penalties from equipment (as hidden reduced movement
+        /// Gets a stat indicating whether the movement speed penalties from equipment (as hidden reduced movement
         /// speed mods) should be ignored.
         /// </summary>
-        IFlagStatBuilder IgnoreMovementSpeedPenalties { get; }
+        IStatBuilder IgnoreMovementSpeedPenalties { get; }
 
-        IFlagStatBuilder ShieldModifiersApplyToMinionsInstead { get; }
+        IStatBuilder ShieldModifiersApplyToMinionsInstead { get; }
     }
 }

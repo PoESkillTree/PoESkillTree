@@ -12,17 +12,17 @@ namespace PoESkillTree.Computation.Builders.Stats
         protected StatBuildersBase(IStatFactory statFactory) =>
             StatFactory = statFactory;
 
-        protected IFlagStatBuilder FromIdentity(
+        protected IStatBuilder FromIdentity(
             Type dataType, ExplicitRegistrationType explicitRegistrationType = null,
             [CallerMemberName] string identity = null) =>
             FromIdentity(identity, dataType, explicitRegistrationType);
 
-        protected IFlagStatBuilder FromIdentity(
+        protected IStatBuilder FromIdentity(
             string identity, Type dataType,
             ExplicitRegistrationType explicitRegistrationType = null) =>
             StatBuilderUtils.FromIdentity(StatFactory, identity, dataType, explicitRegistrationType);
 
-        protected IFlagStatBuilder FromStatFactory(Func<Entity, IStat> statFactory)
+        protected IStatBuilder FromStatFactory(Func<Entity, IStat> statFactory)
             => new StatBuilder(StatFactory, new LeafCoreStatBuilder(statFactory));
 
         protected IDamageRelatedStatBuilder DamageRelatedFromIdentity(

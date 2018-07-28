@@ -92,7 +92,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
             new StatBuilder(_statFactory, new BuffCoreStatBuilder(_buffs, b => b.AddStat(stat), _restrictionsBuilder))
                 .For(_source);
 
-        public IFlagStatBuilder ApplyToEntity(IEntityBuilder target)
+        public IStatBuilder ApplyToEntity(IEntityBuilder target)
         {
             var coreStats = _buffs
                 .Select(b => ApplyToEntity(b.Buff, target))

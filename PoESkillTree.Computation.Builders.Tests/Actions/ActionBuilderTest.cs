@@ -179,6 +179,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
             new ActionBuilder(new StatFactory(), identity ?? CoreBuilder.Create("test"),
                 entity ?? new ModifierSourceEntityBuilder());
 
-        private static IFlagStatBuilder InputStat => StatBuilderUtils.FromIdentity(new StatFactory(), "stat", null);
+        private static IStatBuilder InputStat => StatBuilderUtils.FromIdentity(new StatFactory(), "stat", null);
     }
 }

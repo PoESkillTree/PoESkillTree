@@ -24,10 +24,10 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         IStatBuilder AddStat(IStatBuilder stat);
 
         /// <summary>
-        /// Returns a flag stat indicating whether activating buffs in this collection will also activate them on
+        /// Returns a stat indicating whether activating buffs in this collection will also activate them on
         /// the given entity.
         /// </summary>
-        IFlagStatBuilder ApplyToEntity(IEntityBuilder target);
+        IStatBuilder ApplyToEntity(IEntityBuilder target);
 
         /// <summary>
         /// Returns a new collection that includes all buffs in this collection that originate from any skill

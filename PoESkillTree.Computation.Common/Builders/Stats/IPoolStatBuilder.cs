@@ -57,7 +57,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// Not in ILeechStatBuilder because it does not convert with .AppliesTo(), see Bloodseeker and legacy
         /// Atziri's Acuity.
         /// </remarks>
-        IFlagStatBuilder InstantLeech { get; }
+        IStatBuilder InstantLeech { get; }
 
         /// <summary>
         /// Gets a stat representing the flat gains applied to this stat. Requires an action condition to make sense,

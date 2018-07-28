@@ -11,9 +11,9 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
     public interface IEffectBuilder : IResolvable<IEffectBuilder>
     {
         /// <summary>
-        /// Returns a flag stat representing whether <paramref name="target"/> is currently affected by this effect.
+        /// Returns a stat representing whether <paramref name="target"/> is currently affected by this effect.
         /// </summary>
-        IFlagStatBuilder On(IEntityBuilder target);
+        IStatBuilder On(IEntityBuilder target);
 
         /// <summary>
         /// Returns a stat representing the chance to inflict/activate this effect.

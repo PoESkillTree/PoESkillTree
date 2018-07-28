@@ -16,7 +16,7 @@ using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
-    public class StatBuilder : IFlagStatBuilder
+    public class StatBuilder : IStatBuilder
     {
         protected IStatFactory StatFactory { get; }
         protected ICoreStatBuilder CoreStatBuilder { get; }
@@ -27,10 +27,10 @@ namespace PoESkillTree.Computation.Builders.Stats
             CoreStatBuilder = coreStatBuilder;
         }
 
-        protected virtual IFlagStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
+        protected virtual IStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
             WithUntyped(coreStatBuilder);
 
-        private IFlagStatBuilder WithUntyped(ICoreStatBuilder coreStatBuilder) =>
+        private IStatBuilder WithUntyped(ICoreStatBuilder coreStatBuilder) =>
             new StatBuilder(StatFactory, coreStatBuilder);
 
         protected virtual IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
