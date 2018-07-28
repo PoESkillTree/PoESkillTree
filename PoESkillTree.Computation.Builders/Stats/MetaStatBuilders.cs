@@ -83,7 +83,8 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IDamageRelatedStatBuilder AverageDamage => DamageRelatedFromIdentity(typeof(double)).WithSkills;
         public IStatBuilder AverageDamageWithHits => FromIdentity("AverageDamage.Hit", typeof(double));
-        public IStatBuilder DpsWithHits => FromIdentity("Dps.Hit", typeof(double));
+        public IStatBuilder SkillDpsWithHits => FromIdentity("Dps.Hit", typeof(double));
+        public IStatBuilder SkillDpsWithDoTs => FromIdentity("Dps.OverTime.Skill", typeof(double));
 
 
         public IStatBuilder CastRate => FromIdentity(typeof(double));

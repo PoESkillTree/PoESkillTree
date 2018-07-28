@@ -42,7 +42,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             {
                 // skill hit damage
                 // - DPS
-                { TotalOverride, _stat.DpsWithHits, _stat.AverageDamageWithHits.Value * _stat.CastRate.Value },
+                { TotalOverride, _stat.SkillDpsWithHits, _stat.AverageDamageWithHits.Value * _stat.CastRate.Value },
                 // - average damage
                 {
                     TotalOverride, _stat.AverageDamageWithHits,
@@ -125,6 +125,34 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     (dt, ignoreResistance, penetration)
                         => ValueFactory.If(ignoreResistance.Value.Eq(1)).Then(0)
                             .Else(DamageTypeBuilders.From(dt).Resistance.For(Enemy).Value - penetration.Value)
+                },
+                // skill damage over time
+                // - DPS = average damage = non-crit damage
+                { TotalOverride, _stat.SkillDpsWithDoTs, _stat.AverageDamage.With(DamageSource.OverTime).Value },
+                {
+                    TotalOverride, _stat.AverageDamage.With(DamageSource.OverTime),
+                    _stat.DamageWithNonCrits().With(DamageSource.OverTime).Value
+                },
+                {
+                    BaseAdd, _ => _stat.DamageWithNonCrits().With(DamageSource.OverTime),
+                    dt => _stat.DamageWithNonCrits(dt).With(DamageSource.OverTime).Value
+                },
+                // - damage per type
+                {
+                    TotalOverride, dt => _stat.DamageWithNonCrits(dt).With(DamageSource.OverTime),
+                    dt => DamageTypeBuilders.From(dt).Damage.With(DamageSource.OverTime).Value *
+                          _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(DamageSource.OverTime).Value
+                },
+                // - effective damage multiplier per type
+                {
+                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(DamageSource.OverTime),
+                    dt => (1 - _stat.EnemyResistanceAgainstNonCrits(dt).With(DamageSource.OverTime).Value / 100) *
+                          DamageTypeBuilders.From(dt).Damage.Taken.With(DamageSource.OverTime).For(Enemy).Value
+                },
+                // - enemy resistance per type
+                {
+                    TotalOverride, dt => _stat.EnemyResistanceAgainstNonCrits(dt).With(DamageSource.OverTime),
+                    dt => DamageTypeBuilders.From(dt).Resistance.For(Enemy).Value
                 },
                 // speed
                 {
