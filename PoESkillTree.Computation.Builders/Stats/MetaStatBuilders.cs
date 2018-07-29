@@ -52,7 +52,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder TimeToReachLeechRateLimit(Pool pool)
             => FromIdentity($"{pool}.Leech.SecondsToReachRateLimit", typeof(double));
-        
+
 
         public IDamageRelatedStatBuilder EnemyResistanceAgainstNonCrits(DamageType damageType)
             => DamageRelatedFromIdentity($"{damageType}.EnemyResistance.NonCrits", typeof(int)).WithHits;
@@ -84,12 +84,17 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IDamageRelatedStatBuilder AverageDamage => DamageRelatedFromIdentity(typeof(double));
         public IStatBuilder AverageHitDamage => FromIdentity("AverageDamage.Hit", typeof(double));
-        public IStatBuilder SkillDpsWithHits => FromIdentity("Dps.Hit", typeof(double));
-        public IStatBuilder SkillDpsWithDoTs => FromIdentity("Dps.OverTime", typeof(double));
-        public IStatBuilder AverageIgniteDamage => FromIdentity("AverageDamage.Ignite", typeof(double));
-        public IStatBuilder IgniteDps => FromIdentity("Dps.Ignite", typeof(double));
-        public IStatBuilder AverageBleedDamage => FromIdentity("AverageDamage.Bleed", typeof(double));
-        public IStatBuilder BleedDps => FromIdentity("Dps.Bleed", typeof(double));
+        public IStatBuilder SkillDpsWithHits => FromIdentity("DPS.Hit", typeof(double));
+        public IStatBuilder SkillDpsWithDoTs => FromIdentity("DPS.OverTime", typeof(double));
+
+        public IStatBuilder AverageAilmentDamage(Ailment ailment)
+            => FromIdentity($"AverageDamage.{ailment}", typeof(double));
+
+        public IStatBuilder AilmentInstanceLifetimeDamage(Ailment ailment)
+            => FromIdentity($"InstanceLifetimeDamage.{ailment}", typeof(double));
+
+        public IStatBuilder AilmentDps(Ailment ailment)
+            => FromIdentity($"DPS.{ailment}", typeof(double));
 
 
         public IStatBuilder CastRate => FromIdentity(typeof(double));
@@ -106,6 +111,9 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder AilmentCombinedEffectiveChance(Ailment ailment)
             => FromIdentity($"{ailment}.EffectiveChance", typeof(double));
+
+        public IStatBuilder AilmentEffectiveInstances(Ailment ailment)
+            => FromIdentity($"{ailment}.EffectiveInstances", typeof(double));
 
         public IDamageRelatedStatBuilder EffectiveCritChance
             => DamageRelatedFromIdentity("CriticalStrike.EffectiveChance", typeof(double)).WithHits;

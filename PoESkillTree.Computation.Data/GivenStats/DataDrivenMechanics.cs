@@ -144,14 +144,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
 
                 // ignite damage
-                // - DPS
-                {
-                    TotalOverride, _stat.IgniteDps,
-                    _stat.AverageIgniteDamage.Value * Ailment.Ignite.InstancesOn(Enemy).Maximum.Value
-                },
                 // - average damage
                 {
-                    TotalOverride, _stat.AverageIgniteDamage,
+                    TotalOverride, _stat.AverageAilmentDamage(Common.Builders.Effects.Ailment.Ignite),
                     CombineSource(_stat.AverageDamage.With(Ailment.Ignite),
                         CombineHandsByWeightedAverage(
                             Stat.ChanceToHit, _stat.AilmentEffectiveChance(Common.Builders.Effects.Ailment.Ignite)))
@@ -169,14 +164,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     (_, damageTaken, mult) => EnemyDamageTakenMultiplier(Fire, damageTaken) * mult.Value
                 },
                 // bleed damage
-                // - DPS
-                {
-                    TotalOverride, _stat.BleedDps,
-                    _stat.AverageBleedDamage.Value * Ailment.Bleed.InstancesOn(Enemy).Maximum.Value
-                },
                 // - average damage
                 {
-                    TotalOverride, _stat.AverageBleedDamage,
+                    TotalOverride, _stat.AverageAilmentDamage(Common.Builders.Effects.Ailment.Bleed),
                     CombineHandsByWeightedAverage(
                         Stat.ChanceToHit, _stat.AilmentEffectiveChance(Common.Builders.Effects.Ailment.Bleed))(
                         _stat.AverageDamage.With(Ailment.Bleed))
@@ -193,7 +183,38 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     _ => CriticalStrike.Multiplier.With(Ailment.Bleed),
                     (_, damageTaken, mult) => EnemyDamageTakenMultiplier(Physical, damageTaken) * mult.Value
                 },
+                // poison damage
+                // - average damage
+                {
+                    TotalOverride, _stat.AverageAilmentDamage(Common.Builders.Effects.Ailment.Poison),
+                    CombineSource(_stat.AverageDamage.With(Ailment.Poison),
+                        CombineHandsByWeightedAverage(
+                            Stat.ChanceToHit, _stat.AilmentEffectiveChance(Common.Builders.Effects.Ailment.Poison)))
+                },
+                // - effective crit/non-crit damage multiplier per source and type
+                {
+                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(Ailment.Poison),
+                    _ => Chaos.Damage.Taken.With(Ailment.Poison),
+                    (_, damageTaken) => EnemyDamageTakenMultiplier(Chaos, damageTaken)
+                },
+                {
+                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(Ailment.Poison),
+                    _ => Chaos.Damage.Taken.With(Ailment.Poison),
+                    _ => CriticalStrike.Multiplier.With(Ailment.Poison),
+                    (_, damageTaken, mult) => EnemyDamageTakenMultiplier(Chaos, damageTaken) * mult.Value
+                },
                 // shared ailment damage
+                // - DPS
+                {
+                    TotalOverride, _stat.AilmentDps,
+                    ailment => _stat.AverageAilmentDamage(ailment).Value *
+                               _stat.AilmentEffectiveInstances(ailment).Value
+                },
+                // - lifetime damage of one instance
+                {
+                    TotalOverride, _stat.AilmentInstanceLifetimeDamage,
+                    ailment => _stat.AverageAilmentDamage(ailment).Value * Ailment.From(ailment).Duration.Value
+                },
                 // - average damage per source
                 {
                     TotalOverride, ailment => _stat.AverageDamage.With(Ailment.From(ailment)),
@@ -339,22 +360,41 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 {
                     TotalOverride, _stat.AilmentCombinedEffectiveChance,
-                    ailment => CombineSource(_stat.AilmentEffectiveChance(ailment), CombineHandsByAverage) *
-                               (1 - Ailment.From(ailment).Avoidance.For(Enemy).Value / 100)
+                    ailment => CombineSource(_stat.AilmentEffectiveChance(ailment), CombineHandsByAverage)
                 },
                 {
                     TotalOverride, _stat.AilmentEffectiveChance,
                     _ => _stat.EffectiveCritChance,
                     (ailment, critChance)
                         => ValueFactory.If(Ailment.From(ailment).CriticalStrikesAlwaysInflict.IsSet)
-                            .Then(Ailment.From(ailment).Chance.Value / 100 * (1 - critChance.Value) + critChance.Value)
-                            .Else(Ailment.From(ailment).Chance.Value)
+                               .Then(Ailment.From(ailment).Chance.Value / 100 * (1 - critChance.Value) +
+                                     critChance.Value)
+                               .Else(Ailment.From(ailment).Chance.Value) *
+                           (1 - Ailment.From(ailment).Avoidance.For(Enemy).Value / 100)
                 },
                 {
                     TotalOverride, _stat.AilmentChanceWithCrits, _stat.AilmentChanceWithCrits,
                     (ailment, _) => ValueFactory
                         .If(Ailment.From(ailment).CriticalStrikesAlwaysInflict.IsSet).Then(100)
                         .Else(Ailment.From(ailment).Chance.Value)
+                },
+                // - AilmentEffectiveInstances
+                {
+                    TotalOverride, _stat.AilmentEffectiveInstances(Common.Builders.Effects.Ailment.Ignite),
+                    Ailment.Ignite.InstancesOn(Enemy).Maximum.Value
+                },
+                {
+                    TotalOverride, _stat.AilmentEffectiveInstances(Common.Builders.Effects.Ailment.Bleed),
+                    Ailment.Bleed.InstancesOn(Enemy).Maximum.Value
+                },
+                {
+                    TotalOverride, _stat.AilmentEffectiveInstances(Common.Builders.Effects.Ailment.Poison),
+                    Ailment.Poison.Duration.Value * _stat.CastRate.Value *
+                    CombineSource(_stat.AilmentEffectiveChance(Common.Builders.Effects.Ailment.Poison),
+                        s => (s.With(AttackDamageHand.MainHand).Value *
+                              Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value +
+                              s.With(AttackDamageHand.OffHand).Value *
+                              Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value) / 2)
                 },
                 // stun (see https://pathofexile.gamepedia.com/Stun)
                 { PercentLess, Effect.Stun.Duration, Effect.Stun.Recovery.For(Enemy).Value * 100 },
@@ -464,7 +504,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     forType.With(DamageSource.Spell));
                 AddForSkillAndAilments(collection, form, damage.With(DamageSource.Secondary),
                     forType.With(DamageSource.Secondary));
-                collection.Add(form, damage.With(DamageSource.OverTime), 
+                collection.Add(form, damage.With(DamageSource.OverTime),
                     forType.With(DamageSource.OverTime).Value);
             }
         }

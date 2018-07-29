@@ -42,10 +42,9 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder AverageHitDamage { get; }
         IStatBuilder SkillDpsWithHits { get; }
         IStatBuilder SkillDpsWithDoTs { get; }
-        IStatBuilder AverageIgniteDamage { get; }
-        IStatBuilder IgniteDps { get; }
-        IStatBuilder AverageBleedDamage { get; }
-        IStatBuilder BleedDps { get; }
+        IStatBuilder AverageAilmentDamage(Ailment ailment);
+        IStatBuilder AilmentInstanceLifetimeDamage(Ailment ailment);
+        IStatBuilder AilmentDps(Ailment ailment);
 
         IStatBuilder CastRate { get; }
         IStatBuilder CastTime { get; }
@@ -54,6 +53,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IDamageRelatedStatBuilder AilmentChanceWithCrits(Ailment ailment);
         IDamageRelatedStatBuilder AilmentEffectiveChance(Ailment ailment);
         IStatBuilder AilmentCombinedEffectiveChance(Ailment ailment);
+        IStatBuilder AilmentEffectiveInstances(Ailment ailment);
 
         IDamageRelatedStatBuilder EffectiveCritChance { get; }
 
