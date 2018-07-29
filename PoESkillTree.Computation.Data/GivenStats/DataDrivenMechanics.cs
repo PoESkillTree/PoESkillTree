@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
+using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
+using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
@@ -28,7 +30,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
         {
             _modifierBuilder = modifierBuilder;
             _stat = metaStatBuilders;
-            _lazyGivenStats = new Lazy<IReadOnlyList<IIntermediateModifier>>(() => CreateCollection().ToList());
+            _lazyGivenStats = new Lazy<IReadOnlyList<IIntermediateModifier>>(
+                () => CollectionToList(CreateCollection()));
         }
 
         public IReadOnlyList<Entity> AffectedEntities { get; } = Enums.GetValues<Entity>().ToList();
@@ -37,7 +40,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
 
         public IReadOnlyList<IIntermediateModifier> GivenModifiers => _lazyGivenStats.Value;
 
-        private IEnumerable<IIntermediateModifier> CreateCollection()
+        private DataDrivenMechanicCollection CreateCollection()
             => new DataDrivenMechanicCollection(_modifierBuilder, BuilderFactories)
             {
                 // skill hit damage
@@ -75,9 +78,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
                         => nonCritDamage.Value.Average * (1 - critChance.Value) +
                            critDamage.Value.Average * critChance.Value
                 },
-                // - critical/non-critical damage per source
-                { BaseAdd, _stat.DamageWithNonCrits().WithHits, dt => _stat.DamageWithNonCrits(dt).WithHits },
-                { BaseAdd, _stat.DamageWithCrits().WithHits, dt => _stat.DamageWithCrits(dt).WithHits },
                 // - crit/non-crit damage per source and type
                 {
                     TotalOverride, dt => _stat.DamageWithNonCrits(dt).WithHits,
@@ -130,10 +130,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     TotalOverride, _stat.AverageDamage.With(DamageSource.OverTime),
                     _stat.DamageWithNonCrits().With(DamageSource.OverTime).Value
                 },
-                {
-                    BaseAdd, _ => _stat.DamageWithNonCrits().With(DamageSource.OverTime),
-                    dt => _stat.DamageWithNonCrits(dt).With(DamageSource.OverTime).Value
-                },
                 // - damage per type
                 {
                     TotalOverride, dt => _stat.DamageWithNonCrits(dt).With(DamageSource.OverTime),
@@ -160,36 +156,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
                         CombineHandsByWeightedAverage(
                             Stat.ChanceToHit, _stat.AilmentEffectiveChance(Common.Builders.Effects.Ailment.Ignite)))
                 },
-                // - average damage per source
-                {
-                    TotalOverride, _stat.AverageDamage.With(Ailment.Ignite),
-                    _stat.DamageWithNonCrits().With(Ailment.Ignite), _stat.DamageWithCrits().With(Ailment.Ignite),
-                    _stat.EffectiveCritChance,
-                    Ailment.Ignite.Chance, _stat.AilmentChanceWithCrits(Common.Builders.Effects.Ailment.Ignite),
-                    AverageAilmentDamageFromCritAndNonCrit
-                },
-                // - crit/non-crit damage per source
-                {
-                    BaseAdd, _stat.DamageWithNonCrits().With(Ailment.Ignite),
-                    dt => _stat.DamageWithNonCrits(dt).With(Ailment.Ignite)
-                },
-                {
-                    BaseAdd, _stat.DamageWithCrits().With(Ailment.Ignite),
-                    dt => _stat.DamageWithCrits(dt).With(Ailment.Ignite)
-                },
-                // - crit/non-crit damage per source and type
-                {
-                    TotalOverride, dt => _stat.DamageWithNonCrits(dt).With(Ailment.Ignite),
-                    dt => DamageTypeBuilders.From(dt).Damage.With(Ailment.Ignite),
-                    dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(Ailment.Ignite),
-                    (_, damage, mult) => damage.Value * mult.Value
-                },
-                {
-                    TotalOverride, dt => _stat.DamageWithCrits(dt).With(Ailment.Ignite),
-                    dt => DamageTypeBuilders.From(dt).Damage.With(Ailment.Ignite),
-                    dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(Ailment.Ignite),
-                    (_, damage, mult) => damage.Value * mult.Value
-                },
                 // - effective crit/non-crit damage multiplier per source and type
                 {
                     TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(Ailment.Ignite),
@@ -202,7 +168,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     _ => CriticalStrike.Multiplier.With(Ailment.Ignite),
                     (_, damageTaken, mult) => EnemyDamageTakenMultiplier(Fire, damageTaken) * mult.Value
                 },
-
                 // bleed damage
                 // - DPS
                 {
@@ -216,36 +181,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
                         Stat.ChanceToHit, _stat.AilmentEffectiveChance(Common.Builders.Effects.Ailment.Bleed))(
                         _stat.AverageDamage.With(Ailment.Bleed))
                 },
-                // - average damage per source
-                {
-                    TotalOverride, _stat.AverageDamage.With(Ailment.Bleed),
-                    _stat.DamageWithNonCrits().With(Ailment.Bleed), _stat.DamageWithCrits().With(Ailment.Bleed),
-                    _stat.EffectiveCritChance,
-                    Ailment.Bleed.Chance, _stat.AilmentChanceWithCrits(Common.Builders.Effects.Ailment.Bleed),
-                    AverageAilmentDamageFromCritAndNonCrit
-                },
-                // - crit/non-crit damage per source
-                {
-                    BaseAdd, _stat.DamageWithNonCrits().With(Ailment.Bleed),
-                    dt => _stat.DamageWithNonCrits(dt).With(Ailment.Bleed)
-                },
-                {
-                    BaseAdd, _stat.DamageWithCrits().With(Ailment.Bleed),
-                    dt => _stat.DamageWithCrits(dt).With(Ailment.Bleed)
-                },
-                // - crit/non-crit damage per source and type
-                {
-                    TotalOverride, dt => _stat.DamageWithNonCrits(dt).With(Ailment.Bleed),
-                    dt => DamageTypeBuilders.From(dt).Damage.With(Ailment.Bleed),
-                    dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(Ailment.Bleed),
-                    (_, damage, mult) => damage.Value * mult.Value
-                },
-                {
-                    TotalOverride, dt => _stat.DamageWithCrits(dt).With(Ailment.Bleed),
-                    dt => DamageTypeBuilders.From(dt).Damage.With(Ailment.Bleed),
-                    dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(Ailment.Bleed),
-                    (_, damage, mult) => damage.Value * mult.Value
-                },
                 // - effective crit/non-crit damage multiplier per source and type
                 {
                     TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(Ailment.Bleed),
@@ -257,6 +192,30 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     _ => Physical.Damage.Taken.With(Ailment.Bleed),
                     _ => CriticalStrike.Multiplier.With(Ailment.Bleed),
                     (_, damageTaken, mult) => EnemyDamageTakenMultiplier(Physical, damageTaken) * mult.Value
+                },
+                // shared ailment damage
+                // - average damage per source
+                {
+                    TotalOverride, ailment => _stat.AverageDamage.With(Ailment.From(ailment)),
+                    ailment => _stat.DamageWithNonCrits().With(Ailment.From(ailment)),
+                    ailment => _stat.DamageWithCrits().With(Ailment.From(ailment)),
+                    _ => _stat.EffectiveCritChance,
+                    ailment => Ailment.From(ailment).Chance,
+                    ailment => _stat.AilmentChanceWithCrits(ailment),
+                    AverageAilmentDamageFromCritAndNonCrit
+                },
+                // - crit/non-crit damage per source and type
+                {
+                    TotalOverride, (a, dt) => _stat.DamageWithNonCrits(dt).With(Ailment.From(a)),
+                    (a, dt) => DamageTypeBuilders.From(dt).Damage.With(Ailment.From(a)),
+                    (a, dt) => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(Ailment.From(a)),
+                    (damage, mult) => damage.Value * mult.Value
+                },
+                {
+                    TotalOverride, (a, dt) => _stat.DamageWithCrits(dt).With(Ailment.From(a)),
+                    (a, dt) => DamageTypeBuilders.From(dt).Damage.With(Ailment.From(a)),
+                    (a, dt) => _stat.EffectiveDamageMultiplierWithCrits(dt).With(Ailment.From(a)),
+                    (damage, mult) => damage.Value * mult.Value
                 },
 
                 // speed
@@ -414,7 +373,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     1 -
                     (1 - Effect.Stun.Avoidance.Value) * (1 - Effect.Stun.ChanceToAvoidInterruptionWhileCasting.Value)
                 },
-            }.Concat(CreateAilmentSourceDamageTypeModifiers());
+            };
 
         private static ValueBuilder AverageAilmentDamageFromCritAndNonCrit(
             IStatBuilder nonCritDamage, IStatBuilder critDamage, IStatBuilder critChance,
@@ -448,24 +407,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
         private static ValueBuilder FailureProbability(IStatBuilder percentageChanceStat)
             => 1 - percentageChanceStat.Value / 100;
 
-        private IEnumerable<IIntermediateModifier> CreateAilmentSourceDamageTypeModifiers()
-        {
-            foreach (var ailment in Enums.GetValues<Ailment>())
-            {
-                var ailmentBuilder = Ailment.From(ailment);
-                foreach (var damageType in Enums.GetValues<DamageType>())
-                {
-                    var damageTypeBuilder = DamageTypeBuilders.From(damageType);
-                    var builder = _modifierBuilder
-                        .WithForm(TotalOverride)
-                        .WithStat(damageTypeBuilder.Damage.With(ailmentBuilder))
-                        .WithValue(ValueFactory.Create(0))
-                        .WithCondition(ailmentBuilder.Source(damageTypeBuilder).IsSet.Not);
-                    yield return builder.Build();
-                }
-            }
-        }
-
         private IValueBuilder EffectiveStunThresholdValue(IStatBuilder stunThresholdStat)
         {
             // If stun threshold is less than 25%, it is scaled up.
@@ -474,6 +415,69 @@ namespace PoESkillTree.Computation.Data.GivenStats
             return ValueFactory
                 .If(stunThreshold >= 0.25).Then(stunThreshold)
                 .Else(0.25 - 0.25 * (0.25 - stunThreshold) / (0.5 - stunThreshold));
+        }
+
+        private IReadOnlyList<IIntermediateModifier> CollectionToList(GivenStatCollection collection)
+        {
+            AddAilmentSourceDamageTypeModifiers(collection);
+            AddDamageWithNonCritsModifiers(collection);
+            AddDamageWithCritsModifiers(collection);
+            return collection.ToList();
+        }
+
+        private void AddAilmentSourceDamageTypeModifiers(GivenStatCollection collection)
+        {
+            foreach (var ailment in Enums.GetValues<Ailment>())
+            {
+                var ailmentBuilder = Ailment.From(ailment);
+                foreach (var damageType in Enums.GetValues<DamageType>())
+                {
+                    var damageTypeBuilder = DamageTypeBuilders.From(damageType);
+                    collection.Add(TotalOverride, damageTypeBuilder.Damage.With(ailmentBuilder), 0,
+                        ailmentBuilder.Source(damageTypeBuilder).IsSet.Not);
+                }
+            }
+        }
+
+        private void AddDamageWithNonCritsModifiers(GivenStatCollection collection)
+        {
+            AddDamageWithModifiers(collection, _stat.DamageWithNonCrits(), _stat.DamageWithNonCrits);
+        }
+
+        private void AddDamageWithCritsModifiers(GivenStatCollection collection)
+        {
+            AddDamageWithModifiers(collection, _stat.DamageWithCrits(), _stat.DamageWithCrits);
+        }
+
+        private void AddDamageWithModifiers(GivenStatCollection collection,
+            IDamageRelatedStatBuilder damage, Func<DamageType, IDamageRelatedStatBuilder> damageForType)
+        {
+            var form = BaseAdd;
+            foreach (var type in Enums.GetValues<DamageType>().Except(DamageType.RandomElement))
+            {
+                var forType = damageForType(type);
+                AddForSkillAndAilments(collection, form, damage.With(AttackDamageHand.MainHand),
+                    forType.With(AttackDamageHand.MainHand));
+                AddForSkillAndAilments(collection, form, damage.With(AttackDamageHand.OffHand),
+                    forType.With(AttackDamageHand.OffHand));
+                AddForSkillAndAilments(collection, form, damage.With(DamageSource.Spell),
+                    forType.With(DamageSource.Spell));
+                AddForSkillAndAilments(collection, form, damage.With(DamageSource.Secondary),
+                    forType.With(DamageSource.Secondary));
+                collection.Add(form, damage.With(DamageSource.OverTime), 
+                    forType.With(DamageSource.OverTime).Value);
+            }
+        }
+
+        private void AddForSkillAndAilments(GivenStatCollection collection,
+            IFormBuilder form, IDamageRelatedStatBuilder stat, IDamageRelatedStatBuilder valueStat)
+        {
+            collection.Add(form, stat.WithSkills, valueStat.WithSkills.Value);
+            foreach (var ailment in Enums.GetValues<Ailment>())
+            {
+                var ailmentBuilder = Ailment.From(ailment);
+                collection.Add(form, stat.With(ailmentBuilder), valueStat.With(ailmentBuilder).Value);
+            }
         }
 
         private ValueBuilder CombineSource(

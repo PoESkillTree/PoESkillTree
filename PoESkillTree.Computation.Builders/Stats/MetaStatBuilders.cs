@@ -71,13 +71,13 @@ namespace PoESkillTree.Computation.Builders.Stats
             => DamageRelatedFromIdentity($"{damageType}.Damage.NonCrits", typeof(int));
 
         public IDamageRelatedStatBuilder DamageWithCrits(DamageType damageType)
-            => DamageRelatedFromIdentity($"{damageType}.Damage.Crits", typeof(int)).WithHitsAndAilments;
+            => DamageRelatedFromIdentity($"{damageType}.Damage.Crits", typeof(int));
 
         public IDamageRelatedStatBuilder DamageWithNonCrits()
             => DamageRelatedFromIdentity("Damage.NonCrits", typeof(int));
 
         public IDamageRelatedStatBuilder DamageWithCrits()
-            => DamageRelatedFromIdentity("Damage.Crits", typeof(int)).WithHitsAndAilments;
+            => DamageRelatedFromIdentity("Damage.Crits", typeof(int));
 
         public IDamageRelatedStatBuilder AverageDamagePerHit
             => DamageRelatedFromIdentity(typeof(double)).WithHits;

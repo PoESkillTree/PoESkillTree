@@ -34,9 +34,9 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IDamageRelatedStatBuilder EffectiveDamageMultiplierWithNonCrits(DamageType damageType);
         IDamageRelatedStatBuilder EffectiveDamageMultiplierWithCrits(DamageType damageType);  // with hits and ailments
         IDamageRelatedStatBuilder DamageWithNonCrits(DamageType damageType);
-        IDamageRelatedStatBuilder DamageWithCrits(DamageType damageType);  // with hits and ailments
+        IDamageRelatedStatBuilder DamageWithCrits(DamageType damageType);
         IDamageRelatedStatBuilder DamageWithNonCrits();
-        IDamageRelatedStatBuilder DamageWithCrits();  // with hits and ailments
+        IDamageRelatedStatBuilder DamageWithCrits();
         IDamageRelatedStatBuilder AverageDamagePerHit { get; }  // with hits
         IDamageRelatedStatBuilder AverageDamage { get; }
         IStatBuilder AverageHitDamage { get; }
