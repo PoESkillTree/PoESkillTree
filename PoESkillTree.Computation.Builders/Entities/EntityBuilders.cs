@@ -24,10 +24,19 @@ namespace PoESkillTree.Computation.Builders.Entities
             public EnemyBuilder(IStatFactory statFactory) : base(Entity.Enemy) =>
                 _statFactory = statFactory;
 
-            public IConditionBuilder IsNearby => StatBuilderUtils.ConditionFromIdentity(_statFactory, "Enemy.IsNearby");
-            public IConditionBuilder IsRare => StatBuilderUtils.ConditionFromIdentity(_statFactory, "Enemy.IsNearby");
-            public IConditionBuilder IsUnique => StatBuilderUtils.ConditionFromIdentity(_statFactory, "Enemy.IsNearby");
+            public IConditionBuilder IsNearby => StatBuilderUtils.ConditionFromIdentity(_statFactory, "Enemy.IsNearby",
+                ExplicitRegistrationTypes.UserSpecifiedValue());
+
+            public IConditionBuilder IsRare => StatBuilderUtils.ConditionFromIdentity(_statFactory, "Enemy.IsRare",
+                ExplicitRegistrationTypes.UserSpecifiedValue());
+
+            public IConditionBuilder IsUnique => StatBuilderUtils.ConditionFromIdentity(_statFactory, "Enemy.IsUnique",
+                ExplicitRegistrationTypes.UserSpecifiedValue());
+
             public IConditionBuilder IsRareOrUnique => IsRare.Or(IsUnique);
+
+            public IConditionBuilder IsMoving => StatBuilderUtils.ConditionFromIdentity(_statFactory, "Enemy.IsMoving",
+                ExplicitRegistrationTypes.UserSpecifiedValue());
         }
     }
 }

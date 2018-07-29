@@ -44,6 +44,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder SkillDpsWithDoTs { get; }
         IStatBuilder AverageIgniteDamage { get; }
         IStatBuilder IgniteDps { get; }
+        IStatBuilder AverageBleedDamage { get; }
+        IStatBuilder BleedDps { get; }
 
         IStatBuilder CastRate { get; }
         IStatBuilder CastTime { get; }

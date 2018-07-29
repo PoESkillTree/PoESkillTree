@@ -26,5 +26,7 @@ namespace PoESkillTree.Computation.Common.Builders.Entities
         /// Gets a condition that is satisfied if this enemy is Rare or Unique.
         /// </summary>
         IConditionBuilder IsRareOrUnique { get; }
+
+        IConditionBuilder IsMoving { get; }
     }
 }

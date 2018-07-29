@@ -88,6 +88,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder SkillDpsWithDoTs => FromIdentity("Dps.OverTime", typeof(double));
         public IStatBuilder AverageIgniteDamage => FromIdentity("AverageDamage.Ignite", typeof(double));
         public IStatBuilder IgniteDps => FromIdentity("Dps.Ignite", typeof(double));
+        public IStatBuilder AverageBleedDamage => FromIdentity("AverageDamage.Bleed", typeof(double));
+        public IStatBuilder BleedDps => FromIdentity("Dps.Bleed", typeof(double));
 
 
         public IStatBuilder CastRate => FromIdentity(typeof(double));

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -34,15 +35,17 @@ namespace PoESkillTree.Computation.Data.Collections
             return GetEnumerator();
         }
 
-        public void Add(IFormBuilder form, IStatBuilder stat, double value)
-            => Add(form, stat, _valueFactory.Create(value));
+        public void Add(IFormBuilder form, IStatBuilder stat, double value, IConditionBuilder condition = null)
+            => Add(form, stat, _valueFactory.Create(value), condition);
 
-        public void Add(IFormBuilder form, IStatBuilder stat, IValueBuilder value)
+        public void Add(IFormBuilder form, IStatBuilder stat, IValueBuilder value, IConditionBuilder condition = null)
         {
             var builder = _modifierBuilder
                 .WithForm(form)
                 .WithStat(stat)
                 .WithValue(value);
+            if (condition != null)
+                builder = builder.WithCondition(condition);
             _data.Add(builder.Build());
         }
     }
