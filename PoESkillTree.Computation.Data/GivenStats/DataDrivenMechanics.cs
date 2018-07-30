@@ -55,12 +55,12 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 {
                     TotalOverride, _stat.AverageDamage.WithHits.With(AttackDamageHand.MainHand),
                     _stat.AverageDamagePerHit.With(AttackDamageHand.MainHand).Value *
-                    Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value
+                    Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value.AsPercentage
                 },
                 {
                     TotalOverride, _stat.AverageDamage.WithHits.With(AttackDamageHand.OffHand),
                     _stat.AverageDamagePerHit.With(AttackDamageHand.OffHand).Value *
-                    Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value
+                    Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value.AsPercentage
                 },
                 {
                     TotalOverride, _stat.AverageDamage.WithHits.With(DamageSource.Spell),
@@ -103,7 +103,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     dt => _stat.EnemyResistanceAgainstCrits(dt),
                     dt => DamageTaken(dt).WithHits.For(Enemy),
                     _ => CriticalStrike.Multiplier.WithHits,
-                    (_, resistance, damageTaken, mult) => DamageTakenMultiplier(resistance, damageTaken) * mult.Value
+                    (_, resistance, damageTaken, mult)
+                        => DamageTakenMultiplier(resistance, damageTaken) * mult.Value.AsPercentage
                 },
                 // - enemy resistance against crit/non-crit hits per source and type
                 {
@@ -149,8 +150,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 {
                     TotalOverride, _stat.AverageAilmentDamage(Common.Builders.Effects.Ailment.Ignite),
                     CombineSource(_stat.AverageDamage.With(Ailment.Ignite),
-                        CombineHandsByWeightedAverage(
-                            Stat.ChanceToHit, _stat.AilmentEffectiveChance(Common.Builders.Effects.Ailment.Ignite)))
+                        CombineHandsForAverageAilmentDamage(Common.Builders.Effects.Ailment.Ignite))
                 },
                 // - effective crit/non-crit damage multiplier per source and type
                 {
@@ -162,15 +162,14 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(Ailment.Ignite),
                     _ => Fire.Damage.Taken.With(Ailment.Ignite),
                     _ => CriticalStrike.Multiplier.With(Ailment.Ignite),
-                    (_, damageTaken, mult) => EnemyDamageTakenMultiplier(Fire, damageTaken) * mult.Value
+                    (_, damageTaken, mult) => EnemyDamageTakenMultiplier(Fire, damageTaken) * mult.Value.AsPercentage
                 },
                 // bleed damage
                 // - average damage
                 {
                     TotalOverride, _stat.AverageAilmentDamage(Common.Builders.Effects.Ailment.Bleed),
-                    CombineHandsByWeightedAverage(
-                        Stat.ChanceToHit, _stat.AilmentEffectiveChance(Common.Builders.Effects.Ailment.Bleed))(
-                        _stat.AverageDamage.With(Ailment.Bleed))
+                    CombineHandsForAverageAilmentDamage(Common.Builders.Effects.Ailment.Bleed)
+                        (_stat.AverageDamage.With(Ailment.Bleed))
                 },
                 // - effective crit/non-crit damage multiplier per source and type
                 {
@@ -182,15 +181,15 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(Ailment.Bleed),
                     _ => Physical.Damage.Taken.With(Ailment.Bleed),
                     _ => CriticalStrike.Multiplier.With(Ailment.Bleed),
-                    (_, damageTaken, mult) => EnemyDamageTakenMultiplier(Physical, damageTaken) * mult.Value
+                    (_, damageTaken, mult)
+                        => EnemyDamageTakenMultiplier(Physical, damageTaken) * mult.Value.AsPercentage
                 },
                 // poison damage
                 // - average damage
                 {
                     TotalOverride, _stat.AverageAilmentDamage(Common.Builders.Effects.Ailment.Poison),
                     CombineSource(_stat.AverageDamage.With(Ailment.Poison),
-                        CombineHandsByWeightedAverage(
-                            Stat.ChanceToHit, _stat.AilmentEffectiveChance(Common.Builders.Effects.Ailment.Poison)))
+                        CombineHandsForAverageAilmentDamage(Common.Builders.Effects.Ailment.Poison))
                 },
                 // - effective crit/non-crit damage multiplier per source and type
                 {
@@ -202,7 +201,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(Ailment.Poison),
                     _ => Chaos.Damage.Taken.With(Ailment.Poison),
                     _ => CriticalStrike.Multiplier.With(Ailment.Poison),
-                    (_, damageTaken, mult) => EnemyDamageTakenMultiplier(Chaos, damageTaken) * mult.Value
+                    (_, damageTaken, mult) => EnemyDamageTakenMultiplier(Chaos, damageTaken) * mult.Value.AsPercentage
                 },
                 // shared ailment damage
                 // - DPS
@@ -306,35 +305,38 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 // crit
                 {
                     TotalOverride, _stat.EffectiveCritChance.With(AttackDamageHand.MainHand),
-                    CriticalStrike.Chance.With(AttackDamageHand.MainHand).Value / 100 *
-                    Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value
+                    CriticalStrike.Chance.With(AttackDamageHand.MainHand).Value.AsPercentage *
+                    Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value.AsPercentage
                 },
                 {
                     TotalOverride, _stat.EffectiveCritChance.With(AttackDamageHand.OffHand),
-                    CriticalStrike.Chance.With(AttackDamageHand.OffHand).Value / 100 *
-                    Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value
+                    CriticalStrike.Chance.With(AttackDamageHand.OffHand).Value.AsPercentage *
+                    Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value.AsPercentage
                 },
                 {
                     TotalOverride, _stat.EffectiveCritChance.With(DamageSource.Spell),
-                    CriticalStrike.Chance.With(DamageSource.Spell).Value / 100
+                    CriticalStrike.Chance.With(DamageSource.Spell).Value.AsPercentage
                 },
                 {
                     TotalOverride, _stat.EffectiveCritChance.With(DamageSource.Secondary),
-                    CriticalStrike.Chance.With(DamageSource.Secondary).Value / 100
+                    CriticalStrike.Chance.With(DamageSource.Secondary).Value.AsPercentage
                 },
                 // pools
-                { BaseAdd, p => p.Regen, p => _stat.RegenTargetPoolValue(p.BuildPool()) * p.Regen.Percent.Value / 100 },
+                {
+                    BaseAdd, p => p.Regen,
+                    p => _stat.RegenTargetPoolValue(p.BuildPool()) * p.Regen.Percent.Value.AsPercentage
+                },
                 { TotalOverride, _stat.EffectiveRegen, p => p.Regen.Value * p.RecoveryRate.Value },
                 { TotalOverride, _stat.EffectiveRecharge, p => p.Recharge.Value * p.RecoveryRate.Value },
                 { TotalOverride, _stat.RechargeStartDelay, p => 2 / p.Recharge.Start.Value },
                 { TotalOverride, _stat.EffectiveLeechRate, p => p.Leech.Rate.Value * p.RecoveryRate.Value },
                 {
                     TotalOverride, _stat.AbsoluteLeechRate,
-                    p => _stat.LeechTargetPoolValue(p) * _stat.EffectiveLeechRate(p).Value / 100
+                    p => _stat.LeechTargetPoolValue(p) * _stat.EffectiveLeechRate(p).Value.AsPercentage
                 },
                 {
                     TotalOverride, _stat.AbsoluteLeechRateLimit,
-                    p => _stat.LeechTargetPoolValue(p.BuildPool()) * p.Leech.RateLimit.Value / 100
+                    p => _stat.LeechTargetPoolValue(p.BuildPool()) * p.Leech.RateLimit.Value.AsPercentage
                 },
                 {
                     TotalOverride, _stat.TimeToReachLeechRateLimit,
@@ -369,9 +371,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     ailment => _stat.AilmentChanceWithCrits(ailment),
                     _ => _stat.EffectiveCritChance,
                     (ailment, ailmentChance, ailmentChanceWithCrits, critChance)
-                        => (ailmentChance.Value / 100 * (1 - critChance.Value) +
-                            ailmentChanceWithCrits.Value / 100 * critChance.Value) *
-                           (1 - Ailment.From(ailment).Avoidance.For(Enemy).Value / 100)
+                        => (ailmentChance.Value.AsPercentage * (1 - critChance.Value) +
+                            ailmentChanceWithCrits.Value.AsPercentage * critChance.Value) *
+                           (1 - Ailment.From(ailment).Avoidance.For(Enemy).Value.AsPercentage)
                 },
                 {
                     TotalOverride, _stat.AilmentChanceWithCrits,
@@ -394,9 +396,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     Ailment.Poison.Duration.Value * _stat.CastRate.Value *
                     CombineSource(_stat.AilmentEffectiveChance(Common.Builders.Effects.Ailment.Poison),
                         s => (s.With(AttackDamageHand.MainHand).Value *
-                              Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value +
+                              Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value.AsPercentage +
                               s.With(AttackDamageHand.OffHand).Value *
-                              Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value) / 2)
+                              Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value.AsPercentage) / 2)
                 },
                 // stun (see https://pathofexile.gamepedia.com/Stun)
                 { PercentLess, Effect.Stun.Duration, Effect.Stun.Recovery.For(Enemy).Value * 100 },
@@ -422,8 +424,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             IStatBuilder nonCritIgniteChance, IStatBuilder critIgniteChance)
         {
             return CombineByWeightedAverage(
-                nonCritDamage.Value.Average, (1 - critChance.Value) * nonCritIgniteChance.Value / 100,
-                critDamage.Value.Average, critChance.Value * critIgniteChance.Value / 100);
+                nonCritDamage.Value.Average, (1 - critChance.Value) * nonCritIgniteChance.Value.AsPercentage,
+                critDamage.Value.Average, critChance.Value * critIgniteChance.Value.AsPercentage);
         }
 
         private ValueBuilder EnemyDamageTakenMultiplier(
@@ -431,7 +433,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             => DamageTakenMultiplier(resistanceType.Resistance.For(Enemy), damageTaken.For(Enemy));
 
         private static ValueBuilder DamageTakenMultiplier(IStatBuilder resistance, IStatBuilder damageTaken)
-            => (1 - resistance.Value / 100) * damageTaken.Value;
+            => (1 - resistance.Value.AsPercentage) * damageTaken.Value;
 
         private IDamageRelatedStatBuilder DamageTaken(DamageType damageType)
             => DamageTypeBuilders.From(damageType).Damage.Taken;
@@ -447,7 +449,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
         }
 
         private static ValueBuilder FailureProbability(IStatBuilder percentageChanceStat)
-            => 1 - percentageChanceStat.Value / 100;
+            => 1 - percentageChanceStat.Value.AsPercentage;
 
         private IValueBuilder EffectiveStunThresholdValue(IStatBuilder stunThresholdStat)
         {
@@ -535,11 +537,14 @@ namespace PoESkillTree.Computation.Data.GivenStats
             => (statToCombine.With(AttackDamageHand.MainHand).Value +
                 statToCombine.With(AttackDamageHand.OffHand).Value) / 2;
 
-        private static Func<IDamageRelatedStatBuilder, ValueBuilder> CombineHandsByWeightedAverage(
-            params IDamageRelatedStatBuilder[] weights)
+        private Func<IDamageRelatedStatBuilder, ValueBuilder> CombineHandsForAverageAilmentDamage(
+            Ailment ailment)
         {
-            var mhWeight = weights.Select(w => w.With(AttackDamageHand.MainHand).Value).Aggregate((l, r) => l * r);
-            var ohWeight = weights.Select(w => w.With(AttackDamageHand.OffHand).Value).Aggregate((l, r) => l * r);
+            var ailmentChance = _stat.AilmentEffectiveChance(ailment);
+            var mhWeight = Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value.AsPercentage *
+                           ailmentChance.With(AttackDamageHand.MainHand).Value;
+            var ohWeight = Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value.AsPercentage *
+                           ailmentChance.With(AttackDamageHand.OffHand).Value;
             return statToCombine => CombineByWeightedAverage(
                 statToCombine.With(AttackDamageHand.MainHand).Value, mhWeight,
                 statToCombine.With(AttackDamageHand.OffHand).Value, ohWeight);

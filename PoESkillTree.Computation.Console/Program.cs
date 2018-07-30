@@ -7,6 +7,7 @@ using System.Linq;
 using EnumsNET;
 using MoreLinq;
 using PoESkillTree.Common.Utils.Extensions;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -151,8 +152,12 @@ namespace PoESkillTree.Computation.Console
             var valuePart = statLine.Split(' ')[0];
             var statPart = statLine.Substring(valuePart.Length);
             var stats = ParseStats(statPart).ToList();
-            var value = new Constant(double.Parse(valuePart));
-            var mod = new Modifier(stats, Form.BaseAdd, value, new ModifierSource.Global());
+            if (!double.TryParse(valuePart, out var value))
+            {
+                System.Console.WriteLine($"Could not parse {valuePart}");
+                return;
+            }
+            var mod = new Modifier(stats, Form.BaseAdd, new Constant(value), new ModifierSource.Global());
             AddMods(new[] { mod });
             System.Console.WriteLine($"Added mod:\n{mod}");
         }
@@ -167,7 +172,7 @@ namespace PoESkillTree.Computation.Console
             {
                 return mods.SelectMany(m => m.Stats);
             }
-            return Enumerable.Empty<IStat>();
+            return new[] { new Stat(stat.Trim()), };
         }
 
         private bool TryParseMetaStat(string stat, out IEnumerable<IStat> parsedStats)
