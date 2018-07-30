@@ -8,31 +8,43 @@ using EnumsNET;
 using MoreLinq;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Effects;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.Parsing;
 
 namespace PoESkillTree.Computation.Console
 {
-    public static class Program
+    public class Program
     {
-        /// <summary>
-        /// Console program prompting the user to enter commands in a loop. Supports parsing single stat lines
-        /// and timing the parsing of many stat lines.
-        /// </summary>
         public static void Main(string[] args)
         {
-            var compRoot = new CompositionRoot();
-            var parser = compRoot.Parser;
-            var calculator = Calculator.CreateCalculator();
-            calculator.ExplicitlyRegisteredStats.CollectionChanged += ExplicitlyRegisteredStatsOnCollectionChanged;
+            var program = new Program();
+            program.Loop();
+        }
 
+        private readonly CompositionRoot _compositionRoot;
+        private readonly IParser _parser;
+        private readonly ICalculator _calculator;
+
+        private Program()
+        {
+            _compositionRoot = new CompositionRoot();
+            _parser = _compositionRoot.Parser;
+            _calculator = Calculator.CreateCalculator();
+            _calculator.ExplicitlyRegisteredStats.CollectionChanged += ExplicitlyRegisteredStatsOnCollectionChanged;
+        }
+
+        private void Loop()
+        {
             System.Console.WriteLine("Enter a stat line to be parsed and added to the Calculator");
             System.Console.WriteLine("- 'exit' quits");
             System.Console.WriteLine("- 'benchmark' runs the parsing benchmark");
-            System.Console.WriteLine("- 'add given' adds the given stats to the Calculator.");
-            System.Console.WriteLine("- 'listen <stat>', 'query <stat>', 'query mods <stats>' allow querying stat values " +
-                                     "and listening to stat value changes.");
+            System.Console.WriteLine("- 'add given' adds the given stats to the Calculator");
+            System.Console.WriteLine("- 'listen <stat>', 'query <stat>', 'query mods <stats>' allow querying stat " +
+                                     "values and listening to stat value changes");
+            System.Console.WriteLine("- 'add <value> <stat>' to BaseAdd to stats");
             System.Console.Write("> ");
             string statLine;
             while ((statLine = System.Console.ReadLine()) != null)
@@ -42,23 +54,25 @@ namespace PoESkillTree.Computation.Console
                     case "exit":
                         return;
                     case "benchmark":
-                        Benchmark(parser);
+                        Benchmark(_parser);
                         break;
                     case "profile":
-                        Profile(parser);
+                        Profile(_parser);
                         break;
                     case "add given":
-                        AddGivenStats(calculator, compRoot);
+                        AddGivenStats();
                         break;
                     default:
                         if (statLine.StartsWith("listen"))
-                            Listen(calculator, parser, statLine.Substring("listen".Length));
+                            Listen(statLine.Substring("listen".Length));
                         else if (statLine.StartsWith("query mods"))
-                            QueryMods(calculator, parser, statLine.Substring("query mods".Length));
+                            QueryMods(statLine.Substring("query mods".Length));
                         else if (statLine.StartsWith("query"))
-                            QueryStat(calculator, parser, statLine.Substring("query".Length));
-                        else if (TryParse(parser, statLine, out var mods, verbose: true))
-                            AddMods(calculator, mods);
+                            QueryStat(statLine.Substring("query".Length));
+                        else if (statLine.StartsWith("add"))
+                            SetStat(statLine.Substring("add".Length));
+                        else if (TryParse(statLine, out var mods, verbose: true))
+                            AddMods(mods);
                         break;
                 }
                 System.Console.Write("> ");
@@ -86,11 +100,11 @@ namespace PoESkillTree.Computation.Console
             }
         }
 
-        private static void Listen(ICalculator calculator, IParser parser, string statLine)
+        private void Listen(string statLine)
         {
-            foreach (var stat in ParseStats(parser, statLine))
+            foreach (var stat in ParseStats(statLine))
             {
-                var node = calculator.NodeRepository.GetNode(stat);
+                var node = _calculator.NodeRepository.GetNode(stat);
                 node.ValueChanged += (sender, args) => OnValueChanged(stat, node);
                 System.Console.WriteLine($"Started listening to {stat} (current value: {node.Value})");
             }
@@ -102,27 +116,27 @@ namespace PoESkillTree.Computation.Console
             }
         }
 
-        private static void QueryStat(ICalculator calculator, IParser parser, string statLine)
+        private void QueryStat(string statLine)
         {
-            foreach (var stat in ParseStats(parser, statLine))
+            foreach (var stat in ParseStats(statLine))
             {
                 System.Console.WriteLine($"Stat: {stat}");
-                var node = calculator.NodeRepository.GetNode(stat);
+                var node = _calculator.NodeRepository.GetNode(stat);
                 System.Console.WriteLine($"  Current value: {node.Value}");
             }
         }
 
-        private static void QueryMods(ICalculator calculator, IParser parser, string statLine)
+        private void QueryMods(string statLine)
         {
-            foreach (var stat in ParseStats(parser, statLine))
+            foreach (var stat in ParseStats(statLine))
             {
                 System.Console.WriteLine($"Stat: {stat}");
-                var statNode = calculator.NodeRepository.GetNode(stat);
+                var statNode = _calculator.NodeRepository.GetNode(stat);
                 System.Console.WriteLine($"  Current value: {statNode.Value}");
                 foreach (var form in Enums.GetValues<Form>())
                 {
                     System.Console.WriteLine($"  Modifiers of form {form}:");
-                    var nodeCollection = calculator.NodeRepository.GetFormNodeCollection(stat, form);
+                    var nodeCollection = _calculator.NodeRepository.GetFormNodeCollection(stat, form);
                     foreach (var (_, modifier) in nodeCollection)
                     {
                         System.Console.WriteLine($"    {modifier.Value} (source: {modifier.Source})");
@@ -131,24 +145,77 @@ namespace PoESkillTree.Computation.Console
             }
         }
 
-        private static IEnumerable<IStat> ParseStats(IParser parser, string stat)
+        private void SetStat(string statLine)
         {
-            if (TryParse(parser, "1% increased" + stat, out var mods))
+            statLine = statLine.Trim();
+            var valuePart = statLine.Split(' ')[0];
+            var statPart = statLine.Substring(valuePart.Length);
+            var stats = ParseStats(statPart).ToList();
+            var value = new Constant(double.Parse(valuePart));
+            var mod = new Modifier(stats, Form.BaseAdd, value, new ModifierSource.Global());
+            AddMods(new[] { mod });
+            System.Console.WriteLine($"Added mod:\n{mod}");
+        }
+
+        private IEnumerable<IStat> ParseStats(string stat)
+        {
+            if (TryParseMetaStat(stat, out var stats))
+            {
+                return stats;
+            }
+            if (TryParse("1% increased" + stat, out var mods))
             {
                 return mods.SelectMany(m => m.Stats);
             }
             return Enumerable.Empty<IStat>();
         }
 
+        private bool TryParseMetaStat(string stat, out IEnumerable<IStat> parsedStats)
+        {
+            var metaStats = _compositionRoot.MetaStats;
+            switch (stat.ToLowerInvariant().Trim())
+            {
+                case "level":
+                    parsedStats = Build(_compositionRoot.BuilderFactories.StatBuilders.Level);
+                    return true;
+                case "skill hit dps":
+                    parsedStats = Build(metaStats.SkillDpsWithHits);
+                    return true;
+                case "skill dot dps":
+                    parsedStats = Build(metaStats.SkillDpsWithDoTs);
+                    return true;
+                case "ignite dps":
+                    parsedStats = Build(metaStats.AilmentDps(Ailment.Ignite));
+                    return true;
+                case "bleed dps":
+                    parsedStats = Build(metaStats.AilmentDps(Ailment.Bleed));
+                    return true;
+                case "poison dps":
+                    parsedStats = Build(metaStats.AilmentDps(Ailment.Poison));
+                    return true;
+                case "cast rate":
+                    parsedStats = Build(metaStats.CastRate);
+                    return true;
+                case "hit damage source":
+                    parsedStats = Build(metaStats.SkillHitDamageSource);
+                    return true;
+                default:
+                    parsedStats = null;
+                    return false;
+            }
+
+            IEnumerable<IStat> Build(IStatBuilder builder)
+                => builder.Build(default).SelectMany(r => r.Stats);
+        }
+
         /// <summary>
         /// Parses the given stat using the given parser and writes results to the console.
         /// </summary>
-        private static bool TryParse(
-            IParser parser, string statLine, out IReadOnlyList<Modifier> mods, bool verbose = false)
+        private bool TryParse(string statLine, out IReadOnlyList<Modifier> mods, bool verbose = false)
         {
             try
             {
-                var (success, remaining, result) = parser.Parse(statLine);
+                var (success, remaining, result) = _parser.Parse(statLine);
                 if (verbose)
                 {
                     System.Console.WriteLine(result?.ToDelimitedString("\n") ?? "null");
@@ -168,16 +235,16 @@ namespace PoESkillTree.Computation.Console
             return false;
         }
 
-        private static void AddGivenStats(ICalculator calculator, CompositionRoot compositionRoot)
+        private void AddGivenStats()
         {
-            var mods = GivenStatsParser.Parse(compositionRoot.Parser,
-                compositionRoot.GivenStats.Append(new EnemyBaseStats()));
-            AddMods(calculator, mods);
+            var mods = GivenStatsParser.Parse(_parser,
+                _compositionRoot.GivenStats.Append(new EnemyBaseStats()));
+            AddMods(mods);
         }
 
-        private static void AddMods(ICalculator calculator, IEnumerable<Modifier> mods)
+        private void AddMods(IEnumerable<Modifier> mods)
         {
-            calculator.NewBatchUpdate().AddModifiers(mods).DoUpdate();
+            _calculator.NewBatchUpdate().AddModifiers(mods).DoUpdate();
         }
 
         /// <summary>
