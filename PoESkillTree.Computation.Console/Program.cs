@@ -40,7 +40,8 @@ namespace PoESkillTree.Computation.Console
                         AddGivenStats(calculator, compRoot);
                         break;
                     default:
-                        Parse(parser, statLine);
+                        if (TryParse(parser, statLine, out var mods))
+                            AddMods(calculator, mods);
                         break;
                 }
                 System.Console.Write("> ");
@@ -50,26 +51,35 @@ namespace PoESkillTree.Computation.Console
         /// <summary>
         /// Parses the given stat using the given parser and writes results to the console.
         /// </summary>
-        private static void Parse(IParser parser, string statLine)
+        private static bool TryParse(IParser parser, string statLine, out IReadOnlyList<Modifier> mods)
         {
             try
             {
                 var (success, remaining, result) = parser.Parse(statLine);
-                if (!success)
+                System.Console.WriteLine(result == null ? "null" : result.ToDelimitedString("\n"));
+                if (success)
                 {
-                    System.Console.WriteLine($"Not recognized: '{remaining}' could not be parsed.");
+                    mods = result;
+                    return true;
                 }
-                System.Console.WriteLine(result == null ? "null" : string.Join("\n", result));
+                System.Console.WriteLine($"Not recognized: '{remaining}' could not be parsed.");
             }
             catch (ParseException e)
             {
                 System.Console.WriteLine("Parsing failed: " + e.Message);
             }
+            mods = null;
+            return false;
         }
 
         private static void AddGivenStats(ICalculator calculator, CompositionRoot compositionRoot)
         {
             var mods = GivenStatsParser.Parse(compositionRoot.Parser, compositionRoot.GivenStats);
+            AddMods(calculator, mods);
+        }
+
+        private static void AddMods(ICalculator calculator, IEnumerable<Modifier> mods)
+        {
             calculator.NewBatchUpdate().AddModifiers(mods).DoUpdate();
         }
 
