@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Builders.Conditions
 
         public IConditionBuilder With(DamageSource damageSource) =>
             new StatConvertingConditionBuilder(IfIsDamageStat(
-                d => d.With(DamageSource.Attack),
+                d => d.WithSkills(damageSource),
                 _ => throw new ParseException(
                     $"IConditionBuilders.{nameof(With)} only works with damage related stats")));
 

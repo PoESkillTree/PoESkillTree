@@ -70,7 +70,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             var stat = condition.Build().StatConverter(inStat);
             var (_, actual, _) =
                 stat.Build(new BuildParameters(new ModifierSource.Global(), default, default)).Single();
-            
+
             Assert.AreEqual(expected, actual);
         }
 
@@ -79,7 +79,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
         {
             var expected = Mock.Of<IDamageRelatedStatBuilder>();
             var hand = AttackDamageHand.OffHand;
-            var inStat = Mock.Of<IDamageRelatedStatBuilder>(b => b.With(DamageSource.Attack).With(hand) == expected);
+            var inStat =
+                Mock.Of<IDamageRelatedStatBuilder>(b => b.WithSkills.With(DamageSource.Attack).With(hand) == expected);
             var sut = CreateSut();
 
             var statConverter = sut.AttackWith(hand).Build().StatConverter;

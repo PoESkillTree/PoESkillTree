@@ -86,7 +86,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         private IStatBuilder InternalApplyModifiersToSkills(DamageSource source, IReadOnlyList<Form> forms) =>
-            With(s => forms.Select(f => StatFactory.ApplyModifiersToSkillDamage(s, source, f)));
+            ((DamageRelatedStatBuilder) WithSkills)
+            .With(s => forms.Select(f => StatFactory.ApplyModifiersToSkillDamage(s, source, f)));
 
         public IStatBuilder ApplyModifiersToAilments(params Form[] forms)
         {
@@ -96,7 +97,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         private IStatBuilder InternalApplyModifiersToAilments(IReadOnlyList<Form> forms) =>
-            With(s => forms.Select(f => StatFactory.ApplyModifiersToAilmentDamage(s, f)));
+            ((DamageRelatedStatBuilder) WithSkills)
+            .With(s => forms.Select(f => StatFactory.ApplyModifiersToAilmentDamage(s, f)));
 
         public override IEnumerable<StatBuilderResult>
             Build(BuildParameters parameters) =>

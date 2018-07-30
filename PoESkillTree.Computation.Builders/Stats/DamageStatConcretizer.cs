@@ -68,10 +68,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public bool CanApplyToAilmentDamage => _applyToAilmentDamage.HasValue;
 
         public DamageStatConcretizer With(DamageSource source)
-        {
-            var concretizer = WithCanApply(_specificationBuilder.With(source), applyToSkillDamage: true);
-            return source == DamageSource.OverTime ? concretizer : concretizer.WithSkills();
-        }
+            => WithCanApply(_specificationBuilder.With(source), applyToSkillDamage: true);
 
         public DamageStatConcretizer WithHits() => With(_specificationBuilder.WithHits());
 

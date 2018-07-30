@@ -60,12 +60,12 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         }
 
         [Test]
-        public void WithSpellBuildsToCorrectResult()
+        public void WithSpellSkillsBuildsToCorrectResult()
         {
             var expectedCount = FullResultCount;
             var sut = CreateSut();
 
-            var stats = BuildToStats(sut.With(DamageSource.Spell), expectedCount);
+            var stats = BuildToStats(sut.WithSkills(DamageSource.Spell), expectedCount);
 
             Assert.That(stats, Has.Exactly(expectedCount).Items);
             Assert.AreEqual("test.Spell.Skill", stats[0].Identity);
@@ -225,7 +225,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [Test]
         public void MinimumBuildsToCorrectResults()
         {
-            var sut = CreateSut().With(DamageSource.Spell);
+            var sut = CreateSut().WithSkills(DamageSource.Spell);
 
             var stats = BuildToStats(sut.Minimum, 1);
 
@@ -234,7 +234,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         }
 
         [Test]
-        public void WithSpellsBuildsToCorrectValueConverters()
+        public void WithSpellSkillsBuildsToCorrectValueConverters()
         {
             var valueBuilder = new ValueBuilderImpl(10);
             var statFactory = new StatFactory();
@@ -251,7 +251,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
                     NodeType.Total, PathDefinition.MainPath) == new NodeValue(10));
             var sut = CreateSut();
 
-            var values = sut.With(DamageSource.Spell)
+            var values = sut.WithSkills(DamageSource.Spell)
                 .Build(default)
                 .Select(r => r.ValueConverter(valueBuilder))
                 .Select(b => b.Build().Calculate(context))
@@ -286,7 +286,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
                 .Build(default)
                 .Select(r => r.ValueConverter(valueBuilder).Build()).ToList();
 
-            Assert.Throws<ParseException>(() => values[1].Calculate(context));
+            Assert.Throws<ParseException>(() => values[1 + Ailments.Count].Calculate(context));
         }
 
         [Test]

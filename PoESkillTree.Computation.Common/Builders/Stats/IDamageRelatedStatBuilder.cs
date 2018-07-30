@@ -64,4 +64,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IStatBuilder ApplyModifiersToAilments(params Form[] forms);
     }
+
+    public static class DamageRelatedStatBuilderExtensions
+    {
+        public static IDamageRelatedStatBuilder WithSkills(this IDamageRelatedStatBuilder @this,
+            DamageSource damageSource)
+            => @this.WithSkills.With(damageSource);
+    }
 }
