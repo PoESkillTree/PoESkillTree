@@ -50,7 +50,7 @@ namespace PoESkillTree.Computation.Data
                 { "attack physical damage", Physical.Damage.WithSkills(DamageSource.Attack) },
                 {
                     "({DamageTypeMatchers}) damage to attacks",
-                    Reference.AsDamageType.Damage.With(DamageSource.Attack)
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Attack)
                 },
                 {
                     "({DamageTypeMatchers}) attack damage",

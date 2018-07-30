@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
                 .Then(0)
                 .ElseIf(ConstantConditionBuilder.Create(trueBranch == 1))
                 .Then(new ValueBuilderImpl(1))
-                .Else(new ValueBuilderImpl(2));
+                .Else(2);
 
             var actual = valueBuilder.Build().Calculate(null);
             Assert.AreEqual(new NodeValue(trueBranch), actual);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using MoreLinq;
 using PoESkillTree.Computation.Core.Events;
 
@@ -35,6 +36,6 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         public void SuspendEvents() => SelectSuspendables().ForEach(s => s.SuspendEvents());
 
-        public void ResumeEvents() => SelectSuspendables().ForEach(s => s.ResumeEvents());
+        public void ResumeEvents() => SelectSuspendables().ToList().ForEach(s => s.ResumeEvents());
     }
 }

@@ -99,7 +99,7 @@ namespace PoESkillTree.Computation.Builders.Values
                 }
             }
 
-            public ValueBuilder Else(double value) => Else(new ValueBuilderImpl(0));
+            public ValueBuilder Else(double value) => Else(new ValueBuilderImpl(value));
         }
 
 
@@ -129,12 +129,12 @@ namespace PoESkillTree.Computation.Builders.Values
 
             public override string ToString()
             {
-                var s = $"If ({_conditionValuePairs[0].condition}): {_conditionValuePairs[0].value}\n";
+                var s = $"(If ({_conditionValuePairs[0].condition}): {_conditionValuePairs[0].value}\n";
                 foreach (var (c, v) in _conditionValuePairs.Skip(1))
                 {
                     s += $"Else If ({c}): {v}\n";
                 }
-                return s + $"Else: {_elseValue}";
+                return s + $"Else: {_elseValue})";
             }
         }
     }

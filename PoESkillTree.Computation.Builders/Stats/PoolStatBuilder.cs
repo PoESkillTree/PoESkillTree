@@ -162,7 +162,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             [CallerMemberName] string identitySuffix = null)
         {
             return new StatBuilder(StatFactory, new CoreStatBuilderFromCoreBuilder<Pool>(Pool,
-                (e, p) => StatFactory.FromIdentity($"{p}.{_identitySuffix}.{identitySuffix}", e, dataType,
+                (e, p) => StatFactory.FromIdentity($"{p}{_identitySuffix}.{identitySuffix}", e, dataType,
                     explicitRegistrationType)));
         }
     }

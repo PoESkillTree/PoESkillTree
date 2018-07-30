@@ -36,6 +36,21 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             mocks.ForEach(m => m.Verify());
         }
 
+        [Test]
+        public void SuspenderResumeEventsGuardsAgainstModifications()
+        {
+            var mocks = new List<Mock>();
+            var graphCollection = MockStatGraphCollection(mocks, true).ToList();
+            mocks.OfType<Mock<ISuspendableEventViewProvider<ICalculationNode>>>().First()
+                .Setup(p => p.Suspender.ResumeEvents())
+                .Callback(() => graphCollection.RemoveAt(0));
+            var sut = new StatGraphCollectionSuspender(graphCollection);
+
+            sut.ResumeEvents();
+
+            mocks.ForEach(m => m.Verify());
+        }
+
         private static IEnumerable<IReadOnlyStatGraph> MockStatGraphCollection(List<Mock> mocks, bool setupResume)
         {
             var graphs = Enumerable.Range(0, 3).Select(_ => MockStatGraph(mocks, setupResume)).ToList();
