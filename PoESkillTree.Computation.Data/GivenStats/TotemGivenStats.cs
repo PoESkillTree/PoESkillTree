@@ -37,8 +37,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
             "-10% to all Elemental Resistances per Endurance Charge",
 
             "45% less damage taken",
-            "+40% to all Elemental Resistances",
-            "+20% to Chaos Resistance",
         };
 
         public IReadOnlyList<IIntermediateModifier> GivenModifiers => _lazyGivenStats.Value;
@@ -49,6 +47,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { TotalOverride, Charge.Power.Amount.Maximum, 0 },
             { TotalOverride, Buff.CurseLimit, 0 },
             { TotalOverride, Mana.Cost, 0 },
+            { BaseAdd, Elemental.Resistance.Maximum, 40 },
+            { BaseAdd, Chaos.Resistance.Maximum, 20 },
         };
     }
 }

@@ -56,8 +56,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
             "1% increased Evasion Rating per 5 Dexterity Evasion Bonus ceiled",
             "+1 to Mana per 2 Intelligence ceiled",
             "1% increased maximum Energy Shield per 5 Intelligence ceiled",
-            "-60% to all Elemental Resistances",
-            "-60% to Chaos Resistance",
+            // Rampage
+            "Minions deal 2% increased Damage per 10 Rampage Stacks",
+            "Minions gain 1% increased Movement Speed per 10 Rampage Stacks",
         };
         
         public IReadOnlyList<IIntermediateModifier> GivenModifiers => _lazyGivenStats.Value;
@@ -73,6 +74,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Stat.Accuracy, -2 }, // 0 at level 1 with no dexterity
             // resistances
             { BaseSet, Physical.Resistance.Maximum, 90 },
+            { BaseSubtract, Elemental.Resistance.Maximum, 60 },
+            { BaseSubtract, Chaos.Resistance.Maximum, 60 },
             // traps, mines and totems
             { BaseSet, Traps.CombinedInstances.Maximum, 15 },
             { BaseSet, Mines.CombinedInstances.Maximum, 5 },

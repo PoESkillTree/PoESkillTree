@@ -34,8 +34,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
             // Rampage
             "1% increased Movement Speed per 10 Rampage Stacks",
             "2% increased Damage per 10 Rampage Stacks",
-            "Minions deal 2% increased Damage per 10 Rampage Stacks",
-            "Minions gain 1% increased Movement Speed per 10 Rampage Stacks",
             // other
             "100% of non-chaos damage is taken from energy shield before life",
         };
