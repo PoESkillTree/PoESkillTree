@@ -72,6 +72,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             // other basic stats
             { BaseSet, Evasion, 53 },
             { BaseSet, Stat.Accuracy, -2 }, // 0 at level 1 with no dexterity
+            { BaseSet, CriticalStrike.Multiplier, 150 },
             // resistances
             { BaseSet, Physical.Resistance.Maximum, 90 },
             { BaseSubtract, Elemental.Resistance.Maximum, 60 },

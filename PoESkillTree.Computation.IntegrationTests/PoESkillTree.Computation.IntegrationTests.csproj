@@ -70,6 +70,7 @@
     <Compile Include="Core\ConversionTest.cs" />
     <Compile Include="Core\PerStatValue.cs" />
     <Compile Include="DataValidatingTest.cs" />
+    <Compile Include="MechanicsTest.cs" />
     <Compile Include="ParsingTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

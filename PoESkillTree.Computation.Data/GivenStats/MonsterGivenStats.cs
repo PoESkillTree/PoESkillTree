@@ -48,6 +48,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             // pools
             { BaseSet, Mana, 200 },
             { BaseSet, Mana.Regen.Percent, 100 / 60.0 },
+            // other basic stats
+            { BaseSet, CriticalStrike.Multiplier, 130 },
             // resistances
             { BaseSet, Physical.Resistance.Maximum, 75 },
             // traps, mines and totems

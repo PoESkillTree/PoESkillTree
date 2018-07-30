@@ -58,7 +58,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Stat.AnimationSpeed, 1 },
             { BaseSet, Stat.MovementSpeed, 1 },
             // crit
-            { BaseSet, CriticalStrike.Multiplier, 130 },
             { BaseSet, CriticalStrike.Chance.Maximum, 95 },
             { BaseSet, CriticalStrike.Chance.Minimum, 5 },
             // evasion

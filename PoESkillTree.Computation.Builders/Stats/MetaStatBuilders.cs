@@ -61,7 +61,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             => DamageRelatedFromIdentity($"{damageType}.EnemyResistance.NonCrits", typeof(int)).WithHits;
 
         public IDamageRelatedStatBuilder EnemyResistanceAgainstCrits(DamageType damageType)
-            => DamageRelatedFromIdentity($"{damageType}.EnemyResistance.NonCrits", typeof(int)).WithHits;
+            => DamageRelatedFromIdentity($"{damageType}.EnemyResistance.Crits", typeof(int)).WithHits;
 
         public IDamageRelatedStatBuilder EffectiveDamageMultiplierWithNonCrits(DamageType damageType)
             => DamageRelatedFromIdentity($"{damageType}.EffectiveDamageMultiplier.NonCrits", typeof(double));
