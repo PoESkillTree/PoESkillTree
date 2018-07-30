@@ -33,7 +33,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             bool canApplyToSkillDamage = false, bool canApplyToAilmentDamage = false)
             : this(statFactory, specificationBuilder,
                 CanApplyToDefault(canApplyToSkillDamage), CanApplyToDefault(canApplyToAilmentDamage),
-                _ => ConstantConditionBuilder.True)
+                _ => new NullConditionBuilder())
         {
         }
 
@@ -170,6 +170,8 @@ namespace PoESkillTree.Computation.Builders.Stats
             var condition = _condition(spec).Build(parameters);
             if (condition.HasStatConverter)
                 throw new InvalidOperationException("Conditions passed to With must not have stat converters");
+            if (!condition.HasValue)
+                return result.ValueConverter;
             return result.ValueConverter.AndThen(v => v.If(condition.Value));
         }
 
@@ -203,5 +205,14 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         private IReadOnlyList<IStat> ConcretizeStats(IDamageSpecification spec, IEnumerable<IStat> resultStats) =>
             resultStats.Select(s => _statFactory.ConcretizeDamage(s, spec)).ToList();
+
+        private class NullConditionBuilder : IConditionBuilder
+        {
+            public IConditionBuilder Resolve(ResolveContext context) => this;
+            public IConditionBuilder And(IConditionBuilder condition) => condition;
+            public IConditionBuilder Or(IConditionBuilder condition) => condition;
+            public IConditionBuilder Not => this;
+            public ConditionBuilderResult Build(BuildParameters parameters) => new ConditionBuilderResult();
+        }
     }
 }
