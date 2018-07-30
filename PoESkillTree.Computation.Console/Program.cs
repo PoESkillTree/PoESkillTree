@@ -6,6 +6,7 @@ using System.Linq;
 using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Parsing;
+using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.Parsing;
 
 namespace PoESkillTree.Computation.Console
@@ -20,6 +21,7 @@ namespace PoESkillTree.Computation.Console
         {
             var compRoot = new CompositionRoot();
             var parser = compRoot.Parser;
+            var calculator = Calculator.CreateCalculator();
 
             System.Console.WriteLine("Enter a stat line to be parsed (or 'benchmark' to time stat parsing)");
             System.Console.Write("> ");
@@ -33,6 +35,9 @@ namespace PoESkillTree.Computation.Console
                         break;
                     case "profile":
                         Profile(parser);
+                        break;
+                    case "add given":
+                        AddGivenStats(calculator, compRoot);
                         break;
                     default:
                         Parse(parser, statLine);
@@ -60,6 +65,12 @@ namespace PoESkillTree.Computation.Console
             {
                 System.Console.WriteLine("Parsing failed: " + e.Message);
             }
+        }
+
+        private static void AddGivenStats(ICalculator calculator, CompositionRoot compositionRoot)
+        {
+            var mods = GivenStatsParser.Parse(compositionRoot.Parser, compositionRoot.GivenStats);
+            calculator.NewBatchUpdate().AddModifiers(mods).DoUpdate();
         }
 
         /// <summary>
@@ -149,16 +160,13 @@ namespace PoESkillTree.Computation.Console
         }
 
         private static IEnumerable<string> ReadStatLines()
-        {
-            return File.ReadAllLines("Data/AllSkillTreeStatLines.txt")
-                .Where(s => !s.StartsWith("//"));
-        }
+            => File.ReadAllLines("Data/AllSkillTreeStatLines.txt").Where(s => !s.StartsWith("//"));
     }
 
 
     public static class ParserExtensions
     {
-        public static ParseResult Parse(this IParser @this, string stat) => 
+        public static ParseResult Parse(this IParser @this, string stat) =>
             @this.Parse(stat, new ModifierSource.Global(), Entity.Character);
     }
 }

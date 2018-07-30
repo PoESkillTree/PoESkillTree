@@ -54,6 +54,9 @@ namespace PoESkillTree.Computation.Builders.Stats
             => FromIdentity($"{pool}.Leech.SecondsToReachRateLimit", typeof(double));
 
 
+        public IDamageRelatedStatBuilder Damage(DamageType damageType)
+            => DamageRelatedFromIdentity($"{damageType}.Damage", typeof(double));
+
         public IDamageRelatedStatBuilder EnemyResistanceAgainstNonCrits(DamageType damageType)
             => DamageRelatedFromIdentity($"{damageType}.EnemyResistance.NonCrits", typeof(int)).WithHits;
 

@@ -29,6 +29,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         ValueBuilder LeechTargetPoolValue(Pool sourcePool);
 
         // Damage calculation
+        IDamageRelatedStatBuilder Damage(DamageType damageType); // like DamageStatBuilder, but !canApplyToSkillDamage
         IDamageRelatedStatBuilder EnemyResistanceAgainstNonCrits(DamageType damageType);  // with hits
         IDamageRelatedStatBuilder EnemyResistanceAgainstCrits(DamageType damageType);  // with hits
         IDamageRelatedStatBuilder EffectiveDamageMultiplierWithNonCrits(DamageType damageType);

@@ -6,6 +6,7 @@ using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Tests.Stats
 {
@@ -18,7 +19,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var expected = "test.Spell.Skill.Taken";
             var sut = CreateSut();
 
-            var taken = sut.Taken.With(DamageSource.Spell);
+            var taken = sut.Taken.WithSkills(DamageSource.Spell);
             var results = taken.Build(default).ToList();
             
             Assert.That(results, Has.One.Items);

@@ -72,6 +72,15 @@ namespace PoESkillTree.Computation.Data.Collections
         public void Add(
             IFormBuilder form, Func<Ailment, IDamageRelatedStatBuilder> stat,
             Func<Ailment, IDamageRelatedStatBuilder> vp1, Func<Ailment, IDamageRelatedStatBuilder> vp2,
+            Func<Ailment, IDamageRelatedStatBuilder> vp3,
+            Func<Ailment, IStatBuilder, IStatBuilder, IStatBuilder, IValueBuilder> value)
+        {
+            Add(form, stat, a => new[] { vp1(a), vp2(a), vp3(a) }, (a, ss) => value(a, ss[0], ss[1], ss[2]));
+        }
+
+        public void Add(
+            IFormBuilder form, Func<Ailment, IDamageRelatedStatBuilder> stat,
+            Func<Ailment, IDamageRelatedStatBuilder> vp1, Func<Ailment, IDamageRelatedStatBuilder> vp2,
             Func<Ailment, IDamageRelatedStatBuilder> vp3, Func<Ailment, IDamageRelatedStatBuilder> vp4,
             Func<Ailment, IDamageRelatedStatBuilder> vp5,
             Func<IStatBuilder, IStatBuilder, IStatBuilder, IStatBuilder, IStatBuilder, IValueBuilder> value)

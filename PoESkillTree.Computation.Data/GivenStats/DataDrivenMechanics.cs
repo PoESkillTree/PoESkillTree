@@ -81,13 +81,13 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 // - crit/non-crit damage per source and type
                 {
                     TotalOverride, dt => _stat.DamageWithNonCrits(dt).WithHits,
-                    dt => DamageTypeBuilders.From(dt).Damage.WithHits,
+                    dt => _stat.Damage(dt).WithHits,
                     dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithHits,
                     (_, damage, mult) => damage.Value * mult.Value
                 },
                 {
                     TotalOverride, dt => _stat.DamageWithCrits(dt).WithHits,
-                    dt => DamageTypeBuilders.From(dt).Damage.WithHits,
+                    dt => _stat.Damage(dt).WithHits,
                     dt => _stat.EffectiveDamageMultiplierWithCrits(dt).WithHits,
                     (_, damage, mult) => damage.Value * mult.Value
                 },
@@ -95,13 +95,13 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 {
                     TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithHits,
                     dt => _stat.EnemyResistanceAgainstNonCrits(dt),
-                    dt => DamageTaken(dt).For(Enemy),
+                    dt => DamageTaken(dt).WithHits.For(Enemy),
                     (_, resistance, damageTaken) => DamageTakenMultiplier(resistance, damageTaken)
                 },
                 {
                     TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).WithHits,
                     dt => _stat.EnemyResistanceAgainstCrits(dt),
-                    dt => DamageTaken(dt).For(Enemy),
+                    dt => DamageTaken(dt).WithHits.For(Enemy),
                     _ => CriticalStrike.Multiplier.WithHits,
                     (_, resistance, damageTaken, mult) => DamageTakenMultiplier(resistance, damageTaken) * mult.Value
                 },
@@ -125,22 +125,23 @@ namespace PoESkillTree.Computation.Data.GivenStats
 
                 // skill damage over time
                 // - DPS = average damage = non-crit damage
-                { TotalOverride, _stat.SkillDpsWithDoTs, _stat.AverageDamage.With(DamageSource.OverTime).Value },
+                { TotalOverride, _stat.SkillDpsWithDoTs, _stat.AverageDamage.WithSkills(DamageSource.OverTime).Value },
                 {
-                    TotalOverride, _stat.AverageDamage.With(DamageSource.OverTime),
-                    _stat.DamageWithNonCrits().With(DamageSource.OverTime).Value
+                    TotalOverride, _stat.AverageDamage.WithSkills(DamageSource.OverTime),
+                    _stat.DamageWithNonCrits().WithSkills(DamageSource.OverTime).Value
                 },
                 // - damage per type
                 {
-                    TotalOverride, dt => _stat.DamageWithNonCrits(dt).With(DamageSource.OverTime),
-                    dt => DamageTypeBuilders.From(dt).Damage.With(DamageSource.OverTime).Value *
-                          _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(DamageSource.OverTime).Value
+                    TotalOverride, dt => _stat.DamageWithNonCrits(dt).WithSkills(DamageSource.OverTime),
+                    dt => _stat.Damage(dt).WithSkills(DamageSource.OverTime).Value *
+                          _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithSkills(DamageSource.OverTime).Value
                 },
                 // - effective damage multiplier per type
                 {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(DamageSource.OverTime),
+                    TotalOverride,
+                    dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithSkills(DamageSource.OverTime),
                     dt => EnemyDamageTakenMultiplier(DamageTypeBuilders.From(dt),
-                        DamageTaken(dt).With(DamageSource.OverTime))
+                        DamageTaken(dt).WithSkills(DamageSource.OverTime))
                 },
 
                 // ignite damage
@@ -228,13 +229,13 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 // - crit/non-crit damage per source and type
                 {
                     TotalOverride, (a, dt) => _stat.DamageWithNonCrits(dt).With(Ailment.From(a)),
-                    (a, dt) => DamageTypeBuilders.From(dt).Damage.With(Ailment.From(a)),
+                    (a, dt) => _stat.Damage(dt).With(Ailment.From(a)),
                     (a, dt) => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(Ailment.From(a)),
                     (damage, mult) => damage.Value * mult.Value
                 },
                 {
                     TotalOverride, (a, dt) => _stat.DamageWithCrits(dt).With(Ailment.From(a)),
-                    (a, dt) => DamageTypeBuilders.From(dt).Damage.With(Ailment.From(a)),
+                    (a, dt) => _stat.Damage(dt).With(Ailment.From(a)),
                     (a, dt) => _stat.EffectiveDamageMultiplierWithCrits(dt).With(Ailment.From(a)),
                     (damage, mult) => damage.Value * mult.Value
                 },
@@ -253,7 +254,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 {
                     BaseAdd, _stat.ResistanceAgainstHits(DamageType.Physical),
                     100 * Armour.Value /
-                    (Armour.Value + 10 * Physical.Damage.With(AttackDamageHand.MainHand).For(Enemy).Value)
+                    (Armour.Value + 10 * Physical.Damage.WithSkills.With(AttackDamageHand.MainHand).For(Enemy).Value)
                 },
                 { BaseSet, _stat.ResistanceAgainstHits(DamageType.Physical).Maximum, 90 },
                 { TotalOverride, _stat.ResistanceAgainstHits(DamageType.Lightning), Lightning.Resistance.Value },
@@ -264,12 +265,12 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 {
                     TotalOverride, _stat.MitigationAgainstHits,
                     dt => 1 - DamageTakenMultiplier(_stat.ResistanceAgainstHits(dt),
-                              DamageTaken(dt).With(DamageSource.OverTime))
+                              DamageTaken(dt).WithSkills(DamageSource.Secondary))
                 },
                 {
                     TotalOverride, _stat.MitigationAgainstDoTs,
                     dt => 1 - DamageTakenMultiplier(DamageTypeBuilders.From(dt).Resistance,
-                              DamageTaken(dt).With(DamageSource.OverTime))
+                              DamageTaken(dt).WithSkills(DamageSource.OverTime))
                 },
                 // chance to hit/evade
                 {
@@ -364,19 +365,20 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 {
                     TotalOverride, _stat.AilmentEffectiveChance,
+                    ailment => Ailment.From(ailment).Chance,
+                    ailment => _stat.AilmentChanceWithCrits(ailment),
                     _ => _stat.EffectiveCritChance,
-                    (ailment, critChance)
-                        => ValueFactory.If(Ailment.From(ailment).CriticalStrikesAlwaysInflict.IsSet)
-                               .Then(Ailment.From(ailment).Chance.Value / 100 * (1 - critChance.Value) +
-                                     critChance.Value)
-                               .Else(Ailment.From(ailment).Chance.Value) *
+                    (ailment, ailmentChance, ailmentChanceWithCrits, critChance)
+                        => (ailmentChance.Value / 100 * (1 - critChance.Value) +
+                            ailmentChanceWithCrits.Value / 100 * critChance.Value) *
                            (1 - Ailment.From(ailment).Avoidance.For(Enemy).Value / 100)
                 },
                 {
-                    TotalOverride, _stat.AilmentChanceWithCrits, _stat.AilmentChanceWithCrits,
-                    (ailment, _) => ValueFactory
+                    TotalOverride, _stat.AilmentChanceWithCrits,
+                    ailment => Ailment.From(ailment).Chance,
+                    (ailment, ailmentChance) => ValueFactory
                         .If(Ailment.From(ailment).CriticalStrikesAlwaysInflict.IsSet).Then(100)
-                        .Else(Ailment.From(ailment).Chance.Value)
+                        .Else(ailmentChance.Value)
                 },
                 // - AilmentEffectiveInstances
                 {
@@ -472,9 +474,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 var ailmentBuilder = Ailment.From(ailment);
                 foreach (var damageType in Enums.GetValues<DamageType>())
                 {
-                    var damageTypeBuilder = DamageTypeBuilders.From(damageType);
-                    collection.Add(TotalOverride, damageTypeBuilder.Damage.With(ailmentBuilder), 0,
-                        ailmentBuilder.Source(damageTypeBuilder).IsSet.Not);
+                    collection.Add(TotalOverride, _stat.Damage(damageType).With(ailmentBuilder), 0,
+                        ailmentBuilder.Source(DamageTypeBuilders.From(damageType)).IsSet.Not);
                 }
             }
         }
@@ -504,8 +505,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     forType.With(DamageSource.Spell));
                 AddForSkillAndAilments(collection, form, damage.With(DamageSource.Secondary),
                     forType.With(DamageSource.Secondary));
-                collection.Add(form, damage.With(DamageSource.OverTime),
-                    forType.With(DamageSource.OverTime).Value);
+                collection.Add(form, damage.WithSkills(DamageSource.OverTime),
+                    forType.WithSkills(DamageSource.OverTime).Value);
             }
         }
 
