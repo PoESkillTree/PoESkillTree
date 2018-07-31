@@ -421,11 +421,11 @@ namespace PoESkillTree.Computation.Data.GivenStats
 
         private static ValueBuilder AverageAilmentDamageFromCritAndNonCrit(
             IStatBuilder nonCritDamage, IStatBuilder critDamage, IStatBuilder critChance,
-            IStatBuilder nonCritIgniteChance, IStatBuilder critIgniteChance)
+            IStatBuilder nonCritAilmentChance, IStatBuilder critAilmentChance)
         {
             return CombineByWeightedAverage(
-                nonCritDamage.Value.Average, (1 - critChance.Value) * nonCritIgniteChance.Value.AsPercentage,
-                critDamage.Value.Average, critChance.Value * critIgniteChance.Value.AsPercentage);
+                nonCritDamage.Value.Average, (1 - critChance.Value) * nonCritAilmentChance.Value.AsPercentage,
+                critDamage.Value.Average, critChance.Value * critAilmentChance.Value.AsPercentage);
         }
 
         private ValueBuilder EnemyDamageTakenMultiplier(

@@ -6,6 +6,7 @@ using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Console;
 using PoESkillTree.Computation.Core;
@@ -17,6 +18,9 @@ namespace PoESkillTree.Computation.IntegrationTests
     [TestFixture]
     public class MechanicsTest
     {
+        private static readonly double Accuracy = (-2 + 2 * 90) + 1000;
+        private static readonly double ChanceToHit = Accuracy / (Accuracy + Math.Pow(1000, 0.8));
+
         private static IReadOnlyList<Modifier> _givenMods;
         private static IBuilderFactories _builderFactories;
         private static IMetaStatBuilders _metaStats;
@@ -33,19 +37,30 @@ namespace PoESkillTree.Computation.IntegrationTests
                         Build(_builderFactories.StatBuilders.Evasion.For(_builderFactories.EntityBuilders.Enemy)),
                         Form.BaseSet, new Constant(4000), new ModifierSource.Global()),
                     new Modifier(
-                        Build(_builderFactories.DamageTypeBuilders.Physical.Damage.Taken.For(_builderFactories
-                            .EntityBuilders.Enemy)),
+                        Build(_builderFactories.DamageTypeBuilders.Physical.Damage.WithHits
+                            .For(_builderFactories.EntityBuilders.Enemy)),
+                        Form.BaseSet, new Constant(1000), new ModifierSource.Global()),
+                    new Modifier(
+                        Build(_builderFactories.StatBuilders.Pool.From(Pool.Life)
+                            .For(_builderFactories.EntityBuilders.Enemy)),
+                        Form.BaseSet, new Constant(200), new ModifierSource.Global()),
+                    new Modifier(
+                        Build(_builderFactories.DamageTypeBuilders.Physical.Damage.Taken
+                            .For(_builderFactories.EntityBuilders.Enemy)),
                         Form.Increase, new Constant(20), new ModifierSource.Global()),
                     new Modifier(
-                        Build(_builderFactories.DamageTypeBuilders.Physical.Resistance.For(_builderFactories
-                            .EntityBuilders.Enemy)),
+                        Build(_builderFactories.DamageTypeBuilders.Physical.Resistance
+                            .For(_builderFactories.EntityBuilders.Enemy)),
                         Form.BaseSet, new Constant(60), new ModifierSource.Global()),
                     new Modifier(
                         Build(_builderFactories.StatBuilders.Level),
                         Form.BaseSet, new Constant(90), new ModifierSource.Global()),
                     new Modifier(
-                        Build(_builderFactories.DamageTypeBuilders.Physical.Damage),
-                        Form.BaseSet, new Constant(5), new ModifierSource.Global()))
+                        Build(_builderFactories.DamageTypeBuilders.Physical.Damage.WithSkills),
+                        Form.BaseSet, new Constant(5), new ModifierSource.Global()),
+                    new Modifier(
+                        Build(_builderFactories.StatBuilders.Accuracy),
+                        Form.BaseAdd, new Constant(1000), new ModifierSource.Global()))
                 .ToList();
         }
 
@@ -59,7 +74,6 @@ namespace PoESkillTree.Computation.IntegrationTests
                 .AddModifiers(_givenMods)
                 .AddModifier(Build(_metaStats.SkillHitDamageSource), Form.BaseSet, (int) DamageSource.Attack)
                 .AddModifier(Build(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack)), Form.BaseSet, 2)
-                .AddModifier(Build(_builderFactories.StatBuilders.Accuracy), Form.BaseAdd, 1000)
                 .AddModifier(Build(_builderFactories.ActionBuilders.CriticalStrike.Chance), Form.BaseSet, 10)
                 .AddModifier(Build(_builderFactories.DamageTypeBuilders.Physical.Penetration), Form.BaseAdd, 10)
                 .DoUpdate();
@@ -97,20 +111,18 @@ namespace PoESkillTree.Computation.IntegrationTests
             actual = nodes
                 .GetNode(BuildMainHandSkillSingle(_builderFactories.StatBuilders.ChanceToHit))
                 .Value.Single();
-            var expectedAccuracy = (-2 + 2 * 90) + 1000;
-            var expectedChanceToHit = 100 * expectedAccuracy / (expectedAccuracy + Math.Pow(1000, 0.8));
-            Assert.AreEqual(expectedChanceToHit, actual);
+            Assert.AreEqual(ChanceToHit * 100, actual);
             actual = nodes
                 .GetNode(BuildMainHandSkillSingle(_metaStats.AverageDamagePerHit))
                 .Value.Single();
-            var effectiveCritChance = 0.1 * expectedChanceToHit / 100;
+            var effectiveCritChance = 0.1 * ChanceToHit;
             var expectedAverageDamagePerHit = expectedDamageWithNonCrits * (1 - effectiveCritChance) +
                                               expectedDamageWithCrits * effectiveCritChance;
             Assert.AreEqual(expectedAverageDamagePerHit, actual);
             actual = nodes
                 .GetNode(BuildMainHandSkillSingle(_metaStats.AverageDamage))
                 .Value.Single();
-            var expectedAverageDamage = expectedAverageDamagePerHit * expectedChanceToHit / 100;
+            var expectedAverageDamage = expectedAverageDamagePerHit * ChanceToHit;
             Assert.AreEqual(expectedAverageDamage, actual);
             actual = nodes
                 .GetNode(Build(_metaStats.SkillDpsWithHits).Single())
@@ -146,6 +158,79 @@ namespace PoESkillTree.Computation.IntegrationTests
                 .Value.Single();
             var expectedSkillDpsWithDoTs = expectedDamageWithNonCrits;
             Assert.AreEqual(expectedSkillDpsWithDoTs, actual);
+        }
+
+        [Test]
+        public void BleedDps()
+        {
+            var calculator = Calculator.CreateCalculator();
+            var nodes = calculator.NodeRepository;
+
+            calculator.NewBatchUpdate()
+                .AddModifiers(_givenMods)
+                .AddModifier(Build(_metaStats.SkillHitDamageSource), Form.BaseSet, (int) DamageSource.Attack)
+                .AddModifier(Build(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack)), Form.BaseSet, 2)
+                .AddModifier(Build(_builderFactories.ActionBuilders.CriticalStrike.Chance), Form.BaseSet, 10)
+                .AddModifier(Build(_builderFactories.EffectBuilders.Ailment.Bleed.Chance), Form.BaseSet, 10)
+                .AddModifier(Build(_builderFactories.EffectBuilders.Ailment.Bleed.CriticalStrikesAlwaysInflict),
+                    Form.BaseSet, 1)
+                .DoUpdate();
+
+            var critChance = 0.1 * ChanceToHit;
+            var ailmentChanceNonCrits = 0.1;
+            var ailmentChanceCrits = 1;
+            var baseDamage = 5 * 0.7;
+            var nonCritDamage = baseDamage * (1 - 60 / 100d) * 1.2;
+            var critDamage = nonCritDamage * 1.5;
+            var expected = (nonCritDamage * (1 - critChance) * ailmentChanceNonCrits +
+                            critDamage * critChance * ailmentChanceCrits) /
+                           ((1 - critChance) * ailmentChanceNonCrits + critChance * ailmentChanceCrits);
+            var actual = nodes
+                .GetNode(Build(_metaStats.AilmentDps(Ailment.Bleed)).Single())
+                .Value.Single();
+            Assert.AreEqual(expected, actual, 1e-10);
+        }
+
+        [Test]
+        public void ResistanceAgainstPhysicalHits()
+        {
+            var calculator = Calculator.CreateCalculator();
+            var nodes = calculator.NodeRepository;
+
+            calculator.NewBatchUpdate()
+                .AddModifiers(_givenMods)
+                .AddModifier(Build(_builderFactories.StatBuilders.Armour), Form.BaseAdd, 4000)
+                .AddModifier(Build(_builderFactories.DamageTypeBuilders.Physical.Resistance), Form.BaseAdd, 50)
+                .DoUpdate();
+
+            var armour = 4000;
+            var enemyDamage = 1000d;
+            var expected = 50 + 100 * armour / (armour + 10 * enemyDamage);
+            var actual = nodes
+                .GetNode(Build(_metaStats.ResistanceAgainstHits(DamageType.Physical)).Single())
+                .Value.Single();
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void StunChance()
+        {
+            var calculator = Calculator.CreateCalculator();
+            var nodes = calculator.NodeRepository;
+
+            calculator.NewBatchUpdate()
+                .AddModifiers(_givenMods)
+                .AddModifier(Build(_metaStats.SkillHitDamageSource), Form.BaseSet, (int) DamageSource.Attack)
+                .AddModifier(Build(_builderFactories.StatBuilders.Armour), Form.BaseAdd, 4000)
+                .AddModifier(Build(_builderFactories.EffectBuilders.Stun.Threshold), Form.Increase, -100)
+                .DoUpdate();
+
+            var damage = 5 * 0.4 * 1.2 * ChanceToHit;
+            var expected = 200 * damage / (200 * 0.125);
+            var actual = nodes
+                .GetNode(Build(_builderFactories.EffectBuilders.Stun.Chance.With(AttackDamageHand.MainHand)).Single())
+                .Value.Single();
+            Assert.AreEqual(expected, actual);
         }
 
         private static IStat BuildMainHandSkillSingle(IDamageRelatedStatBuilder builder)
