@@ -31,36 +31,46 @@ namespace PoESkillTree.Computation.IntegrationTests
             var compRoot = new CompositionRoot();
             _builderFactories = compRoot.BuilderFactories;
             _metaStats = compRoot.MetaStats;
+            var modSource = new ModifierSource.Global();
             _givenMods = GivenStatsParser.Parse(compRoot.Parser, compRoot.GivenStats)
                 .Append(
                     new Modifier(
                         Build(_builderFactories.StatBuilders.Evasion.For(_builderFactories.EntityBuilders.Enemy)),
-                        Form.BaseSet, new Constant(4000), new ModifierSource.Global()),
+                        Form.BaseSet, new Constant(4000), modSource),
                     new Modifier(
                         Build(_builderFactories.DamageTypeBuilders.Physical.Damage.WithHits
                             .For(_builderFactories.EntityBuilders.Enemy)),
-                        Form.BaseSet, new Constant(1000), new ModifierSource.Global()),
+                        Form.BaseSet, new Constant(1000), modSource),
                     new Modifier(
                         Build(_builderFactories.StatBuilders.Pool.From(Pool.Life)
                             .For(_builderFactories.EntityBuilders.Enemy)),
-                        Form.BaseSet, new Constant(200), new ModifierSource.Global()),
+                        Form.BaseSet, new Constant(200), modSource),
                     new Modifier(
                         Build(_builderFactories.DamageTypeBuilders.Physical.Damage.Taken
                             .For(_builderFactories.EntityBuilders.Enemy)),
-                        Form.Increase, new Constant(20), new ModifierSource.Global()),
+                        Form.Increase, new Constant(20), modSource),
                     new Modifier(
                         Build(_builderFactories.DamageTypeBuilders.Physical.Resistance
                             .For(_builderFactories.EntityBuilders.Enemy)),
-                        Form.BaseSet, new Constant(60), new ModifierSource.Global()),
+                        Form.BaseSet, new Constant(60), modSource),
                     new Modifier(
                         Build(_builderFactories.StatBuilders.Level),
-                        Form.BaseSet, new Constant(90), new ModifierSource.Global()),
+                        Form.BaseSet, new Constant(90), modSource),
                     new Modifier(
                         Build(_builderFactories.DamageTypeBuilders.Physical.Damage.WithSkills),
-                        Form.BaseSet, new Constant(5), new ModifierSource.Global()),
+                        Form.BaseSet, new Constant(5), modSource),
                     new Modifier(
                         Build(_builderFactories.StatBuilders.Accuracy),
-                        Form.BaseAdd, new Constant(1000), new ModifierSource.Global()))
+                        Form.BaseAdd, new Constant(1000), modSource),
+                    new Modifier(
+                        Build(_metaStats.SkillHitDamageSource),
+                        Form.BaseSet, new Constant((int) DamageSource.Attack), modSource),
+                    new Modifier(
+                        Build(_metaStats.SkillUsesHand(AttackDamageHand.MainHand)),
+                        Form.BaseSet, new Constant(true), modSource),
+                    new Modifier(
+                        Build(_metaStats.SkillUsesHand(AttackDamageHand.OffHand)),
+                        Form.BaseSet, new Constant(true), modSource))
                 .ToList();
         }
 
@@ -72,7 +82,6 @@ namespace PoESkillTree.Computation.IntegrationTests
 
             calculator.NewBatchUpdate()
                 .AddModifiers(_givenMods)
-                .AddModifier(Build(_metaStats.SkillHitDamageSource), Form.BaseSet, (int) DamageSource.Attack)
                 .AddModifier(Build(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack)), Form.BaseSet, 2)
                 .AddModifier(Build(_builderFactories.ActionBuilders.CriticalStrike.Chance), Form.BaseSet, 10)
                 .AddModifier(Build(_builderFactories.DamageTypeBuilders.Physical.Penetration), Form.BaseAdd, 10)
@@ -168,7 +177,6 @@ namespace PoESkillTree.Computation.IntegrationTests
 
             calculator.NewBatchUpdate()
                 .AddModifiers(_givenMods)
-                .AddModifier(Build(_metaStats.SkillHitDamageSource), Form.BaseSet, (int) DamageSource.Attack)
                 .AddModifier(Build(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack)), Form.BaseSet, 2)
                 .AddModifier(Build(_builderFactories.ActionBuilders.CriticalStrike.Chance), Form.BaseSet, 10)
                 .AddModifier(Build(_builderFactories.EffectBuilders.Ailment.Bleed.Chance), Form.BaseSet, 10)
@@ -220,7 +228,6 @@ namespace PoESkillTree.Computation.IntegrationTests
 
             calculator.NewBatchUpdate()
                 .AddModifiers(_givenMods)
-                .AddModifier(Build(_metaStats.SkillHitDamageSource), Form.BaseSet, (int) DamageSource.Attack)
                 .AddModifier(Build(_builderFactories.StatBuilders.Armour), Form.BaseAdd, 4000)
                 .AddModifier(Build(_builderFactories.EffectBuilders.Stun.Threshold), Form.Increase, -100)
                 .DoUpdate();

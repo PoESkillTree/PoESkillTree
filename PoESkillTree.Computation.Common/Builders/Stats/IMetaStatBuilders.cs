@@ -69,5 +69,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder StunAvoidanceWhileCasting { get; }
 
         IStatBuilder SkillHitDamageSource { get; }
+        IStatBuilder SkillUsesHand(AttackDamageHand hand);
     }
 }

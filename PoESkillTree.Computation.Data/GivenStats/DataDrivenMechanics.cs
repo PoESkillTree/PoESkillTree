@@ -240,13 +240,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
 
                 // speed
-                {
-                    // This assumes cast rate is only set for the skill's hit damage source.
-                    TotalOverride, _stat.CastRate,
-                    (Stat.CastRate.With(AttackDamageHand.MainHand).Value +
-                     Stat.CastRate.With(AttackDamageHand.OffHand).Value) / 2
-                    + Stat.CastRate.With(DamageSource.Spell).Value + Stat.CastRate.With(DamageSource.Secondary).Value
-                },
+                { TotalOverride, _stat.CastRate, CombineSource(Stat.CastRate, CombineHandsByAverage) },
                 { TotalOverride, _stat.CastTime, _stat.CastRate.Value.Invert },
                 // resistances/damage reduction
                 { BaseSet, _stat.ResistanceAgainstHits(DamageType.Physical), Physical.Resistance.Value },
@@ -395,10 +389,13 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     TotalOverride, _stat.AilmentEffectiveInstances(Common.Builders.Effects.Ailment.Poison),
                     Ailment.Poison.Duration.Value * _stat.CastRate.Value *
                     CombineSource(_stat.AilmentEffectiveChance(Common.Builders.Effects.Ailment.Poison),
-                        s => (s.With(AttackDamageHand.MainHand).Value *
-                              Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value.AsPercentage +
-                              s.With(AttackDamageHand.OffHand).Value *
-                              Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value.AsPercentage) / 2)
+                        s => CombineByWeightedAverage(
+                            s.With(AttackDamageHand.MainHand).Value *
+                            Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value.AsPercentage,
+                            SkillUsesHandAsMultiplier(AttackDamageHand.MainHand),
+                            s.With(AttackDamageHand.OffHand).Value *
+                            Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value.AsPercentage,
+                            SkillUsesHandAsMultiplier(AttackDamageHand.OffHand)))
                 },
                 // stun (see https://pathofexile.gamepedia.com/Stun)
                 { PercentLess, Effect.Stun.Duration, Effect.Stun.Recovery.For(Enemy).Value * 100 },
@@ -533,18 +530,25 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 .Then(statToCombine.With(DamageSource.Secondary).Value)
                 .Else(0);
 
-        private static ValueBuilder CombineHandsByAverage(IDamageRelatedStatBuilder statToCombine)
-            => (statToCombine.With(AttackDamageHand.MainHand).Value +
-                statToCombine.With(AttackDamageHand.OffHand).Value) / 2;
+        private ValueBuilder CombineHandsByAverage(IDamageRelatedStatBuilder statToCombine)
+        {
+            var mhWeight = SkillUsesHandAsMultiplier(AttackDamageHand.MainHand);
+            var ohWeight = SkillUsesHandAsMultiplier(AttackDamageHand.OffHand);
+            return CombineByWeightedAverage(
+                statToCombine.With(AttackDamageHand.MainHand).Value, mhWeight,
+                statToCombine.With(AttackDamageHand.OffHand).Value, ohWeight);
+        }
 
         private Func<IDamageRelatedStatBuilder, ValueBuilder> CombineHandsForAverageAilmentDamage(
             Ailment ailment)
         {
             var ailmentChance = _stat.AilmentEffectiveChance(ailment);
             var mhWeight = Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value.AsPercentage *
-                           ailmentChance.With(AttackDamageHand.MainHand).Value;
+                           ailmentChance.With(AttackDamageHand.MainHand).Value *
+                           SkillUsesHandAsMultiplier(AttackDamageHand.MainHand);
             var ohWeight = Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value.AsPercentage *
-                           ailmentChance.With(AttackDamageHand.OffHand).Value;
+                           ailmentChance.With(AttackDamageHand.OffHand).Value *
+                           SkillUsesHandAsMultiplier(AttackDamageHand.OffHand);
             return statToCombine => CombineByWeightedAverage(
                 statToCombine.With(AttackDamageHand.MainHand).Value, mhWeight,
                 statToCombine.With(AttackDamageHand.OffHand).Value, ohWeight);
@@ -553,5 +557,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
         private static ValueBuilder CombineByWeightedAverage(
             ValueBuilder left, ValueBuilder leftWeight, ValueBuilder right, ValueBuilder rightWeight)
             => (left * leftWeight + right * rightWeight) / (leftWeight + rightWeight);
+
+        private ValueBuilder SkillUsesHandAsMultiplier(AttackDamageHand hand)
+            => ValueFactory.If(_stat.SkillUsesHand(hand).IsSet).Then(1).Else(0);
     }
 }

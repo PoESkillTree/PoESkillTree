@@ -141,5 +141,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder StunAvoidanceWhileCasting => FromIdentity("Stun.ChanceToAvoidWhileCasting", typeof(double));
 
         public IStatBuilder SkillHitDamageSource => FromIdentity(typeof(DamageSource));
+        public IStatBuilder SkillUsesHand(AttackDamageHand hand) => FromIdentity($"SkillUses.{hand}", typeof(bool));
     }
 }
