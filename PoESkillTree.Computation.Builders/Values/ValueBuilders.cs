@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Builders.Values
 
         public IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue) =>
             ValueBuilderImpl.Create(minimumValue, maximumValue, (o1, o2) => CalculateFromMinAndMax(o1, o2),
-                (l, r) => $"Value(min: {l}, max: {r}");
+                (l, r) => $"Value(min: {l}, max: {r})");
 
         private static NodeValue? CalculateFromMinAndMax(NodeValue? min, NodeValue? max) =>
             min.HasValue && max.HasValue

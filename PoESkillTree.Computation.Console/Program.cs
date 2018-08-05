@@ -9,6 +9,7 @@ using MoreLinq;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
@@ -70,8 +71,8 @@ namespace PoESkillTree.Computation.Console
                             QueryMods(statLine.Substring("query mods".Length));
                         else if (statLine.StartsWith("query"))
                             QueryStat(statLine.Substring("query".Length));
-                        else if (statLine.StartsWith("add"))
-                            SetStat(statLine.Substring("add".Length));
+                        else if (statLine.StartsWith("add "))
+                            SetStat(statLine.Substring("add ".Length));
                         else if (TryParse(statLine, out var mods, verbose: true))
                             AddMods(mods);
                         break;
@@ -158,8 +159,8 @@ namespace PoESkillTree.Computation.Console
                 return;
             }
             var mod = new Modifier(stats, Form.BaseAdd, new Constant(value), new ModifierSource.Global());
+            System.Console.WriteLine(mod);
             AddMods(new[] { mod });
-            System.Console.WriteLine($"Added mod:\n{mod}");
         }
 
         private IEnumerable<IStat> ParseStats(string stat)
@@ -201,8 +202,17 @@ namespace PoESkillTree.Computation.Console
                 case "cast rate":
                     parsedStats = Build(metaStats.CastRate);
                     return true;
+                case "chance to hit":
+                    parsedStats = Build(_compositionRoot.BuilderFactories.StatBuilders.ChanceToHit);
+                    return true;
                 case "hit damage source":
                     parsedStats = Build(metaStats.SkillHitDamageSource);
+                    return true;
+                case "uses main hand":
+                    parsedStats = Build(metaStats.SkillUsesHand(AttackDamageHand.MainHand));
+                    return true;
+                case "uses off hand":
+                    parsedStats = Build(metaStats.SkillUsesHand(AttackDamageHand.OffHand));
                     return true;
                 default:
                     parsedStats = null;
