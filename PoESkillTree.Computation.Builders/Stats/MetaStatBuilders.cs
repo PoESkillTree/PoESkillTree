@@ -142,5 +142,8 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder SkillHitDamageSource => FromIdentity(typeof(DamageSource));
         public IStatBuilder SkillUsesHand(AttackDamageHand hand) => FromIdentity($"SkillUses.{hand}", typeof(bool));
+
+        public IStatBuilder SelectedBandit => FromIdentity(typeof(Bandit));
+        public IStatBuilder SelectedQuestPart => FromIdentity(typeof(QuestPart));
     }
 }

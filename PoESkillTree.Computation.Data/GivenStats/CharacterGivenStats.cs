@@ -75,8 +75,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, CriticalStrike.Multiplier, 150 },
             // resistances
             { BaseSet, Physical.Resistance.Maximum, 90 },
-            { BaseSubtract, Elemental.Resistance.Maximum, 60 },
-            { BaseSubtract, Chaos.Resistance.Maximum, 60 },
             // traps, mines and totems
             { BaseSet, Traps.CombinedInstances.Maximum, 15 },
             { BaseSet, Mines.CombinedInstances.Maximum, 5 },

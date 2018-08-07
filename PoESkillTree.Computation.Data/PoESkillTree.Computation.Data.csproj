@@ -92,6 +92,7 @@
     <Compile Include="Collections\GivenStatCollection.cs" />
     <Compile Include="GivenStats\CharacterGivenStats.cs" />
     <Compile Include="GivenStats\CommonGivenStats.cs" />
+    <Compile Include="GivenStats\GameStateDependentMods.cs" />
     <Compile Include="GivenStats\GivenStatsCollection.cs" />
     <Compile Include="GivenStats\MonsterGivenStats.cs" />
     <Compile Include="GivenStats\TotemGivenStats.cs" />

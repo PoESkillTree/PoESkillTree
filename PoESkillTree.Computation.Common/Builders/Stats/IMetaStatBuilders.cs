@@ -70,5 +70,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         IStatBuilder SkillHitDamageSource { get; }
         IStatBuilder SkillUsesHand(AttackDamageHand hand);
+
+        IStatBuilder SelectedBandit { get; }
+        IStatBuilder SelectedQuestPart { get; }
     }
 }

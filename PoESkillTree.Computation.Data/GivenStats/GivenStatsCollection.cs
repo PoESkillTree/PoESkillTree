@@ -36,6 +36,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 new TotemGivenStats(_builderFactories, modifierBuilder),
                 new EffectStats(_builderFactories, modifierBuilder),
                 new DataDrivenMechanics(_builderFactories, modifierBuilder, _metaStatBuilders),
+                new GameStateDependentMods(_builderFactories, modifierBuilder, _metaStatBuilders),
             };
     }
 }
