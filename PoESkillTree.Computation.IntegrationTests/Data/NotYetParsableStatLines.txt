@@ -1,13 +1,4 @@
 ﻿// TODO not handled yet
-// - chill/shock effect
-5% increased effect of chill
-10% increased effect of chill
-15% increased effect of chill
-10% increased effect of shock
-15% increased effect of shock
-10% increased effect of non-damaging ailments on enemies
-15% increased effect of non-damaging ailments on enemies
-20% increased effect of non-damaging ailments on enemies
 // - charge gain at 1/3 of value
 2% chance to gain a Power, Frenzy or Endurance Charge on Kill
 8% chance to gain a Power, Frenzy or Endurance Charge on Kill

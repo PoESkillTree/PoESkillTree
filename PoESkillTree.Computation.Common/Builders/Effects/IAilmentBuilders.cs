@@ -1,3 +1,5 @@
+using PoESkillTree.Computation.Common.Builders.Stats;
+
 namespace PoESkillTree.Computation.Common.Builders.Effects
 {
     /// <summary>
@@ -19,5 +21,8 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         /// Gets a collection of all elemental ailments.
         /// </summary>
         IAilmentBuilderCollection Elemental { get; }
+
+        IStatBuilder ShockEffect { get; }
+        IStatBuilder ChillEffect { get; }
     }
 }

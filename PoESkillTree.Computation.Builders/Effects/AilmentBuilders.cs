@@ -3,6 +3,7 @@ using System.Linq;
 using EnumsNET;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Effects;
+using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Effects
 {
@@ -15,6 +16,8 @@ namespace PoESkillTree.Computation.Builders.Effects
             _allAilments = new AilmentBuilderCollection(statFactory, Enums.GetValues<Ailment>().ToList());
             Elemental = new AilmentBuilderCollection(statFactory,
                 new[] { Ailment.Ignite, Ailment.Shock, Ailment.Chill, Ailment.Freeze });
+            ShockEffect = StatBuilderUtils.FromIdentity(statFactory, "Shock.Effect", typeof(double));
+            ChillEffect = StatBuilderUtils.FromIdentity(statFactory, "Chill.Effect", typeof(double));
         }
 
         public IAilmentBuilder Ignite => _allAilments[Ailment.Ignite];
@@ -25,6 +28,8 @@ namespace PoESkillTree.Computation.Builders.Effects
         public IAilmentBuilder Poison => _allAilments[Ailment.Poison];
         public IAilmentBuilder From(Ailment ailment) => _allAilments[ailment];
         public IAilmentBuilderCollection Elemental { get; }
+        public IStatBuilder ShockEffect { get; }
+        public IStatBuilder ChillEffect { get; }
     }
 
     internal class AilmentBuilderCollection

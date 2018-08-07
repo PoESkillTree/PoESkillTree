@@ -232,6 +232,9 @@ namespace PoESkillTree.Computation.Data
                 { "chance to avoid elemental ailments", Ailment.Elemental.Select(a => a.Avoidance) },
                 { "({AilmentMatchers}) duration( on enemies)?", Reference.AsAilment.Duration },
                 { "duration of elemental ailments on enemies", Ailment.Elemental.Select(a => a.Duration) },
+                { "effect of shock", Ailment.ShockEffect },
+                { "effect of chill", Ailment.ChillEffect },
+                { "effect of non-damaging ailments on enemies", Ailment.ShockEffect, Ailment.ChillEffect },
                 // stun
                 { "chance to avoid being stunned", Effect.Stun.Avoidance },
                 { "stun and block recovery", Effect.Stun.Recovery, Block.Recovery },
