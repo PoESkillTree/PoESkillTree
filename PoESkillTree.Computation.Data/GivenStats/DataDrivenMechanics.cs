@@ -376,6 +376,18 @@ namespace PoESkillTree.Computation.Data.GivenStats
                         .If(Ailment.From(ailment).CriticalStrikesAlwaysInflict.IsSet).Then(100)
                         .Else(ailmentChance.Value)
                 },
+                { TotalOverride, Ailment.Chill.On(Self), 1, Ailment.Freeze.IsOn(Self) },
+                { PercentIncrease, Ailment.Shock.AddStat(Damage.Taken), _stat.IncreasedDamageTakenFromShocks.Value },
+                { BaseSet, _stat.IncreasedDamageTakenFromShocks, 20 },
+                { TotalOverride, _stat.IncreasedDamageTakenFromShocks.Maximum, 50 },
+                { TotalOverride, _stat.IncreasedDamageTakenFromShocks.Minimum, 1 },
+                {
+                    PercentReduce, Ailment.Chill.AddStat(Stat.AnimationSpeed),
+                    _stat.ReducedAnimationSpeedFromChill.Value
+                },
+                { BaseSet, _stat.ReducedAnimationSpeedFromChill, 10 },
+                { TotalOverride, _stat.ReducedAnimationSpeedFromChill.Maximum, 30 },
+                { TotalOverride, _stat.ReducedAnimationSpeedFromChill.Minimum, 1 },
                 // - AilmentEffectiveInstances
                 {
                     TotalOverride, _stat.AilmentEffectiveInstances(Common.Builders.Effects.Ailment.Ignite),

@@ -55,6 +55,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IDamageRelatedStatBuilder AilmentEffectiveChance(Ailment ailment);
         IStatBuilder AilmentCombinedEffectiveChance(Ailment ailment);
         IStatBuilder AilmentEffectiveInstances(Ailment ailment);
+        IStatBuilder IncreasedDamageTakenFromShocks { get; }
+        IStatBuilder ReducedAnimationSpeedFromChill { get; }
 
         IDamageRelatedStatBuilder EffectiveCritChance { get; }
 
