@@ -21,12 +21,6 @@ namespace PoESkillTree.Computation.Common
          * - This can affect nodes of all NodeTypes
          * - Modifies the output of affected nodes by rounding it.
          * - Affects all paths
-         * Default values:
-         * - Affects NodeType.BaseSet of the stat
-         * - Modifies the output by changing null to the default value if the BaseSet nodes of non-main, non-converted
-         *   paths are also null
-         * - With this, NodeValueAggregators.CalculateBaseSet() should default to null
-         * - Only affects the main path
          */
 
         public Behavior(IEnumerable<IStat> affectedStats, IEnumerable<NodeType> affectedNodeTypes,

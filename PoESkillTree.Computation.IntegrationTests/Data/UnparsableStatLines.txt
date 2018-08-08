@@ -14,6 +14,7 @@ Burning Arrow has a 10% chance to spread Tar if it does not Ignite an Enemy
 #% additional Chance to receive a Critical Strike
 #% increased Rarity of Items dropped by Enemies Shattered by Glacial Hammer
 Magma Orb has 10% increased Area of Effect per Chain
+each Spectral Throw Projectile gains 5% increased Damage each time it Hits
 // passive skills:
 10% Chance for Traps to Trigger an additional time
 Share Endurance, Frenzy and Power Charges with nearby party members

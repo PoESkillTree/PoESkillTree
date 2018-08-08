@@ -1,15 +1,4 @@
 ﻿// TODO not handled yet
-// - charge gain at 1/3 of value
-2% chance to gain a Power, Frenzy or Endurance Charge on Kill
-8% chance to gain a Power, Frenzy or Endurance Charge on Kill
-// - some concept for mana spending (the other stat is supported)
-removes all mana. Spend Life instead of Mana for Skills
-Spend Energy Shield before Mana for Skill Costs Energy Shield protects Mana instead of Life
-// - Crimson Dance's bleed mechanics (this is already split into two stats)
-you can inflict bleeding on an enemy up to 8 times your bleeding does not deal extra damage while the enemy is moving
-// - unique complex value conversion
-each Spectral Throw Projectile gains 5% increased Damage each time it Hits
-// - unique complex condition
 // - adds new sub skill
 can summon up to 3 Skeleton Mages with Summon Skeletons
 Animate Weapon can Animate up to 8 Ranged Weapons
@@ -23,5 +12,3 @@ Dual Strike deals Off-Hand Splash Damage to surrounding targets
 Glacial Hammer deals Cold-only Splash Damage to surrounding targets
 Single-target Melee attacks deal Splash Damage to surrounding targets
 50% less Damage to surrounding targets
-// - modifies skills
-Desecrate creates 2 additional Corpses

@@ -187,6 +187,11 @@ namespace PoESkillTree.Computation.Data
                 },
                 { @"\+# ({PoolStatMatchers}) gained", BaseAdd, Value, Reference.AsPoolStat.Gain },
                 // charges
+                {
+                    "#% chance to gain a power, frenzy or endurance charge",
+                    BaseAdd, Value / 3,
+                    Charge.Power.ChanceToGain, Charge.Frenzy.ChanceToGain, Charge.Endurance.ChanceToGain
+                },
                 // skills
                 // traps, mines, totems
                 {

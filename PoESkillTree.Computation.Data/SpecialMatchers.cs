@@ -96,6 +96,25 @@ namespace PoESkillTree.Computation.Data
                     "you can't deal damage with skills yourself",
                     TotalOverride, 0, Damage, Not(Or(With(Keyword.Totem), With(Keyword.Trap), With(Keyword.Mine)))
                 },
+                {
+                    // Blood Magic
+                    "spend life instead of mana for skills",
+                    BaseAdd, 100, Mana.Cost.ConvertTo(Life.Cost)
+                },
+                {
+                    // Eldritch Battery: Display both mana and energy shield costs
+                    "spend energy shield before mana for skill costs",
+                    BaseAdd, 100, Mana.Cost.GainAs(EnergyShield.Cost)
+                },
+                // - Crimson Dance
+                {
+                    "your bleeding does not deal extra damage while the enemy is moving",
+                    PercentLess, 50, Damage.With(Ailment.Bleed), Enemy.IsMoving
+                },
+                {
+                    "you can inflict bleeding on an enemy up to 8 times",
+                    BaseAdd, 7, Ailment.Bleed.InstancesOn(Self).Maximum
+                },
                 // Ascendancies
                 // - Juggernaut
                 {

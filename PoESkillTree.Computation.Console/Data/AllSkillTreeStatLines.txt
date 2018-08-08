@@ -540,7 +540,6 @@ You and your Minions have 1% additional Physical Damage Reduction for each Zombi
 20% increased Skill Effect Duration
 Your Offering Skills also affect you
 Minions deal 30% increased Damage
-Desecrate creates 2 additional Corpses
 40% increased Damage if you have consumed a corpse recently
 2% increased Attack and Cast Speed for each corpse consumed recently
 +10 to Dexterity
