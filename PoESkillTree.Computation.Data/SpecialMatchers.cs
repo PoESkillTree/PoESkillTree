@@ -166,6 +166,8 @@ namespace PoESkillTree.Computation.Data
                     Damage.WithHits, With(Keyword.Projectile)
                 },
                 { "accuracy rating is doubled", PercentMore, 100, Stat.Accuracy },
+                // - Occultist
+                { "your curses can apply to hexproof enemies", TotalOverride, 1, Flag.IgnoreHexproof },
                 // - Elementalist
                 {
                     "your elemental golems are immune to elemental damage",

@@ -180,6 +180,10 @@ namespace PoESkillTree.Computation.Data
                 // skills
                 { "cooldown recovery speed", Stat.CooldownRecoverySpeed },
                 { "mana cost( of skills)?", Mana.Cost },
+                {
+                    "mana cost of skills that place mines or throw traps",
+                    Mana.Cost, Or(With(Keyword.Mine), With(Keyword.Trap))
+                },
                 { "mana reserved", Mana.Reservation },
                 { "mana reservation of skills", Mana.Reservation },
                 { "skill effect duration", Stat.Duration },

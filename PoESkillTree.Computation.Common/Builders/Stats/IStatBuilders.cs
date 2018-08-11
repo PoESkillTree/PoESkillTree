@@ -1,3 +1,5 @@
+using System;
+
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
     /// <summary>
@@ -93,6 +95,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder DamageTakenGainedAsMana { get; }
 
         IStatBuilder LightRadius { get; }
+
+        /// <summary>
+        /// Returns stat with a value that can only be specified by the user.
+        /// </summary>
+        IStatBuilder Unique(string name, Type type);
 
 
         // Stats from sub factories

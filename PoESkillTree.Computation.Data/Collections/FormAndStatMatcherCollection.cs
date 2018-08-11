@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using MoreLinq;
 using PoESkillTree.Computation.Common.Builders.Conditions;
@@ -54,6 +55,11 @@ namespace PoESkillTree.Computation.Data.Collections
                 .WithValue(value)
                 .WithStats(stat.Concat(stats));
             Add(regex, builder);
+        }
+
+        public void Add([RegexPattern] string regex, IFormBuilder form, double value, params IStatBuilder[] stats)
+        {
+            Add(regex, form, value, stats.AsEnumerable());
         }
 
         /// <summary>

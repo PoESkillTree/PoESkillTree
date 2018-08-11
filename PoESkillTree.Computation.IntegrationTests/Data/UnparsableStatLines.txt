@@ -48,6 +48,9 @@ Cursed Enemies you or your Minions Kill have a 25% chance to Explode, dealing a 
 Energy Shield Recharge is not interrupted by Damage if Recharge began Recently
 // - Elementalist
 Elemental Ailments caused by your Skills spread to other nearby Enemies Radius: 18
+Chills from your Hits always Slow by at least 10%
+Shocks from your Hits always increase Damage taken by at least 20%
+Shocks from your Hits always increase Damage taken by at least 10%
 // - Gladiator
 1% additional Block Chance for each Hit you've Blocked in the past 10 seconds
 8% increased Physical Damage for each Hit you've Blocked in the past 10 seconds

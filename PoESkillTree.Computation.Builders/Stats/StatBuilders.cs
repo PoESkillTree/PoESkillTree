@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common;
+﻿using System;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -48,6 +49,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder LightRadius => FromIdentity(typeof(double));
         public IStatBuilder DamageTakenGainedAsMana =>
             FromIdentity("% of damage taken gained as mana over 4 seconds", typeof(int));
+
+        public IStatBuilder Unique(string name, Type type)
+            => FromIdentity(name, type, ExplicitRegistrationTypes.UserSpecifiedValue());
 
         public IAttributeStatBuilders Attribute => new AttributeStatBuilders(StatFactory);
         public IPoolStatBuilders Pool => new PoolStatBuilders(StatFactory);
@@ -158,6 +162,8 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder ShieldModifiersApplyToMinionsInstead =>
             FromIdentity("Modifiers on an equipped shield apply to your minions instead", typeof(bool));
+
+        public IStatBuilder IgnoreHexproof => FromIdentity(typeof(bool));
     }
 
     internal class GemStatBuilders : StatBuildersBase, IGemStatBuilders

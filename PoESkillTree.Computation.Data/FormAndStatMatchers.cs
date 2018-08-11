@@ -238,6 +238,10 @@ namespace PoESkillTree.Computation.Data
                 { "(you are )?immune to ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
                 { "cannot be ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
                 {
+                    "cannot be ({AilmentMatchers}) or ({AilmentMatchers})",
+                    TotalOverride, 100, References[0].AsAilment.Avoidance, References[1].AsAilment.Avoidance
+                },
+                {
                     "(immune to|cannot be affected by) elemental ailments",
                     TotalOverride, 100, Ailment.Elemental.Select(a => a.Avoidance)
                 },

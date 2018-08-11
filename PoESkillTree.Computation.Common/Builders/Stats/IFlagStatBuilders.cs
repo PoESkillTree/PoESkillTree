@@ -12,5 +12,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder IgnoreMovementSpeedPenalties { get; }
 
         IStatBuilder ShieldModifiersApplyToMinionsInstead { get; }
+
+        IStatBuilder IgnoreHexproof { get; }
     }
 }

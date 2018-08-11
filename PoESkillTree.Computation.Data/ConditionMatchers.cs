@@ -213,11 +213,17 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "(with|of|for|from) ({KeywordMatchers})( skills)?", With(Reference.AsKeyword) },
                 { "({KeywordMatchers}) skills (have|deal)", With(Reference.AsKeyword) },
+                { "projectiles deal", With(Keyword.Projectile) },
                 // - by damage type
                 { "with ({DamageTypeMatchers}) skills", With(Reference.AsDamageType) },
                 // - by single skill
                 { "({SkillMatchers})('|s)?( fires| has a| have a| has| deals| gain)?", With(Reference.AsSkill) },
                 { "(dealt by) ({SkillMatchers})", With(Reference.AsSkill) },
+                {
+                    "({SkillMatchers}) and ({SkillMatchers})",
+                    Or(With(References[0].AsSkill), With(References[1].AsSkill))
+                },
+                { "while you have an? ({SkillMatchers}) summoned", Reference.AsSkill.Instances.Value > 0 },
                 // - cast recently/in past x seconds
                 { "if you've cast a spell recently,?", Skills[Keyword.Spell].Cast.Recently },
                 { "if you've attacked recently,?", Skills[Keyword.Attack].Cast.Recently },

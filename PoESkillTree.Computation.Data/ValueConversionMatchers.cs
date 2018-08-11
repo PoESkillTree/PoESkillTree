@@ -62,6 +62,16 @@ namespace PoESkillTree.Computation.Data
                 { "for each mine", Mines.CombinedInstances.Value },
                 { "for each trap and mine you have", Traps.CombinedInstances.Value + Mines.CombinedInstances.Value },
                 { "per totem", Totems.CombinedInstances.Value },
+                // unique
+                {
+                    "for each poison you have inflicted recently",
+                    Stat.Unique("# of Poisons inflicted Recently", typeof(int)).Value
+                },
+                {
+                    "for each remaining chain",
+                    Projectile.ChainCount.Value -
+                    Stat.Unique("# of times the Active Skill has Chained", typeof(int)).Value
+                },
             };
     }
 }

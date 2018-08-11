@@ -1,7 +1,6 @@
 ﻿// TODO not handled yet
-// - skill/keyword specific cost and reservation
+// - skill/keyword specific reservation
 25% reduced mana reservation of herald skills
-25% reduced Mana Cost of Skills that place Mines or throw Traps
 // - unsupported buffs from ascendancies
 +1000 Evasion Rating while you have Tailwind
 If you've used a Skill Recently, you and nearby Allies have Tailwind
@@ -21,24 +20,10 @@ Gain Adrenaline for 20 seconds when you reach Low Life if you do not have Adrena
 +0.1% to Critical Strike Chance per Poison affecting Enemy, up to +2.0%
 10% increased Effect of Tailwind on you for each Skill you've used Recently, up to 100%
 1% of Energy Shield Regenerated per second for each Enemy you or your Minions have Killed Recently, up to 30%
-// - references specific skills
-100% increased Blink Arrow and Mirror Arrow Cooldown Recovery Speed
-50% increased Convocation Cooldown Recovery Speed
+// - references specific buffs from skills
 Damage penetrates 25% Cold Resistance while affected by Herald of Ice
 Damage penetrates 25% Fire Resistance while affected by Herald of Ash
 Damage penetrates 25% Lightning Resistance while affected by Herald of Thunder
-You cannot be Chilled or Frozen while you have an Ice Golem Summoned
-You cannot be Ignited while you have a Flame Golem Summoned
-You cannot be Shocked while you have a Lightning Golem Summoned
-// - requires unique value multiplier
-5% increased Poison Duration for each Poison you have inflicted Recently
-Projectiles deal 10% more Damage for each remaining Chain
-// - requires Hexproof or something in general to stop buffs from applying
-Your Curses can apply to Hexproof Enemies
-// - minimum effect of ailments from your hits
-Chills from your Hits always Slow by at least 10%
-Shocks from your Hits always increase Damage taken by at least 20%
-Shocks from your Hits always increase Damage taken by at least 10%
 // - requires IStatBuilder.ValueFor(NodeType, ModifierSource)
 +5 to Evasion Rating per 1 Maximum Energy Shield on Helmet
 +1 to maximum Energy Shield per 6 Evasion Rating on Body Armour
