@@ -92,8 +92,18 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         IKeywordBuilder Warcry { get; }
 
         /// <summary>
+        /// Equivalent to the gem tag.
+        /// </summary>
+        IKeywordBuilder Herald { get; }
+
+        /// <summary>
         /// Has no equivalent gem tag or ActiveSkillType.
         /// </summary>
         IKeywordBuilder Offering { get; }
+
+        /// <summary>
+        /// Equivalent to the ActiveSkillType "trigger_attack"
+        /// </summary>
+        IKeywordBuilder CounterAttack { get; }
     }
 }

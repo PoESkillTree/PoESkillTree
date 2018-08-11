@@ -53,6 +53,10 @@ namespace PoESkillTree.Computation.Data
                 { "take ({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage.Taken },
                 { "damage taken", Damage.Taken },
                 { "damage taken from damage over time", Damage.Taken.With(DamageSource.OverTime) },
+                {
+                    "({DamageTypeMatchers}) damage from hits taken as fire damage",
+                    Reference.AsDamageType.HitDamageTakenAs(DamageType.Fire)
+                },
                 // - penetration
                 // - crit
                 { "(global )?critical strike multiplier", CriticalStrike.Multiplier.WithSkills },
@@ -61,7 +65,7 @@ namespace PoESkillTree.Computation.Data
                 { "projectile speed", Projectile.Speed },
                 { "arrow speed", Projectile.Speed, With(Keyword.Bow) },
                 // - other
-                { "accuracy rating", Stat.Accuracy },
+                { "(global )?accuracy rating", Stat.Accuracy },
                 // defense
                 // - life, mana, defences; see also PoolStatMatchers
                 { "armour", Armour },
@@ -115,7 +119,9 @@ namespace PoESkillTree.Computation.Data
                 { "chance to block spells and attacks", ApplyOnce(Block.SpellChance, Block.AttackChance) },
                 // - other
                 { "chance to dodge attacks", Stat.Dodge.AttackChance },
-                { "chance to dodge spell damage", Stat.Dodge.SpellChance },
+                { "chance to dodge attack hits", Stat.Dodge.AttackChance },
+                { "chance to dodge spell hits", Stat.Dodge.SpellChance },
+                { "chance to dodge attack and spell hits", Stat.Dodge.AttackChance, Stat.Dodge.SpellChance },
                 { "chance to evade( attacks)?", Evasion.Chance },
                 { "chance to evade projectile attacks", Evasion.ChanceAgainstProjectileAttacks },
                 { "chance to evade melee attacks", Evasion.ChanceAgainstMeleeAttacks },
@@ -175,6 +181,7 @@ namespace PoESkillTree.Computation.Data
                 { "cooldown recovery speed", Stat.CooldownRecoverySpeed },
                 { "mana cost( of skills)?", Mana.Cost },
                 { "mana reserved", Mana.Reservation },
+                { "mana reservation of skills", Mana.Reservation },
                 { "skill effect duration", Stat.Duration },
                 { "warcry duration", Stat.Duration, With(Keyword.Warcry) },
                 { "curse duration", Stat.Duration, With(Keyword.Curse) },
@@ -198,10 +205,9 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "maximum number of spectres", Skills.RaiseSpectre.Instances.Maximum },
                 { "maximum number of zombies", Skills.RaiseZombie.Instances.Maximum },
-                {
-                    "skeleton duration",
-                    Stat.Duration, Or(With(Skills.SummonSkeleton), With(Skills.VaalSummonSkeletons))
-                },
+                { "minion duration", Stat.Duration, With(Keyword.Minion) },
+                { "skeleton duration", Stat.Duration, WithSkeletonSkills },
+                { "skeleton movement speed", Stat.MovementSpeed.For(Entity.Minion), WithSkeletonSkills },
                 { "golem at a time", Golems.CombinedInstances.Maximum },
                 // buffs
                 { "chance to gain ({BuffMatchers})", Reference.AsBuff.Chance },
@@ -214,6 +220,7 @@ namespace PoESkillTree.Computation.Data
                     Buffs(Entity.Minion).With(Keyword.Golem, Cold).Effect,
                     Buffs(Entity.Minion).With(Keyword.Golem, Lightning).Effect
                 },
+                { "effect of heralds on you", Buffs(targets: Self).With(Keyword.Herald).Effect },
                 { "effect of your curses", Buffs(Self).With(Keyword.Curse).Effect },
                 { "effect of curses on you", Buffs(targets: Self).With(Keyword.Curse).Effect },
                 { "effect of non-curse auras you cast", Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).Effect },
@@ -221,7 +228,7 @@ namespace PoESkillTree.Computation.Data
                 { "effect of fortify on you", Buff.Fortify.Effect },
                 { "chance for attacks to maim on hit", Buff.Maim.Chance, With(Keyword.Attack) },
                 { "chance to taunt", Buff.Taunt.Chance },
-                { "chance to blind enemies", Buff.Blind.Chance },
+                { "chance to blind( enemies)?", Buff.Blind.Chance },
                 // ailments
                 { "chance to ({AilmentMatchers})( the enemy)?", Reference.AsAilment.Chance },
                 {
@@ -261,7 +268,7 @@ namespace PoESkillTree.Computation.Data
                 { "rarity of items found", Stat.ItemRarity },
                 // range and area of effect
                 { "area of effect", Stat.AreaOfEffect },
-                { "melee weapon and unarmed range", Stat.Range, With(Keyword.Melee) },
+                { "melee weapon and unarmed attack range", Stat.Range, With(Keyword.Melee) },
                 { "melee weapon range", Stat.Range, And(With(Keyword.Melee), MainHand.HasItem) },
                 // other
                 { "rampage stacks", Stat.RampageStacks },

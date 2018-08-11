@@ -49,6 +49,8 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         /// </summary>
         IBuffBuilder Phasing { get; }
 
+        IBuffBuilder ArcaneSurge { get; }
+
         /// <summary>
         /// Gets a buff factory that creates Conflux buffs.
         /// </summary>
@@ -59,9 +61,16 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         /// <para> Whether the buff is currently active needs to be selected by the user. </para>
         /// </summary>
         IStatBuilder Temporary(IStatBuilder gainedStat);
+        
+        /// <summary>
+        /// Returns a stat representing Self gaining <paramref name="gainedStat"/> as part of a buff rotation.
+        /// <para> The buff is part of a buff rotation and is active when the current step is
+        /// <paramref name="condition"/>. The current step needs to be selected by the user. </para>
+        /// </summary>
+        IStatBuilder Temporary<T>(IStatBuilder gainedStat, T condition) where T : struct, Enum;
 
         /// <summary>
-        /// Returns a stat representing Self gaining <paramref name="buff"/> gained as part of a rotation.
+        /// Returns a stat representing Self gaining <paramref name="buff"/> as part of a rotation.
         /// <para> The buff is part of a buff rotation and is active when the current step is
         /// <paramref name="condition"/>. The current step needs to be selected by the user. </para>
         /// </summary>

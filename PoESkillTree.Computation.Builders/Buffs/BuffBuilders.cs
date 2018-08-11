@@ -4,7 +4,6 @@ using System.Linq;
 using EnumsNET;
 using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Entities;
-using PoESkillTree.Computation.Builders.Skills;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -32,6 +31,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
             Onslaught = Create("Onslaught");
             UnholyMight = Create("UnholyMight");
             Phasing = Create("Phasing");
+            ArcaneSurge = Create("ArcaneSurge");
             Conflux = new ConfluxBuffBuilders(statFactory);
             CurseLimit = StatBuilderUtils.FromIdentity(statFactory, "CurseLimit", typeof(int));
 
@@ -45,13 +45,14 @@ namespace PoESkillTree.Computation.Builders.Buffs
                 new BuffBuilderWithKeywords(Onslaught),
                 new BuffBuilderWithKeywords(UnholyMight),
                 new BuffBuilderWithKeywords(Phasing),
+                new BuffBuilderWithKeywords(ArcaneSurge),
                 new BuffBuilderWithKeywords(Conflux.Chilling),
                 new BuffBuilderWithKeywords(Conflux.Elemental),
                 new BuffBuilderWithKeywords(Conflux.Igniting),
                 new BuffBuilderWithKeywords(Conflux.Shocking),
-                // Generic buff effect increase
+                // Generic buff effect increase (used for Buff())
                 new BuffBuilderWithKeywords(Create("Buff")),
-                // Aura effect increase
+                // Aura effect increase (used for Aura())
                 new BuffBuilderWithKeywords(Create("Aura"), Keyword.Aura),
             };
             var skillBuffBuilders = skillBuffs
@@ -72,6 +73,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
         public IBuffBuilder Onslaught { get; }
         public IBuffBuilder UnholyMight { get; }
         public IBuffBuilder Phasing { get; }
+        public IBuffBuilder ArcaneSurge { get; }
         public IConfluxBuffBuilders Conflux { get; }
 
         public IStatBuilder Temporary(IStatBuilder gainedStat)
@@ -87,17 +89,25 @@ namespace PoESkillTree.Computation.Builders.Buffs
             }
         }
 
+        public IStatBuilder Temporary<T>(IStatBuilder gainedStat, T condition) where T : struct, Enum
+        {
+            var statBuilder = gainedStat
+                .WithCondition(new ValueConditionBuilder(ps => BuildTemporaryBuffCondition(condition, ps)));
+            return MultiplyValueByEffectModifier(statBuilder, "Buff");
+        }
+
         public IStatBuilder Temporary<T>(IBuffBuilder buff, T condition) where T : struct, Enum
         {
-            return buff.On(new ModifierSourceEntityBuilder()).WithCondition(new ValueConditionBuilder(BuildCondition));
+            return buff.On(new ModifierSourceEntityBuilder())
+                .WithCondition(new ValueConditionBuilder(ps => BuildTemporaryBuffCondition(condition, ps)));
+        }
 
-            IValue BuildCondition(BuildParameters parameters)
-            {
-                var stat = _statFactory.FromIdentity($"Current {parameters.ModifierSource} stage",
-                    parameters.ModifierSourceEntity, typeof(T), ExplicitRegistrationTypes.UserSpecifiedValue());
-                return new ConditionalValue(c => (int) c.GetValue(stat).Single() == Enums.ToInt32(condition),
-                    $"{stat} == {condition}");
-            }
+        private IValue BuildTemporaryBuffCondition<T>(T condition, BuildParameters parameters) where T : struct, Enum
+        {
+            var stat = _statFactory.FromIdentity($"Current {parameters.ModifierSource} stage",
+                parameters.ModifierSourceEntity, typeof(T), ExplicitRegistrationTypes.UserSpecifiedValue());
+            return new ConditionalValue(c => (int) c.GetValue(stat).Single() == Enums.ToInt32(condition),
+                $"{stat} == {condition}");
         }
 
         public IStatBuilder Buff(IStatBuilder gainedStat, params IEntityBuilder[] affectedEntites)

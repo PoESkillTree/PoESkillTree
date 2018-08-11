@@ -54,6 +54,8 @@ namespace PoESkillTree.Computation.Data
                 { "per poison on enemy", Ailment.Poison.InstancesOn(Enemy).Value },
                 // skills
                 { "for each zombie you own", Skills.RaiseZombie.Instances.Value },
+                { "for each summoned golem", Golems.CombinedInstances.Value },
+                { "for each golem you have summoned", Golems.CombinedInstances.Value },
                 { "for each type of golem you have summoned", Golems.CombinedInstances.Value },
                 // traps, mines, totems
                 { "for each trap", Traps.CombinedInstances.Value },

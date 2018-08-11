@@ -77,6 +77,10 @@ namespace PoESkillTree.Computation.Builders.Damage
             return new DamageTakenConversionBuilder(_statFactory, takenFrom);
         }
 
+        public IStatBuilder HitDamageTakenAs(DamageType type) =>
+            new StatBuilder(_statFactory,
+                CoreStat((e, t) => _statFactory.FromIdentity($"{t}.HitDamageTakenAs({type})", e, typeof(int))));
+
 
         public IDamageRelatedStatBuilder Penetration =>
             DamageRelatedStatBuilder.Create(_statFactory, new CompositeCoreStatBuilder(

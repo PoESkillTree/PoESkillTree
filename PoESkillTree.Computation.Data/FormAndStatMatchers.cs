@@ -145,6 +145,10 @@ namespace PoESkillTree.Computation.Data
                     "you take #% reduced extra damage from critical strikes",
                     PercentReduce, Value, CriticalStrike.ExtraDamageTaken
                 },
+                {
+                    "you take no extra damage from critical strikes",
+                    PercentLess, 100, CriticalStrike.ExtraDamageTaken
+                },
                 // regen and recharge 
                 // (need to be FormAndStatMatcher because they also exist with flat values)
                 {
@@ -186,16 +190,21 @@ namespace PoESkillTree.Computation.Data
                     BaseSubtract, Value.PercentOf(Reference.AsStat), Reference.AsPoolStat.Gain
                 },
                 { @"\+# ({PoolStatMatchers}) gained", BaseAdd, Value, Reference.AsPoolStat.Gain },
+                { @"gain \+# ({PoolStatMatchers})", BaseAdd, Value, Reference.AsPoolStat.Gain },
                 // charges
                 {
                     "#% chance to gain a power, frenzy or endurance charge",
                     BaseAdd, Value / 3,
                     Charge.Power.ChanceToGain, Charge.Frenzy.ChanceToGain, Charge.Endurance.ChanceToGain
                 },
+                {
+                    "(?<!chance to |when you )gain an? ({ChargeTypeMatchers})",
+                    BaseAdd, 100, Reference.AsChargeType.ChanceToGain
+                },
                 // skills
                 // traps, mines, totems
                 {
-                    "detonating mines is instant", 
+                    "detonating mines is instant",
                     TotalOverride, double.PositiveInfinity, Stat.CastRate, With(Skills.DetonateMines)
                 },
                 // minions
@@ -209,7 +218,7 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 1, Reference.AsBuff.On(Self)
                 },
                 {
-                    "you can have one additional curse", 
+                    "you can have one additional curse",
                     BaseAdd, 1, Buff.CurseLimit
                 },
                 {
@@ -226,7 +235,7 @@ namespace PoESkillTree.Computation.Data
                     "(you )?can afflict an additional ignite on an enemy",
                     BaseAdd, 1, Ailment.Ignite.InstancesOn(Enemy).Maximum
                 },
-                { "you are immune to ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
+                { "(you are )?immune to ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
                 { "cannot be ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
                 {
                     "(immune to|cannot be affected by) elemental ailments",

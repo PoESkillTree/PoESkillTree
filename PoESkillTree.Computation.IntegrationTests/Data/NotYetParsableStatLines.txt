@@ -1,9 +1,56 @@
 ﻿// TODO not handled yet
+// - skill/keyword specific cost and reservation
+25% reduced mana reservation of herald skills
+25% reduced Mana Cost of Skills that place Mines or throw Traps
+// - unsupported buffs from ascendancies
++1000 Evasion Rating while you have Tailwind
+If you've used a Skill Recently, you and nearby Allies have Tailwind
+10% increased Effect of Tailwind on you for each Skill you've used Recently, up to 100%
+Gain 1 Rage when you Kill an Enemy
+Cannot be Stunned while you have at least 25 Rage
+10% chance to gain 1 Rage when you Hit a Rare or Unique Enemy
+Gain 5 Rage when you use a Warcry
+Effects granted for having Rage are Doubled
+Cannot be Stunned while you have at least 25 Rage
+Enemies you Curse have Malediction
+Gain Adrenaline for 20 seconds when you reach Low Life if you do not have Adrenaline
+10% chance to Cover Rare or Unique Enemies in Ash for 10 Seconds on Hit
+// - "for each ..., up to #%"
+1% Life Regenerated per Second for each of your Mines Detonated Recently, up to 20%
+1% Life Regenerated per Second for each of your Traps Triggered Recently, up to 20%
++0.1% to Critical Strike Chance per Poison affecting Enemy, up to +2.0%
+10% increased Effect of Tailwind on you for each Skill you've used Recently, up to 100%
+1% of Energy Shield Regenerated per second for each Enemy you or your Minions have Killed Recently, up to 30%
+// - references specific skills
+100% increased Blink Arrow and Mirror Arrow Cooldown Recovery Speed
+50% increased Convocation Cooldown Recovery Speed
+Damage penetrates 25% Cold Resistance while affected by Herald of Ice
+Damage penetrates 25% Fire Resistance while affected by Herald of Ash
+Damage penetrates 25% Lightning Resistance while affected by Herald of Thunder
+You cannot be Chilled or Frozen while you have an Ice Golem Summoned
+You cannot be Ignited while you have a Flame Golem Summoned
+You cannot be Shocked while you have a Lightning Golem Summoned
+// - requires unique value multiplier
+5% increased Poison Duration for each Poison you have inflicted Recently
+Projectiles deal 10% more Damage for each remaining Chain
+// - requires Hexproof or something in general to stop buffs from applying
+Your Curses can apply to Hexproof Enemies
+// - minimum effect of ailments from your hits
+Chills from your Hits always Slow by at least 10%
+Shocks from your Hits always increase Damage taken by at least 20%
+Shocks from your Hits always increase Damage taken by at least 10%
+// - requires IStatBuilder.ValueFor(NodeType, ModifierSource)
++5 to Evasion Rating per 1 Maximum Energy Shield on Helmet
++1 to maximum Energy Shield per 6 Evasion Rating on Body Armour
+// - modifies sub skill
+Raised Zombies' Slam Attack has 100% increased Area of Effect
+Raised Zombies' Slam Attack has 100% increased Cooldown Recovery Speed
 // - adds new sub skill
 can summon up to 3 Skeleton Mages with Summon Skeletons
+summon 2 additional skeleton warriors with summon skeleton
 Animate Weapon can Animate up to 8 Ranged Weapons
 Minions explode when reduced to Low Life, dealing 33% of their maximum Life as Fire Damage to surrounding Enemies
-Your Minions spread Caustic Cloud on Death, dealing 10% of their maximum Life as Chaos Damage per second
+Your Raised Zombies spread Caustic Cloud on Death, dealing 50% of their maximum Life as Chaos Damage per second
 // - adds new parts for skills
 Barrage fires an additional 2 projectiles simultaneously on the first and final attacks
 Burning Arrow has a 10% chance to spread Burning Ground if it Ignites an Enemy

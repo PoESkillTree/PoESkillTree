@@ -20,7 +20,9 @@ namespace PoESkillTree.Computation.Builders.Skills
         public IKeywordBuilder Golem { get; } = From(Keyword.Golem);
         public IKeywordBuilder Minion { get; } = From(Keyword.Minion);
         public IKeywordBuilder Warcry { get; } = From(Keyword.Warcry);
+        public IKeywordBuilder Herald { get; } = From(Keyword.Herald);
         public IKeywordBuilder Offering { get; } = From(Keyword.Offering);
+        public IKeywordBuilder CounterAttack { get; } = From(Keyword.CounterAttack);
 
         private static IKeywordBuilder From(Keyword keyword) => new KeywordBuilder(keyword);
     }

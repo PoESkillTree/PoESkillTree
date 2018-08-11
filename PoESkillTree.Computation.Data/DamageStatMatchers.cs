@@ -34,12 +34,14 @@ namespace PoESkillTree.Computation.Data
             {
                 // unspecific
                 { "damage", Damage },
+                { "global damage", Damage },
                 // by source
                 { "attack damage", Damage.WithSkills(DamageSource.Attack) },
                 { "spell damage", Damage.WithSkills(DamageSource.Spell) },
                 { "damage over time", Damage.With(DamageSource.OverTime) },
                 // by type
                 { "({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage },
+                { "global ({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage },
                 { "damage of a random element", RandomElement.Damage },
                 // by skill vs. ailment
                 { "damage with hits and ailments", Damage.WithHitsAndAilments },
@@ -72,6 +74,8 @@ namespace PoESkillTree.Computation.Data
                     "physical projectile attack damage",
                     Physical.Damage.WithSkills(DamageSource.Attack), With(Keyword.Projectile)
                 },
+                // other entities
+                { "minion damage", Damage.For(Entity.Minion) },
             }; //add
     }
 }

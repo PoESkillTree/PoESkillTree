@@ -129,7 +129,19 @@ namespace PoESkillTree.Computation.Data
                     "armour received from body armour is doubled",
                     PercentMore, 100, Armour, Condition.BaseValueComesFrom(ItemSlot.BodyArmour)
                 },
+                { "gain accuracy rating equal to your strength", BaseAdd, Attribute.Strength.Value, Stat.Accuracy },
                 { "#% increased attack speed per # accuracy rating", UndeniableAttackSpeed().ToArray() },
+                {
+                    "gain an endurance charge every second if you've been hit recently",
+                    TotalOverride, 100, Charge.Endurance.ChanceToGain,
+                    Action.Unique("Every second if you've been Hit recently").On
+                },
+                // - Berserker
+                {
+                    "recover #% of life and mana when you use a warcry",
+                    (BaseAdd, Value.PercentOf(Life), Life.Gain, Skills[Keyword.Warcry].Cast.On),
+                    (BaseAdd, Value.PercentOf(Mana), Mana.Gain, Skills[Keyword.Warcry].Cast.On)
+                },
                 // - Chieftain
                 {
                     "totems are immune to fire damage",
@@ -153,11 +165,8 @@ namespace PoESkillTree.Computation.Data
                     Value * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
                     Damage.WithHits, With(Keyword.Projectile)
                 },
+                { "accuracy rating is doubled", PercentMore, 100, Stat.Accuracy },
                 // - Elementalist
-                {
-                    "#% increased damage of each damage type for which you have a matching golem",
-                    LiegeOfThePrimordialDamage().ToArray()
-                },
                 {
                     "your elemental golems are immune to elemental damage",
                     TotalOverride, 100, Elemental.Resistance.For(Entity.Minion), And(With(Keyword.Golem), WithElemental)
@@ -180,11 +189,38 @@ namespace PoESkillTree.Computation.Data
                     "#% reduced damage taken of that element",
                     ParagonOfCalamityDamageTaken().ToArray()
                 },
+                { "cannot take reflected elemental damage", PercentLess, 100, Elemental.ReflectedDamageTaken },
+                {
+                    "gain #% increased area of effect for # seconds",
+                    PercentIncrease, Values[0],
+                    Buff.Temporary(Stat.AreaOfEffect, PendulumOfDestructionStep.AreaOfEffect)
+                },
+                {
+                    "gain #% increased elemental damage for # seconds",
+                    PercentIncrease, Values[0],
+                    Buff.Temporary(Elemental.Damage, PendulumOfDestructionStep.ElementalDamage)
+                },
                 // - Necromancer
                 {
                     "your offering skills also affect you",
-                    TotalOverride, 1,
-                    Buffs(Self, Entity.Minion).With(Keyword.Offering).ApplyToEntity(Self)
+                    TotalOverride, 1, Buffs(Self, Entity.Minion).With(Keyword.Offering).ApplyToEntity(Self)
+                },
+                {
+                    "your offerings have #% reduced effect on you",
+                    PercentLess, 50, Buffs(Self, Self).With(Keyword.Offering).Effect
+                },
+                {
+                    "summoned skeletons' hits can't be evaded",
+                    TotalOverride, 100, Stat.ChanceToHit.For(Entity.Minion), With(Skills.SummonSkeleton)
+                },
+                // - Gladiator
+                {
+                    "attacks maim on hit against bleeding enemies",
+                    TotalOverride, 100, Buff.Maim.Chance, With(Keyword.Attack).And(Ailment.Bleed.IsOn(Enemy))
+                },
+                {
+                    "your counterattacks deal double damage",
+                    TotalOverride, 100, Damage.ChanceToDouble, With(Keyword.CounterAttack)
                 },
                 // - Champion
                 {
@@ -192,12 +228,17 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 1, Buff.Intimidate.On(Enemy),
                     Action.Unique("On Hit against a full life Enemy").On
                 },
+                {
+                    "enemies taunted by you cannot evade attacks",
+                    TotalOverride, 0, Evasion.For(Enemy), Buff.Taunt.IsOn(Self, Enemy)
+                },
                 // - Slayer
-                { 
-                    "your damaging hits always stun enemies that are on full life", 
+                {
+                    "your damaging hits always stun enemies that are on full life",
                     TotalOverride, 100, Effect.Stun.Chance,
                     Action.Unique("On damaging Hit against a full life Enemy").On
                 },
+                { "cannot take reflected physical damage", PercentLess, 100, Physical.ReflectedDamageTaken },
                 // - Inquisitor
                 {
                     "critical strikes ignore enemy monster elemental resistances",
@@ -231,6 +272,11 @@ namespace PoESkillTree.Computation.Data
                     "using warcries is instant",
                     TotalOverride, double.PositiveInfinity, Stat.CastRate, With(Keyword.Warcry)
                 },
+                {
+                    "#% additional block chance for # seconds every # seconds",
+                    BaseAdd, Values[0], Block.AttackChance,
+                    Condition.Unique("Is the additional Block Chance from Bastion of Hope active?")
+                },
                 // - Assassin
                 {
                     // Ascendant
@@ -239,10 +285,13 @@ namespace PoESkillTree.Computation.Data
                     And(With(Keyword.Attack), CriticalStrike.On)
                 },
                 // - Trickster
+                { "movement skills cost no mana", TotalOverride, 0, Mana.Cost, With(Keyword.Movement) },
                 {
-                    "movement skills cost no mana",
-                    TotalOverride, 0, Mana.Cost, With(Keyword.Movement)
+                    "your hits have #% chance to gain #% of non-chaos damage as extra chaos damage",
+                    BaseAdd, Values[0] * Values[1] / 100, Chaos.Invert.Damage.WithHits.GainAs(Chaos.Damage.WithHits)
                 },
+                // - Saboteur
+                { "nearby enemies are blinded", TotalOverride, 1, Buff.Blind.On(Enemy), Enemy.IsNearby },
             };
 
         private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat, IConditionBuilder condition)>
@@ -253,6 +302,7 @@ namespace PoESkillTree.Computation.Data
             {
                 IValueBuilder PerAccuracy(ValueBuilder value) =>
                     ValueBuilderUtils.PerStat(Stat.Accuracy.With(hand), Values[1])(value);
+
                 yield return (PercentIncrease, PerAccuracy(Values[0]), attackSpeed.With(hand), Condition.True);
             }
         }
@@ -269,16 +319,6 @@ namespace PoESkillTree.Computation.Data
                 var otherTypes = ElementalDamageTypes.Except(type);
                 yield return (BaseSubtract, Values[1], type.Resistance.For(Enemy),
                     And(Not(EnemyHitBy(type)), otherTypes.Select(EnemyHitBy).ToArray()));
-            }
-        }
-
-        private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat, IConditionBuilder condition)>
-            LiegeOfThePrimordialDamage()
-        {
-            foreach (var type in AllDamageTypes)
-            {
-                var condition = Skills[Keyword.Golem, type].CombinedInstances.Value > 0;
-                yield return (PercentIncrease, Value, type.Damage, condition);
             }
         }
 
@@ -326,6 +366,13 @@ namespace PoESkillTree.Computation.Data
             {
                 yield return (PercentReduce, Value, type.Damage.Taken, Action.HitWith(type).By(Enemy).Recently);
             }
+        }
+
+        public enum PendulumOfDestructionStep
+        {
+            None,
+            AreaOfEffect,
+            ElementalDamage
         }
     }
 }

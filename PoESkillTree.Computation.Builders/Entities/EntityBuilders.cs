@@ -2,6 +2,7 @@
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
+using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Builders.Entities
 {
@@ -26,6 +27,10 @@ namespace PoESkillTree.Computation.Builders.Entities
 
             public IConditionBuilder IsNearby => StatBuilderUtils.ConditionFromIdentity(_statFactory, "Enemy.IsNearby",
                 ExplicitRegistrationTypes.UserSpecifiedValue());
+
+            public ValueBuilder CountNearby
+                => StatBuilderUtils.FromIdentity(_statFactory, "Enemy.CountNearby", typeof(int),
+                    ExplicitRegistrationTypes.UserSpecifiedValue()).Value;
 
             public IConditionBuilder IsRare => StatBuilderUtils.ConditionFromIdentity(_statFactory, "Enemy.IsRare",
                 ExplicitRegistrationTypes.UserSpecifiedValue());

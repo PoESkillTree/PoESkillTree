@@ -4,7 +4,9 @@ using System.Linq;
 using EnumsNET;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -46,12 +48,17 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 Buff.UnholyMight,
                 BaseAdd, Physical.Damage.WithHitsAndAilments.GainAs(Chaos.Damage.WithHitsAndAilments), 30
             },
+            { Buff.ArcaneSurge, PercentMore, Damage.WithSkills(DamageSource.Spell), 10 },
+            { Buff.ArcaneSurge, PercentIncrease, Stat.CastRate.With(DamageSource.Spell), 10 },
+            { Buff.ArcaneSurge, BaseAdd, Mana.Regen.Percent, 0.5 },
             { Buff.Conflux.Igniting, BaseSet, Ailment.Ignite.Source(AnyDamageType), 1 },
             { Buff.Conflux.Shocking, BaseSet, Ailment.Shock.Source(AnyDamageType), 1 },
             { Buff.Conflux.Chilling, BaseSet, Ailment.Chill.Source(AnyDamageType), 1 },
             { Buff.Conflux.Elemental, BaseSet, Ailment.Ignite.Source(AnyDamageType), 1 },
             { Buff.Conflux.Elemental, BaseSet, Ailment.Shock.Source(AnyDamageType), 1 },
             { Buff.Conflux.Elemental, BaseSet, Ailment.Chill.Source(AnyDamageType), 1 },
+            // other effects
+            { Ground.Consecrated, BaseAdd, Life.Regen, 6 },
         };
     }
 }

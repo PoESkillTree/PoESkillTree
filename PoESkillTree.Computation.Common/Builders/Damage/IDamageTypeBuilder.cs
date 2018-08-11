@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
@@ -53,6 +52,12 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         /// from the given pool before being taken from another pool.
         /// </summary>
         IDamageTakenConversionBuilder DamageTakenFrom(IPoolStatBuilder pool);
+
+        /// <summary>
+        /// Returns a stat representing the percentage of hit damage of the damage types in this collection that is
+        /// taken as the given damage type instead.
+        /// </summary>
+        IStatBuilder HitDamageTakenAs(DamageType type);
 
         /// <summary>
         /// Gets a stat representing the amount of enemy resistances of the damage types in this collection penetrated
