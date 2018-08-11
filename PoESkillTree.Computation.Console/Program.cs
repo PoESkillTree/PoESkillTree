@@ -64,6 +64,9 @@ namespace PoESkillTree.Computation.Console
                     case "add given":
                         AddGivenStats();
                         break;
+                    case "update SkillTreeStatLines":
+                        StatLinesUpdater.UpdateSkillTreeStatLines();
+                        break;
                     default:
                         if (statLine.StartsWith("listen"))
                             Listen(statLine.Substring("listen".Length));
@@ -349,7 +352,7 @@ namespace PoESkillTree.Computation.Console
         }
 
         private static IEnumerable<string> ReadStatLines()
-            => File.ReadAllLines("Data/AllSkillTreeStatLines.txt").Where(s => !s.StartsWith("//"));
+            => File.ReadAllLines("Data/SkillTreeStatLines.txt").Where(s => !s.StartsWith("//"));
     }
 
 

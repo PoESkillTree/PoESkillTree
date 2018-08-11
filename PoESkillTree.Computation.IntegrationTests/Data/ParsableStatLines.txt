@@ -1,4 +1,4 @@
-// Example parsable stat lines (not including those in AllSkillTreeStatLines)
+// Example parsable stat lines (not including those in SkillTreeStatLines)
 10% increased armour per grand spectrum
 Gain 30 Mana per Grand Spectrum
 Adds 1 to Maximum Life
