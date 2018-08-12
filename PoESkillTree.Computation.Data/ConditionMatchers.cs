@@ -168,6 +168,7 @@ namespace PoESkillTree.Computation.Data
                 { "while there is only one nearby enemy", Enemy.CountNearby.Eq(1) },
                 // buffs
                 { "while you have ({BuffMatchers})", Reference.AsBuff.IsOn(Self) },
+                { "while affected by ({SkillMatchers})", Reference.AsSkill.Buff.IsOn(Self) },
                 { "during onslaught", Buff.Onslaught.IsOn(Self) },
                 { "while phasing", Buff.Phasing.IsOn(Self) },
                 { "if you've taunted an enemy recently", Buff.Taunt.Action.Recently },
@@ -217,8 +218,9 @@ namespace PoESkillTree.Computation.Data
                 // - by damage type
                 { "with ({DamageTypeMatchers}) skills", With(Reference.AsDamageType) },
                 // - by single skill
-                { "({SkillMatchers})('|s)?( fires| has a| have a| has| deals| gain)?", With(Reference.AsSkill) },
-                { "(dealt by) ({SkillMatchers})", With(Reference.AsSkill) },
+                { "({SkillMatchers})", With(Reference.AsSkill) },
+                { "({SkillMatchers})('|s)? (fires|has a|have a|has|deals|gain)", With(Reference.AsSkill) },
+                { "dealt by ({SkillMatchers})", With(Reference.AsSkill) },
                 {
                     "({SkillMatchers}) and ({SkillMatchers})",
                     Or(With(References[0].AsSkill), With(References[1].AsSkill))
