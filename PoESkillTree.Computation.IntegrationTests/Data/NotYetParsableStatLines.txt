@@ -14,12 +14,6 @@ Cannot be Stunned while you have at least 25 Rage
 Enemies you Curse have Malediction
 Gain Adrenaline for 20 seconds when you reach Low Life if you do not have Adrenaline
 10% chance to Cover Rare or Unique Enemies in Ash for 10 Seconds on Hit
-// - "for each ..., up to #%"
-1% Life Regenerated per Second for each of your Mines Detonated Recently, up to 20%
-1% Life Regenerated per Second for each of your Traps Triggered Recently, up to 20%
-+0.1% to Critical Strike Chance per Poison affecting Enemy, up to +2.0%
-10% increased Effect of Tailwind on you for each Skill you've used Recently, up to 100%
-1% of Energy Shield Regenerated per second for each Enemy you or your Minions have Killed Recently, up to 30%
 // - requires IStatBuilder.ValueFor(NodeType, ModifierSource)
 +5 to Evasion Rating per 1 Maximum Energy Shield on Helmet
 +1 to maximum Energy Shield per 6 Evasion Rating on Body Armour

@@ -152,7 +152,7 @@ namespace PoESkillTree.Computation.Data
                 // regen and recharge 
                 // (need to be FormAndStatMatcher because they also exist with flat values)
                 {
-                    "#% of ({PoolStatMatchers}) regenerated per second",
+                    "#%( of)? ({PoolStatMatchers}) regenerated per second",
                     BaseAdd, Value, Reference.AsPoolStat.Regen.Percent
                 },
                 {

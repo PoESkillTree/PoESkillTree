@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -35,6 +37,10 @@ namespace PoESkillTree.Computation.Data
                     "per enemy killed by you or your totems recently",
                     Kill.CountRecently + Kill.By(Entity.Totem).CountRecently
                 },
+                {
+                    "for each enemy you or your minions have killed recently, up to #%",
+                    CappedMultiplier(Kill.CountRecently + Kill.By(Entity.Minion).CountRecently, Value)
+                },
                 { "for each hit you've blocked recently", Block.CountRecently },
                 { "for each corpse consumed recently", Action.ConsumeCorpse.CountRecently },
                 // equipment
@@ -52,6 +58,10 @@ namespace PoESkillTree.Computation.Data
                 // ailments
                 { "for each poison on the enemy", Ailment.Poison.InstancesOn(Enemy).Value },
                 { "per poison on enemy", Ailment.Poison.InstancesOn(Enemy).Value },
+                {
+                    @"per poison affecting enemy, up to \+#%",
+                    CappedMultiplier(Ailment.Poison.InstancesOn(Enemy).Value, Value)
+                },
                 // skills
                 { "for each zombie you own", Skills.RaiseZombie.Instances.Value },
                 { "for each summoned golem", Golems.CombinedInstances.Value },
@@ -72,6 +82,19 @@ namespace PoESkillTree.Computation.Data
                     Projectile.ChainCount.Value -
                     Stat.Unique("# of times the Active Skill has Chained", typeof(int)).Value
                 },
-            };
+                {
+                    "for each of your mines detonated recently, up to #%",
+                    CappedMultiplier(Stat.Unique("# of Mines Detonated Recently", typeof(int)).Value, Value)
+                },
+                {
+                    "for each of your traps triggered recently, up to #%",
+                    CappedMultiplier(Stat.Unique("# of Traps Triggered Recently", typeof(int)).Value, Value)
+                },
+            }; // add
+
+        private Func<ValueBuilder, ValueBuilder> CappedMultiplier(ValueBuilder multiplier, ValueBuilder maximum)
+        {
+            return v => ValueFactory.Minimmum(v * multiplier, maximum);
+        }
     }
 }

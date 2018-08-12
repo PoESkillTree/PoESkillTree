@@ -52,6 +52,9 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         public static ValueBuilder PercentOf(this ValueBuilder value, IStatBuilder stat) =>
             value.AsPercentage * stat.Value;
 
+        public static ValueBuilder Minimmum(this IValueBuilders valueFactory, ValueBuilder left, ValueBuilder right)
+            => valueFactory.If(left > right).Then(right).Else(left);
+
         /// <summary>
         /// Builds a function from <paramref name="points"/> by interpolating linearly between each two consecutive
         /// points. Returns a value equal to the function applied to <paramref name="xStat"/>'s value.

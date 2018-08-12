@@ -69,13 +69,13 @@ namespace PoESkillTree.Computation.IntegrationTests
 
         private static string[] ReadParsableStatLines()
         {
-            var unparsable = ReadUnparsableStatLines().ToHashSet();
+            var unparsable = ReadUnparsableStatLines().Select(s => s.ToLowerInvariant()).ToHashSet();
 
             var unparsedGivenStats = new GivenStatsCollection(null, null).SelectMany(s => s.GivenStatLines);
             return ReadStatLines("SkillTreeStatLines")
                 .Concat(ReadStatLines("ParsableStatLines"))
                 .Concat(unparsedGivenStats)
-                .Where(s => !unparsable.Contains(s))
+                .Where(s => !unparsable.Contains(s.ToLowerInvariant()))
                 .ToArray();
         }
 
@@ -90,8 +90,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             return File.ReadAllLines(TestContext.CurrentContext.TestDirectory + $"/Data/{fileName}.txt")
                 .Where(s => !s.StartsWith("//", StringComparison.Ordinal))
-                .Distinct()
-                .Select(s => s.ToLowerInvariant());
+                .Distinct();
         }
 
         [Test, TestCaseSource(nameof(ParsingReturnsCorrectModifiers_TestCases))]
