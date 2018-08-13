@@ -30,6 +30,7 @@ namespace PoESkillTree.Computation.Data
                 { "unholy might", Buff.UnholyMight },
                 { "phasing", Buff.Phasing },
                 { "arcane surge", Buff.ArcaneSurge },
+                { "tailwind", Buff.Tailwind },
             };
     }
 }

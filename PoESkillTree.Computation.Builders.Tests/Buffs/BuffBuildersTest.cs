@@ -111,7 +111,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         public void BuffsWithoutParametersCountBuildsToCorrectValue()
         {
             // Buff properties + conflux + dummy buff and aura + passed buff skills
-            var expected = 9 + 4 + 2 + 3;
+            var expected = 11 + 4 + 2 + 3;
             // For every source entity
             expected *= Enums.GetMemberCount<Entity>();
             var context = Mock.Of<IValueCalculationContext>(c =>
@@ -127,7 +127,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         public void BuffsWithParamtersCountBuildsToCorrectValue()
         {
             // Buff properties + conflux + dummy buff and aura + passed buff skills
-            var expected = 9 + 4 + 2 + 3;
+            var expected = 11 + 4 + 2 + 3;
             var source = new ModifierSourceEntityBuilder();
             var target = new ModifierSourceEntityBuilder();
             var context = Mock.Of<IValueCalculationContext>(c =>

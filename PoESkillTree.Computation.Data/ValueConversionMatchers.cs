@@ -67,6 +67,10 @@ namespace PoESkillTree.Computation.Data
                 { "for each summoned golem", Golems.CombinedInstances.Value },
                 { "for each golem you have summoned", Golems.CombinedInstances.Value },
                 { "for each type of golem you have summoned", Golems.CombinedInstances.Value },
+                {
+                    "for each skill you've used Recently, up to #%",
+                    CappedMultiplier(AllSkills.Cast.CountRecently, Value)
+                },
                 // traps, mines, totems
                 { "for each trap", Traps.CombinedInstances.Value },
                 { "for each mine", Mines.CombinedInstances.Value },

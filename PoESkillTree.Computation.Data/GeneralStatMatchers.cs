@@ -217,6 +217,7 @@ namespace PoESkillTree.Computation.Data
                 { "chance to gain ({BuffMatchers})", Reference.AsBuff.Chance },
                 { "({BuffMatchers}) duration", Reference.AsBuff.Duration },
                 { "({BuffMatchers}) effect", Reference.AsBuff.Effect },
+                { "effect of ({BuffMatchers}) on you", Reference.AsBuff.Effect },
                 { "effect of buffs granted by your golems", Buffs(Entity.Minion).With(Keyword.Golem).Effect },
                 {
                     "effect of buffs granted by your elemental golems",
@@ -229,10 +230,10 @@ namespace PoESkillTree.Computation.Data
                 { "effect of curses on you", Buffs(targets: Self).With(Keyword.Curse).Effect },
                 { "effect of non-curse auras you cast", Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).Effect },
                 { "chance to fortify", Buff.Fortify.Chance },
-                { "effect of fortify on you", Buff.Fortify.Effect },
                 { "chance for attacks to maim on hit", Buff.Maim.Chance, With(Keyword.Attack) },
                 { "chance to taunt", Buff.Taunt.Chance },
                 { "chance to blind( enemies)?", Buff.Blind.Chance },
+                { "chance to cover rare or unique enemies in ash", Buff.CoveredInAsh.Chance, Enemy.IsRareOrUnique },
                 // ailments
                 { "chance to ({AilmentMatchers})( the enemy)?", Reference.AsAilment.Chance },
                 {

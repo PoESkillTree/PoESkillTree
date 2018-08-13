@@ -166,8 +166,18 @@ namespace PoESkillTree.Computation.Data
                     Damage.WithHits, With(Keyword.Projectile)
                 },
                 { "accuracy rating is doubled", PercentMore, 100, Stat.Accuracy },
+                {
+                    "if you've used a skill recently, you and nearby allies have tailwind",
+                    TotalOverride, 1, Buff.Tailwind.On(Self).CombineWith(Buff.Tailwind.On(Ally)),
+                    AllSkills.Cast.Recently
+                },
                 // - Occultist
                 { "your curses can apply to hexproof enemies", TotalOverride, 1, Flag.IgnoreHexproof },
+                {
+                    "enemies you curse have malediction",
+                    (PercentReduce, 10, Buff.Buff(Damage, Enemy), Buffs(Self, Enemy).With(Keyword.Curse).Any()),
+                    (PercentIncrease, 10, Buff.Buff(Damage.Taken, Enemy), Buffs(Self, Enemy).With(Keyword.Curse).Any())
+                },
                 // - Elementalist
                 {
                     "your elemental golems are immune to elemental damage",
@@ -233,6 +243,14 @@ namespace PoESkillTree.Computation.Data
                 {
                     "enemies taunted by you cannot evade attacks",
                     TotalOverride, 0, Evasion.For(Enemy), Buff.Taunt.IsOn(Self, Enemy)
+                },
+                {
+                    "gain adrenaline for # seconds when you reach low life if you do not have adrenaline",
+                    (PercentIncrease, 100, Buff.Buff(Damage, Self), Condition.Unique("Do you have Adrenaline?")),
+                    (PercentIncrease, 25, Buff.Buff(Stat.CastRate, Self), Condition.Unique("Do you have Adrenaline?")),
+                    (PercentIncrease, 25, Buff.Buff(Stat.MovementSpeed, Self),
+                        Condition.Unique("Do you have Adrenaline?")),
+                    (BaseAdd, 10, Buff.Buff(Physical.Resistance, Self), Condition.Unique("Do you have Adrenaline?"))
                 },
                 // - Slayer
                 {

@@ -112,6 +112,7 @@ namespace PoESkillTree.Computation.Data
                 { "removes all mana", TotalOverride, 0, Mana },
                 { "converts all evasion rating to armour", TotalOverride, 100, Evasion.ConvertTo(Armour) },
                 { "cannot evade enemy attacks", TotalOverride, 0, Evasion.Chance },
+                { @"\+# evasion rating", BaseAdd, Value, Evasion },
                 // - resistances
                 { "immune to ({DamageTypeMatchers}) damage", TotalOverride, 100, Reference.AsDamageType.Resistance },
                 { @"\+#% elemental resistances", BaseAdd, Value, Elemental.Resistance },
