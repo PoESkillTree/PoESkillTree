@@ -76,7 +76,6 @@ namespace PoESkillTree.Computation.Data
                 new ChargeTypeMatchers(_builderFactories.ChargeTypeBuilders),
                 new DamageTypeMatchers(_builderFactories.DamageTypeBuilders),
                 new BuffMatchers(_builderFactories.BuffBuilders),
-                new ItemSlotMatchers(_builderFactories.ItemSlotBuilders),
                 new KeywordMatchers(_builderFactories.KeywordBuilders),
                 new SkillMatchers(skillNames, _builderFactories.SkillBuilders.FromName),
             };
