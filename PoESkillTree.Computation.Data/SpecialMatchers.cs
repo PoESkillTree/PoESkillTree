@@ -142,6 +142,10 @@ namespace PoESkillTree.Computation.Data
                     (BaseAdd, Value.PercentOf(Life), Life.Gain, Skills[Keyword.Warcry].Cast.On),
                     (BaseAdd, Value.PercentOf(Mana), Mana.Gain, Skills[Keyword.Warcry].Cast.On)
                 },
+                {
+                    "effects granted for having rage are doubled",
+                    PercentMore, 100, Charge.RageEffect
+                },
                 // - Chieftain
                 {
                     "totems are immune to fire damage",

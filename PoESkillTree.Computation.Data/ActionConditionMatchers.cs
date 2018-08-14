@@ -40,6 +40,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 // kill
                 { "on ({KeywordMatchers}) kill", And(With(Reference.AsKeyword), Kill.On) },
+                { "when you kill an enemy", Kill.On },
                 { "if you or your totems kill an enemy", Or(Kill.On, Kill.By(Entity.Totem).On) },
                 // hit
                 { "when you are hit", Hit.By(Enemy).On },

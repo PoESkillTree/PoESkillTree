@@ -161,7 +161,7 @@ namespace PoESkillTree.Computation.Data
                     "maximum ({ChargeTypeMatchers}) and maximum ({ChargeTypeMatchers})",
                     ApplyOnce(References[0].AsChargeType.Amount.Maximum, References[1].AsChargeType.Amount.Maximum)
                 },
-                { "chance to (gain|grant) an? ({ChargeTypeMatchers})", Reference.AsChargeType.ChanceToGain },
+                { "chance to (gain|grant) (an?|1) ({ChargeTypeMatchers})", Reference.AsChargeType.ChanceToGain },
                 {
                     "chance to (gain|grant) an? ({ChargeTypeMatchers}) and an? ({ChargeTypeMatchers})",
                     References[0].AsChargeType.ChanceToGain, References[1].AsChargeType.ChanceToGain

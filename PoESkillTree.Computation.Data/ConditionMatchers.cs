@@ -155,6 +155,7 @@ namespace PoESkillTree.Computation.Data
                 // - charges
                 { "while you have no ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Value <= 0 },
                 { "while you have an? ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Value > 0 },
+                { "while you have at least # ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Value >= Value },
                 {
                     "while (at maximum|on full) ({ChargeTypeMatchers})",
                     Reference.AsChargeType.Amount.Value >= Reference.AsChargeType.Amount.Maximum.Value

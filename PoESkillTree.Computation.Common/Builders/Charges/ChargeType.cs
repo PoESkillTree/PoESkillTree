@@ -4,6 +4,7 @@
     {
         Endurance,
         Frenzy,
-        Power
+        Power,
+        Rage
     }
 }

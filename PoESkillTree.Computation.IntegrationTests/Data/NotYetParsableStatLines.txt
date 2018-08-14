@@ -1,13 +1,6 @@
 ﻿// TODO not handled yet
 // - skill/keyword specific reservation
 25% reduced mana reservation of herald skills
-// - rage
-Gain 1 Rage when you Kill an Enemy
-Cannot be Stunned while you have at least 25 Rage
-10% chance to gain 1 Rage when you Hit a Rare or Unique Enemy
-Gain 5 Rage when you use a Warcry
-Effects granted for having Rage are Doubled
-Cannot be Stunned while you have at least 25 Rage
 // - requires IStatBuilder.ValueFor(NodeType, ModifierSource)
 +5 to Evasion Rating per 1 Maximum Energy Shield on Helmet
 +1 to maximum Energy Shield per 6 Evasion Rating on Body Armour

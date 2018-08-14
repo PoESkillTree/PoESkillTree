@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
+using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -60,7 +63,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             "Minions deal 2% increased Damage per 10 Rampage Stacks",
             "Minions gain 1% increased Movement Speed per 10 Rampage Stacks",
         };
-        
+
         public IReadOnlyList<IIntermediateModifier> GivenModifiers => _lazyGivenStats.Value;
 
         private GivenStatCollection CreateCollection() => new GivenStatCollection(_modifierBuilder, ValueFactory)
@@ -79,6 +82,22 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Traps.CombinedInstances.Maximum, 15 },
             { BaseSet, Mines.CombinedInstances.Maximum, 5 },
             { BaseSet, Totems.CombinedInstances.Maximum, 1 },
+            // rage
+            { BaseSet, Charge.Rage.Amount.Maximum, 50 },
+            { BaseSet, Charge.RageEffect, 1 },
+            {
+                PercentIncrease, Damage.WithSkills(DamageSource.Attack),
+                Charge.Rage.Amount.Value * Charge.RageEffect.Value
+            },
+            {
+                PercentIncrease, Stat.CastRate.With(DamageSource.Attack),
+                PerStat(Charge.Rage.Amount, 2) * Charge.RageEffect.Value
+            },
+            { PercentIncrease, Stat.MovementSpeed, PerStat(Charge.Rage.Amount, 5) * Charge.RageEffect.Value },
+            { BaseSubtract, Life.Regen.Percent, 0.1 * Charge.Rage.Amount.Value * Charge.RageEffect.Value },
         };
+
+        private static ValueBuilder PerStat(IStatBuilder stat, double divideBy)
+            => (stat.Value / divideBy).Select(Math.Floor, o => $"Floor({o})");
     }
 }

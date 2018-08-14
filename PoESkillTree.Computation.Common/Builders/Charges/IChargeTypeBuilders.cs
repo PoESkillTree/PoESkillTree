@@ -27,5 +27,8 @@ namespace PoESkillTree.Computation.Common.Builders.Charges
         /// an action condition, e.g. "on hit").
         /// </summary>
         IDamageRelatedStatBuilder ChanceToSteal { get; }
+
+        IChargeTypeBuilder Rage { get; }
+        IStatBuilder RageEffect { get; }
     }
 }
