@@ -1,4 +1,6 @@
-﻿using PoESkillTree.Computation.Builders.Actions;
+﻿using System;
+using System.Runtime.CompilerServices;
+using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Buffs;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
@@ -32,9 +34,15 @@ namespace PoESkillTree.Computation.Builders.Skills
             new ActionBuilder(_statFactory, CoreBuilder.UnaryOperation(_coreBuilder, d => $"{d.SkillName}.Cast"),
                 new ModifierSourceEntityBuilder());
 
-        public IStatBuilder Instances =>
-            new StatBuilder(_statFactory, new CoreStatBuilderFromCoreBuilder<SkillDefinition>(_coreBuilder,
-                    (e, d) => _statFactory.FromIdentity($"{d.SkillName}.Instances", e, typeof(int))));
+        public IStatBuilder Instances => CreateStatBuilder(typeof(int));
+
+        public IStatBuilder Reservation => CreateStatBuilder(typeof(int));
+
+        public IStatBuilder ReservationPool => CreateStatBuilder(typeof(Pool));
+
+        private IStatBuilder CreateStatBuilder(Type dataType, [CallerMemberName] string identitySuffix = null)
+            => new StatBuilder(_statFactory, new CoreStatBuilderFromCoreBuilder<SkillDefinition>(_coreBuilder,
+                (e, d) => _statFactory.FromIdentity($"{d.SkillName}.{identitySuffix}", e, dataType)));
 
         public ValueBuilder SkillId =>
             new ValueBuilder(new ValueBuilderImpl(

@@ -23,5 +23,15 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         /// (cast by Self).
         /// </summary>
         IStatBuilder CombinedInstances { get; }
+
+        /// <summary>
+        /// The percentage of a pool skills in this collection reserve.
+        /// </summary>
+        IStatBuilder Reservation { get; }
+
+        /// <summary>
+        /// The pool skills in this collection reserve.
+        /// </summary>
+        IStatBuilder ReservationPool { get; }
     }
 }

@@ -99,7 +99,8 @@ namespace PoESkillTree.Computation.Data
                 {
                     // Blood Magic
                     "spend life instead of mana for skills",
-                    BaseAdd, 100, Mana.Cost.ConvertTo(Life.Cost)
+                    (BaseAdd, 100, Mana.Cost.ConvertTo(Life.Cost), Condition.True),
+                    (TotalOverride, (int) Pool.Life, AllSkills.ReservationPool, Condition.True)
                 },
                 {
                     // Eldritch Battery: Display both mana and energy shield costs

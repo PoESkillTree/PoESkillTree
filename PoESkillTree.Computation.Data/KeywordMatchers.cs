@@ -33,6 +33,7 @@ namespace PoESkillTree.Computation.Data
                 { "area", Keyword.AreaOfEffect },
                 { "spells?", Keyword.Spell },
                 { "warcry", Keyword.Warcry },
+                { "herald", Keyword.Herald },
             };
     }
 }

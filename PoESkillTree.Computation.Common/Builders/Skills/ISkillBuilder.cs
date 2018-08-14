@@ -23,6 +23,16 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         IStatBuilder Instances { get; }
 
         /// <summary>
+        /// The percentage of a pool this skill reserves.
+        /// </summary>
+        IStatBuilder Reservation { get; }
+
+        /// <summary>
+        /// The pool this skill's reservation uses.
+        /// </summary>
+        IStatBuilder ReservationPool { get; }
+
+        /// <summary>
         /// This skill's identifier.
         /// </summary>
         ValueBuilder SkillId { get; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Skills;
 
@@ -19,7 +20,15 @@ namespace PoESkillTree.Computation.Builders.Skills
         }
 
         public ISkillBuilderCollection this[params IKeywordBuilder[] keywords] =>
-            new SkillBuilderCollection(_statFactory, keywords);
+            new SkillBuilderCollection(_statFactory, keywords, SelectSkills);
+
+        private IEnumerable<string> SelectSkills(IEnumerable<Keyword> keywords)
+        {
+            var keywordList = keywords.ToList();
+            return _skills.Value
+                .Where(p => p.Value.Keywords.ContainsAll(keywordList))
+                .Select(p => p.Key);
+        }
 
         public ISkillBuilder SummonSkeleton => FromName("summon skeleton");
         public ISkillBuilder VaalSummonSkeletons => FromName("vaal summon skeletons");

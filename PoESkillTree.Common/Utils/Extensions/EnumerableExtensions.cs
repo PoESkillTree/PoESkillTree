@@ -21,6 +21,9 @@ namespace PoESkillTree.Common.Utils.Extensions
         public static IEnumerable<T> Except<T>(this IEnumerable<T> @this, params T[] elements) =>
             @this.Except((IEnumerable<T>) elements);
 
+        public static bool ContainsAll<T>(this IEnumerable<T> @this, IReadOnlyCollection<T> elements) =>
+            @this.Intersect(elements).Count() == elements.Count;
+
         /// <summary>
         /// Returns a hash code for <paramref name="values"/> that can be used in conjunction with
         /// <see cref="Enumerable.SequenceEqual{TSource}(IEnumerable{TSource},IEnumerable{TSource})"/>.

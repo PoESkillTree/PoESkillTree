@@ -184,8 +184,9 @@ namespace PoESkillTree.Computation.Data
                     "mana cost of skills that place mines or throw traps",
                     Mana.Cost, Or(With(Keyword.Mine), With(Keyword.Trap))
                 },
-                { "mana reserved", Mana.Reservation },
-                { "mana reservation of skills", Mana.Reservation },
+                { "mana reserved", AllSkills.Reservation },
+                { "mana reservation of skills", AllSkills.Reservation },
+                { "mana reservation of ({KeywordMatchers}) skills", Skills[Reference.AsKeyword].Reservation },
                 { "skill effect duration", Stat.Duration },
                 { "warcry duration", Stat.Duration, With(Keyword.Warcry) },
                 { "curse duration", Stat.Duration, With(Keyword.Curse) },
