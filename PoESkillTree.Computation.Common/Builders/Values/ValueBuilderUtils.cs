@@ -21,7 +21,10 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// Returns a value converter multiplying values by <c>(stat.Value / divideBy).Floor</c>.
         /// </summary>
         public static Func<ValueBuilder, ValueBuilder> PerStat(IStatBuilder stat, ValueBuilder divideBy) =>
-            v => v * (stat.Value / divideBy).Select(Math.Floor, o => $"Floor({o})");
+            PerStat(stat.Value, divideBy);
+
+        public static Func<ValueBuilder, ValueBuilder> PerStat(ValueBuilder statValue, ValueBuilder divideBy) =>
+            v => v * (statValue / divideBy).Select(Math.Floor, o => $"Floor({o})");
 
         /// <summary>
         /// Returns a value converter multiplying values by <c>(stat.Value / divideBy).Ceiling</c>.

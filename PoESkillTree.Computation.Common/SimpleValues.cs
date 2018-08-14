@@ -8,7 +8,7 @@ namespace PoESkillTree.Computation.Common
     {
         private readonly string _identity;
 
-        protected StringIdentityValue(object identity) => 
+        protected StringIdentityValue(object identity) =>
             _identity = identity?.ToString() ?? "null";
 
         public abstract NodeValue? Calculate(IValueCalculationContext context);
@@ -49,7 +49,13 @@ namespace PoESkillTree.Computation.Common
     public class StatValue : FunctionalValue
     {
         public StatValue(IStat stat, NodeType nodeType = NodeType.Total)
-            : base(c => c.GetValue(stat, nodeType), $"{stat}.Value")
+            : base(c => c.GetValue(stat, nodeType), $"{stat}.Value({nodeType})")
+        {
+        }
+
+        public StatValue(IStat stat, NodeType nodeType, ModifierSource modifierSource)
+            : base(c => c.GetValue(stat, nodeType, new PathDefinition(modifierSource)),
+                $"{stat}.Value({nodeType}, {modifierSource})")
         {
         }
     }
@@ -59,7 +65,7 @@ namespace PoESkillTree.Computation.Common
     {
         private readonly Func<IValueCalculationContext, NodeValue?> _calculate;
 
-        public FunctionalValue(Func<IValueCalculationContext, NodeValue?> calculate, string identity) 
+        public FunctionalValue(Func<IValueCalculationContext, NodeValue?> calculate, string identity)
             : base(identity) =>
             _calculate = calculate;
 
@@ -78,7 +84,7 @@ namespace PoESkillTree.Computation.Common
     {
         private readonly Predicate<IValueCalculationContext> _calculate;
 
-        public ConditionalValue(Predicate<IValueCalculationContext> calculate, string identity) 
+        public ConditionalValue(Predicate<IValueCalculationContext> calculate, string identity)
             : base(identity) =>
             _calculate = calculate;
 

@@ -43,16 +43,18 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public ValueBuilder Value => ValueFor(NodeType.Total);
 
-        public ValueBuilder ValueFor(NodeType nodeType)
-            => new ValueBuilder(new ValueBuilderImpl(ps => BuildValue(nodeType, ps), c => Resolve(c).Value));
+        public ValueBuilder ValueFor(NodeType nodeType, ModifierSource modifierSource = null)
+            => new ValueBuilder(new ValueBuilderImpl(
+                ps => BuildValue(nodeType, modifierSource ?? new ModifierSource.Global(), ps),
+                c => Resolve(c).Value));
 
-        private IValue BuildValue(NodeType nodeType, BuildParameters parameters)
+        private IValue BuildValue(NodeType nodeType, ModifierSource modifierSource, BuildParameters parameters)
         {
             var stats = Build(parameters).Select(r => r.Stats).Flatten().ToList();
             if (stats.Count != 1)
                 throw new ParseException("Can only access the value of stat builders that represent a single stat");
 
-            return new StatValue(stats.Single(), nodeType);
+            return new StatValue(stats.Single(), nodeType, modifierSource);
         }
 
         public IConditionBuilder IsSet =>

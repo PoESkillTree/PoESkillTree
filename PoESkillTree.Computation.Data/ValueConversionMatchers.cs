@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -49,6 +50,17 @@ namespace PoESkillTree.Computation.Data
                 { "per # ({StatMatchers})", PerStat(stat: Reference.AsStat, divideBy: Value) },
                 { "per # ({StatMatchers}) ceiled", PerStatCeiled(stat: Reference.AsStat, divideBy: Value) },
                 { "per ({StatMatchers})", PerStat(stat: Reference.AsStat) },
+                {
+                    "per # ({StatMatchers}) on helmet",
+                    PerStat(Reference.AsStat.ValueFor(NodeType.Base, new ModifierSource.Local.Item(ItemSlot.Helm)),
+                        divideBy: Value)
+                },
+                {
+                    "per # ({StatMatchers}) on body armour",
+                    PerStat(
+                        Reference.AsStat.ValueFor(NodeType.Base, new ModifierSource.Local.Item(ItemSlot.BodyArmour)),
+                        divideBy: Value)
+                },
                 { "per grand spectrum", PerStat(stat: Stat.GrandSpectrumJewelsSocketed) },
                 { "per level", PerStat(Stat.Level) },
                 // buffs

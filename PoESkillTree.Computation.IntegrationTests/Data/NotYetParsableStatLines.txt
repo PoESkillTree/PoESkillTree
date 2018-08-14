@@ -1,9 +1,6 @@
 ﻿// TODO not handled yet
 // - skill/keyword specific reservation
 25% reduced mana reservation of herald skills
-// - requires IStatBuilder.ValueFor(NodeType, ModifierSource)
-+5 to Evasion Rating per 1 Maximum Energy Shield on Helmet
-+1 to maximum Energy Shield per 6 Evasion Rating on Body Armour
 // - modifies sub skill
 Raised Zombies' Slam Attack has 100% increased Area of Effect
 Raised Zombies' Slam Attack has 100% increased Cooldown Recovery Speed
