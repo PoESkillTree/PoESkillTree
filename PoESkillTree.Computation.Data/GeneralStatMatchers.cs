@@ -218,7 +218,7 @@ namespace PoESkillTree.Computation.Data
                 { "chance to gain ({BuffMatchers})", Reference.AsBuff.Chance },
                 { "({BuffMatchers}) duration", Reference.AsBuff.Duration },
                 { "({BuffMatchers}) effect", Reference.AsBuff.Effect },
-                { "effect of ({BuffMatchers}) on you", Reference.AsBuff.Effect },
+                { "effect of ({BuffMatchers}) on you", Reference.AsBuff.EffectOn(Self) },
                 { "effect of buffs granted by your golems", Buffs(Entity.Minion).With(Keyword.Golem).Effect },
                 {
                     "effect of buffs granted by your elemental golems",

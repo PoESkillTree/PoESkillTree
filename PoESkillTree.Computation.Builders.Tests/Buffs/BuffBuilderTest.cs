@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var activeStat = new Stat("test.Active");
             var buffActiveStat = new Stat("test.BuffActive");
             var buffSourceStat = new Stat("test.BuffSourceIs(Enemy)");
-            var effectStat = new Stat("test.Effect", Entity.Enemy);
+            var effectStat = new Stat($"test.EffectOn({default(Entity)})", Entity.Enemy);
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(activeStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true &&
                 c.GetValue(buffActiveStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true &&

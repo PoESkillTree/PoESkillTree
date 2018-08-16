@@ -32,10 +32,10 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         IStatBuilder Duration { get; }
 
         /// <summary>
-        /// Adds <paramref name="stat"/> to this effect's stat. Modifiers with stats built from the returned stat will
-        /// apply their value to <paramref name="stat"/> modified by this effect's increase if this effect is applied
-        /// by Self on the modified target.
-        /// <para>E.g. "Consecrated Ground you create grants 40% increased Damage to you and Allies"</para>
+        /// Adds <paramref name="stat"/> to the stats of this effect if Self is affected by it.
+        /// Modifiers with stats built from the returned stat will apply their value to <paramref name="stat"/>
+        /// modified by this effect's increase.
+        /// <para>E.g. "Consecrated Ground grants you 40% increased Damage"</para>
         /// </summary>
         IStatBuilder AddStat(IStatBuilder stat);
 

@@ -85,13 +85,13 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat ActiveSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource) =>
             GetOrAdd($"ActiveSkillPart.Damage.{damageSource}.Has.{keyword}", entity, typeof(bool));
 
-        public IStat BuffEffect(Entity entity, string buffIdentity) =>
-            GetOrAdd($"{buffIdentity}.Effect", entity, typeof(double));
+        public IStat BuffEffect(Entity source, Entity target, string buffIdentity) =>
+            GetOrAdd($"{buffIdentity}.EffectOn({target})", source, typeof(double));
 
-        public IStat BuffIsActive(Entity entity, string buffIdentity) =>
-            GetOrAdd($"{buffIdentity}.BuffActive", entity, typeof(bool));
+        public IStat BuffIsActive(Entity target, string buffIdentity) =>
+            GetOrAdd($"{buffIdentity}.BuffActive", target, typeof(bool));
 
-        public IStat BuffSourceIs(Entity target, string buffIdentity, Entity source) =>
+        public IStat BuffSourceIs(Entity source, Entity target, string buffIdentity) =>
             GetOrAdd($"{buffIdentity}.BuffSourceIs({source})", target, typeof(bool));
 
         public IStat Damage(Entity entity, DamageType damageType) =>

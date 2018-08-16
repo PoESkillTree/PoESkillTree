@@ -5,7 +5,6 @@ using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Buffs;
 using PoESkillTree.Computation.Builders.Entities;
-using PoESkillTree.Computation.Builders.Skills;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Builders.Values;
@@ -26,7 +25,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var gainedStatBuilder = StatBuilderUtils.FromIdentity(StatFactory, "s", null);
             var modifierSource = new ModifierSource.Local.Skill("skill node");
             var conditionStat = new Stat($"Is {modifierSource} active?");
-            var buffEffectStat = new Stat("Buff.Effect");
+            var buffEffectStat = new Stat($"Buff.EffectOn({default(Entity)})");
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(conditionStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) expectedCondition &&
                 c.GetValue(buffEffectStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(1.5));
@@ -69,41 +68,45 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var gainedStatBuilder = StatBuilderUtils.FromIdentity(StatFactory, "s", null);
             var entityBuilders = new IEntityBuilder[]
                 { new ModifierSourceEntityBuilder(), new EntityBuilder(Entity.Enemy), };
-            var buffEffectStat = new Stat("Buff.Effect");
+            var buffEffectStats = new[]
+                { new Stat($"Buff.EffectOn({default(Entity)})"), new Stat($"Buff.EffectOn({Entity.Enemy})") };
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValue(buffEffectStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(2));
+                c.GetValue(buffEffectStats[0], NodeType.Total, PathDefinition.MainPath) == new NodeValue(2) &&
+                c.GetValue(buffEffectStats[1], NodeType.Total, PathDefinition.MainPath) == new NodeValue(3));
             var sut = CreateSut();
 
-            var (stats, _, valueConverter) = sut.Buff(gainedStatBuilder, entityBuilders).BuildToSingleResult();
-            var value = valueConverter(new ValueBuilderImpl(2)).Build();
-            var actualValue = value.Calculate(context);
+            var results = sut.Buff(gainedStatBuilder, entityBuilders).Build(default).ToList();
+            Assert.That(results, Has.Exactly(2).Items);
+            var (defaultEntityStats, _, defaultEnittyValueConverter) = results[0];
+            var defaultEntityValue = defaultEnittyValueConverter(new ValueBuilderImpl(2)).Build().Calculate(context);
+            var (enemyStats, _, enemyValueConverter) = results[1];
+            var enemyValue = enemyValueConverter(new ValueBuilderImpl(2)).Build().Calculate(context);
 
-            Assert.That(stats, Has.Exactly(2).Items);
-            Assert.AreEqual("s", stats[0].Identity);
-            Assert.AreEqual(default(Entity), stats[0].Entity);
-            Assert.AreEqual(Entity.Enemy, stats[1].Entity);
-            Assert.AreEqual((NodeValue?) 4, actualValue);
+            Assert.That(defaultEntityStats, Has.One.Items);
+            Assert.AreEqual("s", defaultEntityStats[0].Identity);
+            Assert.AreEqual(default(Entity), defaultEntityStats[0].Entity);
+            Assert.AreEqual((NodeValue?) 4, defaultEntityValue);
+            Assert.AreEqual(Entity.Enemy, enemyStats[0].Entity);
+            Assert.AreEqual((NodeValue?) 6, enemyValue);
         }
 
         [Test]
         public void AuraBuildsToCorrectResults()
         {
             var gainedStatBuilder = StatBuilderUtils.FromIdentity(StatFactory, "s", null);
-            var entityBuilders = new IEntityBuilder[]
-                { new ModifierSourceEntityBuilder(), new EntityBuilder(Entity.Enemy), };
-            var auraEffectStat = new Stat("Aura.Effect");
+            var auraEffectStat = new Stat($"Aura.EffectOn({Entity.Minion})", Entity.Enemy);
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(auraEffectStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(1.5));
             var sut = CreateSut();
 
-            var (stats, _, valueConverter) = sut.Aura(gainedStatBuilder, entityBuilders).BuildToSingleResult();
+            var auraStatBuilder = sut.Aura(gainedStatBuilder, new EntityBuilder(Entity.Minion));
+            var (stats, _, valueConverter) = auraStatBuilder.BuildToSingleResult(entity: Entity.Enemy);
             var value = valueConverter(new ValueBuilderImpl(2)).Build();
             var actualValue = value.Calculate(context);
 
-            Assert.That(stats, Has.Exactly(2).Items);
+            Assert.That(stats, Has.Exactly(1).Items);
             Assert.AreEqual("s", stats[0].Identity);
-            Assert.AreEqual(default(Entity), stats[0].Entity);
-            Assert.AreEqual(Entity.Enemy, stats[1].Entity);
+            Assert.AreEqual(Entity.Minion, stats[0].Entity);
             Assert.AreEqual((NodeValue?) 3, actualValue);
         }
 

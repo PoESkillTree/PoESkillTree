@@ -25,9 +25,9 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var stats = sut.Effect.BuildToSingleResult().Stats;
 
             Assert.That(stats, Has.Exactly(3).Items);
-            Assert.AreEqual("b0.Effect", stats[0].Identity);
-            Assert.AreEqual("b1.Effect", stats[1].Identity);
-            Assert.AreEqual("b2.Effect", stats[2].Identity);
+            Assert.AreEqual($"b0.EffectOn({default(Entity)})", stats[0].Identity);
+            Assert.AreEqual($"b1.EffectOn({default(Entity)})", stats[1].Identity);
+            Assert.AreEqual($"b2.EffectOn({default(Entity)})", stats[2].Identity);
         }
 
         [Test]
@@ -50,9 +50,9 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var sut = CreateSut(unresolvedBuff);
 
             var resolved = (IBuffBuilderCollection) sut.Resolve(null);
-            var stat = resolved.Effect.BuildToSingleStat();
+            var stats = resolved.Effect.BuildToSingleResult().Stats;
 
-            Assert.AreEqual("b.Effect", stat.Identity);
+            Assert.AreEqual($"b.EffectOn({default(Entity)})", stats[0].Identity);
         }
 
         [Test]
@@ -64,8 +64,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var stats = sut.With(keyword).Effect.BuildToSingleResult().Stats;
 
             Assert.That(stats, Has.Exactly(2).Items);
-            Assert.AreEqual("b0.Effect", stats[0].Identity);
-            Assert.AreEqual("b1.Effect", stats[1].Identity);
+            Assert.AreEqual($"b0.EffectOn({default(Entity)})", stats[0].Identity);
+            Assert.AreEqual($"b1.EffectOn({default(Entity)})", stats[1].Identity);
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var stats = sut.Without(keyword).Effect.BuildToSingleResult().Stats;
 
             Assert.That(stats, Has.Exactly(1).Items);
-            Assert.AreEqual("b2.Effect", stats[0].Identity);
+            Assert.AreEqual($"b2.EffectOn({default(Entity)})", stats[0].Identity);
         }
 
         [Test]
@@ -136,9 +136,9 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var entityBuilder = new EntityBuilder(Entity.Enemy);
             var sut = CreateSut(1);
 
-            var stat = sut.Effect.For(entityBuilder).BuildToSingleStat();
+            var stats = sut.Effect.For(entityBuilder).BuildToSingleResult().Stats;
 
-            Assert.AreEqual(Entity.Enemy, stat.Entity);
+            Assert.AreEqual(Entity.Enemy, stats[0].Entity);
         }
 
         [TestCase(0)]
@@ -153,7 +153,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
                 var activeStat = StatFactory.BuffIsActive(default, $"b{activeBuff}");
                 contextMock.Setup(c => c.GetValue(activeStat, NodeType.Total, PathDefinition.MainPath))
                     .Returns((NodeValue?) true);
-                var sourceStat = StatFactory.BuffSourceIs(default, $"b{activeBuff}", default);
+                var sourceStat = StatFactory.BuffSourceIs(default, default, $"b{activeBuff}");
                 contextMock.Setup(c => c.GetValue(sourceStat, NodeType.Total, PathDefinition.MainPath))
                     .Returns((NodeValue?) true);
             }
@@ -177,7 +177,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
                 var activeStat = StatFactory.BuffIsActive(default, $"b{activeBuff}");
                 contextMock.Setup(c => c.GetValue(activeStat, NodeType.Total, PathDefinition.MainPath))
                     .Returns((NodeValue?) true);
-                var sourceStat = StatFactory.BuffSourceIs(default, $"b{activeBuff}", default);
+                var sourceStat = StatFactory.BuffSourceIs(default, default, $"b{activeBuff}");
                 contextMock.Setup(c => c.GetValue(sourceStat, NodeType.Total, PathDefinition.MainPath))
                     .Returns((NodeValue?) true);
             }
@@ -196,8 +196,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var keyword = KeywordBuilder(2);
             var unresolved = Mock.Of<IKeywordBuilder>(b => b.Resolve(null) == keyword);
             var activeStat = StatFactory.BuffIsActive(default, "b0");
-            var sourceStat = StatFactory.BuffSourceIs(default, "b0", default);
-            var context = Mock.Of<IValueCalculationContext>(c => 
+            var sourceStat = StatFactory.BuffSourceIs(default, default, "b0");
+            var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(activeStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true &&
                 c.GetValue(sourceStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true);
             var sut = CreateSut(1);
@@ -215,8 +215,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var target = new EntityBuilder(Entity.Minion);
             var active = Enumerable.Range(0, 3).Select(i => new Stat($"b{i}.Active")).ToList();
             var source = Enumerable.Range(0, 3)
-                .Select(i => StatFactory.BuffSourceIs(default, $"b{i}", Entity.Character)).ToList();
-            var context = Mock.Of<IValueCalculationContext>(c => 
+                .Select(i => StatFactory.BuffSourceIs(Entity.Character, default, $"b{i}")).ToList();
+            var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(active[0], NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true &&
                 c.GetValue(active[1], NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true &&
                 c.GetValue(source[1], NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true &&

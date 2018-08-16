@@ -77,7 +77,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
         private IValue BuffSourceIsAny(Entity target, string buffIdentity, IEnumerable<Entity> sources)
         {
             var statValues = sources
-                .Select(s => _statFactory.BuffSourceIs(target, buffIdentity, s))
+                .Select(s => _statFactory.BuffSourceIs(s, target, buffIdentity))
                 .Select(s => new StatValue(s))
                 .ToList();
             var count = new CountingValue(statValues);
@@ -85,12 +85,14 @@ namespace PoESkillTree.Computation.Builders.Buffs
         }
 
         public IStatBuilder Effect =>
-            new StatBuilder(_statFactory, new BuffCoreStatBuilder(_buffs, b => b.Effect, _restrictionsBuilder))
+            new StatBuilder(_statFactory,
+                    new BuffCoreStatBuilder(_buffs, b => b.EffectOn(_target), _restrictionsBuilder))
                 .For(_source);
 
         public IStatBuilder AddStat(IStatBuilder stat) =>
-            new StatBuilder(_statFactory, new BuffCoreStatBuilder(_buffs, b => b.AddStat(stat), _restrictionsBuilder))
-                .For(_source);
+            new StatBuilder(_statFactory,
+                    new BuffCoreStatBuilder(_buffs, b => b.AddStatForSource(stat, _source), _restrictionsBuilder))
+                .For(_target);
 
         public IStatBuilder ApplyToEntity(IEntityBuilder target)
         {

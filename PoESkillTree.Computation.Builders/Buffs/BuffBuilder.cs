@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using EnumsNET;
 using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Effects;
@@ -30,8 +30,17 @@ namespace PoESkillTree.Computation.Builders.Buffs
         public IStatBuilder NotAsBuffOn(IEntityBuilder target) =>
             InternalOn(target);
 
-        public IStatBuilder Effect =>
-            new StatBuilder(StatFactory, FromStatFactory(BuildEffectStat));
+        public IStatBuilder Effect => EffectOn(EntityBuilder.AllEntities);
+
+        public IStatBuilder EffectOn(IEntityBuilder target)
+        {
+            return new StatBuilder(StatFactory, new CoreStatBuilderFromCoreBuilder<string>(Identity,
+                (ps, s, i) => BuildStats(ps, s, i)));
+
+            IEnumerable<IStat> BuildStats(BuildParameters parameters, Entity source, string identity)
+                => target.Build(parameters.ModifierSourceEntity)
+                    .Select(t => BuildEffectStat(source, t, identity));
+        }
 
         public IActionBuilder Action =>
             new ActionBuilder(StatFactory, Identity, new ModifierSourceEntityBuilder());
@@ -56,24 +65,25 @@ namespace PoESkillTree.Computation.Builders.Buffs
             return new StatBuilder(StatFactory, core).For(target).IsSet;
         }
 
-        public override IStatBuilder AddStat(IStatBuilder stat)
+        public override IStatBuilder AddStat(IStatBuilder stat) => AddStatForSource(stat, EntityBuilder.AllEntities);
+
+        public IStatBuilder AddStatForSource(IStatBuilder stat, IEntityBuilder source)
         {
             var baseCoreBuilder = new StatBuilderAdapter(base.AddStat(stat));
             var coreBuilder = new StatBuilderWithValueConverter(baseCoreBuilder,
-                BuildAddStatMultiplier,
+                (ps, target) => BuildAddStatMultiplier(source.Build(ps.ModifierSourceEntity), target),
                 (l, r) => l.Multiply(r));
             return new StatBuilder(StatFactory, coreBuilder);
         }
 
-        private IValue BuildAddStatMultiplier(Entity entity)
+        private IValue BuildAddStatMultiplier(IReadOnlyCollection<Entity> possibleSources, Entity target)
         {
             var identity = Build();
-            var allEntites = Enums.GetValues<Entity>().ToList();
-            var buffActiveValue = new StatValue(BuildBuffActiveStat(entity, identity));
-            var buffSourceValues = allEntites.ToDictionary(Funcs.Identity,
-                e => new StatValue(BuildBuffSourceStat(e, entity, identity)));
-            var buffEffectValues = allEntites.ToDictionary(Funcs.Identity,
-                e => new StatValue(BuildEffectStat(e, identity)));
+            var buffActiveValue = new StatValue(BuildBuffActiveStat(target, identity));
+            var buffSourceValues = possibleSources.ToDictionary(Funcs.Identity,
+                e => new StatValue(BuildBuffSourceStat(e, target, identity)));
+            var buffEffectValues = possibleSources.ToDictionary(Funcs.Identity,
+                e => new StatValue(BuildEffectStat(e, target, identity)));
 
             return new FunctionalValue(Calculate,
                 $"AddStatMultiplier(buffActive:{buffActiveValue}, buffSources:{string.Join(",", buffSourceValues)}, " +
@@ -86,7 +96,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
                 // If multiple entities apply the same (de-)buff, it depends on the buff which one would actually apply.
                 // Because that shouldn't happen in these calculations, simply the first one is taken.
-                var sourcEntity = allEntites.First(e => buffSourceValues[e].Calculate(context).IsTrue());
+                var sourcEntity = possibleSources.First(e => buffSourceValues[e].Calculate(context).IsTrue());
                 return buffEffectValues[sourcEntity].Calculate(context);
             }
         }
@@ -97,13 +107,13 @@ namespace PoESkillTree.Computation.Builders.Buffs
         private ICoreStatBuilder FromStatFactory(Func<BuildParameters, Entity, string, IStat> statFactory) =>
             new CoreStatBuilderFromCoreBuilder<string>(Identity, statFactory);
 
-        private IStat BuildEffectStat(Entity entity, string identity) =>
-            StatFactory.BuffEffect(entity, identity);
+        private IStat BuildEffectStat(Entity source, Entity target, string identity) =>
+            StatFactory.BuffEffect(source, target, identity);
 
-        private IStat BuildBuffActiveStat(Entity entity, string identity) =>
-            StatFactory.BuffIsActive(entity, identity);
+        private IStat BuildBuffActiveStat(Entity target, string identity) =>
+            StatFactory.BuffIsActive(target, identity);
 
-        private IStat BuildBuffSourceStat(Entity source, Entity entity, string identity) =>
-            StatFactory.BuffSourceIs(entity, identity, source);
+        private IStat BuildBuffSourceStat(Entity source, Entity target, string identity) =>
+            StatFactory.BuffSourceIs(source, target, identity);
     }
 }

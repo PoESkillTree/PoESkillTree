@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EnumsNET;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -18,6 +19,8 @@ namespace PoESkillTree.Computation.Builders.Entities
                 throw new ArgumentException("must not be empty", nameof(entities));
             _entities = entities;
         }
+
+        public static IEntityBuilder AllEntities => new EntityBuilder(Enums.GetValues<Entity>().ToArray());
 
         public IEntityBuilder Resolve(ResolveContext context) => this;
 

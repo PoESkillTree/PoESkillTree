@@ -85,7 +85,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
         public IStatBuilder Temporary(IStatBuilder gainedStat)
         {
             var statBuilder = gainedStat.WithCondition(new ValueConditionBuilder(BuildCondition));
-            return MultiplyValueByEffectModifier(statBuilder, "Buff");
+            return MultiplyValueByEffectModifier(statBuilder, "Buff", new ModifierSourceEntityBuilder());
 
             IValue BuildCondition(BuildParameters parameters)
             {
@@ -99,7 +99,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
         {
             var statBuilder = gainedStat
                 .WithCondition(new ValueConditionBuilder(ps => BuildTemporaryBuffCondition(condition, ps)));
-            return MultiplyValueByEffectModifier(statBuilder, "Buff");
+            return MultiplyValueByEffectModifier(statBuilder, "Buff", new ModifierSourceEntityBuilder());
         }
 
         public IStatBuilder Temporary<T>(IBuffBuilder buff, T condition) where T : struct, Enum
@@ -117,30 +117,25 @@ namespace PoESkillTree.Computation.Builders.Buffs
         }
 
         public IStatBuilder Buff(IStatBuilder gainedStat, params IEntityBuilder[] affectedEntites)
-        {
-            var statBuilder = gainedStat.For(new CompositeEntityBuilder(affectedEntites));
-            return MultiplyValueByEffectModifier(statBuilder, "Buff");
-        }
+            => MultiplyValueByEffectModifier(gainedStat, "Buff", new CompositeEntityBuilder(affectedEntites));
 
         public IStatBuilder Aura(IStatBuilder gainedStat, params IEntityBuilder[] affectedEntites)
-        {
-            var statBuilder = gainedStat.For(new CompositeEntityBuilder(affectedEntites));
-            return MultiplyValueByEffectModifier(statBuilder, "Aura");
-        }
+            => MultiplyValueByEffectModifier(gainedStat, "Aura", new CompositeEntityBuilder(affectedEntites));
 
-        private IStatBuilder MultiplyValueByEffectModifier(IStatBuilder gainedStat, string buffIdentity)
+        private IStatBuilder MultiplyValueByEffectModifier(
+            IStatBuilder gainedStat, string buffIdentity, IEntityBuilder targetEntities)
         {
             var coreStatBuilder = new StatBuilderWithValueConverter(new StatBuilderAdapter(gainedStat),
-                e => new StatValue(_statFactory.BuffEffect(e, buffIdentity)),
+                (ps, target) => new StatValue(_statFactory.BuffEffect(ps.ModifierSourceEntity, target, buffIdentity)),
                 (l, r) => l.Multiply(r));
-            return new StatBuilder(_statFactory, coreStatBuilder);
+            return new StatBuilder(_statFactory, coreStatBuilder).For(targetEntities);
         }
 
         public IBuffBuilderCollection Buffs(IEntityBuilder source = null, params IEntityBuilder[] targets)
         {
-            IEntityBuilder allEntityBuilder = new EntityBuilder(Enums.GetValues<Entity>().ToArray());
-            var sourceEntity = source ?? allEntityBuilder;
-            var targetEntity = targets.Any() ? new CompositeEntityBuilder(targets) : allEntityBuilder;
+            var allEntitiesBuilder = EntityBuilder.AllEntities;
+            var sourceEntity = source ?? allEntitiesBuilder;
+            var targetEntity = targets.Any() ? new CompositeEntityBuilder(targets) : allEntitiesBuilder;
             return new BuffBuilderCollection(_statFactory, _allBuffs, sourceEntity, targetEntity);
         }
 

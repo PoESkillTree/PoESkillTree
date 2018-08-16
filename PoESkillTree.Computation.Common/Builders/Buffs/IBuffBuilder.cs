@@ -24,9 +24,13 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         IConditionBuilder IsOn(IEntityBuilder source, IEntityBuilder target);
 
         /// <summary>
-        /// Gets a stat representing the effect modifier of this buff.
+        /// Gets a stat representing the effect modifier of this buff when created by Self.
         /// </summary>
         IStatBuilder Effect { get; }
+
+        IStatBuilder EffectOn(IEntityBuilder target);
+
+        IStatBuilder AddStatForSource(IStatBuilder stat, IEntityBuilder source);
 
         /// <summary>
         /// Gets an action that occurs when Self gains this buff.
