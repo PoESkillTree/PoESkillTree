@@ -79,7 +79,6 @@
     <Compile Include="Collections\StatMatcherCollection.cs" />
     <Compile Include="Collections\StatReplacerCollection.cs" />
     <Compile Include="Collections\ValueConversionMatcherCollection.cs" />
-    <Compile Include="ComputationData.cs" />
     <Compile Include="ConditionMatchers.cs" />
     <Compile Include="DamageStatMatchers.cs" />
     <Compile Include="DamageTypeMatchers.cs" />

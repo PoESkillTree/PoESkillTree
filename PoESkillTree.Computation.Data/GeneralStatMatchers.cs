@@ -94,6 +94,10 @@ namespace PoESkillTree.Computation.Data
                     Reference.AsPoolStat.Leech.Of(Damage.With(DamageSource.Attack))
                 },
                 {
+                    "spell damage leeched as ({PoolStatMatchers})",
+                    Reference.AsPoolStat.Leech.Of(Damage.With(DamageSource.Spell))
+                },
+                {
                     "({DamageTypeMatchers}) damage leeched as ({PoolStatMatchers})",
                     References[1].AsPoolStat.Leech.Of(References[0].AsDamageType.Damage)
                 },
@@ -106,12 +110,18 @@ namespace PoESkillTree.Computation.Data
                     References[0].AsPoolStat.Leech.Of(Damage), References[1].AsPoolStat.Leech.Of(Damage)
                 },
                 {
+                    "attack damage leeched as ({PoolStatMatchers}) and ({PoolStatMatchers})",
+                    References[0].AsPoolStat.Leech.Of(Damage.With(DamageSource.Attack)),
+                    References[1].AsPoolStat.Leech.Of(Damage.With(DamageSource.Attack))
+                },
+                {
                     "damage dealt by your totems is leeched to you as life",
                     Life.Leech.Of(Damage.For(Entity.Totem))
                 },
                 { "({PoolStatMatchers}) leeched per second", Reference.AsPoolStat.Leech.Rate },
                 // - block
                 { "chance to block", Block.AttackChance },
+                { "chance to block attacks", Block.AttackChance },
                 { "block chance", Block.AttackChance },
                 { "block chance with staves", Block.AttackChance, MainHand.Has(Tags.Staff) },
                 { "maximum block chance", Block.AttackChance.Maximum },

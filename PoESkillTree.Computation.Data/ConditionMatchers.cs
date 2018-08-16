@@ -84,6 +84,8 @@ namespace PoESkillTree.Computation.Data
                 { "if you have consumed a corpse recently", Action.ConsumeCorpse.Recently },
                 // damage
                 { "attacks have", Condition.With(DamageSource.Attack) },
+                { "with attacks", Condition.With(DamageSource.Attack) },
+                { "for spells", Condition.With(DamageSource.Spell) },
                 // - by item tag
                 { "with weapons", AttackWith(Tags.Weapon) },
                 { "weapon", AttackWith(Tags.Weapon) },
@@ -213,8 +215,8 @@ namespace PoESkillTree.Computation.Data
                     "({KeywordMatchers}) and ({KeywordMatchers})",
                     Or(With(References[0].AsKeyword), With(References[1].AsKeyword))
                 },
-                { "(with|of|for|from) ({KeywordMatchers})( skills)?", With(Reference.AsKeyword) },
-                { "({KeywordMatchers}) skills (have|deal)", With(Reference.AsKeyword) },
+                { "(with|of|for) ({KeywordMatchers})( skills)?", With(Reference.AsKeyword) },
+                { "({KeywordMatchers}) skills have", With(Reference.AsKeyword) },
                 { "projectiles deal", With(Keyword.Projectile) },
                 // - by damage type
                 { "with ({DamageTypeMatchers}) skills", With(Reference.AsDamageType) },

@@ -29,6 +29,11 @@ namespace PoESkillTree.Computation.Data
 
         public override IReadOnlyList<string> ReferenceNames { get; } = new[] { "StatMatchers" };
 
+        // Kind of counter-intuitive, but "with attack skills" on a stat line refers to the dealt damage being attack
+        // damage or ailment damage from that attack. On the other hand, IDamageRelatedStatBuilder.WithSkills
+        // differentiates from ailment damage and restricts to not apply to ailment damage.
+        // E.g. "attack damage" does not include ailment damage and corresponds to WithSkills(DamageSource.Attack).
+        // "damage with attack skills does" does include ailment damage and corresponds to With(DamageSource.Attack).
         protected override IEnumerable<MatcherData> CreateCollection() =>
             new StatMatcherCollection<IDamageRelatedStatBuilder>(_modifierBuilder)
             {
@@ -47,6 +52,8 @@ namespace PoESkillTree.Computation.Data
                 { "damage with hits and ailments", Damage.WithHitsAndAilments },
                 { "(?<!no )damage (with|from) hits", Damage.WithHits },
                 { "damage with ailments", Damage.WithAilments },
+                { "damage with ailments from attack skills", Damage.WithAilments.With(DamageSource.Attack) },
+                { "attack skills deal damage with ailments", Damage.WithAilments.With(DamageSource.Attack) },
                 { "damage with ({AilmentMatchers})", Damage.With(Reference.AsAilment) },
                 // by source and type
                 { "attack physical damage", Physical.Damage.WithSkills(DamageSource.Attack) },
@@ -57,6 +64,10 @@ namespace PoESkillTree.Computation.Data
                 {
                     "({DamageTypeMatchers}) attack damage",
                     Reference.AsDamageType.Damage.WithSkills(DamageSource.Attack)
+                },
+                {
+                    "({DamageTypeMatchers}) damage with attack skills",
+                    Reference.AsDamageType.Damage.With(DamageSource.Attack)
                 },
                 {
                     "({DamageTypeMatchers}) spell damage",
@@ -76,6 +87,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 // other entities
                 { "minion damage", Damage.For(Entity.Minion) },
+                { "golem damage", Damage.For(Entity.Minion), With(Keyword.Golem) },
             }; //add
     }
 }
