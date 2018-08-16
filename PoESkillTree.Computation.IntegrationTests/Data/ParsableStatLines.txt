@@ -21,3 +21,6 @@ With 5 Corrupted Items Equipped: 50% of Chaos Damage does not bypass Energy Shie
 5% increased Defences
 Melee Damage dealt by Frost Blades Penetrates 15% Cold Resistance
 Frost Blades has 25% increased Projectile Speed
+Modifiers to Projectile Damage apply to this Skill's Damage Over Time effect
+Modifiers to Spell Damage apply to this Skill's Damage Over Time effect
+Increases and Reductions to Spell Damage also apply to Attacks

@@ -1,4 +1,6 @@
 using System;
+using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Skills;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
@@ -37,6 +39,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IDamageRelatedStatBuilder CastRate { get; }
 
         IStatBuilder EffectivenessOfAddedDamage { get; }
+
+        IStatBuilder DamageHasKeyword(DamageSource damageSource, IKeywordBuilder keyword);
 
         /// <summary>
         /// Gets a stat representing the main skill's area of effect. The square root of this stat is used as a

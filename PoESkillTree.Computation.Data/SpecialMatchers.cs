@@ -3,6 +3,7 @@ using System.Linq;
 using EnumsNET;
 using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Common.Utils.Extensions;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -57,6 +58,21 @@ namespace PoESkillTree.Computation.Data
                 {
                     "life leech recovers based on your chaos damage instead",
                     BaseAdd, 100, Life.Leech.Of(Chaos.Invert.Damage).ConvertTo(Life.Leech.Of(Chaos.Damage))
+                },
+                {
+                    "modifiers to ({KeywordMatchers}) damage apply to this skill's damage over time effect",
+                    TotalOverride, 1, Stat.DamageHasKeyword(DamageSource.OverTime, Reference.AsKeyword)
+                },
+                {
+                    "modifiers to spell damage apply to this skill's damage over time effect",
+                    TotalOverride, 1,
+                    Damage.With(DamageSource.Spell)
+                        .ApplyModifiersToSkills(DamageSource.Attack, Form.Increase, Form.More)
+                },
+                {
+                    "increases and reductions to spell damage also apply to attacks",
+                    TotalOverride, 1,
+                    Damage.With(DamageSource.Attack).ApplyModifiersToSkills(DamageSource.Spell, Form.Increase)
                 },
                 // Keystones
                 {

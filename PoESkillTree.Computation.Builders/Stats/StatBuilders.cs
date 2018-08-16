@@ -2,6 +2,7 @@
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -29,6 +30,15 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IDamageRelatedStatBuilder CastRate => new CastSpeedStatBuilder(StatFactory);
         public IStatBuilder EffectivenessOfAddedDamage => FromIdentity(typeof(double));
+
+        public IStatBuilder DamageHasKeyword(DamageSource damageSource, IKeywordBuilder keyword)
+        {
+            var coreBuilder = new CoreStatBuilderFromCoreBuilder<Keyword>(
+                CoreBuilder.Proxy(keyword, b => b.Build()),
+                (e, k) => StatFactory.ActiveSkillPartDamageHasKeyword(e, k, damageSource));
+            return new StatBuilder(StatFactory, coreBuilder);
+        }
+
         public IStatBuilder AreaOfEffect => FromIdentity(typeof(int));
         public IStatBuilder Range => FromIdentity(typeof(int));
         public IStatBuilder CooldownRecoverySpeed => FromIdentity(typeof(double));
@@ -47,6 +57,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder RampageStacks => FromIdentity(typeof(int));
         public IStatBuilder CharacterSize => FromIdentity(typeof(double));
         public IStatBuilder LightRadius => FromIdentity(typeof(double));
+
         public IStatBuilder DamageTakenGainedAsMana =>
             FromIdentity("% of damage taken gained as mana over 4 seconds", typeof(int));
 
