@@ -18,7 +18,7 @@ using PoESkillTree.Computation.Data.Collections;
 
 namespace PoESkillTree.Computation.Data.GivenStats
 {
-    public class DataDrivenMechanics : UsesStatBuilders, IGivenStats
+    public class DataDrivenMechanics : UsesConditionBuilders, IGivenStats
     {
         private readonly IModifierBuilder _modifierBuilder;
         private readonly IMetaStatBuilders _stat;
@@ -242,6 +242,14 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 // speed
                 { TotalOverride, _stat.CastRate, CombineSource(Stat.CastRate, CombineHandsByAverage) },
                 { TotalOverride, _stat.CastTime, _stat.CastRate.Value.Invert },
+                { PercentMore, Stat.MovementSpeed, ActionSpeedValueForPercentMore },
+                {
+                    PercentMore, Stat.CastRate, ActionSpeedValueForPercentMore,
+                    Not(Or(With(Keyword.Totem), With(Keyword.Trap), With(Keyword.Mine)))
+                },
+                { PercentMore, Stat.Totem.Speed, ActionSpeedValueForPercentMore },
+                { PercentMore, Stat.Trap.Speed, ActionSpeedValueForPercentMore },
+                { PercentMore, Stat.Mine.Speed, ActionSpeedValueForPercentMore },
                 // resistances/damage reduction
                 { BaseSet, _stat.ResistanceAgainstHits(DamageType.Physical), Physical.Resistance.Value },
                 {
@@ -446,6 +454,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
 
         private IDamageRelatedStatBuilder DamageTaken(DamageType damageType)
             => DamageTypeBuilders.From(damageType).Damage.Taken;
+
+        private ValueBuilder ActionSpeedValueForPercentMore => (Stat.ActionSpeed.Value - 1) * 100;
 
         private ValueBuilder ChanceToHitValue(
             IStatBuilder accuracyStat, IStatBuilder evasionStat, IConditionBuilder isBlinded)
