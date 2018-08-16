@@ -145,7 +145,6 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "attack and cast speed", Stat.CastRate },
                 { "attack, cast( speed)? and movement speed", Stat.CastRate, Stat.MovementSpeed },
-                { "animation speed", Stat.AnimationSpeed },
                 // regen and recharge
                 { "({PoolStatMatchers}) regeneration rate", Reference.AsPoolStat.Regen },
                 { "energy shield recharge rate", EnergyShield.Recharge },

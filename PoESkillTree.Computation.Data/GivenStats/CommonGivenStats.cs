@@ -56,7 +56,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Flask.Effect, 1 },
             { BaseSet, Flask.RecoverySpeed, 1 },
             // speed
-            { BaseSet, Stat.AnimationSpeed, 1 },
+            { BaseSet, Stat.ActionSpeed, 1 },
             { BaseSet, Stat.MovementSpeed, 1 },
             // crit
             { BaseSet, CriticalStrike.Chance.Maximum, 95 },

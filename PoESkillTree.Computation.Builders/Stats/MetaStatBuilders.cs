@@ -121,7 +121,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder IncreasedDamageTakenFromShocks
             => FromIdentity("Shock.IncreasedDamageTaken", typeof(int), ExplicitRegistrationTypes.UserSpecifiedValue());
 
-        public IStatBuilder ReducedAnimationSpeedFromChill
+        public IStatBuilder ReducedActionSpeedFromChill
             => FromIdentity("Chill.ReducedAnimationSpeed", typeof(int), ExplicitRegistrationTypes.UserSpecifiedValue());
 
         public IDamageRelatedStatBuilder EffectiveCritChance

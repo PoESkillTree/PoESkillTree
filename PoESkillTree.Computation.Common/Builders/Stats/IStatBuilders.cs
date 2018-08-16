@@ -25,10 +25,10 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder MovementSpeed { get; }
 
         /// <summary>
-        /// Gets a stat representing the multiplier to Self's animation speed. This acts like a more modifier to all
-        /// kinds of speeds (movement, cast, trap throwing, ...).
+        /// Gets a stat representing the multiplier to Self's action/animation speed. This acts like a more modifier
+        /// to all kinds of speeds (movement, cast, trap throwing, ...).
         /// </summary>
-        IStatBuilder AnimationSpeed { get; }
+        IStatBuilder ActionSpeed { get; }
 
 
         /// <summary>

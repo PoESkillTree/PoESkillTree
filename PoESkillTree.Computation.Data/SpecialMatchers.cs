@@ -120,7 +120,7 @@ namespace PoESkillTree.Computation.Data
                 // - Juggernaut
                 {
                     "you cannot be slowed to below base speed",
-                    TotalOverride, 1, Stat.AnimationSpeed.Minimum
+                    TotalOverride, 1, Stat.ActionSpeed.Minimum
                 },
                 {
                     "movement speed cannot be modified to below base value",

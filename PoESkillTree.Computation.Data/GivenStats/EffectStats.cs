@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
         private EffectStatCollection CreateCollection() => new EffectStatCollection(_modifierBuilder, ValueFactory)
         {
             // ailments
-            { Ailment.Freeze, PercentReduce, Stat.AnimationSpeed, 100 },
+            { Ailment.Freeze, PercentReduce, Stat.ActionSpeed, 100 },
             // buffs
             { Buff.Fortify, PercentReduce, Damage.Taken.WithHits, 20 },
             { Buff.Maim, PercentReduce, Stat.MovementSpeed, 30 },
@@ -51,7 +51,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { Buff.ArcaneSurge, PercentMore, Damage.WithSkills(DamageSource.Spell), 10 },
             { Buff.ArcaneSurge, PercentIncrease, Stat.CastRate.With(DamageSource.Spell), 10 },
             { Buff.ArcaneSurge, BaseAdd, Mana.Regen.Percent, 0.5 },
-            { Buff.Tailwind, PercentIncrease, Stat.AnimationSpeed, 10 },
+            { Buff.Tailwind, PercentIncrease, Stat.ActionSpeed, 10 },
             { Buff.CoveredInAsh, PercentLess, Stat.MovementSpeed, 20 },
             { Buff.CoveredInAsh, PercentIncrease, Fire.Damage.Taken, 20 },
             { Buff.Conflux.Igniting, BaseSet, Ailment.Ignite.Source(AnyDamageType), 1 },

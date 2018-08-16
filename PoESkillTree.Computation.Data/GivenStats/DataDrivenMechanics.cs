@@ -382,12 +382,12 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 { TotalOverride, _stat.IncreasedDamageTakenFromShocks.Maximum, 50 },
                 { TotalOverride, _stat.IncreasedDamageTakenFromShocks.Minimum, 1 },
                 {
-                    PercentReduce, Ailment.Chill.AddStat(Stat.AnimationSpeed),
-                    _stat.ReducedAnimationSpeedFromChill.Value
+                    PercentReduce, Ailment.Chill.AddStat(Stat.ActionSpeed),
+                    _stat.ReducedActionSpeedFromChill.Value
                 },
-                { BaseSet, _stat.ReducedAnimationSpeedFromChill, 10 },
-                { TotalOverride, _stat.ReducedAnimationSpeedFromChill.Maximum, 30 },
-                { TotalOverride, _stat.ReducedAnimationSpeedFromChill.Minimum, 1 },
+                { BaseSet, _stat.ReducedActionSpeedFromChill, 10 },
+                { TotalOverride, _stat.ReducedActionSpeedFromChill.Maximum, 30 },
+                { TotalOverride, _stat.ReducedActionSpeedFromChill.Minimum, 1 },
                 // - AilmentEffectiveInstances
                 {
                     TotalOverride, _stat.AilmentEffectiveInstances(Common.Builders.Effects.Ailment.Ignite),
