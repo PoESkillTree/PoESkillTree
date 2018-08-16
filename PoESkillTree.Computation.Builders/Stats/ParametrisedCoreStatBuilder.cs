@@ -42,36 +42,4 @@ namespace PoESkillTree.Computation.Builders.Stats
             let stats = result.Stats.SelectMany(s => _statConverter(_parameter, s))
             select new StatBuilderResult(stats.ToList(), result.ModifierSource, result.ValueConverter);
     }
-
-    internal class ParametrisedCoreStatBuilder<T1, T2> : ICoreStatBuilder
-        where T1 : IResolvable<T1>
-        where T2 : IResolvable<T2>
-    {
-        private readonly ICoreStatBuilder _inner;
-        private readonly T1 _parameter1;
-        private readonly T2 _parameter2;
-        private readonly Func<T1, T2, IStat, IEnumerable<IStat>> _statConverter;
-
-        public ParametrisedCoreStatBuilder(ICoreStatBuilder inner, T1 parameter1, T2 parameter2,
-            Func<T1, T2, IStat, IEnumerable<IStat>> statConverter)
-        {
-            _inner = inner;
-            _parameter1 = parameter1;
-            _parameter2 = parameter2;
-            _statConverter = statConverter;
-        }
-
-        public ICoreStatBuilder Resolve(ResolveContext context) =>
-            new ParametrisedCoreStatBuilder<T1, T2>(_inner.Resolve(context),
-                _parameter1.Resolve(context), _parameter2.Resolve(context), _statConverter);
-
-        public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
-            new ParametrisedCoreStatBuilder<T1, T2>(_inner.WithEntity(entityBuilder), _parameter1, _parameter2,
-                _statConverter);
-
-        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters) =>
-            from result in _inner.Build(parameters)
-            let stats = result.Stats.SelectMany(s => _statConverter(_parameter1, _parameter2, s))
-            select new StatBuilderResult(stats.ToList(), result.ModifierSource, result.ValueConverter);
-    }
 }

@@ -5,7 +5,6 @@ using EnumsNET;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Entities;
-using PoESkillTree.Computation.Common.Builders.Resolving;
 
 namespace PoESkillTree.Computation.Builders.Entities
 {
@@ -22,15 +21,11 @@ namespace PoESkillTree.Computation.Builders.Entities
 
         public static IEntityBuilder AllEntities => new EntityBuilder(Enums.GetValues<Entity>().ToArray());
 
-        public IEntityBuilder Resolve(ResolveContext context) => this;
-
         public IReadOnlyCollection<Entity> Build(Entity modifierSourceEntity) => _entities;
     }
 
     public class ModifierSourceEntityBuilder : IEntityBuilder
     {
-        public IEntityBuilder Resolve(ResolveContext context) => this;
-
         public IReadOnlyCollection<Entity> Build(Entity modifierSourceEntity) => new[] { modifierSourceEntity };
     }
 
@@ -40,9 +35,6 @@ namespace PoESkillTree.Computation.Builders.Entities
 
         public CompositeEntityBuilder(IReadOnlyList<IEntityBuilder> items) =>
             _items = items;
-
-        public IEntityBuilder Resolve(ResolveContext context) =>
-            new CompositeEntityBuilder(_items.Select(b => b.Resolve(context)).ToList());
 
         public IReadOnlyCollection<Entity> Build(Entity modifierSourceEntity) =>
             _items.SelectMany(b => b.Build(modifierSourceEntity)).Distinct().ToList();

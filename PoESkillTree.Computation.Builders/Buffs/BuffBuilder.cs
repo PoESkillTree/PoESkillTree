@@ -34,8 +34,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
         public IStatBuilder EffectOn(IEntityBuilder target)
         {
-            return new StatBuilder(StatFactory, new CoreStatBuilderFromCoreBuilder<string>(Identity,
-                (ps, s, i) => BuildStats(ps, s, i)));
+            return new StatBuilder(StatFactory, FromStatFactory((ps, s, i) => BuildStats(ps, s, i)));
 
             IEnumerable<IStat> BuildStats(BuildParameters parameters, Entity source, string identity)
                 => target.Build(parameters.ModifierSourceEntity)
@@ -48,21 +47,23 @@ namespace PoESkillTree.Computation.Builders.Buffs
         public override IStatBuilder On(IEntityBuilder target) =>
             base.On(target)
                 .CombineWith(new StatBuilder(StatFactory, FromStatFactory(BuildBuffActiveStat)))
-                .CombineWith(new StatBuilder(StatFactory, FromStatFactory(BuildBuffSourceStat)))
+                .CombineWith(new StatBuilder(StatFactory, FromStatFactory((ps, t, i) => BuildBuffSourceStat(ps, t, i))))
                 .For(target);
 
-        private IStat BuildBuffSourceStat(BuildParameters parameters, Entity entity, string identity) =>
-            BuildBuffSourceStat(parameters.ModifierSourceEntity, entity, identity);
+        private IStat BuildBuffSourceStat(BuildParameters parameters, Entity target, string identity) =>
+            BuildBuffSourceStat(parameters.ModifierSourceEntity, target, identity);
 
         public IConditionBuilder IsOn(IEntityBuilder source, IEntityBuilder target) =>
             IsOn(target).And(IsFromSource(source, target));
 
         private IConditionBuilder IsFromSource(IEntityBuilder source, IEntityBuilder target)
         {
-            var core = FromStatFactory((e, id) => StatFactory.FromIdentity(id, e, typeof(double)));
-            core = new ParametrisedCoreStatBuilder<IEntityBuilder>(core, source,
-                (eb, s) => eb.Build(s.Entity).Select(e => BuildBuffSourceStat(e, s.Entity, s.Identity)));
+            var core = FromStatFactory((ps, t, i) => BuildStats(ps, t, i));
             return new StatBuilder(StatFactory, core).For(target).IsSet;
+
+            IEnumerable<IStat> BuildStats(BuildParameters parameters, Entity t, string identity)
+                => source.Build(parameters.ModifierSourceEntity)
+                    .Select(s => BuildBuffSourceStat(s, t, identity));
         }
 
         public override IStatBuilder AddStat(IStatBuilder stat) => AddStatForSource(stat, EntityBuilder.AllEntities);
@@ -105,6 +106,9 @@ namespace PoESkillTree.Computation.Builders.Buffs
             new CoreStatBuilderFromCoreBuilder<string>(Identity, statFactory);
 
         private ICoreStatBuilder FromStatFactory(Func<BuildParameters, Entity, string, IStat> statFactory) =>
+            new CoreStatBuilderFromCoreBuilder<string>(Identity, statFactory);
+
+        private ICoreStatBuilder FromStatFactory(CoreStatBuilderFromCoreBuilder<string>.StatFactory statFactory) =>
             new CoreStatBuilderFromCoreBuilder<string>(Identity, statFactory);
 
         private IStat BuildEffectStat(Entity source, Entity target, string identity) =>

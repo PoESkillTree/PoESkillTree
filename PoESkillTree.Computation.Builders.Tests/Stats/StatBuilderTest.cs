@@ -143,23 +143,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.Throws<ParseException>(() => sut.Value.Build());
         }
 
-        [Test]
-        public void ValueBuildResolvesEntityBuilder()
-        {
-            var resolvedEntityBuilder = new EntityBuilder(default(Entity));
-            var entityBuilder = Mock.Of<IEntityBuilder>(b => b.Resolve(null) == resolvedEntityBuilder);
-            var sut = CreateSut("", entityBuilder);
-            var resolvedStat = CreateSut("", resolvedEntityBuilder).BuildToSingleStat();
-            var expected = new NodeValue(2);
-            var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValue(resolvedStat, NodeType.Total, PathDefinition.MainPath) == expected);
-
-            var value = sut.Value.Resolve(null).Build();
-            var actual = value.Calculate(context);
-
-            Assert.AreEqual(expected, actual);
-        }
-
         [TestCase("stat")]
         [TestCase("test")]
         public void MinimumBuildIsCorrectStat(string identity)

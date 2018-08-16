@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
         {
             var buffs = _buffs.Select(b => b.Resolve(context)).ToList();
             return new BuffBuilderCollection(_statFactory, buffs, _restrictionsBuilder.Resolve(context),
-                _source.Resolve(context), _target.Resolve(context));
+                _source, _target);
         }
 
         public ValueBuilder Count()

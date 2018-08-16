@@ -16,11 +16,6 @@ namespace PoESkillTree.Computation.Builders.Conditions
         private readonly ParametrisedStatConverter _negatedStatConverter;
         private readonly TParameter _parameter;
 
-        public StatConvertingConditionBuilder(ParametrisedStatConverter statConverter, TParameter parameter)
-            : this(statConverter, statConverter, parameter)
-        {
-        }
-
         public StatConvertingConditionBuilder(
             ParametrisedStatConverter statConverter, ParametrisedStatConverter negatedStatConverter,
             TParameter parameter)

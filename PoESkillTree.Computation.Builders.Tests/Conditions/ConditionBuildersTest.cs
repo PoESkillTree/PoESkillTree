@@ -45,18 +45,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
         }
 
         [Test]
-        public void ForResolveResolvesEntity()
-        {
-            var entityMock = new Mock<IEntityBuilder>();
-            var context = BuildersHelper.MockResolveContext();
-            var sut = CreateSut();
-
-            sut.For(entityMock.Object).Resolve(context);
-
-            entityMock.Verify(b => b.Resolve(context));
-        }
-
-        [Test]
         public void BaseValueComesFromConvertsStatCorrectly()
         {
             var slot = ItemSlot.Amulet;

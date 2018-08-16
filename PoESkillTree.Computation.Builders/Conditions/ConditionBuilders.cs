@@ -52,7 +52,7 @@ namespace PoESkillTree.Computation.Builders.Conditions
                 : throw new ParseException($"IConditionBuilders.{nameof(DamageTaken)} only works with damage stats"));
 
         public IConditionBuilder For(IEntityBuilder entity) =>
-            new StatConvertingConditionBuilder<IEntityBuilder>((s, e) => s.For(e), entity);
+            new StatConvertingConditionBuilder(s => s.For(entity));
 
         public IConditionBuilder BaseValueComesFrom(ItemSlot slot)
         {

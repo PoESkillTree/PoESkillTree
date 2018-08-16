@@ -37,8 +37,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         public ICoreStatBuilder Resolve(ResolveContext context)
-            => new StatBuilderWithValueConverter(_inner.Resolve(context), _entity.Resolve(context), _buildValue,
-                _combineValues);
+            => new StatBuilderWithValueConverter(_inner.Resolve(context), _entity, _buildValue, _combineValues);
 
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder)
             => new StatBuilderWithValueConverter(_inner, entityBuilder, _buildValue, _combineValues);

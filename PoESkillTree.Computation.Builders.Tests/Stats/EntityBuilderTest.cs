@@ -8,16 +8,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
     [TestFixture]
     public class EntityBuilderTest
     {
-        [Test]
-        public void ResolveReturnsSelf()
-        {
-            var sut = new EntityBuilder(default(Entity));
-
-            var actual = sut.Resolve(null);
-
-            Assert.AreEqual(sut, actual);
-        }
-
         [TestCase(Entity.Enemy)]
         [TestCase(Entity.Character, Entity.Totem, Entity.Minion)]
         public void BuildReturnsConstructorArgument(params Entity[] expected)
@@ -33,16 +23,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
     [TestFixture]
     public class ModifierSourceEntityBuilderTest
     {
-        [Test]
-        public void ResolveReturnsSelf()
-        {
-            var sut = new ModifierSourceEntityBuilder();
-
-            var actual = sut.Resolve(null);
-
-            Assert.AreEqual(sut, actual);
-        }
-
         [TestCase(Entity.Enemy)]
         [TestCase(Entity.Character)]
         public void BuildReturnsArgument(Entity expected)

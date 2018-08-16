@@ -100,12 +100,12 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
         [Test]
         public void ResolveRecentlyBuildsToCorrectResult()
         {
-            var entityBuilder = new EntityBuilder(Entity.Enemy);
-            var unresolvedEntityBuilder = Mock.Of<IEntityBuilder>(b => b.Resolve(null) == entityBuilder);
-            var lastOccurenceStat = new Stat("test.LastOccurence", Entity.Enemy);
+            var identityBuilder = CoreBuilder.Create("test");
+            var unresolvedIdentityBuilder = Mock.Of<ICoreBuilder<string>>(b => b.Resolve(null) == identityBuilder);
+            var lastOccurenceStat = new Stat("test.LastOccurence");
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(lastOccurenceStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(1));
-            var sut = CreateSut(entity: unresolvedEntityBuilder);
+            var sut = CreateSut(unresolvedIdentityBuilder);
 
             var result = sut.Resolve(null).Recently.Build();
             var actual = result.Value.Calculate(context);
@@ -118,12 +118,10 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
         {
             var identityBuilder = CoreBuilder.Create("test");
             var unresolvedIdentityBuilder = Mock.Of<ICoreBuilder<string>>(b => b.Resolve(null) == identityBuilder);
-            var entityBuilder = new EntityBuilder(Entity.Enemy);
-            var unresolvedEntityBuilder = Mock.Of<IEntityBuilder>(b => b.Resolve(null) == entityBuilder);
-            var lastOccurenceStat = new Stat("test.LastOccurence", Entity.Enemy);
+            var lastOccurenceStat = new Stat("test.LastOccurence");
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(lastOccurenceStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(1));
-            var sut = CreateSut(unresolvedIdentityBuilder, unresolvedEntityBuilder);
+            var sut = CreateSut(unresolvedIdentityBuilder);
 
             var result = sut.Recently.Resolve(null).Build();
             var actual = result.Value.Calculate(context);

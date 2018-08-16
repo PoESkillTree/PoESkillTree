@@ -30,21 +30,22 @@ namespace PoESkillTree.Computation.Builders.Actions
         }
 
         public IActionBuilder Resolve(ResolveContext context) =>
-            new ActionBuilder(StatFactory, _identity.Resolve(context), _entity.Resolve(context));
+            new ActionBuilder(StatFactory, _identity.Resolve(context), _entity);
 
         public IActionBuilder By(IEntityBuilder source) =>
             new ActionBuilder(StatFactory, _identity, source);
 
         public IConditionBuilder On =>
-            new StatConvertingConditionBuilder(b => new StatBuilder(StatFactory,
-                new ParametrisedCoreStatBuilder<ICoreBuilder<string>, IEntityBuilder>(
-                    new StatBuilderAdapter(b), _identity, _entity, ConvertStat)),
+            new StatConvertingConditionBuilder(
+                b => new StatBuilder(StatFactory,
+                    new ParametrisedCoreStatBuilder<ICoreBuilder<string>>(
+                        new StatBuilderAdapter(b), _identity, (i, s) => ConvertStat(i, s))),
                 c => Resolve(c).On);
 
-        private IEnumerable<IStat> ConvertStat(ICoreBuilder<string> identity, IEntityBuilder entity, IStat stat)
+        private IEnumerable<IStat> ConvertStat(ICoreBuilder<string> identity, IStat stat)
         {
             var builtIdentity = identity.Build();
-            return from e in entity.Build(stat.Entity)
+            return from e in _entity.Build(stat.Entity)
                    let i = $"On({builtIdentity}).By({e})"
                    let registrationType = GainOnAction(stat, builtIdentity, e)
                    select StatFactory.CopyWithSuffix(stat, i, stat.DataType, registrationType);

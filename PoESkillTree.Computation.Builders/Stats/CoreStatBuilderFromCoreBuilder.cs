@@ -43,8 +43,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         public ICoreStatBuilder Resolve(ResolveContext context) =>
-            new CoreStatBuilderFromCoreBuilder<T>(
-                _coreBuilder.Resolve(context), _statFactory, _entityBuilder.Resolve(context));
+            new CoreStatBuilderFromCoreBuilder<T>(_coreBuilder.Resolve(context), _statFactory, _entityBuilder);
 
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
             new CoreStatBuilderFromCoreBuilder<T>(_coreBuilder, _statFactory, entityBuilder);
