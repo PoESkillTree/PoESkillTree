@@ -51,7 +51,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             AssertReturnsCorrectResult(NodeValueAggregators.CalculateBaseAdd, expected, values);
         }
         
-        [TestCase(0)]
+        [TestCase(null)]
         [TestCase(42, 42.0)]
         public void CalculateBaseSetReturnsCorrectResult(double? expected, params double?[] values)
         {

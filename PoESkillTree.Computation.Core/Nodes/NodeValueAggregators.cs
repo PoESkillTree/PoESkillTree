@@ -52,7 +52,7 @@ namespace PoESkillTree.Computation.Core.Nodes
                 throw new NotSupportedException("Multiple modifiers to BaseSet are not supported");
             }
 
-            return enumerated.Any() ? enumerated.Sum() : new NodeValue(0);
+            return enumerated.Any() ? enumerated.Sum() : (NodeValue?) null;
         }
 
         private static IReadOnlyList<NodeValue> EnumerateWhereNotNull(this IEnumerable<NodeValue?> values) =>

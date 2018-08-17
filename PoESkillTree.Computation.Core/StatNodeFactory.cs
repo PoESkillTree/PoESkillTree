@@ -41,7 +41,7 @@ namespace PoESkillTree.Computation.Core
                 case NodeType.Base:
                     return Create(new BaseValue(_stat, path));
                 case NodeType.BaseSet:
-                    return Create(new FormAggregatingValue(_stat, Form.BaseSet, path, CalculateBaseAdd));
+                    return Create(new FormAggregatingValue(_stat, Form.BaseSet, path, CalculateBaseSet));
                 case NodeType.BaseAdd:
                     return Create(new FormAggregatingValue(_stat, Form.BaseAdd, path, CalculateBaseAdd));
                 case NodeType.Increase:

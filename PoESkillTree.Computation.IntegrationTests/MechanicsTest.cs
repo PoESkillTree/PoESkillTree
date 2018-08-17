@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -70,7 +71,10 @@ namespace PoESkillTree.Computation.IntegrationTests
                         Form.BaseSet, new Constant(true), modSource),
                     new Modifier(
                         Build(_metaStats.SkillUsesHand(AttackDamageHand.OffHand)),
-                        Form.BaseSet, new Constant(true), modSource))
+                        Form.BaseSet, new Constant(true), modSource),
+                    new Modifier(
+                        Build(_builderFactories.EquipmentBuilders.Equipment[ItemSlot.MainHand].ItemTags),
+                        Form.TotalOverride, new Constant((int) Tags.Sword), modSource))
                 .ToList();
         }
 
