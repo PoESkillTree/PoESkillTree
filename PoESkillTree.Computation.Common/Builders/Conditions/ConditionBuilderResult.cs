@@ -1,4 +1,4 @@
-﻿using PoESkillTree.Common.Utils;
+﻿using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Common.Builders.Conditions
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PoESkillTree.Common.Utils.Extensions
+namespace PoESkillTree.Utils.Extensions
 {
     public static class NullableExtensions
     {
@@ -16,7 +16,7 @@ namespace PoESkillTree.Common.Utils.Extensions
         public static IEnumerable<T?> SelectOnValues<T>(this IEnumerable<T?> values, Func<T, T> selector)
             where T: struct
         {
-            return values.Select(v => v.Select(selector));
+            return values.Select(v => Select(v, selector));
         }
 
         public static T? AggregateOnValues<T>(this IEnumerable<T?> values, Func<T, T, T> operation)

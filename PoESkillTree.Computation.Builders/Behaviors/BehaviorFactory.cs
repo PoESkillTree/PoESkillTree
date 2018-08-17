@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using EnumsNET;
-using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Behaviors
 {

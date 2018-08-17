@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Common.Utils;
-using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Utils;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Buffs
 {

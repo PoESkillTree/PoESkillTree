@@ -8,8 +8,8 @@
     <ProjectGuid>{1F11D13C-9039-40AB-8B91-8A03E4DA934A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PoESkillTree.Common</RootNamespace>
-    <AssemblyName>PoESkillTree.Common</AssemblyName>
+    <RootNamespace>PoESkillTree.Utils</RootNamespace>
+    <AssemblyName>PoESkillTree.Utils</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -62,12 +62,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils\Extensions\CollectionExtensions.cs" />
-    <Compile Include="Utils\Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Utils\Extensions\NullableExtensions.cs" />
-    <Compile Include="Utils\Extensions\NumberExtensions.cs" />
-    <Compile Include="Utils\Funcs.cs" />
-    <Compile Include="Utils\RegexCache.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\NullableExtensions.cs" />
+    <Compile Include="Extensions\NumberExtensions.cs" />
+    <Compile Include="Funcs.cs" />
+    <Compile Include="RegexCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PoESkillTree.Common.Utils
+namespace PoESkillTree.Utils
 {
     public static class Funcs
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PoESkillTree.Common.Utils.Extensions
+namespace PoESkillTree.Utils.Extensions
 {
     public static class NumberExtensions
     {

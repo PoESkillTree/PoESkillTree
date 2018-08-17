@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using EnumsNET;
 using MoreLinq;
-using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -15,6 +14,7 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.Parsing;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Console
 {

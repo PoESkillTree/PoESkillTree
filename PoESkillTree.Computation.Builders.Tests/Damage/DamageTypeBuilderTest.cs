@@ -2,7 +2,6 @@
 using EnumsNET;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Damage;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
@@ -12,6 +11,7 @@ using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Tests.Damage
 {

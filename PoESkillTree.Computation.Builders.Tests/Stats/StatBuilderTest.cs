@@ -2,7 +2,6 @@
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Values;
@@ -15,6 +14,7 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Common.Tests;
+using PoESkillTree.Utils;
 using static PoESkillTree.Computation.Builders.Tests.Stats.StatBuilderHelper;
 
 namespace PoESkillTree.Computation.Builders.Tests.Stats

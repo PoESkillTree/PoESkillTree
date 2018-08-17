@@ -2,13 +2,13 @@
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Tests;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Builders.Tests.Conditions
 {

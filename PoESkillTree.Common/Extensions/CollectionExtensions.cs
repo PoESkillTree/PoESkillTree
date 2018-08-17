@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PoESkillTree.Common.Utils.Extensions
+namespace PoESkillTree.Utils.Extensions
 {
     public static class CollectionExtensions
     {

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
-using PoESkillTree.Common.Utils;
-using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
@@ -14,6 +12,8 @@ using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
+using PoESkillTree.Utils;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {

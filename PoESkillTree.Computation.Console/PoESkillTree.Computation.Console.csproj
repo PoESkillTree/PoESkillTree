@@ -76,9 +76,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Common.csproj">
+    <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Utils.csproj">
       <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
-      <Name>PoESkillTree.Common</Name>
+      <Name>PoESkillTree.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\PoESkillTree.Computation.Builders\PoESkillTree.Computation.Builders.csproj">
       <Project>{940a286a-bca7-4c79-ac89-55c57c7d4784}</Project>

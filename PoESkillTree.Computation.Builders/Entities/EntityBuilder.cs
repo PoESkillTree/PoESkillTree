@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
-using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Entities;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Entities
 {

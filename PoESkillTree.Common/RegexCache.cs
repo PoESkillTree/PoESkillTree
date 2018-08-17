@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using PoESkillTree.Common.Utils.Extensions;
+using PoESkillTree.Utils.Extensions;
 
-namespace PoESkillTree.Common.Utils
+namespace PoESkillTree.Utils
 {
     public class RegexCache
     {

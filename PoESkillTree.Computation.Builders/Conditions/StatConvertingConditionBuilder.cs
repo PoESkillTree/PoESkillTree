@@ -1,9 +1,9 @@
 ﻿using System;
-using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Builders.Conditions
 {

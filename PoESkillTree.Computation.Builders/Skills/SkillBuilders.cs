@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Skills
 {

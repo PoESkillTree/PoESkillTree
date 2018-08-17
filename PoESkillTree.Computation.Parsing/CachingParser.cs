@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using PoESkillTree.Common.Utils.Extensions;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing
 {

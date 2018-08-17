@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using MoreLinq;
 using NUnit.Framework;
-using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
@@ -17,6 +16,7 @@ using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Console;
 using PoESkillTree.Computation.Data.GivenStats;
 using PoESkillTree.Computation.Parsing;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {

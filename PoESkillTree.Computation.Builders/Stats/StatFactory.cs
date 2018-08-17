@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
