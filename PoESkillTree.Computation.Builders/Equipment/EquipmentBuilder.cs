@@ -1,11 +1,11 @@
-﻿using PoESkillTree.Common.Model.Items.Enums;
-using PoESkillTree.Computation.Builders.Conditions;
+﻿using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Equipment;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Builders.Equipment
 {

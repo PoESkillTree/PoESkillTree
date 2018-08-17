@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
 using MoreLinq;
-using PoESkillTree.Common.Model.Items;
+using PoESkillTree.GameModel.Items;
 using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items.StatTranslation

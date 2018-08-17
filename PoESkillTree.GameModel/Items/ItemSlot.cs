@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PoESkillTree.Common.Model.Items.Enums
+namespace PoESkillTree.GameModel.Items
 {
     /// <summary>
     /// Defines the slots which can be filled with items.

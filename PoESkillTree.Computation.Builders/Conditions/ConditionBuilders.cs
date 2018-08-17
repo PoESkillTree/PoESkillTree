@@ -1,5 +1,4 @@
 ﻿using System;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Common.Utils;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
@@ -10,6 +9,7 @@ using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Builders.Conditions
 {

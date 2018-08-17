@@ -104,6 +104,10 @@
       <Project>{1e573c72-9b7f-40af-a5e8-739f90b50690}</Project>
       <Name>PoESkillTree.Computation.Parsing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj">
+      <Project>{c1c73cc9-d825-41f7-86f0-f37ee8178d6d}</Project>
+      <Name>PoESkillTree.GameModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

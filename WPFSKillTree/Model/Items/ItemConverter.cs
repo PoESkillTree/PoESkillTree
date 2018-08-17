@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Media;
-using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.GameModel.Items;
 using POESKillTree.Model.Items.Mods;
 
 namespace POESKillTree.Model.Items

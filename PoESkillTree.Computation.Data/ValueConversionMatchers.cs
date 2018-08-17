@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
@@ -9,6 +8,7 @@ using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.GameModel.Items;
 using static PoESkillTree.Computation.Common.Builders.Values.ValueBuilderUtils;
 
 namespace PoESkillTree.Computation.Data

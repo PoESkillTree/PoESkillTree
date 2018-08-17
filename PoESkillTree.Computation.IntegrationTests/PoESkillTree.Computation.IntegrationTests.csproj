@@ -110,6 +110,10 @@
       <Project>{1E573C72-9B7F-40AF-A5E8-739F90B50690}</Project>
       <Name>PoESkillTree.Computation.Parsing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj">
+      <Project>{c1c73cc9-d825-41f7-86f0-f37ee8178d6d}</Project>
+      <Name>PoESkillTree.GameModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\NotYetParsableStatLines.txt">

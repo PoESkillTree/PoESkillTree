@@ -1,4 +1,4 @@
-﻿namespace PoESkillTree.Common.Model.Items
+﻿namespace PoESkillTree.GameModel.Items
 {
     public static class ItemConstants
     {

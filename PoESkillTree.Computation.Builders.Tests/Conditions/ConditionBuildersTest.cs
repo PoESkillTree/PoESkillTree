@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Values;
@@ -13,6 +12,7 @@ using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Builders.Tests.Conditions
 {

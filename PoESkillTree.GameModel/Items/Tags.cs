@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace PoESkillTree.Common.Model.Items.Enums
+namespace PoESkillTree.GameModel.Items
 {
     /// <summary>
     /// Tags of an item as in the GGPK's Tags.dat. Mostly used to define which mods can spawn on the item.

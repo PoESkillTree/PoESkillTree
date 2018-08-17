@@ -1,10 +1,10 @@
 using System.Linq;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Data.Base
 {

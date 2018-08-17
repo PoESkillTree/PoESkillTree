@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Builders.Equipment;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Builders.Tests.Equipment
 {

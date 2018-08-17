@@ -6,7 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using MoreLinq;
-using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.GameModel.Items;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;

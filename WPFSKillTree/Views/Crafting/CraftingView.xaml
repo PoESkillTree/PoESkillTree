@@ -10,7 +10,7 @@
                              xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Crafting"
                              xmlns:enums="clr-namespace:POESKillTree.Model.Items.Enums"
                              xmlns:mahApps="http://metro.mahapps.com/winfx/xaml/controls"
-                             xmlns:enums1="clr-namespace:PoESkillTree.Common.Model.Items.Enums;assembly=PoESkillTree.Common"
+                             xmlns:enums1="clr-namespace:PoESkillTree.GameModel.Items;assembly=PoESkillTree.GameModel"
                              mc:Ignorable="d" 
                              d:DataContext="{d:DesignInstance viewModels:CraftingViewModel}"
                              CloseButtonVisibility="Collapsed"

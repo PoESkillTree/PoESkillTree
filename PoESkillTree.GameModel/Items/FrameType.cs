@@ -1,4 +1,4 @@
-﻿namespace PoESkillTree.Common.Model.Items.Enums
+﻿namespace PoESkillTree.GameModel.Items
 {
     public enum FrameType
     {

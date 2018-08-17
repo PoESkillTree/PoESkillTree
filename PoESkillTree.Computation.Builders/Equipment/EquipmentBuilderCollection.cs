@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Equipment;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Builders.Equipment
 {

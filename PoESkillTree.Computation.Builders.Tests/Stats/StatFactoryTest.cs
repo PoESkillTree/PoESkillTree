@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Builders.Tests.Stats
 {

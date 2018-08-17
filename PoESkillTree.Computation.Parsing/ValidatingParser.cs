@@ -1,5 +1,5 @@
 ﻿using System;
-using PoESkillTree.Common.Model.Items;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Parsing
 {

@@ -9,8 +9,6 @@ namespace PoESkillTree.Computation.Builders.Stats
 {
     internal class StatBuilders : StatBuildersBase, IStatBuilders
     {
-        private IDamageRelatedStatBuilder _range;
-
         public StatBuilders(IStatFactory statFactory) : base(statFactory)
         {
         }

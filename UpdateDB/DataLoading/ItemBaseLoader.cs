@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using log4net;
 using Newtonsoft.Json.Linq;
-using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.GameModel.Items;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;

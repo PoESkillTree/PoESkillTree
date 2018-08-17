@@ -6,7 +6,7 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:items="clr-namespace:POESKillTree.Model.Items"
              xmlns:enums="clr-namespace:POESKillTree.Model.Items.Enums"
-             xmlns:enums1="clr-namespace:PoESkillTree.Common.Model.Items.Enums;assembly=PoESkillTree.Common"
+             xmlns:enums1="clr-namespace:PoESkillTree.GameModel.Items;assembly=PoESkillTree.GameModel"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance items:Item}"

@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
-using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.GameModel.Items;
 
 namespace POESKillTree.Model.Items.Mods
 {

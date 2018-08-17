@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -13,6 +12,7 @@ using PoESkillTree.Computation.Console;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.IntegrationTests.Core;
 using PoESkillTree.Computation.Parsing;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {

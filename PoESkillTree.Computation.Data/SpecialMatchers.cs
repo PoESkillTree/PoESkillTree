@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -15,6 +14,7 @@ using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Data
 {

@@ -180,6 +180,10 @@
       <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
       <Name>PoESkillTree.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj">
+      <Project>{c1c73cc9-d825-41f7-86f0-f37ee8178d6d}</Project>
+      <Name>PoESkillTree.GameModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

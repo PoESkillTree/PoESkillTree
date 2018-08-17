@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using MoreLinq;
-using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.GameModel.Items;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
