@@ -143,6 +143,7 @@
     <Compile Include="Builders\Values\IValueBuilders.cs" />
     <Compile Include="Builders\Values\ValueBuilder.cs" />
     <Compile Include="Builders\Values\ValueBuilderUtils.cs" />
+    <Compile Include="CharacterClass.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="ExplicitRegistrationType.cs" />
     <Compile Include="GameStateEnums.cs" />

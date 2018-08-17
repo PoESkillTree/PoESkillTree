@@ -10,6 +10,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     public interface IStatBuilders
     {
         IStatBuilder Level { get; }
+        IStatBuilder CharacterClass { get; }
 
         IStatBuilder Armour { get; }
 

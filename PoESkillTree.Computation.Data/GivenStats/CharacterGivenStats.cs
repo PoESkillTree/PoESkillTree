@@ -19,7 +19,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
     /// <remarks>
     /// See http://pathofexile.gamepedia.com/Character and Metadata/Characters/Character.ot in GGPK.
     /// </remarks>
-    public class CharacterGivenStats : UsesStatBuilders, IGivenStats
+    public class CharacterGivenStats : UsesConditionBuilders, IGivenStats
     {
         private readonly IModifierBuilder _modifierBuilder;
         private readonly Lazy<IReadOnlyList<IIntermediateModifier>> _lazyGivenStats;
@@ -95,9 +95,33 @@ namespace PoESkillTree.Computation.Data.GivenStats
             },
             { PercentIncrease, Stat.MovementSpeed, PerStat(Charge.Rage.Amount, 5) * Charge.RageEffect.Value },
             { BaseSubtract, Life.Regen.Percent, 0.1 * Charge.Rage.Amount.Value * Charge.RageEffect.Value },
+            // unarmed
+            { BaseSet, Stat.Range, 4, Not(MainHand.HasItem) },
+            { BaseSet, CriticalStrike.Chance.With(AttackDamageHand.MainHand), 0, Not(MainHand.HasItem) },
+            { BaseSet, Stat.CastRate.With(AttackDamageHand.MainHand), 1 / 0.83, Not(MainHand.HasItem) },
+            {
+                BaseSet, Physical.Damage.WithSkills.With(AttackDamageHand.MainHand),
+                ValueFactory.If(Stat.CharacterClass.Value.Eq((int) CharacterClass.Scion))
+                    .Then(MinMaxValue(2, 6))
+                    .ElseIf(Stat.CharacterClass.Value.Eq((int) CharacterClass.Marauder))
+                    .Then(MinMaxValue(2, 8))
+                    .ElseIf(Stat.CharacterClass.Value.Eq((int) CharacterClass.Ranger))
+                    .Then(MinMaxValue(2, 5))
+                    .ElseIf(Stat.CharacterClass.Value.Eq((int) CharacterClass.Witch))
+                    .Then(MinMaxValue(2, 5))
+                    .ElseIf(Stat.CharacterClass.Value.Eq((int) CharacterClass.Duelist))
+                    .Then(MinMaxValue(2, 6))
+                    .ElseIf(Stat.CharacterClass.Value.Eq((int) CharacterClass.Templar))
+                    .Then(MinMaxValue(2, 6))
+                    .Else(MinMaxValue(2, 5)), // Shadow
+                Not(MainHand.HasItem)
+            },
         };
 
         private static ValueBuilder PerStat(IStatBuilder stat, double divideBy)
             => (stat.Value / divideBy).Select(Math.Floor, o => $"Floor({o})");
+
+        private IValueBuilder MinMaxValue(double min, double max)
+            => ValueFactory.FromMinAndMax(ValueFactory.Create(min), ValueFactory.Create(max));
     }
 }
