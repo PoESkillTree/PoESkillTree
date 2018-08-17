@@ -9,6 +9,8 @@ namespace PoESkillTree.Computation.Builders.Stats
 {
     internal class StatBuilders : StatBuildersBase, IStatBuilders
     {
+        private IDamageRelatedStatBuilder _range;
+
         public StatBuilders(IStatFactory statFactory) : base(statFactory)
         {
         }
@@ -41,7 +43,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         public IStatBuilder AreaOfEffect => FromIdentity(typeof(int));
-        public IStatBuilder Range => FromIdentity(typeof(int));
+        public IStatBuilder Radius => FromIdentity(typeof(int));
+
+        public IDamageRelatedStatBuilder Range
+            => DamageRelatedFromIdentity(typeof(int)).WithSkills(DamageSource.Attack);
+
         public IStatBuilder CooldownRecoverySpeed => FromIdentity(typeof(double));
         public IStatBuilder Duration => FromIdentity(typeof(double));
 

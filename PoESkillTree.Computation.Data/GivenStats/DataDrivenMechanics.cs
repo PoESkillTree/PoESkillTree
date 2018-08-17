@@ -434,6 +434,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     1 -
                     (1 - Effect.Stun.Avoidance.Value) * (1 - Effect.Stun.ChanceToAvoidInterruptionWhileCasting.Value)
                 },
+                // radius
+                { PercentMore, Stat.Radius, Stat.AreaOfEffect.Value.Select(Math.Sqrt, v => $"Sqrt({v})") },
             };
 
         private static ValueBuilder AverageAilmentDamageFromCritAndNonCrit(

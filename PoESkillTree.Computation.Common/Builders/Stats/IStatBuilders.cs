@@ -44,15 +44,20 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder DamageHasKeyword(DamageSource damageSource, IKeywordBuilder keyword);
 
         /// <summary>
-        /// Gets a stat representing the main skill's area of effect. The square root of this stat is used as a
-        /// modifier to <see cref="Range"/>.
+        /// Gets a stat representing the modifier to the main skill's area of effect. The square root of this stat is
+        /// used as a modifier to <see cref="Radius"/>.
         /// </summary>
         IStatBuilder AreaOfEffect { get; }
 
         /// <summary>
-        /// Gets a stat representing the main skill's range
+        /// Gets a stat representing the main skill's radius, if it has one.
         /// </summary>
-        IStatBuilder Range { get; }
+        IStatBuilder Radius { get; }
+
+        /// <summary>
+        /// Gets a stat representing the weapon range
+        /// </summary>
+        IDamageRelatedStatBuilder Range { get; }
 
         /// <summary>
         /// The main skill's cooldown recovery speed

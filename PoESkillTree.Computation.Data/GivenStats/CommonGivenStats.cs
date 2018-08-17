@@ -128,6 +128,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Effect.Stun.Threshold, 1 },
             { BaseSet, Effect.Stun.Recovery, 1 },
             { BaseSet, Effect.Stun.Duration, 350 },
+            // other
+            { BaseSet, Stat.AreaOfEffect, 1 },
         };
     }
 }
