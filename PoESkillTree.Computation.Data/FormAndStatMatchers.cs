@@ -39,6 +39,17 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]), Reference.AsDamageType.Damage.WithHits
                 },
                 {
+                    @"adds # to # ({DamageTypeMatchers}) damage to unarmed attacks",
+                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]),
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Attack),
+                    And(Not(MainHand.HasItem), With(Keyword.Melee))
+                },
+                {
+                    @"adds # to # ({DamageTypeMatchers}) damage to spells",
+                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]),
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell)
+                },
+                {
                     @"# to # additional ({DamageTypeMatchers}) damage",
                     BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]), Reference.AsDamageType.Damage.WithHits
                 },
@@ -226,6 +237,7 @@ namespace PoESkillTree.Computation.Data
                     "enemies can have # additional curse",
                     BaseAdd, Value, Buff.CurseLimit.For(Enemy)
                 },
+                { "unaffected by curses", PercentLess, 100, Buffs(targets: Self).With(Keyword.Curse).Effect },
                 { "grants fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
                 { "gain elemental conflux", TotalOverride, 1, Buff.Conflux.Elemental.On(Self) },
                 // flags

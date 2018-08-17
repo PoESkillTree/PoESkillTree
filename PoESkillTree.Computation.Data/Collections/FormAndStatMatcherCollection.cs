@@ -32,10 +32,16 @@ namespace PoESkillTree.Computation.Data.Collections
         public void Add([RegexPattern] string regex, IFormBuilder form, double value, IStatBuilder stat,
             IConditionBuilder condition = null)
         {
+            Add(regex, form, _valueFactory.Create(value), stat, condition);
+        }
+
+        public void Add([RegexPattern] string regex, IFormBuilder form, IValueBuilder value, IStatBuilder stat,
+            IConditionBuilder condition = null)
+        {
             var builder = ModifierBuilder
                 .WithForm(form)
                 .WithStat(stat)
-                .WithValue(_valueFactory.Create(value));
+                .WithValue(value);
             if (condition != null)
             {
                 builder = builder.WithCondition(condition);
