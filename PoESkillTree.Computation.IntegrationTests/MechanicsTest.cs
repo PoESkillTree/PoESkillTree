@@ -19,12 +19,19 @@ namespace PoESkillTree.Computation.IntegrationTests
     [TestFixture]
     public class MechanicsTest
     {
-        private static readonly double Accuracy = (-2 + 2 * 90) + 1000;
-        private static readonly double ChanceToHit = Accuracy / (Accuracy + Math.Pow(1000, 0.8));
-
         private static IReadOnlyList<Modifier> _givenMods;
         private static IBuilderFactories _builderFactories;
         private static IMetaStatBuilders _metaStats;
+
+        private const double Accuracy = (-2 + 2 * 90) + 1000;
+
+        private static double ChanceToHit(ICalculator calculator)
+        {
+            var enemyEvasionStat =
+                Build(_builderFactories.StatBuilders.Evasion.For(_builderFactories.EntityBuilders.Enemy)).Single();
+            var enemyEvasion = calculator.NodeRepository.GetNode(enemyEvasionStat).Value.Single();
+            return Accuracy / (Accuracy + Math.Pow(enemyEvasion / 4.0, 0.8));
+        }
 
         [OneTimeSetUp]
         public static void ClassInit()
@@ -33,19 +40,11 @@ namespace PoESkillTree.Computation.IntegrationTests
             _builderFactories = compRoot.BuilderFactories;
             _metaStats = compRoot.MetaStats;
             var modSource = new ModifierSource.Global();
-            _givenMods = GivenStatsParser.Parse(compRoot.Parser, compRoot.GivenStats)
+            _givenMods = GivenStatsParser.Parse(compRoot.Parser, compRoot.GivenStats.Result)
                 .Append(
                     new Modifier(
-                        Build(_builderFactories.StatBuilders.Evasion.For(_builderFactories.EntityBuilders.Enemy)),
-                        Form.BaseSet, new Constant(4000), modSource),
-                    new Modifier(
-                        Build(_builderFactories.DamageTypeBuilders.Physical.Damage.WithHits
-                            .For(_builderFactories.EntityBuilders.Enemy)),
-                        Form.BaseSet, new Constant(1000), modSource),
-                    new Modifier(
-                        Build(_builderFactories.StatBuilders.Pool.From(Pool.Life)
-                            .For(_builderFactories.EntityBuilders.Enemy)),
-                        Form.BaseSet, new Constant(200), modSource),
+                        Build(_builderFactories.StatBuilders.Level.For(_builderFactories.EntityBuilders.Enemy)),
+                        Form.BaseSet, new Constant(84), modSource),
                     new Modifier(
                         Build(_builderFactories.DamageTypeBuilders.Physical.Damage.Taken
                             .For(_builderFactories.EntityBuilders.Enemy)),
@@ -91,6 +90,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                 .AddModifier(Build(_builderFactories.DamageTypeBuilders.Physical.Penetration), Form.BaseAdd, 10)
                 .DoUpdate();
 
+            var chanceToHit = ChanceToHit(calculator);
             var actual = nodes
                 .GetNode(BuildMainHandSkillSingle(_metaStats.EnemyResistanceAgainstNonCrits(DamageType.Physical)))
                 .Value.Single();
@@ -124,18 +124,18 @@ namespace PoESkillTree.Computation.IntegrationTests
             actual = nodes
                 .GetNode(BuildMainHandSkillSingle(_builderFactories.StatBuilders.ChanceToHit))
                 .Value.Single();
-            Assert.AreEqual(ChanceToHit * 100, actual);
+            Assert.AreEqual(chanceToHit * 100, actual);
             actual = nodes
                 .GetNode(BuildMainHandSkillSingle(_metaStats.AverageDamagePerHit))
                 .Value.Single();
-            var effectiveCritChance = 0.1 * ChanceToHit;
+            var effectiveCritChance = 0.1 * chanceToHit;
             var expectedAverageDamagePerHit = expectedDamageWithNonCrits * (1 - effectiveCritChance) +
                                               expectedDamageWithCrits * effectiveCritChance;
             Assert.AreEqual(expectedAverageDamagePerHit, actual);
             actual = nodes
                 .GetNode(BuildMainHandSkillSingle(_metaStats.AverageDamage))
                 .Value.Single();
-            var expectedAverageDamage = expectedAverageDamagePerHit * ChanceToHit;
+            var expectedAverageDamage = expectedAverageDamagePerHit * chanceToHit;
             Assert.AreEqual(expectedAverageDamage, actual);
             actual = nodes
                 .GetNode(Build(_metaStats.SkillDpsWithHits).Single())
@@ -188,7 +188,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     Form.BaseSet, 1)
                 .DoUpdate();
 
-            var critChance = 0.1 * ChanceToHit;
+            var critChance = 0.1 * ChanceToHit(calculator);
             var ailmentChanceNonCrits = 0.1;
             var ailmentChanceCrits = 1;
             var baseDamage = 5 * 0.7;
@@ -215,8 +215,10 @@ namespace PoESkillTree.Computation.IntegrationTests
                 .AddModifier(Build(_builderFactories.DamageTypeBuilders.Physical.Resistance), Form.BaseAdd, 50)
                 .DoUpdate();
 
+            var enemyDamageStat = BuildMainHandSkillSingle(
+                _builderFactories.DamageTypeBuilders.Physical.Damage.For(_builderFactories.EntityBuilders.Enemy));
+            var enemyDamage = nodes.GetNode(enemyDamageStat).Value.Single();
             var armour = 4000;
-            var enemyDamage = 1000d;
             var expected = 50 + 100 * armour / (armour + 10 * enemyDamage);
             var actual = nodes
                 .GetNode(Build(_metaStats.ResistanceAgainstHits(DamageType.Physical)).Single())
@@ -236,8 +238,11 @@ namespace PoESkillTree.Computation.IntegrationTests
                 .AddModifier(Build(_builderFactories.EffectBuilders.Stun.Threshold), Form.Increase, -100)
                 .DoUpdate();
 
-            var damage = 5 * 0.4 * 1.2 * ChanceToHit;
-            var expected = 200 * damage / (200 * 0.125);
+            var enemyLifeStat = Build(_builderFactories.StatBuilders.Pool.From(Pool.Life)
+                .For(_builderFactories.EntityBuilders.Enemy)).Single();
+            var enemyLife = nodes.GetNode(enemyLifeStat).Value.Single();
+            var damage = 5 * 0.4 * 1.2 * ChanceToHit(calculator);
+            var expected = 200 * damage / (enemyLife * 0.125);
             var actual = nodes
                 .GetNode(Build(_builderFactories.EffectBuilders.Stun.Chance.With(AttackDamageHand.MainHand)).Single())
                 .Value.Single();

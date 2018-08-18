@@ -5,6 +5,7 @@ using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Data;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Data.GivenStats
 {
@@ -12,12 +13,15 @@ namespace PoESkillTree.Computation.Data.GivenStats
     {
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
+        private readonly MonsterBaseStats _monsterBaseStats;
         private readonly Lazy<IReadOnlyList<IGivenStats>> _lazyCollection;
 
-        public GivenStatsCollection(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
+        public GivenStatsCollection(
+            IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders, MonsterBaseStats monsterBaseStats)
         {
             _builderFactories = builderFactories;
             _metaStatBuilders = metaStatBuilders;
+            _monsterBaseStats = monsterBaseStats;
             _lazyCollection = new Lazy<IReadOnlyList<IGivenStats>>(() => CreateCollection(new ModifierBuilder()));
         }
 
@@ -37,6 +41,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 new EffectStats(_builderFactories, modifierBuilder),
                 new DataDrivenMechanics(_builderFactories, modifierBuilder, _metaStatBuilders),
                 new GameStateDependentMods(_builderFactories, modifierBuilder, _metaStatBuilders),
+                new EnemyLevelBasedStats(_builderFactories, modifierBuilder, _monsterBaseStats),
+                new AllyLevelBasedStats(_builderFactories, modifierBuilder, _monsterBaseStats),
             };
     }
 }

@@ -71,7 +71,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             var unparsable = ReadUnparsableStatLines().Select(s => s.ToLowerInvariant()).ToHashSet();
 
-            var unparsedGivenStats = new GivenStatsCollection(null, null).SelectMany(s => s.GivenStatLines);
+            var unparsedGivenStats = new GivenStatsCollection(null, null, null).SelectMany(s => s.GivenStatLines);
             return ReadStatLines("SkillTreeStatLines")
                 .Concat(ReadStatLines("ParsableStatLines"))
                 .Concat(unparsedGivenStats)

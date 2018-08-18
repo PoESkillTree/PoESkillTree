@@ -83,6 +83,7 @@
     <Compile Include="DamageStatMatchers.cs" />
     <Compile Include="DamageTypeMatchers.cs" />
     <Compile Include="Collections\EffectStatCollection.cs" />
+    <Compile Include="GivenStats\AllyLevelBasedStats.cs" />
     <Compile Include="GivenStats\DataDrivenMechanics.cs" />
     <Compile Include="GivenStats\EffectStats.cs" />
     <Compile Include="BuffMatchers.cs" />
@@ -91,8 +92,10 @@
     <Compile Include="Collections\GivenStatCollection.cs" />
     <Compile Include="GivenStats\CharacterGivenStats.cs" />
     <Compile Include="GivenStats\CommonGivenStats.cs" />
+    <Compile Include="GivenStats\EnemyLevelBasedStats.cs" />
     <Compile Include="GivenStats\GameStateDependentMods.cs" />
     <Compile Include="GivenStats\GivenStatsCollection.cs" />
+    <Compile Include="GivenStats\LevelBasedStats.cs" />
     <Compile Include="GivenStats\MonsterGivenStats.cs" />
     <Compile Include="GivenStats\TotemGivenStats.cs" />
     <Compile Include="KeywordMatchers.cs" />

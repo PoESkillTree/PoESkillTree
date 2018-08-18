@@ -60,6 +60,7 @@
     <Compile Include="Items\Tags.cs" />
     <Compile Include="Items\ValueColoring.cs" />
     <Compile Include="Items\ItemConstants.cs" />
+    <Compile Include="MonsterBaseStats.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataUtils.cs" />
   </ItemGroup>
@@ -69,6 +70,7 @@
     <EmbeddedResource Include="Data\RePoE\npc_master.min.json" />
     <EmbeddedResource Include="Data\RePoE\stat_translations.min.json" />
     <None Include="app.config" />
+    <EmbeddedResource Include="Data\RePoE\default_monster_stats.min.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

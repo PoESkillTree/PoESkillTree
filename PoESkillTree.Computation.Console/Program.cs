@@ -14,7 +14,6 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.Parsing;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Console
 {
@@ -255,8 +254,7 @@ namespace PoESkillTree.Computation.Console
 
         private void AddGivenStats()
         {
-            var mods = GivenStatsParser.Parse(_parser,
-                _compositionRoot.GivenStats.Append(new EnemyBaseStats()));
+            var mods = GivenStatsParser.Parse(_parser, _compositionRoot.GivenStats.Result);
             AddMods(mods);
         }
 
