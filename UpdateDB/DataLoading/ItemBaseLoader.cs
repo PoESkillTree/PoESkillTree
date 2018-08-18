@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using log4net;
 using Newtonsoft.Json.Linq;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;
-using POESKillTree.Utils;
 
 namespace UpdateDB.DataLoading
 {
@@ -18,7 +18,7 @@ namespace UpdateDB.DataLoading
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ItemBaseLoader));
 
-        private const string RepoeUrl = RePoEUtils.RePoEDataUrl + "base_items.min.json";
+        private const string RepoeUrl = DataUtils.RePoEDataUrl + "base_items.min.json";
 
         private static readonly ISet<ItemClass> ItemClassWhitelist = new HashSet<ItemClass>
         {

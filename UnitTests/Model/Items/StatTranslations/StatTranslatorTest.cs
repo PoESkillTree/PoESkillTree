@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PoESkillTree.GameModel;
 using POESKillTree.Model.Items.StatTranslation;
-using POESKillTree.Utils;
 
 namespace UnitTests.Model.Items.StatTranslations
 {
@@ -20,8 +20,7 @@ namespace UnitTests.Model.Items.StatTranslations
 
         private static async Task<StatTranslator> InitializeAsync()
         {
-            var translations = await RePoEUtils
-                .LoadAsync<List<JsonStatTranslation>>("stat_translations");
+            var translations = await DataUtils.LoadRePoEAsync<List<JsonStatTranslation>>("stat_translations");
             return new StatTranslator(translations);
         }
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ItemDB xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <!--
+    GemList.xml is missing:
+    - HitsPerAttack
+   -->
+  <Gem Name="Double Strike" HitsPerAttack="2" />
+  <Gem Name="Lacerate" HitsPerAttack="2" />
+  <Gem Name="Vaal Double Strike" HitsPerAttack="2" />
+</ItemDB>

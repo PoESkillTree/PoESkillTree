@@ -224,7 +224,6 @@
     <Compile Include="Model\Items\Mods\Affix.cs" />
     <Compile Include="Model\Items\Mods\Stat.cs" />
     <Compile Include="Model\Items\Mods\StatLocalityChecker.cs" />
-    <Compile Include="Utils\RePoEUtils.cs" />
     <Compile Include="Model\Items\StatTranslation\Format.cs" />
     <Compile Include="Model\Items\StatTranslation\IndexHandler.cs" />
     <Compile Include="Model\Items\StatTranslation\JsonStatTranslation.cs" />
@@ -794,10 +793,6 @@
     <None Include="Contrib\RangeTree\README.md" />
     <None Include="Contrib\WpfRangeControls\LICENSE" />
     <None Include="Contrib\WpfRangeControls\README.md" />
-    <Resource Include="Data\RePoE\crafting_bench_options.min.json" />
-    <Resource Include="Data\RePoE\mods.min.json" />
-    <Resource Include="Data\RePoE\npc_master.min.json" />
-    <Resource Include="Data\RePoE\stat_translations.min.json" />
     <None Include="dist-clean.bat" />
     <None Include="dist-release.bat" />
     <None Include="Locale\de-DE\Help.md" />
@@ -900,16 +895,8 @@
   <ItemGroup>
     <Content Include="Antlr3.Runtime.dll" />
     <Resource Include="TreeGenerator\ideas_todos.txt" />
-    <Resource Include="Data\Equipment\Items.xml" />
-    <None Include="Data\ItemDB\GemList.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Data\ItemDB\GemProperties.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <Resource Include="Contrib\Monotone\LICENSE.txt" />
     <Resource Include="Contrib\Monotone\README.txt" />
-    <Resource Include="Data\Equipment\Uniques.xml" />
     <Content Include="Data\PseudoAttributes\Crit.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -165,7 +165,7 @@ namespace POESKillTree.ViewModels.Crafting
             return
                 from ms in MsPrefix.Concat(MsSuffix)
                 where !ms.IsEmptySelection
-                let location = ms.Query().Domain == ModDomain.Master ? ModLocation.Crafted : ModLocation.Explicit
+                let location = ms.Query().Domain == ModDomain.Crafted ? ModLocation.Crafted : ModLocation.Explicit
                 from tuple in ms.GetStatValues()
                 group tuple by location;
         }

@@ -79,7 +79,7 @@ namespace POESKillTree.Model.Items.Mods
             }
             else if (tags.HasFlag(Tags.Jewel))
             {
-                if (Domain != ModDomain.Jewel)
+                if (Domain != ModDomain.Misc)
                 {
                     return false;
                 }
@@ -90,7 +90,7 @@ namespace POESKillTree.Model.Items.Mods
             }
             else
             {
-                if (Domain != ModDomain.Item && Domain != ModDomain.Master)
+                if (Domain != ModDomain.Item && Domain != ModDomain.Crafted)
                 {
                     return false;
                 }
