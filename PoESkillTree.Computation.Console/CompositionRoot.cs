@@ -38,9 +38,15 @@ namespace PoESkillTree.Computation.Console
                 () => new Parser<ParsingStep>(_parsingData.Value, _builderFactories.Value));
             _metaStats = new Lazy<IMetaStatBuilders>(
                 () => new MetaStatBuilders(statFactory.Value));
-            _givenStats = new Lazy<Task<IEnumerable<IGivenStats>>>(
-                async () => new GivenStatsCollection(_builderFactories.Value, _metaStats.Value,
-                    await MonsterBaseStats.CreateAsync().ConfigureAwait(false)));
+            _givenStats = new Lazy<Task<IEnumerable<IGivenStats>>>(CreateGivenStatsAsync);
+        }
+
+        private async Task<IEnumerable<IGivenStats>> CreateGivenStatsAsync()
+        {
+            var characterTask = CharacterBaseStats.CreateAsync();
+            var monsterTask = MonsterBaseStats.CreateAsync();
+            return new GivenStatsCollection(_builderFactories.Value, _metaStats.Value,
+                await characterTask.ConfigureAwait(false), await monsterTask.ConfigureAwait(false));
         }
 
         public IBuilderFactories BuilderFactories => _builderFactories.Value;

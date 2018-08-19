@@ -91,7 +91,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
             var expected = (NodeValue?) (value is null ? (double?) null : Math.Round(value.Value));
             var sut = CreateSut(value);
 
-            var actual = sut.Select(Math.Round, _ => "").Build().Calculate(null);
+            var actual = sut.Select(v => v.Select(Math.Round), _ => "").Build().Calculate(null);
 
             Assert.AreEqual(expected, actual);
         }

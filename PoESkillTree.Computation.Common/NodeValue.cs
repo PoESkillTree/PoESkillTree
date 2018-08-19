@@ -60,6 +60,16 @@ namespace PoESkillTree.Computation.Common
 
         public double Maximum { get; }
 
+        public double Single
+        {
+            get
+            {
+                if (!Minimum.AlmostEquals(Maximum, 1e-10))
+                    throw new InvalidOperationException("Minimum and Maximum are not equal");
+                return Maximum;
+            }
+        }
+
 
         public static bool operator ==(NodeValue left, NodeValue right) =>
             left.Equals(right);
@@ -193,9 +203,7 @@ namespace PoESkillTree.Computation.Common
         {
             if (!(@this is NodeValue value))
                 throw new InvalidOperationException("NodeValue? has no value");
-            if (!value.Minimum.AlmostEquals(value.Maximum, 1e-10))
-                throw new InvalidOperationException("Minimum and Maximum are not equal");
-            return value.Maximum;
+            return value.Single;
         }
 
         /// <summary>

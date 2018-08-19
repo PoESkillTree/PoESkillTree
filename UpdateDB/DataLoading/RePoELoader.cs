@@ -12,7 +12,7 @@ namespace UpdateDB.DataLoading
     {
         private static readonly string[] Files =
         {
-            "mods", "crafting_bench_options", "npc_master", "stat_translations", "default_monster_stats"
+            "mods", "crafting_bench_options", "npc_master", "stat_translations", "default_monster_stats", "characters"
         };
 
         public override bool SavePathIsFolder => true;

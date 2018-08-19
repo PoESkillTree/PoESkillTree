@@ -13,15 +13,18 @@ namespace PoESkillTree.Computation.Data.GivenStats
     {
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
+        private readonly CharacterBaseStats _characterBaseStats;
         private readonly MonsterBaseStats _monsterBaseStats;
         private readonly Lazy<IReadOnlyList<IGivenStats>> _lazyCollection;
 
         public GivenStatsCollection(
-            IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders, MonsterBaseStats monsterBaseStats)
+            IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
+            CharacterBaseStats characterBaseStats, MonsterBaseStats monsterBaseStats)
         {
             _builderFactories = builderFactories;
             _metaStatBuilders = metaStatBuilders;
             _monsterBaseStats = monsterBaseStats;
+            _characterBaseStats = characterBaseStats;
             _lazyCollection = new Lazy<IReadOnlyList<IGivenStats>>(() => CreateCollection(new ModifierBuilder()));
         }
 
@@ -35,7 +38,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             => new IGivenStats[]
             {
                 new CommonGivenStats(_builderFactories, modifierBuilder),
-                new CharacterGivenStats(_builderFactories, modifierBuilder),
+                new CharacterGivenStats(_builderFactories, modifierBuilder, _characterBaseStats),
                 new MonsterGivenStats(_builderFactories, modifierBuilder),
                 new TotemGivenStats(_builderFactories, modifierBuilder),
                 new EffectStats(_builderFactories, modifierBuilder),

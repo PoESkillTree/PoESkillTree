@@ -197,8 +197,8 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
 
             public IValueBuilder If(IValue condition) => throw new NotSupportedException();
 
-            public IValueBuilder Select(Func<double, double> selector, Func<IValue, string> identity) => 
-                new ValueBuilderStub(selector(Value));
+            public IValueBuilder Select(Func<NodeValue, NodeValue> selector, Func<IValue, string> identity) => 
+                new ValueBuilderStub(selector(new NodeValue(Value)).Single);
 
             public IValueBuilder Create(double value) => new ValueBuilderStub(value);
 

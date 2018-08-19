@@ -10,6 +10,7 @@ using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Data.GivenStats
 {
@@ -23,11 +24,14 @@ namespace PoESkillTree.Computation.Data.GivenStats
     {
         private readonly IModifierBuilder _modifierBuilder;
         private readonly Lazy<IReadOnlyList<IIntermediateModifier>> _lazyGivenStats;
+        private readonly CharacterBaseStats _characterBaseStats;
 
-        public CharacterGivenStats(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder)
+        public CharacterGivenStats(
+            IBuilderFactories builderFactories, IModifierBuilder modifierBuilder, CharacterBaseStats characterBaseStats)
             : base(builderFactories)
         {
             _modifierBuilder = modifierBuilder;
+            _characterBaseStats = characterBaseStats;
             _lazyGivenStats = new Lazy<IReadOnlyList<IIntermediateModifier>>(() => CreateCollection().ToList());
         }
 
@@ -69,10 +73,13 @@ namespace PoESkillTree.Computation.Data.GivenStats
         private GivenStatCollection CreateCollection() => new GivenStatCollection(_modifierBuilder, ValueFactory)
         {
             // pools
-            { BaseSet, Life, 38 },
-            { BaseSet, Mana, 34 },
+            { BaseSet, Life, CharacterClassBased(_characterBaseStats.Life, "Life") },
+            { BaseSet, Mana, CharacterClassBased(_characterBaseStats.Mana, "Mana") },
             { BaseSet, Mana.Regen.Percent, 1.75 },
             // other basic stats
+            { BaseSet, Attribute.Strength, CharacterClassBased(_characterBaseStats.Strength, "Strength") },
+            { BaseSet, Attribute.Dexterity, CharacterClassBased(_characterBaseStats.Dexterity, "Dexterity") },
+            { BaseSet, Attribute.Intelligence, CharacterClassBased(_characterBaseStats.Intelligence, "Intelligence") },
             { BaseSet, Evasion, 53 },
             { BaseSet, Stat.Accuracy, -2 }, // 0 at level 1 with no dexterity
             { BaseSet, CriticalStrike.Multiplier, 150 },
@@ -96,32 +103,33 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { PercentIncrease, Stat.MovementSpeed, PerStat(Charge.Rage.Amount, 5) * Charge.RageEffect.Value },
             { BaseSubtract, Life.Regen.Percent, 0.1 * Charge.Rage.Amount.Value * Charge.RageEffect.Value },
             // unarmed
-            { BaseSet, Stat.Range, 4, Not(MainHand.HasItem) },
+            {
+                BaseSet, Stat.Range,
+                CharacterClassBased(_characterBaseStats.UnarmedRange, "UnarmedRange"), Not(MainHand.HasItem)
+            },
             { BaseSet, CriticalStrike.Chance.With(AttackDamageHand.MainHand), 0, Not(MainHand.HasItem) },
-            { BaseSet, Stat.CastRate.With(AttackDamageHand.MainHand), 1 / 0.83, Not(MainHand.HasItem) },
+            {
+                BaseSet, Stat.CastRate.With(AttackDamageHand.MainHand),
+                1 / CharacterClassBased(_characterBaseStats.UnarmedAttackTime, "UnarmedAttackTime") / 100,
+                Not(MainHand.HasItem)
+            },
             {
                 BaseSet, Physical.Damage.WithSkills.With(AttackDamageHand.MainHand),
-                ValueFactory.If(Stat.CharacterClass.Value.Eq((int) CharacterClass.Scion))
-                    .Then(MinMaxValue(2, 6))
-                    .ElseIf(Stat.CharacterClass.Value.Eq((int) CharacterClass.Marauder))
-                    .Then(MinMaxValue(2, 8))
-                    .ElseIf(Stat.CharacterClass.Value.Eq((int) CharacterClass.Ranger))
-                    .Then(MinMaxValue(2, 5))
-                    .ElseIf(Stat.CharacterClass.Value.Eq((int) CharacterClass.Witch))
-                    .Then(MinMaxValue(2, 5))
-                    .ElseIf(Stat.CharacterClass.Value.Eq((int) CharacterClass.Duelist))
-                    .Then(MinMaxValue(2, 6))
-                    .ElseIf(Stat.CharacterClass.Value.Eq((int) CharacterClass.Templar))
-                    .Then(MinMaxValue(2, 6))
-                    .Else(MinMaxValue(2, 5)), // Shadow
+                Stat.CharacterClass.Value.Select(
+                    c => UnarmedPhysicalDamage((CharacterClass) (int) c.Single),
+                    c => $"{c}.UnarmedPhysicalDamage"),
                 Not(MainHand.HasItem)
             },
         };
 
+        private ValueBuilder CharacterClassBased(Func<CharacterClass, int> selector, string identity)
+            => Stat.CharacterClass.Value.Select(v => selector((CharacterClass) (int) v), v => $"{v}.{identity}");
+
         private static ValueBuilder PerStat(IStatBuilder stat, double divideBy)
             => (stat.Value / divideBy).Select(Math.Floor, o => $"Floor({o})");
 
-        private IValueBuilder MinMaxValue(double min, double max)
-            => ValueFactory.FromMinAndMax(ValueFactory.Create(min), ValueFactory.Create(max));
+        private NodeValue UnarmedPhysicalDamage(CharacterClass c)
+            => new NodeValue(_characterBaseStats.UnarmedPhysicalDamageMinimum(c),
+                _characterBaseStats.UnarmedPhysicalDamageMaximum(c));
     }
 }

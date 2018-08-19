@@ -1,4 +1,4 @@
-﻿namespace PoESkillTree.Computation.Common
+﻿namespace PoESkillTree.GameModel
 {
     public enum CharacterClass
     {

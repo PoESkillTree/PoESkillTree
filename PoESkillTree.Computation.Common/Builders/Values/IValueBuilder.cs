@@ -57,7 +57,7 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// <summary>
         /// Returns a value that is equal to this value passed to <paramref name="selector"/>.
         /// </summary>
-        IValueBuilder Select(Func<double, double> selector, Func<IValue, string> identity);
+        IValueBuilder Select(Func<NodeValue, NodeValue> selector, Func<IValue, string> identity);
 
         /// <summary>
         /// Creates a value using the same implementation as this instance.

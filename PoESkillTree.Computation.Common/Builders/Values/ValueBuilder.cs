@@ -138,10 +138,13 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// </summary>
         public ValueBuilder Invert => 1 / this;
 
-        IValueBuilder IValueBuilder.Select(Func<double, double> selector, Func<IValue, string> identity) =>
+        public ValueBuilder Select(Func<double, double> selector, Func<IValue, string> identity) =>
+            Select(v => v.Select(selector), identity);
+
+        IValueBuilder IValueBuilder.Select(Func<NodeValue, NodeValue> selector, Func<IValue, string> identity) =>
             _value.Select(selector, identity);
 
-        public ValueBuilder Select(Func<double, double> selector, Func<IValue, string> identity) =>
+        public ValueBuilder Select(Func<NodeValue, NodeValue> selector, Func<IValue, string> identity) =>
             Wrap(_value.Select(selector, identity));
 
         IValueBuilder IValueBuilder.Create(double value) => _value.Create(value);
