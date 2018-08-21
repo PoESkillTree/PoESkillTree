@@ -5,13 +5,16 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using EnumsNET;
+using log4net;
+using log4net.Appender;
+using log4net.Layout;
+using log4net.Repository.Hierarchy;
 using MoreLinq;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.Parsing;
 
@@ -21,6 +24,7 @@ namespace PoESkillTree.Computation.Console
     {
         public static void Main(string[] args)
         {
+            SetupLogger();
             var program = new Program();
             program.Loop();
         }
@@ -230,26 +234,19 @@ namespace PoESkillTree.Computation.Console
         /// </summary>
         private bool TryParse(string statLine, out IReadOnlyList<Modifier> mods, bool verbose = false)
         {
-            try
+            var (success, _, remaining, result) = _parser.Parse(statLine);
+            if (!success)
             {
-                var (success, _, remaining, result) = _parser.Parse(statLine);
-                if (verbose)
-                {
-                    System.Console.WriteLine(result?.ToDelimitedString("\n") ?? "null");
-                }
-                if (success)
-                {
-                    mods = result;
-                    return true;
-                }
                 System.Console.WriteLine($"Not recognized: '{remaining[0]}' could not be parsed.");
+                mods = null;
+                return false;
             }
-            catch (ParseException e)
+            if (verbose)
             {
-                System.Console.WriteLine("Parsing failed: " + e.Message);
+                System.Console.WriteLine(result?.ToDelimitedString("\n") ?? "null");
             }
-            mods = null;
-            return false;
+            mods = result;
+            return true;
         }
 
         private void AddGivenStats()
@@ -351,6 +348,18 @@ namespace PoESkillTree.Computation.Console
 
         private static IEnumerable<string> ReadStatLines()
             => File.ReadAllLines("Data/SkillTreeStatLines.txt").Where(s => !s.StartsWith("//"));
+
+        private static void SetupLogger()
+        {
+            var appender = new ConsoleAppender();
+            var patternLayout = new PatternLayout { ConversionPattern = "%m%n" };
+            patternLayout.ActivateOptions();
+            appender.Layout = patternLayout;
+
+            var hierarchy = (Hierarchy) LogManager.GetRepository();
+            hierarchy.Root.AddAppender(appender);
+            hierarchy.Configured = true;
+        }
     }
 
 

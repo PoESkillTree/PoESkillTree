@@ -39,6 +39,9 @@ namespace PoESkillTree.Computation.Parsing
             ModifierSourceEntity == other.ModifierSourceEntity;
 
         public override int GetHashCode() => (ModifierLine, ModifierSource, ModifierSourceEntity).GetHashCode();
+
+        public override string ToString()
+            => $"{nameof(CoreParserParameter)}('{ModifierLine}', {ModifierSource}, {ModifierSourceEntity})";
     }
 
     public static class CoreParserExtensions

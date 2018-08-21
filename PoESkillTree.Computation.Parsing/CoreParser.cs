@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using log4net;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
+using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Parsing.Referencing;
 using PoESkillTree.Computation.Parsing.StringParsers;
 using PoESkillTree.Utils.Extensions;
@@ -25,6 +27,8 @@ namespace PoESkillTree.Computation.Parsing
     /// </remarks>
     public class CoreParser<TStep> : ICoreParser
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(CoreParser<TStep>));
+
         private readonly IParsingData<TStep> _parsingData;
         private readonly IBuilderFactories _builderFactories;
 
@@ -48,12 +52,21 @@ namespace PoESkillTree.Computation.Parsing
         private ParseResult ParseCacheMiss(CoreParserParameter parameter)
         {
             _currentParameter = parameter;
-            var (success, remaining, result) = _parser.Value.Parse(parameter.ModifierLine);
-            if (success)
+            try
             {
-                return new ParseResult(true, new string[0], new string[0], result);
+                var (success, remaining, result) = _parser.Value.Parse(parameter.ModifierLine);
+                if (success)
+                {
+                    return new ParseResult(true, new string[0], new string[0], result);
+                }
+                return new ParseResult(false, new[] { parameter.ModifierLine }, new[] { remaining }, new Modifier[0]);
             }
-            return new ParseResult(false, new[] { parameter.ModifierLine }, new[] { remaining }, new Modifier[0]);
+            catch (ParseException e)
+            {
+                Log.Error("ParseException while parsing " + parameter, e);
+                return new ParseResult(false, new[] { parameter.ModifierLine }, new[] { parameter.ModifierLine },
+                    new Modifier[0]);
+            }
         }
 
         private IStringParser<IReadOnlyList<Modifier>> CreateParser()
@@ -76,6 +89,7 @@ namespace PoESkillTree.Computation.Parsing
                 );
 
             var innerParserCache = new Dictionary<IStatMatchers, IStringParser<IIntermediateModifier>>();
+
             // The steps define the order in which the inner parsers, and by extent the IStatMatchers, are executed.
             IStringParser<IIntermediateModifier> StepToParser(TStep step) =>
                 innerParserCache.GetOrAdd(_parsingData.SelectStatMatcher(step), CreateInnerParser);
