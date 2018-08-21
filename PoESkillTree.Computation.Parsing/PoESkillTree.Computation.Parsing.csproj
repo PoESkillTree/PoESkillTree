@@ -58,12 +58,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GivenStatsParser.cs" />
+    <Compile Include="IParser.cs" />
     <Compile Include="StringParsers\IStringParser.cs" />
     <Compile Include="Referencing\ResolvedMatchContext.cs" />
-    <Compile Include="IParser.cs" />
+    <Compile Include="ICoreParser.cs" />
     <Compile Include="StringParsers\MatcherDataParser.cs" />
     <Compile Include="StringParsers\CachingParser.cs" />
-    <Compile Include="Parser.cs" />
+    <Compile Include="CoreParser.cs" />
     <Compile Include="ParseResult.cs" />
     <Compile Include="StringParsers\ResultMappingParser.cs" />
     <Compile Include="Referencing\ResolvedReferenceConverter.cs" />

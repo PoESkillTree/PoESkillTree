@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         [Test]
         public void ParseIsEmptyWithNoGivenStats()
         {
-            var actual = GivenStatsParser.Parse(Mock.Of<IParser>(), new IGivenStats[0]);
+            var actual = GivenStatsParser.Parse(Mock.Of<ICoreParser>(), new IGivenStats[0]);
 
             Assert.IsEmpty(actual);
         }
@@ -36,12 +36,20 @@ namespace PoESkillTree.Computation.Parsing.Tests
                     s.GivenStatLines == new[] { "s1", "s2" } &&
                     s.GivenModifiers == new IIntermediateModifier[0])
             };
-            var parseResults = expected.Select(m => new ParseResult(true, "", new[] { m })).ToList();
-            var parser = Mock.Of<IParser>(p =>
-                p.Parse("s1", new ModifierSource.Global(), Entity.Character) == parseResults[0] &&
-                p.Parse("s2", new ModifierSource.Global(), Entity.Character) == parseResults[1] &&
-                p.Parse("s1", new ModifierSource.Global(), Entity.Totem) == parseResults[2] &&
-                p.Parse("s2", new ModifierSource.Global(), Entity.Totem) == parseResults[3]);
+            var parseParameters = new[]
+            {
+                new CoreParserParameter("s1", new ModifierSource.Global(), Entity.Character),
+                new CoreParserParameter("s2", new ModifierSource.Global(), Entity.Character),
+                new CoreParserParameter("s1", new ModifierSource.Global(), Entity.Totem),
+                new CoreParserParameter("s2", new ModifierSource.Global(), Entity.Totem)
+            };
+            var parseResults = expected.Select(m => new ParseResult(true, new string[0], new string[0], new[] { m }))
+                .ToList();
+            var parser = Mock.Of<ICoreParser>(p =>
+                p.Parse(parseParameters[0]) == parseResults[0] &&
+                p.Parse(parseParameters[1]) == parseResults[1] &&
+                p.Parse(parseParameters[2]) == parseResults[2] &&
+                p.Parse(parseParameters[3]) == parseResults[3]);
 
             var actual = GivenStatsParser.Parse(parser, givenStats);
 
@@ -55,7 +63,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var expectedForm = Form.BaseSet;
             var expectedValue = new Constant(42);
             var expectedModifierSource = new ModifierSource.Global();
-            var expected = new []
+            var expected = new[]
             {
                 new Modifier(expectedStats, expectedForm, expectedValue, expectedModifierSource)
             };
@@ -79,7 +87,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
                     s.GivenModifiers == new[] { intermediateModifier })
             };
 
-            var actual = GivenStatsParser.Parse(Mock.Of<IParser>(), givenStats);
+            var actual = GivenStatsParser.Parse(Mock.Of<ICoreParser>(), givenStats);
 
             Assert.AreEqual(expected, actual);
         }
@@ -94,9 +102,9 @@ namespace PoESkillTree.Computation.Parsing.Tests
                     s.GivenStatLines == new[] { "s1" } &&
                     s.GivenModifiers == new IIntermediateModifier[0])
             };
-            var parseResult = new ParseResult(false, "", new Modifier[0]);
-            var parser = Mock.Of<IParser>(p =>
-                p.Parse("s1", new ModifierSource.Global(), Entity.Character) == parseResult);
+            var parseResult = new ParseResult(false, new string[0], new string[0], new Modifier[0]);
+            var parser = Mock.Of<ICoreParser>(p =>
+                p.Parse(new CoreParserParameter("s1", new ModifierSource.Global(), Entity.Character)) == parseResult);
 
             Assert.Throws<ParseException>(() => GivenStatsParser.Parse(parser, givenStats));
         }

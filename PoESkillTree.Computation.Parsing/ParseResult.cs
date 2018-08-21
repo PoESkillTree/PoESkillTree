@@ -1,59 +1,41 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Parsing.StringParsers;
 
 namespace PoESkillTree.Computation.Parsing
 {
     /// <summary>
-    /// Data object for the return value of <see cref="IStringParser{TResult}.Parse"/>. Supports deconstruction to tuples and
-    /// implicit conversion from tuples, allowing it to generally behave like a tuple, just with a proper type name.
+    /// Data object for the return value of <see cref="IParser{TParameter}.Parse"/>.
     /// </summary>
-    /// <typeparam name="T">The type of parsing results.</typeparam>
-    public class ParseResult<T>
+    public class ParseResult
     {
+        public ParseResult(bool successfullyParsed, IReadOnlyList<string> failedLines,
+            IReadOnlyList<string> remainingSubstrings, IReadOnlyList<Modifier> modifiers)
+            => (SuccessfullyParsed, FailedLines, RemainingSubstrings, Modifiers) =
+                (successfullyParsed, failedLines, remainingSubstrings, modifiers);
+
+        public void Deconstruct(out bool successfullyParsed, out IReadOnlyList<string> failedLines,
+            out IReadOnlyList<string> remainingSubstrings, out IReadOnlyList<Modifier> modifiers)
+            => (successfullyParsed, failedLines, remainingSubstrings, modifiers) =
+                (SuccessfullyParsed, FailedLines, RemainingSubstrings, Modifiers);
+
         /// <summary>
-        /// True if the stat was parsed successfully.
+        /// True if all modifiers were parsed successfully.
         /// </summary>
         public bool SuccessfullyParsed { get; }
 
         /// <summary>
-        /// The parts of the stat not parsed into <see cref="Result"/>.
+        /// The modifier lines that were not parsed successfully.
         /// </summary>
-        public string RemainingStat { get; }
+        public IReadOnlyList<string> FailedLines { get; }
 
         /// <summary>
-        /// The parsing result. Only defined if <see cref="SuccessfullyParsed"/> is true.
+        /// For each modifier line that was not parsed successfully, the remaining substring that was not parsed at all.
         /// </summary>
-        public T Result { get; }
+        public IReadOnlyList<string> RemainingSubstrings { get; }
 
-        public ParseResult(bool successfullyParsed, string remainingStat, T result)
-        {
-            SuccessfullyParsed = successfullyParsed;
-            RemainingStat = remainingStat;
-            Result = result;
-        }
-
-        public void Deconstruct(out bool successfullyParsed, out string remainingStat, out T result)
-        {
-            successfullyParsed = SuccessfullyParsed;
-            remainingStat = RemainingStat;
-            result = Result;
-        }
-
-        public static implicit operator ParseResult<T>((bool successfullyParsed, string remainingStat, T result) t)
-        {
-            return new ParseResult<T>(t.successfullyParsed, t.remainingStat, t.result);
-        }
-    }
-
-    /// <summary>
-    /// Data object for the return value of <see cref="IParser.Parse"/>. Supports deconstruction to tuples.
-    /// </summary>
-    public class ParseResult : ParseResult<IReadOnlyList<Modifier>>
-    {
-        public ParseResult(bool successfullyParsed, string remainingStat, IReadOnlyList<Modifier> result)
-            : base(successfullyParsed, remainingStat, result)
-        {
-        }
+        /// <summary>
+        /// The parsed modifiers. Empty if <see cref="SuccessfullyParsed"/> is false.
+        /// </summary>
+        public IReadOnlyList<Modifier> Modifiers { get; }
     }
 }

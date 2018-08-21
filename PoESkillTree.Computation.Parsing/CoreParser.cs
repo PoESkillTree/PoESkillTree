@@ -13,48 +13,47 @@ namespace PoESkillTree.Computation.Parsing
 {
     /// <inheritdoc />
     /// <summary>
-    /// Implementation of <see cref="IParser" /> using the parsing pipeline laid out by this project.
+    /// Implementation of <see cref="ICoreParser" /> using the parsing pipeline laid out by this project.
     /// <para> Dependencies not instantiated here are the actual data (lists of <see cref="IReferencedMatchers" />,
     /// <see cref="IStatMatchers" /> and <see cref="StatReplacerData" />), contained in the <c>Computation.Data</c>
     /// project, and an implementation of the interfaces in <see cref="Common.Builders" />. These must be passed to the
     /// constructor.
     /// </para>
-    /// <para> This should be the only <see cref="IStringParser{TResult}" /> implementation that is relevant outside of
-    /// this project (excluding their own tests, obviously).
-    /// </para>
     /// </summary>
     /// <remarks>
     /// <see cref="CreateParser" /> is a good overview to learn how the parts in this project interact.
     /// </remarks>
-    public class Parser<TStep> : IParser
+    public class CoreParser<TStep> : ICoreParser
     {
         private readonly IParsingData<TStep> _parsingData;
         private readonly IBuilderFactories _builderFactories;
 
         private readonly Lazy<IStringParser<IReadOnlyList<Modifier>>> _parser;
 
-        private readonly Dictionary<CacheKey, ParseResult> _cache = new Dictionary<CacheKey, ParseResult>();
+        private readonly Dictionary<CoreParserParameter, ParseResult> _cache =
+            new Dictionary<CoreParserParameter, ParseResult>();
 
-        private CacheKey _currentKey;
+        private CoreParserParameter _currentParameter;
 
-        public Parser(IParsingData<TStep> parsingData, IBuilderFactories builderFactories)
+        public CoreParser(IParsingData<TStep> parsingData, IBuilderFactories builderFactories)
         {
             _parsingData = parsingData;
             _builderFactories = builderFactories;
             _parser = new Lazy<IStringParser<IReadOnlyList<Modifier>>>(CreateParser);
         }
 
-        public ParseResult Parse(string stat, ModifierSource modifierSource, Entity modifierSourceEntity)
-        {
-            var key = new CacheKey(stat, modifierSource, modifierSourceEntity);
-            return _cache.GetOrAdd(key, Parse);
-        }
+        public ParseResult Parse(CoreParserParameter parameter)
+            => _cache.GetOrAdd(parameter, ParseCacheMiss);
 
-        private ParseResult Parse(CacheKey key)
+        private ParseResult ParseCacheMiss(CoreParserParameter parameter)
         {
-            _currentKey = key;
-            var (success, remaining, result) = _parser.Value.Parse(key.Stat);
-            return new ParseResult(success, remaining, result);
+            _currentParameter = parameter;
+            var (success, remaining, result) = _parser.Value.Parse(parameter.ModifierLine);
+            if (success)
+            {
+                return new ParseResult(true, new string[0], new string[0], result);
+            }
+            return new ParseResult(false, new[] { parameter.ModifierLine }, new[] { remaining }, new Modifier[0]);
         }
 
         private IStringParser<IReadOnlyList<Modifier>> CreateParser()
@@ -103,29 +102,6 @@ namespace PoESkillTree.Computation.Parsing
         private IReadOnlyList<Modifier> AggregateAndBuild(IReadOnlyList<IIntermediateModifier> intermediates) =>
             intermediates
                 .Aggregate()
-                .Build(_currentKey.ModifierSource, _currentKey.ModifierSourcEntity);
-
-        private struct CacheKey : IEquatable<CacheKey>
-        {
-            public CacheKey(string stat, ModifierSource modifierSource, Entity modifierSourcEntity)
-            {
-                Stat = stat;
-                ModifierSource = modifierSource;
-                ModifierSourcEntity = modifierSourcEntity;
-            }
-
-            public string Stat { get; }
-            public ModifierSource ModifierSource { get; }
-            public Entity ModifierSourcEntity { get; }
-
-            public override bool Equals(object obj) =>
-                obj is CacheKey other && Equals(other);
-
-            public bool Equals(CacheKey other) =>
-                Stat == other.Stat && ModifierSource == other.ModifierSource &&
-                ModifierSourcEntity == other.ModifierSourcEntity;
-
-            public override int GetHashCode() => (Stat, ModifierSource, ModifierSourcEntity).GetHashCode();
-        }
+                .Build(_currentParameter.ModifierSource, _currentParameter.ModifierSourceEntity);
     }
 }

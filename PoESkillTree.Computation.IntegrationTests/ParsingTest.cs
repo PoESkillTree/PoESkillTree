@@ -23,20 +23,21 @@ namespace PoESkillTree.Computation.IntegrationTests
     [TestFixture]
     public class ParsingTest
     {
-        private static IParser _parser;
+        private static ICoreParser _parser;
 
         [OneTimeSetUp]
         public static void ClassInit()
         {
-            _parser = new CompositionRoot().Parser;
+            _parser = new CompositionRoot().CoreParser;
         }
 
         [Test, TestCaseSource(nameof(ReadParsableStatLines))]
         public void Parses(string statLine)
         {
-            var (success, remaining, result) = _parser.Parse(statLine);
+            var (success, failedLines, remaining, result) = _parser.Parse(statLine);
 
             Assert.IsTrue(success, $"{remaining}\nResult:\n  {string.Join("\n  ", result)}");
+            CollectionAssert.IsEmpty(failedLines);
             CollectionAssert.IsEmpty(remaining);
             foreach (var modifier in result)
             {
@@ -56,7 +57,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test, TestCaseSource(nameof(ReadUnparsableStatLines))]
         public void DoesNotParse(string statLine)
         {
-            var (success, remaining, result) = _parser.Parse(statLine);
+            var (success, _, remaining, result) = _parser.Parse(statLine);
 
             Assert.IsFalse(success, $"{remaining}\nResult:\n  {string.Join("\n  ", result)}");
             foreach (var modifier in result)
@@ -96,7 +97,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test, TestCaseSource(nameof(ParsingReturnsCorrectModifiers_TestCases))]
         public IEnumerable<Modifier> ParsingReturnsCorrectModifiers(string statLine)
         {
-            var (_, _, result) = _parser.Parse(statLine);
+            var (_, _, _, result) = _parser.Parse(statLine);
             return result;
         }
 

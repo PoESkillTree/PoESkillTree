@@ -40,7 +40,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             _builderFactories = compRoot.BuilderFactories;
             _metaStats = compRoot.MetaStats;
             var modSource = new ModifierSource.Global();
-            _givenMods = GivenStatsParser.Parse(compRoot.Parser, compRoot.GivenStats.Result)
+            _givenMods = GivenStatsParser.Parse(compRoot.CoreParser, compRoot.GivenStats.Result)
                 .Append(
                     new Modifier(
                         Build(_builderFactories.StatBuilders.Level.For(_builderFactories.EntityBuilders.Enemy)),

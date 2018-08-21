@@ -26,13 +26,13 @@ namespace PoESkillTree.Computation.Console
         }
 
         private readonly CompositionRoot _compositionRoot;
-        private readonly IParser _parser;
+        private readonly ICoreParser _parser;
         private readonly ICalculator _calculator;
 
         private Program()
         {
             _compositionRoot = new CompositionRoot();
-            _parser = _compositionRoot.Parser;
+            _parser = _compositionRoot.CoreParser;
             _calculator = Calculator.CreateCalculator();
             _calculator.ExplicitlyRegisteredStats.CollectionChanged += ExplicitlyRegisteredStatsOnCollectionChanged;
         }
@@ -232,7 +232,7 @@ namespace PoESkillTree.Computation.Console
         {
             try
             {
-                var (success, remaining, result) = _parser.Parse(statLine);
+                var (success, _, remaining, result) = _parser.Parse(statLine);
                 if (verbose)
                 {
                     System.Console.WriteLine(result?.ToDelimitedString("\n") ?? "null");
@@ -242,7 +242,7 @@ namespace PoESkillTree.Computation.Console
                     mods = result;
                     return true;
                 }
-                System.Console.WriteLine($"Not recognized: '{remaining}' could not be parsed.");
+                System.Console.WriteLine($"Not recognized: '{remaining[0]}' could not be parsed.");
             }
             catch (ParseException e)
             {
@@ -267,7 +267,7 @@ namespace PoESkillTree.Computation.Console
         /// Reads stat lines from a file, runs them through the parser, times the parsing and writes the timing
         /// results to the console..
         /// </summary>
-        private static void Benchmark(IParser parser)
+        private static void Benchmark(ICoreParser parser)
         {
             var stopwatch = Stopwatch.StartNew();
             parser.Parse("Made-up");
@@ -294,17 +294,17 @@ namespace PoESkillTree.Computation.Console
                 foreach (var line in batch)
                 {
                     stopwatch.Start();
-                    var (parsable, _, _) = parser.Parse(line);
+                    var (parseable, _, _, _) = parser.Parse(line);
                     stopwatch.Stop();
                     batchSize++;
-                    if (parsable)
+                    if (parseable)
                     {
                         successCounter++;
                     }
                     if (distinct.Add(line))
                     {
                         newLines++;
-                        if (parsable)
+                        if (parseable)
                         {
                             distinctSuccessCounter++;
                         }
@@ -341,7 +341,7 @@ namespace PoESkillTree.Computation.Console
         /// <remarks>
         /// For CPU profiling without the output overhead of Benchmark()
         /// </remarks>
-        private static void Profile(IParser parser)
+        private static void Profile(ICoreParser parser)
         {
             foreach (var line in ReadStatLines())
             {
@@ -356,7 +356,7 @@ namespace PoESkillTree.Computation.Console
 
     public static class ParserExtensions
     {
-        public static ParseResult Parse(this IParser @this, string stat) =>
+        public static ParseResult Parse(this ICoreParser @this, string stat) =>
             @this.Parse(stat, new ModifierSource.Global(), Entity.Character);
     }
 }

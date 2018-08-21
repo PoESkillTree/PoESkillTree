@@ -8,10 +8,10 @@ namespace PoESkillTree.Computation.Parsing
 {
     public class GivenStatsParser
     {
-        public static IReadOnlyList<Modifier> Parse(IParser parser, IEnumerable<IGivenStats> givenStats)
+        public static IReadOnlyList<Modifier> Parse(ICoreParser coreParser, IEnumerable<IGivenStats> givenStats)
         {
             var modifierSource = new ModifierSource.Global(new ModifierSource.Local.Given());
-            var givenParser = new GivenStatsParser(parser, modifierSource);
+            var givenParser = new GivenStatsParser(coreParser, modifierSource);
             foreach (var given in givenStats)
             {
                 givenParser.Parse(given);
@@ -19,13 +19,13 @@ namespace PoESkillTree.Computation.Parsing
             return givenParser._modifiers;
         }
 
-        private readonly IParser _parser;
+        private readonly ICoreParser _coreParser;
         private readonly ModifierSource _modifierSource;
 
         private readonly List<Modifier> _modifiers = new List<Modifier>();
 
-        private GivenStatsParser(IParser parser, ModifierSource modifierSource)
-            => (_parser, _modifierSource) = (parser, modifierSource);
+        private GivenStatsParser(ICoreParser parser, ModifierSource modifierSource)
+            => (_coreParser, _modifierSource) = (parser, modifierSource);
 
         private void Parse(IGivenStats givenStats)
         {
@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Parsing
 
         private void Parse(Entity entity, string statLine)
         {
-            var (success, _, mods) = _parser.Parse(statLine, _modifierSource, entity);
+            var (success, _, _, mods) = _coreParser.Parse(statLine, _modifierSource, entity);
             if (!success)
                 throw new ParseException("Failed to parse given stat " + statLine);
             _modifiers.AddRange(mods);
