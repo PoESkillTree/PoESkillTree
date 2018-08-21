@@ -1,7 +1,8 @@
 ﻿using Moq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Parsing.StringParsers;
 
-namespace PoESkillTree.Computation.Parsing.Tests
+namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
 {
     [TestFixture]
     public class CachingParserTest
@@ -13,17 +14,17 @@ namespace PoESkillTree.Computation.Parsing.Tests
         private const string FalseRemaining = "falseRemaining";
         private const string FalseParsed = "falseParsed";
 
-        private Mock<IParser<string>> _innerMock;
-        private IParser<string> _inner;
+        private Mock<IStringParser<string>> _innerMock;
+        private IStringParser<string> _inner;
 
         [SetUp]
         public void SetUp()
         {
-            _innerMock = new Mock<IParser<string>>();
+            _innerMock = new Mock<IStringParser<string>>();
             _innerMock.Setup(p => p.Parse(TrueStat))
-                .Returns(new ParseResult<string>(true, TrueRemaining, TrueParsed));
+                .Returns(new StringParseResult<string>(true, TrueRemaining, TrueParsed));
             _innerMock.Setup(p => p.Parse(FalseStat))
-                .Returns(new ParseResult<string>(false, FalseRemaining, FalseParsed));
+                .Returns(new StringParseResult<string>(false, FalseRemaining, FalseParsed));
             _inner = _innerMock.Object;
         }
 
@@ -32,15 +33,15 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var sut = new CachingParser<string>(_inner);
 
-            Assert.IsInstanceOf<IParser<string>>(sut);
+            Assert.IsInstanceOf<IStringParser<string>>(sut);
         }
 
         [Test]
         public void IsIParserInt()
         {
-            var sut = new CachingParser<int>(Mock.Of<IParser<int>>());
+            var sut = new CachingParser<int>(Mock.Of<IStringParser<int>>());
 
-            Assert.IsInstanceOf<IParser<int>>(sut);
+            Assert.IsInstanceOf<IStringParser<int>>(sut);
         }
 
         [TestCase(TrueStat, ExpectedResult = true)]

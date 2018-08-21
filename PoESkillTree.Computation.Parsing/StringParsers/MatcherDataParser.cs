@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Utils;
 
-namespace PoESkillTree.Computation.Parsing
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     /// <inheritdoc />
     /// <summary>
@@ -14,7 +14,7 @@ namespace PoESkillTree.Computation.Parsing
     /// The output result contains the matched <see cref="MatcherData"/>'s <see cref="MatcherData.Modifier"/> and
     /// the group names of <see cref="MatcherData.Regex"/> with their captured substrings.
     /// </summary>
-    public class MatcherDataParser : IParser<MatcherDataParseResult>
+    public class MatcherDataParser : IStringParser<MatcherDataParseResult>
     {
         private readonly IEnumerable<MatcherData> _matcherData;
 
@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.Parsing
             _matcherData = matcherData;
         }
 
-        public ParseResult<MatcherDataParseResult> Parse(string stat)
+        public StringParseResult<MatcherDataParseResult> Parse(string stat)
         {
             var xs =
                 from matcherData in _matcherData

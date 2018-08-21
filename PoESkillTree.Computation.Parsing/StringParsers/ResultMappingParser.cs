@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PoESkillTree.Computation.Parsing
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     /// <inheritdoc />
     /// <summary>
@@ -8,18 +8,18 @@ namespace PoESkillTree.Computation.Parsing
     /// </summary>
     /// <typeparam name="TSource">Type of the decorated parser's results</typeparam>
     /// <typeparam name="TResult">Type of this parser's results</typeparam>
-    public class ResultMappingParser<TSource, TResult> : IParser<TResult>
+    public class ResultMappingParser<TSource, TResult> : IStringParser<TResult>
     {
-        private readonly IParser<TSource> _inner;
+        private readonly IStringParser<TSource> _inner;
         private readonly Func<TSource, TResult> _mapper;
 
-        public ResultMappingParser(IParser<TSource> inner, Func<TSource, TResult> mapper)
+        public ResultMappingParser(IStringParser<TSource> inner, Func<TSource, TResult> mapper)
         {
             _inner = inner;
             _mapper = mapper;
         }
 
-        public ParseResult<TResult> Parse(string stat)
+        public StringParseResult<TResult> Parse(string stat)
         {
             var (successfullyParsed, remaining, innerResult) = _inner.Parse(stat);
             return (successfullyParsed, remaining, _mapper(innerResult));

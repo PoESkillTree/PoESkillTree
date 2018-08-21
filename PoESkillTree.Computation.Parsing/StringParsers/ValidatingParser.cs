@@ -1,7 +1,7 @@
 ﻿using System;
 using PoESkillTree.GameModel.Items;
 
-namespace PoESkillTree.Computation.Parsing
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     /// <inheritdoc />
     /// <summary>
@@ -11,16 +11,16 @@ namespace PoESkillTree.Computation.Parsing
     /// If remaining is still not empty, <see cref="Parse"/> sets <see cref="ParseResult{T}.SuccessfullyParsed"/> to
     /// false even if the decorated parser's was true.
     /// </summary>
-    public class ValidatingParser<TResult> : IParser<TResult>
+    public class ValidatingParser<TResult> : IStringParser<TResult>
     {
-        private readonly IParser<TResult> _inner;
+        private readonly IStringParser<TResult> _inner;
 
-        public ValidatingParser(IParser<TResult> inner)
+        public ValidatingParser(IStringParser<TResult> inner)
         {
             _inner = inner;
         }
 
-        public ParseResult<TResult> Parse(string stat)
+        public StringParseResult<TResult> Parse(string stat)
         {
             var (successfullyParsed, remaining, result) = _inner.Parse(stat);
 

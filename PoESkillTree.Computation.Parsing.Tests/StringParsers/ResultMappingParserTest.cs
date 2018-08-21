@@ -1,8 +1,9 @@
 ﻿using System;
 using Moq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Parsing.StringParsers;
 
-namespace PoESkillTree.Computation.Parsing.Tests
+namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
 {
     [TestFixture]
     public class ResultMappingParserTest
@@ -12,14 +13,14 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var sut = Create(null);
 
-            Assert.IsInstanceOf<IParser<string>>(sut);
+            Assert.IsInstanceOf<IStringParser<string>>(sut);
         }
 
         [TestCase(true)]
         [TestCase(false)]
         public void TryParsePassesSuccessfullyParsed(bool expected)
         {
-            var inner = Mock.Of<IParser<int>>(p => p.Parse("stat") == new ParseResult<int>(expected, default, default));
+            var inner = Mock.Of<IStringParser<int>>(p => p.Parse("stat") == new StringParseResult<int>(expected, default, default));
             var sut = Create(inner);
 
             var (actual, _, _) = sut.Parse("stat");
@@ -31,7 +32,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         [TestCase("re mai ning")]
         public void TryParsesPassesRemaining(string expected)
         {
-            var inner = Mock.Of<IParser<int>>(p => p.Parse("stat") == new ParseResult<int>(default, expected, default));
+            var inner = Mock.Of<IStringParser<int>>(p => p.Parse("stat") == new StringParseResult<int>(default, expected, default));
             var sut = Create(inner);
 
             var (_, actual, _) = sut.Parse("stat");
@@ -47,8 +48,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
             string Select(int i) => (i + summand).ToString();
 
             var expected = Select(innerResult);
-            var inner = Mock.Of<IParser<int>>(p =>
-                p.Parse("stat") == new ParseResult<int>(default, default, innerResult));
+            var inner = Mock.Of<IStringParser<int>>(p =>
+                p.Parse("stat") == new StringParseResult<int>(default, default, innerResult));
             var sut = Create(inner, Select);
 
             var (_, _, actual) = sut.Parse("stat");
@@ -56,12 +57,12 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.AreEqual(expected, actual);
         }
 
-        private static ResultMappingParser<int, string> Create(IParser<int> inner)
+        private static ResultMappingParser<int, string> Create(IStringParser<int> inner)
         {
             return Create(inner, i => i.ToString());
         }
 
-        private static ResultMappingParser<int, string> Create(IParser<int> inner, 
+        private static ResultMappingParser<int, string> Create(IStringParser<int> inner, 
             Func<int, string> selector)
         {
             return new ResultMappingParser<int, string>(inner, selector);

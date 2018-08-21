@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Utils;
 
-namespace PoESkillTree.Computation.Parsing
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     /// <inheritdoc />
     /// <summary>
@@ -15,23 +15,23 @@ namespace PoESkillTree.Computation.Parsing
     /// <para>Parsing is successful if all stats could be parsed successfully.</para>
     /// </summary>
     /// <typeparam name="TResult">Type of the decorated parser's results</typeparam>
-    public class StatReplacingParser<TResult> : IParser<IReadOnlyList<TResult>>
+    public class StatReplacingParser<TResult> : IStringParser<IReadOnlyList<TResult>>
     {
-        private readonly IParser<TResult> _inner;
+        private readonly IStringParser<TResult> _inner;
 
         private readonly IReadOnlyList<StatReplacerData> _statReplacerData;
 
         private readonly RegexCache _regexCache =
             new RegexCache(RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
-        public StatReplacingParser(IParser<TResult> inner,
+        public StatReplacingParser(IStringParser<TResult> inner,
             IReadOnlyList<StatReplacerData> statReplacerData)
         {
             _inner = inner;
             _statReplacerData = statReplacerData;
         }
 
-        public ParseResult<IReadOnlyList<TResult>> Parse(string stat)
+        public StringParseResult<IReadOnlyList<TResult>> Parse(string stat)
         {
             var successfullyParsed = true;
             var remainings = new List<string>();

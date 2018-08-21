@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Parsing.StringParsers;
 
 namespace PoESkillTree.Computation.Parsing
 {
     /// <summary>
-    /// Data object for the return value of <see cref="IParser{TResult}.Parse"/>. Supports deconstruction to tuples and
+    /// Data object for the return value of <see cref="IStringParser{TResult}.Parse"/>. Supports deconstruction to tuples and
     /// implicit conversion from tuples, allowing it to generally behave like a tuple, just with a proper type name.
     /// </summary>
     /// <typeparam name="T">The type of parsing results.</typeparam>

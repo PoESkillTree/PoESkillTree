@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 
-namespace PoESkillTree.Computation.Parsing
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     /// <summary>
     /// The parsing result type used as output of <see cref="MatcherDataParser"/>.

@@ -6,11 +6,11 @@ using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Parsing.Referencing;
 
-namespace PoESkillTree.Computation.Parsing
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     /// <inheritdoc />
     /// <summary>
-    /// Wraps an <c>IParser&lt;MatcherDataParseResult&gt;</c> and resolves
+    /// Wraps an <c>IStringParser&lt;MatcherDataParseResult&gt;</c> and resolves
     /// <see cref="MatcherDataParseResult.Modifier"/> using references and values specified by 
     /// <see cref="MatcherDataParseResult.RegexGroups"/> before outputting the resolved <see cref="IIntermediateModifier"/>.
     /// </summary>
@@ -20,9 +20,9 @@ namespace PoESkillTree.Computation.Parsing
     /// <see cref="IReferenceToMatcherDataResolver"/>. Referenced <see cref="Common.Data.MatcherData"/> may itself
     /// contain references, requiring recursion.
     /// </remarks>
-    public class ResolvingParser : IParser<IIntermediateModifier>
+    public class ResolvingParser : IStringParser<IIntermediateModifier>
     {
-        private readonly IParser<MatcherDataParseResult> _innerParser;
+        private readonly IStringParser<MatcherDataParseResult> _innerParser;
         private readonly IReferenceToMatcherDataResolver _referenceManager;
         private readonly IIntermediateModifierResolver _modifierResolver;
         private readonly IRegexGroupParser _regexGroupParser;
@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Parsing
         private IReadOnlyDictionary<string, string> _groups;
 
         public ResolvingParser(
-            IParser<MatcherDataParseResult> innerParser,
+            IStringParser<MatcherDataParseResult> innerParser,
             IReferenceToMatcherDataResolver referenceManager,
             IIntermediateModifierResolver modifierResolver,
             IRegexGroupParser regexGroupParser)
@@ -41,7 +41,7 @@ namespace PoESkillTree.Computation.Parsing
             _regexGroupParser = regexGroupParser;
         }
 
-        public ParseResult<IIntermediateModifier> Parse(string stat)
+        public StringParseResult<IIntermediateModifier> Parse(string stat)
         {
             var (successfullyParsed, remaining, innerResult) = _innerParser.Parse(stat);
             IIntermediateModifier result;

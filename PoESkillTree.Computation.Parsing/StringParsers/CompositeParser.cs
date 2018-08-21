@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Data;
 
-namespace PoESkillTree.Computation.Parsing
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     /// <inheritdoc />
     /// <summary>
@@ -17,18 +17,18 @@ namespace PoESkillTree.Computation.Parsing
     /// step.
     /// </para>
     /// </summary>
-    public class CompositeParser<TInnerResult, TStep> : IParser<IReadOnlyList<TInnerResult>>
+    public class CompositeParser<TInnerResult, TStep> : IStringParser<IReadOnlyList<TInnerResult>>
     {
         private readonly IStepper<TStep> _stepper;
-        private readonly Func<TStep, IParser<TInnerResult>> _stepToParserFunc;
+        private readonly Func<TStep, IStringParser<TInnerResult>> _stepToParserFunc;
 
-        public CompositeParser(IStepper<TStep> stepper, Func<TStep, IParser<TInnerResult>> stepToParserFunc)
+        public CompositeParser(IStepper<TStep> stepper, Func<TStep, IStringParser<TInnerResult>> stepToParserFunc)
         {
             _stepper = stepper;
             _stepToParserFunc = stepToParserFunc;
         }
 
-        public ParseResult<IReadOnlyList<TInnerResult>> Parse(string stat)
+        public StringParseResult<IReadOnlyList<TInnerResult>> Parse(string stat)
         {
             var step = _stepper.InitialStep;
             var remaining = stat;

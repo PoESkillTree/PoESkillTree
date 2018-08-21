@@ -66,22 +66,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GivenStatsParserTest.cs" />
-    <Compile Include="MatcherDataParserTest.cs" />
-    <Compile Include="CachingParserTest.cs" />
+    <Compile Include="StringParsers\MatcherDataParserTest.cs" />
+    <Compile Include="StringParsers\CachingParserTest.cs" />
     <Compile Include="Referencing\ResolvedMatchContextTest.cs" />
-    <Compile Include="ResultMappingParserTest.cs" />
+    <Compile Include="StringParsers\ResultMappingParserTest.cs" />
     <Compile Include="Referencing\MatcherMocks.cs" />
     <Compile Include="Referencing\ReferenceServiceTest.cs" />
     <Compile Include="Referencing\ReferenceValidatorTest.cs" />
     <Compile Include="Referencing\RegexGroupServiceFactoryTest.cs" />
     <Compile Include="Referencing\RegexGroupServiceParserTest.cs" />
     <Compile Include="Referencing\StatMatcherRegexExpanderTest.cs" />
-    <Compile Include="ResolvingParserTest.cs" />
-    <Compile Include="CompositeParserTest.cs" />
-    <Compile Include="StatNormalizingParserTest.cs" />
+    <Compile Include="StringParsers\ResolvingParserTest.cs" />
+    <Compile Include="StringParsers\CompositeParserTest.cs" />
+    <Compile Include="StringParsers\StatNormalizingParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StatReplacingParserTest.cs" />
-    <Compile Include="ValidatingParserTest.cs" />
+    <Compile Include="StringParsers\StatReplacingParserTest.cs" />
+    <Compile Include="StringParsers\ValidatingParserTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

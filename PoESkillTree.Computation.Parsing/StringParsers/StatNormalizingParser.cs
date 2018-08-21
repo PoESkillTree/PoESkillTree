@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace PoESkillTree.Computation.Parsing
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     /// <inheritdoc />
     /// <summary>
@@ -8,16 +8,16 @@ namespace PoESkillTree.Computation.Parsing
     /// <para>Normalizing means converting trimming and replacing all whitespace sequences by a single space.
     /// </para>
     /// </summary>
-    public class StatNormalizingParser<TResult> : IParser<TResult>
+    public class StatNormalizingParser<TResult> : IStringParser<TResult>
     {
-        private readonly IParser<TResult> _inner;
+        private readonly IStringParser<TResult> _inner;
 
-        public StatNormalizingParser(IParser<TResult> inner)
+        public StatNormalizingParser(IStringParser<TResult> inner)
         {
             _inner = inner;
         }
 
-        public ParseResult<TResult> Parse(string stat)
+        public StringParseResult<TResult> Parse(string stat)
         {
             var processed = Regex.Replace(stat.Trim(), @"\s+", " ");
             return _inner.Parse(processed);

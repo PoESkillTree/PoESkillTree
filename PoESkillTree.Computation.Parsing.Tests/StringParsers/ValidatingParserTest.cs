@@ -1,8 +1,9 @@
 ﻿using Moq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Parsing.StringParsers;
 using PoESkillTree.GameModel.Items;
 
-namespace PoESkillTree.Computation.Parsing.Tests
+namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
 {
     [TestFixture]
     public class ValidatingParserTest
@@ -12,7 +13,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var sut = new ValidatingParser<string>(null);
 
-            Assert.IsInstanceOf<IParser<string>>(sut);
+            Assert.IsInstanceOf<IStringParser<string>>(sut);
         }
 
         [TestCase(true, "remaining", "result")]
@@ -21,8 +22,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
         [TestCase(false, " ", "result")]
         public void TryParsePassesResult(bool innerSuccess, string innerRemaining, string result)
         {
-            var inner = Mock.Of<IParser<string>>(p =>
-                p.Parse("stat") == new ParseResult<string>(innerSuccess, innerRemaining, result));
+            var inner = Mock.Of<IStringParser<string>>(p =>
+                p.Parse("stat") == new StringParseResult<string>(innerSuccess, innerRemaining, result));
             var sut = new ValidatingParser<string>(inner);
 
             var (_, _, actual) = sut.Parse("stat");
@@ -34,8 +35,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void TryParseReturnsFailureIfInnerReturnsFailure()
         {
             const string remaining = " ";
-            var inner = Mock.Of<IParser<string>>(p =>
-                p.Parse("stat") == new ParseResult<string>(false, remaining, default));
+            var inner = Mock.Of<IStringParser<string>>(p =>
+                p.Parse("stat") == new StringParseResult<string>(false, remaining, default));
             var sut = new ValidatingParser<string>(inner);
 
             var (actual, _, _) = sut.Parse("stat");
@@ -47,8 +48,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void TryParseReturnsFailureIfRemainingContainsNonWhiteSpace()
         {
             const string remaining = " r ";
-            var inner = Mock.Of<IParser<string>>(p =>
-                p.Parse("stat") == new ParseResult<string>(true, remaining, default));
+            var inner = Mock.Of<IStringParser<string>>(p =>
+                p.Parse("stat") == new StringParseResult<string>(true, remaining, default));
             var sut = new ValidatingParser<string>(inner);
 
             var (actual, _, _) = sut.Parse("stat");
@@ -60,8 +61,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void TryParseReturnsFailureIfRemainingStartsWithHidden()
         {
             const string remaining = ItemConstants.HiddenStatSuffix + " ";
-            var inner = Mock.Of<IParser<string>>(p =>
-                p.Parse("stat") == new ParseResult<string>(true, remaining, default));
+            var inner = Mock.Of<IStringParser<string>>(p =>
+                p.Parse("stat") == new StringParseResult<string>(true, remaining, default));
             var sut = new ValidatingParser<string>(inner);
 
             var (actual, _, _) = sut.Parse("stat");
@@ -73,8 +74,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void TryParseReturnsSuccessIfRemainingIsOnlyWhiteSpace()
         {
             const string remaining = " \n\t\r";
-            var inner = Mock.Of<IParser<string>>(p =>
-                p.Parse("stat") == new ParseResult<string>(true, remaining, default));
+            var inner = Mock.Of<IStringParser<string>>(p =>
+                p.Parse("stat") == new StringParseResult<string>(true, remaining, default));
             var sut = new ValidatingParser<string>(inner);
 
             var (actual, _, _) = sut.Parse("stat");
@@ -86,8 +87,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void TryParseReturnsSuccessIfRemainingIsOnlyWhiteSpaceAndEndsWithHidden()
         {
             const string remaining = " \n\t\r" + ItemConstants.HiddenStatSuffix;
-            var inner = Mock.Of<IParser<string>>(p =>
-                p.Parse("stat") == new ParseResult<string>(true, remaining, default));
+            var inner = Mock.Of<IStringParser<string>>(p =>
+                p.Parse("stat") == new StringParseResult<string>(true, remaining, default));
             var sut = new ValidatingParser<string>(inner);
 
             var (actual, _, _) = sut.Parse("stat");
@@ -99,8 +100,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void TryParseHiddenTestIsCaseInsensitive()
         {
             var remaining = ItemConstants.HiddenStatSuffix.ToLowerInvariant();
-            var inner = Mock.Of<IParser<string>>(p =>
-                p.Parse("stat") == new ParseResult<string>(true, remaining, default));
+            var inner = Mock.Of<IStringParser<string>>(p =>
+                p.Parse("stat") == new StringParseResult<string>(true, remaining, default));
             var sut = new ValidatingParser<string>(inner);
 
             var (actual, _, _) = sut.Parse("stat");
@@ -112,8 +113,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
         [TestCase(ItemConstants.HiddenStatSuffix + " a")]
         public void TryParseReturnsCorrectUnchangedRemaining(string remaining)
         {
-            var inner = Mock.Of<IParser<string>>(p =>
-                p.Parse("stat") == new ParseResult<string>(true, remaining, default));
+            var inner = Mock.Of<IStringParser<string>>(p =>
+                p.Parse("stat") == new StringParseResult<string>(true, remaining, default));
             var sut = new ValidatingParser<string>(inner);
 
             var (_, actual, _) = sut.Parse("stat");
@@ -128,8 +129,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
         [TestCase(" \ntest\t\r " + ItemConstants.HiddenStatSuffix, ExpectedResult = "test")]
         public string TryParseReturnsCorrectRemaining(string innerRemaining)
         {
-            var inner = Mock.Of<IParser<string>>(p =>
-                p.Parse("stat") == new ParseResult<string>(true, innerRemaining, default));
+            var inner = Mock.Of<IStringParser<string>>(p =>
+                p.Parse("stat") == new StringParseResult<string>(true, innerRemaining, default));
             var sut = new ValidatingParser<string>(inner);
 
             var (_, actual, _) = sut.Parse("stat");
@@ -141,8 +142,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void TryParseCleansIfInnerReturnsFalse()
         {
             const string innerRemaining = " \ntest\t\r " + ItemConstants.HiddenStatSuffix;
-            var inner = Mock.Of<IParser<string>>(p =>
-                p.Parse("stat") == new ParseResult<string>(true, innerRemaining, default));
+            var inner = Mock.Of<IStringParser<string>>(p =>
+                p.Parse("stat") == new StringParseResult<string>(true, innerRemaining, default));
             var sut = new ValidatingParser<string>(inner);
 
             var (_, actual, _) = sut.Parse("stat");

@@ -58,13 +58,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GivenStatsParser.cs" />
+    <Compile Include="StringParsers\IStringParser.cs" />
     <Compile Include="Referencing\ResolvedMatchContext.cs" />
     <Compile Include="IParser.cs" />
-    <Compile Include="MatcherDataParser.cs" />
-    <Compile Include="CachingParser.cs" />
+    <Compile Include="StringParsers\MatcherDataParser.cs" />
+    <Compile Include="StringParsers\CachingParser.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="ParseResult.cs" />
-    <Compile Include="ResultMappingParser.cs" />
+    <Compile Include="StringParsers\ResultMappingParser.cs" />
     <Compile Include="Referencing\ResolvedReferenceConverter.cs" />
     <Compile Include="Referencing\IReferencedRegexes.cs" />
     <Compile Include="Referencing\IReferenceToMatcherDataResolver.cs" />
@@ -73,14 +74,15 @@
     <Compile Include="Referencing\ReferenceService.cs" />
     <Compile Include="Referencing\ReferenceValidator.cs" />
     <Compile Include="Referencing\RegexGroupService.cs" />
-    <Compile Include="ResolvingParser.cs" />
-    <Compile Include="MatcherDataParseResult.cs" />
+    <Compile Include="StringParsers\ResolvingParser.cs" />
+    <Compile Include="StringParsers\MatcherDataParseResult.cs" />
     <Compile Include="Referencing\StatMatcherRegexExpander.cs" />
-    <Compile Include="CompositeParser.cs" />
-    <Compile Include="StatNormalizingParser.cs" />
+    <Compile Include="StringParsers\CompositeParser.cs" />
+    <Compile Include="StringParsers\StatNormalizingParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StatReplacingParser.cs" />
-    <Compile Include="ValidatingParser.cs" />
+    <Compile Include="StringParsers\StatReplacingParser.cs" />
+    <Compile Include="StringParsers\StringParseResult.cs" />
+    <Compile Include="StringParsers\ValidatingParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Utils.csproj">
