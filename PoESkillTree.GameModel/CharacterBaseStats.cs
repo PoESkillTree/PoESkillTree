@@ -46,12 +46,6 @@ namespace PoESkillTree.GameModel
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        //[JsonProperty("metadata_id")]
-        //public string MetadataId { get; set; }
-
-        //[JsonProperty("integer_id")]
-        //public int IntegerId { get; set; }
-
         [JsonProperty("base_stats")]
         public JsonCharacterBaseStats BaseStats { get; set; }
     }

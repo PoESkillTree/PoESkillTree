@@ -36,6 +36,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
         protected abstract GivenStatCollection CreateCollection();
 
         protected ValueBuilder LevelBased(Func<int, double> selector, string identity)
-            => Stat.Level.For(Enemy).Value.Select(v => selector((int) v), v => $"{identity}(level: {v})");
+            => Stat.Level.Value.Select(v => selector((int) v), v => $"{identity}(level: {v})");
     }
 }
