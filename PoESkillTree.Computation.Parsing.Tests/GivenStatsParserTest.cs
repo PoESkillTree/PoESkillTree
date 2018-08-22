@@ -43,7 +43,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new CoreParserParameter("s1", new ModifierSource.Global(), Entity.Totem),
                 new CoreParserParameter("s2", new ModifierSource.Global(), Entity.Totem)
             };
-            var parseResults = expected.Select(m => new ParseResult(true, new string[0], new string[0], new[] { m }))
+            var parseResults = expected.Select(m => ParseResult.Success(new[] { m }))
                 .ToList();
             var parser = Mock.Of<ICoreParser>(p =>
                 p.Parse(parseParameters[0]) == parseResults[0] &&
@@ -102,7 +102,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
                     s.GivenStatLines == new[] { "s1" } &&
                     s.GivenModifiers == new IIntermediateModifier[0])
             };
-            var parseResult = new ParseResult(false, new string[0], new string[0], new Modifier[0]);
+            var parseResult = ParseResult.Failure("", "");
             var parser = Mock.Of<ICoreParser>(p =>
                 p.Parse(new CoreParserParameter("s1", new ModifierSource.Global(), Entity.Character)) == parseResult);
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing
 {
@@ -8,20 +9,24 @@ namespace PoESkillTree.Computation.Parsing
     /// </summary>
     public class ParseResult
     {
-        public ParseResult(bool successfullyParsed, IReadOnlyList<string> failedLines,
-            IReadOnlyList<string> remainingSubstrings, IReadOnlyList<Modifier> modifiers)
-            => (SuccessfullyParsed, FailedLines, RemainingSubstrings, Modifiers) =
-                (successfullyParsed, failedLines, remainingSubstrings, modifiers);
+        public static ParseResult Success(IReadOnlyList<Modifier> modifiers)
+            => new ParseResult(new string[0], new string[0], modifiers);
 
-        public void Deconstruct(out bool successfullyParsed, out IReadOnlyList<string> failedLines,
+        public static ParseResult Failure(string modifierLine, string remainingSubstring)
+            => new ParseResult(new[] { modifierLine }, new[] { remainingSubstring }, new Modifier[0]);
+
+        private ParseResult(IReadOnlyList<string> failedLines,
+            IReadOnlyList<string> remainingSubstrings, IReadOnlyList<Modifier> modifiers)
+            => (FailedLines, RemainingSubstrings, Modifiers) = (failedLines, remainingSubstrings, modifiers);
+
+        public void Deconstruct(out IReadOnlyList<string> failedLines,
             out IReadOnlyList<string> remainingSubstrings, out IReadOnlyList<Modifier> modifiers)
-            => (successfullyParsed, failedLines, remainingSubstrings, modifiers) =
-                (SuccessfullyParsed, FailedLines, RemainingSubstrings, Modifiers);
+            => (failedLines, remainingSubstrings, modifiers) = (FailedLines, RemainingSubstrings, Modifiers);
 
         /// <summary>
-        /// True if all modifiers were parsed successfully.
+        /// True if all modifier lines were parsed successfully.
         /// </summary>
-        public bool SuccessfullyParsed { get; }
+        public bool SuccessfullyParsed => FailedLines.IsEmpty();
 
         /// <summary>
         /// The modifier lines that were not parsed successfully.
@@ -34,8 +39,22 @@ namespace PoESkillTree.Computation.Parsing
         public IReadOnlyList<string> RemainingSubstrings { get; }
 
         /// <summary>
-        /// The parsed modifiers. Empty if <see cref="SuccessfullyParsed"/> is false.
+        /// The parsed modifiers. Does not contain any modifiers for <see cref="FailedLines"/>.
         /// </summary>
         public IReadOnlyList<Modifier> Modifiers { get; }
+
+        public static ParseResult Aggregate(IEnumerable<ParseResult> results)
+        {
+            var failedLines = new List<string>();
+            var remainingSubstrings = new List<string>();
+            var modifiers = new List<Modifier>();
+            foreach (var (f, r, m) in results)
+            {
+                failedLines.AddRange(f);
+                remainingSubstrings.AddRange(r);
+                modifiers.AddRange(m);
+            }
+            return new ParseResult(failedLines, remainingSubstrings, modifiers);
+        }
     }
 }

@@ -24,9 +24,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var builderFactories = Mock.Of<IBuilderFactories>();
             var parser = new CoreParser<Step>(new ParsingData(), builderFactories);
 
-            var (success, failedLines, remaining, result) = parser.Parse("matched", ExpectedModifier.Source, default);
+            var (failedLines, remaining, result) = parser.Parse("matched", ExpectedModifier.Source, default);
 
-            Assert.IsTrue(success);
             Assert.IsEmpty(failedLines);
             Assert.IsEmpty(remaining);
             Assert.AreEqual(new[] { ExpectedModifier }, result);
@@ -38,10 +37,9 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var builderFactories = Mock.Of<IBuilderFactories>();
             var parser = new CoreParser<Step>(new ParsingData(), builderFactories);
 
-            var (success, failedLines, remaining, result) =
+            var (failedLines, remaining, result) =
                 parser.Parse("matched unmatched", ExpectedModifier.Source, default);
 
-            Assert.IsFalse(success);
             Assert.AreEqual(new[] { "matched unmatched" }, failedLines);
             Assert.AreEqual(new[] { "unmatched" }, remaining);
             Assert.IsEmpty(result);
@@ -53,10 +51,9 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var builderFactories = Mock.Of<IBuilderFactories>();
             var parser = new CoreParser<Step>(new ParsingData(), builderFactories);
 
-            var (success, failedLines, remaining, result) =
+            var (failedLines, remaining, result) =
                 parser.Parse("matched throwing", ExpectedModifier.Source, default);
 
-            Assert.IsFalse(success);
             Assert.AreEqual(new[] { "matched throwing" }, failedLines);
             Assert.AreEqual(new[] { "matched throwing" }, remaining);
             Assert.IsEmpty(result);

@@ -34,11 +34,10 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test, TestCaseSource(nameof(ReadParsableStatLines))]
         public void Parses(string statLine)
         {
-            var (success, failedLines, remaining, result) = _parser.Parse(statLine);
+            var (failedLines, remaining, result) = _parser.Parse(statLine);
 
-            Assert.IsTrue(success, $"{remaining}\nResult:\n  {string.Join("\n  ", result)}");
-            CollectionAssert.IsEmpty(failedLines);
-            CollectionAssert.IsEmpty(remaining);
+            Assert.IsEmpty(failedLines, $"{remaining}\nResult:\n  {string.Join("\n  ", result)}");
+            Assert.IsEmpty(remaining);
             foreach (var modifier in result)
             {
                 Assert.NotNull(modifier);
@@ -57,15 +56,9 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test, TestCaseSource(nameof(ReadUnparsableStatLines))]
         public void DoesNotParse(string statLine)
         {
-            var (success, _, remaining, result) = _parser.Parse(statLine);
+            var parseResult = _parser.Parse(statLine);
 
-            Assert.IsFalse(success, $"{remaining}\nResult:\n  {string.Join("\n  ", result)}");
-            foreach (var modifier in result)
-            {
-                var s = modifier?.ToString();
-                StringAssert.DoesNotContain("References", s);
-                StringAssert.DoesNotContain("Values", s);
-            }
+            Assert.IsFalse(parseResult.SuccessfullyParsed, parseResult.RemainingSubstrings[0]);
         }
 
         private static string[] ReadParsableStatLines()
@@ -97,8 +90,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test, TestCaseSource(nameof(ParsingReturnsCorrectModifiers_TestCases))]
         public IEnumerable<Modifier> ParsingReturnsCorrectModifiers(string statLine)
         {
-            var (_, _, _, result) = _parser.Parse(statLine);
-            return result;
+            return _parser.Parse(statLine).Modifiers;
         }
 
         private static IEnumerable<TestCaseData> ParsingReturnsCorrectModifiers_TestCases()

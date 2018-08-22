@@ -234,18 +234,18 @@ namespace PoESkillTree.Computation.Console
         /// </summary>
         private bool TryParse(string statLine, out IReadOnlyList<Modifier> mods, bool verbose = false)
         {
-            var (success, _, remaining, result) = _parser.Parse(statLine);
-            if (!success)
+            var result = _parser.Parse(statLine);
+            if (!result.SuccessfullyParsed)
             {
-                System.Console.WriteLine($"Not recognized: '{remaining[0]}' could not be parsed.");
+                System.Console.WriteLine($"Not recognized: '{result.RemainingSubstrings[0]}' could not be parsed.");
                 mods = null;
                 return false;
             }
             if (verbose)
             {
-                System.Console.WriteLine(result?.ToDelimitedString("\n") ?? "null");
+                System.Console.WriteLine(result.Modifiers.ToDelimitedString("\n") ?? "null");
             }
-            mods = result;
+            mods = result.Modifiers;
             return true;
         }
 
@@ -291,7 +291,7 @@ namespace PoESkillTree.Computation.Console
                 foreach (var line in batch)
                 {
                     stopwatch.Start();
-                    var (parseable, _, _, _) = parser.Parse(line);
+                    var parseable = parser.Parse(line).SuccessfullyParsed;
                     stopwatch.Stop();
                     batchSize++;
                     if (parseable)

@@ -57,15 +57,14 @@ namespace PoESkillTree.Computation.Parsing
                 var (success, remaining, result) = _parser.Value.Parse(parameter.ModifierLine);
                 if (success)
                 {
-                    return new ParseResult(true, new string[0], new string[0], result);
+                    return ParseResult.Success(result);
                 }
-                return new ParseResult(false, new[] { parameter.ModifierLine }, new[] { remaining }, new Modifier[0]);
+                return ParseResult.Failure(parameter.ModifierLine, remaining);
             }
             catch (ParseException e)
             {
                 Log.Error("ParseException while parsing " + parameter, e);
-                return new ParseResult(false, new[] { parameter.ModifierLine }, new[] { parameter.ModifierLine },
-                    new Modifier[0]);
+                return ParseResult.Failure(parameter.ModifierLine, parameter.ModifierLine);
             }
         }
 

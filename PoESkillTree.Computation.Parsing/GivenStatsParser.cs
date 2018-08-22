@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
@@ -6,54 +8,51 @@ using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Parsing
 {
-    public class GivenStatsParser
+    public class GivenStatsParser : IParser<IEnumerable<IGivenStats>>
     {
         public static IReadOnlyList<Modifier> Parse(ICoreParser coreParser, IEnumerable<IGivenStats> givenStats)
         {
-            var modifierSource = new ModifierSource.Global(new ModifierSource.Local.Given());
-            var givenParser = new GivenStatsParser(coreParser, modifierSource);
-            foreach (var given in givenStats)
-            {
-                givenParser.Parse(given);
-            }
-            return givenParser._modifiers;
+            var givenParser = new GivenStatsParser(coreParser);
+            var parseResult = givenParser.Parse(givenStats);
+            if (!parseResult.SuccessfullyParsed)
+                throw new ParseException("Failed to parse given modifier lines " +
+                                         parseResult.FailedLines.ToDelimitedString("\n"));
+            return parseResult.Modifiers;
         }
 
+        private static readonly ModifierSource ModifierSource =
+            new ModifierSource.Global(new ModifierSource.Local.Given());
+
         private readonly ICoreParser _coreParser;
-        private readonly ModifierSource _modifierSource;
 
-        private readonly List<Modifier> _modifiers = new List<Modifier>();
+        private GivenStatsParser(ICoreParser coreParser)
+            => _coreParser = coreParser;
 
-        private GivenStatsParser(ICoreParser parser, ModifierSource modifierSource)
-            => (_coreParser, _modifierSource) = (parser, modifierSource);
+        public ParseResult Parse(IEnumerable<IGivenStats> givenStats)
+            => ParseResult.Aggregate(givenStats.SelectMany(Parse));
 
-        private void Parse(IGivenStats givenStats)
+        private IEnumerable<ParseResult> Parse(IGivenStats givenStats)
         {
             foreach (var entity in givenStats.AffectedEntities)
             {
                 foreach (var statLine in givenStats.GivenStatLines)
                 {
-                    Parse(entity, statLine);
+                    yield return Parse(entity, statLine);
                 }
                 foreach (var modifier in givenStats.GivenModifiers)
                 {
-                    Parse(entity, modifier);
+                    yield return Parse(entity, modifier);
                 }
             }
         }
 
-        private void Parse(Entity entity, string statLine)
-        {
-            var (success, _, _, mods) = _coreParser.Parse(statLine, _modifierSource, entity);
-            if (!success)
-                throw new ParseException("Failed to parse given stat " + statLine);
-            _modifiers.AddRange(mods);
-        }
+        private ParseResult Parse(Entity entity, string statLine)
+            => _coreParser.Parse(statLine, ModifierSource, entity);
 
-        private void Parse(Entity entity, IIntermediateModifier modifier)
+        private static ParseResult Parse(Entity entity, IIntermediateModifier modifier)
         {
-            var mods = modifier.Build(_modifierSource, entity);
-            _modifiers.AddRange(mods);
+            var mods = modifier.Build(ModifierSource, entity);
+            return ParseResult.Success(mods);
         }
     }
 }
