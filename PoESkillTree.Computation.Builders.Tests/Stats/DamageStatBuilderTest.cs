@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [Test]
         public void WithKeywordHasCorrectValueConverters()
         {
-            var keyword = Keyword.Bow;
+            var keyword = Keyword.Projectile;
             var keywordBuilder = Mock.Of<IKeywordBuilder>(b => b.Build() == keyword);
             var valueBuilder = new ValueBuilderImpl(2);
             var context = SetupKeywordContext(keyword);
@@ -50,7 +50,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [Test]
         public void NotWithKeywordHasCorrectValueConverters()
         {
-            var keyword = Keyword.Bow;
+            var keyword = Keyword.Projectile;
             var keywordBuilder = Mock.Of<IKeywordBuilder>(b => b.Build() == keyword);
             var valueBuilder = new ValueBuilderImpl(2);
             var context = SetupKeywordContext(keyword);
@@ -68,7 +68,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [Test]
         public void WithKeywordIsResolved()
         {
-            var keyword = Keyword.Bow;
+            var keyword = Keyword.Projectile;
             var keywordBuilder = Mock.Of<IKeywordBuilder>(b => b.Build() == keyword);
             var unresolvedKeywordBuilder = Mock.Of<IKeywordBuilder>(b => b.Resolve(null) == keywordBuilder);
             var valueBuilder = new ValueBuilderImpl(2);

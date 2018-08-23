@@ -7,7 +7,6 @@ namespace PoESkillTree.Computation.Builders.Skills
         public IKeywordBuilder Attack { get; } = From(Keyword.Attack);
         public IKeywordBuilder Spell { get; } = From(Keyword.Spell);
         public IKeywordBuilder Projectile { get; } = From(Keyword.Projectile);
-        public IKeywordBuilder Bow { get; } = From(Keyword.Bow);
         public IKeywordBuilder AreaOfEffect { get; } = From(Keyword.AreaOfEffect);
         public IKeywordBuilder Melee { get; } = From(Keyword.Melee);
         public IKeywordBuilder Totem { get; } = From(Keyword.Totem);

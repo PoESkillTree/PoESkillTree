@@ -5,7 +5,6 @@
         Attack,
         Spell,
         Projectile,
-        Bow,
         AreaOfEffect,
         Melee,
         Totem,

@@ -26,25 +26,25 @@ namespace PoESkillTree.Computation.Builders.Tests.Skills
         [Test]
         public void ResolveCombinedInstancesBuildsToCorrectResult()
         {
-            var keywords = new[] { Keyword.Bow };
+            var keywords = new[] { Keyword.Projectile };
             var unresolved = new[] { Mock.Of<IKeywordBuilder>(b => b.Resolve(null).Build() == keywords[0]) };
             var sut = CreateSut(unresolved);
 
             var stat = sut.Resolve(null).CombinedInstances.BuildToSingleStat();
 
-            Assert.AreEqual("Skills[Bow].Instances", stat.Identity);
+            Assert.AreEqual("Skills[Projectile].Instances", stat.Identity);
         }
 
         [Test]
         public void CombinedInstancesResolveBuildsToCorrectResult()
         {
-            var keywords = new[] { Keyword.Bow };
+            var keywords = new[] { Keyword.Projectile };
             var unresolved = new[] { Mock.Of<IKeywordBuilder>(b => b.Resolve(null).Build() == keywords[0]) };
             var sut = CreateSut(unresolved);
 
             var stat = sut.CombinedInstances.Resolve(null).BuildToSingleStat();
 
-            Assert.AreEqual("Skills[Bow].Instances", stat.Identity); 
+            Assert.AreEqual("Skills[Projectile].Instances", stat.Identity); 
         }
 
         [Test]
