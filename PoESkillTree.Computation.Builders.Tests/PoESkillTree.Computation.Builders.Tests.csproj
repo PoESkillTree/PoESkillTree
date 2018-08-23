@@ -105,7 +105,7 @@
     <Compile Include="Values\ValueBuilderTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Utils.csproj">
+    <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">
       <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
       <Name>PoESkillTree.Utils</Name>
     </ProjectReference>
