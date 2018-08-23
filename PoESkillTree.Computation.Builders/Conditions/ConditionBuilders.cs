@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Builders.Conditions
 
         public IConditionBuilder With(ISkillBuilder skill)
         {
-            var activeSkillIdStat = new StatBuilder(_statFactory, new LeafCoreStatBuilder(_statFactory.ActiveSkillId));
+            var activeSkillIdStat = new StatBuilder(_statFactory, new LeafCoreStatBuilder(_statFactory.MainSkillId));
             return new StatConvertingConditionBuilder(IfIsDamageStat(d => d.WithSkills))
                 .And(activeSkillIdStat.Value.Eq(skill.SkillId));
         }

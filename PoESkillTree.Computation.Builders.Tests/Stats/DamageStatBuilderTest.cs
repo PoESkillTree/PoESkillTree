@@ -89,9 +89,9 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var statFactory = new StatFactory();
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValue(statFactory.ActiveSkillPartDamageHasKeyword(default, keyword, DamageSource.Attack),
+                c.GetValue(statFactory.MainSkillPartDamageHasKeyword(default, keyword, DamageSource.Attack),
                     NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true &&
-                c.GetValue(statFactory.ActiveSkillPartDamageHasKeyword(default, keyword, DamageSource.Spell),
+                c.GetValue(statFactory.MainSkillPartDamageHasKeyword(default, keyword, DamageSource.Spell),
                     NodeType.Total, PathDefinition.MainPath) == (NodeValue?) false);
             return context;
         }

@@ -80,7 +80,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             ValueConditionBuilder.Create(BuildKeywordStat, keyword);
 
         protected virtual IStat BuildKeywordStat(BuildParameters parameters, IKeywordBuilder keyword) =>
-            StatFactory.ActiveSkillPartHasKeyword(parameters.ModifierSourceEntity, keyword.Build());
+            StatFactory.MainSkillPartHasKeyword(parameters.ModifierSourceEntity, keyword.Build());
 
         public IStatBuilder WithCondition(IConditionBuilder condition) =>
             WithUntyped(new StatBuilderAdapter(this, condition));

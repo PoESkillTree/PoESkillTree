@@ -121,7 +121,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
         {
             var expected = activeSkillId == skillId;
             var skill = MockSkillBuilder(skillId);
-            var activeSkillStat = new StatFactory().ActiveSkillId(default);
+            var activeSkillStat = new StatFactory().MainSkillId(default);
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(activeSkillStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(activeSkillId));
             var sut = CreateSut();

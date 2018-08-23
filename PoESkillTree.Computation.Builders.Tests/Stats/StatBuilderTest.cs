@@ -424,7 +424,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var expected = new Constant(hasKeyword).Calculate(null);
             var keyword = Mock.Of<IKeywordBuilder>(b => b.Build() == Keyword.Projectile);
-            var hasKeywordStat = new StatFactory().ActiveSkillPartHasKeyword(default, keyword.Build());
+            var hasKeywordStat = new StatFactory().MainSkillPartHasKeyword(default, keyword.Build());
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(hasKeywordStat, NodeType.Total, PathDefinition.MainPath) == expected);
             var sut = CreateSut();

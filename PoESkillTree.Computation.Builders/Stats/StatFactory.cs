@@ -73,17 +73,17 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat LeechTargetPool(Entity entity, Pool leechPool) =>
             GetOrAdd($"{leechPool}.Leech.TargetPool", entity, typeof(Pool));
 
-        public IStat ActiveSkillId(Entity entity) =>
-            GetOrAdd("ActiveSkill.Id", entity, typeof(int));
+        public IStat MainSkillId(Entity entity) =>
+            GetOrAdd("MainSkill.Id", entity, typeof(int));
 
-        public IStat ActiveSkillPartHasKeyword(Entity entity, Keyword keyword) =>
-            GetOrAdd($"ActiveSkillPart.Has.{keyword}", entity, typeof(bool));
+        public IStat MainSkillPartHasKeyword(Entity entity, Keyword keyword) =>
+            GetOrAdd($"MainSkillPart.Has.{keyword}", entity, typeof(bool));
 
-        public IStat ActiveSkillPartCastSpeedHasKeyword(Entity entity, Keyword keyword) =>
-            GetOrAdd($"ActiveSkillPart.CastSpeed.Has.{keyword}", entity, typeof(bool));
+        public IStat MainSkillPartCastSpeedHasKeyword(Entity entity, Keyword keyword) =>
+            GetOrAdd($"MainSkillPart.CastSpeed.Has.{keyword}", entity, typeof(bool));
 
-        public IStat ActiveSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource) =>
-            GetOrAdd($"ActiveSkillPart.Damage.{damageSource}.Has.{keyword}", entity, typeof(bool));
+        public IStat MainSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource) =>
+            GetOrAdd($"MainSkillPart.Damage.{damageSource}.Has.{keyword}", entity, typeof(bool));
 
         public IStat BuffEffect(Entity source, Entity target, string buffIdentity) =>
             GetOrAdd($"{buffIdentity}.EffectOn({target})", source, typeof(double));

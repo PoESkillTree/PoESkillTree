@@ -50,7 +50,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         private IStat BuildKeywordStat(IDamageSpecification spec, BuildParameters parameters, IKeywordBuilder keyword)
         {
-            return StatFactory.ActiveSkillPartDamageHasKeyword(parameters.ModifierSourceEntity, keyword.Build(),
+            return StatFactory.MainSkillPartDamageHasKeyword(parameters.ModifierSourceEntity, keyword.Build(),
                 spec.DamageSource);
         }
     }
