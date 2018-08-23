@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Console
 {
@@ -25,6 +25,6 @@ namespace PoESkillTree.Computation.Console
             new SkillDefinition("Herald of Thunder", 14, new[] { Keyword.Herald }, true),
         };
 
-        public static readonly IReadOnlyList<string> SkillNames = Skills.Select(s => s.SkillName).ToList();
+        public static readonly IReadOnlyList<string> SkillNames = Skills.Select(s => s.DisplayName).ToList();
     }
 }

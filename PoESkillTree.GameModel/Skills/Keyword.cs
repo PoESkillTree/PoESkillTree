@@ -1,4 +1,4 @@
-﻿namespace PoESkillTree.Computation.Common.Builders.Skills
+﻿namespace PoESkillTree.GameModel.Skills
 {
     public enum Keyword
     {

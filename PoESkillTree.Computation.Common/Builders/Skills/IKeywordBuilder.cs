@@ -1,4 +1,5 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Common.Builders.Skills
 {

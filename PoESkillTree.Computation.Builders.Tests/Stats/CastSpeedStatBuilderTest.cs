@@ -3,7 +3,7 @@ using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Skills;
 using PoESkillTree.Computation.Builders.Stats;
-using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders.Tests.Stats
 {

@@ -13,6 +13,7 @@ using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders.Skills
 {
@@ -31,7 +32,7 @@ namespace PoESkillTree.Computation.Builders.Skills
             new SkillBuilder(_statFactory, _coreBuilder.Resolve(context));
 
         public IActionBuilder Cast =>
-            new ActionBuilder(_statFactory, CoreBuilder.UnaryOperation(_coreBuilder, d => $"{d.SkillName}.Cast"),
+            new ActionBuilder(_statFactory, CoreBuilder.UnaryOperation(_coreBuilder, d => $"{d.Id}.Cast"),
                 new ModifierSourceEntityBuilder());
 
         public IStatBuilder Instances => CreateStatBuilder(typeof(int));
@@ -42,7 +43,7 @@ namespace PoESkillTree.Computation.Builders.Skills
 
         private IStatBuilder CreateStatBuilder(Type dataType, [CallerMemberName] string identitySuffix = null)
             => new StatBuilder(_statFactory, new CoreStatBuilderFromCoreBuilder<SkillDefinition>(_coreBuilder,
-                (e, d) => _statFactory.FromIdentity($"{d.SkillName}.{identitySuffix}", e, dataType)));
+                (e, d) => _statFactory.FromIdentity($"{d.Id}.{identitySuffix}", e, dataType)));
 
         public ValueBuilder SkillId =>
             new ValueBuilder(new ValueBuilderImpl(
@@ -56,7 +57,7 @@ namespace PoESkillTree.Computation.Builders.Skills
         {
             if (!skillDefinition.ProvidesBuff)
                 throw new ParseException("");
-            return skillDefinition.SkillName;
+            return skillDefinition.Id;
         }
 
         public SkillDefinition Build() => _coreBuilder.Build();

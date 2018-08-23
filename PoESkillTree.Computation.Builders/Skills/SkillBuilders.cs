@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Skills
@@ -16,7 +17,7 @@ namespace PoESkillTree.Computation.Builders.Skills
         {
             _statFactory = statFactory;
             _skills = new Lazy<IReadOnlyDictionary<string, SkillDefinition>>(() =>
-                skills.ToDictionary(d => d.SkillName.ToLowerInvariant()));
+                skills.ToDictionary(d => d.DisplayName.ToLowerInvariant()));
         }
 
         public ISkillBuilderCollection this[params IKeywordBuilder[] keywords] =>

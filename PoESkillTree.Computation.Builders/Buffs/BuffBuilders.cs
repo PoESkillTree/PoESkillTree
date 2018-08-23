@@ -9,8 +9,8 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Entities;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders.Buffs
 {
@@ -19,8 +19,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
         private readonly IStatFactory _statFactory;
         private readonly IReadOnlyList<BuffBuilderWithKeywords> _allBuffs;
 
-        public BuffBuilders(
-            IStatFactory statFactory, IEnumerable<SkillDefinition> skillBuffs)
+        public BuffBuilders(IStatFactory statFactory, IEnumerable<SkillDefinition> skillBuffs)
         {
             _statFactory = statFactory;
             Fortify = Create("Fortify");
@@ -61,7 +60,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
             };
             var skillBuffBuilders = skillBuffs
                 .Where(s => s.ProvidesBuff)
-                .Select(s => new BuffBuilderWithKeywords(Create(s.SkillName), s.Keywords));
+                .Select(s => new BuffBuilderWithKeywords(Create(s.Id), s.Keywords));
             allBuffs.AddRange(skillBuffBuilders);
             _allBuffs = allBuffs;
         }

@@ -11,6 +11,7 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Builders.Resolving

@@ -115,8 +115,6 @@
     <Compile Include="Builders\Skills\ISkillBuilder.cs" />
     <Compile Include="Builders\Skills\ISkillBuilderCollection.cs" />
     <Compile Include="Builders\Skills\ISkillBuilders.cs" />
-    <Compile Include="Builders\Skills\Keyword.cs" />
-    <Compile Include="Builders\Skills\SkillDefinition.cs" />
     <Compile Include="Builders\StatConverter.cs" />
     <Compile Include="Builders\Stats\IAttributeStatBuilders.cs" />
     <Compile Include="Builders\Stats\IDamageRelatedStatBuilder.cs" />

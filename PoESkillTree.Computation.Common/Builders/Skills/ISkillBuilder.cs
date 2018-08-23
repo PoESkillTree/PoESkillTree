@@ -3,6 +3,7 @@ using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Common.Builders.Skills
 {
