@@ -67,9 +67,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Skills\SkillJsonDeserializerTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Data\frenzyGem.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Data\frenzyGemTooltip.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj">
+      <Project>{c1c73cc9-d825-41f7-86f0-f37ee8178d6d}</Project>
+      <Name>PoESkillTree.GameModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

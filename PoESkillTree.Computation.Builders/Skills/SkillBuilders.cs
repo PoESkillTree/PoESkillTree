@@ -17,7 +17,7 @@ namespace PoESkillTree.Computation.Builders.Skills
         {
             _statFactory = statFactory;
             _skills = new Lazy<IReadOnlyDictionary<string, SkillDefinition>>(() =>
-                skills.ToDictionary(d => d.DisplayName.ToLowerInvariant()));
+                skills.Where(d => !d.IsSupport).ToDictionary(d => d.ActiveSkill.DisplayName.ToLowerInvariant()));
         }
 
         public ISkillBuilderCollection this[params IKeywordBuilder[] keywords] =>
@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Builders.Skills
         {
             var keywordList = keywords.ToList();
             return _skills.Value
-                .Where(p => p.Value.Keywords.ContainsAll(keywordList))
+                .Where(p => p.Value.ActiveSkill.Keywords.ContainsAll(keywordList))
                 .Select(p => p.Key);
         }
 

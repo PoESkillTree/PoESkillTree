@@ -55,8 +55,8 @@ namespace PoESkillTree.Computation.Builders.Skills
 
         private static string SelectBuffIdentity(SkillDefinition skillDefinition)
         {
-            if (!skillDefinition.ProvidesBuff)
-                throw new ParseException("");
+            if (skillDefinition.IsSupport || !skillDefinition.ActiveSkill.ProvidesBuff)
+                throw new ParseException($"{skillDefinition.Id} does not provide a buff");
             return skillDefinition.Id;
         }
 

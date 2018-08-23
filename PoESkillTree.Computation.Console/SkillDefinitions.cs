@@ -25,6 +25,7 @@ namespace PoESkillTree.Computation.Console
             new SkillDefinition("Herald of Thunder", 14, new[] { Keyword.Herald }, true),
         };
 
-        public static readonly IReadOnlyList<string> SkillNames = Skills.Select(s => s.DisplayName).ToList();
+        public static readonly IReadOnlyList<string> SkillNames =
+            Skills.Where(s => !s.IsSupport).Select(s => s.ActiveSkill.DisplayName).ToList();
     }
 }

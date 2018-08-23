@@ -59,8 +59,8 @@ namespace PoESkillTree.Computation.Builders.Buffs
                 new BuffBuilderWithKeywords(Create("Aura"), Keyword.Aura),
             };
             var skillBuffBuilders = skillBuffs
-                .Where(s => s.ProvidesBuff)
-                .Select(s => new BuffBuilderWithKeywords(Create(s.Id), s.Keywords));
+                .Where(s => !s.IsSupport && s.ActiveSkill.ProvidesBuff)
+                .Select(s => new BuffBuilderWithKeywords(Create(s.Id), s.ActiveSkill.Keywords));
             allBuffs.AddRange(skillBuffBuilders);
             _allBuffs = allBuffs;
         }
