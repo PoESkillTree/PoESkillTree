@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Co
 		{827BE52D-878C-45F0-AFC0-75B5385AAD53} = {827BE52D-878C-45F0-AFC0-75B5385AAD53}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Utils", "PoESkillTree.Common\PoESkillTree.Utils.csproj", "{1F11D13C-9039-40AB-8B91-8A03E4DA934A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Utils", "PoESkillTree.Utils\PoESkillTree.Utils.csproj", "{1F11D13C-9039-40AB-8B91-8A03E4DA934A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Data", "PoESkillTree.Computation.Data\PoESkillTree.Computation.Data.csproj", "{85CF9690-7EB9-42CB-9574-ADF4239CFFBE}"
 	ProjectSection(ProjectDependencies) = postProject

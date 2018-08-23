@@ -226,7 +226,7 @@
         <MSBuild Projects="..\PoESkillTree.Computation.IntegrationTests\PoESkillTree.Computation.IntegrationTests.csproj" Targets="Clean" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
         <MSBuild Projects="..\PoESkillTree.Computation.Parsing.Tests\PoESkillTree.Computation.Parsing.Tests.csproj" Targets="Clean" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
         <MSBuild Projects="..\PoESkillTree.Computation.Data.Tests\PoESkillTree.Computation.Data.Tests.csproj" Targets="Clean" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
-        <MSBuild Projects="..\PoESkillTree.Computation.Core.Tests\PoESkillTree.Computation.Builders.Tests.csproj" Targets="Clean" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
+        <MSBuild Projects="..\PoESkillTree.Computation.Builders.Tests\PoESkillTree.Computation.Builders.Tests.csproj" Targets="Clean" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
         <MSBuild Projects="..\PoESkillTree.Computation.Core.Tests\PoESkillTree.Computation.Core.Tests.csproj" Targets="Clean" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
         <MSBuild Projects="..\PoESkillTree.Computation.Common.Tests\PoESkillTree.Computation.Common.Tests.csproj" Targets="Clean" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
         <MSBuild Projects="..\PoESkillTree.GameModel.Tests\PoESkillTree.GameModel.Tests.csproj" Targets="Clean" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
