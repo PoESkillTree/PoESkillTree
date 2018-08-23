@@ -16,6 +16,11 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
         IConditionBuilder With(IKeywordBuilder keyword);
 
         /// <summary>
+        /// Returns a condition that is satisfied if Self's current main skill part has the given keyword.
+        /// </summary>
+        IConditionBuilder WithPart(IKeywordBuilder keyword);
+
+        /// <summary>
         /// Returns a condition that is satisfied if Self's current main skill is <paramref name="skill"/>.
         /// </summary>
         IConditionBuilder With(ISkillBuilder skill);

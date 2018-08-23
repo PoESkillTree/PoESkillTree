@@ -48,24 +48,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         }
 
         [Test]
-        public void NotWithKeywordHasCorrectValueConverters()
-        {
-            var keyword = Keyword.Projectile;
-            var keywordBuilder = Mock.Of<IKeywordBuilder>(b => b.Build() == keyword);
-            var valueBuilder = new ValueBuilderImpl(2);
-            var context = SetupKeywordContext(keyword);
-            var sut = CreateSut();
-
-            var results = sut.WithHits.NotWith(keywordBuilder).Build(default).ToList();
-
-            Assert.That(results, Has.Exactly(4).Items);
-            var attackValue = results[0].ValueConverter(valueBuilder).Build().Calculate(context);
-            Assert.AreEqual(null, attackValue);
-            var spellValue = results[2].ValueConverter(valueBuilder).Build().Calculate(context);
-            Assert.AreEqual(new NodeValue(2), spellValue);
-        }
-
-        [Test]
         public void WithKeywordIsResolved()
         {
             var keyword = Keyword.Projectile;

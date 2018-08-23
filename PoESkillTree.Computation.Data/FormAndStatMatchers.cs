@@ -41,8 +41,8 @@ namespace PoESkillTree.Computation.Data
                 {
                     @"adds # to # ({DamageTypeMatchers}) damage to unarmed attacks",
                     BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]),
-                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Attack),
-                    And(Not(MainHand.HasItem), With(Keyword.Melee))
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Attack).With(Keyword.Melee),
+                    Not(MainHand.HasItem)
                 },
                 {
                     @"adds # to # ({DamageTypeMatchers}) damage to spells",
@@ -96,6 +96,14 @@ namespace PoESkillTree.Computation.Data
                 {
                     "penetrate #% ({DamageTypeMatchers}) resistances?",
                     BaseAdd, Value, Reference.AsDamageType.Penetration
+                },
+                {
+                    "({KeywordMatchers}) damage penetrates #% ({DamageTypeMatchers}) resistances?",
+                    BaseAdd, Value, References[1].AsDamageType.Penetration.With(References[0].AsKeyword)
+                },
+                {
+                    "({KeywordMatchers}) damage (?<inner>with .*|dealt by .*) penetrates #% ({DamageTypeMatchers}) resistances?",
+                    BaseAdd, Value, References[1].AsDamageType.Penetration.With(References[1].AsKeyword), "${inner}"
                 },
                 // - crit
                 { @"\+#% critical strike chance", BaseAdd, Value, CriticalStrike.Chance },

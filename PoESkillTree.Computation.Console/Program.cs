@@ -349,7 +349,7 @@ namespace PoESkillTree.Computation.Console
         private static IEnumerable<string> ReadStatLines()
             => File.ReadAllLines("Data/SkillTreeStatLines.txt").Where(s => !s.StartsWith("//"));
 
-        private static void SetupLogger()
+        public static void SetupLogger()
         {
             var appender = new ConsoleAppender();
             var patternLayout = new PatternLayout { ConversionPattern = "%m%n" };

@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
+using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
 
@@ -17,7 +20,7 @@ namespace PoESkillTree.Computation.Builders.Stats
     {
         private static readonly IReadOnlyList<Form> AllForms = Enums.GetValues<Form>().ToList();
 
-        protected DamageStatConcretizer StatConcretizer { get; }
+        private DamageStatConcretizer StatConcretizer { get; }
         private readonly Func<IStat, IEnumerable<IStat>> _statConverter;
 
         public static IDamageRelatedStatBuilder Create(
@@ -52,7 +55,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         protected override IStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
             Create(coreStatBuilder, StatConcretizer, _statConverter);
 
-        protected IDamageRelatedStatBuilder With(DamageStatConcretizer statConcretizer) =>
+        private IDamageRelatedStatBuilder With(DamageStatConcretizer statConcretizer) =>
             Create(CoreStatBuilder, statConcretizer, _statConverter);
 
         protected override IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
@@ -77,6 +80,16 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IDamageRelatedStatBuilder WithSkills => With(StatConcretizer.WithSkills());
 
         public IDamageRelatedStatBuilder With(AttackDamageHand hand) => With(StatConcretizer.With(hand));
+
+        public IDamageRelatedStatBuilder With(IKeywordBuilder keyword)
+            => With(StatConcretizer.With(spec => KeywordCondition(spec, keyword)));
+
+        private IConditionBuilder KeywordCondition(IDamageSpecification spec, IKeywordBuilder keyword)
+            => ValueConditionBuilder.Create(
+                (ps, k) => BuildKeywordStat(spec, ps.ModifierSourceEntity, k.Build()), keyword);
+
+        protected virtual IStat BuildKeywordStat(IDamageSpecification spec, Entity entity, Keyword keyword)
+            => StatFactory.MainSkillPartHasKeyword(entity, keyword);
 
         public IStatBuilder ApplyModifiersToSkills(DamageSource source, params Form[] forms)
         {

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -39,19 +36,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IDamageRelatedStatBuilder Taken =>
             ((IDamageRelatedStatBuilder) WithStatConverter(StatFactory.DamageTaken));
 
-        public override IStatBuilder With(IKeywordBuilder keyword) =>
-            With(StatConcretizer.With(spec => KeywordCondition(spec, keyword)));
-
-        public override IStatBuilder NotWith(IKeywordBuilder keyword) =>
-            With(StatConcretizer.With(spec => KeywordCondition(spec, keyword).Not));
-
-        private IConditionBuilder KeywordCondition(IDamageSpecification spec, IKeywordBuilder keyword) =>
-            ValueConditionBuilder.Create((ps, k) => BuildKeywordStat(spec, ps, k), keyword);
-
-        private IStat BuildKeywordStat(IDamageSpecification spec, BuildParameters parameters, IKeywordBuilder keyword)
+        protected override IStat BuildKeywordStat(IDamageSpecification spec, Entity entity, Keyword keyword)
         {
-            return StatFactory.MainSkillPartDamageHasKeyword(parameters.ModifierSourceEntity, keyword.Build(),
-                spec.DamageSource);
+            return spec.Ailment.HasValue
+                ? StatFactory.MainSkillPartAilmentDamageHasKeyword(entity, keyword)
+                : StatFactory.MainSkillPartDamageHasKeyword(entity, keyword, spec.DamageSource);
         }
     }
 }

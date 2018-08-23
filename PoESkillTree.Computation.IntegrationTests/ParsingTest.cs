@@ -28,6 +28,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [OneTimeSetUp]
         public static void ClassInit()
         {
+            Program.SetupLogger();
             _parser = new CompositionRoot().CoreParser;
         }
 
@@ -36,8 +37,8 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             var (failedLines, remaining, result) = _parser.Parse(statLine);
 
-            Assert.IsEmpty(failedLines, $"{remaining}\nResult:\n  {string.Join("\n  ", result)}");
             Assert.IsEmpty(remaining);
+            Assert.IsEmpty(failedLines);
             foreach (var modifier in result)
             {
                 Assert.NotNull(modifier);
@@ -191,7 +192,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         }
 
         private static IEnumerable<Modifier> CreateModifier(
-            IStatBuilder statBuilder, IFormBuilder formBuilder, IValueBuilder valueBuilder, 
+            IStatBuilder statBuilder, IFormBuilder formBuilder, IValueBuilder valueBuilder,
             IConditionBuilder conditionBuilder)
         {
             return CreateModifier(statBuilder.WithCondition(conditionBuilder), formBuilder, valueBuilder);

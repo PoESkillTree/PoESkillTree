@@ -82,7 +82,7 @@ namespace PoESkillTree.Computation.Data
                     PercentMore,
                     // 0 to 10: Value; 10 to 35: Value to 0; 35 to 150: 0 to -Value
                     Value * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 1), (10, 1), (35, 0), (150, -1)),
-                    Damage.WithSkills(DamageSource.Attack), With(Keyword.Projectile)
+                    Damage.WithSkills(DamageSource.Attack).With(Keyword.Projectile)
                 },
                 {
                     // Elemental Equilibrium
@@ -177,14 +177,14 @@ namespace PoESkillTree.Computation.Data
                     "far shot",
                     PercentMore,
                     30 * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
-                    Damage.WithSkills(DamageSource.Attack), With(Keyword.Projectile)
+                    Damage.WithSkills(DamageSource.Attack).With(Keyword.Projectile)
                 },
                 {
                     // Ascendant
                     "projectiles gain damage as they travel further, dealing up to #% increased damage with hits to targets",
                     PercentIncrease,
                     Value * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
-                    Damage.WithHits, With(Keyword.Projectile)
+                    Damage.WithHits.With(Keyword.Projectile)
                 },
                 { "accuracy rating is doubled", PercentMore, 100, Stat.Accuracy },
                 {
@@ -202,7 +202,8 @@ namespace PoESkillTree.Computation.Data
                 // - Elementalist
                 {
                     "your elemental golems are immune to elemental damage",
-                    TotalOverride, 100, Elemental.Resistance.For(Entity.Minion), And(With(Keyword.Golem), WithElemental)
+                    TotalOverride, 100, Elemental.Resistance.For(Entity.Minion),
+                    And(With(Keyword.Golem), Or(With(Fire), With(Cold), With(Lightning)))
                 },
                 {
                     "every # seconds: " +
@@ -249,11 +250,11 @@ namespace PoESkillTree.Computation.Data
                 // - Gladiator
                 {
                     "attacks maim on hit against bleeding enemies",
-                    TotalOverride, 100, Buff.Maim.Chance, With(Keyword.Attack).And(Ailment.Bleed.IsOn(Enemy))
+                    TotalOverride, 100, Buff.Maim.Chance.With(Keyword.Attack), Ailment.Bleed.IsOn(Enemy)
                 },
                 {
                     "your counterattacks deal double damage",
-                    TotalOverride, 100, Damage.ChanceToDouble, With(Keyword.CounterAttack)
+                    TotalOverride, 100, Damage.With(Keyword.CounterAttack).ChanceToDouble
                 },
                 // - Champion
                 {
@@ -323,7 +324,7 @@ namespace PoESkillTree.Computation.Data
                     // Ascendant
                     "your critical strikes with attacks maim enemies",
                     TotalOverride, 1, Buff.Maim.On(Enemy),
-                    And(With(Keyword.Attack), CriticalStrike.On)
+                    And(Condition.WithPart(Keyword.Attack), CriticalStrike.On)
                 },
                 // - Trickster
                 { "movement skills cost no mana", TotalOverride, 0, Mana.Cost, With(Keyword.Movement) },

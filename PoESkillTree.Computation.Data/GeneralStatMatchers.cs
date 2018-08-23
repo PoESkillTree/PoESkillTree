@@ -61,6 +61,12 @@ namespace PoESkillTree.Computation.Data
                 // - crit
                 { "(global )?critical strike multiplier", CriticalStrike.Multiplier.WithSkills },
                 { "(global )?critical strike chance", CriticalStrike.Chance },
+                {
+                    "({KeywordMatchers}) critical strike multiplier",
+                    CriticalStrike.Multiplier.WithSkills.With(Reference.AsKeyword)
+                },
+                { "({KeywordMatchers}) critical strike chance", CriticalStrike.Chance.With(Reference.AsKeyword) },
+                { "projectiles have critical strike chance", CriticalStrike.Chance.With(Keyword.Projectile) },
                 // - projectiles
                 { "projectile speed", Projectile.Speed },
                 { "arrow speed", Projectile.Speed, And(With(Keyword.Attack), MainHand.Has(Tags.Bow)) },
@@ -146,7 +152,12 @@ namespace PoESkillTree.Computation.Data
                 },
                 // speed
                 { "attack speed", Stat.CastRate.With(DamageSource.Attack) },
+                {
+                    "({KeywordMatchers}) attack speed",
+                    Stat.CastRate.With(DamageSource.Attack).With(Reference.AsKeyword)
+                },
                 { "cast speed", Stat.CastRate.With(DamageSource.Spell), Stat.CastRate.With(DamageSource.Secondary) },
+                { "cast speed for curses", Stat.CastRate.With(DamageSource.Attack).With(Keyword.Curse) },
                 { "movement speed", Stat.MovementSpeed },
                 {
                     // not the most elegant solution but by far the easiest
@@ -188,6 +199,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 // skills
                 { "cooldown recovery speed", Stat.CooldownRecoverySpeed },
+                { "warcry cooldown recovery speed", Stat.CooldownRecoverySpeed, With(Keyword.Warcry) },
                 { "mana cost( of skills)?", Mana.Cost },
                 {
                     "mana cost of skills that place mines or throw traps",
@@ -240,7 +252,7 @@ namespace PoESkillTree.Computation.Data
                 { "effect of curses on you", Buffs(targets: Self).With(Keyword.Curse).Effect },
                 { "effect of non-curse auras you cast", Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).Effect },
                 { "chance to fortify", Buff.Fortify.Chance },
-                { "chance for attacks to maim on hit", Buff.Maim.Chance, With(Keyword.Attack) },
+                { "chance for attacks to maim on hit", Buff.Maim.Chance.With(DamageSource.Attack) },
                 { "chance to taunt", Buff.Taunt.Chance },
                 { "chance to blind( enemies)?", Buff.Blind.Chance },
                 { "chance to cover rare or unique enemies in ash", Buff.CoveredInAsh.Chance, Enemy.IsRareOrUnique },
@@ -283,8 +295,8 @@ namespace PoESkillTree.Computation.Data
                 { "rarity of items found", Stat.ItemRarity },
                 // range and area of effect
                 { "area of effect", Stat.AreaOfEffect },
-                { "melee weapon and unarmed( attack)? range", Stat.Range, With(Keyword.Melee) },
-                { "melee weapon range", Stat.Range, And(With(Keyword.Melee), MainHand.HasItem) },
+                { "melee weapon and unarmed( attack)? range", Stat.Range.With(Keyword.Melee) },
+                { "melee weapon range", Stat.Range.With(Keyword.Melee), MainHand.HasItem },
                 // other
                 { "rampage stacks", Stat.RampageStacks },
                 { "chance to knock enemies back", Effect.Knockback.Chance },

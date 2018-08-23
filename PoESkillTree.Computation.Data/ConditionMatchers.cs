@@ -210,14 +210,8 @@ namespace PoESkillTree.Computation.Data
                 // skills
                 // - by keyword
                 { "vaal( skill)?", With(Keyword.Vaal) },
-                { "(?<!your |a )({KeywordMatchers})", With(Reference.AsKeyword) },
-                {
-                    "({KeywordMatchers}) and ({KeywordMatchers})",
-                    Or(With(References[0].AsKeyword), With(References[1].AsKeyword))
-                },
-                { "(with|of|for) ({KeywordMatchers})( skills)?", With(Reference.AsKeyword) },
+                { "(with|of|for) ({KeywordMatchers}) skills", With(Reference.AsKeyword) },
                 { "({KeywordMatchers}) skills have", With(Reference.AsKeyword) },
-                { "projectiles deal", With(Keyword.Projectile) },
                 // - by damage type
                 { "with ({DamageTypeMatchers}) skills", With(Reference.AsDamageType) },
                 // - by single skill
@@ -254,7 +248,7 @@ namespace PoESkillTree.Computation.Data
                 { "you and your totems", Or(For(Self), For(Entity.Totem)) },
                 { "totems fire", With(Keyword.Totem) },
                 { "(spells cast|attacks used|skills used) by totems (have a|have)", With(Keyword.Totem) },
-                { "of totem skills that cast an aura", With(Keyword.Totem, Keyword.Aura) },
+                { "of totem skills that cast an aura", And(With(Keyword.Totem), With(Keyword.Aura)) },
                 { "while you have a totem", Totems.CombinedInstances.Value > 0 },
                 { "if you've summoned a totem recently", Totems.Cast.Recently },
                 // minions
@@ -268,7 +262,7 @@ namespace PoESkillTree.Computation.Data
                 { "while using a flask", Flask.IsAnyActive },
                 { "during any flask effect", Flask.IsAnyActive },
                 // other
-                { "have against targets they pierce", Projectile.PierceCount.Value >= 1 },
+                { "against targets they pierce", Projectile.PierceCount.Value >= 1 },
                 // unique
                 { "while leeching", Condition.Unique("Are you leeching?") },
                 {

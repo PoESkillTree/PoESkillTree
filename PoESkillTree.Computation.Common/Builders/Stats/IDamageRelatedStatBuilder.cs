@@ -1,6 +1,7 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
+using PoESkillTree.Computation.Common.Builders.Skills;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
@@ -47,6 +48,12 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// Limits the damage to only apply to attacks with the given hand.
         /// </summary>
         IDamageRelatedStatBuilder With(AttackDamageHand hand);
+
+        /// <summary>
+        /// This stat only applies if the active skill has the given keyword. Normally refers to the selected skill
+        /// part, but some damage related stats can have separate keywords.
+        /// </summary>
+        IDamageRelatedStatBuilder With(IKeywordBuilder keyword);
 
         /// <summary>
         /// Returns a stat that specifies whether modifiers to this stat under the current limitations also apply to

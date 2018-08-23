@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Skills;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -30,7 +29,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             Func<IStat, IEnumerable<IStat>> statConverter) =>
             new CastSpeedStatBuilder(StatFactory, coreStatBuilder, statConcretizer, statConverter);
 
-        protected override IStat BuildKeywordStat(BuildParameters parameters, IKeywordBuilder keyword) =>
-            StatFactory.MainSkillPartCastSpeedHasKeyword(parameters.ModifierSourceEntity, keyword.Build());
+        protected override IStat BuildKeywordStat(IDamageSpecification spec, Entity entity, Keyword keyword)
+            => StatFactory.MainSkillPartCastSpeedHasKeyword(entity, keyword);
     }
 }

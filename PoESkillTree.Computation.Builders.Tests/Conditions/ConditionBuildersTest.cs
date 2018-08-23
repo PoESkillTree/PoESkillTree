@@ -132,32 +132,22 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
             Assert.AreEqual(expected, actual.IsTrue());
         }
 
-        [Test]
-        public void WithKeywordConvertsStatsCorrectly()
+        [TestCase(Keyword.Projectile)]
+        [TestCase(Keyword.Aura)]
+        public void WithKeywordIsCorrectValue(Keyword actualKeyword)
         {
-            var expected = Mock.Of<IStatBuilder>();
-            var keyword = Mock.Of<IKeywordBuilder>();
-            var inStat = Mock.Of<IStatBuilder>(b => b.With(keyword) == expected);
+            var expectedKeyword = Keyword.Aura;
+            var expected = expectedKeyword == actualKeyword;
+            var keyword = Mock.Of<IKeywordBuilder>(b => b.Build() == actualKeyword);
+            var hasKeywordStat = new StatFactory().MainSkillHasKeyword(default, expectedKeyword);
+            var context = Mock.Of<IValueCalculationContext>(c =>
+                c.GetValue(hasKeywordStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true);
             var sut = CreateSut();
 
-            var statConverter = sut.With(keyword).Build().StatConverter;
-            var actual = statConverter(inStat);
+            var value = sut.With(keyword).Build().Value;
+            var actual = value.Calculate(context);
 
-            Assert.AreEqual(expected, actual);
-        }
-
-        [Test]
-        public void WithKeywordNotConvertsStatsCorrectly()
-        {
-            var expected = Mock.Of<IStatBuilder>();
-            var keyword = Mock.Of<IKeywordBuilder>();
-            var inStat = Mock.Of<IStatBuilder>(b => b.NotWith(keyword) == expected);
-            var sut = CreateSut();
-
-            var statConverter = sut.With(keyword).Not.Build().StatConverter;
-            var actual = statConverter(inStat);
-
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual.IsTrue());
         }
 
         [Test]

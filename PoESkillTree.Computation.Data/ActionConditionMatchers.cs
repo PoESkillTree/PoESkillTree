@@ -31,6 +31,10 @@ namespace PoESkillTree.Computation.Data
                 // generic
                 { "on ({ActionMatchers})", Reference.AsAction.On },
                 {
+                    "on ({KeywordMatchers}) ({ActionMatchers})",
+                    And(Condition.WithPart(References[0].AsKeyword), References[1].AsAction.On)
+                },
+                {
                     "when you ({ActionMatchers}) a rare or unique enemy",
                     And(Enemy.IsRareOrUnique, Reference.AsAction.On)
                 },
@@ -39,7 +43,6 @@ namespace PoESkillTree.Computation.Data
                     And(References[1].AsAilment.IsOn(Enemy), References[0].AsAction.On)
                 },
                 // kill
-                { "on ({KeywordMatchers}) kill", And(With(Reference.AsKeyword), Kill.On) },
                 { "when you kill an enemy", Kill.On },
                 { "if you or your totems kill an enemy", Or(Kill.On, Kill.By(Entity.Totem).On) },
                 // hit

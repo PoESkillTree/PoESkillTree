@@ -30,9 +30,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat LeechTargetPool(Entity entity, Pool leechPool);
 
         IStat MainSkillId(Entity entity);
+        IStat MainSkillHasKeyword(Entity entity, Keyword keyword);
         IStat MainSkillPartHasKeyword(Entity entity, Keyword keyword);
         IStat MainSkillPartCastSpeedHasKeyword(Entity entity, Keyword keyword);
         IStat MainSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource);
+        IStat MainSkillPartAilmentDamageHasKeyword(Entity entity, Keyword keyword);
 
         IStat BuffEffect(Entity source, Entity target, string buffIdentity);        
         IStat BuffIsActive(Entity target, string buffIdentity);

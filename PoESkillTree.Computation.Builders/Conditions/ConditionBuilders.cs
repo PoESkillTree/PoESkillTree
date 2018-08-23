@@ -19,8 +19,11 @@ namespace PoESkillTree.Computation.Builders.Conditions
 
         public ConditionBuilders(IStatFactory statFactory) => _statFactory = statFactory;
 
-        public IConditionBuilder With(IKeywordBuilder keyword) =>
-            new StatConvertingConditionBuilder<IKeywordBuilder>((d, k) => d.With(k), (d, k) => d.NotWith(k), keyword);
+        public IConditionBuilder With(IKeywordBuilder keyword) => ValueConditionBuilder.Create(
+            (ps, k) => _statFactory.MainSkillHasKeyword(ps.ModifierSourceEntity, k.Build()), keyword);
+
+        public IConditionBuilder WithPart(IKeywordBuilder keyword) => ValueConditionBuilder.Create(
+            (ps, k) => _statFactory.MainSkillPartHasKeyword(ps.ModifierSourceEntity, k.Build()), keyword);
 
         public IConditionBuilder With(ISkillBuilder skill)
         {

@@ -76,6 +76,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat MainSkillId(Entity entity) =>
             GetOrAdd("MainSkill.Id", entity, typeof(int));
 
+        public IStat MainSkillHasKeyword(Entity entity, Keyword keyword) =>
+            GetOrAdd($"MainSkill.Has.{keyword}", entity, typeof(bool));
+
         public IStat MainSkillPartHasKeyword(Entity entity, Keyword keyword) =>
             GetOrAdd($"MainSkillPart.Has.{keyword}", entity, typeof(bool));
 
@@ -84,6 +87,9 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStat MainSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource) =>
             GetOrAdd($"MainSkillPart.Damage.{damageSource}.Has.{keyword}", entity, typeof(bool));
+
+        public IStat MainSkillPartAilmentDamageHasKeyword(Entity entity, Keyword keyword) =>
+            GetOrAdd($"MainSkillPart.Damage.Ailment.Has.{keyword}", entity, typeof(bool));
 
         public IStat BuffEffect(Entity source, Entity target, string buffIdentity) =>
             GetOrAdd($"{buffIdentity}.EffectOn({target})", source, typeof(double));
