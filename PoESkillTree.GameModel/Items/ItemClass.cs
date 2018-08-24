@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using PoESkillTree.GameModel.Items;
+using EnumsNET;
 
-namespace POESKillTree.Model.Items.Enums
+namespace PoESkillTree.GameModel.Items
 {
     /// <summary>
     /// Classes of items as in the GGPK's ItemClasses.dat ("id" field).
@@ -108,6 +108,9 @@ namespace POESKillTree.Model.Items.Enums
         {
             return Enum.TryParse(ggpkItemClass.Replace(" ", ""), true, out itemClass);
         }
+
+        public static ItemClass Parse(string ggpkItemClass)
+            => Enums.Parse<ItemClass>(ggpkItemClass.Replace(" ", ""));
 
         public static ItemClass ItemClassForGem(string gemName)
         {

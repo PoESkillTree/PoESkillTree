@@ -5,11 +5,17 @@ using EnumsNET;
 using MoreLinq;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.GameModel.Skills
 {
     public class SkillJsonDeserializer
     {
+        private static readonly IReadOnlyList<string> BuffProvidingActiveSkillTypes = new[]
+        {
+            ActiveSkillType.Buff, ActiveSkillType.ExplicitProvidesBuff, ActiveSkillType.Curse
+        };
+
         private int _nextNumericId;
 
         public static SkillDefinitions Deserialize(JObject gemJson, JObject gemTooltipJson)
@@ -18,7 +24,8 @@ namespace PoESkillTree.GameModel.Skills
             MergeStaticWithPerLevel(gemTooltipJson);
             var deserializer = new SkillJsonDeserializer();
             var definitions = gemJson.Properties()
-                .Select(property => deserializer.Deserialize(property, gemTooltipJson));
+                .Select(property => deserializer.Deserialize(property, gemTooltipJson))
+                .Where(d => d != null);
             return new SkillDefinitions(definitions.ToList());
         }
 
@@ -43,6 +50,8 @@ namespace PoESkillTree.GameModel.Skills
             {
                 gemTags = gemJson["tags"].Values<string>().ToHashSet();
                 var releaseState = Enums.Parse<ReleaseState>(baseItemJson.Value<string>("release_state"), true);
+                if (releaseState == ReleaseState.Unreleased)
+                    return null;
                 baseItemDefinition = new SkillBaseItemDefinition(
                     baseItemJson.Value<string>("display_name"),
                     baseItemJson.Value<string>("id"),
@@ -59,19 +68,29 @@ namespace PoESkillTree.GameModel.Skills
                 var displayName = activeSkillJson.Value<string>("display_name");
                 var activeSkillTypes = activeSkillJson["types"].Values<string>().ToHashSet();
                 var minionActiveSkillTypes = activeSkillJson["minion_types"]?.Values<string>().ToHashSet()
-                    ?? new HashSet<string>();
+                                             ?? new HashSet<string>();
                 var keywords = GetKeywords(displayName, activeSkillTypes, gemTags);
+                var providesBuff = activeSkillTypes.ContainsAny(BuffProvidingActiveSkillTypes)
+                                   || minionActiveSkillTypes.ContainsAny(BuffProvidingActiveSkillTypes);
                 var totemLifeMultiplier = activeSkillJson.Value<double?>("skill_totem_life_multiplier");
+                var weaponRestrictions = activeSkillJson["weapon_restrictions"].Values<string>()
+                    .Select(ItemClassEx.Parse).ToList();
                 var activeSkillDefinition = new ActiveSkillDefinition(
-                    displayName, castTime, activeSkillTypes, minionActiveSkillTypes, keywords, false,
-                    totemLifeMultiplier);
+                    displayName, castTime, activeSkillTypes, minionActiveSkillTypes, keywords, providesBuff,
+                    totemLifeMultiplier, weaponRestrictions);
                 return SkillDefinition.CreateActive(skillId, numericId, statTranslationFile,
                     baseItemDefinition, activeSkillDefinition, levels);
             }
             else
             {
+                var supportSkillJson = gemJson["support_gem"];
+                var supportSkillDefinition = new SupportSkillDefinition(
+                    supportSkillJson.Value<bool>("supports_gems_only"),
+                    supportSkillJson["allowed_types"].Values<string>().ToList(),
+                    supportSkillJson["excluded_types"].Values<string>().ToList(),
+                    supportSkillJson["added_types"].Values<string>().ToList());
                 return SkillDefinition.CreateSupport(skillId, numericId, statTranslationFile,
-                    baseItemDefinition, levels);
+                    baseItemDefinition, supportSkillDefinition, levels);
             }
         }
 
@@ -101,7 +120,11 @@ namespace PoESkillTree.GameModel.Skills
             return new SkillLevelDefinition(
                 Value<int?>("damage_effectiveness") / 100D + 1,
                 Value<int?>("damage_multiplier") / 10000D + 1,
-                Value<int>("mana_cost"),
+                Value<int?>("crit_chance") / 100D,
+                Value<int?>("mana_cost"),
+                Value<int?>("mana_multiplier") / 100D,
+                Value<int?>("mana_reservation_override"),
+                Value<int>("cooldown"),
                 Value<int>("required_level"),
                 statRequirements?.Value<int>("dex") ?? 0,
                 statRequirements?.Value<int>("int") ?? 0,

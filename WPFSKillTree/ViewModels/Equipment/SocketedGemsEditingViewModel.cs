@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
+using PoESkillTree.GameModel.Items;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;

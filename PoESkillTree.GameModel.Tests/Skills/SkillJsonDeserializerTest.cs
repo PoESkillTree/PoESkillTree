@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using PoESkillTree.GameModel.Items;
@@ -22,6 +23,7 @@ namespace PoESkillTree.GameModel.Tests.Skills
             Assert.AreEqual("Frenzy", definition.Id);
             Assert.AreEqual(0, definition.NumericId);
             Assert.IsFalse(definition.IsSupport);
+            Assert.IsNull(definition.SupportSkill);
 
             var baseItem = definition.BaseItem;
             Assert.IsNotNull(baseItem);
@@ -37,12 +39,17 @@ namespace PoESkillTree.GameModel.Tests.Skills
             Assert.AreEqual(new[] { Keyword.Attack, Keyword.Projectile, Keyword.Melee }, activeSkill.Keywords);
             Assert.IsFalse(activeSkill.ProvidesBuff);
             Assert.IsNull(activeSkill.TotemLifeMultiplier);
+            Assert.IsEmpty(activeSkill.WeaponRestrictions);
 
             Assert.That(definition.Levels, Has.Exactly(2).Items);
             var level1 = definition.Levels[1];
             Assert.AreEqual(1.1, level1.DamageEffectiveness);
             Assert.AreEqual(1.1, level1.DamageMultiplier);
+            Assert.IsNull(level1.CriticalStrikeChance);
             Assert.AreEqual(10, level1.ManaCost);
+            Assert.IsNull(level1.ManaMultiplier);
+            Assert.IsNull(level1.ManaReservationOverride);
+            Assert.AreEqual(0, level1.Cooldown);
             Assert.AreEqual(16, level1.RequiredLevel);
             Assert.AreEqual(41, level1.RequiredDexterity);
             Assert.AreEqual(0, level1.RequiredIntelligence);
@@ -86,6 +93,63 @@ namespace PoESkillTree.GameModel.Tests.Skills
             var activeSkill = definition.ActiveSkill;
             Assert.AreEqual(250, activeSkill.CastTime);
             Assert.AreEqual(1.62, activeSkill.TotemLifeMultiplier);
+            var level20 = definition.Levels[20];
+            Assert.AreEqual(5, level20.CriticalStrikeChance);
+        }
+
+        [Test]
+        public void DeserializeReturnsCorrectResultForBladeFlurry()
+        {
+            var definitions = DeserializeAll();
+
+            var definition = definitions.GetSkillById("ChargedAttack");
+            var activeSkill = definition.ActiveSkill;
+            Assert.AreEqual(new[]
+                    { ItemClass.Claw, ItemClass.Dagger, ItemClass.OneHandSword, ItemClass.ThrustingOneHandSword },
+                activeSkill.WeaponRestrictions);
+        }
+
+        [Test]
+        public void DeserializeReturnsCorrectResultForClarity()
+        {
+            var definitions = DeserializeAll();
+
+            var definition = definitions.GetSkillById("Clarity");
+            Assert.IsTrue(definition.ActiveSkill.ProvidesBuff);
+            var level20 = definition.Levels[20];
+            Assert.AreEqual(1200, level20.Cooldown);
+        }
+
+        [Test]
+        public void DeserializeReturnsCorrectResultForBurningDamageSupport()
+        {
+            var definitions = DeserializeAll();
+
+            var definition = definitions.GetSkillById("SupportIncreasedBurningDamage");
+            Assert.IsTrue(definition.IsSupport);
+            Assert.IsNull(definition.ActiveSkill);
+
+            var supportSkill = definition.SupportSkill;
+            Assert.IsFalse(supportSkill.SupportsGemsOnly);
+            Assert.AreEqual(new[] { "hits", "attack", "applies_burning" }, supportSkill.AllowedActiveSkillTypes);
+            Assert.IsEmpty(supportSkill.ExcludedActiveSkillTypes);
+            Assert.IsEmpty(supportSkill.AddedActiveSkillTypes);
+
+            var level20 = definition.Levels[20];
+            Assert.IsNull(level20.ManaCost);
+            Assert.AreEqual(1.2, level20.ManaMultiplier);
+            Assert.IsNull(level20.ManaReservationOverride);
+        }
+
+        [Test]
+        public void DeserializeIgnoresSkillsWithUnreleasedBaseItems()
+        {
+            var definitions = DeserializeAll();
+
+            var releaseStates = definitions.Skills
+                .Where(d => d.BaseItem != null)
+                .Select(d => d.BaseItem.ReleaseState);
+            CollectionAssert.DoesNotContain(releaseStates, ReleaseState.Unreleased);
         }
 
         private static SkillDefinitions DeserializeAll()

@@ -228,7 +228,6 @@
     <Compile Include="Model\Items\StatTranslation\IndexHandler.cs" />
     <Compile Include="Model\Items\StatTranslation\JsonStatTranslation.cs" />
     <Compile Include="Model\Items\StatTranslation\StatTranslator.cs" />
-    <Compile Include="Model\Items\Enums\ItemClass.cs" />
     <Compile Include="Model\Items\Enums\ModLocation.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
     <Compile Include="Model\Items\StatTranslation\Translation.cs" />

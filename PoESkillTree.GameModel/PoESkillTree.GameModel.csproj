@@ -68,6 +68,7 @@
     <Compile Include="CharacterBaseStats.cs" />
     <Compile Include="CharacterClass.cs" />
     <Compile Include="Items\FrameType.cs" />
+    <Compile Include="Items\ItemClass.cs" />
     <Compile Include="Items\ItemSlot.cs" />
     <Compile Include="Items\ReleaseState.cs" />
     <Compile Include="Items\Tags.cs" />

@@ -10,11 +10,13 @@
         public const string Attack = "attack";
         public const string Spell = "spell";
         public const string Projectile = "projectile";
+        public const string Buff = "buff";
         public const string Minion = "minion";
         public const string AreaOfEffect = "aoe";
         public const string ExplicitProjectileDamage = "explicit_deals_projectile_damage";
         public const string Melee = "melee";
         public const string Totem = "totem";
+        public const string ExplicitProvidesBuff = "unknown_30";
         public const string Curse = "curse";
         public const string Fire = "fire";
         public const string Cold = "cold";
