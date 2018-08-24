@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.GameModel.Skills
 {
@@ -82,7 +83,7 @@ namespace PoESkillTree.GameModel.Skills
         Warcry,
 
         /// <summary>
-        /// Equivalent to the gem tag.
+        /// Equivalent to the ActiveSkillType.
         /// </summary>
         Herald,
 
@@ -130,32 +131,32 @@ namespace PoESkillTree.GameModel.Skills
         private static readonly IReadOnlyDictionary<Keyword, KeywordApplies> Conditions =
             new Dictionary<Keyword, KeywordApplies>
             {
-                { Keyword.Attack, (_, types, __) => types.Contains("attack") },
-                { Keyword.Spell, (_, types, __) => types.Contains("spell") },
+                { Keyword.Attack, (_, types, __) => types.Contains(ActiveSkillType.Attack) },
+                { Keyword.Spell, (_, types, __) => types.Contains(ActiveSkillType.Spell) },
                 {
-                    Keyword.Projectile,
-                    (_, types, __) => types.Intersect(new[] { "projectile", "explicit_deals_projectile_damage" }).Any()
+                    Keyword.Projectile, (_, types, __)
+                        => types.ContainsAny(ActiveSkillType.Projectile, ActiveSkillType.ExplicitProjectileDamage)
                 },
-                { Keyword.AreaOfEffect, (_, types, __) => types.Contains("aoe") },
-                { Keyword.Melee, (_, types, __) => types.Contains("melee") },
-                { Keyword.Totem, (_, types, __) => types.Contains("totem") },
-                { Keyword.Curse, (_, types, __) => types.Contains("curse") },
-                { Keyword.Trap, (_, types, __) => types.Contains("trap") },
-                { Keyword.Movement, (_, types, __) => types.Contains("movement") },
-                { Keyword.Mine, (_, types, __) => types.Contains("mine") },
-                { Keyword.Vaal, (_, types, __) => types.Contains("vaal") },
-                { Keyword.Aura, (_, types, __) => types.Contains("aura") },
-                { Keyword.Golem, (_, types, __) => types.Contains("golem") },
-                { Keyword.Minion, (_, types, __) => types.Contains("minion") },
+                { Keyword.AreaOfEffect, (_, types, __) => types.Contains(ActiveSkillType.AreaOfEffect) },
+                { Keyword.Melee, (_, types, __) => types.Contains(ActiveSkillType.Melee) },
+                { Keyword.Totem, (_, types, __) => types.Contains(ActiveSkillType.Totem) },
+                { Keyword.Curse, (_, types, __) => types.Contains(ActiveSkillType.Curse) },
+                { Keyword.Trap, (_, types, __) => types.Contains(ActiveSkillType.Trap) },
+                { Keyword.Movement, (_, types, __) => types.Contains(ActiveSkillType.Movement) },
+                { Keyword.Mine, (_, types, __) => types.Contains(ActiveSkillType.Mine) },
+                { Keyword.Vaal, (_, types, __) => types.Contains(ActiveSkillType.Vaal) },
+                { Keyword.Aura, (_, types, __) => types.Contains(ActiveSkillType.Aura) },
+                { Keyword.Golem, (_, types, __) => types.Contains(ActiveSkillType.Golem) },
+                { Keyword.Minion, (_, types, __) => types.Contains(ActiveSkillType.Minion) },
                 { Keyword.Warcry, (_, __, tags) => tags.Contains("warcry") },
-                { Keyword.Herald, (_, __, tags) => tags.Contains("herald") },
+                { Keyword.Herald, (_, types, __) => types.Contains(ActiveSkillType.Herald) },
                 { Keyword.Offering, (name, _, __) => name.EndsWith("Offering") },
-                { Keyword.CounterAttack, (_, types, __) => types.Contains("trigger_attack") },
+                { Keyword.CounterAttack, (_, types, __) => types.Contains(ActiveSkillType.TriggerAttack) },
                 { Keyword.Physical, (_, ___, __) => false },
-                { Keyword.Lightning, (_, types, __) => types.Contains("lightning") },
-                { Keyword.Cold, (_, types, __) => types.Contains("cold") },
-                { Keyword.Fire, (_, types, __) => types.Contains("fire") },
-                { Keyword.Chaos, (_, types, __) => types.Contains("chaos") },
+                { Keyword.Lightning, (_, types, __) => types.Contains(ActiveSkillType.Lightning) },
+                { Keyword.Cold, (_, types, __) => types.Contains(ActiveSkillType.Cold) },
+                { Keyword.Fire, (_, types, __) => types.Contains(ActiveSkillType.Fire) },
+                { Keyword.Chaos, (_, types, __) => types.Contains(ActiveSkillType.Chaos) },
             };
 
         public static bool IsOnSkill(this Keyword @this,

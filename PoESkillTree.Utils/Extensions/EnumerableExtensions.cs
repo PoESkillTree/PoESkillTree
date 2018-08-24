@@ -24,6 +24,12 @@ namespace PoESkillTree.Utils.Extensions
         public static bool ContainsAll<T>(this IEnumerable<T> @this, IReadOnlyCollection<T> elements) =>
             @this.Intersect(elements).Count() == elements.Count;
 
+        public static bool ContainsAny<T>(this IEnumerable<T> @this, params T[] elements) =>
+            @this.ContainsAny(elements.AsEnumerable());
+
+        public static bool ContainsAny<T>(this IEnumerable<T> @this, IEnumerable<T> elements) =>
+            @this.Intersect(elements).Any();
+
         /// <summary>
         /// Returns a hash code for <paramref name="values"/> that can be used in conjunction with
         /// <see cref="Enumerable.SequenceEqual{TSource}(IEnumerable{TSource},IEnumerable{TSource})"/>.
