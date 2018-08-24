@@ -70,6 +70,7 @@
     <Compile Include="Skills\SkillJsonDeserializerTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Data\frenzyGem.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
