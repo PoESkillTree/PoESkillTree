@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.GameModel.Tests.Skills
@@ -22,11 +23,20 @@ namespace PoESkillTree.GameModel.Tests.Skills
             Assert.AreEqual(0, definition.NumericId);
             Assert.IsFalse(definition.IsSupport);
 
+            var baseItem = definition.BaseItem;
+            Assert.IsNotNull(baseItem);
+            Assert.AreEqual("Frenzy", baseItem.DisplayName);
+            Assert.AreEqual("Metadata/Items/Gems/SkillGemFrenzy", baseItem.MetadataId);
+            Assert.AreEqual(ReleaseState.Released, baseItem.ReleaseState);
+            Assert.AreEqual(new[] { "dexterity", "active_skill", "attack", "melee", "bow" }, baseItem.GemTags);
+
             var activeSkill = definition.ActiveSkill;
             Assert.AreEqual("Frenzy", activeSkill.DisplayName);
             Assert.That(activeSkill.ActiveSkillTypes, Has.Exactly(11).Items);
+            Assert.IsEmpty(activeSkill.MinionActiveSkillTypes);
             Assert.AreEqual(new[] { Keyword.Attack, Keyword.Projectile, Keyword.Melee }, activeSkill.Keywords);
             Assert.IsFalse(activeSkill.ProvidesBuff);
+            Assert.IsNull(activeSkill.TotemLifeMultiplier);
 
             Assert.That(definition.Levels, Has.Exactly(2).Items);
             var level1 = definition.Levels[1];
@@ -65,6 +75,30 @@ namespace PoESkillTree.GameModel.Tests.Skills
                 new TranslatedStat("{0}% increased Physical Damage per Frenzy Charge", 5),
                 new TranslatedStat("{0}% increased Attack Speed per Frenzy Charge", 5),
             }, tooltip.Stats);
+        }
+
+        [Test]
+        public void DeserializeReturnsCorrectResultForFlameTotem()
+        {
+            var definitions = DeserializeAll();
+
+            var definition = definitions.GetSkillById("FlameTotem");
+            var activeSkill = definition.ActiveSkill;
+            Assert.AreEqual(250, activeSkill.CastTime);
+            Assert.AreEqual(1.62, activeSkill.TotemLifeMultiplier);
+        }
+
+        private static SkillDefinitions DeserializeAll()
+        {
+            /* Skills in gems.min.json and gem_tooltips.min.json: (from game version 3.3.0)
+             ['RainOfArrows', 'Clarity', 'SupportIncreasedBurningDamage', 'VaalPowerSiphon', 'ChargedAttack',
+              'FreezeMine', 'ShadeForm', 'ElementalHit', 'VaalRighteousFire', 'EnchantmentOfIreWhenHit4',
+              'SupportItemQuantity', 'SupportPierce', 'VaalFireTrap', 'NewPhaseRun', 'IntimidatingCry',
+              'SupportAdditionalProjectilesUnique', 'SupportMinionLife', 'ThrownShield', 'BirdAspect', 'FlameTotem']
+             */
+            var gemJson = JObject.Parse(File.ReadAllText(GetDataFilePath("gems.min.json")));
+            var gemTooltipJson = JObject.Parse(File.ReadAllText(GetDataFilePath("gem_tooltips.min.json")));
+            return SkillJsonDeserializer.Deserialize(gemJson, gemTooltipJson);
         }
 
         private static string GetDataFilePath(string filename)

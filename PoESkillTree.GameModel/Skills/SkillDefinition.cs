@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
+using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.GameModel.Skills
@@ -13,38 +15,72 @@ namespace PoESkillTree.GameModel.Skills
             Id = skillName;
             NumericId = numericId;
             IsSupport = false;
-            ActiveSkill = new ActiveSkillDefinition(skillName, new string[0], keywords, providesBuff);
+            ActiveSkill = new ActiveSkillDefinition(skillName, 0, new string[0], new string[0], keywords, providesBuff,
+                null);
             Levels = new Dictionary<int, SkillLevelDefinition>();
         }
 
         private SkillDefinition(
-            string id, int numericId, bool isSupport, ActiveSkillDefinition activeSkill,
+            string id, int numericId, bool isSupport, string statTranslationFile,
+            SkillBaseItemDefinition baseItem, ActiveSkillDefinition activeSkill,
             IReadOnlyDictionary<int, SkillLevelDefinition> levels)
-            => (Id, NumericId, IsSupport, ActiveSkill, Levels) = (id, numericId, isSupport, activeSkill, levels);
+            => (Id, NumericId, IsSupport, BaseItem, ActiveSkill, Levels, StatTranslationFile) =
+                (id, numericId, isSupport, baseItem, activeSkill, levels, statTranslationFile);
 
         public static SkillDefinition CreateActive(
-            string id, int numericId, ActiveSkillDefinition activeSkill, IReadOnlyDictionary<int, SkillLevelDefinition> levels)
-            => new SkillDefinition(id, numericId, false, activeSkill, levels);
+            string id, int numericId, string statTranslationFile,
+            SkillBaseItemDefinition baseItem, ActiveSkillDefinition activeSkill,
+            IReadOnlyDictionary<int, SkillLevelDefinition> levels)
+            => new SkillDefinition(id, numericId, false, statTranslationFile, baseItem, activeSkill, levels);
+
+        public static SkillDefinition CreateSupport(
+            string id, int numericId, string statTranslationFile,
+            SkillBaseItemDefinition baseItem,
+            IReadOnlyDictionary<int, SkillLevelDefinition> levels)
+            => new SkillDefinition(id, numericId, true, statTranslationFile, baseItem, null, levels);
 
         public string Id { get; }
         public int NumericId { get; }
         public bool IsSupport { get; }
+        public string StatTranslationFile { get; }
+
+        [CanBeNull]
+        public SkillBaseItemDefinition BaseItem { get; }
+
         public ActiveSkillDefinition ActiveSkill { get; }
         public IReadOnlyDictionary<int, SkillLevelDefinition> Levels { get; }
+    }
+
+    public class SkillBaseItemDefinition
+    {
+        public SkillBaseItemDefinition(
+            string displayName, string metadataId, ReleaseState releaseState, IEnumerable<string> gemTags)
+            => (DisplayName, MetadataId, ReleaseState, GemTags) = (displayName, metadataId, releaseState, gemTags);
+
+        public string DisplayName { get; }
+        public string MetadataId { get; }
+        public ReleaseState ReleaseState { get; }
+        public IEnumerable<string> GemTags { get; }
     }
 
     public class ActiveSkillDefinition
     {
         public ActiveSkillDefinition(
-            string displayName, IEnumerable<string> activeSkillTypes, IReadOnlyList<Keyword> keywords,
-            bool providesBuff)
-            => (DisplayName, ActiveSkillTypes, Keywords, ProvidesBuff) =
-                (displayName, activeSkillTypes, keywords, providesBuff);
+            string displayName, int castTime,
+            IEnumerable<string> activeSkillTypes, IEnumerable<string> minionActiveSkillTypes,
+            IReadOnlyList<Keyword> keywords, bool providesBuff, double? totemLifeMultiplier)
+            => (DisplayName, CastTime, ActiveSkillTypes, MinionActiveSkillTypes, Keywords, ProvidesBuff,
+                    TotemLifeMultiplier) =
+                (displayName, castTime, activeSkillTypes, minionActiveSkillTypes, keywords, providesBuff,
+                    totemLifeMultiplier);
 
         public string DisplayName { get; }
+        public int CastTime { get; }
         public IEnumerable<string> ActiveSkillTypes { get; }
+        public IEnumerable<string> MinionActiveSkillTypes { get; }
         public IReadOnlyList<Keyword> Keywords { get; }
         public bool ProvidesBuff { get; }
+        public double? TotemLifeMultiplier { get; }
     }
 
     public class SkillLevelDefinition

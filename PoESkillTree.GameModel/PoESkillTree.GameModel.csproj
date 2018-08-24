@@ -42,6 +42,9 @@
     <Reference Include="Enums.NET, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
       <HintPath>..\packages\Enums.NET.2.3.2\lib\net45\Enums.NET.dll</HintPath>
     </Reference>
+    <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="MoreLinq, Version=2.4.20801.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
       <HintPath>..\packages\morelinq.2.4.1\lib\net40\MoreLinq.dll</HintPath>
     </Reference>
@@ -66,6 +69,7 @@
     <Compile Include="CharacterClass.cs" />
     <Compile Include="Items\FrameType.cs" />
     <Compile Include="Items\ItemSlot.cs" />
+    <Compile Include="Items\ReleaseState.cs" />
     <Compile Include="Items\Tags.cs" />
     <Compile Include="Items\ValueColoring.cs" />
     <Compile Include="Items\ItemConstants.cs" />
