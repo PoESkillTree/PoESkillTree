@@ -37,7 +37,6 @@ namespace PoESkillTree.Computation.Data
                 { "attacks per second", Stat.CastRate },
                 { "cast time", Stat.CastRate, v => v.Invert },
                 { "fire damage", Fire.Damage },
-                { "damage effectiveness", Stat.EffectivenessOfAddedDamage }
             };
     }
 }

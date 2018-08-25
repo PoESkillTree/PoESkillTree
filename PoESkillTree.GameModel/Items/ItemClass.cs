@@ -23,7 +23,7 @@ namespace PoESkillTree.GameModel.Items
         Dagger,
         Claw,
         Wand,
-        //Unarmed,
+        Unarmed,
 
         TwoHandSword,
         TwoHandAxe,
@@ -69,6 +69,7 @@ namespace PoESkillTree.GameModel.Items
             { ItemClass.Dagger, Tags.Dagger | Tags.OneHandWeapon },
             { ItemClass.Claw, Tags.Claw | Tags.OneHandWeapon },
             { ItemClass.Wand, Tags.Wand | Tags.OneHandWeapon | Tags.Ranged },
+            { ItemClass.Unarmed, Tags.Default },
             { ItemClass.TwoHandSword, Tags.Sword | Tags.TwoHandWeapon },
             { ItemClass.TwoHandAxe, Tags.Axe | Tags.TwoHandWeapon },
             { ItemClass.TwoHandMace, Tags.Mace | Tags.TwoHandWeapon },

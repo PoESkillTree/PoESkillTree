@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="GivenStatsParser.cs" />
     <Compile Include="IParser.cs" />
+    <Compile Include="ActiveSkillParser.cs" />
     <Compile Include="StringParsers\IStringParser.cs" />
     <Compile Include="Referencing\ResolvedMatchContext.cs" />
     <Compile Include="ICoreParser.cs" />

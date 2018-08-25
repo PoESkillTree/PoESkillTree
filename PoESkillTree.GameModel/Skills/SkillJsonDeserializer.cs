@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using EnumsNET;
 using MoreLinq;
 using Newtonsoft.Json.Linq;
@@ -18,10 +19,26 @@ namespace PoESkillTree.GameModel.Skills
 
         private int _nextNumericId;
 
+        public static async Task<SkillDefinitions> DeserializeAsync()
+        {
+            var gemJsonTask = DataUtils.LoadRePoEAsync("gems");
+            var gemTooltipJsonTask = DataUtils.LoadRePoEAsync("gem_tooltips");
+            var gemJson = JObject.Parse(await gemJsonTask.ConfigureAwait(false));
+            MergeStaticWithPerLevel(gemJson);
+            var gemTooltipJson = JObject.Parse(await gemTooltipJsonTask.ConfigureAwait(false));
+            MergeStaticWithPerLevel(gemTooltipJson);
+            return DeserializeMerged(gemJson, gemTooltipJson);
+        }
+
         public static SkillDefinitions Deserialize(JObject gemJson, JObject gemTooltipJson)
         {
             MergeStaticWithPerLevel(gemJson);
             MergeStaticWithPerLevel(gemTooltipJson);
+            return DeserializeMerged(gemJson, gemTooltipJson);
+        }
+
+        private static SkillDefinitions DeserializeMerged(JObject gemJson, JObject gemTooltipJson)
+        {
             var deserializer = new SkillJsonDeserializer();
             var definitions = gemJson.Properties()
                 .Select(property => deserializer.Deserialize(property, gemTooltipJson))

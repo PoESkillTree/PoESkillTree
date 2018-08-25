@@ -72,6 +72,7 @@
     <Compile Include="DataValidatingTest.cs" />
     <Compile Include="MechanicsTest.cs" />
     <Compile Include="ParsingTest.cs" />
+    <Compile Include="Parsing\ActiveSkillParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -23,9 +23,12 @@ namespace PoESkillTree.GameModel
         /// <returns>a task returning the deserialized object</returns>
         public static async Task<T> LoadRePoEAsync<T>(string fileName)
         {
-            var text = await LoadTextAsync("RePoE." + fileName + RePoEFileSuffix).ConfigureAwait(false);
+            var text = await LoadRePoEAsync(fileName).ConfigureAwait(false);
             return JsonConvert.DeserializeObject<T>(text);
         }
+
+        public static Task<string> LoadRePoEAsync(string fileName)
+            => LoadTextAsync("RePoE." + fileName + RePoEFileSuffix);
 
         public static async Task<string> LoadTextAsync(string resourceName)
         {
