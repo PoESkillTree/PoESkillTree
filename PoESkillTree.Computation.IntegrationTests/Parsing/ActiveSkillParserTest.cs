@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
             var local = new ModifierSource.Local.Skill("Frenzy");
             var global = new ModifierSource.Global(local);
             var valueCalculationContextMock = new Mock<IValueCalculationContext>();
-            var offHandTagsStat = new Stat("OffHand.Item.Tags");
+            var offHandTagsStat = new Stat("OffHand.ItemTags");
             valueCalculationContextMock.Setup(c => c.GetValue(offHandTagsStat, NodeType.Total, PathDefinition.MainPath))
                 .Returns(new NodeValue(0));
             var mainHandTagsStat = new Stat("MainHand.ItemTags");

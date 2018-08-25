@@ -5,6 +5,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Equipment;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -58,7 +59,7 @@ namespace PoESkillTree.Computation.Parsing
                 .WithStat(_metaStatBuilders.SkillUsesHand(AttackDamageHand.OffHand))
                 .WithForm(Forms.TotalOverride)
                 .WithValue(CreateValue(1))
-                .WithCondition(isMainSkill).Build());
+                .WithCondition(isMainSkill.And(Equipment[ItemSlot.OffHand].HasItem)).Build());
             AddGlobal(_modifierBuilder
                 .WithStat(_metaStatBuilders.MainSkillId)
                 .WithForm(Forms.TotalOverride)
@@ -73,22 +74,31 @@ namespace PoESkillTree.Computation.Parsing
             AddKeywordModifiers(_metaStatBuilders.MainSkillPartHasKeyword);
             AddKeywordModifiers(_metaStatBuilders.MainSkillPartCastRateHasKeyword);
             AddKeywordModifiers(k => _metaStatBuilders.MainSkillPartDamageHasKeyword(k, DamageSource.Attack));
-            
-            AddGlobal(_modifierBuilder
-                .WithStat(_metaStatBuilders.DamageBaseAddEffectiveness)
-                .WithForm(Forms.TotalOverride)
-                .WithValue(CreateValue(level.DamageEffectiveness.Value))
-                .WithCondition(isMainSkill).Build());
-            AddGlobal(_modifierBuilder
-                .WithStat(_metaStatBuilders.DamageBaseSetEffectiveness)
-                .WithForm(Forms.TotalOverride)
-                .WithValue(CreateValue(level.DamageMultiplier.Value))
-                .WithCondition(isMainSkill).Build());
-            AddGlobal(_modifierBuilder
-                .WithStat(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost)
-                .WithForm(Forms.BaseSet)
-                .WithValue(CreateValue(level.ManaCost.Value))
-                .WithCondition(isMainSkill).Build());
+
+            if (level.DamageEffectiveness.HasValue)
+            {
+                AddGlobal(_modifierBuilder
+                    .WithStat(_metaStatBuilders.DamageBaseAddEffectiveness)
+                    .WithForm(Forms.TotalOverride)
+                    .WithValue(CreateValue(level.DamageEffectiveness.Value))
+                    .WithCondition(isMainSkill).Build());
+            }
+            if (level.DamageMultiplier.HasValue)
+            {
+                AddGlobal(_modifierBuilder
+                    .WithStat(_metaStatBuilders.DamageBaseSetEffectiveness)
+                    .WithForm(Forms.TotalOverride)
+                    .WithValue(CreateValue(level.DamageMultiplier.Value))
+                    .WithCondition(isMainSkill).Build());
+            }
+            if (level.ManaCost.HasValue)
+            {
+                AddGlobal(_modifierBuilder
+                    .WithStat(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost)
+                    .WithForm(Forms.BaseSet)
+                    .WithValue(CreateValue(level.ManaCost.Value))
+                    .WithCondition(isMainSkill).Build());
+            }
 
             AddLocal(_modifierBuilder
                 .WithStat(_builderFactories.StatBuilders.Requirements.Level)
@@ -99,22 +109,28 @@ namespace PoESkillTree.Computation.Parsing
                 .WithForm(Forms.BaseSet)
                 .WithValue(CreateValue(level.RequiredDexterity)).Build());
 
-            AddGlobal(_modifierBuilder
-                .WithStat(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack))
-                .WithForm(Forms.PercentIncrease)
-                .WithValue(CreateValue(level.QualityStats[0].Value * parameter.Quality))
-                .WithCondition(isMainSkill).Build());
-            
-            AddGlobal(_modifierBuilder
-                .WithStat(_builderFactories.DamageTypeBuilders.Physical.Damage)
-                .WithForm(Forms.PercentIncrease)
-                .WithValue(level.Stats[0].Value * _builderFactories.ChargeTypeBuilders.Frenzy.Amount.Value)
-                .WithCondition(isMainSkill).Build());
-            AddGlobal(_modifierBuilder
-                .WithStat(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack))
-                .WithForm(Forms.PercentIncrease)
-                .WithValue(level.Stats[0].Value * _builderFactories.ChargeTypeBuilders.Frenzy.Amount.Value)
-                .WithCondition(isMainSkill).Build());
+            if (level.QualityStats.Any())
+            {
+                AddGlobal(_modifierBuilder
+                    .WithStat(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack))
+                    .WithForm(Forms.PercentIncrease)
+                    .WithValue(CreateValue(level.QualityStats[0].Value * parameter.Quality))
+                    .WithCondition(isMainSkill).Build());
+            }
+
+            if (level.Stats.Any())
+            {
+                AddGlobal(_modifierBuilder
+                    .WithStat(_builderFactories.DamageTypeBuilders.Physical.Damage)
+                    .WithForm(Forms.PercentIncrease)
+                    .WithValue(level.Stats[0].Value * _builderFactories.ChargeTypeBuilders.Frenzy.Amount.Value)
+                    .WithCondition(isMainSkill).Build());
+                AddGlobal(_modifierBuilder
+                    .WithStat(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack))
+                    .WithForm(Forms.PercentIncrease)
+                    .WithValue(level.Stats[0].Value * _builderFactories.ChargeTypeBuilders.Frenzy.Amount.Value)
+                    .WithCondition(isMainSkill).Build());
+            }
 
             return ParseResult.Success(modifiers);
         }
@@ -125,10 +141,15 @@ namespace PoESkillTree.Computation.Parsing
             foreach (var keyword in keywords)
             {
                 var condition = isMainSkill;
-                if (keyword == Keyword.Melee)
+                var mainHandIsRanged = Equipment[ItemSlot.MainHand].Has(Tags.Ranged);
+                switch (keyword)
                 {
-                    condition = condition.And(
-                        _builderFactories.EquipmentBuilders.Equipment[ItemSlot.MainHand].Has(Tags.Ranged).Not);
+                    case Keyword.Melee:
+                        condition = condition.And(mainHandIsRanged.Not);
+                        break;
+                    case Keyword.Projectile:
+                        condition = condition.And(mainHandIsRanged);
+                        break;
                 }
                 yield return _modifierBuilder
                     .WithStat(statFactory(keyword))
@@ -141,6 +162,7 @@ namespace PoESkillTree.Computation.Parsing
 
         private IFormBuilders Forms => _builderFactories.FormBuilders;
         private IValueBuilder CreateValue(double value) => _builderFactories.ValueBuilders.Create(value);
+        private IEquipmentBuilderCollection Equipment => _builderFactories.EquipmentBuilders.Equipment;
     }
 
     public struct Skill
