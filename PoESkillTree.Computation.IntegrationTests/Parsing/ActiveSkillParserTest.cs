@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
             var mainHandTagsStat = new Stat("MainHand.ItemTags");
             valueCalculationContextMock
                 .Setup(c => c.GetValue(mainHandTagsStat, NodeType.Total, PathDefinition.MainPath))
-                .Returns(new NodeValue((ulong) Tags.Ranged));
+                .Returns(new NodeValue(Tags.Ranged.EncodeAsDouble()));
             var frenzyAmountStat = new Stat("Frenzy.Amount");
             valueCalculationContextMock
                 .Setup(c => c.GetValue(frenzyAmountStat, NodeType.Total, PathDefinition.MainPath))

@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Builders.Equipment
                 v => $"((Tags) {v}).HasFlag({tag})");
 
         private static Tags ToTags(NodeValue? value) =>
-            value is NodeValue v ? ((Tags) (int) v.Maximum) : Tags.Default;
+            value is NodeValue v ? TagsExtensions.DecodeFromDouble(v.Single) : Tags.Default;
 
         public IConditionBuilder Has(FrameType frameType) =>
             StatBuilderUtils.FromIdentity(_statFactory, $"{_slot}.ItemFrameType", typeof(FrameType))

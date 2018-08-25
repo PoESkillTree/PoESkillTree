@@ -257,7 +257,7 @@ namespace UnitTests.Model.Items.Mods
                 from spawnWeight in mod.SpawnWeights
                 let tag = spawnWeight.Tag
                 where !tag.EndsWith("_shaper") && !tag.EndsWith("_elder")
-                      && !TagsEx.TryParse(tag, out var _)
+                      && !TagsExtensions.TryParse(tag, out var _)
                       && !UnknownTags.Contains(tag)
                 select tag
             ).ToHashSet();
@@ -290,7 +290,7 @@ namespace UnitTests.Model.Items.Mods
                 foreach (var spawnWeight in mod.SpawnWeights)
                 {
                     Tags tag;
-                    if (!TagsEx.TryParse(spawnWeight.Tag, out tag))
+                    if (!TagsExtensions.TryParse(spawnWeight.Tag, out tag))
                     {
                         Assert.IsTrue(UnknownTags.Contains(spawnWeight.Tag), spawnWeight.Tag + " unknown");
                     }

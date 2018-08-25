@@ -57,7 +57,7 @@ namespace POESKillTree.Model.Items.Mods
             var spawnWeights = spawnWeightsReplacement ?? jsonMod.SpawnWeights;
             foreach (var spawnWeight in spawnWeights)
             {
-                if (TagsEx.TryParse(spawnWeight.Tag, out Tags tag))
+                if (TagsExtensions.TryParse(spawnWeight.Tag, out Tags tag))
                 {
                     _spawnTags.Add(Tuple.Create(tag, spawnWeight.CanSpawn));
                 }

@@ -20,7 +20,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Equipment
                 f.FromIdentity("BodyArmour.ItemTags", default, typeof(Tags), null) == tagsStat);
             var sut = new EquipmentBuilder(statFactory, ItemSlot.BodyArmour);
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValue(tagsStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue((double) slotTags));
+                c.GetValue(tagsStat, NodeType.Total, PathDefinition.MainPath) ==
+                new NodeValue(slotTags.EncodeAsDouble()));
 
             var value = sut.Has(queryTags).Build(default).Value;
             var actual = value.Calculate(context);

@@ -73,7 +73,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                         Form.BaseSet, new Constant(true), modSource),
                     new Modifier(
                         Build(_builderFactories.EquipmentBuilders.Equipment[ItemSlot.MainHand].ItemTags),
-                        Form.TotalOverride, new Constant((int) Tags.Sword), modSource))
+                        Form.TotalOverride, new Constant(Tags.Sword.EncodeAsDouble()), modSource))
                 .ToList();
         }
 
