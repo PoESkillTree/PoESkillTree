@@ -30,6 +30,6 @@ namespace PoESkillTree.Computation.Builders.Stats
             new CastSpeedStatBuilder(StatFactory, coreStatBuilder, statConcretizer, statConverter);
 
         protected override IStat BuildKeywordStat(IDamageSpecification spec, Entity entity, Keyword keyword)
-            => StatFactory.MainSkillPartCastSpeedHasKeyword(entity, keyword);
+            => StatFactory.MainSkillPartCastRateHasKeyword(entity, keyword);
     }
 }

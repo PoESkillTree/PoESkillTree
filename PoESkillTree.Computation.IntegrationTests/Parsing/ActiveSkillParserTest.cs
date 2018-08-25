@@ -3,7 +3,9 @@ using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
@@ -14,12 +16,16 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
     public class ActiveSkillParserTest
     {
         private static SkillDefinitions _skillDefinitions;
+        private static IBuilderFactories _builderFactories;
+        private static IMetaStatBuilders _metaStatBuilders;
 
         [OneTimeSetUp]
         public async Task LoadSkillDefinitionsAsync()
         {
             _skillDefinitions = await SkillJsonDeserializer.DeserializeAsync().ConfigureAwait(false);
             var compositionRoot = new Console.CompositionRoot();
+            _builderFactories = compositionRoot.BuilderFactories;
+            _metaStatBuilders = compositionRoot.MetaStats;
         }
 
         [Test]
@@ -51,23 +57,23 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                     ("SkillUses.OffHand", Form.TotalOverride, 1, global, true),
                     ("MainSkill.Id", Form.TotalOverride, definition.NumericId, global, true),
                     ("MainSkill.Has.Attack", Form.TotalOverride, 1, global, true),
-                    ("MainSkill.Has.Melee", Form.TotalOverride, null, global, true),
                     ("MainSkill.Has.Projectile", Form.TotalOverride, 1, global, true),
+                    ("MainSkill.Has.Melee", Form.TotalOverride, null, global, true),
                     ("MainSkillPart.Has.Attack", Form.TotalOverride, 1, global, true),
-                    ("MainSkillPart.Has.Melee", Form.TotalOverride, null, global, true),
                     ("MainSkillPart.Has.Projectile", Form.TotalOverride, 1, global, true),
-                    ("MainSkillPart.CastSpeed.Has.Attack", Form.TotalOverride, 1, global, true),
-                    ("MainSkillPart.CastSpeed.Has.Melee", Form.TotalOverride, null, global, true),
-                    ("MainSkillPart.CastSpeed.Has.Projectile", Form.TotalOverride, 1, global, true),
+                    ("MainSkillPart.Has.Melee", Form.TotalOverride, null, global, true),
+                    ("MainSkillPart.CastRate.Has.Attack", Form.TotalOverride, 1, global, true),
+                    ("MainSkillPart.CastRate.Has.Projectile", Form.TotalOverride, 1, global, true),
+                    ("MainSkillPart.CastRate.Has.Melee", Form.TotalOverride, null, global, true),
                     ("MainSkillPart.Damage.Attack.Has.Attack", Form.TotalOverride, 1, global, true),
-                    ("MainSkillPart.Damage.Attack.Has.Melee", Form.TotalOverride, null, global, true),
                     ("MainSkillPart.Damage.Attack.Has.Projectile", Form.TotalOverride, 1, global, true),
+                    ("MainSkillPart.Damage.Attack.Has.Melee", Form.TotalOverride, null, global, true),
                     ("DamageBaseAddEffectiveness", Form.TotalOverride, levelDefinition.DamageEffectiveness, global,
                         true),
                     ("DamageBaseSetEffectiveness", Form.TotalOverride, levelDefinition.DamageMultiplier, global, true),
-                    ("Mana.Cost", Form.BaseSet, levelDefinition.ManaCost, global, false),
-                    ("Requirement.Level", Form.BaseSet, levelDefinition.RequiredLevel, local, false),
-                    ("Requirement.Dexterity", Form.BaseSet, levelDefinition.RequiredDexterity, local, false),
+                    ("Mana.Cost", Form.BaseSet, levelDefinition.ManaCost, global, true),
+                    ("Level.Required", Form.BaseSet, levelDefinition.RequiredLevel, local, false),
+                    ("Dexterity.Required", Form.BaseSet, levelDefinition.RequiredDexterity, local, false),
                     ("CastSpeed.Attack.MainHand.Skill", Form.Increase, levelDefinition.QualityStats[0].Value * 20,
                         global, true),
                     ("CastSpeed.Attack.OffHand.Skill", Form.Increase, levelDefinition.QualityStats[0].Value * 20,
@@ -110,14 +116,14 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                         true),
                     ("CastSpeed.Attack.OffHand.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global, true),
                 };
-            var parser = new ActiveSkillParser(_skillDefinitions);
+            var parser = new ActiveSkillParser(_skillDefinitions, _builderFactories, _metaStatBuilders);
 
             var (failedLines, remainingSubstrings, modifiers) = parser.Parse(frenzy);
 
             Assert.IsEmpty(failedLines);
             Assert.IsEmpty(remainingSubstrings);
             Assert.That(modifiers, Has.Exactly(expectedModifiers.Length).Items);
-            for (var i = 0; i < expectedModifiers.Length; i++)
+            for (var i = 0; i < modifiers.Count; i++)
             {
                 var expected = expectedModifiers[i];
                 var actual = modifiers[i];

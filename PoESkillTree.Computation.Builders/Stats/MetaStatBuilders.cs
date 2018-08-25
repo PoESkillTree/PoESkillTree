@@ -1,10 +1,13 @@
-﻿using PoESkillTree.Computation.Builders.Values;
+﻿using System;
+using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
@@ -104,7 +107,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder CastTime => FromIdentity(typeof(double));
 
         public IStatBuilder AilmentDealtDamageType(Ailment ailment)
-            => FromStatFactory(e => StatFactory.AilmentDealtDamageType(e, ailment));
+            => FromFactory(e => StatFactory.AilmentDealtDamageType(e, ailment));
 
         public IDamageRelatedStatBuilder AilmentChanceWithCrits(Ailment ailment)
             => DamageRelatedFromIdentity($"{ailment}.ChanceWithCrits", typeof(double)).WithHits;
@@ -149,7 +152,33 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder SkillHitDamageSource => FromIdentity(typeof(DamageSource));
         public IStatBuilder SkillUsesHand(AttackDamageHand hand) => FromIdentity($"SkillUses.{hand}", typeof(bool));
 
+        public IStatBuilder MainSkillSocket(ItemSlot itemSlot, int socketIndex)
+            => FromIdentity($"{itemSlot}.{socketIndex}.IsMainSkill", typeof(bool));
+
+        public IStatBuilder MainSkillId => FromFactory(StatFactory.MainSkillId);
+
+        public IStatBuilder MainSkillHasKeyword(Keyword keyword)
+            => FromFactory(e => StatFactory.MainSkillHasKeyword(e, keyword));
+
+        public IStatBuilder MainSkillPartHasKeyword(Keyword keyword)
+            => FromFactory(e => StatFactory.MainSkillPartHasKeyword(e, keyword));
+
+        public IStatBuilder MainSkillPartCastRateHasKeyword(Keyword keyword)
+            => FromFactory(e => StatFactory.MainSkillPartCastRateHasKeyword(e, keyword));
+
+        public IStatBuilder MainSkillPartDamageHasKeyword(Keyword keyword, DamageSource damageSource)
+            => FromFactory(e => StatFactory.MainSkillPartDamageHasKeyword(e, keyword, damageSource));
+
+        public IStatBuilder MainSkillPartAilmentDamageHasKeyword(Keyword keyword)
+            => FromFactory(e => StatFactory.MainSkillPartAilmentDamageHasKeyword(e, keyword));
+
+        public IStatBuilder DamageBaseAddEffectiveness => FromIdentity(typeof(double));
+        public IStatBuilder DamageBaseSetEffectiveness => FromIdentity(typeof(double));
+
         public IStatBuilder SelectedBandit => FromIdentity(typeof(Bandit));
         public IStatBuilder SelectedQuestPart => FromIdentity(typeof(QuestPart));
+
+        private IStatBuilder FromFactory(Func<Entity, IStat> factory)
+            => new StatBuilder(StatFactory, new LeafCoreStatBuilder(factory));
     }
 }

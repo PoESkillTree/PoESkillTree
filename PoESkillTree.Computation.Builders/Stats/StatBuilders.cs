@@ -32,7 +32,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder ActionSpeed => FromIdentity(typeof(double));
 
         public IDamageRelatedStatBuilder CastRate => new CastSpeedStatBuilder(StatFactory);
-        public IStatBuilder EffectivenessOfAddedDamage => FromIdentity(typeof(double));
 
         public IStatBuilder DamageHasKeyword(DamageSource damageSource, IKeywordBuilder keyword)
         {
@@ -72,6 +71,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             => FromIdentity(name, type, ExplicitRegistrationTypes.UserSpecifiedValue());
 
         public IAttributeStatBuilders Attribute => new AttributeStatBuilders(StatFactory);
+        public IRequirementStatBuilders Requirements => new RequirementStatBuilders(StatFactory);
         public IPoolStatBuilders Pool => new PoolStatBuilders(StatFactory);
         public IDodgeStatBuilders Dodge => new DodgeStatBuilders(StatFactory);
         public IFlaskStatBuilders Flask => new FlaskStatBuilders(StatFactory);
@@ -123,6 +123,18 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder Intelligence => FromIdentity(typeof(int));
         public IStatBuilder StrengthDamageBonus => FromIdentity(typeof(int));
         public IStatBuilder DexterityEvasionBonus => FromIdentity(typeof(int));
+    }
+
+    internal class RequirementStatBuilders : StatBuildersBase, IRequirementStatBuilders
+    {
+        public RequirementStatBuilders(IStatFactory statFactory) : base(statFactory)
+        {
+        }
+
+        public IStatBuilder Level => FromIdentity("Level.Required", typeof(int));
+        public IStatBuilder Strength => FromIdentity("Strength.Required", typeof(int));
+        public IStatBuilder Dexterity => FromIdentity("Dexterity.Required", typeof(int));
+        public IStatBuilder Intelligence => FromIdentity("Intelligence.Required", typeof(int));
     }
 
     internal class DodgeStatBuilders : StatBuildersBase, IDodgeStatBuilders

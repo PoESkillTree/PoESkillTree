@@ -39,8 +39,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IDamageRelatedStatBuilder CastRate { get; }
 
-        IStatBuilder EffectivenessOfAddedDamage { get; }
-
         IStatBuilder DamageHasKeyword(DamageSource damageSource, IKeywordBuilder keyword);
 
         /// <summary>
@@ -115,6 +113,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         // Stats from sub factories
 
         IAttributeStatBuilders Attribute { get; }
+        IRequirementStatBuilders Requirements { get; }
 
         IPoolStatBuilders Pool { get; }
 

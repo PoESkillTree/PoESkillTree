@@ -82,8 +82,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat MainSkillPartHasKeyword(Entity entity, Keyword keyword) =>
             GetOrAdd($"MainSkillPart.Has.{keyword}", entity, typeof(bool));
 
-        public IStat MainSkillPartCastSpeedHasKeyword(Entity entity, Keyword keyword) =>
-            GetOrAdd($"MainSkillPart.CastSpeed.Has.{keyword}", entity, typeof(bool));
+        public IStat MainSkillPartCastRateHasKeyword(Entity entity, Keyword keyword) =>
+            GetOrAdd($"MainSkillPart.CastRate.Has.{keyword}", entity, typeof(bool));
 
         public IStat MainSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource) =>
             GetOrAdd($"MainSkillPart.Damage.{damageSource}.Has.{keyword}", entity, typeof(bool));

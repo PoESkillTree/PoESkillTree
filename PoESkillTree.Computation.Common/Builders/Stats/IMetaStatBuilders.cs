@@ -1,6 +1,8 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
@@ -72,6 +74,17 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         IStatBuilder SkillHitDamageSource { get; }
         IStatBuilder SkillUsesHand(AttackDamageHand hand);
+
+        IStatBuilder MainSkillSocket(ItemSlot itemSlot, int socketIndex);
+        IStatBuilder MainSkillId { get; }
+        IStatBuilder MainSkillHasKeyword(Keyword keyword);
+        IStatBuilder MainSkillPartHasKeyword(Keyword keyword);
+        IStatBuilder MainSkillPartCastRateHasKeyword(Keyword keyword);
+        IStatBuilder MainSkillPartDamageHasKeyword(Keyword keyword, DamageSource damageSource);
+        IStatBuilder MainSkillPartAilmentDamageHasKeyword(Keyword keyword);
+
+        IStatBuilder DamageBaseAddEffectiveness { get; }
+        IStatBuilder DamageBaseSetEffectiveness { get; }
 
         IStatBuilder SelectedBandit { get; }
         IStatBuilder SelectedQuestPart { get; }

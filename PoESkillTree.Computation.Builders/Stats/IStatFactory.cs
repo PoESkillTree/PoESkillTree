@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat MainSkillId(Entity entity);
         IStat MainSkillHasKeyword(Entity entity, Keyword keyword);
         IStat MainSkillPartHasKeyword(Entity entity, Keyword keyword);
-        IStat MainSkillPartCastSpeedHasKeyword(Entity entity, Keyword keyword);
+        IStat MainSkillPartCastRateHasKeyword(Entity entity, Keyword keyword);
         IStat MainSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource);
         IStat MainSkillPartAilmentDamageHasKeyword(Entity entity, Keyword keyword);
 
