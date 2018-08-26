@@ -58,7 +58,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                     ("MainSkill.Id", Form.TotalOverride, definition.NumericId, global, true),
                     ("MainSkill.Has.Attack", Form.TotalOverride, 1, global, true),
                     ("MainSkill.Has.Projectile", Form.TotalOverride, 1, global, true),
-                    ("MainSkill.Has.Melee", Form.TotalOverride, null, global, true),
+                    ("MainSkill.Has.Melee", Form.TotalOverride, 1, global, true),
                     ("MainSkillPart.Has.Attack", Form.TotalOverride, 1, global, true),
                     ("MainSkillPart.Has.Projectile", Form.TotalOverride, 1, global, true),
                     ("MainSkillPart.Has.Melee", Form.TotalOverride, null, global, true),
