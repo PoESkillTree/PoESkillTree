@@ -22,6 +22,11 @@ namespace PoESkillTree.Computation.Common.Builders.Equipment
         IConditionBuilder Has(Tags tag);
 
         /// <summary>
+        /// Returns a condition that is satisfied if this slot holds an item having the given item class.
+        /// </summary>
+        IConditionBuilder Has(ItemClass itemClass);
+
+        /// <summary>
         /// Returns a condition that is satisfied if this slot holds an item having the given frame type.
         /// </summary>
         IConditionBuilder Has(FrameType frameType);

@@ -14,6 +14,7 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing
 {
@@ -75,16 +76,32 @@ namespace PoESkillTree.Computation.Parsing
                     .WithValue(CreateValue((int) hitDamageSource.Value))
                     .WithCondition(isMainSkill).Build());
             }
+            var usesMainHandCondition = isMainSkill;
+            var usesOffHandCondition = isMainSkill.And(OffHand.Has(Tags.Weapon));
+            if (activeSkill.ActiveSkillTypes.Contains(ActiveSkillType.RequiresDualWield))
+                usesMainHandCondition = usesMainHandCondition.And(OffHand.Has(Tags.Weapon));
+            else if (activeSkill.ActiveSkillTypes.Contains(ActiveSkillType.RequiresShield))
+                usesMainHandCondition = usesMainHandCondition.And(OffHand.Has(Tags.Shield));
+            if (activeSkill.WeaponRestrictions.Any())
+            {
+                usesMainHandCondition = usesMainHandCondition.And(
+                    CreateWeaponRestrictionCondition(MainHand, activeSkill.WeaponRestrictions));
+                usesOffHandCondition = usesOffHandCondition.And(
+                    CreateWeaponRestrictionCondition(OffHand, activeSkill.WeaponRestrictions));
+            }
             AddGlobal(_modifierBuilder
                 .WithStat(_metaStatBuilders.SkillUsesHand(AttackDamageHand.MainHand))
                 .WithForm(Forms.TotalOverride)
                 .WithValue(CreateValue(1))
-                .WithCondition(isMainSkill).Build());
-            AddGlobal(_modifierBuilder
-                .WithStat(_metaStatBuilders.SkillUsesHand(AttackDamageHand.OffHand))
-                .WithForm(Forms.TotalOverride)
-                .WithValue(CreateValue(1))
-                .WithCondition(isMainSkill.And(Equipment[ItemSlot.OffHand].HasItem)).Build());
+                .WithCondition(usesMainHandCondition).Build());
+            if (!activeSkill.ActiveSkillTypes.Contains(ActiveSkillType.DoesNotUseOffHand))
+            {
+                AddGlobal(_modifierBuilder
+                    .WithStat(_metaStatBuilders.SkillUsesHand(AttackDamageHand.OffHand))
+                    .WithForm(Forms.TotalOverride)
+                    .WithValue(CreateValue(1))
+                    .WithCondition(usesOffHandCondition).Build());
+            }
             AddGlobal(_modifierBuilder
                 .WithStat(_metaStatBuilders.MainSkillId)
                 .WithForm(Forms.TotalOverride)
@@ -186,6 +203,14 @@ namespace PoESkillTree.Computation.Parsing
             return ParseResult.Success(modifiers);
         }
 
+        private static IConditionBuilder CreateWeaponRestrictionCondition(
+            IEquipmentBuilder hand, IReadOnlyList<ItemClass> weaponRestrictions)
+        {
+            if (weaponRestrictions.IsEmpty())
+                throw new ArgumentException("must not be empty", nameof(weaponRestrictions));
+            return weaponRestrictions.Select(hand.Has).Aggregate((l, r) => l.Or(r));
+        }
+
         private static DamageSource? DetermineHitDamageSource(
             ActiveSkillDefinition activeSkill, SkillLevelDefinition level)
         {
@@ -212,7 +237,7 @@ namespace PoESkillTree.Computation.Parsing
         private IConditionBuilder PartHasKeywordCondition(
             DamageSource? hitDamageSource, IConditionBuilder baseCondition, Keyword keyword)
         {
-            var mainHandIsRanged = Equipment[ItemSlot.MainHand].Has(Tags.Ranged);
+            var mainHandIsRanged = MainHand.Has(Tags.Ranged);
             switch (keyword)
             {
                 case Keyword.Melee:
@@ -243,6 +268,9 @@ namespace PoESkillTree.Computation.Parsing
 
         private IFormBuilders Forms => _builderFactories.FormBuilders;
         private IValueBuilder CreateValue(double value) => _builderFactories.ValueBuilders.Create(value);
+
+        private IEquipmentBuilder MainHand => Equipment[ItemSlot.MainHand];
+        private IEquipmentBuilder OffHand => Equipment[ItemSlot.OffHand];
         private IEquipmentBuilderCollection Equipment => _builderFactories.EquipmentBuilders.Equipment;
     }
 

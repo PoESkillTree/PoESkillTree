@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
             var valueCalculationContextMock = new Mock<IValueCalculationContext>();
             var offHandTagsStat = new Stat("OffHand.ItemTags");
             valueCalculationContextMock.Setup(c => c.GetValue(offHandTagsStat, NodeType.Total, PathDefinition.MainPath))
-                .Returns(new NodeValue(0));
+                .Returns(new NodeValue(Tags.Weapon.EncodeAsDouble()));
             var mainHandTagsStat = new Stat("MainHand.ItemTags");
             valueCalculationContextMock
                 .Setup(c => c.GetValue(mainHandTagsStat, NodeType.Total, PathDefinition.MainPath))

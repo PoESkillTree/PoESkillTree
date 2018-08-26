@@ -14,20 +14,20 @@ namespace PoESkillTree.Computation.Parsing.Tests
     [TestFixture]
     public class ActiveSkillParserTest
     {
-        [TestCase(true)]
-        [TestCase(false)]
-        public void FrenzyUsesOffHandIfNotEmpty(bool offHandHasItem)
+        [TestCase(Tags.Shield)]
+        [TestCase(Tags.Weapon)]
+        public void FrenzyUsesOffHandIfWeapon(Tags offHandTags)
         {
             var (definition, skill) = CreateFrenzyDefinition();
             var valueCalculationContext = MockValueCalculationContext(skill, true,
-                ("OffHand.ItemTags", offHandHasItem ? (double?) 1 : null));
+                ("OffHand.ItemTags", offHandTags.EncodeAsDouble()));
             var sut = CreateSut(definition);
 
             var result = sut.Parse(skill);
 
             var actual = GetValueForIdentity(result.Modifiers, "SkillUses.OffHand")
                 .Calculate(valueCalculationContext);
-            Assert.AreEqual(offHandHasItem, actual.IsTrue());
+            Assert.AreEqual(offHandTags.HasFlag(Tags.Weapon), actual.IsTrue());
         }
 
         [TestCase(Tags.Default)]
@@ -165,19 +165,112 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.IsTrue(AnyModifierHasIdentity(modifiers, "MainSkillPart.Damage.Attack.Has.AreaOfEffect"));
         }
 
+        [Test]
+        public void ShieldChargeDoesNotUseOffHand()
+        {
+            var (definition, skill) = CreateShieldChargeDefinition();
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            Assert.IsFalse(AnyModifierHasIdentity(modifiers, "SkillUses.OffHand"));
+        }
+
+        [TestCase(Tags.Shield)]
+        [TestCase(Tags.Weapon)]
+        public void ShieldChargeUsesMainHandIfOffHandHasShield(Tags offHandTags)
+        {
+            var (definition, skill) = CreateShieldChargeDefinition();
+            var valueCalculationContext = MockValueCalculationContext(skill, true,
+                ("OffHand.ItemTags", offHandTags.EncodeAsDouble()));
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var actual = GetValueForIdentity(result.Modifiers, "SkillUses.MainHand")
+                .Calculate(valueCalculationContext);
+            Assert.AreEqual(offHandTags.HasFlag(Tags.Shield), actual.IsTrue());
+        }
+
         private static (SkillDefinition, Skill) CreateShieldChargeDefinition()
         {
-            var activeSkill = new ActiveSkillDefinition("ShieldCharge", 0, new[] { "attack" }, new string[0],
+            var types = new[]
+                { ActiveSkillType.Attack, ActiveSkillType.DoesNotUseOffHand, ActiveSkillType.RequiresShield };
+            var activeSkill = new ActiveSkillDefinition("ShieldCharge", 0, types, new string[0],
                 new[] { Keyword.Attack, Keyword.AreaOfEffect }, false, null, new ItemClass[0]);
-            var stats = new[]
-            {
-                new UntranslatedStat("is_area_damage", 1),
-            };
+            var stats = new[] { new UntranslatedStat("is_area_damage", 1), };
             var level = new SkillLevelDefinition(null, null, null, null, null, null, 0, 0, 0, 0, 0,
                 new UntranslatedStat[0], stats, null);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (SkillDefinition.CreateActive("ShieldCharge", 0, "", null, activeSkill, levels),
                 new Skill("ShieldCharge", 1, 0, ItemSlot.Belt, 0, null));
+        }
+
+        [TestCase(Tags.Shield)]
+        [TestCase(Tags.Weapon)]
+        public void DualStrikeUsesMainHandIfOffHandHasWeapon(Tags offHandTags)
+        {
+            var (definition, skill) = CreateDualStrikeDefinition();
+            var valueCalculationContext = MockValueCalculationContext(skill, true,
+                ("MainHand.ItemClass", (double) ItemClass.Claw),
+                ("OffHand.ItemTags", offHandTags.EncodeAsDouble()));
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var actual = GetValueForIdentity(result.Modifiers, "SkillUses.MainHand")
+                .Calculate(valueCalculationContext);
+            Assert.AreEqual(offHandTags.HasFlag(Tags.Weapon), actual.IsTrue());
+        }
+
+        [TestCase(ItemClass.Claw)]
+        [TestCase(ItemClass.Wand)]
+        public void DualStrikeUsesMainHandIfWeaponRestrictionsAreSatisfied(ItemClass mainHandClass)
+        {
+            var (definition, skill) = CreateDualStrikeDefinition();
+            var expected = definition.ActiveSkill.WeaponRestrictions.Contains(mainHandClass);
+            var valueCalculationContext = MockValueCalculationContext(skill, true,
+                ("MainHand.ItemClass", (double) mainHandClass),
+                ("OffHand.ItemTags", Tags.Weapon.EncodeAsDouble()));
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var actual = GetValueForIdentity(result.Modifiers, "SkillUses.MainHand")
+                .Calculate(valueCalculationContext);
+            Assert.AreEqual(expected, actual.IsTrue());
+        }
+
+        [TestCase(ItemClass.Claw)]
+        [TestCase(ItemClass.Wand)]
+        public void DualStrikeUsesOffHandIfWeaponRestrictionsAreSatisfied(ItemClass mainHandClass)
+        {
+            var (definition, skill) = CreateDualStrikeDefinition();
+            var expected = definition.ActiveSkill.WeaponRestrictions.Contains(mainHandClass);
+            var valueCalculationContext = MockValueCalculationContext(skill, true,
+                ("OffHand.ItemClass", (double) mainHandClass),
+                ("OffHand.ItemTags", Tags.Weapon.EncodeAsDouble()));
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var actual = GetValueForIdentity(result.Modifiers, "SkillUses.OffHand")
+                .Calculate(valueCalculationContext);
+            Assert.AreEqual(expected, actual.IsTrue());
+        }
+
+        private static (SkillDefinition, Skill) CreateDualStrikeDefinition()
+        {
+            var types = new[] { ActiveSkillType.Attack, ActiveSkillType.RequiresDualWield };
+            var weaponRestrictions = new[] { ItemClass.Claw, ItemClass.Dagger };
+            var activeSkill = new ActiveSkillDefinition("DualStrike", 0, types, new string[0],
+                new[] { Keyword.Attack }, false, null, weaponRestrictions);
+            var level = new SkillLevelDefinition(null, null, null, null, null, null, 0, 0, 0, 0, 0,
+                new UntranslatedStat[0], new UntranslatedStat[0], null);
+            var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
+            return (SkillDefinition.CreateActive("DualStrike", 0, "", null, activeSkill, levels),
+                new Skill("DualStrike", 1, 0, ItemSlot.Belt, 0, null));
         }
 
         [Test]
