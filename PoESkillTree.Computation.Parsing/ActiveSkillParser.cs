@@ -67,6 +67,8 @@ namespace PoESkillTree.Computation.Parsing
             IReadOnlyList<Modifier> BuildGlobal(IIntermediateModifier m) => m.Build(globalSource, Entity.Character);
 
             var hitDamageSource = DetermineHitDamageSource(activeSkill, level);
+            var hasSkillDamageOverTime = HasSkillDamageOverTime(level);
+
             if (hitDamageSource.HasValue)
             {
                 AddGlobal(_modifierBuilder
@@ -129,7 +131,7 @@ namespace PoESkillTree.Computation.Parsing
                     k => PartHasKeywordCondition(hitDamageSource, isMainSkill, k),
                     k => k != Keyword.AreaOfEffect || hitIsAreaDamage);
             }
-            if (HasSkillDamageOverTime(level))
+            if (hasSkillDamageOverTime)
             {
                 var dotIsAreaDamage = AreaDamageOverTimeSkills.Contains(definition.Id);
                 AddKeywordModifiers(
@@ -240,6 +242,14 @@ namespace PoESkillTree.Computation.Parsing
                     .WithCondition(isMainSkill).Build());
             }
 
+            if (hitDamageSource.HasValue && TryParseBaseHitDamageModifier(level.Stats, out var hitModifier))
+            {
+                AddLocal(hitModifier.WithCondition(isMainSkill).Build());
+            }
+            if (hasSkillDamageOverTime && TryParseBaseDamageOverTimeModifier(level.Stats, out var dotModifier))
+            {
+                AddLocal(dotModifier.WithCondition(isMainSkill).Build());
+            }
             if (level.Stats.Any())
             {
                 AddGlobal(_modifierBuilder
@@ -307,14 +317,76 @@ namespace PoESkillTree.Computation.Parsing
                 keywords = keywords.Where(preCondition);
             foreach (var keyword in keywords)
             {
-                yield return _modifierBuilder
-                    .WithStat(statFactory(keyword))
-                    .WithForm(Forms.TotalOverride)
-                    .WithValue(CreateValue(1))
-                    .WithCondition(conditionFactory(keyword))
-                    .Build();
+                yield return ModifierBuilder(
+                    statFactory(keyword), Forms.TotalOverride, CreateValue(1), conditionFactory(keyword)).Build();
             }
         }
+
+        private bool TryParseBaseHitDamageModifier(IEnumerable<UntranslatedStat> stats, out IModifierBuilder modifier)
+        {
+            DamageType? type = null;
+            DamageSource? source = null;
+            double minimum = 0D;
+            double? maximum = null;
+            foreach (var stat in stats)
+            {
+                var match = HitDamageRegex.Match(stat.StatId);
+                if (match.Success)
+                {
+                    source = Enums.Parse<DamageSource>(match.Groups[1].Value, true);
+                    type = Enums.Parse<DamageType>(match.Groups[3].Value, true);
+                    if (match.Groups[2].Value == "minimum")
+                        minimum = stat.Value;
+                    else
+                        maximum = stat.Value;
+                }
+            }
+            if (maximum is null)
+            {
+                modifier = null;
+                return false;
+            }
+
+            var statBuilder = _builderFactories.DamageTypeBuilders.From(type.Value).Damage.WithSkills(source.Value);
+            var valueBuilder =
+                _builderFactories.ValueBuilders.FromMinAndMax(CreateValue(minimum), CreateValue(maximum.Value));
+            modifier = ModifierBuilder(statBuilder, Forms.BaseSet, valueBuilder);
+            return true;
+        }
+
+        private bool TryParseBaseDamageOverTimeModifier(
+            IEnumerable<UntranslatedStat> stats, out IModifierBuilder modifier)
+        {
+            DamageType? type = null;
+            IValueBuilder value = null;
+            foreach (var stat in stats)
+            {
+                var match = DamageOverTimeRegex.Match(stat.StatId);
+                if (match.Success)
+                {
+                    type = Enums.Parse<DamageType>(match.Groups[1].Value, true);
+                    value = CreateValue(stat.Value / 60D);
+                    break;
+                }
+            }
+            if (type is null)
+            {
+                modifier = null;
+                return false;
+            }
+
+            var statBuilder = _builderFactories.DamageTypeBuilders.From(type.Value).Damage
+                .WithSkills(DamageSource.OverTime);
+            modifier = ModifierBuilder(statBuilder, Forms.BaseSet, value);
+            return true;
+        }
+
+        private IModifierBuilder ModifierBuilder(
+            IStatBuilder stat, IFormBuilder form, IValueBuilder value, IConditionBuilder condition)
+            => ModifierBuilder(stat, form, value).WithCondition(condition);
+
+        private IModifierBuilder ModifierBuilder(IStatBuilder stat, IFormBuilder form, IValueBuilder value)
+            => _modifierBuilder.WithStat(stat).WithForm(form).WithValue(value);
 
         private IFormBuilders Forms => _builderFactories.FormBuilders;
         private IValueBuilder CreateValue(double value) => _builderFactories.ValueBuilders.Create(value);

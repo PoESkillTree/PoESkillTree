@@ -133,7 +133,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         }
 
         [Test]
-        public void FlameTotemHasCriticalStrikeChance()
+        public void FlameTotemSetsCriticalStrikeChance()
         {
             var (definition, skill) = CreateFlameTotemDefinition();
             var valueCalculationContext = MockValueCalculationContext(skill, true);
@@ -164,12 +164,32 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.AreEqual(new NodeValue(98), actualStr);
         }
 
+        [Test]
+        public void FlameTotemSetsSpellDamage()
+        {
+            var (definition, skill) = CreateFlameTotemDefinition();
+            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            var actual = GetValueForIdentity(modifiers, "Fire.Damage.Spell.Skill").Calculate(valueCalculationContext);
+            Assert.AreEqual(new NodeValue(5, 10), actual);
+            Assert.IsFalse(AnyModifierHasIdentity(modifiers, "Fire.Damage.Spell.Ignite"));
+        }
+
         private static (SkillDefinition, Skill) CreateFlameTotemDefinition()
         {
             var activeSkill = new ActiveSkillDefinition("Flame Totem", 250, new[] { "spell" }, new string[0],
                 new[] { Keyword.Spell, Keyword.Projectile, Keyword.Totem }, false, 1.62, new ItemClass[0]);
+            var stats = new[]
+            {
+                new UntranslatedStat("spell_minimum_base_fire_damage", 5),
+                new UntranslatedStat("spell_maximum_base_fire_damage", 10),
+            };
             var level = new SkillLevelDefinition(null, null, 5, null, null, null, null, 0, 0, 68, 98,
-                new UntranslatedStat[0], new[] { new UntranslatedStat("spell_maximum_base_fire_damage", 10), }, null);
+                new UntranslatedStat[0], stats, null);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (SkillDefinition.CreateActive("FlameTotem", 0, "", null, activeSkill, levels),
                 new Skill("FlameTotem", 1, 0, ItemSlot.Belt, 0, null));
@@ -199,6 +219,21 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.IsFalse(AnyModifierHasIdentity(modifiers, "MainSkillPart.Damage.Spell.Has.Spell"));
             Assert.IsFalse(AnyModifierHasIdentity(modifiers, "MainSkillPart.Damage.OverTime.Has.AreaOfEffect"));
             Assert.IsTrue(AnyModifierHasIdentity(modifiers, "MainSkillPart.Damage.OverTime.Has.Chaos"));
+        }
+
+        [Test]
+        public void FlameTotemSetsDamageOverTime()
+        {
+            var (definition, skill) = CreateContagionDefinition();
+            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            var actual = GetValueForIdentity(modifiers, "Chaos.Damage.OverTime.Skill")
+                .Calculate(valueCalculationContext);
+            Assert.AreEqual(new NodeValue(1), actual);
         }
 
         private static (SkillDefinition, Skill) CreateContagionDefinition()
