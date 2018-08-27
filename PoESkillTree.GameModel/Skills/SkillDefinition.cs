@@ -106,7 +106,7 @@ namespace PoESkillTree.GameModel.Skills
     {
         public SkillLevelDefinition(
             double? damageEffectiveness, double? damageMultiplier, double? criticalStrikeChance,
-            int? manaCost, double? manaMultiplier, int? manaReservationOverride, int cooldown,
+            int? manaCost, double? manaMultiplier, int? manaCostOverride, int? cooldown,
             int requiredLevel, int requiredDexterity, int requiredIntelligence, int requiredStrength,
             IReadOnlyList<UntranslatedStat> qualityStats, IReadOnlyList<UntranslatedStat> stats,
             SkillTooltipDefinition tooltip)
@@ -116,7 +116,7 @@ namespace PoESkillTree.GameModel.Skills
             CriticalStrikeChance = criticalStrikeChance;
             ManaCost = manaCost;
             ManaMultiplier = manaMultiplier;
-            ManaReservationOverride = manaReservationOverride;
+            ManaCostOverride = manaCostOverride;
             Cooldown = cooldown;
             RequiredLevel = requiredLevel;
             RequiredDexterity = requiredDexterity;
@@ -133,8 +133,8 @@ namespace PoESkillTree.GameModel.Skills
 
         public int? ManaCost { get; }
         public double? ManaMultiplier { get; }
-        public int? ManaReservationOverride { get; }
-        public int Cooldown { get; }
+        public int? ManaCostOverride { get; }
+        public int? Cooldown { get; }
 
         public int RequiredLevel { get; }
         public int RequiredDexterity { get; }

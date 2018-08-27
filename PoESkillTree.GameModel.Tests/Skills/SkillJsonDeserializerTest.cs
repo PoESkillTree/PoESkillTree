@@ -48,8 +48,8 @@ namespace PoESkillTree.GameModel.Tests.Skills
             Assert.IsNull(level1.CriticalStrikeChance);
             Assert.AreEqual(10, level1.ManaCost);
             Assert.IsNull(level1.ManaMultiplier);
-            Assert.IsNull(level1.ManaReservationOverride);
-            Assert.AreEqual(0, level1.Cooldown);
+            Assert.IsNull(level1.ManaCostOverride);
+            Assert.IsNull(level1.Cooldown);
             Assert.AreEqual(16, level1.RequiredLevel);
             Assert.AreEqual(41, level1.RequiredDexterity);
             Assert.AreEqual(0, level1.RequiredIntelligence);
@@ -138,7 +138,7 @@ namespace PoESkillTree.GameModel.Tests.Skills
             var level20 = definition.Levels[20];
             Assert.IsNull(level20.ManaCost);
             Assert.AreEqual(1.2, level20.ManaMultiplier);
-            Assert.IsNull(level20.ManaReservationOverride);
+            Assert.IsNull(level20.ManaCostOverride);
         }
 
         [Test]

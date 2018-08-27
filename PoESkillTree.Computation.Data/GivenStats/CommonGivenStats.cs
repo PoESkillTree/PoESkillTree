@@ -130,6 +130,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Effect.Stun.Duration, 350 },
             // other
             { BaseSet, Stat.AreaOfEffect, 1 },
+            { BaseSet, Stat.CooldownRecoverySpeed, 1 },
         };
     }
 }

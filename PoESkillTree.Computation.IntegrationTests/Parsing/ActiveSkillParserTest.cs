@@ -74,9 +74,9 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                     ("Mana.Cost", Form.BaseSet, levelDefinition.ManaCost, global, true),
                     ("Level.Required", Form.BaseSet, levelDefinition.RequiredLevel, local, false),
                     ("Dexterity.Required", Form.BaseSet, levelDefinition.RequiredDexterity, local, false),
-                    ("CastSpeed.Attack.MainHand.Skill", Form.Increase, levelDefinition.QualityStats[0].Value * 20,
+                    ("CastRate.Attack.MainHand.Skill", Form.Increase, levelDefinition.QualityStats[0].Value * 20,
                         global, true),
-                    ("CastSpeed.Attack.OffHand.Skill", Form.Increase, levelDefinition.QualityStats[0].Value * 20,
+                    ("CastRate.Attack.OffHand.Skill", Form.Increase, levelDefinition.QualityStats[0].Value * 20,
                         global, true),
                     ("Physical.Damage.Attack.MainHand.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
                         true),
@@ -112,9 +112,9 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                         true),
                     ("Physical.Damage.Secondary.Poison", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
                         true),
-                    ("CastSpeed.Attack.MainHand.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
+                    ("CastRate.Attack.MainHand.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
                         true),
-                    ("CastSpeed.Attack.OffHand.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global, true),
+                    ("CastRate.Attack.OffHand.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global, true),
                 };
             var parser = new ActiveSkillParser(_skillDefinitions, _builderFactories, _metaStatBuilders);
 

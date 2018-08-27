@@ -8,13 +8,13 @@ using PoESkillTree.GameModel.Skills;
 namespace PoESkillTree.Computation.Builders.Tests.Stats
 {
     [TestFixture]
-    public class CastSpeedStatBuilderTest
+    public class CastRateStatBuilderTest
     {
         [Test]
         public void WithKeywordCallsStatFactoryCorrectly()
         {
             var statFactoryMock = new Mock<IStatFactory>();
-            var sut = new CastSpeedStatBuilder(statFactoryMock.Object);
+            var sut = new CastRateStatBuilder(statFactoryMock.Object);
 
             var withKeyword = sut.With(new KeywordBuilder(Keyword.Projectile));
             withKeyword.Build(default).Consume();

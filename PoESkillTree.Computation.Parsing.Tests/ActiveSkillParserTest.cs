@@ -101,11 +101,74 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.IsTrue(AnyModifierHasIdentity(modifiers, "MainSkillPart.Damage.Ailment.Has.Totem"));
         }
 
+        [Test]
+        public void FlameTotemHasCastTimeModifier()
+        {
+            var (definition, skill) = CreateFlameTotemDefinition();
+            var expected = (NodeValue?) 1000D / definition.ActiveSkill.CastTime;
+            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var actual = GetValueForIdentity(result.Modifiers, "CastRate.Spell.Skill")
+                .Calculate(valueCalculationContext);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void FlameTotemHasTotemLifeModifier()
+        {
+            var (definition, skill) = CreateFlameTotemDefinition();
+            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var lifeModifier = result.Modifiers.First(m => m.Stats.First().Identity == "Life");
+            Assert.AreEqual(Entity.Totem, lifeModifier.Stats.First().Entity);
+            Assert.AreEqual(Form.More, lifeModifier.Form);
+            var actual = lifeModifier.Value.Calculate(valueCalculationContext);
+            Assert.AreEqual(new NodeValue(62), actual);
+        }
+
+        [Test]
+        public void FlameTotemHasCriticalStrikeChance()
+        {
+            var (definition, skill) = CreateFlameTotemDefinition();
+            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var modifier = result.Modifiers.First(m => m.Stats.First().Identity == "CriticalStrike.Chance.Spell.Skill");
+            Assert.AreEqual(Form.BaseSet, modifier.Form);
+            var actual = modifier.Value.Calculate(valueCalculationContext);
+            Assert.AreEqual(new NodeValue(5), actual);
+        }
+
+        [Test]
+        public void FlameTotemHasCorrectRequirements()
+        {
+            var (definition, skill) = CreateFlameTotemDefinition();
+            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            Assert.IsFalse(AnyModifierHasIdentity(modifiers, "Dexterity.Required"));
+            var actualInt = GetValueForIdentity(modifiers, "Intelligence.Required").Calculate(valueCalculationContext);
+            Assert.AreEqual(new NodeValue(68), actualInt);
+            var actualStr = GetValueForIdentity(modifiers, "Strength.Required").Calculate(valueCalculationContext);
+            Assert.AreEqual(new NodeValue(98), actualStr);
+        }
+
         private static (SkillDefinition, Skill) CreateFlameTotemDefinition()
         {
-            var activeSkill = new ActiveSkillDefinition("Flame Totem", 0, new[] { "spell" }, new string[0],
-                new[] { Keyword.Spell, Keyword.Projectile, Keyword.Totem }, false, null, new ItemClass[0]);
-            var level = new SkillLevelDefinition(null, null, null, null, null, null, 0, 0, 0, 0, 0,
+            var activeSkill = new ActiveSkillDefinition("Flame Totem", 250, new[] { "spell" }, new string[0],
+                new[] { Keyword.Spell, Keyword.Projectile, Keyword.Totem }, false, 1.62, new ItemClass[0]);
+            var level = new SkillLevelDefinition(null, null, 5, null, null, null, null, 0, 0, 68, 98,
                 new UntranslatedStat[0], new[] { new UntranslatedStat("spell_maximum_base_fire_damage", 10), }, null);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (SkillDefinition.CreateActive("FlameTotem", 0, "", null, activeSkill, levels),
@@ -315,6 +378,21 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.AreEqual((double) DamageSource.Secondary, actual.Single());
         }
 
+        [Test]
+        public void AbyssalCryHasCooldown()
+        {
+            var (definition, skill) = CreateAbyssalCryDefinition();
+            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var modifier = result.Modifiers.First(m => m.Stats.First().Identity == "Cooldown");
+            Assert.AreEqual(Form.BaseSet, modifier.Form);
+            var actual = modifier.Value.Calculate(valueCalculationContext);
+            Assert.AreEqual(new NodeValue(4000), actual);
+        }
+
         private static (SkillDefinition, Skill) CreateAbyssalCryDefinition()
         {
             var activeSkill = new ActiveSkillDefinition("AbyssalCry", 0, new[] { "spell" }, new string[0],
@@ -323,7 +401,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             {
                 new UntranslatedStat("display_skill_deals_secondary_damage", 1),
             };
-            var level = new SkillLevelDefinition(null, null, null, null, null, null, 0, 0, 0, 0, 0,
+            var level = new SkillLevelDefinition(null, null, null, null, null, null, 4000, 0, 0, 0, 0,
                 new UntranslatedStat[0], stats, null);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (SkillDefinition.CreateActive("AbyssalCry", 0, "", null, activeSkill, levels),

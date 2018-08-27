@@ -240,7 +240,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
 
                 // speed
-                { TotalOverride, _stat.CastRate, CombineSource(Stat.CastRate, CombineHandsByAverage) },
+                { TotalOverride, _stat.CastRate, CombineSourceDefaultingToSpell(Stat.CastRate, CombineHandsByAverage) },
                 { TotalOverride, _stat.CastTime, _stat.CastRate.Value.Invert },
                 { PercentMore, Stat.MovementSpeed, ActionSpeedValueForPercentMore },
                 {
@@ -434,8 +434,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     1 -
                     (1 - Effect.Stun.Avoidance.Value) * (1 - Effect.Stun.ChanceToAvoidInterruptionWhileCasting.Value)
                 },
-                // radius
+                // other
                 { PercentMore, Stat.Radius, Stat.AreaOfEffect.Value.Select(Math.Sqrt, v => $"Sqrt({v})") },
+                { PercentMore, Stat.Cooldown, 100 - 100 * Stat.CooldownRecoverySpeed.Value.Invert },
             };
 
         private static ValueBuilder AverageAilmentDamageFromCritAndNonCrit(
@@ -553,6 +554,14 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 .ElseIf(_stat.SkillHitDamageSource.Value.Eq((int) DamageSource.Secondary))
                 .Then(statToCombine.With(DamageSource.Secondary).Value)
                 .Else(0);
+
+        private ValueBuilder CombineSourceDefaultingToSpell(
+            IDamageRelatedStatBuilder statToCombine, Func<IDamageRelatedStatBuilder, IValueBuilder> handCombiner)
+            => ValueFactory.If(_stat.SkillHitDamageSource.Value.Eq((int) DamageSource.Attack))
+                .Then(handCombiner(statToCombine))
+                .ElseIf(_stat.SkillHitDamageSource.Value.Eq((int) DamageSource.Secondary))
+                .Then(statToCombine.With(DamageSource.Secondary).Value)
+                .Else(statToCombine.With(DamageSource.Spell).Value);
 
         private ValueBuilder CombineHandsByAverage(IDamageRelatedStatBuilder statToCombine)
         {

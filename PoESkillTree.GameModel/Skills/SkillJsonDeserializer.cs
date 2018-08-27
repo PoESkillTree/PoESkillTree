@@ -141,7 +141,7 @@ namespace PoESkillTree.GameModel.Skills
                 Value<int?>("mana_cost"),
                 Value<int?>("mana_multiplier") / 100D,
                 Value<int?>("mana_reservation_override"),
-                Value<int>("cooldown"),
+                Value<int?>("cooldown"),
                 Value<int>("required_level"),
                 statRequirements?.Value<int>("dex") ?? 0,
                 statRequirements?.Value<int>("int") ?? 0,

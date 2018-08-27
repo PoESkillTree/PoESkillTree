@@ -5,17 +5,17 @@ using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
-    public class CastSpeedStatBuilder : DamageRelatedStatBuilder
+    public class CastRateStatBuilder : DamageRelatedStatBuilder
     {
-        public CastSpeedStatBuilder(IStatFactory statFactory)
+        public CastRateStatBuilder(IStatFactory statFactory)
             : this(statFactory,
-                LeafCoreStatBuilder.FromIdentity(statFactory, "CastSpeed", typeof(double)),
+                LeafCoreStatBuilder.FromIdentity(statFactory, "CastRate", typeof(double)),
                 new DamageStatConcretizer(statFactory, new DamageSpecificationBuilder()).WithHits(),
                 s => new[] { s })
         {
         }
 
-        private CastSpeedStatBuilder(
+        private CastRateStatBuilder(
             IStatFactory statFactory, ICoreStatBuilder coreStatBuilder,
             DamageStatConcretizer statConcretizer,
             Func<IStat, IEnumerable<IStat>> statConverter)
@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             ICoreStatBuilder coreStatBuilder,
             DamageStatConcretizer statConcretizer,
             Func<IStat, IEnumerable<IStat>> statConverter) =>
-            new CastSpeedStatBuilder(StatFactory, coreStatBuilder, statConcretizer, statConverter);
+            new CastRateStatBuilder(StatFactory, coreStatBuilder, statConcretizer, statConverter);
 
         protected override IStat BuildKeywordStat(IDamageSpecification spec, Entity entity, Keyword keyword)
             => StatFactory.MainSkillPartCastRateHasKeyword(entity, keyword);

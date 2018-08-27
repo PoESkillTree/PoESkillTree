@@ -31,7 +31,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder MovementSpeed => FromIdentity(typeof(double));
         public IStatBuilder ActionSpeed => FromIdentity(typeof(double));
 
-        public IDamageRelatedStatBuilder CastRate => new CastSpeedStatBuilder(StatFactory);
+        public IDamageRelatedStatBuilder CastRate => new CastRateStatBuilder(StatFactory);
 
         public IStatBuilder DamageHasKeyword(DamageSource damageSource, IKeywordBuilder keyword)
         {
@@ -47,6 +47,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IDamageRelatedStatBuilder Range
             => DamageRelatedFromIdentity(typeof(int)).WithSkills(DamageSource.Attack);
 
+        public IStatBuilder Cooldown => FromIdentity(typeof(double));
         public IStatBuilder CooldownRecoverySpeed => FromIdentity(typeof(double));
         public IStatBuilder Duration => FromIdentity(typeof(double));
 

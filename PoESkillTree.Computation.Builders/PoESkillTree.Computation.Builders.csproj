@@ -115,7 +115,7 @@
     <Compile Include="Skills\SkillBuilder.cs" />
     <Compile Include="Skills\SkillBuilderCollection.cs" />
     <Compile Include="Skills\SkillBuilders.cs" />
-    <Compile Include="Stats\CastSpeedStatBuilder.cs" />
+    <Compile Include="Stats\CastRateStatBuilder.cs" />
     <Compile Include="Stats\CompositeCoreStatBuilder.cs" />
     <Compile Include="Stats\ConcatCompositeCoreStatBuilder.cs" />
     <Compile Include="Stats\ConversionStatBuilder.cs" />

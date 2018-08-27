@@ -58,6 +58,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IDamageRelatedStatBuilder Range { get; }
 
         /// <summary>
+        /// The main skill's cooldown
+        /// </summary>
+        IStatBuilder Cooldown { get; }
+
+        /// <summary>
         /// The main skill's cooldown recovery speed
         /// </summary>
         IStatBuilder CooldownRecoverySpeed { get; }

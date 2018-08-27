@@ -14,7 +14,6 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing
 {
@@ -143,6 +142,27 @@ namespace PoESkillTree.Computation.Parsing
                 k => PartHasKeywordCondition(hitDamageSource, isMainSkill, k),
                 k => !KeywordsExcludedForDamageOverTime.Contains(k));
 
+            if (hitDamageSource != DamageSource.Attack)
+            {
+                var castRateDamageSource = hitDamageSource ?? DamageSource.Spell;
+                AddLocal(_modifierBuilder
+                    .WithStat(_builderFactories.StatBuilders.CastRate.With(castRateDamageSource))
+                    .WithForm(Forms.BaseSet)
+                    .WithValue(CreateValue(1000D / activeSkill.CastTime))
+                    .WithCondition(isMainSkill).Build());
+            }
+
+            if (activeSkill.TotemLifeMultiplier is double lifeMulti)
+            {
+                var totemLifeStat = _builderFactories.StatBuilders.Pool.From(Pool.Life)
+                    .For(_builderFactories.EntityBuilders.Totem);
+                AddGlobal(_modifierBuilder
+                    .WithStat(totemLifeStat)
+                    .WithForm(Forms.PercentMore)
+                    .WithValue(CreateValue((lifeMulti - 1) * 100))
+                    .WithCondition(isMainSkill).Build());
+            }
+
             if (level.DamageEffectiveness.HasValue)
             {
                 AddGlobal(_modifierBuilder
@@ -159,6 +179,15 @@ namespace PoESkillTree.Computation.Parsing
                     .WithValue(CreateValue(level.DamageMultiplier.Value))
                     .WithCondition(isMainSkill).Build());
             }
+            if (level.CriticalStrikeChance.HasValue && hitDamageSource.HasValue)
+            {
+                AddLocal(_modifierBuilder
+                    .WithStat(_builderFactories.ActionBuilders.CriticalStrike.Chance.With(hitDamageSource.Value))
+                    .WithForm(Forms.BaseSet)
+                    .WithValue(CreateValue(level.CriticalStrikeChance.Value))
+                    .WithCondition(isMainSkill).Build());
+            }
+
             if (level.ManaCost.HasValue)
             {
                 AddGlobal(_modifierBuilder
@@ -167,15 +196,40 @@ namespace PoESkillTree.Computation.Parsing
                     .WithValue(CreateValue(level.ManaCost.Value))
                     .WithCondition(isMainSkill).Build());
             }
+            if (level.Cooldown.HasValue)
+            {
+                AddGlobal(_modifierBuilder
+                    .WithStat(_builderFactories.StatBuilders.Cooldown)
+                    .WithForm(Forms.BaseSet)
+                    .WithValue(CreateValue(level.Cooldown.Value))
+                    .WithCondition(isMainSkill).Build());
+            }
 
             AddLocal(_modifierBuilder
                 .WithStat(_builderFactories.StatBuilders.Requirements.Level)
                 .WithForm(Forms.BaseSet)
                 .WithValue(CreateValue(level.RequiredLevel)).Build());
-            AddLocal(_modifierBuilder
-                .WithStat(_builderFactories.StatBuilders.Requirements.Dexterity)
-                .WithForm(Forms.BaseSet)
-                .WithValue(CreateValue(level.RequiredDexterity)).Build());
+            if (level.RequiredDexterity > 0)
+            {
+                AddLocal(_modifierBuilder
+                    .WithStat(_builderFactories.StatBuilders.Requirements.Dexterity)
+                    .WithForm(Forms.BaseSet)
+                    .WithValue(CreateValue(level.RequiredDexterity)).Build());
+            }
+            if (level.RequiredIntelligence > 0)
+            {
+                AddLocal(_modifierBuilder
+                    .WithStat(_builderFactories.StatBuilders.Requirements.Intelligence)
+                    .WithForm(Forms.BaseSet)
+                    .WithValue(CreateValue(level.RequiredIntelligence)).Build());
+            }
+            if (level.RequiredStrength > 0)
+            {
+                AddLocal(_modifierBuilder
+                    .WithStat(_builderFactories.StatBuilders.Requirements.Strength)
+                    .WithForm(Forms.BaseSet)
+                    .WithValue(CreateValue(level.RequiredStrength)).Build());
+            }
 
             if (level.QualityStats.Any())
             {
@@ -204,12 +258,8 @@ namespace PoESkillTree.Computation.Parsing
         }
 
         private static IConditionBuilder CreateWeaponRestrictionCondition(
-            IEquipmentBuilder hand, IReadOnlyList<ItemClass> weaponRestrictions)
-        {
-            if (weaponRestrictions.IsEmpty())
-                throw new ArgumentException("must not be empty", nameof(weaponRestrictions));
-            return weaponRestrictions.Select(hand.Has).Aggregate((l, r) => l.Or(r));
-        }
+            IEquipmentBuilder hand, IEnumerable<ItemClass> weaponRestrictions)
+            => weaponRestrictions.Select(hand.Has).Aggregate((l, r) => l.Or(r));
 
         private static DamageSource? DetermineHitDamageSource(
             ActiveSkillDefinition activeSkill, SkillLevelDefinition level)
