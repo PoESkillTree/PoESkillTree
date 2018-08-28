@@ -242,13 +242,21 @@ namespace PoESkillTree.Computation.Parsing
                     .WithCondition(isMainSkill).Build());
             }
 
-            if (hitDamageSource.HasValue && TryParseBaseHitDamageModifier(level.Stats, out var hitModifier))
+            if (hitDamageSource.HasValue && TryParseBaseHitDamageModifier(level.Stats, out var modifier))
             {
-                AddLocal(hitModifier.WithCondition(isMainSkill).Build());
+                AddLocal(modifier.WithCondition(isMainSkill).Build());
             }
-            if (hasSkillDamageOverTime && TryParseBaseDamageOverTimeModifier(level.Stats, out var dotModifier))
+            if (hasSkillDamageOverTime && TryParseBaseDamageOverTimeModifier(level.Stats, out modifier))
             {
-                AddLocal(dotModifier.WithCondition(isMainSkill).Build());
+                AddLocal(modifier.WithCondition(isMainSkill).Build());
+            }
+            if (TryParseAdditionalHitsModifier(level.Stats, out modifier))
+            {
+                AddGlobal(modifier.WithCondition(isMainSkill).Build());
+            }
+            if (TryParseDoubleHitsModifier(level.Stats, out modifier))
+            {
+                AddGlobal(modifier.WithCondition(isMainSkill).Build());
             }
             if (level.Stats.Any())
             {
@@ -357,33 +365,55 @@ namespace PoESkillTree.Computation.Parsing
         private bool TryParseBaseDamageOverTimeModifier(
             IEnumerable<UntranslatedStat> stats, out IModifierBuilder modifier)
         {
-            DamageType? type = null;
-            IValueBuilder value = null;
             foreach (var stat in stats)
             {
                 var match = DamageOverTimeRegex.Match(stat.StatId);
                 if (match.Success)
                 {
-                    type = Enums.Parse<DamageType>(match.Groups[1].Value, true);
-                    value = CreateValue(stat.Value / 60D);
-                    break;
+                    var type = Enums.Parse<DamageType>(match.Groups[1].Value, true);
+                    var statBuilder = _builderFactories.DamageTypeBuilders.From(type).Damage
+                        .WithSkills(DamageSource.OverTime);
+                    modifier = ModifierBuilder(statBuilder, Forms.BaseSet, stat.Value / 60D);
+                    return true;
                 }
             }
-            if (type is null)
-            {
-                modifier = null;
-                return false;
-            }
+            modifier = null;
+            return false;
+        }
 
-            var statBuilder = _builderFactories.DamageTypeBuilders.From(type.Value).Damage
-                .WithSkills(DamageSource.OverTime);
-            modifier = ModifierBuilder(statBuilder, Forms.BaseSet, value);
-            return true;
+        private bool TryParseAdditionalHitsModifier(IEnumerable<UntranslatedStat> stats, out IModifierBuilder modifier)
+        {
+            return TryParseModifier(stats, out modifier, "base_skill_number_of_additional_hits",
+                _metaStatBuilders.SkillNumberOfHitsPerCast, Forms.BaseAdd);
+        }
+
+        private bool TryParseDoubleHitsModifier(IEnumerable<UntranslatedStat> stats, out IModifierBuilder modifier)
+        {
+            return TryParseModifier(stats, out modifier, "skill_double_hits_when_dual_wielding",
+                _metaStatBuilders.SkillDoubleHitsWhenDualWielding, Forms.TotalOverride);
+        }
+
+        private bool TryParseModifier(IEnumerable<UntranslatedStat> stats, out IModifierBuilder modifier,
+            string statId, IStatBuilder statBuilder, IFormBuilder formBuilder)
+        {
+            foreach (var stat in stats)
+            {
+                if (stat.StatId == statId)
+                {
+                    modifier = ModifierBuilder(statBuilder, formBuilder, CreateValue(stat.Value));
+                    return true;
+                }
+            }
+            modifier = null;
+            return false;
         }
 
         private IModifierBuilder ModifierBuilder(
             IStatBuilder stat, IFormBuilder form, IValueBuilder value, IConditionBuilder condition)
             => ModifierBuilder(stat, form, value).WithCondition(condition);
+
+        private IModifierBuilder ModifierBuilder(IStatBuilder stat, IFormBuilder form, double value)
+            => ModifierBuilder(stat, form, CreateValue(value));
 
         private IModifierBuilder ModifierBuilder(IStatBuilder stat, IFormBuilder form, IValueBuilder value)
             => _modifierBuilder.WithStat(stat).WithForm(form).WithValue(value);

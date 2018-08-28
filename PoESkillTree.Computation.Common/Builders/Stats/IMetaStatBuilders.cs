@@ -74,6 +74,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         IStatBuilder SkillHitDamageSource { get; }
         IStatBuilder SkillUsesHand(AttackDamageHand hand);
+        IStatBuilder SkillNumberOfHitsPerCast { get; }
+        IStatBuilder SkillDoubleHitsWhenDualWielding { get; }
 
         IStatBuilder MainSkillSocket(ItemSlot itemSlot, int socketIndex);
         IStatBuilder MainSkillId { get; }

@@ -45,11 +45,14 @@ namespace PoESkillTree.Computation.Data.GivenStats
             {
                 // skill hit damage
                 // - DPS
-                { TotalOverride, _stat.SkillDpsWithHits, _stat.AverageHitDamage.Value * _stat.CastRate.Value },
+                {
+                    TotalOverride, _stat.SkillDpsWithHits,
+                    _stat.AverageHitDamage.Value * _stat.CastRate.Value * _stat.SkillNumberOfHitsPerCast.Value
+                },
                 // - average damage
                 {
                     TotalOverride, _stat.AverageHitDamage,
-                    CombineSource(_stat.AverageDamage.WithHits, CombineHandsByAverage)
+                    CombineSource(_stat.AverageDamage.WithHits, CombineHandsForHitDamage)
                 },
                 // - average damage per source
                 {
@@ -342,7 +345,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 {
                     TotalOverride, _stat.TimeToReachLeechRateLimit,
-                    p => p.Leech.RateLimit.Value / p.Leech.Rate.Value / _stat.CastRate.Value
+                    p => p.Leech.RateLimit.Value / p.Leech.Rate.Value /
+                         (_stat.CastRate.Value * _stat.SkillNumberOfHitsPerCast.Value)
                 },
                 // flasks
                 { PercentMore, Flask.LifeRecovery, Flask.Effect.Value * 100 },
@@ -407,7 +411,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 {
                     TotalOverride, _stat.AilmentEffectiveInstances(Common.Builders.Effects.Ailment.Poison),
-                    Ailment.Poison.Duration.Value * _stat.CastRate.Value *
+                    Ailment.Poison.Duration.Value * _stat.CastRate.Value * _stat.SkillNumberOfHitsPerCast.Value *
                     CombineSource(_stat.AilmentEffectiveChance(Common.Builders.Effects.Ailment.Poison),
                         s => CombineByWeightedAverage(
                             s.With(AttackDamageHand.MainHand).Value *
@@ -437,6 +441,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 // other
                 { PercentMore, Stat.Radius, Stat.AreaOfEffect.Value.Select(Math.Sqrt, v => $"Sqrt({v})") },
                 { PercentMore, Stat.Cooldown, 100 - 100 * Stat.CooldownRecoverySpeed.Value.Invert },
+                { BaseSet, _stat.SkillNumberOfHitsPerCast, 1 },
             };
 
         private static ValueBuilder AverageAilmentDamageFromCritAndNonCrit(
@@ -585,6 +590,17 @@ namespace PoESkillTree.Computation.Data.GivenStats
             return statToCombine => CombineByWeightedAverage(
                 statToCombine.With(AttackDamageHand.MainHand).Value, mhWeight,
                 statToCombine.With(AttackDamageHand.OffHand).Value, ohWeight);
+        }
+
+        private ValueBuilder CombineHandsForHitDamage(IDamageRelatedStatBuilder statToCombine)
+        {
+            var usesMh = SkillUsesHandAsMultiplier(AttackDamageHand.MainHand);
+            var usesOh = SkillUsesHandAsMultiplier(AttackDamageHand.OffHand);
+            var sumOfHands = statToCombine.With(AttackDamageHand.MainHand).Value * usesMh +
+                             statToCombine.With(AttackDamageHand.MainHand).Value * usesOh;
+            return ValueFactory.If(_stat.SkillDoubleHitsWhenDualWielding.IsSet)
+                .Then(sumOfHands)
+                .Else(sumOfHands / (usesMh + usesOh));
         }
 
         private static ValueBuilder CombineByWeightedAverage(

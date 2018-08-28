@@ -443,6 +443,58 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Skill("AbyssalCry", 1, 0, ItemSlot.Belt, 0, null));
         }
 
+        [Test]
+        public void DoubleStrikeAddsToHitsPerCast()
+        {
+            var (definition, skill) = CreateDoubleStrikeDefinition();
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            Assert.IsTrue(AnyModifierHasIdentity(result.Modifiers, "SkillNumberOfHitsPerCast"));
+        }
+
+        private static (SkillDefinition, Skill) CreateDoubleStrikeDefinition()
+        {
+            var activeSkill = new ActiveSkillDefinition("DoubleStrike", 0, new[] { "attack" }, new string[0],
+                new[] { Keyword.Attack }, false, null, new ItemClass[0]);
+            var stats = new[]
+            {
+                new UntranslatedStat("base_skill_number_of_additional_hits", 1),
+            };
+            var level = new SkillLevelDefinition(null, null, null, null, null, null, 4000, 0, 0, 0, 0,
+                new UntranslatedStat[0], stats, null);
+            var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
+            return (SkillDefinition.CreateActive("DoubleStrike", 0, "", null, activeSkill, levels),
+                new Skill("DoubleStrike", 1, 0, ItemSlot.Belt, 0, null));
+        }
+
+        [Test]
+        public void CleaveSetsHitsWithBothWeaponsAtOnce()
+        {
+            var (definition, skill) = CreateCleaveDefinition();
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            Assert.IsTrue(AnyModifierHasIdentity(result.Modifiers, "SkillDoubleHitsWhenDualWielding"));
+        }
+
+        private static (SkillDefinition, Skill) CreateCleaveDefinition()
+        {
+            var activeSkill = new ActiveSkillDefinition("Cleave", 0, new[] { "attack" }, new string[0],
+                new[] { Keyword.Attack }, false, null, new ItemClass[0]);
+            var stats = new[]
+            {
+                new UntranslatedStat("skill_double_hits_when_dual_wielding", 1),
+            };
+            var level = new SkillLevelDefinition(null, null, null, null, null, null, 4000, 0, 0, 0, 0,
+                new UntranslatedStat[0], stats, null);
+            var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
+            return (SkillDefinition.CreateActive("Cleave", 0, "", null, activeSkill, levels),
+                new Skill("Cleave", 1, 0, ItemSlot.Belt, 0, null));
+        }
+
         private static ActiveSkillParser CreateSut(SkillDefinition skillDefinition)
         {
             var skillDefinitions = new SkillDefinitions(new[] { skillDefinition });
