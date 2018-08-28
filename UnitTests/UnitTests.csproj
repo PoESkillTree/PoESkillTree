@@ -95,7 +95,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Model\Items\Mods\ModDatabaseTest.cs" />
-    <Compile Include="Model\Items\StatTranslations\StatTranslatorTest.cs" />
     <Compile Include="TestBuilds\Utils\BuildUrlCollection.cs" />
     <Compile Include="TestBuilds\Utils\BuildUrlTestModel.cs" />
     <Compile Include="TestBuilds\Utils\DefaultUrlItem.cs" />

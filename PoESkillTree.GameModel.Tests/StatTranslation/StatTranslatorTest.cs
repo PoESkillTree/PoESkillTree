@@ -1,31 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PoESkillTree.GameModel;
+using NUnit.Framework;
 using PoESkillTree.GameModel.StatTranslation;
 
-namespace UnitTests.Model.Items.StatTranslations
+namespace PoESkillTree.GameModel.Tests.StatTranslation
 {
-    [TestClass]
+    [TestFixture]
     public class StatTranslatorTest
     {
-        private Task<StatTranslator> _translator;
+        private static StatTranslator _translator;
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _translator = InitializeAsync();
-        }
-
-        private static async Task<StatTranslator> InitializeAsync()
+        [OneTimeSetUp]
+        public static async Task CreateTranslatorAsync()
         {
             var translations = await DataUtils.LoadRePoEAsync<List<JsonStatTranslation>>("stat_translations");
-            return new StatTranslator(translations);
+            _translator = new StatTranslator(translations);
         }
 
-        [TestMethod]
-        public async Task GetTranslations_VentorsGamble()
+        [Test]
+        public void GetTranslations_VentorsGamble()
         {
             IReadOnlyDictionary<string, int> statDict = new Dictionary<string, int>
             {
@@ -45,12 +39,12 @@ namespace UnitTests.Model.Items.StatTranslations
                 null,
                 "-1% to Lightning Resistance",
             };
-            var actual = (await _translator).GetTranslations(statDict);
+            var actual = _translator.GetTranslations(statDict);
             CollectionAssert.AreEqual(expected, actual.ToArray());
         }
 
-        [TestMethod]
-        public async Task GetTranslations_DoomfletchsPrism()
+        [Test]
+        public void GetTranslations_DoomfletchsPrism()
         {
             IReadOnlyDictionary<string, int> statDict = new Dictionary<string, int>
             {
@@ -69,12 +63,12 @@ namespace UnitTests.Model.Items.StatTranslations
                 "Gain 110% of Weapon Physical Damage as Extra Damage of each Element",
                 null,
             };
-            var actual = (await _translator).GetTranslations(statDict);
+            var actual = _translator.GetTranslations(statDict);
             CollectionAssert.AreEqual(expected, actual.ToArray());
         }
 
-        [TestMethod]
-        public async Task GetTranslations_Blackheart()
+        [Test]
+        public void GetTranslations_Blackheart()
         {
             IReadOnlyDictionary<string, int> statDict = new Dictionary<string, int>
             {
@@ -93,9 +87,8 @@ namespace UnitTests.Model.Items.StatTranslations
                 "2.1 Life Regenerated per second",
                 "10% chance to Cause Monsters to Flee",
             };
-            var actual = (await _translator).GetTranslations(statDict);
+            var actual = _translator.GetTranslations(statDict);
             CollectionAssert.AreEqual(expected, actual.ToArray());
         }
-
     }
 }
