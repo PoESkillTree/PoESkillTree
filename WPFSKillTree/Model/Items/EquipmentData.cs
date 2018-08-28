@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using MoreLinq;
 using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.StatTranslation;
 using POESKillTree.Model.Items.Mods;
-using POESKillTree.Model.Items.StatTranslation;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Model.Items

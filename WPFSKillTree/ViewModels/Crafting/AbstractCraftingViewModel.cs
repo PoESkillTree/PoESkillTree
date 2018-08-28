@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using MoreLinq;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.StatTranslation;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
-using POESKillTree.Model.Items.StatTranslation;
 using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Crafting

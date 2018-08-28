@@ -5,9 +5,9 @@ using System.Linq;
 using JetBrains.Annotations;
 using MoreLinq;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Utils.Extensions;
+using PoESkillTree.Utils.Extensions;
 
-namespace POESKillTree.Model.Items.StatTranslation
+namespace PoESkillTree.GameModel.StatTranslation
 {
     /// <summary>
     /// Interface for classes that can translate values to a string
@@ -101,7 +101,7 @@ namespace POESKillTree.Model.Items.StatTranslation
         [CanBeNull]
         public string Translate(IReadOnlyDictionary<string, int> idValueDict)
         {
-            var values = Ids.Select(id => idValueDict.GetOrDefault(id));
+            var values = Ids.Select(id => idValueDict.GetValueOrDefault(id));
             return Translate(values.ToList());
         }
     }

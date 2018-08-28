@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.Utils.Extensions;
 using POESKillTree.Model.Items.Enums;
-using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Items.Mods
 {
@@ -29,7 +29,7 @@ namespace POESKillTree.Model.Items.Mods
                 .ToDictionary(s => s.Id, s => s.SpawnWeights);
             Mods = mods.ToDictionary(
                 p => p.Key, 
-                p => new Mod(p.Key, p.Value, benchLookup[p.Key], signatureModDict.GetOrDefault(p.Key)));
+                p => new Mod(p.Key, p.Value, benchLookup[p.Key], signatureModDict.GetValueOrDefault(p.Key)));
             _groupsByType = Mods.Values
                 .GroupBy(m => m.JsonMod.GenerationType)
                 .ToDictionary(g => g.Key, ModsToAffixes);

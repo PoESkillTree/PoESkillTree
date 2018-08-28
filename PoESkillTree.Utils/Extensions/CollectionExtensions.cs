@@ -34,5 +34,13 @@ namespace PoESkillTree.Utils.Extensions
                 action(value);
             }
         }
+
+        public static TValue GetValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict,
+            TKey key, TValue defaultValue = default)
+            => dict.TryGetValue(key, out var value) ? value : defaultValue;
+
+        public static TValue GetValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict,
+            TKey key, Func<TValue> defaultValueProvider)
+            => dict.TryGetValue(key, out var value) ? value : defaultValueProvider();
     }
 }

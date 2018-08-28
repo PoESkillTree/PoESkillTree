@@ -4,8 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using MB.Algodat;
 using MoreLinq;
+using PoESkillTree.GameModel.StatTranslation;
 using POESKillTree.Model.Items.Mods;
-using POESKillTree.Model.Items.StatTranslation;
 using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Crafting

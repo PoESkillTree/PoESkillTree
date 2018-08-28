@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PoESkillTree.GameModel;
-using POESKillTree.Model.Items.StatTranslation;
+using PoESkillTree.GameModel.StatTranslation;
 
 namespace UnitTests.Model.Items.StatTranslations
 {

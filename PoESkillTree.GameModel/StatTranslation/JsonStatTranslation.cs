@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace POESKillTree.Model.Items.StatTranslation
+namespace PoESkillTree.GameModel.StatTranslation
 {
     // The classes used to deserialize RePoE's stat_translations
 

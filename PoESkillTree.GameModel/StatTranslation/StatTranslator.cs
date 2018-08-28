@@ -3,7 +3,7 @@ using System.Linq;
 using log4net;
 using MoreLinq;
 
-namespace POESKillTree.Model.Items.StatTranslation
+namespace PoESkillTree.GameModel.StatTranslation
 {
     /// <summary>
     /// Takes the deserialized stat_translations and returns Translation objects for given stat ids.

@@ -6,14 +6,13 @@ namespace PoESkillTree.Utils.Extensions
     public static class EnumerableExtensions
     {
         public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
-        {
-            return !enumerable.Any();
-        }
+            => !enumerable.Any();
 
         public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> enumerable)
-        {
-            return enumerable.SelectMany(ts => ts);
-        }
+            => enumerable.SelectMany(ts => ts);
+
+        public static bool All(this IEnumerable<bool> enumerable)
+            => enumerable.All(b => b);
 
         public static IEnumerable<T> Append<T>(this IEnumerable<T> @this, params T[] elements) => 
             @this.Concat(elements);

@@ -4,15 +4,15 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace POESKillTree.Model.Items.StatTranslation
+namespace PoESkillTree.GameModel.StatTranslation
 {
     /// <summary>
-    /// Enum of the index handlers used in the GGPK's stat description files/RePoe's stat_translations.
+    /// Enum of the index handlers used in the GGPK's stat description files/RePoE's stat_translations.
     /// The EnumMember annotations specify how the handlers appear in the json file.
     /// </summary>
     /// <remarks>
     /// The names and their effects were taken from
-    /// https://github.com/OmegaK2/PyPoE/blob/dev/PyPoE/poe/file/translations.py#L865
+    /// https://github.com/OmegaK2/PyPoE/blob/dev/PyPoE/poe/file/translations.py#L1890
     /// </remarks>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum IndexHandler
@@ -65,7 +65,7 @@ namespace POESKillTree.Model.Items.StatTranslation
         TempestModText,
     }
 
-    public static class IndexHandlerEx
+    public static class IndexHandlerExtensions
     {
         private static readonly IReadOnlyDictionary<IndexHandler, Func<double, double>> Handlers
             = new Dictionary<IndexHandler, Func<double, double>>
@@ -106,8 +106,6 @@ namespace POESKillTree.Model.Items.StatTranslation
         /// Applies this handler to the given value and returns the handled value.
         /// </summary>
         public static double Apply(this IndexHandler indexHandler, double value)
-        {
-            return Handlers[indexHandler](value);
-        }
+            => Handlers[indexHandler](value);
     }
 }
