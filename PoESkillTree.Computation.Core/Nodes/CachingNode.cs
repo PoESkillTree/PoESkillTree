@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Nodes
@@ -7,6 +8,7 @@ namespace PoESkillTree.Computation.Core.Nodes
     /// Implementation of <see cref="ICachingNode"/>.
     /// Also uses <see cref="ICycleGuard"/> to guard against cycles in the calculation graph.
     /// </summary>
+    [DebuggerDisplay("{" + nameof(_value) + "}")]
     public class CachingNode : SubscriberCountingNode, IDisposable, ICachingNode
     {
         private readonly ICalculationNode _decoratedNode;

@@ -27,6 +27,11 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         IKeywordBuilder Projectile { get; }
 
         /// <summary>
+        /// Equivalent to the ActiveSkillType "explicit_deals_projectile_damage"? (gem tag is "Bow")
+        /// </summary>
+        IKeywordBuilder Bow { get; }
+
+        /// <summary>
         /// Equivalent to the ActiveSkillType "aoe".
         /// </summary>
         IKeywordBuilder AreaOfEffect { get; }
@@ -57,11 +62,6 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         IKeywordBuilder Movement { get; }
 
         /// <summary>
-        /// Equivalent to the ActiveSkillType "cast".
-        /// </summary>
-        IKeywordBuilder Cast { get; }
-
-        /// <summary>
         /// Equivalent to the ActiveSkillType "mine".
         /// </summary>
         IKeywordBuilder Mine { get; }
@@ -90,5 +90,20 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         /// Equivalent to the gem tag "Warcry".
         /// </summary>
         IKeywordBuilder Warcry { get; }
+
+        /// <summary>
+        /// Equivalent to the gem tag.
+        /// </summary>
+        IKeywordBuilder Herald { get; }
+
+        /// <summary>
+        /// Has no equivalent gem tag or ActiveSkillType.
+        /// </summary>
+        IKeywordBuilder Offering { get; }
+
+        /// <summary>
+        /// Equivalent to the ActiveSkillType "trigger_attack"
+        /// </summary>
+        IKeywordBuilder CounterAttack { get; }
     }
 }

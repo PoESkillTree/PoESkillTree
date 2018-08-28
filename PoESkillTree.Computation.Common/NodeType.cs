@@ -13,7 +13,6 @@
         UncappedSubtotal,
         PathTotal,
         Base,
-        BaseOverride,
         BaseSet,
         BaseAdd,
         Increase,

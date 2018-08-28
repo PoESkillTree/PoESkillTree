@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.NodeCollections;
 using PoESkillTree.Computation.Core.Nodes;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {

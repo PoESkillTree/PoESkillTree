@@ -9,8 +9,8 @@ namespace PoESkillTree.Computation.Common.Tests
         public static T[] MockMany<T>(int count = 3) where T : class =>
             Enumerable.Range(0, count).Select(_ => Mock.Of<T>()).ToArray();
 
-
-        public static Modifier[] MockManyModifiers() => new[] { MockModifier(), MockModifier(), MockModifier() };
+        public static Modifier[] MockManyModifiers(int count = 3) =>
+            Enumerable.Range(0, count).Select(_ => MockModifier()).ToArray();
 
         public static Modifier MockModifier(
             IStat stat, Form form = Form.BaseAdd, IValue value = null, ModifierSource source = null) =>

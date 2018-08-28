@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MoreLinq;
+using PoESkillTree.GameModel;
 using POESKillTree.Model.Items.Mods;
 using POESKillTree.Model.Items.StatTranslation;
 using POESKillTree.Utils;
@@ -11,9 +12,6 @@ namespace POESKillTree.Model.Items
 {
     public class EquipmentData
     {
-        private const string ResourcePath =
-            "pack://application:,,,/PoESkillTree;component/Data/Equipment/";
-
         public ModDatabase ModDatabase { get; private set; }
         public StatTranslator StatTranslator { get; private set; }
 
@@ -35,16 +33,15 @@ namespace POESKillTree.Model.Items
 
         private EquipmentData(Options options)
         {
-            Util.TriggerPackUriSchemeInitialization();
             _itemImageService = new ItemImageService(options);
         }
 
         private async Task InitializeAsync()
         {
-            var modsTask = RePoEUtils.LoadAsync<Dictionary<string, JsonMod>>("mods");
-            var benchOptionsTask = RePoEUtils.LoadAsync<JsonCraftingBenchOption[]>("crafting_bench_options");
-            var npcMastersTask = RePoEUtils.LoadAsync<Dictionary<string, JsonNpcMaster>>("npc_master");
-            var statTranslationsTask = RePoEUtils.LoadAsync<List<JsonStatTranslation>>("stat_translations");
+            var modsTask = DataUtils.LoadRePoEAsync<Dictionary<string, JsonMod>>("mods");
+            var benchOptionsTask = DataUtils.LoadRePoEAsync<JsonCraftingBenchOption[]>("crafting_bench_options");
+            var npcMastersTask = DataUtils.LoadRePoEAsync<Dictionary<string, JsonNpcMaster>>("npc_master");
+            var statTranslationsTask = DataUtils.LoadRePoEAsync<List<JsonStatTranslation>>("stat_translations");
             ModDatabase = new ModDatabase(await modsTask, await benchOptionsTask, await npcMastersTask);
             StatTranslator = new StatTranslator(await statTranslationsTask);
 
@@ -80,7 +77,7 @@ namespace POESKillTree.Model.Items
 
         private static async Task<T> DeserializeXmlResourceAsync<T>(string file)
         {
-            var text = await SerializationUtils.ReadResourceAsync(ResourcePath + file);
+            var text = await DataUtils.LoadTextAsync("Equipment." + file);
             return SerializationUtils.XmlDeserializeString<T>(text);
         }
 

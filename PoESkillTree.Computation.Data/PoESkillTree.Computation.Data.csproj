@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -39,6 +39,9 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Enums.NET, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
+      <HintPath>..\packages\Enums.NET.2.3.2\lib\net45\Enums.NET.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
     </Reference>
@@ -46,6 +49,7 @@
       <HintPath>..\packages\morelinq.2.4.1\lib\net40\MoreLinq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
@@ -58,12 +62,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionConditionMatchers.cs" />
     <Compile Include="ActionMatchers.cs" />
     <Compile Include="AilmentMatchers.cs" />
     <Compile Include="Base\ReferencedMatchersBase.cs" />
     <Compile Include="Base\StatMatchersBase.cs" />
     <Compile Include="ChargeTypeMatchers.cs" />
     <Compile Include="Collections\ConditionMatcherCollection.cs" />
+    <Compile Include="Collections\DataDrivenMechanicCollection.cs" />
     <Compile Include="Collections\FormAndStatMatcherCollection.cs" />
     <Compile Include="Collections\FormMatcherCollection.cs" />
     <Compile Include="Collections\PropertyMatcherCollection.cs" />
@@ -73,26 +79,32 @@
     <Compile Include="Collections\StatMatcherCollection.cs" />
     <Compile Include="Collections\StatReplacerCollection.cs" />
     <Compile Include="Collections\ValueConversionMatcherCollection.cs" />
-    <Compile Include="ComputationData.cs" />
     <Compile Include="ConditionMatchers.cs" />
     <Compile Include="DamageStatMatchers.cs" />
     <Compile Include="DamageTypeMatchers.cs" />
     <Compile Include="Collections\EffectStatCollection.cs" />
-    <Compile Include="EffectStats.cs" />
-    <Compile Include="FlagMatchers.cs" />
-    <Compile Include="Collections\FlagStatCollection.cs" />
+    <Compile Include="GivenStats\AllyLevelBasedStats.cs" />
+    <Compile Include="GivenStats\DataDrivenMechanics.cs" />
+    <Compile Include="GivenStats\EffectStats.cs" />
+    <Compile Include="BuffMatchers.cs" />
     <Compile Include="FormAndStatMatchers.cs" />
     <Compile Include="FormMatchers.cs" />
-    <Compile Include="Collections\GivenStatsCollection.cs" />
-    <Compile Include="ItemSlotMatchers.cs" />
+    <Compile Include="Collections\GivenStatCollection.cs" />
+    <Compile Include="GivenStats\CharacterGivenStats.cs" />
+    <Compile Include="GivenStats\CommonGivenStats.cs" />
+    <Compile Include="GivenStats\EnemyLevelBasedStats.cs" />
+    <Compile Include="GivenStats\GameStateDependentMods.cs" />
+    <Compile Include="GivenStats\GivenStatsCollection.cs" />
+    <Compile Include="GivenStats\LevelBasedStats.cs" />
+    <Compile Include="GivenStats\MonsterGivenStats.cs" />
+    <Compile Include="GivenStats\TotemGivenStats.cs" />
     <Compile Include="KeywordMatchers.cs" />
     <Compile Include="Collections\MatcherCollection.cs" />
-    <Compile Include="MonsterGivenStats.cs" />
     <Compile Include="ParsingData.cs" />
+    <Compile Include="SkillMatchers.cs" />
     <Compile Include="Steps\ParsingStep.cs" />
     <Compile Include="PoolStatMatchers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CharacterGivenStats.cs" />
     <Compile Include="GeneralStatMatchers.cs" />
     <Compile Include="PropertyMatchers.cs" />
     <Compile Include="SpecialMatchers.cs" />
@@ -112,13 +124,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Common.csproj">
+    <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">
       <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
-      <Name>PoESkillTree.Common</Name>
+      <Name>PoESkillTree.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj">
       <Project>{827be52d-878c-45f0-afc0-75b5385aad53}</Project>
       <Name>PoESkillTree.Computation.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj">
+      <Project>{c1c73cc9-d825-41f7-86f0-f37ee8178d6d}</Project>
+      <Name>PoESkillTree.GameModel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -126,6 +142,6 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props'))" />
   </Target>
 </Project>

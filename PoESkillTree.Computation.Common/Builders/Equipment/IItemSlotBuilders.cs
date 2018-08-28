@@ -1,4 +1,4 @@
-﻿using PoESkillTree.Common.Model.Items.Enums;
+﻿using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Common.Builders.Equipment
 {

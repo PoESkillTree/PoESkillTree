@@ -8,6 +8,6 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
     /// </summary>
     public interface IKeywordBuilder : IResolvable<IKeywordBuilder>
     {
-
+        Keyword Build();
     }
 }

@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.GameModel.Items;
 using static PoESkillTree.Computation.Common.Builders.Values.ValueBuilderUtils;
 
 namespace PoESkillTree.Computation.Data
@@ -33,17 +36,54 @@ namespace PoESkillTree.Computation.Data
                 // - damage
                 {
                     @"adds # to # ({DamageTypeMatchers}) damage",
-                    (MinBaseAdd, MaxBaseAdd), (Values[0], Values[1]), Reference.AsDamageType.Damage
+                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]), Reference.AsDamageType.Damage.WithHits
+                },
+                {
+                    @"adds # to # ({DamageTypeMatchers}) damage to unarmed attacks",
+                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]),
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Attack),
+                    And(Not(MainHand.HasItem), With(Keyword.Melee))
+                },
+                {
+                    @"adds # to # ({DamageTypeMatchers}) damage to spells",
+                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]),
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell)
                 },
                 {
                     @"# to # additional ({DamageTypeMatchers}) damage",
-                    (MinBaseAdd, MaxBaseAdd), (Values[0], Values[1]), Reference.AsDamageType.Damage
+                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]), Reference.AsDamageType.Damage.WithHits
                 },
                 {
                     @"adds # maximum ({DamageTypeMatchers}) damage",
-                    MaxBaseAdd, Value, Reference.AsDamageType.Damage
+                    BaseAdd, Value.MaximumOnly, Reference.AsDamageType.Damage.WithHits
                 },
                 { "deal no ({DamageTypeMatchers}) damage", TotalOverride, 0, Reference.AsDamageType.Damage },
+                // - conversion and gain
+                {
+                    "(gain )?#% of ({DamageTypeMatchers}) damage (gained |added )?as (extra )?({DamageTypeMatchers}) damage",
+                    BaseAdd, Value, References[0].AsDamageType.Damage.WithHitsAndAilments
+                        .GainAs(References[1].AsDamageType.Damage.WithHitsAndAilments)
+                },
+                {
+                    "gain #% of ({DamageTypeMatchers}) damage as extra damage of a random element",
+                    BaseAdd, Value, Reference.AsDamageType.Damage.WithHitsAndAilments
+                        .GainAs(RandomElement.Damage.WithHitsAndAilments)
+                },
+                {
+                    "gain #% of wand ({DamageTypeMatchers}) damage as extra ({DamageTypeMatchers}) damage",
+                    BaseAdd, Value,
+                    References[0].AsDamageType.Damage.With(AttackDamageHand.MainHand)
+                        .GainAs(References[1].AsDamageType.Damage.With(AttackDamageHand.MainHand))
+                        .WithCondition(MainHand.Has(Tags.Wand)),
+                    References[0].AsDamageType.Damage.With(AttackDamageHand.OffHand)
+                        .GainAs(References[1].AsDamageType.Damage.With(AttackDamageHand.OffHand))
+                        .WithCondition(OffHand.Has(Tags.Wand))
+                },
+                {
+                    "#% of ({DamageTypeMatchers}) damage converted to ({DamageTypeMatchers}) damage",
+                    BaseAdd, Value, References[0].AsDamageType.Damage.WithHitsAndAilments
+                        .ConvertTo(References[1].AsDamageType.Damage.WithHitsAndAilments)
+                },
                 // - penetration
                 {
                     "damage penetrates #% (of enemy )?({DamageTypeMatchers}) resistances?",
@@ -59,10 +99,9 @@ namespace PoESkillTree.Computation.Data
                 },
                 // - crit
                 { @"\+#% critical strike chance", BaseAdd, Value, CriticalStrike.Chance },
-                { "no critical strike multiplier", TotalOverride, 0, CriticalStrike.Multiplier },
                 {
-                    "no damage multiplier for ailments from critical strikes",
-                    TotalOverride, 0, CriticalStrike.AilmentMultiplier
+                    "no critical strike multiplier, no damage multiplier for ailments from critical strikes",
+                    TotalOverride, 0, CriticalStrike.Multiplier
                 },
                 { "never deal critical strikes", TotalOverride, 0, CriticalStrike.Chance },
                 // - speed
@@ -77,13 +116,14 @@ namespace PoESkillTree.Computation.Data
                 },
                 { @"skills chain \+# times", BaseAdd, Value, Projectile.ChainCount },
                 // - other
-                { "your hits can't be evaded", TotalOverride, 0, Enemy.Stat(Evasion.Chance) },
+                { "your hits can't be evaded", TotalOverride, 100, Stat.ChanceToHit },
                 // defense
                 // - life, mana, defences
                 { "maximum life becomes #", TotalOverride, Value, Life },
-                { "removes all mana", BaseOverride, 0, Mana },
+                { "removes all mana", TotalOverride, 0, Mana },
                 { "converts all evasion rating to armour", TotalOverride, 100, Evasion.ConvertTo(Armour) },
                 { "cannot evade enemy attacks", TotalOverride, 0, Evasion.Chance },
+                { @"\+# evasion rating", BaseAdd, Value, Evasion },
                 // - resistances
                 { "immune to ({DamageTypeMatchers}) damage", TotalOverride, 100, Reference.AsDamageType.Resistance },
                 { @"\+#% elemental resistances", BaseAdd, Value, Elemental.Resistance },
@@ -91,7 +131,7 @@ namespace PoESkillTree.Computation.Data
                 // - leech
                 {
                     "life leech is applied to energy shield instead",
-                    TotalOverride, 1, Life.Leech.AppliesTo(EnergyShield)
+                    TotalOverride, (int) Pool.EnergyShield, Life.Leech.TargetPool
                 },
                 { "gain life from leech instantly", TotalOverride, 1, Life.InstantLeech },
                 { "leech #% of damage as life", BaseAdd, Value, Life.Leech.Of(Damage) },
@@ -103,24 +143,28 @@ namespace PoESkillTree.Computation.Data
                 // - other
                 {
                     "chaos damage does not bypass energy shield",
-                    TotalOverride, 100, Chaos.Damage.TakenFrom(EnergyShield).Before(Life)
+                    TotalOverride, 100, Chaos.DamageTakenFrom(EnergyShield).Before(Life)
                 },
                 {
                     "#% of chaos damage does not bypass energy shield",
-                    BaseAdd, Value, Chaos.Damage.TakenFrom(EnergyShield).Before(Life)
+                    BaseAdd, Value, Chaos.DamageTakenFrom(EnergyShield).Before(Life)
                 },
                 {
                     "#% of physical damage bypasses energy shield",
-                    BaseSubtract, Value, Physical.Damage.TakenFrom(EnergyShield).Before(Life)
+                    BaseSubtract, Value, Physical.DamageTakenFrom(EnergyShield).Before(Life)
                 },
                 {
                     "you take #% reduced extra damage from critical strikes",
                     PercentReduce, Value, CriticalStrike.ExtraDamageTaken
                 },
+                {
+                    "you take no extra damage from critical strikes",
+                    PercentLess, 100, CriticalStrike.ExtraDamageTaken
+                },
                 // regen and recharge 
                 // (need to be FormAndStatMatcher because they also exist with flat values)
                 {
-                    "#% of ({PoolStatMatchers}) regenerated per second",
+                    "#%( of)? ({PoolStatMatchers}) regenerated per second",
                     BaseAdd, Value, Reference.AsPoolStat.Regen.Percent
                 },
                 {
@@ -139,10 +183,10 @@ namespace PoESkillTree.Computation.Data
                     "#% faster start of energy shield recharge", PercentIncrease, Value,
                     EnergyShield.Recharge.Start
                 },
-                { "life regeneration has no effect", BaseOverride, 0, Life.Regen },
+                { "life regeneration has no effect", PercentLess, 100, Life.Regen },
                 {
                     "life regeneration is applied to energy shield instead",
-                    TotalOverride, 1, Life.Regen.AppliesTo(EnergyShield)
+                    TotalOverride, (int) Pool.EnergyShield, Life.Regen.TargetPool
                 },
                 // gain (need to be FormAndStatMatcher because they also exist with flat values)
                 {
@@ -158,29 +202,45 @@ namespace PoESkillTree.Computation.Data
                     BaseSubtract, Value.PercentOf(Reference.AsStat), Reference.AsPoolStat.Gain
                 },
                 { @"\+# ({PoolStatMatchers}) gained", BaseAdd, Value, Reference.AsPoolStat.Gain },
+                { @"gain \+# ({PoolStatMatchers})", BaseAdd, Value, Reference.AsPoolStat.Gain },
                 // charges
+                {
+                    "#% chance to gain a power, frenzy or endurance charge",
+                    BaseAdd, Value / 3,
+                    Charge.Power.ChanceToGain, Charge.Frenzy.ChanceToGain, Charge.Endurance.ChanceToGain
+                },
+                {
+                    "(?<!chance to |when you )gain an? ({ChargeTypeMatchers})",
+                    BaseAdd, 100, Reference.AsChargeType.ChanceToGain
+                },
                 // skills
                 // traps, mines, totems
-                { "detonating mines is instant", TotalOverride, double.PositiveInfinity, Skill.DetonateMines.Speed },
+                {
+                    "detonating mines is instant",
+                    TotalOverride, double.PositiveInfinity, Stat.CastRate, With(Skills.DetonateMines)
+                },
                 // minions
                 // buffs
                 {
-                    "you can have one additional curse", 
-                    BaseAdd, 1, Buffs(target: Self).With(Keyword.Curse).CombinedLimit
+                    "(?<!while |chance to )you have ({BuffMatchers})",
+                    TotalOverride, 1, Reference.AsBuff.NotAsBuffOn(Self)
+                },
+                {
+                    "(?<!while |chance to )gain ({BuffMatchers})",
+                    TotalOverride, 1, Reference.AsBuff.On(Self)
+                },
+                {
+                    "you can have one additional curse",
+                    BaseAdd, 1, Buff.CurseLimit
                 },
                 {
                     "enemies can have # additional curse",
-                    BaseAdd, Value, Buffs(target: Enemy).With(Keyword.Curse).CombinedLimit
+                    BaseAdd, Value, Buff.CurseLimit.For(Enemy)
                 },
+                { "unaffected by curses", PercentLess, 100, Buffs(targets: Self).With(Keyword.Curse).Effect },
                 { "grants fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
-                { "(?<!while )you have fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
-                {
-                    "curse enemies with level # ({SkillMatchers})",
-                    TotalOverride, 1, Buff.Curse(skill: Reference.AsSkill, level: Value).On(Enemy)
-                },
                 { "gain elemental conflux", TotalOverride, 1, Buff.Conflux.Elemental.On(Self) },
                 // flags
-                { "(?<!while |chance to )(you have|gain) ({FlagMatchers})", TotalOverride, 1, Reference.AsFlagStat },
                 // ailments
                 { "causes bleeding", TotalOverride, 100, Ailment.Bleed.Chance },
                 { "always poison", TotalOverride, 100, Ailment.Poison.Chance },
@@ -188,19 +248,26 @@ namespace PoESkillTree.Computation.Data
                     "(you )?can afflict an additional ignite on an enemy",
                     BaseAdd, 1, Ailment.Ignite.InstancesOn(Enemy).Maximum
                 },
-                { "you are immune to ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
+                { "(you are )?immune to ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
                 { "cannot be ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
+                {
+                    "cannot be ({AilmentMatchers}) or ({AilmentMatchers})",
+                    TotalOverride, 100, References[0].AsAilment.Avoidance, References[1].AsAilment.Avoidance
+                },
                 {
                     "(immune to|cannot be affected by) elemental ailments",
                     TotalOverride, 100, Ailment.Elemental.Select(a => a.Avoidance)
                 },
+                {
+                    "poison you inflict with critical strikes deals #% more damage",
+                    PercentMore, Value, CriticalStrike.Multiplier.With(Ailment.Poison)
+                },
                 // stun
                 { "(you )?cannot be stunned", TotalOverride, 100, Effect.Stun.Avoidance },
-                { "your damaging hits always stun enemies", TotalOverride, 100, Effect.Stun.ChanceOn(Enemy), Hit.On() },
                 // item quantity/quality
                 // range and area of effect
                 // other
-                { "knocks back enemies", TotalOverride, 100, Effect.Knockback.ChanceOn(Enemy) },
+                { "knocks back enemies", TotalOverride, 100, Effect.Knockback.Chance },
             };
     }
 }

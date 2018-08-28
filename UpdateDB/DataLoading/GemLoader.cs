@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using log4net;
 using MoreLinq;
 using Newtonsoft.Json.Linq;
+using PoESkillTree.GameModel;
 using POESKillTree.SkillTreeFiles;
-using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
 
 namespace UpdateDB.DataLoading
@@ -20,8 +20,8 @@ namespace UpdateDB.DataLoading
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(GemLoader));
 
-        private const string RepoeGemsUrl = RePoEUtils.RePoEDataUrl + "gems.min.json";
-        private const string RepoeGemTooltipsUrl = RePoEUtils.RePoEDataUrl + "gem_tooltips.min.json";
+        private const string RepoeGemsUrl = DataUtils.RePoEDataUrl + "gems.min.json";
+        private const string RepoeGemTooltipsUrl = DataUtils.RePoEDataUrl + "gem_tooltips.min.json";
 
         public override bool SavePathIsFolder => false;
 

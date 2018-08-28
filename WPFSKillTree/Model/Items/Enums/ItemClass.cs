@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.GameModel.Items;
 
 namespace POESKillTree.Model.Items.Enums
 {

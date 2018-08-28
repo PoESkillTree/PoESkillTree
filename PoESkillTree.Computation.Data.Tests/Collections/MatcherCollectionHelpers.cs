@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
@@ -21,13 +18,11 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             return (ModifierBuilderStub) data.Modifier;
         }
 
-        internal static (Func<ValueBuilder, ValueBuilder> converterIn, ValueConverter converterOut) SetupConverter(
-            this Mock<IValueBuilders> valueBuildersMock)
+        internal static ModifierBuilderStub AssertSingle(this IEnumerable<IIntermediateModifier> sut)
         {
-            Func<ValueBuilder, ValueBuilder> converterIn = v => null;
-            ValueConverter converterOut = v => null;
-            valueBuildersMock.Setup(v => v.WrapValueConverter(converterIn)).Returns(converterOut);
-            return (converterIn, converterOut);
+            var mod = sut.Single();
+            Assert.IsInstanceOf<ModifierBuilderStub>(mod);
+            return (ModifierBuilderStub) mod;
         }
     }
 }

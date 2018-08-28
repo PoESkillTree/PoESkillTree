@@ -1,3 +1,5 @@
+using PoESkillTree.Computation.Common.Builders.Stats;
+
 namespace PoESkillTree.Computation.Common.Builders.Effects
 {
     /// <summary>
@@ -13,14 +15,14 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         IAilmentBuilder Bleed { get; }
         IAilmentBuilder Poison { get; }
 
-        /// <summary>
-        /// Gets a collection of all ailments.
-        /// </summary>
-        IAilmentBuilderCollection All { get; }
+        IAilmentBuilder From(Ailment ailment);
 
         /// <summary>
         /// Gets a collection of all elemental ailments.
         /// </summary>
         IAilmentBuilderCollection Elemental { get; }
+
+        IStatBuilder ShockEffect { get; }
+        IStatBuilder ChillEffect { get; }
     }
 }

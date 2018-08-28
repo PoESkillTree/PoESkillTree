@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using MoreLinq;
-using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Common
 {
     /// <summary>
-    /// Abstract data type representing a source of a modifier.
+    /// Union data type representing a source of a modifier.
     /// <para>
     /// Generally, each instance of a leaf ModifierSource class is considered the same, e.g. all instances of
     /// <see cref="Global"/> are equal to each other. The only exception to this is <see cref="Local.Item"/>, which
@@ -58,8 +58,14 @@ namespace PoESkillTree.Computation.Common
         /// </remarks>
         public ModifierSource CanonicalSource { get; }
 
+        public static bool operator ==(ModifierSource left, ModifierSource right) =>
+            left?.Equals(right) ?? right is null;
+
+        public static bool operator !=(ModifierSource left, ModifierSource right) =>
+            !(left == right);
+
         public sealed override bool Equals(object obj) => 
-            (obj == this) || (obj is ModifierSource other && Equals(other));
+            ReferenceEquals(obj, this) || (obj is ModifierSource other && Equals(other));
 
         public virtual bool Equals(ModifierSource other) =>
             GetType() == other?.GetType();
@@ -167,18 +173,6 @@ namespace PoESkillTree.Computation.Common
                 public Skill()
                 {
                 }
-            }
-        }
-
-
-        // Not quite sure yet, probably necessary to allow separate calculations between damage over time directly from
-        // skills and from ailments.
-        // This might need to be further differentiated by ailment type: Poison, Bleed or Ignite.
-        // Inheriting the source from the original Hit type damage might also be necessary.
-        public sealed class Ailment : ModifierSource
-        {
-            public Ailment() : base(new Global())
-            {
             }
         }
     }

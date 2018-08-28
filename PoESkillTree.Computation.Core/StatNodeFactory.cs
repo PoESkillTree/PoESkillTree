@@ -40,10 +40,8 @@ namespace PoESkillTree.Computation.Core
                     return Create(new ConvertedBaseValue(path));
                 case NodeType.Base:
                     return Create(new BaseValue(_stat, path));
-                case NodeType.BaseOverride:
-                    return Create(new FormAggregatingValue(_stat, Form.BaseOverride, path, CalculateOverride));
                 case NodeType.BaseSet:
-                    return Create(new FormAggregatingValue(_stat, Form.BaseSet, path, CalculateBaseAdd));
+                    return Create(new FormAggregatingValue(_stat, Form.BaseSet, path, CalculateBaseSet));
                 case NodeType.BaseAdd:
                     return Create(new FormAggregatingValue(_stat, Form.BaseAdd, path, CalculateBaseAdd));
                 case NodeType.Increase:
@@ -51,7 +49,7 @@ namespace PoESkillTree.Computation.Core
                 case NodeType.More:
                     return Create(new MultiPathFormAggregatingValue(_stat, Form.More, path, CalculateMore));
                 case NodeType.TotalOverride:
-                    return Create(new FormAggregatingValue(_stat, Form.TotalOverride, path, CalculateOverride));
+                    return Create(new FormAggregatingValue(_stat, Form.TotalOverride, path, CalculateTotalOverride));
                 default:
                     throw new ArgumentOutOfRangeException(nameof(selector), nodeType, null);
             }

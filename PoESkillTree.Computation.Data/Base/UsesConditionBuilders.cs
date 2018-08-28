@@ -1,8 +1,10 @@
 using System.Linq;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Data.Base
 {
@@ -21,12 +23,28 @@ namespace PoESkillTree.Computation.Data.Base
 
         protected IConditionBuilders Condition => BuilderFactories.ConditionBuilders;
 
-        protected IConditionBuilder With(ISkillBuilderCollection skills) =>
-            Condition.With(skills);
+        protected IConditionBuilder With(IKeywordBuilder keyword) => Condition.With(keyword);
+
+        protected IConditionBuilder With(IKeywordBuilder keyword, params IKeywordBuilder[] keywords) =>
+            And(With(keyword), keywords.Select(With).ToArray());
+
+        protected IConditionBuilder WithElemental => Or(With(Fire), With(Cold), With(Lightning));
 
         protected IConditionBuilder With(ISkillBuilder skill) => Condition.With(skill);
 
-        protected IConditionBuilder For(params IEntityBuilder[] targets) => Condition.For(targets);
+        protected IConditionBuilder WithSkeletonSkills
+            => Or(With(Skills.SummonSkeleton), With(Skills.VaalSummonSkeletons));
+
+        protected IConditionBuilder MainHandAttackWith(Tags tags) =>
+            Condition.AttackWith(AttackDamageHand.MainHand).And(MainHand.Has(tags));
+
+        protected IConditionBuilder OffHandAttackWith(Tags tags) =>
+            Condition.AttackWith(AttackDamageHand.OffHand).And(OffHand.Has(tags));
+
+        protected (IConditionBuilder mainHand, IConditionBuilder offHand) AttackWith(Tags tags) =>
+            (MainHandAttackWith(tags), OffHandAttackWith(tags));
+
+        protected IConditionBuilder For(IEntityBuilder target) => Condition.For(target);
 
         /// <summary>
         /// Returns a condition that is satisfied if all given conditions are satisfied.
@@ -44,5 +62,8 @@ namespace PoESkillTree.Computation.Data.Base
         /// Returns a condition that is satisfied if the given condition is not satisfied.
         /// </summary>
         protected static IConditionBuilder Not(IConditionBuilder condition) => condition.Not;
+
+        protected IConditionBuilder EitherHandHas(Tags tags) =>
+            Or(MainHand.Has(tags), OffHand.Has(tags));
     }
 }

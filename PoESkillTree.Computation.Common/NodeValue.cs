@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Common.Utils.Extensions;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Common
 {
@@ -14,13 +14,17 @@ namespace PoESkillTree.Computation.Common
     /// <para>
     /// Converting from <see cref="double"/> is possible through constructors or an explicit
     /// conversion operator. Converting to a single <see cref="double"/> is not possible (except simply using either
-    /// <see cref="Minimum"/> or <see cref="Maximum"/>. <see cref="NodeValue"/> can be compared to a
-    /// <see cref="double"/> using <see cref="AlmostEquals"/>.
+    /// <see cref="Minimum"/> or <see cref="Maximum"/>. <see cref="NodeValue"/> can be compared directly to
+    /// <see cref="double"/>s.
     /// </para>
     /// <para>
     /// Comparison operators are overloaded assuming <see cref="Minimum"/> and <see cref="Maximum"/> define a range
     /// of possible values. I.e. they only return true if the comparison is true for all possible values, not if
     /// the comparison has the possibility to be true.
+    /// </para>
+    /// <para>
+    /// When <c>NodeValue?</c> represents a boolean value, use the explicit operator to convert from bool and
+    /// <see cref="NodeValueExtensions.IsTrue"/> to convert to bool.
     /// </para>
     /// </summary>
     /// <remarks>
@@ -48,9 +52,23 @@ namespace PoESkillTree.Computation.Common
             Maximum = maximum;
         }
 
+        public static explicit operator NodeValue(double value) => new NodeValue(value);
+
+        public static explicit operator NodeValue?(bool value) => value ? (NodeValue?) 1 : null;
+
         public double Minimum { get; }
 
         public double Maximum { get; }
+
+        public double Single
+        {
+            get
+            {
+                if (!Minimum.AlmostEquals(Maximum, 1e-10))
+                    throw new InvalidOperationException("Minimum and Maximum are not equal");
+                return Maximum;
+            }
+        }
 
 
         public static bool operator ==(NodeValue left, NodeValue right) =>
@@ -63,28 +81,56 @@ namespace PoESkillTree.Computation.Common
             obj is NodeValue other && Equals(other);
 
         public bool Equals(NodeValue other) =>
-            Minimum.Equals(other.Minimum) && Maximum.Equals(other.Maximum);
+            Minimum.AlmostEquals(other.Minimum, 1e-10) && Maximum.AlmostEquals(other.Maximum, 1e-10);
 
-        public bool AlmostEquals(double value, double delta = 1e-10) =>
-            Minimum.AlmostEquals(value, delta) && Maximum.AlmostEquals(value, delta);
+        public static bool operator ==(NodeValue left, double right) =>
+            left.Equals(right);
+
+        public static bool operator !=(NodeValue left, double right) =>
+            !left.Equals(right);
+
+        public bool Equals(double value) =>
+            Minimum.AlmostEquals(value, 1e-10) && Maximum.AlmostEquals(value, 1e-10);
 
         public override int GetHashCode() =>
             (Minimum, Maximum).GetHashCode();
+
+        public static bool operator <(NodeValue left, NodeValue right) =>
+            left.Maximum < right.Minimum;
+
+        public static bool operator >(NodeValue left, NodeValue right) =>
+            left.Minimum > right.Maximum;
+
+        public static bool operator <=(NodeValue left, NodeValue right) =>
+            left.Maximum <= right.Minimum;
+
+        public static bool operator >=(NodeValue left, NodeValue right) =>
+            left.Minimum >= right.Maximum;
 
         public static bool operator <(NodeValue left, double right) =>
             left.Maximum < right;
 
         public static bool operator >(NodeValue left, double right) =>
             left.Minimum > right;
-        
+
         public static bool operator <=(NodeValue left, double right) =>
             left.Maximum <= right;
 
         public static bool operator >=(NodeValue left, double right) =>
             left.Minimum >= right;
 
+        public static bool operator <(double left, NodeValue right) =>
+            left < right.Minimum;
 
-        public static explicit operator NodeValue(double value) => new NodeValue(value);
+        public static bool operator >(double left, NodeValue right) =>
+            left > right.Maximum;
+
+        public static bool operator <=(double left, NodeValue right) =>
+            left <= right.Minimum;
+
+        public static bool operator >=(double left, NodeValue right) =>
+            left >= right.Maximum;
+
 
         /// <summary>
         /// Returns a value that is at least <paramref name="minValue"/> and at most <paramref name="maxValue"/>.
@@ -106,11 +152,17 @@ namespace PoESkillTree.Computation.Common
         public static NodeValue operator +(double left, NodeValue right) =>
             new NodeValue(left) + right;
 
+        public static NodeValue operator +(NodeValue left, double right) =>
+            left + new NodeValue(right);
+
         public static NodeValue operator -(NodeValue left, NodeValue right) =>
             new NodeValue(left.Minimum - right.Minimum, left.Maximum - right.Maximum);
 
         public static NodeValue operator -(double left, NodeValue right) =>
             new NodeValue(left) - right;
+
+        public static NodeValue operator -(NodeValue left, double right) =>
+            left - new NodeValue(right);
 
         public static NodeValue operator *(NodeValue left, NodeValue right) =>
             new NodeValue(left.Minimum * right.Minimum, left.Maximum * right.Maximum);
@@ -135,12 +187,25 @@ namespace PoESkillTree.Computation.Common
             new NodeValue(operation(left.Minimum, right.Minimum), operation(left.Maximum, right.Maximum));
 
 
-        public override string ToString() => $"{Minimum} to {Maximum}";
+        public override string ToString() =>
+            Minimum.AlmostEquals(Maximum, 1e-10) ? $"{Minimum}" : $"{Minimum} to {Maximum}";
     }
 
 
     public static class NodeValueExtensions
     {
+        /// <summary>
+        /// Returns true if this <c>NodeValue?</c> representing a boolean value represents <c>true</c>.
+        /// </summary>
+        public static bool IsTrue(this NodeValue? @this) => @this.HasValue;
+
+        public static double Single(this NodeValue? @this)
+        {
+            if (!(@this is NodeValue value))
+                throw new InvalidOperationException("NodeValue? has no value");
+            return value.Single;
+        }
+
         /// <summary>
         /// Returns the value created by applying <paramref name="operation"/> to <paramref name="value"/> if
         /// <paramref name="value"/> is not <c>null</c>. Returns <c>null</c> otherwise.

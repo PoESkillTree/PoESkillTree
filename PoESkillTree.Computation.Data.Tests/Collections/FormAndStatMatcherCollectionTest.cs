@@ -132,23 +132,6 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         }
 
         [Test]
-        public void AddTuple()
-        {
-            var firstForm = Mock.Of<IFormBuilder>();
-            var secondForm = Mock.Of<IFormBuilder>();
-            var firstValue = new ValueBuilder(Mock.Of<IValueBuilder>());
-            var secondValue = new ValueBuilder(Mock.Of<IValueBuilder>());
-            var stat = Mock.Of<IStatBuilder>();
-
-            _sut.Add(Regex, (firstForm, secondForm), (firstValue, secondValue), stat);
-
-            var builder = _sut.AssertSingle(Regex);
-            CollectionAssert.AreEqual(new[] { firstForm, secondForm }, builder.Forms);
-            CollectionAssert.AreEqual(new[] { firstValue, secondValue }, builder.Values);
-            Assert.That(builder.Stats, Has.Exactly(1).SameAs(stat));
-        }
-
-        [Test]
         public void AddManyAddsToCount()
         {
             var form = Mock.Of<IFormBuilder>();
@@ -161,9 +144,8 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             _sut.Add(Regex, form, valueBuilder, stat, stat);
             _sut.Add(Regex, form, 5, new[] {stat, stat});
             _sut.Add(Regex, form, valueBuilder, stat, "substitution");
-            _sut.Add(Regex, (form, form), (valueBuilder, valueBuilder), stat);
 
-            Assert.AreEqual(5, _sut.Count());
+            Assert.AreEqual(4, _sut.Count());
         }
     }
 }

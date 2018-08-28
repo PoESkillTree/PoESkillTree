@@ -3,10 +3,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoreLinq;
-using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Items;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
-using POESKillTree.Utils;
 
 namespace UnitTests.Model.Items.Mods
 {
@@ -48,9 +48,9 @@ namespace UnitTests.Model.Items.Mods
 
         private async Task InitializeAsync()
         {
-            _mods = await RePoEUtils.LoadAsync<Dictionary<string, JsonMod>>("mods");
-            _benchOptions = await RePoEUtils.LoadAsync<JsonCraftingBenchOption[]>("crafting_bench_options");
-            _npcMasters = await RePoEUtils.LoadAsync<Dictionary<string, JsonNpcMaster>>("npc_master");
+            _mods = await DataUtils.LoadRePoEAsync<Dictionary<string, JsonMod>>("mods");
+            _benchOptions = await DataUtils.LoadRePoEAsync<JsonCraftingBenchOption[]>("crafting_bench_options");
+            _npcMasters = await DataUtils.LoadRePoEAsync<Dictionary<string, JsonNpcMaster>>("npc_master");
             _modDatabase = new ModDatabase(_mods, _benchOptions, _npcMasters);
         }
 
@@ -60,7 +60,7 @@ namespace UnitTests.Model.Items.Mods
             await _initialization;
             var mod = _mods["AccuracyAndCritsJewel"];
 
-            Assert.AreEqual(ModDomain.Jewel, mod.Domain);
+            Assert.AreEqual(ModDomain.Misc, mod.Domain);
             Assert.AreEqual(ModGenerationType.Suffix, mod.GenerationType);
             Assert.AreEqual("AccuracyAndCrits", mod.Group);
             Assert.AreEqual(false, mod.IsEssenceOnly);
@@ -124,7 +124,7 @@ namespace UnitTests.Model.Items.Mods
             await _initialization;
             foreach (var mod in _mods.Values)
             {
-                if (mod.Domain == ModDomain.Master)
+                if (mod.Domain == ModDomain.Crafted)
                 {
                     AssertCantSpawn(mod);
                 }
@@ -230,7 +230,7 @@ namespace UnitTests.Model.Items.Mods
             var dexHelmet = affix.GetMatchingMods(Tags.Armour | Tags.Helmet | Tags.DexArmour, ItemClass.Helmet)
                 .ToList();
             Assert.IsTrue(dexHelmet.Any());
-            Assert.IsFalse(dexHelmet.Any(m => m.Domain == ModDomain.Master));
+            Assert.IsFalse(dexHelmet.Any(m => m.Domain == ModDomain.Crafted));
         }
 
         [TestMethod]
@@ -242,7 +242,7 @@ namespace UnitTests.Model.Items.Mods
 
             var dexHelmet = affix.GetMatchingMods(Tags.Armour | Tags.Helmet | Tags.DexArmour, ItemClass.Helmet)
                 .ToList();
-            Assert.IsTrue(dexHelmet.Any(m => m.Domain == ModDomain.Master));
+            Assert.IsTrue(dexHelmet.Any(m => m.Domain == ModDomain.Crafted));
         }
 
         // Make sure all possible Tags and ItemClasses are either known or purposefully unknown.

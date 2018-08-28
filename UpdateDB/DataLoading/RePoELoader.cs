@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using POESKillTree.Utils;
+using PoESkillTree.GameModel;
 
 namespace UpdateDB.DataLoading
 {
@@ -12,7 +12,7 @@ namespace UpdateDB.DataLoading
     {
         private static readonly string[] Files =
         {
-            "mods", "crafting_bench_options", "npc_master", "stat_translations"
+            "mods", "crafting_bench_options", "npc_master", "stat_translations", "default_monster_stats", "characters"
         };
 
         public override bool SavePathIsFolder => true;
@@ -24,8 +24,8 @@ namespace UpdateDB.DataLoading
 
         private async Task LoadAsync(string file)
         {
-            var fileName = file + RePoEUtils.FileSuffix;
-            var response = await HttpClient.GetAsync(RePoEUtils.RePoEDataUrl + fileName);
+            var fileName = file + DataUtils.RePoEFileSuffix;
+            var response = await HttpClient.GetAsync(DataUtils.RePoEDataUrl + fileName);
             using (var writer = File.Create(Path.Combine(SavePath, fileName)))
             {
                 await response.Content.CopyToAsync(writer).ConfigureAwait(false);

@@ -1,8 +1,9 @@
-﻿using System.Linq;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common.Builders.Effects;
+using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Data.Collections;
 
 namespace PoESkillTree.Computation.Data.Tests.Collections
@@ -10,12 +11,14 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
     [TestFixture]
     public class EffectStatCollectionTest
     {
+        private Mock<IValueBuilders> _valueFactory;
         private EffectStatCollection _sut;
 
         [SetUp]
         public void SetUp()
         {
-            _sut = new EffectStatCollection();
+            _valueFactory = new Mock<IValueBuilders>();
+            _sut = new EffectStatCollection(new ModifierBuilderStub(), _valueFactory.Object);
         }
 
         [Test]
@@ -25,51 +28,21 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
         }
 
         [Test]
-        public void AddStringsAddsCorrectData()
+        public void AddAddsCorrectData()
         {
-            var effect = Mock.Of<IEffectBuilder>();
+            var expectedStat = Mock.Of<IStatBuilder>();
+            var stat = Mock.Of<IStatBuilder>();
+            var effect = Mock.Of<IEffectBuilder>(b => b.AddStat(stat) == expectedStat);
+            var form = Mock.Of<IFormBuilder>();
+            var value = Mock.Of<IValueBuilder>();
+            _valueFactory.Setup(v => v.Create(3)).Returns(value);
 
-            _sut.Add(effect, "s1", "s2", "s3");
+            _sut.Add(effect, form, stat, 3);
 
-            var data = _sut.Single();
-            Assert.AreSame(effect, data.Effect);
-            CollectionAssert.AreEqual(new[] { "s1", "s2", "s3" }, data.StatLines);
-            CollectionAssert.IsEmpty(data.FlagStats);
-        }
-
-        [Test]
-        public void AddFlagsAddsCorrectData()
-        {
-            var effect = Mock.Of<IEffectBuilder>();
-            var flags = new[]
-            {
-                Mock.Of<IFlagStatBuilder>(), Mock.Of<IFlagStatBuilder>(),
-                Mock.Of<IFlagStatBuilder>()
-            };
-
-            _sut.Add(effect, flags);
-
-            var data = _sut.Single();
-            Assert.AreSame(effect, data.Effect);
-            CollectionAssert.IsEmpty(data.StatLines);
-            CollectionAssert.AreEqual(flags, data.FlagStats);
-        }
-
-        [Test]
-        public void AddManyAddsToCount()
-        {
-            var effect = Mock.Of<IEffectBuilder>();
-            var flags = new[]
-            {
-                Mock.Of<IFlagStatBuilder>(), Mock.Of<IFlagStatBuilder>(),
-                Mock.Of<IFlagStatBuilder>()
-            };
-
-            _sut.Add(effect, "s1");
-            _sut.Add(effect, "s1", "s2", "s3");
-            _sut.Add(effect, flags);
-
-            Assert.AreEqual(3, _sut.Count());
+            var builder = _sut.AssertSingle();
+            Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
+            Assert.That(builder.Stats, Has.Exactly(1).SameAs(expectedStat));
+            Assert.That(builder.Values, Has.Exactly(1).SameAs(value));
         }
     }
 }

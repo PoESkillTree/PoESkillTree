@@ -1,29 +1,13 @@
 ﻿// TODO not handled yet
-// - chill/shock effect
-5% increased effect of chill
-10% increased effect of chill
-15% increased effect of chill
-10% increased effect of shock
-15% increased effect of shock
-10% increased effect of non-damaging ailments on enemies
-15% increased effect of non-damaging ailments on enemies
-20% increased effect of non-damaging ailments on enemies
-// - charge gain at 1/3 of value
-2% chance to gain a Power, Frenzy or Endurance Charge on Kill
-8% chance to gain a Power, Frenzy or Endurance Charge on Kill
-// - some concept for mana spending (the other stat is supported)
-removes all mana. Spend Life instead of Mana for Skills
-Spend Energy Shield before Mana for Skill Costs Energy Shield protects Mana instead of Life
-// - Crimson Dance's bleed mechanics (this is already split into two stats)
-you can inflict bleeding on an enemy up to 8 times your bleeding does not deal extra damage while the enemy is moving
-// - unique complex value conversion
-each Spectral Throw Projectile gains 5% increased Damage each time it Hits
-// - unique complex condition
+// - modifies sub skill
+Raised Zombies' Slam Attack has 100% increased Area of Effect
+Raised Zombies' Slam Attack has 100% increased Cooldown Recovery Speed
 // - adds new sub skill
 can summon up to 3 Skeleton Mages with Summon Skeletons
+summon 2 additional skeleton warriors with summon skeleton
 Animate Weapon can Animate up to 8 Ranged Weapons
 Minions explode when reduced to Low Life, dealing 33% of their maximum Life as Fire Damage to surrounding Enemies
-Your Minions spread Caustic Cloud on Death, dealing 10% of their maximum Life as Chaos Damage per second
+Your Raised Zombies spread Caustic Cloud on Death, dealing 50% of their maximum Life as Chaos Damage per second
 // - adds new parts for skills
 Barrage fires an additional 2 projectiles simultaneously on the first and final attacks
 Burning Arrow has a 10% chance to spread Burning Ground if it Ignites an Enemy
@@ -32,5 +16,3 @@ Dual Strike deals Off-Hand Splash Damage to surrounding targets
 Glacial Hammer deals Cold-only Splash Damage to surrounding targets
 Single-target Melee attacks deal Splash Damage to surrounding targets
 50% less Damage to surrounding targets
-// - modifies skills
-Desecrate creates 2 additional Corpses

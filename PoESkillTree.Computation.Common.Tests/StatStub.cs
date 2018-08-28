@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace PoESkillTree.Computation.Common.Tests
 {
@@ -23,8 +22,10 @@ namespace PoESkillTree.Computation.Common.Tests
 
         public IStat Minimum { get; }
         public IStat Maximum { get; }
-        public bool IsRegisteredExplicitly { get; set; }
+        public string Identity => _instance.ToString();
+        public Entity Entity => Entity.Character;
+        public ExplicitRegistrationType ExplicitRegistrationType { get; set; }
         public Type DataType => typeof(double);
-        public IEnumerable<Behavior> Behaviors => Enumerable.Empty<Behavior>();
+        public IReadOnlyList<Behavior> Behaviors => new Behavior[0];
     }
 }

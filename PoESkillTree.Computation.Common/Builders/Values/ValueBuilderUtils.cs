@@ -21,19 +21,42 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// Returns a value converter multiplying values by <c>(stat.Value / divideBy).Floor</c>.
         /// </summary>
         public static Func<ValueBuilder, ValueBuilder> PerStat(IStatBuilder stat, ValueBuilder divideBy) =>
-            v => v * (stat.Value / divideBy).Floor;
+            PerStat(stat.Value, divideBy);
+
+        public static Func<ValueBuilder, ValueBuilder> PerStat(ValueBuilder statValue, ValueBuilder divideBy) =>
+            v => v * (statValue / divideBy).Select(Math.Floor, o => $"Floor({o})");
 
         /// <summary>
         /// Returns a value converter multiplying values by <c>(stat.Value / divideBy).Ceiling</c>.
         /// </summary>
         public static Func<ValueBuilder, ValueBuilder> PerStatCeiled(IStatBuilder stat, ValueBuilder divideBy) =>
-            v => v * (stat.Value / divideBy).Ceiling;
+            v => v * (stat.Value / divideBy).Select(Math.Ceiling, o => $"Ceiling({o})");
+
+        /// <summary>
+        /// Returns a value converter that behaves the same as the given converter but creates a 
+        /// <see cref="ValueBuilder"/> from parameters that are <see cref="IValueBuilder"/>s and not 
+        /// <see cref="ValueBuilder"/>s.
+        /// </summary>
+        /// <remarks>
+        /// This method can be used when passing converters created in matcher collections (using 
+        /// <see cref="ValueBuilder"/> as type) to <see cref="Builders.Modifiers.IModifierBuilder"/> (which uses
+        /// <see cref="IValueBuilder"/>).
+        /// </remarks>
+        public static ValueConverter ToValueConverter(this Func<ValueBuilder, ValueBuilder> @this)
+        {
+            return iValue => iValue is ValueBuilder value
+                ? @this(value)
+                : @this(new ValueBuilder(iValue));
+        }
 
         /// <summary>
         /// Returns <c>value.AsPercentage * stat.Value</c>.
         /// </summary>
         public static ValueBuilder PercentOf(this ValueBuilder value, IStatBuilder stat) =>
             value.AsPercentage * stat.Value;
+
+        public static ValueBuilder Minimmum(this IValueBuilders valueFactory, ValueBuilder left, ValueBuilder right)
+            => valueFactory.If(left > right).Then(right).Else(left);
 
         /// <summary>
         /// Builds a function from <paramref name="points"/> by interpolating linearly between each two consecutive

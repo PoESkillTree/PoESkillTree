@@ -6,8 +6,7 @@
     public interface IEntityBuilders
     {
         /// <summary>
-        /// Gets the entity whose stats are currently calculated. This normally is <see cref="ModifierSource"/>,
-        /// except when stats apply to other entities via <see cref="Conditions.IConditionBuilders.For"/>.
+        /// Gets the <see cref="BuildParameters.ModifierSourceEntity"/>.
         /// </summary>
         IEntityBuilder Self { get; }
 
@@ -22,27 +21,13 @@
         IEntityBuilder Ally { get; }
 
         /// <summary>
-        /// Gets an entity explicitly representing the entity the modifier originates from.
-        /// <para>Only use this if <see cref="Self"/> refers to another entity but you still need to reference the
-        /// modifier's source entity.</para>
-        /// <para>E.g. when applying stats from one entity to another or when a stat applies to both another entity and
-        /// the modifier's source entity.</para>
-        /// </summary>
-        IEntityBuilder ModifierSource { get; }
-
-        /// <summary>
         /// Gets an entity representing all of Self's totems.
         /// </summary>
-        ISkillEntityBuilder Totem { get; }
+        IEntityBuilder Totem { get; }
 
         /// <summary>
         /// Gets an entity representing all of Self's minions.
         /// </summary>
-        ISkillEntityBuilder Minion { get; }
-
-        /// <summary>
-        /// Gets an entity representing every entity.
-        /// </summary>
-        IEntityBuilder Any { get; }
+        IEntityBuilder Minion { get; }
     }
 }

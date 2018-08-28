@@ -20,5 +20,10 @@ namespace PoESkillTree.Computation.Data.Collections
         {
             Add(regex, ModifierBuilder.WithCondition(condition));
         }
+
+        public void Add([RegexPattern] string regex, (IConditionBuilder mainHand, IConditionBuilder offHand) conditions)
+        {
+            Add(regex, ModifierBuilder.WithConditions(new[] { conditions.mainHand, conditions.offHand }));
+        }
     }
 }

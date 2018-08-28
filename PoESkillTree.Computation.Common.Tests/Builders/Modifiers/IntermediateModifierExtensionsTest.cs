@@ -203,9 +203,9 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             var stat = Mock.Of<IStatBuilder>();
             var form1 = Mock.Of<IFormBuilder>();
             var leftAndRightCondition = Mock.Of<IConditionBuilder>();
-            var leftCondition = Mock.Of<IConditionBuilder>();
-            var rightCondition = Mock.Of<IConditionBuilder>(
-                c => c.And(leftCondition) == leftAndRightCondition);
+            var rightCondition = Mock.Of<IConditionBuilder>();
+            var leftCondition = Mock.Of<IConditionBuilder>(
+                c => c.And(rightCondition) == leftAndRightCondition);
             var entry0 = EmptyEntry
                 .WithCondition(leftCondition);
             var entry1 = EmptyEntry
@@ -229,11 +229,29 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         }
 
         [Test]
+        public void MergeWithDoesNotSwapLeftAndRight()
+        {
+            var expected = Mock.Of<IConditionBuilder>();
+            var rightCondition = Mock.Of<IConditionBuilder>();
+            var leftCondition = Mock.Of<IConditionBuilder>(
+                c => c.And(rightCondition) == expected);
+            var leftEntry = EmptyEntry.WithCondition(leftCondition);
+            var left = CreateResult(leftEntry, leftEntry);
+            var rightEntry = EmptyEntry.WithCondition(rightCondition);
+            var right = CreateResult(rightEntry);
+
+            var result = left.MergeWith(right);
+            var actual = result.Entries[0].Condition;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
         public void BuildSkipsEntriesWithNullStats()
         {
             var input = CreateResult(DefaultEntry.WithStat(null));
 
-            var result = input.Build(Source);
+            var result = input.Build(Source, Entity);
 
             CollectionAssert.IsEmpty(result);
         }
@@ -243,7 +261,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         {
             var input = CreateResult(DefaultEntry.WithForm(null));
 
-            var result = input.Build(Source);
+            var result = input.Build(Source, Entity);
 
             CollectionAssert.IsEmpty(result);
         }
@@ -253,7 +271,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         {
             var input = CreateResult(DefaultEntry.WithValue(null));
 
-            var result = input.Build(Source);
+            var result = input.Build(Source, Entity);
 
             CollectionAssert.IsEmpty(result);
         }
@@ -262,29 +280,28 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         public void BuildReturnsCorrectModifiers()
         {
             var conditionBuilder = Mock.Of<IConditionBuilder>();
+            var buildParameters = new BuildParameters(Source, Entity, Form.More);
 
             var value = Mock.Of<IValue>();
             var valueBuilder = Mock.Of<IValueBuilder>();
             var convertedValueBuilder = Mock.Of<IValueBuilder>();
             var statConvertedValueBuilder = Mock.Of<IValueBuilder>();
-            var formConvertedValueBuilder = Mock.Of<IValueBuilder>(b => b.Build() == value);
+            var formConvertedValueBuilder = Mock.Of<IValueBuilder>(b => b.Build(buildParameters) == value);
 
             var stats = new[] { Mock.Of<IStat>() };
             var source = new ModifierSource.Local.Given();
             IValueBuilder StatConvertValue(IValueBuilder v) =>
                 v == convertedValueBuilder ? statConvertedValueBuilder : v;
-            var statBuilderMock = new Mock<IStatBuilder>();
-            statBuilderMock.Setup(b => b.Build()).Returns((stats, _ => source, StatConvertValue));
-            var statBuilderWithCondition = statBuilderMock.Object;
-            var statBuilder = Mock.Of<IStatBuilder>();
+            var statBuilderResult = new StatBuilderResult(stats, source, StatConvertValue);
             var convertedStatBuilder =
-                Mock.Of<IStatBuilder>(s => s.WithCondition(conditionBuilder) == statBuilderWithCondition);
+                Mock.Of<IStatBuilder>(b => b.Build(buildParameters) == new[] { statBuilderResult });
+            var statBuilderWithCondition = Mock.Of<IStatBuilder>();
+            var statBuilder = Mock.Of<IStatBuilder>(s => s.WithCondition(conditionBuilder) == statBuilderWithCondition);
 
-            var form = Form.More;
             IValueBuilder FormConvertValue(IValueBuilder v) =>
                 v == statConvertedValueBuilder ? formConvertedValueBuilder : v;
             var formBuilderMock = new Mock<IFormBuilder>();
-            formBuilderMock.Setup(b => b.Build()).Returns((form, FormConvertValue));
+            formBuilderMock.Setup(b => b.Build()).Returns((buildParameters.ModifierForm, FormConvertValue));
             var formBuilder = formBuilderMock.Object;
 
             var entry = EmptyEntry
@@ -295,15 +312,15 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
 
             var input = CreateResult(
                 new[] { entry },
-                s => s == statBuilder ? convertedStatBuilder : s,
+                s => s == statBuilderWithCondition ? convertedStatBuilder : s,
                 v => v == valueBuilder ? convertedValueBuilder : v);
 
-            var result = input.Build(Source);
+            var result = input.Build(Source, Entity);
 
             Assert.AreEqual(1, result.Count);
             var item = result[0];
             Assert.AreEqual(stats, item.Stats);
-            Assert.AreEqual(form, item.Form);
+            Assert.AreEqual(buildParameters.ModifierForm, item.Form);
             Assert.AreEqual(value, item.Value);
             Assert.AreSame(source, item.Source);
         }
@@ -325,6 +342,8 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         }
 
         private static readonly ModifierSource Source = new ModifierSource.Global();
+
+        private static readonly Entity Entity = Entity.Character;
 
         private static IIntermediateModifier CreateResult(StatConverter statConverter)
         {

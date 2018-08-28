@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
-using PoESkillTree.Computation.Common.Parsing;
 
 namespace PoESkillTree.Computation.Common.Data
 {

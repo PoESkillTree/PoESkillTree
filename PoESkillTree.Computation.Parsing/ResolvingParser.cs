@@ -81,7 +81,7 @@ namespace PoESkillTree.Computation.Parsing
             if (_referenceManager.TryGetReferencedMatcherData(referenceName, matcherIndex,
                 out var referencedMatcherData))
             {
-                return new ReferenceConverter(referencedMatcherData.Match);
+                return new ResolvedReferenceConverter(referencedMatcherData.Match);
             }
 
             if (_referenceManager.TryGetMatcherData(referenceName, matcherIndex, out var matcherData))
@@ -89,7 +89,7 @@ namespace PoESkillTree.Computation.Parsing
                 var context = CreateContext(groupPrefix);
                 var referencedBuilder =
                     _modifierResolver.ResolveToReferencedBuilder(matcherData.Modifier, context);
-                return new ReferenceConverter(referencedBuilder);
+                return new ResolvedReferenceConverter(referencedBuilder);
             }
 
             throw new ParseException(

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MoreLinq;
-using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {

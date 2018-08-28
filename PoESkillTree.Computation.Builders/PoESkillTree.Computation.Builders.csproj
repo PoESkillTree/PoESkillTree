@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{940A286A-BCA7-4C79-AC89-55C57C7D4784}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PoESkillTree.Computation.Builders</RootNamespace>
+    <AssemblyName>PoESkillTree.Computation.Builders</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Enums.NET, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
+      <HintPath>..\packages\Enums.NET.2.3.2\lib\net45\Enums.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="MoreLinq, Version=2.4.20801.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.2.4.1\lib\net40\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actions\ActionBuilder.cs" />
+    <Compile Include="Actions\ActionBuilders.cs" />
+    <Compile Include="Actions\BlockActionBuilder.cs" />
+    <Compile Include="Actions\CriticalStrikeActionBuilder.cs" />
+    <Compile Include="Behaviors\AilmentDamageBaseValue.cs" />
+    <Compile Include="Behaviors\AilmentDamageIncreaseMoreValue.cs" />
+    <Compile Include="Behaviors\AilmentDamageUncappedSubtotalValue.cs" />
+    <Compile Include="Behaviors\BehaviorFactory.cs" />
+    <Compile Include="Behaviors\ConversionSourcePathTotalValue.cs" />
+    <Compile Include="Behaviors\ConversionTargetPathTotalValue.cs" />
+    <Compile Include="Behaviors\ConversionTargeUncappedSubtotalValue.cs" />
+    <Compile Include="Behaviors\ConvertToUncappedSubtotalValue.cs" />
+    <Compile Include="Behaviors\ModifiedValueCalculationContext.cs" />
+    <Compile Include="Behaviors\RegenUncappedSubtotalValue.cs" />
+    <Compile Include="Behaviors\SkillConversionUncappedSubtotalValue.cs" />
+    <Compile Include="Behaviors\ValueTransformation.cs" />
+    <Compile Include="Buffs\BuffBuilder.cs" />
+    <Compile Include="Buffs\BuffBuilderCollection.cs" />
+    <Compile Include="Buffs\BuffBuilders.cs" />
+    <Compile Include="Buffs\BuffBuilderWithKeywords.cs" />
+    <Compile Include="Buffs\BuffCoreStatBuilder.cs" />
+    <Compile Include="Buffs\BuffRestrictions.cs" />
+    <Compile Include="Buffs\BuffRestrictionsBuilder.cs" />
+    <Compile Include="BuilderFactories.cs" />
+    <Compile Include="Charges\ChargeTypeBuilder.cs" />
+    <Compile Include="Charges\ChargeTypeBuilders.cs" />
+    <Compile Include="Conditions\AndCompositeConditionBuilder.cs" />
+    <Compile Include="Conditions\ConditionBuilderBase.cs" />
+    <Compile Include="Conditions\ConditionBuilders.cs" />
+    <Compile Include="Conditions\OrCompositeConditionBuilder.cs" />
+    <Compile Include="Conditions\StatConvertingConditionBuilder.cs" />
+    <Compile Include="Conditions\ConstantConditionBuilder.cs" />
+    <Compile Include="Conditions\ValueConditionBuilder.cs" />
+    <Compile Include="ConstantBuilder.cs" />
+    <Compile Include="Damage\DamageTypeBuilder.cs" />
+    <Compile Include="Damage\DamageTypeBuilders.cs" />
+    <Compile Include="Damage\ProxyDamageTypeBuilder.cs" />
+    <Compile Include="Effects\AilmentBuilder.cs" />
+    <Compile Include="Effects\AilmentBuilders.cs" />
+    <Compile Include="Effects\EffectBuilder.cs" />
+    <Compile Include="Effects\EffectBuilders.cs" />
+    <Compile Include="Entities\EntityBuilders.cs" />
+    <Compile Include="Equipment\EquipmentBuilder.cs" />
+    <Compile Include="Equipment\EquipmentBuilderCollection.cs" />
+    <Compile Include="Equipment\EquipmentBuilders.cs" />
+    <Compile Include="Equipment\ItemSlotBuilders.cs" />
+    <Compile Include="FixedBuilderCollection.cs" />
+    <Compile Include="Forms\FormBuilders.cs" />
+    <Compile Include="ICoreBuilder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resolving\MatchContexts.cs" />
+    <Compile Include="Resolving\UnresolvedBuilder.cs" />
+    <Compile Include="Resolving\UnresolvedReferenceConverter.cs" />
+    <Compile Include="Skills\KeywordBuilders.cs" />
+    <Compile Include="Skills\SkillBuilder.cs" />
+    <Compile Include="Skills\SkillBuilderCollection.cs" />
+    <Compile Include="Skills\SkillBuilders.cs" />
+    <Compile Include="Stats\CastSpeedStatBuilder.cs" />
+    <Compile Include="Stats\CompositeCoreStatBuilder.cs" />
+    <Compile Include="Stats\ConcatCompositeCoreStatBuilder.cs" />
+    <Compile Include="Stats\ConversionStatBuilder.cs" />
+    <Compile Include="Entities\EntityBuilder.cs" />
+    <Compile Include="Stats\CoreStatBuilderFromCoreBuilder.cs" />
+    <Compile Include="Stats\DamageRelatedStatBuilder.cs" />
+    <Compile Include="Stats\DamageSpecificationBuilder.cs" />
+    <Compile Include="Stats\DamageStatBuilder.cs" />
+    <Compile Include="Stats\DamageStatConcretizer.cs" />
+    <Compile Include="Stats\EvasionStatBuilder.cs" />
+    <Compile Include="Stats\ICoreStatBuilder.cs" />
+    <Compile Include="Stats\IDamageSpecification.cs" />
+    <Compile Include="Stats\IStatFactory.cs" />
+    <Compile Include="Stats\LeafCoreStatBuilder.cs" />
+    <Compile Include="Stats\MetaStatBuilders.cs" />
+    <Compile Include="Stats\ParametrisedCoreStatBuilder.cs" />
+    <Compile Include="Stats\PoolStatBuilder.cs" />
+    <Compile Include="Stats\StatBuilders.cs" />
+    <Compile Include="Stats\Stat.cs" />
+    <Compile Include="Stats\StatBuilder.cs" />
+    <Compile Include="Stats\StatBuilderAdapter.cs" />
+    <Compile Include="Stats\StatBuildersBase.cs" />
+    <Compile Include="Stats\StatBuilderUtils.cs" />
+    <Compile Include="Stats\StatBuilderWithModifierSource.cs" />
+    <Compile Include="Stats\StatBuilderWithStatConverter.cs" />
+    <Compile Include="Stats\StatBuilderWithValueConverter.cs" />
+    <Compile Include="Stats\StatFactory.cs" />
+    <Compile Include="Values\ValueBuilderImpl.cs" />
+    <Compile Include="Values\ValueBuilders.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">
+      <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
+      <Name>PoESkillTree.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj">
+      <Project>{827be52d-878c-45f0-afc0-75b5385aad53}</Project>
+      <Name>PoESkillTree.Computation.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj">
+      <Project>{c1c73cc9-d825-41f7-86f0-f37ee8178d6d}</Project>
+      <Name>PoESkillTree.GameModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props'))" />
+  </Target>
+</Project>

@@ -1,20 +1,26 @@
 ﻿using System.Collections.Generic;
+using PoESkillTree.Computation.Common.Builders.Modifiers;
 
 namespace PoESkillTree.Computation.Common.Data
 {
     /// <summary>
-    /// Collection of the stats that are always applied (to the entity the collection belongs to)
+    /// Collection of stats that are always applied
     /// </summary>
     public interface IGivenStats
     {
+        /// <summary>
+        /// The entities these stats are applied to
+        /// </summary>
+        IReadOnlyList<Entity> AffectedEntities { get; }
+
         /// <summary>
         /// The unparsed stat lines that are always active.
         /// </summary>
         IReadOnlyList<string> GivenStatLines { get; }
 
         /// <summary>
-        /// The parsed stats that are always active.
+        /// The parsed modifiers that are always active.
         /// </summary>
-        IReadOnlyList<GivenStatData> GivenStats { get; }
+        IReadOnlyList<IIntermediateModifier> GivenModifiers { get; }
     }
 }

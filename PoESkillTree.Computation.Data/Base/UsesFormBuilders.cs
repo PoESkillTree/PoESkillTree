@@ -25,8 +25,5 @@ namespace PoESkillTree.Computation.Data.Base
         protected IFormBuilder PercentLess => FormBuilders.PercentLess;
         protected IFormBuilder BaseSubtract => FormBuilders.BaseSubtract;
         protected IFormBuilder TotalOverride => FormBuilders.TotalOverride;
-        protected IFormBuilder BaseOverride => FormBuilders.BaseOverride;
-        protected IFormBuilder MinBaseAdd => FormBuilders.MinBaseAdd;
-        protected IFormBuilder MaxBaseAdd => FormBuilders.MaxBaseAdd;
     }
 }

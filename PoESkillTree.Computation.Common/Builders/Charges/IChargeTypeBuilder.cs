@@ -23,11 +23,13 @@ namespace PoESkillTree.Computation.Common.Builders.Charges
         /// Gets a stat representing the chance to gain a charge of this type (only makes sense in combination with
         /// an action condition, e.g. "on hit").
         /// </summary>
-        IStatBuilder ChanceToGain { get; }
+        IDamageRelatedStatBuilder ChanceToGain { get; }
 
         /// <summary>
         /// Gets an action occurring when Self gains a charge of this type.
         /// </summary>
         IActionBuilder GainAction { get; }
+
+        ChargeType Build();
     }
 }

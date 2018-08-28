@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -64,28 +64,31 @@
     <Compile Include="Builders\Buffs\IBuffBuilder.cs" />
     <Compile Include="Builders\Buffs\IBuffBuilderCollection.cs" />
     <Compile Include="Builders\Buffs\IBuffBuilders.cs" />
+    <Compile Include="Builders\BuildParameters.cs" />
+    <Compile Include="Builders\Charges\ChargeType.cs" />
     <Compile Include="Builders\Charges\IChargeTypeBuilder.cs" />
     <Compile Include="Builders\Charges\IChargeTypeBuilders.cs" />
+    <Compile Include="Builders\Conditions\ConditionBuilderResult.cs" />
     <Compile Include="Builders\Conditions\IConditionBuilder.cs" />
     <Compile Include="Builders\Conditions\IConditionBuilders.cs" />
-    <Compile Include="Builders\Damage\IDamageSourceBuilder.cs" />
-    <Compile Include="Builders\Damage\IDamageSourceBuilders.cs" />
+    <Compile Include="Builders\Damage\AttackDamageHand.cs" />
+    <Compile Include="Builders\Damage\DamageSource.cs" />
+    <Compile Include="Builders\Damage\DamageType.cs" />
     <Compile Include="Builders\Damage\IDamageTypeBuilder.cs" />
     <Compile Include="Builders\Damage\IDamageTypeBuilders.cs" />
+    <Compile Include="Builders\Effects\Ailment.cs" />
     <Compile Include="Builders\Effects\IAilmentBuilder.cs" />
     <Compile Include="Builders\Effects\IAilmentBuilderCollection.cs" />
     <Compile Include="Builders\Effects\IAilmentBuilders.cs" />
     <Compile Include="Builders\Effects\IAvoidableEffectBuilder.cs" />
     <Compile Include="Builders\Effects\IEffectBuilder.cs" />
     <Compile Include="Builders\Effects\IEffectBuilders.cs" />
-    <Compile Include="Builders\Effects\IGroundEffectBuilder.cs" />
     <Compile Include="Builders\Effects\IGroundEffectBuilders.cs" />
     <Compile Include="Builders\Effects\IKnockbackEffectBuilder.cs" />
     <Compile Include="Builders\Effects\IStunEffectBuilder.cs" />
     <Compile Include="Builders\Entities\IEnemyBuilder.cs" />
     <Compile Include="Builders\Entities\IEntityBuilder.cs" />
     <Compile Include="Builders\Entities\IEntityBuilders.cs" />
-    <Compile Include="Builders\Entities\ISkillEntityBuilder.cs" />
     <Compile Include="Builders\Equipment\IEquipmentBuilder.cs" />
     <Compile Include="Builders\Equipment\IEquipmentBuilderCollection.cs" />
     <Compile Include="Builders\Equipment\IEquipmentBuilders.cs" />
@@ -112,32 +115,38 @@
     <Compile Include="Builders\Skills\ISkillBuilder.cs" />
     <Compile Include="Builders\Skills\ISkillBuilderCollection.cs" />
     <Compile Include="Builders\Skills\ISkillBuilders.cs" />
+    <Compile Include="Builders\Skills\Keyword.cs" />
+    <Compile Include="Builders\Skills\SkillDefinition.cs" />
     <Compile Include="Builders\StatConverter.cs" />
     <Compile Include="Builders\Stats\IAttributeStatBuilders.cs" />
+    <Compile Include="Builders\Stats\IDamageRelatedStatBuilder.cs" />
     <Compile Include="Builders\Stats\IDamageStatBuilder.cs" />
     <Compile Include="Builders\Stats\IDodgeStatBuilders.cs" />
     <Compile Include="Builders\Stats\IEvasionStatBuilder.cs" />
-    <Compile Include="Builders\Stats\IFlagStatBuilder.cs" />
     <Compile Include="Builders\Stats\IFlagStatBuilders.cs" />
     <Compile Include="Builders\Stats\IFlaskStatBuilders.cs" />
     <Compile Include="Builders\Stats\IGemStatBuilders.cs" />
     <Compile Include="Builders\Stats\ILeechStatBuilder.cs" />
+    <Compile Include="Builders\Stats\IMetaStatBuilders.cs" />
     <Compile Include="Builders\Stats\IPoolStatBuilder.cs" />
     <Compile Include="Builders\Stats\IPoolStatBuilders.cs" />
     <Compile Include="Builders\Stats\IProjectileStatBuilders.cs" />
     <Compile Include="Builders\Stats\IRechargeStatBuilder.cs" />
     <Compile Include="Builders\Stats\IRegenStatBuilder.cs" />
+    <Compile Include="Builders\Stats\ISkillEntityStatBuilders.cs" />
     <Compile Include="Builders\Stats\IStatBuilder.cs" />
     <Compile Include="Builders\Stats\IStatBuilders.cs" />
+    <Compile Include="Builders\Stats\Pool.cs" />
+    <Compile Include="Builders\Stats\StatBuilderResult.cs" />
     <Compile Include="Builders\ValueConverter.cs" />
     <Compile Include="Builders\Values\IValueBuilder.cs" />
     <Compile Include="Builders\Values\IValueBuilders.cs" />
     <Compile Include="Builders\Values\ValueBuilder.cs" />
     <Compile Include="Builders\Values\ValueBuilderUtils.cs" />
-    <Compile Include="Data\EffectStatData.cs" />
-    <Compile Include="Data\FlagStatData.cs" />
-    <Compile Include="Data\GivenStatData.cs" />
-    <Compile Include="Data\IEffectStats.cs" />
+    <Compile Include="Entity.cs" />
+    <Compile Include="ExplicitRegistrationType.cs" />
+    <Compile Include="GameStateEnums.cs" />
+    <Compile Include="SimpleValues.cs" />
     <Compile Include="Data\IGivenStats.cs" />
     <Compile Include="Data\IParsingData.cs" />
     <Compile Include="Data\IReferencedMatchers.cs" />
@@ -166,9 +175,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PoESkillTree.Common\PoESkillTree.Common.csproj">
+    <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">
       <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
-      <Name>PoESkillTree.Common</Name>
+      <Name>PoESkillTree.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj">
+      <Project>{c1c73cc9-d825-41f7-86f0-f37ee8178d6d}</Project>
+      <Name>PoESkillTree.GameModel</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
@@ -177,6 +190,6 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props'))" />
   </Target>
 </Project>

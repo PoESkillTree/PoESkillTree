@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Co
 		{827BE52D-878C-45F0-AFC0-75B5385AAD53} = {827BE52D-878C-45F0-AFC0-75B5385AAD53}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Common", "PoESkillTree.Common\PoESkillTree.Common.csproj", "{1F11D13C-9039-40AB-8B91-8A03E4DA934A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Utils", "PoESkillTree.Utils\PoESkillTree.Utils.csproj", "{1F11D13C-9039-40AB-8B91-8A03E4DA934A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Data", "PoESkillTree.Computation.Data\PoESkillTree.Computation.Data.csproj", "{85CF9690-7EB9-42CB-9574-ADF4239CFFBE}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -58,6 +58,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Co
 	ProjectSection(ProjectDependencies) = postProject
 		{844B58AB-4D91-4567-BCA9-F3E1B2A29444} = {844B58AB-4D91-4567-BCA9-F3E1B2A29444}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Builders", "PoESkillTree.Computation.Builders\PoESkillTree.Computation.Builders.csproj", "{940A286A-BCA7-4C79-AC89-55C57C7D4784}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Computation.Builders.Tests", "PoESkillTree.Computation.Builders.Tests\PoESkillTree.Computation.Builders.Tests.csproj", "{D6ECC468-961D-4C72-8E8F-DA9037B9B200}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.GameModel", "PoESkillTree.GameModel\PoESkillTree.GameModel.csproj", "{C1C73CC9-D825-41F7-86F0-F37EE8178D6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -179,6 +185,30 @@ Global
 		{02676C0A-817C-4D1D-BE32-640D6D5A9937}.Release|Any CPU.Build.0 = Release|Any CPU
 		{02676C0A-817C-4D1D-BE32-640D6D5A9937}.Release|x86.ActiveCfg = Release|Any CPU
 		{02676C0A-817C-4D1D-BE32-640D6D5A9937}.Release|x86.Build.0 = Release|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Debug|x86.Build.0 = Debug|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Release|Any CPU.Build.0 = Release|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Release|x86.ActiveCfg = Release|Any CPU
+		{940A286A-BCA7-4C79-AC89-55C57C7D4784}.Release|x86.Build.0 = Release|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Debug|x86.Build.0 = Debug|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Release|x86.ActiveCfg = Release|Any CPU
+		{D6ECC468-961D-4C72-8E8F-DA9037B9B200}.Release|x86.Build.0 = Release|Any CPU
+		{C1C73CC9-D825-41F7-86F0-F37EE8178D6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1C73CC9-D825-41F7-86F0-F37EE8178D6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1C73CC9-D825-41F7-86F0-F37EE8178D6D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C1C73CC9-D825-41F7-86F0-F37EE8178D6D}.Debug|x86.Build.0 = Debug|Any CPU
+		{C1C73CC9-D825-41F7-86F0-F37EE8178D6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1C73CC9-D825-41F7-86F0-F37EE8178D6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1C73CC9-D825-41F7-86F0-F37EE8178D6D}.Release|x86.ActiveCfg = Release|Any CPU
+		{C1C73CC9-D825-41F7-86F0-F37EE8178D6D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

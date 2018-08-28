@@ -1,4 +1,4 @@
-// Example parsable stat lines (not including those in AllSkillTreeStatLines)
+// Example parsable stat lines (not including those in SkillTreeStatLines)
 10% increased armour per grand spectrum
 Gain 30 Mana per Grand Spectrum
 Adds 1 to Maximum Life
@@ -21,3 +21,11 @@ With 5 Corrupted Items Equipped: 50% of Chaos Damage does not bypass Energy Shie
 5% increased Defences
 Melee Damage dealt by Frost Blades Penetrates 15% Cold Resistance
 Frost Blades has 25% increased Projectile Speed
+Modifiers to Projectile Damage apply to this Skill's Damage Over Time effect
+Modifiers to Spell Damage apply to this Skill's Damage Over Time effect
+Increases and Reductions to Spell Damage also apply to Attacks
++2 to Melee Weapon and Unarmed Range
+Adds 230 to 800 Lightning Damage to Unarmed Attacks
+Adds 80 to 220 Lightning Damage to Spells while Unarmed
+800% more Unarmed Physical Damage
+Unaffected by Curses

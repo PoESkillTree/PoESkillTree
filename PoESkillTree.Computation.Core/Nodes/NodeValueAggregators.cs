@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
@@ -14,8 +14,7 @@ namespace PoESkillTree.Computation.Core.Nodes
     /// </summary>
     public static class NodeValueAggregators
     {
-        // For both BaseOverride and TotalOverride
-        public static NodeValue? CalculateOverride(IEnumerable<NodeValue?> values)
+        public static NodeValue? CalculateTotalOverride(IEnumerable<NodeValue?> values)
         {
             var enumerated = values.EnumerateWhereNotNull();
             switch (enumerated.Count)
@@ -30,7 +29,7 @@ namespace PoESkillTree.Computation.Core.Nodes
         }
 
         private static NodeValue? CalculateOverrideFromMany(IEnumerable<NodeValue> values) =>
-            values.Any(v => v.AlmostEquals(0))
+            values.Any(v => v == 0)
                 ? new NodeValue(0)
                 : throw new NotSupportedException(
                     "Multiple modifiers to BaseOverride or TotalOverride with none having value 0 are not supported");
@@ -53,7 +52,7 @@ namespace PoESkillTree.Computation.Core.Nodes
                 throw new NotSupportedException("Multiple modifiers to BaseSet are not supported");
             }
 
-            return enumerated.Any() ? enumerated.Sum() : new NodeValue(0);
+            return enumerated.Any() ? enumerated.Sum() : (NodeValue?) null;
         }
 
         private static IReadOnlyList<NodeValue> EnumerateWhereNotNull(this IEnumerable<NodeValue?> values) =>

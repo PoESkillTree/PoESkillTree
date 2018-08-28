@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Data
 {
@@ -29,169 +30,164 @@ namespace PoESkillTree.Computation.Data
             {
                 // actions
                 // - generic
-                { "on ({ActionMatchers})", Reference.AsAction.On() },
                 { "if you've ({ActionMatchers}) recently", Reference.AsAction.Recently },
                 { "if you haven't ({ActionMatchers}) recently", Not(Reference.AsAction.Recently) },
+                { "for # seconds on ({ActionMatchers})", Reference.AsAction.InPastXSeconds(Value) },
                 {
-                    "when you ({ActionMatchers}) a rare or unique enemy",
-                    And(Reference.AsAction.Against(Enemy).On(), Enemy.IsRareOrUnique)
+                    "for # seconds when you ({ActionMatchers}) a rare or unique enemy",
+                    And(Enemy.IsRareOrUnique, Reference.AsAction.InPastXSeconds(Value))
                 },
+                { "when you ({ActionMatchers}) an enemy, for # seconds", Reference.AsAction.InPastXSeconds(Value) },
                 // - kill
-                { "on ({KeywordMatchers}) kill", Kill.On(Reference.AsKeyword) },
-                { "when you kill an enemy,", Kill.Against(Enemy).On() },
                 {
                     "if you've killed a maimed enemy recently",
-                    And(Kill.Against(Enemy).Recently, Buff.Maim.IsOn(Enemy))
+                    And(Kill.Recently, Buff.Maim.IsOn(Enemy))
                 },
                 {
                     "if you've killed a bleeding enemy recently",
-                    And(Kill.Against(Enemy).Recently, Ailment.Bleed.IsOn(Enemy))
+                    And(Kill.Recently, Ailment.Bleed.IsOn(Enemy))
                 },
                 {
                     "if you've killed a cursed enemy recently",
-                    And(Kill.Against(Enemy).Recently, Buffs(target: Enemy).With(Keyword.Curse).Any())
+                    And(Kill.Recently, Buffs(targets: Enemy).With(Keyword.Curse).Any())
                 },
                 {
                     "if you or your totems have killed recently",
                     Or(Kill.Recently, Kill.By(Entity.Totem).Recently)
                 },
-                { "if you or your totems kill an enemy", Or(Kill.On(), Kill.By(Entity.Totem).On()) },
-                // - block
-                { "when they block", Block.On() },
-                { "when you block", Block.On() },
                 {
-                    "if you've blocked a hit from a unique enemy recently",
-                    And(Block.Against(Enemy).Recently, Enemy.IsUnique)
+                    "if you or your minions have killed recently",
+                    Or(Kill.Recently, Kill.By(Entity.Minion).Recently)
                 },
                 // - hit
-                { "(from|with) hits", Hit.On() },
-                { "hits deal", Hit.On() },
-                { "when you are hit", Hit.Taken.On() },
-                { "if you've been hit recently", Hit.Taken.Recently },
-                { "if you haven't been hit recently", Not(Hit.Taken.Recently) },
-                { "if you were damaged by a hit recently", Hit.Taken.Recently },
-                { "if you've taken no damage from hits recently", Not(Hit.Taken.Recently) },
-                // - other
-                { "if you've taken a savage hit recently", Action.SavageHit.Taken.Recently },
-                { "when you deal a critical strike", CriticalStrike.On() },
+                { "if you've been hit recently", Hit.By(Enemy).Recently },
+                { "if you haven't been hit recently", Not(Hit.By(Enemy).Recently) },
+                { "if you were damaged by a hit recently", Hit.By(Enemy).Recently },
+                { "if you've taken no damage from hits recently", Not(Hit.By(Enemy).Recently) },
+                // - critical strike
                 { "if you've crit in the past # seconds", CriticalStrike.InPastXSeconds(Value) },
-                { "if you've shattered an enemy recently", Action.Shatter.Against(Enemy).Recently },
-                { "when you stun an enemy", Effect.Stun.On() },
-                { "after spending # mana", Action.SpendMana(Value).On() },
+                { "if you've dealt a critical strike in the past # seconds", CriticalStrike.InPastXSeconds(Value) },
+                // - block
+                { "if you've blocked in the past # seconds,?", Block.InPastXSeconds(Value) },
+                { "if you've blocked a hit from a unique enemy recently", And(Block.Recently, Enemy.IsUnique) },
+                {
+                    "if you've blocked a hit from a unique enemy in the past # seconds",
+                    And(Block.InPastXSeconds(Value), Enemy.IsUnique)
+                },
+                // - other
+                { "if you've taken a savage hit recently", Action.SavageHit.By(Enemy).Recently },
+                { "if you've shattered an enemy recently", Action.Shatter.Recently },
+                {
+                    "for # seconds after spending( a total of)? # mana",
+                    Action.SpendMana(Values[1]).InPastXSeconds(Values[0])
+                },
                 { "if you have consumed a corpse recently", Action.ConsumeCorpse.Recently },
-                { "when you gain a ({ChargeTypeMatchers})", Reference.AsChargeType.GainAction.On() },
                 // damage
+                { "attacks have", Condition.With(DamageSource.Attack) },
+                { "with attacks", Condition.With(DamageSource.Attack) },
+                { "for spells", Condition.With(DamageSource.Spell) },
                 // - by item tag
-                { "with weapons", Damage.With(Tags.Weapon) },
-                { "weapon", Damage.With(Tags.Weapon) },
-                { "with bows", Damage.With(Tags.Bow) },
-                { "bow", Damage.With(Tags.Bow) },
-                { "with swords", Damage.With(Tags.Sword) },
-                { "with claws", Damage.With(Tags.Claw) },
-                { "claw", Damage.With(Tags.Claw) },
-                { "with daggers", Damage.With(Tags.Dagger) },
-                { "with wands", Damage.With(Tags.Wand) },
-                { "wand", Damage.With(Tags.Wand) },
-                { "with axes", Damage.With(Tags.Axe) },
-                { "with staves", Damage.With(Tags.Staff) },
-                { "with maces", Or(Damage.With(Tags.Mace), Damage.With(Tags.Sceptre)) },
-                { "with one handed weapons", Damage.With(Tags.OneHandWeapon) },
+                { "with weapons", AttackWith(Tags.Weapon) },
+                { "weapon", AttackWith(Tags.Weapon) },
+                { "with bows", AttackWith(Tags.Bow) },
+                { "with a bow", AttackWith(Tags.Bow) },
+                { "bow", AttackWith(Tags.Bow) },
+                { "with swords", AttackWith(Tags.Sword) },
+                { "with claws", AttackWith(Tags.Claw) },
+                { "claw", AttackWith(Tags.Claw) },
+                { "with daggers", AttackWith(Tags.Dagger) },
+                { "with wands", AttackWith(Tags.Wand) },
+                { "wand", AttackWith(Tags.Wand) },
+                { "with axes", AttackWith(Tags.Axe) },
+                { "with staves", AttackWith(Tags.Staff) },
+                { "with a staff", AttackWith(Tags.Staff) },
+                {
+                    "with maces",
+                    (Or(MainHandAttackWith(Tags.Mace), MainHandAttackWith(Tags.Sceptre)),
+                        Or(OffHandAttackWith(Tags.Mace), OffHandAttackWith(Tags.Sceptre)))
+                },
+                { "with one handed weapons", AttackWith(Tags.OneHandWeapon) },
                 {
                     "with one handed melee weapons",
-                    And(Damage.With(Tags.OneHandWeapon), Not(Damage.With(Tags.Ranged)))
+                    (And(MainHandAttackWith(Tags.OneHandWeapon), Not(MainHand.Has(Tags.Ranged))),
+                        And(OffHandAttackWith(Tags.OneHandWeapon), Not(OffHand.Has(Tags.Ranged))))
                 },
-                { "with two handed weapons", Damage.With(Tags.TwoHandWeapon) },
+                { "with two handed weapons", AttackWith(Tags.TwoHandWeapon) },
                 {
                     "with two handed melee weapons",
-                    And(Damage.With(Tags.TwoHandWeapon), Not(Damage.With(Tags.Ranged)))
+                    And(MainHandAttackWith(Tags.TwoHandWeapon), Not(MainHand.Has(Tags.Ranged)))
                 },
                 // - by item slot
-                { "with the main-hand weapon", Damage.With(ItemSlot.MainHand) },
-                { "with main hand", Damage.With(ItemSlot.MainHand) },
-                { "with off hand", Damage.With(ItemSlot.OffHand) },
-                // - by source
-                { "attacks have", Damage.With(Source.Attack) },
-                { "with attacks", Damage.With(Source.Attack) },
-                { "from damage over time", Damage.With(Source.DamageOverTime) },
-                // - by ailment
-                { "with ({AilmentMatchers})", Damage.With(Reference.AsAilment) },
-                { "with ailments", Ailment.All.Any(Damage.With) },
-                // action and damage combinations
-                // - by item tag
-                { "if you get a critical strike with a bow", And(CriticalStrike.On(), Damage.With(Tags.Bow)) },
-                { "if you get a critical strike with a staff", And(CriticalStrike.On(), Damage.With(Tags.Staff)) },
-                { "critical strikes with daggers have a", And(CriticalStrike.On(), Damage.With(Tags.Dagger)) },
-                // - by item slot
-                // - by source
-                { "for each enemy hit by your attacks", And(Hit.Against(Enemy).On(), Damage.With(Source.Attack)) },
-                // - by ailment
-                { "with hits and ailments", Or(Hit.On(), Ailment.All.Any(Damage.With)) },
-                {
-                    "poison you inflict with critical strikes deals",
-                    And(Damage.With(Ailment.Poison), CriticalStrike.On())
-                },
+                { "with the main-hand weapon", Condition.AttackWith(AttackDamageHand.MainHand) },
+                { "with main hand", Condition.AttackWith(AttackDamageHand.MainHand) },
+                { "with off hand", Condition.AttackWith(AttackDamageHand.OffHand) },
+                // - taken
+                { "take", Condition.DamageTaken },
                 // equipment
                 { "while unarmed", Not(MainHand.HasItem) },
                 { "while wielding a staff", MainHand.Has(Tags.Staff) },
-                { "while wielding a dagger", MainHand.Has(Tags.Dagger) },
+                { "while wielding a dagger", EitherHandHas(Tags.Dagger) },
                 { "while wielding a bow", MainHand.Has(Tags.Bow) },
-                { "while wielding a sword", MainHand.Has(Tags.Sword) },
-                { "while wielding a claw", MainHand.Has(Tags.Claw) },
-                { "while wielding an axe", MainHand.Has(Tags.Axe) },
-                { "while wielding a mace", Or(MainHand.Has(Tags.Mace), MainHand.Has(Tags.Sceptre)) },
-                { "while wielding a melee weapon", And(MainHand.Has(Tags.Weapon), Not(MainHand.Has(Tags.Ranged))) },
+                { "while wielding a sword", EitherHandHas(Tags.Sword) },
+                { "while wielding a claw", EitherHandHas(Tags.Claw) },
+                { "while wielding an axe", EitherHandHas(Tags.Axe) },
+                { "while wielding a mace", Or(EitherHandHas(Tags.Mace), EitherHandHas(Tags.Sceptre)) },
+                { "while wielding a wand", EitherHandHas(Tags.Wand) },
+                { "while wielding a melee weapon", And(EitherHandHas(Tags.Weapon), Not(MainHand.Has(Tags.Ranged))) },
                 { "while wielding a one handed weapon", MainHand.Has(Tags.OneHandWeapon) },
                 { "while wielding a two handed weapon", MainHand.Has(Tags.TwoHandWeapon) },
                 { "while dual wielding", OffHand.Has(Tags.Weapon) },
                 { "while holding a shield", OffHand.Has(Tags.Shield) },
                 { "while dual wielding or holding a shield", Or(OffHand.Has(Tags.Weapon), OffHand.Has(Tags.Shield)) },
                 { "with shields", OffHand.Has(Tags.Shield) },
-                { "from equipped shield", And(Condition.BaseValueComesFrom(OffHand), OffHand.Has(Tags.Shield)) },
+                {
+                    "from equipped shield",
+                    And(Condition.BaseValueComesFrom(ItemSlot.OffHand), OffHand.Has(Tags.Shield))
+                },
                 { "with # corrupted items equipped", Equipment.Count(e => e.IsCorrupted) >= Value },
                 // stats
                 // - pool
                 { "when on low life", Life.IsLow },
                 { "when not on low life", Not(Life.IsLow) },
-                { "while no mana is reserved", Mana.Reservation.Value == 0 },
+                { "while no mana is reserved", Mana.Reservation.Value <= 0 },
                 { "while energy shield is full", EnergyShield.IsFull },
                 { "while on full energy shield", EnergyShield.IsFull },
                 { "while not on full energy shield", Not(EnergyShield.IsFull) },
                 { "if energy shield recharge has started recently", EnergyShield.Recharge.StartedRecently },
                 // - charges
-                { "while you have no ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Value == 0 },
+                { "while you have no ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Value <= 0 },
+                { "while you have an? ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Value > 0 },
+                { "while you have at least # ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Value >= Value },
                 {
                     "while (at maximum|on full) ({ChargeTypeMatchers})",
-                    Reference.AsChargeType.Amount.Value == Reference.AsChargeType.Amount.Maximum.Value
+                    Reference.AsChargeType.Amount.Value >= Reference.AsChargeType.Amount.Maximum.Value
                 },
-                // - flags
-                { "while you have ({FlagMatchers})", Reference.AsFlagStat.IsSet },
-                { "during onslaught", Flag.Onslaught.IsSet },
-                { "while phasing", Flag.Phasing.IsSet },
                 // - other
                 { "if you have # primordial jewels,", Stat.PrimordialJewelsSocketed.Value >= Value },
                 // - on enemy
-                { "(against enemies )?that are on low life", Enemy.Stat(Life).IsLow },
-                { "(against enemies )?that are on full life", Enemy.Stat(Life).IsFull },
+                { "(against enemies )?that are on low life", Life.For(Enemy).IsLow },
+                { "(against enemies )?that are on full life", Life.For(Enemy).IsFull },
                 { "against rare and unique enemies", Enemy.IsRareOrUnique },
+                { "while there is only one nearby enemy", Enemy.CountNearby.Eq(1) },
                 // buffs
-                { "while you have fortify", Buff.Fortify.IsOn(Self) },
+                { "while you have ({BuffMatchers})", Reference.AsBuff.IsOn(Self) },
+                { "while affected by ({SkillMatchers})", Reference.AsSkill.Buff.IsOn(Self) },
+                { "during onslaught", Buff.Onslaught.IsOn(Self) },
+                { "while phasing", Buff.Phasing.IsOn(Self) },
                 { "if you've taunted an enemy recently", Buff.Taunt.Action.Recently },
-                { "enemies you taunt( deal| take)?", And(For(Enemy), Buff.Taunt.IsOn(Enemy)) },
-                { "enemies you curse (take|have)", And(For(Enemy), Buffs(Self, Enemy).With(Keyword.Curse).Any()) },
+                { "enemies you taunt( deal)?", And(For(Enemy), Buff.Taunt.IsOn(Self, Enemy)) },
+                { "enemies taunted by you", And(For(Enemy), Buff.Taunt.IsOn(Self, Enemy)) },
+                { "enemies maimed by you", And(For(Enemy), Buff.Maim.IsOn(Self, Enemy)) },
+                { "enemies you curse( have)?", And(For(Enemy), Buffs(Self, Enemy).With(Keyword.Curse).Any()) },
                 { "(against|from) blinded enemies", Buff.Blind.IsOn(Enemy) },
                 { "from taunted enemies", Buff.Taunt.IsOn(Enemy) },
                 {
                     "you and allies affected by your auras have",
-                    Or(For(Entity.ModifierSource), And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
+                    Or(For(Self), And(For(Ally), Buffs(targets: Ally).With(Keyword.Aura).Any()))
                 },
                 {
                     "you and allies deal while affected by auras you cast",
-                    Or(For(Entity.ModifierSource), And(For(Ally), Buffs(target: Ally).With(Keyword.Aura).Any()))
-                },
-                // buff and damage combinations
-                {
-                    "bleeding you inflict on maimed enemies deals",
-                    And(Damage.With(Ailment.Bleed), Buff.Maim.IsOn(Enemy))
+                    Or(For(Self), And(For(Ally), Buffs(targets: Ally).With(Keyword.Aura).Any()))
                 },
                 // ailments
                 { "while ({AilmentMatchers})", Reference.AsAilment.IsOn(Self) },
@@ -211,87 +207,78 @@ namespace PoESkillTree.Computation.Data
                 },
                 // ground effects
                 { "while on consecrated ground", Ground.Consecrated.IsOn(Self) },
-                // other effects
-                { "against burning enemies", Fire.DamageOverTimeIsOn(Enemy) },
                 // skills
                 // - by keyword
-                { "vaal( skill)?", With(Skills[Keyword.Vaal]) },
-                { "({KeywordMatchers})", With(Skills[Reference.AsKeyword]) },
+                { "vaal( skill)?", With(Keyword.Vaal) },
+                { "(?<!your |a )({KeywordMatchers})", With(Reference.AsKeyword) },
                 {
                     "({KeywordMatchers}) and ({KeywordMatchers})",
-                    Or(With(Skills[References[0].AsKeyword]), With(Skills[References[1].AsKeyword]))
+                    Or(With(References[0].AsKeyword), With(References[1].AsKeyword))
                 },
-                { "(with|of|for|from) ({KeywordMatchers})( skills)?", With(Skills[Reference.AsKeyword]) },
-                { "({KeywordMatchers}) skills (have|deal)", With(Skills[Reference.AsKeyword]) },
+                { "(with|of|for) ({KeywordMatchers})( skills)?", With(Reference.AsKeyword) },
+                { "({KeywordMatchers}) skills have", With(Reference.AsKeyword) },
+                { "projectiles deal", With(Keyword.Projectile) },
                 // - by damage type
-                { "with ({DamageTypeMatchers}) skills", With(Skills[Reference.AsDamageType]) },
-                // - by item slot
-                { "skills (in|from) your ({ItemSlotMatchers})(can have| have)?", With(Skills[Reference.AsItemSlot]) },
+                { "with ({DamageTypeMatchers}) skills", With(Reference.AsDamageType) },
                 // - by single skill
-                { "({SkillMatchers})('|s)?( fires| has a| have a| has| deals| gain)?", With(Reference.AsSkill) },
-                { "(dealt by) ({SkillMatchers})", With(Reference.AsSkill) },
+                { "({SkillMatchers})", With(Reference.AsSkill) },
+                { "({SkillMatchers})('|s)? (fires|has a|have a|has|deals|gain)", With(Reference.AsSkill) },
+                { "dealt by ({SkillMatchers})", With(Reference.AsSkill) },
+                {
+                    "({SkillMatchers}) and ({SkillMatchers})",
+                    Or(With(References[0].AsSkill), With(References[1].AsSkill))
+                },
+                { "while you have an? ({SkillMatchers}) summoned", Reference.AsSkill.Instances.Value > 0 },
                 // - cast recently/in past x seconds
-                { "if you've cast a spell recently", Skills[Keyword.Spell].Cast.Recently },
-                { "if you've attacked recently", Skills[Keyword.Attack].Cast.Recently },
+                { "if you've cast a spell recently,?", Skills[Keyword.Spell].Cast.Recently },
+                { "if you've attacked recently,?", Skills[Keyword.Attack].Cast.Recently },
                 { "if you've used a movement skill recently", Skills[Keyword.Movement].Cast.Recently },
+                { "if you've used a minion skill recently", Minions.Cast.Recently },
                 { "if you've used a warcry recently", Skills[Keyword.Warcry].Cast.Recently },
+                { "if you've warcried recently", Skills[Keyword.Warcry].Cast.Recently },
                 {
                     "if you've used a ({DamageTypeMatchers}) skill in the past # seconds",
                     Skills[Reference.AsDamageType].Cast.InPastXSeconds(Value)
                 },
-                // skill and action combinations
-                {
-                    "projectiles have against targets they pierce",
-                    And(Projectile.Pierce.On(), With(Skills[Keyword.Projectile]))
-                },
+                { "if you summoned a golem in the past # seconds", Golems.Cast.InPastXSeconds(Value) },
                 // traps and mines
-                { "with traps", With(Traps) },
-                { "with mines", With(Mines) },
-                { "traps and mines (deal|have a)", Or(With(Traps), With(Mines)) },
-                { "from traps and mines", Or(With(Traps), With(Mines)) },
-                { "for throwing traps", With(Traps) },
-                { "if you detonated mines recently", Skill.DetonateMines.Cast.Recently },
+                { "with traps", With(Keyword.Trap) },
+                { "skills used by traps have", With(Keyword.Trap) },
+                { "with mines", With(Keyword.Mine) },
+                { "traps and mines (deal|have a)", Or(With(Keyword.Trap), With(Keyword.Mine)) },
+                { "for throwing traps", With(Keyword.Trap) },
+                { "if you detonated mines recently", Skills.DetonateMines.Cast.Recently },
                 { "if you've placed a mine or thrown a trap recently", Or(Traps.Cast.Recently, Mines.Cast.Recently) },
                 // totems
-                { "totems", For(Entity.Totem) },
-                { "totems (fire|gain|have)", With(Totems) },
-                { "(spells cast|attacks used|skills used) by totems (have a|have)", With(Totems) },
-                { "of totem skills that cast an aura", With(Skills[Keyword.Totem, Keyword.Aura]) },
-                { "while you have a totem", Totems.Any(s => s.HasInstance) },
+                { "totems (gain|have)", For(Entity.Totem) },
+                { "you and your totems", Or(For(Self), For(Entity.Totem)) },
+                { "totems fire", With(Keyword.Totem) },
+                { "(spells cast|attacks used|skills used) by totems (have a|have)", With(Keyword.Totem) },
+                { "of totem skills that cast an aura", With(Keyword.Totem, Keyword.Aura) },
+                { "while you have a totem", Totems.CombinedInstances.Value > 0 },
                 { "if you've summoned a totem recently", Totems.Cast.Recently },
-                { "when you place a totem", Totems.Cast.On() },
                 // minions
                 { "minions", For(Entity.Minion) },
                 { "minions (deal|have|gain)", For(Entity.Minion) },
-                { "you and your minions have", For(Entity.Minion, Entity.ModifierSource) },
-                { "golem", For(Entity.Minion.With(Keyword.Golem)) },
-                { "golems have", For(Entity.Minion.With(Keyword.Golem)) },
-                { "spectres have", For(Entity.Minion.From(Skill.RaiseSpectre)) },
-                {
-                    // Technically this would be separate for each minion summoned by that skill, but DPS will 
-                    // only be calculated for a single minion anyway.
-                    "golems summoned in the past # seconds deal",
-                    With(Golems.Where(s => s.Cast.InPastXSeconds(Value)))
-                },
-                { "if you Summoned a golem in the past # seconds", Golems.Cast.InPastXSeconds(Value) },
+                { "you and your minions have", For(Entity.Minion).Or(For(Self)) },
+                { "golems have", And(For(Entity.Minion), With(Keyword.Golem)) },
+                { "spectres have", And(For(Entity.Minion), With(Skills.RaiseSpectre)) },
+                { "skeletons deal", And(For(Entity.Minion), WithSkeletonSkills) },
                 // flasks
                 { "while using a flask", Flask.IsAnyActive },
                 { "during any flask effect", Flask.IsAnyActive },
                 // other
-                { "while leeching", Condition.WhileLeeching },
-                { "(you )?gain", Condition.True }, // may be left over at the end, does nothing
+                { "have against targets they pierce", Projectile.PierceCount.Value >= 1 },
                 // unique
-                {
-                    "when your trap is triggered by an enemy",
-                    Condition.Unique("When your Trap is triggered by an Enemy")
-                },
-                {
-                    "when your mine is detonated targeting an enemy",
-                    Condition.Unique("When your Mine is detonated targeting an Enemy")
-                },
+                { "while leeching", Condition.Unique("Are you leeching?") },
                 {
                     "if you've killed an enemy affected by your damage over time recently",
                     Condition.Unique("Have you recently killed an Enemy affected by your Damage over Time?")
+                },
+                { "while you have energy shield", Condition.Unique("Do you have Energy Shield?") },
+                {
+                    "if you've taken fire damage from a hit recently",
+                    Condition.Unique("Have you recently taken Fire Damage from a Hit?")
                 },
             };
     }

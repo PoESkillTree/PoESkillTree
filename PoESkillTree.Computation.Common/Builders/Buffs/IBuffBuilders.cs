@@ -1,7 +1,6 @@
+using System;
 using PoESkillTree.Computation.Common.Builders.Entities;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Common.Builders.Buffs
 {
@@ -36,44 +35,77 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         IBuffBuilder Blind { get; }
 
         /// <summary>
+        /// Gets a buff representing Onslaught.
+        /// </summary>
+        IBuffBuilder Onslaught { get; }
+
+        /// <summary>
+        /// Gets a buff representing Unholy Might.
+        /// </summary>
+        IBuffBuilder UnholyMight { get; }
+
+        /// <summary>
+        /// Gets a buff representing Phasing.
+        /// </summary>
+        IBuffBuilder Phasing { get; }
+
+        IBuffBuilder ArcaneSurge { get; }
+        IBuffBuilder Tailwind { get; }
+        IBuffBuilder CoveredInAsh { get; }
+
+        /// <summary>
         /// Gets a buff factory that creates Conflux buffs.
         /// </summary>
-        IConfluxBuffBuilderFactory Conflux { get; }
-
-        // TODO this probably needs changes when other skills from items are added
-        /// <summary>
-        /// Returns a buff representing the curse (de-)buff applied by the skill <paramref name="skill"/> at level
-        /// <paramref name="level"/>.
-        /// </summary>
-        /// <remarks>
-        /// The stats of the skill starting with "cursed enemies ..." are the (de-)buff.
-        /// </remarks>
-        IBuffBuilder Curse(ISkillBuilder skill, IValueBuilder level);
+        IConfluxBuffBuilders Conflux { get; }
 
         /// <summary>
-        /// Returns a buff factory that can be used to create a buff rotation through different buffs with a total
-        /// duration of <paramref name="duration"/> seconds.
+        /// Returns a buff providing <paramref name="gainedStat"/>. Self gains the buff temporarily in some interval.
+        /// <para> Whether the buff is currently active needs to be selected by the user. </para>
         /// </summary>
-        /// <remarks>
-        /// Buff rotations originate from Self and target Self.
-        /// <para> The currently active step in the rotation will need to be selected by the user.
-        /// </para>
-        /// </remarks>
-        IBuffRotation Rotation(IValueBuilder duration);
+        IStatBuilder Temporary(IStatBuilder gainedStat);
+        
+        /// <summary>
+        /// Returns a stat representing Self gaining <paramref name="gainedStat"/> as part of a buff rotation.
+        /// <para> The buff is part of a buff rotation and is active when the current step is
+        /// <paramref name="condition"/>. The current step needs to be selected by the user. </para>
+        /// </summary>
+        IStatBuilder Temporary<T>(IStatBuilder gainedStat, T condition) where T : struct, Enum;
 
         /// <summary>
-        /// Returns a collection of all buffs that currently affect <paramref name="target"/> and originate from
-        /// <paramref name="source"/>. The parameters default to any entity, e.g. Buffs() without parameters returns
-        /// every active buff.
+        /// Returns a stat representing Self gaining <paramref name="buff"/> as part of a rotation.
+        /// <para> The buff is part of a buff rotation and is active when the current step is
+        /// <paramref name="condition"/>. The current step needs to be selected by the user. </para>
         /// </summary>
-        IBuffBuilderCollection Buffs(IEntityBuilder source = null, IEntityBuilder target = null);
+        IStatBuilder Temporary<T>(IBuffBuilder buff, T condition) where T : struct, Enum;
+
+        /// <summary>
+        /// Returns a buff providing <paramref name="gainedStat"/> and affecting <paramref name="affectedEntites"/>
+        /// cast by Self.
+        /// </summary>
+        IStatBuilder Buff(IStatBuilder gainedStat, params IEntityBuilder[] affectedEntites);
+
+        /// <summary>
+        /// Returns an aura providing <paramref name="gainedStat"/> and affecting <paramref name="affectedEntites"/>
+        /// cast by Self.
+        /// </summary>
+        IStatBuilder Aura(IStatBuilder gainedStat, params IEntityBuilder[] affectedEntites);
+
+        /// <summary>
+        /// Returns a collection of all buffs that currently affect any of <paramref name="targets"/> and originate from
+        /// <paramref name="source"/>.
+        /// <para>If no source and/or target is given, it defaults to any entity, e.g. Buffs() without parameters
+        /// returns every active buff.</para>
+        /// </summary>
+        IBuffBuilderCollection Buffs(IEntityBuilder source = null, params IEntityBuilder[] targets);
+
+        IStatBuilder CurseLimit { get; }
     }
 
 
     /// <summary>
     /// Factory for Conflux buffs.
     /// </summary>
-    public interface IConfluxBuffBuilderFactory
+    public interface IConfluxBuffBuilders
     {
         /// <summary>
         /// Gets a buff representing Igniting Conflux.
@@ -94,20 +126,5 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         /// Gets a buff representing Elemental Conflux.
         /// </summary>
         IBuffBuilder Elemental { get; }
-    }
-
-
-    /// <summary>
-    /// Factory for buff rotations. Buff rotations are stats whose value indicates that the entity with the stat is
-    /// affected by the buff rotation.
-    /// </summary>
-    public interface IBuffRotation : IFlagStatBuilder
-    {
-        /// <summary>
-        /// Returns a new buff rotation that is created by adding a new step to this buff rotation.
-        /// </summary>
-        /// <param name="duration">The duration of the new step.</param>
-        /// <param name="buffs">The buffs gained while the new step is active.</param>
-        IBuffRotation Step(IValueBuilder duration, params IBuffBuilder[] buffs);
     }
 }

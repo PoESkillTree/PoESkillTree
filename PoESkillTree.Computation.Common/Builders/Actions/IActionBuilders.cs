@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Values;
+﻿using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Common.Builders.Actions
 {
@@ -21,6 +22,11 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         /// Gets an action that occurs when Self hits any entity.
         /// </summary>
         IActionBuilder Hit { get; }
+
+        /// <summary>
+        /// Gets an action that occurs when Self hits any entity with the single given damage types.
+        /// </summary>
+        IActionBuilder HitWith(IDamageTypeBuilder damageType);
 
         /// <summary>
         /// Gets an action that occurs when Self savagely hits any entity.
@@ -48,8 +54,15 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         IActionBuilder ConsumeCorpse { get; }
 
         /// <summary>
+        /// Gets an action that occurs when Self stuns any entity.
+        /// </summary>
+        IActionBuilder Stun { get; }
+
+        /// <summary>
         /// Gets an action that occurs when Self spends <paramref name="amount"/> mana.
         /// </summary>
         IActionBuilder SpendMana(IValueBuilder amount);
+
+        IActionBuilder Unique(string description);
     }
 }

@@ -4,15 +4,19 @@ using System.IO;
 using System.Linq;
 using MoreLinq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Builders;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Console;
-using PoESkillTree.Computation.Console.Builders;
+using PoESkillTree.Computation.Data.GivenStats;
 using PoESkillTree.Computation.Parsing;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {
@@ -24,7 +28,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [OneTimeSetUp]
         public static void ClassInit()
         {
-            _parser = Program.CreateParser();
+            _parser = new CompositionRoot().Parser;
         }
 
         [Test, TestCaseSource(nameof(ReadParsableStatLines))]
@@ -65,11 +69,13 @@ namespace PoESkillTree.Computation.IntegrationTests
 
         private static string[] ReadParsableStatLines()
         {
-            var unparsable = ReadUnparsableStatLines().ToHashSet();
+            var unparsable = ReadUnparsableStatLines().Select(s => s.ToLowerInvariant()).ToHashSet();
 
-            return ReadStatLines("AllSkillTreeStatLines")
+            var unparsedGivenStats = new GivenStatsCollection(null, null, null, null).SelectMany(s => s.GivenStatLines);
+            return ReadStatLines("SkillTreeStatLines")
                 .Concat(ReadStatLines("ParsableStatLines"))
-                .Where(s => !unparsable.Contains(s))
+                .Concat(unparsedGivenStats)
+                .Where(s => !unparsable.Contains(s.ToLowerInvariant()))
                 .ToArray();
         }
 
@@ -84,8 +90,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             return File.ReadAllLines(TestContext.CurrentContext.TestDirectory + $"/Data/{fileName}.txt")
                 .Where(s => !s.StartsWith("//", StringComparison.Ordinal))
-                .Distinct()
-                .Select(s => s.ToLowerInvariant());
+                .Distinct();
         }
 
         [Test, TestCaseSource(nameof(ParsingReturnsCorrectModifiers_TestCases))]
@@ -97,15 +102,15 @@ namespace PoESkillTree.Computation.IntegrationTests
 
         private static IEnumerable<TestCaseData> ParsingReturnsCorrectModifiers_TestCases()
         {
-            var f = new BuilderFactories();
+            var f = new BuilderFactories(new StatFactory(), SkillDefinitions.Skills);
+            var life = f.StatBuilders.Pool.From(Pool.Life);
+            var energyShield = f.StatBuilders.Pool.From(Pool.EnergyShield);
 
-            yield return new TestCaseData("+10 to Dexterity").Returns(new[]
-            {
+            yield return new TestCaseData("+10 to Dexterity").Returns(
                 CreateModifier(
                     f.StatBuilders.Attribute.Dexterity,
                     f.FormBuilders.BaseAdd,
-                    f.ValueBuilders.Create(10))
-            });
+                    f.ValueBuilders.Create(10)).ToArray());
 
             yield return new TestCaseData("Gain 30 Mana per Grand Spectrum").Returns(new[]
             {
@@ -114,53 +119,51 @@ namespace PoESkillTree.Computation.IntegrationTests
                     f.FormBuilders.BaseAdd,
                     f.ValueBuilders.Create(1)),
                 CreateModifier(
-                    f.StatBuilders.Pool.Mana,
+                    f.StatBuilders.Pool.From(Pool.Mana),
                     f.FormBuilders.BaseAdd,
                     f.ValueBuilders.Create(30).Multiply(f.StatBuilders.GrandSpectrumJewelsSocketed.Value)),
-            });
+            }.SelectMany(Funcs.Identity).ToArray());
 
             yield return new TestCaseData(
                     "With 5 Corrupted Items Equipped: 50% of Chaos Damage does not bypass Energy Shield, and 50% of Physical Damage bypasses Energy Shield")
                 .Returns(new[]
                 {
                     CreateModifier(
-                        f.DamageTypeBuilders.Chaos.Damage.TakenFrom(f.StatBuilders.Pool.EnergyShield)
-                            .Before(f.StatBuilders.Pool.Life),
+                        f.DamageTypeBuilders.Chaos.DamageTakenFrom(energyShield).Before(life),
                         f.FormBuilders.BaseAdd,
                         f.ValueBuilders.Create(50),
                         f.EquipmentBuilders.Equipment.Count(e => e.IsCorrupted) >= 5),
                     CreateModifier(
-                        f.DamageTypeBuilders.Physical.Damage.TakenFrom(f.StatBuilders.Pool.EnergyShield)
-                            .Before(f.StatBuilders.Pool.Life),
+                        f.DamageTypeBuilders.Physical.DamageTakenFrom(energyShield).Before(life),
                         f.FormBuilders.BaseSubtract,
                         f.ValueBuilders.Create(50),
                         f.EquipmentBuilders.Equipment.Count(e => e.IsCorrupted) >= 5)
-                });
+                }.SelectMany(Funcs.Identity).ToArray());
 
             yield return new TestCaseData(
                     "Life Leeched per Second is doubled.\nMaximum Life Leech Rate is doubled.\nLife Regeneration has no effect.")
                 .Returns(new[]
                 {
                     CreateModifier(
-                        f.StatBuilders.Pool.Life.Leech.Rate,
+                        life.Leech.Rate,
                         f.FormBuilders.PercentMore,
                         f.ValueBuilders.Create(100)),
                     CreateModifier(
-                        f.StatBuilders.Pool.Life.Leech.RateLimit,
+                        life.Leech.RateLimit,
                         f.FormBuilders.PercentMore,
                         f.ValueBuilders.Create(100)),
                     CreateModifier(
-                        f.StatBuilders.Pool.Life.Regen,
-                        f.FormBuilders.BaseOverride,
-                        f.ValueBuilders.Create(0))
-                });
+                        life.Regen,
+                        f.FormBuilders.PercentLess,
+                        f.ValueBuilders.Create(100))
+                }.SelectMany(Funcs.Identity).ToArray());
 
-            Modifier ParagonOfCalamityFor(IDamageTypeBuilder damageType) =>
+            IEnumerable<Modifier> ParagonOfCalamityFor(IDamageTypeBuilder damageType) =>
                 CreateModifier(
                     damageType.Damage.Taken,
                     f.FormBuilders.PercentReduce,
                     f.ValueBuilders.Create(8),
-                    f.ActionBuilders.Hit.With(damageType).Taken.Recently);
+                    f.ActionBuilders.HitWith(damageType).By(f.EntityBuilders.Enemy).Recently);
 
             yield return new TestCaseData(
                     "For each Element you've been hit by Damage of Recently, 8% reduced Damage taken of that Element")
@@ -169,29 +172,32 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ParagonOfCalamityFor(f.DamageTypeBuilders.Fire),
                     ParagonOfCalamityFor(f.DamageTypeBuilders.Lightning),
                     ParagonOfCalamityFor(f.DamageTypeBuilders.Cold),
-                });
+                }.SelectMany(Funcs.Identity).ToArray());
 
             yield return new TestCaseData(
                     "Auras you Cast grant 3% increased Attack and Cast Speed to you and Allies")
-                .Returns(new[]
-                {
-                    CreateModifier(
-                        f.SkillBuilders.Skills.Speed.AddTo(f.SkillBuilders.Skills[f.KeywordBuilders.Aura]),
+                .Returns(CreateModifier(
+                        f.BuffBuilders.Buffs(f.EntityBuilders.Self, f.EntityBuilders.Self, f.EntityBuilders.Ally)
+                            .With(f.KeywordBuilders.Aura).Without(f.KeywordBuilders.Curse)
+                            .AddStat(f.StatBuilders.CastRate),
                         f.FormBuilders.PercentIncrease,
                         f.ValueBuilders.Create(3))
-                });
+                    .ToArray());
         }
 
-        private static Modifier CreateModifier(
+        private static IEnumerable<Modifier> CreateModifier(
             IStatBuilder statBuilder, IFormBuilder formBuilder, IValueBuilder valueBuilder)
         {
-            var (stats, sourceConverter, statValueConverter) = statBuilder.Build();
+            var statBuilderResults = statBuilder.Build(default(BuildParameters).With(new ModifierSource.Global()));
             var (form, formValueConverter) = formBuilder.Build();
-            var value = formValueConverter(statValueConverter(valueBuilder)).Build();
-            return new Modifier(stats, form, value, sourceConverter(new ModifierSource.Global()));
+            foreach (var (stats, source, statValueConverter) in statBuilderResults)
+            {
+                var value = formValueConverter(statValueConverter(valueBuilder)).Build(default);
+                yield return new Modifier(stats, form, value, source);
+            }
         }
 
-        private static Modifier CreateModifier(
+        private static IEnumerable<Modifier> CreateModifier(
             IStatBuilder statBuilder, IFormBuilder formBuilder, IValueBuilder valueBuilder, 
             IConditionBuilder conditionBuilder)
         {

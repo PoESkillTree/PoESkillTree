@@ -1,4 +1,3 @@
-using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
 namespace PoESkillTree.Computation.Common.Builders.Effects
@@ -6,21 +5,18 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
     /// <summary>
     /// Represents the stun effect and action.
     /// </summary>
-    public interface IStunEffectBuilder : IAvoidableEffectBuilder, IActionBuilder
+    public interface IStunEffectBuilder : IAvoidableEffectBuilder
     {
         /// <summary>
-        /// Gets a stat representing the stun threshold.
+        /// Gets a stat representing the stun threshold modifier.
         /// </summary>
-        IStatBuilder Threshold { get; }
+        IDamageRelatedStatBuilder Threshold { get; }
 
         /// <summary>
-        /// Gets a stat representing the stun recovery.
+        /// Gets a stat representing the stun recovery modifier.
         /// </summary>
         IStatBuilder Recovery { get; }
 
-        /// <summary>
-        /// Gets a stat representing the chance to avoid interruption from stuns while casting.
-        /// </summary>
         IStatBuilder ChanceToAvoidInterruptionWhileCasting { get; }
     }
 }

@@ -24,6 +24,7 @@ namespace PoESkillTree.Computation.Data
                 { "endurance charges?", Charge.Endurance },
                 { "frenzy charges?", Charge.Frenzy },
                 { "power charges?", Charge.Power },
+                { "rage", Charge.Rage },
             };
     }
 }

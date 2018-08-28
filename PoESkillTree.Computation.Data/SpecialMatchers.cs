@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Common.Model.Items.Enums;
+using EnumsNET;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -12,6 +13,8 @@ using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.GameModel.Items;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Data
 {
@@ -38,7 +41,7 @@ namespace PoESkillTree.Computation.Data
             {
                 {
                     @"\+# to level of socketed support gems",
-                    BaseAdd, Value, Gem.IncreaseLevel(onlySupportGems: true)
+                    BaseAdd, Value, Gem.IncreaseSupportLevel
                 },
                 {
                     "primordial",
@@ -53,8 +56,23 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 1, Flag.IgnoreMovementSpeedPenalties
                 },
                 {
-                    "life leech is based on your chaos damage instead",
-                    TotalOverride, 1, Life.Leech.BasedOn(Chaos)
+                    "life leech recovers based on your chaos damage instead",
+                    BaseAdd, 100, Life.Leech.Of(Chaos.Invert.Damage).ConvertTo(Life.Leech.Of(Chaos.Damage))
+                },
+                {
+                    "modifiers to ({KeywordMatchers}) damage apply to this skill's damage over time effect",
+                    TotalOverride, 1, Stat.DamageHasKeyword(DamageSource.OverTime, Reference.AsKeyword)
+                },
+                {
+                    "modifiers to spell damage apply to this skill's damage over time effect",
+                    TotalOverride, 1,
+                    Damage.With(DamageSource.Spell)
+                        .ApplyModifiersToSkills(DamageSource.Attack, Form.Increase, Form.More)
+                },
+                {
+                    "increases and reductions to spell damage also apply to attacks",
+                    TotalOverride, 1,
+                    Damage.With(DamageSource.Attack).ApplyModifiersToSkills(DamageSource.Spell, Form.Increase)
                 },
                 // Keystones
                 {
@@ -64,7 +82,7 @@ namespace PoESkillTree.Computation.Data
                     PercentMore,
                     // 0 to 10: Value; 10 to 35: Value to 0; 35 to 150: 0 to -Value
                     Value * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 1), (10, 1), (35, 0), (150, -1)),
-                    Damage, And(Damage.With(Source.Attack), With(Skills[Keyword.Projectile]), Hit.On())
+                    Damage.WithSkills(DamageSource.Attack), With(Keyword.Projectile)
                 },
                 {
                     // Elemental Equilibrium
@@ -75,16 +93,14 @@ namespace PoESkillTree.Computation.Data
                 {
                     // Necromantic Aegis
                     "all bonuses from an equipped shield apply to your minions instead of you",
-                    (TotalOverride, 1, OffHand.AppliesToMinions, OffHand.Has(Tags.Shield)),
-                    (TotalOverride, 0, OffHand.AppliesToSelf, OffHand.Has(Tags.Shield))
+                    TotalOverride, 1, Flag.ShieldModifiersApplyToMinionsInstead
                 },
                 {
                     // Perfect Agony
                     "modifiers to critical strike multiplier also apply to damage multiplier for " +
                     "ailments from critical strikes at #% of their value",
-                    TotalOverride, 1,
-                    CriticalStrike.Multiplier.ApplyModifiersTo(CriticalStrike.AilmentMultiplier,
-                        percentOfTheirValue: Value)
+                    TotalOverride, Value,
+                    CriticalStrike.Multiplier.WithSkills.ApplyModifiersToAilments()
                 },
                 {
                     // Vaal Pact
@@ -94,13 +110,33 @@ namespace PoESkillTree.Computation.Data
                 {
                     // Ancestral Bond
                     "you can't deal damage with skills yourself",
-                    TotalOverride, 0, Damage, Not(Or(With(Totems), With(Traps), With(Mines), With(Minions)))
+                    TotalOverride, 0, Damage, Not(Or(With(Keyword.Totem), With(Keyword.Trap), With(Keyword.Mine)))
+                },
+                {
+                    // Blood Magic
+                    "spend life instead of mana for skills",
+                    (BaseAdd, 100, Mana.Cost.ConvertTo(Life.Cost), Condition.True),
+                    (TotalOverride, (int) Pool.Life, AllSkills.ReservationPool, Condition.True)
+                },
+                {
+                    // Eldritch Battery: Display both mana and energy shield costs
+                    "spend energy shield before mana for skill costs",
+                    BaseAdd, 100, Mana.Cost.GainAs(EnergyShield.Cost)
+                },
+                // - Crimson Dance
+                {
+                    "your bleeding does not deal extra damage while the enemy is moving",
+                    PercentLess, 50, Damage.With(Ailment.Bleed), Enemy.IsMoving
+                },
+                {
+                    "you can inflict bleeding on an enemy up to 8 times",
+                    BaseAdd, 7, Ailment.Bleed.InstancesOn(Self).Maximum
                 },
                 // Ascendancies
                 // - Juggernaut
                 {
                     "you cannot be slowed to below base speed",
-                    TotalOverride, 1, Stat.AnimationSpeed.Minimum
+                    TotalOverride, 1, Stat.ActionSpeed.Minimum
                 },
                 {
                     "movement speed cannot be modified to below base value",
@@ -108,39 +144,65 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "armour received from body armour is doubled",
-                    PercentMore, 100, Armour, Condition.BaseValueComesFrom(Equipment[ItemSlot.BodyArmour])
+                    PercentMore, 100, Armour, Condition.BaseValueComesFrom(ItemSlot.BodyArmour)
+                },
+                { "gain accuracy rating equal to your strength", BaseAdd, Attribute.Strength.Value, Stat.Accuracy },
+                { "#% increased attack speed per # accuracy rating", UndeniableAttackSpeed().ToArray() },
+                {
+                    "gain an endurance charge every second if you've been hit recently",
+                    TotalOverride, 100, Charge.Endurance.ChanceToGain,
+                    Action.Unique("Every second if you've been Hit recently").On
+                },
+                // - Berserker
+                {
+                    "recover #% of life and mana when you use a warcry",
+                    (BaseAdd, Value.PercentOf(Life), Life.Gain, Skills[Keyword.Warcry].Cast.On),
+                    (BaseAdd, Value.PercentOf(Mana), Mana.Gain, Skills[Keyword.Warcry].Cast.On)
+                },
+                {
+                    "effects granted for having rage are doubled",
+                    PercentMore, 100, Charge.RageEffect
                 },
                 // - Chieftain
                 {
                     "totems are immune to fire damage",
-                    TotalOverride, 100, Fire.Resistance, For(Entity.Totem)
+                    TotalOverride, 100, Fire.Resistance.For(Entity.Totem)
                 },
                 {
                     "totems have #% of your armour",
-                    BaseAdd, Value.AsPercentage * Entity.ModifierSource.Stat(Armour).Value, Armour, For(Entity.Totem)
+                    BaseAdd, Value.AsPercentage * Armour.Value, Armour.For(Entity.Totem)
                 },
                 // - Deadeye
                 {
                     "far shot",
                     PercentMore,
                     30 * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
-                    Damage, And(Damage.With(Source.Attack), With(Skills[Keyword.Projectile]))
+                    Damage.WithSkills(DamageSource.Attack), With(Keyword.Projectile)
                 },
                 {
                     // Ascendant
                     "projectiles gain damage as they travel further, dealing up to #% increased damage with hits to targets",
                     PercentIncrease,
                     Value * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
-                    Damage, And(With(Skills[Keyword.Projectile]), Hit.On())
+                    Damage.WithHits, With(Keyword.Projectile)
+                },
+                { "accuracy rating is doubled", PercentMore, 100, Stat.Accuracy },
+                {
+                    "if you've used a skill recently, you and nearby allies have tailwind",
+                    TotalOverride, 1, Buff.Tailwind.On(Self).CombineWith(Buff.Tailwind.On(Ally)),
+                    AllSkills.Cast.Recently
+                },
+                // - Occultist
+                { "your curses can apply to hexproof enemies", TotalOverride, 1, Flag.IgnoreHexproof },
+                {
+                    "enemies you curse have malediction",
+                    (PercentReduce, 10, Buff.Buff(Damage, Enemy), Buffs(Self, Enemy).With(Keyword.Curse).Any()),
+                    (PercentIncrease, 10, Buff.Buff(Damage.Taken, Enemy), Buffs(Self, Enemy).With(Keyword.Curse).Any())
                 },
                 // - Elementalist
                 {
-                    "#% increased damage of each damage type for which you have a matching golem",
-                    LiegeOfThePrimordialDamage().ToArray()
-                },
-                {
                     "your elemental golems are immune to elemental damage",
-                    TotalOverride, 100, Elemental.Resistance, For(Entity.Minion.With(Keyword.Golem, Elemental))
+                    TotalOverride, 100, Elemental.Resistance.For(Entity.Minion), And(With(Keyword.Golem), WithElemental)
                 },
                 {
                     "every # seconds: " +
@@ -148,12 +210,7 @@ namespace PoESkillTree.Computation.Data
                     "gain shocking conflux for # seconds " +
                     "gain igniting conflux for # seconds " +
                     "gain chilling, shocking and igniting conflux for # seconds",
-                    TotalOverride, 1, Buff.Rotation(Values[0])
-                        .Step(Values[1], Buff.Conflux.Chilling)
-                        .Step(Values[2], Buff.Conflux.Shocking)
-                        .Step(Values[3], Buff.Conflux.Igniting)
-                        .Step(Values[4], Buff.Conflux.Chilling, Buff.Conflux.Igniting,
-                            Buff.Conflux.Shocking)
+                    ShaperOfDesolation()
                 },
                 {
                     "for each element you've been hit by damage of recently, " +
@@ -165,26 +222,72 @@ namespace PoESkillTree.Computation.Data
                     "#% reduced damage taken of that element",
                     ParagonOfCalamityDamageTaken().ToArray()
                 },
+                { "cannot take reflected elemental damage", PercentLess, 100, Elemental.ReflectedDamageTaken },
+                {
+                    "gain #% increased area of effect for # seconds",
+                    PercentIncrease, Values[0],
+                    Buff.Temporary(Stat.AreaOfEffect, PendulumOfDestructionStep.AreaOfEffect)
+                },
+                {
+                    "gain #% increased elemental damage for # seconds",
+                    PercentIncrease, Values[0],
+                    Buff.Temporary(Elemental.Damage, PendulumOfDestructionStep.ElementalDamage)
+                },
                 // - Necromancer
                 {
                     "your offering skills also affect you",
-                    TotalOverride, 1,
-                    Combine(Skill.BoneOffering, Skill.FleshOffering, Skill.SpiritOffering).ApplyStatsToEntity(Self)
+                    TotalOverride, 1, Buffs(Self, Entity.Minion).With(Keyword.Offering).ApplyToEntity(Self)
+                },
+                {
+                    "your offerings have #% reduced effect on you",
+                    PercentLess, 50, Buffs(Self, Self).With(Keyword.Offering).Effect
+                },
+                {
+                    "summoned skeletons' hits can't be evaded",
+                    TotalOverride, 100, Stat.ChanceToHit.For(Entity.Minion), With(Skills.SummonSkeleton)
+                },
+                // - Gladiator
+                {
+                    "attacks maim on hit against bleeding enemies",
+                    TotalOverride, 100, Buff.Maim.Chance, With(Keyword.Attack).And(Ailment.Bleed.IsOn(Enemy))
+                },
+                {
+                    "your counterattacks deal double damage",
+                    TotalOverride, 100, Damage.ChanceToDouble, With(Keyword.CounterAttack)
                 },
                 // - Champion
                 {
                     "your hits permanently intimidate enemies that are on full life",
                     TotalOverride, 1, Buff.Intimidate.On(Enemy),
-                    Condition.Unique("on Hit against Enemies that are on Full Life")
+                    Action.Unique("On Hit against a full life Enemy").On
                 },
+                {
+                    "enemies taunted by you cannot evade attacks",
+                    TotalOverride, 0, Evasion.For(Enemy), Buff.Taunt.IsOn(Self, Enemy)
+                },
+                {
+                    "gain adrenaline for # seconds when you reach low life if you do not have adrenaline",
+                    (PercentIncrease, 100, Buff.Buff(Damage, Self), Condition.Unique("Do you have Adrenaline?")),
+                    (PercentIncrease, 25, Buff.Buff(Stat.CastRate, Self), Condition.Unique("Do you have Adrenaline?")),
+                    (PercentIncrease, 25, Buff.Buff(Stat.MovementSpeed, Self),
+                        Condition.Unique("Do you have Adrenaline?")),
+                    (BaseAdd, 10, Buff.Buff(Physical.Resistance, Self), Condition.Unique("Do you have Adrenaline?"))
+                },
+                // - Slayer
+                {
+                    "your damaging hits always stun enemies that are on full life",
+                    TotalOverride, 100, Effect.Stun.Chance,
+                    Action.Unique("On damaging Hit against a full life Enemy").On
+                },
+                { "cannot take reflected physical damage", PercentLess, 100, Physical.ReflectedDamageTaken },
                 // - Inquisitor
                 {
                     "critical strikes ignore enemy monster elemental resistances",
-                    TotalOverride, 1, Elemental.IgnoreResistance, CriticalStrike.Against(Enemy).On()
+                    TotalOverride, 1, Elemental.IgnoreResistanceWithCrits
                 },
                 {
                     "non-critical strikes penetrate #% of enemy elemental resistances",
-                    BaseAdd, Value, Elemental.Penetration, Action.NonCriticalStrike.Against(Enemy).On()
+                    BaseAdd, Value, Elemental.PenetrationWithNonCrits
                 },
                 // - Hierophant
                 {
@@ -195,34 +298,55 @@ namespace PoESkillTree.Computation.Data
                 {
                     "grants armour equal to #% of your reserved life to you and nearby allies",
                     BaseAdd,
-                    Value.AsPercentage * Life.Value * Life.Reservation.Value, Armour.AsAura(Self, Ally)
+                    Value.AsPercentage * Life.Value * Life.Reservation.Value, Buff.Buff(Armour, Self, Ally)
                 },
                 {
                     "grants maximum energy shield equal to #% of your reserved mana to you and nearby allies",
                     BaseAdd,
-                    Value.AsPercentage * Mana.Value * Mana.Reservation.Value, EnergyShield.AsAura(Self, Ally)
+                    Value.AsPercentage * Mana.Value * Mana.Reservation.Value, Buff.Buff(EnergyShield, Self, Ally)
                 },
                 {
                     "warcries cost no mana",
-                    TotalOverride, 0, Skills[Keyword.Warcry].Cost
+                    TotalOverride, 0, Mana.Cost, With(Keyword.Warcry)
                 },
                 {
                     "using warcries is instant",
-                    TotalOverride, double.PositiveInfinity, Skills[Keyword.Warcry].Speed
+                    TotalOverride, double.PositiveInfinity, Stat.CastRate, With(Keyword.Warcry)
+                },
+                {
+                    "#% additional block chance for # seconds every # seconds",
+                    BaseAdd, Values[0], Block.AttackChance,
+                    Condition.Unique("Is the additional Block Chance from Bastion of Hope active?")
                 },
                 // - Assassin
                 {
                     // Ascendant
                     "your critical strikes with attacks maim enemies",
                     TotalOverride, 1, Buff.Maim.On(Enemy),
-                    And(Damage.With(Source.Attack), CriticalStrike.Against(Enemy).On())
+                    And(With(Keyword.Attack), CriticalStrike.On)
                 },
                 // - Trickster
+                { "movement skills cost no mana", TotalOverride, 0, Mana.Cost, With(Keyword.Movement) },
                 {
-                    "movement skills cost no mana",
-                    TotalOverride, 0, Skills[Keyword.Movement].Cost
+                    "your hits have #% chance to gain #% of non-chaos damage as extra chaos damage",
+                    BaseAdd, Values[0] * Values[1] / 100, Chaos.Invert.Damage.WithHits.GainAs(Chaos.Damage.WithHits)
                 },
+                // - Saboteur
+                { "nearby enemies are blinded", TotalOverride, 1, Buff.Blind.On(Enemy), Enemy.IsNearby },
             };
+
+        private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat, IConditionBuilder condition)>
+            UndeniableAttackSpeed()
+        {
+            var attackSpeed = Stat.CastRate.With(DamageSource.Attack);
+            foreach (var hand in Enums.GetValues<AttackDamageHand>())
+            {
+                IValueBuilder PerAccuracy(ValueBuilder value) =>
+                    ValueBuilderUtils.PerStat(Stat.Accuracy.With(hand), Values[1])(value);
+
+                yield return (PercentIncrease, PerAccuracy(Values[0]), attackSpeed.With(hand), Condition.True);
+            }
+        }
 
         private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat, IConditionBuilder condition)>
             ElementalEquilibrium()
@@ -230,22 +354,41 @@ namespace PoESkillTree.Computation.Data
             foreach (var type in ElementalDamageTypes)
             {
                 IConditionBuilder EnemyHitBy(IDamageTypeBuilder damageType) =>
-                    Hit.With(damageType).Against(Enemy).InPastXSeconds(ValueFactory.Create(5));
+                    Action.HitWith(damageType).InPastXSeconds(ValueFactory.Create(5));
 
-                yield return (BaseAdd, Values[0], Enemy.Stat(type.Resistance),
-                    EnemyHitBy(type));
-                yield return (BaseSubtract, Values[1], Enemy.Stat(type.Resistance),
-                    And(Not(EnemyHitBy(type)), EnemyHitBy(Elemental.Except(type))));
+                yield return (BaseAdd, Values[0], type.Resistance.For(Enemy), EnemyHitBy(type));
+                var otherTypes = ElementalDamageTypes.Except(type);
+                yield return (BaseSubtract, Values[1], type.Resistance.For(Enemy),
+                    And(Not(EnemyHitBy(type)), otherTypes.Select(EnemyHitBy).ToArray()));
             }
         }
 
-        private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat, IConditionBuilder condition)>
-            LiegeOfThePrimordialDamage()
+        private (IFormBuilder form, double value, IStatBuilder stat, IConditionBuilder condition)[]
+            ShaperOfDesolation()
         {
-            foreach (var type in AllDamageTypes)
+            var stats = new[]
             {
-                yield return (PercentIncrease, Value, type.Damage, Golems[type].Any(s => s.HasInstance));
-            }
+                Buff.Temporary(Buff.Conflux.Chilling, ShaperOfDesolationStep.Chilling),
+                Buff.Temporary(Buff.Conflux.Shocking, ShaperOfDesolationStep.Shocking),
+                Buff.Temporary(Buff.Conflux.Igniting, ShaperOfDesolationStep.Igniting),
+                Buff.Temporary(Buff.Conflux.Chilling, ShaperOfDesolationStep.All),
+                Buff.Temporary(Buff.Conflux.Shocking, ShaperOfDesolationStep.All),
+                Buff.Temporary(Buff.Conflux.Igniting, ShaperOfDesolationStep.All),
+            };
+
+            return (
+                from stat in stats
+                select (TotalOverride, 1.0, stat, Condition.True)
+            ).ToArray();
+        }
+
+        public enum ShaperOfDesolationStep
+        {
+            None,
+            Chilling,
+            Shocking,
+            Igniting,
+            All
         }
 
         private IEnumerable<(IFormBuilder form, IValueBuilder value, IStatBuilder stat, IConditionBuilder condition)>
@@ -253,7 +396,7 @@ namespace PoESkillTree.Computation.Data
         {
             foreach (var type in ElementalDamageTypes)
             {
-                yield return (PercentIncrease, Value, type.Damage, Hit.With(type).Taken.Recently);
+                yield return (PercentIncrease, Value, type.Damage, Action.HitWith(type).By(Enemy).Recently);
             }
         }
 
@@ -262,8 +405,15 @@ namespace PoESkillTree.Computation.Data
         {
             foreach (var type in ElementalDamageTypes)
             {
-                yield return (PercentReduce, Value, type.Damage.Taken, Hit.With(type).Taken.Recently);
+                yield return (PercentReduce, Value, type.Damage.Taken, Action.HitWith(type).By(Enemy).Recently);
             }
+        }
+
+        public enum PendulumOfDestructionStep
+        {
+            None,
+            AreaOfEffect,
+            ElementalDamage
         }
     }
 }

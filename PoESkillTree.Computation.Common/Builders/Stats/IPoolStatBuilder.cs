@@ -1,9 +1,10 @@
 using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Entities;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
     /// <summary>
-    /// Represents pool stats -- life, mana and energy shield -- that have values, and support things like
+    /// Represents stats for a <see cref="Pool"/> that have values, and support things like
     /// regeneration, gain and leech.
     /// </summary>
     /// <remarks>
@@ -12,6 +13,12 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     /// </remarks>
     public interface IPoolStatBuilder : IStatBuilder
     {
+        /// <summary>
+        /// Applies this stat to <paramref name="entity"/> instead of the currently modified entity.
+        /// See <see cref="IConditionBuilders.For"/> for more information.
+        /// </summary>
+        new IPoolStatBuilder For(IEntityBuilder entity);
+
         /// <summary>
         /// Gets a stat representing the regeneration value of this pool.
         /// </summary>
@@ -27,6 +34,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// recharge and leech.
         /// </summary>
         IStatBuilder RecoveryRate { get; }
+
+        /// <summary>
+        /// Gets a stat representing the amount of this pool spent when casting the main skill once.
+        /// </summary>
+        IStatBuilder Cost { get; }
 
         /// <summary>
         /// Gets a stat representing the percentage of this pool that is reserved.
@@ -45,7 +57,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// Not in ILeechStatBuilder because it does not convert with .AppliesTo(), see Bloodseeker and legacy
         /// Atziri's Acuity.
         /// </remarks>
-        IFlagStatBuilder InstantLeech { get; }
+        IStatBuilder InstantLeech { get; }
 
         /// <summary>
         /// Gets a stat representing the flat gains applied to this stat. Requires an action condition to make sense,
@@ -66,5 +78,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// user says this pool is low.
         /// </summary>
         IConditionBuilder IsLow { get; }
+
+        Pool BuildPool();
     }
 }

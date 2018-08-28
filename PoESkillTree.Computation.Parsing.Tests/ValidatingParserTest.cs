@@ -1,6 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
-using PoESkillTree.Common.Model.Items;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Parsing.Tests
 {

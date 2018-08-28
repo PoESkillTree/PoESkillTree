@@ -37,6 +37,7 @@ namespace PoESkillTree.Computation.Parsing
         /// </summary>
         /// <param name="stat">the stat line that should be parsed</param>
         /// <param name="modifierSource">the source of the modifier</param>
+        /// <param name="modifierSourceEntity">the entity type of the modifier source</param>
         /// <remarks>
         /// <para> If <paramref name="stat"/> was parsed successfully and completely, the return value's 
         /// <see cref="ParseResult.SuccessfullyParsed"/> is true, <see cref="ParseResult.Result"/>
@@ -52,6 +53,6 @@ namespace PoESkillTree.Computation.Parsing
         /// <see cref="Common.Parsing.ParseException"/> on being parsed like not parsable stats.
         /// </para>
         /// </remarks>
-        ParseResult Parse(string stat, ModifierSource modifierSource);
+        ParseResult Parse(string stat, ModifierSource modifierSource, Entity modifierSourceEntity);
     }
 }

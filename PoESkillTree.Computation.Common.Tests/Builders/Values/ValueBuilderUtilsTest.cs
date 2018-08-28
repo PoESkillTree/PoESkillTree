@@ -107,7 +107,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
             public IValueBuilder Create(double value) => 
                 new ValueBuilderStub(value);
 
-            public ValueConverter WrapValueConverter(Func<ValueBuilder, ValueBuilder> converter) => 
+            public IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue) => 
                 throw new NotSupportedException();
 
             private class ThenBuilderStub : IThenBuilder
@@ -120,8 +120,6 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
                     _branchCondition = branchCondition;
                     _value = value;
                 }
-
-                public IThenBuilder Resolve(ResolveContext context) => this;
 
                 public IConditionalValueBuilder Then(IValueBuilder value) =>
                     _branchCondition
@@ -142,8 +140,6 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
                 {
                     _value = value;
                 }
-
-                public IConditionalValueBuilder Resolve(ResolveContext context) => this;
 
                 public IThenBuilder ElseIf(IConditionBuilder condition) => 
                     new ThenBuilderStub(((ConditionBuilderStub) condition).Condition && !_value.HasValue, _value);
@@ -181,52 +177,32 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
 
             public IValueBuilder Resolve(ResolveContext context) => this;
 
-            public IValueBuilder MinimumOnly => throw new NotSupportedException();
             public IValueBuilder MaximumOnly => throw new NotSupportedException();
+            public IValueBuilder Average => throw new NotSupportedException();
 
             public IConditionBuilder Eq(IValueBuilder other) =>
                 new ConditionBuilderStub(Value == Convert(other));
 
-            public IConditionBuilder Eq(double other) =>
-                new ConditionBuilderStub(Value == other);
-
             public IConditionBuilder GreaterThan(IValueBuilder other) =>
                 new ConditionBuilderStub(Value > Convert(other));
-
-            public IConditionBuilder GreaterThan(double other) =>
-                new ConditionBuilderStub(Value > other);
 
             public IValueBuilder Add(IValueBuilder other) =>
                 new ValueBuilderStub(Value + Convert(other));
 
-            public IValueBuilder Add(double other) =>
-                new ValueBuilderStub(Value + other);
-
             public IValueBuilder Multiply(IValueBuilder other) =>
                 new ValueBuilderStub(Value * Convert(other));
 
-            public IValueBuilder Multiply(double other) =>
-                new ValueBuilderStub(Value * other);
-
-            public IValueBuilder AsDividend(IValueBuilder divisor) =>
+            public IValueBuilder DivideBy(IValueBuilder divisor) =>
                 new ValueBuilderStub(Value / Convert(divisor));
 
-            public IValueBuilder AsDividend(double divisor) =>
-                new ValueBuilderStub(Value / divisor);
+            public IValueBuilder If(IValue condition) => throw new NotSupportedException();
 
-            public IValueBuilder AsDivisor(double dividend) =>
-                new ValueBuilderStub(dividend / Value);
+            public IValueBuilder Select(Func<NodeValue, NodeValue> selector, Func<IValue, string> identity) => 
+                new ValueBuilderStub(selector(new NodeValue(Value)).Single);
 
-            public IValueBuilder Round =>
-                new ValueBuilderStub(Math.Round(Value));
+            public IValueBuilder Create(double value) => new ValueBuilderStub(value);
 
-            public IValueBuilder Floor =>
-                new ValueBuilderStub(Math.Floor(Value));
-
-            public IValueBuilder Ceiling =>
-                new ValueBuilderStub(Math.Ceiling(Value));
-
-            public IValue Build() => throw new NotSupportedException();
+            public IValue Build(BuildParameters parameters) => throw new NotSupportedException();
         }
 
 
@@ -249,6 +225,9 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
 
             public IConditionBuilder Not =>
                 new ConditionBuilderStub(!Condition);
+
+            public ConditionBuilderResult Build(BuildParameters parameters) => 
+                throw new NotSupportedException();
         }
     }
 }

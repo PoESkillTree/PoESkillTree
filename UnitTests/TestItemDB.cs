@@ -38,16 +38,9 @@ namespace UnitTests
 
             // Table of damage ranges.
             expectPair = new List<float[]> { new float[] { float.NaN, float.NaN },
-                        new float[] { 7, 10 }, new float[] { 8, 11 }, new float[] { 10, 14 },
-                        new float[] { 13, 20 }, new float[] { 19, 29 }, new float[] { 29, 43 },
-                        new float[] { 39, 58 }, new float[] { 52, 77 }, new float[] { 67, 101 },
-                        new float[] { 87, 131 }, new float[] { 112, 168 }, new float[] { 142, 213 },
-                        new float[] { 180, 270 }, new float[] { 226, 339 }, new float[] { 283, 424 },
-                        new float[] { 352, 528 }, new float[] { 437, 655 }, new float[] { 540, 810 },
-                        new float[] { 632, 948 }, new float[] { 739, 1109 }, new float[] { 819, 1229 },
-                        new float[] { 908, 1362 }, new float[] { 1005, 1508 }, new float[] { 1113, 1669 },
-                        new float[] { 1231, 1847 }, new float[] { 1361, 2042 }, new float[] { 1504, 2257 },
-                        new float[] { 1662, 2493 }, new float[] { 1835, 2752 }, new float[] { 2025, 3038 } 
+                        new float[] { 7, 10 }, new float[] { 8, 11 }, new float[] { 10, 15 },
+                        new float[] { 13, 20 }, new float[] { 20, 29 }, new float[] { 30, 45 },
+                        new float[] { 41, 61 }, new float[] { 55, 82 }, new float[] { 72, 109 },
             };
             for (int level = 1; level < expectPair.Count; ++level)
             {

@@ -1,5 +1,4 @@
-﻿using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Entities;
+﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 
@@ -24,7 +23,7 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         IDamageTypeBuilder And(IDamageTypeBuilder type);
 
         /// <summary>
-        /// Gets a collection that contains all damage types not in this collection.
+        /// Gets a collection that contains all damage types not in this collection (except RandomElement).
         /// <para>E.g. (Fire, Cold).Invert -> (Physical, Lighting, Chaos)</para>
         /// </summary>
         IDamageTypeBuilder Invert { get; }
@@ -49,21 +48,43 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         IDamageStatBuilder Damage { get; }
 
         /// <summary>
-        /// Returns a collection that is satisfied if <paramref name="entity"/> is affected by damage over time
-        /// of any damage type in this collection.
+        /// Starts constructing a stat representing the percentage of damage of this stat's damage types that is taken
+        /// from the given pool before being taken from another pool.
         /// </summary>
-        IConditionBuilder DamageOverTimeIsOn(IEntityBuilder entity);
+        IDamageTakenConversionBuilder DamageTakenFrom(IPoolStatBuilder pool);
+
+        /// <summary>
+        /// Returns a stat representing the percentage of hit damage of the damage types in this collection that is
+        /// taken as the given damage type instead.
+        /// </summary>
+        IStatBuilder HitDamageTakenAs(DamageType type);
 
         /// <summary>
         /// Gets a stat representing the amount of enemy resistances of the damage types in this collection penetrated
         /// by damage.
         /// </summary>
-        IStatBuilder Penetration { get; }
+        IDamageRelatedStatBuilder Penetration { get; }
+        IDamageRelatedStatBuilder PenetrationWithCrits { get; }
+        IDamageRelatedStatBuilder PenetrationWithNonCrits { get; }
 
         /// <summary>
-        /// Gets a flag stat representing whether damage ignores enemy resistances of the damage types in this
-        /// collection.
+        /// Gets a stat representing whether damage ignores enemy resistances of the damage types in this collection.
         /// </summary>
-        IFlagStatBuilder IgnoreResistance { get; }
+        IDamageRelatedStatBuilder IgnoreResistance { get; }
+        IDamageRelatedStatBuilder IgnoreResistanceWithCrits { get; }
+        IDamageRelatedStatBuilder IgnoreResistanceWithNonCrits { get; }
+
+        IStatBuilder ReflectedDamageTaken { get; }
+
+        IReadOnlyList<DamageType> BuildDamageTypes();
+    }
+
+    public interface IDamageTakenConversionBuilder
+    {
+        /// <summary>
+        /// Returns a stat representing the percentage of damage of specific types that is taken from a specific pool
+        /// before being taken from the given pool.
+        /// </summary>
+        IStatBuilder Before(IPoolStatBuilder pool);
     }
 }

@@ -30,8 +30,6 @@ namespace PoESkillTree.Computation.Common.Builders
 
         IConditionBuilders ConditionBuilders { get; }
 
-        IDamageSourceBuilders DamageSourceBuilders { get; }
-
         IDamageTypeBuilders DamageTypeBuilders { get; }
 
         IEffectBuilders EffectBuilders { get; }

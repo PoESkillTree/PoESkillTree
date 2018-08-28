@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Buffs;
@@ -11,6 +10,7 @@ using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Equipment;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Data.Base
 {
@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Data.Base
     /// <see cref="IActionBuilders"/>, <see cref="IBuffBuilders"/>, <see cref="IChargeTypeBuilders"/>,
     /// <see cref="IDamageTypeBuilders"/>, <see cref="IEffectBuilders"/>, <see cref="IEntityBuilders"/>,
     /// <see cref="IEquipmentBuilders"/>, <see cref="IKeywordBuilders"/>, <see cref="ISkillBuilders"/>,
-    /// <see cref="IDamageSourceBuilders"/>, and some of their properties and methods,
+    /// and some of their properties and methods,
     /// in addition to the properties provided by <see cref="UsesFormBuilders"/>.
     /// <para>Also contains a few convenience properties/methods located at the end of the class.</para>
     /// </summary>
@@ -41,11 +41,9 @@ namespace PoESkillTree.Computation.Data.Base
         protected IFlagStatBuilders Flag => Stat.Flag;
         protected IGemStatBuilders Gem => Stat.Gem;
 
-        protected IStatBuilder ApplyOnce(params IStatBuilder[] stats) => Stat.ApplyOnce(stats);
-
-        protected IPoolStatBuilder Life => Stat.Pool.Life;
-        protected IPoolStatBuilder Mana => Stat.Pool.Mana;
-        protected IPoolStatBuilder EnergyShield => Stat.Pool.EnergyShield;
+        protected IPoolStatBuilder Life => Stat.Pool.From(Pool.Life);
+        protected IPoolStatBuilder Mana => Stat.Pool.From(Pool.Mana);
+        protected IPoolStatBuilder EnergyShield => Stat.Pool.From(Pool.EnergyShield);
         protected IStatBuilder Armour => Stat.Armour;
         protected IEvasionStatBuilder Evasion => Stat.Evasion;
 
@@ -62,8 +60,8 @@ namespace PoESkillTree.Computation.Data.Base
 
         protected IBuffBuilders Buff => BuilderFactories.BuffBuilders;
 
-        protected IBuffBuilderCollection Buffs(IEntityBuilder source = null, IEntityBuilder target = null) =>
-            Buff.Buffs(source, target);
+        protected IBuffBuilderCollection Buffs(IEntityBuilder source = null, params IEntityBuilder[] targets) =>
+            Buff.Buffs(source, targets);
 
         // Charges
 
@@ -71,7 +69,7 @@ namespace PoESkillTree.Computation.Data.Base
 
         // Damage types
 
-        private IDamageTypeBuilders DamageTypeBuilders => BuilderFactories.DamageTypeBuilders;
+        protected IDamageTypeBuilders DamageTypeBuilders => BuilderFactories.DamageTypeBuilders;
 
         protected IDamageTypeBuilder Physical => DamageTypeBuilders.Physical;
         protected IDamageTypeBuilder Fire => DamageTypeBuilders.Fire;
@@ -107,19 +105,18 @@ namespace PoESkillTree.Computation.Data.Base
 
         // Skills
 
-        protected ISkillBuilders Skill => BuilderFactories.SkillBuilders;
-
-        protected ISkillBuilderCollection Skills => Skill.Skills;
-
-        protected ISkillBuilderCollection Combine(params ISkillBuilder[] skills) =>
-            Skill.Combine(skills);
-
-        // Sources
-
-        protected IDamageSourceBuilders Source => BuilderFactories.DamageSourceBuilders;
+        protected ISkillBuilders Skills => BuilderFactories.SkillBuilders;
+        protected ISkillBuilderCollection AllSkills => Skills[new IKeywordBuilder[0]];
 
 
         // Convenience methods
+        
+        /// <summary>
+        /// Returns a stat whose modifiers apply to all given stats, but only once.
+        /// (no multiple application if one of the stats is converted to another)
+        /// </summary>
+        protected static IStatBuilder ApplyOnce(IStatBuilder first, params IStatBuilder[] stats) => 
+            stats.Aggregate(first, (s1, s2) => s1.CombineWith(s2));
 
 
         /// <summary>
@@ -161,7 +158,9 @@ namespace PoESkillTree.Computation.Data.Base
         /// <summary>
         /// Shortcut for <c>Fire.And(Lightning).And(Cold)</c>.
         /// </summary>
-        protected IDamageTypeBuilder Elemental => Fire.And(Lightning).And(Cold);
+        protected IDamageTypeBuilder Elemental => ElementalDamageTypes.Aggregate((l, r) => l.And(r));
+
+        protected IDamageTypeBuilder AnyDamageType => AllDamageTypes.Aggregate((l, r) => l.And(r));
 
 
         /// <summary>
@@ -183,6 +182,6 @@ namespace PoESkillTree.Computation.Data.Base
         /// <summary>
         /// Gets a stat for damage with all damage types.
         /// </summary>
-        protected IDamageStatBuilder Damage => AllDamageTypes.Aggregate((l, r) => l.And(r)).Damage;
+        protected IDamageStatBuilder Damage => AnyDamageType.Damage;
     }
 }

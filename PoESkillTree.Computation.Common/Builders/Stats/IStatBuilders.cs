@@ -1,3 +1,7 @@
+using System;
+using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Skills;
+
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
     /// <summary>
@@ -5,12 +9,17 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     /// </summary>
     public interface IStatBuilders
     {
+        IStatBuilder Level { get; }
+        IStatBuilder CharacterClass { get; }
+
         IStatBuilder Armour { get; }
 
         IEvasionStatBuilder Evasion { get; }
 
 
-        IStatBuilder Accuracy { get; }
+        IDamageRelatedStatBuilder Accuracy { get; }
+
+        IDamageRelatedStatBuilder ChanceToHit { get; }
 
 
         /// <summary>
@@ -19,26 +28,53 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder MovementSpeed { get; }
 
         /// <summary>
-        /// Gets a stat representing the multiplier to Self's animation speed.
+        /// Gets a stat representing the multiplier to Self's action/animation speed. This acts like a more modifier
+        /// to all kinds of speeds (movement, cast, trap throwing, ...).
         /// </summary>
-        IStatBuilder AnimationSpeed { get; }
+        IStatBuilder ActionSpeed { get; }
 
 
         /// <summary>
-        /// Gets a stat representing the main skill's range (only for skills that use the weapon's or the unarmed range)
+        /// The rate with which to cast (or attack with) the main skill (casts per second)
         /// </summary>
-        IStatBuilder Range { get; }
+        IDamageRelatedStatBuilder CastRate { get; }
 
+        IStatBuilder EffectivenessOfAddedDamage { get; }
 
-        /// <summary>
-        /// Gets a stat representing the trap trigger area of effect.
-        /// </summary>
-        IStatBuilder TrapTriggerAoE { get; }
+        IStatBuilder DamageHasKeyword(DamageSource damageSource, IKeywordBuilder keyword);
 
         /// <summary>
-        /// Gets a stat representing the mine detonation area of effect.
+        /// Gets a stat representing the modifier to the main skill's area of effect. The square root of this stat is
+        /// used as a modifier to <see cref="Radius"/>.
         /// </summary>
-        IStatBuilder MineDetonationAoE { get; }
+        IStatBuilder AreaOfEffect { get; }
+
+        /// <summary>
+        /// Gets a stat representing the main skill's radius, if it has one.
+        /// </summary>
+        IStatBuilder Radius { get; }
+
+        /// <summary>
+        /// Gets a stat representing the weapon range
+        /// </summary>
+        IDamageRelatedStatBuilder Range { get; }
+
+        /// <summary>
+        /// The main skill's cooldown recovery speed
+        /// </summary>
+        IStatBuilder CooldownRecoverySpeed { get; }
+
+        /// <summary>
+        /// The main skill's duration
+        /// </summary>
+        IStatBuilder Duration { get; }
+
+
+        ITrapStatBuilders Trap { get; }
+
+        IMineStatBuilders Mine { get; }
+
+        ISkillEntityStatBuilders Totem { get; }
 
 
         IStatBuilder ItemQuantity { get; }
@@ -61,6 +97,20 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IStatBuilder RampageStacks { get; }
 
+        IStatBuilder CharacterSize { get; }
+
+        /// <summary>
+        /// The percentage of damage taken gained as mana over 4 seconds.
+        /// </summary>
+        IStatBuilder DamageTakenGainedAsMana { get; }
+
+        IStatBuilder LightRadius { get; }
+
+        /// <summary>
+        /// Returns stat with a value that can only be specified by the user.
+        /// </summary>
+        IStatBuilder Unique(string name, Type type);
+
 
         // Stats from sub factories
 
@@ -77,20 +127,5 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IFlagStatBuilders Flag { get; }
 
         IGemStatBuilders Gem { get; }
-
-
-        // Methods
-
-        /// <summary>
-        /// Returns a stat whose modifiers apply to all given stats, but only once.
-        /// (no multiple application if one of the stats is converted to another)
-        /// </summary>
-        IStatBuilder ApplyOnce(params IStatBuilder[] stats);
-
-        /// <summary>
-        /// Returns a unique stat that can not interact with any other stat. 
-        /// These can still be calculated and displayed.
-        /// </summary>
-        IStatBuilder Unique(string name);
     }
 }

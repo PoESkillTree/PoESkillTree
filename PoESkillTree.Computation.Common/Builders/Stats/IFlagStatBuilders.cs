@@ -6,24 +6,13 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     public interface IFlagStatBuilders
     {
         /// <summary>
-        /// Gets a flag stat indicating whether Onslaught's stats should be applied to Self.
-        /// </summary>
-        IFlagStatBuilder Onslaught { get; }
-
-        /// <summary>
-        /// Gets a flag stat indicating whether Unholy Might's stats should be applied to Self.
-        /// </summary>
-        IFlagStatBuilder UnholyMight { get; }
-
-        /// <summary>
-        /// Gets a flag stat indicating whether Phasing's stats should be applied to Self.
-        /// </summary>
-        IFlagStatBuilder Phasing { get; }
-
-        /// <summary>
-        /// Gets a flag stat indicating whether the movement speed penalties from equipment (as hidden reduced movement
+        /// Gets a stat indicating whether the movement speed penalties from equipment (as hidden reduced movement
         /// speed mods) should be ignored.
         /// </summary>
-        IFlagStatBuilder IgnoreMovementSpeedPenalties { get; }
+        IStatBuilder IgnoreMovementSpeedPenalties { get; }
+
+        IStatBuilder ShieldModifiersApplyToMinionsInstead { get; }
+
+        IStatBuilder IgnoreHexproof { get; }
     }
 }

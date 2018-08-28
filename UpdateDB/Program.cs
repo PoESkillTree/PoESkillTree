@@ -67,7 +67,7 @@ namespace UpdateDB
                         Console.WriteLine("Flags:\r\n");
                         Console.WriteLine("/VersionControlledOnly    Only download version controlled files (gem, base item and unique lists and RePoE data).");
                         Console.WriteLine("/NotVersionControlledOnly Only download not version controlled files (item images and skill tree assets).");
-                        Console.WriteLine("/SourceCodeDir            Save into the WPFSKillTree source code directory instead of the AppData directory.");
+                        Console.WriteLine("/SourceCodeDir            Save into the PoESkillTree.GameModel source code directory instead of the AppData directory.");
                         Console.WriteLine("/CurrentDir               Save into the current directory instead of the AppData directory.");
                         Console.WriteLine("/SpecifiedDir:dirPath     Save into the specified directory instead of the AppData directory.");
                         Console.WriteLine("/Quiet                    Do not display any output.");

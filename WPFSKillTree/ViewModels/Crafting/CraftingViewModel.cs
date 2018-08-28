@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using MoreLinq;
-using PoESkillTree.Common.Model.Items.Enums;
+using PoESkillTree.GameModel.Items;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
@@ -165,7 +165,7 @@ namespace POESKillTree.ViewModels.Crafting
             return
                 from ms in MsPrefix.Concat(MsSuffix)
                 where !ms.IsEmptySelection
-                let location = ms.Query().Domain == ModDomain.Master ? ModLocation.Crafted : ModLocation.Explicit
+                let location = ms.Query().Domain == ModDomain.Crafted ? ModLocation.Crafted : ModLocation.Explicit
                 from tuple in ms.GetStatValues()
                 group tuple by location;
         }

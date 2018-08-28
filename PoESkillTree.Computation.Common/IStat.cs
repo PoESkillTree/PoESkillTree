@@ -14,9 +14,15 @@ namespace PoESkillTree.Computation.Common
     public interface IStat : IEquatable<IStat>
     {
         /// <summary>
-        /// Returns a string naming the represented calculation subgraph.
+        /// A string naming the represented calculation subgraph.
+        /// <para>This string and <see cref="Entity"/> are used in the Equals methods.</para>
         /// </summary>
-        string ToString();
+        string Identity { get; }
+
+        /// <summary>
+        /// The <see cref="Entity"/> this stat belongs to.
+        /// </summary>
+        Entity Entity { get; }
 
         /// <summary>
         /// The <see cref="IStat"/> determining the minimum value of this stat or<c>null</c> if the stat can never
@@ -33,12 +39,13 @@ namespace PoESkillTree.Computation.Common
         IStat Maximum { get; }
 
         /// <summary>
-        /// True if the existence/usage of this stat should be explicitly announced to clients
+        /// Not null if the existence/usage of this stat should be explicitly announced to clients
         /// </summary>
-        bool IsRegisteredExplicitly { get; }
+        [CanBeNull]
+        ExplicitRegistrationType ExplicitRegistrationType { get; }
 
         /// <summary>
-        /// The type of this stat's values. Can be double, int or bool (0 or 1).
+        /// The type of this stat's values. Can be double, int, bool (0 or 1) or an enum type.
         /// The value range is determined by Minimum and Maximum (which have the same DataType).
         /// </summary>
         Type DataType { get; }
@@ -46,6 +53,6 @@ namespace PoESkillTree.Computation.Common
         /// <summary>
         /// The behaviors that should be applied to the calculation graph when this stat's subgraph is created.
         /// </summary>
-        IEnumerable<Behavior> Behaviors { get; }
+        IReadOnlyList<Behavior> Behaviors { get; }
     }
 }

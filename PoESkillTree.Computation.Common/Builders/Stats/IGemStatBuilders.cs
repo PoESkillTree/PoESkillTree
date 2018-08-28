@@ -6,12 +6,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     public interface IGemStatBuilders
     {
         /// <summary>
-        /// Returns a stat representing the modifier to the level of gems.
+        /// A stat representing the modifier to the level of support gems.
         /// </summary>
-        /// <param name="onlySupportGems">True if the stat should only modify support gems.</param>
         /// <remarks>
         /// This stat is used locally to increase the level of socketed gems.
         /// </remarks>
-        IStatBuilder IncreaseLevel(bool onlySupportGems = false);
+        IStatBuilder IncreaseSupportLevel { get; }
     }
 }

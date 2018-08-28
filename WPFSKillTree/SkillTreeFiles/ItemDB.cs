@@ -25,7 +25,7 @@ namespace POESKillTree.SkillTreeFiles
         private static readonly ILog Log = LogManager.GetLogger(typeof(ItemDB));
 
         // Maximum level (quality).
-        public const int MAX_LEVEL = 30;
+        public const int MAX_LEVEL = 40;
 
         // Deserialized attribute.
         public class Attribute

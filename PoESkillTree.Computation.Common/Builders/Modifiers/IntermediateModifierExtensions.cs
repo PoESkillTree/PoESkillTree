@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Common.Builders.Modifiers
 {
@@ -42,23 +42,26 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             IValueBuilder ConvertValue(IValueBuilder v) =>
                 right.ValueConverter(left.ValueConverter(v));
 
-            if (left.Entries.Count > right.Entries.Count)
+            if (left.Entries.Count > 1 && right.Entries.Count > 1)
             {
-                (left, right) = (right, left);
-            }
-
-            if (left.Entries.Count > 1)
-            {
+                // This simple solution will fail once there are stat lines that parse into multiple stats
+                // and have a condition requiring splitting by main hand and off hand.
                 throw new ArgumentException("There may only be one IIntermediateModifier with multiple entries");
             }
 
+            IEnumerable<IntermediateModifierEntry> entries;
             if (left.Entries.IsEmpty())
             {
-                return new SimpleIntermediateModifier(right.Entries, ConvertStat, ConvertValue);
+                entries = right.Entries;
             }
-
-            var leftEntry = left.Entries.Single();
-            IEnumerable<IntermediateModifierEntry> entries = right.Entries.Select(r => Merge(leftEntry, r));
+            else if (right.Entries.IsEmpty())
+            {
+                entries = left.Entries;
+            }
+            else
+            {
+                entries = left.Entries.SelectMany(l => right.Entries.Select(r => Merge(l, r)));
+            }
             return new SimpleIntermediateModifier(entries.ToList(), ConvertStat, ConvertValue);
         }
 
@@ -112,39 +115,42 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
         /// <see cref="IIntermediateModifier.ValueConverter"/> to each value. Entries with null form, stat or value
         /// are ignored.
         /// </summary>
-        public static IReadOnlyList<Modifier> Build(this IIntermediateModifier modifier, ModifierSource originalSource)
+        public static IReadOnlyList<Modifier> Build(this IIntermediateModifier modifier,
+            ModifierSource originalSource, Entity modifierSourceEntity)
         {
             return (
                 from entry in modifier.Entries
-                let m = Build(modifier, entry, originalSource)
-                where m != null
+                from m in Build(modifier, entry, originalSource, modifierSourceEntity)
                 select m
             ).ToList();
         }
 
-        private static Modifier Build(
-            IIntermediateModifier modifier, IntermediateModifierEntry entry, ModifierSource originalSource)
+        private static IEnumerable<Modifier> Build(
+            IIntermediateModifier modifier, IntermediateModifierEntry entry, ModifierSource originalSource,
+            Entity modifierSourceEntity)
         {
             if (entry.Form == null || entry.Stat == null || entry.Value == null)
             {
-                return null;
+                yield break;
             }
 
-            var statBuilder = modifier.StatConverter(entry.Stat);
+            var (form, formValueConverter) = entry.Form.Build();
+            var buildParameters = new BuildParameters(originalSource, modifierSourceEntity, form);
+
+            var statBuilder = entry.Stat;
             if (entry.Condition != null)
             {
                 statBuilder = statBuilder.WithCondition(entry.Condition);
             }
-            var (stats, sourceConverter, statValueConverter) = statBuilder.Build();
+            statBuilder = modifier.StatConverter(statBuilder);
+            var statBuilderResults = statBuilder.Build(buildParameters);
 
-            var (form, formValueConverter) = entry.Form.Build();
-
-            var value =
-                formValueConverter(
-                    statValueConverter(
-                        modifier.ValueConverter(entry.Value))).Build();
-
-            return new Modifier(stats, form, value, sourceConverter(originalSource));
+            foreach (var (stats, source, statValueConverter) in statBuilderResults)
+            {
+                var valueBuilder = formValueConverter(statValueConverter(modifier.ValueConverter(entry.Value)));
+                var value = valueBuilder.Build(buildParameters);
+                yield return new Modifier(stats, form, value, source);
+            }
         }
     }
 }

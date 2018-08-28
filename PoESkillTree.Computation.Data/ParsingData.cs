@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Data
         private readonly Lazy<StatMatchersSelector> _statMatchersSelector;
 
         public ParsingData(
-            IBuilderFactories builderFactories, IMatchContexts matchContexts, IReferencedMatchers skillMatchers)
+            IBuilderFactories builderFactories, IMatchContexts matchContexts, IReadOnlyList<string> skillNames)
         {
             _builderFactories = builderFactories;
             _matchContexts = matchContexts;
@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Data
             _statMatchers = new Lazy<IReadOnlyList<IStatMatchers>>(
                 () => CreateStatMatchers(new ModifierBuilder()));
             _referencedMatchers = new Lazy<IReadOnlyList<IReferencedMatchers>>(
-                () => CreateReferencedMatchers(skillMatchers));
+                () => CreateReferencedMatchers(skillNames));
             _statMatchersSelector = new Lazy<StatMatchersSelector>(
                 () => new StatMatchersSelector(StatMatchers));
         }
@@ -65,19 +65,19 @@ namespace PoESkillTree.Computation.Data
                 new DamageStatMatchers(_builderFactories, _matchContexts, modifierBuilder),
                 new PoolStatMatchers(_builderFactories, _matchContexts, modifierBuilder),
                 new ConditionMatchers(_builderFactories, _matchContexts, modifierBuilder),
+                new ActionConditionMatchers(_builderFactories, _matchContexts, modifierBuilder),
             };
 
-        private IReadOnlyList<IReferencedMatchers> CreateReferencedMatchers(IReferencedMatchers skillMatchers) =>
-            new[]
+        private IReadOnlyList<IReferencedMatchers> CreateReferencedMatchers(IReadOnlyList<string> skillNames) =>
+            new IReferencedMatchers[]
             {
                 new ActionMatchers(_builderFactories.ActionBuilders),
                 new AilmentMatchers(_builderFactories.EffectBuilders.Ailment),
                 new ChargeTypeMatchers(_builderFactories.ChargeTypeBuilders),
                 new DamageTypeMatchers(_builderFactories.DamageTypeBuilders),
-                new FlagMatchers(_builderFactories.StatBuilders.Flag),
-                new ItemSlotMatchers(_builderFactories.ItemSlotBuilders),
+                new BuffMatchers(_builderFactories.BuffBuilders),
                 new KeywordMatchers(_builderFactories.KeywordBuilders),
-                skillMatchers,
+                new SkillMatchers(skillNames, _builderFactories.SkillBuilders.FromName),
             };
     }
 }

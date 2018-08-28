@@ -5,8 +5,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     /// </summary>
     public interface IPoolStatBuilders
     {
-        IPoolStatBuilder Life { get; }
-        IPoolStatBuilder Mana { get; }
-        IPoolStatBuilder EnergyShield { get; }
+        IPoolStatBuilder From(Pool pool);
     }
 }

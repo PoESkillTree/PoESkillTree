@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using PoESkillTree.Common.Model.Items.Enums;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -27,44 +27,71 @@ namespace PoESkillTree.Computation.Data
             _modifierBuilder = modifierBuilder;
         }
 
-        public override IReadOnlyList<string> ReferenceNames { get; } =
-            new[] { "StatMatchers", nameof(DamageStatMatchers) };
+        public override IReadOnlyList<string> ReferenceNames { get; } = new[] { "StatMatchers" };
 
+        // Kind of counter-intuitive, but "with attack skills" on a stat line refers to the dealt damage being attack
+        // damage or ailment damage from that attack. On the other hand, IDamageRelatedStatBuilder.WithSkills
+        // differentiates from ailment damage and restricts to not apply to ailment damage.
+        // E.g. "attack damage" does not include ailment damage and corresponds to WithSkills(DamageSource.Attack).
+        // "damage with attack skills does" does include ailment damage and corresponds to With(DamageSource.Attack).
         protected override IEnumerable<MatcherData> CreateCollection() =>
-            new StatMatcherCollection<IDamageStatBuilder>(_modifierBuilder)
+            new StatMatcherCollection<IDamageRelatedStatBuilder>(_modifierBuilder)
             {
                 // unspecific
                 { "damage", Damage },
+                { "global damage", Damage },
                 // by source
-                { "attack damage", Damage, Damage.With(Source.Attack) },
-                { "spell damage", Damage, Damage.With(Source.Spell) },
-                { "damage over time", Damage, Damage.With(Source.DamageOverTime) },
+                { "attack damage", Damage.WithSkills(DamageSource.Attack) },
+                { "spell damage", Damage.WithSkills(DamageSource.Spell) },
+                { "damage over time", Damage.With(DamageSource.OverTime) },
                 // by type
                 { "({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage },
+                { "global ({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage },
                 { "damage of a random element", RandomElement.Damage },
+                // by skill vs. ailment
+                { "damage with hits and ailments", Damage.WithHitsAndAilments },
+                { "(?<!no )damage (with|from) hits", Damage.WithHits },
+                { "damage with ailments", Damage.WithAilments },
+                { "damage with ailments from attack skills", Damage.WithAilments.With(DamageSource.Attack) },
+                { "attack skills deal damage with ailments", Damage.WithAilments.With(DamageSource.Attack) },
+                { "damage with ({AilmentMatchers})", Damage.With(Reference.AsAilment) },
                 // by source and type
-                { "attack physical damage", Physical.Damage, Damage.With(Source.Attack) },
-                { "physical attack damage", Physical.Damage, Damage.With(Source.Attack) },
+                { "attack physical damage", Physical.Damage.WithSkills(DamageSource.Attack) },
                 {
                     "({DamageTypeMatchers}) damage to attacks",
-                    Reference.AsDamageType.Damage, Damage.With(Source.Attack)
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Attack)
                 },
                 {
                     "({DamageTypeMatchers}) attack damage",
-                    Reference.AsDamageType.Damage, Damage.With(Source.Attack)
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Attack)
+                },
+                {
+                    "({DamageTypeMatchers}) damage with attack skills",
+                    Reference.AsDamageType.Damage.With(DamageSource.Attack)
                 },
                 {
                     "({DamageTypeMatchers}) spell damage",
-                    Reference.AsDamageType.Damage, Damage.With(Source.Spell)
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell)
                 },
-                { "burning damage", Fire.Damage, Damage.With(Source.DamageOverTime) },
+                { "burning damage", Fire.Damage.WithSkills(DamageSource.OverTime), Fire.Damage.With(Ailment.Ignite) },
                 // other combinations
-                { "physical melee damage", Physical.Damage, With(Skills[Keyword.Melee]) },
-                { "physical weapon damage", Physical.Damage, Damage.With(Tags.Weapon) },
+                { "(?<!no )({DamageTypeMatchers}) damage (with|from) hits", Reference.AsDamageType.Damage.WithHits },
+                // specific attack damage
+                { "melee damage", Damage.WithSkills(DamageSource.Attack), With(Keyword.Melee) },
+                { "melee physical damage", Physical.Damage.WithSkills(DamageSource.Attack), With(Keyword.Melee) },
+                { "physical melee damage", Physical.Damage.WithSkills(DamageSource.Attack), With(Keyword.Melee) },
+                { "physical weapon damage", Physical.Damage.WithSkills(DamageSource.Attack), MainHand.HasItem },
+                {
+                    "unarmed physical damage",
+                    Physical.Damage.WithSkills(DamageSource.Attack), And(Not(MainHand.HasItem), With(Keyword.Melee))
+                },
                 {
                     "physical projectile attack damage",
-                    Physical.Damage, And(Damage.With(Source.Attack), With(Skills[Keyword.Projectile]))
+                    Physical.Damage.WithSkills(DamageSource.Attack), With(Keyword.Projectile)
                 },
-            };
+                // other entities
+                { "minion damage", Damage.For(Entity.Minion) },
+                { "golem damage", Damage.For(Entity.Minion), With(Keyword.Golem) },
+            }; //add
     }
 }

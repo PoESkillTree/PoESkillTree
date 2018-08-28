@@ -31,13 +31,13 @@ namespace PoESkillTree.Computation.Data
         }
 
         protected override IEnumerable<MatcherData> CreateCollection() =>
-            new PropertyMatcherCollection(_modifierBuilder, ValueFactory)
+            new PropertyMatcherCollection(_modifierBuilder)
             {
                 { "quality" }, // do nothing with it
-                { "attacks per second", Skills.Speed },
-                { "cast time", Skills.Speed, v => v.Invert },
+                { "attacks per second", Stat.CastRate },
+                { "cast time", Stat.CastRate, v => v.Invert },
                 { "fire damage", Fire.Damage },
-                { "damage effectiveness", Skills.DamageEffectiveness }
+                { "damage effectiveness", Stat.EffectivenessOfAddedDamage }
             };
     }
 }

@@ -31,8 +31,8 @@ namespace PoESkillTree.Computation.Data
             // keystones
             {
                 // Acrobatics
-                @"(\d+% chance to dodge attacks)\. (\d+% less armour and energy shield), (\d+% less chance to block spells and attacks)",
-                "$1", "$2", "$3"
+                @"(\d+% chance to dodge attack hits)\. (\d+% less armour), (\d+% less energy shield), (\d+% less chance to block spells and attacks)",
+                "$1", "$2", "$3", "$4"
             },
             {
                 // Eldritch Battery
@@ -84,7 +84,7 @@ namespace PoESkillTree.Computation.Data
             {
                 // Elemental Overload
                 @"(\d+% more elemental damage if you've crit in the past \d+ seconds) (no critical strike multiplier) (no damage multiplier for ailments from critical strikes)",
-                "$1", "$2", "$3"
+                "$1", "$2, $3"
             },
             {
                 // Avatar of Fire
@@ -103,8 +103,8 @@ namespace PoESkillTree.Computation.Data
             },
             {
                 // Crimson Dance
-                @"(you can inflict bleeding on an enemy up to \d+ times) (your bleeding does not deal extra damage while the enemy is moving)",
-                "$1", "$2"
+                @"(you can inflict bleeding on an enemy up to \d+ times) (your bleeding does not deal extra damage while the enemy is moving) (\d+% less damage with bleeding)",
+                "$1", "$2", "$3"
             },
             {
                 // Resolute Technique

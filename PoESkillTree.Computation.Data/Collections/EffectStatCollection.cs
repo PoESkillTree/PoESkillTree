@@ -1,36 +1,41 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Effects;
+using PoESkillTree.Computation.Common.Builders.Forms;
+using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Common.Data;
+using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Data.Collections
 {
     /// <summary>
-    /// Collection of <see cref="EffectStatData"/> that allows collection initialization syntax for adding entries.
+    /// Collection of <see cref="IIntermediateModifier"/> that allows collection initialization syntax for adding
+    /// entries. Uses <see cref="IEffectBuilder.AddStat"/> for adding stats.
     /// </summary>
-    public class EffectStatCollection : IEnumerable<EffectStatData>
+    public class EffectStatCollection : IEnumerable<IIntermediateModifier>
     {
-        private readonly List<EffectStatData> _data = new List<EffectStatData>();
+        private readonly IModifierBuilder _modifierBuilder;
+        private readonly IValueBuilders _valueFactory;
 
-        public IEnumerator<EffectStatData> GetEnumerator()
+        private readonly List<IIntermediateModifier> _data = new List<IIntermediateModifier>();
+
+        public EffectStatCollection(IModifierBuilder modifierBuilder, IValueBuilders valueFactory)
         {
-            return _data.GetEnumerator();
+            _modifierBuilder = modifierBuilder;
+            _valueFactory = valueFactory;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        public IEnumerator<IIntermediateModifier> GetEnumerator() => _data.GetEnumerator();
 
-        public void Add(IEffectBuilder effect, params string[] stats)
-        {
-            _data.Add(new EffectStatData(effect, stats));
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public void Add(IEffectBuilder effect, params IFlagStatBuilder[] stats)
+        public void Add(IEffectBuilder effect, IFormBuilder form, IStatBuilder stat, double value)
         {
-            _data.Add(new EffectStatData(effect, stats));
+            var builder = _modifierBuilder
+                .WithForm(form)
+                .WithStat(effect.AddStat(stat))
+                .WithValue(_valueFactory.Create(value));
+            _data.Add(builder.Build());
         }
     }
 }

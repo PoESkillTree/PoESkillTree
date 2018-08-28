@@ -1,7 +1,8 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Actions;
-using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Common.Builders.Skills
 {
@@ -22,46 +23,25 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         IStatBuilder Instances { get; }
 
         /// <summary>
-        /// Gets a condition that is satisfied if there are active instances of this skill (cast by Self).
-        /// </summary>
-        /// <remarks>
-        /// Shortcut for <c>Instances.Value > 0</c>.
-        /// </remarks>
-        IConditionBuilder HasInstance { get; }
-
-        /// <summary>
-        /// Gets a stat representing the duration of this skill.
-        /// </summary>
-        IStatBuilder Duration { get; }
-
-        /// <summary>
-        /// Gets a stat representing the mana cost of this skill.
-        /// </summary>
-        IStatBuilder Cost { get; }
-
-        /// <summary>
-        /// Gets a stat representing the mana reservation of this skill.
+        /// The percentage of a pool this skill reserves.
         /// </summary>
         IStatBuilder Reservation { get; }
 
         /// <summary>
-        /// Gets a stat representing the cooldown recovery speed of this skill.
+        /// The pool this skill's reservation uses.
         /// </summary>
-        IStatBuilder CooldownRecoverySpeed { get; }
+        IStatBuilder ReservationPool { get; }
 
         /// <summary>
-        /// Gets a stat representing the damage effectiveness of this skill.
+        /// This skill's identifier.
         /// </summary>
-        IStatBuilder DamageEffectiveness { get; }
+        ValueBuilder SkillId { get; }
 
         /// <summary>
-        /// Gets a stat representing attack/cast rate of this skill (in casts per second).
+        /// The buff provided by this skill. Throws if this is skill does not provide a buff.
         /// </summary>
-        IStatBuilder Speed { get; }
+        IBuffBuilder Buff { get; }
 
-        /// <summary>
-        /// Gets a stat representing the area of effect of this skill.
-        /// </summary>
-        IStatBuilder AreaOfEffect { get; }
+        SkillDefinition Build();
     }
 }

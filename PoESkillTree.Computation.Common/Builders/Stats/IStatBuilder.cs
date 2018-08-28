@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
@@ -33,9 +30,20 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder Maximum { get; }
 
         /// <summary>
-        /// Gets this stats value. Defaults to 0.
+        /// Gets this stat's total value. Defaults to null.
         /// </summary>
         ValueBuilder Value { get; }
+
+        /// <summary>
+        /// Gets this stat's value for the given type and optionally the given ModifierSource (Global if null).
+        /// Defaults to null.
+        /// </summary>
+        ValueBuilder ValueFor(NodeType nodeType, ModifierSource modifierSource = null);
+
+        /// <summary>
+        /// Gets a condition that is satisfied if this stat's value is set, i.e. is not null.
+        /// </summary>
+        IConditionBuilder IsSet { get; }
 
         /// <summary>
         /// Returns a stat that represents the percentage of this stat's value that is converted to the given stat.
@@ -45,14 +53,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// <summary>
         /// Returns a stat that represents the percentage of this stat's value that is added to the given stat.
         /// </summary>
-        IStatBuilder AddAs(IStatBuilder stat);
-
-        /// <summary>
-        /// Returns a stat representing whether modifiers (except of BaseSet, BaseOverride and TotalOverride forms)
-        /// to this stat's value also apply to the given stat
-        /// (at <paramref name="percentOfTheirValue"/> percent of their value).
-        /// </summary>
-        IFlagStatBuilder ApplyModifiersTo(IStatBuilder stat, IValueBuilder percentOfTheirValue);
+        IStatBuilder GainAs(IStatBuilder stat);
 
         /// <summary>
         /// Gets a stat representing the chance to double this stat's value (does not make sense without an action
@@ -60,40 +61,22 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IStatBuilder ChanceToDouble { get; }
 
-        // For Buffs and Auras: some conditions apply to this stat (e.g. the "Attack" from "Attack Speed"), others 
-        // specify whether the buff/aura is granted (e.g. "if you've Blocked Recently"). It has to be decided at some 
-        // point which conditions do and which don't. That point must be before the conditions are combined into one.
-        // Probably as a property inherent in conditions, i.e. decided on condition construction.
+        /// <summary>
+        /// Applies this stat to <paramref name="entity"/> instead of the currently modified entity.
+        /// See <see cref="IConditionBuilders.For"/> for more information.
+        /// </summary>
+        IStatBuilder For(IEntityBuilder entity);
 
         /// <summary>
-        /// Returns a buff that modifies this stat for <paramref name="seconds"/> seconds.
+        /// This stat only applies if the active skill has the given keyword. Normally refers to the selected skill
+        /// part, but some damage related stats can have separate keywords.
         /// </summary>
-        IBuffBuilder ForXSeconds(IValueBuilder seconds);
+        IStatBuilder With(IKeywordBuilder keyword);
 
         /// <summary>
-        /// Gets a buff that modifies this stat. If the buff is not permanent, the duration will be specified elsewhere,
-        /// e.g. as part of a buff rotation.
+        /// This stat only applies if the active skill does not have the given keyword.
         /// </summary>
-        IBuffBuilder AsBuff { get; }
-
-        /// <summary>
-        /// Returns an aura affecting the given entities that modifies these stats.
-        /// </summary>
-        IFlagStatBuilder AsAura(params IEntityBuilder[] affectedEntities);
-
-        /// <summary>
-        /// Returns a flag stat representing whether the given skills modifies this stat as part of their effects
-        /// (unaffected by effect increases).
-        /// <para>E.g. "Auras you Cast grant 3% increased Attack and Cast Speed to you and Allies"</para>
-        /// </summary>
-        IFlagStatBuilder AddTo(ISkillBuilderCollection skills);
-
-        /// <summary>
-        /// Returns a flag stat representing whether the given effect modifies this stat as part of its effects
-        /// (unaffected by effect increases).
-        /// <para>E.g. "Consecrated Ground you create grants 40% increased Damage to you and Allies"</para>
-        /// </summary>
-        IFlagStatBuilder AddTo(IEffectBuilder effect);
+        IStatBuilder NotWith(IKeywordBuilder keyword);
 
         /// <summary>
         /// Returns a stat that is identical to this stat but is only modified if the given condition is satisfied.
@@ -103,11 +86,14 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder WithCondition(IConditionBuilder condition);
 
         /// <summary>
-        /// Builds this instance into a list of <see cref="IStat"/>s, an <see cref="ModifierSource"/> converter to
-        /// change the original modifier's source and a <see cref="ValueConverter"/> that should be applied
-        /// to <see cref="IValueBuilder"/>s before building them.
+        /// Returns a stat that combines this and the given stat. Modifiers to the returned stat will apply to both,
+        /// but only once (no multiple application if one of the stats is converted to another).
         /// </summary>
-        (IReadOnlyList<IStat> stats, Func<ModifierSource, ModifierSource> sourceConverter,
-            ValueConverter valueConverter) Build();
+        IStatBuilder CombineWith(IStatBuilder other);
+
+        /// <summary>
+        /// Builds this instance into a list of <see cref="StatBuilderResult"/>s.
+        /// </summary>
+        IEnumerable<StatBuilderResult> Build(BuildParameters parameters);
     }
 }

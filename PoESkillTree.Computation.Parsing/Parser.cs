@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Common.Utils.Extensions;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Parsing.Referencing;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing
 {
@@ -32,7 +32,9 @@ namespace PoESkillTree.Computation.Parsing
 
         private readonly Lazy<IParser<IReadOnlyList<Modifier>>> _parser;
 
-        private ModifierSource _currentModifierSource;
+        private readonly Dictionary<CacheKey, ParseResult> _cache = new Dictionary<CacheKey, ParseResult>();
+
+        private CacheKey _currentKey;
 
         public Parser(IParsingData<TStep> parsingData, IBuilderFactories builderFactories)
         {
@@ -41,10 +43,15 @@ namespace PoESkillTree.Computation.Parsing
             _parser = new Lazy<IParser<IReadOnlyList<Modifier>>>(CreateParser);
         }
 
-        public ParseResult Parse(string stat, ModifierSource modifierSource)
+        public ParseResult Parse(string stat, ModifierSource modifierSource, Entity modifierSourceEntity)
         {
-            _currentModifierSource = modifierSource;
-            var (success, remaining, result) = _parser.Value.Parse(stat);
+            _currentKey = new CacheKey(stat, modifierSource, modifierSourceEntity);
+            return _cache.GetOrAdd(_currentKey, Parse);
+        }
+
+        private ParseResult Parse(CacheKey key)
+        {
+            var (success, remaining, result) = _parser.Value.Parse(key.Stat);
             return new ParseResult(success, remaining, result);
         }
 
@@ -74,21 +81,49 @@ namespace PoESkillTree.Computation.Parsing
 
             // The full parsing pipeline.
             return
-                new CachingParser<IReadOnlyList<Modifier>>(
-                    new ValidatingParser<IReadOnlyList<Modifier>>(
-                        new StatNormalizingParser<IReadOnlyList<Modifier>>(
-                            new ResultMappingParser<IReadOnlyList<IReadOnlyList<Modifier>>, IReadOnlyList<Modifier>>(
-                                new StatReplacingParser<IReadOnlyList<Modifier>>(
-                                    new ResultMappingParser<IReadOnlyList<IIntermediateModifier>, IReadOnlyList<Modifier>>(
-                                        new CompositeParser<IIntermediateModifier, TStep>(_parsingData.Stepper, StepToParser),
-                                        l => l.Aggregate().Build(_currentModifierSource)),
-                                    _parsingData.StatReplacers
-                                ),
-                                ls => ls.Flatten().ToList()
-                            )
+                new ValidatingParser<IReadOnlyList<Modifier>>(
+                    new StatNormalizingParser<IReadOnlyList<Modifier>>(
+                        new ResultMappingParser<IReadOnlyList<IReadOnlyList<Modifier>>, IReadOnlyList<Modifier>>(
+                            new StatReplacingParser<IReadOnlyList<Modifier>>(
+                                new ResultMappingParser<IReadOnlyList<IIntermediateModifier>,
+                                    IReadOnlyList<Modifier>>(
+                                    new CompositeParser<IIntermediateModifier, TStep>(_parsingData.Stepper,
+                                        StepToParser),
+                                    AggregateAndBuild),
+                                _parsingData.StatReplacers
+                            ),
+                            ls => ls.Flatten().ToList()
                         )
                     )
                 );
+        }
+
+        private IReadOnlyList<Modifier> AggregateAndBuild(IReadOnlyList<IIntermediateModifier> intermediates) =>
+            intermediates
+                .Aggregate()
+                .Build(_currentKey.ModifierSource, _currentKey.ModifierSourcEntity);
+
+        private struct CacheKey : IEquatable<CacheKey>
+        {
+            public CacheKey(string stat, ModifierSource modifierSource, Entity modifierSourcEntity)
+            {
+                Stat = stat;
+                ModifierSource = modifierSource;
+                ModifierSourcEntity = modifierSourcEntity;
+            }
+
+            public string Stat { get; }
+            public ModifierSource ModifierSource { get; }
+            public Entity ModifierSourcEntity { get; }
+
+            public override bool Equals(object obj) =>
+                obj is CacheKey other && Equals(other);
+
+            public bool Equals(CacheKey other) =>
+                Stat == other.Stat && ModifierSource == other.ModifierSource &&
+                ModifierSourcEntity == other.ModifierSourcEntity;
+
+            public override int GetHashCode() => (Stat, ModifierSource, ModifierSourcEntity).GetHashCode();
         }
     }
 }

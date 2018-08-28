@@ -22,7 +22,6 @@ namespace PoESkillTree.Computation.Data
             new ReferencedMatcherCollection<IKeywordBuilder>
             {
                 { "melee", Keyword.Melee },
-                { "attacks?", Keyword.Attack },
                 { "projectiles?", Keyword.Projectile },
                 { "golems?", Keyword.Golem },
                 { "traps?", Keyword.Trap },
@@ -31,8 +30,8 @@ namespace PoESkillTree.Computation.Data
                 { "curses?", Keyword.Curse },
                 { "auras?", Keyword.Aura },
                 { "area", Keyword.AreaOfEffect },
-                { "spells?", Keyword.Spell },
                 { "warcry", Keyword.Warcry },
+                { "herald", Keyword.Herald },
             };
     }
 }

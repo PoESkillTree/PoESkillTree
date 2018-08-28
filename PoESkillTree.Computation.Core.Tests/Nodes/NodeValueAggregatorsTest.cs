@@ -16,7 +16,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         [TestCase(43, null, 43.0, null)]
         public void CalculateOverrideReturnsCorrectResult(double? expected, params double?[] values)
         {
-            AssertReturnsCorrectResult(NodeValueAggregators.CalculateOverride, expected, values);
+            AssertReturnsCorrectResult(NodeValueAggregators.CalculateTotalOverride, expected, values);
         }
 
         [Test]
@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         {
             var values = new double?[] { 42, 43, null, 4, -3 }.Select(v => (NodeValue?) v);
 
-            Assert.Throws<NotSupportedException>(() => NodeValueAggregators.CalculateOverride(values));
+            Assert.Throws<NotSupportedException>(() => NodeValueAggregators.CalculateTotalOverride(values));
         }
 
         [TestCase(null)]
@@ -51,7 +51,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             AssertReturnsCorrectResult(NodeValueAggregators.CalculateBaseAdd, expected, values);
         }
         
-        [TestCase(0)]
+        [TestCase(null)]
         [TestCase(42, 42.0)]
         public void CalculateBaseSetReturnsCorrectResult(double? expected, params double?[] values)
         {

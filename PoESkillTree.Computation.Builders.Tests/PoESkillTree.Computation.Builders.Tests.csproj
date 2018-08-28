@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D6ECC468-961D-4C72-8E8F-DA9037B9B200}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PoESkillTree.Computation.Builders.Tests</RootNamespace>
+    <AssemblyName>PoESkillTree.Computation.Builders.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Enums.NET, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
+      <HintPath>..\packages\Enums.NET.2.3.2\lib\net45\Enums.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq, Version=4.7.145.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.7.145\lib\net45\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="MoreLinq, Version=2.4.20801.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.2.4.1\lib\net40\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.9.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actions\ActionBuildersTest.cs" />
+    <Compile Include="Actions\ActionBuilderTest.cs" />
+    <Compile Include="Behaviors\AilmentDamageBaseValueTest.cs" />
+    <Compile Include="Behaviors\AilmentDamageIncreaseMoreValueTest.cs" />
+    <Compile Include="Behaviors\AilmentDamageUncappedSubtotalValueTest.cs" />
+    <Compile Include="Behaviors\RegenUncappedSubtotalValueTest.cs" />
+    <Compile Include="Buffs\BuffBuilderCollectionTest.cs" />
+    <Compile Include="Buffs\BuffBuildersTest.cs" />
+    <Compile Include="Buffs\BuffBuilderTest.cs" />
+    <Compile Include="BuilderExtensions.cs" />
+    <Compile Include="BuildersHelper.cs" />
+    <Compile Include="Conditions\AndCompositeConditionBuilderTest.cs" />
+    <Compile Include="Conditions\ConditionBuildersTest.cs" />
+    <Compile Include="Conditions\OrCompositeConditionBuilderTest.cs" />
+    <Compile Include="Conditions\ValueConditionBuilderTest.cs" />
+    <Compile Include="Damage\DamageTypeBuilderTest.cs" />
+    <Compile Include="Effects\AilmentBuilderTest.cs" />
+    <Compile Include="Effects\EffectBuilderTest.cs" />
+    <Compile Include="Equipment\EquipmentBuilderCollectionTest.cs" />
+    <Compile Include="Equipment\EquipmentBuilderTest.cs" />
+    <Compile Include="Equipment\ItemSlotBuildersTest.cs" />
+    <Compile Include="Forms\FormBuildersTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resolving\UnresolvedBuilderTest.cs" />
+    <Compile Include="Skills\SkillBuilderCollectionTest.cs" />
+    <Compile Include="Skills\SkillBuilderTest.cs" />
+    <Compile Include="Stats\CastSpeedStatBuilderTest.cs" />
+    <Compile Include="Stats\DamageStatBuilderTest.cs" />
+    <Compile Include="Stats\CompositeCoreStatBuilderTest.cs" />
+    <Compile Include="Stats\ConversionStatBuilderTest.cs" />
+    <Compile Include="Stats\DamageRelatedStatBuilderTest.cs" />
+    <Compile Include="Stats\EntityBuilderTest.cs" />
+    <Compile Include="Stats\LeafCoreStatBuilderTest.cs" />
+    <Compile Include="Stats\MetaStatBuildersTest.cs" />
+    <Compile Include="Stats\StatBuilderAdapterTest.cs" />
+    <Compile Include="Stats\StatBuilderHelper.cs" />
+    <Compile Include="Stats\StatBuilderTest.cs" />
+    <Compile Include="Stats\StatFactoryTest.cs" />
+    <Compile Include="Values\ValueBuildersTest.cs" />
+    <Compile Include="Values\ValueBuilderTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">
+      <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
+      <Name>PoESkillTree.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Builders\PoESkillTree.Computation.Builders.csproj">
+      <Project>{940a286a-bca7-4c79-ac89-55c57c7d4784}</Project>
+      <Name>PoESkillTree.Computation.Builders</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Common.Tests\PoESkillTree.Computation.Common.Tests.csproj">
+      <Project>{844b58ab-4d91-4567-bca9-f3e1b2a29444}</Project>
+      <Name>PoESkillTree.Computation.Common.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj">
+      <Project>{827be52d-878c-45f0-afc0-75b5385aad53}</Project>
+      <Name>PoESkillTree.Computation.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj">
+      <Project>{c1c73cc9-d825-41f7-86f0-f37ee8178d6d}</Project>
+      <Name>PoESkillTree.GameModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets'))" />
+    <Error Condition="!Exists('..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props'))" />
+  </Target>
+  <Import Project="..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
+  <Target Name="Test">
+    <NUnit3 Assemblies="$(OutputPath)/$(TargetFileName)" ToolPath="..\packages\NUnit.ConsoleRunner.3.7.0\tools\" />
+  </Target>
+</Project>

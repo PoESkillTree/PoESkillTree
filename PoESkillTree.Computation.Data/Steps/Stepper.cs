@@ -17,6 +17,7 @@ namespace PoESkillTree.Computation.Data.Steps
          * StatManipulator and ValueConversion are optional.
          * Either FormAndStat or Form and one of GeneralStat, DamageStat and PoolStat must match (if Special doesn't).
          * Condition can be matched multiple times (if Special doesn't).
+         * ActionCondition is optional.
          */
         private static readonly IReadOnlyDictionary<ParsingStep, ParsingStep> SuccessTransitions =
             new Dictionary<ParsingStep, ParsingStep>
@@ -29,7 +30,8 @@ namespace PoESkillTree.Computation.Data.Steps
                 { ParsingStep.GeneralStat, ParsingStep.Condition },
                 { ParsingStep.DamageStat, ParsingStep.Condition },
                 { ParsingStep.PoolStat, ParsingStep.Condition },
-                { ParsingStep.Condition, ParsingStep.Condition }
+                { ParsingStep.Condition, ParsingStep.Condition },
+                { ParsingStep.ActionCondition, ParsingStep.Success },
             };
 
         private static readonly IReadOnlyDictionary<ParsingStep, ParsingStep> FailureTransitions =
@@ -43,7 +45,8 @@ namespace PoESkillTree.Computation.Data.Steps
                 { ParsingStep.GeneralStat, ParsingStep.DamageStat},
                 { ParsingStep.DamageStat, ParsingStep.PoolStat },
                 { ParsingStep.PoolStat, ParsingStep.Failure },
-                { ParsingStep.Condition, ParsingStep.Success }
+                { ParsingStep.Condition, ParsingStep.ActionCondition },
+                { ParsingStep.ActionCondition, ParsingStep.Success },
             };
 
         public ParsingStep InitialStep => ParsingStep.Special;
