@@ -36,6 +36,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
             var levelDefinition = definition.Levels[20];
             var local = new ModifierSource.Local.Skill("Frenzy");
             var global = new ModifierSource.Global(local);
+            var gemSource = new ModifierSource.Local.Gem(ItemSlot.Boots, 0, "Frenzy");
             var valueCalculationContextMock = new Mock<IValueCalculationContext>();
             var offHandTagsStat = new Stat("OffHand.ItemTags");
             valueCalculationContextMock.Setup(c => c.GetValue(offHandTagsStat, NodeType.Total, PathDefinition.MainPath))
@@ -72,8 +73,8 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                         true),
                     ("DamageBaseSetEffectiveness", Form.TotalOverride, levelDefinition.DamageMultiplier, global, true),
                     ("Mana.Cost", Form.BaseSet, levelDefinition.ManaCost, global, true),
-                    ("Level.Required", Form.BaseSet, levelDefinition.RequiredLevel, local, false),
-                    ("Dexterity.Required", Form.BaseSet, levelDefinition.RequiredDexterity, local, false),
+                    ("Level.Required", Form.BaseSet, levelDefinition.RequiredLevel, gemSource, false),
+                    ("Dexterity.Required", Form.BaseSet, levelDefinition.RequiredDexterity, gemSource, false),
                     ("CastRate.Attack.MainHand.Skill", Form.Increase, levelDefinition.QualityStats[0].Value * 20,
                         global, true),
                     ("CastRate.Attack.OffHand.Skill", Form.Increase, levelDefinition.QualityStats[0].Value * 20,

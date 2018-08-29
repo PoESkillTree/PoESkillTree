@@ -59,20 +59,21 @@ namespace PoESkillTree.Computation.Parsing
                               (definition.IsSupport ? parameter.Id : definition.ActiveSkill.DisplayName);
             var localSource = new ModifierSource.Local.Skill(displayName);
             var globalSource = new ModifierSource.Global(localSource);
+            var gemSource = new ModifierSource.Local.Gem(parameter.ItemSlot, parameter.SocketIndex, displayName);
             var isMainSkill = _metaStatBuilders.MainSkillSocket(parameter.ItemSlot, parameter.SocketIndex).IsSet;
             var modifiers = new List<Modifier>();
 
-            void AddLocal(IIntermediateModifier m) => modifiers.AddRange(BuildLocal(m));
-            IReadOnlyList<Modifier> BuildLocal(IIntermediateModifier m) => m.Build(localSource, Entity.Character);
-            void AddGlobal(IIntermediateModifier m) => modifiers.AddRange(BuildGlobal(m));
-            IReadOnlyList<Modifier> BuildGlobal(IIntermediateModifier m) => m.Build(globalSource, Entity.Character);
+            void Add(IIntermediateModifier m) => modifiers.AddRange(Build(m));
+            IReadOnlyList<Modifier> Build(IIntermediateModifier m) => m.Build(globalSource, Entity.Character);
+            void AddGem(IIntermediateModifier m) => modifiers.AddRange(BuildGem(m));
+            IReadOnlyList<Modifier> BuildGem(IIntermediateModifier m) => m.Build(gemSource, Entity.Character);
 
             var hitDamageSource = DetermineHitDamageSource(activeSkill, level);
             var hasSkillDamageOverTime = HasSkillDamageOverTime(level);
 
             if (hitDamageSource.HasValue)
             {
-                AddGlobal(Modifier(_metaStatBuilders.SkillHitDamageSource,
+                Add(Modifier(_metaStatBuilders.SkillHitDamageSource,
                     Forms.TotalOverride, (int) hitDamageSource.Value, isMainSkill));
             }
             var usesMainHandCondition = isMainSkill;
@@ -88,14 +89,14 @@ namespace PoESkillTree.Computation.Parsing
                 usesOffHandCondition = usesOffHandCondition.And(
                     CreateWeaponRestrictionCondition(OffHand, activeSkill.WeaponRestrictions));
             }
-            AddGlobal(Modifier(_metaStatBuilders.SkillUsesHand(AttackDamageHand.MainHand),
+            Add(Modifier(_metaStatBuilders.SkillUsesHand(AttackDamageHand.MainHand),
                 Forms.TotalOverride, 1, usesMainHandCondition));
             if (!activeSkill.ActiveSkillTypes.Contains(ActiveSkillType.DoesNotUseOffHand))
             {
-                AddGlobal(Modifier(_metaStatBuilders.SkillUsesHand(AttackDamageHand.OffHand),
+                Add(Modifier(_metaStatBuilders.SkillUsesHand(AttackDamageHand.OffHand),
                     Forms.TotalOverride, 1, usesOffHandCondition));
             }
-            AddGlobal(Modifier(_metaStatBuilders.MainSkillId,
+            Add(Modifier(_metaStatBuilders.MainSkillId,
                 Forms.TotalOverride, definition.NumericId, isMainSkill));
 
             void AddKeywordModifiers(
@@ -103,7 +104,7 @@ namespace PoESkillTree.Computation.Parsing
                 Func<Keyword, bool> preCondition = null)
                 => modifiers.AddRange(
                     KeywordModifiers(activeSkill.Keywords, statFactory, conditionFactory, preCondition)
-                        .SelectMany(BuildGlobal));
+                        .SelectMany(Build));
 
             AddKeywordModifiers(_metaStatBuilders.MainSkillHasKeyword, _ => isMainSkill);
             AddKeywordModifiers(
@@ -136,7 +137,7 @@ namespace PoESkillTree.Computation.Parsing
             if (hitDamageSource != DamageSource.Attack)
             {
                 var castRateDamageSource = hitDamageSource ?? DamageSource.Spell;
-                AddLocal(Modifier(_builderFactories.StatBuilders.CastRate.With(castRateDamageSource),
+                Add(Modifier(_builderFactories.StatBuilders.CastRate.With(castRateDamageSource),
                     Forms.BaseSet, 1000D / activeSkill.CastTime, isMainSkill));
             }
 
@@ -144,73 +145,75 @@ namespace PoESkillTree.Computation.Parsing
             {
                 var totemLifeStat = _builderFactories.StatBuilders.Pool.From(Pool.Life)
                     .For(_builderFactories.EntityBuilders.Totem);
-                AddGlobal(Modifier(totemLifeStat, Forms.PercentMore, (lifeMulti - 1) * 100, isMainSkill));
+                Add(Modifier(totemLifeStat, Forms.PercentMore, (lifeMulti - 1) * 100, isMainSkill));
             }
 
             if (level.DamageEffectiveness.HasValue)
             {
-                AddGlobal(Modifier(_metaStatBuilders.DamageBaseAddEffectiveness,
+                Add(Modifier(_metaStatBuilders.DamageBaseAddEffectiveness,
                     Forms.TotalOverride, level.DamageEffectiveness.Value, isMainSkill));
             }
             if (level.DamageMultiplier.HasValue)
             {
-                AddGlobal(Modifier(_metaStatBuilders.DamageBaseSetEffectiveness,
+                Add(Modifier(_metaStatBuilders.DamageBaseSetEffectiveness,
                     Forms.TotalOverride, level.DamageMultiplier.Value, isMainSkill));
             }
             if (level.CriticalStrikeChance.HasValue && hitDamageSource.HasValue)
             {
-                AddLocal(Modifier(_builderFactories.ActionBuilders.CriticalStrike.Chance.With(hitDamageSource.Value),
+                Add(Modifier(_builderFactories.ActionBuilders.CriticalStrike.Chance.With(hitDamageSource.Value),
                     Forms.BaseSet, level.CriticalStrikeChance.Value, isMainSkill));
             }
 
             if (level.ManaCost.HasValue)
             {
-                AddGlobal(Modifier(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost,
+                Add(Modifier(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost,
                     Forms.BaseSet, level.ManaCost.Value, isMainSkill));
             }
             if (level.Cooldown.HasValue)
             {
-                AddGlobal(Modifier(_builderFactories.StatBuilders.Cooldown,
+                Add(Modifier(_builderFactories.StatBuilders.Cooldown,
                     Forms.BaseSet, level.Cooldown.Value, isMainSkill));
             }
 
-            AddLocal(Modifier(_builderFactories.StatBuilders.Requirements.Level, Forms.BaseSet, level.RequiredLevel));
-            if (level.RequiredDexterity > 0)
+            if (parameter.GemGroup.HasValue)
             {
-                AddLocal(Modifier(_builderFactories.StatBuilders.Requirements.Dexterity,
-                    Forms.BaseSet, level.RequiredDexterity));
-            }
-            if (level.RequiredIntelligence > 0)
-            {
-                AddLocal(Modifier(_builderFactories.StatBuilders.Requirements.Intelligence,
-                    Forms.BaseSet, level.RequiredIntelligence));
-            }
-            if (level.RequiredStrength > 0)
-            {
-                AddLocal(Modifier(_builderFactories.StatBuilders.Requirements.Strength,
-                    Forms.BaseSet, level.RequiredStrength));
+                AddGem(Modifier(_builderFactories.StatBuilders.Requirements.Level, Forms.BaseSet, level.RequiredLevel));
+                if (level.RequiredDexterity > 0)
+                {
+                    AddGem(Modifier(_builderFactories.StatBuilders.Requirements.Dexterity,
+                        Forms.BaseSet, level.RequiredDexterity));
+                }
+                if (level.RequiredIntelligence > 0)
+                {
+                    AddGem(Modifier(_builderFactories.StatBuilders.Requirements.Intelligence,
+                        Forms.BaseSet, level.RequiredIntelligence));
+                }
+                if (level.RequiredStrength > 0)
+                {
+                    AddGem(Modifier(_builderFactories.StatBuilders.Requirements.Strength,
+                        Forms.BaseSet, level.RequiredStrength));
+                }
             }
 
             if (level.QualityStats.Any())
             {
-                AddGlobal(_modifierBuilder
+                Add(_modifierBuilder
                     .WithStat(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack))
                     .WithForm(Forms.PercentIncrease)
                     .WithValue(CreateValue(level.QualityStats[0].Value * parameter.Quality))
                     .WithCondition(isMainSkill).Build());
             }
 
-            var (local, global, remainingStats) = ParseWithoutTranslating(level.Stats, isMainSkill);
-            local.ForEach(AddLocal);
-            global.ForEach(AddGlobal);
+            var (parsedModifiers, remainingStats) = ParseWithoutTranslating(level.Stats, isMainSkill);
+            parsedModifiers.ForEach(Add);
             if (level.Stats.Any())
             {
-                AddGlobal(_modifierBuilder
+                Add(_modifierBuilder
                     .WithStat(_builderFactories.DamageTypeBuilders.Physical.Damage)
                     .WithForm(Forms.PercentIncrease)
                     .WithValue(level.Stats[0].Value * _builderFactories.ChargeTypeBuilders.Frenzy.Amount.Value)
                     .WithCondition(isMainSkill).Build());
-                AddGlobal(_modifierBuilder
+                Add(_modifierBuilder
                     .WithStat(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack))
                     .WithForm(Forms.PercentIncrease)
                     .WithValue(level.Stats[0].Value * _builderFactories.ChargeTypeBuilders.Frenzy.Amount.Value)
@@ -275,12 +278,10 @@ namespace PoESkillTree.Computation.Parsing
             }
         }
 
-        private (IEnumerable<IIntermediateModifier> local, IEnumerable<IIntermediateModifier> global,
-            IEnumerable<UntranslatedStat> unparsed)
+        private (IEnumerable<IIntermediateModifier> modifiers, IEnumerable<UntranslatedStat> unparsed)
             ParseWithoutTranslating(IEnumerable<UntranslatedStat> stats, IConditionBuilder isMainSkill)
         {
-            var localModifiers = new List<IIntermediateModifier>();
-            var globalModifiers = new List<IIntermediateModifier>();
+            var modifiers = new List<IIntermediateModifier>();
             var unparsedStats = new List<UntranslatedStat>();
             DamageType? hitDamageType = null;
             DamageSource? hitDamageSource = null;
@@ -305,19 +306,19 @@ namespace PoESkillTree.Computation.Parsing
                     var type = Enums.Parse<DamageType>(match.Groups[1].Value, true);
                     var statBuilder = _builderFactories.DamageTypeBuilders.From(type).Damage
                         .WithSkills(DamageSource.OverTime);
-                    localModifiers.Add(Modifier(statBuilder,
+                    modifiers.Add(Modifier(statBuilder,
                         Forms.BaseSet, stat.Value / 60D, isMainSkill));
                     continue;
                 }
                 if (stat.StatId == "base_skill_number_of_additional_hits")
                 {
-                    globalModifiers.Add(Modifier(_metaStatBuilders.SkillNumberOfHitsPerCast,
+                    modifiers.Add(Modifier(_metaStatBuilders.SkillNumberOfHitsPerCast,
                         Forms.BaseAdd, CreateValue(stat.Value), isMainSkill));
                     continue;
                 }
                 if (stat.StatId == "skill_double_hits_when_dual_wielding")
                 {
-                    globalModifiers.Add(Modifier(_metaStatBuilders.SkillDoubleHitsWhenDualWielding,
+                    modifiers.Add(Modifier(_metaStatBuilders.SkillDoubleHitsWhenDualWielding,
                         Forms.TotalOverride, CreateValue(stat.Value), isMainSkill));
                     continue;
                 }
@@ -329,9 +330,9 @@ namespace PoESkillTree.Computation.Parsing
                     .WithSkills(hitDamageSource.Value);
                 var valueBuilder = _builderFactories.ValueBuilders.FromMinAndMax(CreateValue(hitDamageMinimum),
                     CreateValue(hitDamageMaximum.Value));
-                localModifiers.Add(Modifier(statBuilder, Forms.BaseSet, valueBuilder, isMainSkill));
+                modifiers.Add(Modifier(statBuilder, Forms.BaseSet, valueBuilder, isMainSkill));
             }
-            return (localModifiers, globalModifiers, unparsedStats);
+            return (modifiers, unparsedStats);
         }
 
         private IIntermediateModifier Modifier(

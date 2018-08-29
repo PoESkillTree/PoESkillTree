@@ -70,7 +70,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new UntranslatedStat[0], new UntranslatedStat[0], null);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (SkillDefinition.CreateActive("Frenzy", 0, "", null, activeSkill, levels),
-                new Skill("Frenzy", 1, 0, ItemSlot.Belt, 0, null));
+                new Skill("Frenzy", 1, 0, ItemSlot.Belt, 0, 0));
         }
 
         [Test]
@@ -192,7 +192,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new UntranslatedStat[0], stats, null);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (SkillDefinition.CreateActive("FlameTotem", 0, "", null, activeSkill, levels),
-                new Skill("FlameTotem", 1, 0, ItemSlot.Belt, 0, null));
+                new Skill("FlameTotem", 1, 0, ItemSlot.Belt, 0, 0));
         }
 
         [Test]
@@ -222,7 +222,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         }
 
         [Test]
-        public void FlameTotemSetsDamageOverTime()
+        public void ContagionSetsDamageOverTime()
         {
             var (definition, skill) = CreateContagionDefinition();
             var valueCalculationContext = MockValueCalculationContext(skill, true);
@@ -234,6 +234,19 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var actual = GetValueForIdentity(modifiers, "Chaos.Damage.OverTime.Skill")
                 .Calculate(valueCalculationContext);
             Assert.AreEqual(new NodeValue(1), actual);
+        }
+
+        [Test]
+        public void ContagionHasNoRequirementsWhenNotAGem()
+        {
+            var (definition, skill) = CreateContagionDefinition();
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            Assert.IsFalse(AnyModifierHasIdentity(modifiers, "Level.Required"));
+            Assert.IsFalse(AnyModifierHasIdentity(modifiers, "Intelligence.Required"));
         }
 
         private static (SkillDefinition, Skill) CreateContagionDefinition()

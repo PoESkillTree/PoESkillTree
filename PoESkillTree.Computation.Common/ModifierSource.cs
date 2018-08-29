@@ -86,8 +86,7 @@ namespace PoESkillTree.Computation.Common
 
         
         /// <summary>
-        /// This modifier is global. Includes mods from the tree, given mods, most? mods on items and some mods from
-        /// skills.
+        /// This modifier is global. Includes mods from the tree, given mods and most mods on items and skills.
         /// </summary>
         public sealed class Global : ModifierSource
         {
@@ -108,7 +107,7 @@ namespace PoESkillTree.Computation.Common
 
         
         /// <summary>
-        /// This modifier is local. Includes some mods on items and most mods from skills.
+        /// This modifier is local. Includes some mods on items and skills and mods from gems.
         /// </summary>
         public abstract class Local : ModifierSource
         {
@@ -159,7 +158,7 @@ namespace PoESkillTree.Computation.Common
 
                 public override bool Equals(ModifierSource other) => other is Item item && Slot == item.Slot;
 
-                public override int GetHashCode() => Slot.GetHashCode();
+                public override int GetHashCode() => (GetType(), Slot).GetHashCode();
 
                 public override string ToString() => Slot.ToString();
             }
@@ -173,6 +172,30 @@ namespace PoESkillTree.Computation.Common
                 public Skill()
                 {
                 }
+            }
+
+            /// <summary>
+            /// As opposed to <see cref="ModifierSource.Local.Skill"/>, this modifier is provided by the gem itself.
+            /// Skills not coming from gems, i.e. item-innate ones, don't have modifiers with this source.
+            /// Atm, this is only used for level and attribute requirements.
+            /// </summary>
+            public sealed class Gem : Local
+            {
+                public Gem(ItemSlot slot, int socketIndex, string skillName)
+                    : base(new Gem(slot, socketIndex), skillName)
+                    => (Slot, SocketIndex) = (slot, socketIndex);
+
+                private Gem(ItemSlot slot, int socketIndex)
+                    => (Slot, SocketIndex) = (slot, socketIndex);
+
+                public ItemSlot Slot { get; }
+
+                public int SocketIndex { get; }
+
+                public override bool Equals(ModifierSource other)
+                    => other is Gem item && Slot == item.Slot && SocketIndex == item.SocketIndex;
+
+                public override int GetHashCode() => (GetType(), Slot, SocketIndex).GetHashCode();
             }
         }
     }
