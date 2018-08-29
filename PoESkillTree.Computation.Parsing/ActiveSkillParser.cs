@@ -20,6 +20,8 @@ namespace PoESkillTree.Computation.Parsing
 {
     public class ActiveSkillParser : IParser<Skill>
     {
+        public delegate IParser<UntranslatedStatParserParameter> StatParserFactory(string statTranslationFileName);
+
         private const string DamageTypeRegex = "(physical|cold|fire|lightning|chaos)";
 
         private static readonly Regex HitDamageRegex =
@@ -48,14 +50,14 @@ namespace PoESkillTree.Computation.Parsing
         private readonly SkillDefinitions _skillDefinitions;
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
-        private readonly IParser<UntranslatedStatParserParameter> _statParser;
+        private readonly StatParserFactory _statParserFactory;
         private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
 
         public ActiveSkillParser(
             SkillDefinitions skillDefinitions, IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
-            IParser<UntranslatedStatParserParameter> statParser)
-            => (_skillDefinitions, _builderFactories, _metaStatBuilders, _statParser) =
-                (skillDefinitions, builderFactories, metaStatBuilders, statParser);
+            StatParserFactory statParserFactory)
+            => (_skillDefinitions, _builderFactories, _metaStatBuilders, _statParserFactory) =
+                (skillDefinitions, builderFactories, metaStatBuilders, statParserFactory);
 
         public ParseResult Parse(Skill parameter)
         {
@@ -68,9 +70,12 @@ namespace PoESkillTree.Computation.Parsing
             var localSource = new ModifierSource.Local.Skill(displayName);
             var globalSource = new ModifierSource.Global(localSource);
             var gemSource = new ModifierSource.Local.Gem(parameter.ItemSlot, parameter.SocketIndex, displayName);
+            var statParser = _statParserFactory(definition.StatTranslationFile);
+
             var isMainSkillStat = _metaStatBuilders.MainSkillSocket(parameter.ItemSlot, parameter.SocketIndex);
             var isMainSkill = isMainSkillStat.IsSet;
             var isMainSkillValue = isMainSkillStat.Value.Build(new BuildParameters(null, Entity.Character, default));
+
             var modifiers = new List<Modifier>();
 
             void Add(IIntermediateModifier m) => modifiers.AddRange(Build(m));
@@ -211,7 +216,7 @@ namespace PoESkillTree.Computation.Parsing
             parsedModifiers.ForEach(Add);
 
             ParseResult Parse(IEnumerable<UntranslatedStat> stats)
-                => ApplyCondition(_statParser.Parse(new UntranslatedStatParserParameter(localSource, stats)),
+                => ApplyCondition(statParser.Parse(new UntranslatedStatParserParameter(localSource, stats)),
                     isMainSkillValue);
 
             var parseResults = new[] { ParseResult.Success(modifiers), Parse(qualityStats), Parse(remainingStats) };

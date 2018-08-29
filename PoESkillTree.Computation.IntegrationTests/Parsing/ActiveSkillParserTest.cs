@@ -3,9 +3,7 @@ using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
-using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
@@ -17,20 +15,20 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
     public class ActiveSkillParserTest
     {
         private static SkillDefinitions _skillDefinitions;
-        private static IBuilderFactories _builderFactories;
-        private static IMetaStatBuilders _metaStatBuilders;
-        private static IParser<UntranslatedStatParserParameter> _statParser;
+        private static Console.CompositionRoot _compositionRoot;
+        private static StatTranslationLoader _statTranslationLoader;
 
         [OneTimeSetUp]
-        public async Task LoadSkillDefinitionsAsync()
+        public static async Task OneTimeSetUpAsync()
         {
             _skillDefinitions = await SkillJsonDeserializer.DeserializeAsync().ConfigureAwait(false);
-            var compositionRoot = new Console.CompositionRoot();
-            _builderFactories = compositionRoot.BuilderFactories;
-            _metaStatBuilders = compositionRoot.MetaStats;
-            var statTranslator = await StatTranslator.CreateAsync("stat_translations/skill");
-            _statParser = new UntranslatedStatParser(statTranslator, compositionRoot.CoreParser);
+            _compositionRoot = new Console.CompositionRoot();
+            _statTranslationLoader = new StatTranslationLoader();
+            await _statTranslationLoader.LoadAsync("stat_translations/skill").ConfigureAwait(false);
         }
+
+        private static IParser<UntranslatedStatParserParameter> CreateStatParser(string translationFileName)
+            => new UntranslatedStatParser(_statTranslationLoader[translationFileName], _compositionRoot.CoreParser);
 
         [Test]
         public void ParseFrenzyReturnsCorrectResult()
@@ -121,8 +119,8 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                         true),
                     ("CastRate.Attack.OffHand.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global, true),
                 };
-            var parser = new ActiveSkillParser(_skillDefinitions, _builderFactories, _metaStatBuilders,
-                _statParser);
+            var parser = new ActiveSkillParser(_skillDefinitions, _compositionRoot.BuilderFactories,
+                _compositionRoot.MetaStats, CreateStatParser);
 
             var (failedLines, remainingSubstrings, modifiers) = parser.Parse(frenzy);
 

@@ -559,7 +559,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
                     p.Parse(It.IsAny<UntranslatedStatParserParameter>()) == ParseResult.Success(new Modifier[0]));
             }
-            return new ActiveSkillParser(skillDefinitions, builderFactories, metaStatBuilders, statParser);
+            return new ActiveSkillParser(skillDefinitions, builderFactories, metaStatBuilders, _ => statParser);
         }
 
         private static IValueCalculationContext MockValueCalculationContext(

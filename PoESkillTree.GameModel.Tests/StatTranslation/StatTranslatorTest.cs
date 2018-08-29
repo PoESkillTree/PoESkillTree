@@ -14,7 +14,7 @@ namespace PoESkillTree.GameModel.Tests.StatTranslation
         [OneTimeSetUp]
         public static async Task CreateTranslatorAsync()
         {
-            _translator = await StatTranslator.CreateAsync();
+            _translator = await StatTranslationLoader.StaticLoadAsync().ConfigureAwait(false);
         }
 
         [Test]

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using log4net;
 using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.StatTranslation;
 
 namespace UpdateDB.DataLoading
 {
@@ -15,8 +16,8 @@ namespace UpdateDB.DataLoading
 
         private static readonly string[] Files =
         {
-            "mods", "crafting_bench_options", "npc_master", "stat_translations", "default_monster_stats", "characters",
-            "gems", "gem_tooltips", "stat_translations/skill",
+            "mods", "crafting_bench_options", "npc_master", "default_monster_stats", "characters",
+            "gems", "gem_tooltips"
         };
 
         public override bool SavePathIsFolder => true;
@@ -24,7 +25,8 @@ namespace UpdateDB.DataLoading
         protected override async Task LoadAsync()
         {
             Directory.CreateDirectory(Path.Combine(SavePath, "stat_translations"));
-            await Task.WhenAll(Files.Select(LoadAsync));
+            var files = Files.Concat(StatTranslationLoader.TranslationFileNames);
+            await Task.WhenAll(files.Select(LoadAsync));
         }
 
         private async Task LoadAsync(string file)

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -90,6 +90,7 @@
     <Compile Include="StatTranslation\IndexHandler.cs" />
     <Compile Include="StatTranslation\IStatTranslator.cs" />
     <Compile Include="StatTranslation\JsonStatTranslation.cs" />
+    <Compile Include="StatTranslation\StatTranslationLoader.cs" />
     <Compile Include="StatTranslation\StatTranslator.cs" />
     <Compile Include="StatTranslation\Translation.cs" />
   </ItemGroup>
@@ -104,6 +105,15 @@
     <EmbeddedResource Include="Data\RePoE\gems.min.json" />
     <EmbeddedResource Include="Data\RePoE\gem_tooltips.min.json" />
     <EmbeddedResource Include="Data\RePoE\stat_translations\skill.min.json" />
+    <EmbeddedResource Include="Data\RePoE\stat_translations\aura_skill.min.json" />
+    <EmbeddedResource Include="Data\RePoE\stat_translations\beam_skill.min.json" />
+    <EmbeddedResource Include="Data\RePoE\stat_translations\curse_skill.min.json" />
+    <EmbeddedResource Include="Data\RePoE\stat_translations\debuff_skill.min.json" />
+    <EmbeddedResource Include="Data\RePoE\stat_translations\minion_attack_skill.min.json" />
+    <EmbeddedResource Include="Data\RePoE\stat_translations\minion_skill.min.json" />
+    <EmbeddedResource Include="Data\RePoE\stat_translations\minion_spell_skill.min.json" />
+    <EmbeddedResource Include="Data\RePoE\stat_translations\offering_skill.min.json" />
+    <EmbeddedResource Include="Data\RePoE\stat_translations\support_gem.min.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
