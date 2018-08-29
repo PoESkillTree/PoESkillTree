@@ -337,7 +337,7 @@
         <Exec Command='vstest.console ..\..\UnitTests\bin\Debug\UnitTests.dll /TestCaseFilter:"TestCategory!=RequireGUI"' WorkingDirectory="$(WorkDir)" />
         <MSBuild Projects="..\PoESkillTree.Computation.Common.Tests\PoESkillTree.Computation.Common.Tests.csproj" Targets="Test" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
         <MSBuild Projects="..\PoESkillTree.Computation.Core.Tests\PoESkillTree.Computation.Core.Tests.csproj" Targets="Test" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
-        <MSBuild Projects="..\PoESkillTree.Computation.Builders.Tests\PoESkillTree.Computation.Core.Tests.csproj" Targets="Test" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
+        <MSBuild Projects="..\PoESkillTree.Computation.Builders.Tests\PoESkillTree.Computation.Builders.Tests.csproj" Targets="Test" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
         <MSBuild Projects="..\PoESkillTree.Computation.Data.Tests\PoESkillTree.Computation.Data.Tests.csproj" Targets="Test" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
         <MSBuild Projects="..\PoESkillTree.Computation.Parsing.Tests\PoESkillTree.Computation.Parsing.Tests.csproj" Targets="Test" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />
         <MSBuild Projects="..\PoESkillTree.Computation.IntegrationTests\PoESkillTree.Computation.IntegrationTests.csproj" Targets="Test" Properties="Configuration=Debug;Platform=$(Platform);WarningLevel=0" />

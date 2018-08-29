@@ -1271,7 +1271,7 @@ msgstr ""
 
 #: TreeGenerator\ViewModels\AdvancedTabViewModel.cs:231
 #: Utils\Converter\GroupStringConverter.cs:33
-#: ItemFilter\Model\FilterManager.cs:602
+#: ItemFilter\Model\FilterManager.cs:674
 msgid "Flasks"
 msgstr ""
 
@@ -1405,43 +1405,43 @@ msgstr "Fehler beim Laden des Builds von der URL."
 msgid "Currency"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:421
+#: ItemFilter\Model\FilterManager.cs:493
 msgid "Recipes"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:428
+#: ItemFilter\Model\FilterManager.cs:500
 msgid "Any Normal item which vendor trades for Scroll Fragment."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:439
+#: ItemFilter\Model\FilterManager.cs:511
 msgid "Any Magic item which vendor trades for Transmutation Shard, Alteration Shard or Alchemy Shard."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:451
+#: ItemFilter\Model\FilterManager.cs:523
 msgid ""
 "A single Normal weapon with 20% quality.\n"
 "Weapons with a total of at least 40% quality."
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:499
+#: ItemFilter\Model\FilterManager.cs:571
 msgid ""
 "1 Stone Hammer, Rock Breaker or Gavel with 20% quality\n"
 "1 Any Map"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:572
+#: ItemFilter\Model\FilterManager.cs:644
 msgid "Gems"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:795
+#: ItemFilter\Model\FilterManager.cs:867
 msgid "Miscellaneous"
 msgstr "Verschiedenes"
 
-#: ItemFilter\Model\FilterManager.cs:919
+#: ItemFilter\Model\FilterManager.cs:1007
 msgid "Crafting"
 msgstr ""
 
-#: ItemFilter\Model\FilterManager.cs:1037
+#: ItemFilter\Model\FilterManager.cs:1125
 msgid "Chancing"
 msgstr ""
 
