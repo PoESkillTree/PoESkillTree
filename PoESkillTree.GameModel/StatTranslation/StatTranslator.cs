@@ -1,25 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using log4net;
 using MoreLinq;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.GameModel.StatTranslation
 {
     /// <summary>
     /// Takes the deserialized stat_translations and returns Translation objects for given stat ids.
     /// </summary>
-    public class StatTranslator
+    public class StatTranslator : IStatTranslator
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(StatTranslator));
 
-        private readonly ILookup<string, Translation> _translationLookup;
+        private readonly Lazy<ILookup<string, Translation>> _translationLookup;
 
         /// <param name="jsonTranslations">the deserialized stat_translations to use as basis for translations</param>
         public StatTranslator(IEnumerable<JsonStatTranslation> jsonTranslations)
         {
+            _translationLookup =
+                new Lazy<ILookup<string, Translation>>(() => CreateTranslationLookup(jsonTranslations));
+        }
+
+        private static ILookup<string, Translation> CreateTranslationLookup(
+            IEnumerable<JsonStatTranslation> jsonTranslations)
+        {
             // ids are not unique over all translations: (-> must be lookup and not dictionary)
             // there are 2 cases where an id appears once alone and once together with another id
-            _translationLookup = (
+            return (
                 from t in jsonTranslations
                 let translation = new Translation(t)
                 from id in t.Ids
@@ -36,12 +45,12 @@ namespace PoESkillTree.GameModel.StatTranslation
             var translations = new List<Translation>();
             foreach (var id in ids)
             {
-                if (!_translationLookup.Contains(id))
+                if (!_translationLookup.Value.Contains(id))
                 {
                     Log.Warn("Unknown stat id: " + id);
                     continue;
                 }
-                var ts = _translationLookup[id].ToList();
+                var ts = _translationLookup.Value[id].ToList();
                 if (ts.Count > 1)
                 {
                     // For the 2 cases where there is more than one translation in the lookup, 
@@ -63,8 +72,9 @@ namespace PoESkillTree.GameModel.StatTranslation
         /// Returns the translated strings for the given stat ids and values.
         /// </summary>
         public IEnumerable<string> GetTranslations(IReadOnlyDictionary<string, int> idValueDict)
-        {
-            return GetTranslations(idValueDict.Keys).Select(t => t.Translate(idValueDict));
-        }
+            => GetTranslations(idValueDict.Keys).Select(t => t.Translate(idValueDict));
+
+        public IEnumerable<string> Translate(IEnumerable<UntranslatedStat> untranslatedStats)
+            => GetTranslations(untranslatedStats.ToDictionary(s => s.StatId, s => s.Value));
     }
 }

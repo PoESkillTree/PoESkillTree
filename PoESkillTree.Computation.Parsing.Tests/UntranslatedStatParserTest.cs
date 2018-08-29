@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.GameModel.StatTranslation;
 
 namespace PoESkillTree.Computation.Parsing.Tests
 {

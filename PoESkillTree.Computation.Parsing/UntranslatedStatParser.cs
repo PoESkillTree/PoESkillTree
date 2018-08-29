@@ -2,6 +2,7 @@
 using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.GameModel.StatTranslation;
 
 namespace PoESkillTree.Computation.Parsing
 {
@@ -31,10 +32,5 @@ namespace PoESkillTree.Computation.Parsing
 
         public ModifierSource.Local.Skill LocalModifierSource { get; }
         public IEnumerable<UntranslatedStat> UntranslatedStats { get; }
-    }
-
-    public interface IStatTranslator
-    {
-        IEnumerable<string> Translate(IEnumerable<UntranslatedStat> untranslatedStats);
     }
 }
