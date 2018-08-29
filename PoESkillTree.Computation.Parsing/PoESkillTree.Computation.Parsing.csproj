@@ -92,6 +92,7 @@
     <Compile Include="StringParsers\StatReplacingParser.cs" />
     <Compile Include="StringParsers\StringParseResult.cs" />
     <Compile Include="StringParsers\ValidatingParser.cs" />
+    <Compile Include="UntranslatedStatParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">

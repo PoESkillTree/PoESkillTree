@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Utils.Extensions;
 
@@ -56,5 +57,16 @@ namespace PoESkillTree.Computation.Parsing
             }
             return new ParseResult(failedLines, remainingSubstrings, modifiers);
         }
+
+        public override bool Equals(object obj)
+            => (obj == this) || (obj is ParseResult other && Equals(other));
+
+        private bool Equals(ParseResult other)
+            => FailedLines.SequenceEqual(other.FailedLines) &&
+               RemainingSubstrings.SequenceEqual(other.RemainingSubstrings) &&
+               Modifiers.SequenceEqual(other.Modifiers);
+
+        public override int GetHashCode()
+            => (FailedLines.SequenceHash(), RemainingSubstrings.SequenceHash(), Modifiers.SequenceHash()).GetHashCode();
     }
 }
