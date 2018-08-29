@@ -9,6 +9,7 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.GameModel.StatTranslation;
 
 namespace PoESkillTree.Computation.IntegrationTests.Parsing
 {
@@ -18,6 +19,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
         private static SkillDefinitions _skillDefinitions;
         private static IBuilderFactories _builderFactories;
         private static IMetaStatBuilders _metaStatBuilders;
+        private static IParser<UntranslatedStatParserParameter> _statParser;
 
         [OneTimeSetUp]
         public async Task LoadSkillDefinitionsAsync()
@@ -26,6 +28,8 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
             var compositionRoot = new Console.CompositionRoot();
             _builderFactories = compositionRoot.BuilderFactories;
             _metaStatBuilders = compositionRoot.MetaStats;
+            var statTranslator = await StatTranslator.CreateAsync("stat_translations/skill");
+            _statParser = new UntranslatedStatParser(statTranslator, compositionRoot.CoreParser);
         }
 
         [Test]
@@ -75,9 +79,9 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                     ("Mana.Cost", Form.BaseSet, levelDefinition.ManaCost, global, true),
                     ("Level.Required", Form.BaseSet, levelDefinition.RequiredLevel, gemSource, false),
                     ("Dexterity.Required", Form.BaseSet, levelDefinition.RequiredDexterity, gemSource, false),
-                    ("CastRate.Attack.MainHand.Skill", Form.Increase, levelDefinition.QualityStats[0].Value * 20,
+                    ("CastRate.Attack.MainHand.Skill", Form.Increase, levelDefinition.QualityStats[0].Value * 20 / 1000,
                         global, true),
-                    ("CastRate.Attack.OffHand.Skill", Form.Increase, levelDefinition.QualityStats[0].Value * 20,
+                    ("CastRate.Attack.OffHand.Skill", Form.Increase, levelDefinition.QualityStats[0].Value * 20 / 1000,
                         global, true),
                     ("Physical.Damage.Attack.MainHand.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
                         true),
@@ -117,13 +121,14 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                         true),
                     ("CastRate.Attack.OffHand.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global, true),
                 };
-            var parser = new ActiveSkillParser(_skillDefinitions, _builderFactories, _metaStatBuilders);
+            var parser = new ActiveSkillParser(_skillDefinitions, _builderFactories, _metaStatBuilders,
+                _statParser);
 
             var (failedLines, remainingSubstrings, modifiers) = parser.Parse(frenzy);
 
             Assert.IsEmpty(failedLines);
             Assert.IsEmpty(remainingSubstrings);
-            Assert.That(modifiers, Has.Exactly(expectedModifiers.Length).Items);
+            Assert.AreEqual(expectedModifiers.Length, modifiers.Count);
             for (var i = 0; i < modifiers.Count; i++)
             {
                 var expected = expectedModifiers[i];

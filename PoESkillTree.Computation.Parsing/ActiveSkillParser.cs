@@ -28,6 +28,12 @@ namespace PoESkillTree.Computation.Parsing
         private static readonly Regex DamageOverTimeRegex =
             new Regex($"^base_{DamageTypeRegex}_damage_to_deal_per_minute$");
 
+        private const string DealsSecondaryDamage = "display_skill_deals_secondary_damage";
+        private const string IsAreaDamage = "is_area_damage";
+
+        private static readonly IReadOnlyList<string> ExplicitlyHandledStats =
+            new[] { DealsSecondaryDamage, IsAreaDamage };
+
         private static readonly IReadOnlyList<Keyword> KeywordsExcludedForDamageOverTime = new[]
         {
             Keyword.Attack, Keyword.Spell, Keyword.Melee, Keyword.Projectile, Keyword.AreaOfEffect, Keyword.Movement
@@ -42,12 +48,14 @@ namespace PoESkillTree.Computation.Parsing
         private readonly SkillDefinitions _skillDefinitions;
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
+        private readonly IParser<UntranslatedStatParserParameter> _statParser;
         private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
 
         public ActiveSkillParser(
-            SkillDefinitions skillDefinitions, IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
-            => (_skillDefinitions, _builderFactories, _metaStatBuilders) =
-                (skillDefinitions, builderFactories, metaStatBuilders);
+            SkillDefinitions skillDefinitions, IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
+            IParser<UntranslatedStatParserParameter> statParser)
+            => (_skillDefinitions, _builderFactories, _metaStatBuilders, _statParser) =
+                (skillDefinitions, builderFactories, metaStatBuilders, statParser);
 
         public ParseResult Parse(Skill parameter)
         {
@@ -60,7 +68,9 @@ namespace PoESkillTree.Computation.Parsing
             var localSource = new ModifierSource.Local.Skill(displayName);
             var globalSource = new ModifierSource.Global(localSource);
             var gemSource = new ModifierSource.Local.Gem(parameter.ItemSlot, parameter.SocketIndex, displayName);
-            var isMainSkill = _metaStatBuilders.MainSkillSocket(parameter.ItemSlot, parameter.SocketIndex).IsSet;
+            var isMainSkillStat = _metaStatBuilders.MainSkillSocket(parameter.ItemSlot, parameter.SocketIndex);
+            var isMainSkill = isMainSkillStat.IsSet;
+            var isMainSkillValue = isMainSkillStat.Value.Build(new BuildParameters(null, Entity.Character, default));
             var modifiers = new List<Modifier>();
 
             void Add(IIntermediateModifier m) => modifiers.AddRange(Build(m));
@@ -195,32 +205,17 @@ namespace PoESkillTree.Computation.Parsing
                 }
             }
 
-            if (level.QualityStats.Any())
-            {
-                Add(_modifierBuilder
-                    .WithStat(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack))
-                    .WithForm(Forms.PercentIncrease)
-                    .WithValue(CreateValue(level.QualityStats[0].Value * parameter.Quality))
-                    .WithCondition(isMainSkill).Build());
-            }
-
+            var qualityStats =
+                level.QualityStats.Select(s => new UntranslatedStat(s.StatId, s.Value * parameter.Quality / 1000));
             var (parsedModifiers, remainingStats) = ParseWithoutTranslating(level.Stats, isMainSkill);
             parsedModifiers.ForEach(Add);
-            if (level.Stats.Any())
-            {
-                Add(_modifierBuilder
-                    .WithStat(_builderFactories.DamageTypeBuilders.Physical.Damage)
-                    .WithForm(Forms.PercentIncrease)
-                    .WithValue(level.Stats[0].Value * _builderFactories.ChargeTypeBuilders.Frenzy.Amount.Value)
-                    .WithCondition(isMainSkill).Build());
-                Add(_modifierBuilder
-                    .WithStat(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack))
-                    .WithForm(Forms.PercentIncrease)
-                    .WithValue(level.Stats[0].Value * _builderFactories.ChargeTypeBuilders.Frenzy.Amount.Value)
-                    .WithCondition(isMainSkill).Build());
-            }
 
-            return ParseResult.Success(modifiers);
+            ParseResult Parse(IEnumerable<UntranslatedStat> stats)
+                => ApplyCondition(_statParser.Parse(new UntranslatedStatParserParameter(localSource, stats)),
+                    isMainSkillValue);
+
+            var parseResults = new[] { ParseResult.Success(modifiers), Parse(qualityStats), Parse(remainingStats) };
+            return ParseResult.Aggregate(parseResults);
         }
 
         private static IConditionBuilder CreateWeaponRestrictionCondition(
@@ -238,7 +233,7 @@ namespace PoESkillTree.Computation.Parsing
                 var match = HitDamageRegex.Match(statId);
                 if (match.Success)
                     return Enums.Parse<DamageSource>(match.Groups[1].Value, true);
-                if (statId == "display_skill_deals_secondary_damage")
+                if (statId == DealsSecondaryDamage)
                     return DamageSource.Secondary;
             }
             return null;
@@ -248,7 +243,7 @@ namespace PoESkillTree.Computation.Parsing
             => level.Stats.Select(s => s.StatId).Any(DamageOverTimeRegex.IsMatch);
 
         private static bool HitDamageIsArea(SkillLevelDefinition level)
-            => level.Stats.Any(s => s.StatId == "is_area_damage");
+            => level.Stats.Any(s => s.StatId == IsAreaDamage);
 
         private IConditionBuilder PartHasKeywordCondition(
             DamageSource? hitDamageSource, IConditionBuilder baseCondition, Keyword keyword)
@@ -322,7 +317,10 @@ namespace PoESkillTree.Computation.Parsing
                         Forms.TotalOverride, CreateValue(stat.Value), isMainSkill));
                     continue;
                 }
-                unparsedStats.Add(stat);
+                if (!ExplicitlyHandledStats.Contains(stat.StatId))
+                {
+                    unparsedStats.Add(stat);
+                }
             }
             if (hitDamageMaximum.HasValue)
             {
@@ -333,6 +331,16 @@ namespace PoESkillTree.Computation.Parsing
                 modifiers.Add(Modifier(statBuilder, Forms.BaseSet, valueBuilder, isMainSkill));
             }
             return (modifiers, unparsedStats);
+        }
+
+        private ParseResult ApplyCondition(ParseResult result, IValue conditionalValue)
+        {
+            return result
+                .ApplyToModifiers(m => new Modifier(m.Stats, m.Form, ApplyCondition(m.Value), m.Source));
+
+            IValue ApplyCondition(IValue value)
+                => new FunctionalValue(c => conditionalValue.Calculate(c).IsTrue() ? value.Calculate(c) : null,
+                    $"{conditionalValue}.IsTrue ? {value} : null");
         }
 
         private IIntermediateModifier Modifier(

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using log4net;
 using MoreLinq;
 using PoESkillTree.GameModel.Skills;
@@ -21,6 +22,12 @@ namespace PoESkillTree.GameModel.StatTranslation
         {
             _translationLookup =
                 new Lazy<ILookup<string, Translation>>(() => CreateTranslationLookup(jsonTranslations));
+        }
+
+        public static async Task<StatTranslator> CreateAsync(string translationFilename = "stat_translations")
+        {
+            var statTranslations = await DataUtils.LoadRePoEAsync<List<JsonStatTranslation>>(translationFilename);
+            return new StatTranslator(statTranslations);
         }
 
         private static ILookup<string, Translation> CreateTranslationLookup(

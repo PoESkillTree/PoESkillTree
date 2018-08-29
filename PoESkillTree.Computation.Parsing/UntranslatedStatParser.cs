@@ -3,6 +3,7 @@ using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.GameModel.StatTranslation;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing
 {
@@ -32,5 +33,15 @@ namespace PoESkillTree.Computation.Parsing
 
         public ModifierSource.Local.Skill LocalModifierSource { get; }
         public IEnumerable<UntranslatedStat> UntranslatedStats { get; }
+
+        public override bool Equals(object obj)
+            => (obj == this) || (obj is UntranslatedStatParserParameter other && Equals(other));
+
+        private bool Equals(UntranslatedStatParserParameter other)
+            => LocalModifierSource == other.LocalModifierSource &&
+               UntranslatedStats.SequenceEqual(other.UntranslatedStats);
+
+        public override int GetHashCode()
+            => (LocalModifierSource, UntranslatedStats.SequenceHash()).GetHashCode();
     }
 }

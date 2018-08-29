@@ -8,6 +8,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
+using static PoESkillTree.Computation.Common.Tests.Helper;
 
 namespace PoESkillTree.Computation.Parsing.Tests
 {
@@ -179,20 +180,58 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.IsFalse(AnyModifierHasIdentity(modifiers, "Fire.Damage.Spell.Ignite"));
         }
 
+        [Test]
+        public void FlameTotemStatsAreParsedCorrectly()
+        {
+            var (definition, skill) = CreateFlameTotemDefinition();
+            var source = new ModifierSource.Local.Skill("Flame Totem");
+            var parseResults = new[]
+            {
+                ParseResult.Success(new[] { MockModifier(new Stat("s1")) }),
+                ParseResult.Success(new[] { MockModifier(new Stat("s2")) }),
+            };
+            var parseParameters = new[]
+            {
+                new UntranslatedStatParserParameter(source, new[]
+                {
+                    new UntranslatedStat("totem_life_+%", 10),
+                }),
+                new UntranslatedStatParserParameter(source, new[]
+                {
+                    new UntranslatedStat("number_of_additional_projectiles", 2),
+                }),
+            };
+            var statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
+                p.Parse(parseParameters[0]) == parseResults[0] &&
+                p.Parse(parseParameters[1]) == parseResults[1]);
+            var sut = CreateSut(definition, statParser);
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            Assert.IsTrue(AnyModifierHasIdentity(modifiers, "s1"));
+            Assert.IsTrue(AnyModifierHasIdentity(modifiers, "s2"));
+        }
+
         private static (SkillDefinition, Skill) CreateFlameTotemDefinition()
         {
             var activeSkill = new ActiveSkillDefinition("Flame Totem", 250, new[] { "spell" }, new string[0],
                 new[] { Keyword.Spell, Keyword.Projectile, Keyword.Totem }, false, 1.62, new ItemClass[0]);
+            var qualityStats = new[]
+            {
+                new UntranslatedStat("totem_life_+%", 1000),
+            };
             var stats = new[]
             {
                 new UntranslatedStat("spell_minimum_base_fire_damage", 5),
                 new UntranslatedStat("spell_maximum_base_fire_damage", 10),
+                new UntranslatedStat("number_of_additional_projectiles", 2),
             };
             var level = new SkillLevelDefinition(null, null, 5, null, null, null, null, 0, 0, 68, 98,
-                new UntranslatedStat[0], stats, null);
+                qualityStats, stats, null);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (SkillDefinition.CreateActive("FlameTotem", 0, "", null, activeSkill, levels),
-                new Skill("FlameTotem", 1, 0, ItemSlot.Belt, 0, 0));
+                new Skill("FlameTotem", 1, 10, ItemSlot.Belt, 0, 0));
         }
 
         [Test]
@@ -508,13 +547,19 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Skill("Cleave", 1, 0, ItemSlot.Belt, 0, null));
         }
 
-        private static ActiveSkillParser CreateSut(SkillDefinition skillDefinition)
+        private static ActiveSkillParser CreateSut(
+            SkillDefinition skillDefinition, IParser<UntranslatedStatParserParameter> statParser = null)
         {
             var skillDefinitions = new SkillDefinitions(new[] { skillDefinition });
             var statFactory = new StatFactory();
             var builderFactories = new BuilderFactories(statFactory, new SkillDefinition[0]);
             var metaStatBuilders = new MetaStatBuilders(statFactory);
-            return new ActiveSkillParser(skillDefinitions, builderFactories, metaStatBuilders);
+            if (statParser is null)
+            {
+                statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
+                    p.Parse(It.IsAny<UntranslatedStatParserParameter>()) == ParseResult.Success(new Modifier[0]));
+            }
+            return new ActiveSkillParser(skillDefinitions, builderFactories, metaStatBuilders, statParser);
         }
 
         private static IValueCalculationContext MockValueCalculationContext(

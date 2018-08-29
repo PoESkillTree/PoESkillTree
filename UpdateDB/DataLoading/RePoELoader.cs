@@ -16,13 +16,14 @@ namespace UpdateDB.DataLoading
         private static readonly string[] Files =
         {
             "mods", "crafting_bench_options", "npc_master", "stat_translations", "default_monster_stats", "characters",
-            "gems", "gem_tooltips",
+            "gems", "gem_tooltips", "stat_translations/skill",
         };
 
         public override bool SavePathIsFolder => true;
 
         protected override async Task LoadAsync()
         {
+            Directory.CreateDirectory(Path.Combine(SavePath, "stat_translations"));
             await Task.WhenAll(Files.Select(LoadAsync));
         }
 
@@ -38,6 +39,7 @@ namespace UpdateDB.DataLoading
             using (var writer = File.Create(Path.Combine(SavePath, fileName)))
             {
                 await response.Content.CopyToAsync(writer).ConfigureAwait(false);
+                Log.Info($"Loaded {file}");
             }
         }
     }

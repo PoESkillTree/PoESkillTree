@@ -28,7 +28,7 @@ namespace PoESkillTree.GameModel
         }
 
         public static Task<string> LoadRePoEAsync(string fileName)
-            => LoadTextAsync("RePoE." + fileName + RePoEFileSuffix);
+            => LoadTextAsync("RePoE." + fileName.Replace("/", ".") + RePoEFileSuffix);
 
         public static async Task<string> LoadTextAsync(string resourceName)
         {

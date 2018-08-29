@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Utils.Extensions;
@@ -43,6 +44,9 @@ namespace PoESkillTree.Computation.Parsing
         /// The parsed modifiers. Does not contain any modifiers for <see cref="FailedLines"/>.
         /// </summary>
         public IReadOnlyList<Modifier> Modifiers { get; }
+
+        public ParseResult ApplyToModifiers(Func<Modifier, Modifier> func)
+            => new ParseResult(FailedLines, RemainingSubstrings, Modifiers.Select(func).ToList());
 
         public static ParseResult Aggregate(IEnumerable<ParseResult> results)
         {
