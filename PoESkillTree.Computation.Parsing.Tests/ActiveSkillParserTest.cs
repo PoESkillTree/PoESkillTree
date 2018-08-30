@@ -6,6 +6,7 @@ using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 using static PoESkillTree.Computation.Common.Tests.Helper;

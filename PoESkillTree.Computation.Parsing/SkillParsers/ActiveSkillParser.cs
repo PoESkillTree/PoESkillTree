@@ -1,7 +1,5 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using EnumsNET;
 using MoreLinq;
 using PoESkillTree.Computation.Common;
@@ -16,75 +14,51 @@ using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 
-namespace PoESkillTree.Computation.Parsing
+namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
     public class ActiveSkillParser : IParser<Skill>
     {
         public delegate IParser<UntranslatedStatParserParameter> StatParserFactory(string statTranslationFileName);
 
-        private const string DamageTypeRegex = "(physical|cold|fire|lightning|chaos)";
-
-        private static readonly Regex HitDamageRegex =
-            new Regex($"^(attack|spell|secondary)_(minimum|maximum)_base_{DamageTypeRegex}_damage$");
-
-        private static readonly Regex DamageOverTimeRegex =
-            new Regex($"^base_{DamageTypeRegex}_damage_to_deal_per_minute$");
-
-        private const string DealsSecondaryDamage = "display_skill_deals_secondary_damage";
-        private const string IsAreaDamage = "is_area_damage";
-
-        private static readonly IReadOnlyList<string> ExplicitlyHandledStats =
-            new[] { DealsSecondaryDamage, IsAreaDamage };
-
-        private static readonly IReadOnlyList<Keyword> KeywordsExcludedForDamageOverTime = new[]
-        {
-            Keyword.Attack, Keyword.Spell, Keyword.Melee, Keyword.Projectile, Keyword.AreaOfEffect, Keyword.Movement
-        };
-
-        private static readonly IReadOnlyList<string> AreaDamageOverTimeSkills = new[]
-        {
-            "PoisonArrow", "ColdSnap", "VaalColdSnap", "Desecrate", "FireTrap", "RighteousFire", "VaalRighteousFire",
-            "FrostBoltNova"
-        };
-
-        private readonly SkillDefinitions _skillDefinitions;
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
         private readonly StatParserFactory _statParserFactory;
+
         private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
+        private readonly ActiveSkillPreParser _preParser;
+        private readonly ActiveSkillKeywordParser _keywordParser;
 
         public ActiveSkillParser(
             SkillDefinitions skillDefinitions, IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
             StatParserFactory statParserFactory)
-            => (_skillDefinitions, _builderFactories, _metaStatBuilders, _statParserFactory) =
-                (skillDefinitions, builderFactories, metaStatBuilders, statParserFactory);
+        {
+            (_builderFactories, _metaStatBuilders, _statParserFactory) =
+                (builderFactories, metaStatBuilders, statParserFactory);
+            _preParser = new ActiveSkillPreParser(skillDefinitions, metaStatBuilders);
+            _keywordParser = new ActiveSkillKeywordParser(builderFactories, metaStatBuilders);
+        }
 
         public ParseResult Parse(Skill parameter)
         {
-            var definition = _skillDefinitions.GetSkillById(parameter.Id);
+            var modifiers = new List<Modifier>();
+            var (preParseResult, parsedStats) = _preParser.Parse(parameter);
+
+            var definition = preParseResult.SkillDefinition;
             var activeSkill = definition.ActiveSkill;
             var level = definition.Levels[parameter.Level];
 
-            var displayName = definition.BaseItem?.DisplayName ??
-                              (definition.IsSupport ? parameter.Id : definition.ActiveSkill.DisplayName);
-            var localSource = new ModifierSource.Local.Skill(displayName);
-            var globalSource = new ModifierSource.Global(localSource);
-            var gemSource = new ModifierSource.Local.Gem(parameter.ItemSlot, parameter.SocketIndex, displayName);
-            var statParser = _statParserFactory(definition.StatTranslationFile);
+            var hitDamageSource = preParseResult.HitDamageSource;
 
-            var isMainSkillStat = _metaStatBuilders.MainSkillSocket(parameter.ItemSlot, parameter.SocketIndex);
-            var isMainSkill = isMainSkillStat.IsSet;
-            var isMainSkillValue = isMainSkillStat.Value.Build(new BuildParameters(null, Entity.Character, default));
-
-            var modifiers = new List<Modifier>();
+            var isMainSkill = preParseResult.IsMainSkill.IsSet;
 
             void Add(IIntermediateModifier m) => modifiers.AddRange(Build(m));
-            IReadOnlyList<Modifier> Build(IIntermediateModifier m) => m.Build(globalSource, Entity.Character);
             void AddGem(IIntermediateModifier m) => modifiers.AddRange(BuildGem(m));
-            IReadOnlyList<Modifier> BuildGem(IIntermediateModifier m) => m.Build(gemSource, Entity.Character);
 
-            var hitDamageSource = DetermineHitDamageSource(activeSkill, level);
-            var hasSkillDamageOverTime = HasSkillDamageOverTime(level);
+            IReadOnlyList<Modifier> Build(IIntermediateModifier m)
+                => m.Build(preParseResult.GlobalSource, Entity.Character);
+
+            IReadOnlyList<Modifier> BuildGem(IIntermediateModifier m)
+                => m.Build(preParseResult.GemSource, Entity.Character);
 
             if (hitDamageSource.HasValue)
             {
@@ -114,40 +88,9 @@ namespace PoESkillTree.Computation.Parsing
             Add(Modifier(_metaStatBuilders.MainSkillId,
                 Forms.TotalOverride, definition.NumericId, isMainSkill));
 
-            void AddKeywordModifiers(
-                Func<Keyword, IStatBuilder> statFactory, Func<Keyword, IConditionBuilder> conditionFactory,
-                Func<Keyword, bool> preCondition = null)
-                => modifiers.AddRange(
-                    KeywordModifiers(activeSkill.Keywords, statFactory, conditionFactory, preCondition)
-                        .SelectMany(Build));
-
-            AddKeywordModifiers(_metaStatBuilders.MainSkillHasKeyword, _ => isMainSkill);
-            AddKeywordModifiers(
-                _metaStatBuilders.MainSkillPartHasKeyword,
-                k => PartHasKeywordCondition(hitDamageSource, isMainSkill, k));
-            AddKeywordModifiers(
-                _metaStatBuilders.MainSkillPartCastRateHasKeyword,
-                k => PartHasKeywordCondition(hitDamageSource, isMainSkill, k));
-            if (hitDamageSource.HasValue)
-            {
-                var hitIsAreaDamage = HitDamageIsArea(level);
-                AddKeywordModifiers(
-                    k => _metaStatBuilders.MainSkillPartDamageHasKeyword(k, hitDamageSource.Value),
-                    k => PartHasKeywordCondition(hitDamageSource, isMainSkill, k),
-                    k => k != Keyword.AreaOfEffect || hitIsAreaDamage);
-            }
-            if (hasSkillDamageOverTime)
-            {
-                var dotIsAreaDamage = AreaDamageOverTimeSkills.Contains(definition.Id);
-                AddKeywordModifiers(
-                    k => _metaStatBuilders.MainSkillPartDamageHasKeyword(k, DamageSource.OverTime),
-                    k => PartHasKeywordCondition(hitDamageSource, isMainSkill, k),
-                    k => k == Keyword.AreaOfEffect ? dotIsAreaDamage : !KeywordsExcludedForDamageOverTime.Contains(k));
-            }
-            AddKeywordModifiers(
-                k => _metaStatBuilders.MainSkillPartAilmentDamageHasKeyword(k),
-                k => PartHasKeywordCondition(hitDamageSource, isMainSkill, k),
-                k => !KeywordsExcludedForDamageOverTime.Contains(k));
+            var (newlyParsedModifiers, newlyParsedStats) = _keywordParser.Parse(parameter, preParseResult);
+            modifiers.AddRange(newlyParsedModifiers);
+            parsedStats = parsedStats.Concat(newlyParsedStats);
 
             if (hitDamageSource != DamageSource.Attack)
             {
@@ -215,9 +158,16 @@ namespace PoESkillTree.Computation.Parsing
             var (parsedModifiers, remainingStats) = ParseWithoutTranslating(level.Stats, isMainSkill);
             parsedModifiers.ForEach(Add);
 
+            remainingStats = remainingStats.Except(parsedStats);
+            var isMainSkillValue = preParseResult.IsMainSkill.Value
+                .Build(new BuildParameters(null, Entity.Character, default));
+            var statParser = _statParserFactory(definition.StatTranslationFile);
+
             ParseResult Parse(IEnumerable<UntranslatedStat> stats)
-                => ApplyCondition(statParser.Parse(new UntranslatedStatParserParameter(localSource, stats)),
-                    isMainSkillValue);
+            {
+                var parserParameter = new UntranslatedStatParserParameter(preParseResult.LocalSource, stats);
+                return ApplyCondition(statParser.Parse(parserParameter), isMainSkillValue);
+            }
 
             var parseResults = new[] { ParseResult.Success(modifiers), Parse(qualityStats), Parse(remainingStats) };
             return ParseResult.Aggregate(parseResults);
@@ -226,57 +176,6 @@ namespace PoESkillTree.Computation.Parsing
         private static IConditionBuilder CreateWeaponRestrictionCondition(
             IEquipmentBuilder hand, IEnumerable<ItemClass> weaponRestrictions)
             => weaponRestrictions.Select(hand.Has).Aggregate((l, r) => l.Or(r));
-
-        private static DamageSource? DetermineHitDamageSource(
-            ActiveSkillDefinition activeSkill, SkillLevelDefinition level)
-        {
-            if (activeSkill.ActiveSkillTypes.Contains(ActiveSkillType.Attack))
-                return DamageSource.Attack;
-            var statIds = level.Stats.Select(s => s.StatId);
-            foreach (var statId in statIds)
-            {
-                var match = HitDamageRegex.Match(statId);
-                if (match.Success)
-                    return Enums.Parse<DamageSource>(match.Groups[1].Value, true);
-                if (statId == DealsSecondaryDamage)
-                    return DamageSource.Secondary;
-            }
-            return null;
-        }
-
-        private static bool HasSkillDamageOverTime(SkillLevelDefinition level)
-            => level.Stats.Select(s => s.StatId).Any(DamageOverTimeRegex.IsMatch);
-
-        private static bool HitDamageIsArea(SkillLevelDefinition level)
-            => level.Stats.Any(s => s.StatId == IsAreaDamage);
-
-        private IConditionBuilder PartHasKeywordCondition(
-            DamageSource? hitDamageSource, IConditionBuilder baseCondition, Keyword keyword)
-        {
-            var mainHandIsRanged = MainHand.Has(Tags.Ranged);
-            switch (keyword)
-            {
-                case Keyword.Melee:
-                    return baseCondition.And(mainHandIsRanged.Not);
-                case Keyword.Projectile when hitDamageSource == DamageSource.Attack:
-                    return baseCondition.And(mainHandIsRanged);
-                default:
-                    return baseCondition;
-            }
-        }
-
-        private IEnumerable<IIntermediateModifier> KeywordModifiers(
-            IEnumerable<Keyword> keywords, Func<Keyword, IStatBuilder> statFactory,
-            Func<Keyword, IConditionBuilder> conditionFactory, Func<Keyword, bool> preCondition = null)
-        {
-            if (preCondition != null)
-                keywords = keywords.Where(preCondition);
-            foreach (var keyword in keywords)
-            {
-                yield return Modifier(statFactory(keyword),
-                    Forms.TotalOverride, CreateValue(1), conditionFactory(keyword));
-            }
-        }
 
         private (IEnumerable<IIntermediateModifier> modifiers, IEnumerable<UntranslatedStat> unparsed)
             ParseWithoutTranslating(IEnumerable<UntranslatedStat> stats, IConditionBuilder isMainSkill)
@@ -289,7 +188,7 @@ namespace PoESkillTree.Computation.Parsing
             double? hitDamageMaximum = null;
             foreach (var stat in stats)
             {
-                var match = HitDamageRegex.Match(stat.StatId);
+                var match = SkillStatIds.HitDamageRegex.Match(stat.StatId);
                 if (match.Success)
                 {
                     hitDamageSource = Enums.Parse<DamageSource>(match.Groups[1].Value, true);
@@ -300,7 +199,7 @@ namespace PoESkillTree.Computation.Parsing
                         hitDamageMaximum = stat.Value;
                     continue;
                 }
-                match = DamageOverTimeRegex.Match(stat.StatId);
+                match = SkillStatIds.DamageOverTimeRegex.Match(stat.StatId);
                 if (match.Success)
                 {
                     var type = Enums.Parse<DamageType>(match.Groups[1].Value, true);
@@ -322,10 +221,7 @@ namespace PoESkillTree.Computation.Parsing
                         Forms.TotalOverride, CreateValue(stat.Value), isMainSkill));
                     continue;
                 }
-                if (!ExplicitlyHandledStats.Contains(stat.StatId))
-                {
-                    unparsedStats.Add(stat);
-                }
+                unparsedStats.Add(stat);
             }
             if (hitDamageMaximum.HasValue)
             {
@@ -381,10 +277,9 @@ namespace PoESkillTree.Computation.Parsing
         public int Quality { get; }
 
         public ItemSlot ItemSlot { get; }
+        public int SocketIndex { get; }
 
         // Null: item inherent skill
         public int? GemGroup { get; }
-
-        public int SocketIndex { get; }
     }
 }
