@@ -64,12 +64,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SkillParsers\ActiveSkillGeneralParser.cs" />
     <Compile Include="SkillParsers\ActiveSkillKeywordParser.cs" />
+    <Compile Include="SkillParsers\ActiveSkillLevelParser.cs" />
     <Compile Include="SkillParsers\ActiveSkillPreParser.cs" />
-    <Compile Include="SkillParsers\ActiveSkillPreParseResult.cs" />
+    <Compile Include="SkillParsers\SkillPreParseResult.cs" />
     <Compile Include="GivenStatsParser.cs" />
     <Compile Include="IParser.cs" />
     <Compile Include="SkillParsers\ActiveSkillParser.cs" />
+    <Compile Include="SkillParsers\ActiveSkillStatParser.cs" />
+    <Compile Include="SkillParsers\GemRequirementParser.cs" />
     <Compile Include="SkillParsers\PartialSkillParseResult.cs" />
     <Compile Include="SkillParsers\SkillStatIds.cs" />
     <Compile Include="StringParsers\IStringParser.cs" />

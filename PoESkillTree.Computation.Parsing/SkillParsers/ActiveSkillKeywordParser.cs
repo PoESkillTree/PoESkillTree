@@ -32,12 +32,12 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         private List<Modifier> _parsedModifiers;
         private List<UntranslatedStat> _parsedStats;
         private SkillDefinition _skillDefinition;
-        private ActiveSkillPreParseResult _preParseResult;
+        private SkillPreParseResult _preParseResult;
 
         public ActiveSkillKeywordParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
             => (_builderFactories, _metaStatBuilders) = (builderFactories, metaStatBuilders);
 
-        public PartialSkillParseResult Parse(Skill skill, ActiveSkillPreParseResult preParseResult)
+        public PartialSkillParseResult Parse(SkillPreParseResult preParseResult)
         {
             _parsedModifiers = new List<Modifier>();
             _parsedStats = new List<UntranslatedStat>();
@@ -56,7 +56,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 k => PartHasKeywordCondition(hitDamageSource, isMainSkill, k));
             if (hitDamageSource.HasValue)
             {
-                var hitIsAreaDamage = HitDamageIsArea(_skillDefinition.Levels[skill.Level]);
+                var hitIsAreaDamage = HitDamageIsArea(preParseResult.LevelDefinition);
                 AddKeywordModifiers(
                     k => _metaStatBuilders.MainSkillPartDamageHasKeyword(k, hitDamageSource.Value),
                     k => PartHasKeywordCondition(hitDamageSource, isMainSkill, k),

@@ -5,14 +5,16 @@ using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
-    public class ActiveSkillPreParseResult
+    public class SkillPreParseResult
     {
-        public ActiveSkillPreParseResult(
-            SkillDefinition skillDefinition, ModifierSource.Local.Skill localSource, ModifierSource.Global globalSource,
+        public SkillPreParseResult(
+            SkillDefinition skillDefinition, SkillLevelDefinition levelDefinition,
+            ModifierSource.Local.Skill localSource, ModifierSource.Global globalSource,
             ModifierSource.Local.Gem gemSource, DamageSource? hitDamageSource, bool hasSkillDamageOverTime,
             IStatBuilder isMainSkill)
         {
             SkillDefinition = skillDefinition;
+            LevelDefinition = levelDefinition;
             LocalSource = localSource;
             GlobalSource = globalSource;
             GemSource = gemSource;
@@ -22,6 +24,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         }
 
         public SkillDefinition SkillDefinition { get; }
+        public SkillLevelDefinition LevelDefinition { get; }
 
         public ModifierSource.Local.Skill LocalSource { get; }
         public ModifierSource.Global GlobalSource { get; }

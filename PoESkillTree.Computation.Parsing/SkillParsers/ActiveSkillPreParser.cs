@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         public ActiveSkillPreParser(SkillDefinitions skillDefinitions, IMetaStatBuilders metaStatBuilders)
             => (_skillDefinitions, _metaStatBuilders) = (skillDefinitions, metaStatBuilders);
 
-        public (ActiveSkillPreParseResult preParseResult, IEnumerable<UntranslatedStat> parsedStats) Parse(Skill skill)
+        public (SkillPreParseResult preParseResult, IEnumerable<UntranslatedStat> parsedStats) Parse(Skill skill)
         {
             _parsedStats = new List<UntranslatedStat>();
 
@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
             var isMainSkillStat = _metaStatBuilders.MainSkillSocket(skill.ItemSlot, skill.SocketIndex);
 
-            var preParseResult = new ActiveSkillPreParseResult(definition, localSource, globalSource, gemSource,
+            var preParseResult = new SkillPreParseResult(definition, level, localSource, globalSource, gemSource,
                 hitDamageSource, hasSkillDamageOverTime, isMainSkillStat);
             var result = (preParseResult, _parsedStats);
             _parsedStats = null;
