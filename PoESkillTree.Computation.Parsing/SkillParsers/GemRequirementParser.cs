@@ -7,7 +7,7 @@ using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
-    public class GemRequirementParser
+    public class GemRequirementParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;
         private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();

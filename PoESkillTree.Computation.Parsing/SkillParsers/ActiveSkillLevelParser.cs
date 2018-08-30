@@ -8,7 +8,7 @@ using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
-    public class ActiveSkillLevelParser
+    public class ActiveSkillLevelParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
@@ -17,7 +17,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         public ActiveSkillLevelParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
             => (_builderFactories, _metaStatBuilders) = (builderFactories, metaStatBuilders);
 
-        public PartialSkillParseResult Parse(SkillPreParseResult preParseResult)
+        public PartialSkillParseResult Parse(Skill skill, SkillPreParseResult preParseResult)
         {
             var modifiers = new List<Modifier>();
             var level = preParseResult.LevelDefinition;

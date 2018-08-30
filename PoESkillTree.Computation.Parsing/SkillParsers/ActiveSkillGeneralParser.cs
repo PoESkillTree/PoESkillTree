@@ -13,7 +13,7 @@ using PoESkillTree.GameModel.Skills;
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
     // This is a bad name
-    public class ActiveSkillGeneralParser
+    public class ActiveSkillGeneralParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
@@ -25,7 +25,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         public ActiveSkillGeneralParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
             => (_builderFactories, _metaStatBuilders) = (builderFactories, metaStatBuilders);
 
-        public PartialSkillParseResult Parse(SkillPreParseResult preParseResult)
+        public PartialSkillParseResult Parse(Skill skill, SkillPreParseResult preParseResult)
         {
             _parsedModifiers = new List<Modifier>();
             _preParseResult = preParseResult;

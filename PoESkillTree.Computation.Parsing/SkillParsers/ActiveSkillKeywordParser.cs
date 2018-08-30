@@ -12,7 +12,7 @@ using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
-    public class ActiveSkillKeywordParser
+    public class ActiveSkillKeywordParser : IPartialSkillParser
     {
         private static readonly IReadOnlyList<Keyword> KeywordsExcludedForDamageOverTime = new[]
         {
@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         public ActiveSkillKeywordParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
             => (_builderFactories, _metaStatBuilders) = (builderFactories, metaStatBuilders);
 
-        public PartialSkillParseResult Parse(SkillPreParseResult preParseResult)
+        public PartialSkillParseResult Parse(Skill skill, SkillPreParseResult preParseResult)
         {
             _parsedModifiers = new List<Modifier>();
             _parsedStats = new List<UntranslatedStat>();

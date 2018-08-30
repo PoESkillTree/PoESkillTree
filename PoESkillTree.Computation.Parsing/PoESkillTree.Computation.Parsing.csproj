@@ -68,6 +68,7 @@
     <Compile Include="SkillParsers\ActiveSkillKeywordParser.cs" />
     <Compile Include="SkillParsers\ActiveSkillLevelParser.cs" />
     <Compile Include="SkillParsers\ActiveSkillPreParser.cs" />
+    <Compile Include="SkillParsers\IPartialSkillParser.cs" />
     <Compile Include="SkillParsers\SkillPreParseResult.cs" />
     <Compile Include="GivenStatsParser.cs" />
     <Compile Include="IParser.cs" />

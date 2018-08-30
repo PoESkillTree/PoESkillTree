@@ -15,11 +15,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         private readonly StatParserFactory _statParserFactory;
 
         private readonly ActiveSkillPreParser _preParser;
-        private readonly ActiveSkillGeneralParser _generalParser;
-        private readonly ActiveSkillKeywordParser _keywordParser;
-        private readonly ActiveSkillLevelParser _levelParser;
-        private readonly GemRequirementParser _requirementParser;
-        private readonly ActiveSkillStatParser _statParser;
+        private readonly IReadOnlyList<IPartialSkillParser> _partialParsers;
 
         public ActiveSkillParser(
             SkillDefinitions skillDefinitions, IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
@@ -27,61 +23,54 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         {
             _statParserFactory = statParserFactory;
             _preParser = new ActiveSkillPreParser(skillDefinitions, metaStatBuilders);
-            _generalParser = new ActiveSkillGeneralParser(builderFactories, metaStatBuilders);
-            _keywordParser = new ActiveSkillKeywordParser(builderFactories, metaStatBuilders);
-            _levelParser = new ActiveSkillLevelParser(builderFactories, metaStatBuilders);
-            _requirementParser = new GemRequirementParser(builderFactories);
-            _statParser = new ActiveSkillStatParser(builderFactories, metaStatBuilders);
+            _partialParsers = new IPartialSkillParser[]
+            {
+                new ActiveSkillGeneralParser(builderFactories, metaStatBuilders),
+                new ActiveSkillKeywordParser(builderFactories, metaStatBuilders),
+                new ActiveSkillLevelParser(builderFactories, metaStatBuilders),
+                new GemRequirementParser(builderFactories),
+                new ActiveSkillStatParser(builderFactories, metaStatBuilders),
+            };
         }
 
-        public ParseResult Parse(Skill parameter)
+        public ParseResult Parse(Skill skill)
         {
             var modifiers = new List<Modifier>();
-            var (preParseResult, parsedStats) = _preParser.Parse(parameter);
+            var parsedStats = new List<UntranslatedStat>();
+
+            var (preParseResult, preParsedStats) = _preParser.Parse(skill);
+            parsedStats.AddRange(preParsedStats);
+            foreach (var partialParser in _partialParsers)
+            {
+                var (newlyParsedModifiers, newlyParsedStats) = partialParser.Parse(skill, preParseResult);
+                modifiers.AddRange(newlyParsedModifiers);
+                parsedStats.AddRange(newlyParsedStats);
+            }
 
             var level = preParseResult.LevelDefinition;
+            var qualityStats =
+                level.QualityStats.Select(s => new UntranslatedStat(s.StatId, s.Value * skill.Quality / 1000));
+            var levelStats = level.Stats.Except(parsedStats);
+            return ParseResult.Aggregate(new[]
+            {
+                ParseResult.Success(modifiers),
+                TranslateAndParse(preParseResult, qualityStats),
+                TranslateAndParse(preParseResult, levelStats)
+            });
+        }
 
-            var (newlyParsedModifiers, newlyParsedStats) = _generalParser.Parse(preParseResult);
-            modifiers.AddRange(newlyParsedModifiers);
-            parsedStats = parsedStats.Concat(newlyParsedStats);
-
-            (newlyParsedModifiers, newlyParsedStats) = _keywordParser.Parse(preParseResult);
-            modifiers.AddRange(newlyParsedModifiers);
-            parsedStats = parsedStats.Concat(newlyParsedStats);
-
-            (newlyParsedModifiers, newlyParsedStats) = _levelParser.Parse(preParseResult);
-            modifiers.AddRange(newlyParsedModifiers);
-            parsedStats = parsedStats.Concat(newlyParsedStats);
-
-            (newlyParsedModifiers, newlyParsedStats) = _requirementParser.Parse(parameter, preParseResult);
-            modifiers.AddRange(newlyParsedModifiers);
-            parsedStats = parsedStats.Concat(newlyParsedStats);
-
-            (newlyParsedModifiers, newlyParsedStats) = _statParser.Parse(preParseResult);
-            modifiers.AddRange(newlyParsedModifiers);
-            parsedStats = parsedStats.Concat(newlyParsedStats);
-
+        private ParseResult TranslateAndParse(SkillPreParseResult preParseResult, IEnumerable<UntranslatedStat> stats)
+        {
             var isMainSkillValue = preParseResult.IsMainSkill.Value
                 .Build(new BuildParameters(null, Entity.Character, default));
             var statParser = _statParserFactory(preParseResult.SkillDefinition.StatTranslationFile);
-
-            ParseResult Parse(IEnumerable<UntranslatedStat> stats)
-            {
-                var parserParameter = new UntranslatedStatParserParameter(preParseResult.LocalSource, stats);
-                return ApplyCondition(statParser.Parse(parserParameter), isMainSkillValue);
-            }
-            
-            var qualityStats =
-                level.QualityStats.Select(s => new UntranslatedStat(s.StatId, s.Value * parameter.Quality / 1000));
-            var levelStats = level.Stats.Except(parsedStats);
-            var parseResults = new[] { ParseResult.Success(modifiers), Parse(qualityStats), Parse(levelStats) };
-            return ParseResult.Aggregate(parseResults);
+            var parserParameter = new UntranslatedStatParserParameter(preParseResult.LocalSource, stats);
+            return ApplyCondition(statParser.Parse(parserParameter), isMainSkillValue);
         }
 
-        private ParseResult ApplyCondition(ParseResult result, IValue conditionalValue)
+        private static ParseResult ApplyCondition(ParseResult result, IValue conditionalValue)
         {
-            return result
-                .ApplyToModifiers(m => new Modifier(m.Stats, m.Form, ApplyCondition(m.Value), m.Source));
+            return result.ApplyToModifiers(m => new Modifier(m.Stats, m.Form, ApplyCondition(m.Value), m.Source));
 
             IValue ApplyCondition(IValue value)
                 => new FunctionalValue(c => conditionalValue.Calculate(c).IsTrue() ? value.Calculate(c) : null,
