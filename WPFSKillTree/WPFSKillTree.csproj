@@ -232,6 +232,7 @@
     <Compile Include="Model\Items\Enums\ModLocation.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
     <Compile Include="Model\Items\StatTranslation\Translation.cs" />
+    <Compile Include="Utils\SemanticVersion.cs" />
     <Compile Include="Utils\WikiApi\CargoConstants.cs" />
     <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
     <Compile Include="Utils\Wpf\ScrollViewerBindableOffsetBehavior.cs" />

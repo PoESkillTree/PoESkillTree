@@ -281,8 +281,9 @@
         </ReadLinesFromFile>
         <Message Text="%09Revision count: $(BuildNumber)" />
         <PropertyGroup>
-            <!-- Keep only leading digits from Revision of ProductVersion and add format item for BuildNumber -->
-            <FormatFileVersion>$([System.Text.RegularExpressions.Regex]::Replace($(ProductVersion), "\.([0-9]+)([a-zA-Z][a-zA-Z0-9]+)?$", ".$1.{0}"))</FormatFileVersion>
+            <!-- Remove pre-release suffix from ProductVersion and add format item for BuildNumber as Revision.
+                 (Major, Minor and Patch are kept) -->
+            <FormatFileVersion>$([System.Text.RegularExpressions.Regex]::Replace($(ProductVersion), "\.([0-9]+)(-.+)?$", ".$1.{0}"))</FormatFileVersion>
             <!-- Set BuildNumber -->
             <FileVersion>$([System.String]::Format($(FormatFileVersion), $(BuildNumber)))</FileVersion>
         </PropertyGroup>
