@@ -1592,6 +1592,10 @@
     </Explicit>
     <Properties />
   </Unique>
+  <Unique Name="Soulwrest" Level="62" BaseMetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff16">
+    <Explicit />
+    <Properties />
+  </Unique>
   <Unique Name="Taryn's Shiver" Level="64" BaseMetadataId="Metadata/Items/Weapons/TwoHandWeapons/Staves/Staff17">
     <Explicit>
       <string>LocalIncreaseSocketedColdGemLevelUniqueStaff2</string>
@@ -2490,6 +2494,10 @@
     </Explicit>
     <Properties />
   </Unique>
+  <Unique Name="Aul's Uprising" Level="55" BaseMetadataId="Metadata/Items/Amulets/Amulet7">
+    <Explicit />
+    <Properties />
+  </Unique>
   <Unique Name="Bisco's Collar" Level="30" BaseMetadataId="Metadata/Items/Amulets/Amulet6">
     <Explicit>
       <string>MagicMonsterItemRarityUnique__1</string>
@@ -2746,6 +2754,10 @@
       <string>ItemActsAsSupportBlindUnique__1</string>
       <string>SupportedByCastOnStunUnique___1</string>
     </Explicit>
+    <Properties />
+  </Unique>
+  <Unique Name="Perquil's Toe" Level="29" BaseMetadataId="Metadata/Items/Amulets/Amulet6">
+    <Explicit />
     <Properties />
   </Unique>
   <Unique Name="Presence of Chayula" Level="60" BaseMetadataId="Metadata/Items/Amulets/Amulet7">
@@ -5159,6 +5171,10 @@
     </Explicit>
     <Properties />
   </Unique>
+  <Unique Name="Doryani's Delusion" Level="68" BaseMetadataId="Metadata/Items/Armours/Boots/BootsStr9">
+    <Explicit />
+    <Properties />
+  </Unique>
   <Unique Name="Duskblight" Level="40" BaseMetadataId="Metadata/Items/Armours/Boots/BootsStrDex2">
     <Explicit>
       <string>SocketedGemsHaveAddedChaosDamageUnique__2</string>
@@ -5681,6 +5697,10 @@
     </Explicit>
     <Properties />
   </Unique>
+  <Unique Name="Crown of the Tyrant" Level="58" BaseMetadataId="Metadata/Items/Armours/Helmets/HelmetStrInt8">
+    <Explicit />
+    <Properties />
+  </Unique>
   <Unique Name="Crown of Thorns" Level="3" BaseMetadataId="Metadata/Items/Armours/Helmets/HelmetInt1">
     <Explicit>
       <string>LocalIncreasedEnergyShieldPercentUniqueIntHelmet1</string>
@@ -5688,6 +5708,10 @@
       <string>TakesDamageWhenAttackedUniqueIntHelmet1</string>
       <string>PainAttunement</string>
     </Explicit>
+    <Properties />
+  </Unique>
+  <Unique Name="Curtain Call" Level="20" BaseMetadataId="Metadata/Items/Armours/Helmets/HelmetDexInt2">
+    <Explicit />
     <Properties />
   </Unique>
   <Unique Name="Deidbell" Level="33" BaseMetadataId="Metadata/Items/Armours/Helmets/HelmetStrDex4">
@@ -5845,6 +5869,10 @@
       <string>AdditionalPhysicalDamageReductionWhileMovingUnique__1</string>
       <string>ReducedElementalDamageTakenWhileStationaryUnique__1_</string>
     </Explicit>
+    <Properties />
+  </Unique>
+  <Unique Name="Hale Negator" Level="65" BaseMetadataId="Metadata/Items/Armours/Helmets/HelmetInt10">
+    <Explicit />
     <Properties />
   </Unique>
   <Unique Name="Heatshiver" Level="20" BaseMetadataId="Metadata/Items/Armours/Helmets/HelmetDex3">
@@ -6392,6 +6420,10 @@
       <string>IncreasedAttackSpeedUniqueGlovesDemigods1</string>
       <string>IncreasedCastSpeedUniqueGlovesDemigods1</string>
     </Explicit>
+    <Properties />
+  </Unique>
+  <Unique Name="Demon Stitcher" Level="41" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesInt5">
+    <Explicit />
     <Properties />
   </Unique>
   <Unique Name="Doedre's Malevolence" Level="64" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesInt2">
@@ -7297,6 +7329,10 @@
       <string>FireResistUniqueShieldStrDex3</string>
       <string>VulnerabilityOnBlockUniqueShieldStrDex3</string>
     </Explicit>
+    <Properties />
+  </Unique>
+  <Unique Name="The Eternal Apple" Level="49" BaseMetadataId="Metadata/Items/Armours/Shields/ShieldInt10">
+    <Explicit />
     <Properties />
   </Unique>
   <Unique Name="The Oak" Level="40" BaseMetadataId="Metadata/Items/Armours/Shields/ShieldStrInt1">
@@ -8466,6 +8502,12 @@
     </Explicit>
     <Properties>
       <string>Limited to: 2</string>
+    </Properties>
+  </Unique>
+  <Unique Name="Unnatural Instinct" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelDex">
+    <Explicit />
+    <Properties>
+      <string>Limited to: 1</string>
     </Properties>
   </Unique>
   <Unique Name="Unstable Payload" Level="1" BaseMetadataId="Metadata/Items/Jewels/JewelInt">
