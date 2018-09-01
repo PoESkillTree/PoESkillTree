@@ -296,6 +296,7 @@ namespace PoESkillTree.Computation.Data
                 // range and area of effect
                 { "area of effect", Stat.AreaOfEffect },
                 { "melee weapon and unarmed( attack)? range", Stat.Range.With(Keyword.Melee) },
+                { "melee range", Stat.Range.With(Keyword.Melee) },
                 { "melee weapon range", Stat.Range.With(Keyword.Melee), MainHand.HasItem },
                 // other
                 { "rampage stacks", Stat.RampageStacks },

@@ -22,6 +22,8 @@ namespace UnitTests.Model.Items.Mods
             "specific_weapon", "two_handed_mod", "shield_mod", "dual_wielding_mod", "one_handed_mod", "melee_mod",
             // - crit/spell crit shaper mod
             "grants_crit_chance_support",
+            // Resonators/Fossils (Delve league) crafting is not supported and Abyss Jewels aren't either
+            "abyss_jewel",
             // map crafting is not supported
             "map",
             // no idea where these come from

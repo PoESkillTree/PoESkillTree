@@ -119,6 +119,8 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                     ("CastRate.Attack.MainHand.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global,
                         true),
                     ("CastRate.Attack.OffHand.Skill", Form.Increase, levelDefinition.Stats[1].Value * 3, global, true),
+                    ("Range.Attack.MainHand.Skill", Form.BaseAdd, null, global, true),
+                    ("Range.Attack.OffHand.Skill", Form.BaseAdd, null, global, true),
                 };
             var parser = new ActiveSkillParser(_skillDefinitions, _compositionRoot.BuilderFactories,
                 _compositionRoot.MetaStats, CreateStatParser);

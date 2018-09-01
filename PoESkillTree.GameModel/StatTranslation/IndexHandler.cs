@@ -17,6 +17,8 @@ namespace PoESkillTree.GameModel.StatTranslation
     [JsonConverter(typeof(StringEnumConverter))]
     public enum IndexHandler
     {
+        [EnumMember(Value = "30%_of_value")]
+        Percent30OfValue,
         [EnumMember(Value = "60%_of_value")]
         Percent60OfValue,
         [EnumMember(Value = "deciseconds_to_seconds")]
@@ -52,9 +54,11 @@ namespace PoESkillTree.GameModel.StatTranslation
         [EnumMember(Value = "old_leech_permyriad")]
         OldLeechPermyriad,
         [EnumMember(Value = "per_minute_to_per_second")]
-        PerMinuteToPerSecondPrecision1,
+        PerMinuteToPerSecond,
         [EnumMember(Value = "per_minute_to_per_second_0dp")]
         PerMinuteToPerSecondPrecision0,
+        [EnumMember(Value = "per_minute_to_per_second_1dp")]
+        PerMinuteToPerSecondPrecision1,
         [EnumMember(Value = "per_minute_to_per_second_2dp")]
         PerMinuteToPerSecondPrecision2,
         [EnumMember(Value = "per_minute_to_per_second_2dp_if_required")]
@@ -70,6 +74,7 @@ namespace PoESkillTree.GameModel.StatTranslation
         private static readonly IReadOnlyDictionary<IndexHandler, Func<double, double>> Handlers
             = new Dictionary<IndexHandler, Func<double, double>>
             {
+                { IndexHandler.Percent30OfValue, d => d * 0.3 },
                 { IndexHandler.Percent60OfValue, d => d * 0.6 },
                 { IndexHandler.DecisecondsToSeconds, d => d / 10 },
                 { IndexHandler.DivideBy100, d => d / 100 },
@@ -87,6 +92,7 @@ namespace PoESkillTree.GameModel.StatTranslation
                 { IndexHandler.Negate, d => -d },
                 { IndexHandler.OldLeechPercent, d => d / 5 },
                 { IndexHandler.OldLeechPermyriad, d => d / 500 },
+                { IndexHandler.PerMinuteToPerSecond, d => Math.Round(d / 60, 1) },
                 { IndexHandler.PerMinuteToPerSecondPrecision0, d => Math.Round(d / 60, 0) },
                 { IndexHandler.PerMinuteToPerSecondPrecision1, d => Math.Round(d / 60, 1) },
                 { IndexHandler.PerMinuteToPerSecondPrecision2, d => Math.Round(d / 60, 2) },
