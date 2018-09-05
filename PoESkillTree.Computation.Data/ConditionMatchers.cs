@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Data
             {
                 // actions
                 // - generic
-                { "if you've ({ActionMatchers}) recently", Reference.AsAction.Recently },
+                { "if you've ({ActionMatchers})( an enemy)? recently,?", Reference.AsAction.Recently },
                 { "if you haven't ({ActionMatchers}) recently", Not(Reference.AsAction.Recently) },
                 { "for # seconds on ({ActionMatchers})", Reference.AsAction.InPastXSeconds(Value) },
                 {
@@ -69,9 +69,9 @@ namespace PoESkillTree.Computation.Data
                 { "if you've dealt a critical strike in the past # seconds", CriticalStrike.InPastXSeconds(Value) },
                 // - block
                 { "if you've blocked in the past # seconds,?", Block.InPastXSeconds(Value) },
-                { "if you've blocked a hit from a unique enemy recently", And(Block.Recently, Enemy.IsUnique) },
+                { "if you've blocked damage from a unique enemy recently", And(Block.Recently, Enemy.IsUnique) },
                 {
-                    "if you've blocked a hit from a unique enemy in the past # seconds",
+                    "if you've blocked damage from a unique enemy in the past # seconds",
                     And(Block.InPastXSeconds(Value), Enemy.IsUnique)
                 },
                 // - other
@@ -182,11 +182,7 @@ namespace PoESkillTree.Computation.Data
                 { "(against|from) blinded enemies", Buff.Blind.IsOn(Enemy) },
                 { "from taunted enemies", Buff.Taunt.IsOn(Enemy) },
                 {
-                    "you and allies affected by your auras have",
-                    Or(For(Self), And(For(Ally), Buffs(targets: Ally).With(Keyword.Aura).Any()))
-                },
-                {
-                    "you and allies deal while affected by auras you cast",
+                    "you and allies affected by your aura skills (have|deal)",
                     Or(For(Self), And(For(Ally), Buffs(targets: Ally).With(Keyword.Aura).Any()))
                 },
                 // ailments
@@ -210,6 +206,8 @@ namespace PoESkillTree.Computation.Data
                 // skills
                 // - by keyword
                 { "vaal( skill)?", With(Keyword.Vaal) },
+                { "with bow skills", And(MainHand.Has(Tags.Bow), With(Keyword.Bow)) },
+                { "chaos skills have", With(Chaos) },
                 { "(with|of|for) ({KeywordMatchers}) skills", With(Reference.AsKeyword) },
                 { "({KeywordMatchers}) skills have", With(Reference.AsKeyword) },
                 // - by damage type
@@ -274,6 +272,7 @@ namespace PoESkillTree.Computation.Data
                     "if you've taken fire damage from a hit recently",
                     Condition.Unique("Have you recently taken Fire Damage from a Hit?")
                 },
+                { "while you have at least one nearby ally", Condition.Unique("Is any ally nearby?") },
             };
     }
 }

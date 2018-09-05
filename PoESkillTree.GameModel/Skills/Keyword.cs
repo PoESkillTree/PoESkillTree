@@ -98,6 +98,11 @@ namespace PoESkillTree.GameModel.Skills
         CounterAttack,
 
         /// <summary>
+        /// Equivalent to the gem tag.
+        /// </summary>
+        Bow,
+
+        /// <summary>
         /// Never set.
         /// </summary>
         Physical,
@@ -152,6 +157,7 @@ namespace PoESkillTree.GameModel.Skills
                 { Keyword.Herald, (_, types, __) => types.Contains(ActiveSkillType.Herald) },
                 { Keyword.Offering, (name, _, __) => name.EndsWith("Offering") },
                 { Keyword.CounterAttack, (_, types, __) => types.Contains(ActiveSkillType.TriggerAttack) },
+                { Keyword.Bow, (_, __, tags) => tags.Contains("bow") },
                 { Keyword.Physical, (_, ___, __) => false },
                 { Keyword.Lightning, (_, types, __) => types.Contains(ActiveSkillType.Lightning) },
                 { Keyword.Cold, (_, types, __) => types.Contains(ActiveSkillType.Cold) },

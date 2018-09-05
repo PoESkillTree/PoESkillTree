@@ -23,6 +23,7 @@ namespace PoESkillTree.Computation.Builders.Skills
         public IKeywordBuilder Herald { get; } = From(Keyword.Herald);
         public IKeywordBuilder Offering { get; } = From(Keyword.Offering);
         public IKeywordBuilder CounterAttack { get; } = From(Keyword.CounterAttack);
+        public IKeywordBuilder Bow { get; } = From(Keyword.Bow);
 
         private static IKeywordBuilder From(Keyword keyword) => new KeywordBuilder(keyword);
     }

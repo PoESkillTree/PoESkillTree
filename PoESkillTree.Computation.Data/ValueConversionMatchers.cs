@@ -106,6 +106,10 @@ namespace PoESkillTree.Computation.Data
                     "for each of your traps triggered recently, up to #%",
                     CappedMultiplier(Stat.Unique("# of Traps Triggered Recently", typeof(int)).Value, Value)
                 },
+                {
+                    "for each time you've blocked in the past 10 seconds",
+                    Stat.Unique("# of times blocked in the past 10 seconds", typeof(int)).Value
+                },
             }; // add
 
         private Func<ValueBuilder, ValueBuilder> CappedMultiplier(ValueBuilder multiplier, ValueBuilder maximum)

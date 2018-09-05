@@ -16,7 +16,8 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     {
         private static readonly IReadOnlyList<Keyword> KeywordsExcludedForDamageOverTime = new[]
         {
-            Keyword.Attack, Keyword.Spell, Keyword.Melee, Keyword.Projectile, Keyword.AreaOfEffect, Keyword.Movement
+            Keyword.Attack, Keyword.Spell, Keyword.Melee, Keyword.Projectile, Keyword.AreaOfEffect, Keyword.Movement,
+            Keyword.Bow,
         };
 
         private static readonly IReadOnlyList<string> AreaDamageOverTimeSkills = new[]

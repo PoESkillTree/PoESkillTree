@@ -14,5 +14,9 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder ShieldModifiersApplyToMinionsInstead { get; }
 
         IStatBuilder IgnoreHexproof { get; }
+
+        IStatBuilder AffectedByMinionDamageIncreases { get; }
+
+        IStatBuilder AffectedByMinionAttackRateIncreases { get; }
     }
 }

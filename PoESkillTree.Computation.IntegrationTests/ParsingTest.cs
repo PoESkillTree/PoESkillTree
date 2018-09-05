@@ -169,7 +169,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                 }.SelectMany(Funcs.Identity).ToArray());
 
             yield return new TestCaseData(
-                    "Auras you Cast grant 3% increased Attack and Cast Speed to you and Allies")
+                    "Auras from your Skills grant 3% increased Attack and Cast Speed to you and Allies")
                 .Returns(CreateModifier(
                         f.BuffBuilders.Buffs(f.EntityBuilders.Self, f.EntityBuilders.Self, f.EntityBuilders.Ally)
                             .With(f.KeywordBuilders.Aura).Without(f.KeywordBuilders.Curse)

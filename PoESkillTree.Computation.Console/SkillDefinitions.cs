@@ -23,6 +23,7 @@ namespace PoESkillTree.Computation.Console
             new SkillDefinition("Herald of Ice", 12, new[] { Keyword.Herald }, true),
             new SkillDefinition("Herald of Ash", 13, new[] { Keyword.Herald }, true),
             new SkillDefinition("Herald of Thunder", 14, new[] { Keyword.Herald }, true),
+            new SkillDefinition("Herald of Purity", 15, new[] { Keyword.Herald }, true),
         };
 
         public static readonly IReadOnlyList<string> SkillNames =

@@ -45,5 +45,7 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         IKeywordBuilder Offering { get; }
 
         IKeywordBuilder CounterAttack { get; }
+
+        IKeywordBuilder Bow { get; }
     }
 }

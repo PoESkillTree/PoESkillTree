@@ -74,6 +74,14 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 1,
                     Damage.With(DamageSource.Attack).ApplyModifiersToSkills(DamageSource.Spell, Form.Increase)
                 },
+                {
+                    "increases and reductions to minion damage also affect you",
+                    TotalOverride, 1, Flag.AffectedByMinionDamageIncreases
+                },
+                {
+                    "increases and reductions to minion attack speed also affect you",
+                    TotalOverride, 1, Flag.AffectedByMinionAttackRateIncreases
+                },
                 // Keystones
                 {
                     // Point Blank
@@ -192,6 +200,11 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 1, Buff.Tailwind.On(Self).CombineWith(Buff.Tailwind.On(Ally)),
                     AllSkills.Cast.Recently
                 },
+                // - Pathfinder
+                {
+                    "poisons you inflict during any flask effect have #% chance to deal #% more damage",
+                    PercentMore, Values[0].AsPercentage * Values[1], Damage.With(Ailment.Poison)
+                },
                 // - Occultist
                 { "your curses can apply to hexproof enemies", TotalOverride, 1, Flag.IgnoreHexproof },
                 {
@@ -256,6 +269,11 @@ namespace PoESkillTree.Computation.Data
                     "your counterattacks deal double damage",
                     TotalOverride, 100, Damage.With(Keyword.CounterAttack).ChanceToDouble
                 },
+                {
+                    "Chance to Block Spell Damage is equal to Chance to Block Attack Damage Maximum Chance to Block Spell Damage is equal to Maximum Chance to Block Attack Damage",
+                    (TotalOverride, Block.AttackChance.Value, Block.SpellChance),
+                    (TotalOverride, Block.AttackChance.Maximum.Value, Block.SpellChance.Maximum)
+                },
                 // - Champion
                 {
                     "your hits permanently intimidate enemies that are on full life",
@@ -315,9 +333,13 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, double.PositiveInfinity, Stat.CastRate, With(Keyword.Warcry)
                 },
                 {
-                    "#% additional block chance for # seconds every # seconds",
+                    @"\+#% chance to block attack damage for # seconds every # seconds",
                     BaseAdd, Values[0], Block.AttackChance,
                     Condition.Unique("Is the additional Block Chance from Bastion of Hope active?")
+                },
+                {
+                    "minions intimidate enemies for # seconds on hit",
+                    TotalOverride, 1, Buff.Intimidate.On(Enemy), Action.Hit.By(Entity.Minion).Recently
                 },
                 // - Assassin
                 {

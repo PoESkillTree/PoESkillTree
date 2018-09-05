@@ -195,6 +195,9 @@ namespace PoESkillTree.Computation.Builders.Stats
             FromIdentity("Modifiers on an equipped shield apply to your minions instead", typeof(bool));
 
         public IStatBuilder IgnoreHexproof => FromIdentity(typeof(bool));
+
+        public IStatBuilder AffectedByMinionDamageIncreases => FromIdentity(typeof(bool));
+        public IStatBuilder AffectedByMinionAttackRateIncreases => FromIdentity(typeof(bool));
     }
 
     internal class GemStatBuilders : StatBuildersBase, IGemStatBuilders

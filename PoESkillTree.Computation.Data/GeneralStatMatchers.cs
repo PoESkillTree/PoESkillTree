@@ -72,6 +72,7 @@ namespace PoESkillTree.Computation.Data
                 { "arrow speed", Projectile.Speed, And(With(Keyword.Attack), MainHand.Has(Tags.Bow)) },
                 // - other
                 { "(global )?accuracy rating", Stat.Accuracy },
+                { "minion accuracy rating", Stat.Accuracy.For(Entity.Minion) },
                 // defense
                 // - life, mana, defences; see also PoolStatMatchers
                 { "armour", Armour },
@@ -126,13 +127,10 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "({PoolStatMatchers}) leeched per second", Reference.AsPoolStat.Leech.Rate },
                 // - block
-                { "chance to block", Block.AttackChance },
-                { "chance to block attacks", Block.AttackChance },
-                { "block chance", Block.AttackChance },
-                { "block chance with staves", Block.AttackChance, MainHand.Has(Tags.Staff) },
-                { "maximum block chance", Block.AttackChance.Maximum },
-                { "chance to block spells", Block.SpellChance },
-                { "chance to block spells and attacks", ApplyOnce(Block.SpellChance, Block.AttackChance) },
+                { "chance to block attack damage", Block.AttackChance },
+                { "chance to block spell damage", Block.SpellChance },
+                { "chance to block spell and attack damage", Block.SpellChance, Block.AttackChance },
+                { "maximum chance to block attack damage", Block.AttackChance.Maximum },
                 // - other
                 { "chance to dodge attacks", Stat.Dodge.AttackChance },
                 { "chance to dodge attack hits", Stat.Dodge.AttackChance },
@@ -240,6 +238,7 @@ namespace PoESkillTree.Computation.Data
                 { "({BuffMatchers}) duration", Reference.AsBuff.Duration },
                 { "({BuffMatchers}) effect", Reference.AsBuff.Effect },
                 { "effect of ({BuffMatchers}) on you", Reference.AsBuff.EffectOn(Self) },
+                { "({SkillMatchers}) has buff effect", Reference.AsSkill.Buff.Effect },
                 { "effect of buffs granted by your golems", Buffs(Entity.Minion).With(Keyword.Golem).Effect },
                 {
                     "effect of buffs granted by your elemental golems",
@@ -250,7 +249,11 @@ namespace PoESkillTree.Computation.Data
                 { "effect of heralds on you", Buffs(targets: Self).With(Keyword.Herald).Effect },
                 { "effect of your curses", Buffs(Self).With(Keyword.Curse).Effect },
                 { "effect of curses on you", Buffs(targets: Self).With(Keyword.Curse).Effect },
-                { "effect of non-curse auras you cast", Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).Effect },
+                {
+                    "effect of non-curse auras from your skills",
+                    Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).Effect
+                },
+                { "warcry buff effect", Buffs(targets: Self).With(Keyword.Warcry).Effect },
                 { "chance to fortify", Buff.Fortify.Chance },
                 { "chance for attacks to maim on hit", Buff.Maim.Chance.With(DamageSource.Attack) },
                 { "chance to taunt", Buff.Taunt.Chance },

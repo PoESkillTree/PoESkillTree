@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Data
             {
                 { "you and nearby allies( deal| have)?", s => Buff.Aura(s, Self, Ally) },
                 {
-                    "auras you cast grant (?<inner>.*) to you and allies",
+                    "auras from your skills grant (?<inner>.*) to you and allies",
                     s => Buffs(Self, Self, Ally).With(Keyword.Aura).Without(Keyword.Curse).AddStat(s), "${inner}"
                 },
                 {

@@ -57,6 +57,26 @@ namespace PoESkillTree.Computation.Data.Collections
             Add(regex, form, _valueFactory.Create(value), stat, condition);
         }
 
+        public void Add(
+            [RegexPattern] string regex, params (IFormBuilder form, IValueBuilder value, IStatBuilder stat)[] stats)
+        {
+            var formList = new List<IFormBuilder>();
+            var valueList = new List<IValueBuilder>();
+            var statList = new List<IStatBuilder>();
+            foreach (var (form, value, stat) in stats)
+            {
+                formList.Add(form);
+                valueList.Add(value);
+                statList.Add(stat);
+            }
+
+            var builder = ModifierBuilder
+                .WithForms(formList)
+                .WithValues(valueList)
+                .WithStats(statList);
+            Add(regex, builder);
+        }
+
         /// <summary>
         /// Adds a matcher with multiple (form, value, stat, condition) tuples.
         /// </summary>

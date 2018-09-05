@@ -43,6 +43,8 @@ Enemies you Kill that are affected by Elemental Ailments grant 100% increased Fl
 Flasks gain 3 Charges every 3 seconds
 Gain a Flask Charge when you deal a Critical Strike
 Removes Bleeding when you use a Flask
+You lose Virulence 50% slower
+When you kill a Poisoned Enemy during any Flask Effect, nearby enemies are Poisoned
 // - Occultist
 Cursed Enemies you or your Minions Kill have a 25% chance to Explode, dealing a quarter of their maximum Life as Chaos Damage
 Energy Shield Recharge is not interrupted by Damage if Recharge began Recently

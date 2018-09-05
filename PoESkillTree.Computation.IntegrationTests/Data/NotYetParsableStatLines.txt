@@ -2,12 +2,15 @@
 // - modifies sub skill
 Raised Zombies' Slam Attack has 100% increased Area of Effect
 Raised Zombies' Slam Attack has 100% increased Cooldown Recovery Speed
+10% increased area of effect for each Summoned Sentinel of Purity
+Summoned Sentinels of Purity have 50% increased Area of effect
 // - adds new sub skill
 can summon up to 3 Skeleton Mages with Summon Skeletons
 summon 2 additional skeleton warriors with summon skeleton
 Animate Weapon can Animate up to 8 Ranged Weapons
 Minions explode when reduced to Low Life, dealing 33% of their maximum Life as Fire Damage to surrounding Enemies
-Your Raised Zombies spread Caustic Cloud on Death, dealing 50% of their maximum Life as Chaos Damage per second
+Your Raised Zombies spread Caustic Ground on Death, dealing 50% of their maximum Life as Chaos Damage per second
+Summoned Sentinels use Crusade Slam
 // - adds new parts for skills
 Barrage fires an additional 2 projectiles simultaneously on the first and final attacks
 Burning Arrow has a 10% chance to spread Burning Ground if it Ignites an Enemy

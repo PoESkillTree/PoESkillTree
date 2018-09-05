@@ -31,7 +31,7 @@ namespace PoESkillTree.Computation.Data
             // keystones
             {
                 // Acrobatics
-                @"(\d+% chance to dodge attack hits)\. (\d+% less armour), (\d+% less energy shield), (\d+% less chance to block spells and attacks)",
+                @"(\d+% chance to dodge attack hits)\. (\d+% less armour), (\d+% less energy shield), (\d+% less chance to block .+)",
                 "$1", "$2", "$3", "$4"
             },
             {
