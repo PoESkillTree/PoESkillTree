@@ -861,7 +861,7 @@
                     <Style TargetType="{x:Type ToggleButton}"
                            BasedOn="{StaticResource ExpanderDownHeaderStyle}">
                         <Style.Setters>
-                            <Setter Property="Margin" Value="108 4 4 4" />
+                            <Setter Property="Margin" Value="108 0 0 0" />
                         </Style.Setters>
                     </Style>
                 </controls:ExpanderHelper.HeaderDownStyle>
@@ -869,7 +869,7 @@
                     <Style TargetType="{x:Type ToggleButton}"
                            BasedOn="{StaticResource ExpanderUpHeaderStyle}">
                         <Style.Setters>
-                            <Setter Property="Margin" Value="108 4 4 4" />
+                            <Setter Property="Margin" Value="108 0 0 0" />
                         </Style.Setters>
                     </Style>
                 </controls:ExpanderHelper.HeaderUpStyle>

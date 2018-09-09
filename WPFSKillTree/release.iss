@@ -118,9 +118,9 @@ begin
 
 	{ Select standard mode, unless launched with /PORTABLE=1 argument }
 	if (ExpandConstant('{param:portable|0}') = '1') then
-		PortabilityPage.SelectedValueIndex := 1
+		IsPortable := True
 	else
-		PortabilityPage.SelectedValueIndex := 0;
+		IsPortable := False;
 
 	IsSilent := False;
 	for i := 1 to ParamCount do

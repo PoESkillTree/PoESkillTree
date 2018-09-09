@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -269,7 +268,7 @@ namespace POESKillTree.SkillTreeFiles
                 if (releases.Count < 1)
                     throw new UpdaterException(L10n.Message("No release found"));
 
-                Version current = GetCurrentVersion(); // Current version (tag).
+                var current = GetCurrentVersion(); // Current version (tag).
 
                 // Iterate thru avialable releases.
                 foreach (JObject release in (JArray)releases)
@@ -284,7 +283,7 @@ namespace POESKillTree.SkillTreeFiles
 
                     // Compare release tag with our version (tag).
                     string tag = release["tag_name"].Value<string>();
-                    Version version = new Version(tag);
+                    var version = SemanticVersion.Parse(tag);
                     if (version.CompareTo(current) <= 0)
                     {
                         // Same or older version.
@@ -382,9 +381,9 @@ namespace POESKillTree.SkillTreeFiles
         }
 
         // Returns current version.
-        public static Version GetCurrentVersion()
+        private static SemanticVersion GetCurrentVersion()
         {
-            return new Version(Properties.Version.ProductVersion);
+            return SemanticVersion.Parse(Properties.Version.ProductVersion);
         }
 
         // Return latest release, or null if there is none or it wasn't checked for yet.
@@ -445,7 +444,7 @@ namespace POESKillTree.SkillTreeFiles
         // Returns true if newer product is installed.
         private static bool IsNewerProductInstalled()
         {
-            Version current = new Version(Properties.Version.ProductVersion);
+            var current = GetCurrentVersion();
 
             using (RegistryKey uninstallKey = Registry.LocalMachine.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall"))
             {
@@ -460,7 +459,7 @@ namespace POESKillTree.SkillTreeFiles
 
                         if (productName != Properties.Version.ProductName)
                         {
-                            Version version = new Version(key.GetValue("DisplayVersion") as string);
+                            var version = SemanticVersion.Parse((string) key.GetValue("DisplayVersion"));
                             if (version.CompareTo(current) > 0)
                                 return true;
                         }
@@ -469,12 +468,6 @@ namespace POESKillTree.SkillTreeFiles
             }
 
             return false;
-        }
-
-        // Restarts application.
-        public static void RestartApplication()
-        {
-            Bootstrap.Restart();
         }
     }
 
