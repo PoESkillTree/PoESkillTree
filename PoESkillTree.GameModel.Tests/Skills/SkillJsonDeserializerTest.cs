@@ -36,7 +36,8 @@ namespace PoESkillTree.GameModel.Tests.Skills
             Assert.AreEqual("Frenzy", activeSkill.DisplayName);
             Assert.That(activeSkill.ActiveSkillTypes, Has.Exactly(11).Items);
             Assert.IsEmpty(activeSkill.MinionActiveSkillTypes);
-            Assert.AreEqual(new[] { Keyword.Attack, Keyword.Projectile, Keyword.Melee }, activeSkill.Keywords);
+            Assert.AreEqual(new[] { Keyword.Attack, Keyword.Projectile, Keyword.Melee, Keyword.Bow },
+                activeSkill.Keywords);
             Assert.IsFalse(activeSkill.ProvidesBuff);
             Assert.IsNull(activeSkill.TotemLifeMultiplier);
             Assert.IsEmpty(activeSkill.WeaponRestrictions);
