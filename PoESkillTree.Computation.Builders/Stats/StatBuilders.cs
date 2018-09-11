@@ -1,7 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using MoreLinq;
+using PoESkillTree.Computation.Builders.Damage;
+using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Entities;
+using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
@@ -196,8 +204,52 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder IgnoreHexproof => FromIdentity(typeof(bool));
 
-        public IStatBuilder AffectedByMinionDamageIncreases => FromIdentity(typeof(bool));
-        public IStatBuilder AffectedByMinionAttackRateIncreases => FromIdentity(typeof(bool));
+        public IStatBuilder AffectedByMinionDamageIncreases
+        {
+            get
+            {
+                var damageTypes = new DamageTypeBuilder(StatFactory, DamageType.RandomElement).Invert;
+                return AffectedByMinionStatIncreases(damageTypes.Damage);
+            }
+        }
+
+        public IStatBuilder AffectedByMinionAttackRateIncreases
+            => AffectedByMinionStatIncreases(new CastRateStatBuilder(StatFactory).With(DamageSource.Attack));
+
+        private IStatBuilder AffectedByMinionStatIncreases(IStatBuilder affectedStat)
+            => new StatBuilder(StatFactory, new AffectedByEntityCoreStatBuilder(affectedStat, Entity.Minion,
+                (l, r) => StatFactory.StatIsAffectedByModifiersToOtherStat(l, r, Form.Increase)));
+
+        private class AffectedByEntityCoreStatBuilder : ICoreStatBuilder
+        {
+            private readonly IStatBuilder _affectedStat;
+            private readonly Entity _otherEntity;
+            private readonly Func<IStat, IStat, IStat> _combineStats;
+
+            public AffectedByEntityCoreStatBuilder(
+                IStatBuilder affectedStat, Entity otherEntity, Func<IStat, IStat, IStat> combineStats)
+                => (_affectedStat, _otherEntity, _combineStats) = (affectedStat, otherEntity, combineStats);
+
+            public ICoreStatBuilder Resolve(ResolveContext context)
+                => new AffectedByEntityCoreStatBuilder(_affectedStat.Resolve(context), _otherEntity, _combineStats);
+
+            public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder)
+                => new AffectedByEntityCoreStatBuilder(_affectedStat.For(entityBuilder), _otherEntity, _combineStats);
+
+            public IEnumerable<StatBuilderResult> Build(BuildParameters parameters)
+            {
+                var results = _affectedStat.Build(parameters);
+                var otherStat = _affectedStat.For(new EntityBuilder(_otherEntity));
+                var otherResults = otherStat.Build(parameters);
+                return results.EquiZip(otherResults, MergeResults);
+
+                StatBuilderResult MergeResults(StatBuilderResult main, StatBuilderResult other)
+                {
+                    var mergedStats = main.Stats.EquiZip(other.Stats, _combineStats).ToList();
+                    return new StatBuilderResult(mergedStats, main.ModifierSource, main.ValueConverter);
+                }
+            }
+        }
     }
 
     internal class GemStatBuilders : StatBuildersBase, IGemStatBuilders

@@ -46,5 +46,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat ApplyModifiersToAilmentDamage(IStat stat, Form form);
         IStat DamageTaken(IStat damage);
         IStat AilmentDealtDamageType(Entity entity, Ailment ailment);
+
+        IStat StatIsAffectedByModifiersToOtherStat(IStat stat, IStat otherStat, Form form);
     }
 }

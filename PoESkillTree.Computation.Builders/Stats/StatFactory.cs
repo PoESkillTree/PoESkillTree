@@ -119,6 +119,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat AilmentDealtDamageType(Entity entity, Ailment ailment) =>
             GetOrAdd($"{ailment}.DamageType", entity, typeof(DamageType));
 
+        public IStat StatIsAffectedByModifiersToOtherStat(IStat stat, IStat otherStat, Form form)
+            => GetOrAdd($"ModifiersTo({otherStat}).Affect({stat}).ForForm({form})", stat.Entity, typeof(bool),
+                behaviors: () => _behaviorFactory.StatIsAffectedByModifiersToOtherStat(stat, otherStat, form));
+
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,
             Func<IReadOnlyList<Behavior>> behaviors, ExplicitRegistrationType explicitRegistrationType = null)
         {

@@ -62,6 +62,7 @@
     <Compile Include="Actions\ActionBuilders.cs" />
     <Compile Include="Actions\BlockActionBuilder.cs" />
     <Compile Include="Actions\CriticalStrikeActionBuilder.cs" />
+    <Compile Include="Behaviors\AffectedByModifiersToOtherStatValue.cs" />
     <Compile Include="Behaviors\AilmentDamageBaseValue.cs" />
     <Compile Include="Behaviors\AilmentDamageIncreaseMoreValue.cs" />
     <Compile Include="Behaviors\AilmentDamageUncappedSubtotalValue.cs" />

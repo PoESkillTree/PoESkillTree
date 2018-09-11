@@ -25,7 +25,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
         public IReadOnlyList<Behavior> ConvertTo(IStat source, IStat target) => new[]
         {
             ConversionTargetPathTotal(source, target),
-            ConversionTargeUncappedSubtotal(source, target),
+            ConversionTargetUncappedSubtotal(source, target),
             ConversionSourcePathTotal(source),
             ConvertToUncappedSubtotal(source, target)
         };
@@ -33,7 +33,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
         public IReadOnlyList<Behavior> GainAs(IStat source, IStat target) => new[]
         {
             ConversionTargetPathTotal(source, target),
-            ConversionTargeUncappedSubtotal(source, target),
+            ConversionTargetUncappedSubtotal(source, target),
         };
 
         public IReadOnlyList<Behavior> SkillConversion(IStat source) => new[]
@@ -47,7 +47,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                 _statFactory.ConvertTo(source, target), _statFactory.GainAs(source, target), v),
             new CacheKey(source, target));
 
-        private Behavior ConversionTargeUncappedSubtotal(IStat source, IStat target) => GetOrAdd(
+        private Behavior ConversionTargetUncappedSubtotal(IStat source, IStat target) => GetOrAdd(
             target, NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
             v => new ConversionTargeUncappedSubtotalValue(source, target, v),
             new CacheKey(source, target));
@@ -70,9 +70,9 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             new CacheKey(source));
 
         public IReadOnlyList<Behavior> Regen(Pool pool, Entity entity) =>
-            new[] { RegenUncappedSubtotalBehavor(pool, entity) };
+            new[] { RegenUncappedSubtotalBehavior(pool, entity) };
 
-        private Behavior RegenUncappedSubtotalBehavor(Pool pool, Entity entity) => GetOrAdd(
+        private Behavior RegenUncappedSubtotalBehavior(Pool pool, Entity entity) => GetOrAdd(
             () => _statFactory.Regen(entity, pool), NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
             v => new RegenUncappedSubtotalValue(
                 pool, p => _statFactory.Regen(entity, p), p => _statFactory.RegenTargetPool(entity, p), v),
@@ -115,6 +115,18 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                     _statFactory.AilmentDealtDamageType(stat.Entity, damageSpecification.Ailment.Value),
                     t => _statFactory.ConcretizeDamage(_statFactory.Damage(stat.Entity, t), damageSpecification), v),
                 new CacheKey(stat, damageSpecification));
+
+        public IReadOnlyList<Behavior> StatIsAffectedByModifiersToOtherStat(IStat stat, IStat otherStat, Form form)
+            => new[] { StatIsAffectedByModifiersToOtherStatBehavior(stat, otherStat, form) };
+
+        private Behavior StatIsAffectedByModifiersToOtherStatBehavior(IStat stat, IStat otherStat, Form form)
+        {
+            var nodeType = Enums.Parse<NodeType>(form.ToString());
+            return GetOrAdd(stat, nodeType, BehaviorPathInteraction.All,
+                v => new AffectedByModifiersToOtherStatValue(stat, otherStat,
+                    _statFactory.StatIsAffectedByModifiersToOtherStat(stat, otherStat, form), form, v),
+                new CacheKey(stat, otherStat, form));
+        }
 
         private Behavior GetOrAdd(
             IStat affectedStat, NodeType affectNodeType, BehaviorPathInteraction affectedPaths,
@@ -160,6 +172,12 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
             public CacheKey(object parameter1, object parameter2, [CallerMemberName] string behaviorName = null)
                 : this(behaviorName, parameter1, parameter2)
+            {
+            }
+
+            public CacheKey(
+                object parameter1, object parameter2, object parameter3, [CallerMemberName] string behaviorName = null)
+                : this(behaviorName, parameter1, parameter2, parameter3)
             {
             }
 
