@@ -53,6 +53,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public new IDamageRelatedStatBuilder For(IEntityBuilder entity) =>
             (IDamageRelatedStatBuilder) base.For(entity);
 
+        public new IDamageRelatedStatBuilder ChanceToDouble => (IDamageRelatedStatBuilder) base.ChanceToDouble;
+
         protected override IStatBuilder With(ICoreStatBuilder coreStatBuilder) =>
             Create(coreStatBuilder, StatConcretizer, _statConverter);
 

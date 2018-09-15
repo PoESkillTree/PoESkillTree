@@ -86,13 +86,17 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     TotalOverride, dt => _stat.DamageWithNonCrits(dt).WithHits,
                     dt => _stat.Damage(dt).WithHits,
                     dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithHits,
-                    (_, damage, mult) => damage.Value * mult.Value
+                    dt => _stat.Damage(dt).WithHits.ChanceToDouble,
+                    (_, damage, mult, chanceToDouble)
+                        => damage.Value * mult.Value * (1 + chanceToDouble.Value.AsPercentage)
                 },
                 {
                     TotalOverride, dt => _stat.DamageWithCrits(dt).WithHits,
                     dt => _stat.Damage(dt).WithHits,
                     dt => _stat.EffectiveDamageMultiplierWithCrits(dt).WithHits,
-                    (_, damage, mult) => damage.Value * mult.Value
+                    dt => _stat.Damage(dt).WithHits.ChanceToDouble,
+                    (_, damage, mult, chanceToDouble)
+                        => damage.Value * mult.Value * (1 + chanceToDouble.Value.AsPercentage)
                 },
                 // - effective crit/non-crit damage multiplier per source and type
                 {

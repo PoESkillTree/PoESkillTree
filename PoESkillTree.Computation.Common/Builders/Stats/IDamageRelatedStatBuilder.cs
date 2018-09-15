@@ -13,6 +13,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     public interface IDamageRelatedStatBuilder : IStatBuilder
     {
         new IDamageRelatedStatBuilder For(IEntityBuilder entity);
+        new IDamageRelatedStatBuilder ChanceToDouble { get; }
 
         /// <summary>
         /// Limits the damage by source.

@@ -88,6 +88,8 @@ namespace PoESkillTree.Computation.IntegrationTests
                 .AddModifier(Build(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack)), Form.BaseSet, 2)
                 .AddModifier(Build(_builderFactories.ActionBuilders.CriticalStrike.Chance), Form.BaseSet, 10)
                 .AddModifier(Build(_builderFactories.DamageTypeBuilders.Physical.Penetration), Form.BaseAdd, 10)
+                .AddModifier(Build(_builderFactories.DamageTypeBuilders.Physical.Damage.ChanceToDouble), Form.BaseAdd,
+                    20)
                 .DoUpdate();
 
             var chanceToHit = ChanceToHit(calculator);
@@ -114,12 +116,13 @@ namespace PoESkillTree.Computation.IntegrationTests
             actual = nodes
                 .GetNode(BuildMainHandSkillSingle(_metaStats.DamageWithNonCrits(DamageType.Physical)))
                 .Value.Single();
-            var expectedDamageWithNonCrits = 5 * expectedEffectiveDamageMultiplierWithNonCrits;
+            var doubleDamageMultiplier = 1.2;
+            var expectedDamageWithNonCrits = 5 * expectedEffectiveDamageMultiplierWithNonCrits * doubleDamageMultiplier;
             Assert.AreEqual(expectedDamageWithNonCrits, actual);
             actual = nodes
                 .GetNode(BuildMainHandSkillSingle(_metaStats.DamageWithCrits(DamageType.Physical)))
                 .Value.Single();
-            var expectedDamageWithCrits = 5 * expectedEffectiveDamageMultiplierWithCrits;
+            var expectedDamageWithCrits = 5 * expectedEffectiveDamageMultiplierWithCrits * doubleDamageMultiplier;
             Assert.AreEqual(expectedDamageWithCrits, actual);
             actual = nodes
                 .GetNode(BuildMainHandSkillSingle(_builderFactories.StatBuilders.ChanceToHit))
