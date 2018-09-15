@@ -71,6 +71,7 @@
     <Compile Include="Behaviors\ConversionTargetPathTotalValue.cs" />
     <Compile Include="Behaviors\ConversionTargeUncappedSubtotalValue.cs" />
     <Compile Include="Behaviors\ConvertToUncappedSubtotalValue.cs" />
+    <Compile Include="Behaviors\DamageEffectivenessBaseValue.cs" />
     <Compile Include="Behaviors\ModifiedValueCalculationContext.cs" />
     <Compile Include="Behaviors\RegenUncappedSubtotalValue.cs" />
     <Compile Include="Behaviors\SkillConversionUncappedSubtotalValue.cs" />

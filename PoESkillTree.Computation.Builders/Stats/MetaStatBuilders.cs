@@ -174,8 +174,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder MainSkillPartAilmentDamageHasKeyword(Keyword keyword)
             => FromFactory(e => StatFactory.MainSkillPartAilmentDamageHasKeyword(e, keyword));
 
-        public IStatBuilder DamageBaseAddEffectiveness => FromIdentity(typeof(double));
-        public IStatBuilder DamageBaseSetEffectiveness => FromIdentity(typeof(double));
+        public IStatBuilder DamageBaseAddEffectiveness => FromFactory(StatFactory.DamageBaseAddEffectiveness);
+        public IStatBuilder DamageBaseSetEffectiveness => FromFactory(StatFactory.DamageBaseSetEffectiveness);
 
         public IStatBuilder SelectedBandit => FromIdentity(typeof(Bandit));
         public IStatBuilder SelectedQuestPart => FromIdentity(typeof(QuestPart));

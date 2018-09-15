@@ -80,17 +80,43 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         public IReadOnlyList<Behavior> ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification)
         {
-            if (damageSpecification.IsSkillDamage())
-                return new Behavior[0];
+            // Behaviors are only for damage, not other damage related stats
             if (!Enums.GetValues<DamageType>().Any(t => _statFactory.Damage(stat.Entity, t).Equals(stat)))
                 return new Behavior[0];
-            return new[]
+
+            if (damageSpecification.DamageSource == DamageSource.OverTime)
             {
-                AilmentDamageUncappedSubtotalBehavior(stat, damageSpecification),
-                AilmentDamageBaseBehavior(stat, damageSpecification),
-                AilmentDamageIncreaseMoreBehavior(stat, damageSpecification)
-            };
+                // Skill DoT
+                return new Behavior[0];
+            }
+            else if (damageSpecification.IsSkillDamage())
+            {
+                // Skill Hit
+                return new[]
+                {
+                    DamageEffectivenessBaseBehavior(stat, damageSpecification)
+                };
+            }
+            else
+            {
+                // Ailment
+                return new[]
+                {
+                    AilmentDamageUncappedSubtotalBehavior(stat, damageSpecification),
+                    AilmentDamageBaseBehavior(stat, damageSpecification),
+                    AilmentDamageIncreaseMoreBehavior(stat, damageSpecification)
+                };
+            }
         }
+
+        private Behavior DamageEffectivenessBaseBehavior(IStat stat, IDamageSpecification damageSpecification) =>
+            GetOrAdd(() => _statFactory.ConcretizeDamage(stat, damageSpecification),
+                NodeType.Base, BehaviorPathInteraction.NonConversion,
+                v => new DamageEffectivenessBaseValue(
+                    _statFactory.ConcretizeDamage(stat, damageSpecification),
+                    _statFactory.DamageBaseSetEffectiveness(stat.Entity),
+                    _statFactory.DamageBaseAddEffectiveness(stat.Entity), v),
+                new CacheKey(stat, damageSpecification));
 
         private Behavior AilmentDamageUncappedSubtotalBehavior(IStat stat, IDamageSpecification damageSpecification) =>
             GetOrAdd(() => _statFactory.ConcretizeDamage(stat, damageSpecification),

@@ -12,10 +12,6 @@ namespace PoESkillTree.Computation.Common
     public class Behavior
     {
         /*
-         * Effectiveness of Added Damage:
-         * - Applies to NodeType.BaseAdd of all damage stats
-         * - Values of requested form nodes are multiplied by the effectiveness stat's value
-         * - Affects all paths (only non-conversion paths have BaseAdd nodes)
          * Rounding:
          * - Each stat can have different rounding behaviors
          * - This can affect nodes of all NodeTypes

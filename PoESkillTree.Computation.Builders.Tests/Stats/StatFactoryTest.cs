@@ -155,9 +155,22 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             AssertTransformedValueIs<RegenUncappedSubtotalValue>(actual[0]);
         }
 
+        [Test]
+        public void ConcretizeDamageHasCorrectBehaviorsIfStatIsHitDamage()
+        {
+            var inputStat = new StatFactory().Damage(default, DamageType.Fire);
+            var spec = new SkillDamageSpecification(DamageSource.Spell);
+            var sut = CreateSut();
+
+            var actual = sut.ConcretizeDamage(inputStat, spec).Behaviors;
+
+            Assert.That(actual, Has.One.Items);
+            AssertTransformedValueIs<DamageEffectivenessBaseValue>(actual[0]);
+        }
+
         [TestCase(DamageType.Fire)]
         [TestCase(DamageType.Cold)]
-        public void ConcretizeDamageHasCorrectBehaviorsIfStatIsDamage(DamageType damageType)
+        public void ConcretizeDamageHasCorrectBehaviorsIfStatIsAilmentDamage(DamageType damageType)
         {
             var inputStat = new StatFactory().Damage(default, damageType);
             var spec = new AilmentDamageSpecification(DamageSource.Spell, Ailment.Bleed);
@@ -172,7 +185,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         }
 
         [Test]
-        public void ConcretizeDamageHasNoBehaviorsIfSpecificationIsNotAilment()
+        public void ConcretizeDamageHasNoBehaviorsIfSpecificationIsSkillDot()
         {
             var inputStat = new StatFactory().Damage(default, DamageType.Fire);
             var spec = new SkillDamageSpecification(DamageSource.OverTime);
