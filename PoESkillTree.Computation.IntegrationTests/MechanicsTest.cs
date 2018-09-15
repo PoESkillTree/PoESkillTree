@@ -249,6 +249,37 @@ namespace PoESkillTree.Computation.IntegrationTests
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void AffectedByMinionDamageAndAttackRateIncreases()
+        {
+            var calculator = Calculator.CreateCalculator();
+            var nodes = calculator.NodeRepository;
+
+            var minion = _builderFactories.EntityBuilders.Minion;
+            calculator.NewBatchUpdate()
+                .AddModifiers(_givenMods)
+                .AddModifier(Build(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack)), Form.BaseSet, 1)
+                .AddModifier(Build(_builderFactories.StatBuilders.ChanceToHit), Form.TotalOverride, 100)
+                .AddModifier(Build(_builderFactories.DamageTypeBuilders.Physical.Damage.For(minion)), Form.Increase,
+                    100)
+                .AddModifier(Build(_builderFactories.StatBuilders.CastRate.For(minion)), Form.Increase, 100)
+                .AddModifier(Build(_builderFactories.StatBuilders.Flag.AffectedByMinionDamageIncreases),
+                    Form.TotalOverride, 1)
+                .AddModifier(Build(_builderFactories.StatBuilders.Flag.AffectedByMinionAttackRateIncreases),
+                    Form.TotalOverride, 1)
+                .DoUpdate();
+
+            var enemyResistance = 60;
+            var effectiveDamageMultiplier = (1 - enemyResistance / 100d) * 1.2;
+            var baseDamage = 5;
+            var averageDamage = baseDamage * 2 * effectiveDamageMultiplier;
+            var actual = nodes
+                .GetNode(Build(_metaStats.SkillDpsWithHits).Single())
+                .Value.Single();
+            var expectedSkillDpsWithHits = averageDamage * 2;
+            Assert.AreEqual(expectedSkillDpsWithHits, actual);
+        }
+
         private static IStat BuildMainHandSkillSingle(IDamageRelatedStatBuilder builder)
             => Build(builder.WithSkills.With(AttackDamageHand.MainHand)).Single();
 
