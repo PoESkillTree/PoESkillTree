@@ -437,6 +437,22 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.IsTrue(AnyModifierHasIdentity(modifiers, "MainSkillPart.Damage.OverTime.Has.AreaOfEffect"));
         }
 
+        [Test]
+        public void CausticArrowConversionIsLocal()
+        {
+            var (definition, skill) = CreateCausticArrowDefinition();
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            var expectedIdentity =
+                "Physical.Damage.Attack.MainHand.Skill.ConvertTo(Chaos.Damage.Attack.MainHand.Skill)";
+            Assert.IsTrue(AnyModifierHasIdentity(modifiers, expectedIdentity));
+            var modifier = GetFirstModifierWithIdentity(modifiers, expectedIdentity);
+            Assert.IsInstanceOf<ModifierSource.Local.Skill>(modifier.Source);
+        }
+
         private static (SkillDefinition, Skill) CreateCausticArrowDefinition()
         {
             var activeSkill = new ActiveSkillDefinition("Caustic Arrow", 0, new[] { "attack" }, new string[0],
@@ -444,6 +460,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var stats = new[]
             {
                 new UntranslatedStat("base_chaos_damage_to_deal_per_minute", 60),
+                new UntranslatedStat("skill_physical_damage_%_to_convert_to_chaos", 60),
             };
             var level = new SkillLevelDefinition(null, null, null, null, null, null, 0, 0, 0, 0, 0,
                 new UntranslatedStat[0], stats, null);
@@ -583,6 +600,9 @@ namespace PoESkillTree.Computation.Parsing.Tests
             => modifiers.Any(m => m.Stats.Any(s => s.Identity == identity));
 
         private static IValue GetValueForIdentity(IEnumerable<Modifier> modifiers, string identity)
-            => modifiers.First(m => m.Stats.First().Identity == identity).Value;
+            => GetFirstModifierWithIdentity(modifiers, identity).Value;
+
+        private static Modifier GetFirstModifierWithIdentity(IEnumerable<Modifier> modifiers, string identity)
+            => modifiers.First(m => m.Stats.First().Identity == identity);
     }
 }

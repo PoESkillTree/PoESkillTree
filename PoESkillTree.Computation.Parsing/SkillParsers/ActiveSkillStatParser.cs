@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             }
             foreach (var stat in preParseResult.LevelDefinition.Stats)
             {
-                if (TryParseOther(stat) || TryParseDamageOverTime(stat))
+                if (TryParseOther(stat) || TryParseDamageOverTime(stat) || TryParseConversion(stat))
                 {
                     _parsedStats.Add(stat);
                 }
@@ -88,6 +88,21 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             return true;
         }
 
+        private bool TryParseConversion(UntranslatedStat stat)
+        {
+            var match = SkillStatIds.SkillDamageConversionRegex.Match(stat.StatId);
+            if (!match.Success)
+                return false;
+
+            var sourceType = Enums.Parse<DamageType>(match.Groups[1].Value, true);
+            var targetType = Enums.Parse<DamageType>(match.Groups[2].Value, true);
+            var sourceBuilder = _builderFactories.DamageTypeBuilders.From(sourceType).Damage.WithHitsAndAilments;
+            var targetBuilder = _builderFactories.DamageTypeBuilders.From(targetType).Damage.WithHitsAndAilments;
+            var conversionBuilder = sourceBuilder.ConvertTo(targetBuilder);
+            AddModifier(conversionBuilder, Form.BaseAdd, stat.Value, isLocal: true);
+            return true;
+        }
+
         private bool TryParseOther(UntranslatedStat stat)
         {
             switch (stat.StatId)
@@ -103,17 +118,18 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             }
         }
 
-        private void AddModifier(IStatBuilder stat, Form form, double value)
-            => AddModifier(stat, form, CreateValue(value));
+        private void AddModifier(IStatBuilder stat, Form form, double value, bool isLocal = false)
+            => AddModifier(stat, form, CreateValue(value), isLocal);
 
-        private void AddModifier(IStatBuilder stat, Form form, IValueBuilder value)
+        private void AddModifier(IStatBuilder stat, Form form, IValueBuilder value, bool isLocal = false)
         {
             var intermediateModifier = _modifierBuilder
                 .WithStat(stat)
                 .WithForm(_builderFactories.FormBuilders.From(form))
                 .WithValue(value)
                 .WithCondition(_preParseResult.IsMainSkill.IsSet).Build();
-            var modifiers = intermediateModifier.Build(_preParseResult.GlobalSource, Entity.Character);
+            var modifierSource = isLocal ? (ModifierSource) _preParseResult.LocalSource : _preParseResult.GlobalSource;
+            var modifiers = intermediateModifier.Build(modifierSource, Entity.Character);
             _parsedModifiers.AddRange(modifiers);
         }
 
