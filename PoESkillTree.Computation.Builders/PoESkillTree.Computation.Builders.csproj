@@ -74,6 +74,7 @@
     <Compile Include="Behaviors\DamageEffectivenessBaseValue.cs" />
     <Compile Include="Behaviors\ModifiedValueCalculationContext.cs" />
     <Compile Include="Behaviors\RegenUncappedSubtotalValue.cs" />
+    <Compile Include="Behaviors\RequirementUncappedSubtotalValue.cs" />
     <Compile Include="Behaviors\SkillConversionUncappedSubtotalValue.cs" />
     <Compile Include="Behaviors\ValueTransformation.cs" />
     <Compile Include="Buffs\BuffBuilder.cs" />

@@ -50,5 +50,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat DamageBaseSetEffectiveness(Entity entity);
 
         IStat StatIsAffectedByModifiersToOtherStat(IStat stat, IStat otherStat, Form form);
+        IStat Requirement(IStat stat);
     }
 }

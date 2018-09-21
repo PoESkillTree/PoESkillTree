@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using MoreLinq;
 using PoESkillTree.Computation.Builders.Damage;
 using PoESkillTree.Computation.Builders.Entities;
@@ -140,10 +141,13 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        public IStatBuilder Level => FromIdentity("Level.Required", typeof(int));
-        public IStatBuilder Strength => FromIdentity("Strength.Required", typeof(int));
-        public IStatBuilder Dexterity => FromIdentity("Dexterity.Required", typeof(int));
-        public IStatBuilder Intelligence => FromIdentity("Intelligence.Required", typeof(int));
+        public IStatBuilder Level => Requirement(typeof(int));
+        public IStatBuilder Strength => Requirement(typeof(int));
+        public IStatBuilder Dexterity => Requirement(typeof(int));
+        public IStatBuilder Intelligence => Requirement(typeof(int));
+
+        private IStatBuilder Requirement(Type dataType, [CallerMemberName] string requiredStat = null)
+            => FromStatFactory(e => StatFactory.Requirement(StatFactory.FromIdentity(requiredStat, e, dataType)));
     }
 
     internal class DodgeStatBuilders : StatBuildersBase, IDodgeStatBuilders

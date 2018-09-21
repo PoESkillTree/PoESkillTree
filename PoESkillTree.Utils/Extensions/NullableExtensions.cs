@@ -6,10 +6,11 @@ namespace PoESkillTree.Utils.Extensions
 {
     public static class NullableExtensions
     {
-        public static T? Select<T>(this T? nullable, Func<T, T> selector)
-            where T: struct
+        public static TOut? Select<TIn, TOut>(this TIn? nullable, Func<TIn, TOut> selector)
+            where TIn: struct
+            where TOut: struct
         {
-            return nullable.HasValue ? selector(nullable.Value) : (T?) null;
+            return nullable.HasValue ? selector(nullable.Value) : (TOut?) null;
         }
 
 

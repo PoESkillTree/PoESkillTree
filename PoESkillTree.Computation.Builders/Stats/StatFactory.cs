@@ -129,6 +129,9 @@ namespace PoESkillTree.Computation.Builders.Stats
             => GetOrAdd($"ModifiersTo({otherStat}).Affect({stat}).ForForm({form})", stat.Entity, typeof(bool),
                 behaviors: () => _behaviorFactory.StatIsAffectedByModifiersToOtherStat(stat, otherStat, form));
 
+        public IStat Requirement(IStat stat)
+            => CopyWithSuffix(stat, "Required", stat.DataType, () => _behaviorFactory.Requirement(stat));
+
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,
             Func<IReadOnlyList<Behavior>> behaviors, ExplicitRegistrationType explicitRegistrationType = null)
         {

@@ -154,6 +154,15 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                 new CacheKey(stat, otherStat, form));
         }
 
+        public IReadOnlyList<Behavior> Requirement(IStat stat)
+            => new[] { RequirementBehavior(stat) };
+
+        private Behavior RequirementBehavior(IStat stat)
+            => GetOrAdd(() => _statFactory.Requirement(stat),
+                NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
+                v => new RequirementUncappedSubtotalValue(_statFactory.Requirement(stat), v),
+                new CacheKey(stat));
+
         private Behavior GetOrAdd(
             IStat affectedStat, NodeType affectNodeType, BehaviorPathInteraction affectedPaths,
             Func<IValue, IValue> valueTransformation, CacheKey cacheKey)

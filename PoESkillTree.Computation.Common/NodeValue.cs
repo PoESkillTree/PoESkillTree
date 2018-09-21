@@ -206,6 +206,9 @@ namespace PoESkillTree.Computation.Common
             return value.Single;
         }
 
+        public static double? SingleOrNull(this NodeValue? @this) =>
+            @this.Select(v => v.Single);
+
         /// <summary>
         /// Returns the value created by applying <paramref name="operation"/> to <paramref name="value"/> if
         /// <paramref name="value"/> is not <c>null</c>. Returns <c>null</c> otherwise.
