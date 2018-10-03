@@ -3,7 +3,6 @@ using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
@@ -76,22 +75,5 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 => new FunctionalValue(c => conditionalValue.Calculate(c).IsTrue() ? value.Calculate(c) : null,
                     $"{conditionalValue}.IsTrue ? {value} : null");
         }
-    }
-
-    public struct Skill
-    {
-        public Skill(string id, int level, int quality, ItemSlot itemSlot, int socketIndex, int? gemGroup)
-            => (Id, Level, Quality, ItemSlot, SocketIndex, GemGroup) =
-                (id, level, quality, itemSlot, socketIndex, gemGroup);
-
-        public string Id { get; }
-        public int Level { get; }
-        public int Quality { get; }
-
-        public ItemSlot ItemSlot { get; }
-        public int SocketIndex { get; }
-
-        // Null: item inherent skill
-        public int? GemGroup { get; }
     }
 }

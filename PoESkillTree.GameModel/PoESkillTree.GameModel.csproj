@@ -83,6 +83,7 @@
     <Compile Include="DataUtils.cs" />
     <Compile Include="Skills\ActiveSkillType.cs" />
     <Compile Include="Skills\Keyword.cs" />
+    <Compile Include="Skills\Skill.cs" />
     <Compile Include="Skills\SkillDefinition.cs" />
     <Compile Include="Skills\SkillDefinitions.cs" />
     <Compile Include="Skills\SkillJsonDeserializer.cs" />

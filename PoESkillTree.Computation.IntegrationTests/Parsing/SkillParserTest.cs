@@ -13,7 +13,7 @@ using PoESkillTree.GameModel.StatTranslation;
 namespace PoESkillTree.Computation.IntegrationTests.Parsing
 {
     [TestFixture]
-    public class ActiveSkillParserTest
+    public class SkillParserTest
     {
         private static SkillDefinitions _skillDefinitions;
         private static Console.CompositionRoot _compositionRoot;

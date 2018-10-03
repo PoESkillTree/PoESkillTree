@@ -1,4 +1,6 @@
-﻿namespace PoESkillTree.Computation.Parsing.SkillParsers
+﻿using PoESkillTree.GameModel.Skills;
+
+namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
     public interface IPartialSkillParser
     {
