@@ -80,9 +80,10 @@ namespace PoESkillTree.GameModel.Skills
             _nextNumericId++;
             var levels = DeserializeLevels(gemJson, gemTooltipJson);
 
+            var displayName = baseItemDefinition?.DisplayName;
             if (gemJson.TryGetValue("active_skill", out var activeSkillJson))
             {
-                var displayName = activeSkillJson.Value<string>("display_name");
+                displayName = displayName ?? activeSkillJson.Value<string>("display_name");
                 var activeSkillTypes = activeSkillJson["types"].Values<string>().ToHashSet();
                 var minionActiveSkillTypes = activeSkillJson["minion_types"]?.Values<string>().ToHashSet()
                                              ?? new HashSet<string>();
@@ -100,12 +101,15 @@ namespace PoESkillTree.GameModel.Skills
             }
             else
             {
+                displayName = displayName ?? skillId;
                 var supportSkillJson = gemJson["support_gem"];
+                var addedActiveSkillTypes = supportSkillJson["added_types"].Values<string>().ToHashSet();
+                var addedKeywords = GetKeywords(displayName, addedActiveSkillTypes, gemTags);
                 var supportSkillDefinition = new SupportSkillDefinition(
                     supportSkillJson.Value<bool>("supports_gems_only"),
                     supportSkillJson["allowed_types"].Values<string>().ToList(),
                     supportSkillJson["excluded_types"].Values<string>().ToList(),
-                    supportSkillJson["added_types"].Values<string>().ToList());
+                    addedActiveSkillTypes, addedKeywords);
                 return SkillDefinition.CreateSupport(skillId, numericId, statTranslationFile,
                     baseItemDefinition, supportSkillDefinition, levels);
             }

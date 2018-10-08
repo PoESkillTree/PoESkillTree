@@ -90,16 +90,20 @@ namespace PoESkillTree.GameModel.Skills
     public class SupportSkillDefinition
     {
         public SupportSkillDefinition(
-            bool supportsGemsOnly, IReadOnlyList<string> allowedActiveSkillTypes,
-            IReadOnlyList<string> excludedActiveSkillTypes, IReadOnlyList<string> addedActiveSkillTypes)
-            => (SupportsGemsOnly, AllowedActiveSkillTypes, ExcludedActiveSkillTypes, AddedActiveSkillTypes) =
-                (supportsGemsOnly, allowedActiveSkillTypes, excludedActiveSkillTypes, addedActiveSkillTypes);
+            bool supportsGemsOnly, IEnumerable<string> allowedActiveSkillTypes,
+            IEnumerable<string> excludedActiveSkillTypes, IEnumerable<string> addedActiveSkillTypes,
+            IReadOnlyList<Keyword> addedKeywords)
+            => (SupportsGemsOnly, AllowedActiveSkillTypes, ExcludedActiveSkillTypes, AddedActiveSkillTypes,
+                    AddedKeywords) =
+                (supportsGemsOnly, allowedActiveSkillTypes, excludedActiveSkillTypes, addedActiveSkillTypes,
+                    addedKeywords);
 
         public bool SupportsGemsOnly { get; }
 
-        public IReadOnlyList<string> AllowedActiveSkillTypes { get; }
-        public IReadOnlyList<string> ExcludedActiveSkillTypes { get; }
-        public IReadOnlyList<string> AddedActiveSkillTypes { get; }
+        public IEnumerable<string> AllowedActiveSkillTypes { get; }
+        public IEnumerable<string> ExcludedActiveSkillTypes { get; }
+        public IEnumerable<string> AddedActiveSkillTypes { get; }
+        public IReadOnlyList<Keyword> AddedKeywords { get; }
     }
 
     public class SkillLevelDefinition

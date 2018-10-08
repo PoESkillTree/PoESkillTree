@@ -143,6 +143,25 @@ namespace PoESkillTree.GameModel.Tests.Skills
         }
 
         [Test]
+        public void DeserializeReturnsCorrectResultForBlasphemySupport()
+        {
+            var definitions = DeserializeAll();
+
+            var definition = definitions.GetSkillById("SupportBlasphemy");
+            Assert.IsTrue(definition.IsSupport);
+            Assert.IsNull(definition.ActiveSkill);
+
+            var supportSkill = definition.SupportSkill;
+            Assert.AreEqual(
+                new[] { "mana_cost_is_reservation", "mana_cost_is_percentage", "unknown_30", "aura", "aura_debuff" },
+                supportSkill.AddedActiveSkillTypes);
+            Assert.AreEqual(new[] { Keyword.Aura }, supportSkill.AddedKeywords);
+
+            var level20 = definition.Levels[20];
+            Assert.AreEqual(35, level20.ManaCostOverride);
+        }
+
+        [Test]
         public void DeserializeIgnoresSkillsWithUnreleasedBaseItems()
         {
             var definitions = DeserializeAll();
@@ -159,7 +178,8 @@ namespace PoESkillTree.GameModel.Tests.Skills
              ['RainOfArrows', 'Clarity', 'SupportIncreasedBurningDamage', 'VaalPowerSiphon', 'ChargedAttack',
               'FreezeMine', 'ShadeForm', 'ElementalHit', 'VaalRighteousFire', 'EnchantmentOfIreWhenHit4',
               'SupportItemQuantity', 'SupportPierce', 'VaalFireTrap', 'NewPhaseRun', 'IntimidatingCry',
-              'SupportAdditionalProjectilesUnique', 'SupportMinionLife', 'ThrownShield', 'BirdAspect', 'FlameTotem']
+              'SupportAdditionalProjectilesUnique', 'SupportMinionLife', 'ThrownShield', 'BirdAspect', 'FlameTotem',
+              'SupportBlasphemy']
              */
             var gemJson = JObject.Parse(File.ReadAllText(GetDataFilePath("gems.min.json")));
             var gemTooltipJson = JObject.Parse(File.ReadAllText(GetDataFilePath("gem_tooltips.min.json")));
