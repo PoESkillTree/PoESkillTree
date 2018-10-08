@@ -9,33 +9,26 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
     public class SupportSkillParser : IParser<SupportSkillParserParameter>
     {
-        private readonly SkillDefinitions _skillDefinitions;
+        private readonly SkillPreParser _preParser;
         private readonly IBuilderFactories _builderFactories;
-        private readonly IMetaStatBuilders _metaStatBuilders;
         private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
 
         public SupportSkillParser(
             SkillDefinitions skillDefinitions, IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
         {
-            _skillDefinitions = skillDefinitions;
             _builderFactories = builderFactories;
-            _metaStatBuilders = metaStatBuilders;
+            _preParser = new SkillPreParser(skillDefinitions, metaStatBuilders);
         }
 
         public ParseResult Parse(SupportSkillParserParameter parameter)
         {
             var (active, support) = parameter;
 
-            var definition = _skillDefinitions.GetSkillById(support.Id);
-            var level = definition.Levels[support.Level];
-
-            var displayName = definition.BaseItem?.DisplayName ??
-                              (definition.IsSupport ? support.Id : definition.ActiveSkill.DisplayName);
-            var localSource = new ModifierSource.Local.Skill(displayName);
-            var globalSource = new ModifierSource.Global(localSource);
-            var gemSource = new ModifierSource.Local.Gem(support.ItemSlot, support.SocketIndex, displayName);
-
-            var isMainSkillStat = _metaStatBuilders.MainSkillSocket(active.ItemSlot, active.SocketIndex);
+            var preParseResult = _preParser.ParseSupport(active, support);
+            var level = preParseResult.LevelDefinition;
+            var globalSource = preParseResult.GlobalSource;
+            var gemSource = preParseResult.GemSource;
+            var isMainSkillStat = preParseResult.IsMainSkill;
             
             var modifiers = new List<Modifier>();
 

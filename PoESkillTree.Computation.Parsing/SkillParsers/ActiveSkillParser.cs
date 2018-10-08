@@ -13,7 +13,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
         private readonly StatParserFactory _statParserFactory;
 
-        private readonly ActiveSkillPreParser _preParser;
+        private readonly SkillPreParser _preParser;
         private readonly IReadOnlyList<IPartialSkillParser> _partialParsers;
 
         public ActiveSkillParser(
@@ -21,7 +21,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             StatParserFactory statParserFactory)
         {
             _statParserFactory = statParserFactory;
-            _preParser = new ActiveSkillPreParser(skillDefinitions, metaStatBuilders);
+            _preParser = new SkillPreParser(skillDefinitions, metaStatBuilders);
             _partialParsers = new IPartialSkillParser[]
             {
                 new ActiveSkillGeneralParser(builderFactories, metaStatBuilders),
@@ -37,8 +37,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var modifiers = new List<Modifier>();
             var parsedStats = new List<UntranslatedStat>();
 
-            var (preParseResult, preParsedStats) = _preParser.Parse(skill);
-            parsedStats.AddRange(preParsedStats);
+            var preParseResult = _preParser.ParseActive(skill);
             foreach (var partialParser in _partialParsers)
             {
                 var (newlyParsedModifiers, newlyParsedStats) = partialParser.Parse(skill, preParseResult);
