@@ -39,6 +39,10 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]), Reference.AsDamageType.Damage.WithHits
                 },
                 {
+                    @"# to # added ({DamageTypeMatchers}) damage",
+                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]), Reference.AsDamageType.Damage.WithHits
+                },
+                {
                     @"adds # to # ({DamageTypeMatchers}) damage to unarmed attacks",
                     BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]),
                     Reference.AsDamageType.Damage.WithSkills(DamageSource.Attack).With(Keyword.Melee),

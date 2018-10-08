@@ -78,6 +78,7 @@
     <Compile Include="SkillParsers\PartialSkillParseResult.cs" />
     <Compile Include="SkillParsers\SkillStatIds.cs" />
     <Compile Include="SkillParsers\SupportSkillParser.cs" />
+    <Compile Include="SkillParsers\TranslatingSkillParser.cs" />
     <Compile Include="StringParsers\IStringParser.cs" />
     <Compile Include="Referencing\ResolvedMatchContext.cs" />
     <Compile Include="ICoreParser.cs" />

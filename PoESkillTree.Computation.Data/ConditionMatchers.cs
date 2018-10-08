@@ -273,6 +273,8 @@ namespace PoESkillTree.Computation.Data
                     Condition.Unique("Have you recently taken Fire Damage from a Hit?")
                 },
                 { "while you have at least one nearby ally", Condition.Unique("Is any ally nearby?") },
+                // support gem mod clarifications. Irrelevant for parsing.
+                { "supported skills (have|deal)", Condition.True },
             };
     }
 }

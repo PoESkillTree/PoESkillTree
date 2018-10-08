@@ -28,6 +28,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
             _compositionRoot = new Console.CompositionRoot();
             _statTranslationLoader = new StatTranslationLoader();
             await _statTranslationLoader.LoadAsync("stat_translations/skill").ConfigureAwait(false);
+            await _statTranslationLoader.LoadAsync("stat_translations/support_gem").ConfigureAwait(false);
         }
 
         private static IParser<UntranslatedStatParserParameter> CreateStatParser(string translationFileName)
@@ -197,7 +198,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                     ("Cold.Damage.Secondary.Skill", Form.BaseAdd, addedDamageValue, global, true))
                 .ToArray();
             var parser = new SupportSkillParser(_skillDefinitions, _compositionRoot.BuilderFactories,
-                _compositionRoot.MetaStats);
+                _compositionRoot.MetaStats, CreateStatParser);
 
             var actual = parser.Parse(frenzy, support);
             AssertCorrectModifiers(valueCalculationContextMock, isMainSkillStat, expectedModifiers, actual);

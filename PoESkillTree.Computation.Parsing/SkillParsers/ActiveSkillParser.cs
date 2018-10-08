@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -9,18 +8,14 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
     public class ActiveSkillParser : IParser<Skill>
     {
-        public delegate IParser<UntranslatedStatParserParameter> StatParserFactory(string statTranslationFileName);
-
-        private readonly StatParserFactory _statParserFactory;
-
         private readonly SkillPreParser _preParser;
         private readonly IReadOnlyList<IPartialSkillParser> _partialParsers;
+        private readonly TranslatingSkillParser _translatingParser;
 
         public ActiveSkillParser(
             SkillDefinitions skillDefinitions, IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
-            StatParserFactory statParserFactory)
+            TranslatingSkillParser.StatParserFactory statParserFactory)
         {
-            _statParserFactory = statParserFactory;
             _preParser = new SkillPreParser(skillDefinitions, metaStatBuilders);
             _partialParsers = new IPartialSkillParser[]
             {
@@ -30,6 +25,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 new GemRequirementParser(builderFactories),
                 new ActiveSkillStatParser(builderFactories, metaStatBuilders),
             };
+            _translatingParser = new TranslatingSkillParser(statParserFactory);
         }
 
         public ParseResult Parse(Skill skill)
@@ -45,34 +41,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 parsedStats.AddRange(newlyParsedStats);
             }
 
-            var level = preParseResult.LevelDefinition;
-            var qualityStats =
-                level.QualityStats.Select(s => new UntranslatedStat(s.StatId, s.Value * skill.Quality / 1000));
-            var levelStats = level.Stats.Except(parsedStats);
-            return ParseResult.Aggregate(new[]
-            {
-                ParseResult.Success(modifiers),
-                TranslateAndParse(preParseResult, qualityStats),
-                TranslateAndParse(preParseResult, levelStats)
-            });
-        }
-
-        private ParseResult TranslateAndParse(SkillPreParseResult preParseResult, IEnumerable<UntranslatedStat> stats)
-        {
-            var isMainSkillValue = preParseResult.IsMainSkill.Value
-                .Build(new BuildParameters(null, Entity.Character, default));
-            var statParser = _statParserFactory(preParseResult.SkillDefinition.StatTranslationFile);
-            var parserParameter = new UntranslatedStatParserParameter(preParseResult.LocalSource, stats);
-            return ApplyCondition(statParser.Parse(parserParameter), isMainSkillValue);
-        }
-
-        private static ParseResult ApplyCondition(ParseResult result, IValue conditionalValue)
-        {
-            return result.ApplyToModifiers(m => new Modifier(m.Stats, m.Form, ApplyCondition(m.Value), m.Source));
-
-            IValue ApplyCondition(IValue value)
-                => new FunctionalValue(c => conditionalValue.Calculate(c).IsTrue() ? value.Calculate(c) : null,
-                    $"{conditionalValue}.IsTrue ? {value} : null");
+            return _translatingParser.Parse(skill, preParseResult, new PartialSkillParseResult(modifiers, parsedStats));
         }
     }
 }

@@ -10,73 +10,52 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     public class SupportSkillParser : IParser<SupportSkillParserParameter>
     {
         private readonly SkillPreParser _preParser;
+        private readonly IReadOnlyList<IPartialSkillParser> _partialParsers;
+        private readonly TranslatingSkillParser _translatingParser;
         private readonly IBuilderFactories _builderFactories;
         private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
 
         public SupportSkillParser(
-            SkillDefinitions skillDefinitions, IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
+            SkillDefinitions skillDefinitions, IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
+            TranslatingSkillParser.StatParserFactory statParserFactory)
         {
             _builderFactories = builderFactories;
             _preParser = new SkillPreParser(skillDefinitions, metaStatBuilders);
+            _partialParsers = new IPartialSkillParser[]
+            {
+                new GemRequirementParser(builderFactories),
+            };
+            _translatingParser = new TranslatingSkillParser(statParserFactory);
         }
 
         public ParseResult Parse(SupportSkillParserParameter parameter)
         {
             var (active, support) = parameter;
+            var modifiers = new List<Modifier>();
+            var parsedStats = new List<UntranslatedStat>();
 
             var preParseResult = _preParser.ParseSupport(active, support);
-            var level = preParseResult.LevelDefinition;
-            var globalSource = preParseResult.GlobalSource;
-            var gemSource = preParseResult.GemSource;
-            var isMainSkillStat = preParseResult.IsMainSkill;
-            
-            var modifiers = new List<Modifier>();
 
-            void AddModifier(IStatBuilder stat, Form form, double value, ModifierSource source, bool mainSkillOnly = true)
+            if (preParseResult.LevelDefinition.ManaMultiplier is double multiplier)
             {
-                var modifierBuilder = _modifierBuilder
-                    .WithStat(stat)
-                    .WithForm(_builderFactories.FormBuilders.From(form))
-                    .WithValue(_builderFactories.ValueBuilders.Create(value));
-                if (mainSkillOnly)
-                    modifierBuilder = modifierBuilder.WithCondition(isMainSkillStat.IsSet);
-                modifiers.AddRange(modifierBuilder.Build().Build(source, Entity.Character));
-            }
-            
-            if (level.ManaMultiplier is double multiplier)
-            {
-                AddModifier(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost, Form.More,
-                    multiplier * 100 - 100, globalSource);
-            }
-            
-            var requirementStats = _builderFactories.StatBuilders.Requirements;
-            AddModifier(requirementStats.Level, Form.BaseSet, level.RequiredLevel, gemSource, false);
-            if (level.RequiredDexterity > 0)
-            {
-                AddModifier(requirementStats.Dexterity, Form.BaseSet, level.RequiredDexterity, gemSource, false);
-            }
-            if (level.RequiredIntelligence > 0)
-            {
-                AddModifier(requirementStats.Intelligence, Form.BaseSet, level.RequiredIntelligence, gemSource, false);
-            }
-            if (level.RequiredStrength > 0)
-            {
-                AddModifier(requirementStats.Strength, Form.BaseSet, level.RequiredStrength, gemSource, false);
+                var intermediateModifier = _modifierBuilder
+                    .WithStat(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost)
+                    .WithForm(_builderFactories.FormBuilders.From( Form.More))
+                    .WithValue(_builderFactories.ValueBuilders.Create(multiplier * 100 - 100))
+                    .WithCondition(preParseResult.IsMainSkill.IsSet)
+                    .Build();
+                modifiers.AddRange(intermediateModifier.Build(preParseResult.GlobalSource, Entity.Character));
             }
 
-            var coldDamage = _builderFactories.DamageTypeBuilders.Cold.Damage;
-            AddModifier(coldDamage, Form.Increase, level.QualityStats[0].Value * 20 / 1000, globalSource);
-            var intermediateModifier = _modifierBuilder
-                .WithStat(coldDamage.WithHits)
-                .WithForm(_builderFactories.FormBuilders.From(Form.BaseAdd))
-                .WithValue(_builderFactories.ValueBuilders.FromMinAndMax(
-                    _builderFactories.ValueBuilders.Create(level.Stats[0].Value),
-                    _builderFactories.ValueBuilders.Create(level.Stats[1].Value)))
-                .WithCondition(isMainSkillStat.IsSet)
-                .Build();
-            modifiers.AddRange(intermediateModifier.Build(globalSource, Entity.Character));
+            foreach (var partialParser in _partialParsers)
+            {
+                var (newlyParsedModifiers, newlyParsedStats) = partialParser.Parse(support, preParseResult);
+                modifiers.AddRange(newlyParsedModifiers);
+                parsedStats.AddRange(newlyParsedStats);
+            }
 
-            return ParseResult.Success(modifiers);
+            return _translatingParser.Parse(support, preParseResult,
+                new PartialSkillParseResult(modifiers, parsedStats));
         }
     }
 
