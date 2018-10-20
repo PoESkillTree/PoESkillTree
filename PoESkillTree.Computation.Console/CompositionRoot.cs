@@ -33,7 +33,7 @@ namespace PoESkillTree.Computation.Console
                 () => new BuilderFactories(statFactory.Value, SkillDefinitions.Skills));
             _parsingData = new Lazy<IParsingData<ParsingStep>>(
                 () => new ParsingData(_builderFactories.Value, new MatchContexts(statFactory.Value),
-                    SkillDefinitions.SkillNames));
+                    SkillDefinitions.Skills));
             _coreParser = new Lazy<ICoreParser>(
                 () => new CoreParser<ParsingStep>(_parsingData.Value, _builderFactories.Value));
             _metaStats = new Lazy<IMetaStatBuilders>(

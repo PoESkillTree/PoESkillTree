@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using PoESkillTree.GameModel.Items;
@@ -9,17 +8,6 @@ namespace PoESkillTree.GameModel.Skills
 {
     public class SkillDefinition
     {
-        [Obsolete("Temporary constructor to support PoESkillTree.Computation.Console.SkillDefinition")]
-        public SkillDefinition(string skillName, int numericId, IReadOnlyList<Keyword> keywords, bool providesBuff)
-        {
-            Id = skillName;
-            NumericId = numericId;
-            IsSupport = false;
-            ActiveSkill = new ActiveSkillDefinition(skillName, 0, new string[0], new string[0], keywords, providesBuff,
-                null, new ItemClass[0]);
-            Levels = new Dictionary<int, SkillLevelDefinition>();
-        }
-
         private SkillDefinition(
             string id, int numericId, bool isSupport, string statTranslationFile,
             SkillBaseItemDefinition baseItem, ActiveSkillDefinition activeSkill, SupportSkillDefinition supportSkill,

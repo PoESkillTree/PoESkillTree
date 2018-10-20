@@ -60,6 +60,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Skills
         }
 
         private static SkillBuilderCollection CreateSut(IEnumerable<IKeywordBuilder> keywords) =>
-            new SkillBuilderCollection(new StatFactory(), keywords, _ => Enumerable.Empty<string>());
+            new SkillBuilderCollection(new StatFactory(), keywords, Enumerable.Empty<SkillDefinition>());
     }
 }

@@ -10,6 +10,7 @@ using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Entities;
+using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders.Tests.Buffs
@@ -144,14 +145,21 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
 
         private static BuffBuilders CreateSut()
         {
-            var buffSkills = new (string identifier, IReadOnlyList<Keyword> keywords)[]
+            var buffSkills = new (string id, IReadOnlyList<Keyword> keywords)[]
             {
                 ("wrath", new[] { Keyword.Aura, Keyword.AreaOfEffect, Keyword.Lightning }),
                 ("herald", new[] { Keyword.Spell }),
                 ("frostbite", new[] { Keyword.Curse })
-            }.Select(t => new SkillDefinition(t.identifier, 0, t.keywords, true));
+            }.Select(t => CreateSkill(t.id, t.keywords));
             return new BuffBuilders(StatFactory, buffSkills);
         }
+
+        private static SkillDefinition CreateSkill(string id, IReadOnlyList<Keyword> keywords)
+            => SkillDefinition.CreateActive(
+                id, 0, "", null,
+                new ActiveSkillDefinition(id, 0, new string[0], new string[0], keywords, true,
+                    null, new ItemClass[0]),
+                new Dictionary<int, SkillLevelDefinition>());
 
         private static readonly IStatFactory StatFactory = new StatFactory();
 

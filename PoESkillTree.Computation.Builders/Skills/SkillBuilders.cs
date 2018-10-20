@@ -4,7 +4,6 @@ using System.Linq;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.GameModel.Skills;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Skills
 {
@@ -17,27 +16,19 @@ namespace PoESkillTree.Computation.Builders.Skills
         {
             _statFactory = statFactory;
             _skills = new Lazy<IReadOnlyDictionary<string, SkillDefinition>>(() =>
-                skills.Where(d => !d.IsSupport).ToDictionary(d => d.ActiveSkill.DisplayName.ToLowerInvariant()));
+                skills.Where(d => !d.IsSupport).ToDictionary(d => d.Id));
         }
 
-        public ISkillBuilderCollection this[params IKeywordBuilder[] keywords] =>
-            new SkillBuilderCollection(_statFactory, keywords, SelectSkills);
+        public ISkillBuilderCollection this[params IKeywordBuilder[] keywords]
+            => new SkillBuilderCollection(_statFactory, keywords, _skills.Value.Values);
 
-        private IEnumerable<string> SelectSkills(IEnumerable<Keyword> keywords)
-        {
-            var keywordList = keywords.ToList();
-            return _skills.Value
-                .Where(p => p.Value.ActiveSkill.Keywords.ContainsAll(keywordList))
-                .Select(p => p.Key);
-        }
+        public ISkillBuilder SummonSkeleton => FromId("SummonSkeletons");
+        public ISkillBuilder VaalSummonSkeletons => FromId("VaalSummonSkeletons");
+        public ISkillBuilder RaiseSpectre => FromId("RaiseSpectre");
+        public ISkillBuilder RaiseZombie => FromId("RaiseZombie");
+        public ISkillBuilder DetonateMines => FromId("GemDetonateMines");
 
-        public ISkillBuilder SummonSkeleton => FromName("summon skeleton");
-        public ISkillBuilder VaalSummonSkeletons => FromName("vaal summon skeletons");
-        public ISkillBuilder RaiseSpectre => FromName("raise spectre");
-        public ISkillBuilder RaiseZombie => FromName("raise zombie");
-        public ISkillBuilder DetonateMines => FromName("detonate mines");
-
-        public ISkillBuilder FromName(string skillName) =>
-            new SkillBuilder(_statFactory, CoreBuilder.Create(_skills.Value[skillName.ToLowerInvariant()]));
+        public ISkillBuilder FromId(string skillId)
+            => new SkillBuilder(_statFactory, CoreBuilder.Create(_skills.Value[skillId]));
     }
 }

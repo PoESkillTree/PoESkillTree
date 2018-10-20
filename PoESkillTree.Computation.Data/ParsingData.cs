@@ -5,6 +5,7 @@ using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Steps;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Data
 {
@@ -30,7 +31,7 @@ namespace PoESkillTree.Computation.Data
         private readonly Lazy<StatMatchersSelector> _statMatchersSelector;
 
         public ParsingData(
-            IBuilderFactories builderFactories, IMatchContexts matchContexts, IReadOnlyList<string> skillNames)
+            IBuilderFactories builderFactories, IMatchContexts matchContexts, IReadOnlyList<SkillDefinition> skills)
         {
             _builderFactories = builderFactories;
             _matchContexts = matchContexts;
@@ -38,7 +39,7 @@ namespace PoESkillTree.Computation.Data
             _statMatchers = new Lazy<IReadOnlyList<IStatMatchers>>(
                 () => CreateStatMatchers(new ModifierBuilder()));
             _referencedMatchers = new Lazy<IReadOnlyList<IReferencedMatchers>>(
-                () => CreateReferencedMatchers(skillNames));
+                () => CreateReferencedMatchers(skills));
             _statMatchersSelector = new Lazy<StatMatchersSelector>(
                 () => new StatMatchersSelector(StatMatchers));
         }
@@ -68,7 +69,7 @@ namespace PoESkillTree.Computation.Data
                 new ActionConditionMatchers(_builderFactories, _matchContexts, modifierBuilder),
             };
 
-        private IReadOnlyList<IReferencedMatchers> CreateReferencedMatchers(IReadOnlyList<string> skillNames) =>
+        private IReadOnlyList<IReferencedMatchers> CreateReferencedMatchers(IReadOnlyList<SkillDefinition> skills) =>
             new IReferencedMatchers[]
             {
                 new ActionMatchers(_builderFactories.ActionBuilders),
@@ -77,7 +78,7 @@ namespace PoESkillTree.Computation.Data
                 new DamageTypeMatchers(_builderFactories.DamageTypeBuilders),
                 new BuffMatchers(_builderFactories.BuffBuilders),
                 new KeywordMatchers(_builderFactories.KeywordBuilders),
-                new SkillMatchers(skillNames, _builderFactories.SkillBuilders.FromName),
+                new SkillMatchers(skills, _builderFactories.SkillBuilders.FromId),
             };
     }
 }

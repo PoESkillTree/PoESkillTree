@@ -220,7 +220,7 @@ namespace PoESkillTree.Computation.Data
                     "({SkillMatchers}) and ({SkillMatchers})",
                     Or(With(References[0].AsSkill), With(References[1].AsSkill))
                 },
-                { "while you have an? ({SkillMatchers}) summoned", Reference.AsSkill.Instances.Value > 0 },
+                { "while you have an? ({SkillMatchers})", Reference.AsSkill.Instances.Value > 0 },
                 // - cast recently/in past x seconds
                 { "if you've cast a spell recently,?", Skills[Keyword.Spell].Cast.Recently },
                 { "if you've attacked recently,?", Skills[Keyword.Attack].Cast.Recently },
