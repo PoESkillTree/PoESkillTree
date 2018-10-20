@@ -10,7 +10,7 @@ using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
-    public class ActiveSkillStatParser : IPartialSkillParser
+    public class SkillStatParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         private List<UntranslatedStat> _parsedStats;
         private SkillPreParseResult _preParseResult;
 
-        public ActiveSkillStatParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
+        public SkillStatParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
             => (_builderFactories, _metaStatBuilders) = (builderFactories, metaStatBuilders);
 
         public PartialSkillParseResult Parse(Skill skill, SkillPreParseResult preParseResult)

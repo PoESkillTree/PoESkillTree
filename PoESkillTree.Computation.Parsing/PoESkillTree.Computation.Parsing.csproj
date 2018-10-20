@@ -73,7 +73,7 @@
     <Compile Include="GivenStatsParser.cs" />
     <Compile Include="IParser.cs" />
     <Compile Include="SkillParsers\ActiveSkillParser.cs" />
-    <Compile Include="SkillParsers\ActiveSkillStatParser.cs" />
+    <Compile Include="SkillParsers\SkillStatParser.cs" />
     <Compile Include="SkillParsers\GemRequirementParser.cs" />
     <Compile Include="SkillParsers\PartialSkillParseResult.cs" />
     <Compile Include="SkillParsers\SkillStatIds.cs" />

@@ -50,6 +50,38 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Skill("Blasphemy", 1, 0, ItemSlot.Belt, 1, null));
         }
 
+        [Test]
+        public void PhysicalToLightningConversionIsLocal()
+        {
+            var (activeDefinition, activeSkill) = CreateEnfeebleDefinition();
+            var (supportDefinition, supportSkill) = CreatePhysicalToLightningDefinition();
+            var sut = CreateSut(activeDefinition, supportDefinition);
+
+            var result = sut.Parse(activeSkill, supportSkill);
+
+            var modifiers = result.Modifiers;
+            var expectedIdentity =
+                "Physical.Damage.Attack.MainHand.Skill.ConvertTo(Lightning.Damage.Attack.MainHand.Skill)";
+            Assert.IsTrue(AnyModifierHasIdentity(modifiers, expectedIdentity));
+            var modifier = GetFirstModifierWithIdentity(modifiers, expectedIdentity);
+            Assert.IsInstanceOf<ModifierSource.Local.Skill>(modifier.Source);
+        }
+
+        private static (SkillDefinition, Skill) CreatePhysicalToLightningDefinition()
+        {
+            var supportSkill = new SupportSkillDefinition(false, new string[0], new string[0], new string[0],
+                new Keyword[0]);
+            var stats = new[]
+            {
+                new UntranslatedStat("skill_physical_damage_%_to_convert_to_lightning", 50), 
+            };
+            var level = new SkillLevelDefinition(null, null, null, null, null, null, null, 0, 0, 0, 0,
+                new UntranslatedStat[0], stats, null);
+            var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
+            return (SkillDefinition.CreateSupport("SupportPhysicalToLightning", 0, "", null, supportSkill, levels),
+                new Skill("SupportPhysicalToLightning", 1, 0, ItemSlot.Belt, 1, null));
+        }
+
         private static SupportSkillParser CreateSut(
             SkillDefinition activeSkillDefinition, SkillDefinition supportSkillDefinition,
             IParser<UntranslatedStatParserParameter> statParser = null)
@@ -68,5 +100,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private static bool AnyModifierHasIdentity(IEnumerable<Modifier> modifiers, string identity)
             => modifiers.Any(m => m.Stats.Any(s => s.Identity == identity));
+
+        private static Modifier GetFirstModifierWithIdentity(IEnumerable<Modifier> modifiers, string identity)
+            => modifiers.First(m => m.Stats.First().Identity == identity);
     }
 }
