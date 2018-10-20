@@ -12,7 +12,7 @@ using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
-    public class ActiveSkillKeywordParser : IPartialSkillParser
+    public class SkillKeywordParser : IPartialSkillParser
     {
         private static readonly IReadOnlyList<Keyword> KeywordsExcludedForDamageOverTime = new[]
         {
@@ -29,21 +29,33 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
         private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
+        private readonly Func<SkillDefinition, IEnumerable<Keyword>> _selectKeywords;
 
         private List<Modifier> _parsedModifiers;
         private List<UntranslatedStat> _parsedStats;
-        private SkillDefinition _skillDefinition;
+        private IEnumerable<Keyword> _keywords;
         private SkillPreParseResult _preParseResult;
 
-        public ActiveSkillKeywordParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
-            => (_builderFactories, _metaStatBuilders) = (builderFactories, metaStatBuilders);
+        private SkillKeywordParser(
+            IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
+            Func<SkillDefinition, IEnumerable<Keyword>> selectKeywords)
+            => (_builderFactories, _metaStatBuilders, _selectKeywords) =
+                (builderFactories, metaStatBuilders, selectKeywords);
+
+        public static IPartialSkillParser CreateActive(
+            IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
+            => new SkillKeywordParser(builderFactories, metaStatBuilders, d => d.ActiveSkill.Keywords);
+
+        public static IPartialSkillParser CreateSupport(
+            IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
+            => new SkillKeywordParser(builderFactories, metaStatBuilders, d => d.SupportSkill.AddedKeywords);
 
         public PartialSkillParseResult Parse(Skill skill, SkillPreParseResult preParseResult)
         {
             _parsedModifiers = new List<Modifier>();
             _parsedStats = new List<UntranslatedStat>();
             _preParseResult = preParseResult;
-            _skillDefinition = preParseResult.SkillDefinition;
+            _keywords = _selectKeywords(preParseResult.SkillDefinition);
 
             var hitDamageSource = preParseResult.HitDamageSource;
             var isMainSkill = preParseResult.IsMainSkill.IsSet;
@@ -65,7 +77,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             }
             if (preParseResult.HasSkillDamageOverTime)
             {
-                var dotIsAreaDamage = AreaDamageOverTimeSkills.Contains(_skillDefinition.Id);
+                var dotIsAreaDamage = AreaDamageOverTimeSkills.Contains(preParseResult.SkillDefinition.Id);
                 AddKeywordModifiers(
                     k => _metaStatBuilders.MainSkillPartDamageHasKeyword(k, DamageSource.OverTime),
                     k => PartHasKeywordCondition(hitDamageSource, isMainSkill, k),
@@ -88,7 +100,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             Func<Keyword, bool> preCondition = null)
         {
             var modifiers =
-                KeywordModifiers(_skillDefinition.ActiveSkill.Keywords, statFactory, conditionFactory, preCondition)
+                KeywordModifiers(_keywords, statFactory, conditionFactory, preCondition)
                     .SelectMany(m => m.Build(_preParseResult.GlobalSource, Entity.Character));
             _parsedModifiers.AddRange(modifiers);
         }
