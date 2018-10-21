@@ -77,6 +77,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder CombineWith(IStatBuilder other) =>
             WithUntyped(new CompositeCoreStatBuilder(new StatBuilderAdapter(this), new StatBuilderAdapter(other)));
 
+        public IStatBuilder Concat(IStatBuilder other) =>
+            WithUntyped(new ConcatCompositeCoreStatBuilder(new StatBuilderAdapter(this), new StatBuilderAdapter(other)));
+
         public virtual IEnumerable<StatBuilderResult> Build(BuildParameters parameters) =>
             CoreStatBuilder.Build(parameters);
     }

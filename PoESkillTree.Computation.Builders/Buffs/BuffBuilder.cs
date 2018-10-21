@@ -34,7 +34,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
         public IStatBuilder EffectOn(IEntityBuilder target)
         {
-            return new StatBuilder(StatFactory, FromStatFactory((ps, s, i) => BuildStats(ps, s, i)));
+            return new StatBuilder(StatFactory, FromStatFactory(BuildStats));
 
             IEnumerable<IStat> BuildStats(BuildParameters parameters, Entity source, string identity)
                 => target.Build(parameters.ModifierSourceEntity)
@@ -47,7 +47,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
         public override IStatBuilder On(IEntityBuilder target) =>
             base.On(target)
                 .CombineWith(new StatBuilder(StatFactory, FromStatFactory(BuildBuffActiveStat)))
-                .CombineWith(new StatBuilder(StatFactory, FromStatFactory((ps, t, i) => BuildBuffSourceStat(ps, t, i))))
+                .CombineWith(new StatBuilder(StatFactory, FromStatFactory(BuildBuffSourceStat)))
                 .For(target);
 
         private IStat BuildBuffSourceStat(BuildParameters parameters, Entity target, string identity) =>
@@ -58,7 +58,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
         private IConditionBuilder IsFromSource(IEntityBuilder source, IEntityBuilder target)
         {
-            var core = FromStatFactory((ps, t, i) => BuildStats(ps, t, i));
+            var core = FromStatFactory(BuildStats);
             return new StatBuilder(StatFactory, core).For(target).IsSet;
 
             IEnumerable<IStat> BuildStats(BuildParameters parameters, Entity t, string identity)
@@ -97,8 +97,8 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
                 // If multiple entities apply the same (de-)buff, it depends on the buff which one would actually apply.
                 // Because that shouldn't happen in these calculations, simply the first one is taken.
-                var sourcEntity = possibleSources.First(e => buffSourceValues[e].Calculate(context).IsTrue());
-                return buffEffectValues[sourcEntity].Calculate(context);
+                var sourceEntity = possibleSources.First(e => buffSourceValues[e].Calculate(context).IsTrue());
+                return buffEffectValues[sourceEntity].Calculate(context);
             }
         }
 

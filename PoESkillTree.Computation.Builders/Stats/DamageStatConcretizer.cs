@@ -81,7 +81,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public DamageStatConcretizer WithSkills() =>
             WithCanApply(_specificationBuilder.WithSkills(), applyToAilmentDamage: true);
 
-        public DamageStatConcretizer With(AttackDamageHand hand) => WithCanApply(_specificationBuilder.With(hand));
+        public DamageStatConcretizer With(AttackDamageHand hand) => With(_specificationBuilder.With(hand));
 
         public DamageStatConcretizer NotDamageRelated() => With(_specificationBuilder);
 

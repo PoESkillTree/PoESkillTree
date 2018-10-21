@@ -84,7 +84,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
         {
             var expected = Mock.Of<IStatBuilder>();
             var stats = Helper.MockMany<IStatBuilder>();
-            Mock.Get(stats[1]).Setup(s => s.CombineWith(stats[2])).Returns(expected);
+            Mock.Get(stats[1]).Setup(s => s.Concat(stats[2])).Returns(expected);
             var converters = new (StatConverter, IValue)[]
             {
                 (s => s == stats[0] ? stats[1] : null, new Constant(1)),

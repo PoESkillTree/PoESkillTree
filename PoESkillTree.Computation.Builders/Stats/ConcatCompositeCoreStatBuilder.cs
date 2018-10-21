@@ -12,7 +12,7 @@ namespace PoESkillTree.Computation.Builders.Stats
     {
         private readonly IReadOnlyList<ICoreStatBuilder> _items;
 
-        public ConcatCompositeCoreStatBuilder(IReadOnlyList<ICoreStatBuilder> items) =>
+        public ConcatCompositeCoreStatBuilder(params ICoreStatBuilder[] items) =>
             _items = items;
 
         private ConcatCompositeCoreStatBuilder Select(Func<ICoreStatBuilder, ICoreStatBuilder> selector) =>

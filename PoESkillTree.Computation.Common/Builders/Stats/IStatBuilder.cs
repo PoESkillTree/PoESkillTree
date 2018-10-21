@@ -75,9 +75,17 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         /// <summary>
         /// Returns a stat that combines this and the given stat. Modifiers to the returned stat will apply to both,
-        /// but only once (no multiple application if one of the stats is converted to another).
+        /// but only once (no multiple application if one of the stats is converted to another). If this and the
+        /// given stat both build to multiple results, an exception is thrown.
         /// </summary>
         IStatBuilder CombineWith(IStatBuilder other);
+
+        /// <summary>
+        /// Returns a stat that concatenates this and the given stat. Modifiers to the returned stat will apply to both,
+        /// but the results of this and the given stat are concatenated when <see cref="Build"/> is called
+        /// (as opposed to being merged, which is done in <see cref="CombineWith"/>).
+        /// </summary>
+        IStatBuilder Concat(IStatBuilder other);
 
         /// <summary>
         /// Builds this instance into a list of <see cref="StatBuilderResult"/>s.

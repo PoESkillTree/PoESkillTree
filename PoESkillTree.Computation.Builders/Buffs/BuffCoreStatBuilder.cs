@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
                 return Enumerable.Empty<StatBuilderResult>();
             return selectedBuffs
                 .Select(b => _statFactory(b.Buff))
-                .Aggregate((l, r) => l.CombineWith(r))
+                .Aggregate((l, r) => l.Concat(r))
                 .Build(parameters);
         }
     }

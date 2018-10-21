@@ -6,6 +6,7 @@ using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -34,14 +35,24 @@ namespace PoESkillTree.Computation.Builders.Stats
             };
             return _items.Aggregate(seed, Aggregate);
 
-            IEnumerable<StatBuilderResult> Aggregate(IEnumerable<StatBuilderResult> previous, ICoreStatBuilder item) =>
-                from p in previous
-                let ps = parameters.With(p.ModifierSource)
-                from c in item.Build(ps).ToList()
-                let stats = p.Stats.Concat(c.Stats).ToList()
-                let source = c.ModifierSource
-                let valueConverter = p.ValueConverter.AndThen(c.ValueConverter)
-                select new StatBuilderResult(stats, source, valueConverter);
+            IEnumerable<StatBuilderResult> Aggregate(IEnumerable<StatBuilderResult> previous, ICoreStatBuilder item)
+            {
+                var previousResults = previous.ToList();
+                foreach (var previousResult in previousResults)
+                {
+                    var currentParameters = parameters.With(previousResult.ModifierSource);
+                    var currentResults = item.Build(currentParameters).ToList();
+                    if (previousResults.Count > 1 && currentResults.Count > 1)
+                        throw new ParseException("At most one composite item may build to multiple StatBuilderResults");
+                    foreach (var currentResult in currentResults)
+                    {
+                        yield return new StatBuilderResult(
+                            previousResult.Stats.Concat(currentResult.Stats).ToList(),
+                            currentResult.ModifierSource,
+                            previousResult.ValueConverter.AndThen(currentResult.ValueConverter));
+                    }
+                }
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
@@ -29,5 +30,9 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         public static StatBuilderResult BuildToSingleResult(this IStatBuilder @this,
             ModifierSource modifierSource = null, Entity entity = default) =>
             @this.Build(new BuildParameters(modifierSource, entity, default)).Single();
+
+        public static IReadOnlyList<IStat> BuildToStats(this IStatBuilder @this,
+            ModifierSource modifierSource = null, Entity entity = default) =>
+            @this.Build(new BuildParameters(modifierSource, entity, default)).SelectMany(r => r.Stats).ToList();
     }
 }

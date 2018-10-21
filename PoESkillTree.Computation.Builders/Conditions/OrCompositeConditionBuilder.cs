@@ -51,7 +51,7 @@ namespace PoESkillTree.Computation.Builders.Conditions
                     .Select(c => c(stat))
                     .Where(s => s != stat)
                     .DefaultIfEmpty(stat)
-                    .Aggregate((s1, s2) => s1.CombineWith(s2));
+                    .Aggregate((s1, s2) => s1.Concat(s2));
 
             bool Calculate(IValueCalculationContext context) =>
                 values.Any(v => v.Calculate(context).IsTrue());

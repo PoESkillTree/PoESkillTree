@@ -95,13 +95,9 @@ namespace PoESkillTree.Computation.Builders.Buffs
                 .For(_target);
 
         public IStatBuilder ApplyToEntity(IEntityBuilder target)
-        {
-            var coreStats = _buffs
+            => _buffs
                 .Select(b => ApplyToEntity(b.Buff, target))
-                .Select(b => new StatBuilderAdapter(b))
-                .ToList();
-            return new StatBuilder(_statFactory, new ConcatCompositeCoreStatBuilder(coreStats));
-        }
+                .Aggregate((l, r) => l.Concat(r));
 
         private IStatBuilder ApplyToEntity(IBuffBuilder buff, IEntityBuilder target) =>
             buff.On(target).WithCondition(buff.IsOn(_source, _target));

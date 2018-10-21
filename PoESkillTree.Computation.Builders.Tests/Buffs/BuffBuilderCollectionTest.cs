@@ -23,7 +23,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         {
             var sut = CreateSut(3);
 
-            var stats = sut.Effect.BuildToSingleResult().Stats;
+            var stats = sut.Effect.BuildToStats();
 
             Assert.That(stats, Has.Exactly(3).Items);
             Assert.AreEqual($"b0.EffectOn({default(Entity)})", stats[0].Identity);
@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var addedStat = StatBuilderUtils.FromIdentity(StatFactory, "s", null);
             var sut = CreateSut(3);
 
-            var stats = sut.AddStat(addedStat).BuildToSingleResult().Stats;
+            var stats = sut.AddStat(addedStat).BuildToStats();
 
             Assert.That(stats, Has.Exactly(3).Items);
             Assert.AreEqual("s", stats[0].Identity);
@@ -62,7 +62,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var keyword = KeywordBuilder(1);
             var sut = CreateSut(3);
 
-            var stats = sut.With(keyword).Effect.BuildToSingleResult().Stats;
+            var stats = sut.With(keyword).Effect.BuildToStats();
 
             Assert.That(stats, Has.Exactly(2).Items);
             Assert.AreEqual($"b0.EffectOn({default(Entity)})", stats[0].Identity);
@@ -100,7 +100,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var sut = CreateSut(3);
 
             var resolved = (IBuffBuilderCollection) sut.With(unresolved).Resolve(null);
-            var stats = resolved.Effect.BuildToSingleResult().Stats;
+            var stats = resolved.Effect.BuildToStats();
 
             Assert.That(stats, Has.Exactly(2).Items);
         }
@@ -126,7 +126,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var sut = CreateSut(3);
 
             var resolved = sut.With(unresolved).Effect.Resolve(null);
-            var stats = resolved.BuildToSingleResult().Stats;
+            var stats = resolved.BuildToStats();
 
             Assert.That(stats, Has.Exactly(2).Items);
         }
