@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
@@ -15,20 +14,22 @@ using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Console;
 using PoESkillTree.Computation.Data.GivenStats;
 using PoESkillTree.Computation.Parsing;
-using PoESkillTree.Utils;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {
     [TestFixture]
-    public class ParsingTest
+    public class ParsingTest : CompositionRootTestBase
     {
         private static ICoreParser _parser;
+        private static IBuilderFactories _f;
 
         [OneTimeSetUp]
-        public static async Task ClassInit()
+        public static void ClassInit()
         {
             Program.SetupLogger();
-            _parser = await new AsyncCompositionRoot().CoreParser.ConfigureAwait(false);
+            _parser = CompositionRoot.CoreParser;
+            _f = CompositionRoot.BuilderFactories;
         }
 
         [Test, TestCaseSource(nameof(ReadParsableStatLines))]
@@ -87,95 +88,128 @@ namespace PoESkillTree.Computation.IntegrationTests
                 .Distinct();
         }
 
-        [Test, TestCaseSource(nameof(ParsingReturnsCorrectModifiers_TestCases))]
-        public IEnumerable<Modifier> ParsingReturnsCorrectModifiers(string statLine)
+        [Test]
+        public void Dexterity()
         {
-            return _parser.Parse(statLine).Modifiers;
+            var expected = CreateModifier(
+                _f.StatBuilders.Attribute.Dexterity,
+                _f.FormBuilders.BaseAdd,
+                _f.ValueBuilders.Create(10));
+            var actual = _parser.Parse("+10 to Dexterity").Modifiers;
+
+            Assert.AreEqual(expected, actual);
         }
 
-        private static IEnumerable<TestCaseData> ParsingReturnsCorrectModifiers_TestCases()
+        [Test]
+        public void ManaPerGrandSpectrum()
         {
-            var f = new AsyncCompositionRoot().BuilderFactories.Result;
-            var life = f.StatBuilders.Pool.From(Pool.Life);
-            var energyShield = f.StatBuilders.Pool.From(Pool.EnergyShield);
-
-            yield return new TestCaseData("+10 to Dexterity").Returns(
-                CreateModifier(
-                    f.StatBuilders.Attribute.Dexterity,
-                    f.FormBuilders.BaseAdd,
-                    f.ValueBuilders.Create(10)).ToArray());
-
-            yield return new TestCaseData("Gain 30 Mana per Grand Spectrum").Returns(new[]
+            var expected = new[]
             {
                 CreateModifier(
-                    f.StatBuilders.GrandSpectrumJewelsSocketed,
-                    f.FormBuilders.BaseAdd,
-                    f.ValueBuilders.Create(1)),
+                    _f.StatBuilders.GrandSpectrumJewelsSocketed,
+                    _f.FormBuilders.BaseAdd,
+                    _f.ValueBuilders.Create(1)),
                 CreateModifier(
-                    f.StatBuilders.Pool.From(Pool.Mana),
-                    f.FormBuilders.BaseAdd,
-                    f.ValueBuilders.Create(30).Multiply(f.StatBuilders.GrandSpectrumJewelsSocketed.Value)),
-            }.SelectMany(Funcs.Identity).ToArray());
+                    _f.StatBuilders.Pool.From(Pool.Mana),
+                    _f.FormBuilders.BaseAdd,
+                    _f.ValueBuilders.Create(30).Multiply(_f.StatBuilders.GrandSpectrumJewelsSocketed.Value)),
+            }.Flatten();
+            var actual = _parser.Parse("Gain 30 Mana per Grand Spectrum").Modifiers;
 
-            yield return new TestCaseData(
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void CorruptedEnergy()
+        {
+            var expected = new[]
+            {
+                CreateModifier(
+                    _f.DamageTypeBuilders.Chaos.DamageTakenFrom(_f.StatBuilders.Pool.From(Pool.EnergyShield))
+                        .Before(_f.StatBuilders.Pool.From(Pool.Life)),
+                    _f.FormBuilders.BaseAdd,
+                    _f.ValueBuilders.Create(50),
+                    _f.EquipmentBuilders.Equipment.Count(e => e.IsCorrupted) >= 5),
+                CreateModifier(
+                    _f.DamageTypeBuilders.Physical.DamageTakenFrom(_f.StatBuilders.Pool.From(Pool.EnergyShield))
+                        .Before(_f.StatBuilders.Pool.From(Pool.Life)),
+                    _f.FormBuilders.BaseSubtract,
+                    _f.ValueBuilders.Create(50),
+                    _f.EquipmentBuilders.Equipment.Count(e => e.IsCorrupted) >= 5)
+            }.Flatten();
+            var actual = _parser.Parse(
                     "With 5 Corrupted Items Equipped: 50% of Chaos Damage does not bypass Energy Shield, and 50% of Physical Damage bypasses Energy Shield")
-                .Returns(new[]
-                {
-                    CreateModifier(
-                        f.DamageTypeBuilders.Chaos.DamageTakenFrom(energyShield).Before(life),
-                        f.FormBuilders.BaseAdd,
-                        f.ValueBuilders.Create(50),
-                        f.EquipmentBuilders.Equipment.Count(e => e.IsCorrupted) >= 5),
-                    CreateModifier(
-                        f.DamageTypeBuilders.Physical.DamageTakenFrom(energyShield).Before(life),
-                        f.FormBuilders.BaseSubtract,
-                        f.ValueBuilders.Create(50),
-                        f.EquipmentBuilders.Equipment.Count(e => e.IsCorrupted) >= 5)
-                }.SelectMany(Funcs.Identity).ToArray());
+                .Modifiers;
 
-            yield return new TestCaseData(
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void VaalPact()
+        {
+            var life = _f.StatBuilders.Pool.From(Pool.Life);
+            var expected = new[]
+            {
+                CreateModifier(
+                    life.Leech.Rate,
+                    _f.FormBuilders.PercentMore,
+                    _f.ValueBuilders.Create(100)),
+                CreateModifier(
+                    life.Leech.RateLimit,
+                    _f.FormBuilders.PercentMore,
+                    _f.ValueBuilders.Create(100)),
+                CreateModifier(
+                    life.Regen,
+                    _f.FormBuilders.PercentLess,
+                    _f.ValueBuilders.Create(100))
+            }.Flatten();
+            var actual = _parser.Parse(
                     "Life Leeched per Second is doubled.\nMaximum Life Leech Rate is doubled.\nLife Regeneration has no effect.")
-                .Returns(new[]
-                {
-                    CreateModifier(
-                        life.Leech.Rate,
-                        f.FormBuilders.PercentMore,
-                        f.ValueBuilders.Create(100)),
-                    CreateModifier(
-                        life.Leech.RateLimit,
-                        f.FormBuilders.PercentMore,
-                        f.ValueBuilders.Create(100)),
-                    CreateModifier(
-                        life.Regen,
-                        f.FormBuilders.PercentLess,
-                        f.ValueBuilders.Create(100))
-                }.SelectMany(Funcs.Identity).ToArray());
+                .Modifiers;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ParagonOfCalamity()
+        {
+            var expected = new[]
+            {
+                ParagonOfCalamityFor(_f.DamageTypeBuilders.Fire),
+                ParagonOfCalamityFor(_f.DamageTypeBuilders.Lightning),
+                ParagonOfCalamityFor(_f.DamageTypeBuilders.Cold),
+            }.Flatten();
+            var actual = _parser.Parse(
+                    "For each Element you've been hit by Damage of Recently, 8% reduced Damage taken of that Element")
+                .Modifiers;
+
+            Assert.AreEqual(expected, actual);
 
             IEnumerable<Modifier> ParagonOfCalamityFor(IDamageTypeBuilder damageType) =>
                 CreateModifier(
                     damageType.Damage.Taken,
-                    f.FormBuilders.PercentReduce,
-                    f.ValueBuilders.Create(8),
-                    f.ActionBuilders.HitWith(damageType).By(f.EntityBuilders.Enemy).Recently);
+                    _f.FormBuilders.PercentReduce,
+                    _f.ValueBuilders.Create(8),
+                    _f.ActionBuilders.HitWith(damageType).By(_f.EntityBuilders.Enemy).Recently);
+        }
 
-            yield return new TestCaseData(
-                    "For each Element you've been hit by Damage of Recently, 8% reduced Damage taken of that Element")
-                .Returns(new[]
-                {
-                    ParagonOfCalamityFor(f.DamageTypeBuilders.Fire),
-                    ParagonOfCalamityFor(f.DamageTypeBuilders.Lightning),
-                    ParagonOfCalamityFor(f.DamageTypeBuilders.Cold),
-                }.SelectMany(Funcs.Identity).ToArray());
-
-            yield return new TestCaseData(
+        [Test]
+        public void AurasGrantCastRate()
+        {
+            var expected = new[]
+            {
+                CreateModifier(
+                    _f.BuffBuilders.Buffs(_f.EntityBuilders.Self, _f.EntityBuilders.Self, _f.EntityBuilders.Ally)
+                        .With(_f.KeywordBuilders.Aura).Without(_f.KeywordBuilders.Curse)
+                        .AddStat(_f.StatBuilders.CastRate),
+                    _f.FormBuilders.PercentIncrease,
+                    _f.ValueBuilders.Create(3))
+            }.Flatten();
+            var actual = _parser.Parse(
                     "Auras from your Skills grant 3% increased Attack and Cast Speed to you and Allies")
-                .Returns(CreateModifier(
-                        f.BuffBuilders.Buffs(f.EntityBuilders.Self, f.EntityBuilders.Self, f.EntityBuilders.Ally)
-                            .With(f.KeywordBuilders.Aura).Without(f.KeywordBuilders.Curse)
-                            .AddStat(f.StatBuilders.CastRate),
-                        f.FormBuilders.PercentIncrease,
-                        f.ValueBuilders.Create(3))
-                    .ToArray());
+                .Modifiers;
+
+            Assert.AreEqual(expected, actual);
         }
 
         private static IEnumerable<Modifier> CreateModifier(

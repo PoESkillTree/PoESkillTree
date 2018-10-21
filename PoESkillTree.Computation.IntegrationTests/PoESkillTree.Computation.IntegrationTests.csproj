@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompositionRootTestBase.cs" />
     <Compile Include="Core\BatchUpdateExtensions.cs" />
     <Compile Include="Core\BasicCalculatorTest.cs" />
     <Compile Include="Core\ConversionTest.cs" />

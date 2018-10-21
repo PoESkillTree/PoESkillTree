@@ -7,7 +7,6 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Console;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel.Items;
@@ -18,7 +17,7 @@ using PoESkillTree.Utils.Extensions;
 namespace PoESkillTree.Computation.IntegrationTests.Parsing
 {
     [TestFixture]
-    public class SkillParserTest
+    public class SkillParserTest : CompositionRootTestBase
     {
         private static SkillDefinitions _skillDefinitions;
         private static IBuilderFactories _builderFactories;
@@ -29,11 +28,10 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
         [OneTimeSetUp]
         public static async Task OneTimeSetUpAsync()
         {
-            var compositionRoot = new AsyncCompositionRoot();
-            _skillDefinitions = await compositionRoot.SkillDefinitions.ConfigureAwait(false);
-            _builderFactories = await compositionRoot.BuilderFactories.ConfigureAwait(false);
-            _coreParser = await compositionRoot.CoreParser.ConfigureAwait(false);
-            _metaStats = compositionRoot.MetaStats;
+            _skillDefinitions = CompositionRoot.SkillDefinitions;
+            _builderFactories = CompositionRoot.BuilderFactories;
+            _coreParser = CompositionRoot.CoreParser;
+            _metaStats = CompositionRoot.MetaStats;
             _statTranslationLoader = new StatTranslationLoader();
             await _statTranslationLoader.LoadAsync("stat_translations/skill").ConfigureAwait(false);
             await _statTranslationLoader.LoadAsync("stat_translations/support_gem").ConfigureAwait(false);

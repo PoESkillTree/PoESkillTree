@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Console;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.IntegrationTests.Core;
 using PoESkillTree.Computation.Parsing;
@@ -18,7 +16,7 @@ using PoESkillTree.Utils.Extensions;
 namespace PoESkillTree.Computation.IntegrationTests
 {
     [TestFixture]
-    public class MechanicsTest
+    public class MechanicsTest : CompositionRootTestBase
     {
         private static IReadOnlyList<Modifier> _givenMods;
         private static IBuilderFactories _builderFactories;
@@ -35,13 +33,12 @@ namespace PoESkillTree.Computation.IntegrationTests
         }
 
         [OneTimeSetUp]
-        public static async Task ClassInit()
+        public static void ClassInit()
         {
-            var compRoot = await CompositionRoot.CreateAsync().ConfigureAwait(false);
-            _builderFactories = compRoot.BuilderFactories;
-            _metaStats = compRoot.MetaStats;
+            _builderFactories = CompositionRoot.BuilderFactories;
+            _metaStats = CompositionRoot.MetaStats;
             var modSource = new ModifierSource.Global();
-            _givenMods = GivenStatsParser.Parse(compRoot.CoreParser, compRoot.GivenStats)
+            _givenMods = GivenStatsParser.Parse(CompositionRoot.CoreParser, CompositionRoot.GivenStats)
                 .Append(
                     new Modifier(
                         Build(_builderFactories.StatBuilders.Level.For(_builderFactories.EntityBuilders.Enemy)),
