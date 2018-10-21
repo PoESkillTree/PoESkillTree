@@ -17,6 +17,8 @@
         public const string AreaOfEffect = "aoe";
         public const string RequiresShield = "shield_only";
         public const string ExplicitProjectileDamage = "explicit_deals_projectile_damage";
+        public const string ManaCostIsReservation = "mana_cost_is_reservation";
+        public const string ManaCostIsPercentage = "mana_cost_is_percentage";
         public const string Melee = "melee";
         public const string Totem = "totem";
         public const string ExplicitProvidesBuff = "unknown_30";

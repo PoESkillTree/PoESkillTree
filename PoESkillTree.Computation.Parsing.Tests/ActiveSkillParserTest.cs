@@ -6,6 +6,7 @@ using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
@@ -565,12 +566,84 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Skill("Cleave", 1, 0, ItemSlot.Belt, 0, null));
         }
 
+        [Test]
+        public void ClaritySetsSkillReservation()
+        {
+            var (definition, skill) = CreateClarityDefinition();
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var modifier = GetFirstModifierWithIdentity(result.Modifiers, "Clarity.Reservation");
+            var actualValue = modifier.Value.Calculate(null);
+            Assert.AreEqual(new NodeValue(10), actualValue);
+        }
+
+        [TestCase(Pool.Mana)]
+        [TestCase(Pool.Life)]
+        public void ClaritySetsPoolReservation(Pool pool)
+        {
+            var otherPool = pool == Pool.Life ? Pool.Mana : Pool.Life;
+            var (definition, skill) = CreateClarityDefinition();
+            var sut = CreateSut(definition);
+            var context = MockValueCalculationContext(skill, false,
+                ("Clarity.Reservation", 20),
+                ("Clarity.ReservationPool", (double) pool));
+
+            var result = sut.Parse(skill);
+
+            var modifier = GetFirstModifierWithIdentity(result.Modifiers, pool + ".Reservation");
+            Assert.AreEqual(new NodeValue(20), modifier.Value.Calculate(context));
+            modifier = GetFirstModifierWithIdentity(result.Modifiers, otherPool + ".Reservation");
+            Assert.IsNull(modifier.Value.Calculate(context));
+        }
+
+        private static (SkillDefinition, Skill) CreateClarityDefinition()
+        {
+            var activeSkill = new ActiveSkillDefinition("Clarity", 0,
+                new[] { "aura", "mana_cost_is_reservation" }, new string[0],
+                new[] { Keyword.Aura }, true, null, new ItemClass[0]);
+            var level = new SkillLevelDefinition(null, null, null, 10, null, null, 4000, 0, 0, 0, 0,
+                new UntranslatedStat[0], new UntranslatedStat[0], null);
+            var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
+            return (SkillDefinition.CreateActive("Clarity", 0, "", null, activeSkill, levels),
+                new Skill("Clarity", 1, 0, ItemSlot.Belt, 0, null));
+        }
+        
+        [Test]
+        public void HatredSetsPoolReservation()
+        {
+            var (definition, skill) = CreateHatredDefinition();
+            var sut = CreateSut(definition);
+            var context = MockValueCalculationContext(skill, false,
+                ("Hatred.Reservation", 60),
+                ("Hatred.ReservationPool", (double) Pool.Mana),
+                ("Mana", 200));
+
+            var result = sut.Parse(skill);
+
+            var modifier = GetFirstModifierWithIdentity(result.Modifiers, "Mana.Reservation");
+            Assert.AreEqual(new NodeValue(120), modifier.Value.Calculate(context));
+        }
+
+        private static (SkillDefinition, Skill) CreateHatredDefinition()
+        {
+            var activeSkill = new ActiveSkillDefinition("Hatred", 0,
+                new[] { "aura", "mana_cost_is_reservation", "mana_cost_is_percentage" }, new string[0],
+                new[] { Keyword.Aura }, true, null, new ItemClass[0]);
+            var level = new SkillLevelDefinition(null, null, null, 50, null, null, 4000, 0, 0, 0, 0,
+                new UntranslatedStat[0], new UntranslatedStat[0], null);
+            var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
+            return (SkillDefinition.CreateActive("Hatred", 0, "", null, activeSkill, levels),
+                new Skill("Hatred", 1, 0, ItemSlot.Belt, 0, null));
+        }
+
         private static ActiveSkillParser CreateSut(
             SkillDefinition skillDefinition, IParser<UntranslatedStatParserParameter> statParser = null)
         {
             var skillDefinitions = new SkillDefinitions(new[] { skillDefinition });
             var statFactory = new StatFactory();
-            var builderFactories = new BuilderFactories(statFactory, new SkillDefinitions(new SkillDefinition[0]));
+            var builderFactories = new BuilderFactories(statFactory, skillDefinitions);
             var metaStatBuilders = new MetaStatBuilders(statFactory);
             if (statParser is null)
             {

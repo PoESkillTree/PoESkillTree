@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         IStatBuilder Instances { get; }
 
         /// <summary>
-        /// The percentage of a pool this skill reserves.
+        /// The amount or percentage of a pool this skill reserves.
         /// </summary>
         IStatBuilder Reservation { get; }
 

@@ -49,7 +49,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             (Reservation.Value <= 0).And(FromIdentity(typeof(bool), UserSpecifiedValue()).IsSet);
 
         public IConditionBuilder IsLow =>
-            (Reservation.Value >= 65).Or(FromIdentity(typeof(bool), UserSpecifiedValue()).IsSet);
+            (Reservation.Value >= 0.65 * Value).Or(FromIdentity(typeof(bool), UserSpecifiedValue()).IsSet);
 
         public Pool BuildPool() => Pool.Build();
     }

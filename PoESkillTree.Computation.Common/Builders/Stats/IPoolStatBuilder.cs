@@ -41,7 +41,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder Cost { get; }
 
         /// <summary>
-        /// Gets a stat representing the percentage of this pool that is reserved.
+        /// Gets a stat representing the amount of this pool that is reserved.
         /// </summary>
         IStatBuilder Reservation { get; }
 
