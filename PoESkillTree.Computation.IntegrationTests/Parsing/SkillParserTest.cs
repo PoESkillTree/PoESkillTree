@@ -4,7 +4,10 @@ using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Console;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel.Items;
@@ -18,21 +21,26 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
     public class SkillParserTest
     {
         private static SkillDefinitions _skillDefinitions;
-        private static Console.CompositionRoot _compositionRoot;
+        private static IBuilderFactories _builderFactories;
+        private static ICoreParser _coreParser;
+        private static IMetaStatBuilders _metaStats;
         private static StatTranslationLoader _statTranslationLoader;
 
         [OneTimeSetUp]
         public static async Task OneTimeSetUpAsync()
         {
-            _skillDefinitions = await SkillJsonDeserializer.DeserializeAsync().ConfigureAwait(false);
-            _compositionRoot = new Console.CompositionRoot();
+            var compositionRoot = new AsyncCompositionRoot();
+            _skillDefinitions = await compositionRoot.SkillDefinitions.ConfigureAwait(false);
+            _builderFactories = await compositionRoot.BuilderFactories.ConfigureAwait(false);
+            _coreParser = await compositionRoot.CoreParser.ConfigureAwait(false);
+            _metaStats = compositionRoot.MetaStats;
             _statTranslationLoader = new StatTranslationLoader();
             await _statTranslationLoader.LoadAsync("stat_translations/skill").ConfigureAwait(false);
             await _statTranslationLoader.LoadAsync("stat_translations/support_gem").ConfigureAwait(false);
         }
 
         private static IParser<UntranslatedStatParserParameter> CreateStatParser(string translationFileName)
-            => new UntranslatedStatParser(_statTranslationLoader[translationFileName], _compositionRoot.CoreParser);
+            => new UntranslatedStatParser(_statTranslationLoader[translationFileName], _coreParser);
 
         [Test]
         public void ParseFrenzyReturnsCorrectResult()
@@ -129,8 +137,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                     ("Range.Attack.MainHand.Skill", Form.BaseAdd, null, global, true),
                     ("Range.Attack.OffHand.Skill", Form.BaseAdd, null, global, true),
                 }.Select(t => (t.stat, t.form, (NodeValue?) t.value, t.source, t.mainSkillOnly)).ToArray();
-            var parser = new ActiveSkillParser(_skillDefinitions, _compositionRoot.BuilderFactories,
-                _compositionRoot.MetaStats, CreateStatParser);
+            var parser = new ActiveSkillParser(_skillDefinitions, _builderFactories, _metaStats, CreateStatParser);
 
             var actual = parser.Parse(frenzy);
             AssertCorrectModifiers(valueCalculationContextMock, isMainSkillStat, expectedModifiers, actual);
@@ -197,8 +204,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                     ("Cold.Damage.Spell.Skill", Form.BaseAdd, addedDamageValue, global, true),
                     ("Cold.Damage.Secondary.Skill", Form.BaseAdd, addedDamageValue, global, true))
                 .ToArray();
-            var parser = new SupportSkillParser(_skillDefinitions, _compositionRoot.BuilderFactories,
-                _compositionRoot.MetaStats, CreateStatParser);
+            var parser = new SupportSkillParser(_skillDefinitions, _builderFactories, _metaStats, CreateStatParser);
 
             var actual = parser.Parse(frenzy, support);
             AssertCorrectModifiers(valueCalculationContextMock, isMainSkillStat, expectedModifiers, actual);

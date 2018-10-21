@@ -34,7 +34,7 @@ namespace PoESkillTree.Computation.Data
         protected override IEnumerable<ReferencedMatcherData> CreateCollection()
         {
             var coll = new ReferencedMatcherCollection<ISkillBuilder>();
-            foreach (var skill in _skills.Where(d => !d.IsSupport))
+            foreach (var skill in _skills.Where(d => !d.IsSupport && d.BaseItem != null))
             {
                 var regex = skill.ActiveSkill.DisplayName.ToLowerInvariant();
                 coll.Add(regex, _builderFactory(skill.Id));

@@ -150,8 +150,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
                 ("wrath", new[] { Keyword.Aura, Keyword.AreaOfEffect, Keyword.Lightning }),
                 ("herald", new[] { Keyword.Spell }),
                 ("frostbite", new[] { Keyword.Curse })
-            }.Select(t => CreateSkill(t.id, t.keywords));
-            return new BuffBuilders(StatFactory, buffSkills);
+            }.Select(t => CreateSkill(t.id, t.keywords)).ToList();
+            return new BuffBuilders(StatFactory, new SkillDefinitions(buffSkills));
         }
 
         private static SkillDefinition CreateSkill(string id, IReadOnlyList<Keyword> keywords)

@@ -570,7 +570,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var skillDefinitions = new SkillDefinitions(new[] { skillDefinition });
             var statFactory = new StatFactory();
-            var builderFactories = new BuilderFactories(statFactory, new SkillDefinition[0]);
+            var builderFactories = new BuilderFactories(statFactory, new SkillDefinitions(new SkillDefinition[0]));
             var metaStatBuilders = new MetaStatBuilders(statFactory);
             if (statParser is null)
             {

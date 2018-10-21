@@ -64,7 +64,7 @@ namespace PoESkillTree.Computation.Builders.Skills
         {
             var keywordList = keywords.ToList();
             return from skill in _skills
-                   where skill.ActiveSkill.Keywords.ContainsAll(keywordList)
+                   where !skill.IsSupport && skill.ActiveSkill.Keywords.ContainsAll(keywordList)
                    let identity = $"{skill.Id}.{identitySuffix}"
                    select _statFactory.FromIdentity(identity, entity, dataType);
         }

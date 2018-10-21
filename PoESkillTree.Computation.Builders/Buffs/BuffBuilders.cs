@@ -19,7 +19,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
         private readonly IStatFactory _statFactory;
         private readonly IReadOnlyList<BuffBuilderWithKeywords> _allBuffs;
 
-        public BuffBuilders(IStatFactory statFactory, IEnumerable<SkillDefinition> skillBuffs)
+        public BuffBuilders(IStatFactory statFactory, SkillDefinitions skills)
         {
             _statFactory = statFactory;
             Fortify = Create("Fortify");
@@ -58,7 +58,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
                 // Aura effect increase (used for Aura())
                 new BuffBuilderWithKeywords(Create("Aura"), Keyword.Aura),
             };
-            var skillBuffBuilders = skillBuffs
+            var skillBuffBuilders = skills.Skills
                 .Where(s => !s.IsSupport && s.ActiveSkill.ProvidesBuff)
                 .Select(s => new BuffBuilderWithKeywords(Create(s.Id), s.ActiveSkill.Keywords));
             allBuffs.AddRange(skillBuffBuilders);

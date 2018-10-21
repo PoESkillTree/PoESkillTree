@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Builders
 {
     public class BuilderFactories : IBuilderFactories
     {
-        public BuilderFactories(IStatFactory statFactory, IReadOnlyList<SkillDefinition> skills)
+        public BuilderFactories(IStatFactory statFactory, SkillDefinitions skills)
         {
             ActionBuilders = new ActionBuilders(statFactory);
             BuffBuilders = new BuffBuilders(statFactory, skills);

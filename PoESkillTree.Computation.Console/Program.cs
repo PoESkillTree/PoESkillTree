@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using EnumsNET;
 using log4net;
 using log4net.Appender;
@@ -22,10 +23,11 @@ namespace PoESkillTree.Computation.Console
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             SetupLogger();
-            var program = new Program();
+            var compositionRoot = await CompositionRoot.CreateAsync();
+            var program = new Program(compositionRoot);
             program.Loop();
         }
 
@@ -33,9 +35,9 @@ namespace PoESkillTree.Computation.Console
         private readonly ICoreParser _parser;
         private readonly ICalculator _calculator;
 
-        private Program()
+        private Program(CompositionRoot compositionRoot)
         {
-            _compositionRoot = new CompositionRoot();
+            _compositionRoot = compositionRoot;
             _parser = _compositionRoot.CoreParser;
             _calculator = Calculator.CreateCalculator();
             _calculator.ExplicitlyRegisteredStats.CollectionChanged += ExplicitlyRegisteredStatsOnCollectionChanged;
@@ -251,7 +253,7 @@ namespace PoESkillTree.Computation.Console
 
         private void AddGivenStats()
         {
-            var mods = GivenStatsParser.Parse(_parser, _compositionRoot.GivenStats.Result);
+            var mods = GivenStatsParser.Parse(_parser, _compositionRoot.GivenStats);
             AddMods(mods);
         }
 

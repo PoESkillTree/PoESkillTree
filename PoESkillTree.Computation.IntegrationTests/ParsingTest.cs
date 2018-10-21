@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using MoreLinq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders;
-using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
@@ -26,10 +25,10 @@ namespace PoESkillTree.Computation.IntegrationTests
         private static ICoreParser _parser;
 
         [OneTimeSetUp]
-        public static void ClassInit()
+        public static async Task ClassInit()
         {
             Program.SetupLogger();
-            _parser = new CompositionRoot().CoreParser;
+            _parser = await new AsyncCompositionRoot().CoreParser.ConfigureAwait(false);
         }
 
         [Test, TestCaseSource(nameof(ReadParsableStatLines))]
@@ -96,7 +95,7 @@ namespace PoESkillTree.Computation.IntegrationTests
 
         private static IEnumerable<TestCaseData> ParsingReturnsCorrectModifiers_TestCases()
         {
-            var f = new BuilderFactories(new StatFactory(), SkillDefinitions.Skills);
+            var f = new AsyncCompositionRoot().BuilderFactories.Result;
             var life = f.StatBuilders.Pool.From(Pool.Life);
             var energyShield = f.StatBuilders.Pool.From(Pool.EnergyShield);
 

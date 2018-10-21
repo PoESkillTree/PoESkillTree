@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -34,13 +35,13 @@ namespace PoESkillTree.Computation.IntegrationTests
         }
 
         [OneTimeSetUp]
-        public static void ClassInit()
+        public static async Task ClassInit()
         {
-            var compRoot = new CompositionRoot();
+            var compRoot = await CompositionRoot.CreateAsync().ConfigureAwait(false);
             _builderFactories = compRoot.BuilderFactories;
             _metaStats = compRoot.MetaStats;
             var modSource = new ModifierSource.Global();
-            _givenMods = GivenStatsParser.Parse(compRoot.CoreParser, compRoot.GivenStats.Result)
+            _givenMods = GivenStatsParser.Parse(compRoot.CoreParser, compRoot.GivenStats)
                 .Append(
                     new Modifier(
                         Build(_builderFactories.StatBuilders.Level.For(_builderFactories.EntityBuilders.Enemy)),

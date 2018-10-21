@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Threading.Tasks;
+using NUnit.Framework;
 using PoESkillTree.Computation.Console;
 using PoESkillTree.Computation.Parsing.Referencing;
 
@@ -8,9 +9,9 @@ namespace PoESkillTree.Computation.IntegrationTests
     public class DataValidatingTest
     {
         [Test]
-        public void ReferencesAreValid()
+        public async Task ReferencesAreValid()
         {
-            var parsingData = new CompositionRoot().ParsingData;
+            var parsingData = await new AsyncCompositionRoot().ParsingData.ConfigureAwait(false);
             var referencedMatchers = parsingData.ReferencedMatchers;
             var statMatchers = parsingData.StatMatchers;
 
@@ -18,9 +19,9 @@ namespace PoESkillTree.Computation.IntegrationTests
         }
 
         [Test]
-        public void ReferencedMatchersHaveCorrectlyTypedData()
+        public async Task ReferencedMatchersHaveCorrectlyTypedData()
         {
-            var parsingData = new CompositionRoot().ParsingData;
+            var parsingData = await new AsyncCompositionRoot().ParsingData.ConfigureAwait(false);
             var referencedMatchers = parsingData.ReferencedMatchers;
 
             foreach (var matchers in referencedMatchers)
