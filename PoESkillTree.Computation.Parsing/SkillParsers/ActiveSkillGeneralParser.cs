@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
             if (hitDamageSource is DamageSource s)
             {
-                AddModifier(_metaStatBuilders.SkillHitDamageSource, Form.TotalOverride, (int) s);
+                AddMainSkillModifier(_metaStatBuilders.SkillHitDamageSource, Form.TotalOverride, (int) s);
             }
             var usesMainHandCondition = isMainSkill;
             var usesOffHandCondition = isMainSkill.And(OffHand.Has(Tags.Weapon));
@@ -57,13 +57,13 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 AddModifier(_metaStatBuilders.SkillUsesHand(AttackDamageHand.OffHand),
                     Form.TotalOverride, 1, usesOffHandCondition);
             }
-            AddModifier(_metaStatBuilders.MainSkillId,
+            AddMainSkillModifier(_metaStatBuilders.MainSkillId,
                 Form.TotalOverride, preParseResult.SkillDefinition.NumericId);
 
             if (hitDamageSource != DamageSource.Attack)
             {
                 var castRateDamageSource = hitDamageSource ?? DamageSource.Spell;
-                AddModifier(_builderFactories.StatBuilders.CastRate.With(castRateDamageSource),
+                AddMainSkillModifier(_builderFactories.StatBuilders.CastRate.With(castRateDamageSource),
                     Form.BaseSet, 1000D / activeSkill.CastTime);
             }
 
@@ -71,25 +71,29 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             {
                 var totemLifeStat = _builderFactories.StatBuilders.Pool.From(Pool.Life)
                     .For(_builderFactories.EntityBuilders.Totem);
-                AddModifier(totemLifeStat, Form.More, (lifeMulti - 1) * 100);
+                AddMainSkillModifier(totemLifeStat, Form.More, (lifeMulti - 1) * 100);
             }
+
+            AddModifier(_metaStatBuilders.ActiveSkillItemSlot(mainSkill.Id), Form.BaseSet, (double) mainSkill.ItemSlot);
+            AddModifier(_metaStatBuilders.ActiveSkillSocketIndex(mainSkill.Id), Form.BaseSet, mainSkill.SocketIndex);
 
             var result = new PartialSkillParseResult(_parsedModifiers, new UntranslatedStat[0]);
             _parsedModifiers = null;
             return result;
         }
 
-        private void AddModifier(IStatBuilder stat, Form form, double value)
+        private void AddMainSkillModifier(IStatBuilder stat, Form form, double value)
             => AddModifier(stat, form, value, _preParseResult.IsMainSkill.IsSet);
 
-        private void AddModifier(IStatBuilder stat, Form form, double value, IConditionBuilder condition)
+        private void AddModifier(IStatBuilder stat, Form form, double value, IConditionBuilder condition = null)
         {
-            var intermediateModifier = _modifierBuilder
+            var builder = _modifierBuilder
                 .WithStat(stat)
                 .WithForm(_builderFactories.FormBuilders.From(form))
-                .WithValue(_builderFactories.ValueBuilders.Create(value))
-                .WithCondition(condition)
-                .Build();
+                .WithValue(_builderFactories.ValueBuilders.Create(value));
+            if (condition != null)
+                builder = builder.WithCondition(condition);
+            var intermediateModifier = builder.Build();
             _parsedModifiers.AddRange(intermediateModifier.Build(_preParseResult.GlobalSource, Entity.Character));
         }
 

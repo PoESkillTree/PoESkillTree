@@ -50,7 +50,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 AddModifier(costStat, Form.BaseSet, cost);
                 AddMainSkillModifier(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost, Form.BaseSet,
                     costStat.Value);
-                ParseReservation(parsedSkill, costStat);
+                ParseReservation(mainSkill, costStat);
             }
             if (level.Cooldown is int cooldown)
             {
@@ -65,31 +65,24 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
         private void ParseReservation(Skill skill, IStatBuilder costStat)
         {
-            var activeSkillTypes = _preParseResult.SkillDefinition.ActiveSkill.ActiveSkillTypes.ToList();
-            if (!activeSkillTypes.Contains(ActiveSkillType.ManaCostIsReservation))
-                return;
-
-            var isPercentage = activeSkillTypes.Contains(ActiveSkillType.ManaCostIsPercentage);
+            var isReservation = _metaStatBuilders
+                .SkillHasType(skill.ItemSlot, skill.SocketIndex, ActiveSkillType.ManaCostIsReservation).IsSet;
+            var isReservationAndActive = isReservation.And(_preParseResult.IsActiveSkill);
+            var isPercentage = _metaStatBuilders
+                .SkillHasType(skill.ItemSlot, skill.SocketIndex, ActiveSkillType.ManaCostIsPercentage).IsSet;
             var skillBuilder = _builderFactories.SkillBuilders.FromId(_preParseResult.SkillDefinition.Id);
 
-            // TODO This needs to be done for all kinds of buffs, not just those that reserve mana
-            var activeSkillItemSlot = _metaStatBuilders.ActiveSkillItemSlot(skill.Id);
-            var activeSkillSocketIndex = _metaStatBuilders.ActiveSkillSocketIndex(skill.Id);
-            AddModifier(activeSkillItemSlot, Form.BaseSet, (double) skill.ItemSlot);
-            AddModifier(activeSkillSocketIndex, Form.BaseSet, skill.SocketIndex);
-
-            AddModifier(skillBuilder.Reservation, Form.BaseSet, costStat.Value, _preParseResult.IsActiveSkill);
+            AddModifier(skillBuilder.Reservation, Form.BaseSet, costStat.Value, isReservationAndActive);
 
             foreach (var pool in Enums.GetValues<Pool>())
             {
                 var poolBuilder = _builderFactories.StatBuilders.Pool.From(pool);
                 var value = skillBuilder.Reservation.Value;
-                if (isPercentage)
-                {
-                    value = value.AsPercentage * poolBuilder.Value;
-                }
+                value = _builderFactories.ValueBuilders
+                    .If(isPercentage).Then(value.AsPercentage * poolBuilder.Value)
+                    .Else(value);
                 AddModifier(poolBuilder.Reservation, Form.BaseAdd, value,
-                    skillBuilder.ReservationPool.Value.Eq((double) pool).And(_preParseResult.IsActiveSkill));
+                    skillBuilder.ReservationPool.Value.Eq((double) pool).And(isReservationAndActive));
             }
         }
 
