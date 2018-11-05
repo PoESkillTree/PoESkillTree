@@ -46,8 +46,11 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             }
             if (level.ManaCost is int cost)
             {
-                AddMainSkillModifier(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost, Form.BaseSet, cost);
-                ParseReservation(skill, cost);
+                var costStat = _metaStatBuilders.SkillBaseCost(skill.ItemSlot, skill.SocketIndex);
+                AddModifier(costStat, Form.BaseSet, cost);
+                AddMainSkillModifier(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost, Form.BaseSet,
+                    costStat.Value);
+                ParseReservation(skill, costStat);
             }
             if (level.Cooldown is int cooldown)
             {
@@ -60,7 +63,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             return result;
         }
 
-        private void ParseReservation(Skill skill, int cost)
+        private void ParseReservation(Skill skill, IStatBuilder costStat)
         {
             var activeSkillTypes = _preParseResult.SkillDefinition.ActiveSkill.ActiveSkillTypes.ToList();
             if (!activeSkillTypes.Contains(ActiveSkillType.ManaCostIsReservation))
@@ -75,7 +78,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             AddModifier(activeSkillItemSlot, Form.BaseSet, (double) skill.ItemSlot);
             AddModifier(activeSkillSocketIndex, Form.BaseSet, skill.SocketIndex);
 
-            AddModifier(skillBuilder.Reservation, Form.BaseSet, cost, _preParseResult.IsActiveSkill);
+            AddModifier(skillBuilder.Reservation, Form.BaseSet, costStat.Value, _preParseResult.IsActiveSkill);
 
             foreach (var pool in Enums.GetValues<Pool>())
             {
@@ -91,6 +94,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         }
 
         private void AddMainSkillModifier(IStatBuilder stat, Form form, double value)
+            => AddModifier(stat, form, value, _preParseResult.IsMainSkill.IsSet);
+
+        private void AddMainSkillModifier(IStatBuilder stat, Form form, IValueBuilder value)
             => AddModifier(stat, form, value, _preParseResult.IsMainSkill.IsSet);
 
         private void AddModifier(IStatBuilder stat, Form form, double value, IConditionBuilder condition = null)

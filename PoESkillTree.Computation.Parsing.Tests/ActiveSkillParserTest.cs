@@ -65,11 +65,26 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.AreEqual(mainHandTags.HasFlag(Tags.Ranged), actual.IsTrue());
         }
 
+        [Test]
+        public void FrenzySetsManaCost()
+        {
+            var (definition, skill) = CreateFrenzyDefinition();
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill,
+                ("Belt.0.Cost", 20));
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var actual = GetValueForIdentity(result.Modifiers, "Mana.Cost")
+                .Calculate(valueCalculationContext);
+            Assert.AreEqual(new NodeValue(20), actual);
+        }
+
         private static (SkillDefinition, Skill) CreateFrenzyDefinition()
         {
             var activeSkill = new ActiveSkillDefinition("Frenzy", 0, new[] { "attack" }, new string[0],
                 new[] { Keyword.Melee, Keyword.Projectile }, false, null, new ItemClass[0]);
-            var level = new SkillLevelDefinition(null, null, null, null, null, null, 0, 0, 0, 0, 0,
+            var level = new SkillLevelDefinition(null, null, null, 10, null, null, 0, 0, 0, 0, 0,
                 new UntranslatedStat[0], new UntranslatedStat[0], null);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (SkillDefinition.CreateActive("Frenzy", 0, "", null, activeSkill, levels),
@@ -567,17 +582,31 @@ namespace PoESkillTree.Computation.Parsing.Tests
         }
 
         [Test]
+        public void ClaritySetsSkillBaseCost()
+        {
+            var (definition, skill) = CreateClarityDefinition();
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var modifier = GetFirstModifierWithIdentity(result.Modifiers, "Belt.0.Cost");
+            var actualValue = modifier.Value.Calculate(null);
+            Assert.AreEqual(new NodeValue(10), actualValue);
+        }
+
+        [Test]
         public void ClaritySetsSkillReservation()
         {
             var (definition, skill) = CreateClarityDefinition();
             var sut = CreateSut(definition);
-            var context = MockValueCalculationContextForActiveSkill(skill);
+            var context = MockValueCalculationContextForActiveSkill(skill,
+                ("Belt.0.Cost", 20));
 
             var result = sut.Parse(skill);
 
             var modifier = GetFirstModifierWithIdentity(result.Modifiers, "Clarity.Reservation");
             var actualValue = modifier.Value.Calculate(context);
-            Assert.AreEqual(new NodeValue(10), actualValue);
+            Assert.AreEqual(new NodeValue(20), actualValue);
         }
 
         [TestCase(Pool.Mana)]

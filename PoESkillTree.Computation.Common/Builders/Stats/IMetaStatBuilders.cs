@@ -88,6 +88,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder ActiveSkillItemSlot(string skillId);
         IStatBuilder ActiveSkillSocketIndex(string skillId);
 
+        IStatBuilder SkillBaseCost(ItemSlot itemSlot, int socketIndex);
+
         IStatBuilder DamageBaseAddEffectiveness { get; }
         IStatBuilder DamageBaseSetEffectiveness { get; }
 

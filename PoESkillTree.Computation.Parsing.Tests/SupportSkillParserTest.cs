@@ -26,6 +26,20 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.IsTrue(AnyModifierHasIdentity(result.Modifiers, "MainSkill.Has.Aura"));
         }
 
+        [Test]
+        public void BlasphemyOverridesBaseCost()
+        {
+            var (activeDefinition, activeSkill) = CreateEnfeebleDefinition();
+            var (supportDefinition, supportSkill) = CreateBlasphemyDefinition();
+            var sut = CreateSut(activeDefinition, supportDefinition);
+
+            var result = sut.Parse(activeSkill, supportSkill);
+
+            var modifier = GetFirstModifierWithIdentity(result.Modifiers, "Belt.1.Cost");
+            Assert.AreEqual(Form.TotalOverride, modifier.Form);
+            Assert.AreEqual(new NodeValue(42), modifier.Value.Calculate(null));
+        }
+
         private static (SkillDefinition, Skill) CreateEnfeebleDefinition()
         {
             var activeSkill = new ActiveSkillDefinition("Enfeeble", 0, new[] { "curse" }, new string[0],
@@ -43,7 +57,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var supportSkill = new SupportSkillDefinition(false, new string[0], new string[0], new string[0],
                 new[] { Keyword.Aura });
             var stats = new UntranslatedStat[0];
-            var level = new SkillLevelDefinition(null, null, null, null, null, null, null, 0, 0, 0, 0,
+            var level = new SkillLevelDefinition(null, null, null, null, null, 42, null, 0, 0, 0, 0,
                 new UntranslatedStat[0], stats, null);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (SkillDefinition.CreateSupport("Blasphemy", 0, "", null, supportSkill, levels),

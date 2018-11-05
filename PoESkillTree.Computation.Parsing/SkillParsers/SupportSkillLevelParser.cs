@@ -22,13 +22,15 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var modifiers = new List<Modifier>();
             var level = preParseResult.LevelDefinition;
 
-            void AddModifier(IStatBuilder stat, Form form, double value, IConditionBuilder condition)
+            void AddModifier(IStatBuilder stat, Form form, double value, IConditionBuilder condition = null)
             {
-                var intermediateModifier = _modifierBuilder
+                var builder = _modifierBuilder
                     .WithStat(stat)
                     .WithForm(_builderFactories.FormBuilders.From(form))
-                    .WithValue(_builderFactories.ValueBuilders.Create(value))
-                    .WithCondition(condition).Build();
+                    .WithValue(_builderFactories.ValueBuilders.Create(value));
+                if (condition != null)
+                    builder = builder.WithCondition(condition);
+                var intermediateModifier = builder.Build();
                 modifiers.AddRange(intermediateModifier.Build(preParseResult.GlobalSource, Entity.Character));
             }
 
@@ -39,6 +41,12 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     preParseResult.IsMainSkill.IsSet);
                 AddModifier(_builderFactories.SkillBuilders.FromId(preParseResult.MainSkillDefinition.Id).Reservation,
                     Form.More, moreMultiplier, preParseResult.IsActiveSkill);
+            }
+
+            if (level.ManaCostOverride is int manaCostOverride)
+            {
+                AddModifier(_metaStatBuilders.SkillBaseCost(skill.ItemSlot, skill.SocketIndex), Form.TotalOverride,
+                    manaCostOverride);
             }
 
             return new PartialSkillParseResult(modifiers, new UntranslatedStat[0]);

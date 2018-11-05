@@ -61,6 +61,10 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
             valueCalculationContextMock
                 .Setup(c => c.GetValue(frenzyAmountStat, NodeType.Total, PathDefinition.MainPath))
                 .Returns(new NodeValue(3));
+            var baseCostStat = new Stat("Boots.0.Cost");
+            valueCalculationContextMock
+                .Setup(c => c.GetValue(baseCostStat, NodeType.Total, PathDefinition.MainPath))
+                .Returns((NodeValue?) levelDefinition.ManaCost);
             var isMainSkillStat = new Stat("Boots.0.IsMainSkill");
             var expectedModifiers =
                 new (string stat, Form form, double? value, ModifierSource source, bool mainSkillOnly)[]
@@ -88,6 +92,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                     ("DamageBaseAddEffectiveness", Form.TotalOverride, levelDefinition.DamageEffectiveness, global,
                         true),
                     ("DamageBaseSetEffectiveness", Form.TotalOverride, levelDefinition.DamageMultiplier, global, true),
+                    ("Boots.0.Cost", Form.BaseSet, levelDefinition.ManaCost, global, false),
                     ("Mana.Cost", Form.BaseSet, levelDefinition.ManaCost, global, true),
                     ("Level.Required", Form.BaseSet, levelDefinition.RequiredLevel, gemSource, false),
                     ("Dexterity.Required", Form.BaseSet, levelDefinition.RequiredDexterity, gemSource, false),
