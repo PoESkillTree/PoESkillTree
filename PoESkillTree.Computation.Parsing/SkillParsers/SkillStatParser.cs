@@ -2,6 +2,7 @@
 using EnumsNET;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -71,7 +72,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     .WithSkills(hitDamageSource);
                 var valueBuilder = _builderFactories.ValueBuilders.FromMinAndMax(
                     CreateValue(hitDamageMinimum), CreateValue(hitDamageMaximum.Value));
-                AddModifier(statBuilder, Form.BaseSet, valueBuilder);
+                AddMainSkillModifier(statBuilder, Form.BaseSet, valueBuilder);
             }
         }
 
@@ -84,7 +85,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var type = Enums.Parse<DamageType>(match.Groups[1].Value, true);
             var statBuilder = _builderFactories.DamageTypeBuilders.From(type).Damage
                 .WithSkills(DamageSource.OverTime);
-            AddModifier(statBuilder, Form.BaseSet, stat.Value / 60D);
+            AddMainSkillModifier(statBuilder, Form.BaseSet, stat.Value / 60D);
             return true;
         }
 
@@ -99,7 +100,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var sourceBuilder = _builderFactories.DamageTypeBuilders.From(sourceType).Damage.WithHitsAndAilments;
             var targetBuilder = _builderFactories.DamageTypeBuilders.From(targetType).Damage.WithHitsAndAilments;
             var conversionBuilder = sourceBuilder.ConvertTo(targetBuilder);
-            AddModifier(conversionBuilder, Form.BaseAdd, stat.Value, isLocal: true);
+            AddMainSkillModifier(conversionBuilder, Form.BaseAdd, stat.Value, isLocal: true);
             return true;
         }
 
@@ -108,26 +109,50 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             switch (stat.StatId)
             {
                 case "base_skill_number_of_additional_hits":
-                    AddModifier(_metaStatBuilders.SkillNumberOfHitsPerCast, Form.BaseAdd, stat.Value);
+                    AddMainSkillModifier(_metaStatBuilders.SkillNumberOfHitsPerCast, Form.BaseAdd, stat.Value);
                     return true;
                 case "skill_double_hits_when_dual_wielding":
-                    AddModifier(_metaStatBuilders.SkillDoubleHitsWhenDualWielding, Form.TotalOverride, stat.Value);
+                    AddMainSkillModifier(_metaStatBuilders.SkillDoubleHitsWhenDualWielding,
+                        Form.TotalOverride, stat.Value);
+                    return true;
+                case "base_use_life_in_place_of_mana":
+                    ParseBloodMagic();
                     return true;
                 default:
                     return false;
             }
         }
 
-        private void AddModifier(IStatBuilder stat, Form form, double value, bool isLocal = false)
-            => AddModifier(stat, form, CreateValue(value), isLocal);
-
-        private void AddModifier(IStatBuilder stat, Form form, IValueBuilder value, bool isLocal = false)
+        private void ParseBloodMagic()
         {
-            var intermediateModifier = _modifierBuilder
+            var skillBuilder = _builderFactories.SkillBuilders.FromId(_preParseResult.MainSkillDefinition.Id);
+            AddModifier(skillBuilder.ReservationPool,
+                Form.TotalOverride, (double) Pool.Life, _preParseResult.IsActiveSkill);
+            var poolBuilders = _builderFactories.StatBuilders.Pool;
+            AddMainSkillModifier(poolBuilders.From(Pool.Mana).Cost.ConvertTo(poolBuilders.From(Pool.Life).Cost),
+                Form.BaseAdd, 100);
+        }
+
+        private void AddMainSkillModifier(IStatBuilder stat, Form form, double value, bool isLocal = false)
+            => AddMainSkillModifier(stat, form, CreateValue(value), isLocal);
+
+        private void AddMainSkillModifier(IStatBuilder stat, Form form, IValueBuilder value, bool isLocal = false)
+            => AddModifier(stat, form, value, _preParseResult.IsMainSkill.IsSet, isLocal);
+
+        private void AddModifier(
+            IStatBuilder stat, Form form, double value, IConditionBuilder condition, bool isLocal = false)
+            => AddModifier(stat, form, CreateValue(value), condition, isLocal);
+
+        private void AddModifier(
+            IStatBuilder stat, Form form, IValueBuilder value, IConditionBuilder condition, bool isLocal = false)
+        {
+            var builder = _modifierBuilder
                 .WithStat(stat)
                 .WithForm(_builderFactories.FormBuilders.From(form))
-                .WithValue(value)
-                .WithCondition(_preParseResult.IsMainSkill.IsSet).Build();
+                .WithValue(value);
+            if (condition != null)
+                builder = builder.WithCondition(condition);
+            var intermediateModifier = builder.Build();
             var modifierSource = isLocal ? (ModifierSource) _preParseResult.LocalSource : _preParseResult.GlobalSource;
             var modifiers = intermediateModifier.Build(modifierSource, Entity.Character);
             _parsedModifiers.AddRange(modifiers);

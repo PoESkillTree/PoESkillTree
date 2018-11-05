@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
+using static PoESkillTree.Computation.Parsing.Tests.SkillParserTestUtils;
 
 namespace PoESkillTree.Computation.Parsing.Tests
 {
@@ -111,13 +112,60 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Skill("SupportPhysicalToLightning", 1, 0, ItemSlot.Belt, 1, null));
         }
 
+        [TestCase(true)]
+        [TestCase(false)]
+        public void BloodMagicOverridesReservationPool(bool isActive)
+        {
+            var expected = isActive ? (NodeValue?) (double) Pool.Life : null;
+            var (activeDefinition, activeSkill) = CreateEnfeebleDefinition();
+            var (supportDefinition, supportSkill) = CreateBloodMagicDefinition();
+            var sut = CreateSut(activeDefinition, supportDefinition);
+            var context = MockValueCalculationContext(activeSkill, false, isActive);
+
+            var result = sut.Parse(activeSkill, supportSkill);
+
+            var modifier = GetValueForIdentity(result.Modifiers, "Enfeeble.ReservationPool");
+            Assert.AreEqual(expected, modifier.Calculate(context));
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void BloodMagicOverridesCostPool(bool isMain)
+        {
+            var expected = isMain ? (NodeValue?) 100 : null;
+            var (activeDefinition, activeSkill) = CreateEnfeebleDefinition();
+            var (supportDefinition, supportSkill) = CreateBloodMagicDefinition();
+            var sut = CreateSut(activeDefinition, supportDefinition);
+            var context = MockValueCalculationContext(activeSkill, isMain, false);
+
+            var result = sut.Parse(activeSkill, supportSkill);
+
+            var modifier = GetValueForIdentity(result.Modifiers, "Mana.Cost.ConvertTo(Life.Cost)");
+            Assert.AreEqual(expected, modifier.Calculate(context));
+        }
+
+        private static (SkillDefinition, Skill) CreateBloodMagicDefinition()
+        {
+            var supportSkill = new SupportSkillDefinition(false, new string[0], new string[0], new string[0],
+                new Keyword[0]);
+            var stats = new[]
+            {
+                new UntranslatedStat("base_use_life_in_place_of_mana", 1), 
+            };
+            var level = new SkillLevelDefinition(null, null, null, null, null, null, null, 0, 0, 0, 0,
+                new UntranslatedStat[0], stats, null);
+            var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
+            return (SkillDefinition.CreateSupport("SupportBloodMagic", 0, "", null, supportSkill, levels),
+                new Skill("SupportBloodMagic", 1, 0, ItemSlot.Belt, 1, null));
+        }
+
         private static SupportSkillParser CreateSut(
             SkillDefinition activeSkillDefinition, SkillDefinition supportSkillDefinition,
             IParser<UntranslatedStatParserParameter> statParser = null)
         {
             var skillDefinitions = new SkillDefinitions(new[] { activeSkillDefinition, supportSkillDefinition });
             var statFactory = new StatFactory();
-            var builderFactories = new BuilderFactories(statFactory, new SkillDefinitions(new SkillDefinition[0]));
+            var builderFactories = new BuilderFactories(statFactory, skillDefinitions);
             var metaStatBuilders = new MetaStatBuilders(statFactory);
             if (statParser is null)
             {
@@ -126,11 +174,5 @@ namespace PoESkillTree.Computation.Parsing.Tests
             }
             return new SupportSkillParser(skillDefinitions, builderFactories, metaStatBuilders, _ => statParser);
         }
-
-        private static bool AnyModifierHasIdentity(IEnumerable<Modifier> modifiers, string identity)
-            => modifiers.Any(m => m.Stats.Any(s => s.Identity == identity));
-
-        private static Modifier GetFirstModifierWithIdentity(IEnumerable<Modifier> modifiers, string identity)
-            => modifiers.First(m => m.Stats.First().Identity == identity);
     }
 }
