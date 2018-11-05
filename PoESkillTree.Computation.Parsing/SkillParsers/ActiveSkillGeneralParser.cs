@@ -58,20 +58,20 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     Form.TotalOverride, 1, usesOffHandCondition);
             }
             AddModifier(_metaStatBuilders.MainSkillId,
-                Form.TotalOverride, preParseResult.SkillDefinition.NumericId, isMainSkill);
+                Form.TotalOverride, preParseResult.SkillDefinition.NumericId);
 
             if (hitDamageSource != DamageSource.Attack)
             {
                 var castRateDamageSource = hitDamageSource ?? DamageSource.Spell;
                 AddModifier(_builderFactories.StatBuilders.CastRate.With(castRateDamageSource),
-                    Form.BaseSet, 1000D / activeSkill.CastTime, isMainSkill);
+                    Form.BaseSet, 1000D / activeSkill.CastTime);
             }
 
             if (activeSkill.TotemLifeMultiplier is double lifeMulti)
             {
                 var totemLifeStat = _builderFactories.StatBuilders.Pool.From(Pool.Life)
                     .For(_builderFactories.EntityBuilders.Totem);
-                AddModifier(totemLifeStat, Form.More, (lifeMulti - 1) * 100, isMainSkill);
+                AddModifier(totemLifeStat, Form.More, (lifeMulti - 1) * 100);
             }
 
             var result = new PartialSkillParseResult(_parsedModifiers, new UntranslatedStat[0]);
@@ -88,7 +88,8 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 .WithStat(stat)
                 .WithForm(_builderFactories.FormBuilders.From(form))
                 .WithValue(_builderFactories.ValueBuilders.Create(value))
-                .WithCondition(condition).Build();
+                .WithCondition(condition)
+                .Build();
             _parsedModifiers.AddRange(intermediateModifier.Build(_preParseResult.GlobalSource, Entity.Character));
         }
 

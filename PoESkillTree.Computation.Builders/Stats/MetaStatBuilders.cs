@@ -154,9 +154,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder SkillNumberOfHitsPerCast => FromIdentity(typeof(int));
         public IStatBuilder SkillDoubleHitsWhenDualWielding => FromIdentity(typeof(bool));
 
-        public IStatBuilder MainSkillSocket(ItemSlot itemSlot, int socketIndex)
-            => FromIdentity($"{itemSlot}.{socketIndex}.IsMainSkill", typeof(bool));
-
         public IStatBuilder MainSkillId => FromFactory(StatFactory.MainSkillId);
 
         public IStatBuilder MainSkillHasKeyword(Keyword keyword)
@@ -180,8 +177,14 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder ActiveSkillSocketIndex(string skillId)
             => FromFactory(e => StatFactory.ActiveSkillSocketIndex(e, skillId));
 
+        public IStatBuilder SkillIsMain(ItemSlot itemSlot, int socketIndex)
+            => FromIdentity($"{itemSlot}.{socketIndex}.IsMainSkill", typeof(bool));
+
         public IStatBuilder SkillBaseCost(ItemSlot itemSlot, int socketIndex)
             => FromIdentity($"{itemSlot}.{socketIndex}.Cost", typeof(int));
+
+        public IStatBuilder SkillHasType(ItemSlot itemSlot, int socketIndex, string activeSkillType)
+            => FromIdentity($"{itemSlot}.{socketIndex}.Type.{activeSkillType}", typeof(bool));
 
         public IStatBuilder DamageBaseAddEffectiveness => FromFactory(StatFactory.DamageBaseAddEffectiveness);
         public IStatBuilder DamageBaseSetEffectiveness => FromFactory(StatFactory.DamageBaseSetEffectiveness);

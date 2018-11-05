@@ -21,6 +21,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             {
                 new ActiveSkillGeneralParser(builderFactories, metaStatBuilders),
                 SkillKeywordParser.CreateActive(builderFactories, metaStatBuilders),
+                SkillTypeParser.CreateActive(builderFactories, metaStatBuilders),
                 new ActiveSkillLevelParser(builderFactories, metaStatBuilders),
                 new GemRequirementParser(builderFactories),
                 new SkillStatParser(builderFactories, metaStatBuilders),

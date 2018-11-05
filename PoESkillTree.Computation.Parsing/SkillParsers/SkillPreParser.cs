@@ -42,7 +42,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
             var hitDamageSource = DetermineHitDamageSource(mainSkillDefinition.ActiveSkill, mainSkillLevel);
             var hasSkillDamageOverTime = HasSkillDamageOverTime(mainSkillLevel);
-            var isMainSkillStat = _metaStatBuilders.MainSkillSocket(mainSkill.ItemSlot, mainSkill.SocketIndex);
+            var isMainSkillStat = _metaStatBuilders.SkillIsMain(mainSkill.ItemSlot, mainSkill.SocketIndex);
 
             var activeSkillItemSlot = _metaStatBuilders.ActiveSkillItemSlot(mainSkill.Id);
             var activeSkillSocketIndex = _metaStatBuilders.ActiveSkillSocketIndex(mainSkill.Id);

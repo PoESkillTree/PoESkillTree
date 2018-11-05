@@ -32,15 +32,15 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         // Damage calculation
         IDamageRelatedStatBuilder Damage(DamageType damageType); // like DamageStatBuilder, but !canApplyToSkillDamage
-        IDamageRelatedStatBuilder EnemyResistanceAgainstNonCrits(DamageType damageType);  // with hits
-        IDamageRelatedStatBuilder EnemyResistanceAgainstCrits(DamageType damageType);  // with hits
+        IDamageRelatedStatBuilder EnemyResistanceAgainstNonCrits(DamageType damageType); // with hits
+        IDamageRelatedStatBuilder EnemyResistanceAgainstCrits(DamageType damageType); // with hits
         IDamageRelatedStatBuilder EffectiveDamageMultiplierWithNonCrits(DamageType damageType);
-        IDamageRelatedStatBuilder EffectiveDamageMultiplierWithCrits(DamageType damageType);  // with hits and ailments
+        IDamageRelatedStatBuilder EffectiveDamageMultiplierWithCrits(DamageType damageType); // with hits and ailments
         IDamageRelatedStatBuilder DamageWithNonCrits(DamageType damageType);
         IDamageRelatedStatBuilder DamageWithCrits(DamageType damageType);
         IDamageRelatedStatBuilder DamageWithNonCrits();
         IDamageRelatedStatBuilder DamageWithCrits();
-        IDamageRelatedStatBuilder AverageDamagePerHit { get; }  // with hits
+        IDamageRelatedStatBuilder AverageDamagePerHit { get; } // with hits
         IDamageRelatedStatBuilder AverageDamage { get; }
         IStatBuilder AverageHitDamage { get; }
         IStatBuilder SkillDpsWithHits { get; }
@@ -77,7 +77,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder SkillNumberOfHitsPerCast { get; }
         IStatBuilder SkillDoubleHitsWhenDualWielding { get; }
 
-        IStatBuilder MainSkillSocket(ItemSlot itemSlot, int socketIndex);
         IStatBuilder MainSkillId { get; }
         IStatBuilder MainSkillHasKeyword(Keyword keyword);
         IStatBuilder MainSkillPartHasKeyword(Keyword keyword);
@@ -88,7 +87,9 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder ActiveSkillItemSlot(string skillId);
         IStatBuilder ActiveSkillSocketIndex(string skillId);
 
+        IStatBuilder SkillIsMain(ItemSlot itemSlot, int socketIndex);
         IStatBuilder SkillBaseCost(ItemSlot itemSlot, int socketIndex);
+        IStatBuilder SkillHasType(ItemSlot itemSlot, int socketIndex, string activeSkillType);
 
         IStatBuilder DamageBaseAddEffectiveness { get; }
         IStatBuilder DamageBaseSetEffectiveness { get; }
