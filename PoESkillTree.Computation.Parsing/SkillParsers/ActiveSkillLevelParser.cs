@@ -32,26 +32,26 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
             if (level.DamageEffectiveness is double effectiveness)
             {
-                AddModifier(_metaStatBuilders.DamageBaseAddEffectiveness, Form.TotalOverride, effectiveness);
+                AddMainSkillModifier(_metaStatBuilders.DamageBaseAddEffectiveness, Form.TotalOverride, effectiveness);
             }
             if (level.DamageMultiplier is double multiplier)
             {
-                AddModifier(_metaStatBuilders.DamageBaseSetEffectiveness, Form.TotalOverride, multiplier);
+                AddMainSkillModifier(_metaStatBuilders.DamageBaseSetEffectiveness, Form.TotalOverride, multiplier);
             }
             if (level.CriticalStrikeChance is double crit &&
                 preParseResult.HitDamageSource is DamageSource hitDamageSource)
             {
-                AddModifier(_builderFactories.ActionBuilders.CriticalStrike.Chance.With(hitDamageSource),
+                AddMainSkillModifier(_builderFactories.ActionBuilders.CriticalStrike.Chance.With(hitDamageSource),
                     Form.BaseSet, crit);
             }
             if (level.ManaCost is int cost)
             {
-                AddModifier(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost, Form.BaseSet, cost);
-                ParseReservation(cost);
+                AddMainSkillModifier(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost, Form.BaseSet, cost);
+                ParseReservation(skill, cost);
             }
             if (level.Cooldown is int cooldown)
             {
-                AddModifier(_builderFactories.StatBuilders.Cooldown, Form.BaseSet, cooldown);
+                AddMainSkillModifier(_builderFactories.StatBuilders.Cooldown, Form.BaseSet, cooldown);
             }
 
             var result = new PartialSkillParseResult(_modifiers, new UntranslatedStat[0]);
@@ -60,7 +60,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             return result;
         }
 
-        private void ParseReservation(int cost)
+        private void ParseReservation(Skill skill, int cost)
         {
             var activeSkillTypes = _preParseResult.SkillDefinition.ActiveSkill.ActiveSkillTypes.ToList();
             if (!activeSkillTypes.Contains(ActiveSkillType.ManaCostIsReservation))
@@ -68,8 +68,16 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
             var isPercentage = activeSkillTypes.Contains(ActiveSkillType.ManaCostIsPercentage);
             var skillBuilder = _builderFactories.SkillBuilders.FromId(_preParseResult.SkillDefinition.Id);
+            var activeSkillItemSlot = _metaStatBuilders.ActiveSkillItemSlot(skill.Id);
+            var activeSkillSocketIndex = _metaStatBuilders.ActiveSkillSocketIndex(skill.Id);
 
-            AddModifier(skillBuilder.Reservation, Form.BaseSet, cost, requiresMainSkill: false);
+            // TODO This needs to be done for all kinds of buffs, not just those that reserve mana
+            AddModifier(activeSkillItemSlot, Form.BaseSet, (double) skill.ItemSlot);
+            AddModifier(activeSkillSocketIndex, Form.BaseSet, skill.SocketIndex);
+            
+            var isActiveSkill = activeSkillItemSlot.Value.Eq((double) skill.ItemSlot)
+                .And(activeSkillSocketIndex.Value.Eq(skill.SocketIndex));
+            AddModifier(skillBuilder.Reservation, Form.BaseSet, cost, isActiveSkill);
 
             foreach (var pool in Enums.GetValues<Pool>())
             {
@@ -80,17 +88,17 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     value = value.AsPercentage * poolBuilder.Value;
                 }
                 AddModifier(poolBuilder.Reservation, Form.BaseAdd, value,
-                    skillBuilder.ReservationPool.Value.Eq((double) pool));
+                    skillBuilder.ReservationPool.Value.Eq((double) pool).And(isActiveSkill));
             }
         }
 
-        private void AddModifier(IStatBuilder stat, Form form, double value, bool requiresMainSkill = true)
-        {
-            var condition = requiresMainSkill ? _preParseResult.IsMainSkill.IsSet : null;
-            AddModifier(stat, form, _builderFactories.ValueBuilders.Create(value), condition);
-        }
+        private void AddMainSkillModifier(IStatBuilder stat, Form form, double value)
+            => AddModifier(stat, form, value, _preParseResult.IsMainSkill.IsSet);
 
-        private void AddModifier(IStatBuilder stat, Form form, IValueBuilder value, IConditionBuilder condition)
+        private void AddModifier(IStatBuilder stat, Form form, double value, IConditionBuilder condition = null)
+            => AddModifier(stat, form, _builderFactories.ValueBuilders.Create(value), condition);
+
+        private void AddModifier(IStatBuilder stat, Form form, IValueBuilder value, IConditionBuilder condition = null)
         {
             var builder = _modifierBuilder
                 .WithStat(stat)

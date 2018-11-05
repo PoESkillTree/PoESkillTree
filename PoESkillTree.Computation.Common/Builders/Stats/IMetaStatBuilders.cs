@@ -85,6 +85,9 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder MainSkillPartDamageHasKeyword(Keyword keyword, DamageSource damageSource);
         IStatBuilder MainSkillPartAilmentDamageHasKeyword(Keyword keyword);
 
+        IStatBuilder ActiveSkillItemSlot(string skillId);
+        IStatBuilder ActiveSkillSocketIndex(string skillId);
+
         IStatBuilder DamageBaseAddEffectiveness { get; }
         IStatBuilder DamageBaseSetEffectiveness { get; }
 

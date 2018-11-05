@@ -22,7 +22,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void FrenzyUsesOffHandIfWeapon(Tags offHandTags)
         {
             var (definition, skill) = CreateFrenzyDefinition();
-            var valueCalculationContext = MockValueCalculationContext(skill, true,
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill,
                 ("OffHand.ItemTags", offHandTags.EncodeAsDouble()));
             var sut = CreateSut(definition);
 
@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void FrenzyHasMeleeKeywordIfNotRanged(Tags mainHandTags)
         {
             var (definition, skill) = CreateFrenzyDefinition();
-            var valueCalculationContext = MockValueCalculationContext(skill, true,
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill,
                 ("MainHand.ItemTags", mainHandTags.EncodeAsDouble()));
             var sut = CreateSut(definition);
 
@@ -54,7 +54,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void FrenzyHasProjectileKeywordIfRanged(Tags mainHandTags)
         {
             var (definition, skill) = CreateFrenzyDefinition();
-            var valueCalculationContext = MockValueCalculationContext(skill, true,
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill,
                 ("MainHand.ItemTags", mainHandTags.EncodeAsDouble()));
             var sut = CreateSut(definition);
 
@@ -80,7 +80,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void FlameTotemHasSpellHitDamageSource()
         {
             var (definition, skill) = CreateFlameTotemDefinition();
-            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill);
             var sut = CreateSut(definition);
 
             var result = sut.Parse(skill);
@@ -109,7 +109,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var (definition, skill) = CreateFlameTotemDefinition();
             var expected = (NodeValue?) 1000D / definition.ActiveSkill.CastTime;
-            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill);
             var sut = CreateSut(definition);
 
             var result = sut.Parse(skill);
@@ -123,7 +123,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void FlameTotemHasTotemLifeModifier()
         {
             var (definition, skill) = CreateFlameTotemDefinition();
-            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill);
             var sut = CreateSut(definition);
 
             var result = sut.Parse(skill);
@@ -139,7 +139,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void FlameTotemSetsCriticalStrikeChance()
         {
             var (definition, skill) = CreateFlameTotemDefinition();
-            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill);
             var sut = CreateSut(definition);
 
             var result = sut.Parse(skill);
@@ -154,7 +154,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void FlameTotemHasCorrectRequirements()
         {
             var (definition, skill) = CreateFlameTotemDefinition();
-            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill);
             var sut = CreateSut(definition);
 
             var result = sut.Parse(skill);
@@ -171,7 +171,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void FlameTotemSetsSpellDamage()
         {
             var (definition, skill) = CreateFlameTotemDefinition();
-            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill);
             var sut = CreateSut(definition);
 
             var result = sut.Parse(skill);
@@ -266,7 +266,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void ContagionSetsDamageOverTime()
         {
             var (definition, skill) = CreateContagionDefinition();
-            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill);
             var sut = CreateSut(definition);
 
             var result = sut.Parse(skill);
@@ -334,7 +334,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void ShieldChargeUsesMainHandIfOffHandHasShield(Tags offHandTags)
         {
             var (definition, skill) = CreateShieldChargeDefinition();
-            var valueCalculationContext = MockValueCalculationContext(skill, true,
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill,
                 ("OffHand.ItemTags", offHandTags.EncodeAsDouble()));
             var sut = CreateSut(definition);
 
@@ -364,7 +364,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void DualStrikeUsesMainHandIfOffHandHasWeapon(Tags offHandTags)
         {
             var (definition, skill) = CreateDualStrikeDefinition();
-            var valueCalculationContext = MockValueCalculationContext(skill, true,
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill,
                 ("MainHand.ItemClass", (double) ItemClass.Claw),
                 ("OffHand.ItemTags", offHandTags.EncodeAsDouble()));
             var sut = CreateSut(definition);
@@ -382,7 +382,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var (definition, skill) = CreateDualStrikeDefinition();
             var expected = definition.ActiveSkill.WeaponRestrictions.Contains(mainHandClass);
-            var valueCalculationContext = MockValueCalculationContext(skill, true,
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill,
                 ("MainHand.ItemClass", (double) mainHandClass),
                 ("OffHand.ItemTags", Tags.Weapon.EncodeAsDouble()));
             var sut = CreateSut(definition);
@@ -400,7 +400,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var (definition, skill) = CreateDualStrikeDefinition();
             var expected = definition.ActiveSkill.WeaponRestrictions.Contains(mainHandClass);
-            var valueCalculationContext = MockValueCalculationContext(skill, true,
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill,
                 ("OffHand.ItemClass", (double) mainHandClass),
                 ("OffHand.ItemTags", Tags.Weapon.EncodeAsDouble()));
             var sut = CreateSut(definition);
@@ -474,7 +474,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void AbyssalCryHasSecondaryHitDamageSource()
         {
             var (definition, skill) = CreateAbyssalCryDefinition();
-            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill);
             var sut = CreateSut(definition);
 
             var result = sut.Parse(skill);
@@ -488,7 +488,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void AbyssalCryHasCooldown()
         {
             var (definition, skill) = CreateAbyssalCryDefinition();
-            var valueCalculationContext = MockValueCalculationContext(skill, true);
+            var valueCalculationContext = MockValueCalculationContextForMainSkill(skill);
             var sut = CreateSut(definition);
 
             var result = sut.Parse(skill);
@@ -571,11 +571,12 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var (definition, skill) = CreateClarityDefinition();
             var sut = CreateSut(definition);
+            var context = MockValueCalculationContextForActiveSkill(skill);
 
             var result = sut.Parse(skill);
 
             var modifier = GetFirstModifierWithIdentity(result.Modifiers, "Clarity.Reservation");
-            var actualValue = modifier.Value.Calculate(null);
+            var actualValue = modifier.Value.Calculate(context);
             Assert.AreEqual(new NodeValue(10), actualValue);
         }
 
@@ -586,7 +587,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var otherPool = pool == Pool.Life ? Pool.Mana : Pool.Life;
             var (definition, skill) = CreateClarityDefinition();
             var sut = CreateSut(definition);
-            var context = MockValueCalculationContext(skill, false,
+            var context = MockValueCalculationContextForActiveSkill(skill,
                 ("Clarity.Reservation", 20),
                 ("Clarity.ReservationPool", (double) pool));
 
@@ -596,6 +597,37 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.AreEqual(new NodeValue(20), modifier.Value.Calculate(context));
             modifier = GetFirstModifierWithIdentity(result.Modifiers, otherPool + ".Reservation");
             Assert.IsNull(modifier.Value.Calculate(context));
+        }
+
+        [Test]
+        public void ClarityDoesNotSetReservationIfNotActive()
+        {
+            var (definition, skill) = CreateClarityDefinition();
+            var sut = CreateSut(definition);
+            var context = MockValueCalculationContextForInactiveSkill(skill,
+                ("Clarity.Reservation", 20),
+                ("Clarity.ReservationPool", (double) Pool.Mana));
+
+            var result = sut.Parse(skill);
+
+            var modifier = GetFirstModifierWithIdentity(result.Modifiers, "Clarity.Reservation");
+            Assert.IsNull(modifier.Value.Calculate(context));
+            modifier = GetFirstModifierWithIdentity(result.Modifiers, "Mana.Reservation");
+            Assert.IsNull(modifier.Value.Calculate(context));
+        }
+
+        [Test]
+        public void ClaritySetsActiveSkill()
+        {
+            var (definition, skill) = CreateClarityDefinition();
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            var modifier = GetFirstModifierWithIdentity(result.Modifiers, "Clarity.ActiveSkillItemSlot");
+            Assert.AreEqual(new NodeValue((double) skill.ItemSlot), modifier.Value.Calculate(null));
+            modifier = GetFirstModifierWithIdentity(result.Modifiers, "Clarity.ActiveSkillSocketIndex");
+            Assert.AreEqual(new NodeValue(skill.SocketIndex), modifier.Value.Calculate(null));
         }
 
         private static (SkillDefinition, Skill) CreateClarityDefinition()
@@ -615,7 +647,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var (definition, skill) = CreateHatredDefinition();
             var sut = CreateSut(definition);
-            var context = MockValueCalculationContext(skill, false,
+            var context = MockValueCalculationContextForActiveSkill(skill,
                 ("Hatred.Reservation", 60),
                 ("Hatred.ReservationPool", (double) Pool.Mana),
                 ("Mana", 200));
@@ -653,13 +685,33 @@ namespace PoESkillTree.Computation.Parsing.Tests
             return new ActiveSkillParser(skillDefinitions, builderFactories, metaStatBuilders, _ => statParser);
         }
 
+        private static IValueCalculationContext MockValueCalculationContextForMainSkill(
+            Skill skill, params (string stat, double? value)[] nodeValues)
+            => MockValueCalculationContext(skill, true, false, nodeValues);
+
+        private static IValueCalculationContext MockValueCalculationContextForActiveSkill(
+            Skill skill, params (string stat, double? value)[] nodeValues)
+            => MockValueCalculationContext(skill, false, true, nodeValues);
+
+        private static IValueCalculationContext MockValueCalculationContextForInactiveSkill(
+            Skill skill, params (string stat, double? value)[] nodeValues)
+            => MockValueCalculationContext(skill, false, false, nodeValues);
+
         private static IValueCalculationContext MockValueCalculationContext(
-            Skill skill, bool isMainSkill, params (string stat, double? value)[] nodeValues)
+            Skill skill, bool isMainSkill, bool isActiveSkill, params (string stat, double? value)[] nodeValues)
         {
             var contextMock = new Mock<IValueCalculationContext>();
             var isMainSkillStat = new Stat($"{skill.ItemSlot}.{skill.SocketIndex}.IsMainSkill");
             contextMock.Setup(c => c.GetValue(isMainSkillStat, NodeType.Total, PathDefinition.MainPath))
                 .Returns((NodeValue?) isMainSkill);
+            var activeSkillItemSlotStat = new Stat($"{skill.Id}.ActiveSkillItemSlot");
+            var activeSkillItemSlot = isActiveSkill ? skill.ItemSlot : ItemSlot.Unequipable;
+            contextMock.Setup(c => c.GetValue(activeSkillItemSlotStat, NodeType.Total, PathDefinition.MainPath))
+                .Returns((NodeValue?) (double) activeSkillItemSlot);
+            var activeSkillSocketIndexStat = new Stat($"{skill.Id}.ActiveSkillSocketIndex");
+            var activeSkillSocketIndex = isActiveSkill ? skill.SocketIndex : -1;
+            contextMock.Setup(c => c.GetValue(activeSkillSocketIndexStat, NodeType.Total, PathDefinition.MainPath))
+                .Returns((NodeValue?) activeSkillSocketIndex);
             foreach (var (statIdentity, value) in nodeValues)
             {
                 var stat = new Stat(statIdentity);

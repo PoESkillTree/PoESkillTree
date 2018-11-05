@@ -174,6 +174,12 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder MainSkillPartAilmentDamageHasKeyword(Keyword keyword)
             => FromFactory(e => StatFactory.MainSkillPartAilmentDamageHasKeyword(e, keyword));
 
+        public IStatBuilder ActiveSkillItemSlot(string skillId)
+            => FromIdentity($"{skillId}.ActiveSkillItemSlot", typeof(ItemSlot));
+
+        public IStatBuilder ActiveSkillSocketIndex(string skillId)
+            => FromIdentity($"{skillId}.ActiveSkillSocketIndex", typeof(int));
+
         public IStatBuilder DamageBaseAddEffectiveness => FromFactory(StatFactory.DamageBaseAddEffectiveness);
         public IStatBuilder DamageBaseSetEffectiveness => FromFactory(StatFactory.DamageBaseSetEffectiveness);
 
