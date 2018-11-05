@@ -35,9 +35,23 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
             var result = sut.Parse(activeSkill, supportSkill);
 
-            var modifier = GetFirstModifierWithIdentity(result.Modifiers, "Belt.1.Cost");
+            var modifier = GetFirstModifierWithIdentity(result.Modifiers, "Belt.0.Cost");
             Assert.AreEqual(Form.TotalOverride, modifier.Form);
             Assert.AreEqual(new NodeValue(42), modifier.Value.Calculate(null));
+        }
+
+        [Test]
+        public void BlasphemyAddsSkillTypes()
+        {
+            var (activeDefinition, activeSkill) = CreateEnfeebleDefinition();
+            var (supportDefinition, supportSkill) = CreateBlasphemyDefinition();
+            var sut = CreateSut(activeDefinition, supportDefinition);
+
+            var result = sut.Parse(activeSkill, supportSkill);
+
+            var modifier = GetFirstModifierWithIdentity(result.Modifiers,
+                $"Belt.0.Type.{ActiveSkillType.ManaCostIsReservation}");
+            Assert.AreEqual(new NodeValue(1), modifier.Value.Calculate(null));
         }
 
         private static (SkillDefinition, Skill) CreateEnfeebleDefinition()
@@ -54,7 +68,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private static (SkillDefinition, Skill) CreateBlasphemyDefinition()
         {
-            var supportSkill = new SupportSkillDefinition(false, new string[0], new string[0], new string[0],
+            var supportSkill = new SupportSkillDefinition(false, new string[0], new string[0],
+                new[] { ActiveSkillType.ManaCostIsReservation, ActiveSkillType.ManaCostIsPercentage },
                 new[] { Keyword.Aura });
             var stats = new UntranslatedStat[0];
             var level = new SkillLevelDefinition(null, null, null, null, null, 42, null, 0, 0, 0, 0,

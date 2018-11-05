@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         public ActiveSkillLevelParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
             => (_builderFactories, _metaStatBuilders) = (builderFactories, metaStatBuilders);
 
-        public PartialSkillParseResult Parse(Skill skill, SkillPreParseResult preParseResult)
+        public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
             _modifiers = new List<Modifier>();
             _preParseResult = preParseResult;
@@ -46,11 +46,11 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             }
             if (level.ManaCost is int cost)
             {
-                var costStat = _metaStatBuilders.SkillBaseCost(skill.ItemSlot, skill.SocketIndex);
+                var costStat = _metaStatBuilders.SkillBaseCost(parsedSkill.ItemSlot, parsedSkill.SocketIndex);
                 AddModifier(costStat, Form.BaseSet, cost);
                 AddMainSkillModifier(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost, Form.BaseSet,
                     costStat.Value);
-                ParseReservation(skill, costStat);
+                ParseReservation(parsedSkill, costStat);
             }
             if (level.Cooldown is int cooldown)
             {

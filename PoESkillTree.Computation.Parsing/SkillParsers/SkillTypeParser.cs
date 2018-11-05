@@ -29,15 +29,14 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
             => new SkillTypeParser(builderFactories, metaStatBuilders, d => d.SupportSkill.AddedActiveSkillTypes);
 
-        public PartialSkillParseResult Parse(Skill skill, SkillPreParseResult preParseResult)
+        public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
             var modifiers = new List<Modifier>();
 
             foreach (var type in _selectTypes(preParseResult.SkillDefinition))
             {
                 var intermediateModifier = _modifierBuilder
-                        // TODO won't work for supports
-                    .WithStat(_metaStatBuilders.SkillHasType(skill.ItemSlot, skill.SocketIndex, type))
+                    .WithStat(_metaStatBuilders.SkillHasType(mainSkill.ItemSlot, mainSkill.SocketIndex, type))
                     .WithForm(_builderFactories.FormBuilders.TotalOverride)
                     .WithValue(_builderFactories.ValueBuilders.Create(1))
                     .Build();

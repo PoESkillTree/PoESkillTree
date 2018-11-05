@@ -23,7 +23,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         public SkillStatParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
             => (_builderFactories, _metaStatBuilders) = (builderFactories, metaStatBuilders);
 
-        public PartialSkillParseResult Parse(Skill skill, SkillPreParseResult preParseResult)
+        public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
             _parsedModifiers = new List<Modifier>();
             _parsedStats = new List<UntranslatedStat>();

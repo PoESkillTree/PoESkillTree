@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var preParseResult = _preParser.ParseActive(skill);
             foreach (var partialParser in _partialParsers)
             {
-                var (newlyParsedModifiers, newlyParsedStats) = partialParser.Parse(skill, preParseResult);
+                var (newlyParsedModifiers, newlyParsedStats) = partialParser.Parse(skill, skill, preParseResult);
                 modifiers.AddRange(newlyParsedModifiers);
                 parsedStats.AddRange(newlyParsedStats);
             }

@@ -17,7 +17,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         public SupportSkillLevelParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
             => (_builderFactories, _metaStatBuilders) = (builderFactories, metaStatBuilders);
 
-        public PartialSkillParseResult Parse(Skill skill, SkillPreParseResult preParseResult)
+        public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
             var modifiers = new List<Modifier>();
             var level = preParseResult.LevelDefinition;
@@ -39,14 +39,14 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 var moreMultiplier = multiplier * 100 - 100;
                 AddModifier(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost, Form.More, moreMultiplier,
                     preParseResult.IsMainSkill.IsSet);
-                AddModifier(_builderFactories.SkillBuilders.FromId(preParseResult.MainSkillDefinition.Id).Reservation,
+                AddModifier(_builderFactories.SkillBuilders.FromId(mainSkill.Id).Reservation,
                     Form.More, moreMultiplier, preParseResult.IsActiveSkill);
             }
 
             if (level.ManaCostOverride is int manaCostOverride)
             {
-                AddModifier(_metaStatBuilders.SkillBaseCost(skill.ItemSlot, skill.SocketIndex), Form.TotalOverride,
-                    manaCostOverride);
+                AddModifier(_metaStatBuilders.SkillBaseCost(mainSkill.ItemSlot, mainSkill.SocketIndex),
+                    Form.TotalOverride, manaCostOverride);
             }
 
             return new PartialSkillParseResult(modifiers, new UntranslatedStat[0]);

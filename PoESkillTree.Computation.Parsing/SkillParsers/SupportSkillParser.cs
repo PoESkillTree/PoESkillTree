@@ -20,6 +20,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             _partialParsers = new[]
             {
                 SkillKeywordParser.CreateSupport(builderFactories, metaStatBuilders),
+                SkillTypeParser.CreateSupport(builderFactories, metaStatBuilders),
                 new SupportSkillLevelParser(builderFactories, metaStatBuilders), 
                 new GemRequirementParser(builderFactories),
                 new SkillStatParser(builderFactories, metaStatBuilders),
@@ -37,7 +38,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
             foreach (var partialParser in _partialParsers)
             {
-                var (newlyParsedModifiers, newlyParsedStats) = partialParser.Parse(support, preParseResult);
+                var (newlyParsedModifiers, newlyParsedStats) = partialParser.Parse(active, support, preParseResult);
                 modifiers.AddRange(newlyParsedModifiers);
                 parsedStats.AddRange(newlyParsedStats);
             }

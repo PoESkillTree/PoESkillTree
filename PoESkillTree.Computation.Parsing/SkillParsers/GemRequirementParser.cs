@@ -15,9 +15,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         public GemRequirementParser(IBuilderFactories builderFactories)
             => _builderFactories = builderFactories;
 
-        public PartialSkillParseResult Parse(Skill skill, SkillPreParseResult preParseResult)
+        public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
-            if (!skill.GemGroup.HasValue)
+            if (!parsedSkill.GemGroup.HasValue)
                 return new PartialSkillParseResult(new Modifier[0], new UntranslatedStat[0]);
 
             var modifiers = new List<Modifier>();
