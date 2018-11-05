@@ -78,6 +78,27 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                 pool, p => _statFactory.Regen(entity, p), p => _statFactory.RegenTargetPool(entity, p), v),
             new CacheKey(pool, entity));
 
+        public IReadOnlyList<Behavior> ActiveSkillItemSlot(Entity entity, string skillId)
+            => new[] { ActiveSkillItemSlotBaseSetByMaximumBehavior(entity, skillId) };
+
+        private Behavior ActiveSkillItemSlotBaseSetByMaximumBehavior(Entity entity, string skillId)
+            => BaseSetByMaximumBehavior(
+                () => _statFactory.ActiveSkillItemSlot(entity, skillId),
+                new CacheKey(entity, skillId));
+
+        public IReadOnlyList<Behavior> ActiveSkillSocketIndex(Entity entity, string skillId)
+            => new[] { ActiveSkillSocketIndexBaseSetByMaximumBehavior(entity, skillId) };
+
+        private Behavior ActiveSkillSocketIndexBaseSetByMaximumBehavior(Entity entity, string skillId)
+            => BaseSetByMaximumBehavior(
+                () => _statFactory.ActiveSkillSocketIndex(entity, skillId),
+                new CacheKey(entity, skillId));
+
+        private Behavior BaseSetByMaximumBehavior(Func<IStat> affectedStat, CacheKey cacheKey)
+            => GetOrAdd(affectedStat, NodeType.BaseSet, BehaviorPathInteraction.All,
+                v => new MaximumFormAggregatingValue(affectedStat(), Form.BaseSet, v),
+                cacheKey);
+
         public IReadOnlyList<Behavior> ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification)
         {
             // Behaviors are only for damage, not other damage related stats

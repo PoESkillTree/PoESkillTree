@@ -5,6 +5,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils.Extensions;
 
@@ -90,6 +91,14 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStat MainSkillPartAilmentDamageHasKeyword(Entity entity, Keyword keyword) =>
             GetOrAdd($"MainSkillPart.Damage.Ailment.Has.{keyword}", entity, typeof(bool));
+
+        public IStat ActiveSkillItemSlot(Entity entity, string skillId)
+            => GetOrAdd($"{skillId}.ActiveSkillItemSlot", entity, typeof(ItemSlot),
+                behaviors: () => _behaviorFactory.ActiveSkillItemSlot(entity, skillId));
+
+        public IStat ActiveSkillSocketIndex(Entity entity, string skillId)
+            => GetOrAdd($"{skillId}.ActiveSkillSocketIndex", entity, typeof(int),
+                behaviors: () => _behaviorFactory.ActiveSkillSocketIndex(entity, skillId));
 
         public IStat BuffEffect(Entity source, Entity target, string buffIdentity) =>
             GetOrAdd($"{buffIdentity}.EffectOn({target})", source, typeof(double));

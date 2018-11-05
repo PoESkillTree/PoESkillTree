@@ -36,6 +36,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat MainSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource);
         IStat MainSkillPartAilmentDamageHasKeyword(Entity entity, Keyword keyword);
 
+        IStat ActiveSkillItemSlot(Entity entity, string skillId);
+        IStat ActiveSkillSocketIndex(Entity entity, string skillId);
+
         IStat BuffEffect(Entity source, Entity target, string buffIdentity);        
         IStat BuffIsActive(Entity target, string buffIdentity);
         IStat BuffSourceIs(Entity source, Entity target, string buffIdentity);
