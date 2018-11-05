@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel.Skills;
@@ -21,20 +22,23 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var modifiers = new List<Modifier>();
             var level = preParseResult.LevelDefinition;
 
-            void AddModifier(IStatBuilder stat, Form form, double value)
+            void AddModifier(IStatBuilder stat, Form form, double value, IConditionBuilder condition)
             {
                 var intermediateModifier = _modifierBuilder
                     .WithStat(stat)
                     .WithForm(_builderFactories.FormBuilders.From(form))
                     .WithValue(_builderFactories.ValueBuilders.Create(value))
-                    .WithCondition(preParseResult.IsMainSkill.IsSet).Build();
+                    .WithCondition(condition).Build();
                 modifiers.AddRange(intermediateModifier.Build(preParseResult.GlobalSource, Entity.Character));
             }
 
             if (level.ManaMultiplier is double multiplier)
             {
-                AddModifier(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost, Form.More,
-                    multiplier * 100 - 100);
+                var moreMultiplier = multiplier * 100 - 100;
+                AddModifier(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost, Form.More, moreMultiplier,
+                    preParseResult.IsMainSkill.IsSet);
+                AddModifier(_builderFactories.SkillBuilders.FromId(preParseResult.MainSkillDefinition.Id).Reservation,
+                    Form.More, moreMultiplier, preParseResult.IsActiveSkill);
             }
 
             return new PartialSkillParseResult(modifiers, new UntranslatedStat[0]);

@@ -153,12 +153,21 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
             var gemSource =
                 new ModifierSource.Local.Gem(support.ItemSlot, support.SocketIndex, "Added Cold Damage Support");
             var valueCalculationContextMock = new Mock<IValueCalculationContext>();
+            var activeSkillItemSlotStat = new Stat("Frenzy.ActiveSkillItemSlot");
+            valueCalculationContextMock
+                .Setup(c => c.GetValue(activeSkillItemSlotStat, NodeType.Total, PathDefinition.MainPath))
+                .Returns(new NodeValue((double) frenzy.ItemSlot));
+            var activeSkillSocketIndexStat = new Stat("Frenzy.ActiveSkillSocketIndex");
+            valueCalculationContextMock
+                .Setup(c => c.GetValue(activeSkillSocketIndexStat, NodeType.Total, PathDefinition.MainPath))
+                .Returns(new NodeValue(frenzy.SocketIndex));
             var isMainSkillStat = new Stat("Boots.0.IsMainSkill");
             var addedDamageValue = new NodeValue(levelDefinition.Stats[0].Value, levelDefinition.Stats[1].Value);
             var expectedModifiers =
                 new (string stat, Form form, double? value, ModifierSource source, bool mainSkillOnly)[]
                 {
                     ("Mana.Cost", Form.More, levelDefinition.ManaMultiplier * 100 - 100, global, true),
+                    ("Frenzy.Reservation", Form.More, levelDefinition.ManaMultiplier * 100 - 100, global, false),
                     ("Level.Required", Form.BaseSet, levelDefinition.RequiredLevel, gemSource, false),
                     ("Dexterity.Required", Form.BaseSet, levelDefinition.RequiredDexterity, gemSource, false),
                     ("Cold.Damage.Attack.MainHand.Skill", Form.Increase,

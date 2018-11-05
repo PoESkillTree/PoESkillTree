@@ -68,16 +68,14 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
             var isPercentage = activeSkillTypes.Contains(ActiveSkillType.ManaCostIsPercentage);
             var skillBuilder = _builderFactories.SkillBuilders.FromId(_preParseResult.SkillDefinition.Id);
-            var activeSkillItemSlot = _metaStatBuilders.ActiveSkillItemSlot(skill.Id);
-            var activeSkillSocketIndex = _metaStatBuilders.ActiveSkillSocketIndex(skill.Id);
 
             // TODO This needs to be done for all kinds of buffs, not just those that reserve mana
+            var activeSkillItemSlot = _metaStatBuilders.ActiveSkillItemSlot(skill.Id);
+            var activeSkillSocketIndex = _metaStatBuilders.ActiveSkillSocketIndex(skill.Id);
             AddModifier(activeSkillItemSlot, Form.BaseSet, (double) skill.ItemSlot);
             AddModifier(activeSkillSocketIndex, Form.BaseSet, skill.SocketIndex);
-            
-            var isActiveSkill = activeSkillItemSlot.Value.Eq((double) skill.ItemSlot)
-                .And(activeSkillSocketIndex.Value.Eq(skill.SocketIndex));
-            AddModifier(skillBuilder.Reservation, Form.BaseSet, cost, isActiveSkill);
+
+            AddModifier(skillBuilder.Reservation, Form.BaseSet, cost, _preParseResult.IsActiveSkill);
 
             foreach (var pool in Enums.GetValues<Pool>())
             {
@@ -88,7 +86,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     value = value.AsPercentage * poolBuilder.Value;
                 }
                 AddModifier(poolBuilder.Reservation, Form.BaseAdd, value,
-                    skillBuilder.ReservationPool.Value.Eq((double) pool).And(isActiveSkill));
+                    skillBuilder.ReservationPool.Value.Eq((double) pool).And(_preParseResult.IsActiveSkill));
             }
         }
 
