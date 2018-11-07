@@ -128,9 +128,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
         private bool MatchFlagStat(SkillLevelDefinition level, string statId)
         {
-            var firstMatch = level.Stats.Where(s => s.StatId == statId)
-                .Cast<UntranslatedStat?>()
-                .FirstOrDefault();
+            var firstMatch = level.Stats.FirstOrDefault(s => s.StatId == statId);
             if (firstMatch is UntranslatedStat stat)
             {
                 _parsedStats.Add(stat);

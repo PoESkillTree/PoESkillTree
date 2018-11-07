@@ -84,12 +84,11 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private static (SkillDefinition, Skill) CreateFrenzyDefinition()
         {
-            var activeSkill = new ActiveSkillDefinition("Frenzy", 0, new[] { "attack" }, new string[0],
-                new[] { Keyword.Melee, Keyword.Projectile }, false, null, new ItemClass[0]);
-            var level = new SkillLevelDefinition(null, null, null, 10, null, null, 0, 0, 0, 0, 0,
-                new UntranslatedStat[0], new UntranslatedStat[0], null);
+            var activeSkill = CreateActiveSkillDefinition("Frenzy", new[] { "attack" },
+                new[] { Keyword.Melee, Keyword.Projectile });
+            var level = CreateLevelDefinition(manaCost: 10);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (SkillDefinition.CreateActive("Frenzy", 0, "", null, activeSkill, levels),
+            return (CreateActive("Frenzy", activeSkill, levels),
                 new Skill("Frenzy", 1, 0, ItemSlot.Belt, 0, 0));
         }
 
@@ -234,8 +233,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private static (SkillDefinition, Skill) CreateFlameTotemDefinition()
         {
-            var activeSkill = new ActiveSkillDefinition("Flame Totem", 250, new[] { "spell" }, new string[0],
-                new[] { Keyword.Spell, Keyword.Projectile, Keyword.Totem }, false, 1.62, new ItemClass[0]);
+            var activeSkill = CreateActiveSkillDefinition("Flame Totem", 250, new[] { "spell" },
+                new[] { Keyword.Spell, Keyword.Projectile, Keyword.Totem }, totemLifeMultiplier: 1.62);
             var qualityStats = new[]
             {
                 new UntranslatedStat("totem_life_+%", 1000),
@@ -246,10 +245,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new UntranslatedStat("spell_maximum_base_fire_damage", 10),
                 new UntranslatedStat("number_of_additional_projectiles", 2),
             };
-            var level = new SkillLevelDefinition(null, null, 5, null, null, null, null, 0, 0, 68, 98,
-                qualityStats, stats, null);
+            var level = CreateLevelDefinition(criticalStrikeChance: 5, requiredIntelligence: 68, requiredStrength: 98,
+                qualityStats: qualityStats, stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (SkillDefinition.CreateActive("FlameTotem", 0, "", null, activeSkill, levels),
+            return (CreateActive("FlameTotem", activeSkill, levels),
                 new Skill("FlameTotem", 1, 10, ItemSlot.Belt, 0, 0));
         }
 
@@ -309,16 +308,15 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private static (SkillDefinition, Skill) CreateContagionDefinition()
         {
-            var activeSkill = new ActiveSkillDefinition("Contagion", 0, new[] { "spell" }, new string[0],
-                new[] { Keyword.Spell, Keyword.AreaOfEffect, Keyword.Chaos }, false, null, new ItemClass[0]);
+            var activeSkill = CreateActiveSkillDefinition("Contagion", new[] { "spell" },
+                new[] { Keyword.Spell, Keyword.AreaOfEffect, Keyword.Chaos });
             var stats = new[]
             {
                 new UntranslatedStat("base_chaos_damage_to_deal_per_minute", 60),
             };
-            var level = new SkillLevelDefinition(null, null, null, null, null, null, 0, 0, 0, 0, 0,
-                new UntranslatedStat[0], stats, null);
+            var level = CreateLevelDefinition(stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (SkillDefinition.CreateActive("Contagion", 0, "", null, activeSkill, levels),
+            return (CreateActive("Contagion", activeSkill, levels),
                 new Skill("Contagion", 1, 0, ItemSlot.Belt, 0, null));
         }
 
@@ -366,13 +364,12 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var types = new[]
                 { ActiveSkillType.Attack, ActiveSkillType.DoesNotUseOffHand, ActiveSkillType.RequiresShield };
-            var activeSkill = new ActiveSkillDefinition("ShieldCharge", 0, types, new string[0],
-                new[] { Keyword.Attack, Keyword.AreaOfEffect }, false, null, new ItemClass[0]);
+            var activeSkill = CreateActiveSkillDefinition("ShieldCharge", types,
+                new[] { Keyword.Attack, Keyword.AreaOfEffect });
             var stats = new[] { new UntranslatedStat("is_area_damage", 1), };
-            var level = new SkillLevelDefinition(null, null, null, null, null, null, 0, 0, 0, 0, 0,
-                new UntranslatedStat[0], stats, null);
+            var level = CreateLevelDefinition(stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (SkillDefinition.CreateActive("ShieldCharge", 0, "", null, activeSkill, levels),
+            return (CreateActive("ShieldCharge", activeSkill, levels),
                 new Skill("ShieldCharge", 1, 0, ItemSlot.Belt, 0, null));
         }
 
@@ -432,13 +429,11 @@ namespace PoESkillTree.Computation.Parsing.Tests
         private static (SkillDefinition, Skill) CreateDualStrikeDefinition()
         {
             var types = new[] { ActiveSkillType.Attack, ActiveSkillType.RequiresDualWield };
-            var weaponRestrictions = new[] { ItemClass.Claw, ItemClass.Dagger };
-            var activeSkill = new ActiveSkillDefinition("DualStrike", 0, types, new string[0],
-                new[] { Keyword.Attack }, false, null, weaponRestrictions);
-            var level = new SkillLevelDefinition(null, null, null, null, null, null, 0, 0, 0, 0, 0,
-                new UntranslatedStat[0], new UntranslatedStat[0], null);
+            var activeSkill = CreateActiveSkillDefinition("DualStrike", types, new[] { Keyword.Attack },
+                weaponRestrictions: new[] { ItemClass.Claw, ItemClass.Dagger });
+            var level = CreateLevelDefinition();
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (SkillDefinition.CreateActive("DualStrike", 0, "", null, activeSkill, levels),
+            return (CreateActive("DualStrike", activeSkill, levels),
                 new Skill("DualStrike", 1, 0, ItemSlot.Belt, 0, null));
         }
 
@@ -473,17 +468,16 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private static (SkillDefinition, Skill) CreateCausticArrowDefinition()
         {
-            var activeSkill = new ActiveSkillDefinition("Caustic Arrow", 0, new[] { "attack" }, new string[0],
-                new[] { Keyword.Attack, Keyword.AreaOfEffect }, false, null, new ItemClass[0]);
+            var activeSkill = CreateActiveSkillDefinition("Caustic Arrow", new[] { "attack" },
+                new[] { Keyword.Attack, Keyword.AreaOfEffect });
             var stats = new[]
             {
                 new UntranslatedStat("base_chaos_damage_to_deal_per_minute", 60),
                 new UntranslatedStat("skill_physical_damage_%_to_convert_to_chaos", 60),
             };
-            var level = new SkillLevelDefinition(null, null, null, null, null, null, 0, 0, 0, 0, 0,
-                new UntranslatedStat[0], stats, null);
+            var level = CreateLevelDefinition(stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (SkillDefinition.CreateActive("PoisonArrow", 0, "", null, activeSkill, levels),
+            return (CreateActive("PoisonArrow", activeSkill, levels),
                 new Skill("PoisonArrow", 1, 0, ItemSlot.Belt, 0, null));
         }
 
@@ -518,16 +512,15 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private static (SkillDefinition, Skill) CreateAbyssalCryDefinition()
         {
-            var activeSkill = new ActiveSkillDefinition("AbyssalCry", 0, new[] { "spell" }, new string[0],
-                new[] { Keyword.Spell, Keyword.Projectile, Keyword.Totem }, false, null, new ItemClass[0]);
+            var activeSkill = CreateActiveSkillDefinition("AbyssalCry", new[] { "spell" },
+                new[] { Keyword.Spell, Keyword.Projectile, Keyword.Totem });
             var stats = new[]
             {
                 new UntranslatedStat("display_skill_deals_secondary_damage", 1),
             };
-            var level = new SkillLevelDefinition(null, null, null, null, null, null, 4000, 0, 0, 0, 0,
-                new UntranslatedStat[0], stats, null);
+            var level = CreateLevelDefinition(cooldown: 4000, stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (SkillDefinition.CreateActive("AbyssalCry", 0, "", null, activeSkill, levels),
+            return (CreateActive("AbyssalCry", activeSkill, levels),
                 new Skill("AbyssalCry", 1, 0, ItemSlot.Belt, 0, null));
         }
 
@@ -544,16 +537,14 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private static (SkillDefinition, Skill) CreateDoubleStrikeDefinition()
         {
-            var activeSkill = new ActiveSkillDefinition("DoubleStrike", 0, new[] { "attack" }, new string[0],
-                new[] { Keyword.Attack }, false, null, new ItemClass[0]);
+            var activeSkill = CreateActiveSkillDefinition("DoubleStrike", new[] { "attack" }, new[] { Keyword.Attack });
             var stats = new[]
             {
                 new UntranslatedStat("base_skill_number_of_additional_hits", 1),
             };
-            var level = new SkillLevelDefinition(null, null, null, null, null, null, 4000, 0, 0, 0, 0,
-                new UntranslatedStat[0], stats, null);
+            var level = CreateLevelDefinition(stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (SkillDefinition.CreateActive("DoubleStrike", 0, "", null, activeSkill, levels),
+            return (CreateActive("DoubleStrike", activeSkill, levels),
                 new Skill("DoubleStrike", 1, 0, ItemSlot.Belt, 0, null));
         }
 
@@ -570,16 +561,14 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private static (SkillDefinition, Skill) CreateCleaveDefinition()
         {
-            var activeSkill = new ActiveSkillDefinition("Cleave", 0, new[] { "attack" }, new string[0],
-                new[] { Keyword.Attack }, false, null, new ItemClass[0]);
+            var activeSkill = CreateActiveSkillDefinition("Cleave", new[] { "attack" }, new[] { Keyword.Attack });
             var stats = new[]
             {
                 new UntranslatedStat("skill_double_hits_when_dual_wielding", 1),
             };
-            var level = new SkillLevelDefinition(null, null, null, null, null, null, 4000, 0, 0, 0, 0,
-                new UntranslatedStat[0], stats, null);
+            var level = CreateLevelDefinition(stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (SkillDefinition.CreateActive("Cleave", 0, "", null, activeSkill, levels),
+            return (CreateActive("Cleave", activeSkill, levels),
                 new Skill("Cleave", 1, 0, ItemSlot.Belt, 0, null));
         }
 
@@ -666,16 +655,15 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private static (SkillDefinition, Skill) CreateClarityDefinition()
         {
-            var activeSkill = new ActiveSkillDefinition("Clarity", 0,
-                new[] { "aura", "mana_cost_is_reservation" }, new string[0],
-                new[] { Keyword.Aura }, true, null, new ItemClass[0]);
-            var level = new SkillLevelDefinition(null, null, null, 10, null, null, 4000, 0, 0, 0, 0,
-                new UntranslatedStat[0], new UntranslatedStat[0], null);
+            var activeSkill = CreateActiveSkillDefinition("Clarity",
+                new[] { "aura", "mana_cost_is_reservation" },
+                new[] { Keyword.Aura }, providesBuff: true);
+            var level = CreateLevelDefinition(manaCost: 10);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (SkillDefinition.CreateActive("Clarity", 0, "", null, activeSkill, levels),
+            return (CreateActive("Clarity", activeSkill, levels),
                 new Skill("Clarity", 1, 0, ItemSlot.Belt, 0, null));
         }
-        
+
         [Test]
         public void HatredSetsPoolReservation()
         {
@@ -696,13 +684,12 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private static (SkillDefinition, Skill) CreateHatredDefinition()
         {
-            var activeSkill = new ActiveSkillDefinition("Hatred", 0,
-                new[] { "aura", "mana_cost_is_reservation", "mana_cost_is_percentage" }, new string[0],
-                new[] { Keyword.Aura }, true, null, new ItemClass[0]);
-            var level = new SkillLevelDefinition(null, null, null, 50, null, null, 4000, 0, 0, 0, 0,
-                new UntranslatedStat[0], new UntranslatedStat[0], null);
+            var activeSkill = CreateActiveSkillDefinition("Hatred",
+                new[] { "aura", "mana_cost_is_reservation", "mana_cost_is_percentage" },
+                new[] { Keyword.Aura }, providesBuff: true);
+            var level = CreateLevelDefinition(manaCost: 50);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (SkillDefinition.CreateActive("Hatred", 0, "", null, activeSkill, levels),
+            return (CreateActive("Hatred", activeSkill, levels),
                 new Skill("Hatred", 1, 0, ItemSlot.Belt, 0, null));
         }
 

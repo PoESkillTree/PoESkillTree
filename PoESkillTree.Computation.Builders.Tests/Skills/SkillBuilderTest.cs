@@ -65,9 +65,9 @@ namespace PoESkillTree.Computation.Builders.Tests.Skills
 
         private static SkillDefinition CreateSkill(string id, int numericId)
             => SkillDefinition.CreateActive(
-                id, numericId, "", null,
-                new ActiveSkillDefinition(id, 0, new string[0], new string[0], new Keyword[0], false,
-                    null, new ItemClass[0]),
+                id, numericId, "", new[] { "" }, null,
+                new ActiveSkillDefinition(id, 0, new string[0], new string[0], new Keyword[0],
+                    new[] { new Keyword[0], }, false, null, new ItemClass[0]),
                 new Dictionary<int, SkillLevelDefinition>());
 
         private static SkillBuilder CreateSut(ICoreBuilder<SkillDefinition> coreBuilder) =>

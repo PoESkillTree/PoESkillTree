@@ -57,13 +57,12 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private static (SkillDefinition, Skill) CreateEnfeebleDefinition()
         {
-            var activeSkill = new ActiveSkillDefinition("Enfeeble", 0, new[] { "curse" }, new string[0],
-                new[] { Keyword.Curse }, true, null, new ItemClass[0]);
+            var activeSkill = CreateActiveSkillDefinition("Enfeeble", new[] { "curse" }, new[] { Keyword.Curse },
+                providesBuff: true);
             var stats = new UntranslatedStat[0];
-            var level = new SkillLevelDefinition(null, null, null, null, null, null, null, 0, 0, 0, 0,
-                new UntranslatedStat[0], stats, null);
+            var level = CreateLevelDefinition(stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (SkillDefinition.CreateActive("Enfeeble", 0, "", null, activeSkill, levels),
+            return (CreateActive("Enfeeble", activeSkill, levels),
                 new Skill("Enfeeble", 1, 0, ItemSlot.Belt, 0, null));
         }
 
@@ -73,10 +72,9 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new[] { ActiveSkillType.ManaCostIsReservation, ActiveSkillType.ManaCostIsPercentage },
                 new[] { Keyword.Aura });
             var stats = new UntranslatedStat[0];
-            var level = new SkillLevelDefinition(null, null, null, null, null, 42, null, 0, 0, 0, 0,
-                new UntranslatedStat[0], stats, null);
+            var level = CreateLevelDefinition(manaCostOverride: 42, stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (SkillDefinition.CreateSupport("Blasphemy", 0, "", null, supportSkill, levels),
+            return (CreateSupport("Blasphemy", supportSkill, levels),
                 new Skill("Blasphemy", 1, 0, ItemSlot.Belt, 1, null));
         }
 
@@ -105,10 +103,9 @@ namespace PoESkillTree.Computation.Parsing.Tests
             {
                 new UntranslatedStat("skill_physical_damage_%_to_convert_to_lightning", 50), 
             };
-            var level = new SkillLevelDefinition(null, null, null, null, null, null, null, 0, 0, 0, 0,
-                new UntranslatedStat[0], stats, null);
+            var level = CreateLevelDefinition(stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (SkillDefinition.CreateSupport("SupportPhysicalToLightning", 0, "", null, supportSkill, levels),
+            return (CreateSupport("SupportPhysicalToLightning", supportSkill, levels),
                 new Skill("SupportPhysicalToLightning", 1, 0, ItemSlot.Belt, 1, null));
         }
 
@@ -152,10 +149,9 @@ namespace PoESkillTree.Computation.Parsing.Tests
             {
                 new UntranslatedStat("base_use_life_in_place_of_mana", 1), 
             };
-            var level = new SkillLevelDefinition(null, null, null, null, null, null, null, 0, 0, 0, 0,
-                new UntranslatedStat[0], stats, null);
+            var level = CreateLevelDefinition(stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (SkillDefinition.CreateSupport("SupportBloodMagic", 0, "", null, supportSkill, levels),
+            return (CreateSupport("SupportBloodMagic", supportSkill, levels),
                 new Skill("SupportBloodMagic", 1, 0, ItemSlot.Belt, 1, null));
         }
 

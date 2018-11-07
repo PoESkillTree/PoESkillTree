@@ -9,28 +9,32 @@ namespace PoESkillTree.GameModel.Skills
     public class SkillDefinition
     {
         private SkillDefinition(
-            string id, int numericId, bool isSupport, string statTranslationFile,
+            string id, int numericId, bool isSupport, string statTranslationFile, IReadOnlyList<string> partNames,
             SkillBaseItemDefinition baseItem, ActiveSkillDefinition activeSkill, SupportSkillDefinition supportSkill,
             IReadOnlyDictionary<int, SkillLevelDefinition> levels)
-            => (Id, NumericId, IsSupport, BaseItem, ActiveSkill, SupportSkill, Levels, StatTranslationFile) =
-                (id, numericId, isSupport, baseItem, activeSkill, supportSkill, levels, statTranslationFile);
+            => (Id, NumericId, IsSupport, PartNames, BaseItem, ActiveSkill, SupportSkill, Levels, StatTranslationFile) =
+                (id, numericId, isSupport, partNames, baseItem, activeSkill, supportSkill, levels, statTranslationFile);
 
         public static SkillDefinition CreateActive(
-            string id, int numericId, string statTranslationFile,
+            string id, int numericId, string statTranslationFile, IReadOnlyList<string> partNames,
             SkillBaseItemDefinition baseItem, ActiveSkillDefinition activeSkill,
             IReadOnlyDictionary<int, SkillLevelDefinition> levels)
-            => new SkillDefinition(id, numericId, false, statTranslationFile, baseItem, activeSkill, null, levels);
+            => new SkillDefinition(id, numericId, false, statTranslationFile, partNames, baseItem, activeSkill, null,
+                levels);
 
         public static SkillDefinition CreateSupport(
-            string id, int numericId, string statTranslationFile,
+            string id, int numericId, string statTranslationFile, IReadOnlyList<string> partNames,
             SkillBaseItemDefinition baseItem, SupportSkillDefinition supportSkill,
             IReadOnlyDictionary<int, SkillLevelDefinition> levels)
-            => new SkillDefinition(id, numericId, true, statTranslationFile, baseItem, null, supportSkill, levels);
+            => new SkillDefinition(id, numericId, true, statTranslationFile, partNames, baseItem, null, supportSkill,
+                levels);
 
         public string Id { get; }
         public int NumericId { get; }
         public bool IsSupport { get; }
         public string StatTranslationFile { get; }
+
+        public IReadOnlyList<string> PartNames { get; }
 
         [CanBeNull]
         public SkillBaseItemDefinition BaseItem { get; }
@@ -58,18 +62,19 @@ namespace PoESkillTree.GameModel.Skills
         public ActiveSkillDefinition(
             string displayName, int castTime,
             IEnumerable<string> activeSkillTypes, IEnumerable<string> minionActiveSkillTypes,
-            IReadOnlyList<Keyword> keywords, bool providesBuff, double? totemLifeMultiplier,
-            IReadOnlyList<ItemClass> weaponRestrictions)
-            => (DisplayName, CastTime, ActiveSkillTypes, MinionActiveSkillTypes, Keywords, ProvidesBuff,
-                    TotemLifeMultiplier, WeaponRestrictions) =
-                (displayName, castTime, activeSkillTypes, minionActiveSkillTypes, keywords, providesBuff,
-                    totemLifeMultiplier, weaponRestrictions);
+            IReadOnlyList<Keyword> keywords, IReadOnlyList<IReadOnlyList<Keyword>> keywordsPerPart, bool providesBuff,
+            double? totemLifeMultiplier, IReadOnlyList<ItemClass> weaponRestrictions)
+            => (DisplayName, CastTime, ActiveSkillTypes, MinionActiveSkillTypes, Keywords, KeywordsPerPart,
+                    ProvidesBuff, TotemLifeMultiplier, WeaponRestrictions) =
+                (displayName, castTime, activeSkillTypes, minionActiveSkillTypes, keywords, keywordsPerPart,
+                    providesBuff, totemLifeMultiplier, weaponRestrictions);
 
         public string DisplayName { get; }
         public int CastTime { get; }
         public IEnumerable<string> ActiveSkillTypes { get; }
         public IEnumerable<string> MinionActiveSkillTypes { get; }
         public IReadOnlyList<Keyword> Keywords { get; }
+        public IReadOnlyList<IReadOnlyList<Keyword>> KeywordsPerPart { get; }
         public bool ProvidesBuff { get; }
         public double? TotemLifeMultiplier { get; }
         public IReadOnlyList<ItemClass> WeaponRestrictions { get; }
@@ -101,6 +106,8 @@ namespace PoESkillTree.GameModel.Skills
             int? manaCost, double? manaMultiplier, int? manaCostOverride, int? cooldown,
             int requiredLevel, int requiredDexterity, int requiredIntelligence, int requiredStrength,
             IReadOnlyList<UntranslatedStat> qualityStats, IReadOnlyList<UntranslatedStat> stats,
+            IReadOnlyList<IReadOnlyList<UntranslatedStat>> additionalStatsPerPart,
+            IReadOnlyList<BuffStat> qualityBuffStats, IReadOnlyList<BuffStat> buffStats,
             SkillTooltipDefinition tooltip)
         {
             DamageEffectiveness = damageEffectiveness;
@@ -116,6 +123,9 @@ namespace PoESkillTree.GameModel.Skills
             RequiredStrength = requiredStrength;
             QualityStats = qualityStats;
             Stats = stats;
+            AdditionalStatsPerPart = additionalStatsPerPart;
+            QualityBuffStats = qualityBuffStats;
+            BuffStats = buffStats;
             Tooltip = tooltip;
         }
 
@@ -135,11 +145,15 @@ namespace PoESkillTree.GameModel.Skills
 
         public IReadOnlyList<UntranslatedStat> QualityStats { get; }
         public IReadOnlyList<UntranslatedStat> Stats { get; }
+        public IReadOnlyList<IReadOnlyList<UntranslatedStat>> AdditionalStatsPerPart { get; }
+
+        public IReadOnlyList<BuffStat> QualityBuffStats { get; }
+        public IReadOnlyList<BuffStat> BuffStats { get; }
 
         public SkillTooltipDefinition Tooltip { get; }
     }
 
-    public struct UntranslatedStat
+    public class UntranslatedStat
     {
         public UntranslatedStat(string statId, int value) => (StatId, Value) = (statId, value);
 
@@ -154,6 +168,27 @@ namespace PoESkillTree.GameModel.Skills
 
         public override int GetHashCode()
             => (StatId, Value).GetHashCode();
+
+        public override string ToString()
+            => $"{StatId}, {Value}";
+    }
+
+    public class BuffStat
+    {
+        public BuffStat(UntranslatedStat stat, IEnumerable<Entity> affectedEntities)
+            => (Stat, AffectedEntities) = (stat, affectedEntities);
+
+        public UntranslatedStat Stat { get; }
+        public IEnumerable<Entity> AffectedEntities { get; }
+
+        public override bool Equals(object obj)
+            => obj is BuffStat other && Equals(other);
+
+        private bool Equals(BuffStat other)
+            => Stat.Equals(other.Stat) && AffectedEntities.SequenceEqual(other.AffectedEntities);
+
+        public override int GetHashCode()
+            => (Stat, AffectedEntities.SequenceHash()).GetHashCode();
     }
 
     public class SkillTooltipDefinition

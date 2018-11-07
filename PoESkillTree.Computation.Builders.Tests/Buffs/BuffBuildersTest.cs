@@ -157,8 +157,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
 
         private static SkillDefinition CreateSkill(string id, IReadOnlyList<Keyword> keywords)
             => SkillDefinition.CreateActive(
-                id, 0, "", null,
-                new ActiveSkillDefinition(id, 0, new string[0], new string[0], keywords, true,
+                id, 0, "", new[] { "" }, null,
+                new ActiveSkillDefinition(id, 0, new string[0], new string[0], keywords, new[] { keywords }, true,
                     null, new ItemClass[0]),
                 new Dictionary<int, SkillLevelDefinition>());
 

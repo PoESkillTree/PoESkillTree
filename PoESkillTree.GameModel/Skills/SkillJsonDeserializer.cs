@@ -17,7 +17,12 @@ namespace PoESkillTree.GameModel.Skills
             ActiveSkillType.Buff, ActiveSkillType.ExplicitProvidesBuff, ActiveSkillType.Curse
         };
 
+        private readonly SkillDefinitionExtensions _definitionExtensions;
         private int _nextNumericId;
+        private SkillDefinitionExtension _definitionExtension;
+
+        private SkillJsonDeserializer(SkillDefinitionExtensions definitionExtensions)
+            => _definitionExtensions = definitionExtensions;
 
         public static async Task<SkillDefinitions> DeserializeAsync()
         {
@@ -39,7 +44,7 @@ namespace PoESkillTree.GameModel.Skills
 
         private static SkillDefinitions DeserializeMerged(JObject gemJson, JObject gemTooltipJson)
         {
-            var deserializer = new SkillJsonDeserializer();
+            var deserializer = new SkillJsonDeserializer(new SkillDefinitionExtensions());
             var definitions = gemJson.Properties()
                 .Select(property => deserializer.Deserialize(property, gemTooltipJson))
                 .Where(d => d != null);
@@ -78,6 +83,7 @@ namespace PoESkillTree.GameModel.Skills
 
             var numericId = _nextNumericId;
             _nextNumericId++;
+            _definitionExtension = _definitionExtensions.GetExtensionForSkill(skillId);
             var levels = DeserializeLevels(gemJson, gemTooltipJson);
 
             var displayName = baseItemDefinition?.DisplayName;
@@ -94,10 +100,10 @@ namespace PoESkillTree.GameModel.Skills
                 var weaponRestrictions = activeSkillJson["weapon_restrictions"].Values<string>()
                     .Select(ItemClassEx.Parse).ToList();
                 var activeSkillDefinition = new ActiveSkillDefinition(
-                    displayName, castTime, activeSkillTypes, minionActiveSkillTypes, keywords, providesBuff,
-                    totemLifeMultiplier, weaponRestrictions);
+                    displayName, castTime, activeSkillTypes, minionActiveSkillTypes, keywords,
+                    GetKeywordsPerPart(keywords), providesBuff, totemLifeMultiplier, weaponRestrictions);
                 return SkillDefinition.CreateActive(skillId, numericId, statTranslationFile,
-                    baseItemDefinition, activeSkillDefinition, levels);
+                    _definitionExtension.PartNames, baseItemDefinition, activeSkillDefinition, levels);
             }
             else
             {
@@ -111,18 +117,22 @@ namespace PoESkillTree.GameModel.Skills
                     supportSkillJson["excluded_types"].Values<string>().ToList(),
                     addedActiveSkillTypes, addedKeywords);
                 return SkillDefinition.CreateSupport(skillId, numericId, statTranslationFile,
-                    baseItemDefinition, supportSkillDefinition, levels);
+                    _definitionExtension.PartNames, baseItemDefinition, supportSkillDefinition, levels);
             }
         }
 
-        private static IReadOnlyList<Keyword> GetKeywords(
+        private IReadOnlyList<Keyword> GetKeywords(
             string displayName, ISet<string> activeSkillTypes, ISet<string> gemTags)
         {
-            return Enums.GetValues<Keyword>()
-                .Where(k => k.IsOnSkill(displayName, activeSkillTypes, gemTags)).ToList();
+            var keywords = Enums.GetValues<Keyword>()
+                .Where(k => k.IsOnSkill(displayName, activeSkillTypes, gemTags));
+            return _definitionExtension.CommonExtension.ModifyKeywords(keywords).ToList();
         }
 
-        private static IReadOnlyDictionary<int, SkillLevelDefinition> DeserializeLevels(
+        private IReadOnlyList<IReadOnlyList<Keyword>> GetKeywordsPerPart(IReadOnlyList<Keyword> keywords)
+            => _definitionExtension.PartExtensions.Select(e => e.ModifyKeywords(keywords).ToList()).ToList();
+
+        private IReadOnlyDictionary<int, SkillLevelDefinition> DeserializeLevels(
             JObject gemJson, JObject gemTooltipJson)
         {
             var perLevel = gemJson["per_level"];
@@ -135,8 +145,15 @@ namespace PoESkillTree.GameModel.Skills
             return levels;
         }
 
-        private static SkillLevelDefinition DeserializeLevel(JObject levelJson, JToken tooltipLevelJson)
+        private SkillLevelDefinition DeserializeLevel(JObject levelJson, JToken tooltipLevelJson)
         {
+            var allQualityStats = Stats("quality_stats");
+            var (qualityStats, qualityBuffStats) = SplitBuffStats(allQualityStats);
+
+            var allStats = Stats("stats");
+            var (nonBuffStats, buffStats) = SplitBuffStats(allStats);
+            var (commonStats, additionalStatsPerPart) = SplitStatsIntoParts(nonBuffStats);
+
             var statRequirements = levelJson["stat_requirements"];
             return new SkillLevelDefinition(
                 Value<int?>("damage_effectiveness") / 100D + 1,
@@ -150,16 +167,43 @@ namespace PoESkillTree.GameModel.Skills
                 statRequirements?.Value<int>("dex") ?? 0,
                 statRequirements?.Value<int>("int") ?? 0,
                 statRequirements?.Value<int>("str") ?? 0,
-                Stats("quality_stats"),
-                Stats("stats"),
+                qualityStats,
+                commonStats,
+                additionalStatsPerPart,
+                qualityBuffStats,
+                buffStats,
                 DeserializeTooltip(tooltipLevelJson));
 
             T Value<T>(string propertyName) => levelJson.Value<T>(propertyName);
 
             IReadOnlyList<UntranslatedStat> Stats(string propertyName)
-                => Value<JArray>(propertyName)
-                    .Select(s => new UntranslatedStat(s.Value<string>("id"), s.Value<int>("value")))
-                    .ToList();
+            {
+                var stats = Value<JArray>(propertyName)
+                    .Select(s => new UntranslatedStat(s.Value<string>("id"), s.Value<int>("value")));
+                return _definitionExtension.CommonExtension.ModifyStats(stats).ToList();
+            }
+        }
+
+        private (IReadOnlyList<UntranslatedStat>, IReadOnlyList<BuffStat>) SplitBuffStats(
+            IReadOnlyList<UntranslatedStat> stats)
+        {
+            var untranslatedBuffStats =stats
+                .Where(s => _definitionExtension.BuffStats.ContainsKey(s.StatId))
+                .ToList();
+            var remainingStats = stats.Except(untranslatedBuffStats).ToList();
+            var buffStats = untranslatedBuffStats
+                .Select(s => new BuffStat(s, _definitionExtension.BuffStats[s.StatId]))
+                .ToList();
+            return (remainingStats, buffStats);
+        }
+
+        private (IReadOnlyList<UntranslatedStat>, IReadOnlyList<IReadOnlyList<UntranslatedStat>>) SplitStatsIntoParts(
+            IReadOnlyList<UntranslatedStat> stats)
+        {
+            var statsPerPart = _definitionExtension.PartExtensions.Select(e => e.ModifyStats(stats)).ToList();
+            var commonStats = statsPerPart.Aggregate((l, r) => l.Intersect(r)).ToList();
+            var additionalStatsPerPart = statsPerPart.Select(s => s.Except(commonStats).ToList()).ToList();
+            return (commonStats, additionalStatsPerPart);
         }
 
         private static SkillTooltipDefinition DeserializeTooltip(JToken tooltipJson)

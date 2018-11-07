@@ -104,10 +104,29 @@ namespace PoESkillTree.GameModel.Tests.Skills
             var definitions = DeserializeAll();
 
             var definition = definitions.GetSkillById("ChargedAttack");
+            Assert.AreEqual(new[] { "No Release", "Release at 6 Stages" }, definition.PartNames);
             var activeSkill = definition.ActiveSkill;
+            Assert.AreEqual(new[] { activeSkill.Keywords, activeSkill.Keywords }, activeSkill.KeywordsPerPart);
             Assert.AreEqual(new[]
                     { ItemClass.Claw, ItemClass.Dagger, ItemClass.OneHandSword, ItemClass.ThrustingOneHandSword },
                 activeSkill.WeaponRestrictions);
+            var level20 = definition.Levels[20];
+            Assert.AreEqual(new[]
+            {
+                new UntranslatedStat("active_skill_attack_speed_+%_final", 60),
+                new UntranslatedStat("is_area_damage", 1),
+                new UntranslatedStat("skill_can_add_multiple_charges_per_action", 1),
+            }, level20.Stats);
+            Assert.AreEqual(new[]
+            {
+                new UntranslatedStat("charged_attack_damage_per_stack_+%_final", 20),
+                new UntranslatedStat("maximum_stages", 6),
+            }, level20.AdditionalStatsPerPart[0]);
+            Assert.AreEqual(new[]
+            {
+                new UntranslatedStat("base_skill_number_of_additional_hits", 1),
+                new UntranslatedStat("damage_hits_ailments_more", 80),
+            }, level20.AdditionalStatsPerPart[1]);
         }
 
         [Test]
@@ -119,6 +138,21 @@ namespace PoESkillTree.GameModel.Tests.Skills
             Assert.IsTrue(definition.ActiveSkill.ProvidesBuff);
             var level20 = definition.Levels[20];
             Assert.AreEqual(1200, level20.Cooldown);
+            Assert.AreEqual(new[]
+            {
+                new UntranslatedStat("base_skill_area_of_effect_+%", 1000),
+            }, level20.QualityStats);
+            Assert.AreEqual(new[]
+            {
+                new UntranslatedStat("active_skill_base_radius_+", 19),
+                new UntranslatedStat("base_deal_no_damage", 1),
+            }, level20.Stats);
+            Assert.IsEmpty(level20.QualityBuffStats);
+            Assert.AreEqual(new[]
+            {
+                new BuffStat(new UntranslatedStat("base_mana_regeneration_rate_per_minute", 1031),
+                    new[] { Entity.Character, Entity.Minion, Entity.Totem }),
+            }, level20.BuffStats);
         }
 
         [Test]

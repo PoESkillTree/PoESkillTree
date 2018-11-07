@@ -10,6 +10,46 @@ namespace PoESkillTree.Computation.Parsing.Tests
 {
     public static class SkillParserTestUtils
     {
+        public static SkillDefinition CreateActive(
+            string id, ActiveSkillDefinition activeSkill, IReadOnlyDictionary<int, SkillLevelDefinition> levels)
+            => SkillDefinition.CreateActive(id, 0, "", new[] { "" }, null, activeSkill, levels);
+
+        public static SkillDefinition CreateSupport(
+            string id, SupportSkillDefinition supportSkill, IReadOnlyDictionary<int, SkillLevelDefinition> levels)
+            => SkillDefinition.CreateSupport(id, 0, "", new[] { "" }, null, supportSkill, levels);
+
+        public static ActiveSkillDefinition CreateActiveSkillDefinition(
+            string displayName, IEnumerable<string> activeSkillTypes, IReadOnlyList<Keyword> keywords,
+            bool providesBuff = false, IReadOnlyList<ItemClass> weaponRestrictions = null)
+            => CreateActiveSkillDefinition(displayName, null, activeSkillTypes, keywords,
+                providesBuff: providesBuff, weaponRestrictions: weaponRestrictions);
+
+        public static SkillLevelDefinition CreateLevelDefinition(
+            double? damageEffectiveness = null, double? damageMultiplier = null, double? criticalStrikeChance = null,
+            int? manaCost = null, double? manaMultiplier = null, int? manaCostOverride = null, int? cooldown = null,
+            int requiredLevel = 0, int requiredDexterity = 0, int requiredIntelligence = 0, int requiredStrength = 0,
+            IReadOnlyList<UntranslatedStat> qualityStats = null, IReadOnlyList<UntranslatedStat> stats = null,
+            IReadOnlyList<IReadOnlyList<UntranslatedStat>> additionalStatsPerPart = null,
+            IReadOnlyList<BuffStat> qualityBuffStats = null, IReadOnlyList<BuffStat> buffStats = null,
+            SkillTooltipDefinition tooltip = null)
+            => new SkillLevelDefinition(damageEffectiveness, damageMultiplier, criticalStrikeChance, manaCost,
+                manaMultiplier, manaCostOverride, cooldown, requiredLevel, requiredDexterity, requiredIntelligence,
+                requiredStrength, qualityStats ?? new UntranslatedStat[0], stats ?? new UntranslatedStat[0],
+                additionalStatsPerPart ?? new[] { new UntranslatedStat[0]}, qualityBuffStats ?? new BuffStat[0],
+                buffStats ?? new BuffStat[0], tooltip ?? null);
+
+        public static ActiveSkillDefinition CreateActiveSkillDefinition(
+            string displayName, int? castTime = null, IEnumerable<string> activeSkillTypes = null,
+            IReadOnlyList<Keyword> keywords = null, IReadOnlyList<IReadOnlyList<Keyword>> keywordsPerPart = null,
+            bool providesBuff = false, double? totemLifeMultiplier = null,
+            IReadOnlyList<ItemClass> weaponRestrictions = null)
+        {
+            keywords = keywords ?? new Keyword[0];
+            return new ActiveSkillDefinition(displayName, castTime ?? 0, activeSkillTypes ?? new string[0],
+                new string[0], keywords, keywordsPerPart ?? new[] { keywords }, providesBuff, totemLifeMultiplier,
+                weaponRestrictions ?? new ItemClass[0]);
+        }
+
         public static IValueCalculationContext MockValueCalculationContextForMainSkill(
             Skill skill, params (string stat, double? value)[] nodeValues)
             => MockValueCalculationContext(skill, true, false, nodeValues);
