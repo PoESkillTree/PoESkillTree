@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using EnumsNET;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
@@ -38,10 +36,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             {
                 AddMainSkillModifier(_metaStatBuilders.DamageBaseSetEffectiveness, Form.TotalOverride, multiplier);
             }
-            if (level.CriticalStrikeChance is double crit &&
-                preParseResult.HitDamageSource is DamageSource hitDamageSource)
+            if (level.CriticalStrikeChance is double crit)
             {
-                AddMainSkillModifier(_builderFactories.ActionBuilders.CriticalStrike.Chance.With(hitDamageSource),
+                AddMainSkillModifier(_builderFactories.ActionBuilders.CriticalStrike.Chance.WithHits,
                     Form.BaseSet, crit);
             }
             if (level.ManaCost is int cost)
