@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EnumsNET;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
@@ -30,12 +31,11 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             _parsedModifiers = new List<Modifier>();
             _preParseResult = preParseResult;
             var activeSkill = preParseResult.SkillDefinition.ActiveSkill;
-            var hitDamageSource = preParseResult.HitDamageSource;
             var isMainSkill = preParseResult.IsMainSkill.IsSet;
 
-            if (hitDamageSource is DamageSource s)
+            if (DetermineHitDamageSource(activeSkill, preParseResult.LevelDefinition) is DamageSource damageSource)
             {
-                AddMainSkillModifier(_metaStatBuilders.SkillHitDamageSource, Form.TotalOverride, (int) s);
+                AddMainSkillModifier(_metaStatBuilders.SkillHitDamageSource, Form.TotalOverride, (int) damageSource);
             }
             var usesMainHandCondition = isMainSkill;
             var usesOffHandCondition = isMainSkill.And(OffHand.Has(Tags.Weapon));
@@ -60,10 +60,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             AddMainSkillModifier(_metaStatBuilders.MainSkillId,
                 Form.TotalOverride, preParseResult.SkillDefinition.NumericId);
 
-            if (hitDamageSource != DamageSource.Attack)
+            if (!activeSkill.ActiveSkillTypes.Contains(ActiveSkillType.Attack))
             {
-                var castRateDamageSource = hitDamageSource ?? DamageSource.Spell;
-                AddMainSkillModifier(_builderFactories.StatBuilders.CastRate.With(castRateDamageSource),
+                AddMainSkillModifier(_builderFactories.StatBuilders.CastRate,
                     Form.BaseSet, 1000D / activeSkill.CastTime);
             }
 
@@ -80,6 +79,23 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var result = new PartialSkillParseResult(_parsedModifiers, new UntranslatedStat[0]);
             _parsedModifiers = null;
             return result;
+        }
+
+        private static DamageSource? DetermineHitDamageSource(
+            ActiveSkillDefinition activeSkill, SkillLevelDefinition level)
+        {
+            if (activeSkill.ActiveSkillTypes.Contains(ActiveSkillType.Attack))
+                return DamageSource.Attack;
+            var statIds = level.Stats.Select(s => s.StatId);
+            foreach (var statId in statIds)
+            {
+                var match = SkillStatIds.HitDamageRegex.Match(statId);
+                if (match.Success)
+                    return Enums.Parse<DamageSource>(match.Groups[1].Value, true);
+                if (statId == SkillStatIds.DealsSecondaryDamage)
+                    return DamageSource.Secondary;
+            }
+            return null;
         }
 
         private void AddMainSkillModifier(IStatBuilder stat, Form form, double value)

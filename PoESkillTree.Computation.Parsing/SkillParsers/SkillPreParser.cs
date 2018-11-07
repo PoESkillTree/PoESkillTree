@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using EnumsNET;
-using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Builders.Damage;
+﻿using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel.Skills;
 
@@ -32,7 +29,6 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         private SkillPreParseResult Parse(Skill mainSkill, Skill parsedSkill, string displayName)
         {
             var mainSkillDefinition = _skillDefinitions.GetSkillById(mainSkill.Id);
-            var mainSkillLevel = mainSkillDefinition.Levels[mainSkill.Level];
             var parsedSkillDefinition = _skillDefinitions.GetSkillById(parsedSkill.Id);
             var parsedSkillLevel = parsedSkillDefinition.Levels[parsedSkill.Level];
 
@@ -40,8 +36,6 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var globalSource = new ModifierSource.Global(localSource);
             var gemSource = new ModifierSource.Local.Gem(parsedSkill.ItemSlot, parsedSkill.SocketIndex, displayName);
 
-            var hitDamageSource = DetermineHitDamageSource(mainSkillDefinition.ActiveSkill, mainSkillLevel);
-            var hasSkillDamageOverTime = HasSkillDamageOverTime(mainSkillLevel);
             var isMainSkillStat = _metaStatBuilders.SkillIsMain(mainSkill.ItemSlot, mainSkill.SocketIndex);
 
             var activeSkillItemSlot = _metaStatBuilders.ActiveSkillItemSlot(mainSkill.Id);
@@ -51,27 +45,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
             return new SkillPreParseResult(parsedSkillDefinition, parsedSkillLevel, mainSkillDefinition,
                 localSource, globalSource, gemSource,
-                hitDamageSource, hasSkillDamageOverTime, isMainSkillStat, isActiveSkill);
+                isMainSkillStat, isActiveSkill);
         }
-
-        private static DamageSource? DetermineHitDamageSource(
-            ActiveSkillDefinition activeSkill, SkillLevelDefinition level)
-        {
-            if (activeSkill.ActiveSkillTypes.Contains(ActiveSkillType.Attack))
-                return DamageSource.Attack;
-            var statIds = level.Stats.Select(s => s.StatId);
-            foreach (var statId in statIds)
-            {
-                var match = SkillStatIds.HitDamageRegex.Match(statId);
-                if (match.Success)
-                    return Enums.Parse<DamageSource>(match.Groups[1].Value, true);
-                if (statId == SkillStatIds.DealsSecondaryDamage)
-                    return DamageSource.Secondary;
-            }
-            return null;
-        }
-
-        private static bool HasSkillDamageOverTime(SkillLevelDefinition level)
-            => level.Stats.Any(s => SkillStatIds.DamageOverTimeRegex.IsMatch(s.StatId));
     }
 }

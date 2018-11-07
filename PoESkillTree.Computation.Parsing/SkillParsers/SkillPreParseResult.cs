@@ -1,6 +1,5 @@
 ﻿using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel.Skills;
 
@@ -11,7 +10,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         public SkillPreParseResult(
             SkillDefinition skillDefinition, SkillLevelDefinition levelDefinition, SkillDefinition mainSkillDefinition,
             ModifierSource.Local.Skill localSource, ModifierSource.Global globalSource,
-            ModifierSource.Local.Gem gemSource, DamageSource? hitDamageSource, bool hasSkillDamageOverTime,
+            ModifierSource.Local.Gem gemSource,
             IStatBuilder isMainSkill, IConditionBuilder isActiveSkill)
         {
             SkillDefinition = skillDefinition;
@@ -20,8 +19,6 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             LocalSource = localSource;
             GlobalSource = globalSource;
             GemSource = gemSource;
-            HitDamageSource = hitDamageSource;
-            HasSkillDamageOverTime = hasSkillDamageOverTime;
             IsMainSkill = isMainSkill;
             IsActiveSkill = isActiveSkill;
         }
@@ -38,9 +35,6 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         public ModifierSource.Local.Skill LocalSource { get; }
         public ModifierSource.Global GlobalSource { get; }
         public ModifierSource.Local.Gem GemSource { get; }
-
-        public DamageSource? HitDamageSource { get; }
-        public bool HasSkillDamageOverTime { get; }
 
         public IStatBuilder IsMainSkill { get; }
         public IConditionBuilder IsActiveSkill { get; }
