@@ -5,6 +5,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Common.Parsing;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Parsing
 {

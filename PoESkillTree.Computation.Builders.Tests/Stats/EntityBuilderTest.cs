@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Builders.Tests.Stats
 {

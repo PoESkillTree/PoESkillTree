@@ -4,6 +4,7 @@ using System.Linq;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Common.Builders.Modifiers

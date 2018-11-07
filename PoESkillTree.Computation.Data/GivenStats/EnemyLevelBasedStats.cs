@@ -17,7 +17,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
         {
         }
 
-        public override IReadOnlyList<Entity> AffectedEntities { get; } = new[] { Common.Entity.Enemy };
+        public override IReadOnlyList<Entity> AffectedEntities { get; } = new[] { GameModel.Entity.Enemy };
 
         protected override GivenStatCollection CreateCollection()
             => new GivenStatCollection(ModifierBuilder, ValueFactory)

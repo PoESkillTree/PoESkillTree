@@ -18,6 +18,7 @@ using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.Parsing;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Console
 {

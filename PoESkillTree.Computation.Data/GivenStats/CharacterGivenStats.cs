@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             _lazyGivenStats = new Lazy<IReadOnlyList<IIntermediateModifier>>(() => CreateCollection().ToList());
         }
 
-        public IReadOnlyList<Entity> AffectedEntities { get; } = new[] { Common.Entity.Character };
+        public IReadOnlyList<Entity> AffectedEntities { get; } = new[] { GameModel.Entity.Character };
 
         public IReadOnlyList<string> GivenStatLines { get; } = new[]
         {

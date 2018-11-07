@@ -1,4 +1,6 @@
-﻿namespace PoESkillTree.Computation.Common.Builders
+﻿using PoESkillTree.GameModel;
+
+namespace PoESkillTree.Computation.Common.Builders
 {
     /// <summary>
     /// Common parameters for stat builders and all builders producible from stat builders (e.g. value and condition).

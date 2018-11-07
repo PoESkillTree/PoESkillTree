@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Common.Builders.Entities
 {

@@ -16,7 +16,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
         }
 
         public override IReadOnlyList<Entity> AffectedEntities { get; } =
-            new[] { Common.Entity.Totem, Common.Entity.Minion };
+            new[] { GameModel.Entity.Totem, GameModel.Entity.Minion };
 
         protected override GivenStatCollection CreateCollection()
             => new GivenStatCollection(ModifierBuilder, ValueFactory)

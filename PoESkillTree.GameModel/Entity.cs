@@ -1,4 +1,4 @@
-﻿namespace PoESkillTree.Computation.Common
+﻿namespace PoESkillTree.GameModel
 {
     /// <summary>
     /// The types of entities relevant for stat calculation. The first entry is the default entity of stats.

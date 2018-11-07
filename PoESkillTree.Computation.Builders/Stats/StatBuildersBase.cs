@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {

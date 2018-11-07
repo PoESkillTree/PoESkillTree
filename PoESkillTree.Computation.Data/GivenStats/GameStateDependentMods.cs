@@ -8,6 +8,7 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Data.GivenStats
 {
@@ -29,7 +30,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             _lazyGivenStats = new Lazy<IReadOnlyList<IIntermediateModifier>>(() => CreateCollection().ToList());
         }
 
-        public IReadOnlyList<Entity> AffectedEntities { get; } = new[] { Common.Entity.Character };
+        public IReadOnlyList<Entity> AffectedEntities { get; } = new[] { GameModel.Entity.Character };
         public IReadOnlyList<string> GivenStatLines { get; } = new string[0];
         public IReadOnlyList<IIntermediateModifier> GivenModifiers => _lazyGivenStats.Value;
 
