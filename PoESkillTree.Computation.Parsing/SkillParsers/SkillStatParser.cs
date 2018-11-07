@@ -30,10 +30,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             _parsedStats = new List<UntranslatedStat>();
             _preParseResult = preParseResult;
 
-            if (preParseResult.HitDamageSource is DamageSource hitDamageSource)
-            {
-                ParseHitDamage(hitDamageSource);
-            }
+            ParseHitDamage();
             foreach (var stat in preParseResult.LevelDefinition.Stats)
             {
                 if (TryParseOther(stat) || TryParseDamageOverTime(stat) || TryParseConversion(stat))
@@ -48,9 +45,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             return result;
         }
 
-        private void ParseHitDamage(DamageSource hitDamageSource)
+        private void ParseHitDamage()
         {
-            DamageType? hitDamageType = null;
+            IStatBuilder statBuilder = null;
             double hitDamageMinimum = 0D;
             double? hitDamageMaximum = null;
             foreach (var stat in _preParseResult.LevelDefinition.Stats)
@@ -58,18 +55,21 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 var match = SkillStatIds.HitDamageRegex.Match(stat.StatId);
                 if (match.Success)
                 {
-                    hitDamageType = Enums.Parse<DamageType>(match.Groups[3].Value, true);
+                    var hitDamageSource = Enums.Parse<DamageSource>(match.Groups[1].Value, true);
+                    var hitDamageType = Enums.Parse<DamageType>(match.Groups[3].Value, true);
+                    statBuilder = _builderFactories.DamageTypeBuilders.From(hitDamageType).Damage
+                        .WithSkills(hitDamageSource);
+
                     if (match.Groups[2].Value == "minimum")
                         hitDamageMinimum = stat.Value;
                     else
                         hitDamageMaximum = stat.Value;
+
                     _parsedStats.Add(stat);
                 }
             }
             if (hitDamageMaximum.HasValue)
             {
-                var statBuilder = _builderFactories.DamageTypeBuilders.From(hitDamageType.Value).Damage
-                    .WithSkills(hitDamageSource);
                 var valueBuilder = _builderFactories.ValueBuilders.FromMinAndMax(
                     CreateValue(hitDamageMinimum), CreateValue(hitDamageMaximum.Value));
                 AddMainSkillModifier(statBuilder, Form.BaseSet, valueBuilder);
