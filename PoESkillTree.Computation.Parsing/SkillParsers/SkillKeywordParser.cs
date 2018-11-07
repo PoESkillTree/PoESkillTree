@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EnumsNET;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
@@ -14,11 +15,17 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
     public class SkillKeywordParser : IPartialSkillParser
     {
-        private static readonly IReadOnlyList<Keyword> KeywordsExcludedForDamageOverTime = new[]
-        {
-            Keyword.Attack, Keyword.Spell, Keyword.Melee, Keyword.Projectile, Keyword.AreaOfEffect, Keyword.Movement,
-            Keyword.Bow,
-        };
+        private static readonly IReadOnlyDictionary<DamageSource, IReadOnlyList<Keyword>> ExcludedKeywords =
+            new Dictionary<DamageSource, IReadOnlyList<Keyword>>
+            {
+                [DamageSource.Attack] = new[] { Keyword.Spell, },
+                [DamageSource.Spell] = new[] { Keyword.Attack, Keyword.Melee, Keyword.Bow, },
+                [DamageSource.Secondary] = new[] { Keyword.Attack, Keyword.Spell, Keyword.Melee, Keyword.Bow, },
+                [DamageSource.OverTime] = new[]
+                {
+                    Keyword.Attack, Keyword.Spell, Keyword.Melee, Keyword.Projectile, Keyword.Movement, Keyword.Bow,
+                },
+            };
 
         private static readonly IReadOnlyList<string> AreaDamageOverTimeSkills = new[]
         {
@@ -57,36 +64,27 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             _preParseResult = preParseResult;
             _keywords = _selectKeywords(preParseResult.SkillDefinition);
 
-            var hitDamageSource = preParseResult.HitDamageSource;
             var isMainSkill = preParseResult.IsMainSkill.IsSet;
+            var isAlwaysProjectile = HitIsAlwaysProjectile(preParseResult.LevelDefinition);
+            var hitIsAreaDamage = HitDamageIsArea(preParseResult.LevelDefinition);
+            var dotIsAreaDamage = AreaDamageOverTimeSkills.Contains(preParseResult.SkillDefinition.Id);
+
+            IConditionBuilder CreatePartHasKeywordCondition(Keyword k)
+                => PartHasKeywordCondition(isAlwaysProjectile, isMainSkill, k);
 
             AddKeywordModifiers(_metaStatBuilders.MainSkillHasKeyword, _ => isMainSkill);
-            AddKeywordModifiers(
-                _metaStatBuilders.MainSkillPartHasKeyword,
-                k => PartHasKeywordCondition(hitDamageSource, isMainSkill, k));
-            AddKeywordModifiers(
-                _metaStatBuilders.MainSkillPartCastRateHasKeyword,
-                k => PartHasKeywordCondition(hitDamageSource, isMainSkill, k));
-            if (hitDamageSource.HasValue)
+            AddKeywordModifiers(_metaStatBuilders.MainSkillPartHasKeyword, CreatePartHasKeywordCondition);
+            AddKeywordModifiers(_metaStatBuilders.MainSkillPartCastRateHasKeyword, CreatePartHasKeywordCondition);
+            foreach (var damageSource in Enums.GetValues<DamageSource>())
             {
-                var hitIsAreaDamage = HitDamageIsArea(preParseResult.LevelDefinition);
-                AddKeywordModifiers(
-                    k => _metaStatBuilders.MainSkillPartDamageHasKeyword(k, hitDamageSource.Value),
-                    k => PartHasKeywordCondition(hitDamageSource, isMainSkill, k),
-                    k => k != Keyword.AreaOfEffect || hitIsAreaDamage);
+                var preCondition = damageSource != DamageSource.OverTime
+                    ? KeywordPreCondition(hitIsAreaDamage, ExcludedKeywords[damageSource])
+                    : KeywordPreCondition(dotIsAreaDamage, ExcludedKeywords[damageSource]);
+                AddKeywordModifiers(k => _metaStatBuilders.MainSkillPartDamageHasKeyword(k, damageSource),
+                    CreatePartHasKeywordCondition, preCondition);
             }
-            if (preParseResult.HasSkillDamageOverTime)
-            {
-                var dotIsAreaDamage = AreaDamageOverTimeSkills.Contains(preParseResult.SkillDefinition.Id);
-                AddKeywordModifiers(
-                    k => _metaStatBuilders.MainSkillPartDamageHasKeyword(k, DamageSource.OverTime),
-                    k => PartHasKeywordCondition(hitDamageSource, isMainSkill, k),
-                    k => k == Keyword.AreaOfEffect ? dotIsAreaDamage : !KeywordsExcludedForDamageOverTime.Contains(k));
-            }
-            AddKeywordModifiers(
-                k => _metaStatBuilders.MainSkillPartAilmentDamageHasKeyword(k),
-                k => PartHasKeywordCondition(hitDamageSource, isMainSkill, k),
-                k => !KeywordsExcludedForDamageOverTime.Contains(k));
+            AddKeywordModifiers(k => _metaStatBuilders.MainSkillPartAilmentDamageHasKeyword(k),
+                CreatePartHasKeywordCondition, KeywordPreCondition(false, ExcludedKeywords[DamageSource.OverTime]));
 
             var result = new PartialSkillParseResult(_parsedModifiers, _parsedStats);
             _parsedModifiers = null;
@@ -121,9 +119,15 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             }
         }
 
+        private bool HitIsAlwaysProjectile(SkillLevelDefinition level)
+            => MatchFlagStat(level, SkillStatIds.IsAlwaysProjectile);
+
         private bool HitDamageIsArea(SkillLevelDefinition level)
+            => MatchFlagStat(level, SkillStatIds.IsAreaDamage);
+
+        private bool MatchFlagStat(SkillLevelDefinition level, string statId)
         {
-            var firstMatch = level.Stats.Where(s => s.StatId == SkillStatIds.IsAreaDamage)
+            var firstMatch = level.Stats.Where(s => s.StatId == statId)
                 .Cast<UntranslatedStat?>()
                 .FirstOrDefault();
             if (firstMatch is UntranslatedStat stat)
@@ -135,18 +139,23 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         }
 
         private IConditionBuilder PartHasKeywordCondition(
-            DamageSource? hitDamageSource, IConditionBuilder baseCondition, Keyword keyword)
+            bool isAlwaysProjectile, IConditionBuilder baseCondition, Keyword keyword)
         {
             var mainHandIsRanged = _builderFactories.EquipmentBuilders.Equipment[ItemSlot.MainHand].Has(Tags.Ranged);
             switch (keyword)
             {
                 case Keyword.Melee:
                     return baseCondition.And(mainHandIsRanged.Not);
-                case Keyword.Projectile when hitDamageSource == DamageSource.Attack:
+                case Keyword.Projectile when !isAlwaysProjectile:
                     return baseCondition.And(mainHandIsRanged);
                 default:
                     return baseCondition;
             }
+        }
+
+        private Func<Keyword, bool> KeywordPreCondition(bool canBeArea, IEnumerable<Keyword> excludedKeywords)
+        {
+            return k => k == Keyword.AreaOfEffect ? canBeArea : !excludedKeywords.Contains(k);
         }
     }
 }

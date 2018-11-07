@@ -273,7 +273,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var result = sut.Parse(skill);
 
             var modifiers = result.Modifiers;
-            Assert.IsFalse(AnyModifierHasIdentity(modifiers, "MainSkillPart.Damage.Spell.Has.Spell"));
+            Assert.IsFalse(AnyModifierHasIdentity(modifiers, "MainSkillPart.Damage.OverTime.Has.Spell"));
             Assert.IsFalse(AnyModifierHasIdentity(modifiers, "MainSkillPart.Damage.OverTime.Has.AreaOfEffect"));
             Assert.IsTrue(AnyModifierHasIdentity(modifiers, "MainSkillPart.Damage.OverTime.Has.Chaos"));
         }

@@ -5,6 +5,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     public static class SkillStatIds
     {
         public const string IsAreaDamage = "is_area_damage";
+        public const string IsAlwaysProjectile = "base_is_projectile";
         public const string DealsSecondaryDamage = "display_skill_deals_secondary_damage";
 
         private const string DamageTypeRegex = "(physical|cold|fire|lightning|chaos)";

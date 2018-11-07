@@ -91,6 +91,8 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                     ("MainSkillPart.Damage.Attack.Has.Projectile", Form.TotalOverride, 1, global, true),
                     ("MainSkillPart.Damage.Attack.Has.Melee", Form.TotalOverride, null, global, true),
                     ("MainSkillPart.Damage.Attack.Has.Bow", Form.TotalOverride, 1, global, true),
+                    ("MainSkillPart.Damage.Spell.Has.Projectile", Form.TotalOverride, 1, global, true),
+                    ("MainSkillPart.Damage.Secondary.Has.Projectile", Form.TotalOverride, 1, global, true),
                     ("Boots.0.Type.attack", Form.TotalOverride, 1, global, false),
                     ("Boots.0.Type.projectile_attack", Form.TotalOverride, 1, global, false),
                     ("Boots.0.Type.mirage_archer_supportable", Form.TotalOverride, 1, global, false),
