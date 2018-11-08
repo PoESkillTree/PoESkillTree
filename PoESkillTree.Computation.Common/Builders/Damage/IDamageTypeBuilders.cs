@@ -22,4 +22,10 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
 
         IDamageTypeBuilder From(DamageType damageType);
     }
+
+    public static class DamageTypeBuildersExtension
+    {
+        public static IDamageTypeBuilder AnyDamageType(this IDamageTypeBuilders @this)
+            => @this.RandomElement.Invert;
+    }
 }

@@ -160,16 +160,8 @@ namespace PoESkillTree.Computation.Data.Base
         /// </summary>
         protected IDamageTypeBuilder Elemental => ElementalDamageTypes.Aggregate((l, r) => l.And(r));
 
-        protected IDamageTypeBuilder AnyDamageType => AllDamageTypes.Aggregate((l, r) => l.And(r));
+        protected IDamageTypeBuilder AnyDamageType => DamageTypeBuilders.AnyDamageType();
 
-
-        /// <summary>
-        /// Gets an enumerable of all damage types.
-        /// </summary>
-        protected IEnumerable<IDamageTypeBuilder> AllDamageTypes => new[]
-        {
-            Physical, Fire, Lightning, Cold, Chaos
-        };
 
         /// <summary>
         /// Gets an enumerable of the elemental damage types.
