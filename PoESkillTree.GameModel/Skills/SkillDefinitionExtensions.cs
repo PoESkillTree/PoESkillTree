@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PoESkillTree.GameModel.Skills
@@ -20,40 +21,46 @@ namespace PoESkillTree.GameModel.Skills
         public SkillDefinitionExtensions()
         {
             var skillDotIsAreaDamageExtension = new SkillPartDefinitionExtension(
-                addedStats: Stats(("skill_dot_is_area_damage", 1)));
+                AddStat("skill_dot_is_area_damage", 1));
             var removeShowAverageDamageExtension = new SkillPartDefinitionExtension(
-                removedStats: new[] { "base_skill_show_average_damage_instead_of_dps" });
+                RemoveStat("base_skill_show_average_damage_instead_of_dps"));
+
             Add("Barrage",
                 ("Single Projectile", new SkillPartDefinitionExtension()),
                 ("All Projectiles", new SkillPartDefinitionExtension()));
-            Add("BearTrap", BuffStats(("bear_trap_damage_taken_+%_from_traps_and_mines", Entity.Character)));
+            Add("BearTrap", EnemyBuff("bear_trap_damage_taken_+%_from_traps_and_mines"));
             Add("ChargedDash", removeShowAverageDamageExtension);
             Add("ChargedAttack", removeShowAverageDamageExtension,
                 ("No Release", new SkillPartDefinitionExtension(
-                    addedStats: Stats(("maximum_stages", 6)))),
+                    AddStat("maximum_stages", 6))),
                 ("Release at 6 Stages", new SkillPartDefinitionExtension(
-                    removedStats: new[] { "charged_attack_damage_per_stack_+%_final" },
-                    addedStats: Stats(
+                    RemoveStat("charged_attack_damage_per_stack_+%_final"),
+                    AddStats(
                         // For releasing
                         ("base_skill_number_of_additional_hits", 1),
                         // Average stage multiplier, slightly smaller than the perfect 85
                         ("hit_ailment_damage_+%_final", 80)))));
-            Add("Clarity", BuffStats(("base_mana_regeneration_rate_per_minute", AuraEntities)));
+            Add("Clarity", Aura("base_mana_regeneration_rate_per_minute"));
             Add("ColdSnap", skillDotIsAreaDamageExtension);
             Add("VaalColdSnap", skillDotIsAreaDamageExtension);
             Add("Desecrate", skillDotIsAreaDamageExtension);
             Add("FireTrap", skillDotIsAreaDamageExtension);
             Add("FlameDash", skillDotIsAreaDamageExtension);
             Add("FlickerStrike", removeShowAverageDamageExtension);
+            Add("IceSpear",
+                ("First Form", new SkillPartDefinitionExtension(
+                    AddStat("always_pierce", 1))),
+                ("Second Form", new SkillPartDefinitionExtension(
+                    ReplaceStat("ice_spear_second_form_critical_strike_chance_+%", "critical_strike_chance_+%"))));
             Add("InfernalBlow",
                 ("Attack", new SkillPartDefinitionExtension()),
                 ("Corpse Explosion", new SkillPartDefinitionExtension(
-                    addedStats: Stats(
+                    AddStats(
                         ("display_skill_deals_secondary_damage", 1),
                         ("base_skill_show_average_damage_instead_of_dps", 1)))),
                 ("6 Charge Explosion", new SkillPartDefinitionExtension(
-                    removedStats: new[] { "corpse_explosion_monster_life_%" },
-                    addedStats: Stats(
+                    RemoveStat("corpse_explosion_monster_life_%"),
+                    AddStats(
                         ("display_skill_deals_secondary_damage", 1),
                         ("base_skill_show_average_damage_instead_of_dps", 1)))));
             Add("PoisonArrow", skillDotIsAreaDamageExtension);
@@ -63,25 +70,25 @@ namespace PoESkillTree.GameModel.Skills
             Add("FrostBoltNova", skillDotIsAreaDamageExtension);
             Add("WildStrike",
                 ("Fire", new SkillPartDefinitionExtension(
-                    addedStats: Stats(("skill_physical_damage_%_to_convert_to_fire", 100)))),
+                    AddStat("skill_physical_damage_%_to_convert_to_fire", 100))),
                 ("Fire Explosion", new SkillPartDefinitionExtension(
-                    addedStats: Stats(
+                    AddStats(
                         ("skill_physical_damage_%_to_convert_to_fire", 100),
                         ("cast_rate_is_melee", 1),
                         ("is_area_damage", 1)),
                     removedKeywords: new[] { Keyword.Melee })),
                 ("Cold", new SkillPartDefinitionExtension(
-                    addedStats: Stats(("skill_physical_damage_%_to_convert_to_cold", 100)))),
+                    AddStat("skill_physical_damage_%_to_convert_to_cold", 100))),
                 ("Cold Wave", new SkillPartDefinitionExtension(
-                    addedStats: Stats(
+                    AddStats(
                         ("skill_physical_damage_%_to_convert_to_cold", 100),
                         ("cast_rate_is_melee", 1),
                         ("base_is_projectile", 1)),
                     removedKeywords: new[] { Keyword.Melee })),
                 ("Lightning", new SkillPartDefinitionExtension(
-                    addedStats: Stats(("skill_physical_damage_%_to_convert_to_lightning", 100)))),
+                    AddStat("skill_physical_damage_%_to_convert_to_lightning", 100))),
                 ("Lightning Bolt", new SkillPartDefinitionExtension(
-                    addedStats: Stats(
+                    AddStats(
                         ("skill_physical_damage_%_to_convert_to_lightning", 100),
                         ("cast_rate_is_melee", 1)),
                     removedKeywords: new[] { Keyword.Melee })));
@@ -103,14 +110,38 @@ namespace PoESkillTree.GameModel.Skills
             params (string name, SkillPartDefinitionExtension extension)[] parts)
             => _extensions[skillId] = new SkillDefinitionExtension(commonExtension, buffStats, parts);
 
-        private static IEnumerable<UntranslatedStat> Stats(params (string statId, int value)[] stats)
+        private static IEnumerable<string> RemoveStat(string statId)
+            => new[] { statId };
+
+        private static IEnumerable<UntranslatedStat> AddStat(string statId, int value)
+            => AddStats((statId, value));
+
+        private static IEnumerable<UntranslatedStat> AddStats(params (string statId, int value)[] stats)
             => stats.Select(t => new UntranslatedStat(t.statId, t.value));
 
-        private static IReadOnlyDictionary<string, IEnumerable<Entity>> BuffStats(
-            params (string statId, Entity affectedEntity)[] stats)
-            => stats.ToDictionary(t => t.statId, t => (IEnumerable<Entity>) new[] { t.affectedEntity });
+        private static Func<IEnumerable<UntranslatedStat>, IEnumerable<UntranslatedStat>> ReplaceStat(
+            string oldStatId, string newStatId)
+        {
+            return stats => stats.Select(Replace);
 
-        private static IReadOnlyDictionary<string, IEnumerable<Entity>> BuffStats(
+            UntranslatedStat Replace(UntranslatedStat stat)
+                => stat.StatId == oldStatId ? new UntranslatedStat(newStatId, stat.Value) : stat;
+        }
+
+        private static IReadOnlyDictionary<string, IEnumerable<Entity>> SelfBuff(params string[] statIds)
+            => Buff(new[] { Entity.Character }, statIds);
+
+        private static IReadOnlyDictionary<string, IEnumerable<Entity>> EnemyBuff(params string[] statIds)
+            => Buff(new[] { Entity.Enemy }, statIds);
+
+        private static IReadOnlyDictionary<string, IEnumerable<Entity>> Aura(params string[] statIds)
+            => Buff(AuraEntities, statIds);
+
+        private static IReadOnlyDictionary<string, IEnumerable<Entity>> Buff(
+            IEnumerable<Entity> affectedEntities, params string[] statIds)
+            => Buff(statIds.Select(s => (s, affectedEntities)).ToArray());
+
+        private static IReadOnlyDictionary<string, IEnumerable<Entity>> Buff(
             params (string statId, IEnumerable<Entity> affectedEntities)[] stats)
             => stats.ToDictionary(t => t.statId, t => t.affectedEntities);
     }

@@ -228,7 +228,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
             };
             var statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
                 p.Parse(parseParameters[0]) == parseResults[0] &&
-                p.Parse(parseParameters[1]) == parseResults[1]);
+                p.Parse(parseParameters[1]) == parseResults[1] &&
+                p.Parse(EmptyParserParameter(source)) == EmptyParseResult);
             var sut = CreateSut(definition, statParser);
 
             var result = sut.Parse(skill);
@@ -757,7 +758,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             });
             var statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
                 p.Parse(parseParameter) == parseResult &&
-                p.Parse(new UntranslatedStatParserParameter(source, new UntranslatedStat[0])) == EmptyParseResult);
+                p.Parse(EmptyParserParameter(source)) == EmptyParseResult);
             var sut = CreateSut(definition, statParser);
             var context = MockValueCalculationContextForMainSkill(skill,
                 ("MainSkillPart", skillPart));
@@ -945,6 +946,64 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         #endregion
 
+        #region Ice Spear
+
+        [TestCase(0)]
+        [TestCase(1)]
+        public void IceSpearStatsDependOnSkillPart(int skillPart)
+        {
+            var (definition, skill) = CreateIceSpearDefinition();
+            var source = new ModifierSource.Local.Skill("Ice Spear");
+            var expected = new[]
+            {
+                skillPart == 0 ? (NodeValue?) 5 : null,
+                skillPart == 1 ? (NodeValue?) 6 : null,
+            };
+            var parseResults = new[]
+            {
+                ParseResult.Success(new[] { MockModifier(new Stat("s1"), value: new Constant(5)) }),
+                ParseResult.Success(new[] { MockModifier(new Stat("s2"), value: new Constant(6)) }),
+            };
+            var parseParameters = new[]
+            {
+                new UntranslatedStatParserParameter(source, definition.Levels[1].AdditionalStatsPerPart[0]),
+                new UntranslatedStatParserParameter(source, definition.Levels[1].AdditionalStatsPerPart[1]),
+            };
+            var statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
+                p.Parse(parseParameters[0]) == parseResults[0] &&
+                p.Parse(parseParameters[1]) == parseResults[1] &&
+                p.Parse(EmptyParserParameter(source)) == EmptyParseResult);
+            var sut = CreateSut(definition, statParser);
+            var context = MockValueCalculationContextForMainSkill(skill,
+                ("MainSkillPart", skillPart));
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            var actual = GetValueForIdentity(modifiers, "s1").Calculate(context);
+            Assert.AreEqual(expected[0], actual);
+            actual = GetValueForIdentity(modifiers, "s2").Calculate(context);
+            Assert.AreEqual(expected[1], actual);
+        }
+
+        private static (SkillDefinition, Skill) CreateIceSpearDefinition()
+        {
+            var activeSkill = CreateActiveSkillDefinition("Ice Spear",
+                new[] { "spell" }, new[] { Keyword.Spell });
+            var stats = new UntranslatedStat[0];
+            var additionalStatsPerPart = new[]
+            {
+                new[] { new UntranslatedStat("always_pierce", 1), },
+                new[] { new UntranslatedStat("critical_strike_chance_+%", 100), },
+            };
+            var level = CreateLevelDefinition(stats: stats, additionalStatsPerPart: additionalStatsPerPart);
+            var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
+            return (CreateActive("IceSpear", activeSkill, levels),
+                new Skill("IceSpear", 1, 0, ItemSlot.Belt, 0, null));
+        }
+
+        #endregion
+
         private static ActiveSkillParser CreateSut(
             SkillDefinition skillDefinition, IParser<UntranslatedStatParserParameter> statParser = null)
         {
@@ -959,6 +1018,9 @@ namespace PoESkillTree.Computation.Parsing.Tests
             }
             return new ActiveSkillParser(skillDefinitions, builderFactories, metaStatBuilders, _ => statParser);
         }
+
+        private static UntranslatedStatParserParameter EmptyParserParameter(ModifierSource.Local.Skill source)
+            => new UntranslatedStatParserParameter(source, new UntranslatedStat[0]);
 
         private static readonly ParseResult EmptyParseResult = ParseResult.Success(new Modifier[0]);
 
