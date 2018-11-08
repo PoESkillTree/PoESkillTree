@@ -125,7 +125,7 @@ namespace PoESkillTree.GameModel.Tests.Skills
             Assert.AreEqual(new[]
             {
                 new UntranslatedStat("base_skill_number_of_additional_hits", 1),
-                new UntranslatedStat("damage_hits_ailments_more", 80),
+                new UntranslatedStat("hit_ailment_damage_+%_final", 80),
             }, level20.AdditionalStatsPerPart[1]);
         }
 

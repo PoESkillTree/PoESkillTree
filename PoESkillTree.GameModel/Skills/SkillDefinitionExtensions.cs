@@ -37,7 +37,7 @@ namespace PoESkillTree.GameModel.Skills
                         // For releasing
                         ("base_skill_number_of_additional_hits", 1),
                         // Average stage multiplier, slightly smaller than the perfect 85
-                        ("damage_hits_ailments_more", 80)))));
+                        ("hit_ailment_damage_+%_final", 80)))));
             Add("Clarity", BuffStats(("base_mana_regeneration_rate_per_minute", AuraEntities)));
             Add("ColdSnap", skillDotIsAreaDamageExtension);
             Add("VaalColdSnap", skillDotIsAreaDamageExtension);
@@ -50,6 +50,30 @@ namespace PoESkillTree.GameModel.Skills
             Add("RighteousFire", skillDotIsAreaDamageExtension);
             Add("VaalRighteousFire", skillDotIsAreaDamageExtension);
             Add("FrostBoltNova", skillDotIsAreaDamageExtension);
+            Add("WildStrike",
+                ("Fire", new SkillPartDefinitionExtension(
+                    addedStats: Stats(("skill_physical_damage_%_to_convert_to_fire", 100)))),
+                ("Fire Explosion", new SkillPartDefinitionExtension(
+                    addedStats: Stats(
+                        ("skill_physical_damage_%_to_convert_to_fire", 100),
+                        ("cast_rate_is_melee", 1),
+                        ("is_area_damage", 1)),
+                    removedKeywords: new[] { Keyword.Melee })),
+                ("Cold", new SkillPartDefinitionExtension(
+                    addedStats: Stats(("skill_physical_damage_%_to_convert_to_cold", 100)))),
+                ("Cold Wave", new SkillPartDefinitionExtension(
+                    addedStats: Stats(
+                        ("skill_physical_damage_%_to_convert_to_cold", 100),
+                        ("cast_rate_is_melee", 1),
+                        ("base_is_projectile", 1)),
+                    removedKeywords: new[] { Keyword.Melee })),
+                ("Lightning", new SkillPartDefinitionExtension(
+                    addedStats: Stats(("skill_physical_damage_%_to_convert_to_lightning", 100)))),
+                ("Lightning Bolt", new SkillPartDefinitionExtension(
+                    addedStats: Stats(
+                        ("skill_physical_damage_%_to_convert_to_lightning", 100),
+                        ("cast_rate_is_melee", 1)),
+                    removedKeywords: new[] { Keyword.Melee })));
         }
 
         private void Add(string skillId, params (string name, SkillPartDefinitionExtension extension)[] parts)

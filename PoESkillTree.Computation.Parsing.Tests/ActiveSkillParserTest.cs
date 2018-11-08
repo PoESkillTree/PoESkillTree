@@ -11,6 +11,7 @@ using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Utils.Extensions;
 using static PoESkillTree.Computation.Common.Tests.Helper;
 using static PoESkillTree.Computation.Parsing.Tests.SkillParserTestUtils;
 
@@ -693,6 +694,134 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Skill("Hatred", 1, 0, ItemSlot.Belt, 0, null));
         }
 
+        [TestCase(0)]
+        [TestCase(1)]
+        public void BladeFlurryStatsDependOnSkillPart(int skillPart)
+        {
+            var (definition, skill) = CreateBladeFlurryDefinition();
+            var source = new ModifierSource.Local.Skill("Blade Flurry");
+            var parseResult = ParseResult.Success(new[]
+            {
+                MockModifier(new Stat("CastRate.Attack.MainHand.Skill"), value: new Constant(60))
+            });
+            var parseParameter = new UntranslatedStatParserParameter(source, new[]
+            {
+                new UntranslatedStat("active_skill_attack_speed_+%_final", 60),
+            });
+            var statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
+                p.Parse(parseParameter) == parseResult &&
+                p.Parse(new UntranslatedStatParserParameter(source, new UntranslatedStat[0])) == EmptyParseResult);
+            var sut = CreateSut(definition, statParser);
+            var context = MockValueCalculationContextForMainSkill(skill,
+                ("MainSkillPart", skillPart));
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            var actualCastRate = GetValueForIdentity(modifiers, "CastRate.Attack.MainHand.Skill").Calculate(context);
+            Assert.AreEqual(new NodeValue(60), actualCastRate);
+            var actualStageMaximum = GetValueForIdentity(modifiers, "SkillStage.Maximum").Calculate(context);
+            var expectedStageMaximum = skillPart == 0 ? (NodeValue?) 6 : null;
+            Assert.AreEqual(expectedStageMaximum, actualStageMaximum);
+            var actualHitsPerCast = GetValueForIdentity(modifiers, "SkillNumberOfHitsPerCast").Calculate(context);
+            var expectedHitsPerCast = skillPart == 0 ? null : (NodeValue?) 1;
+            Assert.AreEqual(expectedHitsPerCast, actualHitsPerCast);
+            var actualDamage = GetValueForIdentity(modifiers, "Physical.Damage.Attack.MainHand.Skill")
+                .Calculate(context);
+            var expectedDamage = skillPart == 0 ? null : (NodeValue?) 80;
+            Assert.AreEqual(expectedDamage, actualDamage);
+        }
+
+        private static (SkillDefinition, Skill) CreateBladeFlurryDefinition()
+        {
+            var activeSkill = CreateActiveSkillDefinition("Blade Flurry",
+                new[] { "attack" }, new[] { Keyword.Attack });
+            var stats = new[] { new UntranslatedStat("active_skill_attack_speed_+%_final", 60), };
+            var additionalStatsPerPart = new[]
+            {
+                new[] { new UntranslatedStat("maximum_stages", 6), },
+                new[]
+                {
+                    new UntranslatedStat("base_skill_number_of_additional_hits", 1),
+                    new UntranslatedStat("hit_ailment_damage_+%_final", 80),
+                },
+            };
+            var level = CreateLevelDefinition(stats: stats, additionalStatsPerPart: additionalStatsPerPart);
+            var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
+            return (CreateActive("ChargedAttack", activeSkill, levels),
+                new Skill("ChargedAttack", 1, 0, ItemSlot.Belt, 0, null));
+        }
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        public void WildStrikeStatsDependOnSkillPart(int skillPart)
+        {
+            var (definition, skill) = CreateWildStrikeDefinition();
+            var sut = CreateSut(definition);
+            var context = MockValueCalculationContextForMainSkill(skill,
+                ("MainSkillPart", skillPart));
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            var fireConversionIdentity =
+                "Physical.Damage.Attack.MainHand.Skill.ConvertTo(Fire.Damage.Attack.MainHand.Skill)";
+            var actualFireConversion = GetValueForIdentity(modifiers, fireConversionIdentity).Calculate(context);
+            var expectedFireConversion = skillPart == 0 ? (NodeValue?) 100 : null;
+            Assert.AreEqual(expectedFireConversion, actualFireConversion);
+            var coldConversionIdentity =
+                "Physical.Damage.Attack.MainHand.Skill.ConvertTo(Cold.Damage.Attack.MainHand.Skill)";
+            var actualColdConversion = GetValueForIdentity(modifiers, coldConversionIdentity).Calculate(context);
+            var expectedColdConversion = skillPart == 2 ? (NodeValue?) 100 : null;
+            Assert.AreEqual(expectedColdConversion, actualColdConversion);
+            var actualCastRateHasMelee =
+                modifiers.Where(m => m.Stats.Any(s => s.Identity == "MainSkillPart.CastRate.Has.Melee"))
+                    .Select(m => m.Value.Calculate(context)).ToList();
+            var expectedCastRateHasMelee = skillPart == 1 ? (NodeValue?) 1 : null;
+            Assert.That(actualCastRateHasMelee, Has.Exactly(4).Items);
+            Assert.AreEqual(expectedCastRateHasMelee, actualCastRateHasMelee[1]);
+        }
+
+        private static (SkillDefinition, Skill) CreateWildStrikeDefinition()
+        {
+            var keywords = new[] { Keyword.Attack, Keyword.Melee, Keyword.Projectile, Keyword.AreaOfEffect };
+            var keywordsWithoutMelee = keywords.Except(Keyword.Melee).ToArray();
+            var keywordsPerPart = new[]
+            {
+                keywords, keywordsWithoutMelee, keywords, keywordsWithoutMelee, keywords, keywordsWithoutMelee
+            };
+            var activeSkill = CreateActiveSkillDefinition("Wild Strike", activeSkillTypes: new[] { "attack" },
+                keywords: keywords, keywordsPerPart: keywordsPerPart);
+            var additionalStatsPerPart = new[]
+            {
+                new[] { new UntranslatedStat("skill_physical_damage_%_to_convert_to_fire", 100), },
+                new[]
+                {
+                    new UntranslatedStat("skill_physical_damage_%_to_convert_to_fire", 100),
+                    new UntranslatedStat("cast_rate_is_melee", 1),
+                    new UntranslatedStat("is_area_damage", 1),
+                },
+                new[] { new UntranslatedStat("skill_physical_damage_%_to_convert_to_cold", 100), },
+                new[]
+                {
+                    new UntranslatedStat("skill_physical_damage_%_to_convert_to_cold", 100),
+                    new UntranslatedStat("cast_rate_is_melee", 1),
+                    new UntranslatedStat("base_is_projectile", 1),
+                },
+                new[] { new UntranslatedStat("skill_physical_damage_%_to_convert_to_lightning", 100), },
+                new[]
+                {
+                    new UntranslatedStat("skill_physical_damage_%_to_convert_to_lightning", 100),
+                    new UntranslatedStat("cast_rate_is_melee", 1),
+                },
+            };
+            var level = CreateLevelDefinition(additionalStatsPerPart: additionalStatsPerPart);
+            var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
+            return (CreateActive("WildStrike", activeSkill, levels),
+                new Skill("WildStrike", 1, 0, ItemSlot.Belt, 0, null));
+        }
+
         private static ActiveSkillParser CreateSut(
             SkillDefinition skillDefinition, IParser<UntranslatedStatParserParameter> statParser = null)
         {
@@ -703,9 +832,11 @@ namespace PoESkillTree.Computation.Parsing.Tests
             if (statParser is null)
             {
                 statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
-                    p.Parse(It.IsAny<UntranslatedStatParserParameter>()) == ParseResult.Success(new Modifier[0]));
+                    p.Parse(It.IsAny<UntranslatedStatParserParameter>()) == EmptyParseResult);
             }
             return new ActiveSkillParser(skillDefinitions, builderFactories, metaStatBuilders, _ => statParser);
         }
+
+        private static readonly ParseResult EmptyParseResult = ParseResult.Success(new Modifier[0]);
     }
 }
