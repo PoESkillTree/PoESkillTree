@@ -20,6 +20,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
     [TestFixture]
     public class ActiveSkillParserTest
     {
+        #region Frenzy
+
         [TestCase(Tags.Shield)]
         [TestCase(Tags.Weapon)]
         public void FrenzyUsesOffHandIfWeapon(Tags offHandTags)
@@ -92,6 +94,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
             return (CreateActive("Frenzy", activeSkill, levels),
                 new Skill("Frenzy", 1, 0, ItemSlot.Belt, 0, 0));
         }
+
+        #endregion
+
+        #region Flame Totem
 
         [Test]
         public void FlameTotemHasSpellHitDamageSource()
@@ -253,6 +259,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Skill("FlameTotem", 1, 10, ItemSlot.Belt, 0, 0));
         }
 
+        #endregion
+
+        #region Contagion
+
         [Test]
         public void ContagionHasNoHitDamageSource()
         {
@@ -321,6 +331,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Skill("Contagion", 1, 0, ItemSlot.Belt, 0, null));
         }
 
+        #endregion
+
+        #region Shield Charge
+
         [Test]
         public void ShieldChargeHasCorrectKeywords()
         {
@@ -373,6 +387,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
             return (CreateActive("ShieldCharge", activeSkill, levels),
                 new Skill("ShieldCharge", 1, 0, ItemSlot.Belt, 0, null));
         }
+
+        #endregion
+
+        #region Dual Strike
 
         [TestCase(Tags.Shield)]
         [TestCase(Tags.Weapon)]
@@ -438,6 +456,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Skill("DualStrike", 1, 0, ItemSlot.Belt, 0, null));
         }
 
+        #endregion
+
+        #region Caustic Arrow
+
         [Test]
         public void CausticArrowHasCorrectKeywords()
         {
@@ -475,12 +497,17 @@ namespace PoESkillTree.Computation.Parsing.Tests
             {
                 new UntranslatedStat("base_chaos_damage_to_deal_per_minute", 60),
                 new UntranslatedStat("skill_physical_damage_%_to_convert_to_chaos", 60),
+                new UntranslatedStat("skill_dot_is_area_damage", 1),
             };
             var level = CreateLevelDefinition(stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (CreateActive("PoisonArrow", activeSkill, levels),
                 new Skill("PoisonArrow", 1, 0, ItemSlot.Belt, 0, null));
         }
+
+        #endregion
+
+        #region Abyssal Cry
 
         [Test]
         public void AbyssalCryHasSecondaryHitDamageSource()
@@ -525,6 +552,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Skill("AbyssalCry", 1, 0, ItemSlot.Belt, 0, null));
         }
 
+        #endregion
+
+        #region Double Strike
+
         [Test]
         public void DoubleStrikeAddsToHitsPerCast()
         {
@@ -549,6 +580,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Skill("DoubleStrike", 1, 0, ItemSlot.Belt, 0, null));
         }
 
+        #endregion
+
+        #region Cleave
+
         [Test]
         public void CleaveSetsHitsWithBothWeaponsAtOnce()
         {
@@ -572,6 +607,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
             return (CreateActive("Cleave", activeSkill, levels),
                 new Skill("Cleave", 1, 0, ItemSlot.Belt, 0, null));
         }
+
+        #endregion
+
+        #region Clarity
 
         [Test]
         public void ClaritySetsSkillBaseCost()
@@ -665,6 +704,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Skill("Clarity", 1, 0, ItemSlot.Belt, 0, null));
         }
 
+        #endregion
+
+        #region Hatred
+
         [Test]
         public void HatredSetsPoolReservation()
         {
@@ -693,6 +736,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
             return (CreateActive("Hatred", activeSkill, levels),
                 new Skill("Hatred", 1, 0, ItemSlot.Belt, 0, null));
         }
+
+        #endregion
+
+        #region Blade Flurry
 
         [TestCase(0)]
         [TestCase(1)]
@@ -752,6 +799,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Skill("ChargedAttack", 1, 0, ItemSlot.Belt, 0, null));
         }
 
+        #endregion
+
+        #region Wild Strike
+
         [TestCase(0)]
         [TestCase(1)]
         [TestCase(2)]
@@ -775,12 +826,39 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var actualColdConversion = GetValueForIdentity(modifiers, coldConversionIdentity).Calculate(context);
             var expectedColdConversion = skillPart == 2 ? (NodeValue?) 100 : null;
             Assert.AreEqual(expectedColdConversion, actualColdConversion);
-            var actualCastRateHasMelee =
-                modifiers.Where(m => m.Stats.Any(s => s.Identity == "MainSkillPart.CastRate.Has.Melee"))
-                    .Select(m => m.Value.Calculate(context)).ToList();
+            var actualCastRateHasMelee = GetValuesForIdentity(modifiers, "MainSkillPart.CastRate.Has.Melee")
+                .Select(m => m.Calculate(context)).ToList();
             var expectedCastRateHasMelee = skillPart == 1 ? (NodeValue?) 1 : null;
-            Assert.That(actualCastRateHasMelee, Has.Exactly(4).Items);
-            Assert.AreEqual(expectedCastRateHasMelee, actualCastRateHasMelee[1]);
+            Assert.That(actualCastRateHasMelee, Has.Exactly(6).Items);
+            Assert.AreEqual(expectedCastRateHasMelee, actualCastRateHasMelee[3]);
+        }
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(3)]
+        [TestCase(5)]
+        public void WildStrikeKeywordsDependOnSkillPart(int skillPart)
+        {
+            var (definition, skill) = CreateWildStrikeDefinition();
+            var sut = CreateSut(definition);
+            var context = MockValueCalculationContextForMainSkill(skill,
+                ("MainSkillPart", skillPart));
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            var actualHasAttack = GetValuesForIdentity(modifiers, "MainSkillPart.Has.Attack").Calculate(context);
+            AssertSparse(6, skillPart, true, actualHasAttack);
+            var actualHasMelee = GetValuesForIdentity(modifiers, "MainSkillPart.Has.Melee").Calculate(context);
+            AssertSparse(3, 0, skillPart == 0, actualHasMelee);
+            var actualHasProjectile =
+                GetValuesForIdentity(modifiers, "MainSkillPart.Has.Projectile").Calculate(context);
+            AssertSparse(6, skillPart, skillPart == 3, actualHasProjectile);
+            var actualHasAoE = GetValuesForIdentity(modifiers, "MainSkillPart.Has.AreaOfEffect").Calculate(context);
+            AssertSparse(6, skillPart, true, actualHasAoE);
+            var actualHasAoEDamage =
+                GetValuesForIdentity(modifiers, "MainSkillPart.Damage.Attack.Has.AreaOfEffect").Calculate(context);
+            AssertSparse(1, 0, skillPart == 1, actualHasAoEDamage);
         }
 
         private static (SkillDefinition, Skill) CreateWildStrikeDefinition()
@@ -822,6 +900,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Skill("WildStrike", 1, 0, ItemSlot.Belt, 0, null));
         }
 
+        #endregion
+
         private static ActiveSkillParser CreateSut(
             SkillDefinition skillDefinition, IParser<UntranslatedStatParserParameter> statParser = null)
         {
@@ -838,5 +918,14 @@ namespace PoESkillTree.Computation.Parsing.Tests
         }
 
         private static readonly ParseResult EmptyParseResult = ParseResult.Success(new Modifier[0]);
+
+        private static void AssertSparse(
+            int valueCount, int expectedIndex, bool expectedValue, IEnumerable<NodeValue?> actualValues)
+        {
+            var expected = Enumerable.Repeat(false, valueCount).ToArray();
+            expected[expectedIndex] = expectedValue;
+            var actual = actualValues.Select(v => v.IsTrue()).ToArray();
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

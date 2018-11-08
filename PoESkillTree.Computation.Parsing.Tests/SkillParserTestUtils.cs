@@ -94,5 +94,12 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         public static Modifier GetFirstModifierWithIdentity(IEnumerable<Modifier> modifiers, string identity)
             => modifiers.First(m => m.Stats.First().Identity == identity);
+
+        public static IEnumerable<IValue> GetValuesForIdentity(IEnumerable<Modifier> modifiers, string identity)
+            => modifiers.Where(m => m.Stats.First().Identity == identity).Select(m => m.Value);
+
+        public static IEnumerable<NodeValue?> Calculate(
+            this IEnumerable<IValue> @this, IValueCalculationContext context)
+            => @this.Select(v => v.Calculate(context));
     }
 }

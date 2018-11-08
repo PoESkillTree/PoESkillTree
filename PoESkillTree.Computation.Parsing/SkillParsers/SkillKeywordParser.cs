@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
+using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
@@ -11,6 +12,7 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
@@ -28,64 +30,57 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 },
             };
 
-        private static readonly IReadOnlyList<string> AreaDamageOverTimeSkills = new[]
-        {
-            "PoisonArrow", "ColdSnap", "VaalColdSnap", "Desecrate", "FireTrap", "RighteousFire", "VaalRighteousFire",
-            "FrostBoltNova"
-        };
-
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
         private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
-        private readonly Func<SkillDefinition, IEnumerable<Keyword>> _selectKeywords;
+        private readonly ISkillKeywordSelector _keywordSelector;
 
         private List<Modifier> _parsedModifiers;
-        private List<UntranslatedStat> _parsedStats;
-        private IEnumerable<Keyword> _keywords;
+        private ISet<UntranslatedStat> _parsedStats;
         private SkillPreParseResult _preParseResult;
 
         private SkillKeywordParser(
             IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
-            Func<SkillDefinition, IEnumerable<Keyword>> selectKeywords)
-            => (_builderFactories, _metaStatBuilders, _selectKeywords) =
-                (builderFactories, metaStatBuilders, selectKeywords);
+            ISkillKeywordSelector keywordSelector)
+            => (_builderFactories, _metaStatBuilders, _keywordSelector) =
+                (builderFactories, metaStatBuilders, keywordSelector);
 
         public static IPartialSkillParser CreateActive(
             IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
-            => new SkillKeywordParser(builderFactories, metaStatBuilders, d => d.ActiveSkill.Keywords);
+            => new SkillKeywordParser(builderFactories, metaStatBuilders, new ActiveSkillKeywordSelector());
 
         public static IPartialSkillParser CreateSupport(
             IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
-            => new SkillKeywordParser(builderFactories, metaStatBuilders, d => d.SupportSkill.AddedKeywords);
+            => new SkillKeywordParser(builderFactories, metaStatBuilders, new SupportSkillKeywordSelector());
 
         public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
             _parsedModifiers = new List<Modifier>();
-            _parsedStats = new List<UntranslatedStat>();
+            _parsedStats = new HashSet<UntranslatedStat>();
             _preParseResult = preParseResult;
-            _keywords = _selectKeywords(preParseResult.SkillDefinition);
 
             var isMainSkill = preParseResult.IsMainSkill.IsSet;
-            var isAlwaysProjectile = HitIsAlwaysProjectile(preParseResult.LevelDefinition);
-            var hitIsAreaDamage = HitDamageIsArea(preParseResult.LevelDefinition);
-            var dotIsAreaDamage = AreaDamageOverTimeSkills.Contains(preParseResult.SkillDefinition.Id);
+            var alwaysProjectileParts = GetPartsWithFlagStat(SkillStatIds.IsAlwaysProjectile);
+            var areaDamageHitParts = GetPartsWithFlagStat(SkillStatIds.IsAreaDamage);
+            var areaDamageDotParts = GetPartsWithFlagStat(SkillStatIds.SkillDotIsAreaDamage);
 
-            IConditionBuilder CreatePartHasKeywordCondition(Keyword k)
-                => PartHasKeywordCondition(isAlwaysProjectile, isMainSkill, k);
+            IConditionBuilder CreatePartHasKeywordCondition(Keyword k, int partIndex)
+                => PartHasKeywordCondition(alwaysProjectileParts.Contains(partIndex), isMainSkill, k);
 
-            AddKeywordModifiers(_metaStatBuilders.MainSkillHasKeyword, _ => isMainSkill);
-            AddKeywordModifiers(_metaStatBuilders.MainSkillPartHasKeyword, CreatePartHasKeywordCondition);
-            AddKeywordModifiers(_metaStatBuilders.MainSkillPartCastRateHasKeyword, CreatePartHasKeywordCondition);
+            AddKeywordModifiers(_metaStatBuilders.MainSkillHasKeyword, isMainSkill);
+            AddPartKeywordModifiers(_metaStatBuilders.MainSkillPartHasKeyword, CreatePartHasKeywordCondition);
+            AddPartKeywordModifiers(_metaStatBuilders.MainSkillPartCastRateHasKeyword, CreatePartHasKeywordCondition);
             foreach (var damageSource in Enums.GetValues<DamageSource>())
             {
                 var preCondition = damageSource != DamageSource.OverTime
-                    ? KeywordPreCondition(hitIsAreaDamage, ExcludedKeywords[damageSource])
-                    : KeywordPreCondition(dotIsAreaDamage, ExcludedKeywords[damageSource]);
-                AddKeywordModifiers(k => _metaStatBuilders.MainSkillPartDamageHasKeyword(k, damageSource),
+                    ? KeywordPreCondition(areaDamageHitParts, ExcludedKeywords[damageSource])
+                    : KeywordPreCondition(areaDamageDotParts, ExcludedKeywords[damageSource]);
+                AddPartKeywordModifiers(k => _metaStatBuilders.MainSkillPartDamageHasKeyword(k, damageSource),
                     CreatePartHasKeywordCondition, preCondition);
             }
-            AddKeywordModifiers(k => _metaStatBuilders.MainSkillPartAilmentDamageHasKeyword(k),
-                CreatePartHasKeywordCondition, KeywordPreCondition(false, ExcludedKeywords[DamageSource.OverTime]));
+            AddPartKeywordModifiers(k => _metaStatBuilders.MainSkillPartAilmentDamageHasKeyword(k),
+                CreatePartHasKeywordCondition,
+                KeywordPreCondition(new int[0], ExcludedKeywords[DamageSource.OverTime]));
 
             var result = new PartialSkillParseResult(_parsedModifiers, _parsedStats);
             _parsedModifiers = null;
@@ -93,14 +88,40 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             return result;
         }
 
-        private void AddKeywordModifiers(
-            Func<Keyword, IStatBuilder> statFactory,
-            Func<Keyword, IConditionBuilder> conditionFactory,
-            Func<Keyword, bool> preCondition = null)
+        private void AddKeywordModifiers(Func<Keyword, IStatBuilder> statFactory, IConditionBuilder condition)
         {
-            var modifiers =
-                KeywordModifiers(_keywords, statFactory, conditionFactory, preCondition)
-                    .SelectMany(m => m.Build(_preParseResult.GlobalSource, Entity.Character));
+            var keywords = _keywordSelector.GetKeywords(_preParseResult.SkillDefinition);
+            AddKeywordModifiers(keywords, statFactory, _ => condition);
+        }
+
+        private void AddPartKeywordModifiers(
+            Func<Keyword, IStatBuilder> statFactory,
+            Func<Keyword, int, IConditionBuilder> conditionFactory,
+            Func<Keyword, int, bool> preCondition = null)
+        {
+            if (preCondition is null)
+                preCondition = (_, __) => true;
+            var keywordsPerPart = _keywordSelector.GetKeywordsPerPart(_preParseResult.SkillDefinition);
+            if (keywordsPerPart.Count == 1)
+            {
+                AddKeywordModifiers(keywordsPerPart[0], statFactory,
+                    k => conditionFactory(k, 0), k => preCondition(k, 0));
+                return;
+            }
+            foreach (var (partIndex, keywords) in keywordsPerPart.Index())
+            {
+                var isSkillPart = _metaStatBuilders.MainSkillPart.Value.Eq(partIndex);
+                AddKeywordModifiers(keywords, statFactory,
+                    k => conditionFactory(k, partIndex).And(isSkillPart), k => preCondition(k, partIndex));
+            }
+        }
+
+        private void AddKeywordModifiers(
+            IEnumerable<Keyword> keywords, Func<Keyword, IStatBuilder> statFactory,
+            Func<Keyword, IConditionBuilder> conditionFactory, Func<Keyword, bool> preCondition = null)
+        {
+            var modifiers = KeywordModifiers(keywords, statFactory, conditionFactory, preCondition)
+                .SelectMany(m => m.Build(_preParseResult.GlobalSource, Entity.Character));
             _parsedModifiers.AddRange(modifiers);
         }
 
@@ -120,15 +141,24 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             }
         }
 
-        private bool HitIsAlwaysProjectile(SkillLevelDefinition level)
-            => MatchFlagStat(level, SkillStatIds.IsAlwaysProjectile);
-
-        private bool HitDamageIsArea(SkillLevelDefinition level)
-            => MatchFlagStat(level, SkillStatIds.IsAreaDamage);
-
-        private bool MatchFlagStat(SkillLevelDefinition level, string statId)
+        private ISet<int> GetPartsWithFlagStat(string statId)
         {
-            var firstMatch = level.Stats.FirstOrDefault(s => s.StatId == statId);
+            var level = _preParseResult.LevelDefinition;
+            if (MatchFlagStat(level.Stats, statId))
+                return Enumerable.Range(0, level.AdditionalStatsPerPart.Count).ToHashSet();
+
+            var partIndices = new HashSet<int>();
+            foreach (var (partIndex, stats) in level.AdditionalStatsPerPart.Index())
+            {
+                if (MatchFlagStat(stats, statId))
+                    partIndices.Add(partIndex);
+            }
+            return partIndices;
+        }
+
+        private bool MatchFlagStat(IEnumerable<UntranslatedStat> stats, string statId)
+        {
+            var firstMatch = stats.FirstOrDefault(s => s.StatId == statId);
             if (firstMatch is UntranslatedStat stat)
             {
                 _parsedStats.Add(stat);
@@ -152,9 +182,12 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             }
         }
 
-        private Func<Keyword, bool> KeywordPreCondition(bool canBeArea, IEnumerable<Keyword> excludedKeywords)
+        private static Func<Keyword, int, bool> KeywordPreCondition(
+            IEnumerable<int> areaDamageParts, IEnumerable<Keyword> excludedKeywords)
         {
-            return k => k == Keyword.AreaOfEffect ? canBeArea : !excludedKeywords.Contains(k);
+            return (k, partIndex) => k == Keyword.AreaOfEffect
+                ? areaDamageParts.Contains(partIndex)
+                : !excludedKeywords.Contains(k);
         }
     }
 }
