@@ -34,10 +34,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var activeSkill = preParseResult.SkillDefinition.ActiveSkill;
             var isMainSkill = preParseResult.IsMainSkill.IsSet;
 
-            if (DetermineHitDamageSource(activeSkill, preParseResult.LevelDefinition) is DamageSource damageSource)
-            {
-                AddMainSkillModifier(_metaStatBuilders.SkillHitDamageSource, Form.TotalOverride, (int) damageSource);
-            }
+            AddHitDamageSourceModifiers(preParseResult);
             var usesMainHandCondition = isMainSkill;
             var usesOffHandCondition = isMainSkill.And(OffHand.Has(Tags.Weapon));
             if (activeSkill.ActiveSkillTypes.Contains(ActiveSkillType.RequiresDualWield))
@@ -82,25 +79,53 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             return result;
         }
 
-        private static DamageSource? DetermineHitDamageSource(
-            ActiveSkillDefinition activeSkill, SkillLevelDefinition level)
+        private void AddHitDamageSourceModifiers(SkillPreParseResult preParseResult)
         {
-            if (activeSkill.ActiveSkillTypes.Contains(ActiveSkillType.Attack))
+            var partCount = preParseResult.LevelDefinition.AdditionalStatsPerPart.Count;
+
+            for (var partIndex = 0; partIndex < partCount; partIndex++)
+            {
+                if (DetermineHitDamageSource(preParseResult, partIndex) is DamageSource damageSource)
+                {
+                    var condition = partCount > 1 ? _metaStatBuilders.MainSkillPart.Value.Eq(partIndex) : null;
+                    AddMainSkillModifier(_metaStatBuilders.SkillHitDamageSource,
+                        Form.TotalOverride, (int) damageSource, condition);
+                }
+            }
+        }
+
+        private static DamageSource? DetermineHitDamageSource(SkillPreParseResult preParseResult, int partIndex)
+        {
+            var statIds = preParseResult.LevelDefinition.Stats
+                .Concat(preParseResult.LevelDefinition.AdditionalStatsPerPart[partIndex])
+                .Select(s => s.StatId).ToList();
+
+            if (statIds.Any(s => s == SkillStatIds.DealsSecondaryDamage))
+            {
+                return DamageSource.Secondary;
+            }
+
+            if (preParseResult.SkillDefinition.ActiveSkill.ActiveSkillTypes.Contains(ActiveSkillType.Attack))
+            {
                 return DamageSource.Attack;
-            var statIds = level.Stats.Select(s => s.StatId);
+            }
+
             foreach (var statId in statIds)
             {
                 var match = SkillStatIds.HitDamageRegex.Match(statId);
                 if (match.Success)
                     return Enums.Parse<DamageSource>(match.Groups[1].Value, true);
-                if (statId == SkillStatIds.DealsSecondaryDamage)
-                    return DamageSource.Secondary;
             }
             return null;
         }
 
-        private void AddMainSkillModifier(IStatBuilder stat, Form form, double value)
-            => AddModifier(stat, form, value, _preParseResult.IsMainSkill.IsSet);
+        private void AddMainSkillModifier(
+            IStatBuilder stat, Form form, double value, IConditionBuilder condition = null)
+        {
+            var isMainSkill = _preParseResult.IsMainSkill.IsSet;
+            var combinedCondition = condition is null ? isMainSkill : isMainSkill.And(condition);
+            AddModifier(stat, form, value, combinedCondition);
+        }
 
         private void AddModifier(IStatBuilder stat, Form form, double value, IConditionBuilder condition = null)
         {

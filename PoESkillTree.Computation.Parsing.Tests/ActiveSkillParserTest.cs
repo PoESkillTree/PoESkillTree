@@ -902,6 +902,49 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         #endregion
 
+        #region Infernal Blow
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        public void InfernalBlowHitDamageSourceDependOnSkillPart(int skillPart)
+        {
+            var (definition, skill) = CreateInfernalBlowDefinition();
+            var sut = CreateSut(definition);
+            var context = MockValueCalculationContextForMainSkill(skill,
+                ("MainSkillPart", skillPart));
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            var actual = GetValuesForIdentity(modifiers, "SkillHitDamageSource").Calculate(context).ToList();
+            var expected = new[]
+            {
+                skillPart == 0 ? (NodeValue?) (int) DamageSource.Attack : null,
+                skillPart == 1 ? (NodeValue?) (int) DamageSource.Secondary : null,
+                skillPart == 2 ? (NodeValue?) (int) DamageSource.Secondary : null,
+            };
+            Assert.AreEqual(expected, actual);
+        }
+
+        private static (SkillDefinition, Skill) CreateInfernalBlowDefinition()
+        {
+            var activeSkill = CreateActiveSkillDefinition("Infernal Blow", new[] { "attack" },
+                new[] { Keyword.Attack, Keyword.Melee, Keyword.AreaOfEffect });
+            var additionalStatsPerPart = new[]
+            {
+                new UntranslatedStat[0],
+                new[] { new UntranslatedStat("display_skill_deals_secondary_damage", 1), },
+                new[] { new UntranslatedStat("display_skill_deals_secondary_damage", 1), },
+            };
+            var level = CreateLevelDefinition(additionalStatsPerPart: additionalStatsPerPart);
+            var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
+            return (CreateActive("InfernalBlow", activeSkill, levels),
+                new Skill("InfernalBlow", 1, 0, ItemSlot.Belt, 0, null));
+        }
+
+        #endregion
+
         private static ActiveSkillParser CreateSut(
             SkillDefinition skillDefinition, IParser<UntranslatedStatParserParameter> statParser = null)
         {

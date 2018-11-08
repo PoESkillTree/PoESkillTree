@@ -45,6 +45,17 @@ namespace PoESkillTree.GameModel.Skills
             Add("FireTrap", skillDotIsAreaDamageExtension);
             Add("FlameDash", skillDotIsAreaDamageExtension);
             Add("FlickerStrike", removeShowAverageDamageExtension);
+            Add("InfernalBlow",
+                ("Attack", new SkillPartDefinitionExtension()),
+                ("Corpse Explosion", new SkillPartDefinitionExtension(
+                    addedStats: Stats(
+                        ("display_skill_deals_secondary_damage", 1),
+                        ("base_skill_show_average_damage_instead_of_dps", 1)))),
+                ("6 Charge Explosion", new SkillPartDefinitionExtension(
+                    removedStats: new[] { "corpse_explosion_monster_life_%" },
+                    addedStats: Stats(
+                        ("display_skill_deals_secondary_damage", 1),
+                        ("base_skill_show_average_damage_instead_of_dps", 1)))));
             Add("PoisonArrow", skillDotIsAreaDamageExtension);
             Add("RainOfSpores", skillDotIsAreaDamageExtension);
             Add("RighteousFire", skillDotIsAreaDamageExtension);
