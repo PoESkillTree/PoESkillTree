@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
-using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -132,6 +131,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             // other
             { BaseSet, Stat.AreaOfEffect, 1 },
             { BaseSet, Stat.CooldownRecoverySpeed, 1 },
+            { BaseSet, Stat.SkillStage.Minimum, 0 },
         };
     }
 }

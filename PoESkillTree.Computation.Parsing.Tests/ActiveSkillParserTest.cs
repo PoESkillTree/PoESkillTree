@@ -1004,6 +1004,36 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         #endregion
 
+        #region Blade Vortex
+
+        [Test]
+        public void BladeVortexHasCorrectHitRate()
+        {
+            var (definition, skill) = CreateBladeVortexDefinition();
+            var sut = CreateSut(definition);
+            var context = MockValueCalculationContextForMainSkill(skill);
+
+            var result = sut.Parse(skill);
+
+            var actual = GetValueForIdentity(result.Modifiers, "HitRate").Calculate(context);
+            Assert.AreEqual((NodeValue?) 1000 / 600D, actual);
+        }
+
+        private static (SkillDefinition, Skill) CreateBladeVortexDefinition()
+        {
+            var activeSkill = CreateActiveSkillDefinition("BladeVortex", new[] { "spell" }, new[] { Keyword.Spell });
+            var stats = new[]
+            {
+                new UntranslatedStat("hit_rate_ms", 600),
+            };
+            var level = CreateLevelDefinition(stats: stats);
+            var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
+            return (CreateActive("BladeVortex", activeSkill, levels),
+                new Skill("BladeVortex", 1, 0, ItemSlot.Belt, 0, null));
+        }
+
+        #endregion
+
         private static ActiveSkillParser CreateSut(
             SkillDefinition skillDefinition, IParser<UntranslatedStatParserParameter> statParser = null)
         {

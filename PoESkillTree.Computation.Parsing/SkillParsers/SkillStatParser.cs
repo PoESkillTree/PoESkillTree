@@ -155,6 +155,10 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     AddMainSkillModifier(_metaStatBuilders.MainSkillPartCastRateHasKeyword(Keyword.Melee),
                         Form.TotalOverride, stat.Value, partCondition);
                     return true;
+                case "hit_rate_ms":
+                    AddMainSkillModifier(_builderFactories.StatBuilders.HitRate,
+                        Form.BaseSet, 1000D / stat.Value, partCondition);
+                    return true;
                 default:
                     return false;
             }

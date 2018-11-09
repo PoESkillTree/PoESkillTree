@@ -48,7 +48,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 // - DPS
                 {
                     TotalOverride, _stat.SkillDpsWithHits,
-                    _stat.AverageHitDamage.Value * _stat.CastRate.Value * _stat.SkillNumberOfHitsPerCast.Value
+                    _stat.AverageHitDamage.Value *
+                    ValueFactory.If(Stat.HitRate.IsSet).Then(Stat.HitRate.Value)
+                        .Else(_stat.CastRate.Value * _stat.SkillNumberOfHitsPerCast.Value)
                 },
                 // - average damage
                 {
@@ -447,6 +449,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 { PercentMore, Stat.Radius, Stat.AreaOfEffect.Value.Select(Math.Sqrt, v => $"Sqrt({v})") },
                 { PercentMore, Stat.Cooldown, 100 - 100 * Stat.CooldownRecoverySpeed.Value.Invert },
                 { BaseSet, _stat.SkillNumberOfHitsPerCast, 1 },
+                { BaseSet, _stat.MainSkillPart, 0 },
             };
 
         private static ValueBuilder AverageAilmentDamageFromCritAndNonCrit(

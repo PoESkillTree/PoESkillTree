@@ -39,6 +39,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IDamageRelatedStatBuilder CastRate { get; }
 
+        /// <summary>
+        /// The rate at which the main skill hits, for skills where that rate is independent from CastRate.
+        /// </summary>
+        IStatBuilder HitRate { get; }
+
         IStatBuilder DamageHasKeyword(DamageSource damageSource, IKeywordBuilder keyword);
 
         /// <summary>

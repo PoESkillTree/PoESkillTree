@@ -63,6 +63,8 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "per grand spectrum", PerStat(stat: Stat.GrandSpectrumJewelsSocketed) },
                 { "per level", PerStat(Stat.Level) },
+                { "per (stage|fuse charge)", PerStat(Stat.SkillStage) },
+                { "for each (stage|blade)", PerStat(Stat.SkillStage) },
                 // buffs
                 { "per buff on you", Buffs(targets: Self).Count() },
                 { "per curse on you", Buffs(targets: Self).With(Keyword.Curse).Count() },

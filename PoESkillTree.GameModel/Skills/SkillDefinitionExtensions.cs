@@ -29,6 +29,10 @@ namespace PoESkillTree.GameModel.Skills
                 ("Single Projectile", new SkillPartDefinitionExtension()),
                 ("All Projectiles", new SkillPartDefinitionExtension()));
             Add("BearTrap", EnemyBuff("bear_trap_damage_taken_+%_from_traps_and_mines"));
+            Add("BladeVortex", new SkillPartDefinitionExtension(
+                RemoveStat("base_skill_show_average_damage_instead_of_dps"),
+                AddStat("hit_rate_ms", 600),
+                ReplaceStat("maximum_number_of_spinning_blades", "maximum_stages")));
             Add("ChargedDash", removeShowAverageDamageExtension);
             Add("ChargedAttack", removeShowAverageDamageExtension,
                 ("No Release", new SkillPartDefinitionExtension(
