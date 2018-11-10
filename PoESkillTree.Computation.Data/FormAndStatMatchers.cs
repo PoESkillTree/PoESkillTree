@@ -62,6 +62,16 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value.MaximumOnly, Reference.AsDamageType.Damage.WithHits
                 },
                 { "deal no ({DamageTypeMatchers}) damage", TotalOverride, 0, Reference.AsDamageType.Damage },
+                {
+                    @"explosion deals base ({DamageTypeMatchers}) damage equal to #% of the (corpse|monster)'s maximum life",
+                    BaseSet, Value.AsPercentage * Life.For(Enemy).Value,
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Secondary)
+                },
+                {
+                    @"explosion deals # to # base ({DamageTypeMatchers}) damage",
+                    BaseSet, ValueFactory.FromMinAndMax(Values[0], Values[1]),
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Secondary)
+                },
                 // - conversion and gain
                 {
                     "(gain )?#% of ({DamageTypeMatchers}) damage (gained |added )?as (extra )?({DamageTypeMatchers}) damage",

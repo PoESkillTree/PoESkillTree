@@ -109,7 +109,7 @@ namespace PoESkillTree.GameModel.Skills
             };
             Add("Earthquake", earthquakeParts);
             Add("VaalEarthquake", earthquakeParts);
-            Add("Elemental Hit",
+            Add("ElementalHit",
                 ("Fire", new SkillPartDefinitionExtension()),
                 ("Cold", new SkillPartDefinitionExtension()),
                 ("Lightning", new SkillPartDefinitionExtension()));

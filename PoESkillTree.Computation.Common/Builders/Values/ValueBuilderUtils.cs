@@ -55,8 +55,13 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         public static ValueBuilder PercentOf(this ValueBuilder value, IStatBuilder stat) =>
             value.AsPercentage * stat.Value;
 
-        public static ValueBuilder Minimmum(this IValueBuilders valueFactory, ValueBuilder left, ValueBuilder right)
+        public static ValueBuilder Minimum(this IValueBuilders valueFactory, ValueBuilder left, ValueBuilder right)
             => valueFactory.If(left > right).Then(right).Else(left);
+
+        public static ValueBuilder LinearScale(this IValueBuilders valueFactory,
+            IStatBuilder xStat,
+            params (double x, double y)[] points)
+            => LinearScale(valueFactory, xStat.Value, points);
 
         /// <summary>
         /// Builds a function from <paramref name="points"/> by interpolating linearly between each two consecutive
@@ -69,7 +74,7 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         /// At least 2 points must be given and they must be ordered by x values.
         /// </remarks>
         public static ValueBuilder LinearScale(this IValueBuilders valueFactory,
-            IStatBuilder xStat,
+            ValueBuilder xValue,
             params (double x, double y)[] points)
         {
             if (points.Length < 2)
@@ -89,12 +94,12 @@ namespace PoESkillTree.Computation.Common.Builders.Values
                 var m = (y2 - y1) / (x2 - x1);
                 // Calculate b from m and one point (b = y - m * x)
                 var b = y2 - m * x2;
-                sections.Add((xStat.Value <= x2, m * xStat.Value + b));
+                sections.Add((xValue <= x2, m * xValue + b));
                 last = (x2, y2);
             }
 
             // Constant multiplier before first and after last section
-            var firstCondition = xStat.Value <= points[0].x;
+            var firstCondition = xValue <= points[0].x;
             var firstMultiplier = points[0].y;
             var lastMultiplier = last.y;
 

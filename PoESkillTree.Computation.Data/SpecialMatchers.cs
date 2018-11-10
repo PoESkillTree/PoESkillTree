@@ -82,6 +82,24 @@ namespace PoESkillTree.Computation.Data
                     "increases and reductions to minion attack speed also affect you",
                     TotalOverride, 1, Flag.AffectedByMinionAttackRateIncreases
                 },
+                // skills
+                {
+                    // Cleave
+                    "when dual wielding, deals #% damage from each weapon combined",
+                    PercentLess, 100 - Value, Damage, OffHand.Has(Tags.Weapon)
+                },
+                {
+                    // Infernal Blow
+                    "debuff deals #% of damage per charge",
+                    BaseSet, Value.AsPercentage * Stat.SkillStage.Value *
+                             Physical.Damage.WithSkills.With(AttackDamageHand.MainHand).ValueFor(NodeType.Base),
+                    Fire.Damage.WithSkills(DamageSource.Secondary)
+                },
+                {
+                    // Static Strike
+                    "#% increased beam frequency per buff stack",
+                    PercentIncrease, Value * Stat.SkillStage.Value, Stat.HitRate
+                },
                 // Keystones
                 {
                     // Point Blank

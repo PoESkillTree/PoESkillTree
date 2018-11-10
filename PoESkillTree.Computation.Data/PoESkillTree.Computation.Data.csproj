@@ -83,6 +83,7 @@
     <Compile Include="DamageStatMatchers.cs" />
     <Compile Include="DamageTypeMatchers.cs" />
     <Compile Include="Collections\EffectStatCollection.cs" />
+    <Compile Include="GivenStats\AdditionalSkillStats.cs" />
     <Compile Include="GivenStats\AllyLevelBasedStats.cs" />
     <Compile Include="GivenStats\DataDrivenMechanics.cs" />
     <Compile Include="GivenStats\EffectStats.cs" />

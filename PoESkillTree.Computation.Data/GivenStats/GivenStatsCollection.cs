@@ -46,6 +46,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 new GameStateDependentMods(_builderFactories, modifierBuilder, _metaStatBuilders),
                 new EnemyLevelBasedStats(_builderFactories, modifierBuilder, _monsterBaseStats),
                 new AllyLevelBasedStats(_builderFactories, modifierBuilder, _monsterBaseStats),
+                new AdditionalSkillStats(_builderFactories, modifierBuilder, _metaStatBuilders),
             };
     }
 }

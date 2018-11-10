@@ -116,7 +116,7 @@ namespace PoESkillTree.Computation.Data
 
         private Func<ValueBuilder, ValueBuilder> CappedMultiplier(ValueBuilder multiplier, ValueBuilder maximum)
         {
-            return v => ValueFactory.Minimmum(v * multiplier, maximum);
+            return v => ValueFactory.Minimum(v * multiplier, maximum);
         }
     }
 }

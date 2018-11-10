@@ -233,6 +233,8 @@ namespace PoESkillTree.Computation.Data
                     Skills[Reference.AsDamageType].Cast.InPastXSeconds(Value)
                 },
                 { "if you summoned a golem in the past # seconds", Golems.Cast.InPastXSeconds(Value) },
+                // - by skill part
+                { "(beams|final wave) deals?", Stat.MainSkillPart.Value.Eq(1) },
                 // traps and mines
                 { "with traps", With(Keyword.Trap) },
                 { "skills used by traps have", With(Keyword.Trap) },
