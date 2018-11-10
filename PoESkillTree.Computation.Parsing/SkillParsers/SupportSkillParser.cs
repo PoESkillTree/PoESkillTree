@@ -25,7 +25,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 new GemRequirementParser(builderFactories),
                 new SkillStatParser(builderFactories, metaStatBuilders),
             };
-            _translatingParser = new TranslatingSkillParser(metaStatBuilders, statParserFactory);
+            _translatingParser = new TranslatingSkillParser(builderFactories, statParserFactory);
         }
 
         public ParseResult Parse(SupportSkillParserParameter parameter)

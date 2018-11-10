@@ -5,7 +5,6 @@ using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils.Extensions;
@@ -16,11 +15,11 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     {
         public delegate IParser<UntranslatedStatParserParameter> StatParserFactory(string statTranslationFileName);
 
-        private readonly IMetaStatBuilders _metaStatBuilders;
+        private readonly IBuilderFactories _builderFactories;
         private readonly StatParserFactory _statParserFactory;
 
-        public TranslatingSkillParser(IMetaStatBuilders metaStatBuilders, StatParserFactory statParserFactory)
-            => (_metaStatBuilders, _statParserFactory) = (metaStatBuilders, statParserFactory);
+        public TranslatingSkillParser(IBuilderFactories builderFactories, StatParserFactory statParserFactory)
+            => (_builderFactories, _statParserFactory) = (builderFactories, statParserFactory);
 
         public ParseResult Parse(
             Skill skill, SkillPreParseResult preParseResult, PartialSkillParseResult partialResult)
@@ -40,7 +39,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var additionalLevelStats = level.AdditionalStatsPerPart.Select(s => s.Except(partialResult.ParsedStats));
             foreach (var (partIndex, stats) in additionalLevelStats.Index())
             {
-                var condition = isMainSkill.And(_metaStatBuilders.MainSkillPart.Value.Eq(partIndex));
+                var condition = isMainSkill.And(_builderFactories.StatBuilders.MainSkillPart.Value.Eq(partIndex));
                 var result = TranslateAndParse(preParseResult, stats, condition);
                 parseResults.Add(result);
             }

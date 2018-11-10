@@ -110,7 +110,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             }
             foreach (var (partIndex, keywords) in keywordsPerPart.Index())
             {
-                var isSkillPart = _metaStatBuilders.MainSkillPart.Value.Eq(partIndex);
+                var isSkillPart = _builderFactories.StatBuilders.MainSkillPart.Value.Eq(partIndex);
                 AddKeywordModifiers(keywords, statFactory,
                     k => conditionFactory(k, partIndex).And(isSkillPart), k => preCondition(k, partIndex));
             }

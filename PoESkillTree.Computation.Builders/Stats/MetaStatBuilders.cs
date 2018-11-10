@@ -156,7 +156,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder SkillDoubleHitsWhenDualWielding => FromIdentity(typeof(bool));
 
         public IStatBuilder MainSkillId => FromFactory(StatFactory.MainSkillId);
-        public IStatBuilder MainSkillPart => FromIdentity(typeof(int));
 
         public IStatBuilder MainSkillHasKeyword(Keyword keyword)
             => FromFactory(e => StatFactory.MainSkillHasKeyword(e, keyword));

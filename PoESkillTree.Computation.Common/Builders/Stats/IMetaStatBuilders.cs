@@ -78,7 +78,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder SkillDoubleHitsWhenDualWielding { get; }
 
         IStatBuilder MainSkillId { get; }
-        IStatBuilder MainSkillPart { get; }
         IStatBuilder MainSkillHasKeyword(Keyword keyword);
         IStatBuilder MainSkillPartHasKeyword(Keyword keyword);
         IStatBuilder MainSkillPartCastRateHasKeyword(Keyword keyword);

@@ -87,7 +87,8 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             {
                 if (DetermineHitDamageSource(preParseResult, partIndex) is DamageSource damageSource)
                 {
-                    var condition = partCount > 1 ? _metaStatBuilders.MainSkillPart.Value.Eq(partIndex) : null;
+                    var condition =
+                        partCount > 1 ? _builderFactories.StatBuilders.MainSkillPart.Value.Eq(partIndex) : null;
                     AddMainSkillModifier(_metaStatBuilders.SkillHitDamageSource,
                         Form.TotalOverride, (int) damageSource, condition);
                 }

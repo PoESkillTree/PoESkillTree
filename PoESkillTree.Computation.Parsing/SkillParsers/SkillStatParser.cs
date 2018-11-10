@@ -36,7 +36,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             Parse(preParseResult.LevelDefinition.Stats);
             foreach (var (partIndex, additionalStats) in preParseResult.LevelDefinition.AdditionalStatsPerPart.Index())
             {
-                var condition = _metaStatBuilders.MainSkillPart.Value.Eq(partIndex);
+                var condition = _builderFactories.StatBuilders.MainSkillPart.Value.Eq(partIndex);
                 Parse(additionalStats, condition);
             }
 

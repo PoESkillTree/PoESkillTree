@@ -78,6 +78,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder Duration { get; }
 
         IStatBuilder SkillStage { get; }
+        IStatBuilder MainSkillPart { get; }
 
 
         ITrapStatBuilders Trap { get; }

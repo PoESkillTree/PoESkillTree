@@ -62,6 +62,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder Duration => FromIdentity(typeof(double));
         public IStatBuilder SkillStage => FromIdentity(typeof(int),
             ExplicitRegistrationTypes.UserSpecifiedValue(double.MaxValue));
+        public IStatBuilder MainSkillPart => FromIdentity(typeof(int));
 
         public ITrapStatBuilders Trap => new TrapStatBuilders(StatFactory);
         public IMineStatBuilders Mine => new MineStatBuilders(StatFactory);
