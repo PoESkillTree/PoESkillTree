@@ -34,21 +34,22 @@ namespace PoESkillTree.Computation.Data
                     "on ({KeywordMatchers}) ({ActionMatchers})",
                     And(Condition.WithPart(References[0].AsKeyword), References[1].AsAction.On)
                 },
+                { "when you ({ActionMatchers}) an enemy", Reference.AsAction.On },
                 {
                     "when you ({ActionMatchers}) a rare or unique enemy",
                     And(Enemy.IsRareOrUnique, Reference.AsAction.On)
                 },
                 {
-                    "when you ({ActionMatchers}) a ({AilmentMatchers}) enemy",
+                    "(when you|on) ({ActionMatchers}) a ({AilmentMatchers}) enemy",
                     And(References[1].AsAilment.IsOn(Enemy), References[0].AsAction.On)
                 },
                 // kill
-                { "when you kill an enemy", Kill.On },
                 { "if you or your totems kill an enemy", Or(Kill.On, Kill.By(Entity.Totem).On) },
                 // hit
+                { "when hit", Hit.By(Enemy).On },
                 { "when you are hit", Hit.By(Enemy).On },
                 { "with hits", Hit.On },
-                { "for each enemy hit by your attacks", And(With(Keyword.Attack), Hit.On) },
+                { "for each enemy hit by (your )?attacks", And(With(Keyword.Attack), Hit.On) },
                 {
                     "when you or your totems hit an enemy with a spell",
                     And(With(Keyword.Spell), Hit.On.Or(Hit.By(Entity.Totem).On))
@@ -65,6 +66,7 @@ namespace PoESkillTree.Computation.Data
                 { "when you block", Block.On },
                 // other
                 { "when you stun an enemy", Action.Stun.On },
+                { "when you stun an enemy with a melee hit", And(Condition.WithPart(Keyword.Melee), Action.Stun.On) },
                 { "after spending( a total of)? # mana", Action.SpendMana(Value).On },
                 { "when you gain a ({ChargeTypeMatchers})", Reference.AsChargeType.GainAction.On },
                 { "you gain", Condition.True }, // may be left over at the end, does nothing

@@ -100,6 +100,17 @@ namespace PoESkillTree.Computation.Data
                     "#% increased beam frequency per buff stack",
                     PercentIncrease, Value * Stat.SkillStage.Value, Stat.HitRate
                 },
+                {
+                    // Swift Affliction Support
+                    "#% reduced duration of supported skills and damaging ailments they inflict",
+                    PercentReduce, Value,
+                    ApplyOnce(Stat.Duration, Ailment.Ignite.Duration, Ailment.Bleed.Duration, Ailment.Poison.Duration)
+                },
+                {   // Minion and Totem Elemental Resistance Support
+                    @"totems and minions summoned by supported skills have \+#% ({DamageTypeMatchers}) resistance",
+                    (BaseAdd, Value, Elemental.Resistance.For(Entity.Minion)),
+                    (BaseAdd, Value, Elemental.Resistance.For(Entity.Totem))
+                },
                 // Keystones
                 {
                     // Point Blank

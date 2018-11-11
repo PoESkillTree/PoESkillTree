@@ -129,9 +129,14 @@ namespace PoESkillTree.Computation.Data
                 // - speed
                 // - projectiles
                 { "skills fire an additional projectile", BaseAdd, 1, Projectile.Count },
+                { "supported skills fire # additional projectiles", BaseAdd, Value, Projectile.Count },
                 { "pierces # additional targets", BaseAdd, Value, Projectile.PierceCount },
                 { "projectiles pierce an additional target", BaseAdd, 1, Projectile.PierceCount },
                 { "projectiles pierce # (additional )?targets", BaseAdd, Value, Projectile.PierceCount },
+                {
+                    "projectiles from supported skills pierce # additional targets", BaseAdd, Value,
+                    Projectile.PierceCount
+                },
                 {
                     "projectiles pierce all nearby targets",
                     TotalOverride, double.PositiveInfinity, Projectile.PierceCount, Enemy.IsNearby
@@ -237,6 +242,9 @@ namespace PoESkillTree.Computation.Data
                 },
                 // skills
                 // traps, mines, totems
+                { "trap lasts # seconds", BaseSet, Value, Stat.Trap.Duration },
+                { "mine lasts # seconds", BaseSet, Value, Stat.Mine.Duration },
+                { "totem lasts # seconds", BaseSet, Value, Stat.Totem.Duration },
                 {
                     "detonating mines is instant",
                     TotalOverride, double.PositiveInfinity, Stat.CastRate, With(Skills.DetonateMines)
@@ -260,16 +268,18 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value, Buff.CurseLimit.For(Enemy)
                 },
                 { "unaffected by curses", PercentLess, 100, Buffs(targets: Self).With(Keyword.Curse).Effect },
-                { "grants fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
+                { "grants? fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
                 { "gain elemental conflux", TotalOverride, 1, Buff.Conflux.Elemental.On(Self) },
                 // flags
                 // ailments
                 { "causes bleeding", TotalOverride, 100, Ailment.Bleed.Chance },
+                { "cannot cause bleeding", TotalOverride, 0, Ailment.Bleed.Chance },
                 { "always poison", TotalOverride, 100, Ailment.Poison.Chance },
                 {
                     "(you )?can afflict an additional ignite on an enemy",
                     BaseAdd, 1, Ailment.Ignite.InstancesOn(Enemy).Maximum
                 },
+                { "cannot inflict elemental ailments", TotalOverride, 0, Ailment.Elemental.Select(s => s.Chance) },
                 { "(you are )?immune to ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
                 { "cannot be ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
                 {

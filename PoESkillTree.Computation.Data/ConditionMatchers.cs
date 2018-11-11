@@ -149,6 +149,7 @@ namespace PoESkillTree.Computation.Data
                 // - pool
                 { "when on low life", Life.IsLow },
                 { "when not on low life", Not(Life.IsLow) },
+                { "while on full life", Life.IsFull },
                 { "while no mana is reserved", Mana.Reservation.Value <= 0 },
                 { "while energy shield is full", EnergyShield.IsFull },
                 { "while on full energy shield", EnergyShield.IsFull },
@@ -210,6 +211,7 @@ namespace PoESkillTree.Computation.Data
                 { "chaos skills have", With(Chaos) },
                 { "(with|of|for) ({KeywordMatchers}) skills", With(Reference.AsKeyword) },
                 { "({KeywordMatchers}) skills have", With(Reference.AsKeyword) },
+                { "caused by melee hits", Condition.WithPart(Keyword.Melee) },
                 // - by damage type
                 { "with ({DamageTypeMatchers}) skills", With(Reference.AsDamageType) },
                 // - by single skill
@@ -254,6 +256,7 @@ namespace PoESkillTree.Computation.Data
                 // minions
                 { "minions", For(Entity.Minion) },
                 { "minions (deal|have|gain)", For(Entity.Minion) },
+                { "supported skills have minion", For(Entity.Minion) },
                 { "you and your minions have", For(Entity.Minion).Or(For(Self)) },
                 { "golems have", And(For(Entity.Minion), With(Keyword.Golem)) },
                 { "spectres have", And(For(Entity.Minion), With(Skills.RaiseSpectre)) },
@@ -264,6 +267,9 @@ namespace PoESkillTree.Computation.Data
                 // other
                 { "against targets they pierce", Projectile.PierceCount.Value >= 1 },
                 // unique
+                {
+                    "against burning enemies", Or(Ailment.Ignite.IsOn(Enemy), Condition.Unique("Is the Enemy Burning?"))
+                },
                 { "while leeching", Condition.Unique("Are you leeching?") },
                 {
                     "if you've killed an enemy affected by your damage over time recently",
@@ -275,8 +281,12 @@ namespace PoESkillTree.Computation.Data
                     Condition.Unique("Have you recently taken Fire Damage from a Hit?")
                 },
                 { "while you have at least one nearby ally", Condition.Unique("Is any ally nearby?") },
+                { "while channelling supported skills", Condition.Unique("Are you currently channeling?") },
                 // support gem mod clarifications. Irrelevant for parsing.
                 { "supported skills (have|deal)", Condition.True },
+                { "(from )?supported skills'?", Condition.True },
+                { "supported attacks", Condition.True },
+                { "supported attack skills", Condition.True },
             };
     }
 }

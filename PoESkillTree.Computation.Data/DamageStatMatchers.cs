@@ -49,8 +49,8 @@ namespace PoESkillTree.Computation.Data
                 { "global ({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage },
                 { "damage of a random element", RandomElement.Damage },
                 // by keyword
-                { "({KeywordMatchers}) damage",  Damage.With(Reference.AsKeyword) },
-                { "projectiles deal damage",  Damage.With(Keyword.Projectile) },
+                { "({KeywordMatchers}) damage", Damage.With(Reference.AsKeyword) },
+                { "projectiles deal damage", Damage.With(Keyword.Projectile) },
                 // by skill vs. ailment
                 { "damage with hits and ailments", Damage.WithHitsAndAilments },
                 { "(?<!no )damage (with|from) hits", Damage.WithHits },
@@ -58,6 +58,10 @@ namespace PoESkillTree.Computation.Data
                 { "damage with ailments from attack skills", Damage.WithAilments.With(DamageSource.Attack) },
                 { "attack skills deal damage with ailments", Damage.WithAilments.With(DamageSource.Attack) },
                 { "damage with ({AilmentMatchers})", Damage.With(Reference.AsAilment) },
+                {
+                    "damage with ({AilmentMatchers}) and ({AilmentMatchers})",
+                    Damage.With(References[0].AsAilment), Damage.With(References[1].AsAilment)
+                },
                 // by source and type
                 { "attack physical damage", Physical.Damage.WithSkills(DamageSource.Attack) },
                 {
@@ -75,6 +79,10 @@ namespace PoESkillTree.Computation.Data
                 {
                     "({DamageTypeMatchers}) spell damage",
                     Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell)
+                },
+                {
+                    "({DamageTypeMatchers}) damage over time",
+                    Reference.AsDamageType.Damage.With(DamageSource.OverTime)
                 },
                 { "burning damage", Fire.Damage.WithSkills(DamageSource.OverTime), Fire.Damage.With(Ailment.Ignite) },
                 // other combinations
@@ -94,6 +102,10 @@ namespace PoESkillTree.Computation.Data
                 // other entities
                 { "minion damage", Damage.For(Entity.Minion) },
                 { "golem damage", Damage.For(Entity.Minion).With(Keyword.Golem) },
+                {
+                    "minion and totem elemental damage",
+                    Elemental.Damage.For(Entity.Minion), Elemental.Damage.With(Keyword.Totem)
+                },
             }; //add
     }
 }

@@ -10,6 +10,7 @@ using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Data
 {
@@ -198,6 +199,7 @@ namespace PoESkillTree.Computation.Data
                 // skills
                 { "cooldown recovery speed", Stat.CooldownRecoverySpeed },
                 { "warcry cooldown recovery speed", Stat.CooldownRecoverySpeed, With(Keyword.Warcry) },
+                { "cooldown recovery speed for throwing traps", Stat.CooldownRecoverySpeed, With(Keyword.Trap) },
                 { "mana cost( of skills)?", Mana.Cost },
                 {
                     "mana cost of skills that place mines or throw traps",
@@ -234,7 +236,7 @@ namespace PoESkillTree.Computation.Data
                 { "skeleton movement speed", Stat.MovementSpeed.For(Entity.Minion), WithSkeletonSkills },
                 { "golem at a time", Golems.CombinedInstances.Maximum },
                 // buffs
-                { "chance to gain ({BuffMatchers})", Reference.AsBuff.Chance },
+                { "chance to (gain|grant) ({BuffMatchers})", Reference.AsBuff.Chance },
                 { "({BuffMatchers}) duration", Reference.AsBuff.Duration },
                 { "({BuffMatchers}) effect", Reference.AsBuff.Effect },
                 { "effect of ({BuffMatchers}) on you", Reference.AsBuff.EffectOn(Self) },
@@ -255,9 +257,11 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "warcry buff effect", Buffs(targets: Self).With(Keyword.Warcry).Effect },
                 { "chance to fortify", Buff.Fortify.Chance },
-                { "chance for attacks to maim on hit", Buff.Maim.Chance.With(DamageSource.Attack) },
+                { "chance to maim", Buff.Maim.Chance },
+                { "chance for attacks to maim", Buff.Maim.Chance.With(DamageSource.Attack) },
                 { "chance to taunt", Buff.Taunt.Chance },
                 { "chance to blind( enemies)?", Buff.Blind.Chance },
+                { "blinding duration", Buff.Blind.Duration },
                 { "chance to cover rare or unique enemies in ash", Buff.CoveredInAsh.Chance, Enemy.IsRareOrUnique },
                 // ailments
                 { "chance to ({AilmentMatchers})( the enemy)?", Reference.AsAilment.Chance },
@@ -268,9 +272,13 @@ namespace PoESkillTree.Computation.Data
                 { "chance to avoid being ({AilmentMatchers})", Reference.AsAilment.Avoidance },
                 { "chance to avoid elemental ailments", Ailment.Elemental.Select(a => a.Avoidance) },
                 { "({AilmentMatchers}) duration( on enemies)?", Reference.AsAilment.Duration },
+                {
+                    "duration of ailments on enemies",
+                    Ailment.Elemental.Append(Ailment.Bleed, Ailment.Poison).Select(a => a.Duration)
+                },
                 { "duration of elemental ailments on enemies", Ailment.Elemental.Select(a => a.Duration) },
                 { "effect of shock", Ailment.ShockEffect },
-                { "effect of chill", Ailment.ChillEffect },
+                { "effect of chill( on enemies)?", Ailment.ChillEffect },
                 { "effect of non-damaging ailments on enemies", Ailment.ShockEffect, Ailment.ChillEffect },
                 // stun
                 { "chance to avoid being stunned", Effect.Stun.Avoidance },
@@ -296,6 +304,7 @@ namespace PoESkillTree.Computation.Data
                 // item quantity/quality
                 { "quantity of items found", Stat.ItemQuantity },
                 { "rarity of items found", Stat.ItemRarity },
+                { "rarity of items dropped by enemies slain", Stat.ItemRarity },
                 // range and area of effect
                 { "area of effect", Stat.AreaOfEffect },
                 { "melee weapon and unarmed( attack)? range", Stat.Range.With(Keyword.Melee) },

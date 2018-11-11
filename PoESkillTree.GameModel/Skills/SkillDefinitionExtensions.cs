@@ -259,6 +259,21 @@ namespace PoESkillTree.GameModel.Skills
                     removedKeywords: new[] { Keyword.Melee })));
             Add("Wither", new SkillPartDefinitionExtension(
                 RemoveStat("chaos_damage_taken_+%")));
+
+            Add("SupportCastOnDeath", new SkillPartDefinitionExtension(
+                ReplaceStat("area_of_effect_+%_while_dead", "base_skill_area_of_effect_+%")
+                    .AndThen(ReplaceStat("cast_on_death_damage_+%_final_while_dead", "damage_+%_final"))));
+            Add("SupportGemFrenzyPowerOnTrapTrigger", new SkillPartDefinitionExtension(
+                ReplaceStat("trap_critical_strike_multiplier_+_per_power_charge",
+                    "critical_strike_multiplier_+_per_power_charge")));
+            Add("SupportRangedAttackTotem", new SkillPartDefinitionExtension(
+                ReplaceStat("support_attack_totem_attack_speed_+%_final", "active_skill_attack_speed_+%_final")));
+            Add("SupportSpellTotem", new SkillPartDefinitionExtension(
+                ReplaceStat("support_spell_totem_cast_speed_+%_final", "active_skill_cast_speed_+%_final")));
+            Add("SupportCastWhileChannelling", new SkillPartDefinitionExtension(
+                ReplaceStat("cast_while_channelling_time_ms", "hit_rate_ms")
+                    .AndThen(ReplaceStat("support_cast_while_channelling_triggered_skill_damage_+%_final",
+                        "damage_+%_final"))));
         }
 
         private void Add(string skillId, params (string name, SkillPartDefinitionExtension extension)[] parts)

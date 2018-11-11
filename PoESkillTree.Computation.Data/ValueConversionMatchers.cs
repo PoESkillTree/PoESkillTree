@@ -76,6 +76,10 @@ namespace PoESkillTree.Computation.Data
                     @"per poison affecting enemy, up to \+#%",
                     CappedMultiplier(Ailment.Poison.InstancesOn(Enemy).Value, Value)
                 },
+                {
+                    "for each poison on the enemy, up to #",
+                    CappedMultiplier(Ailment.Poison.InstancesOn(Enemy).Value, Value)
+                },
                 // skills
                 { "for each zombie you own", Skills.RaiseZombie.Instances.Value },
                 { "for each summoned golem", Golems.CombinedInstances.Value },
