@@ -71,6 +71,7 @@ namespace PoESkillTree.Computation.Data
                 { "when you gain a ({ChargeTypeMatchers})", Reference.AsChargeType.GainAction.On },
                 { "you gain", Condition.True }, // may be left over at the end, does nothing
                 { "you", Condition.True },
+                { "grants", Condition.True },
                 // unique
                 {
                     "when your trap is triggered by an enemy",

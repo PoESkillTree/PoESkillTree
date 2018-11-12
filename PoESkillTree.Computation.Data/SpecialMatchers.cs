@@ -106,10 +106,15 @@ namespace PoESkillTree.Computation.Data
                     PercentReduce, Value,
                     ApplyOnce(Stat.Duration, Ailment.Ignite.Duration, Ailment.Bleed.Duration, Ailment.Poison.Duration)
                 },
+                {
+                    // Vaal Impurity of Ice/Fire/Lightning
+                    "nearby enemies' ({DamageTypeMatchers}) resistance is ignored by hits",
+                    TotalOverride, 1, Reference.AsDamageType.IgnoreResistance
+                },
                 {   // Minion and Totem Elemental Resistance Support
                     @"totems and minions summoned by supported skills have \+#% ({DamageTypeMatchers}) resistance",
-                    (BaseAdd, Value, Elemental.Resistance.For(Entity.Minion)),
-                    (BaseAdd, Value, Elemental.Resistance.For(Entity.Totem))
+                    (BaseAdd, Value, Reference.AsDamageType.Resistance.For(Entity.Minion)),
+                    (BaseAdd, Value, Reference.AsDamageType.Resistance.For(Entity.Totem))
                 },
                 // Keystones
                 {

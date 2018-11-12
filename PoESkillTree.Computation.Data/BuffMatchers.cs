@@ -31,6 +31,7 @@ namespace PoESkillTree.Computation.Data
                 { "phasing", Buff.Phasing },
                 { "arcane surge", Buff.ArcaneSurge },
                 { "tailwind", Buff.Tailwind },
+                { "innervation", Buff.Innervation },
             };
     }
 }

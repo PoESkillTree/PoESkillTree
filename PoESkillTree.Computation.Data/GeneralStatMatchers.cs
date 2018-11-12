@@ -55,6 +55,11 @@ namespace PoESkillTree.Computation.Data
                 { "damage taken", Damage.Taken },
                 { "damage taken from damage over time", Damage.Taken.With(DamageSource.OverTime) },
                 {
+                    "({DamageTypeMatchers}) damage taken over time",
+                    Reference.AsDamageType.Damage.Taken.With(DamageSource.OverTime)
+                },
+                { "damage taken from projectiles", Damage.Taken.With(Keyword.Projectile) },
+                {
                     "({DamageTypeMatchers}) damage from hits taken as fire damage",
                     Reference.AsDamageType.HitDamageTakenAs(DamageType.Fire)
                 },
@@ -269,6 +274,7 @@ namespace PoESkillTree.Computation.Data
                     "chance to freeze, shock and ignite",
                     Ailment.Freeze.Chance, Ailment.Shock.Chance, Ailment.Ignite.Chance
                 },
+                { "chance to cause bleeding", Ailment.Bleed.Chance.With(DamageSource.Attack) },
                 { "chance to avoid being ({AilmentMatchers})", Reference.AsAilment.Avoidance },
                 { "chance to avoid elemental ailments", Ailment.Elemental.Select(a => a.Avoidance) },
                 { "({AilmentMatchers}) duration( on enemies)?", Reference.AsAilment.Duration },

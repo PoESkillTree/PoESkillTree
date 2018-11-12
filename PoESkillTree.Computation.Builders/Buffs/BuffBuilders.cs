@@ -33,6 +33,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
             ArcaneSurge = Create("ArcaneSurge");
             Tailwind = Create("Tailwind");
             CoveredInAsh = Create("CoveredInAsh");
+            Innervation = Create("Innervation");
             Conflux = new ConfluxBuffBuilders(statFactory);
             CurseLimit = StatBuilderUtils.FromIdentity(statFactory, "CurseLimit", typeof(int));
 
@@ -49,6 +50,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
                 new BuffBuilderWithKeywords(ArcaneSurge),
                 new BuffBuilderWithKeywords(Tailwind, Keyword.Aura),
                 new BuffBuilderWithKeywords(CoveredInAsh),
+                new BuffBuilderWithKeywords(Innervation),
                 new BuffBuilderWithKeywords(Conflux.Chilling),
                 new BuffBuilderWithKeywords(Conflux.Elemental),
                 new BuffBuilderWithKeywords(Conflux.Igniting),
@@ -79,6 +81,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
         public IBuffBuilder ArcaneSurge { get; }
         public IBuffBuilder Tailwind { get; }
         public IBuffBuilder CoveredInAsh { get; }
+        public IBuffBuilder Innervation { get; }
         public IConfluxBuffBuilders Conflux { get; }
 
         public IStatBuilder Temporary(IStatBuilder gainedStat)

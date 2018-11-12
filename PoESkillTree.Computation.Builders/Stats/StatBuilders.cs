@@ -212,6 +212,12 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder IgnoreHexproof => FromIdentity(typeof(bool));
 
+        public IStatBuilder AlwaysMoving
+            => FromIdentity("Are you always moving?", typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue());
+
+        public IStatBuilder AlwaysStationary
+            => FromIdentity("Are you always stationary?", typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue());
+
         public IStatBuilder AffectedByMinionDamageIncreases
         {
             get

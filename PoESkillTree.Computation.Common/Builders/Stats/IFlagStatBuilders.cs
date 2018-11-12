@@ -18,5 +18,9 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder AffectedByMinionDamageIncreases { get; }
 
         IStatBuilder AffectedByMinionAttackRateIncreases { get; }
+
+        IStatBuilder AlwaysMoving { get; }
+
+        IStatBuilder AlwaysStationary { get; }
     }
 }

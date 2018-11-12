@@ -127,6 +127,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "never deal critical strikes", TotalOverride, 0, CriticalStrike.Chance },
                 // - speed
+                { "actions are #% slower", PercentLess, Value, Stat.ActionSpeed },
                 // - projectiles
                 { "skills fire an additional projectile", BaseAdd, 1, Projectile.Count },
                 { "supported skills fire # additional projectiles", BaseAdd, Value, Projectile.Count },
@@ -241,6 +242,8 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, 100, Reference.AsChargeType.ChanceToGain
                 },
                 // skills
+                { "base duration is # seconds", BaseSet, Value, Stat.Duration },
+                { "skills cost no mana", TotalOverride, 0, Mana.Cost },
                 // traps, mines, totems
                 { "trap lasts # seconds", BaseSet, Value, Stat.Trap.Duration },
                 { "mine lasts # seconds", BaseSet, Value, Stat.Mine.Duration },
@@ -250,6 +253,7 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, double.PositiveInfinity, Stat.CastRate, With(Skills.DetonateMines)
                 },
                 // minions
+                { "can summon up to # golem at a time", BaseSet, Value, Golems.CombinedInstances.Maximum },
                 // buffs
                 {
                     "(?<!while |chance to )you have ({BuffMatchers})",
@@ -270,6 +274,7 @@ namespace PoESkillTree.Computation.Data
                 { "unaffected by curses", PercentLess, 100, Buffs(targets: Self).With(Keyword.Curse).Effect },
                 { "grants? fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
                 { "gain elemental conflux", TotalOverride, 1, Buff.Conflux.Elemental.On(Self) },
+                { "({BuffMatchers}) lasts # seconds", BaseSet, Value, Reference.AsBuff.Duration },
                 // flags
                 // ailments
                 { "causes bleeding", TotalOverride, 100, Ailment.Bleed.Chance },

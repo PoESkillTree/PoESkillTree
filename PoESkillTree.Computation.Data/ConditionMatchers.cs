@@ -266,6 +266,8 @@ namespace PoESkillTree.Computation.Data
                 { "during any flask effect", Flask.IsAnyActive },
                 // other
                 { "against targets they pierce", Projectile.PierceCount.Value >= 1 },
+                { "while stationary", Flag.AlwaysStationary.IsSet },
+                { "while moving", Flag.AlwaysMoving.IsSet },
                 // unique
                 {
                     "against burning enemies", Or(Ailment.Ignite.IsOn(Enemy), Condition.Unique("Is the Enemy Burning?"))
@@ -284,9 +286,10 @@ namespace PoESkillTree.Computation.Data
                 { "while channelling supported skills", Condition.Unique("Are you currently channeling?") },
                 // support gem mod clarifications. Irrelevant for parsing.
                 { "supported skills (have|deal)", Condition.True },
-                { "(from )?supported skills'?", Condition.True },
+                { "(from |with )?supported skills'?", Condition.True },
                 { "supported attacks", Condition.True },
                 { "supported attack skills", Condition.True },
+                { "of supported curse skills", Condition.True },
             };
     }
 }
