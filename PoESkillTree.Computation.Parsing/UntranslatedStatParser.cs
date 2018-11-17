@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Parsing
         {
             var modifierLines = _translator.Translate(parameter.UntranslatedStats);
             var modifierSource = new ModifierSource.Global(parameter.LocalModifierSource);
-            var entity = Entity.Character;
+            var entity = parameter.ModifierSourceEntity;
             var parseResults = modifierLines.Select(m => _coreParser.Parse(m, modifierSource, entity));
             return ParseResult.Aggregate(parseResults);
         }
@@ -30,9 +30,17 @@ namespace PoESkillTree.Computation.Parsing
     {
         public UntranslatedStatParserParameter(
             ModifierSource.Local.Skill localModifierSource, IEnumerable<UntranslatedStat> untranslatedStats)
-            => (LocalModifierSource, UntranslatedStats) = (localModifierSource, untranslatedStats);
+            => (LocalModifierSource, ModifierSourceEntity, UntranslatedStats) =
+                (localModifierSource, default, untranslatedStats);
+
+        public UntranslatedStatParserParameter(
+            ModifierSource.Local.Skill localModifierSource, Entity modifierSourceEntity,
+            IEnumerable<UntranslatedStat> untranslatedStats)
+            => (LocalModifierSource, ModifierSourceEntity, UntranslatedStats) =
+                (localModifierSource, modifierSourceEntity, untranslatedStats);
 
         public ModifierSource.Local.Skill LocalModifierSource { get; }
+        public Entity ModifierSourceEntity { get; }
         public IEnumerable<UntranslatedStat> UntranslatedStats { get; }
 
         public override bool Equals(object obj)
@@ -40,9 +48,10 @@ namespace PoESkillTree.Computation.Parsing
 
         private bool Equals(UntranslatedStatParserParameter other)
             => LocalModifierSource == other.LocalModifierSource &&
+               ModifierSourceEntity == other.ModifierSourceEntity &&
                UntranslatedStats.SequenceEqual(other.UntranslatedStats);
 
         public override int GetHashCode()
-            => (LocalModifierSource, UntranslatedStats.SequenceHash()).GetHashCode();
+            => (LocalModifierSource, ModifierSourceEntity, UntranslatedStats.SequenceHash()).GetHashCode();
     }
 }

@@ -178,6 +178,9 @@ namespace PoESkillTree.GameModel.Skills
         public BuffStat(UntranslatedStat stat, IEnumerable<Entity> affectedEntities)
             => (Stat, AffectedEntities) = (stat, affectedEntities);
 
+        public void Deconstruct(out UntranslatedStat stat, out IEnumerable<Entity> affectedEntities)
+            => (stat, affectedEntities) = (Stat, AffectedEntities);
+
         public UntranslatedStat Stat { get; }
         public IEnumerable<Entity> AffectedEntities { get; }
 

@@ -11,6 +11,7 @@ using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.GameModel.StatTranslation;
 using PoESkillTree.Utils.Extensions;
 using static PoESkillTree.Computation.Common.Tests.Helper;
 using static PoESkillTree.Computation.Parsing.Tests.SkillParserTestUtils;
@@ -694,12 +695,112 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.AreEqual(new NodeValue(skill.SocketIndex), modifier.Value.Calculate(null));
         }
 
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ClarityBuffsManaRegenIfActive(bool isActiveSkill)
+        {
+            var expectedValues = new[] { isActiveSkill ? (NodeValue?) 6 : null, isActiveSkill ? (NodeValue?) 8 : null };
+            var expectedEntities = new[] { Entity.Character, Entity.Minion };
+            var (definition, skill) = CreateClarityDefinition();
+            var source = new ModifierSource.Local.Skill("Clarity");
+            var results = new[]
+            {
+                ParseResult.Success(new[]
+                    { MockModifier(new Stat("Mana.Regen"), value: new Constant(4)) }),
+                ParseResult.Success(new[]
+                    { MockModifier(new Stat("Mana.Regen", Entity.Minion), value: new Constant(4)) }),
+            };
+            var parameters = new[]
+            {
+                new UntranslatedStatParserParameter(source, Entity.Character, new[]
+                    { new UntranslatedStat("base_mana_regeneration_rate_per_minute", 240), }),
+                new UntranslatedStatParserParameter(source, Entity.Minion, new[]
+                    { new UntranslatedStat("base_mana_regeneration_rate_per_minute", 240), }),
+            };
+            var statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
+                p.Parse(parameters[0]) == results[0] &&
+                p.Parse(parameters[1]) == results[1]);
+            var emptyStatParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
+                p.Parse(EmptyParserParameter(source)) == EmptyParseResult);
+            var sut = CreateSut(definition, CreateParser);
+            var context = MockValueCalculationContext(skill, false, isActiveSkill,
+                ("Clarity.EffectOn(Character)", default, 1.5),
+                ("Clarity.EffectOn(Minion)", default, 2),
+                ("Clarity.BuffActive", Entity.Character, 1),
+                ("Clarity.BuffActive", Entity.Minion, 1),
+                ("Clarity.BuffSourceIs(Character)", Entity.Character, 1),
+                ("Clarity.BuffSourceIs(Character)", Entity.Minion, 1));
+
+            var result = sut.Parse(skill);
+
+            var modifiers = GetModifiersWithIdentity(result.Modifiers, "Mana.Regen").ToList();
+            var actualValues = modifiers.Select(m => m.Value).Calculate(context).ToList();
+            Assert.AreEqual(expectedValues, actualValues);
+            var actualEntities = modifiers.Select(m => m.Stats.Single().Entity).ToList();
+            Assert.AreEqual(expectedEntities, actualEntities);
+
+            IParser<UntranslatedStatParserParameter> CreateParser(string statTranslationFileName)
+                => statTranslationFileName == "stat_translations" ? statParser : emptyStatParser;
+        }
+
+        [Test]
+        public void ClarityUsesSkillStatTranslationFileForBuffStatIfMainCantTranslate()
+        {
+            var (definition, skill) = CreateClarityDefinition();
+            var source = new ModifierSource.Local.Skill("Clarity");
+            var results = new[]
+            {
+                ParseResult.Success(new[]
+                    { MockModifier(new Stat("Mana.Regen"), value: new Constant(4)) }),
+                ParseResult.Success(new[]
+                    { MockModifier(new Stat("Mana.Regen", Entity.Minion), value: new Constant(4)) }),
+            };
+            var parameters = new[]
+            {
+                new UntranslatedStatParserParameter(source, Entity.Character, new[]
+                    { new UntranslatedStat("base_mana_regeneration_rate_per_minute", 240), }),
+                new UntranslatedStatParserParameter(source, Entity.Minion, new[]
+                    { new UntranslatedStat("base_mana_regeneration_rate_per_minute", 240), }),
+            };
+            var skillStatParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
+                p.Parse(parameters[0]) == results[0] &&
+                p.Parse(parameters[1]) == results[1]);
+            var mainStatParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
+                p.Parse(parameters[0]) == EmptyParseResult &&
+                p.Parse(parameters[1]) == EmptyParseResult);
+            var emptyStatParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
+                p.Parse(EmptyParserParameter(source)) == EmptyParseResult);
+            var sut = CreateSut(definition, CreateParser);
+
+            var result = sut.Parse(skill);
+
+            Assert.IsTrue(AnyModifierHasIdentity(result.Modifiers, "Mana.Regen"));
+
+            IParser<UntranslatedStatParserParameter> CreateParser(string statTranslationFileName)
+            {
+                switch (statTranslationFileName)
+                {
+                    case StatTranslationLoader.MainFileName:
+                        return mainStatParser;
+                    case StatTranslationLoader.SkillFileName:
+                        return skillStatParser;
+                    default:
+                        return emptyStatParser;
+                }
+            }
+        }
+
         private static (SkillDefinition, Skill) CreateClarityDefinition()
         {
             var activeSkill = CreateActiveSkillDefinition("Clarity",
                 new[] { "aura", "mana_cost_is_reservation" },
                 new[] { Keyword.Aura }, providesBuff: true);
-            var level = CreateLevelDefinition(manaCost: 10);
+            var buffStats = new[]
+            {
+                new BuffStat(new UntranslatedStat("base_mana_regeneration_rate_per_minute", 240),
+                    new[] { Entity.Character, Entity.Minion }),
+            };
+            var level = CreateLevelDefinition(manaCost: 10, buffStats: buffStats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (CreateActive("Clarity", activeSkill, levels),
                 new Skill("Clarity", 1, 0, ItemSlot.Belt, 0, null));
@@ -1034,19 +1135,25 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         #endregion
 
+        private static ActiveSkillParser CreateSut(SkillDefinition skillDefinition)
+        {
+            var statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
+                p.Parse(It.IsAny<UntranslatedStatParserParameter>()) == EmptyParseResult);
+            return CreateSut(skillDefinition, _ => statParser);
+        }
+
         private static ActiveSkillParser CreateSut(
-            SkillDefinition skillDefinition, IParser<UntranslatedStatParserParameter> statParser = null)
+            SkillDefinition skillDefinition, IParser<UntranslatedStatParserParameter> statParser)
+            => CreateSut(skillDefinition, _ => statParser);
+
+        private static ActiveSkillParser CreateSut(
+            SkillDefinition skillDefinition, TranslatingSkillParser.StatParserFactory statParserFactory)
         {
             var skillDefinitions = new SkillDefinitions(new[] { skillDefinition });
             var statFactory = new StatFactory();
             var builderFactories = new BuilderFactories(statFactory, skillDefinitions);
             var metaStatBuilders = new MetaStatBuilders(statFactory);
-            if (statParser is null)
-            {
-                statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
-                    p.Parse(It.IsAny<UntranslatedStatParserParameter>()) == EmptyParseResult);
-            }
-            return new ActiveSkillParser(skillDefinitions, builderFactories, metaStatBuilders, _ => statParser);
+            return new ActiveSkillParser(skillDefinitions, builderFactories, metaStatBuilders, statParserFactory);
         }
 
         private static UntranslatedStatParserParameter EmptyParserParameter(ModifierSource.Local.Skill source)

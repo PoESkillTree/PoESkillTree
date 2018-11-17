@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Common.Builders.Buffs
 {
@@ -36,5 +38,11 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         /// Gets an action that occurs when Self gains this buff.
         /// </summary>
         IActionBuilder Action { get; }
+
+        /// <summary>
+        /// Builds an IValue that calculates the multiplier to the value of modifiers created from
+        /// <see cref="AddStatForSource"/> and <see cref="IEffectBuilder.AddStat"/>.
+        /// </summary>
+        IValue BuildAddStatMultiplier(IReadOnlyCollection<Entity> possibleSources, Entity target);
     }
 }

@@ -78,7 +78,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
             return new StatBuilder(StatFactory, coreBuilder);
         }
 
-        private IValue BuildAddStatMultiplier(IReadOnlyCollection<Entity> possibleSources, Entity target)
+        public IValue BuildAddStatMultiplier(IReadOnlyCollection<Entity> possibleSources, Entity target)
         {
             var identity = Build();
             var buffActiveValue = new StatValue(BuildBuffActiveStat(target, identity));

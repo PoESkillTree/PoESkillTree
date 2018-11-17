@@ -6,17 +6,11 @@ using EnumsNET;
 using MoreLinq;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.GameModel.Items;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.GameModel.Skills
 {
     public class SkillJsonDeserializer
     {
-        private static readonly IReadOnlyList<string> BuffProvidingActiveSkillTypes = new[]
-        {
-            ActiveSkillType.Buff, ActiveSkillType.ExplicitProvidesBuff, ActiveSkillType.Curse
-        };
-
         private readonly SkillDefinitionExtensions _definitionExtensions;
         private int _nextNumericId;
         private SkillDefinitionExtension _definitionExtension;
@@ -94,8 +88,7 @@ namespace PoESkillTree.GameModel.Skills
                 var minionActiveSkillTypes = activeSkillJson["minion_types"]?.Values<string>().ToHashSet()
                                              ?? new HashSet<string>();
                 var keywords = GetKeywords(displayName, activeSkillTypes, gemTags);
-                var providesBuff = activeSkillTypes.ContainsAny(BuffProvidingActiveSkillTypes)
-                                   || minionActiveSkillTypes.ContainsAny(BuffProvidingActiveSkillTypes);
+                var providesBuff = _definitionExtension.BuffStats.Any();
                 var totemLifeMultiplier = activeSkillJson.Value<double?>("skill_totem_life_multiplier");
                 var weaponRestrictions = activeSkillJson["weapon_restrictions"].Values<string>()
                     .Select(ItemClassEx.Parse).ToList();

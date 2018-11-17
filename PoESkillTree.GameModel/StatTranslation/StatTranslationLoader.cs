@@ -6,10 +6,13 @@ namespace PoESkillTree.GameModel.StatTranslation
 {
     public class StatTranslationLoader
     {
+        public const string MainFileName = "stat_translations";
+        public const string SkillFileName = MainFileName + "/skill";
+
         public static readonly IReadOnlyList<string> TranslationFileNames = new[]
         {
-            "stat_translations",
-            "stat_translations/skill",
+            MainFileName,
+            SkillFileName,
             "stat_translations/support_gem",
             "stat_translations/aura_skill",
             "stat_translations/beam_skill",

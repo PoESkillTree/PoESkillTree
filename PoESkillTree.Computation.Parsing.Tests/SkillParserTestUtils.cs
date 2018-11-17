@@ -3,6 +3,7 @@ using System.Linq;
 using Moq;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 
@@ -63,7 +64,17 @@ namespace PoESkillTree.Computation.Parsing.Tests
             => MockValueCalculationContext(skill, false, false, nodeValues);
 
         public static IValueCalculationContext MockValueCalculationContext(
+            Skill skill, bool isMainSkill, bool isActiveSkill)
+            => MockValueCalculationContext(skill, isMainSkill, isActiveSkill, new (string, double?)[0]);
+
+        public static IValueCalculationContext MockValueCalculationContext(
             Skill skill, bool isMainSkill, bool isActiveSkill, params (string stat, double? value)[] nodeValues)
+            => MockValueCalculationContext(skill, isMainSkill, isActiveSkill,
+                nodeValues.Select(t => (t.stat, default(Entity), t.value)).ToArray());
+
+        public static IValueCalculationContext MockValueCalculationContext(
+            Skill skill, bool isMainSkill, bool isActiveSkill,
+            params (string stat, Entity entity, double? value)[] nodeValues)
         {
             var contextMock = new Mock<IValueCalculationContext>();
             var isMainSkillStat = new Stat($"{skill.ItemSlot}.{skill.SocketIndex}.IsMainSkill");
@@ -77,9 +88,9 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var activeSkillSocketIndex = isActiveSkill ? skill.SocketIndex : -1;
             contextMock.Setup(c => c.GetValue(activeSkillSocketIndexStat, NodeType.Total, PathDefinition.MainPath))
                 .Returns((NodeValue?) activeSkillSocketIndex);
-            foreach (var (statIdentity, value) in nodeValues)
+            foreach (var (statIdentity, entity, value) in nodeValues)
             {
-                var stat = new Stat(statIdentity);
+                var stat = new Stat(statIdentity, entity);
                 contextMock.Setup(c => c.GetValue(stat, NodeType.Total, PathDefinition.MainPath))
                     .Returns((NodeValue?) value);
             }
@@ -96,7 +107,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
             => modifiers.First(m => m.Stats.First().Identity == identity);
 
         public static IEnumerable<IValue> GetValuesForIdentity(IEnumerable<Modifier> modifiers, string identity)
-            => modifiers.Where(m => m.Stats.First().Identity == identity).Select(m => m.Value);
+            => GetModifiersWithIdentity(modifiers, identity).Select(m => m.Value);
+
+        public static IEnumerable<Modifier> GetModifiersWithIdentity(IEnumerable<Modifier> modifiers, string identity)
+            => modifiers.Where(m => m.Stats.First().Identity == identity);
 
         public static IEnumerable<NodeValue?> Calculate(
             this IEnumerable<IValue> @this, IValueCalculationContext context)
