@@ -1,4 +1,6 @@
-﻿using PoESkillTree.Computation.Builders.Stats;
+﻿using System.Collections.Generic;
+using System.Linq;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -18,6 +20,7 @@ namespace PoESkillTree.Computation.Builders.Entities
         public IEntityBuilder Ally => new EntityBuilder(Entity.Minion, Entity.Totem);
         public IEntityBuilder Totem => new EntityBuilder(Entity.Totem);
         public IEntityBuilder Minion => new EntityBuilder(Entity.Minion);
+        public IEntityBuilder From(IEnumerable<Entity> entities) => new EntityBuilder(entities.ToArray());
 
         private class EnemyBuilder : EntityBuilder, IEnemyBuilder
         {

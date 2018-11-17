@@ -74,6 +74,19 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             AddModifier(_metaStatBuilders.ActiveSkillItemSlot(mainSkill.Id), Form.BaseSet, (double) mainSkill.ItemSlot);
             AddModifier(_metaStatBuilders.ActiveSkillSocketIndex(mainSkill.Id), Form.BaseSet, mainSkill.SocketIndex);
 
+            if (activeSkill.ProvidesBuff)
+            {
+                var allBuffStats =
+                    preParseResult.LevelDefinition.BuffStats.Concat(preParseResult.LevelDefinition.QualityBuffStats);
+                var allAffectedEntities = allBuffStats.SelectMany(s => s.AffectedEntities).Distinct().ToList();
+                if (allAffectedEntities.Any())
+                {
+                    var target = _builderFactories.EntityBuilders.From(allAffectedEntities);
+                    AddModifier(_builderFactories.SkillBuilders.FromId(mainSkill.Id).Buff.On(target),
+                        Form.BaseSet, 1, preParseResult.IsActiveSkill);
+                }
+            }
+
             var result = new PartialSkillParseResult(_parsedModifiers, new UntranslatedStat[0]);
             _parsedModifiers = null;
             return result;

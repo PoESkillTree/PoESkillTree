@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Moq;
+using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Builders.Stats;
@@ -788,6 +789,31 @@ namespace PoESkillTree.Computation.Parsing.Tests
                         return emptyStatParser;
                 }
             }
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ClarityActivatesBuffIfActive(bool isActiveSkill)
+        {
+            var expectedValue = (NodeValue?) isActiveSkill;
+            var expectedEntities = new[] { Entity.Character, Entity.Minion }.Repeat(3);
+            var expectedIdentities =
+                new[] { "Clarity.Active", "Clarity.BuffActive", "Clarity.BuffSourceIs(Character)" }
+                    .SelectMany(s => Enumerable.Repeat(s, 2));
+            var (definition, skill) = CreateClarityDefinition();
+            var sut = CreateSut(definition);
+            var context = MockValueCalculationContext(skill, false, isActiveSkill);
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            var activeModifier = GetFirstModifierWithIdentity(modifiers, "Clarity.Active");
+            var actualValue = activeModifier.Value.Calculate(context);
+            Assert.AreEqual(expectedValue, actualValue);
+            var actualIdentities = activeModifier.Stats.Select(s => s.Identity).ToList();
+            Assert.AreEqual(expectedIdentities, actualIdentities);
+            var actualEntities = activeModifier.Stats.Select(s => s.Entity).ToList();
+            Assert.AreEqual(expectedEntities, actualEntities);
         }
 
         private static (SkillDefinition, Skill) CreateClarityDefinition()

@@ -1,4 +1,7 @@
-﻿namespace PoESkillTree.Computation.Common.Builders.Entities
+﻿using System.Collections.Generic;
+using PoESkillTree.GameModel;
+
+namespace PoESkillTree.Computation.Common.Builders.Entities
 {
     /// <summary>
     /// Factory interface for entities.
@@ -29,5 +32,7 @@
         /// Gets an entity representing all of Self's minions.
         /// </summary>
         IEntityBuilder Minion { get; }
+
+        IEntityBuilder From(IEnumerable<Entity> entities);
     }
 }
