@@ -1161,6 +1161,47 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         #endregion
 
+        #region Herald Of Ice
+
+        [Test]
+        public void HeraldOfIceQualityBuffStatHasCorrectValue()
+        {
+            var (definition, skill) = CreateHeraldOfIceDefinition();
+            var source = new ModifierSource.Local.Skill("HeraldOfIce");
+            var parseResult = ParseResult.Success(new[]
+                { MockModifier(new Stat("Cold.Damage.Attack.MainHand.Skill"), value: new Constant(15)) });
+            var parameter = new UntranslatedStatParserParameter(source, new[]
+                { new UntranslatedStat("herald_of_ice_cold_damage_+%", 15), });
+            var statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
+                p.Parse(parameter) == parseResult &&
+                p.Parse(EmptyParserParameter(source)) == EmptyParseResult);
+            var sut = CreateSut(definition, statParser);
+            var context = MockValueCalculationContextForActiveSkill(skill);
+
+            var result = sut.Parse(skill);
+
+            var actual = GetValueForIdentity(result.Modifiers, "Cold.Damage.Attack.MainHand.Skill").Calculate(context);
+            Assert.AreEqual((NodeValue?) 15, actual);
+        }
+
+        private static (SkillDefinition, Skill) CreateHeraldOfIceDefinition()
+        {
+            var activeSkill = CreateActiveSkillDefinition("HeraldOfIce",
+                new[] { "aura", "mana_cost_is_reservation" },
+                new[] { Keyword.Aura }, providesBuff: true);
+            var buffStats = new[]
+            {
+                new BuffStat(new UntranslatedStat("herald_of_ice_cold_damage_+%", 750),
+                    new[] { Entity.Character }),
+            };
+            var level = CreateLevelDefinition(manaCost: 10, qualityBuffStats: buffStats);
+            var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
+            return (CreateActive("HeraldOfIce", activeSkill, levels),
+                new Skill("HeraldOfIce", 1, 20, ItemSlot.Belt, 0, null));
+        }
+
+        #endregion
+
         private static ActiveSkillParser CreateSut(SkillDefinition skillDefinition)
         {
             var statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
