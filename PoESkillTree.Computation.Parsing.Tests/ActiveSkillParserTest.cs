@@ -875,16 +875,23 @@ namespace PoESkillTree.Computation.Parsing.Tests
         {
             var (definition, skill) = CreateBladeFlurryDefinition();
             var source = new ModifierSource.Local.Skill("Blade Flurry");
-            var parseResult = ParseResult.Success(new[]
+            var parseResults = new[]
             {
-                MockModifier(new Stat("CastRate.Attack.MainHand.Skill"), value: new Constant(60))
-            });
-            var parseParameter = new UntranslatedStatParserParameter(source, new[]
+                ParseResult.Success(new[]
+                    { MockModifier(new Stat("CastRate.Attack.MainHand.Skill"), value: new Constant(60)) }),
+                ParseResult.Success(new[]
+                    { MockModifier(new Stat("Physical.Damage.Attack.MainHand.Skill"), value: new Constant(80)) })
+            };
+            var parseParameters = new[]
             {
-                new UntranslatedStat("active_skill_attack_speed_+%_final", 60),
-            });
+                new UntranslatedStatParserParameter(source, new[]
+                    { new UntranslatedStat("active_skill_attack_speed_+%_final", 60), }),
+                new UntranslatedStatParserParameter(source, new[]
+                    { new UntranslatedStat("hit_ailment_damage_+%_final", 80), })
+            };
             var statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
-                p.Parse(parseParameter) == parseResult &&
+                p.Parse(parseParameters[0]) == parseResults[0] &&
+                p.Parse(parseParameters[1]) == parseResults[1] &&
                 p.Parse(EmptyParserParameter(source)) == EmptyParseResult);
             var sut = CreateSut(definition, statParser);
             var context = MockValueCalculationContextForMainSkill(skill,

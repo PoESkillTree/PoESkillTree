@@ -36,18 +36,48 @@ namespace PoESkillTree.GameModel.StatTranslation
             ).ToLookup(x => x.id, x => x.translation);
         }
 
+        public StatTranslatorResult Translate(IEnumerable<UntranslatedStat> untranslatedStats)
+        {
+            var idStatDict = untranslatedStats.ToDictionary(s => s.StatId, s => s);
+            var (translations, unknownStatIds) = LookupStatIds(idStatDict.Keys);
+            var unknownStats = unknownStatIds.Select(k => idStatDict[k]);
+
+            var idValueDict = idStatDict.ToDictionary(p => p.Key, p => p.Value.Value);
+            var translatedStats = translations.Select(t => t.Translate(idValueDict));
+
+            return new StatTranslatorResult(translatedStats.ToList(), unknownStats.ToList());
+        }
+
+        /// <summary>
+        /// Returns the translated strings for the given stat ids and values.
+        /// </summary>
+        public IEnumerable<string> GetTranslations(IReadOnlyDictionary<string, int> idValueDict)
+            => GetTranslations(idValueDict.Keys).Select(t => t.Translate(idValueDict));
+
         /// <summary>
         /// Returns the Translation objects matching the given stat ids. Each Translation appears only once.
         /// </summary>
         public IEnumerable<Translation> GetTranslations(IEnumerable<string> statIds)
         {
+            var (translations, unknownStatIds) = LookupStatIds(statIds);
+            if (unknownStatIds.Any())
+            {
+                Log.Warn("Unknown stat ids: " + unknownStatIds.ToDelimitedString(","));
+            }
+            return translations;
+        }
+
+        private (IEnumerable<Translation> translations, IReadOnlyList<string> unknownStatIds)
+            LookupStatIds(IEnumerable<string> statIds)
+        {
             var ids = statIds.ToHashSet();
             var translations = new List<Translation>();
+            var unknownStatIds = new List<string>();
             foreach (var id in ids)
             {
                 if (!_translationLookup.Value.Contains(id))
                 {
-                    Log.Warn("Unknown stat id: " + id);
+                    unknownStatIds.Add(id);
                     continue;
                 }
                 var ts = _translationLookup.Value[id].ToList();
@@ -65,16 +95,7 @@ namespace PoESkillTree.GameModel.StatTranslation
                     translations.Add(ts[0]);
                 }
             }
-            return translations.Distinct();
+            return (translations.Distinct(), unknownStatIds);
         }
-
-        /// <summary>
-        /// Returns the translated strings for the given stat ids and values.
-        /// </summary>
-        public IEnumerable<string> GetTranslations(IReadOnlyDictionary<string, int> idValueDict)
-            => GetTranslations(idValueDict.Keys).Select(t => t.Translate(idValueDict));
-
-        public IEnumerable<string> Translate(IEnumerable<UntranslatedStat> untranslatedStats)
-            => GetTranslations(untranslatedStats.ToDictionary(s => s.StatId, s => s.Value));
     }
 }

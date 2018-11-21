@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Parsing
 
         public ParseResult Parse(UntranslatedStatParserParameter parameter)
         {
-            var modifierLines = _translator.Translate(parameter.UntranslatedStats);
+            var modifierLines = _translator.Translate(parameter.UntranslatedStats).TranslatedStats;
             var modifierSource = new ModifierSource.Global(parameter.LocalModifierSource);
             var entity = parameter.ModifierSourceEntity;
             var parseResults = modifierLines.Select(m => _coreParser.Parse(m, modifierSource, entity));

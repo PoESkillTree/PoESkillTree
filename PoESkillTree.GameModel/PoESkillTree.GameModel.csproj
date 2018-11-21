@@ -90,6 +90,7 @@
     <Compile Include="Skills\SkillDefinition.cs" />
     <Compile Include="Skills\SkillDefinitions.cs" />
     <Compile Include="Skills\SkillJsonDeserializer.cs" />
+    <Compile Include="StatTranslation\CompositeStatTranslator.cs" />
     <Compile Include="StatTranslation\Format.cs" />
     <Compile Include="StatTranslation\IndexHandler.cs" />
     <Compile Include="StatTranslation\IStatTranslator.cs" />
@@ -118,6 +119,7 @@
     <EmbeddedResource Include="Data\RePoE\stat_translations\minion_spell_skill.min.json" />
     <EmbeddedResource Include="Data\RePoE\stat_translations\offering_skill.min.json" />
     <EmbeddedResource Include="Data\RePoE\stat_translations\support_gem.min.json" />
+    <EmbeddedResource Include="Data\RePoE\stat_translations\custom.min.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

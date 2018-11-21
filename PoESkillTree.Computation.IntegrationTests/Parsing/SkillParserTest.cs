@@ -35,11 +35,16 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
             _metaStats = CompositionRoot.MetaStats;
             _statTranslationLoader = new StatTranslationLoader();
             await _statTranslationLoader.LoadAsync("stat_translations/skill").ConfigureAwait(false);
+            await _statTranslationLoader.LoadAsync("stat_translations/custom").ConfigureAwait(false);
             await _statTranslationLoader.LoadAsync("stat_translations/support_gem").ConfigureAwait(false);
         }
 
         private static IParser<UntranslatedStatParserParameter> CreateStatParser(string translationFileName)
-            => new UntranslatedStatParser(_statTranslationLoader[translationFileName], _coreParser);
+        {
+            var composite = new CompositeStatTranslator(
+                _statTranslationLoader[translationFileName], _statTranslationLoader["stat_translations/custom"]);
+            return new UntranslatedStatParser(composite, _coreParser);
+        }
 
         [Test]
         public void ParseFrenzyReturnsCorrectResult()

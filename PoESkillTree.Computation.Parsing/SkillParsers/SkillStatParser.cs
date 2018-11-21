@@ -138,19 +138,6 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     AddMainSkillModifier(_builderFactories.StatBuilders.SkillStage.Maximum,
                         Form.BaseSet, stat.Value, partCondition);
                     return true;
-                case "hit_ailment_damage_+%_final":
-                    AddMainSkillModifier(
-                        _builderFactories.DamageTypeBuilders.AnyDamageType().Damage.WithHitsAndAilments,
-                        Form.More, stat.Value, partCondition);
-                    return true;
-                case "hit_damage_+%_final":
-                    AddMainSkillModifier(_builderFactories.DamageTypeBuilders.AnyDamageType().Damage.WithHits,
-                        Form.More, stat.Value, partCondition);
-                    return true;
-                case "damage_+%_final":
-                    AddMainSkillModifier(_builderFactories.DamageTypeBuilders.AnyDamageType().Damage,
-                        Form.More, stat.Value, partCondition);
-                    return true;
                 case "cast_rate_is_melee":
                     AddMainSkillModifier(_metaStatBuilders.MainSkillPartCastRateHasKeyword(Keyword.Melee),
                         Form.TotalOverride, stat.Value, partCondition);

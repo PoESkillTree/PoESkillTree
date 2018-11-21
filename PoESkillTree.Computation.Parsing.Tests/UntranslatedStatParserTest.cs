@@ -20,7 +20,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new UntranslatedStat("c", 3),
             };
             var modifierLines = new[] { "a1", "b2" };
-            var translator = Mock.Of<IStatTranslator>(t => t.Translate(untranslatedStats) == modifierLines);
+            var statTranslatorResult = new StatTranslatorResult(modifierLines, new UntranslatedStat[0]);
+            var translator = Mock.Of<IStatTranslator>(t => t.Translate(untranslatedStats) == statTranslatorResult);
             var modifierSource = new ModifierSource.Global();
             var coreParserParameters = new[]
             {
