@@ -15,6 +15,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
     [TestFixture]
     public class SupportSkillParserTest
     {
+        #region Blasphemy
+
         [Test]
         public void BlasphemyAddsAuraKeyword()
         {
@@ -55,6 +57,27 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.AreEqual(new NodeValue(1), modifier.Value.Calculate(null));
         }
 
+        [TestCase(true)]
+        [TestCase(false)]
+        public void BlasphemySetsActiveSkill(bool isActiveSkill)
+        {
+            var expectedItemSlot = isActiveSkill ? (NodeValue?) (int) ItemSlot.Belt : null;
+            var expectedSocketIndex = isActiveSkill ? (NodeValue?) 1 : null;
+            var (activeDefinition, activeSkill) = CreateEnfeebleDefinition();
+            var (supportDefinition, supportSkill) = CreateBlasphemyDefinition();
+            var sut = CreateSut(activeDefinition, supportDefinition);
+            var context = MockValueCalculationContext(activeSkill, false, isActiveSkill);
+
+            var result = sut.Parse(activeSkill, supportSkill);
+
+            var actualItemSlot =
+                GetValueForIdentity(result.Modifiers, "Blasphemy.ActiveSkillItemSlot").Calculate(context);
+            Assert.AreEqual(expectedItemSlot, actualItemSlot);
+            var actualSocketIndex =
+                GetValueForIdentity(result.Modifiers, "Blasphemy.ActiveSkillSocketIndex").Calculate(context);
+            Assert.AreEqual(expectedSocketIndex, actualSocketIndex);
+        }
+
         private static (SkillDefinition, Skill) CreateEnfeebleDefinition()
         {
             var activeSkill = CreateActiveSkillDefinition("Enfeeble", new[] { "curse" }, new[] { Keyword.Curse },
@@ -77,6 +100,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
             return (CreateSupport("Blasphemy", supportSkill, levels),
                 new Skill("Blasphemy", 1, 0, ItemSlot.Belt, 1, null));
         }
+
+        #endregion
+
+        #region Physical to Lightning
 
         [Test]
         public void PhysicalToLightningConversionIsLocal()
@@ -101,13 +128,17 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Keyword[0]);
             var stats = new[]
             {
-                new UntranslatedStat("skill_physical_damage_%_to_convert_to_lightning", 50), 
+                new UntranslatedStat("skill_physical_damage_%_to_convert_to_lightning", 50),
             };
             var level = CreateLevelDefinition(stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (CreateSupport("SupportPhysicalToLightning", supportSkill, levels),
                 new Skill("SupportPhysicalToLightning", 1, 0, ItemSlot.Belt, 1, null));
         }
+
+        #endregion
+
+        #region Blood Magic
 
         [TestCase(true)]
         [TestCase(false)]
@@ -147,13 +178,15 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 new Keyword[0]);
             var stats = new[]
             {
-                new UntranslatedStat("base_use_life_in_place_of_mana", 1), 
+                new UntranslatedStat("base_use_life_in_place_of_mana", 1),
             };
             var level = CreateLevelDefinition(stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (CreateSupport("SupportBloodMagic", supportSkill, levels),
                 new Skill("SupportBloodMagic", 1, 0, ItemSlot.Belt, 1, null));
         }
+
+        #endregion
 
         private static SupportSkillParser CreateSut(
             SkillDefinition activeSkillDefinition, SkillDefinition supportSkillDefinition,

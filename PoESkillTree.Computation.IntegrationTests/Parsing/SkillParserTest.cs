@@ -172,7 +172,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
         }
 
         [Test]
-        public void ParseAddedFireDamageSupportReturnsCorrectResult()
+        public void ParseAddedColdDamageSupportReturnsCorrectResult()
         {
             var frenzy = new Skill("Frenzy", 20, 20, ItemSlot.Boots, 0, 0);
             var support = new Skill("SupportAddedColdDamage", 20, 20, ItemSlot.Boots, 1, 0);
@@ -196,6 +196,10 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
             var expectedModifiers =
                 new (string stat, Form form, double? value, ModifierSource source, bool mainSkillOnly)[]
                 {
+                    ("SupportAddedColdDamage.ActiveSkillItemSlot",
+                        Form.BaseSet, (double) support.ItemSlot, global, false),
+                    ("SupportAddedColdDamage.ActiveSkillSocketIndex",
+                        Form.BaseSet, support.SocketIndex, global, false),
                     ("Mana.Cost", Form.More, levelDefinition.ManaMultiplier * 100 - 100, global, true),
                     ("Frenzy.Reservation", Form.More, levelDefinition.ManaMultiplier * 100 - 100, global, false),
                     ("Level.Required", Form.BaseSet, levelDefinition.RequiredLevel, gemSource, false),

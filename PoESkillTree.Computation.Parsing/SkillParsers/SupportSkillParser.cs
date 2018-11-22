@@ -19,6 +19,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             _preParser = new SkillPreParser(skillDefinitions, metaStatBuilders);
             _partialParsers = new[]
             {
+                new SupportSkillGeneralParser(builderFactories, metaStatBuilders),
                 SkillKeywordParser.CreateSupport(builderFactories, metaStatBuilders),
                 SkillTypeParser.CreateSupport(builderFactories, metaStatBuilders),
                 new SupportSkillLevelParser(builderFactories, metaStatBuilders), 

@@ -79,6 +79,7 @@
     <Compile Include="SkillParsers\PartialSkillParseResult.cs" />
     <Compile Include="SkillParsers\SkillStatIds.cs" />
     <Compile Include="SkillParsers\SkillTypeParser.cs" />
+    <Compile Include="SkillParsers\SupportSkillGeneralParser.cs" />
     <Compile Include="SkillParsers\SupportSkillLevelParser.cs" />
     <Compile Include="SkillParsers\SupportSkillParser.cs" />
     <Compile Include="SkillParsers\TranslatingSkillParser.cs" />

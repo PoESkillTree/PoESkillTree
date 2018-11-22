@@ -40,15 +40,15 @@ namespace PoESkillTree.Computation.Data.GivenStats
 
         private GivenStatCollection CreateCollection() => new GivenStatCollection(_modifierBuilder, ValueFactory)
         {
-            { TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value, ForSkill("Barrage", 1) },
-            { TotalOverride, Fire.Invert.Damage, 0, ForSkill("ElementalHit", 0) },
-            { TotalOverride, Cold.Invert.Damage, 0, ForSkill("ElementalHit", 1) },
-            { TotalOverride, Lightning.Invert.Damage, 0, ForSkill("ElementalHit", 2) },
+            { TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value, IsMainSkill("Barrage", 1) },
+            { TotalOverride, Fire.Invert.Damage, 0, IsMainSkill("ElementalHit", 0) },
+            { TotalOverride, Cold.Invert.Damage, 0, IsMainSkill("ElementalHit", 1) },
+            { TotalOverride, Lightning.Invert.Damage, 0, IsMainSkill("ElementalHit", 2) },
             {
                 // Reduce cast rate proportional to the time spent channeling
                 PercentLess, Stat.CastRate,
                 100 * (Stat.SkillStage.Maximum.Value - Stat.SkillStage.Value + 1) / Stat.SkillStage.Maximum.Value,
-                ForSkill("ScourgeArrow").And(Stat.SkillStage.Value > 0)
+                IsMainSkill("ScourgeArrow").And(Stat.SkillStage.Value > 0)
             },
             {
                 // Freezing Pulse's damage dissipates while traveling
@@ -56,21 +56,26 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 PercentLess, Damage,
                 ValueFactory.LinearScale(Projectile.TravelDistance.Value / (60 * Projectile.Speed.Value),
                     (0, 0), (1, 50)),
-                ForSkill("FreezingPulse")
+                IsMainSkill("FreezingPulse")
             },
             {
                 // Freezing Pulse's additional chance to freeze dissipates while traveling
                 BaseAdd, Ailment.Freeze.Chance,
                 ValueFactory.LinearScale(Projectile.TravelDistance.Value / (60 * Projectile.Speed.Value),
                     (0, 25), (0.25, 0)),
-                ForSkill("FreezingPulse")
+                IsMainSkill("FreezingPulse")
             },
+            { TotalOverride, Buff.ArcaneSurge.On(Self), 1, SkillIsActive("SupportArcaneSurge") },
+            { TotalOverride, Buff.Innervation.On(Self), 1, SkillIsActive("SupportOnslaughtOnSlayingShockedEnemy") },
         };
 
-        private IConditionBuilder ForSkill(string skillId, int skillPart)
-            => ForSkill(skillId).And(Stat.MainSkillPart.Value.Eq(skillPart));
+        private IConditionBuilder IsMainSkill(string skillId, int skillPart)
+            => IsMainSkill(skillId).And(Stat.MainSkillPart.Value.Eq(skillPart));
 
-        private IConditionBuilder ForSkill(string skillId)
+        private IConditionBuilder IsMainSkill(string skillId)
             => _stat.MainSkillId.Value.Eq(Skills.FromId(skillId).SkillId);
+
+        private IConditionBuilder SkillIsActive(string skillId)
+            => _stat.ActiveSkillItemSlot(skillId).IsSet;
     }
 }
