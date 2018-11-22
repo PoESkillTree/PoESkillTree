@@ -14,6 +14,12 @@ namespace PoESkillTree.Computation.Common.Builders.Entities
         IEntityBuilder Self { get; }
 
         /// <summary>
+        /// Gets the entity/entities opposing <see cref="BuildParameters.ModifierSourceEntity"/>
+        /// (Enemy opposes Character, Minion and Totem).
+        /// </summary>
+        IEntityBuilder OpponentOfSelf { get; }
+
+        /// <summary>
         /// Gets an entity representing enemies.
         /// </summary>
         IEnemyBuilder Enemy { get; }

@@ -301,6 +301,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 // stun
                 { "(you )?cannot be stunned", TotalOverride, 100, Effect.Stun.Avoidance },
+                { "additional #% chance to be stunned", BaseAdd, Value, Effect.Stun.Chance.For(Entity.OpponentOfSelf) },
                 // item quantity/quality
                 // range and area of effect
                 // other

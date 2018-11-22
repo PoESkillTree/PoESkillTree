@@ -104,6 +104,7 @@
     <Compile Include="Effects\EffectBuilder.cs" />
     <Compile Include="Effects\EffectBuilders.cs" />
     <Compile Include="Entities\EntityBuilders.cs" />
+    <Compile Include="Entities\ModifierSourceOpponentEntityBuilder.cs" />
     <Compile Include="Equipment\EquipmentBuilder.cs" />
     <Compile Include="Equipment\EquipmentBuilderCollection.cs" />
     <Compile Include="Equipment\EquipmentBuilders.cs" />
