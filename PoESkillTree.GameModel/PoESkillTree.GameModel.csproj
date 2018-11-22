@@ -84,6 +84,7 @@
     <Compile Include="DataUtils.cs" />
     <Compile Include="Skills\ActiveSkillType.cs" />
     <Compile Include="Skills\SkillDefinitionExtension.cs" />
+    <Compile Include="Skills\SkillDefinitionExtensionCollection.cs" />
     <Compile Include="Skills\SkillDefinitionExtensions.cs" />
     <Compile Include="Skills\Keyword.cs" />
     <Compile Include="Skills\Skill.cs" />
