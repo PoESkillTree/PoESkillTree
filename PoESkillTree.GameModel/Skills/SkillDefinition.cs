@@ -108,6 +108,7 @@ namespace PoESkillTree.GameModel.Skills
             IReadOnlyList<UntranslatedStat> qualityStats, IReadOnlyList<UntranslatedStat> stats,
             IReadOnlyList<IReadOnlyList<UntranslatedStat>> additionalStatsPerPart,
             IReadOnlyList<BuffStat> qualityBuffStats, IReadOnlyList<BuffStat> buffStats,
+            IReadOnlyList<UntranslatedStat> qualityPassiveStats, IReadOnlyList<UntranslatedStat> passiveStats,
             SkillTooltipDefinition tooltip)
         {
             DamageEffectiveness = damageEffectiveness;
@@ -126,6 +127,8 @@ namespace PoESkillTree.GameModel.Skills
             AdditionalStatsPerPart = additionalStatsPerPart;
             QualityBuffStats = qualityBuffStats;
             BuffStats = buffStats;
+            QualityPassiveStats = qualityPassiveStats;
+            PassiveStats = passiveStats;
             Tooltip = tooltip;
         }
 
@@ -143,12 +146,18 @@ namespace PoESkillTree.GameModel.Skills
         public int RequiredIntelligence { get; }
         public int RequiredStrength { get; }
 
+        // Stats that apply when the skill is the main skill
         public IReadOnlyList<UntranslatedStat> QualityStats { get; }
         public IReadOnlyList<UntranslatedStat> Stats { get; }
         public IReadOnlyList<IReadOnlyList<UntranslatedStat>> AdditionalStatsPerPart { get; }
 
+        // Stats that apply as part of the skill's buff
         public IReadOnlyList<BuffStat> QualityBuffStats { get; }
         public IReadOnlyList<BuffStat> BuffStats { get; }
+
+        // Stats that always apply when the skill is socketed (these usually modify the skill's buff)
+        public IReadOnlyList<UntranslatedStat> QualityPassiveStats { get; }
+        public IReadOnlyList<UntranslatedStat> PassiveStats { get; }
 
         public SkillTooltipDefinition Tooltip { get; }
     }

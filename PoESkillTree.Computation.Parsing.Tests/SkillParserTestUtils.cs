@@ -32,12 +32,15 @@ namespace PoESkillTree.Computation.Parsing.Tests
             IReadOnlyList<UntranslatedStat> qualityStats = null, IReadOnlyList<UntranslatedStat> stats = null,
             IReadOnlyList<IReadOnlyList<UntranslatedStat>> additionalStatsPerPart = null,
             IReadOnlyList<BuffStat> qualityBuffStats = null, IReadOnlyList<BuffStat> buffStats = null,
+            IReadOnlyList<UntranslatedStat> qualityPassiveStats = null,
+            IReadOnlyList<UntranslatedStat> passiveStats = null,
             SkillTooltipDefinition tooltip = null)
             => new SkillLevelDefinition(damageEffectiveness, damageMultiplier, criticalStrikeChance, manaCost,
                 manaMultiplier, manaCostOverride, cooldown, requiredLevel, requiredDexterity, requiredIntelligence,
                 requiredStrength, qualityStats ?? new UntranslatedStat[0], stats ?? new UntranslatedStat[0],
                 additionalStatsPerPart ?? new[] { new UntranslatedStat[0]}, qualityBuffStats ?? new BuffStat[0],
-                buffStats ?? new BuffStat[0], tooltip ?? null);
+                buffStats ?? new BuffStat[0], qualityPassiveStats ?? new UntranslatedStat[0],
+                passiveStats ?? new UntranslatedStat[0], tooltip ?? null);
 
         public static ActiveSkillDefinition CreateActiveSkillDefinition(
             string displayName, int? castTime = null, IEnumerable<string> activeSkillTypes = null,

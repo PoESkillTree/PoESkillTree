@@ -12,7 +12,7 @@ namespace PoESkillTree.GameModel.Skills
 
         private readonly SkillDefinitionExtension _emptyExtension =
             new SkillDefinitionExtension(new SkillPartDefinitionExtension(),
-                new Dictionary<string, IEnumerable<Entity>>());
+                new Dictionary<string, IEnumerable<Entity>>(), new string[0]);
 
         private readonly IReadOnlyDictionary<string, SkillDefinitionExtension> _extensions;
 
@@ -498,7 +498,11 @@ namespace PoESkillTree.GameModel.Skills
                     ReplaceStat("shockwave_slam_explosion_damage_+%_final", "damage_+%_final")))
             },
             { "TempestShield", SelfBuff("shield_block_%") },
-            { "TemporalChains", EnemyBuff("buff_time_passed_-%", "temporal_chains_action_speed_+%_final") },
+            {
+                "TemporalChains",
+                EnemyBuff("buff_time_passed_-%", "temporal_chains_action_speed_+%_final"),
+                Passive("curse_effect_+%_vs_players")
+            },
             {
                 "ThrownShield", // Spectral Shield Throw
                 ("Primary Projectile", new SkillPartDefinitionExtension()),
@@ -579,8 +583,11 @@ namespace PoESkillTree.GameModel.Skills
                 new SkillPartDefinitionExtension(
                     ReplaceStat("support_arcane_surge_spell_damage_+%_final", v => (int) Math.Round((v - 10) / 1.1))
                         .AndThen(ReplaceStat("support_arcane_surge_cast_speed_+%", v => v - 10))
-                        .AndThen(ReplaceStat("support_arcane_surge_mana_regeneration_rate_per_minute_%", v => v - 30)))
+                        .AndThen(ReplaceStat("support_arcane_surge_mana_regeneration_rate_per_minute_%", v => v - 30))),
+                Passive("support_arcane_surge_spell_damage_+%_final", "support_arcane_surge_cast_speed_+%",
+                    "support_arcane_surge_mana_regeneration_rate_per_minute_%")
             },
+            { "SupportBlasphemy", Passive("curse_effect_+%") },
             {
                 "SupportCastOnDeath",
                 new SkillPartDefinitionExtension(
@@ -588,10 +595,23 @@ namespace PoESkillTree.GameModel.Skills
                         .AndThen(ReplaceStat("cast_on_death_damage_+%_final_while_dead", "damage_+%_final")))
             },
             {
-                "SupportGemFrenzyPowerOnTrapTrigger",
+                "SupportCastWhileChannelling",
+                new SkillPartDefinitionExtension(
+                    ReplaceStat("cast_while_channelling_time_ms", "hit_rate_ms")
+                        .AndThen(ReplaceStat("support_cast_while_channelling_triggered_skill_damage_+%_final",
+                            "damage_+%_final")))
+            },
+            {
+                "SupportGemFrenzyPowerOnTrapTrigger", // Charged Traps
                 new SkillPartDefinitionExtension(
                     ReplaceStat("trap_critical_strike_multiplier_+_per_power_charge",
                         "critical_strike_multiplier_+_per_power_charge"))
+            },
+            { "SupportGenerosity", Passive("aura_cannot_affect_self", "non_curse_aura_effect_+%") },
+            {
+                "SupportOnslaughtOnSlayingShockedEnemy", // Innervate
+                Passive("support_innervate_minimum_added_lightning_damage",
+                    "support_innervate_maximum_added_lightning_damage")
             },
             {
                 "SupportRangedAttackTotem",
@@ -602,13 +622,6 @@ namespace PoESkillTree.GameModel.Skills
                 "SupportSpellTotem",
                 new SkillPartDefinitionExtension(
                     ReplaceStat("support_spell_totem_cast_speed_+%_final", "active_skill_cast_speed_+%_final"))
-            },
-            {
-                "SupportCastWhileChannelling",
-                new SkillPartDefinitionExtension(
-                    ReplaceStat("cast_while_channelling_time_ms", "hit_rate_ms")
-                        .AndThen(ReplaceStat("support_cast_while_channelling_triggered_skill_damage_+%_final",
-                            "damage_+%_final")))
             },
         };
 
@@ -728,5 +741,8 @@ namespace PoESkillTree.GameModel.Skills
         private static IReadOnlyDictionary<string, IEnumerable<Entity>> Buff(
             params (string statId, IEnumerable<Entity> affectedEntities)[] stats)
             => stats.ToDictionary(t => t.statId, t => t.affectedEntities);
+
+        private static IEnumerable<string> Passive(params string[] statIds)
+            => statIds;
     }
 }

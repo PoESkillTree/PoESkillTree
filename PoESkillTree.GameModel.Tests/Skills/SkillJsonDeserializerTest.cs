@@ -193,6 +193,8 @@ namespace PoESkillTree.GameModel.Tests.Skills
 
             var level20 = definition.Levels[20];
             Assert.AreEqual(35, level20.ManaCostOverride);
+            Assert.IsEmpty(level20.QualityStats);
+            Assert.AreEqual(new[] { "curse_effect_+%" }, level20.QualityPassiveStats.Select(s => s.StatId));
         }
 
         [Test]

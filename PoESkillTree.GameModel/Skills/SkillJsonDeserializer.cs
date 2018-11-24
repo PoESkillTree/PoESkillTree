@@ -141,11 +141,13 @@ namespace PoESkillTree.GameModel.Skills
         private SkillLevelDefinition DeserializeLevel(JObject levelJson, JToken tooltipLevelJson)
         {
             var allQualityStats = Stats("quality_stats");
-            var (qualityStats, qualityBuffStats) = SplitBuffStats(allQualityStats);
+            var (nonBuffQualityStats, qualityBuffStats) = SplitBuffStats(allQualityStats);
+            var (qualityStats, qualityPassiveStats) = SplitPassiveStats(nonBuffQualityStats);
 
             var allStats = Stats("stats");
             var (nonBuffStats, buffStats) = SplitBuffStats(allStats);
-            var (commonStats, additionalStatsPerPart) = SplitStatsIntoParts(nonBuffStats);
+            var (nonPassiveStats, passiveStats) = SplitPassiveStats(nonBuffStats);
+            var (commonStats, additionalStatsPerPart) = SplitStatsIntoParts(nonPassiveStats);
 
             var statRequirements = levelJson["stat_requirements"];
             return new SkillLevelDefinition(
@@ -165,6 +167,8 @@ namespace PoESkillTree.GameModel.Skills
                 additionalStatsPerPart,
                 qualityBuffStats,
                 buffStats,
+                qualityPassiveStats,
+                passiveStats,
                 DeserializeTooltip(tooltipLevelJson));
 
             T Value<T>(string propertyName) => levelJson.Value<T>(propertyName);
@@ -180,7 +184,7 @@ namespace PoESkillTree.GameModel.Skills
         private (IReadOnlyList<UntranslatedStat>, IReadOnlyList<BuffStat>) SplitBuffStats(
             IReadOnlyList<UntranslatedStat> stats)
         {
-            var untranslatedBuffStats =stats
+            var untranslatedBuffStats = stats
                 .Where(s => _definitionExtension.BuffStats.ContainsKey(s.StatId))
                 .ToList();
             var remainingStats = stats.Except(untranslatedBuffStats).ToList();
@@ -188,6 +192,16 @@ namespace PoESkillTree.GameModel.Skills
                 .Select(s => new BuffStat(s, _definitionExtension.BuffStats[s.StatId]))
                 .ToList();
             return (remainingStats, buffStats);
+        }
+
+        private (IReadOnlyList<UntranslatedStat>, IReadOnlyList<UntranslatedStat>) SplitPassiveStats(
+            IReadOnlyList<UntranslatedStat> stats)
+        {
+            var passiveStats = stats
+                .Where(s => _definitionExtension.PassiveStats.Contains(s.StatId))
+                .ToList();
+            var remainingStats = stats.Except(passiveStats).ToList();
+            return (remainingStats, passiveStats);
         }
 
         private (IReadOnlyList<UntranslatedStat>, IReadOnlyList<IReadOnlyList<UntranslatedStat>>) SplitStatsIntoParts(
