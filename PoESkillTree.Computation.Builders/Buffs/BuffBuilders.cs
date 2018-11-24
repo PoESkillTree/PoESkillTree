@@ -5,11 +5,13 @@ using EnumsNET;
 using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
+using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders.Buffs
@@ -128,9 +130,12 @@ namespace PoESkillTree.Computation.Builders.Buffs
             IStatBuilder gainedStat, string buffIdentity, IEntityBuilder targetEntities)
         {
             var coreStatBuilder = new StatBuilderWithValueConverter(new StatBuilderAdapter(gainedStat),
-                (ps, target) => new StatValue(_statFactory.BuffEffect(ps.ModifierSourceEntity, target, buffIdentity)),
+                target => new ValueBuilderImpl(ps => Build(ps, target), _ => ps => Build(ps, target)),
                 (l, r) => l.Multiply(r));
             return new StatBuilder(_statFactory, coreStatBuilder).For(targetEntities);
+
+            IValue Build(BuildParameters ps, Entity target)
+                => new StatValue(_statFactory.BuffEffect(ps.ModifierSourceEntity, target, buffIdentity));
         }
 
         public IBuffBuilderCollection Buffs(IEntityBuilder source = null, params IEntityBuilder[] targets)

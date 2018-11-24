@@ -45,7 +45,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ValueBuilder ValueFor(NodeType nodeType, ModifierSource modifierSource = null)
             => new ValueBuilder(new ValueBuilderImpl(
                 ps => BuildValue(nodeType, modifierSource ?? new ModifierSource.Global(), ps),
-                c => Resolve(c).Value));
+                c => Resolve(c).ValueFor(nodeType, modifierSource)));
 
         private IValue BuildValue(NodeType nodeType, ModifierSource modifierSource, BuildParameters parameters)
         {

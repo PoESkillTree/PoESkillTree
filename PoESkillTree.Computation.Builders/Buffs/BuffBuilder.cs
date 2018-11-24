@@ -5,6 +5,7 @@ using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Effects;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
+using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
@@ -14,6 +15,7 @@ using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.GameModel;
 using PoESkillTree.Utils;
 
@@ -73,14 +75,22 @@ namespace PoESkillTree.Computation.Builders.Buffs
         {
             var baseCoreBuilder = new StatBuilderAdapter(base.AddStat(stat));
             var coreBuilder = new StatBuilderWithValueConverter(baseCoreBuilder,
-                (ps, target) => BuildAddStatMultiplier(source.Build(ps.ModifierSourceEntity), target),
+                target => CreateAddStatMultiplier(source, target),
                 (l, r) => l.Multiply(r));
             return new StatBuilder(StatFactory, coreBuilder);
         }
 
+        private IValueBuilder CreateAddStatMultiplier(IEntityBuilder source, Entity target)
+            => new ValueBuilderImpl(
+                ps => BuildAddStatMultiplier(Build(), source.Build(ps.ModifierSourceEntity), target),
+                c => ((BuffBuilder) Resolve(c)).CreateAddStatMultiplier(source, target));
+
         public IValue BuildAddStatMultiplier(IReadOnlyCollection<Entity> possibleSources, Entity target)
+            => BuildAddStatMultiplier(Build(), possibleSources, target);
+
+        private IValue BuildAddStatMultiplier(
+            string identity, IReadOnlyCollection<Entity> possibleSources, Entity target)
         {
-            var identity = Build();
             var buffActiveValue = new StatValue(BuildBuffActiveStat(target, identity));
             var buffSourceValues = possibleSources.ToDictionary(Funcs.Identity,
                 e => new StatValue(BuildBuffSourceStat(e, target, identity)));

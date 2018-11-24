@@ -9,6 +9,7 @@ using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
@@ -103,7 +104,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
 
             var auraStatBuilder = sut.Aura(gainedStatBuilder, new EntityBuilder(Entity.Minion));
             var (stats, _, valueConverter) = auraStatBuilder.BuildToSingleResult(entity: Entity.Enemy);
-            var value = valueConverter(new ValueBuilderImpl(2)).Build();
+            var value = valueConverter(new ValueBuilderImpl(2)).Build(new BuildParameters(null, Entity.Enemy, default));
             var actualValue = value.Calculate(context);
 
             Assert.That(stats, Has.Exactly(1).Items);

@@ -3,10 +3,12 @@ using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Buffs;
 using PoESkillTree.Computation.Builders.Entities;
+using PoESkillTree.Computation.Builders.Resolving;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Builders.Tests.Buffs
@@ -77,6 +79,19 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
 
             Assert.AreEqual(expectedStat, actualStat);
             Assert.AreEqual(expectedValue, actualValue);
+        }
+
+        [Test]
+        public void AddStatResolveResolvesIdentity()
+        {
+            var expectedIdentity = "buff";
+            var statBuilder = StatBuilderUtils.FromIdentity(StatFactory, "stat", null);
+            var resolveContext = new ResolveContext(null, null);
+            var sut = new BuffBuilder(StatFactory, new UnresolvedCoreBuilder<string>("unresolved",
+                c => CoreBuilder.Create(expectedIdentity)));
+
+            var builder = sut.AddStat(statBuilder).Resolve(resolveContext);
+            var value = builder.BuildToSingleResult().ValueConverter(new ValueBuilderImpl(1));
         }
 
         private static BuffBuilder CreateSut() =>

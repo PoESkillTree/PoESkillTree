@@ -29,3 +29,4 @@ Adds 230 to 800 Lightning Damage to Unarmed Attacks
 Adds 80 to 220 Lightning Damage to Spells while Unarmed
 800% more Unarmed Physical Damage
 Unaffected by Curses
+Arcane Surge grants 10% more Spell Damage

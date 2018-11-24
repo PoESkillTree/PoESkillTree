@@ -73,7 +73,7 @@ namespace PoESkillTree.Computation.Builders.Resolving
         public override string ToString() => _description;
     }
 
-    internal class UnresolvedCoreBuilder<TResult>
+    public class UnresolvedCoreBuilder<TResult>
         : UnresolvedBuilder<ICoreBuilder<TResult>, TResult>, ICoreBuilder<TResult>
     {
         public UnresolvedCoreBuilder(string description, Func<ResolveContext, ICoreBuilder<TResult>> resolver)
