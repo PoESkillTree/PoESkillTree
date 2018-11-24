@@ -13,28 +13,20 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             => (_skillDefinitions, _metaStatBuilders) = (skillDefinitions, metaStatBuilders);
 
         public SkillPreParseResult ParseActive(Skill activeSkill)
-        {
-            var definition = _skillDefinitions.GetSkillById(activeSkill.Id);
-            var displayName = definition.BaseItem?.DisplayName ?? definition.ActiveSkill.DisplayName;
-            return Parse(activeSkill, activeSkill, displayName);
-        }
+            => Parse(activeSkill, activeSkill);
 
         public SkillPreParseResult ParseSupport(Skill activeSkill, Skill supportSkill)
-        {
-            var definition = _skillDefinitions.GetSkillById(supportSkill.Id);
-            var displayName = definition.BaseItem?.DisplayName ?? supportSkill.Id;
-            return Parse(activeSkill, supportSkill, displayName);
-        }
+            => Parse(activeSkill, supportSkill);
 
-        private SkillPreParseResult Parse(Skill mainSkill, Skill parsedSkill, string displayName)
+        private SkillPreParseResult Parse(Skill mainSkill, Skill parsedSkill)
         {
             var mainSkillDefinition = _skillDefinitions.GetSkillById(mainSkill.Id);
             var parsedSkillDefinition = _skillDefinitions.GetSkillById(parsedSkill.Id);
             var parsedSkillLevel = parsedSkillDefinition.Levels[parsedSkill.Level];
 
-            var localSource = new ModifierSource.Local.Skill(displayName);
+            var localSource = new ModifierSource.Local.Skill(mainSkill.Id);
             var globalSource = new ModifierSource.Global(localSource);
-            var gemSource = new ModifierSource.Local.Gem(parsedSkill.ItemSlot, parsedSkill.SocketIndex, displayName);
+            var gemSource = new ModifierSource.Local.Gem(parsedSkill.ItemSlot, parsedSkill.SocketIndex, mainSkill.Id);
 
             var isMainSkillStat = _metaStatBuilders.SkillIsMain(mainSkill.ItemSlot, mainSkill.SocketIndex);
 

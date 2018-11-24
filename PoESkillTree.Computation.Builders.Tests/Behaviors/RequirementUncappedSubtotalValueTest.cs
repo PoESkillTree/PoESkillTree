@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Behaviors
             var expected = (NodeValue?) values.Max();
             var transformedStat = new Stat("transformed");
             var paths = values
-                .Select((_, i) => new PathDefinition(new ModifierSource.Local.Gem(ItemSlot.Helm, i, "")))
+                .Select((_, i) => new PathDefinition(new ModifierSource.Local.Gem(ItemSlot.Helm, i)))
                 .ToList();
             var contextMock = new Mock<IValueCalculationContext>();
             contextMock.Setup(c => c.GetPaths(transformedStat)).Returns(paths);

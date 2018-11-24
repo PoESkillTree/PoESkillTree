@@ -178,10 +178,10 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
             var support = new Skill("SupportAddedColdDamage", 20, 20, ItemSlot.Boots, 1, 0);
             var definition = _skillDefinitions.GetSkillById(support.Id);
             var levelDefinition = definition.Levels[20];
-            var local = new ModifierSource.Local.Skill("Added Cold Damage Support");
+            var local = new ModifierSource.Local.Skill("SupportAddedColdDamage");
             var global = new ModifierSource.Global(local);
             var gemSource =
-                new ModifierSource.Local.Gem(support.ItemSlot, support.SocketIndex, "Added Cold Damage Support");
+                new ModifierSource.Local.Gem(support.ItemSlot, support.SocketIndex, "SupportAddedColdDamage");
             var valueCalculationContextMock = new Mock<IValueCalculationContext>();
             var activeSkillItemSlotStat = new Stat("Frenzy.ActiveSkillItemSlot");
             valueCalculationContextMock
