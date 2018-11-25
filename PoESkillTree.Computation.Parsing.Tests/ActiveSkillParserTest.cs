@@ -87,6 +87,28 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.AreEqual(new NodeValue(20), actual);
         }
 
+        [TestCase(true)]
+        [TestCase(false)]
+        public void FrenzyAddsToSkillInstances(bool isActiveSkill)
+        {
+            var expected = isActiveSkill ? (NodeValue?) 1 : null;
+            var (definition, skill) = CreateFrenzyDefinition();
+            var sut = CreateSut(definition);
+            var context = MockValueCalculationContext(skill, false, isActiveSkill);
+            
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            var actualForFrenzy = GetValueForIdentity(modifiers, "Frenzy.Instances").Calculate(context);
+            Assert.AreEqual(expected, actualForFrenzy);
+            var actualForAllSkills = GetValueForIdentity(modifiers, "Skills[].Instances").Calculate(context);
+            Assert.AreEqual(expected, actualForAllSkills);
+            var actualForMeleeSkills = GetValueForIdentity(modifiers, "Skills[Melee].Instances").Calculate(context);
+            Assert.AreEqual(expected, actualForMeleeSkills);
+            var actualForProjectileSkills = GetValueForIdentity(modifiers, "Skills[Projectile].Instances").Calculate(context);
+            Assert.AreEqual(expected, actualForProjectileSkills);
+        }
+
         private static (SkillDefinition, Skill) CreateFrenzyDefinition()
         {
             var activeSkill = CreateActiveSkillDefinition("Frenzy", new[] { "attack" },

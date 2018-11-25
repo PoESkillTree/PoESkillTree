@@ -1,7 +1,9 @@
+using PoESkillTree.GameModel.Skills;
+
 namespace PoESkillTree.Computation.Common.Builders.Skills
 {
     /// <summary>
-    /// Factory interface for keywords. For information on the keywords, see <see cref="GameModel.Skills.Keyword"/>.
+    /// Factory interface for keywords. For information on the keywords, see <see cref="Keyword"/>.
     /// </summary>
     /// <remarks>
     /// The keywords for damage types are contained in <see cref="Damage.IDamageTypeBuilders"/>. They are used as more
@@ -47,5 +49,7 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         IKeywordBuilder CounterAttack { get; }
 
         IKeywordBuilder Bow { get; }
+
+        IKeywordBuilder From(Keyword keyword);
     }
 }

@@ -56,6 +56,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
             var global = new ModifierSource.Global(local);
             var gemSource = new ModifierSource.Local.Gem(ItemSlot.Boots, 0, "Frenzy");
             var valueCalculationContextMock = new Mock<IValueCalculationContext>();
+            SetupIsActiveSkillInContext(valueCalculationContextMock, frenzy);
             var offHandTagsStat = new Stat("OffHand.ItemTags");
             valueCalculationContextMock.Setup(c => c.GetValue(offHandTagsStat, NodeType.Total, PathDefinition.MainPath))
                 .Returns(new NodeValue(Tags.Weapon.EncodeAsDouble()));
@@ -81,6 +82,12 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                     ("MainSkill.Id", Form.TotalOverride, definition.NumericId, global, true),
                     ("Frenzy.ActiveSkillItemSlot", Form.BaseSet, (double) frenzy.ItemSlot, global, false),
                     ("Frenzy.ActiveSkillSocketIndex", Form.BaseSet, frenzy.SocketIndex, global, false),
+                    ("Frenzy.Instances", Form.BaseAdd, 1, global, false),
+                    ("Skills[].Instances", Form.BaseAdd, 1, global, false),
+                    ("Skills[Attack].Instances", Form.BaseAdd, 1, global, false),
+                    ("Skills[Projectile].Instances", Form.BaseAdd, 1, global, false),
+                    ("Skills[Melee].Instances", Form.BaseAdd, 1, global, false),
+                    ("Skills[Bow].Instances", Form.BaseAdd, 1, global, false),
                     ("MainSkill.Has.Attack", Form.TotalOverride, 1, global, true),
                     ("MainSkill.Has.Projectile", Form.TotalOverride, 1, global, true),
                     ("MainSkill.Has.Melee", Form.TotalOverride, 1, global, true),
@@ -183,14 +190,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
             var gemSource =
                 new ModifierSource.Local.Gem(support.ItemSlot, support.SocketIndex, "SupportAddedColdDamage");
             var valueCalculationContextMock = new Mock<IValueCalculationContext>();
-            var activeSkillItemSlotStat = new Stat("Frenzy.ActiveSkillItemSlot");
-            valueCalculationContextMock
-                .Setup(c => c.GetValue(activeSkillItemSlotStat, NodeType.Total, PathDefinition.MainPath))
-                .Returns(new NodeValue((double) frenzy.ItemSlot));
-            var activeSkillSocketIndexStat = new Stat("Frenzy.ActiveSkillSocketIndex");
-            valueCalculationContextMock
-                .Setup(c => c.GetValue(activeSkillSocketIndexStat, NodeType.Total, PathDefinition.MainPath))
-                .Returns(new NodeValue(frenzy.SocketIndex));
+            SetupIsActiveSkillInContext(valueCalculationContextMock, frenzy);
             var isMainSkillStat = new Stat("Boots.0.IsMainSkill");
             var addedDamageValue = new NodeValue(levelDefinition.Stats[0].Value, levelDefinition.Stats[1].Value);
             var expectedModifiers =
@@ -249,6 +249,19 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
 
             var actual = parser.Parse(frenzy, support);
             AssertCorrectModifiers(valueCalculationContextMock, isMainSkillStat, expectedModifiers, actual);
+        }
+
+        private static void SetupIsActiveSkillInContext(
+            Mock<IValueCalculationContext> contextMock, Skill frenzy)
+        {
+            var activeSkillItemSlotStat = new Stat("Frenzy.ActiveSkillItemSlot");
+            contextMock
+                .Setup(c => c.GetValue(activeSkillItemSlotStat, NodeType.Total, PathDefinition.MainPath))
+                .Returns(new NodeValue((double) frenzy.ItemSlot));
+            var activeSkillSocketIndexStat = new Stat("Frenzy.ActiveSkillSocketIndex");
+            contextMock
+                .Setup(c => c.GetValue(activeSkillSocketIndexStat, NodeType.Total, PathDefinition.MainPath))
+                .Returns(new NodeValue(frenzy.SocketIndex));
         }
 
         private static void AssertCorrectModifiers(

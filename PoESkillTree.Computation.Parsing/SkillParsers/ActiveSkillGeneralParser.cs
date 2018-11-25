@@ -33,6 +33,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             _preParseResult = preParseResult;
             var activeSkill = preParseResult.SkillDefinition.ActiveSkill;
             var isMainSkill = preParseResult.IsMainSkill.IsSet;
+            var isActiveSkill = preParseResult.IsActiveSkill;
 
             AddHitDamageSourceModifiers(preParseResult);
             var usesMainHandCondition = isMainSkill;
@@ -83,8 +84,17 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 {
                     var target = _builderFactories.EntityBuilders.From(allAffectedEntities);
                     AddModifier(_builderFactories.SkillBuilders.FromId(mainSkill.Id).Buff.On(target),
-                        Form.BaseSet, 1, preParseResult.IsActiveSkill);
+                        Form.BaseSet, 1, isActiveSkill);
                 }
+            }
+
+            AddModifier(_builderFactories.SkillBuilders.FromId(mainSkill.Id).Instances, Form.BaseAdd, 1, isActiveSkill);
+            AddModifier(_builderFactories.SkillBuilders.AllSkills.CombinedInstances, Form.BaseAdd, 1, isActiveSkill);
+            foreach (var keyword in activeSkill.Keywords)
+            {
+                var keywordBuilder = _builderFactories.KeywordBuilders.From(keyword);
+                AddModifier(_builderFactories.SkillBuilders[keywordBuilder].CombinedInstances,
+                    Form.BaseAdd, 1, isActiveSkill);
             }
 
             var result = new PartialSkillParseResult(_parsedModifiers, new UntranslatedStat[0]);
