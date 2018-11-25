@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Data;
@@ -112,6 +113,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Ailment.Bleed.InstancesOn(Self).Maximum, 1 },
             { BaseSet, Ailment.Bleed.Source(Physical), 1 },
             { BaseSet, Ailment.Bleed.Duration, 5000 },
+            { TotalOverride, Ailment.Bleed.Chance.With(DamageSource.Spell), 0 },
+            { TotalOverride, Ailment.Bleed.Chance.With(DamageSource.Secondary), 0 },
             { PercentLess, Damage.With(Ailment.Bleed), 30 },
             { PercentMore, Damage.With(Ailment.Bleed), 100, Enemy.IsMoving },
             { BaseSet, Ailment.Poison.Source(Physical.And(Chaos)), 1 },
@@ -124,6 +127,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Buff.Maim.Duration, 4000 },
             { BaseSet, Buff.Taunt.Duration, 3000 },
             { BaseSet, Buff.ArcaneSurge.Duration, 4000 },
+            { TotalOverride, Buff.Maim.Chance.With(DamageSource.Spell), 0 },
+            { TotalOverride, Buff.Maim.Chance.With(DamageSource.Secondary), 0 },
             // stun
             { BaseSet, Effect.Stun.Threshold, 1 },
             { BaseSet, Effect.Stun.Recovery, 1 },
