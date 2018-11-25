@@ -20,5 +20,6 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         ISkillBuilder DetonateMines { get; }
 
         ISkillBuilder FromId(string skillId);
+        ISkillBuilder ModifierSourceSkill { get; }
     }
 }

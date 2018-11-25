@@ -92,6 +92,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolving\UnresolvedBuilderTest.cs" />
     <Compile Include="Skills\SkillBuilderCollectionTest.cs" />
+    <Compile Include="Skills\SkillBuildersTest.cs" />
     <Compile Include="Skills\SkillBuilderTest.cs" />
     <Compile Include="Stats\CastRateStatBuilderTest.cs" />
     <Compile Include="Stats\DamageStatBuilderTest.cs" />

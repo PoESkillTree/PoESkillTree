@@ -1,5 +1,8 @@
 ﻿using PoESkillTree.Computation.Builders.Stats;
+using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders.Skills
@@ -26,5 +29,20 @@ namespace PoESkillTree.Computation.Builders.Skills
 
         public ISkillBuilder FromId(string skillId)
             => new SkillBuilder(_statFactory, CoreBuilder.Create(_skills.GetSkillById(skillId)));
+
+        public ISkillBuilder ModifierSourceSkill
+            => new SkillBuilder(_statFactory, CoreBuilder.Create(BuildModifierSourceSkill));
+
+        private SkillDefinition BuildModifierSourceSkill(BuildParameters parameters)
+        {
+            var modifierSource = parameters.ModifierSource;
+            if (modifierSource is ModifierSource.Global global)
+                modifierSource = global.LocalSource;
+
+            if (modifierSource is ModifierSource.Local.Skill || modifierSource is ModifierSource.Local.Gem)
+                return _skills.GetSkillById(modifierSource.SourceName);
+
+            throw new ParseException($"ModifierSource must be a skill, {parameters.ModifierSource} given");
+        }
     }
 }
