@@ -25,11 +25,19 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         {
             _parsedModifiers = new List<Modifier>();
             _preParseResult = preParseResult;
+            var isActiveSkill = preParseResult.IsActiveSkill;
 
             AddModifier(_metaStatBuilders.ActiveSkillItemSlot(parsedSkill.Id),
-                Form.BaseSet, (double) parsedSkill.ItemSlot, preParseResult.IsActiveSkill);
+                Form.BaseSet, (double) parsedSkill.ItemSlot, isActiveSkill);
             AddModifier(_metaStatBuilders.ActiveSkillSocketIndex(parsedSkill.Id),
-                Form.BaseSet, parsedSkill.SocketIndex, preParseResult.IsActiveSkill);
+                Form.BaseSet, parsedSkill.SocketIndex, isActiveSkill);
+
+            foreach (var keyword in _preParseResult.SkillDefinition.SupportSkill.AddedKeywords)
+            {
+                var keywordBuilder = _builderFactories.KeywordBuilders.From(keyword);
+                AddModifier(_builderFactories.SkillBuilders[keywordBuilder].CombinedInstances,
+                    Form.BaseAdd, 1, isActiveSkill);
+            }
 
             var result = new PartialSkillParseResult(_parsedModifiers, new UntranslatedStat[0]);
             _parsedModifiers = null;

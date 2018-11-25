@@ -103,6 +103,22 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.AreEqual(expected, actual);
         }
 
+        [TestCase(true)]
+        [TestCase(false)]
+        public void BlasphemyAddsToAuraSkillInstances(bool isActiveSkill)
+        {
+            var expected = isActiveSkill ? (NodeValue?) 1 : null;
+            var (activeDefinition, activeSkill) = CreateEnfeebleDefinition();
+            var (supportDefinition, supportSkill) = CreateBlasphemyDefinition();
+            var sut = CreateSut(activeDefinition, supportDefinition);
+            var context = MockValueCalculationContext(activeSkill, false, isActiveSkill);
+
+            var result = sut.Parse(activeSkill, supportSkill);
+
+            var actual = GetValueForIdentity(result.Modifiers, "Skills[Aura].Instances").Calculate(context);
+            Assert.AreEqual(expected, actual);
+        }
+
         private static (SkillDefinition, Skill) CreateEnfeebleDefinition()
         {
             var activeSkill = CreateActiveSkillDefinition("Enfeeble", new[] { "curse" }, new[] { Keyword.Curse },
