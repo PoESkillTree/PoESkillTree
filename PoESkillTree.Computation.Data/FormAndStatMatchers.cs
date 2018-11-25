@@ -275,6 +275,10 @@ namespace PoESkillTree.Computation.Data
                 { "grants? fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
                 { "gain elemental conflux", TotalOverride, 1, Buff.Conflux.Elemental.On(Self) },
                 { "({BuffMatchers}) lasts # seconds", BaseSet, Value, Reference.AsBuff.Duration },
+                {
+                    "supported auras do not affect you",
+                    TotalOverride, 0, Skills.ModifierSourceSkill.Buff.EffectOn(Self)
+                },
                 // flags
                 // ailments
                 { "causes bleeding", TotalOverride, 100, Ailment.Bleed.Chance },

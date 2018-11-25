@@ -25,17 +25,22 @@ namespace PoESkillTree.Computation.Common.Builders.Entities
         IEnemyBuilder Enemy { get; }
 
         /// <summary>
-        /// Gets an entity representing allies.
+        /// Gets an entity representing the player character.
+        /// </summary>
+        IEntityBuilder Character { get; }
+
+        /// <summary>
+        /// Gets an entity representing the character's allies.
         /// </summary>
         IEntityBuilder Ally { get; }
 
         /// <summary>
-        /// Gets an entity representing all of Self's totems.
+        /// Gets an entity representing the character's totems.
         /// </summary>
         IEntityBuilder Totem { get; }
 
         /// <summary>
-        /// Gets an entity representing all of Self's minions.
+        /// Gets an entity representing the character's minions.
         /// </summary>
         IEntityBuilder Minion { get; }
 

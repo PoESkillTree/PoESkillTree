@@ -241,8 +241,7 @@ namespace PoESkillTree.Computation.Data
                 { "skeleton movement speed", Stat.MovementSpeed.For(Entity.Minion), WithSkeletonSkills },
                 { "golem at a time", Golems.CombinedInstances.Maximum },
                 // buffs
-                { "chance to (gain|grant) ({BuffMatchers})", Reference.AsBuff.Chance },
-                { "({BuffMatchers}) duration", Reference.AsBuff.Duration },
+                // - effect
                 { "({BuffMatchers}) effect", Reference.AsBuff.Effect },
                 { "effect of ({BuffMatchers}) on you", Reference.AsBuff.EffectOn(Self) },
                 { "({SkillMatchers}) has buff effect", Reference.AsSkill.Buff.Effect },
@@ -261,13 +260,20 @@ namespace PoESkillTree.Computation.Data
                     Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).Effect
                 },
                 { "warcry buff effect", Buffs(targets: Self).With(Keyword.Warcry).Effect },
+                { "effect of supported curses", Skills.ModifierSourceSkill.Buff.Effect },
+                { "non-curse auras from supported skills have effect", Skills.ModifierSourceSkill.Buff.Effect },
+                { "effect of curse against players", Skills.ModifierSourceSkill.Buff.EffectOn(Entity.Character) },
+                // - chance
+                { "chance to (gain|grant) ({BuffMatchers})", Reference.AsBuff.Chance },
                 { "chance to fortify", Buff.Fortify.Chance },
                 { "chance to maim", Buff.Maim.Chance },
                 { "chance for attacks to maim", Buff.Maim.Chance.With(DamageSource.Attack) },
                 { "chance to taunt", Buff.Taunt.Chance },
                 { "chance to blind( enemies)?", Buff.Blind.Chance },
-                { "blinding duration", Buff.Blind.Duration },
                 { "chance to cover rare or unique enemies in ash", Buff.CoveredInAsh.Chance, Enemy.IsRareOrUnique },
+                // - duration
+                { "({BuffMatchers}) duration", Reference.AsBuff.Duration },
+                { "blinding duration", Buff.Blind.Duration },
                 // ailments
                 { "chance to ({AilmentMatchers})( the enemy)?", Reference.AsAilment.Chance },
                 {
