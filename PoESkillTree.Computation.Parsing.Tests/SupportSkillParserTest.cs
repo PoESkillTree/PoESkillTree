@@ -8,6 +8,7 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
+using static PoESkillTree.Computation.Common.Tests.Helper;
 using static PoESkillTree.Computation.Parsing.Tests.SkillParserTestUtils;
 
 namespace PoESkillTree.Computation.Parsing.Tests
@@ -78,12 +79,35 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.AreEqual(expectedSocketIndex, actualSocketIndex);
         }
 
+        [TestCase(true)]
+        [TestCase(false)]
+        public void BlasphemyParsesPassiveStatsWithIsActiveSkillCondition(bool isActiveSkill)
+        {
+            var expected = isActiveSkill ? (NodeValue?) 10 : null;
+            var (activeDefinition, activeSkill) = CreateEnfeebleDefinition();
+            var (supportDefinition, supportSkill) = CreateBlasphemyDefinition();
+            var source = new ModifierSource.Local.Skill("Enfeeble");
+            var parseResult = ParseResult.Success(new[]
+                { MockModifier(new Stat("Blasphemy.EffectOn(Character)"), value: new Constant(10)) });
+            var parameter = new UntranslatedStatParserParameter(source, new[]
+                { new UntranslatedStat("curse_effect_+%", 10), });
+            var statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
+                p.Parse(parameter) == parseResult &&
+                p.Parse(EmptyParserParameter(source)) == EmptyParseResult);
+            var sut = CreateSut(activeDefinition, supportDefinition, statParser);
+            var context = MockValueCalculationContext(activeSkill, false, isActiveSkill);
+
+            var result = sut.Parse(activeSkill, supportSkill);
+
+            var actual = GetValueForIdentity(result.Modifiers, "Blasphemy.EffectOn(Character)").Calculate(context);
+            Assert.AreEqual(expected, actual);
+        }
+
         private static (SkillDefinition, Skill) CreateEnfeebleDefinition()
         {
             var activeSkill = CreateActiveSkillDefinition("Enfeeble", new[] { "curse" }, new[] { Keyword.Curse },
                 providesBuff: true);
-            var stats = new UntranslatedStat[0];
-            var level = CreateLevelDefinition(stats: stats);
+            var level = CreateLevelDefinition();
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (CreateActive("Enfeeble", activeSkill, levels),
                 new Skill("Enfeeble", 1, 0, ItemSlot.Belt, 0, null));
@@ -94,11 +118,11 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var supportSkill = new SupportSkillDefinition(false, new string[0], new string[0],
                 new[] { ActiveSkillType.ManaCostIsReservation, ActiveSkillType.ManaCostIsPercentage },
                 new[] { Keyword.Aura });
-            var stats = new UntranslatedStat[0];
-            var level = CreateLevelDefinition(manaCostOverride: 42, stats: stats);
+            var qualityPassiveStats = new[] { new UntranslatedStat("curse_effect_+%", 500),  };
+            var level = CreateLevelDefinition(manaCostOverride: 42, qualityPassiveStats: qualityPassiveStats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (CreateSupport("Blasphemy", supportSkill, levels),
-                new Skill("Blasphemy", 1, 0, ItemSlot.Belt, 1, null));
+                new Skill("Blasphemy", 1, 20, ItemSlot.Belt, 1, null));
         }
 
         #endregion

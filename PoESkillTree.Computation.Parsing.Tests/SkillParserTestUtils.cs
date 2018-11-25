@@ -118,5 +118,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public static IEnumerable<NodeValue?> Calculate(
             this IEnumerable<IValue> @this, IValueCalculationContext context)
             => @this.Select(v => v.Calculate(context));
+
+        public static UntranslatedStatParserParameter EmptyParserParameter(ModifierSource.Local.Skill source)
+            => new UntranslatedStatParserParameter(source, new UntranslatedStat[0]);
+
+        public static readonly ParseResult EmptyParseResult = ParseResult.Success(new Modifier[0]);
     }
 }

@@ -53,6 +53,10 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             parseResults.Add(TranslateAndParseBuff(qualityBuffStats));
             parseResults.Add(TranslateAndParseBuff(level.BuffStats));
 
+            var qualityPassiveStats = level.QualityPassiveStats.Select(s => ApplyQuality(s, skill));
+            parseResults.Add(TranslateAndParse(qualityPassiveStats, _preParseResult.IsActiveSkill));
+            parseResults.Add(TranslateAndParse(level.PassiveStats, _preParseResult.IsActiveSkill));
+
             _preParseResult = null;
             _parsedStats = null;
             return ParseResult.Aggregate(parseResults);

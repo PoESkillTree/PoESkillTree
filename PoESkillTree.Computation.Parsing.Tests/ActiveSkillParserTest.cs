@@ -1230,11 +1230,6 @@ namespace PoESkillTree.Computation.Parsing.Tests
             return new ActiveSkillParser(skillDefinitions, builderFactories, metaStatBuilders, statParserFactory);
         }
 
-        private static UntranslatedStatParserParameter EmptyParserParameter(ModifierSource.Local.Skill source)
-            => new UntranslatedStatParserParameter(source, new UntranslatedStat[0]);
-
-        private static readonly ParseResult EmptyParseResult = ParseResult.Success(new Modifier[0]);
-
         private static void AssertSparse(
             int valueCount, int expectedIndex, bool expectedValue, IEnumerable<NodeValue?> actualValues)
         {
