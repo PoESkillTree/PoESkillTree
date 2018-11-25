@@ -18,7 +18,10 @@ namespace PoESkillTree.Computation.Builders.Skills
             _skills = skills;
         }
 
-        public ISkillBuilderCollection this[params IKeywordBuilder[] keywords]
+        public ISkillBuilderCollection AllSkills => CreateCollection();
+        public ISkillBuilderCollection this[IKeywordBuilder keyword] => CreateCollection(keyword);
+
+        private ISkillBuilderCollection CreateCollection(params IKeywordBuilder[] keywords)
             => new SkillBuilderCollection(_statFactory, keywords, _skills.Skills);
 
         public ISkillBuilder SummonSkeleton => FromId("SummonSkeletons");

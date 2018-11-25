@@ -106,7 +106,7 @@ namespace PoESkillTree.Computation.Data.Base
         // Skills
 
         protected ISkillBuilders Skills => BuilderFactories.SkillBuilders;
-        protected ISkillBuilderCollection AllSkills => Skills[new IKeywordBuilder[0]];
+        protected ISkillBuilderCollection AllSkills => Skills.AllSkills;
 
 
         // Convenience methods
