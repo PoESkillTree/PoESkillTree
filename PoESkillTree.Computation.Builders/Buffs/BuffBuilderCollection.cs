@@ -60,12 +60,12 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
         private IEnumerable<IValue> CreateValues(BuildParameters parameters)
         {
-            var restrictions = _restrictionsBuilder.Build();
+            var restrictions = _restrictionsBuilder.Build(parameters);
             var sourceEntities = _source.Build(parameters.ModifierSourceEntity);
             var targetEntities = _target.Build(parameters.ModifierSourceEntity);
             return from b in _buffs
                    where restrictions.AllowsBuff(b)
-                   let buffIdentity = b.Buff.Build()
+                   let buffIdentity = b.Buff.Build(parameters)
                    from t in targetEntities
                    let activeStat = _statFactory.BuffIsActive(t, buffIdentity)
                    let activeCondition = new StatValue(activeStat)

@@ -76,7 +76,7 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
 
         IStatBuilder ReflectedDamageTaken { get; }
 
-        IReadOnlyList<DamageType> BuildDamageTypes();
+        IReadOnlyList<DamageType> BuildDamageTypes(BuildParameters parameters);
     }
 
     public interface IDamageTakenConversionBuilder

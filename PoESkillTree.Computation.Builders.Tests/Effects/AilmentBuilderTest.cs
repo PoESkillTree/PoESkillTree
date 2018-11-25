@@ -14,8 +14,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Effects
         [Test]
         public void SourceBuildsToCorrectResults()
         {
-            var damageTypes =
-                Mock.Of<IDamageTypeBuilder>(b => b.BuildDamageTypes() == new[] { DamageType.Fire, DamageType.Cold });
+            var damageTypes = Mock.Of<IDamageTypeBuilder>(b =>
+                b.BuildDamageTypes(default) == new[] { DamageType.Fire, DamageType.Cold });
             var sut = new AilmentBuilder(new StatFactory(), CoreBuilder.Create(Ailment.Bleed));
 
             var statBuilder = sut.Source(damageTypes);

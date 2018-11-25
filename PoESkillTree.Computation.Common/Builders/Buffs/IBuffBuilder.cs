@@ -41,8 +41,9 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
 
         /// <summary>
         /// Builds an IValue that calculates the multiplier to the value of modifiers created from
-        /// <see cref="AddStatForSource"/> and <see cref="IEffectBuilder.AddStat"/>.
+        /// <see cref="AddStatForSource"/> and <see cref="IEffectBuilder.AddStat"/>. The ModifierSourceEntity is
+        /// used as the target.
         /// </summary>
-        IValue BuildAddStatMultiplier(IReadOnlyCollection<Entity> possibleSources, Entity target);
+        IValue BuildAddStatMultiplier(BuildParameters parameters, IReadOnlyCollection<Entity> possibleSources);
     }
 }

@@ -30,6 +30,6 @@ namespace PoESkillTree.Computation.Common.Builders.Charges
         /// </summary>
         IActionBuilder GainAction { get; }
 
-        ChargeType Build();
+        ChargeType Build(BuildParameters parameters);
     }
 }

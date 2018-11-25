@@ -58,7 +58,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         private IEnumerable<IStat> BuildStats(BuildParameters parameters)
         {
             var entities = _entityBuilder.Build(parameters.ModifierSourceEntity);
-            var t = _coreBuilder.Build();
+            var t = _coreBuilder.Build(parameters);
             return entities.SelectMany(e => _statFactory(parameters, e, t));
         }
     }

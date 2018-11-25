@@ -20,10 +20,10 @@ namespace PoESkillTree.Computation.Builders.Conditions
         public ConditionBuilders(IStatFactory statFactory) => _statFactory = statFactory;
 
         public IConditionBuilder With(IKeywordBuilder keyword) => ValueConditionBuilder.Create(
-            (ps, k) => _statFactory.MainSkillHasKeyword(ps.ModifierSourceEntity, k.Build()), keyword);
+            (ps, k) => _statFactory.MainSkillHasKeyword(ps.ModifierSourceEntity, k.Build(ps)), keyword);
 
         public IConditionBuilder WithPart(IKeywordBuilder keyword) => ValueConditionBuilder.Create(
-            (ps, k) => _statFactory.MainSkillPartHasKeyword(ps.ModifierSourceEntity, k.Build()), keyword);
+            (ps, k) => _statFactory.MainSkillPartHasKeyword(ps.ModifierSourceEntity, k.Build(ps)), keyword);
 
         public IConditionBuilder With(ISkillBuilder skill)
         {

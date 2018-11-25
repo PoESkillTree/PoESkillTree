@@ -33,6 +33,9 @@ namespace PoESkillTree.Computation.Builders.Resolving
         public TBuild Build() => 
             throw new UnresolvedException(Description);
 
+        public TBuild Build(BuildParameters parameters) => 
+            throw new UnresolvedException(Description);
+
         public override string ToString() => Description;
     }
 
@@ -92,7 +95,5 @@ namespace PoESkillTree.Computation.Builders.Resolving
 
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
             new UnresolvedCoreStatBuilder(Description, Resolver.AndThen(b => b.WithEntity(entityBuilder)));
-
-        public IEnumerable<StatBuilderResult> Build(BuildParameters parameters) => Build();
     }
 }

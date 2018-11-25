@@ -40,12 +40,12 @@ namespace PoESkillTree.Computation.Builders.Actions
             new StatConvertingConditionBuilder(
                 b => new StatBuilder(StatFactory,
                     new ParametrisedCoreStatBuilder<ICoreBuilder<string>>(
-                        new StatBuilderAdapter(b), _identity, (i, s) => ConvertStat(i, s))),
+                        new StatBuilderAdapter(b), _identity, ConvertStat)),
                 c => Resolve(c).On);
 
-        private IEnumerable<IStat> ConvertStat(ICoreBuilder<string> identity, IStat stat)
+        private IEnumerable<IStat> ConvertStat(BuildParameters parameters, ICoreBuilder<string> identity, IStat stat)
         {
-            var builtIdentity = identity.Build();
+            var builtIdentity = identity.Build(parameters);
             return from e in _entity.Build(stat.Entity)
                    let i = $"On({builtIdentity}).By({e})"
                    let registrationType = GainOnAction(stat, builtIdentity, e)
@@ -59,17 +59,17 @@ namespace PoESkillTree.Computation.Builders.Actions
         private IValue BuildInPastXSecondsValue(BuildParameters parameters, IValueBuilder seconds)
         {
             var builtEntity = BuildEntity(parameters, _entity);
-            var recentOccurencesStat = BuildRecentOccurencesStat(builtEntity);
-            var lastOccurenceStat = BuildLastOccurenceStat(builtEntity);
+            var recentOccurrencesStat = BuildRecentOccurencesStat(parameters, builtEntity);
+            var lastOccurenceStat = BuildLastOccurenceStat(parameters, builtEntity);
             var secondsValue = seconds.Build(parameters);
             return new ConditionalValue(Calculate,
-                $"({RecentlySeconds} <= {secondsValue} && {recentOccurencesStat} > 0) " +
+                $"({RecentlySeconds} <= {secondsValue} && {recentOccurrencesStat} > 0) " +
                 $"|| {lastOccurenceStat} <= {secondsValue}");
 
             bool Calculate(IValueCalculationContext context)
             {
                 NodeValue? threshold = secondsValue.Calculate(context);
-                if (RecentlySeconds <= threshold && context.GetValue(recentOccurencesStat) > 0)
+                if (RecentlySeconds <= threshold && context.GetValue(recentOccurrencesStat) > 0)
                     return true;
                 return context.GetValue(lastOccurenceStat) <= threshold;
             }
@@ -82,17 +82,17 @@ namespace PoESkillTree.Computation.Builders.Actions
             new ValueBuilder(new ValueBuilderImpl(BuildCountRecentlyValue, c => Resolve(c).CountRecently));
 
         private IValue BuildCountRecentlyValue(BuildParameters parameters) =>
-            new StatValue(BuildRecentOccurencesStat(BuildEntity(parameters, _entity)));
+            new StatValue(BuildRecentOccurencesStat(parameters, BuildEntity(parameters, _entity)));
 
-        private IStat BuildLastOccurenceStat(Entity entity) =>
-            StatFactory.FromIdentity($"{Build()}.LastOccurence", entity, typeof(int), UserSpecifiedValue());
+        private IStat BuildLastOccurenceStat(BuildParameters parameters, Entity entity) =>
+            StatFactory.FromIdentity($"{Build(parameters)}.LastOccurence", entity, typeof(int), UserSpecifiedValue());
 
-        private IStat BuildRecentOccurencesStat(Entity entity) =>
-            StatFactory.FromIdentity($"{Build()}.RecentOccurences", entity, typeof(int), UserSpecifiedValue());
+        private IStat BuildRecentOccurencesStat(BuildParameters parameters, Entity entity) =>
+            StatFactory.FromIdentity($"{Build(parameters)}.RecentOccurences", entity, typeof(int), UserSpecifiedValue());
 
         private static Entity BuildEntity(BuildParameters parameters, IEntityBuilder entity) =>
             entity.Build(parameters.ModifierSourceEntity).Single();
 
-        public string Build() => _identity.Build();
+        public string Build(BuildParameters parameters) => _identity.Build(parameters);
     }
 }

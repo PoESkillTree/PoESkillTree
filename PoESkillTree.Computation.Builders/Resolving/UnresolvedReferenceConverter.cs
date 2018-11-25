@@ -46,7 +46,7 @@ namespace PoESkillTree.Computation.Builders.Resolving
             get
             {
                 var core = new UnresolvedCoreBuilder<ChargeType>($"{this}.AsChargeType",
-                    context => CoreBuilder.Proxy(_resolver(context).AsChargeType, b => b.Build()));
+                    context => CoreBuilder.Proxy(_resolver(context).AsChargeType, (ps, b) => b.Build(ps)));
                 return new ChargeTypeBuilder(_statFactory, core);
             }
         }
@@ -57,7 +57,7 @@ namespace PoESkillTree.Computation.Builders.Resolving
             {
                 var core = new UnresolvedCoreBuilder<Ailment>($"{this}.AsAilment",
                     context => CoreBuilder.Proxy<IAilmentBuilder, IEffectBuilder, Ailment>(
-                        _resolver(context).AsAilment, b => b.Build()));
+                        _resolver(context).AsAilment, (ps, b) => b.Build(ps)));
                 return new AilmentBuilder(_statFactory, core);
             }
         }
@@ -73,7 +73,7 @@ namespace PoESkillTree.Computation.Builders.Resolving
             get
             {
                 var core = new UnresolvedCoreBuilder<string>($"{this}.AsAction",
-                    context => CoreBuilder.Proxy(_resolver(context).AsAction, b => b.Build()));
+                    context => CoreBuilder.Proxy(_resolver(context).AsAction, (ps, b) => b.Build(ps)));
                 return new ActionBuilder(_statFactory, core, new ModifierSourceEntityBuilder());
             }
         }
@@ -94,7 +94,7 @@ namespace PoESkillTree.Computation.Builders.Resolving
             {
                 var core = new UnresolvedCoreBuilder<Pool>($"{this}.AsPoolStat",
                     context => CoreBuilder.Proxy<IPoolStatBuilder, IStatBuilder, Pool>(
-                        _resolver(context).AsPoolStat, b => b.BuildPool()));
+                        _resolver(context).AsPoolStat, (ps, b) => b.BuildPool(ps)));
                 return new PoolStatBuilder(_statFactory, core);
             }
         }
@@ -104,7 +104,7 @@ namespace PoESkillTree.Computation.Builders.Resolving
             get
             {
                 var core = new UnresolvedCoreBuilder<string>($"{this}.AsBuff",
-                    context => CoreBuilder.Proxy((IEffectBuilder) _resolver(context).AsBuff, b => b.Build()));
+                    context => CoreBuilder.Proxy((IEffectBuilder) _resolver(context).AsBuff, (ps, b) => b.Build(ps)));
                 return new BuffBuilder(_statFactory, core);
             }
         }
@@ -114,7 +114,7 @@ namespace PoESkillTree.Computation.Builders.Resolving
             get
             {
                 var core = new UnresolvedCoreBuilder<SkillDefinition>($"{this}.AsSkill",
-                    context => CoreBuilder.Proxy(_resolver(context).AsSkill, b => b.Build()));
+                    context => CoreBuilder.Proxy(_resolver(context).AsSkill, (ps, b) => b.Build(ps)));
                 return new SkillBuilder(_statFactory, core);
             }
         }

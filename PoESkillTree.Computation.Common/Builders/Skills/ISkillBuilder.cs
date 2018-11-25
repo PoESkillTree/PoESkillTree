@@ -43,6 +43,6 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         /// </summary>
         IBuffBuilder Buff { get; }
 
-        SkillDefinition Build();
+        SkillDefinition Build(BuildParameters parameters);
     }
 }

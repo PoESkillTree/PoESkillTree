@@ -46,7 +46,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder DamageHasKeyword(DamageSource damageSource, IKeywordBuilder keyword)
         {
             var coreBuilder = new CoreStatBuilderFromCoreBuilder<Keyword>(
-                CoreBuilder.Proxy(keyword, b => b.Build()),
+                CoreBuilder.Proxy(keyword, (ps, b) => b.Build(ps)),
                 (e, k) => StatFactory.MainSkillPartDamageHasKeyword(e, k, damageSource));
             return new StatBuilder(StatFactory, coreBuilder);
         }

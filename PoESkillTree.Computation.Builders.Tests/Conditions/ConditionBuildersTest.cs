@@ -139,7 +139,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Conditions
         {
             var expectedKeyword = Keyword.Aura;
             var expected = expectedKeyword == actualKeyword;
-            var keyword = Mock.Of<IKeywordBuilder>(b => b.Build() == actualKeyword);
+            var keyword = Mock.Of<IKeywordBuilder>(b => b.Build(default) == actualKeyword);
             var hasKeywordStat = new StatFactory().MainSkillHasKeyword(default, expectedKeyword);
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(hasKeywordStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true);

@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
         public IEnumerable<StatBuilderResult> Build(BuildParameters parameters)
         {
-            var restrictions = _restrictionsBuilder.Build();
+            var restrictions = _restrictionsBuilder.Build(parameters);
             var selectedBuffs = _buffs.Where(restrictions.AllowsBuff).ToList();
             if (selectedBuffs.IsEmpty())
                 return Enumerable.Empty<StatBuilderResult>();

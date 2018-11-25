@@ -6,6 +6,7 @@ using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -47,7 +48,7 @@ namespace PoESkillTree.Computation.Builders.Skills
 
         public ValueBuilder SkillId =>
             new ValueBuilder(new ValueBuilderImpl(
-                ps => new Constant(_coreBuilder.Build().NumericId),
+                ps => new Constant(_coreBuilder.Build(ps).NumericId),
                 c => Resolve(c).SkillId));
 
         public IBuffBuilder Buff
@@ -60,6 +61,6 @@ namespace PoESkillTree.Computation.Builders.Skills
             return skillDefinition.Id;
         }
 
-        public SkillDefinition Build() => _coreBuilder.Build();
+        public SkillDefinition Build(BuildParameters parameters) => _coreBuilder.Build(parameters);
     }
 }

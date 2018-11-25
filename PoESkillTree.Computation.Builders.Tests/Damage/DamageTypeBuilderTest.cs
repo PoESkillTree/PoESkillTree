@@ -25,7 +25,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
         {
             var sut = CreateSut(damageType);
 
-            var actual = sut.Build();
+            var actual = sut.Build(default);
 
             Assert.AreEqual(expected, actual);
         }
@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
         {
             var sut = CreateSut(DamageType.RandomElement);
 
-            Assert.Throws<ParseException>(() => sut.Build());
+            Assert.Throws<ParseException>(() => sut.Build(default));
         }
 
         [TestCase(DamageType.Chaos)]
@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
         {
             var sut = CreateSut(damageType);
 
-            var actual = sut.BuildDamageTypes();
+            var actual = sut.BuildDamageTypes(default);
 
             Assert.AreEqual(new[] { damageType }, actual);
         }
@@ -54,10 +54,10 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
         {
             var expected = new[] { DamageType.Fire, DamageType.Chaos, DamageType.Cold };
             var other = Mock.Of<IDamageTypeBuilder>(b =>
-                b.BuildDamageTypes() == new[] { DamageType.Chaos, DamageType.Fire, DamageType.Cold });
+                b.BuildDamageTypes(default) == new[] { DamageType.Chaos, DamageType.Fire, DamageType.Cold });
             var sut = CreateSut(expected.First());
 
-            var actual = sut.And(other).BuildDamageTypes();
+            var actual = sut.And(other).BuildDamageTypes(default);
 
             Assert.AreEqual(expected, actual);
         }
@@ -68,7 +68,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
             var expected = Enums.GetValues<DamageType>().Except(DamageType.Fire, DamageType.RandomElement);
             var sut = CreateSut(DamageType.Fire);
 
-            var actual = sut.Invert.BuildDamageTypes();
+            var actual = sut.Invert.BuildDamageTypes(default);
 
             Assert.AreEqual(expected, actual);
         }
@@ -80,7 +80,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
                 .Except(DamageType.Fire, DamageType.RandomElement, DamageType.Cold);
             var sut = CreateSut(DamageType.Fire);
 
-            var actual = sut.Invert.Except(CreateSut(DamageType.Cold)).BuildDamageTypes();
+            var actual = sut.Invert.Except(CreateSut(DamageType.Cold)).BuildDamageTypes(default);
 
             Assert.AreEqual(expected, actual);
         }
@@ -90,7 +90,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
         {
             var sut = CreateSut(DamageType.Fire).Except(CreateSut(DamageType.Fire));
 
-            Assert.Throws<ParseException>(() => sut.Build());
+            Assert.Throws<ParseException>(() => sut.Build(default));
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
         {
             var sut = CreateSut(DamageType.Fire).And(CreateSut(DamageType.Cold));
 
-            Assert.Throws<ParseException>(() => sut.Build());
+            Assert.Throws<ParseException>(() => sut.Build(default));
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
             var sut = CreateSut(DamageType.Fire).And(unresolved);
 
             var resolvedSut = (IDamageTypeBuilder) sut.Resolve(null);
-            var actual = resolvedSut.BuildDamageTypes();
+            var actual = resolvedSut.BuildDamageTypes(default);
 
             Assert.AreEqual(expected, actual);
         }
@@ -226,8 +226,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
         [TestCase(Pool.EnergyShield, Pool.Life)]
         public void DamageTakenFromBuildsToCorrectStat(Pool source, Pool target)
         {
-            var sourcePool = Mock.Of<IPoolStatBuilder>(b => b.BuildPool() == source);
-            var targetPool = Mock.Of<IPoolStatBuilder>(b => b.BuildPool() == target);
+            var sourcePool = Mock.Of<IPoolStatBuilder>(b => b.BuildPool(default) == source);
+            var targetPool = Mock.Of<IPoolStatBuilder>(b => b.BuildPool(default) == target);
             var sut = CreateSut(DamageType.Fire);
 
             var taken = sut.DamageTakenFrom(sourcePool).Before(targetPool);
@@ -239,9 +239,9 @@ namespace PoESkillTree.Computation.Builders.Tests.Damage
         [TestCase(Pool.EnergyShield, Pool.Mana)]
         public void DamageTakenFromIsResolvable(Pool source, Pool target)
         {
-            var sourcePool = Mock.Of<IPoolStatBuilder>(b => b.BuildPool() == source);
+            var sourcePool = Mock.Of<IPoolStatBuilder>(b => b.BuildPool(default) == source);
             var unresolvedSource = Mock.Of<IPoolStatBuilder>(b => b.Resolve(null) == sourcePool);
-            var targetPool = Mock.Of<IPoolStatBuilder>(b => b.BuildPool() == target);
+            var targetPool = Mock.Of<IPoolStatBuilder>(b => b.BuildPool(default) == target);
             var unresolvedTarget = Mock.Of<IPoolStatBuilder>(b => b.Resolve(null) == targetPool);
             var sut = CreateSut(DamageType.Fire);
 

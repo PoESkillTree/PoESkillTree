@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Skills
         public void ResolveCombinedInstancesBuildsToCorrectResult()
         {
             var keywords = new[] { Keyword.Projectile };
-            var unresolved = new[] { Mock.Of<IKeywordBuilder>(b => b.Resolve(null).Build() == keywords[0]) };
+            var unresolved = new[] { Mock.Of<IKeywordBuilder>(b => b.Resolve(null).Build(default) == keywords[0]) };
             var sut = CreateSut(unresolved);
 
             var stat = sut.Resolve(null).CombinedInstances.BuildToSingleStat();
@@ -40,7 +40,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Skills
         public void CombinedInstancesResolveBuildsToCorrectResult()
         {
             var keywords = new[] { Keyword.Projectile };
-            var unresolved = new[] { Mock.Of<IKeywordBuilder>(b => b.Resolve(null).Build() == keywords[0]) };
+            var unresolved = new[] { Mock.Of<IKeywordBuilder>(b => b.Resolve(null).Build(default) == keywords[0]) };
             var sut = CreateSut(unresolved);
 
             var stat = sut.CombinedInstances.Resolve(null).BuildToSingleStat();
@@ -54,7 +54,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Skills
             var keywords = new[] { Keyword.Aura, Keyword.Melee };
             var sut = CreateSut(keywords.Select(k => new KeywordBuilder(k)));
 
-            var actual = sut.Cast.Build();
+            var actual = sut.Cast.Build(default);
 
             Assert.AreEqual("Skills[Aura, Melee].Cast", actual);
         }

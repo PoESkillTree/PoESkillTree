@@ -13,14 +13,14 @@ namespace PoESkillTree.Computation.Builders.Actions
         }
 
         public IDamageRelatedStatBuilder Chance =>
-            StatBuilderUtils.DamageRelatedFromIdentity(StatFactory, $"{Build()}.Chance", typeof(double))
+            StatBuilderUtils.DamageRelatedFromIdentity(StatFactory, "CriticalStrike.Chance", typeof(double))
                 .WithHits;
 
         public IDamageRelatedStatBuilder Multiplier =>
-            StatBuilderUtils.DamageRelatedFromIdentity(StatFactory, $"{Build()}.Multiplier", typeof(double),
+            StatBuilderUtils.DamageRelatedFromIdentity(StatFactory, "CriticalStrike.Multiplier", typeof(double),
                     canApplyToAilmentDamage: true);
 
         public IStatBuilder ExtraDamageTaken =>
-            StatBuilderUtils.FromIdentity(StatFactory, $"{Build()}.ExtraDamageTaken", typeof(int));
+            StatBuilderUtils.FromIdentity(StatFactory, "CriticalStrike.ExtraDamageTaken", typeof(int));
     }
 }

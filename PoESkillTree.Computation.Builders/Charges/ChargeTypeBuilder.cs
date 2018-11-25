@@ -4,6 +4,7 @@ using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Charges;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -41,6 +42,6 @@ namespace PoESkillTree.Computation.Builders.Charges
             new ActionBuilder(_statFactory,
                 CoreBuilder.UnaryOperation(_chargeType, t => $"{t}.GainAction"), new ModifierSourceEntityBuilder());
 
-        public ChargeType Build() => _chargeType.Build();
+        public ChargeType Build(BuildParameters parameters) => _chargeType.Build(parameters);
     }
 }

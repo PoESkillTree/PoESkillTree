@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -84,9 +85,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public DamageSpecificationBuilder WithSkills() =>
             new DamageSpecificationBuilder(_mode.RemoveFlags(Mode.Ailments), _damageSource, _ailment, _hand);
 
-        public IEnumerable<IDamageSpecification> Build()
+        public IEnumerable<IDamageSpecification> Build(BuildParameters parameters)
         {
-            var intermediateBuilder = new IntermediateBuilder(_mode, Hands().ToList(), Ailments().ToList());
+            var intermediateBuilder = new IntermediateBuilder(_mode, Hands().ToList(), Ailments(parameters).ToList());
             return BuildSkillDamage(intermediateBuilder).Concat(BuildAilmentDamage(intermediateBuilder));
         }
 
@@ -106,8 +107,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         private IEnumerable<AttackDamageHand> Hands() =>
             SingleOrAll(_hand, Enums.GetValues<AttackDamageHand>);
 
-        private IEnumerable<Ailment> Ailments() =>
-            SingleOrAll(_ailment?.Build(), () => AilmentConstants.DamagingAilments);
+        private IEnumerable<Ailment> Ailments(BuildParameters parameters) =>
+            SingleOrAll(_ailment?.Build(parameters), () => AilmentConstants.DamagingAilments);
 
         private static IEnumerable<T> SingleOrAll<T>(T? single, Func<IEnumerable<T>> all) where T : struct =>
             single.HasValue ? new[] { single.Value } : all();
@@ -137,7 +138,7 @@ namespace PoESkillTree.Computation.Builders.Stats
                     case DamageSource.Attack:
                         return BuildSkillAttackDamage();
                     case DamageSource.Spell:
-                        return BuildSkillSpelllDamage();
+                        return BuildSkillSpellDamage();
                     case DamageSource.Secondary:
                         return BuildSkillSecondaryDamage();
                     case DamageSource.OverTime:
@@ -150,7 +151,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             private IEnumerable<IDamageSpecification> BuildSkillAttackDamage() =>
                 _hands.Select(hand => new SkillAttackDamageSpecification(hand));
 
-            private static IEnumerable<IDamageSpecification> BuildSkillSpelllDamage() =>
+            private static IEnumerable<IDamageSpecification> BuildSkillSpellDamage() =>
                 new[] { new SkillDamageSpecification(DamageSource.Spell) };
 
             private static IEnumerable<IDamageSpecification> BuildSkillSecondaryDamage() =>
@@ -168,7 +169,7 @@ namespace PoESkillTree.Computation.Builders.Stats
                     case DamageSource.Attack:
                         return BuildAilmentAttackDamage();
                     case DamageSource.Spell:
-                        return BuildAilmentSpelllDamage();
+                        return BuildAilmentSpellDamage();
                     case DamageSource.Secondary:
                         return BuildAilmentSecondaryDamage();
                     case DamageSource.OverTime:
@@ -183,7 +184,7 @@ namespace PoESkillTree.Computation.Builders.Stats
                 from ailment in _ailments
                 select new AilmentAttackDamageSpecification(hand, ailment);
 
-            private IEnumerable<IDamageSpecification> BuildAilmentSpelllDamage() =>
+            private IEnumerable<IDamageSpecification> BuildAilmentSpellDamage() =>
                 _ailments.Select(a => new AilmentDamageSpecification(DamageSource.Spell, a));
 
             private IEnumerable<IDamageSpecification> BuildAilmentSecondaryDamage() =>

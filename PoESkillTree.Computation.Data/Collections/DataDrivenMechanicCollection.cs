@@ -145,10 +145,6 @@ namespace PoESkillTree.Computation.Data.Collections
         }
 
         public void Add(
-            IFormBuilder form, Func<IPoolStatBuilder, IStatBuilder> stat, Func<IPoolStatBuilder, IValueBuilder> value)
-            => Add(form, p => stat(PoolStatFrom(p)), value);
-
-        public void Add(
             IFormBuilder form, Func<Pool, IStatBuilder> stat, Func<IPoolStatBuilder, IValueBuilder> value)
             => Add(form, stat, p => value(PoolStatFrom(p)));
 

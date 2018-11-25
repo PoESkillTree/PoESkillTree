@@ -7,6 +7,7 @@ using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
@@ -83,8 +84,8 @@ namespace PoESkillTree.Computation.Builders.Skills
             public ICoreBuilder<IEnumerable<Keyword>> Resolve(ResolveContext context) =>
                 new KeywordsCoreBuilder(_keywords.Select(b => b.Resolve(context)));
 
-            public IEnumerable<Keyword> Build() =>
-                _keywords.Select(b => b.Build());
+            public IEnumerable<Keyword> Build(BuildParameters parameters) =>
+                _keywords.Select(b => b.Build(parameters));
         }
     }
 }

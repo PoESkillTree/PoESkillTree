@@ -55,7 +55,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Skills
             var coreBuilder = CreateCoreBuilder("skill");
             var sut = CreateSut(coreBuilder);
 
-            var actual = sut.Cast.Build();
+            var actual = sut.Cast.Build(default);
 
             Assert.AreEqual("skill.Cast", actual);
         }

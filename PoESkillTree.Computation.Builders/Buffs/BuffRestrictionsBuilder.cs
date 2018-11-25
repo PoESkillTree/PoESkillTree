@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Utils.Extensions;
@@ -35,9 +36,9 @@ namespace PoESkillTree.Computation.Builders.Buffs
         public BuffRestrictionsBuilder Without(IKeywordBuilder keyword) =>
             new BuffRestrictionsBuilder(_restrictedToKeywords, _excludedKeywords.Append(keyword));
 
-        public BuffRestrictions Build() =>
+        public BuffRestrictions Build(BuildParameters parameters) =>
             new BuffRestrictions(
-                _restrictedToKeywords.Select(b => b.Build()).ToList(),
-                _excludedKeywords.Select(b => b.Build()).ToList());
+                _restrictedToKeywords.Select(b => b.Build(parameters)).ToList(),
+                _excludedKeywords.Select(b => b.Build(parameters)).ToList());
     }
 }

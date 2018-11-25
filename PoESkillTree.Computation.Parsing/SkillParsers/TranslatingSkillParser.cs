@@ -77,7 +77,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     if (result.SuccessfullyParsed && result.Modifiers.IsEmpty())
                         result = Parse(StatTranslationLoader.SkillFileName, stat, affectedEntity);
                     result = ApplyCondition(result, _preParseResult.IsActiveSkill);
-                    var multiplier = buffBuilder.BuildAddStatMultiplier(new[] { Entity.Character }, affectedEntity);
+
+                    var buildParameters = new BuildParameters(_preParseResult.GlobalSource, affectedEntity, default);
+                    var multiplier = buffBuilder.BuildAddStatMultiplier(buildParameters, new[] { Entity.Character });
                     result = ApplyMultiplier(result, multiplier);
                     results.Add(result);
                 }

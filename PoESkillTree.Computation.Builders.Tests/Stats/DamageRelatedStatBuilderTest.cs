@@ -122,7 +122,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var expectedCount = SkillResultCount - 1;
             var sut = CreateSut();
-            var ailmentBuilder = Mock.Of<IAilmentBuilder>(b => b.Build() == Ailment.Bleed);
+            var ailmentBuilder = Mock.Of<IAilmentBuilder>(b => b.Build(default) == Ailment.Bleed);
 
             var stats = BuildToStats(sut.With(ailmentBuilder), expectedCount);
 
@@ -132,7 +132,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [Test]
         public void WithAilmentThrowsIfAlreadyRestricted()
         {
-            var ailmentBuilder = Mock.Of<IAilmentBuilder>(b => b.Build() == Ailment.Bleed);
+            var ailmentBuilder = Mock.Of<IAilmentBuilder>(b => b.Build(default) == Ailment.Bleed);
             var sut = CreateSut().With(ailmentBuilder);
 
             Assert.Throws<ParseException>(() => sut.With(ailmentBuilder));
@@ -191,7 +191,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         public void WithAilmentCanBeResolved()
         {
             var ailment = Ailment.Bleed;
-            var resolvedAilmentBuilder = Mock.Of<IAilmentBuilder>(b => b.Build() == ailment);
+            var resolvedAilmentBuilder = Mock.Of<IAilmentBuilder>(b => b.Build(default) == ailment);
             var ailmentBuilder = Mock.Of<IAilmentBuilder>(b => b.Resolve(null) == resolvedAilmentBuilder);
             var sut = CreateSut();
 

@@ -335,8 +335,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 // pools
                 {
-                    BaseAdd, p => p.Regen,
-                    p => _stat.RegenTargetPoolValue(p.BuildPool()) * p.Regen.Percent.Value.AsPercentage
+                    BaseAdd, p => Stat.Pool.From(p).Regen,
+                    p => _stat.RegenTargetPoolValue(p) * Stat.Pool.From(p).Regen.Percent.Value.AsPercentage
                 },
                 { TotalOverride, _stat.EffectiveRegen, p => p.Regen.Value * p.RecoveryRate.Value },
                 { TotalOverride, _stat.EffectiveRecharge, p => p.Recharge.Value * p.RecoveryRate.Value },
@@ -348,7 +348,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 {
                     TotalOverride, _stat.AbsoluteLeechRateLimit,
-                    p => _stat.LeechTargetPoolValue(p.BuildPool()) * p.Leech.RateLimit.Value.AsPercentage
+                    p => _stat.LeechTargetPoolValue(p) * Stat.Pool.From(p).Leech.RateLimit.Value.AsPercentage
                 },
                 {
                     TotalOverride, _stat.TimeToReachLeechRateLimit,

@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
         public void HitWithMultipleOnThrows()
         {
             var damageTypes = new[] { DamageType.Chaos, DamageType.Fire };
-            var damageTypeBuilder = Mock.Of<IDamageTypeBuilder>(b => b.BuildDamageTypes() == damageTypes);
+            var damageTypeBuilder = Mock.Of<IDamageTypeBuilder>(b => b.BuildDamageTypes(default) == damageTypes);
             var sut = CreateSut();
 
             var result = sut.HitWith(damageTypeBuilder).On.Build();

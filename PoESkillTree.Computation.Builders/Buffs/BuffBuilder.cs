@@ -82,11 +82,11 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
         private IValueBuilder CreateAddStatMultiplier(IEntityBuilder source, Entity target)
             => new ValueBuilderImpl(
-                ps => BuildAddStatMultiplier(Build(), source.Build(ps.ModifierSourceEntity), target),
+                ps => BuildAddStatMultiplier(Build(ps), source.Build(ps.ModifierSourceEntity), target),
                 c => ((BuffBuilder) Resolve(c)).CreateAddStatMultiplier(source, target));
 
-        public IValue BuildAddStatMultiplier(IReadOnlyCollection<Entity> possibleSources, Entity target)
-            => BuildAddStatMultiplier(Build(), possibleSources, target);
+        public IValue BuildAddStatMultiplier(BuildParameters parameters, IReadOnlyCollection<Entity> possibleSources)
+            => BuildAddStatMultiplier(Build(parameters), possibleSources, parameters.ModifierSourceEntity);
 
         private IValue BuildAddStatMultiplier(
             string identity, IReadOnlyCollection<Entity> possibleSources, Entity target)

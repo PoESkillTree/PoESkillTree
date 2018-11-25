@@ -3,6 +3,7 @@ using System.Linq;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -34,9 +35,9 @@ namespace PoESkillTree.Computation.Builders.Actions
             return new ActionBuilder(_statFactory, stringBuilder, _entity);
         }
 
-        private static string BuildHitWithIdentity(IKeywordBuilder builder)
+        private static string BuildHitWithIdentity(BuildParameters parameters, IKeywordBuilder builder)
         {
-            var damageTypes = ((IDamageTypeBuilder) builder).BuildDamageTypes();
+            var damageTypes = ((IDamageTypeBuilder) builder).BuildDamageTypes(parameters);
             if (damageTypes.Count != 1)
                 throw new ParseException(
                     $"IDamageTypeBuilders passed to {nameof(HitWith)} must build to exactly one damage type." +
@@ -62,8 +63,8 @@ namespace PoESkillTree.Computation.Builders.Actions
             return new ActionBuilder(_statFactory, stringBuilder, _entity);
         }
 
-        private static string BuildSpendManaIdentity(IValueBuilder builder) =>
-            $"Spend{builder.Build(default).Calculate(new ThrowingContext())}Mana";
+        private static string BuildSpendManaIdentity(BuildParameters parameters, IValueBuilder builder) =>
+            $"Spend{builder.Build(parameters).Calculate(new ThrowingContext())}Mana";
 
         public IActionBuilder Unique(string description) => Create(description);
 

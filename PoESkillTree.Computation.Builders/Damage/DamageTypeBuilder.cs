@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using EnumsNET;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
@@ -41,9 +42,9 @@ namespace PoESkillTree.Computation.Builders.Damage
         public IKeywordBuilder Resolve(ResolveContext context) =>
             With(_coreDamageType.Resolve(context));
 
-        public Keyword Build()
+        public Keyword Build(BuildParameters parameters)
         {
-            var types = _coreDamageType.Build().ToList();
+            var types = _coreDamageType.Build(parameters).ToList();
             if (types.IsEmpty())
                 throw new ParseException("Can't built zero damage types");
             if (types.Count > 1)
@@ -53,7 +54,8 @@ namespace PoESkillTree.Computation.Builders.Damage
             throw new ParseException($"{_coreDamageType} can't be used as a keyword");
         }
 
-        public IReadOnlyList<DamageType> BuildDamageTypes() => _coreDamageType.Build().ToList();
+        public IReadOnlyList<DamageType> BuildDamageTypes(BuildParameters parameters)
+            => _coreDamageType.Build(parameters).ToList();
 
         public IDamageTypeBuilder And(IDamageTypeBuilder type) =>
             With(CoreBuilder.BinaryOperation(_coreDamageType, new ProxyDamageTypeBuilder(type), Enumerable.Union));
@@ -74,7 +76,7 @@ namespace PoESkillTree.Computation.Builders.Damage
         {
             var damage = CoreStat(_statFactory.Damage);
             var takenFrom = new ParametrisedCoreStatBuilder<IStatBuilder>(damage, pool,
-                (p, s) => _statFactory.CopyWithSuffix(s, $"TakenFrom({((IPoolStatBuilder) p).BuildPool()})",
+                (ps, p, s) => _statFactory.CopyWithSuffix(s, $"TakenFrom({((IPoolStatBuilder) p).BuildPool(ps)})",
                     typeof(int)));
             return new DamageTakenConversionBuilder(_statFactory, takenFrom);
         }
@@ -131,7 +133,7 @@ namespace PoESkillTree.Computation.Builders.Damage
             public IStatBuilder Before(IPoolStatBuilder pool)
             {
                 var coreStat = new ParametrisedCoreStatBuilder<IStatBuilder>(_coreStat, pool,
-                    (p, s) => _statFactory.CopyWithSuffix(s, $"Before({((IPoolStatBuilder) p).BuildPool()})",
+                    (ps, p, s) => _statFactory.CopyWithSuffix(s, $"Before({((IPoolStatBuilder) p).BuildPool(ps)})",
                         typeof(int)));
                 return new StatBuilder(_statFactory, coreStat);
             }

@@ -1,6 +1,7 @@
 ﻿using System;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -50,7 +51,7 @@ namespace PoESkillTree.Computation.Builders.Effects
             new CoreStatBuilderFromCoreBuilder<string>(Identity,
                 (e, id) => StatFactory.FromIdentity($"{id}.{identitySuffx}", e, dataType));
 
-        public string Build() => Identity.Build();
+        public string Build(BuildParameters parameters) => Identity.Build(parameters);
     }
 
     internal class KnockbackEffectBuilder : EffectBuilder, IKnockbackEffectBuilder

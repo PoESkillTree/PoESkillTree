@@ -79,6 +79,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IConditionBuilder IsLow { get; }
 
-        Pool BuildPool();
+        Pool BuildPool(BuildParameters parameters);
     }
 }

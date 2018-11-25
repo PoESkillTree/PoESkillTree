@@ -90,7 +90,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         private IConditionBuilder KeywordCondition(IDamageSpecification spec, IKeywordBuilder keyword)
             => ValueConditionBuilder.Create(
-                (ps, k) => BuildKeywordStat(spec, ps.ModifierSourceEntity, k.Build()), keyword);
+                (ps, k) => BuildKeywordStat(spec, ps.ModifierSourceEntity, k.Build(ps)), keyword);
 
         protected virtual IStat BuildKeywordStat(IDamageSpecification spec, Entity entity, Keyword keyword)
             => StatFactory.MainSkillPartHasKeyword(entity, keyword);
