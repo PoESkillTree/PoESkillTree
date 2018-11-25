@@ -272,6 +272,11 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value, Buff.CurseLimit.For(Enemy)
                 },
                 { "unaffected by curses", PercentLess, 100, Buffs(targets: Self).With(Keyword.Curse).Effect },
+                { "immune to curses", TotalOverride, 0, Buffs(targets: Self).With(Keyword.Curse).On },
+                {
+                    "monsters are hexproof",
+                    TotalOverride, 0, Buffs(Self, Enemy).With(Keyword.Curse).On, Flag.IgnoreHexproof.IsSet.Not
+                },
                 { "grants? fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
                 { "gain elemental conflux", TotalOverride, 1, Buff.Conflux.Elemental.On(Self) },
                 { "({BuffMatchers}) lasts # seconds", BaseSet, Value, Reference.AsBuff.Duration },

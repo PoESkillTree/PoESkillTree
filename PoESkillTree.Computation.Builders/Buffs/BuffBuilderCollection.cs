@@ -85,6 +85,11 @@ namespace PoESkillTree.Computation.Builders.Buffs
             return new ConditionalValue(c => count.Calculate(c) > 0, $"{count} > 0");
         }
 
+        public IStatBuilder On =>
+            new StatBuilder(_statFactory,
+                    new BuffCoreStatBuilder(_buffs, b => b.On(_target), _restrictionsBuilder))
+                .For(_source);
+
         public IStatBuilder Effect =>
             new StatBuilder(_statFactory,
                     new BuffCoreStatBuilder(_buffs, b => b.EffectOn(_target), _restrictionsBuilder))
