@@ -91,6 +91,7 @@
     <Compile Include="Skills\SkillDefinition.cs" />
     <Compile Include="Skills\SkillDefinitions.cs" />
     <Compile Include="Skills\SkillJsonDeserializer.cs" />
+    <Compile Include="Skills\SupportabilityTester.cs" />
     <Compile Include="StatTranslation\CompositeStatTranslator.cs" />
     <Compile Include="StatTranslation\Format.cs" />
     <Compile Include="StatTranslation\IndexHandler.cs" />

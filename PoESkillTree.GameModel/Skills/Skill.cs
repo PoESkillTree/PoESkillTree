@@ -15,7 +15,12 @@ namespace PoESkillTree.GameModel.Skills
         public ItemSlot ItemSlot { get; }
         public int SocketIndex { get; }
 
-        // Null: item inherent skill
+        /// <summary>
+        /// The skill's gem/link group. Null for item-inherent skills.
+        /// </summary>
         public int? GemGroup { get; }
+
+        public override string ToString()
+            => $"{Id}(level: {Level}, quality: {Quality}, {ItemSlot}.{SocketIndex}, group: {GemGroup})";
     }
 }
