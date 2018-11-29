@@ -11,14 +11,16 @@ using PoESkillTree.Computation.Data;
 using PoESkillTree.Computation.Data.GivenStats;
 using PoESkillTree.Computation.Data.Steps;
 using PoESkillTree.Computation.Parsing;
+using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.GameModel.StatTranslation;
 
 namespace PoESkillTree.Computation.Console
 {
     /// <summary>
-    /// Composition root for <see cref="Program"/> and integration tests. If <see cref="GivenStats"/> is not
-    /// required, <see cref="AsyncCompositionRoot"/> is faster.
+    /// Composition root for <see cref="Program"/> and integration tests. If not all properties are used,
+    /// <see cref="AsyncCompositionRoot"/> is faster.
     /// </summary>
     public class CompositionRoot
     {
@@ -34,9 +36,7 @@ namespace PoESkillTree.Computation.Console
             return new CompositionRoot(asyncRoot);
         }
 
-        public SkillDefinitions SkillDefinitions => _asyncRoot.SkillDefinitions.Result;
         public IBuilderFactories BuilderFactories => _asyncRoot.BuilderFactories.Result;
-        public IParsingData<ParsingStep> ParsingData => _asyncRoot.ParsingData.Result;
         public ICoreParser CoreParser => _asyncRoot.CoreParser.Result;
         public IMetaStatBuilders MetaStats => _asyncRoot.MetaStats;
         public IEnumerable<IGivenStats> GivenStats => _asyncRoot.GivenStats.Result;
@@ -51,6 +51,9 @@ namespace PoESkillTree.Computation.Console
         private readonly Lazy<Task<ICoreParser>> _coreParser;
         private readonly Lazy<IMetaStatBuilders> _metaStats;
         private readonly Lazy<Task<IEnumerable<IGivenStats>>> _givenStats;
+        private readonly Lazy<Task<StatTranslationLoader>> _statTranslationLoader;
+        private readonly Lazy<Task<IParser<Skill>>> _activeSkillParser;
+        private readonly Lazy<Task<IParser<SupportSkillParserParameter>>> _supportSkillParser;
 
         public AsyncCompositionRoot()
         {
@@ -62,6 +65,9 @@ namespace PoESkillTree.Computation.Console
             _coreParser = new Lazy<Task<ICoreParser>>(CreateCoreParserAsync);
             _metaStats = new Lazy<IMetaStatBuilders>(() => new MetaStatBuilders(_statFactory.Value));
             _givenStats = new Lazy<Task<IEnumerable<IGivenStats>>>(CreateGivenStatsAsync);
+            _statTranslationLoader = new Lazy<Task<StatTranslationLoader>>(StatTranslationLoader.CreateAsync);
+            _activeSkillParser = new Lazy<Task<IParser<Skill>>>(CreateActiveSkillParserAsync);
+            _supportSkillParser = new Lazy<Task<IParser<SupportSkillParserParameter>>>(CreateSupportSkillParserAsync);
         }
 
         private async Task<IBuilderFactories> CreateBuilderFactoriesAsync()
@@ -93,8 +99,45 @@ namespace PoESkillTree.Computation.Console
                 await characterTask.ConfigureAwait(false), await monsterTask.ConfigureAwait(false));
         }
 
+        private async Task<IParser<Skill>> CreateActiveSkillParserAsync()
+        {
+            var (skillDefinitions, builderFactories, metaStats, createStatParser) =
+                await CreateSkillParserParametersAsync().ConfigureAwait(false);
+            return new ActiveSkillParser(skillDefinitions, builderFactories, metaStats, createStatParser);
+        }
+
+        private async Task<IParser<SupportSkillParserParameter>> CreateSupportSkillParserAsync()
+        {
+            var (skillDefinitions, builderFactories, metaStats, createStatParser) =
+                await CreateSkillParserParametersAsync().ConfigureAwait(false);
+            return new SupportSkillParser(skillDefinitions, builderFactories, metaStats, createStatParser);
+        }
+
+        private async Task<(SkillDefinitions, IBuilderFactories, IMetaStatBuilders, UntranslatedStatParserFactory)>
+            CreateSkillParserParametersAsync()
+        {
+            var statTranslationLoaderTask = _statTranslationLoader.Value;
+            var skillDefinitionsTask = _skillDefinitions.Value;
+            var builderFactoriesTask = _builderFactories.Value;
+            var metaStats = _metaStats.Value;
+            var coreParserTask = _coreParser.Value;
+
+            await Task.WhenAll(statTranslationLoaderTask, skillDefinitionsTask, builderFactoriesTask, coreParserTask)
+                .ConfigureAwait(false);
+
+            return (skillDefinitionsTask.Result, builderFactoriesTask.Result, metaStats, CreateStatParser);
+
+            IParser<UntranslatedStatParserParameter> CreateStatParser(string translationFileName)
+            {
+                var composite = new CompositeStatTranslator(
+                    statTranslationLoaderTask.Result[translationFileName],
+                    statTranslationLoaderTask.Result[StatTranslationLoader.CustomFileName]);
+                return new UntranslatedStatParser(composite, coreParserTask.Result);
+            }
+        }
+
         public Task InitializeAsync()
-            => Task.WhenAll(BuilderFactories, ParsingData, CoreParser, GivenStats);
+            => Task.WhenAll(SkillDefinitions, BuilderFactories, ParsingData, CoreParser, GivenStats);
 
         public Task<SkillDefinitions> SkillDefinitions => _skillDefinitions.Value;
         public Task<IBuilderFactories> BuilderFactories => _builderFactories.Value;
@@ -102,5 +145,7 @@ namespace PoESkillTree.Computation.Console
         public Task<ICoreParser> CoreParser => _coreParser.Value;
         public IMetaStatBuilders MetaStats => _metaStats.Value;
         public Task<IEnumerable<IGivenStats>> GivenStats => _givenStats.Value;
+        public Task<IParser<Skill>> ActiveSkillParser => _activeSkillParser.Value;
+        public Task<IParser<SupportSkillParserParameter>> SupportSkillParser => _supportSkillParser.Value;
     }
 }

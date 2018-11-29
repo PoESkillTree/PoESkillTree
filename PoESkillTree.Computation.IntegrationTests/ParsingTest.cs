@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
@@ -21,15 +22,14 @@ namespace PoESkillTree.Computation.IntegrationTests
     [TestFixture]
     public class ParsingTest : CompositionRootTestBase
     {
-        private static ICoreParser _parser;
-        private static IBuilderFactories _f;
+        private ICoreParser _parser;
+        private IBuilderFactories _f;
 
-        [OneTimeSetUp]
-        public static void ClassInit()
+        [SetUp]
+        public async Task SetUpAsync()
         {
-            Program.SetupLogger();
-            _parser = CompositionRoot.CoreParser;
-            _f = CompositionRoot.BuilderFactories;
+            _parser = await CompositionRoot.CoreParser.ConfigureAwait(false);
+            _f = await CompositionRoot.BuilderFactories.ConfigureAwait(false);
         }
 
         [Test, TestCaseSource(nameof(ReadParsableStatLines))]

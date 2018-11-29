@@ -4,46 +4,29 @@ using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
-using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
-using PoESkillTree.GameModel.StatTranslation;
 using PoESkillTree.Utils.Extensions;
 
-namespace PoESkillTree.Computation.IntegrationTests.Parsing
+namespace PoESkillTree.Computation.IntegrationTests
 {
     [TestFixture]
     public class SkillParserTest : CompositionRootTestBase
     {
-        private static SkillDefinitions _skillDefinitions;
-        private static IBuilderFactories _builderFactories;
-        private static ICoreParser _coreParser;
-        private static IMetaStatBuilders _metaStats;
-        private static StatTranslationLoader _statTranslationLoader;
+        private SkillDefinitions _skillDefinitions;
+        private IParser<Skill> _activeSkillParser;
+        private IParser<SupportSkillParserParameter> _supportSkillParser;
 
-        [OneTimeSetUp]
-        public static async Task OneTimeSetUpAsync()
+        [SetUp]
+        public async Task SetUpAsync()
         {
-            _skillDefinitions = CompositionRoot.SkillDefinitions;
-            _builderFactories = CompositionRoot.BuilderFactories;
-            _coreParser = CompositionRoot.CoreParser;
-            _metaStats = CompositionRoot.MetaStats;
-            _statTranslationLoader = new StatTranslationLoader();
-            await _statTranslationLoader.LoadAsync("stat_translations/skill").ConfigureAwait(false);
-            await _statTranslationLoader.LoadAsync("stat_translations/custom").ConfigureAwait(false);
-            await _statTranslationLoader.LoadAsync("stat_translations/support_gem").ConfigureAwait(false);
-        }
-
-        private static IParser<UntranslatedStatParserParameter> CreateStatParser(string translationFileName)
-        {
-            var composite = new CompositeStatTranslator(
-                _statTranslationLoader[translationFileName], _statTranslationLoader["stat_translations/custom"]);
-            return new UntranslatedStatParser(composite, _coreParser);
+            _skillDefinitions = await CompositionRoot.SkillDefinitions.ConfigureAwait(false);
+            _activeSkillParser = await CompositionRoot.ActiveSkillParser.ConfigureAwait(false);
+            _supportSkillParser = await CompositionRoot.SupportSkillParser.ConfigureAwait(false);
         }
 
         [Test]
@@ -172,9 +155,9 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                     ("Range.Attack.MainHand.Skill", Form.BaseAdd, null, global, true),
                     ("Range.Attack.OffHand.Skill", Form.BaseAdd, null, global, true),
                 }.Select(t => (t.stat, t.form, (NodeValue?) t.value, t.source, t.mainSkillOnly)).ToArray();
-            var parser = new ActiveSkillParser(_skillDefinitions, _builderFactories, _metaStats, CreateStatParser);
 
-            var actual = parser.Parse(frenzy);
+            var actual = _activeSkillParser.Parse(frenzy);
+
             AssertCorrectModifiers(valueCalculationContextMock, isMainSkillStat, expectedModifiers, actual);
         }
 
@@ -245,9 +228,9 @@ namespace PoESkillTree.Computation.IntegrationTests.Parsing
                     ("Cold.Damage.Spell.Skill", Form.BaseAdd, addedDamageValue, global, true),
                     ("Cold.Damage.Secondary.Skill", Form.BaseAdd, addedDamageValue, global, true))
                 .ToArray();
-            var parser = new SupportSkillParser(_skillDefinitions, _builderFactories, _metaStats, CreateStatParser);
 
-            var actual = parser.Parse(frenzy, support);
+            var actual = _supportSkillParser.Parse(frenzy, support);
+
             AssertCorrectModifiers(valueCalculationContextMock, isMainSkillStat, expectedModifiers, actual);
         }
 

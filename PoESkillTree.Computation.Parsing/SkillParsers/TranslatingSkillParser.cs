@@ -12,17 +12,19 @@ using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
+    public delegate IParser<UntranslatedStatParserParameter> UntranslatedStatParserFactory(
+        string statTranslationFileName);
+
     public class TranslatingSkillParser
     {
-        public delegate IParser<UntranslatedStatParserParameter> StatParserFactory(string statTranslationFileName);
-
         private readonly IBuilderFactories _builderFactories;
-        private readonly StatParserFactory _statParserFactory;
+        private readonly UntranslatedStatParserFactory _statParserFactory;
 
         private SkillPreParseResult _preParseResult;
         private IEnumerable<UntranslatedStat> _parsedStats;
 
-        public TranslatingSkillParser(IBuilderFactories builderFactories, StatParserFactory statParserFactory)
+        public TranslatingSkillParser(
+            IBuilderFactories builderFactories, UntranslatedStatParserFactory statParserFactory)
             => (_builderFactories, _statParserFactory) = (builderFactories, statParserFactory);
 
         public ParseResult Parse(

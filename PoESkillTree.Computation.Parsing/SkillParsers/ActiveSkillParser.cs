@@ -14,7 +14,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
         public ActiveSkillParser(
             SkillDefinitions skillDefinitions, IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
-            TranslatingSkillParser.StatParserFactory statParserFactory)
+            UntranslatedStatParserFactory statParserFactory)
         {
             _preParser = new SkillPreParser(skillDefinitions, metaStatBuilders);
             _partialParsers = new[]

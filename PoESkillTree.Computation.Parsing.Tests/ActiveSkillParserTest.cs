@@ -1243,7 +1243,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             => CreateSut(skillDefinition, _ => statParser);
 
         private static ActiveSkillParser CreateSut(
-            SkillDefinition skillDefinition, TranslatingSkillParser.StatParserFactory statParserFactory)
+            SkillDefinition skillDefinition, UntranslatedStatParserFactory statParserFactory)
         {
             var skillDefinitions = new SkillDefinitions(new[] { skillDefinition });
             var statFactory = new StatFactory();

@@ -1,17 +1,17 @@
-﻿using System.Threading.Tasks;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using PoESkillTree.Computation.Console;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {
     public abstract class CompositionRootTestBase
     {
-        protected static CompositionRoot CompositionRoot { get; private set; }
+        protected static AsyncCompositionRoot CompositionRoot { get; private set; }
 
         [OneTimeSetUp]
-        public static async Task CreateCompositionRootAsync()
+        public static void CreateCompositionRoot()
         {
-            CompositionRoot = await CompositionRoot.CreateAsync().ConfigureAwait(false);
+            Program.SetupLogger();
+            CompositionRoot = new AsyncCompositionRoot();
         }
     }
 }
