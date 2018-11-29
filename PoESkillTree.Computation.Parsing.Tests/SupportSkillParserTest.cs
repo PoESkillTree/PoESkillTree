@@ -119,6 +119,18 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void BlasphemyDoesNotAddToAuraSkillInstancesWhenSupportingAuras()
+        {
+            var (activeDefinition, activeSkill) = CreateClarityDefinition();
+            var (supportDefinition, supportSkill) = CreateBlasphemyDefinition();
+            var sut = CreateSut(activeDefinition, supportDefinition);
+
+            var result = sut.Parse(activeSkill, supportSkill);
+
+            Assert.False(AnyModifierHasIdentity(result.Modifiers, "Skills[Aura].Instances"));
+        }
+
         private static (SkillDefinition, Skill) CreateEnfeebleDefinition()
         {
             var activeSkill = CreateActiveSkillDefinition("Enfeeble", new[] { "curse" }, new[] { Keyword.Curse },
@@ -127,6 +139,16 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (CreateActive("Enfeeble", activeSkill, levels),
                 new Skill("Enfeeble", 1, 0, ItemSlot.Belt, 0, null));
+        }
+
+        private static (SkillDefinition, Skill) CreateClarityDefinition()
+        {
+            var activeSkill = CreateActiveSkillDefinition("Clarity", new[] { "aura" }, new[] { Keyword.Aura },
+                providesBuff: true);
+            var level = CreateLevelDefinition();
+            var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
+            return (CreateActive("Clarity", activeSkill, levels),
+                new Skill("Clarity", 1, 0, ItemSlot.Belt, 0, null));
         }
 
         private static (SkillDefinition, Skill) CreateBlasphemyDefinition()

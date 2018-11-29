@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
@@ -31,17 +32,23 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 Form.BaseSet, (double) parsedSkill.ItemSlot, isActiveSkill);
             AddModifier(_metaStatBuilders.ActiveSkillSocketIndex(parsedSkill.Id),
                 Form.BaseSet, parsedSkill.SocketIndex, isActiveSkill);
-
-            foreach (var keyword in _preParseResult.SkillDefinition.SupportSkill.AddedKeywords)
-            {
-                var keywordBuilder = _builderFactories.KeywordBuilders.From(keyword);
-                AddModifier(_builderFactories.SkillBuilders[keywordBuilder].CombinedInstances,
-                    Form.BaseAdd, 1, isActiveSkill);
-            }
+            AddInstanceModifiers();
 
             var result = new PartialSkillParseResult(_parsedModifiers, new UntranslatedStat[0]);
             _parsedModifiers = null;
             return result;
+        }
+
+        private void AddInstanceModifiers()
+        {
+            var addedKeywords = _preParseResult.SkillDefinition.SupportSkill.AddedKeywords
+                .Where(k => !_preParseResult.MainSkillDefinition.ActiveSkill.Keywords.Contains(k));
+            foreach (var keyword in addedKeywords)
+            {
+                var keywordBuilder = _builderFactories.KeywordBuilders.From(keyword);
+                AddModifier(_builderFactories.SkillBuilders[keywordBuilder].CombinedInstances,
+                    Form.BaseAdd, 1, _preParseResult.IsActiveSkill);
+            }
         }
 
         private void AddModifier(IStatBuilder stat, Form form, double value, IConditionBuilder condition = null)
