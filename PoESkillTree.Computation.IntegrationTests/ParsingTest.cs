@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MoreLinq;
@@ -16,6 +14,7 @@ using PoESkillTree.Computation.Console;
 using PoESkillTree.Computation.Data.GivenStats;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.Utils.Extensions;
+using static PoESkillTree.Computation.IntegrationTests.ParsingTestUtils;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {
@@ -35,58 +34,32 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test, TestCaseSource(nameof(ReadParsableStatLines))]
         public void Parses(string statLine)
         {
-            var (failedLines, remaining, result) = _parser.Parse(statLine);
+            var actual = _parser.Parse(statLine);
 
-            Assert.IsEmpty(remaining);
-            Assert.IsEmpty(failedLines);
-            foreach (var modifier in result)
-            {
-                Assert.NotNull(modifier);
-                Assert.NotNull(modifier.Stats);
-                CollectionAssert.IsNotEmpty(modifier.Stats);
-                Assert.NotNull(modifier.Form);
-                Assert.NotNull(modifier.Value);
-                Assert.NotNull(modifier.Source);
-                var s = modifier.ToString();
-                // Assert it has no unresolved references or values
-                StringAssert.DoesNotContain("References", s);
-                StringAssert.DoesNotContain("Values", s);
-            }
+            AssertIsParsedSuccessfully(actual);
         }
 
         [Test, TestCaseSource(nameof(ReadUnparsableStatLines))]
         public void DoesNotParse(string statLine)
         {
-            var parseResult = _parser.Parse(statLine);
+            var actual = _parser.Parse(statLine);
 
-            Assert.IsFalse(parseResult.SuccessfullyParsed, parseResult.RemainingSubstrings[0]);
+            AssertIsParsedUnsuccessfully(actual);
         }
 
-        private static string[] ReadParsableStatLines()
+        private static IEnumerable<string> ReadParsableStatLines()
         {
             var unparsable = ReadUnparsableStatLines().Select(s => s.ToLowerInvariant()).ToHashSet();
 
             var unparsedGivenStats = new GivenStatsCollection(null, null, null, null).SelectMany(s => s.GivenStatLines);
-            return ReadStatLines("SkillTreeStatLines")
-                .Concat(ReadStatLines("ParsableStatLines"))
+            return ReadDataLines("SkillTreeStatLines")
+                .Concat(ReadDataLines("ParsableStatLines"))
                 .Concat(unparsedGivenStats)
-                .Where(s => !unparsable.Contains(s.ToLowerInvariant()))
-                .ToArray();
+                .Where(s => !unparsable.Contains(s.ToLowerInvariant()));
         }
 
-        private static string[] ReadUnparsableStatLines()
-        {
-            return ReadStatLines("UnparsableStatLines")
-                .Concat(ReadStatLines("NotYetParsableStatLines"))
-                .ToArray();
-        }
-
-        private static IEnumerable<string> ReadStatLines(string fileName)
-        {
-            return File.ReadAllLines(TestContext.CurrentContext.TestDirectory + $"/Data/{fileName}.txt")
-                .Where(s => !s.StartsWith("//", StringComparison.Ordinal))
-                .Distinct();
-        }
+        private static IEnumerable<string> ReadUnparsableStatLines()
+            => ReadDataLines("UnparsableStatLines").Concat(ReadDataLines("NotYetParsableStatLines"));
 
         [Test]
         public void Dexterity()

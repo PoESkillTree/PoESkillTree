@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
@@ -11,6 +14,7 @@ using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils.Extensions;
+using static PoESkillTree.Computation.IntegrationTests.ParsingTestUtils;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {
@@ -283,5 +287,42 @@ namespace PoESkillTree.Computation.IntegrationTests
                 Assert.AreEqual(expectedValue, actualValue);
             }
         }
+
+        [TestCaseSource(nameof(ReadParseableSkills))]
+        public void SkillIsParsedSuccessfully(string skillId)
+        {
+            var actual = Parse(skillId);
+
+            AssertIsParsedSuccessfully(actual);
+        }
+
+        [TestCaseSource(nameof(ReadUnparseableSkills))]
+        public void SkillIsParsedUnsuccessfully(string skillId)
+        {
+            var actual = Parse(skillId);
+
+            AssertIsParsedUnsuccessfully(actual);
+        }
+
+        private ParseResult Parse(string skillId)
+        {
+            if (_skillDefinitions.GetSkillById(skillId).IsSupport)
+            {
+                var activeSkill = new Skill("Frenzy", 20, 20, default, 0, 0);
+                var supportSkill = new Skill(skillId, 20, 20, default, 1, 0);
+                return _supportSkillParser.Parse(activeSkill, supportSkill);
+            }
+            else
+            {
+                var skill = new Skill(skillId, 20, 20, default, 0, 0);
+                return _activeSkillParser.Parse(skill);
+            }
+        }
+
+        private static IEnumerable<string> ReadParseableSkills()
+            => ReadDataLines("ParseableSkills");
+
+        private static IEnumerable<string> ReadUnparseableSkills()
+            => ReadDataLines("UnparseableSkills");
     }
 }
