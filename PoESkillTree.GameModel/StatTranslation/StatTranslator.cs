@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using log4net;
 using MoreLinq;
 using PoESkillTree.GameModel.Skills;
@@ -43,7 +44,7 @@ namespace PoESkillTree.GameModel.StatTranslation
             var unknownStats = unknownStatIds.Select(k => idStatDict[k]);
 
             var idValueDict = idStatDict.ToDictionary(p => p.Key, p => p.Value.Value);
-            var translatedStats = translations.Select(t => t.Translate(idValueDict));
+            var translatedStats = translations.Select(t => t.Translate(idValueDict)).Where(s => s != null);
 
             return new StatTranslatorResult(translatedStats.ToList(), unknownStats.ToList());
         }
@@ -51,6 +52,7 @@ namespace PoESkillTree.GameModel.StatTranslation
         /// <summary>
         /// Returns the translated strings for the given stat ids and values.
         /// </summary>
+        [ItemCanBeNull]
         public IEnumerable<string> GetTranslations(IReadOnlyDictionary<string, int> idValueDict)
             => GetTranslations(idValueDict.Keys).Select(t => t.Translate(idValueDict));
 

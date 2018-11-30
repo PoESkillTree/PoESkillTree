@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using PoESkillTree.GameModel.Skills;
 using PoESkillTree.GameModel.StatTranslation;
 
 namespace PoESkillTree.GameModel.Tests.StatTranslation
@@ -89,6 +90,24 @@ namespace PoESkillTree.GameModel.Tests.StatTranslation
             };
             var actual = _translator.GetTranslations(statDict);
             CollectionAssert.AreEqual(expected, actual.ToArray());
+        }
+
+        [Test]
+        public void TranslateFiltersNullTranslations()
+        {
+            var untranslatedStats = new[]
+            {
+                new UntranslatedStat("weapon_physical_damage_%_to_add_as_each_element", 110),
+                new UntranslatedStat("weapon_physical_damage_%_to_add_as_random_element", 0),
+            };
+            string[] expected =
+            {
+                "Gain 110% of Weapon Physical Damage as Extra Damage of each Element",
+            };
+
+            var actual = _translator.Translate(untranslatedStats);
+
+            Assert.AreEqual(expected, actual.TranslatedStats);
         }
     }
 }
