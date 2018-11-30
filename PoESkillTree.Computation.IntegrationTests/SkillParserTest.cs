@@ -293,10 +293,10 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             var actual = Parse(skillId);
 
-            AssertIsParsedSuccessfully(actual);
+            AssertIsParsedSuccessfully(actual, NotParseableStatLines.Value);
         }
 
-        [TestCaseSource(nameof(ReadUnparseableSkills))]
+        [TestCaseSource(nameof(ReadNotParseableSkills))]
         public void SkillIsParsedUnsuccessfully(string skillId)
         {
             var actual = Parse(skillId);
@@ -322,7 +322,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         private static IEnumerable<string> ReadParseableSkills()
             => ReadDataLines("ParseableSkills");
 
-        private static IEnumerable<string> ReadUnparseableSkills()
-            => ReadDataLines("UnparseableSkills");
+        private static IEnumerable<string> ReadNotParseableSkills()
+            => ReadDataLines("NotParseableSkills");
     }
 }

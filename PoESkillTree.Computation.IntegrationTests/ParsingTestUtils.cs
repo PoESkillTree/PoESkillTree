@@ -10,12 +10,18 @@ namespace PoESkillTree.Computation.IntegrationTests
 {
     public static class ParsingTestUtils
     {
-        public static void AssertIsParsedSuccessfully(ParseResult parseResult)
+        public static void AssertIsParsedSuccessfully(
+            ParseResult parseResult, IEnumerable<string> ignoredStatLines = null)
         {
             var (failedLines, remaining, result) = parseResult;
-            
-            Assert.IsEmpty(failedLines, "\"" + remaining.ToDelimitedString("\", \"") + "\"");
-            Assert.IsEmpty(remaining);
+
+            var failedLinesWithRemaining = failedLines.EquiZip(remaining, (line, remain) => (line, remain));
+            if (ignoredStatLines != null)
+            {
+                failedLinesWithRemaining = failedLinesWithRemaining
+                    .Where(t => !ignoredStatLines.Contains(t.line.ToLowerInvariant()));
+            }
+            Assert.IsEmpty(failedLinesWithRemaining);
 
             foreach (var modifier in result)
             {
@@ -36,6 +42,12 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             Assert.IsFalse(parseResult.SuccessfullyParsed, parseResult.RemainingSubstrings[0]);
         }
+
+        public static readonly Lazy<IEnumerable<string>> NotParseableStatLines = new Lazy<IEnumerable<string>>(
+            () => ReadNotParseableStatLines().Select(s => s.ToLowerInvariant()).ToHashSet());
+
+        public static IEnumerable<string> ReadNotParseableStatLines()
+            => ReadDataLines("NotParseableStatLines").Concat(ReadDataLines("NotYetParseableStatLines"));
 
         public static IEnumerable<string> ReadDataLines(string fileName)
             => File.ReadAllLines(TestContext.CurrentContext.TestDirectory + $"/Data/{fileName}.txt")

@@ -119,19 +119,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\NotYetParsableStatLines.txt">
+    <Content Include="Data\NotYetParseableStatLines.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\ParsableStatLines.txt">
+    <Content Include="Data\ParseableStatLines.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Data\ParseableSkills.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\UnparsableStatLines.txt">
+    <Content Include="Data\NotParseableStatLines.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\UnparseableSkills.txt">
+    <Content Include="Data\NotParseableSkills.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

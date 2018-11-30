@@ -31,7 +31,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             _f = await CompositionRoot.BuilderFactories.ConfigureAwait(false);
         }
 
-        [Test, TestCaseSource(nameof(ReadParsableStatLines))]
+        [Test, TestCaseSource(nameof(ReadParseableStatLines))]
         public void Parses(string statLine)
         {
             var actual = _parser.Parse(statLine);
@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             AssertIsParsedSuccessfully(actual);
         }
 
-        [Test, TestCaseSource(nameof(ReadUnparsableStatLines))]
+        [Test, TestCaseSource(nameof(ReadNotParseableStatLines))]
         public void DoesNotParse(string statLine)
         {
             var actual = _parser.Parse(statLine);
@@ -47,19 +47,16 @@ namespace PoESkillTree.Computation.IntegrationTests
             AssertIsParsedUnsuccessfully(actual);
         }
 
-        private static IEnumerable<string> ReadParsableStatLines()
+        private static IEnumerable<string> ReadParseableStatLines()
         {
-            var unparsable = ReadUnparsableStatLines().Select(s => s.ToLowerInvariant()).ToHashSet();
-
             var unparsedGivenStats = new GivenStatsCollection(null, null, null, null).SelectMany(s => s.GivenStatLines);
             return ReadDataLines("SkillTreeStatLines")
-                .Concat(ReadDataLines("ParsableStatLines"))
+                .Concat(ReadDataLines("ParseableStatLines"))
                 .Concat(unparsedGivenStats)
-                .Where(s => !unparsable.Contains(s.ToLowerInvariant()));
+                .Where(s => !NotParseableStatLines.Value.Contains(s.ToLowerInvariant()));
         }
 
-        private static IEnumerable<string> ReadUnparsableStatLines()
-            => ReadDataLines("UnparsableStatLines").Concat(ReadDataLines("NotYetParsableStatLines"));
+        private static IEnumerable<string> ReadNotParseableStatLines() => ParsingTestUtils.ReadNotParseableStatLines();
 
         [Test]
         public void Dexterity()
