@@ -43,10 +43,23 @@ namespace PoESkillTree.GameModel.Skills
         private readonly IEnumerable<Keyword> _removedKeywords;
         private readonly IEnumerable<Keyword> _addedKeywords;
 
+        public SkillPartDefinitionExtension()
+            : this(null, null, null, null, null)
+        {
+        }
+
         public SkillPartDefinitionExtension(
             Func<IEnumerable<UntranslatedStat>, IEnumerable<UntranslatedStat>> statReplacer,
             IEnumerable<Keyword> removedKeywords = null, IEnumerable<Keyword> addedKeywords = null)
-            : this(null, statReplacer, removedKeywords, addedKeywords)
+            : this(null, null, statReplacer, removedKeywords, addedKeywords)
+        {
+        }
+
+        public SkillPartDefinitionExtension(
+            IEnumerable<string> removedStats,
+            Func<IEnumerable<UntranslatedStat>, IEnumerable<UntranslatedStat>> statReplacer = null,
+            IEnumerable<Keyword> removedKeywords = null, IEnumerable<Keyword> addedKeywords = null)
+            : this(removedStats, null, statReplacer, removedKeywords, addedKeywords)
         {
         }
 
@@ -59,7 +72,7 @@ namespace PoESkillTree.GameModel.Skills
         }
 
         public SkillPartDefinitionExtension(
-            IEnumerable<string> removedStats = null, IEnumerable<UntranslatedStat> addedStats = null,
+            IEnumerable<string> removedStats, IEnumerable<UntranslatedStat> addedStats,
             Func<IEnumerable<UntranslatedStat>, IEnumerable<UntranslatedStat>> statReplacer = null,
             IEnumerable<Keyword> removedKeywords = null, IEnumerable<Keyword> addedKeywords = null)
         {

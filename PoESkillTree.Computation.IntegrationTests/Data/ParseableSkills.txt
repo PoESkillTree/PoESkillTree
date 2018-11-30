@@ -33,7 +33,6 @@ Desecrate
 Despair
 Determination
 DetonateDead
-DevouringTotem
 Discharge
 Discipline
 DoubleSlash
@@ -86,7 +85,6 @@ HeraldOfThunder
 IceCrash
 IceNova
 IceShot
-IceSiphonTrap
 IceSpear
 IceTrap
 ImmortalCall
@@ -163,7 +161,6 @@ SupportCastOnStunned
 SupportCastWhileChannelling
 SupportChain
 SupportChanceToBleed
-SupportChanceToFlee
 SupportClusterTrap
 SupportColdPenetration
 SupportColdToFire
@@ -194,8 +191,6 @@ SupportIncreasedBurningDamage
 SupportIncreasedCriticalDamage
 SupportIncreasedCriticalStrikes
 SupportIncreasedDuration
-SupportIronGrip
-SupportIronWill
 SupportItemQuantity
 SupportItemRarity
 SupportKnockback
@@ -221,7 +216,6 @@ SupportParallelProjectiles
 SupportPhysicalProjectileAttackDamage
 SupportPhysicalToLightning
 SupportPierce
-SupportPointBlank
 SupportPoison
 SupportPowerChargeOnCrit
 SupportRangedAttackTotem

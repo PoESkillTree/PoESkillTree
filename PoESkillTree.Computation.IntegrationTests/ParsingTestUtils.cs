@@ -19,7 +19,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             if (ignoredStatLines != null)
             {
                 failedLinesWithRemaining = failedLinesWithRemaining
-                    .Where(t => !ignoredStatLines.Contains(t.line.ToLowerInvariant()));
+                    .Where(t => !ignoredStatLines.Contains(CanonicalizeFailedStatLine(t.line)));
             }
             Assert.IsEmpty(failedLinesWithRemaining);
 
@@ -38,9 +38,12 @@ namespace PoESkillTree.Computation.IntegrationTests
             }
         }
 
+        private static string CanonicalizeFailedStatLine(string statLine)
+            => statLine.ToLowerInvariant().Replace("\r", " ").Replace("\n", " ");
+
         public static void AssertIsParsedUnsuccessfully(ParseResult parseResult)
         {
-            Assert.IsFalse(parseResult.SuccessfullyParsed, parseResult.RemainingSubstrings[0]);
+            Assert.IsFalse(parseResult.SuccessfullyParsed, parseResult.RemainingSubstrings.FirstOrDefault());
         }
 
         public static readonly Lazy<IEnumerable<string>> NotParseableStatLines = new Lazy<IEnumerable<string>>(

@@ -15,6 +15,108 @@ Burning Arrow has a 10% chance to spread Tar if it does not Ignite an Enemy
 #% increased Rarity of Items dropped by Enemies Shattered by Glacial Hammer
 Magma Orb has 10% increased Area of Effect per Chain
 each Spectral Throw Projectile gains 5% increased Damage each time it Hits
+// skills: (either irrelevant or already handled by SkillDefinitionExtensions and/or AdditionalSkillStats)
+damage cannot be reflected
+0.86% reduced movement speed per nearby enemy
+summons a totem which uses this skill
+Enemies have 80% less Movement Speed when the Debuff starts
+Locks enemy in place
+Traps do not Trigger at the end of their Duration
+6% less Damage per Volley
+20% reduced Critical Strike Chance per Volley
+Bladefall has 5 additional Volleys
+Causes 4 Explosions
+Debuff can have up to 20 layers of Damage
+Creates Corpses with Level 80
+Maximum of 10 Corpses allowed
+Deals 150% more Damage while Channelling if Illusion has finished moving
+Illusion moves at 130% of your Movement Speed
+Final wave deals 75% of Damage per stage
+Creates 4 explosions
+Modifiers to Skill Effect Duration also apply to this Skill's Soul Gain Prevention
+Modifiers to Buff Duration also apply to this Skill's Soul Gain Prevention
+25% chance to gain a Frenzy Charge when an Enemy Dies while in this Skill's Area
+Totems Summoned by this Skill cannot Evade
+Deals up to 20% more Damage to closer targets
+Maximum of 3 Geysers at a time
+First Hit deals 50% less Damage
+Creates 5 Corpses
+Creates Corpses up to Level 100
+Maximum of 15 Corpses allowed
+80% more Area Radius against Enemies affected by an Ailment of the chosen Element
+Only Deals Damage of the chosen Element Deals no Damage of other Damage Types
+36 Endurance Charges granted per one hundred nearby enemies
+Regenerate 0.5% of Debuff Damage as Life
+100% increased angle per stage, up to 300%
+Spell Repeats 3 times
+29% more Damage with Hits and Ailments per Repeat
+One impact every 0.1 seconds
+Has 4 Flames
+Modifiers to Cast Speed apply to the rotation speed of the Flames
+Freezes enemies as though dealing 390% more Damage
+40% more Damage when Cast on Frostbolt
+0.15 seconds between appearance of Wall sections
+Wall will be 56 units long
+Deals up to 49% more Damage to closer targets
+Base Burning Damage is 25% of Overkill Damage
+Hits up to 3 additional enemies near the target
+Stronger Pulses deal 50% more Damage with Hits and Ailments
+Releases a Stronger Pulse every 4 Pulses
+Strikes every 0.35 seconds
+Strikes 3 Areas
+Projectiles are fired in a Nova (Hidden)
+Shields break after 1508 total Damage is prevented
+80% reduced Visibility to Enemies
+50% increased Stun Threshold reduction on enemies at Maximum charge distance
+200% more Damage with Hits at Maximum Charge Distance
+Beams Split to hit 4 extra targets
+Strikes every 1 second
+Releases 5 waves
+Releases waves every 0.9 seconds
+Monster gives 100% increased Flask Charges on death (Hidden)
+Each Spore Pod applies 10% less Movement Speed to nearby Enemies, to a maximum of 60%
+Trigger this Skill when you Block
+You cannot use this Attack directly
+Causes 7 smaller explosions
+6 maximum Beam Targets
+Fires 3 secondary Projectiles
+Has 10 blades
+Monsters from the Breach do not grant Experience or drop Items
+Gain a Frenzy Charge when an Enemy Dies while in this Skill's Area Every second, gain a Frenzy Charge if an Enemy is in this Skill's Area
+Energy Shield Recharge not delayed by Damage
+Doubles have 57% increased Movement Speed
+Ongoing effect ends after 7 Aftershocks
+Fires Projectiles at all nearby Enemies
+Causes smaller novas up to 5 times on enemies hit
+20% reduced Area of Effect each repeat
+Shocked Ground causes 5% increased Damage taken
+Shocked Ground causes 15% increased Damage taken
+Projectiles leave Shocking Ground
+Fires 3 additional sequences of arrows
+Strikes an Enemy every 0.25 seconds
+10% chance to Trigger this Skill when Hit
+30% chance to Trigger this Skill when Hit
+Destroys up to 3 Corpses
+100% of Physical Damage Converted to Fire, Cold or Lightning Damage
+Supported Attacks will Trigger a Supported Spell when you Crit an Enemy
+You cannot Cast Supported Triggerable Spells directly
+Trigger Supported Spells when you take a total of 3272 Damage
+This Gem can only Support Skill Gems requiring Level 70 or lower
+100% chance to Trigger Supported Non-Minion Spells on Death
+Supported Melee Attacks will Trigger a Supported Spell on Kill
+69% chance to Trigger Supported Spells when you are Stunned, or Block a Stunning Hit
+Kill Enemies that have 10% Life or lower when Hit by Supported Skills
+Supported Skills apply supported Curses on Hit
+You cannot Cast Supported Curses
+Elemental Ailments caused by Supported Skills spread to other enemies in a Radius of 15
+Ignites caused by Supported Skills spread to other Enemies within a Radius of 20
+Supported Skills Repeat an additional time
+Supported Skills Repeat 2 additional times
+Supported Skills also fire Projectiles from up to 2 points on each side of you
+Summons a Totem which uses the Supported Skill
+Supported Area of Effect skills also affect areas in front and behind the targeted area
+Supported Attack Skills also target 2 nearby Enemies
+Supported Curse Spells are Cast as Auras
 // passive skills:
 10% Chance for Traps to Trigger an additional time
 Share Endurance, Frenzy and Power Charges with nearby party members
@@ -83,7 +185,6 @@ Recover 0.5% of your maximum Life per Poison affecting Enemies you Kill
 // - Trickster
 20% chance to Recover 10% of Maximum Mana when you use a Skill
 // - Saboteur
-10% reduced Damage taken from Trap or Mine Hits
 100% increased Mine Arming Speed
 20% Chance for Traps to Trigger an additional time
 20% chance when Placing Mines to Place an additional Mine

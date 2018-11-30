@@ -33,9 +33,16 @@ namespace PoESkillTree.GameModel.Skills
             },
             {
                 "AncestorTotemSlam", // Ancestral Warchief
+                new SkillPartDefinitionExtension(
+                    ReplaceStat("slam_ancestor_totem_grant_owner_melee_damage_+%_final", "melee_damage_+%_final")),
                 SelfBuff("slam_ancestor_totem_grant_owner_melee_damage_+%_final")
             },
-            { "VaalAncestralWarchief", SelfBuff("slam_ancestor_totem_grant_owner_melee_damage_+%_final") },
+            {
+                "VaalAncestralWarchief",
+                new SkillPartDefinitionExtension(
+                    ReplaceStat("slam_ancestor_totem_grant_owner_melee_damage_+%_final", "melee_damage_+%_final")),
+                SelfBuff("slam_ancestor_totem_grant_owner_melee_damage_+%_final")
+            },
             {
                 "Anger",
                 SelfBuff("spell_minimum_added_fire_damage", "spell_maximum_added_fire_damage",
@@ -63,7 +70,13 @@ namespace PoESkillTree.GameModel.Skills
                 ("Single Projectile", new SkillPartDefinitionExtension()),
                 ("All Projectiles", new SkillPartDefinitionExtension())
             },
-            { "BearTrap", EnemyBuff("bear_trap_damage_taken_+%_from_traps_and_mines") },
+            {
+                "BearTrap",
+                new SkillPartDefinitionExtension(
+                    ReplaceStat("bear_trap_damage_taken_+%_from_traps_and_mines",
+                        "damage_taken_from_traps_and_mines_+%")),
+                EnemyBuff("bear_trap_damage_taken_+%_from_traps_and_mines")
+            },
             {
                 "BladeVortex",
                 new SkillPartDefinitionExtension(
@@ -87,7 +100,7 @@ namespace PoESkillTree.GameModel.Skills
                     "base_physical_damage_%_of_maximum_life_to_deal_per_minute",
                     "base_physical_damage_%_of_maximum_energy_shield_to_deal_per_minute",
                     "add_frenzy_charge_on_kill_%_chance",
-                    "attack_speed_+%_granted_from_skill")
+                    "attack_speed_+%")
             },
             {
                 "Bodyswap",
@@ -120,7 +133,8 @@ namespace PoESkillTree.GameModel.Skills
                 Buff(("cold_damage_taken_+%", AuraEntities),
                     ("base_avoid_freeze_%", AuraEntities),
                     ("base_avoid_chill_%", AuraEntities),
-                    ("hits_ignore_my_cold_resistance", new[] { Entity.Enemy }))
+                    ("hits_ignore_my_cold_resistance", new[] { Entity.Enemy })),
+                Passive("aura_effect_+%")
             },
             {
                 "ColdResistAura", // Purity of Ice
@@ -195,6 +209,7 @@ namespace PoESkillTree.GameModel.Skills
             {
                 "ExpandingFireCone", // Incinerate
                 ("Channeling", new SkillPartDefinitionExtension(
+                    RemoveStat("expanding_fire_cone_final_wave_always_ignite"),
                     ReplaceStat("expanding_fire_cone_maximum_number_of_stages", "maximum_stages"))),
                 ("Release", new SkillPartDefinitionExtension(
                     AddStat("base_skill_show_average_damage_instead_of_dps", 1),
@@ -225,7 +240,8 @@ namespace PoESkillTree.GameModel.Skills
                     ReplaceStat("base_immune_to_ignite", "base_avoid_ignite_%", 100)),
                 Buff(("fire_damage_taken_+%", AuraEntities),
                     ("base_avoid_ignite_%", AuraEntities),
-                    ("hits_ignore_my_fire_resistance", new[] { Entity.Enemy }))
+                    ("hits_ignore_my_fire_resistance", new[] { Entity.Enemy })),
+                Passive("aura_effect_+%")
             },
             {
                 "FireResistAura", // Purity of Fire
@@ -264,13 +280,12 @@ namespace PoESkillTree.GameModel.Skills
             { "VaalGrace", Aura("base_chance_to_dodge_%", "base_chance_to_dodge_spells_%") },
             {
                 "Haste",
-                Aura("attack_speed_+%_granted_from_skill", "cast_speed_+%_granted_from_skill",
+                Aura("attack_speed_+%", "cast_speed_+%_granted_from_skill",
                     "base_movement_velocity_+%")
             },
             {
                 "VaalHaste",
-                Aura("attack_speed_+%_granted_from_skill", "cast_speed_+%_granted_from_skill",
-                    "base_movement_velocity_+%")
+                Aura("attack_speed_+%", "cast_speed_+%_granted_from_skill", "base_movement_velocity_+%")
             },
             { "Hatred", Aura("physical_damage_%_to_add_as_cold") },
             {
@@ -304,10 +319,13 @@ namespace PoESkillTree.GameModel.Skills
             },
             {
                 "IceCrash",
-                ("First Hit", new SkillPartDefinitionExtension()),
+                ("First Hit", new SkillPartDefinitionExtension(
+                    RemoveStats("ice_crash_second_hit_damage_+%_final", "ice_crash_third_hit_damage_+%_final"))),
                 ("Second Hit", new SkillPartDefinitionExtension(
+                    RemoveStat("ice_crash_third_hit_damage_+%_final"),
                     ReplaceStat("ice_crash_second_hit_damage_+%_final", "damage_+%_final"))),
                 ("Third Hit", new SkillPartDefinitionExtension(
+                    RemoveStat("ice_crash_second_hit_damage_+%_final"),
                     ReplaceStat("ice_crash_third_hit_damage_+%_final", "damage_+%_final")))
             },
             {
@@ -319,6 +337,7 @@ namespace PoESkillTree.GameModel.Skills
             {
                 "IceSpear",
                 ("First Form", new SkillPartDefinitionExtension(
+                    RemoveStat("ice_spear_second_form_critical_strike_chance_+%"),
                     AddStat("always_pierce", 1))),
                 ("Second Form", new SkillPartDefinitionExtension(
                     ReplaceStat("ice_spear_second_form_critical_strike_chance_+%", "critical_strike_chance_+%")))
@@ -342,7 +361,8 @@ namespace PoESkillTree.GameModel.Skills
                     ReplaceStat("base_immune_to_shock", "base_avoid_shock_%", 100)),
                 Buff(("lightning_damage_taken_+%", AuraEntities),
                     ("base_avoid_shock_%", AuraEntities),
-                    ("hits_ignore_my_lightning_resistance", new[] { Entity.Enemy }))
+                    ("hits_ignore_my_lightning_resistance", new[] { Entity.Enemy })),
+                Passive("aura_effect_+%")
             },
             {
                 "LightningResistAura", // Purity of Lightning
@@ -413,6 +433,7 @@ namespace PoESkillTree.GameModel.Skills
                 new SkillPartDefinitionExtension(
                     ReplaceStat("virulent_arrow_maximum_number_of_stacks", "maximum_stages")),
                 ("Primary Projectile", new SkillPartDefinitionExtension(
+                    RemoveStat("virulent_arrow_pod_projectile_damage_+%_final"),
                     AddStat("always_pierce", 1))),
                 ("Thorn Arrows", new SkillPartDefinitionExtension(
                     ReplaceStat("virulent_arrow_pod_projectile_damage_+%_final", "damage_+%_final")))
@@ -421,7 +442,8 @@ namespace PoESkillTree.GameModel.Skills
                 "ShockNova",
                 ("Ring", new SkillPartDefinitionExtension(
                     ReplaceStat("newshocknova_first_ring_damage_+%_final", "damage_+%_final"))),
-                ("Nova", new SkillPartDefinitionExtension())
+                ("Nova", new SkillPartDefinitionExtension(
+                    RemoveStat("newshocknova_first_ring_damage_+%_final")))
             },
             {
                 "ShrapnelShot",
@@ -446,7 +468,8 @@ namespace PoESkillTree.GameModel.Skills
                 "StaticStrike",
                 new SkillPartDefinitionExtension(
                     AddStat("maximum_stages", 3)),
-                ("Melee Attack", new SkillPartDefinitionExtension()),
+                ("Melee Attack", new SkillPartDefinitionExtension(
+                    RemoveStat("static_strike_base_zap_frequency_ms"))),
                 ("Beams", new SkillPartDefinitionExtension(
                     ReplaceStat("static_strike_base_zap_frequency_ms", "hit_rate_ms")))
             },
@@ -493,7 +516,8 @@ namespace PoESkillTree.GameModel.Skills
             },
             {
                 "Sunder",
-                ("Initial Hit", new SkillPartDefinitionExtension()),
+                ("Initial Hit", new SkillPartDefinitionExtension(
+                    RemoveStat("shockwave_slam_explosion_damage_+%_final"))),
                 ("Shockwave", new SkillPartDefinitionExtension(
                     ReplaceStat("shockwave_slam_explosion_damage_+%_final", "damage_+%_final")))
             },
@@ -511,6 +535,9 @@ namespace PoESkillTree.GameModel.Skills
             { "ThrownWeapon", new SkillPartDefinitionExtension(AddStat("always_pierce", 1)) }, // Spectral Throw
             {
                 "TotemMelee", // Ancestral Protector
+                new SkillPartDefinitionExtension(
+                    ReplaceStat("melee_ancestor_totem_grant_owner_attack_speed_+%_final",
+                        "active_skill_attack_speed_+%_final")),
                 SelfBuff("melee_ancestor_totem_grant_owner_attack_speed_+%_final")
             },
             { "Vitality", Aura("life_regeneration_rate_per_minute_%") },
@@ -658,7 +685,8 @@ namespace PoESkillTree.GameModel.Skills
         private static (string name, SkillPartDefinitionExtension extension)[] EarthquakeParts
             => new[]
             {
-                ("Initial Hit", new SkillPartDefinitionExtension()),
+                ("Initial Hit", new SkillPartDefinitionExtension(
+                    RemoveStat("quake_slam_fully_charged_explosion_damage_+%_final"))),
                 ("Aftershock", new SkillPartDefinitionExtension(
                     AddStat("base_skill_show_average_damage_instead_of_dps", 1),
                     ReplaceStat("quake_slam_fully_charged_explosion_damage_+%_final", "damage_+%_final")))
@@ -666,6 +694,9 @@ namespace PoESkillTree.GameModel.Skills
 
         private static IEnumerable<string> RemoveStat(string statId)
             => new[] { statId };
+
+        private static IEnumerable<string> RemoveStats(params string[] statIds)
+            => statIds;
 
         private static IEnumerable<UntranslatedStat> AddStat(string statId, int value)
             => AddStats((statId, value));
