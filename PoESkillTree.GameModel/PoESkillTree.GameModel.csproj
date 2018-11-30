@@ -122,6 +122,7 @@
     <EmbeddedResource Include="Data\RePoE\stat_translations\offering_skill.min.json" />
     <EmbeddedResource Include="Data\RePoE\stat_translations\support_gem.min.json" />
     <EmbeddedResource Include="Data\RePoE\stat_translations\custom.min.json" />
+    <EmbeddedResource Include="Data\RePoE\stat_translations\variable_duration_skill.min.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -24,6 +24,7 @@ namespace PoESkillTree.GameModel.StatTranslation
             "stat_translations/minion_skill",
             "stat_translations/minion_spell_skill",
             "stat_translations/offering_skill",
+            "stat_translations/variable_duration_skill",
         };
 
         private readonly IDictionary<string, Task<StatTranslator>> _loadTasks =
