@@ -1,1 +1,42 @@
-﻿
+﻿// These skills have stat lines that are not parsed successfully (yet)
+// - Require new stats or are otherwise not trivial to support
+ArcticArmour
+AssassinsMark
+BloodRage
+CorpseWarp
+DarkPact
+FireBeam
+RighteousFire
+SupportChanceToIgnite
+SupportChaosAttacks
+SupportDecay
+SupportGemMirageArcher
+SupportMaim
+SupportRuthless
+SupportSummonGhostOnKill
+TemporalChains
+ThrownShield
+VaalRighteousFire
+Wither
+// - Gem affecting supports
+SupportAdditionalLevel
+SupportAdditionalQuality
+SupportAdditionalXP
+// - Item-inherent skills (not listed)
+// - Minion Skills
+AnimateArmour
+AnimateWeapon
+BoneOffering
+DominatingBlow
+FleshOffering
+HeraldOfAgony
+HeraldOfPurity
+MirrorArrow
+RaiseSpectre
+RaiseZombie
+SpiritOffering
+SummonRagingSpirit
+SummonRelic
+SummonSkeletons
+VaalSummonSkeletons
+// - Spectre/Monster Skills (not listed)

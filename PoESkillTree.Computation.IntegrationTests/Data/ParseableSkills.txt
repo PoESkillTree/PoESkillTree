@@ -1,12 +1,8 @@
 ﻿AbyssalCry
 AncestorTotemSlam
 Anger
-AnimateArmour
-AnimateWeapon
 Arc
-ArcticArmour
 ArcticBreath
-AssassinsMark
 BallLightning
 Barrage
 BearTrap
@@ -15,11 +11,8 @@ Bladefall
 BlastRain
 Blight
 BlinkArrow
-BloodRage
 BoneLance
-BoneOffering
 BurningArrow
-CaptureMonster
 ChargedAttack
 ChargedDash
 Clarity
@@ -34,9 +27,7 @@ Contagion
 ConversionTrap
 Convocation
 CorpseEruption
-CorpseWarp
 Cyclone
-DarkPact
 DecoyTotem
 Desecrate
 Despair
@@ -45,7 +36,6 @@ DetonateDead
 DevouringTotem
 Discharge
 Discipline
-DominatingBlow
 DoubleSlash
 DoubleStrike
 DualStrike
@@ -60,7 +50,6 @@ EssenceDrain
 EtherealKnives
 ExpandingFireCone
 ExplosiveArrow
-FireBeam
 FireImpurity
 FireNovaMine
 FireResistAura
@@ -73,7 +62,6 @@ FlameWhip
 Flameblast
 FlamethrowerTrap
 Flammability
-FleshOffering
 FlickerStrike
 FreezeMine
 FreezingPulse
@@ -92,10 +80,8 @@ GroundSlam
 Haste
 Hatred
 HeavyStrike
-HeraldOfAgony
 HeraldOfAsh
 HeraldOfIce
-HeraldOfPurity
 HeraldOfThunder
 IceCrash
 IceNova
@@ -115,7 +101,6 @@ LightningTowerTrap
 LightningTrap
 LightningWarp
 MagmaOrb
-MirrorArrow
 MoltenShell
 MoltenStrike
 NewPhaseRun
@@ -132,13 +117,10 @@ Punishment
 Purity
 RainOfArrows
 RainOfSpores
-RaiseSpectre
-RaiseZombie
 RallyingCry
 Reave
 Reckoning
 RejuvenationTotem
-RighteousFire
 Riposte
 ScourgeArrow
 SearingBond
@@ -150,7 +132,6 @@ SiegeBallista
 Smite
 SmokeMine
 Spark
-SpiritOffering
 SplitArrow
 StaticStrike
 StormBurst
@@ -159,19 +140,13 @@ SummonChaosGolem
 SummonFireGolem
 SummonIceGolem
 SummonLightningGolem
-SummonRagingSpirit
-SummonRelic
 SummonRockGolem
-SummonSkeletons
 Sunder
 SupportAddedChaosDamage
 SupportAddedColdDamage
 SupportAddedFireDamage
 SupportAddedLightningDamage
 SupportAdditionalAccuracy
-SupportAdditionalLevel
-SupportAdditionalQuality
-SupportAdditionalXP
 SupportAilments
 SupportArcaneSurge
 SupportBlasphemy
@@ -189,8 +164,6 @@ SupportCastWhileChannelling
 SupportChain
 SupportChanceToBleed
 SupportChanceToFlee
-SupportChanceToIgnite
-SupportChaosAttacks
 SupportClusterTrap
 SupportColdPenetration
 SupportColdToFire
@@ -201,7 +174,6 @@ SupportCurseOnHit
 SupportDamageAgainstChilled
 SupportDeadlyAilments
 SupportDebilitate
-SupportDecay
 SupportEfficacy
 SupportElementalFocus
 SupportElementalProliferation
@@ -213,7 +185,6 @@ SupportFork
 SupportFortify
 SupportFrenzyChargeOnSlayingFrozenEnemy
 SupportGemFrenzyPowerOnTrapTrigger
-SupportGemMirageArcher
 SupportGenerosity
 SupportGreaterMultipleProjectiles
 SupportIgniteProliferation
@@ -233,7 +204,6 @@ SupportLesserPoison
 SupportLifeGainOnHit
 SupportLifeLeech
 SupportLightningPenetration
-SupportMaim
 SupportManaLeech
 SupportMeleeDamageOnFullLife
 SupportMeleePhysicalDamage
@@ -259,7 +229,6 @@ SupportRapidDecay
 SupportReducedDuration
 SupportReducedMana
 SupportRemoteMine
-SupportRuthless
 SupportSlowerProjectiles
 SupportSpellCascade
 SupportSpellTotem
@@ -267,7 +236,6 @@ SupportSpiritStrike
 SupportStormBarrier
 SupportStun
 SupportSummonElementalResistances
-SupportSummonGhostOnKill
 SupportTrap
 SupportTrapAndMineDamage
 SupportTrapCooldown
@@ -275,8 +243,6 @@ SupportVoidManipulation
 SupportWeaponElementalDamage
 Sweep
 TempestShield
-TemporalChains
-ThrownShield
 ThrownWeapon
 TornadoShot
 TotemMelee
@@ -308,10 +274,8 @@ VaalMoltenShell
 VaalPowerSiphon
 VaalRainOfArrows
 VaalReave
-VaalRighteousFire
 VaalSparkSpiralNova
 VaalStormCall
-VaalSummonSkeletons
 VaalThrownWeapon
 Vengeance
 VigilantStrike
@@ -322,5 +286,4 @@ Vulnerability
 WarlordsMark
 WhirlingBlades
 WildStrike
-Wither
 Wrath

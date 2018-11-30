@@ -306,15 +306,17 @@ namespace PoESkillTree.Computation.IntegrationTests
 
         private ParseResult Parse(string skillId)
         {
-            if (_skillDefinitions.GetSkillById(skillId).IsSupport)
+            var definition = _skillDefinitions.GetSkillById(skillId);
+            var level = definition.Levels.ContainsKey(20) ? 20 : 3;
+            if (definition.IsSupport)
             {
-                var activeSkill = new Skill("Frenzy", 20, 20, default, 0, 0);
-                var supportSkill = new Skill(skillId, 20, 20, default, 1, 0);
+                var activeSkill = new Skill("BloodRage", 20, 20, default, 0, 0);
+                var supportSkill = new Skill(skillId, level, 20, default, 1, 0);
                 return _supportSkillParser.Parse(activeSkill, supportSkill);
             }
             else
             {
-                var skill = new Skill(skillId, 20, 20, default, 0, 0);
+                var skill = new Skill(skillId, level, 20, default, 0, 0);
                 return _activeSkillParser.Parse(skill);
             }
         }
