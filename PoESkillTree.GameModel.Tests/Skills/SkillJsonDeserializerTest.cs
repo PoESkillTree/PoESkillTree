@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using PoESkillTree.GameModel.Items;
@@ -13,8 +12,8 @@ namespace PoESkillTree.GameModel.Tests.Skills
         [Test]
         public void DeserializeReturnsCorrectResultForFrenzy()
         {
-            var gemJson = JObject.Parse(File.ReadAllText(GetDataFilePath("frenzyGem.json")));
-            var gemTooltipJson = JObject.Parse(File.ReadAllText(GetDataFilePath("frenzyGemTooltip.json")));
+            var gemJson = JObject.Parse(TestUtils.ReadDataFile("frenzyGem.json"));
+            var gemTooltipJson = JObject.Parse(TestUtils.ReadDataFile("frenzyGemTooltip.json"));
 
             var definitions = SkillJsonDeserializer.Deserialize(gemJson, gemTooltipJson);
 
@@ -217,12 +216,9 @@ namespace PoESkillTree.GameModel.Tests.Skills
               'SupportAdditionalProjectilesUnique', 'SupportMinionLife', 'ThrownShield', 'BirdAspect', 'FlameTotem',
               'SupportBlasphemy']
              */
-            var gemJson = JObject.Parse(File.ReadAllText(GetDataFilePath("gems.min.json")));
-            var gemTooltipJson = JObject.Parse(File.ReadAllText(GetDataFilePath("gem_tooltips.min.json")));
+            var gemJson = JObject.Parse(TestUtils.ReadDataFile("gems.min.json"));
+            var gemTooltipJson = JObject.Parse(TestUtils.ReadDataFile("gem_tooltips.min.json"));
             return SkillJsonDeserializer.Deserialize(gemJson, gemTooltipJson);
         }
-
-        private static string GetDataFilePath(string filename)
-            => TestContext.CurrentContext.TestDirectory + "/Data/" + filename;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace PoESkillTree.GameModel
+﻿namespace PoESkillTree.GameModel.Items
 {
     public class Requirements
     {

@@ -1,0 +1,36 @@
+﻿{
+	"Metadata/Items/Armours/Shields/ShieldStrInt13": {
+		"drop_level": 68,
+		"implicits": [
+			"MovementVelocityPenaltyLightShieldImplicit",
+			"AllResistancesImplicitShield3"
+		],
+		"inventory_height": 3,
+		"inventory_width": 2,
+		"item_class": "Shield",
+		"name": "Archon Kite Shield",
+		"properties": {
+			"armour": 156,
+			"block": 22,
+			"energy_shield": 30
+		},
+		"release_state": "released",
+		"requirements": {
+			"dexterity": 0,
+			"intelligence": 85,
+			"level": 68,
+			"strength": 85
+		},
+		"tags": [
+			"str_int_armour",
+			"str_int_shield",
+			"shield",
+			"armour",
+			"default"
+		],
+		"visual_identity": {
+			"dds_file": "Art/2DItems/Armours/Shields/ShieldStrInt5.dds",
+			"id": "ShieldStrInt5"
+		}
+	}
+}
