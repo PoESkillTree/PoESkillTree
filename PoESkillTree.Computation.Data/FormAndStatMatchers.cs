@@ -267,7 +267,8 @@ namespace PoESkillTree.Computation.Data
                 },
                 // skills
                 { "base duration is # seconds", BaseSet, Value, Stat.Duration },
-                { "#% reduced duration", PercentReduce, Value, Stat.Duration },
+                { "base secondary duration is # seconds", BaseSet, Value, Stat.SecondaryDuration },
+                { "#% reduced duration", PercentReduce, Value, ApplyOnce(Stat.Duration, Stat.SecondaryDuration) },
                 { "skills cost no mana", TotalOverride, 0, Mana.Cost },
                 // traps, mines, totems
                 { "trap lasts # seconds", BaseSet, Value, Stat.Trap.Duration },

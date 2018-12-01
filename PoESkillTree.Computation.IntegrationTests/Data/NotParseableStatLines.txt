@@ -120,6 +120,7 @@ Supported Curse Spells are Cast as Auras
 Supported Skills throw up to 2 additional Traps
 Supported Skills place 2 additional Mines
 Supported Attack Skills cannot be used with Melee Weapons
+Buff is applied for a Base Duration of 4 seconds
 // passive skills:
 10% Chance for Traps to Trigger an additional time
 Share Endurance, Frenzy and Power Charges with nearby party members

@@ -77,6 +77,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IStatBuilder Duration { get; }
 
+        /// <summary>
+        /// The duration of secondary effects of the main skill.
+        /// </summary>
+        IStatBuilder SecondaryDuration { get; }
+
         IStatBuilder SkillStage { get; }
         IStatBuilder MainSkillPart { get; }
 

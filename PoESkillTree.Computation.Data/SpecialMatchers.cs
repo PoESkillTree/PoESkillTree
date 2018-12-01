@@ -106,11 +106,6 @@ namespace PoESkillTree.Computation.Data
                     Fire.Damage.WithSkills(DamageSource.Secondary)
                 },
                 {
-                    // Punishment
-                    "buff is applied for a base duration of # seconds",
-                    BaseSet, Value, Skills.ModifierSourceSkill.Buff.Duration
-                },
-                {
                     // Static Strike
                     "#% increased beam frequency per buff stack",
                     PercentIncrease, Value * Stat.SkillStage.Value, Stat.HitRate
@@ -119,7 +114,8 @@ namespace PoESkillTree.Computation.Data
                     // Swift Affliction Support
                     "#% reduced duration of supported skills and damaging ailments they inflict",
                     PercentReduce, Value,
-                    ApplyOnce(Stat.Duration, Ailment.Ignite.Duration, Ailment.Bleed.Duration, Ailment.Poison.Duration)
+                    ApplyOnce(Stat.Duration, Stat.SecondaryDuration,
+                        Ailment.Ignite.Duration, Ailment.Bleed.Duration, Ailment.Poison.Duration)
                 },
                 {
                     // Vaal Ground Slam

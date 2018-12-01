@@ -60,6 +60,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder Cooldown => FromIdentity(typeof(double));
         public IStatBuilder CooldownRecoverySpeed => FromIdentity(typeof(double));
         public IStatBuilder Duration => FromIdentity(typeof(double));
+        public IStatBuilder SecondaryDuration => FromIdentity(typeof(double));
         public IStatBuilder SkillStage => FromIdentity(typeof(int),
             ExplicitRegistrationTypes.UserSpecifiedValue(double.MaxValue));
         public IStatBuilder MainSkillPart => FromIdentity(typeof(int));
