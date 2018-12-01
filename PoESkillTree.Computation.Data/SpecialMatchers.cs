@@ -141,6 +141,11 @@ namespace PoESkillTree.Computation.Data
                     "using supported skills is instant",
                     TotalOverride, double.PositiveInfinity, Stat.CastRate
                 },
+                {
+                    // Fork Support
+                    "supported skills fork",
+                    TotalOverride, 1, Projectile.Fork
+                },
                 {   // Minion and Totem Elemental Resistance Support
                     @"totems and minions summoned by supported skills have \+#% ({DamageTypeMatchers}) resistance",
                     (BaseAdd, Value, Reference.AsDamageType.Resistance.For(Entity.Minion)),
