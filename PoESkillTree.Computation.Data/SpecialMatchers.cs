@@ -94,6 +94,11 @@ namespace PoESkillTree.Computation.Data
                     PercentLess, 100 - Value, Damage, OffHand.Has(Tags.Weapon)
                 },
                 {
+                    // Freeze Mine
+                    "enemies lose #% cold resistance while frozen",
+                    BaseSubtract, Value, Cold.Resistance.For(Enemy), Ailment.Freeze.IsOn(Enemy)
+                },
+                {
                     // Infernal Blow
                     "debuff deals #% of damage per charge",
                     BaseSet, Value.AsPercentage * Stat.SkillStage.Value *

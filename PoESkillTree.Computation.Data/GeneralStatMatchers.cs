@@ -50,9 +50,12 @@ namespace PoESkillTree.Computation.Data
                 // offense
                 // - damage: see also DamageStatMatchers
                 { "chance to deal double damage", Damage.ChanceToDouble },
+                // - damage taken
+                { "damage taken", Damage.Taken },
                 { "({DamageTypeMatchers}) damage taken", Reference.AsDamageType.Damage.Taken },
                 { "take ({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage.Taken },
-                { "damage taken", Damage.Taken },
+                { "damage taken from hits", Damage.Taken.WithHits },
+                { "({DamageTypeMatchers}) damage taken from hits", Reference.AsDamageType.Damage.Taken.WithHits },
                 { "damage taken from damage over time", Damage.Taken.With(DamageSource.OverTime) },
                 {
                     "({DamageTypeMatchers}) damage taken over time",
@@ -63,6 +66,7 @@ namespace PoESkillTree.Computation.Data
                     "damage taken from trap or mine hits",
                     Damage.Taken.With(Keyword.Trap).WithHits, Damage.Taken.With(Keyword.Mine).WithHits
                 },
+                // - damage taken as
                 {
                     "({DamageTypeMatchers}) damage from hits taken as fire damage",
                     Reference.AsDamageType.HitDamageTakenAs(DamageType.Fire)
@@ -141,12 +145,17 @@ namespace PoESkillTree.Computation.Data
                 { "chance to block attack damage", Block.AttackChance },
                 { "chance to block spell damage", Block.SpellChance },
                 { "chance to block spell and attack damage", Block.SpellChance, Block.AttackChance },
+                { "enemy block chance", ApplyOnce(Block.SpellChance, Block.AttackChance).For(Enemy) },
                 { "maximum chance to block attack damage", Block.AttackChance.Maximum },
                 // - other
                 { "chance to dodge attacks", Stat.Dodge.AttackChance },
                 { "chance to dodge attack hits", Stat.Dodge.AttackChance },
                 { "chance to dodge spell hits", Stat.Dodge.SpellChance },
                 { "chance to dodge attack and spell hits", Stat.Dodge.AttackChance, Stat.Dodge.SpellChance },
+                {
+                    "enemies have chance to dodge hits",
+                    ApplyOnce(Stat.Dodge.AttackChance, Stat.Dodge.SpellChance).For(Enemy)
+                },
                 { "chance to evade( attacks)?", Evasion.Chance },
                 { "chance to evade projectile attacks", Evasion.ChanceAgainstProjectileAttacks },
                 { "chance to evade melee attacks", Evasion.ChanceAgainstMeleeAttacks },
@@ -325,6 +334,7 @@ namespace PoESkillTree.Computation.Data
                 { "flask recovery (speed|rate)", Flask.RecoverySpeed },
                 // item quantity/quality
                 { "quantity of items found", Stat.ItemQuantity },
+                { "quantity of items dropped by enemies slain", Stat.ItemQuantity },
                 { "rarity of items found", Stat.ItemRarity },
                 { "rarity of items dropped by enemies slain", Stat.ItemRarity },
                 // range and area of effect

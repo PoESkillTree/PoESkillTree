@@ -374,9 +374,12 @@ namespace PoESkillTree.GameModel.Skills
             { "VaalMoltenShell", SelfBuff("base_physical_damage_reduction_rating") },
             {
                 "MoltenStrike",
-                ("Melee Attack", new SkillPartDefinitionExtension()),
+                ("Melee Attack", new SkillPartDefinitionExtension(
+                    RemoveStat("active_skill_damage_over_time_from_projectile_hits_+%_final"))),
                 ("Projectiles", new SkillPartDefinitionExtension(
                     AddStats(("cast_rate_is_melee", 1), ("base_is_projectile", 1), ("is_area_damage", 1)),
+                    ReplaceStat("active_skill_damage_over_time_from_projectile_hits_+%_final",
+                        "damage_over_time_+%_final"),
                     removedKeywords: new[] { Keyword.Melee }))
             },
             {
@@ -669,9 +672,12 @@ namespace PoESkillTree.GameModel.Skills
         private static (string name, SkillPartDefinitionExtension extension)[] SecondaryProjectileMeleeAttackParts
             => new[]
             {
-                ("Melee Attack", new SkillPartDefinitionExtension()),
+                ("Melee Attack", new SkillPartDefinitionExtension(
+                    RemoveStat("active_skill_damage_over_time_from_projectile_hits_+%_final"))),
                 ("Projectiles", new SkillPartDefinitionExtension(
                     AddStats(("cast_rate_is_melee", 1), ("base_is_projectile", 1)),
+                    ReplaceStat("active_skill_damage_over_time_from_projectile_hits_+%_final",
+                        "damage_over_time_+%_final"),
                     removedKeywords: new[] { Keyword.Melee }))
             };
 

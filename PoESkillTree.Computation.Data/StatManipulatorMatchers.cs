@@ -39,8 +39,10 @@ namespace PoESkillTree.Computation.Data
                     "every # seconds, gain (?<inner>.*) for # seconds",
                     s => Buff.Temporary(s), "${inner}"
                 },
-                { "nearby enemies( have| deal)?", s => Buff.Aura(s, Enemy) },
-                { "enemies near your totems( have| deal)?", s => Buff.Aura(s, Enemy).For(Entity.Totem) },
+                { "nearby enemies (have|deal)", s => Buff.Aura(s, Enemy) },
+                { "nearby enemies(?= take)", s => Buff.Aura(s, Enemy) },
+                { "enemies near your totems (have|deal)", s => Buff.Aura(s, Enemy).For(Entity.Totem) },
+                { "enemies near your totems(?= take)", s => Buff.Aura(s, Enemy).For(Entity.Totem) },
                 { "({BuffMatchers}) grants", s => Reference.AsBuff.AddStat(s) },
             };
     }

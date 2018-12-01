@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         }
 
         private static string CanonicalizeFailedStatLine(string statLine)
-            => statLine.ToLowerInvariant().Replace("\r", " ").Replace("\n", " ");
+            => statLine.ToLowerInvariant().Replace("\r", "").Replace("\n", " ");
 
         public static void AssertIsParsedUnsuccessfully(ParseResult parseResult)
         {

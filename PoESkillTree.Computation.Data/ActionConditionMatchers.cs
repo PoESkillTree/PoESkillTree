@@ -40,6 +40,10 @@ namespace PoESkillTree.Computation.Data
                     And(Enemy.IsRareOrUnique, Reference.AsAction.On)
                 },
                 {
+                    "when projectile ({ActionMatchers}) a rare or unique enemy",
+                    And(Enemy.IsRareOrUnique, Condition.WithPart(Keyword.Projectile), Reference.AsAction.On)
+                },
+                {
                     "(when you|on) ({ActionMatchers}) a ({AilmentMatchers}) enemy",
                     And(References[1].AsAilment.IsOn(Enemy), References[0].AsAction.On)
                 },

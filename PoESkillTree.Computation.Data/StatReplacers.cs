@@ -111,6 +111,17 @@ namespace PoESkillTree.Computation.Data
                 @"(your hits can't be evaded) (never deal critical strikes)",
                 "$1", "$2"
             },
+            // Skills
+            {
+                // Arcane Surge Support
+                "(arcane surge grants .*) (arcane surge grants .*) (arcane surge grants .*)",
+                "$1", "$2", "$3"
+            },
+            {
+                // Storm Barrier Support
+                "(.* while channelling supported skills) (.* while channelling supported skills) (.* while channelling supported skills)",
+                "$1", "$2", "$3"
+            },
         }.ToList();
     }
 }

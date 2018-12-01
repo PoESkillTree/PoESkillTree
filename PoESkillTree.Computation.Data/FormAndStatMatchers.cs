@@ -86,6 +86,8 @@ namespace PoESkillTree.Computation.Data
                     BaseSet, ValueFactory.FromMinAndMax(Values[0], Values[1]),
                     Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell)
                 },
+                // - damage taken
+                // - damage taken as
                 // - conversion and gain
                 {
                     "(gain )?#% of ({DamageTypeMatchers}) damage (gained |added )?as (extra )?({DamageTypeMatchers}) damage",

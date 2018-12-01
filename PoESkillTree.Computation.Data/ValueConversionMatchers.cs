@@ -81,6 +81,7 @@ namespace PoESkillTree.Computation.Data
                     "for each poison on the enemy, up to #",
                     CappedMultiplier(Ailment.Poison.InstancesOn(Enemy).Value, Value)
                 },
+                { "per elemental ailment on the enemy", Ailment.Elemental.Count(b => b.IsOn(Enemy)) },
                 // skills
                 { "for each zombie you own", Skills.RaiseZombie.Instances.Value },
                 { "for each summoned golem", Golems.CombinedInstances.Value },
@@ -116,6 +117,10 @@ namespace PoESkillTree.Computation.Data
                 {
                     "for each time you've blocked in the past 10 seconds",
                     Stat.Unique("# of times blocked in the past 10 seconds", typeof(int)).Value
+                },
+                {
+                    "per one hundred nearby enemies",
+                    Stat.Unique("# of nearby enemies", typeof(int)).Value / 100
                 },
             }; // add
 

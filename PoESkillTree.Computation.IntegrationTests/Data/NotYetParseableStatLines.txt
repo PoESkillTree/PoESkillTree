@@ -5,8 +5,12 @@ base secondary duration is 0.8 seconds
 Base secondary duration is 3 seconds
 Base secondary duration is 5 seconds
 Base secondary duration is 12 seconds
+// - requires a Forks stat
+Supported Skills Fork
 // - requires a Triggered stat
 35% less Damage if Triggered
+// - requires the Hinder buff
+Hindered Enemies take 20% increased Chaos Damage
 // - modifies sub skill
 Raised Zombies' Slam Attack has 100% increased Area of Effect
 Raised Zombies' Slam Attack has 100% increased Cooldown Recovery Speed
