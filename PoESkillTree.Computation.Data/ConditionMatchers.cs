@@ -156,9 +156,12 @@ namespace PoESkillTree.Computation.Data
                 { "while not on full energy shield", Not(EnergyShield.IsFull) },
                 { "if energy shield recharge has started recently", EnergyShield.Recharge.StartedRecently },
                 // - charges
-                { "while you have no ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Value <= 0 },
-                { "while you have an? ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Value > 0 },
-                { "while you have at least # ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Value >= Value },
+                { "(while|if) you have no ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Value <= 0 },
+                { "(while|if) you have an? ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Value > 0 },
+                {
+                    "(while|if) you have at least # ({ChargeTypeMatchers})",
+                    Reference.AsChargeType.Amount.Value >= Value
+                },
                 {
                     "while (at maximum|on full) ({ChargeTypeMatchers})",
                     Reference.AsChargeType.Amount.Value >= Reference.AsChargeType.Amount.Maximum.Value
@@ -193,7 +196,7 @@ namespace PoESkillTree.Computation.Data
                     "against frozen, shocked or ignited enemies",
                     Or(Ailment.Freeze.IsOn(Enemy), Ailment.Shock.IsOn(Enemy), Ailment.Ignite.IsOn(Enemy))
                 },
-                { "enemies which are ({AilmentMatchers})", Reference.AsAilment.IsOn(Enemy) },
+                { "which are ({AilmentMatchers})", Reference.AsAilment.IsOn(Enemy) },
                 {
                     "against enemies( that are)? affected by elemental ailments",
                     Ailment.Elemental.Any(a => a.IsOn(Enemy))
@@ -285,10 +288,11 @@ namespace PoESkillTree.Computation.Data
                 { "while you have at least one nearby ally", Condition.Unique("Is any ally nearby?") },
                 { "while channelling supported skills", Condition.Unique("Are you currently channeling?") },
                 // support gem mod clarifications. Irrelevant for parsing.
-                { "supported skills (have|deal)", Condition.True },
+                { "supported (skills|spells|attacks) (have|deal)", Condition.True },
                 { "(from |with )?supported skills'?", Condition.True },
                 { "supported attacks", Condition.True },
                 { "supported attack skills", Condition.True },
+                { "supported attack skills deal", Condition.True },
                 { "of supported curse skills", Condition.True },
             };
     }

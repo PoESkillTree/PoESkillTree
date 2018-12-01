@@ -39,6 +39,7 @@ namespace PoESkillTree.Computation.Data
             {
                 // unspecific
                 { "damage", Damage },
+                { "deals damage", Damage },
                 { "global damage", Damage },
                 // by source
                 { "attack damage", Damage.WithSkills(DamageSource.Attack) },
@@ -50,6 +51,7 @@ namespace PoESkillTree.Computation.Data
                 { "damage of a random element", RandomElement.Damage },
                 // by keyword
                 { "({KeywordMatchers}) damage", Damage.With(Reference.AsKeyword) },
+                { "trap and mine damage", Damage, Or(With(Keyword.Trap), With(Keyword.Mine)) },
                 { "projectiles deal damage", Damage.With(Keyword.Projectile) },
                 // by skill vs. ailment
                 { "damage with hits and ailments", Damage.WithHitsAndAilments },
@@ -78,6 +80,10 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "({DamageTypeMatchers}) spell damage",
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell)
+                },
+                {
+                    "spell ({DamageTypeMatchers}) damage",
                     Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell)
                 },
                 {

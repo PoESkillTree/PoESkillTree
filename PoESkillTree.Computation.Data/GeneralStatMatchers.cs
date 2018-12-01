@@ -60,6 +60,10 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "damage taken from projectiles", Damage.Taken.With(Keyword.Projectile) },
                 {
+                    "damage taken from trap or mine hits",
+                    Damage.Taken.With(Keyword.Trap).WithHits, Damage.Taken.With(Keyword.Mine).WithHits
+                },
+                {
                     "({DamageTypeMatchers}) damage from hits taken as fire damage",
                     Reference.AsDamageType.HitDamageTakenAs(DamageType.Fire)
                 },
@@ -87,6 +91,7 @@ namespace PoESkillTree.Computation.Data
                 { "armour and evasion( rating)?", ApplyOnce(Armour, Evasion) },
                 { "armour and energy shield", ApplyOnce(Armour, EnergyShield) },
                 { "(global )?defences", ApplyOnce(Armour, Evasion, EnergyShield) },
+                { "minion maximum life", Life.For(Entity.Minion) },
                 // - resistances
                 { "({DamageTypeMatchers}) resistance", Reference.AsDamageType.Resistance },
                 { "all elemental resistances", Elemental.Resistance },
@@ -170,6 +175,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "attack and cast speed", Stat.CastRate },
                 { "attack, cast( speed)? and movement speed", Stat.CastRate, Stat.MovementSpeed },
+                { "hit rate", Stat.HitRate },
                 // regen and recharge
                 { "({PoolStatMatchers}) regeneration rate", Reference.AsPoolStat.Regen },
                 { "energy shield recharge rate", EnergyShield.Recharge },
@@ -179,7 +185,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 // gain
                 // charges
-                { "(?<!maximum )({ChargeTypeMatchers})", Reference.AsChargeType.Amount },
+                { "(?<!maximum |have an? )({ChargeTypeMatchers})", Reference.AsChargeType.Amount },
                 { "(?<!while at )maximum ({ChargeTypeMatchers})", Reference.AsChargeType.Amount.Maximum },
                 {
                     "maximum ({ChargeTypeMatchers}) and maximum ({ChargeTypeMatchers})",
@@ -214,6 +220,8 @@ namespace PoESkillTree.Computation.Data
                 { "mana reservation of skills", AllSkills.Reservation },
                 { "mana reservation of ({KeywordMatchers}) skills", Skills[Reference.AsKeyword].Reservation },
                 { "skill effect duration", Stat.Duration },
+                { "skill duration", Stat.Duration },
+                { "buff duration", Stat.Duration },
                 { "warcry duration", Stat.Duration, With(Keyword.Warcry) },
                 { "curse duration", Stat.Duration, With(Keyword.Curse) },
                 // traps, mines, totems
@@ -243,6 +251,7 @@ namespace PoESkillTree.Computation.Data
                 // buffs
                 // - effect
                 { "({BuffMatchers}) effect", Reference.AsBuff.Effect },
+                { "effect of ({BuffMatchers})", Reference.AsBuff.Effect },
                 { "effect of ({BuffMatchers}) on you", Reference.AsBuff.EffectOn(Self) },
                 { "({SkillMatchers}) has buff effect", Reference.AsSkill.Buff.Effect },
                 { "effect of buffs granted by your golems", Buffs(Entity.Minion).With(Keyword.Golem).Effect },
@@ -260,6 +269,7 @@ namespace PoESkillTree.Computation.Data
                     Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).Effect
                 },
                 { "warcry buff effect", Buffs(targets: Self).With(Keyword.Warcry).Effect },
+                { "(?<!area of )effect of aura", Skills.ModifierSourceSkill.Buff.Effect },
                 { "effect of supported curses", Skills.ModifierSourceSkill.Buff.Effect },
                 { "non-curse auras from supported skills have effect", Skills.ModifierSourceSkill.Buff.Effect },
                 { "effect of curse against players", Skills.ModifierSourceSkill.Buff.EffectOn(Entity.Character) },
@@ -275,7 +285,7 @@ namespace PoESkillTree.Computation.Data
                 { "({BuffMatchers}) duration", Reference.AsBuff.Duration },
                 { "blinding duration", Buff.Blind.Duration },
                 // ailments
-                { "chance to ({AilmentMatchers})( the enemy)?", Reference.AsAilment.Chance },
+                { "chance to ({AilmentMatchers})( the enemy| enemies)?", Reference.AsAilment.Chance },
                 {
                     "chance to freeze, shock and ignite",
                     Ailment.Freeze.Chance, Ailment.Shock.Chance, Ailment.Ignite.Chance
@@ -319,6 +329,9 @@ namespace PoESkillTree.Computation.Data
                 { "rarity of items dropped by enemies slain", Stat.ItemRarity },
                 // range and area of effect
                 { "area of effect", Stat.AreaOfEffect },
+                { "aura area of effect", Stat.AreaOfEffect, With(Keyword.Aura) },
+                { "radius", Stat.Radius },
+                { "explosion radius", Stat.Radius },
                 { "melee weapon and unarmed( attack)? range", Stat.Range.With(Keyword.Melee) },
                 { "melee range", Stat.Range.With(Keyword.Melee) },
                 { "melee weapon range", Stat.Range.With(Keyword.Melee), MainHand.HasItem },

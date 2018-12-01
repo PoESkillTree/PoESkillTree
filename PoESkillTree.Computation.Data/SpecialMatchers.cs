@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
 using PoESkillTree.Computation.Common;
@@ -64,6 +65,10 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 1, Stat.DamageHasKeyword(DamageSource.OverTime, Reference.AsKeyword)
                 },
                 {
+                    "phasing",
+                    TotalOverride, 1, Buff.Phasing.On(Self)
+                },
+                {
                     "modifiers to spell damage apply to this skill's damage over time effect",
                     TotalOverride, 1,
                     Damage.With(DamageSource.Spell)
@@ -96,6 +101,11 @@ namespace PoESkillTree.Computation.Data
                     Fire.Damage.WithSkills(DamageSource.Secondary)
                 },
                 {
+                    // Punishment
+                    "buff is applied for a base duration of # seconds",
+                    BaseSet, Value, Skills.ModifierSourceSkill.Buff.Duration
+                },
+                {
                     // Static Strike
                     "#% increased beam frequency per buff stack",
                     PercentIncrease, Value * Stat.SkillStage.Value, Stat.HitRate
@@ -107,9 +117,24 @@ namespace PoESkillTree.Computation.Data
                     ApplyOnce(Stat.Duration, Ailment.Ignite.Duration, Ailment.Bleed.Duration, Ailment.Poison.Duration)
                 },
                 {
+                    // Vaal Ground Slam
+                    "stuns enemies",
+                    TotalOverride, 100, Effect.Stun.Chance
+                },
+                {
                     // Vaal Impurity of Ice/Fire/Lightning
                     "nearby enemies' ({DamageTypeMatchers}) resistance is ignored by hits",
                     TotalOverride, 1, Reference.AsDamageType.IgnoreResistance
+                },
+                {
+                    // Vaal Rain of Arrows
+                    "maim on hit",
+                    TotalOverride, 100, Buff.Maim.Chance.WithHits
+                },
+                {
+                    // Blasphemy Support
+                    "using supported skills is instant",
+                    TotalOverride, double.PositiveInfinity, Stat.CastRate
                 },
                 {   // Minion and Totem Elemental Resistance Support
                     @"totems and minions summoned by supported skills have \+#% ({DamageTypeMatchers}) resistance",

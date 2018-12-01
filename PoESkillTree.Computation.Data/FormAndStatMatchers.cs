@@ -43,6 +43,15 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]), Reference.AsDamageType.Damage.WithHits
                 },
                 {
+                    "# to # ({DamageTypeMatchers}) damage",
+                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]), Reference.AsDamageType.Damage.WithHits
+                },
+                {
+                    @"adds # to # ({DamageTypeMatchers}) damage to attacks",
+                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]),
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Attack)
+                },
+                {
                     @"adds # to # ({DamageTypeMatchers}) damage to unarmed attacks",
                     BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]),
                     Reference.AsDamageType.Damage.WithSkills(DamageSource.Attack).With(Keyword.Melee),
@@ -63,7 +72,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "deal no ({DamageTypeMatchers}) damage", TotalOverride, 0, Reference.AsDamageType.Damage },
                 {
-                    @"explosion deals base ({DamageTypeMatchers}) damage equal to #% of the (corpse|monster)'s maximum life",
+                    @"explosion deals (base )?({DamageTypeMatchers}) damage equal to #% of the (corpse|monster)'s maximum life",
                     BaseSet, Value.AsPercentage * Life.For(Enemy).Value,
                     Reference.AsDamageType.Damage.WithSkills(DamageSource.Secondary)
                 },
@@ -71,6 +80,11 @@ namespace PoESkillTree.Computation.Data
                     @"explosion deals # to # base ({DamageTypeMatchers}) damage",
                     BaseSet, ValueFactory.FromMinAndMax(Values[0], Values[1]),
                     Reference.AsDamageType.Damage.WithSkills(DamageSource.Secondary)
+                },
+                {
+                    "deals # to # base ({DamageTypeMatchers}) damage",
+                    BaseSet, ValueFactory.FromMinAndMax(Values[0], Values[1]),
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell)
                 },
                 // - conversion and gain
                 {
@@ -108,7 +122,7 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value, Reference.AsDamageType.Penetration, "${inner}"
                 },
                 {
-                    "penetrate #% ({DamageTypeMatchers}) resistances?",
+                    "penetrates? #% ({DamageTypeMatchers}) resistances?",
                     BaseAdd, Value, Reference.AsDamageType.Penetration
                 },
                 {
@@ -129,11 +143,13 @@ namespace PoESkillTree.Computation.Data
                 // - speed
                 { "actions are #% slower", PercentLess, Value, Stat.ActionSpeed },
                 // - projectiles
+                { "fires # additional (projectiles|arrows)", BaseAdd, Value, Projectile.Count },
+                { "fires an additional (projectile|arrow)", BaseAdd, 1, Projectile.Count },
                 { "skills fire an additional projectile", BaseAdd, 1, Projectile.Count },
                 { "supported skills fire # additional projectiles", BaseAdd, Value, Projectile.Count },
                 { "pierces # additional targets", BaseAdd, Value, Projectile.PierceCount },
                 { "projectiles pierce an additional target", BaseAdd, 1, Projectile.PierceCount },
-                { "projectiles pierce # (additional )?targets", BaseAdd, Value, Projectile.PierceCount },
+                { "(projectiles|arrows) pierce # (additional )?targets", BaseAdd, Value, Projectile.PierceCount },
                 {
                     "projectiles from supported skills pierce # additional targets", BaseAdd, Value,
                     Projectile.PierceCount
@@ -142,9 +158,15 @@ namespace PoESkillTree.Computation.Data
                     "projectiles pierce all nearby targets",
                     TotalOverride, double.PositiveInfinity, Projectile.PierceCount, Enemy.IsNearby
                 },
-                { @"skills chain \+# times", BaseAdd, Value, Projectile.ChainCount },
+                {
+                    "projectiles pierce all targets",
+                    TotalOverride, double.PositiveInfinity, Projectile.PierceCount
+                },
+                { @"chains \+# times", BaseAdd, Value, Projectile.ChainCount },
+                { @"(supported )?skills chain \+# times", BaseAdd, Value, Projectile.ChainCount },
                 // - other
                 { "your hits can't be evaded", TotalOverride, 100, Stat.ChanceToHit },
+                { "can't be evaded", TotalOverride, 100, Stat.ChanceToHit },
                 // defense
                 // - life, mana, defences
                 { "maximum life becomes #", TotalOverride, Value, Life },
@@ -243,6 +265,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 // skills
                 { "base duration is # seconds", BaseSet, Value, Stat.Duration },
+                { "#% reduced duration", PercentReduce, Value, Stat.Duration },
                 { "skills cost no mana", TotalOverride, 0, Mana.Cost },
                 // traps, mines, totems
                 { "trap lasts # seconds", BaseSet, Value, Stat.Trap.Duration },
@@ -287,13 +310,17 @@ namespace PoESkillTree.Computation.Data
                 // flags
                 // ailments
                 { "causes bleeding", TotalOverride, 100, Ailment.Bleed.Chance },
-                { "cannot cause bleeding", TotalOverride, 0, Ailment.Bleed.Chance },
+                { "bleed is applied", TotalOverride, 100, Ailment.Bleed.Chance },
                 { "always poison", TotalOverride, 100, Ailment.Poison.Chance },
+                { "always ({AilmentMatchers}) enemies", TotalOverride, 100, Reference.AsAilment.Chance },
+                { "cannot cause bleeding", TotalOverride, 0, Ailment.Bleed.Chance },
+                { "cannot ignite", TotalOverride, 0, Ailment.Ignite.Chance },
+                { "cannot apply shock", TotalOverride, 0, Ailment.Shock.Chance },
+                { "cannot inflict elemental ailments", TotalOverride, 0, Ailment.Elemental.Select(s => s.Chance) },
                 {
                     "(you )?can afflict an additional ignite on an enemy",
                     BaseAdd, 1, Ailment.Ignite.InstancesOn(Enemy).Maximum
                 },
-                { "cannot inflict elemental ailments", TotalOverride, 0, Ailment.Elemental.Select(s => s.Chance) },
                 { "(you are )?immune to ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
                 { "cannot be ({AilmentMatchers})", TotalOverride, 100, Reference.AsAilment.Avoidance },
                 {
@@ -315,6 +342,7 @@ namespace PoESkillTree.Computation.Data
                 // range and area of effect
                 // other
                 { "knocks back enemies", TotalOverride, 100, Effect.Knockback.Chance },
+                { "knocks enemies back", TotalOverride, 100, Effect.Knockback.Chance },
             };
     }
 }
