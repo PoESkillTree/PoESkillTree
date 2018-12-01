@@ -64,6 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ItemParsers\ItemParser.cs" />
     <Compile Include="SkillParsers\ActiveSkillGeneralParser.cs" />
     <Compile Include="SkillParsers\ISkillKeywordSelector.cs" />
     <Compile Include="SkillParsers\SkillKeywordParser.cs" />

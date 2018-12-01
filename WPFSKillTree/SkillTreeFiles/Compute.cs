@@ -7,8 +7,8 @@ using POESKillTree.ViewModels;
 using System.Linq;
 using PoESkillTree.GameModel.Items;
 using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
+using Item = POESKillTree.Model.Items.Item;
 
 namespace POESKillTree.SkillTreeFiles
 {

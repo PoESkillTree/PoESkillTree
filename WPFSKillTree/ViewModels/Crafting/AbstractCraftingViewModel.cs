@@ -13,6 +13,7 @@ using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils;
+using Item = POESKillTree.Model.Items.Item;
 
 namespace POESKillTree.ViewModels.Crafting
 {

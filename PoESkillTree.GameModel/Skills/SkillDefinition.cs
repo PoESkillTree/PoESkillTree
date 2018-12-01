@@ -118,10 +118,7 @@ namespace PoESkillTree.GameModel.Skills
             ManaMultiplier = manaMultiplier;
             ManaCostOverride = manaCostOverride;
             Cooldown = cooldown;
-            RequiredLevel = requiredLevel;
-            RequiredDexterity = requiredDexterity;
-            RequiredIntelligence = requiredIntelligence;
-            RequiredStrength = requiredStrength;
+            Requirements = new Requirements(requiredLevel, requiredDexterity, requiredIntelligence, requiredStrength);
             QualityStats = qualityStats;
             Stats = stats;
             AdditionalStatsPerPart = additionalStatsPerPart;
@@ -140,11 +137,8 @@ namespace PoESkillTree.GameModel.Skills
         public double? ManaMultiplier { get; }
         public int? ManaCostOverride { get; }
         public int? Cooldown { get; }
-
-        public int RequiredLevel { get; }
-        public int RequiredDexterity { get; }
-        public int RequiredIntelligence { get; }
-        public int RequiredStrength { get; }
+        
+        public Requirements Requirements { get; }
 
         // Stats that apply when the skill is the main skill
         public IReadOnlyList<UntranslatedStat> QualityStats { get; }

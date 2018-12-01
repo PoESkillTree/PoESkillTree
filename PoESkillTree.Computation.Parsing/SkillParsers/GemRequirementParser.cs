@@ -34,18 +34,18 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 modifiers.AddRange(intermediateModifier.Build(preParseResult.GemSource, Entity.Character));
             }
 
-            AddModifier(requirementStats.Level, Form.BaseSet, level.RequiredLevel);
-            if (level.RequiredDexterity > 0)
+            AddModifier(requirementStats.Level, Form.BaseSet, level.Requirements.Level);
+            if (level.Requirements.Dexterity > 0)
             {
-                AddModifier(requirementStats.Dexterity, Form.BaseSet, level.RequiredDexterity);
+                AddModifier(requirementStats.Dexterity, Form.BaseSet, level.Requirements.Dexterity);
             }
-            if (level.RequiredIntelligence > 0)
+            if (level.Requirements.Intelligence > 0)
             {
-                AddModifier(requirementStats.Intelligence, Form.BaseSet, level.RequiredIntelligence);
+                AddModifier(requirementStats.Intelligence, Form.BaseSet, level.Requirements.Intelligence);
             }
-            if (level.RequiredStrength > 0)
+            if (level.Requirements.Strength > 0)
             {
-                AddModifier(requirementStats.Strength, Form.BaseSet, level.RequiredStrength);
+                AddModifier(requirementStats.Strength, Form.BaseSet, level.Requirements.Strength);
             }
 
             return new PartialSkillParseResult(modifiers, new UntranslatedStat[0]);

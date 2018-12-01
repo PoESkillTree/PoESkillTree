@@ -51,16 +51,16 @@ namespace PoESkillTree.GameModel.Tests.Skills
             Assert.IsNull(level1.ManaMultiplier);
             Assert.IsNull(level1.ManaCostOverride);
             Assert.IsNull(level1.Cooldown);
-            Assert.AreEqual(16, level1.RequiredLevel);
-            Assert.AreEqual(41, level1.RequiredDexterity);
-            Assert.AreEqual(0, level1.RequiredIntelligence);
+            Assert.AreEqual(16, level1.Requirements.Level);
+            Assert.AreEqual(41, level1.Requirements.Dexterity);
+            Assert.AreEqual(0, level1.Requirements.Intelligence);
             Assert.AreEqual(new[] { new UntranslatedStat("attack_speed_+%", 500) }, level1.QualityStats);
             Assert.AreEqual(new UntranslatedStat("physical_damage_+%_per_frenzy_charge", 5), level1.Stats[0]);
             var level20 = definition.Levels[20];
             Assert.AreEqual(1.37, level20.DamageEffectiveness);
             Assert.AreEqual(10, level20.ManaCost);
-            Assert.AreEqual(155, level20.RequiredDexterity);
-            Assert.AreEqual(0, level20.RequiredIntelligence);
+            Assert.AreEqual(155, level20.Requirements.Dexterity);
+            Assert.AreEqual(0, level20.Requirements.Intelligence);
             Assert.AreEqual(new[] { new UntranslatedStat("attack_speed_+%", 500) }, level20.QualityStats);
             Assert.AreEqual(new UntranslatedStat("physical_damage_+%_per_frenzy_charge", 5), level20.Stats[0]);
 
