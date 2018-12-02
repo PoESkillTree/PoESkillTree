@@ -4,6 +4,27 @@ namespace PoESkillTree.GameModel.Items
 {
     public class BaseItemDefinition
     {
+        public BaseItemDefinition(
+            string metadataId, string name, ItemClass itemClass, IEnumerable<string> rawTags, Tags tags,
+            IReadOnlyList<Property> properties, Requirements requirements,
+            IReadOnlyList<CraftableStat> implicitModifiers, int inventoryHeight, int inventoryWidth, int dropLevel,
+            ReleaseState releaseState, string visualIdentity)
+        {
+            MetadataId = metadataId;
+            Name = name;
+            ItemClass = itemClass;
+            RawTags = rawTags;
+            Tags = tags;
+            Properties = properties;
+            Requirements = requirements;
+            ImplicitModifiers = implicitModifiers;
+            InventoryHeight = inventoryHeight;
+            InventoryWidth = inventoryWidth;
+            DropLevel = dropLevel;
+            ReleaseState = releaseState;
+            VisualIdentity = visualIdentity;
+        }
+
         public string MetadataId { get; }
 
         public string Name { get; }
