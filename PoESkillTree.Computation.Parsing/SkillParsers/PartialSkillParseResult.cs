@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.GameModel.Skills;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {

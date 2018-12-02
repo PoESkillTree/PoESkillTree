@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Linq;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using PoESkillTree.GameModel.Items;
 
@@ -8,11 +9,21 @@ namespace PoESkillTree.GameModel.Tests.Items
     public class BaseItemJsonDeserializerTest
     {
         [Test]
-        public void DeserializeReturnsCorrectResultForArchonKiteShield()
+        public void DeserializeReturnsCorrectBases()
         {
             var definitions = DeserializeAll();
 
-            Assert.That(definitions.BaseItems, Has.One.Items);
+            Assert.AreEqual(new[]
+            {
+                "Metadata/Items/Armours/Shields/ShieldStrInt13",
+                "Metadata/Items/Flasks/FlaskUtility6"
+            }, definitions.BaseItems.Select(d => d.MetadataId));
+        }
+
+        [Test]
+        public void DeserializeReturnsCorrectResultForArchonKiteShield()
+        {
+            var definitions = DeserializeAll();
 
             var definition = definitions.GetBaseItemById("Metadata/Items/Armours/Shields/ShieldStrInt13");
             Assert.AreEqual("Metadata/Items/Armours/Shields/ShieldStrInt13", definition.MetadataId);
@@ -25,6 +36,7 @@ namespace PoESkillTree.GameModel.Tests.Items
             Assert.AreEqual(
                 new[] { new Property("armour", 156), new Property("block", 22), new Property("energy_shield", 30) },
                 definition.Properties);
+            Assert.AreEqual(new UntranslatedStat[0], definition.BuffStats);
             Assert.AreEqual(new Requirements(68, 0, 85, 85), definition.Requirements);
             Assert.AreEqual(
                 new[]
@@ -40,10 +52,21 @@ namespace PoESkillTree.GameModel.Tests.Items
             Assert.AreEqual("Art/2DItems/Armours/Shields/ShieldStrInt5.dds", definition.VisualIdentity);
         }
 
+        [Test]
+        public void DeserializeReturnsCorrectBuffStatsForQuicksilverFlask()
+        {
+            var definitions = DeserializeAll();
+
+            var definition = definitions.GetBaseItemById("Metadata/Items/Flasks/FlaskUtility6");
+            Assert.AreEqual(
+                new[] { new UntranslatedStat("base_movement_velocity_+%", 40) },
+                definition.BuffStats);
+        }
+
         private static BaseItemDefinitions DeserializeAll()
         {
             /* Base items in base_items.json: (from game version 3.4.0)
-             * ['Archon Kite Shield', 'Mystery Leaguestone']
+             * Archon Kite Shield, Mystery Leaguestone, Quicksilver Flask
              */
             var itemJson = JObject.Parse(TestUtils.ReadDataFile("base_items.json"));
             var modJson =  JObject.Parse(TestUtils.ReadDataFile("mods.json"));

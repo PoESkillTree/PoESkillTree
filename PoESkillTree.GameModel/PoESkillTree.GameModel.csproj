@@ -105,6 +105,7 @@
     <Compile Include="StatTranslation\StatTranslationLoader.cs" />
     <Compile Include="StatTranslation\StatTranslator.cs" />
     <Compile Include="StatTranslation\Translation.cs" />
+    <Compile Include="UntranslatedStat.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Data\RePoE\crafting_bench_options.min.json" />

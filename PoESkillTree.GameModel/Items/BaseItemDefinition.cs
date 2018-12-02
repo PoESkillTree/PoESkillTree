@@ -6,7 +6,7 @@ namespace PoESkillTree.GameModel.Items
     {
         public BaseItemDefinition(
             string metadataId, string name, ItemClass itemClass, IEnumerable<string> rawTags, Tags tags,
-            IReadOnlyList<Property> properties, Requirements requirements,
+            IReadOnlyList<Property> properties, IReadOnlyList<UntranslatedStat> buffStats, Requirements requirements,
             IReadOnlyList<CraftableStat> implicitModifiers, int inventoryHeight, int inventoryWidth, int dropLevel,
             ReleaseState releaseState, string visualIdentity)
         {
@@ -16,6 +16,7 @@ namespace PoESkillTree.GameModel.Items
             RawTags = rawTags;
             Tags = tags;
             Properties = properties;
+            BuffStats = buffStats;
             Requirements = requirements;
             ImplicitModifiers = implicitModifiers;
             InventoryHeight = inventoryHeight;
@@ -33,6 +34,11 @@ namespace PoESkillTree.GameModel.Items
         public Tags Tags { get; }
 
         public IReadOnlyList<Property> Properties { get; }
+
+        /// <summary>
+        /// Stats granted through a buff when this flask is active.
+        /// </summary>
+        public IReadOnlyList<UntranslatedStat> BuffStats { get; }
 
         public Requirements Requirements { get; }
 

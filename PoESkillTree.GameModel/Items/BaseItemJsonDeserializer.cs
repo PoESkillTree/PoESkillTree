@@ -44,6 +44,7 @@ namespace PoESkillTree.GameModel.Items
                 rawTags,
                 DeserializeTags(rawTags),
                 DeserializeProperties(Value<JObject>("properties")),
+                DeserializeGrantsBuff(json["grants_buff"]),
                 DeserializeRequirements(json["requirements"]),
                 DeserializeImplicitModifiers(Values<string>("implicits")),
                 Value<int>("inventory_height"),
@@ -77,6 +78,16 @@ namespace PoESkillTree.GameModel.Items
 
         private static Property DeserializeProperty(JProperty jsonProperty)
             => new Property(jsonProperty.Name, jsonProperty.Value.Value<int>());
+
+        private static IReadOnlyList<UntranslatedStat> DeserializeGrantsBuff(JToken buffJson)
+        {
+            if (buffJson is null)
+                return new UntranslatedStat[0];
+            return buffJson.Value<JObject>("stats").Properties().Select(DeserializeUntranslatedStat).ToList();
+        }
+
+        private static UntranslatedStat DeserializeUntranslatedStat(JProperty jsonProperty)
+            => new UntranslatedStat(jsonProperty.Name, jsonProperty.Value.Value<int>());
 
         private static Requirements DeserializeRequirements(JToken requirementsJson)
         {

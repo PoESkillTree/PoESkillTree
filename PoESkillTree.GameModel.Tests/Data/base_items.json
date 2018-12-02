@@ -56,5 +56,36 @@
 			"dds_file": "Art/2DItems/Currency/Classic/Mystery.dds",
 			"id": "MysteryLeaguestone"
 		}
+	},
+	"Metadata/Items/Flasks/FlaskUtility6": {
+		"drop_level": 4,
+		"grants_buff": {
+			"id": "flask_utility_sprint",
+			"stats": {
+				"base_movement_velocity_+%": 40
+			}
+		},
+		"implicits": [],
+		"inventory_height": 2,
+		"inventory_width": 1,
+		"item_class": "UtilityFlask",
+		"name": "Quicksilver Flask",
+		"properties": {
+			"charges_max": 50,
+			"charges_per_use": 20,
+			"duration": 40
+		},
+		"release_state": "released",
+		"requirements": null,
+		"tags": [
+			"not_for_sale",
+			"utility_flask",
+			"flask",
+			"default"
+		],
+		"visual_identity": {
+			"dds_file": "Art/2DItems/Flasks/sprint.dds",
+			"id": "FlaskUtilitySprint"
+		}
 	}
 }
