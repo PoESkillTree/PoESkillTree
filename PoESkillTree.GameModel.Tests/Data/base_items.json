@@ -32,5 +32,29 @@
 			"dds_file": "Art/2DItems/Armours/Shields/ShieldStrInt5.dds",
 			"id": "ShieldStrInt5"
 		}
+	},
+	"Metadata/Items/Classic/MysteryLeaguestone": {
+		"drop_level": 1,
+		"implicits": [],
+		"inventory_height": 1,
+		"inventory_width": 1,
+		"item_class": "Currency",
+		"name": "Mystery Leaguestone",
+		"properties": {
+			"description": "Contains an unknown Leaguestone.",
+			"directions": "",
+			"stack_size": 1,
+			"stack_size_currency_tab": 0
+		},
+		"release_state": "unreleased",
+		"requirements": null,
+		"tags": [
+			"not_for_sale",
+			"default"
+		],
+		"visual_identity": {
+			"dds_file": "Art/2DItems/Currency/Classic/Mystery.dds",
+			"id": "MysteryLeaguestone"
+		}
 	}
 }

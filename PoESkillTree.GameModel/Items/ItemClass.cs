@@ -53,6 +53,8 @@ namespace PoESkillTree.GameModel.Items
 
         ActiveSkillGem,
         SupportSkillGem,
+
+        Currency,
     }
 
     public static class ItemClassEx
@@ -92,7 +94,8 @@ namespace PoESkillTree.GameModel.Items
             { ItemClass.CriticalUtilityFlask, Tags.CriticalUtilityFlask | Tags.UtilityFlask | Tags.Flask },
             { ItemClass.Jewel, Tags.Jewel },
             { ItemClass.ActiveSkillGem, Tags.Gem },
-            { ItemClass.SupportSkillGem, Tags.SupportGem | Tags.Gem }
+            { ItemClass.SupportSkillGem, Tags.SupportGem | Tags.Gem },
+            { ItemClass.Currency, Tags.Default },
         };
 
         /// <returns>the Tags an item with this ItemClass always has</returns>
@@ -161,17 +164,8 @@ namespace PoESkillTree.GameModel.Items
                 case ItemClass.ActiveSkillGem:
                 case ItemClass.SupportSkillGem:
                     return ItemSlot.Gem;
-                case ItemClass.LifeFlask:
-                case ItemClass.ManaFlask:
-                case ItemClass.HybridFlask:
-                case ItemClass.UtilityFlask:
-                case ItemClass.CriticalUtilityFlask:
-                case ItemClass.Jewel:
-                case ItemClass.Unknown:
-                case ItemClass.Any:
-                    return ItemSlot.Unequipable;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(itemClass), itemClass, null);
+                    return ItemSlot.Unequipable;
             }
         }
     }

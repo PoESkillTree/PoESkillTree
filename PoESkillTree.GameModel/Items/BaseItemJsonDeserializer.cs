@@ -25,8 +25,11 @@ namespace PoESkillTree.GameModel.Items
         public static BaseItemDefinitions Deserialize(JObject baseItemJson, JObject modJson)
         {
             var deserializer = new BaseItemJsonDeserializer(modJson);
-            var definitions = baseItemJson.Properties().Select(deserializer.Deserialize);
-            return new BaseItemDefinitions(definitions.ToList());
+            var definitions = baseItemJson.Properties()
+                .Select(deserializer.Deserialize)
+                .Where(d => d.ReleaseState != ReleaseState.Unreleased)
+                .ToList();
+            return new BaseItemDefinitions(definitions);
         }
 
         private BaseItemDefinition Deserialize(JProperty itemProperty)
@@ -68,17 +71,23 @@ namespace PoESkillTree.GameModel.Items
         }
 
         private static IReadOnlyList<Property> DeserializeProperties(JObject propertiesJson)
-            => propertiesJson.Properties().Select(DeserializeProperty).ToList();
+            => propertiesJson.Properties()
+                .Where(p => p.Value.Type == JTokenType.Integer)
+                .Select(DeserializeProperty).ToList();
 
         private static Property DeserializeProperty(JProperty jsonProperty)
             => new Property(jsonProperty.Name, jsonProperty.Value.Value<int>());
 
         private static Requirements DeserializeRequirements(JToken requirementsJson)
-            => new Requirements(
+        {
+            if (!requirementsJson.HasValues)
+                return new Requirements(0, 0, 0, 0);
+            return new Requirements(
                 requirementsJson.Value<int>("level"),
                 requirementsJson.Value<int>("dexterity"),
                 requirementsJson.Value<int>("intelligence"),
                 requirementsJson.Value<int>("strength"));
+        }
 
         private IReadOnlyList<CraftableStat> DeserializeImplicitModifiers(IEnumerable<string> implicits)
             => implicits.SelectMany(DeserializeImplicitModifier).ToList();

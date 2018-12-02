@@ -43,7 +43,7 @@ namespace PoESkillTree.GameModel.Tests.Items
         private static BaseItemDefinitions DeserializeAll()
         {
             /* Base items in base_items.json: (from game version 3.4.0)
-             * ['Archon Kite Shield']
+             * ['Archon Kite Shield', 'Mystery Leaguestone']
              */
             var itemJson = JObject.Parse(TestUtils.ReadDataFile("base_items.json"));
             var modJson =  JObject.Parse(TestUtils.ReadDataFile("mods.json"));
