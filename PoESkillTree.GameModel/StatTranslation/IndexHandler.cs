@@ -67,6 +67,8 @@ namespace PoESkillTree.GameModel.StatTranslation
         ModValueToItemClass,
         [EnumMember(Value = "tempest_mod_text")]
         TempestModText,
+        [EnumMember(Value = "canonical_stat")]
+        CanonicalStat,
     }
 
     public static class IndexHandlerExtensions
@@ -103,9 +105,11 @@ namespace PoESkillTree.GameModel.StatTranslation
                     d => Math.Round(d / 60, 2)
                 },
                 // this appears on a unique map, we don't support map crafting
-                { IndexHandler.ModValueToItemClass, d => { throw new NotSupportedException(); } },
+                { IndexHandler.ModValueToItemClass, d => throw new NotSupportedException() },
                 // not sure where this appears, at least not on anything we need to support
-                { IndexHandler.TempestModText, d => { throw new NotSupportedException(); } },
+                { IndexHandler.TempestModText, d => throw new NotSupportedException() },
+                // doesn't seem to do anything
+                { IndexHandler.CanonicalStat, d => d },
             };
 
         /// <summary>

@@ -280,12 +280,13 @@ namespace PoESkillTree.GameModel.Skills
             { "VaalGrace", Aura("base_chance_to_dodge_%", "base_chance_to_dodge_spells_%") },
             {
                 "Haste",
-                Aura("attack_speed_+%", "cast_speed_+%_granted_from_skill",
+                Aura("attack_speed_+%_granted_from_skill", "cast_speed_+%_granted_from_skill",
                     "base_movement_velocity_+%")
             },
             {
                 "VaalHaste",
-                Aura("attack_speed_+%", "cast_speed_+%_granted_from_skill", "base_movement_velocity_+%")
+                Aura("attack_speed_+%_granted_from_skill", "cast_speed_+%_granted_from_skill",
+                    "base_movement_velocity_+%")
             },
             { "Hatred", Aura("physical_damage_%_to_add_as_cold") },
             {

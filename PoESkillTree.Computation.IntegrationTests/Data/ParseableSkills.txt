@@ -99,6 +99,7 @@ LightningTowerTrap
 LightningTrap
 LightningWarp
 MagmaOrb
+MirrorArrow
 MoltenShell
 MoltenStrike
 NewPhaseRun
