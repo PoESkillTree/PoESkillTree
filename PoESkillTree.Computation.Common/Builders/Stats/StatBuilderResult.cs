@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
     /// <summary>
     /// Represents the result of <see cref="IStatBuilder"/>. Each of these will be built into one <see cref="Modifier"/>
     /// </summary>
-    public class StatBuilderResult
+    public class StatBuilderResult : ValueObject
     {
         public StatBuilderResult(
             IReadOnlyList<IStat> stats, ModifierSource modifierSource, ValueConverter valueConverter)
@@ -34,14 +33,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
             (IReadOnlyList<IStat> stats, ModifierSource modifierSource, ValueConverter valueConverter) tuple) =>
             new StatBuilderResult(tuple.stats, tuple.modifierSource, tuple.valueConverter);
 
-        public override bool Equals(object obj) =>
-            (obj == this) || (obj is StatBuilderResult other && Equals(other));
-
-        private bool Equals(StatBuilderResult other) =>
-            Stats.SequenceEqual(other.Stats) && ModifierSource.Equals(other.ModifierSource) &&
-            ValueConverter.Equals(other.ValueConverter);
-
-        public override int GetHashCode() =>
-            (Stats.SequenceHash(), ModifierSource, ValueConverter).GetHashCode();
+        protected override object ToTuple() => (WithSequenceEquality(Stats), ModifierSource, ValueConverter);
     }
 }

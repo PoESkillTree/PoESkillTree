@@ -9,6 +9,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Behaviors
@@ -156,7 +157,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                 new CacheKey(stat, damageSpecification));
 
         private Behavior AilmentDamageIncreaseMoreBehavior(IStat stat, IDamageSpecification damageSpecification) =>
-            GetOrAdd(new LazyStatEnumerable(() => _statFactory.ConcretizeDamage(stat, damageSpecification)),
+            GetOrAdd(new LazyStatList(() => _statFactory.ConcretizeDamage(stat, damageSpecification)),
                 new[] { NodeType.Increase, NodeType.More }, BehaviorPathInteraction.All,
                 v => new AilmentDamageIncreaseMoreValue(
                     _statFactory.ConcretizeDamage(stat, damageSpecification),
@@ -196,20 +197,20 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             Func<IStat> lazyAffectedStat, NodeType affectNodeType, BehaviorPathInteraction affectedPaths,
             Func<IValue, IValue> valueTransformation, CacheKey cacheKey)
         {
-            return GetOrAdd(new LazyStatEnumerable(lazyAffectedStat), affectNodeType, affectedPaths,
+            return GetOrAdd(new LazyStatList(lazyAffectedStat), affectNodeType, affectedPaths,
                 valueTransformation, cacheKey);
         }
 
         private Behavior GetOrAdd(
-            IEnumerable<IStat> affectedStats, NodeType affectNodeType, BehaviorPathInteraction affectedPaths,
+            IReadOnlyList<IStat> affectedStats, NodeType affectNodeType, BehaviorPathInteraction affectedPaths,
             Func<IValue, IValue> valueTransformation, CacheKey cacheKey)
         {
             return GetOrAdd(affectedStats, new[] { affectNodeType }, affectedPaths, valueTransformation, cacheKey);
         }
 
         private Behavior GetOrAdd(
-            IEnumerable<IStat> affectedStats,
-            IEnumerable<NodeType> affectNodeTypes, BehaviorPathInteraction affectedPaths,
+            IReadOnlyList<IStat> affectedStats,
+            IReadOnlyList<NodeType> affectNodeTypes, BehaviorPathInteraction affectedPaths,
             Func<IValue, IValue> valueTransformation, CacheKey cacheKey)
         {
             return _cache.GetOrAdd(cacheKey, _ =>
@@ -217,7 +218,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                     new ValueTransformation(valueTransformation)));
         }
 
-        private struct CacheKey
+        private class CacheKey : ValueObject
         {
             private readonly string _behaviorName;
             private readonly IReadOnlyList<object> _parameters;
@@ -244,26 +245,25 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                 _parameters = parameters;
             }
 
-            public override bool Equals(object obj) =>
-                obj is CacheKey other && _behaviorName == other._behaviorName &&
-                _parameters.SequenceEqual(other._parameters);
-
-            public override int GetHashCode() =>
-                (_behaviorName, _parameters.SequenceHash()).GetHashCode();
+            protected override object ToTuple() => (_behaviorName, WithSequenceEquality(_parameters));
         }
 
-        private class LazyStatEnumerable : IEnumerable<IStat>
+        private class LazyStatList : IReadOnlyList<IStat>
         {
-            private readonly Lazy<IEnumerable<IStat>> _lazyStats;
+            private readonly Lazy<IReadOnlyList<IStat>> _lazyStats;
 
-            public LazyStatEnumerable(Func<IStat> statFactory)
+            public LazyStatList(Func<IStat> statFactory)
             {
-                _lazyStats = new Lazy<IEnumerable<IStat>>(() => new[] { statFactory() });
+                _lazyStats = new Lazy<IReadOnlyList<IStat>>(() => new[] { statFactory() });
             }
 
             public IEnumerator<IStat> GetEnumerator() => _lazyStats.Value.GetEnumerator();
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+            public int Count => 1;
+
+            public IStat this[int index] => _lazyStats.Value[index];
         }
     }
 }

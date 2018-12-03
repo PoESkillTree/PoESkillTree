@@ -9,7 +9,7 @@ namespace PoESkillTree.GameModel.Skills
     public class SkillDefinitionExtension
     {
         public SkillDefinitionExtension(
-            SkillPartDefinitionExtension commonExtension, IReadOnlyDictionary<string, IEnumerable<Entity>> buffStats,
+            SkillPartDefinitionExtension commonExtension, IReadOnlyDictionary<string, IReadOnlyList<Entity>> buffStats,
             IEnumerable<string> passiveStats, params (string name, SkillPartDefinitionExtension extension)[] parts)
         {
             CommonExtension = commonExtension;
@@ -30,7 +30,7 @@ namespace PoESkillTree.GameModel.Skills
         public SkillPartDefinitionExtension CommonExtension { get; }
         public IReadOnlyList<SkillPartDefinitionExtension> PartExtensions { get; }
         public IReadOnlyList<string> PartNames { get; }
-        public IReadOnlyDictionary<string, IEnumerable<Entity>> BuffStats { get; }
+        public IReadOnlyDictionary<string, IReadOnlyList<Entity>> BuffStats { get; }
         public IEnumerable<string> PassiveStats { get; }
     }
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Common
 {
@@ -13,7 +12,7 @@ namespace PoESkillTree.Computation.Common
     /// The "main path" refers to the global <see cref="ModifierSource"/> without conversions.
     /// </para>
     /// </summary>
-    public class PathDefinition
+    public class PathDefinition : ValueObject
     {
         /// <summary>
         /// An instance of the main path (global <see cref="ModifierSource"/>, no conversions).
@@ -47,13 +46,6 @@ namespace PoESkillTree.Computation.Common
         /// </summary>
         public bool IsMainPath => Equals(MainPath);
 
-        public override bool Equals(object obj) => 
-            (obj == this) || (obj is PathDefinition other && Equals(other));
-
-        private bool Equals(PathDefinition other) =>
-            ModifierSource.Equals(other.ModifierSource) && ConversionStats.SequenceEqual(other.ConversionStats);
-
-        public override int GetHashCode() => 
-            (ModifierSource, ConversionStats.SequenceHash()).GetHashCode();
+        protected override object ToTuple() => (ModifierSource, WithSequenceEquality(ConversionStats));
     }
 }

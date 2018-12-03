@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using PoESkillTree.GameModel.Skills;
-using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.GameModel.StatTranslation
 {
@@ -10,7 +8,7 @@ namespace PoESkillTree.GameModel.StatTranslation
         StatTranslatorResult Translate(IEnumerable<UntranslatedStat> untranslatedStats);
     }
 
-    public class StatTranslatorResult
+    public class StatTranslatorResult : ValueObject
     {
         public StatTranslatorResult(
             IReadOnlyList<string> translatedStats, IReadOnlyList<UntranslatedStat> unknownStats)
@@ -19,13 +17,7 @@ namespace PoESkillTree.GameModel.StatTranslation
         public IReadOnlyList<string> TranslatedStats { get; }
         public IReadOnlyList<UntranslatedStat> UnknownStats { get; }
 
-        public override bool Equals(object obj)
-            => obj == this || (obj is StatTranslatorResult other && Equals(other));
-
-        private bool Equals(StatTranslatorResult other)
-            => TranslatedStats.SequenceEqual(other.TranslatedStats) && UnknownStats.SequenceEqual(other.UnknownStats);
-
-        public override int GetHashCode()
-            => (TranslatedStats.SequenceHash(), UnknownStats.SequenceHash()).GetHashCode();
+        protected override object ToTuple()
+            => (WithSequenceEquality(TranslatedStats), WithSequenceEquality(UnknownStats));
     }
 }

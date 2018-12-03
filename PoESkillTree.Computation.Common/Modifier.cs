@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Common
 {
     /// <summary>
     /// Represents a single parsed Modifier.
     /// </summary>
-    public class Modifier
+    public class Modifier : ValueObject
     {
         /// <summary>
         /// Defines the subgraphs of the calculation graph this modifier applies to.
@@ -37,17 +36,6 @@ namespace PoESkillTree.Computation.Common
             Source = source;
         }
 
-        public override bool Equals(object obj) =>
-            (obj == this) || (obj is Modifier other && Equals(other));
-
-        private bool Equals(Modifier other) =>
-            Stats.SequenceEqual(other.Stats) && Form.Equals(other.Form) && Value.Equals(other.Value)
-            && Source.Equals(other.Source);
-
-        public override int GetHashCode() =>
-            (Stats.SequenceHash(), Form, Value, Source).GetHashCode();
-
-        public override string ToString() =>
-            $"Stats: {string.Join("    \n", Stats)}\n  Form: {Form}\n  Value: {Value}\n  Source: {Source}";
+        protected override object ToTuple() => (WithSequenceEquality(Stats), Form, Value, Source);
     }
 }

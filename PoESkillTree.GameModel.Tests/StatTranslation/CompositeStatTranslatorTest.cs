@@ -2,7 +2,6 @@
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.GameModel.Skills;
 using PoESkillTree.GameModel.StatTranslation;
 
 namespace PoESkillTree.GameModel.Tests.StatTranslation

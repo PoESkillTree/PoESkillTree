@@ -2,7 +2,7 @@
 using System.Linq;
 using JetBrains.Annotations;
 using PoESkillTree.GameModel.Items;
-using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.GameModel.Skills
 {
@@ -156,25 +156,18 @@ namespace PoESkillTree.GameModel.Skills
         public SkillTooltipDefinition Tooltip { get; }
     }
 
-    public class BuffStat
+    public class BuffStat : ValueObject
     {
-        public BuffStat(UntranslatedStat stat, IEnumerable<Entity> affectedEntities)
+        public BuffStat(UntranslatedStat stat, IReadOnlyList<Entity> affectedEntities)
             => (Stat, AffectedEntities) = (stat, affectedEntities);
 
-        public void Deconstruct(out UntranslatedStat stat, out IEnumerable<Entity> affectedEntities)
+        public void Deconstruct(out UntranslatedStat stat, out IReadOnlyList<Entity> affectedEntities)
             => (stat, affectedEntities) = (Stat, AffectedEntities);
 
         public UntranslatedStat Stat { get; }
-        public IEnumerable<Entity> AffectedEntities { get; }
+        public IReadOnlyList<Entity> AffectedEntities { get; }
 
-        public override bool Equals(object obj)
-            => obj is BuffStat other && Equals(other);
-
-        private bool Equals(BuffStat other)
-            => Stat.Equals(other.Stat) && AffectedEntities.SequenceEqual(other.AffectedEntities);
-
-        public override int GetHashCode()
-            => (Stat, AffectedEntities.SequenceHash()).GetHashCode();
+        protected override object ToTuple() => (Stat, WithSequenceEquality(AffectedEntities));
     }
 
     public class SkillTooltipDefinition
@@ -200,7 +193,7 @@ namespace PoESkillTree.GameModel.Skills
         public IReadOnlyList<TranslatedStat> Stats { get; }
     }
 
-    public class TranslatedStat
+    public class TranslatedStat : ValueObject
     {
         public TranslatedStat(string formatText, params double[] values)
             => (FormatText, Values) = (formatText, values);
@@ -208,16 +201,9 @@ namespace PoESkillTree.GameModel.Skills
         public string FormatText { get; }
         public IReadOnlyList<double> Values { get; }
 
-        public override bool Equals(object obj)
-            => this == obj || (obj is TranslatedStat other && Equals(other));
-
-        private bool Equals(TranslatedStat other)
-            => FormatText == other.FormatText && Values.SequenceEqual(other.Values);
-
-        public override int GetHashCode()
-            => (FormatText, Values.SequenceHash()).GetHashCode();
-
         public override string ToString()
             => string.Format(FormatText, Values.Cast<object>().ToArray());
+
+        protected override object ToTuple() => (FormatText, WithSequenceEquality(Values));
     }
 }

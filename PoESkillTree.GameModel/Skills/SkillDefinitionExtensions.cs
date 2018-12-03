@@ -12,7 +12,7 @@ namespace PoESkillTree.GameModel.Skills
 
         private readonly SkillDefinitionExtension _emptyExtension =
             new SkillDefinitionExtension(new SkillPartDefinitionExtension(),
-                new Dictionary<string, IEnumerable<Entity>>(), new string[0]);
+                new Dictionary<string, IReadOnlyList<Entity>>(), new string[0]);
 
         private readonly IReadOnlyDictionary<string, SkillDefinitionExtension> _extensions;
 
@@ -759,25 +759,25 @@ namespace PoESkillTree.GameModel.Skills
                     poolDamagePerMinute));
         }
 
-        private static IReadOnlyDictionary<string, IEnumerable<Entity>> SelfBuff(params string[] statIds)
+        private static IReadOnlyDictionary<string, IReadOnlyList<Entity>> SelfBuff(params string[] statIds)
             => Buff(Entity.Character, statIds);
 
-        private static IReadOnlyDictionary<string, IEnumerable<Entity>> EnemyBuff(params string[] statIds)
+        private static IReadOnlyDictionary<string, IReadOnlyList<Entity>> EnemyBuff(params string[] statIds)
             => Buff(Entity.Enemy, statIds);
 
-        private static IReadOnlyDictionary<string, IEnumerable<Entity>> Aura(params string[] statIds)
+        private static IReadOnlyDictionary<string, IReadOnlyList<Entity>> Aura(params string[] statIds)
             => Buff(AuraEntities, statIds);
 
-        private static IReadOnlyDictionary<string, IEnumerable<Entity>> Buff(
+        private static IReadOnlyDictionary<string, IReadOnlyList<Entity>> Buff(
             Entity affectedEntity, params string[] statIds)
             => Buff(new[] { affectedEntity }, statIds);
 
-        private static IReadOnlyDictionary<string, IEnumerable<Entity>> Buff(
-            IEnumerable<Entity> affectedEntities, params string[] statIds)
+        private static IReadOnlyDictionary<string, IReadOnlyList<Entity>> Buff(
+            IReadOnlyList<Entity> affectedEntities, params string[] statIds)
             => Buff(statIds.Select(s => (s, affectedEntities)).ToArray());
 
-        private static IReadOnlyDictionary<string, IEnumerable<Entity>> Buff(
-            params (string statId, IEnumerable<Entity> affectedEntities)[] stats)
+        private static IReadOnlyDictionary<string, IReadOnlyList<Entity>> Buff(
+            params (string statId, IReadOnlyList<Entity> affectedEntities)[] stats)
             => stats.ToDictionary(t => t.statId, t => t.affectedEntities);
 
         private static IEnumerable<string> Passive(params string[] statIds)

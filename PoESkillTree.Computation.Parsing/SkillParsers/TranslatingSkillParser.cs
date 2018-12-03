@@ -104,7 +104,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             IEnumerable<UntranslatedStat> stats,
             Entity modifierSourceEntity = Entity.Character)
         {
-            var unparsedStats = stats.Except(_parsedStats);
+            var unparsedStats = stats.Except(_parsedStats).ToList();
             var statParser = _statParserFactory(statTranslationFileName);
             var parserParameter =
                 new UntranslatedStatParserParameter(localModifierSource, modifierSourceEntity, unparsedStats);

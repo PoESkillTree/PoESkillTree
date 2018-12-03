@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.GameModel.Items
 {
@@ -54,27 +55,17 @@ namespace PoESkillTree.GameModel.Items
         public string VisualIdentity { get; }
     }
 
-    public class Property
+    public class Property : ValueObject
     {
         public Property(string name, int value) => (Name, Value) = (name, value);
 
         public string Name { get; }
         public int Value { get; }
 
-        public override bool Equals(object obj)
-            => obj is Property other && Equals(other);
-
-        private bool Equals(Property other)
-            => Name == other.Name && Value == other.Value;
-
-        public override int GetHashCode()
-            => (Name, Value).GetHashCode();
-
-        public override string ToString()
-            => $"{Name}: {Value}";
+        protected override object ToTuple() => (Name, Value);
     }
 
-    public class CraftableStat
+    public class CraftableStat : ValueObject
     {
         public CraftableStat(string statId, int minValue, int maxValue)
             => (StatId, MinValue, MaxValue) = (statId, minValue, maxValue);
@@ -83,13 +74,6 @@ namespace PoESkillTree.GameModel.Items
         public int MinValue { get; }
         public int MaxValue { get; }
 
-        public override bool Equals(object obj)
-            => obj is CraftableStat other && Equals(other);
-
-        private bool Equals(CraftableStat other)
-            => StatId == other.StatId && MinValue == other.MinValue && MaxValue == other.MaxValue;
-
-        public override int GetHashCode()
-            => (StatId, MinValue, MaxValue).GetHashCode();
+        protected override object ToTuple() => (StatId, MinValue, MaxValue);
     }
 }

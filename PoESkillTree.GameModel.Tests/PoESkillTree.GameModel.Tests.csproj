@@ -104,6 +104,10 @@
       <Project>{c1c73cc9-d825-41f7-86f0-f37ee8178d6d}</Project>
       <Name>PoESkillTree.GameModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">
+      <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
+      <Name>PoESkillTree.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

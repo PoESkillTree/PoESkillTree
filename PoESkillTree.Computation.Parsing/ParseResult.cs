@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing
@@ -9,7 +10,7 @@ namespace PoESkillTree.Computation.Parsing
     /// <summary>
     /// Data object for the return value of <see cref="IParser{TParameter}.Parse"/>.
     /// </summary>
-    public class ParseResult
+    public class ParseResult : ValueObject
     {
         public static ParseResult Success(IReadOnlyList<Modifier> modifiers)
             => new ParseResult(new string[0], new string[0], modifiers);
@@ -62,15 +63,8 @@ namespace PoESkillTree.Computation.Parsing
             return new ParseResult(failedLines, remainingSubstrings, modifiers);
         }
 
-        public override bool Equals(object obj)
-            => (obj == this) || (obj is ParseResult other && Equals(other));
-
-        private bool Equals(ParseResult other)
-            => FailedLines.SequenceEqual(other.FailedLines) &&
-               RemainingSubstrings.SequenceEqual(other.RemainingSubstrings) &&
-               Modifiers.SequenceEqual(other.Modifiers);
-
-        public override int GetHashCode()
-            => (FailedLines.SequenceHash(), RemainingSubstrings.SequenceHash(), Modifiers.SequenceHash()).GetHashCode();
+        protected override object ToTuple()
+            => (WithSequenceEquality(FailedLines), WithSequenceEquality(RemainingSubstrings),
+                WithSequenceEquality(Modifiers));
     }
 }

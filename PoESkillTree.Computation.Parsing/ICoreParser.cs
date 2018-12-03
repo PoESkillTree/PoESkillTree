@@ -1,6 +1,6 @@
-﻿using System;
-using PoESkillTree.Computation.Common;
+﻿using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Parsing
 {
@@ -11,7 +11,7 @@ namespace PoESkillTree.Computation.Parsing
     {
     }
 
-    public struct CoreParserParameter : IEquatable<CoreParserParameter>
+    public class CoreParserParameter : ValueObject
     {
         public CoreParserParameter(string modifierLine, ModifierSource modifierSource, Entity modifierSourceEntity)
             => (ModifierLine, ModifierSource, ModifierSourceEntity) =
@@ -32,17 +32,7 @@ namespace PoESkillTree.Computation.Parsing
         /// </summary>
         public Entity ModifierSourceEntity { get; }
 
-        public override bool Equals(object obj) =>
-            obj is CoreParserParameter other && Equals(other);
-
-        public bool Equals(CoreParserParameter other) =>
-            ModifierLine == other.ModifierLine && ModifierSource == other.ModifierSource &&
-            ModifierSourceEntity == other.ModifierSourceEntity;
-
-        public override int GetHashCode() => (ModifierLine, ModifierSource, ModifierSourceEntity).GetHashCode();
-
-        public override string ToString()
-            => $"{nameof(CoreParserParameter)}('{ModifierLine}', {ModifierSource}, {ModifierSourceEntity})";
+        protected override object ToTuple() => (ModifierLine, ModifierSource, ModifierSourceEntity);
     }
 
     public static class CoreParserExtensions
