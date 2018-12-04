@@ -1132,32 +1132,32 @@ msgstr "角色"
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:125 SkillTreeFiles\Updater.cs:246
+#: SkillTreeFiles\Updater.cs:124 SkillTreeFiles\Updater.cs:245
 msgid "Download already in progress"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:127
+#: SkillTreeFiles\Updater.cs:126
 msgid "Download already completed"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:169 SkillTreeFiles\Updater.cs:362
-#: SkillTreeFiles\Updater.cs:436
+#: SkillTreeFiles\Updater.cs:168 SkillTreeFiles\Updater.cs:361
+#: SkillTreeFiles\Updater.cs:435
 msgid "Download still in progress"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:172 SkillTreeFiles\Updater.cs:438
+#: SkillTreeFiles\Updater.cs:171 SkillTreeFiles\Updater.cs:437
 msgid "No package downloaded"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:270
+#: SkillTreeFiles\Updater.cs:269
 msgid "No release found"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:378
+#: SkillTreeFiles\Updater.cs:377
 msgid "Download completed or still in progress"
 msgstr ""
 
-#: SkillTreeFiles\Updater.cs:418
+#: SkillTreeFiles\Updater.cs:417
 msgid "The application is not correctly installed"
 msgstr ""
 
