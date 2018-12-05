@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
+using MoreLinq;
 using Newtonsoft.Json.Linq;
+using PoESkillTree.Utils.Extensions;
 using POESKillTree.Model.Items;
+using POESKillTree.Utils.WikiApi;
 using static POESKillTree.Utils.WikiApi.CargoConstants;
 
 namespace UpdateDB.DataLoading
@@ -18,7 +20,7 @@ namespace UpdateDB.DataLoading
 
         private static readonly IReadOnlyList<string> Fields = new[]
         {
-            Name, BaseItemId, RequiredLevel, ExplicitMods, DropEnabled
+            Name, BaseItemId, RequiredLevel, DropEnabled
         };
 
         private static readonly IReadOnlyList<string> JewelFields = Fields.Concat(new[]
@@ -41,38 +43,54 @@ namespace UpdateDB.DataLoading
 
         protected override async Task LoadAsync()
         {
-            var uniques = new List<XmlUnique>();
-            foreach (var wikiClass in RelevantWikiClasses)
-            {
-                uniques.AddRange(await LoadAsync(wikiClass));
-            }
-            uniques.AddRange(await LoadJewelsAsync());
+            var mods = await LoadMods();
+            var uniqueTasks = RelevantWikiClasses.Select(c => LoadAsync(c, mods))
+                .Append(LoadJewelsAsync(mods));
+            var results = await Task.WhenAll(uniqueTasks).ConfigureAwait(false);
             Data = new XmlUniqueList
             {
-                Uniques = uniques.ToArray()
+                Uniques = results.Flatten().ToArray()
             };
         }
 
-        private async Task<IEnumerable<XmlUnique>> LoadAsync(string wikiClass)
+        private async Task<ILookup<string, string>> LoadMods()
         {
-            var results = await QueryApiAsync(wikiClass);
-            return ReadJson(wikiClass, results);
+            var results = await QueryApiForModsAsync().ConfigureAwait(false);
+            Log.Info($"Retrieved {results.Count} unique item mods.");
+            return results.ToLookup(
+                j => j.Value<string>(ApiAccessor.GetPageNameFieldAlias(ItemTableName)),
+                j => j.Value<string>(ModId));
         }
 
-        private async Task<IEnumerable<XmlUnique>> LoadJewelsAsync()
+        private async Task<IEnumerable<XmlUnique>> LoadAsync(string wikiClass, ILookup<string, string> mods)
         {
-            var results = await QueryApiForJewelsAsync();
-            return ReadJson(JewelClass, results);
+            var results = await QueryApiForUniquesAsync(wikiClass).ConfigureAwait(false);
+            return ReadJson(wikiClass, results, mods);
         }
 
-        private Task<IEnumerable<JToken>> QueryApiAsync(string wikiClass)
+        private async Task<IEnumerable<XmlUnique>> LoadJewelsAsync(ILookup<string, string> mods)
+        {
+            var results = await QueryApiForJewelsAsync().ConfigureAwait(false);
+            return ReadJson(JewelClass, results, mods);
+        }
+
+        private Task<IReadOnlyList<JToken>> QueryApiForModsAsync()
+        {
+            string[] tables = { ItemTableName, ItemModTableName };
+            string[] fields = { ModId };
+            var where = $"{Rarity}='Unique' AND is_implicit=false AND is_random=false AND {ModId} != ''";
+            var joinOn = $"{ItemTableName}.{PageName}={ItemModTableName}.{PageName}";
+            return WikiApiAccessor.CargoQueryAsync(tables, fields, where, joinOn);
+        }
+
+        private Task<IReadOnlyList<JToken>> QueryApiForUniquesAsync(string wikiClass)
         {
             string[] tables = { ItemTableName };
             var where = GetWhereClause(wikiClass);
             return WikiApiAccessor.CargoQueryAsync(tables, Fields, where);
         }
 
-        private Task<IEnumerable<JToken>> QueryApiForJewelsAsync()
+        private Task<IReadOnlyList<JToken>> QueryApiForJewelsAsync()
         {
             string[] tables = { ItemTableName, JewelTableName };
             var where = GetWhereClause(JewelClass);
@@ -85,11 +103,13 @@ namespace UpdateDB.DataLoading
             return $"{Rarity}='Unique' AND {ItemClass}='{wikiClass}'";
         }
 
-        private static IEnumerable<XmlUnique> ReadJson(string wikiClass, IEnumerable<JToken> results)
+        private static IEnumerable<XmlUnique> ReadJson(
+            string wikiClass, IEnumerable<JToken> results, ILookup<string, string> mods)
         {
+            results = results.DistinctBy(j => j.Value<string>(ApiAccessor.GetPageNameFieldAlias(ItemTableName)));
             List<XmlUnique> uniques = (
                 from result in results
-                let unique = PrintoutsToUnique(result)
+                let unique = PrintoutsToUnique(result, mods)
                 where !Blacklist.Contains(unique.Name)
                 orderby unique.Name
                 select unique
@@ -98,10 +118,8 @@ namespace UpdateDB.DataLoading
             return uniques;
         }
 
-        private static XmlUnique PrintoutsToUnique(JToken printouts)
+        private static XmlUnique PrintoutsToUnique(JToken printouts, ILookup<string, string> mods)
         {
-            string[] explicits = printouts.Value<string>(ExplicitMods)
-                .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToArray();
             var properties = new List<string>();
             if (printouts[JewelLimit]?.Value<string>() is string itemLimit && itemLimit.Length > 0)
             {
@@ -114,7 +132,7 @@ namespace UpdateDB.DataLoading
                 Name = printouts.Value<string>(Name),
                 DropDisabled = printouts.Value<string>(DropEnabled) == "0",
                 BaseMetadataId = printouts.Value<string>(BaseItemId),
-                Explicit = explicits,
+                Explicit = mods[printouts.Value<string>("items_page_name")].ToArray(),
                 Properties = properties.ToArray()
             };
         }
