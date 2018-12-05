@@ -1138,32 +1138,32 @@ msgstr "Charakter"
 msgid "Some nodes ({unknownNodes}) are unknown and have been omitted."
 msgstr "Manche Knoten ({unknownNodes}) sind unbekannt und wurden weggelassen."
 
-#: SkillTreeFiles\Updater.cs:125 SkillTreeFiles\Updater.cs:246
+#: SkillTreeFiles\Updater.cs:124 SkillTreeFiles\Updater.cs:245
 msgid "Download already in progress"
 msgstr "Das Herunterladen findet bereits statt"
 
-#: SkillTreeFiles\Updater.cs:127
+#: SkillTreeFiles\Updater.cs:126
 msgid "Download already completed"
 msgstr "Das Herunterladen ist bereits abgeschlossen"
 
-#: SkillTreeFiles\Updater.cs:169 SkillTreeFiles\Updater.cs:362
-#: SkillTreeFiles\Updater.cs:436
+#: SkillTreeFiles\Updater.cs:168 SkillTreeFiles\Updater.cs:361
+#: SkillTreeFiles\Updater.cs:435
 msgid "Download still in progress"
 msgstr "Das Herunterladen ist noch nicht abgeschlossen"
 
-#: SkillTreeFiles\Updater.cs:172 SkillTreeFiles\Updater.cs:438
+#: SkillTreeFiles\Updater.cs:171 SkillTreeFiles\Updater.cs:437
 msgid "No package downloaded"
 msgstr "Kein Paket heruntergeladen"
 
-#: SkillTreeFiles\Updater.cs:270
+#: SkillTreeFiles\Updater.cs:269
 msgid "No release found"
 msgstr "Keine Veröffentlichung gefunden"
 
-#: SkillTreeFiles\Updater.cs:378
+#: SkillTreeFiles\Updater.cs:377
 msgid "Download completed or still in progress"
 msgstr "Das Herunterladen ist abgeschlossen oder findet noch statt"
 
-#: SkillTreeFiles\Updater.cs:418
+#: SkillTreeFiles\Updater.cs:417
 msgid "The application is not correctly installed"
 msgstr "Die Anwendung ist nicht korrekt installiert"
 

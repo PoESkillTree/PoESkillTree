@@ -13,7 +13,6 @@
         public const string Name = "name";
         public const string BaseItemId = "base item id";
         public const string RequiredLevel = "required level";
-        public const string ExplicitMods = "explicit mods";
         public const string DropEnabled = "drop enabled";
         public const string Rarity = "rarity";
         public const string ItemClass = "class";
@@ -23,5 +22,9 @@
 
         // Relevant fields of the jewels table
         public const string JewelLimit = "item limit";
+
+        public const string ItemModTableName = "item_mods";
+        
+        public const string ModId = "id";
     }
 }

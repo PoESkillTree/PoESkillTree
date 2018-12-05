@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using log4net;
 using MoreLinq;
 using Newtonsoft.Json;
@@ -29,27 +30,24 @@ namespace POESKillTree.Utils.WikiApi
         /// <summary>
         /// Queries the API using the cargoquery action.
         /// </summary>
-        public async Task<IEnumerable<JToken>> CargoQueryAsync(
-            IEnumerable<string> tables, IEnumerable<string> fields, string where, string joinOn = "")
+        public async Task<IReadOnlyList<JToken>> CargoQueryAsync(
+            IReadOnlyList<string> tables, IEnumerable<string> fields, string where, string joinOn = "")
         {
-            var enumeratedTables = tables.ToList();
-            var uri = BuildCargoQueryUri(enumeratedTables, fields, where, joinOn);
-            try
+            var results = new List<JToken>();
+            List<JToken> newResults;
+            var baseUri = BuildCargoQueryUri(tables, fields, where, joinOn) + "&offset=";
+            int limit;
+            do
             {
-                var json = JObject.Parse(await _httpClient.GetStringAsync(uri).ConfigureAwait(false));
-                LogWarnings(json, uri);
-                if (!LogErrors(json, uri))
-                {
-                    var result = json["cargoquery"].Select(j => j["title"]);
-                    return SelectDistinctPageNames(result, enumeratedTables).ToList();
-                }
-                return Enumerable.Empty<JToken>();
-            }
-            catch (JsonException e)
-            {
-                Log.Error($"Retrieving cargoquery results from {uri} failed", e);
-                return Enumerable.Empty<JToken>();
-            }
+                var json = await CargoQueryAsync(baseUri + results.Count).ConfigureAwait(false);
+                if (json is null)
+                    return new JToken[0];
+
+                newResults = json["cargoquery"].Select(j => j["title"]).ToList();
+                limit = json["limits"].Value<int>("cargoquery");
+                results.AddRange(newResults);
+            } while (newResults.Count >= limit);
+            return results;
         }
 
         private static string BuildCargoQueryUri(
@@ -60,12 +58,30 @@ namespace POESKillTree.Utils.WikiApi
                 .Select(s => s.Replace(' ', '_'));
             var queryString = new StringBuilder()
                 .Append("&action=cargoquery")
-                .Append("&limit=500")
+                .Append("&limit=max")
                 .Append("&tables=").Append(string.Join(",", tables))
                 .Append("&fields=").Append(string.Join(",", allFields))
                 .Append("&where=").Append(AddValidPageNameConditionToWhereClause(where, tables))
-                .Append("&join_on=").Append(joinOn);
+                .Append("&join_on=").Append(joinOn)
+                .Append("&order_by=").Append(GetPageNameFieldAlias(tables.First()));
             return BaseUri + queryString;
+        }
+
+        [ItemCanBeNull]
+        private async Task<JObject> CargoQueryAsync(string uri)
+        {
+            try
+            {
+                Log.Debug($"Getting {uri} ...");
+                var json = JObject.Parse(await _httpClient.GetStringAsync(uri).ConfigureAwait(false));
+                LogWarnings(json, uri);
+                return LogErrors(json, uri) ? null : json;
+            }
+            catch (JsonException e)
+            {
+                Log.Error($"Retrieving cargoquery results from {uri} failed", e);
+                return null;
+            }
         }
 
         private static string AddValidPageNameConditionToWhereClause(string where, IEnumerable<string> tables)
@@ -74,28 +90,11 @@ namespace POESKillTree.Utils.WikiApi
             return $"({where}) AND {string.Join(" AND ", validPageNameCondition)}";
         }
 
-        private static IEnumerable<JToken> SelectDistinctPageNames(
-            IEnumerable<JToken> cargoQueryResult, IEnumerable<string> tables)
-        {
-            var result = cargoQueryResult;
-            foreach (var table in tables)
-            {
-                var pageNameField = GetPageNameFieldAlias(table);
-                result = result.DistinctBy(token => token.Value<string>(pageNameField));
-            }
-
-            return result;
-        }
-
         private static string GetPageNameField(string table)
-        {
-            return $"{table}.{CargoConstants.PageName}={GetPageNameFieldAlias(table)}";
-        }
+            => $"{table}.{CargoConstants.PageName}={GetPageNameFieldAlias(table)}";
 
-        private static string GetPageNameFieldAlias(string table)
-        {
-            return $"{table}_page_name";
-        }
+        public static string GetPageNameFieldAlias(string table)
+            => $"{table}_page_name";
 
         /// <summary>
         /// Queries the API using the 'query' action, 'imageinfo' prop and 'url' iiprop.
@@ -173,7 +172,7 @@ namespace POESKillTree.Utils.WikiApi
                 let name = cargoResult.Value<string>(CargoConstants.Name)
                 let iconPageTitle = cargoResult.Value<string>(CargoConstants.InventoryIcon)
                 select new { name, iconPageTitle }
-            ).ToList();
+            ).DistinctBy(x => x.iconPageTitle).ToList();
             var titleToName = results.ToLookup(x => x.iconPageTitle, x => x.name);
 
             // QueryImageInfoUrls: retrieve urls of the icons
