@@ -21,14 +21,20 @@ namespace PoESkillTree.GameModel
         /// <typeparam name="T">type to deserialize the json as</typeparam>
         /// <param name="fileName">the data file to deserialize</param>
         /// <returns>a task returning the deserialized object</returns>
-        public static async Task<T> LoadRePoEAsync<T>(string fileName)
-        {
-            var text = await LoadRePoEAsync(fileName).ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<T>(text);
-        }
+        public static Task<T> LoadRePoEAsync<T>(string fileName)
+            => LoadJsonAsync<T>(RePoEFileToResource(fileName));
 
         public static Task<string> LoadRePoEAsync(string fileName)
-            => LoadTextAsync("RePoE." + fileName.Replace("/", ".") + RePoEFileSuffix);
+            => LoadTextAsync(RePoEFileToResource(fileName));
+
+        private static string RePoEFileToResource(string fileName)
+            => "RePoE." + fileName.Replace("/", ".") + RePoEFileSuffix;
+
+        public static async Task<T> LoadJsonAsync<T>(string fileName)
+        {
+            var text = await LoadTextAsync(fileName).ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<T>(text);
+        }
 
         public static async Task<string> LoadTextAsync(string resourceName)
         {

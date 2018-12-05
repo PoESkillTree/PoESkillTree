@@ -9,7 +9,7 @@ namespace PoESkillTree.GameModel.StatTranslation
     {
         public const string MainFileName = "stat_translations";
         public const string SkillFileName = MainFileName + "/skill";
-        public const string CustomFileName = MainFileName + "/custom";
+        public const string CustomFileName = "custom_stat_translations.json";
 
         public static readonly IReadOnlyList<string> RePoETranslationFileNames = new[]
         {
@@ -53,8 +53,10 @@ namespace PoESkillTree.GameModel.StatTranslation
 
         public static async Task<StatTranslator> StaticLoadAsync(string translationFileName)
         {
-            var statTranslations = await DataUtils.LoadRePoEAsync<List<JsonStatTranslation>>(translationFileName)
-                .ConfigureAwait(false);
+            var loadTask = translationFileName == CustomFileName
+                ? DataUtils.LoadJsonAsync<List<JsonStatTranslation>>(translationFileName)
+                : DataUtils.LoadRePoEAsync<List<JsonStatTranslation>>(translationFileName);
+            var statTranslations = await loadTask.ConfigureAwait(false);
             return new StatTranslator(statTranslations);
         }
     }
