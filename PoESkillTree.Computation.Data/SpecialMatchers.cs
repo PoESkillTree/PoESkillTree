@@ -249,14 +249,14 @@ namespace PoESkillTree.Computation.Data
                 {
                     "far shot",
                     PercentMore,
-                    30 * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
+                    30 * ValueFactory.LinearScale(Projectile.TravelDistance, (35, 0), (70, 1)),
                     Damage.WithSkills(DamageSource.Attack).With(Keyword.Projectile)
                 },
                 {
                     // Ascendant
                     "projectiles gain damage as they travel further, dealing up to #% increased damage with hits to targets",
                     PercentIncrease,
-                    Value * ValueFactory.LinearScale(Projectile.TravelDistance, (0, 0), (150, 1)),
+                    Value * ValueFactory.LinearScale(Projectile.TravelDistance, (35, 0), (70, 1)),
                     Damage.WithHits.With(Keyword.Projectile)
                 },
                 { "accuracy rating is doubled", PercentMore, 100, Stat.Accuracy },
