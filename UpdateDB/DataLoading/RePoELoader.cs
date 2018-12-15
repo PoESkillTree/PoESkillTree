@@ -16,7 +16,7 @@ namespace UpdateDB.DataLoading
 
         private static readonly string[] Files =
         {
-            "mods", "crafting_bench_options", "npc_master", "default_monster_stats", "characters",
+            "mods", "crafting_bench_options", "default_monster_stats", "characters",
             "gems", "gem_tooltips"
         };
 

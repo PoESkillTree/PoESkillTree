@@ -32,7 +32,7 @@ namespace UnitTests
                 Assert.AreEqual(expect[level], GetValueOf("Molten Strike", "Mana Cost: #", level)[0]);
 
             // Per level gain.
-            expect2 = new List<double> { double.NaN, 120, 121.4, 122.8, 124.2, 125.6, 127, 128.4, 129.8, 131.2, 132.6, 134, 135.4, 136.8, 138.2, 139.6, 141, 142.4, 143.8, 145.2, 146.6, 148, 149.4, 150.8, 152.2, 153.6, 155, 156.4, 157.8, 159.2, 160.6 };
+            expect2 = new List<double> { double.NaN, 120, 122.2, 124.3, 126.5, };
             for (int level = 1; level < expect2.Count; ++level)
                 Assert.AreEqual(Math.Round(expect2[level], 1), Math.Round(GetValueOf("Molten Strike", "Deals #% of Base Attack Damage", level)[0], 1));
 

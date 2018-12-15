@@ -119,20 +119,6 @@ namespace UnitTests.Model.Items.Mods
             Assert.AreEqual(166, stat.Min);
         }
 
-        // make sure master crafted mods can't spawn through tags so matching their item classes is enough
-        [TestMethod]
-        public async Task MasterMods_NoSpawnTags()
-        {
-            await _initialization;
-            foreach (var mod in _mods.Values)
-            {
-                if (mod.Domain == ModDomain.Crafted)
-                {
-                    AssertCantSpawn(mod);
-                }
-            }
-        }
-
         // make sure essence mods can't spawn through tags so they need to be handled differently
         [TestMethod]
         public async Task EssenceMods_NoSpawnTags()
@@ -180,9 +166,9 @@ namespace UnitTests.Model.Items.Mods
             var affixes = _modDatabase[ModGenerationType.Prefix];
 
             var chaosDamage = affixes.Single(a => a.Group == "ChaosDamage");
-            Assert.AreEqual(2, chaosDamage.Mods.Count);
+            Assert.AreEqual(4, chaosDamage.Mods.Count);
             Assert.AreEqual("ChaosDamageJewel", ((Mod) chaosDamage.Mods[0]).Id);
-            Assert.AreEqual("StrIntMasterAddedChaosDamageCrafted", ((Mod) chaosDamage.Mods[1]).Id);
+            Assert.AreEqual("EinharMasterAddedChaosDamage1", ((Mod) chaosDamage.Mods[1]).Id);
 
             var bowChaosDamage = chaosDamage.GetMatchingMods(
                 Tags.Bow | Tags.TwoHandWeapon | Tags.Ranged, ItemClass.Bow).ToList();
@@ -216,9 +202,8 @@ namespace UnitTests.Model.Items.Mods
             var affixes = _modDatabase[ModGenerationType.Prefix];
             var affix = affixes.Single(a => a.Group == "CausesBleeding");
 
-            var bow = affix.GetMatchingMods(
-                Tags.Bow | Tags.TwoHandWeapon | Tags.Ranged, ItemClass.Bow).ToList();
-            Assert.AreEqual(1, bow.Count);
+            var bow = affix.GetMatchingMods(Tags.Bow | Tags.TwoHandWeapon | Tags.Ranged, ItemClass.Bow).ToList();
+            Assert.AreEqual(5, bow.Count);
             Assert.AreEqual("BleedOnHitGainedDexMasterVendorItemUpdated_", ((Mod) bow[0]).Id);
         }
 
