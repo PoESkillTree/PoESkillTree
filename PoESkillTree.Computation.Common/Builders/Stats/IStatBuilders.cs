@@ -123,6 +123,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder LightRadius { get; }
 
         /// <summary>
+        /// The number of brands attached to Self.
+        /// </summary>
+        IStatBuilder AttachedBrands { get; }
+
+        /// <summary>
         /// Returns stat with a value that can only be specified by the user.
         /// </summary>
         IStatBuilder Unique(string name, Type type);

@@ -186,6 +186,11 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 0, Damage, Not(Or(With(Keyword.Totem), With(Keyword.Trap), With(Keyword.Mine)))
                 },
                 {
+                    // Runebinder
+                    "you can have an additional brand attached to an enemy",
+                    BaseAdd, 1, Stat.AttachedBrands.For(Enemy).Maximum
+                },
+                {
                     // Blood Magic
                     "spend life instead of mana for skills",
                     (BaseAdd, 100, Mana.Cost.ConvertTo(Life.Cost), Condition.True),
@@ -208,7 +213,7 @@ namespace PoESkillTree.Computation.Data
                 // Ascendancies
                 // - Juggernaut
                 {
-                    "you cannot be slowed to below base speed",
+                    "action speed cannot be modified to below base value",
                     TotalOverride, 1, Stat.ActionSpeed.Minimum
                 },
                 {
@@ -254,7 +259,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     // Ascendant
-                    "projectiles gain damage as they travel further, dealing up to #% increased damage with hits to targets",
+                    "projectiles gain damage as they travel f(u|a)rther, dealing up to #% increased damage with hits to targets",
                     PercentIncrease,
                     Value * ValueFactory.LinearScale(Projectile.TravelDistance, (35, 0), (70, 1)),
                     Damage.WithHits.With(Keyword.Projectile)
@@ -357,6 +362,10 @@ namespace PoESkillTree.Computation.Data
                         Condition.Unique("Do you have Adrenaline?")),
                     (BaseAdd, 10, Buff.Buff(Physical.Resistance, Self), Condition.Unique("Do you have Adrenaline?"))
                 },
+                {
+                    "impales you inflict last # additional hits",
+                    BaseAdd, Value, Buff.Impale.StackCount.For(Enemy)
+                },
                 // - Slayer
                 {
                     "your damaging hits always stun enemies that are on full life",
@@ -377,6 +386,10 @@ namespace PoESkillTree.Computation.Data
                 {
                     "gain #% of maximum mana as extra maximum energy shield",
                     BaseAdd, Value, Mana.ConvertTo(EnergyShield)
+                },
+                {
+                    "enemies take #% increased damage for each of your brands attached to them",
+                    PercentIncrease, Value * Stat.AttachedBrands.For(Enemy).Maximum.Value, Damage.Taken.For(Enemy)
                 },
                 // - Guardian
                 {

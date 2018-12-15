@@ -131,6 +131,8 @@ Traps cannot be Damaged for 5 seconds after being Thrown
 Mines cannot be Damaged for 5 seconds after being Placed
 Enemies Cannot Leech Life From You
 Hits that Stun Enemies have Culling Strike
+10% increased Brand Attachment range
+14% increased Brand Attachment range
 // Side effect from how jewels are currently handled, the stat doesn't actually exist
 +1 Jewel Socket
 // Ascendancies:
@@ -155,9 +157,11 @@ When you kill a Poisoned Enemy during any Flask Effect, nearby enemies are Poiso
 // - Occultist
 Cursed Enemies you or your Minions Kill have a 25% chance to Explode, dealing a quarter of their maximum Life as Chaos Damage
 Energy Shield Recharge is not interrupted by Damage if Recharge began Recently
+Every 4 seconds, 33% chance to Freeze nearby Chilled Unique Enemies for 0.6 seconds
+Every 4 seconds, Freeze nearby Chilled Non-Unique Enemies for 0.6 seconds
 // - Elementalist
 Elemental Ailments caused by your Skills spread to other nearby Enemies Radius: 18
-Chills from your Hits always Slow by at least 10%
+Chills from your Hits always reduce Action Speed by at least 10%
 Shocks from your Hits always increase Damage taken by at least 20%
 Shocks from your Hits always increase Damage taken by at least 10%
 // - Gladiator
@@ -168,6 +172,8 @@ Cannot be Stunned by Hits you Block
 // - Champion
 Remove all Ailments and Burning when you gain Adrenaline
 Enemies Taunted by you deal 10% less Damage with Hits and Ailments against other targets
+When you create a Banner, it gains 20% of the Stages of your placed Banner
+When you place a Banner, you and nearby Allies recover 0.5% of Life for each Stage the Banner has
 // - Slayer
 20% of Overkill Damage is Leeched as Life
 Culling Strike
@@ -183,6 +189,8 @@ You and Nearby Party Members Share Power, Frenzy and Endurance Charges with each
 10% chance to create Consecrated Ground when you Hit a Rare or Unique Enemy, lasting 8 seconds
 30% chance to create Consecrated Ground on Kill, lasting 8 seconds
 30% chance to create Consecrated Ground when Hit, lasting 8 seconds
+// - Hierophant
+Skills that would Summon a Totem Summon two Totems instead
 // - Assassin
 Critical Strikes have Culling Strike
 Damage from your Critical Strikes cannot be Reflected

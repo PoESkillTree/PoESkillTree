@@ -1,8 +1,14 @@
 ﻿// TODO not handled yet
+// - requires updated gem data
+banner skills reserve no mana
+Brand Recall has 30% increased Cooldown Recovery Speed
 // - requires a Triggered stat
 35% less Damage if Triggered
 // - requires the Hinder buff
 Hindered Enemies take 20% increased Chaos Damage
+Nearby Hindered Enemies deal 15% reduced Damage over Time
+// - requires the Withered buff
+Every second, inflict Withered on nearby Enemies for 15 seconds
 // - modifies sub skill
 Raised Zombies' Slam Attack has 100% increased Area of Effect
 Raised Zombies' Slam Attack has 100% increased Cooldown Recovery Speed

@@ -371,7 +371,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     (int) DamageType.Physical
                 },
                 {
-                    TotalOverride, _stat.AilmentDealtDamageType(Common.Builders.Effects.Ailment.Ignite),
+                    TotalOverride, _stat.AilmentDealtDamageType(Common.Builders.Effects.Ailment.Poison),
                     (int) DamageType.Chaos
                 },
                 {

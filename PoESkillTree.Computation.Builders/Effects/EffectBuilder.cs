@@ -1,6 +1,7 @@
 ﻿using System;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Effects;
@@ -41,15 +42,18 @@ namespace PoESkillTree.Computation.Builders.Effects
         public virtual IStatBuilder AddStat(IStatBuilder stat) =>
             stat.WithCondition(IsOn(new ModifierSourceEntityBuilder()));
 
-        protected IStatBuilder FromIdentity(string identitySuffx, Type dataType) =>
-            new StatBuilder(StatFactory, CoreStatBuilderFromIdentity(identitySuffx, dataType));
+        protected IStatBuilder FromIdentity(
+            string identitySuffix, Type dataType, ExplicitRegistrationType explicitRegistrationType = null)
+            => new StatBuilder(StatFactory,
+                CoreStatBuilderFromIdentity(identitySuffix, dataType, explicitRegistrationType));
 
-        protected IDamageRelatedStatBuilder DamageRelatedFromIdentity(string identitySuffx, Type dataType) =>
-            DamageRelatedStatBuilder.Create(StatFactory, CoreStatBuilderFromIdentity(identitySuffx, dataType));
+        protected IDamageRelatedStatBuilder DamageRelatedFromIdentity(string identitySuffix, Type dataType) =>
+            DamageRelatedStatBuilder.Create(StatFactory, CoreStatBuilderFromIdentity(identitySuffix, dataType));
 
-        protected ICoreStatBuilder CoreStatBuilderFromIdentity(string identitySuffx, Type dataType) =>
-            new CoreStatBuilderFromCoreBuilder<string>(Identity,
-                (e, id) => StatFactory.FromIdentity($"{id}.{identitySuffx}", e, dataType));
+        protected ICoreStatBuilder CoreStatBuilderFromIdentity(
+            string identitySuffix, Type dataType, ExplicitRegistrationType explicitRegistrationType = null)
+            => new CoreStatBuilderFromCoreBuilder<string>(Identity,
+                (e, id) => StatFactory.FromIdentity($"{id}.{identitySuffix}", e, dataType, explicitRegistrationType));
 
         public string Build(BuildParameters parameters) => Identity.Build(parameters);
     }

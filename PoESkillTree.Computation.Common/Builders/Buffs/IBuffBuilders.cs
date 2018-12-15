@@ -53,6 +53,7 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         IBuffBuilder Tailwind { get; }
         IBuffBuilder CoveredInAsh { get; }
         IBuffBuilder Innervation { get; }
+        IBuffBuilder Impale { get; }
 
         /// <summary>
         /// Gets a buff factory that creates Conflux buffs.

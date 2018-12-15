@@ -64,6 +64,7 @@ namespace PoESkillTree.Computation.Data
                 { "if you get a critical strike", CriticalStrike.On },
                 // skill cast
                 { "when you place a totem", Totems.Cast.On },
+                { "when you summon a totem", Totems.Cast.On },
                 { "when you use a warcry", Skills[Keyword.Warcry].Cast.On },
                 // block
                 { "when they block", Block.On },

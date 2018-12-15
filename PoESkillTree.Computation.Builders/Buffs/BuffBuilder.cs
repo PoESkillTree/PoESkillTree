@@ -47,6 +47,9 @@ namespace PoESkillTree.Computation.Builders.Buffs
         public IActionBuilder Action =>
             new ActionBuilder(StatFactory, Identity, new ModifierSourceEntityBuilder());
 
+        public IStatBuilder StackCount =>
+            FromIdentity("StackCount", typeof(int), ExplicitRegistrationTypes.UserSpecifiedValue());
+
         public override IStatBuilder On(IEntityBuilder target) =>
             base.On(target)
                 .CombineWith(new StatBuilder(StatFactory, FromStatFactory(BuildBuffActiveStat)))

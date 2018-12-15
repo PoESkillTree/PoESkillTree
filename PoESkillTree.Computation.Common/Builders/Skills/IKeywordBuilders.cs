@@ -50,6 +50,8 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
 
         IKeywordBuilder Bow { get; }
 
+        IKeywordBuilder Brand { get; }
+
         IKeywordBuilder From(Keyword keyword);
     }
 }

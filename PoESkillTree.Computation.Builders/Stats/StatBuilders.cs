@@ -78,6 +78,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder RampageStacks => FromIdentity(typeof(int));
         public IStatBuilder CharacterSize => FromIdentity(typeof(double));
         public IStatBuilder LightRadius => FromIdentity(typeof(double));
+        public IStatBuilder AttachedBrands => FromIdentity(typeof(int));
 
         public IStatBuilder DamageTakenGainedAsMana =>
             FromIdentity("% of damage taken gained as mana over 4 seconds", typeof(int));
@@ -219,6 +220,10 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder AlwaysStationary
             => FromIdentity("Are you always stationary?", typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue());
+
+        public IStatBuilder BrandAttachedToEnemy
+            => FromIdentity("Is your Brand attached to an enemy?", typeof(bool),
+                ExplicitRegistrationTypes.UserSpecifiedValue());
 
         public IStatBuilder AffectedByMinionDamageIncreases
         {

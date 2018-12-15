@@ -48,6 +48,11 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         IDamageStatBuilder Damage { get; }
 
         /// <summary>
+        /// Gets a stat representing the multiplier to damage of this type.
+        /// </summary>
+        IDamageRelatedStatBuilder DamageMultiplier { get; }
+
+        /// <summary>
         /// Starts constructing a stat representing the percentage of damage of this stat's damage types that is taken
         /// from the given pool before being taken from another pool.
         /// </summary>

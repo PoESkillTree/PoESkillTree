@@ -41,6 +41,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "nearby enemies (have|deal)", s => Buff.Aura(s, Enemy) },
                 { "nearby enemies(?= take)", s => Buff.Aura(s, Enemy) },
+                { "nearby chilled enemies deal", s => Buff.Aura(s, Enemy).WithCondition(Ailment.Chill.IsOn(Enemy)) },
                 { "enemies near your totems (have|deal)", s => Buff.Aura(s, Enemy).For(Entity.Totem) },
                 { "enemies near your totems(?= take)", s => Buff.Aura(s, Enemy).For(Entity.Totem) },
                 { "({BuffMatchers}) grants", s => Reference.AsBuff.AddStat(s) },

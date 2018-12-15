@@ -268,8 +268,13 @@ namespace PoESkillTree.Computation.Data
                 // skills
                 { "base duration is # seconds", BaseSet, Value, Stat.Duration },
                 { "base secondary duration is # seconds", BaseSet, Value, Stat.SecondaryDuration },
-                { "#% reduced duration", PercentReduce, Value, ApplyOnce(Stat.Duration, Stat.SecondaryDuration) },
+                {
+                    "#% increased duration(?! of)",
+                    PercentIncrease, Value, ApplyOnce(Stat.Duration, Stat.SecondaryDuration)
+                },
+                { "#% reduced duration(?! of)", PercentReduce, Value, ApplyOnce(Stat.Duration, Stat.SecondaryDuration) },
                 { "skills cost no mana", TotalOverride, 0, Mana.Cost },
+                { "you can cast an additional brand", BaseAdd, 1, Skills[Keyword.Brand].CombinedInstances },
                 // traps, mines, totems
                 { "trap lasts # seconds", BaseSet, Value, Stat.Trap.Duration },
                 { "mine lasts # seconds", BaseSet, Value, Stat.Mine.Duration },
@@ -297,6 +302,7 @@ namespace PoESkillTree.Computation.Data
                     "enemies can have # additional curse",
                     BaseAdd, Value, Buff.CurseLimit.For(Enemy)
                 },
+                { "you can apply an additional curse", BaseAdd, 1, Buff.CurseLimit.For(Enemy) },
                 { "unaffected by curses", PercentLess, 100, Buffs(targets: Self).With(Keyword.Curse).Effect },
                 { "immune to curses", TotalOverride, 0, Buffs(targets: Self).With(Keyword.Curse).On },
                 {

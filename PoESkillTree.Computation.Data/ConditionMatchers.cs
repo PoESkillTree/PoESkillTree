@@ -178,10 +178,9 @@ namespace PoESkillTree.Computation.Data
                 { "while affected by ({SkillMatchers})", Reference.AsSkill.Buff.IsOn(Self) },
                 { "during onslaught", Buff.Onslaught.IsOn(Self) },
                 { "while phasing", Buff.Phasing.IsOn(Self) },
-                { "if you've taunted an enemy recently", Buff.Taunt.Action.Recently },
+                { "if you've ({BuffMatchers}) an enemy recently,?", Reference.AsBuff.Action.Recently },
                 { "enemies you taunt( deal)?", And(For(Enemy), Buff.Taunt.IsOn(Self, Enemy)) },
-                { "enemies taunted by you", And(For(Enemy), Buff.Taunt.IsOn(Self, Enemy)) },
-                { "enemies maimed by you", And(For(Enemy), Buff.Maim.IsOn(Self, Enemy)) },
+                { "enemies ({BuffMatchers}) by you", And(For(Enemy), Reference.AsBuff.IsOn(Self, Enemy)) },
                 { "enemies you curse( have)?", And(For(Enemy), Buffs(Self, Enemy).With(Keyword.Curse).Any()) },
                 { "(against|from) blinded enemies", Buff.Blind.IsOn(Enemy) },
                 { "from taunted enemies", Buff.Taunt.IsOn(Enemy) },
@@ -240,6 +239,11 @@ namespace PoESkillTree.Computation.Data
                 { "if you summoned a golem in the past # seconds", Golems.Cast.InPastXSeconds(Value) },
                 // - by skill part
                 { "(beams|final wave) deals?", Stat.MainSkillPart.Value.Eq(1) },
+                // - other
+                {
+                    "brand skills deal to enemies they're attached to",
+                    And(With(Keyword.Brand), Flag.BrandAttachedToEnemy.IsSet)
+                },
                 // traps and mines
                 { "with traps", With(Keyword.Trap) },
                 { "skills used by traps have", With(Keyword.Trap) },

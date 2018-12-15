@@ -137,6 +137,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Stat.AreaOfEffect, 1 },
             { BaseSet, Stat.CooldownRecoverySpeed, 1 },
             { BaseSet, Stat.SkillStage.Minimum, 0 },
+            { BaseSet, Stat.AttachedBrands.Maximum, 1 },
         };
     }
 }

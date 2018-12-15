@@ -36,10 +36,11 @@ namespace PoESkillTree.Computation.Data
             },
             {
                 // Eldritch Battery
-                "(Spend Energy Shield before Mana for Skill Costs) energy shield protects mana instead of life",
+                @"(Spend Energy Shield before Mana for Skill Costs) energy shield protects mana instead of life (\d+% less Energy Shield Recharge Rate)",
                 "$1",
                 "100% of non-chaos damage is taken from energy shield before mana",
-                "-100% of non-chaos damage is taken from energy shield before life"
+                "-100% of non-chaos damage is taken from energy shield before life",
+                "$2"
             },
             {
                 // Chaos Inoculation
@@ -68,7 +69,7 @@ namespace PoESkillTree.Computation.Data
             },
             {
                 // Ancestral Bond
-                "(you can't deal damage with skills yourself) (can have up to 1 additional totem summoned at a time)",
+                "(you can't deal damage with skills yourself) (.* of Summoned Totems)",
                 "$1", "$2"
             },
             {

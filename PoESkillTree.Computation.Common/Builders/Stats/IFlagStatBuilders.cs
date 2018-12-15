@@ -22,5 +22,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder AlwaysMoving { get; }
 
         IStatBuilder AlwaysStationary { get; }
+
+        IStatBuilder BrandAttachedToEnemy { get; }
     }
 }

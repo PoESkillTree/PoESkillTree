@@ -40,6 +40,12 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         IActionBuilder Action { get; }
 
         /// <summary>
+        /// The number of stacks this buff currently has. Only relevant for buffs that can stack, the stat does
+        /// nothing for most buffs. The value has to be entered by the user.
+        /// </summary>
+        IStatBuilder StackCount { get; }
+
+        /// <summary>
         /// Builds an IValue that calculates the multiplier to the value of modifiers created from
         /// <see cref="AddStatForSource"/> and <see cref="IEffectBuilder.AddStat"/>. The ModifierSourceEntity is
         /// used as the target.

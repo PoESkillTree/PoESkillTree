@@ -43,7 +43,7 @@ Attack Skills deal 10% increased Damage with Ailments while Dual Wielding
 25% increased Skill Effect Duration
 +10 to Intelligence
 100% increased Totem Duration
-Can have up to 1 additional Totem summoned at a time
++1 to maximum number of Summoned Totems
 6% increased Damage per Enemy Killed by you or your Totems Recently
 10% increased Attack and Cast Speed while you have a Totem
 10% increased Physical Attack Damage while holding a Shield
@@ -66,7 +66,7 @@ Attack Skills deal 10% increased Damage with Ailments while holding a Shield
 20% increased Accuracy Rating with Daggers
 60% increased Critical Strike Chance with Daggers
 16% increased Damage with Ailments from Attack Skills while wielding a Dagger
-+6% to Chaos Resistance
++8% to Chaos Resistance
 +10 to Dexterity
 +10 to Dexterity
 8% increased Fire Damage
@@ -163,6 +163,7 @@ Attack Skills deal 10% increased Damage with Ailments while Dual Wielding
 10% increased Cast Speed for Curses
 +20 to maximum Energy Shield
 14% increased maximum Energy Shield
+10% increased Energy Shield Recharge Rate
 +10 to Dexterity
 4% increased maximum Life
 3% reduced Mana Cost of Skills
@@ -196,6 +197,8 @@ Cannot be Stunned while you have at least 25 Rage
 20% chance to gain a Power Charge on non-Critical Strike
 Minions have 10% increased maximum Life
 14% increased Totem Damage
+10% increased Totem Placement speed
+14% increased Damage with Brand Skills
 15% increased Physical Damage with Swords
 Attacks have 10% chance to cause Bleeding
 15% increased Damage with Ailments from Attack Skills while wielding a Sword
@@ -296,7 +299,7 @@ Energy Shield Recharge is not interrupted by Damage if Recharge began Recently
 6% increased Damage with Ailments from Attack Skills while wielding a Dagger
 10% increased Movement Speed
 Cannot be Stunned
-You cannot be slowed to below base speed
+Action Speed cannot be modified to below base value
 Movement Speed cannot be modified to below base value
 12% increased Attack Speed
 6% increased Cast Speed
@@ -409,7 +412,8 @@ Can have up to 2 additional Traps placed at a time
 4% reduced Mana Reserved
 10% increased Skill Effect Duration
 Can Allocate Passives from the Ranger's starting point
-15% increased Energy Shield Recharge Rate
++15 to maximum Energy Shield
+10% increased Energy Shield Recharge Rate
 5% increased Melee Attack Speed
 +2% Chance to Block Attack Damage while Dual Wielding or holding a Shield
 4% increased Trap Throwing Speed
@@ -486,6 +490,7 @@ Damage Penetrates 6% of Enemy Elemental Resistances
 +4% to Chaos Resistance
 6% increased effect of Non-Curse Auras from your Skills
 6% increased Cast Speed
+10% increased Energy Shield Recharge Rate
 20% increased Mana Regeneration Rate
 25% increased Critical Strike Chance
 Minions deal 10% increased Damage
@@ -504,6 +509,8 @@ Minions deal 10% increased Damage
 15% chance to Avoid interruption from Stuns while Casting
 20% increased Damage over Time
 1% of Life Regenerated per second
++8% to Non-Ailment Chaos Damage over Time Multiplier
++8% to Cold Damage over Time Multiplier
 5% increased maximum Life
 10% increased Fire Damage
 0.5% of Life Regenerated per second
@@ -517,10 +524,10 @@ Attacks have 5% chance to cause Bleeding
 24% increased Damage with Ailments from Attack Skills while wielding a Two Handed Weapon
 4% increased Attack Speed
 6% increased maximum Life
-20% increased Skill Effect Duration
-Minions deal 30% increased Damage
 Your Offering Skills also affect you
 Your Offerings have 50% reduced Effect on you
+20% increased Skill Effect Duration
+Minions deal 30% increased Damage
 Auras from your Skills grant 3% increased Attack and Cast Speed to you and Allies
 100% increased Life Leeched per second
 30% increased Damage while Leeching
@@ -538,9 +545,9 @@ Life Leech effects are not removed at Full Life
 10% increased Elemental Damage
 Converts all Evasion Rating to Armour. Dexterity provides no bonus to Evasion Rating
 20% increased Critical Strike Chance
-10% increased Totem Damage
-Spells Cast by Totems have 3% increased Cast Speed
-Attacks used by Totems have 5% increased Attack Speed
+Spells Cast by Totems have 5% increased Cast Speed
+Attacks used by Totems have 7% increased Attack Speed
+5% increased Brand Activation frequency
 Life Leeched per Second is doubled. Maximum Life Leech Rate is doubled. Life Regeneration has no effect.
 +10 to Dexterity
 25% increased maximum Mana
@@ -556,13 +563,18 @@ Minions have +5% to all Elemental Resistances
 4% increased maximum Life
 3% reduced Mana Cost of Skills
 15% chance to Avoid interruption from Stuns while Casting
++6% to Cold Damage over Time Multiplier
 10% increased Totem Life
 Totems have 10% additional Physical Damage Reduction
+Brand Skills have 10% increased Duration
 +10 to Intelligence
 Attacks have 15% chance to cause Bleeding
 10% chance to Poison on Hit
 18% increased Frenzy Charge Duration
-You and nearby Allies deal 35% increased Damage
+15% increased effect of Non-Curse Auras from your Skills
+Banner Skills Reserve no Mana
+When you create a Banner, it gains 20% of the Stages of your placed Banner
+When you place a Banner, you and nearby Allies recover 0.5% of Life for each Stage the Banner has
 You and nearby Allies have 12% increased Movement Speed
 20% increased Spell Damage
 5% increased Cast Speed
@@ -621,7 +633,7 @@ Attacks have 10% chance to cause Bleeding
 +10 to Dexterity
 12% increased Cold Damage
 10% increased Elemental Damage
-Enemies can have 1 additional Curse
+You can apply an additional Curse
 10% increased Effect of your Curses
 1.5% of Energy Shield Regenerated per second
 Cannot Be Stunned while you have Energy Shield
@@ -669,6 +681,10 @@ Bow Attacks have 10% chance to cause Bleeding
 6% increased Physical Damage with Staves
 8% increased Accuracy Rating with Staves
 6% increased Damage with Ailments from Attack Skills while wielding a Staff
+20% chance to Impale Enemies on Hit with Attacks
+Impales you inflict last 2 additional Hits
+If you've Impaled an Enemy Recently, you and nearby Allies have +1000 to Armour
+You and nearby Allies deal 4 to 8 added Physical Damage for each Impale on Enemy
 3% increased Attack Speed with Staves
 3% increased Attack Speed with Maces
 10% increased Armour
@@ -696,8 +712,6 @@ Damage Penetrates 10% Elemental Resistances
 8% increased Flask effect duration
 5% increased effect of Flasks on you
 6% increased maximum Energy Shield
-8% increased Cold Damage
-5% increased Effect of Chill
 6% increased maximum Energy Shield
 +10 to Dexterity
 12% increased Fire Damage with Attack Skills
@@ -781,6 +795,8 @@ Attack Skills deal 15% increased Damage with Ailments while holding a Shield
 +3% Chance to Block Attack Damage while holding a Shield
 6% increased Armour
 4% increased maximum Life
+12% increased Damage with Brand Skills
+10% increased Brand Attachment range
 4% increased Evasion Rating per Frenzy Charge
 +2% Chance to Block Spell Damage while wielding a Staff
 +2% Chance to Block Attack Damage while wielding a Staff
@@ -823,7 +839,8 @@ Immune to Shock
 10% increased Effect of Chill
 +10 to Dexterity
 Projectiles Pierce an additional Target
-15% increased Energy Shield Recharge Rate
++15 to maximum Energy Shield
+10% increased Energy Shield Recharge Rate
 10% increased Armour
 5% increased maximum Energy Shield
 100% increased Stun Duration on Enemies
@@ -841,6 +858,7 @@ Minions Regenerate 1% Life per second
 12% increased Evasion Rating and Armour
 +3% to all Elemental Resistances
 25% increased Critical Strike Chance with Totem Skills
+25% increased Critical Strike Chance with Brand Skills
 10% increased Spell Damage
 4% increased Attack Speed while Dual Wielding
 4% increased Cast Speed while Dual Wielding
@@ -887,6 +905,7 @@ Attack Skills deal 10% increased Damage with Ailments while holding a Shield
 10% chance to gain Onslaught for 4 seconds on Kill
 22% increased Chaos Damage
 +8% to Chaos Resistance
++8% to Non-Ailment Chaos Damage over Time Multiplier
 15% increased Fire Damage
 10% increased maximum Mana
 10% increased maximum Energy Shield
@@ -941,6 +960,8 @@ Summoned Sentinels use Crusade Slam
 100% increased Minion Accuracy Rating
 Minions Intimidate Enemies for 4 seconds on Hit
 If you've Hit an Enemy Recently, you and nearby Allies Regenerate 3.0% of Life per second
+Brand Skills have 10% increased Duration
+4% increased Brand Activation frequency
 +10 to Dexterity
 40% increased Defences from Equipped Shield
 10% increased maximum Life
@@ -962,6 +983,7 @@ Attacks have 5% chance to cause Bleeding
 15% increased Curse Duration
 10% chance to Poison on Hit
 +20% to Critical Strike Multiplier with Totem Skills
++20% to Critical Strike Multiplier with Brand Skills
 +14 to maximum Life
 20% increased Mana Regeneration Rate
 +1% Chance to Block Attack Damage while Dual Wielding or holding a Shield
@@ -1010,6 +1032,10 @@ Mine Damage Penetrates 10% Elemental Resistances
 6% increased maximum Life
 20% increased Mana Regeneration Rate
 0.8% of Life Regenerated per second
+You can Cast an additional Brand
+Brand Skills deal 30% increased Damage to Enemies they're Attached to
+Brand Skills have 10% increased Duration
+12% increased Brand Activation frequency
 20% increased Armour
 5% increased maximum Life
 1% of Life Regenerated per second
@@ -1021,6 +1047,7 @@ Projectiles Pierce all nearby Targets
 20% increased Cold Damage
 20% increased Freeze Duration on Enemies
 10% chance to Freeze
++10% to Cold Damage over Time Multiplier
 15% increased Effect of Chill
 10% increased Elemental Damage
 25% increased Mine Damage
@@ -1068,7 +1095,7 @@ Attack Skills deal 12% increased Damage with Ailments while Dual Wielding
 12% increased Trap Damage
 4% increased Trap Throwing Speed
 3% increased Cast Speed
-Enemies can have 1 additional Curse
+You can apply an additional Curse
 +20 to Strength and Intelligence
 4% increased maximum Mana
 6% increased Armour
@@ -1080,6 +1107,7 @@ Enemies can have 1 additional Curse
 +35% to Global Critical Strike Multiplier while wielding a Staff
 +10 to Strength
 15% increased Totem Placement speed
+10% increased Brand Attachment range
 10% increased Skill Effect Duration
 8% increased Attack Speed with Wands
 16% increased Damage with Wands
@@ -1094,6 +1122,7 @@ Enemies can have 1 additional Curse
 25% increased Damage with Ailments from Attack Skills while wielding an Axe
 +1 to Maximum Frenzy Charges
 14% increased Totem Damage
+14% increased Damage with Brand Skills
 6% increased Projectile Damage
 Minions have 4% increased Attack Speed
 Minions have 4% increased Cast Speed
@@ -1198,6 +1227,10 @@ Minions have 4% increased Cast Speed
 10% increased maximum Mana
 10% increased Mana Regeneration Rate
 6% increased maximum Life
++60% to Chaos Resistance
++20% to Non-Ailment Chaos Damage over Time Multiplier
+Every second, inflict Withered on nearby Enemies for 15 seconds
+Nearby Hindered Enemies deal 15% reduced Damage over Time
 12% increased Physical Attack Damage while holding a Shield
 Attack Skills deal 12% increased Damage with Ailments while holding a Shield
 Minions have 4% increased Attack Speed
@@ -1217,7 +1250,7 @@ Attack Skills deal 24% increased Damage with Ailments while Dual Wielding
 8% increased Cast Speed while Dual Wielding
 +20 to Dexterity
 25% chance to gain an Endurance Charge when you gain a Power Charge
-50% chance to gain a Power Charge when you place a Totem
+50% chance to gain a Power Charge when you Summon a Totem
 15% chance to gain a Power Charge if you or your Totems kill an Enemy
 5% reduced Elemental Damage taken while you have an Endurance Charge
 Damage Penetrates 5% Elemental Resistances while you have a Power Charge
@@ -1270,8 +1303,9 @@ Attack Skills deal 24% increased Damage with Ailments while Dual Wielding
 20% increased Shock Duration on Enemies
 10% chance to Shock
 15% increased Effect of Shock
-15% increased Damage over Time
-15% increased Chaos Damage
+10% increased Damage over Time
+10% increased Chaos Damage
++8% to Non-Ailment Chaos Damage over Time Multiplier
 8% increased Armour
 20% increased Mana Regeneration Rate
 20% increased Totem Placement speed
@@ -1282,6 +1316,7 @@ Attack Skills deal 24% increased Damage with Ailments while Dual Wielding
 +10 to Strength and Intelligence
 10% increased Projectile Damage
 10% increased Critical Strike Chance
+Nearby Enemies have -20% to Cold Resistance
 Nearby Enemies have -20% to Chaos Resistance
 Nearby Enemies have 100% reduced Life Regeneration rate
 12% increased Physical Damage with Maces
@@ -1383,7 +1418,7 @@ You gain 8% increased Damage for each Trap
 6% increased Damage with Ailments from Attack Skills while wielding a Dagger
 4% reduced Mana Reserved
 40% increased Attack and Cast Speed if Energy Shield Recharge has started Recently
-20% more chance to Evade while on full Energy Shield
+20% more Evasion Rating while on full Energy Shield
 10% chance to Dodge Attack and Spell Hits while you have Energy Shield
 10% increased Movement Speed while you have Energy Shield
 10% increased Global Accuracy Rating
@@ -1394,6 +1429,7 @@ You gain 8% increased Damage for each Trap
 50% reduced Mana Cost of Skills while on Full Energy Shield
 Gain 30% of Maximum Mana as Extra Maximum Energy Shield
 10% less Mana Reservation of Skills
+14% increased Damage with Brand Skills
 20% increased Fire Damage
 40% increased Burning Damage
 15% chance to Ignite
@@ -1423,6 +1459,9 @@ Cannot be Stunned if you haven't been Hit Recently
 10% increased Physical Damage with Swords
 20% increased Critical Strike Chance with Swords
 10% increased Damage with Ailments from Attack Skills while wielding a Sword
+You can Cast an additional Brand
+20% increased Damage with Brand Skills
+10% increased Brand Attachment range
 4% increased Attack Speed
 5% increased maximum Life
 +10 to Dexterity
@@ -1431,7 +1470,8 @@ Cannot be Stunned if you haven't been Hit Recently
 8% increased Physical Damage with Axes
 3% increased Attack Speed with Axes
 8% increased Damage with Ailments from Attack Skills while wielding an Axe
-12% increased Chaos Damage
+10% increased Chaos Damage
++3% to Non-Ailment Chaos Damage over Time Multiplier
 10% increased Projectile Damage
 12% chance to Knock Enemies Back on hit
 25% increased Knockback Distance
@@ -1496,7 +1536,9 @@ You and nearby allies have 6% increased Attack, Cast and Movement Speed if you'v
 Warcries cost no Mana
 8% increased Evasion Rating
 4% increased maximum Life
-Enemies can have 1 additional Curse
+8% increased maximum Energy Shield
++5% to Non-Ailment Chaos Damage over Time Multiplier
+You can apply an additional Curse
 15% increased Effect of your Curses
 When you Kill an Enemy, for each Curse on that Enemy, gain 8% of Non-Chaos Damage as extra Chaos Damage for 4 seconds
 Enemies you Curse have Malediction
@@ -1514,9 +1556,9 @@ Enemies you Curse have Malediction
 4% increased Movement Speed
 20% increased Critical Strike Chance
 +10 to Dexterity and Intelligence
-10% increased Totem Damage
-Spells Cast by Totems have 3% increased Cast Speed
-Attacks used by Totems have 5% increased Attack Speed
+Spells Cast by Totems have 5% increased Cast Speed
+Attacks used by Totems have 8% increased Attack Speed
+5% increased Brand Activation frequency
 10% increased Trap Damage
 10% increased Mine Damage
 +40 to Dexterity
@@ -1559,6 +1601,7 @@ Gain 5 Rage when you use a Warcry
 14% increased Armour
 6% increased maximum Energy Shield
 0.5% of Life Regenerated per second
+10% increased Cold Damage
 10% increased Chaos Damage
 8% increased maximum Energy Shield
 12% increased Lightning Damage
@@ -1653,6 +1696,8 @@ Attack Skills deal 24% increased Damage with Ailments while Dual Wielding
 40% increased Mine Detonation Area of Effect
 10% increased Totem Damage
 15% increased Critical Strike Chance with Totem Skills
+15% increased Critical Strike Chance with Brand Skills
+10% increased Damage with Brand Skills
 +10 to Intelligence
 6% increased maximum Energy Shield
 20% increased Global Physical Damage
@@ -1690,9 +1735,10 @@ Minions have +2% Chance to Block Attack Damage
 28% increased Damage with Ailments from Attack Skills while wielding a Mace
 28% increased Damage with Ailments from Attack Skills while wielding a Staff
 +10 to Strength
-Can have up to 1 additional Totem summoned at a time
 50% increased Totem Placement speed
+3% more Damage per Totem
 You Regenerate 0.5% of Mana per second per Totem
+Skills that would Summon a Totem Summon two Totems instead
 You and your Totems Regenerate 1% of Life per second per Totem
 20% of Overkill Damage is Leeched as Life
 You are Immune to Bleeding while Leeching
@@ -1703,7 +1749,7 @@ You are Immune to Bleeding while Leeching
 100% increased Global Accuracy Rating
 Projectiles Pierce 2 additional Targets
 Moving while Bleeding doesn't cause you to take extra Damage
-Projectiles gain Damage as they travel further, dealing up to 50% increased Damage with Hits to targets
+Projectiles gain Damage as they travel farther, dealing up to 50% increased Damage with Hits to targets
 Skills fire an additional Projectile
 15% increased Critical Strike Chance
 +30 to Dexterity
@@ -1714,7 +1760,8 @@ Skills fire an additional Projectile
 20% increased Accuracy Rating with Two Handed Melee Weapons
 25% increased Damage with Ailments from Attack Skills while wielding a Two Handed Weapon
 4% increased maximum Life
-12% increased Chaos Damage
+10% increased Chaos Damage
++3% to Non-Ailment Chaos Damage over Time Multiplier
 15% Chance to Block Spell Damage
 +3% to maximum Chance to Block Attack Damage
 Attacks have 25% chance to cause Bleeding
@@ -1774,8 +1821,10 @@ Enemies Taunted by you deal 10% less Damage with Hits and Ailments against other
 +10 to Dexterity and Intelligence
 10% increased Totem Life
 Totems gain +16% to all Elemental Resistances
+Brand Skills have 10% increased Duration
 20% increased Armour
 10% increased maximum Energy Shield
+10% increased Energy Shield Recharge Rate
 +8% to all Elemental Resistances
 Auras from your Skills grant 3% increased Attack and Cast Speed to you and Allies
 You and Allies affected by your Aura Skills deal 30% increased Damage
@@ -1789,6 +1838,7 @@ You and Allies affected by your Aura Skills have +20% to all Elemental Resistanc
 +15% to Critical Strike Multiplier with Claws
 10% increased Cold Damage
 5% chance to Freeze
++5% to Cold Damage over Time Multiplier
 8% increased Flask effect duration
 5% increased effect of Flasks on you
 10% reduced Reflected Elemental Damage taken
@@ -1863,7 +1913,8 @@ Cannot Be Stunned while you have Energy Shield
 5% increased Attack Speed with One Handed Weapons
 15% increased Physical Damage with Staves
 15% increased Damage with Ailments from Attack Skills while wielding a Staff
-12% increased Chaos Damage
+8% increased Chaos Damage
++3% to Non-Ailment Chaos Damage over Time Multiplier
 +10 to Intelligence
 8% increased maximum Mana
 8% increased Physical Damage with Claws
@@ -1897,6 +1948,8 @@ Single-target Melee attacks deal Splash Damage to surrounding targets
 Attack Skills deal 16% increased Damage with Ailments while Dual Wielding
 4% increased Attack Speed
 +10 to Dexterity
+20% increased Mana Regeneration Rate
+14% increased Damage with Brand Skills
 8% increased Area of Effect
 18% increased Endurance Charge Duration
 22% increased maximum Mana
@@ -1943,7 +1996,7 @@ Enemies you hit with Elemental Damage temporarily get +25% Resistance to those E
 +3% of maximum Life per second to maximum Life Leech rate
 20% increased Life Leeched per second
 10% chance to Fortify on Melee hit
-Enemies you Taunt take 10% increased Damage
+Enemies Taunted by you take 10% increased Damage
 25% chance to Taunt on Hit
 Your Hits permanently Intimidate Enemies that are on Full Life
 You and nearby Allies have 8% increased Movement Speed
@@ -1990,7 +2043,7 @@ You gain 8% increased Area of Effect for each Mine
 14% increased Armour
 6% increased maximum Energy Shield
 Minions deal 10% increased Damage
-Nearby Enemies Take 16% increased Elemental Damage
+Nearby Enemies take 16% increased Elemental Damage
 Nearby Enemies deal 8% less Elemental Damage
 15% increased Critical Strike Chance
 5% increased Effect of your Curses
@@ -2021,6 +2074,7 @@ Minions deal 10% increased Damage
 20% increased Freeze Duration on Enemies
 15% chance to Avoid Elemental Ailments
 18% increased Endurance Charge Duration
+14% increased Damage with Brand Skills
 30% increased Chaos Damage
 Chaos Skills have 50% increased Area of Effect
 When you kill a Poisoned Enemy during any Flask Effect, nearby Enemies are Poisoned
@@ -2046,6 +2100,8 @@ Minions deal 12% increased Damage
 10% increased Projectile Damage
 3% increased Attack Speed with Bows
 15% increased Critical Strike Chance with Bows
+15% increased Evasion Rating and Armour
+8% increased Impale Effect
 +30 to maximum Life
 10% increased maximum Life
 40% increased Physical Damage with Wands
@@ -2063,7 +2119,7 @@ Minions deal 12% increased Damage
 15% more Damage over Time
 8% increased maximum Mana
 10% increased Mana Recovery from Flasks
-You can't deal Damage with Skills yourself Can have up to 1 additional Totem summoned at a time
+You can't deal Damage with Skills yourself +1 to maximum number of Summoned Totems
 30% increased Armour
 +5% to all Elemental Resistances
 4% additional Physical Damage Reduction
@@ -2072,7 +2128,7 @@ You can't deal Damage with Skills yourself Can have up to 1 additional Totem sum
 3% increased Attack Speed
 8% increased Global Accuracy Rating
 25% increased maximum Mana
-Can have up to 1 additional Totem summoned at a time
++1 to maximum number of Summoned Totems
 8% of Damage is taken from Mana before Life
 Gain Arcane Surge when you or your Totems Hit an Enemy with a Spell
 20% increased Spell Damage while you have Arcane Surge
@@ -2081,6 +2137,8 @@ Grants Armour equal to 160% of your Reserved Life to you and nearby Allies
 Grants maximum Energy Shield equal to 15% of your Reserved Mana to you and nearby Allies
 5% increased Attack Speed
 14% increased Damage with Two Handed Weapons
+-1 to maximum number of Summoned Totems
+You can have an additional Brand Attached to an Enemy
 5% increased Effect of your Curses
 +1 to Maximum Frenzy Charges
 5% increased maximum Life
@@ -2118,7 +2176,8 @@ Minions have 3% increased Cast Speed
 12% increased Attack Physical Damage
 6% increased Attack Speed
 14% increased Totem Damage
-12% increased Chaos Damage
+10% increased Chaos Damage
++3% to Non-Ailment Chaos Damage over Time Multiplier
 +10 to Strength
 +6% Chance to Block Spell Damage while wielding a Staff
 10% chance to gain a Power Charge when you Block
@@ -2146,6 +2205,8 @@ Culling Strike
 Life Leech effects are not removed at Full Life
 20% increased Area of Effect if you've Killed Recently
 Cannot take Reflected Physical Damage
+8% increased maximum Energy Shield
++5% to Cold Damage over Time Multiplier
 12% increased Physical Damage with Two Handed Melee Weapons
 12% increased Damage with Ailments from Attack Skills while wielding a Two Handed Weapon
 8% increased Global Physical Damage
@@ -2178,7 +2239,7 @@ Minions Leech 0.2% of Damage as Life
 Damage Penetrates 6% of Enemy Elemental Resistances
 10% chance to create Consecrated Ground when you Hit a Rare or Unique Enemy, lasting 8 seconds
 Immune to Elemental Ailments while on Consecrated Ground
-Nearby Enemies Take 10% increased Elemental Damage
+Nearby Enemies take 10% increased Elemental Damage
 +50 to Evasion Rating
 30% increased Evasion Rating
 20% increased Critical Strike Chance with Daggers
@@ -2196,6 +2257,7 @@ Nearby Enemies Take 10% increased Elemental Damage
 Gain Accuracy Rating equal to your Strength
 12% increased Lightning Damage with Attack Skills
 10% increased Damage over Time
++3% to Non-Ailment Chaos Damage over Time Multiplier
 4% increased maximum Life
 +3% to all Elemental Resistances
 Attacks have 25% chance to cause Bleeding
@@ -2207,6 +2269,8 @@ Gain +30 Life when you Hit a Bleeding Enemy
 3% increased Attack and Cast Speed
 100% increased Global Critical Strike Chance if you've Summoned a Totem Recently
 +20% to Critical Strike Multiplier with Totem Skills
+50% increased Critical Strike Chance with Brand Skills
++20% to Critical Strike Multiplier with Brand Skills
 +10 to Intelligence
 12% increased Physical Damage with Axes
 12% increased Damage with Ailments from Attack Skills while wielding an Axe
@@ -2237,6 +2301,7 @@ Far Shot
 10% chance to Poison on Hit with Attacks
 12% increased Damage Over Time with Bow Skills
 +20% to Critical Strike Multiplier with Totem Skills
++20% to Critical Strike Multiplier with Brand Skills
 25% increased Damage with Hits against Frozen, Shocked or Ignited Enemies
 30% increased Burning Damage
 5% chance to Freeze, Shock and Ignite
@@ -2328,6 +2393,12 @@ Can have up to 1 additional Remote Mine placed at a time
 0.5% of Life Regenerated per second
 15% increased Endurance Charge Duration
 +15% to Critical Strike Multiplier for Spells
+Cannot be Chilled
+Cannot be Frozen
++20% to Cold Damage over Time Multiplier
+Every 4 seconds, 33% chance to Freeze nearby Chilled Unique Enemies for 0.6 seconds
+Every 4 seconds, Freeze nearby Chilled Non-Unique Enemies for 0.6 seconds
+Nearby Chilled Enemies deal 10% reduced Damage with Hits
 +6% to all Elemental Resistances
 10% increased Elemental Damage
 12% increased Chaos Damage
@@ -2365,9 +2436,9 @@ Unaffected by Ignite
 10% increased maximum Energy Shield
 10% increased Energy Shield Recharge Rate
 +8% to all Elemental Resistances
-20% increased Skill Effect Duration
 Your Offering Skills also affect you
 Your Offerings have 50% reduced Effect on you
+20% increased Skill Effect Duration
 40% increased Damage if you have consumed a corpse Recently
 2% increased Attack and Cast Speed for each corpse consumed Recently
 10% increased Global Physical Damage
@@ -2445,6 +2516,7 @@ Attack Skills deal 12% increased Damage with Ailments while Dual Wielding
 +15% to Critical Strike Multiplier for Spells
 15% increased Totem Life
 Totems gain +10% to all Elemental Resistances
+10% increased Brand Attachment range
 18% increased Frenzy Charge Duration
 +10 to Dexterity
 12% increased Attack Physical Damage
@@ -2488,7 +2560,7 @@ Using Warcries is Instant
 5% increased Skill Effect Duration
 10% increased Global Physical Damage
 10% increased Chaos Damage
-+6% to Chaos Resistance
++8% to Chaos Resistance
 8% increased Area of Effect
 Every 14 seconds: Gain Chilling Conflux for 4 seconds Gain Shocking Conflux for 4 seconds Gain Igniting Conflux for 4 seconds Gain Chilling, Shocking and Igniting Conflux for 2 seconds
 12% increased Cold Damage with Attack Skills
@@ -2501,6 +2573,10 @@ Every 14 seconds: Gain Chilling Conflux for 4 seconds Gain Shocking Conflux for 
 Can have up to 2 additional Remote Mines placed at a time
 20% increased Mine Laying Speed if you Detonated Mines Recently
 40% increased Damage if you Detonated Mines Recently
+You can Cast an additional Brand
+Enemies take 10% increased Damage for each of your Brands Attached to them
+Brand Recall has 30% increased Cooldown Recovery Speed
+14% increased Brand Attachment range
 Minions have 7% increased maximum Life
 Minions have +5% to Chaos Resistance
 5% increased Attack Speed with Wands
@@ -2515,6 +2591,7 @@ Minions have +5% to Chaos Resistance
 20% increased Arrow Speed
 12% increased Damage Over Time with Bow Skills
 +10 to Intelligence
+14% increased Damage with Brand Skills
 15% increased Armour
 20% increased Stun Duration on Enemies
 +10 to maximum Mana
@@ -2541,9 +2618,12 @@ Minions have 10% increased maximum Life
 +10 to Dexterity
 8% increased Evasion Rating
 8% increased Melee Damage
-25% increased Chaos Damage
+20% increased Chaos Damage
 4% increased Cast Speed with Chaos Skills
 +8% to Chaos Resistance
++10% to Non-Ailment Chaos Damage over Time Multiplier
+12% increased Damage with Brand Skills
+10% increased Brand Attachment range
 25% increased Skill Effect Duration
 5% increased Attack Speed
 10% increased Projectile Damage
@@ -2567,6 +2647,7 @@ Totems Reflect 15% of their maximum Life as Fire Damage to nearby Enemies when H
 +15% to Critical Strike Multiplier for Spells
 +2% Chance to Block Attack Damage while holding a Shield
 10% increased Cold Damage
++5% to Cold Damage over Time Multiplier
 10% increased Effect of Chill
 30% increased Totem Damage
 15% increased Totem Placement speed
@@ -2680,7 +2761,7 @@ Recover 4% of Maximum Mana on Kill
 +10 to Strength
 +30 to Dexterity
 8% increased Elemental Damage with Wands
-Spend Energy Shield before Mana for Skill Costs Energy Shield protects Mana instead of Life
+Spend Energy Shield before Mana for Skill Costs Energy Shield protects Mana instead of Life 50% less Energy Shield Recharge Rate
 10% increased Evasion Rating
 5% increased maximum Energy Shield
 10% increased maximum Life
@@ -2690,6 +2771,7 @@ Spend Energy Shield before Mana for Skill Costs Energy Shield protects Mana inst
 10% increased Physical Damage with Daggers
 3% increased Attack Speed with Daggers
 10% increased Damage with Ailments from Attack Skills while wielding a Dagger
++6% to Cold Damage over Time Multiplier
 +2% Chance to Block Attack Damage while Dual Wielding
 6% increased Physical Weapon Damage while Dual Wielding
 Attack Skills deal 6% increased Damage with Ailments while Dual Wielding
@@ -2732,7 +2814,7 @@ Can Allocate Passives from the Witch's starting point
 +4% to Chaos Resistance per Endurance Charge
 4% increased Attack Speed
 +2% Chance to Block Attack Damage while Dual Wielding
-Enemies you Taunt take 20% increased Damage
+Enemies Taunted by you take 20% increased Damage
 Enemies Taunted by you cannot Evade Attacks
 5% reduced Enemy Stun Threshold
 2% of Life Regenerated per second
@@ -2799,6 +2881,7 @@ Attack Skills deal 20% increased Damage with Ailments while holding a Shield
 12% increased Cold Damage
 Enemies Become Chilled as they Unfreeze
 10% chance to Freeze Enemies which are Chilled
++10% to Cold Damage over Time Multiplier
 10% increased Effect of Chill
 8% increased maximum Life
 +8% to Chaos Resistance
@@ -2819,8 +2902,9 @@ Enemies Become Chilled as they Unfreeze
 14% increased Damage with Ailments from Attack Skills while wielding a Mace
 8% increased maximum Mana
 8% increased Cold Damage
-30% increased Chill Duration on Enemies
+20% increased Chill Duration on Enemies
 20% increased Freeze Duration on Enemies
+5% increased Effect of Chill
 12% increased Lightning Damage
 10% increased Elemental Damage
 8% increased Cold Damage
@@ -2833,7 +2917,8 @@ Damage Penetrates 6% of Enemy Elemental Resistances
 50% increased Melee Critical Strike Chance
 +25% to Melee Critical Strike Multiplier
 8% increased Evasion Rating
-12% increased Chaos Damage
+8% increased Chaos Damage
++3% to Non-Ailment Chaos Damage over Time Multiplier
 10% increased Elemental Damage
 8% increased maximum Mana
 4% increased Attack Speed while Dual Wielding
@@ -3005,8 +3090,9 @@ Minions have +15% to Chaos Resistance
 5% increased Spell Damage per Power Charge
 Gain a Power Charge after Spending a total of 200 Mana
 +1 to Maximum Power Charges
++30 to maximum Energy Shield
 15% faster start of Energy Shield Recharge
-30% increased Energy Shield Recharge Rate
+10% increased Energy Shield Recharge Rate
 5% increased Damage per Endurance Charge
 5% increased Area of Effect per Endurance Charge
 25% chance to gain an Endurance Charge when you Stun an Enemy
@@ -3062,10 +3148,11 @@ Life Regeneration is applied to Energy Shield instead
 +1% Chance to Block Attack Damage for each time you've Blocked in the past 10 seconds
 12% increased Attack Physical Damage
 6% increased Attack Speed
-16% increased Totem Damage
-16% increased Totem Life
-16% increased Totem Duration
-16% increased Totem Placement speed
+24% increased Totem Damage
+20% increased Totem Life
+20% increased Totem Duration
+24% increased Damage with Brand Skills
+Brand Skills have 20% increased Duration
 12% increased Damage
 +10 to maximum Energy Shield
 +10 to Dexterity
@@ -3106,7 +3193,7 @@ Knocks Back Enemies if you get a Critical Strike with a Staff
 10% increased Elemental Damage
 5% increased maximum Life
 Elemental Ailments caused by your Skills spread to other nearby Enemies Radius: 18
-Chills from your Hits always Slow by at least 10%
+Chills from your Hits always reduce Action Speed by at least 10%
 20% more Damage with Ignite
 Shocks from your Hits always increase Damage taken by at least 20%
 Gain 10% of Wand Physical Damage as Extra Cold Damage
@@ -3137,6 +3224,7 @@ Spectres have 100% increased maximum Life
 Spectres have 100% increased Damage
 Spells Cast by Totems have 5% increased Cast Speed
 Attacks used by Totems have 8% increased Attack Speed
+5% increased Brand Activation frequency
 5% increased maximum Life
 8% increased maximum Mana
 10% increased Mana Regeneration Rate

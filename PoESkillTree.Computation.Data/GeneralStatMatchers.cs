@@ -50,6 +50,15 @@ namespace PoESkillTree.Computation.Data
                 // offense
                 // - damage: see also DamageStatMatchers
                 { "chance to deal double damage", Damage.ChanceToDouble },
+                // - damage multiplier
+                {
+                    "({DamageTypeMatchers}) damage over time multiplier",
+                    Reference.AsDamageType.DamageMultiplier.With(DamageSource.OverTime)
+                },
+                {
+                    "non-ailment ({DamageTypeMatchers}) damage over time multiplier",
+                    Reference.AsDamageType.DamageMultiplier.WithSkills(DamageSource.OverTime)
+                },
                 // - damage taken
                 { "damage taken", Damage.Taken },
                 { "({DamageTypeMatchers}) damage taken", Reference.AsDamageType.Damage.Taken },
@@ -185,6 +194,7 @@ namespace PoESkillTree.Computation.Data
                 { "attack and cast speed", Stat.CastRate },
                 { "attack, cast( speed)? and movement speed", Stat.CastRate, Stat.MovementSpeed },
                 { "hit rate", Stat.HitRate },
+                { "brand activation frequency", Stat.HitRate, With(Keyword.Brand) },
                 // regen and recharge
                 { "({PoolStatMatchers}) regeneration rate", Reference.AsPoolStat.Regen },
                 { "energy shield recharge rate", EnergyShield.Recharge },
@@ -240,6 +250,7 @@ namespace PoESkillTree.Computation.Data
                 { "traps? placed at a time", Traps.CombinedInstances.Maximum },
                 { "remote mines? placed at a time", Mines.CombinedInstances.Maximum },
                 { "totems? summoned at a time", Totems.CombinedInstances.Maximum },
+                { "maximum number of summoned totems", Totems.CombinedInstances.Maximum },
                 { "trap trigger area of effect", Stat.Trap.TriggerAoE },
                 { "mine detonation area of effect", Stat.Mine.DetonationAoE },
                 { "trap throwing speed", Stat.Trap.Speed },
@@ -290,6 +301,7 @@ namespace PoESkillTree.Computation.Data
                 { "chance to taunt", Buff.Taunt.Chance },
                 { "chance to blind( enemies)?", Buff.Blind.Chance },
                 { "chance to cover rare or unique enemies in ash", Buff.CoveredInAsh.Chance, Enemy.IsRareOrUnique },
+                { "chance to impale enemies", Buff.Impale.Chance },
                 // - duration
                 { "({BuffMatchers}) duration", Reference.AsBuff.Duration },
                 { "blinding duration", Buff.Blind.Duration },
