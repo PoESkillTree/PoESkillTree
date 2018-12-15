@@ -5,6 +5,7 @@ using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.GameModel.StatTranslation;
@@ -18,14 +19,17 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     public class TranslatingSkillParser
     {
         private readonly IBuilderFactories _builderFactories;
+        private readonly IMetaStatBuilders _metaStatBuilders;
         private readonly UntranslatedStatParserFactory _statParserFactory;
 
         private SkillPreParseResult _preParseResult;
         private IEnumerable<UntranslatedStat> _parsedStats;
 
         public TranslatingSkillParser(
-            IBuilderFactories builderFactories, UntranslatedStatParserFactory statParserFactory)
-            => (_builderFactories, _statParserFactory) = (builderFactories, statParserFactory);
+            IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
+            UntranslatedStatParserFactory statParserFactory)
+            => (_builderFactories, _metaStatBuilders, _statParserFactory) =
+                (builderFactories, metaStatBuilders, statParserFactory);
 
         public ParseResult Parse(
             Skill skill, SkillPreParseResult preParseResult, PartialSkillParseResult partialResult)
@@ -34,6 +38,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             _parsedStats = partialResult.ParsedStats.ToHashSet();
 
             var isMainSkill = preParseResult.IsMainSkill.IsSet;
+            var isActiveSkill = _metaStatBuilders.IsActiveSkill(skill);
             var level = preParseResult.LevelDefinition;
             var qualityStats = level.QualityStats.Select(s => ApplyQuality(s, skill));
             var parseResults = new List<ParseResult>
@@ -52,12 +57,12 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
             var qualityBuffStats =
                 level.QualityBuffStats.Select(s => new BuffStat(ApplyQuality(s.Stat, skill), s.AffectedEntities));
-            parseResults.Add(TranslateAndParseBuff(qualityBuffStats));
-            parseResults.Add(TranslateAndParseBuff(level.BuffStats));
+            parseResults.Add(TranslateAndParseBuff(qualityBuffStats, isActiveSkill));
+            parseResults.Add(TranslateAndParseBuff(level.BuffStats, isActiveSkill));
 
             var qualityPassiveStats = level.QualityPassiveStats.Select(s => ApplyQuality(s, skill));
-            parseResults.Add(TranslateAndParse(qualityPassiveStats, _preParseResult.IsActiveSkill));
-            parseResults.Add(TranslateAndParse(level.PassiveStats, _preParseResult.IsActiveSkill));
+            parseResults.Add(TranslateAndParse(qualityPassiveStats, isActiveSkill));
+            parseResults.Add(TranslateAndParse(level.PassiveStats, isActiveSkill));
 
             _preParseResult = null;
             _parsedStats = null;
@@ -71,7 +76,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             return ApplyCondition(result, condition);
         }
 
-        private ParseResult TranslateAndParseBuff(IEnumerable<BuffStat> buffStats)
+        private ParseResult TranslateAndParseBuff(IEnumerable<BuffStat> buffStats, IConditionBuilder condition)
         {
             var results = new List<ParseResult>();
             var buffBuilder = _builderFactories.SkillBuilders.FromId(_preParseResult.SkillDefinition.Id).Buff;
@@ -82,7 +87,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     var result = Parse(StatTranslationLoader.MainFileName, stat, affectedEntity);
                     if (result.SuccessfullyParsed && result.Modifiers.IsEmpty())
                         result = Parse(StatTranslationLoader.SkillFileName, stat, affectedEntity);
-                    result = ApplyCondition(result, _preParseResult.IsActiveSkill);
+                    result = ApplyCondition(result, condition);
 
                     var buildParameters = new BuildParameters(_preParseResult.GlobalSource, affectedEntity, default);
                     var multiplier = buffBuilder.BuildAddStatMultiplier(buildParameters, new[] { Entity.Character });

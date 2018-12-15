@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Damage;
+﻿using PoESkillTree.Computation.Common.Builders.Conditions;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.GameModel.Items;
@@ -96,5 +97,16 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         IStatBuilder SelectedBandit { get; }
         IStatBuilder SelectedQuestPart { get; }
+    }
+
+    public static class MetaStatBuildersExtensions
+    {
+        public static IConditionBuilder IsActiveSkill(this IMetaStatBuilders @this, Skill skill)
+        {
+            var activeSkillItemSlot = @this.ActiveSkillItemSlot(skill.Id);
+            var activeSkillSocketIndex = @this.ActiveSkillSocketIndex(skill.Id);
+            return activeSkillItemSlot.Value.Eq((double) skill.ItemSlot)
+                .And(activeSkillSocketIndex.Value.Eq(skill.SocketIndex));
+        }
     }
 }

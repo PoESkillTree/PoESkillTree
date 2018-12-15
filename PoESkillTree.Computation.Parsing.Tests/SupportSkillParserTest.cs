@@ -82,7 +82,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         [TestCase(true)]
         [TestCase(false)]
-        public void BlasphemyParsesPassiveStatsWithIsActiveSkillCondition(bool isActiveSkill)
+        public void BlasphemyParsesPassiveStatsWithParsedSkillIsActiveSkillCondition(bool isActiveSkill)
         {
             var expected = isActiveSkill ? (NodeValue?) 10 : null;
             var (activeDefinition, activeSkill) = CreateEnfeebleDefinition();
@@ -96,7 +96,9 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 p.Parse(parameter) == parseResult &&
                 p.Parse(EmptyParserParameter(source)) == EmptyParseResult);
             var sut = CreateSut(activeDefinition, supportDefinition, statParser);
-            var context = MockValueCalculationContext(activeSkill, false, isActiveSkill);
+            var context = MockValueCalculationContextForActiveSkill(activeSkill,
+                ("Blasphemy.ActiveSkillItemSlot", isActiveSkill ? (double?) supportSkill.ItemSlot : null),
+                ("Blasphemy.ActiveSkillSocketIndex", 1));
 
             var result = sut.Parse(activeSkill, supportSkill);
 
