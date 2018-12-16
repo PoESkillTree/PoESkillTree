@@ -106,15 +106,19 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithHits,
                     dt => _stat.EnemyResistanceAgainstNonCrits(dt),
                     dt => DamageTaken(dt).WithHits.For(Enemy),
-                    (_, resistance, damageTaken) => DamageTakenMultiplier(resistance, damageTaken)
+                    dt => DamageMultiplier(dt).WithHits,
+                    (_, resistance, damageTaken, damageMulti)
+                        => DamageTakenMultiplier(resistance, damageTaken) * damageMulti.Value.AsPercentage
                 },
                 {
                     TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).WithHits,
                     dt => _stat.EnemyResistanceAgainstCrits(dt),
                     dt => DamageTaken(dt).WithHits.For(Enemy),
+                    dt => DamageMultiplier(dt).WithHits,
                     _ => CriticalStrike.Multiplier.WithHits,
-                    (_, resistance, damageTaken, mult)
-                        => DamageTakenMultiplier(resistance, damageTaken) * mult.Value.AsPercentage
+                    (_, resistance, damageTaken, damageMulti, critMulti)
+                        => DamageTakenMultiplier(resistance, damageTaken) * damageMulti.Value.AsPercentage
+                                                                          * critMulti.Value.AsPercentage
                 },
                 // - enemy resistance against crit/non-crit hits per source and type
                 {
@@ -151,74 +155,23 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 {
                     TotalOverride,
                     dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithSkills(DamageSource.OverTime),
-                    dt => EnemyDamageTakenMultiplier(DamageTypeBuilders.From(dt),
-                        DamageTaken(dt).WithSkills(DamageSource.OverTime))
+                    dt => EnemyDamageTakenMultiplier(dt, DamageTaken(dt).WithSkills(DamageSource.OverTime))
+                          * DamageMultiplier(dt).WithSkills(DamageSource.OverTime).Value.AsPercentage
                 },
 
-                // ignite damage
-                // - average damage
-                {
-                    TotalOverride, _stat.AverageAilmentDamage(Common.Builders.Effects.Ailment.Ignite),
-                    CombineSource(_stat.AverageDamage.With(Ailment.Ignite),
-                        CombineHandsForAverageAilmentDamage(Common.Builders.Effects.Ailment.Ignite))
-                },
-                // - effective crit/non-crit damage multiplier per source and type
-                {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(Ailment.Ignite),
-                    _ => Fire.Damage.Taken.With(Ailment.Ignite),
-                    (_, damageTaken) => EnemyDamageTakenMultiplier(Fire, damageTaken)
-                },
-                {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(Ailment.Ignite),
-                    _ => Fire.Damage.Taken.With(Ailment.Ignite),
-                    _ => CriticalStrike.Multiplier.With(Ailment.Ignite),
-                    (_, damageTaken, mult) => EnemyDamageTakenMultiplier(Fire, damageTaken) * mult.Value.AsPercentage
-                },
-                // bleed damage
-                // - average damage
-                {
-                    TotalOverride, _stat.AverageAilmentDamage(Common.Builders.Effects.Ailment.Bleed),
-                    CombineHandsForAverageAilmentDamage(Common.Builders.Effects.Ailment.Bleed)
-                        (_stat.AverageDamage.With(Ailment.Bleed))
-                },
-                // - effective crit/non-crit damage multiplier per source and type
-                {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(Ailment.Bleed),
-                    _ => Physical.Damage.Taken.With(Ailment.Bleed),
-                    (_, damageTaken) => EnemyDamageTakenMultiplier(Physical, damageTaken)
-                },
-                {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(Ailment.Bleed),
-                    _ => Physical.Damage.Taken.With(Ailment.Bleed),
-                    _ => CriticalStrike.Multiplier.With(Ailment.Bleed),
-                    (_, damageTaken, mult)
-                        => EnemyDamageTakenMultiplier(Physical, damageTaken) * mult.Value.AsPercentage
-                },
-                // poison damage
-                // - average damage
-                {
-                    TotalOverride, _stat.AverageAilmentDamage(Common.Builders.Effects.Ailment.Poison),
-                    CombineSource(_stat.AverageDamage.With(Ailment.Poison),
-                        CombineHandsForAverageAilmentDamage(Common.Builders.Effects.Ailment.Poison))
-                },
-                // - effective crit/non-crit damage multiplier per source and type
-                {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(Ailment.Poison),
-                    _ => Chaos.Damage.Taken.With(Ailment.Poison),
-                    (_, damageTaken) => EnemyDamageTakenMultiplier(Chaos, damageTaken)
-                },
-                {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(Ailment.Poison),
-                    _ => Chaos.Damage.Taken.With(Ailment.Poison),
-                    _ => CriticalStrike.Multiplier.With(Ailment.Poison),
-                    (_, damageTaken, mult) => EnemyDamageTakenMultiplier(Chaos, damageTaken) * mult.Value.AsPercentage
-                },
-                // shared ailment damage
+                // ailment damage (modifiers for EffectiveDamageMultiplierWith[Non]Crits() and Damage() are added below
+                // this collection initializer)
                 // - DPS
                 {
                     TotalOverride, _stat.AilmentDps,
                     ailment => _stat.AverageAilmentDamage(ailment).Value *
                                _stat.AilmentEffectiveInstances(ailment).Value
+                },
+                // - average damage
+                {
+                    TotalOverride, ailment => _stat.AverageAilmentDamage(ailment),
+                    ailment => CombineSource(_stat.AverageDamage.With(Ailment.From(ailment)),
+                        CombineHandsForAverageAilmentDamage(ailment))
                 },
                 // - lifetime damage of one instance
                 {
@@ -462,15 +415,18 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 critDamage.Value.Average, critChance.Value * critAilmentChance.Value.AsPercentage);
         }
 
-        private ValueBuilder EnemyDamageTakenMultiplier(
-            IDamageTypeBuilder resistanceType, IStatBuilder damageTaken)
-            => DamageTakenMultiplier(resistanceType.Resistance.For(Enemy), damageTaken.For(Enemy));
+        private ValueBuilder EnemyDamageTakenMultiplier(DamageType resistanceType, IStatBuilder damageTaken)
+            => DamageTakenMultiplier(DamageTypeBuilders.From(resistanceType).Resistance.For(Enemy),
+                damageTaken.For(Enemy));
 
         private static ValueBuilder DamageTakenMultiplier(IStatBuilder resistance, IStatBuilder damageTaken)
             => (1 - resistance.Value.AsPercentage) * damageTaken.Value;
 
         private IDamageRelatedStatBuilder DamageTaken(DamageType damageType)
             => DamageTypeBuilders.From(damageType).Damage.Taken;
+
+        private IDamageRelatedStatBuilder DamageMultiplier(DamageType damageType)
+            => DamageTypeBuilders.From(damageType).DamageMultiplier;
 
         private ValueBuilder ActionSpeedValueForPercentMore => (Stat.ActionSpeed.Value - 1) * 100;
 
@@ -497,12 +453,52 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 .Else(0.25 - 0.25 * (0.25 - stunThreshold) / (0.5 - stunThreshold));
         }
 
-        private IReadOnlyList<IIntermediateModifier> CollectionToList(GivenStatCollection collection)
+        private IReadOnlyList<IIntermediateModifier> CollectionToList(DataDrivenMechanicCollection collection)
         {
-            AddAilmentSourceDamageTypeModifiers(collection);
             AddDamageWithNonCritsModifiers(collection);
             AddDamageWithCritsModifiers(collection);
+            AddAilmentEffectiveDamageMultiplierModifiers(collection);
+            AddAilmentSourceDamageTypeModifiers(collection);
             return collection.ToList();
+        }
+
+        private void AddAilmentEffectiveDamageMultiplierModifiers(DataDrivenMechanicCollection collection)
+        {
+            var ailmentsAndTypes = new[]
+            {
+                (Common.Builders.Effects.Ailment.Ignite, DamageType.Fire),
+                (Common.Builders.Effects.Ailment.Bleed, DamageType.Physical),
+                (Common.Builders.Effects.Ailment.Poison, DamageType.Chaos),
+            };
+            foreach (var (ailment, damageType) in ailmentsAndTypes)
+            {
+                AddEffectiveDamageMultiplierWithNonCritsModifiers(collection, ailment, damageType);
+                AddEffectiveDamageMultiplierWithCritsModifiers(collection, ailment, damageType);
+            }
+        }
+
+        private void AddEffectiveDamageMultiplierWithNonCritsModifiers(
+            DataDrivenMechanicCollection collection, Ailment ailment, DamageType damageType)
+        {
+            var ailmentBuilder = Ailment.From(ailment);
+            collection.Add(TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(ailmentBuilder),
+                _ => DamageTaken(damageType).With(ailmentBuilder),
+                _ => DamageMultiplier(damageType).With(ailmentBuilder),
+                (_, damageTaken, damageMulti)
+                    => EnemyDamageTakenMultiplier(damageType, damageTaken) * damageMulti.Value.AsPercentage);
+        }
+
+        private void AddEffectiveDamageMultiplierWithCritsModifiers(
+            DataDrivenMechanicCollection collection, Ailment ailment, DamageType damageType)
+        {
+            var ailmentBuilder = Ailment.From(ailment);
+            collection.Add(TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(ailmentBuilder),
+                _ => DamageTaken(damageType).With(ailmentBuilder),
+                _ => CriticalStrike.Multiplier.With(ailmentBuilder),
+                _ => DamageMultiplier(damageType).With(ailmentBuilder),
+                (_, damageTaken, damageMulti, critMulti)
+                    => EnemyDamageTakenMultiplier(damageType, damageTaken) * damageMulti.Value.AsPercentage
+                                                                           * critMulti.Value.AsPercentage);
         }
 
         private void AddAilmentSourceDamageTypeModifiers(GivenStatCollection collection)

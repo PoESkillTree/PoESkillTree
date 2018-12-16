@@ -24,6 +24,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         private static IMetaStatBuilders _metaStats;
 
         private const double Accuracy = (-2 + 2 * 90) + 1000;
+        private const double EffectiveDamageMultiplierWithNonCrits = 0.4 * 1.2 * 1.75;
 
         private static double ChanceToHit(ICalculator calculator)
         {
@@ -54,6 +55,9 @@ namespace PoESkillTree.Computation.IntegrationTests
                         Build(_builderFactories.DamageTypeBuilders.Physical.Resistance
                             .For(_builderFactories.EntityBuilders.Enemy)),
                         Form.BaseSet, new Constant(60), modSource),
+                    new Modifier(
+                        Build(_builderFactories.DamageTypeBuilders.Physical.DamageMultiplier),
+                        Form.BaseAdd, new Constant(75), modSource),
                     new Modifier(
                         Build(_builderFactories.StatBuilders.Level),
                         Form.BaseSet, new Constant(90), modSource),
@@ -109,12 +113,12 @@ namespace PoESkillTree.Computation.IntegrationTests
                 .GetNode(
                     BuildMainHandSkillSingle(_metaStats.EffectiveDamageMultiplierWithNonCrits(DamageType.Physical)))
                 .Value.Single();
-            var expectedEffectiveDamageMultiplierWithNonCrits = (1 - expectedEnemyResistance / 100d) * 1.2;
+            var expectedEffectiveDamageMultiplierWithNonCrits = (1 - expectedEnemyResistance / 100d) * 1.2 * 1.75;
             Assert.AreEqual(expectedEffectiveDamageMultiplierWithNonCrits, actual);
             actual = nodes
                 .GetNode(BuildMainHandSkillSingle(_metaStats.EffectiveDamageMultiplierWithCrits(DamageType.Physical)))
                 .Value.Single();
-            var expectedEffectiveDamageMultiplierWithCrits = (1 - expectedEnemyResistance / 100d) * 1.2 * 1.5;
+            var expectedEffectiveDamageMultiplierWithCrits = expectedEffectiveDamageMultiplierWithNonCrits * 1.5;
             Assert.AreEqual(expectedEffectiveDamageMultiplierWithCrits, actual);
             actual = nodes
                 .GetNode(BuildMainHandSkillSingle(_metaStats.DamageWithNonCrits(DamageType.Physical)))
@@ -168,13 +172,12 @@ namespace PoESkillTree.Computation.IntegrationTests
                 .GetNode(Build(_metaStats.EffectiveDamageMultiplierWithNonCrits(DamageType.Physical)
                     .WithSkills(DamageSource.OverTime)).Single())
                 .Value.Single();
-            var expectedEffectiveDamageMultiplierWithNonCrits = (1 - 60 / 100d) * 1.2;
-            Assert.AreEqual(expectedEffectiveDamageMultiplierWithNonCrits, actual);
+            Assert.AreEqual(EffectiveDamageMultiplierWithNonCrits, actual);
             actual = nodes
                 .GetNode(Build(_metaStats.DamageWithNonCrits(DamageType.Physical)
                     .WithSkills(DamageSource.OverTime)).Single())
                 .Value.Single();
-            var expectedDamageWithNonCrits = 5 * expectedEffectiveDamageMultiplierWithNonCrits;
+            var expectedDamageWithNonCrits = 5 * EffectiveDamageMultiplierWithNonCrits;
             Assert.AreEqual(expectedDamageWithNonCrits, actual);
             actual = nodes
                 .GetNode(Build(_metaStats.SkillDpsWithDoTs).Single())
@@ -202,7 +205,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var ailmentChanceNonCrits = 0.1;
             var ailmentChanceCrits = 1;
             var baseDamage = 5 * 0.7;
-            var nonCritDamage = baseDamage * (1 - 60 / 100d) * 1.2;
+            var nonCritDamage = baseDamage * EffectiveDamageMultiplierWithNonCrits;
             var critDamage = nonCritDamage * 1.5;
             var expected = (nonCritDamage * (1 - critChance) * ailmentChanceNonCrits +
                             critDamage * critChance * ailmentChanceCrits) /
@@ -251,7 +254,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var enemyLifeStat = Build(_builderFactories.StatBuilders.Pool.From(Pool.Life)
                 .For(_builderFactories.EntityBuilders.Enemy)).Single();
             var enemyLife = nodes.GetNode(enemyLifeStat).Value.Single();
-            var damage = 5 * 0.4 * 1.2 * ChanceToHit(calculator);
+            var damage = 5 * EffectiveDamageMultiplierWithNonCrits * ChanceToHit(calculator);
             var expected = 200 * damage / (enemyLife * 0.125);
             var actual = nodes
                 .GetNode(Build(_builderFactories.EffectBuilders.Stun.Chance.With(AttackDamageHand.MainHand)).Single())
@@ -279,10 +282,8 @@ namespace PoESkillTree.Computation.IntegrationTests
                     Form.TotalOverride, 1)
                 .DoUpdate();
 
-            var enemyResistance = 60;
-            var effectiveDamageMultiplier = (1 - enemyResistance / 100d) * 1.2;
             var baseDamage = 5;
-            var averageDamage = baseDamage * 2 * effectiveDamageMultiplier;
+            var averageDamage = baseDamage * 2 * EffectiveDamageMultiplierWithNonCrits;
             var actual = nodes
                 .GetNode(Build(_metaStats.SkillDpsWithHits).Single())
                 .Value.Single();

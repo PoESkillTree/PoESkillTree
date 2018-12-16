@@ -56,6 +56,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             // flasks
             { BaseSet, Flask.Effect, 1 },
             { BaseSet, Flask.RecoverySpeed, 1 },
+            // Damage Multiplier
+            { BaseSet, AnyDamageType.DamageMultiplier, 100 },
             // speed
             { BaseSet, Stat.ActionSpeed, 1 },
             { BaseSet, Stat.MovementSpeed, 1 },
