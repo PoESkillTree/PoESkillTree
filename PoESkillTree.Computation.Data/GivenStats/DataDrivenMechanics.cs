@@ -103,7 +103,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 // - effective crit/non-crit damage multiplier per source and type
                 {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithHits,
+                    BaseSet, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithHits,
                     dt => _stat.EnemyResistanceAgainstNonCrits(dt),
                     dt => DamageTaken(dt).WithHits.For(Enemy),
                     dt => DamageMultiplier(dt).WithHits,
@@ -111,7 +111,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                         => DamageTakenMultiplier(resistance, damageTaken) * damageMulti.Value.AsPercentage
                 },
                 {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).WithHits,
+                    BaseSet, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).WithHits,
                     dt => _stat.EnemyResistanceAgainstCrits(dt),
                     dt => DamageTaken(dt).WithHits.For(Enemy),
                     dt => DamageMultiplier(dt).WithHits,
@@ -153,8 +153,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 // - effective damage multiplier per type
                 {
-                    TotalOverride,
-                    dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithSkills(DamageSource.OverTime),
+                    BaseSet, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithSkills(DamageSource.OverTime),
                     dt => EnemyDamageTakenMultiplier(dt, DamageTaken(dt).WithSkills(DamageSource.OverTime))
                           * DamageMultiplier(dt).WithSkills(DamageSource.OverTime).Value.AsPercentage
                 },
@@ -382,6 +381,25 @@ namespace PoESkillTree.Computation.Data.GivenStats
                             Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value.AsPercentage,
                             SkillUsesHandAsMultiplier(AttackDamageHand.OffHand)))
                 },
+                // buffs
+                {
+                    PercentMore,
+                    _stat.EffectiveDamageMultiplierWithNonCrits(DamageType.Physical).WithSkills,
+                    Buff.Impale.Chance,
+                    chance => ValueFactory.If(Buff.Impale.IsOn(Self, Enemy))
+                        .Then(10 * Buff.Impale.EffectOn(Enemy).Value * Buff.Impale.StackCount.For(Enemy).Value
+                              * chance.WithCondition(Hit.On).Value.AsPercentage)
+                        .Else(0)
+                },
+                {
+                    PercentMore,
+                    _stat.EffectiveDamageMultiplierWithCrits(DamageType.Physical).WithSkills,
+                    Buff.Impale.Chance,
+                    chance => ValueFactory.If(Buff.Impale.IsOn(Self, Enemy))
+                        .Then(10 * Buff.Impale.EffectOn(Enemy).Value * Buff.Impale.StackCount.For(Enemy).Value
+                              * chance.WithCondition(Hit.On).Value.AsPercentage)
+                        .Else(0)
+                },
                 // stun (see https://pathofexile.gamepedia.com/Stun)
                 { PercentLess, Effect.Stun.Duration, Effect.Stun.Recovery.For(Enemy).Value * 100 },
                 {
@@ -481,7 +499,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             DataDrivenMechanicCollection collection, Ailment ailment, DamageType damageType)
         {
             var ailmentBuilder = Ailment.From(ailment);
-            collection.Add(TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(ailmentBuilder),
+            collection.Add(BaseSet, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(ailmentBuilder),
                 _ => DamageTaken(damageType).With(ailmentBuilder),
                 _ => DamageMultiplier(damageType).With(ailmentBuilder),
                 (_, damageTaken, damageMulti)
@@ -492,7 +510,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             DataDrivenMechanicCollection collection, Ailment ailment, DamageType damageType)
         {
             var ailmentBuilder = Ailment.From(ailment);
-            collection.Add(TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(ailmentBuilder),
+            collection.Add(BaseSet, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(ailmentBuilder),
                 _ => DamageTaken(damageType).With(ailmentBuilder),
                 _ => CriticalStrike.Multiplier.With(ailmentBuilder),
                 _ => DamageMultiplier(damageType).With(ailmentBuilder),

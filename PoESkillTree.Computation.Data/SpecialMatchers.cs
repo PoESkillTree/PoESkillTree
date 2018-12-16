@@ -364,7 +364,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "impales you inflict last # additional hits",
-                    BaseAdd, Value, Buff.Impale.StackCount.For(Enemy)
+                    BaseAdd, Value, Buff.Impale.StackCount.For(Enemy).Maximum
                 },
                 // - Slayer
                 {

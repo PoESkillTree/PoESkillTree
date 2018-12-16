@@ -134,6 +134,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Buff.ArcaneSurge.Duration, 4000 },
             { TotalOverride, Buff.Maim.Chance.With(DamageSource.Spell), 0 },
             { TotalOverride, Buff.Maim.Chance.With(DamageSource.Secondary), 0 },
+            { BaseSet, Buff.Impale.StackCount.Maximum, 5 },
             // stun
             { BaseSet, Effect.Stun.Threshold, 1 },
             { BaseSet, Effect.Stun.Recovery, 1 },
