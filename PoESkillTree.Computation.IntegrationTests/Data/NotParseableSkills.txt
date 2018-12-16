@@ -46,4 +46,5 @@ VaalSummonSkeletons
 // - Pointless to support
 DevouringTotem
 IceSiphonTrap
+SigilRecall
 SupportChanceToFlee

@@ -226,49 +226,38 @@ namespace PoESkillTree.Computation.Builders.Stats
             => FromIdentity("Is your Brand attached to an enemy?", typeof(bool),
                 ExplicitRegistrationTypes.UserSpecifiedValue());
 
-        public IStatBuilder AffectedByMinionDamageIncreases
+        public IStatBuilder IncreasesToSourceApplyToTarget(IStatBuilder source, IStatBuilder target)
+            => new StatBuilder(StatFactory,
+                new ModifiersApplyToOtherStatCoreStatBuilder(source, target, Form.Increase, StatFactory));
+
+        private class ModifiersApplyToOtherStatCoreStatBuilder : ICoreStatBuilder
         {
-            get
-            {
-                var damageTypes = new DamageTypeBuilder(StatFactory, DamageType.RandomElement).Invert;
-                return AffectedByMinionStatIncreases(damageTypes.Damage);
-            }
-        }
+            private readonly IStatBuilder _target;
+            private readonly IStatBuilder _source;
+            private readonly Form _form;
+            private readonly IStatFactory _statFactory;
 
-        public IStatBuilder AffectedByMinionAttackRateIncreases
-            => AffectedByMinionStatIncreases(new CastRateStatBuilder(StatFactory).With(DamageSource.Attack));
-
-        private IStatBuilder AffectedByMinionStatIncreases(IStatBuilder affectedStat)
-            => new StatBuilder(StatFactory, new AffectedByEntityCoreStatBuilder(affectedStat, Entity.Minion,
-                (l, r) => StatFactory.StatIsAffectedByModifiersToOtherStat(l, r, Form.Increase)));
-
-        private class AffectedByEntityCoreStatBuilder : ICoreStatBuilder
-        {
-            private readonly IStatBuilder _affectedStat;
-            private readonly Entity _otherEntity;
-            private readonly Func<IStat, IStat, IStat> _combineStats;
-
-            public AffectedByEntityCoreStatBuilder(
-                IStatBuilder affectedStat, Entity otherEntity, Func<IStat, IStat, IStat> combineStats)
-                => (_affectedStat, _otherEntity, _combineStats) = (affectedStat, otherEntity, combineStats);
+            public ModifiersApplyToOtherStatCoreStatBuilder(
+                IStatBuilder source, IStatBuilder target, Form form, IStatFactory statFactory)
+                => (_target, _source, _form, _statFactory) = (target, source, form, statFactory);
 
             public ICoreStatBuilder Resolve(ResolveContext context)
-                => new AffectedByEntityCoreStatBuilder(_affectedStat.Resolve(context), _otherEntity, _combineStats);
+                => new ModifiersApplyToOtherStatCoreStatBuilder(
+                    _source.Resolve(context), _target.Resolve(context), _form, _statFactory);
 
             public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder)
-                => new AffectedByEntityCoreStatBuilder(_affectedStat.For(entityBuilder), _otherEntity, _combineStats);
+                => new ModifiersApplyToOtherStatCoreStatBuilder(
+                    _source.For(entityBuilder), _target.For(entityBuilder), _form, _statFactory);
 
             public IEnumerable<StatBuilderResult> Build(BuildParameters parameters)
             {
-                var results = _affectedStat.Build(parameters);
-                var otherStat = _affectedStat.For(new EntityBuilder(_otherEntity));
-                var otherResults = otherStat.Build(parameters);
-                return results.EquiZip(otherResults, MergeResults);
+                return _source.Build(parameters).EquiZip(_target.Build(parameters), MergeResults);
 
-                StatBuilderResult MergeResults(StatBuilderResult main, StatBuilderResult other)
+                StatBuilderResult MergeResults(StatBuilderResult source, StatBuilderResult target)
                 {
-                    var mergedStats = main.Stats.EquiZip(other.Stats, _combineStats).ToList();
-                    return new StatBuilderResult(mergedStats, main.ModifierSource, main.ValueConverter);
+                    var mergedStats = source.Stats.EquiZip(target.Stats,
+                        (s, t) => _statFactory.StatIsAffectedByModifiersToOtherStat(t, s, _form));
+                    return new StatBuilderResult(mergedStats.ToList(), source.ModifierSource, source.ValueConverter);
                 }
             }
         }

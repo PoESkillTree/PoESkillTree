@@ -15,12 +15,9 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         IStatBuilder IgnoreHexproof { get; }
 
-        IStatBuilder AffectedByMinionDamageIncreases { get; }
-
-        IStatBuilder AffectedByMinionAttackRateIncreases { get; }
+        IStatBuilder IncreasesToSourceApplyToTarget(IStatBuilder source, IStatBuilder target);
 
         IStatBuilder AlwaysMoving { get; }
-
         IStatBuilder AlwaysStationary { get; }
 
         IStatBuilder BrandAttachedToEnemy { get; }

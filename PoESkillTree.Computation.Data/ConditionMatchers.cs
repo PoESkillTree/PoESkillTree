@@ -244,6 +244,7 @@ namespace PoESkillTree.Computation.Data
                     "brand skills deal to enemies they're attached to",
                     And(With(Keyword.Brand), Flag.BrandAttachedToEnemy.IsSet)
                 },
+                { "to branded enemy", Flag.BrandAttachedToEnemy.IsSet },
                 // traps and mines
                 { "with traps", With(Keyword.Trap) },
                 { "skills used by traps have", With(Keyword.Trap) },

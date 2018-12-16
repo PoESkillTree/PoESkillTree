@@ -131,6 +131,8 @@ Can explode from up to 5 Frostbolt Projectiles
 Can expand from up to 2 Frostbolt Projectiles
 Charged Slam Deals 60% more Damage
 35% chance to consume an Endurance Charge to create a Charged Slam
+Can be Detached for a total Duration of 10 seconds
+Sends beams to 3 Enemies, including the Branded Enemy
 // passive skills: =====================================================================================================
 10% Chance for Traps to Trigger an additional time
 Share Endurance, Frenzy and Power Charges with nearby party members

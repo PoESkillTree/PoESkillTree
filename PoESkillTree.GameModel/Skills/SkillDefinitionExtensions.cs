@@ -108,6 +108,7 @@ namespace PoESkillTree.GameModel.Skills
                 ("Corpse Explosion", new SkillPartDefinitionExtension(
                     AddStat("display_skill_deals_secondary_damage", 1)))
             },
+            { "CataclysmSigil", BrandExtension }, // Armageddon Brand
             { "ChargedDash", RemoveShowAverageDamageExtension },
             {
                 "ChargedAttack", // Blade Flurry
@@ -150,6 +151,7 @@ namespace PoESkillTree.GameModel.Skills
                     ("shock_duration_+%", AuraEntities),
                     ("base_chance_to_shock_%", AuraEntities))
             },
+            { "ConduitSigil", BrandExtension }, // Storm Brand
             { "Convocation", Buff(Entity.Minion, "base_life_regeneration_rate_per_minute") },
             { "VaalColdSnap", SkillDotIsAreaDamageExtension },
             { "CorpseEruption", CorpseExplodingSpellParts }, // Cremation
@@ -685,6 +687,11 @@ namespace PoESkillTree.GameModel.Skills
                 ("Projectile", new SkillPartDefinitionExtension()),
                 ("Explosion", new SkillPartDefinitionExtension(AddStat("is_area_damage", 1)))
             };
+
+        private static SkillPartDefinitionExtension BrandExtension
+            => new SkillPartDefinitionExtension(
+                RemoveStat("base_skill_show_average_damage_instead_of_dps"),
+                ReplaceStat("base_sigil_repeat_frequency_ms", "hit_rate_ms"));
 
         private static (string name, SkillPartDefinitionExtension extension)[] EarthquakeParts
             => new[]

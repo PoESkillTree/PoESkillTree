@@ -269,16 +269,15 @@ namespace PoESkillTree.Computation.IntegrationTests
             var nodes = calculator.NodeRepository;
 
             var minion = _builderFactories.EntityBuilders.Minion;
+            var physicalDamage = _builderFactories.DamageTypeBuilders.Physical.Damage;
             calculator.NewBatchUpdate()
                 .AddModifiers(_givenMods)
                 .AddModifier(Build(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack)), Form.BaseSet, 1)
                 .AddModifier(Build(_builderFactories.StatBuilders.ChanceToHit), Form.TotalOverride, 100)
-                .AddModifier(Build(_builderFactories.DamageTypeBuilders.Physical.Damage.For(minion)), Form.Increase,
-                    100)
+                .AddModifier(Build(physicalDamage.For(minion)), Form.Increase, 100)
                 .AddModifier(Build(_builderFactories.StatBuilders.CastRate.For(minion)), Form.Increase, 100)
-                .AddModifier(Build(_builderFactories.StatBuilders.Flag.AffectedByMinionDamageIncreases),
-                    Form.TotalOverride, 1)
-                .AddModifier(Build(_builderFactories.StatBuilders.Flag.AffectedByMinionAttackRateIncreases),
+                .AddModifier(Build(_builderFactories.StatBuilders.Flag.IncreasesToSourceApplyToTarget(
+                            physicalDamage.For(minion), physicalDamage)),
                     Form.TotalOverride, 1)
                 .DoUpdate();
 
@@ -287,7 +286,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var actual = nodes
                 .GetNode(Build(_metaStats.SkillDpsWithHits).Single())
                 .Value.Single();
-            var expectedSkillDpsWithHits = averageDamage * 2;
+            var expectedSkillDpsWithHits = averageDamage;
             Assert.AreEqual(expectedSkillDpsWithHits, actual);
         }
 

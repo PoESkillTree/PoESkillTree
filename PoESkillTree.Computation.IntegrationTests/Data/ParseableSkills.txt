@@ -13,6 +13,7 @@ Blight
 BlinkArrow
 BoneLance
 BurningArrow
+CataclysmSigil
 ChargedAttack
 ChargedDash
 Clarity
@@ -22,6 +23,7 @@ ColdImpurity
 ColdResistAura
 ColdSnap
 Conductivity
+ConduitSigil
 ConsecratedPath
 Contagion
 ConversionTrap

@@ -1,4 +1,3 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
@@ -81,11 +80,18 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "increases and reductions to minion damage also affect you",
-                    TotalOverride, 1, Flag.AffectedByMinionDamageIncreases
+                    TotalOverride, 1, Flag.IncreasesToSourceApplyToTarget(Damage.For(Entity.Minion), Damage)
                 },
                 {
                     "increases and reductions to minion attack speed also affect you",
-                    TotalOverride, 1, Flag.AffectedByMinionAttackRateIncreases
+                    TotalOverride, 1,
+                    Flag.IncreasesToSourceApplyToTarget(Stat.CastRate.With(DamageSource.Attack).For(Entity.Minion),
+                        Stat.CastRate.With(DamageSource.Attack))
+                },
+                {
+                    "increases and reductions to cast speed also apply to this skill's activation frequency",
+                    TotalOverride, 1,
+                    Flag.IncreasesToSourceApplyToTarget(Stat.CastRate.With(DamageSource.Spell), Stat.HitRate)
                 },
                 // skills
                 {
