@@ -109,8 +109,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             },
             { BaseSet, CriticalStrike.Chance.With(AttackDamageHand.MainHand), 0, Not(MainHand.HasItem) },
             {
-                BaseSet, Stat.CastRate.With(AttackDamageHand.MainHand),
-                1 / CharacterClassBased(_characterBaseStats.UnarmedAttackTime, "UnarmedAttackTime") / 100,
+                BaseSet, Stat.BaseCastTime.With(AttackDamageHand.MainHand),
+                CharacterClassBased(_characterBaseStats.UnarmedAttackTime, "UnarmedAttackTime") / 100,
                 Not(MainHand.HasItem)
             },
             {

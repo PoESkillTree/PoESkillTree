@@ -135,7 +135,7 @@ namespace PoESkillTree.Computation.Data
                 {
                     // Blasphemy Support
                     "using supported skills is instant",
-                    TotalOverride, double.PositiveInfinity, Stat.CastRate
+                    TotalOverride, 0, Stat.BaseCastTime
                 },
                 {
                     // Fork Support
@@ -408,7 +408,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "using warcries is instant",
-                    TotalOverride, double.PositiveInfinity, Stat.CastRate, With(Keyword.Warcry)
+                    TotalOverride, 0, Stat.BaseCastTime, With(Keyword.Warcry)
                 },
                 {
                     @"\+#% chance to block attack damage for # seconds every # seconds",

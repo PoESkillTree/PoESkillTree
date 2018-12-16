@@ -155,15 +155,17 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public void FlameTotemHasCastTimeModifier()
         {
             var (definition, skill) = CreateFlameTotemDefinition();
-            var expected = (NodeValue?) 1000D / definition.ActiveSkill.CastTime;
+            var expected = (NodeValue?) definition.ActiveSkill.CastTime / 1000D;
             var valueCalculationContext = MockValueCalculationContextForMainSkill(skill);
             var sut = CreateSut(definition);
 
             var result = sut.Parse(skill);
 
-            var actual = GetValueForIdentity(result.Modifiers, "CastRate.Spell.Skill")
-                .Calculate(valueCalculationContext);
+            var modifiers = result.Modifiers;
+            var actual = GetValueForIdentity(modifiers, "BaseCastTime.Spell.Skill").Calculate(valueCalculationContext);
             Assert.AreEqual(expected, actual);
+            Assert.IsTrue(AnyModifierHasIdentity(modifiers, "BaseCastTime.Secondary.Skill"));
+            Assert.IsFalse(AnyModifierHasIdentity(modifiers, "BaseCastTime.Attack.MainHand.Skill"));
         }
 
         [Test]

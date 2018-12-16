@@ -41,6 +41,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder ActionSpeed => FromIdentity(typeof(double));
 
         public IDamageRelatedStatBuilder CastRate => new CastRateStatBuilder(StatFactory);
+        public IDamageRelatedStatBuilder BaseCastTime => DamageRelatedFromIdentity(typeof(double)).WithHits;
         public IStatBuilder HitRate => FromIdentity(typeof(double));
 
         public IStatBuilder DamageHasKeyword(DamageSource damageSource, IKeywordBuilder keyword)

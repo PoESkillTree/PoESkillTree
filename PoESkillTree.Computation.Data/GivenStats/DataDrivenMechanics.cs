@@ -250,6 +250,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
 
                 // speed
+                { TotalOverride, Stat.CastRate, Stat.BaseCastTime, castTime => castTime.Value.Invert },
                 { TotalOverride, _stat.CastRate, CombineSourceDefaultingToSpell(Stat.CastRate, CombineHandsByAverage) },
                 { TotalOverride, _stat.CastTime, _stat.CastRate.Value.Invert },
                 { PercentMore, Stat.MovementSpeed, ActionSpeedValueForPercentMore },

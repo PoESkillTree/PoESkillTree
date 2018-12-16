@@ -40,6 +40,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IDamageRelatedStatBuilder CastRate { get; }
 
         /// <summary>
+        /// The main skill's cast time (in seconds), used to initialize CastRate
+        /// </summary>
+        IDamageRelatedStatBuilder BaseCastTime { get; }
+
+        /// <summary>
         /// The rate at which the main skill hits, for skills where that rate is independent from CastRate.
         /// </summary>
         IStatBuilder HitRate { get; }

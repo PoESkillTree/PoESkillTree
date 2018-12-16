@@ -144,6 +144,7 @@ namespace PoESkillTree.Computation.Data
                 { "never deal critical strikes", TotalOverride, 0, CriticalStrike.Chance },
                 // - speed
                 { "actions are #% slower", PercentLess, Value, Stat.ActionSpeed },
+                { @"\+# seconds to attack time", BaseAdd, Value, Stat.BaseCastTime.With(DamageSource.Attack) },
                 // - projectiles
                 { "fires # additional (projectiles|arrows)", BaseAdd, Value, Projectile.Count },
                 { "fires an additional (projectile|arrow)", BaseAdd, 1, Projectile.Count },
@@ -281,7 +282,7 @@ namespace PoESkillTree.Computation.Data
                 { "totem lasts # seconds", BaseSet, Value, Stat.Totem.Duration },
                 {
                     "detonating mines is instant",
-                    TotalOverride, double.PositiveInfinity, Stat.CastRate, With(Skills.DetonateMines)
+                    TotalOverride, 0, Stat.BaseCastTime, With(Skills.DetonateMines)
                 },
                 // minions
                 { "can summon up to # golem at a time", BaseSet, Value, Golems.CombinedInstances.Maximum },

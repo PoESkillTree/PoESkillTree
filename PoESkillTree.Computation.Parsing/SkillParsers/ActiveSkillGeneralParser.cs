@@ -59,11 +59,10 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             AddMainSkillModifier(_metaStatBuilders.MainSkillId,
                 Form.TotalOverride, preParseResult.SkillDefinition.NumericId);
 
-            if (!activeSkill.ActiveSkillTypes.Contains(ActiveSkillType.Attack))
-            {
-                AddMainSkillModifier(_builderFactories.StatBuilders.CastRate,
-                    Form.BaseSet, 1000D / activeSkill.CastTime);
-            }
+            AddMainSkillModifier(_builderFactories.StatBuilders.BaseCastTime.With(DamageSource.Spell),
+                Form.BaseSet, activeSkill.CastTime / 1000D);
+            AddMainSkillModifier(_builderFactories.StatBuilders.BaseCastTime.With(DamageSource.Secondary),
+                Form.BaseSet, activeSkill.CastTime / 1000D);
 
             if (activeSkill.TotemLifeMultiplier is double lifeMulti)
             {

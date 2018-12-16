@@ -86,7 +86,8 @@ namespace PoESkillTree.Computation.IntegrationTests
 
             calculator.NewBatchUpdate()
                 .AddModifiers(_givenMods)
-                .AddModifier(Build(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack)), Form.BaseSet, 2)
+                .AddModifier(Build(_builderFactories.StatBuilders.BaseCastTime.With(DamageSource.Attack)),
+                    Form.BaseSet, 0.5)
                 .AddModifier(Build(_builderFactories.ActionBuilders.CriticalStrike.Chance), Form.BaseSet, 10)
                 .AddModifier(Build(_builderFactories.DamageTypeBuilders.Physical.Penetration), Form.BaseAdd, 10)
                 .AddModifier(Build(_builderFactories.DamageTypeBuilders.Physical.Damage.ChanceToDouble), Form.BaseAdd,
