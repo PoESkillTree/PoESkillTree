@@ -65,6 +65,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     (0, 25), (0.25, 0)),
                 IsMainSkill("FreezingPulse")
             },
+            { TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value, IsMainSkill("IceSpear", 1) },
+            { TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value, IsMainSkill("IceSpear", 3) },
             { TotalOverride, Buff.ArcaneSurge.On(Self), 1, SkillIsActive("SupportArcaneSurge") },
             { TotalOverride, Buff.Innervation.On(Self), 1, SkillIsActive("SupportOnslaughtOnSlayingShockedEnemy") },
         };

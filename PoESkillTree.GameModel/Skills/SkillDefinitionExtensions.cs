@@ -100,7 +100,7 @@ namespace PoESkillTree.GameModel.Skills
                     "base_physical_damage_%_of_maximum_life_to_deal_per_minute",
                     "base_physical_damage_%_of_maximum_energy_shield_to_deal_per_minute",
                     "add_frenzy_charge_on_kill_%_chance",
-                    "attack_speed_+%")
+                    "attack_speed_+%_granted_from_skill")
             },
             {
                 "Bodyswap",
@@ -144,7 +144,7 @@ namespace PoESkillTree.GameModel.Skills
             {
                 "Conductivity",
                 new SkillPartDefinitionExtension(
-                    ReplaceStat("base_self_shock_duration_-%", "shock_duration_+%")
+                    ReplaceStat("base_self_shock_duration_-%", "shock_duration_+%", v => -v)
                         .AndThen(ReplaceStat("chance_to_be_shocked_%", "base_chance_to_shock_%"))),
                 Buff(("base_lightning_damage_resistance_%", new[] { Entity.Enemy }),
                     ("shock_duration_+%", AuraEntities),
@@ -230,9 +230,7 @@ namespace PoESkillTree.GameModel.Skills
             { "VaalFireball", SecondaryExplosionProjectileParts },
             {
                 "FireBeam", // Scorching Ray
-                new SkillPartDefinitionExtension(
-                    ReplaceStat("fire_beam_enemy_fire_resistance_%_per_stack", "base_fire_damage_resistance_%")),
-                EnemyBuff("base_fire_damage_resistance_%")
+                EnemyBuff("fire_beam_enemy_fire_resistance_%_per_stack")
             },
             {
                 "FireImpurity", // Vaal Impurity of Fire
@@ -253,7 +251,7 @@ namespace PoESkillTree.GameModel.Skills
             {
                 "Flammability",
                 new SkillPartDefinitionExtension(
-                    ReplaceStat("base_self_ignite_duration_-%", "ignite_duration_+%")
+                    ReplaceStat("base_self_ignite_duration_-%", "ignite_duration_+%", v => -v)
                         .AndThen(ReplaceStat("chance_to_be_ignited_%", "base_chance_to_ignite_%"))),
                 Buff(("base_fire_damage_resistance_%", new[] { Entity.Enemy }),
                     ("ignite_duration_+%", AuraEntities),
@@ -263,7 +261,7 @@ namespace PoESkillTree.GameModel.Skills
             {
                 "Frostbite",
                 new SkillPartDefinitionExtension(
-                    ReplaceStat("base_self_freeze_duration_-%", "freeze_duration_+%")
+                    ReplaceStat("base_self_freeze_duration_-%", "freeze_duration_+%", v => -v)
                         .AndThen(ReplaceStat("chance_to_be_frozen_%", "base_chance_to_freeze_%"))),
                 Buff(("base_cold_damage_resistance_%", new[] { Entity.Enemy }),
                     ("freeze_duration_+%", AuraEntities),
@@ -337,11 +335,10 @@ namespace PoESkillTree.GameModel.Skills
             },
             {
                 "IceSpear",
-                ("First Form", new SkillPartDefinitionExtension(
-                    RemoveStat("ice_spear_second_form_critical_strike_chance_+%"),
-                    AddStat("always_pierce", 1))),
-                ("Second Form", new SkillPartDefinitionExtension(
-                    ReplaceStat("ice_spear_second_form_critical_strike_chance_+%", "critical_strike_chance_+%")))
+                ("First Form (Single Projectile)", IceSpearFirstFormExtension),
+                ("First Form (All Projectiles)", IceSpearFirstFormExtension),
+                ("Second Form (Single Projectile)", IceSpearSecondFormExtension),
+                ("Second Form (All Projectiles)", IceSpearSecondFormExtension)
             },
             {
                 "InfernalBlow",
@@ -525,10 +522,10 @@ namespace PoESkillTree.GameModel.Skills
                 ("Shockwave", new SkillPartDefinitionExtension(
                     ReplaceStat("shockwave_slam_explosion_damage_+%_final", "damage_+%_final")))
             },
-            { "TempestShield", SelfBuff("shield_block_%") },
+            { "TempestShield", SelfBuff("shield_block_%", "shield_spell_block_%") },
             {
                 "TemporalChains",
-                EnemyBuff("buff_time_passed_-%", "temporal_chains_action_speed_+%_final"),
+                EnemyBuff("buff_time_passed_+%_other_than_temporal_chains", "temporal_chains_action_speed_+%_final"),
                 Passive("curse_effect_+%_vs_players")
             },
             {
@@ -698,6 +695,21 @@ namespace PoESkillTree.GameModel.Skills
                     AddStat("base_skill_show_average_damage_instead_of_dps", 1),
                     ReplaceStat("quake_slam_fully_charged_explosion_damage_+%_final", "damage_+%_final")))
             };
+
+        private static SkillPartDefinitionExtension IceSpearFirstFormExtension
+            => new SkillPartDefinitionExtension(
+                RemoveStats("ice_spear_second_form_critical_strike_chance_+%",
+                    "ice_spear_second_form_critical_strike_multiplier_+",
+                    "ice_spear_second_form_projectile_speed_+%_final"));
+
+        private static SkillPartDefinitionExtension IceSpearSecondFormExtension
+            => new SkillPartDefinitionExtension(
+                AddStat("always_pierce", 1),
+                ReplaceStat("ice_spear_second_form_critical_strike_chance_+%", "critical_strike_chance_+%")
+                    .AndThen(ReplaceStat("ice_spear_second_form_critical_strike_multiplier_+",
+                        "base_critical_strike_multiplier_+"))
+                    .AndThen(ReplaceStat("ice_spear_second_form_projectile_speed_+%_final",
+                        "projectile_speed_+%_final")));
 
         private static IEnumerable<string> RemoveStat(string statId)
             => new[] { statId };

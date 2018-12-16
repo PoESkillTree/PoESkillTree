@@ -1,5 +1,5 @@
 ﻿// not handled (no useful usage)
-// Jewels:
+// Jewels: =============================================================================================================
 Your Golems are aggressive
 #% chance to gain an additional Vaal Soul per Enemy Shattered
 #% chance to gain an additional Vaal Soul on Kill
@@ -15,7 +15,8 @@ Burning Arrow has a 10% chance to spread Tar if it does not Ignite an Enemy
 #% increased Rarity of Items dropped by Enemies Shattered by Glacial Hammer
 Magma Orb has 10% increased Area of Effect per Chain
 each Spectral Throw Projectile gains 5% increased Damage each time it Hits
-// skills: (either irrelevant or already handled by SkillDefinitionExtensions and/or AdditionalSkillStats)
+// skills: =============================================================================================================
+// (either irrelevant or already handled by SkillDefinitionExtensions and/or AdditionalSkillStats)
 damage cannot be reflected
 0.86% reduced movement speed per nearby enemy
 summons a totem which uses this skill
@@ -55,6 +56,7 @@ Has 4 Flames
 Modifiers to Cast Speed apply to the rotation speed of the Flames
 Freezes enemies as though dealing 390% more Damage
 40% more Damage when Cast on Frostbolt
+20% less Area of Effect when Cast on Frostbolt
 0.15 seconds between appearance of Wall sections
 Wall will be 56 units long
 Deals up to 49% more Damage to closer targets
@@ -67,6 +69,7 @@ Strikes 3 Areas
 Projectiles are fired in a Nova (Hidden)
 Shields break after 1508 total Damage is prevented
 80% reduced Visibility to Enemies
+50% reduced Visibility to Enemies
 50% increased Stun Threshold reduction on enemies at Maximum charge distance
 200% more Damage with Hits at Maximum Charge Distance
 Beams Split to hit 4 extra targets
@@ -75,6 +78,7 @@ Releases 5 waves
 Releases waves every 0.9 seconds
 Monster gives 100% increased Flask Charges on death (Hidden)
 Each Spore Pod applies 10% less Movement Speed to nearby Enemies, to a maximum of 60%
+Each Spore Pod fires 9 Thorn Arrows
 Trigger this Skill when you Block
 You cannot use this Attack directly
 Causes 7 smaller explosions
@@ -122,7 +126,12 @@ Supported Skills place 2 additional Mines
 Supported Attack Skills cannot be used with Melee Weapons
 Buff is applied for a Base Duration of 4 seconds
 Pods fire 8 additional Arrows
-// passive skills:
+Can have up to 10 Chilling Areas
+Can explode from up to 5 Frostbolt Projectiles
+Can expand from up to 2 Frostbolt Projectiles
+Charged Slam Deals 60% more Damage
+35% chance to consume an Endurance Charge to create a Charged Slam
+// passive skills: =====================================================================================================
 10% Chance for Traps to Trigger an additional time
 Share Endurance, Frenzy and Power Charges with nearby party members
 Enemies Become Chilled as they Unfreeze
@@ -135,7 +144,7 @@ Hits that Stun Enemies have Culling Strike
 14% increased Brand Attachment range
 // Side effect from how jewels are currently handled, the stat doesn't actually exist
 +1 Jewel Socket
-// Ascendancies:
+// Ascendancies: =======================================================================================================
 // - Chieftain
 Totems Reflect 15% of their maximum Life as Fire Damage to nearby Enemies when Hit
 unaffected by ignite

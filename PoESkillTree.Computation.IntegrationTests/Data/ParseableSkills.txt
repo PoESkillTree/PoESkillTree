@@ -150,7 +150,6 @@ SupportAilments
 SupportArcaneSurge
 SupportBlasphemy
 SupportBlind
-SupportBlockReduction
 SupportBloodMagic
 SupportBloodlust
 SupportBrutality
@@ -238,6 +237,7 @@ SupportVoidManipulation
 SupportWeaponElementalDamage
 Sweep
 TempestShield
+TemporalChains
 ThrownWeapon
 TornadoShot
 TotemMelee

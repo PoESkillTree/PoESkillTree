@@ -77,6 +77,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Charge.Endurance.Amount.Maximum, 3 },
             { BaseSet, Charge.Frenzy.Amount.Maximum, 3 },
             { BaseSet, Charge.Power.Amount.Maximum, 3 },
+            { BaseSet, Charge.Endurance.Amount.Minimum, 0 },
+            { BaseSet, Charge.Frenzy.Amount.Minimum, 0 },
+            { BaseSet, Charge.Power.Amount.Minimum, 0 },
             // Rampage
             { BaseSet, Stat.RampageStacks.Maximum, 1000 },
             // leech

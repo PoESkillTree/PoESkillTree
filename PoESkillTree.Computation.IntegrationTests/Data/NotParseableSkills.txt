@@ -11,6 +11,7 @@ CorpseWarp
 DarkPact
 FireBeam
 RighteousFire
+SupportBlockReduction
 SupportChanceToIgnite
 SupportChaosAttacks
 SupportDecay
@@ -18,7 +19,6 @@ SupportGemMirageArcher
 SupportMaim
 SupportRuthless
 SupportSummonGhostOnKill
-TemporalChains
 ThrownShield
 VaalRighteousFire
 Wither

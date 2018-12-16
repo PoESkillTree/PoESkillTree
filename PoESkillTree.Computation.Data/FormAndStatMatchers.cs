@@ -324,7 +324,7 @@ namespace PoESkillTree.Computation.Data
                 { "always ({AilmentMatchers}) enemies", TotalOverride, 100, Reference.AsAilment.Chance },
                 { "cannot cause bleeding", TotalOverride, 0, Ailment.Bleed.Chance },
                 { "cannot ignite", TotalOverride, 0, Ailment.Ignite.Chance },
-                { "cannot apply shock", TotalOverride, 0, Ailment.Shock.Chance },
+                { "cannot (apply|inflict) shock", TotalOverride, 0, Ailment.Shock.Chance },
                 { "cannot inflict elemental ailments", TotalOverride, 0, Ailment.Elemental.Select(s => s.Chance) },
                 {
                     "(you )?can afflict an additional ignite on an enemy",

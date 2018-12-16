@@ -66,6 +66,10 @@ namespace PoESkillTree.Computation.Data
                 { "per (stage|fuse charge)", PerStat(Stat.SkillStage) },
                 { "for each (stage|blade)", PerStat(Stat.SkillStage) },
                 { @"per stage, up to \+#", CappedMultiplier(Stat.SkillStage.Value, Value) },
+                {
+                    "per ({ChargeTypeMatchers}) removed",
+                    v => v * (Reference.AsChargeType.Amount.Value - Reference.AsChargeType.Amount.Minimum.Value)
+                },
                 // buffs
                 { "per buff on you", Buffs(targets: Self).Count() },
                 { "per curse on you", Buffs(targets: Self).With(Keyword.Curse).Count() },

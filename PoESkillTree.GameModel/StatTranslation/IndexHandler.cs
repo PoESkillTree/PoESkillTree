@@ -43,6 +43,8 @@ namespace PoESkillTree.GameModel.StatTranslation
         MillisecondsToSecondsPrecision0,
         [EnumMember(Value = "milliseconds_to_seconds_2dp")]
         MillisecondsToSecondsPrecision2,
+        [EnumMember(Value = "milliseconds_to_seconds_2dp_if_required")]
+        MillisecondsToSecondsPrecision2IfRequired,
         [EnumMember(Value = "multiplicative_damage_modifier")]
         MultiplicativeDamageModifier,
         [EnumMember(Value = "multiplicative_permyriad_damage_modifier")]
@@ -89,6 +91,7 @@ namespace PoESkillTree.GameModel.StatTranslation
                 { IndexHandler.MillisecondsToSeconds, d => d / 1000 },
                 { IndexHandler.MillisecondsToSecondsPrecision0, d => Math.Round(d / 1000, 0) },
                 { IndexHandler.MillisecondsToSecondsPrecision2, d => Math.Round(d / 1000, 2) },
+                { IndexHandler.MillisecondsToSecondsPrecision2IfRequired, d => Math.Round(d / 1000, 2) },
                 { IndexHandler.MultiplicativeDamageModifier, d => d + 100 },
                 { IndexHandler.MultiplicativePermyriadDamageModifier, d => d / 100 + 100 },
                 { IndexHandler.Negate, d => -d },
