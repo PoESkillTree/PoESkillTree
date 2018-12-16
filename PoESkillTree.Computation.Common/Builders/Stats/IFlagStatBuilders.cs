@@ -21,5 +21,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder AlwaysStationary { get; }
 
         IStatBuilder BrandAttachedToEnemy { get; }
+        IStatBuilder BannerPlanted { get; }
     }
 }

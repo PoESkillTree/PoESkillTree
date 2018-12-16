@@ -41,15 +41,10 @@ namespace PoESkillTree.Computation.Data.GivenStats
         private GivenStatCollection CreateCollection() => new GivenStatCollection(_modifierBuilder, ValueFactory)
         {
             { TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value, IsMainSkill("Barrage", 1) },
+            { TotalOverride, Skills.FromId("BloodstainedBanner").Reservation, 0, Flag.BannerPlanted.IsSet },
             { TotalOverride, Fire.Invert.Damage, 0, IsMainSkill("ElementalHit", 0) },
             { TotalOverride, Cold.Invert.Damage, 0, IsMainSkill("ElementalHit", 1) },
             { TotalOverride, Lightning.Invert.Damage, 0, IsMainSkill("ElementalHit", 2) },
-            {
-                // Reduce cast rate proportional to the time spent channeling
-                PercentLess, Stat.CastRate,
-                100 * (Stat.SkillStage.Maximum.Value - Stat.SkillStage.Value + 1) / Stat.SkillStage.Maximum.Value,
-                IsMainSkill("ScourgeArrow").And(Stat.SkillStage.Value > 0)
-            },
             {
                 // Freezing Pulse's damage dissipates while traveling
                 // 60 * Projectile.Speed is the range, Projectile.TravelDistance / range is the percentage traveled
@@ -67,6 +62,13 @@ namespace PoESkillTree.Computation.Data.GivenStats
             },
             { TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value, IsMainSkill("IceSpear", 1) },
             { TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value, IsMainSkill("IceSpear", 3) },
+            { TotalOverride, Skills.FromId("PuresteelBanner").Reservation, 0, Flag.BannerPlanted.IsSet },
+            {
+                // Reduce cast rate proportional to the time spent channeling
+                PercentLess, Stat.CastRate,
+                100 * (Stat.SkillStage.Maximum.Value - Stat.SkillStage.Value + 1) / Stat.SkillStage.Maximum.Value,
+                IsMainSkill("ScourgeArrow").And(Stat.SkillStage.Value > 0)
+            },
             { TotalOverride, Buff.ArcaneSurge.On(Self), 1, SkillIsActive("SupportArcaneSurge") },
             { TotalOverride, Buff.Innervation.On(Self), 1, SkillIsActive("SupportOnslaughtOnSlayingShockedEnemy") },
         };

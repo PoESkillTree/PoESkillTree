@@ -9,6 +9,7 @@ BearTrap
 BladeVortex
 Bladefall
 BlastRain
+BloodstainedBanner
 Blight
 BlinkArrow
 BoneLance
@@ -115,6 +116,7 @@ PowerSiphon
 ProjectileWeakness
 Puncture
 Punishment
+PuresteelBanner
 Purity
 RainOfArrows
 RainOfSpores

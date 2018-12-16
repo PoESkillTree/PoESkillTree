@@ -103,6 +103,12 @@ namespace PoESkillTree.GameModel.Skills
                     "attack_speed_+%_granted_from_skill")
             },
             {
+                "BloodstainedBanner", // War Banner
+                Buff(("physical_damage_taken_+%", new[] { Entity.Enemy }),
+                    ("accuracy_rating_+%", AuraEntities)),
+                Passive("aura_effect_+%", "banner_buff_effect_+%_per_stage")
+            },
+            {
                 "Bodyswap",
                 ("Self Explosion", new SkillPartDefinitionExtension()),
                 ("Corpse Explosion", new SkillPartDefinitionExtension(
@@ -412,6 +418,16 @@ namespace PoESkillTree.GameModel.Skills
                     ReplaceStat("newpunishment_attack_speed_+%", "attack_speed_+%")
                         .AndThen(ReplaceStat("newpunishment_melee_damage_+%_final", "melee_damage_+%_final"))),
                 SelfBuff("attack_speed_+%", "melee_damage_+%_final")
+            },
+            {
+                "PuresteelBanner", // Dread Banner
+                new SkillPartDefinitionExtension(
+                    RemoveStat("puresteel_banner_fortify_effect_+%_per_stage"),
+                    ReplaceStat("puresteel_banner_accuracy_rating_+%_final", "accuracy_rating_+%_final")),
+                Buff(("accuracy_rating_+%_final", new[] { Entity.Enemy }),
+                    ("attacks_impale_on_hit_%_chance", AuraEntities),
+                    ("impale_debuff_effect_+%", AuraEntities)),
+                Passive("aura_effect_+%", "banner_buff_effect_+%_per_stage")
             },
             { "Purity", Aura("base_resist_all_elements_%") }, // Purity of Elements
             { "Reave", new SkillPartDefinitionExtension(AddStat("maximum_stages", 8)) },

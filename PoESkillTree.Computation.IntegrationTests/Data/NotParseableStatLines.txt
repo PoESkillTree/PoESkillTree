@@ -133,6 +133,10 @@ Charged Slam Deals 60% more Damage
 35% chance to consume an Endurance Charge to create a Charged Slam
 Can be Detached for a total Duration of 10 seconds
 Sends beams to 3 Enemies, including the Branded Enemy
+Gain Fortify for 0.05 seconds per Stage on Placing the Banner
+Gain 1 Stage when you Impale an Enemy while carrying the Banner, up to 5 per second
+Gain Adrenaline for 0.05 seconds per Stage on Placing the Banner
+Gain 1 Stage when you Kill an Enemy while carrying the Banner
 // passive skills: =====================================================================================================
 10% Chance for Traps to Trigger an additional time
 Share Endurance, Frenzy and Power Charges with nearby party members

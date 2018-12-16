@@ -226,6 +226,9 @@ namespace PoESkillTree.Computation.Builders.Stats
             => FromIdentity("Is your Brand attached to an enemy?", typeof(bool),
                 ExplicitRegistrationTypes.UserSpecifiedValue());
 
+        public IStatBuilder BannerPlanted
+            => FromIdentity("Is your Banner planted?", typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue());
+
         public IStatBuilder IncreasesToSourceApplyToTarget(IStatBuilder source, IStatBuilder target)
             => new StatBuilder(StatFactory,
                 new ModifiersApplyToOtherStatCoreStatBuilder(source, target, Form.Increase, StatFactory));

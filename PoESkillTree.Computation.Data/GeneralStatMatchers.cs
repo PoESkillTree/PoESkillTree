@@ -289,6 +289,7 @@ namespace PoESkillTree.Computation.Data
                     Buffs(Self).With(Keyword.Aura).Without(Keyword.Curse).Effect
                 },
                 { "warcry buff effect", Buffs(targets: Self).With(Keyword.Warcry).Effect },
+                { "aura effect", Skills.ModifierSourceSkill.Buff.Effect },
                 { "(?<!area of )effect of aura", Skills.ModifierSourceSkill.Buff.Effect },
                 { "effect of supported curses", Skills.ModifierSourceSkill.Buff.Effect },
                 { "non-curse auras from supported skills have effect", Skills.ModifierSourceSkill.Buff.Effect },

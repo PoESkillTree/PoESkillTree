@@ -235,6 +235,43 @@
         "index_handlers": [
           []
         ],
+        "string": "{0}% more Accuracy Rating"
+      },
+      {
+        "condition": [
+          {
+            "max": -1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          [
+            "negate"
+          ]
+        ],
+        "string": "{0}% less Accuracy Rating"
+      }
+    ],
+    "ids": [
+      "accuracy_rating_+%_final"
+    ]
+  },
+  {
+    "English": [
+      {
+        "condition": [
+          {
+            "min": 1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          []
+        ],
         "string": "{0}% more Projectile Speed"
       },
       {

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
 using PoESkillTree.Computation.Common;
@@ -95,6 +95,11 @@ namespace PoESkillTree.Computation.Data
                 },
                 // skills
                 {
+                    // Dread Banner, War Banner
+                    @"\+# second to base placed banner duration per stage",
+                    BaseAdd, Value * Skills.ModifierSourceSkill.Instances.Value, Stat.Duration
+                },
+                {
                     // Cleave
                     "when dual wielding, deals #% damage from each weapon combined",
                     PercentLess, 100 - Value, Damage, OffHand.Has(Tags.Weapon)
@@ -150,8 +155,8 @@ namespace PoESkillTree.Computation.Data
                 },
                 {   // Minion and Totem Elemental Resistance Support
                     @"totems and minions summoned by supported skills have \+#% ({DamageTypeMatchers}) resistance",
-                    (BaseAdd, Value, Reference.AsDamageType.Resistance.For(Entity.Minion)),
-                    (BaseAdd, Value, Reference.AsDamageType.Resistance.For(Entity.Totem))
+                    BaseAdd, Value, Reference.AsDamageType.Resistance.For(Entity.Minion),
+                    Reference.AsDamageType.Resistance.For(Entity.Totem)
                 },
                 // Keystones
                 {
@@ -371,6 +376,11 @@ namespace PoESkillTree.Computation.Data
                 {
                     "impales you inflict last # additional hits",
                     BaseAdd, Value, Buff.Impale.StackCount.For(Enemy).Maximum
+                },
+                {
+                    "banner skills reserve no mana",
+                    TotalOverride, 0,
+                    Skills.FromId("PuresteelBanner").Reservation, Skills.FromId("BloodstainedBanner").Reservation
                 },
                 // - Slayer
                 {

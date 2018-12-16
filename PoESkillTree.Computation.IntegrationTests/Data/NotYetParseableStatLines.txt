@@ -1,6 +1,4 @@
 ﻿// TODO not handled yet
-// - requires updated gem data
-banner skills reserve no mana
 // - requires a Triggered stat
 35% less Damage if Triggered
 // - requires the Hinder buff
