@@ -36,26 +36,28 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var isActiveSkill = preParseResult.IsActiveSkill;
 
             AddHitDamageSourceModifiers(preParseResult);
+
+            var offHandHasWeapon = OffHand.Has(Tags.Weapon);
             var usesMainHandCondition = isMainSkill;
-            var usesOffHandCondition = isMainSkill.And(OffHand.Has(Tags.Weapon));
+            var usesOffHandCondition = isMainSkill.And(offHandHasWeapon);
             if (activeSkill.ActiveSkillTypes.Contains(ActiveSkillType.RequiresDualWield))
-                usesMainHandCondition = usesMainHandCondition.And(OffHand.Has(Tags.Weapon));
+                usesMainHandCondition = usesMainHandCondition.And(offHandHasWeapon);
             else if (activeSkill.ActiveSkillTypes.Contains(ActiveSkillType.RequiresShield))
                 usesMainHandCondition = usesMainHandCondition.And(OffHand.Has(Tags.Shield));
             if (activeSkill.WeaponRestrictions.Any())
             {
-                usesMainHandCondition = usesMainHandCondition.And(
-                    CreateWeaponRestrictionCondition(MainHand, activeSkill.WeaponRestrictions));
-                usesOffHandCondition = usesOffHandCondition.And(
-                    CreateWeaponRestrictionCondition(OffHand, activeSkill.WeaponRestrictions));
+                var suitableMainHand = CreateWeaponRestrictionCondition(MainHand, activeSkill.WeaponRestrictions);
+                var suitableOffHand = CreateWeaponRestrictionCondition(OffHand, activeSkill.WeaponRestrictions);
+                usesMainHandCondition = usesMainHandCondition
+                    .And(suitableMainHand).And(suitableOffHand.Or(offHandHasWeapon.Not));
+                usesOffHandCondition = usesOffHandCondition
+                    .And(suitableMainHand).And(suitableOffHand);
             }
             AddModifier(_metaStatBuilders.SkillUsesHand(AttackDamageHand.MainHand),
                 Form.TotalOverride, 1, usesMainHandCondition);
-            if (!activeSkill.ActiveSkillTypes.Contains(ActiveSkillType.DoesNotUseOffHand))
-            {
-                AddModifier(_metaStatBuilders.SkillUsesHand(AttackDamageHand.OffHand),
-                    Form.TotalOverride, 1, usesOffHandCondition);
-            }
+            AddModifier(_metaStatBuilders.SkillUsesHand(AttackDamageHand.OffHand),
+                Form.TotalOverride, 1, usesOffHandCondition);
+
             AddMainSkillModifier(_metaStatBuilders.MainSkillId,
                 Form.TotalOverride, preParseResult.SkillDefinition.NumericId);
 

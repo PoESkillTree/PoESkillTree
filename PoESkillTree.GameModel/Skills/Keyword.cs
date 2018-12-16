@@ -168,7 +168,7 @@ namespace PoESkillTree.GameModel.Skills
                 { Keyword.Cold, (_, types, __) => types.Contains(ActiveSkillType.Cold) },
                 { Keyword.Fire, (_, types, __) => types.Contains(ActiveSkillType.Fire) },
                 { Keyword.Chaos, (_, types, __) => types.Contains(ActiveSkillType.Chaos) },
-                { Keyword.Brand, (_, types, __) => types.Contains(ActiveSkillType.Chaos) },
+                { Keyword.Brand, (_, types, __) => types.Contains(ActiveSkillType.Brand) },
             };
 
         public static bool IsOnSkill(this Keyword @this,

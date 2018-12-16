@@ -3,7 +3,7 @@
     /// <summary>
     /// Constants for the ActiveSkillTypes that need to be referenced.
     /// See https://github.com/brather1ng/RePoE/blob/master/RePoE/constants.py.
-    /// (using an enum would not work because it would need all types and the don't fit into an enum)
+    /// (using an enum would not work because it would need all types and they don't fit into an enum)
     /// </summary>
     public static class ActiveSkillType
     {
@@ -11,7 +11,6 @@
         public const string Spell = "spell";
         public const string Projectile = "projectile";
         public const string RequiresDualWield = "dual_wield_only";
-        public const string DoesNotUseOffHand = "uses_main_hand_when_dual_wielding";
         public const string Minion = "minion";
         public const string AreaOfEffect = "aoe";
         public const string RequiresShield = "shield_only";
