@@ -312,6 +312,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "grants? fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
                 { "gain elemental conflux", TotalOverride, 1, Buff.Conflux.Elemental.On(Self) },
+                { "(?<!chance to )impale enemies", TotalOverride, 100, Buff.Impale.Chance },
                 { "({BuffMatchers}) lasts # seconds", BaseSet, Value, Reference.AsBuff.Duration },
                 {
                     "supported auras do not affect you",

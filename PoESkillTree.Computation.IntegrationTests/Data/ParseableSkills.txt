@@ -92,6 +92,7 @@ IceSpear
 IceTrap
 ImmortalCall
 InfernalBlow
+LancingSteel
 LeapSlam
 LightningArrow
 LightningImpurity
@@ -127,6 +128,7 @@ RejuvenationTotem
 Riposte
 ScourgeArrow
 SearingBond
+ShatteringSteel
 ShockNova
 ShockwaveTotem
 ShrapnelShot

@@ -41,10 +41,13 @@ namespace PoESkillTree.Computation.Data.GivenStats
         private GivenStatCollection CreateCollection() => new GivenStatCollection(_modifierBuilder, ValueFactory)
         {
             { TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value, IsMainSkill("Barrage", 1) },
+
             { TotalOverride, Skills.FromId("BloodstainedBanner").Reservation, 0, Flag.BannerPlanted.IsSet },
+
             { TotalOverride, Fire.Invert.Damage, 0, IsMainSkill("ElementalHit", 0) },
             { TotalOverride, Cold.Invert.Damage, 0, IsMainSkill("ElementalHit", 1) },
             { TotalOverride, Lightning.Invert.Damage, 0, IsMainSkill("ElementalHit", 2) },
+
             {
                 // Freezing Pulse's damage dissipates while traveling
                 // 60 * Projectile.Speed is the range, Projectile.TravelDistance / range is the percentage traveled
@@ -60,16 +63,50 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     (0, 25), (0.25, 0)),
                 IsMainSkill("FreezingPulse")
             },
+
             { TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value, IsMainSkill("IceSpear", 1) },
             { TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value, IsMainSkill("IceSpear", 3) },
+
+            { TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value, IsMainSkill("LancingSteel", 2) },
+            // With the Primary and all Secondary Projectiles hitting, the Impale chance has to be adjusted
+            // to be averaged across all hits.
+            // The Primary Projectile has 100% Impale chance and is thus not affected by additional Impale chance
+            // Derivation of the BaseAdd and PercentLess modifiers: (chances are between 0 and 1)
+            //     Total chance = primary chance * 1/hits + secondary chance * (hits-1)/hits
+            // <=> Total = primary * 1/hits + secondary * (hits-1)/hits
+            // <=> Total = 1/hits + secondary * (hits-1)/hits                       (primary chance is 1)
+            // <=> Total = (1/hits * hits/(hits-1) + secondary) * (hits-1)/hits
+            // <=> Total = (1/(hits-1) + secondary) * (hits-1)/hits
+            // With x = 1/(hits-1) and y = (hits-1)/hits we get
+            //     Total = (x + secondary) * y
+            // With x = 1/(hits-1) as a BaseAdd modifier (after multiplying by 100 to get a 0 to 100 based value),
+            // 1 - y = 1/hits as a PercentLess modifier (after multiplying by 100) and
+            // secondary simply being the sum of all parsed Impale chance modifiers, Total is calculated correctly.
+            {
+                BaseAdd, Buff.Impale.Chance.WithCondition(Hit.On), 100 / (_stat.SkillNumberOfHitsPerCast.Value - 1),
+                IsMainSkill("LancingSteel", 2)
+            },
+            {
+                PercentLess, Buff.Impale.Chance.WithCondition(Hit.On), 100 / _stat.SkillNumberOfHitsPerCast.Value,
+                IsMainSkill("LancingSteel", 2)
+            },
+
             { TotalOverride, Skills.FromId("PuresteelBanner").Reservation, 0, Flag.BannerPlanted.IsSet },
+
             {
                 // Reduce cast rate proportional to the time spent channeling
                 PercentLess, Stat.CastRate,
                 100 * (Stat.SkillStage.Maximum.Value - Stat.SkillStage.Value + 1) / Stat.SkillStage.Maximum.Value,
                 IsMainSkill("ScourgeArrow").And(Stat.SkillStage.Value > 0)
             },
+
+            {
+                TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value,
+                IsMainSkill("ShatteringSteel", 2)
+            },
+
             { TotalOverride, Buff.ArcaneSurge.On(Self), 1, SkillIsActive("SupportArcaneSurge") },
+
             { TotalOverride, Buff.Innervation.On(Self), 1, SkillIsActive("SupportOnslaughtOnSlayingShockedEnemy") },
         };
 

@@ -362,6 +362,15 @@ namespace PoESkillTree.GameModel.Skills
                         ("base_skill_show_average_damage_instead_of_dps", 1))))
             },
             {
+                "LancingSteel",
+                ("Primary Projectile", new SkillPartDefinitionExtension(
+                    ReplaceStat("primary_projectile_impale_chance_%", "attacks_impale_on_hit_%_chance"))),
+                ("Secondary Projectile", new SkillPartDefinitionExtension(
+                    RemoveStat("primary_projectile_impale_chance_%"))),
+                ("All Projectiles", new SkillPartDefinitionExtension(
+                    RemoveStat("primary_projectile_impale_chance_%")))
+            },
+            {
                 "LightningImpurity", // Vaal Impurity of Lightning
                 new SkillPartDefinitionExtension(
                     ReplaceStat("base_immune_to_shock", "base_avoid_shock_%", 100)),
@@ -456,6 +465,14 @@ namespace PoESkillTree.GameModel.Skills
                     AddStat("always_pierce", 1))),
                 ("Thorn Arrows", new SkillPartDefinitionExtension(
                     ReplaceStat("virulent_arrow_pod_projectile_damage_+%_final", "damage_+%_final")))
+            },
+            {
+                "ShatteringSteel",
+                new SkillPartDefinitionExtension(
+                    RemoveStat("shattering_steel_damage_+%_final_scaled_by_projectile_distance")),
+                ("Projectile", new SkillPartDefinitionExtension()),
+                ("Cone", new SkillPartDefinitionExtension(AddStat("is_area_damage", 1))),
+                ("All Projectiles", new SkillPartDefinitionExtension())
             },
             {
                 "ShockNova",
