@@ -70,6 +70,10 @@ namespace PoESkillTree.Computation.Data
                     "({DamageTypeMatchers}) damage taken over time",
                     Reference.AsDamageType.Damage.Taken.With(DamageSource.OverTime)
                 },
+                {
+                    "take ({DamageTypeMatchers}) damage over time",
+                    Reference.AsDamageType.Damage.Taken.With(DamageSource.OverTime)
+                },
                 { "damage taken from projectiles", Damage.Taken.With(Keyword.Projectile) },
                 {
                     "damage taken from trap or mine hits",

@@ -282,6 +282,13 @@ namespace PoESkillTree.GameModel.Skills
                     "energy_shield_regeneration_rate_+%", "energy_shield_recharge_rate_+%")
             },
             { "FrostBoltNova", SkillDotIsAreaDamageExtension }, // Vortex
+            {
+                "FrostFury", // Winter Orb
+                new SkillPartDefinitionExtension(
+                    RemoveStat("base_skill_show_average_damage_instead_of_dps"),
+                    ReplaceStat("frost_fury_base_fire_interval_ms", "hit_rate_ms")
+                        .AndThen(ReplaceStat("frost_fury_max_number_of_stages", "maximum_stages")))
+            },
             { "Grace", Aura("base_evasion_rating") },
             { "VaalGrace", Aura("base_chance_to_dodge_%", "base_chance_to_dodge_spells_%") },
             {
@@ -651,6 +658,11 @@ namespace PoESkillTree.GameModel.Skills
                     "support_arcane_surge_mana_regeneration_rate_per_minute_%")
             },
             { "SupportBlasphemy", Passive("curse_effect_+%") },
+            {
+                "SupportBonechill",
+                Passive("support_chills_also_grant_cold_damage_taken_per_minute_+%",
+                    "support_chills_also_grant_cold_damage_taken_+%_equal_to_slow_amount")
+            },
             {
                 "SupportCastOnDeath",
                 new SkillPartDefinitionExtension(

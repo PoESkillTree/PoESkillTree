@@ -137,6 +137,9 @@ Gain Fortify for 0.05 seconds per Stage on Placing the Banner
 Gain 1 Stage when you Impale an Enemy while carrying the Banner, up to 5 per second
 Gain Adrenaline for 0.05 seconds per Stage on Placing the Banner
 Gain 1 Stage when you Kill an Enemy while carrying the Banner
+Enemies in Chilling Areas from Supported Skills take 29% increased Cold Damage over Time
+Enemies in Chilling Areas from Supported Skills have Cold Damage taken increased by Chill Effect
+Supported Skills Summon two Totems instead of one
 // passive skills: =====================================================================================================
 10% Chance for Traps to Trigger an additional time
 Share Endurance, Frenzy and Power Charges with nearby party members

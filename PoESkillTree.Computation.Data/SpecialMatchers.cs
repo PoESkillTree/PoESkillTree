@@ -144,6 +144,11 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 100, Buff.Maim.Chance.WithHits
                 },
                 {
+                    // Winter Orb
+                    "#% increased projectile frequency per stage",
+                    PercentIncrease, Value * Stat.SkillStage.Value, Stat.HitRate
+                },
+                {
                     // Blasphemy Support
                     "using supported skills is instant",
                     TotalOverride, 0, Stat.BaseCastTime

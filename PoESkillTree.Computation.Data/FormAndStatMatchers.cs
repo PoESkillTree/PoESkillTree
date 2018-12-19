@@ -87,6 +87,11 @@ namespace PoESkillTree.Computation.Data
                     Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell)
                 },
                 // - damage taken
+                {
+                    "cold damage taken increased by chill effect",
+                    PercentIncrease, 100 * (Ailment.ChillEffect.Value - 1),
+                    Cold.Damage.Taken.With(DamageSource.OverTime)
+                },
                 // - damage taken as
                 // - conversion and gain
                 {
@@ -268,6 +273,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 // skills
                 { "base duration is # seconds", BaseSet, Value, Stat.Duration },
+                { @"\+# seconds to base duration", BaseAdd, Value, Stat.Duration },
                 { "base secondary duration is # seconds", BaseSet, Value, Stat.SecondaryDuration },
                 {
                     "#% increased duration(?! of)",

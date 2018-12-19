@@ -72,6 +72,7 @@ FrostBlades
 FrostBolt
 FrostBoltNova
 FrostBomb
+FrostFury
 FrostWall
 Frostbite
 GemDetonateMines
@@ -158,6 +159,7 @@ SupportBlasphemy
 SupportBlind
 SupportBloodMagic
 SupportBloodlust
+SupportBonechill
 SupportBrutality
 SupportCastOnCrit
 SupportCastOnDamageTaken
@@ -213,6 +215,7 @@ SupportMinefield
 SupportMinionDamage
 SupportMinionLife
 SupportMinionSpeed
+SupportMultiTotem
 SupportMultiTrap
 SupportMulticast
 SupportMultistrike

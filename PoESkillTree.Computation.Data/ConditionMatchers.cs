@@ -204,6 +204,7 @@ namespace PoESkillTree.Computation.Data
                     "against enemies( that are)? affected by no elemental ailments",
                     Not(Ailment.Elemental.Any(a => a.IsOn(Enemy)))
                 },
+                { "enemies chilled by supported skills( have)?", Ailment.Chill.IsOn(Enemy) },
                 // ground effects
                 { "while on consecrated ground", Ground.Consecrated.IsOn(Self) },
                 // skills
