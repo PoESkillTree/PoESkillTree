@@ -215,6 +215,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             FromIdentity("Modifiers on an equipped shield apply to your minions instead", typeof(bool));
 
         public IStatBuilder IgnoreHexproof => FromIdentity(typeof(bool));
+        public IStatBuilder FarShot => FromIdentity(typeof(bool));
 
         public IStatBuilder AlwaysMoving
             => FromIdentity("Are you always moving?", typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue());

@@ -15,6 +15,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         IStatBuilder IgnoreHexproof { get; }
 
+        IStatBuilder FarShot { get; }
+
         IStatBuilder IncreasesToSourceApplyToTarget(IStatBuilder source, IStatBuilder target);
 
         IStatBuilder AlwaysMoving { get; }

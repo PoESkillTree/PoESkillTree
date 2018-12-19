@@ -267,12 +267,7 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value.AsPercentage * Armour.Value, Armour.For(Entity.Totem)
                 },
                 // - Deadeye
-                {
-                    "far shot",
-                    PercentMore,
-                    30 * ValueFactory.LinearScale(Projectile.TravelDistance, (35, 0), (70, 1)),
-                    Damage.WithSkills(DamageSource.Attack).With(Keyword.Projectile)
-                },
+                { "far shot", TotalOverride, 1, Flag.FarShot },
                 {
                     // Ascendant
                     "projectiles gain damage as they travel f(u|a)rther, dealing up to #% increased damage with hits to targets",

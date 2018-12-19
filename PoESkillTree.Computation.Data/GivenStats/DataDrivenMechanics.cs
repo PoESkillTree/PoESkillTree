@@ -400,6 +400,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                               * chance.WithCondition(Hit.On).Value.AsPercentage)
                         .Else(0)
                 },
+                { TotalOverride, Buff.Impale.Chance.WithCondition(Hit.On).Maximum, 100 },
                 // stun (see https://pathofexile.gamepedia.com/Stun)
                 { PercentLess, Effect.Stun.Duration, Effect.Stun.Recovery.For(Enemy).Value * 100 },
                 {
@@ -416,6 +417,12 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     TotalOverride, _stat.StunAvoidanceWhileCasting,
                     1 -
                     (1 - Effect.Stun.Avoidance.Value) * (1 - Effect.Stun.ChanceToAvoidInterruptionWhileCasting.Value)
+                },
+                // flags
+                {
+                    PercentMore, Damage.WithSkills(DamageSource.Attack).With(Keyword.Projectile),
+                    30 * ValueFactory.LinearScale(Projectile.TravelDistance, (35, 0), (70, 1)),
+                    Flag.FarShot.IsSet
                 },
                 // other
                 { PercentMore, Stat.Radius, Stat.AreaOfEffect.Value.Select(Math.Sqrt, v => $"Sqrt({v})") },
