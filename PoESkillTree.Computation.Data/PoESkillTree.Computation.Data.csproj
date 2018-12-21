@@ -107,7 +107,6 @@
     <Compile Include="PoolStatMatchers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GeneralStatMatchers.cs" />
-    <Compile Include="PropertyMatchers.cs" />
     <Compile Include="SpecialMatchers.cs" />
     <Compile Include="StatManipulatorMatchers.cs" />
     <Compile Include="Base\UsesConditionBuilders.cs" />
