@@ -39,7 +39,6 @@ namespace UnitTests.Model.Items.Mods
 
         private Dictionary<string, JsonMod> _mods;
         private JsonCraftingBenchOption[] _benchOptions;
-        private Dictionary<string, JsonNpcMaster> _npcMasters;
         private ModDatabase _modDatabase;
 
         [TestInitialize]
@@ -52,8 +51,7 @@ namespace UnitTests.Model.Items.Mods
         {
             _mods = await DataUtils.LoadRePoEAsync<Dictionary<string, JsonMod>>("mods");
             _benchOptions = await DataUtils.LoadRePoEAsync<JsonCraftingBenchOption[]>("crafting_bench_options");
-            _npcMasters = await DataUtils.LoadRePoEAsync<Dictionary<string, JsonNpcMaster>>("npc_master");
-            _modDatabase = new ModDatabase(_mods, _benchOptions, _npcMasters);
+            _modDatabase = new ModDatabase(_mods, _benchOptions);
         }
 
         [TestMethod]
@@ -133,23 +131,6 @@ namespace UnitTests.Model.Items.Mods
             }
         }
 
-        // make sure signature mods can't spawn through tags 
-        // so the spawn tags in JsonNpcMaster can simply be prepended
-        [TestMethod]
-        public async Task SignatureMods_NoSpawnTags()
-        {
-            await _initialization;
-            foreach (var npcMaster in _npcMasters.Values)
-            {
-                // TryGetValue because Zana's signature mod is of domain Map. Those mods are not in _mods.
-                JsonMod mod;
-                if (_mods.TryGetValue(npcMaster.SignatureMod.Id, out mod))
-                {
-                    AssertCantSpawn(mod);
-                }
-            }
-        }
-
         private void AssertCantSpawn(JsonMod mod)
         {
             foreach (var spawnWeight in mod.SpawnWeights)
@@ -178,8 +159,8 @@ namespace UnitTests.Model.Items.Mods
             Assert.AreEqual(1, jewelChaosDamage.Count);
             Assert.AreEqual("ChaosDamageJewel", ((Mod) jewelChaosDamage[0]).Id);
             var amuletChaosDamage = chaosDamage.GetMatchingMods(Tags.Amulet, ItemClass.Amulet).ToList();
-            Assert.AreEqual(1, amuletChaosDamage.Count);
-            Assert.AreEqual("StrIntMasterAddedChaosDamageCrafted", ((Mod) amuletChaosDamage[0]).Id);
+            Assert.AreEqual(2, amuletChaosDamage.Count);
+            Assert.AreEqual("EinharMasterAddedChaosDamage1", ((Mod) amuletChaosDamage[0]).Id);
         }
 
         [TestMethod]
@@ -190,9 +171,8 @@ namespace UnitTests.Model.Items.Mods
             var affix = affixes.Single(a => a.Group == "ProjectileSpeed");
 
             var quiver = affix.GetMatchingMods(Tags.Quiver, ItemClass.Quiver).ToList();
-            Assert.AreEqual(6, quiver.Count);
-            Assert.AreEqual("DexMasterProjectileSpeedCrafted", ((Mod) quiver[0]).Id);
-            Assert.AreEqual("ProjectileSpeed1", ((Mod) quiver[1]).Id);
+            Assert.AreEqual(5, quiver.Count);
+            Assert.AreEqual("ProjectileSpeed1", ((Mod) quiver[0]).Id);
         }
 
         [TestMethod]
@@ -203,8 +183,8 @@ namespace UnitTests.Model.Items.Mods
             var affix = affixes.Single(a => a.Group == "CausesBleeding");
 
             var bow = affix.GetMatchingMods(Tags.Bow | Tags.TwoHandWeapon | Tags.Ranged, ItemClass.Bow).ToList();
-            Assert.AreEqual(5, bow.Count);
-            Assert.AreEqual("BleedOnHitGainedDexMasterVendorItemUpdated_", ((Mod) bow[0]).Id);
+            Assert.AreEqual(4, bow.Count);
+            Assert.AreEqual("JunMasterBleedOnHitGained2h1", ((Mod) bow[0]).Id);
         }
 
         [TestMethod]
@@ -259,27 +239,9 @@ namespace UnitTests.Model.Items.Mods
             {
                 foreach (var itemClass in benchOption.ItemClasses)
                 {
-                    ItemClass enumClass;
-                    if (!ItemClassEx.TryParse(itemClass, out enumClass))
+                    if (!ItemClassEx.TryParse(itemClass, out _))
                     {
                         Assert.IsTrue(UnknownItemClasses.Contains(itemClass), itemClass + " unknown");
-                    }
-                }
-            }
-        }
-
-        [TestMethod]
-        public async Task JsonSignatureMod_UnknownTags()
-        {
-            await _initialization;
-            foreach (var mod in _npcMasters.Values.Select(n => n.SignatureMod))
-            {
-                foreach (var spawnWeight in mod.SpawnWeights)
-                {
-                    Tags tag;
-                    if (!TagsExtensions.TryParse(spawnWeight.Tag, out tag))
-                    {
-                        Assert.IsTrue(UnknownTags.Contains(spawnWeight.Tag), spawnWeight.Tag + " unknown");
                     }
                 }
             }

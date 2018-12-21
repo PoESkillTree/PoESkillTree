@@ -64,7 +64,7 @@ namespace POESKillTree.Model.Items.Mods
                 case ItemClass.ManaFlask:
                 case ItemClass.HybridFlask:
                 case ItemClass.UtilityFlask:
-                case ItemClass.CriticalUtilityFlask:
+                case ItemClass.UtilityFlaskCritical:
                 case ItemClass.Unknown:
                 case ItemClass.Any:
                     // These item classes are not supported.

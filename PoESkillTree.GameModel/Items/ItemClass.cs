@@ -47,7 +47,7 @@ namespace PoESkillTree.GameModel.Items
         ManaFlask,
         HybridFlask,
         UtilityFlask,
-        CriticalUtilityFlask,
+        UtilityFlaskCritical,
 
         Jewel,
 
@@ -91,7 +91,7 @@ namespace PoESkillTree.GameModel.Items
             { ItemClass.ManaFlask, Tags.ManaFlask | Tags.Flask },
             { ItemClass.HybridFlask, Tags.HybridFlask | Tags.Flask },
             { ItemClass.UtilityFlask, Tags.UtilityFlask | Tags.Flask },
-            { ItemClass.CriticalUtilityFlask, Tags.CriticalUtilityFlask | Tags.UtilityFlask | Tags.Flask },
+            { ItemClass.UtilityFlaskCritical, Tags.CriticalUtilityFlask | Tags.UtilityFlask | Tags.Flask },
             { ItemClass.Jewel, Tags.Jewel },
             { ItemClass.ActiveSkillGem, Tags.Gem },
             { ItemClass.SupportSkillGem, Tags.SupportGem | Tags.Gem },

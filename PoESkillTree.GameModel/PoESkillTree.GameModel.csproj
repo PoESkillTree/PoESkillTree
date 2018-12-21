@@ -110,7 +110,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Data\RePoE\crafting_bench_options.min.json" />
     <EmbeddedResource Include="Data\RePoE\mods.min.json" />
-    <EmbeddedResource Include="Data\RePoE\npc_master.min.json" />
     <EmbeddedResource Include="Data\RePoE\stat_translations.min.json" />
     <None Include="app.config" />
     <EmbeddedResource Include="Data\RePoE\default_monster_stats.min.json" />
