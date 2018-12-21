@@ -17,7 +17,7 @@ namespace UpdateDB.DataLoading
         private static readonly string[] Files =
         {
             "mods", "crafting_bench_options", "default_monster_stats", "characters",
-            "gems", "gem_tooltips"
+            "gems", "gem_tooltips", "base_items"
         };
 
         public override bool SavePathIsFolder => true;
