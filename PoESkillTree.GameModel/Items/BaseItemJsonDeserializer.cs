@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EnumsNET;
@@ -50,7 +49,7 @@ namespace PoESkillTree.GameModel.Items
                 Value<int>("inventory_height"),
                 Value<int>("inventory_width"),
                 Value<int>("drop_level"),
-                Enums.Parse<ReleaseState>(Value<string>("release_state"), true),
+                Enums.Parse<ReleaseState>(Value<string>("release_state"), EnumFormat.EnumMemberValue),
                 json["visual_identity"].Value<string>("dds_file"));
 
             T Value<T>(string propertyName) => json.Value<T>(propertyName);

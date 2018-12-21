@@ -49,12 +49,14 @@ namespace PoESkillTree.GameModel.Items
         UtilityFlask,
         UtilityFlaskCritical,
 
+        AbyssJewel,
         Jewel,
 
         ActiveSkillGem,
         SupportSkillGem,
 
         Currency,
+        StackableCurrency,
     }
 
     public static class ItemClassEx
@@ -92,10 +94,12 @@ namespace PoESkillTree.GameModel.Items
             { ItemClass.HybridFlask, Tags.HybridFlask | Tags.Flask },
             { ItemClass.UtilityFlask, Tags.UtilityFlask | Tags.Flask },
             { ItemClass.UtilityFlaskCritical, Tags.CriticalUtilityFlask | Tags.UtilityFlask | Tags.Flask },
+            { ItemClass.AbyssJewel, Tags.Jewel },
             { ItemClass.Jewel, Tags.Jewel },
             { ItemClass.ActiveSkillGem, Tags.Gem },
             { ItemClass.SupportSkillGem, Tags.SupportGem | Tags.Gem },
             { ItemClass.Currency, Tags.Default },
+            { ItemClass.StackableCurrency, Tags.Default },
         };
 
         /// <returns>the Tags an item with this ItemClass always has</returns>
