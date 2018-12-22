@@ -1,11 +1,7 @@
-﻿using System.Collections.Generic;
-using EnumsNET;
+﻿using EnumsNET;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
-using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
 
@@ -15,9 +11,8 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     {
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
-        private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
 
-        private List<Modifier> _modifiers;
+        private SkillModifierCollection _modifiers;
         private SkillPreParseResult _preParseResult;
 
         public ActiveSkillLevelParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
@@ -25,34 +20,37 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
         public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
-            _modifiers = new List<Modifier>();
+            _modifiers = new SkillModifierCollection(_builderFactories,
+                preParseResult.IsMainSkill.IsSet, preParseResult.LocalSource);
             _preParseResult = preParseResult;
             var level = preParseResult.LevelDefinition;
 
             if (level.DamageEffectiveness is double effectiveness)
             {
-                AddMainSkillModifier(_metaStatBuilders.DamageBaseAddEffectiveness, Form.TotalOverride, effectiveness);
+                _modifiers.AddGlobalForMainSkill(_metaStatBuilders.DamageBaseAddEffectiveness,
+                    Form.TotalOverride, effectiveness);
             }
             if (level.DamageMultiplier is double multiplier)
             {
-                AddMainSkillModifier(_metaStatBuilders.DamageBaseSetEffectiveness, Form.TotalOverride, multiplier);
+                _modifiers.AddGlobalForMainSkill(_metaStatBuilders.DamageBaseSetEffectiveness,
+                    Form.TotalOverride, multiplier);
             }
             if (level.CriticalStrikeChance is double crit)
             {
-                AddMainSkillModifier(_builderFactories.ActionBuilders.CriticalStrike.Chance.WithHits,
+                _modifiers.AddGlobalForMainSkill(_builderFactories.ActionBuilders.CriticalStrike.Chance.WithHits,
                     Form.BaseSet, crit);
             }
             if (level.ManaCost is int cost)
             {
                 var costStat = _metaStatBuilders.SkillBaseCost(parsedSkill.ItemSlot, parsedSkill.SocketIndex);
-                AddModifier(costStat, Form.BaseSet, cost);
-                AddMainSkillModifier(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost, Form.BaseSet,
-                    costStat.Value);
+                _modifiers.AddGlobal(costStat, Form.BaseSet, cost);
+                _modifiers.AddGlobalForMainSkill(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost,
+                    Form.BaseSet, costStat.Value);
                 ParseReservation(mainSkill, costStat);
             }
             if (level.Cooldown is int cooldown)
             {
-                AddMainSkillModifier(_builderFactories.StatBuilders.Cooldown, Form.BaseSet, cooldown);
+                _modifiers.AddGlobalForMainSkill(_builderFactories.StatBuilders.Cooldown, Form.BaseSet, cooldown);
             }
 
             var result = new PartialSkillParseResult(_modifiers, new UntranslatedStat[0]);
@@ -70,7 +68,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 .SkillHasType(skill.ItemSlot, skill.SocketIndex, ActiveSkillType.ManaCostIsPercentage).IsSet;
             var skillBuilder = _builderFactories.SkillBuilders.FromId(_preParseResult.SkillDefinition.Id);
 
-            AddModifier(skillBuilder.Reservation, Form.BaseSet, costStat.Value, isReservationAndActive);
+            _modifiers.AddGlobal(skillBuilder.Reservation, Form.BaseSet, costStat.Value, isReservationAndActive);
 
             foreach (var pool in Enums.GetValues<Pool>())
             {
@@ -79,30 +77,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 value = _builderFactories.ValueBuilders
                     .If(isPercentage).Then(value.AsPercentage * poolBuilder.Value)
                     .Else(value);
-                AddModifier(poolBuilder.Reservation, Form.BaseAdd, value,
+                _modifiers.AddGlobal(poolBuilder.Reservation, Form.BaseAdd, value,
                     skillBuilder.ReservationPool.Value.Eq((double) pool).And(isReservationAndActive));
             }
-        }
-
-        private void AddMainSkillModifier(IStatBuilder stat, Form form, double value)
-            => AddModifier(stat, form, value, _preParseResult.IsMainSkill.IsSet);
-
-        private void AddMainSkillModifier(IStatBuilder stat, Form form, IValueBuilder value)
-            => AddModifier(stat, form, value, _preParseResult.IsMainSkill.IsSet);
-
-        private void AddModifier(IStatBuilder stat, Form form, double value, IConditionBuilder condition = null)
-            => AddModifier(stat, form, _builderFactories.ValueBuilders.Create(value), condition);
-
-        private void AddModifier(IStatBuilder stat, Form form, IValueBuilder value, IConditionBuilder condition = null)
-        {
-            var builder = _modifierBuilder
-                .WithStat(stat)
-                .WithForm(_builderFactories.FormBuilders.From(form))
-                .WithValue(value);
-            if (condition != null)
-                builder = builder.WithCondition(condition);
-            var intermediateModifier = builder.Build();
-            _modifiers.AddRange(intermediateModifier.Build(_preParseResult.GlobalSource, Entity.Character));
         }
     }
 }

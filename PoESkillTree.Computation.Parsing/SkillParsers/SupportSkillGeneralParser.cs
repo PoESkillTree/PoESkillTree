@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
@@ -14,9 +11,8 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     {
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
-        private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
 
-        private List<Modifier> _parsedModifiers;
+        private ModifierCollection _parsedModifiers;
         private SkillPreParseResult _preParseResult;
 
         public SupportSkillGeneralParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
@@ -24,13 +20,13 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
         public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
-            _parsedModifiers = new List<Modifier>();
+            _parsedModifiers = new ModifierCollection(_builderFactories, preParseResult.LocalSource);
             _preParseResult = preParseResult;
             var isActiveSkill = preParseResult.IsActiveSkill;
 
-            AddModifier(_metaStatBuilders.ActiveSkillItemSlot(parsedSkill.Id),
+            _parsedModifiers.AddGlobal(_metaStatBuilders.ActiveSkillItemSlot(parsedSkill.Id),
                 Form.BaseSet, (double) parsedSkill.ItemSlot, isActiveSkill);
-            AddModifier(_metaStatBuilders.ActiveSkillSocketIndex(parsedSkill.Id),
+            _parsedModifiers.AddGlobal(_metaStatBuilders.ActiveSkillSocketIndex(parsedSkill.Id),
                 Form.BaseSet, parsedSkill.SocketIndex, isActiveSkill);
             AddInstanceModifiers();
 
@@ -46,21 +42,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             foreach (var keyword in addedKeywords)
             {
                 var keywordBuilder = _builderFactories.KeywordBuilders.From(keyword);
-                AddModifier(_builderFactories.SkillBuilders[keywordBuilder].CombinedInstances,
+                _parsedModifiers.AddGlobal(_builderFactories.SkillBuilders[keywordBuilder].CombinedInstances,
                     Form.BaseAdd, 1, _preParseResult.IsActiveSkill);
             }
-        }
-
-        private void AddModifier(IStatBuilder stat, Form form, double value, IConditionBuilder condition = null)
-        {
-            var builder = _modifierBuilder
-                .WithStat(stat)
-                .WithForm(_builderFactories.FormBuilders.From(form))
-                .WithValue(_builderFactories.ValueBuilders.Create(value));
-            if (condition != null)
-                builder = builder.WithCondition(condition);
-            var intermediateModifier = builder.Build();
-            _parsedModifiers.AddRange(intermediateModifier.Build(_preParseResult.GlobalSource, Entity.Character));
         }
     }
 }

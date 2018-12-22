@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
@@ -13,7 +12,6 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     {
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
-        private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
         private readonly Func<SkillDefinition, IEnumerable<string>> _selectTypes;
 
         private SkillTypeParser(
@@ -32,16 +30,12 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
         public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
-            var modifiers = new List<Modifier>();
+            var modifiers = new ModifierCollection(_builderFactories, preParseResult.LocalSource);
 
             foreach (var type in _selectTypes(preParseResult.SkillDefinition))
             {
-                var intermediateModifier = _modifierBuilder
-                    .WithStat(_metaStatBuilders.SkillHasType(mainSkill.ItemSlot, mainSkill.SocketIndex, type))
-                    .WithForm(_builderFactories.FormBuilders.TotalOverride)
-                    .WithValue(_builderFactories.ValueBuilders.Create(1))
-                    .Build();
-                modifiers.AddRange(intermediateModifier.Build(preParseResult.GlobalSource, Entity.Character));
+                modifiers.AddGlobal(_metaStatBuilders.SkillHasType(mainSkill.ItemSlot, mainSkill.SocketIndex, type),
+                    Form.TotalOverride, 1);
             }
 
             return new PartialSkillParseResult(modifiers, new UntranslatedStat[0]);

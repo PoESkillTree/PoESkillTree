@@ -6,7 +6,6 @@ using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Equipment;
-using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
@@ -19,18 +18,16 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     {
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
-        private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
 
-        private List<Modifier> _parsedModifiers;
-        private SkillPreParseResult _preParseResult;
+        private SkillModifierCollection _parsedModifiers;
 
         public ActiveSkillGeneralParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
             => (_builderFactories, _metaStatBuilders) = (builderFactories, metaStatBuilders);
 
         public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
-            _parsedModifiers = new List<Modifier>();
-            _preParseResult = preParseResult;
+            _parsedModifiers = new SkillModifierCollection(_builderFactories,
+                preParseResult.IsMainSkill.IsSet, preParseResult.LocalSource);
             var activeSkill = preParseResult.SkillDefinition.ActiveSkill;
             var isMainSkill = preParseResult.IsMainSkill.IsSet;
             var isActiveSkill = preParseResult.IsActiveSkill;
@@ -53,28 +50,31 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 usesOffHandCondition = usesOffHandCondition
                     .And(suitableMainHand).And(suitableOffHand);
             }
-            AddModifier(_metaStatBuilders.SkillUsesHand(AttackDamageHand.MainHand),
+            _parsedModifiers.AddGlobal(_metaStatBuilders.SkillUsesHand(AttackDamageHand.MainHand),
                 Form.TotalOverride, 1, usesMainHandCondition);
-            AddModifier(_metaStatBuilders.SkillUsesHand(AttackDamageHand.OffHand),
+            _parsedModifiers.AddGlobal(_metaStatBuilders.SkillUsesHand(AttackDamageHand.OffHand),
                 Form.TotalOverride, 1, usesOffHandCondition);
 
-            AddMainSkillModifier(_metaStatBuilders.MainSkillId,
+            _parsedModifiers.AddGlobalForMainSkill(_metaStatBuilders.MainSkillId,
                 Form.TotalOverride, preParseResult.SkillDefinition.NumericId);
 
-            AddMainSkillModifier(_builderFactories.StatBuilders.BaseCastTime.With(DamageSource.Spell),
+            _parsedModifiers.AddGlobalForMainSkill(_builderFactories.StatBuilders.BaseCastTime.With(DamageSource.Spell),
                 Form.BaseSet, activeSkill.CastTime / 1000D);
-            AddMainSkillModifier(_builderFactories.StatBuilders.BaseCastTime.With(DamageSource.Secondary),
+            _parsedModifiers.AddGlobalForMainSkill(
+                _builderFactories.StatBuilders.BaseCastTime.With(DamageSource.Secondary),
                 Form.BaseSet, activeSkill.CastTime / 1000D);
 
             if (activeSkill.TotemLifeMultiplier is double lifeMulti)
             {
                 var totemLifeStat = _builderFactories.StatBuilders.Pool.From(Pool.Life)
                     .For(_builderFactories.EntityBuilders.Totem);
-                AddMainSkillModifier(totemLifeStat, Form.More, (lifeMulti - 1) * 100);
+                _parsedModifiers.AddGlobalForMainSkill(totemLifeStat, Form.More, (lifeMulti - 1) * 100);
             }
 
-            AddModifier(_metaStatBuilders.ActiveSkillItemSlot(mainSkill.Id), Form.BaseSet, (double) mainSkill.ItemSlot);
-            AddModifier(_metaStatBuilders.ActiveSkillSocketIndex(mainSkill.Id), Form.BaseSet, mainSkill.SocketIndex);
+            _parsedModifiers.AddGlobal(_metaStatBuilders.ActiveSkillItemSlot(mainSkill.Id),
+                Form.BaseSet, (double) mainSkill.ItemSlot);
+            _parsedModifiers.AddGlobal(_metaStatBuilders.ActiveSkillSocketIndex(mainSkill.Id),
+                Form.BaseSet, mainSkill.SocketIndex);
 
             if (activeSkill.ProvidesBuff)
             {
@@ -84,17 +84,19 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 if (allAffectedEntities.Any())
                 {
                     var target = _builderFactories.EntityBuilders.From(allAffectedEntities);
-                    AddModifier(_builderFactories.SkillBuilders.FromId(mainSkill.Id).Buff.On(target),
+                    _parsedModifiers.AddGlobal(_builderFactories.SkillBuilders.FromId(mainSkill.Id).Buff.On(target),
                         Form.BaseSet, 1, isActiveSkill);
                 }
             }
 
-            AddModifier(_builderFactories.SkillBuilders.FromId(mainSkill.Id).Instances, Form.BaseAdd, 1, isActiveSkill);
-            AddModifier(_builderFactories.SkillBuilders.AllSkills.CombinedInstances, Form.BaseAdd, 1, isActiveSkill);
+            _parsedModifiers.AddGlobal(_builderFactories.SkillBuilders.FromId(mainSkill.Id).Instances,
+                Form.BaseAdd, 1, isActiveSkill);
+            _parsedModifiers.AddGlobal(_builderFactories.SkillBuilders.AllSkills.CombinedInstances,
+                Form.BaseAdd, 1, isActiveSkill);
             foreach (var keyword in activeSkill.Keywords)
             {
                 var keywordBuilder = _builderFactories.KeywordBuilders.From(keyword);
-                AddModifier(_builderFactories.SkillBuilders[keywordBuilder].CombinedInstances,
+                _parsedModifiers.AddGlobal(_builderFactories.SkillBuilders[keywordBuilder].CombinedInstances,
                     Form.BaseAdd, 1, isActiveSkill);
             }
 
@@ -113,7 +115,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 {
                     var condition =
                         partCount > 1 ? _builderFactories.StatBuilders.MainSkillPart.Value.Eq(partIndex) : null;
-                    AddMainSkillModifier(_metaStatBuilders.SkillHitDamageSource,
+                    _parsedModifiers.AddGlobalForMainSkill(_metaStatBuilders.SkillHitDamageSource,
                         Form.TotalOverride, (int) damageSource, condition);
                 }
             }
@@ -142,26 +144,6 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     return Enums.Parse<DamageSource>(match.Groups[1].Value, true);
             }
             return null;
-        }
-
-        private void AddMainSkillModifier(
-            IStatBuilder stat, Form form, double value, IConditionBuilder condition = null)
-        {
-            var isMainSkill = _preParseResult.IsMainSkill.IsSet;
-            var combinedCondition = condition is null ? isMainSkill : isMainSkill.And(condition);
-            AddModifier(stat, form, value, combinedCondition);
-        }
-
-        private void AddModifier(IStatBuilder stat, Form form, double value, IConditionBuilder condition = null)
-        {
-            var builder = _modifierBuilder
-                .WithStat(stat)
-                .WithForm(_builderFactories.FormBuilders.From(form))
-                .WithValue(_builderFactories.ValueBuilders.Create(value));
-            if (condition != null)
-                builder = builder.WithCondition(condition);
-            var intermediateModifier = builder.Build();
-            _parsedModifiers.AddRange(intermediateModifier.Build(_preParseResult.GlobalSource, Entity.Character));
         }
 
         private static IConditionBuilder CreateWeaponRestrictionCondition(

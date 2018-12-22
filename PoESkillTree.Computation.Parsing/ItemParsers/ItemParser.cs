@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Common.Builders.Modifiers;
-using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils.Extensions;
@@ -16,9 +13,6 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
         private readonly BaseItemDefinitions _baseItemDefinitions;
         private readonly IBuilderFactories _builderFactories;
         private readonly ICoreParser _coreParser;
-        private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
-
-        private List<Modifier> _parsedModifiers;
 
         public ItemParser(
             BaseItemDefinitions baseItemDefinitions, IBuilderFactories builderFactories, ICoreParser coreParser)
@@ -27,41 +21,28 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
 
         public ParseResult Parse(ItemParserParameter parameter)
         {
-            _parsedModifiers = new List<Modifier>();
             var (item, slot) = parameter;
+            var modifiers = new ModifierCollection(_builderFactories, new ModifierSource.Local.Item(slot));
             var localSource = new ModifierSource.Local.Item(slot, item.Name);
             var globalSource = new ModifierSource.Global(localSource);
             var baseItemDefinition = _baseItemDefinitions.GetBaseItemById(item.BaseMetadataId);
 
             var equipmentBuilder = _builderFactories.EquipmentBuilders.Equipment[slot];
-            AddModifier(equipmentBuilder.ItemTags, Form.BaseSet, baseItemDefinition.Tags.EncodeAsDouble(),
-                globalSource);
-            AddModifier(equipmentBuilder.ItemClass, Form.BaseSet, (double) baseItemDefinition.ItemClass, globalSource);
-            AddModifier(equipmentBuilder.FrameType, Form.BaseSet, (double) item.FrameType, globalSource);
+            modifiers.AddGlobal(equipmentBuilder.ItemTags, Form.BaseSet, baseItemDefinition.Tags.EncodeAsDouble());
+            modifiers.AddGlobal(equipmentBuilder.ItemClass, Form.BaseSet, (double) baseItemDefinition.ItemClass);
+            modifiers.AddGlobal(equipmentBuilder.FrameType, Form.BaseSet, (double) item.FrameType);
             if (item.IsCorrupted)
             {
-                AddModifier(equipmentBuilder.Corrupted, Form.BaseSet, 1, globalSource);
+                modifiers.AddGlobal(equipmentBuilder.Corrupted, Form.BaseSet, 1);
             }
 
-            var parseResult = ParseResult.Success(_parsedModifiers);
+            var parseResult = ParseResult.Success(modifiers.ToList());
             var coreParseResult = item.Modifiers.Values.Flatten().Select(s => Parse(s, globalSource));
-            _parsedModifiers = null;
             return ParseResult.Aggregate(parseResult.Concat(coreParseResult));
         }
 
         private ParseResult Parse(string modifierLine, ModifierSource modifierSource)
             => _coreParser.Parse(modifierLine, modifierSource, Entity.Character);
-
-        private void AddModifier(
-            IStatBuilder stat, Form form, double value, ModifierSource modifierSource)
-        {
-            var builder = _modifierBuilder
-                .WithStat(stat)
-                .WithForm(_builderFactories.FormBuilders.From(form))
-                .WithValue(_builderFactories.ValueBuilders.Create(value));
-            var intermediateModifier = builder.Build();
-            _parsedModifiers.AddRange(intermediateModifier.Build(modifierSource, Entity.Character));
-        }
     }
 
     public class ItemParserParameter

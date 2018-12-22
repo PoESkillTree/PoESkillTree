@@ -7,7 +7,6 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
-using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
@@ -32,10 +31,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
-        private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
         private readonly ISkillKeywordSelector _keywordSelector;
 
-        private List<Modifier> _parsedModifiers;
+        private ModifierCollection _parsedModifiers;
         private ISet<UntranslatedStat> _parsedStats;
         private SkillPreParseResult _preParseResult;
 
@@ -55,7 +53,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
         public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
-            _parsedModifiers = new List<Modifier>();
+            _parsedModifiers = new ModifierCollection(_builderFactories, preParseResult.LocalSource);
             _parsedStats = new HashSet<UntranslatedStat>();
             _preParseResult = preParseResult;
 
@@ -120,24 +118,11 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             IEnumerable<Keyword> keywords, Func<Keyword, IStatBuilder> statFactory,
             Func<Keyword, IConditionBuilder> conditionFactory, Func<Keyword, bool> preCondition = null)
         {
-            var modifiers = KeywordModifiers(keywords, statFactory, conditionFactory, preCondition)
-                .SelectMany(m => m.Build(_preParseResult.GlobalSource, Entity.Character));
-            _parsedModifiers.AddRange(modifiers);
-        }
-
-        private IEnumerable<IIntermediateModifier> KeywordModifiers(
-            IEnumerable<Keyword> keywords, Func<Keyword, IStatBuilder> statFactory,
-            Func<Keyword, IConditionBuilder> conditionFactory, Func<Keyword, bool> preCondition = null)
-        {
             if (preCondition != null)
                 keywords = keywords.Where(preCondition);
             foreach (var keyword in keywords)
             {
-                yield return _modifierBuilder
-                    .WithStat(statFactory(keyword))
-                    .WithForm(_builderFactories.FormBuilders.TotalOverride)
-                    .WithValue(_builderFactories.ValueBuilders.Create(1))
-                    .WithCondition(conditionFactory(keyword)).Build();
+                _parsedModifiers.AddGlobal(statFactory(keyword), Form.TotalOverride, 1, conditionFactory(keyword));
             }
         }
 

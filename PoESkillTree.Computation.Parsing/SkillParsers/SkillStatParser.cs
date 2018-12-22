@@ -5,7 +5,6 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
-using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.GameModel;
@@ -18,9 +17,8 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     {
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
-        private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
 
-        private List<Modifier> _parsedModifiers;
+        private SkillModifierCollection _parsedModifiers;
         private List<UntranslatedStat> _parsedStats;
         private SkillPreParseResult _preParseResult;
 
@@ -29,7 +27,8 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
         public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
-            _parsedModifiers = new List<Modifier>();
+            _parsedModifiers = new SkillModifierCollection(_builderFactories,
+                preParseResult.IsMainSkill.IsSet, preParseResult.LocalSource);
             _parsedStats = new List<UntranslatedStat>();
             _preParseResult = preParseResult;
 
@@ -87,7 +86,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             {
                 var valueBuilder = _builderFactories.ValueBuilders.FromMinAndMax(
                     CreateValue(hitDamageMinimum), CreateValue(hitDamageMaximum.Value));
-                AddMainSkillModifier(statBuilder, Form.BaseSet, valueBuilder, partCondition);
+                _parsedModifiers.AddGlobalForMainSkill(statBuilder, Form.BaseSet, valueBuilder, partCondition);
             }
         }
 
@@ -100,7 +99,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var type = Enums.Parse<DamageType>(match.Groups[1].Value, true);
             var statBuilder = _builderFactories.DamageTypeBuilders.From(type).Damage
                 .WithSkills(DamageSource.OverTime);
-            AddMainSkillModifier(statBuilder, Form.BaseSet, stat.Value / 60D, partCondition);
+            _parsedModifiers.AddGlobalForMainSkill(statBuilder, Form.BaseSet, stat.Value / 60D, partCondition);
             return true;
         }
 
@@ -115,7 +114,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var sourceBuilder = _builderFactories.DamageTypeBuilders.From(sourceType).Damage.WithHitsAndAilments;
             var targetBuilder = _builderFactories.DamageTypeBuilders.From(targetType).Damage.WithHitsAndAilments;
             var conversionBuilder = sourceBuilder.ConvertTo(targetBuilder);
-            AddMainSkillModifier(conversionBuilder, Form.BaseAdd, stat.Value, partCondition, isLocal: true);
+            _parsedModifiers.AddLocalForMainSkill(conversionBuilder, Form.BaseAdd, stat.Value, partCondition);
             return true;
         }
 
@@ -124,26 +123,27 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             switch (stat.StatId)
             {
                 case "base_skill_number_of_additional_hits":
-                    AddMainSkillModifier(_metaStatBuilders.SkillNumberOfHitsPerCast,
+                    _parsedModifiers.AddGlobalForMainSkill(_metaStatBuilders.SkillNumberOfHitsPerCast,
                         Form.BaseAdd, stat.Value, partCondition);
                     return true;
                 case "skill_double_hits_when_dual_wielding":
-                    AddMainSkillModifier(_metaStatBuilders.SkillDoubleHitsWhenDualWielding,
+                    _parsedModifiers.AddGlobalForMainSkill(_metaStatBuilders.SkillDoubleHitsWhenDualWielding,
                         Form.TotalOverride, stat.Value, partCondition);
                     return true;
                 case "base_use_life_in_place_of_mana":
                     ParseBloodMagic(partCondition);
                     return true;
                 case "maximum_stages":
-                    AddMainSkillModifier(_builderFactories.StatBuilders.SkillStage.Maximum,
+                    _parsedModifiers.AddGlobalForMainSkill(_builderFactories.StatBuilders.SkillStage.Maximum,
                         Form.BaseSet, stat.Value, partCondition);
                     return true;
                 case "cast_rate_is_melee":
-                    AddMainSkillModifier(_metaStatBuilders.MainSkillPartCastRateHasKeyword(Keyword.Melee),
+                    _parsedModifiers.AddGlobalForMainSkill(
+                        _metaStatBuilders.MainSkillPartCastRateHasKeyword(Keyword.Melee),
                         Form.TotalOverride, stat.Value, partCondition);
                     return true;
                 case "hit_rate_ms":
-                    AddMainSkillModifier(_builderFactories.StatBuilders.HitRate,
+                    _parsedModifiers.AddGlobalForMainSkill(_builderFactories.StatBuilders.HitRate,
                         Form.BaseSet, 1000D / stat.Value, partCondition);
                     return true;
                 default:
@@ -154,51 +154,15 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         private void ParseBloodMagic(IConditionBuilder partCondition = null)
         {
             var skillBuilder = _builderFactories.SkillBuilders.FromId(_preParseResult.MainSkillDefinition.Id);
-            AddModifier(skillBuilder.ReservationPool,
+            _parsedModifiers.AddGlobal(skillBuilder.ReservationPool,
                 Form.TotalOverride, (double) Pool.Life,
-                CombineNullableConditions(_preParseResult.IsActiveSkill, partCondition));
+                _preParseResult.IsActiveSkill.And(partCondition ?? _builderFactories.ConditionBuilders.True));
             var poolBuilders = _builderFactories.StatBuilders.Pool;
-            AddMainSkillModifier(poolBuilders.From(Pool.Mana).Cost.ConvertTo(poolBuilders.From(Pool.Life).Cost),
+            _parsedModifiers.AddGlobalForMainSkill(
+                poolBuilders.From(Pool.Mana).Cost.ConvertTo(poolBuilders.From(Pool.Life).Cost),
                 Form.BaseAdd, 100, partCondition);
         }
 
-        private void AddMainSkillModifier(
-            IStatBuilder stat, Form form, double value, IConditionBuilder condition, bool isLocal = false)
-            => AddMainSkillModifier(stat, form, CreateValue(value), condition, isLocal);
-
-        private void AddMainSkillModifier(
-            IStatBuilder stat, Form form, IValueBuilder value, IConditionBuilder condition, bool isLocal = false)
-            => AddModifier(stat, form, value, CombineNullableConditions(_preParseResult.IsMainSkill.IsSet, condition),
-                isLocal);
-
-        private void AddModifier(
-            IStatBuilder stat, Form form, double value, IConditionBuilder condition, bool isLocal = false)
-            => AddModifier(stat, form, CreateValue(value), condition, isLocal);
-
-        private void AddModifier(
-            IStatBuilder stat, Form form, IValueBuilder value, IConditionBuilder condition, bool isLocal = false)
-        {
-            var builder = _modifierBuilder
-                .WithStat(stat)
-                .WithForm(_builderFactories.FormBuilders.From(form))
-                .WithValue(value);
-            if (condition != null)
-                builder = builder.WithCondition(condition);
-            var intermediateModifier = builder.Build();
-            var modifierSource = isLocal ? (ModifierSource) _preParseResult.LocalSource : _preParseResult.GlobalSource;
-            var modifiers = intermediateModifier.Build(modifierSource, Entity.Character);
-            _parsedModifiers.AddRange(modifiers);
-        }
-
         private IValueBuilder CreateValue(double value) => _builderFactories.ValueBuilders.Create(value);
-
-        private IConditionBuilder CombineNullableConditions(IConditionBuilder left, IConditionBuilder right)
-        {
-            if (left is null)
-                return right ?? _builderFactories.ConditionBuilders.True;
-            if (right is null)
-                return left;
-            return left.And(right);
-        }
     }
 }
