@@ -176,18 +176,6 @@ namespace UnitTests.Model.Items.Mods
         }
 
         [TestMethod]
-        public async Task GetMatchingMods_CausesBleeding()
-        {
-            await _initialization;
-            var affixes = _modDatabase[ModGenerationType.Prefix];
-            var affix = affixes.Single(a => a.Group == "CausesBleeding");
-
-            var bow = affix.GetMatchingMods(Tags.Bow | Tags.TwoHandWeapon | Tags.Ranged, ItemClass.Bow).ToList();
-            Assert.AreEqual(4, bow.Count);
-            Assert.AreEqual("JunMasterBleedOnHitGained2h1", ((Mod) bow[0]).Id);
-        }
-
-        [TestMethod]
         public async Task GetMatchingMods_DefencesPercent_NoMasterMods()
         {
             await _initialization;

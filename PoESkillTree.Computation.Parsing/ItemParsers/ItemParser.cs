@@ -1,9 +1,11 @@
-﻿using System.Linq;
-using MoreLinq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.StatTranslation;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing.ItemParsers
@@ -13,13 +15,15 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
         private readonly BaseItemDefinitions _baseItemDefinitions;
         private readonly IBuilderFactories _builderFactories;
         private readonly ICoreParser _coreParser;
+        private readonly IStatTranslator _statTranslator;
 
         private ModifierCollection _modifiers;
 
         public ItemParser(
-            BaseItemDefinitions baseItemDefinitions, IBuilderFactories builderFactories, ICoreParser coreParser)
-            => (_coreParser, _builderFactories, _baseItemDefinitions) =
-                (coreParser, builderFactories, baseItemDefinitions);
+            BaseItemDefinitions baseItemDefinitions, IBuilderFactories builderFactories, ICoreParser coreParser,
+            IStatTranslator statTranslator)
+            => (_coreParser, _builderFactories, _baseItemDefinitions, _statTranslator) =
+                (coreParser, builderFactories, baseItemDefinitions, statTranslator);
 
         public ParseResult Parse(ItemParserParameter parameter)
         {
@@ -31,10 +35,16 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
 
             AddEquipmentModifiers(item, slot, baseItemDefinition);
             AddRequirementModifiers(item, baseItemDefinition);
+            var parseResults = new List<ParseResult>
+            {
+                ParseResult.Success(_modifiers.ToList()),
+                ParseBuffStats(baseItemDefinition, localSource),
+            };
 
-            var parseResult = ParseResult.Success(_modifiers.ToList());
-            var coreParseResult = item.Modifiers.Values.Flatten().Select(s => Parse(s, globalSource));
-            return ParseResult.Aggregate(parseResult.Concat(coreParseResult));
+            var coreParseResults = item.Modifiers.Values.Flatten().Select(s => Parse(s, globalSource));
+            parseResults.AddRange(coreParseResults);
+
+            return ParseResult.Aggregate(parseResults);
         }
 
         private void AddEquipmentModifiers(Item item, ItemSlot slot, BaseItemDefinition baseItemDefinition)
@@ -66,6 +76,27 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             {
                 _modifiers.AddLocal(requirementStats.Strength, Form.BaseSet, requirements.Strength);
             }
+        }
+
+        private ParseResult ParseBuffStats(
+            BaseItemDefinition baseItemDefinition, ModifierSource.Local localSource)
+        {
+            if (baseItemDefinition.BuffStats.IsEmpty())
+                return ParseResult.Success(new Modifier[0]);
+            if (!baseItemDefinition.Tags.HasFlag(Tags.Flask))
+                throw new NotSupportedException("Buff stats are only supported for flasks");
+
+            var untranslatedStatParser = new UntranslatedStatParser(_statTranslator, _coreParser);
+            var result = untranslatedStatParser.Parse(localSource, Entity.Character, baseItemDefinition.BuffStats);
+            var multiplierBuilder = _builderFactories.StatBuilders.Flask.Effect.Value;
+            return result.ApplyToModifiers(
+                m => new Modifier(m.Stats, m.Form, ApplyMultiplier(m.Value, BuildMultiplier(m)), m.Source));
+
+            IValue BuildMultiplier(Modifier modifier)
+                => multiplierBuilder.Build(new BuildParameters(modifier.Source, Entity.Character, modifier.Form));
+
+            IValue ApplyMultiplier(IValue value, IValue multiplier)
+                => new FunctionalValue(c => value.Calculate(c) * multiplier.Calculate(c), $"{value} * {multiplier}");
         }
 
         private ParseResult Parse(string modifierLine, ModifierSource modifierSource)

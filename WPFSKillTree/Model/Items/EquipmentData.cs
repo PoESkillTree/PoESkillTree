@@ -40,7 +40,7 @@ namespace POESKillTree.Model.Items
         {
             var modsTask = DataUtils.LoadRePoEAsync<Dictionary<string, JsonMod>>("mods");
             var benchOptionsTask = DataUtils.LoadRePoEAsync<JsonCraftingBenchOption[]>("crafting_bench_options");
-            var statTranslatorTask = StatTranslationLoader.StaticLoadAsync(StatTranslationLoader.MainFileName);
+            var statTranslatorTask = StatTranslationLoader.LoadAsync(StatTranslationLoader.MainFileName);
             ModDatabase = new ModDatabase(await modsTask, await benchOptionsTask);
             StatTranslator = await statTranslatorTask;
 

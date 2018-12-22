@@ -173,13 +173,13 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        public IStatBuilder Effect => FromIdentity("Flask effect", typeof(int));
-        public IStatBuilder Duration => FromIdentity("Flask effect duration", typeof(double));
-        public IStatBuilder LifeRecovery => FromIdentity("Flask life recovery", typeof(int));
-        public IStatBuilder ManaRecovery => FromIdentity("Flask mana recovery", typeof(int));
-        public IStatBuilder RecoverySpeed => FromIdentity("Flask recovery speed", typeof(double));
-        public IStatBuilder ChargesUsed => FromIdentity("Flask charges used", typeof(int));
-        public IStatBuilder ChargesGained => FromIdentity("Flask charges gained", typeof(double));
+        public IStatBuilder Effect => FromIdentity("Flask.Effect", typeof(int));
+        public IStatBuilder Duration => FromIdentity("Flask.EffectDuration", typeof(double));
+        public IStatBuilder LifeRecovery => FromIdentity("Flask.LifeRecovery", typeof(int));
+        public IStatBuilder ManaRecovery => FromIdentity("Flask.ManaRecovery", typeof(int));
+        public IStatBuilder RecoverySpeed => FromIdentity("Flask.RecoverySpeed", typeof(double));
+        public IStatBuilder ChargesUsed => FromIdentity("Flask.ChargesUsed", typeof(int));
+        public IStatBuilder ChargesGained => FromIdentity("Flask.ChargesGained", typeof(double));
 
         public IConditionBuilder IsAnyActive =>
             FromIdentity("Is any flask active?", typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue()).IsSet;

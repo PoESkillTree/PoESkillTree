@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MoreLinq;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.GameModel.StatTranslation
@@ -29,31 +30,23 @@ namespace PoESkillTree.GameModel.StatTranslation
             "stat_translations/variable_duration_skill",
         };
 
-        private readonly IDictionary<string, Task<StatTranslator>> _loadTasks =
-            new Dictionary<string, Task<StatTranslator>>();
+        private readonly IReadOnlyDictionary<string, StatTranslator> _translators;
 
-        private StatTranslationLoader()
+        private StatTranslationLoader(IReadOnlyDictionary<string, StatTranslator> translators)
+            => _translators = translators;
+
+        public static async Task<StatTranslationLoader> CreateAsync()
         {
+            var fileNames = RePoETranslationFileNames.Append(CustomFileName).ToList();
+            var tasks = fileNames.Select(LoadAsync);
+            var translators = await Task.WhenAll(tasks).ConfigureAwait(false);
+            var dict = fileNames.EquiZip(translators, (f, t) => (f, t)).ToDictionary();
+            return new StatTranslationLoader(dict);
         }
 
-        public static Task<StatTranslationLoader> CreateAsync()
-            => CreateAsync(RePoETranslationFileNames.Append(CustomFileName));
+        public StatTranslator this[string translationFileName] => _translators[translationFileName];
 
-        private static async Task<StatTranslationLoader> CreateAsync(IEnumerable<string> translationFileNames)
-        {
-            var loader = new StatTranslationLoader();
-            var tasks = translationFileNames.Select(loader.LoadAsync);
-            await Task.WhenAll(tasks).ConfigureAwait(false);
-            return loader;
-        }
-
-        public StatTranslator this[string translationFileName]
-            => _loadTasks[translationFileName].GetAwaiter().GetResult();
-
-        private async Task<StatTranslator> LoadAsync(string translationFileName)
-            => await _loadTasks.GetOrAdd(translationFileName, StaticLoadAsync).ConfigureAwait(false);
-
-        public static async Task<StatTranslator> StaticLoadAsync(string translationFileName)
+        public static async Task<StatTranslator> LoadAsync(string translationFileName)
         {
             var loadTask = translationFileName == CustomFileName
                 ? DataUtils.LoadJsonAsync<List<JsonStatTranslation>>(translationFileName)

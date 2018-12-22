@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using PoESkillTree.GameModel.Skills;
 using PoESkillTree.GameModel.StatTranslation;
 
 namespace PoESkillTree.GameModel.Tests.StatTranslation
@@ -15,7 +14,7 @@ namespace PoESkillTree.GameModel.Tests.StatTranslation
         [OneTimeSetUp]
         public static async Task CreateTranslatorAsync()
         {
-            _translator = await StatTranslationLoader.StaticLoadAsync(StatTranslationLoader.MainFileName)
+            _translator = await StatTranslationLoader.LoadAsync(StatTranslationLoader.MainFileName)
                 .ConfigureAwait(false);
         }
 

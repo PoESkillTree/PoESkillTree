@@ -25,20 +25,29 @@ namespace PoESkillTree.Computation.Parsing
         }
     }
 
+    public static class UntranslatedStatParserExtensions
+    {
+        public static ParseResult Parse(this IParser<UntranslatedStatParserParameter> @this,
+            ModifierSource.Local localModifierSource, Entity modifierSourceEntity,
+            IReadOnlyList<UntranslatedStat> untranslatedStats)
+            => @this.Parse(new UntranslatedStatParserParameter(localModifierSource, modifierSourceEntity,
+                untranslatedStats));
+    }
+
     public class UntranslatedStatParserParameter : ValueObject
     {
         public UntranslatedStatParserParameter(
-            ModifierSource.Local.Skill localModifierSource, IReadOnlyList<UntranslatedStat> untranslatedStats)
+            ModifierSource.Local localModifierSource, IReadOnlyList<UntranslatedStat> untranslatedStats)
             => (LocalModifierSource, ModifierSourceEntity, UntranslatedStats) =
                 (localModifierSource, default, untranslatedStats);
 
         public UntranslatedStatParserParameter(
-            ModifierSource.Local.Skill localModifierSource, Entity modifierSourceEntity,
+            ModifierSource.Local localModifierSource, Entity modifierSourceEntity,
             IReadOnlyList<UntranslatedStat> untranslatedStats)
             => (LocalModifierSource, ModifierSourceEntity, UntranslatedStats) =
                 (localModifierSource, modifierSourceEntity, untranslatedStats);
 
-        public ModifierSource.Local.Skill LocalModifierSource { get; }
+        public ModifierSource.Local LocalModifierSource { get; }
         public Entity ModifierSourceEntity { get; }
         public IReadOnlyList<UntranslatedStat> UntranslatedStats { get; }
 

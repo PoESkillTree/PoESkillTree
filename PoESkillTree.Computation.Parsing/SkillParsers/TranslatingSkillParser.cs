@@ -111,9 +111,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         {
             var unparsedStats = stats.Except(_parsedStats).ToList();
             var statParser = _statParserFactory(statTranslationFileName);
-            var parserParameter =
-                new UntranslatedStatParserParameter(localModifierSource, modifierSourceEntity, unparsedStats);
-            return statParser.Parse(parserParameter);
+            return statParser.Parse(localModifierSource, modifierSourceEntity, unparsedStats);
         }
 
         private static ParseResult ApplyCondition(

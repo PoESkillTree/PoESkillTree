@@ -9,6 +9,7 @@ using PoESkillTree.Computation.Parsing.ItemParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Modifiers;
+using PoESkillTree.GameModel.StatTranslation;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {
@@ -21,9 +22,15 @@ namespace PoESkillTree.Computation.IntegrationTests
         [SetUp]
         public async Task SetUpAsync()
         {
-            _baseItemDefinitions = await BaseItemJsonDeserializer.DeserializeAsync();
-            _itemParser = new ItemParser(_baseItemDefinitions, await CompositionRoot.BuilderFactories,
-                await CompositionRoot.CoreParser);
+            var definitionsTask = BaseItemJsonDeserializer.DeserializeAsync();
+            var builderFactoriesTask = CompositionRoot.BuilderFactories;
+            var coreParserTask = CompositionRoot.CoreParser;
+            var statTranslatorTask = StatTranslationLoader.LoadAsync(StatTranslationLoader.MainFileName);
+            _baseItemDefinitions = await definitionsTask.ConfigureAwait(false);
+            _itemParser = new ItemParser(_baseItemDefinitions,
+                await builderFactoriesTask.ConfigureAwait(false),
+                await coreParserTask.ConfigureAwait(false),
+                await statTranslatorTask.ConfigureAwait(false));
         }
 
         [Test]

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders;
@@ -9,6 +10,7 @@ using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Modifiers;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.GameModel.StatTranslation;
 using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
 
 namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
@@ -121,15 +123,60 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             Assert.That(result.Modifiers, Is.SupersetOf(expected));
         }
 
-        private static ItemParser CreateSut(BaseItemDefinition baseItemDefinition)
-            => CreateSut(baseItemDefinition, Mock.Of<ICoreParser>());
-
-        private static ItemParser CreateSut(BaseItemDefinition baseItemDefinition, ICoreParser coreParser)
+        [Test]
+        public void ParseReturnsCorrectBuffModifiers()
         {
+            var parserParam = CreateItem(ItemSlot.BodyArmour);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.UtilityFlask, Tags.Flask,
+                buffStats: new[]
+                {
+                    new UntranslatedStat("base_cold_damage_resistance_%", 50),
+                    new UntranslatedStat("utility_flask_cold_damage_taken_+%_final", -20),
+                });
+            var translatorResult = new StatTranslatorResult(
+                new[] { "cold resistance", "cold damage taken" }, new UntranslatedStat[0]);
+            var translator = Mock.Of<IStatTranslator>(t =>
+                t.Translate(baseItemDefinition.BuffStats) == translatorResult);
+            var parserParameters = translatorResult.TranslatedStats
+                .Select(r => new CoreParserParameter(r, new ModifierSource.Global(), Entity.Character))
+                .ToList();
+            var modifiers = new[]
+            {
+                CreateModifier("Cold.Resistance", Form.BaseAdd, 50),
+                CreateModifier("Cold.Damage.Attack.MainHand.Skill.Taken", Form.More, -20),
+            };
+            var coreParser = Mock.Of<ICoreParser>(p =>
+                p.Parse(parserParameters[0]) == ParseResult.Success(new[] { modifiers[0] }) &&
+                p.Parse(parserParameters[1]) == ParseResult.Success(new[] { modifiers[1] }));
+            var flaskEffect = 2;
+            var flaskEffectStat = new Stat("Flask.Effect");
+            var context = Mock.Of<IValueCalculationContext>(c =>
+                c.GetValue(flaskEffectStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) flaskEffect);
+            var sut = CreateSut(baseItemDefinition, coreParser, translator);
+
+            var (_, _, actualModifiers) = sut.Parse(parserParam);
+
+            foreach (var modifier in modifiers)
+            {
+                var identity = modifier.Stats[0].Identity;
+                Assert.IsTrue(AnyModifierHasIdentity(actualModifiers, identity));
+                var actual = GetFirstModifierWithIdentity(actualModifiers, identity);
+                Assert.AreEqual(modifier.Form, actual.Form);
+                Assert.AreEqual(modifier.Source, actual.Source);
+                var expectedValue = modifier.Value.Calculate(context) * flaskEffect;
+                Assert.AreEqual(expectedValue, actual.Value.Calculate(context));
+            }
+        }
+
+        private static ItemParser CreateSut(
+            BaseItemDefinition baseItemDefinition, ICoreParser coreParser = null, IStatTranslator statTranslator = null)
+        {
+            coreParser = coreParser ?? Mock.Of<ICoreParser>();
+
             var baseItemDefinitions = new BaseItemDefinitions(new[] { baseItemDefinition });
             var builderFactories =
                 new BuilderFactories(new StatFactory(), new SkillDefinitions(new SkillDefinition[0]));
-            return new ItemParser(baseItemDefinitions, builderFactories, coreParser);
+            return new ItemParser(baseItemDefinitions, builderFactories, coreParser, statTranslator);
         }
 
         private static ItemParserParameter CreateItem(ItemSlot itemSlot, params string[] mods)
@@ -154,9 +201,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         }
 
         private static BaseItemDefinition CreateBaseItemDefinition(Item item, ItemClass itemClass, Tags tags = default,
-            Requirements requirements = null)
+            IReadOnlyList<UntranslatedStat> buffStats = null, Requirements requirements = null)
             => new BaseItemDefinition(item.BaseMetadataId, "", itemClass, new string[0], tags, null,
-                null, requirements ?? new Requirements(0, 0, 0, 0),
+                buffStats ?? new UntranslatedStat[0],
+                requirements ?? new Requirements(0, 0, 0, 0),
                 null, 0, 0, 0, default, "");
 
         private static ModifierSource.Global CreateGlobalSource(ItemParserParameter parserParam)
