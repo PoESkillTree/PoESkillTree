@@ -68,6 +68,7 @@
     <Compile Include="ActiveSkillParserTest.cs" />
     <Compile Include="CoreParserTest.cs" />
     <Compile Include="GivenStatsParserTest.cs" />
+    <Compile Include="ItemParserTest.cs" />
     <Compile Include="SkillParserTestUtils.cs" />
     <Compile Include="StringParsers\MatcherDataParserTest.cs" />
     <Compile Include="StringParsers\CachingParserTest.cs" />
