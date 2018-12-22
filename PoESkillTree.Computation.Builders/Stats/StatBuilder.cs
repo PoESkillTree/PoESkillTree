@@ -11,6 +11,7 @@ using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
+using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -68,6 +69,9 @@ namespace PoESkillTree.Computation.Builders.Stats
                 new StatBuilderAdapter(this), new StatBuilderAdapter(stat)));
 
         public IStatBuilder ChanceToDouble => WithStatConverter(StatFactory.ChanceToDouble);
+
+        public IStatBuilder AsItemProperty(ItemSlot itemSlot)
+            => WithStatConverter(s => StatFactory.FromIdentity($"{itemSlot}.{s.Identity}", s.Entity, s.DataType));
 
         public IStatBuilder For(IEntityBuilder entity) => With(CoreStatBuilder.WithEntity(entity));
 

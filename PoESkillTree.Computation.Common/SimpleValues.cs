@@ -49,7 +49,7 @@ namespace PoESkillTree.Computation.Common
     public class StatValue : FunctionalValue
     {
         public StatValue(IStat stat, NodeType nodeType = NodeType.Total)
-            : base(c => c.GetValue(stat, nodeType), $"{stat}.Value({nodeType})")
+            : this(stat, nodeType, new ModifierSource.Global())
         {
         }
 

@@ -57,12 +57,14 @@ namespace PoESkillTree.GameModel.Items
 
     public class Property : ValueObject
     {
-        public Property(string name, int value) => (Name, Value) = (name, value);
+        public Property(string id, int value) => (Id, Value) = (id, value);
 
-        public string Name { get; }
+        public void Deconstruct(out string id, out int value) => (id, value) = (Id, Value);
+
+        public string Id { get; }
         public int Value { get; }
 
-        protected override object ToTuple() => (Name, Value);
+        protected override object ToTuple() => (Id, Value);
     }
 
     public class CraftableStat : ValueObject

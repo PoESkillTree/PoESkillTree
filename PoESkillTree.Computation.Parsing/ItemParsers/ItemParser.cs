@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.StatTranslation;
@@ -34,6 +36,8 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             var baseItemDefinition = _baseItemDefinitions.GetBaseItemById(item.BaseMetadataId);
 
             AddEquipmentModifiers(item, slot, baseItemDefinition);
+            AddPropertyModifiers(slot, baseItemDefinition);
+            AddDamagePropertyModifiers(slot, baseItemDefinition);
             AddRequirementModifiers(item, baseItemDefinition);
             var parseResults = new List<ParseResult>
             {
@@ -58,6 +62,74 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                 _modifiers.AddGlobal(equipmentBuilder.Corrupted, Form.BaseSet, 1);
             }
         }
+
+        private void AddPropertyModifiers(ItemSlot slot, BaseItemDefinition baseItemDefinition)
+        {
+            foreach (var (id, value) in baseItemDefinition.Properties)
+            {
+                switch (id)
+                {
+                    case "armour":
+                        SetProperty(slot, _builderFactories.StatBuilders.Armour, value);
+                        break;
+                    case "evasion":
+                        SetProperty(slot, _builderFactories.StatBuilders.Evasion, value);
+                        break;
+                    case "energy_shield":
+                        SetProperty(slot, _builderFactories.StatBuilders.Pool.From(Pool.EnergyShield), value);
+                        break;
+                    case "block":
+                        SetProperty(slot, _builderFactories.ActionBuilders.Block.AttackChance, value);
+                        break;
+                    case "critical_strike_chance":
+                        SetDamageRelatedProperty(slot, _builderFactories.ActionBuilders.CriticalStrike.Chance, value);
+                        break;
+                    case "attack_time":
+                        SetDamageRelatedProperty(slot, _builderFactories.StatBuilders.BaseCastTime, value / 1000D);
+                        break;
+                    case "range":
+                        SetDamageRelatedProperty(slot, _builderFactories.StatBuilders.Range, value);
+                        break;
+                }
+            }
+        }
+
+        private void SetDamageRelatedProperty(ItemSlot slot, IDamageRelatedStatBuilder stat, double value)
+        {
+            SetProperty(slot, stat.WithSkills.With(SlotToHand(slot)), value);
+        }
+
+        private void SetProperty(ItemSlot slot, IStatBuilder stat, double value)
+        {
+            _modifiers.AddLocal(stat.AsItemProperty(slot), Form.BaseSet, value);
+            _modifiers.AddLocal(stat, Form.BaseSet, stat.AsItemProperty(slot).Value);
+        }
+
+        private void AddDamagePropertyModifiers(ItemSlot slot, BaseItemDefinition baseItemDefinition)
+        {
+            int physDamageMin = 0;
+            int? physDamageMax = null;
+            foreach (var (id, value) in baseItemDefinition.Properties)
+            {
+                if (id == "physical_damage_min")
+                    physDamageMin = value;
+                else if (id == "physical_damage_max")
+                    physDamageMax = value;
+            }
+
+            if (physDamageMax.HasValue)
+            {
+                var value = _builderFactories.ValueBuilders.FromMinAndMax(
+                    _builderFactories.ValueBuilders.Create(physDamageMin),
+                    _builderFactories.ValueBuilders.Create(physDamageMax.Value));
+                var stat = _builderFactories.DamageTypeBuilders.Physical.Damage.WithSkills.With(SlotToHand(slot));
+                _modifiers.AddLocal(stat.AsItemProperty(slot), Form.BaseSet, value);
+                _modifiers.AddLocal(stat, Form.BaseSet, stat.AsItemProperty(slot).Value);
+            }
+        }
+
+        private static AttackDamageHand SlotToHand(ItemSlot slot)
+            => slot == ItemSlot.MainHand ? AttackDamageHand.MainHand : AttackDamageHand.OffHand;
 
         private void AddRequirementModifiers(Item item, BaseItemDefinition baseItemDefinition)
         {

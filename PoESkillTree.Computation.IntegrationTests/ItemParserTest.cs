@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.Computation.Parsing.ItemParsers;
@@ -50,13 +51,17 @@ namespace PoESkillTree.Computation.IntegrationTests
             var definition = _baseItemDefinitions.GetBaseItemById(item.BaseMetadataId);
             var local = new ModifierSource.Local.Item(ItemSlot.BodyArmour, item.Name);
             var global = new ModifierSource.Global(local);
-            var valueCalculationContextMock = new Mock<IValueCalculationContext>();
+            var armourPropertyStat = new Stat("BodyArmour.Armour");
+            var valueCalculationContext = Mock.Of<IValueCalculationContext>(c =>
+                c.GetValue(armourPropertyStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) 5);
             var expectedModifiers =
                 new (string stat, Form form, double? value, ModifierSource source)[]
                 {
                     ("BodyArmour.ItemTags", Form.BaseSet, definition.Tags.EncodeAsDouble(), global),
                     ("BodyArmour.ItemClass", Form.BaseSet, (double) definition.ItemClass, global),
                     ("BodyArmour.ItemFrameType", Form.BaseSet, (double) FrameType.Rare, global),
+                    ("BodyArmour.Armour", Form.BaseSet, definition.Properties[0].Value, local),
+                    ("Armour", Form.BaseSet, 5, local),
                     ("Level.Required", Form.BaseSet, 62, local),
                     ("Strength.Required", Form.BaseSet, definition.Requirements.Strength, local),
                     ("MovementSpeed", Form.Increase, -5, global),
@@ -70,7 +75,7 @@ namespace PoESkillTree.Computation.IntegrationTests
 
             var actual = _itemParser.Parse(new ItemParserParameter(item, ItemSlot.BodyArmour));
 
-            AssertCorrectModifiers(valueCalculationContextMock.Object, expectedModifiers, actual);
+            AssertCorrectModifiers(valueCalculationContext, expectedModifiers, actual);
         }
 
         private static void AssertCorrectModifiers(

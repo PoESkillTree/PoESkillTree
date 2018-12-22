@@ -3,6 +3,7 @@ using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
@@ -59,6 +60,12 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// condition. E.g. damage has a 20% chance to be doubled on hit.
         /// </summary>
         IStatBuilder ChanceToDouble { get; }
+
+        /// <summary>
+        /// Returns this stat as a property on the item in the given slot. Properties are modified by
+        /// local modifiers on the item. The resulting value is used to set this stat.
+        /// </summary>
+        IStatBuilder AsItemProperty(ItemSlot itemSlot);
 
         /// <summary>
         /// Applies this stat to <paramref name="entity"/> instead of the currently modified entity.

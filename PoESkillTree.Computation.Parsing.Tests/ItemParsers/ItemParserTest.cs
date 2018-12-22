@@ -168,6 +168,81 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             }
         }
 
+        [TestCase("armour", "Armour")]
+        [TestCase("evasion", "Evasion")]
+        [TestCase("energy_shield", "EnergyShield")]
+        [TestCase("block", "Block.ChanceAgainstAttacks")]
+        public void ParseReturnsCorrectModifiersForArmourProperties(string property, string stat)
+        {
+            var parserParam = CreateItem(ItemSlot.BodyArmour);
+            var slot = parserParam.ItemSlot;
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour,
+                properties: new[] { new Property(property, 10), });
+            var source = new ModifierSource.Local.Item(parserParam.ItemSlot, parserParam.Item.Name);
+            var expected = new[]
+            {
+                CreateModifier($"{slot}.{stat}", Form.BaseSet, 10, source),
+                CreateModifier($"{stat}", Form.BaseSet, new StatValue(new Stat($"{slot}.{stat}")), source),
+            };
+            var sut = CreateSut(baseItemDefinition);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.That(result.Modifiers, Is.SupersetOf(expected));
+        }
+
+        [TestCase("critical_strike_chance", "CriticalStrike.Chance", 1, ItemSlot.MainHand)]
+        [TestCase("attack_time", "BaseCastTime", 1D / 1000, ItemSlot.MainHand)]
+        [TestCase("range", "Range", 1, ItemSlot.MainHand)]
+        [TestCase("range", "Range", 1, ItemSlot.OffHand)]
+        public void ParseReturnsCorrectModifiersForDamageRelatedProperties(
+            string property, string stat, double factor, ItemSlot slot)
+        {
+            var parserParam = CreateItem(slot);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.OneHandSword,
+                properties: new[] { new Property(property, 10), });
+            var expectedValue = 10 * factor;
+            var statSuffix = $"Attack.{slot}.Skill";
+            var source = new ModifierSource.Local.Item(parserParam.ItemSlot, parserParam.Item.Name);
+            var expected = new[]
+            {
+                CreateModifier($"{slot}.{stat}.{statSuffix}", Form.BaseSet, expectedValue, source),
+                CreateModifier($"{stat}.{statSuffix}", Form.BaseSet,
+                    new StatValue(new Stat($"{slot}.{stat}.{statSuffix}")), source),
+            };
+            var sut = CreateSut(baseItemDefinition);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.That(result.Modifiers, Is.SupersetOf(expected));
+        }
+
+        [TestCase(ItemSlot.MainHand)]
+        [TestCase(ItemSlot.OffHand)]
+        public void ParseReturnsCorrectModifiersForDamageProperty(ItemSlot slot)
+        {
+            var parserParam = CreateItem(slot);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.OneHandSword,
+                properties: new[]
+                {
+                    new Property("physical_damage_min", 2),
+                    new Property("physical_damage_max", 8),
+                });
+            var stat = $"Physical.Damage.Attack.{slot}.Skill";
+            var source = new ModifierSource.Local.Item(parserParam.ItemSlot, parserParam.Item.Name);
+            var expected = new[]
+            {
+                CreateModifier($"{slot}.{stat}", Form.BaseSet,
+                    new FunctionalValue(null, "Value(min: 2, max: 8)"), source),
+                CreateModifier($"{stat}", Form.BaseSet, new StatValue(new Stat($"{slot}.{stat}")), source),
+            };
+            var sut = CreateSut(baseItemDefinition);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.That(result.Modifiers, Is.SupersetOf(expected));
+        }
+
         private static ItemParser CreateSut(
             BaseItemDefinition baseItemDefinition, ICoreParser coreParser = null, IStatTranslator statTranslator = null)
         {
@@ -201,8 +276,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         }
 
         private static BaseItemDefinition CreateBaseItemDefinition(Item item, ItemClass itemClass, Tags tags = default,
+            IReadOnlyList<Property> properties = null,
             IReadOnlyList<UntranslatedStat> buffStats = null, Requirements requirements = null)
-            => new BaseItemDefinition(item.BaseMetadataId, "", itemClass, new string[0], tags, null,
+            => new BaseItemDefinition(item.BaseMetadataId, "", itemClass, new string[0], tags,
+                properties ?? new Property[0],
                 buffStats ?? new UntranslatedStat[0],
                 requirements ?? new Requirements(0, 0, 0, 0),
                 null, 0, 0, 0, default, "");
