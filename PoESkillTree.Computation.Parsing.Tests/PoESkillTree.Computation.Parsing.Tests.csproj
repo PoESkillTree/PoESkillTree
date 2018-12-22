@@ -65,13 +65,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActiveSkillParserTest.cs" />
     <Compile Include="CoreParserTest.cs" />
-    <Compile Include="EmptyItemSlotParserTest.cs" />
     <Compile Include="GivenStatsParserTest.cs" />
-    <Compile Include="ItemParserTest.cs" />
+    <Compile Include="ItemParsers\EmptyItemSlotParserTest.cs" />
+    <Compile Include="ItemParsers\ItemParserTest.cs" />
     <Compile Include="ParserTestUtils.cs" />
-    <Compile Include="SkillParserTestUtils.cs" />
+    <Compile Include="SkillParsers\ActiveSkillParserTest.cs" />
+    <Compile Include="SkillParsers\SkillParserTestUtils.cs" />
+    <Compile Include="SkillParsers\SupportSkillParserTest.cs" />
     <Compile Include="StringParsers\MatcherDataParserTest.cs" />
     <Compile Include="StringParsers\CachingParserTest.cs" />
     <Compile Include="Referencing\ResolvedMatchContextTest.cs" />
@@ -88,7 +89,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringParsers\StatReplacingParserTest.cs" />
     <Compile Include="StringParsers\ValidatingParserTest.cs" />
-    <Compile Include="SupportSkillParserTest.cs" />
     <Compile Include="UntranslatedStatParserTest.cs" />
   </ItemGroup>
   <ItemGroup>

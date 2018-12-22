@@ -11,7 +11,7 @@ using PoESkillTree.GameModel.Modifiers;
 using PoESkillTree.GameModel.Skills;
 using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
 
-namespace PoESkillTree.Computation.Parsing.Tests
+namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
 {
     [TestFixture]
     public class ItemParserTest
