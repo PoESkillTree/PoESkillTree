@@ -21,10 +21,14 @@ namespace PoESkillTree.Computation.Common.Builders.Equipment
         /// </summary>
         IConditionBuilder Has(Tags tag);
 
+        IStatBuilder ItemClass { get; }
+
         /// <summary>
         /// Returns a condition that is satisfied if this slot holds an item having the given item class.
         /// </summary>
         IConditionBuilder Has(ItemClass itemClass);
+
+        IStatBuilder FrameType { get; }
 
         /// <summary>
         /// Returns a condition that is satisfied if this slot holds an item having the given frame type.
@@ -37,8 +41,8 @@ namespace PoESkillTree.Computation.Common.Builders.Equipment
         IConditionBuilder HasItem { get; }
 
         /// <summary>
-        /// Returns a condition that is satisfied if this slot holds a corrupted item.
+        /// Is set if this slot holds a corrupted item.
         /// </summary>
-        IConditionBuilder IsCorrupted { get; }
+        IStatBuilder Corrupted { get; }
     }
 }

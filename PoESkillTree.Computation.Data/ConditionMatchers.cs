@@ -144,7 +144,7 @@ namespace PoESkillTree.Computation.Data
                     "from equipped shield",
                     And(Condition.BaseValueComesFrom(ItemSlot.OffHand), OffHand.Has(Tags.Shield))
                 },
-                { "with # corrupted items equipped", Equipment.Count(e => e.IsCorrupted) >= Value },
+                { "with # corrupted items equipped", Equipment.Count(e => e.Corrupted.IsSet) >= Value },
                 // stats
                 // - pool
                 { "when on low life", Life.IsLow },
