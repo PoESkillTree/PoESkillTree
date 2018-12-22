@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                 [ModLocation.Crafted] = new[] { "6% increased maximum Life" }
             };
             var item = new Item("Metadata/Items/Armours/BodyArmours/BodyStr15",
-                "Hypnotic Keep Astral Plate", 20, 62, modDict);
+                "Hypnotic Keep Astral Plate", 20, 62, FrameType.Rare, false, modDict);
             var definition = _baseItemDefinitions.GetBaseItemById(item.BaseMetadataId);
             var local = new ModifierSource.Local.Item(ItemSlot.BodyArmour, item.Name);
             var global = new ModifierSource.Global(local);
@@ -48,6 +48,8 @@ namespace PoESkillTree.Computation.IntegrationTests
                 new (string stat, Form form, double? value, ModifierSource source)[]
                 {
                     ("BodyArmour.ItemTags", Form.BaseSet, definition.Tags.EncodeAsDouble(), global),
+                    ("BodyArmour.ItemClass", Form.BaseSet, (double) definition.ItemClass, global),
+                    ("BodyArmour.ItemFrameType", Form.BaseSet, (double) FrameType.Rare, global),
                     ("MovementSpeed", Form.Increase, -5, global),
                     ("Fire.Resistance", Form.BaseAdd, 11, global),
                     ("Mana", Form.BaseAdd, 1, global),

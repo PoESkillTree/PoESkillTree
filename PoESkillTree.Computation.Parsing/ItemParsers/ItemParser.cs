@@ -31,9 +31,17 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             var (item, slot) = parameter;
             var localSource = new ModifierSource.Local.Item(slot, item.Name);
             var globalSource = new ModifierSource.Global(localSource);
+            var baseItemDefinition = _baseItemDefinitions.GetBaseItemById(item.BaseMetadataId);
 
-            AddModifier(_builderFactories.EquipmentBuilders.Equipment[slot].ItemTags, Form.BaseSet,
-                _baseItemDefinitions.GetBaseItemById(item.BaseMetadataId).Tags.EncodeAsDouble(), globalSource);
+            var equipmentBuilder = _builderFactories.EquipmentBuilders.Equipment[slot];
+            AddModifier(equipmentBuilder.ItemTags, Form.BaseSet, baseItemDefinition.Tags.EncodeAsDouble(),
+                globalSource);
+            AddModifier(equipmentBuilder.ItemClass, Form.BaseSet, (double) baseItemDefinition.ItemClass, globalSource);
+            AddModifier(equipmentBuilder.FrameType, Form.BaseSet, (double) item.FrameType, globalSource);
+            if (item.IsCorrupted)
+            {
+                AddModifier(equipmentBuilder.Corrupted, Form.BaseSet, 1, globalSource);
+            }
 
             var parseResult = ParseResult.Success(_parsedModifiers);
             var coreParseResult = item.Modifiers.Values.Flatten().Select(s => Parse(s, globalSource));

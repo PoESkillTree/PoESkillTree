@@ -9,6 +9,7 @@ using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Modifiers;
 using PoESkillTree.GameModel.Skills;
+using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
 
 namespace PoESkillTree.Computation.Parsing.Tests
 {
@@ -32,19 +33,76 @@ namespace PoESkillTree.Computation.Parsing.Tests
             Assert.That(result.Modifiers, Has.Member(expected));
         }
 
-        [Test]
-        public void ParseReturnsCorrectItemTagsModifier()
+        [TestCase(Tags.BodyArmour)]
+        [TestCase(Tags.BodyArmour | Tags.Armour | Tags.StrArmour)]
+        public void ParseReturnsCorrectItemTagsModifier(Tags tags)
         {
             var parserParam = CreateItem(ItemSlot.BodyArmour);
             var baseItemDefinition =
-                CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour, Tags.BodyArmour | Tags.Armour);
-            var expected = CreateModifier($"{parserParam.ItemSlot}.ItemTags", Form.BaseSet,
-                baseItemDefinition.Tags.EncodeAsDouble());
+                CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour, tags);
+            var expected = CreateModifier($"{parserParam.ItemSlot}.ItemTags", Form.BaseSet, tags.EncodeAsDouble());
             var sut = CreateSut(baseItemDefinition);
 
             var result = sut.Parse(parserParam);
 
             Assert.That(result.Modifiers, Has.Member(expected));
+        }
+
+        [TestCase(ItemClass.BodyArmour)]
+        [TestCase(ItemClass.Belt)]
+        public void ParseReturnsCorrectItemClassModifier(ItemClass itemClass)
+        {
+            var parserParam = CreateItem(ItemSlot.BodyArmour);
+            var baseItemDefinition =
+                CreateBaseItemDefinition(parserParam.Item, itemClass, default);
+            var expected = CreateModifier($"{parserParam.ItemSlot}.ItemClass", Form.BaseSet, (double) itemClass);
+            var sut = CreateSut(baseItemDefinition);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.That(result.Modifiers, Has.Member(expected));
+        }
+
+        [TestCase(FrameType.Rare)]
+        [TestCase(FrameType.Magic)]
+        public void ParseReturnsCorrectFrameTypeModifier(FrameType frameType)
+        {
+            var parserParam = CreateItem(ItemSlot.BodyArmour, frameType: frameType);
+            var baseItemDefinition =
+                CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour, default);
+            var expected = CreateModifier($"{parserParam.ItemSlot}.ItemFrameType", Form.BaseSet, (double) frameType);
+            var sut = CreateSut(baseItemDefinition);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.That(result.Modifiers, Has.Member(expected));
+        }
+
+        [Test]
+        public void ParseReturnsCorrectCorruptedModifierIfCorrupted()
+        {
+            var parserParam = CreateItem(ItemSlot.BodyArmour, isCorrupted: true);
+            var baseItemDefinition =
+                CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour, default);
+            var expected = CreateModifier($"{parserParam.ItemSlot}.ItemIsCorrupted", Form.BaseSet, 1);
+            var sut = CreateSut(baseItemDefinition);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.That(result.Modifiers, Has.Member(expected));
+        }
+
+        [Test]
+        public void ParseReturnsNoCorruptedModifierIfNotCorrupted()
+        {
+            var parserParam = CreateItem(ItemSlot.BodyArmour);
+            var baseItemDefinition =
+                CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour, default);
+            var sut = CreateSut(baseItemDefinition);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.IsFalse(AnyModifierHasIdentity(result.Modifiers, $"{parserParam.ItemSlot}.ItemIsCorrupted"));
         }
 
         private static ItemParser CreateSut(BaseItemDefinition baseItemDefinition)
@@ -59,15 +117,23 @@ namespace PoESkillTree.Computation.Parsing.Tests
         }
 
         private static ItemParserParameter CreateItem(ItemSlot itemSlot, params string[] mods)
-            => CreateItem(itemSlot, 0, 0, mods);
+            => CreateItem(itemSlot, 0, 0, FrameType.Rare, false, mods);
 
-        private static ItemParserParameter CreateItem(ItemSlot itemSlot, int quality, int requiredLevel, params string[] mods)
+        private static ItemParserParameter CreateItem(
+            ItemSlot itemSlot, int quality = 0, int requiredLevel = 0, FrameType frameType = FrameType.Rare,
+            bool isCorrupted = false)
+            => CreateItem(itemSlot, quality, requiredLevel, frameType, isCorrupted, new string[0]);
+
+        private static ItemParserParameter CreateItem(
+            ItemSlot itemSlot, int quality, int requiredLevel, FrameType frameType, bool isCorrupted,
+            params string[] mods)
         {
             var modDict = new Dictionary<ModLocation, IReadOnlyList<string>>
             {
                 { ModLocation.Explicit, mods }
             };
-            var item = new Item("metadataId", "itemName", quality, requiredLevel, modDict);
+            var item =
+                new Item("metadataId", "itemName", quality, requiredLevel, frameType, isCorrupted, modDict);
             return new ItemParserParameter(item, itemSlot);
         }
 
