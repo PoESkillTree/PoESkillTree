@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Parsing.Tests
@@ -26,5 +27,9 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public static IEnumerable<NodeValue?> Calculate(
             this IEnumerable<IValue> @this, IValueCalculationContext context)
             => @this.Select(v => v.Calculate(context));
+
+        public static Modifier CreateModifier(string stat, Form form, double? value, ModifierSource source = null)
+            => new Modifier(new[] { new Stat(stat), }, form, new Constant(value),
+                source ?? new ModifierSource.Global());
     }
 }

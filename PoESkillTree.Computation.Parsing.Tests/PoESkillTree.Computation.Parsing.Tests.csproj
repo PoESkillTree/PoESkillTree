@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="ActiveSkillParserTest.cs" />
     <Compile Include="CoreParserTest.cs" />
+    <Compile Include="EmptyItemSlotParserTest.cs" />
     <Compile Include="GivenStatsParserTest.cs" />
     <Compile Include="ItemParserTest.cs" />
     <Compile Include="ParserTestUtils.cs" />

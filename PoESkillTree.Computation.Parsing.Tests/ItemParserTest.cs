@@ -147,9 +147,5 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private static ModifierSource.Local.Item CreateLocalSource(ItemParserParameter parserParam)
             => new ModifierSource.Local.Item(parserParam.ItemSlot, parserParam.Item.Name);
-
-        private static Modifier CreateModifier(string stat, Form form, double? value, ModifierSource source = null)
-            => new Modifier(new[] { new Stat(stat), }, form, new Constant(value),
-                source ?? new ModifierSource.Global());
     }
 }
