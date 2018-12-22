@@ -14,6 +14,8 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
         private readonly IBuilderFactories _builderFactories;
         private readonly ICoreParser _coreParser;
 
+        private ModifierCollection _modifiers;
+
         public ItemParser(
             BaseItemDefinitions baseItemDefinitions, IBuilderFactories builderFactories, ICoreParser coreParser)
             => (_coreParser, _builderFactories, _baseItemDefinitions) =
@@ -22,23 +24,48 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
         public ParseResult Parse(ItemParserParameter parameter)
         {
             var (item, slot) = parameter;
-            var modifiers = new ModifierCollection(_builderFactories, new ModifierSource.Local.Item(slot));
+            _modifiers = new ModifierCollection(_builderFactories, new ModifierSource.Local.Item(slot));
             var localSource = new ModifierSource.Local.Item(slot, item.Name);
             var globalSource = new ModifierSource.Global(localSource);
             var baseItemDefinition = _baseItemDefinitions.GetBaseItemById(item.BaseMetadataId);
 
-            var equipmentBuilder = _builderFactories.EquipmentBuilders.Equipment[slot];
-            modifiers.AddGlobal(equipmentBuilder.ItemTags, Form.BaseSet, baseItemDefinition.Tags.EncodeAsDouble());
-            modifiers.AddGlobal(equipmentBuilder.ItemClass, Form.BaseSet, (double) baseItemDefinition.ItemClass);
-            modifiers.AddGlobal(equipmentBuilder.FrameType, Form.BaseSet, (double) item.FrameType);
-            if (item.IsCorrupted)
-            {
-                modifiers.AddGlobal(equipmentBuilder.Corrupted, Form.BaseSet, 1);
-            }
+            AddEquipmentModifiers(item, slot, baseItemDefinition);
+            AddRequirementModifiers(item, baseItemDefinition);
 
-            var parseResult = ParseResult.Success(modifiers.ToList());
+            var parseResult = ParseResult.Success(_modifiers.ToList());
             var coreParseResult = item.Modifiers.Values.Flatten().Select(s => Parse(s, globalSource));
             return ParseResult.Aggregate(parseResult.Concat(coreParseResult));
+        }
+
+        private void AddEquipmentModifiers(Item item, ItemSlot slot, BaseItemDefinition baseItemDefinition)
+        {
+            var equipmentBuilder = _builderFactories.EquipmentBuilders.Equipment[slot];
+            _modifiers.AddGlobal(equipmentBuilder.ItemTags, Form.BaseSet, baseItemDefinition.Tags.EncodeAsDouble());
+            _modifiers.AddGlobal(equipmentBuilder.ItemClass, Form.BaseSet, (double) baseItemDefinition.ItemClass);
+            _modifiers.AddGlobal(equipmentBuilder.FrameType, Form.BaseSet, (double) item.FrameType);
+            if (item.IsCorrupted)
+            {
+                _modifiers.AddGlobal(equipmentBuilder.Corrupted, Form.BaseSet, 1);
+            }
+        }
+
+        private void AddRequirementModifiers(Item item, BaseItemDefinition baseItemDefinition)
+        {
+            var requirementStats = _builderFactories.StatBuilders.Requirements;
+            var requirements = baseItemDefinition.Requirements;
+            _modifiers.AddLocal(requirementStats.Level, Form.BaseSet, item.RequiredLevel);
+            if (requirements.Dexterity > 0)
+            {
+                _modifiers.AddLocal(requirementStats.Dexterity, Form.BaseSet, requirements.Dexterity);
+            }
+            if (requirements.Intelligence > 0)
+            {
+                _modifiers.AddLocal(requirementStats.Intelligence, Form.BaseSet, requirements.Intelligence);
+            }
+            if (requirements.Strength > 0)
+            {
+                _modifiers.AddLocal(requirementStats.Strength, Form.BaseSet, requirements.Strength);
+            }
         }
 
         private ParseResult Parse(string modifierLine, ModifierSource modifierSource)

@@ -50,6 +50,8 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("BodyArmour.ItemTags", Form.BaseSet, definition.Tags.EncodeAsDouble(), global),
                     ("BodyArmour.ItemClass", Form.BaseSet, (double) definition.ItemClass, global),
                     ("BodyArmour.ItemFrameType", Form.BaseSet, (double) FrameType.Rare, global),
+                    ("Level.Required", Form.BaseSet, 62, local),
+                    ("Strength.Required", Form.BaseSet, definition.Requirements.Strength, local),
                     ("MovementSpeed", Form.Increase, -5, global),
                     ("Fire.Resistance", Form.BaseAdd, 11, global),
                     ("Mana", Form.BaseAdd, 1, global),

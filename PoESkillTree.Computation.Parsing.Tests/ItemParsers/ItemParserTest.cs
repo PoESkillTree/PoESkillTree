@@ -21,7 +21,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         {
             var parserParam = CreateItem(ItemSlot.BodyArmour, "+42 to maximum Life");
             var source = CreateGlobalSource(parserParam);
-            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, default, default);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, default);
             var expected = CreateModifier("", Form.BaseAdd, 2, source);
             var coreParser = Mock.Of<ICoreParser>(p =>
                 p.Parse(new CoreParserParameter("+42 to maximum Life", source, Entity.Character))
@@ -38,8 +38,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         public void ParseReturnsCorrectItemTagsModifier(Tags tags)
         {
             var parserParam = CreateItem(ItemSlot.BodyArmour);
-            var baseItemDefinition =
-                CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour, tags);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour, tags);
             var expected = CreateModifier($"{parserParam.ItemSlot}.ItemTags", Form.BaseSet, tags.EncodeAsDouble());
             var sut = CreateSut(baseItemDefinition);
 
@@ -53,8 +52,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         public void ParseReturnsCorrectItemClassModifier(ItemClass itemClass)
         {
             var parserParam = CreateItem(ItemSlot.BodyArmour);
-            var baseItemDefinition =
-                CreateBaseItemDefinition(parserParam.Item, itemClass, default);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, itemClass);
             var expected = CreateModifier($"{parserParam.ItemSlot}.ItemClass", Form.BaseSet, (double) itemClass);
             var sut = CreateSut(baseItemDefinition);
 
@@ -68,8 +66,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         public void ParseReturnsCorrectFrameTypeModifier(FrameType frameType)
         {
             var parserParam = CreateItem(ItemSlot.BodyArmour, frameType: frameType);
-            var baseItemDefinition =
-                CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour, default);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour);
             var expected = CreateModifier($"{parserParam.ItemSlot}.ItemFrameType", Form.BaseSet, (double) frameType);
             var sut = CreateSut(baseItemDefinition);
 
@@ -82,8 +79,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         public void ParseReturnsCorrectCorruptedModifierIfCorrupted()
         {
             var parserParam = CreateItem(ItemSlot.BodyArmour, isCorrupted: true);
-            var baseItemDefinition =
-                CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour, default);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour);
             var expected = CreateModifier($"{parserParam.ItemSlot}.ItemIsCorrupted", Form.BaseSet, 1);
             var sut = CreateSut(baseItemDefinition);
 
@@ -96,13 +92,33 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         public void ParseReturnsNoCorruptedModifierIfNotCorrupted()
         {
             var parserParam = CreateItem(ItemSlot.BodyArmour);
-            var baseItemDefinition =
-                CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour, default);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour);
             var sut = CreateSut(baseItemDefinition);
 
             var result = sut.Parse(parserParam);
 
             Assert.IsFalse(AnyModifierHasIdentity(result.Modifiers, $"{parserParam.ItemSlot}.ItemIsCorrupted"));
+        }
+
+        [Test]
+        public void ParseReturnsCorrectRequirementModifiers()
+        {
+            var parserParam = CreateItem(ItemSlot.BodyArmour, requiredLevel: 42);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour,
+                requirements: new Requirements(4, 5, 6, 7));
+            var source = new ModifierSource.Local.Item(parserParam.ItemSlot, parserParam.Item.Name);
+            var expected = new[]
+            {
+                CreateModifier("Level.Required", Form.BaseSet, 42, source),
+                CreateModifier("Dexterity.Required", Form.BaseSet, 5, source),
+                CreateModifier("Intelligence.Required", Form.BaseSet, 6, source),
+                CreateModifier("Strength.Required", Form.BaseSet, 7, source),
+            };
+            var sut = CreateSut(baseItemDefinition);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.That(result.Modifiers, Is.SupersetOf(expected));
         }
 
         private static ItemParser CreateSut(BaseItemDefinition baseItemDefinition)
@@ -137,9 +153,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             return new ItemParserParameter(item, itemSlot);
         }
 
-        private static BaseItemDefinition CreateBaseItemDefinition(Item item, ItemClass itemClass, Tags tags)
-            => new BaseItemDefinition(item.BaseMetadataId, "", itemClass,
-                new string[0], tags, null, null, null,
+        private static BaseItemDefinition CreateBaseItemDefinition(Item item, ItemClass itemClass, Tags tags = default,
+            Requirements requirements = null)
+            => new BaseItemDefinition(item.BaseMetadataId, "", itemClass, new string[0], tags, null,
+                null, requirements ?? new Requirements(0, 0, 0, 0),
                 null, 0, 0, 0, default, "");
 
         private static ModifierSource.Global CreateGlobalSource(ItemParserParameter parserParam)
