@@ -15,6 +15,7 @@ using PoESkillTree.GameModel.Skills;
 using PoESkillTree.GameModel.StatTranslation;
 using PoESkillTree.Utils.Extensions;
 using static PoESkillTree.Computation.Common.Tests.Helper;
+using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
 using static PoESkillTree.Computation.Parsing.Tests.SkillParserTestUtils;
 
 namespace PoESkillTree.Computation.Parsing.Tests

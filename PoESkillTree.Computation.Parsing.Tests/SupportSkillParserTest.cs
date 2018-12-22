@@ -10,6 +10,7 @@ using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 using static PoESkillTree.Computation.Common.Tests.Helper;
+using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
 using static PoESkillTree.Computation.Parsing.Tests.SkillParserTestUtils;
 
 namespace PoESkillTree.Computation.Parsing.Tests
