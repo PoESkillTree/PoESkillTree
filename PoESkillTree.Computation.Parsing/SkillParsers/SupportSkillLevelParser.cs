@@ -23,7 +23,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             {
                 var moreMultiplier = multiplier * 100 - 100;
                 modifiers.AddGlobal(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost,
-                    Form.More, moreMultiplier, preParseResult.IsMainSkill.IsSet);
+                    Form.More, moreMultiplier, preParseResult.IsMainSkill);
                 modifiers.AddGlobal(_builderFactories.SkillBuilders.FromId(mainSkill.Id).Reservation,
                     Form.More, moreMultiplier, preParseResult.IsActiveSkill);
             }

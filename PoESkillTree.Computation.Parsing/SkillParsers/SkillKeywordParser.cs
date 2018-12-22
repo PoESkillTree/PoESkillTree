@@ -57,7 +57,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             _parsedStats = new HashSet<UntranslatedStat>();
             _preParseResult = preParseResult;
 
-            var isMainSkill = preParseResult.IsMainSkill.IsSet;
+            var isMainSkill = preParseResult.IsMainSkill;
             var alwaysProjectileParts = GetPartsWithFlagStat(SkillStatIds.IsAlwaysProjectile);
             var areaDamageHitParts = GetPartsWithFlagStat(SkillStatIds.IsAreaDamage);
             var areaDamageDotParts = GetPartsWithFlagStat(SkillStatIds.SkillDotIsAreaDamage);

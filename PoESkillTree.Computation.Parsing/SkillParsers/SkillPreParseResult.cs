@@ -1,6 +1,5 @@
 ﻿using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
-using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
@@ -11,7 +10,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             SkillDefinition skillDefinition, SkillLevelDefinition levelDefinition, SkillDefinition mainSkillDefinition,
             ModifierSource.Local.Skill localSource, ModifierSource.Global globalSource,
             ModifierSource.Local.Gem gemSource,
-            IStatBuilder isMainSkill, IConditionBuilder isActiveSkill)
+            IConditionBuilder isMainSkill, IConditionBuilder isActiveSkill)
         {
             SkillDefinition = skillDefinition;
             LevelDefinition = levelDefinition;
@@ -36,7 +35,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         public ModifierSource.Global GlobalSource { get; }
         public ModifierSource.Local.Gem GemSource { get; }
 
-        public IStatBuilder IsMainSkill { get; }
+        public IConditionBuilder IsMainSkill { get; }
         public IConditionBuilder IsActiveSkill { get; }
     }
 }

@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             _preParseResult = preParseResult;
             _parsedStats = partialResult.ParsedStats.ToHashSet();
 
-            var isMainSkill = preParseResult.IsMainSkill.IsSet;
+            var isMainSkill = preParseResult.IsMainSkill;
             var isActiveSkill = _metaStatBuilders.IsActiveSkill(skill);
             var level = preParseResult.LevelDefinition;
             var qualityStats = level.QualityStats.Select(s => ApplyQuality(s, skill));

@@ -28,12 +28,12 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var globalSource = new ModifierSource.Global(localSource);
             var gemSource = new ModifierSource.Local.Gem(parsedSkill.ItemSlot, parsedSkill.SocketIndex, mainSkill.Id);
 
-            var isMainSkillStat = _metaStatBuilders.SkillIsMain(mainSkill.ItemSlot, mainSkill.SocketIndex);
+            var isMainSkill = _metaStatBuilders.SkillIsMain(mainSkill.ItemSlot, mainSkill.SocketIndex).IsSet;
             var isActiveSkill = _metaStatBuilders.IsActiveSkill(mainSkill);
 
             return new SkillPreParseResult(parsedSkillDefinition, parsedSkillLevel, mainSkillDefinition,
                 localSource, globalSource, gemSource,
-                isMainSkillStat, isActiveSkill);
+                isMainSkill, isActiveSkill);
         }
     }
 }

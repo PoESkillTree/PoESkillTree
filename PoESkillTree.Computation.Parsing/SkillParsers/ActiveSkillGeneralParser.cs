@@ -27,9 +27,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
             _parsedModifiers = new SkillModifierCollection(_builderFactories,
-                preParseResult.IsMainSkill.IsSet, preParseResult.LocalSource);
+                preParseResult.IsMainSkill, preParseResult.LocalSource);
             var activeSkill = preParseResult.SkillDefinition.ActiveSkill;
-            var isMainSkill = preParseResult.IsMainSkill.IsSet;
+            var isMainSkill = preParseResult.IsMainSkill;
             var isActiveSkill = preParseResult.IsActiveSkill;
 
             AddHitDamageSourceModifiers(preParseResult);
