@@ -83,6 +83,7 @@
     <Compile Include="Items\Tags.cs" />
     <Compile Include="Items\ValueColoring.cs" />
     <Compile Include="Items\ItemConstants.cs" />
+    <Compile Include="Modifiers\ModLocation.cs" />
     <Compile Include="MonsterBaseStats.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataUtils.cs" />

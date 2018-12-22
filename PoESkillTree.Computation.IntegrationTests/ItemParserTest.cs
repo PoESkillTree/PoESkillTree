@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
@@ -7,6 +8,7 @@ using PoESkillTree.Computation.Parsing;
 using PoESkillTree.Computation.Parsing.ItemParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.Modifiers;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {
@@ -26,13 +28,17 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void ParseRareAstralPlateReturnsCorrectResult()
         {
+            var modDict = new Dictionary<ModLocation, IReadOnlyList<string>>
+            {
+                [ModLocation.Implicit] =
+                    new[] { "5% reduced Movement Speed (Hidden)", "+11% to all Elemental Resistances" },
+                [ModLocation.Corruption] = new[] { "+1 to maximum Mana" },
+                [ModLocation.Enchantment] = new[] { "+1% to Fire Resistance" },
+                [ModLocation.Explicit] = new[] { "+50 to maximum Life", "+32 to Strength" },
+                [ModLocation.Crafted] = new[] { "6% increased maximum Life" }
+            };
             var item = new Item("Metadata/Items/Armours/BodyArmours/BodyStr15",
-                "Hypnotic Keep Astral Plate", 20, 62,
-                new[] { "5% reduced Movement Speed (Hidden)", "+11% to all Elemental Resistances" },
-                new[] { "+1 to maximum Mana" },
-                new[] { "+1% to Fire Resistance" },
-                new[] { "+50 to maximum Life", "+32 to Strength" },
-                new[] { "6% increased maximum Life" });
+                "Hypnotic Keep Astral Plate", 20, 62, modDict);
             var definition = _baseItemDefinitions.GetBaseItemById(item.BaseMetadataId);
             var local = new ModifierSource.Local.Item(ItemSlot.BodyArmour, item.Name);
             var global = new ModifierSource.Global(local);
@@ -42,8 +48,6 @@ namespace PoESkillTree.Computation.IntegrationTests
                 {
                     ("MovementSpeed", Form.Increase, -5, global),
                     ("Fire.Resistance", Form.BaseAdd, 11, global),
-                    ("Cold.Resistance", Form.BaseAdd, 11, global),
-                    ("Lightning.Resistance", Form.BaseAdd, 11, global),
                     ("Mana", Form.BaseAdd, 1, global),
                     ("Fire.Resistance", Form.BaseAdd, 1, global),
                     ("Life", Form.BaseAdd, 50, global),
@@ -70,7 +74,6 @@ namespace PoESkillTree.Computation.IntegrationTests
             {
                 var expected = expectedModifiers[i];
                 var actual = modifiers[i];
-                Assert.That(actual.Stats, Has.One.Items);
                 Assert.AreEqual(expected.stat, actual.Stats[0].Identity);
                 Assert.AreEqual(Entity.Character, actual.Stats[0].Entity);
                 Assert.AreEqual(expected.form, actual.Form);
