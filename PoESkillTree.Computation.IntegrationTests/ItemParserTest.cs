@@ -22,7 +22,8 @@ namespace PoESkillTree.Computation.IntegrationTests
         public async Task SetUpAsync()
         {
             _baseItemDefinitions = await BaseItemJsonDeserializer.DeserializeAsync();
-            _itemParser = new ItemParser(await CompositionRoot.CoreParser);
+            _itemParser = new ItemParser(_baseItemDefinitions, await CompositionRoot.BuilderFactories,
+                await CompositionRoot.CoreParser);
         }
 
         [Test]
@@ -46,6 +47,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var expectedModifiers =
                 new (string stat, Form form, double? value, ModifierSource source)[]
                 {
+                    ("BodyArmour.ItemTags", Form.BaseSet, definition.Tags.EncodeAsDouble(), global),
                     ("MovementSpeed", Form.Increase, -5, global),
                     ("Fire.Resistance", Form.BaseAdd, 11, global),
                     ("Mana", Form.BaseAdd, 1, global),
