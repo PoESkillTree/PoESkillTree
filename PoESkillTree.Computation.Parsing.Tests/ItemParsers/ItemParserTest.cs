@@ -108,7 +108,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             var parserParam = CreateItem(ItemSlot.BodyArmour, requiredLevel: 42);
             var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour,
                 requirements: new Requirements(4, 5, 6, 7));
-            var source = new ModifierSource.Local.Item(parserParam.ItemSlot, parserParam.Item.Name);
+            var source = CreateLocalSource(parserParam);
             var expected = new[]
             {
                 CreateModifier("Level.Required", Form.BaseSet, 42, source),
@@ -178,7 +178,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             var slot = parserParam.ItemSlot;
             var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour,
                 properties: new[] { new Property(property, 10), });
-            var source = new ModifierSource.Local.Item(parserParam.ItemSlot, parserParam.Item.Name);
+            var source = CreateLocalSource(parserParam);
             var expected = new[]
             {
                 CreateModifier($"{slot}.{stat}", Form.BaseSet, 10, source),
@@ -203,7 +203,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
                 properties: new[] { new Property(property, 10), });
             var expectedValue = 10 * factor;
             var statSuffix = $"Attack.{slot}.Skill";
-            var source = new ModifierSource.Local.Item(parserParam.ItemSlot, parserParam.Item.Name);
+            var source = CreateLocalSource(parserParam);
             var expected = new[]
             {
                 CreateModifier($"{slot}.{stat}.{statSuffix}", Form.BaseSet, expectedValue, source),
@@ -229,12 +229,50 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
                     new Property("physical_damage_max", 8),
                 });
             var stat = $"Physical.Damage.Attack.{slot}.Skill";
-            var source = new ModifierSource.Local.Item(parserParam.ItemSlot, parserParam.Item.Name);
+            var source = CreateLocalSource(parserParam);
             var expected = new[]
             {
                 CreateModifier($"{slot}.{stat}", Form.BaseSet,
                     new FunctionalValue(null, "Value(min: 2, max: 8)"), source),
                 CreateModifier($"{stat}", Form.BaseSet, new StatValue(new Stat($"{slot}.{stat}")), source),
+            };
+            var sut = CreateSut(baseItemDefinition);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.That(result.Modifiers, Is.SupersetOf(expected));
+        }
+
+        [Test]
+        public void ParseReturnsCorrectModifiersForArmourQuality()
+        {
+            var parserParam = CreateItem(ItemSlot.BodyArmour, 20);
+            var slot = parserParam.ItemSlot;
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour, Tags.Armour);
+            var source = CreateLocalSource(parserParam);
+            var expected = new[]
+            {
+                CreateModifier($"{slot}.Armour", Form.Increase, 20, source),
+                CreateModifier($"{slot}.Evasion", Form.Increase, 20, source),
+                CreateModifier($"{slot}.EnergyShield", Form.Increase, 20, source),
+            };
+            var sut = CreateSut(baseItemDefinition);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.That(result.Modifiers, Is.SupersetOf(expected));
+        }
+
+        [TestCase(ItemSlot.MainHand)]
+        [TestCase(ItemSlot.OffHand)]
+        public void ParseReturnsCorrectModifiersForWeaponQuality(ItemSlot slot)
+        {
+            var parserParam = CreateItem(slot, 20);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.OneHandSword, Tags.Weapon);
+            var source = CreateLocalSource(parserParam);
+            var expected = new[]
+            {
+                CreateModifier($"{slot}.Physical.Damage.Attack.{slot}.Skill", Form.Increase, 20, source),
             };
             var sut = CreateSut(baseItemDefinition);
 

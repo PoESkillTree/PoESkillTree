@@ -38,6 +38,7 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             AddEquipmentModifiers(item, slot, baseItemDefinition);
             AddPropertyModifiers(slot, baseItemDefinition);
             AddDamagePropertyModifiers(slot, baseItemDefinition);
+            AddQualityModifiers(item, slot, baseItemDefinition);
             AddRequirementModifiers(item, baseItemDefinition);
             var parseResults = new List<ParseResult>
             {
@@ -128,8 +129,26 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             }
         }
 
-        private static AttackDamageHand SlotToHand(ItemSlot slot)
-            => slot == ItemSlot.MainHand ? AttackDamageHand.MainHand : AttackDamageHand.OffHand;
+        private void AddQualityModifiers(Item item, ItemSlot slot, BaseItemDefinition baseItemDefinition)
+        {
+            var value = item.Quality;
+            if (value == 0)
+                return;
+
+            if (baseItemDefinition.Tags.HasFlag(Tags.Armour))
+            {
+                Add(_builderFactories.StatBuilders.Armour);
+                Add(_builderFactories.StatBuilders.Evasion);
+                Add(_builderFactories.StatBuilders.Pool.From(Pool.EnergyShield));
+            }
+            else if (baseItemDefinition.Tags.HasFlag(Tags.Weapon))
+            {
+                Add(_builderFactories.DamageTypeBuilders.Physical.Damage.WithSkills.With(SlotToHand(slot)));
+            }
+
+            void Add(IStatBuilder stat)
+                => _modifiers.AddLocal(stat.AsItemProperty(slot), Form.Increase, value);
+        }
 
         private void AddRequirementModifiers(Item item, BaseItemDefinition baseItemDefinition)
         {
@@ -173,6 +192,9 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
 
         private ParseResult Parse(string modifierLine, ModifierSource modifierSource)
             => _coreParser.Parse(modifierLine, modifierSource, Entity.Character);
+
+        private static AttackDamageHand SlotToHand(ItemSlot slot)
+            => slot == ItemSlot.MainHand ? AttackDamageHand.MainHand : AttackDamageHand.OffHand;
     }
 
     public class ItemParserParameter
