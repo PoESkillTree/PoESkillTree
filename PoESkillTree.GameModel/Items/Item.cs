@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PoESkillTree.GameModel.Modifiers;
 
 namespace PoESkillTree.GameModel.Items
 {
@@ -7,7 +6,7 @@ namespace PoESkillTree.GameModel.Items
     {
         public Item(
             string baseMetadataId, string name, int quality, int requiredLevel, FrameType frameType, bool isCorrupted,
-            IReadOnlyDictionary<ModLocation, IReadOnlyList<string>> modifiers)
+            IReadOnlyList<string> modifiers)
         {
             BaseMetadataId = baseMetadataId;
             Name = name;
@@ -27,6 +26,6 @@ namespace PoESkillTree.GameModel.Items
         public FrameType FrameType { get; }
         public bool IsCorrupted { get; }
 
-        public IReadOnlyDictionary<ModLocation, IReadOnlyList<string>> Modifiers { get; }
+        public IReadOnlyList<string> Modifiers { get; }
     }
 }

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.Modifiers;
 using PoESkillTree.GameModel.StatTranslation;
 using PoESkillTree.Utils.Extensions;
 
@@ -46,8 +48,12 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                 ParseBuffStats(baseItemDefinition, localSource),
             };
 
-            var coreParseResults = item.Modifiers.Values.Flatten().Select(s => Parse(s, globalSource));
-            parseResults.AddRange(coreParseResults);
+            var (localMods, globalMods) =
+                item.Modifiers.Partition(s => ModifierLocalityTester.IsLocal(s, baseItemDefinition.Tags));
+            var localResults = localMods.Select(s => Parse(s, localSource));
+            var globalResults = globalMods.Select(s => Parse(s, globalSource));
+            parseResults.AddRange(localResults);
+            parseResults.AddRange(globalResults);
 
             return ParseResult.Aggregate(parseResults);
         }

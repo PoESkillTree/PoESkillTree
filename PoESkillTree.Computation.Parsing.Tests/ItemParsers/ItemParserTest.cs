@@ -8,7 +8,6 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Parsing.ItemParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.Modifiers;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.GameModel.StatTranslation;
 using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
@@ -27,6 +26,23 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             var expected = CreateModifier("", Form.BaseAdd, 2, source);
             var coreParser = Mock.Of<ICoreParser>(p =>
                 p.Parse(new CoreParserParameter("+42 to maximum Life", source, Entity.Character))
+                == ParseResult.Success(new[] { expected }));
+            var sut = CreateSut(baseItemDefinition, coreParser);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.That(result.Modifiers, Has.Member(expected));
+        }
+
+        [Test]
+        public void ParseReturnsCorrectResultForLocalModifier()
+        {
+            var parserParam = CreateItem(ItemSlot.BodyArmour, "+42 to Armour");
+            var source = CreateLocalSource(parserParam);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, default, Tags.Armour);
+            var expected = CreateModifier("", Form.BaseAdd, 2, source);
+            var coreParser = Mock.Of<ICoreParser>(p =>
+                p.Parse(new CoreParserParameter("+42 to Armour", source, Entity.Character))
                 == ParseResult.Success(new[] { expected }));
             var sut = CreateSut(baseItemDefinition, coreParser);
 
@@ -304,12 +320,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             ItemSlot itemSlot, int quality, int requiredLevel, FrameType frameType, bool isCorrupted,
             params string[] mods)
         {
-            var modDict = new Dictionary<ModLocation, IReadOnlyList<string>>
-            {
-                { ModLocation.Explicit, mods }
-            };
             var item =
-                new Item("metadataId", "itemName", quality, requiredLevel, frameType, isCorrupted, modDict);
+                new Item("metadataId", "itemName", quality, requiredLevel, frameType, isCorrupted, mods);
             return new ItemParserParameter(item, itemSlot);
         }
 
