@@ -384,7 +384,7 @@ namespace POESKillTree.Model.Items
         private ItemMod ItemModFromString(string attribute, ModLocation location, 
             IEnumerable<ValueColoring> valueColor = null)
         {
-            var isLocal = StatLocalityChecker.DetermineLocal(ItemClass, location, attribute);
+            var isLocal = ModifierLocalityTester.IsLocal(attribute, Tags);
             var itemMod = new ItemMod(attribute, isLocal);
             if (valueColor != null)
             {

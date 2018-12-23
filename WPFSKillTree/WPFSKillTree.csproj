@@ -222,7 +222,6 @@
     <Compile Include="Model\Items\Enums\ModDomain.cs" />
     <Compile Include="Model\Items\Mods\Affix.cs" />
     <Compile Include="Model\Items\Mods\Stat.cs" />
-    <Compile Include="Model\Items\Mods\StatLocalityChecker.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
     <Compile Include="Utils\SemanticVersion.cs" />
     <Compile Include="Utils\WikiApi\CargoConstants.cs" />

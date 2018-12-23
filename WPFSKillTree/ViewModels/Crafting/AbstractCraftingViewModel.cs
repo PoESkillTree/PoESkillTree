@@ -393,7 +393,7 @@ namespace POESKillTree.ViewModels.Crafting
             foreach (var line in lines)
             {
                 var attr = ItemMod.Numberfilter.Replace(line, "#");
-                var isLocal = StatLocalityChecker.DetermineLocal(SelectedBase.ItemClass, location, attr);
+                var isLocal = ModifierLocalityTester.IsLocal(attr, SelectedBase.Tags);
                 yield return new ItemMod(line, isLocal);
             }
         }
