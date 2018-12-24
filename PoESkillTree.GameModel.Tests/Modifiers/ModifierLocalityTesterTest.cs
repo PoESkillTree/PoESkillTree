@@ -18,8 +18,6 @@ namespace PoESkillTree.GameModel.Tests.Modifiers
         [TestCase("1% increased Physical Damage", ExpectedResult = true)]
         [TestCase("1% chance to maim on hit", ExpectedResult = true)]
         [TestCase("maim on hit", ExpectedResult = true)]
-        [TestCase("Adds # to # Physical Damage to Attacks with this Weapon per 3 Player Levels", ExpectedResult = true)]
-        [TestCase("Attacks with this Weapon Maim on hit", ExpectedResult = true)]
         public bool IsLocalReturnsCorrectResultForWeapon(string modifier)
             => ModifierLocalityTester.IsLocal(modifier, Tags.Weapon);
 
@@ -51,9 +49,6 @@ namespace PoESkillTree.GameModel.Tests.Modifiers
         [TestCase("Adds 2 to 6 Physical Damage", ExpectedResult = true)]
         [TestCase("Adds 2 to 6 Physical Damage to Attacks", ExpectedResult = false)]
         [TestCase("1% chance to maim on hit", ExpectedResult = false)]
-        [TestCase("Adds # to # Physical Damage to Attacks with this Weapon per 3 Player Levels", ExpectedResult =
-            true)]
-        [TestCase("Attacks with this Weapon Maim on hit", ExpectedResult = false)]
         public bool AffectsPropertiesReturnsCorrectResultForWeapon(string modifier)
             => ModifierLocalityTester.AffectsProperties(modifier, Tags.Weapon);
 

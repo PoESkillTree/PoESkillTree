@@ -118,9 +118,14 @@ namespace PoESkillTree.Computation.Data
                     And(MainHandAttackWith(Tags.TwoHandWeapon), Not(MainHand.Has(Tags.Ranged)))
                 },
                 // - by item slot
-                { "with the main-hand weapon", Condition.AttackWith(AttackDamageHand.MainHand) },
-                { "with main hand", Condition.AttackWith(AttackDamageHand.MainHand) },
-                { "with off hand", Condition.AttackWith(AttackDamageHand.OffHand) },
+                { "with the main-hand weapon", MainHandAttack },
+                { "with main hand", MainHandAttack },
+                { "with off hand", OffHandAttack },
+                {
+                    "(attacks|hits) with this weapon( deal| have)?",
+                    (ModifierSourceIs(ItemSlot.MainHand).And(MainHandAttack),
+                        ModifierSourceIs(ItemSlot.OffHand).And(OffHandAttack))
+                },
                 // - taken
                 { "take", Condition.DamageTaken },
                 // equipment

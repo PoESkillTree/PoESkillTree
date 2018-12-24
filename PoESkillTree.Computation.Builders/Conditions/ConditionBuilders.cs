@@ -57,6 +57,9 @@ namespace PoESkillTree.Computation.Builders.Conditions
         public IConditionBuilder For(IEntityBuilder entity) =>
             new StatConvertingConditionBuilder(s => s.For(entity));
 
+        public IConditionBuilder ModifierSourceIs(ModifierSource modifierSource)
+            => new ValueConditionBuilder(ps => new Constant(ps.ModifierSource.Equals(modifierSource)));
+
         public IConditionBuilder BaseValueComesFrom(ItemSlot slot)
         {
             var modiiferSource = new ModifierSource.Local.Item(slot);

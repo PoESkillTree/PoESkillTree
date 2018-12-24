@@ -26,8 +26,6 @@ namespace PoESkillTree.GameModel.Modifiers
             "adds # to # (physical|fire|cold|lightning|chaos) damage( in (main|off) hand)?",
             "no physical damage",
             Increase + "(physical damage|attack speed|critical strike chance|weapon range)",
-            "adds # to # physical damage to attacks with this weapon.*",
-            "attacks with this weapon deal # to # added (physical|fire) damage.*",
         }.ToList();
 
         private static readonly IReadOnlyList<Regex> WeaponLocal = new RegexCollection
@@ -41,9 +39,6 @@ namespace PoESkillTree.GameModel.Modifiers
             "hits can't be evaded",
             "# (life|mana) gained for each enemy hit by attacks",
             "# life and mana gained for each enemy hit",
-            ".*(attacks|hits|on hit|inflicted|critical strikes) with this weapon.*",
-            ".*hit by this weapon.*",
-            Increase + "enemy stun threshold with this weapon",
         }.ToList();
 
         private static readonly IReadOnlyList<Regex> ArmourProperty = new RegexCollection

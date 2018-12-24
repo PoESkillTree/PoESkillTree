@@ -54,6 +54,11 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
         IConditionBuilder For(IEntityBuilder entity);
 
         /// <summary>
+        /// Returns a condition that is satisfied if the modifier source of this modifier is equal to the parameter
+        /// </summary>
+        IConditionBuilder ModifierSourceIs(ModifierSource modifierSource);
+
+        /// <summary>
         /// Returns a condition that is satisfied if the source of modified base values is an item in the specified
         /// <paramref name="slot"/>.
         /// </summary>

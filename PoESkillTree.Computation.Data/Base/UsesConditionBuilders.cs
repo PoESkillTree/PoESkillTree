@@ -1,4 +1,5 @@
 using System.Linq;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -31,13 +32,19 @@ namespace PoESkillTree.Computation.Data.Base
             => Or(With(Skills.SummonSkeleton), With(Skills.VaalSummonSkeletons));
 
         protected IConditionBuilder MainHandAttackWith(Tags tags) =>
-            Condition.AttackWith(AttackDamageHand.MainHand).And(MainHand.Has(tags));
+            MainHandAttack.And(MainHand.Has(tags));
 
         protected IConditionBuilder OffHandAttackWith(Tags tags) =>
-            Condition.AttackWith(AttackDamageHand.OffHand).And(OffHand.Has(tags));
+            OffHandAttack.And(OffHand.Has(tags));
 
         protected (IConditionBuilder mainHand, IConditionBuilder offHand) AttackWith(Tags tags) =>
             (MainHandAttackWith(tags), OffHandAttackWith(tags));
+
+        protected IConditionBuilder MainHandAttack => Condition.AttackWith(AttackDamageHand.MainHand);
+        protected IConditionBuilder OffHandAttack => Condition.AttackWith(AttackDamageHand.OffHand);
+
+        protected IConditionBuilder ModifierSourceIs(ItemSlot slot)
+            => Condition.ModifierSourceIs(new ModifierSource.Local.Item(slot));
 
         protected IConditionBuilder For(IEntityBuilder target) => Condition.For(target);
 
