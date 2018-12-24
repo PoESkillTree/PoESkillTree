@@ -65,7 +65,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ItemParsers\EmptyItemSlotParser.cs" />
+    <Compile Include="ItemParsers\ItemEquipmentParser.cs" />
+    <Compile Include="ItemParsers\ItemModifierParser.cs" />
     <Compile Include="ItemParsers\ItemParser.cs" />
+    <Compile Include="ItemParsers\ItemPropertyParser.cs" />
+    <Compile Include="ItemParsers\PartialItemParserParameter.cs" />
     <Compile Include="ModifierCollection.cs" />
     <Compile Include="SkillParsers\ActiveSkillGeneralParser.cs" />
     <Compile Include="SkillParsers\ISkillKeywordSelector.cs" />

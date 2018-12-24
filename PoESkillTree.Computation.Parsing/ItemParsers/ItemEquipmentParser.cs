@@ -1,0 +1,32 @@
+﻿using System.Linq;
+using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.GameModel.Items;
+
+namespace PoESkillTree.Computation.Parsing.ItemParsers
+{
+    public class ItemEquipmentParser : IParser<PartialItemParserParameter>
+    {
+        private readonly IBuilderFactories _builderFactories;
+
+        public ItemEquipmentParser(IBuilderFactories builderFactories)
+            => _builderFactories = builderFactories;
+
+        public ParseResult Parse(PartialItemParserParameter parameter)
+        {
+            var (item, slot, baseItemDefinition, localSource, _) = parameter;
+            var modifiers = new ModifierCollection(_builderFactories, localSource);
+            var equipmentBuilder = _builderFactories.EquipmentBuilders.Equipment[slot];
+
+            modifiers.AddGlobal(equipmentBuilder.ItemTags, Form.BaseSet, baseItemDefinition.Tags.EncodeAsDouble());
+            modifiers.AddGlobal(equipmentBuilder.ItemClass, Form.BaseSet, (double) baseItemDefinition.ItemClass);
+            modifiers.AddGlobal(equipmentBuilder.FrameType, Form.BaseSet, (double) item.FrameType);
+            if (item.IsCorrupted)
+            {
+                modifiers.AddGlobal(equipmentBuilder.Corrupted, Form.BaseSet, 1);
+            }
+
+            return ParseResult.Success(modifiers.ToList());
+        }
+    }
+}
