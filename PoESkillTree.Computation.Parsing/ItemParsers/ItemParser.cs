@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EnumsNET;
 using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -38,6 +39,7 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             var baseItemDefinition = _baseItemDefinitions.GetBaseItemById(item.BaseMetadataId);
 
             AddEquipmentModifiers(item, slot, baseItemDefinition);
+            AddPropertySetupModifiers(slot, baseItemDefinition);
             AddPropertyModifiers(slot, baseItemDefinition);
             AddDamagePropertyModifiers(slot, baseItemDefinition);
             AddQualityModifiers(item, slot, baseItemDefinition);
@@ -48,16 +50,20 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                 ParseBuffStats(baseItemDefinition, localSource),
             };
 
+            var (propertyMods, remainingMods) =
+                item.Modifiers.Partition(s => ModifierLocalityTester.AffectsProperties(s, baseItemDefinition.Tags));
             var (localMods, globalMods) =
-                item.Modifiers.Partition(s => ModifierLocalityTester.IsLocal(s, baseItemDefinition.Tags));
+                remainingMods.Partition(s => ModifierLocalityTester.IsLocal(s, baseItemDefinition.Tags));
             if (baseItemDefinition.Tags.HasFlag(Tags.Weapon))
             {
                 localMods = localMods.Select(s => "Attacks with this Weapon have " + s);
+                propertyMods = propertyMods.Select(s => "Attacks with this Weapon have " + s);
             }
-            var localResults = localMods.Select(s => Parse(s, localSource));
-            var globalResults = globalMods.Select(s => Parse(s, globalSource));
-            parseResults.AddRange(localResults);
-            parseResults.AddRange(globalResults);
+            propertyMods = propertyMods.Select(s => s + " (AsItemProperty)");
+
+            parseResults.AddRange(propertyMods.Select(s => Parse(s, localSource)));
+            parseResults.AddRange(localMods.Select(s => Parse(s, localSource)));
+            parseResults.AddRange(globalMods.Select(s => Parse(s, globalSource)));
 
             return ParseResult.Aggregate(parseResults);
         }
@@ -73,6 +79,37 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                 _modifiers.AddGlobal(equipmentBuilder.Corrupted, Form.BaseSet, 1);
             }
         }
+
+        private void AddPropertySetupModifiers(ItemSlot slot, BaseItemDefinition baseItemDefinition)
+        {
+            var tags = baseItemDefinition.Tags;
+            if (tags.HasFlag(Tags.Armour))
+            {
+                SetupProperty(_builderFactories.StatBuilders.Armour);
+                SetupProperty(_builderFactories.StatBuilders.Evasion);
+                SetupProperty(_builderFactories.StatBuilders.Pool.From(Pool.EnergyShield));
+            }
+            if (tags.HasFlag(Tags.Shield))
+            {
+                SetupProperty(_builderFactories.ActionBuilders.Block.AttackChance);
+            }
+            if (tags.HasFlag(Tags.Weapon))
+            {
+                SetupDamageRelatedProperty(slot, _builderFactories.ActionBuilders.CriticalStrike.Chance);
+                SetupDamageRelatedProperty(slot, _builderFactories.StatBuilders.BaseCastTime);
+                SetupDamageRelatedProperty(slot, _builderFactories.StatBuilders.Range);
+                foreach (var damageType in Enums.GetValues<DamageType>())
+                {
+                    SetupDamageRelatedProperty(slot, _builderFactories.DamageTypeBuilders.From(damageType).Damage);
+                }
+            }
+        }
+
+        private void SetupDamageRelatedProperty(ItemSlot slot, IDamageRelatedStatBuilder stat)
+            => SetupProperty(stat.WithSkills.With(SlotToHand(slot)));
+
+        private void SetupProperty(IStatBuilder stat)
+            => _modifiers.AddLocal(stat, Form.BaseSet, stat.AsItemProperty.Value);
 
         private void AddPropertyModifiers(ItemSlot slot, BaseItemDefinition baseItemDefinition)
         {
@@ -107,15 +144,10 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
         }
 
         private void SetDamageRelatedProperty(ItemSlot slot, IDamageRelatedStatBuilder stat, double value)
-        {
-            SetProperty(stat.WithSkills.With(SlotToHand(slot)), value);
-        }
+            => SetProperty(stat.WithSkills.With(SlotToHand(slot)), value);
 
         private void SetProperty(IStatBuilder stat, double value)
-        {
-            _modifiers.AddLocal(stat.AsItemProperty, Form.BaseSet, value);
-            _modifiers.AddLocal(stat, Form.BaseSet, stat.AsItemProperty.Value);
-        }
+            => _modifiers.AddLocal(stat.AsItemProperty, Form.BaseSet, value);
 
         private void AddDamagePropertyModifiers(ItemSlot slot, BaseItemDefinition baseItemDefinition)
         {
@@ -136,7 +168,6 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                     _builderFactories.ValueBuilders.Create(physDamageMax.Value));
                 var stat = _builderFactories.DamageTypeBuilders.Physical.Damage.WithSkills.With(SlotToHand(slot));
                 _modifiers.AddLocal(stat.AsItemProperty, Form.BaseSet, value);
-                _modifiers.AddLocal(stat, Form.BaseSet, stat.AsItemProperty.Value);
             }
         }
 

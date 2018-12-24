@@ -35,20 +35,25 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         }
 
         [Test]
-        public void ParseReturnsCorrectResultForLocalArmourModifier()
+        public void ParseReturnsCorrectResultForPropertyArmourModifier()
         {
             var parserParam = CreateItem(ItemSlot.BodyArmour, "+42 to Armour");
+            var slot = parserParam.ItemSlot;
             var source = CreateLocalSource(parserParam);
             var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, default, Tags.Armour);
-            var expected = CreateModifier("", Form.BaseAdd, 2, source);
+            var expected = new[]
+            {
+                CreateModifier($"{slot}.Armour", Form.BaseAdd, 42, source),
+                CreateModifier("Armour", Form.BaseSet, new StatValue(new Stat($"{slot}.Armour")), source),
+            };
             var coreParser = Mock.Of<ICoreParser>(p =>
-                p.Parse(new CoreParserParameter("+42 to Armour", source, Entity.Character))
-                == ParseResult.Success(new[] { expected }));
+                p.Parse(new CoreParserParameter("+42 to Armour (AsItemProperty)", source, Entity.Character))
+                == ParseResult.Success(new[] { expected[0] }));
             var sut = CreateSut(baseItemDefinition, coreParser);
 
             var result = sut.Parse(parserParam);
 
-            Assert.That(result.Modifiers, Has.Member(expected));
+            Assert.That(result.Modifiers, Is.SupersetOf(expected));
         }
 
         [Test]
@@ -59,6 +64,24 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, default, Tags.Weapon);
             var expected = CreateModifier("", Form.BaseAdd, 2, source);
             var parameter = new CoreParserParameter("Attacks with this Weapon have +42 to accuracy rating",
+                source, Entity.Character);
+            var coreParser = Mock.Of<ICoreParser>(p => p.Parse(parameter) == ParseResult.Success(new[] { expected }));
+            var sut = CreateSut(baseItemDefinition, coreParser);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.That(result.Modifiers, Has.Member(expected));
+        }
+
+        [Test]
+        public void ParseReturnsCorrectResultForPropertyWeaponModifier()
+        {
+            var parserParam = CreateItem(ItemSlot.MainHand, "adds 2 to 8 physical damage");
+            var source = CreateLocalSource(parserParam);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, default, Tags.Weapon);
+            var expected = CreateModifier("", Form.BaseAdd, 2, source);
+            var parameter = new CoreParserParameter(
+                "Attacks with this Weapon have adds 2 to 8 physical damage (AsItemProperty)",
                 source, Entity.Character);
             var coreParser = Mock.Of<ICoreParser>(p => p.Parse(parameter) == ParseResult.Success(new[] { expected }));
             var sut = CreateSut(baseItemDefinition, coreParser);
@@ -210,6 +233,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             var parserParam = CreateItem(ItemSlot.BodyArmour);
             var slot = parserParam.ItemSlot;
             var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour,
+                Tags.Armour | Tags.Shield,
                 properties: new[] { new Property(property, 10), });
             var source = CreateLocalSource(parserParam);
             var expected = new[]
@@ -232,7 +256,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             string property, string stat, double factor, ItemSlot slot)
         {
             var parserParam = CreateItem(slot);
-            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.OneHandSword,
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.OneHandSword, Tags.Weapon,
                 properties: new[] { new Property(property, 10), });
             var expectedValue = 10 * factor;
             var statSuffix = $"Attack.{slot}.Skill";
@@ -255,7 +279,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         public void ParseReturnsCorrectModifiersForDamageProperty(ItemSlot slot)
         {
             var parserParam = CreateItem(slot);
-            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.OneHandSword,
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.OneHandSword, Tags.Weapon,
                 properties: new[]
                 {
                     new Property("physical_damage_min", 2),
