@@ -54,16 +54,28 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                 item.Modifiers.Partition(s => ModifierLocalityTester.AffectsProperties(s, baseItemDefinition.Tags));
             var (localMods, globalMods) =
                 remainingMods.Partition(s => ModifierLocalityTester.IsLocal(s, baseItemDefinition.Tags));
+            
+            propertyMods = propertyMods.Select(s => s + " (AsItemProperty)");
+            if (baseItemDefinition.Tags.HasFlag(Tags.Weapon))
+            {
+                propertyMods = propertyMods.Select(s => "Attacks with this Weapon have " + s);
+            }
+            var propertyResults = propertyMods.Select(s => Parse(s, localSource));
+            parseResults.AddRange(propertyResults);
+            
             if (baseItemDefinition.Tags.HasFlag(Tags.Weapon))
             {
                 localMods = localMods.Select(s => "Attacks with this Weapon have " + s);
-                propertyMods = propertyMods.Select(s => "Attacks with this Weapon have " + s);
             }
-            propertyMods = propertyMods.Select(s => s + " (AsItemProperty)");
+            var localResults = localMods.Select(s => Parse(s, localSource));
+            parseResults.AddRange(localResults);
 
-            parseResults.AddRange(propertyMods.Select(s => Parse(s, localSource)));
-            parseResults.AddRange(localMods.Select(s => Parse(s, localSource)));
-            parseResults.AddRange(globalMods.Select(s => Parse(s, globalSource)));
+            var globalResults = globalMods.Select(s => Parse(s, globalSource));
+            if (baseItemDefinition.Tags.HasFlag(Tags.Flask))
+            {
+                globalResults = globalResults.Select(r => r.ApplyToModifiers(MultiplyValueByFlaskEffect));
+            }
+            parseResults.AddRange(globalResults);
 
             return ParseResult.Aggregate(parseResults);
         }
@@ -227,15 +239,16 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
 
             var untranslatedStatParser = new UntranslatedStatParser(_statTranslator, _coreParser);
             var result = untranslatedStatParser.Parse(localSource, Entity.Character, baseItemDefinition.BuffStats);
-            var multiplierBuilder = _builderFactories.StatBuilders.Flask.Effect.Value;
-            return result.ApplyToModifiers(
-                m => new Modifier(m.Stats, m.Form, ApplyMultiplier(m.Value, BuildMultiplier(m)), m.Source));
+            return result.ApplyToModifiers(MultiplyValueByFlaskEffect);
+        }
 
-            IValue BuildMultiplier(Modifier modifier)
-                => multiplierBuilder.Build(new BuildParameters(modifier.Source, Entity.Character, modifier.Form));
-
-            IValue ApplyMultiplier(IValue value, IValue multiplier)
-                => new FunctionalValue(c => value.Calculate(c) * multiplier.Calculate(c), $"{value} * {multiplier}");
+        private Modifier MultiplyValueByFlaskEffect(Modifier modifier)
+        {
+            var multiplier = _builderFactories.StatBuilders.Flask.Effect.Value
+                .Build(new BuildParameters(modifier.Source, Entity.Character, modifier.Form));
+            var newValue = new FunctionalValue(
+                c => modifier.Value.Calculate(c) * multiplier.Calculate(c), $"{modifier.Value} * {multiplier}");
+            return new Modifier(modifier.Stats, modifier.Form, newValue, modifier.Source);
         }
 
         private ParseResult Parse(string modifierLine, ModifierSource modifierSource)

@@ -248,6 +248,28 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             }
         }
 
+        [Test]
+        public void GlobalFlaskModifiersAreAffectedByFlaskEffect()
+        {
+            var parserParam = CreateItem(ItemSlot.BodyArmour, "mod");
+            var source = CreateGlobalSource(parserParam);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.UtilityFlask, Tags.Flask);
+            var expected = CreateModifier("stat", Form.BaseAdd, 3, source);
+            var parameter = new CoreParserParameter("mod", source, Entity.Character);
+            var coreParser = Mock.Of<ICoreParser>(p => p.Parse(parameter) == ParseResult.Success(new[] { expected }));
+            var flaskEffect = 2;
+            var flaskEffectStat = new Stat("Flask.Effect");
+            var context = Mock.Of<IValueCalculationContext>(c =>
+                c.GetValue(flaskEffectStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) flaskEffect);
+            var sut = CreateSut(baseItemDefinition, coreParser);
+
+            var result = sut.Parse(parserParam);
+
+            var actual = GetFirstModifierWithIdentity(result.Modifiers, expected.Stats[0].Identity);
+            var expectedValue = expected.Value.Calculate(context) * flaskEffect;
+            Assert.AreEqual(expectedValue, actual.Value.Calculate(context));
+        }
+
         [TestCase("armour", "Armour")]
         [TestCase("evasion", "Evasion")]
         [TestCase("energy_shield", "EnergyShield")]
