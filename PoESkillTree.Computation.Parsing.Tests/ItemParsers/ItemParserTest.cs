@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         }
 
         [Test]
-        public void ParseReturnsCorrectResultForLocalModifier()
+        public void ParseReturnsCorrectResultForLocalArmourModifier()
         {
             var parserParam = CreateItem(ItemSlot.BodyArmour, "+42 to Armour");
             var source = CreateLocalSource(parserParam);
@@ -44,6 +44,23 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             var coreParser = Mock.Of<ICoreParser>(p =>
                 p.Parse(new CoreParserParameter("+42 to Armour", source, Entity.Character))
                 == ParseResult.Success(new[] { expected }));
+            var sut = CreateSut(baseItemDefinition, coreParser);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.That(result.Modifiers, Has.Member(expected));
+        }
+
+        [Test]
+        public void ParseReturnsCorrectResultForLocalWeaponModifier()
+        {
+            var parserParam = CreateItem(ItemSlot.MainHand, "+42 to accuracy rating");
+            var source = CreateLocalSource(parserParam);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, default, Tags.Weapon);
+            var expected = CreateModifier("", Form.BaseAdd, 2, source);
+            var parameter = new CoreParserParameter("Attacks with this Weapon have +42 to accuracy rating",
+                source, Entity.Character);
+            var coreParser = Mock.Of<ICoreParser>(p => p.Parse(parameter) == ParseResult.Success(new[] { expected }));
             var sut = CreateSut(baseItemDefinition, coreParser);
 
             var result = sut.Parse(parserParam);
@@ -207,7 +224,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             Assert.That(result.Modifiers, Is.SupersetOf(expected));
         }
 
-        [TestCase("critical_strike_chance", "CriticalStrike.Chance", 1, ItemSlot.MainHand)]
+        [TestCase("critical_strike_chance", "CriticalStrike.Chance", 1D / 100, ItemSlot.MainHand)]
         [TestCase("attack_time", "BaseCastTime", 1D / 1000, ItemSlot.MainHand)]
         [TestCase("range", "Range", 1, ItemSlot.MainHand)]
         [TestCase("range", "Range", 1, ItemSlot.OffHand)]

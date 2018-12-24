@@ -50,6 +50,10 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
 
             var (localMods, globalMods) =
                 item.Modifiers.Partition(s => ModifierLocalityTester.IsLocal(s, baseItemDefinition.Tags));
+            if (baseItemDefinition.Tags.HasFlag(Tags.Weapon))
+            {
+                localMods = localMods.Select(s => "Attacks with this Weapon have " + s);
+            }
             var localResults = localMods.Select(s => Parse(s, localSource));
             var globalResults = globalMods.Select(s => Parse(s, globalSource));
             parseResults.AddRange(localResults);
@@ -89,7 +93,8 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                         SetProperty(slot, _builderFactories.ActionBuilders.Block.AttackChance, value);
                         break;
                     case "critical_strike_chance":
-                        SetDamageRelatedProperty(slot, _builderFactories.ActionBuilders.CriticalStrike.Chance, value);
+                        SetDamageRelatedProperty(slot, _builderFactories.ActionBuilders.CriticalStrike.Chance,
+                            value / 100D);
                         break;
                     case "attack_time":
                         SetDamageRelatedProperty(slot, _builderFactories.StatBuilders.BaseCastTime, value / 1000D);

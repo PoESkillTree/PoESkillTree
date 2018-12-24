@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Moq;
@@ -74,6 +74,58 @@ namespace PoESkillTree.Computation.IntegrationTests
             AssertCorrectModifiers(valueCalculationContext, expectedModifiers, actual);
         }
 
+        [Test]
+        public void ParseRareCorsairSwordReturnsCorrectResult()
+        {
+            var mods = new[]
+            {
+                "Adds 20 to 20 Physical Damage", "20% increased Attack Speed", "+10 to Accuracy Rating",
+                "+42 to Dexterity"
+            };
+            var item = new Item("Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword17",
+                "Some Corsair Sword", 20, 58, FrameType.Rare, false, mods);
+            var definition = _baseItemDefinitions.GetBaseItemById(item.BaseMetadataId);
+            var baseDamageValue = new NodeValue(definition.Properties[3].Value, definition.Properties[2].Value);
+            var local = new ModifierSource.Local.Item(ItemSlot.MainHand, item.Name);
+            var global = new ModifierSource.Global(local);
+            var expectedModifiers =
+                new (string stat, Form form, double? value, ModifierSource source)[]
+                {
+                    ("MainHand.ItemTags", Form.BaseSet, definition.Tags.EncodeAsDouble(), global),
+                    ("MainHand.ItemClass", Form.BaseSet, (double) definition.ItemClass, global),
+                    ("MainHand.ItemFrameType", Form.BaseSet, (double) FrameType.Rare, global),
+                    ("MainHand.BaseCastTime.Attack.MainHand.Skill", Form.BaseSet,
+                        definition.Properties[0].Value / 1000D, local),
+                    ("BaseCastTime.Attack.MainHand.Skill", Form.BaseSet, null, local),
+                    ("MainHand.CriticalStrike.Chance.Attack.MainHand.Skill", Form.BaseSet,
+                        definition.Properties[1].Value / 100D, local),
+                    ("CriticalStrike.Chance.Attack.MainHand.Skill", Form.BaseSet, null, local),
+                    ("MainHand.Range.Attack.MainHand.Skill", Form.BaseSet, definition.Properties[4].Value, local),
+                    ("Range.Attack.MainHand.Skill", Form.BaseSet, null, local),
+                    ("base phys", default, null, null),
+                    ("Physical.Damage.Attack.MainHand.Skill", Form.BaseSet, null, local),
+                    ("MainHand.Physical.Damage.Attack.MainHand.Skill", Form.Increase, 20, local),
+                    ("Level.Required", Form.BaseSet, 58, local),
+                    ("Dexterity.Required", Form.BaseSet, definition.Requirements.Dexterity, local),
+                    ("Strength.Required", Form.BaseSet, definition.Requirements.Strength, local),
+                    ("Physical.Damage.Attack.MainHand.Skill", Form.BaseAdd, 20, local),
+                    ("Physical.Damage.Attack.OffHand.Skill", Form.BaseAdd, null, local),
+                    ("CastRate.Attack.MainHand.Skill", Form.Increase, 20, local),
+                    ("CastRate.Attack.OffHand.Skill", Form.Increase, null, local),
+                    ("Accuracy.Attack.MainHand.Skill", Form.BaseAdd, 10, local),
+                    ("Accuracy.Attack.OffHand.Skill", Form.BaseAdd, null, local),
+                    ("Dexterity", Form.BaseAdd, 42, global),
+                }.Select(
+                    t => t.stat == "base phys"
+                        ? ("MainHand.Physical.Damage.Attack.MainHand.Skill", Form.BaseSet, baseDamageValue, local)
+                        : (t.stat, t.form, (NodeValue?) t.value, t.source)
+                ).ToArray();
+
+            var actual = _itemParser.Parse(new ItemParserParameter(item, ItemSlot.MainHand));
+
+            AssertCorrectModifiers(Mock.Of<IValueCalculationContext>(), expectedModifiers, actual);
+        }
+
         private static void AssertCorrectModifiers(
             IValueCalculationContext context,
             (string stat, Form form, NodeValue? value, ModifierSource source)[] expectedModifiers,
@@ -83,20 +135,20 @@ namespace PoESkillTree.Computation.IntegrationTests
 
             Assert.IsEmpty(failedLines);
             Assert.IsEmpty(remainingSubstrings);
-            Assert.AreEqual(expectedModifiers.Length, modifiers.Count);
-            for (var i = 0; i < modifiers.Count; i++)
+            for (var i = 0; i < Math.Min(modifiers.Count, expectedModifiers.Length); i++)
             {
                 var expected = expectedModifiers[i];
                 var actual = modifiers[i];
                 Assert.AreEqual(expected.stat, actual.Stats[0].Identity);
-                Assert.AreEqual(Entity.Character, actual.Stats[0].Entity);
-                Assert.AreEqual(expected.form, actual.Form);
-                Assert.AreEqual(expected.source, actual.Source);
+                Assert.AreEqual(Entity.Character, actual.Stats[0].Entity, expected.stat);
+                Assert.AreEqual(expected.form, actual.Form, expected.stat);
+                Assert.AreEqual(expected.source, actual.Source, expected.stat);
 
                 var expectedValue = expected.value;
                 var actualValue = actual.Value.Calculate(context);
-                Assert.AreEqual(expectedValue, actualValue);
+                Assert.AreEqual(expectedValue, actualValue, expected.stat);
             }
+            Assert.AreEqual(expectedModifiers.Length, modifiers.Count);
         }
     }
 }
