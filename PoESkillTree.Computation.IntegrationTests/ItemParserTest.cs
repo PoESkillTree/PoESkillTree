@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Moq;
@@ -58,12 +58,16 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("Armour", Form.BaseSet, 5, local),
                     ("Evasion", Form.BaseSet, null, local),
                     ("EnergyShield", Form.BaseSet, null, local),
+                    ("Level.Required", Form.BaseSet, null, local),
+                    ("Dexterity.Required", Form.BaseSet, null, local),
+                    ("Intelligence.Required", Form.BaseSet, null, local),
+                    ("Strength.Required", Form.BaseSet, null, local),
                     ("BodyArmour.Armour", Form.BaseSet, definition.Properties[0].Value, local),
                     ("BodyArmour.Armour", Form.Increase, 20, local),
                     ("BodyArmour.Evasion", Form.Increase, 20, local),
                     ("BodyArmour.EnergyShield", Form.Increase, 20, local),
-                    ("Level.Required", Form.BaseSet, 62, local),
-                    ("Strength.Required", Form.BaseSet, definition.Requirements.Strength, local),
+                    ("BodyArmour.Level.Required", Form.BaseSet, 62, local),
+                    ("BodyArmour.Strength.Required", Form.BaseSet, definition.Requirements.Strength, local),
                     ("BodyArmour.Armour", Form.Increase, 10, local),
                     ("MovementSpeed", Form.Increase, -5, global),
                     ("Fire.Resistance", Form.BaseAdd, 1, global),
@@ -105,6 +109,10 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("Fire.Damage.Attack.MainHand.Skill", Form.BaseSet, null, local),
                     ("Chaos.Damage.Attack.MainHand.Skill", Form.BaseSet, null, local),
                     ("RandomElement.Damage.Attack.MainHand.Skill", Form.BaseSet, null, local),
+                    ("Level.Required", Form.BaseSet, null, local),
+                    ("Dexterity.Required", Form.BaseSet, null, local),
+                    ("Intelligence.Required", Form.BaseSet, null, local),
+                    ("Strength.Required", Form.BaseSet, null, local),
                     ("MainHand.BaseCastTime.Attack.MainHand.Skill", Form.BaseSet,
                         definition.Properties[0].Value / 1000D, local),
                     ("MainHand.CriticalStrike.Chance.Attack.MainHand.Skill", Form.BaseSet,
@@ -112,9 +120,9 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("MainHand.Range.Attack.MainHand.Skill", Form.BaseSet, definition.Properties[4].Value, local),
                     ("base phys", default, null, null),
                     ("MainHand.Physical.Damage.Attack.MainHand.Skill", Form.Increase, 20, local),
-                    ("Level.Required", Form.BaseSet, 58, local),
-                    ("Dexterity.Required", Form.BaseSet, definition.Requirements.Dexterity, local),
-                    ("Strength.Required", Form.BaseSet, definition.Requirements.Strength, local),
+                    ("MainHand.Level.Required", Form.BaseSet, 58, local),
+                    ("MainHand.Dexterity.Required", Form.BaseSet, definition.Requirements.Dexterity, local),
+                    ("MainHand.Strength.Required", Form.BaseSet, definition.Requirements.Strength, local),
                     ("MainHand.Physical.Damage.Attack.MainHand.Skill", Form.BaseAdd, 20, local),
                     ("MainHand.Physical.Damage.Attack.OffHand.Skill", Form.BaseAdd, null, local),
                     ("MainHand.CastRate.Attack.MainHand.Skill", Form.Increase, 20, local),

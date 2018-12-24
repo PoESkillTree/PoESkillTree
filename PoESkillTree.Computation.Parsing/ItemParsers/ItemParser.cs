@@ -103,6 +103,12 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                     SetupDamageRelatedProperty(slot, _builderFactories.DamageTypeBuilders.From(damageType).Damage);
                 }
             }
+
+            var requirementStats = _builderFactories.StatBuilders.Requirements;
+            SetupProperty(requirementStats.Level);
+            SetupProperty(requirementStats.Dexterity);
+            SetupProperty(requirementStats.Intelligence);
+            SetupProperty(requirementStats.Strength);
         }
 
         private void SetupDamageRelatedProperty(ItemSlot slot, IDamageRelatedStatBuilder stat)
@@ -196,18 +202,18 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
         {
             var requirementStats = _builderFactories.StatBuilders.Requirements;
             var requirements = baseItemDefinition.Requirements;
-            _modifiers.AddLocal(requirementStats.Level, Form.BaseSet, item.RequiredLevel);
+            SetProperty(requirementStats.Level, item.RequiredLevel);
             if (requirements.Dexterity > 0)
             {
-                _modifiers.AddLocal(requirementStats.Dexterity, Form.BaseSet, requirements.Dexterity);
+                SetProperty(requirementStats.Dexterity, requirements.Dexterity);
             }
             if (requirements.Intelligence > 0)
             {
-                _modifiers.AddLocal(requirementStats.Intelligence, Form.BaseSet, requirements.Intelligence);
+                SetProperty(requirementStats.Intelligence, requirements.Intelligence);
             }
             if (requirements.Strength > 0)
             {
-                _modifiers.AddLocal(requirementStats.Strength, Form.BaseSet, requirements.Strength);
+                SetProperty(requirementStats.Strength, requirements.Strength);
             }
         }
 

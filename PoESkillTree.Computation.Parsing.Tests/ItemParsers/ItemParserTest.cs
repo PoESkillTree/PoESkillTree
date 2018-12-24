@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
     public class ItemParserTest
     {
         [Test]
-        public void ParseReturnsCorrectResultForGlobalModifier()
+        public void ParseReturnsCorrectGlobalModifier()
         {
             var parserParam = CreateItem(ItemSlot.BodyArmour, "+42 to maximum Life");
             var source = CreateGlobalSource(parserParam);
@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         }
 
         [Test]
-        public void ParseReturnsCorrectResultForPropertyArmourModifier()
+        public void ParseReturnsCorrectPropertyArmourModifier()
         {
             var parserParam = CreateItem(ItemSlot.BodyArmour, "+42 to Armour");
             var slot = parserParam.ItemSlot;
@@ -57,7 +57,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         }
 
         [Test]
-        public void ParseReturnsCorrectResultForLocalWeaponModifier()
+        public void ParseReturnsCorrectLocalWeaponModifier()
         {
             var parserParam = CreateItem(ItemSlot.MainHand, "+42 to accuracy rating");
             var source = CreateLocalSource(parserParam);
@@ -74,7 +74,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         }
 
         [Test]
-        public void ParseReturnsCorrectResultForPropertyWeaponModifier()
+        public void ParseReturnsCorrectPropertyWeaponModifier()
         {
             var parserParam = CreateItem(ItemSlot.MainHand, "adds 2 to 8 physical damage");
             var source = CreateLocalSource(parserParam);
@@ -89,6 +89,29 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             var result = sut.Parse(parserParam);
 
             Assert.That(result.Modifiers, Has.Member(expected));
+        }
+
+        [Test]
+        public void ParseReturnsCorrectRequirementPropertyModifiers()
+        {
+            var parserParam = CreateItem(ItemSlot.BodyArmour, "+1 intelligence requirement");
+            var slot = parserParam.ItemSlot;
+            var stat = "Intelligence.Required";
+            var source = CreateLocalSource(parserParam);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, default);
+            var expected = new[]
+            {
+                CreateModifier($"{slot}.{stat}", Form.BaseAdd, 1, source),
+                CreateModifier($"{stat}", Form.BaseSet, new StatValue(new Stat($"{slot}.{stat}")), source),
+            };
+            var coreParser = Mock.Of<ICoreParser>(p =>
+                p.Parse(new CoreParserParameter("+1 intelligence requirement (AsItemProperty)", source, Entity.Character))
+                == ParseResult.Success(new[] { expected[0] }));
+            var sut = CreateSut(baseItemDefinition, coreParser);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.That(result.Modifiers, Is.SupersetOf(expected));
         }
 
         [TestCase(Tags.BodyArmour)]
@@ -162,15 +185,16 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         public void ParseReturnsCorrectRequirementModifiers()
         {
             var parserParam = CreateItem(ItemSlot.BodyArmour, requiredLevel: 42);
+            var slot = parserParam.ItemSlot;
             var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.BodyArmour,
                 requirements: new Requirements(4, 5, 6, 7));
             var source = CreateLocalSource(parserParam);
             var expected = new[]
             {
-                CreateModifier("Level.Required", Form.BaseSet, 42, source),
-                CreateModifier("Dexterity.Required", Form.BaseSet, 5, source),
-                CreateModifier("Intelligence.Required", Form.BaseSet, 6, source),
-                CreateModifier("Strength.Required", Form.BaseSet, 7, source),
+                CreateModifier($"{slot}.Level.Required", Form.BaseSet, 42, source),
+                CreateModifier($"{slot}.Dexterity.Required", Form.BaseSet, 5, source),
+                CreateModifier($"{slot}.Intelligence.Required", Form.BaseSet, 6, source),
+                CreateModifier($"{slot}.Strength.Required", Form.BaseSet, 7, source),
             };
             var sut = CreateSut(baseItemDefinition);
 
