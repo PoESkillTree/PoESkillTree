@@ -33,8 +33,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         private IStatBuilder WithUntyped(ICoreStatBuilder coreStatBuilder) =>
             new StatBuilder(StatFactory, coreStatBuilder);
 
-        protected virtual IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
-            With(new StatBuilderWithStatConverter(CoreStatBuilder, statConverter));
+        protected IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter)
+            => WithStatConverter((_, s) => statConverter(s));
+
+        protected virtual IStatBuilder WithStatConverter(Func<ModifierSource, IStat, IStat> statConverter)
+            => With(new StatBuilderWithStatConverter(CoreStatBuilder, statConverter));
 
         public virtual IStatBuilder Resolve(ResolveContext context) => With(CoreStatBuilder.Resolve(context));
 
@@ -70,8 +73,17 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder ChanceToDouble => WithStatConverter(StatFactory.ChanceToDouble);
 
-        public IStatBuilder AsItemProperty(ItemSlot itemSlot)
-            => WithStatConverter(s => StatFactory.FromIdentity($"{itemSlot}.{s.Identity}", s.Entity, s.DataType));
+        public IStatBuilder AsItemProperty
+            => WithStatConverter(
+                (m, s) => StatFactory.FromIdentity($"{GetItemSlot(m)}.{s.Identity}", s.Entity, s.DataType));
+
+        private static ItemSlot GetItemSlot(ModifierSource modifierSource)
+        {
+            if (modifierSource is ModifierSource.Local.Item itemSource)
+                return itemSource.Slot;
+            throw new ParseException(
+                "IStatBuilder.AsItemProperty can only be used with a source of type ModifierSource.Local.Item");
+        }
 
         public IStatBuilder For(IEntityBuilder entity) => With(CoreStatBuilder.WithEntity(entity));
 

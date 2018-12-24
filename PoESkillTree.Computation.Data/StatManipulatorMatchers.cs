@@ -45,6 +45,7 @@ namespace PoESkillTree.Computation.Data
                 { "enemies near your totems (have|deal)", s => Buff.Aura(s, Enemy).For(Entity.Totem) },
                 { "enemies near your totems(?= take)", s => Buff.Aura(s, Enemy).For(Entity.Totem) },
                 { "({BuffMatchers}) grants", s => Reference.AsBuff.AddStat(s) },
+                { @"\(AsItemProperty\)", s => s.AsItemProperty },
             };
     }
 }

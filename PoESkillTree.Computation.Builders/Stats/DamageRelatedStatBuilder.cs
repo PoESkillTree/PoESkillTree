@@ -23,7 +23,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         private static readonly IReadOnlyList<Form> AllForms = Enums.GetValues<Form>().ToList();
 
         private DamageStatConcretizer StatConcretizer { get; }
-        private readonly Func<IStat, IEnumerable<IStat>> _statConverter;
+        private readonly Func<ModifierSource, IStat, IEnumerable<IStat>> _statConverter;
 
         public static IDamageRelatedStatBuilder Create(
             IStatFactory statFactory, ICoreStatBuilder coreStatBuilder,
@@ -32,13 +32,13 @@ namespace PoESkillTree.Computation.Builders.Stats
             return new DamageRelatedStatBuilder(statFactory, coreStatBuilder,
                 new DamageStatConcretizer(statFactory, new DamageSpecificationBuilder(), canApplyToSkillDamage,
                     canApplyToAilmentDamage),
-                s => new[] { s });
+                (_, s) => new[] { s });
         }
 
         protected DamageRelatedStatBuilder(
             IStatFactory statFactory, ICoreStatBuilder coreStatBuilder,
             DamageStatConcretizer statConcretizer,
-            Func<IStat, IEnumerable<IStat>> statConverter)
+            Func<ModifierSource, IStat, IEnumerable<IStat>> statConverter)
             : base(statFactory, coreStatBuilder)
         {
             StatConcretizer = statConcretizer;
@@ -48,8 +48,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         protected virtual DamageRelatedStatBuilder Create(
             ICoreStatBuilder coreStatBuilder,
             DamageStatConcretizer statConcretizer,
-            Func<IStat, IEnumerable<IStat>> statConverter) =>
-            new DamageRelatedStatBuilder(StatFactory, coreStatBuilder, statConcretizer, statConverter);
+            Func<ModifierSource, IStat, IEnumerable<IStat>> statConverter)
+            => new DamageRelatedStatBuilder(StatFactory, coreStatBuilder, statConcretizer, statConverter);
 
         public new IDamageRelatedStatBuilder For(IEntityBuilder entity) =>
             (IDamageRelatedStatBuilder) base.For(entity);
@@ -62,10 +62,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         private IDamageRelatedStatBuilder With(DamageStatConcretizer statConcretizer) =>
             Create(CoreStatBuilder, statConcretizer, _statConverter);
 
-        protected override IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
-            With(s => new[] { statConverter(s) });
+        protected override IStatBuilder WithStatConverter(Func<ModifierSource, IStat, IStat> statConverter) =>
+            With((m, s) => new[] { statConverter(m, s) });
 
-        private IStatBuilder With(Func<IStat, IEnumerable<IStat>> statConverter) =>
+        private IStatBuilder With(Func<ModifierSource, IStat, IEnumerable<IStat>> statConverter) =>
             Create(CoreStatBuilder, StatConcretizer.NotDamageRelated(), statConverter);
 
         public override IStatBuilder Resolve(ResolveContext context) =>
@@ -104,7 +104,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         private IStatBuilder InternalApplyModifiersToSkills(DamageSource source, IReadOnlyList<Form> forms) =>
             ((DamageRelatedStatBuilder) WithSkills)
-            .With(s => forms.Select(f => StatFactory.ApplyModifiersToSkillDamage(s, source, f)));
+            .With((_, s) => forms.Select(f => StatFactory.ApplyModifiersToSkillDamage(s, source, f)));
 
         public IStatBuilder ApplyModifiersToAilments(params Form[] forms)
         {
@@ -115,13 +115,12 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         private IStatBuilder InternalApplyModifiersToAilments(IReadOnlyList<Form> forms) =>
             ((DamageRelatedStatBuilder) WithSkills)
-            .With(s => forms.Select(f => StatFactory.ApplyModifiersToAilmentDamage(s, f)));
+            .With((_, s) => forms.Select(f => StatFactory.ApplyModifiersToAilmentDamage(s, f)));
 
-        public override IEnumerable<StatBuilderResult>
-            Build(BuildParameters parameters) =>
-            from baseResult in base.Build(parameters)
-            from result in StatConcretizer.Concretize(parameters, baseResult)
-            select new StatBuilderResult(result.Stats.SelectMany(_statConverter).ToList(), result.ModifierSource,
-                result.ValueConverter);
+        public override IEnumerable<StatBuilderResult> Build(BuildParameters parameters)
+            => from baseResult in base.Build(parameters)
+               from result in StatConcretizer.Concretize(parameters, baseResult)
+               let stats = result.Stats.SelectMany(s => _statConverter(result.ModifierSource, s)).ToList()
+               select new StatBuilderResult(stats, result.ModifierSource, result.ValueConverter);
     }
 }

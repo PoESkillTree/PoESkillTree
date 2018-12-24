@@ -62,10 +62,10 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder ChanceToDouble { get; }
 
         /// <summary>
-        /// Returns this stat as a property on the item in the given slot. Properties are modified by
-        /// local modifiers on the item. The resulting value is used to set this stat.
+        /// Returns this stat as a property of the ModifierSource item. Properties are modified by
+        /// local modifiers on the item. The Total value is used to set this stat.
         /// </summary>
-        IStatBuilder AsItemProperty(ItemSlot itemSlot);
+        IStatBuilder AsItemProperty { get; }
 
         /// <summary>
         /// Applies this stat to <paramref name="entity"/> instead of the currently modified entity.

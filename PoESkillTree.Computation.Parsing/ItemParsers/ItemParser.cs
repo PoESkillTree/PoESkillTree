@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MoreLinq;
@@ -81,16 +81,16 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                 switch (id)
                 {
                     case "armour":
-                        SetProperty(slot, _builderFactories.StatBuilders.Armour, value);
+                        SetProperty(_builderFactories.StatBuilders.Armour, value);
                         break;
                     case "evasion":
-                        SetProperty(slot, _builderFactories.StatBuilders.Evasion, value);
+                        SetProperty(_builderFactories.StatBuilders.Evasion, value);
                         break;
                     case "energy_shield":
-                        SetProperty(slot, _builderFactories.StatBuilders.Pool.From(Pool.EnergyShield), value);
+                        SetProperty(_builderFactories.StatBuilders.Pool.From(Pool.EnergyShield), value);
                         break;
                     case "block":
-                        SetProperty(slot, _builderFactories.ActionBuilders.Block.AttackChance, value);
+                        SetProperty(_builderFactories.ActionBuilders.Block.AttackChance, value);
                         break;
                     case "critical_strike_chance":
                         SetDamageRelatedProperty(slot, _builderFactories.ActionBuilders.CriticalStrike.Chance,
@@ -108,13 +108,13 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
 
         private void SetDamageRelatedProperty(ItemSlot slot, IDamageRelatedStatBuilder stat, double value)
         {
-            SetProperty(slot, stat.WithSkills.With(SlotToHand(slot)), value);
+            SetProperty(stat.WithSkills.With(SlotToHand(slot)), value);
         }
 
-        private void SetProperty(ItemSlot slot, IStatBuilder stat, double value)
+        private void SetProperty(IStatBuilder stat, double value)
         {
-            _modifiers.AddLocal(stat.AsItemProperty(slot), Form.BaseSet, value);
-            _modifiers.AddLocal(stat, Form.BaseSet, stat.AsItemProperty(slot).Value);
+            _modifiers.AddLocal(stat.AsItemProperty, Form.BaseSet, value);
+            _modifiers.AddLocal(stat, Form.BaseSet, stat.AsItemProperty.Value);
         }
 
         private void AddDamagePropertyModifiers(ItemSlot slot, BaseItemDefinition baseItemDefinition)
@@ -135,8 +135,8 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                     _builderFactories.ValueBuilders.Create(physDamageMin),
                     _builderFactories.ValueBuilders.Create(physDamageMax.Value));
                 var stat = _builderFactories.DamageTypeBuilders.Physical.Damage.WithSkills.With(SlotToHand(slot));
-                _modifiers.AddLocal(stat.AsItemProperty(slot), Form.BaseSet, value);
-                _modifiers.AddLocal(stat, Form.BaseSet, stat.AsItemProperty(slot).Value);
+                _modifiers.AddLocal(stat.AsItemProperty, Form.BaseSet, value);
+                _modifiers.AddLocal(stat, Form.BaseSet, stat.AsItemProperty.Value);
             }
         }
 
@@ -158,7 +158,7 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             }
 
             void Add(IStatBuilder stat)
-                => _modifiers.AddLocal(stat.AsItemProperty(slot), Form.Increase, value);
+                => _modifiers.AddLocal(stat.AsItemProperty, Form.Increase, value);
         }
 
         private void AddRequirementModifiers(Item item, BaseItemDefinition baseItemDefinition)

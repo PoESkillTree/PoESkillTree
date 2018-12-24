@@ -13,14 +13,14 @@ namespace PoESkillTree.Computation.Builders.Stats
         public DamageStatBuilder(IStatFactory statFactory, ICoreStatBuilder coreStatBuilder)
             : this(statFactory, coreStatBuilder,
                 new DamageStatConcretizer(statFactory, new DamageSpecificationBuilder(), canApplyToSkillDamage: true),
-                s => new[] { s })
+                (_, s) => new[] { s })
         {
         }
 
         private DamageStatBuilder(
             IStatFactory statFactory, ICoreStatBuilder coreStatBuilder,
             DamageStatConcretizer statConcretizer,
-            Func<IStat, IEnumerable<IStat>> statConverter)
+            Func<ModifierSource, IStat, IEnumerable<IStat>> statConverter)
             : base(statFactory, coreStatBuilder, statConcretizer, statConverter)
         {
         }
@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         protected override DamageRelatedStatBuilder Create(
             ICoreStatBuilder coreStatBuilder,
             DamageStatConcretizer statConcretizer,
-            Func<IStat, IEnumerable<IStat>> statConverter) =>
+            Func<ModifierSource, IStat, IEnumerable<IStat>> statConverter) =>
             new DamageStatBuilder(StatFactory, coreStatBuilder, statConcretizer, statConverter);
 
         public new IDamageStatBuilder For(IEntityBuilder entity) =>
