@@ -1,10 +1,7 @@
 ﻿using NUnit.Framework;
-using PoESkillTree.Computation.Builders;
-using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Parsing.ItemParsers;
 using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.Skills;
 using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
 
 namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
@@ -36,10 +33,6 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         }
 
         private static EmptyItemSlotParser CreateSut()
-        {
-            var builderFactories =
-                new BuilderFactories(new StatFactory(), new SkillDefinitions(new SkillDefinition[0]));
-            return new EmptyItemSlotParser(builderFactories);
-        }
+            => new EmptyItemSlotParser(CreateBuilderFactories());
     }
 }

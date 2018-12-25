@@ -73,7 +73,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         {
             var result = TranslateAndParse(_preParseResult.SkillDefinition.StatTranslationFile,
                 _preParseResult.LocalSource, stats);
-            return ApplyCondition(result, condition);
+            return result.ApplyCondition(condition.Build);
         }
 
         private ParseResult TranslateAndParseBuff(IEnumerable<BuffStat> buffStats, IConditionBuilder condition)
@@ -87,11 +87,11 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     var result = Parse(StatTranslationLoader.MainFileName, stat, affectedEntity);
                     if (result.SuccessfullyParsed && result.Modifiers.IsEmpty())
                         result = Parse(StatTranslationLoader.SkillFileName, stat, affectedEntity);
-                    result = ApplyCondition(result, condition);
+                    result = result.ApplyCondition(condition.Build);
 
                     var buildParameters = new BuildParameters(_preParseResult.GlobalSource, affectedEntity, default);
                     var multiplier = buffBuilder.BuildAddStatMultiplier(buildParameters, new[] { Entity.Character });
-                    result = ApplyMultiplier(result, multiplier);
+                    result = result.ApplyMultiplier(_ => multiplier);
                     results.Add(result);
                 }
             }
@@ -112,33 +112,6 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var unparsedStats = stats.Except(_parsedStats).ToList();
             var statParser = _statParserFactory(statTranslationFileName);
             return statParser.Parse(localModifierSource, modifierSourceEntity, unparsedStats);
-        }
-
-        private static ParseResult ApplyCondition(
-            ParseResult result, IConditionBuilder condition, Entity modifierSourceEntity = Entity.Character)
-        {
-            var conditionalValue = BuildCondition(condition, modifierSourceEntity);
-            return result.ApplyToModifiers(m => new Modifier(m.Stats, m.Form, ApplyCondition(m.Value), m.Source));
-
-            IValue ApplyCondition(IValue value)
-                => new FunctionalValue(c => conditionalValue.Calculate(c).IsTrue() ? value.Calculate(c) : null,
-                    $"{conditionalValue}.IsTrue ? {value} : null");
-        }
-
-        private static IValue BuildCondition(IConditionBuilder condition, Entity modifierSourceEntity)
-        {
-            var conditionResult = condition.Build(new BuildParameters(null, modifierSourceEntity, default));
-            if (conditionResult.HasStatConverter)
-                throw new InvalidOperationException("Can only handle value conditions");
-            return conditionResult.Value;
-        }
-
-        private static ParseResult ApplyMultiplier(ParseResult result, IValue multiplier)
-        {
-            return result.ApplyToModifiers(m => new Modifier(m.Stats, m.Form, ApplyMultiplier(m.Value), m.Source));
-
-            IValue ApplyMultiplier(IValue value)
-                => new FunctionalValue(c => value.Calculate(c) * multiplier.Calculate(c), $"{value} * {multiplier}");
         }
 
         private static UntranslatedStat ApplyQuality(UntranslatedStat qualityStat, Skill skill)

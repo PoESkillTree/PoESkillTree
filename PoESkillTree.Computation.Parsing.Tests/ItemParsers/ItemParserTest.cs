@@ -2,13 +2,11 @@
 using System.Linq;
 using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Parsing.ItemParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
-using PoESkillTree.GameModel.Skills;
 using PoESkillTree.GameModel.StatTranslation;
 using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
 
@@ -390,9 +388,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             coreParser = coreParser ?? Mock.Of<ICoreParser>();
 
             var baseItemDefinitions = new BaseItemDefinitions(new[] { baseItemDefinition });
-            var builderFactories =
-                new BuilderFactories(new StatFactory(), new SkillDefinitions(new SkillDefinition[0]));
-            return new ItemParser(baseItemDefinitions, builderFactories, coreParser, statTranslator);
+            return new ItemParser(baseItemDefinitions, CreateBuilderFactories(), coreParser, statTranslator);
         }
 
         private static ItemParserParameter CreateItem(ItemSlot itemSlot, params string[] mods)

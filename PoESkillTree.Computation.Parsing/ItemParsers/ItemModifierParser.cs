@@ -52,7 +52,7 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                 throw new NotSupportedException("Buff stats are only supported for flasks");
 
             var result = _untranslatedStatParser.Parse(source, Entity.Character, buffStats);
-            return result.ApplyToModifiers(MultiplyValueByFlaskEffect);
+            return MultiplyValuesByFlaskEffect(result);
         }
 
         private IEnumerable<ParseResult> ParsePropertyModifiers(
@@ -82,18 +82,15 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             var results = globalMods.Select(s => Parse(s, source));
             if (itemTags.HasFlag(Tags.Flask))
             {
-                results = results.Select(r => r.ApplyToModifiers(MultiplyValueByFlaskEffect));
+                results = results.Select(MultiplyValuesByFlaskEffect);
             }
             return results;
         }
 
-        private Modifier MultiplyValueByFlaskEffect(Modifier modifier)
+        private ParseResult MultiplyValuesByFlaskEffect(ParseResult result)
         {
-            var multiplier = _builderFactories.StatBuilders.Flask.Effect.Value
-                .Build(new BuildParameters(modifier.Source, Entity.Character, modifier.Form));
-            var newValue = new FunctionalValue(
-                c => modifier.Value.Calculate(c) * multiplier.Calculate(c), $"{modifier.Value} * {multiplier}");
-            return new Modifier(modifier.Stats, modifier.Form, newValue, modifier.Source);
+            var multiplierBuilder = _builderFactories.StatBuilders.Flask.Effect.Value;
+            return result.ApplyMultiplier(multiplierBuilder.Build);
         }
 
         private ParseResult Parse(string modifierLine, ModifierSource modifierSource)

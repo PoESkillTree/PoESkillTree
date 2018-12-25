@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.Tests
 {
@@ -36,5 +38,8 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         public static Modifier CreateModifier(string stat, Form form, IValue value, ModifierSource source = null)
             => new Modifier(new[] { new Stat(stat), }, form, value, source ?? new ModifierSource.Global());
+
+        public static BuilderFactories CreateBuilderFactories(params SkillDefinition[] skillDefinitions)
+            => new BuilderFactories(new StatFactory(), new SkillDefinitions(skillDefinitions));
     }
 }

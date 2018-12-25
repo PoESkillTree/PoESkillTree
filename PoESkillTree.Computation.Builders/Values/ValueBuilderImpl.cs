@@ -67,7 +67,7 @@ namespace PoESkillTree.Computation.Builders.Values
 
         public IValueBuilder If(IValue condition) =>
             Create(this, new ValueBuilderImpl(condition), (l, r) => r.IsTrue() ? l : null,
-                (l, r) => $"{r}.IsTrue ? {l} : null");
+                (l, r) => $"{r} ? {l} : null");
 
         public IValueBuilder Select(Func<NodeValue, NodeValue> selector, Func<IValue, string> identity) =>
             Create(this, o => o.Select(selector), identity);

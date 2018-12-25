@@ -70,6 +70,7 @@
     <Compile Include="ItemParsers\EmptyItemSlotParserTest.cs" />
     <Compile Include="ItemParsers\ItemParserTest.cs" />
     <Compile Include="ParserTestUtils.cs" />
+    <Compile Include="PassiveTreeParsers\PassiveNodeParserTest.cs" />
     <Compile Include="SkillParsers\ActiveSkillParserTest.cs" />
     <Compile Include="SkillParsers\SkillParserTestUtils.cs" />
     <Compile Include="SkillParsers\SupportSkillParserTest.cs" />

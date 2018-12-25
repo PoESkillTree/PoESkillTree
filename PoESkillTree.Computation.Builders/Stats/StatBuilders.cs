@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using MoreLinq;
-using PoESkillTree.Computation.Builders.Damage;
-using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
@@ -80,6 +78,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder CharacterSize => FromIdentity(typeof(double));
         public IStatBuilder LightRadius => FromIdentity(typeof(double));
         public IStatBuilder AttachedBrands => FromIdentity(typeof(int));
+
+        public IStatBuilder PassiveNodeSkilled(ushort nodeId) => FromIdentity($"{nodeId}.Skilled", typeof(bool));
+        public IStatBuilder KeystoneSkilled(string keystone) => FromIdentity($"{keystone}.Skilled", typeof(bool));
 
         public IStatBuilder DamageTakenGainedAsMana =>
             FromIdentity("% of damage taken gained as mana over 4 seconds", typeof(int));
