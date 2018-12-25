@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace PoESkillTree.GameModel
@@ -36,7 +37,17 @@ namespace PoESkillTree.GameModel
             return JsonConvert.DeserializeObject<T>(text);
         }
 
-        public static async Task<string> LoadTextAsync(string resourceName)
+        public static async Task<T> LoadXmlAsync<T>(string fileName)
+        {
+            var xmlString = await LoadTextAsync(fileName).ConfigureAwait(false);
+            using (var reader = new StringReader(xmlString))
+            {
+                var serializer = new XmlSerializer(typeof(T));
+                return (T)serializer.Deserialize(reader);
+            }
+        }
+
+        private static async Task<string> LoadTextAsync(string resourceName)
         {
             var name = ResourceRoot + resourceName;
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name))

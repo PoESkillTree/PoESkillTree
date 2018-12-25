@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using MoreLinq;
 using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.StatTranslation;
 using POESKillTree.Model.Items.Mods;
-using POESKillTree.Utils;
 
 namespace POESKillTree.Model.Items
 {
@@ -62,22 +62,16 @@ namespace POESKillTree.Model.Items
 
         private async Task<IEnumerable<ItemBase>> LoadBases()
         {
-            var xmlList = await DeserializeXmlResourceAsync<XmlItemList>("Items.xml");
+            var xmlList = await DataUtils.LoadXmlAsync<XmlItemList>("Equipment.Items.xml");
             return xmlList.ItemBases.Select(x => new ItemBase(_itemImageService, ModDatabase, x));
         }
 
         private async Task<IEnumerable<UniqueBase>> LoadUniques()
         {
             var metadataToBase = ItemBases.ToDictionary(b => b.MetadataId);
-            var xmlList = await DeserializeXmlResourceAsync<XmlUniqueList>("Uniques.xml");
+            var xmlList = await DataUtils.LoadXmlAsync<XmlUniqueList>("Equipment.Uniques.xml");
             return xmlList.Uniques.Select(
                 x => new UniqueBase(_itemImageService, ModDatabase, metadataToBase[x.BaseMetadataId], x));
-        }
-
-        private static async Task<T> DeserializeXmlResourceAsync<T>(string file)
-        {
-            var text = await DataUtils.LoadTextAsync("Equipment." + file);
-            return SerializationUtils.XmlDeserializeString<T>(text);
         }
 
         public ItemBase ItemBaseFromTypeline(string typeline)

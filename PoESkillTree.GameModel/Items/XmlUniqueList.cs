@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace POESKillTree.Model.Items
+namespace PoESkillTree.GameModel.Items
 {
     // Contains the classes that allow serialization and deserialization of Uniques.xml
 
