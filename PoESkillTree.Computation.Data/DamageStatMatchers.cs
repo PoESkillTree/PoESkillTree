@@ -101,6 +101,7 @@ namespace PoESkillTree.Computation.Data
                     "unarmed physical damage",
                     Physical.Damage.WithSkills(DamageSource.Attack).With(Keyword.Melee), Not(MainHand.HasItem)
                 },
+                { "projectile attack damage", Damage.WithSkills(DamageSource.Attack).With(Keyword.Projectile) },
                 {
                     "physical projectile attack damage",
                     Physical.Damage.WithSkills(DamageSource.Attack).With(Keyword.Projectile)

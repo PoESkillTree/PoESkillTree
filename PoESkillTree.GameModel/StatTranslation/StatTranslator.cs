@@ -4,7 +4,6 @@ using System.Linq;
 using JetBrains.Annotations;
 using log4net;
 using MoreLinq;
-using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.GameModel.StatTranslation
 {

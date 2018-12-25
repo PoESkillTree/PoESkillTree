@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Moq;
@@ -10,14 +11,23 @@ using PoESkillTree.Computation.Parsing.ItemParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.StatTranslation;
+using static PoESkillTree.Computation.IntegrationTests.ParsingTestUtils;
 
 namespace PoESkillTree.Computation.IntegrationTests
 {
     [TestFixture]
     public class ItemParserTest : CompositionRootTestBase
     {
+        private static Task<StatTranslator> _statTranslatorTask;
         private BaseItemDefinitions _baseItemDefinitions;
+        private IStatTranslator _statTranslator;
         private IParser<ItemParserParameter> _itemParser;
+
+        [OneTimeSetUp]
+        public static void OneTimeSetUp()
+        {
+            _statTranslatorTask = StatTranslationLoader.LoadAsync(StatTranslationLoader.MainFileName);
+        }
 
         [SetUp]
         public async Task SetUpAsync()
@@ -25,12 +35,12 @@ namespace PoESkillTree.Computation.IntegrationTests
             var definitionsTask = CompositionRoot.BaseItemDefinitions;
             var builderFactoriesTask = CompositionRoot.BuilderFactories;
             var coreParserTask = CompositionRoot.CoreParser;
-            var statTranslatorTask = StatTranslationLoader.LoadAsync(StatTranslationLoader.MainFileName);
             _baseItemDefinitions = await definitionsTask.ConfigureAwait(false);
+            _statTranslator = await _statTranslatorTask.ConfigureAwait(false);
             _itemParser = new ItemParser(_baseItemDefinitions,
                 await builderFactoriesTask.ConfigureAwait(false),
                 await coreParserTask.ConfigureAwait(false),
-                await statTranslatorTask.ConfigureAwait(false));
+                _statTranslator);
         }
 
         [Test]
@@ -165,5 +175,32 @@ namespace PoESkillTree.Computation.IntegrationTests
             }
             Assert.AreEqual(expectedModifiers.Length, modifiers.Count);
         }
+
+        [TestCaseSource(nameof(ReadParseableBaseItems))]
+        public void ItemIsParsedSuccessfully(string skillId)
+        {
+            var actual = Parse(skillId);
+
+            AssertIsParsedSuccessfully(actual, NotParseableStatLines.Value);
+        }
+
+        private ParseResult Parse(string metadataId)
+        {
+            var definition = _baseItemDefinitions.GetBaseItemById(metadataId);
+            var untranslatedStats = definition.ImplicitModifiers
+                .Select(s => new UntranslatedStat(s.StatId, (s.MinValue + s.MaxValue) / 2));
+            var mods = _statTranslator.Translate(untranslatedStats).TranslatedStats;
+            var item = new Item(metadataId, "Item", 20, definition.Requirements.Level, FrameType.White,
+                false, mods);
+            var slot = definition.ItemClass.ItemSlots();
+            if (slot.HasFlag(ItemSlot.MainHand))
+                slot = ItemSlot.MainHand;
+            else if (slot.HasFlag(ItemSlot.Ring))
+                slot = ItemSlot.Ring;
+            return _itemParser.Parse(new ItemParserParameter(item, slot));
+        }
+
+        private static IEnumerable<string> ReadParseableBaseItems()
+            => ReadDataLines("ParseableBaseItems");
     }
 }

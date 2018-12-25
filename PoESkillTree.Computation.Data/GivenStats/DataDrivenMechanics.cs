@@ -270,21 +270,21 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 // crit
                 {
                     TotalOverride, _stat.EffectiveCritChance.With(AttackDamageHand.MainHand),
-                    CriticalStrike.Chance.With(AttackDamageHand.MainHand).Value.AsPercentage *
+                    CalculateLuckyCriticalStrikeChance(CriticalStrike.Chance.With(AttackDamageHand.MainHand)) *
                     Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value.AsPercentage
                 },
                 {
                     TotalOverride, _stat.EffectiveCritChance.With(AttackDamageHand.OffHand),
-                    CriticalStrike.Chance.With(AttackDamageHand.OffHand).Value.AsPercentage *
+                    CalculateLuckyCriticalStrikeChance(CriticalStrike.Chance.With(AttackDamageHand.OffHand)) *
                     Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value.AsPercentage
                 },
                 {
                     TotalOverride, _stat.EffectiveCritChance.With(DamageSource.Spell),
-                    CriticalStrike.Chance.With(DamageSource.Spell).Value.AsPercentage
+                    CalculateLuckyCriticalStrikeChance(CriticalStrike.Chance.With(DamageSource.Spell))
                 },
                 {
                     TotalOverride, _stat.EffectiveCritChance.With(DamageSource.Secondary),
-                    CriticalStrike.Chance.With(DamageSource.Secondary).Value.AsPercentage
+                    CalculateLuckyCriticalStrikeChance(CriticalStrike.Chance.With(DamageSource.Secondary))
                 },
                 // pools
                 {
@@ -578,6 +578,14 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 var ailmentBuilder = Ailment.From(ailment);
                 collection.Add(form, stat.With(ailmentBuilder), valueStat.With(ailmentBuilder).Value);
             }
+        }
+
+        private ValueBuilder CalculateLuckyCriticalStrikeChance(IStatBuilder critChance)
+        {
+            var critValue = critChance.Value.AsPercentage;
+            return ValueFactory.If(Flag.CriticalStrikeChanceIsLucky.IsSet)
+                .Then(1 - (1 - critValue) * (1 - critValue))
+                .Else(critValue);
         }
 
         private ValueBuilder CombineSource(

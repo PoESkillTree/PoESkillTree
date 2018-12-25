@@ -86,6 +86,10 @@ namespace PoESkillTree.Computation.Data
                     "when your mine is detonated targeting an enemy",
                     Action.Unique("When your Mine is detonated targeting an Enemy").On
                 },
+                {
+                    "on use",
+                    Action.Unique("When your use the Flask").On
+                },
             }; // add
     }
 }

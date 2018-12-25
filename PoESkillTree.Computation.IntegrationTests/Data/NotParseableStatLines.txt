@@ -1,4 +1,14 @@
 ﻿// not handled (no useful usage)
+// Accessories: ========================================================================================================
+Has 1 Socket
+Has 1 Abyssal Socket
+35% increased Fish Bite Sensitivity
+Properties are doubled while in a Breach
+// Flasks: =============================================================================================================
+20% of Melee Physical Damage taken reflected to Attacker
+20% chance to Avoid Cold Damage when Hit
+Creates a Smoke Cloud on Use
+Creates Chilled Ground on Use
 // Jewels: =============================================================================================================
 Your Golems are aggressive
 #% chance to gain an additional Vaal Soul per Enemy Shattered

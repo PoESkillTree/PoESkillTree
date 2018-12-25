@@ -58,6 +58,12 @@ namespace PoESkillTree.Computation.Data
                     Not(MainHand.HasItem)
                 },
                 {
+                    @"adds # to # ({DamageTypeMatchers}) damage to bow attacks",
+                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]),
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Attack).With(Keyword.Melee),
+                    MainHand.Has(Tags.Bow)
+                },
+                {
                     @"adds # to # ({DamageTypeMatchers}) damage to spells",
                     BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]),
                     Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell)
@@ -151,13 +157,20 @@ namespace PoESkillTree.Computation.Data
                 { "actions are #% slower", PercentLess, Value, Stat.ActionSpeed },
                 { @"\+# seconds to attack time", BaseAdd, Value, Stat.BaseCastTime.With(DamageSource.Attack) },
                 // - projectiles
-                { "fires # additional (projectiles|arrows)", BaseAdd, Value, Projectile.Count },
-                { "fires an additional (projectile|arrow)", BaseAdd, 1, Projectile.Count },
+                { "fires # additional projectiles", BaseAdd, Value, Projectile.Count },
+                { "fires # additional arrows", BaseAdd, Value, Projectile.Count, With(Keyword.Attack) },
+                { "fires an additional projectile", BaseAdd, 1, Projectile.Count },
+                { "fires an additional arrow", BaseAdd, 1, Projectile.Count, With(Keyword.Attack) },
                 { "skills fire an additional projectile", BaseAdd, 1, Projectile.Count },
                 { "supported skills fire # additional projectiles", BaseAdd, Value, Projectile.Count },
                 { "pierces # additional targets", BaseAdd, Value, Projectile.PierceCount },
                 { "projectiles pierce an additional target", BaseAdd, 1, Projectile.PierceCount },
-                { "(projectiles|arrows) pierce # (additional )?targets", BaseAdd, Value, Projectile.PierceCount },
+                { "arrows pierce an additional target", BaseAdd, 1, Projectile.PierceCount, With(Keyword.Attack) },
+                { "projectiles pierce # (additional )?targets", BaseAdd, Value, Projectile.PierceCount },
+                {
+                    "arrows pierce # (additional )?targets",
+                    BaseAdd, Value, Projectile.PierceCount, With(Keyword.Attack)
+                },
                 {
                     "projectiles from supported skills pierce # additional targets", BaseAdd, Value,
                     Projectile.PierceCount
@@ -279,7 +292,9 @@ namespace PoESkillTree.Computation.Data
                     "#% increased duration(?! of)",
                     PercentIncrease, Value, ApplyOnce(Stat.Duration, Stat.SecondaryDuration)
                 },
-                { "#% reduced duration(?! of)", PercentReduce, Value, ApplyOnce(Stat.Duration, Stat.SecondaryDuration) },
+                {
+                    "#% reduced duration(?! of)", PercentReduce, Value, ApplyOnce(Stat.Duration, Stat.SecondaryDuration)
+                },
                 { "skills cost no mana", TotalOverride, 0, Mana.Cost },
                 { "you can cast an additional brand", BaseAdd, 1, Skills[Keyword.Brand].CombinedInstances },
                 // traps, mines, totems
@@ -318,6 +333,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "grants? fortify", TotalOverride, 1, Buff.Fortify.On(Self) },
                 { "gain elemental conflux", TotalOverride, 1, Buff.Conflux.Elemental.On(Self) },
+                { "creates consecrated ground", TotalOverride, 1, Buff.Conflux.Elemental.On(Self) },
                 { "(?<!chance to )impale enemies", TotalOverride, 100, Buff.Impale.Chance },
                 { "({BuffMatchers}) lasts # seconds", BaseSet, Value, Reference.AsBuff.Duration },
                 {

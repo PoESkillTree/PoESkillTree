@@ -46,7 +46,7 @@ namespace PoESkillTree.Computation.Data
                 { "strength and dexterity", ApplyOnce(Attribute.Strength, Attribute.Dexterity) },
                 { "strength and intelligence", ApplyOnce(Attribute.Strength, Attribute.Intelligence) },
                 { "dexterity and intelligence", ApplyOnce(Attribute.Dexterity, Attribute.Intelligence) },
-                { "attributes", ApplyOnce(Attribute.Strength, Attribute.Dexterity, Attribute.Intelligence) },
+                { "(all )?attributes", ApplyOnce(Attribute.Strength, Attribute.Dexterity, Attribute.Intelligence) },
                 // offense
                 // - damage: see also DamageStatMatchers
                 { "chance to deal double damage", Damage.ChanceToDouble },
@@ -81,8 +81,20 @@ namespace PoESkillTree.Computation.Data
                 },
                 // - damage taken as
                 {
+                    "({DamageTypeMatchers}) damage from hits taken as lightning damage",
+                    Reference.AsDamageType.HitDamageTakenAs(DamageType.Lightning)
+                },
+                {
+                    "({DamageTypeMatchers}) damage from hits taken as cold damage",
+                    Reference.AsDamageType.HitDamageTakenAs(DamageType.Cold)
+                },
+                {
                     "({DamageTypeMatchers}) damage from hits taken as fire damage",
                     Reference.AsDamageType.HitDamageTakenAs(DamageType.Fire)
+                },
+                {
+                    "({DamageTypeMatchers}) damage from hits taken as chaos damage",
+                    Reference.AsDamageType.HitDamageTakenAs(DamageType.Chaos)
                 },
                 // - penetration
                 // - crit
@@ -111,6 +123,10 @@ namespace PoESkillTree.Computation.Data
                 { "minion maximum life", Life.For(Entity.Minion) },
                 // - resistances
                 { "({DamageTypeMatchers}) resistance", Reference.AsDamageType.Resistance },
+                {
+                    "({DamageTypeMatchers}) and ({DamageTypeMatchers}) resistances",
+                    References[0].AsDamageType.Resistance, References[1].AsDamageType.Resistance
+                },
                 { "all elemental resistances", Elemental.Resistance },
                 { "maximum ({DamageTypeMatchers}) resistance", Reference.AsDamageType.Resistance.Maximum },
                 { "all maximum resistances", Elemental.And(Chaos).Resistance.Maximum },

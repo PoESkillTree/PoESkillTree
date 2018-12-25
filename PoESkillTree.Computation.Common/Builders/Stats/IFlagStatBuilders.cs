@@ -14,7 +14,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder ShieldModifiersApplyToMinionsInstead { get; }
 
         IStatBuilder IgnoreHexproof { get; }
-
+        IStatBuilder CriticalStrikeChanceIsLucky { get; }
         IStatBuilder FarShot { get; }
 
         IStatBuilder IncreasesToSourceApplyToTarget(IStatBuilder source, IStatBuilder target);

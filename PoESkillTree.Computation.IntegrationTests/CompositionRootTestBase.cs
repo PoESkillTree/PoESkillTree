@@ -11,7 +11,10 @@ namespace PoESkillTree.Computation.IntegrationTests
         public static void CreateCompositionRoot()
         {
             Program.SetupLogger();
-            CompositionRoot = new CompositionRoot();
+            if (CompositionRoot is null)
+            {
+                CompositionRoot = new CompositionRoot();
+            }
         }
     }
 }

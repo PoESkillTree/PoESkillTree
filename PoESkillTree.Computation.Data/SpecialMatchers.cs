@@ -56,22 +56,26 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 1, Flag.IgnoreMovementSpeedPenalties
                 },
                 {
+                    "your critical strike chance is lucky",
+                    TotalOverride, 1, Flag.CriticalStrikeChanceIsLucky
+                },
+                {
                     "life leech recovers based on your chaos damage instead",
                     BaseAdd, 100, Life.Leech.Of(Chaos.Invert.Damage).ConvertTo(Life.Leech.Of(Chaos.Damage))
+                },
+                {
+                    "({BuffMatchers})",
+                    TotalOverride, 1, Reference.AsBuff.On(Self)
                 },
                 {
                     "modifiers to ({KeywordMatchers}) damage apply to this skill's damage over time effect",
                     TotalOverride, 1, Stat.DamageHasKeyword(DamageSource.OverTime, Reference.AsKeyword)
                 },
                 {
-                    "phasing",
-                    TotalOverride, 1, Buff.Phasing.On(Self)
-                },
-                {
                     "modifiers to spell damage apply to this skill's damage over time effect",
                     TotalOverride, 1,
                     Damage.With(DamageSource.Spell)
-                        .ApplyModifiersToSkills(DamageSource.Attack, Form.Increase, Form.More)
+                        .ApplyModifiersToSkills(DamageSource.OverTime, Form.Increase, Form.More)
                 },
                 {
                     "increases and reductions to spell damage also apply to attacks",
