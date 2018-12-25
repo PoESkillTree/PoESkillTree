@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Common
@@ -30,6 +31,8 @@ namespace PoESkillTree.Computation.Common
 
         public Modifier(IReadOnlyList<IStat> stats, Form form, IValue value, ModifierSource source)
         {
+            if (form == Form.TotalOverride && source is ModifierSource.Local)
+                throw new ArgumentException("TotalOverride modifiers with a local ModifierSource don't do anything");
             Stats = stats;
             Form = form;
             Value = value;
