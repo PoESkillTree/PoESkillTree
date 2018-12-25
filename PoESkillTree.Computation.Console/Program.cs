@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -69,7 +69,10 @@ namespace PoESkillTree.Computation.Console
                         await AddGivenStatsAsync();
                         break;
                     case "update SkillTreeStatLines":
-                        StatLinesUpdater.UpdateSkillTreeStatLines();
+                        TestDataUpdater.UpdateSkillTreeStatLines();
+                        break;
+                    case "update ParseableBaseItems":
+                        TestDataUpdater.UpdateParseableBaseItems(await _compositionRoot.BaseItemDefinitions);
                         break;
                     default:
                         await HandleParseCommandAsync(statLine);
