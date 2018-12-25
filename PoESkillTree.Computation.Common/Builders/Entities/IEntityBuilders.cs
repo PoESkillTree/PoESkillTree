@@ -44,6 +44,8 @@ namespace PoESkillTree.Computation.Common.Builders.Entities
         /// </summary>
         IEntityBuilder Minion { get; }
 
+        IEntityBuilder Any { get; }
+
         IEntityBuilder From(IEnumerable<Entity> entities);
     }
 }

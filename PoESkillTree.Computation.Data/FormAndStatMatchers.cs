@@ -206,6 +206,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "gain life from leech instantly", TotalOverride, 1, Life.InstantLeech },
                 { "leech #% of damage as life", BaseAdd, Value, Life.Leech.Of(Damage) },
+                { "cannot leech mana", TotalOverride, 0, Mana.Leech.Of(Damage) },
                 // - block
                 {
                     "#% of block chance applied to spells",
@@ -326,6 +327,10 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "you can apply an additional curse", BaseAdd, 1, Buff.CurseLimit.For(Enemy) },
                 { "unaffected by curses", PercentLess, 100, Buffs(targets: Self).With(Keyword.Curse).Effect },
+                {
+                    "unaffected by ({SkillMatchers})",
+                    PercentLess, 100, Reference.AsSkill.Buff.EffectOn(Self).For(Entity.Any)
+                },
                 { "immune to curses", TotalOverride, 0, Buffs(targets: Self).With(Keyword.Curse).On },
                 {
                     "monsters are hexproof",

@@ -22,6 +22,7 @@ namespace PoESkillTree.Computation.Builders.Entities
         public IEntityBuilder Ally => new EntityBuilder(Entity.Minion, Entity.Totem);
         public IEntityBuilder Totem => new EntityBuilder(Entity.Totem);
         public IEntityBuilder Minion => new EntityBuilder(Entity.Minion);
+        public IEntityBuilder Any => EntityBuilder.AllEntities;
         public IEntityBuilder From(IEnumerable<Entity> entities) => new EntityBuilder(entities.ToArray());
 
         private class EnemyBuilder : EntityBuilder, IEnemyBuilder

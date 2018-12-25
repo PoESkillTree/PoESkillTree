@@ -64,6 +64,10 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, 100, Life.Leech.Of(Chaos.Invert.Damage).ConvertTo(Life.Leech.Of(Chaos.Damage))
                 },
                 {
+                    "strength's damage bonus instead grants 3% increased melee physical damage per 10 strength",
+                    PercentMore, 50, Attribute.StrengthDamageBonus
+                },
+                {
                     "({BuffMatchers})",
                     TotalOverride, 1, Reference.AsBuff.On(Self)
                 },

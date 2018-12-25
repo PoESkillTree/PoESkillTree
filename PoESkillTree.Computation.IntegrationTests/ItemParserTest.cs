@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Moq;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
@@ -19,6 +20,9 @@ namespace PoESkillTree.Computation.IntegrationTests
     public class ItemParserTest : CompositionRootTestBase
     {
         private static Task<StatTranslator> _statTranslatorTask;
+        private static Task<XmlUniqueList> _uniqueDefinitionsTask;
+        private static Task<Dictionary<string, IReadOnlyList<CraftableStat>>> _modDefinitionsTask;
+
         private BaseItemDefinitions _baseItemDefinitions;
         private IStatTranslator _statTranslator;
         private IParser<ItemParserParameter> _itemParser;
@@ -27,6 +31,8 @@ namespace PoESkillTree.Computation.IntegrationTests
         public static void OneTimeSetUp()
         {
             _statTranslatorTask = StatTranslationLoader.LoadAsync(StatTranslationLoader.MainFileName);
+            _uniqueDefinitionsTask = DataUtils.LoadXmlAsync<XmlUniqueList>("Equipment.Uniques.xml");
+            _modDefinitionsTask = LoadModsAsync();
         }
 
         [SetUp]
@@ -177,9 +183,9 @@ namespace PoESkillTree.Computation.IntegrationTests
         }
 
         [TestCaseSource(nameof(ReadParseableBaseItems))]
-        public void ItemIsParsedSuccessfully(string skillId)
+        public void BaseItemIsParsedSuccessfully(string metadataId)
         {
-            var actual = Parse(skillId);
+            var actual = Parse(metadataId);
 
             AssertIsParsedSuccessfully(actual, NotParseableStatLines.Value);
         }
@@ -187,20 +193,71 @@ namespace PoESkillTree.Computation.IntegrationTests
         private ParseResult Parse(string metadataId)
         {
             var definition = _baseItemDefinitions.GetBaseItemById(metadataId);
-            var untranslatedStats = definition.ImplicitModifiers
-                .Select(s => new UntranslatedStat(s.StatId, (s.MinValue + s.MaxValue) / 2));
-            var mods = _statTranslator.Translate(untranslatedStats).TranslatedStats;
-            var item = new Item(metadataId, "Item", 20, definition.Requirements.Level, FrameType.White,
-                false, mods);
-            var slot = definition.ItemClass.ItemSlots();
-            if (slot.HasFlag(ItemSlot.MainHand))
-                slot = ItemSlot.MainHand;
-            else if (slot.HasFlag(ItemSlot.Ring))
-                slot = ItemSlot.Ring;
+            var mods = Translate(definition.ImplicitModifiers);
+            var item = new Item(metadataId, definition.Name, 20, definition.Requirements.Level,
+                FrameType.White, false, mods);
+            var slot = SlotForClass(definition.ItemClass);
             return _itemParser.Parse(new ItemParserParameter(item, slot));
         }
 
         private static IEnumerable<string> ReadParseableBaseItems()
             => ReadDataLines("ParseableBaseItems");
+
+        [TestCaseSource(nameof(ReadParseableUniqueItems))]
+        public async Task UniqueItemIsParsedSuccessfully(string uniqueName)
+        {
+            var uniqueDefinitions = await _uniqueDefinitionsTask.ConfigureAwait(false);
+            var modDefinitions = await _modDefinitionsTask.ConfigureAwait(false);
+            var unique = uniqueDefinitions.Uniques.First(u => u.Name == uniqueName);
+            var explicitMods = unique.Explicit.SelectMany(s => modDefinitions[s]);
+
+            var actual = Parse(unique, explicitMods);
+
+            AssertIsParsedSuccessfully(actual, NotParseableStatLines.Value);
+        }
+
+        private ParseResult Parse(XmlUnique unique, IEnumerable<CraftableStat> explicitMods)
+        {
+            var definition = _baseItemDefinitions.GetBaseItemById(unique.BaseMetadataId);
+            var craftableStats = definition.ImplicitModifiers.Concat(explicitMods);
+            var mods = Translate(craftableStats);
+            var item = new Item(unique.BaseMetadataId, unique.Name, 20, unique.Level,
+                FrameType.Unique, false, mods);
+            var slot = SlotForClass(definition.ItemClass);
+            return _itemParser.Parse(new ItemParserParameter(item, slot));
+        }
+
+        private static IEnumerable<string> ReadParseableUniqueItems()
+            => ReadDataLines("ParseableUniqueItems");
+
+        private IReadOnlyList<string> Translate(IEnumerable<CraftableStat> craftableStats)
+        {
+            var untranslatedStats =
+                craftableStats.Select(s => new UntranslatedStat(s.StatId, (s.MinValue + s.MaxValue) / 2));
+            return _statTranslator.Translate(untranslatedStats).TranslatedStats;
+        }
+
+        private static ItemSlot SlotForClass(ItemClass itemClass)
+        {
+            var slot = itemClass.ItemSlots();
+            if (slot.HasFlag(ItemSlot.MainHand))
+                slot = ItemSlot.MainHand;
+            else if (slot.HasFlag(ItemSlot.Ring))
+                slot = ItemSlot.Ring;
+            return slot;
+        }
+
+        private static async Task<Dictionary<string, IReadOnlyList<CraftableStat>>> LoadModsAsync()
+        {
+            var jsonText = await DataUtils.LoadRePoEAsync("mods").ConfigureAwait(false);
+            var json = JObject.Parse(jsonText);
+            return json.Properties().ToDictionary(p => p.Name,
+                p => SelectCraftableStats(p.Value.Value<JArray>("stats")));
+
+            IReadOnlyList<CraftableStat> SelectCraftableStats(JArray jsonStats)
+                => jsonStats
+                    .Select(j => new CraftableStat(j.Value<string>("id"), j.Value<int>("min"), j.Value<int>("max")))
+                    .ToList();
+        }
     }
 }

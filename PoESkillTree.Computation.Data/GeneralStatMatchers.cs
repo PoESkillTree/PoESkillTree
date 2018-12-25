@@ -258,6 +258,7 @@ namespace PoESkillTree.Computation.Data
                 { "mana reserved", AllSkills.Reservation },
                 { "mana reservation of skills", AllSkills.Reservation },
                 { "mana reservation of ({KeywordMatchers}) skills", Skills[Reference.AsKeyword].Reservation },
+                { "({SkillMatchers}) has mana reservation", Reference.AsSkill.Reservation },
                 { "skill effect duration", Stat.Duration },
                 { "skill duration", Stat.Duration },
                 { "buff duration", Stat.Duration },

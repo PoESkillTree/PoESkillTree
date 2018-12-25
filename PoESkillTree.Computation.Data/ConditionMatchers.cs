@@ -175,6 +175,7 @@ namespace PoESkillTree.Computation.Data
                 { "if you have # primordial jewels,", Stat.PrimordialJewelsSocketed.Value >= Value },
                 // - on enemy
                 { "(against enemies )?that are on low life", Life.For(Enemy).IsLow },
+                { "against enemies on low life", Life.For(Enemy).IsLow },
                 { "(against enemies )?that are on full life", Life.For(Enemy).IsFull },
                 { "against rare and unique enemies", Enemy.IsRareOrUnique },
                 { "while there is only one nearby enemy", Enemy.CountNearby.Eq(1) },

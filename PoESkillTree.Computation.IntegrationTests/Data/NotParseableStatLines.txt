@@ -1,4 +1,8 @@
 ﻿// not handled (no useful usage)
+// Weapons: ============================================================================================================
+// Armour: =============================================================================================================
+Gore Footprints
+Enemies Cannot Leech Mana From you
 // Accessories: ========================================================================================================
 Has 1 Socket
 Has 1 Abyssal Socket
@@ -25,6 +29,8 @@ Burning Arrow has a 10% chance to spread Tar if it does not Ignite an Enemy
 #% increased Rarity of Items dropped by Enemies Shattered by Glacial Hammer
 Magma Orb has 10% increased Area of Effect per Chain
 each Spectral Throw Projectile gains 5% increased Damage each time it Hits
+Barrage fires an additional 2 projectiles simultaneously on the first and final attacks
+Burning Arrow has a 10% chance to spread Burning Ground if it Ignites an Enemy
 // skills: =============================================================================================================
 // (either irrelevant or already handled by SkillDefinitionExtensions and/or AdditionalSkillStats)
 damage cannot be reflected
