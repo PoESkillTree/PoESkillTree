@@ -108,5 +108,23 @@ namespace PoESkillTree.GameModel.Tests.StatTranslation
 
             Assert.AreEqual(expected, actual.TranslatedStats);
         }
+
+        [Test]
+        public void TranslateCombinesDuplicateStatIds()
+        {
+            var untranslatedStats = new[]
+            {
+                new UntranslatedStat("base_maximum_energy_shield", 5),
+                new UntranslatedStat("base_maximum_energy_shield", 10),
+            };
+            string[] expected =
+            {
+                "+15 to maximum Energy Shield",
+            };
+
+            var actual = _translator.Translate(untranslatedStats);
+
+            Assert.AreEqual(expected, actual.TranslatedStats);
+        }
     }
 }

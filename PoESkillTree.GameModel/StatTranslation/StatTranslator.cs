@@ -38,7 +38,9 @@ namespace PoESkillTree.GameModel.StatTranslation
 
         public StatTranslatorResult Translate(IEnumerable<UntranslatedStat> untranslatedStats)
         {
-            var idStatDict = untranslatedStats.ToDictionary(s => s.StatId, s => s);
+            var idStatDict = untranslatedStats
+                .GroupBy(s => s.StatId)
+                .ToDictionary(g => g.Key, s => s.Aggregate(Merge));
             var (translations, unknownStatIds) = LookupStatIds(idStatDict.Keys);
             var unknownStats = unknownStatIds.Select(k => idStatDict[k]);
 
@@ -46,6 +48,9 @@ namespace PoESkillTree.GameModel.StatTranslation
             var translatedStats = translations.Select(t => t.Translate(idValueDict)).Where(s => s != null);
 
             return new StatTranslatorResult(translatedStats.ToList(), unknownStats.ToList());
+
+            UntranslatedStat Merge(UntranslatedStat left, UntranslatedStat right)
+                => new UntranslatedStat(left.StatId, left.Value + right.Value);
         }
 
         /// <summary>
