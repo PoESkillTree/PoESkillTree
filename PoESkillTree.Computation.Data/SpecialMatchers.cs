@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
 using PoESkillTree.Computation.Common;
@@ -165,6 +166,13 @@ namespace PoESkillTree.Computation.Data
                     // Fork Support
                     "supported skills fork",
                     TotalOverride, 1, Projectile.Fork
+                },
+                {
+                    // Iron Will Support
+                    "strength's damage bonus applies to spell damage as well for supported skills",
+                    PercentIncrease,
+                    (Attribute.StrengthDamageBonus.Value / 5).Select(Math.Ceiling, o => $"Ceiling({o})"),
+                    Damage.WithSkills(DamageSource.Spell)
                 },
                 {   // Minion and Totem Elemental Resistance Support
                     @"totems and minions summoned by supported skills have \+#% ({DamageTypeMatchers}) resistance",

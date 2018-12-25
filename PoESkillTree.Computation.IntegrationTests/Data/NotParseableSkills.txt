@@ -1,7 +1,6 @@
 ﻿// These skills have stat lines that are not parsed successfully (yet)
 // - Keystone supports. These need to activate the keystone instead of being translated and parsed
 SupportIronGrip
-SupportIronWill
 SupportPointBlank
 // - Require new stats or are otherwise not trivial to support
 ArcticArmour
