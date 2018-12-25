@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using PoESkillTree.GameModel.PassiveTree;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Algorithm;
 using POESKillTree.TreeGenerator.Algorithm.Model;
@@ -272,7 +273,7 @@ namespace POESKillTree.TreeGenerator.Solver
                             // Don't add nodes that should not be skilled.
                             || Settings.Crossed.Contains(node)
                             // Mastery nodes are obviously not useful.
-                            || node.Type == NodeType.Mastery
+                            || node.Type == PassiveNodeType.Mastery
                             // Ignore ascendancies for now
                             || node.ascendancyName != null)
                             continue;

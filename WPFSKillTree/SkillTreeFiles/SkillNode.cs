@@ -1,17 +1,9 @@
 using System;
 using System.Collections.Generic;
+using PoESkillTree.GameModel.PassiveTree;
 
 namespace POESKillTree.SkillTreeFiles
 {
-    public enum NodeType
-    {
-        Normal,
-        Notable,
-        Keystone,
-        Mastery,
-        JewelSocket
-    }
-
     public class SkillNode
     {
         public static float[] SkillsPerOrbit = {1, 6, 12, 12, 40};
@@ -29,7 +21,7 @@ namespace POESKillTree.SkillTreeFiles
         public int Ia; //"ia": 0,
         public string Icon; // icon "icon": "Art/2DArt/SkillIcons/passives/tempint.png",
         public UInt16 Id; // "id": -28194677,
-        public NodeType Type; // "ks", "not", "m", "isJewelSocket"
+        public PassiveNodeType Type; // "ks", "not", "m", "isJewelSocket"
         public List<ushort> LinkId = new List<ushort>(); // "out": []
         public string Name; //"dn": "Block Recovery",
         public int Orbit; //  "o": 1,
@@ -62,17 +54,17 @@ namespace POESKillTree.SkillTreeFiles
                 string iconPrefix;
                 switch (Type)
                 {
-                    case NodeType.JewelSocket:
-                    case NodeType.Normal:
+                    case PassiveNodeType.JewelSocket:
+                    case PassiveNodeType.Normal:
                         iconPrefix = "normal";
                         break;
-                    case NodeType.Notable:
+                    case PassiveNodeType.Notable:
                         iconPrefix = "notable";
                         break;
-                    case NodeType.Keystone:
+                    case PassiveNodeType.Keystone:
                         iconPrefix = "keystone";
                         break;
-                    case NodeType.Mastery:
+                    case PassiveNodeType.Mastery:
                         iconPrefix = "mastery";
                         break;
                     default:

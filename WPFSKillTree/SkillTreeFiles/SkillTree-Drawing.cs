@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
+using PoESkillTree.GameModel.PassiveTree;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
 using POESKillTree.Model;
 
@@ -274,7 +273,7 @@ namespace POESKillTree.SkillTreeFiles
                         new Rect(node.Position - new Vector2D(bitmap.PixelWidth, bitmap.PixelHeight),
                                 new Size(bitmap.PixelWidth * 2, bitmap.PixelHeight * 2)));
             }
-            else if (node.ascendancyName != null && node.Type == NodeType.Notable)
+            else if (node.ascendancyName != null && node.Type == PassiveNodeType.Notable)
             {
                 if (!DrawAscendancy) return;
 
@@ -285,7 +284,7 @@ namespace POESKillTree.SkillTreeFiles
                             surroundBrush[10 + activeOffset].Key.Width * 1.75 * factor,
                             surroundBrush[10 + activeOffset].Key.Height * 1.75 * factor));
             }
-            else if (node.ascendancyName != null && node.Type == NodeType.Normal)
+            else if (node.ascendancyName != null && node.Type == PassiveNodeType.Normal)
             {
                 if (!DrawAscendancy) return;
 
@@ -296,7 +295,7 @@ namespace POESKillTree.SkillTreeFiles
                             surroundBrush[8 + activeOffset].Key.Width * 2 * factor,
                             surroundBrush[8 + activeOffset].Key.Height * 2 * factor));
             }
-            else if (node.Type == NodeType.Notable)
+            else if (node.Type == PassiveNodeType.Notable)
             {
                 dc.DrawRectangle(surroundBrush[2 + activeOffset].Value, null,
                     new Rect((int)node.Position.X - surroundBrush[2 + activeOffset].Key.Width * factor,
@@ -304,7 +303,7 @@ namespace POESKillTree.SkillTreeFiles
                         surroundBrush[2 + activeOffset].Key.Width * 2 * factor,
                         surroundBrush[2 + activeOffset].Key.Height * 2 * factor));
             }
-            else if (node.Type == NodeType.Keystone)
+            else if (node.Type == PassiveNodeType.Keystone)
             {
                 dc.DrawRectangle(surroundBrush[4 + activeOffset].Value, null,
                     new Rect((int)node.Position.X - surroundBrush[4 + activeOffset].Key.Width * factor,
@@ -312,11 +311,11 @@ namespace POESKillTree.SkillTreeFiles
                         surroundBrush[4 + activeOffset].Key.Width * 2 * factor,
                         surroundBrush[4 + activeOffset].Key.Height * 2 * factor));
             }
-            else if (node.Type == NodeType.Mastery)
+            else if (node.Type == PassiveNodeType.Mastery)
             {
                 //Needs to be here so that "Masteries" (Middle images of nodes) don't get anything drawn around them.
             }
-            else if (node.Type == NodeType.JewelSocket)
+            else if (node.Type == PassiveNodeType.JewelSocket)
             {
                 dc.DrawRectangle(surroundBrush[6 + activeOffset].Value, null,
                     new Rect((int)node.Position.X - surroundBrush[6 + activeOffset].Key.Width * factor,
@@ -600,7 +599,7 @@ namespace POESKillTree.SkillTreeFiles
                     if (AscendantClassStartRegex.IsMatch(attibute))
                         draw = false;
                 }
-                if (n1.Type == NodeType.Mastery || n2.Type == NodeType.Mastery)
+                if (n1.Type == PassiveNodeType.Mastery || n2.Type == PassiveNodeType.Mastery)
                     draw = false;
                 if (draw)
                     dc.DrawLine(pen2, n1.Position, n2.Position);
