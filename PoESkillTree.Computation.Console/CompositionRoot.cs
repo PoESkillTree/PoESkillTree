@@ -13,39 +13,17 @@ using PoESkillTree.Computation.Data.Steps;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.GameModel.StatTranslation;
 
 namespace PoESkillTree.Computation.Console
 {
-    /// <summary>
-    /// Composition root for <see cref="Program"/> and integration tests. If not all properties are used,
-    /// <see cref="AsyncCompositionRoot"/> is faster.
-    /// </summary>
     public class CompositionRoot
-    {
-        private readonly AsyncCompositionRoot _asyncRoot;
-
-        private CompositionRoot(AsyncCompositionRoot asyncRoot)
-            => _asyncRoot = asyncRoot;
-
-        public static async Task<CompositionRoot> CreateAsync()
-        {
-            var asyncRoot = new AsyncCompositionRoot();
-            await asyncRoot.InitializeAsync().ConfigureAwait(false);
-            return new CompositionRoot(asyncRoot);
-        }
-
-        public IBuilderFactories BuilderFactories => _asyncRoot.BuilderFactories.Result;
-        public ICoreParser CoreParser => _asyncRoot.CoreParser.Result;
-        public IMetaStatBuilders MetaStats => _asyncRoot.MetaStats;
-        public IEnumerable<IGivenStats> GivenStats => _asyncRoot.GivenStats.Result;
-    }
-
-    public class AsyncCompositionRoot
     {
         private readonly Lazy<IStatFactory> _statFactory;
         private readonly Lazy<Task<SkillDefinitions>> _skillDefinitions;
+        private readonly Lazy<Task<BaseItemDefinitions>> _baseItemDefinitions;
         private readonly Lazy<Task<IBuilderFactories>> _builderFactories;
         private readonly Lazy<Task<IParsingData<ParsingStep>>> _parsingData;
         private readonly Lazy<Task<ICoreParser>> _coreParser;
@@ -55,11 +33,13 @@ namespace PoESkillTree.Computation.Console
         private readonly Lazy<Task<IParser<Skill>>> _activeSkillParser;
         private readonly Lazy<Task<IParser<SupportSkillParserParameter>>> _supportSkillParser;
 
-        public AsyncCompositionRoot()
+        public CompositionRoot()
         {
             _statFactory = new Lazy<IStatFactory>(() => new StatFactory());
             _skillDefinitions = new Lazy<Task<SkillDefinitions>>(
                 async () => await SkillJsonDeserializer.DeserializeAsync().ConfigureAwait(false));
+            _baseItemDefinitions = new Lazy<Task<BaseItemDefinitions>>(
+                async () => await BaseItemJsonDeserializer.DeserializeAsync().ConfigureAwait(false));
             _builderFactories = new Lazy<Task<IBuilderFactories>>(CreateBuilderFactoriesAsync);
             _parsingData = new Lazy<Task<IParsingData<ParsingStep>>>(CreateParsingDataAsync);
             _coreParser = new Lazy<Task<ICoreParser>>(CreateCoreParserAsync);
@@ -136,10 +116,8 @@ namespace PoESkillTree.Computation.Console
             }
         }
 
-        public Task InitializeAsync()
-            => Task.WhenAll(SkillDefinitions, BuilderFactories, ParsingData, CoreParser, GivenStats);
-
         public Task<SkillDefinitions> SkillDefinitions => _skillDefinitions.Value;
+        public Task<BaseItemDefinitions> BaseItemDefinitions => _baseItemDefinitions.Value;
         public Task<IBuilderFactories> BuilderFactories => _builderFactories.Value;
         public Task<IParsingData<ParsingStep>> ParsingData => _parsingData.Value;
         public Task<ICoreParser> CoreParser => _coreParser.Value;

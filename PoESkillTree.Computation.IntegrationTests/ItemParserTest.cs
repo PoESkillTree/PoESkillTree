@@ -22,7 +22,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [SetUp]
         public async Task SetUpAsync()
         {
-            var definitionsTask = BaseItemJsonDeserializer.DeserializeAsync();
+            var definitionsTask = CompositionRoot.BaseItemDefinitions;
             var builderFactoriesTask = CompositionRoot.BuilderFactories;
             var coreParserTask = CompositionRoot.CoreParser;
             var statTranslatorTask = StatTranslationLoader.LoadAsync(StatTranslationLoader.MainFileName);

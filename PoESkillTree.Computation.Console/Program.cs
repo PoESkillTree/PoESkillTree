@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -27,24 +27,22 @@ namespace PoESkillTree.Computation.Console
         public static async Task Main(string[] args)
         {
             SetupLogger();
-            var compositionRoot = await CompositionRoot.CreateAsync();
+            var compositionRoot = new CompositionRoot();
             var program = new Program(compositionRoot);
-            program.Loop();
+            await program.LoopAsync();
         }
 
         private readonly CompositionRoot _compositionRoot;
-        private readonly ICoreParser _parser;
         private readonly ICalculator _calculator;
 
         private Program(CompositionRoot compositionRoot)
         {
             _compositionRoot = compositionRoot;
-            _parser = _compositionRoot.CoreParser;
             _calculator = Calculator.CreateCalculator();
             _calculator.ExplicitlyRegisteredStats.CollectionChanged += ExplicitlyRegisteredStatsOnCollectionChanged;
         }
 
-        private void Loop()
+        private async Task LoopAsync()
         {
             System.Console.WriteLine("Enter a stat line to be parsed and added to the Calculator");
             System.Console.WriteLine("- 'exit' quits");
@@ -62,31 +60,50 @@ namespace PoESkillTree.Computation.Console
                     case "exit":
                         return;
                     case "benchmark":
-                        Benchmark(_parser);
+                        await Benchmark();
                         break;
                     case "profile":
-                        Profile(_parser);
+                        await Profile();
                         break;
                     case "add given":
-                        AddGivenStats();
+                        await AddGivenStatsAsync();
                         break;
                     case "update SkillTreeStatLines":
                         StatLinesUpdater.UpdateSkillTreeStatLines();
                         break;
                     default:
-                        if (statLine.StartsWith("listen"))
-                            Listen(statLine.Substring("listen".Length));
-                        else if (statLine.StartsWith("query mods"))
-                            QueryMods(statLine.Substring("query mods".Length));
-                        else if (statLine.StartsWith("query"))
-                            QueryStat(statLine.Substring("query".Length));
-                        else if (statLine.StartsWith("add "))
-                            SetStat(statLine.Substring("add ".Length));
-                        else if (TryParse(statLine, out var mods, verbose: true))
-                            AddMods(mods);
+                        await HandleParseCommandAsync(statLine);
                         break;
                 }
                 System.Console.Write("> ");
+            }
+        }
+
+        private async Task HandleParseCommandAsync(string statLine)
+        {
+            if (statLine.StartsWith("listen"))
+            {
+                await ListenAsync(statLine.Substring("listen".Length));
+            }
+            else if (statLine.StartsWith("query mods"))
+            {
+                await QueryModsAsync(statLine.Substring("query mods".Length));
+            }
+            else if (statLine.StartsWith("query"))
+            {
+                await QueryStatAsync(statLine.Substring("query".Length));
+            }
+            else if (statLine.StartsWith("add "))
+            {
+                await SetStatAsync(statLine.Substring("add ".Length));
+            }
+            else 
+            {
+                var parser = await _compositionRoot.CoreParser;
+                if (TryParse(parser, statLine, out var mods, verbose: true))
+                {
+                    AddMods(mods);
+                }
             }
         }
 
@@ -111,9 +128,9 @@ namespace PoESkillTree.Computation.Console
             }
         }
 
-        private void Listen(string statLine)
+        private async Task ListenAsync(string statLine)
         {
-            foreach (var stat in ParseStats(statLine))
+            foreach (var stat in await ParseStatsAsync(statLine))
             {
                 var node = _calculator.NodeRepository.GetNode(stat);
                 node.ValueChanged += (sender, args) => OnValueChanged(stat, node);
@@ -127,9 +144,9 @@ namespace PoESkillTree.Computation.Console
             }
         }
 
-        private void QueryStat(string statLine)
+        private async Task QueryStatAsync(string statLine)
         {
-            foreach (var stat in ParseStats(statLine))
+            foreach (var stat in await ParseStatsAsync(statLine))
             {
                 System.Console.WriteLine($"Stat: {stat}");
                 var node = _calculator.NodeRepository.GetNode(stat);
@@ -137,9 +154,9 @@ namespace PoESkillTree.Computation.Console
             }
         }
 
-        private void QueryMods(string statLine)
+        private async Task QueryModsAsync(string statLine)
         {
-            foreach (var stat in ParseStats(statLine))
+            foreach (var stat in await ParseStatsAsync(statLine))
             {
                 System.Console.WriteLine($"Stat: {stat}");
                 var statNode = _calculator.NodeRepository.GetNode(stat);
@@ -156,12 +173,12 @@ namespace PoESkillTree.Computation.Console
             }
         }
 
-        private void SetStat(string statLine)
+        private async Task SetStatAsync(string statLine)
         {
             statLine = statLine.Trim();
             var valuePart = statLine.Split(' ')[0];
             var statPart = statLine.Substring(valuePart.Length);
-            var stats = ParseStats(statPart).ToList();
+            var stats = (await ParseStatsAsync(statPart)).ToList();
             if (!double.TryParse(valuePart, out var value))
             {
                 System.Console.WriteLine($"Could not parse {valuePart}");
@@ -172,72 +189,66 @@ namespace PoESkillTree.Computation.Console
             AddMods(new[] { mod });
         }
 
-        private IEnumerable<IStat> ParseStats(string stat)
+        private async Task<IEnumerable<IStat>> ParseStatsAsync(string stat)
         {
-            if (TryParseMetaStat(stat, out var stats))
+            var (isMetaStat, metaStats) = await TryParseMetaStatAsync(stat);
+            if (isMetaStat)
             {
-                return stats;
+                return metaStats;
             }
-            if (TryParse("1% increased" + stat, out var mods))
+            var parser = await _compositionRoot.CoreParser;
+            if (TryParse(parser, "1% increased" + stat, out var mods))
             {
                 return mods.SelectMany(m => m.Stats);
             }
             return new[] { new Stat(stat.Trim()), };
         }
 
-        private bool TryParseMetaStat(string stat, out IEnumerable<IStat> parsedStats)
+        private async Task<(bool, IEnumerable<IStat>)> TryParseMetaStatAsync(string stat)
         {
             var metaStats = _compositionRoot.MetaStats;
             switch (stat.ToLowerInvariant().Trim())
             {
                 case "level":
-                    parsedStats = Build(_compositionRoot.BuilderFactories.StatBuilders.Level);
-                    return true;
+                    return (true, Build((await GetStatBuildersAsync()).Level));
                 case "skill hit dps":
-                    parsedStats = Build(metaStats.SkillDpsWithHits);
-                    return true;
+                    return (true, Build(metaStats.SkillDpsWithHits));
                 case "skill dot dps":
-                    parsedStats = Build(metaStats.SkillDpsWithDoTs);
-                    return true;
+                    return (true, Build(metaStats.SkillDpsWithDoTs));
                 case "ignite dps":
-                    parsedStats = Build(metaStats.AilmentDps(Ailment.Ignite));
-                    return true;
+                    return (true, Build(metaStats.AilmentDps(Ailment.Ignite)));
                 case "bleed dps":
-                    parsedStats = Build(metaStats.AilmentDps(Ailment.Bleed));
-                    return true;
+                    return (true, Build(metaStats.AilmentDps(Ailment.Bleed)));
                 case "poison dps":
-                    parsedStats = Build(metaStats.AilmentDps(Ailment.Poison));
-                    return true;
+                    return (true, Build(metaStats.AilmentDps(Ailment.Poison)));
                 case "cast rate":
-                    parsedStats = Build(metaStats.CastRate);
-                    return true;
+                    return (true, Build(metaStats.CastRate));
                 case "chance to hit":
-                    parsedStats = Build(_compositionRoot.BuilderFactories.StatBuilders.ChanceToHit);
-                    return true;
+                    return (true, Build((await GetStatBuildersAsync()).ChanceToHit));
                 case "hit damage source":
-                    parsedStats = Build(metaStats.SkillHitDamageSource);
-                    return true;
+                    return (true, Build(metaStats.SkillHitDamageSource));
                 case "uses main hand":
-                    parsedStats = Build(metaStats.SkillUsesHand(AttackDamageHand.MainHand));
-                    return true;
+                    return (true, Build(metaStats.SkillUsesHand(AttackDamageHand.MainHand)));
                 case "uses off hand":
-                    parsedStats = Build(metaStats.SkillUsesHand(AttackDamageHand.OffHand));
-                    return true;
+                    return (true, Build(metaStats.SkillUsesHand(AttackDamageHand.OffHand)));
                 default:
-                    parsedStats = null;
-                    return false;
+                    return (false, null);
             }
 
             IEnumerable<IStat> Build(IStatBuilder builder)
                 => builder.Build(default).SelectMany(r => r.Stats);
+
+            async Task<IStatBuilders> GetStatBuildersAsync()
+                => (await _compositionRoot.BuilderFactories).StatBuilders;
         }
 
         /// <summary>
         /// Parses the given stat using the given parser and writes results to the console.
         /// </summary>
-        private bool TryParse(string statLine, out IReadOnlyList<Modifier> mods, bool verbose = false)
+        private static bool TryParse(
+            ICoreParser parser, string statLine, out IReadOnlyList<Modifier> mods, bool verbose = false)
         {
-            var result = _parser.Parse(statLine);
+            var result = parser.Parse(statLine);
             if (!result.SuccessfullyParsed)
             {
                 System.Console.WriteLine($"Not recognized: '{result.RemainingSubstrings[0]}' could not be parsed.");
@@ -252,9 +263,11 @@ namespace PoESkillTree.Computation.Console
             return true;
         }
 
-        private void AddGivenStats()
+        private async Task AddGivenStatsAsync()
         {
-            var mods = GivenStatsParser.Parse(_parser, _compositionRoot.GivenStats);
+            var parser = await _compositionRoot.CoreParser;
+            var givenStats = await _compositionRoot.GivenStats;
+            var mods = GivenStatsParser.Parse(parser, givenStats);
             AddMods(mods);
         }
 
@@ -267,9 +280,14 @@ namespace PoESkillTree.Computation.Console
         /// Reads stat lines from a file, runs them through the parser, times the parsing and writes the timing
         /// results to the console..
         /// </summary>
-        private static void Benchmark(ICoreParser parser)
+        private async Task Benchmark()
         {
             var stopwatch = Stopwatch.StartNew();
+            var parser = await _compositionRoot.CoreParser;
+            stopwatch.Stop();
+            System.Console.WriteLine($"Async parser initialization:\n  {stopwatch.ElapsedMilliseconds} ms");
+
+            stopwatch.Restart();
             parser.Parse("Made-up");
             stopwatch.Stop();
             System.Console.WriteLine($"Initialization (parsing 1 made-up stat):\n  {stopwatch.ElapsedMilliseconds} ms");
@@ -341,8 +359,9 @@ namespace PoESkillTree.Computation.Console
         /// <remarks>
         /// For CPU profiling without the output overhead of Benchmark()
         /// </remarks>
-        private static void Profile(ICoreParser parser)
+        private async Task Profile()
         {
+            var parser = await _compositionRoot.CoreParser;
             foreach (var line in ReadStatLines())
             {
                 parser.Parse(line);
