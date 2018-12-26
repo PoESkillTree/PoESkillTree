@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
             var coreResult = CreateModifier("Life", Form.BaseAdd, 2, source);
             var expected = new[]
             {
-                CreateModifier("Life", Form.BaseAdd, new FunctionalValue(_ => null,
+                CreateModifier("Life", Form.BaseAdd, new FunctionalValue(null,
                     $"Character.{definition.Id}.Skilled.Value(Total, Global).IsSet ? 2 : null"), source)
             };
             var coreParser = Mock.Of<ICoreParser>(p =>

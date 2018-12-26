@@ -27,19 +27,11 @@ namespace PoESkillTree.Computation.Data.Base
         protected StatMatchersBase(
             IBuilderFactories builderFactories, IMatchContexts matchContexts)
             : base(builderFactories, matchContexts)
-        {
-            _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
-        }
+            => _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
 
-        public IEnumerator<MatcherData> GetEnumerator()
-        {
-            return _lazyMatchers.Value.GetEnumerator();
-        }
+        public IEnumerator<MatcherData> GetEnumerator() => _lazyMatchers.Value.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         protected abstract IEnumerable<MatcherData> CreateCollection();
     }

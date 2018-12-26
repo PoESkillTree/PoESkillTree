@@ -19,9 +19,7 @@ namespace PoESkillTree.Computation.Data.Collections
 
         public DataDrivenMechanicCollection(IModifierBuilder modifierBuilder, IBuilderFactories builderFactories)
             : base(modifierBuilder, builderFactories.ValueBuilders)
-        {
-            _builderFactories = builderFactories;
-        }
+            => _builderFactories = builderFactories;
 
         public void Add(
             IFormBuilder form, IDamageRelatedStatBuilder stat,
@@ -87,14 +85,6 @@ namespace PoESkillTree.Computation.Data.Collections
         {
             Add(form, stat, a => new[] { vp1(a), vp2(a), vp3(a), vp4(a), vp5(a) },
                 (a, ss) => value(ss[0], ss[1], ss[2], ss[3], ss[4]));
-        }
-
-        public void Add(
-            IFormBuilder form, Func<DamageType, IDamageRelatedStatBuilder> stat,
-            Func<DamageType, IDamageRelatedStatBuilder> vp,
-            Func<DamageType, IStatBuilder, IValueBuilder> value)
-        {
-            Add(form, stat, a => new[] { vp(a) }, (a, ss) => value(a, ss.Single()));
         }
 
         public void Add(

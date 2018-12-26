@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -129,7 +128,6 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
             var mock = new Mock<IStatMatchers>();
             mock.SetupGet(m => m.MatchesWholeLineOnly).Returns(matchesWholeLineOnly);
             mock.Setup(m => m.GetEnumerator()).Returns(() => dataList.GetEnumerator());
-            mock.As<IEnumerable>().Setup(m => m.GetEnumerator()).Returns(() => dataList.GetEnumerator());
             return mock.Object;
         }
 

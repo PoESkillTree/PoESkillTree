@@ -50,20 +50,12 @@ namespace PoESkillTree.Computation.Parsing.Referencing
         }
 
         private bool Equals(ResolvedReferenceConverter other)
-        {
-            return Equals(_referencedBuilder, other._referencedBuilder);
-        }
+            => Equals(_referencedBuilder, other._referencedBuilder);
 
         public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(this, obj))
-                return true;
-            return obj is ResolvedReferenceConverter other && Equals(other);
-        }
+            => (this == obj) || (obj is ResolvedReferenceConverter other && Equals(other));
 
         public override int GetHashCode()
-        {
-            return _referencedBuilder.GetHashCode();
-        }
+            => _referencedBuilder.GetHashCode();
     }
 }

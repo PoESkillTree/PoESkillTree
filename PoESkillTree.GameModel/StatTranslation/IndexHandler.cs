@@ -67,8 +67,6 @@ namespace PoESkillTree.GameModel.StatTranslation
         PerMinuteToPerSecondPrecision2IfRequired,
         [EnumMember(Value = "mod_value_to_item_class")]
         ModValueToItemClass,
-        [EnumMember(Value = "tempest_mod_text")]
-        TempestModText,
         [EnumMember(Value = "canonical_stat")]
         CanonicalStat,
     }
@@ -109,8 +107,6 @@ namespace PoESkillTree.GameModel.StatTranslation
                 },
                 // this appears on a unique map, we don't support map crafting
                 { IndexHandler.ModValueToItemClass, d => throw new NotSupportedException() },
-                // not sure where this appears, at least not on anything we need to support
-                { IndexHandler.TempestModText, d => throw new NotSupportedException() },
                 // doesn't seem to do anything
                 { IndexHandler.CanonicalStat, d => d },
             };

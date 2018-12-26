@@ -43,7 +43,7 @@ namespace PoESkillTree.GameModel
             using (var reader = new StringReader(xmlString))
             {
                 var serializer = new XmlSerializer(typeof(T));
-                return (T)serializer.Deserialize(reader);
+                return (T) serializer.Deserialize(reader);
             }
         }
 
@@ -53,9 +53,8 @@ namespace PoESkillTree.GameModel
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name))
             {
                 if (stream is null)
-                {
                     throw new ArgumentException("Unknown resource " + name);
-                }
+
                 using (var reader = new StreamReader(stream))
                 {
                     return await reader.ReadToEndAsync().ConfigureAwait(false);

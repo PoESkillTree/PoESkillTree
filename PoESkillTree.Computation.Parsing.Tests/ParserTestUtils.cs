@@ -33,9 +33,6 @@ namespace PoESkillTree.Computation.Parsing.Tests
         public static Modifier CreateModifier(string stat, Form form, double? value, ModifierSource source = null)
             => CreateModifier(stat, form, new Constant(value), source);
 
-        public static Modifier CreateModifier(string stat, Form form, NodeValue? value, ModifierSource source = null)
-            => CreateModifier(stat, form, new Constant(value), source);
-
         public static Modifier CreateModifier(string stat, Form form, IValue value, ModifierSource source = null)
             => new Modifier(new[] { new Stat(stat), }, form, value, source ?? new ModifierSource.Global());
 

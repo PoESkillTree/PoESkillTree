@@ -19,23 +19,15 @@ namespace PoESkillTree.Computation.Data.Base
         private readonly Lazy<IReadOnlyList<ReferencedMatcherData>> _lazyMatchers;
 
         protected ReferencedMatchersBase()
-        {
-            _lazyMatchers = new Lazy<IReadOnlyList<ReferencedMatcherData>>(() => CreateCollection().ToList());
-        }
+            => _lazyMatchers = new Lazy<IReadOnlyList<ReferencedMatcherData>>(() => CreateCollection().ToList());
 
         public string ReferenceName => GetType().Name;
 
         public Type MatchType => typeof(T);
 
-        public IEnumerator<ReferencedMatcherData> GetEnumerator()
-        {
-            return _lazyMatchers.Value.GetEnumerator();
-        }
+        public IEnumerator<ReferencedMatcherData> GetEnumerator() => _lazyMatchers.Value.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         protected abstract IEnumerable<ReferencedMatcherData> CreateCollection();
     }

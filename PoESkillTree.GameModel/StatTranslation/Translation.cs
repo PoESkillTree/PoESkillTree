@@ -55,9 +55,8 @@ namespace PoESkillTree.GameModel.StatTranslation
         public string Translate(IReadOnlyList<int> values)
         {
             if (values.Count != Ids.Count)
-            {
                 throw new ArgumentException("Number of values does not match number of ids");
-            }
+
             if (values.All(v => v == 0))
             {
                 // stats with all values being zero (before applying handlers) have no effect
@@ -83,8 +82,8 @@ namespace PoESkillTree.GameModel.StatTranslation
                     var suffix = _jsonTranslation.IsHidden
                         ? " " + ItemConstants.HiddenStatSuffix
                         : "";
-                    return string.Format(CultureInfo.InvariantCulture, entry.FormatString, 
-                        formatInputs.ToArray<object>()) + suffix;
+                    return string.Format(CultureInfo.InvariantCulture, entry.FormatString,
+                               formatInputs.ToArray<object>()) + suffix;
                 }
             }
             return null;

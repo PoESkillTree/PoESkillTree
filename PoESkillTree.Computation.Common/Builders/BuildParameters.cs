@@ -37,9 +37,6 @@ namespace PoESkillTree.Computation.Common.Builders
         public BuildParameters With(ModifierSource modifierSource) =>
             new BuildParameters(modifierSource, ModifierSourceEntity, ModifierForm);
 
-        public BuildParameters With(Entity entity) =>
-            new BuildParameters(ModifierSource, entity, ModifierForm);
-
         public override bool Equals(object obj) =>
             obj is BuildParameters other && Equals(other);
 

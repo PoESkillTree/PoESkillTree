@@ -44,13 +44,13 @@ namespace PoESkillTree.Computation.Builders.Resolving
                 new UnresolvedReferenceConverter(_statFactory, $"References[{index}]", c => c.ReferenceContext[index]);
 
             public IReferenceConverter First =>
-                new UnresolvedReferenceConverter(_statFactory, $"References.First", c => c.ReferenceContext.First);
+                new UnresolvedReferenceConverter(_statFactory, "References.First", c => c.ReferenceContext.First);
 
             public IReferenceConverter Last =>
-                new UnresolvedReferenceConverter(_statFactory, $"References.Last", c => c.ReferenceContext.Last);
+                new UnresolvedReferenceConverter(_statFactory, "References.Last", c => c.ReferenceContext.Last);
 
             public IReferenceConverter Single =>
-                new UnresolvedReferenceConverter(_statFactory, $"References.Single", c => c.ReferenceContext.Single);
+                new UnresolvedReferenceConverter(_statFactory, "References.Single", c => c.ReferenceContext.Single);
         }
     }
 }

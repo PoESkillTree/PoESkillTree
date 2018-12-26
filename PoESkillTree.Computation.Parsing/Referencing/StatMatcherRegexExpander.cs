@@ -38,15 +38,9 @@ namespace PoESkillTree.Computation.Parsing.Referencing
             _expanded = new Lazy<IReadOnlyList<MatcherData>>(() => Expand().ToList());
         }
 
-        public IEnumerator<MatcherData> GetEnumerator()
-        {
-            return _expanded.Value.GetEnumerator();
-        }
+        public IEnumerator<MatcherData> GetEnumerator() => _expanded.Value.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         private IEnumerable<MatcherData> Expand()
         {

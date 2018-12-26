@@ -29,10 +29,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
             out IReadOnlyList<IStat> stats, out ModifierSource modifierSource, out ValueConverter valueConverter) =>
             (stats, modifierSource, valueConverter) = (Stats, ModifierSource, ValueConverter);
 
-        public static implicit operator StatBuilderResult(
-            (IReadOnlyList<IStat> stats, ModifierSource modifierSource, ValueConverter valueConverter) tuple) =>
-            new StatBuilderResult(tuple.stats, tuple.modifierSource, tuple.valueConverter);
-
         protected override object ToTuple() => (WithSequenceEquality(Stats), ModifierSource, ValueConverter);
     }
 }

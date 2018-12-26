@@ -17,18 +17,10 @@ namespace PoESkillTree.Computation.Data.Collections
         private readonly List<ReferencedMatcherData> _matchers = new List<ReferencedMatcherData>();
 
         public void Add([RegexPattern] string regex, T element)
-        {
-            _matchers.Add(new ReferencedMatcherData(regex, element));
-        }
+            => _matchers.Add(new ReferencedMatcherData(regex, element));
 
-        public IEnumerator<ReferencedMatcherData> GetEnumerator()
-        {
-            return _matchers.GetEnumerator();
-        }
+        public IEnumerator<ReferencedMatcherData> GetEnumerator() => _matchers.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

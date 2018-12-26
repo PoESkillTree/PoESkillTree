@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using PoESkillTree.Computation.Common.Data;
@@ -22,7 +21,6 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
             var mock = new Mock<IReferencedMatchers>();
             mock.SetupGet(m => m.ReferenceName).Returns(referenceName);
             mock.Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
-            mock.As<IEnumerable>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
             return mock.Object;
         }
 
@@ -42,7 +40,6 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
             var mock = new Mock<IStatMatchers>();
             mock.SetupGet(m => m.ReferenceNames).Returns(referenceNames);
             mock.Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
-            mock.As<IEnumerable>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
             return mock.Object;
         }
     }

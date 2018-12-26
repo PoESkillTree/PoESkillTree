@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -19,14 +18,11 @@ namespace PoESkillTree.Computation.Builders.Stats
             _modifierSource = modifierSource;
         }
 
-        private ICoreStatBuilder Select(Func<ICoreStatBuilder, ICoreStatBuilder> selector) =>
-            new StatBuilderWithModifierSource(selector(_statBuilder), _modifierSource);
-
         public ICoreStatBuilder Resolve(ResolveContext context) =>
-            Select(b => b.Resolve(context));
+            new StatBuilderWithModifierSource(_statBuilder.Resolve(context), _modifierSource);
 
         public ICoreStatBuilder WithEntity(IEntityBuilder entityBuilder) =>
-            Select(b => b.WithEntity(entityBuilder));
+            new StatBuilderWithModifierSource(_statBuilder.WithEntity(entityBuilder), _modifierSource);
 
         public IEnumerable<StatBuilderResult> Build(BuildParameters parameters) =>
             _statBuilder.Build(parameters.With(_modifierSource));

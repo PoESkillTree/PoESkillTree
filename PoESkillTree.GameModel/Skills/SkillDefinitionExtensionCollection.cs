@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using MoreLinq;
 
 namespace PoESkillTree.GameModel.Skills
 {
@@ -9,13 +8,9 @@ namespace PoESkillTree.GameModel.Skills
         private readonly List<(string, SkillDefinitionExtension)> _collection =
             new List<(string, SkillDefinitionExtension)>();
 
-        public IEnumerator<(string, SkillDefinitionExtension)> GetEnumerator()
-            => throw new System.NotImplementedException();
+        public IEnumerator<(string, SkillDefinitionExtension)> GetEnumerator() => _collection.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        public IReadOnlyDictionary<string, SkillDefinitionExtension> ToDictionary()
-            => _collection.ToDictionary();
 
         public void Add(string skillId,
             params (string name, SkillPartDefinitionExtension extension)[] parts)
