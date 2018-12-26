@@ -13,7 +13,6 @@ using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Charges;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
-using PoESkillTree.Computation.Common.Builders.Equipment;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -64,9 +63,6 @@ namespace PoESkillTree.Computation.Builders.Resolving
 
         public IKeywordBuilder AsKeyword =>
             new UnresolvedKeywordBuilder($"{this}.AsKeyword", context => _resolver(context).AsKeyword);
-
-        public IItemSlotBuilder AsItemSlot =>
-            new UnresolvedItemSlotBuilder($"{this}.AsItemSlot", context => _resolver(context).AsItemSlot);
 
         public IActionBuilder AsAction
         {

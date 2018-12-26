@@ -4,13 +4,11 @@ using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
-using PoESkillTree.Computation.Common.Builders.Equipment;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
-using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils;
 
@@ -30,9 +28,6 @@ namespace PoESkillTree.Computation.Builders.Resolving
         public TResolve Resolve(ResolveContext context) =>
             Resolver(context);
 
-        public TBuild Build() => 
-            throw new UnresolvedException(Description);
-
         public TBuild Build(BuildParameters parameters) => 
             throw new UnresolvedException(Description);
 
@@ -43,14 +38,6 @@ namespace PoESkillTree.Computation.Builders.Resolving
     {
         public UnresolvedException(string message) 
             : base("Builder must be resolved before being built, " + message)
-        {
-        }
-    }
-
-    internal class UnresolvedItemSlotBuilder : UnresolvedBuilder<IItemSlotBuilder, ItemSlot>, IItemSlotBuilder
-    {
-        public UnresolvedItemSlotBuilder(string description, Func<ResolveContext, IItemSlotBuilder> resolver) 
-            : base(description, resolver)
         {
         }
     }

@@ -108,7 +108,6 @@
     <Compile Include="Equipment\EquipmentBuilder.cs" />
     <Compile Include="Equipment\EquipmentBuilderCollection.cs" />
     <Compile Include="Equipment\EquipmentBuilders.cs" />
-    <Compile Include="Equipment\ItemSlotBuilders.cs" />
     <Compile Include="FixedBuilderCollection.cs" />
     <Compile Include="Forms\FormBuilders.cs" />
     <Compile Include="ICoreBuilder.cs" />

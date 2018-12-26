@@ -111,8 +111,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         protected override IStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool) =>
             new LeechStatBuilder(StatFactory, coreStatBuilder, pool);
 
-        public new ILeechStatBuilder Resolve(ResolveContext context) => (ILeechStatBuilder) base.Resolve(context);
-
         public IStatBuilder Of(IDamageRelatedStatBuilder damage)
         {
             var damageCoreBuilder = new StatBuilderAdapter(damage.WithHits);

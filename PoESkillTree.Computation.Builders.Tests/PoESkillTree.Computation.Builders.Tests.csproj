@@ -87,7 +87,6 @@
     <Compile Include="Effects\EffectBuilderTest.cs" />
     <Compile Include="Equipment\EquipmentBuilderCollectionTest.cs" />
     <Compile Include="Equipment\EquipmentBuilderTest.cs" />
-    <Compile Include="Equipment\ItemSlotBuildersTest.cs" />
     <Compile Include="Forms\FormBuildersTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolving\UnresolvedBuilderTest.cs" />

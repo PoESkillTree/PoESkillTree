@@ -11,7 +11,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Resolving
         {
             var sut = CreateSut();
 
-            Assert.Throws<UnresolvedException>(() => sut.Build());
+            Assert.Throws<UnresolvedException>(() => sut.Build(default));
         }
 
         [Test]

@@ -21,12 +21,6 @@ namespace PoESkillTree.Computation.Builders.Resolving
             public ValueBuilder this[int index] =>
                 new ValueBuilder(new UnresolvedValueBuilder("Values[{index}]", c => c.ValueContext[index]));
 
-            public ValueBuilder First =>
-                new ValueBuilder(new UnresolvedValueBuilder("Values.First", c => c.ValueContext.First));
-
-            public ValueBuilder Last =>
-                new ValueBuilder(new UnresolvedValueBuilder("Values.Last", c => c.ValueContext.Last));
-
             public ValueBuilder Single =>
                 new ValueBuilder(new UnresolvedValueBuilder("Values.Single", c => c.ValueContext.Single));
         }
@@ -42,12 +36,6 @@ namespace PoESkillTree.Computation.Builders.Resolving
 
             public IReferenceConverter this[int index] =>
                 new UnresolvedReferenceConverter(_statFactory, $"References[{index}]", c => c.ReferenceContext[index]);
-
-            public IReferenceConverter First =>
-                new UnresolvedReferenceConverter(_statFactory, "References.First", c => c.ReferenceContext.First);
-
-            public IReferenceConverter Last =>
-                new UnresolvedReferenceConverter(_statFactory, "References.Last", c => c.ReferenceContext.Last);
 
             public IReferenceConverter Single =>
                 new UnresolvedReferenceConverter(_statFactory, "References.Single", c => c.ReferenceContext.Single);

@@ -44,7 +44,6 @@ namespace PoESkillTree.Computation.Builders
             SkillBuilders = new SkillBuilders(statFactory, skills);
             StatBuilders = new StatBuilders(statFactory);
             ValueBuilders = new ValueBuilders();
-            ItemSlotBuilders = new ItemSlotBuilders();
         }
 
         public IActionBuilders ActionBuilders { get; }
@@ -60,6 +59,5 @@ namespace PoESkillTree.Computation.Builders
         public ISkillBuilders SkillBuilders { get; }
         public IStatBuilders StatBuilders { get; }
         public IValueBuilders ValueBuilders { get; }
-        public IItemSlotBuilders ItemSlotBuilders { get; }
     }
 }
