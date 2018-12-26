@@ -38,6 +38,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
         {
             // Bandits
             { BaseSet, _stat.SelectedBandit, (int) Bandit.None },
+            { BaseAdd, Stat.PassivePoints.Maximum, 2, _stat.SelectedBandit.Value.Eq((int) Bandit.None) },
             { BaseAdd, Life.Regen.Percent, 1, _stat.SelectedBandit.Value.Eq((int) Bandit.Oak) },
             { BaseAdd, Physical.Resistance, 2, _stat.SelectedBandit.Value.Eq((int) Bandit.Oak) },
             { PercentIncrease, Physical.Damage, 20, _stat.SelectedBandit.Value.Eq((int) Bandit.Oak) },

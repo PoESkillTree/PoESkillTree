@@ -28,12 +28,25 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
             var nodeDefinition = _passiveTreeDefinition.GetNodeById(nodeId);
             var localSource = new ModifierSource.Local.Tree(nodeDefinition.Name);
             var globalSource = new ModifierSource.Global(localSource);
-            var skilledCondition = _builderFactories.StatBuilders.PassiveNodeSkilled(nodeId).IsSet;
+            var isSkilled = _builderFactories.StatBuilders.PassiveNodeSkilled(nodeId).IsSet;
 
             var results = nodeDefinition.Modifiers
                 .Select(s => Parse(s, globalSource))
-                .Select(r => r.ApplyCondition(skilledCondition.Build))
+                .Select(r => r.ApplyCondition(isSkilled.Build))
                 .ToList();
+            
+            var modifiers = new ModifierCollection(_builderFactories, localSource);
+            var passivePointStat = nodeDefinition.IsAscendancyNode
+                ? _builderFactories.StatBuilders.AscendancyPassivePoints
+                : _builderFactories.StatBuilders.PassivePoints;
+            modifiers.AddGlobal(passivePointStat, Form.BaseAdd, 1, isSkilled);
+            if (nodeDefinition.PassivePointsGranted > 0)
+            {
+                modifiers.AddGlobal(_builderFactories.StatBuilders.PassivePoints.Maximum,
+                    Form.BaseAdd, nodeDefinition.PassivePointsGranted, isSkilled);
+            }
+            results.Add(ParseResult.Success(modifiers.ToList()));
+
             return ParseResult.Aggregate(results);
         }
 

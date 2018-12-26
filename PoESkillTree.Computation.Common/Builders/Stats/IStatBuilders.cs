@@ -11,6 +11,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     {
         IStatBuilder Level { get; }
         IStatBuilder CharacterClass { get; }
+        IStatBuilder PassivePoints { get; }
+        IStatBuilder AscendancyPassivePoints { get; }
 
         IStatBuilder Armour { get; }
 

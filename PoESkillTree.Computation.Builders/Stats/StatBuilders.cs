@@ -24,6 +24,8 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder Level => FromIdentity(typeof(int));
         public IStatBuilder CharacterClass => FromIdentity(typeof(CharacterClass));
+        public IStatBuilder PassivePoints => FromIdentity(typeof(int));
+        public IStatBuilder AscendancyPassivePoints => FromIdentity(typeof(int));
 
         public IStatBuilder Armour => FromIdentity(typeof(int));
 

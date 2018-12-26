@@ -72,6 +72,10 @@ namespace PoESkillTree.Computation.Data.GivenStats
 
         private GivenStatCollection CreateCollection() => new GivenStatCollection(_modifierBuilder, ValueFactory)
         {
+            // passive points
+            { BaseSet, Stat.PassivePoints.Maximum, Stat.Level.Value - 1 },
+            { BaseAdd, Stat.PassivePoints.Maximum, 22 },
+            { BaseSet, Stat.AscendancyPassivePoints.Maximum, 8 },
             // pools
             { BaseSet, Life, CharacterClassBased(_characterBaseStats.Life, "Life") },
             { BaseSet, Mana, CharacterClassBased(_characterBaseStats.Mana, "Mana") },
