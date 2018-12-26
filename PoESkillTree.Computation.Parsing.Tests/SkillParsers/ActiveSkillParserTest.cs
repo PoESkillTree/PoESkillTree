@@ -739,7 +739,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
             };
             var statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
                 p.Parse(parameters[0]) == results[0] &&
-                p.Parse(parameters[1]) == results[1]);
+                p.Parse(parameters[1]) == results[1] &&
+                p.Parse(EmptyParserParameter(source)) == EmptyParseResult);
             var emptyStatParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
                 p.Parse(EmptyParserParameter(source)) == EmptyParseResult);
             var sut = CreateSut(definition, CreateParser);
@@ -787,7 +788,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
                 p.Parse(parameters[1]) == results[1]);
             var mainStatParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
                 p.Parse(parameters[0]) == EmptyParseResult &&
-                p.Parse(parameters[1]) == EmptyParseResult);
+                p.Parse(parameters[1]) == EmptyParseResult &&
+                p.Parse(EmptyParserParameter(source)) == EmptyParseResult);
             var emptyStatParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
                 p.Parse(EmptyParserParameter(source)) == EmptyParseResult);
             var sut = CreateSut(definition, CreateParser);

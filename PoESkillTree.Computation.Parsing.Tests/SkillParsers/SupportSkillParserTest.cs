@@ -9,6 +9,7 @@ using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.GameModel.StatTranslation;
 using static PoESkillTree.Computation.Common.Tests.Helper;
 using static PoESkillTree.Computation.Parsing.Tests.ParserTestUtils;
 using static PoESkillTree.Computation.Parsing.Tests.SkillParsers.SkillParserTestUtils;
@@ -254,20 +255,72 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
 
         #endregion
 
+        #region Point Blank
+
+        [Test]
+        public void PointBlankTranslatesKeystoneStatCorrectly()
+        {
+            var (activeDefinition, activeSkill) = CreateEnfeebleDefinition();
+            var (supportDefinition, supportSkill) = CreatePointBlankDefinition();
+            var source = new ModifierSource.Local.Skill("Enfeeble");
+            var parseResult = ParseResult.Success(new[]
+                { CreateModifier("PointBlank", Form.TotalOverride, 1) });
+            var parameter = new UntranslatedStatParserParameter(source, new[]
+                { new UntranslatedStat("keystone_point_blank", 1), });
+            var mainStatParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
+                p.Parse(parameter) == parseResult &&
+                p.Parse(EmptyParserParameter(source)) == EmptyParseResult);
+            var emptyStatParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
+                p.Parse(EmptyParserParameter(source)) == EmptyParseResult);
+            var sut = CreateSut(activeDefinition, supportDefinition, GetStatParser);
+
+            var result = sut.Parse(activeSkill, supportSkill);
+
+            Assert.IsTrue(AnyModifierHasIdentity(result.Modifiers, "PointBlank"));
+
+            IParser<UntranslatedStatParserParameter> GetStatParser(string translationFileName)
+                => translationFileName == StatTranslationLoader.MainFileName
+                    ? mainStatParser
+                    : emptyStatParser;
+        }
+
+        private static (SkillDefinition, Skill) CreatePointBlankDefinition()
+        {
+            var supportSkill = new SupportSkillDefinition(false, new string[0], new string[0], new string[0],
+                new Keyword[0]);
+            var stats = new[]
+            {
+                new UntranslatedStat("keystone_point_blank", 1),
+            };
+            var level = CreateLevelDefinition(stats: stats);
+            var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
+            return (CreateSupport("SupportPointBlank", supportSkill, levels),
+                new Skill("SupportPointBlank", 1, 0, ItemSlot.Belt, 1, null));
+        }
+
+        #endregion
+
+        private static SupportSkillParser CreateSut(SkillDefinition activeSkillDefinition, SkillDefinition supportSkillDefinition)
+        {
+            var statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
+                p.Parse(It.IsAny<UntranslatedStatParserParameter>()) == ParseResult.Success(new Modifier[0]));
+            return CreateSut(activeSkillDefinition, supportSkillDefinition, _ => statParser);
+        }
+
         private static SupportSkillParser CreateSut(
             SkillDefinition activeSkillDefinition, SkillDefinition supportSkillDefinition,
-            IParser<UntranslatedStatParserParameter> statParser = null)
+            IParser<UntranslatedStatParserParameter> statParser)
+            => CreateSut(activeSkillDefinition, supportSkillDefinition, _ => statParser);
+
+        private static SupportSkillParser CreateSut(
+            SkillDefinition activeSkillDefinition, SkillDefinition supportSkillDefinition,
+            UntranslatedStatParserFactory statParserFactory)
         {
             var skillDefinitions = new SkillDefinitions(new[] { activeSkillDefinition, supportSkillDefinition });
             var statFactory = new StatFactory();
             var builderFactories = new BuilderFactories(statFactory, skillDefinitions);
             var metaStatBuilders = new MetaStatBuilders(statFactory);
-            if (statParser is null)
-            {
-                statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
-                    p.Parse(It.IsAny<UntranslatedStatParserParameter>()) == ParseResult.Success(new Modifier[0]));
-            }
-            return new SupportSkillParser(skillDefinitions, builderFactories, metaStatBuilders, _ => statParser);
+            return new SupportSkillParser(skillDefinitions, builderFactories, metaStatBuilders, statParserFactory);
         }
     }
 }

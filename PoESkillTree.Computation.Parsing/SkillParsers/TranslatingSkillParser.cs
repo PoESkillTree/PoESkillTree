@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -18,6 +18,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
     public class TranslatingSkillParser
     {
+        // This does not match every keystone stat, but it does match the two that are currently on skills.
+        private static readonly Regex KeystoneStatRegex = new Regex("^keystone_");
+
         private readonly IBuilderFactories _builderFactories;
         private readonly IMetaStatBuilders _metaStatBuilders;
         private readonly UntranslatedStatParserFactory _statParserFactory;
@@ -41,11 +44,14 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var isActiveSkill = _metaStatBuilders.IsActiveSkill(skill);
             var level = preParseResult.LevelDefinition;
             var qualityStats = level.QualityStats.Select(s => ApplyQuality(s, skill));
+            var (keystoneStats, levelStats) = level.Stats.Partition(s => KeystoneStatRegex.IsMatch(s.StatId));
             var parseResults = new List<ParseResult>
             {
                 ParseResult.Success(partialResult.ParsedModifiers.ToList()),
                 TranslateAndParse(qualityStats, isMainSkill),
-                TranslateAndParse(level.Stats, isMainSkill)
+                TranslateAndParse(levelStats, isMainSkill),
+                // Keystones are translated into their names when using the main instead of skill translation files
+                TranslateAndParse(StatTranslationLoader.MainFileName, keystoneStats, isMainSkill),
             };
 
             foreach (var (partIndex, stats) in level.AdditionalStatsPerPart.Index())
@@ -70,9 +76,12 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         }
 
         private ParseResult TranslateAndParse(IEnumerable<UntranslatedStat> stats, IConditionBuilder condition)
+            => TranslateAndParse(_preParseResult.SkillDefinition.StatTranslationFile, stats, condition);
+
+        private ParseResult TranslateAndParse(
+            string statTranslationFileName, IEnumerable<UntranslatedStat> stats, IConditionBuilder condition)
         {
-            var result = TranslateAndParse(_preParseResult.SkillDefinition.StatTranslationFile,
-                _preParseResult.LocalSource, stats);
+            var result = TranslateAndParse(statTranslationFileName, _preParseResult.LocalSource, stats);
             return result.ApplyCondition(condition.Build);
         }
 

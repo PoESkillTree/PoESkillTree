@@ -199,6 +199,7 @@ SupportIncreasedBurningDamage
 SupportIncreasedCriticalDamage
 SupportIncreasedCriticalStrikes
 SupportIncreasedDuration
+SupportIronGrip
 SupportIronWill
 SupportItemQuantity
 SupportItemRarity
@@ -226,6 +227,7 @@ SupportParallelProjectiles
 SupportPhysicalProjectileAttackDamage
 SupportPhysicalToLightning
 SupportPierce
+SupportPointBlank
 SupportPoison
 SupportPowerChargeOnCrit
 SupportRangedAttackTotem
