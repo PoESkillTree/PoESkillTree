@@ -7,6 +7,10 @@ using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
+    /// <summary>
+    /// Partial parser of <see cref="SupportSkillParser"/> that parses general modifiers that don't fit any other
+    /// partial parser.
+    /// </summary>
     public class SupportSkillGeneralParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;

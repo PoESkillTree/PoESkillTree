@@ -10,6 +10,9 @@ using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Parsing
 {
+    /// <summary>
+    /// Collection and factory for creating <see cref="Modifier"/>s
+    /// </summary>
     public class ModifierCollection : IEnumerable<Modifier>
     {
         private readonly IBuilderFactories _builderFactories;

@@ -5,6 +5,9 @@ using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Parsing.ItemParsers
 {
+    /// <summary>
+    /// Parser for ItemSlots that currently hold no item
+    /// </summary>
     public class EmptyItemSlotParser : IParser<ItemSlot>
     {
         private readonly IBuilderFactories _builderFactories;

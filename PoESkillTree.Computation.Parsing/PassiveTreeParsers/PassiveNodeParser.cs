@@ -6,6 +6,12 @@ using PoESkillTree.GameModel.PassiveTree;
 
 namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
 {
+    /// <summary>
+    /// Parser for passive tree nodes. Adding parsed modifiers to a calculator does nothing on its own.
+    /// Use <see cref="SkilledPassiveNodeParser"/> to activate nodes that are skilled. Nodes, keystones in particular,
+    /// can also be activated from items and skills. Because of that, the whole passive tree has to be parsed and
+    /// added to the calculator initially.
+    /// </summary>
     public class PassiveNodeParser : IParser<ushort>
     {
         private readonly PassiveTreeDefinition _passiveTreeDefinition;

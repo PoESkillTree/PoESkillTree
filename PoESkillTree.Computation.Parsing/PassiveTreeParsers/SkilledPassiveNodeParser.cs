@@ -5,6 +5,10 @@ using PoESkillTree.GameModel.PassiveTree;
 
 namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
 {
+    /// <summary>
+    /// Parses passive nodes so the returned modifier can be used to activate skilled nodes in the calculator
+    /// whose modifiers were parsed and added previously using <see cref="PassiveNodeParser"/>.
+    /// </summary>
     public class SkilledPassiveNodeParser : IParser<ushort>
     {
         private readonly PassiveTreeDefinition _passiveTreeDefinition;

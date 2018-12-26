@@ -13,7 +13,10 @@ using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
-    // This is a bad name
+    /// <summary>
+    /// Partial parser of <see cref="ActiveSkillParser"/> that parses general modifiers like used AttackDamageHand,
+    /// skill id and cast time that don't fit any other partial parser.
+    /// </summary>
     public class ActiveSkillGeneralParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;

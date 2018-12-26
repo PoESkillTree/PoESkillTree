@@ -12,7 +12,10 @@ using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing.ItemParsers
 {
-    // Parses BaseItemDefinition.BuffStats and Item.Modifiers
+    /// <summary>
+    /// Partial parser of <see cref="ItemParser"/> that parses <see cref="BaseItemDefinition.BuffStats"/>
+    /// and <see cref="Item.Modifiers"/>
+    /// </summary>
     public class ItemModifierParser : IParser<PartialItemParserParameter>
     {
         private readonly IBuilderFactories _builderFactories;

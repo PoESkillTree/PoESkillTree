@@ -8,7 +8,11 @@ using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Parsing.ItemParsers
 {
-    // Parses BaseItemDefinition.Properties, Item.Quality, Item.RequiredLevel and BaseItemDefinition.Requirements
+    /// <summary>
+    /// Partial parser of <see cref="ItemParser"/> that sets up properties and parses
+    /// <see cref="BaseItemDefinition.Properties"/>, <see cref="Item.Quality"/>, <see cref="Item.RequiredLevel"/> and
+    /// <see cref="BaseItemDefinition.Requirements"/>
+    /// </summary>
     public class ItemPropertyParser : IParser<PartialItemParserParameter>
     {
         private readonly IBuilderFactories _builderFactories;

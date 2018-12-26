@@ -5,6 +5,9 @@ using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Utils
 {
+    /// <summary>
+    /// Base class for plain objects that are only a set of their properties.
+    /// </summary>
     public abstract class ValueObject
     {
         public override bool Equals(object obj)
@@ -18,6 +21,9 @@ namespace PoESkillTree.Utils
 
         public override string ToString() => ToTuple().ToString();
 
+        /// <summary>
+        /// Returns an object (generally a tuple) that is used to implement Equals, GetHashCode and ToString.
+        /// </summary>
         protected abstract object ToTuple();
 
         protected static object WithSequenceEquality<T>(IReadOnlyList<T> list)

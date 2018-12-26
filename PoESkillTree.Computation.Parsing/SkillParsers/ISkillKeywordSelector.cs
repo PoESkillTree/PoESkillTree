@@ -3,6 +3,10 @@ using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
+    /// <summary>
+    /// Selects keywords from <see cref="SkillDefinition"/>. Exists because the active and support skills store
+    /// the keywords in different properties.
+    /// </summary>
     public interface ISkillKeywordSelector
     {
         IEnumerable<Keyword> GetKeywords(SkillDefinition skillDefinition);

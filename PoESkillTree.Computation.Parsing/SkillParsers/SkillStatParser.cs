@@ -13,6 +13,10 @@ using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
+    /// <summary>
+    /// Partial parser of <see cref="ActiveSkillParser"/> and <see cref="SupportSkillParser"/> that parses the
+    /// <see cref="UntranslatedStat"/> that cannot simply be translated and parsed afterwards.
+    /// </summary>
     public class SkillStatParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;

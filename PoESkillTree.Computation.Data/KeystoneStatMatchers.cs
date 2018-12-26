@@ -10,6 +10,9 @@ using PoESkillTree.GameModel.PassiveTree;
 
 namespace PoESkillTree.Computation.Data
 {
+    /// <summary>
+    /// <see cref="IStatMatchers"/> implementation that matches keystones by their name.
+    /// </summary>
     public class KeystoneStatMatchers : StatMatchersBase
     {
         private readonly IModifierBuilder _modifierBuilder;

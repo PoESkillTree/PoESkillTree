@@ -7,6 +7,9 @@ using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
+    /// <summary>
+    /// Parser for active skills
+    /// </summary>
     public class ActiveSkillParser : IParser<Skill>
     {
         private readonly SkillPreParser _preParser;

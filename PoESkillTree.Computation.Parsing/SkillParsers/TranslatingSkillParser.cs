@@ -16,6 +16,10 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     public delegate IParser<UntranslatedStatParserParameter> UntranslatedStatParserFactory(
         string statTranslationFileName);
 
+    /// <summary>
+    /// Partial parser of <see cref="ActiveSkillParser"/> and <see cref="SupportSkillParser"/> that translates and
+    /// parses all <see cref="UntranslatedStat"/>s that were not handled previously.
+    /// </summary>
     public class TranslatingSkillParser
     {
         // This does not match every keystone stat, but it does match the two that are currently on skills.

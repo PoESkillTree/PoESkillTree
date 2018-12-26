@@ -5,6 +5,9 @@ using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Parsing.ItemParsers
 {
+    /// <summary>
+    /// Partial parser of <see cref="ItemParser"/> that parses equipment related modifiers
+    /// </summary>
     public class ItemEquipmentParser : IParser<PartialItemParserParameter>
     {
         private readonly IBuilderFactories _builderFactories;

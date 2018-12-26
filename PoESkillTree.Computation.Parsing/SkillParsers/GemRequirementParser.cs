@@ -5,6 +5,9 @@ using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
+    /// <summary>
+    /// Partial parser of <see cref="ActiveSkillParser"/> and <see cref="SupportSkillParser"/> that parses requirements.
+    /// </summary>
     public class GemRequirementParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;

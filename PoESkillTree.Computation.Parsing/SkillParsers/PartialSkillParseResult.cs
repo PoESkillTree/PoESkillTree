@@ -15,6 +15,11 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             => (parsedModifiers, parsedStats) = (ParsedModifiers, ParsedStats);
 
         public IEnumerable<Modifier> ParsedModifiers { get; }
+
+        /// <summary>
+        /// The stats of the parsed skill that were parsed into <see cref="ParsedModifiers"/> and shouldn't be
+        /// translated/parsed again.
+        /// </summary>
         public IEnumerable<UntranslatedStat> ParsedStats { get; }
     }
 }

@@ -8,6 +8,9 @@ namespace PoESkillTree.Computation.Parsing
 {
     public static class ParseResultExtensions
     {
+        /// <summary>
+        /// Applies a condition to the values of all modifiers
+        /// </summary>
         public static ParseResult ApplyCondition(this ParseResult @this,
             Func<BuildParameters, ConditionBuilderResult> buildCondition, Entity modifierSourceEntity = Entity.Character)
         {
@@ -30,6 +33,9 @@ namespace PoESkillTree.Computation.Parsing
             }
         }
 
+        /// <summary>
+        /// Applies a multiplier to the values of all modifiers
+        /// </summary>
         public static ParseResult ApplyMultiplier(this ParseResult @this,
             Func<BuildParameters, IValue> buildMultiplier, Entity modifierSourceEntity = Entity.Character)
         {

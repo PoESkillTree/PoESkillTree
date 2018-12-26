@@ -6,6 +6,9 @@ using PoESkillTree.GameModel.StatTranslation;
 
 namespace PoESkillTree.Computation.Parsing.ItemParsers
 {
+    /// <summary>
+    /// Parser for items in ItemSlots
+    /// </summary>
     public class ItemParser : IParser<ItemParserParameter>
     {
         private readonly BaseItemDefinitions _baseItemDefinitions;

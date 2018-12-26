@@ -7,6 +7,9 @@ using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Parsing
 {
+    /// <summary>
+    /// Parser that translates and parses <see cref="UntranslatedStat"/>s
+    /// </summary>
     public class UntranslatedStatParser : IParser<UntranslatedStatParserParameter>
     {
         private readonly IStatTranslator _translator;

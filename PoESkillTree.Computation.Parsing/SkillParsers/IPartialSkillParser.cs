@@ -2,6 +2,9 @@
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
+    /// <summary>
+    /// Interface for partial parsers of <see cref="ActiveSkillParser"/> and/or <see cref="SupportSkillParser"/>.
+    /// </summary>
     public interface IPartialSkillParser
     {
         /// <param name="mainSkill">The supported active skill</param>

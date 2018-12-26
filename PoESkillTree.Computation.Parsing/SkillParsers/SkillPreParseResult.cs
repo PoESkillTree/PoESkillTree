@@ -22,7 +22,14 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             IsActiveSkill = isActiveSkill;
         }
 
+        /// <summary>
+        /// The definition of the parsed skill.
+        /// </summary>
         public SkillDefinition SkillDefinition { get; }
+
+        /// <summary>
+        /// The relevant level definition of <see cref="SkillDefinition"/>.
+        /// </summary>
         public SkillLevelDefinition LevelDefinition { get; }
 
         /// <summary>

@@ -4,6 +4,10 @@ using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
+    /// <summary>
+    /// Collects properties for <see cref="ActiveSkillParser"/> and <see cref="SupportSkillParser"/> that are used
+    /// in different partial parsers.
+    /// </summary>
     public class SkillPreParser
     {
         private readonly SkillDefinitions _skillDefinitions;

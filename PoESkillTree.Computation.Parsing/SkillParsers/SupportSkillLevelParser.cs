@@ -6,6 +6,9 @@ using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
+    /// <summary>
+    /// Partial parser of <see cref="SupportSkillParser"/> that parses level-dependent modifiers.
+    /// </summary>
     public class SupportSkillLevelParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;

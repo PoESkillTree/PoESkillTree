@@ -8,6 +8,10 @@ using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
+    /// <summary>
+    /// Partial parser of <see cref="ActiveSkillParser"/> and <see cref="SupportSkillParser"/> that parses
+    /// active skill types.
+    /// </summary>
     public class SkillTypeParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;

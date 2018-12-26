@@ -15,6 +15,9 @@ using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
+    /// <summary>
+    /// Partial parser of <see cref="ActiveSkillParser"/> and <see cref="SupportSkillParser"/> that parses keywords.
+    /// </summary>
     public class SkillKeywordParser : IPartialSkillParser
     {
         private static readonly IReadOnlyDictionary<DamageSource, IReadOnlyList<Keyword>> ExcludedKeywords =
