@@ -7,6 +7,12 @@ using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.GameModel.Modifiers
 {
+    /// <summary>
+    /// Determines whether a modifier is local and whether it affects the properties on the item it's on.
+    /// Local modifiers that don't affect properties are only relevant for weapons so the stat can be restricted to
+    /// the hand the item is in when that restriction is not clear from the text (e.g. "with this weapon"), and
+    /// for flasks so they can be applied without being modified by flask effect.
+    /// </summary>
     public static class ModifierLocalityTester
     {
         private const string Increase = "#% (increased|reduced) ";

@@ -7,6 +7,10 @@ using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.GameModel.Skills
 {
+    /// <summary>
+    /// Contains the skill data that is not accessible through the game data but required for parsing.
+    /// Used by <see cref="SkillJsonDeserializer"/> to extend the deserialized <see cref="SkillDefinition"/>s.
+    /// </summary>
     public class SkillDefinitionExtensions
     {
         private static readonly Entity[] AuraEntities = { Entity.Character, Entity.Minion, Entity.Totem };

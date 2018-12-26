@@ -3,6 +3,9 @@ using PoESkillTree.Utils;
 
 namespace PoESkillTree.GameModel.StatTranslation
 {
+    /// <summary>
+    /// Translates <see cref="UntranslatedStat"/>s into natural language.
+    /// </summary>
     public interface IStatTranslator
     {
         StatTranslatorResult Translate(IEnumerable<UntranslatedStat> untranslatedStats);

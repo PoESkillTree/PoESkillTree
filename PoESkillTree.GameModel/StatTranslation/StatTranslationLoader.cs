@@ -6,6 +6,9 @@ using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.GameModel.StatTranslation
 {
+    /// <summary>
+    /// Creates <see cref="StatTranslator"/> instances from RePoE data.
+    /// </summary>
     public class StatTranslationLoader
     {
         public const string MainFileName = "stat_translations";

@@ -9,6 +9,10 @@ using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.GameModel.Skills
 {
+    /// <summary>
+    /// Deserializes <see cref="SkillDefinitions"/> from RePoE's gems and gem_tooltips and extends that data using
+    /// <see cref="SkillDefinitionExtensions"/>.
+    /// </summary>
     public class SkillJsonDeserializer
     {
         private readonly SkillDefinitionExtensions _definitionExtensions;

@@ -6,6 +6,9 @@ using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.GameModel.Skills
 {
+    /// <summary>
+    /// Determines the support skills that can support a given active skill.
+    /// </summary>
     public class SupportabilityTester
     {
         private readonly SkillDefinitions _skillDefinitions;

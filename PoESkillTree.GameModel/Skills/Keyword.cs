@@ -4,6 +4,10 @@ using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.GameModel.Skills
 {
+    /// <summary>
+    /// Keywords of gems as they are required for parsing. They are mostly derived from the skill's active skill types.
+    /// Some are derived from its gem tags and some from its name.
+    /// </summary>
     public enum Keyword
     {
         /// <summary>

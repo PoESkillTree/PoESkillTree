@@ -6,6 +6,11 @@ using PoESkillTree.Utils;
 
 namespace PoESkillTree.GameModel.Skills
 {
+    /// <summary>
+    /// Additional skill data that is not accessible through the game data. These are created in
+    /// <see cref="SkillDefinitionExtensions"/>. The extension is used by <see cref="SkillJsonDeserializer"/> to
+    /// extend the deserialized <see cref="SkillDefinition"/>.
+    /// </summary>
     public class SkillDefinitionExtension
     {
         public SkillDefinitionExtension(
@@ -27,10 +32,30 @@ namespace PoESkillTree.GameModel.Skills
             }
         }
 
+        /// <summary>
+        /// Extension for all skill parts
+        /// </summary>
         public SkillPartDefinitionExtension CommonExtension { get; }
+
+        /// <summary>
+        /// Extensions per skill part
+        /// </summary>
         public IReadOnlyList<SkillPartDefinitionExtension> PartExtensions { get; }
+
+        /// <summary>
+        /// Names of the skill parts
+        /// </summary>
         public IReadOnlyList<string> PartNames { get; }
+
+        /// <summary>
+        /// Stat ids of the skill's modifiers that are provided as part of the skill's buff, together with the Entities
+        /// affected by the modifier
+        /// </summary>
         public IReadOnlyDictionary<string, IReadOnlyList<Entity>> BuffStats { get; }
+
+        /// <summary>
+        /// Stat ids of the skill's modifiers that are enabled even when the skill is not the main skill
+        /// </summary>
         public IEnumerable<string> PassiveStats { get; }
     }
 
@@ -83,6 +108,9 @@ namespace PoESkillTree.GameModel.Skills
             _addedKeywords = addedKeywords ?? new Keyword[0];
         }
 
+        /// <summary>
+        /// Modifies the stats of this skill part as specified by this extension.
+        /// </summary>
         public IEnumerable<UntranslatedStat> ModifyStats(IEnumerable<UntranslatedStat> stats)
         {
             var removedIds = _removedStats.ToHashSet();
@@ -91,6 +119,9 @@ namespace PoESkillTree.GameModel.Skills
                 .Concat(_addedStats));
         }
 
+        /// <summary>
+        /// Modifies the keywords of this skill part as specified by this extension.
+        /// </summary>
         public IEnumerable<Keyword> ModifyKeywords(IEnumerable<Keyword> keywords)
             => keywords.Except(_removedKeywords).Union(_addedKeywords);
     }

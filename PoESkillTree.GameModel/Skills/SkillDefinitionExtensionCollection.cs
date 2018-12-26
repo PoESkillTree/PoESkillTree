@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace PoESkillTree.GameModel.Skills
 {
+    /// <summary>
+    /// Helper collection for <see cref="SkillDefinitionExtensions"/>
+    /// </summary>
     public class SkillDefinitionExtensionCollection : IEnumerable<(string, SkillDefinitionExtension)>
     {
         private readonly List<(string, SkillDefinitionExtension)> _collection =

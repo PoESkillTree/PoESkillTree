@@ -6,6 +6,9 @@ using Newtonsoft.Json.Linq;
 
 namespace PoESkillTree.GameModel.Items
 {
+    /// <summary>
+    /// Deserializes <see cref="BaseItemDefinitions"/> from RePoE's base_items and mods files.
+    /// </summary>
     public class BaseItemJsonDeserializer
     {
         private readonly JObject _modJson;
