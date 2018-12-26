@@ -162,6 +162,7 @@ namespace PoESkillTree.Computation.Data
                 { "fires an additional projectile", BaseAdd, 1, Projectile.Count },
                 { "fires an additional arrow", BaseAdd, 1, Projectile.Count, With(Keyword.Attack) },
                 { "skills fire an additional projectile", BaseAdd, 1, Projectile.Count },
+                { "skills fire # additional projectiles", BaseAdd, Value, Projectile.Count },
                 { "supported skills fire # additional projectiles", BaseAdd, Value, Projectile.Count },
                 { "pierces # additional targets", BaseAdd, Value, Projectile.PierceCount },
                 { "projectiles pierce an additional target", BaseAdd, 1, Projectile.PierceCount },

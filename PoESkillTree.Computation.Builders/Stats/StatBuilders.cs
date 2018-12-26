@@ -80,7 +80,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder AttachedBrands => FromIdentity(typeof(int));
 
         public IStatBuilder PassiveNodeSkilled(ushort nodeId) => FromIdentity($"{nodeId}.Skilled", typeof(bool));
-        public IStatBuilder KeystoneSkilled(string keystone) => FromIdentity($"{keystone}.Skilled", typeof(bool));
 
         public IStatBuilder DamageTakenGainedAsMana =>
             FromIdentity("% of damage taken gained as mana over 4 seconds", typeof(int));

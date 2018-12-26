@@ -14,6 +14,7 @@ using PoESkillTree.Computation.Parsing;
 using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.GameModel.StatTranslation;
 
@@ -60,7 +61,8 @@ namespace PoESkillTree.Computation.Console
         {
             var skillDefinitions = await _skillDefinitions.Value.ConfigureAwait(false);
             var builderFactories = await _builderFactories.Value.ConfigureAwait(false);
-            return new ParsingData(builderFactories, new MatchContexts(_statFactory.Value), skillDefinitions.Skills);
+            return new ParsingData(builderFactories, new MatchContexts(_statFactory.Value), skillDefinitions.Skills,
+                PassiveTreeDefinition.CreateKeystoneDefinitions().Nodes);
         }
 
         private async Task<ICoreParser> CreateCoreParserAsync()

@@ -99,6 +99,7 @@
     <Compile Include="GivenStats\LevelBasedStats.cs" />
     <Compile Include="GivenStats\MonsterGivenStats.cs" />
     <Compile Include="GivenStats\TotemGivenStats.cs" />
+    <Compile Include="KeystoneStatMatchers.cs" />
     <Compile Include="KeywordMatchers.cs" />
     <Compile Include="Collections\MatcherCollection.cs" />
     <Compile Include="ParsingData.cs" />

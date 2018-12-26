@@ -133,7 +133,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder AttachedBrands { get; }
 
         IStatBuilder PassiveNodeSkilled(ushort nodeId);
-        IStatBuilder KeystoneSkilled(string keystone);
 
         /// <summary>
         /// Returns stat with a value that can only be specified by the user.

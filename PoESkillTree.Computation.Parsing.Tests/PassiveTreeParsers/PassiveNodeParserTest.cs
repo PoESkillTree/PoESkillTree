@@ -33,23 +33,6 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
             Assert.AreEqual(expected, result.Modifiers);
         }
 
-        [Test]
-        public void AddsSkilledModifierForKeystones()
-        {
-            var definition = new PassiveNodeDefinition(2, PassiveNodeType.Keystone, "keystone", new string[0]);
-            var source = CreateGlobalSource(definition);
-            var expected = new[]
-            {
-                CreateModifier($"{definition.Name}.Skilled", Form.TotalOverride, new FunctionalValue(_ => null,
-                    $"Character.{definition.Id}.Skilled.Value(Total, Global).IsSet ? 1 : null"), source)
-            };
-            var sut = CreateSut(definition);
-
-            var result = sut.Parse(definition.Id);
-
-            Assert.AreEqual(expected, result.Modifiers);
-        }
-
         private static PassiveNodeParser CreateSut(PassiveNodeDefinition nodeDefinition, ICoreParser coreParser = null)
         {
             coreParser = coreParser ?? Mock.Of<ICoreParser>();

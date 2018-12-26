@@ -21,22 +21,13 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
         {
             var nodeDefinition = _passiveTreeDefinition.GetNodeById(nodeId);
             var localSource = new ModifierSource.Local.Tree(nodeDefinition.Name);
-            var globalSource = new ModifierSource.Global();
+            var globalSource = new ModifierSource.Global(localSource);
             var skilledCondition = _builderFactories.StatBuilders.PassiveNodeSkilled(nodeId).IsSet;
 
             var results = nodeDefinition.Modifiers
                 .Select(s => Parse(s, globalSource))
                 .Select(r => r.ApplyCondition(skilledCondition.Build))
                 .ToList();
-
-            if (nodeDefinition.Type == PassiveNodeType.Keystone)
-            {
-                var modifiers = new ModifierCollection(_builderFactories, localSource);
-                modifiers.AddGlobal(_builderFactories.StatBuilders.KeystoneSkilled(nodeDefinition.Name),
-                    Form.TotalOverride, 1, skilledCondition);
-                results.Add(ParseResult.Success(modifiers.ToList()));
-            }
-
             return ParseResult.Aggregate(results);
         }
 
