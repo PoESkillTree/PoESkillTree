@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Core.Nodes
             var paths =
                 from source in _path.ModifierSource.InfluencingSources
                 let path = new PathDefinition(source)
-                from stat in _stat.Concat(_path.ConversionStats)
+                from stat in _path.ConversionStats.Prepend(_stat)
                 select (stat, path);
             return _aggregator(valueCalculationContext.GetValues(_form, paths));
         }

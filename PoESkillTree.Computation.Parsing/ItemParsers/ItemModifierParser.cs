@@ -39,8 +39,8 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             var (localMods, globalMods) =
                 remainingMods.Partition(s => ModifierLocalityTester.IsLocal(s, itemTags));
 
-            var parseResults = ParseBuffStats(itemTags, localSource, baseItemDefinition.BuffStats)
-                .Concat(ParsePropertyModifiers(itemTags, localSource, propertyMods))
+            var parseResults = ParsePropertyModifiers(itemTags, localSource, propertyMods)
+                .Prepend(ParseBuffStats(itemTags, localSource, baseItemDefinition.BuffStats))
                 .Concat(ParseLocalModifiers(itemTags, localSource, localMods))
                 .Concat(ParseGlobalModifiers(itemTags, globalSource, globalMods));
             return ParseResult.Aggregate(parseResults);

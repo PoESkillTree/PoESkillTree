@@ -180,8 +180,8 @@ namespace POESKillTree.ViewModels.Crafting
 
                 if (SelectedFirstLevel == BaseGroup.Any)
                 {
-                    SecondLevelList = ItemClass.Any
-                        .Concat(EligibleBases.Select(b => b.ItemClass))
+                    SecondLevelList = EligibleBases.Select(b => b.ItemClass)
+                        .Prepend(ItemClass.Any)
                         .Distinct()
                         .OrderBy(c => c).ToList();
                 }
@@ -200,7 +200,7 @@ namespace POESKillTree.ViewModels.Crafting
                             SecondLevelList = list;
                             break;
                         default:
-                            SecondLevelList = ItemClass.Any.Concat(list).ToList();
+                            SecondLevelList = list.Prepend(ItemClass.Any).ToList();
                             break;
                     }
                 }
@@ -238,7 +238,7 @@ namespace POESKillTree.ViewModels.Crafting
                         ThirdLevelList = list;
                         break;
                     default:
-                        ThirdLevelList = Tags.Default.Concat(list).ToList();
+                        ThirdLevelList = list.Prepend(Tags.Default).ToList();
                         break;
                 }
             }

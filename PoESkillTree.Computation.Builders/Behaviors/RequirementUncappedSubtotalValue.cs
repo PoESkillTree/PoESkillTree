@@ -25,7 +25,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                 return originalPaths;
 
             var maxPath = originalPaths.MaxBy(
-                p => context.GetValue(_transformedStat, NodeType.PathTotal, p).SingleOrNull());
+                p => context.GetValue(_transformedStat, NodeType.PathTotal, p).SingleOrNull()).First();
             return new[] { maxPath };
         }
     }

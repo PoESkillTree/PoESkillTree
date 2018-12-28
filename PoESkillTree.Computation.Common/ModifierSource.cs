@@ -29,7 +29,7 @@ namespace PoESkillTree.Computation.Common
         {
             CanonicalSource = canonicalSource ?? this;
             SourceName = sourceName;
-            InfluencingSources = CanonicalSource.Concat(influencingSources).ToList();
+            InfluencingSources = influencingSources.Prepend(CanonicalSource).ToList();
         }
 
         private ModifierSource(params ModifierSource[] influencingSources)
