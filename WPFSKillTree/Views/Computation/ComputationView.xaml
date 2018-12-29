@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:POESKillTree.Views.Computation"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:mahApps="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:computationDamage="clr-namespace:PoESkillTree.Computation.Common.Builders.Damage;assembly=PoESkillTree.Computation.Common"
              mc:Ignorable="d">
     <UserControl.Resources>
@@ -57,6 +58,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+
+        <local:MainSkillSelectionView Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" />
 
         <TextBlock Grid.Column="2" Grid.Row="0"
                    HorizontalAlignment="Right"

@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="POESKillTree.Views.Computation.MainSkillSelectionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:POESKillTree.Views.Computation"
+             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+             xmlns:mahApps="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d">
+    <StackPanel Orientation="Horizontal">
+        <Label>
+            <l:Catalog Message="Main Skill:" />
+        </Label>
+        <ComboBox SelectedIndex="0">
+            <ComboBoxItem>Blade Flurry</ComboBoxItem>
+        </ComboBox>
+        <ComboBox SelectedIndex="0"
+                  Width="140">
+            <ComboBoxItem>No Release</ComboBoxItem>
+            <ComboBoxItem>Release at 6 Stages</ComboBoxItem>
+        </ComboBox>
+        <Label>
+            <l:Catalog Message="Stages:" />
+        </Label>
+        <mahApps:NumericUpDown NumericInputMode="Numbers"
+                               Value="6"
+                               Minimum="0" Maximum="6" />
+    </StackPanel>
+</UserControl>
