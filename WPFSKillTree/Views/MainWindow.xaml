@@ -1,4 +1,4 @@
-﻿<controls:MetroWindow
+<controls:MetroWindow
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
@@ -12,6 +12,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:builds="clr-namespace:POESKillTree.Views.Builds"
         xmlns:equipment="clr-namespace:POESKillTree.Views.Equipment"
+        xmlns:computation="clr-namespace:POESKillTree.Views.Computation"
         xmlns:dd="urn:gong-wpf-dragdrop"
 
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
@@ -78,7 +79,7 @@
         <KeyBinding Modifiers="Control" Key="N"
                     Command="{Binding BuildsControlViewModel.NewBuildCommand}"
                     CommandParameter="{Binding BuildsControlViewModel.BuildRoot}"/>
-        
+
         <KeyBinding Modifiers="Control+Shift" Key="G"
                     Command="{Binding TreeGeneratorInteraction.OpenTreeGeneratorCommand}" />
         <KeyBinding Modifiers="Control+Shift" Key="T"
@@ -606,15 +607,21 @@
 
         <TabControl Grid.Row="0" HorizontalAlignment="Right">
             <TabItem controls:ControlsHelper.HeaderFontSize="14"
-                     IsSelected="{Binding IsSelected, ElementName= tyPassiveTree}">
+                     IsSelected="{Binding IsSelected, ElementName=tyPassiveTree}">
                 <TabItem.Header>
                     <l:Catalog Message="Skill Tree"/>
                 </TabItem.Header>
             </TabItem>
             <TabItem controls:ControlsHelper.HeaderFontSize="14"
-                     IsSelected="{Binding IsSelected, ElementName= tyEquipment}">
+                     IsSelected="{Binding IsSelected, ElementName=tyEquipment}">
                 <TabItem.Header>
                     <l:Catalog Message="Equipment"/>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem controls:ControlsHelper.HeaderFontSize="14"
+                     IsSelected="{Binding IsSelected, ElementName=ComputationTab}">
+                <TabItem.Header>
+                    <l:Catalog Message="Computation"/>
                 </TabItem.Header>
             </TabItem>
         </TabControl>
@@ -739,6 +746,12 @@
                                                  HorizontalAlignment="Left" Margin="0,4,0,0"
                                                  DataContext="{Binding StashViewModel, ElementName=window}" />
                         </Grid>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Name="ComputationTab">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto">
+                        <computation:ComputationView HorizontalAlignment="Center" />
                     </ScrollViewer>
                 </TabItem>
             </TabControl>

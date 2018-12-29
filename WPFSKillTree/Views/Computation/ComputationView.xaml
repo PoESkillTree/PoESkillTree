@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="POESKillTree.Views.Computation.ComputationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:POESKillTree.Views.Computation"
+             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:computationDamage="clr-namespace:PoESkillTree.Computation.Common.Builders.Damage;assembly=PoESkillTree.Computation.Common"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <x:Array x:Key="OffensiveStats" Type="local:MockStatViewModel">
+                <local:MockStatViewModel Identity="DPS.Hit"
+                                         DataType="system:Double"
+                                         MinimumValue="1234.56" MaximumValue="1234.56" />
+                <local:MockStatViewModel Identity="Physical.Damage.Attack.MainHand.Skill"
+                                         DataType="system:Int32"
+                                         MinimumValue="2" MaximumValue="8" />
+                <local:MockStatViewModel Identity="HitRate"
+                                         DataType="system:Double" />
+                <local:MockStatViewModel Identity="CriticalStrikeChanceIsLucky"
+                                         DataType="system:Boolean"
+                                         MinimumValue="1" MaximumValue="1" />
+                <local:MockStatViewModel Identity="FarShot"
+                                         DataType="system:Boolean" />
+                <local:MockStatViewModel Identity="SkillHitDamageSource"
+                                         DataType="computationDamage:DamageSource"
+                                         MinimumValue="0" MaximumValue="0" />
+                <local:MockStatViewModel Identity="Stun.ThresholdModifier.Attack.MainHand.Skill"
+                                         Entity="Enemy"
+                                         DataType="system:Double"
+                                         MinimumValue="0.8" MaximumValue="0.8" />
+            </x:Array>
+            <x:Array x:Key="DefensiveStats" Type="local:MockStatViewModel">
+                <local:MockStatViewModel Identity="Life"
+                                         DataType="system:Int32"
+                                         MinimumValue="500" MaximumValue="500" />
+                <local:MockStatViewModel Identity="Life"
+                                         DataType="system:Int32"
+                                         NodeType="Increase"
+                                         MinimumValue="180" MaximumValue="180" />
+                <local:MockStatViewModel Identity="Cold.Resistance"
+                                         DataType="system:Int32"
+                                         MinimumValue="40" MaximumValue="40" />
+            </x:Array>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="2" Grid.Row="0"
+                   HorizontalAlignment="Right"
+                   FontWeight="Bold"
+                   FontSize="{DynamicResource NormalFontSize}"
+                   Foreground="{DynamicResource AccentColorBrush2}">
+            <TextBlock.Text>
+                <l:Catalog Message="Alpha Version" />
+            </TextBlock.Text>
+        </TextBlock>
+
+        <TextBlock Grid.Column="0" Grid.Row="1"
+                   FontSize="{DynamicResource SubHeaderFontSize}"
+                   Foreground="{DynamicResource AccentColorBrush}">
+            <TextBlock.Text>
+                <l:Catalog Message="Offensive Stats" />
+            </TextBlock.Text>
+        </TextBlock>
+        <local:ResultStatsView Grid.Column="0" Grid.Row="2"
+                               DataContext="{StaticResource OffensiveStats}" />
+        <TextBlock Grid.Column="1" Grid.Row="1"
+                   FontSize="{DynamicResource SubHeaderFontSize}"
+                   Foreground="{DynamicResource AccentColorBrush}">
+            <TextBlock.Text>
+                <l:Catalog Message="Defensive Stats" />
+            </TextBlock.Text>
+        </TextBlock>
+
+        <local:ResultStatsView Grid.Column="1" Grid.Row="2"
+                               DataContext="{StaticResource DefensiveStats}" />
+
+        <TextBlock Grid.Column="2" Grid.Row="1"
+                   FontSize="{DynamicResource SubHeaderFontSize}"
+                   Foreground="{DynamicResource AccentColorBrush}">
+            <TextBlock.Text>
+                <l:Catalog Message="Configuration" />
+            </TextBlock.Text>
+        </TextBlock>
+        <local:ConfigurationStatsView Grid.Column="2" Grid.Row="2" />
+    </Grid>
+</UserControl>

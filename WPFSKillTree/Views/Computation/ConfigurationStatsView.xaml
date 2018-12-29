@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="POESKillTree.Views.Computation.ConfigurationStatsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:POESKillTree.Views.Computation"
+             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance local:MockStatViewModel}">
+    <DataGrid AutoGenerateColumns="False"
+              CanUserAddRows="False"
+              CanUserDeleteRows="False"
+              CanUserResizeColumns="False"
+              HorizontalScrollBarVisibility="Hidden">
+        <DataGrid.Columns>
+            <DataGridTextColumn IsReadOnly="True"
+                                Width="250"
+                                HeaderStyle="{StaticResource MetroDataGridColumnHeader}"
+                                Binding="{Binding Name}">
+                <DataGridTextColumn.Header>
+                    <l:Catalog>Stat</l:Catalog>
+                </DataGridTextColumn.Header>
+            </DataGridTextColumn>
+            <DataGridTextColumn IsReadOnly="True"
+                                Width="100"
+                                HeaderStyle="{StaticResource MetroDataGridColumnHeader}">
+                <DataGridTextColumn.Header>
+                    <l:Catalog>Value</l:Catalog>
+                </DataGridTextColumn.Header>
+            </DataGridTextColumn>
+        </DataGrid.Columns>
+    </DataGrid>
+</UserControl>
