@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
 using POESKillTree.Localization;
@@ -14,13 +13,37 @@ namespace POESKillTree.Views.Computation
         public string Name => ToString();
 
         public Type DataType { get; set; }
+        public Array EnumValues => DataType.GetEnumValues();
 
         public double? MinimumValue { get; set; }
         public double? MaximumValue { get; set; }
 
-        public NodeValue? Value => MaximumValue.HasValue && MinimumValue.HasValue
-            ? new NodeValue(MinimumValue.Value, MaximumValue.Value)
-            : (NodeValue?) null;
+        public NodeValue? Value
+        {
+            get
+            {
+                if (MaximumValue.HasValue && MinimumValue.HasValue)
+                    return new NodeValue(MinimumValue.Value, MaximumValue.Value);
+                return null;
+            }
+            set
+            {
+                MinimumValue = value?.Minimum;
+                MaximumValue = value?.Maximum;
+            }
+        }
+
+        public double? SingleValue
+        {
+            get => Value?.Single;
+            set => Value = (NodeValue?) value;
+        }
+
+        public bool BoolValue
+        {
+            get => Value.IsTrue();
+            set => Value = (NodeValue?) value;
+        }
 
         public override string ToString()
         {
@@ -42,19 +65,17 @@ namespace POESKillTree.Views.Computation
             {
                 if (DataType == typeof(int) || DataType == typeof(double))
                 {
-                    return Value is null ? L10n.Message("None") : Value.ToString();
+                    return Value?.ToString() ?? L10n.Message("None");
                 }
                 if (DataType == typeof(bool))
                 {
-                    return Value.IsTrue() ? L10n.Message("True") : L10n.Message("False");
+                    return BoolValue.ToString();
                 }
                 if (DataType.IsEnum)
                 {
                     if (Value is null)
                         return L10n.Message("None");
-                    var enumValue =
-                        (Enum) Enum.Parse(DataType, Value.Single().ToString(CultureInfo.InvariantCulture));
-                    return enumValue.ToString();
+                    return EnumValues.GetValue((int) Value.Single()).ToString();
                 }
                 return null;
             }

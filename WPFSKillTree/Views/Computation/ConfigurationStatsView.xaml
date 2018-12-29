@@ -1,17 +1,37 @@
 ﻿<UserControl x:Class="POESKillTree.Views.Computation.ConfigurationStatsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:mahApps="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:POESKillTree.Views.Computation"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+             xmlns:local="clr-namespace:POESKillTree.Views.Computation"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance local:MockStatViewModel}">
+    <UserControl.Resources>
+        <DataTemplate x:Key="IntTemplate" DataType="local:MockStatViewModel">
+            <mahApps:NumericUpDown Value="{Binding SingleValue}" NumericInputMode="Numbers" />
+        </DataTemplate>
+        <DataTemplate x:Key="DoubleTemplate" DataType="local:MockStatViewModel">
+            <mahApps:NumericUpDown Value="{Binding SingleValue}" NumericInputMode="Decimal" />
+        </DataTemplate>
+        <DataTemplate x:Key="BoolTemplate" DataType="local:MockStatViewModel">
+            <CheckBox IsChecked="{Binding BoolValue}"
+                      HorizontalAlignment="Center" />
+        </DataTemplate>
+        <DataTemplate x:Key="EnumTemplate" DataType="local:MockStatViewModel">
+            <ComboBox SelectedIndex="{Binding SingleValue}"
+                      ItemsSource="{Binding EnumValues}">
+            </ComboBox>
+        </DataTemplate>
+    </UserControl.Resources>
     <DataGrid AutoGenerateColumns="False"
               CanUserAddRows="False"
               CanUserDeleteRows="False"
               CanUserResizeColumns="False"
-              HorizontalScrollBarVisibility="Hidden">
+              HorizontalScrollBarVisibility="Hidden"
+              ItemsSource="{Binding}">
         <DataGrid.Columns>
             <DataGridTextColumn IsReadOnly="True"
                                 Width="250"
@@ -21,13 +41,36 @@
                     <l:Catalog>Stat</l:Catalog>
                 </DataGridTextColumn.Header>
             </DataGridTextColumn>
-            <DataGridTextColumn IsReadOnly="True"
-                                Width="100"
-                                HeaderStyle="{StaticResource MetroDataGridColumnHeader}">
-                <DataGridTextColumn.Header>
+            <DataGridTemplateColumn Width="100"
+                                    HeaderStyle="{StaticResource MetroDataGridColumnHeader}">
+                <DataGridTemplateColumn.Header>
                     <l:Catalog>Value</l:Catalog>
-                </DataGridTextColumn.Header>
-            </DataGridTextColumn>
+                </DataGridTemplateColumn.Header>
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <ContentControl Content="{Binding}">
+                            <ContentControl.Style>
+                                <Style TargetType="ContentControl">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DataType}" Value="{x:Type system:Double}">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource IntTemplate}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding DataType}" Value="{x:Type system:Int32}">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource DoubleTemplate}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding DataType}" Value="{x:Type system:Boolean}">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource BoolTemplate}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding DataType.IsEnum}" Value="True">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource EnumTemplate}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
         </DataGrid.Columns>
     </DataGrid>
 </UserControl>
