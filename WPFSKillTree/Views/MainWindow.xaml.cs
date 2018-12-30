@@ -1597,6 +1597,12 @@ namespace POESKillTree.Views
             }
         }
 
+        private void zbSkillTreeBackground_StylusSystemGesture(object sender, StylusSystemGestureEventArgs e)
+        {
+            if (e.SystemGesture == SystemGesture.TwoFingerTap)
+                zbSkillTreeBackground.Reset();
+        }
+
         private void GenerateTooltipForNode(SkillNode node, bool forcerefresh = false)
         {
             if (!Tree.DrawAscendancy && node.ascendancyName != null && !forcerefresh)
