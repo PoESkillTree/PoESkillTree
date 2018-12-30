@@ -5,24 +5,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-             mc:Ignorable="d">
+             xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Computation"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:MainSkillSelectionViewModel}">
     <StackPanel Orientation="Horizontal">
         <Label>
             <l:Catalog Message="Main Skill:" />
         </Label>
-        <ComboBox SelectedIndex="0">
-            <ComboBoxItem>Blade Flurry</ComboBoxItem>
-        </ComboBox>
-        <ComboBox SelectedIndex="0"
-                  Width="140">
-            <ComboBoxItem>No Release</ComboBoxItem>
-            <ComboBoxItem>Release at 6 Stages</ComboBoxItem>
+        <ComboBox Width="130"
+                  ItemsSource="{Binding AvailableSkills}"
+                  SelectedItem="{Binding SelectedSkill}"
+                  DisplayMemberPath="Name" />
+        <ComboBox Width="140"
+                  ItemsSource="{Binding SelectedSkill.SkillParts}"
+                  SelectedIndex="{Binding SelectedSkill.SelectedSkillPart}">
+            <ComboBox.Style>
+                <Style BasedOn="{StaticResource {x:Type ComboBox}}"
+                       TargetType="{x:Type ComboBox}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedSkill.HasSkillParts}" Value="False">
+                            <Setter Property="Visibility" Value="Hidden" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ComboBox.Style>
         </ComboBox>
         <Label>
-            <l:Catalog Message="Stages:" />
+            <l:Catalog Message="Stage:" />
         </Label>
         <mahApps:NumericUpDown NumericInputMode="Numbers"
-                               Value="6"
+                               Value="{Binding SkillStage}"
                                Minimum="0" Maximum="6" />
     </StackPanel>
 </UserControl>

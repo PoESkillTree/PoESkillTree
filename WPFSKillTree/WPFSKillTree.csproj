@@ -220,6 +220,8 @@
     <Compile Include="ViewModels\Computation\AddableResultStatViewModel.cs" />
     <Compile Include="ViewModels\Computation\ComputationViewModel.cs" />
     <Compile Include="ViewModels\Computation\ConfigurationStatViewModel.cs" />
+    <Compile Include="ViewModels\Computation\MainSkillSelectionViewModel.cs" />
+    <Compile Include="ViewModels\Computation\MainSkillViewModel.cs" />
     <Compile Include="ViewModels\Computation\ResultStatsViewModel.cs" />
     <Compile Include="ViewModels\Computation\ResultStatViewModel.cs" />
     <Compile Include="ViewModels\Computation\StatStub.cs" />

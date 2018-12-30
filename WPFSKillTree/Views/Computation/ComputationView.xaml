@@ -20,7 +20,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <local:MainSkillSelectionView Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" />
+        <local:MainSkillSelectionView Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3"
+                                      DataContext="{Binding MainSkillSelection}" />
 
         <TextBlock Grid.Column="2" Grid.Row="0"
                    HorizontalAlignment="Right"

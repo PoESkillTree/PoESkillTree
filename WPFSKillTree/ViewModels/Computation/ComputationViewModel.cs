@@ -1,12 +1,24 @@
 ﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.Skills;
+using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Computation
 {
-    public class ComputationViewModel
+    public class ComputationViewModel : Notifier
     {
+        private MainSkillSelectionViewModel _mainSkillSelection;
+
+        public MainSkillSelectionViewModel MainSkillSelection
+        {
+            get => _mainSkillSelection;
+            private set => SetProperty(ref _mainSkillSelection, value);
+        }
+
         public ResultStatsViewModel OffensiveStats { get; }
         public ResultStatsViewModel DefensiveStats { get; }
         public ObservableCollection<ConfigurationStatViewModel> ConfigurationStats { get; }
@@ -54,6 +66,15 @@ namespace POESKillTree.ViewModels.Computation
                         new StatStub("Chilled", Entity.Enemy, typeof(bool)))
                     { BoolValue = true },
             };
+        }
+
+        public async Task InitializeAsync()
+        {
+            var skillDefinitions = await SkillJsonDeserializer.DeserializeAsync();
+            MainSkillSelection = new MainSkillSelectionViewModel(skillDefinitions);
+            MainSkillSelection.AddSkill(new Skill("ChargedAttack", 20, 20, ItemSlot.Boots, 0, 0));
+            MainSkillSelection.AddSkill(new Skill("Fireball", 21, 23, ItemSlot.Boots, 1, 0));
+            MainSkillSelection.AddSkill(new Skill("BladeVortex", 18, 0, ItemSlot.Helm, 0, 0));
         }
     }
 }
