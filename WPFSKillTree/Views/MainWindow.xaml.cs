@@ -36,6 +36,7 @@ using POESKillTree.Utils.Extensions;
 using POESKillTree.Utils.UrlProcessing;
 using POESKillTree.ViewModels;
 using POESKillTree.ViewModels.Builds;
+using POESKillTree.ViewModels.Computation;
 using POESKillTree.ViewModels.Crafting;
 using POESKillTree.ViewModels.Equipment;
 using POESKillTree.Views.Crafting;
@@ -107,6 +108,8 @@ namespace POESKillTree.Views
         }
 
         public StashViewModel StashViewModel { get; } = new StashViewModel(ExtendedDialogCoordinator.Instance);
+
+        public ComputationViewModel ComputationViewModel { get; } = new ComputationViewModel();
 
         private SkillTree _tree;
         public SkillTree Tree
@@ -450,7 +453,7 @@ namespace POESKillTree.Views
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var controller = await ExtendedDialogManager.ShowProgressAsync(this, L10n.Message("Initialization"),
-                        L10n.Message("Initalizing window ..."));
+                        L10n.Message("Initializing window ..."));
             controller.Maximum = 1;
             controller.SetIndeterminate();
 

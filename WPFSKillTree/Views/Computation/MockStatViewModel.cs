@@ -33,18 +33,6 @@ namespace POESKillTree.Views.Computation
             }
         }
 
-        public double? SingleValue
-        {
-            get => Value?.Single;
-            set => Value = (NodeValue?) value;
-        }
-
-        public bool BoolValue
-        {
-            get => Value.IsTrue();
-            set => Value = (NodeValue?) value;
-        }
-
         public override string ToString()
         {
             var result = Identity;
@@ -69,7 +57,7 @@ namespace POESKillTree.Views.Computation
                 }
                 if (DataType == typeof(bool))
                 {
-                    return BoolValue.ToString();
+                    return Value.IsTrue().ToString();
                 }
                 if (DataType.IsEnum)
                 {

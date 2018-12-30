@@ -5,22 +5,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-             xmlns:local="clr-namespace:POESKillTree.Views.Computation"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Computation"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance local:MockStatViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:ComputationViewModel}">
     <UserControl.Resources>
-        <DataTemplate x:Key="IntTemplate" DataType="local:MockStatViewModel">
-            <mahApps:NumericUpDown Value="{Binding SingleValue}" NumericInputMode="Numbers" />
+        <DataTemplate x:Key="IntTemplate" DataType="viewModels:ConfigurationStatViewModel">
+            <mahApps:NumericUpDown Value="{Binding SingleValue}"
+                                   NumericInputMode="Numbers"
+                                   Style="{StaticResource UpDownInDataGridStyle}" />
         </DataTemplate>
-        <DataTemplate x:Key="DoubleTemplate" DataType="local:MockStatViewModel">
-            <mahApps:NumericUpDown Value="{Binding SingleValue}" NumericInputMode="Decimal" />
+        <DataTemplate x:Key="DoubleTemplate" DataType="viewModels:ConfigurationStatViewModel">
+            <mahApps:NumericUpDown Value="{Binding SingleValue}"
+                                   NumericInputMode="Decimal"
+                                   Style="{StaticResource UpDownInDataGridStyle}" />
         </DataTemplate>
-        <DataTemplate x:Key="BoolTemplate" DataType="local:MockStatViewModel">
+        <DataTemplate x:Key="BoolTemplate" DataType="viewModels:ConfigurationStatViewModel">
             <CheckBox IsChecked="{Binding BoolValue}"
                       HorizontalAlignment="Center" />
         </DataTemplate>
-        <DataTemplate x:Key="EnumTemplate" DataType="local:MockStatViewModel">
+        <DataTemplate x:Key="EnumTemplate" DataType="viewModels:ConfigurationStatViewModel">
             <ComboBox SelectedIndex="{Binding SingleValue}"
                       ItemsSource="{Binding EnumValues}">
             </ComboBox>
@@ -31,7 +35,7 @@
               CanUserDeleteRows="False"
               CanUserResizeColumns="False"
               HorizontalScrollBarVisibility="Hidden"
-              ItemsSource="{Binding}">
+              ItemsSource="{Binding ConfigurationStats}">
         <DataGrid.Columns>
             <DataGridTextColumn IsReadOnly="True"
                                 Width="250"
@@ -47,21 +51,21 @@
                     <l:Catalog>Value</l:Catalog>
                 </DataGridTemplateColumn.Header>
                 <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate>
+                    <DataTemplate DataType="viewModels:ConfigurationStatViewModel">
                         <ContentControl Content="{Binding}">
                             <ContentControl.Style>
                                 <Style TargetType="ContentControl">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding DataType}" Value="{x:Type system:Double}">
-                                            <Setter Property="ContentTemplate" Value="{StaticResource IntTemplate}" />
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding DataType}" Value="{x:Type system:Int32}">
+                                        <DataTrigger Binding="{Binding Stat.DataType}" Value="{x:Type system:Double}">
                                             <Setter Property="ContentTemplate" Value="{StaticResource DoubleTemplate}" />
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding DataType}" Value="{x:Type system:Boolean}">
+                                        <DataTrigger Binding="{Binding Stat.DataType}" Value="{x:Type system:Int32}">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource IntTemplate}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Stat.DataType}" Value="{x:Type system:Boolean}">
                                             <Setter Property="ContentTemplate" Value="{StaticResource BoolTemplate}" />
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding DataType.IsEnum}" Value="True">
+                                        <DataTrigger Binding="{Binding Stat.DataType.IsEnum}" Value="True">
                                             <Setter Property="ContentTemplate" Value="{StaticResource EnumTemplate}" />
                                         </DataTrigger>
                                     </Style.Triggers>

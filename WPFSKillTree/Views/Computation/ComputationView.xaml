@@ -4,11 +4,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:computationDamage="clr-namespace:PoESkillTree.Computation.Common.Builders.Damage;assembly=PoESkillTree.Computation.Common"
-             xmlns:computation="clr-namespace:PoESkillTree.Computation.Common;assembly=PoESkillTree.Computation.Common"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+             xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Computation"
              xmlns:local="clr-namespace:POESKillTree.Views.Computation"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:ComputationViewModel}">
     <UserControl.Resources>
         <ResourceDictionary>
             <x:Array x:Key="OffensiveStats" Type="local:MockStatViewModel">
@@ -44,24 +45,6 @@
                 <local:MockStatViewModel Identity="Cold.Resistance"
                                          DataType="system:Int32"
                                          MinimumValue="40" MaximumValue="40" />
-            </x:Array>
-            <x:Array x:Key="ConfigurationStats" Type="local:MockStatViewModel">
-                <local:MockStatViewModel Identity="SelectedQuestPart"
-                                         DataType="computation:QuestPart"
-                                         MinimumValue="2" MaximumValue="2" />
-                <local:MockStatViewModel Identity="Level"
-                                         Entity="Enemy"
-                                         DataType="system:Double"
-                                         MinimumValue="84" MaximumValue="84" />
-                <local:MockStatViewModel Identity="Projectile.TravelDistance"
-                                         DataType="system:Int32" />
-                <local:MockStatViewModel Identity="Shocked"
-                                         Entity="Enemy"
-                                         DataType="system:Boolean" />
-                <local:MockStatViewModel Identity="Chilled"
-                                         Entity="Enemy"
-                                         DataType="system:Boolean"
-                                         MinimumValue="1" MaximumValue="1" />
             </x:Array>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -117,6 +100,6 @@
             </TextBlock.Text>
         </TextBlock>
         <local:ConfigurationStatsView Grid.Column="2" Grid.Row="2"
-                                      DataContext="{StaticResource ConfigurationStats}" />
+                                      DataContext="{Binding}" />
     </Grid>
 </UserControl>
