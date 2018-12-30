@@ -106,6 +106,9 @@
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
+    <Reference Include="Enums.NET, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
+      <HintPath>..\packages\Enums.NET.2.3.2\lib\net45\Enums.NET.dll</HintPath>
+    </Reference>
     <Reference Include="ExpressionEvaluator">
       <HintPath>.\ExpressionEvaluator.dll</HintPath>
     </Reference>
@@ -145,6 +148,7 @@
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -213,8 +217,12 @@
     <Compile Include="Utils\WikiApi\CargoConstants.cs" />
     <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
     <Compile Include="Utils\Wpf\ScrollViewerBindableOffsetBehavior.cs" />
+    <Compile Include="ViewModels\Computation\AddableResultStatViewModel.cs" />
     <Compile Include="ViewModels\Computation\ComputationViewModel.cs" />
     <Compile Include="ViewModels\Computation\ConfigurationStatViewModel.cs" />
+    <Compile Include="ViewModels\Computation\ResultStatsViewModel.cs" />
+    <Compile Include="ViewModels\Computation\ResultStatViewModel.cs" />
+    <Compile Include="ViewModels\Computation\StatStub.cs" />
     <Compile Include="ViewModels\Crafting\AbstractCraftingViewModel.cs" />
     <Compile Include="ViewModels\Crafting\BaseGroup.cs" />
     <Compile Include="ViewModels\Crafting\CraftingViewModel.cs" />
@@ -237,7 +245,6 @@
     <Compile Include="Views\Computation\MainSkillSelectionView.xaml.cs">
       <DependentUpon>MainSkillSelectionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Computation\MockStatViewModel.cs" />
     <Compile Include="Views\Computation\ResultStatsView.xaml.cs">
       <DependentUpon>ResultStatsView.xaml</DependentUpon>
     </Compile>
