@@ -16,14 +16,9 @@ namespace POESKillTree.Model.Items.Mods
         public string Name { get; }
 
         /// <summary>
-        /// Gets the number of values mods of this affix have
+        /// All stat ids of all tiers. The valueIndex parameters to methods of Affix are indices of this array.
         /// </summary>
-        public int ValueCount { get; }
-
-        /// <summary>
-        /// Gets the stats of the first tier mod
-        /// </summary>
-        public IReadOnlyList<IStat> FirstTierStats { get; }
+        public IReadOnlyList<string> StatIds { get; }
 
         /// <summary>
         /// The ranges of this selector. The array index specifies the stat.
@@ -61,28 +56,33 @@ namespace POESKillTree.Model.Items.Mods
         {
             if (!mods.Any())
             {
-                ValueCount = 0;
-                FirstTierStats = new IStat[0];
+                StatIds = new string[0];
                 _ranges = new IReadOnlyList<Range<int>>[0];
                 _trees = new IRangeTree<int, ModWrapper>[0];
                 return;
             }
 
-            var firstMod = mods[0];
-            ValueCount = firstMod.Stats.Count;
-            FirstTierStats = firstMod.Stats;
+            StatIds = mods.SelectMany(m => m.Stats).Select(s => s.Id).Distinct().ToList();
+            var valueCount = StatIds.Count;
 
             var comparer = new ModWrapperComparer();
-            _trees = new IRangeTree<int, ModWrapper>[ValueCount];
-            _ranges = new IReadOnlyList<Range<int>>[ValueCount];
-            for (int i = 0; i < ValueCount; i++)
+            _trees = new IRangeTree<int, ModWrapper>[valueCount];
+            _ranges = new IReadOnlyList<Range<int>>[valueCount];
+            for (int i = 0; i < valueCount; i++)
             {
-                var wrapper = mods.Select(t => new ModWrapper(t, t.Stats[i].Range)).ToList();
+                var wrapper = mods.Select(t => new ModWrapper(t, SelectStat(t, i).Range)).ToList();
                 _trees[i] = new RangeTree<int, ModWrapper>(wrapper, comparer);
                 _ranges[i] = wrapper.Select(w => w.Range).ToList();
             }
 
             _allMods = mods.ToList();
+        }
+
+        public Stat SelectStat(IMod mod, int valueIndex)
+        {
+            var statId = StatIds[valueIndex];
+            var stat = mod.Stats.FirstOrDefault(s => s.Id == statId);
+            return stat ?? new Stat(statId, 0, 0);
         }
 
         public IEnumerable<IMod> QueryModsSingleValue(int valueIndex, int value)

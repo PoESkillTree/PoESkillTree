@@ -83,16 +83,18 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="110" />
-                <RowDefinition Height="110" />
-                <RowDefinition Height="110" />
+                <RowDefinition MinHeight="100" Height="Auto" />
+                <RowDefinition MinHeight="100" Height="Auto" />
+                <RowDefinition MinHeight="100" Height="Auto" />
             </Grid.RowDefinitions>
 
             <Label Content="Prefixes"
                    Grid.Column="0" Grid.Row="0"/>
             <local:ModSelectorView Grid.Column="0" Grid.Row="1"
+                                   Margin="0 0 0 10"
                                    DataContext="{Binding MsPrefix[0]}" />
             <local:ModSelectorView Grid.Column="0" Grid.Row="2"
+                                   Margin="0 0 0 10"
                                    DataContext="{Binding MsPrefix[1]}" />
             <local:ModSelectorView Grid.Column="0" Grid.Row="3"
                                    DataContext="{Binding MsPrefix[2]}"
@@ -107,8 +109,10 @@
             <Label Content="Suffixes"
                    Grid.Column="2" Grid.Row="0"/>
             <local:ModSelectorView Grid.Column="2" Grid.Row="1"
+                                   Margin="0 0 0 10"
                                    DataContext="{Binding MsSuffix[0]}" />
             <local:ModSelectorView Grid.Column="2" Grid.Row="2"
+                                   Margin="0 0 0 10"
                                    DataContext="{Binding MsSuffix[1]}" />
             <local:ModSelectorView Grid.Column="2" Grid.Row="3"
                                    DataContext="{Binding MsSuffix[2]}"

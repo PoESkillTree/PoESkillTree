@@ -8,7 +8,7 @@ namespace POESKillTree.Model.Items.Mods
     /// </summary>
     public interface IMod
     {
-        IReadOnlyList<IStat> Stats { get; }
+        IReadOnlyList<Stat> Stats { get; }
 
         string Name { get; }
 
