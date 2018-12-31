@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Media;
 using log4net;
-using POESKillTree.Model.Items.Enums;
+using PoESkillTree.GameModel.Items;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Model.Items

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using PoESkillTree.GameModel.PassiveTree;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.TreeGenerator.Algorithm.Model;
 using POESKillTree.TreeGenerator.Genetic;
@@ -196,7 +197,7 @@ namespace POESKillTree.TreeGenerator.Solver
         protected override bool IncludeNodeInSearchGraph(SkillNode node)
         {
             // Keystones can only be included if they are check-tagged.
-            return node.Type != NodeType.Keystone;
+            return node.Type != PassiveNodeType.Keystone;
         }
 
         /// <summary>
@@ -247,7 +248,7 @@ namespace POESKillTree.TreeGenerator.Solver
         private List<ConvertedPseudoAttributeConstraint> EvalPseudoAttrConstraints()
         {
             var keystones = from node in Settings.Checked
-                            where node.Type == NodeType.Keystone
+                            where node.Type == PassiveNodeType.Keystone
                             select node.Name;
             var conditionSettings = new ConditionSettings(Settings.Tags, Settings.OffHand, keystones.ToArray(), Settings.WeaponClass);
 

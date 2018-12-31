@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Core
 {
@@ -74,11 +73,11 @@ namespace PoESkillTree.Computation.Core
     /// <summary>
     /// Parameter object for <see cref="ICalculator.Update"/>.
     /// </summary>
-    public class CalculatorUpdate
+    public class CalculatorUpdate : ValueObject
     {
         public CalculatorUpdate(
-            IReadOnlyCollection<Modifier> addedModifiers,
-            IReadOnlyCollection<Modifier> removedModifiers)
+            IReadOnlyList<Modifier> addedModifiers,
+            IReadOnlyList<Modifier> removedModifiers)
         {
             AddedModifiers = addedModifiers;
             RemovedModifiers = removedModifiers;
@@ -87,21 +86,14 @@ namespace PoESkillTree.Computation.Core
         /// <summary>
         /// The modifiers added in this update.
         /// </summary>
-        public IReadOnlyCollection<Modifier> AddedModifiers { get; }
+        public IReadOnlyList<Modifier> AddedModifiers { get; }
 
         /// <summary>
         /// The modifiers removed in this update.
         /// </summary>
-        public IReadOnlyCollection<Modifier> RemovedModifiers { get; }
+        public IReadOnlyList<Modifier> RemovedModifiers { get; }
 
-        public override bool Equals(object obj) =>
-            (this == obj) || (obj is CalculatorUpdate other && Equals(other));
-
-        private bool Equals(CalculatorUpdate other) =>
-            AddedModifiers.SequenceEqual(other.AddedModifiers)
-            && RemovedModifiers.SequenceEqual(other.RemovedModifiers);
-
-        public override int GetHashCode() =>
-            (AddedModifiers.SequenceHash(), RemovedModifiers.SequenceHash()).GetHashCode();
+        protected override object ToTuple()
+            => (WithSequenceEquality(AddedModifiers), WithSequenceEquality(RemovedModifiers));
     }
 }

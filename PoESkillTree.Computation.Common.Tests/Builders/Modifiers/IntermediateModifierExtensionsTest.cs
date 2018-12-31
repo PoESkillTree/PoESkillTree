@@ -9,6 +9,8 @@ using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
 {
@@ -323,6 +325,25 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             Assert.AreEqual(buildParameters.ModifierForm, item.Form);
             Assert.AreEqual(value, item.Value);
             Assert.AreSame(source, item.Source);
+        }
+
+        [Test]
+        public void BuildThrowsForLocalTotalOverride()
+        {
+            var statBuilderResult =
+                new StatBuilderResult(new IStat[0], new ModifierSource.Local.Skill(), Funcs.Identity);
+            var statBuilder = Mock.Of<IStatBuilder>(
+                b => b.Build(It.IsAny<BuildParameters>()) == new[] { statBuilderResult });
+            var formBuilderMock = new Mock<IFormBuilder>();
+            formBuilderMock.Setup(b => b.Build()).Returns((Form.TotalOverride, (ValueConverter) Funcs.Identity));
+            var formBuilder = formBuilderMock.Object;
+            var entry = EmptyEntry
+                .WithStat(statBuilder)
+                .WithForm(formBuilder)
+                .WithValue(Mock.Of<IValueBuilder>());
+            var input = CreateResult(entry);
+
+            Assert.Throws<ArgumentException>(() => input.Build(Source, Entity));
         }
 
         private static readonly IntermediateModifierEntry EmptyEntry = new IntermediateModifierEntry();

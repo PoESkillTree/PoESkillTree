@@ -6,9 +6,14 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
     public interface ISkillBuilders
     {
         /// <summary>
+        /// Gets a collection of all skills.
+        /// </summary>
+        ISkillBuilderCollection AllSkills { get; }
+
+        /// <summary>
         /// Gets a collection of all skills that have the given keyword.
         /// </summary>
-        ISkillBuilderCollection this[params IKeywordBuilder[] keywords] { get; }
+        ISkillBuilderCollection this[IKeywordBuilder keyword] { get; }
 
         // Single skills that need to be individually referenced
 
@@ -19,6 +24,7 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
 
         ISkillBuilder DetonateMines { get; }
 
-        ISkillBuilder FromName(string skillName);
+        ISkillBuilder FromId(string skillId);
+        ISkillBuilder ModifierSourceSkill { get; }
     }
 }

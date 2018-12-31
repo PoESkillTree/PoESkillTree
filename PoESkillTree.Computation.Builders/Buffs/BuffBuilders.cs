@@ -5,12 +5,14 @@ using EnumsNET;
 using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
+using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Entities;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders.Buffs
 {
@@ -19,8 +21,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
         private readonly IStatFactory _statFactory;
         private readonly IReadOnlyList<BuffBuilderWithKeywords> _allBuffs;
 
-        public BuffBuilders(
-            IStatFactory statFactory, IEnumerable<SkillDefinition> skillBuffs)
+        public BuffBuilders(IStatFactory statFactory, SkillDefinitions skills)
         {
             _statFactory = statFactory;
             Fortify = Create("Fortify");
@@ -34,6 +35,8 @@ namespace PoESkillTree.Computation.Builders.Buffs
             ArcaneSurge = Create("ArcaneSurge");
             Tailwind = Create("Tailwind");
             CoveredInAsh = Create("CoveredInAsh");
+            Innervation = Create("Innervation");
+            Impale = Create("Impale");
             Conflux = new ConfluxBuffBuilders(statFactory);
             CurseLimit = StatBuilderUtils.FromIdentity(statFactory, "CurseLimit", typeof(int));
 
@@ -50,6 +53,8 @@ namespace PoESkillTree.Computation.Builders.Buffs
                 new BuffBuilderWithKeywords(ArcaneSurge),
                 new BuffBuilderWithKeywords(Tailwind, Keyword.Aura),
                 new BuffBuilderWithKeywords(CoveredInAsh),
+                new BuffBuilderWithKeywords(Innervation),
+                new BuffBuilderWithKeywords(Impale),
                 new BuffBuilderWithKeywords(Conflux.Chilling),
                 new BuffBuilderWithKeywords(Conflux.Elemental),
                 new BuffBuilderWithKeywords(Conflux.Igniting),
@@ -59,9 +64,9 @@ namespace PoESkillTree.Computation.Builders.Buffs
                 // Aura effect increase (used for Aura())
                 new BuffBuilderWithKeywords(Create("Aura"), Keyword.Aura),
             };
-            var skillBuffBuilders = skillBuffs
-                .Where(s => s.ProvidesBuff)
-                .Select(s => new BuffBuilderWithKeywords(Create(s.SkillName), s.Keywords));
+            var skillBuffBuilders = skills.Skills
+                .Where(s => !s.IsSupport && s.ActiveSkill.ProvidesBuff)
+                .Select(s => new BuffBuilderWithKeywords(Create(s.Id), s.ActiveSkill.Keywords));
             allBuffs.AddRange(skillBuffBuilders);
             _allBuffs = allBuffs;
         }
@@ -80,6 +85,8 @@ namespace PoESkillTree.Computation.Builders.Buffs
         public IBuffBuilder ArcaneSurge { get; }
         public IBuffBuilder Tailwind { get; }
         public IBuffBuilder CoveredInAsh { get; }
+        public IBuffBuilder Innervation { get; }
+        public IBuffBuilder Impale { get; }
         public IConfluxBuffBuilders Conflux { get; }
 
         public IStatBuilder Temporary(IStatBuilder gainedStat)
@@ -126,9 +133,12 @@ namespace PoESkillTree.Computation.Builders.Buffs
             IStatBuilder gainedStat, string buffIdentity, IEntityBuilder targetEntities)
         {
             var coreStatBuilder = new StatBuilderWithValueConverter(new StatBuilderAdapter(gainedStat),
-                (ps, target) => new StatValue(_statFactory.BuffEffect(ps.ModifierSourceEntity, target, buffIdentity)),
+                target => new ValueBuilderImpl(ps => Build(ps, target), _ => ps => Build(ps, target)),
                 (l, r) => l.Multiply(r));
             return new StatBuilder(_statFactory, coreStatBuilder).For(targetEntities);
+
+            IValue Build(BuildParameters ps, Entity target)
+                => new StatValue(_statFactory.BuffEffect(ps.ModifierSourceEntity, target, buffIdentity));
         }
 
         public IBuffBuilderCollection Buffs(IEntityBuilder source = null, params IEntityBuilder[] targets)

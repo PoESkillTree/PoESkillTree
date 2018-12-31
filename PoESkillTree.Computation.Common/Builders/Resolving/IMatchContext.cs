@@ -14,16 +14,6 @@ namespace PoESkillTree.Computation.Common.Builders.Resolving
         T this[int index] { get; }
 
         /// <summary>
-        /// Gets the first value.
-        /// </summary>
-        T First { get; }
-
-        /// <summary>
-        /// Gets the last value.
-        /// </summary>
-        T Last { get; }
-
-        /// <summary>
         /// Gets the only value.
         /// </summary>
         T Single { get; }

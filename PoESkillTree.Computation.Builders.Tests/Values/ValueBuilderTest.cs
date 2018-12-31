@@ -4,6 +4,7 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Tests.Values
@@ -126,7 +127,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
         {
             var sut = CreateSut(5);
 
-            var value = sut.Select(d => 2 * d, d => $"(2 * {d})").Build();
+            var value = sut.Select(Funcs.Identity, d => $"(2 * {d})").Build();
 
             Assert.AreEqual("(2 * 5)", value.ToString());
         }

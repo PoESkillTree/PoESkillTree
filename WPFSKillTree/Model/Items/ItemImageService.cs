@@ -10,7 +10,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using log4net;
-using POESKillTree.Model.Items.Enums;
+using PoESkillTree.GameModel.Items;
 using POESKillTree.Utils;
 using POESKillTree.Utils.WikiApi;
 

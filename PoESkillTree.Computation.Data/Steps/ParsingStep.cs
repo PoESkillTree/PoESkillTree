@@ -18,6 +18,7 @@
         StatManipulator,
         ValueConversion,
         FormAndStat,
+        Keystone,
         Form,
         GeneralStat,
         DamageStat,

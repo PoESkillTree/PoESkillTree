@@ -6,14 +6,13 @@ namespace PoESkillTree.Utils.Extensions
     public static class EnumerableExtensions
     {
         public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
-        {
-            return !enumerable.Any();
-        }
+            => !enumerable.Any();
 
         public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> enumerable)
-        {
-            return enumerable.SelectMany(ts => ts);
-        }
+            => enumerable.SelectMany(ts => ts);
+
+        public static bool All(this IEnumerable<bool> enumerable)
+            => enumerable.All(b => b);
 
         public static IEnumerable<T> Append<T>(this IEnumerable<T> @this, params T[] elements) => 
             @this.Concat(elements);
@@ -23,6 +22,15 @@ namespace PoESkillTree.Utils.Extensions
 
         public static bool ContainsAll<T>(this IEnumerable<T> @this, IReadOnlyCollection<T> elements) =>
             @this.Intersect(elements).Count() == elements.Count;
+
+        public static bool ContainsAny<T>(this IEnumerable<T> @this, params T[] elements) =>
+            @this.ContainsAny(elements.AsEnumerable());
+
+        public static bool ContainsAny<T>(this IEnumerable<T> @this, IEnumerable<T> elements) =>
+            @this.Intersect(elements).Any();
+
+        public static bool ContainsNone<T>(this IEnumerable<T> @this, IEnumerable<T> elements) =>
+            !@this.ContainsAny(elements);
 
         /// <summary>
         /// Returns a hash code for <paramref name="values"/> that can be used in conjunction with

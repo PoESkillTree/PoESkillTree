@@ -63,10 +63,18 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "per grand spectrum", PerStat(stat: Stat.GrandSpectrumJewelsSocketed) },
                 { "per level", PerStat(Stat.Level) },
+                { "per (stage|fuse charge)", PerStat(Stat.SkillStage) },
+                { "for each (stage|blade)", PerStat(Stat.SkillStage) },
+                { @"per stage, up to \+#", CappedMultiplier(Stat.SkillStage.Value, Value) },
+                {
+                    "per ({ChargeTypeMatchers}) removed",
+                    v => v * (Reference.AsChargeType.Amount.Value - Reference.AsChargeType.Amount.Minimum.Value)
+                },
                 // buffs
                 { "per buff on you", Buffs(targets: Self).Count() },
                 { "per curse on you", Buffs(targets: Self).With(Keyword.Curse).Count() },
                 { "for each curse on that enemy,", Buffs(targets: Enemy).With(Keyword.Curse).Count() },
+                { "for each impale on enemy", Buff.Impale.StackCount.For(Enemy).Value },
                 // ailments
                 { "for each poison on the enemy", Ailment.Poison.InstancesOn(Enemy).Value },
                 { "per poison on enemy", Ailment.Poison.InstancesOn(Enemy).Value },
@@ -74,6 +82,11 @@ namespace PoESkillTree.Computation.Data
                     @"per poison affecting enemy, up to \+#%",
                     CappedMultiplier(Ailment.Poison.InstancesOn(Enemy).Value, Value)
                 },
+                {
+                    "for each poison on the enemy, up to #",
+                    CappedMultiplier(Ailment.Poison.InstancesOn(Enemy).Value, Value)
+                },
+                { "per elemental ailment on the enemy", Ailment.Elemental.Count(b => b.IsOn(Enemy)) },
                 // skills
                 { "for each zombie you own", Skills.RaiseZombie.Instances.Value },
                 { "for each summoned golem", Golems.CombinedInstances.Value },
@@ -106,11 +119,19 @@ namespace PoESkillTree.Computation.Data
                     "for each of your traps triggered recently, up to #%",
                     CappedMultiplier(Stat.Unique("# of Traps Triggered Recently", typeof(int)).Value, Value)
                 },
+                {
+                    "for each time you've blocked in the past 10 seconds",
+                    Stat.Unique("# of times blocked in the past 10 seconds", typeof(int)).Value
+                },
+                {
+                    "per one hundred nearby enemies",
+                    Stat.Unique("# of nearby enemies", typeof(int)).Value / 100
+                },
             }; // add
 
         private Func<ValueBuilder, ValueBuilder> CappedMultiplier(ValueBuilder multiplier, ValueBuilder maximum)
         {
-            return v => ValueFactory.Minimmum(v * multiplier, maximum);
+            return v => ValueFactory.Minimum(v * multiplier, maximum);
         }
     }
 }

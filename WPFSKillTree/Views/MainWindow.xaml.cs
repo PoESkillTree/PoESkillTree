@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -21,6 +20,7 @@ using log4net;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MoreLinq;
+using PoESkillTree.GameModel.PassiveTree;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.ItemFilter.Views;
@@ -1506,7 +1506,7 @@ namespace POESKillTree.Views
                 if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != ascendancyClassName)
                     return;
                 // Ignore clicks on character portraits and masteries
-                if (node.Spc == null && node.Type != NodeType.Mastery)
+                if (node.Spc == null && node.Type != PassiveNodeType.Mastery)
                 {
                     if (_lastMouseButton == MouseButton.Right)
                     {
@@ -1610,7 +1610,7 @@ namespace POESKillTree.Views
             if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.AscendancyClasses.GetClassName(Tree.Chartype, Tree.AscType))
                 return;
 
-            if (node.Type == NodeType.JewelSocket)
+            if (node.Type == PassiveNodeType.JewelSocket)
             {
                 Tree.DrawJewelHighlight(node);
             }
@@ -1624,7 +1624,7 @@ namespace POESKillTree.Views
             else
             {
                 _prePath = Tree.GetShortestPathTo(node, Tree.SkilledNodes);
-                if (node.Type != NodeType.Mastery)
+                if (node.Type != PassiveNodeType.Mastery)
                     Tree.DrawPath(_prePath);
             }
             var tooltip = node.Name;
@@ -1642,7 +1642,7 @@ namespace POESKillTree.Views
                     sp.Children.Add(new Separator());
                     sp.Children.Add(new TextBlock { Text = node.reminderText.Aggregate((s1, s2) => s1 + '\n' + s2) });
                 }
-                if (_prePath != null && node.Type != NodeType.Mastery)
+                if (_prePath != null && node.Type != PassiveNodeType.Mastery)
                 {
                     var points = _prePath.Count;
                     if (_prePath.Any(x => x.IsAscendancyStart))

@@ -38,13 +38,20 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Enums.NET, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
+      <HintPath>..\packages\Enums.NET.2.3.2\lib\net45\Enums.NET.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MoreLinq, Version=2.4.20801.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
       <HintPath>..\packages\morelinq.2.4.1\lib\net40\MoreLinq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
@@ -57,14 +64,44 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ItemParsers\EmptyItemSlotParser.cs" />
+    <Compile Include="ItemParsers\ItemEquipmentParser.cs" />
+    <Compile Include="ItemParsers\ItemModifierParser.cs" />
+    <Compile Include="ItemParsers\ItemParser.cs" />
+    <Compile Include="ItemParsers\ItemPropertyParser.cs" />
+    <Compile Include="ItemParsers\PartialItemParserParameter.cs" />
+    <Compile Include="ModifierCollection.cs" />
+    <Compile Include="ParseResultExtensions.cs" />
+    <Compile Include="PassiveTreeParsers\PassiveNodeParser.cs" />
+    <Compile Include="PassiveTreeParsers\SkilledPassiveNodeParser.cs" />
+    <Compile Include="SkillParsers\ActiveSkillGeneralParser.cs" />
+    <Compile Include="SkillParsers\ISkillKeywordSelector.cs" />
+    <Compile Include="SkillParsers\SkillKeywordParser.cs" />
+    <Compile Include="SkillParsers\ActiveSkillLevelParser.cs" />
+    <Compile Include="SkillParsers\SkillModifierCollection.cs" />
+    <Compile Include="SkillParsers\SkillPreParser.cs" />
+    <Compile Include="SkillParsers\IPartialSkillParser.cs" />
+    <Compile Include="SkillParsers\SkillPreParseResult.cs" />
     <Compile Include="GivenStatsParser.cs" />
-    <Compile Include="Referencing\ResolvedMatchContext.cs" />
     <Compile Include="IParser.cs" />
-    <Compile Include="MatcherDataParser.cs" />
-    <Compile Include="CachingParser.cs" />
-    <Compile Include="Parser.cs" />
+    <Compile Include="SkillParsers\ActiveSkillParser.cs" />
+    <Compile Include="SkillParsers\SkillStatParser.cs" />
+    <Compile Include="SkillParsers\GemRequirementParser.cs" />
+    <Compile Include="SkillParsers\PartialSkillParseResult.cs" />
+    <Compile Include="SkillParsers\SkillStatIds.cs" />
+    <Compile Include="SkillParsers\SkillTypeParser.cs" />
+    <Compile Include="SkillParsers\SupportSkillGeneralParser.cs" />
+    <Compile Include="SkillParsers\SupportSkillLevelParser.cs" />
+    <Compile Include="SkillParsers\SupportSkillParser.cs" />
+    <Compile Include="SkillParsers\TranslatingSkillParser.cs" />
+    <Compile Include="StringParsers\IStringParser.cs" />
+    <Compile Include="Referencing\ResolvedMatchContext.cs" />
+    <Compile Include="ICoreParser.cs" />
+    <Compile Include="StringParsers\MatcherDataParser.cs" />
+    <Compile Include="StringParsers\CachingParser.cs" />
+    <Compile Include="CoreParser.cs" />
     <Compile Include="ParseResult.cs" />
-    <Compile Include="ResultMappingParser.cs" />
+    <Compile Include="StringParsers\ResultMappingParser.cs" />
     <Compile Include="Referencing\ResolvedReferenceConverter.cs" />
     <Compile Include="Referencing\IReferencedRegexes.cs" />
     <Compile Include="Referencing\IReferenceToMatcherDataResolver.cs" />
@@ -73,14 +110,16 @@
     <Compile Include="Referencing\ReferenceService.cs" />
     <Compile Include="Referencing\ReferenceValidator.cs" />
     <Compile Include="Referencing\RegexGroupService.cs" />
-    <Compile Include="ResolvingParser.cs" />
-    <Compile Include="MatcherDataParseResult.cs" />
+    <Compile Include="StringParsers\ResolvingParser.cs" />
+    <Compile Include="StringParsers\MatcherDataParseResult.cs" />
     <Compile Include="Referencing\StatMatcherRegexExpander.cs" />
-    <Compile Include="CompositeParser.cs" />
-    <Compile Include="StatNormalizingParser.cs" />
+    <Compile Include="StringParsers\CompositeParser.cs" />
+    <Compile Include="StringParsers\StatNormalizingParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StatReplacingParser.cs" />
-    <Compile Include="ValidatingParser.cs" />
+    <Compile Include="StringParsers\StatReplacingParser.cs" />
+    <Compile Include="StringParsers\StringParseResult.cs" />
+    <Compile Include="StringParsers\ValidatingParser.cs" />
+    <Compile Include="UntranslatedStatParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">

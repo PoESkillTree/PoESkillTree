@@ -92,8 +92,6 @@
     <Compile Include="Builders\Equipment\IEquipmentBuilder.cs" />
     <Compile Include="Builders\Equipment\IEquipmentBuilderCollection.cs" />
     <Compile Include="Builders\Equipment\IEquipmentBuilders.cs" />
-    <Compile Include="Builders\Equipment\IItemSlotBuilder.cs" />
-    <Compile Include="Builders\Equipment\IItemSlotBuilders.cs" />
     <Compile Include="Builders\Forms\IFormBuilder.cs" />
     <Compile Include="Builders\Forms\IFormBuilders.cs" />
     <Compile Include="Builders\IBuilderCollection.cs" />
@@ -115,8 +113,6 @@
     <Compile Include="Builders\Skills\ISkillBuilder.cs" />
     <Compile Include="Builders\Skills\ISkillBuilderCollection.cs" />
     <Compile Include="Builders\Skills\ISkillBuilders.cs" />
-    <Compile Include="Builders\Skills\Keyword.cs" />
-    <Compile Include="Builders\Skills\SkillDefinition.cs" />
     <Compile Include="Builders\StatConverter.cs" />
     <Compile Include="Builders\Stats\IAttributeStatBuilders.cs" />
     <Compile Include="Builders\Stats\IDamageRelatedStatBuilder.cs" />
@@ -133,6 +129,7 @@
     <Compile Include="Builders\Stats\IProjectileStatBuilders.cs" />
     <Compile Include="Builders\Stats\IRechargeStatBuilder.cs" />
     <Compile Include="Builders\Stats\IRegenStatBuilder.cs" />
+    <Compile Include="Builders\Stats\IRequirementStatBuilders.cs" />
     <Compile Include="Builders\Stats\ISkillEntityStatBuilders.cs" />
     <Compile Include="Builders\Stats\IStatBuilder.cs" />
     <Compile Include="Builders\Stats\IStatBuilders.cs" />
@@ -143,7 +140,6 @@
     <Compile Include="Builders\Values\IValueBuilders.cs" />
     <Compile Include="Builders\Values\ValueBuilder.cs" />
     <Compile Include="Builders\Values\ValueBuilderUtils.cs" />
-    <Compile Include="Entity.cs" />
     <Compile Include="ExplicitRegistrationType.cs" />
     <Compile Include="GameStateEnums.cs" />
     <Compile Include="SimpleValues.cs" />

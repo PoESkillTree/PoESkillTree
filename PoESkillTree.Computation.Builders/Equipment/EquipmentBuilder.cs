@@ -22,24 +22,30 @@ namespace PoESkillTree.Computation.Builders.Equipment
 
         public IEquipmentBuilder Resolve(ResolveContext context) => this;
 
-        public IStatBuilder ItemTags =>
-            StatBuilderUtils.FromIdentity(_statFactory, $"{_slot}.ItemTags", typeof(Tags));
+        public IStatBuilder ItemTags
+            => StatBuilderUtils.FromIdentity(_statFactory, $"{_slot}.ItemTags", typeof(Tags));
 
-        public IConditionBuilder Has(Tags tag) =>
-            ValueConditionBuilder.Create(ItemTags.Value, v => ToTags(v).HasFlag(tag),
+        public IConditionBuilder Has(Tags tag)
+            => ValueConditionBuilder.Create(ItemTags.Value, v => ToTags(v).HasFlag(tag),
                 v => $"((Tags) {v}).HasFlag({tag})");
 
-        private static Tags ToTags(NodeValue? value) =>
-            value is NodeValue v ? ((Tags) (int) v.Maximum) : Tags.Default;
+        private static Tags ToTags(NodeValue? value)
+            => value is NodeValue v ? TagsExtensions.DecodeFromDouble(v.Single) : Tags.Default;
 
-        public IConditionBuilder Has(FrameType frameType) =>
-            StatBuilderUtils.FromIdentity(_statFactory, $"{_slot}.ItemFrameType", typeof(FrameType))
-                .Value.Eq((int) frameType);
+        public IStatBuilder ItemClass
+            => StatBuilderUtils.FromIdentity(_statFactory, $"{_slot}.ItemClass", typeof(ItemClass));
 
-        public IConditionBuilder HasItem =>
-            ValueConditionBuilder.Create(ItemTags.Value, v => v.HasValue, v => $"{v}.HasValue");
+        public IConditionBuilder Has(ItemClass itemClass) => ItemClass.Value.Eq((int) itemClass);
 
-        public IConditionBuilder IsCorrupted =>
-            StatBuilderUtils.ConditionFromIdentity(_statFactory, $"{_slot}.ItemIsCorrupted");
+        public IStatBuilder FrameType
+            => StatBuilderUtils.FromIdentity(_statFactory, $"{_slot}.ItemFrameType", typeof(FrameType));
+
+        public IConditionBuilder Has(FrameType frameType) => FrameType.Value.Eq((int) frameType);
+
+        public IConditionBuilder HasItem
+            => ValueConditionBuilder.Create(ItemTags.Value, v => v.HasValue, v => $"{v}.HasValue");
+
+        public IStatBuilder Corrupted
+            => StatBuilderUtils.FromIdentity(_statFactory, $"{_slot}.ItemIsCorrupted", typeof(bool));
     }
 }

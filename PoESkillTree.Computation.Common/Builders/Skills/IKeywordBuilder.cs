@@ -1,4 +1,5 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Resolving;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Common.Builders.Skills
 {
@@ -8,6 +9,6 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
     /// </summary>
     public interface IKeywordBuilder : IResolvable<IKeywordBuilder>
     {
-        Keyword Build();
+        Keyword Build(BuildParameters parameters);
     }
 }

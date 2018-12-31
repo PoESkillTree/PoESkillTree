@@ -7,10 +7,14 @@ using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Skills
 {
@@ -18,26 +22,26 @@ namespace PoESkillTree.Computation.Builders.Skills
     {
         private readonly IStatFactory _statFactory;
         private readonly ICoreBuilder<IEnumerable<Keyword>> _coreBuilder;
-        private readonly Func<IEnumerable<Keyword>, IEnumerable<string>> _selectSkills;
+        private readonly IEnumerable<SkillDefinition> _skills;
 
         public SkillBuilderCollection(
             IStatFactory statFactory, IEnumerable<IKeywordBuilder> keywords,
-            Func<IEnumerable<Keyword>, IEnumerable<string>> selectSkills)
-            : this(statFactory, new KeywordsCoreBuilder(keywords), selectSkills)
+            IEnumerable<SkillDefinition> skills)
+            : this(statFactory, new KeywordsCoreBuilder(keywords), skills)
         {
         }
 
         private SkillBuilderCollection(
             IStatFactory statFactory, ICoreBuilder<IEnumerable<Keyword>> coreBuilder,
-            Func<IEnumerable<Keyword>, IEnumerable<string>> selectSkills)
+            IEnumerable<SkillDefinition> skills)
         {
             _statFactory = statFactory;
             _coreBuilder = coreBuilder;
-            _selectSkills = selectSkills;
+            _skills = skills;
         }
 
         public ISkillBuilderCollection Resolve(ResolveContext context) =>
-            new SkillBuilderCollection(_statFactory, _coreBuilder.Resolve(context), _selectSkills);
+            new SkillBuilderCollection(_statFactory, _coreBuilder.Resolve(context), _skills);
 
         public IActionBuilder Cast =>
             new ActionBuilder(_statFactory, CoreBuilder.UnaryOperation(_coreBuilder,
@@ -59,9 +63,13 @@ namespace PoESkillTree.Computation.Builders.Skills
         private IEnumerable<IStat> SelectSkillStats(
             IEnumerable<Keyword> keywords, Entity entity, Type dataType,
             [CallerMemberName] string identitySuffix = null)
-            => from skill in _selectSkills(keywords)
-               let identity = $"{skill}.{identitySuffix}"
-               select _statFactory.FromIdentity(identity, entity, dataType);
+        {
+            var keywordList = keywords.ToList();
+            return from skill in _skills
+                   where !skill.IsSupport && skill.ActiveSkill.Keywords.ContainsAll(keywordList)
+                   let identity = $"{skill.Id}.{identitySuffix}"
+                   select _statFactory.FromIdentity(identity, entity, dataType);
+        }
 
         private static string KeywordsToString(IEnumerable<Keyword> keywords) =>
             $"Skills[{keywords.ToDelimitedString(", ")}]";
@@ -76,8 +84,8 @@ namespace PoESkillTree.Computation.Builders.Skills
             public ICoreBuilder<IEnumerable<Keyword>> Resolve(ResolveContext context) =>
                 new KeywordsCoreBuilder(_keywords.Select(b => b.Resolve(context)));
 
-            public IEnumerable<Keyword> Build() =>
-                _keywords.Select(b => b.Build());
+            public IEnumerable<Keyword> Build(BuildParameters parameters) =>
+                _keywords.Select(b => b.Build(parameters));
         }
     }
 }

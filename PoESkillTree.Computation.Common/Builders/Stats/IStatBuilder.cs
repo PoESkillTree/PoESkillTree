@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
@@ -62,21 +62,16 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder ChanceToDouble { get; }
 
         /// <summary>
+        /// Returns this stat as a property of the ModifierSource item. Properties are modified by
+        /// local modifiers on the item. The Total value is used to set this stat.
+        /// </summary>
+        IStatBuilder AsItemProperty { get; }
+
+        /// <summary>
         /// Applies this stat to <paramref name="entity"/> instead of the currently modified entity.
         /// See <see cref="IConditionBuilders.For"/> for more information.
         /// </summary>
         IStatBuilder For(IEntityBuilder entity);
-
-        /// <summary>
-        /// This stat only applies if the active skill has the given keyword. Normally refers to the selected skill
-        /// part, but some damage related stats can have separate keywords.
-        /// </summary>
-        IStatBuilder With(IKeywordBuilder keyword);
-
-        /// <summary>
-        /// This stat only applies if the active skill does not have the given keyword.
-        /// </summary>
-        IStatBuilder NotWith(IKeywordBuilder keyword);
 
         /// <summary>
         /// Returns a stat that is identical to this stat but is only modified if the given condition is satisfied.
@@ -87,9 +82,17 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         /// <summary>
         /// Returns a stat that combines this and the given stat. Modifiers to the returned stat will apply to both,
-        /// but only once (no multiple application if one of the stats is converted to another).
+        /// but only once (no multiple application if one of the stats is converted to another). If this and the
+        /// given stat both build to multiple results, an exception is thrown.
         /// </summary>
         IStatBuilder CombineWith(IStatBuilder other);
+
+        /// <summary>
+        /// Returns a stat that concatenates this and the given stat. Modifiers to the returned stat will apply to both,
+        /// but the results of this and the given stat are concatenated when <see cref="Build"/> is called
+        /// (as opposed to being merged, which is done in <see cref="CombineWith"/>).
+        /// </summary>
+        IStatBuilder Concat(IStatBuilder other);
 
         /// <summary>
         /// Builds this instance into a list of <see cref="StatBuilderResult"/>s.

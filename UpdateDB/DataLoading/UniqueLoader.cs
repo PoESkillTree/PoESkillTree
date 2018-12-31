@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using log4net;
 using MoreLinq;
 using Newtonsoft.Json.Linq;
+using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils.Extensions;
-using POESKillTree.Model.Items;
 using POESKillTree.Utils.WikiApi;
 using static POESKillTree.Utils.WikiApi.CargoConstants;
 
@@ -100,7 +100,7 @@ namespace UpdateDB.DataLoading
 
         private static string GetWhereClause(string wikiClass)
         {
-            return $"{Rarity}='Unique' AND {ItemClass}='{wikiClass}'";
+            return $"{Rarity}='Unique' AND {CargoConstants.ItemClass}='{wikiClass}'";
         }
 
         private static IEnumerable<XmlUnique> ReadJson(

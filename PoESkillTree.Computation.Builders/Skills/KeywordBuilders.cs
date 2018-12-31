@@ -1,4 +1,5 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders.Skills
 {
@@ -7,7 +8,6 @@ namespace PoESkillTree.Computation.Builders.Skills
         public IKeywordBuilder Attack { get; } = From(Keyword.Attack);
         public IKeywordBuilder Spell { get; } = From(Keyword.Spell);
         public IKeywordBuilder Projectile { get; } = From(Keyword.Projectile);
-        public IKeywordBuilder Bow { get; } = From(Keyword.Bow);
         public IKeywordBuilder AreaOfEffect { get; } = From(Keyword.AreaOfEffect);
         public IKeywordBuilder Melee { get; } = From(Keyword.Melee);
         public IKeywordBuilder Totem { get; } = From(Keyword.Totem);
@@ -23,6 +23,9 @@ namespace PoESkillTree.Computation.Builders.Skills
         public IKeywordBuilder Herald { get; } = From(Keyword.Herald);
         public IKeywordBuilder Offering { get; } = From(Keyword.Offering);
         public IKeywordBuilder CounterAttack { get; } = From(Keyword.CounterAttack);
+        public IKeywordBuilder Bow { get; } = From(Keyword.Bow);
+        public IKeywordBuilder Brand { get; } = From(Keyword.Brand);
+        IKeywordBuilder IKeywordBuilders.From(Keyword keyword) => From(keyword);
 
         private static IKeywordBuilder From(Keyword keyword) => new KeywordBuilder(keyword);
     }

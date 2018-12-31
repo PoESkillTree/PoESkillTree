@@ -47,7 +47,5 @@ namespace PoESkillTree.Computation.Common.Builders
         IStatBuilders StatBuilders { get; }
 
         IValueBuilders ValueBuilders { get; }
-
-        IItemSlotBuilders ItemSlotBuilders { get; }
     }
 }

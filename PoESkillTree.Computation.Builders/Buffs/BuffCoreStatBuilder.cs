@@ -38,13 +38,13 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
         public IEnumerable<StatBuilderResult> Build(BuildParameters parameters)
         {
-            var restrictions = _restrictionsBuilder.Build();
+            var restrictions = _restrictionsBuilder.Build(parameters);
             var selectedBuffs = _buffs.Where(restrictions.AllowsBuff).ToList();
             if (selectedBuffs.IsEmpty())
                 return Enumerable.Empty<StatBuilderResult>();
             return selectedBuffs
                 .Select(b => _statFactory(b.Buff))
-                .Aggregate((l, r) => l.CombineWith(r))
+                .Aggregate((l, r) => l.Concat(r))
                 .Build(parameters);
         }
     }

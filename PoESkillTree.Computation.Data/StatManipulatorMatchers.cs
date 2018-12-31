@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Data
             {
                 { "you and nearby allies( deal| have)?", s => Buff.Aura(s, Self, Ally) },
                 {
-                    "auras you cast grant (?<inner>.*) to you and allies",
+                    "auras from your skills grant (?<inner>.*) to you and allies",
                     s => Buffs(Self, Self, Ally).With(Keyword.Aura).Without(Keyword.Curse).AddStat(s), "${inner}"
                 },
                 {
@@ -39,8 +39,13 @@ namespace PoESkillTree.Computation.Data
                     "every # seconds, gain (?<inner>.*) for # seconds",
                     s => Buff.Temporary(s), "${inner}"
                 },
-                { "nearby enemies( have| deal)?", s => Buff.Aura(s, Enemy) },
-                { "enemies near your totems( have| deal)?", s => Buff.Aura(s, Enemy).For(Entity.Totem) },
+                { "nearby enemies (have|deal)", s => Buff.Aura(s, Enemy) },
+                { "nearby enemies(?= take)", s => Buff.Aura(s, Enemy) },
+                { "nearby chilled enemies deal", s => Buff.Aura(s, Enemy).WithCondition(Ailment.Chill.IsOn(Enemy)) },
+                { "enemies near your totems (have|deal)", s => Buff.Aura(s, Enemy).For(Entity.Totem) },
+                { "enemies near your totems(?= take)", s => Buff.Aura(s, Enemy).For(Entity.Totem) },
+                { "({BuffMatchers}) grants", s => Reference.AsBuff.AddStat(s) },
+                { @"\(AsItemProperty\)", s => s.AsItemProperty },
             };
     }
 }

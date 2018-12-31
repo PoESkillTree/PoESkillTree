@@ -35,13 +35,13 @@ namespace PoESkillTree.Computation.Data.GivenStats
             _lazyGivenStats = new Lazy<IReadOnlyList<IIntermediateModifier>>(() => CreateCollection().ToList());
         }
 
-        public IReadOnlyList<Entity> AffectedEntities { get; } = new[] { Common.Entity.Character };
+        public IReadOnlyList<Entity> AffectedEntities { get; } = new[] { GameModel.Entity.Character };
 
         public IReadOnlyList<string> GivenStatLines { get; } = new[]
         {
             // while Dual Wielding
             "10% more Attack Speed while Dual Wielding",
-            "15% additional Block Chance while Dual Wielding",
+            "+15% chance to block attack damage while Dual Wielding",
             "20% more Attack Physical Damage while Dual Wielding",
             // charges
             "4% additional Physical Damage Reduction per Endurance Charge",
@@ -72,6 +72,10 @@ namespace PoESkillTree.Computation.Data.GivenStats
 
         private GivenStatCollection CreateCollection() => new GivenStatCollection(_modifierBuilder, ValueFactory)
         {
+            // passive points
+            { BaseSet, Stat.PassivePoints.Maximum, Stat.Level.Value - 1 },
+            { BaseAdd, Stat.PassivePoints.Maximum, 22 },
+            { BaseSet, Stat.AscendancyPassivePoints.Maximum, 8 },
             // pools
             { BaseSet, Life, CharacterClassBased(_characterBaseStats.Life, "Life") },
             { BaseSet, Mana, CharacterClassBased(_characterBaseStats.Mana, "Mana") },
@@ -109,8 +113,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             },
             { BaseSet, CriticalStrike.Chance.With(AttackDamageHand.MainHand), 0, Not(MainHand.HasItem) },
             {
-                BaseSet, Stat.CastRate.With(AttackDamageHand.MainHand),
-                1 / CharacterClassBased(_characterBaseStats.UnarmedAttackTime, "UnarmedAttackTime") / 100,
+                BaseSet, Stat.BaseCastTime.With(AttackDamageHand.MainHand),
+                CharacterClassBased(_characterBaseStats.UnarmedAttackTime, "UnarmedAttackTime") / 100,
                 Not(MainHand.HasItem)
             },
             {

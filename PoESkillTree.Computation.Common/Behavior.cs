@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Common
 {
@@ -9,13 +8,9 @@ namespace PoESkillTree.Computation.Common
     /// Defines a behavior. A behavior applies an <see cref="IValueTransformation"/> to a defined set of calculation
     /// graph nodes, thus modifying the values calculated by those nodes.
     /// </summary>
-    public class Behavior
+    public class Behavior : ValueObject
     {
         /*
-         * Effectiveness of Added Damage:
-         * - Applies to NodeType.BaseAdd of all damage stats
-         * - Values of requested form nodes are multiplied by the effectiveness stat's value
-         * - Affects all paths (only non-conversion paths have BaseAdd nodes)
          * Rounding:
          * - Each stat can have different rounding behaviors
          * - This can affect nodes of all NodeTypes
@@ -23,7 +18,7 @@ namespace PoESkillTree.Computation.Common
          * - Affects all paths
          */
 
-        public Behavior(IEnumerable<IStat> affectedStats, IEnumerable<NodeType> affectedNodeTypes,
+        public Behavior(IReadOnlyList<IStat> affectedStats, IReadOnlyList<NodeType> affectedNodeTypes,
             BehaviorPathInteraction affectedPaths, IValueTransformation transformation)
         {
             AffectedStats = affectedStats;
@@ -35,12 +30,12 @@ namespace PoESkillTree.Computation.Common
         /// <summary>
         /// The <see cref="IStat"/> subgraphs affected by this behavior.
         /// </summary>
-        public IEnumerable<IStat> AffectedStats { get; }
+        public IReadOnlyList<IStat> AffectedStats { get; }
 
         /// <summary>
         /// The <see cref="NodeType"/>s of nodes affected by this behavior.
         /// </summary>
-        public IEnumerable<NodeType> AffectedNodeTypes { get; }
+        public IReadOnlyList<NodeType> AffectedNodeTypes { get; }
 
         /// <summary>
         /// The <see cref="PathDefinition"/>s of nodes affected by this behavior.
@@ -52,17 +47,9 @@ namespace PoESkillTree.Computation.Common
         /// </summary>
         public IValueTransformation Transformation { get; }
 
-        public override bool Equals(object obj) =>
-            (obj == this) || (obj is Behavior other && Equals(other));
-
-        private bool Equals(Behavior other) =>
-            Transformation.Equals(other.Transformation) && AffectedPaths.Equals(other.AffectedPaths) &&
-            AffectedStats.SequenceEqual(other.AffectedStats) &&
-            AffectedNodeTypes.SequenceEqual(other.AffectedNodeTypes);
-
-        public override int GetHashCode() =>
-            (AffectedStats.SequenceHash(), AffectedNodeTypes.SequenceHash(), AffectedPaths, Transformation)
-            .GetHashCode();
+        protected override object ToTuple()
+            => (WithSequenceEquality(AffectedStats), WithSequenceEquality(AffectedNodeTypes), AffectedPaths,
+                Transformation);
     }
 
 

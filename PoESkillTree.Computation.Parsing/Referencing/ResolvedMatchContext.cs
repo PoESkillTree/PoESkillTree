@@ -34,28 +34,6 @@ namespace PoESkillTree.Computation.Parsing.Referencing
             }
         }
 
-        public T First
-        {
-            get
-            {
-                if (_values.IsEmpty())
-                    throw new ParseException(
-                        "Tried to access first value in context with no values");
-                return _values.First();
-            }
-        }
-
-        public T Last
-        {
-            get
-            {
-                if (_values.IsEmpty())
-                    throw new ParseException(
-                        "Tried to access first value in context with no values");
-                return _values.Last();
-            }
-        }
-
         public T Single
         {
             get

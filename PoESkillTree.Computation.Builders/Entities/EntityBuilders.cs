@@ -1,8 +1,11 @@
-﻿using PoESkillTree.Computation.Builders.Stats;
+﻿using System.Collections.Generic;
+using System.Linq;
+using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Builders.Entities
 {
@@ -13,10 +16,14 @@ namespace PoESkillTree.Computation.Builders.Entities
         public EntityBuilders(IStatFactory statFactory) => _statFactory = statFactory;
 
         public IEntityBuilder Self => new ModifierSourceEntityBuilder();
+        public IEntityBuilder OpponentOfSelf => new ModifierSourceOpponentEntityBuilder();
         public IEnemyBuilder Enemy => new EnemyBuilder(_statFactory);
+        public IEntityBuilder Character => new EntityBuilder(Entity.Character);
         public IEntityBuilder Ally => new EntityBuilder(Entity.Minion, Entity.Totem);
         public IEntityBuilder Totem => new EntityBuilder(Entity.Totem);
         public IEntityBuilder Minion => new EntityBuilder(Entity.Minion);
+        public IEntityBuilder Any => EntityBuilder.AllEntities;
+        public IEntityBuilder From(IEnumerable<Entity> entities) => new EntityBuilder(entities.ToArray());
 
         private class EnemyBuilder : EntityBuilder, IEnemyBuilder
         {

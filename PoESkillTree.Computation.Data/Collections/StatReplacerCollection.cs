@@ -13,19 +13,11 @@ namespace PoESkillTree.Computation.Data.Collections
     {
         private readonly List<StatReplacerData> _data = new List<StatReplacerData>();
 
-        public IEnumerator<StatReplacerData> GetEnumerator()
-        {
-            return _data.GetEnumerator();
-        }
+        public IEnumerator<StatReplacerData> GetEnumerator() => _data.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public void Add([RegexPattern] string originalStat, params string[] replacements)
-        {
-            _data.Add(new StatReplacerData(originalStat, replacements));
-        }
+            => _data.Add(new StatReplacerData(originalStat, replacements));
     }
 }

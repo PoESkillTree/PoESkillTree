@@ -5,6 +5,8 @@ using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Steps;
+using PoESkillTree.GameModel.PassiveTree;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Data
 {
@@ -30,15 +32,16 @@ namespace PoESkillTree.Computation.Data
         private readonly Lazy<StatMatchersSelector> _statMatchersSelector;
 
         public ParsingData(
-            IBuilderFactories builderFactories, IMatchContexts matchContexts, IReadOnlyList<string> skillNames)
+            IBuilderFactories builderFactories, IMatchContexts matchContexts, IReadOnlyList<SkillDefinition> skills,
+            IReadOnlyList<PassiveNodeDefinition> passives)
         {
             _builderFactories = builderFactories;
             _matchContexts = matchContexts;
 
             _statMatchers = new Lazy<IReadOnlyList<IStatMatchers>>(
-                () => CreateStatMatchers(new ModifierBuilder()));
+                () => CreateStatMatchers(new ModifierBuilder(), passives));
             _referencedMatchers = new Lazy<IReadOnlyList<IReferencedMatchers>>(
-                () => CreateReferencedMatchers(skillNames));
+                () => CreateReferencedMatchers(skills));
             _statMatchersSelector = new Lazy<StatMatchersSelector>(
                 () => new StatMatchersSelector(StatMatchers));
         }
@@ -53,13 +56,15 @@ namespace PoESkillTree.Computation.Data
 
         public IStatMatchers SelectStatMatcher(ParsingStep step) => _statMatchersSelector.Value.Get(step);
 
-        private IReadOnlyList<IStatMatchers> CreateStatMatchers(IModifierBuilder modifierBuilder) =>
-            new IStatMatchers[]
+        private IReadOnlyList<IStatMatchers> CreateStatMatchers(
+            IModifierBuilder modifierBuilder, IReadOnlyList<PassiveNodeDefinition> passives)
+            => new IStatMatchers[]
             {
                 new SpecialMatchers(_builderFactories, _matchContexts, modifierBuilder),
                 new StatManipulatorMatchers(_builderFactories, _matchContexts, modifierBuilder),
                 new ValueConversionMatchers(_builderFactories, _matchContexts, modifierBuilder),
                 new FormAndStatMatchers(_builderFactories, _matchContexts, modifierBuilder),
+                new KeystoneStatMatchers(_builderFactories, _matchContexts, modifierBuilder, passives),
                 new FormMatchers(_builderFactories, _matchContexts, modifierBuilder),
                 new GeneralStatMatchers(_builderFactories, _matchContexts, modifierBuilder),
                 new DamageStatMatchers(_builderFactories, _matchContexts, modifierBuilder),
@@ -68,7 +73,7 @@ namespace PoESkillTree.Computation.Data
                 new ActionConditionMatchers(_builderFactories, _matchContexts, modifierBuilder),
             };
 
-        private IReadOnlyList<IReferencedMatchers> CreateReferencedMatchers(IReadOnlyList<string> skillNames) =>
+        private IReadOnlyList<IReferencedMatchers> CreateReferencedMatchers(IReadOnlyList<SkillDefinition> skills) =>
             new IReferencedMatchers[]
             {
                 new ActionMatchers(_builderFactories.ActionBuilders),
@@ -77,7 +82,7 @@ namespace PoESkillTree.Computation.Data
                 new DamageTypeMatchers(_builderFactories.DamageTypeBuilders),
                 new BuffMatchers(_builderFactories.BuffBuilders),
                 new KeywordMatchers(_builderFactories.KeywordBuilders),
-                new SkillMatchers(skillNames, _builderFactories.SkillBuilders.FromName),
+                new SkillMatchers(skills, _builderFactories.SkillBuilders.FromId),
             };
     }
 }

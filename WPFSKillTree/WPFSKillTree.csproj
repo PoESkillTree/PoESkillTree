@@ -217,21 +217,12 @@
     <Compile Include="Model\Items\Mods\IMod.cs" />
     <Compile Include="Model\Items\Mods\JsonCraftingBenchOption.cs" />
     <Compile Include="Model\Items\Mods\JsonMod.cs" />
-    <Compile Include="Model\Items\Mods\JsonNpcMaster.cs" />
     <Compile Include="Model\Items\Mods\Mod.cs" />
     <Compile Include="Model\Items\Mods\ModDatabase.cs" />
     <Compile Include="Model\Items\Enums\ModDomain.cs" />
     <Compile Include="Model\Items\Mods\Affix.cs" />
     <Compile Include="Model\Items\Mods\Stat.cs" />
-    <Compile Include="Model\Items\Mods\StatLocalityChecker.cs" />
-    <Compile Include="Model\Items\StatTranslation\Format.cs" />
-    <Compile Include="Model\Items\StatTranslation\IndexHandler.cs" />
-    <Compile Include="Model\Items\StatTranslation\JsonStatTranslation.cs" />
-    <Compile Include="Model\Items\StatTranslation\StatTranslator.cs" />
-    <Compile Include="Model\Items\Enums\ItemClass.cs" />
-    <Compile Include="Model\Items\Enums\ModLocation.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
-    <Compile Include="Model\Items\StatTranslation\Translation.cs" />
     <Compile Include="Utils\SemanticVersion.cs" />
     <Compile Include="Utils\WikiApi\CargoConstants.cs" />
     <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
@@ -268,7 +259,6 @@
     </Compile>
     <Compile Include="Model\Items\ItemImageService.cs" />
     <Compile Include="Model\Items\UniqueBase.cs" />
-    <Compile Include="Model\Items\XmlUniqueList.cs" />
     <Compile Include="Utils\WikiApi\ApiAccessor.cs" />
     <Compile Include="Utils\WikiApi\PoolingImageLoader.cs" />
     <Compile Include="Utils\WikiApi\WikiApiUtils.cs" />

@@ -43,44 +43,6 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
             return sut.Single;
         }
 
-        [Test]
-        public void FirstThrowsWhenNoValues()
-        {
-            var sut = Create();
-
-            object _;
-            Assert.Throws<ParseException>(() => _ = sut.First);
-        }
-
-        [TestCase(1, ExpectedResult = 1)]
-        [TestCase(42, ExpectedResult = 42)]
-        [TestCase(1, 2, 3, 4, ExpectedResult = 1)]
-        public int FirstReturnsCorrectResultWhenValues(params int[] values)
-        {
-            var sut = Create(values);
-
-            return sut.First;
-        }
-
-        [Test]
-        public void LastThrowsWhenNoValues()
-        {
-            var sut = Create();
-
-            object _;
-            Assert.Throws<ParseException>(() => _ = sut.Last);
-        }
-
-        [TestCase(1, ExpectedResult = 1)]
-        [TestCase(42, ExpectedResult = 42)]
-        [TestCase(1, 2, 3, 4, ExpectedResult = 4)]
-        public int LastReturnsCorrectResultWhenValues(params int[] values)
-        {
-            var sut = Create(values);
-
-            return sut.Last;
-        }
-
         [TestCase(0)]
         [TestCase(-1)]
         [TestCase(1, 42)]

@@ -166,7 +166,7 @@ namespace UpdateDB.DataLoading
             var unknownTags = new HashSet<string>();
             foreach (var s in _json["tags"].Values<string>())
             {
-                if (TagsEx.TryParse(s, out var tag))
+                if (TagsExtensions.TryParse(s, out var tag))
                 {
                     _xml.Tags |= tag;
                 }

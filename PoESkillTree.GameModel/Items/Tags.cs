@@ -101,15 +101,19 @@ namespace PoESkillTree.GameModel.Items
     }
 
 
-    public static class TagsEx
+    public static class TagsExtensions
     {
         /// <summary>
         /// Tries to convert a string from the GGPK's Tags.dat to an <see cref="Tags"/>
         /// instance.
         /// </summary>
         public static bool TryParse(string ggpkTag, out Tags tag)
-        {
-            return Enum.TryParse(ggpkTag.Replace("_", ""), true, out tag);
-        }
+            => Enum.TryParse(ggpkTag.Replace("_", ""), true, out tag);
+
+        public static double EncodeAsDouble(this Tags @this)
+            => BitConverter.Int64BitsToDouble((long) @this);
+
+        public static Tags DecodeFromDouble(double encodedTags)
+            => (Tags) BitConverter.DoubleToInt64Bits(encodedTags);
     }
 }

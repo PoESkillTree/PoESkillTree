@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using JetBrains.Annotations;
 using log4net;
+using PoESkillTree.GameModel.PassiveTree;
 using POESKillTree.Common;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
@@ -319,23 +320,23 @@ namespace POESKillTree.SkillTreeFiles
                         };
                         if (nd.ks && !nd.not && !nd.isJewelSocket && !nd.m)
                         {
-                            skillNode.Type = NodeType.Keystone;
+                            skillNode.Type = PassiveNodeType.Keystone;
                         }
                         else if (!nd.ks && nd.not && !nd.isJewelSocket && !nd.m)
                         {
-                            skillNode.Type = NodeType.Notable;
+                            skillNode.Type = PassiveNodeType.Notable;
                         }
                         else if (!nd.ks && !nd.not && nd.isJewelSocket && !nd.m)
                         {
-                            skillNode.Type = NodeType.JewelSocket;
+                            skillNode.Type = PassiveNodeType.JewelSocket;
                         }
                         else if (!nd.ks && !nd.not && !nd.isJewelSocket && nd.m)
                         {
-                            skillNode.Type = NodeType.Mastery;
+                            skillNode.Type = PassiveNodeType.Mastery;
                         }
                         else if (!nd.ks && !nd.not && !nd.isJewelSocket && !nd.m)
                         {
-                            skillNode.Type = NodeType.Normal;
+                            skillNode.Type = PassiveNodeType.Normal;
                         }
                         else
                         {
@@ -894,7 +895,7 @@ namespace POESKillTree.SkillTreeFiles
                         continue;
                     if (newNode.Spc.HasValue)
                         continue;
-                    if (newNode.Type == NodeType.Mastery)
+                    if (newNode.Type == PassiveNodeType.Mastery)
                         continue;
                     if (IsAscendantClassStartNode(newNode))
                         continue;
@@ -1044,7 +1045,7 @@ namespace POESKillTree.SkillTreeFiles
                     var nodes =
                         Skillnodes.Values.Where(
                             nd => (matchFct(nd.attributes, att => regex.IsMatch(att)) ||
-                                  regex.IsMatch(nd.Name) && nd.Type != NodeType.Mastery) &&
+                                  regex.IsMatch(nd.Name) && nd.Type != PassiveNodeType.Mastery) &&
                                   (DrawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses || (nd.ascendancyName == GetAscendancyClass(SkilledNodes) || nd.ascendancyName == null)) : nd.ascendancyName == null));
                     _nodeHighlighter.ResetHighlights(nodes, flag);
                     DrawHighlights();
@@ -1060,7 +1061,7 @@ namespace POESKillTree.SkillTreeFiles
                 var nodes =
                     Skillnodes.Values.Where(
                         nd => (matchFct(nd.attributes, att => att.ToLowerInvariant().Contains(search)) ||
-                              nd.Name.ToLowerInvariant().Contains(search) && nd.Type != NodeType.Mastery) &&
+                              nd.Name.ToLowerInvariant().Contains(search) && nd.Type != PassiveNodeType.Mastery) &&
                               (DrawAscendancy ? (_persistentData.Options.ShowAllAscendancyClasses || (nd.ascendancyName == GetAscendancyClass(SkilledNodes) || nd.ascendancyName == null)) : nd.ascendancyName == null));
                 _nodeHighlighter.ResetHighlights(nodes, flag);
                 DrawHighlights();

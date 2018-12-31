@@ -4,8 +4,10 @@ using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -73,17 +75,31 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat LeechTargetPool(Entity entity, Pool leechPool) =>
             GetOrAdd($"{leechPool}.Leech.TargetPool", entity, typeof(Pool));
 
-        public IStat ActiveSkillId(Entity entity) =>
-            GetOrAdd("ActiveSkill.Id", entity, typeof(int));
+        public IStat MainSkillId(Entity entity) =>
+            GetOrAdd("MainSkill.Id", entity, typeof(int));
 
-        public IStat ActiveSkillPartHasKeyword(Entity entity, Keyword keyword) =>
-            GetOrAdd($"ActiveSkillPart.Has.{keyword}", entity, typeof(bool));
+        public IStat MainSkillHasKeyword(Entity entity, Keyword keyword) =>
+            GetOrAdd($"MainSkill.Has.{keyword}", entity, typeof(bool));
 
-        public IStat ActiveSkillPartCastSpeedHasKeyword(Entity entity, Keyword keyword) =>
-            GetOrAdd($"ActiveSkillPart.CastSpeed.Has.{keyword}", entity, typeof(bool));
+        public IStat MainSkillPartHasKeyword(Entity entity, Keyword keyword) =>
+            GetOrAdd($"MainSkillPart.Has.{keyword}", entity, typeof(bool));
 
-        public IStat ActiveSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource) =>
-            GetOrAdd($"ActiveSkillPart.Damage.{damageSource}.Has.{keyword}", entity, typeof(bool));
+        public IStat MainSkillPartCastRateHasKeyword(Entity entity, Keyword keyword) =>
+            GetOrAdd($"MainSkillPart.CastRate.Has.{keyword}", entity, typeof(bool));
+
+        public IStat MainSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource) =>
+            GetOrAdd($"MainSkillPart.Damage.{damageSource}.Has.{keyword}", entity, typeof(bool));
+
+        public IStat MainSkillPartAilmentDamageHasKeyword(Entity entity, Keyword keyword) =>
+            GetOrAdd($"MainSkillPart.Damage.Ailment.Has.{keyword}", entity, typeof(bool));
+
+        public IStat ActiveSkillItemSlot(Entity entity, string skillId)
+            => GetOrAdd($"{skillId}.ActiveSkillItemSlot", entity, typeof(ItemSlot),
+                behaviors: () => _behaviorFactory.ActiveSkillItemSlot(entity, skillId));
+
+        public IStat ActiveSkillSocketIndex(Entity entity, string skillId)
+            => GetOrAdd($"{skillId}.ActiveSkillSocketIndex", entity, typeof(int),
+                behaviors: () => _behaviorFactory.ActiveSkillSocketIndex(entity, skillId));
 
         public IStat BuffEffect(Entity source, Entity target, string buffIdentity) =>
             GetOrAdd($"{buffIdentity}.EffectOn({target})", source, typeof(double));
@@ -112,6 +128,19 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStat AilmentDealtDamageType(Entity entity, Ailment ailment) =>
             GetOrAdd($"{ailment}.DamageType", entity, typeof(DamageType));
+
+        public IStat DamageBaseAddEffectiveness(Entity entity) =>
+            GetOrAdd("DamageBaseAddEffectiveness", entity, typeof(double));
+
+        public IStat DamageBaseSetEffectiveness(Entity entity) =>
+            GetOrAdd("DamageBaseSetEffectiveness", entity, typeof(double));
+
+        public IStat StatIsAffectedByModifiersToOtherStat(IStat stat, IStat otherStat, Form form)
+            => GetOrAdd($"ModifiersTo({otherStat}).Affect({stat}).ForForm({form})", stat.Entity, typeof(bool),
+                behaviors: () => _behaviorFactory.StatIsAffectedByModifiersToOtherStat(stat, otherStat, form));
+
+        public IStat Requirement(IStat stat)
+            => CopyWithSuffix(stat, "Required", stat.DataType, () => _behaviorFactory.Requirement(stat));
 
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,
             Func<IReadOnlyList<Behavior>> behaviors, ExplicitRegistrationType explicitRegistrationType = null)

@@ -2,6 +2,7 @@
 using System.Linq;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -31,15 +32,15 @@ namespace PoESkillTree.Computation.Builders.Effects
         {
             var inner = CoreStatBuilderFromIdentity("HasSource", typeof(bool));
             var coreStat = new ParametrisedCoreStatBuilder<IKeywordBuilder>(inner, type,
-                (k, s) => ConcretizeSourceStat((IDamageTypeBuilder) k, s));
+                (ps, k, s) => ConcretizeSourceStat(((IDamageTypeBuilder) k).BuildDamageTypes(ps), s));
             return new StatBuilder(StatFactory, coreStat);
         }
 
         public IStatBuilder CriticalStrikesAlwaysInflict => FromIdentity("CriticalStrikesAlwaysInflict", typeof(bool));
 
-        private IEnumerable<IStat> ConcretizeSourceStat(IDamageTypeBuilder type, IStat stat) =>
-            type.BuildDamageTypes().Select(t => StatFactory.CopyWithSuffix(stat, t.ToString(), typeof(bool)));
+        private IEnumerable<IStat> ConcretizeSourceStat(IReadOnlyList<DamageType> types, IStat stat) =>
+            types.Select(t => StatFactory.CopyWithSuffix(stat, t.ToString(), typeof(bool)));
 
-        public new Ailment Build() => _ailment.Build();
+        public new Ailment Build(BuildParameters parameters) => _ailment.Build(parameters);
     }
 }

@@ -1,0 +1,40 @@
+﻿// TODO not handled yet
+// Requires not yet implemented stats
+// - Triggered
+35% less Damage if Triggered
+// - Lucky/Unlucky for chances
+Chance to Block Spell Damage is Unlucky
+// Requires new buffs
+// - Hinder
+Hindered Enemies take 20% increased Chaos Damage
+Nearby Hindered Enemies deal 15% reduced Damage over Time
+// - Withered
+Every second, inflict Withered on nearby Enemies for 15 seconds
+// - Maddening Presence
+Gain Maddening Presence for 10 seconds when you Kill a Rare or Unique Enemy
+// Socketed gem modifiers
++2 to Level of Socketed Gems
+// Item-inherent skills
+Curse Enemies with Level 10 Flammability on Hit
+Triggers Level 20 Cold Aegis when Equipped
+// Minions
+10% increased area of effect for each Summoned Sentinel of Purity
+// - modifies minion skill
+Raised Zombies' Slam Attack has 100% increased Area of Effect
+Raised Zombies' Slam Attack has 100% increased Cooldown Recovery Speed
+Summoned Sentinels of Purity have 50% increased Area of effect
+// - adds new minion skill
+can summon up to 3 Skeleton Mages with Summon Skeletons
+summon 2 additional skeleton warriors with summon skeleton
+Animate Weapon can Animate up to 8 Ranged Weapons
+Minions explode when reduced to Low Life, dealing 33% of their maximum Life as Fire Damage to surrounding Enemies
+Your Raised Zombies spread Caustic Ground on Death, dealing 50% of their maximum Life as Chaos Damage per second
+Summoned Sentinels use Crusade Slam
+// Splash damage
+Dual Strike deals Off-Hand Splash Damage to surrounding targets
+Glacial Hammer deals Cold-only Splash Damage to surrounding targets
+Single-target Melee attacks deal Splash Damage to surrounding targets
+50% less Damage to surrounding targets
+Supported Skills deal Splash Damage to surrounding targets
+Supported Skills deal 26% less Damage to surrounding targets
+Supported Skills have 57% more Melee Splash Area of Effect

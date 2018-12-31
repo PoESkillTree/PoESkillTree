@@ -71,10 +71,6 @@ namespace POESKillTree.Model.Items.Mods
             var firstMod = mods[0];
             ValueCount = firstMod.Stats.Count;
             FirstTierStats = firstMod.Stats;
-            if (mods.Any(m => m.Stats.Count != ValueCount))
-            {
-                throw new NotSupportedException("Mods must all have the same amount of stats");
-            }
 
             var comparer = new ModWrapperComparer();
             _trees = new IRangeTree<int, ModWrapper>[ValueCount];

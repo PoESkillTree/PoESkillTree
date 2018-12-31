@@ -1,0 +1,246 @@
+﻿// not handled (no useful usage)
+// Weapons: ============================================================================================================
+// Armour: =============================================================================================================
+Gore Footprints
+Enemies Cannot Leech Mana From you
+// Accessories: ========================================================================================================
+Has 1 Socket
+Has 1 Abyssal Socket
+35% increased Fish Bite Sensitivity
+Properties are doubled while in a Breach
+// Flasks: =============================================================================================================
+20% of Melee Physical Damage taken reflected to Attacker
+20% chance to Avoid Cold Damage when Hit
+Creates a Smoke Cloud on Use
+Creates Chilled Ground on Use
+// Jewels: =============================================================================================================
+Your Golems are aggressive
+#% chance to gain an additional Vaal Soul per Enemy Shattered
+#% chance to gain an additional Vaal Soul on Kill
+Frostbolt Projectiles gain 40% increased Projectile Speed per second
+Ethereal Knives fires Projectiles in a Nova
+#% increased Experience Gain for Corrupted Gems
+Fireball Projectiles gain Radius as they travel farther, up to +4 Radius
+Raised Spectres have a 50% chance to gain Soul Eater for 30 seconds on Kill
+Ground Slam has a 35% increased angle
+Vigilant Strike Fortifies you and Nearby Allies for 12 seconds
+Burning Arrow has a 10% chance to spread Tar if it does not Ignite an Enemy
+#% additional Chance to receive a Critical Strike
+#% increased Rarity of Items dropped by Enemies Shattered by Glacial Hammer
+Magma Orb has 10% increased Area of Effect per Chain
+each Spectral Throw Projectile gains 5% increased Damage each time it Hits
+Barrage fires an additional 2 projectiles simultaneously on the first and final attacks
+Burning Arrow has a 10% chance to spread Burning Ground if it Ignites an Enemy
+// skills: =============================================================================================================
+// (either irrelevant or already handled by SkillDefinitionExtensions and/or AdditionalSkillStats)
+damage cannot be reflected
+0.86% reduced movement speed per nearby enemy
+summons a totem which uses this skill
+Enemies have 80% less Movement Speed when the Debuff starts
+Locks enemy in place
+Traps do not Trigger at the end of their Duration
+6% less Damage per Volley
+20% reduced Critical Strike Chance per Volley
+Bladefall has 5 additional Volleys
+Causes 4 Explosions
+Debuff can have up to 20 layers of Damage
+Creates Corpses with Level 80
+Maximum of 10 Corpses allowed
+Deals 150% more Damage while Channelling if Illusion has finished moving
+Illusion moves at 130% of your Movement Speed
+Final wave deals 75% of Damage per stage
+Creates 4 explosions
+Modifiers to Skill Effect Duration also apply to this Skill's Soul Gain Prevention
+Modifiers to Buff Duration also apply to this Skill's Soul Gain Prevention
+25% chance to gain a Frenzy Charge when an Enemy Dies while in this Skill's Area
+Totems Summoned by this Skill cannot Evade
+Deals up to 20% more Damage to closer targets
+Maximum of 3 Geysers at a time
+First Hit deals 50% less Damage
+Creates 5 Corpses
+Creates Corpses up to Level 100
+Maximum of 15 Corpses allowed
+80% more Area Radius against Enemies affected by an Ailment of the chosen Element
+Only Deals Damage of the chosen Element Deals no Damage of other Damage Types
+36 Endurance Charges granted per one hundred nearby enemies
+Regenerate 0.5% of Debuff Damage as Life
+100% increased angle per stage, up to 300%
+Spell Repeats 3 times
+29% more Damage with Hits and Ailments per Repeat
+One impact every 0.1 seconds
+Has 4 Flames
+Modifiers to Cast Speed apply to the rotation speed of the Flames
+Freezes enemies as though dealing 390% more Damage
+40% more Damage when Cast on Frostbolt
+20% less Area of Effect when Cast on Frostbolt
+0.15 seconds between appearance of Wall sections
+Wall will be 56 units long
+Deals up to 49% more Damage to closer targets
+Base Burning Damage is 25% of Overkill Damage
+Hits up to 3 additional enemies near the target
+Stronger Pulses deal 50% more Damage with Hits and Ailments
+Releases a Stronger Pulse every 4 Pulses
+Strikes every 0.35 seconds
+Strikes 3 Areas
+Projectiles are fired in a Nova (Hidden)
+Shields break after 1508 total Damage is prevented
+80% reduced Visibility to Enemies
+50% reduced Visibility to Enemies
+50% increased Stun Threshold reduction on enemies at Maximum charge distance
+200% more Damage with Hits at Maximum Charge Distance
+Beams Split to hit 4 extra targets
+Strikes every 1 second
+Releases 5 waves
+Releases waves every 0.9 seconds
+Monster gives 100% increased Flask Charges on death (Hidden)
+Each Spore Pod applies 10% less Movement Speed to nearby Enemies, to a maximum of 60%
+Each Spore Pod fires 9 Thorn Arrows
+Trigger this Skill when you Block
+You cannot use this Attack directly
+Causes 7 smaller explosions
+6 maximum Beam Targets
+Fires 3 secondary Projectiles
+Has 10 blades
+Monsters from the Breach do not grant Experience or drop Items
+Gain a Frenzy Charge when an Enemy Dies while in this Skill's Area Every second, gain a Frenzy Charge if an Enemy is in this Skill's Area
+Energy Shield Recharge not delayed by Damage
+Doubles have 57% increased Movement Speed
+Ongoing effect ends after 7 Aftershocks
+Fires Projectiles at all nearby Enemies
+Causes smaller novas up to 5 times on enemies hit
+20% reduced Area of Effect each repeat
+Shocked Ground causes 5% increased Damage taken
+Shocked Ground causes 15% increased Damage taken
+Projectiles leave Shocking Ground
+Fires 3 additional sequences of arrows
+Strikes an Enemy every 0.25 seconds
+10% chance to Trigger this Skill when Hit
+30% chance to Trigger this Skill when Hit
+Destroys up to 3 Corpses
+100% of Physical Damage Converted to Fire, Cold or Lightning Damage
+Supported Attacks will Trigger a Supported Spell when you Crit an Enemy
+You cannot Cast Supported Triggerable Spells directly
+Trigger Supported Spells when you take a total of 3272 Damage
+This Gem can only Support Skill Gems requiring Level 70 or lower
+100% chance to Trigger Supported Non-Minion Spells on Death
+Supported Melee Attacks will Trigger a Supported Spell on Kill
+69% chance to Trigger Supported Spells when you are Stunned, or Block a Stunning Hit
+Kill Enemies that have 10% Life or lower when Hit by Supported Skills
+Supported Skills apply supported Curses on Hit
+You cannot Cast Supported Curses
+Elemental Ailments caused by Supported Skills spread to other enemies in a Radius of 15
+Ignites caused by Supported Skills spread to other Enemies within a Radius of 20
+Supported Skills Repeat an additional time
+Supported Skills Repeat 2 additional times
+Supported Skills also fire Projectiles from up to 2 points on each side of you
+Summons a Totem which uses the Supported Skill
+Supported Area of Effect skills also affect areas in front and behind the targeted area
+Supported Attack Skills also target 2 nearby Enemies
+Supported Curse Spells are Cast as Auras
+Supported Skills throw up to 2 additional Traps
+Supported Skills place 2 additional Mines
+Supported Attack Skills cannot be used with Melee Weapons
+Buff is applied for a Base Duration of 4 seconds
+Pods fire 8 additional Arrows
+Can have up to 10 Chilling Areas
+Can explode from up to 5 Frostbolt Projectiles
+Can expand from up to 2 Frostbolt Projectiles
+Charged Slam Deals 60% more Damage
+35% chance to consume an Endurance Charge to create a Charged Slam
+Can be Detached for a total Duration of 10 seconds
+Sends beams to 3 Enemies, including the Branded Enemy
+Gain Fortify for 0.05 seconds per Stage on Placing the Banner
+Gain 1 Stage when you Impale an Enemy while carrying the Banner, up to 5 per second
+Gain Adrenaline for 0.05 seconds per Stage on Placing the Banner
+Gain 1 Stage when you Kill an Enemy while carrying the Banner
+Enemies in Chilling Areas from Supported Skills take 29% increased Cold Damage over Time
+Enemies in Chilling Areas from Supported Skills have Cold Damage taken increased by Chill Effect
+Supported Skills Summon two Totems instead of one
+// passive skills: =====================================================================================================
+10% Chance for Traps to Trigger an additional time
+Share Endurance, Frenzy and Power Charges with nearby party members
+Enemies Become Chilled as they Unfreeze
+Light Radius is based on Energy Shield instead of Life
+Traps cannot be Damaged for 5 seconds after being Thrown
+Mines cannot be Damaged for 5 seconds after being Placed
+Enemies Cannot Leech Life From You
+Hits that Stun Enemies have Culling Strike
+10% increased Brand Attachment range
+14% increased Brand Attachment range
+// Side effect from how jewels are currently handled, the stat doesn't actually exist
++1 Jewel Socket
+// Ascendancies: =======================================================================================================
+// - Chieftain
+Totems Reflect 15% of their maximum Life as Fire Damage to nearby Enemies when Hit
+unaffected by ignite
+When you or your Totems Kill a Burning Enemy, 20% chance for you and your Totems to each gain an Endurance Charge
+// - Juggernaut
+1.5% of Total Physical Damage prevented from Hits in the past 10 seconds is Regenerated as Life per second
+25% chance that if you would gain Endurance Charges, you instead gain up to your maximum number of Endurance Charges
+// - Deadeye
+Moving while Bleeding doesn't cause you to take extra Damage
+// - Pathfinder
+15% chance for your Flasks to not consume Charges
+20% chance for your Flasks to not consume Charges
+Enemies you Kill that are affected by Elemental Ailments grant 100% increased Flask Charges
+Flasks gain 3 Charges every 3 seconds
+Gain a Flask Charge when you deal a Critical Strike
+Removes Bleeding when you use a Flask
+You lose Virulence 50% slower
+When you kill a Poisoned Enemy during any Flask Effect, nearby enemies are Poisoned
+// - Occultist
+Cursed Enemies you or your Minions Kill have a 25% chance to Explode, dealing a quarter of their maximum Life as Chaos Damage
+Energy Shield Recharge is not interrupted by Damage if Recharge began Recently
+Every 4 seconds, 33% chance to Freeze nearby Chilled Unique Enemies for 0.6 seconds
+Every 4 seconds, Freeze nearby Chilled Non-Unique Enemies for 0.6 seconds
+// - Elementalist
+Elemental Ailments caused by your Skills spread to other nearby Enemies Radius: 18
+Chills from your Hits always reduce Action Speed by at least 10%
+Shocks from your Hits always increase Damage taken by at least 20%
+Shocks from your Hits always increase Damage taken by at least 10%
+// - Gladiator
+1% additional Block Chance for each Hit you've Blocked in the past 10 seconds
+8% increased Physical Damage for each Hit you've Blocked in the past 10 seconds
+Bleeding Enemies you Kill Explode, dealing 10% of their Maximum Life as Physical Damage
+Cannot be Stunned by Hits you Block
+// - Champion
+Remove all Ailments and Burning when you gain Adrenaline
+Enemies Taunted by you deal 10% less Damage with Hits and Ailments against other targets
+When you create a Banner, it gains 20% of the Stages of your placed Banner
+When you place a Banner, you and nearby Allies recover 0.5% of Life for each Stage the Banner has
+// - Slayer
+20% of Overkill Damage is Leeched as Life
+Culling Strike
+Kill Enemies that have 20% or lower Life when Hit by your Skills
+Life Leech effects are not removed at Full Life
+// - Guardian
+Every 5 seconds, remove Curses and Elemental Ailments from you
+Every 5 seconds, 30% of Maximum Life Regenerated over one second
+Every 5 seconds, 20% of Maximum Life Regenerated over one second
+Nearby Enemies cannot gain Power, Frenzy or Endurance Charges
+You and Nearby Party Members Share Power, Frenzy and Endurance Charges with each other
+// - Inquisitor
+10% chance to create Consecrated Ground when you Hit a Rare or Unique Enemy, lasting 8 seconds
+30% chance to create Consecrated Ground on Kill, lasting 8 seconds
+30% chance to create Consecrated Ground when Hit, lasting 8 seconds
+// - Hierophant
+Skills that would Summon a Totem Summon two Totems instead
+// - Assassin
+Critical Strikes have Culling Strike
+Damage from your Critical Strikes cannot be Reflected
+Recover 0.5% of your maximum Life per Poison affecting Enemies you Kill
+// - Trickster
+20% chance to Recover 10% of Maximum Mana when you use a Skill
+// - Saboteur
+100% increased Mine Arming Speed
+20% Chance for Traps to Trigger an additional time
+20% chance when Placing Mines to Place an additional Mine
+cannot be blinded
+When your Traps Trigger, your nearby Traps also Trigger
+// - Ascendant (generic)
+can allocate passives from the marauder's starting point
+can allocate passives from the duelist's starting point
+can allocate passives from the ranger's starting point
+can allocate passives from the shadow's starting point
+can allocate passives from the witch's starting point
+can allocate passives from the templar's starting point

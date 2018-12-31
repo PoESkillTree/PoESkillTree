@@ -50,5 +50,7 @@ namespace PoESkillTree.Computation.Common.Builders.Forms
         /// This form disregards the maximum and minimum values of stats.
         /// </summary>
         IFormBuilder TotalOverride { get; }
+
+        IFormBuilder From(Form form);
     }
 }

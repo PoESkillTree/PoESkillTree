@@ -7,6 +7,7 @@ using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -57,7 +58,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         private IEnumerable<IStat> BuildStats(BuildParameters parameters)
         {
             var entities = _entityBuilder.Build(parameters.ModifierSourceEntity);
-            var t = _coreBuilder.Build();
+            var t = _coreBuilder.Build(parameters);
             return entities.SelectMany(e => _statFactory(parameters, e, t));
         }
     }

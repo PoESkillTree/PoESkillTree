@@ -9,11 +9,11 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Common.Tests;
+using PoESkillTree.GameModel;
 using PoESkillTree.Utils;
 using static PoESkillTree.Computation.Builders.Tests.Stats.StatBuilderHelper;
 
@@ -416,23 +416,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var actual = conditionBuilder.Build().Value.Calculate(context);
 
             Assert.AreEqual(expected, actual.IsTrue());
-        }
-
-        [TestCase(true)]
-        [TestCase(false)]
-        public void WithKeywordBuildsToCorrectValueConverter(bool hasKeyword)
-        {
-            var expected = new Constant(hasKeyword).Calculate(null);
-            var keyword = Mock.Of<IKeywordBuilder>(b => b.Build() == Keyword.Projectile);
-            var hasKeywordStat = new StatFactory().ActiveSkillPartHasKeyword(default, keyword.Build());
-            var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValue(hasKeywordStat, NodeType.Total, PathDefinition.MainPath) == expected);
-            var sut = CreateSut();
-
-            var (_, _, valueConverter) = sut.With(keyword).BuildToSingleResult();
-            var actual = valueConverter(new ValueBuilderImpl(1)).Build().Calculate(context);
-
-            Assert.AreEqual(expected, actual);
         }
 
         [Test]

@@ -21,11 +21,11 @@ namespace PoESkillTree.Computation.Data
         protected override IEnumerable<ReferencedMatcherData> CreateCollection() =>
             new ReferencedMatcherCollection<IAilmentBuilder>
             {
-                // chance to x/x duration
-                { "ignite", Ailment.Ignite },
-                { "shock", Ailment.Shock },
-                { "chill", Ailment.Chill },
-                { "freeze", Ailment.Freeze },
+                // chance to x/x duration/always x
+                { "ignites?", Ailment.Ignite },
+                { "shocks?", Ailment.Shock },
+                { "chills?", Ailment.Chill },
+                { "freezes?", Ailment.Freeze },
                 { "bleed", Ailment.Bleed },
                 { "cause bleeding", Ailment.Bleed },
                 { "poison", Ailment.Poison },

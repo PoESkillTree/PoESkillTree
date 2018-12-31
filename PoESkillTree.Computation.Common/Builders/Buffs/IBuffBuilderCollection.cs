@@ -11,6 +11,11 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
     public interface IBuffBuilderCollection : IBuilderCollection
     {
         /// <summary>
+        /// Gets a stat representing whether all buffs in this collection currently apply.
+        /// </summary>
+        IStatBuilder On { get; }
+
+        /// <summary>
         /// Gets a stat representing the effect modifier that is applied to all buffs in this collection.
         /// </summary>
         IStatBuilder Effect { get; }

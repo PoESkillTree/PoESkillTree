@@ -11,6 +11,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
     {
         IStatBuilder Level { get; }
         IStatBuilder CharacterClass { get; }
+        IStatBuilder PassivePoints { get; }
+        IStatBuilder AscendancyPassivePoints { get; }
 
         IStatBuilder Armour { get; }
 
@@ -39,7 +41,15 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IDamageRelatedStatBuilder CastRate { get; }
 
-        IStatBuilder EffectivenessOfAddedDamage { get; }
+        /// <summary>
+        /// The main skill's cast time (in seconds), used to initialize CastRate
+        /// </summary>
+        IDamageRelatedStatBuilder BaseCastTime { get; }
+
+        /// <summary>
+        /// The rate at which the main skill hits, for skills where that rate is independent from CastRate.
+        /// </summary>
+        IStatBuilder HitRate { get; }
 
         IStatBuilder DamageHasKeyword(DamageSource damageSource, IKeywordBuilder keyword);
 
@@ -60,6 +70,11 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IDamageRelatedStatBuilder Range { get; }
 
         /// <summary>
+        /// The main skill's cooldown
+        /// </summary>
+        IStatBuilder Cooldown { get; }
+
+        /// <summary>
         /// The main skill's cooldown recovery speed
         /// </summary>
         IStatBuilder CooldownRecoverySpeed { get; }
@@ -68,6 +83,14 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// The main skill's duration
         /// </summary>
         IStatBuilder Duration { get; }
+
+        /// <summary>
+        /// The duration of secondary effects of the main skill.
+        /// </summary>
+        IStatBuilder SecondaryDuration { get; }
+
+        IStatBuilder SkillStage { get; }
+        IStatBuilder MainSkillPart { get; }
 
 
         ITrapStatBuilders Trap { get; }
@@ -107,6 +130,13 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder LightRadius { get; }
 
         /// <summary>
+        /// The number of brands attached to Self.
+        /// </summary>
+        IStatBuilder AttachedBrands { get; }
+
+        IStatBuilder PassiveNodeSkilled(ushort nodeId);
+
+        /// <summary>
         /// Returns stat with a value that can only be specified by the user.
         /// </summary>
         IStatBuilder Unique(string name, Type type);
@@ -115,6 +145,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         // Stats from sub factories
 
         IAttributeStatBuilders Attribute { get; }
+        IRequirementStatBuilders Requirements { get; }
 
         IPoolStatBuilders Pool { get; }
 

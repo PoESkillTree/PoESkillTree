@@ -8,10 +8,10 @@ using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
+using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -33,8 +33,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         private IStatBuilder WithUntyped(ICoreStatBuilder coreStatBuilder) =>
             new StatBuilder(StatFactory, coreStatBuilder);
 
-        protected virtual IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter) =>
-            With(new StatBuilderWithStatConverter(CoreStatBuilder, statConverter));
+        protected IStatBuilder WithStatConverter(Func<IStat, IStat> statConverter)
+            => WithStatConverter((_, s) => statConverter(s));
+
+        protected virtual IStatBuilder WithStatConverter(Func<ModifierSource, IStat, IStat> statConverter)
+            => With(new StatBuilderWithStatConverter(CoreStatBuilder, statConverter));
 
         public virtual IStatBuilder Resolve(ResolveContext context) => With(CoreStatBuilder.Resolve(context));
 
@@ -46,7 +49,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public ValueBuilder ValueFor(NodeType nodeType, ModifierSource modifierSource = null)
             => new ValueBuilder(new ValueBuilderImpl(
                 ps => BuildValue(nodeType, modifierSource ?? new ModifierSource.Global(), ps),
-                c => Resolve(c).Value));
+                c => Resolve(c).ValueFor(nodeType, modifierSource)));
 
         private IValue BuildValue(NodeType nodeType, ModifierSource modifierSource, BuildParameters parameters)
         {
@@ -70,23 +73,28 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder ChanceToDouble => WithStatConverter(StatFactory.ChanceToDouble);
 
+        public IStatBuilder AsItemProperty
+            => WithStatConverter(
+                (m, s) => StatFactory.FromIdentity($"{GetItemSlot(m)}.{s.Identity}", s.Entity, s.DataType));
+
+        private static ItemSlot GetItemSlot(ModifierSource modifierSource)
+        {
+            if (modifierSource is ModifierSource.Local.Item itemSource)
+                return itemSource.Slot;
+            throw new ParseException(
+                "IStatBuilder.AsItemProperty can only be used with a source of type ModifierSource.Local.Item");
+        }
+
         public IStatBuilder For(IEntityBuilder entity) => With(CoreStatBuilder.WithEntity(entity));
-
-        public virtual IStatBuilder With(IKeywordBuilder keyword) => WithCondition(KeywordCondition(keyword));
-
-        public virtual IStatBuilder NotWith(IKeywordBuilder keyword) => WithCondition(KeywordCondition(keyword).Not);
-
-        private IConditionBuilder KeywordCondition(IKeywordBuilder keyword) =>
-            ValueConditionBuilder.Create(BuildKeywordStat, keyword);
-
-        protected virtual IStat BuildKeywordStat(BuildParameters parameters, IKeywordBuilder keyword) =>
-            StatFactory.ActiveSkillPartHasKeyword(parameters.ModifierSourceEntity, keyword.Build());
 
         public IStatBuilder WithCondition(IConditionBuilder condition) =>
             WithUntyped(new StatBuilderAdapter(this, condition));
 
         public IStatBuilder CombineWith(IStatBuilder other) =>
             WithUntyped(new CompositeCoreStatBuilder(new StatBuilderAdapter(this), new StatBuilderAdapter(other)));
+
+        public IStatBuilder Concat(IStatBuilder other) =>
+            WithUntyped(new ConcatCompositeCoreStatBuilder(new StatBuilderAdapter(this), new StatBuilderAdapter(other)));
 
         public virtual IEnumerable<StatBuilderResult> Build(BuildParameters parameters) =>
             CoreStatBuilder.Build(parameters);

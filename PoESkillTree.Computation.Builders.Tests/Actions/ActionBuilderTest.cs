@@ -9,6 +9,7 @@ using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Builders.Tests.Actions
 {

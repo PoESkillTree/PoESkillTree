@@ -9,8 +9,11 @@ using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Tests.Stats;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
-using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders.Tests.Buffs
 {
@@ -101,7 +104,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
 
             var auraStatBuilder = sut.Aura(gainedStatBuilder, new EntityBuilder(Entity.Minion));
             var (stats, _, valueConverter) = auraStatBuilder.BuildToSingleResult(entity: Entity.Enemy);
-            var value = valueConverter(new ValueBuilderImpl(2)).Build();
+            var value = valueConverter(new ValueBuilderImpl(2)).Build(new BuildParameters(null, Entity.Enemy, default));
             var actualValue = value.Calculate(context);
 
             Assert.That(stats, Has.Exactly(1).Items);
@@ -114,7 +117,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         public void BuffsWithoutParametersCountBuildsToCorrectValue()
         {
             // Buff properties + conflux + dummy buff and aura + passed buff skills
-            var expected = 11 + 4 + 2 + 3;
+            var expected = 13 + 4 + 2 + 3;
             // For every source entity
             expected *= Enums.GetMemberCount<Entity>();
             var context = Mock.Of<IValueCalculationContext>(c =>
@@ -130,7 +133,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         public void BuffsWithParamtersCountBuildsToCorrectValue()
         {
             // Buff properties + conflux + dummy buff and aura + passed buff skills
-            var expected = 11 + 4 + 2 + 3;
+            var expected = 13 + 4 + 2 + 3;
             var source = new ModifierSourceEntityBuilder();
             var target = new ModifierSourceEntityBuilder();
             var context = Mock.Of<IValueCalculationContext>(c =>
@@ -144,14 +147,21 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
 
         private static BuffBuilders CreateSut()
         {
-            var buffSkills = new (string identifier, IReadOnlyList<Keyword> keywords)[]
+            var buffSkills = new (string id, IReadOnlyList<Keyword> keywords)[]
             {
                 ("wrath", new[] { Keyword.Aura, Keyword.AreaOfEffect, Keyword.Lightning }),
                 ("herald", new[] { Keyword.Spell }),
                 ("frostbite", new[] { Keyword.Curse })
-            }.Select(t => new SkillDefinition(t.identifier, 0, t.keywords, true));
-            return new BuffBuilders(StatFactory, buffSkills);
+            }.Select(t => CreateSkill(t.id, t.keywords)).ToList();
+            return new BuffBuilders(StatFactory, new SkillDefinitions(buffSkills));
         }
+
+        private static SkillDefinition CreateSkill(string id, IReadOnlyList<Keyword> keywords)
+            => SkillDefinition.CreateActive(
+                id, 0, "", new[] { "" }, null,
+                new ActiveSkillDefinition(id, 0, new string[0], new string[0], keywords, new[] { keywords }, true,
+                    null, new ItemClass[0]),
+                new Dictionary<int, SkillLevelDefinition>());
 
         private static readonly IStatFactory StatFactory = new StatFactory();
 

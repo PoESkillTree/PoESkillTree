@@ -41,6 +41,6 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         /// <summary>
         /// Builds the represented action.
         /// </summary>
-        string Build();
+        string Build(BuildParameters parameters);
     }
 }

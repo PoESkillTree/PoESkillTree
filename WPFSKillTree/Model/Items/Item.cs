@@ -8,8 +8,8 @@ using System.Text.RegularExpressions;
 using MB.Algodat;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.Modifiers;
 using PoESkillTree.Utils.Extensions;
-using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
@@ -384,7 +384,7 @@ namespace POESKillTree.Model.Items
         private ItemMod ItemModFromString(string attribute, ModLocation location, 
             IEnumerable<ValueColoring> valueColor = null)
         {
-            var isLocal = StatLocalityChecker.DetermineLocal(ItemClass, location, attribute);
+            var isLocal = ModifierLocalityTester.IsLocal(attribute, Tags);
             var itemMod = new ItemMod(attribute, isLocal);
             if (valueColor != null)
             {

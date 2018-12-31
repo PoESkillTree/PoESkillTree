@@ -12,13 +12,10 @@ namespace PoESkillTree.Computation.Builders.Stats
     internal class StatBuilderWithStatConverter : ICoreStatBuilder
     {
         private readonly ICoreStatBuilder _inner;
-        private readonly Func<IStat, IStat> _statConverter;
+        private readonly Func<ModifierSource, IStat, IStat> _statConverter;
 
-        public StatBuilderWithStatConverter(ICoreStatBuilder inner, Func<IStat, IStat> statConverter)
-        {
-            _inner = inner;
-            _statConverter = statConverter;
-        }
+        public StatBuilderWithStatConverter(ICoreStatBuilder inner, Func<ModifierSource, IStat, IStat> statConverter)
+            => (_inner, _statConverter) = (inner, statConverter);
 
         public ICoreStatBuilder Resolve(ResolveContext context) =>
             new StatBuilderWithStatConverter(_inner.Resolve(context), _statConverter);
@@ -28,7 +25,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IEnumerable<StatBuilderResult> Build(BuildParameters parameters) =>
             from r in _inner.Build(parameters)
-            let stats = r.Stats.Select(_statConverter).ToList()
+            let stats = r.Stats.Select(s => _statConverter(r.ModifierSource, s)).ToList()
             select new StatBuilderResult(stats, r.ModifierSource, r.ValueConverter);
     }
 }

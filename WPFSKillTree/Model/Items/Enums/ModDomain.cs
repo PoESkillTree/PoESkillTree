@@ -15,5 +15,6 @@
         Misc,
         Abyss_Jewel,
         Atlas,
+        Delve,
     }
 }

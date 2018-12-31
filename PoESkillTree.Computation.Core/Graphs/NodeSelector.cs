@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
@@ -10,7 +11,7 @@ namespace PoESkillTree.Computation.Core.Graphs
     /// a <see cref="NodeType"/> and <see cref="PathDefinition"/>.
     /// </summary>
     [DebuggerDisplay("{" + nameof(NodeType) + "}, {" + nameof(Path) + "}")]
-    public class NodeSelector
+    public class NodeSelector : ValueObject
     {
         private static readonly NodeType[] MainPathOnlyNodeTypes =
             { NodeType.Total, NodeType.Subtotal, NodeType.UncappedSubtotal, NodeType.TotalOverride };
@@ -27,14 +28,7 @@ namespace PoESkillTree.Computation.Core.Graphs
         public NodeType NodeType { get; }
         public PathDefinition Path { get; }
 
-        public override bool Equals(object obj) =>
-            (obj == this) || (obj is NodeSelector other && Equals(other));
-
-        private bool Equals(NodeSelector other) =>
-            NodeType.Equals(other.NodeType) && Path.Equals(other.Path);
-
-        public override int GetHashCode() =>
-            (NodeType, Path).GetHashCode();
+        protected override object ToTuple() => (NodeType, Path);
 
         public void Deconstruct(out NodeType nodeType, out PathDefinition path) => 
             (nodeType, path) = (NodeType, Path);

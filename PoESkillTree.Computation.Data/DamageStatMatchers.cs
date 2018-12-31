@@ -39,6 +39,7 @@ namespace PoESkillTree.Computation.Data
             {
                 // unspecific
                 { "damage", Damage },
+                { "deals damage", Damage },
                 { "global damage", Damage },
                 // by source
                 { "attack damage", Damage.WithSkills(DamageSource.Attack) },
@@ -48,6 +49,10 @@ namespace PoESkillTree.Computation.Data
                 { "({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage },
                 { "global ({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage },
                 { "damage of a random element", RandomElement.Damage },
+                // by keyword
+                { "({KeywordMatchers}) damage", Damage.With(Reference.AsKeyword) },
+                { "trap and mine damage", Damage, Or(With(Keyword.Trap), With(Keyword.Mine)) },
+                { "projectiles deal damage", Damage.With(Keyword.Projectile) },
                 // by skill vs. ailment
                 { "damage with hits and ailments", Damage.WithHitsAndAilments },
                 { "(?<!no )damage (with|from) hits", Damage.WithHits },
@@ -55,6 +60,10 @@ namespace PoESkillTree.Computation.Data
                 { "damage with ailments from attack skills", Damage.WithAilments.With(DamageSource.Attack) },
                 { "attack skills deal damage with ailments", Damage.WithAilments.With(DamageSource.Attack) },
                 { "damage with ({AilmentMatchers})", Damage.With(Reference.AsAilment) },
+                {
+                    "damage with ({AilmentMatchers}) and ({AilmentMatchers})",
+                    Damage.With(References[0].AsAilment), Damage.With(References[1].AsAilment)
+                },
                 // by source and type
                 { "attack physical damage", Physical.Damage.WithSkills(DamageSource.Attack) },
                 {
@@ -73,25 +82,37 @@ namespace PoESkillTree.Computation.Data
                     "({DamageTypeMatchers}) spell damage",
                     Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell)
                 },
+                {
+                    "spell ({DamageTypeMatchers}) damage",
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell)
+                },
+                {
+                    "({DamageTypeMatchers}) damage over time",
+                    Reference.AsDamageType.Damage.With(DamageSource.OverTime)
+                },
                 { "burning damage", Fire.Damage.WithSkills(DamageSource.OverTime), Fire.Damage.With(Ailment.Ignite) },
                 // other combinations
                 { "(?<!no )({DamageTypeMatchers}) damage (with|from) hits", Reference.AsDamageType.Damage.WithHits },
                 // specific attack damage
-                { "melee damage", Damage.WithSkills(DamageSource.Attack), With(Keyword.Melee) },
-                { "melee physical damage", Physical.Damage.WithSkills(DamageSource.Attack), With(Keyword.Melee) },
-                { "physical melee damage", Physical.Damage.WithSkills(DamageSource.Attack), With(Keyword.Melee) },
+                { "melee physical damage", Physical.Damage.With(Keyword.Melee) },
+                { "physical melee damage", Physical.Damage.With(Keyword.Melee) },
                 { "physical weapon damage", Physical.Damage.WithSkills(DamageSource.Attack), MainHand.HasItem },
                 {
                     "unarmed physical damage",
-                    Physical.Damage.WithSkills(DamageSource.Attack), And(Not(MainHand.HasItem), With(Keyword.Melee))
+                    Physical.Damage.WithSkills(DamageSource.Attack).With(Keyword.Melee), Not(MainHand.HasItem)
                 },
+                { "projectile attack damage", Damage.WithSkills(DamageSource.Attack).With(Keyword.Projectile) },
                 {
                     "physical projectile attack damage",
-                    Physical.Damage.WithSkills(DamageSource.Attack), With(Keyword.Projectile)
+                    Physical.Damage.WithSkills(DamageSource.Attack).With(Keyword.Projectile)
                 },
                 // other entities
                 { "minion damage", Damage.For(Entity.Minion) },
-                { "golem damage", Damage.For(Entity.Minion), With(Keyword.Golem) },
+                { "golem damage", Damage.For(Entity.Minion).With(Keyword.Golem) },
+                {
+                    "minion and totem elemental damage",
+                    Elemental.Damage.For(Entity.Minion), Elemental.Damage.With(Keyword.Totem)
+                },
             }; //add
     }
 }

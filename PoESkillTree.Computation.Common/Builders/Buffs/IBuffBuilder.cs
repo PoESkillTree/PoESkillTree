@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Common.Builders.Buffs
 {
@@ -36,5 +38,18 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         /// Gets an action that occurs when Self gains this buff.
         /// </summary>
         IActionBuilder Action { get; }
+
+        /// <summary>
+        /// The number of stacks this buff currently has. Only relevant for buffs that can stack, the stat does
+        /// nothing for most buffs. The value has to be entered by the user.
+        /// </summary>
+        IStatBuilder StackCount { get; }
+
+        /// <summary>
+        /// Builds an IValue that calculates the multiplier to the value of modifiers created from
+        /// <see cref="AddStatForSource"/> and <see cref="IEffectBuilder.AddStat"/>. The ModifierSourceEntity is
+        /// used as the target.
+        /// </summary>
+        IValue BuildAddStatMultiplier(BuildParameters parameters, IReadOnlyCollection<Entity> possibleSources);
     }
 }

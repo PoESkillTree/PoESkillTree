@@ -13,10 +13,10 @@ namespace PoESkillTree.Computation.Data.Steps
     public class Stepper : IStepper<ParsingStep>
     {
         /*
-         * Special matches either everything or nothing.
+         * Special matches either everything or nothing. If it matches, parsing is successful
          * StatManipulator and ValueConversion are optional.
-         * Either FormAndStat or Form and one of GeneralStat, DamageStat and PoolStat must match (if Special doesn't).
-         * Condition can be matched multiple times (if Special doesn't).
+         * Either (FormAndStat or Keystone) or (Form and one of {GeneralStat, DamageStat, PoolStat}) must match.
+         * Condition can be matched multiple times
          * ActionCondition is optional.
          */
         private static readonly IReadOnlyDictionary<ParsingStep, ParsingStep> SuccessTransitions =
@@ -26,6 +26,7 @@ namespace PoESkillTree.Computation.Data.Steps
                 { ParsingStep.StatManipulator, ParsingStep.ValueConversion },
                 { ParsingStep.ValueConversion, ParsingStep.FormAndStat },
                 { ParsingStep.FormAndStat, ParsingStep.Condition },
+                { ParsingStep.Keystone, ParsingStep.Condition },
                 { ParsingStep.Form, ParsingStep.GeneralStat },
                 { ParsingStep.GeneralStat, ParsingStep.Condition },
                 { ParsingStep.DamageStat, ParsingStep.Condition },
@@ -40,7 +41,8 @@ namespace PoESkillTree.Computation.Data.Steps
                 { ParsingStep.Special, ParsingStep.StatManipulator },
                 { ParsingStep.StatManipulator, ParsingStep.ValueConversion },
                 { ParsingStep.ValueConversion, ParsingStep.FormAndStat },
-                { ParsingStep.FormAndStat, ParsingStep.Form },
+                { ParsingStep.FormAndStat, ParsingStep.Keystone },
+                { ParsingStep.Keystone, ParsingStep.Form },
                 { ParsingStep.Form, ParsingStep.Failure },
                 { ParsingStep.GeneralStat, ParsingStep.DamageStat},
                 { ParsingStep.DamageStat, ParsingStep.PoolStat },

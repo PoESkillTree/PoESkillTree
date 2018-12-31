@@ -38,10 +38,7 @@ namespace POESKillTree.Model.Items.Mods
         /// <param name="id">the id of this mod</param>
         /// <param name="jsonMod">the <see cref="JsonMod"/> to encapsulate</param>
         /// <param name="jsonBenchOptions">the master crafting options with which this mod can be crafted</param>
-        /// <param name="spawnWeightsReplacement">replacement spawn weights if this mod can only be spawned by different 
-        /// means, e.g. as a master signature mod</param>
-        public Mod(string id, JsonMod jsonMod, IEnumerable<JsonCraftingBenchOption> jsonBenchOptions,
-            IEnumerable<JsonSpawnWeight> spawnWeightsReplacement)
+        public Mod(string id, JsonMod jsonMod, IEnumerable<JsonCraftingBenchOption> jsonBenchOptions)
         {
             Id = id;
             foreach (var jsonMasterMod in jsonBenchOptions)
@@ -54,10 +51,9 @@ namespace POESKillTree.Model.Items.Mods
                     }
                 }
             }
-            var spawnWeights = spawnWeightsReplacement ?? jsonMod.SpawnWeights;
-            foreach (var spawnWeight in spawnWeights)
+            foreach (var spawnWeight in jsonMod.SpawnWeights)
             {
-                if (TagsEx.TryParse(spawnWeight.Tag, out Tags tag))
+                if (TagsExtensions.TryParse(spawnWeight.Tag, out Tags tag))
                 {
                     _spawnTags.Add(Tuple.Create(tag, spawnWeight.CanSpawn));
                 }

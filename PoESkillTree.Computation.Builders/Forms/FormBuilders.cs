@@ -15,6 +15,7 @@ namespace PoESkillTree.Computation.Builders.Forms
         public IFormBuilder PercentMore { get; } = Create(Form.More);
         public IFormBuilder PercentLess { get; } = CreateNegating(Form.More);
         public IFormBuilder TotalOverride { get; } = Create(Form.TotalOverride);
+        public IFormBuilder From(Form form) => Create(form);
 
         private static IFormBuilder Create(Form form) => new FormBuilder(form, Funcs.Identity);
 

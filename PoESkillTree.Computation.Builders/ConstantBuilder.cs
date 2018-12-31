@@ -1,4 +1,5 @@
 ﻿using System;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 
 namespace PoESkillTree.Computation.Builders
@@ -17,5 +18,6 @@ namespace PoESkillTree.Computation.Builders
         public TResolve Resolve(ResolveContext context) => this as TResolve;
 
         public TBuild Build() => _buildResult;
+        public TBuild Build(BuildParameters parameters) => _buildResult;
     }
 }

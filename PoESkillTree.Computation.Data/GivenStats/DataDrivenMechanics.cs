@@ -14,6 +14,7 @@ using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.GameModel;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Data.GivenStats
@@ -45,11 +46,16 @@ namespace PoESkillTree.Computation.Data.GivenStats
             {
                 // skill hit damage
                 // - DPS
-                { TotalOverride, _stat.SkillDpsWithHits, _stat.AverageHitDamage.Value * _stat.CastRate.Value },
+                {
+                    TotalOverride, _stat.SkillDpsWithHits,
+                    _stat.AverageHitDamage.Value *
+                    ValueFactory.If(Stat.HitRate.IsSet).Then(Stat.HitRate.Value)
+                        .Else(_stat.CastRate.Value * _stat.SkillNumberOfHitsPerCast.Value)
+                },
                 // - average damage
                 {
                     TotalOverride, _stat.AverageHitDamage,
-                    CombineSource(_stat.AverageDamage.WithHits, CombineHandsByAverage)
+                    CombineSource(_stat.AverageDamage.WithHits, CombineHandsForHitDamage)
                 },
                 // - average damage per source
                 {
@@ -83,28 +89,36 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     TotalOverride, dt => _stat.DamageWithNonCrits(dt).WithHits,
                     dt => _stat.Damage(dt).WithHits,
                     dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithHits,
-                    (_, damage, mult) => damage.Value * mult.Value
+                    dt => _stat.Damage(dt).WithHits.ChanceToDouble,
+                    (_, damage, mult, chanceToDouble)
+                        => damage.Value * mult.Value * (1 + chanceToDouble.Value.AsPercentage)
                 },
                 {
                     TotalOverride, dt => _stat.DamageWithCrits(dt).WithHits,
                     dt => _stat.Damage(dt).WithHits,
                     dt => _stat.EffectiveDamageMultiplierWithCrits(dt).WithHits,
-                    (_, damage, mult) => damage.Value * mult.Value
+                    dt => _stat.Damage(dt).WithHits.ChanceToDouble,
+                    (_, damage, mult, chanceToDouble)
+                        => damage.Value * mult.Value * (1 + chanceToDouble.Value.AsPercentage)
                 },
                 // - effective crit/non-crit damage multiplier per source and type
                 {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithHits,
+                    BaseSet, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithHits,
                     dt => _stat.EnemyResistanceAgainstNonCrits(dt),
                     dt => DamageTaken(dt).WithHits.For(Enemy),
-                    (_, resistance, damageTaken) => DamageTakenMultiplier(resistance, damageTaken)
+                    dt => DamageMultiplier(dt).WithHits,
+                    (_, resistance, damageTaken, damageMulti)
+                        => DamageTakenMultiplier(resistance, damageTaken) * damageMulti.Value.AsPercentage
                 },
                 {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).WithHits,
+                    BaseSet, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).WithHits,
                     dt => _stat.EnemyResistanceAgainstCrits(dt),
                     dt => DamageTaken(dt).WithHits.For(Enemy),
+                    dt => DamageMultiplier(dt).WithHits,
                     _ => CriticalStrike.Multiplier.WithHits,
-                    (_, resistance, damageTaken, mult)
-                        => DamageTakenMultiplier(resistance, damageTaken) * mult.Value.AsPercentage
+                    (_, resistance, damageTaken, damageMulti, critMulti)
+                        => DamageTakenMultiplier(resistance, damageTaken) * damageMulti.Value.AsPercentage
+                                                                          * critMulti.Value.AsPercentage
                 },
                 // - enemy resistance against crit/non-crit hits per source and type
                 {
@@ -139,76 +153,24 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 // - effective damage multiplier per type
                 {
-                    TotalOverride,
-                    dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithSkills(DamageSource.OverTime),
-                    dt => EnemyDamageTakenMultiplier(DamageTypeBuilders.From(dt),
-                        DamageTaken(dt).WithSkills(DamageSource.OverTime))
+                    BaseSet, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).WithSkills(DamageSource.OverTime),
+                    dt => EnemyDamageTakenMultiplier(dt, DamageTaken(dt).WithSkills(DamageSource.OverTime))
+                          * DamageMultiplier(dt).WithSkills(DamageSource.OverTime).Value.AsPercentage
                 },
 
-                // ignite damage
-                // - average damage
-                {
-                    TotalOverride, _stat.AverageAilmentDamage(Common.Builders.Effects.Ailment.Ignite),
-                    CombineSource(_stat.AverageDamage.With(Ailment.Ignite),
-                        CombineHandsForAverageAilmentDamage(Common.Builders.Effects.Ailment.Ignite))
-                },
-                // - effective crit/non-crit damage multiplier per source and type
-                {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(Ailment.Ignite),
-                    _ => Fire.Damage.Taken.With(Ailment.Ignite),
-                    (_, damageTaken) => EnemyDamageTakenMultiplier(Fire, damageTaken)
-                },
-                {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(Ailment.Ignite),
-                    _ => Fire.Damage.Taken.With(Ailment.Ignite),
-                    _ => CriticalStrike.Multiplier.With(Ailment.Ignite),
-                    (_, damageTaken, mult) => EnemyDamageTakenMultiplier(Fire, damageTaken) * mult.Value.AsPercentage
-                },
-                // bleed damage
-                // - average damage
-                {
-                    TotalOverride, _stat.AverageAilmentDamage(Common.Builders.Effects.Ailment.Bleed),
-                    CombineHandsForAverageAilmentDamage(Common.Builders.Effects.Ailment.Bleed)
-                        (_stat.AverageDamage.With(Ailment.Bleed))
-                },
-                // - effective crit/non-crit damage multiplier per source and type
-                {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(Ailment.Bleed),
-                    _ => Physical.Damage.Taken.With(Ailment.Bleed),
-                    (_, damageTaken) => EnemyDamageTakenMultiplier(Physical, damageTaken)
-                },
-                {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(Ailment.Bleed),
-                    _ => Physical.Damage.Taken.With(Ailment.Bleed),
-                    _ => CriticalStrike.Multiplier.With(Ailment.Bleed),
-                    (_, damageTaken, mult)
-                        => EnemyDamageTakenMultiplier(Physical, damageTaken) * mult.Value.AsPercentage
-                },
-                // poison damage
-                // - average damage
-                {
-                    TotalOverride, _stat.AverageAilmentDamage(Common.Builders.Effects.Ailment.Poison),
-                    CombineSource(_stat.AverageDamage.With(Ailment.Poison),
-                        CombineHandsForAverageAilmentDamage(Common.Builders.Effects.Ailment.Poison))
-                },
-                // - effective crit/non-crit damage multiplier per source and type
-                {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(Ailment.Poison),
-                    _ => Chaos.Damage.Taken.With(Ailment.Poison),
-                    (_, damageTaken) => EnemyDamageTakenMultiplier(Chaos, damageTaken)
-                },
-                {
-                    TotalOverride, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(Ailment.Poison),
-                    _ => Chaos.Damage.Taken.With(Ailment.Poison),
-                    _ => CriticalStrike.Multiplier.With(Ailment.Poison),
-                    (_, damageTaken, mult) => EnemyDamageTakenMultiplier(Chaos, damageTaken) * mult.Value.AsPercentage
-                },
-                // shared ailment damage
+                // ailment damage (modifiers for EffectiveDamageMultiplierWith[Non]Crits() and Damage() are added below
+                // this collection initializer)
                 // - DPS
                 {
                     TotalOverride, _stat.AilmentDps,
                     ailment => _stat.AverageAilmentDamage(ailment).Value *
                                _stat.AilmentEffectiveInstances(ailment).Value
+                },
+                // - average damage
+                {
+                    TotalOverride, ailment => _stat.AverageAilmentDamage(ailment),
+                    ailment => CombineSource(_stat.AverageDamage.With(Ailment.From(ailment)),
+                        CombineHandsForAverageAilmentDamage(ailment))
                 },
                 // - lifetime damage of one instance
                 {
@@ -240,7 +202,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
 
                 // speed
-                { TotalOverride, _stat.CastRate, CombineSource(Stat.CastRate, CombineHandsByAverage) },
+                { TotalOverride, Stat.CastRate, Stat.BaseCastTime, castTime => castTime.Value.Invert },
+                { TotalOverride, _stat.CastRate, CombineSourceDefaultingToSpell(Stat.CastRate, CombineHandsByAverage) },
                 { TotalOverride, _stat.CastTime, _stat.CastRate.Value.Invert },
                 { PercentMore, Stat.MovementSpeed, ActionSpeedValueForPercentMore },
                 {
@@ -307,26 +270,26 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 // crit
                 {
                     TotalOverride, _stat.EffectiveCritChance.With(AttackDamageHand.MainHand),
-                    CriticalStrike.Chance.With(AttackDamageHand.MainHand).Value.AsPercentage *
+                    CalculateLuckyCriticalStrikeChance(CriticalStrike.Chance.With(AttackDamageHand.MainHand)) *
                     Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value.AsPercentage
                 },
                 {
                     TotalOverride, _stat.EffectiveCritChance.With(AttackDamageHand.OffHand),
-                    CriticalStrike.Chance.With(AttackDamageHand.OffHand).Value.AsPercentage *
+                    CalculateLuckyCriticalStrikeChance(CriticalStrike.Chance.With(AttackDamageHand.OffHand)) *
                     Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value.AsPercentage
                 },
                 {
                     TotalOverride, _stat.EffectiveCritChance.With(DamageSource.Spell),
-                    CriticalStrike.Chance.With(DamageSource.Spell).Value.AsPercentage
+                    CalculateLuckyCriticalStrikeChance(CriticalStrike.Chance.With(DamageSource.Spell))
                 },
                 {
                     TotalOverride, _stat.EffectiveCritChance.With(DamageSource.Secondary),
-                    CriticalStrike.Chance.With(DamageSource.Secondary).Value.AsPercentage
+                    CalculateLuckyCriticalStrikeChance(CriticalStrike.Chance.With(DamageSource.Secondary))
                 },
                 // pools
                 {
-                    BaseAdd, p => p.Regen,
-                    p => _stat.RegenTargetPoolValue(p.BuildPool()) * p.Regen.Percent.Value.AsPercentage
+                    BaseAdd, p => Stat.Pool.From(p).Regen,
+                    p => _stat.RegenTargetPoolValue(p) * Stat.Pool.From(p).Regen.Percent.Value.AsPercentage
                 },
                 { TotalOverride, _stat.EffectiveRegen, p => p.Regen.Value * p.RecoveryRate.Value },
                 { TotalOverride, _stat.EffectiveRecharge, p => p.Recharge.Value * p.RecoveryRate.Value },
@@ -338,11 +301,12 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 {
                     TotalOverride, _stat.AbsoluteLeechRateLimit,
-                    p => _stat.LeechTargetPoolValue(p.BuildPool()) * p.Leech.RateLimit.Value.AsPercentage
+                    p => _stat.LeechTargetPoolValue(p) * Stat.Pool.From(p).Leech.RateLimit.Value.AsPercentage
                 },
                 {
                     TotalOverride, _stat.TimeToReachLeechRateLimit,
-                    p => p.Leech.RateLimit.Value / p.Leech.Rate.Value / _stat.CastRate.Value
+                    p => p.Leech.RateLimit.Value / p.Leech.Rate.Value /
+                         (_stat.CastRate.Value * _stat.SkillNumberOfHitsPerCast.Value)
                 },
                 // flasks
                 { PercentMore, Flask.LifeRecovery, Flask.Effect.Value * 100 },
@@ -360,7 +324,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     (int) DamageType.Physical
                 },
                 {
-                    TotalOverride, _stat.AilmentDealtDamageType(Common.Builders.Effects.Ailment.Ignite),
+                    TotalOverride, _stat.AilmentDealtDamageType(Common.Builders.Effects.Ailment.Poison),
                     (int) DamageType.Chaos
                 },
                 {
@@ -407,7 +371,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 {
                     TotalOverride, _stat.AilmentEffectiveInstances(Common.Builders.Effects.Ailment.Poison),
-                    Ailment.Poison.Duration.Value * _stat.CastRate.Value *
+                    Ailment.Poison.Duration.Value * _stat.CastRate.Value * _stat.SkillNumberOfHitsPerCast.Value *
                     CombineSource(_stat.AilmentEffectiveChance(Common.Builders.Effects.Ailment.Poison),
                         s => CombineByWeightedAverage(
                             s.With(AttackDamageHand.MainHand).Value *
@@ -417,6 +381,26 @@ namespace PoESkillTree.Computation.Data.GivenStats
                             Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value.AsPercentage,
                             SkillUsesHandAsMultiplier(AttackDamageHand.OffHand)))
                 },
+                // buffs
+                {
+                    PercentMore,
+                    _stat.EffectiveDamageMultiplierWithNonCrits(DamageType.Physical).WithSkills,
+                    Buff.Impale.Chance,
+                    chance => ValueFactory.If(Buff.Impale.IsOn(Self, Enemy))
+                        .Then(10 * Buff.Impale.EffectOn(Enemy).Value * Buff.Impale.StackCount.For(Enemy).Value
+                              * chance.WithCondition(Hit.On).Value.AsPercentage)
+                        .Else(0)
+                },
+                {
+                    PercentMore,
+                    _stat.EffectiveDamageMultiplierWithCrits(DamageType.Physical).WithSkills,
+                    Buff.Impale.Chance,
+                    chance => ValueFactory.If(Buff.Impale.IsOn(Self, Enemy))
+                        .Then(10 * Buff.Impale.EffectOn(Enemy).Value * Buff.Impale.StackCount.For(Enemy).Value
+                              * chance.WithCondition(Hit.On).Value.AsPercentage)
+                        .Else(0)
+                },
+                { TotalOverride, Buff.Impale.Chance.WithCondition(Hit.On).Maximum, 100 },
                 // stun (see https://pathofexile.gamepedia.com/Stun)
                 { PercentLess, Effect.Stun.Duration, Effect.Stun.Recovery.For(Enemy).Value * 100 },
                 {
@@ -434,8 +418,17 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     1 -
                     (1 - Effect.Stun.Avoidance.Value) * (1 - Effect.Stun.ChanceToAvoidInterruptionWhileCasting.Value)
                 },
-                // radius
+                // flags
+                {
+                    PercentMore, Damage.WithSkills(DamageSource.Attack).With(Keyword.Projectile),
+                    30 * ValueFactory.LinearScale(Projectile.TravelDistance, (35, 0), (70, 1)),
+                    Flag.FarShot.IsSet
+                },
+                // other
                 { PercentMore, Stat.Radius, Stat.AreaOfEffect.Value.Select(Math.Sqrt, v => $"Sqrt({v})") },
+                { PercentMore, Stat.Cooldown, 100 - 100 * Stat.CooldownRecoverySpeed.Value.Invert },
+                { BaseSet, _stat.SkillNumberOfHitsPerCast, 1 },
+                { BaseSet, Stat.MainSkillPart, 0 },
             };
 
         private static ValueBuilder AverageAilmentDamageFromCritAndNonCrit(
@@ -447,15 +440,18 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 critDamage.Value.Average, critChance.Value * critAilmentChance.Value.AsPercentage);
         }
 
-        private ValueBuilder EnemyDamageTakenMultiplier(
-            IDamageTypeBuilder resistanceType, IStatBuilder damageTaken)
-            => DamageTakenMultiplier(resistanceType.Resistance.For(Enemy), damageTaken.For(Enemy));
+        private ValueBuilder EnemyDamageTakenMultiplier(DamageType resistanceType, IStatBuilder damageTaken)
+            => DamageTakenMultiplier(DamageTypeBuilders.From(resistanceType).Resistance.For(Enemy),
+                damageTaken.For(Enemy));
 
         private static ValueBuilder DamageTakenMultiplier(IStatBuilder resistance, IStatBuilder damageTaken)
             => (1 - resistance.Value.AsPercentage) * damageTaken.Value;
 
         private IDamageRelatedStatBuilder DamageTaken(DamageType damageType)
             => DamageTypeBuilders.From(damageType).Damage.Taken;
+
+        private IDamageRelatedStatBuilder DamageMultiplier(DamageType damageType)
+            => DamageTypeBuilders.From(damageType).DamageMultiplier;
 
         private ValueBuilder ActionSpeedValueForPercentMore => (Stat.ActionSpeed.Value - 1) * 100;
 
@@ -482,12 +478,52 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 .Else(0.25 - 0.25 * (0.25 - stunThreshold) / (0.5 - stunThreshold));
         }
 
-        private IReadOnlyList<IIntermediateModifier> CollectionToList(GivenStatCollection collection)
+        private IReadOnlyList<IIntermediateModifier> CollectionToList(DataDrivenMechanicCollection collection)
         {
-            AddAilmentSourceDamageTypeModifiers(collection);
             AddDamageWithNonCritsModifiers(collection);
             AddDamageWithCritsModifiers(collection);
+            AddAilmentEffectiveDamageMultiplierModifiers(collection);
+            AddAilmentSourceDamageTypeModifiers(collection);
             return collection.ToList();
+        }
+
+        private void AddAilmentEffectiveDamageMultiplierModifiers(DataDrivenMechanicCollection collection)
+        {
+            var ailmentsAndTypes = new[]
+            {
+                (Common.Builders.Effects.Ailment.Ignite, DamageType.Fire),
+                (Common.Builders.Effects.Ailment.Bleed, DamageType.Physical),
+                (Common.Builders.Effects.Ailment.Poison, DamageType.Chaos),
+            };
+            foreach (var (ailment, damageType) in ailmentsAndTypes)
+            {
+                AddEffectiveDamageMultiplierWithNonCritsModifiers(collection, ailment, damageType);
+                AddEffectiveDamageMultiplierWithCritsModifiers(collection, ailment, damageType);
+            }
+        }
+
+        private void AddEffectiveDamageMultiplierWithNonCritsModifiers(
+            DataDrivenMechanicCollection collection, Ailment ailment, DamageType damageType)
+        {
+            var ailmentBuilder = Ailment.From(ailment);
+            collection.Add(BaseSet, dt => _stat.EffectiveDamageMultiplierWithNonCrits(dt).With(ailmentBuilder),
+                _ => DamageTaken(damageType).With(ailmentBuilder),
+                _ => DamageMultiplier(damageType).With(ailmentBuilder),
+                (_, damageTaken, damageMulti)
+                    => EnemyDamageTakenMultiplier(damageType, damageTaken) * damageMulti.Value.AsPercentage);
+        }
+
+        private void AddEffectiveDamageMultiplierWithCritsModifiers(
+            DataDrivenMechanicCollection collection, Ailment ailment, DamageType damageType)
+        {
+            var ailmentBuilder = Ailment.From(ailment);
+            collection.Add(BaseSet, dt => _stat.EffectiveDamageMultiplierWithCrits(dt).With(ailmentBuilder),
+                _ => DamageTaken(damageType).With(ailmentBuilder),
+                _ => CriticalStrike.Multiplier.With(ailmentBuilder),
+                _ => DamageMultiplier(damageType).With(ailmentBuilder),
+                (_, damageTaken, damageMulti, critMulti)
+                    => EnemyDamageTakenMultiplier(damageType, damageTaken) * damageMulti.Value.AsPercentage
+                                                                           * critMulti.Value.AsPercentage);
         }
 
         private void AddAilmentSourceDamageTypeModifiers(GivenStatCollection collection)
@@ -544,6 +580,14 @@ namespace PoESkillTree.Computation.Data.GivenStats
             }
         }
 
+        private ValueBuilder CalculateLuckyCriticalStrikeChance(IStatBuilder critChance)
+        {
+            var critValue = critChance.Value.AsPercentage;
+            return ValueFactory.If(Flag.CriticalStrikeChanceIsLucky.IsSet)
+                .Then(1 - (1 - critValue) * (1 - critValue))
+                .Else(critValue);
+        }
+
         private ValueBuilder CombineSource(
             IDamageRelatedStatBuilder statToCombine, Func<IDamageRelatedStatBuilder, IValueBuilder> handCombiner)
             => ValueFactory.If(_stat.SkillHitDamageSource.Value.Eq((int) DamageSource.Attack))
@@ -553,6 +597,14 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 .ElseIf(_stat.SkillHitDamageSource.Value.Eq((int) DamageSource.Secondary))
                 .Then(statToCombine.With(DamageSource.Secondary).Value)
                 .Else(0);
+
+        private ValueBuilder CombineSourceDefaultingToSpell(
+            IDamageRelatedStatBuilder statToCombine, Func<IDamageRelatedStatBuilder, IValueBuilder> handCombiner)
+            => ValueFactory.If(_stat.SkillHitDamageSource.Value.Eq((int) DamageSource.Attack))
+                .Then(handCombiner(statToCombine))
+                .ElseIf(_stat.SkillHitDamageSource.Value.Eq((int) DamageSource.Secondary))
+                .Then(statToCombine.With(DamageSource.Secondary).Value)
+                .Else(statToCombine.With(DamageSource.Spell).Value);
 
         private ValueBuilder CombineHandsByAverage(IDamageRelatedStatBuilder statToCombine)
         {
@@ -576,6 +628,17 @@ namespace PoESkillTree.Computation.Data.GivenStats
             return statToCombine => CombineByWeightedAverage(
                 statToCombine.With(AttackDamageHand.MainHand).Value, mhWeight,
                 statToCombine.With(AttackDamageHand.OffHand).Value, ohWeight);
+        }
+
+        private ValueBuilder CombineHandsForHitDamage(IDamageRelatedStatBuilder statToCombine)
+        {
+            var usesMh = SkillUsesHandAsMultiplier(AttackDamageHand.MainHand);
+            var usesOh = SkillUsesHandAsMultiplier(AttackDamageHand.OffHand);
+            var sumOfHands = statToCombine.With(AttackDamageHand.MainHand).Value * usesMh +
+                             statToCombine.With(AttackDamageHand.MainHand).Value * usesOh;
+            return ValueFactory.If(_stat.SkillDoubleHitsWhenDualWielding.IsSet)
+                .Then(sumOfHands)
+                .Else(sumOfHands / (usesMh + usesOh));
         }
 
         private static ValueBuilder CombineByWeightedAverage(

@@ -65,29 +65,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreParserTest.cs" />
     <Compile Include="GivenStatsParserTest.cs" />
-    <Compile Include="MatcherDataParserTest.cs" />
-    <Compile Include="CachingParserTest.cs" />
+    <Compile Include="ItemParsers\EmptyItemSlotParserTest.cs" />
+    <Compile Include="ItemParsers\ItemParserTest.cs" />
+    <Compile Include="ParserTestUtils.cs" />
+    <Compile Include="PassiveTreeParsers\PassiveNodeParserTest.cs" />
+    <Compile Include="PassiveTreeParsers\SkilledPassiveNodeParserTest.cs" />
+    <Compile Include="SkillParsers\ActiveSkillParserTest.cs" />
+    <Compile Include="SkillParsers\SkillParserTestUtils.cs" />
+    <Compile Include="SkillParsers\SupportSkillParserTest.cs" />
+    <Compile Include="StringParsers\MatcherDataParserTest.cs" />
+    <Compile Include="StringParsers\CachingParserTest.cs" />
     <Compile Include="Referencing\ResolvedMatchContextTest.cs" />
-    <Compile Include="ResultMappingParserTest.cs" />
+    <Compile Include="StringParsers\ResultMappingParserTest.cs" />
     <Compile Include="Referencing\MatcherMocks.cs" />
     <Compile Include="Referencing\ReferenceServiceTest.cs" />
     <Compile Include="Referencing\ReferenceValidatorTest.cs" />
     <Compile Include="Referencing\RegexGroupServiceFactoryTest.cs" />
     <Compile Include="Referencing\RegexGroupServiceParserTest.cs" />
     <Compile Include="Referencing\StatMatcherRegexExpanderTest.cs" />
-    <Compile Include="ResolvingParserTest.cs" />
-    <Compile Include="CompositeParserTest.cs" />
-    <Compile Include="StatNormalizingParserTest.cs" />
+    <Compile Include="StringParsers\ResolvingParserTest.cs" />
+    <Compile Include="StringParsers\CompositeParserTest.cs" />
+    <Compile Include="StringParsers\StatNormalizingParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StatReplacingParserTest.cs" />
-    <Compile Include="ValidatingParserTest.cs" />
+    <Compile Include="StringParsers\StatReplacingParserTest.cs" />
+    <Compile Include="StringParsers\ValidatingParserTest.cs" />
+    <Compile Include="UntranslatedStatParserTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PoESkillTree.Computation.Builders\PoESkillTree.Computation.Builders.csproj">
+      <Project>{940A286A-BCA7-4C79-AC89-55C57C7D4784}</Project>
+      <Name>PoESkillTree.Computation.Builders</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">
       <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
       <Name>PoESkillTree.Utils</Name>

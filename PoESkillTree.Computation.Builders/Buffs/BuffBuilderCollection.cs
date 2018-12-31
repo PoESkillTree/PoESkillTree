@@ -11,6 +11,7 @@ using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Builders.Buffs
 {
@@ -59,12 +60,12 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
         private IEnumerable<IValue> CreateValues(BuildParameters parameters)
         {
-            var restrictions = _restrictionsBuilder.Build();
+            var restrictions = _restrictionsBuilder.Build(parameters);
             var sourceEntities = _source.Build(parameters.ModifierSourceEntity);
             var targetEntities = _target.Build(parameters.ModifierSourceEntity);
             return from b in _buffs
                    where restrictions.AllowsBuff(b)
-                   let buffIdentity = b.Buff.Build()
+                   let buffIdentity = b.Buff.Build(parameters)
                    from t in targetEntities
                    let activeStat = _statFactory.BuffIsActive(t, buffIdentity)
                    let activeCondition = new StatValue(activeStat)
@@ -84,6 +85,11 @@ namespace PoESkillTree.Computation.Builders.Buffs
             return new ConditionalValue(c => count.Calculate(c) > 0, $"{count} > 0");
         }
 
+        public IStatBuilder On =>
+            new StatBuilder(_statFactory,
+                    new BuffCoreStatBuilder(_buffs, b => b.On(_target), _restrictionsBuilder))
+                .For(_source);
+
         public IStatBuilder Effect =>
             new StatBuilder(_statFactory,
                     new BuffCoreStatBuilder(_buffs, b => b.EffectOn(_target), _restrictionsBuilder))
@@ -95,13 +101,9 @@ namespace PoESkillTree.Computation.Builders.Buffs
                 .For(_target);
 
         public IStatBuilder ApplyToEntity(IEntityBuilder target)
-        {
-            var coreStats = _buffs
+            => _buffs
                 .Select(b => ApplyToEntity(b.Buff, target))
-                .Select(b => new StatBuilderAdapter(b))
-                .ToList();
-            return new StatBuilder(_statFactory, new ConcatCompositeCoreStatBuilder(coreStats));
-        }
+                .Aggregate((l, r) => l.Concat(r));
 
         private IStatBuilder ApplyToEntity(IBuffBuilder buff, IEntityBuilder target) =>
             buff.On(target).WithCondition(buff.IsOn(_source, _target));

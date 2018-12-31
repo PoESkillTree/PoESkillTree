@@ -1,4 +1,6 @@
-﻿namespace PoESkillTree.Computation.Common.Builders
+﻿using PoESkillTree.GameModel;
+
+namespace PoESkillTree.Computation.Common.Builders
 {
     /// <summary>
     /// Common parameters for stat builders and all builders producible from stat builders (e.g. value and condition).
@@ -34,9 +36,6 @@
 
         public BuildParameters With(ModifierSource modifierSource) =>
             new BuildParameters(modifierSource, ModifierSourceEntity, ModifierForm);
-
-        public BuildParameters With(Entity entity) =>
-            new BuildParameters(ModifierSource, entity, ModifierForm);
 
         public override bool Equals(object obj) =>
             obj is BuildParameters other && Equals(other);

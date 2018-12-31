@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using PoESkillTree.Computation.Builders.Actions;
+﻿using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Buffs;
 using PoESkillTree.Computation.Builders.Charges;
 using PoESkillTree.Computation.Builders.Conditions;
@@ -24,12 +23,13 @@ using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders
 {
     public class BuilderFactories : IBuilderFactories
     {
-        public BuilderFactories(IStatFactory statFactory, IReadOnlyList<SkillDefinition> skills)
+        public BuilderFactories(IStatFactory statFactory, SkillDefinitions skills)
         {
             ActionBuilders = new ActionBuilders(statFactory);
             BuffBuilders = new BuffBuilders(statFactory, skills);
@@ -44,7 +44,6 @@ namespace PoESkillTree.Computation.Builders
             SkillBuilders = new SkillBuilders(statFactory, skills);
             StatBuilders = new StatBuilders(statFactory);
             ValueBuilders = new ValueBuilders();
-            ItemSlotBuilders = new ItemSlotBuilders();
         }
 
         public IActionBuilders ActionBuilders { get; }
@@ -60,6 +59,5 @@ namespace PoESkillTree.Computation.Builders
         public ISkillBuilders SkillBuilders { get; }
         public IStatBuilders StatBuilders { get; }
         public IValueBuilders ValueBuilders { get; }
-        public IItemSlotBuilders ItemSlotBuilders { get; }
     }
 }

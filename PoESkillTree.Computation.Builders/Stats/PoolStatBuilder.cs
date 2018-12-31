@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
@@ -49,9 +50,9 @@ namespace PoESkillTree.Computation.Builders.Stats
             (Reservation.Value <= 0).And(FromIdentity(typeof(bool), UserSpecifiedValue()).IsSet);
 
         public IConditionBuilder IsLow =>
-            (Reservation.Value >= 65).Or(FromIdentity(typeof(bool), UserSpecifiedValue()).IsSet);
+            (Reservation.Value >= 0.65 * Value).Or(FromIdentity(typeof(bool), UserSpecifiedValue()).IsSet);
 
-        public Pool BuildPool() => Pool.Build();
+        public Pool BuildPool(BuildParameters parameters) => Pool.Build(parameters);
     }
 
     internal class RechargeStatBuilder : StatBuilderWithPool, IRechargeStatBuilder
@@ -110,13 +111,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         protected override IStatBuilder Create(ICoreStatBuilder coreStatBuilder, ICoreBuilder<Pool> pool) =>
             new LeechStatBuilder(StatFactory, coreStatBuilder, pool);
 
-        public new ILeechStatBuilder Resolve(ResolveContext context) => (ILeechStatBuilder) base.Resolve(context);
-
         public IStatBuilder Of(IDamageRelatedStatBuilder damage)
         {
             var damageCoreBuilder = new StatBuilderAdapter(damage.WithHits);
             var coreBuilder = new ParametrisedCoreStatBuilder<ICoreBuilder<Pool>>(damageCoreBuilder, Pool,
-                (p, s) => StatFactory.CopyWithSuffix(s, $"LeechTo({p.Build()})", typeof(int)));
+                (ps, p, s) => StatFactory.CopyWithSuffix(s, $"LeechTo({p.Build(ps)})", typeof(int)));
             return new StatBuilder(StatFactory, coreBuilder);
         }
 

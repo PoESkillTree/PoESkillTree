@@ -5,6 +5,7 @@ using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Effects;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
+using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Actions;
@@ -14,6 +15,8 @@ using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Builders.Buffs
@@ -34,7 +37,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
         public IStatBuilder EffectOn(IEntityBuilder target)
         {
-            return new StatBuilder(StatFactory, FromStatFactory((ps, s, i) => BuildStats(ps, s, i)));
+            return new StatBuilder(StatFactory, FromStatFactory(BuildStats));
 
             IEnumerable<IStat> BuildStats(BuildParameters parameters, Entity source, string identity)
                 => target.Build(parameters.ModifierSourceEntity)
@@ -44,10 +47,14 @@ namespace PoESkillTree.Computation.Builders.Buffs
         public IActionBuilder Action =>
             new ActionBuilder(StatFactory, Identity, new ModifierSourceEntityBuilder());
 
+        public IStatBuilder StackCount
+            => FromIdentity("StackCount", typeof(int),
+                ExplicitRegistrationTypes.UserSpecifiedValue(double.PositiveInfinity));
+
         public override IStatBuilder On(IEntityBuilder target) =>
             base.On(target)
                 .CombineWith(new StatBuilder(StatFactory, FromStatFactory(BuildBuffActiveStat)))
-                .CombineWith(new StatBuilder(StatFactory, FromStatFactory((ps, t, i) => BuildBuffSourceStat(ps, t, i))))
+                .CombineWith(new StatBuilder(StatFactory, FromStatFactory(BuildBuffSourceStat)))
                 .For(target);
 
         private IStat BuildBuffSourceStat(BuildParameters parameters, Entity target, string identity) =>
@@ -58,7 +65,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
         private IConditionBuilder IsFromSource(IEntityBuilder source, IEntityBuilder target)
         {
-            var core = FromStatFactory((ps, t, i) => BuildStats(ps, t, i));
+            var core = FromStatFactory(BuildStats);
             return new StatBuilder(StatFactory, core).For(target).IsSet;
 
             IEnumerable<IStat> BuildStats(BuildParameters parameters, Entity t, string identity)
@@ -72,14 +79,22 @@ namespace PoESkillTree.Computation.Builders.Buffs
         {
             var baseCoreBuilder = new StatBuilderAdapter(base.AddStat(stat));
             var coreBuilder = new StatBuilderWithValueConverter(baseCoreBuilder,
-                (ps, target) => BuildAddStatMultiplier(source.Build(ps.ModifierSourceEntity), target),
+                target => CreateAddStatMultiplier(source, target),
                 (l, r) => l.Multiply(r));
             return new StatBuilder(StatFactory, coreBuilder);
         }
 
-        private IValue BuildAddStatMultiplier(IReadOnlyCollection<Entity> possibleSources, Entity target)
+        private IValueBuilder CreateAddStatMultiplier(IEntityBuilder source, Entity target)
+            => new ValueBuilderImpl(
+                ps => BuildAddStatMultiplier(Build(ps), source.Build(ps.ModifierSourceEntity), target),
+                c => ((BuffBuilder) Resolve(c)).CreateAddStatMultiplier(source, target));
+
+        public IValue BuildAddStatMultiplier(BuildParameters parameters, IReadOnlyCollection<Entity> possibleSources)
+            => BuildAddStatMultiplier(Build(parameters), possibleSources, parameters.ModifierSourceEntity);
+
+        private IValue BuildAddStatMultiplier(
+            string identity, IReadOnlyCollection<Entity> possibleSources, Entity target)
         {
-            var identity = Build();
             var buffActiveValue = new StatValue(BuildBuffActiveStat(target, identity));
             var buffSourceValues = possibleSources.ToDictionary(Funcs.Identity,
                 e => new StatValue(BuildBuffSourceStat(e, target, identity)));
@@ -97,8 +112,8 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
                 // If multiple entities apply the same (de-)buff, it depends on the buff which one would actually apply.
                 // Because that shouldn't happen in these calculations, simply the first one is taken.
-                var sourcEntity = possibleSources.First(e => buffSourceValues[e].Calculate(context).IsTrue());
-                return buffEffectValues[sourcEntity].Calculate(context);
+                var sourceEntity = possibleSources.First(e => buffSourceValues[e].Calculate(context).IsTrue());
+                return buffEffectValues[sourceEntity].Calculate(context);
             }
         }
 

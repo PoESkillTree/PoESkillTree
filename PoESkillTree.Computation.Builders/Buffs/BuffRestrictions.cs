@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Buffs
@@ -17,7 +16,6 @@ namespace PoESkillTree.Computation.Builders.Buffs
         }
 
         public bool AllowsBuff(BuffBuilderWithKeywords buff) =>
-            _restrictedToKeywords.Intersect(buff.Keywords).Count() == _restrictedToKeywords.Count &&
-            _excludedKeywords.Intersect(buff.Keywords).IsEmpty();
+            buff.Keywords.ContainsAll(_restrictedToKeywords) && !_excludedKeywords.ContainsAny(buff.Keywords);
     }
 }

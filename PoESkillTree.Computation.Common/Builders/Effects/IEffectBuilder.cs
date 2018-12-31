@@ -42,6 +42,6 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         /// <summary>
         /// Builds this effect to its identity string.
         /// </summary>
-        string Build();
+        string Build(BuildParameters parameters);
     }
 }

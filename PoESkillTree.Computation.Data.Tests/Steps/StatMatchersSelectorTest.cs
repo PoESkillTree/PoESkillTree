@@ -40,15 +40,9 @@ namespace PoESkillTree.Computation.Data.Tests.Steps
 
         private class StatMatchersStub : IStatMatchers
         {
-            public IEnumerator<MatcherData> GetEnumerator()
-            {
-                return Enumerable.Empty<MatcherData>().GetEnumerator();
-            }
+            public IEnumerator<MatcherData> GetEnumerator() => Enumerable.Empty<MatcherData>().GetEnumerator();
 
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
+            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
             public IReadOnlyList<string> ReferenceNames { get; } = new string[0];
 

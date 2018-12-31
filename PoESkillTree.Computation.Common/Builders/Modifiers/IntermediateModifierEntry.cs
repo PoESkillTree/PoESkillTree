@@ -3,6 +3,7 @@ using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Common.Builders.Modifiers
 {
@@ -11,7 +12,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
     /// through a fluent interface creating new instances on each method call. Since <see cref="IIntermediateModifier"/>
     /// is for partial modifiers, every property can be null.
     /// </summary>
-    public class IntermediateModifierEntry
+    public class IntermediateModifierEntry : ValueObject
     {
         [CanBeNull]
         public IFormBuilder Form { get; }
@@ -58,16 +59,6 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             return new IntermediateModifierEntry(Form, Stat, Value, condition);
         }
 
-        public override bool Equals(object obj) =>
-            (obj == this) || (obj is IntermediateModifierEntry other && Equals(other));
-
-        private bool Equals(IntermediateModifierEntry other) =>
-            (Form, Stat, Value, Condition).Equals((other.Form, other.Stat, other.Value, other.Condition));
-
-        public override int GetHashCode() =>
-            (Form, Stat, Value, Condition).GetHashCode();
-
-        public override string ToString() =>
-            $"IntermediateModifierEntry(Form={Form},Stat={Stat},Value={Value},Condition={Condition})";
+        protected override object ToTuple() => (Form, Stat, Value, Condition);
     }
 }

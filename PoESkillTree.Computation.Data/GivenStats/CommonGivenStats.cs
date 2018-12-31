@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
-using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Data.GivenStats
 {
@@ -55,6 +56,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             // flasks
             { BaseSet, Flask.Effect, 1 },
             { BaseSet, Flask.RecoverySpeed, 1 },
+            // Damage Multiplier
+            { BaseSet, AnyDamageType.DamageMultiplier, 100 },
             // speed
             { BaseSet, Stat.ActionSpeed, 1 },
             { BaseSet, Stat.MovementSpeed, 1 },
@@ -76,6 +79,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Charge.Endurance.Amount.Maximum, 3 },
             { BaseSet, Charge.Frenzy.Amount.Maximum, 3 },
             { BaseSet, Charge.Power.Amount.Maximum, 3 },
+            { BaseSet, Charge.Endurance.Amount.Minimum, 0 },
+            { BaseSet, Charge.Frenzy.Amount.Minimum, 0 },
+            { BaseSet, Charge.Power.Amount.Minimum, 0 },
             // Rampage
             { BaseSet, Stat.RampageStacks.Maximum, 1000 },
             // leech
@@ -112,6 +118,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Ailment.Bleed.InstancesOn(Self).Maximum, 1 },
             { BaseSet, Ailment.Bleed.Source(Physical), 1 },
             { BaseSet, Ailment.Bleed.Duration, 5000 },
+            { TotalOverride, Ailment.Bleed.Chance.With(DamageSource.Spell), 0 },
+            { TotalOverride, Ailment.Bleed.Chance.With(DamageSource.Secondary), 0 },
             { PercentLess, Damage.With(Ailment.Bleed), 30 },
             { PercentMore, Damage.With(Ailment.Bleed), 100, Enemy.IsMoving },
             { BaseSet, Ailment.Poison.Source(Physical.And(Chaos)), 1 },
@@ -124,12 +132,18 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Buff.Maim.Duration, 4000 },
             { BaseSet, Buff.Taunt.Duration, 3000 },
             { BaseSet, Buff.ArcaneSurge.Duration, 4000 },
+            { TotalOverride, Buff.Maim.Chance.With(DamageSource.Spell), 0 },
+            { TotalOverride, Buff.Maim.Chance.With(DamageSource.Secondary), 0 },
+            { BaseSet, Buff.Impale.StackCount.Maximum, 5 },
             // stun
             { BaseSet, Effect.Stun.Threshold, 1 },
             { BaseSet, Effect.Stun.Recovery, 1 },
             { BaseSet, Effect.Stun.Duration, 350 },
             // other
             { BaseSet, Stat.AreaOfEffect, 1 },
+            { BaseSet, Stat.CooldownRecoverySpeed, 1 },
+            { BaseSet, Stat.SkillStage.Minimum, 0 },
+            { BaseSet, Stat.AttachedBrands.Maximum, 1 },
         };
     }
 }

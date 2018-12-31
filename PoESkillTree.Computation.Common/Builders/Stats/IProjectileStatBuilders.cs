@@ -21,9 +21,14 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder PierceCount { get; }
 
         /// <summary>
-        /// Gets a stat representing the number of times projectile chain.
+        /// Gets a stat representing the number of times projectiles chain.
         /// </summary>
         IStatBuilder ChainCount { get; }
+
+        /// <summary>
+        /// Gets a stat representing whether projectiles fork.
+        /// </summary>
+        IStatBuilder Fork { get; }
 
         /// <summary>
         /// Gets a stat representing the distance traveled by projectiles.

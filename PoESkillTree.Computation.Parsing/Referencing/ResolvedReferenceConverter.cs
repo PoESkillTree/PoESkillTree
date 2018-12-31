@@ -3,7 +3,6 @@ using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Charges;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
-using PoESkillTree.Computation.Common.Builders.Equipment;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -27,7 +26,6 @@ namespace PoESkillTree.Computation.Parsing.Referencing
         public IChargeTypeBuilder AsChargeType => As<IChargeTypeBuilder>();
         public IAilmentBuilder AsAilment => As<IAilmentBuilder>();
         public IKeywordBuilder AsKeyword => As<IKeywordBuilder>();
-        public IItemSlotBuilder AsItemSlot => As<IItemSlotBuilder>();
         public IActionBuilder AsAction => As<IActionBuilder>();
         public IStatBuilder AsStat => As<IStatBuilder>();
         public IPoolStatBuilder AsPoolStat => As<IPoolStatBuilder>();
@@ -50,20 +48,12 @@ namespace PoESkillTree.Computation.Parsing.Referencing
         }
 
         private bool Equals(ResolvedReferenceConverter other)
-        {
-            return Equals(_referencedBuilder, other._referencedBuilder);
-        }
+            => Equals(_referencedBuilder, other._referencedBuilder);
 
         public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(this, obj))
-                return true;
-            return obj is ResolvedReferenceConverter other && Equals(other);
-        }
+            => (this == obj) || (obj is ResolvedReferenceConverter other && Equals(other));
 
         public override int GetHashCode()
-        {
-            return _referencedBuilder.GetHashCode();
-        }
+            => _referencedBuilder.GetHashCode();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Common
 {

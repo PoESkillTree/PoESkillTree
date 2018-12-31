@@ -65,10 +65,14 @@
   <ItemGroup>
     <Compile Include="Actions\ActionBuildersTest.cs" />
     <Compile Include="Actions\ActionBuilderTest.cs" />
+    <Compile Include="Behaviors\AffectedByModifiersToOtherStatValueTest.cs" />
     <Compile Include="Behaviors\AilmentDamageBaseValueTest.cs" />
     <Compile Include="Behaviors\AilmentDamageIncreaseMoreValueTest.cs" />
     <Compile Include="Behaviors\AilmentDamageUncappedSubtotalValueTest.cs" />
+    <Compile Include="Behaviors\DamageEffectivenessBaseValueTest.cs" />
+    <Compile Include="Behaviors\MaximumFormAggregatingValueTest.cs" />
     <Compile Include="Behaviors\RegenUncappedSubtotalValueTest.cs" />
+    <Compile Include="Behaviors\RequirementUncappedSubtotalValueTest.cs" />
     <Compile Include="Buffs\BuffBuilderCollectionTest.cs" />
     <Compile Include="Buffs\BuffBuildersTest.cs" />
     <Compile Include="Buffs\BuffBuilderTest.cs" />
@@ -83,13 +87,13 @@
     <Compile Include="Effects\EffectBuilderTest.cs" />
     <Compile Include="Equipment\EquipmentBuilderCollectionTest.cs" />
     <Compile Include="Equipment\EquipmentBuilderTest.cs" />
-    <Compile Include="Equipment\ItemSlotBuildersTest.cs" />
     <Compile Include="Forms\FormBuildersTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolving\UnresolvedBuilderTest.cs" />
     <Compile Include="Skills\SkillBuilderCollectionTest.cs" />
+    <Compile Include="Skills\SkillBuildersTest.cs" />
     <Compile Include="Skills\SkillBuilderTest.cs" />
-    <Compile Include="Stats\CastSpeedStatBuilderTest.cs" />
+    <Compile Include="Stats\CastRateStatBuilderTest.cs" />
     <Compile Include="Stats\DamageStatBuilderTest.cs" />
     <Compile Include="Stats\CompositeCoreStatBuilderTest.cs" />
     <Compile Include="Stats\ConversionStatBuilderTest.cs" />

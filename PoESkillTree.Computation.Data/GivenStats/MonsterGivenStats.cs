@@ -7,6 +7,7 @@ using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Data.GivenStats
 {
@@ -29,7 +30,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
         }
 
         public IReadOnlyList<Entity> AffectedEntities { get; } =
-            new[] { Common.Entity.Enemy, Common.Entity.Totem, Common.Entity.Minion };
+            new[] { GameModel.Entity.Enemy, GameModel.Entity.Totem, GameModel.Entity.Minion };
 
         public IReadOnlyList<string> GivenStatLines { get; } = new[]
         {

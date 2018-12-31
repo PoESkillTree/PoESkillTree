@@ -62,6 +62,7 @@
     <Compile Include="Actions\ActionBuilders.cs" />
     <Compile Include="Actions\BlockActionBuilder.cs" />
     <Compile Include="Actions\CriticalStrikeActionBuilder.cs" />
+    <Compile Include="Behaviors\AffectedByModifiersToOtherStatValue.cs" />
     <Compile Include="Behaviors\AilmentDamageBaseValue.cs" />
     <Compile Include="Behaviors\AilmentDamageIncreaseMoreValue.cs" />
     <Compile Include="Behaviors\AilmentDamageUncappedSubtotalValue.cs" />
@@ -70,8 +71,11 @@
     <Compile Include="Behaviors\ConversionTargetPathTotalValue.cs" />
     <Compile Include="Behaviors\ConversionTargeUncappedSubtotalValue.cs" />
     <Compile Include="Behaviors\ConvertToUncappedSubtotalValue.cs" />
+    <Compile Include="Behaviors\DamageEffectivenessBaseValue.cs" />
+    <Compile Include="Behaviors\MaximumFormAggregatingValue.cs" />
     <Compile Include="Behaviors\ModifiedValueCalculationContext.cs" />
     <Compile Include="Behaviors\RegenUncappedSubtotalValue.cs" />
+    <Compile Include="Behaviors\RequirementUncappedSubtotalValue.cs" />
     <Compile Include="Behaviors\SkillConversionUncappedSubtotalValue.cs" />
     <Compile Include="Behaviors\ValueTransformation.cs" />
     <Compile Include="Buffs\BuffBuilder.cs" />
@@ -100,10 +104,10 @@
     <Compile Include="Effects\EffectBuilder.cs" />
     <Compile Include="Effects\EffectBuilders.cs" />
     <Compile Include="Entities\EntityBuilders.cs" />
+    <Compile Include="Entities\ModifierSourceOpponentEntityBuilder.cs" />
     <Compile Include="Equipment\EquipmentBuilder.cs" />
     <Compile Include="Equipment\EquipmentBuilderCollection.cs" />
     <Compile Include="Equipment\EquipmentBuilders.cs" />
-    <Compile Include="Equipment\ItemSlotBuilders.cs" />
     <Compile Include="FixedBuilderCollection.cs" />
     <Compile Include="Forms\FormBuilders.cs" />
     <Compile Include="ICoreBuilder.cs" />
@@ -115,7 +119,7 @@
     <Compile Include="Skills\SkillBuilder.cs" />
     <Compile Include="Skills\SkillBuilderCollection.cs" />
     <Compile Include="Skills\SkillBuilders.cs" />
-    <Compile Include="Stats\CastSpeedStatBuilder.cs" />
+    <Compile Include="Stats\CastRateStatBuilder.cs" />
     <Compile Include="Stats\CompositeCoreStatBuilder.cs" />
     <Compile Include="Stats\ConcatCompositeCoreStatBuilder.cs" />
     <Compile Include="Stats\ConversionStatBuilder.cs" />

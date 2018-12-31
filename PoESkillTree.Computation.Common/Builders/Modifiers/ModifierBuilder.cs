@@ -5,6 +5,7 @@ using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Common.Builders.Modifiers
@@ -13,8 +14,8 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
     public class ModifierBuilder : IModifierBuilder, IIntermediateModifier
     {
         public IReadOnlyList<IntermediateModifierEntry> Entries { get; }
-        public StatConverter StatConverter { get; } = s => s;
-        public ValueConverter ValueConverter { get; } = v => v;
+        public StatConverter StatConverter { get; } = Funcs.Identity;
+        public ValueConverter ValueConverter { get; } = Funcs.Identity;
 
         public ModifierBuilder()
         {

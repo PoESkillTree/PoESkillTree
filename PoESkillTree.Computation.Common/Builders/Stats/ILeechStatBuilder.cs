@@ -1,11 +1,9 @@
-using PoESkillTree.Computation.Common.Builders.Resolving;
-
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
     /// <summary>
     /// Represents the leech stats related to a pool.
     /// </summary>
-    public interface ILeechStatBuilder : IResolvable<ILeechStatBuilder>
+    public interface ILeechStatBuilder
     {
         /// <summary>
         /// Returns a stat representing the percentage of damage done matching <paramref name="damage"/> that leeched

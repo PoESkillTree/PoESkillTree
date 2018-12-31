@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using MoreLinq;
 using Newtonsoft.Json.Linq;
+using PoESkillTree.GameModel.PassiveTree;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
@@ -731,7 +732,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
         private void ConverteAttributeToPseudoAttributeConstraints()
         {
             var keystones = from node in Tree.GetCheckedNodes()
-                            where node.Type == NodeType.Keystone
+                            where node.Type == PassiveNodeType.Keystone
                             select node.Name;
             var conditionSettings = new ConditionSettings(Tags.Value, OffHand.Value, keystones.ToArray(), WeaponClass.Value);
             var convertedConstraints = new List<AttributeConstraint>();

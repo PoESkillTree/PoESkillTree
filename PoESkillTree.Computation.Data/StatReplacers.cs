@@ -31,15 +31,16 @@ namespace PoESkillTree.Computation.Data
             // keystones
             {
                 // Acrobatics
-                @"(\d+% chance to dodge attack hits)\. (\d+% less armour), (\d+% less energy shield), (\d+% less chance to block spells and attacks)",
+                @"(\d+% chance to dodge attack hits)\. (\d+% less armour), (\d+% less energy shield), (\d+% less chance to block .+)",
                 "$1", "$2", "$3", "$4"
             },
             {
                 // Eldritch Battery
-                "(Spend Energy Shield before Mana for Skill Costs) energy shield protects mana instead of life",
+                @"(Spend Energy Shield before Mana for Skill Costs) energy shield protects mana instead of life (\d+% less Energy Shield Recharge Rate)",
                 "$1",
                 "100% of non-chaos damage is taken from energy shield before mana",
-                "-100% of non-chaos damage is taken from energy shield before life"
+                "-100% of non-chaos damage is taken from energy shield before life",
+                "$2"
             },
             {
                 // Chaos Inoculation
@@ -68,7 +69,7 @@ namespace PoESkillTree.Computation.Data
             },
             {
                 // Ancestral Bond
-                "(you can't deal damage with skills yourself) (can have up to 1 additional totem summoned at a time)",
+                "(you can't deal damage with skills yourself) (.* of Summoned Totems)",
                 "$1", "$2"
             },
             {
@@ -110,6 +111,17 @@ namespace PoESkillTree.Computation.Data
                 // Resolute Technique
                 @"(your hits can't be evaded) (never deal critical strikes)",
                 "$1", "$2"
+            },
+            // Skills
+            {
+                // Arcane Surge Support
+                "(arcane surge grants .*) (arcane surge grants .*) (arcane surge grants .*)",
+                "$1", "$2", "$3"
+            },
+            {
+                // Storm Barrier Support
+                "(.* while channelling supported skills) (.* while channelling supported skills) (.* while channelling supported skills)",
+                "$1", "$2", "$3"
             },
         }.ToList();
     }

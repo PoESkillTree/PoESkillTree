@@ -28,9 +28,6 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
         public bool HasValue { get; }
         public IValue Value { get; }
 
-        public void Deconstruct(out StatConverter statConverter, out IValue value) =>
-            (statConverter, value) = (StatConverter, Value);
-
         public static implicit operator ConditionBuilderResult((StatConverter statConverter, IValue value) t) =>
             new ConditionBuilderResult(t.statConverter, t.value);
     }

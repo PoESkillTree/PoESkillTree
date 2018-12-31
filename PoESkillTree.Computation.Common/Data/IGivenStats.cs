@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
+using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Common.Data
 {

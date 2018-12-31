@@ -1,0 +1,44 @@
+﻿{
+	"AllResistancesImplicitShield3": {
+		"adds_tags": [
+			"elemental"
+		],
+		"domain": "item",
+		"generation_type": "unique",
+		"generation_weights": [],
+		"grants_buff": {},
+		"grants_effect": {},
+		"group": "AllResistances",
+		"is_essence_only": false,
+		"name": "",
+		"required_level": 1,
+		"spawn_weights": [],
+		"stats": [
+			{
+				"id": "base_resist_all_elements_%",
+				"max": 12,
+				"min": 12
+			}
+		]
+	},
+	"MovementVelocityPenaltyLightShieldImplicit": {
+		"adds_tags": [],
+		"domain": "item",
+		"generation_type": "unique",
+		"generation_weights": [],
+		"grants_buff": {},
+		"grants_effect": {},
+		"group": "MovementVelocityPenalty",
+		"is_essence_only": false,
+		"name": "",
+		"required_level": 1,
+		"spawn_weights": [],
+		"stats": [
+			{
+				"id": "from_armour_movement_speed_+%",
+				"max": -3,
+				"min": -3
+			}
+		]
+	}
+}

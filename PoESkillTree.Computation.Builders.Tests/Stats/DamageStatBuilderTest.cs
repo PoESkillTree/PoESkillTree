@@ -7,6 +7,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders.Tests.Stats
 {
@@ -32,8 +33,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         [Test]
         public void WithKeywordHasCorrectValueConverters()
         {
-            var keyword = Keyword.Bow;
-            var keywordBuilder = Mock.Of<IKeywordBuilder>(b => b.Build() == keyword);
+            var keyword = Keyword.Projectile;
+            var keywordBuilder = Mock.Of<IKeywordBuilder>(b => b.Build(default) == keyword);
             var valueBuilder = new ValueBuilderImpl(2);
             var context = SetupKeywordContext(keyword);
             var sut = CreateSut();
@@ -48,28 +49,10 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         }
 
         [Test]
-        public void NotWithKeywordHasCorrectValueConverters()
-        {
-            var keyword = Keyword.Bow;
-            var keywordBuilder = Mock.Of<IKeywordBuilder>(b => b.Build() == keyword);
-            var valueBuilder = new ValueBuilderImpl(2);
-            var context = SetupKeywordContext(keyword);
-            var sut = CreateSut();
-
-            var results = sut.WithHits.NotWith(keywordBuilder).Build(default).ToList();
-
-            Assert.That(results, Has.Exactly(4).Items);
-            var attackValue = results[0].ValueConverter(valueBuilder).Build().Calculate(context);
-            Assert.AreEqual(null, attackValue);
-            var spellValue = results[2].ValueConverter(valueBuilder).Build().Calculate(context);
-            Assert.AreEqual(new NodeValue(2), spellValue);
-        }
-
-        [Test]
         public void WithKeywordIsResolved()
         {
-            var keyword = Keyword.Bow;
-            var keywordBuilder = Mock.Of<IKeywordBuilder>(b => b.Build() == keyword);
+            var keyword = Keyword.Projectile;
+            var keywordBuilder = Mock.Of<IKeywordBuilder>(b => b.Build(default) == keyword);
             var unresolvedKeywordBuilder = Mock.Of<IKeywordBuilder>(b => b.Resolve(null) == keywordBuilder);
             var valueBuilder = new ValueBuilderImpl(2);
             var context = SetupKeywordContext(keyword);
@@ -89,9 +72,9 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         {
             var statFactory = new StatFactory();
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValue(statFactory.ActiveSkillPartDamageHasKeyword(default, keyword, DamageSource.Attack),
+                c.GetValue(statFactory.MainSkillPartDamageHasKeyword(default, keyword, DamageSource.Attack),
                     NodeType.Total, PathDefinition.MainPath) == (NodeValue?) true &&
-                c.GetValue(statFactory.ActiveSkillPartDamageHasKeyword(default, keyword, DamageSource.Spell),
+                c.GetValue(statFactory.MainSkillPartDamageHasKeyword(default, keyword, DamageSource.Spell),
                     NodeType.Total, PathDefinition.MainPath) == (NodeValue?) false);
             return context;
         }

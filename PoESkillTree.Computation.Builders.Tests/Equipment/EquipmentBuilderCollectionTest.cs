@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Equipment
             foreach (var itemSlot in Enum.GetValues(typeof(ItemSlot)).Cast<ItemSlot>())
             {
                 var stat = sut[itemSlot].ItemTags.BuildToSingleStat();
-                var value = itemSlot.ToString().StartsWith("A") ? (NodeValue?) (int) Tags.Amulet : null;
+                var value = itemSlot.ToString().StartsWith("A") ? (NodeValue?) Tags.Amulet.EncodeAsDouble() : null;
                 contextMock.Setup(c => c.GetValue(stat, NodeType.Total, PathDefinition.MainPath)).Returns(value);
                 if (value.IsTrue())
                     expected += 1;
@@ -87,7 +87,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Equipment
             foreach (var itemSlot in Enum.GetValues(typeof(ItemSlot)).Cast<ItemSlot>())
             {
                 var stat = sut[itemSlot].ItemTags.BuildToSingleStat();
-                var value = itemSlot.ToString() == truthySlot ? (NodeValue?) (int) Tags.Amulet : null;
+                var value = itemSlot.ToString() == truthySlot ? (NodeValue?) Tags.Amulet.EncodeAsDouble() : null;
                 contextMock.Setup(c => c.GetValue(stat, NodeType.Total, PathDefinition.MainPath)).Returns(value);
                 expected |= value.IsTrue();
             }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
@@ -17,7 +16,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
         {
         }
 
-        public override IReadOnlyList<Entity> AffectedEntities { get; } = new[] { Common.Entity.Enemy };
+        public override IReadOnlyList<Entity> AffectedEntities { get; } = new[] { GameModel.Entity.Enemy };
 
         protected override GivenStatCollection CreateCollection()
             => new GivenStatCollection(ModifierBuilder, ValueFactory)

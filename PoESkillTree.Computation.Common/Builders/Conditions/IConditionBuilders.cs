@@ -16,6 +16,11 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
         IConditionBuilder With(IKeywordBuilder keyword);
 
         /// <summary>
+        /// Returns a condition that is satisfied if Self's current main skill part has the given keyword.
+        /// </summary>
+        IConditionBuilder WithPart(IKeywordBuilder keyword);
+
+        /// <summary>
         /// Returns a condition that is satisfied if Self's current main skill is <paramref name="skill"/>.
         /// </summary>
         IConditionBuilder With(ISkillBuilder skill);
@@ -47,6 +52,11 @@ namespace PoESkillTree.Computation.Common.Builders.Conditions
         /// <para>Totems, mines and traps have their own non-damage stats.</para>
         /// </remarks>
         IConditionBuilder For(IEntityBuilder entity);
+
+        /// <summary>
+        /// Returns a condition that is satisfied if the modifier source of this modifier is equal to the parameter
+        /// </summary>
+        IConditionBuilder ModifierSourceIs(ModifierSource modifierSource);
 
         /// <summary>
         /// Returns a condition that is satisfied if the source of modified base values is an item in the specified

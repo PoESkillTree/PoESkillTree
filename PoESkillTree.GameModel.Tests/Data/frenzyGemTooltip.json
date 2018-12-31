@@ -1,0 +1,115 @@
+﻿{
+	"Frenzy": {
+		"per_level": {
+			"1": {
+				"properties": [
+					null,
+					{
+						"text": "Level: {0}",
+						"value": 1
+					},
+					null,
+					null,
+					{
+						"value": 110
+					}
+				],
+				"requirements": [
+					{
+						"values": [
+							16,
+							41
+						]
+					}
+				],
+				"stats": [
+					{
+						"value": 110.0
+					},
+					null,
+					null
+				]
+			},
+			"20": {
+				"properties": [
+					null,
+					{
+						"text": "Level: {0} (Max)",
+						"value": 20
+					},
+					null,
+					null,
+					{
+						"value": 137
+					}
+				],
+				"requirements": [
+					{
+						"values": [
+							70,
+							155
+						]
+					}
+				],
+				"stats": [
+					{
+						"value": 136.6
+					},
+					null,
+					null
+				]
+			}
+		},
+		"static": {
+			"description": [
+				"Performs an attack that gives the character a frenzy charge if it hits. Frenzy charges increase your attack speed."
+			],
+			"name": "Frenzy",
+			"properties": [
+				"Attack, Melee, Bow",
+				null,
+				{
+					"text": "Mana Cost: {0}",
+					"value": 10
+				},
+				{
+					"text": "Cast Time: {0} sec",
+					"value": 1.0
+				},
+				{
+					"text": "Damage Effectiveness: {0}%"
+				}
+			],
+			"quality_stats": [
+				{
+					"text": "{0}% increased Attack Speed",
+					"values": [
+						0.5
+					]
+				}
+			],
+			"requirements": [
+				{
+					"text": "Requires Level {0}, {1} Dex"
+				}
+			],
+			"stats": [
+				{
+					"text": "Deals {0}% of Base Attack Damage"
+				},
+				{
+					"text": "{0}% increased Physical Damage per Frenzy Charge",
+					"values": [
+						5
+					]
+				},
+				{
+					"text": "{0}% increased Attack Speed per Frenzy Charge",
+					"values": [
+						5
+					]
+				}
+			]
+		}
+	}
+}

@@ -5,12 +5,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Input;
+using PoESkillTree.GameModel.Items;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Enums;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Wpf;
+using Item = POESKillTree.Model.Items.Item;
 
 namespace POESKillTree.ViewModels.Equipment
 {

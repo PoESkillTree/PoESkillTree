@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
-using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
@@ -29,10 +30,15 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat RegenTargetPool(Entity entity, Pool regenPool);
         IStat LeechTargetPool(Entity entity, Pool leechPool);
 
-        IStat ActiveSkillId(Entity entity);
-        IStat ActiveSkillPartHasKeyword(Entity entity, Keyword keyword);
-        IStat ActiveSkillPartCastSpeedHasKeyword(Entity entity, Keyword keyword);
-        IStat ActiveSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource);
+        IStat MainSkillId(Entity entity);
+        IStat MainSkillHasKeyword(Entity entity, Keyword keyword);
+        IStat MainSkillPartHasKeyword(Entity entity, Keyword keyword);
+        IStat MainSkillPartCastRateHasKeyword(Entity entity, Keyword keyword);
+        IStat MainSkillPartDamageHasKeyword(Entity entity, Keyword keyword, DamageSource damageSource);
+        IStat MainSkillPartAilmentDamageHasKeyword(Entity entity, Keyword keyword);
+
+        IStat ActiveSkillItemSlot(Entity entity, string skillId);
+        IStat ActiveSkillSocketIndex(Entity entity, string skillId);
 
         IStat BuffEffect(Entity source, Entity target, string buffIdentity);        
         IStat BuffIsActive(Entity target, string buffIdentity);
@@ -44,5 +50,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat ApplyModifiersToAilmentDamage(IStat stat, Form form);
         IStat DamageTaken(IStat damage);
         IStat AilmentDealtDamageType(Entity entity, Ailment ailment);
+        IStat DamageBaseAddEffectiveness(Entity entity);
+        IStat DamageBaseSetEffectiveness(Entity entity);
+
+        IStat StatIsAffectedByModifiersToOtherStat(IStat stat, IStat otherStat, Form form);
+        IStat Requirement(IStat stat);
     }
 }

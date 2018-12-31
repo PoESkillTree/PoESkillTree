@@ -25,15 +25,9 @@ namespace PoESkillTree.Computation.Data.Collections
             _valueFactory = valueFactory;
         }
 
-        public IEnumerator<IIntermediateModifier> GetEnumerator()
-        {
-            return _data.GetEnumerator();
-        }
+        public IEnumerator<IIntermediateModifier> GetEnumerator() => _data.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public void Add(IFormBuilder form, IStatBuilder stat, double value, IConditionBuilder condition = null)
             => Add(form, stat, _valueFactory.Create(value), condition);

@@ -1,4 +1,5 @@
 ﻿using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Common.Builders.Resolving
 {
@@ -18,7 +19,7 @@ namespace PoESkillTree.Computation.Common.Builders.Resolving
     /// <summary>
     /// Class holding the context instances required for <see cref="IResolvable{T}.Resolve"/>.
     /// </summary>
-    public class ResolveContext
+    public class ResolveContext : ValueObject
     {
         public ResolveContext(
             IMatchContext<IValueBuilder> valueContext, IMatchContext<IReferenceConverter> referenceContext)
@@ -37,13 +38,6 @@ namespace PoESkillTree.Computation.Common.Builders.Resolving
         /// </summary>
         public IMatchContext<IReferenceConverter> ReferenceContext { get; }
 
-        public override bool Equals(object obj) =>
-            (this == obj) || (obj is ResolveContext other && Equals(other));
-
-        private bool Equals(ResolveContext other) =>
-            ValueContext.Equals(other.ValueContext) && ReferenceContext.Equals(other.ReferenceContext);
-
-        public override int GetHashCode() =>
-            (ValueContext, ReferenceContext).GetHashCode();
+        protected override object ToTuple() => (ValueContext, ReferenceContext);
     }
 }

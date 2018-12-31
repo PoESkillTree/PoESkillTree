@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
-using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -81,7 +80,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public DamageStatConcretizer WithSkills() =>
             WithCanApply(_specificationBuilder.WithSkills(), applyToAilmentDamage: true);
 
-        public DamageStatConcretizer With(AttackDamageHand hand) => WithCanApply(_specificationBuilder.With(hand));
+        public DamageStatConcretizer With(AttackDamageHand hand) => With(_specificationBuilder.With(hand));
 
         public DamageStatConcretizer NotDamageRelated() => With(_specificationBuilder);
 
@@ -103,7 +102,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             // This method is the hot path of building modifiers from builders. Using HashSet instead of this array
             // would be much slower (HashSet.Add() would be 60% of this method's execution time, array is negligible).
             var sourceSkillDamageSources = new bool[Enums.GetMemberCount<DamageSource>()];
-            foreach (var spec in _specificationBuilder.Build())
+            foreach (var spec in _specificationBuilder.Build(parameters))
             {
                 var stats = ConcretizeStats(spec, result.Stats);
                 var valueConverter = ValueConverterForResult(parameters, result, spec);
@@ -137,7 +136,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             var specs = Enums.GetValues<DamageSource>()
                 .Where(s => !sourceSkillDamageSources[(int) s])
                 .Select(source => new DamageSpecificationBuilder().WithSkills().With(source))
-                .SelectMany(specBuilder => specBuilder.Build());
+                .SelectMany(specBuilder => specBuilder.Build(parameters));
             foreach (var spec in specs)
             {
                 var stats = ConcretizeStats(spec, result.Stats);
@@ -155,7 +154,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             var specBuilder = new DamageSpecificationBuilder().WithAilments();
             var applyStats = sourceStats.Select(
                 s => _statFactory.ApplyModifiersToAilmentDamage(s, parameters.ModifierForm)).ToList();
-            foreach (var spec in specBuilder.Build())
+            foreach (var spec in specBuilder.Build(parameters))
             {
                 var stats = ConcretizeStats(spec, result.Stats);
                 var valueConverter = ValueConverterForResult(parameters, result, spec)

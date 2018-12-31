@@ -19,9 +19,7 @@ namespace PoESkillTree.Computation.Data.Collections
 
         public DataDrivenMechanicCollection(IModifierBuilder modifierBuilder, IBuilderFactories builderFactories)
             : base(modifierBuilder, builderFactories.ValueBuilders)
-        {
-            _builderFactories = builderFactories;
-        }
+            => _builderFactories = builderFactories;
 
         public void Add(
             IFormBuilder form, IDamageRelatedStatBuilder stat,
@@ -91,14 +89,6 @@ namespace PoESkillTree.Computation.Data.Collections
 
         public void Add(
             IFormBuilder form, Func<DamageType, IDamageRelatedStatBuilder> stat,
-            Func<DamageType, IDamageRelatedStatBuilder> vp,
-            Func<DamageType, IStatBuilder, IValueBuilder> value)
-        {
-            Add(form, stat, a => new[] { vp(a) }, (a, ss) => value(a, ss.Single()));
-        }
-
-        public void Add(
-            IFormBuilder form, Func<DamageType, IDamageRelatedStatBuilder> stat,
             Func<DamageType, IDamageRelatedStatBuilder> vp1, Func<DamageType, IDamageRelatedStatBuilder> vp2,
             Func<DamageType, IStatBuilder, IStatBuilder, IValueBuilder> value)
         {
@@ -112,6 +102,16 @@ namespace PoESkillTree.Computation.Data.Collections
             Func<DamageType, IStatBuilder, IStatBuilder, IStatBuilder, IValueBuilder> value)
         {
             Add(form, stat, dt => new[] { vp1(dt), vp2(dt), vp3(dt) }, (dt, ss) => value(dt, ss[0], ss[1], ss[2]));
+        }
+
+        public void Add(
+            IFormBuilder form, Func<DamageType, IDamageRelatedStatBuilder> stat,
+            Func<DamageType, IDamageRelatedStatBuilder> vp1, Func<DamageType, IDamageRelatedStatBuilder> vp2,
+            Func<DamageType, IDamageRelatedStatBuilder> vp3, Func<DamageType, IDamageRelatedStatBuilder> vp4,
+            Func<DamageType, IStatBuilder, IStatBuilder, IStatBuilder, IStatBuilder, IValueBuilder> value)
+        {
+            Add(form, stat, dt => new[] { vp1(dt), vp2(dt), vp3(dt), vp4(dt) },
+                (dt, ss) => value(dt, ss[0], ss[1], ss[2], ss[3]));
         }
 
         public void Add(
@@ -143,10 +143,6 @@ namespace PoESkillTree.Computation.Data.Collections
             Add<TEnum>(form, dt => stat(dt).With(DamageSource.Secondary),
                 dt => value(dt, valueParameters(dt).Select(s => s.With(DamageSource.Secondary)).ToList()));
         }
-
-        public void Add(
-            IFormBuilder form, Func<IPoolStatBuilder, IStatBuilder> stat, Func<IPoolStatBuilder, IValueBuilder> value)
-            => Add(form, p => stat(PoolStatFrom(p)), value);
 
         public void Add(
             IFormBuilder form, Func<Pool, IStatBuilder> stat, Func<IPoolStatBuilder, IValueBuilder> value)

@@ -22,8 +22,10 @@ namespace PoESkillTree.Computation.Data
             new ReferencedMatcherCollection<IActionBuilder>
             {
                 { "kill(ed)?", Action.Kill },
+                { "killing", Action.Kill },
+                { "dealing a killing blow", Action.Kill },
                 { "block(ed)?", Action.Block },
-                { "hit", Action.Hit },
+                { "hits?", Action.Hit },
                 { "critical strike", Action.CriticalStrike },
                 { "non-critical strike", Action.NonCriticalStrike },
             };

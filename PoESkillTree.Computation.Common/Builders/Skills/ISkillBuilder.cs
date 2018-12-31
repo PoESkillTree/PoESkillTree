@@ -3,6 +3,7 @@ using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Common.Builders.Skills
 {
@@ -23,7 +24,7 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         IStatBuilder Instances { get; }
 
         /// <summary>
-        /// The percentage of a pool this skill reserves.
+        /// The amount or percentage of a pool this skill reserves.
         /// </summary>
         IStatBuilder Reservation { get; }
 
@@ -42,6 +43,6 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         /// </summary>
         IBuffBuilder Buff { get; }
 
-        SkillDefinition Build();
+        SkillDefinition Build(BuildParameters parameters);
     }
 }

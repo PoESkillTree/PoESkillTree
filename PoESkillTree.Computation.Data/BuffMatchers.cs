@@ -22,15 +22,17 @@ namespace PoESkillTree.Computation.Data
             new ReferencedMatcherCollection<IBuffBuilder>
             {
                 { "fortify", Buff.Fortify },
-                { "maim", Buff.Maim },
+                { "maim(ed)?", Buff.Maim },
                 { "intimidate", Buff.Intimidate },
-                { "taunt", Buff.Taunt },
+                { "taunt(ed)?", Buff.Taunt },
                 { "blind", Buff.Blind },
                 { "onslaught", Buff.Onslaught },
                 { "unholy might", Buff.UnholyMight },
                 { "phasing", Buff.Phasing },
                 { "arcane surge", Buff.ArcaneSurge },
                 { "tailwind", Buff.Tailwind },
-            };
+                { "innervation", Buff.Innervation },
+                { "impaled?", Buff.Impale },
+            }; // Add
     }
 }
