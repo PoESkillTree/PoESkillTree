@@ -30,7 +30,7 @@ namespace POESKillTree.Model.Items.Mods
 
         public JsonMod JsonMod { get; }
 
-        public IReadOnlyList<IStat> Stats { get; }
+        public IReadOnlyList<Stat> Stats { get; }
         public string Name => JsonMod.Name;
         public ModDomain Domain => JsonMod.Domain;
         public int RequiredLevel => JsonMod.RequiredLevel;

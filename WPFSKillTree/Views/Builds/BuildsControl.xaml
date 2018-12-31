@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-             xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+             xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:wpf="clr-namespace:POESKillTree.Utils.Wpf"
              xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
