@@ -2,7 +2,7 @@
 using PoESkillTree.GameModel;
 using POESKillTree.Utils;
 
-namespace POESKillTree.ViewModels.Computation
+namespace POESKillTree.Computation.ViewModels
 {
     public class AddableResultStatViewModel : Notifier
     {

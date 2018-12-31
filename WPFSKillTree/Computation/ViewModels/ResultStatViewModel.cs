@@ -6,7 +6,7 @@ using POESKillTree.Common.ViewModels;
 using POESKillTree.Localization;
 using POESKillTree.Utils;
 
-namespace POESKillTree.ViewModels.Computation
+namespace POESKillTree.Computation.ViewModels
 {
     public class ResultStatViewModel : Notifier
     {

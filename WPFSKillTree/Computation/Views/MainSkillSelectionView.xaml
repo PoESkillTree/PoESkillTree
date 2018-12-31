@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="POESKillTree.Views.Computation.MainSkillSelectionView"
+﻿<UserControl x:Class="POESKillTree.Computation.Views.MainSkillSelectionView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:mahApps="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
-             xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Computation"
+             xmlns:viewModels="clr-namespace:POESKillTree.Computation.ViewModels"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MainSkillSelectionViewModel}">
     <StackPanel Orientation="Horizontal">

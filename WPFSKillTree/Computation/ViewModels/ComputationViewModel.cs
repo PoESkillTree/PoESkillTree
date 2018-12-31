@@ -7,7 +7,7 @@ using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 using POESKillTree.Utils;
 
-namespace POESKillTree.ViewModels.Computation
+namespace POESKillTree.Computation.ViewModels
 {
     public class ComputationViewModel : Notifier
     {

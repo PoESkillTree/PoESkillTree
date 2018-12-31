@@ -6,7 +6,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
 using POESKillTree.Common.ViewModels;
 
-namespace POESKillTree.ViewModels.Computation
+namespace POESKillTree.Computation.ViewModels
 {
     public class ResultStatsViewModel
     {

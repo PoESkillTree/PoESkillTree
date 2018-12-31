@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
 
-namespace POESKillTree.ViewModels.Computation
+namespace POESKillTree.Computation.ViewModels
 {
     internal class StatStub : IStat
     {

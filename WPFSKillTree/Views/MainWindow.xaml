@@ -12,7 +12,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:builds="clr-namespace:POESKillTree.Views.Builds"
         xmlns:equipment="clr-namespace:POESKillTree.Views.Equipment"
-        xmlns:computation="clr-namespace:POESKillTree.Views.Computation"
+        xmlns:computation="clr-namespace:POESKillTree.Computation.Views"
         xmlns:dd="urn:gong-wpf-dragdrop"
 
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"

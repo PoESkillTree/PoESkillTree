@@ -1,4 +1,4 @@
-﻿namespace POESKillTree.Views.Computation
+﻿namespace POESKillTree.Computation.Views
 {
     /// <summary>
     /// Interaction logic for ResultStatsView.xaml
