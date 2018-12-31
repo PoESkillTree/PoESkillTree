@@ -8,7 +8,8 @@ namespace POESKillTree.ViewModels.Computation
     {
         private readonly SkillDefinitions _skillDefinitions;
         private MainSkillViewModel _selectedSkill;
-        private int _skillStage;
+        private uint _skillStage;
+        private uint _maximumSkillStage;
 
         public MainSkillSelectionViewModel(SkillDefinitions skillDefinitions)
             => _skillDefinitions = skillDefinitions;
@@ -31,10 +32,16 @@ namespace POESKillTree.ViewModels.Computation
             set => SetProperty(ref _selectedSkill, value);
         }
 
-        public int SkillStage
+        public uint SkillStage
         {
             get => _skillStage;
             set => SetProperty(ref _skillStage, value);
+        }
+
+        public uint MaximumSkillStage
+        {
+            get => _maximumSkillStage;
+            set => SetProperty(ref _maximumSkillStage, value);
         }
     }
 }

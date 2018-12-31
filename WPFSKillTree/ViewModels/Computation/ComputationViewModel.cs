@@ -54,12 +54,13 @@ namespace POESKillTree.ViewModels.Computation
             {
                 new ConfigurationStatViewModel(
                         new StatStub("SelectedQuestPart", Entity.Character, typeof(QuestPart)))
-                    { SingleValue = (int) QuestPart.Epilogue },
+                    { NumericValue = (int) QuestPart.Epilogue },
                 new ConfigurationStatViewModel(
                         new StatStub("Level", Entity.Enemy, typeof(int)))
-                    { SingleValue = 84 },
+                    { NumericValue = 84, Minimum = new NodeValue(0), Maximum = new NodeValue(100) },
                 new ConfigurationStatViewModel(
-                    new StatStub("Projectile.TravelDistance", Entity.Character, typeof(double))),
+                        new StatStub("Projectile.TravelDistance", Entity.Character, typeof(double)))
+                    { Minimum = new NodeValue(0) },
                 new ConfigurationStatViewModel(
                     new StatStub("Shocked", Entity.Enemy, typeof(bool))),
                 new ConfigurationStatViewModel(
@@ -75,6 +76,8 @@ namespace POESKillTree.ViewModels.Computation
             MainSkillSelection.AddSkill(new Skill("ChargedAttack", 20, 20, ItemSlot.Boots, 0, 0));
             MainSkillSelection.AddSkill(new Skill("Fireball", 21, 23, ItemSlot.Boots, 1, 0));
             MainSkillSelection.AddSkill(new Skill("BladeVortex", 18, 0, ItemSlot.Helm, 0, 0));
+            MainSkillSelection.MaximumSkillStage = 10;
+            MainSkillSelection.SkillStage = uint.MaxValue;
         }
     }
 }

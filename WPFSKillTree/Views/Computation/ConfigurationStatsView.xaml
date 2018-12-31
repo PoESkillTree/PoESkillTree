@@ -11,13 +11,17 @@
              d:DataContext="{d:DesignInstance viewModels:ComputationViewModel}">
     <UserControl.Resources>
         <DataTemplate x:Key="IntTemplate" DataType="viewModels:ConfigurationStatViewModel">
-            <mahApps:NumericUpDown Value="{Binding SingleValue}"
+            <mahApps:NumericUpDown Value="{Binding NumericValue}"
+                                   Minimum="{Binding NumericMinimum}"
+                                   Maximum="{Binding NumericMaximum}"
                                    NumericInputMode="Numbers"
                                    Style="{StaticResource UpDownInDataGridStyle}" />
         </DataTemplate>
         <DataTemplate x:Key="DoubleTemplate" DataType="viewModels:ConfigurationStatViewModel">
-            <mahApps:NumericUpDown Value="{Binding SingleValue}"
+            <mahApps:NumericUpDown Value="{Binding NumericValue}"
                                    NumericInputMode="Decimal"
+                                   Minimum="{Binding NumericMinimum}"
+                                   Maximum="{Binding NumericMaximum}"
                                    Style="{StaticResource UpDownInDataGridStyle}" />
         </DataTemplate>
         <DataTemplate x:Key="BoolTemplate" DataType="viewModels:ConfigurationStatViewModel">
@@ -25,7 +29,7 @@
                       HorizontalAlignment="Center" />
         </DataTemplate>
         <DataTemplate x:Key="EnumTemplate" DataType="viewModels:ConfigurationStatViewModel">
-            <ComboBox SelectedIndex="{Binding SingleValue}"
+            <ComboBox SelectedIndex="{Binding NumericValue}"
                       ItemsSource="{Binding EnumValues}">
             </ComboBox>
         </DataTemplate>

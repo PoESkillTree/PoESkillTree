@@ -8,6 +8,8 @@ namespace POESKillTree.ViewModels.Computation
     public class ConfigurationStatViewModel : Notifier
     {
         private NodeValue? _value;
+        private NodeValue? _minimum;
+        private NodeValue? _maximum;
 
         public ConfigurationStatViewModel(IStat stat)
             => Stat = stat;
@@ -19,10 +21,16 @@ namespace POESKillTree.ViewModels.Computation
         public NodeValue? Value
         {
             get => _value;
-            set => SetProperty(ref _value, value);
+            set => SetProperty(ref _value, value, ValueOnPropertyChanged);
         }
 
-        public double? SingleValue
+        private void ValueOnPropertyChanged()
+        {
+            OnPropertyChanged(nameof(NumericValue));
+            OnPropertyChanged(nameof(BoolValue));
+        }
+
+        public double? NumericValue
         {
             get => Value?.Single;
             set => Value = (NodeValue?) value;
@@ -34,6 +42,22 @@ namespace POESKillTree.ViewModels.Computation
             set => Value = (NodeValue?) value;
         }
 
+        public NodeValue? Minimum
+        {
+            get => _minimum;
+            set => SetProperty(ref _minimum, value, () => OnPropertyChanged(nameof(NumericMinimum)));
+        }
+
+        public double NumericMinimum => Minimum?.Single ?? double.MinValue;
+
+        public NodeValue? Maximum
+        {
+            get => _maximum;
+            set => SetProperty(ref _maximum, value, () => OnPropertyChanged(nameof(NumericMaximum)));
+        }
+
+        public double NumericMaximum => Maximum?.Single ?? double.MaxValue;
+
         public override string ToString()
         {
             var result = Stat.Identity;
@@ -42,16 +66,6 @@ namespace POESKillTree.ViewModels.Computation
                 result = $"{Stat.Entity} {result}";
             }
             return result;
-        }
-
-        protected override void OnPropertyChanged(string propertyName)
-        {
-            base.OnPropertyChanged(propertyName);
-            if (propertyName == nameof(Value))
-            {
-                base.OnPropertyChanged(nameof(SingleValue));
-                base.OnPropertyChanged(nameof(BoolValue));
-            }
         }
     }
 }

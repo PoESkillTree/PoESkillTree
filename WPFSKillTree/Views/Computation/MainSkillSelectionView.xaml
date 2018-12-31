@@ -35,6 +35,6 @@
         </Label>
         <mahApps:NumericUpDown NumericInputMode="Numbers"
                                Value="{Binding SkillStage}"
-                               Minimum="0" Maximum="6" />
+                               Minimum="0" Maximum="{Binding MaximumSkillStage}" />
     </StackPanel>
 </UserControl>
