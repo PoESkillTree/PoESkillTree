@@ -19,7 +19,7 @@ namespace PoESkillTree.Computation.Console
                 .SelectMany(t => t["sd"].Values<string>())
                 .Select(s => s.Replace("\n", " "));
 
-            var statLinesPath = "../../Data/SkillTreeStatLines.txt";
+            var statLinesPath = "../../../PoESkillTree.GameModel/Data/SkillTreeStatLines.txt";
             File.WriteAllLines(statLinesPath, statLines);
         }
 
