@@ -83,7 +83,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void SkillDpsWithHits()
         {
-            var calculator = Calculator.CreateCalculator();
+            var calculator = Calculator.Create();
             var nodes = calculator.NodeRepository;
 
             calculator.NewBatchUpdate()
@@ -159,7 +159,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void SkillDpsWithDoTs()
         {
-            var calculator = Calculator.CreateCalculator();
+            var calculator = Calculator.Create();
             var nodes = calculator.NodeRepository;
 
             calculator.NewBatchUpdate()
@@ -187,7 +187,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void BleedDps()
         {
-            var calculator = Calculator.CreateCalculator();
+            var calculator = Calculator.Create();
             var nodes = calculator.NodeRepository;
 
             calculator.NewBatchUpdate()
@@ -217,7 +217,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void ResistanceAgainstPhysicalHits()
         {
-            var calculator = Calculator.CreateCalculator();
+            var calculator = Calculator.Create();
             var nodes = calculator.NodeRepository;
 
             calculator.NewBatchUpdate()
@@ -240,7 +240,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void StunChance()
         {
-            var calculator = Calculator.CreateCalculator();
+            var calculator = Calculator.Create();
             var nodes = calculator.NodeRepository;
 
             calculator.NewBatchUpdate()
@@ -263,7 +263,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void AffectedByMinionDamageAndAttackRateIncreases()
         {
-            var calculator = Calculator.CreateCalculator();
+            var calculator = Calculator.Create();
             var nodes = calculator.NodeRepository;
 
             var minion = _builderFactories.EntityBuilders.Minion;

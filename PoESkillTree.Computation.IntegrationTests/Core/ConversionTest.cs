@@ -22,7 +22,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         [SetUp]
         public void SetUp()
         {
-            _sut = Calculator.CreateCalculator();
+            _sut = Calculator.Create();
             _bar = new Stat("Bar");
             _foo = new Stat("Foo");
             var statFactory = new StatFactory();

@@ -7,7 +7,7 @@ namespace PoESkillTree.Computation.Core
     /// <summary>
     /// Main interface of Computation.Core. Represents a graph that calculates stat values based on modifiers.
     /// <para>
-    /// An instance of this interface can be created with <see cref="Calculator.CreateCalculator"/>.
+    /// An instance of this interface can be created with <see cref="Calculator.Create"/>.
     /// </para>
     /// <para>
     /// All values of nodes are calculated lazily. <see cref="Update"/> only invalidates previously stored values
@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Core
     /// </remarks>
     /* If the delayed events turn out to be a performance issue in the "preview calculations" use case, they could
      * easily be disabled: Either a property on ICalculator that turns off suspender usage in Calculator or a different
-     * factory method than/parameter to Calculator.CreateCalculator() that passes an empty suspender to the constructor.
+     * factory method than/parameter to Calculator.Create() that passes an empty suspender to the constructor.
      */
     public interface ICalculator
     {

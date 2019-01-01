@@ -50,7 +50,7 @@ namespace PoESkillTree.Computation.Core
         /// <summary>
         /// Creates an <see cref="ICalculator"/>.
         /// </summary>
-        public static ICalculator CreateCalculator()
+        public static ICalculator Create()
         {
             var innerNodeFactory = new NodeFactory();
             var nodeFactory = new TransformableNodeFactory(innerNodeFactory, v => new TransformableValue(v));
