@@ -37,6 +37,6 @@ namespace PoESkillTree.Computation.Parsing.Tests
             => new Modifier(new[] { new Stat(stat), }, form, value, source ?? new ModifierSource.Global());
 
         public static BuilderFactories CreateBuilderFactories(params SkillDefinition[] skillDefinitions)
-            => new BuilderFactories(new StatFactory(), new SkillDefinitions(skillDefinitions));
+            => new BuilderFactories(new SkillDefinitions(skillDefinitions));
     }
 }

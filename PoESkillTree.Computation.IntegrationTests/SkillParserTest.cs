@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [SetUp]
         public async Task SetUpAsync()
         {
-            _skillDefinitions = await CompositionRoot.SkillDefinitions.ConfigureAwait(false);
+            _skillDefinitions = await CompositionRoot.GameData.Skills.ConfigureAwait(false);
             _activeSkillParser = await CompositionRoot.ActiveSkillParser.ConfigureAwait(false);
             _supportSkillParser = await CompositionRoot.SupportSkillParser.ConfigureAwait(false);
         }

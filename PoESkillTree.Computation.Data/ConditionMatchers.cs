@@ -2,7 +2,6 @@
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
-using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -18,9 +17,8 @@ namespace PoESkillTree.Computation.Data
     {
         private readonly IModifierBuilder _modifierBuilder;
 
-        public ConditionMatchers(
-            IBuilderFactories builderFactories, IMatchContexts matchContexts, IModifierBuilder modifierBuilder)
-            : base(builderFactories, matchContexts)
+        public ConditionMatchers(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder)
+            : base(builderFactories)
         {
             _modifierBuilder = modifierBuilder;
         }

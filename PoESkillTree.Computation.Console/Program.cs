@@ -72,7 +72,7 @@ namespace PoESkillTree.Computation.Console
                         TestDataUpdater.UpdateSkillTreeStatLines();
                         break;
                     case "update ParseableBaseItems":
-                        TestDataUpdater.UpdateParseableBaseItems(await _compositionRoot.BaseItemDefinitions);
+                        TestDataUpdater.UpdateParseableBaseItems(await _compositionRoot.GameData.BaseItems);
                         break;
                     default:
                         await HandleParseCommandAsync(statLine);
@@ -209,11 +209,12 @@ namespace PoESkillTree.Computation.Console
 
         private async Task<(bool, IEnumerable<IStat>)> TryParseMetaStatAsync(string stat)
         {
-            var metaStats = _compositionRoot.MetaStats;
+            var builderFactories = await _compositionRoot.BuilderFactories;
+            var metaStats = builderFactories.MetaStatBuilders;
             switch (stat.ToLowerInvariant().Trim())
             {
                 case "level":
-                    return (true, Build((await GetStatBuildersAsync()).Level));
+                    return (true, Build(builderFactories.StatBuilders.Level));
                 case "skill hit dps":
                     return (true, Build(metaStats.SkillDpsWithHits));
                 case "skill dot dps":
@@ -227,7 +228,7 @@ namespace PoESkillTree.Computation.Console
                 case "cast rate":
                     return (true, Build(metaStats.CastRate));
                 case "chance to hit":
-                    return (true, Build((await GetStatBuildersAsync()).ChanceToHit));
+                    return (true, Build(builderFactories.StatBuilders.ChanceToHit));
                 case "hit damage source":
                     return (true, Build(metaStats.SkillHitDamageSource));
                 case "uses main hand":
@@ -240,9 +241,6 @@ namespace PoESkillTree.Computation.Console
 
             IEnumerable<IStat> Build(IStatBuilder builder)
                 => builder.Build(default).SelectMany(r => r.Stats);
-
-            async Task<IStatBuilders> GetStatBuildersAsync()
-                => (await _compositionRoot.BuilderFactories).StatBuilders;
         }
 
         /// <summary>

@@ -33,26 +33,23 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             };
 
         private readonly IBuilderFactories _builderFactories;
-        private readonly IMetaStatBuilders _metaStatBuilders;
         private readonly ISkillKeywordSelector _keywordSelector;
 
         private ModifierCollection _parsedModifiers;
         private ISet<UntranslatedStat> _parsedStats;
         private SkillPreParseResult _preParseResult;
 
-        private SkillKeywordParser(
-            IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
-            ISkillKeywordSelector keywordSelector)
-            => (_builderFactories, _metaStatBuilders, _keywordSelector) =
-                (builderFactories, metaStatBuilders, keywordSelector);
+        private SkillKeywordParser(IBuilderFactories builderFactories, ISkillKeywordSelector keywordSelector)
+            => (_builderFactories, _keywordSelector) =
+                (builderFactories, keywordSelector);
 
-        public static IPartialSkillParser CreateActive(
-            IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
-            => new SkillKeywordParser(builderFactories, metaStatBuilders, new ActiveSkillKeywordSelector());
+        private IMetaStatBuilders MetaStats => _builderFactories.MetaStatBuilders;
 
-        public static IPartialSkillParser CreateSupport(
-            IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
-            => new SkillKeywordParser(builderFactories, metaStatBuilders, new SupportSkillKeywordSelector());
+        public static IPartialSkillParser CreateActive(IBuilderFactories builderFactories)
+            => new SkillKeywordParser(builderFactories, new ActiveSkillKeywordSelector());
+
+        public static IPartialSkillParser CreateSupport(IBuilderFactories builderFactories)
+            => new SkillKeywordParser(builderFactories, new SupportSkillKeywordSelector());
 
         public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
@@ -68,18 +65,18 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             IConditionBuilder CreatePartHasKeywordCondition(Keyword k, int partIndex)
                 => PartHasKeywordCondition(alwaysProjectileParts.Contains(partIndex), isMainSkill, k);
 
-            AddKeywordModifiers(_metaStatBuilders.MainSkillHasKeyword, isMainSkill);
-            AddPartKeywordModifiers(_metaStatBuilders.MainSkillPartHasKeyword, CreatePartHasKeywordCondition);
-            AddPartKeywordModifiers(_metaStatBuilders.MainSkillPartCastRateHasKeyword, CreatePartHasKeywordCondition);
+            AddKeywordModifiers(MetaStats.MainSkillHasKeyword, isMainSkill);
+            AddPartKeywordModifiers(MetaStats.MainSkillPartHasKeyword, CreatePartHasKeywordCondition);
+            AddPartKeywordModifiers(MetaStats.MainSkillPartCastRateHasKeyword, CreatePartHasKeywordCondition);
             foreach (var damageSource in Enums.GetValues<DamageSource>())
             {
                 var preCondition = damageSource != DamageSource.OverTime
                     ? KeywordPreCondition(areaDamageHitParts, ExcludedKeywords[damageSource])
                     : KeywordPreCondition(areaDamageDotParts, ExcludedKeywords[damageSource]);
-                AddPartKeywordModifiers(k => _metaStatBuilders.MainSkillPartDamageHasKeyword(k, damageSource),
+                AddPartKeywordModifiers(k => MetaStats.MainSkillPartDamageHasKeyword(k, damageSource),
                     CreatePartHasKeywordCondition, preCondition);
             }
-            AddPartKeywordModifiers(k => _metaStatBuilders.MainSkillPartAilmentDamageHasKeyword(k),
+            AddPartKeywordModifiers(k => MetaStats.MainSkillPartAilmentDamageHasKeyword(k),
                 CreatePartHasKeywordCondition,
                 KeywordPreCondition(new int[0], ExcludedKeywords[DamageSource.OverTime]));
 

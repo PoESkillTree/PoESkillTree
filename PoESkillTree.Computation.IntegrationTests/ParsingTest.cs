@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MoreLinq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -49,7 +48,7 @@ namespace PoESkillTree.Computation.IntegrationTests
 
         private static IEnumerable<string> ReadParseableStatLines()
         {
-            var unparsedGivenStats = new GivenStatsCollection(null, null, null, null).SelectMany(s => s.GivenStatLines);
+            var unparsedGivenStats = new GivenStatsCollection(null, null, null).SelectMany(s => s.GivenStatLines);
             return ReadDataLines("SkillTreeStatLines")
                 .Concat(ReadDataLines("ParseableStatLines"))
                 .Concat(unparsedGivenStats)

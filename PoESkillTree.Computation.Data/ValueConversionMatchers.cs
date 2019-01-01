@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
-using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
@@ -22,9 +21,8 @@ namespace PoESkillTree.Computation.Data
     {
         private readonly IModifierBuilder _modifierBuilder;
 
-        public ValueConversionMatchers(
-            IBuilderFactories builderFactories, IMatchContexts matchContexts, IModifierBuilder modifierBuilder)
-            : base(builderFactories, matchContexts)
+        public ValueConversionMatchers(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder)
+            : base(builderFactories)
         {
             _modifierBuilder = modifierBuilder;
         }

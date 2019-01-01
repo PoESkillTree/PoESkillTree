@@ -20,17 +20,16 @@ namespace PoESkillTree.Computation.Data.GivenStats
     public class AdditionalSkillStats : UsesConditionBuilders, IGivenStats
     {
         private readonly IModifierBuilder _modifierBuilder;
-        private readonly IMetaStatBuilders _stat;
         private readonly Lazy<IReadOnlyList<IIntermediateModifier>> _lazyGivenStats;
 
-        public AdditionalSkillStats(
-            IBuilderFactories builderFactories, IModifierBuilder modifierBuilder, IMetaStatBuilders metaStatBuilders)
+        public AdditionalSkillStats(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder)
             : base(builderFactories)
         {
             _modifierBuilder = modifierBuilder;
-            _stat = metaStatBuilders;
             _lazyGivenStats = new Lazy<IReadOnlyList<IIntermediateModifier>>(() => CreateCollection().ToList());
         }
+
+        private IMetaStatBuilders MetaStats => BuilderFactories.MetaStatBuilders;
 
         public IReadOnlyList<Entity> AffectedEntities { get; } = new[] { GameModel.Entity.Character };
 
@@ -40,7 +39,10 @@ namespace PoESkillTree.Computation.Data.GivenStats
 
         private GivenStatCollection CreateCollection() => new GivenStatCollection(_modifierBuilder, ValueFactory)
         {
-            { TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value, IsMainSkill("Barrage", 1) },
+            {
+                TotalOverride, MetaStats.SkillNumberOfHitsPerCast, Projectile.Count.Value,
+                IsMainSkill("Barrage", 1)
+            },
 
             { TotalOverride, Skills.FromId("BloodstainedBanner").Reservation, 0, Flag.BannerPlanted.IsSet },
 
@@ -64,10 +66,19 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 IsMainSkill("FreezingPulse")
             },
 
-            { TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value, IsMainSkill("IceSpear", 1) },
-            { TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value, IsMainSkill("IceSpear", 3) },
+            {
+                TotalOverride, MetaStats.SkillNumberOfHitsPerCast, Projectile.Count.Value,
+                IsMainSkill("IceSpear", 1)
+            },
+            {
+                TotalOverride, MetaStats.SkillNumberOfHitsPerCast, Projectile.Count.Value,
+                IsMainSkill("IceSpear", 3)
+            },
 
-            { TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value, IsMainSkill("LancingSteel", 2) },
+            {
+                TotalOverride, MetaStats.SkillNumberOfHitsPerCast, Projectile.Count.Value,
+                IsMainSkill("LancingSteel", 2)
+            },
             // With the Primary and all Secondary Projectiles hitting, the Impale chance has to be adjusted
             // to be averaged across all hits.
             // The Primary Projectile has 100% Impale chance and is thus not affected by additional Impale chance
@@ -83,11 +94,11 @@ namespace PoESkillTree.Computation.Data.GivenStats
             // 1 - y = 1/hits as a PercentLess modifier (after multiplying by 100) and
             // secondary simply being the sum of all parsed Impale chance modifiers, Total is calculated correctly.
             {
-                BaseAdd, Buff.Impale.Chance.WithCondition(Hit.On), 100 / (_stat.SkillNumberOfHitsPerCast.Value - 1),
+                BaseAdd, Buff.Impale.Chance.WithCondition(Hit.On), 100 / (MetaStats.SkillNumberOfHitsPerCast.Value - 1),
                 IsMainSkill("LancingSteel", 2)
             },
             {
-                PercentLess, Buff.Impale.Chance.WithCondition(Hit.On), 100 / _stat.SkillNumberOfHitsPerCast.Value,
+                PercentLess, Buff.Impale.Chance.WithCondition(Hit.On), 100 / MetaStats.SkillNumberOfHitsPerCast.Value,
                 IsMainSkill("LancingSteel", 2)
             },
 
@@ -101,7 +112,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             },
 
             {
-                TotalOverride, _stat.SkillNumberOfHitsPerCast, Projectile.Count.Value,
+                TotalOverride, MetaStats.SkillNumberOfHitsPerCast, Projectile.Count.Value,
                 IsMainSkill("ShatteringSteel", 2)
             },
 
@@ -114,9 +125,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
             => IsMainSkill(skillId).And(Stat.MainSkillPart.Value.Eq(skillPart));
 
         private IConditionBuilder IsMainSkill(string skillId)
-            => _stat.MainSkillId.Value.Eq(Skills.FromId(skillId).SkillId);
+            => MetaStats.MainSkillId.Value.Eq(Skills.FromId(skillId).SkillId);
 
         private IConditionBuilder SkillIsActive(string skillId)
-            => _stat.ActiveSkillItemSlot(skillId).IsSet;
+            => MetaStats.ActiveSkillItemSlot(skillId).IsSet;
     }
 }

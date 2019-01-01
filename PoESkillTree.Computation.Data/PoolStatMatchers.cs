@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
-using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
@@ -19,9 +18,8 @@ namespace PoESkillTree.Computation.Data
     {
         private readonly IModifierBuilder _modifierBuilder;
 
-        public PoolStatMatchers(
-            IBuilderFactories builderFactories, IMatchContexts matchContexts, IModifierBuilder modifierBuilder)
-            : base(builderFactories, matchContexts)
+        public PoolStatMatchers(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder)
+            : base(builderFactories)
         {
             _modifierBuilder = modifierBuilder;
         }

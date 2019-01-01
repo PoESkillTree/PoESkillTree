@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
-using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
 
@@ -17,20 +16,20 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         private readonly TranslatingSkillParser _translatingParser;
 
         public ActiveSkillParser(
-            SkillDefinitions skillDefinitions, IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
+            SkillDefinitions skillDefinitions, IBuilderFactories builderFactories,
             UntranslatedStatParserFactory statParserFactory)
         {
-            _preParser = new SkillPreParser(skillDefinitions, metaStatBuilders);
+            _preParser = new SkillPreParser(skillDefinitions, builderFactories.MetaStatBuilders);
             _partialParsers = new[]
             {
-                new ActiveSkillGeneralParser(builderFactories, metaStatBuilders),
-                SkillKeywordParser.CreateActive(builderFactories, metaStatBuilders),
-                SkillTypeParser.CreateActive(builderFactories, metaStatBuilders),
-                new ActiveSkillLevelParser(builderFactories, metaStatBuilders),
+                new ActiveSkillGeneralParser(builderFactories),
+                SkillKeywordParser.CreateActive(builderFactories),
+                SkillTypeParser.CreateActive(builderFactories),
+                new ActiveSkillLevelParser(builderFactories),
                 new GemRequirementParser(builderFactories),
-                new SkillStatParser(builderFactories, metaStatBuilders),
+                new SkillStatParser(builderFactories),
             };
-            _translatingParser = new TranslatingSkillParser(builderFactories, metaStatBuilders, statParserFactory);
+            _translatingParser = new TranslatingSkillParser(builderFactories, statParserFactory);
         }
 
         public ParseResult Parse(Skill skill)

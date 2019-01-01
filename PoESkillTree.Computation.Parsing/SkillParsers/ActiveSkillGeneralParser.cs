@@ -20,12 +20,13 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     public class ActiveSkillGeneralParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;
-        private readonly IMetaStatBuilders _metaStatBuilders;
 
         private SkillModifierCollection _parsedModifiers;
 
-        public ActiveSkillGeneralParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
-            => (_builderFactories, _metaStatBuilders) = (builderFactories, metaStatBuilders);
+        public ActiveSkillGeneralParser(IBuilderFactories builderFactories)
+            => _builderFactories = builderFactories;
+
+        private IMetaStatBuilders MetaStats => _builderFactories.MetaStatBuilders;
 
         public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
@@ -53,12 +54,12 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 usesOffHandCondition = usesOffHandCondition
                     .And(suitableMainHand).And(suitableOffHand);
             }
-            _parsedModifiers.AddGlobal(_metaStatBuilders.SkillUsesHand(AttackDamageHand.MainHand),
+            _parsedModifiers.AddGlobal(MetaStats.SkillUsesHand(AttackDamageHand.MainHand),
                 Form.TotalOverride, 1, usesMainHandCondition);
-            _parsedModifiers.AddGlobal(_metaStatBuilders.SkillUsesHand(AttackDamageHand.OffHand),
+            _parsedModifiers.AddGlobal(MetaStats.SkillUsesHand(AttackDamageHand.OffHand),
                 Form.TotalOverride, 1, usesOffHandCondition);
 
-            _parsedModifiers.AddGlobalForMainSkill(_metaStatBuilders.MainSkillId,
+            _parsedModifiers.AddGlobalForMainSkill(MetaStats.MainSkillId,
                 Form.TotalOverride, preParseResult.SkillDefinition.NumericId);
 
             _parsedModifiers.AddGlobalForMainSkill(_builderFactories.StatBuilders.BaseCastTime.With(DamageSource.Spell),
@@ -74,9 +75,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 _parsedModifiers.AddGlobalForMainSkill(totemLifeStat, Form.More, (lifeMulti - 1) * 100);
             }
 
-            _parsedModifiers.AddGlobal(_metaStatBuilders.ActiveSkillItemSlot(mainSkill.Id),
+            _parsedModifiers.AddGlobal(MetaStats.ActiveSkillItemSlot(mainSkill.Id),
                 Form.BaseSet, (double) mainSkill.ItemSlot);
-            _parsedModifiers.AddGlobal(_metaStatBuilders.ActiveSkillSocketIndex(mainSkill.Id),
+            _parsedModifiers.AddGlobal(MetaStats.ActiveSkillSocketIndex(mainSkill.Id),
                 Form.BaseSet, mainSkill.SocketIndex);
 
             if (activeSkill.ProvidesBuff)
@@ -118,7 +119,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 {
                     var condition =
                         partCount > 1 ? _builderFactories.StatBuilders.MainSkillPart.Value.Eq(partIndex) : null;
-                    _parsedModifiers.AddGlobalForMainSkill(_metaStatBuilders.SkillHitDamageSource,
+                    _parsedModifiers.AddGlobalForMainSkill(MetaStats.SkillHitDamageSource,
                         Form.TotalOverride, (int) damageSource, condition);
                 }
             }

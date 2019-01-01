@@ -317,10 +317,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
             UntranslatedStatParserFactory statParserFactory)
         {
             var skillDefinitions = new SkillDefinitions(new[] { activeSkillDefinition, supportSkillDefinition });
-            var statFactory = new StatFactory();
-            var builderFactories = new BuilderFactories(statFactory, skillDefinitions);
-            var metaStatBuilders = new MetaStatBuilders(statFactory);
-            return new SupportSkillParser(skillDefinitions, builderFactories, metaStatBuilders, statParserFactory);
+            var builderFactories = new BuilderFactories(skillDefinitions);
+            return new SupportSkillParser(skillDefinitions, builderFactories, statParserFactory);
         }
     }
 }

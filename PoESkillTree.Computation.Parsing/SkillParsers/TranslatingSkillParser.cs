@@ -26,17 +26,15 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         private static readonly Regex KeystoneStatRegex = new Regex("^keystone_");
 
         private readonly IBuilderFactories _builderFactories;
-        private readonly IMetaStatBuilders _metaStatBuilders;
         private readonly UntranslatedStatParserFactory _statParserFactory;
 
         private SkillPreParseResult _preParseResult;
         private IEnumerable<UntranslatedStat> _parsedStats;
 
         public TranslatingSkillParser(
-            IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
-            UntranslatedStatParserFactory statParserFactory)
-            => (_builderFactories, _metaStatBuilders, _statParserFactory) =
-                (builderFactories, metaStatBuilders, statParserFactory);
+            IBuilderFactories builderFactories, UntranslatedStatParserFactory statParserFactory)
+            => (_builderFactories, _statParserFactory) =
+                (builderFactories, statParserFactory);
 
         public ParseResult Parse(
             Skill skill, SkillPreParseResult preParseResult, PartialSkillParseResult partialResult)
@@ -45,7 +43,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             _parsedStats = partialResult.ParsedStats.ToHashSet();
 
             var isMainSkill = preParseResult.IsMainSkill;
-            var isActiveSkill = _metaStatBuilders.IsActiveSkill(skill);
+            var isActiveSkill = _builderFactories.MetaStatBuilders.IsActiveSkill(skill);
             var level = preParseResult.LevelDefinition;
             var qualityStats = level.QualityStats.Select(s => ApplyQuality(s, skill));
             var (keystoneStats, levelStats) = level.Stats.Partition(s => KeystoneStatRegex.IsMatch(s.StatId));

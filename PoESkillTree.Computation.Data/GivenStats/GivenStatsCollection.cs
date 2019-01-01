@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
-using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.GameModel;
 
@@ -12,17 +11,15 @@ namespace PoESkillTree.Computation.Data.GivenStats
     public class GivenStatsCollection : IReadOnlyCollection<IGivenStats>
     {
         private readonly IBuilderFactories _builderFactories;
-        private readonly IMetaStatBuilders _metaStatBuilders;
         private readonly CharacterBaseStats _characterBaseStats;
         private readonly MonsterBaseStats _monsterBaseStats;
         private readonly Lazy<IReadOnlyList<IGivenStats>> _lazyCollection;
 
         public GivenStatsCollection(
-            IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
+            IBuilderFactories builderFactories,
             CharacterBaseStats characterBaseStats, MonsterBaseStats monsterBaseStats)
         {
             _builderFactories = builderFactories;
-            _metaStatBuilders = metaStatBuilders;
             _monsterBaseStats = monsterBaseStats;
             _characterBaseStats = characterBaseStats;
             _lazyCollection = new Lazy<IReadOnlyList<IGivenStats>>(() => CreateCollection(new ModifierBuilder()));
@@ -42,11 +39,11 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 new MonsterGivenStats(_builderFactories, modifierBuilder),
                 new TotemGivenStats(_builderFactories, modifierBuilder),
                 new EffectStats(_builderFactories, modifierBuilder),
-                new DataDrivenMechanics(_builderFactories, modifierBuilder, _metaStatBuilders),
-                new GameStateDependentMods(_builderFactories, modifierBuilder, _metaStatBuilders),
+                new DataDrivenMechanics(_builderFactories, modifierBuilder),
+                new GameStateDependentMods(_builderFactories, modifierBuilder),
                 new EnemyLevelBasedStats(_builderFactories, modifierBuilder, _monsterBaseStats),
                 new AllyLevelBasedStats(_builderFactories, modifierBuilder, _monsterBaseStats),
-                new AdditionalSkillStats(_builderFactories, modifierBuilder, _metaStatBuilders),
+                new AdditionalSkillStats(_builderFactories, modifierBuilder),
             };
     }
 }

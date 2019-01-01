@@ -14,13 +14,14 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     public class SupportSkillGeneralParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;
-        private readonly IMetaStatBuilders _metaStatBuilders;
 
         private ModifierCollection _parsedModifiers;
         private SkillPreParseResult _preParseResult;
 
-        public SupportSkillGeneralParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
-            => (_builderFactories, _metaStatBuilders) = (builderFactories, metaStatBuilders);
+        public SupportSkillGeneralParser(IBuilderFactories builderFactories)
+            => _builderFactories = builderFactories;
+
+        private IMetaStatBuilders MetaStats => _builderFactories.MetaStatBuilders;
 
         public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
@@ -28,9 +29,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             _preParseResult = preParseResult;
             var isActiveSkill = preParseResult.IsActiveSkill;
 
-            _parsedModifiers.AddGlobal(_metaStatBuilders.ActiveSkillItemSlot(parsedSkill.Id),
+            _parsedModifiers.AddGlobal(MetaStats.ActiveSkillItemSlot(parsedSkill.Id),
                 Form.BaseSet, (double) parsedSkill.ItemSlot, isActiveSkill);
-            _parsedModifiers.AddGlobal(_metaStatBuilders.ActiveSkillSocketIndex(parsedSkill.Id),
+            _parsedModifiers.AddGlobal(MetaStats.ActiveSkillSocketIndex(parsedSkill.Id),
                 Form.BaseSet, parsedSkill.SocketIndex, isActiveSkill);
             AddInstanceModifiers();
 
