@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
+using PoESkillTree.Computation.Data.GivenStats;
 using PoESkillTree.Computation.Data.Steps;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.GameModel.Skills;
 
@@ -24,23 +27,43 @@ namespace PoESkillTree.Computation.Data
         private readonly Lazy<IReadOnlyList<StatReplacerData>> _statReplacers =
             new Lazy<IReadOnlyList<StatReplacerData>>(() => new StatReplacers().Replacers);
 
+        private readonly Lazy<IReadOnlyList<IGivenStats>> _givenStats;
+
         private readonly Lazy<IStepper<ParsingStep>> _stepper =
             new Lazy<IStepper<ParsingStep>>(() => new Stepper());
 
         private readonly Lazy<StatMatchersSelector> _statMatchersSelector;
 
-        public ParsingData(
-            IBuilderFactories builderFactories, IReadOnlyList<SkillDefinition> skills,
-            IReadOnlyList<PassiveNodeDefinition> passives)
+        private ParsingData(
+            IBuilderFactories builderFactories,
+            SkillDefinitions skills, PassiveTreeDefinition passives,
+            CharacterBaseStats characterBaseStats, MonsterBaseStats monsterBaseStats)
         {
             _builderFactories = builderFactories;
 
             _statMatchers = new Lazy<IReadOnlyList<IStatMatchers>>(
-                () => CreateStatMatchers(new ModifierBuilder(), passives));
+                () => CreateStatMatchers(new ModifierBuilder(), passives.Nodes));
             _referencedMatchers = new Lazy<IReadOnlyList<IReferencedMatchers>>(
-                () => CreateReferencedMatchers(skills));
+                () => CreateReferencedMatchers(skills.Skills));
+            _givenStats = new Lazy<IReadOnlyList<IGivenStats>>(
+                () => new GivenStatsCollection(builderFactories, characterBaseStats, monsterBaseStats));
             _statMatchersSelector = new Lazy<StatMatchersSelector>(
                 () => new StatMatchersSelector(StatMatchers));
+        }
+
+        public static async Task<IParsingData<ParsingStep>> CreateAsync(
+            GameData gameData, Task<IBuilderFactories> builderFactoriesTask)
+        {
+            var skillsTask = gameData.Skills;
+            var passivesTask = gameData.PassiveTree;
+            var characterTask = gameData.CharacterBaseStats;
+            var monsterTask = gameData.MonsterBaseStats;
+            return new ParsingData(
+                await builderFactoriesTask.ConfigureAwait(false),
+                await skillsTask.ConfigureAwait(false),
+                await passivesTask.ConfigureAwait(false),
+                await characterTask.ConfigureAwait(false),
+                await monsterTask.ConfigureAwait(false));
         }
 
         public IReadOnlyList<IStatMatchers> StatMatchers => _statMatchers.Value;
@@ -48,6 +71,8 @@ namespace PoESkillTree.Computation.Data
         public IReadOnlyList<IReferencedMatchers> ReferencedMatchers => _referencedMatchers.Value;
 
         public IReadOnlyList<StatReplacerData> StatReplacers => _statReplacers.Value;
+
+        public IReadOnlyList<IGivenStats> GivenStats => _givenStats.Value;
 
         public IStepper<ParsingStep> Stepper => _stepper.Value;
 

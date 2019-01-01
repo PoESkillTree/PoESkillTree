@@ -8,7 +8,7 @@ using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Data.GivenStats
 {
-    public class GivenStatsCollection : IReadOnlyCollection<IGivenStats>
+    public class GivenStatsCollection : IReadOnlyList<IGivenStats>
     {
         private readonly IBuilderFactories _builderFactories;
         private readonly CharacterBaseStats _characterBaseStats;
@@ -30,6 +30,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public int Count => _lazyCollection.Value.Count;
+
+        public IGivenStats this[int index] => _lazyCollection.Value[index];
 
         private IReadOnlyList<IGivenStats> CreateCollection(IModifierBuilder modifierBuilder)
             => new IGivenStats[]

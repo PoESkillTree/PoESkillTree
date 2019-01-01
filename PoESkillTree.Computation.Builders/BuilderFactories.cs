@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Builders.Actions;
+﻿using System.Threading.Tasks;
+using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Buffs;
 using PoESkillTree.Computation.Builders.Charges;
 using PoESkillTree.Computation.Builders.Conditions;
@@ -25,6 +26,7 @@ using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders
@@ -50,6 +52,9 @@ namespace PoESkillTree.Computation.Builders
             MetaStatBuilders = new MetaStatBuilders(statFactory);
             MatchContexts = new MatchContexts(statFactory);
         }
+
+        public static async Task<IBuilderFactories> CreateAsync(GameData gameData)
+            => new BuilderFactories(await gameData.Skills.ConfigureAwait(false));
 
         public IActionBuilders ActionBuilders { get; }
         public IBuffBuilders BuffBuilders { get; }

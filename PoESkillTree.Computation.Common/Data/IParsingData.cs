@@ -11,7 +11,7 @@ namespace PoESkillTree.Computation.Common.Data
     /// The combination of <see cref="Stepper"/> and <see cref="SelectStatMatcher"/> must make sure that
     /// <see cref="IStepper{T}.IsSuccess"/> only returns true if one matched <see cref="MatcherData.Modifier"/>
     /// has stats in each entry, one has forms in each entry and one has values in each entry. The resulting
-    /// <see cref="Common.Modifier"/>s must have a stat, form and value (and condition, but that is taken care of by
+    /// <see cref="Modifier"/>s must have a stat, form and value (and condition, but that is taken care of by
     /// adding a default condition when building the merged <see cref="Common.Builders.Modifiers.IIntermediateModifier"/>).
     /// </remarks>
     public interface IParsingData<TStep>
@@ -21,6 +21,8 @@ namespace PoESkillTree.Computation.Common.Data
         IReadOnlyList<IStatMatchers> StatMatchers { get; }
 
         IReadOnlyList<StatReplacerData> StatReplacers { get; }
+
+        IReadOnlyList<IGivenStats> GivenStats { get; }
 
         IStepper<TStep> Stepper { get; }
 

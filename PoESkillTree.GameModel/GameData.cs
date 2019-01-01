@@ -21,6 +21,12 @@ namespace PoESkillTree.GameModel
         private readonly Lazy<Task<StatTranslators>> _statTranslators =
             new Lazy<Task<StatTranslators>>(StatTranslation.StatTranslators.CreateAsync);
 
+        private readonly Lazy<Task<CharacterBaseStats>> _characterBaseStats =
+            new Lazy<Task<CharacterBaseStats>>(GameModel.CharacterBaseStats.CreateAsync);
+
+        private readonly Lazy<Task<MonsterBaseStats>> _monsterBaseStats =
+            new Lazy<Task<MonsterBaseStats>>(GameModel.MonsterBaseStats.CreateAsync);
+
         public GameData(IReadOnlyList<PassiveNodeDefinition> passiveNodeDefinitions)
         {
             _passiveTreeDefinition = new Lazy<Task<PassiveTreeDefinition>>(
@@ -31,5 +37,7 @@ namespace PoESkillTree.GameModel
         public Task<BaseItemDefinitions> BaseItems => _baseItemDefinitions.Value;
         public Task<SkillDefinitions> Skills => _skillDefinitions.Value;
         public Task<StatTranslators> StatTranslators => _statTranslators.Value;
+        public Task<CharacterBaseStats> CharacterBaseStats => _characterBaseStats.Value;
+        public Task<MonsterBaseStats> MonsterBaseStats => _monsterBaseStats.Value;
     }
 }

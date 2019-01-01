@@ -267,8 +267,8 @@ namespace PoESkillTree.Computation.Console
         private async Task AddGivenStatsAsync()
         {
             var parser = await _compositionRoot.CoreParser;
-            var givenStats = await _compositionRoot.GivenStats;
-            var mods = GivenStatsParser.Parse(parser, givenStats);
+            var parsingData = await _compositionRoot.ParsingData;
+            var mods = GivenStatsParser.Parse(parser, parsingData.GivenStats);
             AddMods(mods);
         }
 

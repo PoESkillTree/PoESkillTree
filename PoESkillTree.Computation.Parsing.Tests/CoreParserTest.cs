@@ -64,6 +64,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             public IReadOnlyList<IReferencedMatchers> ReferencedMatchers => new IReferencedMatchers[0];
             public IReadOnlyList<IStatMatchers> StatMatchers { get; } = new[] { new Matchers(), };
             public IReadOnlyList<StatReplacerData> StatReplacers => new StatReplacerData[0];
+            public IReadOnlyList<IGivenStats> GivenStats { get; } = new IGivenStats[0];
             public IStepper<Step> Stepper { get; } = new Stepper();
             public IStatMatchers SelectStatMatcher(Step step) => StatMatchers[0];
         }

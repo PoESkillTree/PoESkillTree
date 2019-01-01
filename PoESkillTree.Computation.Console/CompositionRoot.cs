@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using PoESkillTree.Computation.Builders;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Data;
-using PoESkillTree.Computation.Data;
-using PoESkillTree.Computation.Data.GivenStats;
 using PoESkillTree.Computation.Data.Steps;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.Computation.Parsing.SkillParsers;
@@ -22,33 +18,20 @@ namespace PoESkillTree.Computation.Console
         private readonly Lazy<Task<IBuilderFactories>> _builderFactories;
         private readonly Lazy<Task<IParsingData<ParsingStep>>> _parsingData;
         private readonly Lazy<Task<ICoreParser>> _coreParser;
-        private readonly Lazy<Task<IEnumerable<IGivenStats>>> _givenStats;
         private readonly Lazy<Task<IParser<Skill>>> _activeSkillParser;
         private readonly Lazy<Task<IParser<SupportSkillParserParameter>>> _supportSkillParser;
 
         public CompositionRoot()
         {
-            _gameData = new Lazy<GameData>(() => new GameData(PassiveTreeDefinition.CreateKeystoneDefinitions()));
-            _builderFactories = new Lazy<Task<IBuilderFactories>>(CreateBuilderFactoriesAsync);
-            _parsingData = new Lazy<Task<IParsingData<ParsingStep>>>(CreateParsingDataAsync);
+            _gameData = new Lazy<GameData>(
+                () => new GameData(PassiveTreeDefinition.CreateKeystoneDefinitions()));
+            _builderFactories = new Lazy<Task<IBuilderFactories>>(
+                () => Builders.BuilderFactories.CreateAsync(_gameData.Value));
+            _parsingData = new Lazy<Task<IParsingData<ParsingStep>>>(
+                () => Data.ParsingData.CreateAsync(_gameData.Value, _builderFactories.Value));
             _coreParser = new Lazy<Task<ICoreParser>>(CreateCoreParserAsync);
-            _givenStats = new Lazy<Task<IEnumerable<IGivenStats>>>(CreateGivenStatsAsync);
             _activeSkillParser = new Lazy<Task<IParser<Skill>>>(CreateActiveSkillParserAsync);
             _supportSkillParser = new Lazy<Task<IParser<SupportSkillParserParameter>>>(CreateSupportSkillParserAsync);
-        }
-
-        private async Task<IBuilderFactories> CreateBuilderFactoriesAsync()
-        {
-            var skillDefinitions = await _gameData.Value.Skills.ConfigureAwait(false);
-            return new BuilderFactories(skillDefinitions);
-        }
-
-        private async Task<IParsingData<ParsingStep>> CreateParsingDataAsync()
-        {
-            var skillDefinitions = await _gameData.Value.Skills.ConfigureAwait(false);
-            var passiveNodeDefinitions = await _gameData.Value.PassiveTree.ConfigureAwait(false);
-            var builderFactories = await _builderFactories.Value.ConfigureAwait(false);
-            return new ParsingData(builderFactories, skillDefinitions.Skills, passiveNodeDefinitions.Nodes);
         }
 
         private async Task<ICoreParser> CreateCoreParserAsync()
@@ -56,15 +39,6 @@ namespace PoESkillTree.Computation.Console
             var builderFactories = await _builderFactories.Value.ConfigureAwait(false);
             var parsingData = await _parsingData.Value.ConfigureAwait(false);
             return new CoreParser<ParsingStep>(parsingData, builderFactories);
-        }
-
-        private async Task<IEnumerable<IGivenStats>> CreateGivenStatsAsync()
-        {
-            var characterTask = CharacterBaseStats.CreateAsync();
-            var monsterTask = MonsterBaseStats.CreateAsync();
-            var builderFactoriesTask = _builderFactories.Value;
-            return new GivenStatsCollection(await builderFactoriesTask.ConfigureAwait(false),
-                await characterTask.ConfigureAwait(false), await monsterTask.ConfigureAwait(false));
         }
 
         private async Task<IParser<Skill>> CreateActiveSkillParserAsync()
@@ -107,7 +81,6 @@ namespace PoESkillTree.Computation.Console
         public Task<IBuilderFactories> BuilderFactories => _builderFactories.Value;
         public Task<IParsingData<ParsingStep>> ParsingData => _parsingData.Value;
         public Task<ICoreParser> CoreParser => _coreParser.Value;
-        public Task<IEnumerable<IGivenStats>> GivenStats => _givenStats.Value;
         public Task<IParser<Skill>> ActiveSkillParser => _activeSkillParser.Value;
         public Task<IParser<SupportSkillParserParameter>> SupportSkillParser => _supportSkillParser.Value;
     }
