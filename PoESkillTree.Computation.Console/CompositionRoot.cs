@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Console
         public CompositionRoot()
         {
             _gameData = new Lazy<GameData>(
-                () => new GameData(PassiveTreeDefinition.CreateKeystoneDefinitions()));
+                () => new GameData(PassiveTreeDefinition.CreateKeystoneDefinitions(), true));
             _builderFactories = new Lazy<Task<IBuilderFactories>>(
                 () => Builders.BuilderFactories.CreateAsync(_gameData.Value));
             _parser = new Lazy<Task<IParser>>(
