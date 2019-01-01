@@ -20,13 +20,13 @@ namespace PoESkillTree.Computation.IntegrationTests
     [TestFixture]
     public class ParsingTest : CompositionRootTestBase
     {
-        private ICoreParser _parser;
+        private IParser _parser;
         private IBuilderFactories _f;
 
         [SetUp]
         public async Task SetUpAsync()
         {
-            _parser = await CompositionRoot.CoreParser.ConfigureAwait(false);
+            _parser = await CompositionRoot.Parser.ConfigureAwait(false);
             _f = await CompositionRoot.BuilderFactories.ConfigureAwait(false);
         }
 

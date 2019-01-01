@@ -15,7 +15,7 @@ namespace PoESkillTree.GameModel.StatTranslation
         private StatTranslators(IReadOnlyDictionary<string, StatTranslator> translators)
             => _translators = translators;
 
-        public StatTranslator this[string translationFileName] => _translators[translationFileName];
+        public IStatTranslator this[string translationFileName] => _translators[translationFileName];
 
         public static async Task<StatTranslators> CreateAsync()
         {

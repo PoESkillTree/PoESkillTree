@@ -102,7 +102,7 @@ namespace PoESkillTree.Computation.Console
             }
             else 
             {
-                var parser = await _compositionRoot.CoreParser;
+                var parser = await _compositionRoot.Parser;
                 if (TryParse(parser, statLine, out var mods, verbose: true))
                 {
                     AddMods(mods);
@@ -199,7 +199,7 @@ namespace PoESkillTree.Computation.Console
             {
                 return metaStats;
             }
-            var parser = await _compositionRoot.CoreParser;
+            var parser = await _compositionRoot.Parser;
             if (TryParse(parser, "1% increased" + stat, out var mods))
             {
                 return mods.SelectMany(m => m.Stats);
@@ -247,7 +247,7 @@ namespace PoESkillTree.Computation.Console
         /// Parses the given stat using the given parser and writes results to the console.
         /// </summary>
         private static bool TryParse(
-            ICoreParser parser, string statLine, out IReadOnlyList<Modifier> mods, bool verbose = false)
+            IParser parser, string statLine, out IReadOnlyList<Modifier> mods, bool verbose = false)
         {
             var result = parser.Parse(statLine);
             if (!result.SuccessfullyParsed)
@@ -266,10 +266,8 @@ namespace PoESkillTree.Computation.Console
 
         private async Task AddGivenStatsAsync()
         {
-            var parser = await _compositionRoot.CoreParser;
-            var parsingData = await _compositionRoot.ParsingData;
-            var mods = GivenStatsParser.Parse(parser, parsingData.GivenStats);
-            AddMods(mods);
+            var parser = await _compositionRoot.Parser;
+            AddMods(parser.ParseGivenModifiers());
         }
 
         private void AddMods(IEnumerable<Modifier> mods)
@@ -284,7 +282,7 @@ namespace PoESkillTree.Computation.Console
         private async Task Benchmark()
         {
             var stopwatch = Stopwatch.StartNew();
-            var parser = await _compositionRoot.CoreParser;
+            var parser = await _compositionRoot.Parser;
             stopwatch.Stop();
             System.Console.WriteLine($"Async parser initialization:\n  {stopwatch.ElapsedMilliseconds} ms");
 
@@ -362,7 +360,7 @@ namespace PoESkillTree.Computation.Console
         /// </remarks>
         private async Task Profile()
         {
-            var parser = await _compositionRoot.CoreParser;
+            var parser = await _compositionRoot.Parser;
             foreach (var line in ReadStatLines())
             {
                 parser.Parse(line);
@@ -388,7 +386,7 @@ namespace PoESkillTree.Computation.Console
 
     public static class ParserExtensions
     {
-        public static ParseResult Parse(this ICoreParser @this, string stat) =>
-            @this.Parse(stat, new ModifierSource.Global(), Entity.Character);
+        public static ParseResult Parse(this IParser @this, string stat) =>
+            @this.ParseRawModifier(stat, new ModifierSource.Global(), Entity.Character);
     }
 }

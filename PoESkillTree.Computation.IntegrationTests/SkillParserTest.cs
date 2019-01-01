@@ -7,7 +7,6 @@ using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Parsing;
-using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
@@ -20,15 +19,13 @@ namespace PoESkillTree.Computation.IntegrationTests
     public class SkillParserTest : CompositionRootTestBase
     {
         private SkillDefinitions _skillDefinitions;
-        private IParser<Skill> _activeSkillParser;
-        private IParser<SupportSkillParserParameter> _supportSkillParser;
+        private IParser _parser;
 
         [SetUp]
         public async Task SetUpAsync()
         {
             _skillDefinitions = await CompositionRoot.GameData.Skills.ConfigureAwait(false);
-            _activeSkillParser = await CompositionRoot.ActiveSkillParser.ConfigureAwait(false);
-            _supportSkillParser = await CompositionRoot.SupportSkillParser.ConfigureAwait(false);
+            _parser = await CompositionRoot.Parser.ConfigureAwait(false);
         }
 
         [Test]
@@ -161,7 +158,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("Range.Attack.OffHand.Skill", Form.BaseAdd, null, global, true),
                 }.Select(t => (t.stat, t.form, (NodeValue?) t.value, t.source, t.mainSkillOnly)).ToArray();
 
-            var actual = _activeSkillParser.Parse(frenzy);
+            var actual = _parser.ParseActiveSkill(frenzy);
 
             AssertCorrectModifiers(valueCalculationContextMock, isMainSkillStat, expectedModifiers, actual);
         }
@@ -234,7 +231,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("Cold.Damage.Secondary.Skill", Form.BaseAdd, addedDamageValue, global, true))
                 .ToArray();
 
-            var actual = _supportSkillParser.Parse(frenzy, support);
+            var actual = _parser.ParseSupportSkill(frenzy, support);
 
             AssertCorrectModifiers(valueCalculationContextMock, isMainSkillStat, expectedModifiers, actual);
         }
@@ -313,12 +310,12 @@ namespace PoESkillTree.Computation.IntegrationTests
             {
                 var activeSkill = new Skill("BloodRage", 20, 20, default, 0, 0);
                 var supportSkill = new Skill(skillId, level, 20, default, 1, 0);
-                return _supportSkillParser.Parse(activeSkill, supportSkill);
+                return _parser.ParseSupportSkill(activeSkill, supportSkill);
             }
             else
             {
                 var skill = new Skill(skillId, level, 20, default, 0, 0);
-                return _activeSkillParser.Parse(skill);
+                return _parser.ParseActiveSkill(skill);
             }
         }
 

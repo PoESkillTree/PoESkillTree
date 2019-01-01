@@ -72,6 +72,7 @@
     <Compile Include="ItemParsers\ItemPropertyParser.cs" />
     <Compile Include="ItemParsers\PartialItemParserParameter.cs" />
     <Compile Include="ModifierCollection.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="ParseResultExtensions.cs" />
     <Compile Include="PassiveTreeParsers\PassiveNodeParser.cs" />
     <Compile Include="PassiveTreeParsers\SkilledPassiveNodeParser.cs" />

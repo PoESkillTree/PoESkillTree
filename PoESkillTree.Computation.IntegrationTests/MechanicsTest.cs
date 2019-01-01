@@ -10,7 +10,6 @@ using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.IntegrationTests.Core;
-using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils.Extensions;
 
@@ -39,10 +38,9 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             _builderFactories = await CompositionRoot.BuilderFactories.ConfigureAwait(false);
             _metaStats = _builderFactories.MetaStatBuilders;
-            var coreParser = await CompositionRoot.CoreParser.ConfigureAwait(false);
-            var parsingData = await CompositionRoot.ParsingData.ConfigureAwait(false);
+            var parser = await CompositionRoot.Parser.ConfigureAwait(false);
             var modSource = new ModifierSource.Global();
-            _givenMods = GivenStatsParser.Parse(coreParser, parsingData.GivenStats)
+            _givenMods = parser.ParseGivenModifiers()
                 .Append(
                     new Modifier(
                         Build(_builderFactories.StatBuilders.Level.For(_builderFactories.EntityBuilders.Enemy)),

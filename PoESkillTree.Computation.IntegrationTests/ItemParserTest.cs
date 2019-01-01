@@ -8,7 +8,6 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Parsing;
-using PoESkillTree.Computation.Parsing.ItemParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.StatTranslation;
@@ -25,7 +24,7 @@ namespace PoESkillTree.Computation.IntegrationTests
 
         private BaseItemDefinitions _baseItemDefinitions;
         private IStatTranslator _statTranslator;
-        private IParser<ItemParserParameter> _itemParser;
+        private IParser _parser;
 
         [OneTimeSetUp]
         public static void OneTimeSetUp()
@@ -39,14 +38,9 @@ namespace PoESkillTree.Computation.IntegrationTests
         public async Task SetUpAsync()
         {
             var definitionsTask = CompositionRoot.GameData.BaseItems;
-            var builderFactoriesTask = CompositionRoot.BuilderFactories;
-            var coreParserTask = CompositionRoot.CoreParser;
             _baseItemDefinitions = await definitionsTask.ConfigureAwait(false);
             _statTranslator = await _statTranslatorTask.ConfigureAwait(false);
-            _itemParser = new ItemParser(_baseItemDefinitions,
-                await builderFactoriesTask.ConfigureAwait(false),
-                await coreParserTask.ConfigureAwait(false),
-                _statTranslator);
+            _parser = await CompositionRoot.Parser.ConfigureAwait(false);
         }
 
         [Test]
@@ -91,7 +85,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("Strength", Form.BaseAdd, 32, global),
                 }.Select(t => (t.stat, t.form, (NodeValue?) t.value, t.source)).ToArray();
 
-            var actual = _itemParser.Parse(new ItemParserParameter(item, ItemSlot.BodyArmour));
+            var actual = _parser.ParseItem(item, ItemSlot.BodyArmour);
 
             AssertCorrectModifiers(valueCalculationContext, expectedModifiers, actual);
         }
@@ -152,7 +146,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                         : (t.stat, t.form, (NodeValue?) t.value, t.source)
                 ).ToArray();
 
-            var actual = _itemParser.Parse(new ItemParserParameter(item, ItemSlot.MainHand));
+            var actual = _parser.ParseItem(item, ItemSlot.MainHand);
 
             AssertCorrectModifiers(Mock.Of<IValueCalculationContext>(), expectedModifiers, actual);
         }
@@ -197,7 +191,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var item = new Item(metadataId, definition.Name, 20, definition.Requirements.Level,
                 FrameType.White, false, mods);
             var slot = SlotForClass(definition.ItemClass);
-            return _itemParser.Parse(new ItemParserParameter(item, slot));
+            return _parser.ParseItem(item, slot);
         }
 
         private static IEnumerable<string> ReadParseableBaseItems()
@@ -224,7 +218,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var item = new Item(unique.BaseMetadataId, unique.Name, 20, unique.Level,
                 FrameType.Unique, false, mods);
             var slot = SlotForClass(definition.ItemClass);
-            return _itemParser.Parse(new ItemParserParameter(item, slot));
+            return _parser.ParseItem(item, slot);
         }
 
         private static IEnumerable<string> ReadParseableUniqueItems()
