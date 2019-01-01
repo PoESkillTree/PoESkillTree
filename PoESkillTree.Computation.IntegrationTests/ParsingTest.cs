@@ -9,9 +9,9 @@ using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
-using PoESkillTree.Computation.Console;
 using PoESkillTree.Computation.Data.GivenStats;
 using PoESkillTree.Computation.Parsing;
+using PoESkillTree.GameModel;
 using PoESkillTree.Utils.Extensions;
 using static PoESkillTree.Computation.IntegrationTests.ParsingTestUtils;
 
@@ -26,14 +26,14 @@ namespace PoESkillTree.Computation.IntegrationTests
         [SetUp]
         public async Task SetUpAsync()
         {
-            _parser = await CompositionRoot.Parser.ConfigureAwait(false);
-            _f = await CompositionRoot.BuilderFactories.ConfigureAwait(false);
+            _parser = await ParserTask.ConfigureAwait(false);
+            _f = await BuilderFactoriesTask.ConfigureAwait(false);
         }
 
         [Test, TestCaseSource(nameof(ReadParseableStatLines))]
         public void Parses(string statLine)
         {
-            var actual = _parser.Parse(statLine);
+            var actual = Parse(statLine);
 
             AssertIsParsedSuccessfully(actual);
         }
@@ -41,7 +41,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test, TestCaseSource(nameof(ReadNotParseableStatLines))]
         public void DoesNotParse(string statLine)
         {
-            var actual = _parser.Parse(statLine);
+            var actual = Parse(statLine);
 
             AssertIsParsedUnsuccessfully(actual);
         }
@@ -64,7 +64,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                 _f.StatBuilders.Attribute.Dexterity,
                 _f.FormBuilders.BaseAdd,
                 _f.ValueBuilders.Create(10));
-            var actual = _parser.Parse("+10 to Dexterity").Modifiers;
+            var actual = Parse("+10 to Dexterity").Modifiers;
 
             Assert.AreEqual(expected, actual);
         }
@@ -83,7 +83,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     _f.FormBuilders.BaseAdd,
                     _f.ValueBuilders.Create(30).Multiply(_f.StatBuilders.GrandSpectrumJewelsSocketed.Value)),
             }.Flatten();
-            var actual = _parser.Parse("Gain 30 Mana per Grand Spectrum").Modifiers;
+            var actual = Parse("Gain 30 Mana per Grand Spectrum").Modifiers;
 
             Assert.AreEqual(expected, actual);
         }
@@ -106,7 +106,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     _f.ValueBuilders.Create(50),
                     _f.EquipmentBuilders.Equipment.Count(e => e.Corrupted.IsSet) >= 5)
             }.Flatten();
-            var actual = _parser.Parse(
+            var actual = Parse(
                     "With 5 Corrupted Items Equipped: 50% of Chaos Damage does not bypass Energy Shield, and 50% of Physical Damage bypasses Energy Shield")
                 .Modifiers;
 
@@ -132,7 +132,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     _f.FormBuilders.PercentLess,
                     _f.ValueBuilders.Create(100))
             }.Flatten();
-            var actual = _parser.Parse(
+            var actual = Parse(
                     "Life Leeched per Second is doubled.\nMaximum Life Leech Rate is doubled.\nLife Regeneration has no effect.")
                 .Modifiers;
 
@@ -148,7 +148,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                 ParagonOfCalamityFor(_f.DamageTypeBuilders.Lightning),
                 ParagonOfCalamityFor(_f.DamageTypeBuilders.Cold),
             }.Flatten();
-            var actual = _parser.Parse(
+            var actual = Parse(
                     "For each Element you've been hit by Damage of Recently, 8% reduced Damage taken of that Element")
                 .Modifiers;
 
@@ -174,8 +174,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     _f.FormBuilders.PercentIncrease,
                     _f.ValueBuilders.Create(3))
             }.Flatten();
-            var actual = _parser.Parse(
-                    "Auras from your Skills grant 3% increased Attack and Cast Speed to you and Allies")
+            var actual = Parse("Auras from your Skills grant 3% increased Attack and Cast Speed to you and Allies")
                 .Modifiers;
 
             Assert.AreEqual(expected, actual);
@@ -199,5 +198,8 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             return CreateModifier(statBuilder.WithCondition(conditionBuilder), formBuilder, valueBuilder);
         }
+
+        private ParseResult Parse(string stat)
+            => _parser.ParseRawModifier(stat, new ModifierSource.Global(), Entity.Character);
     }
 }

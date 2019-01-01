@@ -7,9 +7,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using EnumsNET;
 using log4net;
-using log4net.Appender;
-using log4net.Layout;
-using log4net.Repository.Hierarchy;
 using MoreLinq;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
@@ -370,16 +367,10 @@ namespace PoESkillTree.Computation.Console
         private static IEnumerable<string> ReadStatLines()
             => File.ReadAllLines("Data/SkillTreeStatLines.txt").Where(s => !s.StartsWith("//"));
 
-        public static void SetupLogger()
+        private static void SetupLogger()
         {
-            var appender = new ConsoleAppender();
-            var patternLayout = new PatternLayout { ConversionPattern = "%m%n" };
-            patternLayout.ActivateOptions();
-            appender.Layout = patternLayout;
-
-            var hierarchy = (Hierarchy) LogManager.GetRepository();
-            hierarchy.Root.AddAppender(appender);
-            hierarchy.Configured = true;
+            // Necessary for logging in other assemblies to work
+            LogManager.GetLogger(typeof(Program));
         }
     }
 

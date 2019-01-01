@@ -10,7 +10,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public async Task ReferencesAreValid()
         {
-            var parsingData = await CompositionRoot.ParsingData;
+            var parsingData = await ParsingDataTask;
             var referencedMatchers = parsingData.ReferencedMatchers;
             var statMatchers = parsingData.StatMatchers;
 
@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public async Task ReferencedMatchersHaveCorrectlyTypedData()
         {
-            var parsingData = await CompositionRoot.ParsingData;
+            var parsingData = await ParsingDataTask;
             var referencedMatchers = parsingData.ReferencedMatchers;
 
             foreach (var matchers in referencedMatchers)

@@ -36,9 +36,9 @@ namespace PoESkillTree.Computation.IntegrationTests
         [OneTimeSetUp]
         public static async Task ClassInit()
         {
-            _builderFactories = await CompositionRoot.BuilderFactories.ConfigureAwait(false);
+            _builderFactories = await BuilderFactoriesTask.ConfigureAwait(false);
             _metaStats = _builderFactories.MetaStatBuilders;
-            var parser = await CompositionRoot.Parser.ConfigureAwait(false);
+            var parser = await ParserTask.ConfigureAwait(false);
             var modSource = new ModifierSource.Global();
             _givenMods = parser.ParseGivenModifiers()
                 .Append(

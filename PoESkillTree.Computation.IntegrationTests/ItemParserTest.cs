@@ -37,10 +37,9 @@ namespace PoESkillTree.Computation.IntegrationTests
         [SetUp]
         public async Task SetUpAsync()
         {
-            var definitionsTask = CompositionRoot.GameData.BaseItems;
-            _baseItemDefinitions = await definitionsTask.ConfigureAwait(false);
+            _baseItemDefinitions = await GameData.BaseItems.ConfigureAwait(false);
             _statTranslator = await _statTranslatorTask.ConfigureAwait(false);
-            _parser = await CompositionRoot.Parser.ConfigureAwait(false);
+            _parser = await ParserTask.ConfigureAwait(false);
         }
 
         [Test]
