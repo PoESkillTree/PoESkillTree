@@ -69,9 +69,9 @@ namespace POESKillTree.Computation.ViewModels
             };
         }
 
-        public async Task InitializeAsync()
+        public async Task InitializeAsync(GameData gameData)
         {
-            var skillDefinitions = await SkillJsonDeserializer.DeserializeAsync();
+            var skillDefinitions = await gameData.Skills;
             MainSkillSelection = new MainSkillSelectionViewModel(skillDefinitions);
             MainSkillSelection.AddSkill(new Skill("ChargedAttack", 20, 20, ItemSlot.Boots, 0, 0));
             MainSkillSelection.AddSkill(new Skill("Fireball", 21, 23, ItemSlot.Boots, 1, 0));

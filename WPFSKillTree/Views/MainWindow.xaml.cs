@@ -452,7 +452,7 @@ namespace POESKillTree.Views
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var controller = await ExtendedDialogManager.ShowProgressAsync(this, L10n.Message("Initialization"),
+            var controller = await this.ShowProgressAsync(L10n.Message("Initialization"),
                         L10n.Message("Initializing window ..."));
             controller.Maximum = 1;
             controller.SetIndeterminate();
@@ -474,12 +474,59 @@ namespace POESKillTree.Views
                 ItemDB.Index();
             });
             var persistentDataTask = PersistentData.InitializeAsync(DialogCoordinator.Instance);
-            var computationViewModelTask = ComputationViewModel.InitializeAsync();
-            await itemDBTask;
-            await persistentDataTask;
-            await computationViewModelTask;
-            RegisterPersistentDataHandlers();
+            var gameData = new GameDataWithOldTreeModel();
+            gameData.Data.StartAllTasks();
 
+            InitializeIndependentUI();
+
+            await persistentDataTask;
+            RegisterPersistentDataHandlers();
+            StashViewModel.PersistentData = PersistentData;
+            // Set theme & accent.
+            SetTheme(PersistentData.Options.Theme);
+            SetAccent(PersistentData.Options.Accent);
+
+            controller.SetMessage(L10n.Message("Loading skill tree assets ..."));
+            Tree = await CreateSkillTreeAsync(controller);
+            await Task.Delay(1); // Give the progress dialog a chance to update
+
+            updateCanvasSize();
+            recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
+
+            controller.SetMessage(L10n.Message("Initializing window ..."));
+            controller.SetIndeterminate();
+            await Task.Delay(1); // Give the progress dialog a chance to update
+
+            gameData.PassiveNodes = SkillTree.Skillnodes.Values;
+            await ComputationViewModel.InitializeAsync(gameData.Data);
+            await itemDBTask;
+
+            _justLoaded = true;
+
+            // loading last build
+            await CurrentBuildChanged();
+
+            _justLoaded = false;
+            // loading saved build
+            PersistentData.Options.PropertyChanged += Options_PropertyChanged;
+            PopulateAscendancySelectionList();
+            BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData, Tree);
+            UpdateTreeComparison();
+            TreeGeneratorInteraction =
+                new TreeGeneratorInteraction(SettingsDialogCoordinator.Instance, PersistentData, Tree);
+            TreeGeneratorInteraction.RunFinished += (o, args) =>
+            {
+                UpdateUI();
+                SetCurrentBuildUrlFromTree();
+            };
+
+            InitializeLoadTreeButtonViewModel();
+
+            await controller.CloseAsync();
+        }
+
+        private void InitializeIndependentUI()
+        {
             var cmHighlight = new MenuItem
             {
                 Header = L10n.Message("Highlight nodes by attribute")
@@ -490,7 +537,7 @@ namespace POESKillTree.Views
                 Header = L10n.Message("Remove highlights by attribute")
             };
             cmRemoveHighlight.Click += UnhighlightNodesByAttribute;
-            cmCreateGroup = new MenuItem {Header = "Create new group"};
+            cmCreateGroup = new MenuItem { Header = "Create new group" };
             cmCreateGroup.Click += CreateGroup;
             cmAddToGroup = new MenuItem
             {
@@ -502,7 +549,7 @@ namespace POESKillTree.Views
                 Header = "Delete group...",
                 IsEnabled = false
             };
-            cmRemoveFromGroup = new MenuItem {Header = "Remove from group"};
+            cmRemoveFromGroup = new MenuItem { Header = "Remove from group" };
             cmRemoveFromGroup.Click += RemoveFromGroup;
 
             _attributeGroups = new GroupStringConverter();
@@ -540,43 +587,10 @@ namespace POESKillTree.Views
                 CharacterNames.NameToContent.Select(
                     x => new ComboBoxItem {Name = x.Key, Content = x.Value});
             cbAscType.SelectedIndex = 0;
+        }
 
-            StashViewModel.PersistentData = PersistentData;
-
-            // Set theme & accent.
-            SetTheme(PersistentData.Options.Theme);
-            SetAccent(PersistentData.Options.Accent);
-
-            controller.SetMessage(L10n.Message("Loading skill tree assets ..."));
-            Tree = await CreateSkillTreeAsync(controller);
-            await Task.Delay(1); // Give the progress dialog a chance to update
-
-            updateCanvasSize();
-            recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
-
-            controller.SetMessage(L10n.Message("Initalizing window ..."));
-            controller.SetIndeterminate();
-            await Task.Delay(1); // Give the progress dialog a chance to update
-
-            _justLoaded = true;
-
-            // loading last build
-            await CurrentBuildChanged();
-
-            _justLoaded = false;
-            // loading saved build
-            PersistentData.Options.PropertyChanged += Options_PropertyChanged;
-            PopulateAscendancySelectionList();
-            BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData, Tree);
-            UpdateTreeComparison();
-            TreeGeneratorInteraction =
-                new TreeGeneratorInteraction(SettingsDialogCoordinator.Instance, PersistentData, Tree);
-            TreeGeneratorInteraction.RunFinished += (o, args) =>
-            {
-                UpdateUI();
-                SetCurrentBuildUrlFromTree();
-            };
-
+        private void InitializeLoadTreeButtonViewModel()
+        {
             LoadTreeButtonViewModel.Add(L10n.Message("Load Tree"), async () =>
             {
                 if (string.IsNullOrWhiteSpace(InputTreeUrl))
@@ -602,8 +616,6 @@ namespace POESKillTree.Views
                         break;
                 }
             };
-
-            await controller.CloseAsync();
         }
 
         private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)

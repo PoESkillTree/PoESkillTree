@@ -203,6 +203,7 @@
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
     <Compile Include="Model\Builds\GGGBuild.cs" />
+    <Compile Include="Model\GameDataWithOldTreeModel.cs" />
     <Compile Include="Model\Items\Mods\ModGroup.cs" />
     <Compile Include="Model\Items\Mods\IMod.cs" />
     <Compile Include="Model\Items\Mods\JsonCraftingBenchOption.cs" />
@@ -213,6 +214,7 @@
     <Compile Include="Model\Items\Mods\Affix.cs" />
     <Compile Include="Model\Items\Mods\Stat.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
+    <Compile Include="Model\ModelConverter.cs" />
     <Compile Include="Utils\SemanticVersion.cs" />
     <Compile Include="Utils\WikiApi\CargoConstants.cs" />
     <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
