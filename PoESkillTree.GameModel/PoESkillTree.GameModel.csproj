@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="CharacterBaseStats.cs" />
     <Compile Include="CharacterClass.cs" />
+    <Compile Include="GameData.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Items\BaseItemDefinitions.cs" />
     <Compile Include="Items\BaseItemJsonDeserializer.cs" />

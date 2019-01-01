@@ -249,8 +249,7 @@ namespace PoESkillTree.Computation.IntegrationTests
 
         private static async Task<Dictionary<string, IReadOnlyList<CraftableStat>>> LoadModsAsync()
         {
-            var jsonText = await DataUtils.LoadRePoEAsync("mods").ConfigureAwait(false);
-            var json = JObject.Parse(jsonText);
+            var json = await DataUtils.LoadRePoEAsObjectAsync("mods").ConfigureAwait(false);
             return json.Properties().ToDictionary(p => p.Name,
                 p => SelectCraftableStats(p.Value.Value<JArray>("stats")));
 

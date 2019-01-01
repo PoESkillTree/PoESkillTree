@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using MoreLinq;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.GameModel.StatTranslation
 {

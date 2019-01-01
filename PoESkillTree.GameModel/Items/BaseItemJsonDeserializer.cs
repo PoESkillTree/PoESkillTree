@@ -17,11 +17,11 @@ namespace PoESkillTree.GameModel.Items
 
         public static async Task<BaseItemDefinitions> DeserializeAsync()
         {
-            var baseItemsTask = DataUtils.LoadRePoEAsync("base_items");
-            var modsTask = DataUtils.LoadRePoEAsync("mods");
-            var baseItemJson = JObject.Parse(await baseItemsTask.ConfigureAwait(false));
-            var modJson = JObject.Parse(await modsTask.ConfigureAwait(false));
-            return Deserialize(baseItemJson, modJson);
+            var baseItemsTask = DataUtils.LoadRePoEAsObjectAsync("base_items");
+            var modsTask = DataUtils.LoadRePoEAsObjectAsync("mods");
+            return Deserialize(
+                await baseItemsTask.ConfigureAwait(false),
+                await modsTask.ConfigureAwait(false));
         }
 
         public static BaseItemDefinitions Deserialize(JObject baseItemJson, JObject modJson)

@@ -24,16 +24,15 @@ namespace PoESkillTree.GameModel.Skills
 
         public static async Task<SkillDefinitions> DeserializeAsync()
         {
-            var gemJsonTask = Task.Run(() => DeserializeAsync("gems"));
-            var gemTooltipJsonTask = Task.Run(() => DeserializeAsync("gem_tooltips"));
+            var gemJsonTask = DeserializeAsync("gems");
+            var gemTooltipJsonTask = DeserializeAsync("gem_tooltips");
             return DeserializeMerged(
                 await gemJsonTask.ConfigureAwait(false),
                 await gemTooltipJsonTask.ConfigureAwait(false));
 
             async Task<JObject> DeserializeAsync(string fileName)
             {
-                var jsonString = await DataUtils.LoadRePoEAsync(fileName).ConfigureAwait(false);
-                var json = JObject.Parse(jsonString);
+                var json = await DataUtils.LoadRePoEAsObjectAsync(fileName).ConfigureAwait(false);
                 MergeStaticWithPerLevel(json);
                 return json;
             }
