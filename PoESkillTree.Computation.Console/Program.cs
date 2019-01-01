@@ -240,7 +240,7 @@ namespace PoESkillTree.Computation.Console
             }
 
             IEnumerable<IStat> Build(IStatBuilder builder)
-                => builder.Build(default).SelectMany(r => r.Stats);
+                => builder.BuildToStats(Entity.Character);
         }
 
         /// <summary>

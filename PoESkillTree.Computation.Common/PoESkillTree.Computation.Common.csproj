@@ -135,6 +135,7 @@
     <Compile Include="Builders\Stats\IStatBuilder.cs" />
     <Compile Include="Builders\Stats\IStatBuilders.cs" />
     <Compile Include="Builders\Stats\Pool.cs" />
+    <Compile Include="Builders\Stats\StatBuilderExtensions.cs" />
     <Compile Include="Builders\Stats\StatBuilderResult.cs" />
     <Compile Include="Builders\ValueConverter.cs" />
     <Compile Include="Builders\Values\IValueBuilder.cs" />
