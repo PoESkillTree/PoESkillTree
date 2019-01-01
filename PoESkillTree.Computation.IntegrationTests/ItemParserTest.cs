@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [OneTimeSetUp]
         public static void OneTimeSetUp()
         {
-            _statTranslatorTask = StatTranslationLoader.LoadAsync(StatTranslationLoader.MainFileName);
+            _statTranslatorTask = StatTranslators.CreateFromMainFileAsync();
             _uniqueDefinitionsTask = DataUtils.LoadXmlAsync<XmlUniqueList>("Equipment.Uniques.xml");
             _modDefinitionsTask = LoadModsAsync();
         }

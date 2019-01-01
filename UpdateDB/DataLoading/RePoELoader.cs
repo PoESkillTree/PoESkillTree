@@ -25,7 +25,7 @@ namespace UpdateDB.DataLoading
         protected override async Task LoadAsync()
         {
             Directory.CreateDirectory(Path.Combine(SavePath, "stat_translations"));
-            var files = Files.Concat(StatTranslationLoader.RePoETranslationFileNames);
+            var files = Files.Concat(StatTranslationFileNames.AllFromRePoE);
             await Task.WhenAll(files.Select(LoadAsync));
         }
 

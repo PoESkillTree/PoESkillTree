@@ -18,8 +18,8 @@ namespace PoESkillTree.GameModel
         private readonly Lazy<Task<SkillDefinitions>> _skillDefinitions =
             new Lazy<Task<SkillDefinitions>>(SkillJsonDeserializer.DeserializeAsync);
 
-        private readonly Lazy<Task<StatTranslationLoader>> _statTranslationLoader =
-            new Lazy<Task<StatTranslationLoader>>(StatTranslationLoader.CreateAsync);
+        private readonly Lazy<Task<StatTranslators>> _statTranslators =
+            new Lazy<Task<StatTranslators>>(StatTranslation.StatTranslators.CreateAsync);
 
         public GameData(IReadOnlyList<PassiveNodeDefinition> passiveNodeDefinitions)
         {
@@ -30,6 +30,6 @@ namespace PoESkillTree.GameModel
         public Task<PassiveTreeDefinition> PassiveTree => _passiveTreeDefinition.Value;
         public Task<BaseItemDefinitions> BaseItems => _baseItemDefinitions.Value;
         public Task<SkillDefinitions> Skills => _skillDefinitions.Value;
-        public Task<StatTranslationLoader> StatTranslators => _statTranslationLoader.Value;
+        public Task<StatTranslators> StatTranslators => _statTranslators.Value;
     }
 }

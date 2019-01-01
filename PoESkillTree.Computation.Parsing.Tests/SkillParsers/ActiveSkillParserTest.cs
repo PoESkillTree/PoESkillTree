@@ -802,9 +802,9 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
             {
                 switch (statTranslationFileName)
                 {
-                    case StatTranslationLoader.MainFileName:
+                    case StatTranslationFileNames.Main:
                         return mainStatParser;
-                    case StatTranslationLoader.SkillFileName:
+                    case StatTranslationFileNames.Skill:
                         return skillStatParser;
                     default:
                         return emptyStatParser;

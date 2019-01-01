@@ -55,7 +55,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 TranslateAndParse(qualityStats, isMainSkill),
                 TranslateAndParse(levelStats, isMainSkill),
                 // Keystones are translated into their names when using the main instead of skill translation files
-                TranslateAndParse(StatTranslationLoader.MainFileName, keystoneStats, isMainSkill),
+                TranslateAndParse(StatTranslationFileNames.Main, keystoneStats, isMainSkill),
             };
 
             foreach (var (partIndex, stats) in level.AdditionalStatsPerPart.Index())
@@ -97,9 +97,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             {
                 foreach (var affectedEntity in affectedEntities)
                 {
-                    var result = Parse(StatTranslationLoader.MainFileName, stat, affectedEntity);
+                    var result = Parse(StatTranslationFileNames.Main, stat, affectedEntity);
                     if (result.SuccessfullyParsed && result.Modifiers.IsEmpty())
-                        result = Parse(StatTranslationLoader.SkillFileName, stat, affectedEntity);
+                        result = Parse(StatTranslationFileNames.Skill, stat, affectedEntity);
                     result = result.ApplyCondition(condition.Build);
 
                     var buildParameters = new BuildParameters(_preParseResult.GlobalSource, affectedEntity, default);

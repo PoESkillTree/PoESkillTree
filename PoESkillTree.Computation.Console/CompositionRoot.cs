@@ -108,7 +108,7 @@ namespace PoESkillTree.Computation.Console
             {
                 var composite = new CompositeStatTranslator(
                     statTranslationLoaderTask.Result[translationFileName],
-                    statTranslationLoaderTask.Result[StatTranslationLoader.CustomFileName]);
+                    statTranslationLoaderTask.Result[StatTranslationFileNames.Custom]);
                 return new UntranslatedStatParser(composite, coreParserTask.Result);
             }
         }

@@ -110,7 +110,8 @@
     <Compile Include="StatTranslation\IndexHandler.cs" />
     <Compile Include="StatTranslation\IStatTranslator.cs" />
     <Compile Include="StatTranslation\JsonStatTranslation.cs" />
-    <Compile Include="StatTranslation\StatTranslationLoader.cs" />
+    <Compile Include="StatTranslation\StatTranslationFileNames.cs" />
+    <Compile Include="StatTranslation\StatTranslators.cs" />
     <Compile Include="StatTranslation\StatTranslator.cs" />
     <Compile Include="StatTranslation\Translation.cs" />
     <Compile Include="UntranslatedStat.cs" />
