@@ -97,7 +97,7 @@ namespace PoESkillTree.Computation.Console
             {
                 await SetStatAsync(statLine.Substring("add ".Length));
             }
-            else 
+            else
             {
                 var parser = await _compositionRoot.Parser;
                 if (TryParse(parser, statLine, out var mods, verbose: true))
@@ -278,15 +278,17 @@ namespace PoESkillTree.Computation.Console
         /// </summary>
         private async Task Benchmark()
         {
+            System.Console.WriteLine("Async parser initialization:");
             var stopwatch = Stopwatch.StartNew();
             var parser = await _compositionRoot.Parser;
             stopwatch.Stop();
-            System.Console.WriteLine($"Async parser initialization:\n  {stopwatch.ElapsedMilliseconds} ms");
+            System.Console.WriteLine($"  {stopwatch.ElapsedMilliseconds} ms");
 
+            System.Console.WriteLine("Initialization (parsing 1 made-up stat):");
             stopwatch.Restart();
             parser.Parse("Made-up");
             stopwatch.Stop();
-            System.Console.WriteLine($"Initialization (parsing 1 made-up stat):\n  {stopwatch.ElapsedMilliseconds} ms");
+            System.Console.WriteLine($"  {stopwatch.ElapsedMilliseconds} ms");
             stopwatch.Reset();
 
             var rng = new Random(1);

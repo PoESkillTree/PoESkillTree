@@ -67,7 +67,6 @@
     <Compile Include="Extensions\NullableExtensions.cs" />
     <Compile Include="Extensions\NumberExtensions.cs" />
     <Compile Include="Funcs.cs" />
-    <Compile Include="RegexCache.cs" />
     <Compile Include="ValueObject.cs" />
   </ItemGroup>
   <ItemGroup>

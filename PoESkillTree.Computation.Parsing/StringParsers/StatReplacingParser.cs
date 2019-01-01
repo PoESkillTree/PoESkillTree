@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.Computation.Common.Data;
-using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Parsing.StringParsers
 {
@@ -19,17 +19,19 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
     {
         private readonly IStringParser<TResult> _inner;
 
-        private readonly IReadOnlyList<StatReplacerData> _statReplacerData;
-
-        private readonly RegexCache _regexCache =
-            new RegexCache(RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+        private readonly Lazy<IReadOnlyList<(StatReplacerData data, Regex regex)>> _dataWithRegexes;
 
         public StatReplacingParser(IStringParser<TResult> inner,
             IReadOnlyList<StatReplacerData> statReplacerData)
         {
             _inner = inner;
-            _statReplacerData = statReplacerData;
+            _dataWithRegexes = new Lazy<IReadOnlyList<(StatReplacerData, Regex)>>(
+                () => statReplacerData.Select(d => (d, CreateRegex(d))).ToList());
         }
+
+        private static Regex CreateRegex(StatReplacerData data)
+            => new Regex("^" + data.OriginalStatRegex + "$",
+                RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
         public StringParseResult<IReadOnlyList<TResult>> Parse(string stat)
         {
@@ -53,10 +55,10 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
         private IEnumerable<string> GetReplacements(string stat)
         {
             IEnumerable<IEnumerable<string>> allMatches =
-                from data in _statReplacerData
-                let match = _regexCache["^" + data.OriginalStatRegex + "$"].Match(stat)
+                from tuple in _dataWithRegexes.Value
+                let match = tuple.regex.Match(stat)
                 where match.Success
-                select data.Replacements.Select(match.Result);
+                select tuple.data.Replacements.Select(match.Result);
             return allMatches
                 .DefaultIfEmpty(new[] { stat })
                 .First();
