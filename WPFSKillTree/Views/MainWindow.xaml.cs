@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -22,6 +24,7 @@ using MahApps.Metro.Controls;
 using MoreLinq;
 using PoESkillTree.GameModel.PassiveTree;
 using POESKillTree.Common.ViewModels;
+using POESKillTree.Computation.Model;
 using POESKillTree.Computation.ViewModels;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.ItemFilter.Views;
@@ -498,7 +501,17 @@ namespace POESKillTree.Views
             await Task.Delay(1); // Give the progress dialog a chance to update
 
             gameData.PassiveNodes = SkillTree.Skillnodes.Values;
+            var computationFactory = new ComputationFactory(gameData.Data);
+            var calculator = computationFactory.CreateCalculator();
+            var parser = await computationFactory.CreateParserAsync();
+            var schedulers = new ComputationSchedulerProvider();
+            var initialComputation = new InitialComputation(gameData.Data, parser);
+            initialComputation.InitialParse()
+                .ObserveOn(schedulers.CalculationThread)
+                .Subscribe(calculator.Update,
+                    ex => schedulers.Dispatcher.Schedule(() => throw ex));
             await ComputationViewModel.InitializeAsync(gameData.Data);
+
             await itemDBTask;
 
             _justLoaded = true;

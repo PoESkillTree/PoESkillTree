@@ -153,13 +153,23 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Reactive, Version=4.1.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.4.1.2\lib\net46\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Threading.Tasks.Dataflow, Version=4.6.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Dataflow.4.9.0\lib\netstandard2.0\System.Threading.Tasks.Dataflow.dll</HintPath>
     </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.1\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -190,6 +200,9 @@
     <Compile Include="Common\ViewModels\ErrorInfoViewModel.cs" />
     <Compile Include="Common\ViewModels\RelayCommand.cs" />
     <Compile Include="Common\ViewModels\ViewModelBase.cs" />
+    <Compile Include="Computation\Model\ComputationFactory.cs" />
+    <Compile Include="Computation\Model\ComputationSchedulerProvider.cs" />
+    <Compile Include="Computation\Model\InitialComputation.cs" />
     <Compile Include="Contrib\RangeTree\Range.cs" />
     <Compile Include="Contrib\RangeTree\RangeTree.cs" />
     <Compile Include="Contrib\RangeTree\RangeTreeAsync.cs" />
@@ -1078,9 +1091,25 @@
     <Folder Include="Data\Assets\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PoESkillTree.Computation.Builders\PoESkillTree.Computation.Builders.csproj">
+      <Project>{940A286A-BCA7-4C79-AC89-55C57C7D4784}</Project>
+      <Name>PoESkillTree.Computation.Builders</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj">
       <Project>{827be52d-878c-45f0-afc0-75b5385aad53}</Project>
       <Name>PoESkillTree.Computation.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Core\PoESkillTree.Computation.Core.csproj">
+      <Project>{E9C0CF81-6800-4461-8897-F8B569C7CDD0}</Project>
+      <Name>PoESkillTree.Computation.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Data\PoESkillTree.Computation.Data.csproj">
+      <Project>{85CF9690-7EB9-42CB-9574-ADF4239CFFBE}</Project>
+      <Name>PoESkillTree.Computation.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Parsing\PoESkillTree.Computation.Parsing.csproj">
+      <Project>{1E573C72-9B7F-40AF-A5E8-739F90B50690}</Project>
+      <Name>PoESkillTree.Computation.Parsing</Name>
     </ProjectReference>
     <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">
       <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
