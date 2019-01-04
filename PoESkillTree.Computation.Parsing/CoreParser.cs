@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using log4net;
@@ -34,10 +35,8 @@ namespace PoESkillTree.Computation.Parsing
 
         private readonly Lazy<IStringParser<IReadOnlyList<Modifier>>> _parser;
 
-        private readonly Dictionary<CoreParserParameter, ParseResult> _cache =
-            new Dictionary<CoreParserParameter, ParseResult>();
-
-        private CoreParserParameter _currentParameter;
+        private readonly ConcurrentDictionary<CoreParserParameter, ParseResult> _cache =
+            new ConcurrentDictionary<CoreParserParameter, ParseResult>();
 
         public CoreParser(IParsingData<TStep> parsingData, IBuilderFactories builderFactories)
         {
@@ -51,10 +50,9 @@ namespace PoESkillTree.Computation.Parsing
 
         private ParseResult ParseCacheMiss(CoreParserParameter parameter)
         {
-            _currentParameter = parameter;
             try
             {
-                var (success, remaining, result) = _parser.Value.Parse(parameter.ModifierLine);
+                var (success, remaining, result) = _parser.Value.Parse(parameter);
                 if (success)
                 {
                     return ParseResult.Success(result);
@@ -87,7 +85,7 @@ namespace PoESkillTree.Computation.Parsing
                     )
                 );
 
-            var innerParserCache = new Dictionary<IStatMatchers, IStringParser<IIntermediateModifier>>();
+            var innerParserCache = new ConcurrentDictionary<IStatMatchers, IStringParser<IIntermediateModifier>>();
 
             // The steps define the order in which the inner parsers, and by extent the IStatMatchers, are executed.
             IStringParser<IIntermediateModifier> StepToParser(TStep step) =>
@@ -106,15 +104,16 @@ namespace PoESkillTree.Computation.Parsing
                                     AggregateAndBuild),
                                 _parsingData.StatReplacers
                             ),
-                            ls => ls.Flatten().ToList()
+                            (_, ls) => ls.Flatten().ToList()
                         )
                     )
                 );
         }
 
-        private IReadOnlyList<Modifier> AggregateAndBuild(IReadOnlyList<IIntermediateModifier> intermediates) =>
+        private static IReadOnlyList<Modifier> AggregateAndBuild(
+            CoreParserParameter parameter, IReadOnlyList<IIntermediateModifier> intermediates) =>
             intermediates
                 .Aggregate()
-                .Build(_currentParameter.ModifierSource, _currentParameter.ModifierSourceEntity);
+                .Build(parameter.ModifierSource, parameter.ModifierSourceEntity);
     }
 }

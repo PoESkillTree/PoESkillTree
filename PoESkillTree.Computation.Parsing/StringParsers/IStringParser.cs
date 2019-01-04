@@ -1,4 +1,7 @@
-﻿namespace PoESkillTree.Computation.Parsing.StringParsers
+﻿using PoESkillTree.Computation.Common;
+using PoESkillTree.GameModel;
+
+namespace PoESkillTree.Computation.Parsing.StringParsers
 {
     /// <summary>
     /// Generic interface for parsing modifier lines.
@@ -6,15 +9,20 @@
     /// <typeparam name="TResult">The type of parsing results.</typeparam>
     public interface IStringParser<TResult>
     {
-        /// <summary>
-        /// Parses the given modifier line into <see cref="StringParseResult{T}"/>.
-        /// </summary>
-        /// <param name="modifierLine">the modifier line that should be parsed</param>
-        /// <remarks>
-        /// Throws <see cref="Common.Parsing.ParseException"/> if the data specification is erroneous, e.g. it tries to
-        /// reference values that don't occur in the matched modifier. You'll want to handle modifiers that throw a
-        /// <see cref="Common.Parsing.ParseException"/> on being parsed like not parseable modifiers.
-        /// </remarks>
-        StringParseResult<TResult> Parse(string modifierLine);
+        StringParseResult<TResult> Parse(CoreParserParameter parameter);
+    }
+
+    public static class StringParserExtensions
+    {
+        public static StringParseResult<TResult> Parse<TResult>(this IStringParser<TResult> @this,
+            string modifierLine, CoreParserParameter previousParameter)
+            => @this.Parse(modifierLine, previousParameter.ModifierSource, previousParameter.ModifierSourceEntity);
+
+        public static StringParseResult<TResult> Parse<TResult>(this IStringParser<TResult> @this,
+            string modifierLine, ModifierSource modifierSource, Entity modifierSourceEntity)
+        {
+            var parameter = new CoreParserParameter(modifierLine, modifierSource, modifierSourceEntity);
+            return @this.Parse(parameter);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -11,7 +12,6 @@ using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.GameModel.StatTranslation;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing
 {
@@ -28,8 +28,8 @@ namespace PoESkillTree.Computation.Parsing
         private readonly StatTranslators _statTranslators;
         private readonly IEnumerable<IGivenStats> _givenStats;
 
-        private readonly IDictionary<string, IParser<UntranslatedStatParserParameter>> _untranslatedStatParsers =
-            new Dictionary<string, IParser<UntranslatedStatParserParameter>>();
+        private readonly ConcurrentDictionary<string, IParser<UntranslatedStatParserParameter>> _untranslatedStatParsers
+            = new ConcurrentDictionary<string, IParser<UntranslatedStatParserParameter>>();
 
         public static async Task<IParser> CreateAsync(
             GameData gameData, Task<IBuilderFactories> builderFactoriesTask, Task<IParsingData<TStep>> parsingDataTask)

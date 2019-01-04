@@ -20,11 +20,9 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [SetUp]
         public void SetUp()
         {
-            _innerMock = new Mock<IStringParser<string>>();
-            _innerMock.Setup(p => p.Parse(TrueStat))
-                .Returns(new StringParseResult<string>(true, TrueRemaining, TrueParsed));
-            _innerMock.Setup(p => p.Parse(FalseStat))
-                .Returns(new StringParseResult<string>(false, FalseRemaining, FalseParsed));
+            _innerMock = StringParserTestUtils.MockParser(
+                (TrueStat, new StringParseResult<string>(true, TrueRemaining, TrueParsed)),
+                (FalseStat, new StringParseResult<string>(false, FalseRemaining, FalseParsed)));
             _inner = _innerMock.Object;
         }
 
@@ -83,7 +81,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
             sut.Parse(TrueStat);
             sut.Parse(TrueStat);
 
-            _innerMock.Verify(p => p.Parse(TrueStat), Times.Once);
+            _innerMock.VerifyParse(TrueStat, Times.Once);
         }
 
         [Test]
@@ -98,10 +96,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
             sut.Parse(TrueStat);
             sut.Parse(TrueStat);
             sut.Parse("whatever");
-
-            _innerMock.Verify(p => p.Parse(TrueStat), Times.Once);
-            _innerMock.Verify(p => p.Parse(FalseStat), Times.Once);
-            _innerMock.Verify(p => p.Parse("whatever"), Times.Once);
+            
+            _innerMock.VerifyParse(TrueStat, Times.Once);
+            _innerMock.VerifyParse(FalseStat, Times.Once);
+            _innerMock.VerifyParse("whatever", Times.Once);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Moq;
+using System.Linq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Parsing.StringParsers;
@@ -36,8 +36,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [TestCase(false, ExpectedResult = false)]
         public bool TryParseWithoutReplacementPassesSuccessfullyParsed(bool innerSuccess)
         {
-            var inner = Mock.Of<IStringParser<string>>(p =>
-                p.Parse("stat") == new StringParseResult<string>(innerSuccess, default, default));
+            var inner = StringParserTestUtils.MockParser("stat", innerSuccess, default, "").Object;
             var sut = new StatReplacingParser<string>(inner, _statReplacers);
 
             var (actual, _, _) = sut.Parse("stat");
@@ -49,8 +48,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         public void TryParseWithoutReplacementPassesRemaining()
         {
             const string expected = "remaining";
-            var inner = Mock.Of<IStringParser<string>>(p =>
-                p.Parse("stat") == new StringParseResult<string>(default, expected, default));
+            var inner = StringParserTestUtils.MockParser("stat", default, expected, "").Object;
             var sut = new StatReplacingParser<string>(inner, _statReplacers);
 
             var (_, actual, _) = sut.Parse("stat");
@@ -62,8 +60,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         public void TryParseWithoutReplacementPassesResult()
         {
             const string expected = "result";
-            var inner = Mock.Of<IStringParser<string>>(p =>
-                p.Parse("stat") == new StringParseResult<string>(default, default, expected));
+            var inner = StringParserTestUtils.MockParser("stat", default, default, expected).Object;
             var sut = new StatReplacingParser<string>(inner, _statReplacers);
 
             var (_, _, actual) = sut.Parse("stat");
@@ -78,10 +75,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [TestCase(false, false, false, ExpectedResult = false)]
         public bool TryParseWithManyReplacementsReturnsCorrectSuccessfullyParsed(params bool[] successes)
         {
-            var inner = Mock.Of<IStringParser<string>>(p =>
-                p.Parse("stat1") == new StringParseResult<string>(successes[0], default, default) &&
-                p.Parse("stat2") == new StringParseResult<string>(successes[1], default, default) &&
-                p.Parse("stat3") == new StringParseResult<string>(successes[2], default, default));
+            var inner = StringParserTestUtils.MockParser(
+                ("stat1", new StringParseResult<string>(successes[0], default, default)),
+                ("stat2", new StringParseResult<string>(successes[1], default, default)),
+                ("stat3", new StringParseResult<string>(successes[2], default, default))).Object;
             var sut = new StatReplacingParser<string>(inner, _statReplacers);
 
             var (actual, _, _) = sut.Parse("plain stat");
@@ -93,10 +90,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         public void TryParseWithManyReplacementsJoinsInnerRemainings()
         {
             string[] remainings = { "r1", "r2", "r3" };
-            var inner = Mock.Of<IStringParser<string>>(p =>
-                p.Parse("stat1") == new StringParseResult<string>(default, remainings[0], default) &&
-                p.Parse("stat2") == new StringParseResult<string>(default, remainings[1], default) &&
-                p.Parse("stat3") == new StringParseResult<string>(default, remainings[2], default));
+            var inner = StringParserTestUtils.MockParser(
+                ("stat1", new StringParseResult<string>(default, remainings[0], default)),
+                ("stat2", new StringParseResult<string>(default, remainings[1], default)),
+                ("stat3", new StringParseResult<string>(default, remainings[2], default))).Object;
             var sut = new StatReplacingParser<string>(inner, _statReplacers);
 
             var (_, actual, _) = sut.Parse("plain stat");
@@ -108,10 +105,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         public void TryParseWithManyReplacementsReturnsListOfInnerResults()
         {
             string[] results = { "r1", "r2", "r3" };
-            var inner = Mock.Of<IStringParser<string>>(p =>
-                p.Parse("stat1") == new StringParseResult<string>(default, default, results[0]) &&
-                p.Parse("stat2") == new StringParseResult<string>(default, default, results[1]) &&
-                p.Parse("stat3") == new StringParseResult<string>(default, default, results[2]));
+            var inner = StringParserTestUtils.MockParser(
+                ("stat1", new StringParseResult<string>(default, default, results[0])),
+                ("stat2", new StringParseResult<string>(default, default, results[1])),
+                ("stat3", new StringParseResult<string>(default, default, results[2]))).Object;
             var sut = new StatReplacingParser<string>(inner, _statReplacers);
 
             var (_, _, actual) = sut.Parse("plain stat");
@@ -157,12 +154,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [TestCase("unknown stat", new[] { "unknown stat" })]
         public void TryParseCallsInnerCorrectly(string stat, string[] expectedParts)
         {
-            var innerMock = new Mock<IStringParser<string>>();
-            foreach (var expectedPart in expectedParts)
-            {
-                innerMock.Setup(p => p.Parse(expectedPart))
-                    .Returns(new StringParseResult<string>(default, default, default));
-            }
+            var setup = expectedParts.Select(s => (s, new StringParseResult<string>(default, default, default)));
+            var innerMock = StringParserTestUtils.MockParser(setup.ToArray());
 
             var sut = new StatReplacingParser<string>(innerMock.Object, _statReplacers);
 
@@ -170,7 +163,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
 
             foreach (var expectedPart in expectedParts)
             {
-                innerMock.Verify(p => p.Parse(expectedPart));
+                innerMock.VerifyParse(expectedPart);
             }
         }
 
@@ -178,10 +171,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         public void TryParseIgnoresWhitespaceRemainings()
         {
             string[] remainings = { "\t \n", "", "r3" };
-            var inner = Mock.Of<IStringParser<string>>(p =>
-                p.Parse("stat1") == new StringParseResult<string>(default, remainings[0], default) &&
-                p.Parse("stat2") == new StringParseResult<string>(default, remainings[1], default) &&
-                p.Parse("stat3") == new StringParseResult<string>(default, remainings[2], default));
+            var inner = StringParserTestUtils.MockParser(
+                ("stat1", new StringParseResult<string>(default, remainings[0], default)),
+                ("stat2", new StringParseResult<string>(default, remainings[1], default)),
+                ("stat3", new StringParseResult<string>(default, remainings[2], default))).Object;
             var sut = new StatReplacingParser<string>(inner, _statReplacers);
 
             var (_, actual, _) = sut.Parse("plain stat");
@@ -192,14 +185,12 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [Test]
         public void TryParseMustFindFullMatchToReplaceStat()
         {
-            var innerMock = new Mock<IStringParser<string>>();
-            innerMock.Setup(p => p.Parse("plain stat something"))
-                .Returns(new StringParseResult<string>(default, default, default));
+            var innerMock = StringParserTestUtils.MockParser("plain stat something", default, default, "");
             var sut = new StatReplacingParser<string>(innerMock.Object, _statReplacers);
 
             sut.Parse("plain stat something");
 
-            innerMock.Verify(p => p.Parse("plain stat something"));
+            innerMock.VerifyParse("plain stat something");
         }
     }
 }

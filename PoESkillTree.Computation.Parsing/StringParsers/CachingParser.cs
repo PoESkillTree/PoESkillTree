@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using PoESkillTree.Utils.Extensions;
+﻿using System.Collections.Concurrent;
 
 namespace PoESkillTree.Computation.Parsing.StringParsers
 {
@@ -11,17 +10,17 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
     {
         private readonly IStringParser<T> _decoratedParser;
 
-        private readonly Dictionary<string, StringParseResult<T>> _cache =
-            new Dictionary<string, StringParseResult<T>>();
+        private readonly ConcurrentDictionary<CoreParserParameter, StringParseResult<T>> _cache =
+            new ConcurrentDictionary<CoreParserParameter, StringParseResult<T>>();
 
         public CachingParser(IStringParser<T> decoratedParser)
         {
             _decoratedParser = decoratedParser;
         }
 
-        public StringParseResult<T> Parse(string stat)
+        public StringParseResult<T> Parse(CoreParserParameter parameter)
         {
-            return _cache.GetOrAdd(stat, stat1 => _decoratedParser.Parse(stat1));
+            return _cache.GetOrAdd(parameter, _decoratedParser.Parse);
         }
     }
 }

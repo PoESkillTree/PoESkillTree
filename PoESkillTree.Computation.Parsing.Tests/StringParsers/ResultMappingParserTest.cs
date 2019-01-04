@@ -1,5 +1,4 @@
 ﻿using System;
-using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Parsing.StringParsers;
 
@@ -20,7 +19,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [TestCase(false)]
         public void TryParsePassesSuccessfullyParsed(bool expected)
         {
-            var inner = Mock.Of<IStringParser<int>>(p => p.Parse("stat") == new StringParseResult<int>(expected, default, default));
+            var inner = StringParserTestUtils.MockParser("stat", expected, default, 0).Object;
             var sut = Create(inner);
 
             var (actual, _, _) = sut.Parse("stat");
@@ -32,7 +31,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [TestCase("re mai ning")]
         public void TryParsesPassesRemaining(string expected)
         {
-            var inner = Mock.Of<IStringParser<int>>(p => p.Parse("stat") == new StringParseResult<int>(default, expected, default));
+            var inner = StringParserTestUtils.MockParser("stat", default, expected, 0).Object;
             var sut = Create(inner);
 
             var (_, actual, _) = sut.Parse("stat");
@@ -48,8 +47,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
             string Select(int i) => (i + summand).ToString();
 
             var expected = Select(innerResult);
-            var inner = Mock.Of<IStringParser<int>>(p =>
-                p.Parse("stat") == new StringParseResult<int>(default, default, innerResult));
+            var inner = StringParserTestUtils.MockParser("stat", default, default, innerResult).Object;
             var sut = Create(inner, Select);
 
             var (_, _, actual) = sut.Parse("stat");
@@ -65,7 +63,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         private static ResultMappingParser<int, string> Create(IStringParser<int> inner, 
             Func<int, string> selector)
         {
-            return new ResultMappingParser<int, string>(inner, selector);
+            return new ResultMappingParser<int, string>(inner, (_, i) => selector(i));
         }
     }
 }

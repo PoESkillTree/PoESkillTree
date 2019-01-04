@@ -98,6 +98,7 @@
     <Compile Include="StringParsers\StatNormalizingParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringParsers\StatReplacingParserTest.cs" />
+    <Compile Include="StringParsers\StringParserTestUtils.cs" />
     <Compile Include="StringParsers\ValidatingParserTest.cs" />
     <Compile Include="UntranslatedStatParserTest.cs" />
   </ItemGroup>

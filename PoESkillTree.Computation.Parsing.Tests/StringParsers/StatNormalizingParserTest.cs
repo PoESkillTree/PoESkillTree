@@ -1,5 +1,4 @@
-﻿using Moq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using PoESkillTree.Computation.Parsing.StringParsers;
 
 namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
@@ -19,8 +18,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [TestCase(false, ExpectedResult = false)]
         public bool TryParsePassesSuccessfullyParsed(bool innerSuccess)
         {
-            var inner = Mock.Of<IStringParser<string>>(p =>
-                p.Parse("stat") == new StringParseResult<string>(innerSuccess, default, default));
+            var inner = StringParserTestUtils.MockParser("stat", innerSuccess, default, "").Object;
             var sut = new StatNormalizingParser<string>(inner);
 
             var (actual, _, _) = sut.Parse("stat");
@@ -32,8 +30,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         public void TryParsePassesRemainingd()
         {
             const string expected = "remaining";
-            var inner = Mock.Of<IStringParser<string>>(p =>
-                p.Parse("stat") == new StringParseResult<string>(default, expected, default));
+            var inner = StringParserTestUtils.MockParser("stat", default, expected, "").Object;
             var sut = new StatNormalizingParser<string>(inner);
 
             var (_, actual, _) = sut.Parse("stat");
@@ -45,8 +42,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         public void TryParsePassesResul()
         {
             const string expected = "result";
-            var inner = Mock.Of<IStringParser<string>>(p =>
-                p.Parse("stat") == new StringParseResult<string>(default, default, expected));
+            var inner = StringParserTestUtils.MockParser("stat", default, default, expected).Object;
             var sut = new StatNormalizingParser<string>(inner);
 
             var (_, _, actual) = sut.Parse("stat");
@@ -62,12 +58,12 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
             "A lot Of pointless White-space")]
         public void TryParseNormalizesStat(string input, string expected)
         {
-            var innerMock = new Mock<IStringParser<string>>();
+            var innerMock = StringParserTestUtils.MockParser<string>();
             var sut = new StatNormalizingParser<string>(innerMock.Object);
 
             sut.Parse(input);
 
-            innerMock.Verify(p => p.Parse(expected));
+            innerMock.VerifyParse(expected);
         }
     }
 }

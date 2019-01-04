@@ -28,8 +28,9 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
             => new Regex(data.Regex,
                 RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
 
-        public StringParseResult<MatcherDataParseResult> Parse(string stat)
+        public StringParseResult<MatcherDataParseResult> Parse(CoreParserParameter parameter)
         {
+            var stat = parameter.ModifierLine;
             var xs =
                 from tuple in _dataWithRegexes.Value
                 let match = tuple.regex.Match(stat)

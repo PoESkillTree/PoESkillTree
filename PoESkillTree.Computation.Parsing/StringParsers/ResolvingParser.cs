@@ -27,8 +27,6 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
         private readonly IIntermediateModifierResolver _modifierResolver;
         private readonly IRegexGroupParser _regexGroupParser;
 
-        private IReadOnlyDictionary<string, string> _groups;
-
         public ResolvingParser(
             IStringParser<MatcherDataParseResult> innerParser,
             IReferenceToMatcherDataResolver referenceManager,
@@ -41,15 +39,15 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
             _regexGroupParser = regexGroupParser;
         }
 
-        public StringParseResult<IIntermediateModifier> Parse(string stat)
+        public StringParseResult<IIntermediateModifier> Parse(CoreParserParameter parameter)
         {
-            var (successfullyParsed, remaining, innerResult) = _innerParser.Parse(stat);
+            var (successfullyParsed, remaining, innerResult) = _innerParser.Parse(parameter);
             IIntermediateModifier result;
 
             if (successfullyParsed)
             {
-                _groups = innerResult.RegexGroups;
-                var context = CreateContext("");
+                var groups = innerResult.RegexGroups;
+                var context = CreateContext(groups, "");
                 result = _modifierResolver.Resolve(innerResult.Modifier, context);
             }
             else
@@ -60,23 +58,24 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
             return (successfullyParsed, remaining, result);
         }
 
-        private ResolveContext CreateContext(string groupPrefix)
+        private ResolveContext CreateContext(IReadOnlyDictionary<string, string> groups, string groupPrefix)
         {
             IReadOnlyList<IValueBuilder> values = _regexGroupParser
-                .ParseValues(_groups, groupPrefix)
+                .ParseValues(groups, groupPrefix)
                 .ToList();
             var valueContext = new ResolvedMatchContext<IValueBuilder>(values);
 
             IReadOnlyList<IReferenceConverter> references = _regexGroupParser
-                .ParseReferences(_groups.Keys, groupPrefix)
-                .Select(t => ResolveNested(t.referenceName, t.matcherIndex, t.groupPrefix))
+                .ParseReferences(groups.Keys, groupPrefix)
+                .Select(t => ResolveNested(groups, t.referenceName, t.matcherIndex, t.groupPrefix))
                 .ToList();
             var referenceContext = new ResolvedMatchContext<IReferenceConverter>(references);
 
             return new ResolveContext(valueContext, referenceContext);
         }
 
-        private IReferenceConverter ResolveNested(string referenceName, int matcherIndex, string groupPrefix)
+        private IReferenceConverter ResolveNested(
+            IReadOnlyDictionary<string, string> groups, string referenceName, int matcherIndex, string groupPrefix)
         {
             if (_referenceManager.TryGetReferencedMatcherData(referenceName, matcherIndex,
                 out var referencedMatcherData))
@@ -86,7 +85,7 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
 
             if (_referenceManager.TryGetMatcherData(referenceName, matcherIndex, out var matcherData))
             {
-                var context = CreateContext(groupPrefix);
+                var context = CreateContext(groups, groupPrefix);
                 var referencedBuilder =
                     _modifierResolver.ResolveToReferencedBuilder(matcherData.Modifier, context);
                 return new ResolvedReferenceConverter(referencedBuilder);

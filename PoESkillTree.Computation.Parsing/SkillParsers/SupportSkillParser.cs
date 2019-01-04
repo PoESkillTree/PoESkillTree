@@ -11,26 +11,15 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     /// </summary>
     public class SupportSkillParser : IParser<SupportSkillParserParameter>
     {
-        private readonly SkillPreParser _preParser;
-        private readonly IReadOnlyList<IPartialSkillParser> _partialParsers;
-        private readonly TranslatingSkillParser _translatingParser;
+        private readonly SkillDefinitions _skillDefinitions;
+        private readonly IBuilderFactories _builderFactories;
+        private readonly UntranslatedStatParserFactory _statParserFactory;
 
         public SupportSkillParser(
             SkillDefinitions skillDefinitions, IBuilderFactories builderFactories,
             UntranslatedStatParserFactory statParserFactory)
-        {
-            _preParser = new SkillPreParser(skillDefinitions, builderFactories.MetaStatBuilders);
-            _partialParsers = new[]
-            {
-                new SupportSkillGeneralParser(builderFactories),
-                SkillKeywordParser.CreateSupport(builderFactories),
-                SkillTypeParser.CreateSupport(builderFactories),
-                new SupportSkillLevelParser(builderFactories), 
-                new GemRequirementParser(builderFactories),
-                new SkillStatParser(builderFactories),
-            };
-            _translatingParser = new TranslatingSkillParser(builderFactories, statParserFactory);
-        }
+            => (_skillDefinitions, _builderFactories, _statParserFactory) =
+                (skillDefinitions, builderFactories, statParserFactory);
 
         public ParseResult Parse(SupportSkillParserParameter parameter)
         {
@@ -38,18 +27,31 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var modifiers = new List<Modifier>();
             var parsedStats = new List<UntranslatedStat>();
 
-            var preParseResult = _preParser.ParseSupport(active, support);
+            var preParser = new SkillPreParser(_skillDefinitions, _builderFactories.MetaStatBuilders);
+            var preParseResult = preParser.ParseSupport(active, support);
 
-            foreach (var partialParser in _partialParsers)
+            foreach (var partialParser in CreatePartialParsers())
             {
                 var (newlyParsedModifiers, newlyParsedStats) = partialParser.Parse(active, support, preParseResult);
                 modifiers.AddRange(newlyParsedModifiers);
                 parsedStats.AddRange(newlyParsedStats);
             }
 
-            return _translatingParser.Parse(support, preParseResult,
+            var translatingParser = new TranslatingSkillParser(_builderFactories, _statParserFactory);
+            return translatingParser.Parse(support, preParseResult,
                 new PartialSkillParseResult(modifiers, parsedStats));
         }
+
+        private IEnumerable<IPartialSkillParser> CreatePartialParsers()
+            => new[]
+            {
+                new SupportSkillGeneralParser(_builderFactories),
+                SkillKeywordParser.CreateSupport(_builderFactories),
+                SkillTypeParser.CreateSupport(_builderFactories),
+                new SupportSkillLevelParser(_builderFactories),
+                new GemRequirementParser(_builderFactories),
+                new SkillStatParser(_builderFactories),
+            };
     }
 
     public static class SupportSkillParserExtensions
