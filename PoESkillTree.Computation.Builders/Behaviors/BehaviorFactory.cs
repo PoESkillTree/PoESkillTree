@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -10,13 +11,14 @@ using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.Utils;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Behaviors
 {
     public class BehaviorFactory
     {
-        private readonly IDictionary<CacheKey, Behavior> _cache = new Dictionary<CacheKey, Behavior>();
+        private readonly ConcurrentDictionary<CacheKey, Behavior> _cache =
+            new ConcurrentDictionary<CacheKey, Behavior>();
+
         private readonly IStatFactory _statFactory;
 
         public BehaviorFactory(IStatFactory statFactory)

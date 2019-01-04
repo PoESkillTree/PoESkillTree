@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Common;
@@ -8,13 +9,14 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
     public class StatFactory : IStatFactory
     {
-        private readonly IDictionary<(string, Entity), IStat> _cache = new Dictionary<(string, Entity), IStat>();
+        private readonly ConcurrentDictionary<(string, Entity), IStat> _cache =
+            new ConcurrentDictionary<(string, Entity), IStat>();
+
         private readonly BehaviorFactory _behaviorFactory;
 
         public StatFactory()
