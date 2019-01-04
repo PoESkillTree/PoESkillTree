@@ -20,6 +20,7 @@ namespace PoESkillTree.Computation.Parsing
         ParseResult ParseActiveSkill(Skill activeSkill);
         ParseResult ParseSupportSkill(Skill activeSkill, Skill supportSkill);
         IReadOnlyList<Modifier> ParseGivenModifiers();
+        IEnumerable<IReadOnlyList<Modifier>> ParseGivenModifiersDeferred();
     }
 
     /// <summary>

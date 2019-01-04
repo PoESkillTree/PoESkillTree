@@ -6,19 +6,26 @@ using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.GameModel;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing
 {
-    public class GivenStatsParser : IParser<IEnumerable<IGivenStats>>
+    public class GivenStatsParser
     {
         public static IReadOnlyList<Modifier> Parse(ICoreParser coreParser, IEnumerable<IGivenStats> givenStats)
+            => ParseDeferred(coreParser, givenStats).Flatten().ToList();
+
+        public static IEnumerable<IReadOnlyList<Modifier>> ParseDeferred(
+            ICoreParser coreParser, IEnumerable<IGivenStats> givenStats)
         {
             var givenParser = new GivenStatsParser(coreParser);
-            var parseResult = givenParser.Parse(givenStats);
-            if (!parseResult.SuccessfullyParsed)
-                throw new ParseException("Failed to parse given modifier lines " +
-                                         parseResult.FailedLines.ToDelimitedString("\n"));
-            return parseResult.Modifiers;
+            foreach (var parseResult in givenStats.SelectMany(g => givenParser.Parse(g)))
+            {
+                if (!parseResult.SuccessfullyParsed)
+                    throw new ParseException("Failed to parse given modifier lines " +
+                                             parseResult.FailedLines.ToDelimitedString("\n"));
+                yield return parseResult.Modifiers;
+            }
         }
 
         private static readonly ModifierSource ModifierSource =
@@ -28,9 +35,6 @@ namespace PoESkillTree.Computation.Parsing
 
         private GivenStatsParser(ICoreParser coreParser)
             => _coreParser = coreParser;
-
-        public ParseResult Parse(IEnumerable<IGivenStats> givenStats)
-            => ParseResult.Aggregate(givenStats.SelectMany(Parse));
 
         private IEnumerable<ParseResult> Parse(IGivenStats givenStats)
         {

@@ -99,5 +99,8 @@ namespace PoESkillTree.Computation.Parsing
 
         public IReadOnlyList<Modifier> ParseGivenModifiers()
             => GivenStatsParser.Parse(_coreParser, _givenStats);
+
+        public IEnumerable<IReadOnlyList<Modifier>> ParseGivenModifiersDeferred()
+            => GivenStatsParser.ParseDeferred(_coreParser, _givenStats);
     }
 }
