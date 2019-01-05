@@ -57,13 +57,15 @@ namespace PoESkillTree.Computation.Parsing
             _coreParser = new CoreParser<TStep>(parsingData, builderFactories);
             _givenStats = parsingData.GivenStats;
 
-            _passiveNodeParser = new PassiveNodeParser(passiveTree, builderFactories, _coreParser);
-            _skilledPassiveNodeParser = new SkilledPassiveNodeParser(passiveTree, builderFactories);
-            _itemParser =
-                new ItemParser(baseItems, builderFactories, _coreParser, statTranslators[StatTranslationFileNames.Main]);
-            _emptyItemSlotParser = new EmptyItemSlotParser(builderFactories);
-            _activeSkillParser = new ActiveSkillParser(skills, builderFactories, GetOrAddUntranslatedStatParser);
-            _supportSkillParser = new SupportSkillParser(skills, builderFactories, GetOrAddUntranslatedStatParser);
+            _passiveNodeParser = Caching(new PassiveNodeParser(passiveTree, builderFactories, _coreParser));
+            _skilledPassiveNodeParser = Caching(new SkilledPassiveNodeParser(passiveTree, builderFactories));
+            _itemParser = Caching(new ItemParser(baseItems, builderFactories, _coreParser,
+                statTranslators[StatTranslationFileNames.Main]));
+            _emptyItemSlotParser = Caching(new EmptyItemSlotParser(builderFactories));
+            _activeSkillParser =
+                Caching(new ActiveSkillParser(skills, builderFactories, GetOrAddUntranslatedStatParser));
+            _supportSkillParser =
+                Caching(new SupportSkillParser(skills, builderFactories, GetOrAddUntranslatedStatParser));
         }
 
         private IParser<UntranslatedStatParserParameter> GetOrAddUntranslatedStatParser(string translationFileName)
@@ -74,8 +76,11 @@ namespace PoESkillTree.Computation.Parsing
             var composite = new CompositeStatTranslator(
                 _statTranslators[translationFileName],
                 _statTranslators[StatTranslationFileNames.Custom]);
-            return new UntranslatedStatParser(composite, _coreParser);
+            return Caching(new UntranslatedStatParser(composite, _coreParser));
         }
+
+        private static IParser<T> Caching<T>(IParser<T> parser)
+            => new CachingParser<T>(parser);
 
         public ParseResult ParseRawModifier(
             string modifierLine, ModifierSource modifierSource, Entity modifierSourceEntity)

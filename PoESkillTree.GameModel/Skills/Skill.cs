@@ -1,8 +1,9 @@
 ﻿using PoESkillTree.GameModel.Items;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.GameModel.Skills
 {
-    public class Skill
+    public class Skill : ValueObject
     {
         public Skill(string id, int level, int quality, ItemSlot itemSlot, int socketIndex, int? gemGroup)
             => (Id, Level, Quality, ItemSlot, SocketIndex, GemGroup) =
@@ -20,7 +21,7 @@ namespace PoESkillTree.GameModel.Skills
         /// </summary>
         public int? GemGroup { get; }
 
-        public override string ToString()
-            => $"{Id}(level: {Level}, quality: {Quality}, {ItemSlot}.{SocketIndex}, group: {GemGroup})";
+        protected override object ToTuple()
+            => (Id, Level, Quality, ItemSlot, SocketIndex, GemGroup);
     }
 }

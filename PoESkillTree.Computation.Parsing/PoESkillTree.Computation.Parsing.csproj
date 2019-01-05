@@ -65,6 +65,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CachingParser.cs" />
+    <Compile Include="GenericCachingParser.cs" />
     <Compile Include="ItemParsers\EmptyItemSlotParser.cs" />
     <Compile Include="ItemParsers\ItemEquipmentParser.cs" />
     <Compile Include="ItemParsers\ItemModifierParser.cs" />
@@ -100,7 +102,7 @@
     <Compile Include="Referencing\ResolvedMatchContext.cs" />
     <Compile Include="ICoreParser.cs" />
     <Compile Include="StringParsers\MatcherDataParser.cs" />
-    <Compile Include="StringParsers\CachingParser.cs" />
+    <Compile Include="StringParsers\CachingStringParser.cs" />
     <Compile Include="CoreParser.cs" />
     <Compile Include="ParseResult.cs" />
     <Compile Include="StringParsers\ResultMappingParser.cs" />

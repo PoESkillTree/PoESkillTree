@@ -73,7 +73,7 @@ namespace PoESkillTree.Computation.Parsing
 
             // The parsing pipeline using one IStatMatchers instance to parse a part of the stat.
             IStringParser<IIntermediateModifier> CreateInnerParser(IStatMatchers statMatchers) =>
-                new CachingParser<IIntermediateModifier>(
+                new CachingStringParser<IIntermediateModifier>(
                     new StatNormalizingParser<IIntermediateModifier>(
                         new ResolvingParser(
                             new MatcherDataParser(
