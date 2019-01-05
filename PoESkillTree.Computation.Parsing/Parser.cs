@@ -1,5 +1,7 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -100,7 +102,8 @@ namespace PoESkillTree.Computation.Parsing
         public IReadOnlyList<Modifier> ParseGivenModifiers()
             => GivenStatsParser.Parse(_coreParser, _givenStats);
 
-        public IEnumerable<IReadOnlyList<Modifier>> ParseGivenModifiersDeferred()
-            => GivenStatsParser.ParseDeferred(_coreParser, _givenStats);
+        public IEnumerable<Func<IReadOnlyList<Modifier>>> CreateGivenModifierParseDelegates()
+            => _givenStats.Select<IGivenStats, Func<IReadOnlyList<Modifier>>>(
+                g => () => GivenStatsParser.Parse(_coreParser, g));
     }
 }

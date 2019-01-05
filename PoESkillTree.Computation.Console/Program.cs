@@ -264,7 +264,9 @@ namespace PoESkillTree.Computation.Console
         private async Task AddGivenStatsAsync()
         {
             var parser = await _compositionRoot.Parser;
-            AddMods(parser.ParseGivenModifiers());
+            var modifiers = parser.CreateGivenModifierParseDelegates()
+                .AsParallel().SelectMany(d => d()).ToList();
+            AddMods(modifiers);
         }
 
         private void AddMods(IEnumerable<Modifier> mods)
@@ -303,38 +305,30 @@ namespace PoESkillTree.Computation.Console
                 "=================================================================");
             foreach (var batch in lines.Batch((int) Math.Ceiling(lines.Count / 10.0)))
             {
+                var batchList = batch.ToList();
                 var batchStart = stopwatch.ElapsedMilliseconds;
-                var batchSize = 0;
-                var newLines = 0;
 
-                foreach (var line in batch)
-                {
-                    stopwatch.Start();
-                    var parseable = parser.Parse(line).SuccessfullyParsed;
-                    stopwatch.Stop();
-                    batchSize++;
-                    if (parseable)
-                    {
-                        successCounter++;
-                    }
-                    if (distinct.Add(line))
-                    {
-                        newLines++;
-                        if (parseable)
-                        {
-                            distinctSuccessCounter++;
-                        }
-                    }
-                }
+                stopwatch.Start();
+                var results = batchList
+                    .AsParallel()
+                    .Select(s => (s, parser.Parse(s).SuccessfullyParsed))
+                    .ToList();
+                stopwatch.Stop();
+
+                var batchSize = batchList.Count;
+                var newLines = results.Where(t => distinct.Add(t.s)).ToList();
+                var newLinesCount = newLines.Count;
+                successCounter += results.Count(t => t.SuccessfullyParsed);
+                distinctSuccessCounter += newLines.Count(t => t.SuccessfullyParsed);
 
                 var elapsed = stopwatch.ElapsedMilliseconds - batchStart;
                 System.Console.WriteLine(
                     $"{batchCounter,5} " +
                     $"| {elapsed,8} " +
                     $"| {(elapsed / (double) batchSize),7:F} " +
-                    $"| {(elapsed / (double) newLines),11:F} " +
+                    $"| {(elapsed / (double) newLinesCount),11:F} " +
                     $"| {batchSize,10} " +
-                    $"| {newLines,9} ");
+                    $"| {newLinesCount,9} ");
                 batchCounter++;
             }
             System.Console.WriteLine(
@@ -360,10 +354,10 @@ namespace PoESkillTree.Computation.Console
         private async Task Profile()
         {
             var parser = await _compositionRoot.Parser;
-            foreach (var line in ReadStatLines())
-            {
-                parser.Parse(line);
-            }
+            ReadStatLines()
+                .AsParallel()
+                .Select(s => parser.Parse(s))
+                .Consume();
         }
 
         private static IEnumerable<string> ReadStatLines()

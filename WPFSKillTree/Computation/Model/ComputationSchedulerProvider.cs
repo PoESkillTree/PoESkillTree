@@ -9,5 +9,6 @@ namespace POESKillTree.Computation.Model
 
         public IScheduler CalculationThread { get; } = new EventLoopScheduler();
         public IScheduler Dispatcher { get; }
+        public IScheduler TaskPool { get; } = TaskPoolScheduler.Default;
     }
 }

@@ -507,6 +507,7 @@ namespace POESKillTree.Views
             var schedulers = new ComputationSchedulerProvider();
             var initialComputation = new InitialComputation(gameData.Data, parser);
             initialComputation.InitialParse()
+                .SubscribeOn(schedulers.TaskPool)
                 .ObserveOn(schedulers.CalculationThread)
                 .Subscribe(calculator.Update,
                     ex => schedulers.Dispatcher.Schedule(() => throw ex));

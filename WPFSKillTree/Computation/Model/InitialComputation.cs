@@ -20,8 +20,10 @@ namespace POESKillTree.Computation.Model
 
         public IObservable<CalculatorUpdate> InitialParse()
         {
-            var givenResultObservable = _parser.ParseGivenModifiersDeferred().ToObservable();
-            var passiveNodesObservable = _gameData.PassiveTree.ToObservable().SelectMany(t => t.Nodes)
+            var givenResultObservable = _parser.CreateGivenModifierParseDelegates().ToObservable()
+                .Select(d => d());
+            var passiveNodesObservable = _gameData.PassiveTree.ToObservable()
+                .SelectMany(t => t.Nodes)
                 .Select(n => _parser.ParsePassiveNode(n.Id).Modifiers);
             return givenResultObservable.Merge(passiveNodesObservable)
                 .Buffer(TimeSpan.FromMilliseconds(100))

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
@@ -20,7 +21,8 @@ namespace PoESkillTree.Computation.Parsing
         ParseResult ParseActiveSkill(Skill activeSkill);
         ParseResult ParseSupportSkill(Skill activeSkill, Skill supportSkill);
         IReadOnlyList<Modifier> ParseGivenModifiers();
-        IEnumerable<IReadOnlyList<Modifier>> ParseGivenModifiersDeferred();
+        // This method looks weird, but the delegates are necessary for caller-defined concurrency
+        IEnumerable<Func<IReadOnlyList<Modifier>>> CreateGivenModifierParseDelegates();
     }
 
     /// <summary>

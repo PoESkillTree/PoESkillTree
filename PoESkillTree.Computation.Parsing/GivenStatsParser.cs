@@ -6,27 +6,19 @@ using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.GameModel;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing
 {
     public class GivenStatsParser
     {
         public static IReadOnlyList<Modifier> Parse(ICoreParser coreParser, IEnumerable<IGivenStats> givenStats)
-            => ParseDeferred(coreParser, givenStats).Flatten().ToList();
-
-        public static IEnumerable<IReadOnlyList<Modifier>> ParseDeferred(
-            ICoreParser coreParser, IEnumerable<IGivenStats> givenStats)
         {
             var givenParser = new GivenStatsParser(coreParser);
-            foreach (var parseResult in givenStats.SelectMany(g => givenParser.Parse(g)))
-            {
-                if (!parseResult.SuccessfullyParsed)
-                    throw new ParseException("Failed to parse given modifier lines " +
-                                             parseResult.FailedLines.ToDelimitedString("\n"));
-                yield return parseResult.Modifiers;
-            }
+            return givenStats.SelectMany(givenParser.ParseToModifiers).ToList();
         }
+
+        public static IReadOnlyList<Modifier> Parse(ICoreParser coreParser, IGivenStats givenStats)
+            => new GivenStatsParser(coreParser).ParseToModifiers(givenStats);
 
         private static readonly ModifierSource ModifierSource =
             new ModifierSource.Global(new ModifierSource.Local.Given());
@@ -35,6 +27,16 @@ namespace PoESkillTree.Computation.Parsing
 
         private GivenStatsParser(ICoreParser coreParser)
             => _coreParser = coreParser;
+
+        private IReadOnlyList<Modifier> ParseToModifiers(IGivenStats givenStats)
+        {
+            var results = Parse(givenStats);
+            var result = ParseResult.Aggregate(results);
+            if (!result.SuccessfullyParsed)
+                throw new ParseException("Failed to parse given modifier lines " +
+                                         result.FailedLines.ToDelimitedString("\n"));
+            return result.Modifiers;
+        }
 
         private IEnumerable<ParseResult> Parse(IGivenStats givenStats)
         {
