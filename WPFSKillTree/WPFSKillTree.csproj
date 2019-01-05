@@ -240,7 +240,6 @@
     <Compile Include="Computation\ViewModels\MainSkillViewModel.cs" />
     <Compile Include="Computation\ViewModels\ResultStatsViewModel.cs" />
     <Compile Include="Computation\ViewModels\ResultStatViewModel.cs" />
-    <Compile Include="Computation\ViewModels\StatStub.cs" />
     <Compile Include="ViewModels\Crafting\AbstractCraftingViewModel.cs" />
     <Compile Include="ViewModels\Crafting\BaseGroup.cs" />
     <Compile Include="ViewModels\Crafting\CraftingViewModel.cs" />

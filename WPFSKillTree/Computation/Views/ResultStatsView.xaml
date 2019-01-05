@@ -45,11 +45,11 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Grid Width="250"
-              HorizontalAlignment="Center">
+        <Grid Width="305"
+              HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="45*" />
-                <ColumnDefinition Width="55*" />
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -57,12 +57,9 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <ComboBox Grid.Column="0" Grid.ColumnSpan="3"
-                      ItemsSource="{Binding AvailableStatIdentities}"
-                      SelectedItem="{Binding NewStat.Identity}" />
+                      ItemsSource="{Binding AvailableStats}"
+                      SelectedItem="{Binding NewStat.Stat}" />
             <ComboBox Grid.Column="0" Grid.Row="1"
-                      ItemsSource="{Binding AvailableEntities}"
-                      SelectedItem="{Binding NewStat.Entity}" />
-            <ComboBox Grid.Column="1" Grid.Row="1"
                       ItemsSource="{Binding AvailableNodeTypes}"
                       SelectedItem="{Binding NewStat.NodeType}" />
             <Button Grid.Column="2" Grid.Row="1"

@@ -1,19 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using EnumsNET;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.GameModel;
 using POESKillTree.Common.ViewModels;
 
 namespace POESKillTree.Computation.ViewModels
 {
     public class ResultStatsViewModel
     {
-        public ResultStatsViewModel(ObservableCollection<string> availableStatIdentities)
+        public ResultStatsViewModel()
         {
-            AvailableStatIdentities = availableStatIdentities;
-            NewStat = new AddableResultStatViewModel { Identity = AvailableStatIdentities[0] };
+            NewStat = new AddableResultStatViewModel();
             AddStatCommand = new RelayCommand(AddStat);
         }
 
@@ -22,8 +21,7 @@ namespace POESKillTree.Computation.ViewModels
 
         public AddableResultStatViewModel NewStat { get; }
 
-        public ObservableCollection<string> AvailableStatIdentities { get; }
-        public IEnumerable<Entity> AvailableEntities => Enums.GetValues<Entity>();
+        public ObservableCollection<IStat> AvailableStats { get; } = new ObservableCollection<IStat>();
         public IEnumerable<NodeType> AvailableNodeTypes => Enums.GetValues<NodeType>();
 
         public ICommand AddStatCommand { get; }
@@ -35,22 +33,32 @@ namespace POESKillTree.Computation.ViewModels
             Stats.Add(newStat);
         }
 
+        public void AddAvailableStat(IStat stat)
+        {
+            if (Stats.Any(s => s.Stat.Equals(stat)))
+                return;
+
+            if (NewStat.Stat is null)
+            {
+                NewStat.Stat = stat;
+            }
+            AvailableStats.Add(stat);
+        }
+
         private void AddStat()
         {
-            var newStat = new ResultStatViewModel(new StatStub(NewStat.Identity, NewStat.Entity, typeof(double)),
-                    NewStat.NodeType, RemoveStat)
-                { Value = new NodeValue(NewStat.Identity.GetHashCode()) };
+            var newStat = new ResultStatViewModel(NewStat.Stat, NewStat.NodeType, RemoveStat)
+                { Value = new NodeValue(NewStat.Stat.GetHashCode()) };
             Stats.Add(newStat);
-            AvailableStatIdentities.Remove(NewStat.Identity);
+            AvailableStats.Remove(NewStat.Stat);
         }
 
         private void RemoveStat(ResultStatViewModel resultStat)
         {
             Stats.Remove(resultStat);
             var stat = resultStat.Stat;
-            AvailableStatIdentities.Add(stat.Identity);
-            NewStat.Identity = stat.Identity;
-            NewStat.Entity = stat.Entity;
+            AvailableStats.Add(stat);
+            NewStat.Stat = stat;
             NewStat.NodeType = resultStat.NodeType;
         }
     }
