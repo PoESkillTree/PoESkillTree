@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
+using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.Parsing;
@@ -31,5 +33,11 @@ namespace POESKillTree.Computation.Model
                 .Where(ms => ms.Any())
                 .Select(ms => new CalculatorUpdate(ms, new Modifier[0]));
         }
+
+        public IObservable<CalculatorUpdate> ParseSkilledPassiveNodes(IEnumerable<ushort> skilledNodes)
+            => skilledNodes.ToObservable()
+                .SelectMany(id => _parser.ParseSkilledPassiveNode(id).Modifiers)
+                .Aggregate(Enumerable.Empty<Modifier>(), (ms, m) => ms.Append(m))
+                .Select(ms => new CalculatorUpdate(ms.ToList(), new Modifier[0]));
     }
 }

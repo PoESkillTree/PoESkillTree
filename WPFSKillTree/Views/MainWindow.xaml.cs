@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Text;
@@ -460,22 +459,7 @@ namespace POESKillTree.Views
             controller.Maximum = 1;
             controller.SetIndeterminate();
 
-            var itemDBTask = Task.Run(() =>
-            {
-                const string itemDBPrefix = "Data/ItemDB/";
-                Directory.CreateDirectory(AppData.GetFolder(itemDBPrefix));
-                // First file instantiates the ItemDB.
-                ItemDB.Load(itemDBPrefix + "GemList.xml");
-                // Merge all other files from the ItemDB path.
-                Directory.GetFiles(AppData.GetFolder(itemDBPrefix))
-                    .Select(Path.GetFileName)
-                    .Where(f => f != "GemList.xml")
-                    .Select(f => itemDBPrefix + f)
-                    .ForEach(ItemDB.Merge);
-                // Merge the user specified things.
-                ItemDB.Merge("ItemsLocal.xml");
-                ItemDB.Index();
-            });
+            var itemDBTask = Task.Run(() => InitializeItemDB());
             var persistentDataTask = PersistentData.InitializeAsync(DialogCoordinator.Instance);
             var gameData = new GameDataWithOldTreeModel();
             gameData.Data.StartAllTasks();
@@ -483,18 +467,11 @@ namespace POESKillTree.Views
             InitializeIndependentUI();
 
             await persistentDataTask;
-            RegisterPersistentDataHandlers();
-            StashViewModel.PersistentData = PersistentData;
-            // Set theme & accent.
-            SetTheme(PersistentData.Options.Theme);
-            SetAccent(PersistentData.Options.Accent);
+            InitializePersistentDataDependentUI();
 
             controller.SetMessage(L10n.Message("Loading skill tree assets ..."));
             Tree = await CreateSkillTreeAsync(controller);
-            await Task.Delay(1); // Give the progress dialog a chance to update
-
-            updateCanvasSize();
-            recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
+            InitializeTreeDependentUI();
 
             controller.SetMessage(L10n.Message("Initializing window ..."));
             controller.SetIndeterminate();
@@ -506,37 +483,45 @@ namespace POESKillTree.Views
             var parser = await computationFactory.CreateParserAsync();
             var schedulers = new ComputationSchedulerProvider();
             var initialComputation = new InitialComputation(gameData.Data, parser);
-            initialComputation.InitialParse()
+            var initialComputationTask = initialComputation.InitialParse()
                 .SubscribeOn(schedulers.TaskPool)
                 .ObserveOn(schedulers.CalculationThread)
-                .Subscribe(calculator.Update,
-                    ex => schedulers.Dispatcher.Schedule(() => throw ex));
+                .SubscribeAndAwaitCompletionAsync(calculator.Update);
             await ComputationViewModel.InitializeAsync(gameData.Data);
 
             await itemDBTask;
 
             _justLoaded = true;
-
             // loading last build
             await CurrentBuildChanged();
-
             _justLoaded = false;
-            // loading saved build
-            PersistentData.Options.PropertyChanged += Options_PropertyChanged;
-            PopulateAscendancySelectionList();
-            BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData, Tree);
-            UpdateTreeComparison();
-            TreeGeneratorInteraction =
-                new TreeGeneratorInteraction(SettingsDialogCoordinator.Instance, PersistentData, Tree);
-            TreeGeneratorInteraction.RunFinished += (o, args) =>
-            {
-                UpdateUI();
-                SetCurrentBuildUrlFromTree();
-            };
+            InitializeBuildDependentUI();
 
-            InitializeLoadTreeButtonViewModel();
+            var skilledNodes = Tree.SkilledNodes.Select(n => n.Id);
+            var skilledNodesComputationTask = initialComputation.ParseSkilledPassiveNodes(skilledNodes)
+                .SubscribeOn(schedulers.TaskPool)
+                .ObserveOn(schedulers.CalculationThread)
+                .SubscribeAndAwaitCompletionAsync(calculator.Update);
 
+            await Task.WhenAll(initialComputationTask, skilledNodesComputationTask);
             await controller.CloseAsync();
+        }
+
+        private static void InitializeItemDB()
+        {
+            const string itemDBPrefix = "Data/ItemDB/";
+            Directory.CreateDirectory(AppData.GetFolder(itemDBPrefix));
+            // First file instantiates the ItemDB.
+            ItemDB.Load(itemDBPrefix + "GemList.xml");
+            // Merge all other files from the ItemDB path.
+            Directory.GetFiles(AppData.GetFolder(itemDBPrefix))
+                .Select(Path.GetFileName)
+                .Where(f => f != "GemList.xml")
+                .Select(f => itemDBPrefix + f)
+                .ForEach(ItemDB.Merge);
+            // Merge the user specified things.
+            ItemDB.Merge("ItemsLocal.xml");
+            ItemDB.Index();
         }
 
         private void InitializeIndependentUI()
@@ -601,6 +586,38 @@ namespace POESKillTree.Views
                 CharacterNames.NameToContent.Select(
                     x => new ComboBoxItem {Name = x.Key, Content = x.Value});
             cbAscType.SelectedIndex = 0;
+        }
+
+        private void InitializePersistentDataDependentUI()
+        {
+            RegisterPersistentDataHandlers();
+            StashViewModel.PersistentData = PersistentData;
+            // Set theme & accent.
+            SetTheme(PersistentData.Options.Theme);
+            SetAccent(PersistentData.Options.Accent);
+        }
+
+        private void InitializeTreeDependentUI()
+        {
+            updateCanvasSize();
+            recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
+        }
+
+        private void InitializeBuildDependentUI()
+        {
+            PersistentData.Options.PropertyChanged += Options_PropertyChanged;
+            PopulateAscendancySelectionList();
+            BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData, Tree);
+            UpdateTreeComparison();
+            TreeGeneratorInteraction =
+                new TreeGeneratorInteraction(SettingsDialogCoordinator.Instance, PersistentData, Tree);
+            TreeGeneratorInteraction.RunFinished += (o, args) =>
+            {
+                UpdateUI();
+                SetCurrentBuildUrlFromTree();
+            };
+
+            InitializeLoadTreeButtonViewModel();
         }
 
         private void InitializeLoadTreeButtonViewModel()
