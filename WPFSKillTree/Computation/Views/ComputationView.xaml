@@ -61,6 +61,6 @@
             </TextBlock.Text>
         </TextBlock>
         <local:ConfigurationStatsView Grid.Column="2" Grid.Row="2"
-                                      DataContext="{Binding}" />
+                                      DataContext="{Binding ConfigurationStats}" />
     </Grid>
 </UserControl>

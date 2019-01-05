@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
@@ -20,14 +21,20 @@ namespace POESKillTree.Computation.Model
                 new Lazy<IObservable<CollectionChangeEventArgs>>(CreateExplicitlyRegisteredStatsObservable);
         }
 
-        public IObservable<NodeValue?> ObserveNode(IStat stat, NodeType nodeType)
+        public IObservable<NodeValue?> ObserveNode(IStat stat, NodeType nodeType = NodeType.Total)
+            => ObserveNode(() => _calculator.NodeRepository.GetNode(stat, nodeType));
+
+        public IObservable<NodeValue?> ObserveNode(ICalculationNode node)
+            => ObserveNode(() => node);
+
+        private IObservable<NodeValue?> ObserveNode(Func<ICalculationNode> getNode)
         {
             return Observable.Create<NodeValue?>(o => Subscribe(o))
                 .SubscribeOn(_calculationScheduler);
 
             Action Subscribe(IObserver<NodeValue?> observer)
             {
-                var node = _calculator.NodeRepository.GetNode(stat, nodeType);
+                var node = getNode();
                 void ValueChanged(object _, EventArgs __) => observer.OnNext(node.Value);
                 node.ValueChanged += ValueChanged;
                 observer.OnNext(node.Value);
@@ -47,5 +54,12 @@ namespace POESKillTree.Computation.Model
                 .Select(p => p.EventArgs)
                 .SubscribeOn(_calculationScheduler);
         }
+
+        public IReadOnlyCollection<(ICalculationNode node, IStat stat)> ExplicitlyRegisteredStatsCollection
+            => _calculator.ExplicitlyRegisteredStats;
+
+        public IDisposable SubscribeCalculatorTo(IObservable<CalculatorUpdate> observable, Action<Exception> onError)
+            => observable.ObserveOn(_calculationScheduler)
+                .Subscribe(_calculator.Update, onError);
     }
 }

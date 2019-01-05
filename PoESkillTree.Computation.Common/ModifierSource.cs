@@ -9,11 +9,6 @@ namespace PoESkillTree.Computation.Common
     /// <summary>
     /// Union data type representing a source of a modifier.
     /// <para>
-    /// Generally, each instance of a leaf ModifierSource class is considered the same, e.g. all instances of
-    /// <see cref="Global"/> are equal to each other. The only exception to this is <see cref="Local.Item"/>, which
-    /// also consists of an <see cref="ItemSlot"/>.
-    /// </para>
-    /// <para>
     /// Other information in an instance, e.g. <see cref="SourceName"/>, does not influence equality and is not
     /// contained in <see cref="CanonicalSource"/> instances.
     /// </para>
@@ -195,6 +190,13 @@ namespace PoESkillTree.Computation.Common
                     => other is Gem item && Slot == item.Slot && SocketIndex == item.SocketIndex;
 
                 public override int GetHashCode() => (GetType(), Slot, SocketIndex).GetHashCode();
+            }
+
+            public sealed class UserDefined : Local
+            {
+                public UserDefined()
+                {
+                }
             }
         }
     }

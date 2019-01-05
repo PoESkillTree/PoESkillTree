@@ -96,7 +96,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
             IValue BuildCondition(BuildParameters parameters)
             {
-                var stat = _statFactory.FromIdentity($"Is {parameters.ModifierSource} active?",
+                var stat = _statFactory.FromIdentity($"Is {parameters.ModifierSource.SourceName} active?",
                     parameters.ModifierSourceEntity, typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue(false));
                 return new StatValue(stat);
             }
@@ -117,9 +117,9 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
         private IValue BuildTemporaryBuffCondition<T>(T condition, BuildParameters parameters) where T : struct, Enum
         {
-            var stat = _statFactory.FromIdentity($"Current {parameters.ModifierSource} stage",
+            var stat = _statFactory.FromIdentity($"Current {parameters.ModifierSource.SourceName} stage",
                 parameters.ModifierSourceEntity, typeof(T), ExplicitRegistrationTypes.UserSpecifiedValue(0));
-            return new ConditionalValue(c => (int) c.GetValue(stat).Single() == Enums.ToInt32(condition),
+            return new ConditionalValue(c => (int?) c.GetValue(stat).SingleOrNull() == Enums.ToInt32(condition),
                 $"{stat} == {condition}");
         }
 

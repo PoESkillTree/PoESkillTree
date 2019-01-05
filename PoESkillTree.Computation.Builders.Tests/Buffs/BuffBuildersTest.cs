@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var expectedValue = expectedCondition ? (NodeValue?) 3 : null;
             var gainedStatBuilder = StatBuilderUtils.FromIdentity(StatFactory, "s", null);
             var modifierSource = new ModifierSource.Local.Skill("skill node");
-            var conditionStat = new Stat($"Is {modifierSource} active?");
+            var conditionStat = new Stat($"Is {modifierSource.SourceName} active?");
             var buffEffectStat = new Stat($"Buff.EffectOn({default(Entity)})");
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(conditionStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) expectedCondition &&

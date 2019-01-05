@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using log4net;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
 using POESKillTree.Common.ViewModels;
@@ -12,6 +13,8 @@ namespace POESKillTree.Computation.ViewModels
 {
     public class ResultStatViewModel : Notifier, IDisposable
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ResultStatViewModel));
+
         private string _value;
         private IDisposable _subscription;
 
@@ -20,12 +23,6 @@ namespace POESKillTree.Computation.ViewModels
             (Stat, NodeType) = (stat, nodeType);
             RemoveCommand = new RelayCommand(() => removeAction(this));
         }
-
-        public void Connect(ObservableCalculator observableCalculator)
-            => _subscription = observableCalculator
-                .ObserveNode(Stat, NodeType)
-                .ObserveOnDispatcher()
-                .Subscribe(SetValue);
 
         public IStat Stat { get; }
         public string Name => ToString();
@@ -40,10 +37,16 @@ namespace POESKillTree.Computation.ViewModels
 
         public ICommand RemoveCommand { get; }
 
+        public void Observe(ObservableCalculator observableCalculator)
+            => _subscription = observableCalculator
+                .ObserveNode(Stat, NodeType)
+                .ObserveOnDispatcher()
+                .Subscribe(OnNext, OnError);
+
         public void Dispose()
             => _subscription?.Dispose();
 
-        private void SetValue(NodeValue? value)
+        private void OnNext(NodeValue? value)
         {
             var dataType = Stat.DataType;
             if (dataType == typeof(int) || dataType == typeof(double))
@@ -62,8 +65,14 @@ namespace POESKillTree.Computation.ViewModels
             }
             else
             {
-                Value = null;
+                Value = L10n.Message("Unknown type");
             }
+        }
+
+        private void OnError(Exception exception)
+        {
+            Log.Error($"ObserveNode({Stat}, {NodeType}) failed", exception);
+            Value = L10n.Message("Error");
         }
 
         public override string ToString()

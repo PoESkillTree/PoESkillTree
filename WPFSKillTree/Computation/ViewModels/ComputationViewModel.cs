@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -17,13 +16,13 @@ namespace POESKillTree.Computation.ViewModels
         public MainSkillSelectionViewModel MainSkillSelection { get; }
         public ResultStatsViewModel OffensiveStats { get; }
         public ResultStatsViewModel DefensiveStats { get; }
-        public ObservableCollection<ConfigurationStatViewModel> ConfigurationStats { get; }
+        public ConfigurationStatsViewModel ConfigurationStats { get; }
 
         private ComputationViewModel(SkillDefinitions skillDefinitions, ObservableCalculator observableCalculator)
         {
             OffensiveStats = new ResultStatsViewModel(observableCalculator);
             DefensiveStats = new ResultStatsViewModel(observableCalculator);
-            ConfigurationStats = new ObservableCollection<ConfigurationStatViewModel>();
+            ConfigurationStats = new ConfigurationStatsViewModel(observableCalculator);
             MainSkillSelection = new MainSkillSelectionViewModel(skillDefinitions);
         }
 
@@ -42,6 +41,7 @@ namespace POESKillTree.Computation.ViewModels
             AddStats(OffensiveStats, f.StatBuilders.Flag.FarShot);
             AddStats(OffensiveStats, f.MetaStatBuilders.SkillHitDamageSource);
             AddStats(OffensiveStats, f.EffectBuilders.Stun.Threshold.With(AttackDamageHand.MainHand), Entity.Enemy);
+            AddStats(OffensiveStats, f.StatBuilders.AreaOfEffect);
             AddAvailableStats(OffensiveStats, f.StatBuilders.BaseCastTime.With(AttackDamageHand.MainHand));
             AddAvailableStats(OffensiveStats, f.MetaStatBuilders.SkillDpsWithDoTs);
 
@@ -51,17 +51,11 @@ namespace POESKillTree.Computation.ViewModels
             AddStats(DefensiveStats, f.StatBuilders.Attribute.Strength);
             AddStats(DefensiveStats, f.StatBuilders.Attribute.Dexterity);
             AddStats(DefensiveStats, f.StatBuilders.Attribute.Intelligence);
+            AddStats(DefensiveStats, f.StatBuilders.PassivePoints);
+            AddStats(DefensiveStats, f.StatBuilders.AscendancyPassivePoints);
             AddAvailableStats(DefensiveStats, f.DamageTypeBuilders.AnyDamageType().Resistance);
 
-            AddConfigurationStats(f.MetaStatBuilders.SelectedQuestPart, Entity.Character,
-                new NodeValue((int) QuestPart.Epilogue));
-            AddConfigurationStats(f.StatBuilders.Level, Entity.Enemy,
-                new NodeValue(84), new NodeValue(0), new NodeValue(100));
-            AddConfigurationStats(f.StatBuilders.Projectile.TravelDistance, Entity.Character,
-                minimum: new NodeValue(0));
-            AddConfigurationStats(f.EffectBuilders.Ailment.Shock.On(f.EntityBuilders.Enemy), Entity.Enemy);
-            AddConfigurationStats(f.EffectBuilders.Ailment.Chill.On(f.EntityBuilders.Enemy), Entity.Enemy,
-                (NodeValue?) true);
+            ConfigurationStats.Observe();
         }
 
         private static void AddAvailableStats(
@@ -81,19 +75,6 @@ namespace POESKillTree.Computation.ViewModels
             foreach (var stat in statBuilder.BuildToStats(entity))
             {
                 viewModel.AddStat(stat, nodeType);
-            }
-        }
-
-        private void AddConfigurationStats(
-            IStatBuilder statBuilder, Entity entity,
-            NodeValue? value = null, NodeValue? minimum = null, NodeValue? maximum = null)
-        {
-            foreach (var stat in statBuilder.BuildToStats(entity))
-            {
-                ConfigurationStats.Add(new ConfigurationStatViewModel(stat)
-                {
-                    Value = value, Minimum = minimum, Maximum = maximum
-                });
             }
         }
 

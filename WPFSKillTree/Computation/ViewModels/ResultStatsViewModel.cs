@@ -47,9 +47,9 @@ namespace POESKillTree.Computation.ViewModels
 
         public void AddStat(IStat stat, NodeType nodeType = NodeType.Total)
         {
-            var newStat = new ResultStatViewModel(stat, nodeType, RemoveStat);
-            newStat.Connect(_observableCalculator);
-            Stats.Add(newStat);
+            var resultStat = new ResultStatViewModel(stat, nodeType, RemoveStat);
+            resultStat.Observe(_observableCalculator);
+            Stats.Add(resultStat);
             AvailableStats.Remove(stat);
             NewStat.Stat = AvailableStats.FirstOrDefault();
         }

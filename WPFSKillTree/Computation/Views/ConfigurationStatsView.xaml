@@ -8,28 +8,28 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:viewModels="clr-namespace:POESKillTree.Computation.ViewModels"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance viewModels:ComputationViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:ConfigurationStatsViewModel}">
     <UserControl.Resources>
         <DataTemplate x:Key="IntTemplate" DataType="viewModels:ConfigurationStatViewModel">
-            <mahApps:NumericUpDown Value="{Binding NumericValue}"
+            <mahApps:NumericUpDown Value="{Binding NumericValue, UpdateSourceTrigger=PropertyChanged}"
                                    Minimum="{Binding NumericMinimum}"
                                    Maximum="{Binding NumericMaximum}"
                                    NumericInputMode="Numbers"
                                    Style="{StaticResource UpDownInDataGridStyle}" />
         </DataTemplate>
         <DataTemplate x:Key="DoubleTemplate" DataType="viewModels:ConfigurationStatViewModel">
-            <mahApps:NumericUpDown Value="{Binding NumericValue}"
+            <mahApps:NumericUpDown Value="{Binding NumericValue, UpdateSourceTrigger=PropertyChanged}"
                                    NumericInputMode="Decimal"
                                    Minimum="{Binding NumericMinimum}"
                                    Maximum="{Binding NumericMaximum}"
                                    Style="{StaticResource UpDownInDataGridStyle}" />
         </DataTemplate>
         <DataTemplate x:Key="BoolTemplate" DataType="viewModels:ConfigurationStatViewModel">
-            <CheckBox IsChecked="{Binding BoolValue}"
+            <CheckBox IsChecked="{Binding BoolValue, UpdateSourceTrigger=PropertyChanged}"
                       HorizontalAlignment="Center" />
         </DataTemplate>
         <DataTemplate x:Key="EnumTemplate" DataType="viewModels:ConfigurationStatViewModel">
-            <ComboBox SelectedIndex="{Binding NumericValue}"
+            <ComboBox SelectedIndex="{Binding NumericValue, UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding EnumValues}">
             </ComboBox>
         </DataTemplate>
@@ -39,7 +39,7 @@
               CanUserDeleteRows="False"
               CanUserResizeColumns="False"
               HorizontalScrollBarVisibility="Hidden"
-              ItemsSource="{Binding ConfigurationStats}">
+              ItemsSource="{Binding Stats}">
         <DataGrid.Columns>
             <DataGridTextColumn IsReadOnly="True"
                                 Width="250"
