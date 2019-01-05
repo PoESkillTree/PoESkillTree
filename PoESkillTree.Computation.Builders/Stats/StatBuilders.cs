@@ -13,6 +13,7 @@ using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
+using static PoESkillTree.Computation.Common.ExplicitRegistrationTypes;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
@@ -62,8 +63,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder CooldownRecoverySpeed => FromIdentity(typeof(double));
         public IStatBuilder Duration => FromIdentity(typeof(double));
         public IStatBuilder SecondaryDuration => FromIdentity(typeof(double));
-        public IStatBuilder SkillStage => FromIdentity(typeof(int),
-            ExplicitRegistrationTypes.UserSpecifiedValue(double.MaxValue));
+        public IStatBuilder SkillStage => FromIdentity(typeof(int), UserSpecifiedValue(double.MaxValue));
         public IStatBuilder MainSkillPart => FromIdentity(typeof(int));
 
         public ITrapStatBuilders Trap => new TrapStatBuilders(StatFactory);
@@ -87,7 +87,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             FromIdentity("% of damage taken gained as mana over 4 seconds", typeof(int));
 
         public IStatBuilder Unique(string name, Type type)
-            => FromIdentity(name, type, ExplicitRegistrationTypes.UserSpecifiedValue());
+            => FromIdentity(name, type, UserSpecifiedValue());
 
         public IAttributeStatBuilders Attribute => new AttributeStatBuilders(StatFactory);
         public IRequirementStatBuilders Requirements => new RequirementStatBuilders(StatFactory);
@@ -183,8 +183,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder ChargesUsed => FromIdentity("Flask.ChargesUsed", typeof(int));
         public IStatBuilder ChargesGained => FromIdentity("Flask.ChargesGained", typeof(double));
 
-        public IConditionBuilder IsAnyActive =>
-            FromIdentity("Is any flask active?", typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue()).IsSet;
+        public IConditionBuilder IsAnyActive
+            => FromIdentity("Is any flask active?", typeof(bool), UserSpecifiedValue(false)).IsSet;
     }
 
     internal class ProjectileStatBuilders : StatBuildersBase, IProjectileStatBuilders
@@ -201,7 +201,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder Fork => FromIdentity("Projectile.Fork", typeof(bool));
 
         public IStatBuilder TravelDistance =>
-            FromIdentity("Projectile travel distance", typeof(int), ExplicitRegistrationTypes.UserSpecifiedValue(35));
+            FromIdentity("Projectile travel distance", typeof(int), UserSpecifiedValue(35));
     }
 
     internal class FlagStatBuilders : StatBuildersBase, IFlagStatBuilders
@@ -221,17 +221,16 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder FarShot => FromIdentity(typeof(bool));
 
         public IStatBuilder AlwaysMoving
-            => FromIdentity("Are you always moving?", typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue());
+            => FromIdentity("Are you always moving?", typeof(bool), UserSpecifiedValue(false));
 
         public IStatBuilder AlwaysStationary
-            => FromIdentity("Are you always stationary?", typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue());
+            => FromIdentity("Are you always stationary?", typeof(bool), UserSpecifiedValue(false));
 
         public IStatBuilder BrandAttachedToEnemy
-            => FromIdentity("Is your Brand attached to an enemy?", typeof(bool),
-                ExplicitRegistrationTypes.UserSpecifiedValue());
+            => FromIdentity("Is your Brand attached to an enemy?", typeof(bool), UserSpecifiedValue(false));
 
         public IStatBuilder BannerPlanted
-            => FromIdentity("Is your Banner planted?", typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue());
+            => FromIdentity("Is your Banner planted?", typeof(bool), UserSpecifiedValue(false));
 
         public IStatBuilder IncreasesToSourceApplyToTarget(IStatBuilder source, IStatBuilder target)
             => new StatBuilder(StatFactory,

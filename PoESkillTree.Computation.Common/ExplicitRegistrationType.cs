@@ -17,14 +17,14 @@ namespace PoESkillTree.Computation.Common
         /// </summary>
         public sealed class UserSpecifiedValue : ExplicitRegistrationType
         {
-            public UserSpecifiedValue(double? defaultValue = null)
-            {
-                DefaultValue = defaultValue;
-            }
+            public UserSpecifiedValue(bool hasDefaultValue, NodeValue? defaultValue)
+                => (HasDefaultValue, DefaultValue) = (hasDefaultValue, defaultValue);
 
-            public double? DefaultValue { get; }
+            public bool HasDefaultValue { get; }
 
-            protected override object ToTuple() => (GetType().Name, DefaultValue);
+            public NodeValue? DefaultValue { get; }
+
+            protected override object ToTuple() => (GetType().Name, HasDefaultValue, DefaultValue);
         }
 
         /// <summary>
@@ -50,11 +50,20 @@ namespace PoESkillTree.Computation.Common
 
     public static class ExplicitRegistrationTypes
     {
-        public static ExplicitRegistrationType.UserSpecifiedValue UserSpecifiedValue(double? defaultValue = null) =>
-            new ExplicitRegistrationType.UserSpecifiedValue(defaultValue);
+        public static ExplicitRegistrationType.UserSpecifiedValue UserSpecifiedValue()
+            => new ExplicitRegistrationType.UserSpecifiedValue(false, null);
+
+        public static ExplicitRegistrationType.UserSpecifiedValue UserSpecifiedValue(bool defaultValue)
+            => UserSpecifiedValue((NodeValue?) defaultValue);
+
+        public static ExplicitRegistrationType.UserSpecifiedValue UserSpecifiedValue(double? defaultValue)
+            => UserSpecifiedValue((NodeValue?) defaultValue);
+
+        public static ExplicitRegistrationType.UserSpecifiedValue UserSpecifiedValue(NodeValue? defaultValue)
+            => new ExplicitRegistrationType.UserSpecifiedValue(true, defaultValue);
 
         public static ExplicitRegistrationType.GainOnAction GainOnAction(
-            IStat gainedStat, string action, Entity actionEntity) =>
-            new ExplicitRegistrationType.GainOnAction(gainedStat, action, actionEntity);
+            IStat gainedStat, string action, Entity actionEntity)
+            => new ExplicitRegistrationType.GainOnAction(gainedStat, action, actionEntity);
     }
 }
