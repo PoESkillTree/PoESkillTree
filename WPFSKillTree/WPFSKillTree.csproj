@@ -202,7 +202,7 @@
     <Compile Include="Common\ViewModels\ViewModelBase.cs" />
     <Compile Include="Computation\Model\ComputationFactory.cs" />
     <Compile Include="Computation\Model\ComputationSchedulerProvider.cs" />
-    <Compile Include="Computation\Model\InitialComputation.cs" />
+    <Compile Include="Computation\Model\ComputationObservables.cs" />
     <Compile Include="Contrib\RangeTree\Range.cs" />
     <Compile Include="Contrib\RangeTree\RangeTree.cs" />
     <Compile Include="Contrib\RangeTree\RangeTreeAsync.cs" />

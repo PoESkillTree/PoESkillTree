@@ -482,8 +482,8 @@ namespace POESKillTree.Views
             var calculator = computationFactory.CreateCalculator();
             var parser = await computationFactory.CreateParserAsync();
             var schedulers = new ComputationSchedulerProvider();
-            var initialComputation = new InitialComputation(gameData.Data, parser);
-            var initialComputationTask = initialComputation.InitialParse()
+            var observables = new ComputationObservables(gameData.Data, parser);
+            var initialComputationTask = observables.InitialParse()
                 .SubscribeOn(schedulers.TaskPool)
                 .ObserveOn(schedulers.CalculationThread)
                 .SubscribeAndAwaitCompletionAsync(calculator.Update);
@@ -497,11 +497,14 @@ namespace POESKillTree.Views
             _justLoaded = false;
             InitializeBuildDependentUI();
 
-            var skilledNodes = Tree.SkilledNodes.Select(n => n.Id);
-            var skilledNodesComputationTask = initialComputation.ParseSkilledPassiveNodes(skilledNodes)
+            var skilledNodesComputationTask = observables.ParseSkilledPassiveNodes(Tree.SkilledNodes)
                 .SubscribeOn(schedulers.TaskPool)
                 .ObserveOn(schedulers.CalculationThread)
                 .SubscribeAndAwaitCompletionAsync(calculator.Update);
+            observables.ObserveSkilledPassiveNodes(Tree.SkilledNodes)
+                .ObserveOn(schedulers.CalculationThread)
+                .Subscribe(calculator.Update,
+                    ex => Log.Error("Exception while observing skilled node updates", ex));
 
             await Task.WhenAll(initialComputationTask, skilledNodesComputationTask);
             await controller.CloseAsync();
