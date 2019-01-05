@@ -27,7 +27,7 @@
                 <DataGridTextColumn IsReadOnly="True"
                                     Width="55"
                                     HeaderStyle="{StaticResource MetroDataGridColumnHeader}"
-                                    Binding="{Binding StringValue}">
+                                    Binding="{Binding Value}">
                     <DataGridTextColumn.Header>
                         <l:Catalog>Value</l:Catalog>
                     </DataGridTextColumn.Header>

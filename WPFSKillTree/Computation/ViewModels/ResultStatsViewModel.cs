@@ -5,13 +5,17 @@ using System.Windows.Input;
 using EnumsNET;
 using PoESkillTree.Computation.Common;
 using POESKillTree.Common.ViewModels;
+using POESKillTree.Computation.Model;
 
 namespace POESKillTree.Computation.ViewModels
 {
     public class ResultStatsViewModel
     {
-        public ResultStatsViewModel()
+        private readonly ObservableCalculator _observableCalculator;
+
+        public ResultStatsViewModel(ObservableCalculator observableCalculator)
         {
+            _observableCalculator = observableCalculator;
             NewStat = new AddableResultStatViewModel();
             AddStatCommand = new RelayCommand(AddStat);
         }
@@ -26,13 +30,6 @@ namespace POESKillTree.Computation.ViewModels
 
         public ICommand AddStatCommand { get; }
 
-        public void AddStat(IStat stat, NodeValue? value = null, NodeType nodeType = NodeType.Total)
-        {
-            var newStat = new ResultStatViewModel(stat, nodeType, RemoveStat)
-                { Value = value };
-            Stats.Add(newStat);
-        }
-
         public void AddAvailableStat(IStat stat)
         {
             if (Stats.Any(s => s.Stat.Equals(stat)))
@@ -46,20 +43,24 @@ namespace POESKillTree.Computation.ViewModels
         }
 
         private void AddStat()
+            => AddStat(NewStat.Stat, NewStat.NodeType);
+
+        public void AddStat(IStat stat, NodeType nodeType = NodeType.Total)
         {
-            var newStat = new ResultStatViewModel(NewStat.Stat, NewStat.NodeType, RemoveStat)
-                { Value = new NodeValue(NewStat.Stat.GetHashCode()) };
+            var newStat = new ResultStatViewModel(stat, nodeType, RemoveStat);
+            newStat.Connect(_observableCalculator);
             Stats.Add(newStat);
-            AvailableStats.Remove(NewStat.Stat);
+            AvailableStats.Remove(stat);
+            NewStat.Stat = AvailableStats.FirstOrDefault();
         }
 
         private void RemoveStat(ResultStatViewModel resultStat)
         {
             Stats.Remove(resultStat);
-            var stat = resultStat.Stat;
-            AvailableStats.Add(stat);
-            NewStat.Stat = stat;
+            AvailableStats.Add(resultStat.Stat);
+            NewStat.Stat = resultStat.Stat;
             NewStat.NodeType = resultStat.NodeType;
+            resultStat.Dispose();
         }
     }
 }

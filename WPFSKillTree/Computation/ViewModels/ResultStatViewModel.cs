@@ -1,16 +1,19 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
 using POESKillTree.Common.ViewModels;
+using POESKillTree.Computation.Model;
 using POESKillTree.Localization;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Computation.ViewModels
 {
-    public class ResultStatViewModel : Notifier
+    public class ResultStatViewModel : Notifier, IDisposable
     {
-        private NodeValue? _value;
+        private string _value;
+        private IDisposable _subscription;
 
         public ResultStatViewModel(IStat stat, NodeType nodeType, Action<ResultStatViewModel> removeAction)
         {
@@ -18,15 +21,49 @@ namespace POESKillTree.Computation.ViewModels
             RemoveCommand = new RelayCommand(() => removeAction(this));
         }
 
+        public void Connect(ObservableCalculator observableCalculator)
+            => _subscription = observableCalculator
+                .ObserveNode(Stat, NodeType)
+                .ObserveOnDispatcher()
+                .Subscribe(SetValue);
+
         public IStat Stat { get; }
         public string Name => ToString();
 
         public NodeType NodeType { get; }
 
-        public NodeValue? Value
+        public string Value
         {
             get => _value;
-            set => SetProperty(ref _value, value);
+            private set => SetProperty(ref _value, value);
+        }
+
+        public ICommand RemoveCommand { get; }
+
+        public void Dispose()
+            => _subscription?.Dispose();
+
+        private void SetValue(NodeValue? value)
+        {
+            var dataType = Stat.DataType;
+            if (dataType == typeof(int) || dataType == typeof(double))
+            {
+                Value = value?.ToString() ?? L10n.Message("None");
+            }
+            else if (dataType == typeof(bool))
+            {
+                Value = value.IsTrue().ToString();
+            }
+            else if (dataType.IsEnum)
+            {
+                Value = value is null
+                    ? L10n.Message("None")
+                    : dataType.GetEnumValues().GetValue((int) value.Single()).ToString();
+            }
+            else
+            {
+                Value = null;
+            }
         }
 
         public override string ToString()
@@ -42,30 +79,5 @@ namespace POESKillTree.Computation.ViewModels
             }
             return result;
         }
-
-        public string StringValue
-        {
-            get
-            {
-                var dataType = Stat.DataType;
-                if (dataType == typeof(int) || dataType == typeof(double))
-                {
-                    return Value?.ToString() ?? L10n.Message("None");
-                }
-                if (dataType == typeof(bool))
-                {
-                    return Value.IsTrue().ToString();
-                }
-                if (dataType.IsEnum)
-                {
-                    if (Value is null)
-                        return L10n.Message("None");
-                    return dataType.GetEnumValues().GetValue((int) Value.Single()).ToString();
-                }
-                return null;
-            }
-        }
-
-        public ICommand RemoveCommand { get; }
     }
 }

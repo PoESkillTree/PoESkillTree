@@ -7,6 +7,7 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
+using POESKillTree.Computation.Model;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Computation.ViewModels
@@ -18,10 +19,10 @@ namespace POESKillTree.Computation.ViewModels
         public ResultStatsViewModel DefensiveStats { get; }
         public ObservableCollection<ConfigurationStatViewModel> ConfigurationStats { get; }
 
-        private ComputationViewModel(SkillDefinitions skillDefinitions)
+        private ComputationViewModel(SkillDefinitions skillDefinitions, ObservableCalculator observableCalculator)
         {
-            OffensiveStats = new ResultStatsViewModel();
-            DefensiveStats = new ResultStatsViewModel();
+            OffensiveStats = new ResultStatsViewModel(observableCalculator);
+            DefensiveStats = new ResultStatsViewModel(observableCalculator);
             ConfigurationStats = new ObservableCollection<ConfigurationStatViewModel>();
             MainSkillSelection = new MainSkillSelectionViewModel(skillDefinitions);
         }
@@ -34,27 +35,22 @@ namespace POESKillTree.Computation.ViewModels
             MainSkillSelection.MaximumSkillStage = 10;
             MainSkillSelection.SkillStage = uint.MaxValue;
 
-            AddOffensiveStats(f.MetaStatBuilders.SkillDpsWithHits,
-                new NodeValue(1234.56));
-            AddOffensiveStats(f.DamageTypeBuilders.Physical.Damage.WithSkills.With(AttackDamageHand.MainHand),
-                new NodeValue(2, 8));
-            AddOffensiveStats(f.StatBuilders.HitRate);
-            AddOffensiveStats(f.StatBuilders.Flag.CriticalStrikeChanceIsLucky,
-                (NodeValue?) true);
-            AddOffensiveStats(f.StatBuilders.Flag.FarShot);
-            AddOffensiveStats(f.MetaStatBuilders.SkillHitDamageSource,
-                new NodeValue((int) DamageSource.Attack));
-            AddOffensiveStats(f.EffectBuilders.Stun.Threshold.With(AttackDamageHand.MainHand),
-                new NodeValue(0.8), Entity.Enemy);
+            AddStats(OffensiveStats, f.MetaStatBuilders.SkillDpsWithHits);
+            AddStats(OffensiveStats, f.DamageTypeBuilders.Physical.Damage.WithSkills.With(AttackDamageHand.MainHand));
+            AddStats(OffensiveStats, f.StatBuilders.HitRate);
+            AddStats(OffensiveStats, f.StatBuilders.Flag.CriticalStrikeChanceIsLucky);
+            AddStats(OffensiveStats, f.StatBuilders.Flag.FarShot);
+            AddStats(OffensiveStats, f.MetaStatBuilders.SkillHitDamageSource);
+            AddStats(OffensiveStats, f.EffectBuilders.Stun.Threshold.With(AttackDamageHand.MainHand), Entity.Enemy);
             AddAvailableStats(OffensiveStats, f.StatBuilders.BaseCastTime.With(AttackDamageHand.MainHand));
             AddAvailableStats(OffensiveStats, f.MetaStatBuilders.SkillDpsWithDoTs);
 
-            AddDefensiveStats(f.StatBuilders.Pool.From(Pool.Life),
-                new NodeValue(500));
-            AddDefensiveStats(f.StatBuilders.Pool.From(Pool.Life),
-                new NodeValue(100), nodeType: NodeType.Increase);
-            AddDefensiveStats(f.DamageTypeBuilders.Cold.Resistance,
-                new NodeValue(40));
+            AddStats(DefensiveStats, f.StatBuilders.Pool.From(Pool.Life));
+            AddStats(DefensiveStats, f.StatBuilders.Pool.From(Pool.Life), nodeType: NodeType.Increase);
+            AddStats(DefensiveStats, f.DamageTypeBuilders.Cold.Resistance);
+            AddStats(DefensiveStats, f.StatBuilders.Attribute.Strength);
+            AddStats(DefensiveStats, f.StatBuilders.Attribute.Dexterity);
+            AddStats(DefensiveStats, f.StatBuilders.Attribute.Intelligence);
             AddAvailableStats(DefensiveStats, f.DamageTypeBuilders.AnyDamageType().Resistance);
 
             AddConfigurationStats(f.MetaStatBuilders.SelectedQuestPart, Entity.Character,
@@ -77,23 +73,14 @@ namespace POESKillTree.Computation.ViewModels
             }
         }
 
-        private void AddOffensiveStats(
-            IStatBuilder statBuilder, NodeValue? value = null, Entity entity = Entity.Character,
+        private static void AddStats(
+            ResultStatsViewModel viewModel,
+            IStatBuilder statBuilder, Entity entity = Entity.Character,
             NodeType nodeType = NodeType.Total)
         {
             foreach (var stat in statBuilder.BuildToStats(entity))
             {
-                OffensiveStats.AddStat(stat, value, nodeType);
-            }
-        }
-
-        private void AddDefensiveStats(
-            IStatBuilder statBuilder, NodeValue? value = null, Entity entity = Entity.Character,
-            NodeType nodeType = NodeType.Total)
-        {
-            foreach (var stat in statBuilder.BuildToStats(entity))
-            {
-                DefensiveStats.AddStat(stat, value, nodeType);
+                viewModel.AddStat(stat, nodeType);
             }
         }
 
@@ -111,10 +98,10 @@ namespace POESKillTree.Computation.ViewModels
         }
 
         public static async Task<ComputationViewModel> CreateAsync(
-            GameData gameData, IBuilderFactories builderFactories)
+            GameData gameData, IBuilderFactories builderFactories, ObservableCalculator observableCalculator)
         {
             var skillDefinitions = await gameData.Skills;
-            var vm = new ComputationViewModel(skillDefinitions);
+            var vm = new ComputationViewModel(skillDefinitions, observableCalculator);
             vm.Initialize(builderFactories);
             return vm;
         }

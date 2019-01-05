@@ -470,11 +470,13 @@ namespace POESKillTree.Views
             var parser = await computationFactory.CreateParserAsync();
             var schedulers = new ComputationSchedulerProvider();
             var observables = new ComputationObservables(gameData.Data, parser);
+            var observableCalculator = new ObservableCalculator(calculator, schedulers.CalculationThread);
             var initialComputationTask = observables.InitialParse()
                 .SubscribeOn(schedulers.TaskPool)
                 .ObserveOn(schedulers.CalculationThread)
                 .SubscribeAndAwaitCompletionAsync(calculator.Update);
-            ComputationViewModel = await ComputationViewModel.CreateAsync(gameData.Data, builderFactories);
+            ComputationViewModel =
+                await ComputationViewModel.CreateAsync(gameData.Data, builderFactories, observableCalculator);
 
             await itemDBTask;
 
