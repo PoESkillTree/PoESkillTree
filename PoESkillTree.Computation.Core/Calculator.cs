@@ -58,39 +58,67 @@ namespace PoESkillTree.Computation.Core
             var statRegistry = new StatRegistry(statRegistryCollection);
             var valueTransformer = new ValueTransformer();
 
-            var prunableGraph = CreateCalculationGraph(nodeFactory, statRegistry, valueTransformer);
+            var (graph, pruner) = CreateCalculationGraph(nodeFactory, statRegistry, valueTransformer);
 
-            var defaultView = new DefaultViewNodeRepository(prunableGraph);
-            var suspendableView = new SuspendableViewNodeRepository(prunableGraph);
+            var defaultView = new DefaultViewNodeRepository(graph);
+            var suspendableView = new SuspendableViewNodeRepository(graph);
             innerNodeFactory.NodeRepository = defaultView;
             statRegistry.NodeRepository = suspendableView;
 
             var suspender = new SuspendableEventsComposite();
-            suspender.Add(new StatGraphCollectionSuspender(prunableGraph));
+            suspender.Add(new StatGraphCollectionSuspender(graph));
             suspender.Add(statRegistryCollection);
 
-            return new Calculator(suspender, prunableGraph, prunableGraph, suspendableView, statRegistryCollection);
+            return new Calculator(suspender, graph, pruner, suspendableView, statRegistryCollection);
         }
 
-        private static PrunableCalculationGraph CreateCalculationGraph(
+        private static (ICalculationGraph, ICalculationGraphPruner) CreateCalculationGraph(
             TransformableNodeFactory nodeFactory, StatRegistry statRegistry, ValueTransformer valueTransformer)
         {
             var coreGraph =
                 new CoreCalculationGraph(s => CreateStatGraph(nodeFactory, valueTransformer, s), nodeFactory);
-            var eventGraph = new CalculationGraphWithEvents(coreGraph, StatAdded, StatRemoved);
-            var pruningRuleSet = new DefaultPruningRuleSet(coreGraph.StatGraphs, statRegistry);
-            return new PrunableCalculationGraph(eventGraph, pruningRuleSet);
+            var eventGraph = new CalculationGraphWithEvents(coreGraph);
+
+            var defaultPruningRuleSet = new DefaultPruningRuleSet(statRegistry);
+            var defaultPruner = new CalculationGraphPruner(eventGraph, defaultPruningRuleSet);
+            var userSpecifiedValuePruningRuleSet =
+                new UserSpecifiedValuePruningRuleSet(defaultPruningRuleSet, statRegistry);
+            var userSpecifiedValuePruner =
+                new CalculationGraphPruner(eventGraph, userSpecifiedValuePruningRuleSet);
+            var pruner = new CompositeCalculationGraphPruner(defaultPruner, userSpecifiedValuePruner);
+
+            eventGraph.StatAdded += StatAdded;
+            eventGraph.StatRemoved += StatRemoved;
+            eventGraph.ModifierAdded += ModifierAdded;
+            eventGraph.ModifierRemoved += ModifierRemoved;
+            return (eventGraph, pruner);
 
             void StatAdded(IStat stat)
             {
                 statRegistry.Add(stat);
                 valueTransformer.AddBehaviors(stat.Behaviors);
+                defaultPruner.StatAdded(stat);
+                userSpecifiedValuePruner.StatAdded(stat);
             }
 
             void StatRemoved(IStat stat)
             {
                 statRegistry.Remove(stat);
                 valueTransformer.RemoveBehaviors(stat.Behaviors);
+                defaultPruner.StatRemoved(stat);
+                userSpecifiedValuePruner.StatRemoved(stat);
+            }
+
+            void ModifierAdded(Modifier modifier)
+            {
+                defaultPruner.ModifierAdded(modifier);
+                userSpecifiedValuePruner.ModifierAdded(modifier);
+            }
+
+            void ModifierRemoved(Modifier modifier)
+            {
+                defaultPruner.ModifierRemoved(modifier);
+                userSpecifiedValuePruner.ModifierRemoved(modifier);
             }
         }
 

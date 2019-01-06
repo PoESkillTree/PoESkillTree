@@ -3,16 +3,17 @@ using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Graphs
 {
+    /// <summary>
+    /// Defines the rules <see cref="ICalculationGraphPruner"/> uses to select what can be removed.
+    /// </summary>
     public interface IGraphPruningRuleSet
     {
-        IEnumerable<IStat> SelectStatsConsideredForRemoval(Modifier modifier);
-
-        IEnumerable<IStat> SelectStatsNoLongerConsideredForRemoval(Modifier modifier);
+        bool CanStatBeConsideredForRemoval(IStat stat, IReadOnlyStatGraph statGraph);
 
         IEnumerable<NodeSelector> SelectRemovableNodesByNodeType(IReadOnlyStatGraph statGraph);
 
         IEnumerable<FormNodeSelector> SelectRemovableNodesByForm(IReadOnlyStatGraph statGraph);
 
-        IEnumerable<IStat> SelectRemovableStats(IEnumerable<IStat> stats);
+        bool CanStatGraphBeRemoved(IReadOnlyStatGraph statGraph);
     }
 }

@@ -14,7 +14,6 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         void AddModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier);
         void RemoveModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier);
-        int ModifierCount { get; }
     }
 
 
@@ -33,5 +32,7 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         IReadOnlyDictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
             FormNodeCollections { get; }
+
+        int ModifierCount { get; }
     }
 }

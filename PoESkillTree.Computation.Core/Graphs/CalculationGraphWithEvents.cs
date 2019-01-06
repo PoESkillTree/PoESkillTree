@@ -13,16 +13,9 @@ namespace PoESkillTree.Computation.Core.Graphs
     public class CalculationGraphWithEvents : ICalculationGraph
     {
         private readonly ICalculationGraph _decoratedGraph;
-        private readonly Action<IStat> _statAddedAction;
-        private readonly Action<IStat> _statRemovedAction;
 
-        public CalculationGraphWithEvents(ICalculationGraph decoratedGraph,
-            Action<IStat> statAddedAction, Action<IStat> statRemovedAction)
-        {
-            _decoratedGraph = decoratedGraph;
-            _statAddedAction = statAddedAction;
-            _statRemovedAction = statRemovedAction;
-        }
+        public CalculationGraphWithEvents(ICalculationGraph decoratedGraph)
+            => _decoratedGraph = decoratedGraph;
 
         public IEnumerator<IReadOnlyStatGraph> GetEnumerator() => _decoratedGraph.GetEnumerator();
 
@@ -36,7 +29,7 @@ namespace PoESkillTree.Computation.Core.Graphs
             var statGraph = _decoratedGraph.GetOrAdd(stat);
             if (statIsNew)
             {
-                _statAddedAction(stat);
+                StatAdded?.Invoke(stat);
             }
             return statGraph;
         }
@@ -47,16 +40,26 @@ namespace PoESkillTree.Computation.Core.Graphs
             _decoratedGraph.AddModifier(modifier);
             foreach (var stat in newStats)
             {
-                _statAddedAction(stat);
+                StatAdded?.Invoke(stat);
             }
+            ModifierAdded?.Invoke(modifier);
         }
 
-        public void RemoveModifier(Modifier modifier) => _decoratedGraph.RemoveModifier(modifier);
+        public void RemoveModifier(Modifier modifier)
+        {
+            _decoratedGraph.RemoveModifier(modifier);
+            ModifierRemoved?.Invoke(modifier);
+        }
 
         public void Remove(IStat stat)
         {
             _decoratedGraph.Remove(stat);
-            _statRemovedAction(stat);
+            StatRemoved?.Invoke(stat);
         }
+
+        public event Action<IStat> StatAdded;
+        public event Action<IStat> StatRemoved;
+        public event Action<Modifier> ModifierAdded;
+        public event Action<Modifier> ModifierRemoved;
     }
 }

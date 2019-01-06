@@ -212,7 +212,12 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             ICalculationGraph decoratedGraph,
             Action<IStat> statAddedAction = null, Action<IStat> statRemovedAction = null)
         {
-            return new CalculationGraphWithEvents(decoratedGraph, statAddedAction, statRemovedAction ?? (_ => { }));
+            var sut = new CalculationGraphWithEvents(decoratedGraph);
+            if (statAddedAction != null)
+                sut.StatAdded += statAddedAction;
+            if (statRemovedAction != null)
+                sut.StatRemoved += statRemovedAction;
+            return sut;
         }
 
         private static ICalculationGraph MockGraph(params IStat[] knownStats)

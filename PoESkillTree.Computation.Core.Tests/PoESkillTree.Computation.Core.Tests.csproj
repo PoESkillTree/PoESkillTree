@@ -79,6 +79,7 @@
     <Compile Include="Graphs\StatGraphWithEventsTest.cs" />
     <Compile Include="Graphs\StatRegistryTest.cs" />
     <Compile Include="Graphs\TransformableNodeFactoryTest.cs" />
+    <Compile Include="Graphs\UserSpecifiedValuePruningRuleSetTest.cs" />
     <Compile Include="Graphs\ValueTransformerTest.cs" />
     <Compile Include="NodeCollections\PathDefinitionCollectionTest.cs" />
     <Compile Include="Nodes\BaseValueTest.cs" />
@@ -114,6 +115,10 @@
     <Compile Include="Nodes\ValueNodeTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj">
+      <Project>{C1C73CC9-D825-41F7-86F0-F37EE8178D6D}</Project>
+      <Name>PoESkillTree.GameModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">
       <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
       <Name>PoESkillTree.Utils</Name>
