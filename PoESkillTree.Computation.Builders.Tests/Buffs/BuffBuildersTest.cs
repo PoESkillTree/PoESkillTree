@@ -50,7 +50,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
             var temporaryStage = BuffRotationStage.Stage1;
             var expectedCondition = temporaryStage == activeStage;
             var modifierSource = new ModifierSource.Local.Skill("skill node");
-            var stageStat = new Stat($"Current {modifierSource} stage");
+            var stageStat = new Stat($"Current {modifierSource.SourceName} stage");
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(stageStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue((int) activeStage));
             var sut = CreateSut();

@@ -48,6 +48,7 @@ namespace PoESkillTree.Computation.Console
             System.Console.WriteLine("- 'listen <stat>', 'query <stat>', 'query mods <stats>' allow querying stat " +
                                      "values and listening to stat value changes");
             System.Console.WriteLine("- 'add <value> <stat>' to BaseAdd to stats");
+            System.Console.WriteLine("- 'remove <modifier>' to remove modifiers");
             System.Console.Write("> ");
             string statLine;
             while ((statLine = System.Console.ReadLine()) != null)
@@ -96,6 +97,10 @@ namespace PoESkillTree.Computation.Console
             else if (statLine.StartsWith("add "))
             {
                 await SetStatAsync(statLine.Substring("add ".Length));
+            }
+            else if (statLine.StartsWith("remove "))
+            {
+                await RemoveModifierAsync(statLine.Substring("remove ".Length));
             }
             else
             {
@@ -187,6 +192,15 @@ namespace PoESkillTree.Computation.Console
             var mod = new Modifier(stats, Form.BaseAdd, new Constant(value), new ModifierSource.Global());
             System.Console.WriteLine(mod);
             AddMods(new[] { mod });
+        }
+
+        private async Task RemoveModifierAsync(string modifierLine)
+        {
+            var parser = await _compositionRoot.Parser;
+            if (TryParse(parser, modifierLine, out var mods, verbose: true))
+            {
+                _calculator.NewBatchUpdate().RemoveModifiers(mods).DoUpdate();
+            }
         }
 
         private async Task<IEnumerable<IStat>> ParseStatsAsync(string stat)

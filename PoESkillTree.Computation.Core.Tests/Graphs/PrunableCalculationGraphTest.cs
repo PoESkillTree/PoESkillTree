@@ -318,6 +318,37 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             graphMock.Verify(g => g.RemoveModifier(modifier));
         }
 
+        [Test]
+        public void RemoveUnusedNodesCanRemoveMultipleNodeTypesAtOnce()
+        {
+            var stat = new StatStub();
+            var graphMock = MockGraph();
+            var sut = CreateSut(graphMock.Object);
+            sut.GetOrAdd(stat);
+            var statGraphMock = new Mock<IStatGraph>();
+            var statGraphs = new Dictionary<IStat, IStatGraph> { { stat, statGraphMock.Object } };
+            graphMock.SetupGet(g => g.StatGraphs).Returns(statGraphs);
+            var nodeSelectors = new[] { Selector(NodeType.Total), Selector(NodeType.Subtotal) };
+            var subTotalProviderMock = new Mock<ISuspendableEventViewProvider<ICalculationNode>>();
+            var subTotalSubscriberCount = 1;
+            subTotalProviderMock.SetupGet(p => p.SubscriberCount).Returns(() => subTotalSubscriberCount);
+            var nodes = new Dictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>>
+            {
+                { nodeSelectors[0], MockProvider<ICalculationNode>() },
+                { nodeSelectors[1], subTotalProviderMock.Object },
+            };
+            statGraphMock.SetupGet(g => g.Nodes).Returns(nodes);
+            var formNodeCollection =
+                new Dictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>();
+            statGraphMock.SetupGet(g => g.FormNodeCollections).Returns(formNodeCollection);
+            statGraphMock.Setup(g => g.RemoveNode(nodeSelectors[0])).Callback(() => subTotalSubscriberCount = 0);
+
+            sut.RemoveUnusedNodes();
+
+            statGraphMock.Verify(g => g.RemoveNode(nodeSelectors[0]));
+            statGraphMock.Verify(g => g.RemoveNode(nodeSelectors[1]));
+        }
+
         private static PrunableCalculationGraph CreateSut(ICalculationGraph decoratedGraph) =>
             new PrunableCalculationGraph(decoratedGraph, MockDeterminesNodeRemoval());
 

@@ -71,27 +71,23 @@ namespace PoESkillTree.Computation.Core.Graphs
         {
             var statGraph = StatGraphs[stat];
             SelectRemovableNodesByNodeType(statGraph)
-                .ToList().ForEach(statGraph.RemoveNode);
+                .ForEach(statGraph.RemoveNode);
             SelectRemovableNodesByForm(statGraph)
-                .ToList().ForEach(statGraph.RemoveFormNodeCollection);
+                .ForEach(statGraph.RemoveFormNodeCollection);
         }
 
-        private IEnumerable<NodeSelector> SelectRemovableNodesByNodeType(IReadOnlyStatGraph statGraph) =>
-            from pair in statGraph.Nodes
-            orderby pair.Key.NodeType
-            where _nodeRemovalDeterminer.CanBeRemoved(pair.Value)
-            select pair.Key;
+        private IEnumerable<NodeSelector> SelectRemovableNodesByNodeType(IReadOnlyStatGraph statGraph)
+            => statGraph.Nodes.OrderBy(p => p.Key.NodeType).ToList()
+                .Where(p => _nodeRemovalDeterminer.CanBeRemoved(p.Value))
+                .Select(p => p.Key);
 
-        private IEnumerable<FormNodeSelector> SelectRemovableNodesByForm(IReadOnlyStatGraph statGraph) =>
-            from pair in statGraph.FormNodeCollections
-            where _nodeRemovalDeterminer.CanBeRemoved(pair.Value)
-            select pair.Key;
+        private IEnumerable<FormNodeSelector> SelectRemovableNodesByForm(IReadOnlyStatGraph statGraph)
+            => statGraph.FormNodeCollections.ToList()
+                .Where(p => _nodeRemovalDeterminer.CanBeRemoved(p.Value))
+                .Select(p => p.Key);
 
-        private IEnumerable<IStat> SelectRemovableStats() =>
-            from stat in _statsWithoutModifiers
-            let statGraph = StatGraphs[stat]
-            where CanStatGraphBeRemoved(statGraph)
-            select stat;
+        private IEnumerable<IStat> SelectRemovableStats()
+            => _statsWithoutModifiers.Where(s => CanStatGraphBeRemoved(StatGraphs[s]));
 
         private bool CanStatGraphBeRemoved(IReadOnlyStatGraph statGraph) =>
             statGraph.Nodes.IsEmpty() && statGraph.FormNodeCollections.IsEmpty()
