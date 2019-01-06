@@ -11,6 +11,7 @@ using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
 using static PoESkillTree.Computation.Common.ExplicitRegistrationTypes;
@@ -86,8 +87,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder DamageTakenGainedAsMana =>
             FromIdentity("% of damage taken gained as mana over 4 seconds", typeof(int));
 
-        public IStatBuilder Unique(string name, Type type)
-            => FromIdentity(name, type, UserSpecifiedValue());
+        public ValueBuilder UniqueInt(string name, int defaultValue)
+            => FromIdentity(name, typeof(int), UserSpecifiedValue(defaultValue)).Value;
 
         public IAttributeStatBuilders Attribute => new AttributeStatBuilders(StatFactory);
         public IRequirementStatBuilders Requirements => new RequirementStatBuilders(StatFactory);
@@ -200,8 +201,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder ChainCount => FromIdentity("Projectile chain count", typeof(int));
         public IStatBuilder Fork => FromIdentity("Projectile.Fork", typeof(bool));
 
-        public IStatBuilder TravelDistance =>
-            FromIdentity("Projectile travel distance", typeof(int), UserSpecifiedValue(35));
+        public ValueBuilder TravelDistance =>
+            FromIdentity("Projectile travel distance", typeof(int), UserSpecifiedValue(35)).Value;
     }
 
     internal class FlagStatBuilders : StatBuildersBase, IFlagStatBuilders
@@ -220,17 +221,17 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder CriticalStrikeChanceIsLucky => FromIdentity(typeof(bool));
         public IStatBuilder FarShot => FromIdentity(typeof(bool));
 
-        public IStatBuilder AlwaysMoving
-            => FromIdentity("Are you always moving?", typeof(bool), UserSpecifiedValue(false));
+        public IConditionBuilder AlwaysMoving
+            => FromIdentity("Are you always moving?", typeof(bool), UserSpecifiedValue(false)).IsSet;
 
-        public IStatBuilder AlwaysStationary
-            => FromIdentity("Are you always stationary?", typeof(bool), UserSpecifiedValue(false));
+        public IConditionBuilder AlwaysStationary
+            => FromIdentity("Are you always stationary?", typeof(bool), UserSpecifiedValue(false)).IsSet;
 
-        public IStatBuilder BrandAttachedToEnemy
-            => FromIdentity("Is your Brand attached to an enemy?", typeof(bool), UserSpecifiedValue(false));
+        public IConditionBuilder IsBrandAttachedToEnemy
+            => FromIdentity("Is your Brand attached to an enemy?", typeof(bool), UserSpecifiedValue(false)).IsSet;
 
-        public IStatBuilder BannerPlanted
-            => FromIdentity("Is your Banner planted?", typeof(bool), UserSpecifiedValue(false));
+        public IConditionBuilder IsBannerPlanted
+            => FromIdentity("Is your Banner planted?", typeof(bool), UserSpecifiedValue(false)).IsSet;
 
         public IStatBuilder IncreasesToSourceApplyToTarget(IStatBuilder source, IStatBuilder target)
             => new StatBuilder(StatFactory,

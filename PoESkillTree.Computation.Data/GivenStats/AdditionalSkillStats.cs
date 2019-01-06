@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 IsMainSkill("Barrage", 1)
             },
 
-            { TotalOverride, Skills.FromId("BloodstainedBanner").Reservation, 0, Flag.BannerPlanted.IsSet },
+            { TotalOverride, Skills.FromId("BloodstainedBanner").Reservation, 0, Flag.IsBannerPlanted },
 
             { TotalOverride, Fire.Invert.Damage, 0, IsMainSkill("ElementalHit", 0) },
             { TotalOverride, Cold.Invert.Damage, 0, IsMainSkill("ElementalHit", 1) },
@@ -54,14 +54,14 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 // Freezing Pulse's damage dissipates while traveling
                 // 60 * Projectile.Speed is the range, Projectile.TravelDistance / range is the percentage traveled
                 PercentLess, Damage,
-                ValueFactory.LinearScale(Projectile.TravelDistance.Value / (60 * Projectile.Speed.Value),
+                ValueFactory.LinearScale(Projectile.TravelDistance / (60 * Projectile.Speed.Value),
                     (0, 0), (1, 50)),
                 IsMainSkill("FreezingPulse")
             },
             {
                 // Freezing Pulse's additional chance to freeze dissipates while traveling
                 BaseAdd, Ailment.Freeze.Chance,
-                ValueFactory.LinearScale(Projectile.TravelDistance.Value / (60 * Projectile.Speed.Value),
+                ValueFactory.LinearScale(Projectile.TravelDistance / (60 * Projectile.Speed.Value),
                     (0, 25), (0.25, 0)),
                 IsMainSkill("FreezingPulse")
             },
@@ -102,7 +102,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 IsMainSkill("LancingSteel", 2)
             },
 
-            { TotalOverride, Skills.FromId("PuresteelBanner").Reservation, 0, Flag.BannerPlanted.IsSet },
+            { TotalOverride, Skills.FromId("PuresteelBanner").Reservation, 0, Flag.IsBannerPlanted },
 
             {
                 // Reduce cast rate proportional to the time spent channeling

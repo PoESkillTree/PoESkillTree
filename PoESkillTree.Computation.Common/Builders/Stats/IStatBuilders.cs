@@ -1,6 +1,6 @@
-using System;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Skills;
+using PoESkillTree.Computation.Common.Builders.Values;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
@@ -137,9 +137,9 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder PassiveNodeSkilled(ushort nodeId);
 
         /// <summary>
-        /// Returns stat with a value that can only be specified by the user.
+        /// Returns the value of a stat that can only be specified by the user.
         /// </summary>
-        IStatBuilder Unique(string name, Type type);
+        ValueBuilder UniqueInt(string name, int defaultValue);
 
 
         // Stats from sub factories

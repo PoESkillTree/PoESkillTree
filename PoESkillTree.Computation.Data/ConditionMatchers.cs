@@ -247,10 +247,10 @@ namespace PoESkillTree.Computation.Data
                 // - other
                 {
                     "brand skills deal to enemies they're attached to",
-                    And(With(Keyword.Brand), Flag.BrandAttachedToEnemy.IsSet)
+                    And(With(Keyword.Brand), Flag.IsBrandAttachedToEnemy)
                 },
-                { "to branded enemy", Flag.BrandAttachedToEnemy.IsSet },
-                { "when placed,", Flag.BannerPlanted.IsSet },
+                { "to branded enemy", Flag.IsBrandAttachedToEnemy },
+                { "when placed,", Flag.IsBannerPlanted },
                 // traps and mines
                 { "with traps", With(Keyword.Trap) },
                 { "skills used by traps have", With(Keyword.Trap) },
@@ -280,8 +280,8 @@ namespace PoESkillTree.Computation.Data
                 { "during any flask effect", Flask.IsAnyActive },
                 // other
                 { "against targets they pierce", Projectile.PierceCount.Value >= 1 },
-                { "while stationary", Flag.AlwaysStationary.IsSet },
-                { "while moving", Flag.AlwaysMoving.IsSet },
+                { "while stationary", Flag.AlwaysStationary },
+                { "while moving", Flag.AlwaysMoving },
                 // unique
                 {
                     "against burning enemies", Or(Ailment.Ignite.IsOn(Enemy), Condition.Unique("Is the Enemy Burning?"))

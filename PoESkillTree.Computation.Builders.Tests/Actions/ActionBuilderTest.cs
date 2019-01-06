@@ -23,7 +23,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
             var lastOccurence = 3;
             var expected = lastOccurence <= seconds;
             var secondsValue = new ValueBuilderImpl(seconds);
-            var lastOccurenceStat = new Stat("test.LastOccurence");
+            var lastOccurenceStat = new Stat("test.LastOccurrence");
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(lastOccurenceStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(lastOccurence));
             var sut = CreateSut();
@@ -40,7 +40,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
         public void InPastXSecondsBuildsToCorrectResultIfLastOccurenceIsNull()
         {
             var secondsValue = new ValueBuilderImpl(5);
-            var lastOccurenceStat = new Stat("test.LastOccurence");
+            var lastOccurenceStat = new Stat("test.LastOccurrence");
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(lastOccurenceStat, NodeType.Total, PathDefinition.MainPath) == null);
             var sut = CreateSut();
@@ -56,7 +56,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
         public void CountRecentlyBuildsToCorrectResult(int count)
         {
             var expected = (NodeValue?) count;
-            var countStat = new Stat("test.RecentOccurences");
+            var countStat = new Stat("test.RecentOccurrences");
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(countStat, NodeType.Total, PathDefinition.MainPath) == expected);
             var sut = CreateSut();
@@ -68,10 +68,10 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
         }
 
         [Test]
-        public void RecentlyBuildsToCorrectResultIfHasRecentOccurences()
+        public void RecentlyBuildsToCorrectResultIfHasRecentOccurrences()
         {
-            var lastOccurenceStat = new Stat("test.LastOccurence");
-            var countStat = new Stat("test.RecentOccurences");
+            var lastOccurenceStat = new Stat("test.LastOccurrence");
+            var countStat = new Stat("test.RecentOccurrences");
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(lastOccurenceStat, NodeType.Total, PathDefinition.MainPath) == null &&
                 c.GetValue(countStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(2));
@@ -87,7 +87,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
         public void ByRecentlyBuildsToCorrectResult()
         {
             var entityBuilder = new EntityBuilder(Entity.Enemy);
-            var lastOccurenceStat = new Stat("test.LastOccurence", Entity.Enemy);
+            var lastOccurenceStat = new Stat("test.LastOccurrence", Entity.Enemy);
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(lastOccurenceStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(1));
             var sut = CreateSut();
@@ -103,7 +103,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
         {
             var identityBuilder = CoreBuilder.Create("test");
             var unresolvedIdentityBuilder = Mock.Of<ICoreBuilder<string>>(b => b.Resolve(null) == identityBuilder);
-            var lastOccurenceStat = new Stat("test.LastOccurence");
+            var lastOccurenceStat = new Stat("test.LastOccurrence");
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(lastOccurenceStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(1));
             var sut = CreateSut(unresolvedIdentityBuilder);
@@ -119,7 +119,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Actions
         {
             var identityBuilder = CoreBuilder.Create("test");
             var unresolvedIdentityBuilder = Mock.Of<ICoreBuilder<string>>(b => b.Resolve(null) == identityBuilder);
-            var lastOccurenceStat = new Stat("test.LastOccurence");
+            var lastOccurenceStat = new Stat("test.LastOccurrence");
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(lastOccurenceStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue(1));
             var sut = CreateSut(unresolvedIdentityBuilder);

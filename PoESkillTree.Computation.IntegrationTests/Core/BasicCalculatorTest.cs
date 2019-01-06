@@ -136,8 +136,8 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
             var sut = Calculator.Create();
             var mod = new Modifier(new[] { Stat }, Form.BaseAdd, new Constant(1), new ModifierSource.Global());
             var node = sut.NodeRepository.GetNode(Stat);
-            var invovcations = 0;
-            node.ValueChanged += (sender, args) => invovcations++;
+            var invocations = 0;
+            node.ValueChanged += (sender, args) => invocations++;
 
             Assert.IsNull(node.Value);
             sut.NewBatchUpdate().AddModifier(mod).DoUpdate();
@@ -147,14 +147,14 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
             sut.NewBatchUpdate().AddModifier(mod).DoUpdate();
             Assert.AreEqual(new NodeValue(3), node.Value);
 
-            Assert.AreEqual(3, invovcations);
+            Assert.AreEqual(3, invocations);
         }
 
         [Test]
         public void ExplicitlyRegistered()
         {
             var sut = Calculator.Create();
-            var stat = new Stat("stat", explicitRegistrationType: ExplicitRegistrationTypes.UserSpecifiedValue());
+            var stat = new Stat("stat", explicitRegistrationType: ExplicitRegistrationTypes.UserSpecifiedValue(0));
             IStat actual = null;
             sut.ExplicitlyRegisteredStats.CollectionChanged += (sender, args) =>
             {

@@ -83,19 +83,7 @@ namespace POESKillTree.Computation.ViewModels
             if (!(Stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue userSpecifiedValue))
                 throw new ArgumentException("Configuration stats must be UserDefinedValue");
 
-            var initializationSubscription = Disposable.Empty;
-            if (userSpecifiedValue.HasDefaultValue)
-            {
-                Value = userSpecifiedValue.DefaultValue;
-            }
-            else
-            {
-                initializationSubscription = observableCalculator.ObserveNode(node)
-                    .Take(1)
-                    .ObserveOnDispatcher()
-                    .Subscribe(v => Value = v,
-                        ex => Log.Error($"ObserveNode({Stat}) failed", ex));
-            }
+            Value = userSpecifiedValue.DefaultValue;
 
             var minSubscription = observableCalculator.ObserveNode(Stat.Minimum)
                 .ObserveOnDispatcher()
@@ -111,8 +99,7 @@ namespace POESKillTree.Computation.ViewModels
                 ex => Log.Error($"SubscribeCalculatorTo({Stat}) failed", ex));
             _updateSubject.OnNext(new CalculatorUpdate(new[] { CreateModifier(Value) }, new Modifier[0]));
 
-            _subscriptions = new CompositeDisposable(initializationSubscription, minSubscription, maxSubscription,
-                calculatorSubscription);
+            _subscriptions = new CompositeDisposable(minSubscription, maxSubscription, calculatorSubscription);
         }
 
         private CalculatorUpdate CreateCalculatorUpdate(NodeValue? oldValue, NodeValue? newValue)
@@ -124,6 +111,11 @@ namespace POESKillTree.Computation.ViewModels
 
         public void Dispose()
         {
+            if (!_updateSubject.IsDisposed)
+            {
+                _updateSubject.OnNext(new CalculatorUpdate(new Modifier[0], new[] { CreateModifier(Value) }));
+                _updateSubject.OnCompleted();
+            }
             _subscriptions?.Dispose();
             _updateSubject.Dispose();
         }

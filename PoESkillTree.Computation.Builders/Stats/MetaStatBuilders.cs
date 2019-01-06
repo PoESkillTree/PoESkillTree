@@ -123,10 +123,12 @@ namespace PoESkillTree.Computation.Builders.Stats
             => FromIdentity($"{ailment}.EffectiveInstances", typeof(double));
 
         public IStatBuilder IncreasedDamageTakenFromShocks
-            => FromIdentity("Shock.IncreasedDamageTaken", typeof(int), ExplicitRegistrationTypes.UserSpecifiedValue());
+            => FromIdentity("Shock.IncreasedDamageTaken", typeof(int),
+                ExplicitRegistrationTypes.UserSpecifiedValue(20));
 
         public IStatBuilder ReducedActionSpeedFromChill
-            => FromIdentity("Chill.ReducedAnimationSpeed", typeof(int), ExplicitRegistrationTypes.UserSpecifiedValue());
+            => FromIdentity("Chill.ReducedAnimationSpeed", typeof(int),
+                ExplicitRegistrationTypes.UserSpecifiedValue(10));
 
         public IDamageRelatedStatBuilder EffectiveCritChance
             => DamageRelatedFromIdentity("CriticalStrike.EffectiveChance", typeof(double)).WithHits;

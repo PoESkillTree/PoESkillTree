@@ -360,14 +360,12 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 {
                     PercentIncrease, Ailment.Shock.AddStat(Damage.Taken), MetaStats.IncreasedDamageTakenFromShocks.Value
                 },
-                { BaseSet, MetaStats.IncreasedDamageTakenFromShocks, 20 },
                 { TotalOverride, MetaStats.IncreasedDamageTakenFromShocks.Maximum, 50 },
                 { TotalOverride, MetaStats.IncreasedDamageTakenFromShocks.Minimum, 1 },
                 {
                     PercentReduce, Ailment.Chill.AddStat(Stat.ActionSpeed),
                     MetaStats.ReducedActionSpeedFromChill.Value
                 },
-                { BaseSet, MetaStats.ReducedActionSpeedFromChill, 10 },
                 { TotalOverride, MetaStats.ReducedActionSpeedFromChill.Maximum, 30 },
                 { TotalOverride, MetaStats.ReducedActionSpeedFromChill.Minimum, 1 },
                 // - AilmentEffectiveInstances
