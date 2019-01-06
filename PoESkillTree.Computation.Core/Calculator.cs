@@ -78,7 +78,8 @@ namespace PoESkillTree.Computation.Core
             var coreGraph =
                 new CoreCalculationGraph(s => CreateStatGraph(nodeFactory, valueTransformer, s), nodeFactory);
             var eventGraph = new CalculationGraphWithEvents(coreGraph, StatAdded, StatRemoved);
-            return new PrunableCalculationGraph(eventGraph, statRegistry);
+            var pruningRuleSet = new DefaultPruningRuleSet(coreGraph.StatGraphs, statRegistry);
+            return new PrunableCalculationGraph(eventGraph, pruningRuleSet);
 
             void StatAdded(IStat stat)
             {
