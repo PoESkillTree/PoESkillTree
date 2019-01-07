@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
 
             var result = sut.Parse(definition.Id);
 
-            Assert.AreEqual(new[] { expected }, result.Modifiers);
+            Assert.That(result.Modifiers, Has.Member(expected));
         }
 
         [Test]
@@ -49,8 +49,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
             var sut = CreateSut(definition);
 
             var result = sut.Parse(definition.Id);
-            
-            Assert.AreEqual(new[] { expected }, result.Modifiers);
+
+            Assert.That(result.Modifiers, Has.Member(expected));
         }
 
         [Test]
@@ -58,6 +58,18 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
         {
             var definition = CreateNode(false, 3);
             var expected = CreateConditionalModifier(definition, "PassivePoints.Maximum", Form.BaseAdd, 3);
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(definition.Id);
+
+            Assert.That(result.Modifiers, Has.Member(expected));
+        }
+
+        [Test]
+        public void SetsNodeSkilledToFalse()
+        {
+            var definition = CreateNode();
+            var expected = CreateModifier($"{definition.Id}.Skilled", Form.BaseSet, (NodeValue?) false);
             var sut = CreateSut(definition);
 
             var result = sut.Parse(definition.Id);

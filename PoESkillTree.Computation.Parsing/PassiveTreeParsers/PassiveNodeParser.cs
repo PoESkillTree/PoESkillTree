@@ -28,7 +28,8 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
             var nodeDefinition = _passiveTreeDefinition.GetNodeById(nodeId);
             var localSource = new ModifierSource.Local.Tree(nodeDefinition.Name);
             var globalSource = new ModifierSource.Global(localSource);
-            var isSkilled = _builderFactories.StatBuilders.PassiveNodeSkilled(nodeId).IsSet;
+            var isSkilledStat = _builderFactories.StatBuilders.PassiveNodeSkilled(nodeId);
+            var isSkilled = isSkilledStat.IsSet;
 
             var results = nodeDefinition.Modifiers
                 .Select(s => Parse(s, globalSource))
@@ -36,6 +37,7 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
                 .ToList();
             
             var modifiers = new ModifierCollection(_builderFactories, localSource);
+            modifiers.AddGlobal(isSkilledStat, Form.BaseSet, false);
             var passivePointStat = nodeDefinition.IsAscendancyNode
                 ? _builderFactories.StatBuilders.AscendancyPassivePoints
                 : _builderFactories.StatBuilders.PassivePoints;
