@@ -51,8 +51,10 @@ namespace POESKillTree.Computation.ViewModels
             AddStats(DefensiveStats, f.StatBuilders.Attribute.Strength);
             AddStats(DefensiveStats, f.StatBuilders.Attribute.Dexterity);
             AddStats(DefensiveStats, f.StatBuilders.Attribute.Intelligence);
-            AddStats(DefensiveStats, f.StatBuilders.PassivePoints);
-            AddStats(DefensiveStats, f.StatBuilders.AscendancyPassivePoints);
+            AddStats(DefensiveStats, f.StatBuilders.PassivePoints, nodeType: NodeType.UncappedSubtotal);
+            AddStats(DefensiveStats, f.StatBuilders.PassivePoints.Maximum);
+            AddStats(DefensiveStats, f.StatBuilders.AscendancyPassivePoints, nodeType: NodeType.UncappedSubtotal);
+            AddStats(DefensiveStats, f.StatBuilders.AscendancyPassivePoints.Maximum);
             AddAvailableStats(DefensiveStats, f.DamageTypeBuilders.AnyDamageType().Resistance);
 
             ConfigurationStats.Observe();

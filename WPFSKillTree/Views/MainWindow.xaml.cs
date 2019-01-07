@@ -493,6 +493,10 @@ namespace POESKillTree.Views
             observableCalculator.SubscribeCalculatorTo(
                 observables.ObserveSkilledPassiveNodes(Tree.SkilledNodes),
                 ex => Log.Error("Exception while observing skilled node updates", ex));
+            Observable.Interval(TimeSpan.FromMilliseconds(200))
+                .ObserveOn(schedulers.CalculationThread)
+                .Subscribe(_ => calculator.RemoveUnusedNodes(),
+                    ex => Log.Error("Exception while removing unused calculation nodes", ex));
 
             await Task.WhenAll(initialComputationTask, skilledNodesComputationTask);
             await controller.CloseAsync();

@@ -46,6 +46,12 @@ namespace PoESkillTree.Computation.Core
         void Update(CalculatorUpdate update);
 
         /// <summary>
+        /// Removes unused nodes. Is done with every <see cref="Update"/> call but might be necessary after calculating
+        /// node values. Nodes only become removable after the nodes using them were recalculated.
+        /// </summary>
+        void RemoveUnusedNodes();
+
+        /// <summary>
         /// The <see cref="INodeRepository"/> that can be used to retrieve the values of nodes.
         /// </summary>
         INodeRepository NodeRepository { get; }

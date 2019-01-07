@@ -32,7 +32,7 @@ namespace POESKillTree.Computation.Model
                 .SelectMany(t => t.Nodes)
                 .Select(n => _parser.ParsePassiveNode(n.Id).Modifiers);
             return givenResultObservable.Merge(passiveNodesObservable)
-                .Buffer(TimeSpan.FromMilliseconds(100))
+                .Buffer(TimeSpan.FromMilliseconds(200))
                 .Select(ms => ms.Flatten().ToList())
                 .Where(ms => ms.Any())
                 .Select(ms => new CalculatorUpdate(ms, new Modifier[0]));

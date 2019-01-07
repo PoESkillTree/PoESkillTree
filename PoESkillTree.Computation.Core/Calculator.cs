@@ -47,6 +47,8 @@ namespace PoESkillTree.Computation.Core
             _suspender.ResumeEvents();
         }
 
+        public void RemoveUnusedNodes() => _graphPruner.RemoveUnusedNodes();
+
         /// <summary>
         /// Creates an <see cref="ICalculator"/>.
         /// </summary>
