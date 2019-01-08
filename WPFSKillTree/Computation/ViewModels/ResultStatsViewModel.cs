@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using EnumsNET;
 using PoESkillTree.Computation.Common;
@@ -32,14 +32,38 @@ namespace POESKillTree.Computation.ViewModels
 
         public void AddAvailableStat(IStat stat)
         {
-            if (Stats.Any(s => s.Stat.Equals(stat)))
+            if (TryGetIndex(stat, out var index))
                 return;
 
-            if (NewStat.Stat is null)
+            AvailableStats.Insert(index, stat);
+            if (index == 0)
             {
                 NewStat.Stat = stat;
             }
-            AvailableStats.Add(stat);
+        }
+
+        /// <summary>
+        /// Gets the index of the first <see cref="AvailableStats"/> that is ordered behind or at the same place as
+        /// <see cref="stat"/>. The second means there is an entry that is equal to <see cref="stat"/>, in which case
+        /// true is returned.
+        /// </summary>
+        private bool TryGetIndex(IStat stat, out int i)
+        {
+            for (i = 0; i < AvailableStats.Count; i++)
+            {
+                var availableStat = AvailableStats[i];
+                if (availableStat.Entity < stat.Entity)
+                    continue;
+                if (availableStat.Entity > stat.Entity)
+                    break;
+
+                var stringComparision = string.Compare(availableStat.Identity, stat.Identity, StringComparison.Ordinal);
+                if (stringComparision == 0)
+                    return true;
+                if (stringComparision > 0)
+                    break;
+            }
+            return false;
         }
 
         private void AddStat()
@@ -50,14 +74,12 @@ namespace POESKillTree.Computation.ViewModels
             var resultStat = new ResultStatViewModel(stat, nodeType, RemoveStat);
             resultStat.Observe(_observableCalculator);
             Stats.Add(resultStat);
-            AvailableStats.Remove(stat);
-            NewStat.Stat = AvailableStats.FirstOrDefault();
+            AddAvailableStat(stat);
         }
 
         private void RemoveStat(ResultStatViewModel resultStat)
         {
             Stats.Remove(resultStat);
-            AvailableStats.Add(resultStat.Stat);
             NewStat.Stat = resultStat.Stat;
             NewStat.NodeType = resultStat.NodeType;
             resultStat.Dispose();
