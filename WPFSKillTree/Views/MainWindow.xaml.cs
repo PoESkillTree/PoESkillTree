@@ -471,8 +471,6 @@ namespace POESKillTree.Views
             var schedulers = new ComputationSchedulerProvider();
             var observables = new ComputationObservables(gameData.Data, parser);
             var observableCalculator = new ObservableCalculator(calculator, schedulers.CalculationThread);
-            ComputationViewModel =
-                await ComputationViewModel.CreateAsync(gameData.Data, builderFactories, observableCalculator);
             var initialComputationTask = observables.InitialParse()
                 .SubscribeOn(schedulers.TaskPool)
                 .ObserveOn(schedulers.CalculationThread)
@@ -490,6 +488,9 @@ namespace POESKillTree.Views
                 .SubscribeOn(schedulers.TaskPool)
                 .ObserveOn(schedulers.CalculationThread)
                 .SubscribeAndAwaitCompletionAsync(calculator.Update);
+            await Task.WhenAll(initialComputationTask, skilledNodesComputationTask);
+            ComputationViewModel =
+                await ComputationViewModel.CreateAsync(gameData.Data, builderFactories, observableCalculator);
             observableCalculator.SubscribeCalculatorTo(
                 observables.ObserveSkilledPassiveNodes(Tree.SkilledNodes),
                 ex => Log.Error("Exception while observing skilled node updates", ex));
@@ -498,7 +499,6 @@ namespace POESKillTree.Views
                 .Subscribe(_ => calculator.RemoveUnusedNodes(),
                     ex => Log.Error("Exception while removing unused calculation nodes", ex));
 
-            await Task.WhenAll(initialComputationTask, skilledNodesComputationTask);
             await controller.CloseAsync();
         }
 

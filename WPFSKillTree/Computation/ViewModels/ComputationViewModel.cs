@@ -26,7 +26,7 @@ namespace POESKillTree.Computation.ViewModels
             MainSkillSelection = new MainSkillSelectionViewModel(skillDefinitions);
         }
 
-        private void Initialize(IBuilderFactories f)
+        private async Task InitializeAsync(IBuilderFactories f)
         {
             MainSkillSelection.AddSkill(new Skill("ChargedAttack", 20, 20, ItemSlot.Boots, 0, 0));
             MainSkillSelection.AddSkill(new Skill("Fireball", 21, 23, ItemSlot.Boots, 1, 0));
@@ -57,6 +57,8 @@ namespace POESKillTree.Computation.ViewModels
             AddStats(DefensiveStats, f.StatBuilders.AscendancyPassivePoints.Maximum);
             AddAvailableStats(DefensiveStats, f.DamageTypeBuilders.AnyDamageType().Resistance);
 
+            await AddConfigurationStatAsync(f.StatBuilders.Level, Entity.Enemy);
+            await AddConfigurationStatAsync(f.MetaStatBuilders.SelectedQuestPart);
             ConfigurationStats.Observe();
         }
 
@@ -80,12 +82,20 @@ namespace POESKillTree.Computation.ViewModels
             }
         }
 
+        private async Task AddConfigurationStatAsync(IStatBuilder statBuilder, Entity entity = Entity.Character)
+        {
+            foreach (var stat in statBuilder.BuildToStats(entity))
+            {
+                await ConfigurationStats.AddPinnedAsync(stat);
+            }
+        }
+
         public static async Task<ComputationViewModel> CreateAsync(
             GameData gameData, IBuilderFactories builderFactories, ObservableCalculator observableCalculator)
         {
             var skillDefinitions = await gameData.Skills;
             var vm = new ComputationViewModel(skillDefinitions, observableCalculator);
-            vm.Initialize(builderFactories);
+            await vm.InitializeAsync(builderFactories);
             return vm;
         }
     }

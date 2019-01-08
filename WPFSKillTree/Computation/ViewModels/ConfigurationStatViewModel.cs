@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -15,7 +16,7 @@ namespace POESKillTree.Computation.ViewModels
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ConfigurationStatViewModel));
 
-        private readonly Subject<CalculatorUpdate> _updateSubject = new Subject<CalculatorUpdate>();
+        private readonly Subject<IReadOnlyList<Modifier>> _updateSubject = new Subject<IReadOnlyList<Modifier>>();
 
         private IDisposable _subscriptions;
 
@@ -30,22 +31,18 @@ namespace POESKillTree.Computation.ViewModels
         public string Name => ToString();
         public Array EnumValues => Stat.DataType.GetEnumValues();
 
-        private NodeValue? Value
+        public NodeValue? Value
         {
             get => _value;
-            set => SetProperty(ref _value, value, ValueOnPropertyChanged, ValueOnPropertyChanging);
-        }
-
-        private void ValueOnPropertyChanging(NodeValue? newValue)
-        {
-            if (!_updateSubject.IsDisposed)
-            {
-                _updateSubject.OnNext(CreateCalculatorUpdate(_value, newValue));
-            }
+            set => SetProperty(ref _value, value, ValueOnPropertyChanged);
         }
 
         private void ValueOnPropertyChanged()
         {
+            if (!_updateSubject.IsDisposed)
+            {
+                _updateSubject.OnNext(CreateModifiers(Value));
+            }
             OnPropertyChanged(nameof(NumericValue));
             OnPropertyChanged(nameof(BoolValue));
         }
@@ -78,13 +75,8 @@ namespace POESKillTree.Computation.ViewModels
 
         public double NumericMaximum => Maximum?.Single ?? double.MaxValue;
 
-        public void Observe(ObservableCalculator observableCalculator, ICalculationNode node)
+        public void Observe(ObservableCalculator observableCalculator)
         {
-            if (!(Stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue userSpecifiedValue))
-                throw new ArgumentException("Configuration stats must be UserDefinedValue");
-
-            Value = userSpecifiedValue.DefaultValue;
-
             var minSubscription = observableCalculator.ObserveNode(Stat.Minimum)
                 .ObserveOnDispatcher()
                 .Subscribe(v => Minimum = v,
@@ -95,25 +87,30 @@ namespace POESKillTree.Computation.ViewModels
                     ex => Log.Error($"ObserveNode({Stat.Maximum}) failed", ex));
 
             var calculatorSubscription = observableCalculator.SubscribeCalculatorTo(
-                _updateSubject.AsObservable(),
+                _updateSubject.AsObservable()
+                    .Scan(new CalculatorUpdate(new Modifier[0], new Modifier[0]),
+                        (u, ms) => new CalculatorUpdate(ms, u.AddedModifiers)),
                 ex => Log.Error($"SubscribeCalculatorTo({Stat}) failed", ex));
-            _updateSubject.OnNext(new CalculatorUpdate(new[] { CreateModifier(Value) }, new Modifier[0]));
+            if (Stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue userSpecifiedValue)
+            {
+                Value = userSpecifiedValue.DefaultValue;
+            }
 
             _subscriptions = new CompositeDisposable(minSubscription, maxSubscription, calculatorSubscription);
         }
 
-        private CalculatorUpdate CreateCalculatorUpdate(NodeValue? oldValue, NodeValue? newValue)
-            => new CalculatorUpdate(new[] { CreateModifier(newValue) }, new[] { CreateModifier(oldValue) });
-
-        private Modifier CreateModifier(NodeValue? value)
-            => new Modifier(new[] { Stat }, Form.TotalOverride, new Constant(value),
-                new ModifierSource.Global(new ModifierSource.Local.UserDefined()));
+        private IReadOnlyList<Modifier> CreateModifiers(NodeValue? value)
+            => new[]
+            {
+                new Modifier(new[] { Stat }, Form.TotalOverride, new Constant(value),
+                    new ModifierSource.Global(new ModifierSource.Local.UserDefined()))
+            };
 
         public void Dispose()
         {
             if (!_updateSubject.IsDisposed)
             {
-                _updateSubject.OnNext(new CalculatorUpdate(new Modifier[0], new[] { CreateModifier(Value) }));
+                _updateSubject.OnNext(new Modifier[0]);
                 _updateSubject.OnCompleted();
             }
             _subscriptions?.Dispose();

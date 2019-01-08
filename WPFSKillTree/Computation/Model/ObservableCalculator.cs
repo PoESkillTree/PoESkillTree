@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
+using POESKillTree.Utils;
 
 namespace POESKillTree.Computation.Model
 {
@@ -22,7 +24,7 @@ namespace POESKillTree.Computation.Model
         }
 
         public IObservable<NodeValue?> ObserveNode(IStat stat, NodeType nodeType = NodeType.Total)
-            => ObserveNode(() => _calculator.NodeRepository.GetNode(stat, nodeType));
+            => ObserveNode(() => GetNode(stat, nodeType));
 
         public IObservable<NodeValue?> ObserveNode(ICalculationNode node)
             => ObserveNode(() => node);
@@ -61,5 +63,14 @@ namespace POESKillTree.Computation.Model
         public IDisposable SubscribeCalculatorTo(IObservable<CalculatorUpdate> observable, Action<Exception> onError)
             => observable.ObserveOn(_calculationScheduler)
                 .Subscribe(_calculator.Update, onError);
+
+        public Task<NodeValue?> GetNodeValueAsync(IStat stat)
+            => _calculationScheduler.ScheduleAsync(() => GetNode(stat).Value);
+
+        public Task<ICalculationNode> GetNodeAsync(IStat stat)
+            => _calculationScheduler.ScheduleAsync(() => GetNode(stat));
+
+        private ICalculationNode GetNode(IStat stat, NodeType nodeType = NodeType.Total)
+            => _calculator.NodeRepository.GetNode(stat, nodeType);
     }
 }

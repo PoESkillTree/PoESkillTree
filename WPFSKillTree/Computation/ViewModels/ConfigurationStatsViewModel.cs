@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using log4net;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
@@ -15,12 +17,21 @@ namespace POESKillTree.Computation.ViewModels
         private static readonly ILog Log = LogManager.GetLogger(typeof(ConfigurationStatsViewModel));
 
         private readonly ObservableCalculator _observableCalculator;
+        private readonly HashSet<IStat> _pinnedStats = new HashSet<IStat>();
 
         public ConfigurationStatsViewModel(ObservableCalculator observableCalculator)
             => _observableCalculator = observableCalculator;
 
         public ObservableCollection<ConfigurationStatViewModel> Stats { get; } =
             new ObservableCollection<ConfigurationStatViewModel>();
+
+        public async Task AddPinnedAsync(IStat stat)
+        {
+            var value = await _observableCalculator.GetNodeValueAsync(stat);
+            _pinnedStats.Add(stat);
+            var configStat = Add(stat);
+            configStat.Value = value;
+        }
 
         public void Observe()
         {
@@ -53,41 +64,59 @@ namespace POESKillTree.Computation.ViewModels
 
         private void Add(object element)
         {
-            var (node, stat) = ((ICalculationNode, IStat)) element;
-            Add(node, stat);
+            var (_, stat) = ((ICalculationNode, IStat)) element;
+            AddIfUserSpecified(stat);
         }
 
         private void Remove(object element)
         {
             var (_, stat) = ((ICalculationNode, IStat)) element;
-            Remove(stat);
+            RemoveIfNotPinned(stat);
         }
 
         private void Refresh()
         {
-            var configStats = Stats.ToList();
-            Stats.Clear();
-            configStats.ForEach(s => s.Dispose());
+            foreach (var stat in Stats.Select(vm => vm.Stat).ToList())
+            {
+                RemoveIfNotPinned(stat);
+            }
 
             foreach (var (node, stat) in _observableCalculator.ExplicitlyRegisteredStatsCollection)
             {
-                Add(node, stat);
+                AddIfUserSpecified(stat);
             }
         }
 
-        private void Add(ICalculationNode node, IStat stat)
+        private void AddIfUserSpecified(IStat stat)
         {
-            if (!(stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue))
-                return;
+            if (stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue)
+            {
+                Add(stat);
+            }
+        }
+
+        private void RemoveIfNotPinned(IStat stat)
+        {
+            if (!_pinnedStats.Contains(stat))
+            {
+                Remove(stat);
+            }
+        }
+
+        private ConfigurationStatViewModel Add(IStat stat)
+        {
+            var existingStat = Stats.FirstOrDefault(s => s.Stat.Equals(stat));
+            if (existingStat != null)
+                return existingStat;
+
             var configStat = new ConfigurationStatViewModel(stat);
-            configStat.Observe(_observableCalculator, node);
+            configStat.Observe(_observableCalculator);
             Stats.Add(configStat);
+            return configStat;
         }
 
         private void Remove(IStat stat)
         {
-            if (!(stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue))
-                return;
             var configStat = Stats.First(s => s.Stat.Equals(stat));
             Stats.Remove(configStat);
             configStat.Dispose();

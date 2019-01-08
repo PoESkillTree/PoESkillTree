@@ -231,6 +231,7 @@
     <Compile Include="Model\Items\IItemBase.cs" />
     <Compile Include="Model\ModelConverter.cs" />
     <Compile Include="Utils\ObservableExtensions.cs" />
+    <Compile Include="Utils\SchedulerExtensions.cs" />
     <Compile Include="Utils\SemanticVersion.cs" />
     <Compile Include="Utils\WikiApi\CargoConstants.cs" />
     <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
