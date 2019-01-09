@@ -8,28 +8,35 @@ namespace PoESkillTree.Computation.Builders.Stats
 {
     public class Stat : IStat
     {
+        private static readonly HashSet<Type> NumericTypes = new HashSet<Type>
+        {
+            typeof(double), typeof(int)
+        };
+
         public Stat(string identity, Entity entity = default, Type dataType = null,
+            ExplicitRegistrationType explicitRegistrationType = null, IReadOnlyList<Behavior> behaviors = null)
+            : this(identity, entity, dataType, explicitRegistrationType, behaviors, null)
+        {
+        }
+
+        private Stat(string identity, Entity entity, Type dataType,
             ExplicitRegistrationType explicitRegistrationType = null, IReadOnlyList<Behavior> behaviors = null,
-            bool hasRange = true)
+            bool? hasRange = null)
         {
             if (!IsDataTypeValid(dataType))
                 throw new ArgumentException($"Stats only support double, int, bool or enum data types, {dataType} given",
                     nameof(dataType));
 
             Identity = identity;
-            _hasRange = hasRange;
             Entity = entity;
             ExplicitRegistrationType = explicitRegistrationType;
             DataType = dataType ?? typeof(double);
+            _hasRange = hasRange ?? NumericTypes.Contains(DataType);
             Behaviors = behaviors ?? new Behavior[0];
         }
 
         private static bool IsDataTypeValid(Type dataType)
-        {
-            return dataType == null
-                   || dataType == typeof(int) || dataType == typeof(double) || dataType == typeof(bool)
-                   || dataType.IsEnum;
-        }
+            => dataType == null || dataType == typeof(bool) || NumericTypes.Contains(dataType) || dataType.IsEnum;
 
         private readonly bool _hasRange;
         public string Identity { get; }
@@ -42,10 +49,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat Maximum => MinOrMax();
 
         private IStat MinOrMax([CallerMemberName] string identitySuffix = null) =>
-            _hasRange ? CopyWithSuffix(identitySuffix, hasRange: false) : null;
-
-        private IStat CopyWithSuffix(string identitySuffix, bool hasRange = true) =>
-            new Stat(Identity + "." + identitySuffix, Entity, DataType, hasRange: hasRange);
+            _hasRange ? new Stat(Identity + "." + identitySuffix, Entity, DataType, hasRange: false) : null;
 
         public override string ToString() => Entity + "." + Identity;
 

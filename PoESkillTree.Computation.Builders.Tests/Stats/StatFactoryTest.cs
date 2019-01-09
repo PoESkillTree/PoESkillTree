@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Behaviors;
@@ -132,6 +132,16 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var sut = CreateSut();
 
             Assert.DoesNotThrow(() => sut.FromIdentity("", default, dataType));
+        }
+
+        [Test]
+        public void FromIdentityMaximumIsNullWithBoolDataType()
+        {
+            var sut = CreateSut();
+
+            var actual = sut.FromIdentity("test", Entity.Character, typeof(bool)).Maximum;
+
+            Assert.IsNull(actual);
         }
 
         [Test]

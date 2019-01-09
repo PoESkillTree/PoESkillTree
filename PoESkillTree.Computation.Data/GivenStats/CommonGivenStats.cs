@@ -140,6 +140,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Effect.Stun.Recovery, 1 },
             { BaseSet, Effect.Stun.Duration, 350 },
             // other
+            { TotalOverride, Stat.Level.Maximum, 100 },
             { BaseSet, Stat.AreaOfEffect, 1 },
             { BaseSet, Stat.CooldownRecoverySpeed, 1 },
             { BaseSet, Stat.SkillStage.Minimum, 0 },

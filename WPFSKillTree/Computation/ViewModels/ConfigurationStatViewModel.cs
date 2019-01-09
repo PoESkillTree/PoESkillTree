@@ -77,26 +77,34 @@ namespace POESKillTree.Computation.ViewModels
 
         public void Observe(ObservableCalculator observableCalculator)
         {
-            var minSubscription = observableCalculator.ObserveNode(Stat.Minimum)
-                .ObserveOnDispatcher()
-                .Subscribe(v => Minimum = v,
-                    ex => Log.Error($"ObserveNode({Stat.Minimum}) failed", ex));
-            var maxSubscription = observableCalculator.ObserveNode(Stat.Maximum)
-                .ObserveOnDispatcher()
-                .Subscribe(v => Maximum = v,
-                    ex => Log.Error($"ObserveNode({Stat.Maximum}) failed", ex));
+            var subscriptions = new List<IDisposable>();
 
-            var calculatorSubscription = observableCalculator.SubscribeCalculatorTo(
+            if (Stat.Minimum != null)
+            {
+                subscriptions.Add(observableCalculator.ObserveNode(Stat.Minimum)
+                    .ObserveOnDispatcher()
+                    .Subscribe(v => Minimum = v,
+                        ex => Log.Error($"ObserveNode({Stat.Minimum}) failed", ex)));
+            }
+            if (Stat.Maximum != null)
+            {
+                subscriptions.Add(observableCalculator.ObserveNode(Stat.Maximum)
+                    .ObserveOnDispatcher()
+                    .Subscribe(v => Maximum = v,
+                        ex => Log.Error($"ObserveNode({Stat.Maximum}) failed", ex)));
+            }
+
+            subscriptions.Add(observableCalculator.SubscribeCalculatorTo(
                 _updateSubject.AsObservable()
                     .Scan(new CalculatorUpdate(new Modifier[0], new Modifier[0]),
                         (u, ms) => new CalculatorUpdate(ms, u.AddedModifiers)),
-                ex => Log.Error($"SubscribeCalculatorTo({Stat}) failed", ex));
+                ex => Log.Error($"SubscribeCalculatorTo({Stat}) failed", ex)));
             if (Stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue userSpecifiedValue)
             {
                 Value = userSpecifiedValue.DefaultValue;
             }
 
-            _subscriptions = new CompositeDisposable(minSubscription, maxSubscription, calculatorSubscription);
+            _subscriptions = new CompositeDisposable(subscriptions);
         }
 
         private IReadOnlyList<Modifier> CreateModifiers(NodeValue? value)
