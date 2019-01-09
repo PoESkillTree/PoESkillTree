@@ -36,7 +36,7 @@ namespace PoESkillTree.Computation.Builders.Entities
                 ExplicitRegistrationTypes.UserSpecifiedValue(false));
 
             public ValueBuilder CountNearby
-                => StatBuilderUtils.FromIdentity(_statFactory, "Enemy.CountNearby", typeof(int),
+                => StatBuilderUtils.FromIdentity(_statFactory, "Enemy.CountNearby", typeof(uint),
                     ExplicitRegistrationTypes.UserSpecifiedValue(0)).Value;
 
             public IConditionBuilder IsRare => StatBuilderUtils.ConditionFromIdentity(_statFactory, "Enemy.IsRare",

@@ -10,7 +10,7 @@ namespace PoESkillTree.Computation.Builders.Stats
     {
         private static readonly HashSet<Type> NumericTypes = new HashSet<Type>
         {
-            typeof(double), typeof(int)
+            typeof(double), typeof(int), typeof(uint)
         };
 
         public Stat(string identity, Entity entity = default, Type dataType = null,

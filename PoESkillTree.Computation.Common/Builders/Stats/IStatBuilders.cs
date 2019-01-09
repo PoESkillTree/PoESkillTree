@@ -139,7 +139,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// <summary>
         /// Returns the value of a stat that can only be specified by the user.
         /// </summary>
-        ValueBuilder UniqueInt(string name, int defaultValue);
+        ValueBuilder UniqueAmount(string name);
 
 
         // Stats from sub factories

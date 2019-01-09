@@ -85,11 +85,11 @@ namespace PoESkillTree.Computation.Builders.Actions
             => new StatValue(BuildRecentOccurrencesStat(parameters, BuildEntity(parameters, _entity)));
 
         private IStat BuildLastOccurrenceStat(BuildParameters parameters, Entity entity)
-            => StatFactory.FromIdentity($"{Build(parameters)}.LastOccurrence", entity, typeof(int),
+            => StatFactory.FromIdentity($"{Build(parameters)}.LastOccurrence", entity, typeof(uint),
                 UserSpecifiedValue(null));
 
         private IStat BuildRecentOccurrencesStat(BuildParameters parameters, Entity entity)
-            => StatFactory.FromIdentity($"{Build(parameters)}.RecentOccurrences", entity, typeof(int),
+            => StatFactory.FromIdentity($"{Build(parameters)}.RecentOccurrences", entity, typeof(uint),
                 UserSpecifiedValue(0));
 
         private static Entity BuildEntity(BuildParameters parameters, IEntityBuilder entity) =>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Behaviors;
@@ -125,6 +125,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         
         [TestCase(typeof(double))]
         [TestCase(typeof(int))]
+        [TestCase(typeof(uint))]
         [TestCase(typeof(bool))]
         [TestCase(typeof(Tags))]
         public void FromIdentityDoesNotThrowIfDataTypeIsValid(Type dataType)

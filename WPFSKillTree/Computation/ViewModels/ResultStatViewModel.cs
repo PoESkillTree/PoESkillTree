@@ -49,11 +49,7 @@ namespace POESKillTree.Computation.ViewModels
         private void OnNext(NodeValue? value)
         {
             var dataType = Stat.DataType;
-            if (dataType == typeof(int) || dataType == typeof(double))
-            {
-                Value = value?.ToString() ?? L10n.Message("None");
-            }
-            else if (dataType == typeof(bool))
+            if (dataType == typeof(bool))
             {
                 Value = value.IsTrue().ToString();
             }
@@ -65,7 +61,7 @@ namespace POESKillTree.Computation.ViewModels
             }
             else
             {
-                Value = L10n.Message("Unknown type");
+                Value = value?.ToString() ?? L10n.Message("None");
             }
         }
 

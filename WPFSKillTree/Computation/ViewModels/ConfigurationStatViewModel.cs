@@ -65,7 +65,15 @@ namespace POESKillTree.Computation.ViewModels
             set => SetProperty(ref _minimum, value, () => OnPropertyChanged(nameof(NumericMinimum)));
         }
 
-        public double NumericMinimum => Minimum?.Single ?? double.MinValue;
+        public double NumericMinimum
+        {
+            get
+            {
+                if (Minimum?.Single is double value)
+                    return value;
+                return Stat.DataType == typeof(uint) ? 0 : double.MinValue;
+            }
+        }
 
         private NodeValue? Maximum
         {

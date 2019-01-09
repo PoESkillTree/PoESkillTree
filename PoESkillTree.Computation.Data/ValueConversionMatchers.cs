@@ -102,28 +102,28 @@ namespace PoESkillTree.Computation.Data
                 // unique
                 {
                     "for each poison you have inflicted recently",
-                    Stat.UniqueInt("# of Poisons inflicted Recently", 0)
+                    Stat.UniqueAmount("# of Poisons inflicted Recently")
                 },
                 {
                     "for each remaining chain",
                     Projectile.ChainCount.Value -
-                    Stat.UniqueInt("# of times the Active Skill has Chained", 0)
+                    Stat.UniqueAmount("# of times the Active Skill has Chained")
                 },
                 {
                     "for each of your mines detonated recently, up to #%",
-                    CappedMultiplier(Stat.UniqueInt("# of Mines Detonated Recently", 0), Value)
+                    CappedMultiplier(Stat.UniqueAmount("# of Mines Detonated Recently"), Value)
                 },
                 {
                     "for each of your traps triggered recently, up to #%",
-                    CappedMultiplier(Stat.UniqueInt("# of Traps Triggered Recently", 0), Value)
+                    CappedMultiplier(Stat.UniqueAmount("# of Traps Triggered Recently"), Value)
                 },
                 {
                     "for each time you've blocked in the past 10 seconds",
-                    Stat.UniqueInt("# of times blocked in the past 10 seconds", 0)
+                    Stat.UniqueAmount("# of times blocked in the past 10 seconds")
                 },
                 {
                     "per one hundred nearby enemies",
-                    Stat.UniqueInt("# of nearby enemies", 0) / 100
+                    Stat.UniqueAmount("# of nearby enemies") / 100
                 },
             }; // add
 

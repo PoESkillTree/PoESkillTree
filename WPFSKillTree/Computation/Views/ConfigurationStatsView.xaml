@@ -19,9 +19,9 @@
         </DataTemplate>
         <DataTemplate x:Key="DoubleTemplate" DataType="viewModels:ConfigurationStatViewModel">
             <mahApps:NumericUpDown Value="{Binding NumericValue, UpdateSourceTrigger=PropertyChanged}"
-                                   NumericInputMode="Decimal"
                                    Minimum="{Binding NumericMinimum}"
                                    Maximum="{Binding NumericMaximum}"
+                                   NumericInputMode="Decimal"
                                    Style="{StaticResource UpDownInDataGridStyle}" />
         </DataTemplate>
         <DataTemplate x:Key="BoolTemplate" DataType="viewModels:ConfigurationStatViewModel">
@@ -64,6 +64,9 @@
                                             <Setter Property="ContentTemplate" Value="{StaticResource DoubleTemplate}" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Stat.DataType}" Value="{x:Type system:Int32}">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource IntTemplate}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Stat.DataType}" Value="{x:Type system:UInt32}">
                                             <Setter Property="ContentTemplate" Value="{StaticResource IntTemplate}" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Stat.DataType}" Value="{x:Type system:Boolean}">

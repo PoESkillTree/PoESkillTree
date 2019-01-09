@@ -16,9 +16,9 @@ namespace PoESkillTree.Computation.Builders.Actions
             StatBuilderUtils.FromIdentity(StatFactory, "Block.Recovery", typeof(int));
 
         public IStatBuilder AttackChance =>
-            StatBuilderUtils.FromIdentity(StatFactory, "Block.ChanceAgainstAttacks", typeof(int));
+            StatBuilderUtils.FromIdentity(StatFactory, "Block.ChanceAgainstAttacks", typeof(uint));
 
         public IStatBuilder SpellChance =>
-            StatBuilderUtils.FromIdentity(StatFactory, "Block.ChanceAgainstSpells", typeof(int));
+            StatBuilderUtils.FromIdentity(StatFactory, "Block.ChanceAgainstSpells", typeof(uint));
     }
 }

@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
             Innervation = Create("Innervation");
             Impale = Create("Impale");
             Conflux = new ConfluxBuffBuilders(statFactory);
-            CurseLimit = StatBuilderUtils.FromIdentity(statFactory, "CurseLimit", typeof(int));
+            CurseLimit = StatBuilderUtils.FromIdentity(statFactory, "CurseLimit", typeof(uint));
 
             var allBuffs = new List<BuffBuilderWithKeywords>
             {

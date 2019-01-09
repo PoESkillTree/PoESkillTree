@@ -36,9 +36,9 @@ namespace PoESkillTree.Computation.Builders.Skills
             new ActionBuilder(_statFactory, CoreBuilder.UnaryOperation(_coreBuilder, d => $"{d.Id}.Cast"),
                 new ModifierSourceEntityBuilder());
 
-        public IStatBuilder Instances => CreateStatBuilder(typeof(int));
+        public IStatBuilder Instances => CreateStatBuilder(typeof(uint));
 
-        public IStatBuilder Reservation => CreateStatBuilder(typeof(int));
+        public IStatBuilder Reservation => CreateStatBuilder(typeof(uint));
 
         public IStatBuilder ReservationPool => CreateStatBuilder(typeof(Pool));
 

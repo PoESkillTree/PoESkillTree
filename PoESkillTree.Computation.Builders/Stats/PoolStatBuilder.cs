@@ -40,8 +40,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IRegenStatBuilder Regen => new RegenStatBuilder(StatFactory, Pool);
         public IRechargeStatBuilder Recharge => new RechargeStatBuilder(StatFactory, Pool);
         public IStatBuilder RecoveryRate => FromIdentity(typeof(double));
-        public IStatBuilder Cost => FromIdentity(typeof(int));
-        public IStatBuilder Reservation => FromIdentity(typeof(int));
+        public IStatBuilder Cost => FromIdentity(typeof(uint));
+        public IStatBuilder Reservation => FromIdentity(typeof(uint));
         public ILeechStatBuilder Leech => new LeechStatBuilder(StatFactory, Pool);
         public IStatBuilder InstantLeech => FromIdentity(typeof(bool));
         public IStatBuilder Gain => FromIdentity(typeof(int));
@@ -115,11 +115,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
             var damageCoreBuilder = new StatBuilderAdapter(damage.WithHits);
             var coreBuilder = new ParametrisedCoreStatBuilder<ICoreBuilder<Pool>>(damageCoreBuilder, Pool,
-                (ps, p, s) => StatFactory.CopyWithSuffix(s, $"LeechTo({p.Build(ps)})", typeof(int)));
+                (ps, p, s) => StatFactory.CopyWithSuffix(s, $"LeechTo({p.Build(ps)})", typeof(uint)));
             return new StatBuilder(StatFactory, coreBuilder);
         }
 
-        public IStatBuilder RateLimit => FromIdentity(typeof(int));
+        public IStatBuilder RateLimit => FromIdentity(typeof(uint));
         public IStatBuilder Rate => FromIdentity(typeof(double));
 
         public IStatBuilder TargetPool =>
@@ -134,7 +134,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         protected StatBuilderWithPool(IStatFactory statFactory, ICoreBuilder<Pool> pool, string identitySuffix)
             : this(statFactory,
                 new CoreStatBuilderFromCoreBuilder<Pool>(pool,
-                    (e, p) => statFactory.FromIdentity(p.ToString() + identitySuffix, e, typeof(int))),
+                    (e, p) => statFactory.FromIdentity(p.ToString() + identitySuffix, e, typeof(uint))),
                 pool,
                 identitySuffix)
         {

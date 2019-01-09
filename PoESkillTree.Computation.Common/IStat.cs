@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.Common
         Entity Entity { get; }
 
         /// <summary>
-        /// The <see cref="IStat"/> determining the minimum value of this stat or<c>null</c> if the stat can never
+        /// The <see cref="IStat"/> determining the minimum value of this stat or <c>null</c> if the stat can never
         /// have an lower bound.
         /// </summary>
         [CanBeNull]
@@ -46,7 +46,7 @@ namespace PoESkillTree.Computation.Common
         ExplicitRegistrationType ExplicitRegistrationType { get; }
 
         /// <summary>
-        /// The type of this stat's values. Can be double, int, bool (0 or 1) or an enum type.
+        /// The type of this stat's values. Can be double, int, uint, bool or an enum type.
         /// The value range is determined by Minimum and Maximum (which have the same DataType).
         /// </summary>
         Type DataType { get; }

@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.Builders.Effects
             new AilmentBuilder(StatFactory, _ailment.Resolve(context));
 
         public IStatBuilder InstancesOn(IEntityBuilder target) =>
-            FromIdentity("InstanceCount", typeof(int)).For(target);
+            FromIdentity("InstanceCount", typeof(uint)).For(target);
 
         public IStatBuilder Source(IDamageTypeBuilder type)
         {

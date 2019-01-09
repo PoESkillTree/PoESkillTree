@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             IStat TargetPoolValueStat(NodeValue? targetPool)
             {
                 var targetPoolString = ((Pool) targetPool.Single()).ToString();
-                return StatFactory.FromIdentity(targetPoolString, entity, typeof(int));
+                return StatFactory.FromIdentity(targetPoolString, entity, typeof(uint));
             }
         }
 
@@ -47,7 +47,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder EffectiveRecharge(Pool pool) => FromIdentity($"{pool}.EffectiveRecharge", typeof(int));
         public IStatBuilder RechargeStartDelay(Pool pool) => FromIdentity($"{pool}.RechargeStartDelay", typeof(double));
 
-        public IStatBuilder EffectiveLeechRate(Pool pool) => FromIdentity($"{pool}.Leech.EffectiveRate", typeof(int));
+        public IStatBuilder EffectiveLeechRate(Pool pool) => FromIdentity($"{pool}.Leech.EffectiveRate", typeof(uint));
 
         public IStatBuilder AbsoluteLeechRate(Pool pool) => FromIdentity($"{pool}.Leech.AbsoluteRate", typeof(double));
 
@@ -123,11 +123,11 @@ namespace PoESkillTree.Computation.Builders.Stats
             => FromIdentity($"{ailment}.EffectiveInstances", typeof(double));
 
         public IStatBuilder IncreasedDamageTakenFromShocks
-            => FromIdentity("Shock.IncreasedDamageTaken", typeof(int),
+            => FromIdentity("Shock.IncreasedDamageTaken", typeof(uint),
                 ExplicitRegistrationTypes.UserSpecifiedValue(20));
 
         public IStatBuilder ReducedActionSpeedFromChill
-            => FromIdentity("Chill.ReducedAnimationSpeed", typeof(int),
+            => FromIdentity("Chill.ReducedAnimationSpeed", typeof(uint),
                 ExplicitRegistrationTypes.UserSpecifiedValue(10));
 
         public IDamageRelatedStatBuilder EffectiveCritChance
@@ -143,9 +143,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder MitigationAgainstDoTs(DamageType damageType)
             => FromIdentity($"{damageType}.MitigationAgainstDoTs", typeof(int));
 
-        public IStatBuilder ChanceToAvoidMeleeAttacks => FromIdentity(typeof(int));
-        public IStatBuilder ChanceToAvoidProjectileAttacks => FromIdentity(typeof(int));
-        public IStatBuilder ChanceToAvoidSpells => FromIdentity(typeof(int));
+        public IStatBuilder ChanceToAvoidMeleeAttacks => FromIdentity(typeof(uint));
+        public IStatBuilder ChanceToAvoidProjectileAttacks => FromIdentity(typeof(uint));
+        public IStatBuilder ChanceToAvoidSpells => FromIdentity(typeof(uint));
 
         public IDamageRelatedStatBuilder EffectiveStunThreshold
             => DamageRelatedFromIdentity("Stun.EffectiveThreshold", typeof(double)).WithHits;
@@ -154,7 +154,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder SkillHitDamageSource => FromIdentity(typeof(DamageSource));
         public IStatBuilder SkillUsesHand(AttackDamageHand hand) => FromIdentity($"SkillUses.{hand}", typeof(bool));
-        public IStatBuilder SkillNumberOfHitsPerCast => FromIdentity(typeof(int));
+        public IStatBuilder SkillNumberOfHitsPerCast => FromIdentity(typeof(uint));
         public IStatBuilder SkillDoubleHitsWhenDualWielding => FromIdentity(typeof(bool));
 
         public IStatBuilder MainSkillId => FromFactory(StatFactory.MainSkillId);
@@ -184,7 +184,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             => FromIdentity($"{itemSlot}.{socketIndex}.IsMainSkill", typeof(bool));
 
         public IStatBuilder SkillBaseCost(ItemSlot itemSlot, int socketIndex)
-            => FromIdentity($"{itemSlot}.{socketIndex}.Cost", typeof(int));
+            => FromIdentity($"{itemSlot}.{socketIndex}.Cost", typeof(uint));
 
         public IStatBuilder SkillHasType(ItemSlot itemSlot, int socketIndex, string activeSkillType)
             => FromIdentity($"{itemSlot}.{socketIndex}.Type.{activeSkillType}", typeof(bool));

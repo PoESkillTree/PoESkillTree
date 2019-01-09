@@ -360,7 +360,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var actual = statBuilder.BuildToSingleStat();
 
             Assert.AreEqual(expected, actual);
-            Assert.AreEqual(typeof(int), actual.DataType);
+            Assert.AreEqual(typeof(uint), actual.DataType);
         }
 
         [Test]
@@ -379,7 +379,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var actual = statBuilder.BuildToSingleResult().Stats;
 
             Assert.AreEqual(expected, actual);
-            Assert.AreEqual(expected.Select(_ => typeof(int)), actual.Select(s => s.DataType));
+            Assert.AreEqual(expected.Select(_ => typeof(uint)), actual.Select(s => s.DataType));
         }
 
         [Test]
@@ -398,7 +398,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var actual = statBuilder.BuildToSingleResult().Stats;
 
             Assert.AreEqual(expected, actual);
-            Assert.AreEqual(expected.Select(_ => typeof(int)), actual.Select(s => s.DataType));
+            Assert.AreEqual(expected.Select(_ => typeof(uint)), actual.Select(s => s.DataType));
         }
 
         [TestCase(null, false)]

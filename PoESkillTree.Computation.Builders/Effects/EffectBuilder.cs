@@ -76,7 +76,7 @@ namespace PoESkillTree.Computation.Builders.Effects
         }
 
         public IStatBuilder Avoidance =>
-            FromIdentity("ChanceToAvoid", typeof(int));
+            FromIdentity("ChanceToAvoid", typeof(uint));
     }
 
     internal class GroundEffectBuilders : IGroundEffectBuilders
@@ -105,6 +105,6 @@ namespace PoESkillTree.Computation.Builders.Effects
         public IStatBuilder Recovery => FromIdentity("RecoveryModifier", typeof(double));
 
         public IStatBuilder ChanceToAvoidInterruptionWhileCasting =>
-            FromIdentity("ChanceToAvoidInterruptionWhileCasting", typeof(int));
+            FromIdentity("ChanceToAvoidInterruptionWhileCasting", typeof(uint));
     }
 }
