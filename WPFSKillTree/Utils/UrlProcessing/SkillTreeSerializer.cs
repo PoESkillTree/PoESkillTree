@@ -79,7 +79,7 @@ namespace POESKillTree.Utils.UrlProcessing
             // Ordering provides nice exact Url match, but is not strictly needed.
             // Performance impact is minimal even on tree with all 1.3K nodes allocated.
             var skillNodes = _skillTree.SkilledNodes
-                .Where(node => !node.IsAscendancyStart && !SkillTree.RootNodeList.Contains(node.Id))
+                .Where(node => !node.IsAscendancyStart && !node.IsRootNode)
                 .OrderBy(node => node.Id);
 
             var bytes = new byte[HeaderSize + skillNodes.Count() * 2];

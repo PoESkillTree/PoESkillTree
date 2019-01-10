@@ -266,7 +266,7 @@ namespace POESKillTree.TreeGenerator.Solver
                     foreach (var node in ng.Nodes)
                     {
                         // Can't path through class starts.
-                        if (SkillTree.RootNodeList.Contains(node.Id)
+                        if (node.IsRootNode
                             // Don't add nodes that are already in the graph (as
                             // target or start nodes).
                             || searchGraph.NodeDict.ContainsKey(node)

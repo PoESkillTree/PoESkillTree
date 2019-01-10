@@ -741,7 +741,7 @@ namespace POESKillTree.Views
                         break;
                     case Key.G:
                         ToggleShowSummary();
-                        if (_hoveredNode != null && !SkillTree.RootNodeList.Contains(_hoveredNode.Id))
+                        if (_hoveredNode != null && !_hoveredNode.IsRootNode)
                         {
                             GenerateTooltipForNode(_hoveredNode, true);
                         }
@@ -1541,7 +1541,7 @@ namespace POESKillTree.Views
             v = v * _multransform + _addtransform;
 
             var node = Tree.FindNodeInRange(v, 50);
-            if (node != null && !SkillTree.RootNodeList.Contains(node.Id))
+            if (node != null && !node.IsRootNode)
             {
                 if (node.ascendancyName != null && !Tree.DrawAscendancy)
                     return;
@@ -1620,7 +1620,7 @@ namespace POESKillTree.Views
 
             var node = Tree.FindNodeInRange(v, 50);
             _hoveredNode = node;
-            if (node != null && !SkillTree.RootNodeList.Contains(node.Id))
+            if (node != null && !node.IsRootNode)
             {
                 GenerateTooltipForNode(node);
             }

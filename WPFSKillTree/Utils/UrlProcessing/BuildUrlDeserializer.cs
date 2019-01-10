@@ -57,10 +57,9 @@ namespace POESKillTree.Utils.UrlProcessing
 
             return GetBuildData().SkilledNodesIds.Count(id =>
             {
-                SkillNode skillNode;
-                if (SkillTree.Skillnodes.TryGetValue(id, out skillNode))
+                if (SkillTree.Skillnodes.TryGetValue(id, out var skillNode))
                 {
-                    return !SkillTree.RootNodeList.Contains(id) && skillNode.ascendancyName == null;
+                    return !skillNode.IsRootNode && skillNode.ascendancyName == null;
                 }
 
                 return false;

@@ -348,6 +348,7 @@ namespace POESKillTree.SkillTreeFiles
                                 AscRootNodeList.Add(skillNode);
                         if (RootNodeList.Contains(nd.id))
                         {
+                            skillNode.IsRootNode = true;
                             if (!RootNodeClassDictionary.ContainsKey(nd.dn.ToUpperInvariant()))
                             {
                                 RootNodeClassDictionary.Add(nd.dn.ToUpperInvariant(), nd.id);
@@ -507,7 +508,7 @@ namespace POESKillTree.SkillTreeFiles
 
             foreach (var node in SkilledNodes)
             {
-                if (node.ascendancyName == null && !RootNodeList.Contains(node.Id))
+                if (node.ascendancyName == null && !node.IsRootNode)
                     points["NormalUsed"] += 1;
                 else if (node.ascendancyName != null && !node.IsAscendancyStart && !node.IsMultipleChoiceOption)
                 {
@@ -589,7 +590,7 @@ namespace POESKillTree.SkillTreeFiles
             if(!CanSwitchClass(CharName[classType]))
                 SkilledNodes.Clear();
             Chartype = classType;
-            var remove = SkilledNodes.Where(n => n.ascendancyName != null || RootNodeList.Contains(n.Id)).ToList();
+            var remove = SkilledNodes.Where(n => n.ascendancyName != null || n.IsRootNode).ToList();
             var add = Skillnodes[(ushort)RootNodeClassDictionary[CharName[classType]]];
             SkilledNodes.ExceptWith(remove);
             SkilledNodes.Add(add);
@@ -1285,7 +1286,7 @@ namespace POESKillTree.SkillTreeFiles
             var nodes = new HashSet<SkillNode>();
             foreach (var entry in _nodeHighlighter.NodeHighlights)
             {
-                if (!RootNodeList.Contains(entry.Key.Id) && entry.Value.HasFlag(HighlightState.Checked))
+                if (!entry.Key.IsRootNode && entry.Value.HasFlag(HighlightState.Checked))
                 {
                     nodes.Add(entry.Key);
                 }
@@ -1301,7 +1302,7 @@ namespace POESKillTree.SkillTreeFiles
             var nodes = new HashSet<SkillNode>();
             foreach (var entry in _nodeHighlighter.NodeHighlights)
             {
-                if (!RootNodeList.Contains(entry.Key.Id) && entry.Value.HasFlag(HighlightState.Crossed))
+                if (!entry.Key.IsRootNode && entry.Value.HasFlag(HighlightState.Crossed))
                 {
                     nodes.Add(entry.Key);
                 }
