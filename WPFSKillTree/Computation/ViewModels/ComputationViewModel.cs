@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+using System.Linq;
+using System.Threading.Tasks;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -13,13 +14,16 @@ namespace POESKillTree.Computation.ViewModels
 {
     public class ComputationViewModel : Notifier
     {
+        private readonly ObservableCalculator _observableCalculator;
         public MainSkillSelectionViewModel MainSkillSelection { get; }
         public ResultStatsViewModel OffensiveStats { get; }
         public ResultStatsViewModel DefensiveStats { get; }
         public ConfigurationStatsViewModel ConfigurationStats { get; }
+        public ConfigurationStatViewModel LevelStat { get; private set; }
 
         private ComputationViewModel(SkillDefinitions skillDefinitions, ObservableCalculator observableCalculator)
         {
+            _observableCalculator = observableCalculator;
             OffensiveStats = new ResultStatsViewModel(observableCalculator);
             DefensiveStats = new ResultStatsViewModel(observableCalculator);
             ConfigurationStats = new ConfigurationStatsViewModel(observableCalculator);
@@ -60,6 +64,9 @@ namespace POESKillTree.Computation.ViewModels
             await AddConfigurationStatAsync(f.StatBuilders.Level, Entity.Enemy);
             await AddConfigurationStatAsync(f.MetaStatBuilders.SelectedQuestPart);
             ConfigurationStats.Observe();
+
+            LevelStat = CreateConfigurationStat(f.StatBuilders.Level);
+            CharacterClassStat = CreateConfigurationStat(f.StatBuilders.CharacterClass);
         }
 
         private static void AddAvailableStats(
@@ -88,6 +95,15 @@ namespace POESKillTree.Computation.ViewModels
             {
                 await ConfigurationStats.AddPinnedAsync(stat);
             }
+        }
+
+        private ConfigurationStatViewModel CreateConfigurationStat(
+            IStatBuilder statBuilder, Entity entity = Entity.Character)
+        {
+            var stat = statBuilder.BuildToStats(entity).Single();
+            var vm = new ConfigurationStatViewModel(stat);
+            vm.Observe(_observableCalculator);
+            return vm;
         }
 
         public static async Task<ComputationViewModel> CreateAsync(

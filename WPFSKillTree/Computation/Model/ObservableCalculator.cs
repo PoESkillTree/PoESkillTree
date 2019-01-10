@@ -60,6 +60,10 @@ namespace POESKillTree.Computation.Model
         public IReadOnlyCollection<(ICalculationNode node, IStat stat)> ExplicitlyRegisteredStatsCollection
             => _calculator.ExplicitlyRegisteredStats;
 
+        public Task SubscribeCalculatorToAndAwaitCompletionAsync(IObservable<CalculatorUpdate> observable)
+            => observable.ObserveOn(_calculationScheduler)
+                .SubscribeAndAwaitCompletionAsync(_calculator.Update);
+
         public IDisposable SubscribeCalculatorTo(IObservable<CalculatorUpdate> observable, Action<Exception> onError)
             => observable.ObserveOn(_calculationScheduler)
                 .Subscribe(_calculator.Update, onError);
@@ -67,10 +71,12 @@ namespace POESKillTree.Computation.Model
         public Task<NodeValue?> GetNodeValueAsync(IStat stat)
             => _calculationScheduler.ScheduleAsync(() => GetNode(stat).Value);
 
-        public Task<ICalculationNode> GetNodeAsync(IStat stat)
-            => _calculationScheduler.ScheduleAsync(() => GetNode(stat));
-
         private ICalculationNode GetNode(IStat stat, NodeType nodeType = NodeType.Total)
             => _calculator.NodeRepository.GetNode(stat, nodeType);
+
+        public IDisposable PeriodicallyRemoveUnusedNodes(TimeSpan period, Action<Exception> onError)
+            => Observable.Interval(TimeSpan.FromMilliseconds(200))
+                .ObserveOn(_calculationScheduler)
+                .Subscribe(_ => _calculator.RemoveUnusedNodes(), onError);
     }
 }

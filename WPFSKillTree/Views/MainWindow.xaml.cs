@@ -471,10 +471,10 @@ namespace POESKillTree.Views
             var schedulers = new ComputationSchedulerProvider();
             var observables = new ComputationObservables(gameData.Data, parser);
             var observableCalculator = new ObservableCalculator(calculator, schedulers.CalculationThread);
-            var initialComputationTask = observables.InitialParse()
-                .SubscribeOn(schedulers.TaskPool)
-                .ObserveOn(schedulers.CalculationThread)
-                .SubscribeAndAwaitCompletionAsync(calculator.Update);
+            var initialComputationObservable = observables.InitialParse()
+                .SubscribeOn(schedulers.TaskPool);
+            var initialComputationTask =
+                observableCalculator.SubscribeCalculatorToAndAwaitCompletionAsync(initialComputationObservable);
 
             await itemDBTask;
 
@@ -484,20 +484,19 @@ namespace POESKillTree.Views
             _justLoaded = false;
             InitializeBuildDependentUI();
 
-            var skilledNodesComputationTask = observables.ParseSkilledPassiveNodes(Tree.SkilledNodes)
-                .SubscribeOn(schedulers.TaskPool)
-                .ObserveOn(schedulers.CalculationThread)
-                .SubscribeAndAwaitCompletionAsync(calculator.Update);
+            var skilledNodesComputationObservable = observables.ParseSkilledPassiveNodes(Tree.SkilledNodes)
+                .SubscribeOn(schedulers.TaskPool);
+            var skilledNodesComputationTask =
+                observableCalculator.SubscribeCalculatorToAndAwaitCompletionAsync(skilledNodesComputationObservable);
             await Task.WhenAll(initialComputationTask, skilledNodesComputationTask);
             ComputationViewModel =
                 await ComputationViewModel.CreateAsync(gameData.Data, builderFactories, observableCalculator);
+            ComputationViewModel.LevelStat.NumericValue = Tree.Level;
             observableCalculator.SubscribeCalculatorTo(
                 observables.ObserveSkilledPassiveNodes(Tree.SkilledNodes),
                 ex => Log.Error("Exception while observing skilled node updates", ex));
-            Observable.Interval(TimeSpan.FromMilliseconds(200))
-                .ObserveOn(schedulers.CalculationThread)
-                .Subscribe(_ => calculator.RemoveUnusedNodes(),
-                    ex => Log.Error("Exception while removing unused calculation nodes", ex));
+            observableCalculator.PeriodicallyRemoveUnusedNodes(TimeSpan.FromMilliseconds(200),
+                ex => Log.Error("Exception while removing unused calculation nodes", ex));
 
             await controller.CloseAsync();
         }
@@ -664,6 +663,10 @@ namespace POESKillTree.Views
             {
                 case nameof(SkillTree.Level):
                     PersistentData.CurrentBuild.Level = Tree.Level;
+                    if (ComputationViewModel != null)
+                    {
+                        ComputationViewModel.LevelStat.NumericValue = Tree.Level;
+                    }
                     break;
                 case nameof(SkillTree.Chartype):
                     Tree.UpdateAscendancyClasses = true;
