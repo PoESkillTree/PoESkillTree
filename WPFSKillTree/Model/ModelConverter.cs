@@ -16,6 +16,7 @@ namespace POESKillTree.Model
                 skillNode.Type,
                 skillNode.Name,
                 skillNode.ascendancyName != null,
+                !skillNode.IsRootNode && !skillNode.IsAscendancyStart && !skillNode.IsMultipleChoiceOption,
                 skillNode.passivePointsGranted,
                 skillNode.attributes);
     }

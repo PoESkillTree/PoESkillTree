@@ -35,7 +35,7 @@ namespace PoESkillTree.GameModel.PassiveTree
 
             PassiveNodeDefinition Create(string name)
                 => new PassiveNodeDefinition(id++, PassiveNodeType.Keystone, name, false,
-                    0, new string[0]);
+                    true, 0, new string[0]);
         }
     }
 }

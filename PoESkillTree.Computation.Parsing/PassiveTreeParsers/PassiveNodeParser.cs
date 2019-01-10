@@ -38,10 +38,13 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
             
             var modifiers = new ModifierCollection(_builderFactories, localSource);
             modifiers.AddGlobal(isSkilledStat, Form.BaseSet, false);
-            var passivePointStat = nodeDefinition.IsAscendancyNode
-                ? _builderFactories.StatBuilders.AscendancyPassivePoints
-                : _builderFactories.StatBuilders.PassivePoints;
-            modifiers.AddGlobal(passivePointStat, Form.BaseAdd, 1, isSkilled);
+            if (nodeDefinition.CostsPassivePoint)
+            {
+                var passivePointStat = nodeDefinition.IsAscendancyNode
+                    ? _builderFactories.StatBuilders.AscendancyPassivePoints
+                    : _builderFactories.StatBuilders.PassivePoints;
+                modifiers.AddGlobal(passivePointStat, Form.BaseAdd, 1, isSkilled);
+            }
             if (nodeDefinition.PassivePointsGranted > 0)
             {
                 modifiers.AddGlobal(_builderFactories.StatBuilders.PassivePoints.Maximum,
