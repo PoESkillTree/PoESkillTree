@@ -224,7 +224,7 @@ namespace POESKillTree.Views
         {
             // Register handlers
             PersistentData.CurrentBuild.PropertyChanged += CurrentBuildOnPropertyChanged;
-            PersistentData.CurrentBuild.Bandits.PropertyChanged += (o, a) => UpdateUI();
+            PersistentData.CurrentBuild.Bandits.PropertyChanged += CurrentBuildOnPropertyChanged;
             // Re-register handlers when PersistentData.CurrentBuild is set.
             PersistentData.PropertyChanged += async (sender, args) =>
             {
@@ -232,7 +232,7 @@ namespace POESKillTree.Views
                 {
                     case nameof(PersistentData.CurrentBuild):
                         PersistentData.CurrentBuild.PropertyChanged += CurrentBuildOnPropertyChanged;
-                        PersistentData.CurrentBuild.Bandits.PropertyChanged += (o, a) => UpdateUI();
+                        PersistentData.CurrentBuild.Bandits.PropertyChanged += CurrentBuildOnPropertyChanged;
                         await CurrentBuildChanged();
                         break;
                     case nameof(PersistentData.SelectedBuild):
@@ -248,9 +248,9 @@ namespace POESKillTree.Views
                 {
                     TreeGeneratorInteraction?.SaveSettings();
                     PersistentData.CurrentBuild.PropertyChanged -= CurrentBuildOnPropertyChanged;
+                    PersistentData.CurrentBuild.Bandits.PropertyChanged -= CurrentBuildOnPropertyChanged;
                 }
             };
-            
         }
 
         private async void CurrentBuildOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -271,6 +271,13 @@ namespace POESKillTree.Views
                     break;
                 case nameof(PoEBuild.AdditionalData):
                     TreeGeneratorInteraction?.LoadSettings();
+                    break;
+                case nameof(BanditSettings.Choice):
+                    UpdateUI();
+                    if (ComputationViewModel != null)
+                    {
+                        ComputationViewModel.BanditStat.NumericValue = (int) PersistentData.CurrentBuild.Bandits.Choice;
+                    }
                     break;
             }
         }
@@ -495,6 +502,7 @@ namespace POESKillTree.Views
                 await ComputationViewModel.CreateAsync(gameData.Data, builderFactories, observableCalculator);
             ComputationViewModel.LevelStat.NumericValue = Tree.Level;
             ComputationViewModel.CharacterClassStat.NumericValue = (int) Tree.CharClass;
+            ComputationViewModel.BanditStat.NumericValue = (int) PersistentData.CurrentBuild.Bandits.Choice;
             observableCalculator.SubscribeCalculatorTo(
                 observables.ObserveSkilledPassiveNodes(Tree.SkilledNodes),
                 ex => Log.Error("Exception while observing skilled node updates", ex));

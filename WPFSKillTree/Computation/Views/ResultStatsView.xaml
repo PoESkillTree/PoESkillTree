@@ -25,7 +25,7 @@
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
                 <DataGridTextColumn IsReadOnly="True"
-                                    Width="55"
+                                    Width="60"
                                     HeaderStyle="{StaticResource MetroDataGridColumnHeader}"
                                     Binding="{Binding Value}">
                     <DataGridTextColumn.Header>
@@ -45,7 +45,7 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Grid Width="305"
+        <Grid Width="310"
               HorizontalAlignment="Left">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150" />

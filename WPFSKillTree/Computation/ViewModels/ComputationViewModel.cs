@@ -21,6 +21,7 @@ namespace POESKillTree.Computation.ViewModels
         public ConfigurationStatsViewModel ConfigurationStats { get; }
         public ConfigurationStatViewModel LevelStat { get; private set; }
         public ConfigurationStatViewModel CharacterClassStat { get; private set; }
+        public ConfigurationStatViewModel BanditStat { get; private set; }
 
         private ComputationViewModel(SkillDefinitions skillDefinitions, ObservableCalculator observableCalculator)
         {
@@ -68,6 +69,7 @@ namespace POESKillTree.Computation.ViewModels
 
             LevelStat = CreateConfigurationStat(f.StatBuilders.Level);
             CharacterClassStat = CreateConfigurationStat(f.StatBuilders.CharacterClass);
+            BanditStat = CreateConfigurationStat(f.MetaStatBuilders.SelectedBandit);
         }
 
         private static void AddAvailableStats(

@@ -49,7 +49,7 @@
                     <l:Catalog>Stat</l:Catalog>
                 </DataGridTextColumn.Header>
             </DataGridTextColumn>
-            <DataGridTemplateColumn Width="100"
+            <DataGridTemplateColumn Width="120"
                                     HeaderStyle="{StaticResource MetroDataGridColumnHeader}">
                 <DataGridTemplateColumn.Header>
                     <l:Catalog>Value</l:Catalog>
