@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -20,6 +20,7 @@ namespace POESKillTree.Computation.ViewModels
         public ResultStatsViewModel DefensiveStats { get; }
         public ConfigurationStatsViewModel ConfigurationStats { get; }
         public ConfigurationStatViewModel LevelStat { get; private set; }
+        public ConfigurationStatViewModel CharacterClassStat { get; private set; }
 
         private ComputationViewModel(SkillDefinitions skillDefinitions, ObservableCalculator observableCalculator)
         {

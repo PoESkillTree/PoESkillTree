@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using log4net;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 using POESKillTree.Utils;
@@ -12,6 +13,8 @@ namespace POESKillTree.Computation.Model
 {
     public class ObservableCalculator
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ObservableCalculator));
+
         private readonly ICalculator _calculator;
         private readonly IScheduler _calculationScheduler;
         private readonly Lazy<IObservable<CollectionChangeEventArgs>> _explicitlyRegisteredStatsObservable;
@@ -54,6 +57,7 @@ namespace POESKillTree.Computation.Model
                     h => collection.CollectionChanged += h,
                     h => collection.CollectionChanged -= h)
                 .Select(p => p.EventArgs)
+                .Do(args => Log.Info($"ExplicitlyRegisteredStats: received {args.Action} {args.Element}"))
                 .SubscribeOn(_calculationScheduler);
         }
 
@@ -62,11 +66,17 @@ namespace POESKillTree.Computation.Model
 
         public Task SubscribeCalculatorToAndAwaitCompletionAsync(IObservable<CalculatorUpdate> observable)
             => observable.ObserveOn(_calculationScheduler)
-                .SubscribeAndAwaitCompletionAsync(_calculator.Update);
+                .SubscribeAndAwaitCompletionAsync(UpdateCalculator);
 
         public IDisposable SubscribeCalculatorTo(IObservable<CalculatorUpdate> observable, Action<Exception> onError)
             => observable.ObserveOn(_calculationScheduler)
-                .Subscribe(_calculator.Update, onError);
+                .Subscribe(UpdateCalculator, onError);
+
+        private void UpdateCalculator(CalculatorUpdate update)
+        {
+            _calculator.Update(update);
+            Log.Info($"Added {update.AddedModifiers.Count} and removed {update.RemovedModifiers.Count} modifiers");
+        }
 
         public Task<NodeValue?> GetNodeValueAsync(IStat stat)
             => _calculationScheduler.ScheduleAsync(() => GetNode(stat).Value);

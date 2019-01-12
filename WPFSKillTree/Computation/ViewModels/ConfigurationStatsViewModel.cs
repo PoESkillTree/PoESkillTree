@@ -81,7 +81,7 @@ namespace POESKillTree.Computation.ViewModels
                 RemoveIfNotPinned(stat);
             }
 
-            foreach (var (node, stat) in _observableCalculator.ExplicitlyRegisteredStatsCollection)
+            foreach (var (_, stat) in _observableCalculator.ExplicitlyRegisteredStatsCollection)
             {
                 AddIfUserSpecified(stat);
             }
