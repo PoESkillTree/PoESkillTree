@@ -119,7 +119,7 @@ namespace POESKillTree.Computation.ViewModels
             => new[]
             {
                 new Modifier(new[] { Stat }, Form.TotalOverride, new Constant(value),
-                    new ModifierSource.Global(new ModifierSource.Local.UserDefined()))
+                    new ModifierSource.Global(new ModifierSource.Local.UserSpecified()))
             };
 
         public void Dispose()

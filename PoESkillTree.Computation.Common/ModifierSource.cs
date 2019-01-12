@@ -192,11 +192,8 @@ namespace PoESkillTree.Computation.Common
                 public override int GetHashCode() => (GetType(), Slot, SocketIndex).GetHashCode();
             }
 
-            public sealed class UserDefined : Local
+            public sealed class UserSpecified : Local
             {
-                public UserDefined()
-                {
-                }
             }
         }
     }
