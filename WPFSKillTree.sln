@@ -67,6 +67,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.GameModel", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.GameModel.Tests", "PoESkillTree.GameModel.Tests\PoESkillTree.GameModel.Tests.csproj", "{0664E11C-B04A-469F-A65D-40BFC94BC88D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PoESkillTree.Application.Tests", "PoESkillTree.Application.Tests\PoESkillTree.Application.Tests.csproj", "{172BA462-EB78-47C4-A85A-677FBD1A6A89}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -219,6 +221,14 @@ Global
 		{0664E11C-B04A-469F-A65D-40BFC94BC88D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0664E11C-B04A-469F-A65D-40BFC94BC88D}.Release|x86.ActiveCfg = Release|Any CPU
 		{0664E11C-B04A-469F-A65D-40BFC94BC88D}.Release|x86.Build.0 = Release|Any CPU
+		{172BA462-EB78-47C4-A85A-677FBD1A6A89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{172BA462-EB78-47C4-A85A-677FBD1A6A89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{172BA462-EB78-47C4-A85A-677FBD1A6A89}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{172BA462-EB78-47C4-A85A-677FBD1A6A89}.Debug|x86.Build.0 = Debug|Any CPU
+		{172BA462-EB78-47C4-A85A-677FBD1A6A89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{172BA462-EB78-47C4-A85A-677FBD1A6A89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{172BA462-EB78-47C4-A85A-677FBD1A6A89}.Release|x86.ActiveCfg = Release|Any CPU
+		{172BA462-EB78-47C4-A85A-677FBD1A6A89}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
