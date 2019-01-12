@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -19,9 +18,7 @@ namespace POESKillTree.Computation.ViewModels
         public ResultStatsViewModel OffensiveStats { get; }
         public ResultStatsViewModel DefensiveStats { get; }
         public ConfigurationStatsViewModel ConfigurationStats { get; }
-        public ConfigurationStatViewModel LevelStat { get; private set; }
-        public ConfigurationStatViewModel CharacterClassStat { get; private set; }
-        public ConfigurationStatViewModel BanditStat { get; private set; }
+        public SharedConfigurationViewModel SharedConfiguration { get; private set; }
 
         private ComputationViewModel(SkillDefinitions skillDefinitions, ObservableCalculator observableCalculator)
         {
@@ -67,9 +64,7 @@ namespace POESKillTree.Computation.ViewModels
             await AddConfigurationStatAsync(f.MetaStatBuilders.SelectedQuestPart);
             ConfigurationStats.Observe();
 
-            LevelStat = CreateConfigurationStat(f.StatBuilders.Level);
-            CharacterClassStat = CreateConfigurationStat(f.StatBuilders.CharacterClass);
-            BanditStat = CreateConfigurationStat(f.MetaStatBuilders.SelectedBandit);
+            SharedConfiguration = SharedConfigurationViewModel.Create(_observableCalculator, f);
         }
 
         private static void AddAvailableStats(
@@ -98,15 +93,6 @@ namespace POESKillTree.Computation.ViewModels
             {
                 await ConfigurationStats.AddPinnedAsync(stat);
             }
-        }
-
-        private ConfigurationStatViewModel CreateConfigurationStat(
-            IStatBuilder statBuilder, Entity entity = Entity.Character)
-        {
-            var stat = statBuilder.BuildToStats(entity).Single();
-            var vm = new ConfigurationStatViewModel(stat);
-            vm.Observe(_observableCalculator);
-            return vm;
         }
 
         public static async Task<ComputationViewModel> CreateAsync(

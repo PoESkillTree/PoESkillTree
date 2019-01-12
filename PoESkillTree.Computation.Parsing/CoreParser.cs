@@ -28,7 +28,8 @@ namespace PoESkillTree.Computation.Parsing
     /// </remarks>
     public class CoreParser<TStep> : ICoreParser
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(CoreParser<TStep>));
+        private static readonly ILog Log =
+            LogManager.GetLogger($"{typeof(CoreParser<>).FullName}<{typeof(TStep).Name}>");
 
         private readonly IParsingData<TStep> _parsingData;
         private readonly IBuilderFactories _builderFactories;
