@@ -232,8 +232,8 @@
     <Compile Include="Model\Items\Mods\Stat.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
     <Compile Include="Model\ModelConverter.cs" />
-    <Compile Include="Utils\ObservableExtensions.cs" />
-    <Compile Include="Utils\SchedulerExtensions.cs" />
+    <Compile Include="Utils\Extensions\ObservableExtensions.cs" />
+    <Compile Include="Utils\Extensions\SchedulerExtensions.cs" />
     <Compile Include="Utils\SemanticVersion.cs" />
     <Compile Include="Utils\WikiApi\CargoConstants.cs" />
     <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
@@ -523,7 +523,6 @@
     <Compile Include="Utils\AppData.cs" />
     <Compile Include="Utils\CustomSettingsProvider.cs" />
     <Compile Include="Utils\Extensions\StringExtension.cs" />
-    <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
     <Compile Include="ViewModels\Equipment\DownloadItemsViewModel.cs" />
     <Compile Include="Model\Items\Item.cs" />

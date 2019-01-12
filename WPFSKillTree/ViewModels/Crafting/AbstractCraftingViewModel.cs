@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using EnumsNET;
 using MoreLinq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Modifiers;
@@ -60,7 +61,7 @@ namespace POESKillTree.ViewModels.Crafting
 
         // First level
 
-        public IReadOnlyList<BaseGroup> FirstLevelList { get; } = Util.GetEnumValues<BaseGroup>();
+        public IReadOnlyList<BaseGroup> FirstLevelList { get; } = Enums.GetValues<BaseGroup>().ToList();
 
         private BaseGroup _selectedFirstLevel;
         public BaseGroup SelectedFirstLevel

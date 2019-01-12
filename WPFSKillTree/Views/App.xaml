@@ -4,9 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converter="clr-namespace:POESKillTree.Utils.Converter"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
-             Startup="App_Startup"
              StartupUri="MainWindow.xaml"
-             Exit="App_Exit"
              DispatcherUnhandledException="App_DispatcherUnhandledException">
     <Application.Resources>
         <ResourceDictionary>

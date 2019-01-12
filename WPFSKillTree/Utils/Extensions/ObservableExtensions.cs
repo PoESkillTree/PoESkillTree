@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace POESKillTree.Utils
+namespace POESKillTree.Utils.Extensions
 {
     public static class ObservableExtensions
     {
