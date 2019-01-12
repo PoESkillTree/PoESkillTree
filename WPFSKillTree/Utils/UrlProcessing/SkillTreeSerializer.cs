@@ -46,7 +46,7 @@ namespace POESKillTree.Utils.UrlProcessing
             skillNodes.Sort();
 
             var bytes = new byte[HeaderSize + skillNodes.Count() * 2];
-            bytes = GetCharacterBytes((byte)_buildUrlData.CharacterClassId, (byte)_buildUrlData.AscendancyClassId, bytes);
+            bytes = GetCharacterBytes((byte)_buildUrlData.CharacterClass, (byte)_buildUrlData.AscendancyClassId, bytes);
 
             int unknownNodes = 0;
             int i = HeaderSize;
@@ -83,7 +83,7 @@ namespace POESKillTree.Utils.UrlProcessing
                 .OrderBy(node => node.Id);
 
             var bytes = new byte[HeaderSize + skillNodes.Count() * 2];
-            bytes = GetCharacterBytes((byte)_skillTree.Chartype, (byte)_skillTree.AscType, bytes);
+            bytes = GetCharacterBytes((byte)_skillTree.CharClass, (byte)_skillTree.AscType, bytes);
 
             int i = HeaderSize;
             foreach (var inn in skillNodes)

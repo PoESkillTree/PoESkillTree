@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using PoESkillTree.GameModel;
 using POESKillTree.Localization;
 using POESKillTree.SkillTreeFiles;
 
@@ -52,7 +53,7 @@ namespace POESKillTree.Utils.UrlProcessing
                     L10n.Message("The build is using an old version of the passive tree."));
             }
 
-            deserializedData.CharacterClassId = bytes[4];
+            deserializedData.CharacterClass = (CharacterClass) bytes[4];
             deserializedData.AscendancyClassId = bytes[5];
 
             for (int k = (deserializedData.Version > 3 ? 7 : 6); k < bytes.Length; k += 2)

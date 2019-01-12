@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using PoESkillTree.GameModel;
 using POESKillTree.SkillTreeFiles;
 
 namespace POESKillTree.Utils.UrlProcessing
@@ -69,18 +70,14 @@ namespace POESKillTree.Utils.UrlProcessing
         /// <summary>
         /// Returns the character class of the given build url.
         /// </summary>
-        public virtual string GetCharacterClass()
-        {
-            var classId = GetCharacterClassId();
-
-            return CharacterNames.GetClassNameFromChartype(classId);
-        }
+        public CharacterClass GetCharacterClass()
+            => (CharacterClass) GetCharacterClassId();
 
         /// <summary>
         /// Returns the ascendancy class of the given build url.
         /// Returns null if the tree has no ascendancy class selected.
         /// </summary>
-        public virtual string GetAscendancyClass()
+        public string GetAscendancyClass()
         {
             var ascendancyId = GetAscendancyClassId();
 
@@ -88,9 +85,7 @@ namespace POESKillTree.Utils.UrlProcessing
             if (ascendancyId == 0)
                 return null;
 
-            var classId = GetCharacterClassId();
-
-            return _ascendancyClasses.GetClassName(classId, ascendancyId);
+            return _ascendancyClasses.GetAscendancyClassName(GetCharacterClass(), ascendancyId);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PoESkillTree.GameModel;
 using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Serialization;
@@ -243,8 +244,7 @@ namespace UnitTests.UrlProcessing
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"..\..\TestBuilds\EmptyBuildUrls.xml", "build", DataAccessMethod.Sequential)]
         public void GetCharacterClassTest()
         {
-            var expectedClassId = Convert.ToInt32(TestContext.DataRow["characterClassId"]);
-            var expectedClass = Enum.GetName(typeof(CharacterClasses), expectedClassId);
+            var expectedClass = (CharacterClass) Convert.ToInt32(TestContext.DataRow["characterClassId"]);
             var targetUrl = Convert.ToString(TestContext.DataRow.GetChildRows("build_urls")[0]["default"], CultureInfo.InvariantCulture);
 
             var actualClass =
@@ -259,11 +259,11 @@ namespace UnitTests.UrlProcessing
         {
             // There are duplicate cases for rows with empty ascendancy class.
             // Consider this if test runs too slow.
-            var characterClassId = Convert.ToInt32(TestContext.DataRow["characterClassId"]);
+            var characterClass = (CharacterClass) Convert.ToInt32(TestContext.DataRow["characterClassId"]);
             var ascendancyClassId = Convert.ToInt32(TestContext.DataRow["ascendancyClassId"]);
 
             string expectedAscendancyClass = ascendancyClassId > 0
-                ? _tree.AscendancyClasses.GetClassName(characterClassId, ascendancyClassId)
+                ? _tree.AscendancyClasses.GetAscendancyClassName(characterClass, ascendancyClassId)
                 : null;
 
             string targetUrl = Convert.ToString(TestContext.DataRow.GetChildRows("build_urls")[0]["default"], CultureInfo.InvariantCulture);

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using PoESkillTree.GameModel;
 using POESKillTree.Model;
 
 namespace POESKillTree.Utils.UrlProcessing
@@ -13,7 +14,7 @@ namespace POESKillTree.Utils.UrlProcessing
         private int? _banditId;
 
         public int Version { get; set; }
-        public int CharacterClassId { get; set; }
+        public CharacterClass CharacterClass { get; set; }
         public int AscendancyClassId { get; set; }
         public List<ushort> SkilledNodesIds { get; } = new List<ushort>();
         public Dictionary<int, List<byte>> Jewels { get; } = new Dictionary<int, List<byte>>();

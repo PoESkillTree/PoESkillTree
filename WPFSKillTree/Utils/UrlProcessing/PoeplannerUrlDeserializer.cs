@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using PoESkillTree.GameModel;
 using POESKillTree.SkillTreeFiles;
 
 namespace POESKillTree.Utils.UrlProcessing
@@ -135,7 +136,7 @@ namespace POESKillTree.Utils.UrlProcessing
             if (data.NodesData.Length == 0)
                 return result;
 
-            result.CharacterClassId = data.NodesData[0] & 15;
+            result.CharacterClass = (CharacterClass) (data.NodesData[0] & 15);
             result.AscendancyClassId = data.NodesData[0] >> 4 & 15;
 
             if (data.NodesData.Length < 2)

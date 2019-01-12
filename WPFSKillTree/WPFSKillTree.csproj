@@ -418,7 +418,6 @@
     <Compile Include="SkillTreeFiles\AscendancyClasses.cs" />
     <Compile Include="SkillTreeFiles\AssetLoader.cs" />
     <Compile Include="SkillTreeFiles\Bootstrap.cs" />
-    <Compile Include="SkillTreeFiles\CharacterNames.cs" />
     <Compile Include="SkillTreeFiles\Compute.cs" />
     <Compile Include="SkillTreeFiles\Constants.cs" />
     <Compile Include="SkillTreeFiles\ItemDB.cs" />

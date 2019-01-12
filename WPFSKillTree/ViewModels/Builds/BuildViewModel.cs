@@ -1,5 +1,6 @@
 using System;
 using log4net;
+using PoESkillTree.GameModel;
 using POESKillTree.Localization;
 using POESKillTree.Model.Builds;
 
@@ -14,7 +15,7 @@ namespace POESKillTree.ViewModels.Builds
 
         private bool _currentlyOpen;
         private bool _isVisible;
-        private string _characterClass;
+        private CharacterClass _characterClass;
         private string _ascendancyClass;
         private uint _pointsUsed;
 
@@ -39,7 +40,7 @@ namespace POESKillTree.ViewModels.Builds
         /// <summary>
         /// Gets the character class of the represented tree.
         /// </summary>
-        public string CharacterClass
+        public CharacterClass CharacterClass
         {
             get { return _characterClass; }
             private set { SetProperty(ref _characterClass, value); }
@@ -63,7 +64,7 @@ namespace POESKillTree.ViewModels.Builds
             set { SetProperty(ref _pointsUsed, value); }
         }
 
-        private string ClassName => AscendancyClass ?? CharacterClass;
+        private string ClassName => AscendancyClass ?? CharacterClass.ToString();
 
         /// <summary>
         /// Gets the path to a image describing this build.
@@ -149,8 +150,6 @@ namespace POESKillTree.ViewModels.Builds
             {
                 Log.Warn($"Could not get tree depending properties for {Build.Name} because the tree is invalid: {Build.TreeUrl}", e);
                 PointsUsed = 0;
-                CharacterClass = L10n.Message("Invalid Tree");
-                AscendancyClass = null;
             }
         }
 

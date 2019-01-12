@@ -18,10 +18,12 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using EnumsNET;
 using log4net;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MoreLinq;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.PassiveTree;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Computation.Model;
@@ -121,7 +123,7 @@ namespace POESKillTree.Views
         private async Task<SkillTree> CreateSkillTreeAsync(ProgressDialogController controller,
             AssetLoader assetLoader = null)
         {
-            var tree = await SkillTree.CreateAsync(PersistentData, DialogCoordinator.Instance, controller, assetLoader);
+            var tree = await SkillTree.CreateAsync(PersistentData, controller, assetLoader);
             tree.PropertyChanged += Tree_PropertyChanged;
             if (BuildsControlViewModel != null)
                 BuildsControlViewModel.SkillTree = tree;
@@ -576,9 +578,7 @@ namespace POESKillTree.Views
             _offenceCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Group"));
             listBoxOffence.ItemsSource = _offenceCollection;
 
-            cbCharType.ItemsSource =
-                CharacterNames.NameToContent.Select(
-                    x => new ComboBoxItem {Name = x.Key, Content = x.Value});
+            cbCharType.ItemsSource = Enums.GetValues<CharacterClass>();
             cbAscType.SelectedIndex = 0;
         }
 
@@ -668,7 +668,7 @@ namespace POESKillTree.Views
                         ComputationViewModel.LevelStat.NumericValue = Tree.Level;
                     }
                     break;
-                case nameof(SkillTree.Chartype):
+                case nameof(SkillTree.CharClass):
                     Tree.UpdateAscendancyClasses = true;
                     PopulateAscendancySelectionList();
                     break;
@@ -1186,13 +1186,15 @@ namespace POESKillTree.Views
 
         private void cbCharType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-             if (Tree == null)
+            if (Tree == null)
                 return;
-             if (!_userInteraction)
-                 return;
-             if (Tree.Chartype == cbCharType.SelectedIndex) return;
+            if (!_userInteraction)
+                return;
 
-            Tree.SwitchClass(cbCharType.SelectedIndex);
+            var charClass = (CharacterClass) cbCharType.SelectedItem;
+            if (Tree.CharClass == charClass) return;
+
+            Tree.SwitchClass(charClass);
             UpdateUI();
             SetCurrentBuildUrlFromTree();
             _userInteraction = false;
@@ -1218,7 +1220,7 @@ namespace POESKillTree.Views
             if (!Tree.UpdateAscendancyClasses) return;
             Tree.UpdateAscendancyClasses = false;
             var ascendancyItems = new List<string> { "None" };
-            foreach (var name in Tree.AscendancyClasses.GetClasses(Tree.Chartype))
+            foreach (var name in Tree.AscendancyClasses.GetClasses(Tree.CharClass))
                 ascendancyItems.Add(name.DisplayName);
             cbAscType.ItemsSource = ascendancyItems.Select(x => new ComboBoxItem { Name = x, Content = x });
         }
@@ -1307,7 +1309,7 @@ namespace POESKillTree.Views
 
         public void UpdateClass()
         {
-            cbCharType.SelectedIndex = Tree.Chartype;
+            cbCharType.SelectedItem = Tree.CharClass;
             cbAscType.SelectedIndex = Tree.AscType;
         }
 
@@ -1548,7 +1550,7 @@ namespace POESKillTree.Views
             {
                 if (node.ascendancyName != null && !Tree.DrawAscendancy)
                     return;
-                var ascendancyClassName = Tree.AscendancyClasses.GetClassName(Tree.Chartype, Tree.AscType);
+                var ascendancyClassName = Tree.AscendancyClassName;
                 if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != ascendancyClassName)
                     return;
                 // Ignore clicks on character portraits and masteries
@@ -1653,7 +1655,8 @@ namespace POESKillTree.Views
         {
             if (!Tree.DrawAscendancy && node.ascendancyName != null && !forcerefresh)
                 return;
-            if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.AscendancyClasses.GetClassName(Tree.Chartype, Tree.AscType))
+            if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null &&
+                node.ascendancyName != Tree.AscendancyClassName)
                 return;
 
             if (node.Type == PassiveNodeType.JewelSocket)
@@ -2140,14 +2143,11 @@ namespace POESKillTree.Views
             var build = PersistentData.SelectedBuild as PoEBuild;
             if (build != null && PersistentData.Options.TreeComparisonEnabled)
             {
-                HashSet<SkillNode> nodes;
-                int ctype;
-                int atype;
-                SkillTree.DecodeUrl(build.TreeUrl, out nodes, out ctype, out atype, Tree);
+                SkillTree.DecodeUrl(build.TreeUrl, out var nodes, out var charClass, Tree);
 
                 Tree.HighlightedNodes.Clear();
                 Tree.HighlightedNodes.UnionWith(nodes);
-                Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, ctype, build.Level, build.Bandits);
+                Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, charClass, build.Level, build.Bandits);
             }
             else
             {
