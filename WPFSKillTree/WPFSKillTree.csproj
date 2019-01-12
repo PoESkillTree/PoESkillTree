@@ -200,6 +200,7 @@
     <Compile Include="Common\ViewModels\ErrorInfoViewModel.cs" />
     <Compile Include="Common\ViewModels\RelayCommand.cs" />
     <Compile Include="Common\ViewModels\ViewModelBase.cs" />
+    <Compile Include="Computation\ComputationInitializer.cs" />
     <Compile Include="Computation\Model\ComputationFactory.cs" />
     <Compile Include="Computation\Model\ComputationSchedulerProvider.cs" />
     <Compile Include="Computation\Model\ComputationObservables.cs" />

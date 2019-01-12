@@ -84,7 +84,7 @@ namespace POESKillTree.Computation.Model
         private ICalculationNode GetNode(IStat stat, NodeType nodeType = NodeType.Total)
             => _calculator.NodeRepository.GetNode(stat, nodeType);
 
-        public IDisposable PeriodicallyRemoveUnusedNodes(TimeSpan period, Action<Exception> onError)
+        public IDisposable PeriodicallyRemoveUnusedNodes(Action<Exception> onError)
             => Observable.Interval(TimeSpan.FromMilliseconds(200))
                 .ObserveOn(_calculationScheduler)
                 .Subscribe(_ => _calculator.RemoveUnusedNodes(), onError);
