@@ -1,22 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 using EnumsNET;
+using PoESkillTree.GameModel;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Model
 {
-    /// <summary>
-    /// Enumeration of the bandits from whom can be choose at each difficulty.
-    /// (choosing none gives an extra skill point)
-    /// </summary>
-    public enum Bandit
-    {
-        None = 0,
-        Alira = 1,
-        Oak = 2,
-        Kraityn = 3
-    }
-
     /// <summary>
     /// Stores the bandit choice.
     /// </summary>

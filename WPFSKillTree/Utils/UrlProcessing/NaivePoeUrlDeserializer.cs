@@ -44,8 +44,10 @@ namespace POESKillTree.Utils.UrlProcessing
         {
             var bytes = GetRawData();
 
-            var deserializedData = new BuildUrlData(BanditConverter.Default);
-            deserializedData.Version = bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3];
+            var deserializedData = new BuildUrlData
+            {
+                Version = bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3]
+            };
 
             if (!IsVersionCompatible(deserializedData.Version))
             {
