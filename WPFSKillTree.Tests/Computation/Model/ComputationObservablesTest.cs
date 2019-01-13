@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 
-namespace PoESkillTree.Application.Tests.Computation.Model
+namespace PoESkillTree.Tests.Computation.Model
 {
     [TestFixture]
     public class ComputationObservablesTest
