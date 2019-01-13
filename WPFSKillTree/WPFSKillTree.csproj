@@ -232,7 +232,6 @@
     <Compile Include="Model\Items\Mods\Stat.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
     <Compile Include="Model\ModelConverter.cs" />
-    <Compile Include="Utils\Extensions\ObservableExtensions.cs" />
     <Compile Include="Utils\Extensions\SchedulerExtensions.cs" />
     <Compile Include="Utils\SemanticVersion.cs" />
     <Compile Include="Utils\WikiApi\CargoConstants.cs" />

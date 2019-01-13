@@ -54,15 +54,16 @@ namespace POESKillTree.Computation
             var parser = await computationFactory.CreateParserAsync();
 
             _schedulers = new ComputationSchedulerProvider();
-            _observables = new ComputationObservables(_gameData.Data, parser);
+            _observables = new ComputationObservables(parser);
             _calculator = new ObservableCalculator(calculator, _schedulers.CalculationThread);
         }
 
         private async Task DoInitialParseAsync()
         {
-            var initialObservable = _observables.InitialParse()
+            var passiveTree = await _gameData.Data.PassiveTree;
+            var initialObservable = _observables.InitialParse(passiveTree, TimeSpan.FromMilliseconds(200))
                 .SubscribeOn(_schedulers.TaskPool);
-            await _calculator.SubscribeCalculatorToAndAwaitCompletionAsync(initialObservable);
+            await _calculator.ForEachUpdateCalculatorAsync(initialObservable);
         }
 
         public async Task InitializeAfterBuildLoadAsync(ObservableSet<SkillNode> skilledNodes)
@@ -76,7 +77,7 @@ namespace POESKillTree.Computation
         {
             var skilledNodesComputationObservable = _observables.ParseSkilledPassiveNodes(skilledNodes)
                 .SubscribeOn(_schedulers.TaskPool);
-            await _calculator.SubscribeCalculatorToAndAwaitCompletionAsync(skilledNodesComputationObservable);
+            await _calculator.ForEachUpdateCalculatorAsync(skilledNodesComputationObservable);
 
             _calculator.SubscribeCalculatorTo(
                 _observables.ObserveSkilledPassiveNodes(skilledNodes),

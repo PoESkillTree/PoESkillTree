@@ -58,9 +58,9 @@ namespace POESKillTree.Computation.Model
         public IReadOnlyCollection<(ICalculationNode node, IStat stat)> ExplicitlyRegisteredStatsCollection
             => _calculator.ExplicitlyRegisteredStats;
 
-        public Task SubscribeCalculatorToAndAwaitCompletionAsync(IObservable<CalculatorUpdate> observable)
+        public Task ForEachUpdateCalculatorAsync(IObservable<CalculatorUpdate> observable)
             => observable.ObserveOn(_calculationScheduler)
-                .SubscribeAndAwaitCompletionAsync(UpdateCalculator);
+                .ForEachAsync(UpdateCalculator);
 
         public IDisposable SubscribeCalculatorTo(IObservable<CalculatorUpdate> observable, Action<Exception> onError)
             => observable.ObserveOn(_calculationScheduler)

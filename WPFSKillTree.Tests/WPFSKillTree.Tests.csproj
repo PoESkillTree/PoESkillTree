@@ -58,6 +58,9 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Reactive, Version=4.1.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.4.1.2\lib\net46\System.Reactive.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
@@ -88,9 +91,29 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PoESkillTree.Computation.Builders\PoESkillTree.Computation.Builders.csproj">
+      <Project>{940a286a-bca7-4c79-ac89-55c57c7d4784}</Project>
+      <Name>PoESkillTree.Computation.Builders</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj">
+      <Project>{827BE52D-878C-45F0-AFC0-75B5385AAD53}</Project>
+      <Name>PoESkillTree.Computation.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Core\PoESkillTree.Computation.Core.csproj">
+      <Project>{E9C0CF81-6800-4461-8897-F8B569C7CDD0}</Project>
+      <Name>PoESkillTree.Computation.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Parsing\PoESkillTree.Computation.Parsing.csproj">
+      <Project>{1E573C72-9B7F-40AF-A5E8-739F90B50690}</Project>
+      <Name>PoESkillTree.Computation.Parsing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PoESkillTree.GameModel\PoESkillTree.GameModel.csproj">
       <Project>{c1c73cc9-d825-41f7-86f0-f37ee8178d6d}</Project>
       <Name>PoESkillTree.GameModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">
+      <Project>{1F11D13C-9039-40AB-8B91-8A03E4DA934A}</Project>
+      <Name>PoESkillTree.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\WPFSKillTree\WPFSKillTree.csproj">
       <Project>{fcda18d8-4fd9-484b-b7dc-dbf771b3aec7}</Project>
