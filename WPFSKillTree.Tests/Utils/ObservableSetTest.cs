@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using POESKillTree.Utils;
 
-namespace UnitTests
+namespace PoESkillTree.Tests.Utils
 {
-    [TestClass]
+    [TestFixture]
     public class ObservableSetTest
     {
         private ObservableSet<string> _set;
         private int _collectionChangedInvocations;
         private int _propertyChangedInvocations;
 
-        [TestInitialize]
+        [SetUp]
         public void Initialize()
         {
             _set = new ObservableSet<string>
@@ -32,7 +32,7 @@ namespace UnitTests
             _propertyChangedInvocations = 0;
         }
 
-        [TestMethod]
+        [Test]
         public void TestAdd()
         {
             ExpectCollectionChange(NotifyCollectionChangedAction.Add, "item");
@@ -43,7 +43,7 @@ namespace UnitTests
             ExpectChangeCalls(0);
         }
 
-        [TestMethod]
+        [Test]
         public void TestClear()
         {
             ExpectCollectionChange(NotifyCollectionChangedAction.Remove, "item 1", "item 2", "item 3");
@@ -54,7 +54,7 @@ namespace UnitTests
             ExpectChangeCalls(0);
         }
 
-        [TestMethod]
+        [Test]
         public void TestRemove()
         {
             ExpectCollectionChange(NotifyCollectionChangedAction.Remove, "item 2");
@@ -69,15 +69,14 @@ namespace UnitTests
             ExpectChangeCalls(0);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void TestReentrancy()
         {
             _set.CollectionChanged += (sender, args) => _set.Add("item");
-            _set.Remove("item 1");
+            Assert.Throws<InvalidOperationException>(() => _set.Remove("item 1"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestRangeChangeUnsupported()
         {
             var first = true;
@@ -97,7 +96,7 @@ namespace UnitTests
             Assert.AreEqual(2, _propertyChangedInvocations);
         }
 
-        [TestMethod]
+        [Test]
         public void TestUnionWith()
         {
             ExpectCollectionChange(NotifyCollectionChangedAction.Add, "item 4", "item 5");
@@ -108,7 +107,7 @@ namespace UnitTests
             ExpectChangeCalls(0);
         }
 
-        [TestMethod]
+        [Test]
         public void TestIntersectWith()
         {
             var other = new[] {"item 1", "item 3"};
@@ -165,7 +164,7 @@ namespace UnitTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void TestIntersectWith_CustomEquality()
         {
             // HashSet, non-default equality
@@ -174,7 +173,7 @@ namespace UnitTests
             ExpectChangeCalls(1);
         }
 
-        [TestMethod]
+        [Test]
         public void TestExceptWith()
         {
             ExpectCollectionChange(NotifyCollectionChangedAction.Remove, "item 1", "item 2");
@@ -185,7 +184,7 @@ namespace UnitTests
             ExpectChangeCalls(0);
         }
 
-        [TestMethod]
+        [Test]
         public void TestExceptWith_Empty()
         {
             _set.Clear();
@@ -194,7 +193,7 @@ namespace UnitTests
             ExpectChangeCalls(0);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSymmetricExceptWith()
         {
             _set.CollectionChanged += (sender, args) =>
@@ -212,7 +211,7 @@ namespace UnitTests
             ExpectChangeCalls(0);
         }
 
-        [TestMethod]
+        [Test]
         public void TestSymmetricExceptWith_Empty()
         {
             _set.Clear();

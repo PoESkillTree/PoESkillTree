@@ -108,14 +108,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDPS.cs" />
     <Compile Include="TestItemDB.cs" />
-    <Compile Include="TestMSTAlgorithm.cs" />
-    <Compile Include="TestGeneticAlgorithmEasy.cs" />
-    <Compile Include="ObservableSetTest.cs" />
     <Compile Include="UrlProcessing\BuildConverterTests.cs" />
     <Compile Include="UrlProcessing\BuildLoadingTests.cs" />
     <Compile Include="UrlProcessing\BuildUrlNormalizerTests.cs" />
     <Compile Include="UrlProcessing\UrlProcessingTests.cs" />
-    <Compile Include="WeightedSamplerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">

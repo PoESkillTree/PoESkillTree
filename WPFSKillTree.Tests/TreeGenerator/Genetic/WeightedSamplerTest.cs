@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using POESKillTree.TreeGenerator.Genetic;
 
-namespace UnitTests
+namespace PoESkillTree.Tests.TreeGenerator.Genetic
 {
-    [TestClass]
-    public class WeightedSamplerTests
+    [TestFixture]
+    public class WeightedSamplerTest
     {
         private const int TotalWeight = 38;
 
@@ -36,7 +36,7 @@ namespace UnitTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RandomSampleTest()
         {
             var sampler = new WeightedSampler<int>(new FixedRandom());
