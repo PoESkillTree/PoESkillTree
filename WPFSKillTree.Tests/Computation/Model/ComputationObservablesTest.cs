@@ -72,7 +72,7 @@ namespace PoESkillTree.Tests.Computation.Model
         }
 
         [Test]
-        public void ObserveSkilledPassiveNodesReturnsCorrectResult()
+        public void ObserveSkilledPassiveNodesGeneratesCorrectValues()
         {
             var modifiers = CreateModifiers(6);
             var skilledNodes = CreateSkillNodes(3);
@@ -96,10 +96,12 @@ namespace PoESkillTree.Tests.Computation.Model
             var sut = CreateSut(parser);
 
             var actual = new List<CalculatorUpdate>();
-            sut.ObserveSkilledPassiveNodes(observableSet).Subscribe(actual.Add);
-            observableSet.UnionWith(skilledNodes);
-            observableSet.Remove(skilledNodes[0]);
-            observableSet.Remove(skilledNodes[1]);
+            using (sut.ObserveSkilledPassiveNodes(observableSet).Subscribe(actual.Add))
+            {
+                observableSet.UnionWith(skilledNodes);
+                observableSet.Remove(skilledNodes[0]);
+                observableSet.Remove(skilledNodes[1]);
+            }
 
             Assert.AreEqual(expected, actual);
         }
