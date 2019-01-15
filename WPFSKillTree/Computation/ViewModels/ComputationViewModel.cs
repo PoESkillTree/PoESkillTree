@@ -58,6 +58,7 @@ namespace POESKillTree.Computation.ViewModels
             AddStats(DefensiveStats, f.StatBuilders.PassivePoints.Maximum);
             AddStats(DefensiveStats, f.StatBuilders.AscendancyPassivePoints, nodeType: NodeType.UncappedSubtotal);
             AddStats(DefensiveStats, f.StatBuilders.AscendancyPassivePoints.Maximum);
+            AddStats(DefensiveStats, f.MetaStatBuilders.SelectedBandit);
             AddAvailableStats(DefensiveStats, f.DamageTypeBuilders.AnyDamageType().Resistance);
 
             await AddConfigurationStatAsync(f.StatBuilders.Level, Entity.Enemy);

@@ -30,7 +30,7 @@ namespace POESKillTree.Computation.ViewModels
             var value = await _observableCalculator.GetNodeValueAsync(stat);
             _pinnedStats.Add(stat);
             var configStat = Add(stat);
-            configStat.Value = value;
+            configStat.Node.Value = value;
         }
 
         public void Observe()

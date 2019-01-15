@@ -18,13 +18,13 @@ namespace POESKillTree.Computation.ViewModels
         private ConfigurationStatViewModel BanditStat { get; set; }
 
         public void SetLevel(int level)
-            => LevelStat.NumericValue = level;
+            => LevelStat.Node.NumericValue = level;
 
         public void SetCharacterClass(CharacterClass characterClass)
-            => CharacterClassStat.NumericValue = (int) characterClass;
+            => CharacterClassStat.Node.NumericValue = (int) characterClass;
 
         public void SetBandit(Bandit bandit)
-            => BanditStat.NumericValue = (int) bandit;
+            => BanditStat.Node.NumericValue = (int) bandit;
 
         public static SharedConfigurationViewModel Create(
             ObservableCalculator observableCalculator, IBuilderFactories builderFactories)

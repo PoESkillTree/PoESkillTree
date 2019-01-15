@@ -10,28 +10,39 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:ConfigurationStatsViewModel}">
     <UserControl.Resources>
+        <Style x:Key="NumericUpDownStyle"
+               BasedOn="{StaticResource UpDownInDataGridStyle}"
+               TargetType="mahApps:NumericUpDown">
+            <d:Style.DataContext>
+                <x:Type Type="viewModels:ConfigurationStatViewModel" />
+            </d:Style.DataContext>
+            <Setter Property="Value" Value="{Binding Node.NumericValue, UpdateSourceTrigger=PropertyChanged}" />
+            <Setter Property="Minimum" Value="{Binding MinimumNode.NumericValue}" />
+            <Setter Property="Maximum" Value="{Binding MaximumNode.NumericValue}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding MinimumNode.NumericValue}" Value="{x:Null}">
+                    <Setter Property="Minimum" Value="{Binding DefaultMinimum}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding MaximumNode.NumericValue}" Value="{x:Null}">
+                    <Setter Property="Maximum" Value="{Binding DefaultMaximum}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
         <DataTemplate x:Key="IntTemplate" DataType="viewModels:ConfigurationStatViewModel">
-            <mahApps:NumericUpDown Value="{Binding NumericValue, UpdateSourceTrigger=PropertyChanged}"
-                                   Minimum="{Binding NumericMinimum}"
-                                   Maximum="{Binding NumericMaximum}"
-                                   NumericInputMode="Numbers"
-                                   Style="{StaticResource UpDownInDataGridStyle}" />
+            <mahApps:NumericUpDown NumericInputMode="Numbers"
+                                   Style="{StaticResource NumericUpDownStyle}" />
         </DataTemplate>
         <DataTemplate x:Key="DoubleTemplate" DataType="viewModels:ConfigurationStatViewModel">
-            <mahApps:NumericUpDown Value="{Binding NumericValue, UpdateSourceTrigger=PropertyChanged}"
-                                   Minimum="{Binding NumericMinimum}"
-                                   Maximum="{Binding NumericMaximum}"
-                                   NumericInputMode="Decimal"
-                                   Style="{StaticResource UpDownInDataGridStyle}" />
+            <mahApps:NumericUpDown NumericInputMode="Decimal"
+                                   Style="{StaticResource NumericUpDownStyle}" />
         </DataTemplate>
         <DataTemplate x:Key="BoolTemplate" DataType="viewModels:ConfigurationStatViewModel">
-            <CheckBox IsChecked="{Binding BoolValue, UpdateSourceTrigger=PropertyChanged}"
+            <CheckBox IsChecked="{Binding Node.BoolValue, UpdateSourceTrigger=PropertyChanged}"
                       HorizontalAlignment="Center" />
         </DataTemplate>
         <DataTemplate x:Key="EnumTemplate" DataType="viewModels:ConfigurationStatViewModel">
-            <ComboBox SelectedIndex="{Binding NumericValue, UpdateSourceTrigger=PropertyChanged}"
-                      ItemsSource="{Binding EnumValues}">
-            </ComboBox>
+            <ComboBox SelectedIndex="{Binding Node.NumericValue, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding Node.EnumValues}" />
         </DataTemplate>
     </UserControl.Resources>
     <DataGrid AutoGenerateColumns="False"
@@ -44,7 +55,7 @@
             <DataGridTextColumn IsReadOnly="True"
                                 Width="250"
                                 HeaderStyle="{StaticResource MetroDataGridColumnHeader}"
-                                Binding="{Binding Name}">
+                                Binding="{Binding Node}">
                 <DataGridTextColumn.Header>
                     <l:Catalog>Stat</l:Catalog>
                 </DataGridTextColumn.Header>
@@ -60,19 +71,19 @@
                             <ContentControl.Style>
                                 <Style TargetType="ContentControl">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Stat.DataType}" Value="{x:Type system:Double}">
+                                        <DataTrigger Binding="{Binding Node.DataType}" Value="{x:Type system:Double}">
                                             <Setter Property="ContentTemplate" Value="{StaticResource DoubleTemplate}" />
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding Stat.DataType}" Value="{x:Type system:Int32}">
+                                        <DataTrigger Binding="{Binding Node.DataType}" Value="{x:Type system:Int32}">
                                             <Setter Property="ContentTemplate" Value="{StaticResource IntTemplate}" />
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding Stat.DataType}" Value="{x:Type system:UInt32}">
+                                        <DataTrigger Binding="{Binding Node.DataType}" Value="{x:Type system:UInt32}">
                                             <Setter Property="ContentTemplate" Value="{StaticResource IntTemplate}" />
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding Stat.DataType}" Value="{x:Type system:Boolean}">
+                                        <DataTrigger Binding="{Binding Node.DataType}" Value="{x:Type system:Boolean}">
                                             <Setter Property="ContentTemplate" Value="{StaticResource BoolTemplate}" />
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding Stat.DataType.IsEnum}" Value="True">
+                                        <DataTrigger Binding="{Binding Node.DataType.IsEnum}" Value="True">
                                             <Setter Property="ContentTemplate" Value="{StaticResource EnumTemplate}" />
                                         </DataTrigger>
                                     </Style.Triggers>

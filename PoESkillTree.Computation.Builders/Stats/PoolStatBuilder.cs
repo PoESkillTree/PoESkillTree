@@ -22,7 +22,7 @@ namespace PoESkillTree.Computation.Builders.Stats
     public class PoolStatBuilder : StatBuilderWithPool, IPoolStatBuilder
     {
         public PoolStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
-            : base(statFactory, pool, "")
+            : base(statFactory, pool, "", typeof(uint))
         {
         }
 
@@ -58,7 +58,7 @@ namespace PoESkillTree.Computation.Builders.Stats
     internal class RechargeStatBuilder : StatBuilderWithPool, IRechargeStatBuilder
     {
         public RechargeStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
-            : base(statFactory, pool, ".Recharge")
+            : base(statFactory, pool, ".Recharge", typeof(double))
         {
         }
 
@@ -78,7 +78,7 @@ namespace PoESkillTree.Computation.Builders.Stats
     internal class RegenStatBuilder : StatBuilderWithPool, IRegenStatBuilder
     {
         public RegenStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
-            : base(statFactory, pool, ".Regen")
+            : base(statFactory, pool, ".Regen", typeof(double))
         {
         }
 
@@ -99,7 +99,7 @@ namespace PoESkillTree.Computation.Builders.Stats
     internal class LeechStatBuilder : StatBuilderWithPool, ILeechStatBuilder
     {
         public LeechStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
-            : base(statFactory, pool, ".Leech")
+            : base(statFactory, pool, ".Leech", typeof(double))
         {
         }
 
@@ -131,10 +131,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         private readonly string _identitySuffix;
         protected ICoreBuilder<Pool> Pool { get; }
 
-        protected StatBuilderWithPool(IStatFactory statFactory, ICoreBuilder<Pool> pool, string identitySuffix)
+        protected StatBuilderWithPool(
+            IStatFactory statFactory, ICoreBuilder<Pool> pool, string identitySuffix, Type dataType)
             : this(statFactory,
                 new CoreStatBuilderFromCoreBuilder<Pool>(pool,
-                    (e, p) => statFactory.FromIdentity(p.ToString() + identitySuffix, e, typeof(uint))),
+                    (e, p) => statFactory.FromIdentity(p.ToString() + identitySuffix, e, dataType)),
                 pool,
                 identitySuffix)
         {

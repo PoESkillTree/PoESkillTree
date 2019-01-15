@@ -11,7 +11,7 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Computation.Model
 {
-    public class ObservableCalculator
+    public class ObservableCalculator : IObservableNodeRepository
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ObservableCalculator));
 

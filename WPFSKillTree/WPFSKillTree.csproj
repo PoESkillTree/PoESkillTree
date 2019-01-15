@@ -204,9 +204,11 @@
     <Compile Include="Computation\Model\ComputationFactory.cs" />
     <Compile Include="Computation\Model\ComputationSchedulerProvider.cs" />
     <Compile Include="Computation\Model\ComputationObservables.cs" />
+    <Compile Include="Computation\Model\IObservableNodeRepository.cs" />
     <Compile Include="Computation\Model\ObservableCalculator.cs" />
     <Compile Include="Computation\ViewModels\ConfigurationStatsViewModel.cs" />
     <Compile Include="Computation\ViewModels\SharedConfigurationViewModel.cs" />
+    <Compile Include="Computation\ViewModels\CalculationNodeViewModel.cs" />
     <Compile Include="Contrib\RangeTree\Range.cs" />
     <Compile Include="Contrib\RangeTree\RangeTree.cs" />
     <Compile Include="Contrib\RangeTree\RangeTreeAsync.cs" />

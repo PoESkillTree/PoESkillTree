@@ -80,8 +80,8 @@ namespace POESKillTree.Computation.ViewModels
         private void RemoveStat(ResultStatViewModel resultStat)
         {
             Stats.Remove(resultStat);
-            NewStat.Stat = resultStat.Stat;
-            NewStat.NodeType = resultStat.NodeType;
+            NewStat.Stat = resultStat.Node.Stat;
+            NewStat.NodeType = resultStat.Node.NodeType;
             resultStat.Dispose();
         }
     }
