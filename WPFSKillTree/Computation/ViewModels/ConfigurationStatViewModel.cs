@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using log4net;
@@ -34,13 +35,13 @@ namespace POESKillTree.Computation.ViewModels
         public double DefaultMinimum => Node.DataType == typeof(uint) ? 0 : double.MinValue;
         public double DefaultMaximum => double.MaxValue;
 
-        public void Observe(ObservableCalculator observableCalculator)
+        public void Observe(ObservableCalculator observableCalculator, IScheduler observeScheduler)
         {
             var subscriptions = new List<IDisposable>();
             if (MinimumNode != null)
-                subscriptions.Add(MinimumNode.Observe(observableCalculator));
+                subscriptions.Add(MinimumNode.Observe(observableCalculator, observeScheduler));
             if (MaximumNode != null)
-                subscriptions.Add(MaximumNode.Observe(observableCalculator));
+                subscriptions.Add(MaximumNode.Observe(observableCalculator, observeScheduler));
             subscriptions.Add(SubscribeNode(observableCalculator));
             _subscriptions = new CompositeDisposable(subscriptions);
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using log4net;
 using PoESkillTree.Computation.Common;
@@ -80,10 +81,10 @@ namespace POESKillTree.Computation.ViewModels
             return Value.ToString();
         }
 
-        public IDisposable Observe(IObservableNodeRepository nodeRepository)
+        public IDisposable Observe(IObservableNodeRepository nodeRepository, IScheduler observeScheduler)
             => nodeRepository
                 .ObserveNode(Stat, NodeType)
-                .ObserveOnDispatcher()
+                .ObserveOn(observeScheduler)
                 .Subscribe(
                     v => Value = v,
                     ex => Log.Error($"ObserveNode({Stat}, {NodeType}) failed", ex));

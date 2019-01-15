@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Concurrency;
 using System.Windows.Input;
 using PoESkillTree.Computation.Common;
 using POESKillTree.Common.ViewModels;
@@ -21,8 +22,8 @@ namespace POESKillTree.Computation.ViewModels
 
         public ICommand RemoveCommand { get; }
 
-        public void Observe(ObservableCalculator observableCalculator)
-            => _subscription = Node.Observe(observableCalculator);
+        public void Observe(ObservableCalculator observableCalculator, IScheduler observeScheduler)
+            => _subscription = Node.Observe(observableCalculator, observeScheduler);
 
         public void Dispose()
             => _subscription?.Dispose();

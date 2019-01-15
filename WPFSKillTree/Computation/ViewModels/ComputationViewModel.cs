@@ -14,18 +14,22 @@ namespace POESKillTree.Computation.ViewModels
     public class ComputationViewModel : Notifier
     {
         private readonly ObservableCalculator _observableCalculator;
+        private readonly ComputationSchedulerProvider _schedulers;
+
         public MainSkillSelectionViewModel MainSkillSelection { get; }
         public ResultStatsViewModel OffensiveStats { get; }
         public ResultStatsViewModel DefensiveStats { get; }
         public ConfigurationStatsViewModel ConfigurationStats { get; }
         public SharedConfigurationViewModel SharedConfiguration { get; private set; }
 
-        private ComputationViewModel(SkillDefinitions skillDefinitions, ObservableCalculator observableCalculator)
+        private ComputationViewModel(
+            SkillDefinitions skillDefinitions,
+            ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers)
         {
-            _observableCalculator = observableCalculator;
-            OffensiveStats = new ResultStatsViewModel(observableCalculator);
-            DefensiveStats = new ResultStatsViewModel(observableCalculator);
-            ConfigurationStats = new ConfigurationStatsViewModel(observableCalculator);
+            (_observableCalculator, _schedulers) = (observableCalculator, schedulers);
+            OffensiveStats = new ResultStatsViewModel(observableCalculator, schedulers);
+            DefensiveStats = new ResultStatsViewModel(observableCalculator, schedulers);
+            ConfigurationStats = new ConfigurationStatsViewModel(observableCalculator, schedulers);
             MainSkillSelection = new MainSkillSelectionViewModel(skillDefinitions);
         }
 
@@ -65,7 +69,7 @@ namespace POESKillTree.Computation.ViewModels
             await AddConfigurationStatAsync(f.MetaStatBuilders.SelectedQuestPart);
             ConfigurationStats.Observe();
 
-            SharedConfiguration = SharedConfigurationViewModel.Create(_observableCalculator, f);
+            SharedConfiguration = SharedConfigurationViewModel.Create(_observableCalculator, _schedulers, f);
         }
 
         private static void AddAvailableStats(
@@ -97,10 +101,11 @@ namespace POESKillTree.Computation.ViewModels
         }
 
         public static async Task<ComputationViewModel> CreateAsync(
-            GameData gameData, IBuilderFactories builderFactories, ObservableCalculator observableCalculator)
+            GameData gameData, IBuilderFactories builderFactories,
+            ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers)
         {
             var skillDefinitions = await gameData.Skills;
-            var vm = new ComputationViewModel(skillDefinitions, observableCalculator);
+            var vm = new ComputationViewModel(skillDefinitions, observableCalculator, schedulers);
             await vm.InitializeAsync(builderFactories);
             return vm;
         }

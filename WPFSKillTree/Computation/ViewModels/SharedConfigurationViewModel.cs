@@ -9,9 +9,11 @@ namespace POESKillTree.Computation.ViewModels
     public class SharedConfigurationViewModel
     {
         private readonly ObservableCalculator _observableCalculator;
+        private readonly ComputationSchedulerProvider _schedulers;
 
-        private SharedConfigurationViewModel(ObservableCalculator observableCalculator)
-            => _observableCalculator = observableCalculator;
+        private SharedConfigurationViewModel(
+            ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers)
+            => (_observableCalculator, _schedulers) = (observableCalculator, schedulers);
 
         private ConfigurationStatViewModel LevelStat { get; set; }
         private ConfigurationStatViewModel CharacterClassStat { get; set; }
@@ -27,9 +29,10 @@ namespace POESKillTree.Computation.ViewModels
             => BanditStat.Node.NumericValue = (int) bandit;
 
         public static SharedConfigurationViewModel Create(
-            ObservableCalculator observableCalculator, IBuilderFactories builderFactories)
+            ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers,
+            IBuilderFactories builderFactories)
         {
-            var vm = new SharedConfigurationViewModel(observableCalculator);
+            var vm = new SharedConfigurationViewModel(observableCalculator, schedulers);
             vm.Initialize(builderFactories);
             return vm;
         }
@@ -46,7 +49,7 @@ namespace POESKillTree.Computation.ViewModels
         {
             var stat = statBuilder.BuildToStats(entity).Single();
             var vm = new ConfigurationStatViewModel(stat);
-            vm.Observe(_observableCalculator);
+            vm.Observe(_observableCalculator, _schedulers.Dispatcher);
             return vm;
         }
     }

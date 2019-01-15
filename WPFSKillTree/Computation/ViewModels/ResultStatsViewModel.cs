@@ -12,10 +12,11 @@ namespace POESKillTree.Computation.ViewModels
     public class ResultStatsViewModel
     {
         private readonly ObservableCalculator _observableCalculator;
+        private readonly ComputationSchedulerProvider _schedulers;
 
-        public ResultStatsViewModel(ObservableCalculator observableCalculator)
+        public ResultStatsViewModel(ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers)
         {
-            _observableCalculator = observableCalculator;
+            (_observableCalculator, _schedulers) = (observableCalculator, schedulers);
             NewStat = new AddableResultStatViewModel();
             AddStatCommand = new RelayCommand(AddStat);
         }
@@ -72,7 +73,7 @@ namespace POESKillTree.Computation.ViewModels
         public void AddStat(IStat stat, NodeType nodeType = NodeType.Total)
         {
             var resultStat = new ResultStatViewModel(stat, nodeType, RemoveStat);
-            resultStat.Observe(_observableCalculator);
+            resultStat.Observe(_observableCalculator, _schedulers.Dispatcher);
             Stats.Add(resultStat);
             AddAvailableStat(stat);
         }

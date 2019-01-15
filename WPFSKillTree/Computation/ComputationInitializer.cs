@@ -85,7 +85,7 @@ namespace POESKillTree.Computation
         }
 
         public async Task<ComputationViewModel> CreateComputationViewModelAsync()
-            => await ComputationViewModel.CreateAsync(_gameData.Data, _builderFactories, _calculator);
+            => await ComputationViewModel.CreateAsync(_gameData.Data, _builderFactories, _calculator, _schedulers);
 
         public void SetupPeriodicActions()
             => _calculator.PeriodicallyRemoveUnusedNodes(
