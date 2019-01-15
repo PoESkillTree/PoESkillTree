@@ -1853,6 +1853,7 @@ namespace POESKillTree.Views
             await LoadItemData();
             SetCustomGroups(build.CustomGroups);
             await ResetTreeUrl();
+            ComputationViewModel?.SharedConfiguration.SetBandit(build.Bandits.Choice);
         }
 
         /// <summary>
