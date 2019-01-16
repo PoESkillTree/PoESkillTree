@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
@@ -68,17 +67,11 @@ namespace POESKillTree.Views
 
         private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
-        private readonly List<ListGroupItem> _defenceList = new List<ListGroupItem>();
-        private readonly Dictionary<string, AttributeGroup> _defenceListGroups = new Dictionary<string, AttributeGroup>();
-        private readonly List<ListGroupItem> _offenceList = new List<ListGroupItem>();
-        private readonly Dictionary<string, AttributeGroup> _offenceListGroups = new Dictionary<string, AttributeGroup>();
         private readonly Regex _backreplace = new Regex("#");
         private readonly ToolTip _sToolTip = new ToolTip();
         private readonly BuildUrlNormalizer _buildUrlNormalizer = new BuildUrlNormalizer();
         private ListCollectionView _allAttributeCollection;
         private ListCollectionView _attributeCollection;
-        private ListCollectionView _defenceCollection;
-        private ListCollectionView _offenceCollection;
         private RenderTargetBitmap _clipboardBmp;
 
         private GroupStringConverter _attributeGroups;
@@ -563,14 +556,6 @@ namespace POESKillTree.Views
             lbAllAttr.SelectionMode = SelectionMode.Extended;
             lbAllAttr.ContextMenu = _attributeContextMenu;
 
-            _defenceCollection = new ListCollectionView(_defenceList);
-            _defenceCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Group"));
-            listBoxDefence.ItemsSource = _defenceCollection;
-
-            _offenceCollection = new ListCollectionView(_offenceList);
-            _offenceCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Group"));
-            listBoxOffence.ItemsSource = _offenceCollection;
-
             cbCharType.ItemsSource = Enums.GetValues<CharacterClass>();
             cbAscType.SelectedIndex = 0;
         }
@@ -750,16 +735,6 @@ namespace POESKillTree.Views
             if (HighlightByHoverKeys.Any(key => key == e.Key))
             {
                 HighlightNodesByHover();
-            }
-
-            if ((Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
-            {
-                switch (e.Key)
-                {
-                    case Key.Q:
-                        ToggleCharacterSheet();
-                        break;
-                }
             }
         }
 
@@ -1232,14 +1207,13 @@ namespace POESKillTree.Views
 
 #endregion
 
-#region Update Attribute and Character lists
+#region Update Attribute lists
 
         public void UpdateUI()
         {
             UpdateAttributeList();
             UpdateAllAttributeList();
             RefreshAttributeLists();
-            UpdateStatistics();
             UpdateClass();
             UpdatePoints();
         }
@@ -1351,48 +1325,6 @@ namespace POESKillTree.Views
             AscendancyTotalPoints.Content = "[" + points["AscendancyTotal"].ToString() + "]";
         }
 
-        public void UpdateStatistics()
-        {
-            _defenceList.Clear();
-            _offenceList.Clear();
-
-            if (_itemAttributes != null)
-            {
-                Compute.Initialize(Tree, _itemAttributes);
-
-                foreach (var group in Compute.Defense())
-                {
-                    foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
-                    {
-                        AttributeGroup attributeGroup;
-                        if (!_defenceListGroups.TryGetValue(group.Name, out attributeGroup))
-                        {
-                            attributeGroup = new AttributeGroup(group.Name);
-                            _defenceListGroups.Add(group.Name, attributeGroup);
-                        }
-                        _defenceList.Add(new ListGroupItem(item, attributeGroup));
-                    }
-                }
-
-                foreach (var group in Compute.Offense())
-                {
-                    foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
-                    {
-                        AttributeGroup attributeGroup;
-                        if (!_offenceListGroups.TryGetValue(group.Name, out attributeGroup))
-                        {
-                            attributeGroup = new AttributeGroup(group.Name);
-                            _offenceListGroups.Add(group.Name, attributeGroup);
-                        }
-                        _offenceList.Add(new ListGroupItem(item, attributeGroup));
-                    }
-                }
-            }
-
-            _defenceCollection.Refresh();
-            _offenceCollection.Refresh();
-        }
-
         private string InsertNumbersInAttributes(KeyValuePair<string, List<float>> attrib)
         {
             var s = attrib.Key;
@@ -1424,39 +1356,16 @@ namespace POESKillTree.Views
 
 #endregion
 
-#region Attribute and Character lists - Event Handlers
+#region Attribute lists - Event Handlers
 
         private void ToggleAttributes()
         {
             PersistentData.Options.AttributesBarOpened = !PersistentData.Options.AttributesBarOpened;
         }
 
-        private void ToggleAttributes(bool expanded)
-        {
-            PersistentData.Options.AttributesBarOpened = expanded;
-        }
-
-        private void ToggleCharacterSheet()
-        {
-            PersistentData.Options.CharacterSheetBarOpened = !PersistentData.Options.CharacterSheetBarOpened;
-        }
-
         private void ToggleShowSummary()
         {
             PersistentData.Options.ChangeSummaryEnabled = !PersistentData.Options.ChangeSummaryEnabled;
-        }
-
-        private void ToggleCharacterSheet(bool expanded)
-        {
-            PersistentData.Options.CharacterSheetBarOpened = expanded;
-        }
-
-        private void expAttributes_Expanded(object sender, RoutedEventArgs e)
-        {
-            if (sender == e.Source) // Ignore contained ListBox group collapsion events.
-            {
-                ToggleCharacterSheet(false);
-            }
         }
 
         private void HighlightNodesByAttribute(object sender, RoutedEventArgs e)
@@ -1480,14 +1389,6 @@ namespace POESKillTree.Views
         private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
         {
             SearchUpdate();
-        }
-
-        private void expCharacterSheet_Expanded(object sender, RoutedEventArgs e)
-        {
-            if (sender == e.Source) // Ignore contained ListBox group expansion events.
-            {
-                ToggleAttributes(false);
-            }
         }
 
         private void ToggleBuilds()

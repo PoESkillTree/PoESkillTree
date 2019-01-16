@@ -10,13 +10,10 @@ using POESKillTree.Model;
 using POESKillTree.Model.Items;
 using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils;
-using AttackSkill = POESKillTree.SkillTreeFiles.Compute.AttackSkill;
 using DamageForm = POESKillTree.SkillTreeFiles.Compute.DamageForm;
-using DamageNature = POESKillTree.SkillTreeFiles.Compute.DamageNature;
 using DamageSource = POESKillTree.SkillTreeFiles.Compute.DamageSource;
 using WeaponHand = POESKillTree.SkillTreeFiles.Compute.WeaponHand;
 using WeaponType = POESKillTree.SkillTreeFiles.Compute.WeaponType;
-using Weapon = POESKillTree.SkillTreeFiles.Compute.Weapon;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -1225,54 +1222,6 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
-        // Returns attributes of gem in item.
-        public static AttributeSet AttributesOf(Item gem, Item item)
-        {
-            AttributeSet attrs = new AttributeSet();
-
-            // Collect gem attributes and modifiers at gem level.
-            foreach (var prop in gem.Properties)
-                attrs.Add(prop.Attribute, new List<float>(prop.Values));
-            foreach (ItemMod mod in gem.Mods)
-                attrs.Add(mod.Attribute, new List<float>(mod.Values));
-
-            // Check if gem is in database.
-            if (GemIndex.ContainsKey(gem.Name))
-            {
-                Gem entry = GemIndex[gem.Name];
-
-                // Process +Level modifiers from item.
-                int plusLevel = 0;
-                foreach (ItemMod mod in item.Mods)
-                {
-                    if (mod.Attribute == "+# to Level of Socketed Gems")
-                        plusLevel += (int)mod.Values[0];
-                    else
-                    {
-                        Match m = ReGemLevelKeyword.Match(mod.Attribute);
-                        if (m.Success)
-                        {
-                            if (gem.Keywords.Contains(m.Groups[1].Value)
-                                || m.Groups[1].Value == "Elemental" && (gem.Keywords.Contains("Cold") || gem.Keywords.Contains("Fire") || gem.Keywords.Contains("Lightning")))
-                                plusLevel += (int)mod.Values[0];
-                        }
-                    }
-                }
-
-                // Replace level-based attributes of gem (even without level bonus).
-                AttributeSet replace = entry.AttributesAtLevel(plusLevel + LevelOf(gem));
-
-                // Add quality-based attributes if Quality attributes are defined.
-                int quality = QualityOf(gem);
-                if (quality > 0)
-                    replace.Add(entry.AttributesAtQuality(quality));
-
-                attrs.Replace(replace);
-            }
-
-            return attrs;
-        }
-
         // Returns attributes of gem at specified level and quality.
         public static AttributeSet AttributesOf(string gemName, int level, int quality)
         {
@@ -1291,64 +1240,6 @@ namespace POESKillTree.SkillTreeFiles
             return attrs;
         }
 
-        // Returns true if gem can support attack skill, false otherwise.
-        public static bool CanSupport(AttackSkill skill, Item gem)
-        {
-            if (GemIndex.ContainsKey(gem.Name))
-            {
-                Gem entry = GemIndex[gem.Name];
-
-                // No support for excluded forms.
-                if (entry.ExcludeFormSupport != DamageForm.Any && skill.Nature.Is(entry.ExcludeFormSupport)) return false;
-            }
-
-            return true;
-        }
-
-        // Returns true if gem can support attack skill, false otherwise.
-        public static bool CanSupport(AttackSkill skill, string gemName)
-        {
-            if (GemIndex.ContainsKey(gemName))
-            {
-                Gem entry = GemIndex[gemName];
-
-                // No support for excluded forms.
-                if (entry.ExcludeFormSupport != DamageForm.Any && skill.Nature.Is(entry.ExcludeFormSupport)) return false;
-            }
-
-            return true;
-        }
-
-        // Returns true if gem can use weapon, false otherwise.
-        public static bool CanUse(Item gem, Weapon weapon)
-        {
-            if (GemIndex.ContainsKey(gem.Name))
-            {
-                Gem entry = GemIndex[gem.Name];
-
-                if (entry.RequiredHand != WeaponHand.Any && !weapon.Is(entry.RequiredHand))
-                    return false;
-
-                if (entry.RequiresEquippedShield && !Compute.IsWieldingShield)
-                    return false;
-
-                // Weapon having "Counts as Dual Wielding" mod cannot be used to perform skills that require a two-handed weapon.
-                // @see http://pathofexile.gamepedia.com/Wings_of_Entropy
-                if (entry.RequiredWeapon != WeaponType.Any && (entry.RequiredWeapon & WeaponType.TwoHandedMelee) != 0
-                    && weapon.Attributes.ContainsKey("Counts as Dual Wielding"))
-                    return false;
-            }
-
-            return true;
-        }
-
-        // Clears database.
-        public static void Clear()
-        {
-            GemIndex.Clear();
-            DB = null;
-        }
-
         // Creates empty database.
         private static void Create()
         {
@@ -1359,18 +1250,6 @@ namespace POESKillTree.SkillTreeFiles
         public static List<Gem> GetAllGems()
         {
             return DB == null ? null : DB.Gems;
-        }
-
-        // Returns deserialized gem.
-        public static Gem GetGem(string gemName)
-        {
-            return DB == null ? null : DB.Gems.Find(g => g.Name == gemName);
-        }
-
-        // Returns numbner of hits skill gem does per single attack.
-        public static float HitsPerAttackOf(Item gem)
-        {
-            return GemIndex.ContainsKey(gem.Name) ? GemIndex[gem.Name].HitsPerAttack : 1;
         }
 
         // Indexes items in database.
@@ -1392,12 +1271,6 @@ namespace POESKillTree.SkillTreeFiles
         public static bool IsEmpty()
         {
             return GemIndex.Count == 0;
-        }
-
-        // Returns true if skill strikes with both weapons at once.
-        public static bool IsStrikingWithBothWeaponsAtOnce(Item gem)
-        {
-            return GemIndex.ContainsKey(gem.Name) ? GemIndex[gem.Name].StrikesWithBothWeapons : false;
         }
 
         // Returns level of gem.
@@ -1469,59 +1342,12 @@ namespace POESKillTree.SkillTreeFiles
             }
         }
 
-        // Returns damage nature of gem.
-        public static DamageNature NatureOf(Item gem)
-        {
-            // Implicit nature from keywords.
-            DamageNature nature = new DamageNature(gem.Keywords);
-
-            if (nature.Is(DamageSource.Attack))
-            {
-                // Attacks with melee form implicitly gets melee weapon type.
-                if ((nature.Form & DamageForm.Melee) != 0)
-                    nature.WeaponType |= WeaponType.Melee;
-                // Attacks with ranged weapons implicitly gets projectile form.
-                if (nature.Is(WeaponType.Ranged))
-                    nature.Form |= DamageForm.Projectile;
-            }
-            else if (nature.Is(DamageSource.Cast)) // All Cast skill gems have damage on use form.
-                nature.Form |= DamageForm.OnUse;
-
-            if (GemIndex.ContainsKey(gem.Name))
-            {
-                Gem entry = GemIndex[gem.Name];
-
-                // Override weapon type requirement if defined.
-                if (entry.RequiredWeapon != WeaponType.Any)
-                    nature.WeaponType = entry.RequiredWeapon;
-
-                // Ignore form.
-                if (entry.ExcludeForm != DamageForm.Any)
-                    nature.Form ^= entry.ExcludeForm;
-
-                // Ignore source.
-                if (entry.ExcludeSource != DamageSource.Any)
-                    nature.Source ^= entry.ExcludeSource;
-
-                // Include form.
-                if (entry.IncludeForm != DamageForm.Any)
-                    nature.Form |= entry.IncludeForm;
-            }
-
-            return nature;
-        }
-
         // Returns quality of gem.
         public static int QualityOf(Item gem)
         {
             return (int) gem.Properties.First("Quality: +#%", 0, 0);
         }
 
-        // Writes database to file.
-        public static void WriteTo(string file)
-        {
-            WriteToCompletePath(AppData.GetFolder(true) + file);
-        }
         public static void WriteToCompletePath(string file)
         {
             // Sort gems alphabetically.
