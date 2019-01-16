@@ -5,12 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using log4net;
 using Newtonsoft.Json.Linq;
+using PoESkillTree.GameModel;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model.Builds;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Serialization
 {
@@ -58,7 +58,7 @@ namespace POESKillTree.Model.Serialization
             return SerializationConstants.EncodedDefaultBuildName;
         }
 
-        public async Task InitializeAsync(IDialogCoordinator dialogCoordinator)
+        public async Task InitializeAsync(IDialogCoordinator dialogCoordinator, GameData gameData)
         {
             DialogCoordinator = dialogCoordinator;
             if (PersistentData.Options.BuildsSavePath == null)
@@ -94,7 +94,7 @@ namespace POESKillTree.Model.Serialization
             Directory.CreateDirectory(PersistentData.Options.BuildsSavePath);
             await DeserializeAdditionalFilesAsync();
             PersistentData.EquipmentData = await DeserializeEquipmentData();
-            PersistentData.StashItems.AddRange(await DeserializeStashItemsAsync());
+            PersistentData.StashItems.AddRange(await DeserializeStashItemsAsync(gameData));
         }
 
         public virtual void SaveBuildChanges()
@@ -111,13 +111,18 @@ namespace POESKillTree.Model.Serialization
             return EquipmentData.CreateAsync(PersistentData.Options);
         }
 
-        private async Task<IEnumerable<Item>> DeserializeStashItemsAsync()
+        private async Task<IEnumerable<Item>> DeserializeStashItemsAsync(GameData gameData)
         {
             try
             {
                 var file = Path.Combine(AppData.GetFolder(), "stash.json");
                 if (File.Exists(file))
-                    return JArray.Parse(await FileEx.ReadAllTextAsync(file)).Select(item => new Item(PersistentData, (JObject) item));
+                {
+                    var skills = await gameData.Skills;
+                    return JArray.Parse(await FileEx.ReadAllTextAsync(file))
+                        .Select(item => new Item(PersistentData.EquipmentData, skills, (JObject) item));
+
+                }
             }
             catch (Exception e)
             {

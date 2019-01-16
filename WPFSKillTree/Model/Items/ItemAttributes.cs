@@ -9,6 +9,7 @@ using System.Windows.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.Skills;
 using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
@@ -121,7 +122,8 @@ namespace POESKillTree.Model.Items
 
         public IReadOnlyList<ItemMod> NonLocalMods { get; private set; }
 
-        private readonly IPersistentData _persistentData;
+        private readonly EquipmentData _equipmentData;
+        private readonly SkillDefinitions _skillDefinitions;
 
         public event EventHandler ItemDataChanged;
 
@@ -139,9 +141,10 @@ namespace POESKillTree.Model.Items
             RefreshItemAttributes();
         }
 
-        public ItemAttributes(IPersistentData persistentData, string itemData)
+        public ItemAttributes(EquipmentData equipmentData, SkillDefinitions skillDefinitions, string itemData)
         {
-            _persistentData = persistentData;
+            _equipmentData = equipmentData;
+            _skillDefinitions = skillDefinitions;
             Equip = new ObservableCollection<Item>();
 
             var jObject = JObject.Parse(itemData);
@@ -306,7 +309,7 @@ namespace POESKillTree.Model.Items
 
         private void AddItem(JObject val, ItemSlot islot)
         {
-            var item = new Item(_persistentData, val, islot);
+            var item = new Item(_equipmentData, _skillDefinitions, val, islot);
             Equip.Add(item);
             item.PropertyChanged += SlottedItemOnPropertyChanged;
         }

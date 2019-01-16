@@ -38,24 +38,12 @@ namespace POESKillTree.ViewModels.Equipment
         /// </summary>
         public static int Columns => 12;
 
-        private readonly IExtendedDialogCoordinator _dialogCoordinator;
+        private IExtendedDialogCoordinator _dialogCoordinator;
 
         // The view model is created before the window is loaded, PersistentData is not available at that point.
         // This is done because some WPF things don't like DataContext initially being null and don't recognize it 
         // changing to a valid value.
         private IPersistentData _persistentData;
-        public IPersistentData PersistentData
-        {
-            private get { return _persistentData; }
-            set
-            {
-                if (_persistentData != null)
-                {
-                    throw new InvalidOperationException("PersistentData may only be set once");
-                }
-                SetProperty(ref _persistentData, value, OnPersistentDataChanged);
-            }
-        }
 
         // true if after BeginUpdate() and before EndUpdate()
         private bool _inBatchUpdate;
@@ -142,10 +130,8 @@ namespace POESKillTree.ViewModels.Equipment
         /// </summary>
         public IDropTarget StashTabDropHandler { get; }
 
-        public StashViewModel(IExtendedDialogCoordinator dialogCoordinator)
+        public StashViewModel()
         {
-            _dialogCoordinator = dialogCoordinator;
-
             EditStashTabCommand = new AsyncRelayCommand<StashBookmarkViewModel>(EditStashTabAsync);
             AddStashTabCommand = new AsyncRelayCommand(AddStashTabAsync);
             ScrollToStashTabCommand = new RelayCommand<StashBookmarkViewModel>(ScrollToStashTab);
@@ -153,16 +139,19 @@ namespace POESKillTree.ViewModels.Equipment
             StashTabDropHandler = new StashTabDropTarget(this);
         }
 
-        private void OnPersistentDataChanged()
+        public void Initialize(IExtendedDialogCoordinator dialogCoordinator, IPersistentData persistentData)
         {
+            _dialogCoordinator = dialogCoordinator;
+            _persistentData = persistentData;
+
             // add view models for bookmarks and items
             // PersistentData.StashBookmarks and PersistentData.StashItems may only be changed through the stash after this
             BeginUpdate();
-            Bookmarks.AddRange(PersistentData.StashBookmarks.Select(b => new StashBookmarkViewModel(b)));
+            Bookmarks.AddRange(persistentData.StashBookmarks.Select(b => new StashBookmarkViewModel(b)));
             Bookmarks.CollectionChanged += (sender, args) => RowsChanged();
-            foreach (var stashItem in PersistentData.StashItems)
+            foreach (var stashItem in persistentData.StashItems)
             {
-                var item = new StashItemViewModel(_dialogCoordinator, PersistentData.EquipmentData, stashItem);
+                var item = new StashItemViewModel(_dialogCoordinator, stashItem);
                 item.PropertyChanging += ItemOnPropertyChanging;
                 item.PropertyChanged += ItemOnPropertyChanged;
                 Items.Add(item);
@@ -179,7 +168,7 @@ namespace POESKillTree.ViewModels.Equipment
                 {
                     i.PropertyChanging -= ItemOnPropertyChanging;
                     i.PropertyChanged -= ItemOnPropertyChanged;
-                    PersistentData.StashItems.Remove(i.Item);
+                    _persistentData.StashItems.Remove(i.Item);
                 }
             }
 
@@ -189,7 +178,7 @@ namespace POESKillTree.ViewModels.Equipment
                 {
                     i.PropertyChanging += ItemOnPropertyChanging;
                     i.PropertyChanged += ItemOnPropertyChanged;
-                    PersistentData.StashItems.Add(i.Item);
+                    _persistentData.StashItems.Add(i.Item);
                 }
             }
 
@@ -281,7 +270,7 @@ namespace POESKillTree.ViewModels.Equipment
 
         public void AddItem(Item item, bool scrollToItem)
         {
-            var itemVm = new StashItemViewModel(_dialogCoordinator, PersistentData.EquipmentData, item);
+            var itemVm = new StashItemViewModel(_dialogCoordinator, item);
             Items.Add(itemVm);
 
             if (!scrollToItem)
@@ -318,7 +307,7 @@ namespace POESKillTree.ViewModels.Equipment
             var vm = new StashBookmarkViewModel(stashBookmark);
             var index = FindTabIndex(vm);
             Bookmarks.Insert(index, vm);
-            PersistentData.StashBookmarks.Insert(index, stashBookmark);
+            _persistentData.StashBookmarks.Insert(index, stashBookmark);
         }
 
         private int FindTabIndex(StashBookmarkViewModel bookmark)
@@ -340,7 +329,7 @@ namespace POESKillTree.ViewModels.Equipment
             {
                 case TabPickerResult.Delete:
                     Bookmarks.Remove(bookmarkVm);
-                    PersistentData.StashBookmarks.Remove(bookmark);
+                    _persistentData.StashBookmarks.Remove(bookmark);
                     break;
 
                 case TabPickerResult.DeleteIncludingItems:
@@ -387,7 +376,7 @@ namespace POESKillTree.ViewModels.Equipment
             }
 
             Bookmarks.Remove(bm);
-            PersistentData.StashBookmarks.Remove(bm.Bookmark);
+            _persistentData.StashBookmarks.Remove(bm.Bookmark);
             foreach (var bookmark in Bookmarks.ToList())
             {
                 if (bookmark.Bookmark.Position >= to)
@@ -520,8 +509,8 @@ namespace POESKillTree.ViewModels.Equipment
                 // with Bookmarks.Move() the scroll bar element's position is not updated
                 Bookmarks.RemoveAt(oldIndex);
                 Bookmarks.Insert(newIndex, bookmark);
-                PersistentData.StashBookmarks.RemoveAt(oldIndex);
-                PersistentData.StashBookmarks.Insert(newIndex, bookmark.Bookmark);
+                _persistentData.StashBookmarks.RemoveAt(oldIndex);
+                _persistentData.StashBookmarks.Insert(newIndex, bookmark.Bookmark);
             }
 
             RowsChanged();

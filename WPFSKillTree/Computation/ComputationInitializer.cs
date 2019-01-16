@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using log4net;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Core;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using POESKillTree.Computation.Model;
 using POESKillTree.Computation.ViewModels;
@@ -36,9 +37,11 @@ namespace POESKillTree.Computation
         public static ComputationInitializer StartNew()
         {
             var instance = new ComputationInitializer();
-            instance._gameData.Data.StartAllTasks();
+            instance.GameData.StartAllTasks();
             return instance;
         }
+
+        public GameData GameData => _gameData.Data;
 
         public async Task InitializeAsync(IEnumerable<SkillNode> skillNodes)
         {
@@ -51,7 +54,7 @@ namespace POESKillTree.Computation
         {
             _gameData.PassiveNodes = skillNodes;
 
-            var computationFactory = new ComputationFactory(_gameData.Data);
+            var computationFactory = new ComputationFactory(GameData);
             var calculator = computationFactory.CreateCalculator();
             _builderFactories = await computationFactory.CreateBuilderFactoriesAsync();
             var parser = await computationFactory.CreateParserAsync();
@@ -63,7 +66,7 @@ namespace POESKillTree.Computation
 
         private async Task DoInitialParseAsync()
         {
-            var passiveTree = await _gameData.Data.PassiveTree;
+            var passiveTree = await GameData.PassiveTree;
             var initialObservable = _observables.InitialParse(passiveTree, TimeSpan.FromMilliseconds(200))
                 .SubscribeOn(_schedulers.TaskPool);
             await _calculator.ForEachUpdateCalculatorAsync(initialObservable);
@@ -99,7 +102,7 @@ namespace POESKillTree.Computation
         }
 
         public async Task<ComputationViewModel> CreateComputationViewModelAsync()
-            => await ComputationViewModel.CreateAsync(_gameData.Data, _builderFactories, _calculator, _schedulers);
+            => await ComputationViewModel.CreateAsync(GameData, _builderFactories, _calculator, _schedulers);
 
         public void SetupPeriodicActions()
             => _calculator.PeriodicallyRemoveUnusedNodes(

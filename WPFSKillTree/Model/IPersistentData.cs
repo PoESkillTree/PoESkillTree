@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using PoESkillTree.GameModel;
 using POESKillTree.Controls;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model.Builds;
@@ -28,7 +29,7 @@ namespace POESKillTree.Model
         /// <summary>
         /// Initializes all fields that require asnychronous actions like dialogs.
         /// </summary>
-        Task InitializeAsync(IDialogCoordinator dialogCoordinator);
+        Task InitializeAsync(IDialogCoordinator dialogCoordinator, GameData gameData);
 
         /// <summary>
         /// Saves everything but the builds to the filesystem.

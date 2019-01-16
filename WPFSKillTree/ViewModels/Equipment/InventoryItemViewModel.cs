@@ -37,9 +37,9 @@ namespace POESKillTree.ViewModels.Equipment
         public override DragDropEffects DropOnInventoryEffect => DragDropEffects.Link;
         public override DragDropEffects DropOnStashEffect => DragDropEffects.Copy;
 
-        public InventoryItemViewModel(IExtendedDialogCoordinator dialogCoordinator, EquipmentData equipmentData,
+        public InventoryItemViewModel(IExtendedDialogCoordinator dialogCoordinator,
             ItemAttributes itemAttributes, ItemSlot slot)
-            : base(dialogCoordinator, equipmentData)
+            : base(dialogCoordinator)
         {
             _itemAttributes = itemAttributes;
             _slot = slot;
