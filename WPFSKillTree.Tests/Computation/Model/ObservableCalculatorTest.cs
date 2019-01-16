@@ -73,7 +73,7 @@ namespace PoESkillTree.Tests.Computation.Model
                 new CalculatorUpdate(
                     new[] { new Modifier(new[] { new Stat("") }, default, null, null), },
                     new Modifier[0]),
-                new CalculatorUpdate(new Modifier[0], new Modifier[0]),
+                CalculatorUpdate.Empty,
             };
             var observable = expected.ToObservable();
             var calculatorMock = new Mock<ICalculator>();

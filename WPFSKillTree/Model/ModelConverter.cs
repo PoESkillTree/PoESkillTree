@@ -1,5 +1,9 @@
-﻿using PoESkillTree.GameModel.PassiveTree;
+﻿using System.Linq;
+using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.PassiveTree;
+using POESKillTree.Model.Items.Mods;
 using POESKillTree.SkillTreeFiles;
+using OldItem = POESKillTree.Model.Items.Item;
 
 namespace POESKillTree.Model
 {
@@ -19,5 +23,22 @@ namespace POESKillTree.Model
                 !skillNode.IsRootNode && !skillNode.IsAscendancyStart && !skillNode.IsMultipleChoiceOption,
                 skillNode.passivePointsGranted,
                 skillNode.attributes);
+
+        public static Item Convert(OldItem oldItem)
+        {
+            var quality = (int) oldItem.Properties.First("Quality: +%", 0, 0);
+            var levelMod = oldItem.Requirements.FirstOrDefault(m => m.Attribute.Contains("Level #"));
+            var level = (int) (levelMod?.Values.FirstOrDefault() ?? 0);
+            var isCorrupted = oldItem.Mods.Any(m => m.Attribute == "Corrupted");
+            var mods = oldItem.Mods.Select(m => m.ToModifierString()).ToList();
+            return new Item(
+                oldItem.BaseType.MetadataId,
+                oldItem.Name,
+                quality,
+                level,
+                oldItem.Frame,
+                isCorrupted,
+                mods);
+        }
     }
 }

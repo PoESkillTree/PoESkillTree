@@ -78,7 +78,7 @@ namespace POESKillTree.Computation.ViewModels
                 return L10n.Message("None");
             if (DataType.IsEnum)
                 return EnumValues.GetValue((int) Value.Single()).ToString();
-            return Value.ToString();
+            return Value.ToString().Replace(" to ", " \nto ");
         }
 
         public IDisposable Observe(IObservableNodeRepository nodeRepository, IScheduler observeScheduler)

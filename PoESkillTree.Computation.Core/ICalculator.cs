@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Utils;
 
@@ -81,6 +82,8 @@ namespace PoESkillTree.Computation.Core
     /// </summary>
     public class CalculatorUpdate : ValueObject
     {
+        public static CalculatorUpdate Empty { get; } = new CalculatorUpdate(new Modifier[0], new Modifier[0]);
+
         public CalculatorUpdate(
             IReadOnlyList<Modifier> addedModifiers,
             IReadOnlyList<Modifier> removedModifiers)
@@ -101,5 +104,13 @@ namespace PoESkillTree.Computation.Core
 
         protected override object ToTuple()
             => (WithSequenceEquality(AddedModifiers), WithSequenceEquality(RemovedModifiers));
+
+        public CalculatorUpdate Invert()
+            => new CalculatorUpdate(RemovedModifiers, AddedModifiers);
+
+        public static CalculatorUpdate Accumulate(CalculatorUpdate l, CalculatorUpdate r)
+            => new CalculatorUpdate(
+                l.AddedModifiers.Concat(r.AddedModifiers).ToList(),
+                l.RemovedModifiers.Concat(r.RemovedModifiers).ToList());
     }
 }

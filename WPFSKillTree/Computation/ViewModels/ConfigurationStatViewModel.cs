@@ -63,7 +63,7 @@ namespace POESKillTree.Computation.ViewModels
                     h => Node.PropertyChanged -= h)
                 .Where(p => p.EventArgs.PropertyName == nameof(CalculationNodeViewModel.Value))
                 .Select(p => CreateModifiers((CalculationNodeViewModel) p.Sender))
-                .Scan(new CalculatorUpdate(new Modifier[0], new Modifier[0]),
+                .Scan(CalculatorUpdate.Empty,
                     (u, ms) => new CalculatorUpdate(ms, u.AddedModifiers));
 
         private static IReadOnlyList<Modifier> CreateModifiers(CalculationNodeViewModel node)
