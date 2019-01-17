@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using POESKillTree.SkillTreeFiles;
 
@@ -15,10 +16,12 @@ namespace POESKillTree.Utils.UrlProcessing
 
         private readonly SkillTree _skillTree;
         private readonly BuildUrlData _buildUrlData;
+        private readonly ICollection<ushort> _skillNodes;
 
-        public SkillTreeSerializer(BuildUrlData buildUrlData)
+        public SkillTreeSerializer(BuildUrlData buildUrlData, ICollection<ushort> skillNodes)
         {
             _buildUrlData = buildUrlData;
+            _skillNodes = skillNodes;
         }
 
         /// <summary>
@@ -52,7 +55,7 @@ namespace POESKillTree.Utils.UrlProcessing
             int i = HeaderSize;
             foreach (var id in skillNodes)
             {
-                if (SkillTree.Skillnodes.ContainsKey(id))
+                if (_skillNodes.Contains(id))
                 {
                     bytes[i++] = (byte)(id >> 8 & 0xFF);
                     bytes[i++] = (byte)(id & 0xFF);

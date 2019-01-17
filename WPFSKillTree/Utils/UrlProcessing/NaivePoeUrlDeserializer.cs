@@ -74,7 +74,7 @@ namespace POESKillTree.Utils.UrlProcessing
             return rawData.Length < 5 ? 0 : rawData[4];
         }
 
-        protected override int GetAscendancyClassId()
+        public override int GetAscendancyClassId()
         {
             var rawData = GetRawData();
 

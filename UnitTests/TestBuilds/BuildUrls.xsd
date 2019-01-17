@@ -98,8 +98,7 @@
                     <xs:element ref="bandits" minOccurs="0" maxOccurs="1"/>
                   </xs:all>
                   <xs:attribute name="name" type="xs:string" use="required"/>
-                  <xs:attribute name="points" type="xs:integer"/>
-                  <xs:attribute name="ascendancyPoints" type="xs:integer"/>
+                  <xs:attribute name="nodes" type="xs:integer"/>
                   <xs:attribute name="treeVersion" type="xs:integer"/>
                   <xs:attribute name="characterClassId" type="xs:byte"/>
                   <xs:attribute name="ascendancyClassId" type="xs:byte"/>

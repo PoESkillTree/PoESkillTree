@@ -1806,7 +1806,7 @@ namespace POESKillTree.Views
             {
                 var normalizedUrl = await _buildUrlNormalizer.NormalizeAsync(treeUrl, AwaitAsyncTask);
                 BuildUrlData data = SkillTree.DecodeUrl(normalizedUrl, Tree);
-                var newTreeUrl = new SkillTreeSerializer(data).ToUrl();
+                var newTreeUrl = new SkillTreeSerializer(data, SkillTree.Skillnodes.Keys.ToHashSet()).ToUrl();
 
                 BanditSettings bandits = PersistentData.CurrentBuild.Bandits;
                 if (forceBanditsUpdate)

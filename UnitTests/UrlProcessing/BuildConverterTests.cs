@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using POESKillTree.SkillTreeFiles;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using POESKillTree.Utils.UrlProcessing;
 
 namespace UnitTests.UrlProcessing

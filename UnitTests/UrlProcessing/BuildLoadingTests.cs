@@ -26,8 +26,7 @@ namespace UnitTests.UrlProcessing
             Assert.AreEqual(4, build.TreeVersion);
             Assert.AreEqual(3, build.CharacterClassId);
             Assert.AreEqual(1, build.AscendancyClassId);
-            Assert.AreEqual(113, build.Points);
-            Assert.AreEqual(8, build.AscendancyPoints);
+            Assert.AreEqual(121, build.Nodes);
 
             Assert.IsNotNull(build.Urls);
             Assert.IsTrue(build.Urls.Any());

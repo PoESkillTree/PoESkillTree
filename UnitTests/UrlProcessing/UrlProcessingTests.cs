@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using PoESkillTree.GameModel;
-using POESKillTree.Model.Builds;
-using POESKillTree.Model.Items;
-using POESKillTree.Model.Serialization;
-using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils.UrlProcessing;
 using UnitTests.TestBuilds.Utils;
 
@@ -17,60 +13,44 @@ namespace UnitTests.UrlProcessing
     [TestClass]
     public class UrlProcessingTests
     {
-        private static AbstractPersistentData _persistentData;
         private static BuildUrlCollection _builds;
-        private static SkillTree _tree;
+        private static BuildConverter _buildConverter;
 
         public TestContext TestContext { get; set; }
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            _persistentData = new BarePersistentData { CurrentBuild = new PoEBuild() };
-            _persistentData.EquipmentData = EquipmentData.CreateAsync(_persistentData.Options).Result;
-
             _builds = TestBuildUrlLoader.LoadFromXmlFile("../../TestBuilds/BuildUrls.xml");
             _builds.AddRange(TestBuildUrlLoader.LoadFromXmlFile("../../TestBuilds/EmptyBuildUrls.xml"));
 
-            // This initialization requires a lot of time, so it is reasonable to reuse one instance if possible.
-            // However, as some tests may change tree state this field should be used only for methods,
-            // that does not depend on a tree instance.
-            _tree = SkillTree.CreateAsync(_persistentData).Result;
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            SkillTree.ClearAssets();
+            _buildConverter = new BuildConverter(null);
+            _buildConverter.RegisterDefaultDeserializer(url => new NaivePoEUrlDeserializer(url, null));
+            _buildConverter.RegisterDeserializersFactories(
+                PoeplannerUrlDeserializer.TryCreate,
+                PathofexileUrlDeserializer.TryCreate
+            );
         }
 
         #region Full tree selected
 
         [TestMethod]
-        public async Task FullPathofexileTreeLoadUnloadTest()
+        public void FullPathofexileTreeLoadUnloadTest()
         {
             var build = _builds.FindByName("PoeplannerFullTreeWithMaxScionAndBandits");
             var targetUrl = build.GetAlternativeUrl("pathofexile");
 
-            SkillTree.ClearAssets();
-            SkillTree tree = await SkillTree.CreateAsync(_persistentData);
-            tree.LoadFromUrl(targetUrl);
-
-            var actualUrl = new SkillTreeSerializer(tree).ToUrl();
+            var actualUrl = Serialize(targetUrl);
 
             Assert.AreEqual(targetUrl, actualUrl);
         }
 
         [TestMethod]
-        public async Task FullPoeplannerTreeLoadUnloadTest()
+        public void FullPoeplannerTreeLoadUnloadTest()
         {
             var build = _builds.FindByName("PoeplannerFullTreeWithMaxScionAndBandits");
 
-            SkillTree.ClearAssets();
-            SkillTree tree = await SkillTree.CreateAsync(_persistentData);
-            tree.LoadFromUrl(build.DefaultUrl);
-
-            var actualUrl = new SkillTreeSerializer(tree).ToUrl();
+            var actualUrl = Serialize(build.DefaultUrl);
 
             Assert.AreEqual(build.GetAlternativeUrl("pathofexile"), actualUrl);
         }
@@ -84,9 +64,9 @@ namespace UnitTests.UrlProcessing
         {
             var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
 
-            var nodes = DecodeInSkillTree(build.DefaultUrl);
+            var nodes = Deserialize(build.DefaultUrl);
 
-            Assert.AreEqual(build.GetTotalPoints(true), nodes.Count);
+            Assert.AreEqual(build.Nodes, nodes.Count);
         }
 
         #endregion
@@ -98,9 +78,9 @@ namespace UnitTests.UrlProcessing
         {
             var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
 
-            var nodes = DecodeInSkillTree(build.DefaultUrl);
+            var nodes = Deserialize(build.DefaultUrl);
 
-            Assert.AreEqual(build.GetTotalPoints(true), nodes.Count);
+            Assert.AreEqual(build.Nodes, nodes.Count);
         }
 
         [TestMethod]
@@ -108,9 +88,9 @@ namespace UnitTests.UrlProcessing
         {
             var build = _builds.FindByName("PoeplannerSmallWitchOccultistWithOneJewel");
 
-            var nodes = DecodeInSkillTree(build.DefaultUrl);
+            var nodes = Deserialize(build.DefaultUrl);
 
-            Assert.AreEqual(build.GetTotalPoints(true), nodes.Count);
+            Assert.AreEqual(build.Nodes, nodes.Count);
         }
 
         [TestMethod]
@@ -118,9 +98,9 @@ namespace UnitTests.UrlProcessing
         {
             var build = _builds.FindByName("PoedbBuild");
 
-            var nodes = DecodeInSkillTree(build.DefaultUrl);
+            var nodes = Deserialize(build.DefaultUrl);
 
-            Assert.AreEqual(build.GetTotalPoints(true), nodes.Count);
+            Assert.AreEqual(build.Nodes, nodes.Count);
         }
 
         [TestMethod]
@@ -128,9 +108,9 @@ namespace UnitTests.UrlProcessing
         {
             var build = _builds.FindByName("PoeplannerSmallScionWithAuras");
 
-            var nodes = DecodeInSkillTree(build.DefaultUrl);
+            var nodes = Deserialize(build.DefaultUrl);
 
-            Assert.AreEqual(1, nodes.Count, "Only one class root node expected.");
+            Assert.AreEqual(build.Nodes, nodes.Count);
         }
 
         [TestMethod]
@@ -138,9 +118,9 @@ namespace UnitTests.UrlProcessing
         {
             var build = _builds.FindByName("PoeplannerSmallScionWithUquip");
 
-            var nodes = DecodeInSkillTree(build.DefaultUrl);
+            var nodes = Deserialize(build.DefaultUrl);
 
-            Assert.AreEqual(1, nodes.Count, "Only one class root node expected.");
+            Assert.AreEqual(build.Nodes, nodes.Count);
         }
 
         [TestMethod]
@@ -148,9 +128,9 @@ namespace UnitTests.UrlProcessing
         {
             var build = _builds.FindByName("ObsoleteTemplar");
 
-            var nodes = DecodeInSkillTree(build.DefaultUrl);
+            var nodes = Deserialize(build.DefaultUrl);
 
-            Assert.AreEqual(build.GetTotalPoints(), nodes.Count);
+            Assert.AreEqual(build.Nodes, nodes.Count);
         }
 
         #endregion
@@ -158,43 +138,29 @@ namespace UnitTests.UrlProcessing
         #region Urls encoding
 
         [TestMethod]
-        public async Task SaveToUrlTest()
+        public void SaveToUrlTest()
         {
             var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
             var targetUrl = build.GetAlternativeUrl("pathofexileWindowed");
 
             string expectedUrl = targetUrl.Split('/').LastOrDefault();
 
-            // Need instance created in current thread for a WPF UI logic
-            SkillTree.ClearAssets();
-            SkillTree tree = await SkillTree.CreateAsync(_persistentData);
-            tree.LoadFromUrl(targetUrl);
-
-            var actualUrl = tree.Serializer.ToUrl().Split('/').LastOrDefault();
+            var actualUrl = Serialize(targetUrl).Split('/').LastOrDefault();
 
             Assert.AreEqual(expectedUrl, actualUrl);
-
-            SkillTree.ClearAssets();
         }
 
         [TestMethod]
-        public async Task SaveToUrlNoAscendancyPointsTest()
+        public void SaveToUrlNoAscendancyPointsTest()
         {
             var build = _builds.FindByName("PathofexilWitchOccultist");
             var targetUrl = build.DefaultUrl;
 
             string expectedSegment = targetUrl.Split('/').LastOrDefault();
 
-            // Need new instance created in current thread for a WPF UI logic
-            SkillTree.ClearAssets();
-            SkillTree tree = await SkillTree.CreateAsync(_persistentData);
-            tree.LoadFromUrl(targetUrl);
-
-            var actualSegment = tree.Serializer.ToUrl().Split('/').LastOrDefault();
+            var actualSegment = Serialize(targetUrl).Split('/').LastOrDefault();
 
             Assert.AreEqual(expectedSegment, actualSegment);
-
-            SkillTree.ClearAssets();
         }
 
         [TestMethod]
@@ -217,36 +183,13 @@ namespace UnitTests.UrlProcessing
         #region Misc
 
         [TestMethod]
-        public void PointsUsedTest()
-        {
-            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
-            var targetUrl = build.GetAlternativeUrl("pathofexileWindowed");
-
-            var actualCount = _tree.BuildConverter.GetUrlDeserializer(targetUrl).GetPointsCount();
-
-            Assert.AreEqual(build.Points, actualCount);
-        }
-
-        [TestMethod]
-        public void PointsUsedWithAscendancyTest()
-        {
-            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
-            var targetUrl = build.GetAlternativeUrl("pathofexileWindowed");
-
-            var actualCount = _tree.BuildConverter.GetUrlDeserializer(targetUrl).GetPointsCount(true);
-
-            Assert.AreEqual(build.GetTotalPoints(), actualCount);
-        }
-
-        [TestMethod]
         [DataSource("Microsoft.VisualStudio.TestTools.DataSource.XML", @"..\..\TestBuilds\EmptyBuildUrls.xml", "build", DataAccessMethod.Sequential)]
         public void GetCharacterClassTest()
         {
             var expectedClass = (CharacterClass) Convert.ToInt32(TestContext.DataRow["characterClassId"]);
             var targetUrl = Convert.ToString(TestContext.DataRow.GetChildRows("build_urls")[0]["default"], CultureInfo.InvariantCulture);
 
-            var actualClass =
-                _tree.BuildConverter.GetUrlDeserializer(Constants.TreeAddress + targetUrl).GetCharacterClass();
+            var actualClass = _buildConverter.GetUrlDeserializer(targetUrl).GetCharacterClass();
 
             Assert.AreEqual(expectedClass, actualClass);
         }
@@ -257,52 +200,26 @@ namespace UnitTests.UrlProcessing
         {
             // There are duplicate cases for rows with empty ascendancy class.
             // Consider this if test runs too slow.
-            var characterClass = (CharacterClass) Convert.ToInt32(TestContext.DataRow["characterClassId"]);
-            var ascendancyClassId = Convert.ToInt32(TestContext.DataRow["ascendancyClassId"]);
-
-            string expectedAscendancyClass = ascendancyClassId > 0
-                ? _tree.AscendancyClasses.GetAscendancyClassName(characterClass, ascendancyClassId)
-                : null;
-
+            var expectedAscendancyClass = Convert.ToInt32(TestContext.DataRow["ascendancyClassId"]);
             string targetUrl = Convert.ToString(TestContext.DataRow.GetChildRows("build_urls")[0]["default"], CultureInfo.InvariantCulture);
-            string actualAscendancyClass =
-                _tree.BuildConverter.GetUrlDeserializer(targetUrl).GetAscendancyClass();
+
+            var actualAscendancyClass = _buildConverter.GetUrlDeserializer(targetUrl).GetAscendancyClassId();
 
             Assert.AreEqual(expectedAscendancyClass, actualAscendancyClass);
-        }
-
-        [TestMethod]
-        public async Task GetPointCountTest()
-        {
-            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
-            var targetUrl = build.GetAlternativeUrl("pathofexileWindowed");
-
-            // Need instance created in current thread for a WPF UI logic
-            SkillTree.ClearAssets();
-            SkillTree tree = await SkillTree.CreateAsync(_persistentData);
-            tree.LoadFromUrl(targetUrl);
-
-            var deserializer = _tree.BuildConverter.GetUrlDeserializer(targetUrl);
-
-            var points = tree.GetPointCount();
-            var count = points["NormalUsed"] + points["AscendancyUsed"] + points["ScionAscendancyChoices"];
-
-            Assert.AreEqual(count, deserializer.GetPointsCount(true));
         }
 
         #endregion
 
         #region Helpers
 
-        private static HashSet<SkillNode> DecodeInSkillTree(string buildUrl)
-        {
-            // SkillTree.DecodeUrl accesses static state that should be reset between tests
-            SkillTree.ClearAssets();
-            _tree = SkillTree.CreateAsync(_persistentData).Result;
+        private static IReadOnlyCollection<ushort> Deserialize(string buildUrl)
+            => _buildConverter.GetUrlDeserializer(buildUrl).GetBuildData().SkilledNodesIds;
 
-            HashSet<SkillNode> nodes;
-            SkillTree.DecodeUrl(buildUrl, out nodes, _tree);
-            return nodes;
+        private static string Serialize(string buildUrl)
+        {
+            var buildData = _buildConverter.GetUrlDeserializer(buildUrl).GetBuildData();
+            var allNodes = Mock.Of<ICollection<ushort>>(c => c.Contains(It.IsAny<ushort>()));
+            return new SkillTreeSerializer(buildData, allNodes).ToUrl();
         }
 
         #endregion

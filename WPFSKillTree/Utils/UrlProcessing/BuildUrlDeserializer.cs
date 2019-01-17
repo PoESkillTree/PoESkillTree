@@ -38,7 +38,7 @@ namespace POESKillTree.Utils.UrlProcessing
         /// <summary>
         /// Returns the id of an ascendancy class decoded from the tree url.
         /// </summary>
-        protected abstract int GetAscendancyClassId();
+        public abstract int GetAscendancyClassId();
 
         /// <summary>
         /// Validates that the build url can be deserialized without exceptions.
@@ -51,21 +51,10 @@ namespace POESKillTree.Utils.UrlProcessing
         /// <summary>
         /// Returns the number of non-ascendancy points the given tree url uses.
         /// </summary>
-        public virtual int GetPointsCount(bool includeAscendancy = false)
-        {
-            if (includeAscendancy)
-                return GetBuildData().SkilledNodesIds.Count(id => !SkillTree.RootNodeList.Contains(id));
-
-            return GetBuildData().SkilledNodesIds.Count(id =>
-            {
-                if (SkillTree.Skillnodes.TryGetValue(id, out var skillNode))
-                {
-                    return !skillNode.IsRootNode && skillNode.ascendancyName == null;
-                }
-
-                return false;
-            });
-        }
+        public int GetPointsCount()
+            => GetBuildData().SkilledNodesIds.Count(
+                id => SkillTree.Skillnodes.TryGetValue(id, out var skillNode)
+                      && (!skillNode.IsRootNode && skillNode.ascendancyName == null));
 
         /// <summary>
         /// Returns the character class of the given build url.

@@ -15,8 +15,6 @@ namespace UnitTests.TestBuilds.Utils
 
         public string DefaultUrl => Urls.FirstOrDefault(x => x.IsDefault)?.Value;
 
-        public ICollection<string> AlternativeUrls => Urls.Where(x => !x.IsDefault).Select(x => x.Value).ToList();
-
         [XmlAttribute("name")]
         public string Name { get; set; }
 
@@ -29,11 +27,8 @@ namespace UnitTests.TestBuilds.Utils
         [XmlAttribute("ascendancyClassId")]
         public byte AscendancyClassId { get; set; }
 
-        [XmlAttribute("points")]
-        public int Points { get; set; }
-
-        [XmlAttribute("ascendancyPoints")]
-        public int AscendancyPoints { get; set; }
+        [XmlAttribute("nodes")]
+        public int Nodes { get; set; }
 
         [XmlArray("urls")]
         [XmlArrayItem("default", typeof(DefaultUrlItem))]
@@ -57,24 +52,6 @@ namespace UnitTests.TestBuilds.Utils
 
         [XmlElement("tags")]
         public TagsCollection Tags { get; set; }
-
-        public int GetTotalPoints(bool includeClassPoints = false)
-        {
-            var totalPoints = Points + AscendancyPoints;
-
-            if (includeClassPoints)
-            {
-                // +1 for class root node
-                totalPoints++;
-
-                if (AscendancyClassId > 0)
-                {
-                    totalPoints++;
-                }
-            }
-
-            return totalPoints;
-        }
 
         public string GetAlternativeUrl(string urlName)
         {
