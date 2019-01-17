@@ -167,16 +167,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\ItemDB\GemProperties.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Data\Equipment\Items.xml" />
     <EmbeddedResource Include="Data\Equipment\Uniques.xml" />
-    <None Include="Data\ItemDB\GemList.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\SkillTreeStatLines.txt">

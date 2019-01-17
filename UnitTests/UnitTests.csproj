@@ -105,7 +105,6 @@
     <Compile Include="TestBuilds\Utils\TestData.cs" />
     <Compile Include="TestBuilds\Utils\UrlItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestItemDB.cs" />
     <Compile Include="UrlProcessing\BuildConverterTests.cs" />
     <Compile Include="UrlProcessing\BuildLoadingTests.cs" />
     <Compile Include="UrlProcessing\BuildUrlNormalizerTests.cs" />
@@ -134,14 +133,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="TestBuilds\EmptyBuildUrls.xml" />
-    <Content Include="TestItems.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="TestMerge.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TestBuilds\gems\" />

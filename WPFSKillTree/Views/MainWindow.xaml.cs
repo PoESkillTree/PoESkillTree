@@ -455,7 +455,6 @@ namespace POESKillTree.Views
             controller.Maximum = 1;
             controller.SetIndeterminate();
 
-            var itemDBTask = Task.Run(InitializeItemDB);
             var computationInitializer = ComputationInitializer.StartNew();
             _gameData = computationInitializer.GameData;
             var persistentDataTask = PersistentData.InitializeAsync(DialogCoordinator.Instance, _gameData);
@@ -475,8 +474,6 @@ namespace POESKillTree.Views
 
             var initialComputationTask = computationInitializer.InitializeAsync(SkillTree.Skillnodes.Values);
 
-            await itemDBTask;
-
             _justLoaded = true;
             // loading last build
             await CurrentBuildChanged();
@@ -490,23 +487,6 @@ namespace POESKillTree.Views
             computationInitializer.SetupPeriodicActions();
 
             await controller.CloseAsync();
-        }
-
-        private static void InitializeItemDB()
-        {
-            const string itemDBPrefix = "Data/ItemDB/";
-            Directory.CreateDirectory(AppData.GetFolder(itemDBPrefix));
-            // First file instantiates the ItemDB.
-            ItemDB.Load(itemDBPrefix + "GemList.xml");
-            // Merge all other files from the ItemDB path.
-            Directory.GetFiles(AppData.GetFolder(itemDBPrefix))
-                .Select(Path.GetFileName)
-                .Where(f => f != "GemList.xml")
-                .Select(f => itemDBPrefix + f)
-                .ForEach(ItemDB.Merge);
-            // Merge the user specified things.
-            ItemDB.Merge("ItemsLocal.xml");
-            ItemDB.Index();
         }
 
         private void InitializeIndependentUI()

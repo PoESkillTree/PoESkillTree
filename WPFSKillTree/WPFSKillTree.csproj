@@ -375,7 +375,6 @@
     <Compile Include="Localization\Markdown\Markdown.cs" />
     <Compile Include="Localization\Markdown\TextToFlowDocumentConverter.cs" />
     <Compile Include="Localization\XAML.cs" />
-    <Compile Include="Model\AttributeSet.cs" />
     <Compile Include="Model\BanditSettings.cs" />
     <Compile Include="Model\Builds\AbstractBuild.cs" />
     <Compile Include="Model\Builds\BuildFolder.cs" />
@@ -421,9 +420,7 @@
     <Compile Include="SkillTreeFiles\AscendancyClasses.cs" />
     <Compile Include="SkillTreeFiles\AssetLoader.cs" />
     <Compile Include="SkillTreeFiles\Bootstrap.cs" />
-    <Compile Include="SkillTreeFiles\Compute.cs" />
     <Compile Include="SkillTreeFiles\Constants.cs" />
-    <Compile Include="SkillTreeFiles\ItemDB.cs" />
     <Compile Include="SkillTreeFiles\NodeHighlighter.cs" />
     <Compile Include="SkillTreeFiles\SkillIcons.cs" />
     <Compile Include="SkillTreeFiles\SkillNode.cs" />

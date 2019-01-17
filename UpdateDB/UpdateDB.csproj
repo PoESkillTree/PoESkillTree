@@ -87,7 +87,6 @@
   <ItemGroup>
     <Compile Include="DataLoaderExecuter.cs" />
     <Compile Include="DataLoading\DataLoader.cs" />
-    <Compile Include="DataLoading\GemLoader.cs" />
     <Compile Include="DataLoading\ItemBaseLoader.cs" />
     <Compile Include="DataLoading\ItemImageLoader.cs" />
     <Compile Include="DataLoading\RePoELoader.cs" />

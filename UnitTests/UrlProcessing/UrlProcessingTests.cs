@@ -26,8 +26,6 @@ namespace UnitTests.UrlProcessing
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            if (ItemDB.IsEmpty())
-                ItemDB.Load("Data/ItemDB/GemList.xml", true);
             _persistentData = new BarePersistentData { CurrentBuild = new PoEBuild() };
             _persistentData.EquipmentData = EquipmentData.CreateAsync(_persistentData.Options).Result;
 
