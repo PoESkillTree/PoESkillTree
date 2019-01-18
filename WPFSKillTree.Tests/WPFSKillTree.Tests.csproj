@@ -88,8 +88,10 @@
     <Compile Include="TreeGenerator\Genetic\WeightedSamplerTest.cs" />
     <Compile Include="Utils\ObservableSetTest.cs" />
     <Compile Include="Utils\UrlProcessing\BuildConverterTest.cs" />
+    <Compile Include="Utils\UrlProcessing\BuildUrlDeserializerTest.cs" />
     <Compile Include="Utils\UrlProcessing\BuildUrlNormalizerExtensions.cs" />
     <Compile Include="Utils\UrlProcessing\BuildUrlNormalizerTest.cs" />
+    <Compile Include="Utils\UrlProcessing\SkillTreeSerializerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -83,9 +83,10 @@ namespace POESKillTree.Utils.UrlProcessing
             // Performance impact is minimal even on tree with all 1.3K nodes allocated.
             var skillNodes = _skillTree.SkilledNodes
                 .Where(node => !node.IsAscendancyStart && !node.IsRootNode)
-                .OrderBy(node => node.Id);
+                .OrderBy(node => node.Id)
+                .ToList();
 
-            var bytes = new byte[HeaderSize + skillNodes.Count() * 2];
+            var bytes = new byte[HeaderSize + skillNodes.Count * 2];
             bytes = GetCharacterBytes((byte)_skillTree.CharClass, (byte)_skillTree.AscType, bytes);
 
             int i = HeaderSize;
@@ -96,19 +97,6 @@ namespace POESKillTree.Utils.UrlProcessing
             }
 
             return Constants.TreeAddress + Convert.ToBase64String(bytes).Replace("/", "_").Replace("+", "-");
-        }
-
-        /// <summary>
-        /// Creates empty build Url, containing only information about selected classes.
-        /// </summary>
-        /// <param name="characterClassId">The character class Id.</param>
-        /// <param name="ascendancyClassId">The ascendancy class Id.</param>
-        /// <returns>Starting build Url.</returns>
-        public static string GetEmptyBuildUrl(byte characterClassId = 0, byte ascendancyClassId = 0)
-        {
-            var b = GetCharacterBytes(characterClassId, ascendancyClassId);
-
-            return Convert.ToBase64String(b).Replace("/", "_").Replace("+", "-");
         }
 
         private static byte[] GetCharacterBytes(byte characterClassId = 0, byte ascendancyClassId = 0, byte[] target = null)
