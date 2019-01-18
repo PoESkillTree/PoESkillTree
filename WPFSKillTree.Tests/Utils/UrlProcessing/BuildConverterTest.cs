@@ -1,21 +1,21 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using POESKillTree.Utils.UrlProcessing;
 
-namespace UnitTests.UrlProcessing
+namespace PoESkillTree.Tests.Utils.UrlProcessing
 {
-    [TestClass]
-    public class BuildConverterTests
+    [TestFixture]
+    public class BuildConverterTest
     {
         private IBuildConverter _buildConverter;
 
-        [TestInitialize]
+        [SetUp]
         public void TestInitialize()
         {
             _buildConverter = new BuildConverter(null);
             RegisterFactories();
         }
 
-        [TestMethod]
+        [Test]
         public void GetUrlDeserializerReturnsNullWhenNoFactories()
         {
             UnregisterAllFactories();
@@ -25,7 +25,7 @@ namespace UnitTests.UrlProcessing
             Assert.IsNull(deserializer);
         }
 
-        [TestMethod]
+        [Test]
         public void GetUrlDeserializerReturnsCorrectDeserializer()
         {
             var deserializer = _buildConverter.GetUrlDeserializer("http://www.pathofexile.com/passive-skill-tree/AAAABAAAAA==");
@@ -33,7 +33,7 @@ namespace UnitTests.UrlProcessing
             Assert.AreEqual(typeof(PathofexileUrlDeserializer), deserializer.GetType());
         }
 
-        [TestMethod]
+        [Test]
         public void GetUrlDeserializerReturnsDefaultDeserializerWhenUrlNotSupported()
         {
             var deserializer = _buildConverter.GetUrlDeserializer("https://example.com/AAAABAAAAA==");
