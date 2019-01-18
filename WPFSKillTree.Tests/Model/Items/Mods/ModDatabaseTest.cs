@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoreLinq;
+using NUnit.Framework;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
 
-namespace UnitTests.Model.Items.Mods
+namespace PoESkillTree.Tests.Model.Items.Mods
 {
-    [TestClass]
+    [TestFixture]
     public class ModDatabaseTest
     {
         private static readonly ISet<string> UnknownTags = new HashSet<string>
@@ -35,29 +35,21 @@ namespace UnitTests.Model.Items.Mods
             "Map", "MapFragment",
         };
 
-        private Task _initialization;
+        private static Dictionary<string, JsonMod> _mods;
+        private static JsonCraftingBenchOption[] _benchOptions;
+        private static ModDatabase _modDatabase;
 
-        private Dictionary<string, JsonMod> _mods;
-        private JsonCraftingBenchOption[] _benchOptions;
-        private ModDatabase _modDatabase;
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            _initialization = InitializeAsync();
-        }
-
-        private async Task InitializeAsync()
+        [OneTimeSetUp]
+        public static async Task InitializeAsync()
         {
             _mods = await DataUtils.LoadRePoEAsync<Dictionary<string, JsonMod>>("mods");
             _benchOptions = await DataUtils.LoadRePoEAsync<JsonCraftingBenchOption[]>("crafting_bench_options");
             _modDatabase = new ModDatabase(_mods, _benchOptions);
         }
 
-        [TestMethod]
-        public async Task JsonMod_AccuracyAndCritsJewel()
+        [Test]
+        public void JsonMod_AccuracyAndCritsJewel()
         {
-            await _initialization;
             var mod = _mods["AccuracyAndCritsJewel"];
 
             Assert.AreEqual(ModDomain.Misc, mod.Domain);
@@ -86,10 +78,9 @@ namespace UnitTests.Model.Items.Mods
             Assert.AreEqual(6, stat.Min);
         }
 
-        [TestMethod]
-        public async Task JsonMod_LocalIncreasedAccuracy6()
+        [Test]
+        public void JsonMod_LocalIncreasedAccuracy6()
         {
-            await _initialization;
             var mod = _mods["LocalIncreasedAccuracy6"];
 
             Assert.AreEqual(ModDomain.Item, mod.Domain);
@@ -118,10 +109,9 @@ namespace UnitTests.Model.Items.Mods
         }
 
         // make sure essence mods can't spawn through tags so they need to be handled differently
-        [TestMethod]
-        public async Task EssenceMods_NoSpawnTags()
+        [Test]
+        public void EssenceMods_NoSpawnTags()
         {
-            await _initialization;
             foreach (var mod in _mods.Values)
             {
                 if (mod.IsEssenceOnly)
@@ -140,10 +130,9 @@ namespace UnitTests.Model.Items.Mods
             }
         }
 
-        [TestMethod]
-        public async Task GetMatchingMods_ChaosDamage()
+        [Test]
+        public void GetMatchingMods_ChaosDamage()
         {
-            await _initialization;
             var affixes = _modDatabase[ModGenerationType.Prefix];
 
             var chaosDamage = affixes.Single(a => a.Group == "ChaosDamage");
@@ -163,10 +152,9 @@ namespace UnitTests.Model.Items.Mods
             Assert.AreEqual("EinharMasterAddedChaosDamage1", ((Mod) amuletChaosDamage[0]).Id);
         }
 
-        [TestMethod]
-        public async Task GetMatchingMods_ProjectileSpeed()
+        [Test]
+        public void GetMatchingMods_ProjectileSpeed()
         {
-            await _initialization;
             var affixes = _modDatabase[ModGenerationType.Suffix];
             var affix = affixes.Single(a => a.Group == "ProjectileSpeed");
 
@@ -175,10 +163,9 @@ namespace UnitTests.Model.Items.Mods
             Assert.AreEqual("ProjectileSpeed1", ((Mod) quiver[0]).Id);
         }
 
-        [TestMethod]
-        public async Task GetMatchingMods_DefencesPercent_NoMasterMods()
+        [Test]
+        public void GetMatchingMods_DefencesPercent_NoMasterMods()
         {
-            await _initialization;
             var affixes = _modDatabase[ModGenerationType.Prefix];
             var affix = affixes.Single(a => a.Group == "DefencesPercent");
 
@@ -188,10 +175,9 @@ namespace UnitTests.Model.Items.Mods
             Assert.IsFalse(dexHelmet.Any(m => m.Domain == ModDomain.Crafted));
         }
 
-        [TestMethod]
-        public async Task GetMatchingMods_IncreasedLife_MasterMods()
+        [Test]
+        public void GetMatchingMods_IncreasedLife_MasterMods()
         {
-            await _initialization;
             var affixes = _modDatabase[ModGenerationType.Prefix];
             var affix = affixes.Single(a => a.Group == "IncreasedLife");
 
@@ -202,10 +188,9 @@ namespace UnitTests.Model.Items.Mods
 
         // Make sure all possible Tags and ItemClasses are either known or purposefully unknown.
 
-        [TestMethod]
-        public async Task JsonMod_UnknownTags()
+        [Test]
+        public void JsonMod_UnknownTags()
         {
-            await _initialization;
             var unexpectedTags = (
                 from mod in _mods.Values
                 where mod.Domain != ModDomain.Area && mod.Domain != ModDomain.Atlas
@@ -219,10 +204,9 @@ namespace UnitTests.Model.Items.Mods
             Assert.AreEqual(0, unexpectedTags.Count, string.Join(", ", unexpectedTags));
         }
 
-        [TestMethod]
-        public async Task JsonCraftingBenchOption_UnknownItemClasses()
+        [Test]
+        public void JsonCraftingBenchOption_UnknownItemClasses()
         {
-            await _initialization;
             foreach (var benchOption in _benchOptions)
             {
                 foreach (var itemClass in benchOption.ItemClasses)

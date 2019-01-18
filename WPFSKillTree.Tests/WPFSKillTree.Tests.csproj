@@ -81,6 +81,7 @@
     <Compile Include="Computation\Model\ComputationObservablesTest.cs" />
     <Compile Include="Computation\Model\ObservableCalculatorTest.cs" />
     <Compile Include="Computation\ViewModels\CalculationNodeViewModelTest.cs" />
+    <Compile Include="Model\Items\Mods\ModDatabaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TreeGenerator\Algorithm\LinkedListPriorityQueueTest.cs" />
     <Compile Include="TreeGenerator\Algorithm\MinimalSpanningTreeTest.cs" />
