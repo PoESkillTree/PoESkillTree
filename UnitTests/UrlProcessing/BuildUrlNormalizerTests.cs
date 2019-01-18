@@ -1,62 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MoreLinq;
 using POESKillTree.Utils.UrlProcessing;
-using UnitTests.TestBuilds.Utils;
 
 namespace UnitTests.UrlProcessing
 {
     [TestClass]
     public class BuildUrlNormalizerTests
     {
-        private static BuildUrlCollection _builds;
+        private const string ResolvedObsoleteAssassin =
+            "https://www.pathofexile.com/passive-skill-tree/AAAAAwYAsNjjdaLZMjIjNsgUEJJTEPVv2YZqjLxvFr8mlWHiVUuMNonTcFIqC13yKwoOSBEvAx7jhBGW62MfQQ3RBx5_xrVINj1jQ5UuoqOTJ52q8NXB8--IbIxJUZUg-TdirGsXLR_Xz7TFvOpMs0mxwuzAVAQHIG6usypbBbUI9GpD6-SD21AwQZZ59ujWjb9fKlXG217Q9UM2IuqbJlFH1CM6WFLswzoyAedUN9QwfDBxGYqbtSo4shkk_e0_jX3dqJcGhMXPev_eI_ZLeMSiYetNkjpCu-N6U_66fXXTfgBeGY7tgwgu";
 
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext testContext)
-        {
-            _builds = TestBuildUrlLoader.LoadFromXmlFile("../../TestBuilds/BuildUrls.xml");
-        }
+        private const string ObsoleteAssassin =
+            "https://pathofexile.com/passive-skill-tree/AAAAAwYAsNjjdaLZMjIjNsgUEJJTEPVv2YZqjLxvFr8mlWHiVUuMNonTcFIqC13yKwoOSBEvAx7jhBGW62MfQQ3RBx5_xrVINj1jQ5UuoqOTJ52q8NXB8--IbIxJUZUg-TdirGsXLR_Xz7TFvOpMs0mxwuzAVAQHIG6usypbBbUI9GpD6-SD21AwQZZ59ujWjb9fKlXG217Q9UM2IuqbJlFH1CM6WFLswzoyAedUN9QwfDBxGYqbtSo4shkk_e0_jX3dqJcGhMXPev_eI_ZLeMSiYetNkjpCu-N6U_66fXXTfgBeGY7tgwgu";
+
+        private const string Ascendant =
+            "https://pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhV-FdcV7Ra_GkgbJR1PIG4i9CSLKgsqOCy_LOE1uTY9Ow07fD1fRwZJE0lRSbFLrkyzUDBSU1S9VmNW9VxAXGtd8l9qYqxjQ2nYbAhsC2yMbRlwUnBWdZ51_XzwfeN-oX_GhEiEb4auh8uJ4It6joqP-pAbkQeTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-u_y-isHFwzrDbcrTzxXQH9DQ1ELVudfP2HbZW9tu29Tb59-K4vfmWOkC6rrrY-wY74jv6_DV8Yry4fQo9vz31_k3";
+
+        private const string RuOccultist =
+            "https://ru.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhXXFe0WvxslHU8gbiL0JIsqCyo4LL8s4TW5Nj07DTt8PV9HBkkTSVFJsUuuTLNQMFJTVL1WY1b1XEBca13yX2pirGNDbAhsC2yMbRlwUnBWdZ51_X3jf8aESIRvhq6Hy4ngi3qOio_6kBuTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-vorBxcM6w23K088V0B_Q0NRC1bnXz9h22VvbbtvU2-ffiuL35ljpAuq662PsGO-I7-vw1fGK8uH2_PfX-Tc=";
 
         [TestMethod]
-        public async Task NormalizeAsyncExtractsUrlFromValidGoogleLinkTest()
+        public async Task NormalizeAsyncExtractsUrlFromValidGoogleLink()
         {
             // #267
-            var build = _builds.FindByName("ObsoleteShadowAssassin");
-            var targetUrl = build.GetAlternativeUrl("googleQuery");
+            var data = NormalizationTestData.CreateShortened(
+                "https://www.google.com/url?q=http://poeurl.com/xer&amp;sa=D&amp;ust=1456857460554000&amp;usg=AFQjCNH6POtjRXIVzd_kSRbH7sOVYuZW7A",
+                "http://poeurl.com/redirect.php?url=xer",
+                ResolvedObsoleteAssassin, ObsoleteAssassin);
+            var sut = data.CreateNormalizer();
 
-            Func<string, Task, Task> loadingWrapper = (msg, task) => task;
+            var actualUrl = await sut.NormalizeAsync(data.OriginalUrl);
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(targetUrl, loadingWrapper);
-
-            Assert.AreEqual(build.DefaultUrl, actualUrl);
+            Assert.AreEqual(data.ExpectedUrl, actualUrl);
         }
 
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromParameterlessValidGoogleLinkTest()
         {
             // #267
-            var build = _builds.FindByName("ObsoleteShadowAssassin");
-            var targetUrl = build.GetAlternativeUrl("googleQueryShort");
+            var data = NormalizationTestData.CreateShortened(
+                "https://www.google.com/url?q=http://poeurl.com/xer",
+                "http://poeurl.com/redirect.php?url=xer",
+                ResolvedObsoleteAssassin, ObsoleteAssassin);
+            var sut = data.CreateNormalizer();
 
-            Func<string, Task, Task> loadingWrapper = (msg, task) => task;
+            var actualUrl = await sut.NormalizeAsync(data.OriginalUrl);
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(targetUrl, loadingWrapper);
-
-            Assert.AreEqual(build.DefaultUrl, actualUrl);
+            Assert.AreEqual(data.ExpectedUrl, actualUrl);
         }
 
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromShortenedGoogleLinkTest()
         {
-            var build = _builds.FindByName("ObsoleteShadowAssassin");
-            var targetUrl = build.GetAlternativeUrl("googl");
+            var data = NormalizationTestData.CreateShortened(
+                "goo.gl/44tsqv",
+                "https://goo.gl/44tsqv",
+                ResolvedObsoleteAssassin, ObsoleteAssassin);
+            var sut = data.CreateNormalizer();
 
-            Func<string, Task, Task> loadingWrapper = (msg, task) => task;
+            var actualUrl = await sut.NormalizeAsync(data.OriginalUrl);
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(targetUrl, loadingWrapper);
-
-            Assert.AreEqual(build.DefaultUrl, actualUrl);
+            Assert.AreEqual(data.ExpectedUrl, actualUrl);
         }
 
         [TestMethod]
@@ -65,6 +75,7 @@ namespace UnitTests.UrlProcessing
             // #267
             var treeUrl = "https://google.com/url?ust=1456857460554000&usg=AFQjCNH6POtjRXIVzd_kSRbH7sOVYuZW7A";
 
+            // TODO Change to Assert.Throws<>()
             Exception exception = null;
             try
             {
@@ -82,133 +93,133 @@ namespace UnitTests.UrlProcessing
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromValidTinyurlLinkTest()
         {
-            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
-            var tinyurlTreeUrl = build.GetAlternativeUrl("tinyurl");
-            var expectedUrl = build.GetAlternativeUrl("pathofexileWindowed");
+            var data = NormalizationTestData.CreateShortened(
+                "http://tinyurl.com/glcmaeo",
+                "https://tinyurl.com/glcmaeo",
+                Ascendant);
+            var sut = data.CreateNormalizer();
 
-            Func<string, Task, Task> loadingWrapper = (url, task) => task;
+            var actualUrl = await sut.NormalizeAsync(data.OriginalUrl);
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(tinyurlTreeUrl, loadingWrapper);
-
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.AreEqual(data.ExpectedUrl, actualUrl);
         }
 
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromValidPoeurlLinkTest()
         {
-            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
-            var poeurlTreeUrl = build.GetAlternativeUrl("poeurl");
-            var expectedUrl = build.GetAlternativeUrl("pathofexileWindowed");
+            var data = NormalizationTestData.CreateShortened(
+                "http://poeurl.com/0dE",
+                "http://poeurl.com/redirect.php?url=0dE",
+                Ascendant);
+            var sut = data.CreateNormalizer();
 
-            Func<string, Task, Task> loadingWrapper = (url, task) => task;
+            var actualUrl = await sut.NormalizeAsync(data.OriginalUrl);
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
-
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.AreEqual(data.ExpectedUrl, actualUrl);
         }
 
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromValidPoeurlLinkWithRedirectTest()
         {
-            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
-            var poeurlTreeUrl = build.GetAlternativeUrl("poeurlRedirect");
-            var expectedUrl = build.GetAlternativeUrl("pathofexileWindowed");
+            var data = NormalizationTestData.CreateShortened(
+                "http://poeurl.com/redirect.php?url=0dE",
+                "http://poeurl.com/redirect.php?url=0dE",
+                Ascendant);
+            var sut = data.CreateNormalizer();
 
-            Func<string, Task, Task> loadingWrapper = (url, task) => task;
+            var actualUrl = await sut.NormalizeAsync(data.OriginalUrl);
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
-
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.AreEqual(data.ExpectedUrl, actualUrl);
         }
 
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromValidPoeurlLinkWithoutProtocolTest()
         {
-            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
-            var poeurlTreeUrl = build.GetAlternativeUrl("poeurlNoProto");
-            var expectedUrl = build.GetAlternativeUrl("pathofexileWindowed");
+            var data = NormalizationTestData.CreateShortened(
+                "www.poeurl.com/0dE",
+                "http://poeurl.com/redirect.php?url=0dE",
+                Ascendant);
+            var sut = data.CreateNormalizer();
 
-            Func<string, Task, Task> loadingWrapper = (url, task) => task;
+            var actualUrl = await sut.NormalizeAsync(data.OriginalUrl);
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
-
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.AreEqual(data.ExpectedUrl, actualUrl);
         }
 
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromValidPoeurlLinkWithoutWwwPrefixTest()
         {
-            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
-            var poeurlTreeUrl = build.GetAlternativeUrl("poeurlNoPrefix");
-            var expectedUrl = build.GetAlternativeUrl("pathofexileWindowed");
+            var data = NormalizationTestData.CreateShortened(
+                "poeurl.com/0dE",
+                "http://poeurl.com/redirect.php?url=0dE",
+                Ascendant);
+            var sut = data.CreateNormalizer();
 
-            Func<string, Task, Task> loadingWrapper = (url, task) => task;
+            var actualUrl = await sut.NormalizeAsync(data.OriginalUrl);
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
-
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.AreEqual(data.ExpectedUrl, actualUrl);
         }
 
         [TestMethod]
         public async Task NormalizeAsyncLoadsFromTwiceShortenedLinkTest()
         {
-            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
-            var poeurlTreeUrl = build.GetAlternativeUrl("doubleShortened");
-            var expectedUrl = build.GetAlternativeUrl("pathofexileWindowed");
+            var data = NormalizationTestData.CreateTwiceShortened(
+                "https://goo.gl/kKjcuK",
+                "https://goo.gl/kKjcuK",
+                "poeurl.com/0dE",
+                "http://poeurl.com/redirect.php?url=0dE",
+                Ascendant);
+            var sut = data.CreateNormalizer();
 
-            Func<string, Task, Task> loadingWrapper = (url, task) => task;
+            var actualUrl = await sut.NormalizeAsync(data.OriginalUrl);
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
-
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.AreEqual(data.ExpectedUrl, actualUrl);
         }
 
         [TestMethod]
         public async Task NormalizeAsyncProvidesMessageToLoadingWrapperTest()
         {
-            var build = _builds.FindByName("PoeplannerWitchOccultistAscendant");
-            var poeurlTreeUrl = build.GetAlternativeUrl("poeurl");
-            var expectedUrl = build.GetAlternativeUrl("pathofexileWindowed");
-
+            var data = NormalizationTestData.CreateShortened(
+                "http://poeurl.com/0dE",
+                "http://poeurl.com/redirect.php?url=0dE",
+                Ascendant);
+            var sut = data.CreateNormalizer();
             string message = null;
 
-            Func<string, Task, Task> loadingWrapper = (msg, task) =>
+            Task LoadingWrapper(string msg, Task task)
             {
                 message = msg;
                 return task;
-            };
+            }
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
+            var actualUrl = await sut.NormalizeAsync(data.OriginalUrl, LoadingWrapper);
 
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.AreEqual(data.ExpectedUrl, actualUrl);
             Assert.AreEqual("Resolving shortened tree address", message);
         }
 
         [TestMethod]
         public async Task NormalizeAsyncRuPathofexileLinkTest()
         {
-            var build = _builds.FindByName("PathofexilWitchOccultist");
-            var poeurlTreeUrl = build.GetAlternativeUrl("ruPathofexile");
+            var data = NormalizationTestData.Create(RuOccultist, RuOccultist);
+            var sut = data.CreateNormalizer();
 
-            Func<string, Task, Task> loadingWrapper = (msg, task) => task;
+            var actualUrl = await sut.NormalizeAsync(data.OriginalUrl);
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
-
-            Assert.AreEqual(poeurlTreeUrl, actualUrl, "Url should stay the same");
+            Assert.AreEqual(data.ExpectedUrl, actualUrl);
         }
 
         [TestMethod]
         public async Task NormalizeAsyncEncodedPathofexileLinkTest()
         {
-            var build = _builds.FindByName("PathofexilWitchOccultist");
-            var poeurlTreeUrl = build.GetAlternativeUrl("ruPathofexileEncoded");
-            var expectedUrl = build.GetAlternativeUrl("ruPathofexile");
+            var data = NormalizationTestData.Create(
+                "https://ru.pathofexile.com/passive-skill-tree/AAAABAMBAAFvDXwOSA-rD8QRDxEvEVARlhXXFe0WvxslHU8gbiL0JIsqCyo4LL8s4TW5Nj07DTt8PV9HBkkTSVFJsUuuTLNQMFJTVL1WY1b1XEBca13yX2pirGNDbAhsC2yMbRlwUnBWdZ51_X3jf8aESIRvhq6Hy4ngi3qOio_6kBuTH5MnlouXlZfQl_SaE52qoS-io6crpzSnm6xmrJi0DLTFtUi4yrk-vorBxcM6w23K088V0B_Q0NRC1bnXz9h22VvbbtvU2-ffiuL35ljpAuq662PsGO-I7-vw1fGK8uH2_PfX-Tc%3D",
+                RuOccultist);
+            var sut = data.CreateNormalizer();
 
-            Func<string, Task, Task> loadingWrapper = (msg, task) => task;
+            var actualUrl = await sut.NormalizeAsync(data.OriginalUrl);
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(poeurlTreeUrl, loadingWrapper);
-
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.AreEqual(data.ExpectedUrl, actualUrl);
         }
 
         [TestMethod]
@@ -216,7 +227,7 @@ namespace UnitTests.UrlProcessing
         {
             var treeUrl = "https://pathofexile.com/passive-skill-tree/AAAABAAAAA==";
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(treeUrl, null);
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(treeUrl);
 
             Assert.AreEqual(treeUrl, actualUrl);
         }
@@ -226,73 +237,72 @@ namespace UnitTests.UrlProcessing
         {
             var treeUrl = "http://unsupported.com";
 
-            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(treeUrl, null);
+            var actualUrl = await CreateBuildUrlNormalizer().NormalizeAsync(treeUrl);
 
             Assert.AreEqual(treeUrl, actualUrl);
         }
 
-        [TestMethod]
-        public void EnsureProtocolCompletesKnownUrlsTest()
-        {
-            var targetPath = "/abc";
-            var completions = new Dictionary<string, string>
-            {
-                { "goo.gl", "https://goo.gl" },
-                { "poeurl.com", "http://poeurl.com" },
-                { "tinyurl.com", "https://tinyurl.com" },
-                { "pathofexile.com", "https://pathofexile.com" }
-            };
+        private static BuildUrlNormalizer CreateBuildUrlNormalizer()
+            => new BuildUrlNormalizer((uri, __) => throw new AssertFailedException(uri));
 
-            var urlNormalizer = CreateBuildUrlNormalizerMock();
-            foreach (var completion in completions)
+        private static BuildUrlNormalizer CreateBuildUrlNormalizer(params (string, string)[] requests)
+        {
+            var requestDict = requests.ToDictionary();
+            return new BuildUrlNormalizer(GetResponse);
+
+            Task<HttpResponseMessage> GetResponse(string uri, HttpCompletionOption _)
             {
-                var actualUrl = urlNormalizer.EnsureProtocolProxy(completion.Key + targetPath);
-                Assert.AreEqual(completion.Value + targetPath, actualUrl);
+                if (!requestDict.TryGetValue(uri, out var outputUri))
+                    Assert.Fail($"Unexpected request: {uri}");
+
+                var response = new HttpResponseMessage
+                {
+                    ReasonPhrase = "",
+                    StatusCode = HttpStatusCode.OK,
+                    RequestMessage = new HttpRequestMessage(HttpMethod.Get, outputUri),
+                };
+                return Task.FromResult(response);
             }
         }
 
-        [TestMethod]
-        public void EnsureProtocolSkipsUnknownUrlsTest()
+        private class NormalizationTestData
         {
-            var expectedPath = "example.com/a";
-            var urlNormalizer = CreateBuildUrlNormalizerMock();
+            private NormalizationTestData(string originalUrl, string expectedUrl, params (string, string)[] requests)
+            {
+                OriginalUrl = originalUrl;
+                ExpectedUrl = expectedUrl;
+                Requests = requests;
+            }
 
-            var actualUrl = urlNormalizer.EnsureProtocolProxy(expectedPath);
-            Assert.AreEqual(expectedPath, actualUrl);
+            public string OriginalUrl { get; }
+            public string ExpectedUrl { get; }
+            private IReadOnlyList<(string requestUrl, string responseUrl)> Requests { get; }
 
+            public static NormalizationTestData Create(string originalUrl, string expectedUrl)
+                => new NormalizationTestData(originalUrl, expectedUrl);
+
+            public static NormalizationTestData CreateShortened(
+                string originalUrl, string canonicalUrl, string resolvedUrl, string expectedUrl)
+                => new NormalizationTestData(originalUrl, expectedUrl, (canonicalUrl, resolvedUrl));
+
+            public static NormalizationTestData CreateShortened(
+                string originalUrl, string canonicalUrl, string expectedUrl)
+                => new NormalizationTestData(originalUrl, expectedUrl, (canonicalUrl, expectedUrl));
+
+            public static NormalizationTestData CreateTwiceShortened(
+                string firstOriginalUrl, string firstCanonicalUrl, string secondOriginalUrl, string secondCanonicalUrl,
+                string expectedUrl)
+                => new NormalizationTestData(firstOriginalUrl, expectedUrl,
+                    (firstCanonicalUrl, secondOriginalUrl), (secondCanonicalUrl, expectedUrl));
+
+            public BuildUrlNormalizer CreateNormalizer()
+                => CreateBuildUrlNormalizer(Requests.ToArray());
         }
+    }
 
-        [TestMethod]
-        public void ExtractUrlFromQueryTest()
-        {
-            var expectedUrl = "https://pathofexile.com";
-            var targetUrl = $"https://example.com?q={expectedUrl}&x=42";
-            var urlNormalizer = CreateBuildUrlNormalizerMock();
-
-            var actualUrl = urlNormalizer.ExtractUrlFromQueryProxy(targetUrl, "q");
-
-            Assert.AreEqual(expectedUrl, actualUrl);
-        }
-
-        #region Helpers
-
-        private static BuildUrlNormalizer CreateBuildUrlNormalizer()
-        {
-            return new BuildUrlNormalizer();
-        }
-
-        private static BuildUrlNormalizerMock CreateBuildUrlNormalizerMock()
-        {
-            return new BuildUrlNormalizerMock();
-        }
-
-        private class BuildUrlNormalizerMock : BuildUrlNormalizer
-        {
-            public string EnsureProtocolProxy(string buildUrl) => EnsureProtocol(buildUrl);
-
-            public string ExtractUrlFromQueryProxy(string buildUrl, string parameterName) => ExtractUrlFromQuery(buildUrl, parameterName);
-        }
-
-        #endregion
+    internal static class BuildUrlNormalizerExtensions
+    {
+        public static Task<string> NormalizeAsync(this BuildUrlNormalizer @this, string buildUrl)
+            => @this.NormalizeAsync(buildUrl, (_, t) => t);
     }
 }

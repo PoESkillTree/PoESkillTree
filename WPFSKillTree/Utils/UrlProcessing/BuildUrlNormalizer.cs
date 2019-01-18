@@ -28,11 +28,21 @@ namespace POESKillTree.Utils.UrlProcessing
             { "ru.pathofexile.com", "https://ru.pathofexile.com" }
         };
 
+        private readonly Func<string, HttpCompletionOption, Task<HttpResponseMessage>> _getResponseAsync;
+
+        public BuildUrlNormalizer()
+            : this(new HttpClient().GetAsync)
+        {
+        }
+
+        public BuildUrlNormalizer(Func<string, HttpCompletionOption, Task<HttpResponseMessage>> getResponseAsync)
+            => _getResponseAsync = getResponseAsync;
+
         /// <summary>
         /// Creates link to official pathofexile.com builder.
         /// Extracts build url from google link if needed, resolves shortened urls and removes unused query parameters.
         /// </summary>
-        public virtual async Task<string> NormalizeAsync(string buildUrl, Func<string, Task, Task> loadingWrapper = null)
+        public async Task<string> NormalizeAsync(string buildUrl, Func<string, Task, Task> loadingWrapper)
         {
             buildUrl = Regex.Replace(buildUrl, @"\s", "");
 
@@ -58,7 +68,7 @@ namespace POESKillTree.Utils.UrlProcessing
             return EnsureProtocol(buildUrl);
         }
 
-        protected virtual string ExtractUrlFromQuery(string url, string parameterName)
+        private static string ExtractUrlFromQuery(string url, string parameterName)
         {
             var match = Regex.Match(url, $@"{parameterName}=(?<urlParam>.*?)(&|$)");
             if (!match.Success)
@@ -67,62 +77,42 @@ namespace POESKillTree.Utils.UrlProcessing
             return match.Groups["urlParam"].Value;
         }
 
-        protected virtual async Task<string> ResolveShortenedUrl(string buildUrl, Func<string, Task, Task> loadingWrapper)
+        private async Task<string> ResolveShortenedUrl(string buildUrl, Func<string, Task, Task> loadingWrapper)
         {
             buildUrl = EnsureProtocol(buildUrl);
 
-            bool allowForbidden = false;
-
             if (_poeUrlRegex.IsMatch(buildUrl))
             {
-                // Fix for a bug in poeplanner: it returns 403 when getting 88+ points, but content is valid
-                allowForbidden = true;
-
                 buildUrl = buildUrl.Replace("preview.", "");
                 if (!buildUrl.Contains("redirect.php"))
                 {
-                    buildUrl = _poeUrlRegex.Replace(buildUrl, "http://www.poeurl.com/redirect.php?url=");
+                    buildUrl = _poeUrlRegex.Replace(buildUrl, "http://poeurl.com/redirect.php?url=");
                 }
             }
 
             HttpResponseMessage response = null;
 
-            if (loadingWrapper != null)
-            {
-                // This lambda is used to skip GetAsync() result value in loadingWrapper parameter
-                // and thereby unify it by using Task instead of Task<HttpResponseMessage> in signature
-                Func<Task> headersLoader = async () =>
-                {
-                    response = await new HttpClient().GetAsync(buildUrl, HttpCompletionOption.ResponseHeadersRead);
-                };
+            // This lambda is used to skip GetAsync() result value in loadingWrapper parameter
+            // and thereby unify it by using Task instead of Task<HttpResponseMessage> in signature
+            async Task RequestAsync()
+                => response = await _getResponseAsync(buildUrl, HttpCompletionOption.ResponseHeadersRead);
 
-                await loadingWrapper(L10n.Message("Resolving shortened tree address"), headersLoader());
+            await loadingWrapper(L10n.Message("Resolving shortened tree address"), RequestAsync());
 
-                if (!allowForbidden)
-                {
-                    response.EnsureSuccessStatusCode();
-                }
-            }
-            else
-            {
-                response = await new HttpClient().GetAsync(buildUrl, HttpCompletionOption.ResponseHeadersRead);
-            }
+            response.EnsureSuccessStatusCode();
 
             return response.RequestMessage.RequestUri.ToString();
         }
 
-        protected virtual string EnsureProtocol(string buildUrl)
+        private string EnsureProtocol(string buildUrl)
         {
             var match = _prefixRegex.Match(buildUrl);
 
             if (!match.Success)
                 return buildUrl;
 
-            string completion;
-            if (_urlCompletionMap.TryGetValue(match.Groups["hostname"].Value, out completion))
-            {
-                buildUrl = buildUrl.Replace(match.Groups["toReplace"].Value, completion);
-            }
+            if (_urlCompletionMap.TryGetValue(match.Groups["hostname"].Value, out var completion))
+                return buildUrl.Replace(match.Groups["toReplace"].Value, completion);
 
             return buildUrl;
         }
