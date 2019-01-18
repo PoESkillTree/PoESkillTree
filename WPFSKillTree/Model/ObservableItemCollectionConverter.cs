@@ -46,7 +46,9 @@ namespace POESKillTree.Model
 
         private void Reset()
         {
-            Collection.Clear();
+            // When the old collection is removed, the replacement should be an INotifyCollectionChanged implementation
+            // that can raise proper multi-item events (ObservableList, similar to ObservableSet).
+            Collection.ToList().ForEach(i => Collection.Remove(i));
             Collection.AddRange(_oldCollection.Select(Convert));
         }
 
