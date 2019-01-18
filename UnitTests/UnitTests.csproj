@@ -120,7 +120,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UrlProcessing\BuildConverterTests.cs" />
     <Compile Include="UrlProcessing\BuildLoadingTests.cs" />
-    <Compile Include="UrlProcessing\BuildUrlNormalizerTests.cs" />
     <Compile Include="UrlProcessing\UrlProcessingTests.cs" />
   </ItemGroup>
   <ItemGroup>
