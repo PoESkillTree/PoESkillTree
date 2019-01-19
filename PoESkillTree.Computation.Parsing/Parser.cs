@@ -24,6 +24,7 @@ namespace PoESkillTree.Computation.Parsing
         private readonly IParser<ushort> _skilledPassiveNodeParser;
         private readonly IParser<ItemParserParameter> _itemParser;
         private readonly IParser<ItemSlot> _emptyItemSlotParser;
+        private readonly IParser<IReadOnlyCollection<Skill>> _skillsParser;
         private readonly IParser<Skill> _activeSkillParser;
         private readonly IParser<SupportSkillParserParameter> _supportSkillParser;
 
@@ -66,6 +67,7 @@ namespace PoESkillTree.Computation.Parsing
                 Caching(new ActiveSkillParser(skills, builderFactories, GetOrAddUntranslatedStatParser));
             _supportSkillParser =
                 Caching(new SupportSkillParser(skills, builderFactories, GetOrAddUntranslatedStatParser));
+            _skillsParser = new SkillsParser(skills, _activeSkillParser, _supportSkillParser);
         }
 
         private IParser<UntranslatedStatParserParameter> GetOrAddUntranslatedStatParser(string translationFileName)
@@ -97,6 +99,9 @@ namespace PoESkillTree.Computation.Parsing
 
         public ParseResult ParseEmptyItemSlot(ItemSlot itemSlot)
             => _emptyItemSlotParser.Parse(itemSlot);
+
+        public ParseResult ParseSkills(IReadOnlyCollection<Skill> skills)
+            => _skillsParser.Parse(skills);
 
         public ParseResult ParseActiveSkill(Skill activeSkill)
             => _activeSkillParser.Parse(activeSkill);

@@ -158,9 +158,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
 
         private static (SkillDefinition, Skill) CreateBlasphemyDefinition()
         {
-            var supportSkill = new SupportSkillDefinition(false, new string[0], new string[0],
-                new[] { ActiveSkillType.ManaCostIsReservation, ActiveSkillType.ManaCostIsPercentage },
-                new[] { Keyword.Aura });
+            var supportSkill = CreateSupportSkillDefinition(
+                addedActiveSkillTypes: new[]
+                    { ActiveSkillType.ManaCostIsReservation, ActiveSkillType.ManaCostIsPercentage },
+                addedKeywords: new[] { Keyword.Aura });
             var qualityPassiveStats = new[] { new UntranslatedStat("curse_effect_+%", 500),  };
             var level = CreateLevelDefinition(manaCostOverride: 42, qualityPassiveStats: qualityPassiveStats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
@@ -191,15 +192,13 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
 
         private static (SkillDefinition, Skill) CreatePhysicalToLightningDefinition()
         {
-            var supportSkill = new SupportSkillDefinition(false, new string[0], new string[0], new string[0],
-                new Keyword[0]);
             var stats = new[]
             {
                 new UntranslatedStat("skill_physical_damage_%_to_convert_to_lightning", 50),
             };
             var level = CreateLevelDefinition(stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (CreateSupport("SupportPhysicalToLightning", supportSkill, levels),
+            return (CreateSupport("SupportPhysicalToLightning", CreateSupportSkillDefinition(), levels),
                 new Skill("SupportPhysicalToLightning", 1, 0, ItemSlot.Belt, 1, null));
         }
 
@@ -241,15 +240,13 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
 
         private static (SkillDefinition, Skill) CreateBloodMagicDefinition()
         {
-            var supportSkill = new SupportSkillDefinition(false, new string[0], new string[0], new string[0],
-                new Keyword[0]);
             var stats = new[]
             {
                 new UntranslatedStat("base_use_life_in_place_of_mana", 1),
             };
             var level = CreateLevelDefinition(stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (CreateSupport("SupportBloodMagic", supportSkill, levels),
+            return (CreateSupport("SupportBloodMagic", CreateSupportSkillDefinition(), levels),
                 new Skill("SupportBloodMagic", 1, 0, ItemSlot.Belt, 1, null));
         }
 
@@ -286,15 +283,13 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
 
         private static (SkillDefinition, Skill) CreatePointBlankDefinition()
         {
-            var supportSkill = new SupportSkillDefinition(false, new string[0], new string[0], new string[0],
-                new Keyword[0]);
             var stats = new[]
             {
                 new UntranslatedStat("keystone_point_blank", 1),
             };
             var level = CreateLevelDefinition(stats: stats);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
-            return (CreateSupport("SupportPointBlank", supportSkill, levels),
+            return (CreateSupport("SupportPointBlank", CreateSupportSkillDefinition(), levels),
                 new Skill("SupportPointBlank", 1, 0, ItemSlot.Belt, 1, null));
         }
 

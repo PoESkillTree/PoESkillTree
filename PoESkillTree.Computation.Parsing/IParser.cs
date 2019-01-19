@@ -14,12 +14,17 @@ namespace PoESkillTree.Computation.Parsing
     public interface IParser
     {
         ParseResult ParseRawModifier(string modifierLine, ModifierSource modifierSource, Entity modifierSourceEntity);
+
         ParseResult ParsePassiveNode(ushort nodeId);
         ParseResult ParseSkilledPassiveNode(ushort nodeId);
+
         ParseResult ParseItem(Item item, ItemSlot itemSlot);
         ParseResult ParseEmptyItemSlot(ItemSlot itemSlot);
+        
+        ParseResult ParseSkills(IReadOnlyCollection<Skill> skills);
         ParseResult ParseActiveSkill(Skill activeSkill);
         ParseResult ParseSupportSkill(Skill activeSkill, Skill supportSkill);
+
         IReadOnlyList<Modifier> ParseGivenModifiers();
         // This method looks weird, but the delegates are necessary for caller-defined concurrency
         IEnumerable<Func<IReadOnlyList<Modifier>>> CreateGivenModifierParseDelegates();

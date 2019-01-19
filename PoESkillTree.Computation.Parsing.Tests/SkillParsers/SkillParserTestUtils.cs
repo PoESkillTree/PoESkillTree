@@ -54,6 +54,13 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
                 weaponRestrictions ?? new ItemClass[0]);
         }
 
+        public static SupportSkillDefinition CreateSupportSkillDefinition(
+            IEnumerable<string> allowedActiveSkillTypes = null, IEnumerable<string> addedActiveSkillTypes = null,
+            IReadOnlyList<Keyword> addedKeywords = null)
+            => new SupportSkillDefinition(false,
+                allowedActiveSkillTypes ?? new string[0], new string[0], 
+                addedActiveSkillTypes ?? new string[0], addedKeywords ?? new Keyword[0]);
+
         public static IValueCalculationContext MockValueCalculationContextForMainSkill(
             Skill skill, params (string stat, double? value)[] nodeValues)
             => MockValueCalculationContext(skill, true, false, nodeValues);

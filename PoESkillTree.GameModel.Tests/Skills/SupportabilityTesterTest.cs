@@ -59,13 +59,16 @@ namespace PoESkillTree.GameModel.Tests.Skills
         }
 
         [Test]
-        public void ThrowsIfSupportHasDifferentItemSlot()
+        public void ActiveSkillCanOnlyBeSupportedBySupportsWithSameItemSlot()
         {
             var activeSkill = new Skill("active", 20, 20, ItemSlot.Boots, 0, 0);
             var supportSkills = new[] { new Skill("1empty", 20, 20, ItemSlot.Helm, 1, 0) };
+            var expected = new Skill[0];
             var sut = CreateSut();
 
-            Assert.Throws<ArgumentException>(() => sut.SelectSupportingSkills(activeSkill, supportSkills));
+            var actual = sut.SelectSupportingSkills(activeSkill, supportSkills).ToList();
+
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
