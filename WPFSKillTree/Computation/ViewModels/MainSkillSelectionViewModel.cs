@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils.Extensions;
 using POESKillTree.Utils;
@@ -10,13 +11,23 @@ namespace POESKillTree.Computation.ViewModels
 {
     public class MainSkillSelectionViewModel : Notifier
     {
+        private const string DefaultSkillId = "PlayerMelee";
+
         private readonly SkillDefinitions _skillDefinitions;
+
+        private readonly MainSkillViewModel _defaultSkill;
+
         private MainSkillViewModel _selectedSkill;
         private uint _skillStage;
         private uint _maximumSkillStage;
 
         public MainSkillSelectionViewModel(SkillDefinitions skillDefinitions)
-            => _skillDefinitions = skillDefinitions;
+        {
+            _skillDefinitions = skillDefinitions;
+            _defaultSkill = new MainSkillViewModel(
+                _skillDefinitions.GetSkillById(DefaultSkillId),
+                new Skill(DefaultSkillId, 1, 0, ItemSlot.Unequipable, 0, null));
+        }
 
         public ObservableCollection<MainSkillViewModel> AvailableSkills { get; } =
             new ObservableCollection<MainSkillViewModel>();
@@ -41,7 +52,7 @@ namespace POESKillTree.Computation.ViewModels
 
         public void Observe(ObservableCollection<IReadOnlyList<Skill>> skillCollection)
         {
-            AddSkills(skillCollection);
+            ResetSkills(skillCollection);
             skillCollection.CollectionChanged += OnSkillsChanged;
         }
 
@@ -65,8 +76,8 @@ namespace POESKillTree.Computation.ViewModels
 
         private void ResetSkills(IEnumerable<IEnumerable<Skill>> skills)
         {
-            SelectedSkill = null;
             AvailableSkills.Clear();
+            AddSkill(_defaultSkill);
             AddSkills(skills);
         }
 
@@ -74,7 +85,7 @@ namespace POESKillTree.Computation.ViewModels
         {
             foreach (var skill in skills.Flatten().Where(IsActiveSkill))
             {
-                AddSkill(skill);
+                AddSkill(new MainSkillViewModel(_skillDefinitions.GetSkillById(skill.Id), skill));
             }
         }
 
@@ -89,9 +100,13 @@ namespace POESKillTree.Computation.ViewModels
         private bool IsActiveSkill(Skill skill)
             => !_skillDefinitions.GetSkillById(skill.Id).IsSupport;
 
-        private void AddSkill(Skill skill)
+        private void AddSkill(MainSkillViewModel skill)
         {
-            AvailableSkills.Add(new MainSkillViewModel(_skillDefinitions.GetSkillById(skill.Id), skill));
+            if (skill != _defaultSkill)
+            {
+                AvailableSkills.Remove(_defaultSkill);
+            }
+            AvailableSkills.Add(skill);
             if (AvailableSkills.Count == 1)
             {
                 SelectedSkill = AvailableSkills[0];
@@ -104,11 +119,17 @@ namespace POESKillTree.Computation.ViewModels
             if (vm is null)
                 return;
 
-            if (SelectedSkill == vm)
-            {
-                SelectedSkill = AvailableSkills.FirstOrDefault(x => x != vm);
-            }
+            var wasSelected = SelectedSkill == vm;
             AvailableSkills.Remove(vm);
+
+            if (AvailableSkills.IsEmpty())
+            {
+                AddSkill(_defaultSkill);
+            }
+            else if (wasSelected)
+            {
+                SelectedSkill = AvailableSkills[0];
+            }
         }
     }
 }
