@@ -68,7 +68,7 @@ namespace POESKillTree.Computation.ViewModels
             get => Value.IsTrue();
             set => Value = (NodeValue?) value;
         }
-        
+
         public string StringValue
         {
             get => _stringValue ?? (_stringValue = CalculateStringValue());
@@ -110,9 +110,31 @@ namespace POESKillTree.Computation.ViewModels
         private IReadOnlyList<Modifier> CreateModifiers()
             => new[]
             {
-                new Modifier(new[] { Stat }, Form.TotalOverride, new Constant(Value),
+                new Modifier(new[] { Stat }, Form.TotalOverride,
+                    new FunctionalValue(Calculate, $"{Stat.Minimum} <= {Value} <= {Stat.Maximum}"), 
                     new ModifierSource.Global(new ModifierSource.Local.UserSpecified()))
             };
+
+        private NodeValue? Calculate(IValueCalculationContext context)
+        {
+            var nValue = Value;
+            if (!(nValue is NodeValue value))
+                return null;
+
+            if (Stat.Minimum != null)
+            {
+                var minimum = context.GetValue(Stat.Minimum) ?? new NodeValue(double.MinValue);
+                value = NodeValue.Combine(value, minimum, Math.Max);
+            }
+
+            if (Stat.Maximum != null)
+            {
+                var maximum = context.GetValue(Stat.Maximum) ?? new NodeValue(double.MaxValue);
+                value = NodeValue.Combine(value, maximum, Math.Min);
+            }
+
+            return value;
+        }
 
         public void Dispose()
             => _subscription?.Dispose();

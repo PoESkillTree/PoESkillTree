@@ -106,8 +106,8 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "for each remaining chain",
-                    Projectile.ChainCount.Value -
-                    Stat.UniqueAmount("# of times the Active Skill has Chained")
+                    AtLeastZero(
+                        Projectile.ChainCount.Value - Stat.UniqueAmount("# of times the Active Skill has Chained"))
                 },
                 {
                     "for each of your mines detonated recently, up to #%",
@@ -124,12 +124,13 @@ namespace PoESkillTree.Computation.Data
                 {
                     "per one hundred nearby enemies",
                     Stat.UniqueAmount("# of nearby enemies") / 100
-                },
+                }
             }; // add
 
         private Func<ValueBuilder, ValueBuilder> CappedMultiplier(ValueBuilder multiplier, ValueBuilder maximum)
-        {
-            return v => ValueFactory.Minimum(v * multiplier, maximum);
-        }
+            => v => ValueFactory.Minimum(v * multiplier, maximum);
+
+        private ValueBuilder AtLeastZero(ValueBuilder value)
+            => ValueFactory.If(value < 0).Then(0).Else(value);
     }
 }
