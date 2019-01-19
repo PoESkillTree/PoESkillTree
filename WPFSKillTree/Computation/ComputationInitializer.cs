@@ -30,6 +30,8 @@ namespace POESKillTree.Computation
 
         private Task _initialParseTask;
 
+        private ObservableCollection<IReadOnlyList<Skill>> _skills;
+
         private ComputationInitializer()
         {
             _gameData = new GameDataWithOldTreeModel();
@@ -76,6 +78,7 @@ namespace POESKillTree.Computation
             ObservableSet<SkillNode> skilledNodes, ObservableCollection<(Item, ItemSlot)> items,
             ObservableCollection<IReadOnlyList<Skill>> skills)
         {
+            _skills = skills;
             await Task.WhenAll(_initialParseTask,
                 ConnectToSkilledPassiveNodesAsync(skilledNodes),
                 ConnectToEquipmentAsync(items),
@@ -107,7 +110,11 @@ namespace POESKillTree.Computation
         }
 
         public async Task<ComputationViewModel> CreateComputationViewModelAsync()
-            => await ComputationViewModel.CreateAsync(GameData, _builderFactories, _calculator, _schedulers);
+        {
+            var vm = await ComputationViewModel.CreateAsync(GameData, _builderFactories, _calculator, _schedulers);
+            vm.MainSkillSelection.Observe(_skills);
+            return vm;
+        }
 
         public void SetupPeriodicActions()
             => _calculator.PeriodicallyRemoveUnusedNodes(

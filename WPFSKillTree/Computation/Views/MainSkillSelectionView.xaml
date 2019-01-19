@@ -12,12 +12,27 @@
         <Label>
             <l:Catalog Message="Main Skill:" />
         </Label>
-        <ComboBox Width="130"
+        <ComboBox Width="220"
                   ItemsSource="{Binding AvailableSkills}"
-                  SelectedItem="{Binding SelectedSkill}"
-                  DisplayMemberPath="Name" />
+                  SelectedItem="{Binding SelectedSkill}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="viewModels:MainSkillViewModel">
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <MultiBinding Mode="OneWay"
+                                          StringFormat="{} {0} ({1}/{2}, {3})">
+                                <Binding Path="SkillDefinition.ActiveSkill.DisplayName" />
+                                <Binding Path="Skill.Level" />
+                                <Binding Path="Skill.Quality" />
+                                <Binding Path="Skill.ItemSlot" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
         <ComboBox Width="140"
-                  ItemsSource="{Binding SelectedSkill.SkillParts}"
+                  ItemsSource="{Binding SelectedSkill.SkillDefinition.PartNames}"
                   SelectedIndex="{Binding SelectedSkill.SelectedSkillPart}">
             <ComboBox.Style>
                 <Style BasedOn="{StaticResource {x:Type ComboBox}}"

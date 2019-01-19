@@ -4,7 +4,6 @@ using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
-using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 using POESKillTree.Computation.Model;
 using POESKillTree.Utils;
@@ -35,9 +34,6 @@ namespace POESKillTree.Computation.ViewModels
 
         private async Task InitializeAsync(IBuilderFactories f)
         {
-            MainSkillSelection.AddSkill(new Skill("ChargedAttack", 20, 20, ItemSlot.Boots, 0, 0));
-            MainSkillSelection.AddSkill(new Skill("Fireball", 21, 23, ItemSlot.Boots, 1, 0));
-            MainSkillSelection.AddSkill(new Skill("BladeVortex", 18, 0, ItemSlot.Helm, 0, 0));
             MainSkillSelection.MaximumSkillStage = 10;
             MainSkillSelection.SkillStage = uint.MaxValue;
 

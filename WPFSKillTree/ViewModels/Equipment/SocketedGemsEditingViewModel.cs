@@ -137,6 +137,7 @@ namespace POESKillTree.ViewModels.Equipment
                 .Where(d => d.BaseItem != null)
                 .Where(d => d.BaseItem.ReleaseState == ReleaseState.Released ||
                             d.BaseItem.ReleaseState == ReleaseState.Legacy)
+                .OrderBy(d => d.BaseItem.DisplayName)
                 .Select(d => new GemBaseViewModel(itemImageService, d)).ToList();
             NumberOfSockets = _itemWithSockets.BaseType.MaximumNumberOfSockets;
             NewSocketedGem = new SocketedGemViewModel
