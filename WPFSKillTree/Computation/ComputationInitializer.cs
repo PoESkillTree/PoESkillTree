@@ -105,16 +105,12 @@ namespace POESKillTree.Computation
         {
             await _calculator.ForEachUpdateCalculatorAsync(
                 initialObservable.SubscribeOn(_schedulers.TaskPool));
-            _calculator.SubscribeCalculatorTo(
+            _calculator.SubscribeTo(
                 changeObservable, ex => Log.Error("Exception while observing updates", ex));
         }
 
         public async Task<ComputationViewModel> CreateComputationViewModelAsync()
-        {
-            var vm = await ComputationViewModel.CreateAsync(GameData, _builderFactories, _calculator, _schedulers);
-            vm.MainSkillSelection.Observe(_skills);
-            return vm;
-        }
+            => await ComputationViewModel.CreateAsync(GameData, _builderFactories, _calculator, _schedulers, _skills);
 
         public void SetupPeriodicActions()
             => _calculator.PeriodicallyRemoveUnusedNodes(

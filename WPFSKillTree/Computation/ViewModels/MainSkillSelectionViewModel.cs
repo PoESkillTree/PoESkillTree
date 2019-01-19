@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils.Extensions;
@@ -14,19 +16,39 @@ namespace POESKillTree.Computation.ViewModels
         private const string DefaultSkillId = "PlayerMelee";
 
         private readonly SkillDefinitions _skillDefinitions;
-
+        private readonly IMetaStatBuilders _statBuilders;
+        private readonly CalculationNodeViewModelFactory _nodeFactory;
         private readonly MainSkillViewModel _defaultSkill;
 
         private MainSkillViewModel _selectedSkill;
         private uint _skillStage;
         private uint _maximumSkillStage;
 
-        public MainSkillSelectionViewModel(SkillDefinitions skillDefinitions)
+        public static MainSkillSelectionViewModel Create(
+            SkillDefinitions skillDefinitions, IMetaStatBuilders statBuilders,
+            CalculationNodeViewModelFactory nodeFactory,
+            ObservableCollection<IReadOnlyList<Skill>> skills)
+        {
+            var vm = new MainSkillSelectionViewModel(skillDefinitions, statBuilders, nodeFactory);
+            vm.Initialize(skills);
+            return vm;
+        }
+
+        private MainSkillSelectionViewModel(
+            SkillDefinitions skillDefinitions, IMetaStatBuilders statBuilders,
+            CalculationNodeViewModelFactory nodeFactory)
         {
             _skillDefinitions = skillDefinitions;
-            _defaultSkill = new MainSkillViewModel(
-                _skillDefinitions.GetSkillById(DefaultSkillId),
+            _statBuilders = statBuilders;
+            _nodeFactory = nodeFactory;
+            _defaultSkill = CreateSkillViewModel(
                 new Skill(DefaultSkillId, 1, 0, ItemSlot.Unequipable, 0, null));
+        }
+
+        private void Initialize(ObservableCollection<IReadOnlyList<Skill>> skills)
+        {
+            ResetSkills(skills);
+            skills.CollectionChanged += OnSkillsChanged;
         }
 
         public ObservableCollection<MainSkillViewModel> AvailableSkills { get; } =
@@ -35,7 +57,16 @@ namespace POESKillTree.Computation.ViewModels
         public MainSkillViewModel SelectedSkill
         {
             get => _selectedSkill;
-            set => SetProperty(ref _selectedSkill, value);
+            set => SetProperty(ref _selectedSkill, value, onChanging: OnSelectedSkillChanging);
+        }
+
+        private void OnSelectedSkillChanging(MainSkillViewModel newValue)
+        {
+            if (SelectedSkill != null)
+            {
+                SelectedSkill.SkillIsMainNode.BoolValue = false;
+            }
+            newValue.SkillIsMainNode.BoolValue = true;
         }
 
         public uint SkillStage
@@ -48,12 +79,6 @@ namespace POESKillTree.Computation.ViewModels
         {
             get => _maximumSkillStage;
             set => SetProperty(ref _maximumSkillStage, value);
-        }
-
-        public void Observe(ObservableCollection<IReadOnlyList<Skill>> skillCollection)
-        {
-            ResetSkills(skillCollection);
-            skillCollection.CollectionChanged += OnSkillsChanged;
         }
 
         private void OnSkillsChanged(object sender, NotifyCollectionChangedEventArgs args)
@@ -85,7 +110,7 @@ namespace POESKillTree.Computation.ViewModels
         {
             foreach (var skill in skills.Flatten().Where(IsActiveSkill))
             {
-                AddSkill(new MainSkillViewModel(_skillDefinitions.GetSkillById(skill.Id), skill));
+                AddSkill(CreateSkillViewModel(skill));
             }
         }
 
@@ -130,6 +155,15 @@ namespace POESKillTree.Computation.ViewModels
             {
                 SelectedSkill = AvailableSkills[0];
             }
+        }
+
+        private MainSkillViewModel CreateSkillViewModel(Skill skill)
+        {
+            var definition = _skillDefinitions.GetSkillById(skill.Id);
+            var stat = _statBuilders.SkillIsMain(skill.ItemSlot, skill.SocketIndex).BuildToStats(Entity.Character)
+                .Single();
+            var node = _nodeFactory.CreateConfiguration(stat);
+            return new MainSkillViewModel(definition, skill, node);
         }
     }
 }

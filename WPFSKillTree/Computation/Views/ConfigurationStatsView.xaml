@@ -16,21 +16,21 @@
             <d:Style.DataContext>
                 <x:Type Type="viewModels:ConfigurationStatViewModel" />
             </d:Style.DataContext>
-            <Setter Property="Value" Value="{Binding Node.NumericValue, UpdateSourceTrigger=PropertyChanged}" />
-            <Setter Property="Minimum" Value="{Binding MinimumNode.NumericValue}" />
-            <Setter Property="Maximum" Value="{Binding MaximumNode.NumericValue}" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding MinimumNode.NumericValue}" Value="{x:Null}">
-                    <Setter Property="Minimum" Value="{Binding DefaultMinimum}" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding MaximumNode.NumericValue}" Value="{x:Null}">
-                    <Setter Property="Maximum" Value="{Binding DefaultMaximum}" />
-                </DataTrigger>
-            </Style.Triggers>
+            <Setter Property="Value" 
+                    Value="{Binding Node.NumericValue, UpdateSourceTrigger=PropertyChanged}" />
+            <Setter Property="Minimum" 
+                    Value="{Binding MinimumNode.NumericValue, TargetNullValue={x:Static system:Double.MinValue}}" />
+            <Setter Property="Maximum" 
+                    Value="{Binding MaximumNode.NumericValue, TargetNullValue={x:Static system:Double.MaxValue}}" />
         </Style>
         <DataTemplate x:Key="IntTemplate" DataType="viewModels:ConfigurationStatViewModel">
             <mahApps:NumericUpDown NumericInputMode="Numbers"
                                    Style="{StaticResource NumericUpDownStyle}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UIntTemplate" DataType="viewModels:ConfigurationStatViewModel">
+            <mahApps:NumericUpDown NumericInputMode="Numbers"
+                                   Style="{StaticResource NumericUpDownStyle}"
+                                   Minimum="{Binding MinimumNode.NumericValue, TargetNullValue=0}" />
         </DataTemplate>
         <DataTemplate x:Key="DoubleTemplate" DataType="viewModels:ConfigurationStatViewModel">
             <mahApps:NumericUpDown NumericInputMode="Decimal"
@@ -78,7 +78,7 @@
                                             <Setter Property="ContentTemplate" Value="{StaticResource IntTemplate}" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Node.DataType}" Value="{x:Type system:UInt32}">
-                                            <Setter Property="ContentTemplate" Value="{StaticResource IntTemplate}" />
+                                            <Setter Property="ContentTemplate" Value="{StaticResource UIntTemplate}" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Node.DataType}" Value="{x:Type system:Boolean}">
                                             <Setter Property="ContentTemplate" Value="{StaticResource BoolTemplate}" />

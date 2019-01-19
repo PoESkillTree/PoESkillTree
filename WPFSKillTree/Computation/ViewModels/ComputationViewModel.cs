@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -12,33 +15,34 @@ namespace POESKillTree.Computation.ViewModels
 {
     public class ComputationViewModel : Notifier
     {
-        private readonly ObservableCalculator _observableCalculator;
-        private readonly ComputationSchedulerProvider _schedulers;
+        private readonly CalculationNodeViewModelFactory _nodeFactory;
 
-        public MainSkillSelectionViewModel MainSkillSelection { get; }
+        public MainSkillSelectionViewModel MainSkillSelection { get; private set; }
         public ResultStatsViewModel OffensiveStats { get; }
         public ResultStatsViewModel DefensiveStats { get; }
         public ConfigurationStatsViewModel ConfigurationStats { get; }
         public SharedConfigurationViewModel SharedConfiguration { get; private set; }
 
-        private ComputationViewModel(
-            SkillDefinitions skillDefinitions,
-            ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers)
+        private ComputationViewModel(ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers)
         {
-            (_observableCalculator, _schedulers) = (observableCalculator, schedulers);
-            OffensiveStats = new ResultStatsViewModel(observableCalculator, schedulers);
-            DefensiveStats = new ResultStatsViewModel(observableCalculator, schedulers);
-            ConfigurationStats = new ConfigurationStatsViewModel(observableCalculator, schedulers);
-            MainSkillSelection = new MainSkillSelectionViewModel(skillDefinitions);
+            _nodeFactory = new CalculationNodeViewModelFactory(observableCalculator, schedulers.Dispatcher);
+            OffensiveStats = new ResultStatsViewModel(_nodeFactory);
+            DefensiveStats = new ResultStatsViewModel(_nodeFactory);
+            ConfigurationStats = new ConfigurationStatsViewModel(observableCalculator, _nodeFactory);
         }
 
-        private async Task InitializeAsync(IBuilderFactories f)
+        private async Task InitializeAsync(
+            SkillDefinitions skillDefinitions, IBuilderFactories f, ObservableCollection<IReadOnlyList<Skill>> skills)
         {
+            MainSkillSelection =
+                MainSkillSelectionViewModel.Create(skillDefinitions, f.MetaStatBuilders, _nodeFactory, skills);
             MainSkillSelection.MaximumSkillStage = 10;
             MainSkillSelection.SkillStage = uint.MaxValue;
 
             AddStats(OffensiveStats, f.MetaStatBuilders.SkillDpsWithHits);
-            AddStats(OffensiveStats, f.DamageTypeBuilders.Physical.Damage.WithSkills.With(AttackDamageHand.MainHand));
+            AddStats(OffensiveStats, f.DamageTypeBuilders.Physical.Damage.WithSkills);
+            AddStats(OffensiveStats, f.DamageTypeBuilders.Lightning.Damage.WithSkills);
+            AddStats(OffensiveStats, f.StatBuilders.CastRate);
             AddStats(OffensiveStats, f.StatBuilders.HitRate);
             AddStats(OffensiveStats, f.StatBuilders.Flag.CriticalStrikeChanceIsLucky);
             AddStats(OffensiveStats, f.StatBuilders.Flag.FarShot);
@@ -65,7 +69,7 @@ namespace POESKillTree.Computation.ViewModels
             await AddConfigurationStatAsync(f.MetaStatBuilders.SelectedQuestPart);
             ConfigurationStats.Observe();
 
-            SharedConfiguration = SharedConfigurationViewModel.Create(_observableCalculator, _schedulers, f);
+            SharedConfiguration = SharedConfigurationViewModel.Create(_nodeFactory, f);
         }
 
         private static void AddAvailableStats(
@@ -98,11 +102,12 @@ namespace POESKillTree.Computation.ViewModels
 
         public static async Task<ComputationViewModel> CreateAsync(
             GameData gameData, IBuilderFactories builderFactories,
-            ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers)
+            ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers,
+            ObservableCollection<IReadOnlyList<Skill>> skills)
         {
             var skillDefinitions = await gameData.Skills;
-            var vm = new ComputationViewModel(skillDefinitions, observableCalculator, schedulers);
-            await vm.InitializeAsync(builderFactories);
+            var vm = new ComputationViewModel(observableCalculator, schedulers);
+            await vm.InitializeAsync(skillDefinitions, builderFactories, skills);
             return vm;
         }
     }

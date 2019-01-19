@@ -2,18 +2,15 @@
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
-using POESKillTree.Computation.Model;
 
 namespace POESKillTree.Computation.ViewModels
 {
     public class SharedConfigurationViewModel
     {
-        private readonly ObservableCalculator _observableCalculator;
-        private readonly ComputationSchedulerProvider _schedulers;
+        private readonly CalculationNodeViewModelFactory _nodeFactory;
 
-        private SharedConfigurationViewModel(
-            ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers)
-            => (_observableCalculator, _schedulers) = (observableCalculator, schedulers);
+        private SharedConfigurationViewModel(CalculationNodeViewModelFactory nodeFactory)
+            => _nodeFactory = nodeFactory;
 
         private ConfigurationStatViewModel LevelStat { get; set; }
         private ConfigurationStatViewModel CharacterClassStat { get; set; }
@@ -29,10 +26,9 @@ namespace POESKillTree.Computation.ViewModels
             => BanditStat.Node.NumericValue = (int) bandit;
 
         public static SharedConfigurationViewModel Create(
-            ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers,
-            IBuilderFactories builderFactories)
+            CalculationNodeViewModelFactory nodeFactory, IBuilderFactories builderFactories)
         {
-            var vm = new SharedConfigurationViewModel(observableCalculator, schedulers);
+            var vm = new SharedConfigurationViewModel(nodeFactory);
             vm.Initialize(builderFactories);
             return vm;
         }
@@ -48,9 +44,7 @@ namespace POESKillTree.Computation.ViewModels
             IStatBuilder statBuilder, Entity entity = Entity.Character)
         {
             var stat = statBuilder.BuildToStats(entity).Single();
-            var vm = new ConfigurationStatViewModel(stat);
-            vm.Observe(_observableCalculator, _schedulers.Dispatcher);
-            return vm;
+            return new ConfigurationStatViewModel(_nodeFactory, stat);
         }
     }
 }

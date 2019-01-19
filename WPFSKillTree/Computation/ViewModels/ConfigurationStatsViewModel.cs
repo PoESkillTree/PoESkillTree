@@ -17,12 +17,12 @@ namespace POESKillTree.Computation.ViewModels
         private static readonly ILog Log = LogManager.GetLogger(typeof(ConfigurationStatsViewModel));
 
         private readonly ObservableCalculator _observableCalculator;
-        private readonly ComputationSchedulerProvider _schedulers;
+        private readonly CalculationNodeViewModelFactory _nodeFactory;
         private readonly HashSet<IStat> _pinnedStats = new HashSet<IStat>();
 
         public ConfigurationStatsViewModel(
-            ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers)
-            => (_observableCalculator, _schedulers) = (observableCalculator, schedulers);
+            ObservableCalculator observableCalculator, CalculationNodeViewModelFactory nodeFactory)
+            => (_observableCalculator, _nodeFactory) = (observableCalculator, nodeFactory);
 
         public ObservableCollection<ConfigurationStatViewModel> Stats { get; } =
             new ObservableCollection<ConfigurationStatViewModel>();
@@ -111,8 +111,7 @@ namespace POESKillTree.Computation.ViewModels
             if (existingStat != null)
                 return existingStat;
 
-            var configStat = new ConfigurationStatViewModel(stat);
-            configStat.Observe(_observableCalculator, _schedulers.Dispatcher);
+            var configStat = new ConfigurationStatViewModel(_nodeFactory, stat);
             Stats.Add(configStat);
             return configStat;
         }

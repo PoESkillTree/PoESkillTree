@@ -61,10 +61,11 @@ namespace PoESkillTree.Tests.Computation.ViewModels
             var subject = new Subject<NodeValue?>();
             var repository = Mock.Of<IObservableNodeRepository>(r =>
                 r.ObserveNode(stat, NodeType.More) == subject);
-            var sut = CreateSut(stat, NodeType.More);
 
-            using (sut.Observe(repository, Scheduler.Immediate))
+            using (var sut = CreateSut(stat, NodeType.More))
             {
+                sut.Observe(repository, Scheduler.Immediate);
+
                 Assert.AreEqual(null, sut.NumericValue);
                 subject.OnNext(new NodeValue(2));
                 Assert.AreEqual(2, sut.NumericValue);

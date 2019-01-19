@@ -5,18 +5,16 @@ using System.Windows.Input;
 using EnumsNET;
 using PoESkillTree.Computation.Common;
 using POESKillTree.Common.ViewModels;
-using POESKillTree.Computation.Model;
 
 namespace POESKillTree.Computation.ViewModels
 {
     public class ResultStatsViewModel
     {
-        private readonly ObservableCalculator _observableCalculator;
-        private readonly ComputationSchedulerProvider _schedulers;
+        private readonly CalculationNodeViewModelFactory _nodeFactory;
 
-        public ResultStatsViewModel(ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers)
+        public ResultStatsViewModel(CalculationNodeViewModelFactory nodeFactory)
         {
-            (_observableCalculator, _schedulers) = (observableCalculator, schedulers);
+            _nodeFactory = nodeFactory;
             NewStat = new AddableResultStatViewModel();
             AddStatCommand = new RelayCommand(AddStat);
         }
@@ -72,8 +70,7 @@ namespace POESKillTree.Computation.ViewModels
 
         public void AddStat(IStat stat, NodeType nodeType = NodeType.Total)
         {
-            var resultStat = new ResultStatViewModel(stat, nodeType, RemoveStat);
-            resultStat.Observe(_observableCalculator, _schedulers.Dispatcher);
+            var resultStat = new ResultStatViewModel(_nodeFactory.CreateResult(stat, nodeType), RemoveStat);
             Stats.Add(resultStat);
             AddAvailableStat(stat);
         }
@@ -83,7 +80,7 @@ namespace POESKillTree.Computation.ViewModels
             Stats.Remove(resultStat);
             NewStat.Stat = resultStat.Node.Stat;
             NewStat.NodeType = resultStat.Node.NodeType;
-            resultStat.Dispose();
+            resultStat.Node.Dispose();
         }
     }
 }

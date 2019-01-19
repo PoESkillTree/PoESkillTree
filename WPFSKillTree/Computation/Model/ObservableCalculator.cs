@@ -11,7 +11,7 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Computation.Model
 {
-    public class ObservableCalculator : IObservableNodeRepository
+    public class ObservableCalculator : IObservableNodeRepository, IObservingCalculator
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ObservableCalculator));
 
@@ -62,7 +62,7 @@ namespace POESKillTree.Computation.Model
             => observable.ObserveOn(_calculationScheduler)
                 .ForEachAsync(UpdateCalculator);
 
-        public IDisposable SubscribeCalculatorTo(IObservable<CalculatorUpdate> observable, Action<Exception> onError)
+        public IDisposable SubscribeTo(IObservable<CalculatorUpdate> observable, Action<Exception> onError)
             => observable.ObserveOn(_calculationScheduler)
                 .Subscribe(UpdateCalculator, onError);
 
