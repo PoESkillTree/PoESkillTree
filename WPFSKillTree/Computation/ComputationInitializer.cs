@@ -8,6 +8,7 @@ using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
+using PoESkillTree.GameModel.Skills;
 using POESKillTree.Computation.Model;
 using POESKillTree.Computation.ViewModels;
 using POESKillTree.Model;
@@ -27,7 +28,7 @@ namespace POESKillTree.Computation
         private ComputationObservables _observables;
         private ObservableCalculator _calculator;
 
-        private readonly List<Task> _calculationTasks = new List<Task>();
+        private Task _initialParseTask;
 
         private ComputationInitializer()
         {
@@ -46,8 +47,7 @@ namespace POESKillTree.Computation
         public async Task InitializeAsync(IEnumerable<SkillNode> skillNodes)
         {
             await InitializeFields(skillNodes);
-            var initialParseTask = DoInitialParseAsync();
-            _calculationTasks.Add(initialParseTask);
+            _initialParseTask = DoInitialParseAsync();
         }
 
         private async Task InitializeFields(IEnumerable<SkillNode> skillNodes)
@@ -67,19 +67,19 @@ namespace POESKillTree.Computation
         private async Task DoInitialParseAsync()
         {
             var passiveTree = await GameData.PassiveTree;
-            var initialObservable = _observables.InitialParse(passiveTree, TimeSpan.FromMilliseconds(200))
+            var initialObservable = _observables.InitialParse(passiveTree, TimeSpan.FromMilliseconds(500))
                 .SubscribeOn(_schedulers.TaskPool);
             await _calculator.ForEachUpdateCalculatorAsync(initialObservable);
         }
 
         public async Task InitializeAfterBuildLoadAsync(
-            ObservableSet<SkillNode> skilledNodes, ObservableCollection<(Item, ItemSlot)> items)
+            ObservableSet<SkillNode> skilledNodes, ObservableCollection<(Item, ItemSlot)> items,
+            ObservableCollection<IReadOnlyList<Skill>> skills)
         {
-            var skilledPassivesTask = ConnectToSkilledPassiveNodesAsync(skilledNodes);
-            _calculationTasks.Add(skilledPassivesTask);
-            var equipmentTask = ConnectToEquipmentAsync(items);
-            _calculationTasks.Add(equipmentTask);
-            await Task.WhenAll(_calculationTasks);
+            await Task.WhenAll(_initialParseTask,
+                ConnectToSkilledPassiveNodesAsync(skilledNodes),
+                ConnectToEquipmentAsync(items),
+                ConnectToSkillsAsync(skills));
         }
 
         private async Task ConnectToSkilledPassiveNodesAsync(ObservableSet<SkillNode> skilledNodes)
@@ -91,6 +91,11 @@ namespace POESKillTree.Computation
             => await ConnectAsync(
                 _observables.ParseItems(items),
                 _observables.ObserveItems(items));
+
+        private async Task ConnectToSkillsAsync(ObservableCollection<IReadOnlyList<Skill>> skills)
+            => await ConnectAsync(
+                _observables.ParseSkills(skills),
+                _observables.ObserveSkills(skills));
 
         private async Task ConnectAsync(
             IObservable<CalculatorUpdate> initialObservable, IObservable<CalculatorUpdate> changeObservable)

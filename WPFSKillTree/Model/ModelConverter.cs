@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.PassiveTree;
+using PoESkillTree.GameModel.Skills;
 using POESKillTree.Model.Items.Mods;
 using POESKillTree.SkillTreeFiles;
 using OldItem = POESKillTree.Model.Items.Item;
@@ -26,7 +28,7 @@ namespace POESKillTree.Model
 
         public static Item Convert(OldItem oldItem)
         {
-            var quality = (int) oldItem.Properties.First("Quality: +%", 0, 0);
+            var quality = (int) oldItem.Properties.First("Quality: +#%", 0, 0);
             var levelMod = oldItem.Requirements.FirstOrDefault(m => m.Attribute.Contains("Level #"));
             var level = (int) (levelMod?.Values.FirstOrDefault() ?? 0);
             var isCorrupted = oldItem.Mods.Any(m => m.Attribute == "Corrupted");
@@ -40,5 +42,10 @@ namespace POESKillTree.Model
                 isCorrupted,
                 mods);
         }
+
+        public static IReadOnlyList<Skill> ConvertSkills(OldItem oldItem)
+            => oldItem.SocketedSkills.Select(skill =>
+                    new Skill(skill.Id, skill.Level, skill.Quality, oldItem.Slot, skill.SocketIndex, skill.GemGroup))
+                .ToList();
     }
 }

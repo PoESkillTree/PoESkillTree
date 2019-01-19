@@ -12,6 +12,7 @@ using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.PassiveTree;
+using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils.Extensions;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
@@ -72,9 +73,19 @@ namespace POESKillTree.Computation.Model
                     _parser.ParseItem(t.item, t.slot).Modifiers,
                     _parser.ParseEmptyItemSlot(t.slot).Modifiers));
 
+        public IObservable<CalculatorUpdate> ParseSkills(IEnumerable<IReadOnlyList<Skill>> skills)
+            => AggregateModifiers(skills.ToObservable().SelectMany(ParseSkills));
+
+        public IObservable<CalculatorUpdate> ObserveSkills(ObservableCollection<IReadOnlyList<Skill>> skills)
+            => ObserveCollection<IReadOnlyList<Skill>>(skills, ParseSkills);
+
+        private IReadOnlyList<Modifier> ParseSkills(IReadOnlyList<Skill> skills)
+            => _parser.ParseSkills(skills).Modifiers;
+
         private static IObservable<CalculatorUpdate> AggregateModifiers(IObservable<Modifier> modifiers)
             => modifiers.Aggregate(Enumerable.Empty<Modifier>(), (ms, m) => ms.Append(m))
-                .Select(ms => new CalculatorUpdate(ms.ToList(), new Modifier[0]));
+                .Select(ms => new CalculatorUpdate(ms.ToList(), new Modifier[0]))
+                .Where(UpdateIsNotEmpty);
 
         private static IObservable<CalculatorUpdate> ObserveCollection<T>(
             INotifyCollectionChanged collection, Func<T, IReadOnlyList<Modifier>> parse)
@@ -97,7 +108,8 @@ namespace POESKillTree.Computation.Model
                     var addUpdate = Parse(args.NewItems);
                     var removeUpdate = Parse(args.OldItems).Invert();
                     return CalculatorUpdate.Accumulate(addUpdate, removeUpdate);
-                });
+                })
+                .Where(UpdateIsNotEmpty);
 
             CalculatorUpdate Parse(IEnumerable changedItems)
             {
@@ -106,5 +118,8 @@ namespace POESKillTree.Computation.Model
                 return changedItems.Cast<T>().Select(parse).Aggregate(CalculatorUpdate.Accumulate);
             }
         }
+
+        private static bool UpdateIsNotEmpty(CalculatorUpdate update)
+            => update.AddedModifiers.Any() || update.RemovedModifiers.Any();
     }
 }

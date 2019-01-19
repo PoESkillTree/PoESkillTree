@@ -13,6 +13,7 @@ using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.PassiveTree;
+using PoESkillTree.GameModel.Skills;
 using POESKillTree.Computation.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
@@ -126,6 +127,46 @@ namespace PoESkillTree.Tests.Computation.Model
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public async Task ParseSkillsReturnsCorrectResult()
+        {
+            var expected = CreateModifiers(6);
+            var skills = CreateSkills();
+            var parseResults = CreateParseResults(expected);
+            var parser = MockSkillParser(skills, parseResults);
+            var sut = CreateSut(parser);
+
+            var actual = await AggregateAsync(sut.ParseSkills(skills));
+
+            Assert.AreEqual(expected, actual.AddedModifiers);
+            Assert.IsEmpty(actual.RemovedModifiers);
+        }
+
+        [Test]
+        public void ObserveSkillsGeneratesCorrectValues()
+        {
+            var modifiers = CreateModifiers(6);
+            var skills = CreateSkills();
+            var parseResults = CreateParseResults(modifiers);
+            var expected = new[]
+            {
+                new CalculatorUpdate(parseResults[0].Modifiers, new Modifier[0]),
+                new CalculatorUpdate(new Modifier[0], parseResults[0].Modifiers),
+            };
+            var parser = MockSkillParser(skills, parseResults);
+            var sut = CreateSut(parser);
+            var observableCollection = new ObservableCollection<IReadOnlyList<Skill>>();
+
+            var actual = new List<CalculatorUpdate>();
+            using (sut.ObserveSkills(observableCollection).Subscribe(actual.Add))
+            {
+                observableCollection.Add(skills[0]);
+                observableCollection.Remove(skills[0]);
+            }
+
+            Assert.AreEqual(expected, actual);
+        }
+
         private static IParser MockSkilledPassiveNodeParser(IReadOnlyList<ParseResult> parseResults)
         {
             var parser = new Mock<IParser>();
@@ -163,6 +204,18 @@ namespace PoESkillTree.Tests.Computation.Model
             return parser.Object;
         }
 
+        private static IParser MockSkillParser(
+            IReadOnlyList<IReadOnlyList<Skill>> skills, IReadOnlyList<ParseResult> parseResults)
+        {
+            var parser = new Mock<IParser>();
+            for (var i = 0; i < skills.Count; i++)
+            {
+                var id = i;
+                parser.Setup(p => p.ParseSkills(skills[id])).Returns(parseResults[i]);
+            }
+            return parser.Object;
+        }
+
         private static PassiveTreeDefinition CreatePassiveTree(int nodeCount)
         {
             var nodes = Enumerable.Range(0, nodeCount).Select(id => CreatePassiveNode((ushort) id));
@@ -181,6 +234,12 @@ namespace PoESkillTree.Tests.Computation.Model
 
         private static Item CreateItem(int id)
             => new Item(id.ToString(), "", 0, 0, default, false, new string[0]);
+
+        private static IReadOnlyList<IReadOnlyList<Skill>> CreateSkills()
+            => Enumerable.Range(0, 3).Select(i => Enumerable.Range(i, 2).Select(CreateSkill).ToList()).ToList();
+
+        private static Skill CreateSkill(int id)
+            => new Skill(id.ToString(), 0, 0, default, 0, 0);
 
         private static List<Modifier> CreateModifiers(int count)
             => Enumerable.Range(0, count).Select(i => CreateModifier(i.ToString())).ToList();

@@ -1,10 +1,12 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using MoreLinq;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Utils.Extensions;
+using PoESkillTree.GameModel.Skills;
 using OldItem = POESKillTree.Model.Items.Item;
 
 namespace POESKillTree.Model
@@ -13,8 +15,17 @@ namespace POESKillTree.Model
     {
         private ObservableCollection<OldItem> _oldCollection;
 
-        public ObservableCollection<(Item, ItemSlot)> Collection { get; } =
+        private readonly Dictionary<ItemSlot, OldItem> _itemSlotToOldItem =
+            new Dictionary<ItemSlot, OldItem>();
+
+        private readonly Dictionary<ItemSlot, IReadOnlyList<Skill>> _itemSlotToSkills =
+            new Dictionary<ItemSlot, IReadOnlyList<Skill>>();
+
+        public ObservableCollection<(Item, ItemSlot)> Items { get; } =
             new ObservableCollection<(Item, ItemSlot)>();
+
+        public ObservableCollection<IReadOnlyList<Skill>> Skills { get; } =
+            new ObservableCollection<IReadOnlyList<Skill>>();
 
         public void ConvertFrom(ObservableCollection<OldItem> oldCollection)
         {
@@ -36,35 +47,62 @@ namespace POESKillTree.Model
             }
             if (args.NewItems is IList newItems)
             {
-                Add(newItems);
+                newItems.Cast<OldItem>().ForEach(Add);
             }
             if (args.OldItems is IList oldItems)
             {
-                Remove(oldItems);
+                oldItems.Cast<OldItem>().ForEach(Remove);
             }
         }
 
         private void Reset()
         {
-            // When the old collection is removed, the replacement should be an INotifyCollectionChanged implementation
-            // that can raise proper multi-item events (ObservableList, similar to ObservableSet).
-            Collection.ToList().ForEach(i => Collection.Remove(i));
-            Collection.AddRange(_oldCollection.Select(Convert));
+            _itemSlotToOldItem.Values.ToList().ForEach(Remove);
+            _oldCollection.ForEach(Add);
         }
 
-        private void Add(IEnumerable newItems)
+        private void Add(OldItem oldItem)
         {
-            var items = newItems.Cast<OldItem>().Select(Convert);
-            Collection.AddRange(items);
+            var (item, slot) = Convert(oldItem);
+            var skills = ModelConverter.ConvertSkills(oldItem);
+
+            oldItem.PropertyChanged += OldItemOnPropertyChanged;
+            
+            _itemSlotToOldItem[slot] = oldItem;
+            _itemSlotToSkills[slot] = skills;
+            Items.Add((item, slot));
+            Skills.Add(skills);
         }
 
-        private void Remove(IEnumerable oldItems)
+        private void Remove(OldItem oldItem)
         {
-            var items = oldItems.Cast<OldItem>().Select(Convert);
-            items.ForEach(i => Collection.Remove(i));
+            var (item, slot) = Convert(oldItem);
+            var skills = _itemSlotToSkills[slot];
+
+            oldItem.PropertyChanged -= OldItemOnPropertyChanged;
+            
+            _itemSlotToOldItem.Remove(slot);
+            _itemSlotToSkills.Remove(slot);
+            Items.Remove((item, slot));
+            Skills.Remove(skills);
         }
 
         private static (Item, ItemSlot) Convert(OldItem oldItem)
             => (ModelConverter.Convert(oldItem), oldItem.Slot);
+
+        private void OldItemOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(OldItem.SocketedSkills))
+                return;
+
+            var oldItem = (OldItem) sender;
+            var slot = oldItem.Slot;
+            var oldSkills = _itemSlotToSkills[slot];
+            var newSkills = ModelConverter.ConvertSkills(oldItem);
+
+            _itemSlotToSkills[slot] = newSkills;
+            Skills.Remove(oldSkills);
+            Skills.Add(newSkills);
+        }
     }
 }
