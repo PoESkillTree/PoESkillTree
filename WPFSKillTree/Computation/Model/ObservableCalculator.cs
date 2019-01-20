@@ -28,7 +28,7 @@ namespace POESKillTree.Computation.Model
 
         public IObservable<NodeValue?> ObserveNode(IStat stat, NodeType nodeType = NodeType.Total)
         {
-            return Observable.Create<NodeValue?>(o => Subscribe(o))
+            return Observable.Create<NodeValue?>(Subscribe)
                 .SubscribeOn(_calculationScheduler);
 
             Action Subscribe(IObserver<NodeValue?> observer)
@@ -68,8 +68,16 @@ namespace POESKillTree.Computation.Model
 
         private void UpdateCalculator(CalculatorUpdate update)
         {
-            _calculator.Update(update);
-            Log.Info($"Added {update.AddedModifiers.Count} and removed {update.RemovedModifiers.Count} modifiers");
+            try
+            {
+                _calculator.Update(update);
+                Log.Info($"Added {update.AddedModifiers.Count} and removed {update.RemovedModifiers.Count} modifiers");
+            }
+            catch (Exception e)
+            {
+                Log.Error($"_calculator.Update({update}) failed", e);
+                throw;
+            }
         }
 
         public Task<NodeValue?> GetNodeValueAsync(IStat stat)

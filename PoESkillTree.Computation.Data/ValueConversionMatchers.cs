@@ -131,6 +131,6 @@ namespace PoESkillTree.Computation.Data
             => v => ValueFactory.Minimum(v * multiplier, maximum);
 
         private ValueBuilder AtLeastZero(ValueBuilder value)
-            => ValueFactory.If(value < 0).Then(0).Else(value);
+            => ValueFactory.Maximum(value, 0);
     }
 }

@@ -21,12 +21,12 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             var modifiers = new ModifierCollection(_builderFactories, localSource);
             var equipmentBuilder = _builderFactories.EquipmentBuilders.Equipment[slot];
 
-            modifiers.AddGlobal(equipmentBuilder.ItemTags, Form.BaseSet, baseItemDefinition.Tags.EncodeAsDouble());
-            modifiers.AddGlobal(equipmentBuilder.ItemClass, Form.BaseSet, (double) baseItemDefinition.ItemClass);
-            modifiers.AddGlobal(equipmentBuilder.FrameType, Form.BaseSet, (double) item.FrameType);
+            modifiers.AddGlobal(equipmentBuilder.ItemTags, Form.TotalOverride, baseItemDefinition.Tags.EncodeAsDouble());
+            modifiers.AddGlobal(equipmentBuilder.ItemClass, Form.TotalOverride, (double) baseItemDefinition.ItemClass);
+            modifiers.AddGlobal(equipmentBuilder.FrameType, Form.TotalOverride, (double) item.FrameType);
             if (item.IsCorrupted)
             {
-                modifiers.AddGlobal(equipmentBuilder.Corrupted, Form.BaseSet, 1);
+                modifiers.AddGlobal(equipmentBuilder.Corrupted, Form.TotalOverride, 1);
             }
 
             return ParseResult.Success(modifiers.ToList());

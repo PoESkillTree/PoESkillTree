@@ -744,7 +744,8 @@
                 </TabItem>
                 <TabItem Name="ComputationTab">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto"
-                                  VerticalScrollBarVisibility="Auto">
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalAlignment="Center">
                         <computation:ComputationView HorizontalAlignment="Center"
                                                      DataContext="{Binding ComputationViewModel, ElementName=window}" />
                     </ScrollViewer>

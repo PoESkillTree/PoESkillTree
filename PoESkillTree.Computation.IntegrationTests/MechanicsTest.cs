@@ -43,9 +43,6 @@ namespace PoESkillTree.Computation.IntegrationTests
             _givenMods = parser.ParseGivenModifiers()
                 .Append(
                     new Modifier(
-                        Build(_builderFactories.StatBuilders.Level.For(_builderFactories.EntityBuilders.Enemy)),
-                        Form.BaseSet, new Constant(84), modSource),
-                    new Modifier(
                         Build(_builderFactories.DamageTypeBuilders.Physical.Damage.Taken
                             .For(_builderFactories.EntityBuilders.Enemy)),
                         Form.Increase, new Constant(20), modSource),

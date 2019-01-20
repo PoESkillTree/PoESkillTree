@@ -58,6 +58,12 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         public static ValueBuilder Minimum(this IValueBuilders valueFactory, ValueBuilder left, ValueBuilder right)
             => valueFactory.If(left > right).Then(right).Else(left);
 
+        public static ValueBuilder Minimum(this IValueBuilders valueFactory, ValueBuilder left, double right)
+            => valueFactory.If(left > right).Then(right).Else(left);
+
+        public static ValueBuilder Maximum(this IValueBuilders valueFactory, ValueBuilder left, double right)
+            => valueFactory.If(left < right).Then(right).Else(left);
+
         public static ValueBuilder LinearScale(this IValueBuilders valueFactory,
             IStatBuilder xStat,
             params (double x, double y)[] points)

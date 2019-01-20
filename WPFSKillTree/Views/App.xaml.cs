@@ -66,6 +66,9 @@ namespace POESKillTree.Views
         {
             base.OnStartup(e);
 
+            AppDomain.CurrentDomain.UnhandledException +=
+                (_, args) => OnUnhandledException((Exception) args.ExceptionObject);
+
             // Create Mutex if this is first instance.
             try
             {
@@ -89,7 +92,17 @@ namespace POESKillTree.Views
 
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            var ex = e.Exception;
+            OnUnhandledException(e.Exception);
+
+            if (!Debugger.IsAttached)
+            {
+                e.Handled = true;
+                Shutdown();
+            }
+        }
+
+        private static void OnUnhandledException(Exception ex)
+        {
             Log.Error("Unhandled exception", ex);
 
             if (!Debugger.IsAttached)
@@ -105,8 +118,6 @@ namespace POESKillTree.Views
                     }
                 }
                 MessageBox.Show("The program crashed. A stack trace can be found at:\n" + filePath);
-                e.Handled = true;
-                Shutdown();
             }
         }
 

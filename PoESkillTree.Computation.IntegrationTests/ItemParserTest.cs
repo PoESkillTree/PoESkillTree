@@ -61,9 +61,9 @@ namespace PoESkillTree.Computation.IntegrationTests
             var expectedModifiers =
                 new (string stat, Form form, double? value, ModifierSource source)[]
                 {
-                    ("BodyArmour.ItemTags", Form.BaseSet, definition.Tags.EncodeAsDouble(), global),
-                    ("BodyArmour.ItemClass", Form.BaseSet, (double) definition.ItemClass, global),
-                    ("BodyArmour.ItemFrameType", Form.BaseSet, (double) FrameType.Rare, global),
+                    ("BodyArmour.ItemTags", Form.TotalOverride, definition.Tags.EncodeAsDouble(), global),
+                    ("BodyArmour.ItemClass", Form.TotalOverride, (double) definition.ItemClass, global),
+                    ("BodyArmour.ItemFrameType", Form.TotalOverride, (double) FrameType.Rare, global),
                     ("Armour", Form.BaseSet, 5, local),
                     ("Evasion", Form.BaseSet, null, local),
                     ("EnergyShield", Form.BaseSet, null, local),
@@ -106,9 +106,9 @@ namespace PoESkillTree.Computation.IntegrationTests
             var expectedModifiers =
                 new (string stat, Form form, double? value, ModifierSource source)[]
                 {
-                    ("MainHand.ItemTags", Form.BaseSet, definition.Tags.EncodeAsDouble(), global),
-                    ("MainHand.ItemClass", Form.BaseSet, (double) definition.ItemClass, global),
-                    ("MainHand.ItemFrameType", Form.BaseSet, (double) FrameType.Rare, global),
+                    ("MainHand.ItemTags", Form.TotalOverride, definition.Tags.EncodeAsDouble(), global),
+                    ("MainHand.ItemClass", Form.TotalOverride, (double) definition.ItemClass, global),
+                    ("MainHand.ItemFrameType", Form.TotalOverride, (double) FrameType.Rare, global),
                     ("CriticalStrike.Chance.Attack.MainHand.Skill", Form.BaseSet, null, local),
                     ("BaseCastTime.Attack.MainHand.Skill", Form.BaseSet, null, local),
                     ("Range.Attack.MainHand.Skill", Form.BaseSet, null, local),
@@ -133,9 +133,11 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("MainHand.Dexterity.Required", Form.BaseSet, definition.Requirements.Dexterity, local),
                     ("MainHand.Strength.Required", Form.BaseSet, definition.Requirements.Strength, local),
                     ("MainHand.Physical.Damage.Attack.MainHand.Skill", Form.BaseAdd, 20, local),
-                    ("MainHand.Physical.Damage.Attack.OffHand.Skill", Form.BaseAdd, null, local),
+                    ("MainHand.Physical.Damage.Attack.OffHand.Skill", Form.BaseAdd, 20, local),
+                    ("MainHand.Physical.Damage.Spell.Skill", Form.BaseAdd, 20, local),
+                    ("MainHand.Physical.Damage.Secondary.Skill", Form.BaseAdd, 20, local),
                     ("MainHand.CastRate.Attack.MainHand.Skill", Form.Increase, 20, local),
-                    ("MainHand.CastRate.Attack.OffHand.Skill", Form.Increase, null, local),
+                    ("MainHand.CastRate.Attack.OffHand.Skill", Form.Increase, 20, local),
                     ("Accuracy.Attack.MainHand.Skill", Form.BaseAdd, 10, local),
                     ("Accuracy.Attack.OffHand.Skill", Form.BaseAdd, null, local),
                     ("Dexterity", Form.BaseAdd, 42, global),

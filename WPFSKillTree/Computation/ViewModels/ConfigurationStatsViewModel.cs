@@ -27,12 +27,14 @@ namespace POESKillTree.Computation.ViewModels
         public ObservableCollection<ConfigurationStatViewModel> Stats { get; } =
             new ObservableCollection<ConfigurationStatViewModel>();
 
-        public async Task AddPinnedAsync(IStat stat)
+        public async Task AddPinnedAsync(IStat stat, bool initializeWithCurrentValue)
         {
-            var value = await _observableCalculator.GetNodeValueAsync(stat);
             _pinnedStats.Add(stat);
             var configStat = Add(stat);
-            configStat.Node.Value = value;
+            if (initializeWithCurrentValue)
+            {
+                configStat.Node.Value = await _observableCalculator.GetNodeValueAsync(stat);
+            }
         }
 
         public void Observe()

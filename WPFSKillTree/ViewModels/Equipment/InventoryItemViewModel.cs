@@ -83,9 +83,11 @@ namespace POESKillTree.ViewModels.Equipment
             else if (dropInfo.Effects == DragDropEffects.Link)
             {
                 // Link = Swap
-                var item = draggedItem.Item;
-                draggedItem.Item = Item;
-                Item = item;
+                var newItem = draggedItem.Item;
+                var oldItem = Item;
+                Item = null;
+                draggedItem.Item = oldItem;
+                Item = newItem;
             }
         }
     }

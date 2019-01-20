@@ -70,7 +70,10 @@ namespace POESKillTree.Computation.ViewModels
             {
                 SelectedSkill.SkillIsMainNode.BoolValue = false;
             }
-            newValue.SkillIsMainNode.BoolValue = true;
+            if (newValue != null)
+            {
+                newValue.SkillIsMainNode.BoolValue = true;
+            }
         }
 
         private void OnSkillsChanged(object sender, NotifyCollectionChangedEventArgs args)

@@ -37,21 +37,25 @@ namespace POESKillTree.Computation.ViewModels
             MainSkillSelection = MainSkillSelectionViewModel.Create(skillDefinitions, f, _nodeFactory, skills);
 
             AddStats(OffensiveStats, f.MetaStatBuilders.SkillDpsWithHits);
+            AddStats(OffensiveStats, f.MetaStatBuilders.AverageHitDamage);
             AddStats(OffensiveStats, f.DamageTypeBuilders.Physical.Damage.WithSkills);
             AddStats(OffensiveStats, f.DamageTypeBuilders.Lightning.Damage.WithSkills);
             AddStats(OffensiveStats, f.StatBuilders.CastRate);
             AddStats(OffensiveStats, f.StatBuilders.HitRate);
-            AddStats(OffensiveStats, f.StatBuilders.Flag.CriticalStrikeChanceIsLucky);
-            AddStats(OffensiveStats, f.StatBuilders.Flag.FarShot);
             AddStats(OffensiveStats, f.MetaStatBuilders.SkillHitDamageSource);
-            AddStats(OffensiveStats, f.EffectBuilders.Stun.Threshold.With(AttackDamageHand.MainHand), Entity.Enemy);
-            AddStats(OffensiveStats, f.StatBuilders.AreaOfEffect);
-            AddAvailableStats(OffensiveStats, f.StatBuilders.BaseCastTime.With(AttackDamageHand.MainHand));
             AddAvailableStats(OffensiveStats, f.MetaStatBuilders.SkillDpsWithDoTs);
+            AddAvailableStats(OffensiveStats, f.MetaStatBuilders.AverageDamage.WithSkills);
+            AddAvailableStats(OffensiveStats, f.MetaStatBuilders.SkillUsesHand(AttackDamageHand.MainHand));
+            AddAvailableStats(OffensiveStats, f.MetaStatBuilders.SkillUsesHand(AttackDamageHand.OffHand));
+            AddAvailableStats(OffensiveStats, f.StatBuilders.BaseCastTime.With(AttackDamageHand.MainHand));
+            AddAvailableStats(OffensiveStats, f.EffectBuilders.Stun.Threshold.With(AttackDamageHand.MainHand), Entity.Enemy);
+            AddAvailableStats(OffensiveStats, f.StatBuilders.AreaOfEffect);
 
             AddStats(DefensiveStats, f.StatBuilders.Pool.From(Pool.Life));
             AddStats(DefensiveStats, f.StatBuilders.Pool.From(Pool.Life), nodeType: NodeType.Increase);
-            AddStats(DefensiveStats, f.DamageTypeBuilders.Cold.Resistance);
+            AddStats(DefensiveStats, f.StatBuilders.Armour);
+            AddStats(DefensiveStats, f.StatBuilders.Evasion);
+            AddStats(DefensiveStats, f.DamageTypeBuilders.AnyDamageType().Resistance);
             AddStats(DefensiveStats, f.StatBuilders.Attribute.Strength);
             AddStats(DefensiveStats, f.StatBuilders.Attribute.Dexterity);
             AddStats(DefensiveStats, f.StatBuilders.Attribute.Intelligence);
@@ -59,10 +63,9 @@ namespace POESKillTree.Computation.ViewModels
             AddStats(DefensiveStats, f.StatBuilders.PassivePoints.Maximum);
             AddStats(DefensiveStats, f.StatBuilders.AscendancyPassivePoints, nodeType: NodeType.UncappedSubtotal);
             AddStats(DefensiveStats, f.StatBuilders.AscendancyPassivePoints.Maximum);
-            AddStats(DefensiveStats, f.MetaStatBuilders.SelectedBandit);
-            AddAvailableStats(DefensiveStats, f.DamageTypeBuilders.AnyDamageType().Resistance);
+            AddAvailableStats(DefensiveStats, f.MetaStatBuilders.SelectedBandit);
 
-            await AddConfigurationStatAsync(f.StatBuilders.Level, Entity.Enemy);
+            await AddConfigurationStatAsync(f.StatBuilders.Level, Entity.Enemy, false);
             await AddConfigurationStatAsync(f.MetaStatBuilders.SelectedQuestPart);
             ConfigurationStats.Observe();
 
@@ -89,11 +92,12 @@ namespace POESKillTree.Computation.ViewModels
             }
         }
 
-        private async Task AddConfigurationStatAsync(IStatBuilder statBuilder, Entity entity = Entity.Character)
+        private async Task AddConfigurationStatAsync(IStatBuilder statBuilder, Entity entity = Entity.Character,
+            bool initializeWithCurrentValue = true)
         {
             foreach (var stat in statBuilder.BuildToStats(entity))
             {
-                await ConfigurationStats.AddPinnedAsync(stat);
+                await ConfigurationStats.AddPinnedAsync(stat, initializeWithCurrentValue);
             }
         }
 

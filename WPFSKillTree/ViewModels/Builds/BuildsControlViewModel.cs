@@ -695,8 +695,16 @@ namespace POESKillTree.ViewModels.Builds
             {
                 return false;
             }
-            var str = Clipboard.GetText();
-            return str.StartsWith("<?xml ") && str.Contains("<PoEBuild ") && str.Contains("</PoEBuild>");
+            try
+            {
+                var str = Clipboard.GetText();
+                return str.StartsWith("<?xml ") && str.Contains("<PoEBuild ") && str.Contains("</PoEBuild>");
+            }
+            catch (System.Runtime.InteropServices.COMException e)
+            {
+                Log.Error("Can't open clipboard", e);
+                return false;
+            }
         }
 
         private async Task<PoEBuild> PasteFromClipboard(IBuildFolderViewModel targetFolder)
