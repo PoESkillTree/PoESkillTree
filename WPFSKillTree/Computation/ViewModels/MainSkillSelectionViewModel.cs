@@ -23,8 +23,6 @@ namespace POESKillTree.Computation.ViewModels
         private readonly CalculationNodeViewModel _selectedSkillPart;
 
         private MainSkillViewModel _selectedSkill;
-        private uint _skillStage;
-        private uint _maximumSkillStage;
 
         public static MainSkillSelectionViewModel Create(
             SkillDefinitions skillDefinitions, IBuilderFactories builderFactories,
@@ -73,18 +71,6 @@ namespace POESKillTree.Computation.ViewModels
                 SelectedSkill.SkillIsMainNode.BoolValue = false;
             }
             newValue.SkillIsMainNode.BoolValue = true;
-        }
-
-        public uint SkillStage
-        {
-            get => _skillStage;
-            set => SetProperty(ref _skillStage, value);
-        }
-
-        public uint MaximumSkillStage
-        {
-            get => _maximumSkillStage;
-            set => SetProperty(ref _maximumSkillStage, value);
         }
 
         private void OnSkillsChanged(object sender, NotifyCollectionChangedEventArgs args)

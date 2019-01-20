@@ -35,8 +35,6 @@ namespace POESKillTree.Computation.ViewModels
             SkillDefinitions skillDefinitions, IBuilderFactories f, ObservableCollection<IReadOnlyList<Skill>> skills)
         {
             MainSkillSelection = MainSkillSelectionViewModel.Create(skillDefinitions, f, _nodeFactory, skills);
-            MainSkillSelection.MaximumSkillStage = 10;
-            MainSkillSelection.SkillStage = uint.MaxValue;
 
             AddStats(OffensiveStats, f.MetaStatBuilders.SkillDpsWithHits);
             AddStats(OffensiveStats, f.DamageTypeBuilders.Physical.Damage.WithSkills);

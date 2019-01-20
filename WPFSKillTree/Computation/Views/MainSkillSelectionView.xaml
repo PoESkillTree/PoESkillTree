@@ -12,7 +12,7 @@
         <Label>
             <l:Catalog Message="Main Skill:" />
         </Label>
-        <ComboBox Width="220"
+        <ComboBox Width="250"
                   ItemsSource="{Binding AvailableSkills}"
                   SelectedItem="{Binding SelectedSkill}">
             <ComboBox.ItemTemplate>
@@ -31,7 +31,7 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        <ComboBox Width="140"
+        <ComboBox Width="150"
                   ItemsSource="{Binding SelectedSkill.SkillDefinition.PartNames}"
                   SelectedIndex="{Binding SelectedSkill.SelectedSkillPart.NumericValue}">
             <ComboBox.Style>
@@ -45,11 +45,5 @@
                 </Style>
             </ComboBox.Style>
         </ComboBox>
-        <Label>
-            <l:Catalog Message="Stage:" />
-        </Label>
-        <mahApps:NumericUpDown NumericInputMode="Numbers"
-                               Value="{Binding SkillStage}"
-                               Minimum="0" Maximum="{Binding MaximumSkillStage}" />
     </StackPanel>
 </UserControl>
