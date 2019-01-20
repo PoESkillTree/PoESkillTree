@@ -34,8 +34,7 @@ namespace POESKillTree.Computation.ViewModels
         private async Task InitializeAsync(
             SkillDefinitions skillDefinitions, IBuilderFactories f, ObservableCollection<IReadOnlyList<Skill>> skills)
         {
-            MainSkillSelection =
-                MainSkillSelectionViewModel.Create(skillDefinitions, f.MetaStatBuilders, _nodeFactory, skills);
+            MainSkillSelection = MainSkillSelectionViewModel.Create(skillDefinitions, f, _nodeFactory, skills);
             MainSkillSelection.MaximumSkillStage = 10;
             MainSkillSelection.SkillStage = uint.MaxValue;
 

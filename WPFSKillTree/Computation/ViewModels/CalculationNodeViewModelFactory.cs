@@ -19,9 +19,9 @@ namespace POESKillTree.Computation.ViewModels
             return node;
         }
 
-        public CalculationNodeViewModel CreateConfiguration(IStat stat, NodeType nodeType = NodeType.Total)
+        public CalculationNodeViewModel CreateConfiguration(IStat stat)
         {
-            var node = new CalculationNodeViewModel(stat, nodeType);
+            var node = new CalculationNodeViewModel(stat);
             node.SubscribeCalculator(_calculator);
             return node;
         }

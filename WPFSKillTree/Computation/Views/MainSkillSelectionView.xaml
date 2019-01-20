@@ -33,7 +33,7 @@
         </ComboBox>
         <ComboBox Width="140"
                   ItemsSource="{Binding SelectedSkill.SkillDefinition.PartNames}"
-                  SelectedIndex="{Binding SelectedSkill.SelectedSkillPart}">
+                  SelectedIndex="{Binding SelectedSkill.SelectedSkillPart.NumericValue}">
             <ComboBox.Style>
                 <Style BasedOn="{StaticResource {x:Type ComboBox}}"
                        TargetType="{x:Type ComboBox}">

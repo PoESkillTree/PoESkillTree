@@ -5,22 +5,17 @@ namespace POESKillTree.Computation.ViewModels
 {
     public class MainSkillViewModel : Notifier
     {
-        private int _selectedSkillPart;
-
         public MainSkillViewModel(
-            SkillDefinition skillDefinition, Skill skill, CalculationNodeViewModel skillIsMainNode)
-            => (SkillDefinition, Skill, SkillIsMainNode) = (skillDefinition, skill, skillIsMainNode);
+            SkillDefinition skillDefinition, Skill skill, CalculationNodeViewModel skillIsMainNode,
+            CalculationNodeViewModel selectedSkillPart)
+            => (SkillDefinition, Skill, SkillIsMainNode, SelectedSkillPart) =
+                (skillDefinition, skill, skillIsMainNode, selectedSkillPart);
 
         public Skill Skill { get; }
         public SkillDefinition SkillDefinition { get; }
         public bool HasSkillParts => SkillDefinition.PartNames.Count > 1;
 
         public CalculationNodeViewModel SkillIsMainNode { get; }
-
-        public int SelectedSkillPart
-        {
-            get => _selectedSkillPart;
-            set => SetProperty(ref _selectedSkillPart, value);
-        }
+        public CalculationNodeViewModel SelectedSkillPart { get; }
     }
 }
