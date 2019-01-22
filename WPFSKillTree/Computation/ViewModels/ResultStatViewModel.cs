@@ -6,13 +6,13 @@ namespace POESKillTree.Computation.ViewModels
 {
     public class ResultStatViewModel
     {
-        public ResultStatViewModel(CalculationNodeViewModel node, Action<ResultStatViewModel> removeAction)
+        public ResultStatViewModel(ResultNodeViewModel node, Action<ResultStatViewModel> removeAction)
         {
             Node = node;
             RemoveCommand = new RelayCommand(() => removeAction(this));
         }
 
-        public CalculationNodeViewModel Node { get; }
+        public ResultNodeViewModel Node { get; }
 
         public ICommand RemoveCommand { get; }
     }

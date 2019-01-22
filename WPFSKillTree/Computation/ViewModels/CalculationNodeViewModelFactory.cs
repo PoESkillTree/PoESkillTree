@@ -12,16 +12,16 @@ namespace POESKillTree.Computation.ViewModels
         public CalculationNodeViewModelFactory(ObservableCalculator calculator, IScheduler observerScheduler)
             => (_calculator, _observerScheduler) = (calculator, observerScheduler);
 
-        public CalculationNodeViewModel CreateResult(IStat stat, NodeType nodeType = NodeType.Total)
+        public ResultNodeViewModel CreateResult(IStat stat, NodeType nodeType = NodeType.Total)
         {
-            var node = new CalculationNodeViewModel(stat, nodeType);
+            var node = new ResultNodeViewModel(stat, nodeType);
             node.Observe(_calculator, _observerScheduler);
             return node;
         }
 
-        public CalculationNodeViewModel CreateConfiguration(IStat stat)
+        public ConfigurationNodeViewModel CreateConfiguration(IStat stat)
         {
-            var node = new CalculationNodeViewModel(stat);
+            var node = new ConfigurationNodeViewModel(stat);
             node.SubscribeCalculator(_calculator);
             return node;
         }

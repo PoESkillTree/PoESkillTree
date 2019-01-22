@@ -20,7 +20,7 @@ namespace POESKillTree.Computation.ViewModels
         private readonly IBuilderFactories _builderFactories;
         private readonly CalculationNodeViewModelFactory _nodeFactory;
         private readonly MainSkillViewModel _defaultSkill;
-        private readonly CalculationNodeViewModel _selectedSkillPart;
+        private readonly ConfigurationNodeViewModel _selectedSkillPart;
 
         private MainSkillViewModel _selectedSkill;
 

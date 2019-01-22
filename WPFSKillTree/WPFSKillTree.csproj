@@ -208,7 +208,9 @@
     <Compile Include="Computation\Model\IObservingCalculator.cs" />
     <Compile Include="Computation\Model\ObservableCalculator.cs" />
     <Compile Include="Computation\ViewModels\CalculationNodeViewModelFactory.cs" />
+    <Compile Include="Computation\ViewModels\ConfigurationNodeViewModel.cs" />
     <Compile Include="Computation\ViewModels\ConfigurationStatsViewModel.cs" />
+    <Compile Include="Computation\ViewModels\ResultNodeViewModel.cs" />
     <Compile Include="Computation\ViewModels\SharedConfigurationViewModel.cs" />
     <Compile Include="Computation\ViewModels\CalculationNodeViewModel.cs" />
     <Compile Include="Contrib\RangeTree\Range.cs" />

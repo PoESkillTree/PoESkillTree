@@ -6,8 +6,8 @@ namespace POESKillTree.Computation.ViewModels
     public class MainSkillViewModel : Notifier
     {
         public MainSkillViewModel(
-            SkillDefinition skillDefinition, Skill skill, CalculationNodeViewModel skillIsMainNode,
-            CalculationNodeViewModel selectedSkillPart)
+            SkillDefinition skillDefinition, Skill skill, ConfigurationNodeViewModel skillIsMainNode,
+            ConfigurationNodeViewModel selectedSkillPart)
             => (SkillDefinition, Skill, SkillIsMainNode, SelectedSkillPart) =
                 (skillDefinition, skill, skillIsMainNode, selectedSkillPart);
 
@@ -15,7 +15,7 @@ namespace POESKillTree.Computation.ViewModels
         public SkillDefinition SkillDefinition { get; }
         public bool HasSkillParts => SkillDefinition.PartNames.Count > 1;
 
-        public CalculationNodeViewModel SkillIsMainNode { get; }
-        public CalculationNodeViewModel SelectedSkillPart { get; }
+        public ConfigurationNodeViewModel SkillIsMainNode { get; }
+        public ConfigurationNodeViewModel SelectedSkillPart { get; }
     }
 }

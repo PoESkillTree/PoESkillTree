@@ -20,9 +20,9 @@ namespace POESKillTree.Computation.ViewModels
             }
         }
 
-        public CalculationNodeViewModel Node { get; }
-        public CalculationNodeViewModel MinimumNode { get; }
-        public CalculationNodeViewModel MaximumNode { get; }
+        public ConfigurationNodeViewModel Node { get; }
+        public ResultNodeViewModel MinimumNode { get; }
+        public ResultNodeViewModel MaximumNode { get; }
 
         public IStat Stat => Node.Stat;
 

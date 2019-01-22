@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reactive.Concurrency;
+﻿using System.Reactive.Concurrency;
 using System.Reactive.Subjects;
 using Moq;
 using NUnit.Framework;
@@ -12,7 +11,7 @@ using POESKillTree.Computation.ViewModels;
 namespace PoESkillTree.Tests.Computation.ViewModels
 {
     [TestFixture]
-    public class CalculationNodeViewModelTest
+    public class ResultNodeViewModelTest
     {
         [TestCase("s1", Entity.Character, NodeType.Total, ExpectedResult = "s1")]
         [TestCase("s2", Entity.Character, NodeType.Base, ExpectedResult = "s2 (Base)")]
@@ -66,22 +65,22 @@ namespace PoESkillTree.Tests.Computation.ViewModels
             {
                 sut.Observe(repository, Scheduler.Immediate);
 
-                Assert.AreEqual(null, sut.NumericValue);
+                Assert.AreEqual(null, sut.Value);
                 subject.OnNext(new NodeValue(2));
-                Assert.AreEqual(2, sut.NumericValue);
+                Assert.AreEqual((NodeValue?) 2, sut.Value);
                 subject.OnNext(new NodeValue(1));
-                Assert.AreEqual(true, sut.BoolValue);
+                Assert.AreEqual((NodeValue?) true, sut.Value);
             }
         }
 
-        private static CalculationNodeViewModel CreateSut<T>(NodeValue? value)
+        private static ResultNodeViewModel CreateSut<T>(NodeValue? value)
         {
             var stat = new Stat("", dataType: typeof(T));
-            return new CalculationNodeViewModel(stat) { Value = value };
+            return new ResultNodeViewModel(stat) { Value = value };
         }
 
-        private static CalculationNodeViewModel CreateSut(IStat stat, NodeType nodeType)
-            => new CalculationNodeViewModel(stat, nodeType);
+        private static ResultNodeViewModel CreateSut(IStat stat, NodeType nodeType)
+            => new ResultNodeViewModel(stat, nodeType);
 
         public enum TestEnum
         {

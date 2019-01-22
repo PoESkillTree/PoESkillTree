@@ -1,28 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using log4net;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Core;
 using PoESkillTree.GameModel;
-using POESKillTree.Computation.Model;
-using POESKillTree.Localization;
 using POESKillTree.Utils;
 
 namespace POESKillTree.Computation.ViewModels
 {
-    public class CalculationNodeViewModel : Notifier, IDisposable
+    public abstract class CalculationNodeViewModel : Notifier
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(CalculationNodeViewModel));
-
         private NodeValue? _value;
-        private string _stringValue;
 
-        private IDisposable _subscription;
-
-        public CalculationNodeViewModel(IStat stat, NodeType nodeType = NodeType.Total)
+        protected CalculationNodeViewModel(IStat stat, NodeType nodeType = NodeType.Total)
             => (Stat, NodeType) = (stat, nodeType);
 
         public IStat Stat { get; }
@@ -54,7 +41,6 @@ namespace POESKillTree.Computation.ViewModels
         {
             OnPropertyChanged(nameof(NumericValue));
             OnPropertyChanged(nameof(BoolValue));
-            StringValue = CalculateStringValue();
         }
 
         public double? NumericValue
@@ -68,75 +54,5 @@ namespace POESKillTree.Computation.ViewModels
             get => Value.IsTrue();
             set => Value = (NodeValue?) value;
         }
-
-        public string StringValue
-        {
-            get => _stringValue ?? (_stringValue = CalculateStringValue());
-            private set => SetProperty(ref _stringValue, value);
-        }
-
-        private string CalculateStringValue()
-        {
-            if (DataType == typeof(bool))
-                return Value.IsTrue().ToString();
-            if (Value is null)
-                return L10n.Message("None");
-            if (DataType.IsEnum)
-                return EnumValues.GetValue((int) Value.Single()).ToString();
-            return Value.ToString().Replace(" to ", " \nto ");
-        }
-
-        public void Observe(IObservableNodeRepository nodeRepository, IScheduler observeScheduler)
-            => _subscription = nodeRepository
-                .ObserveNode(Stat, NodeType)
-                .ObserveOn(observeScheduler)
-                .Subscribe(
-                    v => Value = v,
-                    ex => Log.Error($"ObserveNode({Stat}, {NodeType}) failed", ex));
-
-        public void SubscribeCalculator(IObservingCalculator calculator)
-            => _subscription = calculator.SubscribeTo(CreateValueObservable(),
-                ex => Log.Error($"SubscribeCalculatorTo({Stat}) failed", ex));
-
-        private IObservable<CalculatorUpdate> CreateValueObservable()
-            => Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-                    h => PropertyChanged += h,
-                    h => PropertyChanged -= h)
-                .Where(p => p.EventArgs.PropertyName == nameof(Value))
-                .Select(p => CreateModifiers())
-                .Scan(CalculatorUpdate.Empty,
-                    (u, ms) => new CalculatorUpdate(ms, u.AddedModifiers));
-
-        private IReadOnlyList<Modifier> CreateModifiers()
-            => new[]
-            {
-                new Modifier(new[] { Stat }, Form.TotalOverride,
-                    new FunctionalValue(Calculate, $"{Stat.Minimum} <= {Value} <= {Stat.Maximum}"), 
-                    new ModifierSource.Global(new ModifierSource.Local.UserSpecified()))
-            };
-
-        private NodeValue? Calculate(IValueCalculationContext context)
-        {
-            var nValue = Value;
-            if (!(nValue is NodeValue value))
-                return null;
-
-            if (Stat.Minimum != null)
-            {
-                var minimum = context.GetValue(Stat.Minimum) ?? new NodeValue(double.MinValue);
-                value = NodeValue.Combine(value, minimum, Math.Max);
-            }
-
-            if (Stat.Maximum != null)
-            {
-                var maximum = context.GetValue(Stat.Maximum) ?? new NodeValue(double.MaxValue);
-                value = NodeValue.Combine(value, maximum, Math.Min);
-            }
-
-            return value;
-        }
-
-        public void Dispose()
-            => _subscription?.Dispose();
     }
 }
