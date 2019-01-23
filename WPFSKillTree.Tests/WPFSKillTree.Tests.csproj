@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Computation\Model\ComputationObservablesTest.cs" />
+    <Compile Include="Computation\Model\ExplicitlyRegisteredStatsObserverTest.cs" />
     <Compile Include="Computation\Model\ObservableCalculatorTest.cs" />
     <Compile Include="Computation\ViewModels\ConfigurationNodeViewModelTest.cs" />
     <Compile Include="Computation\ViewModels\ResultNodeViewModelTest.cs" />

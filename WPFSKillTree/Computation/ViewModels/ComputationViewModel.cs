@@ -14,20 +14,21 @@ namespace POESKillTree.Computation.ViewModels
 {
     public class ComputationViewModel : Notifier
     {
+        private readonly ObservableCalculator _observableCalculator;
         private readonly CalculationNodeViewModelFactory _nodeFactory;
 
         public MainSkillSelectionViewModel MainSkillSelection { get; private set; }
         public ResultStatsViewModel OffensiveStats { get; }
         public ResultStatsViewModel DefensiveStats { get; }
-        public ConfigurationStatsViewModel ConfigurationStats { get; }
+        public ConfigurationStatsViewModel ConfigurationStats { get; private set; }
         public SharedConfigurationViewModel SharedConfiguration { get; private set; }
 
         private ComputationViewModel(ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers)
         {
+            _observableCalculator = observableCalculator;
             _nodeFactory = new CalculationNodeViewModelFactory(observableCalculator, schedulers.Dispatcher);
             OffensiveStats = new ResultStatsViewModel(_nodeFactory);
             DefensiveStats = new ResultStatsViewModel(_nodeFactory);
-            ConfigurationStats = new ConfigurationStatsViewModel(observableCalculator, _nodeFactory);
         }
 
         private async Task InitializeAsync(
@@ -63,10 +64,10 @@ namespace POESKillTree.Computation.ViewModels
             AddStats(DefensiveStats, f.StatBuilders.AscendancyPassivePoints, nodeType: NodeType.UncappedSubtotal);
             AddStats(DefensiveStats, f.StatBuilders.AscendancyPassivePoints.Maximum);
             AddAvailableStats(DefensiveStats, f.MetaStatBuilders.SelectedBandit);
-
-            await AddConfigurationStatAsync(f.StatBuilders.Level, Entity.Enemy, false);
-            await AddConfigurationStatAsync(f.MetaStatBuilders.SelectedQuestPart);
-            ConfigurationStats.Observe();
+            
+            ConfigurationStats = ConfigurationStatsViewModel.Create(_observableCalculator, _nodeFactory);
+            AddConfigurationStat(f.StatBuilders.Level, Entity.Enemy);
+            await AddInitializedConfigurationStatAsync(f.MetaStatBuilders.SelectedQuestPart);
 
             SharedConfiguration = SharedConfigurationViewModel.Create(_nodeFactory, f);
         }
@@ -91,12 +92,21 @@ namespace POESKillTree.Computation.ViewModels
             }
         }
 
-        private async Task AddConfigurationStatAsync(IStatBuilder statBuilder, Entity entity = Entity.Character,
-            bool initializeWithCurrentValue = true)
+        private void AddConfigurationStat(IStatBuilder statBuilder, Entity entity = Entity.Character)
         {
             foreach (var stat in statBuilder.BuildToStats(entity))
             {
-                await ConfigurationStats.AddPinnedAsync(stat, initializeWithCurrentValue);
+                ConfigurationStats.AddPinned(stat);
+            }
+        }
+
+        private async Task AddInitializedConfigurationStatAsync(
+            IStatBuilder statBuilder, Entity entity = Entity.Character)
+        {
+            foreach (var stat in statBuilder.BuildToStats(entity))
+            {
+                var value = await _observableCalculator.GetNodeValueAsync(stat);
+                ConfigurationStats.AddPinned(stat, value);
             }
         }
 

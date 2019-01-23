@@ -1,94 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Reactive.Linq;
-using System.Threading.Tasks;
-using log4net;
+using System.Reactive.Concurrency;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Core;
 using POESKillTree.Computation.Model;
 
 namespace POESKillTree.Computation.ViewModels
 {
     public class ConfigurationStatsViewModel
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ConfigurationStatsViewModel));
-
-        private readonly ObservableCalculator _observableCalculator;
+        private readonly ExplicitlyRegisteredStatsObserver _explicitlyRegisteredStats;
         private readonly CalculationNodeViewModelFactory _nodeFactory;
         private readonly HashSet<IStat> _pinnedStats = new HashSet<IStat>();
 
-        public ConfigurationStatsViewModel(
+        private ConfigurationStatsViewModel(
+            CalculationNodeViewModelFactory nodeFactory, ExplicitlyRegisteredStatsObserver explicitlyRegisteredStats)
+        {
+            _nodeFactory = nodeFactory;
+            _explicitlyRegisteredStats = explicitlyRegisteredStats;
+        }
+
+        public static ConfigurationStatsViewModel Create(
             ObservableCalculator observableCalculator, CalculationNodeViewModelFactory nodeFactory)
-            => (_observableCalculator, _nodeFactory) = (observableCalculator, nodeFactory);
+        {
+            var explicitlyRegisteredStats = new ExplicitlyRegisteredStatsObserver(observableCalculator);
+            var vm = new ConfigurationStatsViewModel(nodeFactory, explicitlyRegisteredStats);
+            vm._explicitlyRegisteredStats.StatAdded += vm.AddIfUserSpecified;
+            vm._explicitlyRegisteredStats.StatRemoved += vm.RemoveIfNotPinned;
+            vm._explicitlyRegisteredStats.Initialize(DispatcherScheduler.Current);
+            return vm;
+        }
 
         public ObservableCollection<ConfigurationStatViewModel> Stats { get; } =
             new ObservableCollection<ConfigurationStatViewModel>();
 
-        public async Task AddPinnedAsync(IStat stat, bool initializeWithCurrentValue)
+        public void AddPinned(IStat stat)
+        {
+            _pinnedStats.Add(stat);
+            Add(stat);
+        }
+
+        public void AddPinned(IStat stat, NodeValue? initialValue)
         {
             _pinnedStats.Add(stat);
             var configStat = Add(stat);
-            if (initializeWithCurrentValue)
-            {
-                configStat.Node.Value = await _observableCalculator.GetNodeValueAsync(stat);
-            }
-        }
-
-        public void Observe()
-        {
-            Refresh();
-            _observableCalculator.ObserveExplicitlyRegisteredStats()
-                .ObserveOnDispatcher()
-                .Subscribe(OnNext, OnError);
-        }
-
-        private void OnNext(CollectionChangeEventArgs args)
-        {
-            switch (args.Action)
-            {
-                case CollectionChangeAction.Add:
-                    Add(args.Element);
-                    break;
-                case CollectionChangeAction.Remove:
-                    Remove(args.Element);
-                    break;
-                case CollectionChangeAction.Refresh:
-                    Refresh();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        private static void OnError(Exception exception)
-            => Log.Error("ObserveExplicitlyRegisteredStats failed", exception);
-
-        private void Add(object element)
-        {
-            var (_, stat) = ((ICalculationNode, IStat)) element;
-            AddIfUserSpecified(stat);
-        }
-
-        private void Remove(object element)
-        {
-            var (_, stat) = ((ICalculationNode, IStat)) element;
-            RemoveIfNotPinned(stat);
-        }
-
-        private void Refresh()
-        {
-            foreach (var stat in Stats.Select(vm => vm.Stat).ToList())
-            {
-                RemoveIfNotPinned(stat);
-            }
-
-            foreach (var (_, stat) in _observableCalculator.ExplicitlyRegisteredStatsCollection)
-            {
-                AddIfUserSpecified(stat);
-            }
+            configStat.Node.Value = initialValue;
         }
 
         private void AddIfUserSpecified(IStat stat)

@@ -51,8 +51,7 @@ namespace POESKillTree.Computation.Model
                     h => collection.CollectionChanged += h,
                     h => collection.CollectionChanged -= h)
                 .Select(p => p.EventArgs)
-                .Do(args => Log.Info($"ExplicitlyRegisteredStats: received {args.Action} {args.Element}"))
-                .SubscribeOn(_calculationScheduler);
+                .Do(args => Log.Info($"ExplicitlyRegisteredStats: received {args.Action} {args.Element}"));
         }
 
         public IReadOnlyCollection<(ICalculationNode node, IStat stat)> ExplicitlyRegisteredStatsCollection

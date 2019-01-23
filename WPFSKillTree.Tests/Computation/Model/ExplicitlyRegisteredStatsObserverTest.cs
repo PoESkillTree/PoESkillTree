@@ -1,0 +1,96 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Concurrency;
+using Moq;
+using NUnit.Framework;
+using PoESkillTree.Computation.Builders.Stats;
+using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Core;
+using PoESkillTree.Computation.Core.NodeCollections;
+using POESKillTree.Computation.Model;
+
+namespace PoESkillTree.Tests.Computation.Model
+{
+    [TestFixture]
+    public class ExplicitlyRegisteredStatsObserverTest
+    {
+        [Test]
+        public void InvokesAddOnAdd()
+        {
+            var expected = new Stat("");
+            var actualAdded = new List<IStat>();
+            var actualRemoved = new List<IStat>();
+            var nodeCollection = new NodeCollection<IStat>();
+            SetupSut(nodeCollection, actualAdded, actualRemoved);
+
+            nodeCollection.Add(null, expected);
+
+            Assert.That(actualAdded, Has.One.EqualTo(expected));
+            Assert.IsEmpty(actualRemoved);
+        }
+
+        [Test]
+        public void InvokesRemoveOnRemove()
+        {
+            var expected = new Stat("");
+            var actualAdded = new List<IStat>();
+            var actualRemoved = new List<IStat>();
+            var nodeCollection = new NodeCollection<IStat>();
+            SetupSut(nodeCollection, actualAdded, actualRemoved);
+            nodeCollection.Add(null, expected);
+            actualAdded.Clear();
+
+            nodeCollection.Remove(null, expected);
+            
+            Assert.IsEmpty(actualAdded);
+            Assert.That(actualRemoved, Has.One.EqualTo(expected));
+        }
+
+        [Test]
+        public void InvokesAddAndRemoveOnRefresh()
+        {
+            var stats = new[] { new Stat("a"), new Stat("b"), new Stat("c"), };
+            var actualAdded = new List<IStat>();
+            var actualRemoved = new List<IStat>();
+            var nodeCollection = new NodeCollection<IStat>();
+            SetupSut(nodeCollection, actualAdded, actualRemoved);
+            nodeCollection.Add(null, stats[0]);
+            nodeCollection.Add(null, stats[1]);
+            actualAdded.Clear();
+
+            nodeCollection.SuspendEvents();
+            nodeCollection.Add(null, stats[2]);
+            nodeCollection.Remove(null, stats[0]);
+            nodeCollection.ResumeEvents();
+
+            Assert.AreEqual(stats.Skip(1), actualAdded);
+            Assert.AreEqual(stats.Take(2), actualRemoved);
+        }
+
+        [Test]
+        public void RefreshesOnInitialize()
+        {
+            var expected = new Stat("");
+            var actualAdded = new List<IStat>();
+            var actualRemoved = new List<IStat>();
+            var nodeCollection = new NodeCollection<IStat> { { null, expected } };
+
+            SetupSut(nodeCollection, actualAdded, actualRemoved);
+
+            Assert.That(actualAdded, Has.One.EqualTo(expected));
+            Assert.IsEmpty(actualRemoved);
+        }
+
+        private static void SetupSut(
+            NodeCollection<IStat> nodeCollection, ICollection<IStat> addedStats, ICollection<IStat> removedStats)
+        {
+            var observableCalculator = new ObservableCalculator(
+                Mock.Of<ICalculator>(c => c.ExplicitlyRegisteredStats == nodeCollection),
+                ImmediateScheduler.Instance);
+            var sut = new ExplicitlyRegisteredStatsObserver(observableCalculator);
+            sut.StatAdded += addedStats.Add;
+            sut.StatRemoved += removedStats.Add;
+            sut.Initialize(ImmediateScheduler.Instance);
+        }
+    }
+}
