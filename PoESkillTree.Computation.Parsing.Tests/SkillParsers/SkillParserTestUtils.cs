@@ -87,9 +87,12 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
             params (string stat, Entity entity, double? value)[] nodeValues)
         {
             var contextMock = new Mock<IValueCalculationContext>();
-            var isMainSkillStat = new Stat($"{skill.ItemSlot}.{skill.SocketIndex}.IsMainSkill");
-            contextMock.Setup(c => c.GetValue(isMainSkillStat, NodeType.Total, PathDefinition.MainPath))
-                .Returns((NodeValue?) isMainSkill);
+            if (isMainSkill)
+            {
+                var mainSkillIdStat = new Stat("MainSkill.Id");
+                contextMock.Setup(c => c.GetValue(mainSkillIdStat, NodeType.Total, PathDefinition.MainPath))
+                    .Returns((NodeValue?) 0);
+            }
             var activeSkillItemSlotStat = new Stat($"{skill.Id}.ActiveSkillItemSlot");
             var activeSkillItemSlot = isActiveSkill ? skill.ItemSlot : ItemSlot.Unequipable;
             contextMock.Setup(c => c.GetValue(activeSkillItemSlotStat, NodeType.Total, PathDefinition.MainPath))

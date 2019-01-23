@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Concurrency;
@@ -25,10 +26,15 @@ namespace POESKillTree.Computation.ViewModels
         {
             var explicitlyRegisteredStats = new ExplicitlyRegisteredStatsObserver(observableCalculator);
             var vm = new ConfigurationStatsViewModel(nodeFactory, explicitlyRegisteredStats);
-            vm._explicitlyRegisteredStats.StatAdded += vm.AddIfUserSpecified;
-            vm._explicitlyRegisteredStats.StatRemoved += vm.RemoveIfNotPinned;
-            vm._explicitlyRegisteredStats.Initialize(DispatcherScheduler.Current);
+            vm.Initialize();
             return vm;
+        }
+
+        private void Initialize()
+        {
+            _explicitlyRegisteredStats.StatAdded += stat => DoIfResponsible(stat, s => Add(s));
+            _explicitlyRegisteredStats.StatRemoved += stat => DoIfResponsible(stat, Remove);
+            _explicitlyRegisteredStats.Initialize(DispatcherScheduler.Current);
         }
 
         public ObservableCollection<ConfigurationStatViewModel> Stats { get; } =
@@ -47,26 +53,19 @@ namespace POESKillTree.Computation.ViewModels
             configStat.Node.Value = initialValue;
         }
 
-        private void AddIfUserSpecified(IStat stat)
+        private void DoIfResponsible(IStat stat, Action<IStat> action)
         {
-            if (stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue)
-            {
-                Add(stat);
-            }
+            if (IsResponsibleFor(stat))
+                action(stat);
         }
 
-        private void RemoveIfNotPinned(IStat stat)
-        {
-            if (!_pinnedStats.Contains(stat))
-            {
-                Remove(stat);
-            }
-        }
+        private bool IsResponsibleFor(IStat stat)
+            => !_pinnedStats.Contains(stat) &&
+               (stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue);
 
         private ConfigurationStatViewModel Add(IStat stat)
         {
-            var existingStat = Stats.FirstOrDefault(s => s.Stat.Equals(stat));
-            if (existingStat != null)
+            if (TryGetConfigStat(stat, out var existingStat))
                 return existingStat;
 
             var configStat = new ConfigurationStatViewModel(_nodeFactory, stat);
@@ -76,9 +75,17 @@ namespace POESKillTree.Computation.ViewModels
 
         private void Remove(IStat stat)
         {
-            var configStat = Stats.First(s => s.Stat.Equals(stat));
+            if (!TryGetConfigStat(stat, out var configStat))
+                return;
+
             Stats.Remove(configStat);
             configStat.Dispose();
+        }
+
+        private bool TryGetConfigStat(IStat stat, out ConfigurationStatViewModel configStat)
+        {
+            configStat = Stats.FirstOrDefault(s => s.Stat.Equals(stat));
+            return configStat != null;
         }
     }
 }

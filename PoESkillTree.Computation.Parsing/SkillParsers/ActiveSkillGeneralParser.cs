@@ -59,9 +59,6 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             _parsedModifiers.AddGlobal(MetaStats.SkillUsesHand(AttackDamageHand.OffHand),
                 Form.TotalOverride, 1, usesOffHandCondition);
 
-            _parsedModifiers.AddGlobalForMainSkill(MetaStats.MainSkillId,
-                Form.TotalOverride, preParseResult.SkillDefinition.NumericId);
-
             _parsedModifiers.AddGlobalForMainSkill(_builderFactories.StatBuilders.BaseCastTime.With(DamageSource.Spell),
                 Form.BaseSet, activeSkill.CastTime / 1000D);
             _parsedModifiers.AddGlobalForMainSkill(

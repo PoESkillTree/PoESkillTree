@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -17,9 +18,8 @@ namespace POESKillTree.Computation.ViewModels
         private const string DefaultSkillId = "PlayerMelee";
 
         private readonly SkillDefinitions _skillDefinitions;
-        private readonly IBuilderFactories _builderFactories;
-        private readonly CalculationNodeViewModelFactory _nodeFactory;
         private readonly MainSkillViewModel _defaultSkill;
+        private readonly ConfigurationNodeViewModel _selectedSkillId;
         private readonly ConfigurationNodeViewModel _selectedSkillPart;
 
         private MainSkillViewModel _selectedSkill;
@@ -39,11 +39,12 @@ namespace POESKillTree.Computation.ViewModels
             CalculationNodeViewModelFactory nodeFactory)
         {
             _skillDefinitions = skillDefinitions;
-            _builderFactories = builderFactories;
-            _nodeFactory = nodeFactory;
             _defaultSkill = CreateSkillViewModel(
                 new Skill(DefaultSkillId, 1, 0, ItemSlot.Unequipable, 0, null));
-            var selectedSkillPartStat = _builderFactories.StatBuilders.MainSkillPart
+            var selectedSkillIdStat = builderFactories.MetaStatBuilders.MainSkillId
+                .BuildToStats(Entity.Character).Single();
+            _selectedSkillId = nodeFactory.CreateConfiguration(selectedSkillIdStat);
+            var selectedSkillPartStat = builderFactories.StatBuilders.MainSkillPart
                 .BuildToStats(Entity.Character).Single();
             _selectedSkillPart = nodeFactory.CreateConfiguration(selectedSkillPartStat);
         }
@@ -66,14 +67,8 @@ namespace POESKillTree.Computation.ViewModels
 
         private void OnSelectedSkillChanging(MainSkillViewModel newValue)
         {
-            if (SelectedSkill != null)
-            {
-                SelectedSkill.SkillIsMainNode.BoolValue = false;
-            }
-            if (newValue != null)
-            {
-                newValue.SkillIsMainNode.BoolValue = true;
-            }
+            Trace.WriteLine($"Selected {newValue?.SkillDefinition.Id}/{newValue?.SkillDefinition.NumericId} as main skill");
+            _selectedSkillId.NumericValue = newValue?.SkillDefinition.NumericId;
         }
 
         private void OnSkillsChanged(object sender, NotifyCollectionChangedEventArgs args)
@@ -155,10 +150,7 @@ namespace POESKillTree.Computation.ViewModels
         private MainSkillViewModel CreateSkillViewModel(Skill skill)
         {
             var definition = _skillDefinitions.GetSkillById(skill.Id);
-            var skillIsMainStat = _builderFactories.MetaStatBuilders.SkillIsMain(skill.ItemSlot, skill.SocketIndex)
-                .BuildToStats(Entity.Character).Single();
-            var skillIsMainNode = _nodeFactory.CreateConfiguration(skillIsMainStat);
-            return new MainSkillViewModel(definition, skill, skillIsMainNode, _selectedSkillPart);
+            return new MainSkillViewModel(definition, skill, _selectedSkillPart);
         }
     }
 }

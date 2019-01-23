@@ -88,7 +88,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder ActiveSkillItemSlot(string skillId);
         IStatBuilder ActiveSkillSocketIndex(string skillId);
 
-        IStatBuilder SkillIsMain(ItemSlot itemSlot, int socketIndex);
         IStatBuilder SkillBaseCost(ItemSlot itemSlot, int socketIndex);
         IStatBuilder SkillHasType(ItemSlot itemSlot, int socketIndex, string activeSkillType);
 
