@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="POESKillTree.Computation.Views.GainOnActionStatsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:POESKillTree.Computation.ViewModels"
+             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:GainOnActionStatsViewModel}">
+    <DataGrid AutoGenerateColumns="False"
+              CanUserAddRows="False"
+              CanUserDeleteRows="False"
+              ItemsSource="{Binding Stats}">
+        <DataGrid.RowStyle>
+            <Style TargetType="DataGridRow">
+                <d:Style.DataContext>
+                    <x:Type Type="viewModels:GainOnActionStatViewModel" />
+                </d:Style.DataContext>
+                <Setter Property="Visibility"
+                        Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </Style>
+        </DataGrid.RowStyle>
+        <DataGrid.Columns>
+            <DataGridTextColumn IsReadOnly="True"
+                                Width="300"
+                                Binding="{Binding GainOnActionType.GainedStat.Identity}">
+                <DataGridTextColumn.Header>
+                    <l:Catalog>Stat</l:Catalog>
+                </DataGridTextColumn.Header>
+            </DataGridTextColumn>
+            <DataGridTextColumn IsReadOnly="True"
+                                Width="150"
+                                Binding="{Binding Action}">
+                <DataGridTextColumn.Header>
+                    <l:Catalog>Action</l:Catalog>
+                </DataGridTextColumn.Header>
+            </DataGridTextColumn>
+            <DataGridTextColumn IsReadOnly="True"
+                                Width="60"
+                                Binding="{Binding Node.StringValue}">
+                <DataGridTextColumn.Header>
+                    <l:Catalog>Value</l:Catalog>
+                </DataGridTextColumn.Header>
+            </DataGridTextColumn>
+        </DataGrid.Columns>
+    </DataGrid>
+</UserControl>

@@ -33,34 +33,48 @@
             </TextBlock.Text>
         </TextBlock>
 
-        <TextBlock Grid.Column="0" Grid.Row="1"
-                   FontSize="{DynamicResource SubHeaderFontSize}"
-                   Foreground="{DynamicResource AccentColorBrush}">
-            <TextBlock.Text>
-                <l:Catalog Message="Offensive Stats" />
-            </TextBlock.Text>
-        </TextBlock>
-        <local:ResultStatsView Grid.Column="0" Grid.Row="2" Margin="0 0 5 0"
-                               DataContext="{Binding OffensiveStats}" />
+        <StackPanel Grid.Column="0" Grid.Row="1"
+                    Margin="0 0 5 0">
+            <TextBlock FontSize="{DynamicResource SubHeaderFontSize}"
+                       Foreground="{DynamicResource AccentColorBrush}">
+                <TextBlock.Text>
+                    <l:Catalog Message="Offensive Stats" />
+                </TextBlock.Text>
+            </TextBlock>
+            <local:ResultStatsView DataContext="{Binding OffensiveStats}" />
+        </StackPanel>
 
-        <TextBlock Grid.Column="1" Grid.Row="1"
-                   FontSize="{DynamicResource SubHeaderFontSize}"
-                   Foreground="{DynamicResource AccentColorBrush}">
-            <TextBlock.Text>
-                <l:Catalog Message="Defensive Stats" />
-            </TextBlock.Text>
-        </TextBlock>
-        <local:ResultStatsView Grid.Column="1" Grid.Row="2" Margin="0 0 5 0"
-                               DataContext="{Binding DefensiveStats}" />
+        <StackPanel Grid.Column="1" Grid.Row="1"
+                    Margin="0 0 5 0">
+            <TextBlock FontSize="{DynamicResource SubHeaderFontSize}"
+                       Foreground="{DynamicResource AccentColorBrush}">
+                <TextBlock.Text>
+                    <l:Catalog Message="Defensive Stats" />
+                </TextBlock.Text>
+            </TextBlock>
+            <local:ResultStatsView DataContext="{Binding DefensiveStats}" />
+        </StackPanel>
 
-        <TextBlock Grid.Column="2" Grid.Row="1"
-                   FontSize="{DynamicResource SubHeaderFontSize}"
-                   Foreground="{DynamicResource AccentColorBrush}">
-            <TextBlock.Text>
-                <l:Catalog Message="Configuration" />
-            </TextBlock.Text>
-        </TextBlock>
-        <local:ConfigurationStatsView Grid.Column="2" Grid.Row="2"
-                                      DataContext="{Binding ConfigurationStats}" />
+        <StackPanel Grid.Column="2" Grid.Row="1">
+            <TextBlock FontSize="{DynamicResource SubHeaderFontSize}"
+                       Foreground="{DynamicResource AccentColorBrush}">
+                <TextBlock.Text>
+                    <l:Catalog Message="Configuration" />
+                </TextBlock.Text>
+            </TextBlock>
+            <local:ConfigurationStatsView DataContext="{Binding ConfigurationStats}" />
+        </StackPanel>
+
+        <Expander Grid.Column="0" Grid.Row="2"
+                  Grid.ColumnSpan="3"
+                  HorizontalAlignment="Left"
+                  Margin="0 15 0 0"
+                  MinWidth="510">
+            <Expander.Header>
+                <l:Catalog Message="Stats gained on action" />
+            </Expander.Header>
+                
+            <local:GainOnActionStatsView DataContext="{Binding GainOnActionStats}" />
+        </Expander>
     </Grid>
 </UserControl>

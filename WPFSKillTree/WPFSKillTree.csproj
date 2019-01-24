@@ -215,6 +215,9 @@
     <Compile Include="Computation\ViewModels\ResultNodeViewModel.cs" />
     <Compile Include="Computation\ViewModels\SharedConfigurationViewModel.cs" />
     <Compile Include="Computation\ViewModels\CalculationNodeViewModel.cs" />
+    <Compile Include="Computation\Views\GainOnActionStatsView.xaml.cs">
+      <DependentUpon>GainOnActionStatsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Contrib\RangeTree\Range.cs" />
     <Compile Include="Contrib\RangeTree\RangeTree.cs" />
     <Compile Include="Contrib\RangeTree\RangeTreeAsync.cs" />
@@ -593,6 +596,10 @@
     <Compile Include="Views\Equipment\DownloadItemsWindow.xaml.cs">
       <DependentUpon>DownloadItemsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Computation\Views\GainOnActionStatsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Contrib\Monotone\Styles\ExtendedWPFToolkit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
