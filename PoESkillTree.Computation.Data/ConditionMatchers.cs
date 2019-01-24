@@ -58,7 +58,7 @@ namespace PoESkillTree.Computation.Data
                     Or(Kill.Recently, Kill.By(Entity.Minion).Recently)
                 },
                 // - hit
-                { "if you've been hit recently", Hit.By(Enemy).Recently },
+                { "if you('ve| have) been hit recently", Hit.By(Enemy).Recently },
                 { "if you haven't been hit recently", Not(Hit.By(Enemy).Recently) },
                 { "if you were damaged by a hit recently", Hit.By(Enemy).Recently },
                 { "if you've taken no damage from hits recently", Not(Hit.By(Enemy).Recently) },
@@ -125,7 +125,7 @@ namespace PoESkillTree.Computation.Data
                         ModifierSourceIs(ItemSlot.OffHand).And(OffHandAttack))
                 },
                 // - taken
-                { "take", Condition.DamageTaken },
+                { "(?<!when you )take", Condition.DamageTaken },
                 // equipment
                 { "while unarmed", Not(MainHand.HasItem) },
                 { "while wielding a staff", MainHand.Has(Tags.Staff) },

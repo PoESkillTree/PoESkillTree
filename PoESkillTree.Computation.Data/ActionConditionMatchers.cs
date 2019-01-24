@@ -60,6 +60,7 @@ namespace PoESkillTree.Computation.Data
                 { "critical strikes have a", CriticalStrike.On },
                 { "when you deal a critical strike", CriticalStrike.On },
                 { "if you get a critical strike", CriticalStrike.On },
+                { "when you take a critical strike", CriticalStrike.By(Enemy).On },
                 // skill cast
                 { "when you place a totem", Totems.Cast.On },
                 { "when you summon a totem", Totems.Cast.On },

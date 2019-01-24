@@ -3,6 +3,7 @@
 // Armour: =============================================================================================================
 Gore Footprints
 Enemies Cannot Leech Mana From you
+Share Endurance Charges with nearby party members
 // Accessories: ========================================================================================================
 Has 1 Socket
 Has 1 Abyssal Socket
