@@ -88,8 +88,8 @@ namespace PoESkillTree.Tests.Computation.Model
                 Mock.Of<ICalculator>(c => c.ExplicitlyRegisteredStats == nodeCollection),
                 ImmediateScheduler.Instance);
             var sut = new ExplicitlyRegisteredStatsObserver(observableCalculator);
-            sut.StatAdded += addedStats.Add;
-            sut.StatRemoved += removedStats.Add;
+            sut.StatAdded += (_, s) => addedStats.Add(s);
+            sut.StatRemoved += (_, s) => removedStats.Add(s);
             sut.Initialize(ImmediateScheduler.Instance);
         }
     }

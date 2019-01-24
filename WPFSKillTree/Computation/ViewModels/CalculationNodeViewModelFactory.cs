@@ -1,5 +1,6 @@
 ﻿using System.Reactive.Concurrency;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Core;
 using POESKillTree.Computation.Model;
 
 namespace POESKillTree.Computation.ViewModels
@@ -15,7 +16,14 @@ namespace POESKillTree.Computation.ViewModels
         public ResultNodeViewModel CreateResult(IStat stat, NodeType nodeType = NodeType.Total)
         {
             var node = new ResultNodeViewModel(stat, nodeType);
-            node.Observe(_calculator, _observerScheduler);
+            node.Observe(_calculator.ObserveNode(stat, nodeType), _observerScheduler);
+            return node;
+        }
+
+        public ResultNodeViewModel CreateResult(IStat stat, ICalculationNode calculationNode)
+        {
+            var node = new ResultNodeViewModel(stat);
+            node.Observe(_calculator.ObserveNode(calculationNode), _observerScheduler);
             return node;
         }
 

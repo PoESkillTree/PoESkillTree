@@ -32,8 +32,8 @@ namespace POESKillTree.Computation.ViewModels
 
         private void Initialize()
         {
-            _explicitlyRegisteredStats.StatAdded += stat => DoIfResponsible(stat, s => Add(s));
-            _explicitlyRegisteredStats.StatRemoved += stat => DoIfResponsible(stat, Remove);
+            _explicitlyRegisteredStats.StatAdded += (_, stat) => DoIfResponsible(stat, s => Add(s));
+            _explicitlyRegisteredStats.StatRemoved += (_, stat) => DoIfResponsible(stat, Remove);
             _explicitlyRegisteredStats.Initialize(DispatcherScheduler.Current);
         }
 

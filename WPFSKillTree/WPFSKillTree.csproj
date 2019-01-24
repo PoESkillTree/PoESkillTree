@@ -205,12 +205,13 @@
     <Compile Include="Computation\Model\ComputationSchedulerProvider.cs" />
     <Compile Include="Computation\Model\ComputationObservables.cs" />
     <Compile Include="Computation\Model\ExplicitlyRegisteredStatsObserver.cs" />
-    <Compile Include="Computation\Model\IObservableNodeRepository.cs" />
     <Compile Include="Computation\Model\IObservingCalculator.cs" />
     <Compile Include="Computation\Model\ObservableCalculator.cs" />
     <Compile Include="Computation\ViewModels\CalculationNodeViewModelFactory.cs" />
     <Compile Include="Computation\ViewModels\ConfigurationNodeViewModel.cs" />
     <Compile Include="Computation\ViewModels\ConfigurationStatsViewModel.cs" />
+    <Compile Include="Computation\ViewModels\GainOnActionStatsViewModel.cs" />
+    <Compile Include="Computation\ViewModels\GainOnActionStatViewModel.cs" />
     <Compile Include="Computation\ViewModels\ResultNodeViewModel.cs" />
     <Compile Include="Computation\ViewModels\SharedConfigurationViewModel.cs" />
     <Compile Include="Computation\ViewModels\CalculationNodeViewModel.cs" />

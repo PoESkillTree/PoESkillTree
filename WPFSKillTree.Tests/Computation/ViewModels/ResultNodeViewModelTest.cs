@@ -1,11 +1,9 @@
 ﻿using System.Reactive.Concurrency;
 using System.Reactive.Subjects;
-using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
-using POESKillTree.Computation.Model;
 using POESKillTree.Computation.ViewModels;
 
 namespace PoESkillTree.Tests.Computation.ViewModels
@@ -58,12 +56,10 @@ namespace PoESkillTree.Tests.Computation.ViewModels
         {
             var stat = new Stat("a");
             var subject = new Subject<NodeValue?>();
-            var repository = Mock.Of<IObservableNodeRepository>(r =>
-                r.ObserveNode(stat, NodeType.More) == subject);
 
             using (var sut = CreateSut(stat, NodeType.More))
             {
-                sut.Observe(repository, Scheduler.Immediate);
+                sut.Observe(subject, Scheduler.Immediate);
 
                 Assert.AreEqual(null, sut.Value);
                 subject.OnNext(new NodeValue(2));

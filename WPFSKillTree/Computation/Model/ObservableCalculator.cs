@@ -11,7 +11,7 @@ using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Computation.Model
 {
-    public class ObservableCalculator : IObservableNodeRepository, IObservingCalculator
+    public class ObservableCalculator : IObservingCalculator
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ObservableCalculator));
 
@@ -27,13 +27,19 @@ namespace POESKillTree.Computation.Model
         }
 
         public IObservable<NodeValue?> ObserveNode(IStat stat, NodeType nodeType = NodeType.Total)
+            => ObserveNode(() => GetNode(stat, nodeType));
+
+        public IObservable<NodeValue?> ObserveNode(ICalculationNode node)
+            => ObserveNode(() => node);
+
+        private IObservable<NodeValue?> ObserveNode(Func<ICalculationNode> nodeFunc)
         {
             return Observable.Create<NodeValue?>(Subscribe)
                 .SubscribeOn(_calculationScheduler);
 
             Action Subscribe(IObserver<NodeValue?> observer)
             {
-                var node = GetNode(stat, nodeType);
+                var node = nodeFunc();
                 void ValueChanged(object _, EventArgs __) => observer.OnNext(node.Value);
                 node.ValueChanged += ValueChanged;
                 observer.OnNext(node.Value);

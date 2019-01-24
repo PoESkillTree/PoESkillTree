@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Linq;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -66,10 +65,7 @@ namespace POESKillTree.Computation.ViewModels
         }
 
         private void OnSelectedSkillChanging(MainSkillViewModel newValue)
-        {
-            Trace.WriteLine($"Selected {newValue?.SkillDefinition.Id}/{newValue?.SkillDefinition.NumericId} as main skill");
-            _selectedSkillId.NumericValue = newValue?.SkillDefinition.NumericId;
-        }
+            => _selectedSkillId.NumericValue = newValue?.SkillDefinition.NumericId;
 
         private void OnSkillsChanged(object sender, NotifyCollectionChangedEventArgs args)
         {

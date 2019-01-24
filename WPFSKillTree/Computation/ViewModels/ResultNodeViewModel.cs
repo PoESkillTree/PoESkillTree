@@ -3,7 +3,6 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using log4net;
 using PoESkillTree.Computation.Common;
-using POESKillTree.Computation.Model;
 using POESKillTree.Localization;
 
 namespace POESKillTree.Computation.ViewModels
@@ -46,9 +45,8 @@ namespace POESKillTree.Computation.ViewModels
             base.OnPropertyChanged(propertyName);
         }
 
-        public void Observe(IObservableNodeRepository nodeRepository, IScheduler observeScheduler)
-            => _subscription = nodeRepository
-                .ObserveNode(Stat, NodeType)
+        public void Observe(IObservable<NodeValue?> observable, IScheduler observeScheduler)
+            => _subscription = observable
                 .ObserveOn(observeScheduler)
                 .Subscribe(
                     v => Value = v,

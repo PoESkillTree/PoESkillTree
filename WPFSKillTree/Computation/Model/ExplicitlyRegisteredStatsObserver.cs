@@ -15,13 +15,15 @@ namespace POESKillTree.Computation.Model
         private static readonly ILog Log = LogManager.GetLogger(typeof(ExplicitlyRegisteredStatsObserver));
 
         private readonly ObservableCalculator _observableCalculator;
-        private readonly HashSet<IStat> _stats = new HashSet<IStat>();
+
+        private readonly HashSet<(ICalculationNode node, IStat stat)> _elements =
+            new HashSet<(ICalculationNode, IStat)>();
 
         public ExplicitlyRegisteredStatsObserver(ObservableCalculator observableCalculator)
             => _observableCalculator = observableCalculator;
 
-        public event Action<IStat> StatAdded;
-        public event Action<IStat> StatRemoved;
+        public event Action<ICalculationNode, IStat> StatAdded;
+        public event Action<ICalculationNode, IStat> StatRemoved;
 
         public void Initialize(IScheduler observeScheduler)
         {
@@ -36,10 +38,10 @@ namespace POESKillTree.Computation.Model
             switch (args.Action)
             {
                 case CollectionChangeAction.Add:
-                    Add(args.Element);
+                    Add(((ICalculationNode, IStat)) args.Element);
                     break;
                 case CollectionChangeAction.Remove:
-                    Remove(args.Element);
+                    Remove(((ICalculationNode, IStat)) args.Element);
                     break;
                 case CollectionChangeAction.Refresh:
                     Refresh();
@@ -52,45 +54,25 @@ namespace POESKillTree.Computation.Model
         private static void OnError(Exception exception)
             => Log.Error("ObserveExplicitlyRegisteredStats failed", exception);
 
-        private void Add(object element)
-        {
-            var (_, stat) = ((ICalculationNode, IStat)) element;
-            Add(stat);
-        }
-
-        private void Remove(object element)
-        {
-            var (_, stat) = ((ICalculationNode, IStat)) element;
-            Remove(stat);
-        }
-
         private void Refresh()
         {
-            foreach (var stat in _stats.ToList())
-            {
-                Remove(stat);
-            }
+            foreach (var element in _elements.ToList())
+                Remove(element);
 
-            foreach (var (_, stat) in _observableCalculator.ExplicitlyRegisteredStatsCollection)
-            {
-                Add(stat);
-            }
+            foreach (var element in _observableCalculator.ExplicitlyRegisteredStatsCollection)
+                Add(element);
         }
 
-        private void Add(IStat stat)
+        private void Add((ICalculationNode, IStat) element)
         {
-            if (_stats.Add(stat))
-            {
-                StatAdded?.Invoke(stat);
-            }
+            if (_elements.Add(element))
+                StatAdded?.Invoke(element.Item1, element.Item2);
         }
 
-        private void Remove(IStat stat)
+        private void Remove((ICalculationNode, IStat) element)
         {
-            if (_stats.Remove(stat))
-            {
-                StatRemoved?.Invoke(stat);
-            }
+            if (_elements.Remove(element))
+                StatRemoved?.Invoke(element.Item1, element.Item2);
         }
     }
 }

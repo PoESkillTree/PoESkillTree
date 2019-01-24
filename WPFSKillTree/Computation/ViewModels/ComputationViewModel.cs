@@ -21,6 +21,7 @@ namespace POESKillTree.Computation.ViewModels
         public ResultStatsViewModel OffensiveStats { get; }
         public ResultStatsViewModel DefensiveStats { get; }
         public ConfigurationStatsViewModel ConfigurationStats { get; private set; }
+        public GainOnActionStatsViewModel GainOnActionStats { get; private set; }
         public SharedConfigurationViewModel SharedConfiguration { get; private set; }
 
         private ComputationViewModel(ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers)
@@ -69,6 +70,7 @@ namespace POESKillTree.Computation.ViewModels
             AddConfigurationStat(f.StatBuilders.Level, Entity.Enemy);
             await AddInitializedConfigurationStatAsync(f.MetaStatBuilders.SelectedQuestPart);
 
+            GainOnActionStats = GainOnActionStatsViewModel.Create(_observableCalculator, _nodeFactory);
             SharedConfiguration = SharedConfigurationViewModel.Create(_nodeFactory, f);
         }
 
