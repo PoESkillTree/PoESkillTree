@@ -210,6 +210,7 @@
     <Compile Include="Computation\ViewModels\CalculationNodeViewModelFactory.cs" />
     <Compile Include="Computation\ViewModels\ConfigurationNodeViewModel.cs" />
     <Compile Include="Computation\ViewModels\ConfigurationStatsViewModel.cs" />
+    <Compile Include="Computation\ViewModels\ExplicitlyRegisteredStatsViewModel.cs" />
     <Compile Include="Computation\ViewModels\GainOnActionStatsViewModel.cs" />
     <Compile Include="Computation\ViewModels\GainOnActionStatViewModel.cs" />
     <Compile Include="Computation\ViewModels\ResultNodeViewModel.cs" />
