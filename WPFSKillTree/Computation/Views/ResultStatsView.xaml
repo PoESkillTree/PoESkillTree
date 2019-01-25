@@ -4,8 +4,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
              xmlns:viewModels="clr-namespace:POESKillTree.Computation.ViewModels"
+             xmlns:local="clr-namespace:POESKillTree.Computation.Views"
+             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:ResultStatsViewModel}">
     <StackPanel Orientation="Vertical">
@@ -31,6 +32,18 @@
                     <DataGridTextColumn.Header>
                         <l:Catalog>Value</l:Catalog>
                     </DataGridTextColumn.Header>
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell"
+                               BasedOn="{StaticResource MetroDataGridCell}">
+                            <Setter Property="ToolTip">
+                                <Setter.Value>
+                                    <ToolTip DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+                                        <local:ResultStatToolTip DataContext="{Binding}" />
+                                    </ToolTip>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>

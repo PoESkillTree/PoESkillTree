@@ -1,4 +1,5 @@
 ﻿using System.Reactive.Concurrency;
+using System.Threading.Tasks;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 using POESKillTree.Computation.Model;
@@ -26,6 +27,9 @@ namespace POESKillTree.Computation.ViewModels
             node.Observe(_calculator.ObserveNode(calculationNode), _observerScheduler);
             return node;
         }
+
+        public async Task<ResultNodeViewModel> CreateConstantResultAsync(IStat stat, ICalculationNode calculationNode)
+            => new ResultNodeViewModel(stat) { Value = await _calculator.GetNodeValueAsync(calculationNode) };
 
         public ConfigurationNodeViewModel CreateConfiguration(IStat stat)
         {

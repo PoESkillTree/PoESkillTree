@@ -11,10 +11,13 @@ namespace POESKillTree.Computation.ViewModels
     public class ResultStatsViewModel
     {
         private readonly CalculationNodeViewModelFactory _nodeFactory;
+        private readonly ModifierNodeViewModelFactory _modifierNodeFactory;
 
-        public ResultStatsViewModel(CalculationNodeViewModelFactory nodeFactory)
+        public ResultStatsViewModel(
+            CalculationNodeViewModelFactory nodeFactory, ModifierNodeViewModelFactory modifierNodeFactory)
         {
             _nodeFactory = nodeFactory;
+            _modifierNodeFactory = modifierNodeFactory;
             NewStat = new AddableResultStatViewModel();
             AddStatCommand = new RelayCommand(AddStat);
         }
@@ -70,7 +73,8 @@ namespace POESKillTree.Computation.ViewModels
 
         public void AddStat(IStat stat, NodeType nodeType = NodeType.Total)
         {
-            var resultStat = new ResultStatViewModel(_nodeFactory.CreateResult(stat, nodeType), RemoveStat);
+            var resultStat =
+                new ResultStatViewModel(_nodeFactory.CreateResult(stat, nodeType), _modifierNodeFactory, RemoveStat);
             Stats.Add(resultStat);
             AddAvailableStat(stat);
         }
@@ -80,7 +84,7 @@ namespace POESKillTree.Computation.ViewModels
             Stats.Remove(resultStat);
             NewStat.Stat = resultStat.Node.Stat;
             NewStat.NodeType = resultStat.Node.NodeType;
-            resultStat.Node.Dispose();
+            resultStat.Dispose();
         }
     }
 }

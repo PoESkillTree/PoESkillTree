@@ -28,8 +28,9 @@ namespace POESKillTree.Computation.ViewModels
         {
             _observableCalculator = observableCalculator;
             _nodeFactory = new CalculationNodeViewModelFactory(observableCalculator, schedulers.Dispatcher);
-            OffensiveStats = new ResultStatsViewModel(_nodeFactory);
-            DefensiveStats = new ResultStatsViewModel(_nodeFactory);
+            var modifierNodeFactory = new ModifierNodeViewModelFactory(observableCalculator, _nodeFactory);
+            OffensiveStats = new ResultStatsViewModel(_nodeFactory, modifierNodeFactory);
+            DefensiveStats = new ResultStatsViewModel(_nodeFactory, modifierNodeFactory);
         }
 
         private async Task InitializeAsync(

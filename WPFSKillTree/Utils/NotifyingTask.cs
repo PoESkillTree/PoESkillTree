@@ -7,36 +7,23 @@ namespace POESKillTree.Utils
     // Original source: Stephen Cleary at https://msdn.microsoft.com/en-us/magazine/dn605875.aspx
     /// <summary>
     /// Wrapper class around Task that notifies property changes, has
-    /// a non-blocking <see cref="Result"/> property and swallows exceptions
-    /// in case no exception handler is provided.
+    /// a non-blocking <see cref="Result"/> property.
     /// </summary>
     public sealed class NotifyingTask<TResult> : INotifyPropertyChanged
     {
         public TResult Default { private get; set; }
-        public Task TaskCompletion { get; private set; }
+        public Task TaskCompletion { get; }
         public Task<TResult> Task { get; }
-        public TResult Result
-        {
-            get { return (Task.Status == TaskStatus.RanToCompletion) ? Task.Result : Default; }
-        }
-        public TaskStatus Status { get { return Task.Status; } }
-        public bool IsCompleted { get { return Task.IsCompleted; } }
-        public bool IsNotCompleted { get { return !Task.IsCompleted; } }
-        public bool IsSuccessfullyCompleted
-        {
-            get { return Task.Status == TaskStatus.RanToCompletion; }
-        }
-        public bool IsCanceled { get { return Task.IsCanceled; } }
-        public bool IsFaulted { get { return Task.IsFaulted; } }
-        public AggregateException Exception { get { return Task.Exception; } }
-        public Exception InnerException
-        {
-            get { return Exception?.InnerException; }
-        }
-        public string ErrorMessage
-        {
-            get { return InnerException?.Message; }
-        }
+        public TResult Result => (Task.Status == TaskStatus.RanToCompletion) ? Task.Result : Default;
+        public TaskStatus Status => Task.Status;
+        public bool IsCompleted => Task.IsCompleted;
+        public bool IsNotCompleted => !Task.IsCompleted;
+        public bool IsSuccessfullyCompleted => Task.Status == TaskStatus.RanToCompletion;
+        public bool IsCanceled => Task.IsCanceled;
+        public bool IsFaulted => Task.IsFaulted;
+        public AggregateException Exception => Task.Exception;
+        public Exception InnerException => Exception?.InnerException;
+        public string ErrorMessage => InnerException?.Message;
 
         public NotifyingTask(Task<TResult> task, Action<Exception> errorHandler)
         {
@@ -47,7 +34,7 @@ namespace POESKillTree.Utils
             }
         }
 
-        public NotifyingTask(Task<TResult> task, Func<Exception, Task> errorHandler = null)
+        public NotifyingTask(Task<TResult> task, Func<Exception, Task> errorHandler)
         {
             Task = task;
             if (!task.IsCompleted)
@@ -69,31 +56,29 @@ namespace POESKillTree.Utils
                     await asyncErrorHandler(e);
             }
 
-            var propertyChanged = PropertyChanged;
-            if (propertyChanged == null)
-                return;
-            propertyChanged(this, new PropertyChangedEventArgs("Status"));
-            propertyChanged(this, new PropertyChangedEventArgs("IsCompleted"));
-            propertyChanged(this, new PropertyChangedEventArgs("IsNotCompleted"));
+            OnPropertyChanged(nameof(Status));
+            OnPropertyChanged(nameof(IsCompleted));
+            OnPropertyChanged(nameof(IsNotCompleted));
             if (task.IsCanceled)
             {
-                propertyChanged(this, new PropertyChangedEventArgs("IsCanceled"));
+                OnPropertyChanged(nameof(IsCanceled));
             }
             else if (task.IsFaulted)
             {
-                propertyChanged(this, new PropertyChangedEventArgs("IsFaulted"));
-                propertyChanged(this, new PropertyChangedEventArgs("Exception"));
-                propertyChanged(this,
-                    new PropertyChangedEventArgs("InnerException"));
-                propertyChanged(this, new PropertyChangedEventArgs("ErrorMessage"));
+                OnPropertyChanged(nameof(IsFaulted));
+                OnPropertyChanged(nameof(Exception));
+                OnPropertyChanged(nameof(InnerException));
+                OnPropertyChanged(nameof(ErrorMessage));
             }
             else
             {
-                propertyChanged(this,
-                    new PropertyChangedEventArgs("IsSuccessfullyCompleted"));
-                propertyChanged(this, new PropertyChangedEventArgs("Result"));
+                OnPropertyChanged(nameof(IsSuccessfullyCompleted));
+                OnPropertyChanged(nameof(Result));
             }
         }
+
+        private void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

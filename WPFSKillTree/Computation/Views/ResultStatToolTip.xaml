@@ -1,0 +1,60 @@
+﻿<UserControl x:Class="POESKillTree.Computation.Views.ResultStatToolTip"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:POESKillTree.Computation.ViewModels"
+             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:ResultStatViewModel}">
+    <DataGrid AutoGenerateColumns="False"
+              CanUserAddRows="False"
+              CanUserDeleteRows="False"
+              CanUserResizeColumns="False"
+              HorizontalScrollBarVisibility="Hidden"
+              ItemsSource="{Binding ModifierNodes.Result}">
+        <DataGrid.Resources>
+            <Style TargetType="DataGridColumnHeader"
+                   BasedOn="{StaticResource MetroDataGridColumnHeader}">
+                <Setter Property="Padding" Value="5 0" />
+            </Style>
+        </DataGrid.Resources>
+        <DataGrid.Columns>
+            <DataGridTextColumn IsReadOnly="True"
+                                Width="60"
+                                Binding="{Binding Node.StringValue}">
+                <DataGridTextColumn.Header>
+                    <l:Catalog Message="Value" />
+                </DataGridTextColumn.Header>
+            </DataGridTextColumn>
+            <DataGridTextColumn IsReadOnly="True"
+                                Width="80"
+                                Binding="{Binding Form}">
+                <DataGridTextColumn.Header>
+                    <l:Catalog Message="Form" />
+                </DataGridTextColumn.Header>
+            </DataGridTextColumn>
+            <DataGridTextColumn IsReadOnly="True"
+                                Width="55"
+                                Binding="{Binding IsLocal}">
+                <DataGridTextColumn.Header>
+                    <l:Catalog Message="Local" />
+                </DataGridTextColumn.Header>
+            </DataGridTextColumn>
+            <DataGridTextColumn IsReadOnly="True"
+                                Width="75"
+                                Binding="{Binding ModifierSource}">
+                <DataGridTextColumn.Header>
+                    <l:Catalog Message="Source" />
+                </DataGridTextColumn.Header>
+            </DataGridTextColumn>
+            <DataGridTextColumn IsReadOnly="True"
+                                Width="150"
+                                Binding="{Binding ModifierSource.SourceName}">
+                <DataGridTextColumn.Header>
+                    <l:Catalog Message="Source Name" />
+                </DataGridTextColumn.Header>
+            </DataGridTextColumn>
+        </DataGrid.Columns>
+    </DataGrid>
+</UserControl>
