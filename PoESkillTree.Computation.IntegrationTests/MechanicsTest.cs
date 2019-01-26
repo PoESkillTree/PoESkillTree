@@ -243,7 +243,9 @@ namespace PoESkillTree.Computation.IntegrationTests
             calculator.NewBatchUpdate()
                 .AddModifiers(_givenMods)
                 .AddModifier(Build(_builderFactories.StatBuilders.Armour), Form.BaseAdd, 4000)
-                .AddModifier(Build(_builderFactories.EffectBuilders.Stun.Threshold), Form.Increase, -100)
+                .AddModifier(
+                    Build(_builderFactories.EffectBuilders.Stun.Threshold.For(_builderFactories.EntityBuilders.Enemy)),
+                    Form.Increase, -100)
                 .DoUpdate();
 
             var enemyLifeStat = Build(_builderFactories.StatBuilders.Pool.From(Pool.Life)

@@ -6,6 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:POESKillTree.Computation.ViewModels"
              xmlns:local="clr-namespace:POESKillTree.Computation.Views"
+             xmlns:controls="clr-namespace:POESKillTree.Controls"
              xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:ResultStatsViewModel}">
@@ -69,9 +70,9 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <ComboBox Grid.Column="0" Grid.ColumnSpan="3"
-                      ItemsSource="{Binding AvailableStats}"
-                      SelectedItem="{Binding NewStat.Stat}" />
+            <controls:SearchableComboBox Grid.Column="0" Grid.ColumnSpan="3"
+                                         ItemsSource="{Binding AvailableStats}"
+                                         SelectedItem="{Binding NewStat.Stat}" />
             <ComboBox Grid.Column="0" Grid.Row="1"
                       ItemsSource="{Binding AvailableNodeTypes}"
                       SelectedItem="{Binding NewStat.NodeType}" />

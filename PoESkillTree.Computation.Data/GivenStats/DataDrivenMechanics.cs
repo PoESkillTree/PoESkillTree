@@ -207,7 +207,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
 
                 // speed
-                { TotalOverride, Stat.CastRate, Stat.BaseCastTime, castTime => castTime.Value.Invert },
+                { BaseSet, Stat.CastRate, Stat.BaseCastTime, castTime => castTime.Value.Invert },
                 {
                     TotalOverride, MetaStats.CastRate,
                     CombineSourceDefaultingToSpell(Stat.CastRate, CombineHandsByAverage)
@@ -418,7 +418,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 {
                     BaseSet, Effect.Stun.Chance,
-                    MetaStats.AverageDamage.WithHits, MetaStats.EffectiveStunThreshold,
+                    MetaStats.AverageDamage.WithHits, MetaStats.EffectiveStunThreshold.For(Enemy),
                     (damage, threshold)
                         => 200 * damage.Value / (Life.For(Enemy).ValueFor(NodeType.Subtotal) * threshold.Value)
                 },
