@@ -275,8 +275,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
 
             Assert.IsTrue(AnyModifierHasIdentity(result.Modifiers, "PointBlank"));
 
-            IParser<UntranslatedStatParserParameter> GetStatParser(string translationFileName)
-                => translationFileName == StatTranslationFileNames.Main
+            IParser<UntranslatedStatParserParameter> GetStatParser(IReadOnlyList<string> translationFileNames)
+                => translationFileNames[0] == StatTranslationFileNames.Main
                     ? mainStatParser
                     : emptyStatParser;
         }

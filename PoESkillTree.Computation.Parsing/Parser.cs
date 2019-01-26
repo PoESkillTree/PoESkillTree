@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Data;
@@ -31,8 +32,9 @@ namespace PoESkillTree.Computation.Parsing
         private readonly StatTranslators _statTranslators;
         private readonly IEnumerable<IGivenStats> _givenStats;
 
-        private readonly ConcurrentDictionary<string, IParser<UntranslatedStatParserParameter>> _untranslatedStatParsers
-            = new ConcurrentDictionary<string, IParser<UntranslatedStatParserParameter>>();
+        private readonly ConcurrentDictionary<IReadOnlyList<string>, IParser<UntranslatedStatParserParameter>>
+            _untranslatedStatParsers =
+                new ConcurrentDictionary<IReadOnlyList<string>, IParser<UntranslatedStatParserParameter>>();
 
         public static async Task<IParser> CreateAsync(
             GameData gameData, Task<IBuilderFactories> builderFactoriesTask, Task<IParsingData<TStep>> parsingDataTask)
@@ -70,14 +72,18 @@ namespace PoESkillTree.Computation.Parsing
             _skillsParser = new SkillsParser(skills, _activeSkillParser, _supportSkillParser);
         }
 
-        private IParser<UntranslatedStatParserParameter> GetOrAddUntranslatedStatParser(string translationFileName)
-            => _untranslatedStatParsers.GetOrAdd(translationFileName, CreateUntranslatedStatParser);
+        private IParser<UntranslatedStatParserParameter> GetOrAddUntranslatedStatParser(
+            IReadOnlyList<string> translationFileNames)
+            => _untranslatedStatParsers.GetOrAdd(translationFileNames, CreateUntranslatedStatParser);
 
-        private IParser<UntranslatedStatParserParameter> CreateUntranslatedStatParser(string translationFileName)
+        private IParser<UntranslatedStatParserParameter> CreateUntranslatedStatParser(
+            IReadOnlyList<string> translationFileNames)
         {
-            var composite = new CompositeStatTranslator(
-                _statTranslators[translationFileName],
-                _statTranslators[StatTranslationFileNames.Custom]);
+            var translators = translationFileNames
+                .Append(StatTranslationFileNames.Custom)
+                .Select(s => _statTranslators[s])
+                .ToList();
+            var composite = new CompositeStatTranslator(translators);
             return Caching(new UntranslatedStatParser(composite, _coreParser));
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PoESkillTree.Utils.Extensions
 {
@@ -21,6 +22,13 @@ namespace PoESkillTree.Utils.Extensions
         {
             key = pair.Key;
             value = pair.Value;
+        }
+
+        public static void Deconstruct<TKey, TValue>(this IGrouping<TKey, TValue> pair,
+            out TKey key, out IEnumerable<TValue> value)
+        {
+            key = pair.Key;
+            value = pair;
         }
 
         /// <summary>

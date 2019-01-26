@@ -7,7 +7,7 @@ namespace PoESkillTree.GameModel.StatTranslation
     {
         private readonly IReadOnlyList<IStatTranslator> _components;
 
-        public CompositeStatTranslator(params IStatTranslator[] components)
+        public CompositeStatTranslator(IReadOnlyList<IStatTranslator> components)
             => _components = components;
 
         public StatTranslatorResult Translate(IEnumerable<UntranslatedStat> untranslatedStats)

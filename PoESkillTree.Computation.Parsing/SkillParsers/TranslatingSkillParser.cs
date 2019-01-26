@@ -14,7 +14,7 @@ using PoESkillTree.Utils.Extensions;
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
     public delegate IParser<UntranslatedStatParserParameter> UntranslatedStatParserFactory(
-        string statTranslationFileName);
+        IReadOnlyList<string> statTranslationFileNames);
 
     /// <summary>
     /// Partial parser of <see cref="ActiveSkillParser"/> and <see cref="SupportSkillParser"/> that translates and
@@ -83,7 +83,8 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         private ParseResult TranslateAndParse(
             string statTranslationFileName, IEnumerable<UntranslatedStat> stats, IConditionBuilder condition)
         {
-            var result = TranslateAndParse(statTranslationFileName, _preParseResult.LocalSource, stats);
+            var result = TranslateAndParse(_preParseResult.LocalSource, stats, Entity.Character,
+                statTranslationFileName);
             return result.ApplyCondition(condition.Build);
         }
 
@@ -91,37 +92,32 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         {
             var results = new List<ParseResult>();
             var buffBuilder = _builderFactories.SkillBuilders.FromId(_preParseResult.SkillDefinition.Id).Buff;
-            foreach (var (stat, affectedEntities) in buffStats)
+            var statLookup = buffStats
+                .SelectMany(t => t.AffectedEntities.Select(e => (e, t.Stat)))
+                .ToLookup();
+            foreach (var (affectedEntity, stats) in statLookup)
             {
-                foreach (var affectedEntity in affectedEntities)
-                {
-                    var result = Parse(StatTranslationFileNames.Main, stat, affectedEntity);
-                    if (result.SuccessfullyParsed && result.Modifiers.IsEmpty())
-                        result = Parse(StatTranslationFileNames.Skill, stat, affectedEntity);
-                    result = result.ApplyCondition(condition.Build);
+                var result = TranslateAndParse(_preParseResult.LocalSource, stats, affectedEntity,
+                    StatTranslationFileNames.Main, StatTranslationFileNames.Skill);
+                result = result.ApplyCondition(condition.Build);
 
-                    var buildParameters = new BuildParameters(_preParseResult.GlobalSource, affectedEntity, default);
-                    var multiplier = buffBuilder.BuildAddStatMultiplier(buildParameters, new[] { Entity.Character });
-                    result = result.ApplyMultiplier(_ => multiplier);
-                    results.Add(result);
-                }
+                var buildParameters = new BuildParameters(_preParseResult.GlobalSource, affectedEntity, default);
+                var multiplier = buffBuilder.BuildAddStatMultiplier(buildParameters, new[] { Entity.Character });
+                result = result.ApplyMultiplier(_ => multiplier);
+                results.Add(result);
             }
 
             return ParseResult.Aggregate(results);
-
-            ParseResult Parse(string statTranslationFileName, UntranslatedStat stat, Entity affectedEntity)
-                => TranslateAndParse(statTranslationFileName, _preParseResult.LocalSource, new[] { stat },
-                    affectedEntity);
         }
 
         private ParseResult TranslateAndParse(
-            string statTranslationFileName,
             ModifierSource.Local.Skill localModifierSource,
             IEnumerable<UntranslatedStat> stats,
-            Entity modifierSourceEntity = Entity.Character)
+            Entity modifierSourceEntity,
+            params string[] statTranslationFileNames)
         {
             var unparsedStats = stats.Except(_parsedStats).ToList();
-            var statParser = _statParserFactory(statTranslationFileName);
+            var statParser = _statParserFactory(statTranslationFileNames);
             return statParser.Parse(localModifierSource, modifierSourceEntity, unparsedStats);
         }
 
