@@ -109,7 +109,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
         }
 
         private static Skill CreateSkill(string id, int? gemGroup)
-            => new Skill(id, 0, 0, ItemSlot.Belt, 0, gemGroup);
+            => new Skill(id, 1, 0, ItemSlot.Belt, 0, gemGroup);
 
         private static ParseResult CreateParseResultForActive(string activeId)
             => ParseResult.Success(new[] { CreateModifier(activeId) });

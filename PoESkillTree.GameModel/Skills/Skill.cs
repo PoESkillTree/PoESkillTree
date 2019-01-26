@@ -1,4 +1,5 @@
-﻿using PoESkillTree.GameModel.Items;
+﻿using System;
+using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.GameModel.Skills
@@ -6,8 +7,12 @@ namespace PoESkillTree.GameModel.Skills
     public class Skill : ValueObject
     {
         public Skill(string id, int level, int quality, ItemSlot itemSlot, int socketIndex, int? gemGroup)
-            => (Id, Level, Quality, ItemSlot, SocketIndex, GemGroup) =
+        {
+            if (level < 1)
+                throw new ArgumentOutOfRangeException(nameof(level), level, "Level must be >= 1");
+            (Id, Level, Quality, ItemSlot, SocketIndex, GemGroup) =
                 (id, level, quality, itemSlot, socketIndex, gemGroup);
+        }
 
         public string Id { get; }
         public int Level { get; }

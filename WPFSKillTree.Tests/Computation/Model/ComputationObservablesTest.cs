@@ -239,7 +239,7 @@ namespace PoESkillTree.Tests.Computation.Model
             => Enumerable.Range(0, 3).Select(i => Enumerable.Range(i, 2).Select(CreateSkill).ToList()).ToList();
 
         private static Skill CreateSkill(int id)
-            => new Skill(id.ToString(), 0, 0, default, 0, 0);
+            => new Skill(id.ToString(), 1, 0, default, 0, 0);
 
         private static List<Modifier> CreateModifiers(int count)
             => Enumerable.Range(0, count).Select(i => CreateModifier(i.ToString())).ToList();

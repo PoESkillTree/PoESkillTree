@@ -393,9 +393,12 @@ namespace POESKillTree.Model.Items
             }
 
             var properties = jObject["properties"].Select(j => ItemModFromJson(j, ModLocation.Property)).ToList();
-            var level = (int) properties.First("Level: #", 0, 0);
+            if (!properties.TryGetValue("Level: #", 0, out var level))
+            {
+                level = (int) properties.First("Level: # (Max)", 0, 1);
+            }
             var quality = (int) properties.First("Quality: +#%", 0, 0);
-            skill = new Skill(definition.Id, level, quality, default, socketIndex, socketGroup);
+            skill = new Skill(definition.Id, (int) level, quality, default, socketIndex, socketGroup);
             return true;
         }
 
