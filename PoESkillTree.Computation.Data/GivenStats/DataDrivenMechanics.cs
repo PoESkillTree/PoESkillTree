@@ -207,7 +207,20 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
 
                 // speed
-                { BaseSet, Stat.CastRate, Stat.BaseCastTime, castTime => castTime.Value.Invert },
+                {
+                    // Attack is set through ItemPropertyParser if the slot is not empty
+                    BaseSet, Stat.CastRate.With(AttackDamageHand.MainHand),
+                    Stat.BaseCastTime.With(AttackDamageHand.MainHand).Value.Invert,
+                    Not(MainHand.HasItem)
+                },
+                {
+                    BaseSet, Stat.CastRate.With(DamageSource.Spell),
+                    Stat.BaseCastTime.With(DamageSource.Spell).Value.Invert
+                },
+                {
+                    BaseSet, Stat.CastRate.With(DamageSource.Secondary),
+                    Stat.BaseCastTime.With(DamageSource.Secondary).Value.Invert
+                },
                 {
                     TotalOverride, MetaStats.CastRate,
                     CombineSourceDefaultingToSpell(Stat.CastRate, CombineHandsByAverage)

@@ -295,7 +295,6 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         }
 
         [TestCase("critical_strike_chance", "CriticalStrike.Chance", 1D / 100, ItemSlot.MainHand)]
-        [TestCase("attack_time", "BaseCastTime", 1D / 1000, ItemSlot.MainHand)]
         [TestCase("range", "Range", 1, ItemSlot.MainHand)]
         [TestCase("range", "Range", 1, ItemSlot.OffHand)]
         public void ParseReturnsCorrectModifiersForDamageRelatedProperties(
@@ -312,6 +311,30 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
                 CreateModifier($"{slot}.{stat}.{statSuffix}", Form.BaseSet, expectedValue, source),
                 CreateModifier($"{stat}.{statSuffix}", Form.BaseSet,
                     new StatValue(new Stat($"{slot}.{stat}.{statSuffix}")), source),
+            };
+            var sut = CreateSut(baseItemDefinition);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.That(result.Modifiers, Is.SupersetOf(expected));
+        }
+
+        [Test]
+        public void ParseReturnsCorrectModifiersForCastRateProperties()
+        {
+            var slot = ItemSlot.MainHand;
+            var parserParam = CreateItem(slot);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.OneHandSword, Tags.Weapon,
+                properties: new[] { new Property("attack_time", 1000), });
+            var statSuffix = $"Attack.{slot}.Skill";
+            var source = CreateLocalSource(parserParam);
+            var expected = new[]
+            {
+                CreateModifier($"BaseCastTime.{statSuffix}", Form.BaseSet, 1, source),
+                CreateModifier($"{slot}.CastRate.{statSuffix}", Form.BaseSet, 
+                    new FunctionalValue(null, $"1 / Character.BaseCastTime.{statSuffix}.Value(Total, Global)"), source),
+                CreateModifier($"CastRate.{statSuffix}", Form.BaseSet,
+                    new StatValue(new Stat($"{slot}.CastRate.{statSuffix}")), source),
             };
             var sut = CreateSut(baseItemDefinition);
 
