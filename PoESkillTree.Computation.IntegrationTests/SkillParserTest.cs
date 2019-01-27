@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Moq;
@@ -304,7 +305,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         private ParseResult Parse(string skillId)
         {
             var definition = _skillDefinitions.GetSkillById(skillId);
-            var level = definition.Levels.ContainsKey(20) ? 20 : 3;
+            var level = Math.Min(definition.Levels.Keys.Max(), 20);
             if (definition.IsSupport)
             {
                 var activeSkill = new Skill("BloodRage", 20, 20, default, 0, 0);

@@ -176,7 +176,6 @@ namespace POESKillTree.Computation.ViewModels
             AddAvailableStats(DefensiveStats, f.MetaStatBuilders.ChanceToAvoidSpells);
             AddAvailableStats(DefensiveStats, f.EffectBuilders.Stun.Avoidance);
             AddAvailableStats(DefensiveStats, f.EffectBuilders.Stun.Recovery);
-            AddAvailableStats(DefensiveStats, f.EffectBuilders.Stun.Duration);
             AddAvailableStats(DefensiveStats, f.EffectBuilders.Stun.ChanceToAvoidInterruptionWhileCasting);
             AddAvailableStats(DefensiveStats, f.MetaStatBuilders.StunAvoidanceWhileCasting);
 

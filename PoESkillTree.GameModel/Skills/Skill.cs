@@ -6,6 +6,8 @@ namespace PoESkillTree.GameModel.Skills
 {
     public class Skill : ValueObject
     {
+        public static readonly Skill Default = new Skill("PlayerMelee", 1, 0, ItemSlot.Unequipable, 0, null);
+
         public Skill(string id, int level, int quality, ItemSlot itemSlot, int socketIndex, int? gemGroup)
         {
             if (level < 1)

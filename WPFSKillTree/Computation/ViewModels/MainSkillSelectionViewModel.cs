@@ -5,7 +5,6 @@ using System.Linq;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
-using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils.Extensions;
 using POESKillTree.Utils;
@@ -14,8 +13,6 @@ namespace POESKillTree.Computation.ViewModels
 {
     public class MainSkillSelectionViewModel : Notifier
     {
-        private const string DefaultSkillId = "PlayerMelee";
-
         private readonly SkillDefinitions _skillDefinitions;
         private readonly MainSkillViewModel _defaultSkill;
         private readonly ConfigurationNodeViewModel _selectedSkillId;
@@ -38,14 +35,13 @@ namespace POESKillTree.Computation.ViewModels
             CalculationNodeViewModelFactory nodeFactory)
         {
             _skillDefinitions = skillDefinitions;
-            _defaultSkill = CreateSkillViewModel(
-                new Skill(DefaultSkillId, 1, 0, ItemSlot.Unequipable, 0, null));
             var selectedSkillIdStat = builderFactories.MetaStatBuilders.MainSkillId
                 .BuildToStats(Entity.Character).Single();
             _selectedSkillId = nodeFactory.CreateConfiguration(selectedSkillIdStat);
             var selectedSkillPartStat = builderFactories.StatBuilders.MainSkillPart
                 .BuildToStats(Entity.Character).Single();
             _selectedSkillPart = nodeFactory.CreateConfiguration(selectedSkillPartStat);
+            _defaultSkill = CreateSkillViewModel(Skill.Default);
         }
 
         private void Initialize(ObservableCollection<IReadOnlyList<Skill>> skills)

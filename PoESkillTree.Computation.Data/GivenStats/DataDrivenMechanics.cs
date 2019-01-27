@@ -411,7 +411,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 },
                 { TotalOverride, Buff.Impale.Chance.WithCondition(Hit.On).Maximum, 100 },
                 // stun (see https://pathofexile.gamepedia.com/Stun)
-                { PercentLess, Effect.Stun.Duration, Effect.Stun.Recovery.For(Enemy).Value * 100 },
+                { PercentMore, Effect.Stun.Duration, 100 / Effect.Stun.Recovery.For(Enemy).Value - 100 },
                 {
                     TotalOverride, MetaStats.EffectiveStunThreshold,
                     Effect.Stun.Threshold, EffectiveStunThresholdValue

@@ -25,7 +25,7 @@ namespace POESKillTree.Model
             new ObservableCollection<(Item, ItemSlot)>();
 
         public ObservableCollection<IReadOnlyList<Skill>> Skills { get; } =
-            new ObservableCollection<IReadOnlyList<Skill>>();
+            new ObservableCollection<IReadOnlyList<Skill>> { new[] { Skill.Default, } };
 
         public void ConvertFrom(ObservableCollection<OldItem> oldCollection)
         {
@@ -67,7 +67,7 @@ namespace POESKillTree.Model
             var skills = ModelConverter.ConvertSkills(oldItem);
 
             oldItem.PropertyChanged += OldItemOnPropertyChanged;
-            
+
             _itemSlotToOldItem[slot] = oldItem;
             _itemSlotToSkills[slot] = skills;
             Items.Add((item, slot));
@@ -80,7 +80,7 @@ namespace POESKillTree.Model
             var skills = _itemSlotToSkills[slot];
 
             oldItem.PropertyChanged -= OldItemOnPropertyChanged;
-            
+
             _itemSlotToOldItem.Remove(slot);
             _itemSlotToSkills.Remove(slot);
             Items.Remove((item, slot));
