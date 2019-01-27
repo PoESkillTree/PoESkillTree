@@ -83,8 +83,7 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder PassiveNodeSkilled(ushort nodeId) => FromIdentity($"{nodeId}.Skilled", typeof(bool));
 
-        public IStatBuilder DamageTakenGainedAsMana =>
-            FromIdentity("% of damage taken gained as mana over 4 seconds", typeof(uint));
+        public IStatBuilder DamageTakenGainedAsMana => FromIdentity(typeof(uint));
 
         public ValueBuilder UniqueAmount(string name)
             => FromIdentity(name, typeof(uint), UserSpecifiedValue(0)).Value;
@@ -99,36 +98,36 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IGemStatBuilders Gem => new GemStatBuilders(StatFactory);
     }
 
-    internal class TrapStatBuilders : StatBuildersBase, ITrapStatBuilders
+    internal class TrapStatBuilders : PrefixedStatBuildersBase, ITrapStatBuilders
     {
-        public TrapStatBuilders(IStatFactory statFactory) : base(statFactory)
+        public TrapStatBuilders(IStatFactory statFactory) : base(statFactory, "Trap")
         {
         }
 
-        public IStatBuilder Speed => FromIdentity("Trap throwing speed", typeof(double));
-        public IStatBuilder Duration => FromIdentity("Trap duration", typeof(double));
-        public IStatBuilder TriggerAoE => FromIdentity("Trap trigger AoE", typeof(int));
+        public IStatBuilder Speed => FromIdentity("ThrowingSpeed", typeof(double));
+        public IStatBuilder Duration => FromIdentity(typeof(double));
+        public IStatBuilder TriggerAoE => FromIdentity(typeof(int));
     }
 
-    internal class MineStatBuilders : StatBuildersBase, IMineStatBuilders
+    internal class MineStatBuilders : PrefixedStatBuildersBase, IMineStatBuilders
     {
-        public MineStatBuilders(IStatFactory statFactory) : base(statFactory)
+        public MineStatBuilders(IStatFactory statFactory) : base(statFactory, "Mine")
         {
         }
 
-        public IStatBuilder Speed => FromIdentity("Mine laying speed", typeof(double));
-        public IStatBuilder Duration => FromIdentity("Mine duration", typeof(double));
-        public IStatBuilder DetonationAoE => FromIdentity("Mine detonation AoE", typeof(int));
+        public IStatBuilder Speed => FromIdentity("LayingSpeed", typeof(double));
+        public IStatBuilder Duration => FromIdentity(typeof(double));
+        public IStatBuilder DetonationAoE => FromIdentity(typeof(int));
     }
 
-    internal class TotemStatBuilders : StatBuildersBase, ISkillEntityStatBuilders
+    internal class TotemStatBuilders : PrefixedStatBuildersBase, ISkillEntityStatBuilders
     {
-        public TotemStatBuilders(IStatFactory statFactory) : base(statFactory)
+        public TotemStatBuilders(IStatFactory statFactory) : base(statFactory, "Totem")
         {
         }
 
-        public IStatBuilder Speed => FromIdentity("Totem placement speed", typeof(double));
-        public IStatBuilder Duration => FromIdentity("Totem duration", typeof(double));
+        public IStatBuilder Speed => FromIdentity("PlacementSpeed", typeof(double));
+        public IStatBuilder Duration => FromIdentity(typeof(double));
     }
 
     internal class AttributeStatBuilders : StatBuildersBase, IAttributeStatBuilders
@@ -159,49 +158,47 @@ namespace PoESkillTree.Computation.Builders.Stats
             => FromStatFactory(e => StatFactory.Requirement(StatFactory.FromIdentity(requiredStat, e, typeof(uint))));
     }
 
-    internal class DodgeStatBuilders : StatBuildersBase, IDodgeStatBuilders
+    internal class DodgeStatBuilders : PrefixedStatBuildersBase, IDodgeStatBuilders
     {
-        public DodgeStatBuilders(IStatFactory statFactory) : base(statFactory)
+        public DodgeStatBuilders(IStatFactory statFactory) : base(statFactory, "Dodge")
         {
         }
 
-        public IStatBuilder AttackChance => FromIdentity("Chance to dodge attacks", typeof(uint));
-        public IStatBuilder SpellChance => FromIdentity("Chance to dodge spells", typeof(uint));
+        public IStatBuilder AttackChance => FromIdentity(typeof(uint));
+        public IStatBuilder SpellChance => FromIdentity(typeof(uint));
     }
 
-    internal class FlaskStatBuilders : StatBuildersBase, IFlaskStatBuilders
+    internal class FlaskStatBuilders : PrefixedStatBuildersBase, IFlaskStatBuilders
     {
-        public FlaskStatBuilders(IStatFactory statFactory) : base(statFactory)
+        public FlaskStatBuilders(IStatFactory statFactory) : base(statFactory, "Flask")
         {
         }
 
-        public IStatBuilder Effect => FromIdentity("Flask.Effect", typeof(int));
-        public IStatBuilder Duration => FromIdentity("Flask.EffectDuration", typeof(double));
-        public IStatBuilder LifeRecovery => FromIdentity("Flask.LifeRecovery", typeof(int));
-        public IStatBuilder ManaRecovery => FromIdentity("Flask.ManaRecovery", typeof(int));
-        public IStatBuilder RecoverySpeed => FromIdentity("Flask.RecoverySpeed", typeof(double));
-        public IStatBuilder ChargesUsed => FromIdentity("Flask.ChargesUsed", typeof(int));
-        public IStatBuilder ChargesGained => FromIdentity("Flask.ChargesGained", typeof(double));
+        public IStatBuilder Effect => FromIdentity(typeof(int));
+        public IStatBuilder Duration => FromIdentity(typeof(double));
+        public IStatBuilder LifeRecovery => FromIdentity(typeof(int));
+        public IStatBuilder ManaRecovery => FromIdentity(typeof(int));
+        public IStatBuilder RecoverySpeed => FromIdentity(typeof(double));
+        public IStatBuilder ChargesUsed => FromIdentity(typeof(int));
+        public IStatBuilder ChargesGained => FromIdentity(typeof(double));
 
-        public IConditionBuilder IsAnyActive
-            => FromIdentity("Is any flask active?", typeof(bool), UserSpecifiedValue(false)).IsSet;
+        public IConditionBuilder IsAnyActive => FromIdentity(typeof(bool), UserSpecifiedValue(false)).IsSet;
     }
 
-    internal class ProjectileStatBuilders : StatBuildersBase, IProjectileStatBuilders
+    internal class ProjectileStatBuilders : PrefixedStatBuildersBase, IProjectileStatBuilders
     {
-        public ProjectileStatBuilders(IStatFactory statFactory) : base(statFactory)
+        public ProjectileStatBuilders(IStatFactory statFactory) : base(statFactory, "Projectile")
         {
         }
 
-        public IStatBuilder Speed => FromIdentity("Projectile speed", typeof(int));
-        public IStatBuilder Count => FromIdentity("Projectile count", typeof(uint));
+        public IStatBuilder Speed => FromIdentity(typeof(int));
+        public IStatBuilder Count => FromIdentity(typeof(uint));
 
-        public IStatBuilder PierceCount => FromIdentity("Projectile pierce count", typeof(uint));
-        public IStatBuilder ChainCount => FromIdentity("Projectile chain count", typeof(uint));
-        public IStatBuilder Fork => FromIdentity("Projectile.Fork", typeof(bool));
+        public IStatBuilder PierceCount => FromIdentity(typeof(uint));
+        public IStatBuilder ChainCount => FromIdentity(typeof(uint));
+        public IStatBuilder Fork => FromIdentity(typeof(bool));
 
-        public ValueBuilder TravelDistance =>
-            FromIdentity("Projectile travel distance", typeof(uint), UserSpecifiedValue(35)).Value;
+        public ValueBuilder TravelDistance => FromIdentity(typeof(uint), UserSpecifiedValue(35)).Value;
     }
 
     internal class FlagStatBuilders : StatBuildersBase, IFlagStatBuilders
@@ -210,11 +207,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        public IStatBuilder IgnoreMovementSpeedPenalties =>
-            FromIdentity("Ignore movement speed penalties from equipped armor", typeof(bool));
+        public IStatBuilder IgnoreMovementSpeedPenalties => FromIdentity(typeof(bool));
 
-        public IStatBuilder ShieldModifiersApplyToMinionsInstead =>
-            FromIdentity("Modifiers on an equipped shield apply to your minions instead", typeof(bool));
+        public IStatBuilder ShieldModifiersApplyToMinionsInstead => FromIdentity(typeof(bool));
 
         public IStatBuilder IgnoreHexproof => FromIdentity(typeof(bool));
         public IStatBuilder CriticalStrikeChanceIsLucky => FromIdentity(typeof(bool));

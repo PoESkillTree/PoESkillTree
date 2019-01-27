@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             [CallerMemberName] string identity = null) =>
             FromIdentity(identity, dataType, explicitRegistrationType);
 
-        protected IStatBuilder FromIdentity(
+        protected virtual IStatBuilder FromIdentity(
             string identity, Type dataType,
             ExplicitRegistrationType explicitRegistrationType = null) =>
             StatBuilderUtils.FromIdentity(StatFactory, identity, dataType, explicitRegistrationType);
@@ -30,7 +30,22 @@ namespace PoESkillTree.Computation.Builders.Stats
             Type dataType, [CallerMemberName] string identity = null) =>
             DamageRelatedFromIdentity(identity, dataType);
 
-        protected IDamageRelatedStatBuilder DamageRelatedFromIdentity(string identity, Type dataType) =>
+        protected virtual IDamageRelatedStatBuilder DamageRelatedFromIdentity(string identity, Type dataType) =>
             StatBuilderUtils.DamageRelatedFromIdentity(StatFactory, identity, dataType);
+    }
+
+    internal abstract class PrefixedStatBuildersBase : StatBuildersBase
+    {
+        private readonly string _identityPrefix;
+
+        protected PrefixedStatBuildersBase(IStatFactory statFactory, string identityPrefix) : base(statFactory)
+            => _identityPrefix = identityPrefix;
+
+        protected override IStatBuilder FromIdentity(
+            string identity, Type dataType, ExplicitRegistrationType explicitRegistrationType = null)
+            => base.FromIdentity(_identityPrefix + "." + identity, dataType, explicitRegistrationType);
+
+        protected override IDamageRelatedStatBuilder DamageRelatedFromIdentity(string identity, Type dataType)
+            => base.DamageRelatedFromIdentity(_identityPrefix + "." + identity, dataType);
     }
 }
