@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         public IReadOnlyList<Behavior> ConvertTo(IStat source, IStat target) => new[]
         {
-            ConversionTargetPathTotal(source, target),
+            ConversionTargetBase(source, target),
             ConversionTargetUncappedSubtotal(source, target),
             ConversionSourcePathTotal(source),
             ConvertToUncappedSubtotal(source, target)
@@ -36,7 +36,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         public IReadOnlyList<Behavior> GainAs(IStat source, IStat target) => new[]
         {
-            ConversionTargetPathTotal(source, target),
+            ConversionTargetBase(source, target),
             ConversionTargetUncappedSubtotal(source, target),
         };
 
@@ -45,9 +45,9 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             SkillConversionUncappedSubtotal(source)
         };
 
-        private Behavior ConversionTargetPathTotal(IStat source, IStat target) => GetOrAdd(
-            target, NodeType.PathTotal, BehaviorPathRules.Conversion,
-            v => new ConversionTargetPathTotalValue(
+        private Behavior ConversionTargetBase(IStat source, IStat target) => GetOrAdd(
+            target, NodeType.Base, BehaviorPathRules.ConversionWithSpecificSource(source),
+            v => new ConversionTargetBaseValue(
                 _statFactory.ConvertTo(source, target), _statFactory.GainAs(source, target), v),
             new CacheKey(source, target));
 

@@ -4,16 +4,16 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 {
     /// <summary>
     /// Behavior of Source.ConvertTo(Target) and GainAs(Target).
-    /// Applies to Target.PathTotal (conversion paths only).
+    /// Applies to Target.Base (conversion paths only).
     /// Returns value * (ConvertTo + GainAs).
     /// </summary>
-    public class ConversionTargetPathTotalValue : IValue
+    public class ConversionTargetBaseValue : IValue
     {
         public IStat ConvertTo { get; }
         public IStat GainAs { get; }
         private readonly IValue _transformedValue;
 
-        public ConversionTargetPathTotalValue(IStat convertTo, IStat gainAs, IValue transformedValue)
+        public ConversionTargetBaseValue(IStat convertTo, IStat gainAs, IValue transformedValue)
         {
             ConvertTo = convertTo;
             GainAs = gainAs;

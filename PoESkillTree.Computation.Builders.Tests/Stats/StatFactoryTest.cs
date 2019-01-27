@@ -62,7 +62,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             var actual = gainAs.Behaviors;
 
             Assert.That(actual, Has.Exactly(2).Items);
-            AssertTransformedValueIs<ConversionTargetPathTotalValue>(actual[0]);
+            AssertTransformedValueIs<ConversionTargetBaseValue>(actual[0]);
             AssertTransformedValueIs<ConversionTargeUncappedSubtotalValue>(actual[1]);
         }
 
@@ -90,12 +90,13 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
             Assert.AreNotEqual(first, second);
         }
 
-        private static ConversionTargetPathTotalValue AssertIsConversionTargetPathTotalBehavior(Behavior actual)
+        private static ConversionTargetBaseValue AssertIsConversionTargetPathTotalBehavior(Behavior actual)
         {
             Assert.AreEqual("target", actual.AffectedStats.Single().Identity);
-            Assert.AreEqual(NodeType.PathTotal, actual.AffectedNodeTypes.Single());
-            Assert.AreEqual(BehaviorPathRules.Conversion, actual.AffectedPathsRule);
-            var typedValue = AssertTransformedValueIs<ConversionTargetPathTotalValue>(actual);
+            Assert.AreEqual(NodeType.Base, actual.AffectedNodeTypes.Single());
+            Assert.AreEqual(BehaviorPathRules.ConversionWithSpecificSource(new Stat("source")),
+                actual.AffectedPathsRule);
+            var typedValue = AssertTransformedValueIs<ConversionTargetBaseValue>(actual);
             Assert.AreEqual("source.ConvertTo(target)", typedValue.ConvertTo.Identity);
             Assert.AreEqual("source.GainAs(target)", typedValue.GainAs.Identity);
             return typedValue;
