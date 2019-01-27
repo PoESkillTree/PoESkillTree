@@ -14,7 +14,6 @@ namespace POESKillTree.Computation.ViewModels
     public class MainSkillSelectionViewModel : Notifier
     {
         private readonly SkillDefinitions _skillDefinitions;
-        private readonly MainSkillViewModel _defaultSkill;
         private readonly ConfigurationNodeViewModel _selectedSkillId;
         private readonly ConfigurationNodeViewModel _selectedSkillPart;
 
@@ -41,7 +40,6 @@ namespace POESKillTree.Computation.ViewModels
             var selectedSkillPartStat = builderFactories.StatBuilders.MainSkillPart
                 .BuildToStats(Entity.Character).Single();
             _selectedSkillPart = nodeFactory.CreateConfiguration(selectedSkillPartStat);
-            _defaultSkill = CreateSkillViewModel(Skill.Default);
         }
 
         private void Initialize(ObservableCollection<IReadOnlyList<Skill>> skills)
@@ -84,7 +82,6 @@ namespace POESKillTree.Computation.ViewModels
         private void ResetSkills(IEnumerable<IEnumerable<Skill>> skills)
         {
             AvailableSkills.Clear();
-            AddSkill(_defaultSkill);
             AddSkills(skills);
         }
 
@@ -109,10 +106,15 @@ namespace POESKillTree.Computation.ViewModels
 
         private void AddSkill(MainSkillViewModel skill)
         {
-            if (skill != _defaultSkill)
+            if (skill.Skill == Skill.Default && AvailableSkills.Any())
+                return;
+
+            var defaultVm = AvailableSkills.FirstOrDefault(x => x.Skill == Skill.Default);
+            if (defaultVm != null)
             {
-                AvailableSkills.Remove(_defaultSkill);
+                AvailableSkills.Remove(defaultVm);
             }
+
             AvailableSkills.Add(skill);
             if (AvailableSkills.Count == 1)
             {
@@ -131,7 +133,7 @@ namespace POESKillTree.Computation.ViewModels
 
             if (AvailableSkills.IsEmpty())
             {
-                AddSkill(_defaultSkill);
+                AddSkill(CreateSkillViewModel(Skill.Default));
             }
             else if (wasSelected)
             {
