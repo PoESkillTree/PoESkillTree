@@ -30,6 +30,7 @@ namespace PoESkillTree.Computation.Data
                 // - generic
                 { "if you've ({ActionMatchers})( an enemy)? recently,?", Reference.AsAction.Recently },
                 { "if you haven't ({ActionMatchers}) recently", Not(Reference.AsAction.Recently) },
+                { "if you've ({ActionMatchers}) in the past # seconds,?", Reference.AsAction.InPastXSeconds(Value) },
                 { "for # seconds on ({ActionMatchers})", Reference.AsAction.InPastXSeconds(Value) },
                 {
                     "for # seconds when you ({ActionMatchers}) a rare or unique enemy",
@@ -64,9 +65,7 @@ namespace PoESkillTree.Computation.Data
                 { "if you've taken no damage from hits recently", Not(Hit.By(Enemy).Recently) },
                 // - critical strike
                 { "if you've crit in the past # seconds", CriticalStrike.InPastXSeconds(Value) },
-                { "if you've dealt a critical strike in the past # seconds", CriticalStrike.InPastXSeconds(Value) },
                 // - block
-                { "if you've blocked in the past # seconds,?", Block.InPastXSeconds(Value) },
                 { "if you've blocked damage from a unique enemy recently", And(Block.Recently, Enemy.IsUnique) },
                 {
                     "if you've blocked damage from a unique enemy in the past # seconds",
@@ -84,6 +83,7 @@ namespace PoESkillTree.Computation.Data
                 { "attacks have", Condition.With(DamageSource.Attack) },
                 { "with attacks", Condition.With(DamageSource.Attack) },
                 { "for spells", Condition.With(DamageSource.Spell) },
+                { "your spells have", Condition.With(DamageSource.Spell) },
                 // - by item tag
                 { "with weapons", AttackWith(Tags.Weapon) },
                 { "weapon", AttackWith(Tags.Weapon) },

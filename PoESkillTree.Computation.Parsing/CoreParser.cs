@@ -58,7 +58,9 @@ namespace PoESkillTree.Computation.Parsing
                 {
                     return ParseResult.Success(result);
                 }
-                return ParseResult.Failure(parameter.ModifierLine, remaining);
+                var parseResult = ParseResult.Failure(parameter.ModifierLine, remaining);
+                Log.Debug($"ParseResult.Failure({parseResult})");
+                return parseResult;
             }
             catch (ParseException e)
             {

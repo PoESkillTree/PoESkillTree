@@ -169,6 +169,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "({PoolStatMatchers}) leeched per second", Reference.AsPoolStat.Leech.Rate },
                 // - block
+                { "chance to block", Block.AttackChance },
                 { "chance to block attack damage", Block.AttackChance },
                 { "chance to block spell damage", Block.SpellChance },
                 { "chance to block spell and attack damage", Block.SpellChance, Block.AttackChance },

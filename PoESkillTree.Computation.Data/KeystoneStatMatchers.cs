@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Data
             var collection = new FormAndStatMatcherCollection(_modifierBuilder, ValueFactory);
             foreach (var keystone in _passives.Where(d => d.Type == PassiveNodeType.Keystone))
             {
-                collection.Add(keystone.Name.ToLowerInvariant(),
+                collection.Add($"(you have )?{keystone.Name.ToLowerInvariant()}",
                     TotalOverride, 1, Stat.PassiveNodeSkilled(keystone.Id));
             }
             return collection;

@@ -1,5 +1,12 @@
-﻿Ambu's Charge
+﻿Abyssus
+Aegis Aurora
+Ambu's Charge
+Atziri's Acuity
+Atziri's Step
+Bated Breath
+Blackheart
 Breath of the Council
+Call of the Brotherhood
 Dreadarc
 Grelwood Shank
 Impresence
@@ -7,6 +14,7 @@ Martial Artistry
 Mindspiral
 Shaper's Touch
 Timetwist
+The Anvil
 The Blood Dance
 The Iron Fortress
 Vix Lunaris

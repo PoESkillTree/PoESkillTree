@@ -26,8 +26,8 @@ namespace PoESkillTree.Computation.Data
                 { "dealing a killing blow", Action.Kill },
                 { "block(ed)?", Action.Block },
                 { "hits?", Action.Hit },
-                { "critical strike", Action.CriticalStrike },
+                { "(dealt a )?critical strike", Action.CriticalStrike },
                 { "non-critical strike", Action.NonCriticalStrike },
-            };
+            }; // Add
     }
 }

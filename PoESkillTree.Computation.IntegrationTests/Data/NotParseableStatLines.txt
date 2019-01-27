@@ -9,6 +9,8 @@ Has 1 Socket
 Has 1 Abyssal Socket
 35% increased Fish Bite Sensitivity
 Properties are doubled while in a Breach
+Reflects 240 to 300 Physical Damage to Attackers on Block
+10% chance to Cause Monsters to Flee
 // Flasks: =============================================================================================================
 20% of Melee Physical Damage taken reflected to Attacker
 20% chance to Avoid Cold Damage when Hit

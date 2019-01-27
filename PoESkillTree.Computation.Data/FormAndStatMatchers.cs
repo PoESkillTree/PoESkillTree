@@ -274,6 +274,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { @"\+# ({PoolStatMatchers}) gained", BaseAdd, Value, Reference.AsPoolStat.Gain },
                 { @"gain \+# ({PoolStatMatchers})", BaseAdd, Value, Reference.AsPoolStat.Gain },
+                { "replenishes energy shield by #% of armour", BaseAdd, Value.PercentOf(Armour), EnergyShield.Gain },
                 // charges
                 {
                     "#% chance to gain a power, frenzy or endurance charge",
