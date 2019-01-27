@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Nodes;
@@ -44,7 +43,7 @@ namespace PoESkillTree.Computation.Core.Graphs
                 }
 
                 _behaviorMultiSet[behavior] = 1;
-                var transformation = new Transformation(behavior.AffectedPaths, behavior.Transformation);
+                var transformation = new Transformation(behavior.AffectedPathsRule, behavior.Transformation);
                 _transformations[behavior] = transformation;
 
                 foreach (var key in GetAffectedKeys(behavior))
@@ -133,12 +132,12 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         private class Transformation
         {
-            private readonly BehaviorPathInteraction _pathInteraction;
+            private readonly IBehaviorPathRule _pathRule;
             private readonly IValueTransformation _transformation;
 
-            public Transformation(BehaviorPathInteraction pathInteraction, IValueTransformation transformation)
+            public Transformation(IBehaviorPathRule pathRule, IValueTransformation transformation)
             {
-                _pathInteraction = pathInteraction;
+                _pathRule = pathRule;
                 _transformation = transformation;
             }
 
@@ -149,15 +148,7 @@ namespace PoESkillTree.Computation.Core.Graphs
                 transformable.Remove(_transformation);
 
             public bool Affects(PathDefinition path)
-            {
-                if (_pathInteraction.HasFlag(BehaviorPathInteraction.Main) && path.IsMainPath)
-                    return true;
-                if (_pathInteraction.HasFlag(BehaviorPathInteraction.Conversion) && path.ConversionStats.Any())
-                    return true;
-                if (_pathInteraction.HasFlag(BehaviorPathInteraction.NonConversion) && path.ConversionStats.IsEmpty())
-                    return true;
-                return false;
-            }
+                => _pathRule.AffectsPath(path);
         }
 
 

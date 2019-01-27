@@ -179,7 +179,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
             var sut = Calculator.Create();
             var transformedStat = new Stat("transformed");
             var behavior = new Behavior(new[] { transformedStat }, new[] { NodeType.Subtotal },
-                BehaviorPathInteraction.All, new ValueTransformation(_ => new Constant(5)));
+                BehaviorPathRules.All, new ValueTransformation(_ => new Constant(5)));
             var stat = new Stat("stat", behaviors: new[] { behavior });
 
             sut.NewBatchUpdate().AddModifier(stat, Form.BaseAdd, new Constant(1)).DoUpdate();

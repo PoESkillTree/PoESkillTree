@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.Computation.Core.Graphs;
 using PoESkillTree.Computation.Core.Nodes;
+using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Core.Tests.Graphs
 {
@@ -36,17 +39,20 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             _behaviors = new[]
             {
                 // _behaviors[0]/_transformations[0] affects all _selectors/_transformableMocks
-                new Behavior(new[] { _stat }, new[] { _nodeType }, BehaviorPathInteraction.All,
+                new Behavior(new[] { _stat }, new[] { _nodeType },
+                    new FunctionalPathRule(_ => true), 
                     _transformations[0]),
                 // _behaviors[1]/_transformations[1] affects _selectors/_transformableMocks 0 and 1
                 new Behavior(new[] { _stat }, new[] { _nodeType },
-                    BehaviorPathInteraction.Main | BehaviorPathInteraction.Conversion,
+                    new FunctionalPathRule(p => p.IsMainPath || p.ConversionStats.Any()),
                     _transformations[1]),
                 // _behaviors[2]/_transformations[2] only affects _selectors[1]/_transformableMocks[1]
-                new Behavior(new[] { _stat }, new[] { _nodeType }, BehaviorPathInteraction.Conversion,
+                new Behavior(new[] { _stat }, new[] { _nodeType },
+                    new FunctionalPathRule(p => p.ConversionStats.Any()),
                     _transformations[2]),
                 // _behaviors[3]/_transformations[3] affects _selectors/_transformableMocks 0 and 2
-                new Behavior(new[] { _stat }, new[] { _nodeType }, BehaviorPathInteraction.NonConversion,
+                new Behavior(new[] { _stat }, new[] { _nodeType },
+                    new FunctionalPathRule(p => p.ConversionStats.IsEmpty()),
                     _transformations[3]),
             };
             _sut = new ValueTransformer();
@@ -168,6 +174,15 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             _sut.RemoveTransformable(_stat, _selectors[0]);
             _sut.RemoveTransformable(_stat, _selectors[1]);
             _sut.RemoveTransformable(_stat, _selectors[2]);
+        }
+
+        private class FunctionalPathRule : IBehaviorPathRule
+        {
+            private readonly Predicate<PathDefinition> _rule;
+
+            public FunctionalPathRule(Predicate<PathDefinition> rule) => _rule = rule;
+
+            public bool AffectsPath(PathDefinition path) => _rule(path);
         }
     }
 }
