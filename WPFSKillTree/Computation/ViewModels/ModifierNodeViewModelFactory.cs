@@ -75,7 +75,7 @@ namespace POESKillTree.Computation.ViewModels
 
                 foreach (var influencingSource in path.ModifierSource.InfluencingSources)
                 {
-                    consideredPaths.Add(new PathDefinition(influencingSource, path.ConversionStats));
+                    consideredPaths.Add(new PathDefinition(influencingSource));
                 }
             }
 

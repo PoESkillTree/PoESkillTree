@@ -43,6 +43,7 @@
                                     </ToolTip>
                                 </Setter.Value>
                             </Setter>
+                            <Setter Property="ToolTipService.ShowDuration" Value="60000" />
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>
