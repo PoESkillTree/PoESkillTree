@@ -29,33 +29,36 @@ namespace PoESkillTree.Computation.Core
             switch (nodeType)
             {
                 case NodeType.Total:
-                    return Create(new TotalValue(_stat));
+                    return Create(new TotalValue(_stat), path);
                 case NodeType.Subtotal:
-                    return Create(new SubtotalValue(_stat));
+                    return Create(new SubtotalValue(_stat), path);
                 case NodeType.UncappedSubtotal:
-                    return Create(new UncappedSubtotalValue(_stat));
+                    return Create(new UncappedSubtotalValue(_stat), path);
                 case NodeType.PathTotal:
-                    return Create(new PathTotalValue(_stat, path));
+                    return Create(new PathTotalValue(_stat, path), path);
                 case NodeType.Base when path.ConversionStats.Any():
-                    return Create(new ConvertedBaseValue(path));
+                    return Create(new ConvertedBaseValue(path), path);
                 case NodeType.Base:
-                    return Create(new BaseValue(_stat, path));
+                    return Create(new BaseValue(_stat, path), path);
                 case NodeType.BaseSet:
-                    return Create(new FormAggregatingValue(_stat, Form.BaseSet, path, CalculateBaseSet));
+                    return Create(new FormAggregatingValue(_stat, Form.BaseSet, path, CalculateBaseSet), path);
                 case NodeType.BaseAdd:
-                    return Create(new FormAggregatingValue(_stat, Form.BaseAdd, path, CalculateBaseAdd));
+                    return Create(new FormAggregatingValue(_stat, Form.BaseAdd, path, CalculateBaseAdd), path);
                 case NodeType.Increase:
-                    return Create(new MultiPathFormAggregatingValue(_stat, Form.Increase, path, CalculateIncrease));
+                    return Create(new MultiPathFormAggregatingValue(_stat, Form.Increase, path, CalculateIncrease),
+                        path);
                 case NodeType.More:
-                    return Create(new MultiPathFormAggregatingValue(_stat, Form.More, path, CalculateMore));
+                    return Create(new MultiPathFormAggregatingValue(_stat, Form.More, path, CalculateMore), path);
                 case NodeType.TotalOverride:
-                    return Create(new FormAggregatingValue(_stat, Form.TotalOverride, path, CalculateTotalOverride));
+                    return Create(new FormAggregatingValue(_stat, Form.TotalOverride, path, CalculateTotalOverride),
+                        path);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(selector), nodeType, null);
             }
         }
 
-        private IDisposableNodeViewProvider Create(IValue value) => _nodeFactory.Create(value);
+        private IDisposableNodeViewProvider Create(IValue value, PathDefinition path)
+            => _nodeFactory.Create(value, path);
 
         public ModifierNodeCollection Create(FormNodeSelector selector)
         {

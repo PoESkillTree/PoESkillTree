@@ -97,8 +97,9 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var stats = new IStat[] { new StatStub(), new StatStub() };
             var modifier = MockModifier(stats, Form.More, value);
             var graphs = stats.ToDictionary(s => s, _ => Mock.Of<IStatGraph>());
+            var path = new PathDefinition(modifier.Source);
             var node = MockDisposableNodeProvider();
-            var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(value) == node);
+            var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(value, path) == node);
             var sut = CreateSut(s => graphs[s], nodeFactory);
 
             sut.AddModifier(modifier);
@@ -114,8 +115,9 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var stats = new IStat[] { new StatStub(), new StatStub(), new StatStub() };
             var modifier = MockModifier(stats, Form.More, value);
             var graphs = stats.ToDictionary(s => s, _ => Mock.Of<IStatGraph>());
+            var path = new PathDefinition(modifier.Source);
             var node = MockDisposableNodeProvider();
-            var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(value) == node);
+            var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(value, path) == node);
             var sut = CreateSut(s => graphs[s], nodeFactory);
             sut.AddModifier(modifier);
 
@@ -140,9 +142,10 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var stats = new IStat[] { new StatStub() };
             var modifier = MockModifier(stats, Form.More, value);
             var graphs = stats.ToDictionary(s => s, _ => Mock.Of<IStatGraph>());
+            var path = new PathDefinition(modifier.Source);
             var node = Mock.Of<IDisposableNodeViewProvider>(p => 
                 p.DefaultView == MockNode(0) && p.SuspendableView == MockNode(0));
-            var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(value) == node);
+            var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(value, path) == node);
             var sut = CreateSut(s => graphs[s], nodeFactory);
             sut.AddModifier(modifier);
 

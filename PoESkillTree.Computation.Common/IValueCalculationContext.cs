@@ -9,6 +9,11 @@ namespace PoESkillTree.Computation.Common
     public interface IValueCalculationContext
     {
         /// <summary>
+        /// The path for which the value should be calculated.
+        /// </summary>
+        PathDefinition CurrentPath { get; }
+
+        /// <summary>
         /// Returns all paths of the given stat.
         /// </summary>
         IEnumerable<PathDefinition> GetPaths(IStat stat);

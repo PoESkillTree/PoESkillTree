@@ -17,9 +17,9 @@ namespace PoESkillTree.Computation.Core
     {
         public INodeRepository NodeRepository { private get; set; }
 
-        public IDisposableNodeViewProvider Create(IValue value)
+        public IDisposableNodeViewProvider Create(IValue value, PathDefinition path)
         {
-            var coreNode = new ValueNode(new ValueCalculationContext(NodeRepository), value);
+            var coreNode = new ValueNode(new ValueCalculationContext(NodeRepository, path), value);
             var cachingNode = new CachingNode(coreNode, new CycleGuard());
             var cachingNodeAdapter = new CachingNodeAdapter(cachingNode);
             return new DisposableNodeViewProvider(cachingNodeAdapter, cachingNode, coreNode);

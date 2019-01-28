@@ -161,7 +161,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         }
 
         private static ValueNode CreateSut(INodeRepository nodeRepository = null, IValue value = null) =>
-            new ValueNode(new ValueCalculationContext(nodeRepository), value);
+            new ValueNode(new ValueCalculationContext(nodeRepository, null), value);
 
         private static readonly CollectionChangeEventArgs RefreshEventArgs =
             new CollectionChangeEventArgs(CollectionChangeAction.Refresh, null);

@@ -73,6 +73,8 @@ namespace PoESkillTree.Computation.Builders.Actions
 
         private class ThrowingContext : IValueCalculationContext
         {
+            public PathDefinition CurrentPath => throw CreateException();
+
             public IEnumerable<PathDefinition> GetPaths(IStat stat) =>
                 throw CreateException();
 
