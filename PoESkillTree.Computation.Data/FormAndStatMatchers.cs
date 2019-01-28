@@ -67,6 +67,12 @@ namespace PoESkillTree.Computation.Data
                     Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell)
                 },
                 {
+                    @"adds # to # ({DamageTypeMatchers}) damage to spells and attacks",
+                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]),
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell),
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Attack)
+                },
+                {
                     @"# to # additional ({DamageTypeMatchers}) damage",
                     BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]), Reference.AsDamageType.Damage.WithHits
                 },
@@ -143,6 +149,10 @@ namespace PoESkillTree.Computation.Data
                 {
                     "({KeywordMatchers}) damage (?<inner>with .*|dealt by .*) penetrates #% ({DamageTypeMatchers}) resistances?",
                     BaseAdd, Value, References[1].AsDamageType.Penetration.With(References[1].AsKeyword), "${inner}"
+                },
+                {
+                    "hits ignore enemy monster ({DamageTypeMatchers}) resistance",
+                    TotalOverride, 1, Reference.AsDamageType.IgnoreResistance
                 },
                 // - crit
                 { @"\+#% critical strike chance", BaseAdd, Value, CriticalStrike.Chance },
@@ -381,6 +391,7 @@ namespace PoESkillTree.Computation.Data
                 // other
                 { "knocks back enemies", TotalOverride, 100, Effect.Knockback.Chance },
                 { "knocks enemies back", TotalOverride, 100, Effect.Knockback.Chance },
+                { "knockback(?! distance)", TotalOverride, 100, Effect.Knockback.Chance },
             };
     }
 }

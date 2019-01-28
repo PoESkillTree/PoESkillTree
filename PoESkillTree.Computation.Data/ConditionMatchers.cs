@@ -89,6 +89,7 @@ namespace PoESkillTree.Computation.Data
                 { "weapon", AttackWith(Tags.Weapon) },
                 { "with bows", AttackWith(Tags.Bow) },
                 { "with a bow", AttackWith(Tags.Bow) },
+                { "with arrow hits", AttackWith(Tags.Bow) },
                 { "bow", AttackWith(Tags.Bow) },
                 { "with swords", AttackWith(Tags.Sword) },
                 { "with claws", AttackWith(Tags.Claw) },
@@ -99,6 +100,7 @@ namespace PoESkillTree.Computation.Data
                 { "with axes", AttackWith(Tags.Axe) },
                 { "with staves", AttackWith(Tags.Staff) },
                 { "with a staff", AttackWith(Tags.Staff) },
+                { "with ranged weapons", AttackWith(Tags.Ranged) },
                 {
                     "with maces",
                     (Or(MainHandAttackWith(Tags.Mace), MainHandAttackWith(Tags.Sceptre)),
@@ -150,7 +152,7 @@ namespace PoESkillTree.Computation.Data
                 { "with # corrupted items equipped", Equipment.Count(e => e.Corrupted.IsSet) >= Value },
                 // stats
                 // - pool
-                { "when on low life", Life.IsLow },
+                { "(when|while) on low life", Life.IsLow },
                 { "when not on low life", Not(Life.IsLow) },
                 { "while on full life", Life.IsFull },
                 { "while no mana is reserved", Mana.Reservation.Value <= 0 },
@@ -177,6 +179,7 @@ namespace PoESkillTree.Computation.Data
                 { "(against enemies )?that are on full life", Life.For(Enemy).IsFull },
                 { "against rare and unique enemies", Enemy.IsRareOrUnique },
                 { "while there is only one nearby enemy", Enemy.CountNearby.Eq(1) },
+                { "at close range", Enemy.IsNearby },
                 // buffs
                 { "while you have ({BuffMatchers})", Reference.AsBuff.IsOn(Self) },
                 { "while affected by ({SkillMatchers})", Reference.AsSkill.Buff.IsOn(Self) },
@@ -193,7 +196,7 @@ namespace PoESkillTree.Computation.Data
                     Or(For(Self), And(For(Ally), Buffs(targets: Ally).With(Keyword.Aura).Any()))
                 },
                 // ailments
-                { "while ({AilmentMatchers})", Reference.AsAilment.IsOn(Self) },
+                { "while( you are)? ({AilmentMatchers})", Reference.AsAilment.IsOn(Self) },
                 { "(against|from) ({AilmentMatchers}) enemies", Reference.AsAilment.IsOn(Enemy) },
                 {
                     "against frozen, shocked or ignited enemies",
