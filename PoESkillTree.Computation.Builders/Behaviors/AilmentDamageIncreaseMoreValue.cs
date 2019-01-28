@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             foreach (var (stat, path) in paths)
             {
                 yield return (stat, path);
-                if (stat.Equals(_ailmentDamage))
+                if (stat.Equals(_ailmentDamage) && !stat.Equals(dealtDamageStat))
                     yield return (dealtDamageStat, path);
             }
         }

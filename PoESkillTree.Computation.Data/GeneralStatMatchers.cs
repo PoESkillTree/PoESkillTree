@@ -327,12 +327,12 @@ namespace PoESkillTree.Computation.Data
                 { "({BuffMatchers}) duration", Reference.AsBuff.Duration },
                 { "blinding duration", Buff.Blind.Duration },
                 // ailments
-                { "chance to ({AilmentMatchers})( the enemy| enemies)?", Reference.AsAilment.Chance },
+                { "chance to ({AilmentMatchers})( the enemy| enemies)?( on hit)?", Reference.AsAilment.Chance },
                 {
                     "chance to freeze, shock and ignite",
                     Ailment.Freeze.Chance, Ailment.Shock.Chance, Ailment.Ignite.Chance
                 },
-                { "chance to cause bleeding", Ailment.Bleed.Chance.With(DamageSource.Attack) },
+                { "chance to cause bleeding( on hit)?", Ailment.Bleed.Chance.With(DamageSource.Attack) },
                 { "chance to avoid being ({AilmentMatchers})", Reference.AsAilment.Avoidance },
                 { "chance to avoid elemental ailments", Ailment.Elemental.Select(a => a.Avoidance) },
                 { "({AilmentMatchers}) duration( on enemies)?", Reference.AsAilment.Duration },

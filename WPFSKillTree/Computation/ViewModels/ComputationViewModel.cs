@@ -98,11 +98,11 @@ namespace POESKillTree.Computation.ViewModels
             ForEachDamagingAilment(
                 a => AddAvailableStats(OffensiveStats, f.MetaStatBuilders.AilmentInstanceLifetimeDamage(a)));
             ForEachDamagingAilment(a => AddAvailableStats(OffensiveStats, f.MetaStatBuilders.AverageAilmentDamage(a)));
-            ForEachDamagingAilment(
-                a => AddAvailableStats(OffensiveStats, f.MetaStatBuilders.AilmentEffectiveChance(a)));
-            ForEachDamagingAilment(
+            ForEach<Ailment>(a => AddAvailableStats(OffensiveStats, f.MetaStatBuilders.AilmentEffectiveChance(a)));
+            ForEach<Ailment>(
                 a => AddAvailableStats(OffensiveStats, f.MetaStatBuilders.AilmentCombinedEffectiveChance(a)));
-            ForEachDamagingAilment(a => AddAvailableStats(OffensiveStats, f.EffectBuilders.Ailment.From(a).Chance));
+            ForEach<Ailment>(a => AddAvailableStats(OffensiveStats, f.EffectBuilders.Ailment.From(a).Chance));
+            ForEach<Ailment>(a => AddAvailableStats(OffensiveStats, f.EffectBuilders.Ailment.From(a).Duration));
             ForEachDamagingAilment(
                 a => AddAvailableStats(OffensiveStats, f.MetaStatBuilders.AilmentEffectiveInstances(a)));
             
