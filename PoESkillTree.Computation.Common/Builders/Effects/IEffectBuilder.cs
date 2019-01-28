@@ -27,7 +27,8 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         IConditionBuilder IsOn(IEntityBuilder target);
 
         /// <summary>
-        /// Gets a stat representing the duration of this effect when inflicted by Self (not necessarily upon Self).
+        /// Gets a stat representing the duration in seconds of this effect when inflicted by Self
+        /// (not necessarily upon Self).
         /// </summary>
         IStatBuilder Duration { get; }
 

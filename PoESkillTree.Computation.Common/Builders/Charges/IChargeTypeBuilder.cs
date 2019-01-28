@@ -15,7 +15,7 @@ namespace PoESkillTree.Computation.Common.Builders.Charges
         IStatBuilder Amount { get; }
 
         /// <summary>
-        /// Gets a stat representing the duration charges of this type last.
+        /// Gets a stat representing the duration in seconds charges of this type last.
         /// </summary>
         IStatBuilder Duration { get; }
 

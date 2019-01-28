@@ -7,6 +7,9 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IStatBuilder Speed { get; }
 
+        /// <summary>
+        /// The duration this entity lasts in seconds.
+        /// </summary>
         IStatBuilder Duration { get; }
     }
 

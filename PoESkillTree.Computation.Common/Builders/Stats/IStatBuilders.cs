@@ -80,12 +80,12 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder CooldownRecoverySpeed { get; }
 
         /// <summary>
-        /// The main skill's duration
+        /// The main skill's duration in seconds.
         /// </summary>
         IStatBuilder Duration { get; }
 
         /// <summary>
-        /// The duration of secondary effects of the main skill.
+        /// The duration in seconds of secondary effects of the main skill.
         /// </summary>
         IStatBuilder SecondaryDuration { get; }
 
