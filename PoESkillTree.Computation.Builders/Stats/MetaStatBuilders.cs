@@ -180,6 +180,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder ActiveSkillSocketIndex(string skillId)
             => FromFactory(e => StatFactory.ActiveSkillSocketIndex(e, skillId));
 
+        public IStatBuilder MainSkillItemSlot => FromIdentity(typeof(ItemSlot));
+        public IStatBuilder MainSkillSocketIndex => FromIdentity(typeof(uint));
+
         public IStatBuilder SkillBaseCost(ItemSlot itemSlot, int socketIndex)
             => FromIdentity($"{itemSlot}.{socketIndex}.Cost", typeof(uint));
 

@@ -14,7 +14,8 @@ namespace POESKillTree.Computation.ViewModels
     public class MainSkillSelectionViewModel : Notifier
     {
         private readonly SkillDefinitions _skillDefinitions;
-        private readonly ConfigurationNodeViewModel _selectedSkillId;
+        private readonly ConfigurationNodeViewModel _selectedSkillItemSlot;
+        private readonly ConfigurationNodeViewModel _selectedSkillSocketIndex;
         private readonly ConfigurationNodeViewModel _selectedSkillPart;
 
         private MainSkillViewModel _selectedSkill;
@@ -34,9 +35,12 @@ namespace POESKillTree.Computation.ViewModels
             CalculationNodeViewModelFactory nodeFactory)
         {
             _skillDefinitions = skillDefinitions;
-            var selectedSkillIdStat = builderFactories.MetaStatBuilders.MainSkillId
+            var selectedSkillItemSlotStat = builderFactories.MetaStatBuilders.MainSkillItemSlot
                 .BuildToStats(Entity.Character).Single();
-            _selectedSkillId = nodeFactory.CreateConfiguration(selectedSkillIdStat);
+            _selectedSkillItemSlot = nodeFactory.CreateConfiguration(selectedSkillItemSlotStat);
+            var selectedSkillSocketIndexStat = builderFactories.MetaStatBuilders.MainSkillSocketIndex
+                .BuildToStats(Entity.Character).Single();
+            _selectedSkillSocketIndex = nodeFactory.CreateConfiguration(selectedSkillSocketIndexStat);
             var selectedSkillPartStat = builderFactories.StatBuilders.MainSkillPart
                 .BuildToStats(Entity.Character).Single();
             _selectedSkillPart = nodeFactory.CreateConfiguration(selectedSkillPartStat);
@@ -59,7 +63,10 @@ namespace POESKillTree.Computation.ViewModels
         }
 
         private void OnSelectedSkillChanging(MainSkillViewModel newValue)
-            => _selectedSkillId.NumericValue = newValue?.SkillDefinition.NumericId;
+        {
+            _selectedSkillItemSlot.NumericValue = (double?) newValue?.Skill.ItemSlot;
+            _selectedSkillSocketIndex.NumericValue = newValue?.Skill.SocketIndex;
+        }
 
         private void OnSkillsChanged(object sender, NotifyCollectionChangedEventArgs args)
         {

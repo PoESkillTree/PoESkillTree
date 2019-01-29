@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var global = new ModifierSource.Global(local);
             var gemSource = new ModifierSource.Local.Gem(ItemSlot.Boots, 0, "Frenzy");
             var valueCalculationContextMock = new Mock<IValueCalculationContext>();
-            SetupIsActiveSkillInContext(valueCalculationContextMock, frenzy);
+            var isMainSkillStat = SetupIsActiveSkillInContext(valueCalculationContextMock, frenzy);
             var offHandTagsStat = new Stat("OffHand.ItemTags");
             valueCalculationContextMock.Setup(c => c.GetValue(offHandTagsStat, NodeType.Total, PathDefinition.MainPath))
                 .Returns(new NodeValue(Tags.Weapon.EncodeAsDouble()));
@@ -61,6 +61,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("SkillHitDamageSource", Form.TotalOverride, (int) DamageSource.Attack, global, true),
                     ("SkillUses.MainHand", Form.TotalOverride, 1, global, true),
                     ("SkillUses.OffHand", Form.TotalOverride, 1, global, true),
+                    ("MainSkill.Id", Form.TotalOverride, definition.NumericId, global, true),
                     ("BaseCastTime.Spell.Skill", Form.BaseSet, definition.ActiveSkill.CastTime / 1000D, global, true),
                     ("BaseCastTime.Secondary.Skill", Form.BaseSet, definition.ActiveSkill.CastTime / 1000D, global,
                         true),
@@ -159,7 +160,7 @@ namespace PoESkillTree.Computation.IntegrationTests
 
             var actual = _parser.ParseActiveSkill(frenzy);
 
-            AssertCorrectModifiers(valueCalculationContextMock, expectedModifiers, actual);
+            AssertCorrectModifiers(valueCalculationContextMock, isMainSkillStat, expectedModifiers, actual);
         }
 
         [Test]
@@ -174,7 +175,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var gemSource =
                 new ModifierSource.Local.Gem(support.ItemSlot, support.SocketIndex, "SupportAddedColdDamage");
             var valueCalculationContextMock = new Mock<IValueCalculationContext>();
-            SetupIsActiveSkillInContext(valueCalculationContextMock, frenzy);
+            var isMainSkillStat = SetupIsActiveSkillInContext(valueCalculationContextMock, frenzy);
             var addedDamageValue = new NodeValue(levelDefinition.Stats[0].Value, levelDefinition.Stats[1].Value);
             var expectedModifiers =
                 new (string stat, Form form, double? value, ModifierSource source, bool mainSkillOnly)[]
@@ -231,10 +232,10 @@ namespace PoESkillTree.Computation.IntegrationTests
 
             var actual = _parser.ParseSupportSkill(frenzy, support);
 
-            AssertCorrectModifiers(valueCalculationContextMock, expectedModifiers, actual);
+            AssertCorrectModifiers(valueCalculationContextMock, isMainSkillStat, expectedModifiers, actual);
         }
 
-        private static void SetupIsActiveSkillInContext(
+        private static Stat SetupIsActiveSkillInContext(
             Mock<IValueCalculationContext> contextMock, Skill frenzy)
         {
             var activeSkillItemSlotStat = new Stat("Frenzy.ActiveSkillItemSlot");
@@ -245,17 +246,29 @@ namespace PoESkillTree.Computation.IntegrationTests
             contextMock
                 .Setup(c => c.GetValue(activeSkillSocketIndexStat, NodeType.Total, PathDefinition.MainPath))
                 .Returns(new NodeValue(frenzy.SocketIndex));
+
+            var mainSkillItemSlotStat = new Stat("MainSkillItemSlot");
+            contextMock
+                .Setup(c => c.GetValue(mainSkillItemSlotStat, NodeType.Total, PathDefinition.MainPath))
+                .Returns(new NodeValue((double) frenzy.ItemSlot));
+
+            var isMainSkillStat = new Stat("IsMainSkill");
+            var mainSkillSocketIndexStat = new Stat("MainSkillSocketIndex");
+            contextMock
+                .Setup(c => c.GetValue(mainSkillSocketIndexStat, NodeType.Total, PathDefinition.MainPath))
+                .Returns(() => new NodeValue(contextMock.Object.GetValue(isMainSkillStat).IsTrue()
+                    ? frenzy.SocketIndex
+                    : -1));
+            return isMainSkillStat;
         }
 
-        private void AssertCorrectModifiers(
+        private static void AssertCorrectModifiers(
             Mock<IValueCalculationContext> contextMock,
+            Stat isMainSkillStat,
             (string stat, Form form, NodeValue? value, ModifierSource source, bool mainSkillOnly)[] expectedModifiers,
             ParseResult result)
         {
             var (failedLines, remainingSubstrings, modifiers) = result;
-
-            var mainSkillIdStat = new Stat("MainSkill.Id");
-            var mainSkillIdValue = _skillDefinitions.GetSkillById("Frenzy").NumericId;
 
             Assert.IsEmpty(failedLines);
             Assert.IsEmpty(remainingSubstrings);
@@ -271,15 +284,15 @@ namespace PoESkillTree.Computation.IntegrationTests
                 Assert.AreEqual(expected.source, actual.Source);
 
                 contextMock
-                    .Setup(c => c.GetValue(mainSkillIdStat, NodeType.Total, PathDefinition.MainPath))
-                    .Returns((NodeValue?) mainSkillIdValue);
+                    .Setup(c => c.GetValue(isMainSkillStat, NodeType.Total, PathDefinition.MainPath))
+                    .Returns((NodeValue?) true);
                 var expectedValue = expected.value;
                 var actualValue = actual.Value.Calculate(contextMock.Object);
                 Assert.AreEqual(expectedValue, actualValue);
 
                 contextMock
-                    .Setup(c => c.GetValue(mainSkillIdStat, NodeType.Total, PathDefinition.MainPath))
-                    .Returns((NodeValue?) null);
+                    .Setup(c => c.GetValue(isMainSkillStat, NodeType.Total, PathDefinition.MainPath))
+                    .Returns((NodeValue?) false);
                 expectedValue = expected.mainSkillOnly ? null : expected.value;
                 actualValue = actual.Value.Calculate(contextMock.Object);
                 Assert.AreEqual(expectedValue, actualValue);

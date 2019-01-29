@@ -88,6 +88,9 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder ActiveSkillItemSlot(string skillId);
         IStatBuilder ActiveSkillSocketIndex(string skillId);
 
+        IStatBuilder MainSkillItemSlot { get; }
+        IStatBuilder MainSkillSocketIndex { get; }
+
         IStatBuilder SkillBaseCost(ItemSlot itemSlot, int socketIndex);
         IStatBuilder SkillHasType(ItemSlot itemSlot, int socketIndex, string activeSkillType);
 
@@ -107,5 +110,9 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
             return activeSkillItemSlot.Value.Eq((double) skill.ItemSlot)
                 .And(activeSkillSocketIndex.Value.Eq(skill.SocketIndex));
         }
+
+        public static IConditionBuilder IsMainSkill(this IMetaStatBuilders @this, Skill skill)
+            => @this.MainSkillItemSlot.Value.Eq((double) skill.ItemSlot)
+                .And(@this.MainSkillSocketIndex.Value.Eq(skill.SocketIndex));
     }
 }
