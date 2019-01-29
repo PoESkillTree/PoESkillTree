@@ -395,13 +395,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     Ailment.Poison.Duration.Value * MetaStats.CastRate.Value *
                     MetaStats.SkillNumberOfHitsPerCast.Value *
                     CombineSource(MetaStats.AilmentEffectiveChance(Common.Builders.Effects.Ailment.Poison),
-                        s => CombineByWeightedAverage(
-                            s.With(AttackDamageHand.MainHand).Value *
-                            Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value.AsPercentage,
-                            SkillUsesHandAsMultiplier(AttackDamageHand.MainHand),
-                            s.With(AttackDamageHand.OffHand).Value *
-                            Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value.AsPercentage,
-                            SkillUsesHandAsMultiplier(AttackDamageHand.OffHand)))
+                        CombineHandsForAilmentEffectiveInstances(Common.Builders.Effects.Ailment.Poison))
                 },
                 // buffs
                 {
@@ -641,15 +635,38 @@ namespace PoESkillTree.Computation.Data.GivenStats
             Ailment ailment)
         {
             var ailmentChance = MetaStats.AilmentEffectiveChance(ailment);
-            var mhWeight = Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value.AsPercentage *
-                           ailmentChance.With(AttackDamageHand.MainHand).Value *
-                           SkillUsesHandAsMultiplier(AttackDamageHand.MainHand);
-            var ohWeight = Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value.AsPercentage *
-                           ailmentChance.With(AttackDamageHand.OffHand).Value *
-                           SkillUsesHandAsMultiplier(AttackDamageHand.OffHand);
-            return statToCombine => CombineByWeightedAverage(
-                statToCombine.With(AttackDamageHand.MainHand).Value, mhWeight,
-                statToCombine.With(AttackDamageHand.OffHand).Value, ohWeight);
+            var mhWeight = CalculateAilmentHandWeight(ailmentChance, AttackDamageHand.MainHand);
+            var ohWeight = CalculateAilmentHandWeight(ailmentChance, AttackDamageHand.OffHand);
+            return statToCombine =>
+            {
+                var mhDamage = statToCombine.With(AttackDamageHand.MainHand).Value;
+                var ohDamage = statToCombine.With(AttackDamageHand.OffHand).Value;
+                return CombineByWeightedAverage(
+                    mhDamage, ValueFactory.If(mhDamage > 0).Then(mhWeight).Else(0),
+                    ohDamage, ValueFactory.If(ohDamage > 0).Then(ohWeight).Else(0));
+            };
+        }
+
+        private ValueBuilder CalculateAilmentHandWeight(IDamageRelatedStatBuilder ailmentChance, AttackDamageHand hand)
+            => ailmentChance.With(hand).Value *
+               Stat.ChanceToHit.With(hand).Value.AsPercentage *
+               SkillUsesHandAsMultiplier(hand);
+
+        private Func<IDamageRelatedStatBuilder, ValueBuilder> CombineHandsForAilmentEffectiveInstances(
+            Ailment ailment)
+        {
+            var ailmentDamage = MetaStats.AverageDamage.With(Ailment.From(ailment));
+            var mhDamage = ailmentDamage.With(AttackDamageHand.MainHand).Value;
+            var ohDamage = ailmentDamage.With(AttackDamageHand.OffHand).Value;
+            var mhWeight = SkillUsesHandAsMultiplier(AttackDamageHand.MainHand);
+            var ohWeight = SkillUsesHandAsMultiplier(AttackDamageHand.OffHand);
+            return s => CombineByWeightedAverage(
+                s.With(AttackDamageHand.MainHand).Value *
+                Stat.ChanceToHit.With(AttackDamageHand.MainHand).Value.AsPercentage,
+                ValueFactory.If(mhDamage > 0).Then(mhWeight).Else(0),
+                s.With(AttackDamageHand.OffHand).Value *
+                Stat.ChanceToHit.With(AttackDamageHand.OffHand).Value.AsPercentage,
+                ValueFactory.If(ohDamage > 0).Then(ohWeight).Else(0));
         }
 
         private ValueBuilder CombineHandsForHitDamage(IDamageRelatedStatBuilder statToCombine)
@@ -657,7 +674,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             var usesMh = SkillUsesHandAsMultiplier(AttackDamageHand.MainHand);
             var usesOh = SkillUsesHandAsMultiplier(AttackDamageHand.OffHand);
             var sumOfHands = statToCombine.With(AttackDamageHand.MainHand).Value * usesMh +
-                             statToCombine.With(AttackDamageHand.MainHand).Value * usesOh;
+                             statToCombine.With(AttackDamageHand.OffHand).Value * usesOh;
             return ValueFactory.If(MetaStats.SkillDoubleHitsWhenDualWielding.IsSet)
                 .Then(sumOfHands)
                 .Else(sumOfHands / (usesMh + usesOh));
