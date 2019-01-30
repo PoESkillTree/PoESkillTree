@@ -76,13 +76,13 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "modifiers to spell damage apply to this skill's damage over time effect",
-                    TotalOverride, 1,
+                    TotalOverride, 100,
                     Damage.With(DamageSource.Spell)
                         .ApplyModifiersToSkills(DamageSource.OverTime, Form.Increase, Form.More)
                 },
                 {
                     "increases and reductions to spell damage also apply to attacks",
-                    TotalOverride, 1,
+                    TotalOverride, 100,
                     Damage.With(DamageSource.Attack).ApplyModifiersToSkills(DamageSource.Spell, Form.Increase)
                 },
                 {
