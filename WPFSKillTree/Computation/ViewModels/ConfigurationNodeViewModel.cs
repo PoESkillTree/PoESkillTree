@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using log4net;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
@@ -13,32 +13,43 @@ namespace POESKillTree.Computation.ViewModels
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ConfigurationNodeViewModel));
 
-        private IDisposable _subscription;
+        private readonly Subject<NodeValue?> _valueChangeSubject = new Subject<NodeValue?>();
 
         public ConfigurationNodeViewModel(IStat stat) : base(stat)
         {
         }
 
+        protected override void OnPropertyChanged(string propertyName)
+        {
+            if (propertyName == nameof(Value))
+            {
+                _valueChangeSubject.OnNext(Value);
+            }
+            base.OnPropertyChanged(propertyName);
+        }
+
         public void SubscribeCalculator(IObservingCalculator calculator)
-            => _subscription = calculator.SubscribeTo(CreateValueObservable(),
+            => calculator.SubscribeTo(CreateValueObservable(),
                 ex => Log.Error($"SubscribeCalculatorTo({Stat}) failed", ex));
 
         private IObservable<CalculatorUpdate> CreateValueObservable()
-            => Observable.FromEventPattern<PropertyChangedEventHandler, PropertyChangedEventArgs>(
-                    h => PropertyChanged += h,
-                    h => PropertyChanged -= h)
-                .Where(p => p.EventArgs.PropertyName == nameof(Value))
+            => _valueChangeSubject
                 .Select(p => CreateModifiers(Value))
                 .Scan(CalculatorUpdate.Empty,
                     (u, ms) => new CalculatorUpdate(ms, u.AddedModifiers));
 
         private IReadOnlyList<Modifier> CreateModifiers(NodeValue? value)
-            => new[]
+        {
+            if (value is null)
+                return new Modifier[0];
+
+            return new[]
             {
                 new Modifier(new[] { Stat }, Form.TotalOverride,
                     new FunctionalValue(c => Calculate(c, value), $"{Stat.Minimum} <= {value} <= {Stat.Maximum}"),
                     new ModifierSource.Global(new ModifierSource.Local.UserSpecified()))
             };
+        }
 
         private NodeValue? Calculate(IValueCalculationContext context, NodeValue? nullableValue)
         {
@@ -61,6 +72,10 @@ namespace POESKillTree.Computation.ViewModels
         }
 
         public void Dispose()
-            => _subscription?.Dispose();
+        {
+            Value = null;
+            _valueChangeSubject.OnCompleted();
+            _valueChangeSubject.Dispose();
+        }
     }
 }

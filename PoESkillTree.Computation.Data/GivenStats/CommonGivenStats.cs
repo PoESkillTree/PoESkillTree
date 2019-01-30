@@ -64,6 +64,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             // crit
             { BaseSet, CriticalStrike.Chance.Maximum, 95 },
             { BaseSet, CriticalStrike.Chance.Minimum, 5 },
+            // projectiles
+            { BaseSet, Projectile.Count, 1 },
             // evasion
             { BaseSet, Evasion.Chance.Maximum, 95 },
             { BaseSet, Evasion.Chance.Minimum, 5 },
