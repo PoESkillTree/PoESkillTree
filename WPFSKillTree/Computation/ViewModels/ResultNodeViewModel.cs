@@ -33,7 +33,8 @@ namespace POESKillTree.Computation.ViewModels
                 return L10n.Message("None");
             if (DataType.IsEnum)
                 return EnumValues.GetValue((int) Value.Single()).ToString();
-            return Value.ToString().Replace(" to ", " \nto ");
+            return Value.Select(d => Math.Round(d, 2, MidpointRounding.AwayFromZero))
+                .ToString().Replace(" to ", " \nto ");
         }
 
         protected override void OnPropertyChanged(string propertyName)

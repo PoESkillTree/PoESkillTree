@@ -44,6 +44,7 @@ namespace PoESkillTree.Tests.Computation.ViewModels
 
         [TestCase(null, ExpectedResult = "None")]
         [TestCase(1.2, ExpectedResult = "1.2")]
+        [TestCase(1.235, ExpectedResult = "1.24")]
         public string StringValueOfDoubleReturnsCorrectResult(double? value)
         {
             var sut = CreateSut<double>((NodeValue?) value);
