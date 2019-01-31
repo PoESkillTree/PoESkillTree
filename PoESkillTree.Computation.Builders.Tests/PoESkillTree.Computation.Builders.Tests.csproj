@@ -81,6 +81,7 @@
     <Compile Include="Behaviors\MaximumFormAggregatingValueTest.cs" />
     <Compile Include="Behaviors\RegenUncappedSubtotalValueTest.cs" />
     <Compile Include="Behaviors\RequirementUncappedSubtotalValueTest.cs" />
+    <Compile Include="Behaviors\RoundedValueTest.cs" />
     <Compile Include="Buffs\BuffBuilderCollectionTest.cs" />
     <Compile Include="Buffs\BuffBuildersTest.cs" />
     <Compile Include="Buffs\BuffBuilderTest.cs" />

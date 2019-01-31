@@ -144,6 +144,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat Requirement(IStat stat)
             => CopyWithSuffix(stat, "Required", stat.DataType, () => _behaviorFactory.Requirement(stat));
 
+        public IStat ItemProperty(IStat stat, ItemSlot slot)
+            => GetOrAdd($"{slot}.{stat.Identity}", stat.Entity, stat.DataType,
+                behaviors: () => _behaviorFactory.ItemProperty(stat, slot));
+
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,
             Func<IReadOnlyList<Behavior>> behaviors, ExplicitRegistrationType explicitRegistrationType = null)
         {

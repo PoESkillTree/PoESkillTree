@@ -10,6 +10,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Builders.Behaviors
@@ -187,6 +188,15 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                 NodeType.UncappedSubtotal, BehaviorPathRules.All,
                 v => new RequirementUncappedSubtotalValue(_statFactory.Requirement(stat), v),
                 new CacheKey(stat));
+
+        public IReadOnlyList<Behavior> ItemProperty(IStat stat, ItemSlot slot)
+            => new[] { ItemPropertyBehavior(stat, slot) };
+
+        private Behavior ItemPropertyBehavior(IStat stat, ItemSlot slot)
+            => GetOrAdd(() => _statFactory.ItemProperty(stat, slot),
+                NodeType.Total, BehaviorPathRules.All,
+                v => new RoundedValue(v, stat.DataType == typeof(double) ? 2 : 0),
+                new CacheKey(stat, slot));
 
         private Behavior GetOrAdd(
             IStat affectedStat, NodeType affectNodeType, IBehaviorPathRule affectedPaths,
