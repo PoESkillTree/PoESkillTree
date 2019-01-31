@@ -89,7 +89,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
             var expected = isActiveSkill ? (NodeValue?) 10 : null;
             var (activeDefinition, activeSkill) = CreateEnfeebleDefinition();
             var (supportDefinition, supportSkill) = CreateBlasphemyDefinition();
-            var source = new ModifierSource.Local.Skill("Enfeeble");
+            var source = new ModifierSource.Local.Skill("Enfeeble", "Enfeeble");
             var parseResult = ParseResult.Success(new[]
                 { MockModifier(new Stat("Blasphemy.EffectOn(Character)"), value: new Constant(10)) });
             var parameter = new UntranslatedStatParserParameter(source, new[]
@@ -259,7 +259,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
         {
             var (activeDefinition, activeSkill) = CreateEnfeebleDefinition();
             var (supportDefinition, supportSkill) = CreatePointBlankDefinition();
-            var source = new ModifierSource.Local.Skill("Enfeeble");
+            var source = new ModifierSource.Local.Skill("Enfeeble", "Enfeeble");
             var parseResult = ParseResult.Success(new[]
                 { CreateModifier("PointBlank", Form.TotalOverride, 1) });
             var parameter = new UntranslatedStatParserParameter(source, new[]

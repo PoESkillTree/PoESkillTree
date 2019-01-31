@@ -159,13 +159,16 @@ namespace PoESkillTree.Computation.Common
 
             public sealed class Skill : Local
             {
-                public Skill(string skillId) : base(new Skill(), skillId)
+                public Skill(string skillId, string displayName) : base(new Skill(), displayName)
                 {
+                    SkillId = skillId;
                 }
 
                 public Skill()
                 {
                 }
+
+                public string SkillId { get; }
             }
 
             /// <summary>
@@ -175,16 +178,16 @@ namespace PoESkillTree.Computation.Common
             /// </summary>
             public sealed class Gem : Local
             {
-                public Gem(ItemSlot slot, int socketIndex, string skillId)
-                    : base(new Gem(slot, socketIndex), skillId)
-                    => (Slot, SocketIndex) = (slot, socketIndex);
+                public Gem(ItemSlot slot, int socketIndex, string skillId, string displayName)
+                    : base(new Gem(slot, socketIndex), displayName)
+                    => (Slot, SocketIndex, SkillId) = (slot, socketIndex, skillId);
 
                 public Gem(ItemSlot slot, int socketIndex)
                     => (Slot, SocketIndex) = (slot, socketIndex);
 
                 public ItemSlot Slot { get; }
-
                 public int SocketIndex { get; }
+                public string SkillId { get; }
 
                 public override bool Equals(ModifierSource other)
                     => other is Gem item && Slot == item.Slot && SocketIndex == item.SocketIndex;

@@ -26,9 +26,9 @@ namespace PoESkillTree.Computation.Builders.Tests.Skills
 
         private static IEnumerable<ModifierSource> SuccessTestCases()
         {
-            yield return new ModifierSource.Local.Skill(SkillId);
-            yield return new ModifierSource.Global(new ModifierSource.Local.Skill(SkillId));
-            yield return new ModifierSource.Local.Gem(default, 0, SkillId);
+            yield return new ModifierSource.Local.Skill(SkillId, "");
+            yield return new ModifierSource.Global(new ModifierSource.Local.Skill(SkillId, ""));
+            yield return new ModifierSource.Local.Gem(default, 0, SkillId, "");
         }
 
         [TestCaseSource(nameof(FailureTestCases))]

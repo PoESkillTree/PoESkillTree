@@ -236,7 +236,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
         public void FlameTotemStatsAreParsedCorrectly()
         {
             var (definition, skill) = CreateFlameTotemDefinition();
-            var source = new ModifierSource.Local.Skill("FlameTotem");
+            var source = new ModifierSource.Local.Skill("FlameTotem", "Flame Totem");
             var parseResults = new[]
             {
                 ParseResult.Success(new[] { MockModifier(new Stat("s1")) }),
@@ -722,7 +722,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
             var expectedValues = new[] { isActiveSkill ? (NodeValue?) 6 : null, isActiveSkill ? (NodeValue?) 8 : null };
             var expectedEntities = new[] { Entity.Character, Entity.Minion };
             var (definition, skill) = CreateClarityDefinition();
-            var source = new ModifierSource.Local.Skill("Clarity");
+            var source = new ModifierSource.Local.Skill("Clarity", "Clarity");
             var results = new[]
             {
                 ParseResult.Success(new[]
@@ -768,7 +768,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
         public void ClarityUsesSkillStatTranslationFileForBuffStatIfMainCantTranslate()
         {
             var (definition, skill) = CreateClarityDefinition();
-            var source = new ModifierSource.Local.Skill("Clarity");
+            var source = new ModifierSource.Local.Skill("Clarity", "Clarity");
             var results = new[]
             {
                 ParseResult.Success(new[]
@@ -889,7 +889,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
         public void BladeFlurryStatsDependOnSkillPart(int skillPart)
         {
             var (definition, skill) = CreateBladeFlurryDefinition();
-            var source = new ModifierSource.Local.Skill("ChargedAttack");
+            var source = new ModifierSource.Local.Skill("ChargedAttack", "Blade Flurry");
             var parseResults = new[]
             {
                 ParseResult.Success(new[]
@@ -1102,7 +1102,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
         public void IceSpearStatsDependOnSkillPart(int skillPart)
         {
             var (definition, skill) = CreateIceSpearDefinition();
-            var source = new ModifierSource.Local.Skill("IceSpear");
+            var source = new ModifierSource.Local.Skill("IceSpear", "Ice Spear");
             var expected = new[]
             {
                 skillPart == 0 ? (NodeValue?) 5 : null,
@@ -1189,7 +1189,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
         public void HeraldOfIceQualityBuffStatHasCorrectValue()
         {
             var (definition, skill) = CreateHeraldOfIceDefinition();
-            var source = new ModifierSource.Local.Skill("HeraldOfIce");
+            var source = new ModifierSource.Local.Skill("HeraldOfIce", "Herald of Ice");
             var parseResult = ParseResult.Success(new[]
                 { MockModifier(new Stat("Cold.Damage.Attack.MainHand.Skill"), value: new Constant(15)) });
             var parameter = new UntranslatedStatParserParameter(source, new[]
@@ -1210,7 +1210,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
         public void HeraldOfIceBuffStatHasCorrectValue()
         {
             var (definition, skill) = CreateHeraldOfIceDefinition();
-            var source = new ModifierSource.Local.Skill("HeraldOfIce");
+            var source = new ModifierSource.Local.Skill("HeraldOfIce", "Herald of Ice");
             var expected = new NodeValue(38, 56);
             var parseResult = ParseResult.Success(new[]
                 { MockModifier(new Stat("Cold.Damage.Spell.Skill"), value: new Constant(expected)) });

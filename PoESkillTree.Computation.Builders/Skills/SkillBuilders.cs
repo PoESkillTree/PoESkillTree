@@ -42,10 +42,15 @@ namespace PoESkillTree.Computation.Builders.Skills
             if (modifierSource is ModifierSource.Global global)
                 modifierSource = global.LocalSource;
 
-            if (modifierSource is ModifierSource.Local.Skill || modifierSource is ModifierSource.Local.Gem)
-                return _skills.GetSkillById(modifierSource.SourceName);
-
-            throw new ParseException($"ModifierSource must be a skill, {parameters.ModifierSource} given");
+            switch (modifierSource)
+            {
+                case ModifierSource.Local.Skill skillSource:
+                    return _skills.GetSkillById(skillSource.SkillId);
+                case ModifierSource.Local.Gem gemSource:
+                    return _skills.GetSkillById(gemSource.SkillId);
+                default:
+                    throw new ParseException($"ModifierSource must be a skill, {parameters.ModifierSource} given");
+            }
         }
     }
 }

@@ -35,9 +35,9 @@ namespace PoESkillTree.Computation.IntegrationTests
             var frenzy = new Skill("Frenzy", 20, 20, ItemSlot.Boots, 0, 0);
             var definition = _skillDefinitions.GetSkillById("Frenzy");
             var levelDefinition = definition.Levels[20];
-            var local = new ModifierSource.Local.Skill("Frenzy");
+            var local = new ModifierSource.Local.Skill("Frenzy", "Frenzy");
             var global = new ModifierSource.Global(local);
-            var gemSource = new ModifierSource.Local.Gem(ItemSlot.Boots, 0, "Frenzy");
+            var gemSource = new ModifierSource.Local.Gem(ItemSlot.Boots, 0, "Frenzy", "Frenzy");
             var valueCalculationContextMock = new Mock<IValueCalculationContext>();
             var isMainSkillStat = SetupIsActiveSkillInContext(valueCalculationContextMock, frenzy);
             var offHandTagsStat = new Stat("OffHand.ItemTags");
@@ -170,10 +170,10 @@ namespace PoESkillTree.Computation.IntegrationTests
             var support = new Skill("SupportAddedColdDamage", 20, 20, ItemSlot.Boots, 1, 0);
             var definition = _skillDefinitions.GetSkillById(support.Id);
             var levelDefinition = definition.Levels[20];
-            var local = new ModifierSource.Local.Skill("SupportAddedColdDamage");
+            var local = new ModifierSource.Local.Skill("SupportAddedColdDamage", "Added Cold Damage Support");
             var global = new ModifierSource.Global(local);
-            var gemSource =
-                new ModifierSource.Local.Gem(support.ItemSlot, support.SocketIndex, "SupportAddedColdDamage");
+            var gemSource = new ModifierSource.Local.Gem(support.ItemSlot, support.SocketIndex,
+                "SupportAddedColdDamage", "Added Cold Damage Support");
             var valueCalculationContextMock = new Mock<IValueCalculationContext>();
             var isMainSkillStat = SetupIsActiveSkillInContext(valueCalculationContextMock, frenzy);
             var addedDamageValue = new NodeValue(levelDefinition.Stats[0].Value, levelDefinition.Stats[1].Value);

@@ -49,7 +49,7 @@
                 </DataGridTextColumn.Header>
             </DataGridTextColumn>
             <DataGridTextColumn IsReadOnly="True"
-                                Width="150"
+                                Width="170"
                                 Binding="{Binding ModifierSource.SourceName}">
                 <DataGridTextColumn.Header>
                     <l:Catalog Message="Source Name" />
