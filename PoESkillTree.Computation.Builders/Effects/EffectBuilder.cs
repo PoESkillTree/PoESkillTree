@@ -28,8 +28,12 @@ namespace PoESkillTree.Computation.Builders.Effects
         public virtual IStatBuilder On(IEntityBuilder target) =>
             InternalOn(target);
 
-        protected IStatBuilder InternalOn(IEntityBuilder target) =>
-            FromIdentity("Active", typeof(bool)).For(target);
+        protected IStatBuilder InternalOn(IEntityBuilder target)
+            => FromIdentity("Active", typeof(bool),
+                    OnIsUserSpecified ? ExplicitRegistrationTypes.UserSpecifiedValue(false) : null)
+                .For(target);
+
+        protected virtual bool OnIsUserSpecified => false;
 
         public IDamageRelatedStatBuilder Chance =>
             DamageRelatedFromIdentity("ChanceToActivate", typeof(int)).WithHits;
@@ -83,10 +87,20 @@ namespace PoESkillTree.Computation.Builders.Effects
     {
         public GroundEffectBuilders(IStatFactory statFactory)
         {
-            Consecrated = new EffectBuilder(statFactory, CoreBuilder.Create("ConsecratedGround"));
+            Consecrated = new GroundEffectBuilder(statFactory);
         }
 
         public IEffectBuilder Consecrated { get; }
+
+        private class GroundEffectBuilder : EffectBuilder
+        {
+            public GroundEffectBuilder(IStatFactory statFactory)
+                : base(statFactory, CoreBuilder.Create("ConsecratedGround"))
+            {
+            }
+
+            protected override bool OnIsUserSpecified => true;
+        }
     }
 
     internal class StunEffectBuilder : AvoidableEffectBuilder, IStunEffectBuilder

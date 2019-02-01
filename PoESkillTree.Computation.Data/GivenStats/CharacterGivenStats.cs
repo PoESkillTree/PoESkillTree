@@ -124,6 +124,28 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     c => $"{c}.UnarmedPhysicalDamage"),
                 Not(MainHand.HasItem)
             },
+            // configuration
+            {
+                TotalOverride, Charge.Endurance.Amount, Charge.Endurance.Amount.Maximum.Value,
+                Condition.Unique("Endurance.Charge.Amount.SetToMaximum")
+            },
+            {
+                TotalOverride, Charge.Power.Amount, Charge.Power.Amount.Maximum.Value,
+                Condition.Unique("Power.Charge.Amount.SetToMaximum")
+            },
+            {
+                TotalOverride, Charge.Frenzy.Amount, Charge.Frenzy.Amount.Maximum.Value,
+                Condition.Unique("Frenzy.Charge.Amount.SetToMaximum")
+            },
+            // configuration
+            { TotalOverride, Buff.Onslaught.On(Self), 1, Condition.Unique("Onslaught.ExplicitlyActive") },
+            { TotalOverride, Buff.UnholyMight.On(Self), 1, Condition.Unique("UnholyMight.ExplicitlyActive") },
+            { TotalOverride, Buff.Fortify.On(Self), 1, Condition.Unique("Fortify.ExplicitlyActive") },
+            { TotalOverride, Buff.Tailwind.On(Self), 1, Condition.Unique("Tailwind.ExplicitlyActive") },
+            { TotalOverride, Buff.Maim.On(Enemy), 1, Condition.Unique("Maim.ExplicitlyActiveOnEnemy") },
+            { TotalOverride, Buff.Blind.On(Enemy), 1, Condition.Unique("Blind.ExplicitlyActiveOnEnemy") },
+            { TotalOverride, Buff.Intimidate.On(Enemy), 1, Condition.Unique("Intimidate.ExplicitlyActiveOnEnemy") },
+            { TotalOverride, Buff.CoveredInAsh.On(Enemy), 1, Condition.Unique("CoveredInAsh.ExplicitlyActiveOnEnemy") },
         };
 
         private ValueBuilder CharacterClassBased(Func<CharacterClass, int> selector, string identity)

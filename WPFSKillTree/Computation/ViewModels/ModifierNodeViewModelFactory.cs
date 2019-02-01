@@ -114,10 +114,15 @@ namespace POESKillTree.Computation.ViewModels
                     continue;
                 nodes.Add(new ModifierNodeViewModel(form, modifier.Source, resultNode));
             }
-            return nodes
-                .GroupBy(n => (n.Form, n.ModifierSource, n.ModifierSource.SourceName))
-                .Select(g => g.Aggregate(Accumulate))
-                .ToList();
+
+            if (form == Form.BaseAdd || form == Form.Increase)
+            {
+                return nodes
+                    .GroupBy(n => (n.Form, n.ModifierSource, n.ModifierSource.SourceName))
+                    .Select(g => g.Aggregate(Accumulate))
+                    .ToList();
+            }
+            return nodes;
 
             ModifierNodeViewModel Accumulate(ModifierNodeViewModel l, ModifierNodeViewModel r)
             {
