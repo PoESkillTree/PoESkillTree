@@ -109,8 +109,15 @@ namespace POESKillTree.Computation
                 changeObservable, ex => Log.Error("Exception while observing updates", ex));
         }
 
-        public async Task<ComputationViewModel> CreateComputationViewModelAsync()
-            => await ComputationViewModel.CreateAsync(GameData, _builderFactories, _calculator, _schedulers, _skills);
+        public async Task<ComputationViewModel> CreateComputationViewModelAsync(IPersistentData persistentData)
+        {
+            var vm =
+                await ComputationViewModel.CreateAsync(GameData, _builderFactories, _calculator, _schedulers, _skills);
+            ConfigurationStatsConnector.Connect(
+                () => persistentData.CurrentBuild.ConfigurationStats,
+                vm.ConfigurationStats.Stats);
+            return vm;
+        }
 
         public void SetupPeriodicActions()
             => _calculator.PeriodicallyRemoveUnusedNodes(

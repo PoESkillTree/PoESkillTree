@@ -38,6 +38,8 @@ namespace POESKillTree.Model.Serialization
 
         public List<ushort> CrossedNodeIds { get; set; }
 
+        public List<(string, double?)> ConfigurationStats { get; set; }
+
         public string AdditionalData { get; set; }
 
         public string Version { get; set; }

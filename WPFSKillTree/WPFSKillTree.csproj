@@ -204,11 +204,13 @@
     <Compile Include="Computation\Model\ComputationFactory.cs" />
     <Compile Include="Computation\Model\ComputationSchedulerProvider.cs" />
     <Compile Include="Computation\Model\ComputationObservables.cs" />
+    <Compile Include="Computation\Model\ConfigurationStats.cs" />
     <Compile Include="Computation\Model\ExplicitlyRegisteredStatsObserver.cs" />
     <Compile Include="Computation\Model\IObservingCalculator.cs" />
     <Compile Include="Computation\Model\ObservableCalculator.cs" />
     <Compile Include="Computation\ViewModels\CalculationNodeViewModelFactory.cs" />
     <Compile Include="Computation\ViewModels\ConfigurationNodeViewModel.cs" />
+    <Compile Include="Computation\ViewModels\ConfigurationStatsConnector.cs" />
     <Compile Include="Computation\ViewModels\ConfigurationStatsViewModel.cs" />
     <Compile Include="Computation\ViewModels\ExplicitlyRegisteredStatsViewModel.cs" />
     <Compile Include="Computation\ViewModels\ModifierNodeViewModelFactory.cs" />

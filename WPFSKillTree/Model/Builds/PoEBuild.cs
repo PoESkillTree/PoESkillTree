@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using POESKillTree.Computation.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
 
@@ -28,6 +29,7 @@ namespace POESKillTree.Model.Builds
         private BanditSettings _bandits;
         private ObservableSet<ushort> _checkedNodeIds;
         private ObservableSet<ushort> _crossedNodeIds;
+        private ConfigurationStats _configurationStats;
         private JObject _additionalData;
         private bool _isDirty;
         private IMemento<PoEBuild> _memento;
@@ -37,8 +39,8 @@ namespace POESKillTree.Model.Builds
         /// </summary>
         public string Note
         {
-            get { return _note; }
-            set { SetProperty(ref _note, value); }
+            get => _note;
+            set => SetProperty(ref _note, value);
         }
 
         /// <summary>
@@ -46,8 +48,8 @@ namespace POESKillTree.Model.Builds
         /// </summary>
         public string CharacterName
         {
-            get { return _characterName; }
-            set { SetProperty(ref _characterName, value); }
+            get => _characterName;
+            set => SetProperty(ref _characterName, value);
         }
 
         /// <summary>
@@ -55,8 +57,8 @@ namespace POESKillTree.Model.Builds
         /// </summary>
         public string AccountName
         {
-            get { return _accountName; }
-            set { SetProperty(ref _accountName, value); }
+            get => _accountName;
+            set => SetProperty(ref _accountName, value);
         }
 
         /// <summary>
@@ -64,8 +66,8 @@ namespace POESKillTree.Model.Builds
         /// </summary>
         public string League
         {
-            get { return _league; }
-            set { SetProperty(ref _league, value); }
+            get => _league;
+            set => SetProperty(ref _league, value);
         }
 
         /// <summary>
@@ -73,8 +75,8 @@ namespace POESKillTree.Model.Builds
         /// </summary>
         public int Level
         {
-            get { return _level; }
-            set { SetProperty(ref _level, value); }
+            get => _level;
+            set => SetProperty(ref _level, value);
         }
 
         /// <summary>
@@ -82,8 +84,8 @@ namespace POESKillTree.Model.Builds
         /// </summary>
         public string TreeUrl
         {
-            get { return _treeUrl; }
-            set { SetProperty(ref _treeUrl, value); }
+            get => _treeUrl;
+            set => SetProperty(ref _treeUrl, value);
         }
 
         /// <summary>
@@ -91,8 +93,8 @@ namespace POESKillTree.Model.Builds
         /// </summary>
         public string ItemData
         {
-            get { return _itemData; }
-            set { SetProperty(ref _itemData, value); }
+            get => _itemData;
+            set => SetProperty(ref _itemData, value);
         }
 
         /// <summary>
@@ -100,8 +102,8 @@ namespace POESKillTree.Model.Builds
         /// </summary>
         public DateTime LastUpdated
         {
-            get { return _lastUpdated; }
-            set { SetProperty(ref _lastUpdated, value); }
+            get => _lastUpdated;
+            set => SetProperty(ref _lastUpdated, value);
         }
 
         /// <summary>
@@ -109,8 +111,8 @@ namespace POESKillTree.Model.Builds
         /// </summary>
         public ObservableCollection<string[]> CustomGroups
         {
-            get { return _customGroups; }
-            private set { SetProperty(ref _customGroups, value); }
+            get => _customGroups;
+            private set => SetProperty(ref _customGroups, value);
         }
 
         /// <summary>
@@ -118,8 +120,8 @@ namespace POESKillTree.Model.Builds
         /// </summary>
         public BanditSettings Bandits
         {
-            get { return _bandits; }
-            private set { SetProperty(ref _bandits, value); }
+            get => _bandits;
+            private set => SetProperty(ref _bandits, value);
         }
 
         /// <summary>
@@ -127,8 +129,8 @@ namespace POESKillTree.Model.Builds
         /// </summary>
         public ObservableSet<ushort> CheckedNodeIds
         {
-            get { return _checkedNodeIds; }
-            private set { SetProperty(ref _checkedNodeIds, value); }
+            get => _checkedNodeIds;
+            private set => SetProperty(ref _checkedNodeIds, value);
         }
 
         /// <summary>
@@ -136,8 +138,14 @@ namespace POESKillTree.Model.Builds
         /// </summary>
         public ObservableSet<ushort> CrossedNodeIds
         {
-            get { return _crossedNodeIds; }
-            private set { SetProperty(ref _crossedNodeIds, value); }
+            get => _crossedNodeIds;
+            private set => SetProperty(ref _crossedNodeIds, value);
+        }
+
+        public ConfigurationStats ConfigurationStats
+        {
+            get => _configurationStats;
+            private set => SetProperty(ref _configurationStats, value);
         }
 
         /// <summary>
@@ -147,8 +155,8 @@ namespace POESKillTree.Model.Builds
         /// </summary>
         public JObject AdditionalData
         {
-            get { return _additionalData; }
-            private set { SetProperty(ref _additionalData, value); }
+            get => _additionalData;
+            private set => SetProperty(ref _additionalData, value);
         }
 
         /// <summary>
@@ -156,18 +164,15 @@ namespace POESKillTree.Model.Builds
         /// </summary>
         public bool IsDirty
         {
-            get { return _isDirty; }
-            private set { SetProperty(ref _isDirty, value); }
+            get => _isDirty;
+            private set => SetProperty(ref _isDirty, value);
         }
 
         /// <summary>
         /// Gets whether this build can be reverted to an old state. It can be reverted if
         /// <see cref="KeepChanges"/> was called at least once.
         /// </summary>
-        public bool CanRevert
-        {
-            get { return _memento != null; }
-        }
+        public bool CanRevert => _memento != null;
 
         public PoEBuild()
         {
@@ -176,18 +181,21 @@ namespace POESKillTree.Model.Builds
             CustomGroups = new ObservableCollection<string[]>();
             CheckedNodeIds = new ObservableSet<ushort>();
             CrossedNodeIds = new ObservableSet<ushort>();
+            ConfigurationStats = new ConfigurationStats();
             AdditionalData = new JObject();
             PropertyChanging += PropertyChangingHandler;
         }
 
         public PoEBuild(BanditSettings bandits, IEnumerable<string[]> customGroups,
-            IEnumerable<ushort> checkedNodeIds, IEnumerable<ushort> crossedNodeIds, string additionalData)
+            IEnumerable<ushort> checkedNodeIds, IEnumerable<ushort> crossedNodeIds,
+            IEnumerable<(string, double?)> configurationStats, string additionalData)
         {
             PropertyChanged += PropertyChangedHandler;
             Bandits = bandits ?? new BanditSettings();
             CustomGroups = new ObservableCollection<string[]>(customGroups);
             CheckedNodeIds = new ObservableSet<ushort>(checkedNodeIds);
             CrossedNodeIds = new ObservableSet<ushort>(crossedNodeIds);
+            ConfigurationStats = ConfigurationStats.Create(configurationStats);
             AdditionalData = additionalData == null ? new JObject() : JObject.Parse(additionalData);
             PropertyChanging += PropertyChangingHandler;
         }
@@ -208,6 +216,9 @@ namespace POESKillTree.Model.Builds
                 case nameof(CrossedNodeIds):
                     CrossedNodeIds.CollectionChanged -= ChangedHandler;
                     break;
+                case nameof(ConfigurationStats):
+                    ConfigurationStats.ConfigurationChanged -= ChangedHandler;
+                    break;
             }
         }
 
@@ -226,6 +237,9 @@ namespace POESKillTree.Model.Builds
                     break;
                 case nameof(CrossedNodeIds):
                     CrossedNodeIds.CollectionChanged += ChangedHandler;
+                    break;
+                case nameof(ConfigurationStats):
+                    ConfigurationStats.ConfigurationChanged += ChangedHandler;
                     break;
             }
             if (args.PropertyName != nameof(IsDirty))
@@ -289,6 +303,7 @@ namespace POESKillTree.Model.Builds
             o.CustomGroups = new ObservableCollection<string[]>(CustomGroups.Select(a => (string[])a.Clone()));
             o.CheckedNodeIds = new ObservableSet<ushort>(CheckedNodeIds);
             o.CrossedNodeIds = new ObservableSet<ushort>(CrossedNodeIds);
+            o.ConfigurationStats = ConfigurationStats.Create(ConfigurationStats.Export());
             o.AdditionalData = new JObject(AdditionalData);
             o.Bandits = Bandits.DeepClone();
             return o;
@@ -319,6 +334,7 @@ namespace POESKillTree.Model.Builds
                     new ObservableCollection<string[]>(_build.CustomGroups.Select(a => (string[]) a.Clone()));
                 target.CheckedNodeIds = new ObservableSet<ushort>(_build.CheckedNodeIds);
                 target.CrossedNodeIds = new ObservableSet<ushort>(_build.CrossedNodeIds);
+                target.ConfigurationStats = ConfigurationStats.Create(_build.ConfigurationStats.Export());
                 target.AdditionalData = new JObject(_build.AdditionalData);
                 target.Bandits = _build.Bandits.DeepClone();
             }
