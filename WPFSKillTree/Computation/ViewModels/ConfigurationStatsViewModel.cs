@@ -27,13 +27,6 @@ namespace POESKillTree.Computation.ViewModels
             Add(null, stat);
         }
 
-        public void AddPinned(IStat stat, NodeValue? initialValue)
-        {
-            _pinnedStats.Add(stat);
-            var configStat = Add(null, stat);
-            configStat.Node.Value = initialValue;
-        }
-
         protected override bool IsResponsibleFor(IStat stat)
             => !_pinnedStats.Contains(stat) &&
                (stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue);

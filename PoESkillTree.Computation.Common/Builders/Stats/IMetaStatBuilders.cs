@@ -99,6 +99,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         IStatBuilder SelectedBandit { get; }
         IStatBuilder SelectedQuestPart { get; }
+        IStatBuilder SelectedBossType { get; }
     }
 
     public static class MetaStatBuildersExtensions

@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
         private EffectStatCollection CreateCollection() => new EffectStatCollection(_modifierBuilder, ValueFactory)
         {
             // ailments
-            { Ailment.Freeze, PercentReduce, Stat.ActionSpeed, 100 },
+            { Ailment.Freeze, PercentLess, Stat.ActionSpeed, 100 },
             // buffs
             { Buff.Fortify, PercentReduce, Damage.Taken.WithHits, 20 },
             { Buff.Maim, PercentReduce, Stat.MovementSpeed, 30 },

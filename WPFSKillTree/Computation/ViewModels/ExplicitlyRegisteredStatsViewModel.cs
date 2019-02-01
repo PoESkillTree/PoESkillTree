@@ -28,14 +28,13 @@ namespace POESKillTree.Computation.ViewModels
                 action();
         }
 
-        protected T Add(ICalculationNode node, IStat stat)
+        protected void Add(ICalculationNode node, IStat stat)
         {
-            if (TryGetStatViewModel(stat, out var statVm))
-                return statVm;
+            if (TryGetStatViewModel(stat, out _))
+                return;
 
-            statVm = CreateViewModel(node, stat);
+            var statVm = CreateViewModel(node, stat);
             Stats.Add(statVm);
-            return statVm;
         }
 
         private void Remove(IStat stat)

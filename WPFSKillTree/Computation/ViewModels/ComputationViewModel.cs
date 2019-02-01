@@ -38,7 +38,7 @@ namespace POESKillTree.Computation.ViewModels
             DefensiveStats = new ResultStatsViewModel(_nodeFactory, modifierNodeFactory);
         }
 
-        private async Task InitializeAsync(
+        private void Initialize(
             SkillDefinitions skillDefinitions, IBuilderFactories f, ObservableCollection<IReadOnlyList<Skill>> skills)
         {
             MainSkillSelection = MainSkillSelectionViewModel.Create(skillDefinitions, f, _nodeFactory, skills);
@@ -48,7 +48,6 @@ namespace POESKillTree.Computation.ViewModels
 
             ConfigurationStats = ConfigurationStatsViewModel.Create(_observableCalculator, _nodeFactory);
             AddConfigurationStat(f.StatBuilders.Level, Entity.Enemy);
-            await AddInitializedConfigurationStatAsync(f.MetaStatBuilders.SelectedQuestPart);
 
             GainOnActionStats = GainOnActionStatsViewModel.Create(_observableCalculator, _nodeFactory);
             SharedConfiguration = SharedConfigurationViewModel.Create(_nodeFactory, f);
@@ -228,16 +227,6 @@ namespace POESKillTree.Computation.ViewModels
             }
         }
 
-        private async Task AddInitializedConfigurationStatAsync(
-            IStatBuilder statBuilder, Entity entity = Entity.Character)
-        {
-            foreach (var stat in statBuilder.BuildToStats(entity))
-            {
-                var value = await _observableCalculator.GetNodeValueAsync(stat);
-                ConfigurationStats.AddPinned(stat, value);
-            }
-        }
-
         public static async Task<ComputationViewModel> CreateAsync(
             GameData gameData, IBuilderFactories builderFactories,
             ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers,
@@ -245,7 +234,7 @@ namespace POESKillTree.Computation.ViewModels
         {
             var skillDefinitions = await gameData.Skills;
             var vm = new ComputationViewModel(observableCalculator, schedulers);
-            await vm.InitializeAsync(skillDefinitions, builderFactories, skills);
+            vm.Initialize(skillDefinitions, builderFactories, skills);
             return vm;
         }
     }

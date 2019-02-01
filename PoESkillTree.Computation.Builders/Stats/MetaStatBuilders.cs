@@ -193,7 +193,12 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder DamageBaseSetEffectiveness => FromFactory(StatFactory.DamageBaseSetEffectiveness);
 
         public IStatBuilder SelectedBandit => FromIdentity(typeof(Bandit));
-        public IStatBuilder SelectedQuestPart => FromIdentity(typeof(QuestPart));
+
+        public IStatBuilder SelectedQuestPart
+            => FromIdentity(typeof(QuestPart), ExplicitRegistrationTypes.UserSpecifiedValue((int) QuestPart.Epilogue));
+
+        public IStatBuilder SelectedBossType
+            => FromIdentity(typeof(BossType), ExplicitRegistrationTypes.UserSpecifiedValue((int) BossType.None));
 
         private IStatBuilder FromFactory(Func<Entity, IStat> factory)
             => new StatBuilder(StatFactory, new LeafCoreStatBuilder(factory));
