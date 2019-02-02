@@ -127,7 +127,7 @@ namespace PoESkillTree.Computation.Builders.Stats
                 ExplicitRegistrationTypes.UserSpecifiedValue(20));
 
         public IStatBuilder ReducedActionSpeedFromChill
-            => FromIdentity("Chill.ReducedAnimationSpeed", typeof(uint),
+            => FromIdentity("Chill.ReducedActionSpeed", typeof(uint),
                 ExplicitRegistrationTypes.UserSpecifiedValue(10));
 
         public IDamageRelatedStatBuilder EffectiveCritChance

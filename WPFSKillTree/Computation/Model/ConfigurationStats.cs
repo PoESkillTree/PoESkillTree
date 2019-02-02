@@ -33,8 +33,8 @@ namespace POESKillTree.Computation.Model
             => _values.Select(p => (p.Key, p.Value.SingleOrNull()));
 
         private void OnValueChanged()
-            => ConfigurationChanged?.Invoke(this, EventArgs.Empty);
+            => ValueChanged?.Invoke(this, EventArgs.Empty);
 
-        public event EventHandler ConfigurationChanged;
+        public event EventHandler ValueChanged;
     }
 }

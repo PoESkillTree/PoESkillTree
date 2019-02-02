@@ -41,7 +41,7 @@
                       HorizontalAlignment="Center" />
         </DataTemplate>
         <DataTemplate x:Key="EnumTemplate" DataType="viewModels:ConfigurationStatViewModel">
-            <ComboBox SelectedIndex="{Binding Node.NumericValue, UpdateSourceTrigger=PropertyChanged}"
+            <ComboBox SelectedIndex="{Binding Node.NumericValue, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}"
                       ItemsSource="{Binding Node.EnumValues}" />
         </DataTemplate>
     </UserControl.Resources>

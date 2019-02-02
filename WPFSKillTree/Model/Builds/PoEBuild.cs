@@ -217,7 +217,7 @@ namespace POESKillTree.Model.Builds
                     CrossedNodeIds.CollectionChanged -= ChangedHandler;
                     break;
                 case nameof(ConfigurationStats):
-                    ConfigurationStats.ConfigurationChanged -= ChangedHandler;
+                    ConfigurationStats.ValueChanged -= ChangedHandler;
                     break;
             }
         }
@@ -239,7 +239,7 @@ namespace POESKillTree.Model.Builds
                     CrossedNodeIds.CollectionChanged += ChangedHandler;
                     break;
                 case nameof(ConfigurationStats):
-                    ConfigurationStats.ConfigurationChanged += ChangedHandler;
+                    ConfigurationStats.ValueChanged += ChangedHandler;
                     break;
             }
             if (args.PropertyName != nameof(IsDirty))

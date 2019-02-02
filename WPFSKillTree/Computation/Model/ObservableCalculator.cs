@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -61,7 +62,7 @@ namespace POESKillTree.Computation.Model
         }
 
         public IReadOnlyCollection<(ICalculationNode node, IStat stat)> ExplicitlyRegisteredStatsCollection
-            => _calculator.ExplicitlyRegisteredStats;
+            => _calculator.ExplicitlyRegisteredStats.ToList();
 
         public Task ForEachUpdateCalculatorAsync(IObservable<CalculatorUpdate> observable)
             => observable.ObserveOn(_calculationScheduler)
