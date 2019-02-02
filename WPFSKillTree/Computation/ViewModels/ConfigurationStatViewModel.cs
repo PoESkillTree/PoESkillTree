@@ -13,11 +13,6 @@ namespace POESKillTree.Computation.ViewModels
                 MinimumNode = nodeFactory.CreateResult(stat.Minimum);
             if (stat.Maximum != null)
                 MaximumNode = nodeFactory.CreateResult(stat.Maximum);
-
-            if (Stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue userSpecifiedValue)
-            {
-                Node.Value = userSpecifiedValue.DefaultValue;
-            }
         }
 
         public ConfigurationNodeViewModel Node { get; }

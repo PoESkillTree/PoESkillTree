@@ -113,9 +113,7 @@ namespace POESKillTree.Computation
         {
             var vm =
                 await ComputationViewModel.CreateAsync(GameData, _builderFactories, _calculator, _schedulers, _skills);
-            ConfigurationStatsConnector.Connect(
-                () => persistentData.CurrentBuild.ConfigurationStats,
-                vm.ConfigurationStats.Stats);
+            ConfigurationStatsConnector.Connect(persistentData, vm.ConfigurationStats.Stats);
             return vm;
         }
 

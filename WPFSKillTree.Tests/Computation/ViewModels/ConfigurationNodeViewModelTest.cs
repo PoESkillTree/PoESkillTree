@@ -53,6 +53,30 @@ namespace PoESkillTree.Tests.Computation.ViewModels
             Assert.AreEqual(expectedValues, actualValues);
         }
 
+        [Test]
+        public void ResetValueSetsValueToUserSpecifiedValue()
+        {
+            var stat = new Stat("",
+                explicitRegistrationType: ExplicitRegistrationTypes.UserSpecifiedValue(true));
+            var sut = CreateSut(stat);
+
+            sut.ResetValue();
+
+            Assert.AreEqual(true, sut.BoolValue);
+        }
+
+        [Test]
+        public void ResetValueSetsValueToNullIfNotUserSpecified()
+        {
+            var stat = new Stat("");
+            var sut = CreateSut(stat);
+            sut.BoolValue = true;
+
+            sut.ResetValue();
+
+            Assert.IsNull(sut.Value);
+        }
+
         private static ConfigurationNodeViewModel CreateSut(IStat stat)
             => new ConfigurationNodeViewModel(stat);
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using log4net;
@@ -19,6 +20,13 @@ namespace POESKillTree.Computation.ViewModels
         {
         }
 
+        public void ResetValue()
+        {
+            Value = Stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue userSpecifiedValue
+                ? userSpecifiedValue.DefaultValue
+                : null;
+        }
+
         protected override void OnPropertyChanged(string propertyName)
         {
             if (propertyName == nameof(Value))
@@ -36,7 +44,8 @@ namespace POESKillTree.Computation.ViewModels
             => _valueChangeSubject
                 .Select(p => CreateModifiers(Value))
                 .Scan(CalculatorUpdate.Empty,
-                    (u, ms) => new CalculatorUpdate(ms, u.AddedModifiers));
+                    (u, ms) => new CalculatorUpdate(ms, u.AddedModifiers))
+                .Where(u => !u.AddedModifiers.SequenceEqual(u.RemovedModifiers));
 
         private IReadOnlyList<Modifier> CreateModifiers(NodeValue? value)
         {
@@ -46,16 +55,14 @@ namespace POESKillTree.Computation.ViewModels
             return new[]
             {
                 new Modifier(new[] { Stat }, Form.TotalOverride,
-                    new FunctionalValue(c => Calculate(c, value), $"{Stat.Minimum} <= {value} <= {Stat.Maximum}"),
+                    new FunctionalValue(c => Calculate(c, value.Value),
+                        $"{Stat.Minimum} <= {value} <= {Stat.Maximum}"),
                     new ModifierSource.Global(new ModifierSource.Local.UserSpecified()))
             };
         }
 
-        private NodeValue? Calculate(IValueCalculationContext context, NodeValue? nullableValue)
+        private NodeValue? Calculate(IValueCalculationContext context, NodeValue value)
         {
-            if (!(nullableValue is NodeValue value))
-                return null;
-
             if (Stat.Minimum != null)
             {
                 var minimum = context.GetValue(Stat.Minimum) ?? new NodeValue(double.MinValue);

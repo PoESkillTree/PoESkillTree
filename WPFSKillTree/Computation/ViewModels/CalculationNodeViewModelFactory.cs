@@ -35,6 +35,7 @@ namespace POESKillTree.Computation.ViewModels
         {
             var node = new ConfigurationNodeViewModel(stat);
             node.SubscribeCalculator(_calculator);
+            node.ResetValue();
             return node;
         }
     }
