@@ -3352,6 +3352,289 @@
     </Implicit>
     <Properties />
   </ItemBase>
+  <ItemBase ItemClass="HybridFlask" Tags="Flask HybridFlask" Name="Small Hybrid Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskHybrid1">
+    <Implicit>
+      <string>FlaskLevelRequirement10</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="HybridFlask" Tags="Flask HybridFlask" Name="Medium Hybrid Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskHybrid2">
+    <Implicit>
+      <string>FlaskLevelRequirement20</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="HybridFlask" Tags="Flask HybridFlask" Name="Large Hybrid Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskHybrid3">
+    <Implicit>
+      <string>FlaskLevelRequirement30</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="HybridFlask" Tags="Flask HybridFlask" Name="Colossal Hybrid Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskHybrid4">
+    <Implicit>
+      <string>FlaskLevelRequirement40</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="HybridFlask" Tags="Flask HybridFlask" Name="Sacred Hybrid Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskHybrid5">
+    <Implicit>
+      <string>FlaskLevelRequirement50</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="HybridFlask" Tags="Flask HybridFlask NotForSale" Name="Hallowed Hybrid Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskHybrid6">
+    <Implicit>
+      <string>FlaskLevelRequirementHybrid60</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Small Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife1">
+    <Implicit />
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Sanctified Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife10">
+    <Implicit>
+      <string>FlaskLevelRequirement60</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask NotForSale" Name="Divine Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife11">
+    <Implicit>
+      <string>FlaskLevelRequirement65</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask NotForSale" Name="Eternal Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife12">
+    <Implicit>
+      <string>FlaskLevelRequirement70</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Medium Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife2">
+    <Implicit>
+      <string>FlaskLevelRequirement7</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Large Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife3">
+    <Implicit>
+      <string>FlaskLevelRequirement14</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Greater Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife4">
+    <Implicit>
+      <string>FlaskLevelRequirement18</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Grand Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife5">
+    <Implicit>
+      <string>FlaskLevelRequirement26</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Giant Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife6">
+    <Implicit>
+      <string>FlaskLevelRequirement34</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Colossal Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife7">
+    <Implicit>
+      <string>FlaskLevelRequirement37</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Sacred Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife8">
+    <Implicit>
+      <string>FlaskLevelRequirement45</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Hallowed Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife9">
+    <Implicit>
+      <string>FlaskLevelRequirement53</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Small Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana1">
+    <Implicit />
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Sanctified Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana10">
+    <Implicit>
+      <string>FlaskLevelRequirement60</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask NotForSale" Name="Divine Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana11">
+    <Implicit>
+      <string>FlaskLevelRequirement65</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask NotForSale" Name="Eternal Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana12">
+    <Implicit>
+      <string>FlaskLevelRequirement70</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Medium Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana2">
+    <Implicit>
+      <string>FlaskLevelRequirement7</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Large Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana3">
+    <Implicit>
+      <string>FlaskLevelRequirement14</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Greater Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana4">
+    <Implicit>
+      <string>FlaskLevelRequirement18</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Grand Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana5">
+    <Implicit>
+      <string>FlaskLevelRequirement26</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Giant Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana6">
+    <Implicit>
+      <string>FlaskLevelRequirement34</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Colossal Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana7">
+    <Implicit>
+      <string>FlaskLevelRequirement37</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Sacred Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana8">
+    <Implicit>
+      <string>FlaskLevelRequirement45</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Hallowed Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana9">
+    <Implicit>
+      <string>FlaskLevelRequirement53</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="UtilityFlaskCritical" Tags="Flask UtilityFlask CriticalUtilityFlask NotForSale NoEffectFlaskMod" Name="Diamond Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility1">
+    <Implicit>
+      <string>FlaskLevelRequirement27</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Basalt Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility10">
+    <Implicit>
+      <string>FlaskLevelRequirement40</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Aquamarine Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility11">
+    <Implicit>
+      <string>UtilityFlaskChilledGround</string>
+      <string>FlaskLevelRequirement27</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Stibnite Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility12">
+    <Implicit>
+      <string>UtilityFlaskSmokeCloud</string>
+      <string>FlaskLevelRequirement14Real_</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Sulphur Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility13">
+    <Implicit>
+      <string>UtilityFlaskConsecrate</string>
+      <string>FlaskLevelRequirement35_</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale NoEffectFlaskMod" Name="Silver Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility14">
+    <Implicit>
+      <string>FlaskLevelRequirement22</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Bismuth Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility15">
+    <Implicit>
+      <string>FlaskLevelRequirement8</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Ruby Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility2">
+    <Implicit>
+      <string>FlaskLevelRequirementUtilityResists</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Sapphire Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility3">
+    <Implicit>
+      <string>FlaskLevelRequirementUtilityResists</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Topaz Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility4">
+    <Implicit>
+      <string>FlaskLevelRequirementUtilityResists</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Granite Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility5">
+    <Implicit>
+      <string>FlaskLevelRequirement27</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Quicksilver Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility6">
+    <Implicit />
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Amethyst Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility7">
+    <Implicit>
+      <string>FlaskLevelRequirementUtilityResists</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Quartz Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility8">
+    <Implicit>
+      <string>FlaskLevelRequirement27</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Jade Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility9">
+    <Implicit>
+      <string>FlaskLevelRequirement27</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="AbyssJewel" Tags="NotForSale AbyssJewelCaster" Name="Hypnotic Eye Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelAbyssCaster">
+    <Implicit />
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="AbyssJewel" Tags="NotForSale AbyssJewelMelee" Name="Murderous Eye Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelAbyssMelee">
+    <Implicit />
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="AbyssJewel" Tags="NotForSale AbyssJewelRanged" Name="Searching Eye Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelAbyssRanged">
+    <Implicit />
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="AbyssJewel" Tags="NotForSale AbyssJewelSummoner" Name="Ghastly Eye Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelAbyssSummoner">
+    <Implicit />
+    <Properties />
+  </ItemBase>
   <ItemBase ItemClass="Jewel" Tags="Jewel DexJewel NotStr NotInt NotForSale" Name="Viridian Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelDex">
     <Implicit />
     <Properties />

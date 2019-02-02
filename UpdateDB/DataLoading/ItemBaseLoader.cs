@@ -7,7 +7,6 @@ using Newtonsoft.Json.Linq;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Enums;
 
 namespace UpdateDB.DataLoading
 {
@@ -49,7 +48,14 @@ namespace UpdateDB.DataLoading
             ItemClass.Gloves,
             ItemClass.Helmet,
 
-            ItemClass.Jewel
+            ItemClass.LifeFlask,
+            ItemClass.ManaFlask,
+            ItemClass.HybridFlask,
+            ItemClass.UtilityFlask,
+            ItemClass.UtilityFlaskCritical,
+
+            ItemClass.Jewel,
+            ItemClass.AbyssJewel,
         };
 
         private readonly HashSet<string> _unknownTags = new HashSet<string>();
