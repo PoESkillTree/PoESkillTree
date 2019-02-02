@@ -1060,7 +1060,6 @@
     <Resource Include="Images\EquipmentUI\ItemDefaults\ActiveskillGem.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Bow.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Claw.png" />
-    <Resource Include="Images\EquipmentUI\ItemDefaults\CriticalUtilityFlask.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Dagger.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\FishingRod.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\HybridFlask.png" />
@@ -1078,6 +1077,8 @@
     <Resource Include="Images\EquipmentUI\ItemDefaults\TwoHandSword.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\UtilityFlask.png" />
     <Resource Include="Images\EquipmentUI\ItemDefaults\Wand.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\UtilityFlaskCritical.png" />
+    <Resource Include="Images\EquipmentUI\ItemDefaults\AbyssJewel.png" />
     <Content Include="Libs\Xceed.Wpf.Toolkit.dll" />
     <Content Include="release.iss" />
     <None Include="Tools\isetup\ISCC.exe" />
