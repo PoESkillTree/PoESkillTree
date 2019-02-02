@@ -3356,268 +3356,409 @@
     <Implicit>
       <string>FlaskLevelRequirement10</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 20 of 40 Charges on use</string>
+      <string>Recovers 100 Life over 50 seconds</string>
+      <string>Recovers 70 Mana over 50 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="HybridFlask" Tags="Flask HybridFlask" Name="Medium Hybrid Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskHybrid2">
     <Implicit>
       <string>FlaskLevelRequirement20</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 20 of 40 Charges on use</string>
+      <string>Recovers 230 Life over 50 seconds</string>
+      <string>Recovers 100 Mana over 50 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="HybridFlask" Tags="Flask HybridFlask" Name="Large Hybrid Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskHybrid3">
     <Implicit>
       <string>FlaskLevelRequirement30</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 20 of 40 Charges on use</string>
+      <string>Recovers 510 Life over 50 seconds</string>
+      <string>Recovers 140 Mana over 50 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="HybridFlask" Tags="Flask HybridFlask" Name="Colossal Hybrid Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskHybrid4">
     <Implicit>
       <string>FlaskLevelRequirement40</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 20 of 40 Charges on use</string>
+      <string>Recovers 690 Life over 50 seconds</string>
+      <string>Recovers 200 Mana over 50 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="HybridFlask" Tags="Flask HybridFlask" Name="Sacred Hybrid Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskHybrid5">
     <Implicit>
       <string>FlaskLevelRequirement50</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 20 of 40 Charges on use</string>
+      <string>Recovers 1440 Life over 50 seconds</string>
+      <string>Recovers 400 Mana over 50 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="HybridFlask" Tags="Flask HybridFlask NotForSale" Name="Hallowed Hybrid Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskHybrid6">
     <Implicit>
       <string>FlaskLevelRequirementHybrid60</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 20 of 40 Charges on use</string>
+      <string>Recovers 1740 Life over 50 seconds</string>
+      <string>Recovers 480 Mana over 50 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Small Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife1">
     <Implicit />
-    <Properties />
+    <Properties>
+      <string>Consumes 7 of 21 Charges on use</string>
+      <string>Recovers 70 Life over 60 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Sanctified Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife10">
     <Implicit>
       <string>FlaskLevelRequirement60</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 15 of 30 Charges on use</string>
+      <string>Recovers 1460 Life over 30 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask NotForSale" Name="Divine Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife11">
     <Implicit>
       <string>FlaskLevelRequirement65</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 15 of 45 Charges on use</string>
+      <string>Recovers 2400 Life over 70 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask NotForSale" Name="Eternal Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife12">
     <Implicit>
       <string>FlaskLevelRequirement70</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 15 of 45 Charges on use</string>
+      <string>Recovers 2080 Life over 40 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Medium Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife2">
     <Implicit>
       <string>FlaskLevelRequirement7</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 8 of 28 Charges on use</string>
+      <string>Recovers 150 Life over 65 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Large Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife3">
     <Implicit>
       <string>FlaskLevelRequirement14</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 9 of 30 Charges on use</string>
+      <string>Recovers 250 Life over 70 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Greater Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife4">
     <Implicit>
       <string>FlaskLevelRequirement18</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 10 of 32 Charges on use</string>
+      <string>Recovers 360 Life over 70 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Grand Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife5">
     <Implicit>
       <string>FlaskLevelRequirement26</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 10 of 25 Charges on use</string>
+      <string>Recovers 640 Life over 60 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Giant Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife6">
     <Implicit>
       <string>FlaskLevelRequirement34</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 10 of 30 Charges on use</string>
+      <string>Recovers 830 Life over 80 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Colossal Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife7">
     <Implicit>
       <string>FlaskLevelRequirement37</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 10 of 32 Charges on use</string>
+      <string>Recovers 1000 Life over 70 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Sacred Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife8">
     <Implicit>
       <string>FlaskLevelRequirement45</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 10 of 25 Charges on use</string>
+      <string>Recovers 1200 Life over 60 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="LifeFlask" Tags="Flask LifeFlask" Name="Hallowed Life Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskLife9">
     <Implicit>
       <string>FlaskLevelRequirement53</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 10 of 30 Charges on use</string>
+      <string>Recovers 1990 Life over 80 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Small Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana1">
     <Implicit />
-    <Properties />
+    <Properties>
+      <string>Consumes 10 of 30 Charges on use</string>
+      <string>Recovers 60 Mana over 50 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Sanctified Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana10">
     <Implicit>
       <string>FlaskLevelRequirement60</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 10 of 40 Charges on use</string>
+      <string>Recovers 1050 Mana over 140 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask NotForSale" Name="Divine Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana11">
     <Implicit>
       <string>FlaskLevelRequirement65</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 5 of 30 Charges on use</string>
+      <string>Recovers 400 Mana over 50 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask NotForSale" Name="Eternal Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana12">
     <Implicit>
       <string>FlaskLevelRequirement70</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 8 of 40 Charges on use</string>
+      <string>Recovers 960 Mana over 100 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Medium Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana2">
     <Implicit>
       <string>FlaskLevelRequirement7</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 12 of 36 Charges on use</string>
+      <string>Recovers 90 Mana over 60 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Large Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana3">
     <Implicit>
       <string>FlaskLevelRequirement14</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 10 of 35 Charges on use</string>
+      <string>Recovers 110 Mana over 70 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Greater Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana4">
     <Implicit>
       <string>FlaskLevelRequirement18</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 12 of 32 Charges on use</string>
+      <string>Recovers 140 Mana over 56 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Grand Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana5">
     <Implicit>
       <string>FlaskLevelRequirement26</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 8 of 30 Charges on use</string>
+      <string>Recovers 210 Mana over 100 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Giant Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana6">
     <Implicit>
       <string>FlaskLevelRequirement34</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 10 of 40 Charges on use</string>
+      <string>Recovers 340 Mana over 70 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Colossal Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana7">
     <Implicit>
       <string>FlaskLevelRequirement37</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 5 of 25 Charges on use</string>
+      <string>Recovers 200 Mana over 56 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Sacred Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana8">
     <Implicit>
       <string>FlaskLevelRequirement45</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 10 of 40 Charges on use</string>
+      <string>Recovers 660 Mana over 90 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="ManaFlask" Tags="Flask ManaFlask" Name="Hallowed Mana Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskMana9">
     <Implicit>
       <string>FlaskLevelRequirement53</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 4 of 20 Charges on use</string>
+      <string>Recovers 290 Mana over 70 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="UtilityFlaskCritical" Tags="Flask UtilityFlask CriticalUtilityFlask NotForSale NoEffectFlaskMod" Name="Diamond Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility1">
     <Implicit>
       <string>FlaskLevelRequirement27</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 20 of 40 Charges on use</string>
+      <string>Lasts 40 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Basalt Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility10">
     <Implicit>
       <string>FlaskLevelRequirement40</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 40 of 60 Charges on use</string>
+      <string>Lasts 45 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Aquamarine Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility11">
     <Implicit>
       <string>UtilityFlaskChilledGround</string>
       <string>FlaskLevelRequirement27</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 15 of 40 Charges on use</string>
+      <string>Lasts 50 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Stibnite Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility12">
     <Implicit>
       <string>UtilityFlaskSmokeCloud</string>
       <string>FlaskLevelRequirement14Real_</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 10 of 30 Charges on use</string>
+      <string>Lasts 50 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Sulphur Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility13">
     <Implicit>
       <string>UtilityFlaskConsecrate</string>
       <string>FlaskLevelRequirement35_</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 20 of 60 Charges on use</string>
+      <string>Lasts 40 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale NoEffectFlaskMod" Name="Silver Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility14">
     <Implicit>
       <string>FlaskLevelRequirement22</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 40 of 60 Charges on use</string>
+      <string>Lasts 50 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Bismuth Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility15">
     <Implicit>
       <string>FlaskLevelRequirement8</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 20 of 50 Charges on use</string>
+      <string>Lasts 50 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Ruby Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility2">
     <Implicit>
       <string>FlaskLevelRequirementUtilityResists</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 30 of 60 Charges on use</string>
+      <string>Lasts 40 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Sapphire Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility3">
     <Implicit>
       <string>FlaskLevelRequirementUtilityResists</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 30 of 60 Charges on use</string>
+      <string>Lasts 40 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Topaz Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility4">
     <Implicit>
       <string>FlaskLevelRequirementUtilityResists</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 30 of 60 Charges on use</string>
+      <string>Lasts 40 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Granite Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility5">
     <Implicit>
       <string>FlaskLevelRequirement27</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 30 of 60 Charges on use</string>
+      <string>Lasts 40 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Quicksilver Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility6">
     <Implicit />
-    <Properties />
+    <Properties>
+      <string>Consumes 20 of 50 Charges on use</string>
+      <string>Lasts 40 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Amethyst Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility7">
     <Implicit>
       <string>FlaskLevelRequirementUtilityResists</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 30 of 60 Charges on use</string>
+      <string>Lasts 35 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Quartz Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility8">
     <Implicit>
       <string>FlaskLevelRequirement27</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 30 of 60 Charges on use</string>
+      <string>Lasts 40 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="UtilityFlask" Tags="Flask UtilityFlask NotForSale" Name="Jade Flask" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="2" InventoryWidth="1" MetadataId="Metadata/Items/Flasks/FlaskUtility9">
     <Implicit>
       <string>FlaskLevelRequirement27</string>
     </Implicit>
-    <Properties />
+    <Properties>
+      <string>Consumes 30 of 60 Charges on use</string>
+      <string>Lasts 40 seconds</string>
+    </Properties>
   </ItemBase>
   <ItemBase ItemClass="AbyssJewel" Tags="NotForSale AbyssJewelCaster" Name="Hypnotic Eye Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelAbyssCaster">
     <Implicit />

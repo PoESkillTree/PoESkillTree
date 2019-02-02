@@ -196,6 +196,10 @@ namespace UpdateDB.DataLoading
             {
                 _xml.Properties = FormatToArray(ParseArmourProperties(properties));
             }
+            else if (_xml.Tags.HasFlag(Tags.Flask))
+            {
+                _xml.Properties = FormatToArray(ParseFlaskProperties(properties));
+            }
             else
             {
                 _xml.Properties = new string[0];
@@ -240,6 +244,22 @@ namespace UpdateDB.DataLoading
             {
                 yield return $"Energy Shield: {energyShield}";
             }
+        }
+
+        private static IEnumerable<FormattableString> ParseFlaskProperties(JToken properties)
+        {
+            var duration = properties.Value<double>("duration");
+            yield return
+                $"Consumes {properties.Value<int>("charges_per_use")} of {properties.Value<int>("charges_max")} Charges on use";
+
+            var lifePerUse = properties["life_per_use"]?.Value<int>();
+            if (lifePerUse.HasValue)
+                yield return $"Recovers {lifePerUse} Life over {duration} seconds";
+            var manaPerUse = properties["mana_per_use"]?.Value<int>();
+            if (manaPerUse.HasValue)
+                yield return $"Recovers {manaPerUse} Mana over {duration} seconds";
+            if (!lifePerUse.HasValue && !manaPerUse.HasValue)
+                yield return $"Lasts {duration} seconds";
         }
     }
 }
