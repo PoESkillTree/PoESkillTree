@@ -20,7 +20,7 @@ namespace POESKillTree.Computation.ViewModels
 
         private readonly SimpleMonitor _setNodeValueMonitor = new SimpleMonitor();
 
-        private ConfigurationStatsConnector(
+        public ConfigurationStatsConnector(
             IPersistentData persistentData, IEnumerable<ConfigurationNodeViewModel> nodes)
         {
             _persistentData = persistentData;
@@ -34,7 +34,7 @@ namespace POESKillTree.Computation.ViewModels
             connector.Initialize(viewModels);
         }
 
-        private void Initialize(INotifyCollectionChanged viewModels)
+        public void Initialize(INotifyCollectionChanged viewModels)
         {
             _persistentData.PropertyChanging += PersistentDataOnPropertyChanging;
             _persistentData.PropertyChanged += PersistentDataOnPropertyChanged;

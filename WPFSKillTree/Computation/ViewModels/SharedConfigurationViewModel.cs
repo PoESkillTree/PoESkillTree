@@ -44,7 +44,7 @@ namespace POESKillTree.Computation.ViewModels
             IStatBuilder statBuilder, Entity entity = Entity.Character)
         {
             var stat = statBuilder.BuildToStats(entity).Single();
-            return new ConfigurationStatViewModel(_nodeFactory, stat);
+            return ConfigurationStatViewModel.Create(_nodeFactory, stat);
         }
     }
 }

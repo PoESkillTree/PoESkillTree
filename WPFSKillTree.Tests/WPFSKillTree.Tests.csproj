@@ -82,6 +82,7 @@
     <Compile Include="Computation\Model\ExplicitlyRegisteredStatsObserverTest.cs" />
     <Compile Include="Computation\Model\ObservableCalculatorTest.cs" />
     <Compile Include="Computation\ViewModels\ConfigurationNodeViewModelTest.cs" />
+    <Compile Include="Computation\ViewModels\ConfigurationStatsConnectorTest.cs" />
     <Compile Include="Computation\ViewModels\ResultNodeViewModelTest.cs" />
     <Compile Include="Model\Items\Mods\ModDatabaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -6,14 +6,20 @@ namespace POESKillTree.Computation.ViewModels
 {
     public class ConfigurationStatViewModel : Notifier, IDisposable
     {
-        public ConfigurationStatViewModel(CalculationNodeViewModelFactory nodeFactory, IStat stat)
+        public ConfigurationStatViewModel(
+            ConfigurationNodeViewModel node,
+            ResultNodeViewModel minimumNode = null, ResultNodeViewModel maximumNode = null)
         {
-            Node = nodeFactory.CreateConfiguration(stat);
-            if (stat.Minimum != null)
-                MinimumNode = nodeFactory.CreateResult(stat.Minimum);
-            if (stat.Maximum != null)
-                MaximumNode = nodeFactory.CreateResult(stat.Maximum);
+            Node = node;
+            MinimumNode = minimumNode;
+            MaximumNode = maximumNode;
         }
+
+        public static ConfigurationStatViewModel Create(CalculationNodeViewModelFactory nodeFactory, IStat stat)
+            => new ConfigurationStatViewModel(
+                nodeFactory.CreateConfiguration(stat),
+                stat.Minimum is null ? null : nodeFactory.CreateResult(stat.Minimum),
+                stat.Maximum is null ? null : nodeFactory.CreateResult(stat.Maximum));
 
         public ConfigurationNodeViewModel Node { get; }
         public ResultNodeViewModel MinimumNode { get; }

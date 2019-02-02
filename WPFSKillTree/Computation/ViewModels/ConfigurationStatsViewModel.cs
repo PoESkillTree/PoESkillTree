@@ -32,7 +32,7 @@ namespace POESKillTree.Computation.ViewModels
                (stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue);
 
         protected override ConfigurationStatViewModel CreateViewModel(ICalculationNode node, IStat stat)
-            => new ConfigurationStatViewModel(_nodeFactory, stat);
+            => ConfigurationStatViewModel.Create(_nodeFactory, stat);
 
         protected override IStat SelectStat(ConfigurationStatViewModel statVm)
             => statVm.Stat;
