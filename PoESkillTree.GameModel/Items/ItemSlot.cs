@@ -8,17 +8,22 @@ namespace PoESkillTree.GameModel.Items
     [Flags]
     public enum ItemSlot
     {
-        Unequipable = 0x0,
-        BodyArmour = 0x1,
-        MainHand = 0x2,
-        OffHand = 0x4,
-        Ring = 0x8,
-        Ring2 = 0x10,
-        Amulet = 0x20,
-        Helm = 0x40,
-        Gloves = 0x80,
-        Boots = 0x100,
-        Gem = 0x200,
-        Belt = 0x400
+        Unequipable = 0,
+        BodyArmour = 1 << 0,
+        MainHand = 1 << 1,
+        OffHand = 1 << 2,
+        Ring = 1 << 3,
+        Ring2 = 1 << 4,
+        Amulet = 1 << 5,
+        Helm = 1 << 6,
+        Gloves = 1 << 7,
+        Boots = 1 << 8,
+        Gem = 1 << 9,
+        Belt = 1 << 10,
+        Flask1 = 1 << 11,
+        Flask2 = 1 << 12,
+        Flask3 = 1 << 13,
+        Flask4 = 1 << 14,
+        Flask5 = 1 << 15,
     }
 }
