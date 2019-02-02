@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -9,18 +10,27 @@ namespace POESKillTree.Controls
 {
     public class ZoomBorder : Border
     {
+        enum ManipulationState
+        {
+            NONE, MOUSE_DRAG, MOUSE_ZOOM, TOUCH
+        };
+
         private UIElement _child;
-        private Point _mouseOrigin;
-        private Point _start;
-        private bool allowZoom = true;
+
+        private Point _originalTranslation;
+        private Point _mouseDragAbsoluteStart;
+        private Point _mouseZoomRelativeStart;
+        private double _lastMouseAbsoluteY;
+        private bool _thresholdExceeded;
+        private ManipulationState _manipulationState = ManipulationState.NONE;
 
         const double ZOOM_STEP = 0.3;
         
         const double MAX_ZOOM = 75;
         const double MIN_ZOOM = 0.5;
-
-        // Not sure if this takes the zoom factor into account, but this feels reasonable.
-        const double DRAG_THRESHOLD_SQUARED = 5 * 5;
+        
+        const double DRAG_THRESHOLD = 5; // (in ZoomBorder coordinates, not _child)
+        const double DRAG_THRESHOLD_SQUARED = DRAG_THRESHOLD * DRAG_THRESHOLD;
 
         public Point Origin
         {
@@ -78,7 +88,9 @@ namespace POESKillTree.Controls
 
                 _child.MouseWheel += child_MouseWheel;
                 _child.MouseLeftButtonDown += child_MouseLeftButtonDown;
-                _child.MouseLeftButtonUp += child_MouseLeftButtonUp;
+                _child.MouseLeftButtonUp += child_MouseEitherButtonUp;
+                _child.MouseRightButtonDown += child_MouseRightButtonDown;
+                _child.MouseRightButtonUp += child_MouseEitherButtonUp;
                 _child.MouseMove += child_MouseMove;
 
                 _child.IsManipulationEnabled = true;
@@ -114,28 +126,12 @@ namespace POESKillTree.Controls
             ClickEvent = ButtonBase.ClickEvent.AddOwner(typeof (ZoomBorder));
         }
 
-        protected override void OnMouseDown(MouseButtonEventArgs e)
-        {
-            base.OnMouseDown(e);
-
-            //  CaptureMouse();
-        }
-
-
         protected override void OnMouseUp(MouseButtonEventArgs e)
         {
             base.OnMouseUp(e);
-
-            // if (IsMouseCaptured)
-            // {
-
-            //ReleaseMouseCapture();
-
+            
             if (IsMouseOver)
-
                 RaiseEvent(new RoutedEventArgs(ClickEvent, e));
-
-            //    }
         }
 
         public void ZoomIn(dynamic e)
@@ -158,10 +154,10 @@ namespace POESKillTree.Controls
         /// <param name="zoomFactor">Factor (around 1.0) by how much to zoom in or out.</param>
         public void ZoomOnPoint(Point relativeCenter, double zoomFactor)
         {
-            if (!allowZoom)
+            if (_child == null)
                 return;
 
-            if (_child == null)
+            if (_manipulationState == ManipulationState.MOUSE_DRAG)
                 return;
 
             TranslateTransform tt = GetTranslateTransform(_child);
@@ -184,58 +180,89 @@ namespace POESKillTree.Controls
             tt.Y = absoluteY - relativeCenter.Y * st.ScaleY;
         }
 
+        // Initiate translational dragging.
         private void child_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (_child != null)
+            if (_manipulationState != ManipulationState.NONE)
+                return;
+
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
-                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
-                {
-                    ZoomOut(e);
-                }
-
-                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
-                {
-                    ZoomIn(e);
-                }
-
-                allowZoom = false;
-                var tt = GetTranslateTransform(_child);
-                _start = e.GetPosition(this);
-                _mouseOrigin = new Point(tt.X, tt.Y);
-                Cursor = Cursors.Hand;
-                _child.CaptureMouse();
+                ZoomOut(e);
             }
+
+            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            {
+                ZoomIn(e);
+            }
+
+            _manipulationState = ManipulationState.MOUSE_DRAG;
+            var tt = GetTranslateTransform(_child);
+            _mouseDragAbsoluteStart = e.GetPosition(this);
+            _originalTranslation = new Point(tt.X, tt.Y);
+            _thresholdExceeded = false;
+
+            Cursor = Cursors.Hand;
+            _child.CaptureMouse();
         }
 
-        private void child_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        // Initiate zoom dragging.
+        private void child_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            allowZoom = true;
-            if (_child != null)
-            {
-                _child.ReleaseMouseCapture();
-                Cursor = Cursors.Arrow;
+            if (_manipulationState != ManipulationState.NONE)
+                return;
 
-                if ((_start - e.GetPosition(this)).LengthSquared >= DRAG_THRESHOLD_SQUARED)
-                {
-                    // If we dragged a distance larger than our threshold, handle the up event so that
-                    // it's not treated as a click on a skill node.
-                    e.Handled = true;
-                }
-            }
+            _manipulationState = ManipulationState.MOUSE_ZOOM;
+            _mouseZoomRelativeStart = e.GetPosition(_child);
+            _mouseDragAbsoluteStart = e.GetPosition(this);
+            _lastMouseAbsoluteY = _mouseDragAbsoluteStart.Y;
+            _thresholdExceeded = false;
+
+            Cursor = Cursors.Hand;
+            _child.CaptureMouse();
         }
 
+        // Process translational or zoom dragging updates.
         private void child_MouseMove(object sender, MouseEventArgs e)
         {
-            if (_child != null)
+            if (!_child.IsMouseCaptured)
+                return;
+
+            if (_manipulationState == ManipulationState.MOUSE_DRAG)
             {
-                if (_child.IsMouseCaptured)
-                {
-                    var tt = GetTranslateTransform(_child);
-                    var v = _start - e.GetPosition(this);
-                    tt.X = _mouseOrigin.X - v.X;
-                    tt.Y = _mouseOrigin.Y - v.Y;
-                }
+                var tt = GetTranslateTransform(_child);
+                var v = _mouseDragAbsoluteStart - e.GetPosition(this);
+                tt.X = _originalTranslation.X - v.X;
+                tt.Y = _originalTranslation.Y - v.Y;
+
+                if (v.LengthSquared > DRAG_THRESHOLD_SQUARED)
+                    _thresholdExceeded = true;
             }
+
+            if (_manipulationState == ManipulationState.MOUSE_ZOOM)
+            {
+                var currentAbsolutePosition = e.GetPosition(this);
+                double dy = _lastMouseAbsoluteY - currentAbsolutePosition.Y;
+                double scale = 1 + dy / 200;
+                ZoomOnPoint(_mouseZoomRelativeStart, scale);
+                _lastMouseAbsoluteY = currentAbsolutePosition.Y;
+
+                if (Math.Abs(currentAbsolutePosition.Y - _mouseDragAbsoluteStart.Y) > DRAG_THRESHOLD)
+                    _thresholdExceeded = true;
+            }
+        }
+
+        // End either kind of dragging, consuming the event if the drag threshold was exceeded.
+        private void child_MouseEitherButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _manipulationState = ManipulationState.NONE;
+            _child.ReleaseMouseCapture();
+            Cursor = Cursors.Arrow;
+
+            // If we dragged a distance larger than our threshold, handle the up event so that
+            // it's not treated as a click on a skill node.
+            if (_thresholdExceeded)
+                e.Handled = true;
         }
 
         private void child_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -246,8 +273,14 @@ namespace POESKillTree.Controls
                 ZoomOut(e);
         }
 
+        // Initiate touch dragging/pinching.
         private void child_ManipulationStarting(object sender, ManipulationStartingEventArgs e)
         {
+            if (_manipulationState != ManipulationState.NONE)
+                return;
+
+            _manipulationState = ManipulationState.TOUCH;
+            _thresholdExceeded = false;
             // Things would be easier if we made the child the container to use as reference
             // for all calculations, but changing the child transformations while manipulation
             // events are coming in (and are calculated based on outdated transformation values)
@@ -258,11 +291,9 @@ namespace POESKillTree.Controls
             e.Handled = true;
         }
 
-        void child_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
+        // Process touch dragging/pinching updates.
+        private void child_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
         {
-            if (_child == null)
-                return;
-
             if (e.IsInertial)
                 e.Complete();
 
@@ -279,25 +310,27 @@ namespace POESKillTree.Controls
             // Using the above transforms alone is not enough because there are more (due to layout).
             var relativeOrigin = TranslatePoint(absoluteOrigin, _child);
             var scale = e.DeltaManipulation.Scale.X;
-            
             ZoomOnPoint(relativeOrigin, scale);
+
+            if (e.CumulativeManipulation.Translation.LengthSquared > DRAG_THRESHOLD_SQUARED)
+                _thresholdExceeded = true;
+
+            if (e.CumulativeManipulation.Scale.X != 1.0)
+                _thresholdExceeded = true;
 
             e.Handled = true;
         }
 
+        // End touch dragging/pinching.
         private void child_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
         {
             e.Handled = true;
+            _manipulationState = ManipulationState.NONE;
 
-            // If no actual manipulation (zoom or translation) happened, cancel this 
+            // If no real manipulation (zoom or translation) happened, cancel this 
             // manipulation event. This results in equivalent mouse events being raised
-            // instead that the other interaction code can handle.
-
-            bool didDrag = (e.TotalManipulation.Translation.LengthSquared > DRAG_THRESHOLD_SQUARED);
-            bool didZoom = (e.TotalManipulation.Scale.X != 1.0);
-            if (didDrag || didZoom)
-                return;
-            else
+            // instead which the other interaction code can handle.
+            if (!_thresholdExceeded)
                 e.Cancel();
         }
 
