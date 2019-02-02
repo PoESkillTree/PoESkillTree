@@ -47,7 +47,8 @@ namespace POESKillTree.ViewModels.Crafting
             MsExplicits = modSelectors;
         }
 
-        protected override IEnumerable<IGrouping<ModLocation, StatIdValuePair>> RecalculateItemSpecific(out int requiredLevel)
+        protected override (IEnumerable<StatIdValuePair> explicitStats, IEnumerable<StatIdValuePair> craftedStats)
+            RecalculateItemSpecific(out int requiredLevel)
         {
             Item.NameLine = SelectedBase.UniqueName;
             Item.Frame = FrameType.Unique;
@@ -55,9 +56,7 @@ namespace POESKillTree.ViewModels.Crafting
                 .Select(ms => ms.Query().RequiredLevel)
                 .DefaultIfEmpty()
                 .Max();
-            return MsExplicits
-                .SelectMany(ms => ms.GetStatValues())
-                .ToLookup(_ => ModLocation.Explicit);
+            return (MsExplicits.SelectMany(ms => ms.GetStatValues()), new StatIdValuePair[0]);
         }
 
         private void MsOnPropertyChanged(object sender, PropertyChangedEventArgs e)

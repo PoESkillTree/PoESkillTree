@@ -283,7 +283,7 @@ namespace POESKillTree.Model.Items
             {
                 foreach (var obj in val["properties"])
                 {
-                    Properties.Add(ItemModFromJson(obj, ModLocation.Property));
+                    Properties.Add(ItemModFromJson(obj, false));
                 }
                 if (Properties.Any(m => !m.Values.Any()))
                 {
@@ -294,7 +294,7 @@ namespace POESKillTree.Model.Items
 
             if (val["requirements"] != null)
             {
-                var mods = val["requirements"].Select(t => ItemModFromJson(t, ModLocation.Requirement)).ToList();
+                var mods = val["requirements"].Select(t => ItemModFromJson(t, true)).ToList();
                 if (!mods.Any(m => m.Attribute.StartsWith("Requires ")))
                 {
                     var modsToMerge = new []
@@ -394,7 +394,7 @@ namespace POESKillTree.Model.Items
                 return false;
             }
 
-            var properties = jObject["properties"].Select(j => ItemModFromJson(j, ModLocation.Property)).ToList();
+            var properties = jObject["properties"].Select(j => ItemModFromJson(j, false)).ToList();
             if (!properties.TryGetValue("Level: #", 0, out var level))
             {
                 level = (int) properties.First("Level: # (Max)", 0, 1);
@@ -415,7 +415,7 @@ namespace POESKillTree.Model.Items
             return itemMod;
         }
 
-        private ItemMod ItemModFromJson(JToken jsonMod, ModLocation location)
+        private ItemMod ItemModFromJson(JToken jsonMod, bool isRequirement)
         {
             var valuePairs = (from a in jsonMod["values"]
                               let vc = (ValueColoring)a[1].Value<int>()
@@ -433,7 +433,7 @@ namespace POESKillTree.Model.Items
              * - 3: `attribute = name.Replace(%i with values[i])`
              */
             var name = jsonMod["name"].Value<string>();
-            var mode0Separator = location == ModLocation.Requirement ? " " : ": ";
+            var mode0Separator = isRequirement ? " " : ": ";
             string attribute;
             if (values.Any() && !string.IsNullOrEmpty(name))
             {

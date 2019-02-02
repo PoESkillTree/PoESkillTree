@@ -328,15 +328,11 @@ namespace POESKillTree.ViewModels.Crafting
             Item.TypeLine = Item.BaseType.Name;
             Item.FlavourText = "Created with PoESkillTree";
 
-            int requiredLevel;
-            var statLookup = RecalculateItemSpecific(out requiredLevel).ToList();
+            var (explicitStats, craftedStats) = RecalculateItemSpecific(out var requiredLevel);
 
-            Item.ExplicitMods = CreateItemMods(ModLocation.Explicit, 
-                statLookup.SingleOrDefault(g => g.Key == ModLocation.Explicit)).ToList();
-            Item.CraftedMods = CreateItemMods(ModLocation.Crafted, 
-                statLookup.SingleOrDefault(g => g.Key == ModLocation.Crafted)).ToList();
-            Item.ImplicitMods = CreateItemMods(ModLocation.Implicit, 
-                MsImplicits.SelectMany(ms => ms.GetStatValues())).ToList();
+            Item.ExplicitMods = CreateItemMods(explicitStats).ToList();
+            Item.CraftedMods = CreateItemMods(craftedStats).ToList();
+            Item.ImplicitMods = CreateItemMods(MsImplicits.SelectMany(ms => ms.GetStatValues())).ToList();
 
             var quality = SelectedBase.CanHaveQuality 
                 ? _qualitySlider.Value
@@ -361,11 +357,11 @@ namespace POESKillTree.ViewModels.Crafting
         /// (Re)calculate parts of the item in crafting specific to <see cref="TBase"/>.
         /// </summary>
         /// <param name="requiredLevel">the highest <see cref="IMod.RequiredLevel"/> of any selected mod</param>
-        /// <returns>All explicit and crafted stats of the item and their values (the lookup has entries for explicit
-        /// and crafted and the entries are the stat ids and their values.</returns>
-        protected abstract IEnumerable<IGrouping<ModLocation, StatIdValuePair>> RecalculateItemSpecific(out int requiredLevel);
+        /// <returns>All explicit and crafted stats of the item and their values.</returns>
+        protected abstract (IEnumerable<StatIdValuePair> explicitStats, IEnumerable<StatIdValuePair> craftedStats)
+            RecalculateItemSpecific(out int requiredLevel);
 
-        private IEnumerable<ItemMod> CreateItemMods(ModLocation location, IEnumerable<StatIdValuePair> statValuePairs)
+        private IEnumerable<ItemMod> CreateItemMods(IEnumerable<StatIdValuePair> statValuePairs)
         {
             if (statValuePairs == null)
             {
