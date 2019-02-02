@@ -31,6 +31,8 @@ namespace POESKillTree.Model.Items
 
         public ItemClass ItemClass { get; }
         public Tags Tags { get; }
+        public bool IsFlask => Tags.HasFlag(Tags.Flask);
+        public bool IsJewel => ItemClass == ItemClass.Jewel || ItemClass == ItemClass.AbyssJewel;
 
         private IReadOnlyList<Skill> _socketedSkills = new Skill[0];
         public IReadOnlyList<Skill> SocketedSkills

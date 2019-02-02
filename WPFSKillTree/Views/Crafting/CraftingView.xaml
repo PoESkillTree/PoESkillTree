@@ -17,10 +17,22 @@
                              MaxContentWidth="700">
     <dialogs:CloseableBaseDialog.Resources>
         <viewModels:CraftingViewModelProxy x:Key="VmProxy" Data="{Binding}" />
-        <Style x:Key="HideForJewelsStyle" TargetType="local:ModSelectorView">
+        <Style x:Key="HideForFlasksAndJewelsStyle" TargetType="local:ModSelectorView">
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Data.Item.ItemClass, Source={StaticResource VmProxy}}"
-                             Value="Jewel">
+                <DataTrigger Binding="{Binding Data.Item.IsJewel, Source={StaticResource VmProxy}}"
+                             Value="True">
+                    <Setter Property="Visibility" Value="Hidden" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Data.Item.IsFlask, Source={StaticResource VmProxy}}"
+                             Value="true">
+                    <Setter Property="Visibility" Value="Hidden" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="HideForFlasksStyle" TargetType="local:ModSelectorView">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Data.Item.IsFlask, Source={StaticResource VmProxy}}"
+                             Value="True">
                     <Setter Property="Visibility" Value="Hidden" />
                 </DataTrigger>
             </Style.Triggers>
@@ -95,10 +107,11 @@
                                    DataContext="{Binding MsPrefix[0]}" />
             <local:ModSelectorView Grid.Column="0" Grid.Row="2"
                                    Margin="0 0 0 10"
-                                   DataContext="{Binding MsPrefix[1]}" />
+                                   DataContext="{Binding MsPrefix[1]}"
+                                   Style="{StaticResource HideForFlasksStyle}" />
             <local:ModSelectorView Grid.Column="0" Grid.Row="3"
                                    DataContext="{Binding MsPrefix[2]}"
-                                   Style="{StaticResource HideForJewelsStyle}" />
+                                   Style="{StaticResource HideForFlasksAndJewelsStyle}" />
 
             <controls:ItemVisualizer Grid.Row="0" Grid.Column="1" Grid.RowSpan="4"
                                      Width="94" Height="188"
@@ -113,10 +126,11 @@
                                    DataContext="{Binding MsSuffix[0]}" />
             <local:ModSelectorView Grid.Column="2" Grid.Row="2"
                                    Margin="0 0 0 10"
-                                   DataContext="{Binding MsSuffix[1]}" />
+                                   DataContext="{Binding MsSuffix[1]}"
+                                   Style="{StaticResource HideForFlasksStyle}" />
             <local:ModSelectorView Grid.Column="2" Grid.Row="3"
                                    DataContext="{Binding MsSuffix[2]}"
-                                   Style="{StaticResource HideForJewelsStyle}" />
+                                   Style="{StaticResource HideForFlasksAndJewelsStyle}" />
         </Grid>
 
         <CheckBox Grid.Row="2"

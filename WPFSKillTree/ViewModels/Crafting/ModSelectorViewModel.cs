@@ -201,9 +201,7 @@ namespace POESKillTree.ViewModels.Crafting
         }
 
         public IMod Query()
-        {
-            return SelectedAffix.QueryMods(SelectedValues).First();
-        }
+            => SelectedAffix.QueryMods(SelectedValues).DefaultIfEmpty(SelectedAffix.DefaultMod).First();
 
         public IEnumerable<StatIdValuePair> GetStatValues()
         {
