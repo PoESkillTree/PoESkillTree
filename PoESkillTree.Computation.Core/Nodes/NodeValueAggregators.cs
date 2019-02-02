@@ -16,7 +16,7 @@ namespace PoESkillTree.Computation.Core.Nodes
     {
         public static NodeValue? CalculateTotalOverride(IEnumerable<NodeValue?> values)
         {
-            var enumerated = values.EnumerateWhereNotNull();
+            var enumerated = values.Distinct().EnumerateWhereNotNull();
             switch (enumerated.Count)
             {
                 case 0:

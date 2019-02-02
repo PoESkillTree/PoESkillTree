@@ -14,6 +14,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         [TestCase(42, 42.0)]
         [TestCase(0, 42.0, 43.0, 0.0, 4.0)]
         [TestCase(43, null, 43.0, null)]
+        [TestCase(43, 43.0, 43.0)]
         public void CalculateOverrideReturnsCorrectResult(double? expected, params double?[] values)
         {
             AssertReturnsCorrectResult(NodeValueAggregators.CalculateTotalOverride, expected, values);
