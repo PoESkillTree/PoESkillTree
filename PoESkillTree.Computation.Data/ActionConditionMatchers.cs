@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
-using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -18,9 +17,8 @@ namespace PoESkillTree.Computation.Data
     {
         private readonly IModifierBuilder _modifierBuilder;
 
-        public ActionConditionMatchers(
-            IBuilderFactories builderFactories, IMatchContexts matchContexts, IModifierBuilder modifierBuilder)
-            : base(builderFactories, matchContexts)
+        public ActionConditionMatchers(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder)
+            : base(builderFactories)
         {
             _modifierBuilder = modifierBuilder;
         }
@@ -62,6 +60,7 @@ namespace PoESkillTree.Computation.Data
                 { "critical strikes have a", CriticalStrike.On },
                 { "when you deal a critical strike", CriticalStrike.On },
                 { "if you get a critical strike", CriticalStrike.On },
+                { "when you take a critical strike", CriticalStrike.By(Enemy).On },
                 // skill cast
                 { "when you place a totem", Totems.Cast.On },
                 { "when you summon a totem", Totems.Cast.On },

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using EnumsNET;
 using MoreLinq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Modifiers;
@@ -60,7 +61,7 @@ namespace POESKillTree.ViewModels.Crafting
 
         // First level
 
-        public IReadOnlyList<BaseGroup> FirstLevelList { get; } = Util.GetEnumValues<BaseGroup>();
+        public IReadOnlyList<BaseGroup> FirstLevelList { get; } = Enums.GetValues<BaseGroup>().ToList();
 
         private BaseGroup _selectedFirstLevel;
         public BaseGroup SelectedFirstLevel
@@ -180,8 +181,8 @@ namespace POESKillTree.ViewModels.Crafting
 
                 if (SelectedFirstLevel == BaseGroup.Any)
                 {
-                    SecondLevelList = ItemClass.Any
-                        .Concat(EligibleBases.Select(b => b.ItemClass))
+                    SecondLevelList = EligibleBases.Select(b => b.ItemClass)
+                        .Prepend(ItemClass.Any)
                         .Distinct()
                         .OrderBy(c => c).ToList();
                 }
@@ -200,7 +201,7 @@ namespace POESKillTree.ViewModels.Crafting
                             SecondLevelList = list;
                             break;
                         default:
-                            SecondLevelList = ItemClass.Any.Concat(list).ToList();
+                            SecondLevelList = list.Prepend(ItemClass.Any).ToList();
                             break;
                     }
                 }
@@ -238,7 +239,7 @@ namespace POESKillTree.ViewModels.Crafting
                         ThirdLevelList = list;
                         break;
                     default:
-                        ThirdLevelList = Tags.Default.Concat(list).ToList();
+                        ThirdLevelList = list.Prepend(Tags.Default).ToList();
                         break;
                 }
             }

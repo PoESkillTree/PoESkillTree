@@ -1,3 +1,5 @@
+using PoESkillTree.Computation.Common.Builders.Conditions;
+
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
     /// <summary>
@@ -19,10 +21,10 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
 
         IStatBuilder IncreasesToSourceApplyToTarget(IStatBuilder source, IStatBuilder target);
 
-        IStatBuilder AlwaysMoving { get; }
-        IStatBuilder AlwaysStationary { get; }
+        IConditionBuilder AlwaysMoving { get; }
+        IConditionBuilder AlwaysStationary { get; }
 
-        IStatBuilder BrandAttachedToEnemy { get; }
-        IStatBuilder BannerPlanted { get; }
+        IConditionBuilder IsBrandAttachedToEnemy { get; }
+        IConditionBuilder IsBannerPlanted { get; }
     }
 }

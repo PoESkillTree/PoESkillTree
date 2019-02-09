@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -16,12 +17,16 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using EnumsNET;
 using log4net;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MoreLinq;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.PassiveTree;
 using POESKillTree.Common.ViewModels;
+using POESKillTree.Computation;
+using POESKillTree.Computation.ViewModels;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.ItemFilter.Views;
 using POESKillTree.Localization;
@@ -58,72 +63,71 @@ namespace POESKillTree.Views
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private IExtendedDialogCoordinator _dialogCoordinator;
         public IPersistentData PersistentData { get; } = App.PersistentData;
 
         private readonly List<Attribute> _allAttributesList = new List<Attribute>();
         private readonly List<Attribute> _attiblist = new List<Attribute>();
-        private readonly List<ListGroupItem> _defenceList = new List<ListGroupItem>();
-        private readonly Dictionary<string, AttributeGroup> _defenceListGroups = new Dictionary<string, AttributeGroup>();
-        private readonly List<ListGroupItem> _offenceList = new List<ListGroupItem>();
-        private readonly Dictionary<string, AttributeGroup> _offenceListGroups = new Dictionary<string, AttributeGroup>();
         private readonly Regex _backreplace = new Regex("#");
         private readonly ToolTip _sToolTip = new ToolTip();
         private readonly BuildUrlNormalizer _buildUrlNormalizer = new BuildUrlNormalizer();
         private ListCollectionView _allAttributeCollection;
         private ListCollectionView _attributeCollection;
-        private ListCollectionView _defenceCollection;
-        private ListCollectionView _offenceCollection;
         private RenderTargetBitmap _clipboardBmp;
 
         private GroupStringConverter _attributeGroups;
         private ContextMenu _attributeContextMenu;
         private MenuItem cmCreateGroup, cmAddToGroup, cmRemoveFromGroup, cmDeleteGroup;
 
+        private GameData _gameData;
 
         private ItemAttributes _itemAttributes;
         public ItemAttributes ItemAttributes
         {
-            get { return _itemAttributes; }
-            private set
-            {
-                if (value == _itemAttributes)
-                    return;
-                _itemAttributes = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ItemAttributes"));
-            }
+            get => _itemAttributes;
+            private set => SetProperty(ref _itemAttributes, value);
         }
 
         private InventoryViewModel _inventoryViewModel;
         public InventoryViewModel InventoryViewModel
         {
-            get { return _inventoryViewModel; }
-            private set
-            {
-                if (value == _inventoryViewModel)
-                    return;
-                _inventoryViewModel = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InventoryViewModel)));
-            }
+            get => _inventoryViewModel;
+            private set => SetProperty(ref _inventoryViewModel, value);
         }
 
-        public StashViewModel StashViewModel { get; } = new StashViewModel(ExtendedDialogCoordinator.Instance);
+        public StashViewModel StashViewModel { get; } = new StashViewModel();
+
+        private readonly ObservableItemCollectionConverter
+            _equipmentConverter = new ObservableItemCollectionConverter();
+
+        private ComputationViewModel _computationViewModel;
+        public ComputationViewModel ComputationViewModel
+        {
+            get => _computationViewModel;
+            private set
+            {
+                value.SharedConfiguration.SetLevel(Tree.Level);
+                value.SharedConfiguration.SetCharacterClass(Tree.CharClass);
+                value.SharedConfiguration.SetBandit(PersistentData.CurrentBuild.Bandits.Choice);
+                SetProperty(ref _computationViewModel, value);
+            }
+        }
 
         private SkillTree _tree;
         public SkillTree Tree
         {
-            get { return _tree; }
+            get => _tree;
             private set
             {
                 if (_tree != null)
                     _tree.PropertyChanged -= Tree_PropertyChanged;
-                _tree = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Tree"));
+                SetProperty(ref _tree, value);
             }
         }
         private async Task<SkillTree> CreateSkillTreeAsync(ProgressDialogController controller,
             AssetLoader assetLoader = null)
         {
-            var tree = await SkillTree.CreateAsync(PersistentData, DialogCoordinator.Instance, controller, assetLoader);
+            var tree = await SkillTree.CreateAsync(PersistentData, controller, assetLoader);
             tree.PropertyChanged += Tree_PropertyChanged;
             if (BuildsControlViewModel != null)
                 BuildsControlViewModel.SkillTree = tree;
@@ -135,12 +139,8 @@ namespace POESKillTree.Views
         private BuildsControlViewModel _buildsControlViewModel;
         public BuildsControlViewModel BuildsControlViewModel
         {
-            get { return _buildsControlViewModel; }
-            private set
-            {
-                _buildsControlViewModel = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BuildsControlViewModel)));
-            }
+            get => _buildsControlViewModel;
+            private set => SetProperty(ref _buildsControlViewModel, value);
         }
 
         public CommandCollectionViewModel LoadTreeButtonViewModel { get; } = new CommandCollectionViewModel();
@@ -176,24 +176,16 @@ namespace POESKillTree.Views
         /// </summary>
         public bool NoAsyncTaskRunning
         {
-            get { return _noAsyncTaskRunning; }
-            private set
-            {
-                _noAsyncTaskRunning = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("NoAsyncTaskRunning"));
-            }
+            get => _noAsyncTaskRunning;
+            private set => SetProperty(ref _noAsyncTaskRunning, value);
         }
 
         private TreeGeneratorInteraction _treeGeneratorInteraction;
 
         public TreeGeneratorInteraction TreeGeneratorInteraction
         {
-            get { return _treeGeneratorInteraction; }
-            private set
-            {
-                _treeGeneratorInteraction = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TreeGeneratorInteraction)));
-            }
+            get => _treeGeneratorInteraction;
+            private set => SetProperty(ref _treeGeneratorInteraction, value);
         }
 
         public string MainWindowTitle { get; } =
@@ -212,14 +204,8 @@ namespace POESKillTree.Views
         /// </summary>
         public string InputTreeUrl
         {
-            get { return _inputTreeUrl; }
-            set
-            {
-                if (value == _inputTreeUrl)
-                    return;
-                _inputTreeUrl = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InputTreeUrl)));
-            }
+            get => _inputTreeUrl;
+            set => SetProperty(ref _inputTreeUrl, value);
         }
 
         public MainWindow()
@@ -227,11 +213,22 @@ namespace POESKillTree.Views
             InitializeComponent();
         }
 
+        private void SetProperty<T>(
+            ref T backingStore, T value, Action onChanged = null, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(backingStore, value)) return;
+
+            backingStore = value;
+
+            onChanged?.Invoke();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private void RegisterPersistentDataHandlers()
         {
             // Register handlers
             PersistentData.CurrentBuild.PropertyChanged += CurrentBuildOnPropertyChanged;
-            PersistentData.CurrentBuild.Bandits.PropertyChanged += (o, a) => UpdateUI();
+            PersistentData.CurrentBuild.Bandits.PropertyChanged += CurrentBuildOnPropertyChanged;
             // Re-register handlers when PersistentData.CurrentBuild is set.
             PersistentData.PropertyChanged += async (sender, args) =>
             {
@@ -239,7 +236,7 @@ namespace POESKillTree.Views
                 {
                     case nameof(PersistentData.CurrentBuild):
                         PersistentData.CurrentBuild.PropertyChanged += CurrentBuildOnPropertyChanged;
-                        PersistentData.CurrentBuild.Bandits.PropertyChanged += (o, a) => UpdateUI();
+                        PersistentData.CurrentBuild.Bandits.PropertyChanged += CurrentBuildOnPropertyChanged;
                         await CurrentBuildChanged();
                         break;
                     case nameof(PersistentData.SelectedBuild):
@@ -255,9 +252,9 @@ namespace POESKillTree.Views
                 {
                     TreeGeneratorInteraction?.SaveSettings();
                     PersistentData.CurrentBuild.PropertyChanged -= CurrentBuildOnPropertyChanged;
+                    PersistentData.CurrentBuild.Bandits.PropertyChanged -= CurrentBuildOnPropertyChanged;
                 }
             };
-            
         }
 
         private async void CurrentBuildOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -278,6 +275,10 @@ namespace POESKillTree.Views
                     break;
                 case nameof(PoEBuild.AdditionalData):
                     TreeGeneratorInteraction?.LoadSettings();
+                    break;
+                case nameof(BanditSettings.Choice):
+                    UpdateUI();
+                    ComputationViewModel?.SharedConfiguration.SetBandit(PersistentData.CurrentBuild.Bandits.Choice);
                     break;
             }
         }
@@ -449,32 +450,47 @@ namespace POESKillTree.Views
 
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var controller = await ExtendedDialogManager.ShowProgressAsync(this, L10n.Message("Initialization"),
-                        L10n.Message("Initalizing window ..."));
+            var controller = await this.ShowProgressAsync(L10n.Message("Initialization"),
+                        L10n.Message("Initializing window ..."));
             controller.Maximum = 1;
             controller.SetIndeterminate();
 
-            var itemDBTask = Task.Run(() =>
-            {
-                const string itemDBPrefix = "Data/ItemDB/";
-                Directory.CreateDirectory(AppData.GetFolder(itemDBPrefix));
-                // First file instantiates the ItemDB.
-                ItemDB.Load(itemDBPrefix + "GemList.xml");
-                // Merge all other files from the ItemDB path.
-                Directory.GetFiles(AppData.GetFolder(itemDBPrefix))
-                    .Select(Path.GetFileName)
-                    .Where(f => f != "GemList.xml")
-                    .Select(f => itemDBPrefix + f)
-                    .ForEach(ItemDB.Merge);
-                // Merge the user specified things.
-                ItemDB.Merge("ItemsLocal.xml");
-                ItemDB.Index();
-            });
-            var persistentDataTask = PersistentData.InitializeAsync(DialogCoordinator.Instance);
-            await itemDBTask;
-            await persistentDataTask;
-            RegisterPersistentDataHandlers();
+            var computationInitializer = ComputationInitializer.StartNew();
+            _gameData = computationInitializer.GameData;
+            var persistentDataTask = PersistentData.InitializeAsync(DialogCoordinator.Instance, _gameData);
 
+            InitializeIndependentUI();
+
+            await persistentDataTask;
+            InitializePersistentDataDependentUI();
+
+            controller.SetMessage(L10n.Message("Loading skill tree assets ..."));
+            Tree = await CreateSkillTreeAsync(controller);
+            InitializeTreeDependentUI();
+
+            controller.SetMessage(L10n.Message("Initializing window ..."));
+            controller.SetIndeterminate();
+            await Task.Delay(1); // Give the progress dialog a chance to update
+
+            var initialComputationTask = computationInitializer.InitializeAsync(SkillTree.Skillnodes.Values);
+
+            _justLoaded = true;
+            // loading last build
+            await CurrentBuildChanged();
+            _justLoaded = false;
+            InitializeBuildDependentUI();
+            
+            await initialComputationTask;
+            await computationInitializer.InitializeAfterBuildLoadAsync(
+                Tree.SkilledNodes, _equipmentConverter.Items, _equipmentConverter.Skills);
+            ComputationViewModel = await computationInitializer.CreateComputationViewModelAsync(PersistentData);
+            computationInitializer.SetupPeriodicActions();
+
+            await controller.CloseAsync();
+        }
+
+        private void InitializeIndependentUI()
+        {
             var cmHighlight = new MenuItem
             {
                 Header = L10n.Message("Highlight nodes by attribute")
@@ -485,7 +501,7 @@ namespace POESKillTree.Views
                 Header = L10n.Message("Remove highlights by attribute")
             };
             cmRemoveHighlight.Click += UnhighlightNodesByAttribute;
-            cmCreateGroup = new MenuItem {Header = "Create new group"};
+            cmCreateGroup = new MenuItem { Header = "Create new group" };
             cmCreateGroup.Click += CreateGroup;
             cmAddToGroup = new MenuItem
             {
@@ -497,7 +513,7 @@ namespace POESKillTree.Views
                 Header = "Delete group...",
                 IsEnabled = false
             };
-            cmRemoveFromGroup = new MenuItem {Header = "Remove from group"};
+            cmRemoveFromGroup = new MenuItem { Header = "Remove from group" };
             cmRemoveFromGroup.Click += RemoveFromGroup;
 
             _attributeGroups = new GroupStringConverter();
@@ -523,46 +539,31 @@ namespace POESKillTree.Views
             lbAllAttr.SelectionMode = SelectionMode.Extended;
             lbAllAttr.ContextMenu = _attributeContextMenu;
 
-            _defenceCollection = new ListCollectionView(_defenceList);
-            _defenceCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Group"));
-            listBoxDefence.ItemsSource = _defenceCollection;
-
-            _offenceCollection = new ListCollectionView(_offenceList);
-            _offenceCollection.GroupDescriptions?.Add(new PropertyGroupDescription("Group"));
-            listBoxOffence.ItemsSource = _offenceCollection;
-
-            cbCharType.ItemsSource =
-                CharacterNames.NameToContent.Select(
-                    x => new ComboBoxItem {Name = x.Key, Content = x.Value});
+            cbCharType.ItemsSource = Enums.GetValues<CharacterClass>();
             cbAscType.SelectedIndex = 0;
+        }
 
-            StashViewModel.PersistentData = PersistentData;
-
+        private void InitializePersistentDataDependentUI()
+        {
+            _dialogCoordinator = new ExtendedDialogCoordinator(_gameData, PersistentData);
+            RegisterPersistentDataHandlers();
+            StashViewModel.Initialize(_dialogCoordinator, PersistentData);
             // Set theme & accent.
             SetTheme(PersistentData.Options.Theme);
             SetAccent(PersistentData.Options.Accent);
+        }
 
-            controller.SetMessage(L10n.Message("Loading skill tree assets ..."));
-            Tree = await CreateSkillTreeAsync(controller);
-            await Task.Delay(1); // Give the progress dialog a chance to update
-
+        private void InitializeTreeDependentUI()
+        {
             updateCanvasSize();
             recSkillTree.Fill = new VisualBrush(Tree.SkillTreeVisual);
+        }
 
-            controller.SetMessage(L10n.Message("Initalizing window ..."));
-            controller.SetIndeterminate();
-            await Task.Delay(1); // Give the progress dialog a chance to update
-
-            _justLoaded = true;
-
-            // loading last build
-            await CurrentBuildChanged();
-
-            _justLoaded = false;
-            // loading saved build
+        private void InitializeBuildDependentUI()
+        {
             PersistentData.Options.PropertyChanged += Options_PropertyChanged;
             PopulateAscendancySelectionList();
-            BuildsControlViewModel = new BuildsControlViewModel(ExtendedDialogCoordinator.Instance, PersistentData, Tree);
+            BuildsControlViewModel = new BuildsControlViewModel(_dialogCoordinator, PersistentData, Tree);
             UpdateTreeComparison();
             TreeGeneratorInteraction =
                 new TreeGeneratorInteraction(SettingsDialogCoordinator.Instance, PersistentData, Tree);
@@ -572,6 +573,11 @@ namespace POESKillTree.Views
                 SetCurrentBuildUrlFromTree();
             };
 
+            InitializeLoadTreeButtonViewModel();
+        }
+
+        private void InitializeLoadTreeButtonViewModel()
+        {
             LoadTreeButtonViewModel.Add(L10n.Message("Load Tree"), async () =>
             {
                 if (string.IsNullOrWhiteSpace(InputTreeUrl))
@@ -597,8 +603,6 @@ namespace POESKillTree.Views
                         break;
                 }
             };
-
-            await controller.CloseAsync();
         }
 
         private void Options_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -621,10 +625,12 @@ namespace POESKillTree.Views
             {
                 case nameof(SkillTree.Level):
                     PersistentData.CurrentBuild.Level = Tree.Level;
+                    ComputationViewModel?.SharedConfiguration.SetLevel(Tree.Level);
                     break;
-                case nameof(SkillTree.Chartype):
+                case nameof(SkillTree.CharClass):
                     Tree.UpdateAscendancyClasses = true;
                     PopulateAscendancySelectionList();
+                    ComputationViewModel?.SharedConfiguration.SetCharacterClass(Tree.CharClass);
                     break;
             }
         }
@@ -698,7 +704,7 @@ namespace POESKillTree.Views
                         break;
                     case Key.G:
                         ToggleShowSummary();
-                        if (_hoveredNode != null && !SkillTree.RootNodeList.Contains(_hoveredNode.Id))
+                        if (_hoveredNode != null && !_hoveredNode.IsRootNode)
                         {
                             GenerateTooltipForNode(_hoveredNode, true);
                         }
@@ -713,16 +719,6 @@ namespace POESKillTree.Views
             if (HighlightByHoverKeys.Any(key => key == e.Key))
             {
                 HighlightNodesByHover();
-            }
-
-            if ((Keyboard.Modifiers & (ModifierKeys.Control | ModifierKeys.Shift)) == (ModifierKeys.Control | ModifierKeys.Shift))
-            {
-                switch (e.Key)
-                {
-                    case Key.Q:
-                        ToggleCharacterSheet();
-                        break;
-                }
             }
         }
 
@@ -921,7 +917,7 @@ namespace POESKillTree.Views
 
         private async void Menu_ImportStash(object sender, RoutedEventArgs e)
         {
-            var vm = new DownloadStashViewModel(DialogCoordinator.Instance, PersistentData, StashViewModel);
+            var vm = new DownloadStashViewModel(DialogCoordinator.Instance, _gameData, PersistentData, StashViewModel);
             await this.ShowDialogAsync(vm, new DownloadStashWindow(), () => vm.ViewLoaded());
         }
 
@@ -1140,13 +1136,15 @@ namespace POESKillTree.Views
 
         private void cbCharType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-             if (Tree == null)
+            if (Tree == null)
                 return;
-             if (!_userInteraction)
-                 return;
-             if (Tree.Chartype == cbCharType.SelectedIndex) return;
+            if (!_userInteraction)
+                return;
 
-            Tree.SwitchClass(cbCharType.SelectedIndex);
+            var charClass = (CharacterClass) cbCharType.SelectedItem;
+            if (Tree.CharClass == charClass) return;
+
+            Tree.SwitchClass(charClass);
             UpdateUI();
             SetCurrentBuildUrlFromTree();
             _userInteraction = false;
@@ -1172,7 +1170,7 @@ namespace POESKillTree.Views
             if (!Tree.UpdateAscendancyClasses) return;
             Tree.UpdateAscendancyClasses = false;
             var ascendancyItems = new List<string> { "None" };
-            foreach (var name in Tree.AscendancyClasses.GetClasses(Tree.Chartype))
+            foreach (var name in Tree.AscendancyClasses.GetClasses(Tree.CharClass))
                 ascendancyItems.Add(name.DisplayName);
             cbAscType.ItemsSource = ascendancyItems.Select(x => new ComboBoxItem { Name = x, Content = x });
         }
@@ -1193,14 +1191,13 @@ namespace POESKillTree.Views
 
 #endregion
 
-#region Update Attribute and Character lists
+#region Update Attribute lists
 
         public void UpdateUI()
         {
             UpdateAttributeList();
             UpdateAllAttributeList();
             RefreshAttributeLists();
-            UpdateStatistics();
             UpdateClass();
             UpdatePoints();
         }
@@ -1261,7 +1258,7 @@ namespace POESKillTree.Views
 
         public void UpdateClass()
         {
-            cbCharType.SelectedIndex = Tree.Chartype;
+            cbCharType.SelectedItem = Tree.CharClass;
             cbAscType.SelectedIndex = Tree.AscType;
         }
 
@@ -1312,48 +1309,6 @@ namespace POESKillTree.Views
             AscendancyTotalPoints.Content = "[" + points["AscendancyTotal"].ToString() + "]";
         }
 
-        public void UpdateStatistics()
-        {
-            _defenceList.Clear();
-            _offenceList.Clear();
-
-            if (_itemAttributes != null)
-            {
-                Compute.Initialize(Tree, _itemAttributes);
-
-                foreach (var group in Compute.Defense())
-                {
-                    foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
-                    {
-                        AttributeGroup attributeGroup;
-                        if (!_defenceListGroups.TryGetValue(group.Name, out attributeGroup))
-                        {
-                            attributeGroup = new AttributeGroup(group.Name);
-                            _defenceListGroups.Add(group.Name, attributeGroup);
-                        }
-                        _defenceList.Add(new ListGroupItem(item, attributeGroup));
-                    }
-                }
-
-                foreach (var group in Compute.Offense())
-                {
-                    foreach (var item in group.Properties.Select(InsertNumbersInAttributes))
-                    {
-                        AttributeGroup attributeGroup;
-                        if (!_offenceListGroups.TryGetValue(group.Name, out attributeGroup))
-                        {
-                            attributeGroup = new AttributeGroup(group.Name);
-                            _offenceListGroups.Add(group.Name, attributeGroup);
-                        }
-                        _offenceList.Add(new ListGroupItem(item, attributeGroup));
-                    }
-                }
-            }
-
-            _defenceCollection.Refresh();
-            _offenceCollection.Refresh();
-        }
-
         private string InsertNumbersInAttributes(KeyValuePair<string, List<float>> attrib)
         {
             var s = attrib.Key;
@@ -1385,39 +1340,16 @@ namespace POESKillTree.Views
 
 #endregion
 
-#region Attribute and Character lists - Event Handlers
+#region Attribute lists - Event Handlers
 
         private void ToggleAttributes()
         {
             PersistentData.Options.AttributesBarOpened = !PersistentData.Options.AttributesBarOpened;
         }
 
-        private void ToggleAttributes(bool expanded)
-        {
-            PersistentData.Options.AttributesBarOpened = expanded;
-        }
-
-        private void ToggleCharacterSheet()
-        {
-            PersistentData.Options.CharacterSheetBarOpened = !PersistentData.Options.CharacterSheetBarOpened;
-        }
-
         private void ToggleShowSummary()
         {
             PersistentData.Options.ChangeSummaryEnabled = !PersistentData.Options.ChangeSummaryEnabled;
-        }
-
-        private void ToggleCharacterSheet(bool expanded)
-        {
-            PersistentData.Options.CharacterSheetBarOpened = expanded;
-        }
-
-        private void expAttributes_Expanded(object sender, RoutedEventArgs e)
-        {
-            if (sender == e.Source) // Ignore contained ListBox group collapsion events.
-            {
-                ToggleCharacterSheet(false);
-            }
         }
 
         private void HighlightNodesByAttribute(object sender, RoutedEventArgs e)
@@ -1441,14 +1373,6 @@ namespace POESKillTree.Views
         private void expAttributes_MouseLeave(object sender, MouseEventArgs e)
         {
             SearchUpdate();
-        }
-
-        private void expCharacterSheet_Expanded(object sender, RoutedEventArgs e)
-        {
-            if (sender == e.Source) // Ignore contained ListBox group expansion events.
-            {
-                ToggleAttributes(false);
-            }
         }
 
         private void ToggleBuilds()
@@ -1498,11 +1422,11 @@ namespace POESKillTree.Views
             v = v * _multransform + _addtransform;
 
             var node = Tree.FindNodeInRange(v, 50);
-            if (node != null && !SkillTree.RootNodeList.Contains(node.Id))
+            if (node != null && !node.IsRootNode)
             {
                 if (node.ascendancyName != null && !Tree.DrawAscendancy)
                     return;
-                var ascendancyClassName = Tree.AscendancyClasses.GetClassName(Tree.Chartype, Tree.AscType);
+                var ascendancyClassName = Tree.AscendancyClassName;
                 if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != ascendancyClassName)
                     return;
                 // Ignore clicks on character portraits and masteries
@@ -1577,7 +1501,7 @@ namespace POESKillTree.Views
 
             var node = Tree.FindNodeInRange(v, 50);
             _hoveredNode = node;
-            if (node != null && !SkillTree.RootNodeList.Contains(node.Id))
+            if (node != null && !node.IsRootNode)
             {
                 GenerateTooltipForNode(node);
             }
@@ -1607,7 +1531,8 @@ namespace POESKillTree.Views
         {
             if (!Tree.DrawAscendancy && node.ascendancyName != null && !forcerefresh)
                 return;
-            if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null && node.ascendancyName != Tree.AscendancyClasses.GetClassName(Tree.Chartype, Tree.AscType))
+            if (!PersistentData.Options.ShowAllAscendancyClasses && node.ascendancyName != null &&
+                node.ascendancyName != Tree.AscendancyClassName)
                 return;
 
             if (node.Type == PassiveNodeType.JewelSocket)
@@ -1763,13 +1688,15 @@ namespace POESKillTree.Views
                 ItemAttributes.PropertyChanged -= ItemAttributesPropertyChanged;
             }
 
+            var equipmentData = PersistentData.EquipmentData;
             var itemData = PersistentData.CurrentBuild.ItemData;
             ItemAttributes itemAttributes;
             if (!string.IsNullOrEmpty(itemData))
             {
                 try
                 {
-                    itemAttributes = new ItemAttributes(PersistentData, itemData);
+                    var skillDefinitions = await _gameData.Skills;
+                    itemAttributes = new ItemAttributes(equipmentData, skillDefinitions, itemData);
                 }
                 catch (Exception ex)
                 {
@@ -1786,9 +1713,9 @@ namespace POESKillTree.Views
             itemAttributes.Equip.CollectionChanged += ItemAttributesEquipCollectionChanged;
             itemAttributes.ItemDataChanged += ItemAttributesEquipCollectionChanged;
             itemAttributes.PropertyChanged += ItemAttributesPropertyChanged;
+            _equipmentConverter.ConvertFrom(itemAttributes.Equip);
             ItemAttributes = itemAttributes;
-            InventoryViewModel = new InventoryViewModel(ExtendedDialogCoordinator.Instance, 
-                PersistentData.EquipmentData, itemAttributes);
+            InventoryViewModel = new InventoryViewModel(_dialogCoordinator, itemAttributes);
             UpdateUI();
         }
 
@@ -1818,6 +1745,7 @@ namespace POESKillTree.Views
             await LoadItemData();
             SetCustomGroups(build.CustomGroups);
             await ResetTreeUrl();
+            ComputationViewModel?.SharedConfiguration.SetBandit(build.Bandits.Choice);
         }
 
         /// <summary>
@@ -1878,14 +1806,14 @@ namespace POESKillTree.Views
             {
                 var normalizedUrl = await _buildUrlNormalizer.NormalizeAsync(treeUrl, AwaitAsyncTask);
                 BuildUrlData data = SkillTree.DecodeUrl(normalizedUrl, Tree);
-                var newTreeUrl = new SkillTreeSerializer(data).ToUrl();
+                var newTreeUrl = new SkillTreeSerializer(data, SkillTree.Skillnodes.Keys.ToHashSet()).ToUrl();
 
                 BanditSettings bandits = PersistentData.CurrentBuild.Bandits;
                 if (forceBanditsUpdate)
                 {
-                    bandits.Choice = data.Bandit;
+                    bandits.Choice = data.Bandit ?? Bandit.None;
                 }
-                else if (data != null && data.HasAnyBanditValue() && !data.BanditsAreSame(bandits))
+                else if (data != null && data.Bandit is Bandit bandit && bandits.Choice != bandit)
                 {
                     var details = CreateDetailsString(bandits, data);
 
@@ -1896,7 +1824,7 @@ namespace POESKillTree.Views
 
                     if (dialogResult == MessageBoxResult.Yes)
                     {
-                        bandits.Choice = data.Bandit;
+                        bandits.Choice = bandit;
                     }
                 }
 
@@ -2094,14 +2022,11 @@ namespace POESKillTree.Views
             var build = PersistentData.SelectedBuild as PoEBuild;
             if (build != null && PersistentData.Options.TreeComparisonEnabled)
             {
-                HashSet<SkillNode> nodes;
-                int ctype;
-                int atype;
-                SkillTree.DecodeUrl(build.TreeUrl, out nodes, out ctype, out atype, Tree);
+                SkillTree.DecodeUrl(build.TreeUrl, out var nodes, out var charClass, Tree);
 
                 Tree.HighlightedNodes.Clear();
                 Tree.HighlightedNodes.UnionWith(nodes);
-                Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, ctype, build.Level, build.Bandits);
+                Tree.HighlightedAttributes = SkillTree.GetAttributes(nodes, charClass, build.Level, build.Bandits);
             }
             else
             {

@@ -13,13 +13,14 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     public class ActiveSkillLevelParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;
-        private readonly IMetaStatBuilders _metaStatBuilders;
 
         private SkillModifierCollection _modifiers;
         private SkillPreParseResult _preParseResult;
 
-        public ActiveSkillLevelParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
-            => (_builderFactories, _metaStatBuilders) = (builderFactories, metaStatBuilders);
+        public ActiveSkillLevelParser(IBuilderFactories builderFactories)
+            => _builderFactories = builderFactories;
+
+        private IMetaStatBuilders MetaStats => _builderFactories.MetaStatBuilders;
 
         public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
@@ -30,12 +31,12 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
             if (level.DamageEffectiveness is double effectiveness)
             {
-                _modifiers.AddGlobalForMainSkill(_metaStatBuilders.DamageBaseAddEffectiveness,
+                _modifiers.AddGlobalForMainSkill(MetaStats.DamageBaseAddEffectiveness,
                     Form.TotalOverride, effectiveness);
             }
             if (level.DamageMultiplier is double multiplier)
             {
-                _modifiers.AddGlobalForMainSkill(_metaStatBuilders.DamageBaseSetEffectiveness,
+                _modifiers.AddGlobalForMainSkill(MetaStats.DamageBaseSetEffectiveness,
                     Form.TotalOverride, multiplier);
             }
             if (level.CriticalStrikeChance is double crit)
@@ -45,7 +46,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             }
             if (level.ManaCost is int cost)
             {
-                var costStat = _metaStatBuilders.SkillBaseCost(parsedSkill.ItemSlot, parsedSkill.SocketIndex);
+                var costStat = MetaStats.SkillBaseCost(parsedSkill.ItemSlot, parsedSkill.SocketIndex);
                 _modifiers.AddGlobal(costStat, Form.BaseSet, cost);
                 _modifiers.AddGlobalForMainSkill(_builderFactories.StatBuilders.Pool.From(Pool.Mana).Cost,
                     Form.BaseSet, costStat.Value);
@@ -64,10 +65,10 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
         private void ParseReservation(Skill skill, IStatBuilder costStat)
         {
-            var isReservation = _metaStatBuilders
+            var isReservation = MetaStats
                 .SkillHasType(skill.ItemSlot, skill.SocketIndex, ActiveSkillType.ManaCostIsReservation).IsSet;
             var isReservationAndActive = isReservation.And(_preParseResult.IsActiveSkill);
-            var isPercentage = _metaStatBuilders
+            var isPercentage = MetaStats
                 .SkillHasType(skill.ItemSlot, skill.SocketIndex, ActiveSkillType.ManaCostIsPercentage).IsSet;
             var skillBuilder = _builderFactories.SkillBuilders.FromId(_preParseResult.SkillDefinition.Id);
 

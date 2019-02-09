@@ -9,7 +9,7 @@ using System.Windows.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Model.Items.Enums;
+using PoESkillTree.GameModel.Skills;
 using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
@@ -20,65 +20,25 @@ namespace POESKillTree.Model.Items
     {
         #region slotted items
 
-        public Item Armor
-        {
-            get { return GetItemInSlot(ItemSlot.BodyArmour); }
-            set { SetItemInSlot(value, ItemSlot.BodyArmour); }
-        }
+        public Item Armor => GetItemInSlot(ItemSlot.BodyArmour);
 
-        public Item MainHand
-        {
-            get { return GetItemInSlot(ItemSlot.MainHand); }
-            set { SetItemInSlot(value, ItemSlot.MainHand); }
-        }
+        public Item MainHand => GetItemInSlot(ItemSlot.MainHand);
 
-        public Item OffHand
-        {
-            get { return GetItemInSlot(ItemSlot.OffHand); }
-            set { SetItemInSlot(value, ItemSlot.OffHand); }
-        }
+        public Item OffHand => GetItemInSlot(ItemSlot.OffHand);
 
-        public Item Ring
-        {
-            get { return GetItemInSlot(ItemSlot.Ring); }
-            set { SetItemInSlot(value, ItemSlot.Ring); }
-        }
+        public Item Ring => GetItemInSlot(ItemSlot.Ring);
 
-        public Item Ring2
-        {
-            get { return GetItemInSlot(ItemSlot.Ring2); }
-            set { SetItemInSlot(value, ItemSlot.Ring2); }
-        }
+        public Item Ring2 => GetItemInSlot(ItemSlot.Ring2);
 
-        public Item Amulet
-        {
-            get { return GetItemInSlot(ItemSlot.Amulet); }
-            set { SetItemInSlot(value, ItemSlot.Amulet); }
-        }
+        public Item Amulet => GetItemInSlot(ItemSlot.Amulet);
 
-        public Item Helm
-        {
-            get { return GetItemInSlot(ItemSlot.Helm); }
-            set { SetItemInSlot(value, ItemSlot.Helm); }
-        }
+        public Item Helm => GetItemInSlot(ItemSlot.Helm);
 
-        public Item Gloves
-        {
-            get { return GetItemInSlot(ItemSlot.Gloves); }
-            set { SetItemInSlot(value, ItemSlot.Gloves); }
-        }
+        public Item Gloves => GetItemInSlot(ItemSlot.Gloves);
 
-        public Item Boots
-        {
-            get { return GetItemInSlot(ItemSlot.Boots); }
-            set { SetItemInSlot(value, ItemSlot.Boots); }
-        }
+        public Item Boots => GetItemInSlot(ItemSlot.Boots);
 
-        public Item Belt
-        {
-            get { return GetItemInSlot(ItemSlot.Belt); }
-            set { SetItemInSlot(value, ItemSlot.Belt); }
-        }
+        public Item Belt => GetItemInSlot(ItemSlot.Belt);
 
         public Item GetItemInSlot(ItemSlot slot)
         {
@@ -162,7 +122,8 @@ namespace POESKillTree.Model.Items
 
         public IReadOnlyList<ItemMod> NonLocalMods { get; private set; }
 
-        private readonly IPersistentData _persistentData;
+        private readonly EquipmentData _equipmentData;
+        private readonly SkillDefinitions _skillDefinitions;
 
         public event EventHandler ItemDataChanged;
 
@@ -180,9 +141,10 @@ namespace POESKillTree.Model.Items
             RefreshItemAttributes();
         }
 
-        public ItemAttributes(IPersistentData persistentData, string itemData)
+        public ItemAttributes(EquipmentData equipmentData, SkillDefinitions skillDefinitions, string itemData)
         {
-            _persistentData = persistentData;
+            _equipmentData = equipmentData;
+            _skillDefinitions = skillDefinitions;
             Equip = new ObservableCollection<Item>();
 
             var jObject = JObject.Parse(itemData);
@@ -347,7 +309,7 @@ namespace POESKillTree.Model.Items
 
         private void AddItem(JObject val, ItemSlot islot)
         {
-            var item = new Item(_persistentData, val, islot);
+            var item = new Item(_equipmentData, _skillDefinitions, val, islot);
             Equip.Add(item);
             item.PropertyChanged += SlottedItemOnPropertyChanged;
         }

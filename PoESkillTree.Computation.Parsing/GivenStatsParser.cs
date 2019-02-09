@@ -9,17 +9,16 @@ using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Parsing
 {
-    public class GivenStatsParser : IParser<IEnumerable<IGivenStats>>
+    public class GivenStatsParser
     {
         public static IReadOnlyList<Modifier> Parse(ICoreParser coreParser, IEnumerable<IGivenStats> givenStats)
         {
             var givenParser = new GivenStatsParser(coreParser);
-            var parseResult = givenParser.Parse(givenStats);
-            if (!parseResult.SuccessfullyParsed)
-                throw new ParseException("Failed to parse given modifier lines " +
-                                         parseResult.FailedLines.ToDelimitedString("\n"));
-            return parseResult.Modifiers;
+            return givenStats.SelectMany(givenParser.ParseToModifiers).ToList();
         }
+
+        public static IReadOnlyList<Modifier> Parse(ICoreParser coreParser, IGivenStats givenStats)
+            => new GivenStatsParser(coreParser).ParseToModifiers(givenStats);
 
         private static readonly ModifierSource ModifierSource =
             new ModifierSource.Global(new ModifierSource.Local.Given());
@@ -29,8 +28,15 @@ namespace PoESkillTree.Computation.Parsing
         private GivenStatsParser(ICoreParser coreParser)
             => _coreParser = coreParser;
 
-        public ParseResult Parse(IEnumerable<IGivenStats> givenStats)
-            => ParseResult.Aggregate(givenStats.SelectMany(Parse));
+        private IReadOnlyList<Modifier> ParseToModifiers(IGivenStats givenStats)
+        {
+            var results = Parse(givenStats);
+            var result = ParseResult.Aggregate(results);
+            if (!result.SuccessfullyParsed)
+                throw new ParseException("Failed to parse given modifier lines " +
+                                         result.FailedLines.ToDelimitedString("\n"));
+            return result.Modifiers;
+        }
 
         private IEnumerable<ParseResult> Parse(IGivenStats givenStats)
         {

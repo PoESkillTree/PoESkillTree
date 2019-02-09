@@ -11,11 +11,12 @@ namespace PoESkillTree.Computation.Data.Steps
     /// </summary>
     public class StatMatchersSelector
     {
-        private readonly IReadOnlyList<IStatMatchers> _candidates;
+        private readonly Lazy<IReadOnlyList<IStatMatchers>> _orderedCandidates;
 
         public StatMatchersSelector(IReadOnlyList<IStatMatchers> candidates)
         {
-            _candidates = candidates;
+            _orderedCandidates = new Lazy<IReadOnlyList<IStatMatchers>>(
+                () => candidates.OrderBy(c => c.GetType().Name.Length).ToList());
         }
 
         /// <summary>
@@ -24,13 +25,8 @@ namespace PoESkillTree.Computation.Data.Steps
         public IStatMatchers Get(ParsingStep parsingStep)
         {
             var asString = parsingStep.ToString();
-            return (
-                from c in _candidates
-                let name = c.GetType().Name
-                where name.StartsWith(asString, StringComparison.Ordinal)
-                orderby name.Length
-                select c
-            ).First();
+            return _orderedCandidates.Value
+                .First(c => c.GetType().Name.StartsWith(asString, StringComparison.Ordinal));
         }
     }
 }

@@ -26,8 +26,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         {
             var expectedValue = expectedCondition ? (NodeValue?) 3 : null;
             var gainedStatBuilder = StatBuilderUtils.FromIdentity(StatFactory, "s", null);
-            var modifierSource = new ModifierSource.Local.Skill("skill node");
-            var conditionStat = new Stat($"Is {modifierSource} active?");
+            var modifierSource = new ModifierSource.Local.Skill("skill node", "");
+            var conditionStat = new Stat($"Is {modifierSource.SourceName} active?");
             var buffEffectStat = new Stat($"Buff.EffectOn({default(Entity)})");
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(conditionStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) expectedCondition &&
@@ -49,8 +49,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Buffs
         {
             var temporaryStage = BuffRotationStage.Stage1;
             var expectedCondition = temporaryStage == activeStage;
-            var modifierSource = new ModifierSource.Local.Skill("skill node");
-            var stageStat = new Stat($"Current {modifierSource} stage");
+            var modifierSource = new ModifierSource.Local.Skill("skill node", "");
+            var stageStat = new Stat($"Current {modifierSource.SourceName} stage");
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetValue(stageStat, NodeType.Total, PathDefinition.MainPath) == new NodeValue((int) activeStage));
             var sut = CreateSut();

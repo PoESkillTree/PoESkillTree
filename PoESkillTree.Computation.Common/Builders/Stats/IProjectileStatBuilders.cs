@@ -1,3 +1,5 @@
+using PoESkillTree.Computation.Common.Builders.Values;
+
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
     /// <summary>
@@ -31,8 +33,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder Fork { get; }
 
         /// <summary>
-        /// Gets a stat representing the distance traveled by projectiles.
+        /// Gets the distance traveled by projectiles.
         /// </summary>
-        IStatBuilder TravelDistance { get; }
+        ValueBuilder TravelDistance { get; }
     }
 }

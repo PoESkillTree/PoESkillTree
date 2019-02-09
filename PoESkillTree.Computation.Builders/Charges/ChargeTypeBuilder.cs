@@ -26,11 +26,11 @@ namespace PoESkillTree.Computation.Builders.Charges
 
         public IChargeTypeBuilder Resolve(ResolveContext context) => this;
 
-        public IStatBuilder Amount => new StatBuilder(_statFactory, CoreStat(typeof(int)));
+        public IStatBuilder Amount => new StatBuilder(_statFactory, CoreStat(typeof(uint)));
         public IStatBuilder Duration => new StatBuilder(_statFactory, CoreStat(typeof(double)));
 
         public IDamageRelatedStatBuilder ChanceToGain =>
-            DamageRelatedStatBuilder.Create(_statFactory, CoreStat(typeof(int))).WithHits;
+            DamageRelatedStatBuilder.Create(_statFactory, CoreStat(typeof(uint))).WithHits;
 
         private ICoreStatBuilder CoreStat(Type dataType, [CallerMemberName] string identitySuffix = null) =>
             CoreStat((e, t) => _statFactory.FromIdentity($"{t}.{identitySuffix}", e, dataType));

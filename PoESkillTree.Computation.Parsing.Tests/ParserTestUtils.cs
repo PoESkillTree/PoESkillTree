@@ -30,13 +30,16 @@ namespace PoESkillTree.Computation.Parsing.Tests
             this IEnumerable<IValue> @this, IValueCalculationContext context)
             => @this.Select(v => v.Calculate(context));
 
-        public static Modifier CreateModifier(string stat, Form form, double? value, ModifierSource source = null)
+        public static Modifier CreateModifier(string stat, Form form, double value, ModifierSource source = null)
+            => CreateModifier(stat, form, new NodeValue(value), source);
+
+        public static Modifier CreateModifier(string stat, Form form, NodeValue? value, ModifierSource source = null)
             => CreateModifier(stat, form, new Constant(value), source);
 
         public static Modifier CreateModifier(string stat, Form form, IValue value, ModifierSource source = null)
             => new Modifier(new[] { new Stat(stat), }, form, value, source ?? new ModifierSource.Global());
 
         public static BuilderFactories CreateBuilderFactories(params SkillDefinition[] skillDefinitions)
-            => new BuilderFactories(new StatFactory(), new SkillDefinitions(skillDefinitions));
+            => new BuilderFactories(new SkillDefinitions(skillDefinitions));
     }
 }

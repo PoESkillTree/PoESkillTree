@@ -8,7 +8,6 @@ using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
-using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
@@ -28,9 +27,8 @@ namespace PoESkillTree.Computation.Data
     {
         private readonly IModifierBuilder _modifierBuilder;
 
-        public SpecialMatchers(
-            IBuilderFactories builderFactories, IMatchContexts matchContexts, IModifierBuilder modifierBuilder)
-            : base(builderFactories, matchContexts)
+        public SpecialMatchers(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder)
+            : base(builderFactories)
         {
             _modifierBuilder = modifierBuilder;
         }
@@ -78,13 +76,13 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "modifiers to spell damage apply to this skill's damage over time effect",
-                    TotalOverride, 1,
+                    TotalOverride, 100,
                     Damage.With(DamageSource.Spell)
                         .ApplyModifiersToSkills(DamageSource.OverTime, Form.Increase, Form.More)
                 },
                 {
                     "increases and reductions to spell damage also apply to attacks",
-                    TotalOverride, 1,
+                    TotalOverride, 100,
                     Damage.With(DamageSource.Attack).ApplyModifiersToSkills(DamageSource.Spell, Form.Increase)
                 },
                 {

@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Builders.Actions;
+﻿using System.Threading.Tasks;
+using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Buffs;
 using PoESkillTree.Computation.Builders.Charges;
 using PoESkillTree.Computation.Builders.Conditions;
@@ -7,6 +8,7 @@ using PoESkillTree.Computation.Builders.Effects;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Equipment;
 using PoESkillTree.Computation.Builders.Forms;
+using PoESkillTree.Computation.Builders.Resolving;
 using PoESkillTree.Computation.Builders.Skills;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Builders.Values;
@@ -20,17 +22,20 @@ using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Equipment;
 using PoESkillTree.Computation.Common.Builders.Forms;
+using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders
 {
     public class BuilderFactories : IBuilderFactories
     {
-        public BuilderFactories(IStatFactory statFactory, SkillDefinitions skills)
+        public BuilderFactories(SkillDefinitions skills)
         {
+            var statFactory = new StatFactory();
             ActionBuilders = new ActionBuilders(statFactory);
             BuffBuilders = new BuffBuilders(statFactory, skills);
             ChargeTypeBuilders = new ChargeTypeBuilders(statFactory);
@@ -44,7 +49,12 @@ namespace PoESkillTree.Computation.Builders
             SkillBuilders = new SkillBuilders(statFactory, skills);
             StatBuilders = new StatBuilders(statFactory);
             ValueBuilders = new ValueBuilders();
+            MetaStatBuilders = new MetaStatBuilders(statFactory);
+            MatchContexts = new MatchContexts(statFactory);
         }
+
+        public static async Task<IBuilderFactories> CreateAsync(GameData gameData)
+            => new BuilderFactories(await gameData.Skills.ConfigureAwait(false));
 
         public IActionBuilders ActionBuilders { get; }
         public IBuffBuilders BuffBuilders { get; }
@@ -59,5 +69,7 @@ namespace PoESkillTree.Computation.Builders
         public ISkillBuilders SkillBuilders { get; }
         public IStatBuilders StatBuilders { get; }
         public IValueBuilders ValueBuilders { get; }
+        public IMetaStatBuilders MetaStatBuilders { get; }
+        public IMatchContexts MatchContexts { get; }
     }
 }

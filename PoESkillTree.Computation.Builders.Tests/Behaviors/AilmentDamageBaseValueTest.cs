@@ -16,9 +16,11 @@ namespace PoESkillTree.Computation.Builders.Tests.Behaviors
             var expected = (NodeValue?) (1 + 2);
             var ailmentDamage = new Stat("Damage.Spell.Ignite");
             var skillDamage = ConcretizeDamage(new SkillDamageSpecification(DamageSource.Spell));
+            var path = PathDefinition.MainPath;
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValue(ailmentDamage, NodeType.BaseSet, PathDefinition.MainPath) == new NodeValue(1) &&
-                c.GetValue(skillDamage, NodeType.Base, PathDefinition.MainPath) == new NodeValue(2));
+                c.CurrentPath == path &&
+                c.GetValue(ailmentDamage, NodeType.BaseSet, path) == new NodeValue(1) &&
+                c.GetValue(skillDamage, NodeType.Base, path) == new NodeValue(2));
             var sut = CreateSut(ailmentDamage, skillDamage);
 
             var actual = sut.Calculate(context);
@@ -32,14 +34,31 @@ namespace PoESkillTree.Computation.Builders.Tests.Behaviors
             var expected = (NodeValue?) (1 + 3);
             var ailmentDamage = new Stat("Damage.Attack.MainHand.Ignite");
             var skillDamage = ConcretizeDamage(new SkillAttackDamageSpecification(AttackDamageHand.MainHand));
+            var path = PathDefinition.MainPath;
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValue(ailmentDamage, NodeType.BaseSet, PathDefinition.MainPath) == new NodeValue(1) &&
-                c.GetValue(skillDamage, NodeType.Base, PathDefinition.MainPath) == new NodeValue(3));
+                c.CurrentPath == path &&
+                c.GetValue(ailmentDamage, NodeType.BaseSet, path) == new NodeValue(1) &&
+                c.GetValue(skillDamage, NodeType.Base, path) == new NodeValue(3));
             var sut = CreateSut(ailmentDamage, skillDamage);
 
             var actual = sut.Calculate(context);
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void CalculateUsesCurrentPathOfContext()
+        {
+            var skillDamage = new Stat("");
+            var path = new PathDefinition(new ModifierSource.Local.Tree());
+            var context = Mock.Of<IValueCalculationContext>(c =>
+                c.CurrentPath == path &&
+                c.GetValue(skillDamage, NodeType.Base, path) == new NodeValue(3));
+            var sut = new AilmentDamageBaseValue(skillDamage, new Constant(false));
+
+            var actual = sut.Calculate(context);
+
+            Assert.AreEqual(new NodeValue(3), actual);
         }
 
         private static AilmentDamageBaseValue CreateSut(IStat ailmentDamage, IStat skillDamage)

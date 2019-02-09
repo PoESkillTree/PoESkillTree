@@ -13,11 +13,10 @@ namespace PoESkillTree.Computation.Data.Base
     {
         private readonly IMatchContexts _matchContexts;
 
-        protected UsesMatchContext(IBuilderFactories builderFactories,
-            IMatchContexts matchContexts)
+        protected UsesMatchContext(IBuilderFactories builderFactories)
             : base(builderFactories)
         {
-            _matchContexts = matchContexts;
+            _matchContexts = builderFactories.MatchContexts;
         }
 
         protected IMatchContext<IReferenceConverter> References => _matchContexts.References;

@@ -2,7 +2,6 @@
 using System.Linq;
 using log4net;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
 
 namespace POESKillTree.Model.Items
@@ -23,6 +22,7 @@ namespace POESKillTree.Model.Items
         public int InventoryWidth => _base.InventoryWidth;
 
         public string UniqueName { get; }
+        public string MetadataId => _base.MetadataId;
         public string Name => _base.Name;
         public ItemClass ItemClass => _base.ItemClass;
         public Tags Tags => _base.Tags;

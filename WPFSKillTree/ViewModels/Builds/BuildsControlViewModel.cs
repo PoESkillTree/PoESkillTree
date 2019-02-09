@@ -24,6 +24,8 @@ using POESKillTree.Utils.Wpf;
 using POESKillTree.Controls.Dialogs;
 using Newtonsoft.Json;
 using System.Text;
+using EnumsNET;
+using PoESkillTree.GameModel;
 
 namespace POESKillTree.ViewModels.Builds
 {
@@ -329,12 +331,12 @@ namespace POESKillTree.ViewModels.Builds
         private IEnumerable<ClassFilterItem> GenerateAscendancyClassItems(IAscendancyClasses ascendancyClasses)
         {
             yield return NoFilterItem;
-            foreach (var nameToContent in CharacterNames.NameToContent)
+            foreach (var characterClass in Enums.GetValues<CharacterClass>())
             {
-                var charClass = nameToContent.Value;
+                var charClass = characterClass.ToString();
                 yield return new ClassFilterItem(charClass, null);
 
-                foreach (var ascClass in ascendancyClasses.AscendancyClassesForCharacter(charClass))
+                foreach (var ascClass in ascendancyClasses.AscendancyClassesForCharacter(characterClass))
                 {
                     yield return new ClassFilterItem(charClass, ascClass);
                 }
@@ -693,8 +695,16 @@ namespace POESKillTree.ViewModels.Builds
             {
                 return false;
             }
-            var str = Clipboard.GetText();
-            return str.StartsWith("<?xml ") && str.Contains("<PoEBuild ") && str.Contains("</PoEBuild>");
+            try
+            {
+                var str = Clipboard.GetText();
+                return str.StartsWith("<?xml ") && str.Contains("<PoEBuild ") && str.Contains("</PoEBuild>");
+            }
+            catch (System.Runtime.InteropServices.COMException e)
+            {
+                Log.Error("Can't open clipboard", e);
+                return false;
+            }
         }
 
         private async Task<PoEBuild> PasteFromClipboard(IBuildFolderViewModel targetFolder)
@@ -728,7 +738,7 @@ namespace POESKillTree.ViewModels.Builds
                 return true;
             if (ClassFilter != NoFilterItem)
             {
-                if (ClassFilter.CharacterClass != build.CharacterClass)
+                if (ClassFilter.CharacterClass != build.CharacterClass.ToString())
                     return false;
                 if (ClassFilter.AscendancyClass != null
                     && ClassFilter.AscendancyClass != build.AscendancyClass)

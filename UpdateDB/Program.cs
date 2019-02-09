@@ -72,7 +72,7 @@ namespace UpdateDB
                         Console.WriteLine("/SpecifiedDir:dirPath     Save into the specified directory instead of the AppData directory.");
                         Console.WriteLine("/Quiet                    Do not display any output.");
                         Console.WriteLine("/Verbose                  Enable verbose output.");
-                        Console.WriteLine("/Items, /ItemImages, /TreeAssets, /Gems, /Uniques, /RePoE");
+                        Console.WriteLine("/Items, /ItemImages, /TreeAssets, /Uniques, /RePoE");
                         Console.WriteLine("If at least one is specified, only the specified files are downloaded.\r\n");
                         return 1;
 

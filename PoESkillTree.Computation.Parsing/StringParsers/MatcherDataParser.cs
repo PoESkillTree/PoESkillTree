@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.Computation.Common.Data;
-using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Parsing.StringParsers
 {
@@ -16,35 +16,33 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
     /// </summary>
     public class MatcherDataParser : IStringParser<MatcherDataParseResult>
     {
-        private readonly IEnumerable<MatcherData> _matcherData;
-
-        private readonly RegexCache _regexCache =
-            new RegexCache(RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
+        private readonly Lazy<IReadOnlyList<(MatcherData data, Regex regex)>> _dataWithRegexes;
 
         public MatcherDataParser(IEnumerable<MatcherData> matcherData)
         {
-            _matcherData = matcherData;
+            _dataWithRegexes = new Lazy<IReadOnlyList<(MatcherData, Regex)>>(
+                () => matcherData.Select(d => (d, CreateRegex(d))).ToList());
         }
 
-        public StringParseResult<MatcherDataParseResult> Parse(string stat)
+        private static Regex CreateRegex(MatcherData data)
+            => new Regex(data.Regex,
+                RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
+
+        public StringParseResult<MatcherDataParseResult> Parse(CoreParserParameter parameter)
         {
+            var stat = parameter.ModifierLine;
             var xs =
-                from matcherData in _matcherData
-                let regex = _regexCache[matcherData.Regex]
-                let match = regex.Match(stat)
+                from tuple in _dataWithRegexes.Value
+                let match = tuple.regex.Match(stat)
                 where match.Success
                 orderby match.Length descending
-                select new
-                {
-                    matcherData.Modifier,
-                    Remaining = GetRemaining(matcherData, stat, match),
-                    Groups = SelectGroups(regex, match.Groups)
-                };
+                select (
+                    successfullyParsed: true,
+                    remaining: GetRemaining(tuple.data, stat, match),
+                    new MatcherDataParseResult(tuple.data.Modifier, SelectGroups(tuple.regex, match.Groups))
+                );
 
-            var x = xs.FirstOrDefault();
-            return x == null
-                ? (successfullyParsed: false, remaining: stat, null)
-                : (successfullyParsed: true, remaining: x.Remaining, new MatcherDataParseResult(x.Modifier, x.Groups));
+            return xs.DefaultIfEmpty((false, stat, (MatcherDataParseResult) null)).First();
         }
 
         private static string GetRemaining(MatcherData matcherData, string stat, Match match)

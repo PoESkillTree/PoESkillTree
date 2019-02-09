@@ -265,7 +265,10 @@
             <TreeView.ItemContainerStyleSelector>
                 <wpf:StyleSelectorByType Type="{x:Type viewModels:BuildFolderViewModel}">
                     <wpf:StyleSelectorByType.Style>
-                        <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}" d:DataContext="{d:DesignInstance viewModels:BuildFolderViewModel}">
+                        <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                            <d:Style.DataContext>
+                                <x:Type Type="viewModels:BuildFolderViewModel" />
+                            </d:Style.DataContext>
                             <Setter Property="IsExpanded" Value="{Binding Build.IsExpanded, Mode=TwoWay}" />
                             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -273,7 +276,10 @@
                         </Style>
                     </wpf:StyleSelectorByType.Style>
                     <wpf:StyleSelectorByType.DefaultStyle>
-                        <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}" d:DataContext="{d:DesignInstance viewModels:BuildViewModel}">
+                        <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                            <d:Style.DataContext>
+                                <x:Type Type="viewModels:BuildViewModel" />
+                            </d:Style.DataContext>
                             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                             <Setter Property="Visibility" Value="{Binding IsVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />

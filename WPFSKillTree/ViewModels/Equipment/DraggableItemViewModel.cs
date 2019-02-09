@@ -16,7 +16,6 @@ namespace POESKillTree.ViewModels.Equipment
     public abstract class DraggableItemViewModel : Notifier, IDragSource
     {
         private readonly IExtendedDialogCoordinator _dialogCoordinator;
-        private readonly EquipmentData _equipmentData;
 
         /// <summary>
         /// Gets or sets the item this view models shows.
@@ -60,10 +59,9 @@ namespace POESKillTree.ViewModels.Equipment
         public ICommand DeleteCommand { get; }
         public ICommand EditSocketedGemsCommand { get; }
 
-        protected DraggableItemViewModel(IExtendedDialogCoordinator dialogCoordinator, EquipmentData equipmentData)
+        protected DraggableItemViewModel(IExtendedDialogCoordinator dialogCoordinator)
         {
             _dialogCoordinator = dialogCoordinator;
-            _equipmentData = equipmentData;
 
             DeleteCommand = new RelayCommand(Delete, CanDelete);
             EditSocketedGemsCommand = new AsyncRelayCommand(EditSocketedGemsAsync, CanEditSocketedGems);
@@ -78,10 +76,7 @@ namespace POESKillTree.ViewModels.Equipment
             => Item != null;
 
         private async Task EditSocketedGemsAsync()
-        {
-            await _dialogCoordinator.EditSocketedGemsAsync(this, 
-                new SocketedGemsEditingViewModel(_equipmentData.ItemImageService, Item));
-        }
+            => await _dialogCoordinator.EditSocketedGemsAsync(this, Item);
 
         private bool CanEditSocketedGems()
             => Item != null && Item.BaseType.MaximumNumberOfSockets > 0;

@@ -44,7 +44,7 @@ namespace POESKillTree.ViewModels.Crafting
             get { return _affixes; }
             set
             {
-                var v = EmptySelection.Concat(value ?? new Affix[0]).ToList();
+                var v = (value ?? new Affix[0]).Prepend(EmptySelection).ToList();
                 SetProperty(ref _affixes, v, () =>
                 {
                     if (!CanDeselct && Affixes.Count > 1)

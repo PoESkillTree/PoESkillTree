@@ -25,8 +25,10 @@ namespace PoESkillTree.Computation.Builders.Effects
         public override IEffectBuilder Resolve(ResolveContext context) =>
             new AilmentBuilder(StatFactory, _ailment.Resolve(context));
 
+        protected override bool OnIsUserSpecified => true;
+
         public IStatBuilder InstancesOn(IEntityBuilder target) =>
-            FromIdentity("InstanceCount", typeof(int)).For(target);
+            FromIdentity("InstanceCount", typeof(uint)).For(target);
 
         public IStatBuilder Source(IDamageTypeBuilder type)
         {

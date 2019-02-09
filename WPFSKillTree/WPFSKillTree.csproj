@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>POESKillTree</RootNamespace>
     <AssemblyName>PoESkillTree</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -35,6 +35,7 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <LangVersion>latest</LangVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -105,6 +106,9 @@
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
+    <Reference Include="Enums.NET, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
+      <HintPath>..\packages\Enums.NET.2.3.2\lib\net45\Enums.NET.dll</HintPath>
+    </Reference>
     <Reference Include="ExpressionEvaluator">
       <HintPath>.\ExpressionEvaluator.dll</HintPath>
     </Reference>
@@ -112,36 +116,23 @@
       <HintPath>..\packages\gong-wpf-dragdrop.1.1.0\lib\net45\GongSolutions.Wpf.DragDrop.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="JetBrains.Annotations, Version=2018.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.2018.2.1\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
-    <Reference Include="Ionic.Zip, Version=1.9.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="JetBrains.Annotations, Version=10.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.10.2.1\lib\net\JetBrains.Annotations.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro.IconPacks.Modern, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MahApps.Metro.IconPacks.Modern.1.1.0\lib\net45\MahApps.Metro.IconPacks.Modern.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MahApps.Metro.IconPacks.Modern, Version=1.9.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.Modern.1.9.1\lib\net46\MahApps.Metro.IconPacks.Modern.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro.SimpleChildWindow, Version=1.5.0.16, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.SimpleChildWindow.1.5.0\lib\net45\MahApps.Metro.SimpleChildWindow.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Core.1.1.0.0\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+      <HintPath>..\packages\Microsoft.WindowsAPICodePack-Core.1.1.0.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -150,26 +141,35 @@
     <Reference Include="Microsoft.WindowsAPICodePack.ShellExtensions">
       <HintPath>..\packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.ShellExtensions.dll</HintPath>
     </Reference>
-    <Reference Include="MoreLinq, Version=2.4.20801.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
-      <HintPath>..\packages\morelinq.2.4.1\lib\net40\MoreLinq.dll</HintPath>
+    <Reference Include="MoreLinq, Version=3.1.0.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.3.1.0\lib\net451\MoreLinq.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Reactive, Version=4.1.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.4.1.2\lib\net46\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.6.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Threading.Tasks.Dataflow.4.7.0\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.6.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Dataflow.4.9.0\lib\netstandard2.0\System.Threading.Tasks.Dataflow.dll</HintPath>
     </Reference>
-    <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.1\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -200,6 +200,32 @@
     <Compile Include="Common\ViewModels\ErrorInfoViewModel.cs" />
     <Compile Include="Common\ViewModels\RelayCommand.cs" />
     <Compile Include="Common\ViewModels\ViewModelBase.cs" />
+    <Compile Include="Computation\ComputationInitializer.cs" />
+    <Compile Include="Computation\Model\ComputationFactory.cs" />
+    <Compile Include="Computation\Model\ComputationSchedulerProvider.cs" />
+    <Compile Include="Computation\Model\ComputationObservables.cs" />
+    <Compile Include="Computation\Model\ConfigurationStats.cs" />
+    <Compile Include="Computation\Model\ExplicitlyRegisteredStatsObserver.cs" />
+    <Compile Include="Computation\Model\IObservingCalculator.cs" />
+    <Compile Include="Computation\Model\ObservableCalculator.cs" />
+    <Compile Include="Computation\ViewModels\CalculationNodeViewModelFactory.cs" />
+    <Compile Include="Computation\ViewModels\ConfigurationNodeViewModel.cs" />
+    <Compile Include="Computation\ViewModels\ConfigurationStatsConnector.cs" />
+    <Compile Include="Computation\ViewModels\ConfigurationStatsViewModel.cs" />
+    <Compile Include="Computation\ViewModels\ExplicitlyRegisteredStatsViewModel.cs" />
+    <Compile Include="Computation\ViewModels\ModifierNodeViewModelFactory.cs" />
+    <Compile Include="Computation\ViewModels\GainOnActionStatsViewModel.cs" />
+    <Compile Include="Computation\ViewModels\GainOnActionStatViewModel.cs" />
+    <Compile Include="Computation\ViewModels\ResultNodeViewModel.cs" />
+    <Compile Include="Computation\ViewModels\SharedConfigurationViewModel.cs" />
+    <Compile Include="Computation\ViewModels\CalculationNodeViewModel.cs" />
+    <Compile Include="Computation\ViewModels\ModifierNodeViewModel.cs" />
+    <Compile Include="Computation\Views\GainOnActionStatsView.xaml.cs">
+      <DependentUpon>GainOnActionStatsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Computation\Views\ResultStatToolTip.xaml.cs">
+      <DependentUpon>ResultStatToolTip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Contrib\RangeTree\Range.cs" />
     <Compile Include="Contrib\RangeTree\RangeTree.cs" />
     <Compile Include="Contrib\RangeTree\RangeTreeAsync.cs" />
@@ -213,6 +239,7 @@
     </Compile>
     <Compile Include="Controls\SearchableComboBox.cs" />
     <Compile Include="Model\Builds\GGGBuild.cs" />
+    <Compile Include="Model\GameDataWithOldTreeModel.cs" />
     <Compile Include="Model\Items\Mods\ModGroup.cs" />
     <Compile Include="Model\Items\Mods\IMod.cs" />
     <Compile Include="Model\Items\Mods\JsonCraftingBenchOption.cs" />
@@ -223,10 +250,20 @@
     <Compile Include="Model\Items\Mods\Affix.cs" />
     <Compile Include="Model\Items\Mods\Stat.cs" />
     <Compile Include="Model\Items\IItemBase.cs" />
+    <Compile Include="Model\ModelConverter.cs" />
+    <Compile Include="Model\ObservableItemCollectionConverter.cs" />
+    <Compile Include="Utils\Extensions\SchedulerExtensions.cs" />
     <Compile Include="Utils\SemanticVersion.cs" />
     <Compile Include="Utils\WikiApi\CargoConstants.cs" />
     <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
     <Compile Include="Utils\Wpf\ScrollViewerBindableOffsetBehavior.cs" />
+    <Compile Include="Computation\ViewModels\AddableResultStatViewModel.cs" />
+    <Compile Include="Computation\ViewModels\ComputationViewModel.cs" />
+    <Compile Include="Computation\ViewModels\ConfigurationStatViewModel.cs" />
+    <Compile Include="Computation\ViewModels\MainSkillSelectionViewModel.cs" />
+    <Compile Include="Computation\ViewModels\MainSkillViewModel.cs" />
+    <Compile Include="Computation\ViewModels\ResultStatsViewModel.cs" />
+    <Compile Include="Computation\ViewModels\ResultStatViewModel.cs" />
     <Compile Include="ViewModels\Crafting\AbstractCraftingViewModel.cs" />
     <Compile Include="ViewModels\Crafting\BaseGroup.cs" />
     <Compile Include="ViewModels\Crafting\CraftingViewModel.cs" />
@@ -240,6 +277,18 @@
     <Compile Include="ViewModels\Equipment\InventoryItemViewModel.cs" />
     <Compile Include="ViewModels\Equipment\InventoryViewModel.cs" />
     <Compile Include="ViewModels\Equipment\StashBookmarkViewModel.cs" />
+    <Compile Include="Computation\Views\ComputationView.xaml.cs">
+      <DependentUpon>ComputationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Computation\Views\ConfigurationStatsView.xaml.cs">
+      <DependentUpon>ConfigurationStatsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Computation\Views\MainSkillSelectionView.xaml.cs">
+      <DependentUpon>MainSkillSelectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Computation\Views\ResultStatsView.xaml.cs">
+      <DependentUpon>ResultStatsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Equipment\ScrollBarPositionConverter.cs" />
     <Compile Include="ViewModels\Equipment\StashItemViewModel.cs" />
     <Compile Include="Views\Crafting\BaseCraftingView.xaml.cs">
@@ -264,7 +313,6 @@
     <Compile Include="Utils\WikiApi\WikiApiUtils.cs" />
     <Compile Include="SkillTreeFiles\Class.cs" />
     <Compile Include="SkillTreeFiles\IAscendancyClasses.cs" />
-    <Compile Include="Utils\UrlProcessing\BanditConverter.cs" />
     <Compile Include="Utils\UrlProcessing\BuildUrlDeserializer.cs" />
     <Compile Include="Utils\UrlProcessing\BuildConverter.cs" />
     <Compile Include="Utils\UrlProcessing\BuildUrlData.cs" />
@@ -344,8 +392,7 @@
     <Compile Include="Localization\Markdown\Markdown.cs" />
     <Compile Include="Localization\Markdown\TextToFlowDocumentConverter.cs" />
     <Compile Include="Localization\XAML.cs" />
-    <Compile Include="Model\AttributeSet.cs" />
-    <Compile Include="Model\Bandit.cs" />
+    <Compile Include="Model\BanditSettings.cs" />
     <Compile Include="Model\Builds\AbstractBuild.cs" />
     <Compile Include="Model\Builds\BuildFolder.cs" />
     <Compile Include="Model\Builds\IBuild.cs" />
@@ -390,10 +437,7 @@
     <Compile Include="SkillTreeFiles\AscendancyClasses.cs" />
     <Compile Include="SkillTreeFiles\AssetLoader.cs" />
     <Compile Include="SkillTreeFiles\Bootstrap.cs" />
-    <Compile Include="SkillTreeFiles\CharacterNames.cs" />
-    <Compile Include="SkillTreeFiles\Compute.cs" />
     <Compile Include="SkillTreeFiles\Constants.cs" />
-    <Compile Include="SkillTreeFiles\ItemDB.cs" />
     <Compile Include="SkillTreeFiles\NodeHighlighter.cs" />
     <Compile Include="SkillTreeFiles\SkillIcons.cs" />
     <Compile Include="SkillTreeFiles\SkillNode.cs" />
@@ -495,7 +539,6 @@
     <Compile Include="Utils\AppData.cs" />
     <Compile Include="Utils\CustomSettingsProvider.cs" />
     <Compile Include="Utils\Extensions\StringExtension.cs" />
-    <Compile Include="Utils\TaskbarHelper.cs" />
     <Compile Include="ViewModels\AttributeGroup.cs" />
     <Compile Include="ViewModels\Equipment\DownloadItemsViewModel.cs" />
     <Compile Include="Model\Items\Item.cs" />
@@ -561,6 +604,14 @@
     <Compile Include="Views\Equipment\DownloadItemsWindow.xaml.cs">
       <DependentUpon>DownloadItemsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Computation\Views\GainOnActionStatsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Computation\Views\ResultStatToolTip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Contrib\Monotone\Styles\ExtendedWPFToolkit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -580,6 +631,22 @@
     <Page Include="Controls\ColorPickerButton.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Computation\Views\ComputationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Computation\Views\ConfigurationStatsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Computation\Views\MainSkillSelectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Computation\Views\ResultStatsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Crafting\BaseCraftingView.xaml">
       <SubType>Designer</SubType>
@@ -1050,6 +1117,26 @@
     <Folder Include="Data\Assets\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PoESkillTree.Computation.Builders\PoESkillTree.Computation.Builders.csproj">
+      <Project>{940A286A-BCA7-4C79-AC89-55C57C7D4784}</Project>
+      <Name>PoESkillTree.Computation.Builders</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Common\PoESkillTree.Computation.Common.csproj">
+      <Project>{827be52d-878c-45f0-afc0-75b5385aad53}</Project>
+      <Name>PoESkillTree.Computation.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Core\PoESkillTree.Computation.Core.csproj">
+      <Project>{E9C0CF81-6800-4461-8897-F8B569C7CDD0}</Project>
+      <Name>PoESkillTree.Computation.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Data\PoESkillTree.Computation.Data.csproj">
+      <Project>{85CF9690-7EB9-42CB-9574-ADF4239CFFBE}</Project>
+      <Name>PoESkillTree.Computation.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PoESkillTree.Computation.Parsing\PoESkillTree.Computation.Parsing.csproj">
+      <Project>{1E573C72-9B7F-40AF-A5E8-739F90B50690}</Project>
+      <Name>PoESkillTree.Computation.Parsing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PoESkillTree.Utils\PoESkillTree.Utils.csproj">
       <Project>{1f11d13c-9039-40ab-8b91-8a03e4da934a}</Project>
       <Name>PoESkillTree.Utils</Name>
@@ -1067,7 +1154,7 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.8.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.10.0\build\Microsoft.Net.Compilers.props'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

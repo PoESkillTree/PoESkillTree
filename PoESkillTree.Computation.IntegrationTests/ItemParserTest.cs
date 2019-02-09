@@ -8,7 +8,6 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Parsing;
-using PoESkillTree.Computation.Parsing.ItemParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.StatTranslation;
@@ -25,12 +24,12 @@ namespace PoESkillTree.Computation.IntegrationTests
 
         private BaseItemDefinitions _baseItemDefinitions;
         private IStatTranslator _statTranslator;
-        private IParser<ItemParserParameter> _itemParser;
+        private IParser _parser;
 
         [OneTimeSetUp]
         public static void OneTimeSetUp()
         {
-            _statTranslatorTask = StatTranslationLoader.LoadAsync(StatTranslationLoader.MainFileName);
+            _statTranslatorTask = StatTranslators.CreateFromMainFileAsync();
             _uniqueDefinitionsTask = DataUtils.LoadXmlAsync<XmlUniqueList>("Equipment.Uniques.xml");
             _modDefinitionsTask = LoadModsAsync();
         }
@@ -38,15 +37,9 @@ namespace PoESkillTree.Computation.IntegrationTests
         [SetUp]
         public async Task SetUpAsync()
         {
-            var definitionsTask = CompositionRoot.BaseItemDefinitions;
-            var builderFactoriesTask = CompositionRoot.BuilderFactories;
-            var coreParserTask = CompositionRoot.CoreParser;
-            _baseItemDefinitions = await definitionsTask.ConfigureAwait(false);
+            _baseItemDefinitions = await GameData.BaseItems.ConfigureAwait(false);
             _statTranslator = await _statTranslatorTask.ConfigureAwait(false);
-            _itemParser = new ItemParser(_baseItemDefinitions,
-                await builderFactoriesTask.ConfigureAwait(false),
-                await coreParserTask.ConfigureAwait(false),
-                _statTranslator);
+            _parser = await ParserTask.ConfigureAwait(false);
         }
 
         [Test]
@@ -68,9 +61,9 @@ namespace PoESkillTree.Computation.IntegrationTests
             var expectedModifiers =
                 new (string stat, Form form, double? value, ModifierSource source)[]
                 {
-                    ("BodyArmour.ItemTags", Form.BaseSet, definition.Tags.EncodeAsDouble(), global),
-                    ("BodyArmour.ItemClass", Form.BaseSet, (double) definition.ItemClass, global),
-                    ("BodyArmour.ItemFrameType", Form.BaseSet, (double) FrameType.Rare, global),
+                    ("BodyArmour.ItemTags", Form.TotalOverride, definition.Tags.EncodeAsDouble(), global),
+                    ("BodyArmour.ItemClass", Form.TotalOverride, (double) definition.ItemClass, global),
+                    ("BodyArmour.ItemFrameType", Form.TotalOverride, (double) FrameType.Rare, global),
                     ("Armour", Form.BaseSet, 5, local),
                     ("Evasion", Form.BaseSet, null, local),
                     ("EnergyShield", Form.BaseSet, null, local),
@@ -91,7 +84,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("Strength", Form.BaseAdd, 32, global),
                 }.Select(t => (t.stat, t.form, (NodeValue?) t.value, t.source)).ToArray();
 
-            var actual = _itemParser.Parse(new ItemParserParameter(item, ItemSlot.BodyArmour));
+            var actual = _parser.ParseItem(item, ItemSlot.BodyArmour);
 
             AssertCorrectModifiers(valueCalculationContext, expectedModifiers, actual);
         }
@@ -113,11 +106,12 @@ namespace PoESkillTree.Computation.IntegrationTests
             var expectedModifiers =
                 new (string stat, Form form, double? value, ModifierSource source)[]
                 {
-                    ("MainHand.ItemTags", Form.BaseSet, definition.Tags.EncodeAsDouble(), global),
-                    ("MainHand.ItemClass", Form.BaseSet, (double) definition.ItemClass, global),
-                    ("MainHand.ItemFrameType", Form.BaseSet, (double) FrameType.Rare, global),
+                    ("MainHand.ItemTags", Form.TotalOverride, definition.Tags.EncodeAsDouble(), global),
+                    ("MainHand.ItemClass", Form.TotalOverride, (double) definition.ItemClass, global),
+                    ("MainHand.ItemFrameType", Form.TotalOverride, (double) FrameType.Rare, global),
                     ("CriticalStrike.Chance.Attack.MainHand.Skill", Form.BaseSet, null, local),
-                    ("BaseCastTime.Attack.MainHand.Skill", Form.BaseSet, null, local),
+                    ("CastRate.Attack.MainHand.Skill", Form.BaseSet, null, local),
+                    ("MainHand.CastRate.Attack.MainHand.Skill", Form.BaseSet, null, local),
                     ("Range.Attack.MainHand.Skill", Form.BaseSet, null, local),
                     ("Physical.Damage.Attack.MainHand.Skill", Form.BaseSet, null, local),
                     ("Lightning.Damage.Attack.MainHand.Skill", Form.BaseSet, null, local),
@@ -129,7 +123,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("Dexterity.Required", Form.BaseSet, null, local),
                     ("Intelligence.Required", Form.BaseSet, null, local),
                     ("Strength.Required", Form.BaseSet, null, local),
-                    ("MainHand.BaseCastTime.Attack.MainHand.Skill", Form.BaseSet,
+                    ("BaseCastTime.Attack.MainHand.Skill", Form.BaseSet,
                         definition.Properties[0].Value / 1000D, local),
                     ("MainHand.CriticalStrike.Chance.Attack.MainHand.Skill", Form.BaseSet,
                         definition.Properties[1].Value / 100D, local),
@@ -140,9 +134,11 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("MainHand.Dexterity.Required", Form.BaseSet, definition.Requirements.Dexterity, local),
                     ("MainHand.Strength.Required", Form.BaseSet, definition.Requirements.Strength, local),
                     ("MainHand.Physical.Damage.Attack.MainHand.Skill", Form.BaseAdd, 20, local),
-                    ("MainHand.Physical.Damage.Attack.OffHand.Skill", Form.BaseAdd, null, local),
+                    ("MainHand.Physical.Damage.Attack.OffHand.Skill", Form.BaseAdd, 20, local),
+                    ("MainHand.Physical.Damage.Spell.Skill", Form.BaseAdd, 20, local),
+                    ("MainHand.Physical.Damage.Secondary.Skill", Form.BaseAdd, 20, local),
                     ("MainHand.CastRate.Attack.MainHand.Skill", Form.Increase, 20, local),
-                    ("MainHand.CastRate.Attack.OffHand.Skill", Form.Increase, null, local),
+                    ("MainHand.CastRate.Attack.OffHand.Skill", Form.Increase, 20, local),
                     ("Accuracy.Attack.MainHand.Skill", Form.BaseAdd, 10, local),
                     ("Accuracy.Attack.OffHand.Skill", Form.BaseAdd, null, local),
                     ("Dexterity", Form.BaseAdd, 42, global),
@@ -152,7 +148,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                         : (t.stat, t.form, (NodeValue?) t.value, t.source)
                 ).ToArray();
 
-            var actual = _itemParser.Parse(new ItemParserParameter(item, ItemSlot.MainHand));
+            var actual = _parser.ParseItem(item, ItemSlot.MainHand);
 
             AssertCorrectModifiers(Mock.Of<IValueCalculationContext>(), expectedModifiers, actual);
         }
@@ -197,7 +193,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var item = new Item(metadataId, definition.Name, 20, definition.Requirements.Level,
                 FrameType.White, false, mods);
             var slot = SlotForClass(definition.ItemClass);
-            return _itemParser.Parse(new ItemParserParameter(item, slot));
+            return _parser.ParseItem(item, slot);
         }
 
         private static IEnumerable<string> ReadParseableBaseItems()
@@ -224,7 +220,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var item = new Item(unique.BaseMetadataId, unique.Name, 20, unique.Level,
                 FrameType.Unique, false, mods);
             var slot = SlotForClass(definition.ItemClass);
-            return _itemParser.Parse(new ItemParserParameter(item, slot));
+            return _parser.ParseItem(item, slot);
         }
 
         private static IEnumerable<string> ReadParseableUniqueItems()
@@ -249,8 +245,7 @@ namespace PoESkillTree.Computation.IntegrationTests
 
         private static async Task<Dictionary<string, IReadOnlyList<CraftableStat>>> LoadModsAsync()
         {
-            var jsonText = await DataUtils.LoadRePoEAsync("mods").ConfigureAwait(false);
-            var json = JObject.Parse(jsonText);
+            var json = await DataUtils.LoadRePoEAsObjectAsync("mods").ConfigureAwait(false);
             return json.Properties().ToDictionary(p => p.Name,
                 p => SelectCraftableStats(p.Value.Value<JArray>("stats")));
 

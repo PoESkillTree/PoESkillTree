@@ -27,7 +27,11 @@ namespace PoESkillTree.Computation.Builders.Behaviors
         {
             var originalPaths = context.GetPaths(stat);
             if (_ailmentDamage.Equals(stat))
-                return originalPaths.Union(context.GetPaths(_skillDamage));
+            {
+                var skillPaths = context.GetPaths(_skillDamage)
+                    .Select(p => new PathDefinition(p.ModifierSource));
+                return originalPaths.Union(skillPaths);
+            }
             return originalPaths;
         }
     }

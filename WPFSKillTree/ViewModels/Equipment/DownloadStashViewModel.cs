@@ -10,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Newtonsoft.Json.Linq;
+using PoESkillTree.GameModel;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Controls;
 using POESKillTree.Controls.Dialogs;
@@ -24,6 +25,7 @@ namespace POESKillTree.ViewModels.Equipment
     public class DownloadStashViewModel : CloseableViewModel
     {
         private readonly StashViewModel _stash;
+        private readonly GameData _gameData;
         private readonly IPersistentData _persistenData;
         private readonly IDialogCoordinator _dialogCoordinator;
         private readonly TaskCompletionSource<object> _viewLoadedCompletionSource;
@@ -78,9 +80,12 @@ namespace POESKillTree.ViewModels.Equipment
             get { return _loadTabContentsCommand ?? (_loadTabContentsCommand = new AsyncRelayCommand(LoadTabContents)); }
         }
 
-        public DownloadStashViewModel(IDialogCoordinator dialogCoordinator, IPersistentData persistentData, StashViewModel stash)
+        public DownloadStashViewModel(
+            IDialogCoordinator dialogCoordinator, GameData gameData, IPersistentData persistentData,
+            StashViewModel stash)
         {
             _stash = stash;
+            _gameData = gameData;
             _persistenData = persistentData;
             _dialogCoordinator = dialogCoordinator;
             DisplayName = L10n.Message("Download & Import Stash");
@@ -198,6 +203,7 @@ namespace POESKillTree.ViewModels.Equipment
             var tabContents = Clipboard.GetText();
             try
             {
+                var skillDefinitions = await _gameData.Skills;
                 var json = JObject.Parse(tabContents);
                 var isQuadTab = json.Value<bool>("quadLayout");
                 var items = new List<Item>();
@@ -208,7 +214,7 @@ namespace POESKillTree.ViewModels.Equipment
                         // icons of quad tabs are downsized and their url doesn't allow inferring the normal-sized url
                         jItem.Remove("icon");
                     }
-                    items.Add(new Item(_persistenData, jItem));
+                    items.Add(new Item(_persistenData.EquipmentData, skillDefinitions, jItem));
                 }
 
                 var yStart = _stash.LastOccupiedRow + 3;

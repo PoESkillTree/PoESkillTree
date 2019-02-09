@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
+using log4net;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.Model.Serialization;
@@ -13,63 +16,69 @@ namespace POESKillTree.Views
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(App));
+
         // The flag whether application exit is in progress.
-        bool IsExiting = false;
+        private bool _isExiting;
+
         // The flag whether it is safe to exit application.
-        bool IsSafeToExit = false;
+        private bool _isSafeToExit;
+
         // Single instance of persistent data.
         public static IPersistentData PersistentData { get; private set; }
+
         // The Mutex for detecting running application instance.
-        private Mutex RunningInstanceMutex;
-        // The name of RunningInstanceMutex.
-        private static string RunningInstanceMutexName { get { return POESKillTree.Properties.Version.AppId; } }
+        private Mutex _runningInstanceMutex;
+
+        private static string RunningInstanceMutexName => POESKillTree.Properties.Version.AppId;
 
         // Invoked when application is about to exit.
-        private void App_Exit(object sender, ExitEventArgs e)
+        protected override void OnExit(ExitEventArgs e)
         {
-            if (IsExiting) return;
-            IsExiting = true;
+            base.OnExit(e);
+
+            if (_isExiting) return;
+            _isExiting = true;
 
             try
             {
                 // Try to aquire mutex.
-                if (RunningInstanceMutex.WaitOne(0))
+                if (_runningInstanceMutex.WaitOne(0))
                 {
                     PersistentData.Save();
                     PersistentData.SaveFolders();
 
-                    IsSafeToExit = true;
+                    _isSafeToExit = true;
 
-                    RunningInstanceMutex.ReleaseMutex();
+                    _runningInstanceMutex.ReleaseMutex();
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // Too late to report anything.
+                Log.Error("Exception while exiting", ex);
             }
         }
 
         // Invoked when application is being started up (before MainWindow creation).
-        private void App_Startup(object sender, StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
-            // Set main thread apartment state.
-            Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
+            base.OnStartup(e);
 
-            // Set AppUserModelId of current process.
-            TaskbarHelper.SetAppUserModelId();
+            AppDomain.CurrentDomain.UnhandledException +=
+                (_, args) => OnUnhandledException((Exception) args.ExceptionObject);
 
             // Create Mutex if this is first instance.
             try
             {
-                RunningInstanceMutex = Mutex.OpenExisting(RunningInstanceMutexName);
+                _runningInstanceMutex = Mutex.OpenExisting(RunningInstanceMutexName);
             }
             catch (WaitHandleCannotBeOpenedException)
             {
-                bool created = false;
-                RunningInstanceMutex = new Mutex(false, RunningInstanceMutexName, out created);
-                if (!created) throw new Exception("Unable to create application mutex");
+                _runningInstanceMutex = new Mutex(false, RunningInstanceMutexName, out var created);
+                if (!created)
+                    throw new Exception("Unable to create application mutex");
             }
 
             // Load persistent data.
@@ -81,28 +90,34 @@ namespace POESKillTree.Views
             L10n.Initialize(PersistentData.Options.Language);
         }
 
-        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
+            OnUnhandledException(e.Exception);
 
             if (!Debugger.IsAttached)
             {
+                e.Handled = true;
+                Shutdown();
+            }
+        }
 
-                Exception theException = e.Exception;
-                string theErrorPath = AppData.GetFolder(true) + "debug.txt";
-                using (System.IO.TextWriter theTextWriter = new System.IO.StreamWriter(theErrorPath, true))
+        private static void OnUnhandledException(Exception ex)
+        {
+            Log.Error("Unhandled exception", ex);
+
+            if (!Debugger.IsAttached)
+            {
+                string filePath = AppData.GetFolder(true) + "debug.txt";
+                using (TextWriter writer = new StreamWriter(filePath, true))
                 {
-                    DateTime theNow = DateTime.Now;
-                    theTextWriter.WriteLine("The error time: " + theNow.ToShortDateString() + " " +
-                                            theNow.ToShortTimeString());
-                    while (theException != null)
+                    writer.WriteLine($"Error time: {DateTime.Now:u}");
+                    while (ex != null)
                     {
-                        theTextWriter.WriteLine("Exception: " + theException.ToString());
-                        theException = theException.InnerException;
+                        writer.WriteLine($"Exception: {ex}");
+                        ex = ex.InnerException;
                     }
                 }
-                MessageBox.Show("The program crashed. A stack trace can be found at:\n" + theErrorPath);
-                e.Handled = true;
-                Application.Current.Shutdown();
+                MessageBox.Show("The program crashed. A stack trace can be found at:\n" + filePath);
             }
         }
 
@@ -112,10 +127,10 @@ namespace POESKillTree.Views
             base.OnSessionEnding(e);
 
             // Cancel session ending unless it's safe to exit.
-            e.Cancel = !IsSafeToExit;
+            e.Cancel = !_isSafeToExit;
 
             // If Exit event wasn't raised yet, perform explicit shutdown (Windows 7 bug workaround).
-            if (!IsExiting) Shutdown();
+            if (!_isExiting) Shutdown();
         }
     }
 }

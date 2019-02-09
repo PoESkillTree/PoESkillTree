@@ -25,6 +25,9 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         public NodeValue? Calculate(IValueCalculationContext context)
         {
+            // Make sure paths for conversion chains are created
+            context.GetValue(_source, NodeType.UncappedSubtotal, PathDefinition.MainPath);
+
             var modifiedContext = new ModifiedValueCalculationContext(context, GetPaths);
             return _transformedValue.Calculate(modifiedContext);
         }
@@ -36,7 +39,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
             var originalPaths = context.GetPaths(_target);
             var conversionPaths = context.GetPaths(_source)
-                .Select(p => new PathDefinition(p.ModifierSource, _source.Concat(p.ConversionStats).ToList()));
+                .Select(p => new PathDefinition(p.ModifierSource, p.ConversionStats.Prepend(_source).ToList()));
             return originalPaths.Concat(conversionPaths).Distinct();
         }
     }

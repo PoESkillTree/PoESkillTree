@@ -9,11 +9,6 @@ namespace PoESkillTree.Computation.Common
     /// <summary>
     /// Union data type representing a source of a modifier.
     /// <para>
-    /// Generally, each instance of a leaf ModifierSource class is considered the same, e.g. all instances of
-    /// <see cref="Global"/> are equal to each other. The only exception to this is <see cref="Local.Item"/>, which
-    /// also consists of an <see cref="ItemSlot"/>.
-    /// </para>
-    /// <para>
     /// Other information in an instance, e.g. <see cref="SourceName"/>, does not influence equality and is not
     /// contained in <see cref="CanonicalSource"/> instances.
     /// </para>
@@ -29,7 +24,7 @@ namespace PoESkillTree.Computation.Common
         {
             CanonicalSource = canonicalSource ?? this;
             SourceName = sourceName;
-            InfluencingSources = CanonicalSource.Concat(influencingSources).ToList();
+            InfluencingSources = influencingSources.Prepend(CanonicalSource).ToList();
         }
 
         private ModifierSource(params ModifierSource[] influencingSources)
@@ -164,13 +159,16 @@ namespace PoESkillTree.Computation.Common
 
             public sealed class Skill : Local
             {
-                public Skill(string skillId) : base(new Skill(), skillId)
+                public Skill(string skillId, string displayName) : base(new Skill(), displayName)
                 {
+                    SkillId = skillId;
                 }
 
                 public Skill()
                 {
                 }
+
+                public string SkillId { get; }
             }
 
             /// <summary>
@@ -180,21 +178,25 @@ namespace PoESkillTree.Computation.Common
             /// </summary>
             public sealed class Gem : Local
             {
-                public Gem(ItemSlot slot, int socketIndex, string skillId)
-                    : base(new Gem(slot, socketIndex), skillId)
-                    => (Slot, SocketIndex) = (slot, socketIndex);
+                public Gem(ItemSlot slot, int socketIndex, string skillId, string displayName)
+                    : base(new Gem(slot, socketIndex), displayName)
+                    => (Slot, SocketIndex, SkillId) = (slot, socketIndex, skillId);
 
                 public Gem(ItemSlot slot, int socketIndex)
                     => (Slot, SocketIndex) = (slot, socketIndex);
 
                 public ItemSlot Slot { get; }
-
                 public int SocketIndex { get; }
+                public string SkillId { get; }
 
                 public override bool Equals(ModifierSource other)
                     => other is Gem item && Slot == item.Slot && SocketIndex == item.SocketIndex;
 
                 public override int GetHashCode() => (GetType(), Slot, SocketIndex).GetHashCode();
+            }
+
+            public sealed class UserSpecified : Local
+            {
             }
         }
     }

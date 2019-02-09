@@ -56,7 +56,7 @@ namespace POESKillTree.SkillTreeFiles
 
 
         [JsonProperty("out")]
-        public List<int> ot { get; set; }
+        public List<ushort> ot { get; set; }
     }
 
     internal class Node

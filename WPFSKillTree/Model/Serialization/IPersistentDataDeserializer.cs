@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
+using PoESkillTree.GameModel;
 using POESKillTree.Controls.Dialogs;
 
 namespace POESKillTree.Model.Serialization
@@ -18,7 +19,7 @@ namespace POESKillTree.Model.Serialization
         Version MinimumDeserializableVersion { get; }
 
         /// <summary>
-        /// The maxmimum version this instance can deserialize. <c>null</c> indicates that this instance can only
+        /// The maximum version this instance can deserialize. <c>null</c> indicates that this instance can only
         /// deserialize if there was no version specified.
         /// </summary>
         [CanBeNull]
@@ -41,7 +42,7 @@ namespace POESKillTree.Model.Serialization
         /// Asynchronously initializes all properties of <see cref="PersistentData"/> not contained in
         /// PersistentData.xml.
         /// </summary>
-        Task InitializeAsync(IDialogCoordinator dialogCoordinator);
+        Task InitializeAsync(IDialogCoordinator dialogCoordinator, GameData gameData);
 
         /// <summary>
         /// Must be called after <see cref="InitializeAsync"/> to save all build changes done before.

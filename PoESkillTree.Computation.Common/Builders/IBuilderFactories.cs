@@ -7,6 +7,7 @@ using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Equipment;
 using PoESkillTree.Computation.Common.Builders.Forms;
+using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
@@ -47,5 +48,9 @@ namespace PoESkillTree.Computation.Common.Builders
         IStatBuilders StatBuilders { get; }
 
         IValueBuilders ValueBuilders { get; }
+
+        IMetaStatBuilders MetaStatBuilders { get; }
+
+        IMatchContexts MatchContexts { get; }
     }
 }

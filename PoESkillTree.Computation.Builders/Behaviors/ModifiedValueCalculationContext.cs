@@ -28,6 +28,8 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             _getValues = getValues;
         }
 
+        public PathDefinition CurrentPath => _originalContext.CurrentPath;
+
         public IEnumerable<PathDefinition> GetPaths(IStat stat) =>
             _getPaths is null
                 ? _originalContext.GetPaths(stat)

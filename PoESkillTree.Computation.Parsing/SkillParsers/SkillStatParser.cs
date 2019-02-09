@@ -20,14 +20,15 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     public class SkillStatParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;
-        private readonly IMetaStatBuilders _metaStatBuilders;
 
         private SkillModifierCollection _parsedModifiers;
         private List<UntranslatedStat> _parsedStats;
         private SkillPreParseResult _preParseResult;
 
-        public SkillStatParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
-            => (_builderFactories, _metaStatBuilders) = (builderFactories, metaStatBuilders);
+        public SkillStatParser(IBuilderFactories builderFactories)
+            => _builderFactories = builderFactories;
+
+        private IMetaStatBuilders MetaStats => _builderFactories.MetaStatBuilders;
 
         public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
@@ -127,11 +128,11 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             switch (stat.StatId)
             {
                 case "base_skill_number_of_additional_hits":
-                    _parsedModifiers.AddGlobalForMainSkill(_metaStatBuilders.SkillNumberOfHitsPerCast,
+                    _parsedModifiers.AddGlobalForMainSkill(MetaStats.SkillNumberOfHitsPerCast,
                         Form.BaseAdd, stat.Value, partCondition);
                     return true;
                 case "skill_double_hits_when_dual_wielding":
-                    _parsedModifiers.AddGlobalForMainSkill(_metaStatBuilders.SkillDoubleHitsWhenDualWielding,
+                    _parsedModifiers.AddGlobalForMainSkill(MetaStats.SkillDoubleHitsWhenDualWielding,
                         Form.TotalOverride, stat.Value, partCondition);
                     return true;
                 case "base_use_life_in_place_of_mana":
@@ -143,7 +144,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     return true;
                 case "cast_rate_is_melee":
                     _parsedModifiers.AddGlobalForMainSkill(
-                        _metaStatBuilders.MainSkillPartCastRateHasKeyword(Keyword.Melee),
+                        MetaStats.MainSkillPartCastRateHasKeyword(Keyword.Melee),
                         Form.TotalOverride, stat.Value, partCondition);
                     return true;
                 case "hit_rate_ms":

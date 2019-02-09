@@ -12,7 +12,7 @@ namespace PoESkillTree.Computation.Builders.Charges
             Frenzy = new ChargeTypeBuilder(statFactory, CoreBuilder.Create(ChargeType.Frenzy));
             Power = new ChargeTypeBuilder(statFactory, CoreBuilder.Create(ChargeType.Power));
             ChanceToSteal =
-                StatBuilderUtils.DamageRelatedFromIdentity(statFactory, "ChanceToStealACharge", typeof(int)).WithHits;
+                StatBuilderUtils.DamageRelatedFromIdentity(statFactory, "ChanceToStealACharge", typeof(uint)).WithHits;
             Rage = new ChargeTypeBuilder(statFactory, CoreBuilder.Create(ChargeType.Rage));
             RageEffect = StatBuilderUtils.FromIdentity(statFactory, "RageEffect", typeof(double));
         }

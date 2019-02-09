@@ -45,5 +45,5 @@ using System.Windows;
 [assembly: AssemblyProduct("PoESkillTree - War for the Atlas")]
 [assembly: AssemblyCopyright("Copyright © 2012-2018 PoESkillTree Team")]
 [assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.7.8.1808")]
+[assembly: AssemblyFileVersion("2.7.8.2065")]
 [assembly: AssemblyInformationalVersion("2.7.8")]

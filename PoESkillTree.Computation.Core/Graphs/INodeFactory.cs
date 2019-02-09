@@ -9,6 +9,6 @@ namespace PoESkillTree.Computation.Core.Graphs
     /// </summary>
     public interface INodeFactory
     {
-        IDisposableNodeViewProvider Create(IValue value);
+        IDisposableNodeViewProvider Create(IValue value, PathDefinition path);
     }
 }

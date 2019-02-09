@@ -1,0 +1,98 @@
+﻿<UserControl x:Class="POESKillTree.Computation.Views.ConfigurationStatsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:mahApps="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:viewModels="clr-namespace:POESKillTree.Computation.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:ConfigurationStatsViewModel}">
+    <UserControl.Resources>
+        <Style x:Key="NumericUpDownStyle"
+               BasedOn="{StaticResource UpDownInDataGridStyle}"
+               TargetType="mahApps:NumericUpDown">
+            <d:Style.DataContext>
+                <x:Type Type="viewModels:ConfigurationStatViewModel" />
+            </d:Style.DataContext>
+            <Setter Property="Value" 
+                    Value="{Binding Node.NumericValue, UpdateSourceTrigger=PropertyChanged}" />
+            <Setter Property="Minimum" 
+                    Value="{Binding MinimumNode.NumericValue, TargetNullValue={x:Static system:Double.MinValue}}" />
+            <Setter Property="Maximum" 
+                    Value="{Binding MaximumNode.NumericValue, TargetNullValue={x:Static system:Double.MaxValue}}" />
+        </Style>
+        <DataTemplate x:Key="IntTemplate" DataType="viewModels:ConfigurationStatViewModel">
+            <mahApps:NumericUpDown NumericInputMode="Numbers"
+                                   Style="{StaticResource NumericUpDownStyle}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UIntTemplate" DataType="viewModels:ConfigurationStatViewModel">
+            <mahApps:NumericUpDown NumericInputMode="Numbers"
+                                   Style="{StaticResource NumericUpDownStyle}"
+                                   Minimum="{Binding MinimumNode.NumericValue, TargetNullValue=0}" />
+        </DataTemplate>
+        <DataTemplate x:Key="DoubleTemplate" DataType="viewModels:ConfigurationStatViewModel">
+            <mahApps:NumericUpDown NumericInputMode="Decimal"
+                                   Style="{StaticResource NumericUpDownStyle}" />
+        </DataTemplate>
+        <DataTemplate x:Key="BoolTemplate" DataType="viewModels:ConfigurationStatViewModel">
+            <CheckBox IsChecked="{Binding Node.BoolValue, UpdateSourceTrigger=PropertyChanged}"
+                      HorizontalAlignment="Center" />
+        </DataTemplate>
+        <DataTemplate x:Key="EnumTemplate" DataType="viewModels:ConfigurationStatViewModel">
+            <ComboBox SelectedIndex="{Binding Node.NumericValue, UpdateSourceTrigger=PropertyChanged, TargetNullValue=0}"
+                      ItemsSource="{Binding Node.EnumValues}" />
+        </DataTemplate>
+    </UserControl.Resources>
+    <DataGrid AutoGenerateColumns="False"
+              CanUserAddRows="False"
+              CanUserDeleteRows="False"
+              CanUserResizeColumns="False"
+              HorizontalScrollBarVisibility="Hidden"
+              ItemsSource="{Binding Stats}">
+        <DataGrid.Columns>
+            <DataGridTextColumn IsReadOnly="True"
+                                Width="250"
+                                HeaderStyle="{StaticResource MetroDataGridColumnHeader}"
+                                Binding="{Binding Node}">
+                <DataGridTextColumn.Header>
+                    <l:Catalog>Stat</l:Catalog>
+                </DataGridTextColumn.Header>
+            </DataGridTextColumn>
+            <DataGridTemplateColumn Width="120"
+                                    HeaderStyle="{StaticResource MetroDataGridColumnHeader}">
+                <DataGridTemplateColumn.Header>
+                    <l:Catalog>Value</l:Catalog>
+                </DataGridTemplateColumn.Header>
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate DataType="viewModels:ConfigurationStatViewModel">
+                        <ContentControl Content="{Binding}">
+                            <ContentControl.Style>
+                                <Style TargetType="ContentControl">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Node.DataType}" Value="{x:Type system:Double}">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource DoubleTemplate}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Node.DataType}" Value="{x:Type system:Int32}">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource IntTemplate}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Node.DataType}" Value="{x:Type system:UInt32}">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource UIntTemplate}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Node.DataType}" Value="{x:Type system:Boolean}">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource BoolTemplate}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Node.DataType.IsEnum}" Value="True">
+                                            <Setter Property="ContentTemplate" Value="{StaticResource EnumTemplate}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ContentControl.Style>
+                        </ContentControl>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+    </DataGrid>
+</UserControl>

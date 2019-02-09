@@ -53,7 +53,13 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             if (tags.HasFlag(Tags.Weapon))
             {
                 SetupDamageRelatedProperty(slot, _builderFactories.ActionBuilders.CriticalStrike.Chance);
-                SetupDamageRelatedProperty(slot, _builderFactories.StatBuilders.BaseCastTime);
+                SetupDamageRelatedProperty(slot, _builderFactories.StatBuilders.CastRate);
+                // BaseSet CastRate property using BaseCastTime. This additional step is necessary because of modifiers
+                // attacks like Whirling Blades or Leap Slam that modify/override the BaseCastTime.
+                _modifiers.AddLocal(
+                    _builderFactories.StatBuilders.CastRate.WithSkills.With(SlotToHand(slot)).AsItemProperty,
+                    Form.BaseSet,
+                    _builderFactories.StatBuilders.BaseCastTime.WithSkills.With(SlotToHand(slot)).Value.Invert);
                 SetupDamageRelatedProperty(slot, _builderFactories.StatBuilders.Range);
                 foreach (var damageType in Enums.GetValues<DamageType>())
                 {
@@ -97,7 +103,9 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                             value / 100D);
                         break;
                     case "attack_time":
-                        SetDamageRelatedProperty(slot, _builderFactories.StatBuilders.BaseCastTime, value / 1000D);
+                        _modifiers.AddLocal(
+                            _builderFactories.StatBuilders.BaseCastTime.WithSkills.With(SlotToHand(slot)),
+                            Form.BaseSet, value / 1000D);
                         break;
                     case "range":
                         SetDamageRelatedProperty(slot, _builderFactories.StatBuilders.Range, value);

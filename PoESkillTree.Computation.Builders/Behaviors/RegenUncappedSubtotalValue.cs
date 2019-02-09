@@ -49,6 +49,8 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                 _originalContext = originalContext;
             }
 
+            public PathDefinition CurrentPath => _originalContext.CurrentPath;
+
             public IEnumerable<PathDefinition> GetPaths(IStat stat)
             {
                 if (!_value._regens(_value._pool).Equals(stat))

@@ -11,18 +11,19 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
     public class ResultMappingParser<TSource, TResult> : IStringParser<TResult>
     {
         private readonly IStringParser<TSource> _inner;
-        private readonly Func<TSource, TResult> _mapper;
+        private readonly Func<CoreParserParameter, TSource, TResult> _mapper;
 
-        public ResultMappingParser(IStringParser<TSource> inner, Func<TSource, TResult> mapper)
+        public ResultMappingParser(
+            IStringParser<TSource> inner, Func<CoreParserParameter, TSource, TResult> mapper)
         {
             _inner = inner;
             _mapper = mapper;
         }
 
-        public StringParseResult<TResult> Parse(string stat)
+        public StringParseResult<TResult> Parse(CoreParserParameter parameter)
         {
-            var (successfullyParsed, remaining, innerResult) = _inner.Parse(stat);
-            return (successfullyParsed, remaining, _mapper(innerResult));
+            var (successfullyParsed, remaining, innerResult) = _inner.Parse(parameter);
+            return (successfullyParsed, remaining, _mapper(parameter, innerResult));
         }
     }
 }

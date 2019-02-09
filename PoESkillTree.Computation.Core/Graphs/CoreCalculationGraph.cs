@@ -43,7 +43,7 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         public void AddModifier(Modifier modifier)
         {
-            var node = _nodeFactory.Create(modifier.Value);
+            var node = _nodeFactory.Create(modifier.Value, new PathDefinition(modifier.Source.CanonicalSource));
             modifier.Stats
                 .Select(GetOrAddStatGraph)
                 .ForEach(g => g.AddModifier(node, modifier));

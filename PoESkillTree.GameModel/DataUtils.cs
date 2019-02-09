@@ -4,11 +4,12 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace PoESkillTree.GameModel
 {
     /// <summary>
-    /// Deserializes data files and contains related constants.
+    /// Deserializes data files asynchronously and contains related constants.
     /// </summary>
     public static class DataUtils
     {
@@ -16,17 +17,14 @@ namespace PoESkillTree.GameModel
         public const string RePoEDataUrl = "https://raw.githubusercontent.com/brather1ng/RePoE/master/data/";
         public const string RePoEFileSuffix = ".min.json";
 
-        /// <summary>
-        /// Asynchronously deserializes the data file with the given name (without extension).
-        /// </summary>
         /// <typeparam name="T">type to deserialize the json as</typeparam>
-        /// <param name="fileName">the data file to deserialize</param>
+        /// <param name="fileName">the data file to deserialize, without extension</param>
         /// <returns>a task returning the deserialized object</returns>
         public static Task<T> LoadRePoEAsync<T>(string fileName)
             => LoadJsonAsync<T>(RePoEFileToResource(fileName));
 
-        public static Task<string> LoadRePoEAsync(string fileName)
-            => LoadTextAsync(RePoEFileToResource(fileName));
+        public static Task<JObject> LoadRePoEAsObjectAsync(string fileName)
+            => LoadJObjectAsync(RePoEFileToResource(fileName));
 
         private static string RePoEFileToResource(string fileName)
             => "RePoE." + fileName.Replace("/", ".") + RePoEFileSuffix;
@@ -49,17 +47,28 @@ namespace PoESkillTree.GameModel
 
         private static async Task<string> LoadTextAsync(string resourceName)
         {
-            var name = ResourceRoot + resourceName;
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name))
+            using (var reader = CreateResourceStreamReader(resourceName))
             {
-                if (stream is null)
-                    throw new ArgumentException("Unknown resource " + name);
-
-                using (var reader = new StreamReader(stream))
-                {
-                    return await reader.ReadToEndAsync().ConfigureAwait(false);
-                }
+                return await reader.ReadToEndAsync().ConfigureAwait(false);
             }
+        }
+
+        private static async Task<JObject> LoadJObjectAsync(string resourceName)
+        {
+            using (var reader = CreateResourceStreamReader(resourceName))
+            using (var jsonReader = new JsonTextReader(reader))
+            {
+                return await JObject.LoadAsync(jsonReader).ConfigureAwait(false);
+            }
+        }
+
+        private static StreamReader CreateResourceStreamReader(string resourceName)
+        {
+            var name = ResourceRoot + resourceName;
+            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name);
+            if (stream is null)
+                throw new ArgumentException("Unknown resource " + name);
+            return new StreamReader(stream);
         }
     }
 }

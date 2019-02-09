@@ -17,6 +17,10 @@ Gain Maddening Presence for 10 seconds when you Kill a Rare or Unique Enemy
 // Item-inherent skills
 Curse Enemies with Level 10 Flammability on Hit
 Triggers Level 20 Cold Aegis when Equipped
+25% chance to Curse non-Cursed Enemies with Enfeeble on Hit
+Triggers Level 7 Abberath's Fury when Equipped
+Socketed Gems are Supported by Level 10 Added Fire Damage
+Socketed Gems are supported by Level 2 Chance to Flee
 // Minions
 10% increased area of effect for each Summoned Sentinel of Purity
 // - modifies minion skill

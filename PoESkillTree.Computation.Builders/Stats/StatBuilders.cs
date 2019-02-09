@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using MoreLinq;
@@ -11,8 +10,10 @@ using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
+using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
+using static PoESkillTree.Computation.Common.ExplicitRegistrationTypes;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
@@ -22,20 +23,20 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        public IStatBuilder Level => FromIdentity(typeof(int));
+        public IStatBuilder Level => FromIdentity(typeof(uint));
         public IStatBuilder CharacterClass => FromIdentity(typeof(CharacterClass));
-        public IStatBuilder PassivePoints => FromIdentity(typeof(int));
-        public IStatBuilder AscendancyPassivePoints => FromIdentity(typeof(int));
+        public IStatBuilder PassivePoints => FromIdentity(typeof(uint));
+        public IStatBuilder AscendancyPassivePoints => FromIdentity(typeof(uint));
 
-        public IStatBuilder Armour => FromIdentity(typeof(int));
+        public IStatBuilder Armour => FromIdentity(typeof(uint));
 
         public IEvasionStatBuilder Evasion => new EvasionStatBuilder(StatFactory);
 
         public IDamageRelatedStatBuilder Accuracy
-            => DamageRelatedFromIdentity(typeof(int)).WithSkills(DamageSource.Attack);
+            => DamageRelatedFromIdentity(typeof(uint)).WithSkills(DamageSource.Attack);
 
         public IDamageRelatedStatBuilder ChanceToHit
-            => DamageRelatedFromIdentity(typeof(int)).WithSkills(DamageSource.Attack);
+            => DamageRelatedFromIdentity(typeof(uint)).WithSkills(DamageSource.Attack);
 
         public IStatBuilder MovementSpeed => FromIdentity(typeof(double));
         public IStatBuilder ActionSpeed => FromIdentity(typeof(double));
@@ -53,18 +54,17 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         public IStatBuilder AreaOfEffect => FromIdentity(typeof(int));
-        public IStatBuilder Radius => FromIdentity(typeof(int));
+        public IStatBuilder Radius => FromIdentity(typeof(uint));
 
         public IDamageRelatedStatBuilder Range
-            => DamageRelatedFromIdentity(typeof(int)).WithSkills(DamageSource.Attack);
+            => DamageRelatedFromIdentity(typeof(uint)).WithSkills(DamageSource.Attack);
 
         public IStatBuilder Cooldown => FromIdentity(typeof(double));
         public IStatBuilder CooldownRecoverySpeed => FromIdentity(typeof(double));
         public IStatBuilder Duration => FromIdentity(typeof(double));
         public IStatBuilder SecondaryDuration => FromIdentity(typeof(double));
-        public IStatBuilder SkillStage => FromIdentity(typeof(int),
-            ExplicitRegistrationTypes.UserSpecifiedValue(double.MaxValue));
-        public IStatBuilder MainSkillPart => FromIdentity(typeof(int));
+        public IStatBuilder SkillStage => FromIdentity(typeof(uint), UserSpecifiedValue(double.MaxValue));
+        public IStatBuilder MainSkillPart => FromIdentity(typeof(uint));
 
         public ITrapStatBuilders Trap => new TrapStatBuilders(StatFactory);
         public IMineStatBuilders Mine => new MineStatBuilders(StatFactory);
@@ -73,21 +73,20 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder ItemQuantity => FromIdentity(typeof(int));
         public IStatBuilder ItemRarity => FromIdentity(typeof(int));
 
-        public IStatBuilder PrimordialJewelsSocketed => FromIdentity(typeof(int));
-        public IStatBuilder GrandSpectrumJewelsSocketed => FromIdentity(typeof(int));
+        public IStatBuilder PrimordialJewelsSocketed => FromIdentity(typeof(uint));
+        public IStatBuilder GrandSpectrumJewelsSocketed => FromIdentity(typeof(uint));
 
-        public IStatBuilder RampageStacks => FromIdentity(typeof(int));
+        public IStatBuilder RampageStacks => FromIdentity(typeof(uint));
         public IStatBuilder CharacterSize => FromIdentity(typeof(double));
         public IStatBuilder LightRadius => FromIdentity(typeof(double));
-        public IStatBuilder AttachedBrands => FromIdentity(typeof(int));
+        public IStatBuilder AttachedBrands => FromIdentity(typeof(uint));
 
         public IStatBuilder PassiveNodeSkilled(ushort nodeId) => FromIdentity($"{nodeId}.Skilled", typeof(bool));
 
-        public IStatBuilder DamageTakenGainedAsMana =>
-            FromIdentity("% of damage taken gained as mana over 4 seconds", typeof(int));
+        public IStatBuilder DamageTakenGainedAsMana => FromIdentity(typeof(uint));
 
-        public IStatBuilder Unique(string name, Type type)
-            => FromIdentity(name, type, ExplicitRegistrationTypes.UserSpecifiedValue());
+        public ValueBuilder UniqueAmount(string name)
+            => FromIdentity(name, typeof(uint), UserSpecifiedValue(0)).Value;
 
         public IAttributeStatBuilders Attribute => new AttributeStatBuilders(StatFactory);
         public IRequirementStatBuilders Requirements => new RequirementStatBuilders(StatFactory);
@@ -99,36 +98,36 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IGemStatBuilders Gem => new GemStatBuilders(StatFactory);
     }
 
-    internal class TrapStatBuilders : StatBuildersBase, ITrapStatBuilders
+    internal class TrapStatBuilders : PrefixedStatBuildersBase, ITrapStatBuilders
     {
-        public TrapStatBuilders(IStatFactory statFactory) : base(statFactory)
+        public TrapStatBuilders(IStatFactory statFactory) : base(statFactory, "Trap")
         {
         }
 
-        public IStatBuilder Speed => FromIdentity("Trap throwing speed", typeof(double));
-        public IStatBuilder Duration => FromIdentity("Trap duration", typeof(double));
-        public IStatBuilder TriggerAoE => FromIdentity("Trap trigger AoE", typeof(int));
+        public IStatBuilder Speed => FromIdentity("ThrowingSpeed", typeof(double));
+        public IStatBuilder Duration => FromIdentity(typeof(double));
+        public IStatBuilder TriggerAoE => FromIdentity(typeof(int));
     }
 
-    internal class MineStatBuilders : StatBuildersBase, IMineStatBuilders
+    internal class MineStatBuilders : PrefixedStatBuildersBase, IMineStatBuilders
     {
-        public MineStatBuilders(IStatFactory statFactory) : base(statFactory)
+        public MineStatBuilders(IStatFactory statFactory) : base(statFactory, "Mine")
         {
         }
 
-        public IStatBuilder Speed => FromIdentity("Mine laying speed", typeof(double));
-        public IStatBuilder Duration => FromIdentity("Mine duration", typeof(double));
-        public IStatBuilder DetonationAoE => FromIdentity("Mine detonation AoE", typeof(int));
+        public IStatBuilder Speed => FromIdentity("LayingSpeed", typeof(double));
+        public IStatBuilder Duration => FromIdentity(typeof(double));
+        public IStatBuilder DetonationAoE => FromIdentity(typeof(int));
     }
 
-    internal class TotemStatBuilders : StatBuildersBase, ISkillEntityStatBuilders
+    internal class TotemStatBuilders : PrefixedStatBuildersBase, ISkillEntityStatBuilders
     {
-        public TotemStatBuilders(IStatFactory statFactory) : base(statFactory)
+        public TotemStatBuilders(IStatFactory statFactory) : base(statFactory, "Totem")
         {
         }
 
-        public IStatBuilder Speed => FromIdentity("Totem placement speed", typeof(double));
-        public IStatBuilder Duration => FromIdentity("Totem duration", typeof(double));
+        public IStatBuilder Speed => FromIdentity("PlacementSpeed", typeof(double));
+        public IStatBuilder Duration => FromIdentity(typeof(double));
     }
 
     internal class AttributeStatBuilders : StatBuildersBase, IAttributeStatBuilders
@@ -137,11 +136,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        public IStatBuilder Strength => FromIdentity(typeof(int));
-        public IStatBuilder Dexterity => FromIdentity(typeof(int));
-        public IStatBuilder Intelligence => FromIdentity(typeof(int));
-        public IStatBuilder StrengthDamageBonus => FromIdentity(typeof(int));
-        public IStatBuilder DexterityEvasionBonus => FromIdentity(typeof(int));
+        public IStatBuilder Strength => FromIdentity(typeof(uint));
+        public IStatBuilder Dexterity => FromIdentity(typeof(uint));
+        public IStatBuilder Intelligence => FromIdentity(typeof(uint));
+        public IStatBuilder StrengthDamageBonus => FromIdentity(typeof(uint));
+        public IStatBuilder DexterityEvasionBonus => FromIdentity(typeof(uint));
     }
 
     internal class RequirementStatBuilders : StatBuildersBase, IRequirementStatBuilders
@@ -150,58 +149,56 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        public IStatBuilder Level => Requirement(typeof(int));
-        public IStatBuilder Strength => Requirement(typeof(int));
-        public IStatBuilder Dexterity => Requirement(typeof(int));
-        public IStatBuilder Intelligence => Requirement(typeof(int));
+        public IStatBuilder Level => Requirement();
+        public IStatBuilder Strength => Requirement();
+        public IStatBuilder Dexterity => Requirement();
+        public IStatBuilder Intelligence => Requirement();
 
-        private IStatBuilder Requirement(Type dataType, [CallerMemberName] string requiredStat = null)
-            => FromStatFactory(e => StatFactory.Requirement(StatFactory.FromIdentity(requiredStat, e, dataType)));
+        private IStatBuilder Requirement([CallerMemberName] string requiredStat = null)
+            => FromStatFactory(e => StatFactory.Requirement(StatFactory.FromIdentity(requiredStat, e, typeof(uint))));
     }
 
-    internal class DodgeStatBuilders : StatBuildersBase, IDodgeStatBuilders
+    internal class DodgeStatBuilders : PrefixedStatBuildersBase, IDodgeStatBuilders
     {
-        public DodgeStatBuilders(IStatFactory statFactory) : base(statFactory)
+        public DodgeStatBuilders(IStatFactory statFactory) : base(statFactory, "Dodge")
         {
         }
 
-        public IStatBuilder AttackChance => FromIdentity("Chance to dodge attacks", typeof(int));
-        public IStatBuilder SpellChance => FromIdentity("Chance to dodge spells", typeof(int));
+        public IStatBuilder AttackChance => FromIdentity(typeof(uint));
+        public IStatBuilder SpellChance => FromIdentity(typeof(uint));
     }
 
-    internal class FlaskStatBuilders : StatBuildersBase, IFlaskStatBuilders
+    internal class FlaskStatBuilders : PrefixedStatBuildersBase, IFlaskStatBuilders
     {
-        public FlaskStatBuilders(IStatFactory statFactory) : base(statFactory)
+        public FlaskStatBuilders(IStatFactory statFactory) : base(statFactory, "Flask")
         {
         }
 
-        public IStatBuilder Effect => FromIdentity("Flask.Effect", typeof(int));
-        public IStatBuilder Duration => FromIdentity("Flask.EffectDuration", typeof(double));
-        public IStatBuilder LifeRecovery => FromIdentity("Flask.LifeRecovery", typeof(int));
-        public IStatBuilder ManaRecovery => FromIdentity("Flask.ManaRecovery", typeof(int));
-        public IStatBuilder RecoverySpeed => FromIdentity("Flask.RecoverySpeed", typeof(double));
-        public IStatBuilder ChargesUsed => FromIdentity("Flask.ChargesUsed", typeof(int));
-        public IStatBuilder ChargesGained => FromIdentity("Flask.ChargesGained", typeof(double));
+        public IStatBuilder Effect => FromIdentity(typeof(int));
+        public IStatBuilder Duration => FromIdentity(typeof(double));
+        public IStatBuilder LifeRecovery => FromIdentity(typeof(int));
+        public IStatBuilder ManaRecovery => FromIdentity(typeof(int));
+        public IStatBuilder RecoverySpeed => FromIdentity(typeof(double));
+        public IStatBuilder ChargesUsed => FromIdentity(typeof(int));
+        public IStatBuilder ChargesGained => FromIdentity(typeof(double));
 
-        public IConditionBuilder IsAnyActive =>
-            FromIdentity("Is any flask active?", typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue()).IsSet;
+        public IConditionBuilder IsAnyActive => FromIdentity(typeof(bool), UserSpecifiedValue(false)).IsSet;
     }
 
-    internal class ProjectileStatBuilders : StatBuildersBase, IProjectileStatBuilders
+    internal class ProjectileStatBuilders : PrefixedStatBuildersBase, IProjectileStatBuilders
     {
-        public ProjectileStatBuilders(IStatFactory statFactory) : base(statFactory)
+        public ProjectileStatBuilders(IStatFactory statFactory) : base(statFactory, "Projectile")
         {
         }
 
-        public IStatBuilder Speed => FromIdentity("Projectile speed", typeof(int));
-        public IStatBuilder Count => FromIdentity("Projectile count", typeof(int));
+        public IStatBuilder Speed => FromIdentity(typeof(int));
+        public IStatBuilder Count => FromIdentity(typeof(uint));
 
-        public IStatBuilder PierceCount => FromIdentity("Projectile pierce count", typeof(int));
-        public IStatBuilder ChainCount => FromIdentity("Projectile chain count", typeof(int));
-        public IStatBuilder Fork => FromIdentity("Projectile.Fork", typeof(bool));
+        public IStatBuilder PierceCount => FromIdentity(typeof(uint));
+        public IStatBuilder ChainCount => FromIdentity(typeof(uint));
+        public IStatBuilder Fork => FromIdentity(typeof(bool));
 
-        public IStatBuilder TravelDistance =>
-            FromIdentity("Projectile travel distance", typeof(int), ExplicitRegistrationTypes.UserSpecifiedValue(35));
+        public ValueBuilder TravelDistance => FromIdentity(typeof(uint), UserSpecifiedValue(35)).Value;
     }
 
     internal class FlagStatBuilders : StatBuildersBase, IFlagStatBuilders
@@ -210,28 +207,25 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        public IStatBuilder IgnoreMovementSpeedPenalties =>
-            FromIdentity("Ignore movement speed penalties from equipped armor", typeof(bool));
+        public IStatBuilder IgnoreMovementSpeedPenalties => FromIdentity(typeof(bool));
 
-        public IStatBuilder ShieldModifiersApplyToMinionsInstead =>
-            FromIdentity("Modifiers on an equipped shield apply to your minions instead", typeof(bool));
+        public IStatBuilder ShieldModifiersApplyToMinionsInstead => FromIdentity(typeof(bool));
 
         public IStatBuilder IgnoreHexproof => FromIdentity(typeof(bool));
         public IStatBuilder CriticalStrikeChanceIsLucky => FromIdentity(typeof(bool));
         public IStatBuilder FarShot => FromIdentity(typeof(bool));
 
-        public IStatBuilder AlwaysMoving
-            => FromIdentity("Are you always moving?", typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue());
+        public IConditionBuilder AlwaysMoving
+            => FromIdentity("Are you always moving?", typeof(bool), UserSpecifiedValue(false)).IsSet;
 
-        public IStatBuilder AlwaysStationary
-            => FromIdentity("Are you always stationary?", typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue());
+        public IConditionBuilder AlwaysStationary
+            => FromIdentity("Are you always stationary?", typeof(bool), UserSpecifiedValue(false)).IsSet;
 
-        public IStatBuilder BrandAttachedToEnemy
-            => FromIdentity("Is your Brand attached to an enemy?", typeof(bool),
-                ExplicitRegistrationTypes.UserSpecifiedValue());
+        public IConditionBuilder IsBrandAttachedToEnemy
+            => FromIdentity("Is your Brand attached to an enemy?", typeof(bool), UserSpecifiedValue(false)).IsSet;
 
-        public IStatBuilder BannerPlanted
-            => FromIdentity("Is your Banner planted?", typeof(bool), ExplicitRegistrationTypes.UserSpecifiedValue());
+        public IConditionBuilder IsBannerPlanted
+            => FromIdentity("Is your Banner planted?", typeof(bool), UserSpecifiedValue(false)).IsSet;
 
         public IStatBuilder IncreasesToSourceApplyToTarget(IStatBuilder source, IStatBuilder target)
             => new StatBuilder(StatFactory,

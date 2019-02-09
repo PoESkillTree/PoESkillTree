@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
 
 namespace POESKillTree.Model.Items

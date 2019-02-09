@@ -39,8 +39,8 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             var (localMods, globalMods) =
                 remainingMods.Partition(s => ModifierLocalityTester.IsLocal(s, itemTags));
 
-            var parseResults = ParseBuffStats(itemTags, localSource, baseItemDefinition.BuffStats)
-                .Concat(ParsePropertyModifiers(itemTags, localSource, propertyMods))
+            var parseResults = ParsePropertyModifiers(localSource, propertyMods)
+                .Prepend(ParseBuffStats(itemTags, localSource, baseItemDefinition.BuffStats))
                 .Concat(ParseLocalModifiers(itemTags, localSource, localMods))
                 .Concat(ParseGlobalModifiers(itemTags, globalSource, globalMods));
             return ParseResult.Aggregate(parseResults);
@@ -59,15 +59,8 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
         }
 
         private IEnumerable<ParseResult> ParsePropertyModifiers(
-            Tags itemTags, ModifierSource.Local source, IEnumerable<string> propertyMods)
-        {
-            propertyMods = propertyMods.Select(s => s + " (AsItemProperty)");
-            if (itemTags.HasFlag(Tags.Weapon))
-            {
-                propertyMods = propertyMods.Select(s => "Attacks with this Weapon have " + s);
-            }
-            return propertyMods.Select(s => Parse(s, source));
-        }
+            ModifierSource.Local source, IEnumerable<string> propertyMods)
+            => propertyMods.Select(s => s + " (AsItemProperty)").Select(s => Parse(s, source));
 
         private IEnumerable<ParseResult> ParseLocalModifiers(
             Tags itemTags, ModifierSource.Local source, IEnumerable<string> localMods)

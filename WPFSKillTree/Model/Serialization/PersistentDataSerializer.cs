@@ -282,6 +282,7 @@ namespace POESKillTree.Model.Serialization
                 CharacterName = build.CharacterName,
                 CheckedNodeIds = build.CheckedNodeIds.ToList(),
                 CrossedNodeIds = build.CrossedNodeIds.ToList(),
+                ConfigurationStats = build.ConfigurationStats.Export().ToList(),
                 CustomGroups = build.CustomGroups.ToList(),
                 ItemData = build.ItemData,
                 LastUpdated = build.LastUpdated,

@@ -17,10 +17,13 @@ namespace PoESkillTree.Computation.Core.Nodes
         private readonly ISet<ICalculationNode> _usedNodes = new HashSet<ICalculationNode>();
         private readonly ISet<IObservableCollection> _usedCollections = new HashSet<IObservableCollection>();
 
-        public ValueCalculationContext(INodeRepository nodeRepository)
+        public ValueCalculationContext(INodeRepository nodeRepository, PathDefinition currentPath)
         {
             _nodeRepository = nodeRepository;
+            CurrentPath = currentPath;
         }
+
+        public PathDefinition CurrentPath { get; }
 
         public NodeValue? GetValue(IStat stat, NodeType nodeType, PathDefinition path)
         {

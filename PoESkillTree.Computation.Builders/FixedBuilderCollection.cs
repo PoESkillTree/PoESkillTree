@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Builders.Conditions;
@@ -10,15 +11,13 @@ using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
-using PoESkillTree.Utils.Extensions;
-
 namespace PoESkillTree.Computation.Builders
 {
     public class FixedBuilderCollection<TKey, TBuilder> : IBuilderCollection<TBuilder>, IEnumerable<TBuilder>
     {
         private readonly IReadOnlyList<TKey> _keys;
         private readonly Func<TKey, TBuilder> _builderFactory;
-        private readonly IDictionary<TKey, TBuilder> _builders = new Dictionary<TKey, TBuilder>();
+        private readonly ConcurrentDictionary<TKey, TBuilder> _builders = new ConcurrentDictionary<TKey, TBuilder>();
 
         public FixedBuilderCollection(IReadOnlyList<TKey> keys, Func<TKey, TBuilder> builderFactory)
         {

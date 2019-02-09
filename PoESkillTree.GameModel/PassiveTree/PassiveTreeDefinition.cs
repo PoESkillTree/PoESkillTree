@@ -20,7 +20,7 @@ namespace PoESkillTree.GameModel.PassiveTree
         public PassiveNodeDefinition GetNodeById(ushort id) => _nodeDict.Value[id];
 
         // TODO Replace by real skill tree data
-        public static PassiveTreeDefinition CreateKeystoneDefinitions()
+        public static IReadOnlyList<PassiveNodeDefinition> CreateKeystoneDefinitions()
         {
             ushort id = 0;
             var keystones = new[]
@@ -31,11 +31,11 @@ namespace PoESkillTree.GameModel.PassiveTree
                 "Necromantic Aegis", "Pain Attunement", "Perfect Agony", "Phase Acrobatics", "Point Blank",
                 "Resolute Technique", "Runebinder", "Unwavering Stance", "Vaal Pact", "Zealot's Oath",
             };
-            return new PassiveTreeDefinition(keystones.Select(Create).ToList());
+            return keystones.Select(Create).ToList();
 
             PassiveNodeDefinition Create(string name)
                 => new PassiveNodeDefinition(id++, PassiveNodeType.Keystone, name, false,
-                    0, new string[0]);
+                    true, 0, new string[0]);
         }
     }
 }

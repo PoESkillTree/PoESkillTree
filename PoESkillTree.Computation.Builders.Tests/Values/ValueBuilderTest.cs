@@ -147,8 +147,44 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
             Assert.AreEqual(expected, actual);
         }
 
+        [Test]
+        public void MultiplyOnlyCalculatesRightIfLeftCalculatesToNonNull()
+        {
+            var sut = CreateSut().Multiply(CreateSut(new ThrowingValue()));
+
+            var actual = sut.Build().Calculate(null);
+
+            Assert.IsNull(actual);
+        }
+
+        [Test]
+        public void DivideByOnlyCalculatesRightIfLeftCalculatesToNonNull()
+        {
+            var sut = CreateSut().DivideBy(CreateSut(new ThrowingValue()));
+
+            var actual = sut.Build().Calculate(null);
+
+            Assert.IsNull(actual);
+        }
+
+        [Test]
+        public void IfOnlyCalculatesValueIfConditionIsTrue()
+        {
+            var sut = CreateSut(new ThrowingValue()).If(new Constant(false));
+
+            var actual = sut.Build().Calculate(null);
+
+            Assert.IsNull(actual);
+        }
+
         private static ValueBuilderImpl CreateSut(double? value = null) => new ValueBuilderImpl(value);
 
         private static ValueBuilderImpl CreateSut(IValue value) => new ValueBuilderImpl(value);
+
+        private class ThrowingValue : IValue
+        {
+            public NodeValue? Calculate(IValueCalculationContext context)
+                => throw new AssertionException("Expected value not to be calculated");
+        }
     }
 }

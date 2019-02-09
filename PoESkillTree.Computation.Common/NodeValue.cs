@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Common
     /// more operators if the need arises.
     /// </para>
     /// </remarks>
-    public struct NodeValue : IEquatable<NodeValue>
+    public readonly struct NodeValue : IEquatable<NodeValue>
     {
         public NodeValue(double value)
         {

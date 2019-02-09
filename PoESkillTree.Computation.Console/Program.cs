@@ -7,9 +7,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using EnumsNET;
 using log4net;
-using log4net.Appender;
-using log4net.Layout;
-using log4net.Repository.Hierarchy;
 using MoreLinq;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
@@ -38,7 +35,7 @@ namespace PoESkillTree.Computation.Console
         private Program(CompositionRoot compositionRoot)
         {
             _compositionRoot = compositionRoot;
-            _calculator = Calculator.CreateCalculator();
+            _calculator = Calculator.Create();
             _calculator.ExplicitlyRegisteredStats.CollectionChanged += ExplicitlyRegisteredStatsOnCollectionChanged;
         }
 
@@ -51,6 +48,7 @@ namespace PoESkillTree.Computation.Console
             System.Console.WriteLine("- 'listen <stat>', 'query <stat>', 'query mods <stats>' allow querying stat " +
                                      "values and listening to stat value changes");
             System.Console.WriteLine("- 'add <value> <stat>' to BaseAdd to stats");
+            System.Console.WriteLine("- 'remove <modifier>' to remove modifiers");
             System.Console.Write("> ");
             string statLine;
             while ((statLine = System.Console.ReadLine()) != null)
@@ -72,7 +70,7 @@ namespace PoESkillTree.Computation.Console
                         TestDataUpdater.UpdateSkillTreeStatLines();
                         break;
                     case "update ParseableBaseItems":
-                        TestDataUpdater.UpdateParseableBaseItems(await _compositionRoot.BaseItemDefinitions);
+                        TestDataUpdater.UpdateParseableBaseItems(await _compositionRoot.GameData.BaseItems);
                         break;
                     default:
                         await HandleParseCommandAsync(statLine);
@@ -100,9 +98,13 @@ namespace PoESkillTree.Computation.Console
             {
                 await SetStatAsync(statLine.Substring("add ".Length));
             }
-            else 
+            else if (statLine.StartsWith("remove "))
             {
-                var parser = await _compositionRoot.CoreParser;
+                await RemoveModifierAsync(statLine.Substring("remove ".Length));
+            }
+            else
+            {
+                var parser = await _compositionRoot.Parser;
                 if (TryParse(parser, statLine, out var mods, verbose: true))
                 {
                     AddMods(mods);
@@ -192,6 +194,15 @@ namespace PoESkillTree.Computation.Console
             AddMods(new[] { mod });
         }
 
+        private async Task RemoveModifierAsync(string modifierLine)
+        {
+            var parser = await _compositionRoot.Parser;
+            if (TryParse(parser, modifierLine, out var mods, verbose: true))
+            {
+                _calculator.NewBatchUpdate().RemoveModifiers(mods).DoUpdate();
+            }
+        }
+
         private async Task<IEnumerable<IStat>> ParseStatsAsync(string stat)
         {
             var (isMetaStat, metaStats) = await TryParseMetaStatAsync(stat);
@@ -199,7 +210,7 @@ namespace PoESkillTree.Computation.Console
             {
                 return metaStats;
             }
-            var parser = await _compositionRoot.CoreParser;
+            var parser = await _compositionRoot.Parser;
             if (TryParse(parser, "1% increased" + stat, out var mods))
             {
                 return mods.SelectMany(m => m.Stats);
@@ -209,11 +220,12 @@ namespace PoESkillTree.Computation.Console
 
         private async Task<(bool, IEnumerable<IStat>)> TryParseMetaStatAsync(string stat)
         {
-            var metaStats = _compositionRoot.MetaStats;
+            var builderFactories = await _compositionRoot.BuilderFactories;
+            var metaStats = builderFactories.MetaStatBuilders;
             switch (stat.ToLowerInvariant().Trim())
             {
                 case "level":
-                    return (true, Build((await GetStatBuildersAsync()).Level));
+                    return (true, Build(builderFactories.StatBuilders.Level));
                 case "skill hit dps":
                     return (true, Build(metaStats.SkillDpsWithHits));
                 case "skill dot dps":
@@ -227,7 +239,7 @@ namespace PoESkillTree.Computation.Console
                 case "cast rate":
                     return (true, Build(metaStats.CastRate));
                 case "chance to hit":
-                    return (true, Build((await GetStatBuildersAsync()).ChanceToHit));
+                    return (true, Build(builderFactories.StatBuilders.ChanceToHit));
                 case "hit damage source":
                     return (true, Build(metaStats.SkillHitDamageSource));
                 case "uses main hand":
@@ -239,17 +251,14 @@ namespace PoESkillTree.Computation.Console
             }
 
             IEnumerable<IStat> Build(IStatBuilder builder)
-                => builder.Build(default).SelectMany(r => r.Stats);
-
-            async Task<IStatBuilders> GetStatBuildersAsync()
-                => (await _compositionRoot.BuilderFactories).StatBuilders;
+                => builder.BuildToStats(Entity.Character);
         }
 
         /// <summary>
         /// Parses the given stat using the given parser and writes results to the console.
         /// </summary>
         private static bool TryParse(
-            ICoreParser parser, string statLine, out IReadOnlyList<Modifier> mods, bool verbose = false)
+            IParser parser, string statLine, out IReadOnlyList<Modifier> mods, bool verbose = false)
         {
             var result = parser.Parse(statLine);
             if (!result.SuccessfullyParsed)
@@ -268,10 +277,10 @@ namespace PoESkillTree.Computation.Console
 
         private async Task AddGivenStatsAsync()
         {
-            var parser = await _compositionRoot.CoreParser;
-            var givenStats = await _compositionRoot.GivenStats;
-            var mods = GivenStatsParser.Parse(parser, givenStats);
-            AddMods(mods);
+            var parser = await _compositionRoot.Parser;
+            var modifiers = parser.CreateGivenModifierParseDelegates()
+                .AsParallel().SelectMany(d => d()).ToList();
+            AddMods(modifiers);
         }
 
         private void AddMods(IEnumerable<Modifier> mods)
@@ -285,15 +294,17 @@ namespace PoESkillTree.Computation.Console
         /// </summary>
         private async Task Benchmark()
         {
+            System.Console.WriteLine("Async parser initialization:");
             var stopwatch = Stopwatch.StartNew();
-            var parser = await _compositionRoot.CoreParser;
+            var parser = await _compositionRoot.Parser;
             stopwatch.Stop();
-            System.Console.WriteLine($"Async parser initialization:\n  {stopwatch.ElapsedMilliseconds} ms");
+            System.Console.WriteLine($"  {stopwatch.ElapsedMilliseconds} ms");
 
+            System.Console.WriteLine("Initialization (parsing 1 made-up stat):");
             stopwatch.Restart();
             parser.Parse("Made-up");
             stopwatch.Stop();
-            System.Console.WriteLine($"Initialization (parsing 1 made-up stat):\n  {stopwatch.ElapsedMilliseconds} ms");
+            System.Console.WriteLine($"  {stopwatch.ElapsedMilliseconds} ms");
             stopwatch.Reset();
 
             var rng = new Random(1);
@@ -308,38 +319,30 @@ namespace PoESkillTree.Computation.Console
                 "=================================================================");
             foreach (var batch in lines.Batch((int) Math.Ceiling(lines.Count / 10.0)))
             {
+                var batchList = batch.ToList();
                 var batchStart = stopwatch.ElapsedMilliseconds;
-                var batchSize = 0;
-                var newLines = 0;
 
-                foreach (var line in batch)
-                {
-                    stopwatch.Start();
-                    var parseable = parser.Parse(line).SuccessfullyParsed;
-                    stopwatch.Stop();
-                    batchSize++;
-                    if (parseable)
-                    {
-                        successCounter++;
-                    }
-                    if (distinct.Add(line))
-                    {
-                        newLines++;
-                        if (parseable)
-                        {
-                            distinctSuccessCounter++;
-                        }
-                    }
-                }
+                stopwatch.Start();
+                var results = batchList
+                    .AsParallel()
+                    .Select(s => (s, parser.Parse(s).SuccessfullyParsed))
+                    .ToList();
+                stopwatch.Stop();
+
+                var batchSize = batchList.Count;
+                var newLines = results.Where(t => distinct.Add(t.s)).ToList();
+                var newLinesCount = newLines.Count;
+                successCounter += results.Count(t => t.SuccessfullyParsed);
+                distinctSuccessCounter += newLines.Count(t => t.SuccessfullyParsed);
 
                 var elapsed = stopwatch.ElapsedMilliseconds - batchStart;
                 System.Console.WriteLine(
                     $"{batchCounter,5} " +
                     $"| {elapsed,8} " +
                     $"| {(elapsed / (double) batchSize),7:F} " +
-                    $"| {(elapsed / (double) newLines),11:F} " +
+                    $"| {(elapsed / (double) newLinesCount),11:F} " +
                     $"| {batchSize,10} " +
-                    $"| {newLines,9} ");
+                    $"| {newLinesCount,9} ");
                 batchCounter++;
             }
             System.Console.WriteLine(
@@ -364,33 +367,27 @@ namespace PoESkillTree.Computation.Console
         /// </remarks>
         private async Task Profile()
         {
-            var parser = await _compositionRoot.CoreParser;
-            foreach (var line in ReadStatLines())
-            {
-                parser.Parse(line);
-            }
+            var parser = await _compositionRoot.Parser;
+            ReadStatLines()
+                .AsParallel()
+                .Select(s => parser.Parse(s))
+                .Consume();
         }
 
         private static IEnumerable<string> ReadStatLines()
             => File.ReadAllLines("Data/SkillTreeStatLines.txt").Where(s => !s.StartsWith("//"));
 
-        public static void SetupLogger()
+        private static void SetupLogger()
         {
-            var appender = new ConsoleAppender();
-            var patternLayout = new PatternLayout { ConversionPattern = "%m%n" };
-            patternLayout.ActivateOptions();
-            appender.Layout = patternLayout;
-
-            var hierarchy = (Hierarchy) LogManager.GetRepository();
-            hierarchy.Root.AddAppender(appender);
-            hierarchy.Configured = true;
+            // Necessary for logging in other assemblies to work
+            LogManager.GetLogger(typeof(Program));
         }
     }
 
 
     public static class ParserExtensions
     {
-        public static ParseResult Parse(this ICoreParser @this, string stat) =>
-            @this.Parse(stat, new ModifierSource.Global(), Entity.Character);
+        public static ParseResult Parse(this IParser @this, string stat) =>
+            @this.ParseRawModifier(stat, new ModifierSource.Global(), Entity.Character);
     }
 }

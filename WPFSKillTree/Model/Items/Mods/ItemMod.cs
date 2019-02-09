@@ -64,6 +64,12 @@ namespace POESKillTree.Model.Items.Mods
             };
         }
 
+        public string ToModifierString()
+        {
+            var index = 0;
+            return InsertValues(Attribute, ref index);
+        }
+
         private string InsertValues(string into, ref int index)
         {
             var indexCopy = index;
@@ -82,8 +88,7 @@ namespace POESKillTree.Model.Items.Mods
         {
             if (asMod)
             {
-                var index = 0;
-                return new JValue(InsertValues(Attribute, ref index));
+                return new JValue(ToModifierString());
             }
 
             const string allowedTokens = @"(#|#%|\+#%|#-#|#/#)";

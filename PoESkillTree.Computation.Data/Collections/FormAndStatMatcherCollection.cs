@@ -59,7 +59,7 @@ namespace PoESkillTree.Computation.Data.Collections
             var builder = ModifierBuilder
                 .WithForm(form)
                 .WithValue(value)
-                .WithStats(stat.Concat(stats));
+                .WithStats(stats.Prepend(stat));
             Add(regex, builder);
         }
 

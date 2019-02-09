@@ -17,10 +17,15 @@ namespace PoESkillTree.Computation.Builders.Tests.Behaviors
             var expected = (NodeValue?) 42;
             var ailmentDamage = new Stat("Damage.Spell.Ignite");
             var skillDamage = ConcretizeDamage(new SkillDamageSpecification(DamageSource.Spell));
-            var paths = new[] { PathDefinition.MainPath, new PathDefinition(new ModifierSource.Local.Given()) };
+            var paths = new[]
+            {
+                PathDefinition.MainPath,
+                new PathDefinition(new ModifierSource.Local.Given()),
+                new PathDefinition(new ModifierSource.Local.Given(), new Stat("Damage.Attack")),
+            };
             var context = Mock.Of<IValueCalculationContext>(c =>
                 c.GetPaths(ailmentDamage) == paths.Take(1) &&
-                c.GetPaths(skillDamage) == paths.Skip(1) &&
+                c.GetPaths(skillDamage) == paths.Skip(2) &&
                 c.GetValue(ailmentDamage, NodeType.PathTotal, paths[0]) == expected.Value - 10 &&
                 c.GetValue(ailmentDamage, NodeType.PathTotal, paths[1]) == new NodeValue(10));
             var sut = CreateSut(ailmentDamage, skillDamage);

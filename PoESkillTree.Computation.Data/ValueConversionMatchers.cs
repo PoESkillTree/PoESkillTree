@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
-using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
@@ -22,9 +21,8 @@ namespace PoESkillTree.Computation.Data
     {
         private readonly IModifierBuilder _modifierBuilder;
 
-        public ValueConversionMatchers(
-            IBuilderFactories builderFactories, IMatchContexts matchContexts, IModifierBuilder modifierBuilder)
-            : base(builderFactories, matchContexts)
+        public ValueConversionMatchers(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder)
+            : base(builderFactories)
         {
             _modifierBuilder = modifierBuilder;
         }
@@ -104,34 +102,35 @@ namespace PoESkillTree.Computation.Data
                 // unique
                 {
                     "for each poison you have inflicted recently",
-                    Stat.Unique("# of Poisons inflicted Recently", typeof(int)).Value
+                    Stat.UniqueAmount("# of Poisons inflicted Recently")
                 },
                 {
                     "for each remaining chain",
-                    Projectile.ChainCount.Value -
-                    Stat.Unique("# of times the Active Skill has Chained", typeof(int)).Value
+                    AtLeastZero(
+                        Projectile.ChainCount.Value - Stat.UniqueAmount("# of times the Active Skill has Chained"))
                 },
                 {
                     "for each of your mines detonated recently, up to #%",
-                    CappedMultiplier(Stat.Unique("# of Mines Detonated Recently", typeof(int)).Value, Value)
+                    CappedMultiplier(Stat.UniqueAmount("# of Mines Detonated Recently"), Value)
                 },
                 {
                     "for each of your traps triggered recently, up to #%",
-                    CappedMultiplier(Stat.Unique("# of Traps Triggered Recently", typeof(int)).Value, Value)
+                    CappedMultiplier(Stat.UniqueAmount("# of Traps Triggered Recently"), Value)
                 },
                 {
                     "for each time you've blocked in the past 10 seconds",
-                    Stat.Unique("# of times blocked in the past 10 seconds", typeof(int)).Value
+                    Stat.UniqueAmount("# of times blocked in the past 10 seconds")
                 },
                 {
                     "per one hundred nearby enemies",
-                    Stat.Unique("# of nearby enemies", typeof(int)).Value / 100
-                },
+                    Stat.UniqueAmount("# of nearby enemies") / 100
+                }
             }; // add
 
         private Func<ValueBuilder, ValueBuilder> CappedMultiplier(ValueBuilder multiplier, ValueBuilder maximum)
-        {
-            return v => ValueFactory.Minimum(v * multiplier, maximum);
-        }
+            => v => ValueFactory.Minimum(v * multiplier, maximum);
+
+        private ValueBuilder AtLeastZero(ValueBuilder value)
+            => ValueFactory.Maximum(value, 0);
     }
 }

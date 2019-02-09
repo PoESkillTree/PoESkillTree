@@ -50,11 +50,11 @@ namespace PoESkillTree.Computation.Builders.Skills
         public IStatBuilder CombinedInstances =>
             new StatBuilder(_statFactory, new CoreStatBuilderFromCoreBuilder<IEnumerable<Keyword>>(_coreBuilder,
                 (e, ks) => _statFactory.FromIdentity($"{KeywordsToString(ks)}.Instances", e,
-                    typeof(int))));
+                    typeof(uint))));
 
         public IStatBuilder Reservation =>
             new StatBuilder(_statFactory, new CoreStatBuilderFromCoreBuilder<IEnumerable<Keyword>>(_coreBuilder,
-                (_, e, ks) => SelectSkillStats(ks, e, typeof(int))));
+                (_, e, ks) => SelectSkillStats(ks, e, typeof(uint))));
 
         public IStatBuilder ReservationPool =>
             new StatBuilder(_statFactory, new CoreStatBuilderFromCoreBuilder<IEnumerable<Keyword>>(_coreBuilder,

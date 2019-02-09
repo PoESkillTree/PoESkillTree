@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -16,13 +17,15 @@ namespace PoESkillTree.Computation.Builders.Values
 
         public IValueBuilder Create(double value) => new ValueBuilderImpl(value);
 
+        public IValueBuilder Create(bool value) => new ValueBuilderImpl(new Constant(value));
+
         public IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue) =>
-            ValueBuilderImpl.Create(minimumValue, maximumValue, (o1, o2) => CalculateFromMinAndMax(o1, o2),
+            ValueBuilderImpl.Create(minimumValue, maximumValue, CalculateFromMinAndMax,
                 (l, r) => $"Value(min: {l}, max: {r})");
 
-        private static NodeValue? CalculateFromMinAndMax(NodeValue? min, NodeValue? max) =>
-            min.HasValue && max.HasValue
-                ? new NodeValue(min.Value.Minimum, max.Value.Maximum)
+        private static NodeValue? CalculateFromMinAndMax(Func<NodeValue?> minFunc, Func<NodeValue?> maxFunc)
+            => minFunc() is NodeValue min && maxFunc() is NodeValue max
+                ? new NodeValue(min.Minimum, max.Maximum)
                 : (NodeValue?) null;
 
 

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using PoESkillTree.GameModel;
 using POESKillTree.SkillTreeFiles;
 
 namespace POESKillTree.Utils.UrlProcessing
@@ -72,7 +73,7 @@ namespace POESKillTree.Utils.UrlProcessing
             return rawData.Length < 6 ? 0 : rawData[5] & 15;
         }
 
-        protected override int GetAscendancyClassId()
+        public override int GetAscendancyClassId()
         {
             var rawData = GetRawData();
 
@@ -124,24 +125,22 @@ namespace POESKillTree.Utils.UrlProcessing
             return data;
         }
 
-        private BuildUrlData ParsePoeplannerData(PoeplannerData data)
+        private static BuildUrlData ParsePoeplannerData(PoeplannerData data)
         {
-            var result = new BuildUrlData(BanditConverter.PoEPlanner);
-
-            result.Version = data.Version;
+            var result = new BuildUrlData { Version = data.Version };
 
             // There is a small bug in poeplanner, where class and ascendancy bytes are missing, when no one node was selected.
             // Need to check length
             if (data.NodesData.Length == 0)
                 return result;
 
-            result.CharacterClassId = data.NodesData[0] & 15;
+            result.CharacterClass = (CharacterClass) (data.NodesData[0] & 15);
             result.AscendancyClassId = data.NodesData[0] >> 4 & 15;
 
             if (data.NodesData.Length < 2)
                 return result;
 
-            result.SetBandit(data.NodesData[1] & 3);
+            result.Bandit = ConvertBanditId(data.NodesData[1] & 3);
 
             if (data.NodesData.Length < 4)
                 return result;
@@ -165,6 +164,21 @@ namespace POESKillTree.Utils.UrlProcessing
             }
 
             return result;
+        }
+
+        private static Bandit ConvertBanditId(int id)
+        {
+            switch (id)
+            {
+                case 1:
+                    return Bandit.Alira;
+                case 2:
+                    return Bandit.Kraityn;
+                case 3:
+                    return Bandit.Oak;
+                default:
+                    return Bandit.None;
+            }
         }
 
         /// <summary>

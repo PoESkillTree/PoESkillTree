@@ -15,22 +15,20 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     public class SkillTypeParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;
-        private readonly IMetaStatBuilders _metaStatBuilders;
         private readonly Func<SkillDefinition, IEnumerable<string>> _selectTypes;
 
         private SkillTypeParser(
-            IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders,
-            Func<SkillDefinition, IEnumerable<string>> selectTypes)
-            => (_builderFactories, _metaStatBuilders, _selectTypes) =
-                (builderFactories, metaStatBuilders, selectTypes);
+            IBuilderFactories builderFactories, Func<SkillDefinition, IEnumerable<string>> selectTypes)
+            => (_builderFactories, _selectTypes) =
+                (builderFactories, selectTypes);
 
-        public static IPartialSkillParser CreateActive(
-            IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
-            => new SkillTypeParser(builderFactories, metaStatBuilders, d => d.ActiveSkill.ActiveSkillTypes);
+        public static IPartialSkillParser CreateActive(IBuilderFactories builderFactories)
+            => new SkillTypeParser(builderFactories, d => d.ActiveSkill.ActiveSkillTypes);
 
-        public static IPartialSkillParser CreateSupport(
-            IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
-            => new SkillTypeParser(builderFactories, metaStatBuilders, d => d.SupportSkill.AddedActiveSkillTypes);
+        public static IPartialSkillParser CreateSupport(IBuilderFactories builderFactories)
+            => new SkillTypeParser(builderFactories, d => d.SupportSkill.AddedActiveSkillTypes);
+
+        private IMetaStatBuilders MetaStats => _builderFactories.MetaStatBuilders;
 
         public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
@@ -38,7 +36,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
             foreach (var type in _selectTypes(preParseResult.SkillDefinition))
             {
-                modifiers.AddGlobal(_metaStatBuilders.SkillHasType(mainSkill.ItemSlot, mainSkill.SocketIndex, type),
+                modifiers.AddGlobal(MetaStats.SkillHasType(mainSkill.ItemSlot, mainSkill.SocketIndex, type),
                     Form.TotalOverride, 1);
             }
 

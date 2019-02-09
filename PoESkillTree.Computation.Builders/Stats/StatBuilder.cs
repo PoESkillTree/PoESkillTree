@@ -74,8 +74,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder ChanceToDouble => WithStatConverter(StatFactory.ChanceToDouble);
 
         public IStatBuilder AsItemProperty
-            => WithStatConverter(
-                (m, s) => StatFactory.FromIdentity($"{GetItemSlot(m)}.{s.Identity}", s.Entity, s.DataType));
+            => WithStatConverter((m, s) => StatFactory.ItemProperty(s, GetItemSlot(m)));
 
         private static ItemSlot GetItemSlot(ModifierSource modifierSource)
         {

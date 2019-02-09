@@ -5,10 +5,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using log4net;
 using MB.Algodat;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Modifiers;
+using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils.Extensions;
 using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils;
@@ -18,6 +20,8 @@ namespace POESKillTree.Model.Items
 {
     public class Item : Notifier, IRangeProvider<int>
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(Item));
+
         private ItemSlot _slot;
         public ItemSlot Slot
         {
@@ -28,12 +32,14 @@ namespace POESKillTree.Model.Items
         public ItemClass ItemClass { get; }
         public Tags Tags { get; }
 
-        private List<Item> _gems = new List<Item>();
-        public IReadOnlyList<Item> Gems
+        private IReadOnlyList<Skill> _socketedSkills = new Skill[0];
+        public IReadOnlyList<Skill> SocketedSkills
         {
-            get { return _gems; }
-            set { SetProperty(ref _gems, value.ToList()); }
+            get => _socketedSkills;
+            set => SetProperty(ref _socketedSkills, value.ToList());
         }
+
+        public IReadOnlyList<Item> SocketedJewels { get; } = new List<Item>();
 
         public IReadOnlyList<string> Keywords { get; }
 
@@ -117,9 +123,6 @@ namespace POESKillTree.Model.Items
             set { SetProperty(ref _typeLine, value); }
         }
 
-        // The socket group of gem (all gems with same socket group value are linked).
-        public int SocketGroup { get; private set; }
-
         public IItemBase BaseType { get; }
 
         private readonly string _iconUrl;
@@ -189,7 +192,7 @@ namespace POESKillTree.Model.Items
             _slot = source._slot;
             ItemClass = source.ItemClass;
             Tags = source.Tags;
-            _gems = source._gems.ToList();
+            _socketedSkills = source._socketedSkills.ToList();
             if (source.Keywords != null)
                 Keywords = source.Keywords.ToList();
             _frame = source._frame;
@@ -203,7 +206,6 @@ namespace POESKillTree.Model.Items
             _flavourText = source.FlavourText;
             _nameLine = source.NameLine;
             _typeLine = source.TypeLine;
-            SocketGroup = source.SocketGroup;
             BaseType = source.BaseType;
             _iconUrl = source._iconUrl;
             Image = source.Image;
@@ -215,33 +217,8 @@ namespace POESKillTree.Model.Items
             Height = source.Height;
         }
 
-        /// <summary>
-        /// Constructor for gems as items. Their properties are only gem tags and what is necessary to get the
-        /// correct attributes from ItemDB (level and quality).
-        /// </summary>
-        public Item(string gemName, IEnumerable<string> tags, int level, int quality, int socketGroup)
-        {
-            ItemClass = ItemClassEx.ItemClassForGem(gemName);
-            Tags = ItemClass.ToTags();
-            Keywords = tags.ToList();
-            _frame = FrameType.Gem;
-
-            var keywordProp = new ItemMod(string.Join(", ", Keywords), false);
-            _properties.Add(keywordProp);
-            var levelProp = new ItemMod($"Level: {level}", false, ValueColoring.LocallyAffected);
-            _properties.Add(levelProp);
-            var qualityProp = new ItemMod($"Quality: +{quality}%", false, ValueColoring.LocallyAffected);
-            _properties.Add(qualityProp);
-
-            NameLine = "";
-            TypeLine = gemName;
-            SocketGroup = socketGroup;
-
-            Width = 1;
-            Height = 1;
-        }
-
-        public Item(IPersistentData persistentData, JObject val, ItemSlot itemSlot = ItemSlot.Unequipable, bool isGem = false)
+        public Item(EquipmentData equipmentData, SkillDefinitions skillDefinitions, JObject val,
+            ItemSlot itemSlot = ItemSlot.Unequipable)
         {
             JsonBase = val;
             Slot = itemSlot;
@@ -262,50 +239,42 @@ namespace POESKillTree.Model.Items
 
             Frame = (FrameType)val["frameType"].Value<int>();
             TypeLine = FilterJsonString(val["typeLine"].Value<string>());
-            if (isGem)
+
+            if (Frame == FrameType.Magic)
             {
-                // BaseType will be null for socketed gems.
-                ItemClass = ItemClassEx.ItemClassForGem(TypeLine);
-                Tags = ItemClass.ToTags();
+                BaseType = equipmentData.ItemBaseFromTypeline(TypeLine);
+            }
+            else if ((Frame == FrameType.Unique || Frame == FrameType.Foil)
+                     && equipmentData.UniqueBaseDictionary.ContainsKey(NameLine))
+            {
+                BaseType = equipmentData.UniqueBaseDictionary[NameLine];
             }
             else
             {
-                if (Frame == FrameType.Magic)
-                {
-                    BaseType = persistentData.EquipmentData.ItemBaseFromTypeline(TypeLine);
-                }
-                else if ((Frame == FrameType.Unique || Frame == FrameType.Foil)
-                    && persistentData.EquipmentData.UniqueBaseDictionary.ContainsKey(NameLine))
-                {
-                    BaseType = persistentData.EquipmentData.UniqueBaseDictionary[NameLine];
-                }
-                else
-                {
-                    // item is not unique or the unique is unknown
-                    ItemBase iBase;
-                    persistentData.EquipmentData.ItemBaseDictionary.TryGetValue(TypeLine, out iBase);
-                    BaseType = iBase;
-                }
-                // For known bases, images are only downloaded if the item is unique or foil. All other items should
-                // always have the same image. (except alt art non-uniques that are rare enough to be ignored)
-                var loadImageFromIconUrl = _iconUrl != null
-                    && (BaseType == null || Frame == FrameType.Unique || Frame == FrameType.Foil);
-                if (BaseType == null)
-                {
-                    BaseType = new ItemBase(persistentData.EquipmentData.ItemImageService, itemSlot, TypeLine,
-                        Keywords == null ? "" : Keywords.FirstOrDefault(), Frame);
-                }
-                ItemClass = BaseType.ItemClass;
-                Tags = BaseType.Tags;
-                if (loadImageFromIconUrl)
-                {
-                    Image = BaseType.Image.AsDefaultForImageFromUrl(
-                        persistentData.EquipmentData.ItemImageService, _iconUrl);
-                }
-                else
-                {
-                    Image = BaseType.Image;
-                }
+                // item is not unique or the unique is unknown
+                ItemBase iBase;
+                equipmentData.ItemBaseDictionary.TryGetValue(TypeLine, out iBase);
+                BaseType = iBase;
+            }
+            // For known bases, images are only downloaded if the item is unique or foil. All other items should
+            // always have the same image. (except alt art non-uniques that are rare enough to be ignored)
+            var loadImageFromIconUrl = _iconUrl != null
+                                       && (BaseType == null || Frame == FrameType.Unique || Frame == FrameType.Foil);
+            if (BaseType == null)
+            {
+                BaseType = new ItemBase(equipmentData.ItemImageService, itemSlot, TypeLine,
+                    Keywords == null ? "" : Keywords.FirstOrDefault(), Frame);
+            }
+            ItemClass = BaseType.ItemClass;
+            Tags = BaseType.Tags;
+            if (loadImageFromIconUrl)
+            {
+                Image = BaseType.Image.AsDefaultForImageFromUrl(
+                    equipmentData.ItemImageService, _iconUrl);
+            }
+            else
+            {
+                Image = BaseType.Image;
             }
 
             if (val["properties"] != null)
@@ -348,17 +317,17 @@ namespace POESKillTree.Model.Items
             if (val["implicitMods"] != null)
                 foreach (var s in val["implicitMods"].Values<string>())
                 {
-                    _implicitMods.Add(ItemModFromString(FixOldRanges(s), ModLocation.Implicit));
+                    _implicitMods.Add(ItemModFromString(FixOldRanges(s)));
                 }
             if (val["explicitMods"] != null)
                 foreach (var s in val["explicitMods"].Values<string>())
                 {
-                    ExplicitMods.Add(ItemModFromString(FixOldRanges(s), ModLocation.Explicit));
+                    ExplicitMods.Add(ItemModFromString(FixOldRanges(s)));
                 }
             if (val["craftedMods"] != null)
                 foreach (var s in val["craftedMods"].Values<string>())
                 {
-                    CraftedMods.Add(ItemModFromString(FixOldRanges(s), ModLocation.Crafted));
+                    CraftedMods.Add(ItemModFromString(FixOldRanges(s)));
                 }
 
             if (val["flavourText"] != null && val["flavourText"].HasValues)
@@ -373,16 +342,67 @@ namespace POESKillTree.Model.Items
             if (val["socketedItems"] != null)
             {
                 int socket = 0;
+                var skills = new List<Skill>();
+                var jewels = new List<Item>();
                 foreach (JObject obj in (JArray)val["socketedItems"])
                 {
-                    var item = new Item(persistentData, obj, isGem: true) {SocketGroup = sockets[socket++]};
-                    _gems.Add(item);
+                    var frameType = obj.Value<int>("frameType");
+                    if ((FrameType) frameType == FrameType.Gem)
+                    {
+                        if (TryDeserializeSocketedSkill(skillDefinitions, obj, socket, sockets[socket], out var skill))
+                        {
+                            skills.Add(skill);
+                        }
+                    }
+                    else
+                    {
+                        jewels.Add(new Item(equipmentData, skillDefinitions, obj));
+                    }
+                    socket++;
                 }
+                _socketedSkills = skills;
+                SocketedJewels = jewels;
             }
         }
 
-        private ItemMod ItemModFromString(string attribute, ModLocation location, 
-            IEnumerable<ValueColoring> valueColor = null)
+        private bool TryDeserializeSocketedSkill(
+            SkillDefinitions skillDefinitions, JObject jObject, int socketIndex, int socketGroup, out Skill skill)
+        {
+            if (jObject.ContainsKey("skillId"))
+            {
+                var id = skillDefinitions.GetSkillById(jObject.Value<string>("skillId")).Id;
+                skill = new Skill(id, 
+                    jObject.Value<int>("level"),
+                    jObject.Value<int>("quality"),
+                    default, socketIndex, socketGroup);
+                return true;
+            }
+
+            var baseItemSkills = skillDefinitions.Skills.Where(d => d.BaseItem != null)
+                .Where(d => d.BaseItem.ReleaseState == ReleaseState.Released
+                            || d.BaseItem.ReleaseState == ReleaseState.Legacy)
+                .ToList();
+            var name = jObject.Value<string>("typeLine");
+            var definition = baseItemSkills.FirstOrDefault(d => d.BaseItem?.DisplayName == name)
+                ?? baseItemSkills.FirstOrDefault(d => d.BaseItem?.DisplayName == name + " Support");
+            if (definition is null)
+            {
+                Log.Error($"Unknown skill: {name}");
+                skill = null;
+                return false;
+            }
+
+            var properties = jObject["properties"].Select(j => ItemModFromJson(j, ModLocation.Property)).ToList();
+            if (!properties.TryGetValue("Level: #", 0, out var level))
+            {
+                level = (int) properties.First("Level: # (Max)", 0, 1);
+            }
+            var quality = (int) properties.First("Quality: +#%", 0, 0);
+            skill = new Skill(definition.Id, (int) level, quality, default, socketIndex, socketGroup);
+            return true;
+        }
+
+        private ItemMod ItemModFromString(string attribute, IEnumerable<ValueColoring> valueColor = null)
         {
             var isLocal = ModifierLocalityTester.IsLocal(attribute, Tags);
             var itemMod = new ItemMod(attribute, isLocal);
@@ -442,7 +462,7 @@ namespace POESKillTree.Model.Items
                 attribute = name;
             }
 
-            return ItemModFromString(attribute, location, valueColors);
+            return ItemModFromString(attribute, valueColors);
         }
 
         private static readonly Regex OldRangeRegex = new Regex(@"(\d+)-(\d+) ");
@@ -551,14 +571,25 @@ namespace POESKillTree.Model.Items
                             new JArray(CraftedMods.Select(p => p.ToJobject(true)).ToArray())));
             }
 
-            if (Gems.Count > 0)
+            if (SocketedSkills.Any() || SocketedJewels.Any())
             {
                 var sockets = new JArray();
                 var socketedItems = new JArray();
-                foreach (var gem in Gems)
+                foreach (var jewel in SocketedJewels)
                 {
-                    sockets.Add(new JObject { { "group", gem.SocketGroup } });
-                    socketedItems.Add(gem.JsonBase);
+                    sockets.Add(new JObject { { "group", 0 } });
+                    socketedItems.Add(jewel.JsonBase);
+                }
+                foreach (var skill in SocketedSkills)
+                {
+                    sockets.Add(new JObject { { "group", skill.GemGroup } });
+                    socketedItems.Add(new JObject
+                    {
+                        { "skillId", skill.Id },
+                        { "level", skill.Level },
+                        { "quality", skill.Quality },
+                        { "frameType", (int) FrameType.Gem },
+                    });
                 }
                 j["sockets"] = sockets;
                 j["socketedItems"] = socketedItems;
@@ -573,12 +604,6 @@ namespace POESKillTree.Model.Items
         private static string FilterJsonString(string json)
         {
             return Regex.Replace(json, @"<<[a-zA-Z0-9:]+>>", "");
-        }
-
-        // Returns gems linked to specified gem.
-        public List<Item> GetLinkedGems(Item gem)
-        {
-            return Gems.Where(linked => linked != gem && linked.SocketGroup == gem.SocketGroup).ToList();
         }
 
         /// <summary>

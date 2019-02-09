@@ -12,10 +12,11 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     public class SupportSkillLevelParser : IPartialSkillParser
     {
         private readonly IBuilderFactories _builderFactories;
-        private readonly IMetaStatBuilders _metaStatBuilders;
 
-        public SupportSkillLevelParser(IBuilderFactories builderFactories, IMetaStatBuilders metaStatBuilders)
-            => (_builderFactories, _metaStatBuilders) = (builderFactories, metaStatBuilders);
+        public SupportSkillLevelParser(IBuilderFactories builderFactories)
+            => _builderFactories = builderFactories;
+
+        private IMetaStatBuilders MetaStats => _builderFactories.MetaStatBuilders;
 
         public PartialSkillParseResult Parse(Skill mainSkill, Skill parsedSkill, SkillPreParseResult preParseResult)
         {
@@ -33,7 +34,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
             if (level.ManaCostOverride is int manaCostOverride)
             {
-                modifiers.AddGlobal(_metaStatBuilders.SkillBaseCost(mainSkill.ItemSlot, mainSkill.SocketIndex),
+                modifiers.AddGlobal(MetaStats.SkillBaseCost(mainSkill.ItemSlot, mainSkill.SocketIndex),
                     Form.TotalOverride, manaCostOverride);
             }
 

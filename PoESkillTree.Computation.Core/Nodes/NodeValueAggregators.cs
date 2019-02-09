@@ -16,7 +16,7 @@ namespace PoESkillTree.Computation.Core.Nodes
     {
         public static NodeValue? CalculateTotalOverride(IEnumerable<NodeValue?> values)
         {
-            var enumerated = values.EnumerateWhereNotNull();
+            var enumerated = values.Distinct().EnumerateWhereNotNull();
             switch (enumerated.Count)
             {
                 case 0:
@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Core.Nodes
             values.Any(v => v == 0)
                 ? new NodeValue(0)
                 : throw new NotSupportedException(
-                    "Multiple modifiers to with none having value 0 are not supported");
+                    "Multiple TotalOverride modifiers with none having value 0 are not supported");
 
         public static NodeValue? CalculateMore(IEnumerable<NodeValue?> values) =>
             values.SelectOnValues(v => 1 + v / 100).Product();

@@ -15,7 +15,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         [Test]
         public void SimpleCalculation()
         {
-            var sut = Calculator.CreateCalculator();
+            var sut = Calculator.Create();
 
             var expected = new NodeValue(5);
 
@@ -31,7 +31,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         [Test]
         public void MultipleUpdates()
         {
-            var sut = Calculator.CreateCalculator();
+            var sut = Calculator.Create();
             var source = new ModifierSource.Global();
             var removedModifier = new Modifier(new[] { Stat }, Form.BaseAdd, new Constant(100), source);
 
@@ -55,7 +55,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         [Test]
         public void EvasionCalculation()
         {
-            var sut = Calculator.CreateCalculator();
+            var sut = Calculator.Create();
 
             var evasionStat = new Stat("evasion");
             var lvlStat = new Stat("lvl");
@@ -98,7 +98,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         [TestCase(25)]
         public void Clip(double value)
         {
-            var sut = Calculator.CreateCalculator();
+            var sut = Calculator.Create();
 
             sut.NewBatchUpdate()
                 .AddModifier(Stat, Form.BaseAdd, new Constant(value))
@@ -115,7 +115,7 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         [Test]
         public void Pruning()
         {
-            var sut = Calculator.CreateCalculator();
+            var sut = Calculator.Create();
             var mod = new Modifier(new[] { Stat }, Form.BaseAdd, new Constant(1), new ModifierSource.Global());
 
             sut.NewBatchUpdate().AddModifier(mod).DoUpdate();
@@ -133,11 +133,11 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
         [Test]
         public void Events()
         {
-            var sut = Calculator.CreateCalculator();
+            var sut = Calculator.Create();
             var mod = new Modifier(new[] { Stat }, Form.BaseAdd, new Constant(1), new ModifierSource.Global());
             var node = sut.NodeRepository.GetNode(Stat);
-            var invovcations = 0;
-            node.ValueChanged += (sender, args) => invovcations++;
+            var invocations = 0;
+            node.ValueChanged += (sender, args) => invocations++;
 
             Assert.IsNull(node.Value);
             sut.NewBatchUpdate().AddModifier(mod).DoUpdate();
@@ -147,14 +147,17 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
             sut.NewBatchUpdate().AddModifier(mod).DoUpdate();
             Assert.AreEqual(new NodeValue(3), node.Value);
 
-            Assert.AreEqual(3, invovcations);
+            Assert.AreEqual(3, invocations);
         }
 
         [Test]
         public void ExplicitlyRegistered()
         {
-            var sut = Calculator.CreateCalculator();
-            var stat = new Stat("stat", explicitRegistrationType: ExplicitRegistrationTypes.UserSpecifiedValue());
+            var sut = Calculator.Create();
+            var modifierStat = new Stat("m");
+            var registeredStat =
+                new Stat("r", explicitRegistrationType: ExplicitRegistrationTypes.UserSpecifiedValue(0));
+            var value = new StatValue(registeredStat);
             IStat actual = null;
             sut.ExplicitlyRegisteredStats.CollectionChanged += (sender, args) =>
             {
@@ -163,18 +166,20 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
                 actual = (((ICalculationNode, IStat)) args.Element).Item2;
             };
 
-            sut.NewBatchUpdate().AddModifier(stat, Form.BaseAdd, new Constant(0)).DoUpdate();
+            sut.NewBatchUpdate().AddModifier(modifierStat, Form.BaseAdd, value).DoUpdate();
+            Assert.IsNull(actual);
+            var _ = sut.NodeRepository.GetNode(modifierStat).Value;
 
-            Assert.AreEqual(stat, actual);
+            Assert.AreEqual(registeredStat, actual);
         }
 
         [Test]
         public void Behavior()
         {
-            var sut = Calculator.CreateCalculator();
+            var sut = Calculator.Create();
             var transformedStat = new Stat("transformed");
             var behavior = new Behavior(new[] { transformedStat }, new[] { NodeType.Subtotal },
-                BehaviorPathInteraction.All, new ValueTransformation(_ => new Constant(5)));
+                BehaviorPathRules.All, new ValueTransformation(_ => new Constant(5)));
             var stat = new Stat("stat", behaviors: new[] { behavior });
 
             sut.NewBatchUpdate().AddModifier(stat, Form.BaseAdd, new Constant(1)).DoUpdate();

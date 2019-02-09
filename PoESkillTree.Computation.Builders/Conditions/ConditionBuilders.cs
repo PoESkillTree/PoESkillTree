@@ -70,8 +70,9 @@ namespace PoESkillTree.Computation.Builders.Conditions
                     new StatBuilderWithModifierSource(new StatBuilderAdapter(stat), modiiferSource));
         }
 
-        public IConditionBuilder Unique(string name) =>
-            StatBuilderUtils.ConditionFromIdentity(_statFactory, name, ExplicitRegistrationTypes.UserSpecifiedValue());
+        public IConditionBuilder Unique(string name)
+            => StatBuilderUtils.ConditionFromIdentity(_statFactory, name,
+                ExplicitRegistrationTypes.UserSpecifiedValue(false));
 
         public IConditionBuilder True => ConstantConditionBuilder.True;
     }

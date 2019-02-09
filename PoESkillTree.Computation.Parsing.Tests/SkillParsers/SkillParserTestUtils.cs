@@ -54,6 +54,13 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
                 weaponRestrictions ?? new ItemClass[0]);
         }
 
+        public static SupportSkillDefinition CreateSupportSkillDefinition(
+            IEnumerable<string> allowedActiveSkillTypes = null, IEnumerable<string> addedActiveSkillTypes = null,
+            IReadOnlyList<Keyword> addedKeywords = null)
+            => new SupportSkillDefinition(false,
+                allowedActiveSkillTypes ?? new string[0], new string[0], 
+                addedActiveSkillTypes ?? new string[0], addedKeywords ?? new Keyword[0]);
+
         public static IValueCalculationContext MockValueCalculationContextForMainSkill(
             Skill skill, params (string stat, double? value)[] nodeValues)
             => MockValueCalculationContext(skill, true, false, nodeValues);
@@ -80,9 +87,13 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
             params (string stat, Entity entity, double? value)[] nodeValues)
         {
             var contextMock = new Mock<IValueCalculationContext>();
-            var isMainSkillStat = new Stat($"{skill.ItemSlot}.{skill.SocketIndex}.IsMainSkill");
-            contextMock.Setup(c => c.GetValue(isMainSkillStat, NodeType.Total, PathDefinition.MainPath))
-                .Returns((NodeValue?) isMainSkill);
+            var mainSkillItemSlotStat = new Stat("MainSkillItemSlot");
+            var mainSkillItemSlot = isMainSkill ? skill.ItemSlot : ItemSlot.Unequipable;
+            contextMock.Setup(c => c.GetValue(mainSkillItemSlotStat, NodeType.Total, PathDefinition.MainPath))
+                .Returns((NodeValue?) (double) mainSkillItemSlot);
+            var mainSkillSocketIndexStat = new Stat("MainSkillSocketIndex");
+            contextMock.Setup(c => c.GetValue(mainSkillSocketIndexStat, NodeType.Total, PathDefinition.MainPath))
+                .Returns((NodeValue?) skill.SocketIndex);
             var activeSkillItemSlotStat = new Stat($"{skill.Id}.ActiveSkillItemSlot");
             var activeSkillItemSlot = isActiveSkill ? skill.ItemSlot : ItemSlot.Unequipable;
             contextMock.Setup(c => c.GetValue(activeSkillItemSlotStat, NodeType.Total, PathDefinition.MainPath))

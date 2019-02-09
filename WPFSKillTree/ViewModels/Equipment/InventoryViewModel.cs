@@ -1,6 +1,5 @@
 ﻿using PoESkillTree.GameModel.Items;
 using POESKillTree.Model.Items;
-using POESKillTree.Model.Items.Enums;
 using POESKillTree.Utils;
 
 namespace POESKillTree.ViewModels.Equipment
@@ -11,7 +10,6 @@ namespace POESKillTree.ViewModels.Equipment
     public class InventoryViewModel : Notifier
     {
         private readonly IExtendedDialogCoordinator _dialogCoordinator;
-        private readonly EquipmentData _equipmentData;
         private readonly ItemAttributes _itemAttributes;
 
         public InventoryItemViewModel Armor { get; }
@@ -25,11 +23,9 @@ namespace POESKillTree.ViewModels.Equipment
         public InventoryItemViewModel Boots { get; }
         public InventoryItemViewModel Belt { get; }
 
-        public InventoryViewModel(IExtendedDialogCoordinator dialogCoordinator, EquipmentData equipmentData,
-            ItemAttributes itemAttributes)
+        public InventoryViewModel(IExtendedDialogCoordinator dialogCoordinator, ItemAttributes itemAttributes)
         {
             _dialogCoordinator = dialogCoordinator;
-            _equipmentData = equipmentData;
             _itemAttributes = itemAttributes;
             Armor = CreateSlotVm(ItemSlot.BodyArmour);
             MainHand = CreateSlotVm(ItemSlot.MainHand);
@@ -63,7 +59,7 @@ namespace POESKillTree.ViewModels.Equipment
                 imageName = "Helmet";
             }
 
-            return new InventoryItemViewModel(_dialogCoordinator, _equipmentData, _itemAttributes, slot)
+            return new InventoryItemViewModel(_dialogCoordinator, _itemAttributes, slot)
             {
                 EmptyBackgroundImagePath = $"/POESKillTree;component/Images/EquipmentUI/ItemDefaults/{imageName}.png"
             };

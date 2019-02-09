@@ -107,6 +107,8 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Values
             public IValueBuilder Create(double value) => 
                 new ValueBuilderStub(value);
 
+            public IValueBuilder Create(bool value) => throw new NotSupportedException();
+
             public IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue) => 
                 throw new NotSupportedException();
 

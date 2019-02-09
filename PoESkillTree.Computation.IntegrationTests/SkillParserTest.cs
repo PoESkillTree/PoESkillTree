@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Moq;
@@ -7,7 +8,6 @@ using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Parsing;
-using PoESkillTree.Computation.Parsing.SkillParsers;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
@@ -20,15 +20,13 @@ namespace PoESkillTree.Computation.IntegrationTests
     public class SkillParserTest : CompositionRootTestBase
     {
         private SkillDefinitions _skillDefinitions;
-        private IParser<Skill> _activeSkillParser;
-        private IParser<SupportSkillParserParameter> _supportSkillParser;
+        private IParser _parser;
 
         [SetUp]
         public async Task SetUpAsync()
         {
-            _skillDefinitions = await CompositionRoot.SkillDefinitions.ConfigureAwait(false);
-            _activeSkillParser = await CompositionRoot.ActiveSkillParser.ConfigureAwait(false);
-            _supportSkillParser = await CompositionRoot.SupportSkillParser.ConfigureAwait(false);
+            _skillDefinitions = await GameData.Skills.ConfigureAwait(false);
+            _parser = await ParserTask.ConfigureAwait(false);
         }
 
         [Test]
@@ -37,11 +35,11 @@ namespace PoESkillTree.Computation.IntegrationTests
             var frenzy = new Skill("Frenzy", 20, 20, ItemSlot.Boots, 0, 0);
             var definition = _skillDefinitions.GetSkillById("Frenzy");
             var levelDefinition = definition.Levels[20];
-            var local = new ModifierSource.Local.Skill("Frenzy");
+            var local = new ModifierSource.Local.Skill("Frenzy", "Frenzy");
             var global = new ModifierSource.Global(local);
-            var gemSource = new ModifierSource.Local.Gem(ItemSlot.Boots, 0, "Frenzy");
+            var gemSource = new ModifierSource.Local.Gem(ItemSlot.Boots, 0, "Frenzy", "Frenzy");
             var valueCalculationContextMock = new Mock<IValueCalculationContext>();
-            SetupIsActiveSkillInContext(valueCalculationContextMock, frenzy);
+            var isMainSkillStat = SetupIsActiveSkillInContext(valueCalculationContextMock, frenzy);
             var offHandTagsStat = new Stat("OffHand.ItemTags");
             valueCalculationContextMock.Setup(c => c.GetValue(offHandTagsStat, NodeType.Total, PathDefinition.MainPath))
                 .Returns(new NodeValue(Tags.Weapon.EncodeAsDouble()));
@@ -57,7 +55,6 @@ namespace PoESkillTree.Computation.IntegrationTests
             valueCalculationContextMock
                 .Setup(c => c.GetValue(baseCostStat, NodeType.Total, PathDefinition.MainPath))
                 .Returns((NodeValue?) levelDefinition.ManaCost);
-            var isMainSkillStat = new Stat("Boots.0.IsMainSkill");
             var expectedModifiers =
                 new (string stat, Form form, double? value, ModifierSource source, bool mainSkillOnly)[]
                 {
@@ -161,7 +158,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("Range.Attack.OffHand.Skill", Form.BaseAdd, null, global, true),
                 }.Select(t => (t.stat, t.form, (NodeValue?) t.value, t.source, t.mainSkillOnly)).ToArray();
 
-            var actual = _activeSkillParser.Parse(frenzy);
+            var actual = _parser.ParseActiveSkill(frenzy);
 
             AssertCorrectModifiers(valueCalculationContextMock, isMainSkillStat, expectedModifiers, actual);
         }
@@ -173,13 +170,12 @@ namespace PoESkillTree.Computation.IntegrationTests
             var support = new Skill("SupportAddedColdDamage", 20, 20, ItemSlot.Boots, 1, 0);
             var definition = _skillDefinitions.GetSkillById(support.Id);
             var levelDefinition = definition.Levels[20];
-            var local = new ModifierSource.Local.Skill("SupportAddedColdDamage");
+            var local = new ModifierSource.Local.Skill("SupportAddedColdDamage", "Added Cold Damage Support");
             var global = new ModifierSource.Global(local);
-            var gemSource =
-                new ModifierSource.Local.Gem(support.ItemSlot, support.SocketIndex, "SupportAddedColdDamage");
+            var gemSource = new ModifierSource.Local.Gem(support.ItemSlot, support.SocketIndex,
+                "SupportAddedColdDamage", "Added Cold Damage Support");
             var valueCalculationContextMock = new Mock<IValueCalculationContext>();
-            SetupIsActiveSkillInContext(valueCalculationContextMock, frenzy);
-            var isMainSkillStat = new Stat("Boots.0.IsMainSkill");
+            var isMainSkillStat = SetupIsActiveSkillInContext(valueCalculationContextMock, frenzy);
             var addedDamageValue = new NodeValue(levelDefinition.Stats[0].Value, levelDefinition.Stats[1].Value);
             var expectedModifiers =
                 new (string stat, Form form, double? value, ModifierSource source, bool mainSkillOnly)[]
@@ -234,12 +230,12 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("Cold.Damage.Secondary.Skill", Form.BaseAdd, addedDamageValue, global, true))
                 .ToArray();
 
-            var actual = _supportSkillParser.Parse(frenzy, support);
+            var actual = _parser.ParseSupportSkill(frenzy, support);
 
             AssertCorrectModifiers(valueCalculationContextMock, isMainSkillStat, expectedModifiers, actual);
         }
 
-        private static void SetupIsActiveSkillInContext(
+        private static Stat SetupIsActiveSkillInContext(
             Mock<IValueCalculationContext> contextMock, Skill frenzy)
         {
             var activeSkillItemSlotStat = new Stat("Frenzy.ActiveSkillItemSlot");
@@ -250,6 +246,20 @@ namespace PoESkillTree.Computation.IntegrationTests
             contextMock
                 .Setup(c => c.GetValue(activeSkillSocketIndexStat, NodeType.Total, PathDefinition.MainPath))
                 .Returns(new NodeValue(frenzy.SocketIndex));
+
+            var mainSkillItemSlotStat = new Stat("MainSkillItemSlot");
+            contextMock
+                .Setup(c => c.GetValue(mainSkillItemSlotStat, NodeType.Total, PathDefinition.MainPath))
+                .Returns(new NodeValue((double) frenzy.ItemSlot));
+
+            var isMainSkillStat = new Stat("IsMainSkill");
+            var mainSkillSocketIndexStat = new Stat("MainSkillSocketIndex");
+            contextMock
+                .Setup(c => c.GetValue(mainSkillSocketIndexStat, NodeType.Total, PathDefinition.MainPath))
+                .Returns(() => new NodeValue(contextMock.Object.GetValue(isMainSkillStat).IsTrue()
+                    ? frenzy.SocketIndex
+                    : -1));
+            return isMainSkillStat;
         }
 
         private static void AssertCorrectModifiers(
@@ -308,17 +318,17 @@ namespace PoESkillTree.Computation.IntegrationTests
         private ParseResult Parse(string skillId)
         {
             var definition = _skillDefinitions.GetSkillById(skillId);
-            var level = definition.Levels.ContainsKey(20) ? 20 : 3;
+            var level = Math.Min(definition.Levels.Keys.Max(), 20);
             if (definition.IsSupport)
             {
                 var activeSkill = new Skill("BloodRage", 20, 20, default, 0, 0);
                 var supportSkill = new Skill(skillId, level, 20, default, 1, 0);
-                return _supportSkillParser.Parse(activeSkill, supportSkill);
+                return _parser.ParseSupportSkill(activeSkill, supportSkill);
             }
             else
             {
                 var skill = new Skill(skillId, level, 20, default, 0, 0);
-                return _activeSkillParser.Parse(skill);
+                return _parser.ParseActiveSkill(skill);
             }
         }
 

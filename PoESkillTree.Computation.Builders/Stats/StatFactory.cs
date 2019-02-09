@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Common;
@@ -8,13 +9,14 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
     public class StatFactory : IStatFactory
     {
-        private readonly IDictionary<(string, Entity), IStat> _cache = new Dictionary<(string, Entity), IStat>();
+        private readonly ConcurrentDictionary<(string, Entity), IStat> _cache =
+            new ConcurrentDictionary<(string, Entity), IStat>();
+
         private readonly BehaviorFactory _behaviorFactory;
 
         public StatFactory()
@@ -31,7 +33,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             CopyWithSuffix(stat, identitySuffix, dataType, null, explicitRegistrationType);
 
         public IStat ChanceToDouble(IStat stat) =>
-            CopyWithSuffix(stat, nameof(ChanceToDouble), typeof(int));
+            CopyWithSuffix(stat, nameof(ChanceToDouble), typeof(uint));
 
         public IEnumerable<IStat> ConvertTo(IStat source, IEnumerable<IStat> targets)
         {
@@ -52,18 +54,18 @@ namespace PoESkillTree.Computation.Builders.Stats
         }
 
         public IStat ConvertTo(IStat source, IStat target) =>
-            CopyWithSuffix(source, $"{nameof(ConvertTo)}({target.Identity})", typeof(int),
+            CopyWithSuffix(source, $"{nameof(ConvertTo)}({target.Identity})", typeof(uint),
                 () => _behaviorFactory.ConvertTo(source, target));
 
         public IStat GainAs(IStat source, IStat target) =>
-            CopyWithSuffix(source, $"{nameof(GainAs)}({target.Identity})", typeof(int),
+            CopyWithSuffix(source, $"{nameof(GainAs)}({target.Identity})", typeof(uint),
                 () => _behaviorFactory.GainAs(source, target));
 
         public IStat Conversion(IStat source) =>
-            CopyWithSuffix(source, "Conversion", typeof(int));
+            CopyWithSuffix(source, "Conversion", typeof(uint));
 
         public IStat SkillConversion(IStat source) =>
-            CopyWithSuffix(source, "SkillConversion", typeof(int),
+            CopyWithSuffix(source, "SkillConversion", typeof(uint),
                 () => _behaviorFactory.SkillConversion(source));
 
         public IStat Regen(Entity entity, Pool pool) =>
@@ -98,7 +100,7 @@ namespace PoESkillTree.Computation.Builders.Stats
                 behaviors: () => _behaviorFactory.ActiveSkillItemSlot(entity, skillId));
 
         public IStat ActiveSkillSocketIndex(Entity entity, string skillId)
-            => GetOrAdd($"{skillId}.ActiveSkillSocketIndex", entity, typeof(int),
+            => GetOrAdd($"{skillId}.ActiveSkillSocketIndex", entity, typeof(uint),
                 behaviors: () => _behaviorFactory.ActiveSkillSocketIndex(entity, skillId));
 
         public IStat BuffEffect(Entity source, Entity target, string buffIdentity) =>
@@ -118,10 +120,10 @@ namespace PoESkillTree.Computation.Builders.Stats
                 () => _behaviorFactory.ConcretizeDamage(stat, damageSpecification));
 
         public IStat ApplyModifiersToSkillDamage(IStat stat, DamageSource damageSource, Form form) =>
-            CopyWithSuffix(stat, $"ApplyModifiersToSkills({damageSource} for form {form})", typeof(int));
+            CopyWithSuffix(stat, $"ApplyModifiersToSkills({damageSource} for form {form})", typeof(bool));
 
         public IStat ApplyModifiersToAilmentDamage(IStat stat, Form form) =>
-            CopyWithSuffix(stat, $"ApplyModifiersToAilments(for form {form})", typeof(int));
+            CopyWithSuffix(stat, $"ApplyModifiersToAilments(for form {form})", typeof(bool));
 
         public IStat DamageTaken(IStat damage) =>
             CopyWithSuffix(damage, "Taken", damage.DataType);
@@ -141,6 +143,10 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStat Requirement(IStat stat)
             => CopyWithSuffix(stat, "Required", stat.DataType, () => _behaviorFactory.Requirement(stat));
+
+        public IStat ItemProperty(IStat stat, ItemSlot slot)
+            => GetOrAdd($"{slot}.{stat.Identity}", stat.Entity, stat.DataType,
+                behaviors: () => _behaviorFactory.ItemProperty(stat, slot));
 
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,
             Func<IReadOnlyList<Behavior>> behaviors, ExplicitRegistrationType explicitRegistrationType = null)

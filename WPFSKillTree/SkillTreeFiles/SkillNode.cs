@@ -35,6 +35,7 @@ namespace POESKillTree.SkillTreeFiles
         public string ascendancyName; //"ascendancyName": "Raider"
         public bool IsAscendancyStart; //"isAscendancyStart": false
         public string[] reminderText;
+        public bool IsRootNode;
 
         public Vector2D Position
         {

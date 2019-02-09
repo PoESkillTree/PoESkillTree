@@ -20,18 +20,16 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [SetUp]
         public void SetUp()
         {
-            _innerMock = new Mock<IStringParser<string>>();
-            _innerMock.Setup(p => p.Parse(TrueStat))
-                .Returns(new StringParseResult<string>(true, TrueRemaining, TrueParsed));
-            _innerMock.Setup(p => p.Parse(FalseStat))
-                .Returns(new StringParseResult<string>(false, FalseRemaining, FalseParsed));
+            _innerMock = StringParserTestUtils.MockParser(
+                (TrueStat, new StringParseResult<string>(true, TrueRemaining, TrueParsed)),
+                (FalseStat, new StringParseResult<string>(false, FalseRemaining, FalseParsed)));
             _inner = _innerMock.Object;
         }
 
         [Test]
         public void IsIParserString()
         {
-            var sut = new CachingParser<string>(_inner);
+            var sut = new CachingStringParser<string>(_inner);
 
             Assert.IsInstanceOf<IStringParser<string>>(sut);
         }
@@ -39,7 +37,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [Test]
         public void IsIParserInt()
         {
-            var sut = new CachingParser<int>(Mock.Of<IStringParser<int>>());
+            var sut = new CachingStringParser<int>(Mock.Of<IStringParser<int>>());
 
             Assert.IsInstanceOf<IStringParser<int>>(sut);
         }
@@ -48,7 +46,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [TestCase(FalseStat, ExpectedResult = false)]
         public bool TryParsePassesSuccessfullyParsed(string stat)
         {
-            var sut = new CachingParser<string>(_inner);
+            var sut = new CachingStringParser<string>(_inner);
 
             var (actual, _, _) = sut.Parse(stat);
 
@@ -58,7 +56,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [TestCase(TrueStat, ExpectedResult = TrueRemaining)]
         public string TryParsePassesRemaining(string stat)
         {
-            var sut = new CachingParser<string>(_inner);
+            var sut = new CachingStringParser<string>(_inner);
 
             var (_, actual, _) = sut.Parse(stat);
 
@@ -68,7 +66,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [TestCase(TrueStat, ExpectedResult = TrueParsed)]
         public string TryParsePassesResult(string stat)
         {
-            var sut = new CachingParser<string>(_inner);
+            var sut = new CachingStringParser<string>(_inner);
 
             var (_, _, actual) = sut.Parse(stat);
 
@@ -78,18 +76,18 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [Test]
         public void TryParseCachesSingleStat()
         {
-            var sut = new CachingParser<string>(_inner);
+            var sut = new CachingStringParser<string>(_inner);
 
             sut.Parse(TrueStat);
             sut.Parse(TrueStat);
 
-            _innerMock.Verify(p => p.Parse(TrueStat), Times.Once);
+            _innerMock.VerifyParse(TrueStat, Times.Once);
         }
 
         [Test]
         public void TryParsesCachesMultipleStats()
         {
-            var sut = new CachingParser<string>(_inner);
+            var sut = new CachingStringParser<string>(_inner);
 
             sut.Parse(TrueStat);
             sut.Parse(FalseStat);
@@ -98,10 +96,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
             sut.Parse(TrueStat);
             sut.Parse(TrueStat);
             sut.Parse("whatever");
-
-            _innerMock.Verify(p => p.Parse(TrueStat), Times.Once);
-            _innerMock.Verify(p => p.Parse(FalseStat), Times.Once);
-            _innerMock.Verify(p => p.Parse("whatever"), Times.Once);
+            
+            _innerMock.VerifyParse(TrueStat, Times.Once);
+            _innerMock.VerifyParse(FalseStat, Times.Once);
+            _innerMock.VerifyParse("whatever", Times.Once);
         }
     }
 }

@@ -26,10 +26,10 @@ namespace PoESkillTree.Computation.Core.Graphs
             TransformableDictionary { get; } =
             new Dictionary<ISuspendableEventViewProvider<ICalculationNode>, IValueTransformable>();
 
-        public IDisposableNodeViewProvider Create(IValue value)
+        public IDisposableNodeViewProvider Create(IValue value, PathDefinition path)
         {
             var transformableValue = _transformableValueFactory(value);
-            var result = _decoratedFactory.Create(transformableValue);
+            var result = _decoratedFactory.Create(transformableValue, path);
             TransformableDictionary[result] = transformableValue;
             transformableValue.ValueChanged += TransformableValueValueChanged;
             result.Disposed += ResultDisposed;

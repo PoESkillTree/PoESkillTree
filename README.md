@@ -7,13 +7,9 @@ A Passive Skill Tree and Character Planner for Path of Exile
 
 ## Features
 
-* Import build URLs from:
-  * PoEBuilder
-  * PoE Planner
-  * PoEURL
-  * TinyURL
-* Export build to PoEURL link
-* Character Sheet: DPS and Defensive calculations
+* DPS and Defensive calculations: Click on "Computation" in the top right corner.
+  * This is currently an alpha version with a first basic UI and doesn't support everything (notably no item-inherent skills and nothing minion related).
+  * Skills can be set in "Equipment" by double-clicking inventory items.
 * Tree comparison: Compare current tree with the tree of a saved build
 * Search the tree
   * Search by text through the field in the bottom bar
@@ -29,6 +25,12 @@ A Passive Skill Tree and Character Planner for Path of Exile
   * Import character inventories and stash tabs
   * Craft rare and unique items
   * Inventory is saved per build, stash is shared between all builds
+* Import build URLs from:
+  * PoEBuilder
+  * PoE Planner
+  * PoEURL
+  * TinyURL
+* Export build to PoEURL link
 * Build organization
   * Builds are organized in folders
   * Drag&Drop builds to reorder them and move them between folders
@@ -92,8 +94,8 @@ Note: Both these options require that you can access the official Path of Exile 
 ## Information for contributors
 
 * The code requires Visual Studio 2017 to be compiled and run
-* It is compiled to .NET 4.5.2 using C# 7.2
-* To run the batch scripts in WPFSKillTree (and by extension, compile the code in Run configuration), your Visual Studio installation's Common7/Tools/ folder must be added to the PATH environment variable
+* It is compiled to .NET 4.6.2 using C# 7.3
+* To run the batch scripts in WPFSKillTree (and by extension, compile the code in Release configuration), your Visual Studio installation's Common7/Tools/ folder must be added to the PATH environment variable
 
 ## Credits
 
@@ -112,5 +114,6 @@ Note: Both these options require that you can access the official Path of Exile 
 
 ![](https://github.com/EmmittJ/PoESkillTree/wiki/images/tree.png)
 ![](https://github.com/EmmittJ/PoESkillTree/wiki/images/equipment.PNG)
+![](https://github.com/EmmittJ/PoESkillTree/wiki/images/computationTab.PNG)
 ![](https://github.com/EmmittJ/PoESkillTree/wiki/images/treeGen.png)
 ![](https://github.com/EmmittJ/PoESkillTree/wiki/images/gems.png)

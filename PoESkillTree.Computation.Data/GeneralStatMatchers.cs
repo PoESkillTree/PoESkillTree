@@ -4,7 +4,6 @@ using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Buffs;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
-using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
@@ -25,9 +24,8 @@ namespace PoESkillTree.Computation.Data
     {
         private readonly IModifierBuilder _modifierBuilder;
 
-        public GeneralStatMatchers(
-            IBuilderFactories builderFactories, IMatchContexts matchContexts, IModifierBuilder modifierBuilder)
-            : base(builderFactories, matchContexts)
+        public GeneralStatMatchers(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder)
+            : base(builderFactories)
         {
             _modifierBuilder = modifierBuilder;
         }
@@ -171,6 +169,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "({PoolStatMatchers}) leeched per second", Reference.AsPoolStat.Leech.Rate },
                 // - block
+                { "chance to block", Block.AttackChance },
                 { "chance to block attack damage", Block.AttackChance },
                 { "chance to block spell damage", Block.SpellChance },
                 { "chance to block spell and attack damage", Block.SpellChance, Block.AttackChance },
@@ -328,12 +327,12 @@ namespace PoESkillTree.Computation.Data
                 { "({BuffMatchers}) duration", Reference.AsBuff.Duration },
                 { "blinding duration", Buff.Blind.Duration },
                 // ailments
-                { "chance to ({AilmentMatchers})( the enemy| enemies)?", Reference.AsAilment.Chance },
+                { "chance to ({AilmentMatchers})( the enemy| enemies)?( on hit)?", Reference.AsAilment.Chance },
                 {
                     "chance to freeze, shock and ignite",
                     Ailment.Freeze.Chance, Ailment.Shock.Chance, Ailment.Ignite.Chance
                 },
-                { "chance to cause bleeding", Ailment.Bleed.Chance.With(DamageSource.Attack) },
+                { "chance to cause bleeding( on hit)?", Ailment.Bleed.Chance.With(DamageSource.Attack) },
                 { "chance to avoid being ({AilmentMatchers})", Reference.AsAilment.Avoidance },
                 { "chance to avoid elemental ailments", Ailment.Elemental.Select(a => a.Avoidance) },
                 { "({AilmentMatchers}) duration( on enemies)?", Reference.AsAilment.Duration },

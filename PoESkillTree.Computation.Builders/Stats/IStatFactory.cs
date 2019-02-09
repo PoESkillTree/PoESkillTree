@@ -5,6 +5,7 @@ using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -55,5 +56,6 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         IStat StatIsAffectedByModifiersToOtherStat(IStat stat, IStat otherStat, Form form);
         IStat Requirement(IStat stat);
+        IStat ItemProperty(IStat stat, ItemSlot slot);
     }
 }

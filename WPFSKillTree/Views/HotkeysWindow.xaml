@@ -94,10 +94,8 @@
         <TextBlock Grid.Row="10" Grid.Column="1">
             <l:Catalog Message="Toggle Attributes sidebar"/>
         </TextBlock>
-        <TextBlock Grid.Row="11" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}">Ctrl + Shift + Q</TextBlock>
-        <TextBlock Grid.Row="11" Grid.Column="1" Background="{DynamicResource AccentColorBrush4}">
-            <l:Catalog Message="Toggle Character Sheet sidebar"/>
-        </TextBlock>
+        <TextBlock Grid.Row="11" Grid.Column="0" Background="{DynamicResource AccentColorBrush4}" />
+        <TextBlock Grid.Row="11" Grid.Column="1" Background="{DynamicResource AccentColorBrush4}" />
         <TextBlock Grid.Row="12" Grid.Column="0">Ctrl + B</TextBlock>
         <TextBlock Grid.Row="12" Grid.Column="1">
             <l:Catalog Message="Toggle Saved Builds sidebar"/>

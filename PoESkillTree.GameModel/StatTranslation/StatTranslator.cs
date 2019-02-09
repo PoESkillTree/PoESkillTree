@@ -93,7 +93,7 @@ namespace PoESkillTree.GameModel.StatTranslation
                     // take the full match with the most ids (the one with 2 ids if both are given, else
                     // the one with only the current id).
                     var fullMatches = ts.Where(t => t.Ids.All(ids.Contains));
-                    translations.Add(fullMatches.MaxBy(t => t.Ids.Count));
+                    translations.Add(fullMatches.MaxBy(t => t.Ids.Count).First());
                 }
                 else
                 {

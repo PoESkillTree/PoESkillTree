@@ -25,7 +25,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var value = Mock.Of<IValue>();
             var sut = CreateSut(new TransformableValue(value), expected);
 
-            var actual = sut.Create(value);
+            var actual = sut.Create(value, null);
 
             Assert.AreSame(expected, actual);
         }
@@ -45,7 +45,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var transformableValue = new TransformableValue(null);
             var sut = CreateSut(transformableValue, key);
 
-            sut.Create(null);
+            sut.Create(null, null);
 
             Assert.IsTrue(sut.TransformableDictionary.ContainsKey(key));
             Assert.AreSame(transformableValue, sut.TransformableDictionary[key]);
@@ -56,7 +56,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             var providerMock = new Mock<IDisposableNodeViewProvider>();
             var sut = CreateSut(provider: providerMock.Object);
-            sut.Create(null);
+            sut.Create(null, null);
 
             providerMock.Raise(p => p.Disposed += null, EventArgs.Empty);
 
@@ -69,7 +69,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var transformableValue = new TransformableValue(null);
             var providerMock = new Mock<IDisposableNodeViewProvider>();
             var sut = CreateSut(transformableValue, providerMock.Object);
-            sut.Create(null);
+            sut.Create(null, null);
 
             transformableValue.RemoveAll();
 
@@ -82,7 +82,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var transformableValue = new TransformableValue(null);
             var providerMock = new Mock<IDisposableNodeViewProvider>();
             var sut = CreateSut(transformableValue, providerMock.Object);
-            sut.Create(null);
+            sut.Create(null, null);
             
             providerMock.Raise(p => p.Disposed += null, EventArgs.Empty);
             transformableValue.RemoveAll();
@@ -94,7 +94,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             TransformableValue transformableValue = null, IDisposableNodeViewProvider provider = null)
         {
             transformableValue = transformableValue ?? new TransformableValue(null);
-            var injectedFactory = Mock.Of<INodeFactory>(f => f.Create(transformableValue) == provider);
+            var injectedFactory = Mock.Of<INodeFactory>(f => f.Create(transformableValue, null) == provider);
             return new TransformableNodeFactory(injectedFactory, _ => transformableValue);
         }
     }

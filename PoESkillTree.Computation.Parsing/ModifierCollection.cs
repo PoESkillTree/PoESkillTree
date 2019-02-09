@@ -44,6 +44,9 @@ namespace PoESkillTree.Computation.Parsing
         public void AddGlobal(IStatBuilder stat, Form form, double value, IConditionBuilder condition = null)
             => AddGlobal(stat, form, _builderFactories.ValueBuilders.Create(value), condition);
 
+        public void AddGlobal(IStatBuilder stat, Form form, bool value, IConditionBuilder condition = null)
+            => AddGlobal(stat, form, _builderFactories.ValueBuilders.Create(value), condition);
+
         public void AddGlobal(IStatBuilder stat, Form form, IValueBuilder value, IConditionBuilder condition = null)
             => Add(stat, form, value, condition, _globalModifierSource);
 

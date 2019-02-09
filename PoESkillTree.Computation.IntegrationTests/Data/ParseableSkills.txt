@@ -111,6 +111,7 @@ NewPhaseRun
 NewShieldCharge
 OrbOfStorms
 PhysCascadeTrap
+PlayerMelee
 PoachersMark
 PoisonArrow
 Portal

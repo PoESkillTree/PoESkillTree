@@ -111,7 +111,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         private static IStringParser<int> MockConstantParser(string stat, 
             string remaining = "remaining", int result = 42, bool @return = true)
         {
-            return Mock.Of<IStringParser<int>>(p => p.Parse(stat) == new StringParseResult<int>(@return, remaining, result));
+            return StringParserTestUtils.MockParser(stat, @return, remaining, result).Object;
         }
 
         private static IStepper<string> MockStepper(

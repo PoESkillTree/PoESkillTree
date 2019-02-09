@@ -1,4 +1,4 @@
-﻿<controls:MetroWindow
+<controls:MetroWindow
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
@@ -12,6 +12,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:builds="clr-namespace:POESKillTree.Views.Builds"
         xmlns:equipment="clr-namespace:POESKillTree.Views.Equipment"
+        xmlns:computation="clr-namespace:POESKillTree.Computation.Views"
         xmlns:dd="urn:gong-wpf-dragdrop"
 
         mc:Ignorable="d" x:Class="POESKillTree.Views.MainWindow"
@@ -78,7 +79,7 @@
         <KeyBinding Modifiers="Control" Key="N"
                     Command="{Binding BuildsControlViewModel.NewBuildCommand}"
                     CommandParameter="{Binding BuildsControlViewModel.BuildRoot}"/>
-        
+
         <KeyBinding Modifiers="Control+Shift" Key="G"
                     Command="{Binding TreeGeneratorInteraction.OpenTreeGeneratorCommand}" />
         <KeyBinding Modifiers="Control+Shift" Key="T"
@@ -96,7 +97,7 @@
         </Grid.RowDefinitions>
 
         <!-- grid row 0 - upper part-->
-        <Menu IsMainMenu="True" x:Name="menu1" Grid.Row="0" Margin="0,0,0,2"
+        <Menu IsMainMenu="True" Grid.Row="0" Margin="0,0,0,2"
              dialogs:DialogParticipation.Register="{Binding PersistentData}">
             <MenuItem>
                 <MenuItem.Header>
@@ -207,7 +208,7 @@
                         <iconPacks:PackIconModern Kind="Settings" HorizontalAlignment="Center" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem x:Name="mnuUndo" InputGestureText="Ctrl+Z" Click="tbSkillURL_Undo_Click">
+                <MenuItem InputGestureText="Ctrl+Z" Click="tbSkillURL_Undo_Click">
                     <MenuItem.Header>
                         <l:Catalog Message="_Undo" />
                     </MenuItem.Header>
@@ -215,7 +216,7 @@
                         <iconPacks:PackIconModern Kind="Undo" HorizontalAlignment="Center" />
                     </MenuItem.Icon>
                 </MenuItem>
-                <MenuItem x:Name="mnuRedo" InputGestureText="Ctrl+Y" Click="tbSkillURL_Redo_Click">
+                <MenuItem InputGestureText="Ctrl+Y" Click="tbSkillURL_Redo_Click">
                     <MenuItem.Header>
                         <l:Catalog Message="_Redo" />
                     </MenuItem.Header>
@@ -406,13 +407,7 @@
                         <l:Catalog Message="_Attributes" />
                     </MenuItem.Header>
                 </MenuItem>
-                <MenuItem x:Name="mnuViewCharacterSheet" InputGestureText="Ctrl+Shift+Q" IsCheckable="true"
-                          IsChecked="{Binding PersistentData.Options.CharacterSheetBarOpened,ElementName=window, Mode=TwoWay}">
-                    <MenuItem.Header>
-                        <l:Catalog Message="_Character Sheet" />
-                    </MenuItem.Header>
-                </MenuItem>
-                <MenuItem x:Name="mnuViewComparison" IsCheckable="true"
+                <MenuItem IsCheckable="true"
                           IsChecked="{Binding PersistentData.Options.TreeComparisonEnabled,ElementName=window, Mode=TwoWay}">
                     <MenuItem.Header>
                         <l:Catalog Message="Skill _Tree Comparison" />
@@ -606,15 +601,21 @@
 
         <TabControl Grid.Row="0" HorizontalAlignment="Right">
             <TabItem controls:ControlsHelper.HeaderFontSize="14"
-                     IsSelected="{Binding IsSelected, ElementName= tyPassiveTree}">
+                     IsSelected="{Binding IsSelected, ElementName=tyPassiveTree}">
                 <TabItem.Header>
                     <l:Catalog Message="Skill Tree"/>
                 </TabItem.Header>
             </TabItem>
             <TabItem controls:ControlsHelper.HeaderFontSize="14"
-                     IsSelected="{Binding IsSelected, ElementName= tyEquipment}">
+                     IsSelected="{Binding IsSelected, ElementName=tyEquipment}">
                 <TabItem.Header>
                     <l:Catalog Message="Equipment"/>
+                </TabItem.Header>
+            </TabItem>
+            <TabItem controls:ControlsHelper.HeaderFontSize="14"
+                     IsSelected="{Binding IsSelected, ElementName=ComputationTab}">
+                <TabItem.Header>
+                    <l:Catalog Message="Computation"/>
                 </TabItem.Header>
             </TabItem>
         </TabControl>
@@ -741,6 +742,14 @@
                         </Grid>
                     </ScrollViewer>
                 </TabItem>
+                <TabItem Name="ComputationTab">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto"
+                                  HorizontalAlignment="Center">
+                        <computation:ComputationView HorizontalAlignment="Center"
+                                                     DataContext="{Binding ComputationViewModel, ElementName=window}" />
+                    </ScrollViewer>
+                </TabItem>
             </TabControl>
 
             <Expander Style="{StaticResource TopRowExpander}" HorizontalAlignment="Right" FlowDirection="RightToLeft" IsExpanded="{Binding IsChecked,ElementName=mnuViewBuilds}">
@@ -754,7 +763,7 @@
 
             <Expander Style="{StaticResource TopRowExpander}"
                       IsExpanded="{Binding IsChecked,ElementName=mnuViewAttributes}"
-                      Expanded="expAttributes_Expanded" MouseLeave="expAttributes_MouseLeave">
+                      MouseLeave="expAttributes_MouseLeave">
                 <Expander.Header>
                     <l:Catalog Message="Attributes"/>
                 </Expander.Header>
@@ -849,70 +858,6 @@
                             </TabItem>
                         </TabControl>
                     </Grid>
-                </Grid>
-            </Expander>
-
-            <Expander Style="{StaticResource TopRowExpander}"
-                      IsExpanded="{Binding IsChecked,ElementName=mnuViewCharacterSheet}"
-                      Expanded="expCharacterSheet_Expanded"
-                      Background="{x:Null}"
-                      controls:GroupBoxHelper.HeaderForeground="{DynamicResource BlackColorBrush}">
-                <controls:ExpanderHelper.HeaderDownStyle>
-                    <Style TargetType="{x:Type ToggleButton}"
-                           BasedOn="{StaticResource ExpanderDownHeaderStyle}">
-                        <Style.Setters>
-                            <Setter Property="Margin" Value="108 0 0 0" />
-                        </Style.Setters>
-                    </Style>
-                </controls:ExpanderHelper.HeaderDownStyle>
-                <controls:ExpanderHelper.HeaderUpStyle>
-                    <Style TargetType="{x:Type ToggleButton}"
-                           BasedOn="{StaticResource ExpanderUpHeaderStyle}">
-                        <Style.Setters>
-                            <Setter Property="Margin" Value="108 0 0 0" />
-                        </Style.Setters>
-                    </Style>
-                </controls:ExpanderHelper.HeaderUpStyle>
-                <Expander.Header>
-                    <l:Catalog Message="Character Sheet"/>
-                </Expander.Header>
-                <Grid Background="{DynamicResource WhiteColorBrush}">
-                    <TabControl x:Name="tabControlSheet" HorizontalAlignment="Left" Width="410" Margin="1,0,0,0" controls:TabControlHelper.IsUnderlined="True" Focusable="True">
-                        <TabItem Margin="0" x:Name="tabItemDefence" controls:ControlsHelper.HeaderFontSize="15">
-                            <TabItem.Header>
-                                <l:Catalog Message="Defense"/>
-                            </TabItem.Header>
-                            <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
-                                <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="listBoxDefence" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                    <ListBox.GroupStyle>
-                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
-                                    </ListBox.GroupStyle>
-                                </ListBox>
-                            </Grid>
-                        </TabItem>
-                        <TabItem Margin="0" x:Name="tabItemOffence" controls:ControlsHelper.HeaderFontSize="15">
-                            <TabItem.Header>
-                                <l:Catalog Message="Offense"/>
-                            </TabItem.Header>
-                            <Grid ScrollViewer.HorizontalScrollBarVisibility="Hidden">
-                                <ListBox ScrollViewer.CanContentScroll="False" Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}" x:Name="listBoxOffence" Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorLevel=1, AncestorType={x:Type Grid}}}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Text}" TextWrapping="Wrap"/>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                    <ListBox.GroupStyle>
-                                        <GroupStyle ContainerStyle="{StaticResource ContainerStyleIsExpanded}" />
-                                    </ListBox.GroupStyle>
-                                </ListBox>
-                            </Grid>
-                        </TabItem>
-                    </TabControl>
                 </Grid>
             </Expander>
 

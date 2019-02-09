@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -9,14 +10,16 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Behaviors
 {
     public class BehaviorFactory
     {
-        private readonly IDictionary<CacheKey, Behavior> _cache = new Dictionary<CacheKey, Behavior>();
+        private readonly ConcurrentDictionary<CacheKey, Behavior> _cache =
+            new ConcurrentDictionary<CacheKey, Behavior>();
+
         private readonly IStatFactory _statFactory;
 
         public BehaviorFactory(IStatFactory statFactory)
@@ -26,7 +29,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         public IReadOnlyList<Behavior> ConvertTo(IStat source, IStat target) => new[]
         {
-            ConversionTargetPathTotal(source, target),
+            ConversionTargetBase(source, target),
             ConversionTargetUncappedSubtotal(source, target),
             ConversionSourcePathTotal(source),
             ConvertToUncappedSubtotal(source, target)
@@ -34,7 +37,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         public IReadOnlyList<Behavior> GainAs(IStat source, IStat target) => new[]
         {
-            ConversionTargetPathTotal(source, target),
+            ConversionTargetBase(source, target),
             ConversionTargetUncappedSubtotal(source, target),
         };
 
@@ -43,31 +46,31 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             SkillConversionUncappedSubtotal(source)
         };
 
-        private Behavior ConversionTargetPathTotal(IStat source, IStat target) => GetOrAdd(
-            target, NodeType.PathTotal, BehaviorPathInteraction.Conversion,
-            v => new ConversionTargetPathTotalValue(
+        private Behavior ConversionTargetBase(IStat source, IStat target) => GetOrAdd(
+            target, NodeType.Base, BehaviorPathRules.ConversionWithSpecificSource(source),
+            v => new ConversionTargetBaseValue(
                 _statFactory.ConvertTo(source, target), _statFactory.GainAs(source, target), v),
             new CacheKey(source, target));
 
         private Behavior ConversionTargetUncappedSubtotal(IStat source, IStat target) => GetOrAdd(
-            target, NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
+            target, NodeType.UncappedSubtotal, BehaviorPathRules.All,
             v => new ConversionTargeUncappedSubtotalValue(source, target, v),
             new CacheKey(source, target));
 
         private Behavior ConversionSourcePathTotal(IStat source) => GetOrAdd(
-            source, NodeType.PathTotal, BehaviorPathInteraction.All,
+            source, NodeType.PathTotal, BehaviorPathRules.All,
             v => new ConversionSourcePathTotalValue(_statFactory.Conversion(source), v),
             new CacheKey(source));
 
         private Behavior ConvertToUncappedSubtotal(IStat source, IStat target) => GetOrAdd(
-            () => _statFactory.ConvertTo(source, target), NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
+            () => _statFactory.ConvertTo(source, target), NodeType.UncappedSubtotal, BehaviorPathRules.All,
             v => new ConvertToUncappedSubtotalValue(
                 _statFactory.ConvertTo(source, target), _statFactory.Conversion(source),
                 _statFactory.SkillConversion(source), v),
             new CacheKey(source, target));
 
         private Behavior SkillConversionUncappedSubtotal(IStat source) => GetOrAdd(
-            () => _statFactory.SkillConversion(source), NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
+            () => _statFactory.SkillConversion(source), NodeType.UncappedSubtotal, BehaviorPathRules.All,
             v => new SkillConversionUncappedSubtotalValue(_statFactory.SkillConversion(source), v),
             new CacheKey(source));
 
@@ -75,7 +78,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             new[] { RegenUncappedSubtotalBehavior(pool, entity) };
 
         private Behavior RegenUncappedSubtotalBehavior(Pool pool, Entity entity) => GetOrAdd(
-            () => _statFactory.Regen(entity, pool), NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
+            () => _statFactory.Regen(entity, pool), NodeType.UncappedSubtotal, BehaviorPathRules.All,
             v => new RegenUncappedSubtotalValue(
                 pool, p => _statFactory.Regen(entity, p), p => _statFactory.RegenTargetPool(entity, p), v),
             new CacheKey(pool, entity));
@@ -97,7 +100,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                 new CacheKey(entity, skillId));
 
         private Behavior BaseSetByMaximumBehavior(Func<IStat> affectedStat, CacheKey cacheKey)
-            => GetOrAdd(affectedStat, NodeType.BaseSet, BehaviorPathInteraction.All,
+            => GetOrAdd(affectedStat, NodeType.BaseSet, BehaviorPathRules.All,
                 v => new MaximumFormAggregatingValue(affectedStat(), Form.BaseSet, v),
                 cacheKey);
 
@@ -134,7 +137,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         private Behavior DamageEffectivenessBaseBehavior(IStat stat, IDamageSpecification damageSpecification) =>
             GetOrAdd(() => _statFactory.ConcretizeDamage(stat, damageSpecification),
-                NodeType.Base, BehaviorPathInteraction.NonConversion,
+                NodeType.Base, BehaviorPathRules.NonConversion,
                 v => new DamageEffectivenessBaseValue(
                     _statFactory.ConcretizeDamage(stat, damageSpecification),
                     _statFactory.DamageBaseSetEffectiveness(stat.Entity),
@@ -143,7 +146,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         private Behavior AilmentDamageUncappedSubtotalBehavior(IStat stat, IDamageSpecification damageSpecification) =>
             GetOrAdd(() => _statFactory.ConcretizeDamage(stat, damageSpecification),
-                NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
+                NodeType.UncappedSubtotal, BehaviorPathRules.All,
                 v => new AilmentDamageUncappedSubtotalValue(
                     _statFactory.ConcretizeDamage(stat, damageSpecification),
                     _statFactory.ConcretizeDamage(stat, damageSpecification.ForSkills()), v),
@@ -151,14 +154,14 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         private Behavior AilmentDamageBaseBehavior(IStat stat, IDamageSpecification damageSpecification) =>
             GetOrAdd(() => _statFactory.ConcretizeDamage(stat, damageSpecification),
-                NodeType.Base, BehaviorPathInteraction.NonConversion,
+                NodeType.Base, BehaviorPathRules.NonConversion,
                 v => new AilmentDamageBaseValue(
                     _statFactory.ConcretizeDamage(stat, damageSpecification.ForSkills()), v),
                 new CacheKey(stat, damageSpecification));
 
         private Behavior AilmentDamageIncreaseMoreBehavior(IStat stat, IDamageSpecification damageSpecification) =>
             GetOrAdd(new LazyStatList(() => _statFactory.ConcretizeDamage(stat, damageSpecification)),
-                new[] { NodeType.Increase, NodeType.More }, BehaviorPathInteraction.All,
+                new[] { NodeType.Increase, NodeType.More }, BehaviorPathRules.All,
                 v => new AilmentDamageIncreaseMoreValue(
                     _statFactory.ConcretizeDamage(stat, damageSpecification),
                     _statFactory.AilmentDealtDamageType(stat.Entity, damageSpecification.Ailment.Value),
@@ -171,7 +174,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
         private Behavior StatIsAffectedByModifiersToOtherStatBehavior(IStat stat, IStat otherStat, Form form)
         {
             var nodeType = Enums.Parse<NodeType>(form.ToString());
-            return GetOrAdd(stat, nodeType, BehaviorPathInteraction.All,
+            return GetOrAdd(stat, nodeType, BehaviorPathRules.All,
                 v => new AffectedByModifiersToOtherStatValue(stat, otherStat,
                     _statFactory.StatIsAffectedByModifiersToOtherStat(stat, otherStat, form), form, v),
                 new CacheKey(stat, otherStat, form));
@@ -182,19 +185,28 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         private Behavior RequirementBehavior(IStat stat)
             => GetOrAdd(() => _statFactory.Requirement(stat),
-                NodeType.UncappedSubtotal, BehaviorPathInteraction.All,
+                NodeType.UncappedSubtotal, BehaviorPathRules.All,
                 v => new RequirementUncappedSubtotalValue(_statFactory.Requirement(stat), v),
                 new CacheKey(stat));
 
+        public IReadOnlyList<Behavior> ItemProperty(IStat stat, ItemSlot slot)
+            => new[] { ItemPropertyBehavior(stat, slot) };
+
+        private Behavior ItemPropertyBehavior(IStat stat, ItemSlot slot)
+            => GetOrAdd(() => _statFactory.ItemProperty(stat, slot),
+                NodeType.Total, BehaviorPathRules.All,
+                v => new RoundedValue(v, stat.DataType == typeof(double) ? 2 : 0),
+                new CacheKey(stat, slot));
+
         private Behavior GetOrAdd(
-            IStat affectedStat, NodeType affectNodeType, BehaviorPathInteraction affectedPaths,
+            IStat affectedStat, NodeType affectNodeType, IBehaviorPathRule affectedPaths,
             Func<IValue, IValue> valueTransformation, CacheKey cacheKey)
         {
             return GetOrAdd(new[] { affectedStat }, affectNodeType, affectedPaths, valueTransformation, cacheKey);
         }
 
         private Behavior GetOrAdd(
-            Func<IStat> lazyAffectedStat, NodeType affectNodeType, BehaviorPathInteraction affectedPaths,
+            Func<IStat> lazyAffectedStat, NodeType affectNodeType, IBehaviorPathRule affectedPaths,
             Func<IValue, IValue> valueTransformation, CacheKey cacheKey)
         {
             return GetOrAdd(new LazyStatList(lazyAffectedStat), affectNodeType, affectedPaths,
@@ -202,7 +214,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
         }
 
         private Behavior GetOrAdd(
-            IReadOnlyList<IStat> affectedStats, NodeType affectNodeType, BehaviorPathInteraction affectedPaths,
+            IReadOnlyList<IStat> affectedStats, NodeType affectNodeType, IBehaviorPathRule affectedPaths,
             Func<IValue, IValue> valueTransformation, CacheKey cacheKey)
         {
             return GetOrAdd(affectedStats, new[] { affectNodeType }, affectedPaths, valueTransformation, cacheKey);
@@ -210,11 +222,11 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         private Behavior GetOrAdd(
             IReadOnlyList<IStat> affectedStats,
-            IReadOnlyList<NodeType> affectNodeTypes, BehaviorPathInteraction affectedPaths,
+            IReadOnlyList<NodeType> affectNodeTypes, IBehaviorPathRule affectedPathsRule,
             Func<IValue, IValue> valueTransformation, CacheKey cacheKey)
         {
             return _cache.GetOrAdd(cacheKey, _ =>
-                new Behavior(affectedStats, affectNodeTypes, affectedPaths,
+                new Behavior(affectedStats, affectNodeTypes, affectedPathsRule,
                     new ValueTransformation(valueTransformation)));
         }
 

@@ -80,13 +80,13 @@ namespace PoESkillTree.Computation.Builders.Damage
             var damage = CoreStat(_statFactory.Damage);
             var takenFrom = new ParametrisedCoreStatBuilder<IStatBuilder>(damage, pool,
                 (ps, p, s) => _statFactory.CopyWithSuffix(s, $"TakenFrom({((IPoolStatBuilder) p).BuildPool(ps)})",
-                    typeof(int)));
+                    typeof(uint)));
             return new DamageTakenConversionBuilder(_statFactory, takenFrom);
         }
 
         public IStatBuilder HitDamageTakenAs(DamageType type) =>
             new StatBuilder(_statFactory,
-                CoreStat((e, t) => _statFactory.FromIdentity($"{t}.HitDamageTakenAs({type})", e, typeof(int))));
+                CoreStat((e, t) => _statFactory.FromIdentity($"{t}.HitDamageTakenAs({type})", e, typeof(uint))));
 
 
         public IDamageRelatedStatBuilder Penetration =>
@@ -137,7 +137,7 @@ namespace PoESkillTree.Computation.Builders.Damage
             {
                 var coreStat = new ParametrisedCoreStatBuilder<IStatBuilder>(_coreStat, pool,
                     (ps, p, s) => _statFactory.CopyWithSuffix(s, $"Before({((IPoolStatBuilder) p).BuildPool(ps)})",
-                        typeof(int)));
+                        typeof(uint)));
                 return new StatBuilder(_statFactory, coreStat);
             }
         }

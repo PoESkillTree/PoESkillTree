@@ -59,8 +59,8 @@ namespace PoESkillTree.Computation.Builders.Actions
         private IValue BuildInPastXSecondsValue(BuildParameters parameters, IValueBuilder seconds)
         {
             var builtEntity = BuildEntity(parameters, _entity);
-            var recentOccurrencesStat = BuildRecentOccurencesStat(parameters, builtEntity);
-            var lastOccurenceStat = BuildLastOccurenceStat(parameters, builtEntity);
+            var recentOccurrencesStat = BuildRecentOccurrencesStat(parameters, builtEntity);
+            var lastOccurenceStat = BuildLastOccurrenceStat(parameters, builtEntity);
             var secondsValue = seconds.Build(parameters);
             return new ConditionalValue(Calculate,
                 $"({RecentlySeconds} <= {secondsValue} && {recentOccurrencesStat} > 0) " +
@@ -81,14 +81,16 @@ namespace PoESkillTree.Computation.Builders.Actions
         public ValueBuilder CountRecently =>
             new ValueBuilder(new ValueBuilderImpl(BuildCountRecentlyValue, c => Resolve(c).CountRecently));
 
-        private IValue BuildCountRecentlyValue(BuildParameters parameters) =>
-            new StatValue(BuildRecentOccurencesStat(parameters, BuildEntity(parameters, _entity)));
+        private IValue BuildCountRecentlyValue(BuildParameters parameters)
+            => new StatValue(BuildRecentOccurrencesStat(parameters, BuildEntity(parameters, _entity)));
 
-        private IStat BuildLastOccurenceStat(BuildParameters parameters, Entity entity) =>
-            StatFactory.FromIdentity($"{Build(parameters)}.LastOccurence", entity, typeof(int), UserSpecifiedValue());
+        private IStat BuildLastOccurrenceStat(BuildParameters parameters, Entity entity)
+            => StatFactory.FromIdentity($"{Build(parameters)}.LastOccurrence", entity, typeof(uint),
+                UserSpecifiedValue(null));
 
-        private IStat BuildRecentOccurencesStat(BuildParameters parameters, Entity entity) =>
-            StatFactory.FromIdentity($"{Build(parameters)}.RecentOccurences", entity, typeof(int), UserSpecifiedValue());
+        private IStat BuildRecentOccurrencesStat(BuildParameters parameters, Entity entity)
+            => StatFactory.FromIdentity($"{Build(parameters)}.RecentOccurrences", entity, typeof(uint),
+                UserSpecifiedValue(0));
 
         private static Entity BuildEntity(BuildParameters parameters, IEntityBuilder entity) =>
             entity.Build(parameters.ModifierSourceEntity).Single();

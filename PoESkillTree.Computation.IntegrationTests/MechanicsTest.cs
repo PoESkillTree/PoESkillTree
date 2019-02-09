@@ -10,7 +10,6 @@ using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.IntegrationTests.Core;
-using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.Utils.Extensions;
 
@@ -37,16 +36,12 @@ namespace PoESkillTree.Computation.IntegrationTests
         [OneTimeSetUp]
         public static async Task ClassInit()
         {
-            _builderFactories = await CompositionRoot.BuilderFactories.ConfigureAwait(false);
-            _metaStats = CompositionRoot.MetaStats;
-            var coreParser = await CompositionRoot.CoreParser.ConfigureAwait(false);
-            var givenStats = await CompositionRoot.GivenStats.ConfigureAwait(false);
+            _builderFactories = await BuilderFactoriesTask.ConfigureAwait(false);
+            _metaStats = _builderFactories.MetaStatBuilders;
+            var parser = await ParserTask.ConfigureAwait(false);
             var modSource = new ModifierSource.Global();
-            _givenMods = GivenStatsParser.Parse(coreParser, givenStats)
+            _givenMods = parser.ParseGivenModifiers()
                 .Append(
-                    new Modifier(
-                        Build(_builderFactories.StatBuilders.Level.For(_builderFactories.EntityBuilders.Enemy)),
-                        Form.BaseSet, new Constant(84), modSource),
                     new Modifier(
                         Build(_builderFactories.DamageTypeBuilders.Physical.Damage.Taken
                             .For(_builderFactories.EntityBuilders.Enemy)),
@@ -85,13 +80,13 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void SkillDpsWithHits()
         {
-            var calculator = Calculator.CreateCalculator();
+            var calculator = Calculator.Create();
             var nodes = calculator.NodeRepository;
 
             calculator.NewBatchUpdate()
                 .AddModifiers(_givenMods)
-                .AddModifier(Build(_builderFactories.StatBuilders.BaseCastTime.With(DamageSource.Attack)),
-                    Form.BaseSet, 0.5)
+                .AddModifier(Build(_builderFactories.StatBuilders.CastRate.With(DamageSource.Attack)),
+                    Form.BaseSet, 2)
                 .AddModifier(Build(_builderFactories.ActionBuilders.CriticalStrike.Chance), Form.BaseSet, 10)
                 .AddModifier(Build(_builderFactories.DamageTypeBuilders.Physical.Penetration), Form.BaseAdd, 10)
                 .AddModifier(Build(_builderFactories.DamageTypeBuilders.Physical.Damage.ChanceToDouble), Form.BaseAdd,
@@ -161,7 +156,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void SkillDpsWithDoTs()
         {
-            var calculator = Calculator.CreateCalculator();
+            var calculator = Calculator.Create();
             var nodes = calculator.NodeRepository;
 
             calculator.NewBatchUpdate()
@@ -189,7 +184,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void BleedDps()
         {
-            var calculator = Calculator.CreateCalculator();
+            var calculator = Calculator.Create();
             var nodes = calculator.NodeRepository;
 
             calculator.NewBatchUpdate()
@@ -219,7 +214,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void ResistanceAgainstPhysicalHits()
         {
-            var calculator = Calculator.CreateCalculator();
+            var calculator = Calculator.Create();
             var nodes = calculator.NodeRepository;
 
             calculator.NewBatchUpdate()
@@ -242,13 +237,15 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void StunChance()
         {
-            var calculator = Calculator.CreateCalculator();
+            var calculator = Calculator.Create();
             var nodes = calculator.NodeRepository;
 
             calculator.NewBatchUpdate()
                 .AddModifiers(_givenMods)
                 .AddModifier(Build(_builderFactories.StatBuilders.Armour), Form.BaseAdd, 4000)
-                .AddModifier(Build(_builderFactories.EffectBuilders.Stun.Threshold), Form.Increase, -100)
+                .AddModifier(
+                    Build(_builderFactories.EffectBuilders.Stun.Threshold.For(_builderFactories.EntityBuilders.Enemy)),
+                    Form.Increase, -100)
                 .DoUpdate();
 
             var enemyLifeStat = Build(_builderFactories.StatBuilders.Pool.From(Pool.Life)
@@ -265,7 +262,7 @@ namespace PoESkillTree.Computation.IntegrationTests
         [Test]
         public void AffectedByMinionDamageAndAttackRateIncreases()
         {
-            var calculator = Calculator.CreateCalculator();
+            var calculator = Calculator.Create();
             var nodes = calculator.NodeRepository;
 
             var minion = _builderFactories.EntityBuilders.Minion;

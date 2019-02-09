@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using PoESkillTree.GameModel;
 using POESKillTree.Localization;
 using POESKillTree.SkillTreeFiles;
 
@@ -43,8 +44,10 @@ namespace POESKillTree.Utils.UrlProcessing
         {
             var bytes = GetRawData();
 
-            var deserializedData = new BuildUrlData(BanditConverter.Default);
-            deserializedData.Version = bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3];
+            var deserializedData = new BuildUrlData
+            {
+                Version = bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3]
+            };
 
             if (!IsVersionCompatible(deserializedData.Version))
             {
@@ -52,7 +55,7 @@ namespace POESKillTree.Utils.UrlProcessing
                     L10n.Message("The build is using an old version of the passive tree."));
             }
 
-            deserializedData.CharacterClassId = bytes[4];
+            deserializedData.CharacterClass = (CharacterClass) bytes[4];
             deserializedData.AscendancyClassId = bytes[5];
 
             for (int k = (deserializedData.Version > 3 ? 7 : 6); k < bytes.Length; k += 2)
@@ -71,7 +74,7 @@ namespace POESKillTree.Utils.UrlProcessing
             return rawData.Length < 5 ? 0 : rawData[4];
         }
 
-        protected override int GetAscendancyClassId()
+        public override int GetAscendancyClassId()
         {
             var rawData = GetRawData();
 

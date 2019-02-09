@@ -5,7 +5,7 @@ using PoESkillTree.Utils;
 namespace PoESkillTree.Computation.Parsing
 {
     /// <summary>
-    /// This is the core interface for using Computation.Parsing. It parses modifier lines to <see cref="Modifier"/>s.
+    /// This is the core interface for parsers. It parses modifier lines to <see cref="Modifier"/>s.
     /// </summary>
     public interface ICoreParser : IParser<CoreParserParameter>
     {

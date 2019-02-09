@@ -57,17 +57,25 @@ namespace PoESkillTree.Computation.Builders.Values
                 (left, right) => left.GetValueOrDefault() > right.GetValueOrDefault(), (l, r) => $"{l} > {r}");
 
         public IValueBuilder Add(IValueBuilder other) =>
-            Create(this, other, (left, right) => new[] { left, right }.Sum(), (l, r) => $"({l} + {r})");
+            Create(this, other, (left, right) => new[] { left(), right() }.Sum(), (l, r) => $"({l} + {r})");
 
         public IValueBuilder Multiply(IValueBuilder other) =>
-            Create(this, other, (left, right) => left * right, (l, r) => $"{l} * {r}");
+            Create(this, other, CalculateMultiply, (l, r) => $"{l} * {r}");
+
+        private static NodeValue? CalculateMultiply(Func<NodeValue?> leftFunc, Func<NodeValue?> rightFunc)
+            => leftFunc() is NodeValue left ? left * rightFunc() : null;
 
         public IValueBuilder DivideBy(IValueBuilder divisor) =>
-            Create(this, divisor, (left, right) => left / right, (l, r) => $"{l} / {r}");
+            Create(this, divisor, CalculateDivideBy, (l, r) => $"{l} / {r}");
+
+        private static NodeValue? CalculateDivideBy(Func<NodeValue?> leftFunc, Func<NodeValue?> rightFunc)
+            => leftFunc() is NodeValue left ? left / rightFunc() : null;
 
         public IValueBuilder If(IValue condition) =>
-            Create(this, new ValueBuilderImpl(condition), (l, r) => r.IsTrue() ? l : null,
-                (l, r) => $"{r} ? {l} : null");
+            Create(this, new ValueBuilderImpl(condition), CalculateIf, (l, r) => $"{r} ? {l} : null");
+
+        private static NodeValue? CalculateIf(Func<NodeValue?> value, Func<NodeValue?> condition)
+            => condition().IsTrue() ? value() : null;
 
         public IValueBuilder Select(Func<NodeValue, NodeValue> selector, Func<IValue, string> identity) =>
             Create(this, o => o.Select(selector), identity);
@@ -87,7 +95,7 @@ namespace PoESkillTree.Computation.Builders.Values
 
         public static IValueBuilder Create(
             IValueBuilder left, IValueBuilder right,
-            Func<NodeValue?, NodeValue?, NodeValue?> calculate,
+            Func<Func<NodeValue?>, Func<NodeValue?>, NodeValue?> calculate,
             Func<IValue, IValue, string> identity) =>
             new ValueBuilderImpl(
                 ps => Build(ps, left, right, calculate, identity),
@@ -106,12 +114,12 @@ namespace PoESkillTree.Computation.Builders.Values
         private static IValue Build(
             BuildParameters parameters,
             IValueBuilder left, IValueBuilder right,
-            Func<NodeValue?, NodeValue?, NodeValue?> calculate,
+            Func<Func<NodeValue?>, Func<NodeValue?>, NodeValue?> calculate,
             Func<IValue, IValue, string> identity)
         {
             var l = left.Build(parameters);
             var r = right.Build(parameters);
-            return new FunctionalValue(c => calculate(l.Calculate(c), r.Calculate(c)), identity(l, r));
+            return new FunctionalValue(c => calculate(() => l.Calculate(c), () => r.Calculate(c)), identity(l, r));
         }
     }
 }

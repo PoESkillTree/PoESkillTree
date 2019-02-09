@@ -151,6 +151,6 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
 
         private static readonly PathDefinition Path = PathDefinition.MainPath;
 
-        private static readonly ExplicitRegistrationType Registered = ExplicitRegistrationTypes.UserSpecifiedValue();
+        private static readonly ExplicitRegistrationType Registered = ExplicitRegistrationTypes.UserSpecifiedValue(0);
     }
 }

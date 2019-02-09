@@ -28,36 +28,50 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
             Assert.That(result.Modifiers, Has.Member(expected));
         }
 
-        [Test]
-        public void AddsToPassivePoints()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void AddsToPassivePointsIfCostsPoint(bool costsPassivePoint)
         {
-            var definition = CreateNode();
+            var definition = CreateNode(false, 0, costsPassivePoint);
             var expected = CreateConditionalModifier(definition, "PassivePoints", Form.BaseAdd, 1);
             var sut = CreateSut(definition);
 
             var result = sut.Parse(definition.Id);
 
-            Assert.AreEqual(new[] { expected }, result.Modifiers);
+            Assert.That(result.Modifiers,
+                costsPassivePoint ? Has.Member(expected) : Has.No.Member(expected));
         }
 
         [Test]
         public void AddsToAscendancyPassivePointsIfAscendancyNode()
         {
-            var definition = CreateNode(true, 0);
+            var definition = CreateNode(true, 0, true);
             var expected =
                 CreateConditionalModifier(definition, "AscendancyPassivePoints", Form.BaseAdd, 1);
             var sut = CreateSut(definition);
 
             var result = sut.Parse(definition.Id);
-            
-            Assert.AreEqual(new[] { expected }, result.Modifiers);
+
+            Assert.That(result.Modifiers, Has.Member(expected));
         }
 
         [Test]
         public void AddsPassivePointsGrantedToPassivePointsMaximum()
         {
-            var definition = CreateNode(false, 3);
+            var definition = CreateNode(false, 3, true);
             var expected = CreateConditionalModifier(definition, "PassivePoints.Maximum", Form.BaseAdd, 3);
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(definition.Id);
+
+            Assert.That(result.Modifiers, Has.Member(expected));
+        }
+
+        [Test]
+        public void SetsNodeSkilledToFalse()
+        {
+            var definition = CreateNode();
+            var expected = CreateModifier($"{definition.Id}.Skilled", Form.BaseSet, (NodeValue?) false);
             var sut = CreateSut(definition);
 
             var result = sut.Parse(definition.Id);
@@ -73,12 +87,12 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
         }
 
         private static PassiveNodeDefinition CreateNode(params string[] modifiers)
-            => CreateNode(false, 0, modifiers);
+            => CreateNode(false, 0, true, modifiers);
 
         private static PassiveNodeDefinition CreateNode(
-            bool isAscendancyNode, int passivePointsGranted, params string[] modifiers)
-            => new PassiveNodeDefinition(42, PassiveNodeType.Normal, "node", isAscendancyNode, passivePointsGranted,
-                modifiers);
+            bool isAscendancyNode, int passivePointsGranted, bool costsPassivePoint, params string[] modifiers)
+            => new PassiveNodeDefinition(42, PassiveNodeType.Normal, "node", isAscendancyNode, costsPassivePoint,
+                passivePointsGranted, modifiers);
 
         private static Modifier CreateConditionalModifier(
             PassiveNodeDefinition nodeDefinition, string stat, Form form, double value)

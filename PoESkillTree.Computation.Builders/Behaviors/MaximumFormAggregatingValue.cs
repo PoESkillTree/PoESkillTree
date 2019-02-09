@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                     $"Stat: {_stat}. Form: {_form}. Transformed value: {_transformedValue}");
 
             var nonNullValues = originalValues.OfType<NodeValue>().ToList();
-            var max = nonNullValues.Any() ? nonNullValues.MaxBy(v => v.Single) : (NodeValue?) null;
+            var max = nonNullValues.Any() ? nonNullValues.MaxBy(v => v.Single).First() : (NodeValue?) null;
             return new[] { max };
         }
     }

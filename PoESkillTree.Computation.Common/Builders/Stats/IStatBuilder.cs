@@ -3,7 +3,6 @@ using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
-using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Utils;
 
@@ -7,7 +8,7 @@ namespace PoESkillTree.Computation.Core
     /// <summary>
     /// Main interface of Computation.Core. Represents a graph that calculates stat values based on modifiers.
     /// <para>
-    /// An instance of this interface can be created with <see cref="Calculator.CreateCalculator"/>.
+    /// An instance of this interface can be created with <see cref="Calculator.Create"/>.
     /// </para>
     /// <para>
     /// All values of nodes are calculated lazily. <see cref="Update"/> only invalidates previously stored values
@@ -32,7 +33,7 @@ namespace PoESkillTree.Computation.Core
     /// </remarks>
     /* If the delayed events turn out to be a performance issue in the "preview calculations" use case, they could
      * easily be disabled: Either a property on ICalculator that turns off suspender usage in Calculator or a different
-     * factory method than/parameter to Calculator.CreateCalculator() that passes an empty suspender to the constructor.
+     * factory method than/parameter to Calculator.Create() that passes an empty suspender to the constructor.
      */
     public interface ICalculator
     {
@@ -44,6 +45,12 @@ namespace PoESkillTree.Computation.Core
         /// </para>
         /// </summary>
         void Update(CalculatorUpdate update);
+
+        /// <summary>
+        /// Removes unused nodes. Is done with every <see cref="Update"/> call but might be necessary after calculating
+        /// node values. Nodes only become removable after the nodes using them were recalculated.
+        /// </summary>
+        void RemoveUnusedNodes();
 
         /// <summary>
         /// The <see cref="INodeRepository"/> that can be used to retrieve the values of nodes.
@@ -75,6 +82,8 @@ namespace PoESkillTree.Computation.Core
     /// </summary>
     public class CalculatorUpdate : ValueObject
     {
+        public static CalculatorUpdate Empty { get; } = new CalculatorUpdate(new Modifier[0], new Modifier[0]);
+
         public CalculatorUpdate(
             IReadOnlyList<Modifier> addedModifiers,
             IReadOnlyList<Modifier> removedModifiers)
@@ -95,5 +104,13 @@ namespace PoESkillTree.Computation.Core
 
         protected override object ToTuple()
             => (WithSequenceEquality(AddedModifiers), WithSequenceEquality(RemovedModifiers));
+
+        public CalculatorUpdate Invert()
+            => new CalculatorUpdate(RemovedModifiers, AddedModifiers);
+
+        public static CalculatorUpdate Accumulate(CalculatorUpdate l, CalculatorUpdate r)
+            => new CalculatorUpdate(
+                l.AddedModifiers.Concat(r.AddedModifiers).ToList(),
+                l.RemovedModifiers.Concat(r.RemovedModifiers).ToList());
     }
 }

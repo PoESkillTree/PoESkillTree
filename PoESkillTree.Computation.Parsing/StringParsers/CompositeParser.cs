@@ -28,14 +28,14 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
             _stepToParserFunc = stepToParserFunc;
         }
 
-        public StringParseResult<IReadOnlyList<TInnerResult>> Parse(string stat)
+        public StringParseResult<IReadOnlyList<TInnerResult>> Parse(CoreParserParameter parameter)
         {
             var step = _stepper.InitialStep;
-            var remaining = stat;
+            var remaining = parameter.ModifierLine;
             var results = new List<TInnerResult>();
             while (!_stepper.IsTerminal(step))
             {
-                var (innerSuccess, innerRemaining, innerResult) = _stepToParserFunc(step).Parse(remaining);
+                var (innerSuccess, innerRemaining, innerResult) = _stepToParserFunc(step).Parse(remaining, parameter);
                 remaining = innerRemaining;
                 if (innerSuccess)
                 {

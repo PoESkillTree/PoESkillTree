@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Common
@@ -19,11 +18,11 @@ namespace PoESkillTree.Computation.Common
          */
 
         public Behavior(IReadOnlyList<IStat> affectedStats, IReadOnlyList<NodeType> affectedNodeTypes,
-            BehaviorPathInteraction affectedPaths, IValueTransformation transformation)
+            IBehaviorPathRule affectedPathsRule, IValueTransformation transformation)
         {
             AffectedStats = affectedStats;
             AffectedNodeTypes = affectedNodeTypes;
-            AffectedPaths = affectedPaths;
+            AffectedPathsRule = affectedPathsRule;
             Transformation = transformation;
         }
 
@@ -36,11 +35,8 @@ namespace PoESkillTree.Computation.Common
         /// The <see cref="NodeType"/>s of nodes affected by this behavior.
         /// </summary>
         public IReadOnlyList<NodeType> AffectedNodeTypes { get; }
-
-        /// <summary>
-        /// The <see cref="PathDefinition"/>s of nodes affected by this behavior.
-        /// </summary>
-        public BehaviorPathInteraction AffectedPaths { get; }
+        
+        public IBehaviorPathRule AffectedPathsRule { get; }
 
         /// <summary>
         /// The transformation applied by this behavior.
@@ -48,37 +44,7 @@ namespace PoESkillTree.Computation.Common
         public IValueTransformation Transformation { get; }
 
         protected override object ToTuple()
-            => (WithSequenceEquality(AffectedStats), WithSequenceEquality(AffectedNodeTypes), AffectedPaths,
+            => (WithSequenceEquality(AffectedStats), WithSequenceEquality(AffectedNodeTypes), AffectedPathsRule,
                 Transformation);
-    }
-
-
-    /// <summary>
-    /// Defines the <see cref="PathDefinition"/>s affected by a behavior.
-    /// </summary>
-    [Flags]
-    public enum BehaviorPathInteraction
-    {
-        /// <summary>
-        /// The behavior affects the main path (paths with <see cref="PathDefinition.IsMainPath"/>).
-        /// </summary>
-        Main = 1,
-
-        /// <summary>
-        /// The behavior affects conversion paths (paths where <see cref="PathDefinition.ConversionStats"/> is not
-        /// empty).
-        /// </summary>
-        Conversion = 2,
-
-        /// <summary>
-        /// The behavior affects non-conversion paths (paths where <see cref="PathDefinition.ConversionStats"/> is
-        /// empty).
-        /// </summary>
-        NonConversion = 4,
-
-        /// <summary>
-        /// The behavior affects all paths.
-        /// </summary>
-        All = Main | Conversion | NonConversion,
     }
 }

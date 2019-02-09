@@ -2,7 +2,6 @@
 using System.Linq;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
-using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -19,9 +18,9 @@ namespace PoESkillTree.Computation.Data
         private readonly IReadOnlyList<PassiveNodeDefinition> _passives;
 
         public KeystoneStatMatchers(
-            IBuilderFactories builderFactories, IMatchContexts matchContexts, IModifierBuilder modifierBuilder,
+            IBuilderFactories builderFactories, IModifierBuilder modifierBuilder,
             IReadOnlyList<PassiveNodeDefinition> passives)
-            : base(builderFactories, matchContexts)
+            : base(builderFactories)
             => (_modifierBuilder, _passives) = (modifierBuilder, passives);
 
         protected override IEnumerable<MatcherData> CreateCollection()
@@ -29,7 +28,7 @@ namespace PoESkillTree.Computation.Data
             var collection = new FormAndStatMatcherCollection(_modifierBuilder, ValueFactory);
             foreach (var keystone in _passives.Where(d => d.Type == PassiveNodeType.Keystone))
             {
-                collection.Add(keystone.Name.ToLowerInvariant(),
+                collection.Add($"(you have )?{keystone.Name.ToLowerInvariant()}",
                     TotalOverride, 1, Stat.PassiveNodeSkilled(keystone.Id));
             }
             return collection;

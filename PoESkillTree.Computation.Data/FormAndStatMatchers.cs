@@ -3,7 +3,6 @@ using System.Linq;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
-using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
@@ -21,9 +20,8 @@ namespace PoESkillTree.Computation.Data
     {
         private readonly IModifierBuilder _modifierBuilder;
 
-        public FormAndStatMatchers(
-            IBuilderFactories builderFactories, IMatchContexts matchContexts, IModifierBuilder modifierBuilder)
-            : base(builderFactories, matchContexts)
+        public FormAndStatMatchers(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder)
+            : base(builderFactories)
         {
             _modifierBuilder = modifierBuilder;
         }
@@ -67,6 +65,12 @@ namespace PoESkillTree.Computation.Data
                     @"adds # to # ({DamageTypeMatchers}) damage to spells",
                     BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]),
                     Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell)
+                },
+                {
+                    @"adds # to # ({DamageTypeMatchers}) damage to spells and attacks",
+                    BaseAdd, ValueFactory.FromMinAndMax(Values[0], Values[1]),
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Spell),
+                    Reference.AsDamageType.Damage.WithSkills(DamageSource.Attack)
                 },
                 {
                     @"# to # additional ({DamageTypeMatchers}) damage",
@@ -145,6 +149,10 @@ namespace PoESkillTree.Computation.Data
                 {
                     "({KeywordMatchers}) damage (?<inner>with .*|dealt by .*) penetrates #% ({DamageTypeMatchers}) resistances?",
                     BaseAdd, Value, References[1].AsDamageType.Penetration.With(References[1].AsKeyword), "${inner}"
+                },
+                {
+                    "hits ignore enemy monster ({DamageTypeMatchers}) resistance",
+                    TotalOverride, 1, Reference.AsDamageType.IgnoreResistance
                 },
                 // - crit
                 { @"\+#% critical strike chance", BaseAdd, Value, CriticalStrike.Chance },
@@ -276,6 +284,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { @"\+# ({PoolStatMatchers}) gained", BaseAdd, Value, Reference.AsPoolStat.Gain },
                 { @"gain \+# ({PoolStatMatchers})", BaseAdd, Value, Reference.AsPoolStat.Gain },
+                { "replenishes energy shield by #% of armour", BaseAdd, Value.PercentOf(Armour), EnergyShield.Gain },
                 // charges
                 {
                     "#% chance to gain a power, frenzy or endurance charge",
@@ -382,6 +391,7 @@ namespace PoESkillTree.Computation.Data
                 // other
                 { "knocks back enemies", TotalOverride, 100, Effect.Knockback.Chance },
                 { "knocks enemies back", TotalOverride, 100, Effect.Knockback.Chance },
+                { "knockback(?! distance)", TotalOverride, 100, Effect.Knockback.Chance },
             };
     }
 }

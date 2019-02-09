@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using PoESkillTree.GameModel.Items;
-using POESKillTree.Model.Items.Enums;
 using POESKillTree.Model.Items.Mods;
 
 namespace POESKillTree.Model.Items
@@ -19,6 +18,7 @@ namespace POESKillTree.Model.Items
         int InventoryHeight { get; }
         int InventoryWidth { get; }
 
+        string MetadataId { get; }
         string Name { get; }
         ItemClass ItemClass { get; }
         Tags Tags { get; }

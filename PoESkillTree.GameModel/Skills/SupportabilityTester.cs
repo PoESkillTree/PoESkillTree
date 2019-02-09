@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MoreLinq;
 using PoESkillTree.Utils.Extensions;
@@ -18,9 +17,8 @@ namespace PoESkillTree.GameModel.Skills
 
         public IEnumerable<Skill> SelectSupportingSkills(Skill activeSkill, IEnumerable<Skill> supportSkills)
         {
-            var supports = supportSkills.OrderBy(s => s.SocketIndex).ToList();
-            if (supports.Any(s => activeSkill.ItemSlot != s.ItemSlot))
-                throw new ArgumentException("All supports must have the same ItemSlot as the active skill");
+            var supports = supportSkills.Where(s => activeSkill.ItemSlot == s.ItemSlot)
+                .OrderBy(s => s.SocketIndex).ToList();
 
             if (activeSkill.GemGroup is int group)
             {

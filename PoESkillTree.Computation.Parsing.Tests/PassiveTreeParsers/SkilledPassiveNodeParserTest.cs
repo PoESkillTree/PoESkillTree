@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
                 CreateModifier($"{nodeId}.Skilled", Form.TotalOverride, 1)
             };
             var definition = new PassiveNodeDefinition(nodeId, PassiveNodeType.Normal, "", false,
-                0, new string[0]);
+                true, 0, new string[0]);
             var treeDefinition = new PassiveTreeDefinition(new []{definition});
             var sut = new SkilledPassiveNodeParser(treeDefinition, CreateBuilderFactories());
 

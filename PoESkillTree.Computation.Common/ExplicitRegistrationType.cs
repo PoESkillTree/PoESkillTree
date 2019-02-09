@@ -17,12 +17,10 @@ namespace PoESkillTree.Computation.Common
         /// </summary>
         public sealed class UserSpecifiedValue : ExplicitRegistrationType
         {
-            public UserSpecifiedValue(double? defaultValue = null)
-            {
-                DefaultValue = defaultValue;
-            }
+            public UserSpecifiedValue(NodeValue? defaultValue)
+                => DefaultValue = defaultValue;
 
-            public double? DefaultValue { get; }
+            public NodeValue? DefaultValue { get; }
 
             protected override object ToTuple() => (GetType().Name, DefaultValue);
         }
@@ -50,11 +48,17 @@ namespace PoESkillTree.Computation.Common
 
     public static class ExplicitRegistrationTypes
     {
-        public static ExplicitRegistrationType.UserSpecifiedValue UserSpecifiedValue(double? defaultValue = null) =>
-            new ExplicitRegistrationType.UserSpecifiedValue(defaultValue);
+        public static ExplicitRegistrationType.UserSpecifiedValue UserSpecifiedValue(bool defaultValue)
+            => UserSpecifiedValue((NodeValue?) defaultValue);
+
+        public static ExplicitRegistrationType.UserSpecifiedValue UserSpecifiedValue(double defaultValue)
+            => UserSpecifiedValue(new NodeValue(defaultValue));
+
+        public static ExplicitRegistrationType.UserSpecifiedValue UserSpecifiedValue(NodeValue? defaultValue)
+            => new ExplicitRegistrationType.UserSpecifiedValue(defaultValue);
 
         public static ExplicitRegistrationType.GainOnAction GainOnAction(
-            IStat gainedStat, string action, Entity actionEntity) =>
-            new ExplicitRegistrationType.GainOnAction(gainedStat, action, actionEntity);
+            IStat gainedStat, string action, Entity actionEntity)
+            => new ExplicitRegistrationType.GainOnAction(gainedStat, action, actionEntity);
     }
 }

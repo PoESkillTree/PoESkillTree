@@ -22,7 +22,7 @@ namespace PoESkillTree.Computation.Builders.Stats
     public class PoolStatBuilder : StatBuilderWithPool, IPoolStatBuilder
     {
         public PoolStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
-            : base(statFactory, pool, "")
+            : base(statFactory, pool, "", typeof(uint))
         {
         }
 
@@ -40,17 +40,17 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IRegenStatBuilder Regen => new RegenStatBuilder(StatFactory, Pool);
         public IRechargeStatBuilder Recharge => new RechargeStatBuilder(StatFactory, Pool);
         public IStatBuilder RecoveryRate => FromIdentity(typeof(double));
-        public IStatBuilder Cost => FromIdentity(typeof(int));
-        public IStatBuilder Reservation => FromIdentity(typeof(int));
+        public IStatBuilder Cost => FromIdentity(typeof(uint));
+        public IStatBuilder Reservation => FromIdentity(typeof(uint));
         public ILeechStatBuilder Leech => new LeechStatBuilder(StatFactory, Pool);
         public IStatBuilder InstantLeech => FromIdentity(typeof(bool));
         public IStatBuilder Gain => FromIdentity(typeof(int));
 
         public IConditionBuilder IsFull =>
-            (Reservation.Value <= 0).And(FromIdentity(typeof(bool), UserSpecifiedValue()).IsSet);
+            (Reservation.Value <= 0).And(FromIdentity(typeof(bool), UserSpecifiedValue(false)).IsSet);
 
         public IConditionBuilder IsLow =>
-            (Reservation.Value >= 0.65 * Value).Or(FromIdentity(typeof(bool), UserSpecifiedValue()).IsSet);
+            (Reservation.Value >= 0.65 * Value).Or(FromIdentity(typeof(bool), UserSpecifiedValue(false)).IsSet);
 
         public Pool BuildPool(BuildParameters parameters) => Pool.Build(parameters);
     }
@@ -58,7 +58,7 @@ namespace PoESkillTree.Computation.Builders.Stats
     internal class RechargeStatBuilder : StatBuilderWithPool, IRechargeStatBuilder
     {
         public RechargeStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
-            : base(statFactory, pool, ".Recharge")
+            : base(statFactory, pool, ".Recharge", typeof(double))
         {
         }
 
@@ -72,13 +72,13 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder Start => FromIdentity(typeof(double));
 
-        public IConditionBuilder StartedRecently => FromIdentity(typeof(bool), UserSpecifiedValue()).IsSet;
+        public IConditionBuilder StartedRecently => FromIdentity(typeof(bool), UserSpecifiedValue(false)).IsSet;
     }
 
     internal class RegenStatBuilder : StatBuilderWithPool, IRegenStatBuilder
     {
         public RegenStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
-            : base(statFactory, pool, ".Regen")
+            : base(statFactory, pool, ".Regen", typeof(double))
         {
         }
 
@@ -99,7 +99,7 @@ namespace PoESkillTree.Computation.Builders.Stats
     internal class LeechStatBuilder : StatBuilderWithPool, ILeechStatBuilder
     {
         public LeechStatBuilder(IStatFactory statFactory, ICoreBuilder<Pool> pool)
-            : base(statFactory, pool, ".Leech")
+            : base(statFactory, pool, ".Leech", typeof(double))
         {
         }
 
@@ -115,11 +115,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
             var damageCoreBuilder = new StatBuilderAdapter(damage.WithHits);
             var coreBuilder = new ParametrisedCoreStatBuilder<ICoreBuilder<Pool>>(damageCoreBuilder, Pool,
-                (ps, p, s) => StatFactory.CopyWithSuffix(s, $"LeechTo({p.Build(ps)})", typeof(int)));
+                (ps, p, s) => StatFactory.CopyWithSuffix(s, $"LeechTo({p.Build(ps)})", typeof(uint)));
             return new StatBuilder(StatFactory, coreBuilder);
         }
 
-        public IStatBuilder RateLimit => FromIdentity(typeof(int));
+        public IStatBuilder RateLimit => FromIdentity(typeof(uint));
         public IStatBuilder Rate => FromIdentity(typeof(double));
 
         public IStatBuilder TargetPool =>
@@ -131,10 +131,11 @@ namespace PoESkillTree.Computation.Builders.Stats
         private readonly string _identitySuffix;
         protected ICoreBuilder<Pool> Pool { get; }
 
-        protected StatBuilderWithPool(IStatFactory statFactory, ICoreBuilder<Pool> pool, string identitySuffix)
+        protected StatBuilderWithPool(
+            IStatFactory statFactory, ICoreBuilder<Pool> pool, string identitySuffix, Type dataType)
             : this(statFactory,
                 new CoreStatBuilderFromCoreBuilder<Pool>(pool,
-                    (e, p) => statFactory.FromIdentity(p.ToString() + identitySuffix, e, typeof(int))),
+                    (e, p) => statFactory.FromIdentity(p.ToString() + identitySuffix, e, dataType)),
                 pool,
                 identitySuffix)
         {

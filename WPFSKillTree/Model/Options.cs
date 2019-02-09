@@ -9,7 +9,6 @@ namespace POESKillTree.Model
         private string _theme = "Dark";
         private string _accent = "Steel";
         private bool _attributesBarOpened;
-        private bool _characterSheetBarOpened;
         private bool _buildsBarOpened;
         private bool _treeComparisonEnabled;
         private bool _changeSummaryEnabled;
@@ -44,12 +43,6 @@ namespace POESKillTree.Model
         {
             get { return _attributesBarOpened; }
             set { SetProperty(ref _attributesBarOpened, value); }
-        }
-
-        public bool CharacterSheetBarOpened
-        {
-            get { return _characterSheetBarOpened; }
-            set { SetProperty(ref _characterSheetBarOpened, value); }
         }
 
         public bool BuildsBarOpened

@@ -2,7 +2,6 @@
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
-using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -18,9 +17,8 @@ namespace PoESkillTree.Computation.Data
     {
         private readonly IModifierBuilder _modifierBuilder;
 
-        public ConditionMatchers(
-            IBuilderFactories builderFactories, IMatchContexts matchContexts, IModifierBuilder modifierBuilder)
-            : base(builderFactories, matchContexts)
+        public ConditionMatchers(IBuilderFactories builderFactories, IModifierBuilder modifierBuilder)
+            : base(builderFactories)
         {
             _modifierBuilder = modifierBuilder;
         }
@@ -32,6 +30,7 @@ namespace PoESkillTree.Computation.Data
                 // - generic
                 { "if you've ({ActionMatchers})( an enemy)? recently,?", Reference.AsAction.Recently },
                 { "if you haven't ({ActionMatchers}) recently", Not(Reference.AsAction.Recently) },
+                { "if you've ({ActionMatchers}) in the past # seconds,?", Reference.AsAction.InPastXSeconds(Value) },
                 { "for # seconds on ({ActionMatchers})", Reference.AsAction.InPastXSeconds(Value) },
                 {
                     "for # seconds when you ({ActionMatchers}) a rare or unique enemy",
@@ -60,15 +59,13 @@ namespace PoESkillTree.Computation.Data
                     Or(Kill.Recently, Kill.By(Entity.Minion).Recently)
                 },
                 // - hit
-                { "if you've been hit recently", Hit.By(Enemy).Recently },
+                { "if you('ve| have) been hit recently", Hit.By(Enemy).Recently },
                 { "if you haven't been hit recently", Not(Hit.By(Enemy).Recently) },
                 { "if you were damaged by a hit recently", Hit.By(Enemy).Recently },
                 { "if you've taken no damage from hits recently", Not(Hit.By(Enemy).Recently) },
                 // - critical strike
                 { "if you've crit in the past # seconds", CriticalStrike.InPastXSeconds(Value) },
-                { "if you've dealt a critical strike in the past # seconds", CriticalStrike.InPastXSeconds(Value) },
                 // - block
-                { "if you've blocked in the past # seconds,?", Block.InPastXSeconds(Value) },
                 { "if you've blocked damage from a unique enemy recently", And(Block.Recently, Enemy.IsUnique) },
                 {
                     "if you've blocked damage from a unique enemy in the past # seconds",
@@ -86,11 +83,13 @@ namespace PoESkillTree.Computation.Data
                 { "attacks have", Condition.With(DamageSource.Attack) },
                 { "with attacks", Condition.With(DamageSource.Attack) },
                 { "for spells", Condition.With(DamageSource.Spell) },
+                { "your spells have", Condition.With(DamageSource.Spell) },
                 // - by item tag
                 { "with weapons", AttackWith(Tags.Weapon) },
                 { "weapon", AttackWith(Tags.Weapon) },
                 { "with bows", AttackWith(Tags.Bow) },
                 { "with a bow", AttackWith(Tags.Bow) },
+                { "with arrow hits", AttackWith(Tags.Bow) },
                 { "bow", AttackWith(Tags.Bow) },
                 { "with swords", AttackWith(Tags.Sword) },
                 { "with claws", AttackWith(Tags.Claw) },
@@ -101,6 +100,7 @@ namespace PoESkillTree.Computation.Data
                 { "with axes", AttackWith(Tags.Axe) },
                 { "with staves", AttackWith(Tags.Staff) },
                 { "with a staff", AttackWith(Tags.Staff) },
+                { "with ranged weapons", AttackWith(Tags.Ranged) },
                 {
                     "with maces",
                     (Or(MainHandAttackWith(Tags.Mace), MainHandAttackWith(Tags.Sceptre)),
@@ -127,7 +127,7 @@ namespace PoESkillTree.Computation.Data
                         ModifierSourceIs(ItemSlot.OffHand).And(OffHandAttack))
                 },
                 // - taken
-                { "take", Condition.DamageTaken },
+                { "(?<!when you )take", Condition.DamageTaken },
                 // equipment
                 { "while unarmed", Not(MainHand.HasItem) },
                 { "while wielding a staff", MainHand.Has(Tags.Staff) },
@@ -152,7 +152,7 @@ namespace PoESkillTree.Computation.Data
                 { "with # corrupted items equipped", Equipment.Count(e => e.Corrupted.IsSet) >= Value },
                 // stats
                 // - pool
-                { "when on low life", Life.IsLow },
+                { "(when|while) on low life", Life.IsLow },
                 { "when not on low life", Not(Life.IsLow) },
                 { "while on full life", Life.IsFull },
                 { "while no mana is reserved", Mana.Reservation.Value <= 0 },
@@ -179,6 +179,7 @@ namespace PoESkillTree.Computation.Data
                 { "(against enemies )?that are on full life", Life.For(Enemy).IsFull },
                 { "against rare and unique enemies", Enemy.IsRareOrUnique },
                 { "while there is only one nearby enemy", Enemy.CountNearby.Eq(1) },
+                { "at close range", Enemy.IsNearby },
                 // buffs
                 { "while you have ({BuffMatchers})", Reference.AsBuff.IsOn(Self) },
                 { "while affected by ({SkillMatchers})", Reference.AsSkill.Buff.IsOn(Self) },
@@ -195,7 +196,7 @@ namespace PoESkillTree.Computation.Data
                     Or(For(Self), And(For(Ally), Buffs(targets: Ally).With(Keyword.Aura).Any()))
                 },
                 // ailments
-                { "while ({AilmentMatchers})", Reference.AsAilment.IsOn(Self) },
+                { "while( you are)? ({AilmentMatchers})", Reference.AsAilment.IsOn(Self) },
                 { "(against|from) ({AilmentMatchers}) enemies", Reference.AsAilment.IsOn(Enemy) },
                 {
                     "against frozen, shocked or ignited enemies",
@@ -249,10 +250,10 @@ namespace PoESkillTree.Computation.Data
                 // - other
                 {
                     "brand skills deal to enemies they're attached to",
-                    And(With(Keyword.Brand), Flag.BrandAttachedToEnemy.IsSet)
+                    And(With(Keyword.Brand), Flag.IsBrandAttachedToEnemy)
                 },
-                { "to branded enemy", Flag.BrandAttachedToEnemy.IsSet },
-                { "when placed,", Flag.BannerPlanted.IsSet },
+                { "to branded enemy", Flag.IsBrandAttachedToEnemy },
+                { "when placed,", Flag.IsBannerPlanted },
                 // traps and mines
                 { "with traps", With(Keyword.Trap) },
                 { "skills used by traps have", With(Keyword.Trap) },
@@ -282,8 +283,8 @@ namespace PoESkillTree.Computation.Data
                 { "during any flask effect", Flask.IsAnyActive },
                 // other
                 { "against targets they pierce", Projectile.PierceCount.Value >= 1 },
-                { "while stationary", Flag.AlwaysStationary.IsSet },
-                { "while moving", Flag.AlwaysMoving.IsSet },
+                { "while stationary", Flag.AlwaysStationary },
+                { "while moving", Flag.AlwaysMoving },
                 // unique
                 {
                     "against burning enemies", Or(Ailment.Ignite.IsOn(Enemy), Condition.Unique("Is the Enemy Burning?"))
