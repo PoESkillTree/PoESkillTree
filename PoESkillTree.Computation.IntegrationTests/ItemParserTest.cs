@@ -51,7 +51,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                 "+1% to Fire Resistance", "+50 to maximum Life", "+32 to Strength", "10% increased Armour"
             };
             var item = new Item("Metadata/Items/Armours/BodyArmours/BodyStr15",
-                "Hypnotic Keep Astral Plate", 20, 62, FrameType.Rare, false, mods);
+                "Hypnotic Keep Astral Plate", 20, 62, FrameType.Rare, false, mods, true);
             var definition = _baseItemDefinitions.GetBaseItemById(item.BaseMetadataId);
             var local = new ModifierSource.Local.Item(ItemSlot.BodyArmour, item.Name);
             var global = new ModifierSource.Global(local);
@@ -98,7 +98,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                 "+42 to Dexterity"
             };
             var item = new Item("Metadata/Items/Weapons/OneHandWeapons/OneHandSwords/OneHandSword17",
-                "Some Corsair Sword", 20, 58, FrameType.Rare, false, mods);
+                "Some Corsair Sword", 20, 58, FrameType.Rare, false, mods, true);
             var definition = _baseItemDefinitions.GetBaseItemById(item.BaseMetadataId);
             var baseDamageValue = new NodeValue(definition.Properties[3].Value, definition.Properties[2].Value);
             var local = new ModifierSource.Local.Item(ItemSlot.MainHand, item.Name);
@@ -191,7 +191,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var definition = _baseItemDefinitions.GetBaseItemById(metadataId);
             var mods = Translate(definition.ImplicitModifiers);
             var item = new Item(metadataId, definition.Name, 20, definition.Requirements.Level,
-                FrameType.White, false, mods);
+                FrameType.White, false, mods, true);
             var slot = SlotForClass(definition.ItemClass);
             return _parser.ParseItem(item, slot);
         }
@@ -218,7 +218,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             var craftableStats = definition.ImplicitModifiers.Concat(explicitMods);
             var mods = Translate(craftableStats);
             var item = new Item(unique.BaseMetadataId, unique.Name, 20, unique.Level,
-                FrameType.Unique, false, mods);
+                FrameType.Unique, false, mods, true);
             var slot = SlotForClass(definition.ItemClass);
             return _parser.ParseItem(item, slot);
         }

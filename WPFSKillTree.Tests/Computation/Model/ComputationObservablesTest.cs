@@ -233,7 +233,7 @@ namespace PoESkillTree.Tests.Computation.Model
             => Enumerable.Range(0, count).Zip(Enums.GetValues<ItemSlot>(), (i, s) => (CreateItem(i), s)).ToList();
 
         private static Item CreateItem(int id)
-            => new Item(id.ToString(), "", 0, 0, default, false, new string[0]);
+            => new Item(id.ToString(), "", 0, 0, default, false, new string[0], true);
 
         private static IReadOnlyList<IReadOnlyList<Skill>> CreateSkills()
             => Enumerable.Range(0, 3).Select(i => Enumerable.Range(i, 2).Select(CreateSkill).ToList()).ToList();

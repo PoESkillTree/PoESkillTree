@@ -34,6 +34,13 @@ namespace POESKillTree.Model.Items
         public bool IsFlask => Tags.HasFlag(Tags.Flask);
         public bool IsJewel => ItemClass == ItemClass.Jewel || ItemClass == ItemClass.AbyssJewel;
 
+        private bool _isEnabled = true;
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set => SetProperty(ref _isEnabled, value);
+        }
+
         private IReadOnlyList<Skill> _socketedSkills = new Skill[0];
         public IReadOnlyList<Skill> SocketedSkills
         {
