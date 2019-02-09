@@ -25,8 +25,8 @@ namespace POESKillTree.Model.Items
         private ItemSlot _slot;
         public ItemSlot Slot
         {
-            get { return _slot; }
-            set { SetProperty(ref _slot, value); }
+            get => _slot;
+            set => SetProperty(ref _slot, value);
         }
 
         public ItemClass ItemClass { get; }
@@ -38,7 +38,17 @@ namespace POESKillTree.Model.Items
         public bool IsEnabled
         {
             get => _isEnabled;
-            set => SetProperty(ref _isEnabled, value);
+            set
+            {
+                SetProperty(ref _isEnabled, value, () =>
+                {
+                    if (JsonBase != null)
+                    {
+                        JsonBase["isEnabled"] = value;
+                        OnPropertyChanged(nameof(JsonBase));
+                    }
+                });
+            }
         }
 
         private IReadOnlyList<Skill> _socketedSkills = new Skill[0];
@@ -50,86 +60,72 @@ namespace POESKillTree.Model.Items
 
         public IReadOnlyList<Item> SocketedJewels { get; } = new List<Item>();
 
-        public IReadOnlyList<string> Keywords { get; }
-
         private FrameType _frame;
         public FrameType Frame
         {
-            get { return _frame; }
-            set { SetProperty(ref _frame, value); }
+            get => _frame;
+            set => SetProperty(ref _frame, value);
         }
 
         private ObservableCollection<ItemMod> _properties = new ObservableCollection<ItemMod>();
         public ObservableCollection<ItemMod> Properties
         {
-            get { return _properties; }
-            set { SetProperty(ref _properties, value); }
+            get => _properties;
+            set => SetProperty(ref _properties, value);
         }
 
         private readonly ObservableCollection<ItemMod> _requirements = new ObservableCollection<ItemMod>();
-        public IReadOnlyList<ItemMod> Requirements
-        {
-            get { return _requirements; }
-        }
+        public IReadOnlyList<ItemMod> Requirements => _requirements;
 
         private List<ItemMod> _implicitMods = new List<ItemMod>();
         public List<ItemMod> ImplicitMods
         {
-            get { return _implicitMods; }
-            set { SetProperty(ref _implicitMods, value); }
+            get => _implicitMods;
+            set => SetProperty(ref _implicitMods, value);
         }
 
         private List<ItemMod> _explicitMods = new List<ItemMod>();
         public List<ItemMod> ExplicitMods
         {
-            get { return _explicitMods; }
-            set { SetProperty(ref _explicitMods, value); }
+            get => _explicitMods;
+            set => SetProperty(ref _explicitMods, value);
         }
 
         private List<ItemMod> _craftedMods = new List<ItemMod>();
         public List<ItemMod> CraftedMods
         {
-            get { return _craftedMods; }
-            set { SetProperty(ref _craftedMods, value); }
+            get => _craftedMods;
+            set => SetProperty(ref _craftedMods, value);
         }
 
         private string _flavourText;
         public string FlavourText
         {
-            get { return _flavourText; }
-            set { SetProperty(ref _flavourText, value, () => OnPropertyChanged("HaveFlavourText")); }
+            get => _flavourText;
+            set => SetProperty(ref _flavourText, value, () => OnPropertyChanged("HaveFlavourText"));
         }
         public bool HaveFlavourText
-        {
-            get { return !string.IsNullOrEmpty(_flavourText); }
-        }
+            => !string.IsNullOrEmpty(_flavourText);
 
         public IEnumerable<ItemMod> Mods
-        {
-            get { return ImplicitMods.Union(ExplicitMods).Union(CraftedMods); }
-        }
+            => ImplicitMods.Union(ExplicitMods).Union(CraftedMods);
 
         public string Name
-        {
-            get { return string.IsNullOrEmpty(_nameLine) ? TypeLine : NameLine; }
-        }
+            => string.IsNullOrEmpty(_nameLine) ? TypeLine : NameLine;
 
         private string _nameLine;
         public string NameLine
         {
-            get { return _nameLine; }
-            set { SetProperty(ref _nameLine, value, () => OnPropertyChanged("HaveName")); }
+            get => _nameLine;
+            set => SetProperty(ref _nameLine, value, () => OnPropertyChanged("HaveName"));
         }
-        public bool HaveName
-        {
-            get { return !string.IsNullOrEmpty(NameLine); }
-        }
+        public bool HaveName => !string.IsNullOrEmpty(NameLine);
 
         private string _typeLine;
         public string TypeLine
         {
-            get { return _typeLine; }
-            set { SetProperty(ref _typeLine, value); }
+            get => _typeLine;
+            set => SetProperty(ref _typeLine, value);
         }
 
         public IItemBase BaseType { get; }
@@ -141,14 +137,14 @@ namespace POESKillTree.Model.Items
         private JObject _jsonBase;
         public JObject JsonBase
         {
-            get { return _jsonBase; }
-            private set { SetProperty(ref _jsonBase, value); }
+            get => _jsonBase;
+            private set => SetProperty(ref _jsonBase, value);
         }
 
         private int _x;
         public int X
         {
-            get { return _x; }
+            get => _x;
             set
             {
                 SetProperty(ref _x, value, () =>
@@ -162,7 +158,7 @@ namespace POESKillTree.Model.Items
         private int _y;
         public int Y
         {
-            get { return _y; }
+            get => _y;
             set
             {
                 SetProperty(ref _y, value, () =>
@@ -197,15 +193,14 @@ namespace POESKillTree.Model.Items
 
         public Item(Item source)
         {
-            //_slot, ItemClass, Tags, _gems, _keywords, _frame
+            //_slot, ItemClass, Tags, _gems, _frame, _isEnabled
             _slot = source._slot;
             ItemClass = source.ItemClass;
             Tags = source.Tags;
             _socketedSkills = source._socketedSkills.ToList();
-            if (source.Keywords != null)
-                Keywords = source.Keywords.ToList();
             _frame = source._frame;
-            //_properties, _requirements, _explicit-, _implicit-, _craftetMods
+            _isEnabled = source._isEnabled;
+            //_properties, _requirements, _explicit-, _implicit-, _craftedMods
             _properties = new ObservableCollection<ItemMod>(source._properties);
             _requirements = new ObservableCollection<ItemMod>(source._requirements);
             _explicitMods = source._explicitMods.ToList();
@@ -242,9 +237,11 @@ namespace POESKillTree.Model.Items
             if (val["name"] != null)
                 NameLine = FilterJsonString(val["name"].Value<string>());
 
-            JToken iconToken;
-            if (val.TryGetValue("icon", out iconToken))
+            if (val.TryGetValue("icon", out var iconToken))
                 _iconUrl = iconToken.Value<string>();
+
+            if (val.TryGetValue("isEnabled", out var enabledToken))
+                IsEnabled = enabledToken.Value<bool>();
 
             Frame = (FrameType)val["frameType"].Value<int>();
             TypeLine = FilterJsonString(val["typeLine"].Value<string>());
@@ -261,8 +258,7 @@ namespace POESKillTree.Model.Items
             else
             {
                 // item is not unique or the unique is unknown
-                ItemBase iBase;
-                equipmentData.ItemBaseDictionary.TryGetValue(TypeLine, out iBase);
+                equipmentData.ItemBaseDictionary.TryGetValue(TypeLine, out var iBase);
                 BaseType = iBase;
             }
             // For known bases, images are only downloaded if the item is unique or foil. All other items should
@@ -271,8 +267,7 @@ namespace POESKillTree.Model.Items
                                        && (BaseType == null || Frame == FrameType.Unique || Frame == FrameType.Foil);
             if (BaseType == null)
             {
-                BaseType = new ItemBase(equipmentData.ItemImageService, itemSlot, TypeLine,
-                    Keywords == null ? "" : Keywords.FirstOrDefault(), Frame);
+                BaseType = new ItemBase(equipmentData.ItemImageService, itemSlot, TypeLine, Frame);
             }
             ItemClass = BaseType.ItemClass;
             Tags = BaseType.Tags;
@@ -291,11 +286,6 @@ namespace POESKillTree.Model.Items
                 foreach (var obj in val["properties"])
                 {
                     Properties.Add(ItemModFromJson(obj, false));
-                }
-                if (Properties.Any(m => !m.Values.Any()))
-                {
-                    // The name of one property of gems contains the Keywords of that gem.
-                    Keywords = Properties.First(m => !m.Values.Any()).Attribute.Split(',').Select(i => i.Trim()).ToList();
                 }
             }
 
@@ -545,7 +535,8 @@ namespace POESKillTree.Model.Items
                 new JProperty("y", Y),
                 new JProperty("name", NameLine),
                 new JProperty("typeLine", TypeLine),
-                new JProperty("frameType", Frame)
+                new JProperty("frameType", Frame),
+                new JProperty("isEnabled", IsEnabled)
                 );
             if (_iconUrl != null)
                 j["icon"] = _iconUrl;
