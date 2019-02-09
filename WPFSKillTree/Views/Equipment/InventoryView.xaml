@@ -95,21 +95,16 @@
                     Orientation="Horizontal"
                     Margin="0 10 0 0"
                     HorizontalAlignment="Center" VerticalAlignment="Top">
-            <views:InventoryItemView Margin="0 0 -2 0"
-                                     Width="51" Height="98"
-                                     DataContext="{Binding Flasks[0]}" />
-            <views:InventoryItemView Margin="0 0 -2 0"
-                                     Width="51" Height="98"
-                                     DataContext="{Binding Flasks[1]}" />
-            <views:InventoryItemView Margin="0 0 -2 0"
-                                     Width="51" Height="98"
-                                     DataContext="{Binding Flasks[2]}" />
-            <views:InventoryItemView Margin="0 0 -2 0"
-                                     Width="51" Height="98"
-                                     DataContext="{Binding Flasks[3]}" />
-            <views:InventoryItemView Margin="0"
-                                     Width="51" Height="98"
-                                     DataContext="{Binding Flasks[4]}" />
+            <views:InventoryFlaskView Margin="0 0 -2 0"
+                                      DataContext="{Binding Flasks[0]}" />
+            <views:InventoryFlaskView Margin="0 0 -2 0"
+                                      DataContext="{Binding Flasks[1]}" />
+            <views:InventoryFlaskView Margin="0 0 -2 0"
+                                      DataContext="{Binding Flasks[2]}" />
+            <views:InventoryFlaskView Margin="0 0 -2 0"
+                                      DataContext="{Binding Flasks[3]}" />
+            <views:InventoryFlaskView Margin="0"
+                                      DataContext="{Binding Flasks[4]}" />
         </StackPanel>
 
         <views:BinView Grid.Column="2"

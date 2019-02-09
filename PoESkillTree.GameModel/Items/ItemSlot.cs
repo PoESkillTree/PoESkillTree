@@ -26,4 +26,13 @@ namespace PoESkillTree.GameModel.Items
         Flask4 = 1 << 14,
         Flask5 = 1 << 15,
     }
+
+    public static class ItemSlotExtensions
+    {
+        public const ItemSlot Flask
+            = ItemSlot.Flask1 | ItemSlot.Flask2 | ItemSlot.Flask3 | ItemSlot.Flask4 | ItemSlot.Flask5;
+
+        public static bool IsFlask(this ItemSlot @this)
+            => (@this & Flask) > 0;
+    }
 }

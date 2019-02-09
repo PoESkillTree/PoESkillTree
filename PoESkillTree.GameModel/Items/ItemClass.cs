@@ -173,7 +173,7 @@ namespace PoESkillTree.GameModel.Items
                 case ItemClass.HybridFlask:
                 case ItemClass.UtilityFlask:
                 case ItemClass.UtilityFlaskCritical:
-                    return ItemSlot.Flask1 | ItemSlot.Flask2 | ItemSlot.Flask3 | ItemSlot.Flask4 | ItemSlot.Flask5;
+                    return ItemSlotExtensions.Flask;
                 default:
                     return ItemSlot.Unequipable;
             }

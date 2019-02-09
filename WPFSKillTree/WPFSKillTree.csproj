@@ -289,6 +289,9 @@
     <Compile Include="Computation\Views\ResultStatsView.xaml.cs">
       <DependentUpon>ResultStatsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Equipment\InventoryFlaskView.xaml.cs">
+      <DependentUpon>InventoryFlaskView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Equipment\ScrollBarPositionConverter.cs" />
     <Compile Include="ViewModels\Equipment\StashItemViewModel.cs" />
     <Compile Include="Views\Crafting\BaseCraftingView.xaml.cs">
@@ -727,6 +730,10 @@
       <DependentUpon>TabPicker.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\Equipment\BinView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Equipment\InventoryFlaskView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

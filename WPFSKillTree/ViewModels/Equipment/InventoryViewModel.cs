@@ -60,6 +60,8 @@ namespace POESKillTree.ViewModels.Equipment
 
         private static string SlotToImageName(ItemSlot slot)
         {
+            if (slot.IsFlask())
+                return "LifeFlask";
             switch (slot)
             {
                 case ItemSlot.MainHand:
@@ -70,12 +72,6 @@ namespace POESKillTree.ViewModels.Equipment
                     return "Ring";
                 case ItemSlot.Helm:
                     return "Helmet";
-                case ItemSlot.Flask1:
-                case ItemSlot.Flask2:
-                case ItemSlot.Flask3:
-                case ItemSlot.Flask4:
-                case ItemSlot.Flask5:
-                    return "LifeFlask";
                 default:
                     return slot.ToString();
             }
