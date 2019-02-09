@@ -5,9 +5,9 @@ namespace PoESkillTree.Utils.Extensions
     public static class NumberExtensions
     {
         public static bool AlmostEquals(this float x, float y, double delta)
-            => Math.Abs(x - y) < delta;
+            => x == y || Math.Abs(x - y) < delta;
 
         public static bool AlmostEquals(this double x, double y, double delta)
-            => Math.Abs(x - y) < delta;
+            => x == y || Math.Abs(x - y) < delta;
     }
 }

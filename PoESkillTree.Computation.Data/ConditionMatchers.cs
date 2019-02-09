@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
+using PoESkillTree.Computation.Common.Builders.Equipment;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
@@ -279,8 +280,10 @@ namespace PoESkillTree.Computation.Data
                 { "spectres have", And(For(Entity.Minion), With(Skills.RaiseSpectre)) },
                 { "skeletons deal", And(For(Entity.Minion), WithSkeletonSkills) },
                 // flasks
-                { "while using a flask", Flask.IsAnyActive },
-                { "during any flask effect", Flask.IsAnyActive },
+                { "while using a flask", Equipment.IsAnyFlaskActive() },
+                { "during any flask effect", Equipment.IsAnyFlaskActive() },
+                // - mods on flasks are only added when the flask item is enabled
+                { "during (flask )?effect", Condition.True },
                 // other
                 { "against targets they pierce", Projectile.PierceCount.Value >= 1 },
                 { "while stationary", Flag.AlwaysStationary },

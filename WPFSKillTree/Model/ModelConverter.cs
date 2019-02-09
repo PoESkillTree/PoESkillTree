@@ -40,7 +40,8 @@ namespace POESKillTree.Model
                 level,
                 oldItem.Frame,
                 isCorrupted,
-                mods);
+                mods,
+                oldItem.IsEnabled);
         }
 
         public static IReadOnlyList<Skill> ConvertSkills(OldItem oldItem)

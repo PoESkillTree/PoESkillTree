@@ -30,6 +30,8 @@ namespace POESKillTree.Model.Items.Mods
 
         private readonly IEnumerable<IMod> _allMods;
 
+        public IMod DefaultMod => _allMods.First();
+
         public Affix()
             : this(new IMod[0])
         {

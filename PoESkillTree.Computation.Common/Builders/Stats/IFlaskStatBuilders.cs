@@ -41,10 +41,5 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// Gets a stat representing the modifier to flask charges gained.
         /// </summary>
         IStatBuilder ChargesGained { get; }
-
-        /// <summary>
-        /// Gets a condition that is satisfied if any flask is currently active.
-        /// </summary>
-        IConditionBuilder IsAnyActive { get; }
     }
 }

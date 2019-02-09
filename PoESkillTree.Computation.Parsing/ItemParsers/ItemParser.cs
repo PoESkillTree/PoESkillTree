@@ -26,6 +26,9 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
         {
             var (item, slot) = parameter;
 
+            if (!item.IsEnabled)
+                return ParseResult.Empty;
+
             var localSource = new ModifierSource.Local.Item(slot, item.Name);
             var globalSource = new ModifierSource.Global(localSource);
             var baseItemDefinition = _baseItemDefinitions.GetBaseItemById(item.BaseMetadataId);

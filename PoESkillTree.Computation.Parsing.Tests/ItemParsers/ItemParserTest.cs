@@ -407,6 +407,18 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
             Assert.That(result.Modifiers, Is.SupersetOf(expected));
         }
 
+        [Test]
+        public void ParseReturnsEmptyResultForDisabledItem()
+        {
+            var parserParam = CreateItem(ItemSlot.Gloves, isEnabled: false);
+            var baseItemDefinition = CreateBaseItemDefinition(parserParam.Item, ItemClass.Gloves);
+            var sut = CreateSut(baseItemDefinition);
+
+            var result = sut.Parse(parserParam);
+
+            Assert.IsEmpty(result.Modifiers);
+        }
+
         private static ItemParser CreateSut(
             BaseItemDefinition baseItemDefinition, ICoreParser coreParser = null, IStatTranslator statTranslator = null)
         {
@@ -421,15 +433,20 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
 
         private static ItemParserParameter CreateItem(
             ItemSlot itemSlot, int quality = 0, int requiredLevel = 0, FrameType frameType = FrameType.Rare,
-            bool isCorrupted = false)
-            => CreateItem(itemSlot, quality, requiredLevel, frameType, isCorrupted, new string[0]);
+            bool isCorrupted = false, bool isEnabled = true)
+            => CreateItem(itemSlot, quality, requiredLevel, frameType, isCorrupted, isEnabled, new string[0]);
 
         private static ItemParserParameter CreateItem(
             ItemSlot itemSlot, int quality, int requiredLevel, FrameType frameType, bool isCorrupted,
             params string[] mods)
+            => CreateItem(itemSlot, quality, requiredLevel, frameType, isCorrupted, true, mods);
+
+        private static ItemParserParameter CreateItem(
+            ItemSlot itemSlot, int quality, int requiredLevel, FrameType frameType, bool isCorrupted,
+            bool isEnabled, params string[] mods)
         {
-            var item =
-                new Item("metadataId", "itemName", quality, requiredLevel, frameType, isCorrupted, mods);
+            var item = new Item("metadataId", "itemName", quality, requiredLevel, frameType, isCorrupted,
+                    mods, isEnabled);
             return new ItemParserParameter(item, itemSlot);
         }
 

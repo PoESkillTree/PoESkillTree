@@ -67,7 +67,6 @@
   <ItemGroup>
     <Compile Include="CachingParser.cs" />
     <Compile Include="GenericCachingParser.cs" />
-    <Compile Include="ItemParsers\EmptyItemSlotParser.cs" />
     <Compile Include="ItemParsers\ItemEquipmentParser.cs" />
     <Compile Include="ItemParsers\ItemModifierParser.cs" />
     <Compile Include="ItemParsers\ItemParser.cs" />

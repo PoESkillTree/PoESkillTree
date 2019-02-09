@@ -29,7 +29,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             };
             var parseResults = new[]
             {
-                ParseResult.Success(new Modifier[0]),
+                ParseResult.Empty,
                 ParseResult.Failure("b2", ""),
             };
             var coreParser = Mock.Of<ICoreParser>(p =>

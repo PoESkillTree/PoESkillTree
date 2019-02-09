@@ -89,9 +89,27 @@
                                  Width="98" Height="98"
                                  DataContext="{Binding Boots}" />
 
-        <views:BinView Grid.Column="0" Grid.ColumnSpan="3"
+        <StackPanel Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Grid.Row="2"
+                    Orientation="Horizontal"
+                    Margin="0 10 0 0"
+                    HorizontalAlignment="Center" VerticalAlignment="Top">
+            <views:InventoryFlaskView Margin="0 0 -2 0"
+                                      DataContext="{Binding Flasks[0]}" />
+            <views:InventoryFlaskView Margin="0 0 -2 0"
+                                      DataContext="{Binding Flasks[1]}" />
+            <views:InventoryFlaskView Margin="0 0 -2 0"
+                                      DataContext="{Binding Flasks[2]}" />
+            <views:InventoryFlaskView Margin="0 0 -2 0"
+                                      DataContext="{Binding Flasks[3]}" />
+            <views:InventoryFlaskView Margin="0"
+                                      DataContext="{Binding Flasks[4]}" />
+        </StackPanel>
+
+        <views:BinView Grid.Column="2"
                        Grid.Row="2"
-                       Margin="0 20 0 0"
-                       HorizontalAlignment="Right" />
+                       Margin="0 10 0 0"
+                       HorizontalAlignment="Right" VerticalAlignment="Top" />
     </Grid>
 </UserControl>

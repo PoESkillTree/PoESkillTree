@@ -24,6 +24,7 @@ namespace UpdateDB.DataLoading
             "Amulets", "Belts", "Quivers", "Rings",
             "Body Armours", "Boots", "Helmets", "Gloves", "Shields", "Jewel",
             "Active Skill Gems", "Support Skill Gems",
+            "Life Flasks", "Mana Flasks", "Hybrid Flasks", "Utility Flasks", "Critical Utility Flasks",
         };
 
         public override bool SavePathIsFolder

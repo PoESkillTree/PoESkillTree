@@ -92,10 +92,20 @@ namespace POESKillTree.Model
 
         private void OldItemOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName != nameof(OldItem.SocketedSkills))
-                return;
-
             var oldItem = (OldItem) sender;
+            switch (e.PropertyName)
+            {
+                case nameof(OldItem.SocketedSkills):
+                    OldItemOnSocketedSkillsChanged(oldItem);
+                    break;
+                case nameof(OldItem.IsEnabled):
+                    OldItemOnIsEnabledChanged(oldItem);
+                    break;
+            }
+        }
+
+        private void OldItemOnSocketedSkillsChanged(OldItem oldItem)
+        {
             var slot = oldItem.Slot;
             var oldSkills = _itemSlotToSkills[slot];
             var newSkills = ModelConverter.ConvertSkills(oldItem);
@@ -103,6 +113,13 @@ namespace POESKillTree.Model
             _itemSlotToSkills[slot] = newSkills;
             Skills.Remove(oldSkills);
             Skills.Add(newSkills);
+        }
+
+        private void OldItemOnIsEnabledChanged(OldItem oldItem)
+        {
+            var itemTuple = Convert(oldItem);
+            Items.Remove(itemTuple);
+            Items.Add(itemTuple);
         }
     }
 }

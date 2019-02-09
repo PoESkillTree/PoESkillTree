@@ -60,18 +60,13 @@ namespace POESKillTree.Computation.Model
                     .SelectMany(r => r.Modifiers));
 
             ParseResult Parse(ItemSlot slot)
-            {
-                if (itemsBySlot.TryGetValue(slot, out var item))
-                    return _parser.ParseItem(item, slot);
-                return _parser.ParseEmptyItemSlot(slot);
-            }
+                => itemsBySlot.TryGetValue(slot, out var item)
+                    ? _parser.ParseItem(item, slot)
+                    : ParseResult.Empty;
         }
 
         public IObservable<CalculatorUpdate> ObserveItems(ObservableCollection<(Item, ItemSlot)> items)
-            => ObserveCollection<(Item item, ItemSlot slot)>(items,
-                t => new CalculatorUpdate(
-                    _parser.ParseItem(t.item, t.slot).Modifiers,
-                    _parser.ParseEmptyItemSlot(t.slot).Modifiers));
+            => ObserveCollection<(Item item, ItemSlot slot)>(items, t => _parser.ParseItem(t.item, t.slot).Modifiers);
 
         public IObservable<CalculatorUpdate> ParseSkills(IEnumerable<IReadOnlyList<Skill>> skills)
             => AggregateModifiers(skills.ToObservable().SelectMany(ParseSkills));

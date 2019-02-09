@@ -35,6 +35,7 @@ namespace UpdateDB.DataLoading
             "One Hand Swords", "Thrusting One Hand Swords", "Two Hand Swords", "Wands",
             "Amulets", "Belts", "Quivers", "Rings",
             "Body Armours", "Boots", "Helmets", "Gloves", "Shields",
+            "Life Flasks", "Mana Flasks", "Hybrid Flasks", "Utility Flasks", "Critical Utility Flasks",
         };
 
         private static readonly IReadOnlyList<string> Blacklist = new[] { "Band of the Victor" };

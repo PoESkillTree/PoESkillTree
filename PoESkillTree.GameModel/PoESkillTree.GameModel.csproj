@@ -104,7 +104,6 @@
     <Compile Include="Items\ItemConstants.cs" />
     <Compile Include="Items\XmlUniqueList.cs" />
     <Compile Include="Modifiers\ModifierLocalityTester.cs" />
-    <Compile Include="Modifiers\ModLocation.cs" />
     <Compile Include="MonsterBaseStats.cs" />
     <Compile Include="PassiveTree\PassiveNodeType.cs" />
     <Compile Include="PassiveTree\PassiveNodeDefinition.cs" />

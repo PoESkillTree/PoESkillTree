@@ -12,6 +12,8 @@ namespace PoESkillTree.Computation.Parsing
     /// </summary>
     public class ParseResult : ValueObject
     {
+        public static readonly ParseResult Empty = Success(new Modifier[0]);
+
         public static ParseResult Success(IReadOnlyList<Modifier> modifiers)
             => new ParseResult(new string[0], new string[0], modifiers);
 

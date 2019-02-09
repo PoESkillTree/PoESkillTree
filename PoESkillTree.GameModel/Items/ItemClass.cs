@@ -168,6 +168,12 @@ namespace PoESkillTree.GameModel.Items
                 case ItemClass.ActiveSkillGem:
                 case ItemClass.SupportSkillGem:
                     return ItemSlot.Gem;
+                case ItemClass.LifeFlask:
+                case ItemClass.ManaFlask:
+                case ItemClass.HybridFlask:
+                case ItemClass.UtilityFlask:
+                case ItemClass.UtilityFlaskCritical:
+                    return ItemSlotExtensions.Flask;
                 default:
                     return ItemSlot.Unequipable;
             }
