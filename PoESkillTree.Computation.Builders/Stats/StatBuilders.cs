@@ -181,8 +181,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder RecoverySpeed => FromIdentity(typeof(double));
         public IStatBuilder ChargesUsed => FromIdentity(typeof(int));
         public IStatBuilder ChargesGained => FromIdentity(typeof(double));
-
-        public IConditionBuilder IsAnyActive => FromIdentity(typeof(bool), UserSpecifiedValue(false)).IsSet;
     }
 
     internal class ProjectileStatBuilders : PrefixedStatBuildersBase, IProjectileStatBuilders

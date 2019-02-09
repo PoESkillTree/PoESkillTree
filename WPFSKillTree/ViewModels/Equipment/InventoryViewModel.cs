@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.GameModel.Items;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils;
@@ -39,14 +40,7 @@ namespace POESKillTree.ViewModels.Equipment
             Gloves = CreateSlotVm(ItemSlot.Gloves);
             Boots = CreateSlotVm(ItemSlot.Boots);
             Belt = CreateSlotVm(ItemSlot.Belt);
-            Flasks = new[]
-            {
-                CreateSlotVm(ItemSlot.Flask1),
-                CreateSlotVm(ItemSlot.Flask2),
-                CreateSlotVm(ItemSlot.Flask3),
-                CreateSlotVm(ItemSlot.Flask4),
-                CreateSlotVm(ItemSlot.Flask5),
-            };
+            Flasks = ItemSlotExtensions.Flasks.Select(CreateSlotVm).ToList();
         }
 
         private InventoryItemViewModel CreateSlotVm(ItemSlot slot)

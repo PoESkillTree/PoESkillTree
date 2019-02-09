@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using EnumsNET;
 
 namespace PoESkillTree.GameModel.Items
 {
@@ -32,7 +34,10 @@ namespace PoESkillTree.GameModel.Items
         public const ItemSlot Flask
             = ItemSlot.Flask1 | ItemSlot.Flask2 | ItemSlot.Flask3 | ItemSlot.Flask4 | ItemSlot.Flask5;
 
+        public static IEnumerable<ItemSlot> Flasks
+            => Flask.GetFlags();
+
         public static bool IsFlask(this ItemSlot @this)
-            => (@this & Flask) > 0;
+            => @this.CommonFlags(Flask) > 0;
     }
 }
