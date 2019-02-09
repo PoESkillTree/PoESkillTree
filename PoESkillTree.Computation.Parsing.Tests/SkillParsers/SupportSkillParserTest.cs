@@ -298,7 +298,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
         private static SupportSkillParser CreateSut(SkillDefinition activeSkillDefinition, SkillDefinition supportSkillDefinition)
         {
             var statParser = Mock.Of<IParser<UntranslatedStatParserParameter>>(p =>
-                p.Parse(It.IsAny<UntranslatedStatParserParameter>()) == ParseResult.Success(new Modifier[0]));
+                p.Parse(It.IsAny<UntranslatedStatParserParameter>()) == ParseResult.Empty);
             return CreateSut(activeSkillDefinition, supportSkillDefinition, _ => statParser);
         }
 

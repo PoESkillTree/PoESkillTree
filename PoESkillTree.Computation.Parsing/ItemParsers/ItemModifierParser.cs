@@ -50,7 +50,7 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             Tags itemTags, ModifierSource.Local source, IReadOnlyList<UntranslatedStat> buffStats)
         {
             if (buffStats.IsEmpty())
-                return ParseResult.Success(new Modifier[0]);
+                return ParseResult.Empty;
             if (!itemTags.HasFlag(Tags.Flask))
                 throw new NotSupportedException("Buff stats are only supported for flasks");
 

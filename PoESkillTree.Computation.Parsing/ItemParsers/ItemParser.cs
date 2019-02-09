@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             var (item, slot) = parameter;
 
             if (!item.IsEnabled)
-                return ParseResult.Success(new Modifier[0]);
+                return ParseResult.Empty;
 
             var localSource = new ModifierSource.Local.Item(slot, item.Name);
             var globalSource = new ModifierSource.Global(localSource);

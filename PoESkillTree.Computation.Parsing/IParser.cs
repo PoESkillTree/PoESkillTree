@@ -19,7 +19,6 @@ namespace PoESkillTree.Computation.Parsing
         ParseResult ParseSkilledPassiveNode(ushort nodeId);
 
         ParseResult ParseItem(Item item, ItemSlot itemSlot);
-        ParseResult ParseEmptyItemSlot(ItemSlot itemSlot);
         
         ParseResult ParseSkills(IReadOnlyCollection<Skill> skills);
         ParseResult ParseActiveSkill(Skill activeSkill);

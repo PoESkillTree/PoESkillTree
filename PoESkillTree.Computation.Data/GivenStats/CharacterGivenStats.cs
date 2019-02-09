@@ -11,6 +11,7 @@ using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
 using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Data.GivenStats
 {
@@ -124,6 +125,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     c => $"{c}.UnarmedPhysicalDamage"),
                 Not(MainHand.HasItem)
             },
+            { BaseSet, MainHand.ItemClass, (double) ItemClass.Unarmed, Not(MainHand.HasItem) },
             // configuration
             {
                 TotalOverride, Charge.Endurance.Amount, Charge.Endurance.Amount.Maximum.Value,

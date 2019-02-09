@@ -90,9 +90,10 @@ namespace PoESkillTree.Tests.Computation.Model
         [Test]
         public async Task ParseItemsReturnsCorrectResult()
         {
-            var expected = CreateModifiers(6);
+            var modifiers = CreateModifiers(6);
             var items = CreateItems(2);
-            var parseResults = CreateParseResults(expected);
+            var parseResults = CreateParseResults(modifiers);
+            var expected = parseResults.Take(2).SelectMany(r => r.Modifiers).ToList();
             var parser = MockItemParser(items, parseResults);
             var sut = CreateSut(parser);
 
@@ -106,12 +107,13 @@ namespace PoESkillTree.Tests.Computation.Model
         public void ObserveItemsGeneratesCorrectValues()
         {
             var modifiers = CreateModifiers(6);
-            var items = CreateItems(1);
+            var items = CreateItems(2);
             var parseResults = CreateParseResults(modifiers);
             var expected = new[]
             {
-                new CalculatorUpdate(parseResults[0].Modifiers, parseResults[1].Modifiers),
-                new CalculatorUpdate(parseResults[1].Modifiers, parseResults[0].Modifiers),
+                new CalculatorUpdate(parseResults[0].Modifiers, new Modifier[0]),
+                new CalculatorUpdate(parseResults[1].Modifiers, new Modifier[0]),
+                new CalculatorUpdate(new Modifier[0], parseResults[0].Modifiers),
             };
             var parser = MockItemParser(items, parseResults);
             var sut = CreateSut(parser);
@@ -121,6 +123,7 @@ namespace PoESkillTree.Tests.Computation.Model
             using (sut.ObserveItems(observableCollection).Subscribe(actual.Add))
             {
                 observableCollection.Add(items[0]);
+                observableCollection.Add(items[1]);
                 observableCollection.Remove(items[0]);
             }
 
@@ -190,15 +193,6 @@ namespace PoESkillTree.Tests.Computation.Model
                 {
                     var item = items[i].Item1;
                     parser.Setup(p => p.ParseItem(item, slot)).Returns(parseResults[i]);
-                    parser.Setup(p => p.ParseEmptyItemSlot(slot)).Returns(parseResults[i+1]);
-                }
-                else if (i < parseResults.Count)
-                {
-                    parser.Setup(p => p.ParseEmptyItemSlot(slot)).Returns(parseResults[i]);
-                }
-                else
-                {
-                    parser.Setup(p => p.ParseEmptyItemSlot(slot)).Returns(EmptyParseResult);
                 }
             }
             return parser.Object;
@@ -254,8 +248,6 @@ namespace PoESkillTree.Tests.Computation.Model
                 ParseResult.Success(modifiers.GetRange(2, 1)),
                 ParseResult.Success(modifiers.GetRange(3, 3)),
             };
-
-        private static readonly ParseResult EmptyParseResult = ParseResult.Success(new Modifier[0]);
 
         private static ComputationObservables CreateSut(IParser parser)
             => new ComputationObservables(parser);
