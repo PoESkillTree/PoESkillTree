@@ -24,6 +24,7 @@ Impresence
 Martial Artistry
 Mindspiral
 Shaper's Touch
+Taste of Hate
 Timetwist
 The Anvil
 The Blood Dance

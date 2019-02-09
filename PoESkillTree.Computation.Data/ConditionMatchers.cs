@@ -282,6 +282,8 @@ namespace PoESkillTree.Computation.Data
                 // flasks
                 { "while using a flask", Equipment.IsAnyFlaskActive() },
                 { "during any flask effect", Equipment.IsAnyFlaskActive() },
+                // - mods on flasks are only added when the flask item is enabled
+                { "during (flask )?effect", Condition.True },
                 // other
                 { "against targets they pierce", Projectile.PierceCount.Value >= 1 },
                 { "while stationary", Flag.AlwaysStationary },
