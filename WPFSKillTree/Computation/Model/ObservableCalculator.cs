@@ -57,8 +57,7 @@ namespace POESKillTree.Computation.Model
             return Observable.FromEventPattern<CollectionChangeEventHandler, CollectionChangeEventArgs>(
                     h => collection.CollectionChanged += h,
                     h => collection.CollectionChanged -= h)
-                .Select(p => p.EventArgs)
-                .Do(args => Log.Info($"ExplicitlyRegisteredStats: received {args.Action} {args.Element}"));
+                .Select(p => p.EventArgs);
         }
 
         public IReadOnlyCollection<(ICalculationNode node, IStat stat)> ExplicitlyRegisteredStatsCollection
