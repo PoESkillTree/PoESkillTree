@@ -153,8 +153,6 @@ namespace POESKillTree.Model.Items
                     return ItemClass.Gloves;
                 case ItemSlot.Boots:
                     return ItemClass.Boots;
-                case ItemSlot.Gem:
-                    return ItemClass.ActiveSkillGem;
                 case ItemSlot.Belt:
                     return ItemClass.Belt;
                 default: // MainHand, OffHand, Unequippable
