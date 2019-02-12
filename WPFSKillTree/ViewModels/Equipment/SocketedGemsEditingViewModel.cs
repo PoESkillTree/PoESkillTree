@@ -10,7 +10,6 @@ using POESKillTree.Common.ViewModels;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Wpf;
-using Item = POESKillTree.Model.Items.Item;
 
 namespace POESKillTree.ViewModels.Equipment
 {
@@ -96,7 +95,8 @@ namespace POESKillTree.ViewModels.Equipment
     /// </summary>
     public class SocketedGemsEditingViewModel : CloseableViewModel<bool>
     {
-        private readonly Item _itemWithSockets;
+        private readonly ItemAttributes _itemAttributes;
+        private readonly ItemSlot _slot;
 
         /// <summary>
         /// Gets the gems that can be socketed in the item.
@@ -130,16 +130,18 @@ namespace POESKillTree.ViewModels.Equipment
         }
 
         public SocketedGemsEditingViewModel(
-            SkillDefinitions skillDefinitions, ItemImageService itemImageService, Item itemWithSockets)
+            SkillDefinitions skillDefinitions, ItemImageService itemImageService, ItemAttributes itemAttributes,
+            ItemSlot slot)
         {
-            _itemWithSockets = itemWithSockets;
+            _itemAttributes = itemAttributes;
+            _slot = slot;
             AvailableGems = skillDefinitions.Skills
                 .Where(d => d.BaseItem != null)
                 .Where(d => d.BaseItem.ReleaseState == ReleaseState.Released ||
                             d.BaseItem.ReleaseState == ReleaseState.Legacy)
                 .OrderBy(d => d.BaseItem.DisplayName)
                 .Select(d => new GemBaseViewModel(itemImageService, d)).ToList();
-            NumberOfSockets = _itemWithSockets.BaseType.MaximumNumberOfSockets;
+            NumberOfSockets = itemAttributes.GetItemInSlot(slot)?.BaseType.MaximumNumberOfSockets ?? 6;
             NewSocketedGem = new SocketedGemViewModel
             {
                 GemBase = AvailableGems[0],
@@ -162,7 +164,7 @@ namespace POESKillTree.ViewModels.Equipment
                 ListSortDirection.Ascending));
 
             // convert currently socketed gem Items into SocketedGemViewModels
-            foreach (var skill in _itemWithSockets.SocketedSkills)
+            foreach (var skill in _itemAttributes.GetSkillsInSlot(_slot))
             {
                 var gemBase = AvailableGems.FirstOrDefault(g => g.Id == skill.Id);
                 if (gemBase == null)
@@ -215,12 +217,11 @@ namespace POESKillTree.ViewModels.Equipment
                 for (var i = 0; i < _socketedGems.Count; i++)
                 {
                     var gem = _socketedGems[i];
-                    var skill = new Skill(gem.GemBase.Id, gem.Level, gem.Quality, _itemWithSockets.Slot, i,
+                    var skill = new Skill(gem.GemBase.Id, gem.Level, gem.Quality, _slot, i,
                         gem.Group - 1);
                     skills.Add(skill);
                 }
-                _itemWithSockets.SocketedSkills = skills;
-                _itemWithSockets.SetJsonBase();
+                _itemAttributes.SetSkillsInSlot(skills, _slot);
             }
             base.OnClose(param);
         }

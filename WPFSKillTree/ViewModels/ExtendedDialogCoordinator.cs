@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Items;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model;
 using POESKillTree.Model.Builds;
@@ -15,7 +16,7 @@ namespace POESKillTree.ViewModels
     {
         Task<bool> EditBuildAsync(object context, IBuildViewModel<PoEBuild> buildVm, BuildValidator buildValidator);
 
-        Task EditSocketedGemsAsync(object context, Item itemWithSockets);
+        Task EditSocketedGemsAsync(object context, ItemAttributes itemAttributes, ItemSlot itemSlot);
 
         Task<TabPickerResult> EditStashTabAsync(object context, TabPickerViewModel tabPickerViewModel);
     }
@@ -44,12 +45,12 @@ namespace POESKillTree.ViewModels
             return true;
         }
 
-        public async Task EditSocketedGemsAsync(object context, Item itemWithSockets)
+        public async Task EditSocketedGemsAsync(object context, ItemAttributes itemAttributes, ItemSlot itemSlot)
         {
             var skills = await _gameData.Skills;
             await ShowDialogAsync(context,
                 new SocketedGemsEditingViewModel(skills, _persistentData.EquipmentData.ItemImageService,
-                    itemWithSockets),
+                    itemAttributes, itemSlot),
                 new SocketedGemsEditingView());
         }
 

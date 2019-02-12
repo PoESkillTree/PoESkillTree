@@ -5,13 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:equipment="clr-namespace:POESKillTree.ViewModels.Equipment"
              xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:l="clr-namespace:POESKillTree.Localization.XAML"
              xmlns:local="clr-namespace:POESKillTree.Views.Equipment"
-             mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance equipment:InventoryItemViewModel}">
+             mc:Ignorable="d" >
     <local:DraggableItemView DataContext="{Binding}"
                              dd:DragDrop.IsDropTarget="True"
                              dd:DragDrop.DropHandler="{Binding}"
-                             BorderThickness="2" BorderBrush="{DynamicResource AccentColorBrush}">
+                             BorderThickness="2" BorderBrush="{DynamicResource AccentColorBrush}"
+                             d:DataContext="{d:DesignInstance equipment:InventoryItemViewModel}">
         <UserControl.Style>
             <Style TargetType="{x:Type local:DraggableItemView}">
                 <Setter Property="Background" Value="#202051" />
@@ -31,5 +32,23 @@
                 </Style.Triggers>
             </Style>
         </UserControl.Style>
+        <UserControl.ContextMenu>
+            <ContextMenu>
+                <MenuItem Command="{Binding DeleteCommand}">
+                    <MenuItem.Header>
+                        <l:Catalog>Delete</l:Catalog>
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Command="{Binding EditSocketedGemsCommand}">
+                    <MenuItem.Header>
+                        <l:Catalog>Edit Socketed Gems</l:Catalog>
+                    </MenuItem.Header>
+                </MenuItem>
+            </ContextMenu>
+        </UserControl.ContextMenu>
+        <UserControl.InputBindings>
+            <MouseBinding MouseAction="LeftDoubleClick"
+                          Command="{Binding EditSocketedGemsCommand}"></MouseBinding>
+        </UserControl.InputBindings>
     </local:DraggableItemView>
 </UserControl>

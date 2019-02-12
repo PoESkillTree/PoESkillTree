@@ -27,16 +27,7 @@
                     <l:Catalog>Delete</l:Catalog>
                 </MenuItem.Header>
             </MenuItem>
-            <MenuItem Command="{Binding EditSocketedGemsCommand}">
-                <MenuItem.Header>
-                    <l:Catalog>Edit Socketed Gems</l:Catalog>
-                </MenuItem.Header>
-            </MenuItem>
         </ContextMenu>
     </UserControl.ContextMenu>
-    <UserControl.InputBindings>
-        <MouseBinding MouseAction="LeftDoubleClick"
-                      Command="{Binding EditSocketedGemsCommand}"></MouseBinding>
-    </UserControl.InputBindings>
     <controls:ItemVisualizer DataContext="{Binding Item}" />
 </UserControl>

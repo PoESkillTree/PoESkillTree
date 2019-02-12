@@ -9,13 +9,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using GongSolutions.Wpf.DragDrop;
 using MoreLinq;
+using PoESkillTree.Utils.Extensions;
 using POESKillTree.Common.ViewModels;
 using POESKillTree.Controls;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.Model.Items;
 using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
 using POESKillTree.Utils.Wpf;
 
 namespace POESKillTree.ViewModels.Equipment
@@ -151,7 +151,7 @@ namespace POESKillTree.ViewModels.Equipment
             Bookmarks.CollectionChanged += (sender, args) => RowsChanged();
             foreach (var stashItem in persistentData.StashItems)
             {
-                var item = new StashItemViewModel(_dialogCoordinator, stashItem);
+                var item = new StashItemViewModel(stashItem);
                 item.PropertyChanging += ItemOnPropertyChanging;
                 item.PropertyChanged += ItemOnPropertyChanged;
                 Items.Add(item);
@@ -270,7 +270,7 @@ namespace POESKillTree.ViewModels.Equipment
 
         public void AddItem(Item item, bool scrollToItem)
         {
-            var itemVm = new StashItemViewModel(_dialogCoordinator, item);
+            var itemVm = new StashItemViewModel(item);
             Items.Add(itemVm);
 
             if (!scrollToItem)

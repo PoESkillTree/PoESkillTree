@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using log4net;
 using MoreLinq;
+using PoESkillTree.Utils.Extensions;
 using POESKillTree.Controls;
 using POESKillTree.Model.Builds;
 using POESKillTree.Utils;
-using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Model.Serialization
 {
