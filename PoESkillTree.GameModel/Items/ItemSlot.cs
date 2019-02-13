@@ -20,13 +20,12 @@ namespace PoESkillTree.GameModel.Items
         Helm = 1 << 6,
         Gloves = 1 << 7,
         Boots = 1 << 8,
-        Gem = 1 << 9,
-        Belt = 1 << 10,
-        Flask1 = 1 << 11,
-        Flask2 = 1 << 12,
-        Flask3 = 1 << 13,
-        Flask4 = 1 << 14,
-        Flask5 = 1 << 15,
+        Belt = 1 << 9,
+        Flask1 = 1 << 10,
+        Flask2 = 1 << 11,
+        Flask3 = 1 << 12,
+        Flask4 = 1 << 13,
+        Flask5 = 1 << 14,
     }
 
     public static class ItemSlotExtensions

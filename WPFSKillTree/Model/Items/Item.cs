@@ -51,15 +51,6 @@ namespace POESKillTree.Model.Items
             }
         }
 
-        private IReadOnlyList<Skill> _socketedSkills = new Skill[0];
-        public IReadOnlyList<Skill> SocketedSkills
-        {
-            get => _socketedSkills;
-            set => SetProperty(ref _socketedSkills, value.ToList());
-        }
-
-        public IReadOnlyList<Item> SocketedJewels { get; } = new List<Item>();
-
         private FrameType _frame;
         public FrameType Frame
         {
@@ -197,7 +188,6 @@ namespace POESKillTree.Model.Items
             _slot = source._slot;
             ItemClass = source.ItemClass;
             Tags = source.Tags;
-            _socketedSkills = source._socketedSkills.ToList();
             _frame = source._frame;
             _isEnabled = source._isEnabled;
             //_properties, _requirements, _explicit-, _implicit-, _craftedMods
@@ -221,8 +211,7 @@ namespace POESKillTree.Model.Items
             Height = source.Height;
         }
 
-        public Item(EquipmentData equipmentData, SkillDefinitions skillDefinitions, JObject val,
-            ItemSlot itemSlot = ItemSlot.Unequipable)
+        public Item(EquipmentData equipmentData, JObject val, ItemSlot itemSlot = ItemSlot.Unequipable)
         {
             JsonBase = val;
             Slot = itemSlot;
@@ -331,52 +320,42 @@ namespace POESKillTree.Model.Items
 
             if (val["flavourText"] != null && val["flavourText"].HasValues)
                 FlavourText = string.Join("\r\n", val["flavourText"].Values<string>().Select(s => s.Replace("\r", "")));
+        }
+
+        public IReadOnlyList<Skill> DeserializeSocketedSkills(SkillDefinitions skillDefinitions)
+        {
+            if (!JsonBase.TryGetValue("socketedItems", out var skillJson))
+                return new Skill[0];
 
             var sockets = new List<int>();
-            if (val["sockets"] != null)
-                foreach (var obj in (JArray)val["sockets"])
+            if (JsonBase.TryGetValue("sockets", out var socketsJson))
+            {
+                foreach (var obj in (JArray) socketsJson)
                 {
                     sockets.Add(obj["group"].Value<int>());
                 }
-            if (val["socketedItems"] != null)
-            {
-                int socket = 0;
-                var skills = new List<Skill>();
-                var jewels = new List<Item>();
-                foreach (JObject obj in (JArray)val["socketedItems"])
-                {
-                    var frameType = obj.Value<int>("frameType");
-                    if ((FrameType) frameType == FrameType.Gem)
-                    {
-                        if (TryDeserializeSocketedSkill(skillDefinitions, obj, socket, sockets[socket], out var skill))
-                        {
-                            skills.Add(skill);
-                        }
-                    }
-                    else
-                    {
-                        jewels.Add(new Item(equipmentData, skillDefinitions, obj));
-                    }
-                    socket++;
-                }
-                _socketedSkills = skills;
-                SocketedJewels = jewels;
             }
+
+            int socket = 0;
+            var skills = new List<Skill>();
+            foreach (JObject obj in (JArray) skillJson)
+            {
+                var frameType = obj.Value<int>("frameType");
+                if ((FrameType) frameType == FrameType.Gem)
+                {
+                    if (TryDeserializeSocketedSkill(skillDefinitions, obj, socket, sockets[socket], out var skill))
+                    {
+                        skills.Add(skill);
+                    }
+                }
+                socket++;
+            }
+            return skills;
         }
 
         private bool TryDeserializeSocketedSkill(
             SkillDefinitions skillDefinitions, JObject jObject, int socketIndex, int socketGroup, out Skill skill)
         {
-            if (jObject.ContainsKey("skillId"))
-            {
-                var id = skillDefinitions.GetSkillById(jObject.Value<string>("skillId")).Id;
-                skill = new Skill(id, 
-                    jObject.Value<int>("level"),
-                    jObject.Value<int>("quality"),
-                    default, socketIndex, socketGroup);
-                return true;
-            }
-
             var baseItemSkills = skillDefinitions.Skills.Where(d => d.BaseItem != null)
                 .Where(d => d.BaseItem.ReleaseState == ReleaseState.Released
                             || d.BaseItem.ReleaseState == ReleaseState.Legacy)
@@ -397,7 +376,7 @@ namespace POESKillTree.Model.Items
                 level = (int) properties.First("Level: # (Max)", 0, 1);
             }
             var quality = (int) properties.First("Quality: +#%", 0, 0);
-            skill = new Skill(definition.Id, (int) level, quality, default, socketIndex, socketGroup);
+            skill = new Skill(definition.Id, (int) level, quality, Slot, socketIndex, socketGroup);
             return true;
         }
 
@@ -569,30 +548,6 @@ namespace POESKillTree.Model.Items
             {
                 j.Add(new JProperty("craftedMods",
                             new JArray(CraftedMods.Select(p => p.ToJobject(true)).ToArray())));
-            }
-
-            if (SocketedSkills.Any() || SocketedJewels.Any())
-            {
-                var sockets = new JArray();
-                var socketedItems = new JArray();
-                foreach (var jewel in SocketedJewels)
-                {
-                    sockets.Add(new JObject { { "group", 0 } });
-                    socketedItems.Add(jewel.JsonBase);
-                }
-                foreach (var skill in SocketedSkills)
-                {
-                    sockets.Add(new JObject { { "group", skill.GemGroup } });
-                    socketedItems.Add(new JObject
-                    {
-                        { "skillId", skill.Id },
-                        { "level", skill.Level },
-                        { "quality", skill.Quality },
-                        { "frameType", (int) FrameType.Gem },
-                    });
-                }
-                j["sockets"] = sockets;
-                j["socketedItems"] = socketedItems;
             }
 
             if (HaveFlavourText)

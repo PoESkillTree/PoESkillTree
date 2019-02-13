@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
@@ -14,8 +13,6 @@ namespace POESKillTree.ViewModels.Equipment
     /// </summary>
     public abstract class DraggableItemViewModel : Notifier, IDragSource
     {
-        private readonly IExtendedDialogCoordinator _dialogCoordinator;
-
         /// <summary>
         /// Gets or sets the item this view models shows.
         /// </summary>
@@ -54,14 +51,10 @@ namespace POESKillTree.ViewModels.Equipment
         private DragDropEffects AllowedEffects => DropOnInventoryEffect | DropOnStashEffect | DropOnBinEffect;
 
         public ICommand DeleteCommand { get; }
-        public ICommand EditSocketedGemsCommand { get; }
 
-        protected DraggableItemViewModel(IExtendedDialogCoordinator dialogCoordinator)
+        protected DraggableItemViewModel()
         {
-            _dialogCoordinator = dialogCoordinator;
-
             DeleteCommand = new RelayCommand(Delete, CanDelete);
-            EditSocketedGemsCommand = new AsyncRelayCommand(EditSocketedGemsAsync, CanEditSocketedGems);
         }
 
         private void Delete()
@@ -71,12 +64,6 @@ namespace POESKillTree.ViewModels.Equipment
 
         private bool CanDelete()
             => Item != null;
-
-        private async Task EditSocketedGemsAsync()
-            => await _dialogCoordinator.EditSocketedGemsAsync(this, Item);
-
-        private bool CanEditSocketedGems()
-            => Item != null && Item.BaseType.MaximumNumberOfSockets > 0;
 
         public void StartDrag(IDragInfo dragInfo)
         {

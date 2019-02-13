@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 using GongSolutions.Wpf.DragDrop;
 using PoESkillTree.GameModel.Items;
+using POESKillTree.Common.ViewModels;
 using POESKillTree.Model.Items;
 using Item = POESKillTree.Model.Items.Item;
 
@@ -11,6 +14,7 @@ namespace POESKillTree.ViewModels.Equipment
     /// </summary>
     public class InventoryItemViewModel : DraggableItemViewModel, IDropTarget
     {
+        private readonly IExtendedDialogCoordinator _dialogCoordinator;
         private readonly ItemAttributes _itemAttributes;
         private readonly ItemSlot _slot;
 
@@ -34,12 +38,16 @@ namespace POESKillTree.ViewModels.Equipment
         public override DragDropEffects DropOnInventoryEffect => DragDropEffects.Link;
         public override DragDropEffects DropOnStashEffect => DragDropEffects.Copy;
 
-        public InventoryItemViewModel(IExtendedDialogCoordinator dialogCoordinator,
-            ItemAttributes itemAttributes, ItemSlot slot)
-            : base(dialogCoordinator)
+        public ICommand EditSocketedGemsCommand { get; }
+
+        public InventoryItemViewModel(
+            IExtendedDialogCoordinator dialogCoordinator, ItemAttributes itemAttributes, ItemSlot slot)
         {
+            _dialogCoordinator = dialogCoordinator;
             _itemAttributes = itemAttributes;
             _slot = slot;
+
+            EditSocketedGemsCommand = new AsyncRelayCommand(EditSocketedGemsAsync, CanEditSocketedGems);
 
             // Item changes when the slotted item in ItemAttribute changes as they are the same
             _itemAttributes.PropertyChanged += (sender, args) =>
@@ -50,6 +58,12 @@ namespace POESKillTree.ViewModels.Equipment
                 }
             };
         }
+
+        private async Task EditSocketedGemsAsync()
+            => await _dialogCoordinator.EditSocketedGemsAsync(this, _itemAttributes, _slot);
+
+        private bool CanEditSocketedGems()
+            => !_slot.IsFlask();
 
         public void DragOver(IDropInfo dropInfo)
         {

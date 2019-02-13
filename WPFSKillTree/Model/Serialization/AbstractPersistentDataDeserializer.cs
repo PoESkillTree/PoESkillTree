@@ -118,9 +118,8 @@ namespace POESKillTree.Model.Serialization
                 var file = Path.Combine(AppData.GetFolder(), "stash.json");
                 if (File.Exists(file))
                 {
-                    var skills = await gameData.Skills;
                     return JArray.Parse(await FileEx.ReadAllTextAsync(file))
-                        .Select(item => new Item(PersistentData.EquipmentData, skills, (JObject) item));
+                        .Select(item => new Item(PersistentData.EquipmentData, (JObject) item));
 
                 }
             }

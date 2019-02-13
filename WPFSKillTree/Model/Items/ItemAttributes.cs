@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -10,13 +11,14 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Utils.Extensions;
 using POESKillTree.Model.Items.Mods;
 using POESKillTree.Utils;
 using POESKillTree.ViewModels;
 
 namespace POESKillTree.Model.Items
 {
-    public class ItemAttributes : Notifier
+    public class ItemAttributes : Notifier, IDisposable
     {
         #region slotted items
 
@@ -91,9 +93,29 @@ namespace POESKillTree.Model.Items
             }
             return ((int) item.ItemClass.ItemSlots() & (int) slot) != 0;
         }
+
+        public IReadOnlyList<Skill> GetSkillsInSlot(ItemSlot slot)
+            => Skills.Where(ss => ss.Any(s => s.ItemSlot == slot)).DefaultIfEmpty(new Skill[0]).First();
+
+        public void SetSkillsInSlot(IReadOnlyList<Skill> value, ItemSlot slot)
+        {
+            var oldValue = Skills.FirstOrDefault(ss => ss.Any(s => s.ItemSlot == slot));
+            if (oldValue != null)
+            {
+                Skills.Remove(oldValue);
+            }
+            Skills.Add(value);
+        }
+
+        private void AddSkillsToSlot(IEnumerable<Skill> skills, ItemSlot slot)
+            => SetSkillsInSlot(GetSkillsInSlot(slot).Concat(skills).ToList(), slot);
+
         #endregion
 
-        public ObservableCollection<Item> Equip { get; }
+        public ObservableCollection<Item> Equip { get; } = new ObservableCollection<Item>();
+
+        public ObservableCollection<IReadOnlyList<Skill>> Skills { get; } =
+            new ObservableCollection<IReadOnlyList<Skill>>();
 
         private ListCollectionView _attributes;
         public ListCollectionView Attributes
@@ -109,28 +131,30 @@ namespace POESKillTree.Model.Items
 
         public event EventHandler ItemDataChanged;
 
-        private void SlottedItemOnPropertyChanged(object sender, PropertyChangedEventArgs args)
-        {
-            if (args.PropertyName == nameof(Item.JsonBase))
-            {
-                ItemDataChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
-
-        public ItemAttributes()
-        {
-            Equip = new ObservableCollection<Item>();
-            RefreshItemAttributes();
-        }
-
-        public ItemAttributes(EquipmentData equipmentData, SkillDefinitions skillDefinitions, string itemData)
+        public ItemAttributes(EquipmentData equipmentData, SkillDefinitions skillDefinitions, string itemData = null)
         {
             _equipmentData = equipmentData;
             _skillDefinitions = skillDefinitions;
-            Equip = new ObservableCollection<Item>();
+            Equip.CollectionChanged += OnCollectionChanged;
+            SetSkillsInSlot(new[] { Skill.Default, }, ItemSlot.Unequipable);
+            Skills.CollectionChanged += OnCollectionChanged;
 
-            var jObject = JObject.Parse(itemData);
-            foreach (JObject jobj in (JArray)jObject["items"])
+            if (!string.IsNullOrEmpty(itemData))
+            {
+                var jObject = JObject.Parse(itemData);
+                DeserializeItems(jObject);
+                DeserializeSkills(jObject);
+            }
+
+            RefreshItemAttributes();
+        }
+
+        private void DeserializeItems(JObject itemData)
+        {
+            if (!itemData.TryGetValue("items", out var itemJson))
+                return;
+
+            foreach (JObject jobj in (JArray) itemJson)
             {
                 var inventoryId = jobj.Value<string>("inventoryId");
                 switch (inventoryId)
@@ -148,11 +172,23 @@ namespace POESKillTree.Model.Items
 
                 if (EnumsNET.Enums.TryParse(inventoryId, out ItemSlot slot))
                 {
-                    AddItem(jobj, slot);
+                    var item = AddItem(jobj, slot);
+                    AddSkillsToSlot(item.DeserializeSocketedSkills(_skillDefinitions), slot);
+                    item.SetJsonBase();
                 }
             }
+        }
 
-            RefreshItemAttributes();
+        private void DeserializeSkills(JObject itemData)
+        {
+            if (!itemData.TryGetValue("skills", out var skillJson))
+                return;
+
+            var skillList = skillJson.ToObject<IReadOnlyList<Skill>>();
+            foreach (var (slot, group) in skillList.GroupBy(s => s.ItemSlot))
+            {
+                AddSkillsToSlot(group, slot);
+            }
         }
 
         public string ToJsonString()
@@ -164,9 +200,42 @@ namespace POESKillTree.Model.Items
                 jItem["inventoryId"] = item.Slot.ToString();
                 items.Add(jItem);
             }
-            var jObj = new JObject { ["items"] = items };
+
+            var skillEnumerable = Skills.Flatten()
+                .Where(s => s.ItemSlot != ItemSlot.Unequipable);
+            var skills = JArray.FromObject(skillEnumerable);
+
+            var jObj = new JObject
+            {
+                {"items", items},
+                {"skills", skills},
+            };
             return jObj.ToString(Formatting.None);
         }
+
+        public void Dispose()
+        {
+            foreach (var item in Equip)
+            {
+                item.PropertyChanged -= SlottedItemOnPropertyChanged;
+            }
+            Equip.CollectionChanged -= OnCollectionChanged;
+            Skills.CollectionChanged -= OnCollectionChanged;
+        }
+
+        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+            => OnItemDataChanged();
+
+        private void SlottedItemOnPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (args.PropertyName == nameof(Item.JsonBase))
+            {
+                OnItemDataChanged();
+            }
+        }
+
+        private void OnItemDataChanged()
+            => ItemDataChanged?.Invoke(this, EventArgs.Empty);
 
         private void RefreshItemAttributes()
         {
@@ -241,11 +310,12 @@ namespace POESKillTree.Model.Items
             return mods;
         }
 
-        private void AddItem(JObject val, ItemSlot islot)
+        private Item AddItem(JObject val, ItemSlot islot)
         {
-            var item = new Item(_equipmentData, _skillDefinitions, val, islot);
+            var item = new Item(_equipmentData, val, islot);
             Equip.Add(item);
             item.PropertyChanged += SlottedItemOnPropertyChanged;
+            return item;
         }
 
 

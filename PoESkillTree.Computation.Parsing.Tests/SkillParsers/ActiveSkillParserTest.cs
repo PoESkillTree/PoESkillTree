@@ -110,14 +110,25 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
             Assert.AreEqual(expected, actualForProjectileSkills);
         }
 
-        private static (SkillDefinition, Skill) CreateFrenzyDefinition()
+        [Test]
+        public void ParseReturnsEmptyResultForDisabledSkill()
+        {
+            var (definition, skill) = CreateFrenzyDefinition(false);
+            var sut = CreateSut(definition);
+
+            var result = sut.Parse(skill);
+
+            Assert.IsEmpty(result.Modifiers);
+        }
+
+        private static (SkillDefinition, Skill) CreateFrenzyDefinition(bool isEnabled = true)
         {
             var activeSkill = CreateActiveSkillDefinition("Frenzy", new[] { "attack" },
                 new[] { Keyword.Melee, Keyword.Projectile });
             var level = CreateLevelDefinition(manaCost: 10);
             var levels = new Dictionary<int, SkillLevelDefinition> { { 1, level } };
             return (CreateActive("Frenzy", activeSkill, levels),
-                new Skill("Frenzy", 1, 0, ItemSlot.Belt, 0, 0));
+                new Skill("Frenzy", 1, 0, ItemSlot.Belt, 0, 0, isEnabled));
         }
 
         #endregion

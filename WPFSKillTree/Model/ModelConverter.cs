@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.PassiveTree;
-using PoESkillTree.GameModel.Skills;
 using POESKillTree.Model.Items.Mods;
 using POESKillTree.SkillTreeFiles;
 using OldItem = POESKillTree.Model.Items.Item;
@@ -43,10 +41,5 @@ namespace POESKillTree.Model
                 mods,
                 oldItem.IsEnabled);
         }
-
-        public static IReadOnlyList<Skill> ConvertSkills(OldItem oldItem)
-            => oldItem.SocketedSkills.Select(skill =>
-                    new Skill(skill.Id, skill.Level, skill.Quality, oldItem.Slot, skill.SocketIndex, skill.GemGroup))
-                .ToList();
     }
 }

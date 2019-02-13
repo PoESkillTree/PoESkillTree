@@ -504,7 +504,6 @@
     <Compile Include="TreeGenerator\Views\AutomatedGeneratorTab.xaml.cs">
       <DependentUpon>AutomatedGeneratorTab.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\Extensions\CollectionExtensions.cs" />
     <Compile Include="Utils\Converter\InvertBoolConverter.cs" />
     <Compile Include="Utils\Converter\EnumConverter.cs" />
     <Compile Include="Utils\Converter\GroupStringConverter.cs" />

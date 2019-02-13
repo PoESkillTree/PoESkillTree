@@ -1688,48 +1688,40 @@ namespace POESKillTree.Views
 
             if (ItemAttributes != null)
             {
-                ItemAttributes.Equip.CollectionChanged -= ItemAttributesEquipCollectionChanged;
-                ItemAttributes.ItemDataChanged -= ItemAttributesEquipCollectionChanged;
-                ItemAttributes.PropertyChanged -= ItemAttributesPropertyChanged;
+                ItemAttributes.ItemDataChanged -= ItemAttributesOnItemDataChanged;
+                ItemAttributes.PropertyChanged -= ItemAttributesOnPropertyChanged;
+                ItemAttributes.Dispose();
             }
 
             var equipmentData = PersistentData.EquipmentData;
             var itemData = PersistentData.CurrentBuild.ItemData;
+            var skillDefinitions = await _gameData.Skills;
             ItemAttributes itemAttributes;
-            if (!string.IsNullOrEmpty(itemData))
+            try
             {
-                try
-                {
-                    var skillDefinitions = await _gameData.Skills;
-                    itemAttributes = new ItemAttributes(equipmentData, skillDefinitions, itemData);
-                }
-                catch (Exception ex)
-                {
-                    itemAttributes = new ItemAttributes();
-                    await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load item data."),
-                        ex.Message);
-                }
+                itemAttributes = new ItemAttributes(equipmentData, skillDefinitions, itemData);
             }
-            else
+            catch (Exception ex)
             {
-                itemAttributes = new ItemAttributes();
+                itemAttributes = new ItemAttributes(equipmentData, skillDefinitions);
+                await this.ShowErrorAsync(L10n.Message("An error occurred while attempting to load item data."),
+                    ex.Message);
             }
 
-            itemAttributes.Equip.CollectionChanged += ItemAttributesEquipCollectionChanged;
-            itemAttributes.ItemDataChanged += ItemAttributesEquipCollectionChanged;
-            itemAttributes.PropertyChanged += ItemAttributesPropertyChanged;
-            _equipmentConverter.ConvertFrom(itemAttributes.Equip);
+            itemAttributes.ItemDataChanged += ItemAttributesOnItemDataChanged;
+            itemAttributes.PropertyChanged += ItemAttributesOnPropertyChanged;
+            _equipmentConverter.ConvertFrom(itemAttributes);
             ItemAttributes = itemAttributes;
             InventoryViewModel = new InventoryViewModel(_dialogCoordinator, itemAttributes);
             UpdateUI();
         }
 
-        private void ItemAttributesPropertyChanged(object sender, PropertyChangedEventArgs args)
+        private void ItemAttributesOnPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             UpdateUI();
         }
 
-        private void ItemAttributesEquipCollectionChanged(object sender, EventArgs args)
+        private void ItemAttributesOnItemDataChanged(object sender, EventArgs args)
         {
             _pauseLoadItemData = true;
             PersistentData.CurrentBuild.ItemData = ItemAttributes.ToJsonString();

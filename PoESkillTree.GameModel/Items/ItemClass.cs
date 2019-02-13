@@ -165,9 +165,6 @@ namespace PoESkillTree.GameModel.Items
                     return ItemSlot.Gloves;
                 case ItemClass.Helmet:
                     return ItemSlot.Helm;
-                case ItemClass.ActiveSkillGem:
-                case ItemClass.SupportSkillGem:
-                    return ItemSlot.Gem;
                 case ItemClass.LifeFlask:
                 case ItemClass.ManaFlask:
                 case ItemClass.HybridFlask:

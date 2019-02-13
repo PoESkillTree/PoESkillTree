@@ -8,12 +8,13 @@ namespace PoESkillTree.GameModel.Skills
     {
         public static readonly Skill Default = new Skill("PlayerMelee", 1, 0, ItemSlot.Unequipable, 0, null);
 
-        public Skill(string id, int level, int quality, ItemSlot itemSlot, int socketIndex, int? gemGroup)
+        public Skill(
+            string id, int level, int quality, ItemSlot itemSlot, int socketIndex, int? gemGroup, bool isEnabled = true)
         {
             if (level < 1)
                 throw new ArgumentOutOfRangeException(nameof(level), level, "Level must be >= 1");
-            (Id, Level, Quality, ItemSlot, SocketIndex, GemGroup) =
-                (id, level, quality, itemSlot, socketIndex, gemGroup);
+            (Id, Level, Quality, ItemSlot, SocketIndex, GemGroup, IsEnabled) =
+                (id, level, quality, itemSlot, socketIndex, gemGroup, isEnabled);
         }
 
         public string Id { get; }
@@ -28,7 +29,9 @@ namespace PoESkillTree.GameModel.Skills
         /// </summary>
         public int? GemGroup { get; }
 
+        public bool IsEnabled { get; }
+
         protected override object ToTuple()
-            => (Id, Level, Quality, ItemSlot, SocketIndex, GemGroup);
+            => (Id, Level, Quality, ItemSlot, SocketIndex, GemGroup, IsEnabled);
     }
 }

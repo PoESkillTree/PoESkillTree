@@ -7,42 +7,48 @@ using System.Linq;
 using MoreLinq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Utils.Extensions;
+using POESKillTree.Model.Items;
+using Item = PoESkillTree.GameModel.Items.Item;
 using OldItem = POESKillTree.Model.Items.Item;
 
 namespace POESKillTree.Model
 {
     public class ObservableItemCollectionConverter
     {
-        private ObservableCollection<OldItem> _oldCollection;
+        private ObservableCollection<OldItem> _itemAttributesEquip;
+        private ObservableCollection<IReadOnlyList<Skill>> _itemAttributesSkills;
 
         private readonly Dictionary<ItemSlot, OldItem> _itemSlotToOldItem =
             new Dictionary<ItemSlot, OldItem>();
-
-        private readonly Dictionary<ItemSlot, IReadOnlyList<Skill>> _itemSlotToSkills =
-            new Dictionary<ItemSlot, IReadOnlyList<Skill>>();
 
         public ObservableCollection<(Item, ItemSlot)> Items { get; } =
             new ObservableCollection<(Item, ItemSlot)>();
 
         public ObservableCollection<IReadOnlyList<Skill>> Skills { get; } =
-            new ObservableCollection<IReadOnlyList<Skill>> { new[] { Skill.Default, } };
+            new ObservableCollection<IReadOnlyList<Skill>>();
 
-        public void ConvertFrom(ObservableCollection<OldItem> oldCollection)
+        public void ConvertFrom(ItemAttributes itemAttributes)
         {
-            if (_oldCollection != null)
-            {
-                _oldCollection.CollectionChanged -= OldCollectionChanged;
-            }
-            _oldCollection = oldCollection;
-            Reset();
-            _oldCollection.CollectionChanged += OldCollectionChanged;
+            if (_itemAttributesEquip != null)
+                _itemAttributesEquip.CollectionChanged -= ItemAttributesEquipOnCollectionChanged;
+            if (_itemAttributesSkills != null)
+                _itemAttributesSkills.CollectionChanged -= ItemAttributesSkillsOnCollectionChanged;
+            _itemAttributesEquip = itemAttributes.Equip;
+            _itemAttributesSkills = itemAttributes.Skills;
+
+            ResetItems();
+            ResetSkills();
+
+            _itemAttributesEquip.CollectionChanged += ItemAttributesEquipOnCollectionChanged;
+            _itemAttributesSkills.CollectionChanged += ItemAttributesSkillsOnCollectionChanged;
         }
 
-        private void OldCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        private void ItemAttributesEquipOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
             if (args.Action == NotifyCollectionChangedAction.Reset)
             {
-                Reset();
+                ResetItems();
                 return;
             }
             if (args.NewItems is IList newItems)
@@ -55,36 +61,53 @@ namespace POESKillTree.Model
             }
         }
 
-        private void Reset()
+        private void ItemAttributesSkillsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        {
+            if (args.Action == NotifyCollectionChangedAction.Reset)
+            {
+                ResetSkills();
+                return;
+            }
+            if (args.NewItems is IList newItems)
+            {
+                Skills.AddRange(newItems.Cast<IReadOnlyList<Skill>>());
+            }
+            if (args.OldItems is IList oldItems)
+            {
+                oldItems.Cast<IReadOnlyList<Skill>>().ForEach(ss => Skills.Remove(ss));
+            }
+        }
+
+        private void ResetItems()
         {
             _itemSlotToOldItem.Values.ToList().ForEach(Remove);
-            _oldCollection.ForEach(Add);
+            _itemAttributesEquip.ForEach(Add);
+        }
+
+        private void ResetSkills()
+        {
+            Skills.ToList().ForEach(ss => Skills.Remove(ss));
+            Skills.AddRange(_itemAttributesSkills);
         }
 
         private void Add(OldItem oldItem)
         {
             var (item, slot) = Convert(oldItem);
-            var skills = ModelConverter.ConvertSkills(oldItem);
 
             oldItem.PropertyChanged += OldItemOnPropertyChanged;
 
             _itemSlotToOldItem[slot] = oldItem;
-            _itemSlotToSkills[slot] = skills;
             Items.Add((item, slot));
-            Skills.Add(skills);
         }
 
         private void Remove(OldItem oldItem)
         {
             var (item, slot) = Convert(oldItem);
-            var skills = _itemSlotToSkills[slot];
 
             oldItem.PropertyChanged -= OldItemOnPropertyChanged;
 
             _itemSlotToOldItem.Remove(slot);
-            _itemSlotToSkills.Remove(slot);
             Items.Remove((item, slot));
-            Skills.Remove(skills);
         }
 
         private static (Item, ItemSlot) Convert(OldItem oldItem)
@@ -92,27 +115,10 @@ namespace POESKillTree.Model
 
         private void OldItemOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var oldItem = (OldItem) sender;
-            switch (e.PropertyName)
+            if (e.PropertyName == nameof(OldItem.IsEnabled))
             {
-                case nameof(OldItem.SocketedSkills):
-                    OldItemOnSocketedSkillsChanged(oldItem);
-                    break;
-                case nameof(OldItem.IsEnabled):
-                    OldItemOnIsEnabledChanged(oldItem);
-                    break;
+                OldItemOnIsEnabledChanged((OldItem) sender);
             }
-        }
-
-        private void OldItemOnSocketedSkillsChanged(OldItem oldItem)
-        {
-            var slot = oldItem.Slot;
-            var oldSkills = _itemSlotToSkills[slot];
-            var newSkills = ModelConverter.ConvertSkills(oldItem);
-
-            _itemSlotToSkills[slot] = newSkills;
-            Skills.Remove(oldSkills);
-            Skills.Add(newSkills);
         }
 
         private void OldItemOnIsEnabledChanged(OldItem oldItem)

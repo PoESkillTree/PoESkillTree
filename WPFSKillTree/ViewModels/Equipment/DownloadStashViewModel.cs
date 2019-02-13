@@ -203,7 +203,6 @@ namespace POESKillTree.ViewModels.Equipment
             var tabContents = Clipboard.GetText();
             try
             {
-                var skillDefinitions = await _gameData.Skills;
                 var json = JObject.Parse(tabContents);
                 var isQuadTab = json.Value<bool>("quadLayout");
                 var items = new List<Item>();
@@ -214,7 +213,7 @@ namespace POESKillTree.ViewModels.Equipment
                         // icons of quad tabs are downsized and their url doesn't allow inferring the normal-sized url
                         jItem.Remove("icon");
                     }
-                    items.Add(new Item(_persistenData.EquipmentData, skillDefinitions, jItem));
+                    items.Add(new Item(_persistenData.EquipmentData, jItem));
                 }
 
                 var yStart = _stash.LastOccupiedRow + 3;

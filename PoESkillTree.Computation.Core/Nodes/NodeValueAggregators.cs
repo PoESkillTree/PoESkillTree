@@ -45,7 +45,7 @@ namespace PoESkillTree.Computation.Core.Nodes
 
         public static NodeValue? CalculateBaseSet(IEnumerable<NodeValue?> values)
         {
-            var enumerated = values.EnumerateWhereNotNull();
+            var enumerated = values.Distinct().EnumerateWhereNotNull();
             if (enumerated.Count(v => !v.Minimum.AlmostEquals(0, 1e-10)) > 1
                 || enumerated.Count(v => !v.Maximum.AlmostEquals(0, 1e-10)) > 1)
             {

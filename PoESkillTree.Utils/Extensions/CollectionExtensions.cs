@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MoreLinq;
 
 namespace PoESkillTree.Utils.Extensions
 {
@@ -50,5 +51,8 @@ namespace PoESkillTree.Utils.Extensions
         public static TValue GetValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dict,
             TKey key, Func<TValue> defaultValueProvider)
             => dict.TryGetValue(key, out var value) ? value : defaultValueProvider();
+        
+        public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> toAdd)
+            => toAdd.ForEach(collection.Add);
     }
 }
