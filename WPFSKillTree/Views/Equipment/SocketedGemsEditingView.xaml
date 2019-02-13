@@ -11,7 +11,7 @@
                              xmlns:viewModels="clr-namespace:POESKillTree.ViewModels.Equipment"
                              mc:Ignorable="d" d:DataContext="{d:DesignInstance viewModels:SocketedGemsEditingViewModel}"
                              CloseButtonVisibility="Collapsed"
-                             MaxContentWidth="520">
+                             MaxContentWidth="590">
     <dialogs:CloseableBaseDialog.Title>
         <l:Catalog>Edit Socketed Gems</l:Catalog>
     </dialogs:CloseableBaseDialog.Title>
@@ -32,6 +32,7 @@
             <ColumnDefinition Width="75" />
             <ColumnDefinition Width="75" />
             <ColumnDefinition Width="75" />
+            <ColumnDefinition Width="70" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
@@ -62,12 +63,15 @@
                                Maximum="{Binding NumberOfSockets}"
                                NumericInputMode="Numbers"
                                Value="{Binding NewSocketedGem.Group}" />
-        <Button Grid.Row="0" Grid.Column="4"
+        <CheckBox Grid.Row="0" Grid.Column="4"
+                  HorizontalAlignment="Center"
+                  IsChecked="{Binding NewSocketedGem.IsEnabled}" />
+        <Button Grid.Row="0" Grid.Column="5"
                 Command="{Binding AddGemCommand}">
             <l:Catalog>Add</l:Catalog>
         </Button>
 
-        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"
+        <DataGrid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6"
                   AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
                   CanUserResizeColumns="False"
                   HorizontalScrollBarVisibility="Hidden"
@@ -131,6 +135,18 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
+                <DataGridTemplateColumn Width="70">
+                    <DataGridTemplateColumn.Header>
+                        <l:Catalog>Enabled</l:Catalog>
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="viewModels:SocketedGemViewModel">
+                            <CheckBox IsChecked="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}"
+                                      HorizontalAlignment="Center" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:SocketedGemViewModel">
@@ -146,12 +162,12 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5">
+        <TextBlock Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6">
             <Run><l:Catalog Message="Equipped item's maximum number of sockets:" /></Run>
             <Run Text="{Binding NumberOfSockets, Mode=OneWay}" />
         </TextBlock>
 
-        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5"
+        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="6"
                     Style="{StaticResource DialogPanel}"
                     Height="45" Margin="0 0 0 20">
             <Button Style="{StaticResource DynamicDialogPanelButton}"

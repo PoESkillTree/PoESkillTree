@@ -22,6 +22,7 @@ namespace POESKillTree.ViewModels.Equipment
         private int _quality;
         private int? _group;
         private GemBaseViewModel _gemBase;
+        private bool _isEnabled;
 
         /// <summary>
         /// Gets or sets the level of this gem.
@@ -56,6 +57,12 @@ namespace POESKillTree.ViewModels.Equipment
             set => SetProperty(ref _gemBase, value);
         }
 
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set => SetProperty(ref _isEnabled, value);
+        }
+
         public SocketedGemViewModel Clone()
         {
             return new SocketedGemViewModel
@@ -63,7 +70,8 @@ namespace POESKillTree.ViewModels.Equipment
                 GemBase = GemBase,
                 Group = Group,
                 Quality = Quality,
-                Level = Level
+                Level = Level,
+                IsEnabled = IsEnabled,
             };
         }
     }
@@ -150,7 +158,8 @@ namespace POESKillTree.ViewModels.Equipment
                 GemBase = AvailableGems[0],
                 Level = 20,
                 Quality = 0,
-                Group = 1
+                Group = 1,
+                IsEnabled = true,
             };
             AddGemCommand = new RelayCommand(AddGem);
             RemoveGemCommand = new RelayCommand<SocketedGemViewModel>(RemoveGem);
@@ -179,7 +188,8 @@ namespace POESKillTree.ViewModels.Equipment
                     GemBase = gemBase,
                     Level = skill.Level,
                     Quality = skill.Quality,
-                    Group = skill.GemGroup + 1
+                    Group = skill.GemGroup + 1,
+                    IsEnabled = skill.IsEnabled,
                 };
                 socketedGem.PropertyChanged += SocketedGemsOnPropertyChanged;
                 _socketedGems.Add(socketedGem);
@@ -217,7 +227,8 @@ namespace POESKillTree.ViewModels.Equipment
                 for (var i = 0; i < _socketedGems.Count; i++)
                 {
                     var gem = _socketedGems[i];
-                    var skill = new Skill(gem.GemBase.Id, gem.Level, gem.Quality, _slot, i, gem.Group - 1);
+                    var skill = new Skill(gem.GemBase.Id, gem.Level, gem.Quality, _slot, i, gem.Group - 1,
+                        gem.IsEnabled);
                     skills.Add(skill);
                 }
                 _itemAttributes.SetSkillsInSlot(skills, _slot);
