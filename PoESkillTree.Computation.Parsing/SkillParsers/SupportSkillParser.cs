@@ -24,6 +24,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         public ParseResult Parse(SupportSkillParserParameter parameter)
         {
             var (active, support) = parameter;
+            if (!active.IsEnabled || !support.IsEnabled)
+                return ParseResult.Empty;
+
             var modifiers = new List<Modifier>();
             var parsedStats = new List<UntranslatedStat>();
 

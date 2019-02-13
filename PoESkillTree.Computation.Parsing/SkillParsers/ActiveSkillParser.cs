@@ -23,6 +23,9 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
         public ParseResult Parse(Skill skill)
         {
+            if (!skill.IsEnabled)
+                return ParseResult.Empty;
+
             var modifiers = new List<Modifier>();
             var parsedStats = new List<UntranslatedStat>();
 
