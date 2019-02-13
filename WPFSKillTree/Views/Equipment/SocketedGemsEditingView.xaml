@@ -50,7 +50,7 @@
             </controls:SearchableComboBox.ItemTemplate>
         </controls:SearchableComboBox>
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="1"
-                               Minimum="1" Maximum="21"
+                               Minimum="1" Maximum="{Binding NewSocketedGem.GemBase.MaxLevel}"
                                NumericInputMode="Numbers"
                                Value="{Binding NewSocketedGem.Level}" />
         <mahapps:NumericUpDown Grid.Row="0" Grid.Column="2"
@@ -96,7 +96,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate DataType="viewModels:SocketedGemViewModel">
                             <mahapps:NumericUpDown Style="{StaticResource UpDownInDataGridStyle}"
-                                                   Minimum="1" Maximum="21"
+                                                   Minimum="1" Maximum="{Binding GemBase.MaxLevel}"
                                                    NumericInputMode="Numbers"
                                                    Value="{Binding Level, UpdateSourceTrigger=PropertyChanged}" />
                         </DataTemplate>

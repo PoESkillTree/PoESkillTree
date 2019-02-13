@@ -77,6 +77,9 @@ namespace POESKillTree.ViewModels.Equipment
         public string Id => _skill.Id;
         public string Name => _skill.BaseItem?.DisplayName ?? "";
 
+        public int MaxLevel
+            => _skill.BaseItem?.GemTags.FirstOrDefault(s => s == "low_max_level") is null ? 21 : 4;
+
         public ItemImage Icon { get; }
 
         public GemBaseViewModel(ItemImageService itemImageService, SkillDefinition skill)
@@ -145,7 +148,7 @@ namespace POESKillTree.ViewModels.Equipment
             NewSocketedGem = new SocketedGemViewModel
             {
                 GemBase = AvailableGems[0],
-                Level = 1,
+                Level = 20,
                 Quality = 0,
                 Group = 1
             };
@@ -160,7 +163,7 @@ namespace POESKillTree.ViewModels.Equipment
                 nameof(SocketedGemViewModel.GemBase) + "." + nameof(GemBaseViewModel.Name),
                 ListSortDirection.Ascending));
             SocketedGemsViewSource.SortDescriptions.Add(new SortDescription(
-                nameof(SocketedGemViewModel.Group), 
+                nameof(SocketedGemViewModel.Group),
                 ListSortDirection.Ascending));
 
             // convert currently socketed gem Items into SocketedGemViewModels
@@ -214,8 +217,7 @@ namespace POESKillTree.ViewModels.Equipment
                 for (var i = 0; i < _socketedGems.Count; i++)
                 {
                     var gem = _socketedGems[i];
-                    var skill = new Skill(gem.GemBase.Id, gem.Level, gem.Quality, _slot, i,
-                        gem.Group - 1);
+                    var skill = new Skill(gem.GemBase.Id, gem.Level, gem.Quality, _slot, i, gem.Group - 1);
                     skills.Add(skill);
                 }
                 _itemAttributes.SetSkillsInSlot(skills, _slot);
