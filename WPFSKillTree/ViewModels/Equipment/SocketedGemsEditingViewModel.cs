@@ -117,7 +117,8 @@ namespace POESKillTree.ViewModels.Equipment
         public ICommand AddGemCommand { get; }
         public ICommand RemoveGemCommand { get; }
 
-        public int NumberOfSockets { get; }
+        public int NumberOfSockets
+            => _itemAttributes.GetItemInSlot(_slot)?.BaseType.MaximumNumberOfSockets ?? 0;
 
         private SocketedGemViewModel _newSocketedGem;
         /// <summary>
@@ -125,8 +126,8 @@ namespace POESKillTree.ViewModels.Equipment
         /// </summary>
         public SocketedGemViewModel NewSocketedGem
         {
-            get { return _newSocketedGem; }
-            private set { SetProperty(ref _newSocketedGem, value); }
+            get => _newSocketedGem;
+            private set => SetProperty(ref _newSocketedGem, value);
         }
 
         public SocketedGemsEditingViewModel(
@@ -141,7 +142,6 @@ namespace POESKillTree.ViewModels.Equipment
                             d.BaseItem.ReleaseState == ReleaseState.Legacy)
                 .OrderBy(d => d.BaseItem.DisplayName)
                 .Select(d => new GemBaseViewModel(itemImageService, d)).ToList();
-            NumberOfSockets = itemAttributes.GetItemInSlot(slot)?.BaseType.MaximumNumberOfSockets ?? 6;
             NewSocketedGem = new SocketedGemViewModel
             {
                 GemBase = AvailableGems[0],
@@ -149,7 +149,7 @@ namespace POESKillTree.ViewModels.Equipment
                 Quality = 0,
                 Group = 1
             };
-            AddGemCommand = new RelayCommand(AddGem, CanAddGem);
+            AddGemCommand = new RelayCommand(AddGem);
             RemoveGemCommand = new RelayCommand<SocketedGemViewModel>(RemoveGem);
 
             SocketedGemsViewSource = new CollectionViewSource
@@ -189,9 +189,6 @@ namespace POESKillTree.ViewModels.Equipment
             addedGem.PropertyChanged += SocketedGemsOnPropertyChanged;
             _socketedGems.Add(addedGem);
         }
-
-        private bool CanAddGem()
-            => _socketedGems.Count < NumberOfSockets;
 
         private void RemoveGem(SocketedGemViewModel gem)
         {

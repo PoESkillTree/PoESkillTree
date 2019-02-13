@@ -33,6 +33,7 @@ namespace PoESkillTree.GameModel.Items
         public bool IsEnabled { get; }
 
         protected override object ToTuple()
-            => (BaseMetadataId, Name, Quality, RequiredLevel, FrameType, IsCorrupted, WithSequenceEquality(Modifiers));
+            => (BaseMetadataId, Name, Quality, RequiredLevel, FrameType, IsCorrupted, WithSequenceEquality(Modifiers),
+                IsEnabled);
     }
 }
