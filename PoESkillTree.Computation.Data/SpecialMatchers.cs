@@ -104,7 +104,7 @@ namespace PoESkillTree.Computation.Data
                 {
                     // Dread Banner, War Banner
                     @"\+# second to base placed banner duration per stage",
-                    BaseAdd, Value * Skills.ModifierSourceSkill.Instances.Value, Stat.Duration
+                    BaseAdd, Value * Skills.ModifierSourceSkill.Buff.StackCount.Value, Stat.Duration
                 },
                 {
                     // Cleave

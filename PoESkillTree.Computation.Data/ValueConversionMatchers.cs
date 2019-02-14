@@ -66,7 +66,11 @@ namespace PoESkillTree.Computation.Data
                 { @"per stage, up to \+#", CappedMultiplier(Stat.SkillStage.Value, Value) },
                 {
                     "per ({ChargeTypeMatchers}) removed",
-                    v => v * (Reference.AsChargeType.Amount.Value - Reference.AsChargeType.Amount.Minimum.Value)
+                    Reference.AsChargeType.Amount.Value - Reference.AsChargeType.Amount.Minimum.Value
+                },
+                {
+                    "when placed, (?<inner>.*) per stage",
+                    Skills.ModifierSourceSkill.Buff.StackCount.Value, Flag.IsBannerPlanted, "${inner}"
                 },
                 // buffs
                 { "per buff on you", Buffs(targets: Self).Count() },

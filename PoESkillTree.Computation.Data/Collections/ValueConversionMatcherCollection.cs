@@ -1,5 +1,6 @@
 using System;
 using JetBrains.Annotations;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Values;
 
@@ -25,6 +26,16 @@ namespace PoESkillTree.Computation.Data.Collections
         public void Add([RegexPattern] string regex, ValueBuilder multiplier)
         {
             Add(regex, v => v * multiplier);
+        }
+
+        public void Add(
+            [RegexPattern] string regex, ValueBuilder multiplier, IConditionBuilder condition,
+            string substitution = "")
+        {
+            var builder = ModifierBuilder
+                .WithValueConverter(v => v.Multiply(multiplier))
+                .WithCondition(condition);
+            Add(regex, builder, substitution);
         }
     }
 }

@@ -45,6 +45,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             },
 
             { TotalOverride, Skills.FromId("BloodstainedBanner").Reservation, 0, Flag.IsBannerPlanted },
+            { TotalOverride, Skills.FromId("BloodstainedBanner").Buff.StackCount.Maximum, 50 },
 
             { TotalOverride, Fire.Invert.Damage, 0, IsMainSkill("ElementalHit", 0) },
             { TotalOverride, Cold.Invert.Damage, 0, IsMainSkill("ElementalHit", 1) },
@@ -103,6 +104,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             },
 
             { TotalOverride, Skills.FromId("PuresteelBanner").Reservation, 0, Flag.IsBannerPlanted },
+            { TotalOverride, Skills.FromId("PuresteelBanner").Buff.StackCount.Maximum, 50 },
 
             {
                 // Reduce cast rate proportional to the time spent channeling
