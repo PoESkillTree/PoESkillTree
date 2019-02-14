@@ -15,12 +15,17 @@ namespace PoESkillTree.Computation.Core
     /// </summary>
     public class NodeFactory : INodeFactory
     {
+        private readonly IEventBuffer _eventBuffer;
+
+        public NodeFactory(IEventBuffer eventBuffer)
+            => _eventBuffer = eventBuffer;
+
         public INodeRepository NodeRepository { private get; set; }
 
         public IDisposableNodeViewProvider Create(IValue value, PathDefinition path)
         {
             var coreNode = new ValueNode(new ValueCalculationContext(NodeRepository, path), value);
-            var cachingNode = new CachingNode(coreNode, new CycleGuard());
+            var cachingNode = new CachingNode(coreNode, new CycleGuard(), _eventBuffer);
             var cachingNodeAdapter = new CachingNodeAdapter(cachingNode);
             return new DisposableNodeViewProvider(cachingNodeAdapter, cachingNode, coreNode);
         }
@@ -29,26 +34,25 @@ namespace PoESkillTree.Computation.Core
         private class DisposableNodeViewProvider : IDisposableNodeViewProvider
         {
             private readonly CachingNodeAdapter _defaultView;
-            private readonly CachingNode _suspendableView;
+            private readonly CachingNode _bufferingView;
             private readonly ValueNode _valueNode;
 
             public DisposableNodeViewProvider(
-                CachingNodeAdapter defaultView, CachingNode suspendableView, ValueNode valueNode)
+                CachingNodeAdapter defaultView, CachingNode bufferingView, ValueNode valueNode)
             {
                 _defaultView = defaultView;
-                _suspendableView = suspendableView;
+                _bufferingView = bufferingView;
                 _valueNode = valueNode;
             }
 
-            public int SubscriberCount => _defaultView.SubscriberCount + _suspendableView.SubscriberCount;
+            public int SubscriberCount => _defaultView.SubscriberCount + _bufferingView.SubscriberCount;
             public ICalculationNode DefaultView => _defaultView;
-            public ICalculationNode SuspendableView => _suspendableView;
-            public ISuspendableEvents Suspender => _suspendableView;
+            public ICalculationNode BufferingView => _bufferingView;
 
             public void Dispose()
             {
                 _defaultView.Dispose();
-                _suspendableView.Dispose();
+                _bufferingView.Dispose();
                 _valueNode.Dispose();
                 Disposed?.Invoke(this, EventArgs.Empty);
             }

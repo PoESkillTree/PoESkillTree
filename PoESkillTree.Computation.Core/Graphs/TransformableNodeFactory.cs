@@ -22,9 +22,9 @@ namespace PoESkillTree.Computation.Core.Graphs
             _transformableValueFactory = transformableValueFactory;
         }
 
-        public IDictionary<ISuspendableEventViewProvider<ICalculationNode>, IValueTransformable>
+        public IDictionary<IBufferingEventViewProvider<ICalculationNode>, IValueTransformable>
             TransformableDictionary { get; } =
-            new Dictionary<ISuspendableEventViewProvider<ICalculationNode>, IValueTransformable>();
+            new Dictionary<IBufferingEventViewProvider<ICalculationNode>, IValueTransformable>();
 
         public IDisposableNodeViewProvider Create(IValue value, PathDefinition path)
         {

@@ -22,9 +22,9 @@ namespace PoESkillTree.Computation.Core.Graphs
             _nodeRemovedAction = nodeRemovedAction;
         }
 
-        public ISuspendableEventViewProvider<IObservableCollection<PathDefinition>> Paths => _decoratedGraph.Paths;
+        public IBufferingEventViewProvider<IObservableCollection<PathDefinition>> Paths => _decoratedGraph.Paths;
 
-        public ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeSelector selector)
+        public IBufferingEventViewProvider<ICalculationNode> GetNode(NodeSelector selector)
         {
             var nodeIsNew = !Nodes.ContainsKey(selector);
             var node = _decoratedGraph.GetNode(selector);
@@ -35,13 +35,13 @@ namespace PoESkillTree.Computation.Core.Graphs
             return node;
         }
 
-        public IReadOnlyDictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>> Nodes =>
+        public IReadOnlyDictionary<NodeSelector, IBufferingEventViewProvider<ICalculationNode>> Nodes =>
             _decoratedGraph.Nodes;
 
-        public ISuspendableEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(FormNodeSelector selector) =>
+        public IBufferingEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(FormNodeSelector selector) =>
             _decoratedGraph.GetFormNodeCollection(selector);
 
-        public IReadOnlyDictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
+        public IReadOnlyDictionary<FormNodeSelector, IBufferingEventViewProvider<INodeCollection<Modifier>>>
             FormNodeCollections => _decoratedGraph.FormNodeCollections;
 
         public void RemoveNode(NodeSelector selector)
@@ -53,10 +53,10 @@ namespace PoESkillTree.Computation.Core.Graphs
         public void RemoveFormNodeCollection(FormNodeSelector selector) => 
             _decoratedGraph.RemoveFormNodeCollection(selector);
 
-        public void AddModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier) =>
+        public void AddModifier(IBufferingEventViewProvider<ICalculationNode> node, Modifier modifier) =>
             _decoratedGraph.AddModifier(node, modifier);
 
-        public void RemoveModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier) =>
+        public void RemoveModifier(IBufferingEventViewProvider<ICalculationNode> node, Modifier modifier) =>
             _decoratedGraph.RemoveModifier(node, modifier);
 
         public int ModifierCount => _decoratedGraph.ModifierCount;

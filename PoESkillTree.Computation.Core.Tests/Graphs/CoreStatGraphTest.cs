@@ -1,7 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Computation.Common.Tests;
 using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.Graphs;
 using PoESkillTree.Computation.Core.NodeCollections;
@@ -328,22 +327,22 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
 
         private static ModifierNodeCollection MockModifierNodeCollection()
         {
-            var nodeCollectionViewProvider = Mock.Of<ISuspendableEventViewProvider<NodeCollection<Modifier>>>();
+            var nodeCollectionViewProvider = Mock.Of<IBufferingEventViewProvider<NodeCollection<Modifier>>>();
             return new ModifierNodeCollection(nodeCollectionViewProvider);
         }
 
         private static ModifierNodeCollection CreateModifierNodeCollection()
         {
-            var defaultView = new NodeCollection<Modifier>();
-            var suspendableView = new NodeCollection<Modifier>();
-            var nodeCollectionViewProvider = SuspendableEventViewProvider.Create(defaultView, suspendableView);
+            var defaultView = new NodeCollection<Modifier>(new EventBuffer());
+            var bufferingView = new NodeCollection<Modifier>(new EventBuffer());
+            var nodeCollectionViewProvider = BufferingEventViewProvider.Create(defaultView, bufferingView);
             return new ModifierNodeCollection(nodeCollectionViewProvider);
         }
 
         private static PathDefinitionCollection CreatePathDefinitionCollection()
         {
-            var viewProvider = SuspendableEventViewProvider.Create(new ObservableCollection<PathDefinition>(),
-                new SuspendableObservableCollection<PathDefinition>());
+            var viewProvider = BufferingEventViewProvider.Create(new ObservableCollection<PathDefinition>(),
+                new EventBufferingObservableCollection<PathDefinition>(new EventBuffer()));
             return new PathDefinitionCollection(viewProvider);
         }
     }

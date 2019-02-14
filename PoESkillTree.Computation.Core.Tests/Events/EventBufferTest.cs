@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Core.Events;
 
@@ -99,6 +100,23 @@ namespace PoESkillTree.Computation.Core.Tests.Events
             sut.Flush();
 
             bufferable.VerifyNoOtherCalls();
+        }
+
+        [Test]
+        public void FlushLoopsOverBuffers()
+        {
+            var sut = new EventBuffer();
+            var bufferable1 = new Mock<IBufferableEvent<int>>();
+            var bufferable2 = new Mock<IBufferableEvent<int>>();
+            bufferable1.Setup(b => b.Invoke(It.IsAny<IReadOnlyList<int>>()))
+                .Callback(() => sut.Buffer(bufferable2.Object, 2));
+            sut.StartBuffering();
+
+            sut.Buffer(bufferable1.Object, 1);
+            sut.Flush();
+
+            VerifyInvoke(bufferable1, 1);
+            VerifyInvoke(bufferable2, 2);
         }
 
         private static void VerifyInvoke<T>(Mock<IBufferableEvent<T>> mock, params T[] invokeArgs)

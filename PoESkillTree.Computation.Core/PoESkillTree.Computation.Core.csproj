@@ -64,6 +64,7 @@
     <Compile Include="Events\EventBuffer.cs" />
     <Compile Include="Events\IBufferableEvent.cs" />
     <Compile Include="Events\IEventBuffer.cs" />
+    <Compile Include="Events\ImmediateEventBuffer.cs" />
     <Compile Include="Graphs\CompositeCalculationGraphPruner.cs" />
     <Compile Include="Graphs\UserSpecifiedValuePruningRuleSet.cs" />
     <Compile Include="Graphs\CalculationGraphWithEvents.cs" />
@@ -98,11 +99,9 @@
     <Compile Include="Nodes\ICycleGuard.cs" />
     <Compile Include="Graphs\INodeFactory.cs" />
     <Compile Include="Graphs\IStatGraph.cs" />
-    <Compile Include="Events\ISuspendableEvents.cs" />
-    <Compile Include="Events\ISuspendableEventViewProvider.cs" />
+    <Compile Include="Events\IBufferingEventViewProvider.cs" />
     <Compile Include="NodeCollections\ModifierNodeCollection.cs" />
     <Compile Include="NodeCollections\NodeCollection.cs" />
-    <Compile Include="Graphs\StatGraphCollectionSuspender.cs" />
     <Compile Include="Nodes\IDisposableNodeViewProvider.cs" />
     <Compile Include="Nodes\IValueTransformable.cs" />
     <Compile Include="Nodes\MultiPathFormAggregatingValue.cs" />
@@ -120,10 +119,9 @@
     <Compile Include="Graphs\CalculationGraphPruner.cs" />
     <Compile Include="Nodes\SubscriberCountingNode.cs" />
     <Compile Include="Nodes\SubtotalValue.cs" />
-    <Compile Include="Events\SuspendableEventsComposite.cs" />
-    <Compile Include="Events\SuspendableEventViewProvider.cs" />
-    <Compile Include="NodeCollections\SuspendableObservableCollection.cs" />
-    <Compile Include="Graphs\SuspendableViewNodeRepository.cs" />
+    <Compile Include="Events\BufferingEventViewProvider.cs" />
+    <Compile Include="NodeCollections\EventBufferingObservableCollection.cs" />
+    <Compile Include="Graphs\BufferingViewNodeRepository.cs" />
     <Compile Include="Nodes\TotalValue.cs" />
     <Compile Include="Nodes\PathTotalValue.cs" />
     <Compile Include="Nodes\ValueCalculationContext.cs" />

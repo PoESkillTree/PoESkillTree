@@ -31,11 +31,15 @@ namespace PoESkillTree.Computation.Core.Events
 
         public void Flush()
         {
-            foreach (var typedBuffer in _typedBuffers.Values)
+            while (_typedBuffers.Any())
             {
-                typedBuffer.Flush();
+                var buffers = _typedBuffers.Values.ToList();
+                _typedBuffers.Clear();
+                foreach (var typedBuffer in buffers)
+                {
+                    typedBuffer.Flush();
+                }
             }
-            _typedBuffers.Clear();
         }
 
         private interface ITypedEventBuffer

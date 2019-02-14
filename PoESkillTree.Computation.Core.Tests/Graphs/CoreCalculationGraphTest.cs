@@ -144,7 +144,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var graphs = stats.ToDictionary(s => s, _ => Mock.Of<IStatGraph>());
             var path = new PathDefinition(modifier.Source);
             var node = Mock.Of<IDisposableNodeViewProvider>(p => 
-                p.DefaultView == MockNode(0) && p.SuspendableView == MockNode(0));
+                p.DefaultView == MockNode(0) && p.BufferingView == MockNode(0));
             var nodeFactory = Mock.Of<INodeFactory>(f => f.Create(value, path) == node);
             var sut = CreateSut(s => graphs[s], nodeFactory);
             sut.AddModifier(modifier);

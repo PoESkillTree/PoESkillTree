@@ -2,6 +2,7 @@
 using System.Linq;
 using MoreLinq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.NodeCollections;
 
 namespace PoESkillTree.Computation.Core.Tests.NodeCollections
@@ -161,7 +162,7 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
             sut.Add(node, 0);
         }
 
-        private static NodeCollection<int> CreateSut() =>
-            new NodeCollection<int>();
+        private static NodeCollection<int> CreateSut()
+            => new NodeCollection<int>(new EventBuffer());
     }
 }

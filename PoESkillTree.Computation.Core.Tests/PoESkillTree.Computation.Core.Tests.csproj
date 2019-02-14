@@ -91,7 +91,6 @@
     <Compile Include="Graphs\DefaultViewRepositoryTest.cs" />
     <Compile Include="NodeCollections\ModifierNodeCollectionTest.cs" />
     <Compile Include="NodeCollections\NodeCollectionTest.cs" />
-    <Compile Include="Graphs\StatGraphCollectionSuspenderTest.cs" />
     <Compile Include="Nodes\ConvertedBaseValueTest.cs" />
     <Compile Include="Nodes\CycleGuardTest.cs" />
     <Compile Include="Nodes\FormAggregatingValueTest.cs" />
@@ -106,10 +105,9 @@
     <Compile Include="Nodes\CachingNodeTest.cs" />
     <Compile Include="Graphs\PrunableCalculationGraphTest.cs" />
     <Compile Include="Nodes\SubtotalValueTest.cs" />
-    <Compile Include="Events\SuspendableEventsCompositeTest.cs" />
-    <Compile Include="Events\SuspendableEventViewProviderTest.cs" />
-    <Compile Include="NodeCollections\SuspendableObservableCollectionTest.cs" />
-    <Compile Include="Graphs\SuspendableViewNodeRepositoryTest.cs" />
+    <Compile Include="Events\BufferingEventViewProviderTest.cs" />
+    <Compile Include="NodeCollections\EventBufferingObservableCollectionTest.cs" />
+    <Compile Include="Graphs\BufferingViewNodeRepositoryTest.cs" />
     <Compile Include="Nodes\TotalValueTest.cs" />
     <Compile Include="Nodes\PathTotalValueTest.cs" />
     <Compile Include="Nodes\ValueCalculationContextTest.cs" />

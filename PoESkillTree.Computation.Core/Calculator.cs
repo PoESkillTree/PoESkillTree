@@ -11,16 +11,16 @@ namespace PoESkillTree.Computation.Core
     /// </summary>
     public class Calculator : ICalculator
     {
-        private readonly ISuspendableEvents _suspender;
+        private readonly EventBuffer _eventBuffer;
         private readonly IModifierCollection _modifierCollection;
         private readonly ICalculationGraphPruner _graphPruner;
 
         public Calculator(
-            ISuspendableEvents suspender, IModifierCollection modifierCollection,
+            EventBuffer eventBuffer, IModifierCollection modifierCollection,
             ICalculationGraphPruner graphPruner, INodeRepository nodeRepository,
             INodeCollection<IStat> explicitlyRegisteredStats)
         {
-            _suspender = suspender;
+            _eventBuffer = eventBuffer;
             _modifierCollection = modifierCollection;
             _graphPruner = graphPruner;
             NodeRepository = nodeRepository;
@@ -33,7 +33,7 @@ namespace PoESkillTree.Computation.Core
 
         public void Update(CalculatorUpdate update)
         {
-            _suspender.SuspendEvents();
+            _eventBuffer.StartBuffering();
             // If the remove/add order matters for performance, ordering logic could be added.
             foreach (var modifier in update.RemovedModifiers)
             {
@@ -44,7 +44,8 @@ namespace PoESkillTree.Computation.Core
                 _modifierCollection.AddModifier(modifier);
             }
             _graphPruner.RemoveUnusedNodes();
-            _suspender.ResumeEvents();
+            _eventBuffer.Flush();
+            _eventBuffer.StopBuffering();
         }
 
         public void RemoveUnusedNodes() => _graphPruner.RemoveUnusedNodes();
@@ -54,31 +55,29 @@ namespace PoESkillTree.Computation.Core
         /// </summary>
         public static ICalculator Create()
         {
-            var innerNodeFactory = new NodeFactory();
+            var eventBuffer = new EventBuffer();
+            var innerNodeFactory = new NodeFactory(eventBuffer);
             var nodeFactory = new TransformableNodeFactory(innerNodeFactory, v => new TransformableValue(v));
-            var statRegistryCollection = new NodeCollection<IStat>();
+            var statRegistryCollection = new NodeCollection<IStat>(eventBuffer);
             var statRegistry = new StatRegistry(statRegistryCollection);
             var valueTransformer = new ValueTransformer();
 
-            var (graph, pruner) = CreateCalculationGraph(nodeFactory, statRegistry, valueTransformer);
+            var (graph, pruner) = CreateCalculationGraph(nodeFactory, statRegistry, valueTransformer, eventBuffer);
 
             var defaultView = new DefaultViewNodeRepository(graph);
-            var suspendableView = new SuspendableViewNodeRepository(graph);
+            var bufferingView = new BufferingViewNodeRepository(graph);
             innerNodeFactory.NodeRepository = defaultView;
-            statRegistry.NodeRepository = suspendableView;
+            statRegistry.NodeRepository = bufferingView;
 
-            var suspender = new SuspendableEventsComposite();
-            suspender.Add(new StatGraphCollectionSuspender(graph));
-            suspender.Add(statRegistryCollection);
-
-            return new Calculator(suspender, graph, pruner, suspendableView, statRegistryCollection);
+            return new Calculator(eventBuffer, graph, pruner, bufferingView, statRegistryCollection);
         }
 
         private static (ICalculationGraph, ICalculationGraphPruner) CreateCalculationGraph(
-            TransformableNodeFactory nodeFactory, StatRegistry statRegistry, ValueTransformer valueTransformer)
+            TransformableNodeFactory nodeFactory, StatRegistry statRegistry, ValueTransformer valueTransformer,
+            IEventBuffer eventBuffer)
         {
-            var coreGraph =
-                new CoreCalculationGraph(s => CreateStatGraph(nodeFactory, valueTransformer, s), nodeFactory);
+            var coreGraph = new CoreCalculationGraph(
+                s => CreateStatGraph(nodeFactory, valueTransformer, eventBuffer, s), nodeFactory);
             var eventGraph = new CalculationGraphWithEvents(coreGraph);
 
             var defaultPruningRuleSet = new DefaultPruningRuleSet(statRegistry);
@@ -125,11 +124,13 @@ namespace PoESkillTree.Computation.Core
         }
 
         private static IStatGraph CreateStatGraph(
-            TransformableNodeFactory nodeFactory, ValueTransformer valueTransformer, IStat stat)
+            TransformableNodeFactory nodeFactory, ValueTransformer valueTransformer, IEventBuffer eventBuffer,
+            IStat stat)
         {
-            var paths = new PathDefinitionCollection(SuspendableEventViewProvider.Create(
-                new ObservableCollection<PathDefinition>(), new SuspendableObservableCollection<PathDefinition>()));
-            var coreGraph = new CoreStatGraph(new StatNodeFactory(nodeFactory, stat), paths);
+            var paths = new PathDefinitionCollection(BufferingEventViewProvider.Create(
+                new ObservableCollection<PathDefinition>(),
+                new EventBufferingObservableCollection<PathDefinition>(eventBuffer)));
+            var coreGraph = new CoreStatGraph(new StatNodeFactory(eventBuffer, nodeFactory, stat), paths);
             return new StatGraphWithEvents(coreGraph, NodeAdded, NodeRemoved);
 
             void NodeAdded(NodeSelector selector)

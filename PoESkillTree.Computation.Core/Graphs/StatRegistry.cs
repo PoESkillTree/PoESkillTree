@@ -55,9 +55,9 @@ namespace PoESkillTree.Computation.Core.Graphs
             _nodeCollection.Remove(wrappedNode, stat);
         }
 
-        public bool CanBeRemoved(ISuspendableEventViewProvider<ICalculationNode> node)
+        public bool CanBeRemoved(IBufferingEventViewProvider<ICalculationNode> node)
         {
-            if (_registeredNodes.ContainsValue(node.SuspendableView))
+            if (_registeredNodes.ContainsValue(node.BufferingView))
             {
                 return node.SubscriberCount <= 1;
             }

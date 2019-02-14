@@ -10,10 +10,10 @@ namespace PoESkillTree.Computation.Core.Graphs
         /// <summary>
         /// Returns true if the given node can be removed from the calculation graph.
         /// </summary>
-        bool CanBeRemoved(ISuspendableEventViewProvider<ICalculationNode> node);
+        bool CanBeRemoved(IBufferingEventViewProvider<ICalculationNode> node);
 
         /// <summary>
-        /// Returns true if the given node (that is not a <see cref="ISuspendableEventViewProvider{T}"/>) can be
+        /// Returns true if the given node (that is not a <see cref="IBufferingEventViewProvider{T}"/>) can be
         /// removed from the calculation graph.
         /// </summary>
         bool CanBeRemoved(ICountsSubsribers node);

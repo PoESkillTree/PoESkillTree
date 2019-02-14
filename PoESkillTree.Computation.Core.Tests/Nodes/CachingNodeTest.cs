@@ -108,48 +108,16 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         }
 
         [Test]
-        public void ValueChangedIsNotRaisedWhenEventsAreSuspended()
+        public void ValueChangedIsBuffered()
         {
             var nodeMock = new Mock<ICalculationNode>();
-            var sut = CreateSut(nodeMock.Object);
+            var eventBufferMock = new Mock<IEventBuffer>();
+            var sut = CreateSut(nodeMock.Object, eventBuffer: eventBufferMock.Object);
             var _ = sut.Value;
 
-            sut.SuspendEvents();
-
-            sut.AssertValueChangedWillNotBeInvoked();
-            nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
-        }
-
-        [Test]
-        public void ResumeAllowsValueChangedToBeRaisedAgain()
-        {
-            var nodeMock = new Mock<ICalculationNode>();
-            var sut = CreateSut(nodeMock.Object);
-            var _ = sut.Value;
-            var raised = false;
-            sut.SubscribeToValueChanged(() => raised = true);
-            sut.SuspendEvents();
-
-            sut.ResumeEvents();
-
-            nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
-            Assert.IsTrue(raised);
-        }
-
-        [Test]
-        public void ResumeRaisesValueChangedIfValueChangeReceivedWasRaisedAfterSuspend()
-        {
-            var nodeMock = new Mock<ICalculationNode>();
-            var sut = CreateSut(nodeMock.Object);
-            var _ = sut.Value;
-            var raised = false;
-            sut.SubscribeToValueChanged(() => raised = true);
-            sut.SuspendEvents();
             nodeMock.Raise(n => n.ValueChanged += null, EventArgs.Empty);
 
-            sut.ResumeEvents();
-
-            Assert.IsTrue(raised);
+            eventBufferMock.Verify(b => b.Buffer(sut, EventArgs.Empty));
         }
 
         [Test]
@@ -198,9 +166,8 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             return CreateSut(decoratedNode, cycleGuard);
         }
 
-        private static CachingNode CreateSut(ICalculationNode decoratedNode, ICycleGuard cycleGuard = null)
-        {
-            return new CachingNode(decoratedNode, cycleGuard ?? Mock.Of<ICycleGuard>());
-        }
+        private static CachingNode CreateSut(
+            ICalculationNode decoratedNode, ICycleGuard cycleGuard = null, IEventBuffer eventBuffer = null)
+            => new CachingNode(decoratedNode, cycleGuard ?? Mock.Of<ICycleGuard>(), eventBuffer ?? new EventBuffer());
     }
 }

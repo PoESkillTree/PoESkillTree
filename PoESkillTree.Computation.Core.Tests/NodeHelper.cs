@@ -36,18 +36,15 @@ namespace PoESkillTree.Computation.Core.Tests
 
         public static IDisposableNodeViewProvider MockDisposableNodeProvider() =>
             Mock.Of<IDisposableNodeViewProvider>(p =>
-                p.DefaultView == MockNode(0) && p.SuspendableView == MockNode(0) &&
-                p.Suspender == Mock.Of<ISuspendableEvents>());
+                p.DefaultView == MockNode(0) && p.BufferingView == MockNode(0));
 
-        public static ISuspendableEventViewProvider<ICalculationNode> MockNodeProvider(
-            ICalculationNode defaultNode = null, ICalculationNode suspendableNode = null,
-            ISuspendableEvents suspender = null)
+        public static IBufferingEventViewProvider<ICalculationNode> MockNodeProvider(
+            ICalculationNode defaultNode = null, ICalculationNode bufferingView = null)
         {
             defaultNode = defaultNode ?? MockNode();
-            suspendableNode = suspendableNode ?? MockNode();
-            suspender = suspender ?? Mock.Of<ISuspendableEvents>();
-            return Mock.Of<ISuspendableEventViewProvider<ICalculationNode>>(
-                p => p.DefaultView == defaultNode && p.SuspendableView == suspendableNode && p.Suspender == suspender);
+            bufferingView = bufferingView ?? MockNode();
+            return Mock.Of<IBufferingEventViewProvider<ICalculationNode>>(
+                p => p.DefaultView == defaultNode && p.BufferingView == bufferingView);
         }
 
         public static PathDefinition NotMainPath => new PathDefinition(new ModifierSource.Global(), new StatStub());

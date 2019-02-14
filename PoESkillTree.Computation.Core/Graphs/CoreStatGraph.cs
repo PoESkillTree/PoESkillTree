@@ -15,12 +15,12 @@ namespace PoESkillTree.Computation.Core.Graphs
         private readonly IStatNodeFactory _nodeFactory;
         private readonly PathDefinitionCollection _paths;
 
-        private readonly Dictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>> _nodes =
-            new Dictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>>();
+        private readonly Dictionary<NodeSelector, IBufferingEventViewProvider<ICalculationNode>> _nodes =
+            new Dictionary<NodeSelector, IBufferingEventViewProvider<ICalculationNode>>();
 
-        private readonly Dictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
+        private readonly Dictionary<FormNodeSelector, IBufferingEventViewProvider<INodeCollection<Modifier>>>
             _formNodeCollections =
-                new Dictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>();
+                new Dictionary<FormNodeSelector, IBufferingEventViewProvider<INodeCollection<Modifier>>>();
 
         public CoreStatGraph(IStatNodeFactory nodeFactory, PathDefinitionCollection paths)
         {
@@ -37,12 +37,12 @@ namespace PoESkillTree.Computation.Core.Graphs
             return _nodeFactory.Create(selector);
         }
 
-        public ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeSelector selector) =>
+        public IBufferingEventViewProvider<ICalculationNode> GetNode(NodeSelector selector) =>
             GetDisposableNode(selector);
 
-        public IReadOnlyDictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>> Nodes => _nodes;
+        public IReadOnlyDictionary<NodeSelector, IBufferingEventViewProvider<ICalculationNode>> Nodes => _nodes;
 
-        public ISuspendableEventViewProvider<IObservableCollection<PathDefinition>> Paths => _paths;
+        public IBufferingEventViewProvider<IObservableCollection<PathDefinition>> Paths => _paths;
 
         public void RemoveNode(NodeSelector selector)
         {
@@ -63,11 +63,11 @@ namespace PoESkillTree.Computation.Core.Graphs
             return _nodeFactory.Create(selector);
         }
 
-        public ISuspendableEventViewProvider<INodeCollection<Modifier>> 
+        public IBufferingEventViewProvider<INodeCollection<Modifier>> 
             GetFormNodeCollection(FormNodeSelector selector) => 
             GetModifierNodeCollection(selector);
 
-        public IReadOnlyDictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
+        public IReadOnlyDictionary<FormNodeSelector, IBufferingEventViewProvider<INodeCollection<Modifier>>>
             FormNodeCollections => _formNodeCollections;
 
         public void RemoveFormNodeCollection(FormNodeSelector selector)
@@ -78,14 +78,14 @@ namespace PoESkillTree.Computation.Core.Graphs
             }
         }
 
-        public void AddModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier)
+        public void AddModifier(IBufferingEventViewProvider<ICalculationNode> node, Modifier modifier)
         {
             var collection = GetModifierNodeCollection(modifier);
             collection.Add(node, modifier);
             ModifierCount++;
         }
 
-        public void RemoveModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier)
+        public void RemoveModifier(IBufferingEventViewProvider<ICalculationNode> node, Modifier modifier)
         {
             var collection = GetModifierNodeCollection(modifier);
             collection.Remove(node, modifier);

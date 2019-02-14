@@ -5,19 +5,18 @@ using PoESkillTree.Computation.Core.Events;
 namespace PoESkillTree.Computation.Core.Tests.Events
 {
     [TestFixture]
-    public class SuspendableEventViewProviderTest
+    public class BufferingEventViewProviderTest
     {
         [Test]
         public void CreateReturnsCorrectInstance()
         {
             var defaultView = Mock.Of<ICountsSubsribers>();
-            var suspendableView = Mock.Of<ISuspendableCountsSubscribers>();
+            var bufferingView = Mock.Of<ICountsSubsribers>();
 
-            var provider = SuspendableEventViewProvider.Create(defaultView, suspendableView);
+            var provider = BufferingEventViewProvider.Create(defaultView, bufferingView);
 
             Assert.AreSame(defaultView, provider.DefaultView);
-            Assert.AreSame(suspendableView, provider.SuspendableView);
-            Assert.AreSame(suspendableView, provider.Suspender);
+            Assert.AreSame(bufferingView, provider.BufferingView);
         }
 
         [TestCase(42, 3)]
@@ -25,16 +24,12 @@ namespace PoESkillTree.Computation.Core.Tests.Events
         public void CreateReturnsInstanceCalculatingSubscriberCountCorrectly(int defaultCount, int suspendableCount)
         {
             var defaultView = Mock.Of<ICountsSubsribers>(o => o.SubscriberCount == defaultCount);
-            var suspendableView = Mock.Of<ISuspendableCountsSubscribers>(o => o.SubscriberCount == suspendableCount);
-            var provider = SuspendableEventViewProvider.Create(defaultView, suspendableView);
+            var bufferingView = Mock.Of<ICountsSubsribers>(o => o.SubscriberCount == suspendableCount);
+            var provider = BufferingEventViewProvider.Create(defaultView, bufferingView);
 
             var actual = provider.SubscriberCount;
 
             Assert.AreEqual(defaultCount + suspendableCount, actual);
         }
-    }
-
-    public interface ISuspendableCountsSubscribers : ISuspendableEvents, ICountsSubsribers
-    {
     }
 }
