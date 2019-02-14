@@ -61,6 +61,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\EventBuffer.cs" />
+    <Compile Include="Events\IBufferableEvent.cs" />
+    <Compile Include="Events\IEventBuffer.cs" />
     <Compile Include="Graphs\CompositeCalculationGraphPruner.cs" />
     <Compile Include="Graphs\UserSpecifiedValuePruningRuleSet.cs" />
     <Compile Include="Graphs\CalculationGraphWithEvents.cs" />
