@@ -12,6 +12,9 @@ namespace PoESkillTree.Computation.Core.Nodes
     {
         private readonly INodeRepository _nodeRepository;
 
+        // Cuts down the memory footprint of GetValues.
+        private static readonly Stack<HashSet<ICalculationNode>> NodeSets = new Stack<HashSet<ICalculationNode>>();
+
         public ValueCalculationContext(INodeRepository nodeRepository, PathDefinition currentPath)
         {
             _nodeRepository = nodeRepository;
@@ -36,7 +39,8 @@ namespace PoESkillTree.Computation.Core.Nodes
 
         public List<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths)
         {
-            var nodeList = new List<ICalculationNode>();
+            var nodeSet = NodeSets.Count > 0 ? NodeSets.Pop() : new HashSet<ICalculationNode>();
+
             foreach (var (stat, path) in paths)
             {
                 var nodeCollection = _nodeRepository.GetFormNodeCollection(stat, form, path);
@@ -44,16 +48,18 @@ namespace PoESkillTree.Computation.Core.Nodes
                 foreach (var (node, _) in nodeCollection)
                 {
                     UsedNodes.Add(node);
-                    nodeList.Add(node);
+                    nodeSet.Add(node);
                 }
             }
-            
-            var nodes = new HashSet<ICalculationNode>(nodeList);
-            var values = new List<NodeValue?>(nodes.Count);
-            foreach (var node in nodes)
+
+            var values = new List<NodeValue?>(nodeSet.Count);
+            foreach (var node in nodeSet)
             {
                 values.Add(node.Value);
             }
+
+            nodeSet.Clear();
+            NodeSets.Push(nodeSet);
             return values;
         }
 

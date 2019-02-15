@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
 
             var stats = new IStat[] { new StatStub(), new StatStub() };
             var source = new ModifierSource.Local.Given();
-            var path = new PathDefinition(source, stats.Skip(1).ToList());
+            var path = new PathDefinition(source, stats[1]);
             var sut = CreateSut(stats[0], path);
 
             var paths = new[]

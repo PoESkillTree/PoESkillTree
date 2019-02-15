@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
             var originalPaths = context.GetPaths(_target);
             var conversionPaths = context.GetPaths(_source)
-                .Select(p => new PathDefinition(p.ModifierSource, p.ConversionStats.Prepend(_source).ToList()));
+                .Select(p => new PathDefinition(p.ModifierSource, p.ConversionStats.Prepend(_source).ToArray()));
             var paths = new HashSet<PathDefinition>(originalPaths);
             paths.UnionWith(conversionPaths);
             return paths;
