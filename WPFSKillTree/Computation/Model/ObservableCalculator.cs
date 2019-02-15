@@ -112,7 +112,7 @@ namespace POESKillTree.Computation.Model
                 .ToList().SingleAsync();
 
         public IDisposable PeriodicallyRemoveUnusedNodes(Action<Exception> onError)
-            => Observable.Interval(TimeSpan.FromMilliseconds(200))
+            => Observable.Interval(TimeSpan.FromMilliseconds(250))
                 .ObserveOn(_calculationScheduler)
                 .Subscribe(_ => _calculator.RemoveUnusedNodes(), onError);
     }

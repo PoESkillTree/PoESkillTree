@@ -19,8 +19,8 @@ namespace PoESkillTree.Computation.Common
         /// </summary>
         public static readonly PathDefinition MainPath = new PathDefinition(new ModifierSource.Global());
 
-        public PathDefinition(ModifierSource modifierSource, params IStat[] conversiStats)
-            : this(modifierSource, (IReadOnlyList<IStat>) conversiStats)
+        public PathDefinition(ModifierSource modifierSource, params IStat[] conversionStats)
+            : this(modifierSource, (IReadOnlyList<IStat>) conversionStats)
         {
         }
 

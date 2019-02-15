@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MoreLinq;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Graphs
@@ -42,7 +41,11 @@ namespace PoESkillTree.Computation.Core.Graphs
         {
             _statsConsideredForRemoval.RemoveWhere(s => !_calculationGraph.StatGraphs.ContainsKey(s));
 
-            _statsConsideredForRemoval.ForEach(RemoveUnusedStatGraphNodes);
+            foreach (var stat in _statsConsideredForRemoval)
+            {
+                RemoveUnusedStatGraphNodes(stat);
+            }
+
             foreach (var stat in _statsConsideredForRemoval.ToList())
             {
                 var statGraph = _calculationGraph.StatGraphs[stat];
@@ -57,10 +60,10 @@ namespace PoESkillTree.Computation.Core.Graphs
         private void RemoveUnusedStatGraphNodes(IStat stat)
         {
             var statGraph = _calculationGraph.StatGraphs[stat];
-            _ruleSet.SelectRemovableNodesByNodeType(statGraph)
-                .ForEach(statGraph.RemoveNode);
-            _ruleSet.SelectRemovableNodesByForm(statGraph)
-                .ForEach(statGraph.RemoveFormNodeCollection);
+            foreach (var selector in _ruleSet.SelectRemovableNodesByNodeType(statGraph))
+                statGraph.RemoveNode(selector);
+            foreach (var selector in _ruleSet.SelectRemovableNodesByForm(statGraph))
+                statGraph.RemoveFormNodeCollection(selector);
         }
 
         private void ClearStatGraph(IStatGraph statGraph)
