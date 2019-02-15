@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Nodes
@@ -12,8 +11,6 @@ namespace PoESkillTree.Computation.Core.Nodes
     public class ValueCalculationContext : IValueCalculationContext
     {
         private readonly INodeRepository _nodeRepository;
-        private readonly HashSet<ICalculationNode> _usedNodes = new HashSet<ICalculationNode>();
-        private readonly HashSet<IObservableCollection> _usedCollections = new HashSet<IObservableCollection>();
 
         public ValueCalculationContext(INodeRepository nodeRepository, PathDefinition currentPath)
         {
@@ -26,14 +23,14 @@ namespace PoESkillTree.Computation.Core.Nodes
         public NodeValue? GetValue(IStat stat, NodeType nodeType, PathDefinition path)
         {
             var node = _nodeRepository.GetNode(stat, nodeType, path);
-            _usedNodes.Add(node);
+            UsedNodes.Add(node);
             return node.Value;
         }
 
         public IReadOnlyCollection<PathDefinition> GetPaths(IStat stat)
         {
             var paths = _nodeRepository.GetPaths(stat);
-            _usedCollections.Add(paths);
+            UsedCollections.Add(paths);
             return paths;
         }
 
@@ -43,10 +40,10 @@ namespace PoESkillTree.Computation.Core.Nodes
             foreach (var (stat, path) in paths)
             {
                 var nodeCollection = _nodeRepository.GetFormNodeCollection(stat, form, path);
-                _usedCollections.Add(nodeCollection);
+                UsedCollections.Add(nodeCollection);
                 foreach (var (node, _) in nodeCollection)
                 {
-                    _usedNodes.Add(node);
+                    UsedNodes.Add(node);
                     nodeList.Add(node);
                 }
             }
@@ -60,13 +57,14 @@ namespace PoESkillTree.Computation.Core.Nodes
             return values;
         }
 
-        public IEnumerable<ICalculationNode> UsedNodes => _usedNodes;
-        public IEnumerable<IObservableCollection> UsedCollections => _usedCollections;
+        public HashSet<ICalculationNode> UsedNodes { get; } = new HashSet<ICalculationNode>();
+
+        public HashSet<IObservableCollection> UsedCollections { get; } = new HashSet<IObservableCollection>();
 
         public void Clear()
         {
-            _usedNodes.Clear();
-            _usedCollections.Clear();
+            UsedNodes.Clear();
+            UsedCollections.Clear();
         }
     }
 }

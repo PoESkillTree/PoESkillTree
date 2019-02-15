@@ -36,6 +36,7 @@ namespace POESKillTree.Computation.Model
         private IObservable<NodeValue?> ObserveNode(Func<ICalculationNode> nodeFunc)
         {
             return Observable.Create<NodeValue?>(Subscribe)
+                .Throttle(TimeSpan.FromMilliseconds(20), _calculationScheduler)
                 .SubscribeOn(_calculationScheduler);
 
             Action Subscribe(IObserver<NodeValue?> observer)

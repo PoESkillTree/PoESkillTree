@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Nodes
@@ -10,21 +11,23 @@ namespace PoESkillTree.Computation.Core.Nodes
     public class ValueNode : ICalculationNode, IDisposable
     {
         private readonly IValue _value;
-        private readonly ValueCalculationContext _context;
+        private ValueCalculationContext _previousContext;
+        private ValueCalculationContext _currentContext;
 
-        public ValueNode(ValueCalculationContext context, IValue value)
+        public ValueNode(ValueCalculationContext context1, ValueCalculationContext context2, IValue value)
         {
             _value = value;
-            _context = context;
+            _previousContext = context1;
+            _currentContext = context2;
         }
 
         public NodeValue? Value
         {
             get
             {
-                Unsubscribe();
-                var value = _value.Calculate(_context);
-                Subscribe();
+                (_previousContext, _currentContext) = (_currentContext, _previousContext);
+                var value = _value.Calculate(_currentContext);
+                UpdateSubscriptions();
                 return value;
             }
         }
@@ -33,35 +36,46 @@ namespace PoESkillTree.Computation.Core.Nodes
 
         public void Dispose()
         {
-            Unsubscribe();
-        }
-
-        private void Unsubscribe()
-        {
-            foreach (var node in _context.UsedNodes)
+            foreach (var node in _currentContext.UsedNodes)
             {
                 node.ValueChanged -= OnValueChanged;
             }
 
-            foreach (var collection in _context.UsedCollections)
+            foreach (var collection in _currentContext.UsedCollections)
             {
                 collection.CollectionChanged -= OnValueChanged;
             }
 
-            _context.Clear();
+            (_previousContext, _currentContext) = (_currentContext, _previousContext);
+            _currentContext.Clear();
+            UpdateSubscriptions();
         }
 
-        private void Subscribe()
+        private void UpdateSubscriptions()
         {
-            foreach (var node in _context.UsedNodes)
+            foreach (var node in _previousContext.UsedNodes)
             {
-                node.ValueChanged += OnValueChanged;
+                if (!_currentContext.UsedNodes.Contains(node))
+                    node.ValueChanged -= OnValueChanged;
+            }
+            foreach (var collection in _previousContext.UsedCollections)
+            {
+                if (!_currentContext.UsedCollections.Contains(collection))
+                    collection.CollectionChanged -= OnValueChanged;
             }
 
-            foreach (var collection in _context.UsedCollections)
+            foreach (var node in _currentContext.UsedNodes)
             {
-                collection.CollectionChanged += OnValueChanged;
+                if (!_previousContext.UsedNodes.Contains(node))
+                    node.ValueChanged += OnValueChanged;
             }
+            foreach (var collection in _currentContext.UsedCollections)
+            {
+                if (!_previousContext.UsedCollections.Contains(collection))
+                    collection.CollectionChanged += OnValueChanged;
+            }
+
+            _previousContext.Clear();
         }
 
         private void OnValueChanged(object sender, EventArgs args) => OnValueChanged();
