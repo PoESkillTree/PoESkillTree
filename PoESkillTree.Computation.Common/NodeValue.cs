@@ -216,16 +216,19 @@ namespace PoESkillTree.Computation.Common
         public static NodeValue? Select(this NodeValue? value, Func<double, double> operation) =>
             value.Select(v => v.Select(operation));
 
-        public static NodeValue Sum(this IEnumerable<NodeValue> values) =>
-            values.Aggregate((l, r) => l + r);
+        public static NodeValue? SumWhereNotNull(this NodeValue? left, NodeValue? right)
+        {
+            if (left is null)
+                return right;
+            if (right is null)
+                return left;
+            return left + right;
+        }
 
-        public static NodeValue? Sum(this IEnumerable<NodeValue?> values) =>
-            values.AggregateOnValues((l, r) => l + r);
+        public static NodeValue? Sum(this List<NodeValue?> values, Func<NodeValue, NodeValue> selector = null)
+            => values.AggregateOnValues((l, r) => l + r, selector);
 
-        public static NodeValue Product(this IEnumerable<NodeValue> values) =>
-            values.Aggregate((l, r) => l * r);
-
-        public static NodeValue? Product(this IEnumerable<NodeValue?> values) =>
-            values.AggregateOnValues((l, r) => l * r);
+        public static NodeValue? Product(this List<NodeValue?> values, Func<NodeValue, NodeValue> selector = null)
+            => values.AggregateOnValues((l, r) => l * r, selector);
     }
 }

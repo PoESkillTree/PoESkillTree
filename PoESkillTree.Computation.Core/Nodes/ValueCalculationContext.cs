@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MoreLinq;
 using PoESkillTree.Computation.Common;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
@@ -14,8 +12,8 @@ namespace PoESkillTree.Computation.Core.Nodes
     public class ValueCalculationContext : IValueCalculationContext
     {
         private readonly INodeRepository _nodeRepository;
-        private readonly ISet<ICalculationNode> _usedNodes = new HashSet<ICalculationNode>();
-        private readonly ISet<IObservableCollection> _usedCollections = new HashSet<IObservableCollection>();
+        private readonly HashSet<ICalculationNode> _usedNodes = new HashSet<ICalculationNode>();
+        private readonly HashSet<IObservableCollection> _usedCollections = new HashSet<IObservableCollection>();
 
         public ValueCalculationContext(INodeRepository nodeRepository, PathDefinition currentPath)
         {
@@ -32,21 +30,34 @@ namespace PoESkillTree.Computation.Core.Nodes
             return node.Value;
         }
 
-        public IEnumerable<PathDefinition> GetPaths(IStat stat)
+        public IReadOnlyCollection<PathDefinition> GetPaths(IStat stat)
         {
             var paths = _nodeRepository.GetPaths(stat);
             _usedCollections.Add(paths);
             return paths;
         }
 
-        public IEnumerable<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths)
+        public List<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths)
         {
-            var nodeCollections = 
-                paths.Select(p => _nodeRepository.GetFormNodeCollection(p.stat, form, p.path)).ToList();
-            _usedCollections.UnionWith(nodeCollections);
-            var nodes = nodeCollections.Flatten().Select(t => t.node).ToHashSet();
-            _usedNodes.UnionWith(nodes);
-            return nodes.Select(n => n.Value);
+            var nodeList = new List<ICalculationNode>();
+            foreach (var (stat, path) in paths)
+            {
+                var nodeCollection = _nodeRepository.GetFormNodeCollection(stat, form, path);
+                _usedCollections.Add(nodeCollection);
+                foreach (var (node, _) in nodeCollection)
+                {
+                    _usedNodes.Add(node);
+                    nodeList.Add(node);
+                }
+            }
+            
+            var nodes = new HashSet<ICalculationNode>(nodeList);
+            var values = new List<NodeValue?>(nodes.Count);
+            foreach (var node in nodes)
+            {
+                values.Add(node.Value);
+            }
+            return values;
         }
 
         public IEnumerable<ICalculationNode> UsedNodes => _usedNodes;

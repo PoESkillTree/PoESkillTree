@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             return _transformedValue.Calculate(modifiedContext);
         }
 
-        private IEnumerable<NodeValue?>
+        private List<NodeValue?>
             GetValues(IValueCalculationContext context, Form form, IEnumerable<(IStat stat, PathDefinition path)> paths)
         {
             if (_affectedForm != form || !context.GetValue(_conditionStat).IsTrue())

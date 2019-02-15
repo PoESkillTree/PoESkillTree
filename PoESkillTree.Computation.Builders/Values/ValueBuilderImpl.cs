@@ -57,7 +57,7 @@ namespace PoESkillTree.Computation.Builders.Values
                 (left, right) => left.GetValueOrDefault() > right.GetValueOrDefault(), (l, r) => $"{l} > {r}");
 
         public IValueBuilder Add(IValueBuilder other) =>
-            Create(this, other, (left, right) => new[] { left(), right() }.Sum(), (l, r) => $"({l} + {r})");
+            Create(this, other, (left, right) => left().SumWhereNotNull(right()), (l, r) => $"({l} + {r})");
 
         public IValueBuilder Multiply(IValueBuilder other) =>
             Create(this, other, CalculateMultiply, (l, r) => $"{l} * {r}");

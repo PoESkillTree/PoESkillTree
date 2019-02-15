@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -64,7 +65,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Behaviors
             var paths = new[] { (Stat, PathDefinition.MainPath), (new Stat("a"), PathDefinition.MainPath) };
             var transformedValue = new FunctionalValue(c => c.GetValues(Form.BaseSet, paths).Single(), "");
             var sut = CreateSut(Stat, Form.BaseSet, transformedValue);
-            var nodeValues = new NodeValue?[0];
+            var nodeValues = new List<NodeValue?>();
             var context = Mock.Of<IValueCalculationContext>(c => c.GetValues(Form.BaseSet, paths) == nodeValues);
 
             Assert.Throws<InvalidOperationException>(() => sut.Calculate(context));
@@ -88,7 +89,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Behaviors
 
         private static IValueCalculationContext MockContext(params int?[] values)
         {
-            var nodeValues = values.Select(v => (NodeValue?) v);
+            var nodeValues = values.Select(v => (NodeValue?) v).ToList();
             return Mock.Of<IValueCalculationContext>(c => c.GetValues(Form.BaseSet, Paths) == nodeValues);
         }
     }

@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             return _transformedValue.Calculate(modifiedContext);
         }
 
-        private IEnumerable<PathDefinition> GetPaths(IValueCalculationContext context, IStat stat)
+        private IReadOnlyCollection<PathDefinition> GetPaths(IValueCalculationContext context, IStat stat)
         {
             if (!_target.Equals(stat))
                 return context.GetPaths(stat);
@@ -40,7 +40,9 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             var originalPaths = context.GetPaths(_target);
             var conversionPaths = context.GetPaths(_source)
                 .Select(p => new PathDefinition(p.ModifierSource, p.ConversionStats.Prepend(_source).ToList()));
-            return originalPaths.Concat(conversionPaths).Distinct();
+            var paths = new HashSet<PathDefinition>(originalPaths);
+            paths.UnionWith(conversionPaths);
+            return paths;
         }
     }
 }

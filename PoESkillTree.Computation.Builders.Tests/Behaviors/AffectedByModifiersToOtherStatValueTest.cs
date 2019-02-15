@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Behaviors;
@@ -29,7 +30,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Behaviors
                 expectedPaths = expectedPaths.Append((otherStat, PathDefinition.MainPath));
 
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValues(retrievedForm, expectedPaths) == new[] { expected } &&
+                c.GetValues(retrievedForm, expectedPaths) == new List<NodeValue?> { expected } &&
                 c.GetValue(conditionStat, NodeType.Total, PathDefinition.MainPath) == (NodeValue?) conditionStatValue);
             var transformedValue = new FunctionalValue(c => c.GetValues(retrievedForm, transformedStat).Sum(), "");
             var sut = new AffectedByModifiersToOtherStatValue(transformedStat, otherStat, conditionStat, affectedForm,

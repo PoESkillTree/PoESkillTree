@@ -126,7 +126,7 @@ namespace POESKillTree.Computation.ViewModels
 
             ModifierNodeViewModel Accumulate(ModifierNodeViewModel l, ModifierNodeViewModel r)
             {
-                l.Node.Value = new[] { l.Node.Value, r.Node.Value }.Sum();
+                l.Node.Value = l.Node.Value.SumWhereNotNull(r.Node.Value);
                 return l;
             }
         }

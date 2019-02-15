@@ -21,7 +21,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             return _transformedValue.Calculate(modifiedContext);
         }
 
-        private IEnumerable<NodeValue?>
+        private List<NodeValue?>
             GetValues(IValueCalculationContext context, Form form, IEnumerable<(IStat stat, PathDefinition path)> paths)
         {
             var enumeratedPaths = paths.ToList();
@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
             var nonNullValues = originalValues.OfType<NodeValue>().ToList();
             var max = nonNullValues.Any() ? nonNullValues.MaxBy(v => v.Single).First() : (NodeValue?) null;
-            return new[] { max };
+            return new List<NodeValue?> { max };
         }
     }
 }

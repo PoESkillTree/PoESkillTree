@@ -24,8 +24,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Behaviors
                 new PathDefinition(new ModifierSource.Local.Given(), new Stat("Damage.Attack")),
             };
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetPaths(ailmentDamage) == paths.Take(1) &&
-                c.GetPaths(skillDamage) == paths.Skip(2) &&
+                c.GetPaths(ailmentDamage) == paths.Take(1).ToList() &&
+                c.GetPaths(skillDamage) == paths.Skip(2).ToList() &&
                 c.GetValue(ailmentDamage, NodeType.PathTotal, paths[0]) == expected.Value - 10 &&
                 c.GetValue(ailmentDamage, NodeType.PathTotal, paths[1]) == new NodeValue(10));
             var sut = CreateSut(ailmentDamage, skillDamage);
@@ -44,8 +44,8 @@ namespace PoESkillTree.Computation.Builders.Tests.Behaviors
             var unrelated = new Stat("unrelated");
             var paths = new[] { PathDefinition.MainPath, new PathDefinition(new ModifierSource.Local.Given()) };
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetPaths(unrelated) == paths.Take(1) &&
-                c.GetPaths(skillDamage) == paths.Skip(1) &&
+                c.GetPaths(unrelated) == paths.Take(1).ToList() &&
+                c.GetPaths(skillDamage) == paths.Skip(1).ToList() &&
                 c.GetValue(unrelated, NodeType.PathTotal, paths[0]) == expected &&
                 c.GetValue(unrelated, NodeType.PathTotal, paths[1]) == new NodeValue(10));
             var transformedValue = new FunctionalValue(c => c.GetValues(unrelated, NodeType.PathTotal).Sum(), "");

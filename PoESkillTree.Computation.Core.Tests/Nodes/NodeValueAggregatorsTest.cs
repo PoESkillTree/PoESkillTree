@@ -23,7 +23,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         [Test]
         public void CalculateOverrideThrowsExceptionIfNoValueIsZero()
         {
-            var values = new double?[] { 42, 43, null, 4, -3 }.Select(v => (NodeValue?) v);
+            var values = new double?[] { 42, 43, null, 4, -3 }.Select(v => (NodeValue?) v).ToList();
 
             Assert.Throws<NotSupportedException>(() => NodeValueAggregators.CalculateTotalOverride(values));
         }
@@ -62,7 +62,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         [Test]
         public void CalculateBaseSetThrowsExceptionIfMultipleNonZeroValuesArePassed()
         {
-            var values = new double?[] { 42, 0, 43 }.Select(v => (NodeValue?) v);
+            var values = new double?[] { 42, 0, 43 }.Select(v => (NodeValue?) v).ToList();
 
             Assert.Throws<NotSupportedException>(() => NodeValueAggregators.CalculateBaseSet(values));
         }
@@ -70,25 +70,15 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         [Test]
         public void CalculateBaseSetThrowsExceptionIfMultipleValuesWithNonUZeroMaximumArePassed()
         {
-            var values = new NodeValue?[] { new NodeValue(0, 5), new NodeValue(0, 44)};
+            var values = new List<NodeValue?> { new NodeValue(0, 5), new NodeValue(0, 44)};
 
             Assert.Throws<NotSupportedException>(() => NodeValueAggregators.CalculateBaseSet(values));
-        }
-
-        [Test]
-        public void CalculateBaseSetCorrectlyAggregatesValuesThatArePartlyZero()
-        {
-            var values = new NodeValue?[] { new NodeValue(-42, 0), new NodeValue(0, 5), new NodeValue(0)};
-
-            var actual = NodeValueAggregators.CalculateBaseSet(values);
-
-            Assert.AreEqual(new NodeValue(-42, 5), actual);
         }
 
         private static void AssertReturnsCorrectResult(
             NodeValueAggregator aggregator, double? expected, IEnumerable<double?> values)
         {
-            var actual = aggregator(values.Select(v => (NodeValue?) v));
+            var actual = aggregator(values.Select(v => (NodeValue?) v).ToList());
 
             Assert.AreEqual((NodeValue?) expected, actual);
         }

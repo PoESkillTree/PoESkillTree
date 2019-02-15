@@ -136,7 +136,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
         [TestCase(5, -3)]
         public void AddResolveBuildsToCorrectValue(double? leftValue, double? rightValue)
         {
-            var expected = (NodeValue?) new[] { leftValue, rightValue }.AggregateOnValues((l, r) => l + r);
+            var expected = ((NodeValue?) leftValue).SumWhereNotNull((NodeValue?) rightValue);
             var context = BuildersHelper.MockResolveContext();
             var right = Mock.Of<IValueBuilder>(b => b.Resolve(context) == new ValueBuilderImpl(rightValue));
             var sut = CreateSut(leftValue);

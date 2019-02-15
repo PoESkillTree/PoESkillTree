@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace PoESkillTree.Utils.Extensions
 {
@@ -13,20 +12,18 @@ namespace PoESkillTree.Utils.Extensions
             return nullable.HasValue ? selector(nullable.Value) : (TOut?) null;
         }
 
-
-        public static IEnumerable<T?> SelectOnValues<T>(this IEnumerable<T?> values, Func<T, T> selector)
-            where T: struct
-        {
-            return values.Select(v => Select(v, selector));
-        }
-
-        public static T? AggregateOnValues<T>(this IEnumerable<T?> values, Func<T, T, T> operation)
+        public static T? AggregateOnValues<T>(this List<T?> values, Func<T, T, T> combiner, Func<T, T> selector = null)
             where T: struct
         {
             T? result = null;
-            foreach (var value in values.OfType<T>())
+            foreach (var nullableValue in values)
             {
-                result = result.HasValue ? operation(result.Value, value) : value;
+                if (!(nullableValue is T value))
+                    continue;
+
+                if (selector != null)
+                    value = selector(value);
+                result = result.HasValue ? combiner(result.Value, value) : value;
             }
             return result;
         }

@@ -26,13 +26,14 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             return _transformedValue.Calculate(modifiedContext);
         }
 
-        private IEnumerable<PathDefinition> GetPaths(IValueCalculationContext context, IStat stat)
+        private IReadOnlyCollection<PathDefinition> GetPaths(IValueCalculationContext context, IStat stat)
         {
             if (!_skillConversion.Equals(stat))
                 return context.GetPaths(stat);
 
             return context.GetPaths(stat)
-                .Where(p => p.ModifierSource is ModifierSource.Local.Skill);
+                .Where(p => p.ModifierSource is ModifierSource.Local.Skill)
+                .ToList();
         }
     }
 }

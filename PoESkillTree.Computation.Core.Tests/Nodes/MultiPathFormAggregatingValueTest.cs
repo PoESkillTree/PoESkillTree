@@ -36,7 +36,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
                 (stats[0], new PathDefinition(source.InfluencingSources[1])),
                 (stats[1], new PathDefinition(source.InfluencingSources[1])),
             };
-            var values = Enumerable.Repeat(new NodeValue(2), valueCount).Cast<NodeValue?>();
+            var values = Enumerable.Repeat(new NodeValue(2), valueCount).Cast<NodeValue?>().ToList();
             var context = Mock.Of<IValueCalculationContext>(c => c.GetValues(Form.More, paths) == values);
 
             var actual = sut.Calculate(context);
@@ -45,6 +45,6 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         }
 
         private static MultiPathFormAggregatingValue CreateSut(IStat stat = null, PathDefinition path = null) => 
-            new MultiPathFormAggregatingValue(stat, Form.More, path, NodeValueExtensions.Sum);
+            new MultiPathFormAggregatingValue(stat, Form.More, path, vs => vs.Sum());
     }
 }

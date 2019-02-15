@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             return _transformedValue.Calculate(modifiedContext);
         }
 
-        private IEnumerable<PathDefinition> GetPaths(IValueCalculationContext context, IStat stat)
+        private IReadOnlyCollection<PathDefinition> GetPaths(IValueCalculationContext context, IStat stat)
         {
             var originalPaths = context.GetPaths(stat);
             if (!stat.Equals(_transformedStat))

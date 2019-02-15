@@ -106,6 +106,6 @@ namespace PoESkillTree.Computation.Common
             _values.Select(v => v.Calculate(context))
                 .Select(v => new NodeValue(v.IsTrue() ? 1 : 0))
                 .DefaultIfEmpty()
-                .Sum();
+                .Aggregate((l, r) => l + r);
     }
 }
