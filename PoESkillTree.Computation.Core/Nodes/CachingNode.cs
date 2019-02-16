@@ -72,7 +72,10 @@ namespace PoESkillTree.Computation.Core.Nodes
         protected override void OnValueChanged()
             => _eventBuffer.Buffer(this, EventArgs.Empty);
 
-        public void Invoke(IReadOnlyList<EventArgs> args)
+        public void Invoke(EventArgs args)
+            => base.OnValueChanged();
+
+        public void Invoke(List<EventArgs> args)
             => base.OnValueChanged();
     }
 }

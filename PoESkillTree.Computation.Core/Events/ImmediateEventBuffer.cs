@@ -3,6 +3,6 @@
     public class ImmediateEventBuffer : IEventBuffer
     {
         public void Buffer<T>(IBufferableEvent<T> sender, T args)
-            => sender.Invoke(new[] { args });
+            => sender.Invoke(args);
     }
 }

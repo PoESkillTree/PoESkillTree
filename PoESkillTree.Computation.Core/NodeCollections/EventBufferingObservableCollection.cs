@@ -18,7 +18,10 @@ namespace PoESkillTree.Computation.Core.NodeCollections
         protected override void OnCollectionChanged(CollectionChangeEventArgs e)
             => _eventBuffer.Buffer(this, e);
 
-        public void Invoke(IReadOnlyList<CollectionChangeEventArgs> args)
+        public void Invoke(CollectionChangeEventArgs args)
+            => base.OnCollectionChanged(args);
+
+        public void Invoke(List<CollectionChangeEventArgs> args)
         {
             var newArgs = args.Count == 1
                 ? args[0]

@@ -14,7 +14,7 @@ namespace PoESkillTree.Computation.Core.Events
         {
             if (!_buffering)
             {
-                sender.Invoke(new[] { args });
+                sender.Invoke(args);
                 return;
             }
 
@@ -68,7 +68,7 @@ namespace PoESkillTree.Computation.Core.Events
 
             public void Flush()
             {
-                _sender.Invoke(_args.ToList());
+                _sender.Invoke(_args);
                 _args.Clear();
             }
         }
