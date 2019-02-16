@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Data
 
         public override bool MatchesWholeLineOnly => true;
 
-        protected override IEnumerable<MatcherData> CreateCollection() =>
+        protected override IReadOnlyList<MatcherData> CreateCollection() =>
             new SpecialMatcherCollection(_modifierBuilder, ValueFactory)
             {
                 {

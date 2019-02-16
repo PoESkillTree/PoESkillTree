@@ -18,14 +18,27 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
     {
         private readonly Lazy<IReadOnlyList<(MatcherData data, Regex regex)>> _dataWithRegexes;
 
-        public MatcherDataParser(IEnumerable<MatcherData> matcherData)
+        public MatcherDataParser(
+            IReadOnlyList<MatcherData> matcherData, Func<string, string> matcherDataExpander)
         {
             _dataWithRegexes = new Lazy<IReadOnlyList<(MatcherData, Regex)>>(
-                () => matcherData.Select(d => (d, CreateRegex(d))).ToList());
+                () => CreateDataWithRegexes(matcherData, matcherDataExpander));
         }
 
-        private static Regex CreateRegex(MatcherData data)
-            => new Regex(data.Regex,
+        private static IReadOnlyList<(MatcherData data, Regex regex)> CreateDataWithRegexes(
+            IReadOnlyList<MatcherData> data, Func<string, string> matcherDataExpander)
+        {
+            var list = new List<(MatcherData, Regex)>(data.Count);
+            foreach (var d in data)
+            {
+                var regex = CreateRegex(matcherDataExpander(d.Regex));
+                list.Add((d, regex));
+            }
+            return list;
+        }
+
+        private static Regex CreateRegex(string regex)
+            => new Regex(regex,
                 RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
 
         public StringParseResult<MatcherDataParseResult> Parse(CoreParserParameter parameter)

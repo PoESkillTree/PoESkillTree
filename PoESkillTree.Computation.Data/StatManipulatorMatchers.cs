@@ -21,7 +21,7 @@ namespace PoESkillTree.Computation.Data
             _modifierBuilder = modifierBuilder;
         }
 
-        protected override IEnumerable<MatcherData> CreateCollection() =>
+        protected override IReadOnlyList<MatcherData> CreateCollection() =>
             new StatManipulatorMatcherCollection(_modifierBuilder)
             {
                 { "you and nearby allies( deal| have)?", s => Buff.Aura(s, Self, Ally) },

@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Data
         // differentiates from ailment damage and restricts to not apply to ailment damage.
         // E.g. "attack damage" does not include ailment damage and corresponds to WithSkills(DamageSource.Attack).
         // "damage with attack skills does" does include ailment damage and corresponds to With(DamageSource.Attack).
-        protected override IEnumerable<MatcherData> CreateCollection() =>
+        protected override IReadOnlyList<MatcherData> CreateCollection() =>
             new StatMatcherCollection<IDamageRelatedStatBuilder>(_modifierBuilder)
             {
                 // unspecific

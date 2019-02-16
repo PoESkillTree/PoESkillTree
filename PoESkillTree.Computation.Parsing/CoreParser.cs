@@ -80,7 +80,9 @@ namespace PoESkillTree.Computation.Parsing
                     new StatNormalizingParser<IIntermediateModifier>(
                         new ResolvingParser(
                             new MatcherDataParser(
-                                new StatMatcherRegexExpander(statMatchers, referenceService, regexGroupService)),
+                                statMatchers.Data,
+                                new StatMatcherRegexExpander(
+                                    referenceService, regexGroupService, statMatchers.MatchesWholeLineOnly).Expand),
                             referenceService,
                             new IntermediateModifierResolver(new ModifierBuilder()),
                             regexGroupService

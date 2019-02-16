@@ -4,6 +4,7 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Parsing.StringParsers;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
 {
@@ -97,7 +98,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
             CreateMatcherData("ab", "a")
         };
 
-        private static readonly MatcherDataParser DefaultSut = new MatcherDataParser(DefaultMatcherData);
+        private static readonly MatcherDataParser DefaultSut
+            = new MatcherDataParser(DefaultMatcherData, Funcs.Identity);
 
         private static MatcherData CreateMatcherData(string regex, string matchSubstitution = "")
         {

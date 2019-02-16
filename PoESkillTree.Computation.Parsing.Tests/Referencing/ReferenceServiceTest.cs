@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
             var sut = new ReferenceService(DefaultReferencedMatchersList, DefaultStatMatchersList);
             var expected = DefaultStatMatchersList
                 .Where(r => r.ReferenceNames.Contains(referenceName))
-                .SelectMany(r => r.Select(d => d.Regex));
+                .SelectMany(r => r.Data.Select(d => d.Regex));
 
             CollectionAssert.AreEqual(expected, sut.GetRegexes(referenceName));
         }

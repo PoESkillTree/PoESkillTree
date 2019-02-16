@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Steps;
@@ -24,7 +22,7 @@ namespace PoESkillTree.Computation.Data.Tests.Steps
         [TestCase(ParsingStep.Form, ExpectedResult = typeof(FormMatchers))]
         public Type GetWithKnownReturnsCorrectResult(ParsingStep parsingStep)
         {
-            var sut = CreateSut(new SpecialMatchers(), new ValueConversionMatchers(), 
+            var sut = CreateSut(new SpecialMatchers(), new ValueConversionMatchers(),
                 new FormAndStatMatchers(), new FormMatchers(), new FormZMatchers());
 
             var statMatchers = sut.Get(parsingStep);
@@ -40,9 +38,7 @@ namespace PoESkillTree.Computation.Data.Tests.Steps
 
         private class StatMatchersStub : IStatMatchers
         {
-            public IEnumerator<MatcherData> GetEnumerator() => Enumerable.Empty<MatcherData>().GetEnumerator();
-
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+            public IReadOnlyList<MatcherData> Data { get; } = new MatcherData[0];
 
             public IReadOnlyList<string> ReferenceNames { get; } = new string[0];
 

@@ -31,7 +31,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
             }
             return _statMatchersList
                 .Where(r => r.ReferenceNames.Contains(referenceName))
-                .SelectMany(r => r.Select(d => d.Regex));
+                .SelectMany(r => r.Data.Select(d => d.Regex));
         }
 
         public bool TryGetReferencedMatcherData(
@@ -48,7 +48,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
         {
             matcherData = _statMatchersList
                 .Where(r => r.ReferenceNames.Contains(referenceName))
-                .Flatten()
+                .SelectMany(r => r.Data)
                 .ElementAtOrDefault(matcherIndex);
             return matcherData != null;
         }

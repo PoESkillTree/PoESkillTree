@@ -111,8 +111,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 };
             }
 
-            public IEnumerator<MatcherData> GetEnumerator() => _data.GetEnumerator();
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+            public IReadOnlyList<MatcherData> Data => new MatcherData[0];
             public IReadOnlyList<string> ReferenceNames => new string[0];
             public bool MatchesWholeLineOnly => false;
         }
