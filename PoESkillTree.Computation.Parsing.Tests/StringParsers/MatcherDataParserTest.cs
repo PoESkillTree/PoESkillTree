@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [TestCase("a", ExpectedResult = false)]
         public bool TryParseReturnsCorrectSuccessfullyParsed(string stat)
         {
-            var sut = DefaultSut;
+            var sut = CreateSut();
 
             var (actual, _, _) = sut.Parse(stat);
 
@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [TestCase("xabx", ExpectedResult = "xax")]
         public string TryParseReturnsCorrectRemaining(string stat)
         {
-            var sut = DefaultSut;
+            var sut = CreateSut();
 
             var (_, actual, _) = sut.Parse(stat);
 
@@ -51,7 +51,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         public void TryParseReturnsCorrectModififer(string stat, int matcherDataIndex)
         {
             var expected = DefaultMatcherData[matcherDataIndex].Modifier;
-            var sut = DefaultSut;
+            var sut = CreateSut();
 
             var (_, _, result) = sut.Parse(stat);
 
@@ -69,7 +69,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
                 ["g1"] = groups[0],
                 ["g2"] = groups[1]
             };
-            var sut = DefaultSut;
+            var sut = CreateSut();
 
             var (_, _, result) = sut.Parse(stat);
 
@@ -83,7 +83,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
         [TestCase("xabx", "ab")]
         public void TryParseReturnsCorrectFullGrouo(string stat, string fullGroup)
         {
-            var sut = DefaultSut;
+            var sut = CreateSut();
 
             var (_, _, result) = sut.Parse(stat);
 
@@ -98,8 +98,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
             CreateMatcherData("ab", "a")
         };
 
-        private static readonly MatcherDataParser DefaultSut
-            = new MatcherDataParser(DefaultMatcherData, Funcs.Identity);
+        private static MatcherDataParser CreateSut()
+            => MatcherDataParser.Create(DefaultMatcherData, Funcs.Identity);
 
         private static MatcherData CreateMatcherData(string regex, string matchSubstitution = "")
         {

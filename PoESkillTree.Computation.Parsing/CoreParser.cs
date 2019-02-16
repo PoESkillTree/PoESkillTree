@@ -79,7 +79,7 @@ namespace PoESkillTree.Computation.Parsing
                 new CachingStringParser<IIntermediateModifier>(
                     new StatNormalizingParser<IIntermediateModifier>(
                         new ResolvingParser(
-                            new MatcherDataParser(
+                            MatcherDataParser.Create(
                                 statMatchers.Data,
                                 new StatMatcherRegexExpander(
                                     referenceService, regexGroupService, statMatchers.MatchesWholeLineOnly).Expand),
@@ -90,11 +90,14 @@ namespace PoESkillTree.Computation.Parsing
                     )
                 );
 
-            var innerParserCache = new ConcurrentDictionary<IStatMatchers, IStringParser<IIntermediateModifier>>();
+            var innerParserCache = new ConcurrentDictionary<IStatMatchers, Lazy<IStringParser<IIntermediateModifier>>>();
 
             // The steps define the order in which the inner parsers, and by extent the IStatMatchers, are executed.
-            IStringParser<IIntermediateModifier> StepToParser(TStep step) =>
-                innerParserCache.GetOrAdd(_parsingData.SelectStatMatcher(step), CreateInnerParser);
+            IStringParser<IIntermediateModifier> StepToParser(TStep step)
+                => innerParserCache
+                    .GetOrAdd(_parsingData.SelectStatMatcher(step),
+                        k => new Lazy<IStringParser<IIntermediateModifier>>(() => CreateInnerParser(k)))
+                    .Value;
 
             // The full parsing pipeline.
             return
