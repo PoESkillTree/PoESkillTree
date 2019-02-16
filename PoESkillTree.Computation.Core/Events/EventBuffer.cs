@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Core.Events
 {
@@ -19,7 +18,16 @@ namespace PoESkillTree.Computation.Core.Events
                 return;
             }
 
-            var buffer = (TypedEventBuffer<T>) _typedBuffers.GetOrAdd(sender, _=> new TypedEventBuffer<T>(sender));
+            TypedEventBuffer<T> buffer;
+            if (_typedBuffers.TryGetValue(sender, out var tempBuffer))
+            {
+                buffer = (TypedEventBuffer<T>) tempBuffer;
+            }
+            else
+            {
+                buffer = new TypedEventBuffer<T>(sender);
+                _typedBuffers[sender] = buffer;
+            }
             buffer.Buffer(args);
         }
 

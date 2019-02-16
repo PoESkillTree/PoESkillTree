@@ -32,11 +32,25 @@ namespace PoESkillTree.Utils.Extensions
         public static bool ContainsNone<T>(this IEnumerable<T> @this, IEnumerable<T> elements) =>
             !@this.ContainsAny(elements);
 
+        public static bool SequenceEqual<T>(this IReadOnlyList<T> @this, IReadOnlyList<T> other)
+        {
+            if (@this.Count != other.Count)
+                return false;
+
+            for (var i = 0; i < @this.Count; i++)
+            {
+                if (!@this[i].Equals(other[i]))
+                    return false;
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// Returns a hash code for <paramref name="values"/> that can be used in conjunction with
-        /// <see cref="Enumerable.SequenceEqual{TSource}(IEnumerable{TSource},IEnumerable{TSource})"/>.
+        /// <see cref="SequenceEqual{TSource}(IReadOnlyList{TSource},IReadOnlyList{TSource})"/>.
         /// </summary>
-        public static int SequenceHash<T>(this IEnumerable<T> values)
+        public static int SequenceHash<T>(this IReadOnlyList<T> values)
         {
             unchecked
             {

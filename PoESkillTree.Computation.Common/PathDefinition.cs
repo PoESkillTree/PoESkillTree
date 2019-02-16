@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using MoreLinq;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Common
 {
@@ -12,19 +12,18 @@ namespace PoESkillTree.Computation.Common
     /// The "main path" refers to the global <see cref="ModifierSource"/> without conversions.
     /// </para>
     /// </summary>
-    public class PathDefinition
+    public class PathDefinition : ValueObject
     {
         /// <summary>
         /// An instance of the main path (global <see cref="ModifierSource"/>, no conversions).
         /// </summary>
         public static readonly PathDefinition MainPath = new PathDefinition(new ModifierSource.Global());
 
-        private readonly IStat[] _conversionStats;
-
         public PathDefinition(ModifierSource modifierSource, params IStat[] conversionStats)
+            : base(true)
         {
             ModifierSource = modifierSource;
-            _conversionStats = conversionStats;
+            ConversionStats = conversionStats;
         }
 
         /// <summary>
@@ -36,50 +35,13 @@ namespace PoESkillTree.Computation.Common
         /// The stats on the conversion path, not including the stat subgraph this path belongs to.
         /// Empty if unconverted.
         /// </summary>
-        public IReadOnlyList<IStat> ConversionStats => _conversionStats;
+        public IReadOnlyList<IStat> ConversionStats { get; }
 
         /// <summary>
         /// True if this instance describes the main path.
         /// </summary>
-        public bool IsMainPath => Equals(MainPath);
+        public bool IsMainPath => ModifierSource is ModifierSource.Global && ConversionStats.Count == 0;
 
-        public override bool Equals(object obj)
-            => (obj == this) || (obj is PathDefinition other && Equals(other));
-
-        private bool Equals(PathDefinition other)
-            => GetType() == other.GetType() &&
-               ModifierSource == other.ModifierSource &&
-               EqualConversionStats(other);
-
-        private bool EqualConversionStats(PathDefinition other)
-        {
-            if (_conversionStats.Length != other._conversionStats.Length)
-                return false;
-
-            for (var i = 0; i < _conversionStats.Length; i++)
-            {
-                if (!_conversionStats[i].Equals(other._conversionStats[i]))
-                    return false;
-            }
-
-            return true;
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hash = 19;
-                hash = hash * 31 + ModifierSource.GetHashCode();
-                foreach (var value in _conversionStats)
-                {
-                    hash = hash * 31 + value.GetHashCode();
-                }
-                return hash;
-            }
-        }
-
-        public override string ToString()
-            => $"({ModifierSource}, {ConversionStats.ToDelimitedString(", ")})";
+        protected override object ToTuple() => (ModifierSource, WithSequenceEquality(ConversionStats));
     }
 }

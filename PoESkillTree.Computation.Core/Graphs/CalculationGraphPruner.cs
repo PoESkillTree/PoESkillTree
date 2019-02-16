@@ -28,10 +28,22 @@ namespace PoESkillTree.Computation.Core.Graphs
             => _statsConsideredForRemoval.Remove(stat);
 
         public void ModifierAdded(Modifier modifier)
-            => _statsConsideredForRemoval.ExceptWith(modifier.Stats.Where(s => !CanBeConsideredForRemoval(s)));
+        {
+            foreach (var stat in modifier.Stats)
+            {
+                if (!CanBeConsideredForRemoval(stat))
+                    _statsConsideredForRemoval.Remove(stat);
+            }
+        }
 
         public void ModifierRemoved(Modifier modifier)
-            => _statsConsideredForRemoval.UnionWith(modifier.Stats.Where(CanBeConsideredForRemoval));
+        {
+            foreach (var stat in modifier.Stats)
+            {
+                if (CanBeConsideredForRemoval(stat))
+                    _statsConsideredForRemoval.Add(stat);
+            }
+        }
 
         private bool CanBeConsideredForRemoval(IStat stat)
             => _calculationGraph.StatGraphs.TryGetValue(stat, out var statGraph)

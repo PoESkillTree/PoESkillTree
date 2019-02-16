@@ -30,6 +30,7 @@ namespace PoESkillTree.Computation.Common
         public ModifierSource Source { get; }
 
         public Modifier(IReadOnlyList<IStat> stats, Form form, IValue value, ModifierSource source)
+            : base(true)
         {
             if (form == Form.TotalOverride && source is ModifierSource.Local)
                 throw new ArgumentException("TotalOverride modifiers with a local ModifierSource don't do anything");

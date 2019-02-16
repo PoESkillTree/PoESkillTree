@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Graphs
@@ -36,8 +35,15 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         public void AddModifier(Modifier modifier)
         {
-            var newStats = modifier.Stats.Where(s => !StatGraphs.ContainsKey(s)).ToList();
+            var newStats = new List<IStat>();
+            foreach (var stat in modifier.Stats)
+            {
+                if (!StatGraphs.ContainsKey(stat))
+                    newStats.Add(stat);
+            }
+
             _decoratedGraph.AddModifier(modifier);
+
             foreach (var stat in newStats)
             {
                 StatAdded?.Invoke(stat);

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PoESkillTree.Computation.Core.Events
+﻿namespace PoESkillTree.Computation.Core.Events
 {
     public static class BufferingEventViewProvider
     {
@@ -13,8 +11,7 @@ namespace PoESkillTree.Computation.Core.Events
         public static IBufferingEventViewProvider<T> Create<T>(T defaultView, T bufferingView)
             where T : ICountsSubsribers
         {
-            return new BufferingEventViewProvider<T>(defaultView, bufferingView, 
-                () => defaultView.SubscriberCount + bufferingView.SubscriberCount);
+            return new BufferingEventViewProvider<T>(defaultView, bufferingView);
         }
     }
 
@@ -25,18 +22,16 @@ namespace PoESkillTree.Computation.Core.Events
     /// passed to it through the constructor.
     /// </summary>
     public class BufferingEventViewProvider<T> : IBufferingEventViewProvider<T>
+        where T : ICountsSubsribers
     {
-        private readonly Func<int> _countSubscribers;
-
-        public BufferingEventViewProvider(T defaultView, T bufferingView, Func<int> countSubscribers)
+        public BufferingEventViewProvider(T defaultView, T bufferingView)
         {
-            _countSubscribers = countSubscribers;
             DefaultView = defaultView;
             BufferingView = bufferingView;
         }
 
         public T DefaultView { get; }
         public T BufferingView { get; }
-        public int SubscriberCount => _countSubscribers();
+        public int SubscriberCount => DefaultView.SubscriberCount + BufferingView.SubscriberCount;
     }
 }

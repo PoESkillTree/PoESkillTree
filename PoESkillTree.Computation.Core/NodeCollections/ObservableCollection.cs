@@ -10,7 +10,7 @@ namespace PoESkillTree.Computation.Core.NodeCollections
     /// </summary>
     public class ObservableCollection<T> : IObservableCollection<T>, ICountsSubsribers
     {
-        private readonly ISet<T> _collection = new HashSet<T>();
+        private readonly HashSet<T> _collection = new HashSet<T>();
 
         public void Add(T element)
         {
