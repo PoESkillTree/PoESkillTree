@@ -58,11 +58,17 @@ namespace POESKillTree.Computation.Model
             return Observable.FromEventPattern<CollectionChangeEventHandler, CollectionChangeEventArgs>(
                     h => collection.CollectionChanged += h,
                     h => collection.CollectionChanged -= h)
-                .Select(p => p.EventArgs);
+                .Select(p => p.EventArgs)
+                .Select(InsertStatsIntoRefresh);
+
+            CollectionChangeEventArgs InsertStatsIntoRefresh(CollectionChangeEventArgs e)
+                => e.Action == CollectionChangeAction.Refresh
+                    ? new CollectionChangeEventArgs(e.Action, _calculator.ExplicitlyRegisteredStats.ToList())
+                    : e;
         }
 
-        public IReadOnlyCollection<(ICalculationNode node, IStat stat)> ExplicitlyRegisteredStatsCollection
-            => _calculator.ExplicitlyRegisteredStats.ToList();
+        public Task<List<(ICalculationNode node, IStat stat)>> GetExplicitlyRegisteredStatsAsync()
+            => _calculationScheduler.ScheduleAsync(() => _calculator.ExplicitlyRegisteredStats.ToList());
 
         public Task ForEachUpdateCalculatorAsync(IObservable<CalculatorUpdate> observable)
             => observable.ObserveOn(_calculationScheduler)

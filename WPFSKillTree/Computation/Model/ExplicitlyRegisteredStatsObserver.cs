@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using log4net;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
@@ -25,9 +26,9 @@ namespace POESKillTree.Computation.Model
         public event Action<ICalculationNode, IStat> StatAdded;
         public event Action<ICalculationNode, IStat> StatRemoved;
 
-        public void Initialize(IScheduler observeScheduler)
+        public async Task InitializeAsync(IScheduler observeScheduler)
         {
-            Refresh();
+            Refresh(await _observableCalculator.GetExplicitlyRegisteredStatsAsync());
             _observableCalculator.ObserveExplicitlyRegisteredStats()
                 .ObserveOn(observeScheduler)
                 .Subscribe(OnNext, OnError);
@@ -44,7 +45,7 @@ namespace POESKillTree.Computation.Model
                     Remove(((ICalculationNode, IStat)) args.Element);
                     break;
                 case CollectionChangeAction.Refresh:
-                    Refresh();
+                    Refresh((IEnumerable<(ICalculationNode node, IStat stat)>) args.Element);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -54,12 +55,12 @@ namespace POESKillTree.Computation.Model
         private static void OnError(Exception exception)
             => Log.Error("ObserveExplicitlyRegisteredStats failed", exception);
 
-        private void Refresh()
+        private void Refresh(IEnumerable<(ICalculationNode node, IStat stat)> currentElements)
         {
             foreach (var element in _elements.ToList())
                 Remove(element);
 
-            foreach (var element in _observableCalculator.ExplicitlyRegisteredStatsCollection)
+            foreach (var element in currentElements)
                 Add(element);
         }
 

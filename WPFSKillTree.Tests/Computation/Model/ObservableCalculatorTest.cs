@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -42,13 +43,17 @@ namespace PoESkillTree.Tests.Computation.Model
         [Test]
         public void ObserveExplicitlyRegisteredStatsGeneratesCorrectValues()
         {
+            var elements = Enumerable.Range(0, 3)
+                .Select(i => (Mock.Of<ICalculationNode>(), (IStat) new Stat(i.ToString())))
+                .ToList();
             var expected = new[]
             {
-                new CollectionChangeEventArgs(CollectionChangeAction.Add, new object()),
-                new CollectionChangeEventArgs(CollectionChangeAction.Refresh, null),
-                new CollectionChangeEventArgs(CollectionChangeAction.Remove, new object()),
+                new CollectionChangeEventArgs(CollectionChangeAction.Add, elements[0]),
+                new CollectionChangeEventArgs(CollectionChangeAction.Refresh, elements),
+                new CollectionChangeEventArgs(CollectionChangeAction.Remove, elements[1]),
             };
             var nodeCollectionMock = new Mock<INodeCollection<IStat>>();
+            nodeCollectionMock.Setup(c => c.GetEnumerator()).Returns(() => elements.GetEnumerator());
             var calculator = Mock.Of<ICalculator>(c =>
                 c.ExplicitlyRegisteredStats == nodeCollectionMock.Object);
             var sut = CreateSut(calculator);
@@ -62,7 +67,11 @@ namespace PoESkillTree.Tests.Computation.Model
                 }
             }
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(3, actual.Count);
+            Assert.AreEqual(expected.Select(e => e.Action), actual.Select(e => e.Action));
+            Assert.AreEqual(expected[0].Element, actual[0].Element);
+            Assert.AreEqual(expected[1].Element, actual[1].Element);
+            Assert.AreEqual(expected[2].Element, actual[2].Element);
         }
 
         [Test]

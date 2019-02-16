@@ -93,7 +93,7 @@ namespace PoESkillTree.Tests.Computation.Model
             var sut = new ExplicitlyRegisteredStatsObserver(observableCalculator);
             sut.StatAdded += (_, s) => addedStats.Add(s);
             sut.StatRemoved += (_, s) => removedStats.Add(s);
-            sut.Initialize(ImmediateScheduler.Instance);
+            sut.InitializeAsync(ImmediateScheduler.Instance).GetAwaiter().GetResult();
         }
 
         private static NodeCollection<IStat> CreateNodeCollection(IEventBuffer eventBuffer = null)
