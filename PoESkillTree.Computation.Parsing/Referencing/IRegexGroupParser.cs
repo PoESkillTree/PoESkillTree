@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
         /// <param name="groupPrefix">The prefix group names must have to be parsed. Group names must also be on
         /// the nesting level given by the prefix to be parsed, e.g. not nested with the empty prefix.</param>
         /// <returns>The parsed values.</returns>
-        IEnumerable<IValueBuilder> ParseValues(
+        IReadOnlyList<IValueBuilder> ParseValues(
             IReadOnlyDictionary<string, string> groups, string groupPrefix = "");
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
         /// <returns>A tuple for each matched reference consisting of the reference name and matcher index resolvable
         /// using <see cref="IReferenceToMatcherDataResolver"/>, and the group prefix of reference groups nested
         /// into the reference. These may recursively be parsed by another call to this method.</returns>
-        IEnumerable<(string referenceName, int matcherIndex, string groupPrefix)> ParseReferences(
+        IReadOnlyList<(string referenceName, int matcherIndex, string groupPrefix)> ParseReferences(
             IEnumerable<string> groupNames, string groupPrefix = "");
     }
 }

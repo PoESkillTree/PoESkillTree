@@ -54,40 +54,53 @@ namespace PoESkillTree.Computation.Parsing.Referencing
             return left + GroupNamePartDelimiter + right;
         }
 
-        public IEnumerable<IValueBuilder> ParseValues(
+        public IReadOnlyList<IValueBuilder> ParseValues(
             IReadOnlyDictionary<string, string> groups, string groupPrefix = "")
         {
             var fullPrefix = ValueGroupPrefix + groupPrefix;
-            return
-                from pair in groups
-                let groupName = pair.Key
-                where groupName.StartsWith(fullPrefix, StringComparison.Ordinal)
-                let suffix = groupName.Substring(fullPrefix.Length)
-                where suffix.Count(c => c == GroupNamePartDelimiter) == 0 // Ignore nested values
-                let value = double.Parse(pair.Value)
-                select _valueBuilders.Create(value);
+            var values = new List<IValueBuilder>();
+            foreach (var (groupName, stringValue) in groups)
+            {
+                if (!groupName.StartsWith(fullPrefix, StringComparison.Ordinal))
+                    continue;
+
+                var suffix = groupName.Substring(fullPrefix.Length);
+                if (suffix.Count(c => c == GroupNamePartDelimiter) != 0)
+                    continue; // ignore nested values
+
+                var value = double.Parse(stringValue);
+                values.Add(_valueBuilders.Create(value));
+            }
+            return values;
         }
 
-        public IEnumerable<(string referenceName, int matcherIndex, string groupPrefix)> ParseReferences(
+        public IReadOnlyList<(string referenceName, int matcherIndex, string groupPrefix)> ParseReferences(
             IEnumerable<string> groupNames, string groupPrefix = "")
         {
             var fullPrefix = ReferenceGroupPrefix + groupPrefix;
-            return
-                from groupName in groupNames
-                where groupName.StartsWith(fullPrefix, StringComparison.Ordinal)
-                let suffix = groupName.Substring(fullPrefix.Length)
-                let parts = suffix.Split(GroupNamePartDelimiter)
-                where parts.Length == 3 // Ignore nested values
-                let nestedReferenceName = parts[1]
-                let nestedMatcherIndex = TryGet(parts[2])
-                where nestedMatcherIndex.HasValue
-                let nestedGroupPrefix = groupPrefix + parts[0] + GroupNamePartDelimiter
-                select (nestedReferenceName, nestedMatcherIndex.Value, nestedGroupPrefix);
+            var references = new List<(string, int, string)>();
+            foreach (var groupName in groupNames)
+            {
+                if (!groupName.StartsWith(fullPrefix, StringComparison.Ordinal))
+                    continue;
+
+                var suffix = groupName.Substring(fullPrefix.Length);
+                var parts = suffix.Split(GroupNamePartDelimiter);
+                if (parts.Length != 3)
+                    continue; // Ignore nested values
+
+                var nestedMatcherIndex = TryGet(parts[2]);
+                if (!nestedMatcherIndex.HasValue)
+                    continue;
+
+                var nestedReferenceName = parts[1];
+                var nestedGroupPrefix = groupPrefix + parts[0] + GroupNamePartDelimiter;
+                references.Add((nestedReferenceName, nestedMatcherIndex.Value, nestedGroupPrefix));
+            }
+            return references;
         }
 
         private static int? TryGet(string s)
-        {
-            return int.TryParse(s, out var r) ? (int?) r : null;
-        }
+            => int.TryParse(s, out var r) ? (int?) r : null;
     }
 }

@@ -60,15 +60,15 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
 
         private ResolveContext CreateContext(IReadOnlyDictionary<string, string> groups, string groupPrefix)
         {
-            IReadOnlyList<IValueBuilder> values = _regexGroupParser
-                .ParseValues(groups, groupPrefix)
-                .ToList();
+            var values = _regexGroupParser.ParseValues(groups, groupPrefix);
             var valueContext = new ResolvedMatchContext<IValueBuilder>(values);
 
-            IReadOnlyList<IReferenceConverter> references = _regexGroupParser
-                .ParseReferences(groups.Keys, groupPrefix)
-                .Select(t => ResolveNested(groups, t.referenceName, t.matcherIndex, t.groupPrefix))
-                .ToList();
+            var parsedReferences = _regexGroupParser.ParseReferences(groups.Keys, groupPrefix);
+            var references = new List<IReferenceConverter>(parsedReferences.Count);
+            foreach (var (referenceName, matcherIndex, nestedGroupPrefix) in parsedReferences)
+            {
+                references.Add(ResolveNested(groups, referenceName, matcherIndex, nestedGroupPrefix));
+            }
             var referenceContext = new ResolvedMatchContext<IReferenceConverter>(references);
 
             return new ResolveContext(valueContext, referenceContext);

@@ -22,11 +22,11 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             Entries = new IntermediateModifierEntry[0];
         }
 
-        private ModifierBuilder(IEnumerable<IntermediateModifierEntry> entries, 
+        private ModifierBuilder(IReadOnlyList<IntermediateModifierEntry> entries, 
             StatConverter statConverter, 
             ValueConverter valueConverter)
         {
-            Entries = entries.ToList();
+            Entries = entries;
             StatConverter = statConverter;
             ValueConverter = valueConverter;
         }
@@ -35,7 +35,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             Func<IntermediateModifierEntry, T, IntermediateModifierEntry> entrySelector, 
             Func<IntermediateModifierEntry, T> entryElementSelector, string elementName)
         {
-            IEnumerable<IntermediateModifierEntry> entries;
+            IReadOnlyList<IntermediateModifierEntry> entries;
             if (Entries.IsEmpty())
             {
                 entries = new[] { entrySelector(new IntermediateModifierEntry(), element) };
@@ -46,7 +46,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             }
             else
             {
-                entries = Entries.Select(e => entrySelector(e, element));
+                entries = Entries.Select(e => entrySelector(e, element)).ToList();
             }
             return new ModifierBuilder(entries, StatConverter, ValueConverter);
         }
@@ -55,11 +55,11 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             Func<IntermediateModifierEntry, T, IntermediateModifierEntry> entrySelector,
             Func<IntermediateModifierEntry, T> entryElementSelector, string elementName)
         {
-            IEnumerable<IntermediateModifierEntry> entries;
+            IReadOnlyList<IntermediateModifierEntry> entries;
             var elementList = elements.ToList();
             if (Entries.IsEmpty())
             {
-                entries = elementList.Select(e => entrySelector(new IntermediateModifierEntry(), e));
+                entries = elementList.Select(e => entrySelector(new IntermediateModifierEntry(), e)).ToList();
             }
             else if (Entries.Select(entryElementSelector).Any(t => t != null))
             {
@@ -68,7 +68,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             else if (Entries.Count == 1)
             {
                 var entry = Entries[0];
-                entries = elementList.Select(e => entrySelector(entry, e));
+                entries = elementList.Select(e => entrySelector(entry, e)).ToList();
             }
             else if (Entries.Count != elementList.Count)
             {
@@ -78,7 +78,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             }
             else
             {
-                entries = Entries.Zip(elementList, entrySelector);
+                entries = Entries.Zip(elementList, entrySelector).ToList();
             }
             return new ModifierBuilder(entries, StatConverter, ValueConverter);
         }

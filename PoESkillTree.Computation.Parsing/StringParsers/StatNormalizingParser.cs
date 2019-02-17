@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
 
 namespace PoESkillTree.Computation.Parsing.StringParsers
 {
@@ -19,9 +19,32 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
 
         public StringParseResult<TResult> Parse(CoreParserParameter parameter)
         {
-            var stat = parameter.ModifierLine;
-            var processed = Regex.Replace(stat.Trim(), @"\s+", " ");
-            return _inner.Parse(processed, parameter);
+            var modifierLine = MergeWhiteSpace(parameter.ModifierLine.Trim());
+            return _inner.Parse(modifierLine, parameter);
+        }
+
+        // This is infinitely faster than Regex.Replace
+        private static string MergeWhiteSpace(string s)
+        {
+            var result = new List<char>(s.Length);
+            var lastWasWhiteSpace = true;
+            foreach (var c in s)
+            {
+                if (char.IsWhiteSpace(c))
+                {
+                    if (!lastWasWhiteSpace)
+                    {
+                        result.Add(' ');
+                    }
+                    lastWasWhiteSpace = true;
+                }
+                else
+                {
+                    result.Add(c);
+                    lastWasWhiteSpace = false;
+                }
+            }
+            return new string(result.ToArray());
         }
     }
 }
