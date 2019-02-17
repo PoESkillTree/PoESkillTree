@@ -29,7 +29,7 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                 modifiers.AddGlobal(equipmentBuilder.Corrupted, Form.TotalOverride, 1);
             }
 
-            return ParseResult.Success(modifiers.ToList());
+            return ParseResult.Success(modifiers.Modifiers);
         }
     }
 }

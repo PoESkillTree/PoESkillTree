@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 modifiers.AddLocal(requirementStats.Strength, Form.BaseSet, level.Requirements.Strength);
             }
 
-            return new PartialSkillParseResult(modifiers, new UntranslatedStat[0]);
+            return new PartialSkillParseResult(modifiers.Modifiers, new UntranslatedStat[0]);
         }
     }
 }

@@ -104,7 +104,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     Form.BaseAdd, 1, isActiveSkill);
             }
 
-            var result = new PartialSkillParseResult(_parsedModifiers, new UntranslatedStat[0]);
+            var result = new PartialSkillParseResult(_parsedModifiers.Modifiers, new UntranslatedStat[0]);
             _parsedModifiers = null;
             return result;
         }

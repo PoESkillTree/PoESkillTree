@@ -38,7 +38,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     Form.TotalOverride, manaCostOverride);
             }
 
-            return new PartialSkillParseResult(modifiers, new UntranslatedStat[0]);
+            return new PartialSkillParseResult(modifiers.Modifiers, new UntranslatedStat[0]);
         }
     }
 }

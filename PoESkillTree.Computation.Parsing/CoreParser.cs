@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using log4net;
+using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
@@ -90,14 +91,13 @@ namespace PoESkillTree.Computation.Parsing
                     )
                 );
 
-            var innerParserCache = new ConcurrentDictionary<IStatMatchers, Lazy<IStringParser<IIntermediateModifier>>>();
+            var innerParserCache = _parsingData.StatMatchers.AsParallel()
+                .Select(s => (s, CreateInnerParser(s)))
+                .ToDictionary();
 
             // The steps define the order in which the inner parsers, and by extent the IStatMatchers, are executed.
             IStringParser<IIntermediateModifier> StepToParser(TStep step)
-                => innerParserCache
-                    .GetOrAdd(_parsingData.SelectStatMatcher(step),
-                        k => new Lazy<IStringParser<IIntermediateModifier>>(() => CreateInnerParser(k)))
-                    .Value;
+                => innerParserCache[_parsingData.SelectStatMatcher(step)];
 
             // The full parsing pipeline.
             return

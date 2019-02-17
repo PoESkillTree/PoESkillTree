@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             AddQualityModifiers(item, slot, baseItemDefinition);
             AddRequirementModifiers(item, baseItemDefinition);
 
-            var modifiers = _modifiers.ToList();
+            var modifiers = _modifiers.Modifiers;
             _modifiers = null;
             return ParseResult.Success(modifiers);
         }

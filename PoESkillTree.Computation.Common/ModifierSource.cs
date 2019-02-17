@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using MoreLinq;
 using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Common
@@ -24,7 +22,10 @@ namespace PoESkillTree.Computation.Common
         {
             CanonicalSource = canonicalSource ?? this;
             SourceName = sourceName;
-            InfluencingSources = influencingSources.Prepend(CanonicalSource).ToList();
+            var sources = new ModifierSource[influencingSources.Length + 1];
+            sources[0] = CanonicalSource;
+            Array.Copy(influencingSources, 0, sources, 1, influencingSources.Length);
+            InfluencingSources = sources;
         }
 
         private ModifierSource(params ModifierSource[] influencingSources)

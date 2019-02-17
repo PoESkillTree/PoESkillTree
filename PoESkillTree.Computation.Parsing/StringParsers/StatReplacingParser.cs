@@ -54,14 +54,13 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
 
         private IEnumerable<string> GetReplacements(string stat)
         {
-            IEnumerable<IEnumerable<string>> allMatches =
-                from tuple in _dataWithRegexes.Value
-                let match = tuple.regex.Match(stat)
-                where match.Success
-                select tuple.data.Replacements.Select(match.Result);
-            return allMatches
-                .DefaultIfEmpty(new[] { stat })
-                .First();
+            foreach (var (data, regex) in _dataWithRegexes.Value)
+            {
+                var match = regex.Match(stat);
+                if (match.Success)
+                    return data.Replacements.Select(match.Result);
+            }
+            return new[] { stat };
         }
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using MoreLinq;
 using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
@@ -25,18 +23,27 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             _supportSkillParser = supportSkillParser;
         }
 
-        public ParseResult Parse(IReadOnlyCollection<Skill> parameter)
+        public ParseResult Parse(IReadOnlyCollection<Skill> skills)
         {
-            var (supportSkills, activeSkills) = parameter
-                .Partition(s => _skillDefinitions.GetSkillById(s.Id).IsSupport);
-            supportSkills = supportSkills.ToList();
+            var activeSkills = new List<Skill>();
+            var supportSkills = new List<Skill>(skills.Count);
+            foreach (var skill in skills)
+            {
+                if (_skillDefinitions.GetSkillById(skill.Id).IsSupport)
+                    supportSkills.Add(skill);
+                else
+                    activeSkills.Add(skill);
+            }
 
-            var parseResults = new List<ParseResult>();
+            var parseResults = new List<ParseResult>(activeSkills.Count * supportSkills.Count);
             foreach (var activeSkill in activeSkills)
             {
                 parseResults.Add(_activeSkillParser.Parse(activeSkill));
                 var supportingSkills = _supportabilityTester.SelectSupportingSkills(activeSkill, supportSkills);
-                parseResults.AddRange(supportingSkills.Select(s => _supportSkillParser.Parse(activeSkill, s)));
+                foreach (var supportingSkill in supportingSkills)
+                {
+                    parseResults.Add(_supportSkillParser.Parse(activeSkill, supportingSkill));
+                }
             }
 
             return ParseResult.Aggregate(parseResults);

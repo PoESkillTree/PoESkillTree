@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
             var localSource = new ModifierSource.Local.Tree(nodeDefinition.Name);
             var modifiers = new ModifierCollection(_builderFactories, localSource);
             modifiers.AddGlobal(_builderFactories.StatBuilders.PassiveNodeSkilled(nodeId), Form.TotalOverride, 1);
-            return ParseResult.Success(modifiers.ToList());
+            return ParseResult.Success(modifiers.Modifiers);
         }
     }
 }
