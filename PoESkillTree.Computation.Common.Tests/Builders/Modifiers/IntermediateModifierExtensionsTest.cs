@@ -167,8 +167,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             var leftCondition = Mock.Of<IConditionBuilder>(c => c.And(rightCondition) == expected);
             var entryLeft = EmptyEntry
                 .WithCondition(leftCondition);
-            var entryRight = DefaultEntry
-                .WithCondition(rightCondition);
+            var entryRight = CreateFilledEntry(condition: rightCondition);
             var left = CreateResult(entryLeft);
             var right = CreateResult(entryRight);
 
@@ -208,21 +207,19 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             var rightCondition = Mock.Of<IConditionBuilder>();
             var leftCondition = Mock.Of<IConditionBuilder>(
                 c => c.And(rightCondition) == leftAndRightCondition);
-            var entry0 = EmptyEntry
-                .WithCondition(leftCondition);
-            var entry1 = EmptyEntry
-                .WithForm(form1);
-            var entry2 = EmptyEntry;
             var rightEntry = EmptyEntry
                 .WithStat(stat)
                 .WithCondition(rightCondition);
-            var left = CreateResult(entry0, entry1, entry2);
+            var left = CreateResult(
+                EmptyEntry.WithCondition(leftCondition),
+                EmptyEntry.WithForm(form1),
+                EmptyEntry);
             var right = CreateResult(rightEntry);
             var expected = new[]
             {
-                entry0.WithStat(stat).WithCondition(leftAndRightCondition),
-                entry1.WithStat(stat).WithCondition(rightCondition),
-                entry2.WithStat(stat).WithCondition(rightCondition)
+                EmptyEntry.WithStat(stat).WithCondition(leftAndRightCondition),
+                EmptyEntry.WithForm(form1).WithStat(stat).WithCondition(rightCondition),
+                EmptyEntry.WithStat(stat).WithCondition(rightCondition)
             };
 
             var result = left.MergeWith(right);
@@ -348,19 +345,19 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
 
         private static readonly IntermediateModifierEntry EmptyEntry = new IntermediateModifierEntry();
 
-        private static readonly IntermediateModifierEntry DefaultEntry = EmptyEntry
-            .WithStat(Mock.Of<IStatBuilder>())
-            .WithForm(Mock.Of<IFormBuilder>())
-            .WithValue(Mock.Of<IValueBuilder>())
-            .WithCondition(Mock.Of<IConditionBuilder>());
+        private static readonly IntermediateModifierEntry DefaultEntry = CreateFilledEntry();
 
         private static IntermediateModifierEntry[] CreateManyEntries()
-        {
-            var entry0 = DefaultEntry;
-            var entry1 = DefaultEntry;
-            var entry2 = DefaultEntry;
-            return new[] { entry0, entry1, entry2 };
-        }
+            => new[] { CreateFilledEntry(), CreateFilledEntry(), CreateFilledEntry() };
+
+        private static IntermediateModifierEntry CreateFilledEntry(
+            IFormBuilder form = null, IStatBuilder stat = null, IValueBuilder value = null,
+            IConditionBuilder condition = null)
+            => new IntermediateModifierEntry(
+                form ?? Mock.Of<IFormBuilder>(),
+                stat ?? Mock.Of<IStatBuilder>(),
+                value ?? Mock.Of<IValueBuilder>(),
+                condition ?? Mock.Of<IConditionBuilder>());
 
         private static readonly ModifierSource Source = new ModifierSource.Global();
 

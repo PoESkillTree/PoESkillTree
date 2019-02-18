@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -14,13 +13,11 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
     public class ModifierBuilder : IModifierBuilder, IIntermediateModifier
     {
         public IReadOnlyList<IntermediateModifierEntry> Entries { get; }
-        public StatConverter StatConverter { get; } = Funcs.Identity;
-        public ValueConverter ValueConverter { get; } = Funcs.Identity;
+        public StatConverter StatConverter { get; }
+        public ValueConverter ValueConverter { get; }
 
-        public ModifierBuilder()
-        {
-            Entries = new IntermediateModifierEntry[0];
-        }
+        public static readonly ModifierBuilder Empty
+            = new ModifierBuilder(new IntermediateModifierEntry[0], Funcs.Identity, Funcs.Identity);
 
         private ModifierBuilder(IReadOnlyList<IntermediateModifierEntry> entries, 
             StatConverter statConverter, 
@@ -31,111 +28,101 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
             ValueConverter = valueConverter;
         }
 
-        private IModifierBuilder WithSingle<T>(T element, 
-            Func<IntermediateModifierEntry, T, IntermediateModifierEntry> entrySelector, 
-            Func<IntermediateModifierEntry, T> entryElementSelector, string elementName)
-        {
-            IReadOnlyList<IntermediateModifierEntry> entries;
-            if (Entries.IsEmpty())
-            {
-                entries = new[] { entrySelector(new IntermediateModifierEntry(), element) };
-            }
-            else if (Entries.Select(entryElementSelector).Any(t => t != null))
-            {
-                throw new InvalidOperationException(elementName + " may not be set multiple times");
-            }
-            else
-            {
-                entries = Entries.Select(e => entrySelector(e, element)).ToList();
-            }
-            return new ModifierBuilder(entries, StatConverter, ValueConverter);
-        }
-
-        private IModifierBuilder WithEnumerable<T>(IEnumerable<T> elements, 
-            Func<IntermediateModifierEntry, T, IntermediateModifierEntry> entrySelector,
-            Func<IntermediateModifierEntry, T> entryElementSelector, string elementName)
-        {
-            IReadOnlyList<IntermediateModifierEntry> entries;
-            var elementList = elements.ToList();
-            if (Entries.IsEmpty())
-            {
-                entries = elementList.Select(e => entrySelector(new IntermediateModifierEntry(), e)).ToList();
-            }
-            else if (Entries.Select(entryElementSelector).Any(t => t != null))
-            {
-                throw new InvalidOperationException(elementName + " may not be set multiple times");
-            }
-            else if (Entries.Count == 1)
-            {
-                var entry = Entries[0];
-                entries = elementList.Select(e => entrySelector(entry, e)).ToList();
-            }
-            else if (Entries.Count != elementList.Count)
-            {
-                throw new ArgumentException(
-                    "All calls to WithXs methods must be made with parameters with the same amount of elements", 
-                    nameof(elements));
-            }
-            else
-            {
-                entries = Entries.Zip(elementList, entrySelector).ToList();
-            }
-            return new ModifierBuilder(entries, StatConverter, ValueConverter);
-        }
-
         public IModifierBuilder WithForm(IFormBuilder form)
-        {
-            return WithSingle(form, (e, f) => e.WithForm(f), e => e.Form, "Form");
-        }
+            => WithSingle(form, (e, f) => e.WithForm(f));
 
-        public IModifierBuilder WithForms(IEnumerable<IFormBuilder> forms)
-        {
-            return WithEnumerable(forms, (e, f) => e.WithForm(f), e => e.Form, "Form");
-        }
+        public IModifierBuilder WithForms(IReadOnlyList<IFormBuilder> forms)
+            => WithEnumerable(forms, (e, f) => e.WithForm(f));
 
         public IModifierBuilder WithStat(IStatBuilder stat)
-        {
-            return WithSingle(stat, (e, s) => e.WithStat(s), e => e.Stat, "Stat");
-        }
+            => WithSingle(stat, (e, s) => e.WithStat(s));
 
-        public IModifierBuilder WithStats(IEnumerable<IStatBuilder> stats)
-        {
-            return WithEnumerable(stats, (e, s) => e.WithStat(s), e => e.Stat, "Stat");
-        }
+        public IModifierBuilder WithStats(IReadOnlyList<IStatBuilder> stats)
+            => WithEnumerable(stats, (e, s) => e.WithStat(s));
 
         public IModifierBuilder WithStatConverter(StatConverter converter)
-        {
-            return new ModifierBuilder(Entries, converter, ValueConverter);
-        }
+            => new ModifierBuilder(Entries, converter, ValueConverter);
 
         public IModifierBuilder WithValue(IValueBuilder value)
-        {
-            return WithSingle(value, (e, v) => e.WithValue(v), e => e.Value, "Value");
-        }
+            => WithSingle(value, (e, v) => e.WithValue(v));
 
-        public IModifierBuilder WithValues(IEnumerable<IValueBuilder> values)
-        {
-            return WithEnumerable(values, (e, v) => e.WithValue(v), e => e.Value, "Value");
-        }
+        public IModifierBuilder WithValues(IReadOnlyList<IValueBuilder> values)
+            => WithEnumerable(values, (e, v) => e.WithValue(v));
 
         public IModifierBuilder WithValueConverter(ValueConverter converter)
-        {
-            return new ModifierBuilder(Entries, StatConverter, converter);
-        }
+            => new ModifierBuilder(Entries, StatConverter, converter);
 
         public IModifierBuilder WithCondition(IConditionBuilder condition)
+            => WithSingle(condition, (e, c) => e.WithCondition(c));
+
+        public IModifierBuilder WithConditions(IReadOnlyList<IConditionBuilder> conditions)
+            => WithEnumerable(conditions, (e, c) => e.WithCondition(c));
+
+        public IIntermediateModifier Build() => this;
+
+        private IModifierBuilder WithSingle<T>(T element, 
+            Func<IntermediateModifierEntry, T, IntermediateModifierEntry> entrySelector)
         {
-            return WithSingle(condition, (e, c) => e.WithCondition(c), e => e.Condition, "Condition");
+            if (Entries.IsEmpty())
+                return WithEntries(new[] { entrySelector(new IntermediateModifierEntry(), element) });
+
+            var entries = new List<IntermediateModifierEntry>(Entries.Count);
+            foreach (var entry in Entries)
+            {
+                entries.Add(entrySelector(entry, element));
+            }
+            return WithEntries(entries);
         }
 
-        public IModifierBuilder WithConditions(IEnumerable<IConditionBuilder> conditions)
+        private IModifierBuilder WithEnumerable<T>(IReadOnlyList<T> elements, 
+            Func<IntermediateModifierEntry, T, IntermediateModifierEntry> entrySelector)
         {
-            return WithEnumerable(conditions, (e, c) => e.WithCondition(c), e => e.Condition, "Condition");
+            if (Entries.IsEmpty())
+                return WithEnumerableNoEntries(elements, entrySelector);
+            if (Entries.Count == 1)
+                return WithEnumerableSingleEntry(elements, entrySelector);
+            return WithEnumerableManyEntries(elements, entrySelector);
         }
 
-        public IIntermediateModifier Build()
+        private IModifierBuilder WithEnumerableNoEntries<T>(
+            IReadOnlyList<T> elements, Func<IntermediateModifierEntry, T, IntermediateModifierEntry> entrySelector)
         {
-            return this;
+            var entries = new List<IntermediateModifierEntry>(elements.Count);
+            foreach (var element in elements)
+            {
+                entries.Add(entrySelector(new IntermediateModifierEntry(), element));
+            }
+            return WithEntries(entries);
         }
+
+        private IModifierBuilder WithEnumerableSingleEntry<T>(
+            IReadOnlyList<T> elements, Func<IntermediateModifierEntry, T, IntermediateModifierEntry> entrySelector)
+        {
+            var entries = new List<IntermediateModifierEntry>(elements.Count);
+            foreach (var element in elements)
+            {
+                entries.Add(entrySelector(Entries[0], element));
+            }
+            return WithEntries(entries);
+        }
+
+        private IModifierBuilder WithEnumerableManyEntries<T>(
+            IReadOnlyList<T> elements, Func<IntermediateModifierEntry, T, IntermediateModifierEntry> entrySelector)
+        {
+            if (Entries.Count != elements.Count)
+                throw new ArgumentException(
+                    "All calls to WithXs methods must be made with parameters with the same amount of elements",
+                    nameof(elements));
+
+            var entries = new List<IntermediateModifierEntry>(Entries.Count);
+            for (var i = 0; i < Entries.Count; i++)
+            {
+                entries.Add(entrySelector(Entries[i], elements[i]));
+            }
+            return WithEntries(entries);
+        }
+
+        private ModifierBuilder WithEntries(IReadOnlyList<IntermediateModifierEntry> entries)
+            => new ModifierBuilder(entries, StatConverter, ValueConverter);
     }
 }

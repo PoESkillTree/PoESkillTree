@@ -42,7 +42,7 @@ namespace PoESkillTree.Computation.Data
             _builderFactories = builderFactories;
 
             _statMatchers = new Lazy<IReadOnlyList<IStatMatchers>>(
-                () => CreateStatMatchers(new ModifierBuilder(), passives.Nodes));
+                () => CreateStatMatchers(ModifierBuilder.Empty, passives.Nodes));
             _referencedMatchers = new Lazy<IReadOnlyList<IReferencedMatchers>>(
                 () => CreateReferencedMatchers(skills.Skills));
             _givenStats = new Lazy<IReadOnlyList<IGivenStats>>(

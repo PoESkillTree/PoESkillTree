@@ -85,7 +85,7 @@ namespace PoESkillTree.Computation.Parsing
                                 new StatMatcherRegexExpander(
                                     referenceService, regexGroupService, statMatchers.MatchesWholeLineOnly).Expand),
                             referenceService,
-                            new IntermediateModifierResolver(new ModifierBuilder()),
+                            new IntermediateModifierResolver(ModifierBuilder.Empty),
                             regexGroupService
                         )
                     )

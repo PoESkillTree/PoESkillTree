@@ -77,7 +77,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             statBuilderMock.Setup(b => b.Build(buildParams))
                 .Returns(new[] { new StatBuilderResult(expectedStats, expectedModifierSource, Funcs.Identity), });
             var valueBuilder = Mock.Of<IValueBuilder>(b => b.Build(buildParams) == expectedValue);
-            var intermediateModifier = new ModifierBuilder()
+            var intermediateModifier = ModifierBuilder.Empty
                 .WithForm(formBuilderMock.Object).WithStat(statBuilderMock.Object).WithValue(valueBuilder)
                 .Build();
             var givenStats = new[]

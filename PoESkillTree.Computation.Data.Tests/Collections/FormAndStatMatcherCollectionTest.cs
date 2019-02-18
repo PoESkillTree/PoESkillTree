@@ -109,7 +109,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             var builder = _sut.AssertSingle(Regex);
             Assert.That(builder.Forms, Has.Exactly(1).SameAs(form));
             Assert.That(builder.Values, Has.Exactly(1).SameAs(value));
-            Assert.AreSame(stats, builder.Stats);
+            Assert.AreEqual(stats, builder.Stats);
         }
 
         [Test]

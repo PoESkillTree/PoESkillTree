@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void IsIModifierBuilder()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
 
             Assert.IsInstanceOf<IModifierBuilder>(sut);
         }
@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void EntriesIsEmpty()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
 
             CollectionAssert.IsEmpty(sut.Entries);
         }
@@ -34,7 +34,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithFormReturnsModifierBuilder()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var form = Mock.Of<IFormBuilder>();
 
             var actual = sut.WithForm(form);
@@ -45,9 +45,9 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithFormsReturnsModifierBuilder()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
 
-            var actual = sut.WithForms(Enumerable.Empty<IFormBuilder>());
+            var actual = sut.WithForms(new IFormBuilder[0]);
 
             Assert.IsInstanceOf<ModifierBuilder>(actual);
         }
@@ -55,7 +55,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithStatReturnsModifierBuilder()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var stat = Mock.Of<IStatBuilder>();
 
             var actual = sut.WithStat(stat);
@@ -66,9 +66,9 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithStatsReturnsModifierBuilder()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
 
-            var actual = sut.WithStats(Enumerable.Empty<IStatBuilder>());
+            var actual = sut.WithStats(new IStatBuilder[0]);
 
             Assert.IsInstanceOf<ModifierBuilder>(actual);
         }
@@ -76,7 +76,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithStatConverterReturnsModifierBuilder()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
 
             var actual = sut.WithStatConverter(s => s);
 
@@ -86,7 +86,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithValueReturnsModifierBuilder()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var value = Mock.Of<IValueBuilder>();
 
             var actual = sut.WithValue(value);
@@ -97,9 +97,9 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithValuesReturnsModifierBuilder()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
 
-            var actual = sut.WithValues(Enumerable.Empty<IValueBuilder>());
+            var actual = sut.WithValues(new IValueBuilder[0]);
 
             Assert.IsInstanceOf<ModifierBuilder>(actual);
         }
@@ -107,7 +107,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithValueConverterReturnsModifierBuilder()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
 
             var actual = sut.WithValueConverter(v => v);
 
@@ -117,7 +117,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithConditionReturnsModifierBuilder()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var condition = Mock.Of<IConditionBuilder>();
 
             var actual = sut.WithCondition(condition);
@@ -128,9 +128,9 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithConditionsReturnsModifierBuilder()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
 
-            var actual = sut.WithConditions(Enumerable.Empty<IConditionBuilder>());
+            var actual = sut.WithConditions(new IConditionBuilder[0]);
 
             Assert.IsInstanceOf<ModifierBuilder>(actual);
         }
@@ -138,7 +138,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithFormAddsCorrectEntryWhenEmpty()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var form = Mock.Of<IFormBuilder>();
 
             sut = (ModifierBuilder) sut.WithForm(form);
@@ -150,7 +150,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithFormCalledTwiceThrows()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var form = Mock.Of<IFormBuilder>();
             sut = (ModifierBuilder) sut.WithForm(form);
 
@@ -160,7 +160,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithFormModifiesExistingEntriesCorrectly()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var stats = Many<IStatBuilder>();
             sut = (ModifierBuilder) sut.WithStats(stats);
             var form = Mock.Of<IFormBuilder>();
@@ -175,7 +175,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithFormsAddsCorrectEntriesWhenEmpty()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var forms = Many<IFormBuilder>();
             var expected = forms.Select(f => Entry.WithForm(f)).ToList();
 
@@ -187,7 +187,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithFormsCalledTwiceThrows()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var forms = Many<IFormBuilder>();
             sut = (ModifierBuilder) sut.WithForms(forms);
 
@@ -197,7 +197,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithFormsModifiesExistingSingleEntryCorrectly()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var stat = Mock.Of<IStatBuilder>();
             sut = (ModifierBuilder) sut.WithStat(stat);
             var forms = Many<IFormBuilder>();
@@ -211,7 +211,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithFormsModifiesExistingMultipleEntriesCorrectly()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var stats = Many<IStatBuilder>();
             sut = (ModifierBuilder) sut.WithStats(stats);
             var forms = Many<IFormBuilder>();
@@ -226,7 +226,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [TestCase(4)]
         public void WithFormsThrowsIfDifferentAmountOfExistingEntries(int existingCount)
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var stats = Many<IStatBuilder>(existingCount);
             sut = (ModifierBuilder) sut.WithStats(stats);
             var forms = Many<IFormBuilder>();
@@ -237,7 +237,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithFormsStatsValuesAndConditionsCreatesCorrectEntries()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var forms = Many<IFormBuilder>();
             var stats = Many<IStatBuilder>();
             var values = Many<IValueBuilder>();
@@ -260,7 +260,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithStatFormsValueAndConditionCreatesCorrectEntries()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var forms = Many<IFormBuilder>();
             var stat = Mock.Of<IStatBuilder>();
             var value = Mock.Of<IValueBuilder>();
@@ -282,7 +282,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithStatConverterSetsStatConverter()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             StatConverter statConverter = s => null;
 
             sut = (ModifierBuilder) sut.WithStatConverter(statConverter);
@@ -293,7 +293,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void WithValueConverterSetsValueConverter()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             ValueConverter valueConverter = v => null;
 
             sut = (ModifierBuilder) sut.WithValueConverter(valueConverter);
@@ -304,7 +304,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void InitialStatConverterIsIdentity()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var stat = Mock.Of<IStatBuilder>();
 
             var actual = sut.StatConverter(stat);
@@ -315,7 +315,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void InitialValueConverterIsIdentity()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
             var value = Mock.Of<IValueBuilder>();
 
             var actual = sut.ValueConverter(value);
@@ -326,7 +326,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void IsIIntermediateModifier()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
 
             Assert.IsInstanceOf<IIntermediateModifier>(sut);
         }
@@ -334,7 +334,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
         [Test]
         public void CreateReturnsSelf()
         {
-            var sut = new ModifierBuilder();
+            var sut = ModifierBuilder.Empty;
 
             var actual = sut.Build();
 

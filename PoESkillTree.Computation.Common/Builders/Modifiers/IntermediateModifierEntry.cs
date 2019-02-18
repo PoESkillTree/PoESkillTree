@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Forms;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -30,8 +31,8 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
         {
         }
 
-        private IntermediateModifierEntry(IFormBuilder form, IStatBuilder stat, IValueBuilder value, 
-            IConditionBuilder condition)
+        public IntermediateModifierEntry(
+            IFormBuilder form, IStatBuilder stat, IValueBuilder value, IConditionBuilder condition)
         {
             Form = form;
             Stat = stat;
@@ -41,21 +42,29 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
 
         public IntermediateModifierEntry WithForm(IFormBuilder form)
         {
+            if (Form != null && form != null)
+                throw new InvalidOperationException(nameof(WithForm) + " must not be called multiple times");
             return new IntermediateModifierEntry(form, Stat, Value, Condition);
         }
 
         public IntermediateModifierEntry WithStat(IStatBuilder stat)
         {
+            if (Stat != null && stat != null)
+                throw new InvalidOperationException(nameof(WithStat) + " must not be called multiple times");
             return new IntermediateModifierEntry(Form, stat, Value, Condition);
         }
 
         public IntermediateModifierEntry WithValue(IValueBuilder value)
         {
+            if (Value != null && value != null)
+                throw new InvalidOperationException(nameof(WithValue) + " must not be called multiple times");
             return new IntermediateModifierEntry(Form, Stat, value, Condition);
         }
 
         public IntermediateModifierEntry WithCondition(IConditionBuilder condition)
         {
+            if (Condition != null && condition != null)
+                throw new InvalidOperationException(nameof(WithCondition) + " must not be called multiple times");
             return new IntermediateModifierEntry(Form, Stat, Value, condition);
         }
 

@@ -212,7 +212,7 @@ namespace PoESkillTree.Computation.Common.Tests.Builders.Modifiers
             Assert.AreSame(DefaultStats[2], resolved);
         }
 
-        private static IIntermediateModifierResolver CreateSut() => new IntermediateModifierResolver(new ModifierBuilder());
+        private static IIntermediateModifierResolver CreateSut() => new IntermediateModifierResolver(ModifierBuilder.Empty);
 
         private static readonly ResolveContext DefaultContext = 
             new ResolveContext(

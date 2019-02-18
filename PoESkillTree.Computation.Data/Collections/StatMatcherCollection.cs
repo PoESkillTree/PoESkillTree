@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
@@ -22,13 +23,15 @@ namespace PoESkillTree.Computation.Data.Collections
 
         public void Add([RegexPattern] string regex, params T[] stats)
         {
-            Add(regex, (IEnumerable<T>) stats);
+            var builder = ModifierBuilder
+                .WithStats(stats);
+            Add(regex, builder);
         }
 
         public void Add([RegexPattern] string regex, IEnumerable<T> stats)
         {
             var builder = ModifierBuilder
-                .WithStats(stats);
+                .WithStats(stats.ToList());
             Add(regex, builder);
         }
 

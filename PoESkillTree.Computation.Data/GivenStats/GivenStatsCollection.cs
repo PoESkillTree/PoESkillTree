@@ -22,7 +22,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             _builderFactories = builderFactories;
             _monsterBaseStats = monsterBaseStats;
             _characterBaseStats = characterBaseStats;
-            _lazyCollection = new Lazy<IReadOnlyList<IGivenStats>>(() => CreateCollection(new ModifierBuilder()));
+            _lazyCollection = new Lazy<IReadOnlyList<IGivenStats>>(() => CreateCollection(ModifierBuilder.Empty));
         }
 
         public IEnumerator<IGivenStats> GetEnumerator() => _lazyCollection.Value.GetEnumerator();

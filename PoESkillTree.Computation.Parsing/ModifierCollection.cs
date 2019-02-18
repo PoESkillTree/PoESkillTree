@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Parsing
         private readonly ModifierSource.Local _localModifierSource;
         private readonly ModifierSource.Global _globalModifierSource;
         private readonly Entity _modifierSourceEntity;
-        private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
+        private readonly IModifierBuilder _modifierBuilder = ModifierBuilder.Empty;
         private readonly List<Modifier> _modifiers = new List<Modifier>();
 
         public ModifierCollection(

@@ -77,11 +77,11 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("BodyArmour.EnergyShield", Form.Increase, 20, local),
                     ("BodyArmour.Level.Required", Form.BaseSet, 62, local),
                     ("BodyArmour.Strength.Required", Form.BaseSet, definition.Requirements.Strength, local),
-                    ("BodyArmour.Armour", Form.Increase, 10, local),
                     ("MovementSpeed", Form.Increase, -5, global),
                     ("Fire.Resistance", Form.BaseAdd, 1, global),
                     ("Life", Form.BaseAdd, 50, global),
                     ("Strength", Form.BaseAdd, 32, global),
+                    ("BodyArmour.Armour", Form.Increase, 10, local),
                 }.Select(t => (t.stat, t.form, (NodeValue?) t.value, t.source)).ToArray();
 
             var actual = _parser.ParseItem(item, ItemSlot.BodyArmour);
