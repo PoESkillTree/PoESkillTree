@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.IntegrationTests
             foreach (var matchers in referencedMatchers)
             {
                 var type = matchers.MatchType;
-                foreach (var data in matchers)
+                foreach (var data in matchers.Data)
                 {
                     Assert.IsInstanceOf(type, data.Match);
                 }

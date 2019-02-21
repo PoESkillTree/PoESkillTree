@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Data
             Action = actionBuilders;
         }
 
-        protected override IEnumerable<ReferencedMatcherData> CreateCollection() =>
+        protected override IReadOnlyList<ReferencedMatcherData> CreateCollection() =>
             new ReferencedMatcherCollection<IActionBuilder>
             {
                 { "kill(ed)?", Action.Kill },

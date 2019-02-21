@@ -18,7 +18,7 @@ namespace PoESkillTree.Computation.Data
             Charge = chargeTypeBuilders;
         }
 
-        protected override IEnumerable<ReferencedMatcherData> CreateCollection() =>
+        protected override IReadOnlyList<ReferencedMatcherData> CreateCollection() =>
             new ReferencedMatcherCollection<IChargeTypeBuilder>
             {
                 { "endurance charges?", Charge.Endurance },

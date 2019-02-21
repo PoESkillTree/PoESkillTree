@@ -24,7 +24,7 @@ namespace PoESkillTree.Computation.Data
         private IDamageTypeBuilder Cold => _damageTypeBuilders.Cold;
         private IDamageTypeBuilder Chaos => _damageTypeBuilders.Chaos;
 
-        protected override IEnumerable<ReferencedMatcherData> CreateCollection() =>
+        protected override IReadOnlyList<ReferencedMatcherData> CreateCollection() =>
             new ReferencedMatcherCollection<IDamageTypeBuilder>
             {
                 { "physical", Physical },

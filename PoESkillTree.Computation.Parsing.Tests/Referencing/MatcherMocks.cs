@@ -18,10 +18,9 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
             params string[] patterns)
         {
             var data = patterns.Select(p => new ReferencedMatcherData(p, null)).ToList();
-            var mock = new Mock<IReferencedMatchers>();
-            mock.SetupGet(m => m.ReferenceName).Returns(referenceName);
-            mock.Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
-            return mock.Object;
+            return Mock.Of<IReferencedMatchers>(m =>
+                m.ReferenceName == referenceName &&
+                m.Data == data);
         }
 
         internal static readonly IReadOnlyList<IStatMatchers> DefaultStatMatchersList =
