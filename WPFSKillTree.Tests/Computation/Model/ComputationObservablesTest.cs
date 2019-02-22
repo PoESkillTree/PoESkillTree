@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using EnumsNET;
@@ -41,7 +42,8 @@ namespace PoESkillTree.Tests.Computation.Model
                 p.CreateGivenModifierParseDelegates() == givenModifierParseDelegates);
             var sut = CreateSut(parser);
 
-            var actual = await AggregateAsync(sut.InitialParse(passiveTree, TimeSpan.Zero));
+            var actual =
+                await AggregateAsync(sut.InitialParse(passiveTree, TimeSpan.Zero, ImmediateScheduler.Instance));
 
             Assert.That(actual.AddedModifiers, Is.EquivalentTo(expected));
             Assert.IsEmpty(actual.RemovedModifiers);

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using log4net;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Core;
+using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
@@ -14,6 +15,7 @@ using POESKillTree.Computation.ViewModels;
 using POESKillTree.Model;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
+using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Computation
 {
@@ -24,6 +26,7 @@ namespace POESKillTree.Computation
         private readonly GameDataWithOldTreeModel _gameData;
 
         private IBuilderFactories _builderFactories;
+        private IParser _parser;
         private ComputationSchedulerProvider _schedulers;
         private ComputationObservables _observables;
         private ObservableCalculator _calculator;
@@ -59,19 +62,22 @@ namespace POESKillTree.Computation
             var computationFactory = new ComputationFactory(GameData);
             var calculator = computationFactory.CreateCalculator();
             _builderFactories = await computationFactory.CreateBuilderFactoriesAsync();
-            var parser = await computationFactory.CreateParserAsync();
+            _parser = await computationFactory.CreateParserAsync();
 
             _schedulers = new ComputationSchedulerProvider();
-            _observables = new ComputationObservables(parser);
+            _observables = new ComputationObservables(_parser);
             _calculator = new ObservableCalculator(calculator, _schedulers.CalculationThread);
         }
 
         private async Task DoInitialParseAsync()
         {
+            var parserInitializationTask = _schedulers.NewThread.ScheduleAsync(_parser.Initialize);
             var passiveTree = await GameData.PassiveTree;
-            var initialObservable = _observables.InitialParse(passiveTree, TimeSpan.FromMilliseconds(500))
+            var initialObservable = _observables
+                .InitialParse(passiveTree, TimeSpan.FromMilliseconds(500), _schedulers.TaskPool)
                 .SubscribeOn(_schedulers.TaskPool);
             await _calculator.ForEachUpdateCalculatorAsync(initialObservable);
+            await parserInitializationTask;
         }
 
         public async Task InitializeAfterBuildLoadAsync(

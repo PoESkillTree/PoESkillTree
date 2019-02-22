@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using EnumsNET;
 using MoreLinq;
@@ -27,12 +28,12 @@ namespace POESKillTree.Computation.Model
             => _parser = parser;
 
         public IObservable<CalculatorUpdate> InitialParse(
-            PassiveTreeDefinition passiveTreeDefinition, TimeSpan bufferTimeSpan)
+            PassiveTreeDefinition passiveTreeDefinition, TimeSpan bufferTimeSpan, IScheduler scheduler)
         {
             var givenResultObservable = _parser.CreateGivenModifierParseDelegates().ToObservable()
-                .Select(d => d());
+                .SelectMany(d => Observable.Start(d, scheduler));
             var passiveNodesObservable = passiveTreeDefinition.Nodes.ToObservable()
-                .Select(n => _parser.ParsePassiveNode(n.Id).Modifiers);
+                .SelectMany(n => Observable.Start(() => _parser.ParsePassiveNode(n.Id).Modifiers, scheduler));
             return givenResultObservable.Merge(passiveNodesObservable)
                 .Buffer(bufferTimeSpan)
                 .Select(ms => ms.Flatten().ToList())

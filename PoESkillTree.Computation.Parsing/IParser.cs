@@ -40,4 +40,10 @@ namespace PoESkillTree.Computation.Parsing
         /// </summary>
         ParseResult Parse(TParameter parameter);
     }
+
+    public static class ParserExtensions
+    {
+        public static void Initialize(this IParser @this)
+            => @this.ParseRawModifier("", new ModifierSource.Global(), default);
+    }
 }

@@ -23,5 +23,8 @@ namespace POESKillTree.Utils.Extensions
             });
             return taskCompletionSource.Task;
         }
+
+        public static Task ScheduleAsync(this IScheduler @this, Action action)
+            => @this.ScheduleAsync<object>(() => { action(); return null; });
     }
 }
