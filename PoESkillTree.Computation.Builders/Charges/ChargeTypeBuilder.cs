@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using EnumsNET;
 using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
@@ -33,14 +34,14 @@ namespace PoESkillTree.Computation.Builders.Charges
             DamageRelatedStatBuilder.Create(_statFactory, CoreStat(typeof(uint))).WithHits;
 
         private ICoreStatBuilder CoreStat(Type dataType, [CallerMemberName] string identitySuffix = null) =>
-            CoreStat((e, t) => _statFactory.FromIdentity($"{t}.{identitySuffix}", e, dataType));
+            CoreStat((e, t) => _statFactory.FromIdentity(t.GetName() + "." + identitySuffix, e, dataType));
 
         private ICoreStatBuilder CoreStat(Func<Entity, ChargeType, IStat> statFactory) =>
             new CoreStatBuilderFromCoreBuilder<ChargeType>(_chargeType, statFactory);
 
         public IActionBuilder GainAction =>
             new ActionBuilder(_statFactory,
-                CoreBuilder.UnaryOperation(_chargeType, t => $"{t}.GainAction"), new ModifierSourceEntityBuilder());
+                CoreBuilder.UnaryOperation(_chargeType, t => t + ".GainAction"), new ModifierSourceEntityBuilder());
 
         public ChargeType Build(BuildParameters parameters) => _chargeType.Build(parameters);
     }

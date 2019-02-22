@@ -177,7 +177,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         private static ValueConverter ApplyToDamageValueConverter(IEnumerable<IStat> applyStats)
         {
             var values = applyStats
-                .Select(s => new FunctionalValue(c => c.GetValue(s) / 100, $"{s}.Value / 100"))
+                .Select(s => new FunctionalValue(c => c.GetValue(s) / 100, s + ".Value / 100"))
                 .ToList();
             var multiplier = new FunctionalValue(Calculate,
                 $"RequireEqualWhereNotNull({string.Join(",", values)})");
@@ -210,8 +210,8 @@ namespace PoESkillTree.Computation.Builders.Stats
             }
         }
 
-        private IReadOnlyList<IStat> ConcretizeStats(IDamageSpecification spec, IEnumerable<IStat> resultStats) =>
-            resultStats.Select(s => _statFactory.ConcretizeDamage(s, spec)).ToList();
+        private IReadOnlyList<IStat> ConcretizeStats(IDamageSpecification spec, IReadOnlyList<IStat> stats)
+            => stats.SelectToList(s => _statFactory.ConcretizeDamage(s, spec));
 
         private class NullConditionBuilder : IConditionBuilder
         {

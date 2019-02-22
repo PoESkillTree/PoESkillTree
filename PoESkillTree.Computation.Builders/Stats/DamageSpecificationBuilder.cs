@@ -21,6 +21,9 @@ namespace PoESkillTree.Computation.Builders.Stats
             Ailments = 4
         }
 
+        private static readonly IReadOnlyList<DamageSource> AllDamageSources = Enums.GetValues<DamageSource>().ToList();
+        private static readonly IReadOnlyList<AttackDamageHand> AllHands = Enums.GetValues<AttackDamageHand>().ToList();
+
         private readonly Mode _mode;
         private readonly DamageSource? _damageSource;
         private readonly AttackDamageHand? _hand;
@@ -87,13 +90,13 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IEnumerable<IDamageSpecification> Build(BuildParameters parameters)
         {
-            var intermediateBuilder = new IntermediateBuilder(_mode, Hands().ToList(), Ailments(parameters).ToList());
+            var intermediateBuilder = new IntermediateBuilder(_mode, Hands(), Ailments(parameters));
             return BuildSkillDamage(intermediateBuilder).Concat(BuildAilmentDamage(intermediateBuilder));
         }
 
         private IEnumerable<IDamageSpecification> BuildSkillDamage(IntermediateBuilder intermediateBuilder)
         {
-            var sources = SingleOrAll(_damageSource, Enums.GetValues<DamageSource>);
+            var sources = SingleOrAll(_damageSource, AllDamageSources);
             return sources.SelectMany(intermediateBuilder.BuildSkillDamage);
         }
 
@@ -104,14 +107,14 @@ namespace PoESkillTree.Computation.Builders.Stats
             return Enums.GetValues<DamageSource>().SelectMany(intermediateBuilder.BuildAilmentDamage);
         }
 
-        private IEnumerable<AttackDamageHand> Hands() =>
-            SingleOrAll(_hand, Enums.GetValues<AttackDamageHand>);
+        private IReadOnlyList<AttackDamageHand> Hands() =>
+            SingleOrAll(_hand, AllHands);
 
-        private IEnumerable<Ailment> Ailments(BuildParameters parameters) =>
-            SingleOrAll(_ailment?.Build(parameters), () => AilmentConstants.DamagingAilments);
+        private IReadOnlyList<Ailment> Ailments(BuildParameters parameters) =>
+            SingleOrAll(_ailment?.Build(parameters), AilmentConstants.DamagingAilments);
 
-        private static IEnumerable<T> SingleOrAll<T>(T? single, Func<IEnumerable<T>> all) where T : struct =>
-            single.HasValue ? new[] { single.Value } : all();
+        private static IReadOnlyList<T> SingleOrAll<T>(T? single, IReadOnlyList<T> all) where T : struct =>
+            single.HasValue ? new[] { single.Value } : all;
 
         private class IntermediateBuilder
         {

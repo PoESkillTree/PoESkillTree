@@ -116,7 +116,7 @@ namespace PoESkillTree.Computation.Builders.Damage
             new StatBuilder(_statFactory, CoreStat(typeof(int)));
 
         private ICoreStatBuilder CoreStat(Type dataType, [CallerMemberName] string identitySuffix = null) =>
-            CoreStat((e, t) => _statFactory.FromIdentity($"{t}.{identitySuffix}", e, dataType));
+            CoreStat((e, t) => _statFactory.FromIdentity(t.GetName() + "." + identitySuffix, e, dataType));
 
         private ICoreStatBuilder CoreStat(Func<Entity, DamageType, IStat> statFactory) =>
             new CoreStatBuilderFromCoreBuilder<IEnumerable<DamageType>>(_coreDamageType,

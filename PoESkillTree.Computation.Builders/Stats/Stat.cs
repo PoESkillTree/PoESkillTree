@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using EnumsNET;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.GameModel;
 
@@ -51,7 +52,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         private IStat MinOrMax([CallerMemberName] string identitySuffix = null) =>
             _hasRange ? new Stat(Identity + "." + identitySuffix, Entity, DataType, hasRange: false) : null;
 
-        public override string ToString() => Entity + "." + Identity;
+        private string _stringRepresentation;
+        public override string ToString()
+            => _stringRepresentation ?? (_stringRepresentation = Entity.GetName() + "." + Identity);
 
         public override bool Equals(object obj) =>
             (obj == this) || (obj is IStat other && Equals(other));

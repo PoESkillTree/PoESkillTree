@@ -154,7 +154,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             => Stat.CharacterClass.Value.Select(v => selector((CharacterClass) (int) v), v => $"{v}.{identity}");
 
         private static ValueBuilder PerStat(IStatBuilder stat, double divideBy)
-            => (stat.Value / divideBy).Select(Math.Floor, o => $"Floor({o})");
+            => (stat.Value / divideBy).Floor();
 
         private NodeValue UnarmedPhysicalDamage(CharacterClass c)
             => new NodeValue(_characterBaseStats.UnarmedPhysicalDamageMinimum(c),

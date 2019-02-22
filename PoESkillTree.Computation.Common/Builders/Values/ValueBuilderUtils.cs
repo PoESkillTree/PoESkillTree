@@ -24,13 +24,13 @@ namespace PoESkillTree.Computation.Common.Builders.Values
             PerStat(stat.Value, divideBy);
 
         public static Func<ValueBuilder, ValueBuilder> PerStat(ValueBuilder statValue, ValueBuilder divideBy) =>
-            v => v * (statValue / divideBy).Select(Math.Floor, o => $"Floor({o})");
+            v => v * (statValue / divideBy).Floor();
 
         /// <summary>
         /// Returns a value converter multiplying values by <c>(stat.Value / divideBy).Ceiling</c>.
         /// </summary>
         public static Func<ValueBuilder, ValueBuilder> PerStatCeiled(IStatBuilder stat, ValueBuilder divideBy) =>
-            v => v * (stat.Value / divideBy).Select(Math.Ceiling, o => $"Ceiling({o})");
+            v => v * (stat.Value / divideBy).Ceiling();
 
         /// <summary>
         /// Returns a value converter that behaves the same as the given converter but creates a 
@@ -55,6 +55,12 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         public static ValueBuilder PercentOf(this ValueBuilder value, IStatBuilder stat) =>
             value.AsPercentage * stat.Value;
 
+        public static ValueBuilder Floor(this ValueBuilder value)
+            => value.Select(Math.Floor, o => "Floor(" + o + ")");
+
+        public static ValueBuilder Ceiling(this ValueBuilder value)
+            => value.Select(Math.Ceiling, o => "Ceiling(" + o + ")");
+
         public static ValueBuilder Minimum(this IValueBuilders valueFactory, ValueBuilder left, ValueBuilder right)
             => valueFactory.If(left > right).Then(right).Else(left);
 
@@ -71,8 +77,8 @@ namespace PoESkillTree.Computation.Common.Builders.Values
 
         /// <summary>
         /// Builds a function from <paramref name="points"/> by interpolating linearly between each two consecutive
-        /// points. Returns a value equal to the function applied to <paramref name="xStat"/>'s value.
-        /// <para>Expressed differently: If <paramref name="xStat"/>'s value is equal to the x value of a point, that 
+        /// points. Returns a value equal to the function applied to <paramref name="xValue"/>.
+        /// <para>Expressed differently: If <paramref name="xValue"/> is equal to the x value of a point, that 
         /// point's y value is returned. Otherwise the y value is calculated by linear interpolation between
         /// the nearest smaller and nearest bigger point.</para>
         /// </summary>

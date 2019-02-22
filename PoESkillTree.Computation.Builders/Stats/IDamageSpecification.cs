@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Damage;
+﻿using EnumsNET;
+using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 
 namespace PoESkillTree.Computation.Builders.Stats
@@ -23,7 +24,7 @@ namespace PoESkillTree.Computation.Builders.Stats
     public class SkillDamageSpecification : DamageSpecificationBase
     {
         public SkillDamageSpecification(DamageSource damageSource)
-            : base($"{damageSource}.Skill", damageSource, null)
+            : base(damageSource.GetName() + ".Skill", damageSource, null)
         {
         }
 
@@ -33,7 +34,8 @@ namespace PoESkillTree.Computation.Builders.Stats
     public class SkillAttackDamageSpecification : DamageSpecificationBase
     {
         public SkillAttackDamageSpecification(AttackDamageHand attackDamageHand)
-            : base($"{DamageSource.Attack}.{attackDamageHand}.Skill", DamageSource.Attack, null)
+            : base(DamageSource.Attack.GetName() + "." + attackDamageHand.GetName() + ".Skill",
+                DamageSource.Attack, null)
         {
         }
 
@@ -43,7 +45,7 @@ namespace PoESkillTree.Computation.Builders.Stats
     public class AilmentDamageSpecification : DamageSpecificationBase
     {
         public AilmentDamageSpecification(DamageSource damageSource, Ailment ailment)
-            : base($"{damageSource}.{ailment}", damageSource, ailment)
+            : base(damageSource.GetName() + "." + ailment.GetName(), damageSource, ailment)
         {
         }
 
@@ -55,7 +57,8 @@ namespace PoESkillTree.Computation.Builders.Stats
         private readonly AttackDamageHand _attackDamageHand;
 
         public AilmentAttackDamageSpecification(AttackDamageHand attackDamageHand, Ailment ailment)
-            : base($"{DamageSource.Attack}.{attackDamageHand}.{ailment}", DamageSource.Attack, ailment)
+            : base(DamageSource.Attack.GetName() + "." + attackDamageHand.GetName() + "." + ailment.GetName(),
+                DamageSource.Attack, ailment)
         {
             _attackDamageHand = attackDamageHand;
         }

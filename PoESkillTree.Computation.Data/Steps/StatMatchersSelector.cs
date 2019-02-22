@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EnumsNET;
 using PoESkillTree.Computation.Common.Data;
 
 namespace PoESkillTree.Computation.Data.Steps
@@ -24,7 +25,7 @@ namespace PoESkillTree.Computation.Data.Steps
         /// </summary>
         public IStatMatchers Get(ParsingStep parsingStep)
         {
-            var asString = parsingStep.ToString();
+            var asString = parsingStep.GetName();
             return _orderedCandidates.Value
                 .First(c => c.GetType().Name.StartsWith(asString, StringComparison.Ordinal));
         }

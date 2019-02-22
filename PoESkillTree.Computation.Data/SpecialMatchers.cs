@@ -169,7 +169,7 @@ namespace PoESkillTree.Computation.Data
                     // Iron Will Support
                     "strength's damage bonus applies to spell damage as well for supported skills",
                     PercentIncrease,
-                    (Attribute.StrengthDamageBonus.Value / 5).Select(Math.Ceiling, o => $"Ceiling({o})"),
+                    (Attribute.StrengthDamageBonus.Value / 5).Ceiling(),
                     Damage.WithSkills(DamageSource.Spell)
                 },
                 {   // Minion and Totem Elemental Resistance Support

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EnumsNET;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -17,7 +18,7 @@ namespace PoESkillTree.Computation.Builders.Effects
         private readonly ICoreBuilder<Ailment> _ailment;
 
         public AilmentBuilder(IStatFactory statFactory, ICoreBuilder<Ailment> ailment)
-            : base(statFactory, CoreBuilder.UnaryOperation(ailment, a => a.ToString()))
+            : base(statFactory, CoreBuilder.UnaryOperation(ailment, a => a.GetName()))
         {
             _ailment = ailment;
         }

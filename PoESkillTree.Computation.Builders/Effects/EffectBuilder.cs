@@ -57,7 +57,7 @@ namespace PoESkillTree.Computation.Builders.Effects
         protected ICoreStatBuilder CoreStatBuilderFromIdentity(
             string identitySuffix, Type dataType, ExplicitRegistrationType explicitRegistrationType = null)
             => new CoreStatBuilderFromCoreBuilder<string>(Identity,
-                (e, id) => StatFactory.FromIdentity($"{id}.{identitySuffix}", e, dataType, explicitRegistrationType));
+                (e, id) => StatFactory.FromIdentity(id + "." + identitySuffix, e, dataType, explicitRegistrationType));
 
         public string Build(BuildParameters parameters) => Identity.Build(parameters);
     }

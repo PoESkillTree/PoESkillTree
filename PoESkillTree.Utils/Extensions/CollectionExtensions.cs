@@ -54,5 +54,16 @@ namespace PoESkillTree.Utils.Extensions
         
         public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> toAdd)
             => toAdd.ForEach(collection.Add);
+
+        public static List<TResult> SelectToList<TSource, TResult>(this IReadOnlyCollection<TSource> @this,
+            Func<TSource, TResult> selector)
+        {
+            var results = new List<TResult>(@this.Count);
+            foreach (var source in @this)
+            {
+                results.Add(selector(source));
+            }
+            return results;
+        }
     }
 }

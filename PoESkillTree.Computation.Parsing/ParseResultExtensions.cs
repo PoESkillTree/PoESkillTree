@@ -28,7 +28,7 @@ namespace PoESkillTree.Computation.Parsing
                 return new Modifier(modifier.Stats, modifier.Form,
                     new FunctionalValue(
                         c => condition.Calculate(c).IsTrue() ? value.Calculate(c) : null,
-                        $"{condition} ? {value} : null"),
+                        condition + " ? " + value + " : null"),
                     modifier.Source);
             }
         }
@@ -47,7 +47,7 @@ namespace PoESkillTree.Computation.Parsing
                 var multiplier = buildMultiplier(buildParameters);
                 var value = modifier.Value;
                 return new Modifier(modifier.Stats, modifier.Form,
-                    new FunctionalValue(c => value.Calculate(c) * multiplier.Calculate(c), $"{value} * {multiplier}"),
+                    new FunctionalValue(c => value.Calculate(c) * multiplier.Calculate(c), value + " * " + multiplier),
                     modifier.Source);
             }
         }

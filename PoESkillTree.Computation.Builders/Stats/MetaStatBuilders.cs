@@ -1,4 +1,5 @@
 ﻿using System;
+using EnumsNET;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -184,10 +185,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder MainSkillSocketIndex => FromIdentity(typeof(uint));
 
         public IStatBuilder SkillBaseCost(ItemSlot itemSlot, int socketIndex)
-            => FromIdentity($"{itemSlot}.{socketIndex}.Cost", typeof(uint));
+            => FromIdentity($"{itemSlot.GetName()}.{socketIndex}.Cost", typeof(uint));
 
         public IStatBuilder SkillHasType(ItemSlot itemSlot, int socketIndex, string activeSkillType)
-            => FromIdentity($"{itemSlot}.{socketIndex}.Type.{activeSkillType}", typeof(bool));
+            => FromIdentity($"{itemSlot.GetName()}.{socketIndex}.Type.{activeSkillType}", typeof(bool));
 
         public IStatBuilder DamageBaseAddEffectiveness => FromFactory(StatFactory.DamageBaseAddEffectiveness);
         public IStatBuilder DamageBaseSetEffectiveness => FromFactory(StatFactory.DamageBaseSetEffectiveness);
