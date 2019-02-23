@@ -42,7 +42,7 @@ namespace POESKillTree.Model.Items
         {
             var defaultImage = itemImageService.LoadDefaultImage(baseClass);
             ImageSource = NewImageSourceTask(
-                itemImageService.LoadItemImageAsync(baseName, defaultImage),
+                itemImageService.LoadItemImageAsync(baseName, Task.FromResult(defaultImage)),
                 "Loading of base item image failed",
                 defaultImage
             );
@@ -62,7 +62,7 @@ namespace POESKillTree.Model.Items
         {
             return new ItemImage(
                 ImageSource.Result,
-                itemImageService.LoadFromUrl(MakeUrl(imageUrl), ImageSource.Result),
+                itemImageService.LoadFromUrlAsync(MakeUrl(imageUrl), ImageSource.Task),
                 "Downloading of item image from official url failed"
             );
         }
@@ -75,7 +75,7 @@ namespace POESKillTree.Model.Items
         {
             return new ItemImage(
                 ImageSource.Result,
-                itemImageService.LoadItemImageAsync(uniqueName, ImageSource.Result),
+                itemImageService.LoadItemImageAsync(uniqueName, ImageSource.Task),
                 "Loading of unique item image failed"
             );
         }

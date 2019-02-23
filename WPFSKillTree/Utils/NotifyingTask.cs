@@ -30,7 +30,7 @@ namespace POESKillTree.Utils
             Task = task;
             if (!task.IsCompleted)
             {
-                TaskCompletion = WatchTaskAsync(task, errorHandler, null);
+                TaskCompletion = WatchTaskAsync(errorHandler, null);
             }
         }
 
@@ -39,15 +39,15 @@ namespace POESKillTree.Utils
             Task = task;
             if (!task.IsCompleted)
             {
-                TaskCompletion = WatchTaskAsync(task, null, errorHandler);
+                TaskCompletion = WatchTaskAsync(null, errorHandler);
             }
         }
 
-        private async Task WatchTaskAsync(Task task, Action<Exception> errorHandler, Func<Exception, Task> asyncErrorHandler)
+        private async Task WatchTaskAsync(Action<Exception> errorHandler, Func<Exception, Task> asyncErrorHandler)
         {
             try
             {
-                await task;
+                await Task;
             }
             catch (Exception e)
             {
@@ -59,11 +59,11 @@ namespace POESKillTree.Utils
             OnPropertyChanged(nameof(Status));
             OnPropertyChanged(nameof(IsCompleted));
             OnPropertyChanged(nameof(IsNotCompleted));
-            if (task.IsCanceled)
+            if (Task.IsCanceled)
             {
                 OnPropertyChanged(nameof(IsCanceled));
             }
-            else if (task.IsFaulted)
+            else if (Task.IsFaulted)
             {
                 OnPropertyChanged(nameof(IsFaulted));
                 OnPropertyChanged(nameof(Exception));

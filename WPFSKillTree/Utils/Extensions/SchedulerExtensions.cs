@@ -6,15 +6,21 @@ namespace POESKillTree.Utils.Extensions
 {
     public static class SchedulerExtensions
     {
+        public static Task ScheduleAsync(this IScheduler @this, Action action)
+            => @this.ScheduleAsync(() => { action(); return Task.FromResult(default(object)); });
+
         public static Task<T> ScheduleAsync<T>(this IScheduler @this, Func<T> action)
+            => @this.ScheduleAsync(() => Task.FromResult(action()));
+
+        public static Task<T> ScheduleAsync<T>(this IScheduler @this, Func<Task<T>> action)
         {
             var taskCompletionSource = new TaskCompletionSource<T>();
-            @this.Schedule(() =>
+            @this.ScheduleAsync(async (_, __) =>
             {
                 try
                 {
-                    var node = action();
-                    taskCompletionSource.SetResult(node);
+                    var result = await action().ConfigureAwait(false);
+                    taskCompletionSource.SetResult(result);
                 }
                 catch (Exception e)
                 {
@@ -23,8 +29,5 @@ namespace POESKillTree.Utils.Extensions
             });
             return taskCompletionSource.Task;
         }
-
-        public static Task ScheduleAsync(this IScheduler @this, Action action)
-            => @this.ScheduleAsync<object>(() => { action(); return null; });
     }
 }

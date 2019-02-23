@@ -3,7 +3,9 @@ using System.Collections.Concurrent;
 using System.Drawing;
 using System.IO;
 using System.Net.Http;
+using System.Reactive.Concurrency;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
@@ -12,6 +14,7 @@ using System.Windows.Media.Imaging;
 using log4net;
 using PoESkillTree.GameModel.Items;
 using POESKillTree.Utils;
+using POESKillTree.Utils.Extensions;
 using POESKillTree.Utils.WikiApi;
 
 namespace POESKillTree.Model.Items
@@ -47,6 +50,7 @@ namespace POESKillTree.Model.Items
         private readonly HttpClient _httpClient = new HttpClient();
         private readonly PoolingImageLoader _wikiLoader;
         private readonly Options _options;
+        private readonly IScheduler _scheduler;
 
         /// <summary>
         /// Stores images for ItemClasses.
@@ -81,6 +85,7 @@ namespace POESKillTree.Model.Items
         {
             _options = options;
             _wikiLoader = new PoolingImageLoader(_httpClient);
+            _scheduler = new EventLoopScheduler(a => new Thread(a) { Name = "ItemImageService", IsBackground = true });
             Directory.CreateDirectory(AssetPath);
         }
 
@@ -114,23 +119,19 @@ namespace POESKillTree.Model.Items
         /// <param name="itemName">name of the base item. Equals the asset file name of the image.</param>
         /// <param name="defaultImage">image the task returns if the image file does not exist and download of missing
         /// images is disabled.</param>
-        public Task<ImageSource> LoadItemImageAsync(string itemName, ImageSource defaultImage)
-        {
-            return _assetImageCache.GetOrAdd(itemName, n => LoadAssetAsync(itemName, defaultImage));
-        }
+        public Task<ImageSource> LoadItemImageAsync(string itemName, Task<ImageSource> defaultImage)
+            => _assetImageCache.GetOrAdd(itemName, n => Schedule(() => LoadAssetAsync(n, defaultImage)));
 
-        private async Task<ImageSource> LoadAssetAsync(string itemName, ImageSource defaultImage)
+        private async Task<ImageSource> LoadAssetAsync(string itemName, Task<ImageSource> defaultImage)
         {
             var fileName = string.Format(AssetPathFormat, itemName);
-            if (File.Exists(fileName))
+            if (!File.Exists(fileName))
             {
-                return await Task.Run(() => ImageSourceFromPath(fileName)).ConfigureAwait(false);
+                if (_options.DownloadMissingItemImages)
+                    await _wikiLoader.ProduceAsync(itemName, fileName).ConfigureAwait(false);
+                else
+                    return await defaultImage.ConfigureAwait(false);
             }
-            if (!_options.DownloadMissingItemImages)
-            {
-                return defaultImage;
-            }
-            await _wikiLoader.ProduceAsync(itemName, fileName).ConfigureAwait(false);
             return ImageSourceFromPath(fileName);
         }
 
@@ -143,12 +144,10 @@ namespace POESKillTree.Model.Items
         /// pathofexile.com.</param>
         /// <param name="defaultImage">image the task returns if the image file does not exist and download of missing
         /// images is disabled.</param>
-        public Task<ImageSource> LoadFromUrl(string imageUrl, ImageSource defaultImage)
-        {
-            return _downloadedImageCache.GetOrAdd(imageUrl, n => LoadOfficialAsync(n, defaultImage));
-        }
+        public Task<ImageSource> LoadFromUrlAsync(string imageUrl, Task<ImageSource> defaultImage)
+            => _downloadedImageCache.GetOrAdd(imageUrl, n => Schedule(() => LoadOfficialAsync(n, defaultImage)));
 
-        private async Task<ImageSource> LoadOfficialAsync(string imageUrl, ImageSource defaultImage)
+        private async Task<ImageSource> LoadOfficialAsync(string imageUrl, Task<ImageSource> defaultImage)
         {
             // Remove the query part, remove the host part, remove image/Art/2DItems/, trim slashes
             var relevantPart = Regex.Replace(imageUrl, @"(\?.*)|(.*(\.net|\.com)/)|(image/Art/2DItems/)", "").Trim('/');
@@ -171,16 +170,18 @@ namespace POESKillTree.Model.Items
             if (!File.Exists(fileName))
             {
                 if (!_options.DownloadMissingItemImages)
-                {
-                    return defaultImage;
-                }
+                    return await defaultImage.ConfigureAwait(false);
+
                 var imgData = await _httpClient.GetByteArrayAsync(imageUrl).ConfigureAwait(false);
                 CreateDirectories(fileName);
                 WikiApiUtils.SaveImage(imgData, fileName, false);
                 Log.Info($"Downloaded item image {fileName} to the file system.");
             }
-            return await Task.Run(() => ImageSourceFromPath(fileName)).ConfigureAwait(false);
+            return ImageSourceFromPath(fileName);
         }
+
+        private Task<T> Schedule<T>(Func<Task<T>> function)
+            => _scheduler.ScheduleAsync(function);
 
         private static ImageSource ImageSourceFromPath(string path)
         {
