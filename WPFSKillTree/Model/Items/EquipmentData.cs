@@ -38,14 +38,14 @@ namespace POESKillTree.Model.Items
 
         private async Task InitializeAsync()
         {
-            var modsTask = DataUtils.LoadRePoEAsync<Dictionary<string, JsonMod>>("mods");
-            var benchOptionsTask = DataUtils.LoadRePoEAsync<JsonCraftingBenchOption[]>("crafting_bench_options");
-            var statTranslatorTask = StatTranslators.CreateFromMainFileAsync();
+            var modsTask = DataUtils.LoadRePoEAsync<Dictionary<string, JsonMod>>("mods", true);
+            var benchOptionsTask = DataUtils.LoadRePoEAsync<JsonCraftingBenchOption[]>("crafting_bench_options", true);
+            var statTranslatorTask = StatTranslators.CreateFromMainFileAsync(true);
             ModDatabase = new ModDatabase(await modsTask, await benchOptionsTask);
-            StatTranslator = await statTranslatorTask;
 
-            ItemBases = (await LoadBases()).ToList();
-            UniqueBases = (await LoadUniques()).ToList();
+            ItemBases = await LoadBases();
+            UniqueBases = await LoadUniques();
+            StatTranslator = await statTranslatorTask;
 
             ItemBaseDictionary = ItemBases.DistinctBy(b => b.Name).ToDictionary(b => b.Name);
             UniqueBaseDictionary = UniqueBases.DistinctBy(b => b.UniqueName).ToDictionary(b => b.UniqueName);
@@ -60,18 +60,18 @@ namespace POESKillTree.Model.Items
             return o;
         }
 
-        private async Task<IEnumerable<ItemBase>> LoadBases()
+        private async Task<IReadOnlyList<ItemBase>> LoadBases()
         {
-            var xmlList = await DataUtils.LoadXmlAsync<XmlItemList>("Equipment.Items.xml");
-            return xmlList.ItemBases.Select(x => new ItemBase(_itemImageService, ModDatabase, x));
+            var xmlList = await DataUtils.LoadXmlAsync<XmlItemList>("Equipment.Items.xml", true);
+            return xmlList.ItemBases.Select(x => new ItemBase(_itemImageService, ModDatabase, x)).ToList();
         }
 
-        private async Task<IEnumerable<UniqueBase>> LoadUniques()
+        private async Task<IReadOnlyList<UniqueBase>> LoadUniques()
         {
             var metadataToBase = ItemBases.ToDictionary(b => b.MetadataId);
-            var xmlList = await DataUtils.LoadXmlAsync<XmlUniqueList>("Equipment.Uniques.xml");
+            var xmlList = await DataUtils.LoadXmlAsync<XmlUniqueList>("Equipment.Uniques.xml", true);
             return xmlList.Uniques.Select(
-                x => new UniqueBase(_itemImageService, ModDatabase, metadataToBase[x.BaseMetadataId], x));
+                x => new UniqueBase(_itemImageService, ModDatabase, metadataToBase[x.BaseMetadataId], x)).ToList();
         }
 
         public ItemBase ItemBaseFromTypeline(string typeline)

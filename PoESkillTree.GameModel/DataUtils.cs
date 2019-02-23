@@ -17,31 +17,42 @@ namespace PoESkillTree.GameModel
         public const string RePoEDataUrl = "https://raw.githubusercontent.com/brather1ng/RePoE/master/data/";
         public const string RePoEFileSuffix = ".min.json";
 
-        /// <typeparam name="T">type to deserialize the json as</typeparam>
-        /// <param name="fileName">the data file to deserialize, without extension</param>
-        /// <returns>a task returning the deserialized object</returns>
-        public static Task<T> LoadRePoEAsync<T>(string fileName)
-            => LoadJsonAsync<T>(RePoEFileToResource(fileName));
+        public static Task<T> LoadRePoEAsync<T>(string fileName, bool deserializeOnThreadPool = false)
+            => LoadJsonAsync<T>(RePoEFileToResource(fileName), deserializeOnThreadPool);
 
-        public static Task<JObject> LoadRePoEAsObjectAsync(string fileName)
-            => LoadJObjectAsync(RePoEFileToResource(fileName));
+        public static Task<JObject> LoadRePoEAsObjectAsync(string fileName, bool loadOnThreadPool = false)
+        {
+            var resourceName = RePoEFileToResource(fileName);
+            if (loadOnThreadPool)
+                return Task.Run(async () => await LoadJObjectAsync(resourceName));
+            return LoadJObjectAsync(resourceName);
+        }
 
         private static string RePoEFileToResource(string fileName)
             => "RePoE." + fileName.Replace("/", ".") + RePoEFileSuffix;
 
-        public static async Task<T> LoadJsonAsync<T>(string fileName)
+        public static async Task<T> LoadJsonAsync<T>(string fileName, bool deserializeOnThreadPool = false)
         {
             var text = await LoadTextAsync(fileName).ConfigureAwait(false);
+            if (deserializeOnThreadPool)
+                return await Task.Run(() => JsonConvert.DeserializeObject<T>(text)).ConfigureAwait(false);
             return JsonConvert.DeserializeObject<T>(text);
         }
 
-        public static async Task<T> LoadXmlAsync<T>(string fileName)
+        public static async Task<T> LoadXmlAsync<T>(string fileName, bool deserializeOnThreadPool = false)
         {
             var xmlString = await LoadTextAsync(fileName).ConfigureAwait(false);
-            using (var reader = new StringReader(xmlString))
+            if (deserializeOnThreadPool)
+                return await Task.Run(() => Deserialize(xmlString)).ConfigureAwait(false);
+            return Deserialize(xmlString);
+
+            T Deserialize(string s)
             {
-                var serializer = new XmlSerializer(typeof(T));
-                return (T) serializer.Deserialize(reader);
+                using (var reader = new StringReader(s))
+                {
+                    var serializer = new XmlSerializer(typeof(T));
+                    return (T) serializer.Deserialize(reader);
+                }
             }
         }
 
