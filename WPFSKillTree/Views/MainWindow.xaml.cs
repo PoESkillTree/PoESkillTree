@@ -459,7 +459,7 @@ namespace POESKillTree.Views
 
             var computationInitializer = ComputationInitializer.StartNew();
             _gameData = computationInitializer.GameData;
-            var persistentDataTask = PersistentData.InitializeAsync(DialogCoordinator.Instance, _gameData);
+            var persistentDataTask = PersistentData.InitializeAsync(DialogCoordinator.Instance);
 
             InitializeIndependentUI();
 

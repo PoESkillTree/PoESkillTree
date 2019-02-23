@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using log4net;
 using Newtonsoft.Json.Linq;
-using PoESkillTree.GameModel;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model.Builds;
@@ -58,7 +57,7 @@ namespace POESKillTree.Model.Serialization
             return SerializationConstants.EncodedDefaultBuildName;
         }
 
-        public async Task InitializeAsync(IDialogCoordinator dialogCoordinator, GameData gameData)
+        public async Task InitializeAsync(IDialogCoordinator dialogCoordinator)
         {
             DialogCoordinator = dialogCoordinator;
             if (PersistentData.Options.BuildsSavePath == null)
@@ -94,7 +93,7 @@ namespace POESKillTree.Model.Serialization
             Directory.CreateDirectory(PersistentData.Options.BuildsSavePath);
             await DeserializeAdditionalFilesAsync();
             PersistentData.EquipmentData = await DeserializeEquipmentData();
-            PersistentData.StashItems.AddRange(await DeserializeStashItemsAsync(gameData));
+            PersistentData.StashItems.AddRange(await DeserializeStashItemsAsync());
         }
 
         public virtual void SaveBuildChanges()
@@ -111,7 +110,7 @@ namespace POESKillTree.Model.Serialization
             return EquipmentData.CreateAsync(PersistentData.Options);
         }
 
-        private async Task<IEnumerable<Item>> DeserializeStashItemsAsync(GameData gameData)
+        private async Task<IEnumerable<Item>> DeserializeStashItemsAsync()
         {
             try
             {

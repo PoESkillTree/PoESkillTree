@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using PoESkillTree.GameModel;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model.Builds;
 
@@ -11,7 +10,7 @@ namespace POESKillTree.Model.Serialization
     /// </summary>
     public class BarePersistentData : AbstractPersistentData
     {
-        public override Task InitializeAsync(IDialogCoordinator dialogCoordinator, GameData gameData)
+        public override Task InitializeAsync(IDialogCoordinator dialogCoordinator)
         {
             throw new System.NotSupportedException();
         }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using log4net;
-using PoESkillTree.GameModel;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model.Builds;
 using POESKillTree.Utils;
@@ -115,9 +114,9 @@ namespace POESKillTree.Model.Serialization
                                        new PersistentDataDeserializerCurrent {PersistentData = this};
             }
 
-            public override async Task InitializeAsync(IDialogCoordinator dialogCoordinator, GameData gameData)
+            public override async Task InitializeAsync(IDialogCoordinator dialogCoordinator)
             {
-                await _deserializer.InitializeAsync(dialogCoordinator, gameData);
+                await _deserializer.InitializeAsync(dialogCoordinator);
                 _serializer = new PersistentDataSerializer(this);
                 _deserializer.SaveBuildChanges();
                 if (!string.IsNullOrEmpty(_importedBuildPath))
