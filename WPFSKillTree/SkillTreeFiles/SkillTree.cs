@@ -15,6 +15,7 @@ using JetBrains.Annotations;
 using log4net;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.PassiveTree;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 using POESKillTree.Common;
 using POESKillTree.Controls.Dialogs;
@@ -726,7 +727,7 @@ namespace POESKillTree.SkillTreeFiles
             var treeObj = "";
             if (File.Exists(path))
             {
-                treeObj = await FileEx.ReadAllTextAsync(path);
+                treeObj = await FileUtils.ReadAllTextAsync(path);
             }
             if (treeObj == "")
             {

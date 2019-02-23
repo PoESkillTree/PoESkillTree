@@ -5,6 +5,7 @@ using System.Linq;
 using log4net;
 using MoreLinq;
 using Newtonsoft.Json.Linq;
+using PoESkillTree.Utils;
 using POESKillTree.Controls;
 using POESKillTree.Model.Builds;
 using POESKillTree.Utils;
@@ -76,7 +77,7 @@ namespace POESKillTree.Model.Serialization
                 StashBookmarks = _persistentData.StashBookmarks.ToList(),
                 LeagueStashes = stashes
             };
-            SerializationUtils.XmlSerializeToFile(xmlPersistentData, filePath);
+            XmlSerializationUtils.SerializeToFile(xmlPersistentData, filePath);
             SerializeStash();
         }
 
@@ -257,7 +258,7 @@ namespace POESKillTree.Model.Serialization
         public string ExportBuildToString(PoEBuild build)
         {
             var xmlBuild = ToXmlBuild(build);
-            return SerializationUtils.XmlSerializeToString(xmlBuild);
+            return XmlSerializationUtils.SerializeToString(xmlBuild);
         }
 
         private static void SerializeFolder(string path, BuildFolder folder)
@@ -269,7 +270,7 @@ namespace POESKillTree.Model.Serialization
                 Builds = folder.Builds.Select(b => b.Name).ToList()
             };
             Directory.CreateDirectory(path);
-            SerializationUtils.XmlSerializeToFile(xmlFolder, Path.Combine(path, BuildFolderFileName));
+            XmlSerializationUtils.SerializeToFile(xmlFolder, Path.Combine(path, BuildFolderFileName));
         }
 
         private static XmlBuild ToXmlBuild(PoEBuild build)
@@ -298,7 +299,7 @@ namespace POESKillTree.Model.Serialization
         private static void SerializeBuild(string path, PoEBuild build)
         {
             var xmlBuild = ToXmlBuild(build);
-            SerializationUtils.XmlSerializeToFile(xmlBuild, path + BuildFileExtension);
+            XmlSerializationUtils.SerializeToFile(xmlBuild, path + BuildFileExtension);
             build.KeepChanges();
         }
     }
