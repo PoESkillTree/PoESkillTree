@@ -229,6 +229,7 @@
     <Compile Include="Utils\SemanticVersion.cs" />
     <Compile Include="Utils\WikiApi\CargoConstants.cs" />
     <Compile Include="Utils\Wpf\BindableActualSizeBehavior.cs" />
+    <Compile Include="Utils\Wpf\BitmapImageFactory.cs" />
     <Compile Include="Utils\Wpf\ScrollViewerBindableOffsetBehavior.cs" />
     <Compile Include="Computation\ViewModels\AddableResultStatViewModel.cs" />
     <Compile Include="Computation\ViewModels\ComputationViewModel.cs" />
@@ -519,7 +520,6 @@
     <Compile Include="Model\Items\ItemAttributes.cs" />
     <Compile Include="Model\Items\ItemBase.cs" />
     <Compile Include="ViewModels\ListGroup.cs" />
-    <Compile Include="SkillTreeFiles\ImageHelper.cs" />
     <Compile Include="ViewModels\Attribute.cs" />
     <Compile Include="SkillTreeFiles\EXTHelper.cs" />
     <Compile Include="ViewModels\ListGroupItem.cs" />

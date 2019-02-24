@@ -22,6 +22,7 @@ using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model;
 using POESKillTree.Utils.UrlProcessing;
+using POESKillTree.Utils.Wpf;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
 using static POESKillTree.SkillTreeFiles.Constants;
 
@@ -203,6 +204,8 @@ namespace POESKillTree.SkillTreeFiles
                 await assetLoader.DownloadSkillNodeSpritesAsync(inTree, d => controller?.SetProgress(0.25 + d * 0.30));
                 IconInActiveSkills = new SkillIcons();
                 IconActiveSkills = new SkillIcons();
+                var assetActions =
+                    new List<(Task<BitmapImage>, Action<BitmapImage>)>(inTree.skillSprites.Count + inTree.assets.Count);
                 foreach (var obj in inTree.skillSprites)
                 {
                     SkillIcons icons;
@@ -232,7 +235,8 @@ namespace POESKillTree.SkillTreeFiles
                     }
                     var sprite = obj.Value[AssetZoomLevel];
                     var path = _assetsFolderPath + sprite.filename;
-                    icons.Images[sprite.filename] = ImageHelper.OnLoadBitmapImage(new Uri(path, UriKind.Absolute));
+                    assetActions.Add(
+                        (Task.Run(() => BitmapImageFactory.Create(path)), i => icons.Images[sprite.filename] = i));
                     foreach (var o in sprite.coords)
                     {
                         var iconKey = prefix + "_" + o.Key;
@@ -246,8 +250,14 @@ namespace POESKillTree.SkillTreeFiles
                 await assetLoader.DownloadAssetsAsync(inTree, d => controller?.SetProgress(0.55 + d * 0.44));
                 foreach (var ass in inTree.assets)
                 {
-                    var path = _assetsFolderPath + ass.Key + ".png";
-                    Assets[ass.Key] = ImageHelper.OnLoadBitmapImage(new Uri(path, UriKind.Absolute));
+                    var key = ass.Key;
+                    var path = _assetsFolderPath + key + ".png";
+                    assetActions.Add((Task.Run(() => BitmapImageFactory.Create(path)), i => Assets[key] = i));
+                }
+
+                foreach (var (task, action) in assetActions)
+                {
+                    action(await task);
                 }
 
                 RootNodeList = new List<ushort>();

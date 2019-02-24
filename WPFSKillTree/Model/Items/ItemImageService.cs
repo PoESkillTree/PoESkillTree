@@ -16,6 +16,7 @@ using PoESkillTree.GameModel.Items;
 using POESKillTree.Utils;
 using POESKillTree.Utils.Extensions;
 using POESKillTree.Utils.WikiApi;
+using POESKillTree.Utils.Wpf;
 
 namespace POESKillTree.Model.Items
 {
@@ -101,7 +102,7 @@ namespace POESKillTree.Model.Items
                 try
                 {
                     var path = string.Format(ResourcePathFormat, c);
-                    return ImageSourceFromPath(path);
+                    return BitmapImageFactory.Create(path);
                 }
                 catch (Exception e)
                 {
@@ -132,7 +133,7 @@ namespace POESKillTree.Model.Items
                 else
                     return await defaultImage.ConfigureAwait(false);
             }
-            return ImageSourceFromPath(fileName);
+            return BitmapImageFactory.Create(fileName);
         }
 
         /// <summary>
@@ -177,22 +178,11 @@ namespace POESKillTree.Model.Items
                 WikiApiUtils.SaveImage(imgData, fileName, false);
                 Log.Info($"Downloaded item image {fileName} to the file system.");
             }
-            return ImageSourceFromPath(fileName);
+            return BitmapImageFactory.Create(fileName);
         }
 
         private Task<T> Schedule<T>(Func<Task<T>> function)
             => _scheduler.ScheduleAsync(function);
-
-        private static ImageSource ImageSourceFromPath(string path)
-        {
-            var img = new BitmapImage();
-            img.BeginInit();
-            img.CacheOption = BitmapCacheOption.OnLoad;
-            img.UriSource = new Uri(path, UriKind.RelativeOrAbsolute);
-            img.EndInit();
-            img.Freeze();
-            return img;
-        }
 
         private static void CreateDirectories(string fileName)
         {

@@ -11,6 +11,7 @@ using PoESkillTree.GameModel.PassiveTree;
 using HighlightState = POESKillTree.SkillTreeFiles.NodeHighlighter.HighlightState;
 using POESKillTree.Model;
 using MoreLinq;
+using POESKillTree.Utils.Wpf;
 
 namespace POESKillTree.SkillTreeFiles
 {
@@ -1001,12 +1002,12 @@ namespace POESKillTree.SkillTreeFiles
             if (_initialized) return;
             foreach (var faceName in CharacterFaceNames)
             {
-                var bi = ImageHelper.OnLoadBitmapImage(new Uri(_assetsFolderPath + faceName + ".png", UriKind.Absolute));
+                var bi = BitmapImageFactory.Create(_assetsFolderPath + faceName + ".png");
                 _faceBrushes.Add(new KeyValuePair<Rect, ImageBrush>(new Rect(0, 0, bi.PixelWidth, bi.PixelHeight),
                     new ImageBrush(bi)));
             }
 
-            var bi2 = ImageHelper.OnLoadBitmapImage(new Uri(_assetsFolderPath + "PSStartNodeBackgroundInactive.png", UriKind.Absolute));
+            var bi2 = BitmapImageFactory.Create(_assetsFolderPath + "PSStartNodeBackgroundInactive.png");
             if (_startBackgrounds.ContainsKey(false))
             {
                 if (!_startBackgrounds[false].Key.Equals(new Rect(0, 0, bi2.PixelWidth, bi2.PixelHeight)))

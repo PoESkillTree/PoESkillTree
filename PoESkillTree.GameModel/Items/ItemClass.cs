@@ -104,26 +104,20 @@ namespace PoESkillTree.GameModel.Items
 
         /// <returns>the Tags an item with this ItemClass always has</returns>
         public static Tags ToTags(this ItemClass itemClass)
-        {
-            return ItemClassToTags[itemClass];
-        }
+            => ItemClassToTags[itemClass];
 
         /// <summary>
         /// Tries to convert a string that is an Id from the GGPK's ItemClasses.dat to an <see cref="ItemClass"/>
         /// instance.
         /// </summary>
         public static bool TryParse(string ggpkItemClass, out ItemClass itemClass)
-        {
-            return Enum.TryParse(ggpkItemClass.Replace(" ", ""), true, out itemClass);
-        }
+            => Enums.TryParse(ggpkItemClass.Replace(" ", ""), true, out itemClass);
 
         public static ItemClass Parse(string ggpkItemClass)
             => Enums.Parse<ItemClass>(ggpkItemClass.Replace(" ", ""));
 
         public static ItemClass ItemClassForGem(string gemName)
-        {
-            return gemName.EndsWith(" Support") ? ItemClass.SupportSkillGem : ItemClass.ActiveSkillGem;
-        }
+            => gemName.EndsWith(" Support") ? ItemClass.SupportSkillGem : ItemClass.ActiveSkillGem;
 
         /// <summary>
         /// Returns all <see cref="ItemSlot"/>s items of this class can be slotted into.
