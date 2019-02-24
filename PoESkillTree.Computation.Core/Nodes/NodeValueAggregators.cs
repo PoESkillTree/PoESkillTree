@@ -13,6 +13,21 @@ namespace PoESkillTree.Computation.Core.Nodes
     public static class NodeValueAggregators
     {
         public static NodeValue? CalculateTotalOverride(List<NodeValue?> values)
+            => SelectSingleValue(values);
+
+        public static NodeValue? CalculateMore(List<NodeValue?> values)
+            => values.Product(v => 1 + v / 100);
+
+        public static NodeValue? CalculateIncrease(List<NodeValue?> values)
+            => values.Sum(v => v / 100);
+
+        public static NodeValue? CalculateBaseAdd(List<NodeValue?> values)
+            => values.Sum();
+
+        public static NodeValue? CalculateBaseSet(List<NodeValue?> values)
+            => SelectSingleValue(values);
+
+        private static NodeValue? SelectSingleValue(List<NodeValue?> values)
         {
             NodeValue? result = null;
             var hasDistinctValues = false;
@@ -31,34 +46,8 @@ namespace PoESkillTree.Computation.Core.Nodes
             }
 
             if (hasDistinctValues)
-                throw new NotSupportedException(
-                    "Multiple TotalOverride modifiers with none having value 0 are not supported");
+                throw new NotSupportedException("Multiple modifiers with none having value 0 are not supported");
 
-            return result;
-        }
-
-        public static NodeValue? CalculateMore(List<NodeValue?> values)
-            => values.Product(v => 1 + v / 100);
-
-        public static NodeValue? CalculateIncrease(List<NodeValue?> values)
-            => values.Sum(v => v / 100);
-
-        public static NodeValue? CalculateBaseAdd(List<NodeValue?> values)
-            => values.Sum();
-
-        public static NodeValue? CalculateBaseSet(List<NodeValue?> values)
-        {
-            NodeValue? result = null;
-            foreach (var nullableValue in values)
-            {
-                if (nullableValue is NodeValue value)
-                {
-                    if (result is null)
-                        result = value;
-                    else if (result != value)
-                        throw new NotSupportedException("Multiple modifiers to BaseSet are not supported");
-                }
-            }
             return result;
         }
     }

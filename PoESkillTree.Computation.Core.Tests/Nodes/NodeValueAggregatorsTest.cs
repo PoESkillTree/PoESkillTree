@@ -54,21 +54,14 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         
         [TestCase(null)]
         [TestCase(42, 42.0)]
+        [TestCase(0, 42.0, 0.0, null)]
         public void CalculateBaseSetReturnsCorrectResult(double? expected, params double?[] values)
         {
             AssertReturnsCorrectResult(NodeValueAggregators.CalculateBaseSet, expected, values);
         }
 
         [Test]
-        public void CalculateBaseSetThrowsExceptionIfMultipleNonZeroValuesArePassed()
-        {
-            var values = new double?[] { 42, 0, 43 }.Select(v => (NodeValue?) v).ToList();
-
-            Assert.Throws<NotSupportedException>(() => NodeValueAggregators.CalculateBaseSet(values));
-        }
-
-        [Test]
-        public void CalculateBaseSetThrowsExceptionIfMultipleValuesWithNonUZeroMaximumArePassed()
+        public void CalculateBaseSetThrowsExceptionIfNoValueIsZero()
         {
             var values = new List<NodeValue?> { new NodeValue(0, 5), new NodeValue(0, 44)};
 
