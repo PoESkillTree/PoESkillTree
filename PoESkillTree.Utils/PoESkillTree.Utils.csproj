@@ -64,7 +64,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectionChangedEventArgs.cs" />
     <Compile Include="FileUtils.cs" />
+    <Compile Include="INotifyCollectionChanged.cs" />
     <Compile Include="JsonSerializationUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
