@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using PoESkillTree.Computation.Core.Events;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Core.NodeCollections
 {
@@ -16,7 +17,7 @@ namespace PoESkillTree.Computation.Core.NodeCollections
         {
             if (_collection.Add(element))
             {
-                OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Add, element));
+                OnCollectionChanged(CollectionChangedEventArgs.Added(element));
             }
         }
 
@@ -24,7 +25,7 @@ namespace PoESkillTree.Computation.Core.NodeCollections
         {
             if (_collection.Remove(element))
             {
-                OnCollectionChanged(new CollectionChangeEventArgs(CollectionChangeAction.Remove, element));
+                OnCollectionChanged(CollectionChangedEventArgs.Removed(element));
             }
         }
 
@@ -34,13 +35,17 @@ namespace PoESkillTree.Computation.Core.NodeCollections
 
         public int Count => _collection.Count;
 
-        public int SubscriberCount => CollectionChanged?.GetInvocationList().Length ?? 0;
+        public int SubscriberCount
+            => (CollectionChanged?.GetInvocationList().Length ?? 0)
+               + (UntypedCollectionChanged?.GetInvocationList().Length ?? 0);
 
-        public event CollectionChangeEventHandler CollectionChanged;
+        public event CollectionChangedEventHandler<T> CollectionChanged;
+        public event EventHandler UntypedCollectionChanged;
 
-        protected virtual void OnCollectionChanged(CollectionChangeEventArgs e)
+        protected virtual void OnCollectionChanged(CollectionChangedEventArgs<T> e)
         {
             CollectionChanged?.Invoke(this, e);
+            UntypedCollectionChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

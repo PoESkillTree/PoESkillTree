@@ -16,6 +16,7 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Core;
 using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Console
 {
@@ -112,25 +113,35 @@ namespace PoESkillTree.Computation.Console
             }
         }
 
-        private static void ExplicitlyRegisteredStatsOnCollectionChanged(object sender, CollectionChangeEventArgs e)
+        private static void ExplicitlyRegisteredStatsOnCollectionChanged(
+            object sender, CollectionChangedEventArgs<(ICalculationNode node, IStat stat)> e)
         {
-            System.Console.WriteLine($"ExplicitlyRegisteredStats, {e.Action}");
-            if (e.Action != CollectionChangeAction.Refresh)
+            foreach (var (node, stat) in e.AddedItems)
             {
-                var (node, stat) = ((ICalculationNode, IStat)) e.Element;
-                System.Console.WriteLine($"  Stat: {stat}");
-                switch (stat.ExplicitRegistrationType)
-                {
-                    case ExplicitRegistrationType.UserSpecifiedValue t:
-                        System.Console.WriteLine($"  User specified with default value {t.DefaultValue}");
-                        break;
-                    case ExplicitRegistrationType.GainOnAction t:
-                        System.Console.WriteLine(
-                            $"  Gain stat {t.GainedStat} on action {t.Action} by entity {t.ActionEntity}");
-                        break;
-                }
-                System.Console.WriteLine($"  Current value: {node.Value}");
+                System.Console.WriteLine("ExplicitlyRegisteredStats, Added");
+                WriteExplicitlyRegisteredStat(node, stat);
             }
+            foreach (var (node, stat) in e.RemovedItems)
+            {
+                System.Console.WriteLine("ExplicitlyRegisteredStats, Removed");
+                WriteExplicitlyRegisteredStat(node, stat);
+            }
+        }
+
+        private static void WriteExplicitlyRegisteredStat(ICalculationNode node, IStat stat)
+        {
+            System.Console.WriteLine($"  Stat: {stat}");
+            switch (stat.ExplicitRegistrationType)
+            {
+                case ExplicitRegistrationType.UserSpecifiedValue t:
+                    System.Console.WriteLine($"  User specified with default value {t.DefaultValue}");
+                    break;
+                case ExplicitRegistrationType.GainOnAction t:
+                    System.Console.WriteLine(
+                        $"  Gain stat {t.GainedStat} on action {t.Action} by entity {t.ActionEntity}");
+                    break;
+            }
+            System.Console.WriteLine($"  Current value: {node.Value}");
         }
 
         private async Task ListenAsync(string statLine)

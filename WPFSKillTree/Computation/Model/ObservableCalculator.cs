@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
@@ -8,6 +7,7 @@ using System.Threading.Tasks;
 using log4net;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
+using PoESkillTree.Utils;
 using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Computation.Model
@@ -18,13 +18,15 @@ namespace POESKillTree.Computation.Model
 
         private readonly ICalculator _calculator;
         private readonly IScheduler _calculationScheduler;
-        private readonly Lazy<IObservable<CollectionChangeEventArgs>> _explicitlyRegisteredStatsObservable;
+        private readonly Lazy<IObservable<CollectionChangedEventArgs<(ICalculationNode, IStat)>>>
+            _explicitlyRegisteredStatsObservable;
 
         public ObservableCalculator(ICalculator calculator, IScheduler calculationScheduler)
         {
             (_calculator, _calculationScheduler) = (calculator, calculationScheduler);
             _explicitlyRegisteredStatsObservable =
-                new Lazy<IObservable<CollectionChangeEventArgs>>(CreateExplicitlyRegisteredStatsObservable);
+                new Lazy<IObservable<CollectionChangedEventArgs<(ICalculationNode, IStat)>>>(
+                    CreateExplicitlyRegisteredStatsObservable);
         }
 
         public IObservable<NodeValue?> ObserveNode(IStat stat, NodeType nodeType = NodeType.Total)
@@ -49,22 +51,19 @@ namespace POESKillTree.Computation.Model
             }
         }
 
-        public IObservable<CollectionChangeEventArgs> ObserveExplicitlyRegisteredStats()
+        public IObservable<CollectionChangedEventArgs<(ICalculationNode node, IStat stat)>>
+            ObserveExplicitlyRegisteredStats()
             => _explicitlyRegisteredStatsObservable.Value;
 
-        private IObservable<CollectionChangeEventArgs> CreateExplicitlyRegisteredStatsObservable()
+        private IObservable<CollectionChangedEventArgs<(ICalculationNode, IStat)>>
+            CreateExplicitlyRegisteredStatsObservable()
         {
             var collection = _calculator.ExplicitlyRegisteredStats;
-            return Observable.FromEventPattern<CollectionChangeEventHandler, CollectionChangeEventArgs>(
+            return Observable.FromEventPattern<CollectionChangedEventHandler<(ICalculationNode, IStat)>,
+                    CollectionChangedEventArgs<(ICalculationNode, IStat)>>(
                     h => collection.CollectionChanged += h,
                     h => collection.CollectionChanged -= h)
-                .Select(p => p.EventArgs)
-                .Select(InsertStatsIntoRefresh);
-
-            CollectionChangeEventArgs InsertStatsIntoRefresh(CollectionChangeEventArgs e)
-                => e.Action == CollectionChangeAction.Refresh
-                    ? new CollectionChangeEventArgs(e.Action, _calculator.ExplicitlyRegisteredStats.ToList())
-                    : e;
+                .Select(p => p.EventArgs);
         }
 
         public Task<List<(ICalculationNode node, IStat stat)>> GetExplicitlyRegisteredStatsAsync()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Builders.Stats;
@@ -162,8 +163,9 @@ namespace PoESkillTree.Computation.IntegrationTests.Core
             sut.ExplicitlyRegisteredStats.CollectionChanged += (sender, args) =>
             {
                 Assert.IsNull(actual);
-                Assert.AreEqual(CollectionChangeAction.Add, args.Action);
-                actual = (((ICalculationNode, IStat)) args.Element).Item2;
+                Assert.AreEqual(1, args.AddedItems.Count);
+                Assert.IsEmpty(args.RemovedItems);
+                actual = args.AddedItems.First().Item2;
             };
 
             sut.NewBatchUpdate().AddModifier(modifierStat, Form.BaseAdd, value).DoUpdate();

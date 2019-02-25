@@ -43,7 +43,7 @@ namespace PoESkillTree.Computation.Core.Nodes
 
             foreach (var collection in _currentContext.UsedCollections)
             {
-                collection.CollectionChanged -= OnValueChanged;
+                collection.UntypedCollectionChanged -= OnValueChanged;
             }
 
             (_previousContext, _currentContext) = (_currentContext, _previousContext);
@@ -61,7 +61,7 @@ namespace PoESkillTree.Computation.Core.Nodes
             foreach (var collection in _previousContext.UsedCollections)
             {
                 if (!_currentContext.UsedCollections.Contains(collection))
-                    collection.CollectionChanged -= OnValueChanged;
+                    collection.UntypedCollectionChanged -= OnValueChanged;
             }
 
             foreach (var node in _currentContext.UsedNodes)
@@ -72,7 +72,7 @@ namespace PoESkillTree.Computation.Core.Nodes
             foreach (var collection in _currentContext.UsedCollections)
             {
                 if (!_previousContext.UsedCollections.Contains(collection))
-                    collection.CollectionChanged += OnValueChanged;
+                    collection.UntypedCollectionChanged += OnValueChanged;
             }
 
             _previousContext.Clear();

@@ -48,7 +48,7 @@ namespace PoESkillTree.Tests.Computation.Model
         }
 
         [Test]
-        public void InvokesAddAndRemoveOnRefresh()
+        public void InvokesAddAndRemoveOnAddAndRemove()
         {
             var stats = new[] { new Stat("a"), new Stat("b"), new Stat("c"), };
             var actualAdded = new List<IStat>();
@@ -65,8 +65,8 @@ namespace PoESkillTree.Tests.Computation.Model
             nodeCollection.Remove(null, stats[0]);
             eventBuffer.Flush();
 
-            Assert.AreEqual(stats.Skip(1), actualAdded);
-            Assert.AreEqual(stats.Take(2), actualRemoved);
+            Assert.AreEqual(stats.Skip(2), actualAdded);
+            Assert.AreEqual(stats.Take(1), actualRemoved);
         }
 
         [Test]
