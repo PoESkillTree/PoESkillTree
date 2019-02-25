@@ -14,17 +14,19 @@ namespace POESKillTree.Computation.ViewModels
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ConfigurationNodeViewModel));
 
+        private readonly NodeValue? _defaultValue;
         private readonly Subject<NodeValue?> _valueChangeSubject = new Subject<NodeValue?>();
 
-        public ConfigurationNodeViewModel(IStat stat) : base(stat)
+        public ConfigurationNodeViewModel(IStat stat, NodeValue? defaultValue = null) : base(stat)
         {
+            _defaultValue = defaultValue;
         }
 
         public void ResetValue()
         {
             Value = Stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue userSpecifiedValue
                 ? userSpecifiedValue.DefaultValue
-                : null;
+                : _defaultValue;
         }
 
         protected override void OnPropertyChanged(string propertyName)

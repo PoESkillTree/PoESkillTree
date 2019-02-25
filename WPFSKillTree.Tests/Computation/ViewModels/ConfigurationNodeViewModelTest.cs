@@ -65,19 +65,20 @@ namespace PoESkillTree.Tests.Computation.ViewModels
             Assert.AreEqual(true, sut.BoolValue);
         }
 
-        [Test]
-        public void ResetValueSetsValueToNullIfNotUserSpecified()
+        [TestCase(null)]
+        [TestCase(1.2)]
+        public void ResetValueSetsValueToDefaultIfNotUserSpecified(double? defaultValue)
         {
             var stat = new Stat("");
-            var sut = CreateSut(stat);
+            var sut = CreateSut(stat, defaultValue);
             sut.BoolValue = true;
 
             sut.ResetValue();
 
-            Assert.IsNull(sut.Value);
+            Assert.AreEqual(defaultValue, sut.NumericValue);
         }
 
-        private static ConfigurationNodeViewModel CreateSut(IStat stat)
-            => new ConfigurationNodeViewModel(stat);
+        private static ConfigurationNodeViewModel CreateSut(IStat stat, double? defaultValue = null)
+            => new ConfigurationNodeViewModel(stat, (NodeValue?) defaultValue);
     }
 }
