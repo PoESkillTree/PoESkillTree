@@ -14,6 +14,7 @@ using PoESkillTree.Computation.Parsing;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 using POESKillTree.SkillTreeFiles;
 using POESKillTree.Utils;
@@ -47,7 +48,7 @@ namespace POESKillTree.Computation.Model
                     .SelectMany(ParseSkilledNode));
 
         public IObservable<CalculatorUpdate> ObserveSkilledPassiveNodes(ObservableSet<SkillNode> skilledNodes)
-            => ObserveCollection<SkillNode>(skilledNodes, n => ParseSkilledNode(n.Id));
+            => ObserveCollection(skilledNodes, n => ParseSkilledNode(n.Id));
 
         private IReadOnlyList<Modifier> ParseSkilledNode(ushort nodeId)
             => _parser.ParseSkilledPassiveNode(nodeId).Modifiers;
@@ -113,6 +114,29 @@ namespace POESKillTree.Computation.Model
                     return CalculatorUpdate.Empty;
                 return changedItems.Cast<T>().Select(parse).Aggregate(CalculatorUpdate.Accumulate);
             }
+        }
+
+        private static IObservable<CalculatorUpdate> ObserveCollection<T>(
+            INotifyCollectionChanged<T> collection, Func<T, IReadOnlyList<Modifier>> parse)
+            => ObserveCollection<T>(collection, t => new CalculatorUpdate(parse(t), new Modifier[0]));
+
+        private static IObservable<CalculatorUpdate> ObserveCollection<T>(
+            INotifyCollectionChanged<T> collection, Func<T, CalculatorUpdate> parse)
+        {
+            return Observable.FromEventPattern<CollectionChangedEventHandler<T>, CollectionChangedEventArgs<T>>(
+                    h => collection.CollectionChanged += h,
+                    h => collection.CollectionChanged -= h)
+                .Select(p => p.EventArgs)
+                .Select(args =>
+                {
+                    var addUpdate = Parse(args.AddedItems);
+                    var removeUpdate = Parse(args.RemovedItems).Invert();
+                    return CalculatorUpdate.Accumulate(addUpdate, removeUpdate);
+                })
+                .Where(UpdateIsNotEmpty);
+
+            CalculatorUpdate Parse(IEnumerable<T> changedItems)
+                => changedItems.Select(parse).Aggregate(CalculatorUpdate.Empty, CalculatorUpdate.Accumulate);
         }
 
         private static bool UpdateIsNotEmpty(CalculatorUpdate update)

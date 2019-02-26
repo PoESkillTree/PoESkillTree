@@ -5,14 +5,14 @@ namespace PoESkillTree.Utils
 {
     public static class CollectionChangedEventArgs
     {
-        public static CollectionChangedEventArgs<T> Added<T>(T addedItem)
-            => Added((IReadOnlyCollection<T>) new[] { addedItem });
+        public static CollectionChangedEventArgs<T> AddedSingle<T>(T addedItem)
+            => Added(new[] { addedItem });
 
         public static CollectionChangedEventArgs<T> Added<T>(IReadOnlyCollection<T> addedItems)
             => Replaced(addedItems, new T[0]);
 
-        public static CollectionChangedEventArgs<T> Removed<T>(T removedItem)
-            => Removed((IReadOnlyCollection<T>) new[] { removedItem });
+        public static CollectionChangedEventArgs<T> RemovedSingle<T>(T removedItem)
+            => Removed(new[] { removedItem });
 
         public static CollectionChangedEventArgs<T> Removed<T>(IReadOnlyCollection<T> removedItems)
             => Replaced(new T[0], removedItems);

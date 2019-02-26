@@ -86,14 +86,13 @@ namespace POESKillTree.SkillTreeFiles
             CreateCombineVisuals();
         }
 
-        private void HighlightedNodes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void HighlightedNodes_CollectionChanged(object sender, EventArgs e)
         {
             DrawTreeComparisonHighlight();
         }
 
-        private void SkilledNodes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void SkilledNodes_CollectionChanged(object sender, EventArgs e)
         {
-            if (e.NewItems == null && e.OldItems == null) return;
             DrawActiveSkillIconsAndSurrounds();
             DrawActivePaths();
             DrawCharacterFaces();

@@ -48,10 +48,10 @@ namespace PoESkillTree.Tests.Computation.Model
                 .ToList();
             var expected = new[]
             {
-                CollectionChangedEventArgs.Added((elements[0].node, elements[0].stat)),
+                CollectionChangedEventArgs.AddedSingle((elements[0].node, elements[0].stat)),
                 CollectionChangedEventArgs.Replaced(new[] { (elements[1].node, elements[1].stat) },
                     new[] { (elements[2].node, elements[2].stat) }),
-                CollectionChangedEventArgs.Removed((elements[1].node, elements[2].stat)),
+                CollectionChangedEventArgs.RemovedSingle((elements[1].node, elements[2].stat)),
             };
             var nodeCollectionMock = new Mock<INodeCollection<IStat>>();
             nodeCollectionMock.Setup(c => c.GetEnumerator()).Returns(() => elements.GetEnumerator());

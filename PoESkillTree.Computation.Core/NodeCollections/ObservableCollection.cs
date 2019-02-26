@@ -17,7 +17,7 @@ namespace PoESkillTree.Computation.Core.NodeCollections
         {
             if (_collection.Add(element))
             {
-                OnCollectionChanged(CollectionChangedEventArgs.Added(element));
+                OnCollectionChanged(CollectionChangedEventArgs.AddedSingle(element));
             }
         }
 
@@ -25,7 +25,7 @@ namespace PoESkillTree.Computation.Core.NodeCollections
         {
             if (_collection.Remove(element))
             {
-                OnCollectionChanged(CollectionChangedEventArgs.Removed(element));
+                OnCollectionChanged(CollectionChangedEventArgs.RemovedSingle(element));
             }
         }
 
