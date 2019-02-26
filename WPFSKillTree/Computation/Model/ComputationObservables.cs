@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
@@ -67,14 +64,14 @@ namespace POESKillTree.Computation.Model
                     : ParseResult.Empty;
         }
 
-        public IObservable<CalculatorUpdate> ObserveItems(ObservableCollection<(Item, ItemSlot)> items)
-            => ObserveCollection<(Item item, ItemSlot slot)>(items, t => _parser.ParseItem(t.item, t.slot).Modifiers);
+        public IObservable<CalculatorUpdate> ObserveItems(ObservableSet<(Item item, ItemSlot slot)> items)
+            => ObserveCollection(items, t => _parser.ParseItem(t.item, t.slot).Modifiers);
 
         public IObservable<CalculatorUpdate> ParseSkills(IEnumerable<IReadOnlyList<Skill>> skills)
             => AggregateModifiers(skills.ToObservable().SelectMany(ParseSkills));
 
-        public IObservable<CalculatorUpdate> ObserveSkills(ObservableCollection<IReadOnlyList<Skill>> skills)
-            => ObserveCollection<IReadOnlyList<Skill>>(skills, ParseSkills);
+        public IObservable<CalculatorUpdate> ObserveSkills(ObservableSet<IReadOnlyList<Skill>> skills)
+            => ObserveCollection(skills, ParseSkills);
 
         private IReadOnlyList<Modifier> ParseSkills(IReadOnlyList<Skill> skills)
             => _parser.ParseSkills(skills).Modifiers;
@@ -85,40 +82,8 @@ namespace POESKillTree.Computation.Model
                 .Where(UpdateIsNotEmpty);
 
         private static IObservable<CalculatorUpdate> ObserveCollection<T>(
-            INotifyCollectionChanged collection, Func<T, IReadOnlyList<Modifier>> parse)
-            => ObserveCollection<T>(collection, t => new CalculatorUpdate(parse(t), new Modifier[0]));
-
-        private static IObservable<CalculatorUpdate> ObserveCollection<T>(
-            INotifyCollectionChanged collection, Func<T, CalculatorUpdate> parse)
-        {
-            return Observable.FromEventPattern<NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(
-                    h => collection.CollectionChanged += h,
-                    h => collection.CollectionChanged -= h)
-                .Select(p =>
-                {
-                    if (p.EventArgs.Action == NotifyCollectionChangedAction.Reset)
-                        throw new NotSupportedException("Reset action is not supported");
-                    return p.EventArgs;
-                })
-                .Select(args =>
-                {
-                    var addUpdate = Parse(args.NewItems);
-                    var removeUpdate = Parse(args.OldItems).Invert();
-                    return CalculatorUpdate.Accumulate(addUpdate, removeUpdate);
-                })
-                .Where(UpdateIsNotEmpty);
-
-            CalculatorUpdate Parse(IEnumerable changedItems)
-            {
-                if (changedItems is null)
-                    return CalculatorUpdate.Empty;
-                return changedItems.Cast<T>().Select(parse).Aggregate(CalculatorUpdate.Accumulate);
-            }
-        }
-
-        private static IObservable<CalculatorUpdate> ObserveCollection<T>(
             INotifyCollectionChanged<T> collection, Func<T, IReadOnlyList<Modifier>> parse)
-            => ObserveCollection<T>(collection, t => new CalculatorUpdate(parse(t), new Modifier[0]));
+            => ObserveCollection(collection, t => new CalculatorUpdate(parse(t), new Modifier[0]));
 
         private static IObservable<CalculatorUpdate> ObserveCollection<T>(
             INotifyCollectionChanged<T> collection, Func<T, CalculatorUpdate> parse)

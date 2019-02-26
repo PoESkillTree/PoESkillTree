@@ -39,7 +39,7 @@ namespace POESKillTree.Computation.ViewModels
         }
 
         private async Task InitializeAsync(
-            SkillDefinitions skillDefinitions, IBuilderFactories f, ObservableCollection<IReadOnlyList<Skill>> skills)
+            SkillDefinitions skillDefinitions, IBuilderFactories f, ObservableSet<IReadOnlyList<Skill>> skills)
         {
             MainSkillSelection = MainSkillSelectionViewModel.Create(skillDefinitions, f, _nodeFactory, skills);
 
@@ -230,7 +230,7 @@ namespace POESKillTree.Computation.ViewModels
         public static async Task<ComputationViewModel> CreateAsync(
             GameData gameData, IBuilderFactories builderFactories,
             ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers,
-            ObservableCollection<IReadOnlyList<Skill>> skills)
+            ObservableSet<IReadOnlyList<Skill>> skills)
         {
             var skillDefinitions = await gameData.Skills;
             var vm = new ComputationViewModel(observableCalculator, schedulers);

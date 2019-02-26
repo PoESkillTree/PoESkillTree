@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -112,10 +110,9 @@ namespace POESKillTree.Model.Items
 
         #endregion
 
-        public ObservableCollection<Item> Equip { get; } = new ObservableCollection<Item>();
+        public ObservableSet<Item> Equip { get; } = new ObservableSet<Item>();
 
-        public ObservableCollection<IReadOnlyList<Skill>> Skills { get; } =
-            new ObservableCollection<IReadOnlyList<Skill>>();
+        public ObservableSet<IReadOnlyList<Skill>> Skills { get; } = new ObservableSet<IReadOnlyList<Skill>>();
 
         private ListCollectionView _attributes;
         public ListCollectionView Attributes
@@ -223,7 +220,7 @@ namespace POESKillTree.Model.Items
             Skills.CollectionChanged -= OnCollectionChanged;
         }
 
-        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        private void OnCollectionChanged(object sender, EventArgs args)
             => OnItemDataChanged();
 
         private void SlottedItemOnPropertyChanged(object sender, PropertyChangedEventArgs args)

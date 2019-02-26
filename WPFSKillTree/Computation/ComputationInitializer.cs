@@ -33,7 +33,7 @@ namespace POESKillTree.Computation
 
         private Task _initialParseTask;
 
-        private ObservableCollection<IReadOnlyList<Skill>> _skills;
+        private ObservableSet<IReadOnlyList<Skill>> _skills;
 
         private ComputationInitializer()
         {
@@ -81,8 +81,8 @@ namespace POESKillTree.Computation
         }
 
         public async Task InitializeAfterBuildLoadAsync(
-            ObservableSet<SkillNode> skilledNodes, ObservableCollection<(Item, ItemSlot)> items,
-            ObservableCollection<IReadOnlyList<Skill>> skills)
+            ObservableSet<SkillNode> skilledNodes, ObservableSet<(Item, ItemSlot)> items,
+            ObservableSet<IReadOnlyList<Skill>> skills)
         {
             _skills = skills;
             await Task.WhenAll(_initialParseTask,
@@ -96,12 +96,12 @@ namespace POESKillTree.Computation
                 _observables.ParseSkilledPassiveNodes(skilledNodes),
                 _observables.ObserveSkilledPassiveNodes(skilledNodes));
 
-        private async Task ConnectToEquipmentAsync(ObservableCollection<(Item, ItemSlot)> items)
+        private async Task ConnectToEquipmentAsync(ObservableSet<(Item, ItemSlot)> items)
             => await ConnectAsync(
                 _observables.ParseItems(items),
                 _observables.ObserveItems(items));
 
-        private async Task ConnectToSkillsAsync(ObservableCollection<IReadOnlyList<Skill>> skills)
+        private async Task ConnectToSkillsAsync(ObservableSet<IReadOnlyList<Skill>> skills)
             => await ConnectAsync(
                 _observables.ParseSkills(skills),
                 _observables.ObserveSkills(skills));

@@ -1,14 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using MoreLinq;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
-using PoESkillTree.Utils.Extensions;
+using PoESkillTree.Utils;
 using POESKillTree.Model.Items;
+using POESKillTree.Utils;
 using Item = PoESkillTree.GameModel.Items.Item;
 using OldItem = POESKillTree.Model.Items.Item;
 
@@ -16,17 +13,15 @@ namespace POESKillTree.Model
 {
     public class ObservableItemCollectionConverter
     {
-        private ObservableCollection<OldItem> _itemAttributesEquip;
-        private ObservableCollection<IReadOnlyList<Skill>> _itemAttributesSkills;
+        private ObservableSet<OldItem> _itemAttributesEquip;
+        private ObservableSet<IReadOnlyList<Skill>> _itemAttributesSkills;
 
         private readonly Dictionary<ItemSlot, OldItem> _itemSlotToOldItem =
             new Dictionary<ItemSlot, OldItem>();
 
-        public ObservableCollection<(Item, ItemSlot)> Items { get; } =
-            new ObservableCollection<(Item, ItemSlot)>();
+        public ObservableSet<(Item, ItemSlot)> Items { get; } = new ObservableSet<(Item, ItemSlot)>();
 
-        public ObservableCollection<IReadOnlyList<Skill>> Skills { get; } =
-            new ObservableCollection<IReadOnlyList<Skill>>();
+        public ObservableSet<IReadOnlyList<Skill>> Skills { get; } = new ObservableSet<IReadOnlyList<Skill>>();
 
         public void ConvertFrom(ItemAttributes itemAttributes)
         {
@@ -44,70 +39,59 @@ namespace POESKillTree.Model
             _itemAttributesSkills.CollectionChanged += ItemAttributesSkillsOnCollectionChanged;
         }
 
-        private void ItemAttributesEquipOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        private void ItemAttributesEquipOnCollectionChanged(object sender, CollectionChangedEventArgs<OldItem> args)
         {
-            if (args.Action == NotifyCollectionChangedAction.Reset)
-            {
-                ResetItems();
-                return;
-            }
-            if (args.NewItems is IList newItems)
-            {
-                newItems.Cast<OldItem>().ForEach(Add);
-            }
-            if (args.OldItems is IList oldItems)
-            {
-                oldItems.Cast<OldItem>().ForEach(Remove);
-            }
+            Remove(args.RemovedItems);
+            Add(args.AddedItems);
         }
 
-        private void ItemAttributesSkillsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        private void ItemAttributesSkillsOnCollectionChanged(
+            object sender, CollectionChangedEventArgs<IReadOnlyList<Skill>> args)
         {
-            if (args.Action == NotifyCollectionChangedAction.Reset)
-            {
-                ResetSkills();
-                return;
-            }
-            if (args.NewItems is IList newItems)
-            {
-                Skills.AddRange(newItems.Cast<IReadOnlyList<Skill>>());
-            }
-            if (args.OldItems is IList oldItems)
-            {
-                oldItems.Cast<IReadOnlyList<Skill>>().ForEach(ss => Skills.Remove(ss));
-            }
+            Skills.ExceptWith(args.RemovedItems);
+            Skills.UnionWith(args.AddedItems);
         }
 
         private void ResetItems()
         {
-            _itemSlotToOldItem.Values.ToList().ForEach(Remove);
-            _itemAttributesEquip.ForEach(Add);
+            Remove(_itemSlotToOldItem.Values.ToList());
+            Add(_itemAttributesEquip);
         }
 
         private void ResetSkills()
         {
-            Skills.ToList().ForEach(ss => Skills.Remove(ss));
-            Skills.AddRange(_itemAttributesSkills);
+            Skills.Clear();
+            Skills.UnionWith(_itemAttributesSkills);
         }
 
-        private void Add(OldItem oldItem)
+        private void Add(IEnumerable<OldItem> oldItems)
         {
-            var (item, slot) = Convert(oldItem);
+            var toAdd = new List<(Item, ItemSlot)>();
+            foreach (var oldItem in oldItems)
+            {
+                var (item, slot) = Convert(oldItem);
 
-            oldItem.PropertyChanged += OldItemOnPropertyChanged;
+                oldItem.PropertyChanged += OldItemOnPropertyChanged;
 
-            _itemSlotToOldItem[slot] = oldItem;
-            Items.Add((item, slot));
+                _itemSlotToOldItem[slot] = oldItem;
+                toAdd.Add((item, slot));
+            }
+            Items.UnionWith(toAdd);
         }
 
-        private void Remove(OldItem oldItem)
+        private void Remove(IEnumerable<OldItem> oldItems)
         {
-            var (item, slot) = Convert(oldItem);
+            var toRemove = new List<(Item, ItemSlot)>();
+            foreach (var oldItem in oldItems)
+            {
+                var (item, slot) = Convert(oldItem);
 
-            oldItem.PropertyChanged -= OldItemOnPropertyChanged;
+                oldItem.PropertyChanged -= OldItemOnPropertyChanged;
 
-            _itemSlotToOldItem.Remove(slot);
-            Items.Remove((item, slot));
+                _itemSlotToOldItem.Remove(slot);
+                toRemove.Add((item, slot));
+            }
+            Items.ExceptWith(toRemove);
         }
 
         private static (Item, ItemSlot) Convert(OldItem oldItem)

@@ -119,7 +119,7 @@ namespace PoESkillTree.Tests.Computation.Model
             };
             var parser = MockItemParser(items, parseResults);
             var sut = CreateSut(parser);
-            var observableCollection = new ObservableCollection<(Item, ItemSlot)>();
+            var observableCollection = new ObservableSet<(Item, ItemSlot)>();
 
             var actual = new List<CalculatorUpdate>();
             using (sut.ObserveItems(observableCollection).Subscribe(actual.Add))
@@ -160,7 +160,7 @@ namespace PoESkillTree.Tests.Computation.Model
             };
             var parser = MockSkillParser(skills, parseResults);
             var sut = CreateSut(parser);
-            var observableCollection = new ObservableCollection<IReadOnlyList<Skill>>();
+            var observableCollection = new ObservableSet<IReadOnlyList<Skill>>();
 
             var actual = new List<CalculatorUpdate>();
             using (sut.ObserveSkills(observableCollection).Subscribe(actual.Add))

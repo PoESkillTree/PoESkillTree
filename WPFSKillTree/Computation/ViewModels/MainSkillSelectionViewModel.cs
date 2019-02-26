@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using JetBrains.Annotations;
@@ -10,6 +9,7 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 using POESKillTree.Utils;
 
@@ -27,7 +27,7 @@ namespace POESKillTree.Computation.ViewModels
         public static MainSkillSelectionViewModel Create(
             SkillDefinitions skillDefinitions, IBuilderFactories builderFactories,
             CalculationNodeViewModelFactory nodeFactory,
-            ObservableCollection<IReadOnlyList<Skill>> skills)
+            ObservableSet<IReadOnlyList<Skill>> skills)
         {
             var vm = new MainSkillSelectionViewModel(skillDefinitions, builderFactories, nodeFactory);
             vm.Initialize(skills);
@@ -51,9 +51,10 @@ namespace POESKillTree.Computation.ViewModels
             ConfigurationNodes = new[] { _selectedSkillItemSlot, _selectedSkillSocketIndex, _selectedSkillPart };
         }
 
-        private void Initialize(ObservableCollection<IReadOnlyList<Skill>> skills)
+        private void Initialize(ObservableSet<IReadOnlyList<Skill>> skills)
         {
-            ResetSkills(skills);
+            AddSkills(skills);
+            SelectedSkill = GetSelectedAndAvailableSkill() ?? AvailableSkills.First();
             _selectedSkillItemSlot.PropertyChanged += OnSelectedSkillStatChanged;
             _selectedSkillSocketIndex.PropertyChanged += OnSelectedSkillStatChanged;
             skills.CollectionChanged += OnSkillsChanged;
@@ -91,31 +92,12 @@ namespace POESKillTree.Computation.ViewModels
             }
         }
 
-        private void OnSkillsChanged(object sender, NotifyCollectionChangedEventArgs args)
+        private void OnSkillsChanged(object sender, CollectionChangedEventArgs<IReadOnlyList<Skill>> args)
         {
-            if (args.Action == NotifyCollectionChangedAction.Reset)
-            {
-                ResetSkills((IEnumerable<IEnumerable<Skill>>) sender);
-                return;
-            }
-
-            if (args.NewItems != null)
-            {
-                AddSkills(args.NewItems.Cast<IEnumerable<Skill>>());
-            }
-            if (args.OldItems != null)
-            {
-                RemoveSkills(args.OldItems.Cast<IEnumerable<Skill>>());
-            }
+            AddSkills(args.AddedItems);
+            RemoveSkills(args.RemovedItems);
             // FirstOrDefault because AvailableSkills can be temporarily empty
             SelectedSkill = GetSelectedAndAvailableSkill() ?? AvailableSkills.FirstOrDefault();
-        }
-
-        private void ResetSkills(IEnumerable<IEnumerable<Skill>> skills)
-        {
-            AvailableSkills.Clear();
-            AddSkills(skills);
-            SelectedSkill = GetSelectedAndAvailableSkill() ?? AvailableSkills.First();
         }
 
         private void AddSkills(IEnumerable<IEnumerable<Skill>> skills)
