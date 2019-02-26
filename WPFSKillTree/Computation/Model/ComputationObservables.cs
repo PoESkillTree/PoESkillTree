@@ -14,7 +14,6 @@ using PoESkillTree.GameModel.Skills;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 using POESKillTree.SkillTreeFiles;
-using POESKillTree.Utils;
 
 namespace POESKillTree.Computation.Model
 {
@@ -44,7 +43,8 @@ namespace POESKillTree.Computation.Model
                 skilledNodes.Select(n => n.Id).ToObservable()
                     .SelectMany(ParseSkilledNode));
 
-        public IObservable<CalculatorUpdate> ObserveSkilledPassiveNodes(ObservableSet<SkillNode> skilledNodes)
+        public IObservable<CalculatorUpdate> ObserveSkilledPassiveNodes(
+            INotifyCollectionChanged<SkillNode> skilledNodes)
             => ObserveCollection(skilledNodes, n => ParseSkilledNode(n.Id));
 
         private IReadOnlyList<Modifier> ParseSkilledNode(ushort nodeId)
@@ -64,13 +64,13 @@ namespace POESKillTree.Computation.Model
                     : ParseResult.Empty;
         }
 
-        public IObservable<CalculatorUpdate> ObserveItems(ObservableSet<(Item item, ItemSlot slot)> items)
+        public IObservable<CalculatorUpdate> ObserveItems(INotifyCollectionChanged<(Item item, ItemSlot slot)> items)
             => ObserveCollection(items, t => _parser.ParseItem(t.item, t.slot).Modifiers);
 
         public IObservable<CalculatorUpdate> ParseSkills(IEnumerable<IReadOnlyList<Skill>> skills)
             => AggregateModifiers(skills.ToObservable().SelectMany(ParseSkills));
 
-        public IObservable<CalculatorUpdate> ObserveSkills(ObservableSet<IReadOnlyList<Skill>> skills)
+        public IObservable<CalculatorUpdate> ObserveSkills(INotifyCollectionChanged<IReadOnlyList<Skill>> skills)
             => ObserveCollection(skills, ParseSkills);
 
         private IReadOnlyList<Modifier> ParseSkills(IReadOnlyList<Skill> skills)

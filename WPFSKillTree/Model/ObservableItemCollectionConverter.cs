@@ -40,61 +40,40 @@ namespace POESKillTree.Model
         }
 
         private void ItemAttributesEquipOnCollectionChanged(object sender, CollectionChangedEventArgs<OldItem> args)
-        {
-            Remove(args.RemovedItems);
-            Add(args.AddedItems);
-        }
+            => ChangeItems(args.RemovedItems, args.AddedItems);
 
         private void ItemAttributesSkillsOnCollectionChanged(
             object sender, CollectionChangedEventArgs<IReadOnlyList<Skill>> args)
-        {
-            Skills.ExceptWith(args.RemovedItems);
-            Skills.UnionWith(args.AddedItems);
-        }
+            => Skills.ExceptAndUnionWith(args.RemovedItems, args.AddedItems);
 
         private void ResetItems()
-        {
-            Remove(_itemSlotToOldItem.Values.ToList());
-            Add(_itemAttributesEquip);
-        }
+            => ChangeItems(_itemSlotToOldItem.Values.ToList(), _itemAttributesEquip);
 
         private void ResetSkills()
-        {
-            Skills.Clear();
-            Skills.UnionWith(_itemAttributesSkills);
-        }
+            => Skills.ExceptAndUnionWith(Skills.ToList(), _itemAttributesSkills);
 
-        private void Add(IEnumerable<OldItem> oldItems)
-        {
-            var toAdd = new List<(Item, ItemSlot)>();
-            foreach (var oldItem in oldItems)
-            {
-                var (item, slot) = Convert(oldItem);
-
-                oldItem.PropertyChanged += OldItemOnPropertyChanged;
-
-                _itemSlotToOldItem[slot] = oldItem;
-                toAdd.Add((item, slot));
-            }
-            Items.UnionWith(toAdd);
-        }
-
-        private void Remove(IEnumerable<OldItem> oldItems)
+        private void ChangeItems(IEnumerable<OldItem> oldToRemove, IEnumerable<OldItem> oldToAdd)
         {
             var toRemove = new List<(Item, ItemSlot)>();
-            foreach (var oldItem in oldItems)
+            foreach (var oldItem in oldToRemove)
             {
-                var (item, slot) = Convert(oldItem);
-
+                var tuple = Convert(oldItem);
                 oldItem.PropertyChanged -= OldItemOnPropertyChanged;
-
-                _itemSlotToOldItem.Remove(slot);
-                toRemove.Add((item, slot));
+                _itemSlotToOldItem.Remove(tuple.slot);
+                toRemove.Add(tuple);
             }
-            Items.ExceptWith(toRemove);
+            var toAdd = new List<(Item, ItemSlot)>();
+            foreach (var oldItem in oldToAdd)
+            {
+                var tuple = Convert(oldItem);
+                oldItem.PropertyChanged += OldItemOnPropertyChanged;
+                _itemSlotToOldItem[tuple.slot] = oldItem;
+                toAdd.Add(tuple);
+            }
+            Items.ExceptAndUnionWith(toRemove, toAdd);
         }
 
-        private static (Item, ItemSlot) Convert(OldItem oldItem)
+        private static (Item item, ItemSlot slot) Convert(OldItem oldItem)
             => (ModelConverter.Convert(oldItem), oldItem.Slot);
 
         private void OldItemOnPropertyChanged(object sender, PropertyChangedEventArgs e)

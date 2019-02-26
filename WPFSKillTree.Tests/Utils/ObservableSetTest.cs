@@ -91,7 +91,7 @@ namespace PoESkillTree.Tests.Utils
         [Test]
         public void TestIntersectWith()
         {
-            var other = new[] {"item 1", "item 3"};
+            var other = new[] { "item 1", "item 3" };
             var skipNotifierAssertions = false;
             _set.CollectionChanged += (sender, args) =>
             {
@@ -150,7 +150,7 @@ namespace PoESkillTree.Tests.Utils
         {
             // HashSet, non-default equality
             ExpectCollectionRemove("item 2", "item 3");
-            _set.IntersectWith(new HashSet<string>(new[] {"item 1", "item 3"}, new CustomEqualityComparaer()));
+            _set.IntersectWith(new HashSet<string>(new[] { "item 1", "item 3" }, new CustomEqualityComparaer()));
             ExpectChangeCalls(1);
         }
 
@@ -158,10 +158,10 @@ namespace PoESkillTree.Tests.Utils
         public void TestExceptWith()
         {
             ExpectCollectionRemove("item 1", "item 2");
-            _set.ExceptWith(new[] {"item 4", "item 2", "item 1"});
+            _set.ExceptWith(new[] { "item 4", "item 2", "item 1" });
             ExpectChangeCalls(1);
 
-            _set.ExceptWith(new[] {"item 1", "item 5"});
+            _set.ExceptWith(new[] { "item 1", "item 5" });
             ExpectChangeCalls(0);
         }
 
@@ -170,7 +170,7 @@ namespace PoESkillTree.Tests.Utils
         {
             _set.Clear();
             ExpectChangeCalls(1);
-            _set.ExceptWith(new[] {"item 1", "item 4"});
+            _set.ExceptWith(new[] { "item 1", "item 4" });
             ExpectChangeCalls(0);
         }
 
@@ -184,7 +184,7 @@ namespace PoESkillTree.Tests.Utils
                 Assert.AreEqual("item 4", args.AddedItems.First());
                 Assert.AreEqual("item 2", args.RemovedItems.First());
             };
-            _set.SymmetricExceptWith(new[] {"item 2", "item 4"});
+            _set.SymmetricExceptWith(new[] { "item 2", "item 4" });
             ExpectChangeCalls(1, 0);
 
             _set.SymmetricExceptWith(new string[0]);
@@ -199,6 +199,78 @@ namespace PoESkillTree.Tests.Utils
             ExpectCollectionAdd("item 1", "item 4");
             _set.SymmetricExceptWith(new[] { "item 1", "item 4" });
             ExpectChangeCalls(1);
+        }
+
+        [Test]
+        public void TestExceptAndUnionWith()
+        {
+            _set.CollectionChanged += (sender, args) =>
+            {
+                CollectionAssert.AreEquivalent(new[] { "item 2" }, args.RemovedItems);
+                CollectionAssert.AreEquivalent(new[] { "item 4", "item 5" }, args.AddedItems);
+            };
+
+            _set.ExceptAndUnionWith(
+                new[] { "item 2", "item 3", "item 4" },
+                new[] { "item 1", "item 3", "item 4", "item 5" });
+
+            CollectionAssert.AreEquivalent(new[] { "item 1", "item 3", "item 4", "item 5" }, _set);
+            ExpectChangeCalls(1);
+        }
+
+        [Test]
+        public void TestRemoveAndAdd_RemovedAndAdded()
+        {
+            _set.CollectionChanged += (sender, args) =>
+            {
+                CollectionAssert.AreEquivalent(new[] { "item 3" }, args.RemovedItems);
+                CollectionAssert.AreEquivalent(new[] { "item 4" }, args.AddedItems);
+            };
+
+            _set.RemoveAndAdd("item 3", "item 4");
+
+            CollectionAssert.AreEquivalent(new[] { "item 1", "item 2", "item 4" }, _set);
+            ExpectChangeCalls(1, 0);
+        }
+
+        [Test]
+        public void TestRemoveAndAdd_RemovedAndNotAdded()
+        {
+            ExpectCollectionRemove("item 3");
+
+            _set.RemoveAndAdd("item 3", "item 1");
+
+            CollectionAssert.AreEquivalent(new[] { "item 1", "item 2" }, _set);
+            ExpectChangeCalls(1);
+        }
+
+        [Test]
+        public void TestRemoveAndAdd_NotRemovedAndAdded()
+        {
+            ExpectCollectionAdd("item 4");
+
+            _set.RemoveAndAdd("item 5", "item 4");
+
+            CollectionAssert.AreEquivalent(new[] { "item 1", "item 2", "item 3", "item 4" }, _set);
+            ExpectChangeCalls(1);
+        }
+
+        [Test]
+        public void TestRemoveAndAdd_NotRemovedAndNotAdded()
+        {
+            _set.RemoveAndAdd("item 4", "item 3");
+
+            CollectionAssert.AreEquivalent(new[] { "item 1", "item 2", "item 3" }, _set);
+            ExpectChangeCalls(0);
+        }
+
+        [Test]
+        public void TestRemoveAndAdd_SameRemovedAndAddedAndPreviouslyContained()
+        {
+            _set.RemoveAndAdd("item 3", "item 3");
+
+            CollectionAssert.AreEquivalent(new[] { "item 1", "item 2", "item 3" }, _set);
+            ExpectChangeCalls(0);
         }
 
         private void ExpectCollectionAdd(params string[] items)

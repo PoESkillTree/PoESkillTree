@@ -33,17 +33,23 @@ namespace POESKillTree.Model.Items
                 return;
             
             var old = Equip.FirstOrDefault(i => i.Slot == slot);
-            if (old != null)
+            if (value is null)
             {
                 Equip.Remove(old);
+            }
+            else
+            {
+                value.Slot = slot;
+                Equip.RemoveAndAdd(old, value);
+            }
+
+            if (old != null)
+            {
                 old.Slot = ItemSlot.Unequipable;
                 old.PropertyChanged -= SlottedItemOnPropertyChanged;
             }
-
             if (value != null)
             {
-                value.Slot = slot;
-                Equip.Add(value);
                 value.PropertyChanged += SlottedItemOnPropertyChanged;
             }
             OnPropertyChanged(slot.ToString());
@@ -98,11 +104,7 @@ namespace POESKillTree.Model.Items
         public void SetSkillsInSlot(IReadOnlyList<Skill> value, ItemSlot slot)
         {
             var oldValue = Skills.FirstOrDefault(ss => ss.Any(s => s.ItemSlot == slot));
-            if (oldValue != null)
-            {
-                Skills.Remove(oldValue);
-            }
-            Skills.Add(value);
+            Skills.RemoveAndAdd(oldValue, value);
         }
 
         private void AddSkillsToSlot(IEnumerable<Skill> skills, ItemSlot slot)

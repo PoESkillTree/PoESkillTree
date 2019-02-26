@@ -96,8 +96,7 @@ namespace POESKillTree.Computation.ViewModels
         {
             AddSkills(args.AddedItems);
             RemoveSkills(args.RemovedItems);
-            // FirstOrDefault because AvailableSkills can be temporarily empty
-            SelectedSkill = GetSelectedAndAvailableSkill() ?? AvailableSkills.FirstOrDefault();
+            SelectedSkill = GetSelectedAndAvailableSkill() ?? AvailableSkills.First();
         }
 
         private void AddSkills(IEnumerable<IEnumerable<Skill>> skills)

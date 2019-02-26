@@ -17,6 +17,9 @@ namespace PoESkillTree.Utils
         public static CollectionChangedEventArgs<T> Removed<T>(IReadOnlyCollection<T> removedItems)
             => Replaced(new T[0], removedItems);
 
+        public static CollectionChangedEventArgs<T> ReplacedSingle<T>(T addedItem, T removedItem)
+            => Replaced(new[] { addedItem }, new[] { removedItem });
+
         public static CollectionChangedEventArgs<T> Replaced<T>(
             IReadOnlyCollection<T> addedItems, IReadOnlyCollection<T> removedItems)
             => new CollectionChangedEventArgs<T>(addedItems, removedItems);

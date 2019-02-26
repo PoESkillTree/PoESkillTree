@@ -37,17 +37,11 @@ namespace POESKillTree.Utils
             }
         }
 
-        #region IEnumerable methods
-
         public IEnumerator<T> GetEnumerator()
             => _set.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
             => ((IEnumerable)_set).GetEnumerator();
-
-        #endregion
-
-        #region ISet methods
 
         public void UnionWith(IEnumerable<T> other)
         {
@@ -126,6 +120,24 @@ namespace POESKillTree.Utils
             OnCollectionChanged(CollectionChangedEventArgs.Replaced(added, removed));
         }
 
+        public void ExceptAndUnionWith(IEnumerable<T> toRemove, IEnumerable<T> toAdd)
+        {
+            CheckReentrancy();
+            var added = new HashSet<T>();
+            var removed = new HashSet<T>();
+            foreach (var t in toRemove)
+            {
+                if (_set.Remove(t))
+                    removed.Add(t);
+            }
+            foreach (var t in toAdd)
+            {
+                if (_set.Add(t) && !removed.Remove(t))
+                    added.Add(t);
+            }
+            OnCollectionChanged(CollectionChangedEventArgs.Replaced(added, removed));
+        }
+
         public bool IsSubsetOf(IEnumerable<T> other)
             => _set.IsSubsetOf(other);
 
@@ -152,10 +164,6 @@ namespace POESKillTree.Utils
                 OnCollectionChanged(CollectionChangedEventArgs.AddedSingle(item));
             return r;
         }
-
-        #endregion
-
-        #region ICollection methods
 
         void ICollection<T>.Add(T item)
             => Add(item);
@@ -185,9 +193,25 @@ namespace POESKillTree.Utils
             return r;
         }
 
-        #endregion
+        public void RemoveAndAdd(T toRemove, T toAdd)
+        {
+            CheckReentrancy();
 
-        #region Events
+            var (removed, added) = (_set.Remove(toRemove), _set.Add(toAdd));
+            if (removed && added)
+            {
+                if (!EqualityComparer<T>.Default.Equals(toRemove, toAdd))
+                    OnCollectionChanged(CollectionChangedEventArgs.ReplacedSingle(toAdd, toRemove));
+            }
+            else if (removed)
+            {
+                OnCollectionChanged(CollectionChangedEventArgs.RemovedSingle(toRemove));
+            }
+            else if (added)
+            {
+                OnCollectionChanged(CollectionChangedEventArgs.AddedSingle(toAdd));
+            }
+        }
 
         private void OnCollectionChanged(CollectionChangedEventArgs<T> args)
         {
@@ -203,7 +227,5 @@ namespace POESKillTree.Utils
 
         public event CollectionChangedEventHandler<T> CollectionChanged;
         public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
     }
 }
