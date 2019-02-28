@@ -120,6 +120,9 @@ namespace POESKillTree.Utils
             OnCollectionChanged(CollectionChangedEventArgs.Replaced(added, removed));
         }
 
+        public void ResetTo(IEnumerable<T> other)
+            => ExceptAndUnionWith(_set.ToList(), other);
+
         public void ExceptAndUnionWith(IEnumerable<T> toRemove, IEnumerable<T> toAdd)
         {
             CheckReentrancy();
