@@ -940,6 +940,20 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
             Assert.AreEqual(expectedDamage, actualDamage);
         }
 
+        [Test]
+        public void BladeFlurryHasMaximumMainSkillPartStat()
+        {
+            var (definition, skill) = CreateBladeFlurryDefinition();
+            var sut = CreateSut(definition);
+            var context = MockValueCalculationContextForMainSkill(skill);
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            var actual = GetValueForIdentity(modifiers, "MainSkillPart.Maximum").Calculate(context);
+            Assert.AreEqual(new NodeValue(definition.PartNames.Count - 1), actual);
+        }
+
         private static (SkillDefinition, Skill) CreateBladeFlurryDefinition()
         {
             var activeSkill = CreateActiveSkillDefinition("Blade Flurry",

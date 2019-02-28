@@ -62,6 +62,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("SkillUses.MainHand", Form.TotalOverride, 1, global, true),
                     ("SkillUses.OffHand", Form.TotalOverride, 1, global, true),
                     ("MainSkill.Id", Form.TotalOverride, definition.NumericId, global, true),
+                    ("MainSkillPart.Maximum", Form.TotalOverride, definition.PartNames.Count - 1, global, true),
                     ("BaseCastTime.Spell.Skill", Form.BaseSet, definition.ActiveSkill.CastTime / 1000D, global, true),
                     ("BaseCastTime.Secondary.Skill", Form.BaseSet, definition.ActiveSkill.CastTime / 1000D, global,
                         true),

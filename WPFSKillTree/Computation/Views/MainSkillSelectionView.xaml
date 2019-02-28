@@ -32,7 +32,8 @@
         </ComboBox>
         <ComboBox Width="150"
                   ItemsSource="{Binding SelectedSkill.SkillDefinition.PartNames}"
-                  SelectedIndex="{Binding SelectedSkill.SelectedSkillPart.NumericValue, TargetNullValue=0}">
+                  SelectedIndex="{Binding SelectedSkill.SelectedSkillPart.NumericValue, TargetNullValue=0}"
+                  IsSynchronizedWithCurrentItem="True">
             <ComboBox.Style>
                 <Style BasedOn="{StaticResource {x:Type ComboBox}}"
                        TargetType="{x:Type ComboBox}">
