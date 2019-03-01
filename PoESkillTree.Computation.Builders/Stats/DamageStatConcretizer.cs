@@ -200,7 +200,7 @@ namespace PoESkillTree.Computation.Builders.Stats
                     if (!(functionalValue.Calculate(context) is NodeValue value))
                         continue;
 
-                    if (result.HasValue && result != value)
+                    if (result is NodeValue r && !r.AlmostEquals(value))
                         throw new ParseException(
                             $"ApplyModifiersToDamage values must be equal for all concretized stats. {result} and {value} given");
 

@@ -35,12 +35,12 @@ namespace PoESkillTree.Computation.Core.Nodes
             {
                 if (nullableValue is NodeValue value)
                 {
-                    if (value == 0)
+                    if (value.IsZero)
                         return new NodeValue(0);
                     
                     if (result is null)
                         result = value;
-                    else if (result != value)
+                    else if (!value.AlmostEquals(result.Value))
                         hasDistinctValues = true;
                 }
             }

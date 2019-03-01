@@ -193,7 +193,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
             Assert.AreEqual(Entity.Totem, lifeModifier.Stats.First().Entity);
             Assert.AreEqual(Form.More, lifeModifier.Form);
             var actual = lifeModifier.Value.Calculate(valueCalculationContext);
-            Assert.AreEqual(new NodeValue(62), actual);
+            Assert.AreEqual(62, actual?.Minimum, 1e-10);
+            Assert.AreEqual(62, actual?.Maximum, 1e-10);
         }
 
         [Test]

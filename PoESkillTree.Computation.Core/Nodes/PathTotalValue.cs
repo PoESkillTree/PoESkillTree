@@ -19,7 +19,7 @@ namespace PoESkillTree.Computation.Core.Nodes
         public NodeValue? Calculate(IValueCalculationContext context)
         {
             var @base = context.GetValue(_stat, NodeType.Base, _path);
-            if (@base == null)
+            if (@base is null)
             {
                 return null;
             }

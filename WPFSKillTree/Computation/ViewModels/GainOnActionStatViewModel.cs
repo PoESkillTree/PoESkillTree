@@ -20,7 +20,7 @@ namespace POESKillTree.Computation.ViewModels
             => (ExplicitRegistrationType.GainOnAction) Node.Stat.ExplicitRegistrationType;
 
         public bool IsVisible
-            => Node.Value != null && GainOnActionType.GainedStat.Entity == Entity.Character;
+            => Node.Value.HasValue && GainOnActionType.GainedStat.Entity == Entity.Character;
 
         public string Action
             => GainOnActionType.ActionEntity == Entity.Character

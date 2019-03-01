@@ -37,7 +37,7 @@ namespace POESKillTree.Computation.ViewModels
                 return new ModifierNodeViewModel[0];
 
             var totalOverrideValue = await _calculator.GetNodeValueAsync(stat, NodeType.TotalOverride);
-            if (totalOverrideValue != null)
+            if (totalOverrideValue.HasValue)
                 return await CreateFormNodesAsync(stat, Form.TotalOverride, PathDefinition.MainPath);
             return new ModifierNodeViewModel[0];
         }

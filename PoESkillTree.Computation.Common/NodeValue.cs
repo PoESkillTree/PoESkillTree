@@ -77,23 +77,20 @@ namespace PoESkillTree.Computation.Common
         public static bool operator !=(NodeValue left, NodeValue right) =>
             !left.Equals(right);
 
-        public override bool Equals(object obj) =>
-            obj is NodeValue other && Equals(other);
+        public override bool Equals(object obj)
+            => obj is NodeValue other && Equals(other);
 
-        public bool Equals(NodeValue other) =>
-            Minimum.AlmostEquals(other.Minimum, 1e-10) && Maximum.AlmostEquals(other.Maximum, 1e-10);
+        public bool Equals(NodeValue other)
+            => Minimum.Equals(other.Minimum) && Maximum.Equals(other.Maximum);
 
-        public static bool operator ==(NodeValue left, double right) =>
-            left.Equals(right);
+        public bool AlmostEquals(NodeValue other)
+            => Minimum.AlmostEquals(other.Minimum, 1e-10) && Maximum.AlmostEquals(other.Maximum, 1e-10);
 
-        public static bool operator !=(NodeValue left, double right) =>
-            !left.Equals(right);
+        public bool IsZero
+            => Equals(new NodeValue());
 
-        public bool Equals(double value) =>
-            Minimum.AlmostEquals(value, 1e-10) && Maximum.AlmostEquals(value, 1e-10);
-
-        public override int GetHashCode() =>
-            (Minimum, Maximum).GetHashCode();
+        public override int GetHashCode()
+            => (Minimum, Maximum).GetHashCode();
 
         public static bool operator <(NodeValue left, NodeValue right) =>
             left.Maximum < right.Minimum;

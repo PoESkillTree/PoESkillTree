@@ -22,7 +22,7 @@ namespace PoESkillTree.Computation.Core.Nodes
                 return null;
 
             var uncappedV = uncapped.Value;
-            if (uncappedV == 0)
+            if (uncappedV.IsZero)
                 return new NodeValue(0);
 
             var min = _stat.Minimum is null ? null : context.GetValue(_stat.Minimum);

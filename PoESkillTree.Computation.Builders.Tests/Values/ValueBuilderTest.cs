@@ -99,7 +99,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Values
 
         [TestCase(5, 5, true)]
         [TestCase(6, 5, false)]
-        [TestCase(5, 5 + 1e-11, true)]
+        [TestCase(5, 5 + 1e-11, false)]
         public void EqBuildsToCorrectValue(double? leftValue, double? rightValue, bool expected)
         {
             var sut = CreateSut(leftValue);

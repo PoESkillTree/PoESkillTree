@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using PoESkillTree.Computation.Common;
+﻿using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.GameModel.Items;
 
