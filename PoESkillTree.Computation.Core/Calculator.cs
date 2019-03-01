@@ -34,7 +34,6 @@ namespace PoESkillTree.Computation.Core
         public void Update(CalculatorUpdate update)
         {
             _eventBuffer.StartBuffering();
-            // If the remove/add order matters for performance, ordering logic could be added.
             foreach (var modifier in update.RemovedModifiers)
             {
                 _modifierCollection.RemoveModifier(modifier);

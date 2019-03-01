@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using log4net;
@@ -111,8 +110,7 @@ namespace POESKillTree.Computation
         {
             await _calculator.ForEachUpdateCalculatorAsync(
                 initialObservable.SubscribeOn(_schedulers.TaskPool));
-            _calculator.SubscribeTo(
-                changeObservable, ex => Log.Error("Exception while observing updates", ex));
+            _calculator.SubscribeTo(changeObservable);
         }
 
         public async Task<ComputationViewModel> CreateComputationViewModelAsync(IPersistentData persistentData)

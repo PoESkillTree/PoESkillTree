@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalculatorUpdateTest.cs" />
     <Compile Include="Events\EventBufferTest.cs" />
     <Compile Include="Graphs\CalculationGraphWithEventsTest.cs" />
     <Compile Include="Graphs\NodeSelectorHelper.cs" />

@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalculatorUpdate.cs" />
     <Compile Include="Events\EventBuffer.cs" />
     <Compile Include="Events\IBufferableEvent.cs" />
     <Compile Include="Events\IEventBuffer.cs" />

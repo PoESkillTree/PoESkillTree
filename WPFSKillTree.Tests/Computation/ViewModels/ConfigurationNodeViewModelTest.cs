@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Disposables;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
@@ -34,11 +33,9 @@ namespace PoESkillTree.Tests.Computation.ViewModels
             var actualUpdates = new List<CalculatorUpdate>();
             using (var sut = CreateSut(stat))
             {
-                calculatorMock.Setup(
-                        c => c.SubscribeTo(It.IsAny<IObservable<CalculatorUpdate>>(), It.IsAny<Action<Exception>>()))
-                    .Callback<IObservable<CalculatorUpdate>, Action<Exception>>(
-                        (observable, _) => observable.Subscribe(actualUpdates.Add))
-                    .Returns(Disposable.Empty);
+                calculatorMock
+                    .Setup(c => c.SubscribeTo(It.IsAny<IObservable<CalculatorUpdate>>()))
+                    .Callback<IObservable<CalculatorUpdate>>(observable => observable.Subscribe(actualUpdates.Add));
 
                 sut.SubscribeCalculator(calculatorMock.Object);
                 sut.BoolValue = true;

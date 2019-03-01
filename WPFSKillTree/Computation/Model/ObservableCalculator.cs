@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using log4net;
 using PoESkillTree.Computation.Common;
@@ -18,8 +19,11 @@ namespace POESKillTree.Computation.Model
 
         private readonly ICalculator _calculator;
         private readonly IScheduler _calculationScheduler;
+
         private readonly Lazy<IObservable<CollectionChangedEventArgs<(ICalculationNode, IStat)>>>
             _explicitlyRegisteredStatsObservable;
+
+        private readonly Lazy<Subject<IObservable<CalculatorUpdate>>> _updateSubject;
 
         public ObservableCalculator(ICalculator calculator, IScheduler calculationScheduler)
         {
@@ -27,6 +31,7 @@ namespace POESKillTree.Computation.Model
             _explicitlyRegisteredStatsObservable =
                 new Lazy<IObservable<CollectionChangedEventArgs<(ICalculationNode, IStat)>>>(
                     CreateExplicitlyRegisteredStatsObservable);
+            _updateSubject = new Lazy<Subject<IObservable<CalculatorUpdate>>>(CreateUpdateSubject);
         }
 
         public IObservable<NodeValue?> ObserveNode(IStat stat, NodeType nodeType = NodeType.Total)
@@ -73,9 +78,8 @@ namespace POESKillTree.Computation.Model
             => observable.ObserveOn(_calculationScheduler)
                 .ForEachAsync(UpdateCalculator);
 
-        public IDisposable SubscribeTo(IObservable<CalculatorUpdate> observable, Action<Exception> onError)
-            => observable.ObserveOn(_calculationScheduler)
-                .Subscribe(UpdateCalculator, onError);
+        public void SubscribeTo(IObservable<CalculatorUpdate> observable)
+            => _updateSubject.Value.OnNext(observable);
 
         private void UpdateCalculator(CalculatorUpdate update)
         {
@@ -89,6 +93,18 @@ namespace POESKillTree.Computation.Model
                 Log.Error($"_calculator.Update({update}) failed", e);
                 throw;
             }
+        }
+
+        private Subject<IObservable<CalculatorUpdate>> CreateUpdateSubject()
+        {
+            var subject = new Subject<IObservable<CalculatorUpdate>>();
+            subject.Merge()
+                .Buffer(TimeSpan.FromMilliseconds(50))
+                .Where(us => us.Any())
+                .Select(us => us.Aggregate(CalculatorUpdate.Accumulate))
+                .ObserveOn(_calculationScheduler)
+                .Subscribe(UpdateCalculator, ex => Log.Error("Exception while observing calculator updates", ex));
+            return subject;
         }
 
         public Task<NodeValue?> GetNodeValueAsync(ICalculationNode node)

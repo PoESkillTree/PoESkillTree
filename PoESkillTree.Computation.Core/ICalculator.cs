@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using PoESkillTree.Computation.Common;
-using PoESkillTree.Utils;
+﻿using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core
 {
@@ -32,8 +29,7 @@ namespace PoESkillTree.Computation.Core
     /// </para>
     /// </remarks>
     /* If the delayed events turn out to be a performance issue in the "preview calculations" use case, they could
-     * easily be disabled: Either a property on ICalculator that turns off suspender usage in Calculator or a different
-     * factory method than/parameter to Calculator.Create() that passes an empty suspender to the constructor.
+     * easily be disabled: Use ImmediateEventBuffer
      */
     public interface ICalculator
     {
@@ -74,43 +70,5 @@ namespace PoESkillTree.Computation.Core
         /// </para>
         /// </remarks>
         INodeCollection<IStat> ExplicitlyRegisteredStats { get; }
-    }
-
-
-    /// <summary>
-    /// Parameter object for <see cref="ICalculator.Update"/>.
-    /// </summary>
-    public class CalculatorUpdate : ValueObject
-    {
-        public static CalculatorUpdate Empty { get; } = new CalculatorUpdate(new Modifier[0], new Modifier[0]);
-
-        public CalculatorUpdate(
-            IReadOnlyList<Modifier> addedModifiers,
-            IReadOnlyList<Modifier> removedModifiers)
-        {
-            AddedModifiers = addedModifiers;
-            RemovedModifiers = removedModifiers;
-        }
-
-        /// <summary>
-        /// The modifiers added in this update.
-        /// </summary>
-        public IReadOnlyList<Modifier> AddedModifiers { get; }
-
-        /// <summary>
-        /// The modifiers removed in this update.
-        /// </summary>
-        public IReadOnlyList<Modifier> RemovedModifiers { get; }
-
-        protected override object ToTuple()
-            => (WithSequenceEquality(AddedModifiers), WithSequenceEquality(RemovedModifiers));
-
-        public CalculatorUpdate Invert()
-            => new CalculatorUpdate(RemovedModifiers, AddedModifiers);
-
-        public static CalculatorUpdate Accumulate(CalculatorUpdate l, CalculatorUpdate r)
-            => new CalculatorUpdate(
-                l.AddedModifiers.Concat(r.AddedModifiers).ToList(),
-                l.RemovedModifiers.Concat(r.RemovedModifiers).ToList());
     }
 }

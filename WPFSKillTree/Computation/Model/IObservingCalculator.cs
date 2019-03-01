@@ -5,6 +5,6 @@ namespace POESKillTree.Computation.Model
 {
     public interface IObservingCalculator
     {
-        IDisposable SubscribeTo(IObservable<CalculatorUpdate> updateObservable, Action<Exception> onError);
+        void SubscribeTo(IObservable<CalculatorUpdate> updateObservable);
     }
 }
