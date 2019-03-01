@@ -94,7 +94,7 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         private ModifierNodeCollection GetModifierNodeCollection(Modifier modifier)
         {
-            var path = new PathDefinition(modifier.Source.CanonicalSource);
+            var path = new PathDefinition(modifier.Source);
             return GetModifierNodeCollection(new FormNodeSelector(modifier.Form, path));
         }
 

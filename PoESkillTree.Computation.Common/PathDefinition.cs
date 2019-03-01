@@ -22,7 +22,7 @@ namespace PoESkillTree.Computation.Common
         public PathDefinition(ModifierSource modifierSource, params IStat[] conversionStats)
             : base(true)
         {
-            ModifierSource = modifierSource;
+            ModifierSource = modifierSource.CanonicalSource;
             ConversionStats = conversionStats;
         }
 

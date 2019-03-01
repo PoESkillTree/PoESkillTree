@@ -1215,7 +1215,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
         public void HeraldOfIceQualityBuffStatHasCorrectValue()
         {
             var (definition, skill) = CreateHeraldOfIceDefinition();
-            var source = new ModifierSource.Local.Skill("HeraldOfIce", "Herald of Ice");
+            var source = new ModifierSource.Local.Skill("HeraldOfIce", "HeraldOfIce");
             var parseResult = ParseResult.Success(new[]
                 { MockModifier(new Stat("Cold.Damage.Attack.MainHand.Skill"), value: new Constant(15)) });
             var parameter = new UntranslatedStatParserParameter(source, new[]
@@ -1236,7 +1236,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
         public void HeraldOfIceBuffStatHasCorrectValue()
         {
             var (definition, skill) = CreateHeraldOfIceDefinition();
-            var source = new ModifierSource.Local.Skill("HeraldOfIce", "Herald of Ice");
+            var source = new ModifierSource.Local.Skill("HeraldOfIce", "HeraldOfIce");
             var expected = new NodeValue(38, 56);
             var parseResult = ParseResult.Success(new[]
                 { MockModifier(new Stat("Cold.Damage.Spell.Skill"), value: new Constant(expected)) });

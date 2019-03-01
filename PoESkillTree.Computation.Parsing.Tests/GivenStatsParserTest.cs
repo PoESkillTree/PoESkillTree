@@ -39,10 +39,10 @@ namespace PoESkillTree.Computation.Parsing.Tests
             };
             var parseParameters = new[]
             {
-                new CoreParserParameter("s1", new ModifierSource.Global(), Entity.Character),
-                new CoreParserParameter("s2", new ModifierSource.Global(), Entity.Character),
-                new CoreParserParameter("s1", new ModifierSource.Global(), Entity.Totem),
-                new CoreParserParameter("s2", new ModifierSource.Global(), Entity.Totem)
+                new CoreParserParameter("s1", GlobalSource, Entity.Character),
+                new CoreParserParameter("s2", GlobalSource, Entity.Character),
+                new CoreParserParameter("s1", GlobalSource, Entity.Totem),
+                new CoreParserParameter("s2", GlobalSource, Entity.Totem)
             };
             var parseResults = expected.Select(m => ParseResult.Success(new[] { m }))
                 .ToList();
@@ -63,7 +63,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
             var expectedStats = new[] { new StatStub(), };
             var expectedForm = Form.BaseSet;
             var expectedValue = new Constant(42);
-            var expectedModifierSource = new ModifierSource.Global();
+            var expectedModifierSource = GlobalSource;
             var expected = new[]
             {
                 new Modifier(expectedStats, expectedForm, expectedValue, expectedModifierSource)
@@ -105,9 +105,12 @@ namespace PoESkillTree.Computation.Parsing.Tests
             };
             var parseResult = ParseResult.Failure("", "");
             var parser = Mock.Of<ICoreParser>(p =>
-                p.Parse(new CoreParserParameter("s1", new ModifierSource.Global(), Entity.Character)) == parseResult);
+                p.Parse(new CoreParserParameter("s1", GlobalSource, Entity.Character)) == parseResult);
 
             Assert.Throws<ParseException>(() => GivenStatsParser.Parse(parser, givenStats));
         }
+
+        private static ModifierSource.Global GlobalSource
+            => new ModifierSource.Global(new ModifierSource.Local.Given());
     }
 }

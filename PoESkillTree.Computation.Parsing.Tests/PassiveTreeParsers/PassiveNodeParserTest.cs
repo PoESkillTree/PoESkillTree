@@ -15,8 +15,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
         public void ParsesModifiersCorrectly()
         {
             var definition = CreateNode("+5 to maximum Life");
-            var source = new ModifierSource.Global();
-            var coreResult = CreateModifier("Life", Form.BaseAdd, 2);
+            var source = CreateGlobalSource(definition);
+            var coreResult = CreateModifier("Life", Form.BaseAdd, 2, CreateGlobalSource(definition));
             var expected = CreateConditionalModifier(definition, "Life", Form.BaseAdd, 2);
             var coreParser = Mock.Of<ICoreParser>(p =>
                 p.Parse(new CoreParserParameter("+5 to maximum Life", source, Entity.Character))
@@ -71,7 +71,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
         public void SetsNodeSkilledToFalse()
         {
             var definition = CreateNode();
-            var expected = CreateModifier($"{definition.Id}.Skilled", Form.BaseSet, (NodeValue?) false);
+            var expected = CreateModifier($"{definition.Id}.Skilled", Form.BaseSet, (NodeValue?) false,
+                CreateGlobalSource(definition));
             var sut = CreateSut(definition);
 
             var result = sut.Parse(definition.Id);
@@ -97,6 +98,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.PassiveTreeParsers
         private static Modifier CreateConditionalModifier(
             PassiveNodeDefinition nodeDefinition, string stat, Form form, double value)
             => CreateModifier(stat, form, new FunctionalValue(null,
-                $"Character.{nodeDefinition.Id}.Skilled.Value(Total, Global).IsSet ? {value} : null"));
+                $"Character.{nodeDefinition.Id}.Skilled.Value(Total, Global).IsSet ? {value} : null"),
+                CreateGlobalSource(nodeDefinition));
+
+        private static ModifierSource.Global CreateGlobalSource(PassiveNodeDefinition nodeDefinition)
+            => new ModifierSource.Global(new ModifierSource.Local.Tree(nodeDefinition.Name));
     }
 }
