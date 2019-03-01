@@ -3,6 +3,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.StatTranslation;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Parsing.ItemParsers
 {
@@ -53,7 +54,7 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             };
     }
 
-    public class ItemParserParameter
+    public class ItemParserParameter : ValueObject
     {
         public ItemParserParameter(Item item, ItemSlot itemSlot)
             => (Item, ItemSlot) = (item, itemSlot);
@@ -63,5 +64,7 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
 
         public Item Item { get; }
         public ItemSlot ItemSlot { get; }
+
+        protected override object ToTuple() => (Item, ItemSlot);
     }
 }

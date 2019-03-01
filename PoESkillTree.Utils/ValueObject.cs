@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using MoreLinq;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Utils
 {
@@ -46,25 +44,6 @@ namespace PoESkillTree.Utils
         protected abstract object ToTuple();
 
         protected static object WithSequenceEquality<T>(IReadOnlyList<T> list)
-            => new SequenceEquatableView<T>(list);
-
-        private class SequenceEquatableView<T>
-        {
-            private readonly IReadOnlyList<T> _list;
-
-            public SequenceEquatableView(IReadOnlyList<T> list) => _list = list;
-
-            public override bool Equals(object obj)
-                => (obj == this) || (obj is SequenceEquatableView<T> other && Equals(other));
-
-            private bool Equals(SequenceEquatableView<T> other)
-                => _list.SequenceEqual(other._list);
-
-            public override int GetHashCode()
-                => _list.SequenceHash();
-
-            public override string ToString()
-                => "[" + _list.ToDelimitedString(", ") + "]";
-        }
+            => new SequenceEquatableListView<T>(list);
     }
 }

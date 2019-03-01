@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Parsing
 
         ParseResult ParseItem(Item item, ItemSlot itemSlot);
         
-        ParseResult ParseSkills(IReadOnlyCollection<Skill> skills);
+        ParseResult ParseSkills(IReadOnlyList<Skill> skills);
         ParseResult ParseActiveSkill(Skill activeSkill);
         ParseResult ParseSupportSkill(Skill activeSkill, Skill supportSkill);
 

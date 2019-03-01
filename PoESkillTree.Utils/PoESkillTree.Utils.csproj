@@ -74,6 +74,7 @@
     <Compile Include="Extensions\NullableExtensions.cs" />
     <Compile Include="Extensions\NumberExtensions.cs" />
     <Compile Include="Funcs.cs" />
+    <Compile Include="SequenceEquatableListView.cs" />
     <Compile Include="XmlSerializationUtils.cs" />
     <Compile Include="ValueObject.cs" />
   </ItemGroup>

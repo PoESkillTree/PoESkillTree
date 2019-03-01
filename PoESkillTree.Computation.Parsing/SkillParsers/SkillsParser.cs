@@ -6,7 +6,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
     /// <summary>
     /// Parses a group of skills at once. E.g. all equipped skills or all skills for one ItemSlot.
     /// </summary>
-    public class SkillsParser : IParser<IReadOnlyCollection<Skill>>
+    public class SkillsParser : IParser<IReadOnlyList<Skill>>
     {
         private readonly SkillDefinitions _skillDefinitions;
         private readonly SupportabilityTester _supportabilityTester;
@@ -23,7 +23,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             _supportSkillParser = supportSkillParser;
         }
 
-        public ParseResult Parse(IReadOnlyCollection<Skill> skills)
+        public ParseResult Parse(IReadOnlyList<Skill> skills)
         {
             var activeSkills = new List<Skill>();
             var supportSkills = new List<Skill>(skills.Count);

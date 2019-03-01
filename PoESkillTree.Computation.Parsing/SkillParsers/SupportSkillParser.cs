@@ -3,6 +3,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
@@ -68,7 +69,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             => @this.Parse(new SupportSkillParserParameter(activeSkill, supportSkill));
     }
 
-    public class SupportSkillParserParameter
+    public class SupportSkillParserParameter : ValueObject
     {
         public SupportSkillParserParameter(Skill activeSkill, Skill supportSkill)
             => (ActiveSkill, SupportSkill) = (activeSkill, supportSkill);
@@ -78,5 +79,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
         public Skill ActiveSkill { get; }
         public Skill SupportSkill { get; }
+
+        protected override object ToTuple() => (ActiveSkill, SupportSkill);
     }
 }
