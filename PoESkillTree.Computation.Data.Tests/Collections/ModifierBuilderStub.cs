@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             return ret;
         }
 
-        public IModifierBuilder WithConditions(IEnumerable<IConditionBuilder> conditions)
+        public IModifierBuilder WithConditions(IReadOnlyList<IConditionBuilder> conditions)
         {
             if (conditions == null)
                 throw new ArgumentNullException(nameof(conditions));
@@ -54,7 +54,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             return ret;
         }
 
-        public IModifierBuilder WithForms(IEnumerable<IFormBuilder> forms)
+        public IModifierBuilder WithForms(IReadOnlyList<IFormBuilder> forms)
         {
             if (forms == null)
                 throw new ArgumentNullException(nameof(forms));
@@ -87,7 +87,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             return ret;
         }
 
-        public IModifierBuilder WithStats(IEnumerable<IStatBuilder> stats)
+        public IModifierBuilder WithStats(IReadOnlyList<IStatBuilder> stats)
         {
             if (stats == null)
                 throw new ArgumentNullException(nameof(stats));
@@ -120,7 +120,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             return ret;
         }
 
-        public IModifierBuilder WithValues(IEnumerable<IValueBuilder> values)
+        public IModifierBuilder WithValues(IReadOnlyList<IValueBuilder> values)
         {
             if (values == null)
                 throw new ArgumentNullException(nameof(values));

@@ -15,6 +15,7 @@ using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.PassiveTree;
 using PoESkillTree.GameModel.Skills;
 using PoESkillTree.GameModel.StatTranslation;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Parsing
 {
@@ -24,7 +25,7 @@ namespace PoESkillTree.Computation.Parsing
         private readonly IParser<ushort> _passiveNodeParser;
         private readonly IParser<ushort> _skilledPassiveNodeParser;
         private readonly IParser<ItemParserParameter> _itemParser;
-        private readonly IParser<IReadOnlyCollection<Skill>> _skillsParser;
+        private readonly IParser<IReadOnlyList<Skill>> _skillsParser;
         private readonly IParser<Skill> _activeSkillParser;
         private readonly IParser<SupportSkillParserParameter> _supportSkillParser;
 
@@ -101,8 +102,8 @@ namespace PoESkillTree.Computation.Parsing
         public ParseResult ParseItem(Item item, ItemSlot itemSlot)
             => _itemParser.Parse(new ItemParserParameter(item, itemSlot));
 
-        public ParseResult ParseSkills(IReadOnlyCollection<Skill> skills)
-            => _skillsParser.Parse(skills);
+        public ParseResult ParseSkills(IReadOnlyList<Skill> skills)
+            => _skillsParser.Parse(new SequenceEquatableListView<Skill>(skills));
 
         public ParseResult ParseActiveSkill(Skill activeSkill)
             => _activeSkillParser.Parse(activeSkill);

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using log4net;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
+using PoESkillTree.Utils;
 
 namespace POESKillTree.Computation.Model
 {
@@ -16,7 +16,7 @@ namespace POESKillTree.Computation.Model
 
         private readonly ObservableCalculator _observableCalculator;
 
-        private readonly HashSet<(ICalculationNode node, IStat stat)> _elements =
+        private readonly HashSet<(ICalculationNode node, IStat stat)> _items =
             new HashSet<(ICalculationNode, IStat)>();
 
         public ExplicitlyRegisteredStatsObserver(ObservableCalculator observableCalculator)
@@ -25,53 +25,36 @@ namespace POESKillTree.Computation.Model
         public event Action<ICalculationNode, IStat> StatAdded;
         public event Action<ICalculationNode, IStat> StatRemoved;
 
-        public void Initialize(IScheduler observeScheduler)
+        public async Task InitializeAsync(IScheduler observeScheduler)
         {
-            Refresh();
+            foreach (var item in await _observableCalculator.GetExplicitlyRegisteredStatsAsync())
+                Add(item);
+
             _observableCalculator.ObserveExplicitlyRegisteredStats()
                 .ObserveOn(observeScheduler)
                 .Subscribe(OnNext, OnError);
         }
 
-        private void OnNext(CollectionChangeEventArgs args)
+        private void OnNext(CollectionChangedEventArgs<(ICalculationNode node, IStat stat)> args)
         {
-            switch (args.Action)
-            {
-                case CollectionChangeAction.Add:
-                    Add(((ICalculationNode, IStat)) args.Element);
-                    break;
-                case CollectionChangeAction.Remove:
-                    Remove(((ICalculationNode, IStat)) args.Element);
-                    break;
-                case CollectionChangeAction.Refresh:
-                    Refresh();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            foreach (var item in args.AddedItems)
+                Add(item);
+            foreach (var item in args.RemovedItems)
+                Remove(item);
         }
 
         private static void OnError(Exception exception)
             => Log.Error("ObserveExplicitlyRegisteredStats failed", exception);
 
-        private void Refresh()
-        {
-            foreach (var element in _elements.ToList())
-                Remove(element);
-
-            foreach (var element in _observableCalculator.ExplicitlyRegisteredStatsCollection)
-                Add(element);
-        }
-
         private void Add((ICalculationNode, IStat) element)
         {
-            if (_elements.Add(element))
+            if (_items.Add(element))
                 StatAdded?.Invoke(element.Item1, element.Item2);
         }
 
         private void Remove((ICalculationNode, IStat) element)
         {
-            if (_elements.Remove(element))
+            if (_items.Remove(element))
                 StatRemoved?.Invoke(element.Item1, element.Item2);
         }
     }

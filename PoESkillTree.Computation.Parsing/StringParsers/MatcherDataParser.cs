@@ -16,47 +16,64 @@ namespace PoESkillTree.Computation.Parsing.StringParsers
     /// </summary>
     public class MatcherDataParser : IStringParser<MatcherDataParseResult>
     {
-        private readonly Lazy<IReadOnlyList<(MatcherData data, Regex regex)>> _dataWithRegexes;
+        private readonly IReadOnlyList<(MatcherData data, Regex regex)> _dataWithRegexes;
 
-        public MatcherDataParser(IEnumerable<MatcherData> matcherData)
+        public static MatcherDataParser Create(
+            IReadOnlyList<MatcherData> matcherData, Func<string, string> matcherDataExpander)
+            => new MatcherDataParser(CreateDataWithRegexes(matcherData, matcherDataExpander));
+
+        private MatcherDataParser(IReadOnlyList<(MatcherData data, Regex regex)> dataWithRegexes)
+            => _dataWithRegexes = dataWithRegexes;
+
+        private static IReadOnlyList<(MatcherData data, Regex regex)> CreateDataWithRegexes(
+            IReadOnlyList<MatcherData> data, Func<string, string> matcherDataExpander)
         {
-            _dataWithRegexes = new Lazy<IReadOnlyList<(MatcherData, Regex)>>(
-                () => matcherData.Select(d => (d, CreateRegex(d))).ToList());
+            var list = new List<(MatcherData, Regex)>(data.Count);
+            foreach (var d in data)
+            {
+                var regex = CreateRegex(matcherDataExpander(d.Regex));
+                list.Add((d, regex));
+            }
+            return list;
         }
 
-        private static Regex CreateRegex(MatcherData data)
-            => new Regex(data.Regex,
+        private static Regex CreateRegex(string regex)
+            => new Regex(regex,
                 RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
 
         public StringParseResult<MatcherDataParseResult> Parse(CoreParserParameter parameter)
         {
             var stat = parameter.ModifierLine;
-            var xs =
-                from tuple in _dataWithRegexes.Value
-                let match = tuple.regex.Match(stat)
-                where match.Success
-                orderby match.Length descending
-                select (
-                    successfullyParsed: true,
-                    remaining: GetRemaining(tuple.data, stat, match),
-                    new MatcherDataParseResult(tuple.data.Modifier, SelectGroups(tuple.regex, match.Groups))
-                );
+            Match longestMatch = null;
+            MatcherData matchingData = null;
+            Regex matchingRegex = null;
+            foreach (var (data, regex) in _dataWithRegexes)
+            {
+                var match = regex.Match(stat);
+                if (match.Success && (longestMatch is null || match.Length > longestMatch.Length))
+                {
+                    longestMatch = match;
+                    matchingData = data;
+                    matchingRegex = regex;
+                }
+            }
 
-            return xs.DefaultIfEmpty((false, stat, (MatcherDataParseResult) null)).First();
+            if (longestMatch is null)
+                return (false, stat, null);
+
+            return (true,
+                GetRemaining(matchingData, stat, longestMatch),
+                new MatcherDataParseResult(matchingData.Modifier, SelectGroups(matchingRegex, longestMatch.Groups)));
         }
 
         private static string GetRemaining(MatcherData matcherData, string stat, Match match)
-        {
-            return stat.Substring(0, match.Index)
-                   + match.Result(matcherData.MatchSubstitution)
-                   + stat.Substring(match.Index + match.Length);
-        }
+            => stat.Substring(0, match.Index)
+               + match.Result(matcherData.MatchSubstitution)
+               + stat.Substring(match.Index + match.Length);
 
         private static IReadOnlyDictionary<string, string> SelectGroups(Regex regex, GroupCollection groups)
-        {
-            return regex.GetGroupNames()
+            => regex.GetGroupNames()
                 .Where(gn => !string.IsNullOrEmpty(groups[gn].Value))
                 .ToDictionary(gn => gn, gn => groups[gn].Value);
-        }
     }
 }

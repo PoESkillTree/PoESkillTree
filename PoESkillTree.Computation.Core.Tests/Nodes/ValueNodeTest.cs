@@ -112,7 +112,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
 
             var _ = sut.Value;
 
-            nodeCollectionMock.Raise(c => c.CollectionChanged += null, RefreshEventArgs);
+            nodeCollectionMock.Raise(c => c.UntypedCollectionChanged += null, RefreshEventArgs);
             Assert.IsTrue(raised);
         }
 
@@ -128,7 +128,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             sut.Dispose();
 
             sut.AssertValueChangedWillNotBeInvoked();
-            nodeCollectionMock.Raise(c => c.CollectionChanged += null, RefreshEventArgs);
+            nodeCollectionMock.Raise(c => c.UntypedCollectionChanged += null, RefreshEventArgs);
         }
 
         private static ValueNode CreateSut(double stat1Value, double stat2Value)
@@ -160,8 +160,9 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             return CreateSut(nodeRepository, valueMock.Object);
         }
 
-        private static ValueNode CreateSut(INodeRepository nodeRepository = null, IValue value = null) =>
-            new ValueNode(new ValueCalculationContext(nodeRepository, null), value);
+        private static ValueNode CreateSut(INodeRepository nodeRepository = null, IValue value = null)
+            => new ValueNode(new ValueCalculationContext(nodeRepository, null),
+                new ValueCalculationContext(nodeRepository, null), value);
 
         private static readonly CollectionChangeEventArgs RefreshEventArgs =
             new CollectionChangeEventArgs(CollectionChangeAction.Refresh, null);

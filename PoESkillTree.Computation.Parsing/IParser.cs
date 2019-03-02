@@ -20,7 +20,7 @@ namespace PoESkillTree.Computation.Parsing
 
         ParseResult ParseItem(Item item, ItemSlot itemSlot);
         
-        ParseResult ParseSkills(IReadOnlyCollection<Skill> skills);
+        ParseResult ParseSkills(IReadOnlyList<Skill> skills);
         ParseResult ParseActiveSkill(Skill activeSkill);
         ParseResult ParseSupportSkill(Skill activeSkill, Skill supportSkill);
 
@@ -39,5 +39,11 @@ namespace PoESkillTree.Computation.Parsing
         /// Parses the given parameter into <see cref="ParseResult"/>.
         /// </summary>
         ParseResult Parse(TParameter parameter);
+    }
+
+    public static class ParserExtensions
+    {
+        public static void Initialize(this IParser @this)
+            => @this.ParseRawModifier("", new ModifierSource.Global(), default);
     }
 }

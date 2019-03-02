@@ -15,6 +15,8 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         [TestCase(0, 42.0, 43.0, 0.0, 4.0)]
         [TestCase(43, null, 43.0, null)]
         [TestCase(43, 43.0, 43.0)]
+        [TestCase(1e-200, 1e-200)]
+        [TestCase(1e-12, 1e-12, 1e-11)]
         public void CalculateOverrideReturnsCorrectResult(double? expected, params double?[] values)
         {
             AssertReturnsCorrectResult(NodeValueAggregators.CalculateTotalOverride, expected, values);
@@ -23,7 +25,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         [Test]
         public void CalculateOverrideThrowsExceptionIfNoValueIsZero()
         {
-            var values = new double?[] { 42, 43, null, 4, -3 }.Select(v => (NodeValue?) v);
+            var values = new double?[] { 42, 43, null, 4, -3 }.Select(v => (NodeValue?) v).ToList();
 
             Assert.Throws<NotSupportedException>(() => NodeValueAggregators.CalculateTotalOverride(values));
         }
@@ -54,41 +56,24 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         
         [TestCase(null)]
         [TestCase(42, 42.0)]
+        [TestCase(0, 42.0, 0.0, null)]
         public void CalculateBaseSetReturnsCorrectResult(double? expected, params double?[] values)
         {
             AssertReturnsCorrectResult(NodeValueAggregators.CalculateBaseSet, expected, values);
         }
 
         [Test]
-        public void CalculateBaseSetThrowsExceptionIfMultipleNonZeroValuesArePassed()
+        public void CalculateBaseSetThrowsExceptionIfNoValueIsZero()
         {
-            var values = new double?[] { 42, 0, 43 }.Select(v => (NodeValue?) v);
+            var values = new List<NodeValue?> { new NodeValue(0, 5), new NodeValue(0, 44)};
 
             Assert.Throws<NotSupportedException>(() => NodeValueAggregators.CalculateBaseSet(values));
-        }
-
-        [Test]
-        public void CalculateBaseSetThrowsExceptionIfMultipleValuesWithNonUZeroMaximumArePassed()
-        {
-            var values = new NodeValue?[] { new NodeValue(0, 5), new NodeValue(0, 44)};
-
-            Assert.Throws<NotSupportedException>(() => NodeValueAggregators.CalculateBaseSet(values));
-        }
-
-        [Test]
-        public void CalculateBaseSetCorrectlyAggregatesValuesThatArePartlyZero()
-        {
-            var values = new NodeValue?[] { new NodeValue(-42, 0), new NodeValue(0, 5), new NodeValue(0)};
-
-            var actual = NodeValueAggregators.CalculateBaseSet(values);
-
-            Assert.AreEqual(new NodeValue(-42, 5), actual);
         }
 
         private static void AssertReturnsCorrectResult(
             NodeValueAggregator aggregator, double? expected, IEnumerable<double?> values)
         {
-            var actual = aggregator(values.Select(v => (NodeValue?) v));
+            var actual = aggregator(values.Select(v => (NodeValue?) v).ToList());
 
             Assert.AreEqual((NodeValue?) expected, actual);
         }

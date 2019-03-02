@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
@@ -21,7 +22,7 @@ namespace PoESkillTree.Computation.Builders.Values
 
         public IValueBuilder FromMinAndMax(IValueBuilder minimumValue, IValueBuilder maximumValue) =>
             ValueBuilderImpl.Create(minimumValue, maximumValue, CalculateFromMinAndMax,
-                (l, r) => $"Value(min: {l}, max: {r})");
+                (l, r) => "Value(min: " + l + ", max: " + r + ")");
 
         private static NodeValue? CalculateFromMinAndMax(Func<NodeValue?> minFunc, Func<NodeValue?> maxFunc)
             => minFunc() is NodeValue min && maxFunc() is NodeValue max
@@ -132,12 +133,18 @@ namespace PoESkillTree.Computation.Builders.Values
 
             public override string ToString()
             {
-                var s = $"(If ({_conditionValuePairs[0].condition}): {_conditionValuePairs[0].value}\n";
+                var sb = new StringBuilder("(If (")
+                    .Append(_conditionValuePairs[0].condition).Append("): ")
+                    .Append(_conditionValuePairs[0].value).Append("\n");
                 foreach (var (c, v) in _conditionValuePairs.Skip(1))
                 {
-                    s += $"Else If ({c}): {v}\n";
+                    sb.Append("Else If (")
+                        .Append(c).Append("): ")
+                        .Append(v).Append("\n");
                 }
-                return s + $"Else: {_elseValue})";
+                sb.Append("Else: ")
+                    .Append(_elseValue).Append(")");
+                return sb.ToString();
             }
         }
     }

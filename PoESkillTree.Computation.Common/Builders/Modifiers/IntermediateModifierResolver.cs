@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Parsing;
@@ -19,14 +21,28 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
 
         public IIntermediateModifier Resolve(IIntermediateModifier unresolved, ResolveContext context)
         {
+            var entries = unresolved.Entries;
             return _builder
-                .WithValues(unresolved.Entries.Select(e => e.Value?.Resolve(context)))
-                .WithForms(unresolved.Entries.Select(e => e.Form?.Resolve(context)))
-                .WithStats(unresolved.Entries.Select(e => e.Stat?.Resolve(context)))
-                .WithConditions(unresolved.Entries.Select(e => e.Condition?.Resolve(context)))
+                .WithValues(Resolve(entries, e => e.Value, context))
+                .WithForms(Resolve(entries, e => e.Form, context))
+                .WithStats(Resolve(entries, e => e.Stat, context))
+                .WithConditions(Resolve(entries, e => e.Condition, context))
                 .WithValueConverter(v => unresolved.ValueConverter(v)?.Resolve(context))
                 .WithStatConverter(s => unresolved.StatConverter(s)?.Resolve(context))
                 .Build();
+        }
+
+        private static IReadOnlyList<T> Resolve<T>(
+            IReadOnlyList<IntermediateModifierEntry> entries, Func<IntermediateModifierEntry, T> selector,
+            ResolveContext context)
+            where T: class, IResolvable<T>
+        {
+            var newEntries = new List<T>(entries.Count);
+            foreach (var entry in entries)
+            {
+                newEntries.Add(selector(entry)?.Resolve(context));
+            }
+            return newEntries;
         }
 
         public IStatBuilder ResolveToReferencedBuilder(IIntermediateModifier unresolved, ResolveContext context)

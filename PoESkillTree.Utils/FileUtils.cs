@@ -1,13 +1,16 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 
-namespace POESKillTree.Utils
+namespace PoESkillTree.Utils
 {
-    public static class FileEx
+    public static class FileUtils
     {
-        public static async Task<string> ReadAllTextAsync(string path)
+        public static Task<string> ReadAllTextAsync(string path)
+            => ReadAndDisposeAsync(File.OpenText(path));
+
+        public static async Task<string> ReadAndDisposeAsync(TextReader reader)
         {
-            using (var reader = File.OpenText(path))
+            using (reader)
             {
                 return await reader.ReadToEndAsync().ConfigureAwait(false);
             }
@@ -18,6 +21,7 @@ namespace POESKillTree.Utils
             using (var writer = File.CreateText(path))
             {
                 await writer.WriteAsync(contents).ConfigureAwait(false);
+                await writer.FlushAsync().ConfigureAwait(false);
             }
         }
 

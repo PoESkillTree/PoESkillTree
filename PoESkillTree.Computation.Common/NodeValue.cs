@@ -77,23 +77,20 @@ namespace PoESkillTree.Computation.Common
         public static bool operator !=(NodeValue left, NodeValue right) =>
             !left.Equals(right);
 
-        public override bool Equals(object obj) =>
-            obj is NodeValue other && Equals(other);
+        public override bool Equals(object obj)
+            => obj is NodeValue other && Equals(other);
 
-        public bool Equals(NodeValue other) =>
-            Minimum.AlmostEquals(other.Minimum, 1e-10) && Maximum.AlmostEquals(other.Maximum, 1e-10);
+        public bool Equals(NodeValue other)
+            => Minimum.Equals(other.Minimum) && Maximum.Equals(other.Maximum);
 
-        public static bool operator ==(NodeValue left, double right) =>
-            left.Equals(right);
+        public bool AlmostEquals(NodeValue other)
+            => Minimum.AlmostEquals(other.Minimum, 1e-10) && Maximum.AlmostEquals(other.Maximum, 1e-10);
 
-        public static bool operator !=(NodeValue left, double right) =>
-            !left.Equals(right);
+        public bool IsZero
+            => Equals(new NodeValue());
 
-        public bool Equals(double value) =>
-            Minimum.AlmostEquals(value, 1e-10) && Maximum.AlmostEquals(value, 1e-10);
-
-        public override int GetHashCode() =>
-            (Minimum, Maximum).GetHashCode();
+        public override int GetHashCode()
+            => (Minimum, Maximum).GetHashCode();
 
         public static bool operator <(NodeValue left, NodeValue right) =>
             left.Maximum < right.Minimum;
@@ -216,16 +213,19 @@ namespace PoESkillTree.Computation.Common
         public static NodeValue? Select(this NodeValue? value, Func<double, double> operation) =>
             value.Select(v => v.Select(operation));
 
-        public static NodeValue Sum(this IEnumerable<NodeValue> values) =>
-            values.Aggregate((l, r) => l + r);
+        public static NodeValue? SumWhereNotNull(this NodeValue? left, NodeValue? right)
+        {
+            if (left is null)
+                return right;
+            if (right is null)
+                return left;
+            return left + right;
+        }
 
-        public static NodeValue? Sum(this IEnumerable<NodeValue?> values) =>
-            values.AggregateOnValues((l, r) => l + r);
+        public static NodeValue? Sum(this List<NodeValue?> values, Func<NodeValue, NodeValue> selector = null)
+            => values.AggregateOnValues((l, r) => l + r, selector);
 
-        public static NodeValue Product(this IEnumerable<NodeValue> values) =>
-            values.Aggregate((l, r) => l * r);
-
-        public static NodeValue? Product(this IEnumerable<NodeValue?> values) =>
-            values.AggregateOnValues((l, r) => l * r);
+        public static NodeValue? Product(this List<NodeValue?> values, Func<NodeValue, NodeValue> selector = null)
+            => values.AggregateOnValues((l, r) => l * r, selector);
     }
 }

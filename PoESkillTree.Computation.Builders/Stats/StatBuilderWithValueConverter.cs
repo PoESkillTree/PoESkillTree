@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -49,12 +48,11 @@ namespace PoESkillTree.Computation.Builders.Stats
             var entities = _entity.Build(parameters.ModifierSourceEntity);
             foreach (var entity in entities)
             {
-                var resultsForEntity = _inner.WithEntity(new EntityBuilder(entity))
-                    .Build(parameters)
-                    .Select(r
-                        => new StatBuilderResult(r.Stats, r.ModifierSource, r.ValueConverter.AndThen(ConvertValue)));
-                results.AddRange(resultsForEntity);
-
+                var resultsForEntity = _inner.WithEntity(new EntityBuilder(entity)).Build(parameters);
+                foreach (var (stats, source, valueConverter) in resultsForEntity)
+                {
+                    results.Add(new StatBuilderResult(stats, source, valueConverter.AndThen(ConvertValue)));
+                }
                 IValueBuilder ConvertValue(IValueBuilder left) => _combineValues(left, _createValue(entity));
             }
             return results;

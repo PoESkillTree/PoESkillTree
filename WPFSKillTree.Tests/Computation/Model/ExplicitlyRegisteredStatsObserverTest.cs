@@ -6,6 +6,7 @@ using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
+using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.NodeCollections;
 using POESKillTree.Computation.Model;
 
@@ -20,7 +21,7 @@ namespace PoESkillTree.Tests.Computation.Model
             var expected = new Stat("");
             var actualAdded = new List<IStat>();
             var actualRemoved = new List<IStat>();
-            var nodeCollection = new NodeCollection<IStat>();
+            var nodeCollection = CreateNodeCollection();
             SetupSut(nodeCollection, actualAdded, actualRemoved);
 
             nodeCollection.Add(null, expected);
@@ -35,7 +36,7 @@ namespace PoESkillTree.Tests.Computation.Model
             var expected = new Stat("");
             var actualAdded = new List<IStat>();
             var actualRemoved = new List<IStat>();
-            var nodeCollection = new NodeCollection<IStat>();
+            var nodeCollection = CreateNodeCollection();
             SetupSut(nodeCollection, actualAdded, actualRemoved);
             nodeCollection.Add(null, expected);
             actualAdded.Clear();
@@ -47,24 +48,25 @@ namespace PoESkillTree.Tests.Computation.Model
         }
 
         [Test]
-        public void InvokesAddAndRemoveOnRefresh()
+        public void InvokesAddAndRemoveOnAddAndRemove()
         {
             var stats = new[] { new Stat("a"), new Stat("b"), new Stat("c"), };
             var actualAdded = new List<IStat>();
             var actualRemoved = new List<IStat>();
-            var nodeCollection = new NodeCollection<IStat>();
+            var eventBuffer = new EventBuffer();
+            var nodeCollection = CreateNodeCollection(eventBuffer);
             SetupSut(nodeCollection, actualAdded, actualRemoved);
             nodeCollection.Add(null, stats[0]);
             nodeCollection.Add(null, stats[1]);
             actualAdded.Clear();
 
-            nodeCollection.SuspendEvents();
+            eventBuffer.StartBuffering();
             nodeCollection.Add(null, stats[2]);
             nodeCollection.Remove(null, stats[0]);
-            nodeCollection.ResumeEvents();
+            eventBuffer.Flush();
 
-            Assert.AreEqual(stats.Skip(1), actualAdded);
-            Assert.AreEqual(stats.Take(2), actualRemoved);
+            Assert.AreEqual(stats.Skip(2), actualAdded);
+            Assert.AreEqual(stats.Take(1), actualRemoved);
         }
 
         [Test]
@@ -73,7 +75,8 @@ namespace PoESkillTree.Tests.Computation.Model
             var expected = new Stat("");
             var actualAdded = new List<IStat>();
             var actualRemoved = new List<IStat>();
-            var nodeCollection = new NodeCollection<IStat> { { null, expected } };
+            var nodeCollection = CreateNodeCollection();
+            nodeCollection.Add(null, expected);
 
             SetupSut(nodeCollection, actualAdded, actualRemoved);
 
@@ -90,7 +93,10 @@ namespace PoESkillTree.Tests.Computation.Model
             var sut = new ExplicitlyRegisteredStatsObserver(observableCalculator);
             sut.StatAdded += (_, s) => addedStats.Add(s);
             sut.StatRemoved += (_, s) => removedStats.Add(s);
-            sut.Initialize(ImmediateScheduler.Instance);
+            sut.InitializeAsync(ImmediateScheduler.Instance).GetAwaiter().GetResult();
         }
+
+        private static NodeCollection<IStat> CreateNodeCollection(IEventBuffer eventBuffer = null)
+            => new NodeCollection<IStat>(eventBuffer ?? new EventBuffer());
     }
 }

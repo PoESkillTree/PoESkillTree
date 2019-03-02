@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using log4net;
 using MoreLinq;
+using PoESkillTree.Utils;
 using POESKillTree.Utils;
 using UpdateDB.DataLoading;
 
@@ -149,7 +150,7 @@ namespace UpdateDB
                 if (isFolder)
                     DirectoryEx.MoveOverwriting(tmpPath, fullPath);
                 else
-                    FileEx.MoveOverwriting(tmpPath, fullPath);
+                    FileUtils.MoveOverwriting(tmpPath, fullPath);
             }
             else
             {

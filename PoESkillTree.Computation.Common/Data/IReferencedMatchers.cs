@@ -7,8 +7,10 @@ namespace PoESkillTree.Computation.Common.Data
     /// Collection of <see cref="ReferencedMatcherData"/>. These are only used when referenced by 
     /// <see cref="IStatMatchers"/> instances.
     /// </summary>
-    public interface IReferencedMatchers : IEnumerable<ReferencedMatcherData>
+    public interface IReferencedMatchers
     {
+        IReadOnlyList<ReferencedMatcherData> Data { get; }
+
         /// <summary>
         /// The unique name by which this instance can be referenced from regexes in <see cref="IStatMatchers"/>.
         /// </summary>

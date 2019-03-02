@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MoreLinq;
 using PoESkillTree.Computation.Common;
 
 namespace PoESkillTree.Computation.Core.Graphs
@@ -29,10 +28,22 @@ namespace PoESkillTree.Computation.Core.Graphs
             => _statsConsideredForRemoval.Remove(stat);
 
         public void ModifierAdded(Modifier modifier)
-            => _statsConsideredForRemoval.ExceptWith(modifier.Stats.Where(s => !CanBeConsideredForRemoval(s)));
+        {
+            foreach (var stat in modifier.Stats)
+            {
+                if (!CanBeConsideredForRemoval(stat))
+                    _statsConsideredForRemoval.Remove(stat);
+            }
+        }
 
         public void ModifierRemoved(Modifier modifier)
-            => _statsConsideredForRemoval.UnionWith(modifier.Stats.Where(CanBeConsideredForRemoval));
+        {
+            foreach (var stat in modifier.Stats)
+            {
+                if (CanBeConsideredForRemoval(stat))
+                    _statsConsideredForRemoval.Add(stat);
+            }
+        }
 
         private bool CanBeConsideredForRemoval(IStat stat)
             => _calculationGraph.StatGraphs.TryGetValue(stat, out var statGraph)
@@ -42,7 +53,11 @@ namespace PoESkillTree.Computation.Core.Graphs
         {
             _statsConsideredForRemoval.RemoveWhere(s => !_calculationGraph.StatGraphs.ContainsKey(s));
 
-            _statsConsideredForRemoval.ForEach(RemoveUnusedStatGraphNodes);
+            foreach (var stat in _statsConsideredForRemoval)
+            {
+                RemoveUnusedStatGraphNodes(stat);
+            }
+
             foreach (var stat in _statsConsideredForRemoval.ToList())
             {
                 var statGraph = _calculationGraph.StatGraphs[stat];
@@ -57,10 +72,10 @@ namespace PoESkillTree.Computation.Core.Graphs
         private void RemoveUnusedStatGraphNodes(IStat stat)
         {
             var statGraph = _calculationGraph.StatGraphs[stat];
-            _ruleSet.SelectRemovableNodesByNodeType(statGraph)
-                .ForEach(statGraph.RemoveNode);
-            _ruleSet.SelectRemovableNodesByForm(statGraph)
-                .ForEach(statGraph.RemoveFormNodeCollection);
+            foreach (var selector in _ruleSet.SelectRemovableNodesByNodeType(statGraph))
+                statGraph.RemoveNode(selector);
+            foreach (var selector in _ruleSet.SelectRemovableNodesByForm(statGraph))
+                statGraph.RemoveFormNodeCollection(selector);
         }
 
         private void ClearStatGraph(IStatGraph statGraph)

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Common.Data;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing.Referencing
 {
@@ -27,11 +26,11 @@ namespace PoESkillTree.Computation.Parsing.Referencing
                 .FirstOrDefault(r => r.ReferenceName == referenceName);
             if (referencedMatchers != null)
             {
-                return referencedMatchers.Select(d => d.Regex);
+                return referencedMatchers.Data.Select(d => d.Regex);
             }
             return _statMatchersList
                 .Where(r => r.ReferenceNames.Contains(referenceName))
-                .SelectMany(r => r.Select(d => d.Regex));
+                .SelectMany(r => r.Data.Select(d => d.Regex));
         }
 
         public bool TryGetReferencedMatcherData(
@@ -39,7 +38,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
         {
             matcherData = _referencedMatchersList
                 .Where(r => r.ReferenceName == referenceName)
-                .Flatten()
+                .SelectMany(r => r.Data)
                 .ElementAtOrDefault(matcherIndex);
             return matcherData != null;
         }
@@ -48,7 +47,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
         {
             matcherData = _statMatchersList
                 .Where(r => r.ReferenceNames.Contains(referenceName))
-                .Flatten()
+                .SelectMany(r => r.Data)
                 .ElementAtOrDefault(matcherIndex);
             return matcherData != null;
         }

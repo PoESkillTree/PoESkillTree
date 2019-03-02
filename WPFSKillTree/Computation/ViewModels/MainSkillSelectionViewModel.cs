@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
+using JetBrains.Annotations;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.GameModel;
+using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 using POESKillTree.Utils;
 
@@ -23,7 +27,7 @@ namespace POESKillTree.Computation.ViewModels
         public static MainSkillSelectionViewModel Create(
             SkillDefinitions skillDefinitions, IBuilderFactories builderFactories,
             CalculationNodeViewModelFactory nodeFactory,
-            ObservableCollection<IReadOnlyList<Skill>> skills)
+            ObservableSet<IReadOnlyList<Skill>> skills)
         {
             var vm = new MainSkillSelectionViewModel(skillDefinitions, builderFactories, nodeFactory);
             vm.Initialize(skills);
@@ -37,21 +41,26 @@ namespace POESKillTree.Computation.ViewModels
             _skillDefinitions = skillDefinitions;
             var selectedSkillItemSlotStat = builderFactories.MetaStatBuilders.MainSkillItemSlot
                 .BuildToStats(Entity.Character).Single();
-            _selectedSkillItemSlot = nodeFactory.CreateConfiguration(selectedSkillItemSlotStat);
+            _selectedSkillItemSlot = nodeFactory.CreateConfiguration(selectedSkillItemSlotStat, new NodeValue(0));
             var selectedSkillSocketIndexStat = builderFactories.MetaStatBuilders.MainSkillSocketIndex
                 .BuildToStats(Entity.Character).Single();
-            _selectedSkillSocketIndex = nodeFactory.CreateConfiguration(selectedSkillSocketIndexStat);
+            _selectedSkillSocketIndex = nodeFactory.CreateConfiguration(selectedSkillSocketIndexStat, new NodeValue(0));
             var selectedSkillPartStat = builderFactories.StatBuilders.MainSkillPart
                 .BuildToStats(Entity.Character).Single();
-            _selectedSkillPart = nodeFactory.CreateConfiguration(selectedSkillPartStat);
+            _selectedSkillPart = nodeFactory.CreateConfiguration(selectedSkillPartStat, new NodeValue(0));
+            ConfigurationNodes = new[] { _selectedSkillItemSlot, _selectedSkillSocketIndex, _selectedSkillPart };
         }
 
-        private void Initialize(ObservableCollection<IReadOnlyList<Skill>> skills)
+        private void Initialize(ObservableSet<IReadOnlyList<Skill>> skills)
         {
-            _selectedSkillPart.NumericValue = 0;
-            ResetSkills(skills);
+            AddSkills(skills);
+            SelectedSkill = GetSelectedAndAvailableSkill() ?? AvailableSkills.First();
+            _selectedSkillItemSlot.PropertyChanged += OnSelectedSkillStatChanged;
+            _selectedSkillSocketIndex.PropertyChanged += OnSelectedSkillStatChanged;
             skills.CollectionChanged += OnSkillsChanged;
         }
+
+        public IEnumerable<ConfigurationNodeViewModel> ConfigurationNodes { get; }
 
         public ObservableCollection<MainSkillViewModel> AvailableSkills { get; } =
             new ObservableCollection<MainSkillViewModel>();
@@ -59,37 +68,35 @@ namespace POESKillTree.Computation.ViewModels
         public MainSkillViewModel SelectedSkill
         {
             get => _selectedSkill;
-            set => SetProperty(ref _selectedSkill, value, onChanging: OnSelectedSkillChanging);
-        }
-
-        private void OnSelectedSkillChanging(MainSkillViewModel newValue)
-        {
-            _selectedSkillItemSlot.NumericValue = (double?) newValue?.Skill.ItemSlot;
-            _selectedSkillSocketIndex.NumericValue = newValue?.Skill.SocketIndex;
-        }
-
-        private void OnSkillsChanged(object sender, NotifyCollectionChangedEventArgs args)
-        {
-            if (args.Action == NotifyCollectionChangedAction.Reset)
+            set
             {
-                ResetSkills((IEnumerable<IEnumerable<Skill>>) sender);
-                return;
-            }
-
-            if (args.NewItems != null)
-            {
-                AddSkills(args.NewItems.Cast<IEnumerable<Skill>>());
-            }
-            if (args.OldItems != null)
-            {
-                RemoveSkills(args.OldItems.Cast<IEnumerable<Skill>>());
+                if (value == null)
+                    return;
+                _selectedSkillItemSlot.NumericValue = (double?) value.Skill.ItemSlot;
+                _selectedSkillSocketIndex.NumericValue = value.Skill.SocketIndex;
+                SetProperty(ref _selectedSkill, value);
             }
         }
 
-        private void ResetSkills(IEnumerable<IEnumerable<Skill>> skills)
+        [CanBeNull]
+        private MainSkillViewModel GetSelectedAndAvailableSkill()
+            => AvailableSkills.FirstOrDefault(
+                s => s.Skill.ItemSlot == (ItemSlot?) _selectedSkillItemSlot.NumericValue &&
+                     s.Skill.SocketIndex == (int?) _selectedSkillSocketIndex.NumericValue);
+
+        private void OnSelectedSkillStatChanged(object sender, PropertyChangedEventArgs args)
         {
-            AvailableSkills.Clear();
-            AddSkills(skills);
+            if (args.PropertyName == nameof(CalculationNodeViewModel.Value))
+            {
+                SelectedSkill = GetSelectedAndAvailableSkill();
+            }
+        }
+
+        private void OnSkillsChanged(object sender, CollectionChangedEventArgs<IReadOnlyList<Skill>> args)
+        {
+            AddSkills(args.AddedItems);
+            RemoveSkills(args.RemovedItems);
+            SelectedSkill = GetSelectedAndAvailableSkill() ?? AvailableSkills.First();
         }
 
         private void AddSkills(IEnumerable<IEnumerable<Skill>> skills)
@@ -112,22 +119,7 @@ namespace POESKillTree.Computation.ViewModels
             => skill.IsEnabled && !_skillDefinitions.GetSkillById(skill.Id).IsSupport;
 
         private void AddSkill(MainSkillViewModel skill)
-        {
-            if (skill.Skill == Skill.Default && AvailableSkills.Any())
-                return;
-
-            var defaultVm = AvailableSkills.FirstOrDefault(x => x.Skill == Skill.Default);
-            if (defaultVm != null)
-            {
-                AvailableSkills.Remove(defaultVm);
-            }
-
-            AvailableSkills.Add(skill);
-            if (AvailableSkills.Count == 1)
-            {
-                SelectedSkill = AvailableSkills[0];
-            }
-        }
+            => AvailableSkills.Add(skill);
 
         private void RemoveSkill(Skill skill)
         {
@@ -135,17 +127,7 @@ namespace POESKillTree.Computation.ViewModels
             if (vm is null)
                 return;
 
-            var wasSelected = SelectedSkill == vm;
             AvailableSkills.Remove(vm);
-
-            if (AvailableSkills.IsEmpty())
-            {
-                AddSkill(CreateSkillViewModel(Skill.Default));
-            }
-            else if (wasSelected)
-            {
-                SelectedSkill = AvailableSkills[0];
-            }
         }
 
         private MainSkillViewModel CreateSkillViewModel(Skill skill)

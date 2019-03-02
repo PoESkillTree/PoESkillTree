@@ -22,30 +22,16 @@ namespace PoESkillTree.GameModel.Skills
         private SkillJsonDeserializer(SkillDefinitionExtensions definitionExtensions)
             => _definitionExtensions = definitionExtensions;
 
-        public static async Task<SkillDefinitions> DeserializeAsync()
+        public static async Task<SkillDefinitions> DeserializeAsync(bool deserializeOnThreadPool)
         {
-            var gemJsonTask = DeserializeAsync("gems");
-            var gemTooltipJsonTask = DeserializeAsync("gem_tooltips");
-            return DeserializeMerged(
+            var gemJsonTask = DataUtils.LoadRePoEAsObjectAsync("gems", deserializeOnThreadPool);
+            var gemTooltipJsonTask = DataUtils.LoadRePoEAsObjectAsync("gem_tooltips", deserializeOnThreadPool);
+            return Deserialize(
                 await gemJsonTask.ConfigureAwait(false),
                 await gemTooltipJsonTask.ConfigureAwait(false));
-
-            async Task<JObject> DeserializeAsync(string fileName)
-            {
-                var json = await DataUtils.LoadRePoEAsObjectAsync(fileName).ConfigureAwait(false);
-                MergeStaticWithPerLevel(json);
-                return json;
-            }
         }
 
-        public static SkillDefinitions Deserialize(JObject gemJson, JObject gemTooltipJson)
-        {
-            MergeStaticWithPerLevel(gemJson);
-            MergeStaticWithPerLevel(gemTooltipJson);
-            return DeserializeMerged(gemJson, gemTooltipJson);
-        }
-
-        private static SkillDefinitions DeserializeMerged(JObject gemJson, JObject gemTooltipJson)
+        public static SkillDefinitions Deserialize(JObject gemJson, JToken gemTooltipJson)
         {
             var deserializer = new SkillJsonDeserializer(new SkillDefinitionExtensions());
             var definitions = gemJson.Properties()
@@ -58,7 +44,7 @@ namespace PoESkillTree.GameModel.Skills
             => Deserialize(gemProperty.Name, (JObject) gemProperty.Value,
                 gemTooltipJson.Value<JObject>(gemProperty.Name));
 
-        private SkillDefinition Deserialize(string skillId, JObject gemJson, JObject gemTooltipJson)
+        private SkillDefinition Deserialize(string skillId, JObject gemJson, JToken gemTooltipJson)
         {
             var castTime = gemJson.Value<int>("cast_time");
             var statTranslationFile = gemJson.Value<string>("stat_translation_file");
@@ -134,20 +120,23 @@ namespace PoESkillTree.GameModel.Skills
         private IReadOnlyList<IReadOnlyList<Keyword>> GetKeywordsPerPart(IReadOnlyList<Keyword> keywords)
             => _definitionExtension.PartExtensions.Select(e => e.ModifyKeywords(keywords).ToList()).ToList();
 
-        private IReadOnlyDictionary<int, SkillLevelDefinition> DeserializeLevels(
-            JObject gemJson, JObject gemTooltipJson)
+        private IReadOnlyDictionary<int, SkillLevelDefinition> DeserializeLevels(JToken gemJson, JToken gemTooltipJson)
         {
+            var staticJson = gemJson["static"];
+            var staticTooltipJson = gemTooltipJson["static"];
             var perLevel = gemJson["per_level"];
             var levels = new Dictionary<int, SkillLevelDefinition>();
             foreach (var perLevelProp in perLevel.Cast<JProperty>())
             {
+                var tooltip = DeserializeTooltip(gemTooltipJson["per_level"][perLevelProp.Name], staticTooltipJson);
                 levels[int.Parse(perLevelProp.Name)] =
-                    DeserializeLevel((JObject) perLevelProp.Value, gemTooltipJson["per_level"][perLevelProp.Name]);
+                    DeserializeLevel(perLevelProp.Value, staticJson, tooltip);
             }
             return levels;
         }
 
-        private SkillLevelDefinition DeserializeLevel(JObject levelJson, JToken tooltipLevelJson)
+        private SkillLevelDefinition DeserializeLevel(
+            JToken levelJson, JToken staticJson, SkillTooltipDefinition tooltip)
         {
             var allQualityStats = Stats("quality_stats");
             var (nonBuffQualityStats, qualityBuffStats) = SplitBuffStats(allQualityStats);
@@ -158,7 +147,6 @@ namespace PoESkillTree.GameModel.Skills
             var (nonPassiveStats, passiveStats) = SplitPassiveStats(nonBuffStats);
             var (commonStats, additionalStatsPerPart) = SplitStatsIntoParts(nonPassiveStats);
 
-            var statRequirements = levelJson["stat_requirements"];
             return new SkillLevelDefinition(
                 Value<int?>("damage_effectiveness") / 100D + 1,
                 Value<int?>("damage_multiplier") / 10000D + 1,
@@ -168,9 +156,9 @@ namespace PoESkillTree.GameModel.Skills
                 Value<int?>("mana_reservation_override"),
                 Value<int?>("cooldown"),
                 Value<int>("required_level"),
-                statRequirements?.Value<int>("dex") ?? 0,
-                statRequirements?.Value<int>("int") ?? 0,
-                statRequirements?.Value<int>("str") ?? 0,
+                NestedValue<int>("stat_requirements", "dex"),
+                NestedValue<int>("stat_requirements", "int"),
+                NestedValue<int>("stat_requirements", "str"),
                 qualityStats,
                 commonStats,
                 additionalStatsPerPart,
@@ -178,17 +166,25 @@ namespace PoESkillTree.GameModel.Skills
                 buffStats,
                 qualityPassiveStats,
                 passiveStats,
-                DeserializeTooltip(tooltipLevelJson));
+                tooltip);
 
-            T Value<T>(string propertyName) => levelJson.Value<T>(propertyName);
+            T NestedValue<T>(string propertyName, string nestedPropertyName)
+                => GetValue<T>(nestedPropertyName, levelJson[propertyName], staticJson[propertyName]);
+
+            T Value<T>(string propertyName) => GetValue<T>(propertyName, levelJson, staticJson);
 
             IReadOnlyList<UntranslatedStat> Stats(string propertyName)
             {
-                var stats = Value<JArray>(propertyName)
-                    .Select(s => new UntranslatedStat(s.Value<string>("id"), s.Value<int>("value")));
+                var stats = DeserializeStats(
+                    Value<JArray>(propertyName), staticJson.Value<JArray>(propertyName), DeserializeUntranslatedStat);
                 return _definitionExtension.CommonExtension.ModifyStats(stats).ToList();
             }
         }
+
+        private static UntranslatedStat DeserializeUntranslatedStat(JToken statToken, JToken staticStatToken)
+            => new UntranslatedStat(
+                GetValue<string>("id", statToken, staticStatToken),
+                GetValue<int>("value", statToken, staticStatToken));
 
         private (IReadOnlyList<UntranslatedStat>, IReadOnlyList<BuffStat>) SplitBuffStats(
             IReadOnlyList<UntranslatedStat> stats)
@@ -222,105 +218,85 @@ namespace PoESkillTree.GameModel.Skills
             return (commonStats, additionalStatsPerPart);
         }
 
-        private static SkillTooltipDefinition DeserializeTooltip(JToken tooltipJson)
-            => new SkillTooltipDefinition(
-                tooltipJson.Value<string>("name"),
-                DeserializeTranslatedStatArray(tooltipJson.Value<JArray>("properties")),
-                DeserializeTranslatedStatArray(tooltipJson.Value<JArray>("requirements")),
-                tooltipJson["description"].Values<string>().ToList(),
-                DeserializeTranslatedStatArray(tooltipJson.Value<JArray>("quality_stats")),
-                DeserializeTranslatedStatArray(tooltipJson.Value<JArray>("stats")));
-
-        private static IReadOnlyList<TranslatedStat> DeserializeTranslatedStatArray(JArray statJson)
+        private static SkillTooltipDefinition DeserializeTooltip(JToken levelJson, JToken staticJson)
         {
-            var stats = new List<TranslatedStat>();
-            foreach (var token in statJson)
+            var description = levelJson["description"]?.Values<string>() ?? staticJson["description"].Values<string>();
+            return new SkillTooltipDefinition(
+                Value<string>("name"),
+                Stats("properties"),
+                Stats("requirements"),
+                description.ToList(),
+                Stats("quality_stats"),
+                Stats("stats"));
+
+            T Value<T>(string propertyName) where T : class
+                => levelJson[propertyName]?.Value<T>() ?? staticJson.Value<T>(propertyName);
+
+            IReadOnlyList<TranslatedStat> Stats(string propertyName)
+                => DeserializeStats(
+                    Value<JArray>(propertyName), staticJson.Value<JArray>(propertyName), DeserializeTranslatedStat);
+        }
+
+        private static TranslatedStat DeserializeTranslatedStat(JToken statToken, JToken staticStatToken)
+        {
+            if (statToken.Type == JTokenType.String)
+                return new TranslatedStat(statToken.Value<string>());
+
+            var text = statToken["text"]?.Value<string>() ?? staticStatToken.Value<string>("text");
+            return TryGetValues("values", statToken, staticStatToken, out double[] values)
+                ? new TranslatedStat(text, values)
+                : new TranslatedStat(text, GetValue<double>("value", statToken, staticStatToken));
+        }
+
+        private static IReadOnlyList<T> DeserializeStats<T>(
+            JArray statsJson, JArray staticStatsJson, Func<JToken, JToken, T> deserializeStat)
+        {
+            if (statsJson is null)
+                throw new ArgumentNullException(nameof(statsJson));
+            if (staticStatsJson is null)
+                staticStatsJson = statsJson;
+
+            var stats = new List<T>(statsJson.Count);
+            for (var i = 0; i < statsJson.Count; i++)
             {
-                TranslatedStat stat;
-                if (token.Type == JTokenType.String)
-                {
-                    stat = new TranslatedStat(token.Value<string>());
-                }
-                else
-                {
-                    var text = token.Value<string>("text");
-                    stat = ((JObject) token).TryGetValue("values", out var values)
-                        ? new TranslatedStat(text, values.Values<double>().ToArray())
-                        : new TranslatedStat(text, token.Value<double>("value"));
-                }
-                stats.Add(stat);
+                var statToken = statsJson[i];
+                var staticStatToken = staticStatsJson[i];
+                if (statToken.Type == JTokenType.Null)
+                    statToken = staticStatToken;
+                stats.Add(deserializeStat(statToken, staticStatToken));
             }
             return stats;
         }
 
-        private static void MergeStaticWithPerLevel(JObject json)
+        private static bool TryGetValues<T>(string propertyName, JToken firstToken, JToken secondToken, out T[] values)
         {
-            foreach (var token in json.PropertyValues())
+            var firstArray = GetValue<JArray>(propertyName, firstToken, secondToken);
+            if (firstArray is null)
             {
-                var staticObject = token.Value<JObject>("static");
-                foreach (var perLevelProp in token["per_level"].Cast<JProperty>())
-                {
-                    MergeObject(staticObject, (JObject) perLevelProp.Value);
-                }
+                values = null;
+                return false;
             }
+
+            var secondArray = GetValue<JArray>(propertyName, secondToken, firstToken);
+            if (firstArray.Count != secondArray.Count)
+                throw new InvalidOperationException("Both arrays must be of the same size");
+
+            values = new T[firstArray.Count];
+            for (var i = 0; i < firstArray.Count; i++)
+            {
+                var first = firstArray[i];
+                values[i] = first.Type == JTokenType.Null ? secondArray[i].Value<T>() : first.Value<T>();
+            }
+            return true;
         }
 
-        private static void MergeObject(JObject staticObject, JObject perLevelObject)
+        private static T GetValue<T>(string propertyName, JToken firstToken, JToken secondToken)
         {
-            foreach (var staticProp in staticObject.Properties())
-            {
-                var staticValue = staticProp.Value;
-                var staticType = staticValue.Type;
-                var propName = staticProp.Name;
-                if (staticType == JTokenType.Null)
-                {
-                    continue;
-                }
-                if (perLevelObject.TryGetValue(propName, out var perLevelValue))
-                {
-                    if (staticType == JTokenType.Object)
-                    {
-                        MergeObject((JObject) staticValue, (JObject) perLevelValue);
-                    }
-                    else if (staticType == JTokenType.Array)
-                    {
-                        MergeArray((JArray) staticValue, (JArray) perLevelValue);
-                    }
-                    // keep the one from perLevelObject for primitives
-                }
-                else
-                {
-                    perLevelObject[propName] = staticValue;
-                }
-            }
-        }
-
-        private static void MergeArray(JArray staticArray, JArray perLevelArray)
-        {
-            if (staticArray.Count != perLevelArray.Count)
-                throw new ArgumentException("both JArrays must be of the same size");
-            for (int i = 0; i < staticArray.Count; i++)
-            {
-                var staticValue = staticArray[i];
-                var perLevelValue = perLevelArray[i];
-                if (staticValue.Type == JTokenType.Null)
-                {
-                    continue;
-                }
-                switch (perLevelValue.Type)
-                {
-                    case JTokenType.Null:
-                        perLevelArray[i] = staticValue;
-                        break;
-                    case JTokenType.Object:
-                        MergeObject((JObject) staticValue, (JObject) perLevelValue);
-                        break;
-                    case JTokenType.Array:
-                        MergeArray((JArray) staticValue, (JArray) perLevelValue);
-                        break;
-                    // keep the one from perLevelObject for primitives
-                }
-            }
+            if (firstToken is JObject firstObject && firstObject.TryGetValue(propertyName, out var outToken))
+                return outToken.Value<T>();
+            if (secondToken is JObject secondObject && secondObject.TryGetValue(propertyName, out outToken))
+                return outToken.Value<T>();
+            return default;
         }
     }
 }

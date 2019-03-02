@@ -3,6 +3,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.GameModel;
 using PoESkillTree.GameModel.Skills;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
@@ -14,12 +15,16 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
         private readonly SkillDefinitions _skillDefinitions;
         private readonly IBuilderFactories _builderFactories;
         private readonly UntranslatedStatParserFactory _statParserFactory;
+        private readonly IPartialSkillParser[] _partialParsers;
 
         public SupportSkillParser(
             SkillDefinitions skillDefinitions, IBuilderFactories builderFactories,
             UntranslatedStatParserFactory statParserFactory)
-            => (_skillDefinitions, _builderFactories, _statParserFactory) =
+        {
+            (_skillDefinitions, _builderFactories, _statParserFactory) =
                 (skillDefinitions, builderFactories, statParserFactory);
+            _partialParsers = CreatePartialParsers();
+        }
 
         public ParseResult Parse(SupportSkillParserParameter parameter)
         {
@@ -33,7 +38,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var preParser = new SkillPreParser(_skillDefinitions, _builderFactories.MetaStatBuilders);
             var preParseResult = preParser.ParseSupport(active, support);
 
-            foreach (var partialParser in CreatePartialParsers())
+            foreach (var partialParser in _partialParsers)
             {
                 var (newlyParsedModifiers, newlyParsedStats) = partialParser.Parse(active, support, preParseResult);
                 modifiers.AddRange(newlyParsedModifiers);
@@ -45,7 +50,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 new PartialSkillParseResult(modifiers, parsedStats));
         }
 
-        private IEnumerable<IPartialSkillParser> CreatePartialParsers()
+        private IPartialSkillParser[] CreatePartialParsers()
             => new[]
             {
                 new SupportSkillGeneralParser(_builderFactories),
@@ -64,7 +69,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             => @this.Parse(new SupportSkillParserParameter(activeSkill, supportSkill));
     }
 
-    public class SupportSkillParserParameter
+    public class SupportSkillParserParameter : ValueObject
     {
         public SupportSkillParserParameter(Skill activeSkill, Skill supportSkill)
             => (ActiveSkill, SupportSkill) = (activeSkill, supportSkill);
@@ -74,5 +79,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
         public Skill ActiveSkill { get; }
         public Skill SupportSkill { get; }
+
+        protected override object ToTuple() => (ActiveSkill, SupportSkill);
     }
 }

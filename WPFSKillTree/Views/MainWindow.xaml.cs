@@ -459,16 +459,19 @@ namespace POESKillTree.Views
 
             var computationInitializer = ComputationInitializer.StartNew();
             _gameData = computationInitializer.GameData;
-            var persistentDataTask = PersistentData.InitializeAsync(DialogCoordinator.Instance, _gameData);
+            var persistentDataTask = PersistentData.InitializeAsync(DialogCoordinator.Instance);
 
             InitializeIndependentUI();
+            Log.Info($"Independent UI initialized after {stopwatch.ElapsedMilliseconds} ms");
 
             await persistentDataTask;
             InitializePersistentDataDependentUI();
+            Log.Info($"PersistentData UI initialized after {stopwatch.ElapsedMilliseconds} ms");
 
             controller.SetMessage(L10n.Message("Loading skill tree assets ..."));
             Tree = await CreateSkillTreeAsync(controller);
             InitializeTreeDependentUI();
+            Log.Info($"Tree UI initialized after {stopwatch.ElapsedMilliseconds} ms");
 
             controller.SetMessage(L10n.Message("Initializing window ..."));
             controller.SetIndeterminate();
@@ -481,12 +484,14 @@ namespace POESKillTree.Views
             await CurrentBuildChanged();
             _justLoaded = false;
             InitializeBuildDependentUI();
+            Log.Info($"Build UI initialized after {stopwatch.ElapsedMilliseconds} ms");
             
             await initialComputationTask;
             await computationInitializer.InitializeAfterBuildLoadAsync(
                 Tree.SkilledNodes, _equipmentConverter.Items, _equipmentConverter.Skills);
             ComputationViewModel = await computationInitializer.CreateComputationViewModelAsync(PersistentData);
             computationInitializer.SetupPeriodicActions();
+            Log.Info($"Computation UI initialized after {stopwatch.ElapsedMilliseconds} ms");
 
             await controller.CloseAsync();
 

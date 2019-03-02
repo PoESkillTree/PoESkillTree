@@ -50,7 +50,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
             foreach (var referencedMatchers in referencedMatchersList)
             {
                 var referenceName = referencedMatchers.ReferenceName;
-                List<string> regexes = referencedMatchers.Select(d => d.Regex).ToList();
+                List<string> regexes = referencedMatchers.Data.Select(d => d.Regex).ToList();
                 ValidateGroupNames(regexes);
 
                 if (regexes.Any(s => s.Contains(ValuePlaceholder)))
@@ -82,7 +82,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
             foreach (var statMatchers in statMatchersList)
             {
                 var referenceNames = statMatchers.ReferenceNames;
-                List<string> regexes = statMatchers.Select(d => d.Regex).ToList();
+                List<string> regexes = statMatchers.Data.Select(d => d.Regex).ToList();
                 ValidateGroupNames(regexes);
 
                 if (referenceNames.IsEmpty())

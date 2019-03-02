@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using MoreLinq;
 using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Common
@@ -24,7 +22,10 @@ namespace PoESkillTree.Computation.Common
         {
             CanonicalSource = canonicalSource ?? this;
             SourceName = sourceName;
-            InfluencingSources = influencingSources.Prepend(CanonicalSource).ToList();
+            var sources = new ModifierSource[influencingSources.Length + 1];
+            sources[0] = CanonicalSource;
+            Array.Copy(influencingSources, 0, sources, 1, influencingSources.Length);
+            InfluencingSources = sources;
         }
 
         private ModifierSource(params ModifierSource[] influencingSources)
@@ -44,8 +45,8 @@ namespace PoESkillTree.Computation.Common
         public IReadOnlyList<ModifierSource> InfluencingSources { get; }
 
         /// <summary>
-        /// This instance but only containing data necessary for determining equivalence, no additional infos.
-        /// E.g. <see cref="SourceName"/> returns an empty string class name.
+        /// This instance but containing only the information that is relevant for the calculation graph.
+        /// E.g. <see cref="SourceName"/> returns an empty string.
         /// </summary>
         /// <remarks>
         /// These sources are stored in stat graph nodes and returned by <see cref="InfluencingSources"/>.
@@ -62,10 +63,10 @@ namespace PoESkillTree.Computation.Common
             ReferenceEquals(obj, this) || (obj is ModifierSource other && Equals(other));
 
         public virtual bool Equals(ModifierSource other) =>
-            GetType() == other?.GetType();
+            GetType() == other?.GetType() && SourceName == other.SourceName;
 
         public override int GetHashCode() =>
-            GetType().GetHashCode();
+            (GetType(), SourceName).GetHashCode();
 
         /// <summary>
         /// Canonical string representation of this source for UI display purposes. E.g. Given, Helmet or Skill.
@@ -95,6 +96,11 @@ namespace PoESkillTree.Computation.Common
             }
 
             public Local LocalSource { get; }
+
+            public override bool Equals(ModifierSource other)
+                => base.Equals(other) && other is Global global && LocalSource == global.LocalSource;
+
+            public override int GetHashCode() => (base.GetHashCode(), LocalSource).GetHashCode();
 
             public override string ToString() => LocalSource?.ToString() ?? base.ToString();
         }
@@ -150,9 +156,10 @@ namespace PoESkillTree.Computation.Common
 
                 public ItemSlot Slot { get; }
 
-                public override bool Equals(ModifierSource other) => other is Item item && Slot == item.Slot;
+                public override bool Equals(ModifierSource other)
+                    => base.Equals(other) && other is Item item && Slot == item.Slot;
 
-                public override int GetHashCode() => (GetType(), Slot).GetHashCode();
+                public override int GetHashCode() => (base.GetHashCode(), Slot).GetHashCode();
 
                 public override string ToString() => Slot.ToString();
             }
@@ -169,6 +176,11 @@ namespace PoESkillTree.Computation.Common
                 }
 
                 public string SkillId { get; }
+
+                public override bool Equals(ModifierSource other)
+                    => base.Equals(other) && other is Skill skill && SkillId == skill.SkillId;
+
+                public override int GetHashCode() => (base.GetHashCode(), SkillId).GetHashCode();
             }
 
             /// <summary>
@@ -190,9 +202,10 @@ namespace PoESkillTree.Computation.Common
                 public string SkillId { get; }
 
                 public override bool Equals(ModifierSource other)
-                    => other is Gem item && Slot == item.Slot && SocketIndex == item.SocketIndex;
+                    => base.Equals(other) && other is Gem gem && Slot == gem.Slot && SocketIndex == gem.SocketIndex
+                       && SkillId == gem.SkillId;
 
-                public override int GetHashCode() => (GetType(), Slot, SocketIndex).GetHashCode();
+                public override int GetHashCode() => (base.GetHashCode(), Slot, SocketIndex).GetHashCode();
             }
 
             public sealed class UserSpecified : Local

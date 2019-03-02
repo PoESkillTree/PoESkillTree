@@ -23,16 +23,17 @@ namespace PoESkillTree.Computation.Builders.Behaviors
             return _transformedValue.Calculate(modifiedContext);
         }
 
-        private IEnumerable<PathDefinition> GetPaths(IValueCalculationContext context, IStat stat)
+        private IReadOnlyCollection<PathDefinition> GetPaths(IValueCalculationContext context, IStat stat)
         {
             var originalPaths = context.GetPaths(stat);
-            if (_ailmentDamage.Equals(stat))
-            {
-                var skillPaths = context.GetPaths(_skillDamage)
-                    .Select(p => new PathDefinition(p.ModifierSource));
-                return originalPaths.Union(skillPaths);
-            }
-            return originalPaths;
+            if (!_ailmentDamage.Equals(stat))
+                return originalPaths;
+
+            var skillPaths = context.GetPaths(_skillDamage)
+                .Select(p => new PathDefinition(p.ModifierSource));
+            var paths = new HashSet<PathDefinition>(originalPaths);
+            paths.UnionWith(skillPaths);
+            return paths;
         }
     }
 }

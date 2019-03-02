@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using PoESkillTree.Computation.Common.Data;
 using static PoESkillTree.Computation.Common.Parsing.ReferenceConstants;
@@ -12,7 +10,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
     /// <see cref="MatcherData"/> of an <see cref="IStatMatchers"/> instance and expands them (potentially recursively)
     /// using <see cref="IReferencedRegexes"/> and <see cref="IRegexGroupFactory"/>.
     /// </summary>
-    public class StatMatcherRegexExpander : IEnumerable<MatcherData>
+    public class StatMatcherRegexExpander
     {
         /// <summary>
         /// The pattern <see cref="ValuePlaceholder"/> is expanded to.
@@ -22,36 +20,27 @@ namespace PoESkillTree.Computation.Parsing.Referencing
         public const string LeftDelimiterRegex = @"(?<=^|\s)";
         public const string RightDelimiterRegex = @"(?=$|\s)";
 
-        private readonly IStatMatchers _statMatchers;
         private readonly IReferencedRegexes _referencedRegexes;
         private readonly IRegexGroupFactory _regexGroupFactory;
-        private readonly Lazy<IReadOnlyList<MatcherData>> _expanded;
+        private readonly bool _matchesWholeLineOnly;
 
         public StatMatcherRegexExpander(
-            IStatMatchers statMatchers, 
             IReferencedRegexes referencedRegexes,
-            IRegexGroupFactory regexGroupFactory)
+            IRegexGroupFactory regexGroupFactory,
+            bool matchesWholeLineOnly)
         {
-            _statMatchers = statMatchers;
             _referencedRegexes = referencedRegexes;
             _regexGroupFactory = regexGroupFactory;
-            _expanded = new Lazy<IReadOnlyList<MatcherData>>(() => Expand().ToList());
+            _matchesWholeLineOnly = matchesWholeLineOnly;
         }
 
-        public IEnumerator<MatcherData> GetEnumerator() => _expanded.Value.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        private IEnumerable<MatcherData> Expand()
+        public string Expand(string regex)
         {
-            var leftDelimiter = _statMatchers.MatchesWholeLineOnly ? "^" : LeftDelimiterRegex;
-            var rightDelimiter = _statMatchers.MatchesWholeLineOnly ? "$" : RightDelimiterRegex;
-            return
-                from data in _statMatchers
-                let regex = leftDelimiter
-                            + ExpandReferences(ExpandValues(data.Regex), "")
-                            + rightDelimiter
-                select new MatcherData(regex, data.Modifier, data.MatchSubstitution);
+            var leftDelimiter = _matchesWholeLineOnly ? "^" : LeftDelimiterRegex;
+            var rightDelimiter = _matchesWholeLineOnly ? "$" : RightDelimiterRegex;
+            return leftDelimiter
+                   + ExpandReferences(ExpandValues(regex), "")
+                   + rightDelimiter;
         }
 
         private string ExpandValues(string regex)

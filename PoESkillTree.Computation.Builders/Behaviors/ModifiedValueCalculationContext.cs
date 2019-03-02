@@ -10,13 +10,13 @@ namespace PoESkillTree.Computation.Builders.Behaviors
         private readonly GetValueDelegate _getValue;
         private readonly GetValuesDelegate _getValues;
 
-        public delegate IEnumerable<PathDefinition> GetPathsDelegate(
+        public delegate IReadOnlyCollection<PathDefinition> GetPathsDelegate(
             IValueCalculationContext context, IStat stat);
 
         public delegate NodeValue? GetValueDelegate(
             IValueCalculationContext context, IStat stat, NodeType nodeType, PathDefinition path);
 
-        public delegate IEnumerable<NodeValue?> GetValuesDelegate(
+        public delegate List<NodeValue?> GetValuesDelegate(
             IValueCalculationContext context, Form form, IEnumerable<(IStat stat, PathDefinition path)> paths);
 
         public ModifiedValueCalculationContext(IValueCalculationContext originalContext,
@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
         public PathDefinition CurrentPath => _originalContext.CurrentPath;
 
-        public IEnumerable<PathDefinition> GetPaths(IStat stat) =>
+        public IReadOnlyCollection<PathDefinition> GetPaths(IStat stat) =>
             _getPaths is null
                 ? _originalContext.GetPaths(stat)
                 : _getPaths(_originalContext, stat);
@@ -40,7 +40,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                 ? _originalContext.GetValue(stat, nodeType, path)
                 : _getValue(_originalContext, stat, nodeType, path);
 
-        public IEnumerable<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths) =>
+        public List<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths) =>
             _getValues is null
                 ? _originalContext.GetValues(form, paths)
                 : _getValues(_originalContext, form, paths);

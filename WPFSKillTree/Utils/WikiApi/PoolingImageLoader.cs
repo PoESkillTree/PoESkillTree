@@ -48,7 +48,7 @@ namespace POESKillTree.Utils.WikiApi
         /// </summary>
         public async Task ProduceAsync(string itemName, string fileName)
         {
-            var tcs = new TaskCompletionSource<string>();
+            var tcs = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
             var item = new PoolItem(itemName, fileName, tcs);
             await _queue.SendAsync(item).ConfigureAwait(false);
             await tcs.Task.ConfigureAwait(false);

@@ -19,14 +19,10 @@ namespace PoESkillTree.Computation.Common
         /// </summary>
         public static readonly PathDefinition MainPath = new PathDefinition(new ModifierSource.Global());
 
-        public PathDefinition(ModifierSource modifierSource, params IStat[] conversiStats)
-            : this(modifierSource, (IReadOnlyList<IStat>) conversiStats)
+        public PathDefinition(ModifierSource modifierSource, params IStat[] conversionStats)
+            : base(true)
         {
-        }
-
-        public PathDefinition(ModifierSource modifierSource, IReadOnlyList<IStat> conversionStats)
-        {
-            ModifierSource = modifierSource;
+            ModifierSource = modifierSource.CanonicalSource;
             ConversionStats = conversionStats;
         }
 
@@ -44,7 +40,7 @@ namespace PoESkillTree.Computation.Common
         /// <summary>
         /// True if this instance describes the main path.
         /// </summary>
-        public bool IsMainPath => Equals(MainPath);
+        public bool IsMainPath => ModifierSource is ModifierSource.Global && ConversionStats.Count == 0;
 
         protected override object ToTuple() => (ModifierSource, WithSequenceEquality(ConversionStats));
     }

@@ -79,7 +79,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         private static StatGraphWithEvents CreateSut(
             Action<NodeSelector> nodeAddedAction = null, Action<NodeSelector> nodeRemovedAction = null)
         {
-            var nodes = new Dictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>>();
+            var nodes = new Dictionary<NodeSelector, IBufferingEventViewProvider<ICalculationNode>>();
             return CreateSut(Mock.Of<IStatGraph>(g => g.Nodes == nodes), nodeAddedAction, nodeRemovedAction);
         }
 

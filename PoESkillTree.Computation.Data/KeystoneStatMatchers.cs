@@ -23,7 +23,7 @@ namespace PoESkillTree.Computation.Data
             : base(builderFactories)
             => (_modifierBuilder, _passives) = (modifierBuilder, passives);
 
-        protected override IEnumerable<MatcherData> CreateCollection()
+        protected override IReadOnlyList<MatcherData> CreateCollection()
         {
             var collection = new FormAndStatMatcherCollection(_modifierBuilder, ValueFactory);
             foreach (var keystone in _passives.Where(d => d.Type == PassiveNodeType.Keystone))

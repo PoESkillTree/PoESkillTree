@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Concurrency;
+using System.Threading.Tasks;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 using POESKillTree.Computation.Model;
@@ -11,13 +12,13 @@ namespace POESKillTree.Computation.ViewModels
     public abstract class ExplicitlyRegisteredStatsViewModel<T>
         where T : IDisposable
     {
-        protected void Initialize(ExplicitlyRegisteredStatsObserver explicitlyRegisteredStats)
+        protected async Task InitializeAsync(ExplicitlyRegisteredStatsObserver explicitlyRegisteredStats)
         {
             explicitlyRegisteredStats.StatAdded +=
                 (node, stat) => DoIfResponsible(stat, () => Add(node, stat));
             explicitlyRegisteredStats.StatRemoved +=
                 (node, stat) => DoIfResponsible(stat, () => Remove(stat));
-            explicitlyRegisteredStats.Initialize(DispatcherScheduler.Current);
+            await explicitlyRegisteredStats.InitializeAsync(DispatcherScheduler.Current);
         }
 
         public ObservableCollection<T> Stats { get; } = new ObservableCollection<T>();

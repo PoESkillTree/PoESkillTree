@@ -19,6 +19,7 @@ namespace PoESkillTree.Computation.Common
 
         public Behavior(IReadOnlyList<IStat> affectedStats, IReadOnlyList<NodeType> affectedNodeTypes,
             IBehaviorPathRule affectedPathsRule, IValueTransformation transformation)
+            : base(true)
         {
             AffectedStats = affectedStats;
             AffectedNodeTypes = affectedNodeTypes;

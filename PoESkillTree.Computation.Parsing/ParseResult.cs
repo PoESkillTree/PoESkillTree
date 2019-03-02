@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
@@ -49,7 +48,14 @@ namespace PoESkillTree.Computation.Parsing
         public IReadOnlyList<Modifier> Modifiers { get; }
 
         public ParseResult ApplyToModifiers(Func<Modifier, Modifier> func)
-            => new ParseResult(FailedLines, RemainingSubstrings, Modifiers.Select(func).ToList());
+        {
+            var modifiers = new List<Modifier>(Modifiers.Count);
+            foreach (var modifier in Modifiers)
+            {
+                modifiers.Add(func(modifier));
+            }
+            return new ParseResult(FailedLines, RemainingSubstrings, modifiers);
+        }
 
         public static ParseResult Aggregate(IEnumerable<ParseResult> results)
         {

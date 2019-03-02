@@ -15,10 +15,10 @@ namespace PoESkillTree.GameModel.Items
 
         private BaseItemJsonDeserializer(JObject modJson) => _modJson = modJson;
 
-        public static async Task<BaseItemDefinitions> DeserializeAsync()
+        public static async Task<BaseItemDefinitions> DeserializeAsync(bool deserializeOnThreadPool)
         {
-            var baseItemsTask = DataUtils.LoadRePoEAsObjectAsync("base_items");
-            var modsTask = DataUtils.LoadRePoEAsObjectAsync("mods");
+            var baseItemsTask = DataUtils.LoadRePoEAsObjectAsync("base_items", deserializeOnThreadPool);
+            var modsTask = DataUtils.LoadRePoEAsObjectAsync("mods", deserializeOnThreadPool);
             return Deserialize(
                 await baseItemsTask.ConfigureAwait(false),
                 await modsTask.ConfigureAwait(false));

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.GameModel;
@@ -34,16 +33,18 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             var (item, _, baseItemDefinition, localSource, globalSource) = parameter;
             var itemTags = baseItemDefinition.Tags;
 
-            var (propertyMods, remainingMods) =
-                item.Modifiers.Partition(s => ModifierLocalityTester.AffectsProperties(s, itemTags));
-            var (localMods, globalMods) =
-                remainingMods.Partition(s => ModifierLocalityTester.IsLocal(s, itemTags));
-
-            var parseResults = ParsePropertyModifiers(localSource, propertyMods)
-                .Prepend(ParseBuffStats(itemTags, localSource, baseItemDefinition.BuffStats))
-                .Concat(ParseLocalModifiers(itemTags, localSource, localMods))
-                .Concat(ParseGlobalModifiers(itemTags, globalSource, globalMods));
-            return ParseResult.Aggregate(parseResults);
+            var results = new List<ParseResult>(1 + item.Modifiers.Count)
+                { ParseBuffStats(itemTags, localSource, baseItemDefinition.BuffStats) };
+            foreach (var modifier in item.Modifiers)
+            {
+                if (ModifierLocalityTester.AffectsProperties(modifier, itemTags))
+                    results.Add(ParsePropertyModifier(localSource, modifier));
+                else if (ModifierLocalityTester.IsLocal(modifier, itemTags))
+                    results.Add(ParseLocalModifier(itemTags, localSource, modifier));
+                else
+                    results.Add(ParseGlobalModifier(itemTags, globalSource, modifier));
+            }
+            return ParseResult.Aggregate(results);
         }
 
         private ParseResult ParseBuffStats(
@@ -58,29 +59,22 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             return MultiplyValuesByFlaskEffect(result);
         }
 
-        private IEnumerable<ParseResult> ParsePropertyModifiers(
-            ModifierSource.Local source, IEnumerable<string> propertyMods)
-            => propertyMods.Select(s => s + " (AsItemProperty)").Select(s => Parse(s, source));
+        private ParseResult ParsePropertyModifier(ModifierSource.Local source, string modifier)
+            => Parse(modifier + " (AsItemProperty)", source);
 
-        private IEnumerable<ParseResult> ParseLocalModifiers(
-            Tags itemTags, ModifierSource.Local source, IEnumerable<string> localMods)
+        private ParseResult ParseLocalModifier(Tags itemTags, ModifierSource.Local source, string modifier)
         {
             if (itemTags.HasFlag(Tags.Weapon))
-            {
-                localMods = localMods.Select(s => "Attacks with this Weapon have " + s);
-            }
-            return localMods.Select(s => Parse(s, source));
+                modifier = "Attacks with this Weapon have " + modifier;
+            return Parse(modifier, source);
         }
 
-        private IEnumerable<ParseResult> ParseGlobalModifiers(
-            Tags itemTags, ModifierSource.Global source, IEnumerable<string> globalMods)
+        private ParseResult ParseGlobalModifier(Tags itemTags, ModifierSource.Global source, string modifier)
         {
-            var results = globalMods.Select(s => Parse(s, source));
+            var result = Parse(modifier, source);
             if (itemTags.HasFlag(Tags.Flask))
-            {
-                results = results.Select(MultiplyValuesByFlaskEffect);
-            }
-            return results;
+                result = MultiplyValuesByFlaskEffect(result);
+            return result;
         }
 
         private ParseResult MultiplyValuesByFlaskEffect(ParseResult result)

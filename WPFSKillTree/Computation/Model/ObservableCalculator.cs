@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using log4net;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
+using PoESkillTree.Utils;
 using POESKillTree.Utils.Extensions;
 
 namespace POESKillTree.Computation.Model
@@ -18,13 +19,19 @@ namespace POESKillTree.Computation.Model
 
         private readonly ICalculator _calculator;
         private readonly IScheduler _calculationScheduler;
-        private readonly Lazy<IObservable<CollectionChangeEventArgs>> _explicitlyRegisteredStatsObservable;
+
+        private readonly Lazy<IObservable<CollectionChangedEventArgs<(ICalculationNode, IStat)>>>
+            _explicitlyRegisteredStatsObservable;
+
+        private readonly Lazy<Subject<IObservable<CalculatorUpdate>>> _updateSubject;
 
         public ObservableCalculator(ICalculator calculator, IScheduler calculationScheduler)
         {
             (_calculator, _calculationScheduler) = (calculator, calculationScheduler);
             _explicitlyRegisteredStatsObservable =
-                new Lazy<IObservable<CollectionChangeEventArgs>>(CreateExplicitlyRegisteredStatsObservable);
+                new Lazy<IObservable<CollectionChangedEventArgs<(ICalculationNode, IStat)>>>(
+                    CreateExplicitlyRegisteredStatsObservable);
+            _updateSubject = new Lazy<Subject<IObservable<CalculatorUpdate>>>(CreateUpdateSubject);
         }
 
         public IObservable<NodeValue?> ObserveNode(IStat stat, NodeType nodeType = NodeType.Total)
@@ -36,6 +43,7 @@ namespace POESKillTree.Computation.Model
         private IObservable<NodeValue?> ObserveNode(Func<ICalculationNode> nodeFunc)
         {
             return Observable.Create<NodeValue?>(Subscribe)
+                .Throttle(TimeSpan.FromMilliseconds(20), _calculationScheduler)
                 .SubscribeOn(_calculationScheduler);
 
             Action Subscribe(IObserver<NodeValue?> observer)
@@ -48,28 +56,30 @@ namespace POESKillTree.Computation.Model
             }
         }
 
-        public IObservable<CollectionChangeEventArgs> ObserveExplicitlyRegisteredStats()
+        public IObservable<CollectionChangedEventArgs<(ICalculationNode node, IStat stat)>>
+            ObserveExplicitlyRegisteredStats()
             => _explicitlyRegisteredStatsObservable.Value;
 
-        private IObservable<CollectionChangeEventArgs> CreateExplicitlyRegisteredStatsObservable()
+        private IObservable<CollectionChangedEventArgs<(ICalculationNode, IStat)>>
+            CreateExplicitlyRegisteredStatsObservable()
         {
             var collection = _calculator.ExplicitlyRegisteredStats;
-            return Observable.FromEventPattern<CollectionChangeEventHandler, CollectionChangeEventArgs>(
+            return Observable.FromEventPattern<CollectionChangedEventHandler<(ICalculationNode, IStat)>,
+                    CollectionChangedEventArgs<(ICalculationNode, IStat)>>(
                     h => collection.CollectionChanged += h,
                     h => collection.CollectionChanged -= h)
                 .Select(p => p.EventArgs);
         }
 
-        public IReadOnlyCollection<(ICalculationNode node, IStat stat)> ExplicitlyRegisteredStatsCollection
-            => _calculator.ExplicitlyRegisteredStats.ToList();
+        public Task<List<(ICalculationNode node, IStat stat)>> GetExplicitlyRegisteredStatsAsync()
+            => _calculationScheduler.ScheduleAsync(() => _calculator.ExplicitlyRegisteredStats.ToList());
 
         public Task ForEachUpdateCalculatorAsync(IObservable<CalculatorUpdate> observable)
             => observable.ObserveOn(_calculationScheduler)
                 .ForEachAsync(UpdateCalculator);
 
-        public IDisposable SubscribeTo(IObservable<CalculatorUpdate> observable, Action<Exception> onError)
-            => observable.ObserveOn(_calculationScheduler)
-                .Subscribe(UpdateCalculator, onError);
+        public void SubscribeTo(IObservable<CalculatorUpdate> observable)
+            => _updateSubject.Value.OnNext(observable);
 
         private void UpdateCalculator(CalculatorUpdate update)
         {
@@ -83,6 +93,18 @@ namespace POESKillTree.Computation.Model
                 Log.Error($"_calculator.Update({update}) failed", e);
                 throw;
             }
+        }
+
+        private Subject<IObservable<CalculatorUpdate>> CreateUpdateSubject()
+        {
+            var subject = new Subject<IObservable<CalculatorUpdate>>();
+            subject.Merge()
+                .Buffer(TimeSpan.FromMilliseconds(50))
+                .Where(us => us.Any())
+                .Select(us => us.Aggregate(CalculatorUpdate.Accumulate))
+                .ObserveOn(_calculationScheduler)
+                .Subscribe(UpdateCalculator, ex => Log.Error("Exception while observing calculator updates", ex));
+            return subject;
         }
 
         public Task<NodeValue?> GetNodeValueAsync(ICalculationNode node)
@@ -112,7 +134,7 @@ namespace POESKillTree.Computation.Model
                 .ToList().SingleAsync();
 
         public IDisposable PeriodicallyRemoveUnusedNodes(Action<Exception> onError)
-            => Observable.Interval(TimeSpan.FromMilliseconds(200))
+            => Observable.Interval(TimeSpan.FromMilliseconds(250))
                 .ObserveOn(_calculationScheduler)
                 .Subscribe(_ => _calculator.RemoveUnusedNodes(), onError);
     }

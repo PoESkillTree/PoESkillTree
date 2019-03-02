@@ -27,6 +27,8 @@ namespace PoESkillTree.Computation.Core.Graphs
         private readonly Dictionary<IStat, ICalculationNode> _registeredNodes =
             new Dictionary<IStat, ICalculationNode>();
 
+        private readonly HashSet<ICalculationNode> _registeredNodeSet = new HashSet<ICalculationNode>();
+
         public StatRegistry(NodeCollection<IStat> nodeCollection)
         {
             _nodeCollection = nodeCollection;
@@ -39,6 +41,7 @@ namespace PoESkillTree.Computation.Core.Graphs
             if (stat.ExplicitRegistrationType is null)
                 return;
             var node = NodeRepository.GetNode(stat);
+            _registeredNodeSet.Add(node);
             _registeredNodes[stat] = node;
             var wrappedNode = new WrappingNode(node);
             _registeredWrappedNodes[stat] = wrappedNode;
@@ -50,14 +53,16 @@ namespace PoESkillTree.Computation.Core.Graphs
             if (!_registeredWrappedNodes.TryGetValue(stat, out var wrappedNode))
                 return;
             wrappedNode.Dispose();
+            var node = _registeredNodes[stat];
+            _registeredNodeSet.Remove(node);
             _registeredNodes.Remove(stat);
             _registeredWrappedNodes.Remove(stat);
             _nodeCollection.Remove(wrappedNode, stat);
         }
 
-        public bool CanBeRemoved(ISuspendableEventViewProvider<ICalculationNode> node)
+        public bool CanBeRemoved(IBufferingEventViewProvider<ICalculationNode> node)
         {
-            if (_registeredNodes.ContainsValue(node.SuspendableView))
+            if (_registeredNodeSet.Contains(node.BufferingView))
             {
                 return node.SubscriberCount <= 1;
             }

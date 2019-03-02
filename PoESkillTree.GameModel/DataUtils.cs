@@ -2,9 +2,8 @@
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.GameModel
 {
@@ -17,50 +16,24 @@ namespace PoESkillTree.GameModel
         public const string RePoEDataUrl = "https://raw.githubusercontent.com/brather1ng/RePoE/master/data/";
         public const string RePoEFileSuffix = ".min.json";
 
-        /// <typeparam name="T">type to deserialize the json as</typeparam>
-        /// <param name="fileName">the data file to deserialize, without extension</param>
-        /// <returns>a task returning the deserialized object</returns>
-        public static Task<T> LoadRePoEAsync<T>(string fileName)
-            => LoadJsonAsync<T>(RePoEFileToResource(fileName));
+        public static Task<T> LoadRePoEAsync<T>(string fileName, bool deserializeOnThreadPool = false)
+            => LoadJsonAsync<T>(RePoEFileToResource(fileName), deserializeOnThreadPool);
 
-        public static Task<JObject> LoadRePoEAsObjectAsync(string fileName)
-            => LoadJObjectAsync(RePoEFileToResource(fileName));
+        public static Task<JObject> LoadRePoEAsObjectAsync(string fileName, bool loadOnThreadPool = false)
+        {
+            var reader = CreateResourceStreamReader(RePoEFileToResource(fileName));
+            return JsonSerializationUtils.LoadJObjectAsync(reader, loadOnThreadPool);
+        }
 
         private static string RePoEFileToResource(string fileName)
             => "RePoE." + fileName.Replace("/", ".") + RePoEFileSuffix;
 
-        public static async Task<T> LoadJsonAsync<T>(string fileName)
-        {
-            var text = await LoadTextAsync(fileName).ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<T>(text);
-        }
+        public static Task<T> LoadJsonAsync<T>(string fileName, bool deserializeOnThreadPool = false)
+            => JsonSerializationUtils.DeserializeAsync<T>(CreateResourceStreamReader(fileName),
+                deserializeOnThreadPool);
 
-        public static async Task<T> LoadXmlAsync<T>(string fileName)
-        {
-            var xmlString = await LoadTextAsync(fileName).ConfigureAwait(false);
-            using (var reader = new StringReader(xmlString))
-            {
-                var serializer = new XmlSerializer(typeof(T));
-                return (T) serializer.Deserialize(reader);
-            }
-        }
-
-        private static async Task<string> LoadTextAsync(string resourceName)
-        {
-            using (var reader = CreateResourceStreamReader(resourceName))
-            {
-                return await reader.ReadToEndAsync().ConfigureAwait(false);
-            }
-        }
-
-        private static async Task<JObject> LoadJObjectAsync(string resourceName)
-        {
-            using (var reader = CreateResourceStreamReader(resourceName))
-            using (var jsonReader = new JsonTextReader(reader))
-            {
-                return await JObject.LoadAsync(jsonReader).ConfigureAwait(false);
-            }
-        }
+        public static Task<T> LoadXmlAsync<T>(string fileName, bool deserializeOnThreadPool = false)
+            => XmlSerializationUtils.DeserializeAsync<T>(CreateResourceStreamReader(fileName), deserializeOnThreadPool);
 
         private static StreamReader CreateResourceStreamReader(string resourceName)
         {

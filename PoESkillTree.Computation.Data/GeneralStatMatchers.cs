@@ -32,7 +32,7 @@ namespace PoESkillTree.Computation.Data
 
         public override IReadOnlyList<string> ReferenceNames { get; } = new[] { "StatMatchers" };
 
-        protected override IEnumerable<MatcherData> CreateCollection() =>
+        protected override IReadOnlyList<MatcherData> CreateCollection() =>
             new StatMatcherCollection<IStatBuilder>(_modifierBuilder)
             {
                 // attributes

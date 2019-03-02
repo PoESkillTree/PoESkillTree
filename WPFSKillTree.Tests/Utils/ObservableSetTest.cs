@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
+using System.Linq;
 using NUnit.Framework;
+using PoESkillTree.Utils.Extensions;
 using POESKillTree.Utils;
 
 namespace PoESkillTree.Tests.Utils
@@ -35,7 +36,7 @@ namespace PoESkillTree.Tests.Utils
         [Test]
         public void TestAdd()
         {
-            ExpectCollectionChange(NotifyCollectionChangedAction.Add, "item");
+            ExpectCollectionAdd("item");
             _set.Add("item");
             ExpectChangeCalls(1);
 
@@ -46,7 +47,7 @@ namespace PoESkillTree.Tests.Utils
         [Test]
         public void TestClear()
         {
-            ExpectCollectionChange(NotifyCollectionChangedAction.Remove, "item 1", "item 2", "item 3");
+            ExpectCollectionRemove("item 1", "item 2", "item 3");
             _set.Clear();
             ExpectChangeCalls(1);
 
@@ -57,7 +58,7 @@ namespace PoESkillTree.Tests.Utils
         [Test]
         public void TestRemove()
         {
-            ExpectCollectionChange(NotifyCollectionChangedAction.Remove, "item 2");
+            ExpectCollectionRemove("item 2");
 
             _set.Remove("item");
             ExpectChangeCalls(0);
@@ -77,29 +78,9 @@ namespace PoESkillTree.Tests.Utils
         }
 
         [Test]
-        public void TestRangeChangeUnsupported()
-        {
-            var first = true;
-            _set.CollectionChanged += (sender, args) =>
-            {
-                if (first)
-                {
-                    first = false;
-                    Assert.AreEqual(NotifyCollectionChangedAction.Remove, args.Action);
-                    throw new NotSupportedException();
-                }
-                Assert.AreEqual(NotifyCollectionChangedAction.Reset, args.Action);
-            };
-            _set.Clear();
-            _set.UnionWith(new[] {"item 4", "item 5"});
-            Assert.AreEqual(3, _collectionChangedInvocations);
-            Assert.AreEqual(2, _propertyChangedInvocations);
-        }
-
-        [Test]
         public void TestUnionWith()
         {
-            ExpectCollectionChange(NotifyCollectionChangedAction.Add, "item 4", "item 5");
+            ExpectCollectionAdd("item 4", "item 5");
             _set.UnionWith(new[] { "item 4", "item 3", "item 5" });
             ExpectChangeCalls(1);
 
@@ -110,15 +91,15 @@ namespace PoESkillTree.Tests.Utils
         [Test]
         public void TestIntersectWith()
         {
-            var other = new[] {"item 1", "item 3"};
+            var other = new[] { "item 1", "item 3" };
             var skipNotifierAssertions = false;
             _set.CollectionChanged += (sender, args) =>
             {
-                if (skipNotifierAssertions || args.Action == NotifyCollectionChangedAction.Add)
+                if (skipNotifierAssertions || args.RemovedItems.IsEmpty())
                     return;
-                Assert.AreEqual(NotifyCollectionChangedAction.Remove, args.Action);
-                Assert.AreEqual(1, args.OldItems.Count);
-                Assert.AreEqual("item 2", args.OldItems[0]);
+                Assert.IsEmpty(args.AddedItems);
+                Assert.AreEqual(1, args.RemovedItems.Count);
+                Assert.AreEqual("item 2", args.RemovedItems.First());
             };
 
             // Array
@@ -168,19 +149,19 @@ namespace PoESkillTree.Tests.Utils
         public void TestIntersectWith_CustomEquality()
         {
             // HashSet, non-default equality
-            ExpectCollectionChange(NotifyCollectionChangedAction.Remove, "item 2", "item 3");
-            _set.IntersectWith(new HashSet<string>(new[] {"item 1", "item 3"}, new CustomEqualityComparaer()));
+            ExpectCollectionRemove("item 2", "item 3");
+            _set.IntersectWith(new HashSet<string>(new[] { "item 1", "item 3" }, new CustomEqualityComparaer()));
             ExpectChangeCalls(1);
         }
 
         [Test]
         public void TestExceptWith()
         {
-            ExpectCollectionChange(NotifyCollectionChangedAction.Remove, "item 1", "item 2");
-            _set.ExceptWith(new[] {"item 4", "item 2", "item 1"});
+            ExpectCollectionRemove("item 1", "item 2");
+            _set.ExceptWith(new[] { "item 4", "item 2", "item 1" });
             ExpectChangeCalls(1);
 
-            _set.ExceptWith(new[] {"item 1", "item 5"});
+            _set.ExceptWith(new[] { "item 1", "item 5" });
             ExpectChangeCalls(0);
         }
 
@@ -189,7 +170,7 @@ namespace PoESkillTree.Tests.Utils
         {
             _set.Clear();
             ExpectChangeCalls(1);
-            _set.ExceptWith(new[] {"item 1", "item 4"});
+            _set.ExceptWith(new[] { "item 1", "item 4" });
             ExpectChangeCalls(0);
         }
 
@@ -198,14 +179,13 @@ namespace PoESkillTree.Tests.Utils
         {
             _set.CollectionChanged += (sender, args) =>
             {
-                Assert.AreEqual(NotifyCollectionChangedAction.Replace, args.Action);
-                Assert.AreEqual(1, args.NewItems.Count);
-                Assert.AreEqual(1, args.OldItems.Count);
-                Assert.AreEqual("item 4", args.NewItems[0]);
-                Assert.AreEqual("item 2", args.OldItems[0]);
+                Assert.AreEqual(1, args.AddedItems.Count);
+                Assert.AreEqual(1, args.RemovedItems.Count);
+                Assert.AreEqual("item 4", args.AddedItems.First());
+                Assert.AreEqual("item 2", args.RemovedItems.First());
             };
-            _set.SymmetricExceptWith(new[] {"item 2", "item 4"});
-            ExpectChangeCalls(1);
+            _set.SymmetricExceptWith(new[] { "item 2", "item 4" });
+            ExpectChangeCalls(1, 0);
 
             _set.SymmetricExceptWith(new string[0]);
             ExpectChangeCalls(0);
@@ -216,37 +196,110 @@ namespace PoESkillTree.Tests.Utils
         {
             _set.Clear();
             ExpectChangeCalls(1);
-            ExpectCollectionChange(NotifyCollectionChangedAction.Add, "item 1", "item 4");
+            ExpectCollectionAdd("item 1", "item 4");
             _set.SymmetricExceptWith(new[] { "item 1", "item 4" });
             ExpectChangeCalls(1);
         }
 
-        private void ExpectCollectionChange(NotifyCollectionChangedAction action, string item)
+        [Test]
+        public void TestExceptAndUnionWith()
         {
             _set.CollectionChanged += (sender, args) =>
             {
-                Assert.AreEqual(action, args.Action);
-                var items = action == NotifyCollectionChangedAction.Add ? args.NewItems : args.OldItems;
-                Assert.AreEqual(1, items.Count);
-                Assert.AreEqual(item, items[0]);
+                CollectionAssert.AreEquivalent(new[] { "item 2" }, args.RemovedItems);
+                CollectionAssert.AreEquivalent(new[] { "item 4", "item 5" }, args.AddedItems);
+            };
+
+            _set.ExceptAndUnionWith(
+                new[] { "item 2", "item 3", "item 4" },
+                new[] { "item 1", "item 3", "item 4", "item 5" });
+
+            CollectionAssert.AreEquivalent(new[] { "item 1", "item 3", "item 4", "item 5" }, _set);
+            ExpectChangeCalls(1);
+        }
+
+        [Test]
+        public void TestRemoveAndAdd_RemovedAndAdded()
+        {
+            _set.CollectionChanged += (sender, args) =>
+            {
+                CollectionAssert.AreEquivalent(new[] { "item 3" }, args.RemovedItems);
+                CollectionAssert.AreEquivalent(new[] { "item 4" }, args.AddedItems);
+            };
+
+            _set.RemoveAndAdd("item 3", "item 4");
+
+            CollectionAssert.AreEquivalent(new[] { "item 1", "item 2", "item 4" }, _set);
+            ExpectChangeCalls(1, 0);
+        }
+
+        [Test]
+        public void TestRemoveAndAdd_RemovedAndNotAdded()
+        {
+            ExpectCollectionRemove("item 3");
+
+            _set.RemoveAndAdd("item 3", "item 1");
+
+            CollectionAssert.AreEquivalent(new[] { "item 1", "item 2" }, _set);
+            ExpectChangeCalls(1);
+        }
+
+        [Test]
+        public void TestRemoveAndAdd_NotRemovedAndAdded()
+        {
+            ExpectCollectionAdd("item 4");
+
+            _set.RemoveAndAdd("item 5", "item 4");
+
+            CollectionAssert.AreEquivalent(new[] { "item 1", "item 2", "item 3", "item 4" }, _set);
+            ExpectChangeCalls(1);
+        }
+
+        [Test]
+        public void TestRemoveAndAdd_NotRemovedAndNotAdded()
+        {
+            _set.RemoveAndAdd("item 4", "item 3");
+
+            CollectionAssert.AreEquivalent(new[] { "item 1", "item 2", "item 3" }, _set);
+            ExpectChangeCalls(0);
+        }
+
+        [Test]
+        public void TestRemoveAndAdd_SameRemovedAndAddedAndPreviouslyContained()
+        {
+            _set.RemoveAndAdd("item 3", "item 3");
+
+            CollectionAssert.AreEquivalent(new[] { "item 1", "item 2", "item 3" }, _set);
+            ExpectChangeCalls(0);
+        }
+
+        private void ExpectCollectionAdd(params string[] items)
+        {
+            _set.CollectionChanged += (sender, args) =>
+            {
+                Assert.IsEmpty(args.RemovedItems);
+                Assert.AreEqual(items.Length, args.AddedItems.Count);
+                CollectionAssert.AreEquivalent(items, args.AddedItems);
             };
         }
 
-        private void ExpectCollectionChange(NotifyCollectionChangedAction action, params string[] items)
+        private void ExpectCollectionRemove(params string[] items)
         {
             _set.CollectionChanged += (sender, args) =>
             {
-                Assert.AreEqual(action, args.Action);
-                var coll = action == NotifyCollectionChangedAction.Add ? args.NewItems : args.OldItems;
-                Assert.AreEqual(items.Length, coll.Count);
-                CollectionAssert.AreEquivalent(items, coll);
+                Assert.IsEmpty(args.AddedItems);
+                Assert.AreEqual(items.Length, args.RemovedItems.Count);
+                CollectionAssert.AreEquivalent(items, args.RemovedItems);
             };
         }
 
         private void ExpectChangeCalls(int count)
+            => ExpectChangeCalls(count, count);
+
+        private void ExpectChangeCalls(int collectionChangedCount, int propertyChangedCount)
         {
-            Assert.AreEqual(count, _collectionChangedInvocations);
-            Assert.AreEqual(count, _propertyChangedInvocations);
+            Assert.AreEqual(collectionChangedCount, _collectionChangedInvocations);
+            Assert.AreEqual(propertyChangedCount, _propertyChangedInvocations);
             _collectionChangedInvocations = 0;
             _propertyChangedInvocations = 0;
         }

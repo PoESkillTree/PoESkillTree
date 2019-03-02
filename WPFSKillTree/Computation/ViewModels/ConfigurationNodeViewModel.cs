@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using log4net;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 using POESKillTree.Computation.Model;
@@ -12,19 +11,19 @@ namespace POESKillTree.Computation.ViewModels
 {
     public class ConfigurationNodeViewModel : CalculationNodeViewModel, IDisposable
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ConfigurationNodeViewModel));
-
+        private readonly NodeValue? _defaultValue;
         private readonly Subject<NodeValue?> _valueChangeSubject = new Subject<NodeValue?>();
 
-        public ConfigurationNodeViewModel(IStat stat) : base(stat)
+        public ConfigurationNodeViewModel(IStat stat, NodeValue? defaultValue = null) : base(stat)
         {
+            _defaultValue = defaultValue;
         }
 
         public void ResetValue()
         {
             Value = Stat.ExplicitRegistrationType is ExplicitRegistrationType.UserSpecifiedValue userSpecifiedValue
                 ? userSpecifiedValue.DefaultValue
-                : null;
+                : _defaultValue;
         }
 
         protected override void OnPropertyChanged(string propertyName)
@@ -37,8 +36,7 @@ namespace POESKillTree.Computation.ViewModels
         }
 
         public void SubscribeCalculator(IObservingCalculator calculator)
-            => calculator.SubscribeTo(CreateValueObservable(),
-                ex => Log.Error($"SubscribeCalculatorTo({Stat}) failed", ex));
+            => calculator.SubscribeTo(CreateValueObservable());
 
         private IObservable<CalculatorUpdate> CreateValueObservable()
             => _valueChangeSubject

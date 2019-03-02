@@ -31,7 +31,7 @@ namespace PoESkillTree.Computation.Data
             _builderFactory = builderFactory;
         }
 
-        protected override IEnumerable<ReferencedMatcherData> CreateCollection()
+        protected override IReadOnlyList<ReferencedMatcherData> CreateCollection()
         {
             var coll = new ReferencedMatcherCollection<ISkillBuilder>();
             foreach (var skill in _skills.Where(d => !d.IsSupport && d.BaseItem != null))

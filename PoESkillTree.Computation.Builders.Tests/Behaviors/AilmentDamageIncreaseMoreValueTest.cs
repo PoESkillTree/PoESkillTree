@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Builders.Stats;
@@ -24,7 +25,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Behaviors
                 (fireDamage, PathDefinition.MainPath),
             };
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValues(form, paths) == new[] { expected } &&
+                c.GetValues(form, paths) == new List<NodeValue?> { expected } &&
                 c.GetValue(DealtDamageType, NodeType.Total, PathDefinition.MainPath) ==
                 new NodeValue((int) DamageType.Fire));
             var sut = CreateSut(coldDamage, transformedValue);
@@ -54,7 +55,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Behaviors
                 (lightningDamage, PathDefinition.MainPath),
             };
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValues(Form.Increase, paths) == new[] { expected } &&
+                c.GetValues(Form.Increase, paths) == new List<NodeValue?> { expected } &&
                 c.GetValue(DealtDamageType, NodeType.Total, PathDefinition.MainPath) ==
                 new NodeValue((int) DamageType.Fire));
             var sut = CreateSut(coldDamage, transformedValue);
@@ -72,7 +73,7 @@ namespace PoESkillTree.Computation.Builders.Tests.Behaviors
             var transformedValue = new FunctionalValue(c => c.GetValues(Form.BaseAdd, coldDamage).Sum(), "");
             var paths = new[] { (coldDamage, PathDefinition.MainPath), };
             var context = Mock.Of<IValueCalculationContext>(c =>
-                c.GetValues(Form.BaseAdd, paths) == new[] { expected } &&
+                c.GetValues(Form.BaseAdd, paths) == new List<NodeValue?> { expected } &&
                 c.GetValue(DealtDamageType, NodeType.Total, PathDefinition.MainPath) ==
                 new NodeValue((int) DamageType.Fire));
             var sut = CreateSut(coldDamage, transformedValue);

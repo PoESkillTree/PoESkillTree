@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EnumsNET;
 
 namespace PoESkillTree.Computation.Common
 {
@@ -55,7 +56,7 @@ namespace PoESkillTree.Computation.Common
 
         public StatValue(IStat stat, NodeType nodeType, ModifierSource modifierSource)
             : base(c => c.GetValue(stat, nodeType, new PathDefinition(modifierSource)),
-                $"{stat}.Value({nodeType}, {modifierSource})")
+                stat + ".Value(" + nodeType.GetName() + ", " + modifierSource + ")")
         {
         }
     }
@@ -75,7 +76,7 @@ namespace PoESkillTree.Computation.Common
 
     public class NotValue : ConditionalValue
     {
-        public NotValue(IValue value) : base(c => !value.Calculate(c).IsTrue(), $"Not({value})")
+        public NotValue(IValue value) : base(c => !value.Calculate(c).IsTrue(), "Not(" + value + ")")
         {
         }
     }
@@ -106,6 +107,6 @@ namespace PoESkillTree.Computation.Common
             _values.Select(v => v.Calculate(context))
                 .Select(v => new NodeValue(v.IsTrue() ? 1 : 0))
                 .DefaultIfEmpty()
-                .Sum();
+                .Aggregate((l, r) => l + r);
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Conditions;
@@ -13,13 +12,13 @@ namespace PoESkillTree.Computation.Parsing
     /// <summary>
     /// Collection and factory for creating <see cref="Modifier"/>s
     /// </summary>
-    public class ModifierCollection : IEnumerable<Modifier>
+    public class ModifierCollection
     {
         private readonly IBuilderFactories _builderFactories;
         private readonly ModifierSource.Local _localModifierSource;
         private readonly ModifierSource.Global _globalModifierSource;
         private readonly Entity _modifierSourceEntity;
-        private readonly IModifierBuilder _modifierBuilder = new ModifierBuilder();
+        private readonly IModifierBuilder _modifierBuilder = ModifierBuilder.Empty;
         private readonly List<Modifier> _modifiers = new List<Modifier>();
 
         public ModifierCollection(
@@ -31,9 +30,7 @@ namespace PoESkillTree.Computation.Parsing
             _globalModifierSource = new ModifierSource.Global(_localModifierSource);
         }
 
-        public IEnumerator<Modifier> GetEnumerator() => _modifiers.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        public IReadOnlyList<Modifier> Modifiers => _modifiers;
 
         public void AddLocal(IStatBuilder stat, Form form, double value, IConditionBuilder condition = null)
             => AddLocal(stat, form, _builderFactories.ValueBuilders.Create(value), condition);

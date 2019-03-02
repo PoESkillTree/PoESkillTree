@@ -14,11 +14,13 @@ namespace PoESkillTree.Computation.Core
     /// </summary>
     public class StatNodeFactory : IStatNodeFactory
     {
+        private readonly IEventBuffer _eventBuffer;
         private readonly INodeFactory _nodeFactory;
         private readonly IStat _stat;
 
-        public StatNodeFactory(INodeFactory nodeFactory, IStat stat)
+        public StatNodeFactory(IEventBuffer eventBuffer, INodeFactory nodeFactory, IStat stat)
         {
+            _eventBuffer = eventBuffer;
             _nodeFactory = nodeFactory;
             _stat = stat;
         }
@@ -63,8 +65,8 @@ namespace PoESkillTree.Computation.Core
         public ModifierNodeCollection Create(FormNodeSelector selector)
         {
             var defaultView = new NodeCollection<Modifier>();
-            var suspendableView = new NodeCollection<Modifier>();
-            var viewProvider = SuspendableEventViewProvider.Create(defaultView, suspendableView);
+            var bufferingView = new NodeCollection<Modifier>(_eventBuffer);
+            var viewProvider = BufferingEventViewProvider.Create(defaultView, bufferingView);
             return new ModifierNodeCollection(viewProvider);
         }
     }

@@ -2,6 +2,7 @@
 using System.Linq;
 using MoreLinq;
 using NUnit.Framework;
+using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Computation.Core.NodeCollections;
 
 namespace PoESkillTree.Computation.Core.Tests.NodeCollections
@@ -79,8 +80,8 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
             sut.CollectionChanged += (sender, args) =>
             {
                 Assert.AreSame(sender, sut);
-                Assert.AreEqual(CollectionChangeAction.Add, args.Action);
-                Assert.AreEqual((node, 0), args.Element);
+                Assert.AreEqual(new[] { (node, 0) }, args.AddedItems);
+                Assert.IsEmpty(args.RemovedItems);
                 raised = true;
             };
 
@@ -99,8 +100,8 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
             sut.CollectionChanged += (sender, args) =>
             {
                 Assert.AreSame(sender, sut);
-                Assert.AreEqual(CollectionChangeAction.Remove, args.Action);
-                Assert.AreEqual((node, 0), args.Element);
+                Assert.IsEmpty(args.AddedItems);
+                Assert.AreEqual(new[] { (node, 0) }, args.RemovedItems);
                 raised = true;
             };
 
@@ -138,16 +139,17 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
             CollectionAssert.AreEquivalent(expected, sut);
         }
 
-        [TestCase(3)]
-        [TestCase(0)]
-        public void SubscriberCountReturnsCorrectResult(int expected)
+        [TestCase(3, 1)]
+        [TestCase(0, 0)]
+        public void SubscriberCountReturnsCorrectResult(int changed, int untypedChanged)
         {
             var sut = CreateSut();
-            Enumerable.Repeat(0, expected).ForEach(_ => sut.CollectionChanged += (sender, args) => { });
+            Enumerable.Repeat(0, changed).ForEach(_ => sut.CollectionChanged += (sender, args) => { });
+            Enumerable.Repeat(0, untypedChanged).ForEach(_ => sut.UntypedCollectionChanged += (sender, args) => { });
 
             var actual = sut.SubscriberCount;
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(changed + untypedChanged, actual);
         }
 
         [Test]
@@ -161,7 +163,7 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
             sut.Add(node, 0);
         }
 
-        private static NodeCollection<int> CreateSut() =>
-            new NodeCollection<int>();
+        private static NodeCollection<int> CreateSut()
+            => new NodeCollection<int>(new EventBuffer());
     }
 }

@@ -57,7 +57,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 _modifiers.AddGlobalForMainSkill(_builderFactories.StatBuilders.Cooldown, Form.BaseSet, cooldown);
             }
 
-            var result = new PartialSkillParseResult(_modifiers, new UntranslatedStat[0]);
+            var result = new PartialSkillParseResult(_modifiers.Modifiers, new UntranslatedStat[0]);
             _modifiers = null;
             _preParseResult = preParseResult;
             return result;

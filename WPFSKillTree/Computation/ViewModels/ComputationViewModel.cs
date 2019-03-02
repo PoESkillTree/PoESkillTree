@@ -38,18 +38,18 @@ namespace POESKillTree.Computation.ViewModels
             DefensiveStats = new ResultStatsViewModel(_nodeFactory, modifierNodeFactory);
         }
 
-        private void Initialize(
-            SkillDefinitions skillDefinitions, IBuilderFactories f, ObservableCollection<IReadOnlyList<Skill>> skills)
+        private async Task InitializeAsync(
+            SkillDefinitions skillDefinitions, IBuilderFactories f, ObservableSet<IReadOnlyList<Skill>> skills)
         {
             MainSkillSelection = MainSkillSelectionViewModel.Create(skillDefinitions, f, _nodeFactory, skills);
 
             InitializeOffensiveStats(f);
             InitializeDefensiveStats(f);
 
-            ConfigurationStats = ConfigurationStatsViewModel.Create(_observableCalculator, _nodeFactory);
+            ConfigurationStats = await ConfigurationStatsViewModel.CreateAsync(_observableCalculator, _nodeFactory);
             AddConfigurationStat(f.StatBuilders.Level, Entity.Enemy);
 
-            GainOnActionStats = GainOnActionStatsViewModel.Create(_observableCalculator, _nodeFactory);
+            GainOnActionStats = await GainOnActionStatsViewModel.CreateAsync(_observableCalculator, _nodeFactory);
             SharedConfiguration = SharedConfigurationViewModel.Create(_nodeFactory, f);
         }
 
@@ -230,11 +230,11 @@ namespace POESKillTree.Computation.ViewModels
         public static async Task<ComputationViewModel> CreateAsync(
             GameData gameData, IBuilderFactories builderFactories,
             ObservableCalculator observableCalculator, ComputationSchedulerProvider schedulers,
-            ObservableCollection<IReadOnlyList<Skill>> skills)
+            ObservableSet<IReadOnlyList<Skill>> skills)
         {
             var skillDefinitions = await gameData.Skills;
             var vm = new ComputationViewModel(observableCalculator, schedulers);
-            vm.Initialize(skillDefinitions, builderFactories, skills);
+            await vm.InitializeAsync(skillDefinitions, builderFactories, skills);
             return vm;
         }
     }

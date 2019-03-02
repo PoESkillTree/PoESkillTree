@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var stat = new StatStub { ExplicitRegistrationType = Registered };
             var coreNode = Mock.Of<ICalculationNode>();
             var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == coreNode);
-            var nodeCollection = new NodeCollection<IStat>();
+            var nodeCollection = CreateNodeCollection();
             var sut = CreateSut(nodeCollection, nodeRepository);
 
             sut.Add(stat);
@@ -41,7 +41,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var stat = new StatStub { ExplicitRegistrationType = Registered };
             var coreNode = Mock.Of<ICalculationNode>();
             var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == coreNode);
-            var nodeCollection = new NodeCollection<IStat>();
+            var nodeCollection = CreateNodeCollection();
             var sut = CreateSut(nodeCollection, nodeRepository);
             sut.Add(stat);
 
@@ -54,7 +54,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         public void AddDoesNotAddIfStatIsNotRegisteredExplicitly()
         {
             var stat = new StatStub();
-            var nodeCollection = new NodeCollection<IStat>();
+            var nodeCollection = CreateNodeCollection();
             var sut = CreateSut(nodeCollection);
 
             sut.Add(stat);
@@ -86,7 +86,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         public bool CanBeRemovedWithUnknownNodeReturnsCorrectResult(int subscriberCount)
         {
             var node =
-                Mock.Of<ISuspendableEventViewProvider<ICalculationNode>>(c => c.SubscriberCount == subscriberCount);
+                Mock.Of<IBufferingEventViewProvider<ICalculationNode>>(c => c.SubscriberCount == subscriberCount);
             var sut = CreateSut();
 
             return sut.CanBeRemoved(node);
@@ -101,8 +101,8 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == coreNode);
             var sut = CreateSut(nodeRepository: nodeRepository);
             sut.Add(stat);
-            var node = Mock.Of<ISuspendableEventViewProvider<ICalculationNode>>(c =>
-                c.SubscriberCount == subscriberCount && c.SuspendableView == coreNode);
+            var node = Mock.Of<IBufferingEventViewProvider<ICalculationNode>>(c =>
+                c.SubscriberCount == subscriberCount && c.BufferingView == coreNode);
 
             return sut.CanBeRemoved(node);
         }
@@ -116,8 +116,8 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var sut = CreateSut(nodeRepository: nodeRepository);
             sut.Add(stat);
             sut.Remove(stat);
-            var node = Mock.Of<ISuspendableEventViewProvider<ICalculationNode>>(c =>
-                c.SubscriberCount == subscriberCount && c.SuspendableView == coreNode);
+            var node = Mock.Of<IBufferingEventViewProvider<ICalculationNode>>(c =>
+                c.SubscriberCount == subscriberCount && c.BufferingView == coreNode);
 
             return sut.CanBeRemoved(node);
         }
@@ -127,7 +127,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             var stat = new StatStub { ExplicitRegistrationType = Registered };
             var nodeMock = new Mock<ICalculationNode>();
-            var nodeCollection = new NodeCollection<IStat>();
+            var nodeCollection = CreateNodeCollection();
             var nodeRepository = Mock.Of<INodeRepository>(r => r.GetNode(stat, NodeType.Total, Path) == nodeMock.Object);
             var sut = CreateSut(nodeCollection, nodeRepository);
             sut.Add(stat);
@@ -143,7 +143,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             NodeCollection<IStat> nodeCollection = null,
             INodeRepository nodeRepository = null)
         {
-            return new StatRegistry(nodeCollection ?? new NodeCollection<IStat>())
+            return new StatRegistry(nodeCollection ?? CreateNodeCollection())
             {
                 NodeRepository = nodeRepository
             };
@@ -152,5 +152,8 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         private static readonly PathDefinition Path = PathDefinition.MainPath;
 
         private static readonly ExplicitRegistrationType Registered = ExplicitRegistrationTypes.UserSpecifiedValue(0);
+
+        private static NodeCollection<IStat> CreateNodeCollection()
+            => new NodeCollection<IStat>(new EventBuffer());
     }
 }

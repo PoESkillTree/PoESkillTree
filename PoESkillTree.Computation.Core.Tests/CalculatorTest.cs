@@ -34,19 +34,16 @@ namespace PoESkillTree.Computation.Core.Tests
         public void UpdateCallsInjectedInstancesInCorrectSequence()
         {
             var modifier = Helper.MockModifier();
-            var suspenderMock = new Mock<ISuspendableEvents>(MockBehavior.Strict);
             var modifierCollectionMock = new Mock<IModifierCollection>(MockBehavior.Strict);
             var graphPrunerMock = new Mock<ICalculationGraphPruner>(MockBehavior.Strict);
             var seq = new MockSequence();
-            suspenderMock.InSequence(seq).Setup(s => s.SuspendEvents());
             modifierCollectionMock.InSequence(seq).Setup(c => c.AddModifier(modifier));
             graphPrunerMock.InSequence(seq).Setup(p => p.RemoveUnusedNodes());
-            suspenderMock.InSequence(seq).Setup(s => s.ResumeEvents());
-            var sut = CreateSut(suspenderMock.Object, modifierCollectionMock.Object, graphPrunerMock.Object);
+            var sut = CreateSut(modifierCollectionMock.Object, graphPrunerMock.Object);
 
             sut.NewBatchUpdate().AddModifier(modifier).DoUpdate();
 
-            suspenderMock.Verify(s => s.ResumeEvents());
+            graphPrunerMock.Verify(p => p.RemoveUnusedNodes());
         }
 
         [Test]
@@ -55,8 +52,7 @@ namespace PoESkillTree.Computation.Core.Tests
             var addedModifiers = Helper.MockManyModifiers();
             var removedModifiers = Helper.MockManyModifiers();
             var modifierCollectionMock = new Mock<IModifierCollection>();
-            var sut = CreateSut(
-                Mock.Of<ISuspendableEvents>(), modifierCollectionMock.Object, Mock.Of<ICalculationGraphPruner>());
+            var sut = CreateSut(modifierCollectionMock.Object, Mock.Of<ICalculationGraphPruner>());
 
             sut.Update(new CalculatorUpdate(addedModifiers, removedModifiers));
 
@@ -76,9 +72,9 @@ namespace PoESkillTree.Computation.Core.Tests
         }
 
         private static Calculator CreateSut(
-            ISuspendableEvents suspender = null, IModifierCollection modifierCollection = null,
-            ICalculationGraphPruner graphPruner = null, INodeRepository nodeRepository = null,
-            INodeCollection<IStat> explicitlyRegisteredStats = null) =>
-            new Calculator(suspender, modifierCollection, graphPruner, nodeRepository, explicitlyRegisteredStats);
+            IModifierCollection modifierCollection = null, ICalculationGraphPruner graphPruner = null,
+            INodeRepository nodeRepository = null, INodeCollection<IStat> explicitlyRegisteredStats = null)
+            => new Calculator(new EventBuffer(), modifierCollection, graphPruner, nodeRepository,
+                explicitlyRegisteredStats);
     }
 }

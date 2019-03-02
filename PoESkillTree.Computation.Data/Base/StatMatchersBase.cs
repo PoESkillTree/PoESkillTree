@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Data;
 
@@ -18,18 +16,16 @@ namespace PoESkillTree.Computation.Data.Base
     {
         private readonly Lazy<IReadOnlyList<MatcherData>> _lazyMatchers;
 
+        public IReadOnlyList<MatcherData> Data => _lazyMatchers.Value;
+
         public virtual IReadOnlyList<string> ReferenceNames { get; } = new string[0];
 
         public virtual bool MatchesWholeLineOnly { get; } = false;
 
         protected StatMatchersBase(IBuilderFactories builderFactories)
             : base(builderFactories)
-            => _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(() => CreateCollection().ToList());
+            => _lazyMatchers = new Lazy<IReadOnlyList<MatcherData>>(CreateCollection);
 
-        public IEnumerator<MatcherData> GetEnumerator() => _lazyMatchers.Value.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        protected abstract IEnumerable<MatcherData> CreateCollection();
+        protected abstract IReadOnlyList<MatcherData> CreateCollection();
     }
 }

@@ -44,7 +44,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 Parse(additionalStats, condition);
             }
 
-            var result = new PartialSkillParseResult(_parsedModifiers, _parsedStats);
+            var result = new PartialSkillParseResult(_parsedModifiers.Modifiers, _parsedStats);
             _parsedModifiers = null;
             _parsedStats = null;
             return result;

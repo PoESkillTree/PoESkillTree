@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using EnumsNET;
@@ -41,7 +42,8 @@ namespace PoESkillTree.Tests.Computation.Model
                 p.CreateGivenModifierParseDelegates() == givenModifierParseDelegates);
             var sut = CreateSut(parser);
 
-            var actual = await AggregateAsync(sut.InitialParse(passiveTree, TimeSpan.Zero));
+            var actual =
+                await AggregateAsync(sut.InitialParse(passiveTree, TimeSpan.Zero, ImmediateScheduler.Instance));
 
             Assert.That(actual.AddedModifiers, Is.EquivalentTo(expected));
             Assert.IsEmpty(actual.RemovedModifiers);
@@ -117,7 +119,7 @@ namespace PoESkillTree.Tests.Computation.Model
             };
             var parser = MockItemParser(items, parseResults);
             var sut = CreateSut(parser);
-            var observableCollection = new ObservableCollection<(Item, ItemSlot)>();
+            var observableCollection = new ObservableSet<(Item, ItemSlot)>();
 
             var actual = new List<CalculatorUpdate>();
             using (sut.ObserveItems(observableCollection).Subscribe(actual.Add))
@@ -158,7 +160,7 @@ namespace PoESkillTree.Tests.Computation.Model
             };
             var parser = MockSkillParser(skills, parseResults);
             var sut = CreateSut(parser);
-            var observableCollection = new ObservableCollection<IReadOnlyList<Skill>>();
+            var observableCollection = new ObservableSet<IReadOnlyList<Skill>>();
 
             var actual = new List<CalculatorUpdate>();
             using (sut.ObserveSkills(observableCollection).Subscribe(actual.Add))

@@ -119,7 +119,7 @@ namespace PoESkillTree.Tests.Computation.ViewModels
         {
             build.KeepChanges();
             var persistentData = Mock.Of<IPersistentData>(d => d.CurrentBuild == build);
-            ConfigurationStatsConnector.Connect(persistentData, statViewModels);
+            ConfigurationStatsConnector.Connect(persistentData, statViewModels, new ConfigurationNodeViewModel[0]);
         }
 
         private static PoEBuild CreateBuild(IEnumerable<(string, double?)> configurationStats)

@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using log4net;
 using MoreLinq;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 using POESKillTree.Controls;
 using POESKillTree.Model.Builds;
 using POESKillTree.Utils;
+using SerializationUtils = POESKillTree.Utils.SerializationUtils;
 
 namespace POESKillTree.Model.Serialization
 {
@@ -49,7 +51,7 @@ namespace POESKillTree.Model.Serialization
 
         public override void DeserializePersistentDataFile(string xmlString)
         {
-            var obj = SerializationUtils.XmlDeserializeString<XmlPersistentData>(xmlString);
+            var obj = XmlSerializationUtils.DeserializeString<XmlPersistentData>(xmlString);
             PersistentData.Options = obj.Options;
             PersistentData.CurrentBuild = ConvertFromXmlBuild(obj.CurrentBuild) ?? CreateDefaultCurrentBuild();
             obj.StashBookmarks?.ForEach(PersistentData.StashBookmarks.Add);
@@ -125,7 +127,7 @@ namespace POESKillTree.Model.Serialization
                 return;
             try
             {
-                var text = await FileEx.ReadAllTextAsync("savedBuilds");
+                var text = await FileUtils.ReadAllTextAsync("savedBuilds");
                 foreach (var b in text.Split('\n'))
                 {
                     var build = new PoEBuild

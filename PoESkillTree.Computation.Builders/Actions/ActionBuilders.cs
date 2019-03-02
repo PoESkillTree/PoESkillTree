@@ -75,13 +75,13 @@ namespace PoESkillTree.Computation.Builders.Actions
         {
             public PathDefinition CurrentPath => throw CreateException();
 
-            public IEnumerable<PathDefinition> GetPaths(IStat stat) =>
+            public IReadOnlyCollection<PathDefinition> GetPaths(IStat stat) =>
                 throw CreateException();
 
             public NodeValue? GetValue(IStat stat, NodeType nodeType, PathDefinition path) =>
                 throw CreateException();
 
-            public IEnumerable<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths) =>
+            public List<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths) =>
                 throw CreateException();
 
             private static ParseException CreateException() =>

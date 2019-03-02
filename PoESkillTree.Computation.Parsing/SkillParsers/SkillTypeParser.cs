@@ -40,7 +40,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     Form.TotalOverride, 1);
             }
 
-            return new PartialSkillParseResult(modifiers, new UntranslatedStat[0]);
+            return new PartialSkillParseResult(modifiers.Modifiers, new UntranslatedStat[0]);
         }
     }
 }

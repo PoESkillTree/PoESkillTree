@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common;
@@ -78,8 +77,6 @@ namespace PoESkillTree.Computation.Parsing.Tests
 
         private class Matchers : IStatMatchers
         {
-            private readonly IReadOnlyList<MatcherData> _data;
-
             public Matchers()
             {
                 var buildParameters = new BuildParameters(ExpectedModifier.Source, default, ExpectedModifier.Form);
@@ -96,7 +93,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 var value = new Mock<IValueBuilder>();
                 value.Setup(b => b.Build(buildParameters)).Returns(ExpectedModifier.Value);
                 value.Setup(b => b.Resolve(It.IsAny<ResolveContext>())).Returns(value.Object);
-                _data = new[]
+                Data = new[]
                 {
                     new MatcherData("matched", new SimpleIntermediateModifier(new[]
                     {
@@ -111,8 +108,7 @@ namespace PoESkillTree.Computation.Parsing.Tests
                 };
             }
 
-            public IEnumerator<MatcherData> GetEnumerator() => _data.GetEnumerator();
-            IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+            public IReadOnlyList<MatcherData> Data { get; }
             public IReadOnlyList<string> ReferenceNames => new string[0];
             public bool MatchesWholeLineOnly => false;
         }

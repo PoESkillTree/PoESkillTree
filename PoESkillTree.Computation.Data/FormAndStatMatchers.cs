@@ -26,7 +26,7 @@ namespace PoESkillTree.Computation.Data
             _modifierBuilder = modifierBuilder;
         }
 
-        protected override IEnumerable<MatcherData> CreateCollection() =>
+        protected override IReadOnlyList<MatcherData> CreateCollection() =>
             new FormAndStatMatcherCollection(_modifierBuilder, ValueFactory)
             {
                 // attributes

@@ -17,6 +17,7 @@ namespace PoESkillTree.Computation.Core.Graphs
             { NodeType.Total, NodeType.Subtotal, NodeType.UncappedSubtotal, NodeType.TotalOverride };
 
         public NodeSelector(NodeType nodeType, PathDefinition path)
+            : base(true)
         {
             if (!path.IsMainPath && MainPathOnlyNodeTypes.Contains(nodeType))
                 throw new ArgumentException($"{nodeType} is only allowed with the main path");

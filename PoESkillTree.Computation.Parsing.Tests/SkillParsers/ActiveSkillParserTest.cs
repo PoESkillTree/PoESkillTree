@@ -193,7 +193,8 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
             Assert.AreEqual(Entity.Totem, lifeModifier.Stats.First().Entity);
             Assert.AreEqual(Form.More, lifeModifier.Form);
             var actual = lifeModifier.Value.Calculate(valueCalculationContext);
-            Assert.AreEqual(new NodeValue(62), actual);
+            Assert.AreEqual(62, actual?.Minimum, 1e-10);
+            Assert.AreEqual(62, actual?.Maximum, 1e-10);
         }
 
         [Test]
@@ -940,6 +941,20 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
             Assert.AreEqual(expectedDamage, actualDamage);
         }
 
+        [Test]
+        public void BladeFlurryHasMaximumMainSkillPartStat()
+        {
+            var (definition, skill) = CreateBladeFlurryDefinition();
+            var sut = CreateSut(definition);
+            var context = MockValueCalculationContextForMainSkill(skill);
+
+            var result = sut.Parse(skill);
+
+            var modifiers = result.Modifiers;
+            var actual = GetValueForIdentity(modifiers, "MainSkillPart.Maximum").Calculate(context);
+            Assert.AreEqual(new NodeValue(definition.PartNames.Count - 1), actual);
+        }
+
         private static (SkillDefinition, Skill) CreateBladeFlurryDefinition()
         {
             var activeSkill = CreateActiveSkillDefinition("Blade Flurry",
@@ -1200,7 +1215,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
         public void HeraldOfIceQualityBuffStatHasCorrectValue()
         {
             var (definition, skill) = CreateHeraldOfIceDefinition();
-            var source = new ModifierSource.Local.Skill("HeraldOfIce", "Herald of Ice");
+            var source = new ModifierSource.Local.Skill("HeraldOfIce", "HeraldOfIce");
             var parseResult = ParseResult.Success(new[]
                 { MockModifier(new Stat("Cold.Damage.Attack.MainHand.Skill"), value: new Constant(15)) });
             var parameter = new UntranslatedStatParserParameter(source, new[]
@@ -1221,7 +1236,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.SkillParsers
         public void HeraldOfIceBuffStatHasCorrectValue()
         {
             var (definition, skill) = CreateHeraldOfIceDefinition();
-            var source = new ModifierSource.Local.Skill("HeraldOfIce", "Herald of Ice");
+            var source = new ModifierSource.Local.Skill("HeraldOfIce", "HeraldOfIce");
             var expected = new NodeValue(38, 56);
             var parseResult = ParseResult.Success(new[]
                 { MockModifier(new Stat("Cold.Damage.Spell.Skill"), value: new Constant(expected)) });

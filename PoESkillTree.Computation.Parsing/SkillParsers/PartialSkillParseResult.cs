@@ -4,7 +4,7 @@ using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Parsing.SkillParsers
 {
-    public class PartialSkillParseResult
+    public struct PartialSkillParseResult
     {
         public PartialSkillParseResult(
             IEnumerable<Modifier> parsedModifiers, IEnumerable<UntranslatedStat> parsedStats)

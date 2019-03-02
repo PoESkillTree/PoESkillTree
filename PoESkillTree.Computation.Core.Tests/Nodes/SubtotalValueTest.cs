@@ -22,7 +22,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
         [TestCase(9, 4, 8, 8)]
         [TestCase(1, 4, 8, 4)]
         [TestCase(0, 4, 8, 0)]
-        [TestCase(1e-20, 4, 8, 0)]
+        [TestCase(1e-20, 0, 8, 1e-20)]
         [TestCase(null, 4, 8, null)]
         public void CalculateReturnsCorrectResult(double? uncapped, double? min, double? max, double? expected)
         {

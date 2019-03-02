@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using PoESkillTree.Utils;
+using PoESkillTree.Utils.Extensions;
 
 namespace POESKillTree.Utils
 {
@@ -12,32 +13,20 @@ namespace POESKillTree.Utils
     /// 
     /// Uses a HashSet as wrapped storage so Contains, Add and Remove take constant time.
     /// </summary>
-    public class ObservableSet<T> : ISet<T>, IReadOnlyCollection<T>, INotifyCollectionChanged, INotifyPropertyChanged
+    public class ObservableSet<T> : ISet<T>, IReadOnlyCollection<T>, INotifyCollectionChanged<T>, INotifyPropertyChanged
     {
         private readonly ISet<T> _set;
         private readonly SimpleMonitor _monitor = new SimpleMonitor();
 
-        private bool _hasRangeIncompatibleHandlers;
+        public int Count => _set.Count;
 
-        public int Count
-        {
-            get { return _set.Count; }
-        }
-
-        bool ICollection<T>.IsReadOnly
-        {
-            get { return false; }
-        }
+        bool ICollection<T>.IsReadOnly => false;
 
         public ObservableSet()
-        {
-            _set = new HashSet<T>();
-        }
+            => _set = new HashSet<T>();
 
         public ObservableSet(IEnumerable<T> items)
-        {
-            _set = new HashSet<T>(items);
-        }
+            => _set = new HashSet<T>(items);
 
         private void CheckReentrancy()
         {
@@ -48,28 +37,17 @@ namespace POESKillTree.Utils
             }
         }
 
-        #region IEnumerable methods
-
         public IEnumerator<T> GetEnumerator()
-        {
-            return _set.GetEnumerator();
-        }
+            => _set.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable)_set).GetEnumerator();
-        }
-
-        #endregion
-
-        #region ISet methods
+            => ((IEnumerable)_set).GetEnumerator();
 
         public void UnionWith(IEnumerable<T> other)
         {
             CheckReentrancy();
             var added = other.Where(item => _set.Add(item)).ToList();
-            if (added.Any())
-                OnCollectionChanged(NotifyCollectionChangedAction.Add, added);
+            OnCollectionChanged(CollectionChangedEventArgs.Added(added));
         }
 
         public void IntersectWith(IEnumerable<T> other)
@@ -79,8 +57,7 @@ namespace POESKillTree.Utils
 
             // Only use other directly if its Contain method takes constant time and
             // uses the default EqualityComparer.
-            var otherAsHashSet = other as HashSet<T>;
-            if (otherAsHashSet != null)
+            if (other is HashSet<T> otherAsHashSet)
             {
                 if (otherAsHashSet.Comparer.Equals(EqualityComparer<T>.Default))
                 {
@@ -90,8 +67,7 @@ namespace POESKillTree.Utils
                 IntersectWith(new HashSet<T>(otherAsHashSet));
                 return;
             }
-            var otherAsObservable = other as ObservableSet<T>;
-            if (other is ObservableSet<T>)
+            if (other is ObservableSet<T> otherAsObservable)
             {
                 IntersectWith(otherAsObservable);
                 return;
@@ -104,8 +80,7 @@ namespace POESKillTree.Utils
             CheckReentrancy();
             var toRemove = _set.Where(item => !other.Contains(item)).ToList();
             toRemove.ForEach(item => _set.Remove(item));
-            if (toRemove.Any())
-                OnCollectionChanged(NotifyCollectionChangedAction.Remove, toRemove);
+            OnCollectionChanged(CollectionChangedEventArgs.Removed(toRemove));
         }
 
         public void ExceptWith(IEnumerable<T> other)
@@ -115,8 +90,7 @@ namespace POESKillTree.Utils
 
             CheckReentrancy();
             var removed = other.Where(item => _set.Remove(item)).ToList();
-            if (removed.Any())
-                OnCollectionChanged(NotifyCollectionChangedAction.Remove, removed);
+            OnCollectionChanged(CollectionChangedEventArgs.Removed(removed));
         }
 
         public void SymmetricExceptWith(IEnumerable<T> other)
@@ -143,57 +117,59 @@ namespace POESKillTree.Utils
                 }
             }
 
-            if (added.Any() || removed.Any())
-                OnCollectionChanged(NotifyCollectionChangedAction.Replace, added, removed);
+            OnCollectionChanged(CollectionChangedEventArgs.Replaced(added, removed));
+        }
+
+        public void ResetTo(IEnumerable<T> other)
+            => ExceptAndUnionWith(_set.ToList(), other);
+
+        public void ExceptAndUnionWith(IEnumerable<T> toRemove, IEnumerable<T> toAdd)
+        {
+            CheckReentrancy();
+            var added = new HashSet<T>();
+            var removed = new HashSet<T>();
+            foreach (var t in toRemove)
+            {
+                if (_set.Remove(t))
+                    removed.Add(t);
+            }
+            foreach (var t in toAdd)
+            {
+                if (_set.Add(t) && !removed.Remove(t))
+                    added.Add(t);
+            }
+            OnCollectionChanged(CollectionChangedEventArgs.Replaced(added, removed));
         }
 
         public bool IsSubsetOf(IEnumerable<T> other)
-        {
-            return _set.IsSubsetOf(other);
-        }
+            => _set.IsSubsetOf(other);
 
         public bool IsSupersetOf(IEnumerable<T> other)
-        {
-            return _set.IsSupersetOf(other);
-        }
+            => _set.IsSupersetOf(other);
 
         public bool IsProperSupersetOf(IEnumerable<T> other)
-        {
-            return _set.IsProperSupersetOf(other);
-        }
+            => _set.IsProperSupersetOf(other);
 
         public bool IsProperSubsetOf(IEnumerable<T> other)
-        {
-            return _set.IsProperSubsetOf(other);
-        }
+            => _set.IsProperSubsetOf(other);
 
         public bool Overlaps(IEnumerable<T> other)
-        {
-            return _set.Overlaps(other);
-        }
+            => _set.Overlaps(other);
 
         public bool SetEquals(IEnumerable<T> other)
-        {
-            return _set.SetEquals(other);
-        }
+            => _set.SetEquals(other);
 
         public bool Add(T item)
         {
             CheckReentrancy();
             var r = _set.Add(item);
             if (r)
-                OnCollectionChanged(NotifyCollectionChangedAction.Add, item);
+                OnCollectionChanged(CollectionChangedEventArgs.AddedSingle(item));
             return r;
         }
 
-        #endregion
-
-        #region ICollection methods
-
         void ICollection<T>.Add(T item)
-        {
-            Add(item);
-        }
+            => Add(item);
 
         public void Clear()
         {
@@ -202,75 +178,57 @@ namespace POESKillTree.Utils
             CheckReentrancy();
             var items = _set.ToList();
             _set.Clear();
-            OnCollectionChanged(NotifyCollectionChangedAction.Remove, items);
+            OnCollectionChanged(CollectionChangedEventArgs.Removed(items));
         }
 
         public bool Contains(T item)
-        {
-            return _set.Contains(item);
-        }
+            => _set.Contains(item);
 
         public void CopyTo(T[] array, int arrayIndex)
-        {
-            _set.CopyTo(array, arrayIndex);
-        }
+            => _set.CopyTo(array, arrayIndex);
 
         public bool Remove(T item)
         {
             CheckReentrancy();
             var r = _set.Remove(item);
             if (r)
-                OnCollectionChanged(NotifyCollectionChangedAction.Remove, item);
+                OnCollectionChanged(CollectionChangedEventArgs.RemovedSingle(item));
             return r;
         }
 
-        #endregion
-
-        #region Events
-
-        private void OnCollectionChanged(NotifyCollectionChangedAction action, T item)
+        public void RemoveAndAdd(T toRemove, T toAdd)
         {
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, item));
-        }
+            CheckReentrancy();
 
-        private void OnCollectionChanged(NotifyCollectionChangedAction action, IList items)
-        {
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, items));
-        }
-
-        private void OnCollectionChanged(NotifyCollectionChangedAction action, IList newItems, IList oldItems)
-        {
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, newItems, oldItems));
-        }
-
-        private void OnCollectionChanged(NotifyCollectionChangedEventArgs args)
-        {
-            using (_monitor.Enter())
+            var (removed, added) = (_set.Remove(toRemove), _set.Add(toAdd));
+            if (removed && added)
             {
-                try
-                {
-                    var newCount = args.NewItems?.Count ?? 0;
-                    var oldCount = args.OldItems?.Count ?? 0;
-                    if (_hasRangeIncompatibleHandlers && (newCount > 1 || oldCount > 1))
-                        CollectionChanged?.Invoke(this,
-                            new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                    else
-                        CollectionChanged?.Invoke(this, args);
-                }
-                catch (NotSupportedException)
-                {
-                    // This is for WPF default handlers that can't handle range updates.
-                    CollectionChanged?.Invoke(this,
-                        new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                    _hasRangeIncompatibleHandlers = true;
-                }
+                if (!EqualityComparer<T>.Default.Equals(toRemove, toAdd))
+                    OnCollectionChanged(CollectionChangedEventArgs.ReplacedSingle(toAdd, toRemove));
             }
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
+            else if (removed)
+            {
+                OnCollectionChanged(CollectionChangedEventArgs.RemovedSingle(toRemove));
+            }
+            else if (added)
+            {
+                OnCollectionChanged(CollectionChangedEventArgs.AddedSingle(toAdd));
+            }
         }
 
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
-        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnCollectionChanged(CollectionChangedEventArgs<T> args)
+        {
+            if (args.AddedItems.IsEmpty() && args.RemovedItems.IsEmpty())
+                return;
 
-        #endregion
+            using (_monitor.Enter())
+                CollectionChanged?.Invoke(this, args);
+
+            if (args.AddedItems.Count != args.RemovedItems.Count)
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
+        }
+
+        public event CollectionChangedEventHandler<T> CollectionChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EnumsNET;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Core.Events;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Core.Graphs
@@ -16,9 +18,22 @@ namespace PoESkillTree.Computation.Core.Graphs
             => statGraph.ModifierCount == 0;
 
         public IEnumerable<NodeSelector> SelectRemovableNodesByNodeType(IReadOnlyStatGraph statGraph)
-            => statGraph.Nodes.OrderBy(p => p.Key.NodeType).ToList()
+        {
+            var nodeTypeCount = Enums.GetMemberCount<NodeType>();
+            var nodes =
+                new List<KeyValuePair<NodeSelector, IBufferingEventViewProvider<ICalculationNode>>>[nodeTypeCount];
+            for (int i = 0; i < nodeTypeCount; i++)
+            {
+                nodes[i] = new List<KeyValuePair<NodeSelector, IBufferingEventViewProvider<ICalculationNode>>>();
+            }
+            foreach (KeyValuePair<NodeSelector, IBufferingEventViewProvider<ICalculationNode>> node in statGraph.Nodes)
+            {
+                nodes[(int) node.Key.NodeType].Add(node);
+            }
+            return nodes.Flatten()
                 .Where(p => _nodeRemovalDeterminer.CanBeRemoved(p.Value))
                 .Select(p => p.Key);
+        }
 
         public IEnumerable<FormNodeSelector> SelectRemovableNodesByForm(IReadOnlyStatGraph statGraph)
             => statGraph.FormNodeCollections.ToList()

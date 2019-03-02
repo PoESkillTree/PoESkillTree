@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Disposables;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Builders.Stats;
@@ -34,11 +33,9 @@ namespace PoESkillTree.Tests.Computation.ViewModels
             var actualUpdates = new List<CalculatorUpdate>();
             using (var sut = CreateSut(stat))
             {
-                calculatorMock.Setup(
-                        c => c.SubscribeTo(It.IsAny<IObservable<CalculatorUpdate>>(), It.IsAny<Action<Exception>>()))
-                    .Callback<IObservable<CalculatorUpdate>, Action<Exception>>(
-                        (observable, _) => observable.Subscribe(actualUpdates.Add))
-                    .Returns(Disposable.Empty);
+                calculatorMock
+                    .Setup(c => c.SubscribeTo(It.IsAny<IObservable<CalculatorUpdate>>()))
+                    .Callback<IObservable<CalculatorUpdate>>(observable => observable.Subscribe(actualUpdates.Add));
 
                 sut.SubscribeCalculator(calculatorMock.Object);
                 sut.BoolValue = true;
@@ -65,19 +62,20 @@ namespace PoESkillTree.Tests.Computation.ViewModels
             Assert.AreEqual(true, sut.BoolValue);
         }
 
-        [Test]
-        public void ResetValueSetsValueToNullIfNotUserSpecified()
+        [TestCase(null)]
+        [TestCase(1.2)]
+        public void ResetValueSetsValueToDefaultIfNotUserSpecified(double? defaultValue)
         {
             var stat = new Stat("");
-            var sut = CreateSut(stat);
+            var sut = CreateSut(stat, defaultValue);
             sut.BoolValue = true;
 
             sut.ResetValue();
 
-            Assert.IsNull(sut.Value);
+            Assert.AreEqual(defaultValue, sut.NumericValue);
         }
 
-        private static ConfigurationNodeViewModel CreateSut(IStat stat)
-            => new ConfigurationNodeViewModel(stat);
+        private static ConfigurationNodeViewModel CreateSut(IStat stat, double? defaultValue = null)
+            => new ConfigurationNodeViewModel(stat, (NodeValue?) defaultValue);
     }
 }

@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
-using PoESkillTree.Computation.Common.Builders.Modifiers;
-using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Parsing.Referencing;
 
 namespace PoESkillTree.Computation.Parsing.Tests.Referencing
@@ -11,48 +7,13 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
     [TestFixture]
     public class StatMatcherRegexExpanderTest
     {
-        [Test]
-        public void OnlyExpandsOnce()
-        {
-            var statMatchers = MockStatMatchers(false);
-            var sut = CreateSut(statMatchers);
-
-            sut.GetEnumerator();
-            sut.GetEnumerator();
-
-            Mock.Get(statMatchers).Verify(s => s.GetEnumerator(), Times.Once);
-        }
-
-        [TestCase(true, ExpectedResult = "^test$")]
-        [TestCase(false, ExpectedResult = StatMatcherRegexExpander.LeftDelimiterRegex + "test" + StatMatcherRegexExpander.RightDelimiterRegex)]
+        [TestCase(true, ExpectedResult = "^" + DefaultRegex + "$")]
+        [TestCase(false, ExpectedResult = StatMatcherRegexExpander.LeftDelimiterRegex + DefaultRegex + StatMatcherRegexExpander.RightDelimiterRegex)]
         public string RespectsMatchesWholeLineOnlyProperty(bool matchesWholeLineOnly)
         {
-            var statMatchers = MockStatMatchers(matchesWholeLineOnly, DefaultMatcherData);
-            var sut = CreateSut(statMatchers);
+            var sut = CreateSut(matchesWholeLineOnly);
 
-            var data = sut.First();
-
-            return data.Regex;
-        }
-
-        [Test]
-        public void DoesNotModifyModifierBuilder()
-        {
-            var sut = CreateSut(DefaultStatMatchers);
-
-            var data = sut.First();
-
-            Assert.AreSame(DefaultMatcherData.Modifier, data.Modifier);
-        }
-
-        [Test]
-        public void DoesNotModifyMatchSubstitution()
-        {
-            var sut = CreateSut(DefaultStatMatchers);
-
-            var data = sut.First();
-
-            Assert.AreSame(DefaultMatcherData.MatchSubstitution, data.MatchSubstitution);
+            return sut.Expand(DefaultRegex);
         }
 
         [TestCase("test", ExpectedResult = "^test$")]
@@ -72,20 +33,16 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
             " ((?<reference2_Matchers1_1>[1-9])|(?<reference2_Matchers1_2>(01)+)|(?<reference2_Matchers1_0>0+))$")]
         public string ExpandsCorrectly(string inputRegex)
         {
-            var inputData = new MatcherData(inputRegex, new ModifierBuilder());
-            var statMatchers = MockStatMatchers(true, inputData);
-            var sut = CreateSut(statMatchers);
+            var sut = CreateSut(true);
 
-            var data = sut.First();
-
-            return data.Regex;
+            return sut.Expand(inputRegex);
         }
 
         [TestCase("({Matchers3})", ExpectedResult =
             "^((?<reference0_Matchers3_2>d ((?<reference0_0_Matchers1_1>[1-9])|(?<reference0_0_Matchers1_0>0+)) ((?<reference0_1_Matchers2_0>a)))" +
             "|(?<reference0_Matchers3_0>((?<reference0_0_Matchers2_0>a)))" +
             "|(?<reference0_Matchers3_1>c))$")]
-        [TestCase("({Matchers4})", ExpectedResult = 
+        [TestCase("({Matchers4})", ExpectedResult =
             "^((?<reference0_Matchers4_0>((?<reference0_0_Matchers2_0>a))))$")]
         [TestCase("({Matchers5})", ExpectedResult =
             "^((?<reference0_Matchers5_0>((?<reference0_0_Matchers1_1>[1-9])|(?<reference0_0_Matchers1_0>0+)))" +
@@ -99,8 +56,6 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
             " ((?<reference0_3_Matchers2_0>a))))$")]
         public string ExpandsReferencesRecursively(string inputRegex)
         {
-            var inputData = new MatcherData(inputRegex, new ModifierBuilder());
-            var statMatchers = MockStatMatchers(true, inputData);
             var referencedRegexes = Mock.Of<IReferencedRegexes>(r =>
                 r.GetRegexes("Matchers1") == new[] { "0+", "[1-9]" } &&
                 r.GetRegexes("Matchers2") == new[] { "a" } &&
@@ -108,43 +63,23 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
                 r.GetRegexes("Matchers4") == new[] { "({Matchers2})" } &&
                 r.GetRegexes("Matchers5") == new[] { "({Matchers1})", "({Matchers2})", "({Matchers3})", "({Matchers4})" } &&
                 r.GetRegexes("Matchers6") == new[] { "({Matchers2}) ({Matchers2}) ({Matchers2}) ({Matchers2})" });
-            var sut = CreateSut(statMatchers, referencedRegexes);
+            var sut = CreateSut(referencedRegexes, true);
 
-            var data = sut.First();
-
-            return data.Regex;
+            return sut.Expand(inputRegex);
         }
 
-        private static readonly MatcherData DefaultMatcherData =
-            new MatcherData("test", new ModifierBuilder(), "substitution");
-
-        private static readonly IStatMatchers DefaultStatMatchers =
-            MockStatMatchers(false, DefaultMatcherData);
-
-        private static IStatMatchers MockStatMatchers(bool matchesWholeLineOnly,
-            params MatcherData[] data)
-        {
-            var dataList = data.ToList();
-            var mock = new Mock<IStatMatchers>();
-            mock.SetupGet(m => m.MatchesWholeLineOnly).Returns(matchesWholeLineOnly);
-            mock.Setup(m => m.GetEnumerator()).Returns(() => dataList.GetEnumerator());
-            return mock.Object;
-        }
+        private const string DefaultRegex = "test";
 
         private static readonly IReferencedRegexes DefaultReferencedRegexes =
             Mock.Of<IReferencedRegexes>(r =>
                 r.GetRegexes("Matchers1") == new[] { "0+", "[1-9]", "(01)+" } &&
                 r.GetRegexes("Matchers2") == new[] { "a", "b", "c", "d" });
 
-        private static IEnumerable<MatcherData> CreateSut(IStatMatchers statMatchers)
-        {
-            return CreateSut(statMatchers, DefaultReferencedRegexes);
-        }
+        private static StatMatcherRegexExpander CreateSut(bool matchesWholeLineOnly)
+            => CreateSut(DefaultReferencedRegexes, matchesWholeLineOnly);
 
-        private static IEnumerable<MatcherData> CreateSut(
-            IStatMatchers statMatchers, IReferencedRegexes referencedRegexe)
-        {
-            return new StatMatcherRegexExpander(statMatchers, referencedRegexe, new RegexGroupService(null));
-        }
+        private static StatMatcherRegexExpander CreateSut(
+            IReferencedRegexes referencedRegexe, bool matchesWholeLineOnly)
+            => new StatMatcherRegexExpander(referencedRegexe, new RegexGroupService(null), matchesWholeLineOnly);
     }
 }

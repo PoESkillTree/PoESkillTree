@@ -31,9 +31,9 @@ namespace POESKillTree.Computation.ViewModels
         public async Task<ResultNodeViewModel> CreateConstantResultAsync(IStat stat, ICalculationNode calculationNode)
             => new ResultNodeViewModel(stat) { Value = await _calculator.GetNodeValueAsync(calculationNode) };
 
-        public ConfigurationNodeViewModel CreateConfiguration(IStat stat)
+        public ConfigurationNodeViewModel CreateConfiguration(IStat stat, NodeValue? defaultValue = null)
         {
-            var node = new ConfigurationNodeViewModel(stat);
+            var node = new ConfigurationNodeViewModel(stat, defaultValue);
             node.SubscribeCalculator(_calculator);
             node.ResetValue();
             return node;

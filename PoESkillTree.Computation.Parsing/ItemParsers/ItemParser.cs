@@ -3,6 +3,7 @@ using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.GameModel.Items;
 using PoESkillTree.GameModel.StatTranslation;
+using PoESkillTree.Utils;
 
 namespace PoESkillTree.Computation.Parsing.ItemParsers
 {
@@ -12,15 +13,15 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
     public class ItemParser : IParser<ItemParserParameter>
     {
         private readonly BaseItemDefinitions _baseItemDefinitions;
-        private readonly IBuilderFactories _builderFactories;
-        private readonly ICoreParser _coreParser;
-        private readonly IStatTranslator _statTranslator;
+        private readonly IParser<PartialItemParserParameter>[] _partialParsers;
 
         public ItemParser(
             BaseItemDefinitions baseItemDefinitions, IBuilderFactories builderFactories, ICoreParser coreParser,
             IStatTranslator statTranslator)
-            => (_baseItemDefinitions, _builderFactories, _coreParser, _statTranslator) = (baseItemDefinitions,
-                builderFactories, coreParser, statTranslator);
+        {
+            _baseItemDefinitions = baseItemDefinitions;
+            _partialParsers = CreatePartialParsers(builderFactories, coreParser, statTranslator);
+        }
 
         public ParseResult Parse(ItemParserParameter parameter)
         {
@@ -35,24 +36,25 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
             var partialParserParameter =
                 new PartialItemParserParameter(item, slot, baseItemDefinition, localSource, globalSource);
 
-            var parseResults = new List<ParseResult>();
-            foreach (var partialParser in CreatePartialParsers())
+            var parseResults = new List<ParseResult>(_partialParsers.Length);
+            foreach (var partialParser in _partialParsers)
             {
                 parseResults.Add(partialParser.Parse(partialParserParameter));
             }
             return ParseResult.Aggregate(parseResults);
         }
 
-        private IEnumerable<IParser<PartialItemParserParameter>> CreatePartialParsers()
+        private IParser<PartialItemParserParameter>[] CreatePartialParsers(
+            IBuilderFactories builderFactories, ICoreParser coreParser, IStatTranslator statTranslator)
             => new IParser<PartialItemParserParameter>[]
             {
-                new ItemEquipmentParser(_builderFactories),
-                new ItemPropertyParser(_builderFactories),
-                new ItemModifierParser(_builderFactories, _coreParser, _statTranslator),
+                new ItemEquipmentParser(builderFactories),
+                new ItemPropertyParser(builderFactories),
+                new ItemModifierParser(builderFactories, coreParser, statTranslator),
             };
     }
 
-    public class ItemParserParameter
+    public class ItemParserParameter : ValueObject
     {
         public ItemParserParameter(Item item, ItemSlot itemSlot)
             => (Item, ItemSlot) = (item, itemSlot);
@@ -62,5 +64,7 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
 
         public Item Item { get; }
         public ItemSlot ItemSlot { get; }
+
+        protected override object ToTuple() => (Item, ItemSlot);
     }
 }

@@ -62,6 +62,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("SkillUses.MainHand", Form.TotalOverride, 1, global, true),
                     ("SkillUses.OffHand", Form.TotalOverride, 1, global, true),
                     ("MainSkill.Id", Form.TotalOverride, definition.NumericId, global, true),
+                    ("MainSkillPart.Maximum", Form.TotalOverride, definition.PartNames.Count - 1, global, true),
                     ("BaseCastTime.Spell.Skill", Form.BaseSet, definition.ActiveSkill.CastTime / 1000D, global, true),
                     ("BaseCastTime.Secondary.Skill", Form.BaseSet, definition.ActiveSkill.CastTime / 1000D, global,
                         true),
@@ -170,10 +171,10 @@ namespace PoESkillTree.Computation.IntegrationTests
             var support = new Skill("SupportAddedColdDamage", 20, 20, ItemSlot.Boots, 1, 0);
             var definition = _skillDefinitions.GetSkillById(support.Id);
             var levelDefinition = definition.Levels[20];
-            var local = new ModifierSource.Local.Skill("SupportAddedColdDamage", "Added Cold Damage Support");
+            var local = new ModifierSource.Local.Skill("Frenzy", "Added Cold Damage Support");
             var global = new ModifierSource.Global(local);
             var gemSource = new ModifierSource.Local.Gem(support.ItemSlot, support.SocketIndex,
-                "SupportAddedColdDamage", "Added Cold Damage Support");
+                "Frenzy", "Added Cold Damage Support");
             var valueCalculationContextMock = new Mock<IValueCalculationContext>();
             var isMainSkillStat = SetupIsActiveSkillInContext(valueCalculationContextMock, frenzy);
             var addedDamageValue = new NodeValue(levelDefinition.Stats[0].Value, levelDefinition.Stats[1].Value);

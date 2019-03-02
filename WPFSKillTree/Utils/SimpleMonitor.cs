@@ -24,10 +24,10 @@ namespace POESKillTree.Utils
             if (_count == 0)
                 Entered?.Invoke(this, EventArgs.Empty);
             _count++;
-            return Disposable.Create(DisposeCallback);
+            return Disposable.Create(Leave);
         }
 
-        private void DisposeCallback()
+        public void Leave()
         {
             _count--;
             if (_count == 0)

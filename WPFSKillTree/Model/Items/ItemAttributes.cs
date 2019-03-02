@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -35,17 +33,23 @@ namespace POESKillTree.Model.Items
                 return;
             
             var old = Equip.FirstOrDefault(i => i.Slot == slot);
-            if (old != null)
+            if (value is null)
             {
                 Equip.Remove(old);
+            }
+            else
+            {
+                value.Slot = slot;
+                Equip.RemoveAndAdd(old, value);
+            }
+
+            if (old != null)
+            {
                 old.Slot = ItemSlot.Unequipable;
                 old.PropertyChanged -= SlottedItemOnPropertyChanged;
             }
-
             if (value != null)
             {
-                value.Slot = slot;
-                Equip.Add(value);
                 value.PropertyChanged += SlottedItemOnPropertyChanged;
             }
             OnPropertyChanged(slot.ToString());
@@ -100,11 +104,7 @@ namespace POESKillTree.Model.Items
         public void SetSkillsInSlot(IReadOnlyList<Skill> value, ItemSlot slot)
         {
             var oldValue = Skills.FirstOrDefault(ss => ss.Any(s => s.ItemSlot == slot));
-            if (oldValue != null)
-            {
-                Skills.Remove(oldValue);
-            }
-            Skills.Add(value);
+            Skills.RemoveAndAdd(oldValue, value);
         }
 
         private void AddSkillsToSlot(IEnumerable<Skill> skills, ItemSlot slot)
@@ -112,10 +112,9 @@ namespace POESKillTree.Model.Items
 
         #endregion
 
-        public ObservableCollection<Item> Equip { get; } = new ObservableCollection<Item>();
+        public ObservableSet<Item> Equip { get; } = new ObservableSet<Item>();
 
-        public ObservableCollection<IReadOnlyList<Skill>> Skills { get; } =
-            new ObservableCollection<IReadOnlyList<Skill>>();
+        public ObservableSet<IReadOnlyList<Skill>> Skills { get; } = new ObservableSet<IReadOnlyList<Skill>>();
 
         private ListCollectionView _attributes;
         public ListCollectionView Attributes
@@ -223,7 +222,7 @@ namespace POESKillTree.Model.Items
             Skills.CollectionChanged -= OnCollectionChanged;
         }
 
-        private void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        private void OnCollectionChanged(object sender, EventArgs args)
             => OnItemDataChanged();
 
         private void SlottedItemOnPropertyChanged(object sender, PropertyChangedEventArgs args)

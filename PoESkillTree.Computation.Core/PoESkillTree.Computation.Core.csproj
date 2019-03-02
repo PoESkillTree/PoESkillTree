@@ -39,6 +39,9 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Enums.NET, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7ea1c1650d506225, processorArchitecture=MSIL">
+      <HintPath>..\packages\Enums.NET.2.3.2\lib\net45\Enums.NET.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Annotations, Version=2018.2.1.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\packages\JetBrains.Annotations.2018.2.1\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
@@ -49,6 +52,7 @@
       <HintPath>..\packages\morelinq.3.1.0\lib\net451\MoreLinq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
@@ -61,6 +65,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalculatorUpdate.cs" />
+    <Compile Include="Events\EventBuffer.cs" />
+    <Compile Include="Events\IBufferableEvent.cs" />
+    <Compile Include="Events\IEventBuffer.cs" />
+    <Compile Include="Events\ImmediateEventBuffer.cs" />
     <Compile Include="Graphs\CompositeCalculationGraphPruner.cs" />
     <Compile Include="Graphs\UserSpecifiedValuePruningRuleSet.cs" />
     <Compile Include="Graphs\CalculationGraphWithEvents.cs" />
@@ -95,11 +104,9 @@
     <Compile Include="Nodes\ICycleGuard.cs" />
     <Compile Include="Graphs\INodeFactory.cs" />
     <Compile Include="Graphs\IStatGraph.cs" />
-    <Compile Include="Events\ISuspendableEvents.cs" />
-    <Compile Include="Events\ISuspendableEventViewProvider.cs" />
+    <Compile Include="Events\IBufferingEventViewProvider.cs" />
     <Compile Include="NodeCollections\ModifierNodeCollection.cs" />
     <Compile Include="NodeCollections\NodeCollection.cs" />
-    <Compile Include="Graphs\StatGraphCollectionSuspender.cs" />
     <Compile Include="Nodes\IDisposableNodeViewProvider.cs" />
     <Compile Include="Nodes\IValueTransformable.cs" />
     <Compile Include="Nodes\MultiPathFormAggregatingValue.cs" />
@@ -117,10 +124,9 @@
     <Compile Include="Graphs\CalculationGraphPruner.cs" />
     <Compile Include="Nodes\SubscriberCountingNode.cs" />
     <Compile Include="Nodes\SubtotalValue.cs" />
-    <Compile Include="Events\SuspendableEventsComposite.cs" />
-    <Compile Include="Events\SuspendableEventViewProvider.cs" />
-    <Compile Include="NodeCollections\SuspendableObservableCollection.cs" />
-    <Compile Include="Graphs\SuspendableViewNodeRepository.cs" />
+    <Compile Include="Events\BufferingEventViewProvider.cs" />
+    <Compile Include="NodeCollections\EventBufferingObservableCollection.cs" />
+    <Compile Include="Graphs\BufferingViewNodeRepository.cs" />
     <Compile Include="Nodes\TotalValue.cs" />
     <Compile Include="Nodes\PathTotalValue.cs" />
     <Compile Include="Nodes\ValueCalculationContext.cs" />

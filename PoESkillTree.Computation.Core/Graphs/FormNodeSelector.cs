@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Utils;
 
@@ -11,11 +10,12 @@ namespace PoESkillTree.Computation.Core.Graphs
     /// </summary>
     public class FormNodeSelector : ValueObject
     {
-        private static readonly Form[] MainPathOnlyForms = { Form.TotalOverride };
+        private const Form MainPathOnlyForm = Form.TotalOverride;
 
         public FormNodeSelector(Form form, PathDefinition path)
+            : base(true)
         {
-            if (!path.IsMainPath && MainPathOnlyForms.Contains(form))
+            if (form == MainPathOnlyForm && !path.IsMainPath)
                 throw new ArgumentException($"{form} is only allowed with the main path");
 
             Form = form;
@@ -26,8 +26,5 @@ namespace PoESkillTree.Computation.Core.Graphs
         public PathDefinition Path { get; }
 
         protected override object ToTuple() => (Form, Path);
-
-        public void Deconstruct(out Form form, out PathDefinition path) =>
-            (form, path) = (Form, Path);
     }
 }

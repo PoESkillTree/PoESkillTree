@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using EnumsNET;
 using PoESkillTree.Computation.Builders.Behaviors;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -104,26 +105,28 @@ namespace PoESkillTree.Computation.Builders.Stats
                 behaviors: () => _behaviorFactory.ActiveSkillSocketIndex(entity, skillId));
 
         public IStat BuffEffect(Entity source, Entity target, string buffIdentity) =>
-            GetOrAdd($"{buffIdentity}.EffectOn({target})", source, typeof(double));
+            GetOrAdd($"{buffIdentity}.EffectOn({target.GetName()})", source, typeof(double));
 
         public IStat BuffIsActive(Entity target, string buffIdentity) =>
             GetOrAdd($"{buffIdentity}.BuffActive", target, typeof(bool));
 
         public IStat BuffSourceIs(Entity source, Entity target, string buffIdentity) =>
-            GetOrAdd($"{buffIdentity}.BuffSourceIs({source})", target, typeof(bool));
+            GetOrAdd(buffIdentity + ".BuffSourceIs(" + source.GetName() + ")", target, typeof(bool));
 
         public IStat Damage(Entity entity, DamageType damageType) =>
-            GetOrAdd(damageType + ".Damage", entity, typeof(int));
+            GetOrAdd(damageType.GetName() + ".Damage", entity, typeof(int));
 
         public IStat ConcretizeDamage(IStat stat, IDamageSpecification damageSpecification) =>
             CopyWithSuffix(stat, damageSpecification.StatIdentitySuffix, stat.DataType,
                 () => _behaviorFactory.ConcretizeDamage(stat, damageSpecification));
 
         public IStat ApplyModifiersToSkillDamage(IStat stat, DamageSource damageSource, Form form) =>
-            CopyWithSuffix(stat, $"ApplyModifiersToSkills({damageSource} for form {form})", typeof(bool));
+            CopyWithSuffix(stat,
+                "ApplyModifiersToSkills(" + damageSource.GetName() + " for form " + form.GetName() + ")",
+                typeof(bool));
 
         public IStat ApplyModifiersToAilmentDamage(IStat stat, Form form) =>
-            CopyWithSuffix(stat, $"ApplyModifiersToAilments(for form {form})", typeof(bool));
+            CopyWithSuffix(stat, "ApplyModifiersToAilments(for form " + form.GetName() + ")", typeof(bool));
 
         public IStat DamageTaken(IStat damage) =>
             CopyWithSuffix(damage, "Taken", damage.DataType);
@@ -145,7 +148,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             => CopyWithSuffix(stat, "Required", stat.DataType, () => _behaviorFactory.Requirement(stat));
 
         public IStat ItemProperty(IStat stat, ItemSlot slot)
-            => GetOrAdd($"{slot}.{stat.Identity}", stat.Entity, stat.DataType,
+            => GetOrAdd(slot.GetName() + "." + stat.Identity, stat.Entity, stat.DataType,
                 behaviors: () => _behaviorFactory.ItemProperty(stat, slot));
 
         private IStat CopyWithSuffix(IStat source, string identitySuffix, Type dataType,

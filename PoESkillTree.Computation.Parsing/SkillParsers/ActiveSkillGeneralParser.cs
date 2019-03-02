@@ -61,6 +61,8 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
 
             _parsedModifiers.AddGlobalForMainSkill(MetaStats.MainSkillId,
                 Form.TotalOverride, preParseResult.SkillDefinition.NumericId);
+            _parsedModifiers.AddGlobalForMainSkill(_builderFactories.StatBuilders.MainSkillPart.Maximum,
+                Form.TotalOverride, preParseResult.SkillDefinition.PartNames.Count - 1);
 
             _parsedModifiers.AddGlobalForMainSkill(_builderFactories.StatBuilders.BaseCastTime.With(DamageSource.Spell),
                 Form.BaseSet, activeSkill.CastTime / 1000D);
@@ -104,7 +106,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                     Form.BaseAdd, 1, isActiveSkill);
             }
 
-            var result = new PartialSkillParseResult(_parsedModifiers, new UntranslatedStat[0]);
+            var result = new PartialSkillParseResult(_parsedModifiers.Modifiers, new UntranslatedStat[0]);
             _parsedModifiers = null;
             return result;
         }

@@ -74,8 +74,7 @@ namespace POESKillTree.TreeGenerator.ViewModels
                 .ShowControllerDialogAsync(_dialogContext, solver, generator.DisplayName, Tree);
             if (controllerResult != null)
             {
-                Tree.SkilledNodes.Clear();
-                Tree.AllocateSkillNodes(controllerResult.Select(n => SkillTree.Skillnodes[n]));
+                Tree.ResetSkilledNodesTo(controllerResult.Select(n => SkillTree.Skillnodes[n]).ToList());
             }
             Tree.HighlightedNodes.Clear();
             Tree.HighlightedNodes.UnionWith(savedHighlights);

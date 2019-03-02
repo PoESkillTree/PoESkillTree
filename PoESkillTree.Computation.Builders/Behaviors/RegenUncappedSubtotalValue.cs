@@ -51,14 +51,14 @@ namespace PoESkillTree.Computation.Builders.Behaviors
 
             public PathDefinition CurrentPath => _originalContext.CurrentPath;
 
-            public IEnumerable<PathDefinition> GetPaths(IStat stat)
+            public IReadOnlyCollection<PathDefinition> GetPaths(IStat stat)
             {
                 if (!_value._regens(_value._pool).Equals(stat))
                     return _originalContext.GetPaths(stat);
 
                 return _applyingPools
                     .SelectMany(p => _originalContext.GetPaths(_value._regens(p)))
-                    .Distinct();
+                    .Distinct().ToList();
             }
 
             public NodeValue? GetValue(IStat stat, NodeType nodeType, PathDefinition path)
@@ -66,13 +66,17 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                 if (nodeType != NodeType.PathTotal || !_value._regens(_value._pool).Equals(stat))
                     return _originalContext.GetValue(stat, nodeType, path);
 
-                return _applyingPools
-                    .Select(p => _originalContext.GetValue(_value._regens(p), nodeType, path))
-                    .Sum();
+                NodeValue? result = null;
+                foreach (var pool in _applyingPools)
+                {
+                    var value = _originalContext.GetValue(_value._regens(pool), nodeType, path);
+                    result = result.SumWhereNotNull(value);
+                }
+                return result;
             }
 
-            public IEnumerable<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths) =>
-                _originalContext.GetValues(form, paths);
+            public List<NodeValue?> GetValues(Form form, IEnumerable<(IStat stat, PathDefinition path)> paths)
+                => _originalContext.GetValues(form, paths);
         }
     }
 }

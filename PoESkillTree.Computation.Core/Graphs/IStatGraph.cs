@@ -12,8 +12,8 @@ namespace PoESkillTree.Computation.Core.Graphs
         void RemoveNode(NodeSelector selector);
         void RemoveFormNodeCollection(FormNodeSelector selector);
 
-        void AddModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier);
-        void RemoveModifier(ISuspendableEventViewProvider<ICalculationNode> node, Modifier modifier);
+        void AddModifier(IBufferingEventViewProvider<ICalculationNode> node, Modifier modifier);
+        void RemoveModifier(IBufferingEventViewProvider<ICalculationNode> node, Modifier modifier);
     }
 
 
@@ -22,15 +22,15 @@ namespace PoESkillTree.Computation.Core.Graphs
     /// </summary>
     public interface IReadOnlyStatGraph
     {
-        ISuspendableEventViewProvider<IObservableCollection<PathDefinition>> Paths { get; }
+        IBufferingEventViewProvider<IObservableCollection<PathDefinition>> Paths { get; }
 
-        ISuspendableEventViewProvider<ICalculationNode> GetNode(NodeSelector selector);
+        IBufferingEventViewProvider<ICalculationNode> GetNode(NodeSelector selector);
 
-        IReadOnlyDictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>> Nodes { get; }
+        IReadOnlyDictionary<NodeSelector, IBufferingEventViewProvider<ICalculationNode>> Nodes { get; }
 
-        ISuspendableEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(FormNodeSelector selector);
+        IBufferingEventViewProvider<INodeCollection<Modifier>> GetFormNodeCollection(FormNodeSelector selector);
 
-        IReadOnlyDictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
+        IReadOnlyDictionary<FormNodeSelector, IBufferingEventViewProvider<INodeCollection<Modifier>>>
             FormNodeCollections { get; }
 
         int ModifierCount { get; }

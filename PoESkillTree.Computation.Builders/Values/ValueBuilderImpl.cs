@@ -44,35 +44,35 @@ namespace PoESkillTree.Computation.Builders.Values
         public IValueBuilder Resolve(ResolveContext context) => _resolve(context);
 
         public IValueBuilder MaximumOnly =>
-            Create(this, o => o.Select(v => new NodeValue(0, v.Maximum)), o => $"{o}.MaximumOnly");
+            Create(this, o => o.Select(v => new NodeValue(0, v.Maximum)), o => o + ".MaximumOnly");
 
         public IValueBuilder Average =>
-            Create(this, o => o.Select(v => new NodeValue((v.Minimum + v.Maximum) / 2)), o => $"{o}.Average");
+            Create(this, o => o.Select(v => new NodeValue((v.Minimum + v.Maximum) / 2)), o => o + ".Average");
 
         public IConditionBuilder Eq(IValueBuilder other) =>
-            ValueConditionBuilder.Create(this, other, (left, right) => left == right, (l, r) => $"{l} == {r}");
+            ValueConditionBuilder.Create(this, other, (left, right) => left == right, (l, r) =>  l + " == " + r);
 
         public IConditionBuilder GreaterThan(IValueBuilder other) =>
             ValueConditionBuilder.Create(this, other, 
-                (left, right) => left.GetValueOrDefault() > right.GetValueOrDefault(), (l, r) => $"{l} > {r}");
+                (left, right) => left.GetValueOrDefault() > right.GetValueOrDefault(), (l, r) => l + " > " + r);
 
         public IValueBuilder Add(IValueBuilder other) =>
-            Create(this, other, (left, right) => new[] { left(), right() }.Sum(), (l, r) => $"({l} + {r})");
+            Create(this, other, (left, right) => left().SumWhereNotNull(right()), (l, r) => l + " + " + r);
 
         public IValueBuilder Multiply(IValueBuilder other) =>
-            Create(this, other, CalculateMultiply, (l, r) => $"{l} * {r}");
+            Create(this, other, CalculateMultiply, (l, r) => l + " * " + r);
 
         private static NodeValue? CalculateMultiply(Func<NodeValue?> leftFunc, Func<NodeValue?> rightFunc)
             => leftFunc() is NodeValue left ? left * rightFunc() : null;
 
         public IValueBuilder DivideBy(IValueBuilder divisor) =>
-            Create(this, divisor, CalculateDivideBy, (l, r) => $"{l} / {r}");
+            Create(this, divisor, CalculateDivideBy, (l, r) => l + " / " + r);
 
         private static NodeValue? CalculateDivideBy(Func<NodeValue?> leftFunc, Func<NodeValue?> rightFunc)
             => leftFunc() is NodeValue left ? left / rightFunc() : null;
 
         public IValueBuilder If(IValue condition) =>
-            Create(this, new ValueBuilderImpl(condition), CalculateIf, (l, r) => $"{r} ? {l} : null");
+            Create(this, new ValueBuilderImpl(condition), CalculateIf, (l, r) => r + " ? " + l + " : null");
 
         private static NodeValue? CalculateIf(Func<NodeValue?> value, Func<NodeValue?> condition)
             => condition().IsTrue() ? value() : null;

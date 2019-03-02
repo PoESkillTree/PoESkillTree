@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Data
         public override IReadOnlyList<string> ReferenceNames { get; } =
             new[] { "StatMatchers", nameof(PoolStatMatchers) };
 
-        protected override IEnumerable<MatcherData> CreateCollection() =>
+        protected override IReadOnlyList<MatcherData> CreateCollection() =>
             new StatMatcherCollection<IPoolStatBuilder>(_modifierBuilder)
             {
                 { "(maximum )?life", Life },

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using PoESkillTree.Computation.Common;
+﻿using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.GameModel.Items;
 
@@ -29,7 +28,7 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                 modifiers.AddGlobal(equipmentBuilder.Corrupted, Form.TotalOverride, 1);
             }
 
-            return ParseResult.Success(modifiers.ToList());
+            return ParseResult.Success(modifiers.Modifiers);
         }
     }
 }

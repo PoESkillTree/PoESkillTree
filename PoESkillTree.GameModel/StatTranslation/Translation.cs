@@ -100,8 +100,12 @@ namespace PoESkillTree.GameModel.StatTranslation
         [CanBeNull]
         public string Translate(IReadOnlyDictionary<string, int> idValueDict)
         {
-            var values = Ids.Select(id => idValueDict.GetValueOrDefault(id));
-            return Translate(values.ToList());
+            var values = new int[Ids.Count];
+            for (var i = 0; i < Ids.Count; i++)
+            {
+                values[i] = idValueDict.GetValueOrDefault(Ids[i]);
+            }
+            return Translate(values);
         }
     }
 }

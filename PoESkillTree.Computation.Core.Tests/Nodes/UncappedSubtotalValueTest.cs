@@ -29,7 +29,7 @@ namespace PoESkillTree.Computation.Core.Tests.Nodes
             var values = pathTotals.Select(d => (NodeValue?) d);
             var contextMock = new Mock<IValueCalculationContext>();
             contextMock.Setup(c => c.GetPaths(stat))
-                .Returns(Enumerable.Repeat(PathDefinition.MainPath, pathTotals.Length));
+                .Returns(Enumerable.Repeat(PathDefinition.MainPath, pathTotals.Length).ToList());
             contextMock.Setup(c => c.GetValue(stat, NodeType.PathTotal, PathDefinition.MainPath))
                 .Returns(new Queue<NodeValue?>(values).Dequeue);
             var sut = CreateSut(stat);

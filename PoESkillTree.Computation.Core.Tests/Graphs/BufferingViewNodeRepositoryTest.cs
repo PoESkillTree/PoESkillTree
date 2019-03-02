@@ -6,17 +6,17 @@ using PoESkillTree.Computation.Core.Graphs;
 namespace PoESkillTree.Computation.Core.Tests.Graphs
 {
     [TestFixture]
-    public class SuspendableViewNodeRepositoryTest
+    public class BufferingViewNodeRepositoryTest
     {
         [Test]
-        public void SuspendableViewGetNodeReturnsInjectedGetNodesSuspendableView()
+        public void BufferingViewGetNodeReturnsInjectedGetNodesBufferingView()
         {
             var expected = Mock.Of<ICalculationNode>();
             var stat = Mock.Of<IStat>();
             var path = PathDefinition.MainPath;
             var graphCollection = Mock.Of<IStatGraphCollection>(
-                c => c.GetOrAdd(stat).GetNode(new NodeSelector(NodeType.Total, path)).SuspendableView == expected);
-            var sut = new SuspendableViewNodeRepository(graphCollection);
+                c => c.GetOrAdd(stat).GetNode(new NodeSelector(NodeType.Total, path)).BufferingView == expected);
+            var sut = new BufferingViewNodeRepository(graphCollection);
 
             var actual = sut.GetNode(stat, NodeType.Total, path);
 
@@ -24,15 +24,15 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         }
 
         [Test]
-        public void SuspendableViewGetFormNodeCollectionReturnsInjectedGetFormNodeCollectionsSuspendableView()
+        public void BufferingViewGetFormNodeCollectionReturnsInjectedGetFormNodeCollectionsBufferingView()
         {
             var expected = Mock.Of<INodeCollection<Modifier>>();
             var stat = Mock.Of<IStat>();
             var path = PathDefinition.MainPath;
             var graphCollection = Mock.Of<IStatGraphCollection>(
-                c => c.GetOrAdd(stat).GetFormNodeCollection(new FormNodeSelector(Form.BaseAdd, path)).SuspendableView 
+                c => c.GetOrAdd(stat).GetFormNodeCollection(new FormNodeSelector(Form.BaseAdd, path)).BufferingView 
                      == expected);
-            var sut = new SuspendableViewNodeRepository(graphCollection);
+            var sut = new BufferingViewNodeRepository(graphCollection);
 
             var actual = sut.GetFormNodeCollection(stat, Form.BaseAdd, path);
 
@@ -45,8 +45,8 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             var expected = Mock.Of<IObservableCollection<PathDefinition>>();
             var stat = Mock.Of<IStat>();
             var graphCollection = Mock.Of<IStatGraphCollection>(
-                c => c.GetOrAdd(stat).Paths.SuspendableView == expected);
-            var sut = new SuspendableViewNodeRepository(graphCollection);
+                c => c.GetOrAdd(stat).Paths.BufferingView == expected);
+            var sut = new BufferingViewNodeRepository(graphCollection);
 
             var actual = sut.GetPaths(stat);
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using EnumsNET;
 
 namespace PoESkillTree.GameModel.Items
 {
@@ -108,7 +109,7 @@ namespace PoESkillTree.GameModel.Items
         /// instance.
         /// </summary>
         public static bool TryParse(string ggpkTag, out Tags tag)
-            => Enum.TryParse(ggpkTag.Replace("_", ""), true, out tag);
+            => Enums.TryParse(ggpkTag.Replace("_", ""), true, out tag);
 
         public static double EncodeAsDouble(this Tags @this)
             => BitConverter.Int64BitsToDouble((long) @this);

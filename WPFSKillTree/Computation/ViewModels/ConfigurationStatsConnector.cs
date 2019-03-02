@@ -28,9 +28,11 @@ namespace POESKillTree.Computation.ViewModels
         }
 
         public static void Connect(
-            IPersistentData persistentData, ObservableCollection<ConfigurationStatViewModel> viewModels)
+            IPersistentData persistentData, ObservableCollection<ConfigurationStatViewModel> viewModels,
+            IEnumerable<ConfigurationNodeViewModel> additionalNodes)
         {
-            var connector = new ConfigurationStatsConnector(persistentData, viewModels.Select(x => x.Node));
+            var nodes = viewModels.Select(x => x.Node).Concat(additionalNodes);
+            var connector = new ConfigurationStatsConnector(persistentData, nodes);
             connector.Initialize(viewModels);
         }
 
@@ -89,6 +91,7 @@ namespace POESKillTree.Computation.ViewModels
             if (e.PropertyName == nameof(IPersistentData.CurrentBuild))
             {
                 _persistentData.CurrentBuild.PropertyChanged -= CurrentBuildOnPropertyChanged;
+                _setNodeValueMonitor.Enter();
             }
         }
 
@@ -98,6 +101,7 @@ namespace POESKillTree.Computation.ViewModels
             {
                 _persistentData.CurrentBuild.PropertyChanged += CurrentBuildOnPropertyChanged;
                 _nodes.ForEach(SetNodeValue);
+                _setNodeValueMonitor.Leave();
             }
         }
 

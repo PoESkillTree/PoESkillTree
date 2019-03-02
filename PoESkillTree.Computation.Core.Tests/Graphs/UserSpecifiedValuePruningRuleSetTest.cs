@@ -57,18 +57,19 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         {
             var defaultResult = new[] { Selector(Form.BaseSet), Selector(Form.More) };
             var expected = new[] { defaultResult[1] };
+            var eventBuffer = new EventBuffer();
             var formNodeCollections =
-                new Dictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
+                new Dictionary<FormNodeSelector, IBufferingEventViewProvider<INodeCollection<Modifier>>>
                 {
                     {
                         defaultResult[0],
-                        Mock.Of<ISuspendableEventViewProvider<INodeCollection<Modifier>>>(p =>
-                            p.DefaultView == new NodeCollection<Modifier> { { null, null } })
+                        Mock.Of<IBufferingEventViewProvider<INodeCollection<Modifier>>>(p =>
+                            p.DefaultView == new NodeCollection<Modifier>(eventBuffer) { { null, null } })
                     },
                     {
                         defaultResult[1],
-                        Mock.Of<ISuspendableEventViewProvider<INodeCollection<Modifier>>>(p =>
-                            p.DefaultView == new NodeCollection<Modifier>())
+                        Mock.Of<IBufferingEventViewProvider<INodeCollection<Modifier>>>(p =>
+                            p.DefaultView == new NodeCollection<Modifier>(eventBuffer))
                     }
                 };
             var statGraph = Mock.Of<IReadOnlyStatGraph>(g => g.FormNodeCollections == formNodeCollections);
@@ -88,13 +89,13 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
         public bool SelectRemovableStatsReturnsCorrectResult(
             bool nodesCanBeRemoved, bool formNodesCanBeRemoved, bool pathsCanBeRemoved)
         {
-            var nodeCollection = new Dictionary<NodeSelector, ISuspendableEventViewProvider<ICalculationNode>>();
+            var nodeCollection = new Dictionary<NodeSelector, IBufferingEventViewProvider<ICalculationNode>>();
             if (!nodesCanBeRemoved)
             {
                 nodeCollection.Add(Selector(NodeType.Total), MockProvider<ICalculationNode>());
             }
             var formNodeCollections =
-                new Dictionary<FormNodeSelector, ISuspendableEventViewProvider<INodeCollection<Modifier>>>
+                new Dictionary<FormNodeSelector, IBufferingEventViewProvider<INodeCollection<Modifier>>>
                 {
                     { Selector(Form.More), MockProvider<INodeCollection<Modifier>>() }
                 };
@@ -120,7 +121,7 @@ namespace PoESkillTree.Computation.Core.Tests.Graphs
             => new UserSpecifiedValuePruningRuleSet(defaultRuleSet ?? Mock.Of<IGraphPruningRuleSet>(),
                 nodeRemovalDeterminer ?? Mock.Of<IDeterminesNodeRemoval>());
 
-        private static ISuspendableEventViewProvider<T> MockProvider<T>()
-            => Mock.Of<ISuspendableEventViewProvider<T>>();
+        private static IBufferingEventViewProvider<T> MockProvider<T>()
+            => Mock.Of<IBufferingEventViewProvider<T>>();
     }
 }

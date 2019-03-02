@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using log4net;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
@@ -10,6 +11,7 @@ using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.Computation.Parsing.Referencing;
 using PoESkillTree.Computation.Parsing.StringParsers;
+using PoESkillTree.Utils;
 using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Parsing
@@ -79,20 +81,23 @@ namespace PoESkillTree.Computation.Parsing
                 new CachingStringParser<IIntermediateModifier>(
                     new StatNormalizingParser<IIntermediateModifier>(
                         new ResolvingParser(
-                            new MatcherDataParser(
-                                new StatMatcherRegexExpander(statMatchers, referenceService, regexGroupService)),
+                            MatcherDataParser.Create(
+                                statMatchers.Data,
+                                new StatMatcherRegexExpander(
+                                    referenceService, regexGroupService, statMatchers.MatchesWholeLineOnly).Expand),
                             referenceService,
-                            new IntermediateModifierResolver(new ModifierBuilder()),
+                            new IntermediateModifierResolver(ModifierBuilder.Empty),
                             regexGroupService
                         )
                     )
                 );
 
-            var innerParserCache = new ConcurrentDictionary<IStatMatchers, IStringParser<IIntermediateModifier>>();
+            Parallel.ForEach(_parsingData.StatMatchers, s => { _ = s.Data; });
+            var innerParserCache = _parsingData.StatMatchers.ToDictionary(Funcs.Identity, CreateInnerParser);
 
             // The steps define the order in which the inner parsers, and by extent the IStatMatchers, are executed.
-            IStringParser<IIntermediateModifier> StepToParser(TStep step) =>
-                innerParserCache.GetOrAdd(_parsingData.SelectStatMatcher(step), CreateInnerParser);
+            IStringParser<IIntermediateModifier> StepToParser(TStep step)
+                => innerParserCache[_parsingData.SelectStatMatcher(step)];
 
             // The full parsing pipeline.
             return

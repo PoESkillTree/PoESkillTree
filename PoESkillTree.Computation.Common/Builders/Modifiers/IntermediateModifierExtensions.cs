@@ -106,9 +106,7 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
         /// may have more than one entry, entries with form set, entries with stat set and entries with value set.
         /// </remarks>
         public static IIntermediateModifier Aggregate(this IEnumerable<IIntermediateModifier> modifiers)
-        {
-            return modifiers.Aggregate(SimpleIntermediateModifier.Empty, MergeWith);
-        }
+            => modifiers.Aggregate(SimpleIntermediateModifier.Empty, MergeWith);
 
         /// <summary>
         /// Builds <paramref name="modifier"/> by creating a <see cref="Modifier"/> from each of its entries.
@@ -116,41 +114,56 @@ namespace PoESkillTree.Computation.Common.Builders.Modifiers
         /// <see cref="IIntermediateModifier.ValueConverter"/> to each value. Entries with null form, stat or value
         /// are ignored.
         /// </summary>
-        public static IReadOnlyList<Modifier> Build(this IIntermediateModifier modifier,
-            ModifierSource originalSource, Entity modifierSourceEntity)
-        {
-            return (
-                from entry in modifier.Entries
-                from m in Build(modifier, entry, originalSource, modifierSourceEntity)
-                select m
-            ).ToList();
-        }
+        public static IReadOnlyList<Modifier> Build(
+            this IIntermediateModifier modifier, ModifierSource originalSource, Entity modifierSourceEntity)
+            => new IntermediateModifierBuilder(modifier, originalSource, modifierSourceEntity).Build();
 
-        private static IEnumerable<Modifier> Build(
-            IIntermediateModifier modifier, IntermediateModifierEntry entry, ModifierSource originalSource,
-            Entity modifierSourceEntity)
+        private class IntermediateModifierBuilder
         {
-            if (entry.Form == null || entry.Stat == null || entry.Value == null)
+            private readonly IIntermediateModifier _modifier;
+            private readonly ModifierSource _originalSource;
+            private readonly Entity _modifierSourceEntity;
+            private readonly List<Modifier> _modifiers = new List<Modifier>();
+
+            public IntermediateModifierBuilder(
+                IIntermediateModifier modifier, ModifierSource originalSource, Entity modifierSourceEntity)
             {
-                yield break;
+                _modifier = modifier;
+                _originalSource = originalSource;
+                _modifierSourceEntity = modifierSourceEntity;
             }
 
-            var (form, formValueConverter) = entry.Form.Build();
-            var buildParameters = new BuildParameters(originalSource, modifierSourceEntity, form);
-
-            var statBuilder = entry.Stat;
-            if (entry.Condition != null)
+            public IReadOnlyList<Modifier> Build()
             {
-                statBuilder = statBuilder.WithCondition(entry.Condition);
+                foreach (var entry in _modifier.Entries)
+                {
+                    Build(entry);
+                }
+                return _modifiers;
             }
-            statBuilder = modifier.StatConverter(statBuilder);
-            var statBuilderResults = statBuilder.Build(buildParameters);
 
-            foreach (var (stats, source, statValueConverter) in statBuilderResults)
+            private void Build(IntermediateModifierEntry entry)
             {
-                var valueBuilder = formValueConverter(statValueConverter(modifier.ValueConverter(entry.Value)));
-                var value = valueBuilder.Build(buildParameters);
-                yield return new Modifier(stats, form, value, source);
+                if (entry.Form == null || entry.Stat == null || entry.Value == null)
+                    return;
+
+                var (form, formValueConverter) = entry.Form.Build();
+                var buildParameters = new BuildParameters(_originalSource, _modifierSourceEntity, form);
+
+                var statBuilder = entry.Stat;
+                if (entry.Condition != null)
+                {
+                    statBuilder = statBuilder.WithCondition(entry.Condition);
+                }
+                statBuilder = _modifier.StatConverter(statBuilder);
+                var statBuilderResults = statBuilder.Build(buildParameters);
+
+                foreach (var (stats, source, statValueConverter) in statBuilderResults)
+                {
+                    var valueBuilder = formValueConverter(statValueConverter(_modifier.ValueConverter(entry.Value)));
+                    var value = valueBuilder.Build(buildParameters);
+                    _modifiers.Add(new Modifier(stats, form, value, source));
+                }
             }
         }
     }

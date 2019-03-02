@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using JetBrains.Annotations;
 using log4net;
-using PoESkillTree.GameModel;
+using PoESkillTree.Utils;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Model.Builds;
 using POESKillTree.Utils;
@@ -47,8 +47,8 @@ namespace POESKillTree.Model.Serialization
                 var badFilePath = AppData.GetFolder(true) + FileName + "_Bad.xml";
                 File.Copy(FilePath, badFilePath, true);
 
-                FileEx.DeleteIfExists(FilePath);
-                FileEx.DeleteIfExists(BackupPath);
+                FileUtils.DeleteIfExists(FilePath);
+                FileUtils.DeleteIfExists(BackupPath);
 
                 Log.Error("Could not deserialize PeristentData file", ex);
                 throw new Exception(ex.Message +
@@ -64,7 +64,7 @@ namespace POESKillTree.Model.Serialization
                 new PersistentDataDeserializerUpTo230(), new PersistentDataDeserializerCurrent()
             };
             var xmlString = File.ReadAllText(filePath);
-            var version = SerializationUtils.XmlDeserializeString<XmlPersistentDataVersion>(xmlString).AppVersion;
+            var version = XmlSerializationUtils.DeserializeString<XmlPersistentDataVersion>(xmlString).AppVersion;
             IPersistentDataDeserializer suitableDeserializer;
             if (version == null)
             {
@@ -115,9 +115,9 @@ namespace POESKillTree.Model.Serialization
                                        new PersistentDataDeserializerCurrent {PersistentData = this};
             }
 
-            public override async Task InitializeAsync(IDialogCoordinator dialogCoordinator, GameData gameData)
+            public override async Task InitializeAsync(IDialogCoordinator dialogCoordinator)
             {
-                await _deserializer.InitializeAsync(dialogCoordinator, gameData);
+                await _deserializer.InitializeAsync(dialogCoordinator);
                 _serializer = new PersistentDataSerializer(this);
                 _deserializer.SaveBuildChanges();
                 if (!string.IsNullOrEmpty(_importedBuildPath))
@@ -128,14 +128,14 @@ namespace POESKillTree.Model.Serialization
 
             public override void Save()
             {
-                FileEx.CopyIfExists(FilePath, BackupPath, true);
+                FileUtils.CopyIfExists(FilePath, BackupPath, true);
                 try
                 {
                     _serializer.Serialize(FilePath);
                 }
                 catch (Exception e)
                 {
-                    FileEx.MoveOverwriting(BackupPath, FilePath);
+                    FileUtils.MoveOverwriting(BackupPath, FilePath);
                     Log.Error(
                         "Exception while saving PersistentData. Backup file was restored and changes may be lost.", e);
                 }

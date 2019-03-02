@@ -177,13 +177,12 @@ namespace PoESkillTree.Computation.Builders.Stats
         private static ValueConverter ApplyToDamageValueConverter(IEnumerable<IStat> applyStats)
         {
             var values = applyStats
-                .Select(s => new FunctionalValue(c => c.GetValue(s) / 100, $"{s}.Value / 100"))
+                .Select(s => new FunctionalValue(c => c.GetValue(s) / 100, s + ".Value / 100"))
                 .ToList();
-            var multiplier = new FunctionalValue(
-                c => values.Select(v => v.Calculate(c)).AggregateOnValues(Combine),
+            var multiplier = new FunctionalValue(Calculate,
                 $"RequireEqualWhereNotNull({string.Join(",", values)})");
             return v => v.Multiply(new ValueBuilderImpl(multiplier));
-            
+
             // There isn't any obvious way to combine different values but it currently can't happen:
             // - More than one source damage source for ApplyModifiersToSkillDamage can't happen because
             //   With(DamageSource) only takes one argument.
@@ -193,17 +192,26 @@ namespace PoESkillTree.Computation.Builders.Stats
             // - The current solution would not work if different stats of the original StatBuilderResult (built from
             //   the core builder) have different ApplyModifiersTo values. That is possible with IDamageStatBuilder and
             //   its damage types, but damage-type specific ApplyModifiersTo modifiers do not exist.
-            NodeValue Combine(NodeValue left, NodeValue right)
+            NodeValue? Calculate(IValueCalculationContext context)
             {
-                if (left == right)
-                    return left;
-                throw new ParseException(
-                    $"ApplyModifiersToDamage values must be equal for all concretized stats. {left} and {right} given");
+                NodeValue? result = null;
+                foreach (var functionalValue in values)
+                {
+                    if (!(functionalValue.Calculate(context) is NodeValue value))
+                        continue;
+
+                    if (result is NodeValue r && !r.AlmostEquals(value))
+                        throw new ParseException(
+                            $"ApplyModifiersToDamage values must be equal for all concretized stats. {result} and {value} given");
+
+                    result = value;
+                }
+                return result;
             }
         }
 
-        private IReadOnlyList<IStat> ConcretizeStats(IDamageSpecification spec, IEnumerable<IStat> resultStats) =>
-            resultStats.Select(s => _statFactory.ConcretizeDamage(s, spec)).ToList();
+        private IReadOnlyList<IStat> ConcretizeStats(IDamageSpecification spec, IReadOnlyList<IStat> stats)
+            => stats.SelectToList(s => _statFactory.ConcretizeDamage(s, spec));
 
         private class NullConditionBuilder : IConditionBuilder
         {

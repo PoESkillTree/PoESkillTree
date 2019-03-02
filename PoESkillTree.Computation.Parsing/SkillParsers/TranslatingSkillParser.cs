@@ -47,7 +47,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
             var level = preParseResult.LevelDefinition;
             var qualityStats = level.QualityStats.Select(s => ApplyQuality(s, skill));
             var (keystoneStats, levelStats) = level.Stats.Partition(s => KeystoneStatRegex.IsMatch(s.StatId));
-            var parseResults = new List<ParseResult>
+            var parseResults = new List<ParseResult>(4 + level.AdditionalStatsPerPart.Count + 4)
             {
                 ParseResult.Success(partialResult.ParsedModifiers.ToList()),
                 TranslateAndParse(qualityStats, isMainSkill),

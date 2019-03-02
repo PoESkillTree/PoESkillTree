@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common;
+﻿using System.Threading.Tasks;
+using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core;
 using POESKillTree.Computation.Model;
 
@@ -11,11 +12,11 @@ namespace POESKillTree.Computation.ViewModels
         private GainOnActionStatsViewModel(CalculationNodeViewModelFactory nodeFactory)
             => _nodeFactory = nodeFactory;
 
-        public static GainOnActionStatsViewModel Create(
+        public static async Task<GainOnActionStatsViewModel> CreateAsync(
             ObservableCalculator observableCalculator, CalculationNodeViewModelFactory nodeFactory)
         {
             var vm = new GainOnActionStatsViewModel(nodeFactory);
-            vm.Initialize(new ExplicitlyRegisteredStatsObserver(observableCalculator));
+            await vm.InitializeAsync(new ExplicitlyRegisteredStatsObserver(observableCalculator));
             return vm;
         }
 

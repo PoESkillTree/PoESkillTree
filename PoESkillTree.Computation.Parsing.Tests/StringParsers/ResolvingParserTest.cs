@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
@@ -146,11 +147,15 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
                 r.ResolveToReferencedBuilder(rootReferencedModifier, nestedContext) == rootResolvedBuilder &&
                 r.ResolveToReferencedBuilder(nestedReferencedModifier, twiceNestedContext) == nestedResolvedBuilder);
 
+            var emptyValues = new IValueBuilder[0];
+            var emptyReferences = new (string, int, string)[0];
             var regexGroupParser = Mock.Of<IRegexGroupParser>(p =>
                 p.ParseValues(groups, "") == rootValues &&
                 p.ParseReferences(groups.Keys, "") == rootReferences &&
                 p.ParseValues(groups, "p1") == nestedValues &&
-                p.ParseReferences(groups.Keys, "p1") == nestedReferences);
+                p.ParseReferences(groups.Keys, "p1") == nestedReferences &&
+                p.ParseValues(groups, "p3") == emptyValues &&
+                p.ParseReferences(groups.Keys, "p3") == emptyReferences);
 
             var sut = new ResolvingParser(innerParser, referenceManager, modifierResolver, regexGroupParser);
 
@@ -200,7 +205,10 @@ namespace PoESkillTree.Computation.Parsing.Tests.StringParsers
                 new ResolvedMatchContext<IReferenceConverter>(new IReferenceConverter[0]));
             var modifierResultResolver = Mock.Of<IIntermediateModifierResolver>(r =>
                 r.Resolve(result.Modifier, context) == ResolvedModifier);
-            var regexGroupParser = Mock.Of<IRegexGroupParser>();
+            var regexGroupParser = Mock.Of<IRegexGroupParser>(p =>
+                p.ParseValues(It.IsAny<IReadOnlyDictionary<string, string>>(), It.IsAny<string>())
+                == new IValueBuilder[0] &&
+                p.ParseReferences(It.IsAny<IEnumerable<string>>(), It.IsAny<string>()) == new (string, int, string)[0]);
 
             return new ResolvingParser(innerParser, null, modifierResultResolver, regexGroupParser);
         }

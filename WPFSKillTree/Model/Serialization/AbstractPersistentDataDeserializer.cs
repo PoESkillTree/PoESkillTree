@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using log4net;
 using Newtonsoft.Json.Linq;
-using PoESkillTree.GameModel;
+using PoESkillTree.Utils;
 using POESKillTree.Controls.Dialogs;
 using POESKillTree.Localization;
 using POESKillTree.Model.Builds;
@@ -58,43 +58,47 @@ namespace POESKillTree.Model.Serialization
             return SerializationConstants.EncodedDefaultBuildName;
         }
 
-        public async Task InitializeAsync(IDialogCoordinator dialogCoordinator, GameData gameData)
+        public async Task InitializeAsync(IDialogCoordinator dialogCoordinator)
         {
             DialogCoordinator = dialogCoordinator;
             if (PersistentData.Options.BuildsSavePath == null)
             {
-                if (AppData.IsPortable)
-                {
-                    PersistentData.Options.BuildsSavePath = AppData.ToRelativePath(AppData.GetFolder("Builds"));
-                }
-                else
-                {
-                    // Ask user for path. Default: AppData.GetFolder("Builds")
-                    var dialogSettings = new FileSelectorDialogSettings
-                    {
-                        DefaultPath = AppData.GetFolder("Builds"),
-                        IsFolderPicker = true,
-                        ValidationSubPath = GetLongestRequiredSubpath(),
-                        IsCancelable = false
-                    };
-                    if (!DeserializesBuildsSavePath)
-                    {
-                        dialogSettings.AdditionalValidationFunc =
-                            path => Directory.Exists(path) && Directory.EnumerateFileSystemEntries(path).Any()
-                                ? L10n.Message("Directory must be empty.")
-                                : null;
-                    }
-                    PersistentData.Options.BuildsSavePath = await dialogCoordinator.ShowFileSelectorAsync(PersistentData,
-                        L10n.Message("Select build directory"),
-                        L10n.Message("Select the directory where builds will be stored.\n" +
-                                     "It will be created if it does not yet exist. You can change it in the settings later."),
-                        dialogSettings);
-                }
+                PersistentData.Options.BuildsSavePath = await GetBuildsSavePathAsync();
             }
             Directory.CreateDirectory(PersistentData.Options.BuildsSavePath);
-            await DeserializeAdditionalFilesAsync();
-            PersistentData.EquipmentData = await DeserializeEquipmentData();
-            PersistentData.StashItems.AddRange(await DeserializeStashItemsAsync(gameData));
+
+            var equipmentDataTask = DeserializeEquipmentDataAsync();
+            var additionalFilesTask = DeserializeAdditionalFilesAsync();
+            PersistentData.EquipmentData = await equipmentDataTask;
+            PersistentData.StashItems.AddRange(await DeserializeStashItemsAsync());
+            await additionalFilesTask;
+        }
+
+        private async Task<string> GetBuildsSavePathAsync()
+        {
+            if (AppData.IsPortable)
+                return AppData.ToRelativePath(AppData.GetFolder("Builds"));
+
+            // Ask user for path. Default: AppData.GetFolder("Builds")
+            var dialogSettings = new FileSelectorDialogSettings
+            {
+                DefaultPath = AppData.GetFolder("Builds"),
+                IsFolderPicker = true,
+                ValidationSubPath = GetLongestRequiredSubpath(),
+                IsCancelable = false
+            };
+            if (!DeserializesBuildsSavePath)
+            {
+                dialogSettings.AdditionalValidationFunc =
+                    path => Directory.Exists(path) && Directory.EnumerateFileSystemEntries(path).Any()
+                        ? L10n.Message("Directory must be empty.")
+                        : null;
+            }
+            return await DialogCoordinator.ShowFileSelectorAsync(PersistentData,
+                L10n.Message("Select build directory"),
+                L10n.Message("Select the directory where builds will be stored.\n" +
+                             "It will be created if it does not yet exist. You can change it in the settings later."),
+                dialogSettings);
         }
 
         public virtual void SaveBuildChanges()
@@ -106,21 +110,19 @@ namespace POESKillTree.Model.Serialization
         /// </summary>
         protected abstract Task DeserializeAdditionalFilesAsync();
 
-        private Task<EquipmentData> DeserializeEquipmentData()
-        {
-            return EquipmentData.CreateAsync(PersistentData.Options);
-        }
+        private Task<EquipmentData> DeserializeEquipmentDataAsync()
+            => EquipmentData.CreateAsync(PersistentData.Options);
 
-        private async Task<IEnumerable<Item>> DeserializeStashItemsAsync(GameData gameData)
+        private async Task<IEnumerable<Item>> DeserializeStashItemsAsync()
         {
             try
             {
                 var file = Path.Combine(AppData.GetFolder(), "stash.json");
                 if (File.Exists(file))
                 {
-                    return JArray.Parse(await FileEx.ReadAllTextAsync(file))
-                        .Select(item => new Item(PersistentData.EquipmentData, (JObject) item));
-
+                    var jArray = await JsonSerializationUtils.DeserializeJArrayFromFileAsync(file, true)
+                        .ConfigureAwait(false);
+                    return jArray.Select(item => new Item(PersistentData.EquipmentData, (JObject) item));
                 }
             }
             catch (Exception e)

@@ -17,23 +17,23 @@ namespace PoESkillTree.GameModel.StatTranslation
 
         public IStatTranslator this[string translationFileName] => _translators[translationFileName];
 
-        public static async Task<StatTranslators> CreateAsync()
+        public static async Task<StatTranslators> CreateAsync(bool deserializeOnThreadPool)
         {
             var fileNames = StatTranslationFileNames.AllFromRePoE.Append(StatTranslationFileNames.Custom).ToList();
-            var tasks = fileNames.Select(CreateAsync);
+            var tasks = fileNames.Select(f => CreateAsync(f, deserializeOnThreadPool));
             var translators = await Task.WhenAll(tasks).ConfigureAwait(false);
             var dict = fileNames.EquiZip(translators, (f, t) => (f, t)).ToDictionary();
             return new StatTranslators(dict);
         }
 
-        public static Task<StatTranslator> CreateFromMainFileAsync()
-            => CreateAsync(StatTranslationFileNames.Main);
+        public static Task<StatTranslator> CreateFromMainFileAsync(bool deserializeOnThreadPool = false)
+            => CreateAsync(StatTranslationFileNames.Main, deserializeOnThreadPool);
 
-        private static async Task<StatTranslator> CreateAsync(string translationFileName)
+        private static async Task<StatTranslator> CreateAsync(string translationFileName, bool deserializeOnThreadPool)
         {
             var loadTask = translationFileName == StatTranslationFileNames.Custom
-                ? DataUtils.LoadJsonAsync<List<JsonStatTranslation>>(translationFileName)
-                : DataUtils.LoadRePoEAsync<List<JsonStatTranslation>>(translationFileName);
+                ? DataUtils.LoadJsonAsync<List<JsonStatTranslation>>(translationFileName, deserializeOnThreadPool)
+                : DataUtils.LoadRePoEAsync<List<JsonStatTranslation>>(translationFileName, deserializeOnThreadPool);
             var statTranslations = await loadTask.ConfigureAwait(false);
             return new StatTranslator(statTranslations);
         }

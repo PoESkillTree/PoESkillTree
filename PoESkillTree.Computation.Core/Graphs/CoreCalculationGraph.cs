@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Core.Nodes;
 using PoESkillTree.Utils.Extensions;
@@ -43,10 +41,11 @@ namespace PoESkillTree.Computation.Core.Graphs
 
         public void AddModifier(Modifier modifier)
         {
-            var node = _nodeFactory.Create(modifier.Value, new PathDefinition(modifier.Source.CanonicalSource));
-            modifier.Stats
-                .Select(GetOrAddStatGraph)
-                .ForEach(g => g.AddModifier(node, modifier));
+            var node = _nodeFactory.Create(modifier.Value, new PathDefinition(modifier.Source));
+            foreach (var stat in modifier.Stats)
+            {
+                GetOrAddStatGraph(stat).AddModifier(node, modifier);
+            }
             _modifierNodes.GetOrAdd(modifier, k => new Stack<IDisposableNodeViewProvider>())
                 .Push(node);
         }
@@ -58,10 +57,11 @@ namespace PoESkillTree.Computation.Core.Graphs
                 return;
             }
 
-            modifier.Stats
-                .Where(s => StatGraphs.ContainsKey(s))
-                .Select(s => StatGraphs[s])
-                .ForEach(g => g.RemoveModifier(node, modifier));
+            foreach (var stat in modifier.Stats)
+            {
+                if (StatGraphs.TryGetValue(stat, out var statGraph))
+                    statGraph.RemoveModifier(node, modifier);
+            }
 
             node.Dispose();
         }

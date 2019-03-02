@@ -27,7 +27,7 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
 
             sut.Add(path);
 
-            CollectionAssert.Contains(sut.SuspendableView, path);
+            CollectionAssert.Contains(sut.BufferingView, path);
         }
 
         [Test]
@@ -40,7 +40,7 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
             sut.Remove(path);
 
             CollectionAssert.IsEmpty(sut.DefaultView);
-            CollectionAssert.IsEmpty(sut.SuspendableView);
+            CollectionAssert.IsEmpty(sut.BufferingView);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace PoESkillTree.Computation.Core.Tests.NodeCollections
         }
 
         private static PathDefinitionCollection CreateSut() =>
-            new PathDefinitionCollection(SuspendableEventViewProvider.Create(new ObservableCollection<PathDefinition>(),
-                new SuspendableObservableCollection<PathDefinition>()));
+            new PathDefinitionCollection(BufferingEventViewProvider.Create(new ObservableCollection<PathDefinition>(),
+                new EventBufferingObservableCollection<PathDefinition>(new EventBuffer())));
     }
 }

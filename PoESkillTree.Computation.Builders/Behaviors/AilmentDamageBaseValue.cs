@@ -17,7 +17,7 @@ namespace PoESkillTree.Computation.Builders.Behaviors
         {
             var original = _transformedValue.Calculate(context);
             var skillBaseDamage = context.GetValue(_skillDamage, NodeType.Base, context.CurrentPath);
-            return new[] { original, skillBaseDamage }.Sum();
+            return original.SumWhereNotNull(skillBaseDamage);
         }
     }
 }

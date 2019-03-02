@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using PoESkillTree.Computation.Common;
+using PoESkillTree.Computation.Core.Events;
 
 namespace PoESkillTree.Computation.Core.Nodes
 {
@@ -9,20 +11,20 @@ namespace PoESkillTree.Computation.Core.Nodes
     /// Also uses <see cref="ICycleGuard"/> to guard against cycles in the calculation graph.
     /// </summary>
     [DebuggerDisplay("{" + nameof(_value) + "}")]
-    public class CachingNode : SubscriberCountingNode, IDisposable, ICachingNode
+    public class CachingNode : SubscriberCountingNode, IDisposable, ICachingNode, IBufferableEvent<EventArgs>
     {
         private readonly ICalculationNode _decoratedNode;
         private readonly ICycleGuard _cycleGuard;
+        private readonly IEventBuffer _eventBuffer;
 
         private bool _calculatedValue;
         private NodeValue? _value;
-        private bool _suspendEvents;
-        private bool _suppressedValueChanged;
 
-        public CachingNode(ICalculationNode decoratedNode, ICycleGuard cycleGuard)
+        public CachingNode(ICalculationNode decoratedNode, ICycleGuard cycleGuard, IEventBuffer eventBuffer)
         {
             _decoratedNode = decoratedNode;
             _cycleGuard = cycleGuard;
+            _eventBuffer = eventBuffer;
             _decoratedNode.ValueChanged += DecoratedNodeOnValueChanged;
         }
 
@@ -55,21 +57,6 @@ namespace PoESkillTree.Computation.Core.Nodes
             _decoratedNode.ValueChanged -= DecoratedNodeOnValueChanged;
         }
 
-        public void SuspendEvents()
-        {
-            _suspendEvents = true;
-        }
-
-        public void ResumeEvents()
-        {
-            _suspendEvents = false;
-            if (_suppressedValueChanged)
-            {
-                _suppressedValueChanged = false;
-                OnValueChanged();
-            }
-        }
-
         private void DecoratedNodeOnValueChanged(object sender, EventArgs args)
         {
             if (!_calculatedValue)
@@ -83,15 +70,12 @@ namespace PoESkillTree.Computation.Core.Nodes
         }
 
         protected override void OnValueChanged()
-        {
-            if (_suspendEvents)
-            {
-                _suppressedValueChanged = true;
-            }
-            else
-            {
-                base.OnValueChanged();
-            }
-        }
+            => _eventBuffer.Buffer(this, EventArgs.Empty);
+
+        public void Invoke(EventArgs args)
+            => base.OnValueChanged();
+
+        public void Invoke(List<EventArgs> args)
+            => base.OnValueChanged();
     }
 }

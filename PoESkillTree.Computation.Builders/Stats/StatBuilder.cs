@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using PoESkillTree.Computation.Builders.Conditions;
 using PoESkillTree.Computation.Builders.Values;
 using PoESkillTree.Computation.Common;
@@ -12,7 +11,6 @@ using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.GameModel.Items;
-using PoESkillTree.Utils.Extensions;
 
 namespace PoESkillTree.Computation.Builders.Stats
 {
@@ -53,15 +51,28 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         private IValue BuildValue(NodeType nodeType, ModifierSource modifierSource, BuildParameters parameters)
         {
-            var stats = Build(parameters).Select(r => r.Stats).Flatten().ToList();
-            if (stats.Count != 1)
-                throw new ParseException("Can only access the value of stat builders that represent a single stat");
+            IStat firstStat = null;
+            foreach (var (stats, _, _) in Build(parameters))
+            {
+                foreach (var stat in stats)
+                {
+                    if (firstStat is null)
+                        firstStat = stat;
+                    else
+                        throw CreateException();
+                }
+            }
+            if (firstStat is null)
+                throw CreateException();
 
-            return new StatValue(stats.Single(), nodeType, modifierSource);
+            return new StatValue(firstStat, nodeType, modifierSource);
+
+            ParseException CreateException()
+                => new ParseException("Can only access the value of stat builders that represent a single stat");
         }
 
         public IConditionBuilder IsSet =>
-            ValueConditionBuilder.Create(Value, v => v.IsTrue(), v => $"{v}.IsSet");
+            ValueConditionBuilder.Create(Value, v => v.IsTrue(), v => v + ".IsSet");
 
         public IStatBuilder ConvertTo(IStatBuilder stat) =>
             WithUntyped(new ConversionStatBuilder(StatFactory.ConvertTo,

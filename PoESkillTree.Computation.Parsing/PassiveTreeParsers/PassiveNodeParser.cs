@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.GameModel;
@@ -31,10 +32,12 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
             var isSkilledStat = _builderFactories.StatBuilders.PassiveNodeSkilled(nodeId);
             var isSkilled = isSkilledStat.IsSet;
 
-            var results = nodeDefinition.Modifiers
-                .Select(s => Parse(s, globalSource))
-                .Select(r => r.ApplyCondition(isSkilled.Build))
-                .ToList();
+            var results = new List<ParseResult>(nodeDefinition.Modifiers.Count + 1);
+            foreach (var modifier in nodeDefinition.Modifiers)
+            {
+                var result = Parse(modifier, globalSource).ApplyCondition(isSkilled.Build);
+                results.Add(result);
+            }
             
             var modifiers = new ModifierCollection(_builderFactories, localSource);
             modifiers.AddGlobal(isSkilledStat, Form.BaseSet, false);
@@ -50,7 +53,7 @@ namespace PoESkillTree.Computation.Parsing.PassiveTreeParsers
                 modifiers.AddGlobal(_builderFactories.StatBuilders.PassivePoints.Maximum,
                     Form.BaseAdd, nodeDefinition.PassivePointsGranted, isSkilled);
             }
-            results.Add(ParseResult.Success(modifiers.ToList()));
+            results.Add(ParseResult.Success(modifiers.Modifiers));
 
             return ParseResult.Aggregate(results);
         }

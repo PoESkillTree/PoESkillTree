@@ -58,7 +58,7 @@ namespace PoESkillTree.Computation.Data.Tests.Collections
             _sut.Add(Regex, stats);
 
             var builder = _sut.AssertSingle(Regex);
-            Assert.AreSame(stats, builder.Stats);
+            Assert.AreEqual(stats, builder.Stats);
         }
 
         [Test]

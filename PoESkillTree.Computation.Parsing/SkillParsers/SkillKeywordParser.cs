@@ -80,7 +80,7 @@ namespace PoESkillTree.Computation.Parsing.SkillParsers
                 CreatePartHasKeywordCondition,
                 KeywordPreCondition(new int[0], ExcludedKeywords[DamageSource.OverTime]));
 
-            var result = new PartialSkillParseResult(_parsedModifiers, _parsedStats);
+            var result = new PartialSkillParseResult(_parsedModifiers.Modifiers, _parsedStats);
             _parsedModifiers = null;
             _parsedStats = null;
             return result;
