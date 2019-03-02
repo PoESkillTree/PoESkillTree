@@ -30,7 +30,7 @@ namespace POESKillTree.ViewModels.Crafting
         public bool ShowDropDisabledItems
         {
             get { return _showDropDisabledItems; }
-            set { SetProperty(ref _showDropDisabledItems, value, OnShowDropDisabledItemsChanged); }
+            set { SetProperty(ref _showDropDisabledItems, value, UpdateSecondLevel); }
         }
 
         // Bases are filtered in three levels:
@@ -159,20 +159,6 @@ namespace POESKillTree.ViewModels.Crafting
             UpdateSecondLevel();
         }
 
-        private void OnShowDropDisabledItemsChanged()
-        {
-            using (Monitor.Enter())
-            {
-                // this is visibly slow, but the button shouldn't be spammed anyway
-                var previousSelectedFirstLevel = SelectedFirstLevel;
-                SelectedFirstLevel = FirstLevelList[0];
-                if (previousSelectedFirstLevel == SelectedFirstLevel)
-                {
-                    UpdateSecondLevel();
-                }
-            }
-        }
-
         private void UpdateSecondLevel()
         {
             using (Monitor.Enter())
@@ -205,7 +191,9 @@ namespace POESKillTree.ViewModels.Crafting
                             break;
                     }
                 }
-                SelectedSecondLevel = SecondLevelList[0];
+                SelectedSecondLevel = SecondLevelList.Contains(previousSecondLevel)
+                    ? previousSecondLevel
+                    : SecondLevelList[0];
 
                 if (previousSecondLevel == SelectedSecondLevel)
                 {
@@ -243,7 +231,9 @@ namespace POESKillTree.ViewModels.Crafting
                         break;
                 }
             }
-            SelectedThirdLevel = ThirdLevelList[0];
+            SelectedThirdLevel = ThirdLevelList.Contains(previousThirdLevel)
+                ? previousThirdLevel
+                : ThirdLevelList[0];
 
             if (previousThirdLevel == SelectedThirdLevel)
             {
@@ -271,7 +261,9 @@ namespace POESKillTree.ViewModels.Crafting
                     bases = bases.Where(b => b.Tags.HasFlag(SelectedThirdLevel));
                 }
                 BaseList = bases.ToList();
-                SelectedBase = BaseList[0];
+                SelectedBase = BaseList.Contains(previousSelectedBase)
+                    ? previousSelectedBase
+                    : BaseList[0];
 
                 if (SelectedBase == previousSelectedBase)
                 {
@@ -326,7 +318,6 @@ namespace POESKillTree.ViewModels.Crafting
 
             Item.NameLine = "";
             Item.TypeLine = Item.BaseType.Name;
-            Item.FlavourText = "Created with PoESkillTree";
 
             var (explicitStats, craftedStats) = RecalculateItemSpecific(out var requiredLevel);
 

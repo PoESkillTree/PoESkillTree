@@ -173,7 +173,7 @@
             <Button Style="{StaticResource DynamicDialogPanelButton}"
                     Command="{Binding CloseCommand}" CommandParameter="{StaticResource True}"
                     IsDefault="True">
-                <l:Catalog Message="Change socketed gems"/>
+                <l:Catalog Message="Save socketed gems"/>
             </Button>
             <Button Style="{StaticResource DynamicDialogPanelButton}"
                     Command="{Binding CloseCommand}" CommandParameter="{StaticResource False}"
