@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using log4net;
 using log4net.Core;
 
@@ -31,7 +32,7 @@ namespace UpdateDB
         private static readonly ILog Log = LogManager.GetLogger(typeof(Program));
 
         // Main entry point.
-        public static int Main(string[] arguments)
+        public static async Task<int> Main(string[] arguments)
         {
             var args = new Arguments
             {
@@ -135,7 +136,7 @@ namespace UpdateDB
                     exec.AddArgument(split[0], split[1], split[2]);
             }
 
-            exec.LoadAllAsync().Wait();
+            await exec.LoadAllAsync();
             return 0;
         }
 

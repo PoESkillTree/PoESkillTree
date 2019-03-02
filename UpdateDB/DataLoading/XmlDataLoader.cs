@@ -1,6 +1,5 @@
-﻿using System.IO;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
+﻿using System.Threading.Tasks;
+using PoESkillTree.Utils;
 
 namespace UpdateDB.DataLoading
 {
@@ -15,18 +14,11 @@ namespace UpdateDB.DataLoading
         /// </summary>
         protected T Data { private get; set; }
 
-        public override bool SavePathIsFolder
-        {
-            get { return false; }
-        }
+        public override bool SavePathIsFolder => false;
 
         protected override Task CompleteSavingAsync()
         {
-            using (var writer = new StreamWriter(SavePath))
-            {
-                var ser = new XmlSerializer(typeof(T));
-                ser.Serialize(writer, Data);
-            }
+            XmlSerializationUtils.SerializeToFile(Data, SavePath);
             return Task.WhenAll();
         }
     }

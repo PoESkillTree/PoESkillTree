@@ -14,7 +14,7 @@ namespace POESKillTree.Utils.Extensions
 
         public static Task<T> ScheduleAsync<T>(this IScheduler @this, Func<Task<T>> action)
         {
-            var taskCompletionSource = new TaskCompletionSource<T>();
+            var taskCompletionSource = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
             @this.ScheduleAsync(async (_, __) =>
             {
                 try

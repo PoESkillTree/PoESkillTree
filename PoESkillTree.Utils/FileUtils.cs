@@ -21,6 +21,7 @@ namespace PoESkillTree.Utils
             using (var writer = File.CreateText(path))
             {
                 await writer.WriteAsync(contents).ConfigureAwait(false);
+                await writer.FlushAsync().ConfigureAwait(false);
             }
         }
 
