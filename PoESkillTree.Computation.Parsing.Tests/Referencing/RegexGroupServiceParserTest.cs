@@ -59,6 +59,22 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
         }
 
         [Test]
+        [SetCulture("de-DE")]
+        public void ParseValuesIsCultureInvariant()
+        {
+            var groups = new Dictionary<string, string>
+            {
+                { ValueGroupPrefix + "0", "1.23" },
+            };
+            var valueBuildersMock = new Mock<IValueBuilders>();
+            var parser = new RegexGroupService(valueBuildersMock.Object);
+
+            parser.ParseValues(groups);
+
+            valueBuildersMock.Verify(b => b.Create(1.23));
+        }
+
+        [Test]
         public void ParseReferencesParsesAllGroups()
         {
             var groupNames = new[]
@@ -134,19 +150,15 @@ namespace PoESkillTree.Computation.Parsing.Tests.Referencing
 
         private static string[] ParseValues(
             IReadOnlyDictionary<string, string> groups, string groupPrefix = "")
-        {
-            return CreateParser()
+            => CreateParser()
                 .ParseValues(groups, groupPrefix)
                 .Select(v => v.ToString())
                 .ToArray();
-        }
 
         private static (string referenceName, int matcherIndex, string groupPrefix)[] ParseReferences(
             IEnumerable<string> groupNames, string groupPrefix = "")
-        {
-            return CreateParser()
+            => CreateParser()
                 .ParseReferences(groupNames, groupPrefix)
                 .ToArray();
-        }
     }
 }

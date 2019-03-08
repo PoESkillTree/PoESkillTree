@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using PoESkillTree.Computation.Common.Builders.Values;
 using PoESkillTree.Utils.Extensions;
@@ -68,7 +69,7 @@ namespace PoESkillTree.Computation.Parsing.Referencing
                 if (suffix.Count(c => c == GroupNamePartDelimiter) != 0)
                     continue; // ignore nested values
 
-                var value = double.Parse(stringValue);
+                var value = double.Parse(stringValue, CultureInfo.InvariantCulture);
                 values.Add(_valueBuilders.Create(value));
             }
             return values;
