@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using EnumsNET;
@@ -188,6 +187,13 @@ namespace POESKillTree.Computation.ViewModels
             AddAvailableStats(DefensiveStats, f.StatBuilders.AscendancyPassivePoints);
             AddAvailableStats(DefensiveStats, f.StatBuilders.AscendancyPassivePoints.Maximum);
             AddAvailableStats(DefensiveStats, f.MetaStatBuilders.SelectedBandit);
+
+            AddAvailableStats(DefensiveStats, f.ChargeTypeBuilders.Endurance.Amount);
+            AddAvailableStats(DefensiveStats, f.ChargeTypeBuilders.Endurance.Amount.Maximum);
+            AddAvailableStats(DefensiveStats, f.ChargeTypeBuilders.Power.Amount);
+            AddAvailableStats(DefensiveStats, f.ChargeTypeBuilders.Power.Amount.Maximum);
+            AddAvailableStats(DefensiveStats, f.ChargeTypeBuilders.Frenzy.Amount);
+            AddAvailableStats(DefensiveStats, f.ChargeTypeBuilders.Frenzy.Amount.Maximum);
         }
 
         private static void ForEachDamageType(Action<DamageType> action)
