@@ -318,11 +318,11 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 { TotalOverride, MetaStats.EffectiveLeechRate, p => p.Leech.Rate.Value * p.RecoveryRate.Value },
                 {
                     TotalOverride, MetaStats.AbsoluteLeechRate,
-                    p => MetaStats.LeechTargetPoolValue(p) * MetaStats.EffectiveLeechRate(p).Value.AsPercentage
+                    p => Stat.Pool.From(p).Value * MetaStats.EffectiveLeechRate(p).Value.AsPercentage
                 },
                 {
                     TotalOverride, MetaStats.AbsoluteLeechRateLimit,
-                    p => MetaStats.LeechTargetPoolValue(p) * Stat.Pool.From(p).Leech.RateLimit.Value.AsPercentage
+                    p => Stat.Pool.From(p).Value * Stat.Pool.From(p).Leech.RateLimit.Value.AsPercentage
                 },
                 {
                     TotalOverride, MetaStats.TimeToReachLeechRateLimit,

@@ -51,15 +51,6 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         ILeechStatBuilder Leech { get; }
 
         /// <summary>
-        /// Gets a stat representing whether leech applied to this pool is applied instantly.
-        /// </summary>
-        /// <remarks>
-        /// Not in ILeechStatBuilder because it does not convert with .AppliesTo(), see Bloodseeker and legacy
-        /// Atziri's Acuity.
-        /// </remarks>
-        IStatBuilder InstantLeech { get; }
-
-        /// <summary>
         /// Gets a stat representing the flat gains applied to this stat. Requires an action condition to make sense,
         /// e.g. on kill or on hit.
         /// </summary>

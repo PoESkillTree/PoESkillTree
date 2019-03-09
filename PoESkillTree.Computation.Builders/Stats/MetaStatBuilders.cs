@@ -24,11 +24,6 @@ namespace PoESkillTree.Computation.Builders.Stats
                 ps => BuildTargetPoolValue(ps, StatFactory.RegenTargetPool(ps.ModifierSourceEntity, sourcePool)),
                 _ => RegenTargetPoolValue(sourcePool)));
 
-        public ValueBuilder LeechTargetPoolValue(Pool sourcePool) =>
-            new ValueBuilder(new ValueBuilderImpl(
-                ps => BuildTargetPoolValue(ps, StatFactory.LeechTargetPool(ps.ModifierSourceEntity, sourcePool)),
-                _ => LeechTargetPoolValue(sourcePool)));
-
         private IValue BuildTargetPoolValue(BuildParameters parameters, IStat targetPoolStat)
         {
             var entity = parameters.ModifierSourceEntity;

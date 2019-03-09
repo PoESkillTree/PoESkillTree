@@ -219,7 +219,7 @@ namespace PoESkillTree.Computation.Data
                     "leech energy shield instead of life",
                     TotalOverride, 100, Life.Leech.Of(Damage).ConvertTo(EnergyShield.Leech.Of(Damage))
                 },
-                { "gain life from leech instantly", TotalOverride, 1, Life.InstantLeech },
+                { "gain life from leech instantly", TotalOverride, 1, Life.Leech.IsInstant },
                 { "leech #% of damage as life", BaseAdd, Value, Life.Leech.Of(Damage) },
                 { "cannot leech mana", TotalOverride, 0, Mana.Leech.Of(Damage) },
                 // - block

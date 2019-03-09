@@ -29,7 +29,6 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         IStat Regen(Entity entity, Pool pool);
         IStat RegenTargetPool(Entity entity, Pool regenPool);
-        IStat LeechTargetPool(Entity entity, Pool leechPool);
 
         IStat MainSkillId(Entity entity);
         IStat MainSkillHasKeyword(Entity entity, Keyword keyword);

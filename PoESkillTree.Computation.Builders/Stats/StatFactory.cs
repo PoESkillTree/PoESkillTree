@@ -75,9 +75,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat RegenTargetPool(Entity entity, Pool regenPool) =>
             GetOrAdd($"{regenPool}.Regen.TargetPool", entity, typeof(Pool));
 
-        public IStat LeechTargetPool(Entity entity, Pool leechPool) =>
-            GetOrAdd($"{leechPool}.Leech.TargetPool", entity, typeof(Pool));
-
         public IStat MainSkillId(Entity entity) =>
             GetOrAdd("MainSkill.Id", entity, typeof(int));
 

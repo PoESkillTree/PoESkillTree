@@ -43,7 +43,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder Cost => FromIdentity(typeof(uint));
         public IStatBuilder Reservation => FromIdentity(typeof(uint));
         public ILeechStatBuilder Leech => new LeechStatBuilder(StatFactory, Pool);
-        public IStatBuilder InstantLeech => FromIdentity(typeof(bool));
         public IStatBuilder Gain => FromIdentity(typeof(int));
 
         public IConditionBuilder IsFull =>
@@ -126,9 +125,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStatBuilder Rate => FromIdentity(typeof(double));
         public IStatBuilder MaximumRecoveryPerInstance => FromIdentity(typeof(double));
         public IConditionBuilder IsActive => FromIdentity(typeof(bool), UserSpecifiedValue(false)).IsSet;
-
-        public IStatBuilder TargetPool =>
-            new StatBuilder(StatFactory, new CoreStatBuilderFromCoreBuilder<Pool>(Pool, StatFactory.LeechTargetPool));
+        public IStatBuilder IsInstant => FromIdentity(typeof(bool));
     }
 
     public abstract class StatBuilderWithPool : StatBuilder

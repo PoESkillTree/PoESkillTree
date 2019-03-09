@@ -101,9 +101,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Life.Leech.MaximumRecoveryPerInstance, 10 },
             { BaseSet, Mana.Leech.MaximumRecoveryPerInstance, 10 },
             { BaseSet, EnergyShield.Leech.MaximumRecoveryPerInstance, 10 },
-            { BaseSet, Life.Leech.TargetPool, (int) Pool.Life },
-            { BaseSet, Mana.Leech.TargetPool, (int) Pool.Mana },
-            { BaseSet, EnergyShield.Leech.TargetPool, (int) Pool.EnergyShield },
             // resistances
             { BaseSet, Elemental.Resistance.Maximum, 75 },
             { BaseSet, Chaos.Resistance.Maximum, 75 },

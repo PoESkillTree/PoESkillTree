@@ -36,8 +36,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IConditionBuilder IsActive { get; }
 
         /// <summary>
-        /// A stat specifying the Pool this stat's leech value is applied to
+        /// Gets a stat representing whether leech applied to this instance's pool is applied instantly.
         /// </summary>
-        IStatBuilder TargetPool { get; }
+        IStatBuilder IsInstant { get; }
     }
 }
