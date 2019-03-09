@@ -88,6 +88,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Evasion, 53 },
             { BaseSet, Stat.Accuracy, -2 }, // 0 at level 1 with no dexterity
             { BaseSet, CriticalStrike.Multiplier, 150 },
+            { BaseAdd, Ground.Consecrated.AddStat(Life.Regen), 6 },
             // resistances
             { BaseSet, Physical.Resistance.Maximum, 90 },
             // traps, mines and totems

@@ -53,10 +53,10 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSubtract, Elemental.Resistance, 60, QuestPartIs(QuestPart.Epilogue) },
             { BaseSubtract, Chaos.Resistance, 60, QuestPartIs(QuestPart.Epilogue) },
             // Boss type
-            { PercentLess, Buffs(targets: Enemy).With(Keyword.Curse).Effect, 60, BossTypeIs(BossType.StandardBoss) },
+            { PercentLess, Buffs(targets: Enemy).With(Keyword.Curse).Effect, 33, BossTypeIs(BossType.StandardBoss) },
             { BaseAdd, Elemental.Resistance.For(Enemy), 30, BossTypeIs(BossType.StandardBoss) },
             { BaseAdd, Chaos.Resistance.For(Enemy), 15, BossTypeIs(BossType.StandardBoss) },
-            { PercentLess, Buffs(targets: Enemy).With(Keyword.Curse).Effect, 80, BossTypeIs(BossType.Shaper) },
+            { PercentLess, Buffs(targets: Enemy).With(Keyword.Curse).Effect, 66, BossTypeIs(BossType.Shaper) },
             { BaseAdd, Elemental.Resistance.For(Enemy), 40, BossTypeIs(BossType.Shaper) },
             { BaseAdd, Chaos.Resistance.For(Enemy), 25, BossTypeIs(BossType.Shaper) },
         };

@@ -9,9 +9,9 @@ using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Data.GivenStats
 {
-    public class EnemyLevelBasedStats : LevelBasedStats
+    public class EnemyGivenStats : LevelBasedStats
     {
-        public EnemyLevelBasedStats(
+        public EnemyGivenStats(
             IBuilderFactories builderFactories, IModifierBuilder modifierBuilder, MonsterBaseStats monsterBaseStats)
             : base(builderFactories, modifierBuilder, monsterBaseStats)
         {
@@ -22,6 +22,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
         protected override GivenStatCollection CreateCollection()
             => new GivenStatCollection(ModifierBuilder, ValueFactory)
             {
+                { PercentIncrease, Ground.Consecrated.AddStat(CriticalStrike.Chance.For(Entity.OpponentOfSelf)), 100 },
+                // Level based
                 { BaseSet, Stat.Level, ValueFactory.Minimum(Stat.Level.For(Entity.Character).Value, 84) },
                 { BaseSet, Life, LevelBased(l => MonsterBaseStats.EnemyLife(l), "EnemyLife") },
                 { BaseSet, Stat.Accuracy, LevelBased(l => MonsterBaseStats.Accuracy(l), "Accuracy") },

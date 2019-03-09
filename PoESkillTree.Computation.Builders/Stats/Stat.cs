@@ -16,13 +16,6 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public Stat(string identity, Entity entity = default, Type dataType = null,
             ExplicitRegistrationType explicitRegistrationType = null, IReadOnlyList<Behavior> behaviors = null)
-            : this(identity, entity, dataType, explicitRegistrationType, behaviors, null)
-        {
-        }
-
-        private Stat(string identity, Entity entity, Type dataType,
-            ExplicitRegistrationType explicitRegistrationType = null, IReadOnlyList<Behavior> behaviors = null,
-            bool? hasRange = null)
         {
             if (!IsDataTypeValid(dataType))
                 throw new ArgumentException($"Stats only support double, int, bool or enum data types, {dataType} given",
@@ -32,7 +25,7 @@ namespace PoESkillTree.Computation.Builders.Stats
             Entity = entity;
             ExplicitRegistrationType = explicitRegistrationType;
             DataType = dataType ?? typeof(double);
-            _hasRange = hasRange ?? NumericTypes.Contains(DataType);
+            _hasRange = NumericTypes.Contains(DataType);
             Behaviors = behaviors ?? new Behavior[0];
         }
 
@@ -50,7 +43,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat Maximum => MinOrMax();
 
         private IStat MinOrMax([CallerMemberName] string identitySuffix = null) =>
-            _hasRange ? new Stat(Identity + "." + identitySuffix, Entity, DataType, hasRange: false) : null;
+            _hasRange ? new Stat(Identity + "." + identitySuffix, Entity, DataType) : null;
 
         private string _stringRepresentation;
         public override string ToString()

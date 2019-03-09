@@ -60,8 +60,6 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { Buff.Conflux.Elemental, BaseSet, Ailment.Ignite.Source(AnyDamageType), 1 },
             { Buff.Conflux.Elemental, BaseSet, Ailment.Shock.Source(AnyDamageType), 1 },
             { Buff.Conflux.Elemental, BaseSet, Ailment.Chill.Source(AnyDamageType), 1 },
-            // other effects
-            { Ground.Consecrated, BaseAdd, Life.Regen, 6 },
         };
     }
 }

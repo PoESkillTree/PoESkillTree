@@ -6,9 +6,9 @@ using PoESkillTree.GameModel;
 
 namespace PoESkillTree.Computation.Data.GivenStats
 {
-    public class AllyLevelBasedStats : LevelBasedStats
+    public class AllyGivenStats : LevelBasedStats
     {
-        public AllyLevelBasedStats(
+        public AllyGivenStats(
             IBuilderFactories builderFactories, IModifierBuilder modifierBuilder, MonsterBaseStats monsterBaseStats)
             : base(builderFactories, modifierBuilder, monsterBaseStats)
         {
@@ -20,6 +20,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
         protected override GivenStatCollection CreateCollection()
             => new GivenStatCollection(ModifierBuilder, ValueFactory)
             {
+                { BaseAdd, Ground.Consecrated.AddStat(Life.Regen), 6 },
+                // Level based
                 { BaseSet, Life, LevelBased(l => MonsterBaseStats.AllyLife(l), "AllyLife") },
             };
     }

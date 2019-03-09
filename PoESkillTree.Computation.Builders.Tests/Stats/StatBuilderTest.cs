@@ -189,26 +189,6 @@ namespace PoESkillTree.Computation.Builders.Tests.Stats
         }
 
         [Test]
-        public void MaximumMaximumBuildsToNull()
-        {
-            var sut = CreateSut().Maximum;
-
-            var actual = sut.Maximum.BuildToSingleStat();
-
-            Assert.IsNull(actual);
-        }
-
-        [Test]
-        public void MinimumMinimumBuildsToNull()
-        {
-            var sut = CreateSut().Minimum;
-
-            var actual = sut.Minimum.BuildToSingleStat();
-
-            Assert.IsNull(actual);
-        }
-
-        [Test]
         public void ForBuildsUsingPassedEntity()
         {
             var expected = Entity.Enemy;

@@ -62,8 +62,8 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Stat.ActionSpeed, 1 },
             { BaseSet, Stat.MovementSpeed, 1 },
             // crit
-            { BaseSet, CriticalStrike.Chance.Maximum, 95 },
-            { BaseSet, CriticalStrike.Chance.Minimum, 5 },
+            { BaseSet, CriticalStrike.Chance.Maximum, 100 },
+            { BaseSet, CriticalStrike.Chance.Minimum, 0 },
             // projectiles
             { BaseSet, Projectile.Count, 1 },
             // evasion
@@ -92,13 +92,18 @@ namespace PoESkillTree.Computation.Data.GivenStats
             // leech
             { BaseSet, Life.Leech.RateLimit, 20 },
             { BaseSet, Mana.Leech.RateLimit, 20 },
+            { BaseSet, EnergyShield.Leech.RateLimit, 10 },
             { BaseSet, Life.Leech.Rate, 2 },
             { BaseSet, Mana.Leech.Rate, 2 },
+            { BaseSet, EnergyShield.Leech.Rate, 2 },
             { BaseSet, Life.Leech.TargetPool, (int) Pool.Life },
             { BaseSet, Mana.Leech.TargetPool, (int) Pool.Mana },
+            { BaseSet, EnergyShield.Leech.TargetPool, (int) Pool.EnergyShield },
             // resistances
             { BaseSet, Elemental.Resistance.Maximum, 75 },
             { BaseSet, Chaos.Resistance.Maximum, 75 },
+            { BaseSet, Elemental.Resistance.Maximum.Maximum, 90 },
+            { BaseSet, Chaos.Resistance.Maximum.Maximum, 90 },
             { BaseSet, Damage.Taken, 1 },
             // ailments
             { BaseSet, Ailment.Ignite.InstancesOn(Self).Maximum, 1 },
