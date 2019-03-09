@@ -47,7 +47,6 @@ namespace PoESkillTree.Computation.IntegrationTests
         {
             var mods = new[]
             {
-                "5% reduced Movement Speed (Hidden)",
                 "+1% to Fire Resistance", "+50 to maximum Life", "+32 to Strength", "10% increased Armour"
             };
             var item = new Item("Metadata/Items/Armours/BodyArmours/BodyStr15",
@@ -67,17 +66,18 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("Armour", Form.BaseSet, 5, local),
                     ("Evasion", Form.BaseSet, null, local),
                     ("EnergyShield", Form.BaseSet, null, local),
+                    ("MovementSpeed", Form.BaseSet, null, local),
                     ("Level.Required", Form.BaseSet, null, local),
                     ("Dexterity.Required", Form.BaseSet, null, local),
                     ("Intelligence.Required", Form.BaseSet, null, local),
                     ("Strength.Required", Form.BaseSet, null, local),
                     ("BodyArmour.Armour", Form.BaseSet, definition.Properties[0].Value, local),
+                    ("BodyArmour.MovementSpeed", Form.BaseSet, definition.Properties[1].Value, local),
                     ("BodyArmour.Armour", Form.Increase, 20, local),
                     ("BodyArmour.Evasion", Form.Increase, 20, local),
                     ("BodyArmour.EnergyShield", Form.Increase, 20, local),
                     ("BodyArmour.Level.Required", Form.BaseSet, 62, local),
                     ("BodyArmour.Strength.Required", Form.BaseSet, definition.Requirements.Strength, local),
-                    ("MovementSpeed", Form.Increase, -5, global),
                     ("Fire.Resistance", Form.BaseAdd, 1, global),
                     ("Life", Form.BaseAdd, 50, global),
                     ("Strength", Form.BaseAdd, 32, global),

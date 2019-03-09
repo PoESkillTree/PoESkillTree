@@ -69,6 +69,8 @@ namespace PoESkillTree.GameModel.StatTranslation
         ModValueToItemClass,
         [EnumMember(Value = "canonical_stat")]
         CanonicalStat,
+        [EnumMember(Value = "times_twenty")]
+        TimesTwenty,
     }
 
     public static class IndexHandlerExtensions
@@ -109,6 +111,7 @@ namespace PoESkillTree.GameModel.StatTranslation
                 { IndexHandler.ModValueToItemClass, d => throw new NotSupportedException() },
                 // doesn't seem to do anything
                 { IndexHandler.CanonicalStat, d => d },
+                { IndexHandler.TimesTwenty, d => d * 20 },
             };
 
         /// <summary>

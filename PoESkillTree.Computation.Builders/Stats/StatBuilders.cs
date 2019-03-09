@@ -205,8 +205,6 @@ namespace PoESkillTree.Computation.Builders.Stats
         {
         }
 
-        public IStatBuilder IgnoreMovementSpeedPenalties => FromIdentity(typeof(bool));
-
         public IStatBuilder ShieldModifiersApplyToMinionsInstead => FromIdentity(typeof(bool));
 
         public IStatBuilder IgnoreHexproof => FromIdentity(typeof(bool));

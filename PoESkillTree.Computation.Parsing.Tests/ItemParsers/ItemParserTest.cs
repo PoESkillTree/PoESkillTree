@@ -276,6 +276,7 @@ namespace PoESkillTree.Computation.Parsing.Tests.ItemParsers
         [TestCase("evasion", "Evasion")]
         [TestCase("energy_shield", "EnergyShield")]
         [TestCase("block", "Block.ChanceAgainstAttacks")]
+        [TestCase("movement_speed", "MovementSpeed")]
         public void ParseReturnsCorrectModifiersForArmourProperties(string property, string stat)
         {
             var parserParam = CreateItem(ItemSlot.BodyArmour);

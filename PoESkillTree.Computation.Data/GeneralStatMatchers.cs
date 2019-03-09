@@ -214,11 +214,6 @@ namespace PoESkillTree.Computation.Data
                 { "cast speed", Stat.CastRate.With(DamageSource.Spell), Stat.CastRate.With(DamageSource.Secondary) },
                 { "cast speed for curses", Stat.CastRate.With(DamageSource.Attack).With(Keyword.Curse) },
                 { "movement speed", Stat.MovementSpeed },
-                {
-                    // not the most elegant solution but by far the easiest
-                    @"movement speed \(hidden\)",
-                    Stat.MovementSpeed, Not(Flag.IgnoreMovementSpeedPenalties.IsSet)
-                },
                 { "attack and cast speed", Stat.CastRate },
                 { "attack, cast( speed)? and movement speed", Stat.CastRate, Stat.MovementSpeed },
                 { "hit rate", Stat.HitRate },

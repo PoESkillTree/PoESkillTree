@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using EnumsNET;
+﻿using EnumsNET;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
 using PoESkillTree.Computation.Common.Builders.Damage;
@@ -45,6 +44,7 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                 SetupProperty(_builderFactories.StatBuilders.Armour);
                 SetupProperty(_builderFactories.StatBuilders.Evasion);
                 SetupProperty(_builderFactories.StatBuilders.Pool.From(Pool.EnergyShield));
+                SetupProperty(_builderFactories.StatBuilders.MovementSpeed);
             }
             if (tags.HasFlag(Tags.Shield))
             {
@@ -94,6 +94,9 @@ namespace PoESkillTree.Computation.Parsing.ItemParsers
                         break;
                     case "energy_shield":
                         SetProperty(_builderFactories.StatBuilders.Pool.From(Pool.EnergyShield), value);
+                        break;
+                    case "movement_speed":
+                        SetProperty(_builderFactories.StatBuilders.MovementSpeed, value);
                         break;
                     case "block":
                         SetProperty(_builderFactories.ActionBuilders.Block.AttackChance, value);

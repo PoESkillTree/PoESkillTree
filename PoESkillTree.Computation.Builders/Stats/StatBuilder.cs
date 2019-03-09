@@ -95,6 +95,9 @@ namespace PoESkillTree.Computation.Builders.Stats
                 "IStatBuilder.AsItemProperty can only be used with a source of type ModifierSource.Local.Item");
         }
 
+        public IStatBuilder AsItemPropertyForSlot(ItemSlot slot)
+            => WithStatConverter((m, s) => StatFactory.ItemProperty(s, slot));
+
         public IStatBuilder For(IEntityBuilder entity) => With(CoreStatBuilder.WithEntity(entity));
 
         public IStatBuilder WithCondition(IConditionBuilder condition) =>

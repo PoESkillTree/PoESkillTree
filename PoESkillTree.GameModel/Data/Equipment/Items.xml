@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ItemList xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ItemList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <ItemBase ItemClass="Amulet" Tags="Amulet NotForSale" Name="Blue Pearl Amulet" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Amulet/AmuletAtlas1">
     <Implicit>
       <string>ManaRegenerationImplicitAmulet2</string>
@@ -337,67 +337,59 @@
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Shabby Jerkin" Level="2" Strength="0" Dexterity="14" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex1">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 29</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Glorious Leather" Level="45" Strength="0" Dexterity="124" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex10">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 451</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Coronal Leather" Level="49" Strength="0" Dexterity="134" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex11">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 491</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Cutthroat's Garb" Level="53" Strength="0" Dexterity="144" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex12">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 530</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Sharkskin Tunic" Level="56" Strength="0" Dexterity="152" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex13">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 559</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Destiny Leather" Level="59" Strength="0" Dexterity="160" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex14">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 601</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Exquisite Leather" Level="62" Strength="0" Dexterity="170" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex15">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 704</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Zodiac Leather" Level="65" Strength="0" Dexterity="197" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex16">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 854</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Assassin's Garb" Level="68" Strength="0" Dexterity="183" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex17">
@@ -409,423 +401,376 @@
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Strapped Leather" Level="9" Strength="0" Dexterity="32" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex2">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 98</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Buckskin Tunic" Level="17" Strength="0" Dexterity="53" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex3">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 176</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Wild Leather" Level="25" Strength="0" Dexterity="73" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex4">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 255</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Full Leather" Level="28" Strength="0" Dexterity="81" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex5">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 284</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Sun Leather" Level="32" Strength="0" Dexterity="91" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex6">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 324</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Thief's Garb" Level="35" Strength="0" Dexterity="99" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex7">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 353</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Eelskin Tunic" Level="37" Strength="0" Dexterity="104" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex8">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 373</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexArmour" Name="Frontier Leather" Level="41" Strength="0" Dexterity="114" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDex9">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 412</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Padded Vest" Level="4" Strength="0" Dexterity="10" Intelligence="10" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt1">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 27</string>
       <string>Energy Shield: 8</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Crimson Raiment" Level="48" Strength="0" Dexterity="71" Intelligence="71" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt10">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 264</string>
       <string>Energy Shield: 52</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Lacquered Garb" Level="52" Strength="0" Dexterity="76" Intelligence="76" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt11">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 286</string>
       <string>Energy Shield: 56</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Crypt Armour" Level="56" Strength="0" Dexterity="82" Intelligence="82" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt12">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 308</string>
       <string>Energy Shield: 60</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Sentinel Jacket" Level="59" Strength="0" Dexterity="86" Intelligence="86" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt13">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 330</string>
       <string>Energy Shield: 64</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Varnished Coat" Level="62" Strength="0" Dexterity="96" Intelligence="96" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt14">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 387</string>
       <string>Energy Shield: 75</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Blood Raiment" Level="65" Strength="0" Dexterity="107" Intelligence="90" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt15">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 436</string>
       <string>Energy Shield: 70</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Sadist Garb" Level="68" Strength="0" Dexterity="103" Intelligence="109" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt16">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 427</string>
       <string>Energy Shield: 88</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Carnal Armour" Level="71" Strength="0" Dexterity="88" Intelligence="122" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt17">
     <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
       <string>IncreasedManaImplicitArmour1</string>
     </Implicit>
     <Properties>
       <string>Evasion Rating: 353</string>
       <string>Energy Shield: 98</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Oiled Vest" Level="9" Strength="0" Dexterity="17" Intelligence="17" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt2">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 54</string>
       <string>Energy Shield: 13</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Padded Jacket" Level="18" Strength="0" Dexterity="30" Intelligence="30" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt3">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 102</string>
       <string>Energy Shield: 22</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Oiled Coat" Level="22" Strength="0" Dexterity="35" Intelligence="35" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt4">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 124</string>
       <string>Energy Shield: 26</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Scarlet Raiment" Level="28" Strength="0" Dexterity="43" Intelligence="43" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt5">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 156</string>
       <string>Energy Shield: 32</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Waxed Garb" Level="32" Strength="0" Dexterity="48" Intelligence="48" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt6">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 178</string>
       <string>Energy Shield: 36</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Bone Armour" Level="35" Strength="0" Dexterity="53" Intelligence="53" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt7">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 194</string>
       <string>Energy Shield: 39</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Quilted Jacket" Level="40" Strength="0" Dexterity="60" Intelligence="60" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt8">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 221</string>
       <string>Energy Shield: 44</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour DexIntArmour" Name="Sleek Coat" Level="44" Strength="0" Dexterity="65" Intelligence="65" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyDexInt9">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Evasion Rating: 243</string>
       <string>Energy Shield: 48</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Simple Robe" Level="3" Strength="0" Dexterity="0" Intelligence="17" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt1">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 12</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Conjurer's Vestment" Level="45" Strength="0" Dexterity="0" Intelligence="124" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt10">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 89</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Spidersilk Robe" Level="49" Strength="0" Dexterity="0" Intelligence="134" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt11">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 96</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Destroyer Regalia" Level="53" Strength="0" Dexterity="0" Intelligence="144" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt12">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 104</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Savant's Robe" Level="56" Strength="0" Dexterity="0" Intelligence="152" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt13">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 109</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Necromancer Silks" Level="59" Strength="0" Dexterity="0" Intelligence="160" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt14">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 117</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Occultist's Vestment" Level="62" Strength="0" Dexterity="0" Intelligence="180" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt15">
     <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
       <string>SpellDamageImplicitArmour1</string>
     </Implicit>
     <Properties>
       <string>Energy Shield: 130</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Widowsilk Robe" Level="65" Strength="0" Dexterity="0" Intelligence="187" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt16">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 150</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Vaal Regalia" Level="68" Strength="0" Dexterity="0" Intelligence="194" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt17">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 163</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Silken Vest" Level="11" Strength="0" Dexterity="0" Intelligence="37" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt2">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 27</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Scholar's Robe" Level="18" Strength="0" Dexterity="0" Intelligence="55" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt3">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 39</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Silken Garb" Level="25" Strength="0" Dexterity="0" Intelligence="73" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt4">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 52</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Mage's Vestment" Level="28" Strength="0" Dexterity="0" Intelligence="81" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt5">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 58</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Silk Robe" Level="32" Strength="0" Dexterity="0" Intelligence="91" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt6">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 65</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Cabalist Regalia" Level="35" Strength="0" Dexterity="0" Intelligence="99" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt7">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 71</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Sage's Robe" Level="37" Strength="0" Dexterity="0" Intelligence="104" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt8">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 74</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour IntArmour" Name="Silken Wrap" Level="41" Strength="0" Dexterity="0" Intelligence="114" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyInt9">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Energy Shield: 82</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Plate Vest" Level="1" Strength="12" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr1">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 19</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Sun Plate" Level="45" Strength="124" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr10">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 451</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Colosseum Plate" Level="49" Strength="134" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr11">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 491</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Majestic Plate" Level="53" Strength="144" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr12">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 530</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Golden Plate" Level="56" Strength="152" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr13">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 559</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Crusader Plate" Level="59" Strength="160" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr14">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 601</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Astral Plate" Level="62" Strength="180" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr15">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
       <string>AllResistancesImplicitArmour1</string>
     </Implicit>
     <Properties>
       <string>Armour: 711</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Gladiator Plate" Level="65" Strength="177" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr16">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 738</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Glorious Plate" Level="68" Strength="191" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr17">
@@ -835,383 +780,340 @@
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Chestplate" Level="6" Strength="25" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr2">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 68</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Copper Plate" Level="17" Strength="53" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr3">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 176</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="War Plate" Level="21" Strength="63" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr4">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 216</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Full Plate" Level="28" Strength="81" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr5">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 284</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Arena Plate" Level="32" Strength="91" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr6">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 324</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Lordly Plate" Level="35" Strength="99" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr7">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 353</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Bronze Plate" Level="37" Strength="104" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr8">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 373</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrArmour" Name="Battle Plate" Level="41" Strength="114" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStr9">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 412</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Scale Vest" Level="4" Strength="10" Dexterity="10" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex1">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 27</string>
       <string>Evasion Rating: 27</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Full Wyrmscale" Level="46" Strength="68" Dexterity="68" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex10">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 254</string>
       <string>Evasion Rating: 254</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Commander's Brigandine" Level="50" Strength="73" Dexterity="73" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex11">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 275</string>
       <string>Evasion Rating: 275</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Battle Lamellar" Level="54" Strength="79" Dexterity="79" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex12">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 297</string>
       <string>Evasion Rating: 297</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Dragonscale Doublet" Level="57" Strength="83" Dexterity="83" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex13">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 313</string>
       <string>Evasion Rating: 313</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Desert Brigandine" Level="60" Strength="96" Dexterity="96" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex14">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 376</string>
       <string>Evasion Rating: 376</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Full Dragonscale" Level="63" Strength="115" Dexterity="94" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex15">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 470</string>
       <string>Evasion Rating: 373</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="General's Brigandine" Level="66" Strength="103" Dexterity="103" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex16">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 415</string>
       <string>Evasion Rating: 415</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Triumphant Lamellar" Level="69" Strength="95" Dexterity="116" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex17">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 380</string>
       <string>Evasion Rating: 477</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Light Brigandine" Level="8" Strength="16" Dexterity="16" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex2">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 48</string>
       <string>Evasion Rating: 48</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Scale Doublet" Level="17" Strength="28" Dexterity="28" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex3">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 97</string>
       <string>Evasion Rating: 97</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Infantry Brigandine" Level="21" Strength="34" Dexterity="34" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex4">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 119</string>
       <string>Evasion Rating: 119</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Full Scale Armour" Level="28" Strength="43" Dexterity="43" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex5">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 156</string>
       <string>Evasion Rating: 156</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Soldier's Brigandine" Level="32" Strength="48" Dexterity="48" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex6">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 178</string>
       <string>Evasion Rating: 178</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Field Lamellar" Level="35" Strength="53" Dexterity="53" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex7">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 194</string>
       <string>Evasion Rating: 194</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Wyrmscale Doublet" Level="38" Strength="57" Dexterity="57" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex8">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 210</string>
       <string>Evasion Rating: 210</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexArmour" Name="Hussar Brigandine" Level="42" Strength="62" Dexterity="62" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDex9">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 232</string>
       <string>Evasion Rating: 232</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrDexIntArmour NotForSale" Name="Sacrificial Garb" Level="72" Strength="66" Dexterity="66" Intelligence="66" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrDexInt1">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 329</string>
       <string>Evasion Rating: 329</string>
       <string>Energy Shield: 64</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Chainmail Vest" Level="4" Strength="10" Dexterity="0" Intelligence="10" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt1">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 27</string>
       <string>Energy Shield: 8</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Ornate Ringmail" Level="47" Strength="69" Dexterity="0" Intelligence="69" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt10">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 259</string>
       <string>Energy Shield: 51</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Chain Hauberk" Level="51" Strength="75" Dexterity="0" Intelligence="75" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt11">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 281</string>
       <string>Energy Shield: 55</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Devout Chainmail" Level="55" Strength="80" Dexterity="0" Intelligence="80" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt12">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 302</string>
       <string>Energy Shield: 59</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Loricated Ringmail" Level="58" Strength="84" Dexterity="0" Intelligence="84" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt13">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 325</string>
       <string>Energy Shield: 63</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Conquest Chainmail" Level="61" Strength="96" Dexterity="0" Intelligence="96" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt14">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 387</string>
       <string>Energy Shield: 75</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Elegant Ringmail" Level="64" Strength="90" Dexterity="0" Intelligence="105" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt15">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 377</string>
       <string>Energy Shield: 87</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Saint's Hauberk" Level="67" Strength="109" Dexterity="0" Intelligence="94" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt16">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 443</string>
       <string>Energy Shield: 73</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Saintly Chainmail" Level="70" Strength="99" Dexterity="0" Intelligence="115" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt17">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 401</string>
       <string>Energy Shield: 91</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Chainmail Tunic" Level="8" Strength="16" Dexterity="0" Intelligence="16" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt2">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 48</string>
       <string>Energy Shield: 12</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Ringmail Coat" Level="17" Strength="28" Dexterity="0" Intelligence="28" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt3">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 97</string>
       <string>Energy Shield: 21</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Chainmail Doublet" Level="21" Strength="34" Dexterity="0" Intelligence="34" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt4">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 119</string>
       <string>Energy Shield: 25</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Full Ringmail" Level="28" Strength="43" Dexterity="0" Intelligence="43" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt5">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 156</string>
       <string>Energy Shield: 32</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Full Chainmail" Level="32" Strength="48" Dexterity="0" Intelligence="48" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt6">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 178</string>
       <string>Energy Shield: 36</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Holy Chainmail" Level="35" Strength="53" Dexterity="0" Intelligence="53" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt7">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 194</string>
       <string>Energy Shield: 39</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Latticed Ringmail" Level="39" Strength="59" Dexterity="0" Intelligence="59" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt8">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 216</string>
       <string>Energy Shield: 43</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="BodyArmour" Tags="Armour BodyArmour StrIntArmour" Name="Crusader Chainmail" Level="43" Strength="64" Dexterity="0" Intelligence="64" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt9">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyArmourImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Armour: 237</string>
       <string>Energy Shield: 47</string>
+      <string>Movement Speed: -5%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Boots" Tags="Armour Boots DexIntArmour NotForSale" Name="Two-Toned Boots" Level="70" Strength="0" Dexterity="62" Intelligence="62" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Boots/BootsAtlas1">
@@ -2376,920 +2278,910 @@
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield NotForSale" Name="Golden Flame" Level="15" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDemigods">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChaosResistDemigodsTorchImplicit</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 20%</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Goathide Buckler" Level="2" Strength="0" Dexterity="13" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex1">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Evasion Rating: 12</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Battle Buckler" Level="50" Strength="0" Dexterity="121" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex10">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Evasion Rating: 246</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Golden Buckler" Level="54" Strength="0" Dexterity="130" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex11">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Evasion Rating: 310</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Ironwood Buckler" Level="57" Strength="0" Dexterity="136" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex12">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Evasion Rating: 280</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Lacquered Buckler" Level="60" Strength="0" Dexterity="159" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex13">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Evasion Rating: 440</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Vaal Buckler" Level="63" Strength="0" Dexterity="159" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex14">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 27%</string>
       <string>Evasion Rating: 275</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Crusader Buckler" Level="66" Strength="0" Dexterity="159" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex15">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Evasion Rating: 330</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Imperial Buckler" Level="69" Strength="0" Dexterity="159" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex16">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Evasion Rating: 385</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Pine Buckler" Level="8" Strength="0" Dexterity="26" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex2">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Evasion Rating: 43</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Painted Buckler" Level="16" Strength="0" Dexterity="44" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex3">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Evasion Rating: 109</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Hammered Buckler" Level="23" Strength="0" Dexterity="60" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex4">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 27%</string>
       <string>Evasion Rating: 96</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="War Buckler" Level="29" Strength="0" Dexterity="74" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex5">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Evasion Rating: 145</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Gilded Buckler" Level="34" Strength="0" Dexterity="85" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex6">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Evasion Rating: 197</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Oak Buckler" Level="38" Strength="0" Dexterity="94" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex7">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Evasion Rating: 188</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Enameled Buckler" Level="42" Strength="0" Dexterity="103" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex8">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Evasion Rating: 277</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexArmour" Name="Corrugated Buckler" Level="46" Strength="0" Dexterity="112" Intelligence="0" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDex9">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>MovementVelocityImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 27%</string>
       <string>Evasion Rating: 189</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Spiked Bundle" Level="5" Strength="0" Dexterity="10" Intelligence="10" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt1">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChanceToDodgeImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Evasion Rating: 13</string>
       <string>Energy Shield: 4</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Alder Spiked Shield" Level="58" Strength="0" Dexterity="74" Intelligence="74" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt10">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChanceToDodgeImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Evasion Rating: 209</string>
       <string>Energy Shield: 41</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Ezomyte Spiked Shield" Level="62" Strength="0" Dexterity="85" Intelligence="85" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt11">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChanceToDodgeSpellsImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Evasion Rating: 181</string>
       <string>Energy Shield: 35</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Mirrored Spiked Shield" Level="66" Strength="0" Dexterity="85" Intelligence="85" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt12">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChanceToDodgeImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Evasion Rating: 151</string>
       <string>Energy Shield: 29</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Supreme Spiked Shield" Level="70" Strength="0" Dexterity="85" Intelligence="85" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt13">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChanceToDodgeSpellsImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Evasion Rating: 242</string>
       <string>Energy Shield: 47</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Driftwood Spiked Shield" Level="12" Strength="0" Dexterity="19" Intelligence="19" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt2">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChanceToDodgeImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Evasion Rating: 46</string>
       <string>Energy Shield: 10</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Alloyed Spiked Shield" Level="20" Strength="0" Dexterity="28" Intelligence="28" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt3">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChanceToDodgeSpellsImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Evasion Rating: 56</string>
       <string>Energy Shield: 12</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Burnished Spiked Shield" Level="27" Strength="0" Dexterity="37" Intelligence="37" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt4">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChanceToDodgeImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Evasion Rating: 62</string>
       <string>Energy Shield: 13</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Ornate Spiked Shield" Level="33" Strength="0" Dexterity="44" Intelligence="44" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt5">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChanceToDodgeSpellsImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Evasion Rating: 120</string>
       <string>Energy Shield: 24</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Redwood Spiked Shield" Level="39" Strength="0" Dexterity="52" Intelligence="52" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt6">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChanceToDodgeImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Evasion Rating: 142</string>
       <string>Energy Shield: 28</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Compound Spiked Shield" Level="45" Strength="0" Dexterity="58" Intelligence="58" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt7">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChanceToDodgeSpellsImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Evasion Rating: 122</string>
       <string>Energy Shield: 24</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Polished Spiked Shield" Level="49" Strength="0" Dexterity="64" Intelligence="64" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt8">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChanceToDodgeImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Evasion Rating: 111</string>
       <string>Energy Shield: 22</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield DexIntArmour" Name="Sovereign Spiked Shield" Level="54" Strength="0" Dexterity="70" Intelligence="70" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldDexInt9">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>ChanceToDodgeSpellsImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Evasion Rating: 195</string>
       <string>Energy Shield: 38</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Twig Spirit Shield" Level="3" Strength="0" Dexterity="0" Intelligence="15" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt1">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>SpellDamageImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 22%</string>
       <string>Energy Shield: 5</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Chiming Spirit Shield" Level="49" Strength="0" Dexterity="0" Intelligence="118" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt10">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>SpellDamageImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 23%</string>
       <string>Energy Shield: 39</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Thorium Spirit Shield" Level="53" Strength="0" Dexterity="0" Intelligence="128" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt11">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Energy Shield: 51</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Lacewood Spirit Shield" Level="56" Strength="0" Dexterity="0" Intelligence="134" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt12">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>SpellDamageImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Energy Shield: 45</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Fossilised Spirit Shield" Level="59" Strength="0" Dexterity="0" Intelligence="141" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt13">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>SpellDamageImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 22%</string>
       <string>Energy Shield: 47</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Vaal Spirit Shield" Level="62" Strength="0" Dexterity="0" Intelligence="159" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt14">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>SpellDamageImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Energy Shield: 53</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Harmonic Spirit Shield" Level="65" Strength="0" Dexterity="0" Intelligence="159" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt15">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>SpellDamageImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 23%</string>
       <string>Energy Shield: 55</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Titanium Spirit Shield" Level="68" Strength="0" Dexterity="0" Intelligence="159" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt16">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Energy Shield: 64</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Yew Spirit Shield" Level="9" Strength="0" Dexterity="0" Intelligence="28" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt2">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>SpellDamageImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Energy Shield: 9</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Bone Spirit Shield" Level="15" Strength="0" Dexterity="0" Intelligence="42" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt3">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>SpellDamageImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 22%</string>
       <string>Energy Shield: 14</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Tarnished Spirit Shield" Level="23" Strength="0" Dexterity="0" Intelligence="60" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt4">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>SpellDamageImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Energy Shield: 20</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Jingling Spirit Shield" Level="28" Strength="0" Dexterity="0" Intelligence="71" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt5">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>SpellDamageImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 23%</string>
       <string>Energy Shield: 24</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Brass Spirit Shield" Level="33" Strength="0" Dexterity="0" Intelligence="82" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt6">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Energy Shield: 33</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Walnut Spirit Shield" Level="37" Strength="0" Dexterity="0" Intelligence="92" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt7">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>SpellDamageImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Energy Shield: 30</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Ivory Spirit Shield" Level="41" Strength="0" Dexterity="0" Intelligence="100" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt8">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>SpellDamageImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 22%</string>
       <string>Energy Shield: 33</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield IntArmour" Name="Ancient Spirit Shield" Level="45" Strength="0" Dexterity="0" Intelligence="110" InventoryHeight="2" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldInt9">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>SpellDamageImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Energy Shield: 36</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Splintered Tower Shield" Level="1" Strength="10" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr1">
-    <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Armour: 9</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Bronze Tower Shield" Level="47" Strength="114" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr10">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Armour: 367</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Girded Tower Shield" Level="51" Strength="123" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr11">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 23%</string>
       <string>Armour: 481</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Crested Tower Shield" Level="55" Strength="132" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr12">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Armour: 338</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Shagreen Tower Shield" Level="58" Strength="139" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr13">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Armour: 261</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Ebony Tower Shield" Level="61" Strength="159" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr14">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>IncreasedLifeImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Armour: 412</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Ezomyte Tower Shield" Level="64" Strength="159" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr15">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Armour: 522</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Colossal Tower Shield" Level="67" Strength="159" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr16">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 23%</string>
       <string>Armour: 632</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Pinnacle Tower Shield" Level="70" Strength="159" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr17">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Armour: 467</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Corroded Tower Shield" Level="5" Strength="20" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr2">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 23%</string>
       <string>Armour: 46</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Rawhide Tower Shield" Level="11" Strength="33" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr3">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Armour: 53</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Cedar Tower Shield" Level="17" Strength="46" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr4">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Armour: 108</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Copper Tower Shield" Level="24" Strength="62" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr5">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Armour: 191</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Reinforced Tower Shield" Level="30" Strength="76" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr6">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 23%</string>
       <string>Armour: 287</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Painted Tower Shield" Level="35" Strength="87" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr7">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Armour: 217</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Buckskin Tower Shield" Level="39" Strength="96" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr8">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Armour: 177</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrArmour" Name="Mahogany Tower Shield" Level="43" Strength="105" Dexterity="0" Intelligence="0" InventoryHeight="4" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStr9">
     <Implicit>
-      <string>MovementVelocityPenaltyHeavyShieldImplicit</string>
       <string>IncreasedLifeImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Armour: 265</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrDexArmour" Name="Rotted Round Shield" Level="5" Strength="10" Dexterity="10" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrDex1">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>BlockRecoveryImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 23%</string>
       <string>Armour: 13</string>
       <string>Evasion Rating: 13</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrDexArmour" Name="Teak Round Shield" Level="58" Strength="74" Dexterity="74" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrDex10">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>BlockRecoveryImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 23%</string>
       <string>Armour: 131</string>
       <string>Evasion Rating: 131</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrDexArmour" Name="Spiny Round Shield" Level="62" Strength="85" Dexterity="85" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrDex11">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>BlockRecoveryImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Armour: 154</string>
       <string>Evasion Rating: 154</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrDexArmour" Name="Cardinal Round Shield" Level="66" Strength="85" Dexterity="85" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrDex12">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Armour: 209</string>
       <string>Evasion Rating: 209</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrDexArmour" Name="Elegant Round Shield" Level="70" Strength="85" Dexterity="85" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrDex13">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>BlockRecoveryImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Armour: 148</string>
       <string>Evasion Rating: 148</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrDexArmour" Name="Fir Round Shield" Level="12" Strength="19" Dexterity="19" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrDex2">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>BlockRecoveryImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 23%</string>
       <string>Armour: 29</string>
       <string>Evasion Rating: 29</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrDexArmour" Name="Studded Round Shield" Level="20" Strength="28" Dexterity="28" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrDex3">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>BlockRecoveryImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Armour: 46</string>
       <string>Evasion Rating: 46</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrDexArmour" Name="Scarlet Round Shield" Level="27" Strength="37" Dexterity="37" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrDex4">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Armour: 87</string>
       <string>Evasion Rating: 87</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrDexArmour" Name="Splendid Round Shield" Level="33" Strength="44" Dexterity="44" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrDex5">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>BlockRecoveryImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Armour: 75</string>
       <string>Evasion Rating: 75</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrDexArmour" Name="Maple Round Shield" Level="39" Strength="52" Dexterity="52" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrDex6">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>BlockRecoveryImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 23%</string>
       <string>Armour: 88</string>
       <string>Evasion Rating: 88</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrDexArmour" Name="Spiked Round Shield" Level="45" Strength="58" Dexterity="58" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrDex7">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>BlockRecoveryImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Armour: 102</string>
       <string>Evasion Rating: 102</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrDexArmour" Name="Crimson Round Shield" Level="49" Strength="64" Dexterity="64" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrDex8">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Chance to Block: 25%</string>
       <string>Armour: 155</string>
       <string>Evasion Rating: 155</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrDexArmour" Name="Baroque Round Shield" Level="54" Strength="70" Dexterity="70" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrDex9">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>BlockRecoveryImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Armour: 122</string>
       <string>Evasion Rating: 122</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Plank Kite Shield" Level="7" Strength="13" Dexterity="0" Intelligence="13" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt1">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>AllResistancesImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 22%</string>
       <string>Armour: 18</string>
       <string>Energy Shield: 4</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Branded Kite Shield" Level="59" Strength="76" Dexterity="0" Intelligence="76" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt10">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>AllResistancesImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Armour: 186</string>
       <string>Energy Shield: 36</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Champion Kite Shield" Level="62" Strength="85" Dexterity="0" Intelligence="85" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt11">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Armour: 215</string>
       <string>Energy Shield: 42</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Mosaic Kite Shield" Level="65" Strength="85" Dexterity="0" Intelligence="85" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt12">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>AllResistancesImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Armour: 147</string>
       <string>Energy Shield: 28</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Archon Kite Shield" Level="68" Strength="85" Dexterity="0" Intelligence="85" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt13">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>AllResistancesImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 22%</string>
       <string>Armour: 156</string>
       <string>Energy Shield: 30</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Linden Kite Shield" Level="13" Strength="20" Dexterity="0" Intelligence="20" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt2">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>AllResistancesImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Armour: 43</string>
       <string>Energy Shield: 10</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Reinforced Kite Shield" Level="20" Strength="28" Dexterity="0" Intelligence="28" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt3">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Armour: 65</string>
       <string>Energy Shield: 14</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Layered Kite Shield" Level="27" Strength="37" Dexterity="0" Intelligence="37" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt4">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>AllResistancesImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Armour: 62</string>
       <string>Energy Shield: 13</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Ceremonial Kite Shield" Level="34" Strength="46" Dexterity="0" Intelligence="46" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt5">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>AllResistancesImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 22%</string>
       <string>Armour: 77</string>
       <string>Energy Shield: 16</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Etched Kite Shield" Level="40" Strength="52" Dexterity="0" Intelligence="52" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt6">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>AllResistancesImplicitShield1</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Armour: 127</string>
       <string>Energy Shield: 25</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Steel Kite Shield" Level="46" Strength="60" Dexterity="0" Intelligence="60" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt7">
-    <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
-    </Implicit>
+    <Implicit />
     <Properties>
       <string>Chance to Block: 26%</string>
       <string>Armour: 146</string>
       <string>Energy Shield: 29</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Laminated Kite Shield" Level="50" Strength="64" Dexterity="0" Intelligence="64" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt8">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>AllResistancesImplicitShield2</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 24%</string>
       <string>Armour: 113</string>
       <string>Energy Shield: 22</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Shield" Tags="Armour Shield StrIntArmour" Name="Angelic Kite Shield" Level="55" Strength="70" Dexterity="0" Intelligence="70" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Armours/Shields/ShieldStrInt9">
     <Implicit>
-      <string>MovementVelocityPenaltyLightShieldImplicit</string>
       <string>AllResistancesImplicitShield3</string>
     </Implicit>
     <Properties>
       <string>Chance to Block: 22%</string>
       <string>Armour: 124</string>
       <string>Energy Shield: 24</string>
+      <string>Movement Speed: -3%</string>
     </Properties>
   </ItemBase>
   <ItemBase ItemClass="Belt" Tags="Belt" Name="Rustic Sash" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="2" MetadataId="Metadata/Items/Belts/Belt1">
@@ -3819,6 +3711,12 @@
   <ItemBase ItemClass="Quiver" Tags="Quiver" Name="Spike-Point Arrow Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/Quiver13">
     <Implicit>
       <string>CriticalStrikeChanceImplicitQuiver13</string>
+    </Implicit>
+    <Properties />
+  </ItemBase>
+  <ItemBase ItemClass="Quiver" Tags="Quiver NotForSale" Name="Ornate Quiver" Level="1" Strength="0" Dexterity="0" Intelligence="0" DropDisabled="true" InventoryHeight="3" InventoryWidth="2" MetadataId="Metadata/Items/Quivers/Quiver14">
+    <Implicit>
+      <string>QuiverHasOneSocket</string>
     </Implicit>
     <Properties />
   </ItemBase>

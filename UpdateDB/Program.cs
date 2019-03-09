@@ -137,6 +137,7 @@ namespace UpdateDB
             }
 
             await exec.LoadAllAsync();
+            Console.ReadKey();
             return 0;
         }
 

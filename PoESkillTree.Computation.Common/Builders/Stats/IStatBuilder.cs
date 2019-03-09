@@ -3,6 +3,7 @@ using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Values;
+using PoESkillTree.GameModel.Items;
 
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
@@ -65,6 +66,8 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// local modifiers on the item. The Total value is used to set this stat.
         /// </summary>
         IStatBuilder AsItemProperty { get; }
+
+        IStatBuilder AsItemPropertyForSlot(ItemSlot slot);
 
         /// <summary>
         /// Applies this stat to <paramref name="entity"/> instead of the currently modified entity.

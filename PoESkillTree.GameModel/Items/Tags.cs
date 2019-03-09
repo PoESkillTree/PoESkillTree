@@ -95,10 +95,11 @@ namespace PoESkillTree.GameModel.Items
         // Prevents Diamond Flask from getting the increased effect mod
         NoEffectFlaskMod = 1L << 51,
 
-        AbyssJewelMelee = 1L << 52,
-        AbyssJewelRanged = 1L << 53,
-        AbyssJewelCaster = 1L << 54,
-        AbyssJewelSummoner = 1L << 55,
+        AbyssJewel = 1L << 52,
+        AbyssJewelMelee = 1L << 53,
+        AbyssJewelRanged = 1L << 54,
+        AbyssJewelCaster = 1L << 55,
+        AbyssJewelSummoner = 1L << 56,
     }
 
 

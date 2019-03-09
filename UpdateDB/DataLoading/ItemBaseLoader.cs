@@ -226,24 +226,19 @@ namespace UpdateDB.DataLoading
         private static IEnumerable<FormattableString> ParseArmourProperties(JToken properties)
         {
             if (properties["block"]?.Value<int>() is int block)
-            {
                 yield return $"Chance to Block: {block}%";
-            }
 
             if (properties["armour"]?.Value<int>() is int armour)
-            {
                 yield return $"Armour: {armour}";
-            }
 
             if (properties["evasion"]?.Value<int>() is int evasion)
-            {
                 yield return $"Evasion Rating: {evasion}";
-            }
 
             if (properties["energy_shield"]?.Value<int>() is int energyShield)
-            {
                 yield return $"Energy Shield: {energyShield}";
-            }
+
+            if (properties["movement_speed"]?.Value<int>() is int movementSpeed)
+                yield return $"Movement Speed: {movementSpeed}%";
         }
 
         private static IEnumerable<FormattableString> ParseFlaskProperties(JToken properties)

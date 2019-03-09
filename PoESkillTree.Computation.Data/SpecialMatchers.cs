@@ -52,7 +52,9 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "ignore all movement penalties from armour",
-                    TotalOverride, 1, Flag.IgnoreMovementSpeedPenalties
+                    TotalOverride, 0,
+                    Stat.MovementSpeed.AsItemPropertyForSlot(ItemSlot.BodyArmour),
+                    Stat.MovementSpeed.AsItemPropertyForSlot(ItemSlot.OffHand)
                 },
                 {
                     "your critical strike chance is lucky",
