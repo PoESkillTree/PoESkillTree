@@ -51,6 +51,12 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { TotalOverride, Cold.Invert.Damage, 0, IsMainSkill("ElementalHit", 1) },
             { TotalOverride, Lightning.Invert.Damage, 0, IsMainSkill("ElementalHit", 2) },
 
+            { TotalOverride, Skills.FromId("FireBeam").Buff.On(Enemy), 1, SkillIsActive("FireBeam") },
+            {
+                BaseSet, Fire.Exposure.For(Enemy), -25, Skills.FromId("FireBeam").Buff.StackCount.Value
+                                                        >= Skills.FromId("FireBeam").Buff.StackCount.Maximum.Value
+            },
+
             {
                 // Freezing Pulse's damage dissipates while traveling
                 // 60 * Projectile.Speed is the range, Projectile.TravelDistance / range is the percentage traveled

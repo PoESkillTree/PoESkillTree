@@ -63,6 +63,7 @@ namespace PoESkillTree.Computation.Data
                 { "take ({DamageTypeMatchers}) damage", Reference.AsDamageType.Damage.Taken },
                 { "damage taken from hits", Damage.Taken.WithHits },
                 { "({DamageTypeMatchers}) damage taken from hits", Reference.AsDamageType.Damage.Taken.WithHits },
+                { "take ({DamageTypeMatchers}) damage from hits", Reference.AsDamageType.Damage.Taken.WithHits },
                 { "damage taken from damage over time", Damage.Taken.With(DamageSource.OverTime) },
                 {
                     "({DamageTypeMatchers}) damage taken over time",
@@ -76,6 +77,13 @@ namespace PoESkillTree.Computation.Data
                 {
                     "damage taken from trap or mine hits",
                     Damage.Taken.With(Keyword.Trap).WithHits, Damage.Taken.With(Keyword.Mine).WithHits
+                },
+                {
+                    "take damage from hits of types matching the skill gem's tags",
+                    (Lightning.Damage.Taken.WithHits, With(Lightning)),
+                    (Cold.Damage.Taken.WithHits, With(Cold)),
+                    (Fire.Damage.Taken.WithHits, With(Fire)),
+                    (Chaos.Damage.Taken.WithHits, With(Chaos))
                 },
                 // - damage taken as
                 {
@@ -95,6 +103,7 @@ namespace PoESkillTree.Computation.Data
                     Reference.AsDamageType.HitDamageTakenAs(DamageType.Chaos)
                 },
                 // - penetration
+                // - exposure
                 // - crit
                 { "(global )?critical strike multiplier", CriticalStrike.Multiplier.WithSkills },
                 { "(global )?critical strike chance", CriticalStrike.Chance },
@@ -216,6 +225,7 @@ namespace PoESkillTree.Computation.Data
                 { "movement speed", Stat.MovementSpeed },
                 { "attack and cast speed", Stat.CastRate },
                 { "attack, cast( speed)? and movement speed", Stat.CastRate, Stat.MovementSpeed },
+                { "action speed", Stat.ActionSpeed },
                 { "hit rate", Stat.HitRate },
                 { "brand activation frequency", Stat.HitRate, With(Keyword.Brand) },
                 // regen and recharge
@@ -379,6 +389,7 @@ namespace PoESkillTree.Computation.Data
                 { "aura area of effect", Stat.AreaOfEffect, With(Keyword.Aura) },
                 { "radius", Stat.Radius },
                 { "explosion radius", Stat.Radius },
+                { "area of effect length", Stat.Radius },
                 { "melee weapon and unarmed( attack)? range", Stat.Range.With(Keyword.Melee) },
                 { "melee range", Stat.Range.With(Keyword.Melee) },
                 { "melee weapon range", Stat.Range.With(Keyword.Melee), MainHand.HasItem },

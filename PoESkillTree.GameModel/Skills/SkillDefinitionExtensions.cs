@@ -63,9 +63,11 @@ namespace PoESkillTree.GameModel.Skills
                 new SkillPartDefinitionExtension(
                     ReplaceStat("chance_to_grant_power_charge_on_death_%", "add_power_charge_on_kill_%_chance")
                         .AndThen(ReplaceStat("life_granted_when_killed", "base_life_gained_on_enemy_death"))
-                        .AndThen(ReplaceStat("mana_granted_when_killed", "base_mana_gained_on_enemy_death"))),
+                        .AndThen(ReplaceStat("mana_granted_when_killed", "base_mana_gained_on_enemy_death"))
+                        .AndThen(ReplaceStat("enemy_additional_critical_strike_chance_against_self",
+                            "additional_critical_strike_chance_permyriad"))),
                 Buff(("base_self_critical_strike_multiplier_-%", new[] { Entity.Enemy }),
-                    ("additional_chance_to_take_critical_strike_%", new[] { Entity.Enemy }),
+                    ("additional_critical_strike_chance_permyriad", AuraEntities),
                     ("add_power_charge_on_kill_%_chance", AuraEntities),
                     ("base_life_gained_on_enemy_death", AuraEntities),
                     ("base_mana_gained_on_enemy_death", AuraEntities))
@@ -215,8 +217,11 @@ namespace PoESkillTree.GameModel.Skills
             {
                 "Enfeeble",
                 new SkillPartDefinitionExtension(
-                    ReplaceStat("enfeeble_damage_+%_final", "damage_+%_final")),
-                EnemyBuff("critical_strike_chance_+%", "accuracy_rating_+%", "damage_+%_final",
+                    ReplaceStat("enfeeble_damage_+%_final", "damage_+%_vs_normal_or_magic_final")
+                        .AndThen(ReplaceStat("enfeeble_damage_+%_vs_rare_or_unique_final",
+                            "damage_+%_vs_rare_or_unique_final"))),
+                EnemyBuff("critical_strike_chance_+%", "accuracy_rating_+%",
+                    "damage_+%_vs_normal_or_magic_final", "damage_+%_vs_rare_or_unique_final",
                     "base_critical_strike_multiplier_+")
             },
             {
@@ -243,7 +248,8 @@ namespace PoESkillTree.GameModel.Skills
             { "VaalFireball", SecondaryExplosionProjectileParts },
             {
                 "FireBeam", // Scorching Ray
-                EnemyBuff("fire_beam_enemy_fire_resistance_%_per_stack")
+                new SkillPartDefinitionExtension(RemoveStat("base_fire_damage_resistance_%")),
+                EnemyBuff("base_fire_damage_resistance_%")
             },
             {
                 "FireImpurity", // Vaal Impurity of Fire
@@ -283,7 +289,9 @@ namespace PoESkillTree.GameModel.Skills
             { "FrostBlades", SecondaryProjectileMeleeAttackParts },
             {
                 "FrostBomb",
-                EnemyBuff("base_cold_damage_resistance_%", "life_regeneration_rate_+%",
+                new SkillPartDefinitionExtension(
+                    ReplaceStat("base_cold_damage_resistance_%", "cold_exposure_%")),
+                EnemyBuff("cold_exposure_%", "life_regeneration_rate_+%",
                     "energy_shield_regeneration_rate_+%", "energy_shield_recharge_rate_+%")
             },
             { "FrostBoltNova", SkillDotIsAreaDamageExtension }, // Vortex
@@ -306,7 +314,12 @@ namespace PoESkillTree.GameModel.Skills
                 Aura("attack_speed_+%_granted_from_skill", "cast_speed_+%_granted_from_skill",
                     "base_movement_velocity_+%")
             },
-            { "Hatred", Aura("physical_damage_%_to_add_as_cold") },
+            {
+                "Hatred",
+                new SkillPartDefinitionExtension(
+                    ReplaceStat("hatred_aura_cold_damage_+%_final", "cold_damage_+%_final")),
+                Aura("physical_damage_%_to_add_as_cold", "cold_damage_+%_final")
+            },
             {
                 "HeraldOfAgony",
                 SelfBuff("skill_buff_grants_chance_to_poison_%", "herald_of_agony_poison_damage_+%_final",
@@ -522,12 +535,9 @@ namespace PoESkillTree.GameModel.Skills
                     ReplaceStat("static_strike_base_zap_frequency_ms", "hit_rate_ms")))
             },
             {
-                "StormBurst",
-                ("Projectile", new SkillPartDefinitionExtension(
-                    RemoveStat("base_skill_show_average_damage_instead_of_dps"),
-                    AddStat("always_pierce", 1))),
-                ("Explosion", new SkillPartDefinitionExtension(
-                    AddStat("is_area_damage", 1)))
+                "StormBurstNew",
+                new SkillPartDefinitionExtension(
+                    RemoveStat("storm_burst_new_damage_+%_final_per_remaining_teleport_zap"))
             },
             {
                 "SummonChaosGolem",
@@ -572,7 +582,12 @@ namespace PoESkillTree.GameModel.Skills
             { "TempestShield", SelfBuff("shield_block_%", "shield_spell_block_%") },
             {
                 "TemporalChains",
-                EnemyBuff("buff_time_passed_+%_other_than_temporal_chains", "temporal_chains_action_speed_+%_final"),
+                new SkillPartDefinitionExtension(
+                    ReplaceStat("temporal_chains_action_speed_+%_final", "action_speed_+%_vs_normal_or_magic_final")
+                        .AndThen(ReplaceStat("temporal_chains_action_speed_+%_vs_rare_or_unique_final",
+                            "action_speed_+%_vs_rare_or_unique_final"))),
+                EnemyBuff("buff_time_passed_+%_other_than_temporal_chains",
+                    "action_speed_+%_vs_normal_or_magic_final", "action_speed_+%_vs_rare_or_unique_final"),
                 Passive("curse_effect_+%_vs_players")
             },
             {

@@ -91,6 +91,11 @@ namespace PoESkillTree.Computation.Data
                 { "burning damage", Fire.Damage.WithSkills(DamageSource.OverTime), Fire.Damage.With(Ailment.Ignite) },
                 // other combinations
                 { "(?<!no )({DamageTypeMatchers}) damage (with|from) hits", Reference.AsDamageType.Damage.WithHits },
+                {
+                    "damage of types matching supported skill gem's tags",
+                    (Lightning.Damage, With(Lightning)), (Cold.Damage, With(Cold)),
+                    (Fire.Damage, With(Fire)), (Chaos.Damage, With(Chaos))
+                },
                 // specific attack damage
                 { "melee physical damage", Physical.Damage.With(Keyword.Melee) },
                 { "physical melee damage", Physical.Damage.With(Keyword.Melee) },

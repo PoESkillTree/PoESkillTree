@@ -142,7 +142,7 @@ Supported Skills also fire Projectiles from up to 2 points on each side of you
 Summons a Totem which uses the Supported Skill
 Supported Area of Effect skills also affect areas in front and behind the targeted area
 Supported Attack Skills also target 2 nearby Enemies
-Supported Curse Spells are Cast as Auras
+Supported Curses are Cast as Auras
 Supported Skills throw up to 2 additional Traps
 Supported Skills place 2 additional Mines
 Supported Attack Skills cannot be used with Melee Weapons
@@ -162,6 +162,8 @@ Gain 1 Stage when you Kill an Enemy while carrying the Banner
 Enemies in Chilling Areas from Supported Skills take 29% increased Cold Damage over Time
 Enemies in Chilling Areas from Supported Skills have Cold Damage taken increased by Chill Effect
 Supported Skills Summon two Totems instead of one
+Infusion lasts 6 seconds after you finish Channelling
+10% increased beam length
 // passive skills: =====================================================================================================
 10% Chance for Traps to Trigger an additional time
 Share Endurance, Frenzy and Power Charges with nearby party members

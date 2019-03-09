@@ -52,6 +52,7 @@ EssenceDrain
 EtherealKnives
 ExpandingFireCone
 ExplosiveArrow
+FireBeam
 FireImpurity
 FireNovaMine
 FireResistAura
@@ -141,7 +142,7 @@ SmokeMine
 Spark
 SplitArrow
 StaticStrike
-StormBurst
+StormBurstNew
 StormCall
 SummonChaosGolem
 SummonFireGolem

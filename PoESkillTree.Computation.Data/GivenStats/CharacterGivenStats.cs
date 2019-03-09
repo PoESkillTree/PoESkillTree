@@ -134,6 +134,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { TotalOverride, Buff.UnholyMight.On(Self), 1, Condition.Unique("UnholyMight.ExplicitlyActive") },
             { TotalOverride, Buff.Fortify.On(Self), 1, Condition.Unique("Fortify.ExplicitlyActive") },
             { TotalOverride, Buff.Tailwind.On(Self), 1, Condition.Unique("Tailwind.ExplicitlyActive") },
+            { TotalOverride, Buff.Infusion.On(Self), 1, Condition.Unique("Infusion.ExplicitlyActive") },
             { TotalOverride, Buff.Maim.On(Enemy), 1, Condition.Unique("Maim.ExplicitlyActiveOnEnemy") },
             { TotalOverride, Buff.Blind.On(Enemy), 1, Condition.Unique("Blind.ExplicitlyActiveOnEnemy") },
             { TotalOverride, Buff.Intimidate.On(Enemy), 1, Condition.Unique("Intimidate.ExplicitlyActiveOnEnemy") },

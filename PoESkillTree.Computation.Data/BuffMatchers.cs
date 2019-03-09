@@ -33,6 +33,7 @@ namespace PoESkillTree.Computation.Data
                 { "tailwind", Buff.Tailwind },
                 { "innervation", Buff.Innervation },
                 { "impaled?", Buff.Impale },
+                { "infusion", Buff.Infusion },
             }; // Add
     }
 }

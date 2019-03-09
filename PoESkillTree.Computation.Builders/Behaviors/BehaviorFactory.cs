@@ -99,6 +99,14 @@ namespace PoESkillTree.Computation.Builders.Behaviors
                 () => _statFactory.ActiveSkillSocketIndex(entity, skillId),
                 new CacheKey(entity, skillId));
 
+        public IReadOnlyList<Behavior> Exposure(Entity entity, DamageType damageType)
+            => new[] { ExposureBaseSetByMaximumBehavior(entity, damageType) };
+
+        private Behavior ExposureBaseSetByMaximumBehavior(Entity entity, DamageType damageType)
+            => BaseSetByMaximumBehavior(
+                () => _statFactory.Exposure(entity, damageType),
+                new CacheKey(entity, damageType));
+
         private Behavior BaseSetByMaximumBehavior(Func<IStat> affectedStat, CacheKey cacheKey)
             => GetOrAdd(affectedStat, NodeType.BaseSet, BehaviorPathRules.All,
                 v => new MaximumFormAggregatingValue(affectedStat(), Form.BaseSet, v),

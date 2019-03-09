@@ -52,6 +52,7 @@ namespace PoESkillTree.Computation.Builders.Stats
         IStat AilmentDealtDamageType(Entity entity, Ailment ailment);
         IStat DamageBaseAddEffectiveness(Entity entity);
         IStat DamageBaseSetEffectiveness(Entity entity);
+        IStat Exposure(Entity entity, DamageType damageType);
 
         IStat StatIsAffectedByModifiersToOtherStat(IStat stat, IStat otherStat, Form form);
         IStat Requirement(IStat stat);

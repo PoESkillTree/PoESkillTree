@@ -38,6 +38,10 @@ namespace PoESkillTree.Computation.Data
                     "for # seconds when you ({ActionMatchers}) a rare or unique enemy",
                     And(Enemy.IsRareOrUnique, Reference.AsAction.InPastXSeconds(Value))
                 },
+                {
+                    "for # seconds when you ({ActionMatchers}) a unique enemy",
+                    And(Enemy.IsUnique, Reference.AsAction.InPastXSeconds(Value))
+                },
                 { "when you ({ActionMatchers}) an enemy, for # seconds", Reference.AsAction.InPastXSeconds(Value) },
                 // - kill
                 {
@@ -182,6 +186,8 @@ namespace PoESkillTree.Computation.Data
                 { "against enemies on low life", Life.For(Enemy).IsLow },
                 { "(against enemies )?that are on full life", Life.For(Enemy).IsFull },
                 { "against rare and unique enemies", Enemy.IsRareOrUnique },
+                { "if rare or unique", Enemy.IsRareOrUnique },
+                { "if normal or magic", Not(Enemy.IsRareOrUnique) },
                 { "while there is only one nearby enemy", Enemy.CountNearby.Eq(1) },
                 { "at close range", Enemy.IsNearby },
                 // buffs
@@ -307,6 +313,7 @@ namespace PoESkillTree.Computation.Data
                 // support gem mod clarifications. Irrelevant for parsing.
                 { "supported (skills|spells|attacks) (have|deal)", Condition.True },
                 { "(from |with )?supported skills'?", Condition.True },
+                { "a supported skill", Condition.True },
                 { "supported attacks", Condition.True },
                 { "supported attack skills", Condition.True },
                 { "supported attack skills deal", Condition.True },

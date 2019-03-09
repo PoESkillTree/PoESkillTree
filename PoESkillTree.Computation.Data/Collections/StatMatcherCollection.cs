@@ -49,5 +49,13 @@ namespace PoESkillTree.Computation.Data.Collections
                 .WithCondition(condition);
             Add(regex, builder);
         }
+
+        public void Add([RegexPattern] string regex, params (T stat, IConditionBuilder condition)[] tuples)
+        {
+            var builder = ModifierBuilder
+                .WithStats(tuples.Select(t => t.stat).ToList())
+                .WithConditions(tuples.Select(t => t.condition).ToList());
+            Add(regex, builder);
+        }
     }
 }

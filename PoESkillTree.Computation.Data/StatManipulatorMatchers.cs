@@ -30,7 +30,7 @@ namespace PoESkillTree.Computation.Data
                     s => Buffs(Self, Self, Ally).With(Keyword.Aura).Without(Keyword.Curse).AddStat(s), "${inner}"
                 },
                 {
-                    "consecrated ground you create grants (?<inner>.*) to you and allies",
+                    "consecrated ground( you create)? grants (?<inner>.*) to you and allies",
                     s => s.For(Self).WithCondition(Ground.Consecrated.IsOn(Self))
                         .Concat(s.For(Entity.Minion).WithCondition(Ground.Consecrated.IsOn(Entity.Minion)))
                         .Concat(s.For(Entity.Totem).WithCondition(Ground.Consecrated.IsOn(Entity.Totem))),

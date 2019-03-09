@@ -331,5 +331,287 @@
     "ids": [
       "armour_+%_final"
     ]
+  },
+  {
+    "English": [
+      {
+        "condition": [
+          {}
+        ],
+        "format": [
+          "+#%"
+        ],
+        "index_handlers": [
+          [
+            "divide_by_one_hundred"
+          ]
+        ],
+        "string": "{0} Critical Strike Chance"
+      }
+    ],
+    "ids": [
+      "additional_critical_strike_chance_permyriad"
+    ]
+  },
+  {
+    "English": [
+      {
+        "condition": [
+          {}
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          []
+        ],
+        "string": "Additional {0}% Chance to be Stunned"
+      }
+    ],
+    "ids": [
+      "chance_to_be_stunned_%"
+    ]
+  },
+  {
+    "English": [
+      {
+        "condition": [
+          {
+            "min": 1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          []
+        ],
+        "string": "{0}% more Damage against if Normal or Magic"
+      },
+      {
+        "condition": [
+          {
+            "max": -1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          [
+            "negate"
+          ]
+        ],
+        "string": "{0}% less Damage if Normal or Magic"
+      }
+    ],
+    "ids": [
+      "damage_+%_vs_normal_or_magic_final"
+    ]
+  },
+  {
+    "English": [
+	  {
+	    "condition": [
+		  {
+			"min": 1
+		  }
+	    ],
+	    "format": [
+		  "#"
+	    ],
+	    "index_handlers": [
+		  []
+	    ],
+	    "string": "{0}% more Damage if Rare or Unique"
+	  },
+	  {
+	    "condition": [
+		  {
+			"max": -1
+		  }
+	    ],
+	    "format": [
+		  "#"
+	    ],
+	    "index_handlers": [
+		  [
+			"negate"
+		  ]
+	    ],
+	    "string": "{0}% less Damage if Rare or Unique"
+	  }
+    ],
+    "ids": [
+	  "damage_+%_vs_rare_or_unique_final"
+    ]
+  },
+  {
+    "English": [
+      {
+        "condition": [
+          {
+            "min": 1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          []
+        ],
+        "string": "{0}% more Action Speed if Normal or Magic"
+      },
+      {
+        "condition": [
+          {
+            "max": -1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          [
+            "negate"
+          ]
+        ],
+        "string": "{0}% less Action Speed if Normal or Magic"
+      }
+    ],
+    "ids": [
+      "action_speed_+%_vs_normal_or_magic_final"
+    ]
+  },
+  {
+    "English": [
+	  {
+	    "condition": [
+		  {
+			"min": 1
+		  }
+	    ],
+	    "format": [
+		  "#"
+	    ],
+	    "index_handlers": [
+		  []
+	    ],
+	    "string": "{0}% more Action Speed if Rare or Unique"
+	  },
+	  {
+	    "condition": [
+		  {
+			"max": -1
+		  }
+	    ],
+	    "format": [
+		  "#"
+	    ],
+	    "index_handlers": [
+		  [
+			"negate"
+		  ]
+	    ],
+	    "string": "{0}% less Action Speed if Rare or Unique"
+	  }
+    ],
+    "ids": [
+	  "action_speed_+%_vs_rare_or_unique_final"
+    ]
+  },
+  {
+    "English": [
+      {
+        "condition": [
+          {
+            "min": 1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          []
+        ],
+        "string": "{0}% more Cold Damage"
+      },
+      {
+        "condition": [
+          {
+            "max": -1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          [
+            "negate"
+          ]
+        ],
+        "string": "{0}% less Cold Damage"
+      }
+    ],
+    "ids": [
+      "cold_damage_+%_final"
+    ]
+  },
+  {
+    "English": [
+      {
+        "condition": [
+          {}
+        ],
+        "format": [
+          "+#%"
+        ],
+        "index_handlers": [
+          []
+        ],
+        "string": "Cold Exposure applies {0} to Cold Resistance"
+      }
+    ],
+    "ids": [
+      "cold_exposure_%"
+    ]
+  },
+  {
+    "English": [
+      {
+        "condition": [
+          {}
+        ],
+        "format": [
+          "+#%"
+        ],
+        "index_handlers": [
+          []
+        ],
+        "string": "Fire Exposure applies {0} to Fire Resistance"
+      }
+    ],
+    "ids": [
+      "fire_exposure_%"
+    ]
+  },
+  {
+    "English": [
+      {
+        "condition": [
+          {}
+        ],
+        "format": [
+          "+#%"
+        ],
+        "index_handlers": [
+          []
+        ],
+        "string": "Lightning Exposure applies {0} to Lightning Resistance"
+      }
+    ],
+    "ids": [
+      "lightning_exposure_%"
+    ]
   }
 ]

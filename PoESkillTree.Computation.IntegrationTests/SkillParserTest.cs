@@ -103,6 +103,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                     ("Boots.0.Type.melee_single_target_initial_hit", Form.TotalOverride, 1, global, false),
                     ("Boots.0.Type.multistrike_supportable", Form.TotalOverride, 1, global, false),
                     ("Boots.0.Type.melee", Form.TotalOverride, 1, global, false),
+                    ("Boots.0.Type.castable_by_maloneys_mechanism", Form.TotalOverride, 1, global, false),
                     ("DamageBaseAddEffectiveness", Form.TotalOverride, levelDefinition.DamageEffectiveness, global,
                         true),
                     ("DamageBaseSetEffectiveness", Form.TotalOverride, levelDefinition.DamageMultiplier, global, true),
@@ -273,8 +274,7 @@ namespace PoESkillTree.Computation.IntegrationTests
 
             Assert.IsEmpty(failedLines);
             Assert.IsEmpty(remainingSubstrings);
-            Assert.AreEqual(expectedModifiers.Length, modifiers.Count);
-            for (var i = 0; i < modifiers.Count; i++)
+            for (var i = 0; i < modifiers.Count && i < expectedModifiers.Length; i++)
             {
                 var expected = expectedModifiers[i];
                 var actual = modifiers[i];
@@ -298,6 +298,7 @@ namespace PoESkillTree.Computation.IntegrationTests
                 actualValue = actual.Value.Calculate(contextMock.Object);
                 Assert.AreEqual(expectedValue, actualValue);
             }
+            Assert.AreEqual(expectedModifiers.Length, modifiers.Count);
         }
 
         [TestCaseSource(nameof(ReadParseableSkills))]

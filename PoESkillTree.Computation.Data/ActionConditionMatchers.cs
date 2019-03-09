@@ -94,6 +94,7 @@ namespace PoESkillTree.Computation.Data
                 { "when you block attack damage", Action.Unique("Block.Attack").On },
                 { "when you block spell damage", Action.Unique("Block.Spell").On },
                 { "(every|each) second(, up to a maximum of #)?", Action.Unique("Interval.OneSecond").On },
+                { "after channelling for # seconds?", Action.Unique("PeriodOfChannelling").On },
             }; // add
     }
 }

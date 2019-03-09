@@ -130,6 +130,16 @@ namespace PoESkillTree.Computation.Data
                     Fire.Damage.WithSkills(DamageSource.Secondary)
                 },
                 {
+                    // Scorching Ray
+                    "burning debuff can have a maximum of # stages",
+                    TotalOverride, Value, Skills.ModifierSourceSkill.Buff.StackCount.Maximum.For(Enemy)
+                },
+                {
+                    "additional debuff stages add #% of damage",
+                    PercentMore, Value * Skills.ModifierSourceSkill.Buff.StackCount.For(Enemy).Value - 1, Damage,
+                    Skills.ModifierSourceSkill.Buff.StackCount.For(Enemy).Value > 0
+                },
+                {
                     // Static Strike
                     "#% increased beam frequency per buff stack",
                     PercentIncrease, Value * Stat.SkillStage.Value, Stat.HitRate

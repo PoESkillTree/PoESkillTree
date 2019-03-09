@@ -160,6 +160,11 @@ namespace PoESkillTree.Computation.Data
                     "hits ignore enemy monster ({DamageTypeMatchers}) resistance",
                     TotalOverride, 1, Reference.AsDamageType.IgnoreResistance
                 },
+                // - exposure
+                {
+                    @"(?<damageType>({DamageTypeMatchers})) exposure applies #% to \k<damageType> resistance",
+                    BaseSet, Value, Reference.AsDamageType.Exposure
+                },
                 // - crit
                 { @"\+#% critical strike chance", BaseAdd, Value, CriticalStrike.Chance },
                 {
@@ -355,7 +360,7 @@ namespace PoESkillTree.Computation.Data
                     "unaffected by ({SkillMatchers})",
                     PercentLess, 100, Reference.AsSkill.Buff.EffectOn(Self).For(Entity.Any)
                 },
-                { "immune to curses", TotalOverride, 0, Buffs(targets: Self).With(Keyword.Curse).On },
+                { "immun(e|ity) to curses", TotalOverride, 0, Buffs(targets: Self).With(Keyword.Curse).On },
                 {
                     "monsters are hexproof",
                     TotalOverride, 0, Buffs(Self, Enemy).With(Keyword.Curse).On, Flag.IgnoreHexproof.IsSet.Not
@@ -369,6 +374,7 @@ namespace PoESkillTree.Computation.Data
                     "supported auras do not affect you",
                     TotalOverride, 0, Skills.ModifierSourceSkill.Buff.EffectOn(Self)
                 },
+                { "totems cannot gain ({BuffMatchers})", TotalOverride, 0, Reference.AsBuff.On(Entity.Totem) },
                 // flags
                 // ailments
                 { "causes bleeding", TotalOverride, 100, Ailment.Bleed.Chance },

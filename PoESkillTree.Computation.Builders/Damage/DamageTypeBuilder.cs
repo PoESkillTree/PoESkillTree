@@ -111,6 +111,8 @@ namespace PoESkillTree.Computation.Builders.Damage
         public IDamageRelatedStatBuilder IgnoreResistanceWithNonCrits =>
             DamageRelatedStatBuilder.Create(_statFactory, CoreStat(typeof(bool))).WithHits;
 
+        public IStatBuilder Exposure
+            => new StatBuilder(_statFactory, CoreStat(_statFactory.Exposure));
 
         public IStatBuilder ReflectedDamageTaken =>
             new StatBuilder(_statFactory, CoreStat(typeof(int)));

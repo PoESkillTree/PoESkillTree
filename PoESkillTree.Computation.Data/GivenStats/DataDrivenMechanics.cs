@@ -246,6 +246,10 @@ namespace PoESkillTree.Computation.Data.GivenStats
                 { TotalOverride, MetaStats.ResistanceAgainstHits(DamageType.Cold), Cold.Resistance.Value },
                 { TotalOverride, MetaStats.ResistanceAgainstHits(DamageType.Fire), Fire.Resistance.Value },
                 { TotalOverride, MetaStats.ResistanceAgainstHits(DamageType.Chaos), Chaos.Resistance.Value },
+                {
+                    BaseAdd, dt => DamageTypeBuilders.From(dt).Resistance,
+                    dt => DamageTypeBuilders.From(dt).Exposure.Value
+                },
                 // damage mitigation (1 - (1 - resistance / 100) * damage taken)
                 {
                     TotalOverride, MetaStats.MitigationAgainstHits,

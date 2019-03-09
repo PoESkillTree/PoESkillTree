@@ -137,6 +137,10 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IStat DamageBaseSetEffectiveness(Entity entity) =>
             GetOrAdd("DamageBaseSetEffectiveness", entity, typeof(double));
 
+        public IStat Exposure(Entity entity, DamageType damageType)
+            => GetOrAdd(damageType + ".Exposure", entity, typeof(int),
+                behaviors: () => _behaviorFactory.Exposure(entity, damageType));
+
         public IStat StatIsAffectedByModifiersToOtherStat(IStat stat, IStat otherStat, Form form)
             => GetOrAdd($"ModifiersTo({otherStat}).Affect({stat}).ForForm({form})", stat.Entity, typeof(bool),
                 behaviors: () => _behaviorFactory.StatIsAffectedByModifiersToOtherStat(stat, otherStat, form));

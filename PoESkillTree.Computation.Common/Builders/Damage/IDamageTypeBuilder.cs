@@ -79,6 +79,8 @@ namespace PoESkillTree.Computation.Common.Builders.Damage
         IDamageRelatedStatBuilder IgnoreResistanceWithCrits { get; }
         IDamageRelatedStatBuilder IgnoreResistanceWithNonCrits { get; }
 
+        IStatBuilder Exposure { get; }
+
         IStatBuilder ReflectedDamageTaken { get; }
 
         IReadOnlyList<DamageType> BuildDamageTypes(BuildParameters parameters);
