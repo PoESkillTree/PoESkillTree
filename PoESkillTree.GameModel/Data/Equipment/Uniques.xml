@@ -1198,7 +1198,11 @@
     <Properties />
   </Unique>
   <Unique Name="Nebulis" Level="68" BaseMetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre22">
-    <Explicit />
+    <Explicit>
+      <string>IncreasedCastSpeedUnique__16</string>
+      <string>ColdDamagePerResistanceAbove75Unique__1</string>
+      <string>LightningDamagePerResistanceAbove75Unique__1</string>
+    </Explicit>
     <Properties />
   </Unique>
   <Unique Name="Nycta's Lantern" Level="41" BaseMetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre11">
@@ -3875,12 +3879,44 @@
     </Explicit>
     <Properties />
   </Unique>
+  <Unique Name="Circle of Anguish" Level="52" BaseMetadataId="Metadata/Items/Rings/Ring7">
+    <Explicit>
+      <string>GlobalAddedFireDamageUnique__3_</string>
+      <string>FireResistUnique__21</string>
+      <string>HeraldBonusExtraMod1</string>
+    </Explicit>
+    <Properties />
+  </Unique>
+  <Unique Name="Circle of Fear" Level="52" BaseMetadataId="Metadata/Items/Rings/Ring6">
+    <Explicit>
+      <string>GlobalAddedColdDamageUnique__3</string>
+      <string>ColdResistUnique__28</string>
+      <string>HeraldBonusExtraMod2_</string>
+    </Explicit>
+    <Properties />
+  </Unique>
+  <Unique Name="Circle of Guilt" Level="52" BaseMetadataId="Metadata/Items/Rings/Ring1">
+    <Explicit>
+      <string>GlobalAddedPhysicalDamageUnique__2</string>
+      <string>IncreasedPhysicalDamageReductionRatingUnique__4</string>
+      <string>HeraldBonusExtraMod3_</string>
+    </Explicit>
+    <Properties />
+  </Unique>
   <Unique Name="Circle of Nostalgia" Level="52" BaseMetadataId="Metadata/Items/Rings/Ring10">
-    <Explicit />
+    <Explicit>
+      <string>GlobalAddedChaosDamageUnique__5_</string>
+      <string>ChaosResistUnique__13</string>
+      <string>HeraldBonusExtraMod4</string>
+    </Explicit>
     <Properties />
   </Unique>
   <Unique Name="Circle of Regret" Level="52" BaseMetadataId="Metadata/Items/Rings/Ring5">
-    <Explicit />
+    <Explicit>
+      <string>GlobalAddedLightningDamageUnique__3</string>
+      <string>LightningResistUnique__21</string>
+      <string>HeraldBonusExtraMod5</string>
+    </Explicit>
     <Properties />
   </Unique>
   <Unique Name="Death Rush" Level="46" BaseMetadataId="Metadata/Items/Rings/Ring10">
@@ -6486,7 +6522,13 @@
     <Properties />
   </Unique>
   <Unique Name="Mask of the Tribunal" Level="58" BaseMetadataId="Metadata/Items/Armours/Helmets/HelmetStrInt8">
-    <Explicit />
+    <Explicit>
+      <string>LocalIncreasedArmourAndEnergyShieldUnique__13_</string>
+      <string>DefencesPer100StrengthAuraUnique__1</string>
+      <string>CriticalMultiplierPer100DexterityAuraUnique__1</string>
+      <string>CastSpeedPer100IntelligenceAuraUnique__1</string>
+      <string>ManaReservationPerAttributeUnique__1</string>
+    </Explicit>
     <Properties />
   </Unique>
   <Unique Name="Memory Vault" Level="68" BaseMetadataId="Metadata/Items/Armours/Helmets/HelmetStrInt10">
@@ -7244,7 +7286,12 @@
     <Properties />
   </Unique>
   <Unique Name="Storm's Gift" Level="58" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesDexInt7">
-    <Explicit />
+    <Explicit>
+      <string>LocalIncreasedEvasionAndEnergyShieldUnique__19___</string>
+      <string>LightningResistUnique__21</string>
+      <string>ShockOnKillUnique__1</string>
+      <string>ShockProliferationUnique__1</string>
+    </Explicit>
     <Properties />
   </Unique>
   <Unique Name="Surgebinders" Level="67" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStrDex8">
@@ -7750,7 +7797,14 @@
     <Properties />
   </Unique>
   <Unique Name="Perepiteia" Level="62" BaseMetadataId="Metadata/Items/Armours/Shields/ShieldDexInt11">
-    <Explicit />
+    <Explicit>
+      <string>TriggeredLightningAegisSkillUnique__1</string>
+      <string>IncreasedAttackSpeedUnique__3_</string>
+      <string>IncreasedCastSpeedUnique__17</string>
+      <string>LocalIncreasedEvasionAndEnergyShieldUnique__20</string>
+      <string>IncreasedManaUnique__15</string>
+      <string>MovementVelocityUnique__38</string>
+    </Explicit>
     <Properties />
   </Unique>
   <Unique Name="Prism Guardian" Level="68" BaseMetadataId="Metadata/Items/Armours/Shields/ShieldStrInt13">

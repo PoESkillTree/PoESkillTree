@@ -3652,19 +3652,19 @@
       <string>Lasts 40 seconds</string>
     </Properties>
   </ItemBase>
-  <ItemBase ItemClass="AbyssJewel" Tags="NotForSale AbyssJewelCaster" Name="Hypnotic Eye Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelAbyssCaster">
+  <ItemBase ItemClass="AbyssJewel" Tags="NotForSale AbyssJewel AbyssJewelCaster" Name="Hypnotic Eye Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelAbyssCaster">
     <Implicit />
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="AbyssJewel" Tags="NotForSale AbyssJewelMelee" Name="Murderous Eye Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelAbyssMelee">
+  <ItemBase ItemClass="AbyssJewel" Tags="NotForSale AbyssJewel AbyssJewelMelee" Name="Murderous Eye Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelAbyssMelee">
     <Implicit />
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="AbyssJewel" Tags="NotForSale AbyssJewelRanged" Name="Searching Eye Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelAbyssRanged">
+  <ItemBase ItemClass="AbyssJewel" Tags="NotForSale AbyssJewel AbyssJewelRanged" Name="Searching Eye Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelAbyssRanged">
     <Implicit />
     <Properties />
   </ItemBase>
-  <ItemBase ItemClass="AbyssJewel" Tags="NotForSale AbyssJewelSummoner" Name="Ghastly Eye Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelAbyssSummoner">
+  <ItemBase ItemClass="AbyssJewel" Tags="NotForSale AbyssJewel AbyssJewelSummoner" Name="Ghastly Eye Jewel" Level="1" Strength="0" Dexterity="0" Intelligence="0" InventoryHeight="1" InventoryWidth="1" MetadataId="Metadata/Items/Jewels/JewelAbyssSummoner">
     <Implicit />
     <Properties />
   </ItemBase>
