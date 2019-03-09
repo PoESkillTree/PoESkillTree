@@ -7,5 +7,6 @@
         Power,
         Rage,
         GhostShroud,
+        Intensity,
     }
 }

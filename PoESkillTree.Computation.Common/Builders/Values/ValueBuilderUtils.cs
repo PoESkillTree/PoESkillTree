@@ -32,6 +32,9 @@ namespace PoESkillTree.Computation.Common.Builders.Values
         public static Func<ValueBuilder, ValueBuilder> PerStatCeiled(IStatBuilder stat, ValueBuilder divideBy) =>
             v => v * (stat.Value / divideBy).Ceiling();
 
+        public static Func<ValueBuilder, ValueBuilder> PerStatAfterFirst(IStatBuilder stat)
+            => v => v * stat.Value.Select(d => Math.Max(d - 1, 0), d => $"Max({d} - 1, 0)");
+
         /// <summary>
         /// Returns a value converter that behaves the same as the given converter but creates a 
         /// <see cref="ValueBuilder"/> from parameters that are <see cref="IValueBuilder"/>s and not 

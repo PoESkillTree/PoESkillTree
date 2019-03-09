@@ -120,7 +120,7 @@ namespace PoESkillTree.Computation.Builders.Buffs
 
         private IValue BuildTemporaryBuffCondition<T>(T condition, BuildParameters parameters) where T : struct, Enum
         {
-            var stat = _statFactory.FromIdentity($"Current {parameters.ModifierSource.SourceName} stage",
+            var stat = _statFactory.FromIdentity(typeof(T).Name,
                 parameters.ModifierSourceEntity, typeof(T), ExplicitRegistrationTypes.UserSpecifiedValue(0));
             return new ConditionalValue(c => (int?) c.GetValue(stat).SingleOrNull() == Enums.ToInt32(condition),
                 $"{stat} == {condition}");

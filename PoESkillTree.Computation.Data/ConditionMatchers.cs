@@ -257,7 +257,7 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "if you summoned a golem in the past # seconds", Golems.Cast.InPastXSeconds(Value) },
                 // - by skill part
-                { "(beams|final wave) deals?", Stat.MainSkillPart.Value.Eq(1) },
+                { "(beams?|final wave|shockwaves?) deals?", Stat.MainSkillPart.Value.Eq(1) },
                 // - other
                 { "to enemies they're attached to", Flag.IsBrandAttachedToEnemy },
                 { "to branded enemy", Flag.IsBrandAttachedToEnemy },

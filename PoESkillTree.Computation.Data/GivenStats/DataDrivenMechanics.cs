@@ -222,9 +222,10 @@ namespace PoESkillTree.Computation.Data.GivenStats
                     Stat.BaseCastTime.With(DamageSource.Secondary).Value.Invert
                 },
                 {
-                    TotalOverride, MetaStats.CastRate,
+                    BaseSet, MetaStats.CastRate,
                     CombineSourceDefaultingToSpell(Stat.CastRate, CombineHandsByAverage)
                 },
+                { BaseAdd, MetaStats.CastRate, Stat.AdditionalCastRate.Value },
                 { TotalOverride, MetaStats.CastTime, MetaStats.CastRate.Value.Invert },
                 { PercentMore, Stat.MovementSpeed, ActionSpeedValueForPercentMore },
                 {

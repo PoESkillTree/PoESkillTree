@@ -613,5 +613,42 @@
     "ids": [
       "lightning_exposure_%"
     ]
+  },
+  {
+    "English": [
+      {
+        "condition": [
+          {
+            "min": 1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          []
+        ],
+        "string": "{0}% more Spell Damage"
+      },
+      {
+        "condition": [
+          {
+            "max": -1
+          }
+        ],
+        "format": [
+          "#"
+        ],
+        "index_handlers": [
+          [
+            "negate"
+          ]
+        ],
+        "string": "{0}% less Spell Damage"
+      }
+    ],
+    "ids": [
+      "spell_damage_+%_final"
+    ]
   }
 ]

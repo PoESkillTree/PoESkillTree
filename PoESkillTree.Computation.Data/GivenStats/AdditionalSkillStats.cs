@@ -53,8 +53,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
 
             { TotalOverride, Skills.FromId("FireBeam").Buff.On(Enemy), 1, SkillIsActive("FireBeam") },
             {
-                BaseSet, Fire.Exposure.For(Enemy), -25, Skills.FromId("FireBeam").Buff.StackCount.Value
-                                                        >= Skills.FromId("FireBeam").Buff.StackCount.Maximum.Value
+                BaseSet, Fire.Exposure.For(Enemy), -25,
+                SkillIsActive("FireBeam").And(Skills.FromId("FireBeam").Buff.StackCount.For(Enemy).Value
+                                              >= Skills.FromId("FireBeam").Buff.StackCount.For(Enemy).Maximum.Value)
             },
 
             {
@@ -113,6 +114,19 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { TotalOverride, Skills.FromId("PuresteelBanner").Buff.StackCount.Maximum, 50 },
 
             {
+                BaseSet, Buff.Temporary(Lightning.Exposure, WaveOfConvictionExposureType.Lightning).For(Enemy), -25,
+                SkillIsActive("Purge")
+            },
+            {
+                BaseSet, Buff.Temporary(Cold.Exposure, WaveOfConvictionExposureType.Cold).For(Enemy), -25,
+                SkillIsActive("Purge")
+            },
+            {
+                BaseSet, Buff.Temporary(Fire.Exposure, WaveOfConvictionExposureType.Fire).For(Enemy), -25,
+                SkillIsActive("Purge")
+            },
+
+            {
                 // Reduce cast rate proportional to the time spent channeling
                 PercentLess, Stat.CastRate,
                 100 * (Stat.SkillStage.Maximum.Value - Stat.SkillStage.Value + 1) / Stat.SkillStage.Maximum.Value,
@@ -137,5 +151,13 @@ namespace PoESkillTree.Computation.Data.GivenStats
 
         private IConditionBuilder SkillIsActive(string skillId)
             => MetaStats.ActiveSkillItemSlot(skillId).IsSet;
+
+        private enum WaveOfConvictionExposureType
+        {
+            None,
+            Lightning,
+            Cold,
+            Fire,
+        }
     }
 }

@@ -64,6 +64,7 @@ namespace PoESkillTree.Computation.Data
                 { "per (stage|fuse charge)", PerStat(Stat.SkillStage) },
                 { "for each (stage|blade)", PerStat(Stat.SkillStage) },
                 { @"per stage, up to \+#", CappedMultiplier(Stat.SkillStage.Value, Value) },
+                { "per stage after the first", PerStatAfterFirst(Stat.SkillStage) },
                 {
                     "per ({ChargeTypeMatchers}) removed",
                     Reference.AsChargeType.Amount.Value - Reference.AsChargeType.Amount.Minimum.Value
@@ -128,7 +129,7 @@ namespace PoESkillTree.Computation.Data
                 {
                     "per one hundred nearby enemies",
                     Stat.UniqueAmount("# of nearby enemies") / 100
-                }
+                },
             }; // add
 
         private Func<ValueBuilder, ValueBuilder> CappedMultiplier(ValueBuilder multiplier, ValueBuilder maximum)

@@ -51,6 +51,12 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// </summary>
         IStatBuilder HitRate { get; }
 
+        /// <summary>
+        /// A secondary cast rate with which to cast the main skill (casts per second). Combined with CastRate to
+        /// get the real casts per second.
+        /// </summary>
+        IStatBuilder AdditionalCastRate { get; }
+
         IStatBuilder DamageHasKeyword(DamageSource damageSource, IKeywordBuilder keyword);
 
         /// <summary>
@@ -137,7 +143,7 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IStatBuilder PassiveNodeSkilled(ushort nodeId);
 
         /// <summary>
-        /// Returns the value of a stat that can only be specified by the user.
+        /// Returns the value of a stat with type uint that can only be specified by the user.
         /// </summary>
         ValueBuilder UniqueAmount(string name);
 

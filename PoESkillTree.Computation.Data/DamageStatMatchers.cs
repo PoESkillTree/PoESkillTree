@@ -37,7 +37,7 @@ namespace PoESkillTree.Computation.Data
             {
                 // unspecific
                 { "damage", Damage },
-                { "deals damage", Damage },
+                { "^deals damage", Damage },
                 { "global damage", Damage },
                 // by source
                 { "attack damage", Damage.WithSkills(DamageSource.Attack) },

@@ -122,7 +122,11 @@ namespace PoESkillTree.GameModel.Skills
                     AddStat("display_skill_deals_secondary_damage", 1)))
             },
             { "CataclysmSigil", BrandExtension }, // Armageddon Brand
-            { "ChargedDash", RemoveShowAverageDamageExtension },
+            {
+                "ChargedDash",
+                new SkillPartDefinitionExtension(RemoveStats("base_skill_show_average_damage_instead_of_dps",
+                    "charged_dash_damage_+%_final_per_stack"))
+            },
             {
                 "ChargedAttack", // Blade Flurry
                 RemoveShowAverageDamageExtension,
@@ -169,6 +173,13 @@ namespace PoESkillTree.GameModel.Skills
             { "VaalColdSnap", SkillDotIsAreaDamageExtension },
             { "CorpseEruption", CorpseExplodingSpellParts }, // Cremation
             {
+                "DamageOverTimeAura", // Malevolence
+                new SkillPartDefinitionExtension(
+                    ReplaceStat("delirium_aura_damage_over_time_+%_final", "damage_over_time_+%_final")
+                        .AndThen(ReplaceStat("delirium_skill_effect_duration_+%", "skill_effect_duration_+%"))),
+                Aura("damage_over_time_+%_final", "skill_effect_duration_+%")
+            },
+            {
                 "DarkPact",
                 ("Cast on Self", new SkillPartDefinitionExtension(
                     ReplaceStat("skeletal_chains_aoe_%_health_dealt_as_chaos_damage",
@@ -195,6 +206,7 @@ namespace PoESkillTree.GameModel.Skills
                 Aura("armour_+%_final")
             },
             { "DetonateDead", CorpseExplodingSpellParts },
+            { "VaalDetonateDead", CorpseExplodingSpellParts },
             { "Discipline", Aura("energy_shield_recharge_rate_+%", "base_maximum_energy_shield") },
             { "VaalDiscipline", Aura("energy_shield_recharge_not_delayed_by_damage") },
             {
@@ -203,7 +215,12 @@ namespace PoESkillTree.GameModel.Skills
                 ("Both Slashes", new SkillPartDefinitionExtension(
                     AddStat("base_skill_number_of_additional_hits", 1)))
             },
-            { "VaalDetonateDead", CorpseExplodingSpellParts },
+            {
+                "DivineTempest", // Divine Ire
+                ("Channelling", new SkillPartDefinitionExtension()),
+                ("Release", new SkillPartDefinitionExtension(
+                    AddStats(("maximum_stages", 20), ("base_skill_show_average_damage_instead_of_dps", 1))))
+            },
             { "Earthquake", EarthquakeParts },
             { "VaalEarthquake", EarthquakeParts },
             {
@@ -482,6 +499,11 @@ namespace PoESkillTree.GameModel.Skills
                 SelfBuff("righteous_fire_spell_damage_+%_final")
             },
             {
+                "Sanctify", // Purifying Flame
+                ("Initial Hit", new SkillPartDefinitionExtension()),
+                ("Shockwave", new SkillPartDefinitionExtension())
+            },
+            {
                 "ScourgeArrow",
                 new SkillPartDefinitionExtension(
                     ReplaceStat("virulent_arrow_maximum_number_of_stacks", "maximum_stages")),
@@ -525,6 +547,12 @@ namespace PoESkillTree.GameModel.Skills
                     "global_minimum_added_lightning_damage", "global_maximum_added_lightning_damage")
             },
             { "SmokeMine", SelfBuff("base_movement_velocity_+%") },
+            {
+                "SpellDamageAura", // Zealotry
+                new SkillPartDefinitionExtension(
+                    ReplaceStat("spell_damage_aura_spell_damage_+%_final", "spell_damage_+%_final")),
+                Aura("spell_damage_+%_final", "spell_critical_strike_chance_+%")
+            },
             {
                 "StaticStrike",
                 new SkillPartDefinitionExtension(
@@ -574,10 +602,8 @@ namespace PoESkillTree.GameModel.Skills
             },
             {
                 "Sunder",
-                ("Initial Hit", new SkillPartDefinitionExtension(
-                    RemoveStat("shockwave_slam_explosion_damage_+%_final"))),
-                ("Shockwave", new SkillPartDefinitionExtension(
-                    ReplaceStat("shockwave_slam_explosion_damage_+%_final", "damage_+%_final")))
+                ("Initial Hit", new SkillPartDefinitionExtension()),
+                ("Shockwave", new SkillPartDefinitionExtension())
             },
             { "TempestShield", SelfBuff("shield_block_%", "shield_spell_block_%") },
             {

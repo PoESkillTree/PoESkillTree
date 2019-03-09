@@ -136,8 +136,9 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "additional debuff stages add #% of damage",
-                    PercentMore, Value * Skills.ModifierSourceSkill.Buff.StackCount.For(Enemy).Value - 1, Damage,
-                    Skills.ModifierSourceSkill.Buff.StackCount.For(Enemy).Value > 0
+                    PercentMore,
+                    ValueBuilderUtils.PerStatAfterFirst(Skills.ModifierSourceSkill.Buff.StackCount.For(Enemy))(Value),
+                    Damage
                 },
                 {
                     // Static Strike
@@ -188,10 +189,26 @@ namespace PoESkillTree.Computation.Data
                     (Attribute.StrengthDamageBonus.Value / 5).Ceiling(),
                     Damage.WithSkills(DamageSource.Spell)
                 },
-                {   // Minion and Totem Elemental Resistance Support
+                {
+                    // Minion and Totem Elemental Resistance Support
                     @"totems and minions summoned by supported skills have \+#% ({DamageTypeMatchers}) resistance",
                     BaseAdd, Value, Reference.AsDamageType.Resistance.For(Entity.Minion),
                     Reference.AsDamageType.Resistance.For(Entity.Totem)
+                },
+                {
+                    // Unleash Support
+                    "supported spells gain a seal every # seconds, to a maximum of # seals " +
+                    "supported spells are unsealed when cast, and their effects reoccur for each seal lost",
+                    TotalOverride, Values[0].Invert, Stat.AdditionalCastRate
+                },
+                {
+                    "supported skills deal #% less damage when reoccurring",
+                    (PercentLess, Values[0] * Stat.AdditionalCastRate.Value
+                                  / (Stat.AdditionalCastRate.Value + Stat.CastRate.With(DamageSource.Spell).Value),
+                        Damage.With(DamageSource.Spell)),
+                    (PercentLess, Values[0] * Stat.AdditionalCastRate.Value
+                                  / (Stat.AdditionalCastRate.Value + Stat.CastRate.With(DamageSource.Secondary).Value),
+                        Damage.With(DamageSource.Secondary))
                 },
                 // Keystones
                 {
@@ -505,10 +522,10 @@ namespace PoESkillTree.Computation.Data
             }
         }
 
-        private (IFormBuilder form, double value, IStatBuilder stat, IConditionBuilder condition)[]
+        private (IFormBuilder form, double value, IStatBuilder stat)[]
             ShaperOfDesolation()
         {
-            var stats = new[]
+            return new[]
             {
                 Buff.Temporary(Buff.Conflux.Chilling, ShaperOfDesolationStep.Chilling),
                 Buff.Temporary(Buff.Conflux.Shocking, ShaperOfDesolationStep.Shocking),
@@ -516,15 +533,10 @@ namespace PoESkillTree.Computation.Data
                 Buff.Temporary(Buff.Conflux.Chilling, ShaperOfDesolationStep.All),
                 Buff.Temporary(Buff.Conflux.Shocking, ShaperOfDesolationStep.All),
                 Buff.Temporary(Buff.Conflux.Igniting, ShaperOfDesolationStep.All),
-            };
-
-            return (
-                from stat in stats
-                select (TotalOverride, 1.0, stat, Condition.True)
-            ).ToArray();
+            }.Select(s => (TotalOverride, 1.0, s)).ToArray();
         }
 
-        public enum ShaperOfDesolationStep
+        private enum ShaperOfDesolationStep
         {
             None,
             Chilling,
@@ -551,7 +563,7 @@ namespace PoESkillTree.Computation.Data
             }
         }
 
-        public enum PendulumOfDestructionStep
+        private enum PendulumOfDestructionStep
         {
             None,
             AreaOfEffect,
