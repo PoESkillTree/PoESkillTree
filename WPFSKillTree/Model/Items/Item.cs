@@ -305,17 +305,22 @@ namespace POESKillTree.Model.Items
             if (val["implicitMods"] != null)
                 foreach (var s in val["implicitMods"].Values<string>())
                 {
-                    _implicitMods.Add(ItemModFromString(FixOldRanges(s)));
+                    _implicitMods.Add(ItemModFromString(s));
+                }
+            if (val["fracturedMods"] != null)
+                foreach (var s in val["fracturedMods"].Values<string>())
+                {
+                    ExplicitMods.Add(ItemModFromString(s));
                 }
             if (val["explicitMods"] != null)
                 foreach (var s in val["explicitMods"].Values<string>())
                 {
-                    ExplicitMods.Add(ItemModFromString(FixOldRanges(s)));
+                    ExplicitMods.Add(ItemModFromString(s));
                 }
             if (val["craftedMods"] != null)
                 foreach (var s in val["craftedMods"].Values<string>())
                 {
-                    CraftedMods.Add(ItemModFromString(FixOldRanges(s)));
+                    CraftedMods.Add(ItemModFromString(s));
                 }
 
             if (val["flavourText"] != null && val["flavourText"].HasValues)
@@ -441,12 +446,6 @@ namespace POESKillTree.Model.Items
             }
 
             return ItemModFromString(attribute, valueColors);
-        }
-
-        private static readonly Regex OldRangeRegex = new Regex(@"(\d+)-(\d+) ");
-        private static string FixOldRanges(string range)
-        {
-            return OldRangeRegex.Replace(range, "$1 to $2 ");
         }
 
         [SuppressMessage("ReSharper", "PossibleLossOfFraction", Justification = "Attribute requirements are rounded down")]
