@@ -73,11 +73,18 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         IConditionBuilder IsFull { get; }
 
         /// <summary>
-        /// Gets a condition that is satisfied if this pool's current value lower than or equal to 35% of 
+        /// Gets a condition that is satisfied if this pool's current value is lower than or equal to 35% of 
         /// <see cref="IStatBuilder.Value"/>. It is satisfied if <c>Reservation.Value >= 65</c> is satisfied or the
         /// user says this pool is low.
         /// </summary>
         IConditionBuilder IsLow { get; }
+
+        /// <summary>
+        /// Gets a condition that is satisfied if this pool's current value is not zero.
+        /// It is satisfied if <c><see cref="IStatBuilder.Value"/> == 0</c>, <c>Reservation.Value >= 100</c> or
+        /// user says this pool is not empty.
+        /// </summary>
+        IConditionBuilder IsEmpty { get; }
 
         Pool BuildPool(BuildParameters parameters);
     }

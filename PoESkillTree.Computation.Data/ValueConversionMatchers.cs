@@ -45,9 +45,9 @@ namespace PoESkillTree.Computation.Data
                 // equipment
                 { "for each magic item you have equipped", Equipment.Count(e => e.Has(FrameType.Magic)) },
                 // stats
-                { "per # ({StatMatchers})", PerStat(stat: Reference.AsStat, divideBy: Value) },
+                { "per #%? ({StatMatchers})(?! leech)", PerStat(stat: Reference.AsStat, divideBy: Value) },
                 { "per # ({StatMatchers}) ceiled", PerStatCeiled(stat: Reference.AsStat, divideBy: Value) },
-                { "per ({StatMatchers})", PerStat(stat: Reference.AsStat) },
+                { "per ({StatMatchers})(?! leech)", PerStat(stat: Reference.AsStat) },
                 {
                     "per # ({StatMatchers}) on helmet",
                     PerStat(Reference.AsStat.ValueFor(NodeType.Base, new ModifierSource.Local.Item(ItemSlot.Helm)),

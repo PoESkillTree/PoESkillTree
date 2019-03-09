@@ -1,4 +1,5 @@
-﻿using PoESkillTree.Computation.Common.Builders.Conditions;
+﻿using PoESkillTree.Computation.Common.Builders.Actions;
+using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Entities;
 using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -31,6 +32,11 @@ namespace PoESkillTree.Computation.Common.Builders.Effects
         /// (not necessarily upon Self).
         /// </summary>
         IStatBuilder Duration { get; }
+
+        /// <summary>
+        /// Gets an action that occurs when Self inflicts this effect onto an entity.
+        /// </summary>
+        IActionBuilder InflictionAction { get; }
 
         /// <summary>
         /// Adds <paramref name="stat"/> to the stats of this effect if Self is affected by it.

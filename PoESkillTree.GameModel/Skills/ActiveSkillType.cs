@@ -33,5 +33,6 @@
         public const string Golem = "golem";
         public const string Herald = "herald";
         public const string Brand = "brand";
+        public const string Channelling = "channelling";
     }
 }

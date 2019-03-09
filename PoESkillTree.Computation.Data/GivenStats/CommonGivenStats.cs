@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EnumsNET;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Charges;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Modifiers;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -81,6 +82,7 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Charge.Endurance.Amount.Maximum, 3 },
             { BaseSet, Charge.Frenzy.Amount.Maximum, 3 },
             { BaseSet, Charge.Power.Amount.Maximum, 3 },
+            { BaseSet, Charge.From(ChargeType.GhostShroud).Amount.Maximum, 3 },
             { BaseSet, Charge.Endurance.Amount.Minimum, 0 },
             { BaseSet, Charge.Frenzy.Amount.Minimum, 0 },
             { BaseSet, Charge.Power.Amount.Minimum, 0 },
@@ -96,6 +98,9 @@ namespace PoESkillTree.Computation.Data.GivenStats
             { BaseSet, Life.Leech.Rate, 2 },
             { BaseSet, Mana.Leech.Rate, 2 },
             { BaseSet, EnergyShield.Leech.Rate, 2 },
+            { BaseSet, Life.Leech.MaximumRecoveryPerInstance, 10 },
+            { BaseSet, Mana.Leech.MaximumRecoveryPerInstance, 10 },
+            { BaseSet, EnergyShield.Leech.MaximumRecoveryPerInstance, 10 },
             { BaseSet, Life.Leech.TargetPool, (int) Pool.Life },
             { BaseSet, Mana.Leech.TargetPool, (int) Pool.Mana },
             { BaseSet, EnergyShield.Leech.TargetPool, (int) Pool.EnergyShield },

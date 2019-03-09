@@ -6,6 +6,7 @@ using EnumsNET;
 using MoreLinq;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Charges;
 using PoESkillTree.Computation.Common.Builders.Damage;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Stats;
@@ -188,12 +189,8 @@ namespace POESKillTree.Computation.ViewModels
             AddAvailableStats(DefensiveStats, f.StatBuilders.AscendancyPassivePoints.Maximum);
             AddAvailableStats(DefensiveStats, f.MetaStatBuilders.SelectedBandit);
 
-            AddAvailableStats(DefensiveStats, f.ChargeTypeBuilders.Endurance.Amount);
-            AddAvailableStats(DefensiveStats, f.ChargeTypeBuilders.Endurance.Amount.Maximum);
-            AddAvailableStats(DefensiveStats, f.ChargeTypeBuilders.Power.Amount);
-            AddAvailableStats(DefensiveStats, f.ChargeTypeBuilders.Power.Amount.Maximum);
-            AddAvailableStats(DefensiveStats, f.ChargeTypeBuilders.Frenzy.Amount);
-            AddAvailableStats(DefensiveStats, f.ChargeTypeBuilders.Frenzy.Amount.Maximum);
+            ForEach<ChargeType>(t => AddAvailableStats(DefensiveStats, f.ChargeTypeBuilders.From(t).Amount));
+            ForEach<ChargeType>(t => AddAvailableStats(DefensiveStats, f.ChargeTypeBuilders.From(t).Amount.Maximum));
         }
 
         private static void ForEachDamageType(Action<DamageType> action)

@@ -44,9 +44,6 @@ namespace PoESkillTree.Computation.Builders.Buffs
                     .Select(t => BuildEffectStat(source, t, identity));
         }
 
-        public IActionBuilder Action =>
-            new ActionBuilder(StatFactory, Identity, new ModifierSourceEntityBuilder());
-
         public IStatBuilder StackCount
             => FromIdentity("StackCount", typeof(uint),
                 ExplicitRegistrationTypes.UserSpecifiedValue(double.PositiveInfinity));

@@ -33,6 +33,8 @@ namespace PoESkillTree.Computation.Data
                 { "warcry", Keyword.Warcry },
                 { "herald", Keyword.Herald },
                 { "brand", Keyword.Brand },
+                { "movement", Keyword.Movement },
+                { "channelling", Keyword.From(GameModel.Skills.Keyword.Channelling) },
             };
     }
 }

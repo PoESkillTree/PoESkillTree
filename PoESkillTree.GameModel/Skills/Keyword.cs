@@ -135,6 +135,11 @@ namespace PoESkillTree.GameModel.Skills
         /// Equivalent to the ActiveSkillType.
         /// </summary>
         Brand,
+
+        /// <summary>
+        /// Equivalent to the ActiveSkillType.
+        /// </summary>
+        Channelling,
     }
 
     public static class KeywordExtensions
@@ -173,6 +178,7 @@ namespace PoESkillTree.GameModel.Skills
                 { Keyword.Fire, (_, types, __) => types.Contains(ActiveSkillType.Fire) },
                 { Keyword.Chaos, (_, types, __) => types.Contains(ActiveSkillType.Chaos) },
                 { Keyword.Brand, (_, types, __) => types.Contains(ActiveSkillType.Brand) },
+                { Keyword.Channelling, (_, types, __) => types.Contains(ActiveSkillType.Channelling) },
             };
 
         public static bool IsOnSkill(this Keyword @this,

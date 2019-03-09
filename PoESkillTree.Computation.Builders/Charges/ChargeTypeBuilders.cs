@@ -6,14 +6,17 @@ namespace PoESkillTree.Computation.Builders.Charges
 {
     public class ChargeTypeBuilders : IChargeTypeBuilders
     {
+        private readonly IStatFactory _statFactory;
+
         public ChargeTypeBuilders(IStatFactory statFactory)
         {
-            Endurance = new ChargeTypeBuilder(statFactory, CoreBuilder.Create(ChargeType.Endurance));
-            Frenzy = new ChargeTypeBuilder(statFactory, CoreBuilder.Create(ChargeType.Frenzy));
-            Power = new ChargeTypeBuilder(statFactory, CoreBuilder.Create(ChargeType.Power));
+            _statFactory = statFactory;
+            Endurance = From(ChargeType.Endurance);
+            Frenzy = From(ChargeType.Frenzy);
+            Power = From(ChargeType.Power);
             ChanceToSteal =
                 StatBuilderUtils.DamageRelatedFromIdentity(statFactory, "ChanceToStealACharge", typeof(uint)).WithHits;
-            Rage = new ChargeTypeBuilder(statFactory, CoreBuilder.Create(ChargeType.Rage));
+            Rage = From(ChargeType.Rage);
             RageEffect = StatBuilderUtils.FromIdentity(statFactory, "RageEffect", typeof(double));
         }
 
@@ -25,5 +28,8 @@ namespace PoESkillTree.Computation.Builders.Charges
 
         public IChargeTypeBuilder Rage { get; }
         public IStatBuilder RageEffect { get; }
+
+        public IChargeTypeBuilder From(ChargeType type)
+            => new ChargeTypeBuilder(_statFactory, CoreBuilder.Create(type));
     }
 }

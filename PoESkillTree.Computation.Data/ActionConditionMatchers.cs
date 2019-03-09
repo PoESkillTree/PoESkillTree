@@ -69,8 +69,10 @@ namespace PoESkillTree.Computation.Data
                 { "when they block", Block.On },
                 { "when you block", Block.On },
                 // other
-                { "when you stun an enemy", Action.Stun.On },
-                { "when you stun an enemy with a melee hit", And(Condition.WithPart(Keyword.Melee), Action.Stun.On) },
+                {
+                    "when you stun an enemy with a melee hit",
+                    And(Condition.WithPart(Keyword.Melee), Effect.Stun.InflictionAction.On)
+                },
                 { "after spending( a total of)? # mana", Action.SpendMana(Value).On },
                 { "when you gain a ({ChargeTypeMatchers})", Reference.AsChargeType.GainAction.On },
                 { "you gain", Condition.True }, // may be left over at the end, does nothing
@@ -89,6 +91,9 @@ namespace PoESkillTree.Computation.Data
                     "on use",
                     Action.Unique("When your use the Flask").On
                 },
+                { "when you block attack damage", Action.Unique("Block.Attack").On },
+                { "when you block spell damage", Action.Unique("Block.Spell").On },
+                { "(every|each) second(, up to a maximum of #)?", Action.Unique("Interval.OneSecond").On },
             }; // add
     }
 }

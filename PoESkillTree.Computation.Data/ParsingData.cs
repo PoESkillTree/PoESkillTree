@@ -98,7 +98,7 @@ namespace PoESkillTree.Computation.Data
         private IReadOnlyList<IReferencedMatchers> CreateReferencedMatchers(IReadOnlyList<SkillDefinition> skills) =>
             new IReferencedMatchers[]
             {
-                new ActionMatchers(_builderFactories.ActionBuilders),
+                new ActionMatchers(_builderFactories.ActionBuilders, _builderFactories.EffectBuilders),
                 new AilmentMatchers(_builderFactories.EffectBuilders.Ailment),
                 new ChargeTypeMatchers(_builderFactories.ChargeTypeBuilders),
                 new DamageTypeMatchers(_builderFactories.DamageTypeBuilders),

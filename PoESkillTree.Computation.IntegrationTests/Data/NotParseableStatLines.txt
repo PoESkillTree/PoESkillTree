@@ -227,8 +227,8 @@ Nearby Enemies cannot gain Power, Frenzy or Endurance Charges
 You and Nearby Party Members Share Power, Frenzy and Endurance Charges with each other
 // - Inquisitor
 10% chance to create Consecrated Ground when you Hit a Rare or Unique Enemy, lasting 8 seconds
-30% chance to create Consecrated Ground on Kill, lasting 8 seconds
-30% chance to create Consecrated Ground when Hit, lasting 8 seconds
+Effects of Consecrated Ground you create Linger for 4 seconds
+You have Consecrated Ground around you while stationary
 // - Hierophant
 Skills that would Summon a Totem Summon two Totems instead
 // - Assassin

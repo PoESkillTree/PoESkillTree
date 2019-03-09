@@ -129,6 +129,12 @@ namespace PoESkillTree.Computation.Data
                     BaseAdd, Value, References[0].AsDamageType.Damage.WithHitsAndAilments
                         .ConvertTo(References[1].AsDamageType.Damage.WithHitsAndAilments)
                 },
+                {
+                    "({DamageTypeMatchers}) spells have #% of ({DamageTypeMatchers}) damage converted to ({DamageTypeMatchers}) damage",
+                    BaseAdd, Value, References[1].AsDamageType.Damage.With(DamageSource.Spell)
+                        .ConvertTo(References[2].AsDamageType.Damage.With(DamageSource.Spell)),
+                    With(References[0].AsDamageType)
+                },
                 // - penetration
                 {
                     "damage penetrates #% (of enemy )?({DamageTypeMatchers}) resistances?",
@@ -210,8 +216,8 @@ namespace PoESkillTree.Computation.Data
                 { @"\+?#% physical damage reduction", BaseAdd, Value, Physical.Resistance },
                 // - leech
                 {
-                    "life leech is applied to energy shield instead",
-                    TotalOverride, (int) Pool.EnergyShield, Life.Leech.TargetPool
+                    "leech energy shield instead of life",
+                    TotalOverride, 100, Life.Leech.Of(Damage).ConvertTo(EnergyShield.Leech.Of(Damage))
                 },
                 { "gain life from leech instantly", TotalOverride, 1, Life.InstantLeech },
                 { "leech #% of damage as life", BaseAdd, Value, Life.Leech.Of(Damage) },
@@ -285,6 +291,10 @@ namespace PoESkillTree.Computation.Data
                 { @"\+# ({PoolStatMatchers}) gained", BaseAdd, Value, Reference.AsPoolStat.Gain },
                 { @"gain \+# ({PoolStatMatchers})", BaseAdd, Value, Reference.AsPoolStat.Gain },
                 { "replenishes energy shield by #% of armour", BaseAdd, Value.PercentOf(Armour), EnergyShield.Gain },
+                {
+                    "recover ({PoolStatMatchers}) equal to #% of your evasion rating",
+                    BaseAdd, Value.PercentOf(Evasion), Reference.AsPoolStat.Gain
+                },
                 // charges
                 {
                     "#% chance to gain a power, frenzy or endurance charge",
@@ -294,6 +304,10 @@ namespace PoESkillTree.Computation.Data
                 {
                     "(?<!chance to |when you )gain an? ({ChargeTypeMatchers})",
                     BaseAdd, 100, Reference.AsChargeType.ChanceToGain
+                },
+                {
+                    "(?<!chance to |when you )gain a power or frenzy charge",
+                    BaseAdd, 50, Charge.Power.ChanceToGain, Charge.Frenzy.ChanceToGain
                 },
                 // skills
                 { "base duration is # seconds", BaseSet, Value, Stat.Duration },
@@ -376,7 +390,7 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 100, References[0].AsAilment.Avoidance, References[1].AsAilment.Avoidance
                 },
                 {
-                    "(immune to|cannot be affected by) elemental ailments",
+                    "(immune to|cannot be affected by|immunity to) elemental ailments",
                     TotalOverride, 100, Ailment.Elemental.Select(a => a.Avoidance)
                 },
                 {

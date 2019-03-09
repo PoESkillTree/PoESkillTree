@@ -1,8 +1,10 @@
 ﻿using System;
+using PoESkillTree.Computation.Builders.Actions;
 using PoESkillTree.Computation.Builders.Entities;
 using PoESkillTree.Computation.Builders.Stats;
 using PoESkillTree.Computation.Common;
 using PoESkillTree.Computation.Common.Builders;
+using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -42,6 +44,10 @@ namespace PoESkillTree.Computation.Builders.Effects
 
         public virtual IStatBuilder Duration =>
             FromIdentity("Duration", typeof(double));
+
+        public IActionBuilder InflictionAction =>
+            new ActionBuilder(StatFactory, CoreBuilder.UnaryOperation(Identity, s => s + ".Infliction"),
+                new ModifierSourceEntityBuilder());
 
         public virtual IStatBuilder AddStat(IStatBuilder stat) =>
             stat.WithCondition(IsOn(new ModifierSourceEntityBuilder()));

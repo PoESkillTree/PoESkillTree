@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using PoESkillTree.Computation.Common.Builders.Actions;
 using PoESkillTree.Computation.Common.Builders.Conditions;
 using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Builders.Entities;
@@ -33,11 +32,6 @@ namespace PoESkillTree.Computation.Common.Builders.Buffs
         IStatBuilder EffectOn(IEntityBuilder target);
 
         IStatBuilder AddStatForSource(IStatBuilder stat, IEntityBuilder source);
-
-        /// <summary>
-        /// Gets an action that occurs when Self gains this buff.
-        /// </summary>
-        IActionBuilder Action { get; }
 
         /// <summary>
         /// The number of stacks this buff currently has. Only relevant for buffs that can stack, the stat does

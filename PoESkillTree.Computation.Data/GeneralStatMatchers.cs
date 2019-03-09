@@ -131,10 +131,6 @@ namespace PoESkillTree.Computation.Data
                 { "physical damage reduction", Physical.Resistance },
                 // - leech
                 {
-                    @"(?<pool>({PoolStatMatchers})) per second to \k<pool> Leech rate",
-                    Reference.AsPoolStat.Leech.RateLimit
-                },
-                {
                     "damage leeched as ({PoolStatMatchers})",
                     Reference.AsPoolStat.Leech.Of(Damage)
                 },
@@ -168,6 +164,19 @@ namespace PoESkillTree.Computation.Data
                     Life.Leech.Of(Damage.For(Entity.Totem))
                 },
                 { "({PoolStatMatchers}) leeched per second", Reference.AsPoolStat.Leech.Rate },
+                { "total recovery per second from ({PoolStatMatchers}) leech", Reference.AsPoolStat.Leech.Rate },
+                {
+                    @"(?<pool>({PoolStatMatchers})) per second to \k<pool> Leech rate",
+                    Reference.AsPoolStat.Leech.RateLimit
+                },
+                {
+                    "maximum total recovery per second from ({PoolStatMatchers}) leech",
+                    Reference.AsPoolStat.Leech.RateLimit
+                },
+                {
+                    "maximum recovery per ({PoolStatMatchers}) leech",
+                    Reference.AsPoolStat.Leech.MaximumRecoveryPerInstance
+                },
                 // - block
                 { "chance to block", Block.AttackChance },
                 { "chance to block attack damage", Block.AttackChance },
@@ -215,7 +224,7 @@ namespace PoESkillTree.Computation.Data
                 { "hit rate", Stat.HitRate },
                 { "brand activation frequency", Stat.HitRate, With(Keyword.Brand) },
                 // regen and recharge
-                { "({PoolStatMatchers}) regeneration rate", Reference.AsPoolStat.Regen },
+                { "({PoolStatMatchers}) regeneration( rate)?", Reference.AsPoolStat.Regen },
                 { "energy shield recharge rate", EnergyShield.Recharge },
                 {
                     "recovery rate of life, mana and energy shield",

@@ -1,3 +1,5 @@
+using PoESkillTree.Computation.Common.Builders.Conditions;
+
 namespace PoESkillTree.Computation.Common.Builders.Stats
 {
     /// <summary>
@@ -21,6 +23,17 @@ namespace PoESkillTree.Computation.Common.Builders.Stats
         /// per second.
         /// </summary>
         IStatBuilder Rate { get; }
+
+        /// <summary>
+        /// Gets a stat representing the percentage of this instance's pool a single leech instance can recover at
+        /// maximum (before being increased by Rate).
+        /// </summary>
+        IStatBuilder MaximumRecoveryPerInstance { get; }
+
+        /// <summary>
+        /// True if the entity is currently leeching to this instance's pool.
+        /// </summary>
+        IConditionBuilder IsActive { get; }
 
         /// <summary>
         /// A stat specifying the Pool this stat's leech value is applied to

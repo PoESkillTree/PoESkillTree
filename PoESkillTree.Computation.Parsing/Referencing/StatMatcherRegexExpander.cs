@@ -16,9 +16,11 @@ namespace PoESkillTree.Computation.Parsing.Referencing
         /// The pattern <see cref="ValuePlaceholder"/> is expanded to.
         /// </summary>
         public const string ValueRegex = @"\d+(\.\d+)?";
-        // Matches must have whitespace left and right of them, or the input string must end there.
+        // Matches must have whitespace left of them if the input string does not start.
         public const string LeftDelimiterRegex = @"(?<=^|\s)";
-        public const string RightDelimiterRegex = @"(?=$|\s)";
+        // Matches must have whitespace right of them if the input string does not end.
+        // A ',' at the end is always allowed.
+        public const string RightDelimiterRegex = @",?(?=$|\s)";
 
         private readonly IReferencedRegexes _referencedRegexes;
         private readonly IRegexGroupFactory _regexGroupFactory;

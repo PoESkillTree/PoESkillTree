@@ -25,6 +25,7 @@ namespace PoESkillTree.Computation.Data
                 { "frenzy charges?", Charge.Frenzy },
                 { "power charges?", Charge.Power },
                 { "rage", Charge.Rage },
+                { "ghost shrouds?", Charge.From(ChargeType.GhostShroud) },
             };
     }
 }

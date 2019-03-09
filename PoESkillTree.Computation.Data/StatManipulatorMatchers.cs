@@ -31,7 +31,14 @@ namespace PoESkillTree.Computation.Data
                 },
                 {
                     "consecrated ground you create grants (?<inner>.*) to you and allies",
-                    s => Ground.Consecrated.AddStat(s), "${inner}"
+                    s => s.For(Self).WithCondition(Ground.Consecrated.IsOn(Self))
+                        .Concat(s.For(Entity.Minion).WithCondition(Ground.Consecrated.IsOn(Entity.Minion)))
+                        .Concat(s.For(Entity.Totem).WithCondition(Ground.Consecrated.IsOn(Entity.Totem))),
+                    "${inner}"
+                },
+                {
+                    "consecrated ground you create applies (?<inner>.*) to enemies",
+                    s => s.For(Enemy).WithCondition(Ground.Consecrated.IsOn(Enemy)), "${inner}"
                 },
                 {
                     "every # seconds, gain (?<inner>.*) for # seconds",

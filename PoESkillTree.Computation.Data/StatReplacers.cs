@@ -64,18 +64,23 @@ namespace PoESkillTree.Computation.Data
             },
             {
                 // Vaal Pact
-                @"life leeched per second is doubled\. (maximum life leech rate is doubled)\. (life regeneration has no effect)\.",
-                "100% more life leeched per second", "$1", "$2"
+                @"(life leeched per second is doubled)\. (maximum .* is doubled)\. (life regeneration has no effect)\.",
+                "$1", "$2", "$3"
             },
             {
                 // Ancestral Bond
-                "(you can't deal damage with skills yourself) (.* of Summoned Totems)",
+                "(you can't deal damage with skills yourself) (.* of summoned totems)",
+                "$1", "$2"
+            },
+            {
+                // Runebinder
+                @"(.* of summoned totems)\. (you can have an additional brand attached to an enemy)",
                 "$1", "$2"
             },
             {
                 // Ghost Reaver
-                @"(life leech is applied to energy shield instead) (\d+% less energy shield recharge rate)",
-                "$1", "$2"
+                @"(leech energy shield instead of life) (maximum .* is doubled) (\d+% less energy shield recharge rate)",
+                "$1", "$2", "$3"
             },
             {
                 // Arrow Dancing

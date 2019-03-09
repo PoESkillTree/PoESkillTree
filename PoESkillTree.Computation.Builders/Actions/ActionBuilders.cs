@@ -55,8 +55,6 @@ namespace PoESkillTree.Computation.Builders.Actions
 
         public IActionBuilder ConsumeCorpse => Create("ConsumeCorpse");
 
-        public IActionBuilder Stun => Create("Stun");
-
         public IActionBuilder SpendMana(IValueBuilder amount)
         {
             var stringBuilder = CoreBuilder.Create(amount, BuildSpendManaIdentity);

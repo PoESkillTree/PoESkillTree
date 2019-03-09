@@ -54,11 +54,6 @@ namespace PoESkillTree.Computation.Common.Builders.Actions
         IActionBuilder ConsumeCorpse { get; }
 
         /// <summary>
-        /// Gets an action that occurs when Self stuns any entity.
-        /// </summary>
-        IActionBuilder Stun { get; }
-
-        /// <summary>
         /// Gets an action that occurs when Self spends <paramref name="amount"/> mana.
         /// </summary>
         IActionBuilder SpendMana(IValueBuilder amount);

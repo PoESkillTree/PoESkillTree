@@ -100,6 +100,10 @@ namespace PoESkillTree.Computation.Data
                     TotalOverride, 1,
                     Flag.IncreasesToSourceApplyToTarget(Stat.CastRate.With(DamageSource.Spell), Stat.HitRate)
                 },
+                {
+                    "({StatMatchers}) is doubled",
+                    PercentMore, 100, Reference.AsStat
+                },
                 // skills
                 {
                     // Dread Banner, War Banner
@@ -256,11 +260,6 @@ namespace PoESkillTree.Computation.Data
                 },
                 { "gain accuracy rating equal to your strength", BaseAdd, Attribute.Strength.Value, Stat.Accuracy },
                 { "#% increased attack speed per # accuracy rating", UndeniableAttackSpeed().ToArray() },
-                {
-                    "gain an endurance charge every second if you've been hit recently",
-                    TotalOverride, 100, Charge.Endurance.ChanceToGain,
-                    Action.Unique("Every second if you've been Hit recently").On
-                },
                 // - Berserker
                 {
                     "recover #% of life and mana when you use a warcry",
@@ -459,7 +458,7 @@ namespace PoESkillTree.Computation.Data
                 // - Trickster
                 { "movement skills cost no mana", TotalOverride, 0, Mana.Cost, With(Keyword.Movement) },
                 {
-                    "your hits have #% chance to gain #% of non-chaos damage as extra chaos damage",
+                    "#% chance to gain #% of non-chaos damage with hits as extra chaos damage",
                     BaseAdd, Values[0] * Values[1] / 100, Chaos.Invert.Damage.WithHits.GainAs(Chaos.Damage.WithHits)
                 },
                 // - Saboteur

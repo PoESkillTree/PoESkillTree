@@ -30,5 +30,7 @@ namespace PoESkillTree.Computation.Common.Builders.Charges
 
         IChargeTypeBuilder Rage { get; }
         IStatBuilder RageEffect { get; }
+
+        IChargeTypeBuilder From(ChargeType type);
     }
 }

@@ -5,6 +5,7 @@
         Endurance,
         Frenzy,
         Power,
-        Rage
+        Rage,
+        GhostShroud,
     }
 }

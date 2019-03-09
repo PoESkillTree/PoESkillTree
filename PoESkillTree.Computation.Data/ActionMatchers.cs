@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using PoESkillTree.Computation.Common.Builders.Actions;
+using PoESkillTree.Computation.Common.Builders.Effects;
 using PoESkillTree.Computation.Common.Data;
 using PoESkillTree.Computation.Data.Base;
 using PoESkillTree.Computation.Data.Collections;
@@ -12,10 +13,12 @@ namespace PoESkillTree.Computation.Data
     public class ActionMatchers : ReferencedMatchersBase<IActionBuilder>
     {
         private IActionBuilders Action { get; }
+        private IEffectBuilders Effect { get; }
 
-        public ActionMatchers(IActionBuilders actionBuilders)
+        public ActionMatchers(IActionBuilders actionBuilders, IEffectBuilders effect)
         {
             Action = actionBuilders;
+            Effect = effect;
         }
 
         protected override IReadOnlyList<ReferencedMatcherData> CreateCollection() =>
@@ -28,6 +31,8 @@ namespace PoESkillTree.Computation.Data
                 { "hits?", Action.Hit },
                 { "(dealt a )?critical strike", Action.CriticalStrike },
                 { "non-critical strike", Action.NonCriticalStrike },
+                { "stun", Effect.Stun.InflictionAction },
+                { "shocked", Effect.Ailment.Shock.InflictionAction },
             }; // Add
     }
 }

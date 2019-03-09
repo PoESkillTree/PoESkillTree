@@ -52,6 +52,9 @@ namespace PoESkillTree.Computation.Builders.Stats
         public IConditionBuilder IsLow =>
             (Reservation.Value >= 0.65 * Value).Or(FromIdentity(typeof(bool), UserSpecifiedValue(false)).IsSet);
 
+        public IConditionBuilder IsEmpty
+            => (Value <= 0).Or(Reservation.Value >= 100).Or(FromIdentity(typeof(bool), UserSpecifiedValue(true)).IsSet);
+
         public Pool BuildPool(BuildParameters parameters) => Pool.Build(parameters);
     }
 
@@ -121,6 +124,8 @@ namespace PoESkillTree.Computation.Builders.Stats
 
         public IStatBuilder RateLimit => FromIdentity(typeof(uint));
         public IStatBuilder Rate => FromIdentity(typeof(double));
+        public IStatBuilder MaximumRecoveryPerInstance => FromIdentity(typeof(double));
+        public IConditionBuilder IsActive => FromIdentity(typeof(bool), UserSpecifiedValue(false)).IsSet;
 
         public IStatBuilder TargetPool =>
             new StatBuilder(StatFactory, new CoreStatBuilderFromCoreBuilder<Pool>(Pool, StatFactory.LeechTargetPool));

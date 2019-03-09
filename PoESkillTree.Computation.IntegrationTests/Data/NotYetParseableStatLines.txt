@@ -1,5 +1,7 @@
 ﻿// TODO not handled yet
 // Requires not yet implemented stats
+// - Stat that modifies Mana.Cost(Total). Could be done via behavior.
+Channelling Skills have -3 to Total Mana Cost
 // - Triggered
 35% less Damage if Triggered
 // - Lucky/Unlucky for chances
