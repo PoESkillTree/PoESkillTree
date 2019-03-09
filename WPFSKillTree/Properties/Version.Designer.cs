@@ -79,7 +79,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copyright © 2012-2018 PoESkillTree Team.
+        ///   Looks up a localized string similar to Copyright © 2012-2019 PoESkillTree Team.
         /// </summary>
         public static string AssemblyCopyright {
             get {
@@ -106,7 +106,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 3.5.0.
+        ///   Looks up a localized string similar to 3.6.0.
         /// </summary>
         public static string GGGPatchVersion {
             get {
@@ -133,7 +133,7 @@ namespace POESKillTree.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 2.7.8.
+        ///   Looks up a localized string similar to 3.0.0-alpha.2.
         /// </summary>
         public static string ProductVersion {
             get {
