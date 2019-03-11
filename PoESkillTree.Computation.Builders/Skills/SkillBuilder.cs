@@ -13,7 +13,6 @@ using PoESkillTree.Computation.Common.Builders.Resolving;
 using PoESkillTree.Computation.Common.Builders.Skills;
 using PoESkillTree.Computation.Common.Builders.Stats;
 using PoESkillTree.Computation.Common.Builders.Values;
-using PoESkillTree.Computation.Common.Parsing;
 using PoESkillTree.GameModel.Skills;
 
 namespace PoESkillTree.Computation.Builders.Skills
@@ -57,7 +56,7 @@ namespace PoESkillTree.Computation.Builders.Skills
         private static string SelectBuffIdentity(SkillDefinition skillDefinition)
         {
             if (skillDefinition.IsSupport || !skillDefinition.ActiveSkill.ProvidesBuff)
-                throw new ParseException($"{skillDefinition.Id} does not provide a buff");
+                return "dummy";
             return skillDefinition.Id;
         }
 

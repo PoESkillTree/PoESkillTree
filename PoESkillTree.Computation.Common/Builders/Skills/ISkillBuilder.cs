@@ -39,7 +39,7 @@ namespace PoESkillTree.Computation.Common.Builders.Skills
         ValueBuilder SkillId { get; }
 
         /// <summary>
-        /// The buff provided by this skill. Throws if this is skill does not provide a buff.
+        /// The buff provided by this skill. Returns a dummy buff if this skill does not provide a buff.
         /// </summary>
         IBuffBuilder Buff { get; }
 
