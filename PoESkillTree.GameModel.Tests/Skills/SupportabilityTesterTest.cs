@@ -133,6 +133,42 @@ namespace PoESkillTree.GameModel.Tests.Skills
             Assert.AreEqual(expected, actual);
         }
 
+        [TestCase("aura", ExpectedResult = true)]
+        [TestCase("aura", "duration", ExpectedResult = false)]
+        [TestCase("aura", "curse_skill", ExpectedResult = true)]
+        [TestCase("aura", "unknown_78", ExpectedResult = true)]
+        [TestCase("curse_skill", ExpectedResult = false)]
+        public bool BooleanActiveSkillTypesAreEvaluatedCorrectly(params string[] types)
+        {
+            var skills = new[]
+            {
+                SkillDefinition.CreateActive("activeBoolean", 100, "", null, null,
+                    new ActiveSkillDefinition("activeBoolean", 0, types, new string[0], null, null, false, null,
+                        null), null),
+                CreateSupportDefinition("SupportAuraDuration", 22, false,
+                    new[]
+                    {
+                        "aura",
+                        "duration",
+                        "boolean_not",
+                        "curse_skill",
+                        "boolean_or",
+                        "unknown_78",
+                        "boolean_or",
+                        "boolean_and",
+                    },
+                    new[] { "totem", },
+                    new[] { "duration", "unknown_78" }),
+            };
+            var activeSkill = new Skill("activeBoolean", 20, 20, default, 0, 0);
+            var supportSkill = new Skill("SupportAuraDuration", 20, 20, default, 1, 0);
+            var sut = new SupportabilityTester(new SkillDefinitions(skills));
+
+            var actual = sut.SelectSupportingSkills(activeSkill, new[] { supportSkill }).ToList();
+
+            return actual.Contains(supportSkill);
+        }
+
         private static SupportabilityTester CreateSut() => new SupportabilityTester(SkillDefinitions);
 
         private static SkillDefinitions SkillDefinitions => new SkillDefinitions(Skills);

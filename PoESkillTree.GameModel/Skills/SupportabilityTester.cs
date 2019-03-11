@@ -42,11 +42,32 @@ namespace PoESkillTree.GameModel.Skills
             return supports.Where(s => CanSupport(s, activeTypes));
         }
 
-        private bool CanSupport(Skill supportSkill, ISet<string> activeTypes)
+        private bool CanSupport(Skill supportSkill, IReadOnlyCollection<string> activeTypes)
         {
             var definition = GetDefinition(supportSkill);
-            return activeTypes.ContainsAny(definition.AllowedActiveSkillTypes) &&
-                   activeTypes.ContainsNone(definition.ExcludedActiveSkillTypes);
+            if (activeTypes.ContainsAny(definition.ExcludedActiveSkillTypes))
+                return false;
+
+            var stack = new Stack<bool>();
+            foreach (var type in definition.AllowedActiveSkillTypes)
+            {
+                switch (type)
+                {
+                    case ActiveSkillType.Not:
+                        stack.Push(!stack.Pop());
+                        break;
+                    case ActiveSkillType.And:
+                        stack.Push(stack.Pop() & stack.Pop());
+                        break;
+                    case ActiveSkillType.Or:
+                        stack.Push(stack.Pop() | stack.Pop());
+                        break;
+                    default:
+                        stack.Push(activeTypes.Contains(type));
+                        break;
+                }
+            }
+            return stack.Any(b => b);
         }
 
         private SupportSkillDefinition GetDefinition(Skill supportSkill)

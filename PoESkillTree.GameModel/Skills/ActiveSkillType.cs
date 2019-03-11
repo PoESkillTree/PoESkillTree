@@ -34,5 +34,8 @@
         public const string Herald = "herald";
         public const string Brand = "brand";
         public const string Channelling = "channelling";
+        public const string And = "boolean_and";
+        public const string Or = "boolean_or";
+        public const string Not = "boolean_not";
     }
 }

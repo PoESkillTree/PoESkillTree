@@ -1199,7 +1199,6 @@
   </Unique>
   <Unique Name="Nebulis" Level="68" BaseMetadataId="Metadata/Items/Weapons/OneHandWeapons/OneHandMaces/Sceptre22">
     <Explicit>
-      <string>IncreasedCastSpeedUnique__16</string>
       <string>ColdDamagePerResistanceAbove75Unique__1</string>
       <string>LightningDamagePerResistanceAbove75Unique__1</string>
     </Explicit>
@@ -4846,7 +4845,14 @@
     <Properties />
   </Unique>
   <Unique Name="Garb of the Ephemeral" Level="56" BaseMetadataId="Metadata/Items/Armours/BodyArmours/BodyInt13">
-    <Explicit />
+    <Explicit>
+      <string>LocalIncreasedEnergyShieldPercentUnique__24</string>
+      <string>StrengthIntelligenceRequirementsUnique__1</string>
+      <string>DivineChargeOnHitUnique__1_</string>
+      <string>GainDivinityOnMaxDivineChargeUnique__1</string>
+      <string>NearbyAlliesCannotBeSlowedUnique__1</string>
+      <string>NearbyEnemiesCannotCritUnique__1</string>
+    </Explicit>
     <Properties />
   </Unique>
   <Unique Name="Geofri's Sanctuary" Level="64" BaseMetadataId="Metadata/Items/Armours/BodyArmours/BodyStrInt15">
@@ -7152,7 +7158,13 @@
     <Properties />
   </Unique>
   <Unique Name="Offering to the Serpent" Level="57" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesStrInt7">
-    <Explicit />
+    <Explicit>
+      <string>LocalIncreasedArmourAndEnergyShieldUnique__15</string>
+      <string>MaximumLifeLeechAmountUnique__1</string>
+      <string>AttackAndCastSpeedUnique__4</string>
+      <string>IncreasedDamageWhileLeechingUnique__2__</string>
+      <string>LifeLeechNotRemovedOnFullLifeUnique__1</string>
+    </Explicit>
     <Properties />
   </Unique>
   <Unique Name="Ondar's Clasp" Level="5" BaseMetadataId="Metadata/Items/Armours/Gloves/GlovesDexInt1">
