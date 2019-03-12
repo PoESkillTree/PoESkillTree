@@ -13,7 +13,7 @@
                              mc:Ignorable="d" 
                              d:DataContext="{d:DesignInstance viewModels:CraftingViewModel}"
                              CloseButtonVisibility="Collapsed"
-                             MaxContentWidth="700">
+                             MaxContentWidth="800">
     <dialogs:CloseableBaseDialog.Resources>
         <viewModels:CraftingViewModelProxy x:Key="VmProxy" Data="{Binding}" />
         <Style x:Key="HideForFlasksAndJewelsStyle" TargetType="local:ModSelectorView">
@@ -89,10 +89,11 @@
         <ScrollViewer Grid.Row="1"
                       HorizontalScrollBarVisibility="Hidden"
                       VerticalScrollBarVisibility="Auto">
-            <Grid>
+            <Grid
+                Width="{Binding ViewportWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=ScrollViewer}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>

@@ -65,42 +65,29 @@ namespace POESKillTree.Model.Items.Mods
         /// <returns>true if this mod can be crafted onto an item with the given tags and class</returns>
         public bool Matches(Tags tags, ItemClass itemClass)
         {
-            // the ModDomains Item and Master match everything but Flask, Jewel and Gem
-            if (tags.HasFlag(Tags.Flask))
-            {
-                if (Domain != ModDomain.Flask)
-                {
-                    return false;
-                }
-            }
-            else if (tags.HasFlag(Tags.Jewel))
-            {
-                if (Domain != ModDomain.Misc)
-                {
-                    return false;
-                }
-            }
-            else if (tags.HasFlag(Tags.Gem))
-            {
+            if (!TagsAreAllowedInDomain(tags))
                 return false;
-            }
-            else
-            {
-                if (Domain != ModDomain.Item && Domain != ModDomain.Crafted)
-                {
-                    return false;
-                }
-            }
 
             if (!IgnoredMasterCraftedGroups.Contains(JsonMod.Group) && _itemClasses.Contains(itemClass))
-            {
                 return true;
-            }
+
             return (
                 from spawnTag in _spawnTags
                 where tags.HasFlag(spawnTag.Item1)
                 select spawnTag.Item2
             ).FirstOrDefault();
+        }
+
+        private bool TagsAreAllowedInDomain(Tags tags)
+        {
+            // Flasks, jewels and gems have their own domains, everything else allows Item and Crafted.
+            if (tags.HasFlag(Tags.Flask))
+                return Domain == ModDomain.Flask;
+            if (tags.HasFlag(Tags.Jewel) || tags.HasFlag(Tags.AbyssJewel))
+                return Domain == ModDomain.Misc;
+            if (tags.HasFlag(Tags.Gem))
+                return false;
+            return Domain == ModDomain.Item || Domain == ModDomain.Crafted;
         }
     }
 }
